@@ -145,7 +145,8 @@ public class EventHubConsumerAsyncClientIntegrationTest extends IntegrationTestB
                 .assertNext(event -> Assertions.assertNull(event.getLastEnqueuedEventProperties(),
                     "'lastEnqueuedEventProperties' should be null."))
                 .expectNextCount(expectedNumber - 1)
-                .verifyComplete();
+                .expectComplete()
+                .verify(TIMEOUT);
         } finally {
             isActive.set(false);
         }
@@ -183,7 +184,8 @@ public class EventHubConsumerAsyncClientIntegrationTest extends IntegrationTestB
                 .assertNext(event -> verifyLastRetrieved(lastViewed, event.getLastEnqueuedEventProperties(), false))
                 .assertNext(event -> verifyLastRetrieved(lastViewed, event.getLastEnqueuedEventProperties(), false))
                 .assertNext(event -> verifyLastRetrieved(lastViewed, event.getLastEnqueuedEventProperties(), false))
-                .verifyComplete();
+                .expectComplete()
+                .verify(TIMEOUT);
         } finally {
             isActive.set(false);
         }
@@ -297,7 +299,9 @@ public class EventHubConsumerAsyncClientIntegrationTest extends IntegrationTestB
                 Assertions.assertNotNull(properties);
                 Assertions.assertEquals(consumer.getEventHubName(), properties.getName());
                 Assertions.assertEquals(NUMBER_OF_PARTITIONS, properties.getPartitionIds().stream().count());
-            }).verifyComplete();
+            })
+            .expectComplete()
+            .verify(TIMEOUT);
     }
 
     /**
@@ -312,7 +316,8 @@ public class EventHubConsumerAsyncClientIntegrationTest extends IntegrationTestB
         // Act & Assert
         StepVerifier.create(consumer.getPartitionIds())
             .expectNextCount(NUMBER_OF_PARTITIONS)
-            .verifyComplete();
+            .expectComplete()
+            .verify(TIMEOUT);
     }
 
     /**
@@ -331,7 +336,8 @@ public class EventHubConsumerAsyncClientIntegrationTest extends IntegrationTestB
                     Assertions.assertEquals(consumer.getEventHubName(), properties.getEventHubName());
                     Assertions.assertEquals(partitionId, properties.getId());
                 })
-                .verifyComplete();
+                .expectComplete()
+                .verify(TIMEOUT);
         }
     }
 
@@ -380,7 +386,8 @@ public class EventHubConsumerAsyncClientIntegrationTest extends IntegrationTestB
                 .assertNext(event -> verifyLastRetrieved(lastViewed, event.getLastEnqueuedEventProperties(), false))
                 .assertNext(event -> verifyLastRetrieved(lastViewed, event.getLastEnqueuedEventProperties(), false))
                 .assertNext(event -> verifyLastRetrieved(lastViewed, event.getLastEnqueuedEventProperties(), false))
-                .verifyComplete();
+                .expectComplete()
+                .verify(TIMEOUT);
         } finally {
             isActive.set(false);
         }
@@ -571,7 +578,7 @@ public class EventHubConsumerAsyncClientIntegrationTest extends IntegrationTestB
                 .expectNextCount(backpressure)
                 .thenAwait(Duration.ofSeconds(5))
                 .thenCancel()
-                .verify();
+                .verify(TIMEOUT);
         } finally {
             isActive.set(false);
         }

@@ -33,9 +33,7 @@ import com.azure.messaging.servicebus.administration.implementation.models.Title
 import com.azure.messaging.servicebus.administration.models.CreateQueueOptions;
 import com.azure.messaging.servicebus.administration.models.QueueProperties;
 import com.azure.messaging.servicebus.administration.models.QueueRuntimeProperties;
-import org.junit.jupiter.api.AfterAll;
 import org.junit.jupiter.api.AfterEach;
-import org.junit.jupiter.api.BeforeAll;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.params.ParameterizedTest;
@@ -86,6 +84,7 @@ import static org.mockito.Mockito.when;
 class ServiceBusAdministrationAsyncClientTest {
     private static final int HTTP_UNAUTHORIZED = 401;
     private static final String FORWARD_TO_ENTITY = "https://endpoint.servicebus.foo/forward-to-entity";
+    private static final Duration DEFAULT_TIMEOUT = Duration.ofSeconds(5);
 
     @Mock
     private ServiceBusManagementClientImpl serviceClient;
@@ -114,16 +113,6 @@ class ServiceBusAdministrationAsyncClientTest {
         } catch (MalformedURLException e) {
             throw new RuntimeException("Could not form URL.", e);
         }
-    }
-
-    @BeforeAll
-    static void beforeAll() {
-        StepVerifier.setDefaultTimeout(Duration.ofSeconds(5));
-    }
-
-    @AfterAll
-    static void afterAll() {
-        StepVerifier.resetDefaultTimeout();
     }
 
     @BeforeEach
@@ -166,7 +155,8 @@ class ServiceBusAdministrationAsyncClientTest {
         // Act & Assert
         StepVerifier.create(client.createQueue(queueName, description))
             .assertNext(e -> assertEquals(updatedName, e.getName()))
-            .verifyComplete();
+            .expectComplete()
+            .verify(DEFAULT_TIMEOUT);
     }
 
     @Test
@@ -191,7 +181,8 @@ class ServiceBusAdministrationAsyncClientTest {
                 assertResponse(objectResponse, response);
                 assertEquals(updatedName, response.getValue().getName());
             })
-            .verifyComplete();
+            .expectComplete()
+            .verify(DEFAULT_TIMEOUT);
     }
 
     @Test
@@ -221,7 +212,8 @@ class ServiceBusAdministrationAsyncClientTest {
                 assertResponse(objectResponse, response);
                 assertEquals(updatedName, response.getValue().getName());
             })
-            .verifyComplete();
+            .expectComplete()
+            .verify(DEFAULT_TIMEOUT);
     }
 
     @Test
@@ -232,7 +224,8 @@ class ServiceBusAdministrationAsyncClientTest {
 
         // Act & Assert
         StepVerifier.create(client.deleteQueue(queueName))
-            .verifyComplete();
+            .expectComplete()
+            .verify(DEFAULT_TIMEOUT);
     }
 
     @Test
@@ -244,7 +237,8 @@ class ServiceBusAdministrationAsyncClientTest {
         // Act & Assert
         StepVerifier.create(client.deleteQueueWithResponse(queueName))
             .assertNext(response -> assertResponse(objectResponse, response))
-            .verifyComplete();
+            .expectComplete()
+            .verify(DEFAULT_TIMEOUT);
     }
 
     @Test
@@ -263,7 +257,8 @@ class ServiceBusAdministrationAsyncClientTest {
         // Act & Assert
         StepVerifier.create(client.getQueue(queueName))
             .assertNext(e -> assertEquals(queueName, e.getName()))
-            .verifyComplete();
+            .expectComplete()
+            .verify(DEFAULT_TIMEOUT);
     }
 
     @Test
@@ -286,7 +281,8 @@ class ServiceBusAdministrationAsyncClientTest {
                 assertResponse(objectResponse, response);
                 assertEquals(updatedName, response.getValue().getName());
             })
-            .verifyComplete();
+            .expectComplete()
+            .verify(DEFAULT_TIMEOUT);
     }
 
     @Test
@@ -330,7 +326,8 @@ class ServiceBusAdministrationAsyncClientTest {
                 assertEquals(expectedCount.getTransferMessageCount(), info.getTransferMessageCount());
                 assertEquals(expectedCount.getTransferDeadLetterMessageCount(), info.getTransferDeadLetterMessageCount());
             })
-            .verifyComplete();
+            .expectComplete()
+            .verify(DEFAULT_TIMEOUT);
     }
 
     @Test
@@ -378,7 +375,8 @@ class ServiceBusAdministrationAsyncClientTest {
                 assertEquals(expectedCount.getTransferDeadLetterMessageCount(),
                     info.getTransferDeadLetterMessageCount());
             })
-            .verifyComplete();
+            .expectComplete()
+            .verify(DEFAULT_TIMEOUT);
     }
 
     /**
@@ -398,8 +396,9 @@ class ServiceBusAdministrationAsyncClientTest {
 
         // Act & Assert
         StepVerifier.create(client.getSubscriptionRuntimeProperties(topicName, subscriptionName))
-            .verifyErrorMatches(error -> error instanceof ClientAuthenticationException
-                && error.getMessage().equals(errorMessage));
+            .expectErrorMatches(error -> error instanceof ClientAuthenticationException
+                && error.getMessage().equals(errorMessage))
+            .verify(DEFAULT_TIMEOUT);
     }
 
     /**
@@ -481,7 +480,8 @@ class ServiceBusAdministrationAsyncClientTest {
         StepVerifier.create(client.listQueues())
             .expectNextCount(firstEntries.size())
             .expectNextCount(secondEntries.size())
-            .verifyComplete();
+            .expectComplete()
+            .verify(DEFAULT_TIMEOUT);
     }
 
     @Test
@@ -515,7 +515,8 @@ class ServiceBusAdministrationAsyncClientTest {
         // Act & Assert
         StepVerifier.create(client.updateQueue(properties))
             .assertNext(e -> assertEquals(updatedName, e.getName()))
-            .verifyComplete();
+            .expectComplete()
+            .verify(DEFAULT_TIMEOUT);
     }
 
     @Test
@@ -559,7 +560,8 @@ class ServiceBusAdministrationAsyncClientTest {
                 assertResponse(objectResponse, response);
                 assertEquals(updatedName, response.getValue().getName());
             })
-            .verifyComplete();
+            .expectComplete()
+            .verify(DEFAULT_TIMEOUT);
     }
 
     static Stream<Arguments> getSubscriptionRuntimePropertiesUnauthorised() {

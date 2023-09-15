@@ -9,7 +9,9 @@ import com.azure.core.http.HttpPipeline;
 import com.azure.core.management.AzureEnvironment;
 import com.azure.core.util.serializer.SerializerAdapter;
 import com.azure.resourcemanager.containerregistry.fluent.AgentPoolsClient;
+import com.azure.resourcemanager.containerregistry.fluent.CacheRulesClient;
 import com.azure.resourcemanager.containerregistry.fluent.ContainerRegistryManagementClient;
+import com.azure.resourcemanager.containerregistry.fluent.CredentialSetsClient;
 import com.azure.resourcemanager.containerregistry.fluent.OperationsClient;
 import com.azure.resourcemanager.containerregistry.fluent.PrivateEndpointConnectionsClient;
 import com.azure.resourcemanager.containerregistry.fluent.RegistriesClient;
@@ -85,6 +87,30 @@ public final class ContainerRegistryManagementClientImpl extends AzureServiceCli
      */
     public Duration getDefaultPollInterval() {
         return this.defaultPollInterval;
+    }
+
+    /** The CacheRulesClient object to access its operations. */
+    private final CacheRulesClient cacheRules;
+
+    /**
+     * Gets the CacheRulesClient object to access its operations.
+     *
+     * @return the CacheRulesClient object.
+     */
+    public CacheRulesClient getCacheRules() {
+        return this.cacheRules;
+    }
+
+    /** The CredentialSetsClient object to access its operations. */
+    private final CredentialSetsClient credentialSets;
+
+    /**
+     * Gets the CredentialSetsClient object to access its operations.
+     *
+     * @return the CredentialSetsClient object.
+     */
+    public CredentialSetsClient getCredentialSets() {
+        return this.credentialSets;
     }
 
     /** The RegistriesClient object to access its operations. */
@@ -242,6 +268,8 @@ public final class ContainerRegistryManagementClientImpl extends AzureServiceCli
         this.defaultPollInterval = defaultPollInterval;
         this.subscriptionId = subscriptionId;
         this.endpoint = endpoint;
+        this.cacheRules = new CacheRulesClientImpl(this);
+        this.credentialSets = new CredentialSetsClientImpl(this);
         this.registries = new RegistriesClientImpl(this);
         this.operations = new OperationsClientImpl(this);
         this.privateEndpointConnections = new PrivateEndpointConnectionsClientImpl(this);

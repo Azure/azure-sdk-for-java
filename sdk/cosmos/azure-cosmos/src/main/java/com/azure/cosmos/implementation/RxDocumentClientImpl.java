@@ -11,10 +11,13 @@ import com.azure.cosmos.ConnectionMode;
 import com.azure.cosmos.ConsistencyLevel;
 import com.azure.cosmos.CosmosContainerProactiveInitConfig;
 import com.azure.cosmos.CosmosDiagnostics;
+import com.azure.cosmos.CosmosDiagnosticsContext;
 import com.azure.cosmos.CosmosEndToEndOperationLatencyPolicyConfig;
 import com.azure.cosmos.CosmosException;
 import com.azure.cosmos.DirectConnectionConfig;
 import com.azure.cosmos.SessionRetryOptions;
+import com.azure.cosmos.ThresholdBasedAvailabilityStrategy;
+import com.azure.cosmos.implementation.apachecommons.collections.list.UnmodifiableList;
 import com.azure.cosmos.implementation.apachecommons.lang.StringUtils;
 import com.azure.cosmos.implementation.apachecommons.lang.tuple.ImmutablePair;
 import com.azure.cosmos.implementation.batch.BatchResponseParser;
@@ -97,10 +100,14 @@ import java.util.Arrays;
 import java.util.Collection;
 import java.util.Collections;
 import java.util.HashMap;
+import java.util.HashSet;
 import java.util.List;
+import java.util.Locale;
 import java.util.Map;
+import java.util.NoSuchElementException;
 import java.util.UUID;
 import java.util.concurrent.ConcurrentHashMap;
+import java.util.concurrent.ConcurrentLinkedQueue;
 import java.util.concurrent.ConcurrentMap;
 import java.util.concurrent.ThreadLocalRandom;
 import java.util.concurrent.TimeoutException;
@@ -126,13 +133,21 @@ import static com.azure.cosmos.models.ModelBridgeInternal.serializeJsonToByteBuf
 public class RxDocumentClientImpl implements AsyncDocumentClient, IAuthorizationTokenProvider, CpuMemoryListener,
     DiagnosticsClientContext {
 
+    private final static List<String> EMPTY_REGION_LIST = Collections.emptyList();
+
+    private final static List<URI> EMPTY_ENDPOINT_LIST = Collections.emptyList();
+
     private final static
     ImplementationBridgeHelpers.CosmosDiagnosticsHelper.CosmosDiagnosticsAccessor diagnosticsAccessor =
         ImplementationBridgeHelpers.CosmosDiagnosticsHelper.getCosmosDiagnosticsAccessor();
 
     private final static
-    ImplementationBridgeHelpers.CosmosClientTelemetryConfigHelper.CosmosClientTelemetryConfigAccessor ctxAccessor =
+    ImplementationBridgeHelpers.CosmosClientTelemetryConfigHelper.CosmosClientTelemetryConfigAccessor telemetryCfgAccessor =
         ImplementationBridgeHelpers.CosmosClientTelemetryConfigHelper.getCosmosClientTelemetryConfigAccessor();
+
+    private final static
+    ImplementationBridgeHelpers.CosmosDiagnosticsContextHelper.CosmosDiagnosticsContextAccessor ctxAccessor =
+        ImplementationBridgeHelpers.CosmosDiagnosticsContextHelper.getCosmosDiagnosticsContextAccessor();
     private static final String tempMachineId = "uuid:" + UUID.randomUUID();
     private static final AtomicInteger activeClientsCnt = new AtomicInteger(0);
     private static final Map<String, Integer> clientMap = new ConcurrentHashMap<>();
@@ -406,6 +421,7 @@ public class RxDocumentClientImpl implements AsyncDocumentClient, IAuthorization
         this.diagnosticsClientConfig.withConsistency(consistencyLevel);
         this.throughputControlEnabled = new AtomicBoolean(false);
         this.cosmosEndToEndOperationLatencyPolicyConfig = cosmosEndToEndOperationLatencyPolicyConfig;
+        this.diagnosticsClientConfig.withEndToEndOperationLatencyPolicy(cosmosEndToEndOperationLatencyPolicyConfig);
         this.sessionRetryOptions = sessionRetryOptions;
 
         logger.info(
@@ -500,7 +516,7 @@ public class RxDocumentClientImpl implements AsyncDocumentClient, IAuthorization
 
     @Override
     public CosmosDiagnostics createDiagnostics() {
-       return diagnosticsAccessor.create(this, ctxAccessor.getSamplingRate(this.clientTelemetryConfig));
+       return diagnosticsAccessor.create(this, telemetryCfgAccessor.getSamplingRate(this.clientTelemetryConfig));
     }
     private void initializeGatewayConfigurationReader() {
         this.gatewayConfigurationReader = new GatewayServiceConfigurationReader(this.globalEndpointManager);
@@ -747,7 +763,7 @@ public class RxDocumentClientImpl implements AsyncDocumentClient, IAuthorization
 
     @Override
     public Mono<ResourceResponse<Database>> createDatabase(Database database, RequestOptions options) {
-        DocumentClientRetryPolicy retryPolicyInstance = this.resetSessionTokenRetryPolicy.getRequestPolicy();
+        DocumentClientRetryPolicy retryPolicyInstance = this.resetSessionTokenRetryPolicy.getRequestPolicy(null);
         return ObservableHelper.inlineIfPossibleAsObs(() -> createDatabaseInternal(database, options, retryPolicyInstance), retryPolicyInstance);
     }
 
@@ -791,7 +807,7 @@ public class RxDocumentClientImpl implements AsyncDocumentClient, IAuthorization
 
     @Override
     public Mono<ResourceResponse<Database>> deleteDatabase(String databaseLink, RequestOptions options) {
-        DocumentClientRetryPolicy retryPolicyInstance = this.resetSessionTokenRetryPolicy.getRequestPolicy();
+        DocumentClientRetryPolicy retryPolicyInstance = this.resetSessionTokenRetryPolicy.getRequestPolicy(null);
         return ObservableHelper.inlineIfPossibleAsObs(() -> deleteDatabaseInternal(databaseLink, options, retryPolicyInstance), retryPolicyInstance);
     }
 
@@ -821,7 +837,7 @@ public class RxDocumentClientImpl implements AsyncDocumentClient, IAuthorization
 
     @Override
     public Mono<ResourceResponse<Database>> readDatabase(String databaseLink, RequestOptions options) {
-        DocumentClientRetryPolicy retryPolicyInstance = this.resetSessionTokenRetryPolicy.getRequestPolicy();
+        DocumentClientRetryPolicy retryPolicyInstance = this.resetSessionTokenRetryPolicy.getRequestPolicy(null);
         return ObservableHelper.inlineIfPossibleAsObs(() -> readDatabaseInternal(databaseLink, options, retryPolicyInstance), retryPolicyInstance);
     }
 
@@ -1104,7 +1120,7 @@ public class RxDocumentClientImpl implements AsyncDocumentClient, IAuthorization
     @Override
     public Mono<ResourceResponse<DocumentCollection>> createCollection(String databaseLink,
                                                                        DocumentCollection collection, RequestOptions options) {
-        DocumentClientRetryPolicy retryPolicyInstance = this.resetSessionTokenRetryPolicy.getRequestPolicy();
+        DocumentClientRetryPolicy retryPolicyInstance = this.resetSessionTokenRetryPolicy.getRequestPolicy(null);
         return ObservableHelper.inlineIfPossibleAsObs(() -> this.createCollectionInternal(databaseLink, collection, options, retryPolicyInstance), retryPolicyInstance);
     }
 
@@ -1160,7 +1176,7 @@ public class RxDocumentClientImpl implements AsyncDocumentClient, IAuthorization
     @Override
     public Mono<ResourceResponse<DocumentCollection>> replaceCollection(DocumentCollection collection,
                                                                         RequestOptions options) {
-        DocumentClientRetryPolicy retryPolicyInstance = this.resetSessionTokenRetryPolicy.getRequestPolicy();
+        DocumentClientRetryPolicy retryPolicyInstance = this.resetSessionTokenRetryPolicy.getRequestPolicy(null);
         return ObservableHelper.inlineIfPossibleAsObs(() -> replaceCollectionInternal(collection, options, retryPolicyInstance), retryPolicyInstance);
     }
 
@@ -1216,7 +1232,7 @@ public class RxDocumentClientImpl implements AsyncDocumentClient, IAuthorization
     @Override
     public Mono<ResourceResponse<DocumentCollection>> deleteCollection(String collectionLink,
                                                                        RequestOptions options) {
-        DocumentClientRetryPolicy retryPolicyInstance = this.resetSessionTokenRetryPolicy.getRequestPolicy();
+        DocumentClientRetryPolicy retryPolicyInstance = this.resetSessionTokenRetryPolicy.getRequestPolicy(null);
         return ObservableHelper.inlineIfPossibleAsObs(() -> deleteCollectionInternal(collectionLink, options, retryPolicyInstance), retryPolicyInstance);
     }
 
@@ -1302,7 +1318,7 @@ public class RxDocumentClientImpl implements AsyncDocumentClient, IAuthorization
     @Override
     public Mono<ResourceResponse<DocumentCollection>> readCollection(String collectionLink,
                                                                      RequestOptions options) {
-        DocumentClientRetryPolicy retryPolicyInstance = this.resetSessionTokenRetryPolicy.getRequestPolicy();
+        DocumentClientRetryPolicy retryPolicyInstance = this.resetSessionTokenRetryPolicy.getRequestPolicy(null);
         return ObservableHelper.inlineIfPossibleAsObs(() -> readCollectionInternal(collectionLink, options, retryPolicyInstance), retryPolicyInstance);
     }
 
@@ -1606,7 +1622,8 @@ public class RxDocumentClientImpl implements AsyncDocumentClient, IAuthorization
                                                                     Object document,
                                                                     RequestOptions options,
                                                                     boolean disableAutomaticIdGeneration,
-                                                                    OperationType operationType) {
+                                                                    OperationType operationType,
+                                                                    DiagnosticsClientContext clientContextOverride) {
 
         if (StringUtils.isEmpty(documentCollectionLink)) {
             throw new IllegalArgumentException("documentCollectionLink");
@@ -1631,7 +1648,8 @@ public class RxDocumentClientImpl implements AsyncDocumentClient, IAuthorization
         String path = Utils.joinPath(documentCollectionLink, Paths.DOCUMENTS_PATH_SEGMENT);
         Map<String, String> requestHeaders = this.getRequestHeaders(options, ResourceType.Document, operationType);
 
-        RxDocumentServiceRequest request = RxDocumentServiceRequest.create(this,
+        RxDocumentServiceRequest request = RxDocumentServiceRequest.create(
+            getEffectiveClientContext(clientContextOverride),
             operationType, ResourceType.Document, path, requestHeaders, options, content);
 
         if (operationType.isWriteOperation() &&  options != null && options.getNonIdempotentWriteRetriesEnabled()) {
@@ -1967,15 +1985,52 @@ public class RxDocumentClientImpl implements AsyncDocumentClient, IAuthorization
     }
 
     @Override
-    public Mono<ResourceResponse<Document>> createDocument(String collectionLink, Object document,
-                                                           RequestOptions options, boolean disableAutomaticIdGeneration) {
-        DocumentClientRetryPolicy requestRetryPolicy = this.resetSessionTokenRetryPolicy.getRequestPolicy();
+    public Mono<ResourceResponse<Document>> createDocument(
+        String collectionLink,
+        Object document,
+        RequestOptions options,
+        boolean disableAutomaticIdGeneration) {
+
+        return wrapPointOperationWithAvailabilityStrategy(
+            ResourceType.Document,
+            OperationType.Create,
+            (opt, e2ecfg, clientCtxOverride) -> createDocumentCore(
+                collectionLink,
+                document,
+                opt,
+                disableAutomaticIdGeneration,
+                e2ecfg,
+                clientCtxOverride),
+            options,
+            options != null && options.getNonIdempotentWriteRetriesEnabled()
+        );
+    }
+
+    private Mono<ResourceResponse<Document>> createDocumentCore(
+        String collectionLink,
+        Object document,
+        RequestOptions options,
+        boolean disableAutomaticIdGeneration,
+        CosmosEndToEndOperationLatencyPolicyConfig endToEndPolicyConfig,
+        DiagnosticsClientContext clientContextOverride) {
+
+        DocumentClientRetryPolicy requestRetryPolicy =
+            this.resetSessionTokenRetryPolicy.getRequestPolicy(clientContextOverride);
         if (options == null || options.getPartitionKey() == null) {
             requestRetryPolicy = new PartitionKeyMismatchRetryPolicy(collectionCache, requestRetryPolicy, collectionLink, options);
         }
 
         DocumentClientRetryPolicy finalRetryPolicyInstance = requestRetryPolicy;
-        return ObservableHelper.inlineIfPossibleAsObs(() -> createDocumentInternal(collectionLink, document, options, disableAutomaticIdGeneration, finalRetryPolicyInstance), requestRetryPolicy);
+        return ObservableHelper.inlineIfPossibleAsObs(() ->
+            createDocumentInternal(
+                collectionLink,
+                document,
+                options,
+                disableAutomaticIdGeneration,
+                finalRetryPolicyInstance,
+                endToEndPolicyConfig,
+                clientContextOverride),
+            requestRetryPolicy);
     }
 
     private Mono<ResourceResponse<Document>> createDocumentInternal(
@@ -1983,16 +2038,17 @@ public class RxDocumentClientImpl implements AsyncDocumentClient, IAuthorization
         Object document,
         RequestOptions options,
         boolean disableAutomaticIdGeneration,
-        DocumentClientRetryPolicy requestRetryPolicy) {
+        DocumentClientRetryPolicy requestRetryPolicy,
+        CosmosEndToEndOperationLatencyPolicyConfig endToEndPolicyConfig,
+        DiagnosticsClientContext clientContextOverride) {
         try {
             logger.debug("Creating a Document. collectionLink: [{}]", collectionLink);
 
             Mono<RxDocumentServiceRequest> requestObs = getCreateDocumentRequest(requestRetryPolicy, collectionLink, document,
-                options, disableAutomaticIdGeneration, OperationType.Create);
+                options, disableAutomaticIdGeneration, OperationType.Create, clientContextOverride);
 
             Mono<RxDocumentServiceResponse> responseObservable =
                 requestObs.flatMap(request -> {
-                    CosmosEndToEndOperationLatencyPolicyConfig endToEndPolicyConfig = getEndToEndOperationLatencyPolicyConfig(options);
                     Mono<RxDocumentServiceResponse> rxDocumentServiceResponseMono = create(request, requestRetryPolicy, getOperationContextAndListenerTuple(options));
                     return getRxDocumentServiceResponseMonoWithE2ETimeout(request, endToEndPolicyConfig, rxDocumentServiceResponseMono);
                 });
@@ -2006,9 +2062,11 @@ public class RxDocumentClientImpl implements AsyncDocumentClient, IAuthorization
         }
     }
 
-    private static <T> Mono<T> getRxDocumentServiceResponseMonoWithE2ETimeout(RxDocumentServiceRequest request,
-                                                                                                  CosmosEndToEndOperationLatencyPolicyConfig endToEndPolicyConfig,
-                                                                                                  Mono<T> rxDocumentServiceResponseMono) {
+    private static <T> Mono<T> getRxDocumentServiceResponseMonoWithE2ETimeout(
+        RxDocumentServiceRequest request,
+        CosmosEndToEndOperationLatencyPolicyConfig endToEndPolicyConfig,
+        Mono<T> rxDocumentServiceResponseMono) {
+
         if (endToEndPolicyConfig != null && endToEndPolicyConfig.isEnabled()) {
 
             Duration endToEndTimeout = endToEndPolicyConfig.getEndToEndOperationTimeout();
@@ -2059,24 +2117,57 @@ public class RxDocumentClientImpl implements AsyncDocumentClient, IAuthorization
     @Override
     public Mono<ResourceResponse<Document>> upsertDocument(String collectionLink, Object document,
                                                                  RequestOptions options, boolean disableAutomaticIdGeneration) {
-        DocumentClientRetryPolicy requestRetryPolicy = this.resetSessionTokenRetryPolicy.getRequestPolicy();
+        return wrapPointOperationWithAvailabilityStrategy(
+            ResourceType.Document,
+            OperationType.Upsert,
+            (opt, e2ecfg, clientCtxOverride) -> upsertDocumentCore(
+                collectionLink, document, opt, disableAutomaticIdGeneration, e2ecfg, clientCtxOverride),
+            options,
+            options != null && options.getNonIdempotentWriteRetriesEnabled()
+        );
+    }
+
+    private Mono<ResourceResponse<Document>> upsertDocumentCore(
+        String collectionLink,
+        Object document,
+        RequestOptions options,
+        boolean disableAutomaticIdGeneration,
+        CosmosEndToEndOperationLatencyPolicyConfig endToEndPolicyConfig,
+        DiagnosticsClientContext clientContextOverride) {
+
+        DocumentClientRetryPolicy requestRetryPolicy = this.resetSessionTokenRetryPolicy.getRequestPolicy(clientContextOverride);
         if (options == null || options.getPartitionKey() == null) {
             requestRetryPolicy = new PartitionKeyMismatchRetryPolicy(collectionCache, requestRetryPolicy, collectionLink, options);
         }
         DocumentClientRetryPolicy finalRetryPolicyInstance = requestRetryPolicy;
-        return ObservableHelper.inlineIfPossibleAsObs(() -> upsertDocumentInternal(collectionLink, document, options, disableAutomaticIdGeneration, finalRetryPolicyInstance), finalRetryPolicyInstance);
+        return ObservableHelper.inlineIfPossibleAsObs(
+            () -> upsertDocumentInternal(
+                collectionLink,
+                document,
+                options,
+                disableAutomaticIdGeneration,
+                finalRetryPolicyInstance,
+                endToEndPolicyConfig,
+                clientContextOverride),
+            finalRetryPolicyInstance);
     }
 
-    private Mono<ResourceResponse<Document>> upsertDocumentInternal(String collectionLink, Object document,
-                                                                    RequestOptions options, boolean disableAutomaticIdGeneration, DocumentClientRetryPolicy retryPolicyInstance) {
+    private Mono<ResourceResponse<Document>> upsertDocumentInternal(
+        String collectionLink,
+        Object document,
+        RequestOptions options,
+        boolean disableAutomaticIdGeneration,
+        DocumentClientRetryPolicy retryPolicyInstance,
+        CosmosEndToEndOperationLatencyPolicyConfig endToEndPolicyConfig,
+        DiagnosticsClientContext clientContextOverride) {
+
         try {
             logger.debug("Upserting a Document. collectionLink: [{}]", collectionLink);
 
             Mono<RxDocumentServiceRequest> reqObs = getCreateDocumentRequest(retryPolicyInstance, collectionLink, document,
-                options, disableAutomaticIdGeneration, OperationType.Upsert);
+                options, disableAutomaticIdGeneration, OperationType.Upsert, clientContextOverride);
 
             Mono<RxDocumentServiceResponse> responseObservable = reqObs.flatMap(request -> {
-                CosmosEndToEndOperationLatencyPolicyConfig endToEndPolicyConfig = getEndToEndOperationLatencyPolicyConfig(options);
                 return getRxDocumentServiceResponseMonoWithE2ETimeout(request, endToEndPolicyConfig, upsert(request, retryPolicyInstance, getOperationContextAndListenerTuple(options)));
             });
 
@@ -2092,17 +2183,55 @@ public class RxDocumentClientImpl implements AsyncDocumentClient, IAuthorization
     public Mono<ResourceResponse<Document>> replaceDocument(String documentLink, Object document,
                                                             RequestOptions options) {
 
-        DocumentClientRetryPolicy requestRetryPolicy = this.resetSessionTokenRetryPolicy.getRequestPolicy();
-        if (options == null || options.getPartitionKey() == null) {
-            String collectionLink = Utils.getCollectionName(documentLink);
-            requestRetryPolicy = new PartitionKeyMismatchRetryPolicy(collectionCache, requestRetryPolicy, collectionLink, options);
-        }
-        DocumentClientRetryPolicy finalRequestRetryPolicy = requestRetryPolicy;
-        return ObservableHelper.inlineIfPossibleAsObs(() -> replaceDocumentInternal(documentLink, document, options, finalRequestRetryPolicy), requestRetryPolicy);
+        return wrapPointOperationWithAvailabilityStrategy(
+            ResourceType.Document,
+            OperationType.Replace,
+            (opt, e2ecfg, clientCtxOverride) -> replaceDocumentCore(
+                documentLink,
+                document,
+                opt,
+                e2ecfg,
+                clientCtxOverride),
+            options,
+            options != null && options.getNonIdempotentWriteRetriesEnabled()
+        );
     }
 
-    private Mono<ResourceResponse<Document>> replaceDocumentInternal(String documentLink, Object document,
-                                                                     RequestOptions options, DocumentClientRetryPolicy retryPolicyInstance) {
+    private Mono<ResourceResponse<Document>> replaceDocumentCore(
+        String documentLink,
+        Object document,
+        RequestOptions options,
+        CosmosEndToEndOperationLatencyPolicyConfig endToEndPolicyConfig,
+        DiagnosticsClientContext clientContextOverride) {
+
+        DocumentClientRetryPolicy requestRetryPolicy =
+            this.resetSessionTokenRetryPolicy.getRequestPolicy(clientContextOverride);
+        if (options == null || options.getPartitionKey() == null) {
+            String collectionLink = Utils.getCollectionName(documentLink);
+            requestRetryPolicy = new PartitionKeyMismatchRetryPolicy(
+                collectionCache, requestRetryPolicy, collectionLink, options);
+        }
+        DocumentClientRetryPolicy finalRequestRetryPolicy = requestRetryPolicy;
+
+        return ObservableHelper.inlineIfPossibleAsObs(
+            () -> replaceDocumentInternal(
+                documentLink,
+                document,
+                options,
+                finalRequestRetryPolicy,
+                endToEndPolicyConfig,
+                clientContextOverride),
+            requestRetryPolicy);
+    }
+
+    private Mono<ResourceResponse<Document>> replaceDocumentInternal(
+        String documentLink,
+        Object document,
+        RequestOptions options,
+        DocumentClientRetryPolicy retryPolicyInstance,
+        CosmosEndToEndOperationLatencyPolicyConfig endToEndPolicyConfig,
+        DiagnosticsClientContext clientContextOverride) {
+
         try {
             if (StringUtils.isEmpty(documentLink)) {
                 throw new IllegalArgumentException("documentLink");
@@ -2114,7 +2243,13 @@ public class RxDocumentClientImpl implements AsyncDocumentClient, IAuthorization
 
             Document typedDocument = documentFromObject(document, mapper);
 
-            return this.replaceDocumentInternal(documentLink, typedDocument, options, retryPolicyInstance);
+            return this.replaceDocumentInternal(
+                documentLink,
+                typedDocument,
+                options,
+                retryPolicyInstance,
+                endToEndPolicyConfig,
+                clientContextOverride);
 
         } catch (Exception e) {
             logger.debug("Failure in replacing a document due to [{}]", e.getMessage());
@@ -2124,23 +2259,62 @@ public class RxDocumentClientImpl implements AsyncDocumentClient, IAuthorization
 
     @Override
     public Mono<ResourceResponse<Document>> replaceDocument(Document document, RequestOptions options) {
-        DocumentClientRetryPolicy requestRetryPolicy = this.resetSessionTokenRetryPolicy.getRequestPolicy();
-        if (options == null || options.getPartitionKey() == null) {
-            String collectionLink = document.getSelfLink();
-            requestRetryPolicy = new PartitionKeyMismatchRetryPolicy(collectionCache, requestRetryPolicy, collectionLink, options);
-        }
-        DocumentClientRetryPolicy finalRequestRetryPolicy = requestRetryPolicy;
-        return ObservableHelper.inlineIfPossibleAsObs(() -> replaceDocumentInternal(document, options, finalRequestRetryPolicy), requestRetryPolicy);
+        return wrapPointOperationWithAvailabilityStrategy(
+            ResourceType.Document,
+            OperationType.Replace,
+            (opt, e2ecfg, clientCtxOverride) -> replaceDocumentCore(
+                document,
+                opt,
+                e2ecfg,
+                clientCtxOverride),
+            options,
+            options != null && options.getNonIdempotentWriteRetriesEnabled()
+        );
     }
 
-    private Mono<ResourceResponse<Document>> replaceDocumentInternal(Document document, RequestOptions options, DocumentClientRetryPolicy retryPolicyInstance) {
+    private Mono<ResourceResponse<Document>> replaceDocumentCore(
+        Document document,
+        RequestOptions options,
+        CosmosEndToEndOperationLatencyPolicyConfig endToEndPolicyConfig,
+        DiagnosticsClientContext clientContextOverride) {
+
+        DocumentClientRetryPolicy requestRetryPolicy =
+            this.resetSessionTokenRetryPolicy.getRequestPolicy(clientContextOverride);
+        if (options == null || options.getPartitionKey() == null) {
+            String collectionLink = document.getSelfLink();
+            requestRetryPolicy = new PartitionKeyMismatchRetryPolicy(
+                collectionCache, requestRetryPolicy, collectionLink, options);
+        }
+        DocumentClientRetryPolicy finalRequestRetryPolicy = requestRetryPolicy;
+        return ObservableHelper.inlineIfPossibleAsObs(
+            () -> replaceDocumentInternal(
+                document,
+                options,
+                finalRequestRetryPolicy,
+                endToEndPolicyConfig,
+                clientContextOverride),
+            requestRetryPolicy);
+    }
+
+    private Mono<ResourceResponse<Document>> replaceDocumentInternal(
+        Document document,
+        RequestOptions options,
+        DocumentClientRetryPolicy retryPolicyInstance,
+        CosmosEndToEndOperationLatencyPolicyConfig endToEndPolicyConfig,
+        DiagnosticsClientContext clientContextOverride) {
 
         try {
             if (document == null) {
                 throw new IllegalArgumentException("document");
             }
 
-            return this.replaceDocumentInternal(document.getSelfLink(), document, options, retryPolicyInstance);
+            return this.replaceDocumentInternal(
+                document.getSelfLink(),
+                document,
+                options,
+                retryPolicyInstance,
+                endToEndPolicyConfig,
+                clientContextOverride);
 
         } catch (Exception e) {
             logger.debug("Failure in replacing a database due to [{}]", e.getMessage());
@@ -2148,10 +2322,13 @@ public class RxDocumentClientImpl implements AsyncDocumentClient, IAuthorization
         }
     }
 
-    private Mono<ResourceResponse<Document>> replaceDocumentInternal(String documentLink,
-                                                                     Document document,
-                                                                     RequestOptions options,
-                                                                     DocumentClientRetryPolicy retryPolicyInstance) {
+    private Mono<ResourceResponse<Document>> replaceDocumentInternal(
+        String documentLink,
+        Document document,
+        RequestOptions options,
+        DocumentClientRetryPolicy retryPolicyInstance,
+        CosmosEndToEndOperationLatencyPolicyConfig endToEndPolicyConfig,
+        DiagnosticsClientContext clientContextOverride) {
 
         if (document == null) {
             throw new IllegalArgumentException("document");
@@ -2159,7 +2336,8 @@ public class RxDocumentClientImpl implements AsyncDocumentClient, IAuthorization
 
         logger.debug("Replacing a Document. documentLink: [{}]", documentLink);
         final String path = Utils.joinPath(documentLink, null);
-        final Map<String, String> requestHeaders = getRequestHeaders(options, ResourceType.Document, OperationType.Replace);
+        final Map<String, String> requestHeaders =
+            getRequestHeaders(options, ResourceType.Document, OperationType.Replace);
         Instant serializationStartTimeUTC = Instant.now();
         if (options != null) {
             String trackingId = options.getTrackingId();
@@ -2171,13 +2349,16 @@ public class RxDocumentClientImpl implements AsyncDocumentClient, IAuthorization
 
         ByteBuffer content = serializeJsonToByteBuffer(document);
         Instant serializationEndTime = Instant.now();
-        SerializationDiagnosticsContext.SerializationDiagnostics serializationDiagnostics = new SerializationDiagnosticsContext.SerializationDiagnostics(
-            serializationStartTimeUTC,
-            serializationEndTime,
-            SerializationDiagnosticsContext.SerializationType.ITEM_SERIALIZATION);
+        SerializationDiagnosticsContext.SerializationDiagnostics serializationDiagnostics =
+            new SerializationDiagnosticsContext.SerializationDiagnostics(
+                serializationStartTimeUTC,
+                serializationEndTime,
+                SerializationDiagnosticsContext.SerializationType.ITEM_SERIALIZATION);
 
-        final RxDocumentServiceRequest request = RxDocumentServiceRequest.create(this,
+        final RxDocumentServiceRequest request = RxDocumentServiceRequest.create(
+            getEffectiveClientContext(clientContextOverride),
             OperationType.Replace, ResourceType.Document, path, requestHeaders, options, content);
+
         if (options != null && options.getNonIdempotentWriteRetriesEnabled()) {
             request.setNonIdempotentWriteRetriesEnabled(true);
         }
@@ -2190,18 +2371,22 @@ public class RxDocumentClientImpl implements AsyncDocumentClient, IAuthorization
             retryPolicyInstance.onBeforeSendRequest(request);
         }
 
-        SerializationDiagnosticsContext serializationDiagnosticsContext = BridgeInternal.getSerializationDiagnosticsContext(request.requestContext.cosmosDiagnostics);
+        SerializationDiagnosticsContext serializationDiagnosticsContext =
+            BridgeInternal.getSerializationDiagnosticsContext(request.requestContext.cosmosDiagnostics);
         if (serializationDiagnosticsContext != null) {
             serializationDiagnosticsContext.addSerializationDiagnostics(serializationDiagnostics);
         }
 
-        Mono<Utils.ValueHolder<DocumentCollection>> collectionObs = collectionCache.resolveCollectionAsync(BridgeInternal.getMetaDataDiagnosticContext(request.requestContext.cosmosDiagnostics), request);
-        Mono<RxDocumentServiceRequest> requestObs = addPartitionKeyInformation(request, content, document, options, collectionObs);
+        Mono<Utils.ValueHolder<DocumentCollection>> collectionObs =
+            collectionCache.resolveCollectionAsync(
+                BridgeInternal.getMetaDataDiagnosticContext(request.requestContext.cosmosDiagnostics),
+                request);
+        Mono<RxDocumentServiceRequest> requestObs =
+            addPartitionKeyInformation(request, content, document, options, collectionObs);
 
         return requestObs.flatMap(req -> {
             Mono<ResourceResponse<Document>> resourceResponseMono = replace(request, retryPolicyInstance)
                 .map(resp -> toResourceResponse(resp, Document.class));
-            CosmosEndToEndOperationLatencyPolicyConfig endToEndPolicyConfig = getEndToEndOperationLatencyPolicyConfig(options);
 
             return getRxDocumentServiceResponseMonoWithE2ETimeout(request, endToEndPolicyConfig, resourceResponseMono);
         });
@@ -2216,14 +2401,46 @@ public class RxDocumentClientImpl implements AsyncDocumentClient, IAuthorization
     public Mono<ResourceResponse<Document>> patchDocument(String documentLink,
                                                           CosmosPatchOperations cosmosPatchOperations,
                                                           RequestOptions options) {
-        DocumentClientRetryPolicy documentClientRetryPolicy = this.resetSessionTokenRetryPolicy.getRequestPolicy();
-        return ObservableHelper.inlineIfPossibleAsObs(() -> patchDocumentInternal(documentLink, cosmosPatchOperations, options, documentClientRetryPolicy), documentClientRetryPolicy);
+        return wrapPointOperationWithAvailabilityStrategy(
+            ResourceType.Document,
+            OperationType.Patch,
+            (opt, e2ecfg, clientCtxOverride) -> patchDocumentCore(
+                documentLink,
+                cosmosPatchOperations,
+                opt,
+                e2ecfg,
+                clientCtxOverride),
+            options,
+            options != null && options.getNonIdempotentWriteRetriesEnabled()
+        );
     }
 
-    private Mono<ResourceResponse<Document>> patchDocumentInternal(String documentLink,
-                                                                   CosmosPatchOperations cosmosPatchOperations,
-                                                                   RequestOptions options,
-                                                                   DocumentClientRetryPolicy retryPolicyInstance) {
+    private Mono<ResourceResponse<Document>> patchDocumentCore(
+        String documentLink,
+        CosmosPatchOperations cosmosPatchOperations,
+        RequestOptions options,
+        CosmosEndToEndOperationLatencyPolicyConfig endToEndPolicyConfig,
+        DiagnosticsClientContext clientContextOverride) {
+
+        DocumentClientRetryPolicy documentClientRetryPolicy = this.resetSessionTokenRetryPolicy.getRequestPolicy(clientContextOverride);
+        return ObservableHelper.inlineIfPossibleAsObs(
+            () -> patchDocumentInternal(
+                documentLink,
+                cosmosPatchOperations,
+                options,
+                documentClientRetryPolicy,
+                endToEndPolicyConfig,
+                clientContextOverride),
+            documentClientRetryPolicy);
+    }
+
+    private Mono<ResourceResponse<Document>> patchDocumentInternal(
+        String documentLink,
+        CosmosPatchOperations cosmosPatchOperations,
+        RequestOptions options,
+        DocumentClientRetryPolicy retryPolicyInstance,
+        CosmosEndToEndOperationLatencyPolicyConfig endToEndPolicyConfig,
+        DiagnosticsClientContext clientContextOverride) {
 
         checkArgument(StringUtils.isNotEmpty(documentLink), "expected non empty documentLink");
         checkNotNull(cosmosPatchOperations, "expected non null cosmosPatchOperations");
@@ -2232,19 +2449,22 @@ public class RxDocumentClientImpl implements AsyncDocumentClient, IAuthorization
 
         final String path = Utils.joinPath(documentLink, null);
 
-        final Map<String, String> requestHeaders = getRequestHeaders(options, ResourceType.Document, OperationType.Patch);
+        final Map<String, String> requestHeaders =
+            getRequestHeaders(options, ResourceType.Document, OperationType.Patch);
         Instant serializationStartTimeUTC = Instant.now();
 
-        ByteBuffer content = ByteBuffer.wrap(PatchUtil.serializeCosmosPatchToByteArray(cosmosPatchOperations, options));
+        ByteBuffer content = ByteBuffer.wrap(
+            PatchUtil.serializeCosmosPatchToByteArray(cosmosPatchOperations, options));
 
         Instant serializationEndTime = Instant.now();
-        SerializationDiagnosticsContext.SerializationDiagnostics serializationDiagnostics = new SerializationDiagnosticsContext.SerializationDiagnostics(
-            serializationStartTimeUTC,
-            serializationEndTime,
-            SerializationDiagnosticsContext.SerializationType.ITEM_SERIALIZATION);
+        SerializationDiagnosticsContext.SerializationDiagnostics serializationDiagnostics =
+            new SerializationDiagnosticsContext.SerializationDiagnostics(
+                serializationStartTimeUTC,
+                serializationEndTime,
+                SerializationDiagnosticsContext.SerializationType.ITEM_SERIALIZATION);
 
         final RxDocumentServiceRequest request = RxDocumentServiceRequest.create(
-            this,
+            clientContextOverride,
             OperationType.Patch,
             ResourceType.Document,
             path,
@@ -2263,7 +2483,8 @@ public class RxDocumentClientImpl implements AsyncDocumentClient, IAuthorization
             retryPolicyInstance.onBeforeSendRequest(request);
         }
 
-        SerializationDiagnosticsContext serializationDiagnosticsContext = BridgeInternal.getSerializationDiagnosticsContext(request.requestContext.cosmosDiagnostics);
+        SerializationDiagnosticsContext serializationDiagnosticsContext =
+            BridgeInternal.getSerializationDiagnosticsContext(request.requestContext.cosmosDiagnostics);
         if (serializationDiagnosticsContext != null) {
             serializationDiagnosticsContext.addSerializationDiagnostics(serializationDiagnostics);
         }
@@ -2280,9 +2501,9 @@ public class RxDocumentClientImpl implements AsyncDocumentClient, IAuthorization
             collectionObs);
 
         Mono<RxDocumentServiceResponse> responseObservable = requestObs.flatMap(req -> {
-            CosmosEndToEndOperationLatencyPolicyConfig endToEndPolicyConfig = getEndToEndOperationLatencyPolicyConfig(options);
             Mono<RxDocumentServiceResponse> rxDocumentServiceResponseMono = patch(request, retryPolicyInstance);
-            return getRxDocumentServiceResponseMonoWithE2ETimeout(request, endToEndPolicyConfig, rxDocumentServiceResponseMono);
+            return getRxDocumentServiceResponseMonoWithE2ETimeout(
+                request, endToEndPolicyConfig, rxDocumentServiceResponseMono);
         });
 
         return responseObservable.map(resp -> toResourceResponse(resp, Document.class));
@@ -2290,19 +2511,65 @@ public class RxDocumentClientImpl implements AsyncDocumentClient, IAuthorization
 
     @Override
     public Mono<ResourceResponse<Document>> deleteDocument(String documentLink, RequestOptions options) {
-        DocumentClientRetryPolicy requestRetryPolicy = this.resetSessionTokenRetryPolicy.getRequestPolicy();
-        return ObservableHelper.inlineIfPossibleAsObs(() -> deleteDocumentInternal(documentLink, null, options, requestRetryPolicy), requestRetryPolicy);
+        return wrapPointOperationWithAvailabilityStrategy(
+            ResourceType.Document,
+            OperationType.Delete,
+            (opt, e2ecfg, clientCtxOverride) -> deleteDocumentCore(
+                documentLink,
+                null,
+                opt,
+                e2ecfg,
+                clientCtxOverride),
+            options,
+            options != null && options.getNonIdempotentWriteRetriesEnabled()
+        );
     }
 
     @Override
     public Mono<ResourceResponse<Document>> deleteDocument(String documentLink, InternalObjectNode internalObjectNode, RequestOptions options) {
-        DocumentClientRetryPolicy requestRetryPolicy = this.resetSessionTokenRetryPolicy.getRequestPolicy();
-        return ObservableHelper.inlineIfPossibleAsObs(() -> deleteDocumentInternal(documentLink, internalObjectNode, options, requestRetryPolicy),
+        return wrapPointOperationWithAvailabilityStrategy(
+            ResourceType.Document,
+            OperationType.Delete,
+            (opt, e2ecfg, clientCtxOverride) -> deleteDocumentCore(
+                documentLink,
+                internalObjectNode,
+                opt,
+                e2ecfg,
+                clientCtxOverride),
+            options,
+            options != null && options.getNonIdempotentWriteRetriesEnabled()
+        );
+    }
+
+    private Mono<ResourceResponse<Document>> deleteDocumentCore(
+        String documentLink,
+        InternalObjectNode internalObjectNode,
+        RequestOptions options,
+        CosmosEndToEndOperationLatencyPolicyConfig endToEndPolicyConfig,
+        DiagnosticsClientContext clientContextOverride) {
+
+        DocumentClientRetryPolicy requestRetryPolicy =
+            this.resetSessionTokenRetryPolicy.getRequestPolicy(clientContextOverride);
+
+        return ObservableHelper.inlineIfPossibleAsObs(
+            () -> deleteDocumentInternal(
+                documentLink,
+                internalObjectNode,
+                options,
+                requestRetryPolicy,
+                endToEndPolicyConfig,
+                clientContextOverride),
             requestRetryPolicy);
     }
 
-    private Mono<ResourceResponse<Document>> deleteDocumentInternal(String documentLink, InternalObjectNode internalObjectNode, RequestOptions options,
-                                                                    DocumentClientRetryPolicy retryPolicyInstance) {
+    private Mono<ResourceResponse<Document>> deleteDocumentInternal(
+        String documentLink,
+        InternalObjectNode internalObjectNode,
+        RequestOptions options,
+        DocumentClientRetryPolicy retryPolicyInstance,
+        CosmosEndToEndOperationLatencyPolicyConfig endToEndPolicyConfig,
+        DiagnosticsClientContext clientContextOverride) {
+
         try {
             if (StringUtils.isEmpty(documentLink)) {
                 throw new IllegalArgumentException("documentLink");
@@ -2311,7 +2578,8 @@ public class RxDocumentClientImpl implements AsyncDocumentClient, IAuthorization
             logger.debug("Deleting a Document. documentLink: [{}]", documentLink);
             String path = Utils.joinPath(documentLink, null);
             Map<String, String> requestHeaders = this.getRequestHeaders(options, ResourceType.Document, OperationType.Delete);
-            RxDocumentServiceRequest request = RxDocumentServiceRequest.create(this,
+            RxDocumentServiceRequest request = RxDocumentServiceRequest.create(
+                getEffectiveClientContext(clientContextOverride),
                 OperationType.Delete, ResourceType.Document, path, requestHeaders, options);
 
             if (options != null && options.getNonIdempotentWriteRetriesEnabled()) {
@@ -2326,16 +2594,19 @@ public class RxDocumentClientImpl implements AsyncDocumentClient, IAuthorization
                 retryPolicyInstance.onBeforeSendRequest(request);
             }
 
-            Mono<Utils.ValueHolder<DocumentCollection>> collectionObs = collectionCache.resolveCollectionAsync(BridgeInternal.getMetaDataDiagnosticContext(request.requestContext.cosmosDiagnostics), request);
+            Mono<Utils.ValueHolder<DocumentCollection>> collectionObs = collectionCache.resolveCollectionAsync(
+                BridgeInternal.getMetaDataDiagnosticContext(request.requestContext.cosmosDiagnostics),
+                request);
 
-            Mono<RxDocumentServiceRequest> requestObs = addPartitionKeyInformation(request, null, internalObjectNode, options, collectionObs);
+            Mono<RxDocumentServiceRequest> requestObs = addPartitionKeyInformation(
+                request, null, internalObjectNode, options, collectionObs);
 
             Mono<RxDocumentServiceResponse> responseObservable =
                 requestObs.flatMap(req -> {
-                    CosmosEndToEndOperationLatencyPolicyConfig endToEndPolicyConfig = getEndToEndOperationLatencyPolicyConfig(options);
                     Mono<RxDocumentServiceResponse> rxDocumentServiceResponseMono = this
                         .delete(req, retryPolicyInstance, getOperationContextAndListenerTuple(options));
-                    return getRxDocumentServiceResponseMonoWithE2ETimeout(request, endToEndPolicyConfig, rxDocumentServiceResponseMono);
+                    return getRxDocumentServiceResponseMonoWithE2ETimeout(
+                        request, endToEndPolicyConfig, rxDocumentServiceResponseMono);
                 });
 
             return responseObservable
@@ -2349,7 +2620,8 @@ public class RxDocumentClientImpl implements AsyncDocumentClient, IAuthorization
 
     @Override
     public Mono<ResourceResponse<Document>> deleteAllDocumentsByPartitionKey(String collectionLink, PartitionKey partitionKey, RequestOptions options) {
-        DocumentClientRetryPolicy requestRetryPolicy = this.resetSessionTokenRetryPolicy.getRequestPolicy();
+        // No ned-to-end policy / availability strategy applicable because PK Delete is a Gateway/Control-Plane operation
+        DocumentClientRetryPolicy requestRetryPolicy = this.resetSessionTokenRetryPolicy.getRequestPolicy(null);
         return ObservableHelper.inlineIfPossibleAsObs(() -> deleteAllDocumentsByPartitionKeyInternal(collectionLink, options, requestRetryPolicy),
             requestRetryPolicy);
     }
@@ -2385,12 +2657,24 @@ public class RxDocumentClientImpl implements AsyncDocumentClient, IAuthorization
 
     @Override
     public Mono<ResourceResponse<Document>> readDocument(String documentLink, RequestOptions options) {
-        DocumentClientRetryPolicy retryPolicyInstance = this.resetSessionTokenRetryPolicy.getRequestPolicy();
-        return ObservableHelper.inlineIfPossibleAsObs(() -> readDocumentInternal(documentLink, options, retryPolicyInstance), retryPolicyInstance);
+        return wrapPointOperationWithAvailabilityStrategy(
+            ResourceType.Document,
+            OperationType.Read,
+            (opt, e2ecfg, clientCtxOverride) -> readDocumentCore(documentLink, opt, e2ecfg, clientCtxOverride),
+            options,
+            false
+        );
+    }
+
+    private Mono<ResourceResponse<Document>> readDocumentCore(String documentLink, RequestOptions options, CosmosEndToEndOperationLatencyPolicyConfig endToEndPolicyConfig, DiagnosticsClientContext clientContextOverride) {
+        DocumentClientRetryPolicy retryPolicyInstance = this.resetSessionTokenRetryPolicy.getRequestPolicy(clientContextOverride);
+        return ObservableHelper.inlineIfPossibleAsObs(() -> readDocumentInternal(documentLink, options, retryPolicyInstance, endToEndPolicyConfig, clientContextOverride), retryPolicyInstance);
     }
 
     private Mono<ResourceResponse<Document>> readDocumentInternal(String documentLink, RequestOptions options,
-                                                                  DocumentClientRetryPolicy retryPolicyInstance) {
+                                                                  DocumentClientRetryPolicy retryPolicyInstance,
+                                                                  CosmosEndToEndOperationLatencyPolicyConfig endToEndPolicyConfig,
+                                                                  DiagnosticsClientContext clientContextOverride) {
         try {
             if (StringUtils.isEmpty(documentLink)) {
                 throw new IllegalArgumentException("documentLink");
@@ -2399,7 +2683,9 @@ public class RxDocumentClientImpl implements AsyncDocumentClient, IAuthorization
             logger.debug("Reading a Document. documentLink: [{}]", documentLink);
             String path = Utils.joinPath(documentLink, null);
             Map<String, String> requestHeaders = this.getRequestHeaders(options, ResourceType.Document, OperationType.Read);
-            RxDocumentServiceRequest request = RxDocumentServiceRequest.create(this,
+
+            RxDocumentServiceRequest request = RxDocumentServiceRequest.create(
+                getEffectiveClientContext(clientContextOverride),
                 OperationType.Read, ResourceType.Document, path, requestHeaders, options);
             request.requestContext.setExcludeRegions(options.getExcludeRegions());
 
@@ -2410,8 +2696,6 @@ public class RxDocumentClientImpl implements AsyncDocumentClient, IAuthorization
             Mono<Utils.ValueHolder<DocumentCollection>> collectionObs = this.collectionCache.resolveCollectionAsync(BridgeInternal.getMetaDataDiagnosticContext(request.requestContext.cosmosDiagnostics), request);
 
             Mono<RxDocumentServiceRequest> requestObs = addPartitionKeyInformation(request, null, null, options, collectionObs);
-
-            CosmosEndToEndOperationLatencyPolicyConfig endToEndPolicyConfig = getEndToEndOperationLatencyPolicyConfig(options);
 
             return requestObs.flatMap(req -> {
                 Mono<ResourceResponse<Document>> resourceResponseMono = this.read(request, retryPolicyInstance).map(serviceResponse -> toResourceResponse(serviceResponse, Document.class));
@@ -3081,7 +3365,7 @@ public class RxDocumentClientImpl implements AsyncDocumentClient, IAuthorization
     @Override
     public Mono<ResourceResponse<StoredProcedure>> createStoredProcedure(String collectionLink,
                                                                                StoredProcedure storedProcedure, RequestOptions options) {
-        DocumentClientRetryPolicy requestRetryPolicy = this.resetSessionTokenRetryPolicy.getRequestPolicy();
+        DocumentClientRetryPolicy requestRetryPolicy = this.resetSessionTokenRetryPolicy.getRequestPolicy(null);
         return ObservableHelper.inlineIfPossibleAsObs(() -> createStoredProcedureInternal(collectionLink, storedProcedure, options, requestRetryPolicy), requestRetryPolicy);
     }
 
@@ -3113,7 +3397,7 @@ public class RxDocumentClientImpl implements AsyncDocumentClient, IAuthorization
     @Override
     public Mono<ResourceResponse<StoredProcedure>> replaceStoredProcedure(StoredProcedure storedProcedure,
                                                                                 RequestOptions options) {
-        DocumentClientRetryPolicy requestRetryPolicy = this.resetSessionTokenRetryPolicy.getRequestPolicy();
+        DocumentClientRetryPolicy requestRetryPolicy = this.resetSessionTokenRetryPolicy.getRequestPolicy(null);
         return ObservableHelper.inlineIfPossibleAsObs(() -> replaceStoredProcedureInternal(storedProcedure, options, requestRetryPolicy), requestRetryPolicy);
     }
 
@@ -3148,7 +3432,7 @@ public class RxDocumentClientImpl implements AsyncDocumentClient, IAuthorization
     @Override
     public Mono<ResourceResponse<StoredProcedure>> deleteStoredProcedure(String storedProcedureLink,
                                                                                RequestOptions options) {
-        DocumentClientRetryPolicy requestRetryPolicy = this.resetSessionTokenRetryPolicy.getRequestPolicy();
+        DocumentClientRetryPolicy requestRetryPolicy = this.resetSessionTokenRetryPolicy.getRequestPolicy(null);
         return ObservableHelper.inlineIfPossibleAsObs(() -> deleteStoredProcedureInternal(storedProcedureLink, options, requestRetryPolicy), requestRetryPolicy);
     }
 
@@ -3186,7 +3470,7 @@ public class RxDocumentClientImpl implements AsyncDocumentClient, IAuthorization
     @Override
     public Mono<ResourceResponse<StoredProcedure>> readStoredProcedure(String storedProcedureLink,
                                                                              RequestOptions options) {
-        DocumentClientRetryPolicy retryPolicyInstance = this.resetSessionTokenRetryPolicy.getRequestPolicy();
+        DocumentClientRetryPolicy retryPolicyInstance = this.resetSessionTokenRetryPolicy.getRequestPolicy(null);
         return ObservableHelper.inlineIfPossibleAsObs(() -> readStoredProcedureInternal(storedProcedureLink, options, retryPolicyInstance), retryPolicyInstance);
     }
 
@@ -3249,7 +3533,7 @@ public class RxDocumentClientImpl implements AsyncDocumentClient, IAuthorization
     @Override
     public Mono<StoredProcedureResponse> executeStoredProcedure(String storedProcedureLink,
                                                                       RequestOptions options, List<Object> procedureParams) {
-        DocumentClientRetryPolicy documentClientRetryPolicy = this.resetSessionTokenRetryPolicy.getRequestPolicy();
+        DocumentClientRetryPolicy documentClientRetryPolicy = this.resetSessionTokenRetryPolicy.getRequestPolicy(null);
         return ObservableHelper.inlineIfPossibleAsObs(() -> executeStoredProcedureInternal(storedProcedureLink, options, procedureParams, documentClientRetryPolicy), documentClientRetryPolicy);
     }
 
@@ -3258,7 +3542,7 @@ public class RxDocumentClientImpl implements AsyncDocumentClient, IAuthorization
                                                          ServerBatchRequest serverBatchRequest,
                                                          RequestOptions options,
                                                          boolean disableAutomaticIdGeneration) {
-        DocumentClientRetryPolicy documentClientRetryPolicy = this.resetSessionTokenRetryPolicy.getRequestPolicy();
+        DocumentClientRetryPolicy documentClientRetryPolicy = this.resetSessionTokenRetryPolicy.getRequestPolicy(null);
         return ObservableHelper.inlineIfPossibleAsObs(() -> executeBatchRequestInternal(collectionLink, serverBatchRequest, options, documentClientRetryPolicy, disableAutomaticIdGeneration), documentClientRetryPolicy);
     }
 
@@ -3324,7 +3608,7 @@ public class RxDocumentClientImpl implements AsyncDocumentClient, IAuthorization
     @Override
     public Mono<ResourceResponse<Trigger>> createTrigger(String collectionLink, Trigger trigger,
                                                                RequestOptions options) {
-        DocumentClientRetryPolicy retryPolicyInstance = this.resetSessionTokenRetryPolicy.getRequestPolicy();
+        DocumentClientRetryPolicy retryPolicyInstance = this.resetSessionTokenRetryPolicy.getRequestPolicy(null);
         return ObservableHelper.inlineIfPossibleAsObs(() -> createTriggerInternal(collectionLink, trigger, options, retryPolicyInstance), retryPolicyInstance);
     }
 
@@ -3369,7 +3653,7 @@ public class RxDocumentClientImpl implements AsyncDocumentClient, IAuthorization
 
     @Override
     public Mono<ResourceResponse<Trigger>> replaceTrigger(Trigger trigger, RequestOptions options) {
-        DocumentClientRetryPolicy retryPolicyInstance = this.resetSessionTokenRetryPolicy.getRequestPolicy();
+        DocumentClientRetryPolicy retryPolicyInstance = this.resetSessionTokenRetryPolicy.getRequestPolicy(null);
         return ObservableHelper.inlineIfPossibleAsObs(() -> replaceTriggerInternal(trigger, options, retryPolicyInstance), retryPolicyInstance);
     }
 
@@ -3403,7 +3687,7 @@ public class RxDocumentClientImpl implements AsyncDocumentClient, IAuthorization
 
     @Override
     public Mono<ResourceResponse<Trigger>> deleteTrigger(String triggerLink, RequestOptions options) {
-        DocumentClientRetryPolicy retryPolicyInstance = this.resetSessionTokenRetryPolicy.getRequestPolicy();
+        DocumentClientRetryPolicy retryPolicyInstance = this.resetSessionTokenRetryPolicy.getRequestPolicy(null);
         return ObservableHelper.inlineIfPossibleAsObs(() -> deleteTriggerInternal(triggerLink, options, retryPolicyInstance), retryPolicyInstance);
     }
 
@@ -3433,7 +3717,7 @@ public class RxDocumentClientImpl implements AsyncDocumentClient, IAuthorization
 
     @Override
     public Mono<ResourceResponse<Trigger>> readTrigger(String triggerLink, RequestOptions options) {
-        DocumentClientRetryPolicy retryPolicyInstance = this.resetSessionTokenRetryPolicy.getRequestPolicy();
+        DocumentClientRetryPolicy retryPolicyInstance = this.resetSessionTokenRetryPolicy.getRequestPolicy(null);
         return ObservableHelper.inlineIfPossibleAsObs(() -> readTriggerInternal(triggerLink, options, retryPolicyInstance), retryPolicyInstance);
     }
 
@@ -3488,7 +3772,7 @@ public class RxDocumentClientImpl implements AsyncDocumentClient, IAuthorization
     @Override
     public Mono<ResourceResponse<UserDefinedFunction>> createUserDefinedFunction(String collectionLink,
                                                                                        UserDefinedFunction udf, RequestOptions options) {
-        DocumentClientRetryPolicy retryPolicyInstance = this.resetSessionTokenRetryPolicy.getRequestPolicy();
+        DocumentClientRetryPolicy retryPolicyInstance = this.resetSessionTokenRetryPolicy.getRequestPolicy(null);
         return ObservableHelper.inlineIfPossibleAsObs(() -> createUserDefinedFunctionInternal(collectionLink, udf, options, retryPolicyInstance), retryPolicyInstance);
     }
 
@@ -3519,7 +3803,7 @@ public class RxDocumentClientImpl implements AsyncDocumentClient, IAuthorization
     @Override
     public Mono<ResourceResponse<UserDefinedFunction>> replaceUserDefinedFunction(UserDefinedFunction udf,
                                                                                         RequestOptions options) {
-        DocumentClientRetryPolicy retryPolicyInstance = this.resetSessionTokenRetryPolicy.getRequestPolicy();
+        DocumentClientRetryPolicy retryPolicyInstance = this.resetSessionTokenRetryPolicy.getRequestPolicy(null);
         return ObservableHelper.inlineIfPossibleAsObs(() -> replaceUserDefinedFunctionInternal(udf, options, retryPolicyInstance), retryPolicyInstance);
     }
 
@@ -3558,7 +3842,7 @@ public class RxDocumentClientImpl implements AsyncDocumentClient, IAuthorization
     @Override
     public Mono<ResourceResponse<UserDefinedFunction>> deleteUserDefinedFunction(String udfLink,
                                                                                        RequestOptions options) {
-        DocumentClientRetryPolicy retryPolicyInstance = this.resetSessionTokenRetryPolicy.getRequestPolicy();
+        DocumentClientRetryPolicy retryPolicyInstance = this.resetSessionTokenRetryPolicy.getRequestPolicy(null);
         return ObservableHelper.inlineIfPossibleAsObs(() -> deleteUserDefinedFunctionInternal(udfLink, options, retryPolicyInstance), retryPolicyInstance);
     }
 
@@ -3595,7 +3879,7 @@ public class RxDocumentClientImpl implements AsyncDocumentClient, IAuthorization
     @Override
     public Mono<ResourceResponse<UserDefinedFunction>> readUserDefinedFunction(String udfLink,
                                                                                      RequestOptions options) {
-        DocumentClientRetryPolicy retryPolicyInstance = this.resetSessionTokenRetryPolicy.getRequestPolicy();
+        DocumentClientRetryPolicy retryPolicyInstance = this.resetSessionTokenRetryPolicy.getRequestPolicy(null);
         return ObservableHelper.inlineIfPossibleAsObs(() -> readUserDefinedFunctionInternal(udfLink, options, retryPolicyInstance), retryPolicyInstance);
     }
 
@@ -3655,7 +3939,7 @@ public class RxDocumentClientImpl implements AsyncDocumentClient, IAuthorization
 
     @Override
     public Mono<ResourceResponse<Conflict>> readConflict(String conflictLink, RequestOptions options) {
-        DocumentClientRetryPolicy retryPolicyInstance = this.resetSessionTokenRetryPolicy.getRequestPolicy();
+        DocumentClientRetryPolicy retryPolicyInstance = this.resetSessionTokenRetryPolicy.getRequestPolicy(null);
         return ObservableHelper.inlineIfPossibleAsObs(() -> readConflictInternal(conflictLink, options, retryPolicyInstance), retryPolicyInstance);
     }
 
@@ -3712,7 +3996,7 @@ public class RxDocumentClientImpl implements AsyncDocumentClient, IAuthorization
 
     @Override
     public Mono<ResourceResponse<Conflict>> deleteConflict(String conflictLink, RequestOptions options) {
-        DocumentClientRetryPolicy retryPolicyInstance = this.resetSessionTokenRetryPolicy.getRequestPolicy();
+        DocumentClientRetryPolicy retryPolicyInstance = this.resetSessionTokenRetryPolicy.getRequestPolicy(null);
         return ObservableHelper.inlineIfPossibleAsObs(() -> deleteConflictInternal(conflictLink, options, retryPolicyInstance), retryPolicyInstance);
     }
 
@@ -3747,7 +4031,7 @@ public class RxDocumentClientImpl implements AsyncDocumentClient, IAuthorization
 
     @Override
     public Mono<ResourceResponse<User>> createUser(String databaseLink, User user, RequestOptions options) {
-        DocumentClientRetryPolicy documentClientRetryPolicy = this.resetSessionTokenRetryPolicy.getRequestPolicy();
+        DocumentClientRetryPolicy documentClientRetryPolicy = this.resetSessionTokenRetryPolicy.getRequestPolicy(null);
         return ObservableHelper.inlineIfPossibleAsObs(() -> createUserInternal(databaseLink, user, options, documentClientRetryPolicy), documentClientRetryPolicy);
     }
 
@@ -3765,7 +4049,7 @@ public class RxDocumentClientImpl implements AsyncDocumentClient, IAuthorization
 
     @Override
     public Mono<ResourceResponse<User>> upsertUser(String databaseLink, User user, RequestOptions options) {
-        DocumentClientRetryPolicy retryPolicyInstance = this.resetSessionTokenRetryPolicy.getRequestPolicy();
+        DocumentClientRetryPolicy retryPolicyInstance = this.resetSessionTokenRetryPolicy.getRequestPolicy(null);
         return ObservableHelper.inlineIfPossibleAsObs(() -> upsertUserInternal(databaseLink, user, options, retryPolicyInstance), retryPolicyInstance);
     }
 
@@ -3807,7 +4091,7 @@ public class RxDocumentClientImpl implements AsyncDocumentClient, IAuthorization
 
     @Override
     public Mono<ResourceResponse<User>> replaceUser(User user, RequestOptions options) {
-        DocumentClientRetryPolicy retryPolicyInstance = this.resetSessionTokenRetryPolicy.getRequestPolicy();
+        DocumentClientRetryPolicy retryPolicyInstance = this.resetSessionTokenRetryPolicy.getRequestPolicy(null);
         return ObservableHelper.inlineIfPossibleAsObs(() -> replaceUserInternal(user, options, retryPolicyInstance), retryPolicyInstance);
     }
 
@@ -3837,7 +4121,7 @@ public class RxDocumentClientImpl implements AsyncDocumentClient, IAuthorization
 
 
     public Mono<ResourceResponse<User>> deleteUser(String userLink, RequestOptions options) {
-        DocumentClientRetryPolicy retryPolicyInstance =  this.resetSessionTokenRetryPolicy.getRequestPolicy();
+        DocumentClientRetryPolicy retryPolicyInstance =  this.resetSessionTokenRetryPolicy.getRequestPolicy(null);
         return ObservableHelper.inlineIfPossibleAsObs(() -> deleteUserInternal(userLink, options, retryPolicyInstance), retryPolicyInstance);
     }
 
@@ -3867,7 +4151,7 @@ public class RxDocumentClientImpl implements AsyncDocumentClient, IAuthorization
     }
     @Override
     public Mono<ResourceResponse<User>> readUser(String userLink, RequestOptions options) {
-        DocumentClientRetryPolicy retryPolicyInstance = this.resetSessionTokenRetryPolicy.getRequestPolicy();
+        DocumentClientRetryPolicy retryPolicyInstance = this.resetSessionTokenRetryPolicy.getRequestPolicy(null);
         return ObservableHelper.inlineIfPossibleAsObs(() -> readUserInternal(userLink, options, retryPolicyInstance), retryPolicyInstance);
     }
 
@@ -3918,7 +4202,7 @@ public class RxDocumentClientImpl implements AsyncDocumentClient, IAuthorization
     @Override
     public Mono<ResourceResponse<ClientEncryptionKey>> readClientEncryptionKey(String clientEncryptionKeyLink,
                                                                 RequestOptions options) {
-        DocumentClientRetryPolicy retryPolicyInstance = this.resetSessionTokenRetryPolicy.getRequestPolicy();
+        DocumentClientRetryPolicy retryPolicyInstance = this.resetSessionTokenRetryPolicy.getRequestPolicy(null);
         return ObservableHelper.inlineIfPossibleAsObs(() -> readClientEncryptionKeyInternal(clientEncryptionKeyLink, options, retryPolicyInstance), retryPolicyInstance);
     }
 
@@ -3947,7 +4231,7 @@ public class RxDocumentClientImpl implements AsyncDocumentClient, IAuthorization
     @Override
     public Mono<ResourceResponse<ClientEncryptionKey>> createClientEncryptionKey(String databaseLink,
      ClientEncryptionKey clientEncryptionKey, RequestOptions options) {
-        DocumentClientRetryPolicy retryPolicyInstance = this.resetSessionTokenRetryPolicy.getRequestPolicy();
+        DocumentClientRetryPolicy retryPolicyInstance = this.resetSessionTokenRetryPolicy.getRequestPolicy(null);
         return ObservableHelper.inlineIfPossibleAsObs(() -> createClientEncryptionKeyInternal(databaseLink, clientEncryptionKey, options, retryPolicyInstance), retryPolicyInstance);
 
     }
@@ -3987,7 +4271,7 @@ public class RxDocumentClientImpl implements AsyncDocumentClient, IAuthorization
     public Mono<ResourceResponse<ClientEncryptionKey>> replaceClientEncryptionKey(ClientEncryptionKey clientEncryptionKey,
                                                                                   String nameBasedLink,
                                                                                   RequestOptions options) {
-        DocumentClientRetryPolicy retryPolicyInstance = this.resetSessionTokenRetryPolicy.getRequestPolicy();
+        DocumentClientRetryPolicy retryPolicyInstance = this.resetSessionTokenRetryPolicy.getRequestPolicy(null);
         return ObservableHelper.inlineIfPossibleAsObs(() -> replaceClientEncryptionKeyInternal(clientEncryptionKey,
             nameBasedLink, options, retryPolicyInstance), retryPolicyInstance);
     }
@@ -4037,8 +4321,8 @@ public class RxDocumentClientImpl implements AsyncDocumentClient, IAuthorization
     @Override
     public Mono<ResourceResponse<Permission>> createPermission(String userLink, Permission permission,
                                                                      RequestOptions options) {
-        DocumentClientRetryPolicy documentClientRetryPolicy = this.resetSessionTokenRetryPolicy.getRequestPolicy();
-        return ObservableHelper.inlineIfPossibleAsObs(() -> createPermissionInternal(userLink, permission, options, documentClientRetryPolicy), this.resetSessionTokenRetryPolicy.getRequestPolicy());
+        DocumentClientRetryPolicy documentClientRetryPolicy = this.resetSessionTokenRetryPolicy.getRequestPolicy(null);
+        return ObservableHelper.inlineIfPossibleAsObs(() -> createPermissionInternal(userLink, permission, options, documentClientRetryPolicy), this.resetSessionTokenRetryPolicy.getRequestPolicy(null));
     }
 
     private Mono<ResourceResponse<Permission>> createPermissionInternal(String userLink, Permission permission,
@@ -4059,7 +4343,7 @@ public class RxDocumentClientImpl implements AsyncDocumentClient, IAuthorization
     @Override
     public Mono<ResourceResponse<Permission>> upsertPermission(String userLink, Permission permission,
                                                                      RequestOptions options) {
-        DocumentClientRetryPolicy retryPolicyInstance = this.resetSessionTokenRetryPolicy.getRequestPolicy();
+        DocumentClientRetryPolicy retryPolicyInstance = this.resetSessionTokenRetryPolicy.getRequestPolicy(null);
         return ObservableHelper.inlineIfPossibleAsObs(() -> upsertPermissionInternal(userLink, permission, options, retryPolicyInstance), retryPolicyInstance);
     }
 
@@ -4103,7 +4387,7 @@ public class RxDocumentClientImpl implements AsyncDocumentClient, IAuthorization
 
     @Override
     public Mono<ResourceResponse<Permission>> replacePermission(Permission permission, RequestOptions options) {
-        DocumentClientRetryPolicy retryPolicyInstance = this.resetSessionTokenRetryPolicy.getRequestPolicy();
+        DocumentClientRetryPolicy retryPolicyInstance = this.resetSessionTokenRetryPolicy.getRequestPolicy(null);
         return ObservableHelper.inlineIfPossibleAsObs(() -> replacePermissionInternal(permission, options, retryPolicyInstance), retryPolicyInstance);
     }
 
@@ -4134,7 +4418,7 @@ public class RxDocumentClientImpl implements AsyncDocumentClient, IAuthorization
 
     @Override
     public Mono<ResourceResponse<Permission>> deletePermission(String permissionLink, RequestOptions options) {
-        DocumentClientRetryPolicy retryPolicyInstance = this.resetSessionTokenRetryPolicy.getRequestPolicy();
+        DocumentClientRetryPolicy retryPolicyInstance = this.resetSessionTokenRetryPolicy.getRequestPolicy(null);
         return ObservableHelper.inlineIfPossibleAsObs(() -> deletePermissionInternal(permissionLink, options, retryPolicyInstance), retryPolicyInstance);
     }
 
@@ -4165,7 +4449,7 @@ public class RxDocumentClientImpl implements AsyncDocumentClient, IAuthorization
 
     @Override
     public Mono<ResourceResponse<Permission>> readPermission(String permissionLink, RequestOptions options) {
-        DocumentClientRetryPolicy retryPolicyInstance = this.resetSessionTokenRetryPolicy.getRequestPolicy();
+        DocumentClientRetryPolicy retryPolicyInstance = this.resetSessionTokenRetryPolicy.getRequestPolicy(null);
         return ObservableHelper.inlineIfPossibleAsObs(() -> readPermissionInternal(permissionLink, options, retryPolicyInstance), retryPolicyInstance);
     }
 
@@ -4216,7 +4500,7 @@ public class RxDocumentClientImpl implements AsyncDocumentClient, IAuthorization
 
     @Override
     public Mono<ResourceResponse<Offer>> replaceOffer(Offer offer) {
-        DocumentClientRetryPolicy documentClientRetryPolicy = this.resetSessionTokenRetryPolicy.getRequestPolicy();
+        DocumentClientRetryPolicy documentClientRetryPolicy = this.resetSessionTokenRetryPolicy.getRequestPolicy(null);
         return ObservableHelper.inlineIfPossibleAsObs(() -> replaceOfferInternal(offer, documentClientRetryPolicy), documentClientRetryPolicy);
     }
 
@@ -4241,7 +4525,7 @@ public class RxDocumentClientImpl implements AsyncDocumentClient, IAuthorization
 
     @Override
     public Mono<ResourceResponse<Offer>> readOffer(String offerLink) {
-        DocumentClientRetryPolicy retryPolicyInstance = this.resetSessionTokenRetryPolicy.getRequestPolicy();
+        DocumentClientRetryPolicy retryPolicyInstance = this.resetSessionTokenRetryPolicy.getRequestPolicy(null);
         return ObservableHelper.inlineIfPossibleAsObs(() -> readOfferInternal(offerLink, retryPolicyInstance), retryPolicyInstance);
     }
 
@@ -4320,7 +4604,8 @@ public class RxDocumentClientImpl implements AsyncDocumentClient, IAuthorization
         Integer maxItemCount = ModelBridgeInternal.getMaxItemCountFromQueryRequestOptions(options);
         int maxPageSize = maxItemCount != null ? maxItemCount : -1;
         final CosmosQueryRequestOptions finalCosmosQueryRequestOptions = options;
-        DocumentClientRetryPolicy retryPolicy = this.resetSessionTokenRetryPolicy.getRequestPolicy();
+        // TODO @fabianm wire up clientContext
+        DocumentClientRetryPolicy retryPolicy = this.resetSessionTokenRetryPolicy.getRequestPolicy(null);
         BiFunction<String, Integer, RxDocumentServiceRequest> createRequestFunc = (continuationToken, pageSize) -> {
             Map<String, String> requestHeaders = new HashMap<>();
             if (continuationToken != null) {
@@ -4363,7 +4648,7 @@ public class RxDocumentClientImpl implements AsyncDocumentClient, IAuthorization
 
     @Override
     public Mono<DatabaseAccount> getDatabaseAccount() {
-        DocumentClientRetryPolicy documentClientRetryPolicy = this.resetSessionTokenRetryPolicy.getRequestPolicy();
+        DocumentClientRetryPolicy documentClientRetryPolicy = this.resetSessionTokenRetryPolicy.getRequestPolicy(null);
         return ObservableHelper.inlineIfPossibleAsObs(() -> getDatabaseAccountInternal(documentClientRetryPolicy),
          documentClientRetryPolicy);
     }
@@ -4546,7 +4831,11 @@ public class RxDocumentClientImpl implements AsyncDocumentClient, IAuthorization
                     this.connectionPolicy.getConnectionMode(),
                     this.partitionKeyRangeCache);
 
-            this.storeModel.enableThroughputControl(throughputControlStore);
+            if (ConnectionMode.DIRECT == this.connectionPolicy.getConnectionMode()) {
+                this.storeModel.enableThroughputControl(throughputControlStore);
+            } else {
+                this.gatewayProxy.enableThroughputControl(throughputControlStore);
+            }
         }
 
         this.throughputControlStore.enableThroughputControlGroup(group, throughputQueryMono);
@@ -4696,5 +4985,428 @@ public class RxDocumentClientImpl implements AsyncDocumentClient, IAuthorization
         // Use new UUID(long, long) instead of UUID.randomUUID as UUID.randomUUID may be blocking.
         // For environments using Reactor's BlockHound this will raise an exception if called in non-blocking threads.
         return new UUID(msb, lsb);
+    }
+
+    private Mono<ResourceResponse<Document>> wrapPointOperationWithAvailabilityStrategy(
+        ResourceType resourceType,
+        OperationType operationType,
+        DocumentPointOperation callback,
+        RequestOptions initialRequestOptions,
+        boolean idempotentWriteRetriesEnabled) {
+
+        checkNotNull(resourceType, "Argument 'resourceType' must not be null.");
+        checkNotNull(operationType, "Argument 'operationType' must not be null.");
+        checkNotNull(callback, "Argument 'callback' must not be null.");
+
+        final RequestOptions nonNullRequestOptions =
+            initialRequestOptions != null ? initialRequestOptions : new RequestOptions();
+
+        checkArgument(
+            resourceType == ResourceType.Document,
+            "This method can only be used for document point operations.");
+
+        CosmosEndToEndOperationLatencyPolicyConfig endToEndPolicyConfig =
+            getEndToEndOperationLatencyPolicyConfig(nonNullRequestOptions);
+
+        List<String> orderedApplicableRegionsForSpeculation = getApplicableRegionsForSpeculation(
+            endToEndPolicyConfig,
+            resourceType,
+            operationType,
+            idempotentWriteRetriesEnabled,
+            nonNullRequestOptions);
+
+        if (orderedApplicableRegionsForSpeculation.size() < 2) {
+            // There is at most one applicable region - no hedging possible
+            return callback.apply(nonNullRequestOptions, endToEndPolicyConfig, null);
+        }
+
+        ThresholdBasedAvailabilityStrategy availabilityStrategy =
+            (ThresholdBasedAvailabilityStrategy)endToEndPolicyConfig.getAvailabilityStrategy();
+        List<Mono<NonTransientPointOperationResult>> monoList = new ArrayList<>();
+
+        final ScopedDiagnosticsFactory diagnosticsFactory = new ScopedDiagnosticsFactory(this);
+
+        orderedApplicableRegionsForSpeculation
+            .forEach(region -> {
+                RequestOptions clonedOptions = new RequestOptions(nonNullRequestOptions);
+
+                if (monoList.isEmpty()) {
+                    // no special error handling for transient errors to suppress them here
+                    // because any cross-regional retries are expected to be processed
+                    // by the ClientRetryPolicy for the initial request - so, any outcome of the
+                    // initial Mono should be treated as non-transient error - even when
+                    // the error would otherwise be treated as transient
+                    Mono<NonTransientPointOperationResult> initialMonoAcrossAllRegions =
+                        callback.apply(clonedOptions, endToEndPolicyConfig, diagnosticsFactory)
+                                .map(response -> new NonTransientPointOperationResult(response))
+                                .onErrorResume(
+                                    t -> isCosmosException(t),
+                                    t -> Mono.just(
+                                        new NonTransientPointOperationResult(
+                                            Utils.as(Exceptions.unwrap(t), CosmosException.class))));
+
+                        if (logger.isDebugEnabled()) {
+                            monoList.add(initialMonoAcrossAllRegions.doOnSubscribe(c -> logger.debug(
+                                "STARTING to process {} operation in region '{}'",
+                                operationType,
+                                region)));
+                        } else {
+                            monoList.add(initialMonoAcrossAllRegions);
+                        }
+                } else {
+                    clonedOptions.setExcludeRegions(
+                        getEffectiveExcludedRegionsForHedging(
+                            initialRequestOptions.getExcludeRegions(),
+                            orderedApplicableRegionsForSpeculation,
+                            region)
+                    );
+
+                    // Non-Transient errors are mapped to a value - this ensures the firstWithValue
+                    // operator below will complete the composite Mono for both successful values
+                    // and non-transient errors
+                    Mono<NonTransientPointOperationResult> regionalCrossRegionRetryMono =
+                        callback.apply(clonedOptions, endToEndPolicyConfig, diagnosticsFactory)
+                                .map(response -> new NonTransientPointOperationResult(response))
+                                .onErrorResume(
+                                    t -> isNonTransientCosmosException(t),
+                                    t -> Mono.just(
+                                        new NonTransientPointOperationResult(
+                                            Utils.as(Exceptions.unwrap(t), CosmosException.class))));
+
+                    Duration delayForCrossRegionalRetry = (availabilityStrategy)
+                        .getThreshold()
+                        .plus((availabilityStrategy)
+                            .getThresholdStep()
+                            .multipliedBy(monoList.size() - 1));
+
+                    if (logger.isDebugEnabled()) {
+                        monoList.add(
+                            regionalCrossRegionRetryMono
+                                .doOnSubscribe(c -> logger.debug("STARTING to process {} operation in region '{}'", operationType, region))
+                                .delaySubscription(delayForCrossRegionalRetry));
+                    } else {
+                        monoList.add(
+                            regionalCrossRegionRetryMono
+                                .delaySubscription(delayForCrossRegionalRetry));
+                    }
+                }
+            });
+
+        // NOTE - merging diagnosticsFactory cannot only happen in
+        // doFinally operator because the doFinally operator is a side effect method -
+        // meaning it executes concurrently with firing the onComplete/onError signal
+        // doFinally is also triggered by cancellation
+        // So, to make sure merging the Context happens synchronously in line we
+        // have to ensure merging is happening on error/completion
+        // and also in doOnCancel.
+        return Mono
+            .firstWithValue(monoList)
+            .flatMap(nonTransientResult -> {
+                diagnosticsFactory.merge(nonNullRequestOptions);
+                if (nonTransientResult.isError()) {
+                    return Mono.error(nonTransientResult.exception);
+                }
+
+                return Mono.just(nonTransientResult.response);
+            })
+            .onErrorMap(throwable -> {
+                Throwable exception = Exceptions.unwrap(throwable);
+
+                if (exception instanceof NoSuchElementException) {
+
+                    List<Throwable> innerThrowables = Exceptions
+                        .unwrapMultiple(exception.getCause());
+
+                    int index = 0;
+                    for (Throwable innerThrowable : innerThrowables) {
+                        Throwable innerException = Exceptions.unwrap(innerThrowable);
+
+                        // collect latest CosmosException instance bubbling up for a region
+                        if (innerException instanceof CosmosException) {
+                            CosmosException cosmosException = Utils.as(innerException, CosmosException.class);
+                            diagnosticsFactory.merge(nonNullRequestOptions);
+                            return cosmosException;
+                        } else if (exception instanceof NoSuchElementException) {
+                            logger.trace(
+                                "Operation in {} completed with empty result because it was cancelled.",
+                                orderedApplicableRegionsForSpeculation.get(index));
+                        } else if (logger.isWarnEnabled()) {
+                            String message = "Unexpected Non-CosmosException when processing operation in '"
+                                + orderedApplicableRegionsForSpeculation.get(index)
+                                + "'.";
+                            logger.warn(
+                                message,
+                                innerException
+                            );
+                        }
+
+                        index++;
+                    }
+                }
+
+                diagnosticsFactory.merge(nonNullRequestOptions);
+
+                return exception;
+            })
+            .doOnCancel(() -> diagnosticsFactory.merge(nonNullRequestOptions));
+    }
+
+    private static boolean isCosmosException(Throwable t) {
+        final Throwable unwrappedException = Exceptions.unwrap(t);
+        return unwrappedException instanceof CosmosException;
+    }
+
+    private static boolean isNonTransientCosmosException(Throwable t) {
+        final Throwable unwrappedException = Exceptions.unwrap(t);
+        if (!(unwrappedException instanceof CosmosException)) {
+            return false;
+        }
+        CosmosException cosmosException = Utils.as(unwrappedException, CosmosException.class);
+        return isNonTransientResultForHedging(
+            cosmosException.getStatusCode(),
+            cosmosException.getSubStatusCode());
+    }
+
+    private List<String> getEffectiveExcludedRegionsForHedging(
+        List<String> initialExcludedRegions,
+        List<String> applicableRegions,
+        String currentRegion) {
+
+        // For hedging operations execution should only happen in the targeted region - no cross-regional
+        // fail-overs should happen
+        List<String> effectiveExcludedRegions = new ArrayList<>();
+        if (initialExcludedRegions != null) {
+            effectiveExcludedRegions.addAll(initialExcludedRegions);
+        }
+
+        for (String applicableRegion: applicableRegions) {
+            if (!applicableRegion.equals(currentRegion)) {
+                effectiveExcludedRegions.add(applicableRegion);
+            }
+        }
+
+        return effectiveExcludedRegions;
+    }
+
+    private static boolean isNonTransientResultForHedging(int statusCode, int subStatusCode) {
+        // All 1xx, 2xx and 3xx status codes should be treated as final result
+        if (statusCode < HttpConstants.StatusCodes.BADREQUEST) {
+            return true;
+        }
+
+        // Treat OperationCancelledException as non-transient timeout
+        if (statusCode == HttpConstants.StatusCodes.REQUEST_TIMEOUT &&
+            subStatusCode == HttpConstants.SubStatusCodes.CLIENT_OPERATION_TIMEOUT) {
+            return true;
+        }
+
+        // Status codes below indicate non-transient errors
+        if (statusCode == HttpConstants.StatusCodes.BADREQUEST
+            || statusCode == HttpConstants.StatusCodes.CONFLICT
+            || statusCode == HttpConstants.StatusCodes.METHOD_NOT_ALLOWED
+            || statusCode == HttpConstants.StatusCodes.PRECONDITION_FAILED
+            || statusCode == HttpConstants.StatusCodes.REQUEST_ENTITY_TOO_LARGE
+            || statusCode == HttpConstants.StatusCodes.UNAUTHORIZED) {
+
+            return true;
+        }
+
+        // 404 - NotFound is also a final result - it means document was not yet available
+        // after enforcing whatever the consistency model is
+        if (statusCode == HttpConstants.StatusCodes.NOTFOUND
+            && subStatusCode == HttpConstants.SubStatusCodes.UNKNOWN) {
+
+            return true;
+        }
+
+        // All other errors should be treated as possibly transient
+        return false;
+    }
+
+    private DiagnosticsClientContext getEffectiveClientContext(DiagnosticsClientContext clientContextOverride) {
+        if (clientContextOverride != null) {
+            return clientContextOverride;
+        }
+
+        return this;
+    }
+
+    /**
+     * Returns the applicable endpoints ordered by preference list if any
+     * @param operationType - the operationT
+     * @return the applicable endpoints ordered by preference list if any
+     */
+    private List<URI> getApplicableEndPoints(OperationType operationType, RequestOptions options) {
+        List<String> excludedRegions = null;
+        if (options != null) {
+            excludedRegions = options.getExcludeRegions();
+        }
+
+        if (operationType.isReadOnlyOperation()) {
+            return withoutNulls(this.globalEndpointManager.getApplicableReadEndpoints(excludedRegions));
+        } else if (operationType.isWriteOperation()) {
+            return withoutNulls(this.globalEndpointManager.getApplicableWriteEndpoints(excludedRegions));
+        }
+
+        return EMPTY_ENDPOINT_LIST;
+    }
+
+    private static List<URI> withoutNulls(List<URI> orderedEffectiveEndpointsList) {
+        if (orderedEffectiveEndpointsList == null) {
+            return EMPTY_ENDPOINT_LIST;
+        }
+
+        int i = 0;
+        while (i < orderedEffectiveEndpointsList.size()) {
+            if (orderedEffectiveEndpointsList.get(i) == null) {
+                orderedEffectiveEndpointsList.remove(i);
+            } else {
+                i++;
+            }
+        }
+
+        return orderedEffectiveEndpointsList;
+    }
+
+    private List<String> getApplicableRegionsForSpeculation(
+        CosmosEndToEndOperationLatencyPolicyConfig endToEndPolicyConfig,
+        ResourceType resourceType,
+        OperationType operationType,
+        boolean isIdempotentWriteRetriesEnabled,
+        RequestOptions options) {
+
+        if (endToEndPolicyConfig == null || !endToEndPolicyConfig.isEnabled()) {
+            return EMPTY_REGION_LIST;
+        }
+
+        if (resourceType != ResourceType.Document) {
+            return EMPTY_REGION_LIST;
+        }
+
+        if (operationType.isWriteOperation() && !isIdempotentWriteRetriesEnabled) {
+            return EMPTY_REGION_LIST;
+        }
+
+        if (operationType.isWriteOperation() && !this.globalEndpointManager.canUseMultipleWriteLocations()) {
+            return EMPTY_REGION_LIST;
+        }
+
+        if (!(endToEndPolicyConfig.getAvailabilityStrategy() instanceof ThresholdBasedAvailabilityStrategy)) {
+            return EMPTY_REGION_LIST;
+        }
+
+        List<URI> endpoints = getApplicableEndPoints(operationType, options);
+
+        HashSet<String> normalizedExcludedRegions = new HashSet<>();
+        if (options.getExcludeRegions() != null) {
+            options
+                .getExcludeRegions()
+                .forEach(r -> normalizedExcludedRegions.add(r.toLowerCase(Locale.ROOT)));
+        }
+
+        List<String> orderedRegionsForSpeculation = new ArrayList<>();
+        endpoints.forEach(uri -> {
+            String regionName = this.globalEndpointManager.getRegionName(uri, operationType);
+            if (!normalizedExcludedRegions.contains(regionName.toLowerCase(Locale.ROOT))) {
+                orderedRegionsForSpeculation.add(regionName);
+            }
+        });
+
+        return orderedRegionsForSpeculation;
+    }
+
+    @FunctionalInterface
+    private interface DocumentPointOperation {
+        Mono<ResourceResponse<Document>> apply(RequestOptions requestOptions, CosmosEndToEndOperationLatencyPolicyConfig endToEndOperationLatencyPolicyConfig, DiagnosticsClientContext clientContextOverride);
+    }
+
+    private static class NonTransientPointOperationResult {
+        private final ResourceResponse<Document> response;
+        private final CosmosException exception;
+
+        public NonTransientPointOperationResult(CosmosException exception) {
+            checkNotNull(exception, "Argument 'exception' must not be null.");
+            this.exception = exception;
+            this.response = null;
+        }
+
+        public NonTransientPointOperationResult(ResourceResponse<Document> response) {
+            checkNotNull(response, "Argument 'response' must not be null.");
+            this.exception = null;
+            this.response = response;
+        }
+
+        public boolean isError() {
+            return this.exception != null;
+        }
+
+        public CosmosException getException() {
+            return this.exception;
+        }
+
+        public ResourceResponse<Document> getResponse() {
+            return this.response;
+        }
+    }
+
+    private static class ScopedDiagnosticsFactory implements DiagnosticsClientContext {
+
+        private AtomicBoolean isMerged = new AtomicBoolean(false);
+        private final DiagnosticsClientContext inner;
+        private final ConcurrentLinkedQueue<CosmosDiagnostics> createdDiagnostics;
+
+        public ScopedDiagnosticsFactory(DiagnosticsClientContext inner) {
+            checkNotNull(inner, "Argument 'inner' must not be null.");
+            this.inner = inner;
+            this.createdDiagnostics = new ConcurrentLinkedQueue<>();
+        }
+
+        @Override
+        public DiagnosticsClientConfig getConfig() {
+            return inner.getConfig();
+        }
+
+        @Override
+        public CosmosDiagnostics createDiagnostics() {
+            CosmosDiagnostics diagnostics = inner.createDiagnostics();
+            createdDiagnostics.add(diagnostics);
+            return diagnostics;
+        }
+
+        @Override
+        public String getUserAgent() {
+            return inner.getUserAgent();
+        }
+
+        public void merge(RequestOptions requestOptions) {
+            if (!isMerged.compareAndSet(false, true)) {
+                return;
+            }
+
+            CosmosDiagnosticsContext ctx = null;
+
+            if (requestOptions != null &&
+                requestOptions.getDiagnosticsContext() != null) {
+
+                ctx = requestOptions.getDiagnosticsContext();
+            } else {
+                for (CosmosDiagnostics diagnostics : this.createdDiagnostics) {
+                    if (diagnostics.getDiagnosticsContext() != null) {
+                        ctx = diagnostics.getDiagnosticsContext();
+                        break;
+                    }
+                }
+            }
+
+            if (ctx == null) {
+                return;
+            }
+
+            for (CosmosDiagnostics diagnostics : this.createdDiagnostics) {
+                if (diagnostics.getDiagnosticsContext() == null && diagnosticsAccessor.isNotEmpty(diagnostics)) {
+                    ctxAccessor.addDiagnostics(ctx, diagnostics);
+                }
+            }
+        }
     }
 }

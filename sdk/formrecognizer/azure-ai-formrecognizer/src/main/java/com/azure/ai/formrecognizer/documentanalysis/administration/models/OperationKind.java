@@ -11,6 +11,15 @@ import java.util.Collection;
 /** Known values for type of operation. */
 @Immutable
 public final class OperationKind extends ExpandableStringEnum<OperationKind> {
+
+    /**
+     * Creates a OperationKind object.
+     * @deprecated Use the {@link #fromString(String)} factory method.
+     */
+    @Deprecated
+    public OperationKind() {
+    }
+
     /** Static value documentModelBuild for OperationKind. */
     public static final OperationKind DOCUMENT_MODEL_BUILD = fromString("documentModelBuild");
 
@@ -30,7 +39,10 @@ public final class OperationKind extends ExpandableStringEnum<OperationKind> {
         return fromString(name, OperationKind.class);
     }
 
-    /** @return known OperationKind values. */
+    /**
+     * Returns known OperationKind values.
+     * @return known OperationKind values.
+     */
     public static Collection<OperationKind> values() {
         return values(OperationKind.class);
     }

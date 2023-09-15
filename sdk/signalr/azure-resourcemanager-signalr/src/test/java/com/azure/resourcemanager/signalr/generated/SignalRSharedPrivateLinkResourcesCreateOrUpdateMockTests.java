@@ -31,7 +31,7 @@ public final class SignalRSharedPrivateLinkResourcesCreateOrUpdateMockTests {
         ArgumentCaptor<HttpRequest> httpRequest = ArgumentCaptor.forClass(HttpRequest.class);
 
         String responseStr =
-            "{\"properties\":{\"groupId\":\"zejntps\",\"privateLinkResourceId\":\"wgioilqukry\",\"provisioningState\":\"Succeeded\",\"requestMessage\":\"mieoxorgguf\",\"status\":\"Pending\"},\"id\":\"omtbghhavgrvkff\",\"name\":\"vjzhpjbib\",\"type\":\"jmfxumvf\"}";
+            "{\"properties\":{\"groupId\":\"cxmjpbyephmg\",\"privateLinkResourceId\":\"vljvrc\",\"provisioningState\":\"Succeeded\",\"requestMessage\":\"i\",\"status\":\"Timeout\"},\"id\":\"hnp\",\"name\":\"myqwcab\",\"type\":\"nuilee\"}";
 
         Mockito.when(httpResponse.getStatusCode()).thenReturn(200);
         Mockito.when(httpResponse.getHeaders()).thenReturn(new HttpHeaders());
@@ -62,15 +62,15 @@ public final class SignalRSharedPrivateLinkResourcesCreateOrUpdateMockTests {
         SharedPrivateLinkResource response =
             manager
                 .signalRSharedPrivateLinkResources()
-                .define("tw")
-                .withExistingSignalR("sgogczhonnxk", "lgnyhmo")
-                .withGroupId("kkgthr")
-                .withPrivateLinkResourceId("gh")
-                .withRequestMessage("hqxvcxgfrpdsofbs")
+                .define("z")
+                .withExistingSignalR("ufypiv", "sbbjpmcu")
+                .withGroupId("mifoxxkub")
+                .withPrivateLinkResourceId("phavpmhbrb")
+                .withRequestMessage("ovpbbttefjoknssq")
                 .create();
 
-        Assertions.assertEquals("zejntps", response.groupId());
-        Assertions.assertEquals("wgioilqukry", response.privateLinkResourceId());
-        Assertions.assertEquals("mieoxorgguf", response.requestMessage());
+        Assertions.assertEquals("cxmjpbyephmg", response.groupId());
+        Assertions.assertEquals("vljvrc", response.privateLinkResourceId());
+        Assertions.assertEquals("i", response.requestMessage());
     }
 }

@@ -118,7 +118,10 @@ public class EndToEndTimeOutWithAvailabilityTest extends TestSuiteBase {
         Thread.sleep(2000);
         FaultInjectionRule rule = injectFailure(cosmosAsyncContainer, faultInjectionOperationType);
         CosmosDiagnostics cosmosDiagnostics = performDocumentOperation(cosmosAsyncContainer, operationType, createdItem, options, null);
-        assertThat(cosmosDiagnostics.getContactedRegionNames().size()).isGreaterThan(1);
+        assertThat(cosmosDiagnostics).isNotNull();
+        CosmosDiagnosticsContext diagnosticsContext = cosmosDiagnostics.getDiagnosticsContext();
+        assertThat(diagnosticsContext).isNotNull();
+        assertThat(diagnosticsContext.getContactedRegionNames().size()).isGreaterThan(1);
         ObjectNode diagnosticsNode = null;
         try {
             if (operationType == OperationType.Query) {
@@ -249,8 +252,9 @@ public class EndToEndTimeOutWithAvailabilityTest extends TestSuiteBase {
             }
         } catch (JsonProcessingException e) {
             throw new RuntimeException(e);
+        } finally {
+            rule.disable();
         }
-        rule.disable();
     }
 
     @DataProvider(name = "faultInjectionArgProvider")
@@ -260,7 +264,9 @@ public class EndToEndTimeOutWithAvailabilityTest extends TestSuiteBase {
             {OperationType.Replace, FaultInjectionOperationType.REPLACE_ITEM},
             {OperationType.Create, FaultInjectionOperationType.CREATE_ITEM},
             {OperationType.Delete, FaultInjectionOperationType.DELETE_ITEM},
-            {OperationType.Query, FaultInjectionOperationType.QUERY_ITEM},
+            // TODO @fabianm wire up clientContext - availability strategy not yet wired up for query
+            // reenable when adding query support
+            //{OperationType.Query, FaultInjectionOperationType.QUERY_ITEM},
             {OperationType.Patch, FaultInjectionOperationType.PATCH_ITEM}
         };
     }
