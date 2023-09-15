@@ -556,18 +556,16 @@ public class SearchIndexingBufferedSenderUnitTests {
         batchingClient.addUploadActions(readJsonFileToList(HOTELS_DATA_JSON)).block();
 
         AtomicLong firstFlushCompletionTime = new AtomicLong();
-        batchingClient.flush()
-            .doFinally(ignored -> {
+        Mono.using(() -> countDownLatch, ignored -> batchingClient.flush(), latch -> {
                 firstFlushCompletionTime.set(System.nanoTime());
-                countDownLatch.countDown();
+                latch.countDown();
             })
             .subscribe();
 
         AtomicLong secondFlushCompletionTime = new AtomicLong();
-        batchingClient.flush()
-            .doFinally(ignored -> {
+        Mono.using(() -> countDownLatch, ignored -> batchingClient.flush(), latch -> {
                 secondFlushCompletionTime.set(System.nanoTime());
-                countDownLatch.countDown();
+                latch.countDown();
             })
             .subscribe();
 
@@ -601,18 +599,16 @@ public class SearchIndexingBufferedSenderUnitTests {
         batchingClient.addUploadActions(readJsonFileToList(HOTELS_DATA_JSON)).block();
 
         AtomicLong firstFlushCompletionTime = new AtomicLong();
-        batchingClient.flush()
-            .doFinally(ignored -> {
+        Mono.using(() -> countDownLatch, ignored -> batchingClient.flush(), latch -> {
                 firstFlushCompletionTime.set(System.nanoTime());
-                countDownLatch.countDown();
+                latch.countDown();
             })
             .subscribe();
 
         AtomicLong secondFlushCompletionTime = new AtomicLong();
-        batchingClient.close()
-            .doFinally(ignored -> {
+        Mono.using(() -> countDownLatch, ignored -> batchingClient.close(), latch -> {
                 secondFlushCompletionTime.set(System.nanoTime());
-                countDownLatch.countDown();
+                latch.countDown();
             })
             .subscribe();
 
