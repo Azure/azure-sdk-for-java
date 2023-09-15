@@ -291,7 +291,7 @@ public class CosmosAsyncUser {
             null,
             OperationType.Read,
             ResourceType.User,
-            client.getEffectiveDiagnosticsThresholds(null));
+            null);
     }
 
     private Mono<CosmosUserResponse> replaceInternal(CosmosUserProperties userSettings, Context context) {
@@ -311,7 +311,7 @@ public class CosmosAsyncUser {
             null,
             OperationType.Replace,
             ResourceType.User,
-            client.getEffectiveDiagnosticsThresholds(null));
+            null);
     }
 
     private Mono<CosmosUserResponse> deleteInternal(Context context) {
@@ -330,7 +330,7 @@ public class CosmosAsyncUser {
             null,
             OperationType.Delete,
             ResourceType.User,
-            client.getEffectiveDiagnosticsThresholds(null));
+            null);
     }
 
     private Mono<CosmosPermissionResponse> createPermissionInternal(
@@ -343,8 +343,7 @@ public class CosmosAsyncUser {
             .map(ModelBridgeInternal::createCosmosPermissionResponse)
             .single();
         CosmosAsyncClient client = database.getClient();
-        CosmosDiagnosticsThresholds requestDiagnosticThresholds =
-            ModelBridgeInternal.toRequestOptions(options).getDiagnosticsThresholds();
+
         return client.getDiagnosticsProvider().traceEnabledCosmosResponsePublisher(
             responseMono,
             context,
@@ -355,7 +354,7 @@ public class CosmosAsyncUser {
             null,
             OperationType.Create,
             ResourceType.Permission,
-            client.getEffectiveDiagnosticsThresholds(requestDiagnosticThresholds));
+            null);
     }
 
     private Mono<CosmosPermissionResponse> upsertPermissionInternal(
@@ -368,8 +367,7 @@ public class CosmosAsyncUser {
             .map(ModelBridgeInternal::createCosmosPermissionResponse)
             .single();
         CosmosAsyncClient client = database.getClient();
-        CosmosDiagnosticsThresholds requestDiagnosticThresholds =
-            ModelBridgeInternal.toRequestOptions(options).getDiagnosticsThresholds();
+
         return client.getDiagnosticsProvider().traceEnabledCosmosResponsePublisher(
             responseMono,
             context,
@@ -380,6 +378,6 @@ public class CosmosAsyncUser {
             null,
             OperationType.Upsert,
             ResourceType.Permission,
-            client.getEffectiveDiagnosticsThresholds(requestDiagnosticThresholds));
+            null);
     }
 }

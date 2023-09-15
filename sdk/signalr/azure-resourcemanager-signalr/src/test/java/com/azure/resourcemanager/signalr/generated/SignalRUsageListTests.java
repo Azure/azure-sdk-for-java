@@ -17,15 +17,15 @@ public final class SignalRUsageListTests {
         SignalRUsageList model =
             BinaryData
                 .fromString(
-                    "{\"value\":[{\"id\":\"feusnhut\",\"currentValue\":7488631932267615574,\"limit\":1681358719295999682,\"name\":{\"value\":\"ugjzzdatqxhocdge\",\"localizedValue\":\"lgphu\"},\"unit\":\"cndvkaozwyiftyhx\"},{\"id\":\"rokft\",\"currentValue\":3868150209180294588,\"limit\":8023201833032933577,\"name\":{\"value\":\"cukjf\",\"localizedValue\":\"iawxklry\"},\"unit\":\"wckbasyypnd\"},{\"id\":\"sgcbac\",\"currentValue\":3223006673254134056,\"limit\":1592886583482291968,\"name\":{\"value\":\"qgoulznd\",\"localizedValue\":\"kwy\"},\"unit\":\"gfgibm\"},{\"id\":\"gakeqsr\",\"currentValue\":4764420434211011454,\"limit\":7229748892246039848,\"name\":{\"value\":\"ytb\",\"localizedValue\":\"qfou\"},\"unit\":\"mmnkzsmodmgl\"}],\"nextLink\":\"gpbkwtmut\"}")
+                    "{\"value\":[{\"id\":\"ndnvo\",\"currentValue\":4292877192766299113,\"limit\":3293446474919179561,\"name\":{\"value\":\"kcglhslaz\",\"localizedValue\":\"yggdtjixh\"},\"unit\":\"uofqwe\"}],\"nextLink\":\"hmenevfyexfwhybc\"}")
                 .toObject(SignalRUsageList.class);
-        Assertions.assertEquals("feusnhut", model.value().get(0).id());
-        Assertions.assertEquals(7488631932267615574L, model.value().get(0).currentValue());
-        Assertions.assertEquals(1681358719295999682L, model.value().get(0).limit());
-        Assertions.assertEquals("ugjzzdatqxhocdge", model.value().get(0).name().value());
-        Assertions.assertEquals("lgphu", model.value().get(0).name().localizedValue());
-        Assertions.assertEquals("cndvkaozwyiftyhx", model.value().get(0).unit());
-        Assertions.assertEquals("gpbkwtmut", model.nextLink());
+        Assertions.assertEquals("ndnvo", model.value().get(0).id());
+        Assertions.assertEquals(4292877192766299113L, model.value().get(0).currentValue());
+        Assertions.assertEquals(3293446474919179561L, model.value().get(0).limit());
+        Assertions.assertEquals("kcglhslaz", model.value().get(0).name().value());
+        Assertions.assertEquals("yggdtjixh", model.value().get(0).name().localizedValue());
+        Assertions.assertEquals("uofqwe", model.value().get(0).unit());
+        Assertions.assertEquals("hmenevfyexfwhybc", model.nextLink());
     }
 
     @org.junit.jupiter.api.Test
@@ -36,38 +36,19 @@ public final class SignalRUsageListTests {
                     Arrays
                         .asList(
                             new SignalRUsageInner()
-                                .withId("feusnhut")
-                                .withCurrentValue(7488631932267615574L)
-                                .withLimit(1681358719295999682L)
-                                .withName(
-                                    new SignalRUsageName().withValue("ugjzzdatqxhocdge").withLocalizedValue("lgphu"))
-                                .withUnit("cndvkaozwyiftyhx"),
-                            new SignalRUsageInner()
-                                .withId("rokft")
-                                .withCurrentValue(3868150209180294588L)
-                                .withLimit(8023201833032933577L)
-                                .withName(new SignalRUsageName().withValue("cukjf").withLocalizedValue("iawxklry"))
-                                .withUnit("wckbasyypnd"),
-                            new SignalRUsageInner()
-                                .withId("sgcbac")
-                                .withCurrentValue(3223006673254134056L)
-                                .withLimit(1592886583482291968L)
-                                .withName(new SignalRUsageName().withValue("qgoulznd").withLocalizedValue("kwy"))
-                                .withUnit("gfgibm"),
-                            new SignalRUsageInner()
-                                .withId("gakeqsr")
-                                .withCurrentValue(4764420434211011454L)
-                                .withLimit(7229748892246039848L)
-                                .withName(new SignalRUsageName().withValue("ytb").withLocalizedValue("qfou"))
-                                .withUnit("mmnkzsmodmgl")))
-                .withNextLink("gpbkwtmut");
+                                .withId("ndnvo")
+                                .withCurrentValue(4292877192766299113L)
+                                .withLimit(3293446474919179561L)
+                                .withName(new SignalRUsageName().withValue("kcglhslaz").withLocalizedValue("yggdtjixh"))
+                                .withUnit("uofqwe")))
+                .withNextLink("hmenevfyexfwhybc");
         model = BinaryData.fromObject(model).toObject(SignalRUsageList.class);
-        Assertions.assertEquals("feusnhut", model.value().get(0).id());
-        Assertions.assertEquals(7488631932267615574L, model.value().get(0).currentValue());
-        Assertions.assertEquals(1681358719295999682L, model.value().get(0).limit());
-        Assertions.assertEquals("ugjzzdatqxhocdge", model.value().get(0).name().value());
-        Assertions.assertEquals("lgphu", model.value().get(0).name().localizedValue());
-        Assertions.assertEquals("cndvkaozwyiftyhx", model.value().get(0).unit());
-        Assertions.assertEquals("gpbkwtmut", model.nextLink());
+        Assertions.assertEquals("ndnvo", model.value().get(0).id());
+        Assertions.assertEquals(4292877192766299113L, model.value().get(0).currentValue());
+        Assertions.assertEquals(3293446474919179561L, model.value().get(0).limit());
+        Assertions.assertEquals("kcglhslaz", model.value().get(0).name().value());
+        Assertions.assertEquals("yggdtjixh", model.value().get(0).name().localizedValue());
+        Assertions.assertEquals("uofqwe", model.value().get(0).unit());
+        Assertions.assertEquals("hmenevfyexfwhybc", model.nextLink());
     }
 }

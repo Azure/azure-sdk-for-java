@@ -46,6 +46,9 @@ public final class ProvisioningState extends ExpandableStringEnum<ProvisioningSt
     /** Static value Updating for ProvisioningState. */
     public static final ProvisioningState UPDATING = fromString("Updating");
 
+    /** Static value ConfiguringAAD for ProvisioningState. */
+    public static final ProvisioningState CONFIGURING_AAD = fromString("ConfiguringAAD");
+
     /**
      * Creates a new instance of ProvisioningState value.
      *

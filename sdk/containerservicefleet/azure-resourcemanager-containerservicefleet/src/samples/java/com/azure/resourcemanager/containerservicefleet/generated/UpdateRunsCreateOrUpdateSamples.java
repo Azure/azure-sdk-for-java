@@ -7,6 +7,8 @@ package com.azure.resourcemanager.containerservicefleet.generated;
 import com.azure.resourcemanager.containerservicefleet.models.ManagedClusterUpdate;
 import com.azure.resourcemanager.containerservicefleet.models.ManagedClusterUpgradeSpec;
 import com.azure.resourcemanager.containerservicefleet.models.ManagedClusterUpgradeType;
+import com.azure.resourcemanager.containerservicefleet.models.NodeImageSelection;
+import com.azure.resourcemanager.containerservicefleet.models.NodeImageSelectionType;
 import com.azure.resourcemanager.containerservicefleet.models.UpdateGroup;
 import com.azure.resourcemanager.containerservicefleet.models.UpdateRunStrategy;
 import com.azure.resourcemanager.containerservicefleet.models.UpdateStage;
@@ -15,7 +17,7 @@ import java.util.Arrays;
 /** Samples for UpdateRuns CreateOrUpdate. */
 public final class UpdateRunsCreateOrUpdateSamples {
     /*
-     * x-ms-original-file: specification/containerservice/resource-manager/Microsoft.ContainerService/fleet/preview/2023-03-15-preview/examples/UpdateRuns_CreateOrUpdate.json
+     * x-ms-original-file: specification/containerservice/resource-manager/Microsoft.ContainerService/fleet/preview/2023-06-15-preview/examples/UpdateRuns_CreateOrUpdate.json
      */
     /**
      * Sample code: Create an UpdateRun.
@@ -42,7 +44,8 @@ public final class UpdateRunsCreateOrUpdateSamples {
                     .withUpgrade(
                         new ManagedClusterUpgradeSpec()
                             .withType(ManagedClusterUpgradeType.FULL)
-                            .withKubernetesVersion("1.26.1")))
+                            .withKubernetesVersion("1.26.1"))
+                    .withNodeImageSelection(new NodeImageSelection().withType(NodeImageSelectionType.LATEST)))
             .create();
     }
 }

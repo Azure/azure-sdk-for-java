@@ -41,12 +41,12 @@ This workaround allows you to avoid the cost of exporting data to a storage acco
 
 **Disclaimer:** This approach of splitting data retrieval into smaller queries is useful when dealing with a few GBs of data or a few million records per hour. For larger data sets, [exporting][logs_data_export] is recommended.
 
-We've provided a sample that demonstrates how to split a large query into a batch query based on the number of rows. The sample can be found here.
-We've also provided a sample that demonstrates how to split a large query into a batch query based on the size of the data returned. The sample can be found here.
+We've provided a sample that demonstrates how to split a large query into a batch query based on the number of rows. The sample can be found [here][split_query_by_rows].
+We've also provided a sample that demonstrates how to split a large query into a batch query based on the size of the data returned. The sample can be found [here][split_query_by_bytes].
 
-These sample shows how to partition a large query into smaller queries using the `LogsBatchQuery` class. The partitioning is based on the timestamp "TimeGenerated".
+These samples show how to partition a large query into smaller queries using the `LogsBatchQuery` class. The partitioning is based on the timestamp "TimeGenerated".
 
-This sample is suitable for simple data retrieval queries that utilize a subset of KQL operators. The subset of supported KQL operators can be found [here][kql_language_subset].
+These samples are suitable for simple data retrieval queries that utilize a subset of KQL operators. The subset of supported KQL operators can be found [here][kql_language_subset].
 
 ## Troubleshooting
 
@@ -75,3 +75,5 @@ Guidelines][SDK_README_CONTRIBUTING] for more information.
 [monitor_service_limits]: https://learn.microsoft.com/azure/azure-monitor/service-limits#la-query-api
 [logs_data_export]: https://learn.microsoft.com/azure/azure-monitor/logs/logs-data-export?tabs=portal
 [kql_language_subset]: https://learn.microsoft.com/azure/azure-monitor/logs/basic-logs-query?tabs=portal-1#kql-language-limits
+[split_query_by_rows]: https://github.com/Azure/azure-sdk-for-java/blob/main/sdk/monitor/azure-monitor-query/src/samples/java/com/azure/monitor/query/SplitQueryByRowCountSample.java
+[split_query_by_bytes]: https://github.com/Azure/azure-sdk-for-java/blob/main/sdk/monitor/azure-monitor-query/src/samples/java/com/azure/monitor/query/SplitQueryByByteSizeSample.java

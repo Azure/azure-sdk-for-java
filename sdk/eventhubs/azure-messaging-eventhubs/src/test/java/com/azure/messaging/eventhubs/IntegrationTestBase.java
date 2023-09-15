@@ -27,7 +27,6 @@ import org.mockito.Mockito;
 import reactor.core.Disposable;
 import reactor.core.scheduler.Scheduler;
 import reactor.core.scheduler.Schedulers;
-import reactor.test.StepVerifier;
 
 import javax.crypto.Mac;
 import javax.crypto.spec.SecretKeySpec;
@@ -89,12 +88,10 @@ public abstract class IntegrationTestBase extends TestBase {
     @BeforeAll
     public static void beforeAll() {
         scheduler = Schedulers.newParallel("eh-integration");
-        StepVerifier.setDefaultTimeout(TIMEOUT);
     }
 
     @AfterAll
     public static void afterAll() {
-        StepVerifier.resetDefaultTimeout();
         scheduler.dispose();
     }
 
