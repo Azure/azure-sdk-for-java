@@ -33,10 +33,8 @@ import java.util.Objects;
 import static com.azure.containers.containerregistry.implementation.UtilsImpl.createTracer;
 
 /**
- * This class provides a fluent builder API to help aid the configuration and instantiation of {@link
- * ContainerRegistryClient ContainerRegistryClients} and {@link ContainerRegistryAsyncClient ContainerRegistryAsyncClients}, call {@link
- * #buildClient() buildClient} and {@link #buildAsyncClient() buildAsyncClient} respectively to construct an instance of
- * the desired client.
+ * <p>Fluent builder for instantiating a {@link ContainerRegistryClient} and {@link ContainerRegistryAsyncClient}. which are used to
+ * list and delete repositories and artifacts, obtain metadata and configure read/write permissions.</p>
  *
  * <p>The client needs the service endpoint of the Azure Container Registry, Audience for ACR that you want to target and Azure access credentials to use for authentication.
  * <p><strong>Instantiating an asynchronous Container Registry client</strong></p>
@@ -132,6 +130,12 @@ public final class ContainerRegistryClientBuilder implements
     private RetryOptions retryOptions;
     private ContainerRegistryServiceVersion version;
     private ContainerRegistryAudience audience;
+
+    /**
+     * Creates a new instance of {@link ContainerRegistryClientBuilder}.
+     */
+    public ContainerRegistryClientBuilder() {
+    }
 
     /**
      * Sets the service endpoint for the Azure Container Registry instance.

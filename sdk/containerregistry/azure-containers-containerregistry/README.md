@@ -5,9 +5,9 @@ Azure Container Registry allows you to store and manage container images and art
 Use the client library for Azure Container Registry to:
 
 - List images or artifacts in a registry
+- Upload, download, and delete images and artifacts, repositories and tags
 - Obtain metadata for images and artifacts, repositories and tags
 - Set read/write/delete properties on registry items
-- Delete images and artifacts, repositories and tags
 
 [Source code][source_code] | [Package (Maven)][package] | [Product documentation][product_docs] | [Samples][samples]
 
@@ -126,9 +126,10 @@ registryClient
 ```
 
 #### Anonymous access support
+
 If the builder is instantiated without any credentials, the SDK creates the service client for the anonymous pull mode.
 The user must use this setting on a registry that has been enabled for anonymous pull.
-In this mode, the user can only call listRepositoryNames method and its overload. All the other calls will fail. 
+In this mode, the user can only call `listRepositoryNames` method and its overload. All the other calls will fail. 
 For more information please read [Anonymous Pull Access](https://docs.microsoft.com/azure/container-registry/container-registry-faq#how-do-i-enable-anonymous-pull-access)
 
 ```java readme-sample-createAnonymousAccessClient
@@ -202,7 +203,6 @@ image.updateTagProperties(
         .setWriteEnabled(false)
         .setDeleteEnabled(false));
 ```
-
 
 #### Delete Images
 
