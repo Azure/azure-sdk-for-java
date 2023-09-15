@@ -1,6 +1,6 @@
 ## Release History
 
-### 4.46.0-beta.1 (Unreleased)
+### 4.45.2 (2023-09-15)
 
 #### Bugs Fixed
 * Added capability to mark a region as unavailable when a request is cancelled due to end-to-end timeout and connection issues
