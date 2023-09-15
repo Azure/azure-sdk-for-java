@@ -99,18 +99,12 @@ Following operations are supported to manage your text blocklist:
 
 You can set the blocklists you want to use when analyze text, then you can get blocklist match result from returned response.
 
-### Thread safety
-
-We guarantee that all client instance methods are thread-safe and independent of each other ([guideline](https://azure.github.io/azure-sdk/dotnet_introduction.html#dotnet-service-methods-thread-safety)). This ensures that the recommendation of reusing client instances is always safe, even across threads.
-
 ## Examples
 The following section provides several code snippets covering some of the most common Content Safety service tasks, including:
 
 * [Analyze text](#analyze-text)
 * [Analyze image](#analyze-image)
 * [Manage text blocklist](#manage-text-blocklist)
-
-Please refer to [sample data](https://github.com/Azure/azure-sdk-for-net/blob/main/sdk/contentsafety/Azure.AI.ContentSafety/tests/Samples/sample_data) for the data used here. For more samples, please refer to [Samples](https://github.com/Azure/azure-sdk-for-net/blob/main/sdk/contentsafety/Azure.AI.ContentSafety/tests/Samples).
 
 ### Analyze text
 
