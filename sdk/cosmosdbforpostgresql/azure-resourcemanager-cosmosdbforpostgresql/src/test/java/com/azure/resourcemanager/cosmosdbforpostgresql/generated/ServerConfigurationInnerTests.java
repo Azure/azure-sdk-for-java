@@ -14,15 +14,15 @@ public final class ServerConfigurationInnerTests {
         ServerConfigurationInner model =
             BinaryData
                 .fromString(
-                    "{\"properties\":{\"value\":\"umkdosvqwhbmd\",\"source\":\"bjf\",\"description\":\"gmbmbexppbh\",\"defaultValue\":\"qrolfpf\",\"dataType\":\"Enumeration\",\"allowedValues\":\"gbquxigj\",\"requiresRestart\":true,\"provisioningState\":\"InProgress\"},\"id\":\"o\",\"name\":\"fhrtxilnerkujysv\",\"type\":\"eju\"}")
+                    "{\"properties\":{\"value\":\"ftyxolniw\",\"source\":\"cukjf\",\"description\":\"iawxklry\",\"defaultValue\":\"wckbasyypnd\",\"dataType\":\"Numeric\",\"allowedValues\":\"cbacphejkotynqg\",\"requiresRestart\":false,\"provisioningState\":\"Canceled\"},\"id\":\"dlikwyqkgfgibma\",\"name\":\"gakeqsr\",\"type\":\"yb\"}")
                 .toObject(ServerConfigurationInner.class);
-        Assertions.assertEquals("umkdosvqwhbmd", model.value());
+        Assertions.assertEquals("ftyxolniw", model.value());
     }
 
     @org.junit.jupiter.api.Test
     public void testSerialize() throws Exception {
-        ServerConfigurationInner model = new ServerConfigurationInner().withValue("umkdosvqwhbmd");
+        ServerConfigurationInner model = new ServerConfigurationInner().withValue("ftyxolniw");
         model = BinaryData.fromObject(model).toObject(ServerConfigurationInner.class);
-        Assertions.assertEquals("umkdosvqwhbmd", model.value());
+        Assertions.assertEquals("ftyxolniw", model.value());
     }
 }

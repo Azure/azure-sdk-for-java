@@ -17,7 +17,7 @@ public final class ClusterServerListResultTests {
         ClusterServerListResult model =
             BinaryData
                 .fromString(
-                    "{\"value\":[{\"properties\":{\"fullyQualifiedDomainName\":\"mt\",\"role\":\"Worker\",\"state\":\"ryrtihfxtijbpzv\",\"haState\":\"wzsymglzufcy\",\"availabilityZone\":\"ohdbihanufh\",\"postgresqlVersion\":\"bj\",\"citusVersion\":\"a\",\"serverEdition\":\"th\",\"storageQuotaInMb\":731883185,\"vCores\":676674728,\"enableHa\":true,\"enablePublicIpAccess\":false,\"isReadOnly\":true,\"administratorLogin\":\"czbysc\"},\"id\":\"q\",\"name\":\"uhivyqniw\",\"type\":\"ybrk\"},{\"properties\":{\"fullyQualifiedDomainName\":\"umjgrtfwvuk\",\"role\":\"Worker\",\"state\":\"dcc\",\"haState\":\"h\",\"availabilityZone\":\"cnyejhkryhtnapcz\",\"postgresqlVersion\":\"okjye\",\"citusVersion\":\"kvnipjoxz\",\"serverEdition\":\"chgejspodm\",\"storageQuotaInMb\":1543997460,\"vCores\":1345546955,\"enableHa\":false,\"enablePublicIpAccess\":false,\"isReadOnly\":true,\"administratorLogin\":\"ahuxinpm\"},\"id\":\"jaqwixjsp\",\"name\":\"ozvcput\",\"type\":\"gjvw\"}]}")
+                    "{\"value\":[{\"properties\":{\"fullyQualifiedDomainName\":\"mt\",\"role\":\"Worker\",\"state\":\"ryrtihfxtijbpzv\",\"haState\":\"wzsymglzufcy\",\"availabilityZone\":\"ohdbihanufh\",\"postgresqlVersion\":\"bj\",\"citusVersion\":\"a\",\"serverEdition\":\"th\",\"storageQuotaInMb\":731883185,\"vCores\":676674728,\"enableHa\":true,\"enablePublicIpAccess\":false,\"isReadOnly\":true,\"administratorLogin\":\"czbysc\"},\"id\":\"pqxu\",\"name\":\"ivyqniwbybrkxvd\",\"type\":\"mjgr\"},{\"properties\":{\"fullyQualifiedDomainName\":\"vukxgau\",\"role\":\"Coordinator\",\"state\":\"nhsjcnyej\",\"haState\":\"ryhtnapczwlokjy\",\"availabilityZone\":\"kkvnipjox\",\"postgresqlVersion\":\"nchgej\",\"citusVersion\":\"odmailzyd\",\"serverEdition\":\"o\",\"storageQuotaInMb\":1254785420,\"vCores\":302858012,\"enableHa\":true,\"enablePublicIpAccess\":true,\"isReadOnly\":false,\"administratorLogin\":\"njaqwixjspro\"},\"id\":\"vcputegj\",\"name\":\"wmfdatscmdvpjhul\",\"type\":\"uuvmkjozkrwfnd\"}]}")
                 .toObject(ClusterServerListResult.class);
         Assertions.assertEquals(ServerRole.WORKER, model.value().get(0).role());
         Assertions.assertEquals("ohdbihanufh", model.value().get(0).availabilityZone());
@@ -46,14 +46,14 @@ public final class ClusterServerListResultTests {
                                 .withVCores(676674728)
                                 .withEnableHa(true),
                             new ClusterServerInner()
-                                .withRole(ServerRole.WORKER)
-                                .withAvailabilityZone("cnyejhkryhtnapcz")
-                                .withPostgresqlVersion("okjye")
-                                .withCitusVersion("kvnipjoxz")
-                                .withServerEdition("chgejspodm")
-                                .withStorageQuotaInMb(1543997460)
-                                .withVCores(1345546955)
-                                .withEnableHa(false)));
+                                .withRole(ServerRole.COORDINATOR)
+                                .withAvailabilityZone("kkvnipjox")
+                                .withPostgresqlVersion("nchgej")
+                                .withCitusVersion("odmailzyd")
+                                .withServerEdition("o")
+                                .withStorageQuotaInMb(1254785420)
+                                .withVCores(302858012)
+                                .withEnableHa(true)));
         model = BinaryData.fromObject(model).toObject(ClusterServerListResult.class);
         Assertions.assertEquals(ServerRole.WORKER, model.value().get(0).role());
         Assertions.assertEquals("ohdbihanufh", model.value().get(0).availabilityZone());

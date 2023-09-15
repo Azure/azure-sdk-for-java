@@ -113,7 +113,8 @@ public interface Cluster {
     String preferredPrimaryZone();
 
     /**
-     * Gets the enableShardsOnCoordinator property: If shards on coordinator is enabled or not for the cluster.
+     * Gets the enableShardsOnCoordinator property: If distributed tables are placed on coordinator or not. Should be
+     * set to 'true' on single node clusters. Requires shard rebalancing after value is changed.
      *
      * @return the enableShardsOnCoordinator value.
      */
@@ -280,11 +281,13 @@ public interface Cluster {
             DefinitionStages.WithResourceGroup,
             DefinitionStages.WithCreate {
     }
+
     /** The Cluster definition stages. */
     interface DefinitionStages {
         /** The first stage of the Cluster definition. */
         interface Blank extends WithLocation {
         }
+
         /** The stage of the Cluster definition allowing to specify location. */
         interface WithLocation {
             /**
@@ -303,6 +306,7 @@ public interface Cluster {
              */
             WithResourceGroup withRegion(String location);
         }
+
         /** The stage of the Cluster definition allowing to specify parent resource. */
         interface WithResourceGroup {
             /**
@@ -313,6 +317,7 @@ public interface Cluster {
              */
             WithCreate withExistingResourceGroup(String resourceGroupName);
         }
+
         /**
          * The stage of the Cluster definition which contains all the minimum required properties for the resource to be
          * created, but also allows for any other optional properties to be specified.
@@ -353,6 +358,7 @@ public interface Cluster {
              */
             Cluster create(Context context);
         }
+
         /** The stage of the Cluster definition allowing to specify tags. */
         interface WithTags {
             /**
@@ -363,6 +369,7 @@ public interface Cluster {
              */
             WithCreate withTags(Map<String, String> tags);
         }
+
         /** The stage of the Cluster definition allowing to specify administratorLoginPassword. */
         interface WithAdministratorLoginPassword {
             /**
@@ -374,6 +381,7 @@ public interface Cluster {
              */
             WithCreate withAdministratorLoginPassword(String administratorLoginPassword);
         }
+
         /** The stage of the Cluster definition allowing to specify postgresqlVersion. */
         interface WithPostgresqlVersion {
             /**
@@ -384,6 +392,7 @@ public interface Cluster {
              */
             WithCreate withPostgresqlVersion(String postgresqlVersion);
         }
+
         /** The stage of the Cluster definition allowing to specify citusVersion. */
         interface WithCitusVersion {
             /**
@@ -394,6 +403,7 @@ public interface Cluster {
              */
             WithCreate withCitusVersion(String citusVersion);
         }
+
         /** The stage of the Cluster definition allowing to specify maintenanceWindow. */
         interface WithMaintenanceWindow {
             /**
@@ -404,6 +414,7 @@ public interface Cluster {
              */
             WithCreate withMaintenanceWindow(MaintenanceWindow maintenanceWindow);
         }
+
         /** The stage of the Cluster definition allowing to specify preferredPrimaryZone. */
         interface WithPreferredPrimaryZone {
             /**
@@ -415,17 +426,20 @@ public interface Cluster {
              */
             WithCreate withPreferredPrimaryZone(String preferredPrimaryZone);
         }
+
         /** The stage of the Cluster definition allowing to specify enableShardsOnCoordinator. */
         interface WithEnableShardsOnCoordinator {
             /**
-             * Specifies the enableShardsOnCoordinator property: If shards on coordinator is enabled or not for the
-             * cluster..
+             * Specifies the enableShardsOnCoordinator property: If distributed tables are placed on coordinator or not.
+             * Should be set to 'true' on single node clusters. Requires shard rebalancing after value is changed..
              *
-             * @param enableShardsOnCoordinator If shards on coordinator is enabled or not for the cluster.
+             * @param enableShardsOnCoordinator If distributed tables are placed on coordinator or not. Should be set to
+             *     'true' on single node clusters. Requires shard rebalancing after value is changed.
              * @return the next definition stage.
              */
             WithCreate withEnableShardsOnCoordinator(Boolean enableShardsOnCoordinator);
         }
+
         /** The stage of the Cluster definition allowing to specify enableHa. */
         interface WithEnableHa {
             /**
@@ -436,6 +450,7 @@ public interface Cluster {
              */
             WithCreate withEnableHa(Boolean enableHa);
         }
+
         /** The stage of the Cluster definition allowing to specify coordinatorServerEdition. */
         interface WithCoordinatorServerEdition {
             /**
@@ -448,6 +463,7 @@ public interface Cluster {
              */
             WithCreate withCoordinatorServerEdition(String coordinatorServerEdition);
         }
+
         /** The stage of the Cluster definition allowing to specify coordinatorStorageQuotaInMb. */
         interface WithCoordinatorStorageQuotaInMb {
             /**
@@ -460,6 +476,7 @@ public interface Cluster {
              */
             WithCreate withCoordinatorStorageQuotaInMb(Integer coordinatorStorageQuotaInMb);
         }
+
         /** The stage of the Cluster definition allowing to specify coordinatorVCores. */
         interface WithCoordinatorVCores {
             /**
@@ -472,6 +489,7 @@ public interface Cluster {
              */
             WithCreate withCoordinatorVCores(Integer coordinatorVCores);
         }
+
         /** The stage of the Cluster definition allowing to specify coordinatorEnablePublicIpAccess. */
         interface WithCoordinatorEnablePublicIpAccess {
             /**
@@ -482,6 +500,7 @@ public interface Cluster {
              */
             WithCreate withCoordinatorEnablePublicIpAccess(Boolean coordinatorEnablePublicIpAccess);
         }
+
         /** The stage of the Cluster definition allowing to specify nodeServerEdition. */
         interface WithNodeServerEdition {
             /**
@@ -492,6 +511,7 @@ public interface Cluster {
              */
             WithCreate withNodeServerEdition(String nodeServerEdition);
         }
+
         /** The stage of the Cluster definition allowing to specify nodeCount. */
         interface WithNodeCount {
             /**
@@ -506,6 +526,7 @@ public interface Cluster {
              */
             WithCreate withNodeCount(Integer nodeCount);
         }
+
         /** The stage of the Cluster definition allowing to specify nodeStorageQuotaInMb. */
         interface WithNodeStorageQuotaInMb {
             /**
@@ -518,6 +539,7 @@ public interface Cluster {
              */
             WithCreate withNodeStorageQuotaInMb(Integer nodeStorageQuotaInMb);
         }
+
         /** The stage of the Cluster definition allowing to specify nodeVCores. */
         interface WithNodeVCores {
             /**
@@ -530,6 +552,7 @@ public interface Cluster {
              */
             WithCreate withNodeVCores(Integer nodeVCores);
         }
+
         /** The stage of the Cluster definition allowing to specify nodeEnablePublicIpAccess. */
         interface WithNodeEnablePublicIpAccess {
             /**
@@ -540,6 +563,7 @@ public interface Cluster {
              */
             WithCreate withNodeEnablePublicIpAccess(Boolean nodeEnablePublicIpAccess);
         }
+
         /** The stage of the Cluster definition allowing to specify sourceResourceId. */
         interface WithSourceResourceId {
             /**
@@ -550,6 +574,7 @@ public interface Cluster {
              */
             WithCreate withSourceResourceId(String sourceResourceId);
         }
+
         /** The stage of the Cluster definition allowing to specify sourceLocation. */
         interface WithSourceLocation {
             /**
@@ -560,6 +585,7 @@ public interface Cluster {
              */
             WithCreate withSourceLocation(String sourceLocation);
         }
+
         /** The stage of the Cluster definition allowing to specify pointInTimeUtc. */
         interface WithPointInTimeUtc {
             /**
@@ -571,6 +597,7 @@ public interface Cluster {
             WithCreate withPointInTimeUtc(OffsetDateTime pointInTimeUtc);
         }
     }
+
     /**
      * Begins update for the Cluster resource.
      *
@@ -611,6 +638,7 @@ public interface Cluster {
          */
         Cluster apply(Context context);
     }
+
     /** The Cluster update stages. */
     interface UpdateStages {
         /** The stage of the Cluster update allowing to specify tags. */
@@ -623,6 +651,7 @@ public interface Cluster {
              */
             Update withTags(Map<String, String> tags);
         }
+
         /** The stage of the Cluster update allowing to specify administratorLoginPassword. */
         interface WithAdministratorLoginPassword {
             /**
@@ -635,6 +664,7 @@ public interface Cluster {
              */
             Update withAdministratorLoginPassword(String administratorLoginPassword);
         }
+
         /** The stage of the Cluster update allowing to specify postgresqlVersion. */
         interface WithPostgresqlVersion {
             /**
@@ -645,6 +675,7 @@ public interface Cluster {
              */
             Update withPostgresqlVersion(String postgresqlVersion);
         }
+
         /** The stage of the Cluster update allowing to specify citusVersion. */
         interface WithCitusVersion {
             /**
@@ -655,17 +686,20 @@ public interface Cluster {
              */
             Update withCitusVersion(String citusVersion);
         }
+
         /** The stage of the Cluster update allowing to specify enableShardsOnCoordinator. */
         interface WithEnableShardsOnCoordinator {
             /**
-             * Specifies the enableShardsOnCoordinator property: If shards on coordinator is enabled or not for the
-             * cluster..
+             * Specifies the enableShardsOnCoordinator property: If distributed tables are placed on coordinator or not.
+             * Should be set to 'true' on single node clusters. Requires shard rebalancing after value is changed..
              *
-             * @param enableShardsOnCoordinator If shards on coordinator is enabled or not for the cluster.
+             * @param enableShardsOnCoordinator If distributed tables are placed on coordinator or not. Should be set to
+             *     'true' on single node clusters. Requires shard rebalancing after value is changed.
              * @return the next definition stage.
              */
             Update withEnableShardsOnCoordinator(Boolean enableShardsOnCoordinator);
         }
+
         /** The stage of the Cluster update allowing to specify enableHa. */
         interface WithEnableHa {
             /**
@@ -676,6 +710,7 @@ public interface Cluster {
              */
             Update withEnableHa(Boolean enableHa);
         }
+
         /** The stage of the Cluster update allowing to specify preferredPrimaryZone. */
         interface WithPreferredPrimaryZone {
             /**
@@ -687,6 +722,7 @@ public interface Cluster {
              */
             Update withPreferredPrimaryZone(String preferredPrimaryZone);
         }
+
         /** The stage of the Cluster update allowing to specify coordinatorServerEdition. */
         interface WithCoordinatorServerEdition {
             /**
@@ -698,6 +734,7 @@ public interface Cluster {
              */
             Update withCoordinatorServerEdition(String coordinatorServerEdition);
         }
+
         /** The stage of the Cluster update allowing to specify coordinatorStorageQuotaInMb. */
         interface WithCoordinatorStorageQuotaInMb {
             /**
@@ -708,6 +745,7 @@ public interface Cluster {
              */
             Update withCoordinatorStorageQuotaInMb(Integer coordinatorStorageQuotaInMb);
         }
+
         /** The stage of the Cluster update allowing to specify coordinatorVCores. */
         interface WithCoordinatorVCores {
             /**
@@ -718,6 +756,7 @@ public interface Cluster {
              */
             Update withCoordinatorVCores(Integer coordinatorVCores);
         }
+
         /** The stage of the Cluster update allowing to specify coordinatorEnablePublicIpAccess. */
         interface WithCoordinatorEnablePublicIpAccess {
             /**
@@ -728,6 +767,7 @@ public interface Cluster {
              */
             Update withCoordinatorEnablePublicIpAccess(Boolean coordinatorEnablePublicIpAccess);
         }
+
         /** The stage of the Cluster update allowing to specify nodeServerEdition. */
         interface WithNodeServerEdition {
             /**
@@ -738,6 +778,7 @@ public interface Cluster {
              */
             Update withNodeServerEdition(String nodeServerEdition);
         }
+
         /** The stage of the Cluster update allowing to specify nodeCount. */
         interface WithNodeCount {
             /**
@@ -752,6 +793,7 @@ public interface Cluster {
              */
             Update withNodeCount(Integer nodeCount);
         }
+
         /** The stage of the Cluster update allowing to specify nodeStorageQuotaInMb. */
         interface WithNodeStorageQuotaInMb {
             /**
@@ -762,6 +804,7 @@ public interface Cluster {
              */
             Update withNodeStorageQuotaInMb(Integer nodeStorageQuotaInMb);
         }
+
         /** The stage of the Cluster update allowing to specify nodeVCores. */
         interface WithNodeVCores {
             /**
@@ -772,6 +815,7 @@ public interface Cluster {
              */
             Update withNodeVCores(Integer nodeVCores);
         }
+
         /** The stage of the Cluster update allowing to specify maintenanceWindow. */
         interface WithMaintenanceWindow {
             /**
@@ -783,6 +827,7 @@ public interface Cluster {
             Update withMaintenanceWindow(MaintenanceWindow maintenanceWindow);
         }
     }
+
     /**
      * Refreshes the resource to sync with Azure.
      *

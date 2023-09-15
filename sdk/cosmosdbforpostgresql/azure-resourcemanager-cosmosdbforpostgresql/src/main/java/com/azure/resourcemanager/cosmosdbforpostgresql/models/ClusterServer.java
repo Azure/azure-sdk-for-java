@@ -4,7 +4,6 @@
 
 package com.azure.resourcemanager.cosmosdbforpostgresql.models;
 
-import com.azure.core.management.SystemData;
 import com.azure.resourcemanager.cosmosdbforpostgresql.fluent.models.ClusterServerInner;
 
 /** An immutable client-side representation of ClusterServer. */
@@ -29,13 +28,6 @@ public interface ClusterServer {
      * @return the type value.
      */
     String type();
-
-    /**
-     * Gets the systemData property: Azure Resource Manager metadata containing createdBy and modifiedBy information.
-     *
-     * @return the systemData value.
-     */
-    SystemData systemData();
 
     /**
      * Gets the fullyQualifiedDomainName property: The fully qualified domain name of a server.

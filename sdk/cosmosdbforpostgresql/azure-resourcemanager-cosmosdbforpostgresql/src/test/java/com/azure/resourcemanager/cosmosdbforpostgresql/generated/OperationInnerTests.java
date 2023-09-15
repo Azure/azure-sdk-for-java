@@ -14,15 +14,15 @@ public final class OperationInnerTests {
         OperationInner model =
             BinaryData
                 .fromString(
-                    "{\"name\":\"ixhbkuofqweykhm\",\"display\":{\"provider\":\"vfyexfw\",\"resource\":\"bcibvyvdcsitynn\",\"operation\":\"mdectehfiqscjey\",\"description\":\"hezrkgq\"},\"isDataAction\":true,\"origin\":\"user\",\"properties\":{\"cattpngjcrcczsq\":\"datavgmkqsleyyvxyqjp\"}}")
+                    "{\"name\":\"fhyhltrpmopjmcma\",\"display\":{\"provider\":\"kthfui\",\"resource\":\"odsfcpkvxodpuozm\",\"operation\":\"ydagfuaxbe\",\"description\":\"iu\"},\"isDataAction\":false,\"origin\":\"system\",\"properties\":{\"o\":\"datadxwzywqsmbsurexi\",\"fksymddystki\":\"datayocf\",\"yudxorrqnbp\":\"datauxh\"}}")
                 .toObject(OperationInner.class);
-        Assertions.assertEquals(true, model.isDataAction());
+        Assertions.assertEquals(false, model.isDataAction());
     }
 
     @org.junit.jupiter.api.Test
     public void testSerialize() throws Exception {
-        OperationInner model = new OperationInner().withIsDataAction(true);
+        OperationInner model = new OperationInner().withIsDataAction(false);
         model = BinaryData.fromObject(model).toObject(OperationInner.class);
-        Assertions.assertEquals(true, model.isDataAction());
+        Assertions.assertEquals(false, model.isDataAction());
     }
 }

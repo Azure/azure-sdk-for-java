@@ -4,7 +4,6 @@
 
 package com.azure.resourcemanager.cosmosdbforpostgresql.implementation;
 
-import com.azure.core.management.SystemData;
 import com.azure.resourcemanager.cosmosdbforpostgresql.fluent.models.ClusterServerInner;
 import com.azure.resourcemanager.cosmosdbforpostgresql.models.ClusterServer;
 import com.azure.resourcemanager.cosmosdbforpostgresql.models.ServerRole;
@@ -31,10 +30,6 @@ public final class ClusterServerImpl implements ClusterServer {
 
     public String type() {
         return this.innerModel().type();
-    }
-
-    public SystemData systemData() {
-        return this.innerModel().systemData();
     }
 
     public String fullyQualifiedDomainName() {

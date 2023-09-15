@@ -6,7 +6,6 @@ package com.azure.resourcemanager.cosmosdbforpostgresql.fluent.models;
 
 import com.azure.core.annotation.Fluent;
 import com.azure.core.management.ProxyResource;
-import com.azure.core.management.SystemData;
 import com.azure.resourcemanager.cosmosdbforpostgresql.models.ConfigurationDataType;
 import com.azure.resourcemanager.cosmosdbforpostgresql.models.ProvisioningState;
 import com.azure.resourcemanager.cosmosdbforpostgresql.models.ServerRoleGroupConfiguration;
@@ -22,12 +21,6 @@ public final class ConfigurationInner extends ProxyResource {
     @JsonProperty(value = "properties")
     private ConfigurationProperties innerProperties;
 
-    /*
-     * Azure Resource Manager metadata containing createdBy and modifiedBy information.
-     */
-    @JsonProperty(value = "systemData", access = JsonProperty.Access.WRITE_ONLY)
-    private SystemData systemData;
-
     /** Creates an instance of ConfigurationInner class. */
     public ConfigurationInner() {
     }
@@ -39,15 +32,6 @@ public final class ConfigurationInner extends ProxyResource {
      */
     private ConfigurationProperties innerProperties() {
         return this.innerProperties;
-    }
-
-    /**
-     * Get the systemData property: Azure Resource Manager metadata containing createdBy and modifiedBy information.
-     *
-     * @return the systemData value.
-     */
-    public SystemData systemData() {
-        return this.systemData;
     }
 
     /**

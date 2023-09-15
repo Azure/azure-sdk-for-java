@@ -14,26 +14,26 @@ public final class NameAvailabilityInnerTests {
         NameAvailabilityInner model =
             BinaryData
                 .fromString(
-                    "{\"message\":\"oo\",\"nameAvailable\":true,\"name\":\"zevgb\",\"type\":\"jqabcypmivkwlzuv\"}")
+                    "{\"message\":\"lokeyy\",\"nameAvailable\":false,\"name\":\"bdlwtgrhpdjpj\",\"type\":\"asxazjpqyegualhb\"}")
                 .toObject(NameAvailabilityInner.class);
-        Assertions.assertEquals("oo", model.message());
-        Assertions.assertEquals(true, model.nameAvailable());
-        Assertions.assertEquals("zevgb", model.name());
-        Assertions.assertEquals("jqabcypmivkwlzuv", model.type());
+        Assertions.assertEquals("lokeyy", model.message());
+        Assertions.assertEquals(false, model.nameAvailable());
+        Assertions.assertEquals("bdlwtgrhpdjpj", model.name());
+        Assertions.assertEquals("asxazjpqyegualhb", model.type());
     }
 
     @org.junit.jupiter.api.Test
     public void testSerialize() throws Exception {
         NameAvailabilityInner model =
             new NameAvailabilityInner()
-                .withMessage("oo")
-                .withNameAvailable(true)
-                .withName("zevgb")
-                .withType("jqabcypmivkwlzuv");
+                .withMessage("lokeyy")
+                .withNameAvailable(false)
+                .withName("bdlwtgrhpdjpj")
+                .withType("asxazjpqyegualhb");
         model = BinaryData.fromObject(model).toObject(NameAvailabilityInner.class);
-        Assertions.assertEquals("oo", model.message());
-        Assertions.assertEquals(true, model.nameAvailable());
-        Assertions.assertEquals("zevgb", model.name());
-        Assertions.assertEquals("jqabcypmivkwlzuv", model.type());
+        Assertions.assertEquals("lokeyy", model.message());
+        Assertions.assertEquals(false, model.nameAvailable());
+        Assertions.assertEquals("bdlwtgrhpdjpj", model.name());
+        Assertions.assertEquals("asxazjpqyegualhb", model.type());
     }
 }

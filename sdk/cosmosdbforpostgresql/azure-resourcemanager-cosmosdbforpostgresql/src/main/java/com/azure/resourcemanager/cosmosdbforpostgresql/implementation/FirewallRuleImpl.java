@@ -4,7 +4,6 @@
 
 package com.azure.resourcemanager.cosmosdbforpostgresql.implementation;
 
-import com.azure.core.management.SystemData;
 import com.azure.core.util.Context;
 import com.azure.resourcemanager.cosmosdbforpostgresql.fluent.models.FirewallRuleInner;
 import com.azure.resourcemanager.cosmosdbforpostgresql.models.FirewallRule;
@@ -25,10 +24,6 @@ public final class FirewallRuleImpl implements FirewallRule, FirewallRule.Defini
 
     public String type() {
         return this.innerModel().type();
-    }
-
-    public SystemData systemData() {
-        return this.innerModel().systemData();
     }
 
     public String startIpAddress() {

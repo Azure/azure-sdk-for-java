@@ -4,7 +4,6 @@
 
 package com.azure.resourcemanager.cosmosdbforpostgresql.implementation;
 
-import com.azure.core.management.SystemData;
 import com.azure.core.util.Context;
 import com.azure.resourcemanager.cosmosdbforpostgresql.fluent.models.RoleInner;
 import com.azure.resourcemanager.cosmosdbforpostgresql.models.ProvisioningState;
@@ -32,10 +31,6 @@ public final class RoleImpl implements Role, Role.Definition {
 
     public String type() {
         return this.innerModel().type();
-    }
-
-    public SystemData systemData() {
-        return this.innerModel().systemData();
     }
 
     public String password() {

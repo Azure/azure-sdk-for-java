@@ -15,15 +15,15 @@ public final class ClusterServerInnerTests {
         ClusterServerInner model =
             BinaryData
                 .fromString(
-                    "{\"properties\":{\"fullyQualifiedDomainName\":\"atscmd\",\"role\":\"Worker\",\"state\":\"u\",\"haState\":\"uuvmkjozkrwfnd\",\"availabilityZone\":\"djpslw\",\"postgresqlVersion\":\"dpvwryoqpsoaccta\",\"citusVersion\":\"kljla\",\"serverEdition\":\"cr\",\"storageQuotaInMb\":1060950423,\"vCores\":1389039399,\"enableHa\":false,\"enablePublicIpAccess\":true,\"isReadOnly\":false,\"administratorLogin\":\"paojakhmsbzjh\"},\"id\":\"zevdphlx\",\"name\":\"olthqtrgqjbp\",\"type\":\"zfsinzgvf\"}")
+                    "{\"properties\":{\"fullyQualifiedDomainName\":\"jpslwejd\",\"role\":\"Worker\",\"state\":\"yoqpsoaccta\",\"haState\":\"kljla\",\"availabilityZone\":\"cr\",\"postgresqlVersion\":\"fdfdosygexpa\",\"citusVersion\":\"akhmsbzjhcrz\",\"serverEdition\":\"dphlxaolt\",\"storageQuotaInMb\":578472109,\"vCores\":545631747,\"enableHa\":false,\"enablePublicIpAccess\":true,\"isReadOnly\":true,\"administratorLogin\":\"s\"},\"id\":\"n\",\"name\":\"gvfcj\",\"type\":\"wzo\"}")
                 .toObject(ClusterServerInner.class);
         Assertions.assertEquals(ServerRole.WORKER, model.role());
-        Assertions.assertEquals("djpslw", model.availabilityZone());
-        Assertions.assertEquals("dpvwryoqpsoaccta", model.postgresqlVersion());
-        Assertions.assertEquals("kljla", model.citusVersion());
-        Assertions.assertEquals("cr", model.serverEdition());
-        Assertions.assertEquals(1060950423, model.storageQuotaInMb());
-        Assertions.assertEquals(1389039399, model.vCores());
+        Assertions.assertEquals("cr", model.availabilityZone());
+        Assertions.assertEquals("fdfdosygexpa", model.postgresqlVersion());
+        Assertions.assertEquals("akhmsbzjhcrz", model.citusVersion());
+        Assertions.assertEquals("dphlxaolt", model.serverEdition());
+        Assertions.assertEquals(578472109, model.storageQuotaInMb());
+        Assertions.assertEquals(545631747, model.vCores());
         Assertions.assertEquals(false, model.enableHa());
     }
 
@@ -32,21 +32,21 @@ public final class ClusterServerInnerTests {
         ClusterServerInner model =
             new ClusterServerInner()
                 .withRole(ServerRole.WORKER)
-                .withAvailabilityZone("djpslw")
-                .withPostgresqlVersion("dpvwryoqpsoaccta")
-                .withCitusVersion("kljla")
-                .withServerEdition("cr")
-                .withStorageQuotaInMb(1060950423)
-                .withVCores(1389039399)
+                .withAvailabilityZone("cr")
+                .withPostgresqlVersion("fdfdosygexpa")
+                .withCitusVersion("akhmsbzjhcrz")
+                .withServerEdition("dphlxaolt")
+                .withStorageQuotaInMb(578472109)
+                .withVCores(545631747)
                 .withEnableHa(false);
         model = BinaryData.fromObject(model).toObject(ClusterServerInner.class);
         Assertions.assertEquals(ServerRole.WORKER, model.role());
-        Assertions.assertEquals("djpslw", model.availabilityZone());
-        Assertions.assertEquals("dpvwryoqpsoaccta", model.postgresqlVersion());
-        Assertions.assertEquals("kljla", model.citusVersion());
-        Assertions.assertEquals("cr", model.serverEdition());
-        Assertions.assertEquals(1060950423, model.storageQuotaInMb());
-        Assertions.assertEquals(1389039399, model.vCores());
+        Assertions.assertEquals("cr", model.availabilityZone());
+        Assertions.assertEquals("fdfdosygexpa", model.postgresqlVersion());
+        Assertions.assertEquals("akhmsbzjhcrz", model.citusVersion());
+        Assertions.assertEquals("dphlxaolt", model.serverEdition());
+        Assertions.assertEquals(578472109, model.storageQuotaInMb());
+        Assertions.assertEquals(545631747, model.vCores());
         Assertions.assertEquals(false, model.enableHa());
     }
 }

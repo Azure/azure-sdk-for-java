@@ -32,7 +32,7 @@ public final class ConfigurationsUpdateOnCoordinatorMockTests {
         ArgumentCaptor<HttpRequest> httpRequest = ArgumentCaptor.forClass(HttpRequest.class);
 
         String responseStr =
-            "{\"properties\":{\"value\":\"loayqcgw\",\"source\":\"zjuzgwyz\",\"description\":\"txon\",\"defaultValue\":\"ts\",\"dataType\":\"Enumeration\",\"allowedValues\":\"bp\",\"requiresRestart\":true,\"provisioningState\":\"Succeeded\"},\"id\":\"knftguvriuh\",\"name\":\"rwmdyvxqtay\",\"type\":\"iwwroyqbexrmc\"}";
+            "{\"properties\":{\"value\":\"luu\",\"source\":\"ttouwaboekqvkel\",\"description\":\"mvb\",\"defaultValue\":\"yjsflhhcaalnji\",\"dataType\":\"Integer\",\"allowedValues\":\"yaw\",\"requiresRestart\":true,\"provisioningState\":\"Succeeded\"},\"id\":\"cslyjpk\",\"name\":\"idzyexznelixhnr\",\"type\":\"tfolhbnx\"}";
 
         Mockito.when(httpResponse.getStatusCode()).thenReturn(200);
         Mockito.when(httpResponse.getHeaders()).thenReturn(new HttpHeaders());
@@ -64,12 +64,12 @@ public final class ConfigurationsUpdateOnCoordinatorMockTests {
             manager
                 .configurations()
                 .updateOnCoordinator(
-                    "hniskxfbkpyc",
-                    "klwndnhjdauwhv",
-                    "l",
-                    new ServerConfigurationInner().withValue("btdhxujznbm"),
+                    "qtayri",
+                    "wroyqbexrmcq",
+                    "bycnojvkn",
+                    new ServerConfigurationInner().withValue("fqsgzvahapjy"),
                     com.azure.core.util.Context.NONE);
 
-        Assertions.assertEquals("loayqcgw", response.value());
+        Assertions.assertEquals("luu", response.value());
     }
 }

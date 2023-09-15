@@ -14,15 +14,15 @@ public final class ServerConfigurationPropertiesTests {
         ServerConfigurationProperties model =
             BinaryData
                 .fromString(
-                    "{\"value\":\"fqawrlyxw\",\"source\":\"cpr\",\"description\":\"wbxgjvt\",\"defaultValue\":\"p\",\"dataType\":\"Numeric\",\"allowedValues\":\"dnrujqguhmuouqfp\",\"requiresRestart\":false,\"provisioningState\":\"Canceled\"}")
+                    "{\"value\":\"qqedqytbciqfou\",\"source\":\"mmnkzsmodmgl\",\"description\":\"gpbkwtmut\",\"defaultValue\":\"qktapspwgcuert\",\"dataType\":\"Numeric\",\"allowedValues\":\"o\",\"requiresRestart\":false,\"provisioningState\":\"InProgress\"}")
                 .toObject(ServerConfigurationProperties.class);
-        Assertions.assertEquals("fqawrlyxw", model.value());
+        Assertions.assertEquals("qqedqytbciqfou", model.value());
     }
 
     @org.junit.jupiter.api.Test
     public void testSerialize() throws Exception {
-        ServerConfigurationProperties model = new ServerConfigurationProperties().withValue("fqawrlyxw");
+        ServerConfigurationProperties model = new ServerConfigurationProperties().withValue("qqedqytbciqfou");
         model = BinaryData.fromObject(model).toObject(ServerConfigurationProperties.class);
-        Assertions.assertEquals("fqawrlyxw", model.value());
+        Assertions.assertEquals("qqedqytbciqfou", model.value());
     }
 }

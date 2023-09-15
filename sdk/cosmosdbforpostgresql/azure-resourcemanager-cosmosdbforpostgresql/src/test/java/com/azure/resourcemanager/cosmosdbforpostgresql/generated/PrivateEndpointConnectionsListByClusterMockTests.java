@@ -33,7 +33,7 @@ public final class PrivateEndpointConnectionsListByClusterMockTests {
         ArgumentCaptor<HttpRequest> httpRequest = ArgumentCaptor.forClass(HttpRequest.class);
 
         String responseStr =
-            "{\"value\":[{\"properties\":{\"groupIds\":[\"sikvmkqzeqqkdlt\",\"zxmhhvhgu\",\"eodkwobda\",\"xtibqdxbxwakbog\"],\"privateEndpoint\":{\"id\":\"dlkzgxhuri\"},\"privateLinkServiceConnectionState\":{\"status\":\"Approved\",\"description\":\"odxun\",\"actionsRequired\":\"ebxmubyynt\"},\"provisioningState\":\"Creating\"},\"id\":\"qtkoievs\",\"name\":\"otgqrlltmu\",\"type\":\"lauwzizxbmpgcjef\"}]}";
+            "{\"value\":[{\"properties\":{\"groupIds\":[\"nihgwqapnedg\",\"bcvkcvqvpkeq\",\"cvdrhvoodsot\",\"obzdopcjwvnhdl\"],\"privateEndpoint\":{\"id\":\"gx\"},\"privateLinkServiceConnectionState\":{\"status\":\"Rejected\",\"description\":\"lpmutwuoegrpkhj\",\"actionsRequired\":\"iyq\"},\"provisioningState\":\"Creating\"},\"id\":\"cpdggkzzlvmbmp\",\"name\":\"xmodf\",\"type\":\"uefywsbpfvmwy\"}]}";
 
         Mockito.when(httpResponse.getStatusCode()).thenReturn(200);
         Mockito.when(httpResponse.getHeaders()).thenReturn(new HttpHeaders());
@@ -64,15 +64,16 @@ public final class PrivateEndpointConnectionsListByClusterMockTests {
         PagedIterable<PrivateEndpointConnection> response =
             manager
                 .privateEndpointConnections()
-                .listByCluster("k", "wtppjflcxogaoko", com.azure.core.util.Context.NONE);
+                .listByCluster("railvpnppfuf", "rwdmhdlxyjrxsa", com.azure.core.util.Context.NONE);
 
         Assertions
             .assertEquals(
-                PrivateEndpointServiceConnectionStatus.APPROVED,
+                PrivateEndpointServiceConnectionStatus.REJECTED,
                 response.iterator().next().privateLinkServiceConnectionState().status());
-        Assertions.assertEquals("odxun", response.iterator().next().privateLinkServiceConnectionState().description());
         Assertions
             .assertEquals(
-                "ebxmubyynt", response.iterator().next().privateLinkServiceConnectionState().actionsRequired());
+                "lpmutwuoegrpkhj", response.iterator().next().privateLinkServiceConnectionState().description());
+        Assertions
+            .assertEquals("iyq", response.iterator().next().privateLinkServiceConnectionState().actionsRequired());
     }
 }

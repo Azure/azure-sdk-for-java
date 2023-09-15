@@ -16,9 +16,9 @@ public final class ServerConfigurationListResultTests {
         ServerConfigurationListResult model =
             BinaryData
                 .fromString(
-                    "{\"value\":[{\"properties\":{\"value\":\"ispe\",\"source\":\"tzfkufubl\",\"description\":\"fxqeof\",\"defaultValue\":\"e\",\"dataType\":\"Integer\",\"allowedValues\":\"jbasvmsmjqulngs\",\"requiresRestart\":true,\"provisioningState\":\"Canceled\"},\"id\":\"kzgcwrwcl\",\"name\":\"xwrljdouskcqvkoc\",\"type\":\"cjdkwtnhxbnjbi\"},{\"properties\":{\"value\":\"qrglssainqpjwn\",\"source\":\"ljfmppee\",\"description\":\"mgxsab\",\"defaultValue\":\"qduujitcjczdz\",\"dataType\":\"Numeric\",\"allowedValues\":\"hkr\",\"requiresRestart\":false,\"provisioningState\":\"InProgress\"},\"id\":\"dsbdkvwrwjf\",\"name\":\"usnhutje\",\"type\":\"tmrldhugjzzdatq\"},{\"properties\":{\"value\":\"oc\",\"source\":\"eablg\",\"description\":\"uticndvkaozwyif\",\"defaultValue\":\"hxh\",\"dataType\":\"Enumeration\",\"allowedValues\":\"ftyxolniw\",\"requiresRestart\":false,\"provisioningState\":\"Canceled\"},\"id\":\"fkgiawxk\",\"name\":\"ryplwckbasyypn\",\"type\":\"dhsgcba\"},{\"properties\":{\"value\":\"hejkotynqgou\",\"source\":\"ndlik\",\"description\":\"qkgfgibma\",\"defaultValue\":\"akeqs\",\"dataType\":\"Boolean\",\"allowedValues\":\"zqqedq\",\"requiresRestart\":true,\"provisioningState\":\"InProgress\"},\"id\":\"fouflmmnkzsmo\",\"name\":\"mglougpbkw\",\"type\":\"mutduqktaps\"}],\"nextLink\":\"gcue\"}")
+                    "{\"value\":[{\"properties\":{\"value\":\"b\",\"source\":\"v\",\"description\":\"mjqulngsn\",\"defaultValue\":\"bybkzgcwrwclxx\",\"dataType\":\"Numeric\",\"allowedValues\":\"douskcqvkocrcjdk\",\"requiresRestart\":false,\"provisioningState\":\"InProgress\"},\"id\":\"bnjbiksqrglssain\",\"name\":\"p\",\"type\":\"wnzlljfmppeeb\"},{\"properties\":{\"value\":\"gxsabkyq\",\"source\":\"ujitcjcz\",\"description\":\"evndh\",\"defaultValue\":\"wpdappdsbdkv\",\"dataType\":\"Enumeration\",\"allowedValues\":\"feusnhut\",\"requiresRestart\":false,\"provisioningState\":\"Canceled\"},\"id\":\"rl\",\"name\":\"hugjzzdatqxhoc\",\"type\":\"geablgphuticndvk\"}],\"nextLink\":\"zwyiftyhxhur\"}")
                 .toObject(ServerConfigurationListResult.class);
-        Assertions.assertEquals("ispe", model.value().get(0).value());
+        Assertions.assertEquals("b", model.value().get(0).value());
     }
 
     @org.junit.jupiter.api.Test
@@ -28,11 +28,9 @@ public final class ServerConfigurationListResultTests {
                 .withValue(
                     Arrays
                         .asList(
-                            new ServerConfigurationInner().withValue("ispe"),
-                            new ServerConfigurationInner().withValue("qrglssainqpjwn"),
-                            new ServerConfigurationInner().withValue("oc"),
-                            new ServerConfigurationInner().withValue("hejkotynqgou")));
+                            new ServerConfigurationInner().withValue("b"),
+                            new ServerConfigurationInner().withValue("gxsabkyq")));
         model = BinaryData.fromObject(model).toObject(ServerConfigurationListResult.class);
-        Assertions.assertEquals("ispe", model.value().get(0).value());
+        Assertions.assertEquals("b", model.value().get(0).value());
     }
 }

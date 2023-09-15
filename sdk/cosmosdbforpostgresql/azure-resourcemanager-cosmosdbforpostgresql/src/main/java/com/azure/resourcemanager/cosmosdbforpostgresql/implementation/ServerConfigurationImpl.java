@@ -4,7 +4,6 @@
 
 package com.azure.resourcemanager.cosmosdbforpostgresql.implementation;
 
-import com.azure.core.management.SystemData;
 import com.azure.resourcemanager.cosmosdbforpostgresql.fluent.models.ServerConfigurationInner;
 import com.azure.resourcemanager.cosmosdbforpostgresql.models.ConfigurationDataType;
 import com.azure.resourcemanager.cosmosdbforpostgresql.models.ProvisioningState;
@@ -32,10 +31,6 @@ public final class ServerConfigurationImpl implements ServerConfiguration {
 
     public String type() {
         return this.innerModel().type();
-    }
-
-    public SystemData systemData() {
-        return this.innerModel().systemData();
     }
 
     public String value() {

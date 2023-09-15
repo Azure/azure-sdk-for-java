@@ -14,6 +14,7 @@ import com.azure.core.management.AzureEnvironment;
 import com.azure.core.management.profile.AzureProfile;
 import com.azure.resourcemanager.cosmosdbforpostgresql.CosmosDBForPostgreSqlManager;
 import com.azure.resourcemanager.cosmosdbforpostgresql.models.Configuration;
+import com.azure.resourcemanager.cosmosdbforpostgresql.models.ServerRole;
 import java.nio.ByteBuffer;
 import java.nio.charset.StandardCharsets;
 import java.time.OffsetDateTime;
@@ -32,7 +33,7 @@ public final class ConfigurationsListByClusterMockTests {
         ArgumentCaptor<HttpRequest> httpRequest = ArgumentCaptor.forClass(HttpRequest.class);
 
         String responseStr =
-            "{\"value\":[{\"properties\":{\"description\":\"bh\",\"dataType\":\"Boolean\",\"allowedValues\":\"lhrxsbkyvpyc\",\"requiresRestart\":true,\"serverRoleGroupConfigurations\":[],\"provisioningState\":\"Succeeded\"},\"id\":\"kafkuwbcrnwbm\",\"name\":\"hhseyv\",\"type\":\"us\"}]}";
+            "{\"value\":[{\"properties\":{\"description\":\"rnwb\",\"dataType\":\"Numeric\",\"allowedValues\":\"seyvj\",\"requiresRestart\":false,\"serverRoleGroupConfigurations\":[{\"role\":\"Coordinator\",\"value\":\"lhspkdee\",\"defaultValue\":\"ofmxagkvtmelmqkr\",\"source\":\"hvljuahaquh\"},{\"role\":\"Coordinator\",\"value\":\"hmdua\",\"defaultValue\":\"exq\",\"source\":\"fadmws\"},{\"role\":\"Worker\",\"value\":\"r\",\"defaultValue\":\"xpvgo\",\"source\":\"lf\"}],\"provisioningState\":\"InProgress\"},\"id\":\"gwb\",\"name\":\"b\",\"type\":\"e\"}]}";
 
         Mockito.when(httpResponse.getStatusCode()).thenReturn(200);
         Mockito.when(httpResponse.getHeaders()).thenReturn(new HttpHeaders());
@@ -61,8 +62,12 @@ public final class ConfigurationsListByClusterMockTests {
                     new AzureProfile("", "", AzureEnvironment.AZURE));
 
         PagedIterable<Configuration> response =
-            manager.configurations().listByCluster("udxytlmoyrx", "wfudwpzntxhdzhl", com.azure.core.util.Context.NONE);
+            manager.configurations().listByCluster("ca", "uzbpzkafku", com.azure.core.util.Context.NONE);
 
-        Assertions.assertEquals(true, response.iterator().next().requiresRestart());
+        Assertions.assertEquals(false, response.iterator().next().requiresRestart());
+        Assertions
+            .assertEquals(
+                ServerRole.COORDINATOR, response.iterator().next().serverRoleGroupConfigurations().get(0).role());
+        Assertions.assertEquals("lhspkdee", response.iterator().next().serverRoleGroupConfigurations().get(0).value());
     }
 }

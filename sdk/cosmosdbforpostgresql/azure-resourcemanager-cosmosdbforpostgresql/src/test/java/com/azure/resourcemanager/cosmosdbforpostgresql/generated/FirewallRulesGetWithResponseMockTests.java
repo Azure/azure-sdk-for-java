@@ -31,7 +31,7 @@ public final class FirewallRulesGetWithResponseMockTests {
         ArgumentCaptor<HttpRequest> httpRequest = ArgumentCaptor.forClass(HttpRequest.class);
 
         String responseStr =
-            "{\"properties\":{\"startIpAddress\":\"j\",\"endIpAddress\":\"n\",\"provisioningState\":\"Canceled\"},\"id\":\"vkr\",\"name\":\"swbxqz\",\"type\":\"szjfauvjfdxxivet\"}";
+            "{\"properties\":{\"startIpAddress\":\"enq\",\"endIpAddress\":\"eh\",\"provisioningState\":\"Succeeded\"},\"id\":\"oygmift\",\"name\":\"nzdndslgna\",\"type\":\"qig\"}";
 
         Mockito.when(httpResponse.getStatusCode()).thenReturn(200);
         Mockito.when(httpResponse.getHeaders()).thenReturn(new HttpHeaders());
@@ -62,10 +62,10 @@ public final class FirewallRulesGetWithResponseMockTests {
         FirewallRule response =
             manager
                 .firewallRules()
-                .getWithResponse("grcfb", "nrmfqjhhk", "bpvjymjhx", com.azure.core.util.Context.NONE)
+                .getWithResponse("r", "bnw", "ewgdrjervn", com.azure.core.util.Context.NONE)
                 .getValue();
 
-        Assertions.assertEquals("j", response.startIpAddress());
-        Assertions.assertEquals("n", response.endIpAddress());
+        Assertions.assertEquals("enq", response.startIpAddress());
+        Assertions.assertEquals("eh", response.endIpAddress());
     }
 }

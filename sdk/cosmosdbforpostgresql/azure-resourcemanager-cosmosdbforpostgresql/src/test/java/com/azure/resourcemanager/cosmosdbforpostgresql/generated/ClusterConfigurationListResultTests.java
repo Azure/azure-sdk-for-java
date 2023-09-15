@@ -7,6 +7,8 @@ package com.azure.resourcemanager.cosmosdbforpostgresql.generated;
 import com.azure.core.util.BinaryData;
 import com.azure.resourcemanager.cosmosdbforpostgresql.fluent.models.ConfigurationInner;
 import com.azure.resourcemanager.cosmosdbforpostgresql.models.ClusterConfigurationListResult;
+import com.azure.resourcemanager.cosmosdbforpostgresql.models.ServerRole;
+import com.azure.resourcemanager.cosmosdbforpostgresql.models.ServerRoleGroupConfiguration;
 import java.util.Arrays;
 import org.junit.jupiter.api.Assertions;
 
@@ -16,9 +18,11 @@ public final class ClusterConfigurationListResultTests {
         ClusterConfigurationListResult model =
             BinaryData
                 .fromString(
-                    "{\"value\":[{\"properties\":{\"description\":\"tnwu\",\"dataType\":\"Numeric\",\"allowedValues\":\"zxufiz\",\"requiresRestart\":false,\"serverRoleGroupConfigurations\":[],\"provisioningState\":\"Canceled\"},\"id\":\"hr\",\"name\":\"idf\",\"type\":\"zwdzuh\"}],\"nextLink\":\"mwisdkfthwxmnt\"}")
+                    "{\"value\":[{\"properties\":{\"description\":\"bbjfddgmbmbexp\",\"dataType\":\"Integer\",\"allowedValues\":\"q\",\"requiresRestart\":false,\"serverRoleGroupConfigurations\":[{\"role\":\"Worker\",\"value\":\"p\",\"defaultValue\":\"s\",\"source\":\"gbquxigj\"}],\"provisioningState\":\"Failed\"},\"id\":\"zjaoyfhrtxil\",\"name\":\"erkujys\",\"type\":\"l\"},{\"properties\":{\"description\":\"vfqawrlyxwjkcpr\",\"dataType\":\"Numeric\",\"allowedValues\":\"xgjvtbv\",\"requiresRestart\":false,\"serverRoleGroupConfigurations\":[{\"role\":\"Coordinator\",\"value\":\"dnrujqguhmuouqfp\",\"defaultValue\":\"zw\",\"source\":\"g\"},{\"role\":\"Worker\",\"value\":\"tnwu\",\"defaultValue\":\"gazxuf\",\"source\":\"uckyf\"}],\"provisioningState\":\"InProgress\"},\"id\":\"fidfvzw\",\"name\":\"zuhtymwisdkfthwx\",\"type\":\"nteiwaopv\"},{\"properties\":{\"description\":\"jcmmxdcufufsrp\",\"dataType\":\"Enumeration\",\"allowedValues\":\"dnsezcxtbzs\",\"requiresRestart\":false,\"serverRoleGroupConfigurations\":[{\"role\":\"Coordinator\",\"value\":\"sne\",\"defaultValue\":\"dwzjeiach\",\"source\":\"osfln\"}],\"provisioningState\":\"InProgress\"},\"id\":\"fqpte\",\"name\":\"hzzvypyq\",\"type\":\"i\"}],\"nextLink\":\"inpvswjdkirsoodq\"}")
                 .toObject(ClusterConfigurationListResult.class);
         Assertions.assertEquals(false, model.value().get(0).requiresRestart());
+        Assertions.assertEquals(ServerRole.WORKER, model.value().get(0).serverRoleGroupConfigurations().get(0).role());
+        Assertions.assertEquals("p", model.value().get(0).serverRoleGroupConfigurations().get(0).value());
     }
 
     @org.junit.jupiter.api.Test
@@ -30,8 +34,34 @@ public final class ClusterConfigurationListResultTests {
                         .asList(
                             new ConfigurationInner()
                                 .withRequiresRestart(false)
-                                .withServerRoleGroupConfigurations(Arrays.asList())));
+                                .withServerRoleGroupConfigurations(
+                                    Arrays
+                                        .asList(
+                                            new ServerRoleGroupConfiguration()
+                                                .withRole(ServerRole.WORKER)
+                                                .withValue("p"))),
+                            new ConfigurationInner()
+                                .withRequiresRestart(false)
+                                .withServerRoleGroupConfigurations(
+                                    Arrays
+                                        .asList(
+                                            new ServerRoleGroupConfiguration()
+                                                .withRole(ServerRole.COORDINATOR)
+                                                .withValue("dnrujqguhmuouqfp"),
+                                            new ServerRoleGroupConfiguration()
+                                                .withRole(ServerRole.WORKER)
+                                                .withValue("tnwu"))),
+                            new ConfigurationInner()
+                                .withRequiresRestart(false)
+                                .withServerRoleGroupConfigurations(
+                                    Arrays
+                                        .asList(
+                                            new ServerRoleGroupConfiguration()
+                                                .withRole(ServerRole.COORDINATOR)
+                                                .withValue("sne")))));
         model = BinaryData.fromObject(model).toObject(ClusterConfigurationListResult.class);
         Assertions.assertEquals(false, model.value().get(0).requiresRestart());
+        Assertions.assertEquals(ServerRole.WORKER, model.value().get(0).serverRoleGroupConfigurations().get(0).role());
+        Assertions.assertEquals("p", model.value().get(0).serverRoleGroupConfigurations().get(0).value());
     }
 }

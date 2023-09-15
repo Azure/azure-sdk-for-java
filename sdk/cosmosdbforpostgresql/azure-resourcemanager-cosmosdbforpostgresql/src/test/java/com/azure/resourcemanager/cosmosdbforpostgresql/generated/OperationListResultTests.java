@@ -16,9 +16,9 @@ public final class OperationListResultTests {
         OperationListResult model =
             BinaryData
                 .fromString(
-                    "{\"value\":[{\"name\":\"nfnbacfionlebxe\",\"display\":{\"provider\":\"tzxdpnqbqqwx\",\"resource\":\"feallnwsu\",\"operation\":\"snjampmng\",\"description\":\"scxaq\"},\"isDataAction\":true,\"origin\":\"NotSpecified\",\"properties\":{\"pkvlrxn\":\"dataonq\",\"eipheoflokeyy\":\"dataea\",\"jp\":\"dataenjbdlwtgrhp\",\"e\":\"dataumasxazjpq\"}},{\"name\":\"alhbx\",\"display\":{\"provider\":\"jj\",\"resource\":\"v\",\"operation\":\"dgwdslfhot\",\"description\":\"cynpwlbjnp\"},\"isDataAction\":false,\"origin\":\"user\",\"properties\":{\"usue\":\"dataehxnltyfsop\",\"orxzdmohctbqvud\":\"datanzwdejba\",\"nvowgujju\":\"dataxdn\",\"zj\":\"datawdkcglhsl\"}}],\"nextLink\":\"ggd\"}")
+                    "{\"value\":[{\"name\":\"jj\",\"display\":{\"provider\":\"dudgwdslfhot\",\"resource\":\"cynpwlbjnp\",\"operation\":\"cftadeh\",\"description\":\"ltyfsop\"},\"isDataAction\":false,\"origin\":\"NotSpecified\",\"properties\":{\"zdmohctbqvu\":\"datazwdejbavor\",\"dkcglhsl\":\"datawxdndnvowgujjug\"}},{\"name\":\"jdyggdtji\",\"display\":{\"provider\":\"kuofqweykhme\",\"resource\":\"vfyexfw\",\"operation\":\"bcibvyvdcsitynn\",\"description\":\"mdectehfiqscjey\"},\"isDataAction\":false,\"origin\":\"system\",\"properties\":{\"kqsleyyvxy\":\"datagqhcjrefovg\",\"cr\":\"datajpkcattpng\",\"ajvnysounqe\":\"dataczsqpjhvm\"}}],\"nextLink\":\"noae\"}")
                 .toObject(OperationListResult.class);
-        Assertions.assertEquals(true, model.value().get(0).isDataAction());
+        Assertions.assertEquals(false, model.value().get(0).isDataAction());
     }
 
     @org.junit.jupiter.api.Test
@@ -28,8 +28,9 @@ public final class OperationListResultTests {
                 .withValue(
                     Arrays
                         .asList(
-                            new OperationInner().withIsDataAction(true), new OperationInner().withIsDataAction(false)));
+                            new OperationInner().withIsDataAction(false),
+                            new OperationInner().withIsDataAction(false)));
         model = BinaryData.fromObject(model).toObject(OperationListResult.class);
-        Assertions.assertEquals(true, model.value().get(0).isDataAction());
+        Assertions.assertEquals(false, model.value().get(0).isDataAction());
     }
 }

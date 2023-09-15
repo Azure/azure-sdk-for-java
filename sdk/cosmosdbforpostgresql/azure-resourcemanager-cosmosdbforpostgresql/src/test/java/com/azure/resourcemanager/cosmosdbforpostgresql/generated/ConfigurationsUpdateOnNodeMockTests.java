@@ -32,7 +32,7 @@ public final class ConfigurationsUpdateOnNodeMockTests {
         ArgumentCaptor<HttpRequest> httpRequest = ArgumentCaptor.forClass(HttpRequest.class);
 
         String responseStr =
-            "{\"properties\":{\"value\":\"qwwncw\",\"source\":\"hxg\",\"description\":\"rmgucnap\",\"defaultValue\":\"eoellwptfdygp\",\"dataType\":\"Boolean\",\"allowedValues\":\"ac\",\"requiresRestart\":true,\"provisioningState\":\"Succeeded\"},\"id\":\"rhhuaopppcqeqx\",\"name\":\"lzdahzxctobgbkdm\",\"type\":\"izpost\"}";
+            "{\"properties\":{\"value\":\"fbkrvrnsvs\",\"source\":\"johxcrsb\",\"description\":\"vasrruvwb\",\"defaultValue\":\"qfsubcgjbirx\",\"dataType\":\"Enumeration\",\"allowedValues\":\"srfbjfdtwss\",\"requiresRestart\":true,\"provisioningState\":\"Succeeded\"},\"id\":\"vjz\",\"name\":\"exilzznfqqnvwpmq\",\"type\":\"aruoujmkcjhwqyt\"}";
 
         Mockito.when(httpResponse.getStatusCode()).thenReturn(200);
         Mockito.when(httpResponse.getHeaders()).thenReturn(new HttpHeaders());
@@ -64,12 +64,12 @@ public final class ConfigurationsUpdateOnNodeMockTests {
             manager
                 .configurations()
                 .updateOnNode(
-                    "uusdttouwa",
-                    "oekqvk",
-                    "lns",
-                    new ServerConfigurationInner().withValue("bxwyjsflhhcaa"),
+                    "izpost",
+                    "grcfb",
+                    "nrmfqjhhk",
+                    new ServerConfigurationInner().withValue("pvjymjhxxjyng"),
                     com.azure.core.util.Context.NONE);
 
-        Assertions.assertEquals("qwwncw", response.value());
+        Assertions.assertEquals("fbkrvrnsvs", response.value());
     }
 }

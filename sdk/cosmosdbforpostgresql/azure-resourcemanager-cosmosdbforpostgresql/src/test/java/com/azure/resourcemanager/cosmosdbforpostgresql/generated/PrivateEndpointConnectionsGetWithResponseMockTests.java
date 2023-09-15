@@ -32,7 +32,7 @@ public final class PrivateEndpointConnectionsGetWithResponseMockTests {
         ArgumentCaptor<HttpRequest> httpRequest = ArgumentCaptor.forClass(HttpRequest.class);
 
         String responseStr =
-            "{\"properties\":{\"groupIds\":[\"ozfikdowwq\"],\"privateEndpoint\":{\"id\":\"xzxcl\"},\"privateLinkServiceConnectionState\":{\"status\":\"Rejected\",\"description\":\"hqzonosggbhcoh\",\"actionsRequired\":\"dsjnka\"},\"provisioningState\":\"Deleting\"},\"id\":\"iiswacffgdkzze\",\"name\":\"kfvhqcrailvpn\",\"type\":\"pfuflrw\"}";
+            "{\"properties\":{\"groupIds\":[\"mond\",\"mquxvypo\"],\"privateEndpoint\":{\"id\":\"opkwhojv\"},\"privateLinkServiceConnectionState\":{\"status\":\"Rejected\",\"description\":\"gxysmocmbqfqvm\",\"actionsRequired\":\"xozap\"},\"provisioningState\":\"Failed\"},\"id\":\"xprglyatddc\",\"name\":\"cbcuejrjxgciqi\",\"type\":\"rhos\"}";
 
         Mockito.when(httpResponse.getStatusCode()).thenReturn(200);
         Mockito.when(httpResponse.getHeaders()).thenReturn(new HttpHeaders());
@@ -63,13 +63,13 @@ public final class PrivateEndpointConnectionsGetWithResponseMockTests {
         PrivateEndpointConnection response =
             manager
                 .privateEndpointConnections()
-                .getWithResponse("zmuvpbttdumorppx", "bmnzbtbhjpgl", "fgohdneuelfphs", com.azure.core.util.Context.NONE)
+                .getWithResponse("rfouyftaakcpw", "yzvqt", "nubexk", com.azure.core.util.Context.NONE)
                 .getValue();
 
         Assertions
             .assertEquals(
                 PrivateEndpointServiceConnectionStatus.REJECTED, response.privateLinkServiceConnectionState().status());
-        Assertions.assertEquals("hqzonosggbhcoh", response.privateLinkServiceConnectionState().description());
-        Assertions.assertEquals("dsjnka", response.privateLinkServiceConnectionState().actionsRequired());
+        Assertions.assertEquals("gxysmocmbqfqvm", response.privateLinkServiceConnectionState().description());
+        Assertions.assertEquals("xozap", response.privateLinkServiceConnectionState().actionsRequired());
     }
 }

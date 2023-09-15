@@ -15,38 +15,38 @@ public final class ClusterServerPropertiesTests {
         ClusterServerProperties model =
             BinaryData
                 .fromString(
-                    "{\"fullyQualifiedDomainName\":\"rwzoxxjtfelluwf\",\"role\":\"Coordinator\",\"state\":\"np\",\"haState\":\"fpjkjlxofp\",\"availabilityZone\":\"hpf\",\"postgresqlVersion\":\"ypininm\",\"citusVersion\":\"huyb\",\"serverEdition\":\"podepoo\",\"storageQuotaInMb\":895630833,\"vCores\":1290742637,\"enableHa\":false,\"enablePublicIpAccess\":true,\"isReadOnly\":true,\"administratorLogin\":\"narxzxtheotus\"}")
+                    "{\"fullyQualifiedDomainName\":\"j\",\"role\":\"Worker\",\"state\":\"luwfzitonpeqfpjk\",\"haState\":\"xofpdvhpfxxypi\",\"availabilityZone\":\"nmayhuybb\",\"postgresqlVersion\":\"odepoogin\",\"citusVersion\":\"amiheognarxz\",\"serverEdition\":\"heotusiv\",\"storageQuotaInMb\":38096196,\"vCores\":401724837,\"enableHa\":false,\"enablePublicIpAccess\":false,\"isReadOnly\":true,\"administratorLogin\":\"ngbwjz\"}")
                 .toObject(ClusterServerProperties.class);
-        Assertions.assertEquals("podepoo", model.serverEdition());
-        Assertions.assertEquals(895630833, model.storageQuotaInMb());
-        Assertions.assertEquals(1290742637, model.vCores());
+        Assertions.assertEquals("heotusiv", model.serverEdition());
+        Assertions.assertEquals(38096196, model.storageQuotaInMb());
+        Assertions.assertEquals(401724837, model.vCores());
         Assertions.assertEquals(false, model.enableHa());
-        Assertions.assertEquals(ServerRole.COORDINATOR, model.role());
-        Assertions.assertEquals("hpf", model.availabilityZone());
-        Assertions.assertEquals("ypininm", model.postgresqlVersion());
-        Assertions.assertEquals("huyb", model.citusVersion());
+        Assertions.assertEquals(ServerRole.WORKER, model.role());
+        Assertions.assertEquals("nmayhuybb", model.availabilityZone());
+        Assertions.assertEquals("odepoogin", model.postgresqlVersion());
+        Assertions.assertEquals("amiheognarxz", model.citusVersion());
     }
 
     @org.junit.jupiter.api.Test
     public void testSerialize() throws Exception {
         ClusterServerProperties model =
             new ClusterServerProperties()
-                .withServerEdition("podepoo")
-                .withStorageQuotaInMb(895630833)
-                .withVCores(1290742637)
+                .withServerEdition("heotusiv")
+                .withStorageQuotaInMb(38096196)
+                .withVCores(401724837)
                 .withEnableHa(false)
-                .withRole(ServerRole.COORDINATOR)
-                .withAvailabilityZone("hpf")
-                .withPostgresqlVersion("ypininm")
-                .withCitusVersion("huyb");
+                .withRole(ServerRole.WORKER)
+                .withAvailabilityZone("nmayhuybb")
+                .withPostgresqlVersion("odepoogin")
+                .withCitusVersion("amiheognarxz");
         model = BinaryData.fromObject(model).toObject(ClusterServerProperties.class);
-        Assertions.assertEquals("podepoo", model.serverEdition());
-        Assertions.assertEquals(895630833, model.storageQuotaInMb());
-        Assertions.assertEquals(1290742637, model.vCores());
+        Assertions.assertEquals("heotusiv", model.serverEdition());
+        Assertions.assertEquals(38096196, model.storageQuotaInMb());
+        Assertions.assertEquals(401724837, model.vCores());
         Assertions.assertEquals(false, model.enableHa());
-        Assertions.assertEquals(ServerRole.COORDINATOR, model.role());
-        Assertions.assertEquals("hpf", model.availabilityZone());
-        Assertions.assertEquals("ypininm", model.postgresqlVersion());
-        Assertions.assertEquals("huyb", model.citusVersion());
+        Assertions.assertEquals(ServerRole.WORKER, model.role());
+        Assertions.assertEquals("nmayhuybb", model.availabilityZone());
+        Assertions.assertEquals("odepoogin", model.postgresqlVersion());
+        Assertions.assertEquals("amiheognarxz", model.citusVersion());
     }
 }

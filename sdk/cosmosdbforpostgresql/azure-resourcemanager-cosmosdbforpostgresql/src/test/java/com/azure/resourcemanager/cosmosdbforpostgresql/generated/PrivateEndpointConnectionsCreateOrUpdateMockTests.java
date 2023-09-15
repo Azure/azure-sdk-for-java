@@ -34,7 +34,7 @@ public final class PrivateEndpointConnectionsCreateOrUpdateMockTests {
         ArgumentCaptor<HttpRequest> httpRequest = ArgumentCaptor.forClass(HttpRequest.class);
 
         String responseStr =
-            "{\"properties\":{\"groupIds\":[\"fv\",\"efyw\"],\"privateEndpoint\":{\"id\":\"fvmwy\"},\"privateLinkServiceConnectionState\":{\"status\":\"Pending\",\"description\":\"uyfta\",\"actionsRequired\":\"cpwi\"},\"provisioningState\":\"Succeeded\"},\"id\":\"tmnubexkpzksmon\",\"name\":\"jmquxvypomgk\",\"type\":\"pkwhojvpa\"}";
+            "{\"properties\":{\"groupIds\":[\"afnn\",\"lpichk\",\"ymkcdyhb\",\"kkpwdreqnovvq\"],\"privateEndpoint\":{\"id\":\"ljxywsu\"},\"privateLinkServiceConnectionState\":{\"status\":\"Approved\",\"description\":\"s\",\"actionsRequired\":\"sytgadgvraea\"},\"provisioningState\":\"Succeeded\"},\"id\":\"nzar\",\"name\":\"wlquuijfqkace\",\"type\":\"iipfpubj\"}";
 
         Mockito.when(httpResponse.getStatusCode()).thenReturn(200);
         Mockito.when(httpResponse.getHeaders()).thenReturn(new HttpHeaders());
@@ -65,20 +65,20 @@ public final class PrivateEndpointConnectionsCreateOrUpdateMockTests {
         PrivateEndpointConnection response =
             manager
                 .privateEndpointConnections()
-                .define("sag")
-                .withExistingServerGroupsv2("mh", "lxyjr")
+                .define("dtmhrkwofyyvoqa")
+                .withExistingServerGroupsv2("sdqrhzoymibmrq", "ibahwflus")
                 .withPrivateEndpoint(new PrivateEndpoint())
                 .withPrivateLinkServiceConnectionState(
                     new PrivateLinkServiceConnectionState()
                         .withStatus(PrivateEndpointServiceConnectionStatus.APPROVED)
-                        .withDescription("xcxrsl")
-                        .withActionsRequired("utwu"))
+                        .withDescription("pi")
+                        .withActionsRequired("waasip"))
                 .create();
 
         Assertions
             .assertEquals(
-                PrivateEndpointServiceConnectionStatus.PENDING, response.privateLinkServiceConnectionState().status());
-        Assertions.assertEquals("uyfta", response.privateLinkServiceConnectionState().description());
-        Assertions.assertEquals("cpwi", response.privateLinkServiceConnectionState().actionsRequired());
+                PrivateEndpointServiceConnectionStatus.APPROVED, response.privateLinkServiceConnectionState().status());
+        Assertions.assertEquals("s", response.privateLinkServiceConnectionState().description());
+        Assertions.assertEquals("sytgadgvraea", response.privateLinkServiceConnectionState().actionsRequired());
     }
 }

@@ -6,8 +6,12 @@ package com.azure.resourcemanager.cosmosdbforpostgresql.generated;
 
 import com.azure.core.util.BinaryData;
 import com.azure.resourcemanager.cosmosdbforpostgresql.fluent.models.PrivateEndpointConnectionInner;
+import com.azure.resourcemanager.cosmosdbforpostgresql.models.PrivateEndpoint;
 import com.azure.resourcemanager.cosmosdbforpostgresql.models.PrivateEndpointConnectionListResult;
+import com.azure.resourcemanager.cosmosdbforpostgresql.models.PrivateEndpointServiceConnectionStatus;
+import com.azure.resourcemanager.cosmosdbforpostgresql.models.PrivateLinkServiceConnectionState;
 import java.util.Arrays;
+import org.junit.jupiter.api.Assertions;
 
 public final class PrivateEndpointConnectionListResultTests {
     @org.junit.jupiter.api.Test
@@ -15,14 +19,36 @@ public final class PrivateEndpointConnectionListResultTests {
         PrivateEndpointConnectionListResult model =
             BinaryData
                 .fromString(
-                    "{\"value\":[{\"properties\":{\"groupIds\":[],\"provisioningState\":\"Failed\"},\"id\":\"uaodsfcpk\",\"name\":\"xodpuozmyzydagfu\",\"type\":\"xbezyiuokktwh\"}]}")
+                    "{\"value\":[{\"properties\":{\"groupIds\":[\"exxbczwtr\",\"wiqzbqjvsovmyo\",\"acspkwl\"],\"privateEndpoint\":{\"id\":\"obpxjmflbvvn\"},\"privateLinkServiceConnectionState\":{\"status\":\"Rejected\",\"description\":\"cciw\",\"actionsRequired\":\"juqk\"},\"provisioningState\":\"Succeeded\"},\"id\":\"jiwkuofoskghsau\",\"name\":\"imjm\",\"type\":\"xieduugidyjrr\"}]}")
                 .toObject(PrivateEndpointConnectionListResult.class);
+        Assertions
+            .assertEquals(
+                PrivateEndpointServiceConnectionStatus.REJECTED,
+                model.value().get(0).privateLinkServiceConnectionState().status());
+        Assertions.assertEquals("cciw", model.value().get(0).privateLinkServiceConnectionState().description());
+        Assertions.assertEquals("juqk", model.value().get(0).privateLinkServiceConnectionState().actionsRequired());
     }
 
     @org.junit.jupiter.api.Test
     public void testSerialize() throws Exception {
         PrivateEndpointConnectionListResult model =
-            new PrivateEndpointConnectionListResult().withValue(Arrays.asList(new PrivateEndpointConnectionInner()));
+            new PrivateEndpointConnectionListResult()
+                .withValue(
+                    Arrays
+                        .asList(
+                            new PrivateEndpointConnectionInner()
+                                .withPrivateEndpoint(new PrivateEndpoint())
+                                .withPrivateLinkServiceConnectionState(
+                                    new PrivateLinkServiceConnectionState()
+                                        .withStatus(PrivateEndpointServiceConnectionStatus.REJECTED)
+                                        .withDescription("cciw")
+                                        .withActionsRequired("juqk"))));
         model = BinaryData.fromObject(model).toObject(PrivateEndpointConnectionListResult.class);
+        Assertions
+            .assertEquals(
+                PrivateEndpointServiceConnectionStatus.REJECTED,
+                model.value().get(0).privateLinkServiceConnectionState().status());
+        Assertions.assertEquals("cciw", model.value().get(0).privateLinkServiceConnectionState().description());
+        Assertions.assertEquals("juqk", model.value().get(0).privateLinkServiceConnectionState().actionsRequired());
     }
 }

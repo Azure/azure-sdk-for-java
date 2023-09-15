@@ -4,7 +4,6 @@
 
 package com.azure.resourcemanager.cosmosdbforpostgresql.models;
 
-import com.azure.core.management.SystemData;
 import com.azure.core.util.Context;
 import com.azure.resourcemanager.cosmosdbforpostgresql.fluent.models.RoleInner;
 
@@ -30,13 +29,6 @@ public interface Role {
      * @return the type value.
      */
     String type();
-
-    /**
-     * Gets the systemData property: Azure Resource Manager metadata containing createdBy and modifiedBy information.
-     *
-     * @return the systemData value.
-     */
-    SystemData systemData();
 
     /**
      * Gets the password property: The password of the cluster role.
@@ -66,11 +58,13 @@ public interface Role {
             DefinitionStages.WithPassword,
             DefinitionStages.WithCreate {
     }
+
     /** The Role definition stages. */
     interface DefinitionStages {
         /** The first stage of the Role definition. */
         interface Blank extends WithParentResource {
         }
+
         /** The stage of the Role definition allowing to specify parent resource. */
         interface WithParentResource {
             /**
@@ -82,6 +76,7 @@ public interface Role {
              */
             WithPassword withExistingServerGroupsv2(String resourceGroupName, String clusterName);
         }
+
         /** The stage of the Role definition allowing to specify password. */
         interface WithPassword {
             /**
@@ -92,6 +87,7 @@ public interface Role {
              */
             WithCreate withPassword(String password);
         }
+
         /**
          * The stage of the Role definition which contains all the minimum required properties for the resource to be
          * created, but also allows for any other optional properties to be specified.
@@ -113,6 +109,7 @@ public interface Role {
             Role create(Context context);
         }
     }
+
     /**
      * Refreshes the resource to sync with Azure.
      *
