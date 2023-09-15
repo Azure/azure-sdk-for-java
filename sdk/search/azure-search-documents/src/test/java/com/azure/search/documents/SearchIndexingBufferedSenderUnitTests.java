@@ -557,17 +557,15 @@ public class SearchIndexingBufferedSenderUnitTests {
 
         AtomicLong firstFlushCompletionTime = new AtomicLong();
         Mono.using(() -> countDownLatch, ignored -> batchingClient.flush(), latch -> {
-                firstFlushCompletionTime.set(System.nanoTime());
-                latch.countDown();
-            })
-            .subscribe();
+            firstFlushCompletionTime.set(System.nanoTime());
+            latch.countDown();
+        }).subscribe();
 
         AtomicLong secondFlushCompletionTime = new AtomicLong();
         Mono.using(() -> countDownLatch, ignored -> batchingClient.flush(), latch -> {
-                secondFlushCompletionTime.set(System.nanoTime());
-                latch.countDown();
-            })
-            .subscribe();
+            secondFlushCompletionTime.set(System.nanoTime());
+            latch.countDown();
+        }).subscribe();
 
         countDownLatch.await();
         assertTrue(firstFlushCompletionTime.get() > secondFlushCompletionTime.get());
@@ -600,17 +598,15 @@ public class SearchIndexingBufferedSenderUnitTests {
 
         AtomicLong firstFlushCompletionTime = new AtomicLong();
         Mono.using(() -> countDownLatch, ignored -> batchingClient.flush(), latch -> {
-                firstFlushCompletionTime.set(System.nanoTime());
-                latch.countDown();
-            })
-            .subscribe();
+            firstFlushCompletionTime.set(System.nanoTime());
+            latch.countDown();
+        }).subscribe();
 
         AtomicLong secondFlushCompletionTime = new AtomicLong();
         Mono.using(() -> countDownLatch, ignored -> batchingClient.close(), latch -> {
-                secondFlushCompletionTime.set(System.nanoTime());
-                latch.countDown();
-            })
-            .subscribe();
+            secondFlushCompletionTime.set(System.nanoTime());
+            latch.countDown();
+        }).subscribe();
 
         countDownLatch.await();
         assertTrue(firstFlushCompletionTime.get() <= secondFlushCompletionTime.get());
