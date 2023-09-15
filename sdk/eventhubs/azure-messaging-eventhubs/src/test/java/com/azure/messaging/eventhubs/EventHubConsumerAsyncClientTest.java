@@ -18,9 +18,10 @@ import com.azure.core.test.utils.metrics.TestMeter;
 import com.azure.core.util.ClientOptions;
 import com.azure.core.util.Configuration;
 import com.azure.core.util.Context;
+import com.azure.core.util.CoreUtils;
 import com.azure.core.util.logging.ClientLogger;
-import com.azure.core.util.metrics.Meter;
-import com.azure.core.util.tracing.ProcessKind;
+import com.azure.core.util.tracing.SpanKind;
+import com.azure.core.util.tracing.StartSpanOptions;
 import com.azure.core.util.tracing.Tracer;
 import com.azure.messaging.eventhubs.implementation.ClientConstants;
 import com.azure.messaging.eventhubs.implementation.EventHubAmqpConnection;
@@ -34,10 +35,8 @@ import com.azure.messaging.eventhubs.models.ReceiveOptions;
 import org.apache.qpid.proton.amqp.Symbol;
 import org.apache.qpid.proton.engine.SslDomain;
 import org.apache.qpid.proton.message.Message;
-import org.junit.jupiter.api.AfterAll;
 import org.junit.jupiter.api.AfterEach;
 import org.junit.jupiter.api.Assertions;
-import org.junit.jupiter.api.BeforeAll;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.mockito.Mock;
@@ -60,19 +59,17 @@ import java.time.OffsetDateTime;
 import java.util.Collections;
 import java.util.List;
 import java.util.Map;
-import java.util.UUID;
 import java.util.concurrent.CountDownLatch;
 import java.util.concurrent.TimeUnit;
 import java.util.concurrent.atomic.AtomicInteger;
 
 import static com.azure.core.amqp.AmqpMessageConstant.ENQUEUED_TIME_UTC_ANNOTATION_NAME;
-import static com.azure.core.util.tracing.Tracer.AZ_TRACING_NAMESPACE_KEY;
+import static com.azure.core.util.tracing.Tracer.ENTITY_PATH_KEY;
 import static com.azure.core.util.tracing.Tracer.HOST_NAME_KEY;
 import static com.azure.core.util.tracing.Tracer.PARENT_TRACE_CONTEXT_KEY;
 import static com.azure.messaging.eventhubs.EventHubClientBuilder.DEFAULT_PREFETCH_COUNT;
 import static com.azure.messaging.eventhubs.TestUtils.getMessage;
 import static com.azure.messaging.eventhubs.TestUtils.isMatchingEvent;
-import static com.azure.messaging.eventhubs.implementation.ClientConstants.AZ_NAMESPACE_VALUE;
 import static java.nio.charset.StandardCharsets.UTF_8;
 import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertFalse;
@@ -108,13 +105,13 @@ class EventHubConsumerAsyncClientTest {
     private static final String CONSUMER_GROUP = "consumer-group-test";
     private static final String PARTITION_ID = "a-partition-id";
     private static final String CLIENT_IDENTIFIER = "my-client-identifier";
-    private static final Meter DEFAULT_METER = null;
+    private static final Duration DEFAULT_TIMEOUT = Duration.ofSeconds(30);
 
     private static final ClientLogger LOGGER = new ClientLogger(EventHubConsumerAsyncClientTest.class);
     private static final EventHubsConsumerInstrumentation DEFAULT_INSTRUMENTATION = new EventHubsConsumerInstrumentation(null, null,
         HOSTNAME, EVENT_HUB_NAME, CONSUMER_GROUP, false);
     private final AmqpRetryOptions retryOptions = new AmqpRetryOptions().setMaxRetries(2);
-    private final String messageTrackingUUID = UUID.randomUUID().toString();
+    private final String messageTrackingUUID = CoreUtils.randomUuid().toString();
     private final TestPublisher<AmqpEndpointState> endpointProcessor = TestPublisher.createCold();
     private final TestPublisher<Message> messageProcessor = TestPublisher.createCold();
     private final Scheduler testScheduler = Schedulers.newSingle("eh-test");
@@ -132,16 +129,6 @@ class EventHubConsumerAsyncClientTest {
     private EventHubConsumerAsyncClient consumer;
     private EventHubConnectionProcessor connectionProcessor;
     private AutoCloseable mockCloseable;
-
-    @BeforeAll
-    static void beforeAll() {
-        StepVerifier.setDefaultTimeout(Duration.ofSeconds(30));
-    }
-
-    @AfterAll
-    static void afterAll() {
-        StepVerifier.resetDefaultTimeout();
-    }
 
     @BeforeEach
     void setup() {
@@ -207,7 +194,8 @@ class EventHubConsumerAsyncClientTest {
             .assertNext(event -> Assertions.assertNull(event.getLastEnqueuedEventProperties()))
             .assertNext(event -> Assertions.assertNull(event.getLastEnqueuedEventProperties()))
             .assertNext(event -> Assertions.assertNull(event.getLastEnqueuedEventProperties()))
-            .verifyComplete();
+            .expectComplete()
+            .verify(DEFAULT_TIMEOUT);
 
         verifyNoInteractions(onClientClosed);
     }
@@ -237,7 +225,8 @@ class EventHubConsumerAsyncClientTest {
                 Assertions.assertNull(properties.getRetrievalTime());
                 Assertions.assertNull(properties.getEnqueuedTime());
             })
-            .verifyComplete();
+            .expectComplete()
+            .verify(DEFAULT_TIMEOUT);
 
         verifyNoInteractions(onClientClosed);
     }
@@ -256,7 +245,8 @@ class EventHubConsumerAsyncClientTest {
         StepVerifier.create(consumer.receiveFromPartition(PARTITION_ID, EventPosition.earliest()).take(numberOfEvents))
             .then(() -> sendMessages(messageProcessor, numberOfEvents, PARTITION_ID))
             .expectNextCount(numberOfEvents)
-            .verifyComplete();
+            .expectComplete()
+            .verify(DEFAULT_TIMEOUT);
 
         verify(amqpReceiveLink, times(1)).addCredits(PREFETCH);
     }
@@ -341,12 +331,14 @@ class EventHubConsumerAsyncClientTest {
         StepVerifier.create(asyncClient.receiveFromPartition(PARTITION_ID, EventPosition.earliest()).take(numberOfEvents))
             .then(() -> sendMessages(processor2, numberOfEvents, PARTITION_ID))
             .expectNextCount(numberOfEvents)
-            .verifyComplete();
+            .expectComplete()
+            .verify(DEFAULT_TIMEOUT);
 
         StepVerifier.create(asyncClient.receiveFromPartition(PARTITION_ID, EventPosition.earliest()).take(numberOfEvents))
             .then(() -> sendMessages(processor3, numberOfEvents, PARTITION_ID))
             .expectNextCount(numberOfEvents)
-            .verifyComplete();
+            .expectComplete()
+            .verify(DEFAULT_TIMEOUT);
 
         // After the initial prefetch, when we subscribe, and when we do, it'll ask for Long.MAXVALUE, which will set
         // the limit request to MAXIMUM_REQUEST = 100.
@@ -760,7 +752,8 @@ class EventHubConsumerAsyncClientTest {
                 assertAttributes(EVENT_HUB_NAME, e.getPartitionContext().getPartitionId(), last.getAttributes());
                 return true;
             })
-            .verifyComplete();
+            .expectComplete()
+            .verify(DEFAULT_TIMEOUT);
 
         assertEquals(numberOfEvents, meter.getHistograms().get("messaging.eventhubs.consumer.lag").getMeasurements().size());
     }
@@ -795,7 +788,8 @@ class EventHubConsumerAsyncClientTest {
                 assertEquals(0, last.getValue());
                 assertAttributes(EVENT_HUB_NAME, e.getPartitionContext().getPartitionId(), last.getAttributes());
             })
-            .verifyComplete();
+            .expectComplete()
+            .verify(DEFAULT_TIMEOUT);
 
         assertEquals(1, meter.getHistograms().get("messaging.eventhubs.consumer.lag").getMeasurements().size());
     }
@@ -820,7 +814,8 @@ class EventHubConsumerAsyncClientTest {
         sendMessages(messageProcessor, 1, PARTITION_ID);
         StepVerifier.create(receive)
             .expectNextCount(1)
-            .verifyComplete();
+            .expectComplete()
+            .verify(DEFAULT_TIMEOUT);
 
         assertFalse(meter.getHistograms().containsKey("messaging.eventhubs.consumer.lag"));
     }
@@ -841,7 +836,8 @@ class EventHubConsumerAsyncClientTest {
         sendMessages(messageProcessor, 1, PARTITION_ID);
         StepVerifier.create(receive)
             .expectNextCount(1)
-            .verifyComplete();
+            .expectComplete()
+            .verify(DEFAULT_TIMEOUT);
     }
 
     /**
@@ -851,6 +847,7 @@ class EventHubConsumerAsyncClientTest {
     void startSpanForGetProperties() {
         // Arrange
         final Tracer tracer1 = mock(Tracer.class);
+        when(tracer1.isEnabled()).thenReturn(true);
         EventHubsConsumerInstrumentation instrumentation = new EventHubsConsumerInstrumentation(tracer1, null,
             HOSTNAME, EVENT_HUB_NAME, CONSUMER_GROUP, false);
         EventHubConsumerAsyncClient consumer = new EventHubConsumerAsyncClient(HOSTNAME, EVENT_HUB_NAME,
@@ -865,42 +862,46 @@ class EventHubConsumerAsyncClientTest {
         when(managementNode.getEventHubProperties()).thenReturn(Mono.just(ehProperties));
         when(managementNode.getPartitionProperties(anyString())).thenReturn(Mono.just(partitionProperties));
 
-        when(tracer1.start(eq("EventHubs.getPartitionProperties"), any(), eq(ProcessKind.SEND))).thenAnswer(
+        when(tracer1.start(eq("EventHubs.getPartitionProperties"), any(StartSpanOptions.class), any(Context.class))).thenAnswer(
             invocation -> {
-                Context passed = invocation.getArgument(1, Context.class);
-                assertEquals(passed.getData(AZ_TRACING_NAMESPACE_KEY).get(), AZ_NAMESPACE_VALUE);
-                assertEquals(passed.getData(Tracer.ENTITY_PATH_KEY).get(), EVENT_HUB_NAME);
-                assertEquals(passed.getData(HOST_NAME_KEY).get(), HOSTNAME);
-                return passed.addData(PARENT_TRACE_CONTEXT_KEY, "getPartitionProperties");
+                assertStartOptions(invocation.getArgument(1, StartSpanOptions.class));
+                return invocation.getArgument(2, Context.class)
+                        .addData(PARENT_TRACE_CONTEXT_KEY, "getPartitionProperties");
             }
         );
-        when(tracer1.start(eq("EventHubs.getEventHubProperties"), any(), eq(ProcessKind.SEND))).thenAnswer(
+        when(tracer1.start(eq("EventHubs.getEventHubProperties"), any(StartSpanOptions.class), any(Context.class))).thenAnswer(
             invocation -> {
-                Context passed = invocation.getArgument(1, Context.class);
-                assertEquals(passed.getData(AZ_TRACING_NAMESPACE_KEY).get(), AZ_NAMESPACE_VALUE);
-                assertEquals(passed.getData(Tracer.ENTITY_PATH_KEY).get(), EVENT_HUB_NAME);
-                assertEquals(passed.getData(HOST_NAME_KEY).get(), HOSTNAME);
-                return passed.addData(PARENT_TRACE_CONTEXT_KEY, "getEventHubsProperties");
+                assertStartOptions(invocation.getArgument(1, StartSpanOptions.class));
+                return invocation.getArgument(2, Context.class)
+                    .addData(PARENT_TRACE_CONTEXT_KEY, "getEventHubsProperties");
             }
         );
 
         // Act
         StepVerifier.create(consumer.getEventHubProperties())
             .consumeNextWith(p -> assertSame(ehProperties, p))
-            .verifyComplete();
+            .expectComplete()
+            .verify(DEFAULT_TIMEOUT);
 
         StepVerifier.create(consumer.getPartitionProperties("0"))
             .consumeNextWith(p -> assertSame(partitionProperties, p))
-            .verifyComplete();
+            .expectComplete()
+            .verify(DEFAULT_TIMEOUT);
 
         //Assert
         verify(tracer1, times(1))
-            .start(eq("EventHubs.getPartitionProperties"), any(), eq(ProcessKind.SEND));
+            .start(eq("EventHubs.getPartitionProperties"), any(StartSpanOptions.class), any(Context.class));
         verify(tracer1, times(1))
-            .start(eq("EventHubs.getEventHubProperties"), any(), eq(ProcessKind.SEND));
-        verify(tracer1, times(2)).end(eq("success"), isNull(), any());
+            .start(eq("EventHubs.getEventHubProperties"), any(StartSpanOptions.class), any(Context.class));
+        verify(tracer1, times(2)).end(isNull(), isNull(), any());
 
         verifyNoInteractions(onClientClosed);
+    }
+
+    private void assertStartOptions(StartSpanOptions startOpts) {
+        assertEquals(SpanKind.CLIENT, startOpts.getSpanKind());
+        assertEquals(EVENT_HUB_NAME, startOpts.getAttributes().get(ENTITY_PATH_KEY));
+        assertEquals(HOSTNAME, startOpts.getAttributes().get(HOST_NAME_KEY));
     }
 
     private void assertPartition(String partitionId, PartitionEvent event) {

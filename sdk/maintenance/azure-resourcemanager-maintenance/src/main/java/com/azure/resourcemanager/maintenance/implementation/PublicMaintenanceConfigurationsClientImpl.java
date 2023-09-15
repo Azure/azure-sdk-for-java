@@ -73,8 +73,7 @@ public final class PublicMaintenanceConfigurationsClientImpl implements PublicMa
 
         @Headers({"Content-Type: application/json"})
         @Get(
-            "/subscriptions/{subscriptionId}/providers/Microsoft.Maintenance/publicMaintenanceConfigurations"
-                + "/{resourceName}")
+            "/subscriptions/{subscriptionId}/providers/Microsoft.Maintenance/publicMaintenanceConfigurations/{resourceName}")
         @ExpectedResponses({200})
         @UnexpectedResponseExceptionType(ManagementException.class)
         Mono<Response<MaintenanceConfigurationInner>> get(

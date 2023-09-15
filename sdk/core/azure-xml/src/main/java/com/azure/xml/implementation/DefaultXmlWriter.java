@@ -20,7 +20,7 @@ import static javax.xml.XMLConstants.DEFAULT_NS_PREFIX;
  * Default {@link XmlWriter} implementation based on {@link XMLStreamWriter}.
  */
 public final class DefaultXmlWriter extends XmlWriter {
-    private static final XMLOutputFactory XML_OUTPUT_FACTORY = XMLOutputFactory.newFactory();
+    private static final XMLOutputFactory XML_OUTPUT_FACTORY = XMLOutputFactory.newInstance();
 
     private final XMLStreamWriter writer;
 

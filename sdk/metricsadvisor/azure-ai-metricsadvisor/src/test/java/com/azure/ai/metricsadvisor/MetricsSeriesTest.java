@@ -9,36 +9,20 @@ import com.azure.ai.metricsadvisor.models.ListMetricSeriesDefinitionOptions;
 import com.azure.ai.metricsadvisor.models.MetricSeriesDefinition;
 import com.azure.core.http.HttpClient;
 import com.azure.core.util.Context;
-import org.junit.jupiter.api.AfterAll;
-import org.junit.jupiter.api.BeforeAll;
 import org.junit.jupiter.params.ParameterizedTest;
 import org.junit.jupiter.params.provider.MethodSource;
-import reactor.test.StepVerifier;
 
-import java.time.Duration;
 import java.time.OffsetDateTime;
 import java.util.Collections;
-import java.util.HashMap;
 import java.util.List;
 import java.util.stream.Collectors;
 
-import static com.azure.ai.metricsadvisor.TestUtils.DEFAULT_SUBSCRIBER_TIMEOUT_SECONDS;
 import static com.azure.ai.metricsadvisor.TestUtils.DISPLAY_NAME_WITH_ARGUMENTS;
 import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertNotNull;
 
 public class MetricsSeriesTest extends MetricsSeriesTestBase {
     private MetricsAdvisorClient client;
-
-    @BeforeAll
-    static void beforeAll() {
-        StepVerifier.setDefaultTimeout(Duration.ofSeconds(DEFAULT_SUBSCRIBER_TIMEOUT_SECONDS));
-    }
-
-    @AfterAll
-    static void afterAll() {
-        StepVerifier.resetDefaultTimeout();
-    }
 
     /**
      * Verifies all the dimension values returned for a metric.
@@ -96,9 +80,8 @@ public class MetricsSeriesTest extends MetricsSeriesTestBase {
         List<MetricSeriesDefinition> actualMetricSeriesDefinitions
             = client.listMetricSeriesDefinitions(METRIC_ID, TIME_SERIES_START_TIME,
                 new ListMetricSeriesDefinitionOptions()
-                .setDimensionCombinationToFilter(new HashMap<String, List<String>>() {{
-                        put("Dim1", Collections.singletonList("JPN"));
-                    }}), Context.NONE)
+                .setDimensionCombinationToFilter(Collections.singletonMap("Dim1", Collections.singletonList("JPN"))),
+                Context.NONE)
             .stream().collect(Collectors.toList());
 
         actualMetricSeriesDefinitions.forEach(metricSeriesDefinition -> {

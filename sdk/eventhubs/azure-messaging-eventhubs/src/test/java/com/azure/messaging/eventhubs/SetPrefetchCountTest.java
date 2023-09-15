@@ -113,6 +113,7 @@ class SetPrefetchCountTest extends IntegrationTestBase {
             .filter(x -> isMatchingEvent(x, testData.getMessageId()))
             .take(eventCount))
             .expectNextCount(eventCount)
-            .verifyComplete();
+            .expectComplete()
+            .verify(TIMEOUT);
     }
 }

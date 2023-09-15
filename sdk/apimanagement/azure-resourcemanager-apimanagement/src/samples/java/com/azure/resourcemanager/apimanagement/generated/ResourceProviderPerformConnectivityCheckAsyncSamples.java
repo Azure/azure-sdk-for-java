@@ -4,7 +4,6 @@
 
 package com.azure.resourcemanager.apimanagement.generated;
 
-import com.azure.core.util.Context;
 import com.azure.resourcemanager.apimanagement.models.ConnectivityCheckProtocol;
 import com.azure.resourcemanager.apimanagement.models.ConnectivityCheckRequest;
 import com.azure.resourcemanager.apimanagement.models.ConnectivityCheckRequestDestination;
@@ -19,7 +18,7 @@ import java.util.Arrays;
 /** Samples for ResourceProvider PerformConnectivityCheckAsync. */
 public final class ResourceProviderPerformConnectivityCheckAsyncSamples {
     /*
-     * x-ms-original-file: specification/apimanagement/resource-manager/Microsoft.ApiManagement/stable/2021-08-01/examples/ApiManagementPerformConnectivityCheck.json
+     * x-ms-original-file: specification/apimanagement/resource-manager/Microsoft.ApiManagement/stable/2022-08-01/examples/ApiManagementPerformConnectivityCheck.json
      */
     /**
      * Sample code: TCP Connectivity Check.
@@ -36,11 +35,11 @@ public final class ResourceProviderPerformConnectivityCheckAsyncSamples {
                     .withSource(new ConnectivityCheckRequestSource().withRegion("northeurope"))
                     .withDestination(new ConnectivityCheckRequestDestination().withAddress("8.8.8.8").withPort(53L))
                     .withPreferredIpVersion(PreferredIpVersion.IPV4),
-                Context.NONE);
+                com.azure.core.util.Context.NONE);
     }
 
     /*
-     * x-ms-original-file: specification/apimanagement/resource-manager/Microsoft.ApiManagement/stable/2021-08-01/examples/ApiManagementPerformConnectivityCheckHttpConnect.json
+     * x-ms-original-file: specification/apimanagement/resource-manager/Microsoft.ApiManagement/stable/2022-08-01/examples/ApiManagementPerformConnectivityCheckHttpConnect.json
      */
     /**
      * Sample code: HTTP Connectivity Check.
@@ -66,10 +65,7 @@ public final class ResourceProviderPerformConnectivityCheckAsyncSamples {
                                     .withValidStatusCodes(Arrays.asList(200L, 204L))
                                     .withHeaders(
                                         Arrays
-                                            .asList(
-                                                new HttpHeader()
-                                                    .withName("Authorization")
-                                                    .withValue("Bearer myPreciousToken"))))),
-                Context.NONE);
+                                            .asList(new HttpHeader().withName("Authorization").withValue("******"))))),
+                com.azure.core.util.Context.NONE);
     }
 }

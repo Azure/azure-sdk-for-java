@@ -804,7 +804,7 @@ public final class RntbdClientChannelPool implements ChannelPool {
 
         this.executor.schedule(
             () -> {
-                ChannelFuture channelFuture = this.bootstrap.clone().handler(new ChannelInitializer<Channel>() {
+                ChannelFuture channelFuture = this.bootstrap.clone().attr(POOL_KEY, this).handler(new ChannelInitializer<Channel>() {
                     @Override
                     protected void initChannel(Channel channel) throws Exception {
                         checkState(channel.eventLoop().inEventLoop());

@@ -1,6 +1,6 @@
 # Python version 3.4 or higher is required to run this script.
 #
-# This script is used to update sdk\spring\supported-version-matrix.json before compatibility check.
+# This script is used to update sdk\spring\pipeline\supported-version-matrix.json before compatibility check.
 # Sample:
 # 1. python .\sdk\spring\scripts\monitor_update_monitor_matrix_json.py
 #
@@ -49,8 +49,8 @@ def main():
     start_time = time.time()
     change_to_repo_root_dir()
     log.debug('Current working directory = {}.'.format(os.getcwd()))
-    test_spring_boot_version = get_supported_spring_boot_version("https://raw.githubusercontent.com/Azure/azure-sdk-for-java/main/sdk/spring/spring-cloud-azure-supported-spring.json")
-    update_monitor_matrix_json_file("./sdk/spring/monitor-matrix.json", test_spring_boot_version)
+    test_spring_boot_version = get_supported_spring_boot_version("https://raw.githubusercontent.com/Azure/azure-sdk-for-java/main/sdk/spring/pipeline/spring-cloud-azure-supported-spring.json")
+    update_monitor_matrix_json_file("./sdk/spring/pipeline/monitor-supported-version-matrix.json", test_spring_boot_version)
     elapsed_time = time.time() - start_time
     log.info('elapsed_time = {}'.format(elapsed_time))
 

@@ -8,6 +8,8 @@ import com.azure.core.annotation.ServiceClient;
 import com.azure.core.http.HttpPipeline;
 import com.azure.core.management.AzureEnvironment;
 import com.azure.core.util.serializer.SerializerAdapter;
+import com.azure.resourcemanager.redis.fluent.AccessPoliciesClient;
+import com.azure.resourcemanager.redis.fluent.AccessPolicyAssignmentsClient;
 import com.azure.resourcemanager.redis.fluent.AsyncOperationStatusClient;
 import com.azure.resourcemanager.redis.fluent.FirewallRulesClient;
 import com.azure.resourcemanager.redis.fluent.LinkedServersClient;
@@ -23,15 +25,11 @@ import java.time.Duration;
 /** Initializes a new instance of the RedisManagementClientImpl type. */
 @ServiceClient(builder = RedisManagementClientBuilder.class)
 public final class RedisManagementClientImpl extends AzureServiceClient implements RedisManagementClient {
-    /**
-     * Gets subscription credentials which uniquely identify the Microsoft Azure subscription. The subscription ID forms
-     * part of the URI for every service call.
-     */
+    /** The ID of the target subscription. */
     private final String subscriptionId;
 
     /**
-     * Gets Gets subscription credentials which uniquely identify the Microsoft Azure subscription. The subscription ID
-     * forms part of the URI for every service call.
+     * Gets The ID of the target subscription.
      *
      * @return the subscriptionId value.
      */
@@ -195,6 +193,30 @@ public final class RedisManagementClientImpl extends AzureServiceClient implemen
         return this.asyncOperationStatus;
     }
 
+    /** The AccessPoliciesClient object to access its operations. */
+    private final AccessPoliciesClient accessPolicies;
+
+    /**
+     * Gets the AccessPoliciesClient object to access its operations.
+     *
+     * @return the AccessPoliciesClient object.
+     */
+    public AccessPoliciesClient getAccessPolicies() {
+        return this.accessPolicies;
+    }
+
+    /** The AccessPolicyAssignmentsClient object to access its operations. */
+    private final AccessPolicyAssignmentsClient accessPolicyAssignments;
+
+    /**
+     * Gets the AccessPolicyAssignmentsClient object to access its operations.
+     *
+     * @return the AccessPolicyAssignmentsClient object.
+     */
+    public AccessPolicyAssignmentsClient getAccessPolicyAssignments() {
+        return this.accessPolicyAssignments;
+    }
+
     /**
      * Initializes an instance of RedisManagementClient client.
      *
@@ -202,8 +224,7 @@ public final class RedisManagementClientImpl extends AzureServiceClient implemen
      * @param serializerAdapter The serializer to serialize an object into a string.
      * @param defaultPollInterval The default poll interval for long-running operation.
      * @param environment The Azure environment.
-     * @param subscriptionId Gets subscription credentials which uniquely identify the Microsoft Azure subscription. The
-     *     subscription ID forms part of the URI for every service call.
+     * @param subscriptionId The ID of the target subscription.
      * @param endpoint server parameter.
      */
     RedisManagementClientImpl(
@@ -219,7 +240,7 @@ public final class RedisManagementClientImpl extends AzureServiceClient implemen
         this.defaultPollInterval = defaultPollInterval;
         this.subscriptionId = subscriptionId;
         this.endpoint = endpoint;
-        this.apiVersion = "2023-04-01";
+        this.apiVersion = "2023-08-01";
         this.operations = new OperationsClientImpl(this);
         this.redis = new RedisClientImpl(this);
         this.firewallRules = new FirewallRulesClientImpl(this);
@@ -228,5 +249,7 @@ public final class RedisManagementClientImpl extends AzureServiceClient implemen
         this.privateEndpointConnections = new PrivateEndpointConnectionsClientImpl(this);
         this.privateLinkResources = new PrivateLinkResourcesClientImpl(this);
         this.asyncOperationStatus = new AsyncOperationStatusClientImpl(this);
+        this.accessPolicies = new AccessPoliciesClientImpl(this);
+        this.accessPolicyAssignments = new AccessPolicyAssignmentsClientImpl(this);
     }
 }

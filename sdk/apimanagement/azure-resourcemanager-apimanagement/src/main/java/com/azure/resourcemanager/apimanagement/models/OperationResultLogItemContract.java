@@ -28,6 +28,10 @@ public final class OperationResultLogItemContract {
     @JsonProperty(value = "objectKey")
     private String objectKey;
 
+    /** Creates an instance of OperationResultLogItemContract class. */
+    public OperationResultLogItemContract() {
+    }
+
     /**
      * Get the objectType property: The type of entity contract.
      *

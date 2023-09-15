@@ -7,6 +7,7 @@ package com.azure.resourcemanager.maintenance.fluent.models;
 import com.azure.core.annotation.Fluent;
 import com.azure.core.management.ProxyResource;
 import com.azure.core.management.SystemData;
+import com.azure.resourcemanager.maintenance.models.ConfigurationAssignmentFilterProperties;
 import com.fasterxml.jackson.annotation.JsonProperty;
 
 /** Configuration Assignment. */
@@ -115,6 +116,29 @@ public final class ConfigurationAssignmentInner extends ProxyResource {
             this.innerProperties = new ConfigurationAssignmentProperties();
         }
         this.innerProperties().withResourceId(resourceId);
+        return this;
+    }
+
+    /**
+     * Get the filter property: Properties of the configuration assignment.
+     *
+     * @return the filter value.
+     */
+    public ConfigurationAssignmentFilterProperties filter() {
+        return this.innerProperties() == null ? null : this.innerProperties().filter();
+    }
+
+    /**
+     * Set the filter property: Properties of the configuration assignment.
+     *
+     * @param filter the filter value to set.
+     * @return the ConfigurationAssignmentInner object itself.
+     */
+    public ConfigurationAssignmentInner withFilter(ConfigurationAssignmentFilterProperties filter) {
+        if (this.innerProperties() == null) {
+            this.innerProperties = new ConfigurationAssignmentProperties();
+        }
+        this.innerProperties().withFilter(filter);
         return this;
     }
 

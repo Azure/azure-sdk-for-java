@@ -412,8 +412,6 @@ public final class RntbdClientChannelHealthChecker implements ChannelHealthCheck
     private String isCancellationProneChannel(Timestamps timestamps, Instant currentTime, RntbdRequestManager requestManager, Channel channel) {
         String errorMessage = StringUtils.EMPTY;
 
-        final Optional<RntbdContext> rntbdContext = requestManager.rntbdContext();
-
         if (timestamps.cancellationCount() >= this.cancellationCountSinceLastReadThreshold) {
 
             // Request cancellations could be a normal symptom under high CPU load.
@@ -426,6 +424,9 @@ public final class RntbdClientChannelHealthChecker implements ChannelHealthCheck
             final long readSuccessRecency = Duration.between(timestamps.lastChannelReadTime(), currentTime).toNanos();
 
             if (readSuccessRecency >= this.nonRespondingChannelReadDelayTimeLimitInNanos) {
+
+                final Optional<RntbdContext> rntbdContext = requestManager.rntbdContext();
+
                 errorMessage = MessageFormat.format(
                     "{0} health check failed due to channel being cancellation prone: [rntbdContext: {1}, lastChannelWrite: {2}, lastChannelRead: {3},"
                         + "cancellationCountSinceLastSuccessfulRead: {4}, currentTime: {5}]",

@@ -7,7 +7,7 @@
   <parent>
     <groupId>org.springframework.boot</groupId>
     <artifactId>spring-boot-starter-parent</artifactId>
-    <version>2.7.13</version> <!-- {x-version-update;org.springframework.boot:spring-boot-starter-parent;external_dependency} -->
+    <version>2.7.14</version> <!-- {x-version-update;org.springframework.boot:spring-boot-starter-parent;external_dependency} -->
     <relativePath/> <!--By default Maven assumes the parent pom is in the parent folder. This line avoids a Maven warning.
      In Maven, a profile can only be shared with inheritance and a pom can only have one parent.
      spring-boot-starter-parent contains a native-test profile gathering the configuration allowing to execute a Spring native test.-->
@@ -23,30 +23,61 @@
     <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
     <spotbugs.skip>true</spotbugs.skip>
     <codesnippet.skip>true</codesnippet.skip>
+    <opentelemetry.version>1.28.0</opentelemetry.version> <!-- Only required with Spring Boot 3 to override the OTel version used in the Spring Boot BOM-->
   </properties>
 
   <dependencies>
     <dependency>
       <groupId>com.azure.spring</groupId>
       <artifactId>spring-cloud-azure-starter-monitor</artifactId>
-      <version>1.0.0-beta.1</version> <!-- {x-version-update;com.azure.spring:azure-monitor-spring-native;dependency} -->
+      <version>1.0.0-beta.1</version> <!-- {x-version-update;com.azure.spring:spring-cloud-azure-starter-monitor;current} -->
     </dependency>
+
+    <!-- OTel dependencies -->
+    <dependency>
+      <groupId>io.opentelemetry.instrumentation</groupId>
+      <artifactId>opentelemetry-jdbc</artifactId>
+      <version>1.28.0-alpha</version><!-- {x-version-update;io.opentelemetry.instrumentation:opentelemetry-jdbc;external_dependency} -->
+    </dependency>
+    <dependency>
+      <groupId>io.opentelemetry.instrumentation</groupId>
+      <artifactId>opentelemetry-logback-appender-1.0</artifactId>
+      <version>1.28.0-alpha</version><!-- {x-version-update;io.opentelemetry.instrumentation:opentelemetry-logback-appender-1.0;external_dependency} -->
+      <scope>runtime</scope>
+    </dependency>
+    <!-- End of OTel dependencies -->
+
     <dependency>
       <groupId>org.springframework.boot</groupId>
       <artifactId>spring-boot-starter-web</artifactId>
-      <version>2.7.13</version> <!-- {x-version-update;org.springframework.boot:spring-boot-starter-web;external_dependency} -->
+      <version>2.7.14</version> <!-- {x-version-update;org.springframework.boot:spring-boot-starter-web;external_dependency} -->
+    </dependency>
+    <dependency>
+      <groupId>org.springframework.boot</groupId>
+      <artifactId>spring-boot-starter-data-jdbc</artifactId>
+      <version>2.7.14</version><!-- {x-version-update;org.springframework.boot:spring-boot-starter-data-jdbc;external_dependency} -->
+    </dependency>
+    <dependency>
+      <groupId>org.apache.commons</groupId>
+      <artifactId>commons-dbcp2</artifactId>
+      <version>2.9.0</version> <!-- {x-version-update;org.apache.commons:commons-dbcp2;external_dependency} -->
     </dependency>
     <dependency>
       <groupId>org.springframework.boot</groupId>
       <artifactId>spring-boot-starter-test</artifactId>
-      <version>2.7.13</version> <!-- {x-version-update;org.springframework.boot:spring-boot-starter-test;external_dependency} -->
+      <version>2.7.14</version> <!-- {x-version-update;org.springframework.boot:spring-boot-starter-test;external_dependency} -->
       <scope>test</scope>
     </dependency>
     <dependency>
       <groupId>com.azure</groupId>
       <artifactId>azure-core-test</artifactId>
-      <version>1.19.0</version> <!-- {x-version-update;com.azure:azure-core-test;dependency} -->
+      <version>1.20.0</version> <!-- {x-version-update;com.azure:azure-core-test;dependency} -->
       <scope>test</scope>
+    </dependency>
+    <dependency>
+      <groupId>com.h2database</groupId>
+      <artifactId>h2</artifactId>
+      <version>2.2.220</version> <!-- {x-version-update;com.h2database:h2;external_dependency} -->
     </dependency>
   </dependencies>
 

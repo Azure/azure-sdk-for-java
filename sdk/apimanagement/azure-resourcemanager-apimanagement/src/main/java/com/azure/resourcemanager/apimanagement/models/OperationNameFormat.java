@@ -8,13 +8,22 @@ import com.azure.core.util.ExpandableStringEnum;
 import com.fasterxml.jackson.annotation.JsonCreator;
 import java.util.Collection;
 
-/** Defines values for OperationNameFormat. */
+/** The format of the Operation Name for Application Insights telemetries. Default is Name. */
 public final class OperationNameFormat extends ExpandableStringEnum<OperationNameFormat> {
     /** Static value Name for OperationNameFormat. */
     public static final OperationNameFormat NAME = fromString("Name");
 
     /** Static value Url for OperationNameFormat. */
     public static final OperationNameFormat URL = fromString("Url");
+
+    /**
+     * Creates a new instance of OperationNameFormat value.
+     *
+     * @deprecated Use the {@link #fromString(String)} factory method.
+     */
+    @Deprecated
+    public OperationNameFormat() {
+    }
 
     /**
      * Creates or finds a OperationNameFormat from its string representation.
@@ -27,7 +36,11 @@ public final class OperationNameFormat extends ExpandableStringEnum<OperationNam
         return fromString(name, OperationNameFormat.class);
     }
 
-    /** @return known OperationNameFormat values. */
+    /**
+     * Gets known OperationNameFormat values.
+     *
+     * @return known OperationNameFormat values.
+     */
     public static Collection<OperationNameFormat> values() {
         return values(OperationNameFormat.class);
     }

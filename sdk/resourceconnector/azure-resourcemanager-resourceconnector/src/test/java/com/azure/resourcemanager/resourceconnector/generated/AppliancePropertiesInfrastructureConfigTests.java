@@ -13,17 +13,15 @@ public final class AppliancePropertiesInfrastructureConfigTests {
     @org.junit.jupiter.api.Test
     public void testDeserialize() throws Exception {
         AppliancePropertiesInfrastructureConfig model =
-            BinaryData
-                .fromString("{\"provider\":\"OpenStack\"}")
-                .toObject(AppliancePropertiesInfrastructureConfig.class);
-        Assertions.assertEquals(Provider.OPEN_STACK, model.provider());
+            BinaryData.fromString("{\"provider\":\"VMWare\"}").toObject(AppliancePropertiesInfrastructureConfig.class);
+        Assertions.assertEquals(Provider.VMWARE, model.provider());
     }
 
     @org.junit.jupiter.api.Test
     public void testSerialize() throws Exception {
         AppliancePropertiesInfrastructureConfig model =
-            new AppliancePropertiesInfrastructureConfig().withProvider(Provider.OPEN_STACK);
+            new AppliancePropertiesInfrastructureConfig().withProvider(Provider.VMWARE);
         model = BinaryData.fromObject(model).toObject(AppliancePropertiesInfrastructureConfig.class);
-        Assertions.assertEquals(Provider.OPEN_STACK, model.provider());
+        Assertions.assertEquals(Provider.VMWARE, model.provider());
     }
 }

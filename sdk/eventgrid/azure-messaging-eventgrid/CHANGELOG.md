@@ -1,5 +1,28 @@
 # Release History
 
+## 4.19.0-beta.1 (Unreleased)
+
+### Features Added
+
+### Breaking Changes
+
+### Bugs Fixed
+
+### Other Changes
+
+## 4.18.0 (2023-09-13)
+
+### Features Added
+- New events for EventGrid and AppConfig
+
+### Other Changes
+
+#### Dependency Updates
+- 
+- Upgraded `azure-core` from `1.42.0` to version `1.43.0`.
+- Upgraded `azure-core-http-netty` from `1.13.6` to version `1.13.7`.
+
+
 ## 4.17.2 (2023-08-18)
 
 ### Other Changes
@@ -8,7 +31,6 @@
 
 - Upgraded `azure-core` from `1.41.0` to version `1.42.0`.
 - Upgraded `azure-core-http-netty` from `1.13.5` to version `1.13.6`.
-
 
 ## 4.17.1 (2023-07-25)
 

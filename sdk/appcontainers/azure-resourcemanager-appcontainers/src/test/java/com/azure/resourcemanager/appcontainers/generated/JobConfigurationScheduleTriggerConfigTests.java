@@ -14,23 +14,23 @@ public final class JobConfigurationScheduleTriggerConfigTests {
         JobConfigurationScheduleTriggerConfig model =
             BinaryData
                 .fromString(
-                    "{\"replicaCompletionCount\":104545862,\"cronExpression\":\"ayvblmhvkzuhbx\",\"parallelism\":1338429110}")
+                    "{\"replicaCompletionCount\":540645493,\"cronExpression\":\"liqhzvhx\",\"parallelism\":1549555977}")
                 .toObject(JobConfigurationScheduleTriggerConfig.class);
-        Assertions.assertEquals(104545862, model.replicaCompletionCount());
-        Assertions.assertEquals("ayvblmhvkzuhbx", model.cronExpression());
-        Assertions.assertEquals(1338429110, model.parallelism());
+        Assertions.assertEquals(540645493, model.replicaCompletionCount());
+        Assertions.assertEquals("liqhzvhx", model.cronExpression());
+        Assertions.assertEquals(1549555977, model.parallelism());
     }
 
     @org.junit.jupiter.api.Test
     public void testSerialize() throws Exception {
         JobConfigurationScheduleTriggerConfig model =
             new JobConfigurationScheduleTriggerConfig()
-                .withReplicaCompletionCount(104545862)
-                .withCronExpression("ayvblmhvkzuhbx")
-                .withParallelism(1338429110);
+                .withReplicaCompletionCount(540645493)
+                .withCronExpression("liqhzvhx")
+                .withParallelism(1549555977);
         model = BinaryData.fromObject(model).toObject(JobConfigurationScheduleTriggerConfig.class);
-        Assertions.assertEquals(104545862, model.replicaCompletionCount());
-        Assertions.assertEquals("ayvblmhvkzuhbx", model.cronExpression());
-        Assertions.assertEquals(1338429110, model.parallelism());
+        Assertions.assertEquals(540645493, model.replicaCompletionCount());
+        Assertions.assertEquals("liqhzvhx", model.cronExpression());
+        Assertions.assertEquals(1549555977, model.parallelism());
     }
 }

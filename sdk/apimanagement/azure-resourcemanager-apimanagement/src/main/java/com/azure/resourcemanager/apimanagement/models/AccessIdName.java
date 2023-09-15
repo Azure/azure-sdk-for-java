@@ -17,6 +17,15 @@ public final class AccessIdName extends ExpandableStringEnum<AccessIdName> {
     public static final AccessIdName GIT_ACCESS = fromString("gitAccess");
 
     /**
+     * Creates a new instance of AccessIdName value.
+     *
+     * @deprecated Use the {@link #fromString(String)} factory method.
+     */
+    @Deprecated
+    public AccessIdName() {
+    }
+
+    /**
      * Creates or finds a AccessIdName from its string representation.
      *
      * @param name a name to look for.
@@ -27,7 +36,11 @@ public final class AccessIdName extends ExpandableStringEnum<AccessIdName> {
         return fromString(name, AccessIdName.class);
     }
 
-    /** @return known AccessIdName values. */
+    /**
+     * Gets known AccessIdName values.
+     *
+     * @return known AccessIdName values.
+     */
     public static Collection<AccessIdName> values() {
         return values(AccessIdName.class);
     }

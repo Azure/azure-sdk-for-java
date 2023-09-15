@@ -237,15 +237,15 @@ public final class CryptographyClientBuilder implements
 
         httpLogOptions = (httpLogOptions == null) ? new HttpLogOptions() : httpLogOptions;
 
-        policies.add(new UserAgentPolicy(CoreUtils.getApplicationId(clientOptions, httpLogOptions), clientName,
+        ClientOptions localClientOptions = clientOptions != null ? clientOptions : new ClientOptions();
+
+        policies.add(new UserAgentPolicy(CoreUtils.getApplicationId(localClientOptions, httpLogOptions), clientName,
             clientVersion, buildConfiguration));
 
-        if (clientOptions != null) {
-            List<HttpHeader> httpHeaderList = new ArrayList<>();
-            clientOptions.getHeaders().forEach(header ->
-                httpHeaderList.add(new HttpHeader(header.getName(), header.getValue())));
-            policies.add(new AddHeadersPolicy(new HttpHeaders(httpHeaderList)));
-        }
+        List<HttpHeader> httpHeaderList = new ArrayList<>();
+        localClientOptions.getHeaders().forEach(header ->
+            httpHeaderList.add(new HttpHeader(header.getName(), header.getValue())));
+        policies.add(new AddHeadersPolicy(new HttpHeaders(httpHeaderList)));
 
         // Add per call additional policies.
         policies.addAll(perCallPolicies);
@@ -262,7 +262,7 @@ public final class CryptographyClientBuilder implements
         HttpPolicyProviders.addAfterRetryPolicies(policies);
         policies.add(new HttpLoggingPolicy(httpLogOptions));
 
-        TracingOptions tracingOptions = clientOptions == null ? null : clientOptions.getTracingOptions();
+        TracingOptions tracingOptions = localClientOptions.getTracingOptions();
         Tracer tracer = TracerProvider.getDefaultProvider()
             .createTracer(clientName, clientVersion, KEYVAULT_TRACING_NAMESPACE_VALUE, tracingOptions);
 
@@ -270,6 +270,7 @@ public final class CryptographyClientBuilder implements
             .policies(policies.toArray(new HttpPipelinePolicy[0]))
             .httpClient(httpClient)
             .tracer(tracer)
+            .clientOptions(localClientOptions)
             .build();
     }
 

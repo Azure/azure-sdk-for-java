@@ -4,17 +4,26 @@
 
 package com.azure.resourcemanager.maps.generated;
 
+import com.azure.resourcemanager.maps.models.CustomerManagedKeyEncryption;
+import com.azure.resourcemanager.maps.models.CustomerManagedKeyEncryptionKeyIdentity;
+import com.azure.resourcemanager.maps.models.Encryption;
+import com.azure.resourcemanager.maps.models.IdentityType;
 import com.azure.resourcemanager.maps.models.Kind;
+import com.azure.resourcemanager.maps.models.LinkedResource;
+import com.azure.resourcemanager.maps.models.ManagedServiceIdentity;
+import com.azure.resourcemanager.maps.models.ManagedServiceIdentityType;
 import com.azure.resourcemanager.maps.models.MapsAccount;
 import com.azure.resourcemanager.maps.models.Name;
 import com.azure.resourcemanager.maps.models.Sku;
+import com.azure.resourcemanager.maps.models.UserAssignedIdentity;
+import java.util.Arrays;
 import java.util.HashMap;
 import java.util.Map;
 
 /** Samples for Accounts Update. */
 public final class AccountsUpdateSamples {
     /*
-     * x-ms-original-file: specification/maps/resource-manager/Microsoft.Maps/stable/2021-02-01/examples/UpdateAccountGen2.json
+     * x-ms-original-file: specification/maps/resource-manager/Microsoft.Maps/stable/2023-06-01/examples/UpdateAccountGen2.json
      */
     /**
      * Sample code: Update to Gen2 Account.
@@ -31,7 +40,7 @@ public final class AccountsUpdateSamples {
     }
 
     /*
-     * x-ms-original-file: specification/maps/resource-manager/Microsoft.Maps/stable/2021-02-01/examples/UpdateAccount.json
+     * x-ms-original-file: specification/maps/resource-manager/Microsoft.Maps/stable/2023-06-01/examples/UpdateAccount.json
      */
     /**
      * Sample code: Update Account Tags.
@@ -48,7 +57,42 @@ public final class AccountsUpdateSamples {
     }
 
     /*
-     * x-ms-original-file: specification/maps/resource-manager/Microsoft.Maps/stable/2021-02-01/examples/UpdateAccountGen1.json
+     * x-ms-original-file: specification/maps/resource-manager/Microsoft.Maps/stable/2023-06-01/examples/UpdateAccountManagedIdentity.json
+     */
+    /**
+     * Sample code: Update Account Managed Identities.
+     *
+     * @param manager Entry point to AzureMapsManager.
+     */
+    public static void updateAccountManagedIdentities(com.azure.resourcemanager.maps.AzureMapsManager manager) {
+        MapsAccount resource =
+            manager
+                .accounts()
+                .getByResourceGroupWithResponse("myResourceGroup", "myMapsAccount", com.azure.core.util.Context.NONE)
+                .getValue();
+        resource
+            .update()
+            .withKind(Kind.GEN2)
+            .withSku(new Sku().withName(Name.G2))
+            .withIdentity(
+                new ManagedServiceIdentity()
+                    .withType(ManagedServiceIdentityType.SYSTEM_ASSIGNED_USER_ASSIGNED)
+                    .withUserAssignedIdentities(
+                        mapOf(
+                            "/subscriptions/21a9967a-e8a9-4656-a70b-96ff1c4d05a0/resourceGroups/myResourceGroup/providers/Microsoft.ManagedIdentity/userAssignedIdentities/identityName",
+                            new UserAssignedIdentity())))
+            .withLinkedResources(
+                Arrays
+                    .asList(
+                        new LinkedResource()
+                            .withUniqueName("myBatchStorageAccount")
+                            .withId(
+                                "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Storage/accounts/{storageName}")))
+            .apply();
+    }
+
+    /*
+     * x-ms-original-file: specification/maps/resource-manager/Microsoft.Maps/stable/2023-06-01/examples/UpdateAccountGen1.json
      */
     /**
      * Sample code: Update to Gen1 Account.
@@ -64,6 +108,41 @@ public final class AccountsUpdateSamples {
         resource.update().withKind(Kind.GEN1).withSku(new Sku().withName(Name.S1)).apply();
     }
 
+    /*
+     * x-ms-original-file: specification/maps/resource-manager/Microsoft.Maps/stable/2023-06-01/examples/UpdateAccountEncryption.json
+     */
+    /**
+     * Sample code: Update Account Encryption.
+     *
+     * @param manager Entry point to AzureMapsManager.
+     */
+    public static void updateAccountEncryption(com.azure.resourcemanager.maps.AzureMapsManager manager) {
+        MapsAccount resource =
+            manager
+                .accounts()
+                .getByResourceGroupWithResponse("myResourceGroup", "myMapsAccount", com.azure.core.util.Context.NONE)
+                .getValue();
+        resource
+            .update()
+            .withIdentity(
+                new ManagedServiceIdentity()
+                    .withType(ManagedServiceIdentityType.SYSTEM_ASSIGNED)
+                    .withUserAssignedIdentities(
+                        mapOf(
+                            "/subscriptions/21a9967a-e8a9-4656-a70b-96ff1c4d05a0/resourceGroups/myResourceGroup/providers/Microsoft.ManagedIdentity/userAssignedIdentities/identityName",
+                            null)))
+            .withEncryption(
+                new Encryption()
+                    .withCustomerManagedKeyEncryption(
+                        new CustomerManagedKeyEncryption()
+                            .withKeyEncryptionKeyIdentity(
+                                new CustomerManagedKeyEncryptionKeyIdentity()
+                                    .withIdentityType(IdentityType.SYSTEM_ASSIGNED_IDENTITY))
+                            .withKeyEncryptionKeyUrl("fakeTokenPlaceholder")))
+            .apply();
+    }
+
+    // Use "Map.of" if available
     @SuppressWarnings("unchecked")
     private static <T> Map<String, T> mapOf(Object... inputs) {
         Map<String, T> map = new HashMap<>();

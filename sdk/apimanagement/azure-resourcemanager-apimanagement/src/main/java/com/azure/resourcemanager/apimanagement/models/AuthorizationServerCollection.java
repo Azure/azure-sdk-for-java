@@ -30,6 +30,10 @@ public final class AuthorizationServerCollection {
     @JsonProperty(value = "nextLink")
     private String nextLink;
 
+    /** Creates an instance of AuthorizationServerCollection class. */
+    public AuthorizationServerCollection() {
+    }
+
     /**
      * Get the value property: Page values.
      *

@@ -68,6 +68,7 @@ import static com.azure.core.util.FluxUtil.monoError;
  * Person person = Person.newBuilder&#40;&#41;
  *     .setName&#40;&quot;Alina&quot;&#41;
  *     .setFavouriteColour&#40;&quot;Turquoise&quot;&#41;
+ *     .setFavouriteNumber&#40;3&#41;
  *     .build&#40;&#41;;
  *
  * MessageContent message = serializer.serialize&#40;person,

@@ -34,15 +34,33 @@ import java.util.Objects;
 
 
 /**
- * The CertificateClient provides synchronous methods to manage {@link KeyVaultCertificate certifcates} in the Azure Key Vault. The client
- * supports creating, retrieving, updating, merging, deleting, purging, backing up, restoring and listing the
- * {@link KeyVaultCertificate certificates}. The client also supports listing {@link DeletedCertificate deleted certificates} for
- * a soft-delete enabled Azure Key Vault.
+ * The {@link CertificateClient} provides synchronous methods to manage {@link KeyVaultCertificate certifcates} in
+ * the key vault. The client supports creating, retrieving, updating, merging, deleting, purging, backing up,
+ * restoring and listing the {@link KeyVaultCertificate certificates}. The client also supports listing
+ * {@link DeletedCertificate deleted certificates} for a soft-delete enabled key vault.
  *
- * <p>The client further allows creating, retrieving, updating, deleting and listing the {@link CertificateIssuer certificate issuers}. The client also supports
- * creating, listing and deleting {@link CertificateContact certificate contacts}</p>
+ * <p>The client further allows creating, retrieving, updating, deleting and listing the
+ * {@link CertificateIssuer certificate issuers}. The client also supports creating, listing and
+ * deleting {@link CertificateContact certificate contacts}.</p>
  *
- * <p><strong>Samples to construct the sync client</strong></p>
+ * <h2>Getting Started</h2>
+ *
+ * <p>In order to interact with the Azure Key Vault service, you will need to create an instance of the
+ * {@link CertificateClient} class, a vault url and a credential object.</p>
+ *
+ * <p>The examples shown in this document use a credential object named DefaultAzureCredential for authentication,
+ * which is appropriate for most scenarios, including local development and production environments. Additionally,
+ * we recommend using a
+ * <a href="https://learn.microsoft.com/azure/active-directory/managed-identities-azure-resources/">
+ * managed identity</a> for authentication in production environments.
+ * You can find more information on different ways of authenticating and their corresponding credential types in the
+ * <a href="https://learn.microsoft.com/java/api/overview/azure/identity-readme?view=azure-java-stable">
+ * Azure Identity documentation"</a>.</p>
+ *
+ * <p><strong>Sample: Construct Synchronous Certificate Client</strong></p>
+ *
+ * <p>The following code sample demonstrates the creation of a {@link CertificateClient},
+ * using the {@link CertificateClientBuilder} to configure it.</p>
  *
  * <!-- src_embed com.azure.security.keyvault.certificates.CertificateClient.instantiation -->
  * <pre>
@@ -52,10 +70,80 @@ import java.util.Objects;
  *     .httpLogOptions&#40;new HttpLogOptions&#40;&#41;.setLogLevel&#40;HttpLogDetailLevel.BODY_AND_HEADERS&#41;&#41;
  *     .buildClient&#40;&#41;;
  * </pre>
- * <!-- end com.azure.security.keyvault.certificates.CertificateClient.instantiation -->
+ * <!-- end com.azure.security.keyvault.certificates.CertificateClient.instantiation  -->
  *
+ * <br/>
+ *
+ * <hr/>
+ *
+ * <h2>Create a Certificate</h2>
+ * The {@link CertificateClient} can be used to create a certificate in the key vault.
+ *
+ * <p><strong>Code Sample:</strong></p>
+ * <p>The following code sample demonstrates how to synchronously create a certificate in the key vault,
+ * using the {@link CertificateClient#beginCreateCertificate(String, CertificatePolicy)} API.</p>
+ *
+ * <!-- src_embed com.azure.security.keyvault.certificates.CertificateClient.beginCreateCertificate#String-CertificatePolicy -->
+ * <pre>
+ * CertificatePolicy certPolicy = new CertificatePolicy&#40;&quot;Self&quot;,
+ *     &quot;CN=SelfSignedJavaPkcs12&quot;&#41;;
+ * SyncPoller&lt;CertificateOperation, KeyVaultCertificateWithPolicy&gt; certPoller = certificateClient
+ *     .beginCreateCertificate&#40;&quot;certificateName&quot;, certPolicy&#41;;
+ * certPoller.waitUntil&#40;LongRunningOperationStatus.SUCCESSFULLY_COMPLETED&#41;;
+ * KeyVaultCertificate cert = certPoller.getFinalResult&#40;&#41;;
+ * System.out.printf&#40;&quot;Certificate created with name %s%n&quot;, cert.getName&#40;&#41;&#41;;
+ * </pre>
+ * <!-- end com.azure.security.keyvault.certificates.CertificateClient.beginCreateCertificate#String-CertificatePolicy -->
+ *
+ * <p><strong>Note:</strong> For the asynchronous sample, refer to {@link CertificateAsyncClient}.</p>
+ *
+ * <br/>
+ *
+ * <hr/>
+ *
+ * <h2>Get a Certificate</h2>
+ * The {@link CertificateClient} can be used to retrieve a certificate from the key vault.
+ *
+ * <p><strong>Code Sample:</strong></p>
+ * <p>The following code sample demonstrates how to synchronously retrieve a certificate from the key vault, using
+ * the {@link CertificateClient#getCertificate(String)} API.</p>
+ *
+ * <!-- src_embed com.azure.security.keyvault.certificates.CertificateClient.getCertificatePolicy#string -->
+ * <pre>
+ * CertificatePolicy policy = certificateClient.getCertificatePolicy&#40;&quot;certificateName&quot;&#41;;
+ * System.out.printf&#40;&quot;Received policy with subject name %s%n&quot;, policy.getSubject&#40;&#41;&#41;;
+ * </pre>
+ * <!-- end com.azure.security.keyvault.certificates.CertificateClient.getCertificatePolicy#string -->
+ *
+ * <p><strong>Note:</strong> For the asynchronous sample, refer to {@link CertificateAsyncClient}.</p>
+ *
+ * <br/>
+ *
+ * <hr/>
+ *
+ * <h2>Delete a Certificate</h2>
+ * The {@link CertificateClient} can be used to delete a certificate from the key vault.
+ *
+ * <p><strong>Code Sample:</strong></p>
+ * <p>The following code sample demonstrates how to synchronously delete a certificate from the
+ * key vault, using the {@link CertificateClient#beginDeleteCertificate(String)} API.</p>
+ *
+ * <!-- src_embed com.azure.security.keyvault.certificates.CertificateClient.beginDeleteCertificate#String -->
+ * <pre>
+ * SyncPoller&lt;DeletedCertificate, Void&gt; deleteCertPoller =
+ *     certificateClient.beginDeleteCertificate&#40;&quot;certificateName&quot;&#41;;
+ * &#47;&#47; Deleted Certificate is accessible as soon as polling beings.
+ * PollResponse&lt;DeletedCertificate&gt; deleteCertPollResponse = deleteCertPoller.poll&#40;&#41;;
+ * System.out.printf&#40;&quot;Deleted certificate with name %s and recovery id %s%n&quot;,
+ *     deleteCertPollResponse.getValue&#40;&#41;.getName&#40;&#41;, deleteCertPollResponse.getValue&#40;&#41;.getRecoveryId&#40;&#41;&#41;;
+ * deleteCertPoller.waitForCompletion&#40;&#41;;
+ * </pre>
+ * <!-- end com.azure.security.keyvault.certificates.CertificateClient.beginDeleteCertificate#String -->
+ *
+ * <p><strong>Note:</strong> For the asynchronous sample, refer to {@link CertificateAsyncClient}.</p>
+ *
+ * @see com.azure.security.keyvault.certificates
  * @see CertificateClientBuilder
- * @see PagedIterable
  */
 @ServiceClient(builder = CertificateClientBuilder.class, serviceInterfaces = CertificateClientImpl.CertificateService.class)
 public final class CertificateClient {

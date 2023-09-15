@@ -9,7 +9,7 @@ import com.azure.resourcemanager.apimanagement.models.GroupType;
 /** Samples for Group CreateOrUpdate. */
 public final class GroupCreateOrUpdateSamples {
     /*
-     * x-ms-original-file: specification/apimanagement/resource-manager/Microsoft.ApiManagement/stable/2021-08-01/examples/ApiManagementCreateGroupExternal.json
+     * x-ms-original-file: specification/apimanagement/resource-manager/Microsoft.ApiManagement/stable/2022-08-01/examples/ApiManagementCreateGroupExternal.json
      */
     /**
      * Sample code: ApiManagementCreateGroupExternal.
@@ -30,7 +30,7 @@ public final class GroupCreateOrUpdateSamples {
     }
 
     /*
-     * x-ms-original-file: specification/apimanagement/resource-manager/Microsoft.ApiManagement/stable/2021-08-01/examples/ApiManagementCreateGroup.json
+     * x-ms-original-file: specification/apimanagement/resource-manager/Microsoft.ApiManagement/stable/2022-08-01/examples/ApiManagementCreateGroup.json
      */
     /**
      * Sample code: ApiManagementCreateGroup.

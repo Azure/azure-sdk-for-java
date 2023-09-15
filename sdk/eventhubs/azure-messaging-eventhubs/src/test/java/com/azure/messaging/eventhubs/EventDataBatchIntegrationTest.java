@@ -78,7 +78,8 @@ public class EventDataBatchIntegrationTest extends IntegrationTestBase {
 
         // Act & Assert
         StepVerifier.create(producer.send(batch.getEvents()))
-            .verifyComplete();
+            .expectComplete()
+            .verify(TIMEOUT);
     }
 
     /**
@@ -100,7 +101,8 @@ public class EventDataBatchIntegrationTest extends IntegrationTestBase {
 
         // Act & Assert
         StepVerifier.create(producer.send(batch.getEvents()))
-            .verifyComplete();
+            .expectComplete()
+            .verify(TIMEOUT);
     }
 
     /**
@@ -202,7 +204,8 @@ public class EventDataBatchIntegrationTest extends IntegrationTestBase {
         // Act & Assert
         Assertions.assertEquals(count, batch.getCount());
         StepVerifier.create(producer.send(batch.getEvents(), sendOptions))
-            .verifyComplete();
+            .expectComplete()
+            .verify(TIMEOUT);
     }
 
     private static EventData createData() {

@@ -61,8 +61,7 @@ public final class HcxEnterpriseSitesClientImpl implements HcxEnterpriseSitesCli
     public interface HcxEnterpriseSitesService {
         @Headers({"Content-Type: application/json"})
         @Get(
-            "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.AVS/privateClouds"
-                + "/{privateCloudName}/hcxEnterpriseSites")
+            "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.AVS/privateClouds/{privateCloudName}/hcxEnterpriseSites")
         @ExpectedResponses({200})
         @UnexpectedResponseExceptionType(ManagementException.class)
         Mono<Response<HcxEnterpriseSiteList>> list(
@@ -76,8 +75,7 @@ public final class HcxEnterpriseSitesClientImpl implements HcxEnterpriseSitesCli
 
         @Headers({"Content-Type: application/json"})
         @Get(
-            "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.AVS/privateClouds"
-                + "/{privateCloudName}/hcxEnterpriseSites/{hcxEnterpriseSiteName}")
+            "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.AVS/privateClouds/{privateCloudName}/hcxEnterpriseSites/{hcxEnterpriseSiteName}")
         @ExpectedResponses({200})
         @UnexpectedResponseExceptionType(ManagementException.class)
         Mono<Response<HcxEnterpriseSiteInner>> get(
@@ -92,8 +90,7 @@ public final class HcxEnterpriseSitesClientImpl implements HcxEnterpriseSitesCli
 
         @Headers({"Content-Type: application/json"})
         @Put(
-            "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.AVS/privateClouds"
-                + "/{privateCloudName}/hcxEnterpriseSites/{hcxEnterpriseSiteName}")
+            "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.AVS/privateClouds/{privateCloudName}/hcxEnterpriseSites/{hcxEnterpriseSiteName}")
         @ExpectedResponses({200, 201})
         @UnexpectedResponseExceptionType(ManagementException.class)
         Mono<Response<HcxEnterpriseSiteInner>> createOrUpdate(
@@ -109,8 +106,7 @@ public final class HcxEnterpriseSitesClientImpl implements HcxEnterpriseSitesCli
 
         @Headers({"Content-Type: application/json"})
         @Delete(
-            "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.AVS/privateClouds"
-                + "/{privateCloudName}/hcxEnterpriseSites/{hcxEnterpriseSiteName}")
+            "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.AVS/privateClouds/{privateCloudName}/hcxEnterpriseSites/{hcxEnterpriseSiteName}")
         @ExpectedResponses({200, 204})
         @UnexpectedResponseExceptionType(ManagementException.class)
         Mono<Response<Void>> delete(
@@ -135,7 +131,7 @@ public final class HcxEnterpriseSitesClientImpl implements HcxEnterpriseSitesCli
     }
 
     /**
-     * List HCX Enterprise Sites in a private cloud.
+     * List HCX on-premises key in a private cloud.
      *
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param privateCloudName Name of the private cloud.
@@ -194,7 +190,7 @@ public final class HcxEnterpriseSitesClientImpl implements HcxEnterpriseSitesCli
     }
 
     /**
-     * List HCX Enterprise Sites in a private cloud.
+     * List HCX on-premises key in a private cloud.
      *
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param privateCloudName Name of the private cloud.
@@ -251,7 +247,7 @@ public final class HcxEnterpriseSitesClientImpl implements HcxEnterpriseSitesCli
     }
 
     /**
-     * List HCX Enterprise Sites in a private cloud.
+     * List HCX on-premises key in a private cloud.
      *
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param privateCloudName Name of the private cloud.
@@ -268,7 +264,7 @@ public final class HcxEnterpriseSitesClientImpl implements HcxEnterpriseSitesCli
     }
 
     /**
-     * List HCX Enterprise Sites in a private cloud.
+     * List HCX on-premises key in a private cloud.
      *
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param privateCloudName Name of the private cloud.
@@ -287,7 +283,7 @@ public final class HcxEnterpriseSitesClientImpl implements HcxEnterpriseSitesCli
     }
 
     /**
-     * List HCX Enterprise Sites in a private cloud.
+     * List HCX on-premises key in a private cloud.
      *
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param privateCloudName Name of the private cloud.
@@ -302,7 +298,7 @@ public final class HcxEnterpriseSitesClientImpl implements HcxEnterpriseSitesCli
     }
 
     /**
-     * List HCX Enterprise Sites in a private cloud.
+     * List HCX on-premises key in a private cloud.
      *
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param privateCloudName Name of the private cloud.
@@ -319,7 +315,7 @@ public final class HcxEnterpriseSitesClientImpl implements HcxEnterpriseSitesCli
     }
 
     /**
-     * Get an HCX Enterprise Site by name in a private cloud.
+     * Get an HCX on-premises key by name in a private cloud.
      *
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param privateCloudName Name of the private cloud.
@@ -327,7 +323,7 @@ public final class HcxEnterpriseSitesClientImpl implements HcxEnterpriseSitesCli
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return an HCX Enterprise Site by name in a private cloud along with {@link Response} on successful completion of
+     * @return an HCX on-premises key by name in a private cloud along with {@link Response} on successful completion of
      *     {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
@@ -375,7 +371,7 @@ public final class HcxEnterpriseSitesClientImpl implements HcxEnterpriseSitesCli
     }
 
     /**
-     * Get an HCX Enterprise Site by name in a private cloud.
+     * Get an HCX on-premises key by name in a private cloud.
      *
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param privateCloudName Name of the private cloud.
@@ -384,7 +380,7 @@ public final class HcxEnterpriseSitesClientImpl implements HcxEnterpriseSitesCli
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return an HCX Enterprise Site by name in a private cloud along with {@link Response} on successful completion of
+     * @return an HCX on-premises key by name in a private cloud along with {@link Response} on successful completion of
      *     {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
@@ -429,7 +425,7 @@ public final class HcxEnterpriseSitesClientImpl implements HcxEnterpriseSitesCli
     }
 
     /**
-     * Get an HCX Enterprise Site by name in a private cloud.
+     * Get an HCX on-premises key by name in a private cloud.
      *
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param privateCloudName Name of the private cloud.
@@ -437,7 +433,7 @@ public final class HcxEnterpriseSitesClientImpl implements HcxEnterpriseSitesCli
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return an HCX Enterprise Site by name in a private cloud on successful completion of {@link Mono}.
+     * @return an HCX on-premises key by name in a private cloud on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Mono<HcxEnterpriseSiteInner> getAsync(
@@ -447,7 +443,7 @@ public final class HcxEnterpriseSitesClientImpl implements HcxEnterpriseSitesCli
     }
 
     /**
-     * Get an HCX Enterprise Site by name in a private cloud.
+     * Get an HCX on-premises key by name in a private cloud.
      *
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param privateCloudName Name of the private cloud.
@@ -456,7 +452,7 @@ public final class HcxEnterpriseSitesClientImpl implements HcxEnterpriseSitesCli
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return an HCX Enterprise Site by name in a private cloud along with {@link Response}.
+     * @return an HCX on-premises key by name in a private cloud along with {@link Response}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Response<HcxEnterpriseSiteInner> getWithResponse(
@@ -465,7 +461,7 @@ public final class HcxEnterpriseSitesClientImpl implements HcxEnterpriseSitesCli
     }
 
     /**
-     * Get an HCX Enterprise Site by name in a private cloud.
+     * Get an HCX on-premises key by name in a private cloud.
      *
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param privateCloudName Name of the private cloud.
@@ -473,7 +469,7 @@ public final class HcxEnterpriseSitesClientImpl implements HcxEnterpriseSitesCli
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return an HCX Enterprise Site by name in a private cloud.
+     * @return an HCX on-premises key by name in a private cloud.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public HcxEnterpriseSiteInner get(String resourceGroupName, String privateCloudName, String hcxEnterpriseSiteName) {
@@ -481,7 +477,7 @@ public final class HcxEnterpriseSitesClientImpl implements HcxEnterpriseSitesCli
     }
 
     /**
-     * Create or update an HCX Enterprise Site in a private cloud.
+     * Create or update an activation key for on-premises HCX site.
      *
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param privateCloudName The name of the private cloud.
@@ -547,7 +543,7 @@ public final class HcxEnterpriseSitesClientImpl implements HcxEnterpriseSitesCli
     }
 
     /**
-     * Create or update an HCX Enterprise Site in a private cloud.
+     * Create or update an activation key for on-premises HCX site.
      *
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param privateCloudName The name of the private cloud.
@@ -612,7 +608,7 @@ public final class HcxEnterpriseSitesClientImpl implements HcxEnterpriseSitesCli
     }
 
     /**
-     * Create or update an HCX Enterprise Site in a private cloud.
+     * Create or update an activation key for on-premises HCX site.
      *
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param privateCloudName The name of the private cloud.
@@ -635,7 +631,7 @@ public final class HcxEnterpriseSitesClientImpl implements HcxEnterpriseSitesCli
     }
 
     /**
-     * Create or update an HCX Enterprise Site in a private cloud.
+     * Create or update an activation key for on-premises HCX site.
      *
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param privateCloudName The name of the private cloud.
@@ -660,7 +656,7 @@ public final class HcxEnterpriseSitesClientImpl implements HcxEnterpriseSitesCli
     }
 
     /**
-     * Create or update an HCX Enterprise Site in a private cloud.
+     * Create or update an activation key for on-premises HCX site.
      *
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param privateCloudName The name of the private cloud.
@@ -683,7 +679,7 @@ public final class HcxEnterpriseSitesClientImpl implements HcxEnterpriseSitesCli
     }
 
     /**
-     * Delete an HCX Enterprise Site in a private cloud.
+     * Delete HCX on-premises key in a private cloud.
      *
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param privateCloudName Name of the private cloud.
@@ -738,7 +734,7 @@ public final class HcxEnterpriseSitesClientImpl implements HcxEnterpriseSitesCli
     }
 
     /**
-     * Delete an HCX Enterprise Site in a private cloud.
+     * Delete HCX on-premises key in a private cloud.
      *
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param privateCloudName Name of the private cloud.
@@ -791,7 +787,7 @@ public final class HcxEnterpriseSitesClientImpl implements HcxEnterpriseSitesCli
     }
 
     /**
-     * Delete an HCX Enterprise Site in a private cloud.
+     * Delete HCX on-premises key in a private cloud.
      *
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param privateCloudName Name of the private cloud.
@@ -808,7 +804,7 @@ public final class HcxEnterpriseSitesClientImpl implements HcxEnterpriseSitesCli
     }
 
     /**
-     * Delete an HCX Enterprise Site in a private cloud.
+     * Delete HCX on-premises key in a private cloud.
      *
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param privateCloudName Name of the private cloud.
@@ -826,7 +822,7 @@ public final class HcxEnterpriseSitesClientImpl implements HcxEnterpriseSitesCli
     }
 
     /**
-     * Delete an HCX Enterprise Site in a private cloud.
+     * Delete HCX on-premises key in a private cloud.
      *
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param privateCloudName Name of the private cloud.

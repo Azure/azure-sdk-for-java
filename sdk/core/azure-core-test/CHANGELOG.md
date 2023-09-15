@@ -1,6 +1,6 @@
 # Release History
 
-## 1.20.0-beta.1 (Unreleased)
+## 1.21.0-beta.1 (Unreleased)
 
 ### Features Added
 
@@ -9,6 +9,18 @@
 ### Bugs Fixed
 
 ### Other Changes
+
+## 1.20.0 (2023-09-07)
+
+### Features Added
+
+- Added `TestProxyRecordingOptions` model representing the transport layer options to send to the test proxy when recording.
+
+### Other Changes
+
+#### Dependency Updates
+
+- Upgraded `azure-core` from `1.42.0` to `1.43.0`.
 
 ## 1.19.0 (2023-08-04)
 

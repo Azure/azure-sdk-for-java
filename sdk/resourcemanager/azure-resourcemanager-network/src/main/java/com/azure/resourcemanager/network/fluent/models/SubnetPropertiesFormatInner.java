@@ -134,6 +134,13 @@ public final class SubnetPropertiesFormatInner {
     @JsonProperty(value = "applicationGatewayIPConfigurations")
     private List<ApplicationGatewayIpConfigurationInner> applicationGatewayIpConfigurations;
 
+    /*
+     * Set this property to false to disable default outbound connectivity for all VMs in the subnet. This property can
+     * only be set at the time of subnet creation and cannot be updated for an existing subnet.
+     */
+    @JsonProperty(value = "defaultOutboundAccess")
+    private Boolean defaultOutboundAccess;
+
     /** Creates an instance of SubnetPropertiesFormatInner class. */
     public SubnetPropertiesFormatInner() {
     }
@@ -450,6 +457,30 @@ public final class SubnetPropertiesFormatInner {
     public SubnetPropertiesFormatInner withApplicationGatewayIpConfigurations(
         List<ApplicationGatewayIpConfigurationInner> applicationGatewayIpConfigurations) {
         this.applicationGatewayIpConfigurations = applicationGatewayIpConfigurations;
+        return this;
+    }
+
+    /**
+     * Get the defaultOutboundAccess property: Set this property to false to disable default outbound connectivity for
+     * all VMs in the subnet. This property can only be set at the time of subnet creation and cannot be updated for an
+     * existing subnet.
+     *
+     * @return the defaultOutboundAccess value.
+     */
+    public Boolean defaultOutboundAccess() {
+        return this.defaultOutboundAccess;
+    }
+
+    /**
+     * Set the defaultOutboundAccess property: Set this property to false to disable default outbound connectivity for
+     * all VMs in the subnet. This property can only be set at the time of subnet creation and cannot be updated for an
+     * existing subnet.
+     *
+     * @param defaultOutboundAccess the defaultOutboundAccess value to set.
+     * @return the SubnetPropertiesFormatInner object itself.
+     */
+    public SubnetPropertiesFormatInner withDefaultOutboundAccess(Boolean defaultOutboundAccess) {
+        this.defaultOutboundAccess = defaultOutboundAccess;
         return this;
     }
 

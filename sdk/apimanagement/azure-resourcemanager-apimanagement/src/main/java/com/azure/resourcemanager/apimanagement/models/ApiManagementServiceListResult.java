@@ -20,11 +20,14 @@ public final class ApiManagementServiceListResult {
     private List<ApiManagementServiceResourceInner> value;
 
     /*
-     * Link to the next set of results. Not empty if Value contains incomplete
-     * list of API Management services.
+     * Link to the next set of results. Not empty if Value contains incomplete list of API Management services.
      */
     @JsonProperty(value = "nextLink")
     private String nextLink;
+
+    /** Creates an instance of ApiManagementServiceListResult class. */
+    public ApiManagementServiceListResult() {
+    }
 
     /**
      * Get the value property: Result of the List API Management services operation.

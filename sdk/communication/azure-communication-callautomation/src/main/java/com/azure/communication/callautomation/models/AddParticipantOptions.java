@@ -16,7 +16,7 @@ import java.time.Duration;
 public final class AddParticipantOptions {
 
     /**
-     * Information for the target being add
+     * Information for the target being added
      */
     private final CallInvite targetParticipant;
 
