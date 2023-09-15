@@ -17,7 +17,6 @@ import com.azure.cosmos.CosmosException;
 import com.azure.cosmos.DirectConnectionConfig;
 import com.azure.cosmos.SessionRetryOptions;
 import com.azure.cosmos.ThresholdBasedAvailabilityStrategy;
-import com.azure.cosmos.implementation.apachecommons.collections.list.UnmodifiableList;
 import com.azure.cosmos.implementation.apachecommons.lang.StringUtils;
 import com.azure.cosmos.implementation.apachecommons.lang.tuple.ImmutablePair;
 import com.azure.cosmos.implementation.batch.BatchResponseParser;
@@ -115,6 +114,7 @@ import java.util.concurrent.atomic.AtomicBoolean;
 import java.util.concurrent.atomic.AtomicInteger;
 import java.util.function.BiFunction;
 import java.util.function.Function;
+import java.util.function.Supplier;
 import java.util.stream.Collectors;
 
 import static com.azure.cosmos.BridgeInternal.documentFromObject;
@@ -3209,6 +3209,23 @@ public class RxDocumentClientImpl implements AsyncDocumentClient, IAuthorization
             }
 
             @Override
+            public <T> Mono<FeedResponse<T>> executeFeedOperationWithAvailabilityStrategy(
+                ResourceType resourceType,
+                OperationType operationType,
+                Supplier<DocumentClientRetryPolicy> retryPolicyFactory,
+                RxDocumentServiceRequest req,
+                BiFunction<Supplier<DocumentClientRetryPolicy>, RxDocumentServiceRequest, Mono<FeedResponse<T>>> feedOperation) {
+
+                return RxDocumentClientImpl.this.executeFeedOperationWithAvailabilityStrategy(
+                    resourceType,
+                    operationType,
+                    retryPolicyFactory,
+                    req,
+                    feedOperation
+                );
+            }
+
+            @Override
             public Mono<RxDocumentServiceResponse> readFeedAsync(RxDocumentServiceRequest request) {
                 // TODO Auto-generated method stub
                 return null;
@@ -4679,7 +4696,7 @@ public class RxDocumentClientImpl implements AsyncDocumentClient, IAuthorization
         int maxPageSize = maxItemCount != null ? maxItemCount : -1;
         final CosmosQueryRequestOptions finalCosmosQueryRequestOptions = options;
 
-        assert(ResourceType != ResourceType.Document)
+        assert(resourceType == ResourceType.Document);
         // readFeed is only used for non-document operations - no need to wire up hedging
         DocumentClientRetryPolicy retryPolicy = this.resetSessionTokenRetryPolicy.getRequestPolicy(null);
         BiFunction<String, Integer, RxDocumentServiceRequest> createRequestFunc = (continuationToken, pageSize) -> {
@@ -5312,12 +5329,7 @@ public class RxDocumentClientImpl implements AsyncDocumentClient, IAuthorization
      * @param operationType - the operationT
      * @return the applicable endpoints ordered by preference list if any
      */
-    private List<URI> getApplicableEndPoints(OperationType operationType, RequestOptions options) {
-        List<String> excludedRegions = null;
-        if (options != null) {
-            excludedRegions = options.getExcludeRegions();
-        }
-
+    private List<URI> getApplicableEndPoints(OperationType operationType, List<String> excludedRegions) {
         if (operationType.isReadOnlyOperation()) {
             return withoutNulls(this.globalEndpointManager.getApplicableReadEndpoints(excludedRegions));
         } else if (operationType.isWriteOperation()) {
@@ -5351,6 +5363,21 @@ public class RxDocumentClientImpl implements AsyncDocumentClient, IAuthorization
         boolean isIdempotentWriteRetriesEnabled,
         RequestOptions options) {
 
+        return getApplicableRegionsForSpeculation(
+            endToEndPolicyConfig,
+            resourceType,
+            operationType,
+            isIdempotentWriteRetriesEnabled,
+            options.getExcludeRegions());
+    }
+
+    private List<String> getApplicableRegionsForSpeculation(
+        CosmosEndToEndOperationLatencyPolicyConfig endToEndPolicyConfig,
+        ResourceType resourceType,
+        OperationType operationType,
+        boolean isIdempotentWriteRetriesEnabled,
+        List<String> excludedRegions) {
+
         if (endToEndPolicyConfig == null || !endToEndPolicyConfig.isEnabled()) {
             return EMPTY_REGION_LIST;
         }
@@ -5371,13 +5398,11 @@ public class RxDocumentClientImpl implements AsyncDocumentClient, IAuthorization
             return EMPTY_REGION_LIST;
         }
 
-        List<URI> endpoints = getApplicableEndPoints(operationType, options);
+        List<URI> endpoints = getApplicableEndPoints(operationType, excludedRegions);
 
         HashSet<String> normalizedExcludedRegions = new HashSet<>();
-        if (options.getExcludeRegions() != null) {
-            options
-                .getExcludeRegions()
-                .forEach(r -> normalizedExcludedRegions.add(r.toLowerCase(Locale.ROOT)));
+        if (excludedRegions != null) {
+            excludedRegions.forEach(r -> normalizedExcludedRegions.add(r.toLowerCase(Locale.ROOT)));
         }
 
         List<String> orderedRegionsForSpeculation = new ArrayList<>();
@@ -5389,6 +5414,161 @@ public class RxDocumentClientImpl implements AsyncDocumentClient, IAuthorization
         });
 
         return orderedRegionsForSpeculation;
+    }
+
+    private <T> Mono<FeedResponse<T>> executeFeedOperationWithAvailabilityStrategy(
+        final ResourceType resourceType,
+        final OperationType operationType,
+        final Supplier<DocumentClientRetryPolicy> retryPolicyFactory,
+        final RxDocumentServiceRequest req,
+        final BiFunction<Supplier<DocumentClientRetryPolicy>, RxDocumentServiceRequest, Mono<FeedResponse<T>>> feedOperation
+    ) {
+        checkNotNull(retryPolicyFactory, "Argument 'retryPolicyFactory' must not be null.");
+        checkNotNull(req, "Argument 'req' must not be null.");
+        assert(resourceType == ResourceType.Document);
+
+        CosmosEndToEndOperationLatencyPolicyConfig endToEndPolicyConfig = req
+            .requestContext
+            .getEndToEndOperationLatencyPolicyConfig();
+
+        List<String> initialExcludedRegions = req.requestContext.getExcludeRegions();
+        List<String> orderedApplicableRegionsForSpeculation = this.getApplicableRegionsForSpeculation(
+            endToEndPolicyConfig,
+            resourceType,
+            operationType,
+            false,
+            initialExcludedRegions
+        );
+
+        if (orderedApplicableRegionsForSpeculation.size() < 2) {
+            // There is at most one applicable region - no hedging possible
+            return feedOperation.apply(retryPolicyFactory, req);
+        }
+
+        ThresholdBasedAvailabilityStrategy availabilityStrategy =
+            (ThresholdBasedAvailabilityStrategy)endToEndPolicyConfig.getAvailabilityStrategy();
+        List<Mono<NonTransientFeedOperationResult>> monoList = new ArrayList<>();
+
+        final ScopedDiagnosticsFactory diagnosticsFactory = new ScopedDiagnosticsFactory(this);
+
+        orderedApplicableRegionsForSpeculation
+            .forEach(region -> {
+                RxDocumentServiceRequest clonedRequest = req.clone();
+
+                if (monoList.isEmpty()) {
+                    // no special error handling for transient errors to suppress them here
+                    // because any cross-regional retries are expected to be processed
+                    // by the ClientRetryPolicy for the initial request - so, any outcome of the
+                    // initial Mono should be treated as non-transient error - even when
+                    // the error would otherwise be treated as transient
+                    Mono<NonTransientFeedOperationResult> initialMonoAcrossAllRegions =
+                        feedOperation.apply(retryPolicyFactory, clonedRequest)
+                                .map(response -> new NonTransientFeedOperationResult(response))
+                                .onErrorResume(
+                                    t -> isCosmosException(t),
+                                    t -> Mono.just(
+                                        new NonTransientFeedOperationResult(
+                                            Utils.as(Exceptions.unwrap(t), CosmosException.class))));
+
+                    if (logger.isDebugEnabled()) {
+                        monoList.add(initialMonoAcrossAllRegions.doOnSubscribe(c -> logger.debug(
+                            "STARTING to process {} operation in region '{}'",
+                            operationType,
+                            region)));
+                    } else {
+                        monoList.add(initialMonoAcrossAllRegions);
+                    }
+                } else {
+                    clonedRequest.requestContext.setExcludeRegions(
+                        getEffectiveExcludedRegionsForHedging(
+                            initialExcludedRegions,
+                            orderedApplicableRegionsForSpeculation,
+                            region)
+                    );
+
+                    // Non-Transient errors are mapped to a value - this ensures the firstWithValue
+                    // operator below will complete the composite Mono for both successful values
+                    // and non-transient errors
+                    Mono<NonTransientFeedOperationResult> regionalCrossRegionRetryMono =
+                        feedOperation.apply(retryPolicyFactory, clonedRequest)
+                                .map(response -> new NonTransientFeedOperationResult(response))
+                                .onErrorResume(
+                                    t -> isNonTransientCosmosException(t),
+                                    t -> Mono.just(
+                                        new NonTransientFeedOperationResult(
+                                            Utils.as(Exceptions.unwrap(t), CosmosException.class))));
+
+                    Duration delayForCrossRegionalRetry = (availabilityStrategy)
+                        .getThreshold()
+                        .plus((availabilityStrategy)
+                            .getThresholdStep()
+                            .multipliedBy(monoList.size() - 1));
+
+                    if (logger.isDebugEnabled()) {
+                        monoList.add(
+                            regionalCrossRegionRetryMono
+                                .doOnSubscribe(c -> logger.debug("STARTING to process {} operation in region '{}'", operationType, region))
+                                .delaySubscription(delayForCrossRegionalRetry));
+                    } else {
+                        monoList.add(
+                            regionalCrossRegionRetryMono
+                                .delaySubscription(delayForCrossRegionalRetry));
+                    }
+                }
+            });
+
+        // NOTE - merging diagnosticsFactory cannot only happen in
+        // doFinally operator because the doFinally operator is a side effect method -
+        // meaning it executes concurrently with firing the onComplete/onError signal
+        // doFinally is also triggered by cancellation
+        // So, to make sure merging the Context happens synchronously in line we
+        // have to ensure merging is happening on error/completion
+        // and also in doOnCancel.
+        return Mono
+            .firstWithValue(monoList)
+            .flatMap(nonTransientResult -> {
+                if (nonTransientResult.isError()) {
+                    return Mono.error(nonTransientResult.exception);
+                }
+
+                return Mono.just((FeedResponse<T>)nonTransientResult.response);
+            })
+            .onErrorMap(throwable -> {
+                Throwable exception = Exceptions.unwrap(throwable);
+
+                if (exception instanceof NoSuchElementException) {
+
+                    List<Throwable> innerThrowables = Exceptions
+                        .unwrapMultiple(exception.getCause());
+
+                    int index = 0;
+                    for (Throwable innerThrowable : innerThrowables) {
+                        Throwable innerException = Exceptions.unwrap(innerThrowable);
+
+                        // collect latest CosmosException instance bubbling up for a region
+                        if (innerException instanceof CosmosException) {
+                            CosmosException cosmosException = Utils.as(innerException, CosmosException.class);
+                            return cosmosException;
+                        } else if (exception instanceof NoSuchElementException) {
+                            logger.trace(
+                                "Operation in {} completed with empty result because it was cancelled.",
+                                orderedApplicableRegionsForSpeculation.get(index));
+                        } else if (logger.isWarnEnabled()) {
+                            String message = "Unexpected Non-CosmosException when processing operation in '"
+                                + orderedApplicableRegionsForSpeculation.get(index)
+                                + "'.";
+                            logger.warn(
+                                message,
+                                innerException
+                            );
+                        }
+
+                        index++;
+                    }
+                }
+
+                return exception;
+            });
     }
 
     @FunctionalInterface
@@ -5425,6 +5605,35 @@ public class RxDocumentClientImpl implements AsyncDocumentClient, IAuthorization
         }
     }
 
+    private static class NonTransientFeedOperationResult<T> {
+        private final FeedResponse<T> response;
+        private final CosmosException exception;
+
+        public NonTransientFeedOperationResult(CosmosException exception) {
+            checkNotNull(exception, "Argument 'exception' must not be null.");
+            this.exception = exception;
+            this.response = null;
+        }
+
+        public NonTransientFeedOperationResult(FeedResponse<T> response) {
+            checkNotNull(response, "Argument 'response' must not be null.");
+            this.exception = null;
+            this.response = response;
+        }
+
+        public boolean isError() {
+            return this.exception != null;
+        }
+
+        public CosmosException getException() {
+            return this.exception;
+        }
+
+        public FeedResponse<T> getResponse() {
+            return this.response;
+        }
+    }
+
     private static class ScopedDiagnosticsFactory implements DiagnosticsClientContext {
 
         private AtomicBoolean isMerged = new AtomicBoolean(false);
@@ -5455,16 +5664,26 @@ public class RxDocumentClientImpl implements AsyncDocumentClient, IAuthorization
         }
 
         public void merge(RequestOptions requestOptions) {
+            CosmosDiagnosticsContext knownCtx = null;
+
+            if (requestOptions != null &&
+                requestOptions.getDiagnosticsContext() != null) {
+
+                knownCtx = requestOptions.getDiagnosticsContext();
+            }
+
+            merge(knownCtx);
+        }
+
+        public void merge(CosmosDiagnosticsContext knownCtx) {
             if (!isMerged.compareAndSet(false, true)) {
                 return;
             }
 
             CosmosDiagnosticsContext ctx = null;
 
-            if (requestOptions != null &&
-                requestOptions.getDiagnosticsContext() != null) {
-
-                ctx = requestOptions.getDiagnosticsContext();
+            if (knownCtx != null) {
+                ctx = knownCtx;
             } else {
                 for (CosmosDiagnostics diagnostics : this.createdDiagnostics) {
                     if (diagnostics.getDiagnosticsContext() != null) {

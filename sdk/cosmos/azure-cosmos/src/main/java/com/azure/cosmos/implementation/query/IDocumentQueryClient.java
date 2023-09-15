@@ -2,13 +2,25 @@
 // Licensed under the MIT License.
 package com.azure.cosmos.implementation.query;
 
+import com.azure.cosmos.CosmosEndToEndOperationLatencyPolicyConfig;
+import com.azure.cosmos.implementation.DocumentClientRetryPolicy;
+import com.azure.cosmos.implementation.OperationType;
+import com.azure.cosmos.implementation.RequestOptions;
+import com.azure.cosmos.implementation.ResourceType;
+import com.azure.cosmos.implementation.RxDocumentClientImpl;
 import com.azure.cosmos.implementation.caches.IPartitionKeyRangeCache;
 import com.azure.cosmos.implementation.caches.RxCollectionCache;
 import com.azure.cosmos.ConsistencyLevel;
 import com.azure.cosmos.implementation.IRetryPolicyFactory;
 import com.azure.cosmos.implementation.RxDocumentServiceRequest;
 import com.azure.cosmos.implementation.RxDocumentServiceResponse;
+import com.azure.cosmos.models.FeedResponse;
 import reactor.core.publisher.Mono;
+
+import java.net.URI;
+import java.util.List;
+import java.util.function.BiFunction;
+import java.util.function.Supplier;
 
 /**
  * While this class is public, but it is not part of our published public APIs.
@@ -48,6 +60,13 @@ public interface IDocumentQueryClient {
     Mono<RxDocumentServiceResponse> executeQueryAsync(RxDocumentServiceRequest request);
 
     QueryCompatibilityMode getQueryCompatibilityMode();
+
+    <T> Mono<FeedResponse<T>> executeFeedOperationWithAvailabilityStrategy(
+        final ResourceType resourceType,
+        final OperationType operationType,
+        final Supplier<DocumentClientRetryPolicy> retryPolicyFactory,
+        final RxDocumentServiceRequest req,
+        final BiFunction<Supplier<DocumentClientRetryPolicy>, RxDocumentServiceRequest, Mono<FeedResponse<T>>> feedOperation);
 
     /// <summary>
     /// A client query compatibility mode when making query request.
