@@ -14,16 +14,13 @@ import java.nio.file.Paths;
 
 public final class AnalyzeImageTests extends ContentSafetyClientTestBase {
     @Test
-    public void testAnalyzeImageTests() {
+    public void testAnalyzeImageTests() throws IOException {
         // method invocation
         ImageData image = new ImageData();
         String cwd = System.getProperty("user.dir");
-        String absolutePath = cwd + "./src/image.jpg";
-        try {
-            image.setContent(Files.readAllBytes(Paths.get(absolutePath)));
-        } catch (IOException e) {
-            throw new RuntimeException(e);
-        }
+        String absolutePath = cwd + "/src/test/resources/image.jpg";
+        image.setContent(Files.readAllBytes(Paths.get(absolutePath)));
+
         AnalyzeImageResult response =
                 contentSafetyClient.analyzeImage(
                         new AnalyzeImageOptions(image));
