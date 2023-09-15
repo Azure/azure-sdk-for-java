@@ -5,15 +5,14 @@
 package com.azure.ai.formrecognizer.documentanalysis.models;
 
 import com.azure.core.util.ExpandableStringEnum;
-
 import java.util.Collection;
 
 /** Formula kind. */
 public final class DocumentFormulaKind extends ExpandableStringEnum<DocumentFormulaKind> {
-    /** Static value inline for DocumentFormulaKind. */
+    /** A formula embedded within the content of a paragraph. */
     public static final DocumentFormulaKind INLINE = fromString("inline");
 
-    /** Static value display for DocumentFormulaKind. */
+    /** A formula in display mode that takes up an entire line. */
     public static final DocumentFormulaKind DISPLAY = fromString("display");
 
     /**

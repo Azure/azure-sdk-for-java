@@ -5,48 +5,48 @@
 package com.azure.ai.formrecognizer.documentanalysis.implementation.models;
 
 import com.azure.core.annotation.Immutable;
-import com.fasterxml.jackson.annotation.JsonCreator;
-import com.fasterxml.jackson.annotation.JsonProperty;
+import com.azure.json.JsonReader;
+import com.azure.json.JsonSerializable;
+import com.azure.json.JsonToken;
+import com.azure.json.JsonWriter;
+import java.io.IOException;
 import java.time.OffsetDateTime;
+import java.util.ArrayList;
+import java.util.List;
+import java.util.Objects;
 
 /** Authorization to copy a document model to the specified target resource and modelId. */
 @Immutable
-public final class CopyAuthorization {
+public final class CopyAuthorization implements JsonSerializable<CopyAuthorization> {
     /*
      * ID of the target Azure resource where the document model should be copied to.
      */
-    @JsonProperty(value = "targetResourceId", required = true)
-    private String targetResourceId;
+    private final String targetResourceId;
 
     /*
      * Location of the target Azure resource where the document model should be copied to.
      */
-    @JsonProperty(value = "targetResourceRegion", required = true)
-    private String targetResourceRegion;
+    private final String targetResourceRegion;
 
     /*
      * Identifier of the target document model.
      */
-    @JsonProperty(value = "targetModelId", required = true)
-    private String targetModelId;
+    private final String targetModelId;
 
     /*
      * URL of the copied document model in the target account.
      */
-    @JsonProperty(value = "targetModelLocation", required = true)
-    private String targetModelLocation;
+    private final String targetModelLocation;
 
     /*
      * Token used to authorize the request.
      */
-    @JsonProperty(value = "accessToken", required = true)
-    private String accessToken;
+    private final String accessToken;
 
     /*
      * Date/time when the access token expires.
      */
-    @JsonProperty(value = "expirationDateTime", required = true)
-    private OffsetDateTime expirationDateTime;
+    private final OffsetDateTime expirationDateTime;
 
     /**
      * Creates an instance of CopyAuthorization class.
@@ -58,14 +58,13 @@ public final class CopyAuthorization {
      * @param accessToken the accessToken value to set.
      * @param expirationDateTime the expirationDateTime value to set.
      */
-    @JsonCreator
     public CopyAuthorization(
-            @JsonProperty(value = "targetResourceId", required = true) String targetResourceId,
-            @JsonProperty(value = "targetResourceRegion", required = true) String targetResourceRegion,
-            @JsonProperty(value = "targetModelId", required = true) String targetModelId,
-            @JsonProperty(value = "targetModelLocation", required = true) String targetModelLocation,
-            @JsonProperty(value = "accessToken", required = true) String accessToken,
-            @JsonProperty(value = "expirationDateTime", required = true) OffsetDateTime expirationDateTime) {
+            String targetResourceId,
+            String targetResourceRegion,
+            String targetModelId,
+            String targetModelLocation,
+            String accessToken,
+            OffsetDateTime expirationDateTime) {
         this.targetResourceId = targetResourceId;
         this.targetResourceRegion = targetResourceRegion;
         this.targetModelId = targetModelId;
@@ -127,5 +126,111 @@ public final class CopyAuthorization {
      */
     public OffsetDateTime getExpirationDateTime() {
         return this.expirationDateTime;
+    }
+
+    @Override
+    public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
+        jsonWriter.writeStartObject();
+        jsonWriter.writeStringField("targetResourceId", this.targetResourceId);
+        jsonWriter.writeStringField("targetResourceRegion", this.targetResourceRegion);
+        jsonWriter.writeStringField("targetModelId", this.targetModelId);
+        jsonWriter.writeStringField("targetModelLocation", this.targetModelLocation);
+        jsonWriter.writeStringField("accessToken", this.accessToken);
+        jsonWriter.writeStringField("expirationDateTime", Objects.toString(this.expirationDateTime, null));
+        return jsonWriter.writeEndObject();
+    }
+
+    /**
+     * Reads an instance of CopyAuthorization from the JsonReader.
+     *
+     * @param jsonReader The JsonReader being read.
+     * @return An instance of CopyAuthorization if the JsonReader was pointing to an instance of it, or null if it was
+     *     pointing to JSON null.
+     * @throws IllegalStateException If the deserialized JSON object was missing any required properties.
+     * @throws IOException If an error occurs while reading the CopyAuthorization.
+     */
+    public static CopyAuthorization fromJson(JsonReader jsonReader) throws IOException {
+        return jsonReader.readObject(
+                reader -> {
+                    boolean targetResourceIdFound = false;
+                    String targetResourceId = null;
+                    boolean targetResourceRegionFound = false;
+                    String targetResourceRegion = null;
+                    boolean targetModelIdFound = false;
+                    String targetModelId = null;
+                    boolean targetModelLocationFound = false;
+                    String targetModelLocation = null;
+                    boolean accessTokenFound = false;
+                    String accessToken = null;
+                    boolean expirationDateTimeFound = false;
+                    OffsetDateTime expirationDateTime = null;
+                    while (reader.nextToken() != JsonToken.END_OBJECT) {
+                        String fieldName = reader.getFieldName();
+                        reader.nextToken();
+
+                        if ("targetResourceId".equals(fieldName)) {
+                            targetResourceId = reader.getString();
+                            targetResourceIdFound = true;
+                        } else if ("targetResourceRegion".equals(fieldName)) {
+                            targetResourceRegion = reader.getString();
+                            targetResourceRegionFound = true;
+                        } else if ("targetModelId".equals(fieldName)) {
+                            targetModelId = reader.getString();
+                            targetModelIdFound = true;
+                        } else if ("targetModelLocation".equals(fieldName)) {
+                            targetModelLocation = reader.getString();
+                            targetModelLocationFound = true;
+                        } else if ("accessToken".equals(fieldName)) {
+                            accessToken = reader.getString();
+                            accessTokenFound = true;
+                        } else if ("expirationDateTime".equals(fieldName)) {
+                            expirationDateTime =
+                                    reader.getNullable(
+                                            nonNullReader -> OffsetDateTime.parse(nonNullReader.getString()));
+                            expirationDateTimeFound = true;
+                        } else {
+                            reader.skipChildren();
+                        }
+                    }
+                    if (targetResourceIdFound
+                            && targetResourceRegionFound
+                            && targetModelIdFound
+                            && targetModelLocationFound
+                            && accessTokenFound
+                            && expirationDateTimeFound) {
+                        CopyAuthorization deserializedCopyAuthorization =
+                                new CopyAuthorization(
+                                        targetResourceId,
+                                        targetResourceRegion,
+                                        targetModelId,
+                                        targetModelLocation,
+                                        accessToken,
+                                        expirationDateTime);
+
+                        return deserializedCopyAuthorization;
+                    }
+                    List<String> missingProperties = new ArrayList<>();
+                    if (!targetResourceIdFound) {
+                        missingProperties.add("targetResourceId");
+                    }
+                    if (!targetResourceRegionFound) {
+                        missingProperties.add("targetResourceRegion");
+                    }
+                    if (!targetModelIdFound) {
+                        missingProperties.add("targetModelId");
+                    }
+                    if (!targetModelLocationFound) {
+                        missingProperties.add("targetModelLocation");
+                    }
+                    if (!accessTokenFound) {
+                        missingProperties.add("accessToken");
+                    }
+                    if (!expirationDateTimeFound) {
+                        missingProperties.add("expirationDateTime");
+                    }
+
+                    throw new IllegalStateException(
+                            "Missing required property/properties: " + String.join(", ", missingProperties));
+                });
     }
 }

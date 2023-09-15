@@ -4,21 +4,18 @@
 
 package com.azure.ai.formrecognizer.documentanalysis.implementation.models;
 
-import com.fasterxml.jackson.annotation.JsonCreator;
-import com.fasterxml.jackson.annotation.JsonValue;
-
 /** Type of content source. */
 public enum ContentSourceKind {
-    /** Enum value url. */
+    /** Content at a specific URL. */
     URL("url"),
 
-    /** Enum value base64. */
+    /** Content represented via Base64 encoding. */
     BASE64("base64"),
 
-    /** Enum value azureBlob. */
+    /** Files in a path within an Azure Blob Storage container. */
     AZURE_BLOB("azureBlob"),
 
-    /** Enum value azureBlobFileList. */
+    /** A file list specifying individual files in an Azure Blob Storage container. */
     AZURE_BLOB_FILE_LIST("azureBlobFileList");
 
     /** The actual serialized value for a ContentSourceKind instance. */
@@ -34,7 +31,6 @@ public enum ContentSourceKind {
      * @param value the serialized value to parse.
      * @return the parsed ContentSourceKind object, or null if unable to parse.
      */
-    @JsonCreator
     public static ContentSourceKind fromString(String value) {
         if (value == null) {
             return null;
@@ -49,7 +45,6 @@ public enum ContentSourceKind {
     }
 
     /** {@inheritDoc} */
-    @JsonValue
     @Override
     public String toString() {
         return this.value;

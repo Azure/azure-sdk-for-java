@@ -5,42 +5,42 @@
 package com.azure.ai.formrecognizer.documentanalysis.implementation.models;
 
 import com.azure.core.annotation.Immutable;
-import com.fasterxml.jackson.annotation.JsonCreator;
-import com.fasterxml.jackson.annotation.JsonProperty;
+import com.azure.json.JsonReader;
+import com.azure.json.JsonSerializable;
+import com.azure.json.JsonToken;
+import com.azure.json.JsonWriter;
+import java.io.IOException;
+import java.util.ArrayList;
 import java.util.List;
+import java.util.Objects;
 
 /** A barcode object. */
 @Immutable
-public final class DocumentBarcode {
+public final class DocumentBarcode implements JsonSerializable<DocumentBarcode> {
     /*
      * Barcode kind.
      */
-    @JsonProperty(value = "kind", required = true)
-    private DocumentBarcodeKind kind;
+    private final DocumentBarcodeKind kind;
 
     /*
      * Barcode value
      */
-    @JsonProperty(value = "value", required = true)
-    private String value;
+    private final String value;
 
     /*
      * Bounding polygon of the barcode.
      */
-    @JsonProperty(value = "polygon")
     private List<Float> polygon;
 
     /*
      * Location of the barcode in the reading order concatenated content.
      */
-    @JsonProperty(value = "span", required = true)
-    private DocumentSpan span;
+    private final DocumentSpan span;
 
     /*
      * Confidence of correctly extracting the barcode.
      */
-    @JsonProperty(value = "confidence", required = true)
-    private float confidence;
+    private final float confidence;
 
     /**
      * Creates an instance of DocumentBarcode class.
@@ -50,12 +50,7 @@ public final class DocumentBarcode {
      * @param span the span value to set.
      * @param confidence the confidence value to set.
      */
-    @JsonCreator
-    private DocumentBarcode(
-            @JsonProperty(value = "kind", required = true) DocumentBarcodeKind kind,
-            @JsonProperty(value = "value", required = true) String value,
-            @JsonProperty(value = "span", required = true) DocumentSpan span,
-            @JsonProperty(value = "confidence", required = true) float confidence) {
+    private DocumentBarcode(DocumentBarcodeKind kind, String value, DocumentSpan span, float confidence) {
         this.kind = kind;
         this.value = value;
         this.span = span;
@@ -105,5 +100,85 @@ public final class DocumentBarcode {
      */
     public float getConfidence() {
         return this.confidence;
+    }
+
+    @Override
+    public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
+        jsonWriter.writeStartObject();
+        jsonWriter.writeStringField("kind", Objects.toString(this.kind, null));
+        jsonWriter.writeStringField("value", this.value);
+        jsonWriter.writeJsonField("span", this.span);
+        jsonWriter.writeFloatField("confidence", this.confidence);
+        jsonWriter.writeArrayField("polygon", this.polygon, (writer, element) -> writer.writeFloat(element));
+        return jsonWriter.writeEndObject();
+    }
+
+    /**
+     * Reads an instance of DocumentBarcode from the JsonReader.
+     *
+     * @param jsonReader The JsonReader being read.
+     * @return An instance of DocumentBarcode if the JsonReader was pointing to an instance of it, or null if it was
+     *     pointing to JSON null.
+     * @throws IllegalStateException If the deserialized JSON object was missing any required properties.
+     * @throws IOException If an error occurs while reading the DocumentBarcode.
+     */
+    public static DocumentBarcode fromJson(JsonReader jsonReader) throws IOException {
+        return jsonReader.readObject(
+                reader -> {
+                    boolean kindFound = false;
+                    DocumentBarcodeKind kind = null;
+                    boolean valueFound = false;
+                    String value = null;
+                    boolean spanFound = false;
+                    DocumentSpan span = null;
+                    boolean confidenceFound = false;
+                    float confidence = 0.0f;
+                    List<Float> polygon = null;
+                    while (reader.nextToken() != JsonToken.END_OBJECT) {
+                        String fieldName = reader.getFieldName();
+                        reader.nextToken();
+
+                        if ("kind".equals(fieldName)) {
+                            kind = DocumentBarcodeKind.fromString(reader.getString());
+                            kindFound = true;
+                        } else if ("value".equals(fieldName)) {
+                            value = reader.getString();
+                            valueFound = true;
+                        } else if ("span".equals(fieldName)) {
+                            span = DocumentSpan.fromJson(reader);
+                            spanFound = true;
+                        } else if ("confidence".equals(fieldName)) {
+                            confidence = reader.getFloat();
+                            confidenceFound = true;
+                        } else if ("polygon".equals(fieldName)) {
+                            polygon = reader.readArray(reader1 -> reader1.getFloat());
+                        } else {
+                            reader.skipChildren();
+                        }
+                    }
+                    if (kindFound && valueFound && spanFound && confidenceFound) {
+                        DocumentBarcode deserializedDocumentBarcode =
+                                new DocumentBarcode(kind, value, span, confidence);
+                        deserializedDocumentBarcode.polygon = polygon;
+
+                        return deserializedDocumentBarcode;
+                    }
+                    List<String> missingProperties = new ArrayList<>();
+                    if (!kindFound) {
+                        missingProperties.add("kind");
+                    }
+                    if (!valueFound) {
+                        missingProperties.add("value");
+                    }
+                    if (!spanFound) {
+                        missingProperties.add("span");
+                    }
+                    if (!confidenceFound) {
+                        missingProperties.add("confidence");
+                    }
+
+                    throw new IllegalStateException(
+                            "Missing required property/properties: " + String.join(", ", missingProperties));
+                });
     }
 }

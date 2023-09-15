@@ -5,23 +5,26 @@
 package com.azure.ai.formrecognizer.documentanalysis.implementation.models;
 
 import com.azure.core.annotation.Immutable;
-import com.fasterxml.jackson.annotation.JsonCreator;
-import com.fasterxml.jackson.annotation.JsonProperty;
+import com.azure.json.JsonReader;
+import com.azure.json.JsonSerializable;
+import com.azure.json.JsonToken;
+import com.azure.json.JsonWriter;
+import java.io.IOException;
+import java.util.ArrayList;
+import java.util.List;
 
 /** Contiguous region of the concatenated content property, specified as an offset and length. */
 @Immutable
-public final class DocumentSpan {
+public final class DocumentSpan implements JsonSerializable<DocumentSpan> {
     /*
      * Zero-based index of the content represented by the span.
      */
-    @JsonProperty(value = "offset", required = true)
-    private int offset;
+    private final int offset;
 
     /*
      * Number of characters in the content represented by the span.
      */
-    @JsonProperty(value = "length", required = true)
-    private int length;
+    private final int length;
 
     /**
      * Creates an instance of DocumentSpan class.
@@ -29,10 +32,7 @@ public final class DocumentSpan {
      * @param offset the offset value to set.
      * @param length the length value to set.
      */
-    @JsonCreator
-    private DocumentSpan(
-            @JsonProperty(value = "offset", required = true) int offset,
-            @JsonProperty(value = "length", required = true) int length) {
+    private DocumentSpan(int offset, int length) {
         this.offset = offset;
         this.length = length;
     }
@@ -53,5 +53,61 @@ public final class DocumentSpan {
      */
     public int getLength() {
         return this.length;
+    }
+
+    @Override
+    public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
+        jsonWriter.writeStartObject();
+        jsonWriter.writeIntField("offset", this.offset);
+        jsonWriter.writeIntField("length", this.length);
+        return jsonWriter.writeEndObject();
+    }
+
+    /**
+     * Reads an instance of DocumentSpan from the JsonReader.
+     *
+     * @param jsonReader The JsonReader being read.
+     * @return An instance of DocumentSpan if the JsonReader was pointing to an instance of it, or null if it was
+     *     pointing to JSON null.
+     * @throws IllegalStateException If the deserialized JSON object was missing any required properties.
+     * @throws IOException If an error occurs while reading the DocumentSpan.
+     */
+    public static DocumentSpan fromJson(JsonReader jsonReader) throws IOException {
+        return jsonReader.readObject(
+                reader -> {
+                    boolean offsetFound = false;
+                    int offset = 0;
+                    boolean lengthFound = false;
+                    int length = 0;
+                    while (reader.nextToken() != JsonToken.END_OBJECT) {
+                        String fieldName = reader.getFieldName();
+                        reader.nextToken();
+
+                        if ("offset".equals(fieldName)) {
+                            offset = reader.getInt();
+                            offsetFound = true;
+                        } else if ("length".equals(fieldName)) {
+                            length = reader.getInt();
+                            lengthFound = true;
+                        } else {
+                            reader.skipChildren();
+                        }
+                    }
+                    if (offsetFound && lengthFound) {
+                        DocumentSpan deserializedDocumentSpan = new DocumentSpan(offset, length);
+
+                        return deserializedDocumentSpan;
+                    }
+                    List<String> missingProperties = new ArrayList<>();
+                    if (!offsetFound) {
+                        missingProperties.add("offset");
+                    }
+                    if (!lengthFound) {
+                        missingProperties.add("length");
+                    }
+
+                    throw new IllegalStateException(
+                            "Missing required property/properties: " + String.join(", ", missingProperties));
+                });
     }
 }

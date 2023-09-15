@@ -5,21 +5,20 @@
 package com.azure.ai.formrecognizer.documentanalysis.implementation.models;
 
 import com.azure.core.util.ExpandableStringEnum;
-import com.fasterxml.jackson.annotation.JsonCreator;
 import java.util.Collection;
 
 /** Type of operation. */
 public final class OperationKind extends ExpandableStringEnum<OperationKind> {
-    /** Static value documentModelBuild for OperationKind. */
+    /** Build a new custom document model. */
     public static final OperationKind DOCUMENT_MODEL_BUILD = fromString("documentModelBuild");
 
-    /** Static value documentModelCompose for OperationKind. */
+    /** Compose a new custom document model from existing models. */
     public static final OperationKind DOCUMENT_MODEL_COMPOSE = fromString("documentModelCompose");
 
-    /** Static value documentModelCopyTo for OperationKind. */
+    /** Copy an existing document model to potentially a different resource, region, or subscription. */
     public static final OperationKind DOCUMENT_MODEL_COPY_TO = fromString("documentModelCopyTo");
 
-    /** Static value documentClassifierBuild for OperationKind. */
+    /** Build a new custom classifier model. */
     public static final OperationKind DOCUMENT_CLASSIFIER_BUILD = fromString("documentClassifierBuild");
 
     /**
@@ -36,7 +35,6 @@ public final class OperationKind extends ExpandableStringEnum<OperationKind> {
      * @param name a name to look for.
      * @return the corresponding OperationKind.
      */
-    @JsonCreator
     public static OperationKind fromString(String name) {
         return fromString(name, OperationKind.class);
     }

@@ -5,15 +5,14 @@
 package com.azure.ai.formrecognizer.documentanalysis.implementation.models;
 
 import com.azure.core.util.ExpandableStringEnum;
-import com.fasterxml.jackson.annotation.JsonCreator;
 import java.util.Collection;
 
 /** Presence of signature. */
 public final class DocumentSignatureType extends ExpandableStringEnum<DocumentSignatureType> {
-    /** Static value signed for DocumentSignatureType. */
+    /** A signature is detected. */
     public static final DocumentSignatureType SIGNED = fromString("signed");
 
-    /** Static value unsigned for DocumentSignatureType. */
+    /** No signatures are detected. */
     public static final DocumentSignatureType UNSIGNED = fromString("unsigned");
 
     /**
@@ -30,7 +29,6 @@ public final class DocumentSignatureType extends ExpandableStringEnum<DocumentSi
      * @param name a name to look for.
      * @return the corresponding DocumentSignatureType.
      */
-    @JsonCreator
     public static DocumentSignatureType fromString(String name) {
         return fromString(name, DocumentSignatureType.class);
     }

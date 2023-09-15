@@ -5,41 +5,42 @@
 package com.azure.ai.formrecognizer.documentanalysis.implementation.models;
 
 import com.azure.core.annotation.Immutable;
-import com.fasterxml.jackson.annotation.JsonCreator;
-import com.fasterxml.jackson.annotation.JsonProperty;
+import com.azure.json.JsonReader;
+import com.azure.json.JsonSerializable;
+import com.azure.json.JsonToken;
+import com.azure.json.JsonWriter;
+import java.io.IOException;
 import java.time.OffsetDateTime;
+import java.util.ArrayList;
+import java.util.List;
+import java.util.Objects;
 
 /** Status and result of the analyze operation. */
 @Immutable
-public final class AnalyzeResultOperation {
+public final class AnalyzeResultOperation implements JsonSerializable<AnalyzeResultOperation> {
     /*
      * Operation status.
      */
-    @JsonProperty(value = "status", required = true)
-    private AnalyzeResultOperationStatus status;
+    private final AnalyzeResultOperationStatus status;
 
     /*
      * Date and time (UTC) when the analyze operation was submitted.
      */
-    @JsonProperty(value = "createdDateTime", required = true)
-    private OffsetDateTime createdDateTime;
+    private final OffsetDateTime createdDateTime;
 
     /*
      * Date and time (UTC) when the status was last updated.
      */
-    @JsonProperty(value = "lastUpdatedDateTime", required = true)
-    private OffsetDateTime lastUpdatedDateTime;
+    private final OffsetDateTime lastUpdatedDateTime;
 
     /*
      * Encountered error during document analysis.
      */
-    @JsonProperty(value = "error")
     private Error error;
 
     /*
      * Document analysis result.
      */
-    @JsonProperty(value = "analyzeResult")
     private AnalyzeResult analyzeResult;
 
     /**
@@ -49,11 +50,8 @@ public final class AnalyzeResultOperation {
      * @param createdDateTime the createdDateTime value to set.
      * @param lastUpdatedDateTime the lastUpdatedDateTime value to set.
      */
-    @JsonCreator
     private AnalyzeResultOperation(
-            @JsonProperty(value = "status", required = true) AnalyzeResultOperationStatus status,
-            @JsonProperty(value = "createdDateTime", required = true) OffsetDateTime createdDateTime,
-            @JsonProperty(value = "lastUpdatedDateTime", required = true) OffsetDateTime lastUpdatedDateTime) {
+            AnalyzeResultOperationStatus status, OffsetDateTime createdDateTime, OffsetDateTime lastUpdatedDateTime) {
         this.status = status;
         this.createdDateTime = createdDateTime;
         this.lastUpdatedDateTime = lastUpdatedDateTime;
@@ -102,5 +100,85 @@ public final class AnalyzeResultOperation {
      */
     public AnalyzeResult getAnalyzeResult() {
         return this.analyzeResult;
+    }
+
+    @Override
+    public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
+        jsonWriter.writeStartObject();
+        jsonWriter.writeStringField("status", Objects.toString(this.status, null));
+        jsonWriter.writeStringField("createdDateTime", Objects.toString(this.createdDateTime, null));
+        jsonWriter.writeStringField("lastUpdatedDateTime", Objects.toString(this.lastUpdatedDateTime, null));
+        jsonWriter.writeJsonField("error", this.error);
+        jsonWriter.writeJsonField("analyzeResult", this.analyzeResult);
+        return jsonWriter.writeEndObject();
+    }
+
+    /**
+     * Reads an instance of AnalyzeResultOperation from the JsonReader.
+     *
+     * @param jsonReader The JsonReader being read.
+     * @return An instance of AnalyzeResultOperation if the JsonReader was pointing to an instance of it, or null if it
+     *     was pointing to JSON null.
+     * @throws IllegalStateException If the deserialized JSON object was missing any required properties.
+     * @throws IOException If an error occurs while reading the AnalyzeResultOperation.
+     */
+    public static AnalyzeResultOperation fromJson(JsonReader jsonReader) throws IOException {
+        return jsonReader.readObject(
+                reader -> {
+                    boolean statusFound = false;
+                    AnalyzeResultOperationStatus status = null;
+                    boolean createdDateTimeFound = false;
+                    OffsetDateTime createdDateTime = null;
+                    boolean lastUpdatedDateTimeFound = false;
+                    OffsetDateTime lastUpdatedDateTime = null;
+                    Error error = null;
+                    AnalyzeResult analyzeResult = null;
+                    while (reader.nextToken() != JsonToken.END_OBJECT) {
+                        String fieldName = reader.getFieldName();
+                        reader.nextToken();
+
+                        if ("status".equals(fieldName)) {
+                            status = AnalyzeResultOperationStatus.fromString(reader.getString());
+                            statusFound = true;
+                        } else if ("createdDateTime".equals(fieldName)) {
+                            createdDateTime =
+                                    reader.getNullable(
+                                            nonNullReader -> OffsetDateTime.parse(nonNullReader.getString()));
+                            createdDateTimeFound = true;
+                        } else if ("lastUpdatedDateTime".equals(fieldName)) {
+                            lastUpdatedDateTime =
+                                    reader.getNullable(
+                                            nonNullReader -> OffsetDateTime.parse(nonNullReader.getString()));
+                            lastUpdatedDateTimeFound = true;
+                        } else if ("error".equals(fieldName)) {
+                            error = Error.fromJson(reader);
+                        } else if ("analyzeResult".equals(fieldName)) {
+                            analyzeResult = AnalyzeResult.fromJson(reader);
+                        } else {
+                            reader.skipChildren();
+                        }
+                    }
+                    if (statusFound && createdDateTimeFound && lastUpdatedDateTimeFound) {
+                        AnalyzeResultOperation deserializedAnalyzeResultOperation =
+                                new AnalyzeResultOperation(status, createdDateTime, lastUpdatedDateTime);
+                        deserializedAnalyzeResultOperation.error = error;
+                        deserializedAnalyzeResultOperation.analyzeResult = analyzeResult;
+
+                        return deserializedAnalyzeResultOperation;
+                    }
+                    List<String> missingProperties = new ArrayList<>();
+                    if (!statusFound) {
+                        missingProperties.add("status");
+                    }
+                    if (!createdDateTimeFound) {
+                        missingProperties.add("createdDateTime");
+                    }
+                    if (!lastUpdatedDateTimeFound) {
+                        missingProperties.add("lastUpdatedDateTime");
+                    }
+
+                    throw new IllegalStateException(
+                            "Missing required property/properties: " + String.join(", ", missingProperties));
+                });
     }
 }

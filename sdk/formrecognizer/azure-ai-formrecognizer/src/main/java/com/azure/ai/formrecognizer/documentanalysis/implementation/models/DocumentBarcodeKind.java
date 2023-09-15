@@ -5,60 +5,59 @@
 package com.azure.ai.formrecognizer.documentanalysis.implementation.models;
 
 import com.azure.core.util.ExpandableStringEnum;
-import com.fasterxml.jackson.annotation.JsonCreator;
 import java.util.Collection;
 
 /** Barcode kind. */
 public final class DocumentBarcodeKind extends ExpandableStringEnum<DocumentBarcodeKind> {
-    /** Static value QRCode for DocumentBarcodeKind. */
+    /** QR code, as defined in ISO/IEC 18004:2015. */
     public static final DocumentBarcodeKind QRCODE = fromString("QRCode");
 
-    /** Static value PDF417 for DocumentBarcodeKind. */
+    /** PDF417, as defined in ISO 15438. */
     public static final DocumentBarcodeKind PDF417 = fromString("PDF417");
 
-    /** Static value UPCA for DocumentBarcodeKind. */
+    /** GS1 12-digit Universal Product Code. */
     public static final DocumentBarcodeKind UPCA = fromString("UPCA");
 
-    /** Static value UPCE for DocumentBarcodeKind. */
+    /** GS1 6-digit Universal Product Code. */
     public static final DocumentBarcodeKind UPCE = fromString("UPCE");
 
-    /** Static value Code39 for DocumentBarcodeKind. */
+    /** Code 39 barcode, as defined in ISO/IEC 16388:2007. */
     public static final DocumentBarcodeKind CODE39 = fromString("Code39");
 
-    /** Static value Code128 for DocumentBarcodeKind. */
+    /** Code 128 barcode, as defined in ISO/IEC 15417:2007. */
     public static final DocumentBarcodeKind CODE128 = fromString("Code128");
 
-    /** Static value EAN8 for DocumentBarcodeKind. */
+    /** GS1 8-digit International Article Number (European Article Number). */
     public static final DocumentBarcodeKind EAN8 = fromString("EAN8");
 
-    /** Static value EAN13 for DocumentBarcodeKind. */
+    /** GS1 13-digit International Article Number (European Article Number). */
     public static final DocumentBarcodeKind EAN13 = fromString("EAN13");
 
-    /** Static value DataBar for DocumentBarcodeKind. */
+    /** GS1 DataBar barcode. */
     public static final DocumentBarcodeKind DATA_BAR = fromString("DataBar");
 
-    /** Static value Code93 for DocumentBarcodeKind. */
+    /** Code 93 barcode, as defined in ANSI/AIM BC5-1995. */
     public static final DocumentBarcodeKind CODE93 = fromString("Code93");
 
-    /** Static value Codabar for DocumentBarcodeKind. */
+    /** Codabar barcode, as defined in ANSI/AIM BC3-1995. */
     public static final DocumentBarcodeKind CODABAR = fromString("Codabar");
 
-    /** Static value DataBarExpanded for DocumentBarcodeKind. */
+    /** GS1 DataBar Expanded barcode. */
     public static final DocumentBarcodeKind DATA_BAR_EXPANDED = fromString("DataBarExpanded");
 
-    /** Static value ITF for DocumentBarcodeKind. */
+    /** Interleaved 2 of 5 barcode, as defined in ANSI/AIM BC2-1995. */
     public static final DocumentBarcodeKind ITF = fromString("ITF");
 
-    /** Static value MicroQRCode for DocumentBarcodeKind. */
+    /** Micro QR code, as defined in ISO/IEC 23941:2022. */
     public static final DocumentBarcodeKind MICRO_QRCODE = fromString("MicroQRCode");
 
-    /** Static value Aztec for DocumentBarcodeKind. */
+    /** Aztec code, as defined in ISO/IEC 24778:2008. */
     public static final DocumentBarcodeKind AZTEC = fromString("Aztec");
 
-    /** Static value DataMatrix for DocumentBarcodeKind. */
+    /** Data matrix code, as defined in ISO/IEC 16022:2006. */
     public static final DocumentBarcodeKind DATA_MATRIX = fromString("DataMatrix");
 
-    /** Static value MaxiCode for DocumentBarcodeKind. */
+    /** MaxiCode, as defined in ISO/IEC 16023:2000. */
     public static final DocumentBarcodeKind MAXI_CODE = fromString("MaxiCode");
 
     /**
@@ -75,7 +74,6 @@ public final class DocumentBarcodeKind extends ExpandableStringEnum<DocumentBarc
      * @param name a name to look for.
      * @return the corresponding DocumentBarcodeKind.
      */
-    @JsonCreator
     public static DocumentBarcodeKind fromString(String name) {
         return fromString(name, DocumentBarcodeKind.class);
     }

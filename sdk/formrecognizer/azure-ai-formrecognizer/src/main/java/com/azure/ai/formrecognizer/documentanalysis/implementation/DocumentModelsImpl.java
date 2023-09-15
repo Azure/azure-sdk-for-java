@@ -47,6 +47,7 @@ import com.azure.core.util.Context;
 import com.azure.core.util.FluxUtil;
 import com.azure.core.util.polling.DefaultPollingStrategy;
 import com.azure.core.util.polling.PollerFlux;
+import com.azure.core.util.polling.PollingStrategyOptions;
 import com.azure.core.util.polling.SyncDefaultPollingStrategy;
 import com.azure.core.util.polling.SyncPoller;
 import com.azure.core.util.serializer.TypeReference;
@@ -403,7 +404,9 @@ public final class DocumentModelsImpl {
         String featuresConverted =
                 (features == null)
                         ? null
-                        : features.stream().map(value -> Objects.toString(value, "")).collect(Collectors.joining(","));
+                        : features.stream()
+                                .map(paramItemValue -> Objects.toString(paramItemValue, ""))
+                                .collect(Collectors.joining(","));
         return FluxUtil.withContext(
                 context ->
                         service.analyzeDocument(
@@ -448,7 +451,9 @@ public final class DocumentModelsImpl {
         String featuresConverted =
                 (features == null)
                         ? null
-                        : features.stream().map(value -> Objects.toString(value, "")).collect(Collectors.joining(","));
+                        : features.stream()
+                                .map(paramItemValue -> Objects.toString(paramItemValue, ""))
+                                .collect(Collectors.joining(","));
         return service.analyzeDocument(
                 this.client.getEndpoint(),
                 modelId,
@@ -491,7 +496,9 @@ public final class DocumentModelsImpl {
         String featuresConverted =
                 (features == null)
                         ? null
-                        : features.stream().map(value -> Objects.toString(value, "")).collect(Collectors.joining(","));
+                        : features.stream()
+                                .map(paramItemValue -> Objects.toString(paramItemValue, ""))
+                                .collect(Collectors.joining(","));
         return service.analyzeDocumentSync(
                 this.client.getEndpoint(),
                 modelId,
@@ -534,10 +541,10 @@ public final class DocumentModelsImpl {
                         this.analyzeDocumentWithResponseAsync(
                                 modelId, pages, locale, stringIndexType, features, analyzeRequest),
                 new DefaultPollingStrategy<>(
-                        this.client.getHttpPipeline(),
-                        "{endpoint}/formrecognizer".replace("{endpoint}", this.client.getEndpoint()),
-                        null,
-                        Context.NONE),
+                        new PollingStrategyOptions(this.client.getHttpPipeline())
+                                .setEndpoint(
+                                        "{endpoint}/formrecognizer".replace("{endpoint}", this.client.getEndpoint()))
+                                .setContext(Context.NONE)),
                 TypeReference.createInstance(BinaryData.class),
                 TypeReference.createInstance(BinaryData.class));
     }
@@ -573,10 +580,10 @@ public final class DocumentModelsImpl {
                         this.analyzeDocumentWithResponseAsync(
                                 modelId, pages, locale, stringIndexType, features, analyzeRequest, context),
                 new DefaultPollingStrategy<>(
-                        this.client.getHttpPipeline(),
-                        "{endpoint}/formrecognizer".replace("{endpoint}", this.client.getEndpoint()),
-                        null,
-                        context),
+                        new PollingStrategyOptions(this.client.getHttpPipeline())
+                                .setEndpoint(
+                                        "{endpoint}/formrecognizer".replace("{endpoint}", this.client.getEndpoint()))
+                                .setContext(context)),
                 TypeReference.createInstance(BinaryData.class),
                 TypeReference.createInstance(BinaryData.class));
     }
@@ -610,10 +617,10 @@ public final class DocumentModelsImpl {
                         this.analyzeDocumentWithResponse(
                                 modelId, pages, locale, stringIndexType, features, analyzeRequest, Context.NONE),
                 new SyncDefaultPollingStrategy<>(
-                        this.client.getHttpPipeline(),
-                        "{endpoint}/formrecognizer".replace("{endpoint}", this.client.getEndpoint()),
-                        null,
-                        Context.NONE),
+                        new PollingStrategyOptions(this.client.getHttpPipeline())
+                                .setEndpoint(
+                                        "{endpoint}/formrecognizer".replace("{endpoint}", this.client.getEndpoint()))
+                                .setContext(Context.NONE)),
                 TypeReference.createInstance(BinaryData.class),
                 TypeReference.createInstance(BinaryData.class));
     }
@@ -649,10 +656,10 @@ public final class DocumentModelsImpl {
                         this.analyzeDocumentWithResponse(
                                 modelId, pages, locale, stringIndexType, features, analyzeRequest, context),
                 new SyncDefaultPollingStrategy<>(
-                        this.client.getHttpPipeline(),
-                        "{endpoint}/formrecognizer".replace("{endpoint}", this.client.getEndpoint()),
-                        null,
-                        context),
+                        new PollingStrategyOptions(this.client.getHttpPipeline())
+                                .setEndpoint(
+                                        "{endpoint}/formrecognizer".replace("{endpoint}", this.client.getEndpoint()))
+                                .setContext(context)),
                 TypeReference.createInstance(BinaryData.class),
                 TypeReference.createInstance(BinaryData.class));
     }
@@ -688,7 +695,9 @@ public final class DocumentModelsImpl {
         String featuresConverted =
                 (features == null)
                         ? null
-                        : features.stream().map(value -> Objects.toString(value, "")).collect(Collectors.joining(","));
+                        : features.stream()
+                                .map(paramItemValue -> Objects.toString(paramItemValue, ""))
+                                .collect(Collectors.joining(","));
         return FluxUtil.withContext(
                 context ->
                         service.analyzeDocument(
@@ -739,7 +748,9 @@ public final class DocumentModelsImpl {
         String featuresConverted =
                 (features == null)
                         ? null
-                        : features.stream().map(value -> Objects.toString(value, "")).collect(Collectors.joining(","));
+                        : features.stream()
+                                .map(paramItemValue -> Objects.toString(paramItemValue, ""))
+                                .collect(Collectors.joining(","));
         return service.analyzeDocument(
                 this.client.getEndpoint(),
                 modelId,
@@ -795,10 +806,10 @@ public final class DocumentModelsImpl {
                                 analyzeRequest,
                                 contentLength),
                 new DefaultPollingStrategy<>(
-                        this.client.getHttpPipeline(),
-                        "{endpoint}/formrecognizer".replace("{endpoint}", this.client.getEndpoint()),
-                        null,
-                        Context.NONE),
+                        new PollingStrategyOptions(this.client.getHttpPipeline())
+                                .setEndpoint(
+                                        "{endpoint}/formrecognizer".replace("{endpoint}", this.client.getEndpoint()))
+                                .setContext(Context.NONE)),
                 TypeReference.createInstance(BinaryData.class),
                 TypeReference.createInstance(BinaryData.class));
     }
@@ -846,10 +857,10 @@ public final class DocumentModelsImpl {
                                 contentLength,
                                 context),
                 new DefaultPollingStrategy<>(
-                        this.client.getHttpPipeline(),
-                        "{endpoint}/formrecognizer".replace("{endpoint}", this.client.getEndpoint()),
-                        null,
-                        context),
+                        new PollingStrategyOptions(this.client.getHttpPipeline())
+                                .setEndpoint(
+                                        "{endpoint}/formrecognizer".replace("{endpoint}", this.client.getEndpoint()))
+                                .setContext(context)),
                 TypeReference.createInstance(BinaryData.class),
                 TypeReference.createInstance(BinaryData.class));
     }
@@ -885,7 +896,9 @@ public final class DocumentModelsImpl {
         String featuresConverted =
                 (features == null)
                         ? null
-                        : features.stream().map(value -> Objects.toString(value, "")).collect(Collectors.joining(","));
+                        : features.stream()
+                                .map(paramItemValue -> Objects.toString(paramItemValue, ""))
+                                .collect(Collectors.joining(","));
         return FluxUtil.withContext(
                 context ->
                         service.analyzeDocument(
@@ -936,7 +949,9 @@ public final class DocumentModelsImpl {
         String featuresConverted =
                 (features == null)
                         ? null
-                        : features.stream().map(value -> Objects.toString(value, "")).collect(Collectors.joining(","));
+                        : features.stream()
+                                .map(paramItemValue -> Objects.toString(paramItemValue, ""))
+                                .collect(Collectors.joining(","));
         return service.analyzeDocument(
                 this.client.getEndpoint(),
                 modelId,
@@ -985,7 +1000,9 @@ public final class DocumentModelsImpl {
         String featuresConverted =
                 (features == null)
                         ? null
-                        : features.stream().map(value -> Objects.toString(value, "")).collect(Collectors.joining(","));
+                        : features.stream()
+                                .map(paramItemValue -> Objects.toString(paramItemValue, ""))
+                                .collect(Collectors.joining(","));
         return service.analyzeDocumentSync(
                 this.client.getEndpoint(),
                 modelId,
@@ -1041,10 +1058,10 @@ public final class DocumentModelsImpl {
                                 analyzeRequest,
                                 contentLength),
                 new DefaultPollingStrategy<>(
-                        this.client.getHttpPipeline(),
-                        "{endpoint}/formrecognizer".replace("{endpoint}", this.client.getEndpoint()),
-                        null,
-                        Context.NONE),
+                        new PollingStrategyOptions(this.client.getHttpPipeline())
+                                .setEndpoint(
+                                        "{endpoint}/formrecognizer".replace("{endpoint}", this.client.getEndpoint()))
+                                .setContext(Context.NONE)),
                 TypeReference.createInstance(BinaryData.class),
                 TypeReference.createInstance(BinaryData.class));
     }
@@ -1092,10 +1109,10 @@ public final class DocumentModelsImpl {
                                 contentLength,
                                 context),
                 new DefaultPollingStrategy<>(
-                        this.client.getHttpPipeline(),
-                        "{endpoint}/formrecognizer".replace("{endpoint}", this.client.getEndpoint()),
-                        null,
-                        context),
+                        new PollingStrategyOptions(this.client.getHttpPipeline())
+                                .setEndpoint(
+                                        "{endpoint}/formrecognizer".replace("{endpoint}", this.client.getEndpoint()))
+                                .setContext(context)),
                 TypeReference.createInstance(BinaryData.class),
                 TypeReference.createInstance(BinaryData.class));
     }
@@ -1141,10 +1158,10 @@ public final class DocumentModelsImpl {
                                 contentLength,
                                 Context.NONE),
                 new SyncDefaultPollingStrategy<>(
-                        this.client.getHttpPipeline(),
-                        "{endpoint}/formrecognizer".replace("{endpoint}", this.client.getEndpoint()),
-                        null,
-                        Context.NONE),
+                        new PollingStrategyOptions(this.client.getHttpPipeline())
+                                .setEndpoint(
+                                        "{endpoint}/formrecognizer".replace("{endpoint}", this.client.getEndpoint()))
+                                .setContext(Context.NONE)),
                 TypeReference.createInstance(BinaryData.class),
                 TypeReference.createInstance(BinaryData.class));
     }
@@ -1192,10 +1209,10 @@ public final class DocumentModelsImpl {
                                 contentLength,
                                 context),
                 new SyncDefaultPollingStrategy<>(
-                        this.client.getHttpPipeline(),
-                        "{endpoint}/formrecognizer".replace("{endpoint}", this.client.getEndpoint()),
-                        null,
-                        context),
+                        new PollingStrategyOptions(this.client.getHttpPipeline())
+                                .setEndpoint(
+                                        "{endpoint}/formrecognizer".replace("{endpoint}", this.client.getEndpoint()))
+                                .setContext(context)),
                 TypeReference.createInstance(BinaryData.class),
                 TypeReference.createInstance(BinaryData.class));
     }
@@ -1227,7 +1244,9 @@ public final class DocumentModelsImpl {
         String featuresConverted =
                 (features == null)
                         ? null
-                        : features.stream().map(value -> Objects.toString(value, "")).collect(Collectors.joining(","));
+                        : features.stream()
+                                .map(paramItemValue -> Objects.toString(paramItemValue, ""))
+                                .collect(Collectors.joining(","));
         return FluxUtil.withContext(
                 context ->
                         service.analyzeDocument(
@@ -1272,7 +1291,9 @@ public final class DocumentModelsImpl {
         String featuresConverted =
                 (features == null)
                         ? null
-                        : features.stream().map(value -> Objects.toString(value, "")).collect(Collectors.joining(","));
+                        : features.stream()
+                                .map(paramItemValue -> Objects.toString(paramItemValue, ""))
+                                .collect(Collectors.joining(","));
         return service.analyzeDocument(
                 this.client.getEndpoint(),
                 modelId,
@@ -1315,7 +1336,9 @@ public final class DocumentModelsImpl {
         String featuresConverted =
                 (features == null)
                         ? null
-                        : features.stream().map(value -> Objects.toString(value, "")).collect(Collectors.joining(","));
+                        : features.stream()
+                                .map(paramItemValue -> Objects.toString(paramItemValue, ""))
+                                .collect(Collectors.joining(","));
         return service.analyzeDocumentSync(
                 this.client.getEndpoint(),
                 modelId,
@@ -1358,10 +1381,10 @@ public final class DocumentModelsImpl {
                         this.analyzeDocumentWithResponseAsync(
                                 modelId, pages, locale, stringIndexType, features, analyzeRequest),
                 new DefaultPollingStrategy<>(
-                        this.client.getHttpPipeline(),
-                        "{endpoint}/formrecognizer".replace("{endpoint}", this.client.getEndpoint()),
-                        null,
-                        Context.NONE),
+                        new PollingStrategyOptions(this.client.getHttpPipeline())
+                                .setEndpoint(
+                                        "{endpoint}/formrecognizer".replace("{endpoint}", this.client.getEndpoint()))
+                                .setContext(Context.NONE)),
                 TypeReference.createInstance(BinaryData.class),
                 TypeReference.createInstance(BinaryData.class));
     }
@@ -1397,10 +1420,10 @@ public final class DocumentModelsImpl {
                         this.analyzeDocumentWithResponseAsync(
                                 modelId, pages, locale, stringIndexType, features, analyzeRequest, context),
                 new DefaultPollingStrategy<>(
-                        this.client.getHttpPipeline(),
-                        "{endpoint}/formrecognizer".replace("{endpoint}", this.client.getEndpoint()),
-                        null,
-                        context),
+                        new PollingStrategyOptions(this.client.getHttpPipeline())
+                                .setEndpoint(
+                                        "{endpoint}/formrecognizer".replace("{endpoint}", this.client.getEndpoint()))
+                                .setContext(context)),
                 TypeReference.createInstance(BinaryData.class),
                 TypeReference.createInstance(BinaryData.class));
     }
@@ -1434,10 +1457,10 @@ public final class DocumentModelsImpl {
                         this.analyzeDocumentWithResponse(
                                 modelId, pages, locale, stringIndexType, features, analyzeRequest, Context.NONE),
                 new SyncDefaultPollingStrategy<>(
-                        this.client.getHttpPipeline(),
-                        "{endpoint}/formrecognizer".replace("{endpoint}", this.client.getEndpoint()),
-                        null,
-                        Context.NONE),
+                        new PollingStrategyOptions(this.client.getHttpPipeline())
+                                .setEndpoint(
+                                        "{endpoint}/formrecognizer".replace("{endpoint}", this.client.getEndpoint()))
+                                .setContext(Context.NONE)),
                 TypeReference.createInstance(BinaryData.class),
                 TypeReference.createInstance(BinaryData.class));
     }
@@ -1473,10 +1496,10 @@ public final class DocumentModelsImpl {
                         this.analyzeDocumentWithResponse(
                                 modelId, pages, locale, stringIndexType, features, analyzeRequest, context),
                 new SyncDefaultPollingStrategy<>(
-                        this.client.getHttpPipeline(),
-                        "{endpoint}/formrecognizer".replace("{endpoint}", this.client.getEndpoint()),
-                        null,
-                        context),
+                        new PollingStrategyOptions(this.client.getHttpPipeline())
+                                .setEndpoint(
+                                        "{endpoint}/formrecognizer".replace("{endpoint}", this.client.getEndpoint()))
+                                .setContext(context)),
                 TypeReference.createInstance(BinaryData.class),
                 TypeReference.createInstance(BinaryData.class));
     }
@@ -1660,10 +1683,10 @@ public final class DocumentModelsImpl {
                 Duration.ofSeconds(1),
                 () -> this.buildModelWithResponseAsync(buildRequest),
                 new DefaultPollingStrategy<>(
-                        this.client.getHttpPipeline(),
-                        "{endpoint}/formrecognizer".replace("{endpoint}", this.client.getEndpoint()),
-                        null,
-                        Context.NONE),
+                        new PollingStrategyOptions(this.client.getHttpPipeline())
+                                .setEndpoint(
+                                        "{endpoint}/formrecognizer".replace("{endpoint}", this.client.getEndpoint()))
+                                .setContext(Context.NONE)),
                 TypeReference.createInstance(BinaryData.class),
                 TypeReference.createInstance(BinaryData.class));
     }
@@ -1685,10 +1708,10 @@ public final class DocumentModelsImpl {
                 Duration.ofSeconds(1),
                 () -> this.buildModelWithResponseAsync(buildRequest, context),
                 new DefaultPollingStrategy<>(
-                        this.client.getHttpPipeline(),
-                        "{endpoint}/formrecognizer".replace("{endpoint}", this.client.getEndpoint()),
-                        null,
-                        context),
+                        new PollingStrategyOptions(this.client.getHttpPipeline())
+                                .setEndpoint(
+                                        "{endpoint}/formrecognizer".replace("{endpoint}", this.client.getEndpoint()))
+                                .setContext(context)),
                 TypeReference.createInstance(BinaryData.class),
                 TypeReference.createInstance(BinaryData.class));
     }
@@ -1708,10 +1731,10 @@ public final class DocumentModelsImpl {
                 Duration.ofSeconds(1),
                 () -> this.buildModelWithResponse(buildRequest, Context.NONE),
                 new SyncDefaultPollingStrategy<>(
-                        this.client.getHttpPipeline(),
-                        "{endpoint}/formrecognizer".replace("{endpoint}", this.client.getEndpoint()),
-                        null,
-                        Context.NONE),
+                        new PollingStrategyOptions(this.client.getHttpPipeline())
+                                .setEndpoint(
+                                        "{endpoint}/formrecognizer".replace("{endpoint}", this.client.getEndpoint()))
+                                .setContext(Context.NONE)),
                 TypeReference.createInstance(BinaryData.class),
                 TypeReference.createInstance(BinaryData.class));
     }
@@ -1732,10 +1755,10 @@ public final class DocumentModelsImpl {
                 Duration.ofSeconds(1),
                 () -> this.buildModelWithResponse(buildRequest, context),
                 new SyncDefaultPollingStrategy<>(
-                        this.client.getHttpPipeline(),
-                        "{endpoint}/formrecognizer".replace("{endpoint}", this.client.getEndpoint()),
-                        null,
-                        context),
+                        new PollingStrategyOptions(this.client.getHttpPipeline())
+                                .setEndpoint(
+                                        "{endpoint}/formrecognizer".replace("{endpoint}", this.client.getEndpoint()))
+                                .setContext(context)),
                 TypeReference.createInstance(BinaryData.class),
                 TypeReference.createInstance(BinaryData.class));
     }
@@ -1814,10 +1837,10 @@ public final class DocumentModelsImpl {
                 Duration.ofSeconds(1),
                 () -> this.composeModelWithResponseAsync(composeRequest),
                 new DefaultPollingStrategy<>(
-                        this.client.getHttpPipeline(),
-                        "{endpoint}/formrecognizer".replace("{endpoint}", this.client.getEndpoint()),
-                        null,
-                        Context.NONE),
+                        new PollingStrategyOptions(this.client.getHttpPipeline())
+                                .setEndpoint(
+                                        "{endpoint}/formrecognizer".replace("{endpoint}", this.client.getEndpoint()))
+                                .setContext(Context.NONE)),
                 TypeReference.createInstance(BinaryData.class),
                 TypeReference.createInstance(BinaryData.class));
     }
@@ -1839,10 +1862,10 @@ public final class DocumentModelsImpl {
                 Duration.ofSeconds(1),
                 () -> this.composeModelWithResponseAsync(composeRequest, context),
                 new DefaultPollingStrategy<>(
-                        this.client.getHttpPipeline(),
-                        "{endpoint}/formrecognizer".replace("{endpoint}", this.client.getEndpoint()),
-                        null,
-                        context),
+                        new PollingStrategyOptions(this.client.getHttpPipeline())
+                                .setEndpoint(
+                                        "{endpoint}/formrecognizer".replace("{endpoint}", this.client.getEndpoint()))
+                                .setContext(context)),
                 TypeReference.createInstance(BinaryData.class),
                 TypeReference.createInstance(BinaryData.class));
     }
@@ -1862,10 +1885,10 @@ public final class DocumentModelsImpl {
                 Duration.ofSeconds(1),
                 () -> this.composeModelWithResponse(composeRequest, Context.NONE),
                 new SyncDefaultPollingStrategy<>(
-                        this.client.getHttpPipeline(),
-                        "{endpoint}/formrecognizer".replace("{endpoint}", this.client.getEndpoint()),
-                        null,
-                        Context.NONE),
+                        new PollingStrategyOptions(this.client.getHttpPipeline())
+                                .setEndpoint(
+                                        "{endpoint}/formrecognizer".replace("{endpoint}", this.client.getEndpoint()))
+                                .setContext(Context.NONE)),
                 TypeReference.createInstance(BinaryData.class),
                 TypeReference.createInstance(BinaryData.class));
     }
@@ -1887,10 +1910,10 @@ public final class DocumentModelsImpl {
                 Duration.ofSeconds(1),
                 () -> this.composeModelWithResponse(composeRequest, context),
                 new SyncDefaultPollingStrategy<>(
-                        this.client.getHttpPipeline(),
-                        "{endpoint}/formrecognizer".replace("{endpoint}", this.client.getEndpoint()),
-                        null,
-                        context),
+                        new PollingStrategyOptions(this.client.getHttpPipeline())
+                                .setEndpoint(
+                                        "{endpoint}/formrecognizer".replace("{endpoint}", this.client.getEndpoint()))
+                                .setContext(context)),
                 TypeReference.createInstance(BinaryData.class),
                 TypeReference.createInstance(BinaryData.class));
     }
@@ -2089,10 +2112,10 @@ public final class DocumentModelsImpl {
                 Duration.ofSeconds(1),
                 () -> this.copyModelToWithResponseAsync(modelId, copyToRequest),
                 new DefaultPollingStrategy<>(
-                        this.client.getHttpPipeline(),
-                        "{endpoint}/formrecognizer".replace("{endpoint}", this.client.getEndpoint()),
-                        null,
-                        Context.NONE),
+                        new PollingStrategyOptions(this.client.getHttpPipeline())
+                                .setEndpoint(
+                                        "{endpoint}/formrecognizer".replace("{endpoint}", this.client.getEndpoint()))
+                                .setContext(Context.NONE)),
                 TypeReference.createInstance(BinaryData.class),
                 TypeReference.createInstance(BinaryData.class));
     }
@@ -2115,10 +2138,10 @@ public final class DocumentModelsImpl {
                 Duration.ofSeconds(1),
                 () -> this.copyModelToWithResponseAsync(modelId, copyToRequest, context),
                 new DefaultPollingStrategy<>(
-                        this.client.getHttpPipeline(),
-                        "{endpoint}/formrecognizer".replace("{endpoint}", this.client.getEndpoint()),
-                        null,
-                        context),
+                        new PollingStrategyOptions(this.client.getHttpPipeline())
+                                .setEndpoint(
+                                        "{endpoint}/formrecognizer".replace("{endpoint}", this.client.getEndpoint()))
+                                .setContext(context)),
                 TypeReference.createInstance(BinaryData.class),
                 TypeReference.createInstance(BinaryData.class));
     }
@@ -2139,10 +2162,10 @@ public final class DocumentModelsImpl {
                 Duration.ofSeconds(1),
                 () -> this.copyModelToWithResponse(modelId, copyToRequest, Context.NONE),
                 new SyncDefaultPollingStrategy<>(
-                        this.client.getHttpPipeline(),
-                        "{endpoint}/formrecognizer".replace("{endpoint}", this.client.getEndpoint()),
-                        null,
-                        Context.NONE),
+                        new PollingStrategyOptions(this.client.getHttpPipeline())
+                                .setEndpoint(
+                                        "{endpoint}/formrecognizer".replace("{endpoint}", this.client.getEndpoint()))
+                                .setContext(Context.NONE)),
                 TypeReference.createInstance(BinaryData.class),
                 TypeReference.createInstance(BinaryData.class));
     }
@@ -2165,10 +2188,10 @@ public final class DocumentModelsImpl {
                 Duration.ofSeconds(1),
                 () -> this.copyModelToWithResponse(modelId, copyToRequest, context),
                 new SyncDefaultPollingStrategy<>(
-                        this.client.getHttpPipeline(),
-                        "{endpoint}/formrecognizer".replace("{endpoint}", this.client.getEndpoint()),
-                        null,
-                        context),
+                        new PollingStrategyOptions(this.client.getHttpPipeline())
+                                .setEndpoint(
+                                        "{endpoint}/formrecognizer".replace("{endpoint}", this.client.getEndpoint()))
+                                .setContext(context)),
                 TypeReference.createInstance(BinaryData.class),
                 TypeReference.createInstance(BinaryData.class));
     }

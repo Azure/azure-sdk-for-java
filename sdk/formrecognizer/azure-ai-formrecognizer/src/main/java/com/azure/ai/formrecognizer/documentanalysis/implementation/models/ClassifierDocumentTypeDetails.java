@@ -5,29 +5,31 @@
 package com.azure.ai.formrecognizer.documentanalysis.implementation.models;
 
 import com.azure.core.annotation.Fluent;
-import com.fasterxml.jackson.annotation.JsonProperty;
+import com.azure.json.JsonReader;
+import com.azure.json.JsonSerializable;
+import com.azure.json.JsonToken;
+import com.azure.json.JsonWriter;
+import java.io.IOException;
+import java.util.Objects;
 
 /** Classifier document type info. */
 @Fluent
-public final class ClassifierDocumentTypeDetails {
+public final class ClassifierDocumentTypeDetails implements JsonSerializable<ClassifierDocumentTypeDetails> {
     /*
      * Type of training data source.
      */
-    @JsonProperty(value = "sourceKind")
     private ContentSourceKind sourceKind;
 
     /*
      * Azure Blob Storage location containing the training data for a classifier document type.  Either azureBlobSource
      * or azureBlobFileListSource must be specified.
      */
-    @JsonProperty(value = "azureBlobSource")
     private AzureBlobContentSource azureBlobSource;
 
     /*
      * Azure Blob Storage file list specifying the training data for a classifier document type.  Either
      * azureBlobSource or azureBlobFileListSource must be specified.
      */
-    @JsonProperty(value = "azureBlobFileListSource")
     private AzureBlobFileListContentSource azureBlobFileListSource;
 
     /** Creates an instance of ClassifierDocumentTypeDetails class. */
@@ -96,5 +98,49 @@ public final class ClassifierDocumentTypeDetails {
             AzureBlobFileListContentSource azureBlobFileListSource) {
         this.azureBlobFileListSource = azureBlobFileListSource;
         return this;
+    }
+
+    @Override
+    public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
+        jsonWriter.writeStartObject();
+        jsonWriter.writeStringField("sourceKind", Objects.toString(this.sourceKind, null));
+        jsonWriter.writeJsonField("azureBlobSource", this.azureBlobSource);
+        jsonWriter.writeJsonField("azureBlobFileListSource", this.azureBlobFileListSource);
+        return jsonWriter.writeEndObject();
+    }
+
+    /**
+     * Reads an instance of ClassifierDocumentTypeDetails from the JsonReader.
+     *
+     * @param jsonReader The JsonReader being read.
+     * @return An instance of ClassifierDocumentTypeDetails if the JsonReader was pointing to an instance of it, or null
+     *     if it was pointing to JSON null.
+     * @throws IOException If an error occurs while reading the ClassifierDocumentTypeDetails.
+     */
+    public static ClassifierDocumentTypeDetails fromJson(JsonReader jsonReader) throws IOException {
+        return jsonReader.readObject(
+                reader -> {
+                    ClassifierDocumentTypeDetails deserializedClassifierDocumentTypeDetails =
+                            new ClassifierDocumentTypeDetails();
+                    while (reader.nextToken() != JsonToken.END_OBJECT) {
+                        String fieldName = reader.getFieldName();
+                        reader.nextToken();
+
+                        if ("sourceKind".equals(fieldName)) {
+                            deserializedClassifierDocumentTypeDetails.sourceKind =
+                                    ContentSourceKind.fromString(reader.getString());
+                        } else if ("azureBlobSource".equals(fieldName)) {
+                            deserializedClassifierDocumentTypeDetails.azureBlobSource =
+                                    AzureBlobContentSource.fromJson(reader);
+                        } else if ("azureBlobFileListSource".equals(fieldName)) {
+                            deserializedClassifierDocumentTypeDetails.azureBlobFileListSource =
+                                    AzureBlobFileListContentSource.fromJson(reader);
+                        } else {
+                            reader.skipChildren();
+                        }
+                    }
+
+                    return deserializedClassifierDocumentTypeDetails;
+                });
     }
 }

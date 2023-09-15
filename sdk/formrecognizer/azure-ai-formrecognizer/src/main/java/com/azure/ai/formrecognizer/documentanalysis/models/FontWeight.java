@@ -5,15 +5,14 @@
 package com.azure.ai.formrecognizer.documentanalysis.models;
 
 import com.azure.core.util.ExpandableStringEnum;
-
 import java.util.Collection;
 
 /** Font weight. */
 public final class FontWeight extends ExpandableStringEnum<FontWeight> {
-    /** Static value normal for FontWeight. */
+    /** Characters are represented normally. */
     public static final FontWeight NORMAL = fromString("normal");
 
-    /** Static value bold for FontWeight. */
+    /** Characters are represented with thicker strokes. */
     public static final FontWeight BOLD = fromString("bold");
 
     /**

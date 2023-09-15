@@ -6,36 +6,37 @@ package com.azure.ai.formrecognizer.documentanalysis.implementation.models;
 
 import com.azure.ai.formrecognizer.documentanalysis.models.ParagraphRole;
 import com.azure.core.annotation.Immutable;
-import com.fasterxml.jackson.annotation.JsonCreator;
-import com.fasterxml.jackson.annotation.JsonProperty;
+import com.azure.json.JsonReader;
+import com.azure.json.JsonSerializable;
+import com.azure.json.JsonToken;
+import com.azure.json.JsonWriter;
+import java.io.IOException;
+import java.util.ArrayList;
 import java.util.List;
+import java.util.Objects;
 
 /** A paragraph object consisting with contiguous lines generally with common alignment and spacing. */
 @Immutable
-public final class DocumentParagraph {
+public final class DocumentParagraph implements JsonSerializable<DocumentParagraph> {
     /*
      * Semantic role of the paragraph.
      */
-    @JsonProperty(value = "role")
     private ParagraphRole role;
 
     /*
      * Concatenated content of the paragraph in reading order.
      */
-    @JsonProperty(value = "content", required = true)
-    private String content;
+    private final String content;
 
     /*
      * Bounding regions covering the paragraph.
      */
-    @JsonProperty(value = "boundingRegions")
     private List<BoundingRegion> boundingRegions;
 
     /*
      * Location of the paragraph in the reading order concatenated content.
      */
-    @JsonProperty(value = "spans", required = true)
-    private List<DocumentSpan> spans;
+    private final List<DocumentSpan> spans;
 
     /**
      * Creates an instance of DocumentParagraph class.
@@ -43,10 +44,7 @@ public final class DocumentParagraph {
      * @param content the content value to set.
      * @param spans the spans value to set.
      */
-    @JsonCreator
-    private DocumentParagraph(
-            @JsonProperty(value = "content", required = true) String content,
-            @JsonProperty(value = "spans", required = true) List<DocumentSpan> spans) {
+    private DocumentParagraph(String content, List<DocumentSpan> spans) {
         this.content = content;
         this.spans = spans;
     }
@@ -85,5 +83,72 @@ public final class DocumentParagraph {
      */
     public List<DocumentSpan> getSpans() {
         return this.spans;
+    }
+
+    @Override
+    public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
+        jsonWriter.writeStartObject();
+        jsonWriter.writeStringField("content", this.content);
+        jsonWriter.writeArrayField("spans", this.spans, (writer, element) -> writer.writeJson(element));
+        jsonWriter.writeStringField("role", Objects.toString(this.role, null));
+        jsonWriter.writeArrayField(
+                "boundingRegions", this.boundingRegions, (writer, element) -> writer.writeJson(element));
+        return jsonWriter.writeEndObject();
+    }
+
+    /**
+     * Reads an instance of DocumentParagraph from the JsonReader.
+     *
+     * @param jsonReader The JsonReader being read.
+     * @return An instance of DocumentParagraph if the JsonReader was pointing to an instance of it, or null if it was
+     *     pointing to JSON null.
+     * @throws IllegalStateException If the deserialized JSON object was missing any required properties.
+     * @throws IOException If an error occurs while reading the DocumentParagraph.
+     */
+    public static DocumentParagraph fromJson(JsonReader jsonReader) throws IOException {
+        return jsonReader.readObject(
+                reader -> {
+                    boolean contentFound = false;
+                    String content = null;
+                    boolean spansFound = false;
+                    List<DocumentSpan> spans = null;
+                    ParagraphRole role = null;
+                    List<BoundingRegion> boundingRegions = null;
+                    while (reader.nextToken() != JsonToken.END_OBJECT) {
+                        String fieldName = reader.getFieldName();
+                        reader.nextToken();
+
+                        if ("content".equals(fieldName)) {
+                            content = reader.getString();
+                            contentFound = true;
+                        } else if ("spans".equals(fieldName)) {
+                            spans = reader.readArray(reader1 -> DocumentSpan.fromJson(reader1));
+                            spansFound = true;
+                        } else if ("role".equals(fieldName)) {
+                            role = ParagraphRole.fromString(reader.getString());
+                        } else if ("boundingRegions".equals(fieldName)) {
+                            boundingRegions = reader.readArray(reader1 -> BoundingRegion.fromJson(reader1));
+                        } else {
+                            reader.skipChildren();
+                        }
+                    }
+                    if (contentFound && spansFound) {
+                        DocumentParagraph deserializedDocumentParagraph = new DocumentParagraph(content, spans);
+                        deserializedDocumentParagraph.role = role;
+                        deserializedDocumentParagraph.boundingRegions = boundingRegions;
+
+                        return deserializedDocumentParagraph;
+                    }
+                    List<String> missingProperties = new ArrayList<>();
+                    if (!contentFound) {
+                        missingProperties.add("content");
+                    }
+                    if (!spansFound) {
+                        missingProperties.add("spans");
+                    }
+
+                    throw new IllegalStateException(
+                            "Missing required property/properties: " + String.join(", ", missingProperties));
+                });
     }
 }
