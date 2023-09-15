@@ -310,6 +310,93 @@ public class NonAzureOpenAISyncClientTest extends OpenAIClientTestBase {
 
     @ParameterizedTest(name = DISPLAY_NAME_WITH_ARGUMENTS)
     @MethodSource("com.azure.ai.openai.TestUtils#getTestParameters")
+    public void testGetAudioTranscriptionSrt(HttpClient httpClient, OpenAIServiceVersion serviceVersion) {
+        client = getNonAzureOpenAISyncClient(httpClient);
+
+        getAudioTranscriptionRunnerForNonAzure((modelId, fileName) -> {
+            byte[] file = BinaryData.fromFile(openTestResourceFile(fileName)).toBytes();
+            AudioTranscriptionOptions transcriptionOptions = new AudioTranscriptionOptions(file);
+            transcriptionOptions.setResponseFormat(AudioTranscriptionFormat.SRT);
+
+            String transcription = client.getAudioTranscriptionText(modelId, transcriptionOptions, fileName);
+            // Sequence number
+            assertTrue(transcription.contains("1\n"));
+            // First sequence starts at timestamp 0
+            assertTrue(transcription.contains("00:00:00,000 --> "));
+            // Contains one expected word
+            assertTrue(transcription.contains("Batman"));
+        });
+    }
+
+    @ParameterizedTest(name = DISPLAY_NAME_WITH_ARGUMENTS)
+    @MethodSource("com.azure.ai.openai.TestUtils#getTestParameters")
+    public void testGetAudioTranscriptionVtt(HttpClient httpClient, OpenAIServiceVersion serviceVersion) {
+        client = getNonAzureOpenAISyncClient(httpClient);
+
+        getAudioTranscriptionRunnerForNonAzure((modelId, fileName) -> {
+            byte[] file = BinaryData.fromFile(openTestResourceFile(fileName)).toBytes();
+            AudioTranscriptionOptions transcriptionOptions = new AudioTranscriptionOptions(file);
+            transcriptionOptions.setResponseFormat(AudioTranscriptionFormat.VTT);
+
+            String transcription = client.getAudioTranscriptionText(modelId, transcriptionOptions, fileName);
+            // Start value according to spec
+            assertTrue(transcription.startsWith("WEBVTT\n"));
+            // First sequence starts at timestamp 0. Note: unlike SRT, the millisecond separator is a "."
+            assertTrue(transcription.contains("00:00:00.000 --> "));
+            // Contains at least one expected word
+            assertTrue(transcription.contains("Batman"));
+        });
+    }
+
+    @ParameterizedTest(name = DISPLAY_NAME_WITH_ARGUMENTS)
+    @MethodSource("com.azure.ai.openai.TestUtils#getTestParameters")
+    public void testGetAudioTranscriptionTextWrongFormats(HttpClient httpClient, OpenAIServiceVersion serviceVersion) {
+        client = getNonAzureOpenAISyncClient(httpClient);
+
+        getAudioTranscriptionRunnerForNonAzure((modelId, fileName) -> {
+            byte[] file = BinaryData.fromFile(openTestResourceFile(fileName)).toBytes();
+            AudioTranscriptionOptions transcriptionOptions = new AudioTranscriptionOptions(file);
+
+            transcriptionOptions.setResponseFormat(AudioTranscriptionFormat.JSON);
+            assertThrows(IllegalArgumentException.class, () -> {
+                client.getAudioTranscriptionText(modelId, transcriptionOptions, fileName);
+            });
+
+            transcriptionOptions.setResponseFormat(AudioTranscriptionFormat.VERBOSE_JSON);
+            assertThrows(IllegalArgumentException.class, () -> {
+                client.getAudioTranscriptionText(modelId, transcriptionOptions, fileName);
+            });
+        });
+    }
+
+    @ParameterizedTest(name = DISPLAY_NAME_WITH_ARGUMENTS)
+    @MethodSource("com.azure.ai.openai.TestUtils#getTestParameters")
+    public void testGetAudioTranscriptionJsonWrongFormats(HttpClient httpClient, OpenAIServiceVersion serviceVersion) {
+        client = getNonAzureOpenAISyncClient(httpClient);
+
+        getAudioTranscriptionRunnerForNonAzure((modelId, fileName) -> {
+            byte[] file = BinaryData.fromFile(openTestResourceFile(fileName)).toBytes();
+            AudioTranscriptionOptions transcriptionOptions = new AudioTranscriptionOptions(file);
+
+            transcriptionOptions.setResponseFormat(AudioTranscriptionFormat.TEXT);
+            assertThrows(IllegalArgumentException.class, () -> {
+                client.getAudioTranscription(modelId, transcriptionOptions, fileName);
+            });
+
+            transcriptionOptions.setResponseFormat(AudioTranscriptionFormat.SRT);
+            assertThrows(IllegalArgumentException.class, () -> {
+                client.getAudioTranscription(modelId, transcriptionOptions, fileName);
+            });
+
+            transcriptionOptions.setResponseFormat(AudioTranscriptionFormat.VTT);
+            assertThrows(IllegalArgumentException.class, () -> {
+                client.getAudioTranscription(modelId, transcriptionOptions, fileName);
+            });
+        });
+    }
+
+    @ParameterizedTest(name = DISPLAY_NAME_WITH_ARGUMENTS)
+    @MethodSource("com.azure.ai.openai.TestUtils#getTestParameters")
     public void testGetAudioTranslationJson(HttpClient httpClient, OpenAIServiceVersion serviceVersion) {
         client = getNonAzureOpenAISyncClient(httpClient);
 
@@ -373,7 +460,6 @@ public class NonAzureOpenAISyncClientTest extends OpenAIClientTestBase {
         });
     }
 
-
     @ParameterizedTest(name = DISPLAY_NAME_WITH_ARGUMENTS)
     @MethodSource("com.azure.ai.openai.TestUtils#getTestParameters")
     public void testGetAudioTranslationVtt(HttpClient httpClient, OpenAIServiceVersion serviceVersion) {
@@ -393,7 +479,6 @@ public class NonAzureOpenAISyncClientTest extends OpenAIClientTestBase {
             assertTrue(transcription.contains("It's raining today."));
         });
     }
-
 
     @ParameterizedTest(name = DISPLAY_NAME_WITH_ARGUMENTS)
     @MethodSource("com.azure.ai.openai.TestUtils#getTestParameters")
