@@ -151,23 +151,27 @@ public class HttpUrlConnectionClient implements HttpClient {
             case PUT:
             case PATCH:
             case DELETE:
-                return Mono.fromRunnable(() -> {
-                    try (DataOutputStream os = new DataOutputStream(new BufferedOutputStream(connection.getOutputStream()))) {
-                        httpRequest.getBody()
-                            .doOnNext(buffer -> {
-                                try {
-                                    byte[] bytes = new byte[buffer.remaining()];
-                                    buffer.get(bytes);
-                                    os.write(bytes);
-                                } catch (IOException e) {
-                                    throw new RuntimeException(e);
-                                }
-                            }).blockLast();
-                        os.flush();
-                    } catch (IOException e) {
-                        throw new RuntimeException(e);
-                    }
-                });
+                if (httpRequest.getBody() != null) {
+                    return Mono.fromRunnable(() -> {
+                        try (DataOutputStream os = new DataOutputStream(new BufferedOutputStream(connection.getOutputStream()))) {
+                            httpRequest.getBody()
+                                .doOnNext(buffer -> {
+                                    try {
+                                        byte[] bytes = new byte[buffer.remaining()];
+                                        buffer.get(bytes);
+                                        os.write(bytes);
+                                    } catch (IOException e) {
+                                        throw new RuntimeException(e);
+                                    }
+                                }).blockLast();
+                            os.flush();
+                        } catch (IOException e) {
+                            throw new RuntimeException(e);
+                        }
+                    });
+                } else {
+                    return Mono.empty();
+                }
             default:
                 return Mono.empty();
         }
