@@ -4,6 +4,7 @@
 
 package com.azure.communication.jobrouter.models;
 
+import com.azure.core.annotation.Generated;
 import com.azure.core.annotation.Immutable;
 import com.fasterxml.jackson.annotation.JsonSubTypes;
 import com.fasterxml.jackson.annotation.JsonTypeInfo;
@@ -31,4 +32,8 @@ import com.fasterxml.jackson.annotation.JsonTypeName;
     @JsonSubTypes.Type(name = "webhook-rule", value = WebhookRouterRule.class)
 })
 @Immutable
-public abstract class RouterRule {}
+public class RouterRule {
+    /** Creates an instance of RouterRule class. */
+    @Generated
+    public RouterRule() {}
+}

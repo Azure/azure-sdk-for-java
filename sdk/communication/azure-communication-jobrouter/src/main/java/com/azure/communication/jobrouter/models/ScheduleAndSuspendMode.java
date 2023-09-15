@@ -5,33 +5,46 @@
 package com.azure.communication.jobrouter.models;
 
 import com.azure.core.annotation.Fluent;
+import com.azure.core.annotation.Generated;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import java.time.OffsetDateTime;
-import java.util.Objects;
 
-/** The ScheduleAndSuspendMode model. */
+/**
+ * Describes a matching mode used for scheduling jobs to be queued at a future time. At the specified time, matching
+ * worker to a job will not start automatically.
+ */
 @Fluent
 public final class ScheduleAndSuspendMode {
-    /**
-     * Creates an instance of ScheduleAndSuspendMode class.
-     *
-     * @param scheduleAt The time at which this job will be scheduled.
-     */
-    public ScheduleAndSuspendMode(OffsetDateTime scheduleAt) {
-        this.scheduleAt = Objects.requireNonNull(scheduleAt, "'scheduleAt' cannot be null.");
-    }
     /*
-     * The scheduleAt property.
+     * Scheduled time.
      */
+    @Generated
     @JsonProperty(value = "scheduleAt")
-    private final OffsetDateTime scheduleAt;
+    private OffsetDateTime scheduleAt;
+
+    /** Creates an instance of ScheduleAndSuspendMode class. */
+    @Generated
+    public ScheduleAndSuspendMode() {}
 
     /**
-     * Get the scheduleAt property: The time at which this job will be scheduled.
+     * Get the scheduleAt property: Scheduled time.
      *
-     * @return the scheduleAt value
+     * @return the scheduleAt value.
      */
+    @Generated
     public OffsetDateTime getScheduleAt() {
         return this.scheduleAt;
+    }
+
+    /**
+     * Set the scheduleAt property: Scheduled time.
+     *
+     * @param scheduleAt the scheduleAt value to set.
+     * @return the ScheduleAndSuspendMode object itself.
+     */
+    @Generated
+    public ScheduleAndSuspendMode setScheduleAt(OffsetDateTime scheduleAt) {
+        this.scheduleAt = scheduleAt;
+        return this;
     }
 }

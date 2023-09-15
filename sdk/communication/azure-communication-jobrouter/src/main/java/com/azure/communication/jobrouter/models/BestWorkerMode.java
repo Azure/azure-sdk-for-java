@@ -5,6 +5,7 @@
 package com.azure.communication.jobrouter.models;
 
 import com.azure.core.annotation.Fluent;
+import com.azure.core.annotation.Generated;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import com.fasterxml.jackson.annotation.JsonTypeInfo;
 import com.fasterxml.jackson.annotation.JsonTypeName;
@@ -14,30 +15,36 @@ import com.fasterxml.jackson.annotation.JsonTypeName;
 @JsonTypeName("best-worker")
 @Fluent
 public final class BestWorkerMode extends DistributionMode {
-    /** Creates an instance of BestWorkerMode class. */
-    public BestWorkerMode() {}
-
     /*
      * A rule of one of the following types:
      *
-     * StaticRule:  A rule providing static rules that always return the same
-     * result, regardless of input.
-     * DirectMapRule:  A rule that return the same labels as the input labels.
-     * ExpressionRule: A rule providing inline expression rules.
+     * StaticRule:  A rule
+     * providing static rules that always return the same result, regardless of
+     * input.
+     * DirectMapRule:  A rule that return the same labels as the input
+     * labels.
+     * ExpressionRule: A rule providing inline expression
+     * rules.
      * AzureFunctionRule: A rule providing a binding to an HTTP Triggered Azure
      * Function.
      * WebhookRule: A rule providing a binding to a webserver following
      * OAuth2.0 authentication protocol.
      */
+    @Generated
     @JsonProperty(value = "scoringRule")
     private RouterRule scoringRule;
 
     /*
-     * Encapsulates all options that can be passed as parameters for scoring
-     * rule with BestWorkerMode
+     * Encapsulates all options that can be passed as parameters for scoring rule with
+     * BestWorkerMode
      */
+    @Generated
     @JsonProperty(value = "scoringRuleOptions")
     private ScoringRuleOptions scoringRuleOptions;
+
+    /** Creates an instance of BestWorkerMode class. */
+    @Generated
+    public BestWorkerMode() {}
 
     /**
      * Get the scoringRule property: A rule of one of the following types:
@@ -49,6 +56,7 @@ public final class BestWorkerMode extends DistributionMode {
      *
      * @return the scoringRule value.
      */
+    @Generated
     public RouterRule getScoringRule() {
         return this.scoringRule;
     }
@@ -64,6 +72,7 @@ public final class BestWorkerMode extends DistributionMode {
      * @param scoringRule the scoringRule value to set.
      * @return the BestWorkerMode object itself.
      */
+    @Generated
     public BestWorkerMode setScoringRule(RouterRule scoringRule) {
         this.scoringRule = scoringRule;
         return this;
@@ -75,6 +84,7 @@ public final class BestWorkerMode extends DistributionMode {
      *
      * @return the scoringRuleOptions value.
      */
+    @Generated
     public ScoringRuleOptions getScoringRuleOptions() {
         return this.scoringRuleOptions;
     }
@@ -86,12 +96,14 @@ public final class BestWorkerMode extends DistributionMode {
      * @param scoringRuleOptions the scoringRuleOptions value to set.
      * @return the BestWorkerMode object itself.
      */
+    @Generated
     public BestWorkerMode setScoringRuleOptions(ScoringRuleOptions scoringRuleOptions) {
         this.scoringRuleOptions = scoringRuleOptions;
         return this;
     }
 
     /** {@inheritDoc} */
+    @Generated
     @Override
     public BestWorkerMode setMinConcurrentOffers(Integer minConcurrentOffers) {
         super.setMinConcurrentOffers(minConcurrentOffers);
@@ -99,6 +111,7 @@ public final class BestWorkerMode extends DistributionMode {
     }
 
     /** {@inheritDoc} */
+    @Generated
     @Override
     public BestWorkerMode setMaxConcurrentOffers(Integer maxConcurrentOffers) {
         super.setMaxConcurrentOffers(maxConcurrentOffers);
@@ -106,6 +119,7 @@ public final class BestWorkerMode extends DistributionMode {
     }
 
     /** {@inheritDoc} */
+    @Generated
     @Override
     public BestWorkerMode setBypassSelectors(Boolean bypassSelectors) {
         super.setBypassSelectors(bypassSelectors);

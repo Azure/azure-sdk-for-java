@@ -4,43 +4,39 @@
 
 package com.azure.communication.jobrouter.models;
 
-import com.azure.core.annotation.Fluent;
-import com.azure.core.util.ETag;
+import com.azure.core.annotation.Generated;
+import com.azure.core.annotation.Immutable;
 import com.fasterxml.jackson.annotation.JsonProperty;
 
 /** Paged instance of RouterJob. */
-@Fluent
+@Immutable
 public final class RouterJobItem {
     /*
      * A unit of work to be routed
      */
+    @Generated
     @JsonProperty(value = "job")
     private RouterJob job;
 
     /*
      * (Optional) The Concurrency Token.
      */
+    @Generated
     @JsonProperty(value = "etag")
-    private ETag etag;
+    private String etag;
+
+    /** Creates an instance of RouterJobItem class. */
+    @Generated
+    private RouterJobItem() {}
 
     /**
      * Get the job property: A unit of work to be routed.
      *
      * @return the job value.
      */
+    @Generated
     public RouterJob getJob() {
         return this.job;
-    }
-
-    /**
-     * Set the job property: A unit of work to be routed.
-     *
-     * @param job the job value to set.
-     * @return the RouterJobItem object itself.
-     */
-    public RouterJobItem setJob(RouterJob job) {
-        this.job = job;
-        return this;
     }
 
     /**
@@ -48,18 +44,8 @@ public final class RouterJobItem {
      *
      * @return the etag value.
      */
-    public ETag getEtag() {
+    @Generated
+    public String getEtag() {
         return this.etag;
-    }
-
-    /**
-     * Set the etag property: (Optional) The Concurrency Token.
-     *
-     * @param etag the etag value to set.
-     * @return the RouterJobItem object itself.
-     */
-    public RouterJobItem setEtag(ETag etag) {
-        this.etag = etag;
-        return this;
     }
 }

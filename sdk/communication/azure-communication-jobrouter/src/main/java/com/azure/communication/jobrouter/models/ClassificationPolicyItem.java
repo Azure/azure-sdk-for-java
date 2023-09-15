@@ -4,43 +4,39 @@
 
 package com.azure.communication.jobrouter.models;
 
-import com.azure.core.annotation.Fluent;
-import com.azure.core.util.ETag;
+import com.azure.core.annotation.Generated;
+import com.azure.core.annotation.Immutable;
 import com.fasterxml.jackson.annotation.JsonProperty;
 
 /** Paged instance of ClassificationPolicy. */
-@Fluent
+@Immutable
 public final class ClassificationPolicyItem {
     /*
      * A container for the rules that govern how jobs are classified.
      */
+    @Generated
     @JsonProperty(value = "classificationPolicy")
     private ClassificationPolicy classificationPolicy;
 
     /*
      * (Optional) The Concurrency Token.
      */
+    @Generated
     @JsonProperty(value = "etag")
-    private ETag etag;
+    private String etag;
+
+    /** Creates an instance of ClassificationPolicyItem class. */
+    @Generated
+    private ClassificationPolicyItem() {}
 
     /**
      * Get the classificationPolicy property: A container for the rules that govern how jobs are classified.
      *
      * @return the classificationPolicy value.
      */
+    @Generated
     public ClassificationPolicy getClassificationPolicy() {
         return this.classificationPolicy;
-    }
-
-    /**
-     * Set the classificationPolicy property: A container for the rules that govern how jobs are classified.
-     *
-     * @param classificationPolicy the classificationPolicy value to set.
-     * @return the ClassificationPolicyItem object itself.
-     */
-    public ClassificationPolicyItem setClassificationPolicy(ClassificationPolicy classificationPolicy) {
-        this.classificationPolicy = classificationPolicy;
-        return this;
     }
 
     /**
@@ -48,18 +44,8 @@ public final class ClassificationPolicyItem {
      *
      * @return the etag value.
      */
-    public ETag getEtag() {
+    @Generated
+    public String getEtag() {
         return this.etag;
-    }
-
-    /**
-     * Set the etag property: (Optional) The Concurrency Token.
-     *
-     * @param etag the etag value to set.
-     * @return the ClassificationPolicyItem object itself.
-     */
-    public ClassificationPolicyItem setEtag(ETag etag) {
-        this.etag = etag;
-        return this;
     }
 }

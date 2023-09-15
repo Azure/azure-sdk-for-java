@@ -4,17 +4,27 @@
 
 package com.azure.communication.jobrouter.models;
 
+import com.azure.core.annotation.Generated;
 import com.azure.core.util.ExpandableStringEnum;
 import com.fasterxml.jackson.annotation.JsonCreator;
 import java.util.Collection;
 
-/** Defines values for RouterWorkerSelectorStatus. */
+/** The status of the worker selector. */
 public final class RouterWorkerSelectorStatus extends ExpandableStringEnum<RouterWorkerSelectorStatus> {
-    /** Static value active for RouterWorkerSelectorStatus. */
-    public static final RouterWorkerSelectorStatus ACTIVE = fromString("active");
+    /** Active. */
+    @Generated public static final RouterWorkerSelectorStatus ACTIVE = fromString("active");
 
-    /** Static value expired for RouterWorkerSelectorStatus. */
-    public static final RouterWorkerSelectorStatus EXPIRED = fromString("expired");
+    /** Expired. */
+    @Generated public static final RouterWorkerSelectorStatus EXPIRED = fromString("expired");
+
+    /**
+     * Creates a new instance of RouterWorkerSelectorStatus value.
+     *
+     * @deprecated Use the {@link #fromString(String)} factory method.
+     */
+    @Generated
+    @Deprecated
+    public RouterWorkerSelectorStatus() {}
 
     /**
      * Creates or finds a RouterWorkerSelectorStatus from its string representation.
@@ -22,6 +32,7 @@ public final class RouterWorkerSelectorStatus extends ExpandableStringEnum<Route
      * @param name a name to look for.
      * @return the corresponding RouterWorkerSelectorStatus.
      */
+    @Generated
     @JsonCreator
     public static RouterWorkerSelectorStatus fromString(String name) {
         return fromString(name, RouterWorkerSelectorStatus.class);
@@ -32,6 +43,7 @@ public final class RouterWorkerSelectorStatus extends ExpandableStringEnum<Route
      *
      * @return known RouterWorkerSelectorStatus values.
      */
+    @Generated
     public static Collection<RouterWorkerSelectorStatus> values() {
         return values(RouterWorkerSelectorStatus.class);
     }

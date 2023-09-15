@@ -4,43 +4,39 @@
 
 package com.azure.communication.jobrouter.models;
 
-import com.azure.core.annotation.Fluent;
-import com.azure.core.util.ETag;
+import com.azure.core.annotation.Generated;
+import com.azure.core.annotation.Immutable;
 import com.fasterxml.jackson.annotation.JsonProperty;
 
 /** Paged instance of ExceptionPolicy. */
-@Fluent
+@Immutable
 public final class ExceptionPolicyItem {
     /*
      * A policy that defines actions to execute when exception are triggered.
      */
+    @Generated
     @JsonProperty(value = "exceptionPolicy")
     private ExceptionPolicy exceptionPolicy;
 
     /*
      * (Optional) The Concurrency Token.
      */
+    @Generated
     @JsonProperty(value = "etag")
-    private ETag etag;
+    private String etag;
+
+    /** Creates an instance of ExceptionPolicyItem class. */
+    @Generated
+    private ExceptionPolicyItem() {}
 
     /**
      * Get the exceptionPolicy property: A policy that defines actions to execute when exception are triggered.
      *
      * @return the exceptionPolicy value.
      */
+    @Generated
     public ExceptionPolicy getExceptionPolicy() {
         return this.exceptionPolicy;
-    }
-
-    /**
-     * Set the exceptionPolicy property: A policy that defines actions to execute when exception are triggered.
-     *
-     * @param exceptionPolicy the exceptionPolicy value to set.
-     * @return the ExceptionPolicyItem object itself.
-     */
-    public ExceptionPolicyItem setExceptionPolicy(ExceptionPolicy exceptionPolicy) {
-        this.exceptionPolicy = exceptionPolicy;
-        return this;
     }
 
     /**
@@ -48,18 +44,8 @@ public final class ExceptionPolicyItem {
      *
      * @return the etag value.
      */
-    public ETag getEtag() {
+    @Generated
+    public String getEtag() {
         return this.etag;
-    }
-
-    /**
-     * Set the etag property: (Optional) The Concurrency Token.
-     *
-     * @param etag the etag value to set.
-     * @return the ExceptionPolicyItem object itself.
-     */
-    public ExceptionPolicyItem setEtag(ETag etag) {
-        this.etag = etag;
-        return this;
     }
 }

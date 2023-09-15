@@ -4,43 +4,39 @@
 
 package com.azure.communication.jobrouter.models;
 
-import com.azure.core.annotation.Fluent;
-import com.azure.core.util.ETag;
+import com.azure.core.annotation.Generated;
+import com.azure.core.annotation.Immutable;
 import com.fasterxml.jackson.annotation.JsonProperty;
 
 /** Paged instance of DistributionPolicy. */
-@Fluent
+@Immutable
 public final class DistributionPolicyItem {
     /*
      * Policy governing how jobs are distributed to workers
      */
+    @Generated
     @JsonProperty(value = "distributionPolicy")
     private DistributionPolicy distributionPolicy;
 
     /*
      * (Optional) The Concurrency Token.
      */
+    @Generated
     @JsonProperty(value = "etag")
-    private ETag etag;
+    private String etag;
+
+    /** Creates an instance of DistributionPolicyItem class. */
+    @Generated
+    private DistributionPolicyItem() {}
 
     /**
      * Get the distributionPolicy property: Policy governing how jobs are distributed to workers.
      *
      * @return the distributionPolicy value.
      */
+    @Generated
     public DistributionPolicy getDistributionPolicy() {
         return this.distributionPolicy;
-    }
-
-    /**
-     * Set the distributionPolicy property: Policy governing how jobs are distributed to workers.
-     *
-     * @param distributionPolicy the distributionPolicy value to set.
-     * @return the DistributionPolicyItem object itself.
-     */
-    public DistributionPolicyItem setDistributionPolicy(DistributionPolicy distributionPolicy) {
-        this.distributionPolicy = distributionPolicy;
-        return this;
     }
 
     /**
@@ -48,18 +44,8 @@ public final class DistributionPolicyItem {
      *
      * @return the etag value.
      */
-    public ETag getEtag() {
+    @Generated
+    public String getEtag() {
         return this.etag;
-    }
-
-    /**
-     * Set the etag property: (Optional) The Concurrency Token.
-     *
-     * @param etag the etag value to set.
-     * @return the DistributionPolicyItem object itself.
-     */
-    public DistributionPolicyItem setEtag(ETag etag) {
-        this.etag = etag;
-        return this;
     }
 }

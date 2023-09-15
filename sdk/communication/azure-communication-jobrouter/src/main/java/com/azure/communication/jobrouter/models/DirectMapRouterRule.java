@@ -4,6 +4,7 @@
 
 package com.azure.communication.jobrouter.models;
 
+import com.azure.core.annotation.Generated;
 import com.azure.core.annotation.Immutable;
 import com.fasterxml.jackson.annotation.JsonTypeInfo;
 import com.fasterxml.jackson.annotation.JsonTypeName;
@@ -12,4 +13,8 @@ import com.fasterxml.jackson.annotation.JsonTypeName;
 @JsonTypeInfo(use = JsonTypeInfo.Id.NAME, include = JsonTypeInfo.As.PROPERTY, property = "kind")
 @JsonTypeName("direct-map-rule")
 @Immutable
-public final class DirectMapRouterRule extends RouterRule {}
+public final class DirectMapRouterRule extends RouterRule {
+    /** Creates an instance of DirectMapRouterRule class. */
+    @Generated
+    public DirectMapRouterRule() {}
+}
