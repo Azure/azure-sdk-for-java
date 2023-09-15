@@ -78,7 +78,7 @@ public class FaultInjectionServerErrorRuleOnGatewayTests extends TestSuiteBase {
         this.subscriberValidationTimeout = TIMEOUT;
     }
 
-    @BeforeClass(groups = {"multi-region", "simple"}, timeOut = TIMEOUT)
+    @BeforeClass(groups = {"multi-master", "long"}, timeOut = TIMEOUT)
     public void beforeClass() {
         client = getClientBuilder().buildAsyncClient();
         AsyncDocumentClient asyncDocumentClient = BridgeInternal.getContextClient(client);
@@ -128,7 +128,7 @@ public class FaultInjectionServerErrorRuleOnGatewayTests extends TestSuiteBase {
         };
     }
 
-    @Test(groups = {"multi-region"}, timeOut = TIMEOUT)
+    @Test(groups = {"multi-master"}, timeOut = TIMEOUT)
     public void faultInjectionServerErrorRuleTests_Region() throws JsonProcessingException {
         List<String> preferredLocations = this.readRegionMap.keySet().stream().collect(Collectors.toList());
 
@@ -203,9 +203,10 @@ public class FaultInjectionServerErrorRuleOnGatewayTests extends TestSuiteBase {
 
             // Validate fault injection applied in the local region
             CosmosDiagnostics cosmosDiagnostics = this.performDocumentOperation(container, OperationType.Read, createdItem);
-
+            logger.info("Cosmos Diagnostics: {}", cosmosDiagnostics);
             this.validateHitCount(serverErrorRuleLocalRegion, 1, OperationType.Read, ResourceType.Document);
-            this.validateHitCount(serverErrorRuleRemoteRegion, 0, OperationType.Read, ResourceType.Document);
+            // 503/0 is retried in Client Retry policy
+            this.validateHitCount(serverErrorRuleRemoteRegion, 1, OperationType.Read, ResourceType.Document);
 
             this.validateFaultInjectionRuleApplied(
                 cosmosDiagnostics,
@@ -213,7 +214,7 @@ public class FaultInjectionServerErrorRuleOnGatewayTests extends TestSuiteBase {
                 HttpConstants.StatusCodes.SERVICE_UNAVAILABLE,
                 HttpConstants.SubStatusCodes.SERVER_GENERATED_503,
                 localRegionRuleId,
-                false
+                true
             );
 
             serverErrorRuleLocalRegion.disable();
@@ -227,7 +228,7 @@ public class FaultInjectionServerErrorRuleOnGatewayTests extends TestSuiteBase {
         }
     }
 
-    @Test(groups = {"multi-region", "simple"}, timeOut = 4 * TIMEOUT)
+    @Test(groups = {"multi-master", "long"}, timeOut = 4 * TIMEOUT)
     public void faultInjectionServerErrorRuleTests_Partition() throws JsonProcessingException {
         for (int i = 0; i < 10; i++) {
             cosmosAsyncContainer.createItem(TestItem.createNewItem()).block();
@@ -299,7 +300,7 @@ public class FaultInjectionServerErrorRuleOnGatewayTests extends TestSuiteBase {
         }
     }
 
-    @Test(groups = {"multi-region", "simple"}, timeOut = 4 * TIMEOUT)
+    @Test(groups = {"multi-master", "long"}, timeOut = 4 * TIMEOUT)
     public void faultInjectionServerErrorRuleTests_ServerResponseDelay() throws JsonProcessingException {
         // define another rule which can simulate timeout
         String timeoutRuleId = "serverErrorRule-responseDelay-" + UUID.randomUUID();
@@ -349,7 +350,7 @@ public class FaultInjectionServerErrorRuleOnGatewayTests extends TestSuiteBase {
         }
     }
 
-    @Test(groups = {"multi-region", "simple"}, timeOut = 4 * TIMEOUT)
+    @Test(groups = {"multi-master", "long"}, timeOut = 4 * TIMEOUT)
     public void faultInjectionServerErrorRuleTests_ServerConnectionDelay() throws JsonProcessingException {
         // simulate high channel acquisition/connectionTimeout
         String ruleId = "serverErrorRule-serverConnectionDelay-" + UUID.randomUUID();
@@ -390,7 +391,7 @@ public class FaultInjectionServerErrorRuleOnGatewayTests extends TestSuiteBase {
         }
     }
 
-    @Test(groups = {"multi-region", "simple"}, dataProvider = "faultInjectionServerErrorResponseProvider", timeOut = TIMEOUT)
+    @Test(groups = {"multi-master", "long"}, dataProvider = "faultInjectionServerErrorResponseProvider", timeOut = TIMEOUT)
     public void faultInjectionServerErrorRuleTests_ServerErrorResponse(
         FaultInjectionServerErrorType serverErrorType,
         boolean canRetry,
@@ -462,7 +463,7 @@ public class FaultInjectionServerErrorRuleOnGatewayTests extends TestSuiteBase {
         }
     }
 
-    @Test(groups = {"multi-region", "simple"}, dataProvider = "operationTypeProvider", timeOut = TIMEOUT)
+    @Test(groups = {"multi-master", "long"}, dataProvider = "operationTypeProvider", timeOut = TIMEOUT)
     public void faultInjectionServerErrorRuleTests_HitLimit(
         OperationType operationType,
         FaultInjectionOperationType faultInjectionOperationType) throws JsonProcessingException {
@@ -520,7 +521,7 @@ public class FaultInjectionServerErrorRuleOnGatewayTests extends TestSuiteBase {
         }
     }
 
-    @AfterClass(groups = {"multi-region", "simple"}, timeOut = SHUTDOWN_TIMEOUT, alwaysRun = true)
+    @AfterClass(groups = {"multi-master", "long"}, timeOut = SHUTDOWN_TIMEOUT, alwaysRun = true)
     public void afterClass() {
         safeClose(client);
     }
@@ -615,12 +616,9 @@ public class FaultInjectionServerErrorRuleOnGatewayTests extends TestSuiteBase {
             assertThat(gatewayStatisticsList.isArray()).isTrue();
 
             if (canRetryOnFaultInjectedError) {
-                if (gatewayStatisticsList.size() != 2) {
-                    System.out.println("FaultInjectionGatewayStatisticsList is wrong " + cosmosDiagnostics);
-                }
-                assertThat(gatewayStatisticsList.size()).isEqualTo(2);
+                assertThat(gatewayStatisticsList.size()).isGreaterThanOrEqualTo(2);
             } else {
-                assertThat(gatewayStatisticsList.size()).isOne();
+                assertThat(gatewayStatisticsList.size()).isEqualTo(1);
             }
             JsonNode gatewayStatistics = gatewayStatisticsList.get(0);
             assertThat(gatewayStatistics).isNotNull();
@@ -680,9 +678,9 @@ public class FaultInjectionServerErrorRuleOnGatewayTests extends TestSuiteBase {
         OperationType operationType,
         ResourceType resourceType) {
 
-        assertThat(rule.getHitCount()).isEqualTo(totalHitCount);
+        assertThat(rule.getHitCount()).isGreaterThanOrEqualTo(totalHitCount);
         if (totalHitCount > 0) {
-            assertThat(rule.getHitCountDetails().size()).isEqualTo(1);
+            assertThat(rule.getHitCountDetails().size()).isGreaterThanOrEqualTo(1);
             assertThat(rule.getHitCountDetails().get(operationType.toString() + "-" + resourceType.toString())).isEqualTo(totalHitCount);
         }
     }

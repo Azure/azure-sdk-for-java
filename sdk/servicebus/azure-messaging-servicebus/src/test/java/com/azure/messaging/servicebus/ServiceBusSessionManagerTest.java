@@ -24,9 +24,7 @@ import com.azure.messaging.servicebus.models.ServiceBusReceiveMode;
 import org.apache.qpid.proton.amqp.messaging.Accepted;
 import org.apache.qpid.proton.engine.SslDomain;
 import org.apache.qpid.proton.message.Message;
-import org.junit.jupiter.api.AfterAll;
 import org.junit.jupiter.api.AfterEach;
-import org.junit.jupiter.api.BeforeAll;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.TestInfo;
@@ -80,6 +78,7 @@ class ServiceBusSessionManagerTest {
     private static final Duration TIMEOUT = Duration.ofSeconds(10);
     private static final Duration MAX_LOCK_RENEWAL = Duration.ofSeconds(5);
     private static final Duration SESSION_IDLE_TIMEOUT = Duration.ofSeconds(20);
+    private static final Duration DEFAULT_TIMEOUT = Duration.ofSeconds(60);
     private static final String NAMESPACE = "my-namespace-foo.net";
     private static final String ENTITY_PATH = "queue-name";
     private static final MessagingEntityType ENTITY_TYPE = MessagingEntityType.QUEUE;
@@ -107,17 +106,6 @@ class ServiceBusSessionManagerTest {
     private ServiceBusManagementNode managementNode;
     @Captor
     private ArgumentCaptor<String> linkNameCaptor;
-
-
-    @BeforeAll
-    static void beforeAll() {
-        StepVerifier.setDefaultTimeout(Duration.ofSeconds(60));
-    }
-
-    @AfterAll
-    static void afterAll() {
-        StepVerifier.resetDefaultTimeout();
-    }
 
     @BeforeEach
     void beforeEach(TestInfo testInfo) {
@@ -194,7 +182,7 @@ class ServiceBusSessionManagerTest {
         // Act & Assert
         StepVerifier.create(sessionManager.receive())
             .expectError(NullPointerException.class)
-            .verify();
+            .verify(DEFAULT_TIMEOUT);
     }
 
     /**
@@ -431,7 +419,7 @@ class ServiceBusSessionManagerTest {
             })
             .thenAwait(Duration.ofSeconds(15))
             .thenCancel()
-            .verify();
+            .verify(DEFAULT_TIMEOUT);
     }
 
 
@@ -493,12 +481,12 @@ class ServiceBusSessionManagerTest {
         StepVerifier.create(sessionManager.receive())
             .thenAwait(Duration.ofSeconds(5))
             .thenCancel()
-            .verify();
+            .verify(DEFAULT_TIMEOUT);
 
         StepVerifier.create(sessionManager.receive())
             .thenAwait(Duration.ofSeconds(5))
             .thenCancel()
-            .verify();
+            .verify(DEFAULT_TIMEOUT);
 
         verify(connection, times(2)).createReceiveLink(linkNameCaptor.capture(), eq(ENTITY_PATH), any(
             ServiceBusReceiveMode.class), isNull(),
@@ -555,11 +543,11 @@ class ServiceBusSessionManagerTest {
                 try {
                     TimeUnit.SECONDS.sleep(TIMEOUT.getSeconds());
                     assertNull(sessionManager.getLinkName(sessionId));
-                } catch (InterruptedException e) { }
+                } catch (InterruptedException ignored) { }
 
             })
             .thenCancel()
-            .verify();
+            .verify(DEFAULT_TIMEOUT);
     }
 
     private static void assertMessageEquals(String sessionId, ServiceBusReceivedMessage expected,

@@ -212,8 +212,13 @@ public final class NetAppAccountImpl implements NetAppAccount, NetAppAccount.Def
     }
 
     public NetAppAccountImpl withIdentity(ManagedServiceIdentity identity) {
-        this.innerModel().withIdentity(identity);
-        return this;
+        if (isInCreateMode()) {
+            this.innerModel().withIdentity(identity);
+            return this;
+        } else {
+            this.updateBody.withIdentity(identity);
+            return this;
+        }
     }
 
     public NetAppAccountImpl withActiveDirectories(List<ActiveDirectory> activeDirectories) {

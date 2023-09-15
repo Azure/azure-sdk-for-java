@@ -7,6 +7,7 @@ import com.azure.core.amqp.exception.AmqpErrorContext;
 import com.azure.core.amqp.exception.AmqpException;
 import com.azure.core.util.IterableStream;
 import com.azure.core.util.logging.ClientLogger;
+import com.azure.messaging.servicebus.implementation.instrumentation.ReceiverKind;
 import com.azure.messaging.servicebus.implementation.instrumentation.ServiceBusReceiverInstrumentation;
 import com.azure.messaging.servicebus.models.AbandonOptions;
 import com.azure.messaging.servicebus.models.CompleteOptions;
@@ -90,7 +91,7 @@ class ServiceBusReceiverClientTest {
         when(asyncClient.getReceiverOptions()).thenReturn(createNonSessionOptions(ServiceBusReceiveMode.PEEK_LOCK, 0, null, false));
         when(asyncClient.getIdentifier()).thenReturn(CLIENT_IDENTIFIER);
         when(sessionReceiverOptions.getSessionId()).thenReturn(SESSION_ID);
-        when(asyncClient.getInstrumentation()).thenReturn(new ServiceBusReceiverInstrumentation(null, null, NAMESPACE, ENTITY_PATH, null, false));
+        when(asyncClient.getInstrumentation()).thenReturn(new ServiceBusReceiverInstrumentation(null, null, NAMESPACE, ENTITY_PATH, null, ReceiverKind.ASYNC_RECEIVER));
         client = new ServiceBusReceiverClient(asyncClient, false, OPERATION_TIMEOUT);
     }
 

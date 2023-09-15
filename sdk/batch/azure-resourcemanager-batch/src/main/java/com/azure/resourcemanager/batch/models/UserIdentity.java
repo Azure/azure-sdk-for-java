@@ -13,7 +13,7 @@ import com.fasterxml.jackson.annotation.JsonProperty;
  * <p>Specify either the userName or autoUser property, but not both.
  */
 @Fluent
-public class UserIdentity {
+public final class UserIdentity {
     /*
      * The name of the user identity under which the task is run.
      *

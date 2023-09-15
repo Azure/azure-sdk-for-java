@@ -4,12 +4,10 @@
 
 package com.azure.resourcemanager.apimanagement.generated;
 
-import com.azure.core.util.Context;
-
 /** Samples for OpenIdConnectProvider ListSecrets. */
 public final class OpenIdConnectProviderListSecretsSamples {
     /*
-     * x-ms-original-file: specification/apimanagement/resource-manager/Microsoft.ApiManagement/stable/2021-08-01/examples/ApiManagementOpenidConnectProviderListSecrets.json
+     * x-ms-original-file: specification/apimanagement/resource-manager/Microsoft.ApiManagement/stable/2022-08-01/examples/ApiManagementOpenidConnectProviderListSecrets.json
      */
     /**
      * Sample code: ApiManagementOpenidConnectProviderListSecrets.
@@ -20,6 +18,6 @@ public final class OpenIdConnectProviderListSecretsSamples {
         com.azure.resourcemanager.apimanagement.ApiManagementManager manager) {
         manager
             .openIdConnectProviders()
-            .listSecretsWithResponse("rg1", "apimService1", "templateOpenIdConnect2", Context.NONE);
+            .listSecretsWithResponse("rg1", "apimService1", "templateOpenIdConnect2", com.azure.core.util.Context.NONE);
     }
 }

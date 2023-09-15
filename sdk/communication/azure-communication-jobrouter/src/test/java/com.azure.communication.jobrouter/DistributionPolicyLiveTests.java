@@ -3,8 +3,8 @@
 
 package com.azure.communication.jobrouter;
 
-import com.azure.communication.jobrouter.models.AzureFunctionRule;
-import com.azure.communication.jobrouter.models.AzureFunctionRuleCredential;
+import com.azure.communication.jobrouter.models.AzureFunctionRouterRule;
+import com.azure.communication.jobrouter.models.AzureFunctionRouterRuleCredential;
 import com.azure.communication.jobrouter.models.BestWorkerMode;
 import com.azure.communication.jobrouter.models.CreateDistributionPolicyOptions;
 import com.azure.communication.jobrouter.models.DistributionPolicy;
@@ -56,9 +56,9 @@ public class DistributionPolicyLiveTests extends JobRouterTestBase {
         String bestWorkerModeDistributionPolicyId = String.format("%s-BestWorkerAzureFunctionRule-DistributionPolicy", JAVA_LIVE_TESTS);
         String bestWorkerModeDistributionPolicyName = String.format("%s-Name", bestWorkerModeDistributionPolicyId);
 
-        AzureFunctionRule azureFunctionRule = new AzureFunctionRule()
+        AzureFunctionRouterRule azureFunctionRule = new AzureFunctionRouterRule()
             .setFunctionUrl("https://my.function.app/api/myfunction?code=Kg==")
-            .setCredential(new AzureFunctionRuleCredential()
+            .setCredential(new AzureFunctionRouterRuleCredential()
                 .setAppKey("MyAppKey")
                 .setClientId("MyClientId"));
 

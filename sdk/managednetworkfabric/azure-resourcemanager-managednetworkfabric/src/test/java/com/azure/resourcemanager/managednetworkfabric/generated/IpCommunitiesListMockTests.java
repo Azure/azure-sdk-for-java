@@ -34,7 +34,7 @@ public final class IpCommunitiesListMockTests {
         ArgumentCaptor<HttpRequest> httpRequest = ArgumentCaptor.forClass(HttpRequest.class);
 
         String responseStr =
-            "{\"value\":[{\"properties\":{\"action\":\"Permit\",\"wellKnownCommunities\":[\"NoExport\",\"NoExport\",\"NoAdvertise\"],\"communityMembers\":[\"wnjlxu\"],\"provisioningState\":\"Canceled\",\"annotation\":\"pusxjb\"},\"location\":\"ehgpdohzjqatu\",\"tags\":{\"cnwfepbnwgfmxjg\":\"gebx\",\"jbgdlfgtdysnaquf\":\"g\",\"zjrwdkqze\":\"qbctqha\",\"fza\":\"yjleziunjx\"},\"id\":\"tkw\",\"name\":\"eg\",\"type\":\"amlbnseqacjjvpil\"}]}";
+            "{\"value\":[{\"properties\":{\"configurationState\":\"DeferredControl\",\"provisioningState\":\"Canceled\",\"administrativeState\":\"RMA\",\"ipCommunityRules\":[{\"action\":\"Deny\",\"sequenceNumber\":4970968790910387449,\"wellKnownCommunities\":[\"NoExport\",\"NoAdvertise\",\"NoAdvertise\",\"Internet\"],\"communityMembers\":[\"oyineuaxpmezit\",\"guzlweoyxfoaf\",\"dypzlxlmndhgwhlb\",\"juajzqxavmitnwl\"]}],\"annotation\":\"bujysvdtyyddbhat\"},\"location\":\"btpgnq\",\"tags\":{\"ew\":\"nnr\"},\"id\":\"hciga\",\"name\":\"hmdfspkdn\",\"type\":\"qxzxtert\"}]}";
 
         Mockito.when(httpResponse.getStatusCode()).thenReturn(200);
         Mockito.when(httpResponse.getHeaders()).thenReturn(new HttpHeaders());
@@ -64,12 +64,19 @@ public final class IpCommunitiesListMockTests {
 
         PagedIterable<IpCommunity> response = manager.ipCommunities().list(com.azure.core.util.Context.NONE);
 
-        Assertions.assertEquals("ehgpdohzjqatu", response.iterator().next().location());
-        Assertions.assertEquals("gebx", response.iterator().next().tags().get("cnwfepbnwgfmxjg"));
-        Assertions.assertEquals(CommunityActionTypes.PERMIT, response.iterator().next().action());
+        Assertions.assertEquals("btpgnq", response.iterator().next().location());
+        Assertions.assertEquals("nnr", response.iterator().next().tags().get("ew"));
         Assertions
-            .assertEquals(WellKnownCommunities.NO_EXPORT, response.iterator().next().wellKnownCommunities().get(0));
-        Assertions.assertEquals("wnjlxu", response.iterator().next().communityMembers().get(0));
-        Assertions.assertEquals("pusxjb", response.iterator().next().annotation());
+            .assertEquals(CommunityActionTypes.DENY, response.iterator().next().ipCommunityRules().get(0).action());
+        Assertions
+            .assertEquals(4970968790910387449L, response.iterator().next().ipCommunityRules().get(0).sequenceNumber());
+        Assertions
+            .assertEquals(
+                WellKnownCommunities.NO_EXPORT,
+                response.iterator().next().ipCommunityRules().get(0).wellKnownCommunities().get(0));
+        Assertions
+            .assertEquals(
+                "oyineuaxpmezit", response.iterator().next().ipCommunityRules().get(0).communityMembers().get(0));
+        Assertions.assertEquals("bujysvdtyyddbhat", response.iterator().next().annotation());
     }
 }

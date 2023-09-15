@@ -14,7 +14,7 @@
     <name>Microsoft Azure SDK for Application Insights Query API</name>
     <description>
         Please note, a newer package azure-monitor-query for querying logs from Azure Monitor is available at
-        https://search.maven.org/artifact/com.azure/azure-monitor-query as of October 2021. Read the migration guide
+        https://central.sonatype.com/artifact/com.azure/azure-monitor-query as of October 2021. Read the migration guide
         at https://aka.ms/azsdk/java/migrate/monitorquery for more details.</description>
     <url>https://github.com/Azure/azure-sdk-for-java</url>
     <parent>
@@ -62,7 +62,7 @@
         <dependency>
             <groupId>com.azure</groupId>
             <artifactId>azure-core-test</artifactId>
-            <version>1.18.1</version> <!-- {x-version-update;com.azure:azure-core-test;dependency} -->
+            <version>1.20.0</version> <!-- {x-version-update;com.azure:azure-core-test;dependency} -->
             <scope>test</scope>
         </dependency>
         <dependency>

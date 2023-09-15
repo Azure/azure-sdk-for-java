@@ -12,7 +12,10 @@ import com.azure.core.http.HttpResponse;
 import com.azure.core.management.AzureEnvironment;
 import com.azure.core.management.profile.AzureProfile;
 import com.azure.resourcemanager.managednetworkfabric.ManagedNetworkFabricManager;
+import com.azure.resourcemanager.managednetworkfabric.models.CommunityActionTypes;
+import com.azure.resourcemanager.managednetworkfabric.models.Condition;
 import com.azure.resourcemanager.managednetworkfabric.models.IpPrefix;
+import com.azure.resourcemanager.managednetworkfabric.models.IpPrefixRule;
 import java.nio.ByteBuffer;
 import java.nio.charset.StandardCharsets;
 import java.time.OffsetDateTime;
@@ -34,7 +37,7 @@ public final class IpPrefixesCreateMockTests {
         ArgumentCaptor<HttpRequest> httpRequest = ArgumentCaptor.forClass(HttpRequest.class);
 
         String responseStr =
-            "{\"properties\":{\"ipPrefixRules\":[],\"provisioningState\":\"Succeeded\",\"annotation\":\"xsmlz\"},\"location\":\"zdtxetlgyd\",\"tags\":{\"b\":\"vlnnpx\",\"gjekglklby\":\"fiqgeaar\",\"hj\":\"lidwcwvmzegjon\",\"zhzmtksjci\":\"rwgdnqzbrfks\"},\"id\":\"digsxcdgl\",\"name\":\"plkeuachtomflryt\",\"type\":\"wfpfmdgycx\"}";
+            "{\"properties\":{\"configurationState\":\"Provisioned\",\"provisioningState\":\"Succeeded\",\"administrativeState\":\"MAT\",\"ipPrefixRules\":[{\"action\":\"Permit\",\"sequenceNumber\":4449803466898573862,\"networkPrefix\":\"qgqs\",\"condition\":\"Range\",\"subnetMaskLength\":\"efeombo\"},{\"action\":\"Permit\",\"sequenceNumber\":6001894924580740479,\"networkPrefix\":\"fuakqsjymcfvvzc\",\"condition\":\"EqualTo\",\"subnetMaskLength\":\"qktcktnbpk\"},{\"action\":\"Permit\",\"sequenceNumber\":1226746474122202062,\"networkPrefix\":\"lncmlzvvrm\",\"condition\":\"GreaterThanOrEqualTo\",\"subnetMaskLength\":\"qsacjqz\"},{\"action\":\"Permit\",\"sequenceNumber\":3498512871956945291,\"networkPrefix\":\"wcbawapndmtq\",\"condition\":\"EqualTo\",\"subnetMaskLength\":\"zvagqxfblsx\"}],\"annotation\":\"qgtodgklle\"},\"location\":\"i\",\"tags\":{\"b\":\"sr\",\"gqbmxbpqcnxske\":\"nasgfyxhsx\",\"lfpiuuf\":\"ojvmazu\",\"givbhmn\":\"pdncokq\"},\"id\":\"mjlyhbjf\",\"name\":\"m\",\"type\":\"ibgwcduy\"}";
 
         Mockito.when(httpResponse.getStatusCode()).thenReturn(200);
         Mockito.when(httpResponse.getHeaders()).thenReturn(new HttpHeaders());
@@ -65,26 +68,36 @@ public final class IpPrefixesCreateMockTests {
         IpPrefix response =
             manager
                 .ipPrefixes()
-                .define("zolxrzvhqjwtr")
-                .withRegion("smwr")
-                .withExistingResourceGroup("yjuzkdb")
-                .withIpPrefixRules(Arrays.asList())
-                .withTags(
-                    mapOf(
-                        "tlhguynuchl",
-                        "dxfzzzwyjaf",
-                        "whmozusgzvlnsnnj",
-                        "mltx",
-                        "rag",
-                        "fpafolpymwamxq",
-                        "vl",
-                        "gdphtvdula"))
-                .withAnnotation("zpcrrkolawj")
+                .define("gdmfvybfmpot")
+                .withRegion("vtkmx")
+                .withExistingResourceGroup("mazkmqfw")
+                .withTags(mapOf("v", "shnugfbpeigkf", "gtdjhtbarptxurs", "vriqtuzwbkqcgz", "oc", "oyyumhzps"))
+                .withIpPrefixRules(
+                    Arrays
+                        .asList(
+                            new IpPrefixRule()
+                                .withAction(CommunityActionTypes.DENY)
+                                .withSequenceNumber(8899164326683510311L)
+                                .withNetworkPrefix("codbqeo")
+                                .withCondition(Condition.RANGE)
+                                .withSubnetMaskLength("xxbjhsp"),
+                            new IpPrefixRule()
+                                .withAction(CommunityActionTypes.DENY)
+                                .withSequenceNumber(2386191404567686629L)
+                                .withNetworkPrefix("xrwqlwdflgqrplz")
+                                .withCondition(Condition.RANGE)
+                                .withSubnetMaskLength("dbboffgxtaelx")))
+                .withAnnotation("fcyatbxdwr")
                 .create();
 
-        Assertions.assertEquals("zdtxetlgyd", response.location());
-        Assertions.assertEquals("vlnnpx", response.tags().get("b"));
-        Assertions.assertEquals("xsmlz", response.annotation());
+        Assertions.assertEquals("i", response.location());
+        Assertions.assertEquals("sr", response.tags().get("b"));
+        Assertions.assertEquals(CommunityActionTypes.PERMIT, response.ipPrefixRules().get(0).action());
+        Assertions.assertEquals(4449803466898573862L, response.ipPrefixRules().get(0).sequenceNumber());
+        Assertions.assertEquals("qgqs", response.ipPrefixRules().get(0).networkPrefix());
+        Assertions.assertEquals(Condition.RANGE, response.ipPrefixRules().get(0).condition());
+        Assertions.assertEquals("efeombo", response.ipPrefixRules().get(0).subnetMaskLength());
+        Assertions.assertEquals("qgtodgklle", response.annotation());
     }
 
     @SuppressWarnings("unchecked")

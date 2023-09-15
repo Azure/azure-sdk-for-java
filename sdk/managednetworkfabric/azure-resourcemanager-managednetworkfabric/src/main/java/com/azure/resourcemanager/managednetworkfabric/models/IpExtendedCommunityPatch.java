@@ -5,41 +5,84 @@
 package com.azure.resourcemanager.managednetworkfabric.models;
 
 import com.azure.core.annotation.Fluent;
-import com.fasterxml.jackson.annotation.JsonInclude;
+import com.azure.resourcemanager.managednetworkfabric.fluent.models.IpExtendedCommunityPatchProperties;
 import com.fasterxml.jackson.annotation.JsonProperty;
+import java.util.List;
 import java.util.Map;
 
-/** The IpExtendedCommunities patch resource definition. */
+/** The IP Extended Communities patch resource definition. */
 @Fluent
-public final class IpExtendedCommunityPatch {
+public final class IpExtendedCommunityPatch extends TagsUpdate {
     /*
-     * Resource tags
+     * IP Extended Community patchable properties.
      */
-    @JsonProperty(value = "tags")
-    @JsonInclude(value = JsonInclude.Include.NON_NULL, content = JsonInclude.Include.ALWAYS)
-    private Map<String, String> tags;
+    @JsonProperty(value = "properties")
+    private IpExtendedCommunityPatchProperties innerProperties;
 
     /** Creates an instance of IpExtendedCommunityPatch class. */
     public IpExtendedCommunityPatch() {
     }
 
     /**
-     * Get the tags property: Resource tags.
+     * Get the innerProperties property: IP Extended Community patchable properties.
      *
-     * @return the tags value.
+     * @return the innerProperties value.
      */
-    public Map<String, String> tags() {
-        return this.tags;
+    private IpExtendedCommunityPatchProperties innerProperties() {
+        return this.innerProperties;
+    }
+
+    /** {@inheritDoc} */
+    @Override
+    public IpExtendedCommunityPatch withTags(Map<String, String> tags) {
+        super.withTags(tags);
+        return this;
     }
 
     /**
-     * Set the tags property: Resource tags.
+     * Get the annotation property: Switch configuration description.
      *
-     * @param tags the tags value to set.
+     * @return the annotation value.
+     */
+    public String annotation() {
+        return this.innerProperties() == null ? null : this.innerProperties().annotation();
+    }
+
+    /**
+     * Set the annotation property: Switch configuration description.
+     *
+     * @param annotation the annotation value to set.
      * @return the IpExtendedCommunityPatch object itself.
      */
-    public IpExtendedCommunityPatch withTags(Map<String, String> tags) {
-        this.tags = tags;
+    public IpExtendedCommunityPatch withAnnotation(String annotation) {
+        if (this.innerProperties() == null) {
+            this.innerProperties = new IpExtendedCommunityPatchProperties();
+        }
+        this.innerProperties().withAnnotation(annotation);
+        return this;
+    }
+
+    /**
+     * Get the ipExtendedCommunityRules property: List of IP Extended Community Rules.
+     *
+     * @return the ipExtendedCommunityRules value.
+     */
+    public List<IpExtendedCommunityRule> ipExtendedCommunityRules() {
+        return this.innerProperties() == null ? null : this.innerProperties().ipExtendedCommunityRules();
+    }
+
+    /**
+     * Set the ipExtendedCommunityRules property: List of IP Extended Community Rules.
+     *
+     * @param ipExtendedCommunityRules the ipExtendedCommunityRules value to set.
+     * @return the IpExtendedCommunityPatch object itself.
+     */
+    public IpExtendedCommunityPatch withIpExtendedCommunityRules(
+        List<IpExtendedCommunityRule> ipExtendedCommunityRules) {
+        if (this.innerProperties() == null) {
+            this.innerProperties = new IpExtendedCommunityPatchProperties();
+        }
+        this.innerProperties().withIpExtendedCommunityRules(ipExtendedCommunityRules);
         return this;
     }
 
@@ -48,6 +91,11 @@ public final class IpExtendedCommunityPatch {
      *
      * @throws IllegalArgumentException thrown if the instance is not valid.
      */
+    @Override
     public void validate() {
+        super.validate();
+        if (innerProperties() != null) {
+            innerProperties().validate();
+        }
     }
 }

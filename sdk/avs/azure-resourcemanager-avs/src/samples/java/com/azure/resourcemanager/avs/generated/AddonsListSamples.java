@@ -7,7 +7,7 @@ package com.azure.resourcemanager.avs.generated;
 /** Samples for Addons List. */
 public final class AddonsListSamples {
     /*
-     * x-ms-original-file: specification/vmware/resource-manager/Microsoft.AVS/stable/2022-05-01/examples/Addons_List.json
+     * x-ms-original-file: specification/vmware/resource-manager/Microsoft.AVS/stable/2023-03-01/examples/Addons_List.json
      */
     /**
      * Sample code: Addons_List.

@@ -7,7 +7,7 @@ package com.azure.resourcemanager.mobilenetwork.generated;
 /** Samples for PacketCoreControlPlaneVersions List. */
 public final class PacketCoreControlPlaneVersionsListSamples {
     /*
-     * x-ms-original-file: specification/mobilenetwork/resource-manager/Microsoft.MobileNetwork/stable/2022-11-01/examples/PacketCoreControlPlaneVersionList.json
+     * x-ms-original-file: specification/mobilenetwork/resource-manager/Microsoft.MobileNetwork/stable/2023-06-01/examples/PacketCoreControlPlaneVersionList.json
      */
     /**
      * Sample code: Get supported packet core control plane versions.

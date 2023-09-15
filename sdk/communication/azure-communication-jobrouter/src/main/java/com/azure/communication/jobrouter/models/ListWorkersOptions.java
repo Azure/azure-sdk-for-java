@@ -10,9 +10,9 @@ package com.azure.communication.jobrouter.models;
 public class ListWorkersOptions {
 
     /**
-     * workerStateSelector.
+     * state.
      */
-    private final RouterWorkerStateSelector workerStateSelector;
+    private final RouterWorkerStateSelector state;
 
     /**
      * channelId.
@@ -36,14 +36,14 @@ public class ListWorkersOptions {
 
     /**
      * Constructor for ListWorkersOptions.
-     * @param workerStateSelector workerStateSelector.
+     * @param state state.
      * @param channelId channelId.
      * @param queueId queueId.
      * @param hasCapacity hasCapacity.
      * @param maxPageSize maxPageSize.
      */
-    public ListWorkersOptions(RouterWorkerStateSelector workerStateSelector, String channelId, String queueId, boolean hasCapacity, Integer maxPageSize) {
-        this.workerStateSelector = workerStateSelector;
+    public ListWorkersOptions(RouterWorkerStateSelector state, String channelId, String queueId, boolean hasCapacity, Integer maxPageSize) {
+        this.state = state;
         this.channelId = channelId;
         this.queueId = queueId;
         this.hasCapacity = hasCapacity;
@@ -51,11 +51,11 @@ public class ListWorkersOptions {
     }
 
     /**
-     * Returns workerStateSelector.
-     * @return workerStateSelector.
+     * Returns state.
+     * @return state.
      */
-    public RouterWorkerStateSelector getWorkerStateSelector() {
-        return this.workerStateSelector;
+    public RouterWorkerStateSelector getState() {
+        return this.state;
     }
 
     /**

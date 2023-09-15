@@ -7,6 +7,7 @@ package com.azure.resourcemanager.cognitiveservices.models;
 import com.azure.core.annotation.Fluent;
 import com.fasterxml.jackson.annotation.JsonInclude;
 import com.fasterxml.jackson.annotation.JsonProperty;
+import java.util.List;
 import java.util.Map;
 
 /** Properties of Cognitive Services account deployment. */
@@ -48,6 +49,18 @@ public final class DeploymentProperties {
      */
     @JsonProperty(value = "callRateLimit", access = JsonProperty.Access.WRITE_ONLY)
     private CallRateLimit callRateLimit;
+
+    /*
+     * The rateLimits property.
+     */
+    @JsonProperty(value = "rateLimits", access = JsonProperty.Access.WRITE_ONLY)
+    private List<ThrottlingRule> rateLimits;
+
+    /*
+     * Deployment model version upgrade option.
+     */
+    @JsonProperty(value = "versionUpgradeOption")
+    private DeploymentModelVersionUpgradeOption versionUpgradeOption;
 
     /** Creates an instance of DeploymentProperties class. */
     public DeploymentProperties() {
@@ -141,6 +154,35 @@ public final class DeploymentProperties {
     }
 
     /**
+     * Get the rateLimits property: The rateLimits property.
+     *
+     * @return the rateLimits value.
+     */
+    public List<ThrottlingRule> rateLimits() {
+        return this.rateLimits;
+    }
+
+    /**
+     * Get the versionUpgradeOption property: Deployment model version upgrade option.
+     *
+     * @return the versionUpgradeOption value.
+     */
+    public DeploymentModelVersionUpgradeOption versionUpgradeOption() {
+        return this.versionUpgradeOption;
+    }
+
+    /**
+     * Set the versionUpgradeOption property: Deployment model version upgrade option.
+     *
+     * @param versionUpgradeOption the versionUpgradeOption value to set.
+     * @return the DeploymentProperties object itself.
+     */
+    public DeploymentProperties withVersionUpgradeOption(DeploymentModelVersionUpgradeOption versionUpgradeOption) {
+        this.versionUpgradeOption = versionUpgradeOption;
+        return this;
+    }
+
+    /**
      * Validates the instance.
      *
      * @throws IllegalArgumentException thrown if the instance is not valid.
@@ -154,6 +196,9 @@ public final class DeploymentProperties {
         }
         if (callRateLimit() != null) {
             callRateLimit().validate();
+        }
+        if (rateLimits() != null) {
+            rateLimits().forEach(e -> e.validate());
         }
     }
 }

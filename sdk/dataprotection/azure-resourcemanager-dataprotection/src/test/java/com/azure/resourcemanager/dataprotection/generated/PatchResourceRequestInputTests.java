@@ -5,12 +5,23 @@
 package com.azure.resourcemanager.dataprotection.generated;
 
 import com.azure.core.util.BinaryData;
+import com.azure.resourcemanager.dataprotection.models.AlertsState;
+import com.azure.resourcemanager.dataprotection.models.AzureMonitorAlertSettings;
+import com.azure.resourcemanager.dataprotection.models.CrossRegionRestoreSettings;
+import com.azure.resourcemanager.dataprotection.models.CrossRegionRestoreState;
+import com.azure.resourcemanager.dataprotection.models.CrossSubscriptionRestoreSettings;
+import com.azure.resourcemanager.dataprotection.models.CrossSubscriptionRestoreState;
 import com.azure.resourcemanager.dataprotection.models.DppIdentityDetails;
 import com.azure.resourcemanager.dataprotection.models.FeatureSettings;
+import com.azure.resourcemanager.dataprotection.models.ImmutabilitySettings;
+import com.azure.resourcemanager.dataprotection.models.ImmutabilityState;
 import com.azure.resourcemanager.dataprotection.models.MonitoringSettings;
 import com.azure.resourcemanager.dataprotection.models.PatchBackupVaultInput;
 import com.azure.resourcemanager.dataprotection.models.PatchResourceRequestInput;
 import com.azure.resourcemanager.dataprotection.models.SecuritySettings;
+import com.azure.resourcemanager.dataprotection.models.SoftDeleteSettings;
+import com.azure.resourcemanager.dataprotection.models.SoftDeleteState;
+import com.azure.resourcemanager.dataprotection.models.UserAssignedIdentity;
 import java.util.HashMap;
 import java.util.Map;
 import org.junit.jupiter.api.Assertions;
@@ -21,26 +32,98 @@ public final class PatchResourceRequestInputTests {
         PatchResourceRequestInput model =
             BinaryData
                 .fromString(
-                    "{\"identity\":{\"principalId\":\"pbkwtmu\",\"tenantId\":\"uqktap\",\"type\":\"wgcu\"},\"properties\":{\"monitoringSettings\":{},\"securitySettings\":{},\"featureSettings\":{}},\"tags\":{\"bbjfddgmbmbexp\":\"whbmd\"}}")
+                    "{\"identity\":{\"principalId\":\"zaqsqsycbkbfk\",\"tenantId\":\"kdkexxp\",\"type\":\"fmxa\",\"userAssignedIdentities\":{\"gddtocj\":{\"principalId\":\"147cb136-2a60-4b06-a131-c36478985f49\",\"clientId\":\"bad0465d-c493-4571-acf2-db91e0a6d8d9\"},\"vpmouexhdzxib\":{\"principalId\":\"fa798c48-b47c-46a7-a1cb-6be53b13431e\",\"clientId\":\"d11aa6fb-e394-4b1c-8aa2-0364c6a070a1\"},\"jnxqbzvddntwn\":{\"principalId\":\"c138d274-8916-453f-bdd1-b0e35693f694\",\"clientId\":\"44478ebc-2907-4142-8991-3d0946f358ba\"},\"cbtwnpzaoqvuh\":{\"principalId\":\"1deba60b-57d2-4ea7-ab29-55811c0a2e0b\",\"clientId\":\"d02b3ab6-928d-4e8b-a8a0-cfe564603bd4\"}}},\"properties\":{\"monitoringSettings\":{\"azureMonitorAlertSettings\":{\"alertsForAllJobFailures\":\"Disabled\"}},\"securitySettings\":{\"softDeleteSettings\":{\"state\":\"AlwaysOn\",\"retentionDurationInDays\":51.7805556269055},\"immutabilitySettings\":{\"state\":\"Disabled\"}},\"featureSettings\":{\"crossSubscriptionRestoreSettings\":{\"state\":\"Enabled\"},\"crossRegionRestoreSettings\":{\"state\":\"Disabled\"}}},\"tags\":{\"wqvhkhixuigdt\":\"mqc\",\"hm\":\"pbobjo\"}}")
                 .toObject(PatchResourceRequestInput.class);
-        Assertions.assertEquals("wgcu", model.identity().type());
-        Assertions.assertEquals("whbmd", model.tags().get("bbjfddgmbmbexp"));
+        Assertions.assertEquals("fmxa", model.identity().type());
+        Assertions
+            .assertEquals(
+                AlertsState.DISABLED,
+                model.properties().monitoringSettings().azureMonitorAlertSettings().alertsForAllJobFailures());
+        Assertions
+            .assertEquals(
+                SoftDeleteState.ALWAYS_ON, model.properties().securitySettings().softDeleteSettings().state());
+        Assertions
+            .assertEquals(
+                51.7805556269055D,
+                model.properties().securitySettings().softDeleteSettings().retentionDurationInDays());
+        Assertions
+            .assertEquals(
+                ImmutabilityState.DISABLED, model.properties().securitySettings().immutabilitySettings().state());
+        Assertions
+            .assertEquals(
+                CrossSubscriptionRestoreState.ENABLED,
+                model.properties().featureSettings().crossSubscriptionRestoreSettings().state());
+        Assertions
+            .assertEquals(
+                CrossRegionRestoreState.DISABLED,
+                model.properties().featureSettings().crossRegionRestoreSettings().state());
+        Assertions.assertEquals("mqc", model.tags().get("wqvhkhixuigdt"));
     }
 
     @org.junit.jupiter.api.Test
     public void testSerialize() throws Exception {
         PatchResourceRequestInput model =
             new PatchResourceRequestInput()
-                .withIdentity(new DppIdentityDetails().withType("wgcu"))
+                .withIdentity(
+                    new DppIdentityDetails()
+                        .withType("fmxa")
+                        .withUserAssignedIdentities(
+                            mapOf(
+                                "gddtocj",
+                                new UserAssignedIdentity(),
+                                "vpmouexhdzxib",
+                                new UserAssignedIdentity(),
+                                "jnxqbzvddntwn",
+                                new UserAssignedIdentity(),
+                                "cbtwnpzaoqvuh",
+                                new UserAssignedIdentity())))
                 .withProperties(
                     new PatchBackupVaultInput()
-                        .withMonitoringSettings(new MonitoringSettings())
-                        .withSecuritySettings(new SecuritySettings())
-                        .withFeatureSettings(new FeatureSettings()))
-                .withTags(mapOf("bbjfddgmbmbexp", "whbmd"));
+                        .withMonitoringSettings(
+                            new MonitoringSettings()
+                                .withAzureMonitorAlertSettings(
+                                    new AzureMonitorAlertSettings().withAlertsForAllJobFailures(AlertsState.DISABLED)))
+                        .withSecuritySettings(
+                            new SecuritySettings()
+                                .withSoftDeleteSettings(
+                                    new SoftDeleteSettings()
+                                        .withState(SoftDeleteState.ALWAYS_ON)
+                                        .withRetentionDurationInDays(51.7805556269055D))
+                                .withImmutabilitySettings(
+                                    new ImmutabilitySettings().withState(ImmutabilityState.DISABLED)))
+                        .withFeatureSettings(
+                            new FeatureSettings()
+                                .withCrossSubscriptionRestoreSettings(
+                                    new CrossSubscriptionRestoreSettings()
+                                        .withState(CrossSubscriptionRestoreState.ENABLED))
+                                .withCrossRegionRestoreSettings(
+                                    new CrossRegionRestoreSettings().withState(CrossRegionRestoreState.DISABLED))))
+                .withTags(mapOf("wqvhkhixuigdt", "mqc", "hm", "pbobjo"));
         model = BinaryData.fromObject(model).toObject(PatchResourceRequestInput.class);
-        Assertions.assertEquals("wgcu", model.identity().type());
-        Assertions.assertEquals("whbmd", model.tags().get("bbjfddgmbmbexp"));
+        Assertions.assertEquals("fmxa", model.identity().type());
+        Assertions
+            .assertEquals(
+                AlertsState.DISABLED,
+                model.properties().monitoringSettings().azureMonitorAlertSettings().alertsForAllJobFailures());
+        Assertions
+            .assertEquals(
+                SoftDeleteState.ALWAYS_ON, model.properties().securitySettings().softDeleteSettings().state());
+        Assertions
+            .assertEquals(
+                51.7805556269055D,
+                model.properties().securitySettings().softDeleteSettings().retentionDurationInDays());
+        Assertions
+            .assertEquals(
+                ImmutabilityState.DISABLED, model.properties().securitySettings().immutabilitySettings().state());
+        Assertions
+            .assertEquals(
+                CrossSubscriptionRestoreState.ENABLED,
+                model.properties().featureSettings().crossSubscriptionRestoreSettings().state());
+        Assertions
+            .assertEquals(
+                CrossRegionRestoreState.DISABLED,
+                model.properties().featureSettings().crossRegionRestoreSettings().state());
+        Assertions.assertEquals("mqc", model.tags().get("wqvhkhixuigdt"));
     }
 
     @SuppressWarnings("unchecked")

@@ -5,6 +5,7 @@
 package com.azure.communication.jobrouter.models;
 
 import com.azure.core.annotation.Fluent;
+import com.azure.core.util.ETag;
 import com.fasterxml.jackson.annotation.JsonProperty;
 
 /** Paged instance of DistributionPolicy. */
@@ -20,7 +21,7 @@ public final class DistributionPolicyItem {
      * (Optional) The Concurrency Token.
      */
     @JsonProperty(value = "etag")
-    private String etag;
+    private ETag etag;
 
     /**
      * Get the distributionPolicy property: Policy governing how jobs are distributed to workers.
@@ -47,7 +48,7 @@ public final class DistributionPolicyItem {
      *
      * @return the etag value.
      */
-    public String getEtag() {
+    public ETag getEtag() {
         return this.etag;
     }
 
@@ -57,7 +58,7 @@ public final class DistributionPolicyItem {
      * @param etag the etag value to set.
      * @return the DistributionPolicyItem object itself.
      */
-    public DistributionPolicyItem setEtag(String etag) {
+    public DistributionPolicyItem setEtag(ETag etag) {
         this.etag = etag;
         return this;
     }

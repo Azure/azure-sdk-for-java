@@ -21,7 +21,7 @@ public interface IpPrefixes {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the IPPrefix resource definition along with {@link Response}.
+     * @return the IP Prefix resource definition along with {@link Response}.
      */
     Response<IpPrefix> getByResourceGroupWithResponse(String resourceGroupName, String ipPrefixName, Context context);
 
@@ -35,7 +35,7 @@ public interface IpPrefixes {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the IPPrefix resource definition.
+     * @return the IP Prefix resource definition.
      */
     IpPrefix getByResourceGroup(String resourceGroupName, String ipPrefixName);
 
@@ -75,7 +75,7 @@ public interface IpPrefixes {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return list of IpPrefixes as paginated response with {@link PagedIterable}.
+     * @return list of IP Prefixes as paginated response with {@link PagedIterable}.
      */
     PagedIterable<IpPrefix> listByResourceGroup(String resourceGroupName);
 
@@ -89,7 +89,7 @@ public interface IpPrefixes {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return list of IpPrefixes as paginated response with {@link PagedIterable}.
+     * @return list of IP Prefixes as paginated response with {@link PagedIterable}.
      */
     PagedIterable<IpPrefix> listByResourceGroup(String resourceGroupName, Context context);
 
@@ -100,7 +100,7 @@ public interface IpPrefixes {
      *
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return list of IpPrefixes as paginated response with {@link PagedIterable}.
+     * @return list of IP Prefixes as paginated response with {@link PagedIterable}.
      */
     PagedIterable<IpPrefix> list();
 
@@ -113,7 +113,7 @@ public interface IpPrefixes {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return list of IpPrefixes as paginated response with {@link PagedIterable}.
+     * @return list of IP Prefixes as paginated response with {@link PagedIterable}.
      */
     PagedIterable<IpPrefix> list(Context context);
 
@@ -126,7 +126,7 @@ public interface IpPrefixes {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the IPPrefix resource definition along with {@link Response}.
+     * @return the IP Prefix resource definition along with {@link Response}.
      */
     IpPrefix getById(String id);
 
@@ -140,7 +140,7 @@ public interface IpPrefixes {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the IPPrefix resource definition along with {@link Response}.
+     * @return the IP Prefix resource definition along with {@link Response}.
      */
     Response<IpPrefix> getByIdWithResponse(String id, Context context);
 

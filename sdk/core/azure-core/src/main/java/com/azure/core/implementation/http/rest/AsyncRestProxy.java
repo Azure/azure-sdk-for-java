@@ -22,6 +22,7 @@ import com.azure.core.util.serializer.SerializerEncoding;
 import com.azure.json.JsonSerializable;
 import reactor.core.publisher.Flux;
 import reactor.core.publisher.Mono;
+import reactor.core.scheduler.Schedulers;
 
 import java.io.IOException;
 import java.io.InputStream;
@@ -62,7 +63,7 @@ public class AsyncRestProxy extends RestProxyBase {
     }
 
     @Override
-    @SuppressWarnings("try")
+    @SuppressWarnings({"try", "unused"})
     public Object invoke(Object proxy, Method method, RequestOptions options, EnumSet<ErrorOptions> errorOptions,
         Consumer<HttpRequest> requestCallback, SwaggerMethodParser methodParser, HttpRequest request, Context context) {
         RestProxyUtils.validateResumeOperationIsNotPresent(method);
@@ -143,19 +144,32 @@ public class AsyncRestProxy extends RestProxyBase {
                 return response.getSourceResponse().getBody().ignoreElements()
                     .then(Mono.fromCallable(() -> createResponse(response, entityType, null)));
             } else {
-                return handleBodyReturnType(response.getSourceResponse(), response::getDecodedBody, methodParser,
-                    bodyType)
+                return handleBodyReturnType(response.getSourceResponse(),
+                    decodeBytes(response),
+                    methodParser, bodyType)
                     .map(bodyAsObject -> createResponse(response, entityType, bodyAsObject))
                     .switchIfEmpty(Mono.fromCallable(() -> createResponse(response, entityType, null)));
             }
         } else {
             // For now, we're just throwing if the Maybe didn't emit a value.
-            return handleBodyReturnType(response.getSourceResponse(), response::getDecodedBody, methodParser,
-                entityType);
+            return handleBodyReturnType(response.getSourceResponse(), decodeBytes(response), methodParser, entityType);
         }
     }
 
-    static Mono<?> handleBodyReturnType(HttpResponse sourceResponse, Function<byte[], Object> getDecodedBody,
+    private static Function<byte[], Mono<Object>> decodeBytes(HttpResponseDecoder.HttpDecodedResponse response) {
+        return bytes -> Mono.fromCallable(() -> response.getDecodedBody(bytes))
+            .publishOn(Schedulers.boundedElastic())
+            .handle((object, sink) -> {
+                if (object == null) {
+                    sink.complete();
+                } else {
+                    sink.next(object);
+                    sink.complete();
+                }
+            });
+    }
+
+    static Mono<?> handleBodyReturnType(HttpResponse sourceResponse, Function<byte[], Mono<Object>> getDecodedBody,
         SwaggerMethodParser methodParser, Type entityType) {
         final int responseStatusCode = sourceResponse.getStatusCode();
         final HttpMethod httpMethod = methodParser.getHttpMethod();
@@ -197,7 +211,7 @@ public class AsyncRestProxy extends RestProxyBase {
             asyncResult = sourceResponse.getBodyAsInputStream();
         } else {
             // Mono<Object> or Mono<Page<T>>
-            asyncResult = sourceResponse.getBodyAsByteArray().mapNotNull(getDecodedBody);
+            asyncResult = sourceResponse.getBodyAsByteArray().flatMap(getDecodedBody);
         }
         return asyncResult;
     }

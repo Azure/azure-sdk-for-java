@@ -4,6 +4,7 @@
 
 package com.azure.communication.phonenumbers.implementation.models;
 
+import com.azure.communication.phonenumbers.CodeCoverageAnnotation.Generated;
 import com.azure.communication.phonenumbers.models.PurchasedPhoneNumber;
 import com.azure.core.annotation.Fluent;
 import com.fasterxml.jackson.annotation.JsonProperty;
@@ -11,6 +12,7 @@ import java.util.List;
 
 /** The PurchasedPhoneNumbers model. */
 @Fluent
+@Generated
 public final class PurchasedPhoneNumbers {
     /*
      * Represents a list of phone numbers.

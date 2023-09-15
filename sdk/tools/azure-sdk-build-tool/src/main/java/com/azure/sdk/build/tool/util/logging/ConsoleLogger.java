@@ -1,16 +1,23 @@
+// Copyright (c) Microsoft Corporation. All rights reserved.
+// Licensed under the MIT License.
+
 package com.azure.sdk.build.tool.util.logging;
 
 /**
  * An implementation of {@link Logger} that logs messages to console.
  */
 public class ConsoleLogger implements Logger {
-    private static ConsoleLogger INSTANCE;
+    private static ConsoleLogger instance;
 
+    /**
+     * Returns the singleton instance of {@link ConsoleLogger}.
+     * @return The singleton instance of {@link ConsoleLogger}.
+     */
     public static Logger getInstance() {
-        if (INSTANCE == null) {
-            INSTANCE = new ConsoleLogger();
+        if (instance == null) {
+            instance = new ConsoleLogger();
         }
-        return INSTANCE;
+        return instance;
     }
 
     @Override

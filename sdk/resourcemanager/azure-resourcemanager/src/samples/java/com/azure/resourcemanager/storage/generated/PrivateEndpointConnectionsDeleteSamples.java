@@ -4,12 +4,10 @@
 
 package com.azure.resourcemanager.storage.generated;
 
-import com.azure.core.util.Context;
-
 /** Samples for PrivateEndpointConnections Delete. */
 public final class PrivateEndpointConnectionsDeleteSamples {
     /*
-     * x-ms-original-file: specification/storage/resource-manager/Microsoft.Storage/stable/2022-09-01/examples/StorageAccountDeletePrivateEndpointConnection.json
+     * x-ms-original-file: specification/storage/resource-manager/Microsoft.Storage/stable/2023-01-01/examples/StorageAccountDeletePrivateEndpointConnection.json
      */
     /**
      * Sample code: StorageAccountDeletePrivateEndpointConnection.
@@ -23,6 +21,7 @@ public final class PrivateEndpointConnectionsDeleteSamples {
             .manager()
             .serviceClient()
             .getPrivateEndpointConnections()
-            .deleteWithResponse("res6977", "sto2527", "{privateEndpointConnectionName}", Context.NONE);
+            .deleteWithResponse(
+                "res6977", "sto2527", "{privateEndpointConnectionName}", com.azure.core.util.Context.NONE);
     }
 }

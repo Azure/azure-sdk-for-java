@@ -15,14 +15,14 @@ public final class RecoveryPointDataStoreDetailsTests {
         RecoveryPointDataStoreDetails model =
             BinaryData
                 .fromString(
-                    "{\"creationTime\":\"2021-09-15T07:03:18Z\",\"expiryTime\":\"2021-04-06T04:34:54Z\",\"id\":\"tiagx\",\"metaData\":\"sz\",\"state\":\"mpsbzkfzbeyv\",\"type\":\"qi\",\"visible\":true,\"rehydrationExpiryTime\":\"2021-11-22T09:10:31Z\",\"rehydrationStatus\":\"COMPLETED\"}")
+                    "{\"creationTime\":\"2021-10-02T02:42:21Z\",\"expiryTime\":\"2021-09-17T13:51:22Z\",\"id\":\"llqwjygvjayvblmh\",\"metaData\":\"zuhbxvvyhgsopb\",\"state\":\"qufegxuvwzfbn\",\"type\":\"mctlpdngitv\",\"visible\":true,\"rehydrationExpiryTime\":\"2021-02-28T20:17:33Z\",\"rehydrationStatus\":\"DELETE_IN_PROGRESS\"}")
                 .toObject(RecoveryPointDataStoreDetails.class);
-        Assertions.assertEquals(OffsetDateTime.parse("2021-09-15T07:03:18Z"), model.creationTime());
-        Assertions.assertEquals(OffsetDateTime.parse("2021-04-06T04:34:54Z"), model.expiryTime());
-        Assertions.assertEquals("tiagx", model.id());
-        Assertions.assertEquals("sz", model.metadata());
-        Assertions.assertEquals("mpsbzkfzbeyv", model.state());
-        Assertions.assertEquals("qi", model.type());
+        Assertions.assertEquals(OffsetDateTime.parse("2021-10-02T02:42:21Z"), model.creationTime());
+        Assertions.assertEquals(OffsetDateTime.parse("2021-09-17T13:51:22Z"), model.expiryTime());
+        Assertions.assertEquals("llqwjygvjayvblmh", model.id());
+        Assertions.assertEquals("zuhbxvvyhgsopb", model.metadata());
+        Assertions.assertEquals("qufegxuvwzfbn", model.state());
+        Assertions.assertEquals("mctlpdngitv", model.type());
         Assertions.assertEquals(true, model.visible());
     }
 
@@ -30,20 +30,20 @@ public final class RecoveryPointDataStoreDetailsTests {
     public void testSerialize() throws Exception {
         RecoveryPointDataStoreDetails model =
             new RecoveryPointDataStoreDetails()
-                .withCreationTime(OffsetDateTime.parse("2021-09-15T07:03:18Z"))
-                .withExpiryTime(OffsetDateTime.parse("2021-04-06T04:34:54Z"))
-                .withId("tiagx")
-                .withMetadata("sz")
-                .withState("mpsbzkfzbeyv")
-                .withType("qi")
+                .withCreationTime(OffsetDateTime.parse("2021-10-02T02:42:21Z"))
+                .withExpiryTime(OffsetDateTime.parse("2021-09-17T13:51:22Z"))
+                .withId("llqwjygvjayvblmh")
+                .withMetadata("zuhbxvvyhgsopb")
+                .withState("qufegxuvwzfbn")
+                .withType("mctlpdngitv")
                 .withVisible(true);
         model = BinaryData.fromObject(model).toObject(RecoveryPointDataStoreDetails.class);
-        Assertions.assertEquals(OffsetDateTime.parse("2021-09-15T07:03:18Z"), model.creationTime());
-        Assertions.assertEquals(OffsetDateTime.parse("2021-04-06T04:34:54Z"), model.expiryTime());
-        Assertions.assertEquals("tiagx", model.id());
-        Assertions.assertEquals("sz", model.metadata());
-        Assertions.assertEquals("mpsbzkfzbeyv", model.state());
-        Assertions.assertEquals("qi", model.type());
+        Assertions.assertEquals(OffsetDateTime.parse("2021-10-02T02:42:21Z"), model.creationTime());
+        Assertions.assertEquals(OffsetDateTime.parse("2021-09-17T13:51:22Z"), model.expiryTime());
+        Assertions.assertEquals("llqwjygvjayvblmh", model.id());
+        Assertions.assertEquals("zuhbxvvyhgsopb", model.metadata());
+        Assertions.assertEquals("qufegxuvwzfbn", model.state());
+        Assertions.assertEquals("mctlpdngitv", model.type());
         Assertions.assertEquals(true, model.visible());
     }
 }

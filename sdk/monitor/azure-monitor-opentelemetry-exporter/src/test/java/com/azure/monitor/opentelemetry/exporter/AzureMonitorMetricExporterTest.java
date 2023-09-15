@@ -7,25 +7,20 @@ import com.azure.monitor.opentelemetry.exporter.implementation.MetricDataMapper;
 import com.azure.monitor.opentelemetry.exporter.implementation.builders.MetricTelemetryBuilder;
 import com.azure.monitor.opentelemetry.exporter.implementation.models.MetricDataPoint;
 import com.azure.monitor.opentelemetry.exporter.implementation.models.MetricsData;
-import io.opentelemetry.api.OpenTelemetry;
 import io.opentelemetry.api.common.AttributeKey;
 import io.opentelemetry.api.common.Attributes;
 import io.opentelemetry.api.metrics.DoubleCounter;
 import io.opentelemetry.api.metrics.DoubleHistogram;
 import io.opentelemetry.api.metrics.LongCounter;
 import io.opentelemetry.api.metrics.Meter;
-import io.opentelemetry.sdk.OpenTelemetrySdk;
 import io.opentelemetry.sdk.metrics.SdkMeterProvider;
 import io.opentelemetry.sdk.metrics.data.LongPointData;
 import io.opentelemetry.sdk.metrics.data.MetricData;
 import io.opentelemetry.sdk.metrics.data.PointData;
 import io.opentelemetry.sdk.metrics.export.PeriodicMetricReader;
 import io.opentelemetry.sdk.testing.exporter.InMemoryMetricExporter;
-import org.junit.jupiter.api.AfterEach;
-import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 
-import java.time.Duration;
 import java.util.Collection;
 import java.util.Comparator;
 import java.util.Iterator;
@@ -42,46 +37,28 @@ import static org.assertj.core.api.Assertions.assertThat;
 
 public class AzureMonitorMetricExporterTest {
 
-    private Meter meter;
-    private InMemoryMetricExporter inMemoryMetricExporter;
-
-    @BeforeEach
-    public void setup() {
-        inMemoryMetricExporter = InMemoryMetricExporter.create();
-        PeriodicMetricReader metricReader =
-            PeriodicMetricReader.builder(inMemoryMetricExporter)
-                .setInterval(Duration.ofMillis(100))
-                .build();
-        SdkMeterProvider meterProvider =
-            SdkMeterProvider.builder().registerMetricReader(metricReader).build();
-
-        OpenTelemetry openTelemetry =
-            OpenTelemetrySdk.builder().setMeterProvider(meterProvider).build();
-
-        meter =
-            openTelemetry
-                .meterBuilder("AzureMonitorMetricExporterTest")
-                .setInstrumentationVersion("1.0.0")
-                .build();
-    }
-
-    @AfterEach
-    public void cleanup() {
-        inMemoryMetricExporter.reset();
-    }
-
     @Test
-    public void testDoubleCounter() throws InterruptedException {
+    public void testDoubleCounter() {
+        InMemoryMetricExporter inMemoryMetricExporter = InMemoryMetricExporter.create();
+        SdkMeterProvider meterProvider = SdkMeterProvider.builder()
+                .registerMetricReader(
+                        PeriodicMetricReader.builder(inMemoryMetricExporter).build())
+                .build();
+        Meter meter = meterProvider.get("AzureMonitorMetricExporterTest");
+
         DoubleCounter counter = meter.counterBuilder("testDoubleCounter").ofDoubles().build();
         counter.add(3.1415);
 
-        List<MetricData> metricDatas = getFinishedMetricItems(1);
+        meterProvider.forceFlush();
 
-        MetricData metricData = metricDatas.get(0);
+        List<MetricData> metricDataList = inMemoryMetricExporter.getFinishedMetricItems();
+        assertThat(metricDataList).hasSize(1);
+
+        MetricData metricData = metricDataList.get(0);
         for (PointData pointData : metricData.getData().getPoints()) {
             MetricTelemetryBuilder builder = MetricTelemetryBuilder.create();
             MetricDataMapper.updateMetricPointBuilder(
-                builder, metricDatas.get(0), pointData, true, false);
+                builder, metricDataList.get(0), pointData, true, false);
             MetricsData metricsData = (MetricsData) builder.build().getData().getBaseData();
             assertThat(metricsData.getMetrics().size()).isEqualTo(1);
             assertThat(metricsData.getMetrics().get(0).getValue()).isEqualTo(3.1415);
@@ -92,17 +69,25 @@ public class AzureMonitorMetricExporterTest {
     }
 
     @Test
-    public void testDoubleGauge() throws InterruptedException {
+    public void testDoubleGauge() {
+        InMemoryMetricExporter inMemoryMetricExporter = InMemoryMetricExporter.create();
+        SdkMeterProvider meterProvider = SdkMeterProvider.builder()
+                .registerMetricReader(
+                        PeriodicMetricReader.builder(inMemoryMetricExporter).build())
+                .build();
+        Meter meter = meterProvider.get("AzureMonitorMetricExporterTest");
+
         meter
             .gaugeBuilder("testDoubleGauge")
             .setDescription("the current temperature")
             .setUnit("C")
             .buildWithCallback(
-                m -> {
-                    m.record(20.0, Attributes.of(AttributeKey.stringKey("thing"), "engine"));
-                });
+                m -> m.record(20.0, Attributes.of(AttributeKey.stringKey("thing"), "engine")));
 
-        List<MetricData> metricDataList = getFinishedMetricItems(1);
+        meterProvider.forceFlush();
+
+        List<MetricData> metricDataList = inMemoryMetricExporter.getFinishedMetricItems();
+        assertThat(metricDataList).hasSize(1);
 
         MetricData metricData = metricDataList.get(0);
         for (PointData pointData : metricData.getData().getPoints()) {
@@ -120,7 +105,14 @@ public class AzureMonitorMetricExporterTest {
     }
 
     @Test
-    public void testLongCounter() throws InterruptedException {
+    public void testLongCounter() {
+        InMemoryMetricExporter inMemoryMetricExporter = InMemoryMetricExporter.create();
+        SdkMeterProvider meterProvider = SdkMeterProvider.builder()
+                .registerMetricReader(
+                        PeriodicMetricReader.builder(inMemoryMetricExporter).build())
+                .build();
+        Meter meter = meterProvider.get("AzureMonitorMetricExporterTest");
+
         LongCounter counter = meter.counterBuilder("testLongCounter").build();
         counter.add(
             1,
@@ -147,7 +139,10 @@ public class AzureMonitorMetricExporterTest {
             Attributes.of(
                 AttributeKey.stringKey("name"), "lemon", AttributeKey.stringKey("color"), "yellow"));
 
-        List<MetricData> metricDataList = getFinishedMetricItems(1);
+        meterProvider.forceFlush();
+
+        List<MetricData> metricDataList = inMemoryMetricExporter.getFinishedMetricItems();
+        assertThat(metricDataList).hasSize(1);
 
         MetricData metricData = metricDataList.get(0);
         @SuppressWarnings("unchecked")
@@ -222,7 +217,14 @@ public class AzureMonitorMetricExporterTest {
     }
 
     @Test
-    public void testLongGauge() throws InterruptedException {
+    public void testLongGauge() {
+        InMemoryMetricExporter inMemoryMetricExporter = InMemoryMetricExporter.create();
+        SdkMeterProvider meterProvider = SdkMeterProvider.builder()
+                .registerMetricReader(
+                        PeriodicMetricReader.builder(inMemoryMetricExporter).build())
+                .build();
+        Meter meter = meterProvider.get("AzureMonitorMetricExporterTest");
+
         meter
             .gaugeBuilder("testLongGauge")
             .ofLongs()
@@ -233,7 +235,10 @@ public class AzureMonitorMetricExporterTest {
                     m.record(20, Attributes.of(AttributeKey.stringKey("thing"), "engine"));
                 });
 
-        List<MetricData> metricDataList = getFinishedMetricItems(1);
+        meterProvider.forceFlush();
+
+        List<MetricData> metricDataList = inMemoryMetricExporter.getFinishedMetricItems();
+        assertThat(metricDataList).hasSize(1);
 
         MetricData metricData = metricDataList.get(0);
         for (PointData pointData : metricData.getData().getPoints()) {
@@ -251,7 +256,14 @@ public class AzureMonitorMetricExporterTest {
     }
 
     @Test
-    public void testDoubleHistogram() throws InterruptedException {
+    public void testDoubleHistogram() {
+        InMemoryMetricExporter inMemoryMetricExporter = InMemoryMetricExporter.create();
+        SdkMeterProvider meterProvider = SdkMeterProvider.builder()
+                .registerMetricReader(
+                        PeriodicMetricReader.builder(inMemoryMetricExporter).build())
+                .build();
+        Meter meter = meterProvider.get("AzureMonitorMetricExporterTest");
+
         DoubleHistogram doubleHistogram =
             meter
                 .histogramBuilder("testDoubleHistogram")
@@ -261,7 +273,10 @@ public class AzureMonitorMetricExporterTest {
 
         doubleHistogram.record(25.45);
 
-        List<MetricData> metricDataList = getFinishedMetricItems(1);
+        meterProvider.forceFlush();
+
+        List<MetricData> metricDataList = inMemoryMetricExporter.getFinishedMetricItems();
+        assertThat(metricDataList).hasSize(1);
 
         MetricData metricData = metricDataList.get(0);
         assertThat(metricData.getData().getPoints().size()).isEqualTo(1);
@@ -278,19 +293,5 @@ public class AzureMonitorMetricExporterTest {
 
         assertThat(metricData.getType()).isEqualTo(HISTOGRAM);
         assertThat(metricData.getName()).isEqualTo("testDoubleHistogram");
-    }
-
-    private List<MetricData> getFinishedMetricItems(int expected) throws InterruptedException {
-        long startMillis = System.currentTimeMillis();
-        while (System.currentTimeMillis() - startMillis < 5000) {
-            List<MetricData> finishedMetricItems = inMemoryMetricExporter.getFinishedMetricItems();
-            if (finishedMetricItems.size() >= expected) {
-                return finishedMetricItems;
-            }
-            Thread.sleep(10);
-        }
-        List<MetricData> finishedMetricItems = inMemoryMetricExporter.getFinishedMetricItems();
-        assertThat(finishedMetricItems).hasSizeGreaterThanOrEqualTo(expected);
-        return finishedMetricItems;
     }
 }

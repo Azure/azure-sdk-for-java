@@ -7,22 +7,24 @@ package com.azure.resourcemanager.managednetworkfabric.fluent.models;
 import com.azure.core.annotation.Fluent;
 import com.azure.core.management.Resource;
 import com.azure.core.management.SystemData;
-import com.azure.resourcemanager.managednetworkfabric.models.ManagementNetworkConfiguration;
-import com.azure.resourcemanager.managednetworkfabric.models.NetworkFabricOperationalState;
+import com.azure.core.util.logging.ClientLogger;
+import com.azure.resourcemanager.managednetworkfabric.models.AdministrativeState;
+import com.azure.resourcemanager.managednetworkfabric.models.ConfigurationState;
+import com.azure.resourcemanager.managednetworkfabric.models.ManagementNetworkConfigurationProperties;
 import com.azure.resourcemanager.managednetworkfabric.models.ProvisioningState;
 import com.azure.resourcemanager.managednetworkfabric.models.TerminalServerConfiguration;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import java.util.List;
 import java.util.Map;
 
-/** The NetworkFabric resource definition. */
+/** The Network Fabric resource definition. */
 @Fluent
 public final class NetworkFabricInner extends Resource {
     /*
      * Resource properties.
      */
-    @JsonProperty(value = "properties")
-    private NetworkFabricProperties innerProperties;
+    @JsonProperty(value = "properties", required = true)
+    private NetworkFabricProperties innerProperties = new NetworkFabricProperties();
 
     /*
      * Azure Resource Manager metadata containing createdBy and modifiedBy information.
@@ -94,7 +96,50 @@ public final class NetworkFabricInner extends Resource {
     }
 
     /**
-     * Get the rackCount property: Number of racks associated to Network Fabric.Possible values are from 2-8.
+     * Get the fabricVersion property: The version of Network Fabric.
+     *
+     * @return the fabricVersion value.
+     */
+    public String fabricVersion() {
+        return this.innerProperties() == null ? null : this.innerProperties().fabricVersion();
+    }
+
+    /**
+     * Get the routerIds property: Array of router IDs.
+     *
+     * @return the routerIds value.
+     */
+    public List<String> routerIds() {
+        return this.innerProperties() == null ? null : this.innerProperties().routerIds();
+    }
+
+    /**
+     * Get the networkFabricControllerId property: Azure resource ID for the NetworkFabricController the NetworkFabric
+     * belongs.
+     *
+     * @return the networkFabricControllerId value.
+     */
+    public String networkFabricControllerId() {
+        return this.innerProperties() == null ? null : this.innerProperties().networkFabricControllerId();
+    }
+
+    /**
+     * Set the networkFabricControllerId property: Azure resource ID for the NetworkFabricController the NetworkFabric
+     * belongs.
+     *
+     * @param networkFabricControllerId the networkFabricControllerId value to set.
+     * @return the NetworkFabricInner object itself.
+     */
+    public NetworkFabricInner withNetworkFabricControllerId(String networkFabricControllerId) {
+        if (this.innerProperties() == null) {
+            this.innerProperties = new NetworkFabricProperties();
+        }
+        this.innerProperties().withNetworkFabricControllerId(networkFabricControllerId);
+        return this;
+    }
+
+    /**
+     * Get the rackCount property: Number of compute racks associated to Network Fabric.
      *
      * @return the rackCount value.
      */
@@ -103,7 +148,7 @@ public final class NetworkFabricInner extends Resource {
     }
 
     /**
-     * Set the rackCount property: Number of racks associated to Network Fabric.Possible values are from 2-8.
+     * Set the rackCount property: Number of compute racks associated to Network Fabric.
      *
      * @param rackCount the rackCount value to set.
      * @return the NetworkFabricInner object itself.
@@ -121,8 +166,8 @@ public final class NetworkFabricInner extends Resource {
      *
      * @return the serverCountPerRack value.
      */
-    public Integer serverCountPerRack() {
-        return this.innerProperties() == null ? null : this.innerProperties().serverCountPerRack();
+    public int serverCountPerRack() {
+        return this.innerProperties() == null ? 0 : this.innerProperties().serverCountPerRack();
     }
 
     /**
@@ -131,7 +176,7 @@ public final class NetworkFabricInner extends Resource {
      * @param serverCountPerRack the serverCountPerRack value to set.
      * @return the NetworkFabricInner object itself.
      */
-    public NetworkFabricInner withServerCountPerRack(Integer serverCountPerRack) {
+    public NetworkFabricInner withServerCountPerRack(int serverCountPerRack) {
         if (this.innerProperties() == null) {
             this.innerProperties = new NetworkFabricProperties();
         }
@@ -186,21 +231,12 @@ public final class NetworkFabricInner extends Resource {
     }
 
     /**
-     * Get the routerId property: Router Id of CE to be used for MP-BGP between PE and CE.
-     *
-     * @return the routerId value.
-     */
-    public String routerId() {
-        return this.innerProperties() == null ? null : this.innerProperties().routerId();
-    }
-
-    /**
      * Get the fabricAsn property: ASN of CE devices for CE/PE connectivity.
      *
      * @return the fabricAsn value.
      */
-    public Integer fabricAsn() {
-        return this.innerProperties() == null ? null : this.innerProperties().fabricAsn();
+    public long fabricAsn() {
+        return this.innerProperties() == null ? 0L : this.innerProperties().fabricAsn();
     }
 
     /**
@@ -209,36 +245,11 @@ public final class NetworkFabricInner extends Resource {
      * @param fabricAsn the fabricAsn value to set.
      * @return the NetworkFabricInner object itself.
      */
-    public NetworkFabricInner withFabricAsn(Integer fabricAsn) {
+    public NetworkFabricInner withFabricAsn(long fabricAsn) {
         if (this.innerProperties() == null) {
             this.innerProperties = new NetworkFabricProperties();
         }
         this.innerProperties().withFabricAsn(fabricAsn);
-        return this;
-    }
-
-    /**
-     * Get the networkFabricControllerId property: Azure resource ID for the NetworkFabricController the NetworkFabric
-     * belongs.
-     *
-     * @return the networkFabricControllerId value.
-     */
-    public String networkFabricControllerId() {
-        return this.innerProperties() == null ? null : this.innerProperties().networkFabricControllerId();
-    }
-
-    /**
-     * Set the networkFabricControllerId property: Azure resource ID for the NetworkFabricController the NetworkFabric
-     * belongs.
-     *
-     * @param networkFabricControllerId the networkFabricControllerId value to set.
-     * @return the NetworkFabricInner object itself.
-     */
-    public NetworkFabricInner withNetworkFabricControllerId(String networkFabricControllerId) {
-        if (this.innerProperties() == null) {
-            this.innerProperties = new NetworkFabricProperties();
-        }
-        this.innerProperties().withNetworkFabricControllerId(networkFabricControllerId);
         return this;
     }
 
@@ -272,7 +283,7 @@ public final class NetworkFabricInner extends Resource {
      *
      * @return the managementNetworkConfiguration value.
      */
-    public ManagementNetworkConfiguration managementNetworkConfiguration() {
+    public ManagementNetworkConfigurationProperties managementNetworkConfiguration() {
         return this.innerProperties() == null ? null : this.innerProperties().managementNetworkConfiguration();
     }
 
@@ -283,30 +294,12 @@ public final class NetworkFabricInner extends Resource {
      * @return the NetworkFabricInner object itself.
      */
     public NetworkFabricInner withManagementNetworkConfiguration(
-        ManagementNetworkConfiguration managementNetworkConfiguration) {
+        ManagementNetworkConfigurationProperties managementNetworkConfiguration) {
         if (this.innerProperties() == null) {
             this.innerProperties = new NetworkFabricProperties();
         }
         this.innerProperties().withManagementNetworkConfiguration(managementNetworkConfiguration);
         return this;
-    }
-
-    /**
-     * Get the operationalState property: Gets the operational state of the resource.
-     *
-     * @return the operationalState value.
-     */
-    public NetworkFabricOperationalState operationalState() {
-        return this.innerProperties() == null ? null : this.innerProperties().operationalState();
-    }
-
-    /**
-     * Get the provisioningState property: Gets the provisioning state of the resource.
-     *
-     * @return the provisioningState value.
-     */
-    public ProvisioningState provisioningState() {
-        return this.innerProperties() == null ? null : this.innerProperties().provisioningState();
     }
 
     /**
@@ -320,7 +313,7 @@ public final class NetworkFabricInner extends Resource {
     }
 
     /**
-     * Get the l2IsolationDomains property: List of L2IsolationDomain resource IDs under the Network Fabric.
+     * Get the l2IsolationDomains property: List of L2 Isolation Domain resource IDs under the Network Fabric.
      *
      * @return the l2IsolationDomains value.
      */
@@ -329,12 +322,41 @@ public final class NetworkFabricInner extends Resource {
     }
 
     /**
-     * Get the l3IsolationDomains property: List of L3IsolationDomain resource IDs under the Network Fabric.
+     * Get the l3IsolationDomains property: List of L3 Isolation Domain resource IDs under the Network Fabric.
      *
      * @return the l3IsolationDomains value.
      */
     public List<String> l3IsolationDomains() {
         return this.innerProperties() == null ? null : this.innerProperties().l3IsolationDomains();
+    }
+
+    /**
+     * Get the configurationState property: Configuration state of the resource.
+     *
+     * @return the configurationState value.
+     */
+    public ConfigurationState configurationState() {
+        return this.innerProperties() == null ? null : this.innerProperties().configurationState();
+    }
+
+    /**
+     * Get the provisioningState property: Provides you the latest status of the NFC service, whether it is Accepted,
+     * updating, Succeeded or Failed. During this process, the states keep changing based on the status of NFC
+     * provisioning.
+     *
+     * @return the provisioningState value.
+     */
+    public ProvisioningState provisioningState() {
+        return this.innerProperties() == null ? null : this.innerProperties().provisioningState();
+    }
+
+    /**
+     * Get the administrativeState property: Administrative state of the resource.
+     *
+     * @return the administrativeState value.
+     */
+    public AdministrativeState administrativeState() {
+        return this.innerProperties() == null ? null : this.innerProperties().administrativeState();
     }
 
     /**
@@ -366,8 +388,15 @@ public final class NetworkFabricInner extends Resource {
      * @throws IllegalArgumentException thrown if the instance is not valid.
      */
     public void validate() {
-        if (innerProperties() != null) {
+        if (innerProperties() == null) {
+            throw LOGGER
+                .logExceptionAsError(
+                    new IllegalArgumentException(
+                        "Missing required property innerProperties in model NetworkFabricInner"));
+        } else {
             innerProperties().validate();
         }
     }
+
+    private static final ClientLogger LOGGER = new ClientLogger(NetworkFabricInner.class);
 }

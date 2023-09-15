@@ -27,11 +27,6 @@ public final class CreateJobOptions {
     private final String channelId;
 
     /**
-     * The Id of the Classification policy used for classifying a job.
-     */
-    private String classificationPolicyId;
-
-    /**
      * The Id of the Queue that this job is queued to.
      */
     private final String queueId;
@@ -61,12 +56,37 @@ public final class CreateJobOptions {
     /**
      * A set of non-identifying attributes attached to this job.
      */
-    private Map<String, Object> tags;
+    private Map<String, LabelValue> tags;
 
     /**
      * Notes attached to a job, sorted by timestamp.
      */
     private List<RouterJobNote> notes;
+
+    /*
+     * The matchingMode property.
+     */
+    private RouterJobMatchingMode matchingMode;
+
+    /**
+     * Get the matchingMode property: The matchingMode property.
+     *
+     * @return the matchingMode value.
+     */
+    public RouterJobMatchingMode getMatchingMode() {
+        return this.matchingMode;
+    }
+
+    /**
+     * Set the matchingMode property: The matchingMode property.
+     *
+     * @param matchingMode the matchingMode value to set.
+     * @return the RouterJobInternal object itself.
+     */
+    public CreateJobOptions setMatchingMode(RouterJobMatchingMode matchingMode) {
+        this.matchingMode = matchingMode;
+        return this;
+    }
 
     /**
      * Constructor for CreateJobOptions.
@@ -97,16 +117,6 @@ public final class CreateJobOptions {
      */
     public CreateJobOptions setChannelReference(String channelReference) {
         this.channelReference = channelReference;
-        return this;
-    }
-
-    /**
-     * Sets classificationPolicyId.
-     * @param classificationPolicyId The Id of the Classification policy used for classifying a job.
-     * @return this
-     */
-    public CreateJobOptions setClassificationPolicyId(String classificationPolicyId) {
-        this.classificationPolicyId = classificationPolicyId;
         return this;
     }
 
@@ -147,7 +157,7 @@ public final class CreateJobOptions {
      * @param tags A set of non-identifying attributes attached to this job.
      * @return this
      */
-    public CreateJobOptions setTags(Map<String, Object> tags) {
+    public CreateJobOptions setTags(Map<String, LabelValue> tags) {
         this.tags = tags;
         return this;
     }
@@ -184,14 +194,6 @@ public final class CreateJobOptions {
      */
     public String getChannelId() {
         return this.channelId;
-    }
-
-    /**
-     * Returns the Id of the Classification policy used for classifying a job.
-     * @return classificationPolicyId
-     */
-    public String getClassificationPolicyId() {
-        return this.classificationPolicyId;
     }
 
     /**
@@ -240,7 +242,7 @@ public final class CreateJobOptions {
      * A set of non-identifying attributes attached to this job
      * @return tags
      */
-    public Map<String, Object> getTags() {
+    public Map<String, LabelValue> getTags() {
         return this.tags;
     }
 

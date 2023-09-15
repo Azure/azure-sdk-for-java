@@ -14,4 +14,28 @@ import com.fasterxml.jackson.annotation.JsonTypeName;
 @JsonTypeInfo(use = JsonTypeInfo.Id.NAME, include = JsonTypeInfo.As.PROPERTY, property = "kind")
 @JsonTypeName("round-robin")
 @Fluent
-public final class RoundRobinMode extends DistributionMode {}
+public final class RoundRobinMode extends DistributionMode {
+    /** Creates an instance of RoundRobinModeInternal class. */
+    public RoundRobinMode() {}
+
+    /** {@inheritDoc} */
+    @Override
+    public RoundRobinMode setMinConcurrentOffers(Integer minConcurrentOffers) {
+        super.setMinConcurrentOffers(minConcurrentOffers);
+        return this;
+    }
+
+    /** {@inheritDoc} */
+    @Override
+    public RoundRobinMode setMaxConcurrentOffers(Integer maxConcurrentOffers) {
+        super.setMaxConcurrentOffers(maxConcurrentOffers);
+        return this;
+    }
+
+    /** {@inheritDoc} */
+    @Override
+    public RoundRobinMode setBypassSelectors(Boolean bypassSelectors) {
+        super.setBypassSelectors(bypassSelectors);
+        return this;
+    }
+}

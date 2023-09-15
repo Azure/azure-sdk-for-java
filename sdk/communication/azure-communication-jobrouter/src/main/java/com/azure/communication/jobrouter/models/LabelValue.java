@@ -3,20 +3,28 @@
 
 package com.azure.communication.jobrouter.models;
 
+import com.azure.communication.jobrouter.implementation.accesshelpers.LabelValueConstructorProxy;
+
 import com.azure.core.util.logging.ClientLogger;
 
 /**
  * Wrapper class for labels. Supports double, String and boolean types.
  */
 public final class LabelValue {
-
     private static final ClientLogger LOGGER = new ClientLogger(LabelValue.class);
-
 
     /**
      * Value to pass to server.
      */
     private final Object value;
+
+    /**
+     * Constructor for integer value.
+     * @param integerValue integer value of label.
+     */
+    public LabelValue(Integer integerValue) {
+        this.value = integerValue;
+    }
 
     /**
      * Constructor for numerical value.
@@ -42,12 +50,31 @@ public final class LabelValue {
         this.value = boolValue;
     }
 
+    static {
+        LabelValueConstructorProxy.setAccessor(internal -> new LabelValue(internal));
+    }
+
+    LabelValue(Object objectValue) {
+        this.value = objectValue;
+    }
+
     /**
      * Returns value of type Object.
      * @return value
      */
     public Object getValue() {
         return this.value;
+    }
+
+    /**
+     * Returns Integer value of object
+     * @return (Integer) value.
+     */
+    public Integer getValueAsInteger() {
+        if (value.getClass() == Integer.class) {
+            return (Integer) this.value;
+        }
+        throw LOGGER.logExceptionAsError(new IllegalStateException("value is not of type Integer."));
     }
 
     /**

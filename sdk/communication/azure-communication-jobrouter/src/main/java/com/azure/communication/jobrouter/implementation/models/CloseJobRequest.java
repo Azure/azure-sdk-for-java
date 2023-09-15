@@ -18,27 +18,26 @@ public final class CloseJobRequest {
     private String assignmentId;
 
     /*
-     * Indicates the outcome of the job, populate this field with your own
-     * custom values.
+     * Indicates the outcome of the job, populate this field with your own custom values.
      */
     @JsonProperty(value = "dispositionCode")
     private String dispositionCode;
 
     /*
-     * If not provided, worker capacity is released immediately along with a
-     * JobClosedEvent notification.
-     * If provided, worker capacity is released along with a JobClosedEvent
-     * notification at a future time in UTC.
+     * If not provided, worker capacity is released immediately along with a JobClosedEvent notification.
+     * If provided, worker capacity is released along with a JobClosedEvent notification at a future time in UTC.
      */
     @JsonProperty(value = "closeAt")
     private OffsetDateTime closeAt;
 
     /*
-     * (Optional) A note that will be appended to the jobs' Notes collection
-     * with the current timestamp.
+     * (Optional) A note that will be appended to the jobs' Notes collection with the current timestamp.
      */
     @JsonProperty(value = "note")
     private String note;
+
+    /** Creates an instance of CloseJobRequest class. */
+    public CloseJobRequest() {}
 
     /**
      * Get the assignmentId property: The assignment within which the job is to be closed.

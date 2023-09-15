@@ -42,6 +42,10 @@ public final class CacheContractImpl implements CacheContract, CacheContract.Def
         return this.innerModel().resourceId();
     }
 
+    public String resourceGroupName() {
+        return resourceGroupName;
+    }
+
     public CacheContractInner innerModel() {
         return this.innerObject;
     }

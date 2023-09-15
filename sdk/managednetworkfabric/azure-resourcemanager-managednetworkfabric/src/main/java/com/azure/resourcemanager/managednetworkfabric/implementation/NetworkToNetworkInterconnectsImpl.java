@@ -10,9 +10,12 @@ import com.azure.core.http.rest.SimpleResponse;
 import com.azure.core.util.Context;
 import com.azure.core.util.logging.ClientLogger;
 import com.azure.resourcemanager.managednetworkfabric.fluent.NetworkToNetworkInterconnectsClient;
+import com.azure.resourcemanager.managednetworkfabric.fluent.models.CommonPostActionResponseForStateUpdateInner;
 import com.azure.resourcemanager.managednetworkfabric.fluent.models.NetworkToNetworkInterconnectInner;
+import com.azure.resourcemanager.managednetworkfabric.models.CommonPostActionResponseForStateUpdate;
 import com.azure.resourcemanager.managednetworkfabric.models.NetworkToNetworkInterconnect;
 import com.azure.resourcemanager.managednetworkfabric.models.NetworkToNetworkInterconnects;
+import com.azure.resourcemanager.managednetworkfabric.models.UpdateAdministrativeState;
 
 public final class NetworkToNetworkInterconnectsImpl implements NetworkToNetworkInterconnects {
     private static final ClientLogger LOGGER = new ClientLogger(NetworkToNetworkInterconnectsImpl.class);
@@ -65,17 +68,88 @@ public final class NetworkToNetworkInterconnectsImpl implements NetworkToNetwork
         this.serviceClient().delete(resourceGroupName, networkFabricName, networkToNetworkInterconnectName, context);
     }
 
-    public PagedIterable<NetworkToNetworkInterconnect> list(String resourceGroupName, String networkFabricName) {
+    public PagedIterable<NetworkToNetworkInterconnect> listByNetworkFabric(
+        String resourceGroupName, String networkFabricName) {
         PagedIterable<NetworkToNetworkInterconnectInner> inner =
-            this.serviceClient().list(resourceGroupName, networkFabricName);
+            this.serviceClient().listByNetworkFabric(resourceGroupName, networkFabricName);
         return Utils.mapPage(inner, inner1 -> new NetworkToNetworkInterconnectImpl(inner1, this.manager()));
     }
 
-    public PagedIterable<NetworkToNetworkInterconnect> list(
+    public PagedIterable<NetworkToNetworkInterconnect> listByNetworkFabric(
         String resourceGroupName, String networkFabricName, Context context) {
         PagedIterable<NetworkToNetworkInterconnectInner> inner =
-            this.serviceClient().list(resourceGroupName, networkFabricName, context);
+            this.serviceClient().listByNetworkFabric(resourceGroupName, networkFabricName, context);
         return Utils.mapPage(inner, inner1 -> new NetworkToNetworkInterconnectImpl(inner1, this.manager()));
+    }
+
+    public CommonPostActionResponseForStateUpdate updateNpbStaticRouteBfdAdministrativeState(
+        String resourceGroupName,
+        String networkFabricName,
+        String networkToNetworkInterconnectName,
+        UpdateAdministrativeState body) {
+        CommonPostActionResponseForStateUpdateInner inner =
+            this
+                .serviceClient()
+                .updateNpbStaticRouteBfdAdministrativeState(
+                    resourceGroupName, networkFabricName, networkToNetworkInterconnectName, body);
+        if (inner != null) {
+            return new CommonPostActionResponseForStateUpdateImpl(inner, this.manager());
+        } else {
+            return null;
+        }
+    }
+
+    public CommonPostActionResponseForStateUpdate updateNpbStaticRouteBfdAdministrativeState(
+        String resourceGroupName,
+        String networkFabricName,
+        String networkToNetworkInterconnectName,
+        UpdateAdministrativeState body,
+        Context context) {
+        CommonPostActionResponseForStateUpdateInner inner =
+            this
+                .serviceClient()
+                .updateNpbStaticRouteBfdAdministrativeState(
+                    resourceGroupName, networkFabricName, networkToNetworkInterconnectName, body, context);
+        if (inner != null) {
+            return new CommonPostActionResponseForStateUpdateImpl(inner, this.manager());
+        } else {
+            return null;
+        }
+    }
+
+    public CommonPostActionResponseForStateUpdate updateAdministrativeState(
+        String resourceGroupName,
+        String networkFabricName,
+        String networkToNetworkInterconnectName,
+        UpdateAdministrativeState body) {
+        CommonPostActionResponseForStateUpdateInner inner =
+            this
+                .serviceClient()
+                .updateAdministrativeState(
+                    resourceGroupName, networkFabricName, networkToNetworkInterconnectName, body);
+        if (inner != null) {
+            return new CommonPostActionResponseForStateUpdateImpl(inner, this.manager());
+        } else {
+            return null;
+        }
+    }
+
+    public CommonPostActionResponseForStateUpdate updateAdministrativeState(
+        String resourceGroupName,
+        String networkFabricName,
+        String networkToNetworkInterconnectName,
+        UpdateAdministrativeState body,
+        Context context) {
+        CommonPostActionResponseForStateUpdateInner inner =
+            this
+                .serviceClient()
+                .updateAdministrativeState(
+                    resourceGroupName, networkFabricName, networkToNetworkInterconnectName, body, context);
+        if (inner != null) {
+            return new CommonPostActionResponseForStateUpdateImpl(inner, this.manager());
+        } else {
+            return null;
+        }
     }
 
     public NetworkToNetworkInterconnect getById(String id) {

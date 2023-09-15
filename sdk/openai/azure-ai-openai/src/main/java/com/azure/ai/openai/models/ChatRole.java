@@ -51,6 +51,9 @@ public final class ChatRole extends ExpandableStringEnum<ChatRole> {
         return values(ChatRole.class);
     }
 
-    /** The role that provides function results for char completions. */
+    /** The role that provides function results for chat completions. */
     @Generated public static final ChatRole FUNCTION = fromString("function");
+
+    /** The role that represents extension tool activity within a chat completions operation. */
+    @Generated public static final ChatRole TOOL = fromString("tool");
 }

@@ -617,6 +617,15 @@ public final class ClusterUpdate extends ProxyResource {
     }
 
     /**
+     * Get the migrationCluster property: Properties of the peer cluster involved in a migration to/from this cluster.
+     *
+     * @return the migrationCluster value.
+     */
+    public MigrationClusterProperties migrationCluster() {
+        return this.innerProperties() == null ? null : this.innerProperties().migrationCluster();
+    }
+
+    /**
      * Validates the instance.
      *
      * @throws IllegalArgumentException thrown if the instance is not valid.

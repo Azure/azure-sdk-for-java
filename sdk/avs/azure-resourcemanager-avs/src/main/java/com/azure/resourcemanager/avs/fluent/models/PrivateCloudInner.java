@@ -429,6 +429,33 @@ public final class PrivateCloudInner extends Resource {
     }
 
     /**
+     * Get the extendedNetworkBlocks property: Array of additional networks noncontiguous with networkBlock. Networks
+     * must be unique and non-overlapping across VNet in your subscription, on-premise, and this privateCloud
+     * networkBlock attribute. Make sure the CIDR format conforms to (A.B.C.D/X).
+     *
+     * @return the extendedNetworkBlocks value.
+     */
+    public List<String> extendedNetworkBlocks() {
+        return this.innerProperties() == null ? null : this.innerProperties().extendedNetworkBlocks();
+    }
+
+    /**
+     * Set the extendedNetworkBlocks property: Array of additional networks noncontiguous with networkBlock. Networks
+     * must be unique and non-overlapping across VNet in your subscription, on-premise, and this privateCloud
+     * networkBlock attribute. Make sure the CIDR format conforms to (A.B.C.D/X).
+     *
+     * @param extendedNetworkBlocks the extendedNetworkBlocks value to set.
+     * @return the PrivateCloudInner object itself.
+     */
+    public PrivateCloudInner withExtendedNetworkBlocks(List<String> extendedNetworkBlocks) {
+        if (this.innerProperties() == null) {
+            this.innerProperties = new PrivateCloudProperties();
+        }
+        this.innerProperties().withExtendedNetworkBlocks(extendedNetworkBlocks);
+        return this;
+    }
+
+    /**
      * Validates the instance.
      *
      * @throws IllegalArgumentException thrown if the instance is not valid.

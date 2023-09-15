@@ -16,17 +16,18 @@ public final class AppliancesUpdateSamples {
     /**
      * Sample code: Update Appliance.
      *
-     * @param manager Entry point to AppliancesManager.
+     * @param manager Entry point to ResourceConnectorManager.
      */
-    public static void updateAppliance(com.azure.resourcemanager.resourceconnector.AppliancesManager manager) {
+    public static void updateAppliance(com.azure.resourcemanager.resourceconnector.ResourceConnectorManager manager) {
         Appliance resource =
             manager
                 .appliances()
                 .getByResourceGroupWithResponse("testresourcegroup", "appliance01", com.azure.core.util.Context.NONE)
                 .getValue();
-        resource.update().withTags(mapOf("key", "value")).apply();
+        resource.update().withTags(mapOf("key", "fakeTokenPlaceholder")).apply();
     }
 
+    // Use "Map.of" if available
     @SuppressWarnings("unchecked")
     private static <T> Map<String, T> mapOf(Object... inputs) {
         Map<String, T> map = new HashMap<>();

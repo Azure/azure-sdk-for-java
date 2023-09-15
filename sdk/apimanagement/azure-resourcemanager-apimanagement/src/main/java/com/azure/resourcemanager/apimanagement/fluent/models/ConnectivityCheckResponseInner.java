@@ -55,6 +55,10 @@ public final class ConnectivityCheckResponseInner {
     @JsonProperty(value = "probesFailed", access = JsonProperty.Access.WRITE_ONLY)
     private Long probesFailed;
 
+    /** Creates an instance of ConnectivityCheckResponseInner class. */
+    public ConnectivityCheckResponseInner() {
+    }
+
     /**
      * Get the hops property: List of hops between the source and the destination.
      *

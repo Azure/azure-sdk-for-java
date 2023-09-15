@@ -9,11 +9,11 @@ import com.azure.resourcemanager.managednetworkfabric.fluent.models.IpExtendedCo
 import com.fasterxml.jackson.annotation.JsonProperty;
 import java.util.List;
 
-/** List of IpExtendedCommunities. */
+/** List of IP Extended Communities. */
 @Fluent
 public final class IpExtendedCommunityListResult {
     /*
-     * List of IpExtendedCommunities resources.
+     * List of IP Extended Communities resources.
      */
     @JsonProperty(value = "value")
     private List<IpExtendedCommunityInner> value;
@@ -29,7 +29,7 @@ public final class IpExtendedCommunityListResult {
     }
 
     /**
-     * Get the value property: List of IpExtendedCommunities resources.
+     * Get the value property: List of IP Extended Communities resources.
      *
      * @return the value value.
      */
@@ -38,7 +38,7 @@ public final class IpExtendedCommunityListResult {
     }
 
     /**
-     * Set the value property: List of IpExtendedCommunities resources.
+     * Set the value property: List of IP Extended Communities resources.
      *
      * @param value the value value to set.
      * @return the IpExtendedCommunityListResult object itself.

@@ -4,47 +4,47 @@
 package com.azure.communication.jobrouter.models;
 
 import java.time.OffsetDateTime;
+import java.util.Objects;
 
 /**
- * Note for closing job.
+ * Note for a job.
  */
 public class RouterJobNote {
     /**
-     * Time the note is written.
+     * Creates an instance of RouterJobNote class.
+     *
+     * @param message The message for the note.
      */
-    private OffsetDateTime time;
+    public RouterJobNote(String message) {
+        this.message = Objects.requireNonNull(message, "'message' cannot be null.");
+    }
+
+    /**
+     * The time at which the note was added in UTC.
+     */
+    private OffsetDateTime addedAt;
 
     /**
      * Message for the note.
      */
-    private String message;
+    private final String message;
 
     /**
      * setter for time.
-     * @param time time the note is written.
+     * @param addedAt time at which the note was added in UTC.
      * @return this
      */
-    public RouterJobNote setTime(OffsetDateTime time) {
-        this.time = time;
+    public RouterJobNote setAddedAt(OffsetDateTime addedAt) {
+        this.addedAt = addedAt;
         return this;
     }
 
     /**
-     * getter for time.
-     * @return time
+     * getter for addedAt.
+     * @return addedAt
      */
-    public OffsetDateTime getTime() {
-        return time;
-    }
-
-    /**
-     * Setter for message.
-     * @param message Message for the note.
-     * @return this
-     */
-    public RouterJobNote setMessage(String message) {
-        this.message = message;
-        return this;
+    public OffsetDateTime getAddedAt() {
+        return addedAt;
     }
 
     /**

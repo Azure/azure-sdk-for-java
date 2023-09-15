@@ -57,11 +57,10 @@ public final class NotificationsClientImpl implements NotificationsClient {
      */
     @Host("{$host}")
     @ServiceInterface(name = "ApiManagementClientN")
-    private interface NotificationsService {
+    public interface NotificationsService {
         @Headers({"Content-Type: application/json"})
         @Get(
-            "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.ApiManagement"
-                + "/service/{serviceName}/notifications")
+            "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.ApiManagement/service/{serviceName}/notifications")
         @ExpectedResponses({200})
         @UnexpectedResponseExceptionType(ManagementException.class)
         Mono<Response<NotificationCollection>> listByService(
@@ -77,8 +76,7 @@ public final class NotificationsClientImpl implements NotificationsClient {
 
         @Headers({"Content-Type: application/json"})
         @Get(
-            "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.ApiManagement"
-                + "/service/{serviceName}/notifications/{notificationName}")
+            "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.ApiManagement/service/{serviceName}/notifications/{notificationName}")
         @ExpectedResponses({200})
         @UnexpectedResponseExceptionType(ManagementException.class)
         Mono<Response<NotificationContractInner>> get(
@@ -93,8 +91,7 @@ public final class NotificationsClientImpl implements NotificationsClient {
 
         @Headers({"Content-Type: application/json"})
         @Put(
-            "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.ApiManagement"
-                + "/service/{serviceName}/notifications/{notificationName}")
+            "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.ApiManagement/service/{serviceName}/notifications/{notificationName}")
         @ExpectedResponses({200})
         @UnexpectedResponseExceptionType(ManagementException.class)
         Mono<Response<NotificationContractInner>> createOrUpdate(
@@ -122,7 +119,7 @@ public final class NotificationsClientImpl implements NotificationsClient {
     /**
      * Lists a collection of properties defined within a service instance.
      *
-     * @param resourceGroupName The name of the resource group.
+     * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param serviceName The name of the API Management service.
      * @param top Number of records to return.
      * @param skip Number of records to skip.
@@ -184,7 +181,7 @@ public final class NotificationsClientImpl implements NotificationsClient {
     /**
      * Lists a collection of properties defined within a service instance.
      *
-     * @param resourceGroupName The name of the resource group.
+     * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param serviceName The name of the API Management service.
      * @param top Number of records to return.
      * @param skip Number of records to skip.
@@ -244,7 +241,7 @@ public final class NotificationsClientImpl implements NotificationsClient {
     /**
      * Lists a collection of properties defined within a service instance.
      *
-     * @param resourceGroupName The name of the resource group.
+     * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param serviceName The name of the API Management service.
      * @param top Number of records to return.
      * @param skip Number of records to skip.
@@ -264,7 +261,7 @@ public final class NotificationsClientImpl implements NotificationsClient {
     /**
      * Lists a collection of properties defined within a service instance.
      *
-     * @param resourceGroupName The name of the resource group.
+     * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param serviceName The name of the API Management service.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
@@ -283,7 +280,7 @@ public final class NotificationsClientImpl implements NotificationsClient {
     /**
      * Lists a collection of properties defined within a service instance.
      *
-     * @param resourceGroupName The name of the resource group.
+     * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param serviceName The name of the API Management service.
      * @param top Number of records to return.
      * @param skip Number of records to skip.
@@ -304,7 +301,7 @@ public final class NotificationsClientImpl implements NotificationsClient {
     /**
      * Lists a collection of properties defined within a service instance.
      *
-     * @param resourceGroupName The name of the resource group.
+     * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param serviceName The name of the API Management service.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
@@ -321,7 +318,7 @@ public final class NotificationsClientImpl implements NotificationsClient {
     /**
      * Lists a collection of properties defined within a service instance.
      *
-     * @param resourceGroupName The name of the resource group.
+     * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param serviceName The name of the API Management service.
      * @param top Number of records to return.
      * @param skip Number of records to skip.
@@ -340,7 +337,7 @@ public final class NotificationsClientImpl implements NotificationsClient {
     /**
      * Gets the details of the Notification specified by its identifier.
      *
-     * @param resourceGroupName The name of the resource group.
+     * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param serviceName The name of the API Management service.
      * @param notificationName Notification Name Identifier.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
@@ -395,7 +392,7 @@ public final class NotificationsClientImpl implements NotificationsClient {
     /**
      * Gets the details of the Notification specified by its identifier.
      *
-     * @param resourceGroupName The name of the resource group.
+     * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param serviceName The name of the API Management service.
      * @param notificationName Notification Name Identifier.
      * @param context The context to associate with this operation.
@@ -448,7 +445,7 @@ public final class NotificationsClientImpl implements NotificationsClient {
     /**
      * Gets the details of the Notification specified by its identifier.
      *
-     * @param resourceGroupName The name of the resource group.
+     * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param serviceName The name of the API Management service.
      * @param notificationName Notification Name Identifier.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
@@ -460,37 +457,13 @@ public final class NotificationsClientImpl implements NotificationsClient {
     private Mono<NotificationContractInner> getAsync(
         String resourceGroupName, String serviceName, NotificationName notificationName) {
         return getWithResponseAsync(resourceGroupName, serviceName, notificationName)
-            .flatMap(
-                (Response<NotificationContractInner> res) -> {
-                    if (res.getValue() != null) {
-                        return Mono.just(res.getValue());
-                    } else {
-                        return Mono.empty();
-                    }
-                });
+            .flatMap(res -> Mono.justOrEmpty(res.getValue()));
     }
 
     /**
      * Gets the details of the Notification specified by its identifier.
      *
-     * @param resourceGroupName The name of the resource group.
-     * @param serviceName The name of the API Management service.
-     * @param notificationName Notification Name Identifier.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the details of the Notification specified by its identifier.
-     */
-    @ServiceMethod(returns = ReturnType.SINGLE)
-    public NotificationContractInner get(
-        String resourceGroupName, String serviceName, NotificationName notificationName) {
-        return getAsync(resourceGroupName, serviceName, notificationName).block();
-    }
-
-    /**
-     * Gets the details of the Notification specified by its identifier.
-     *
-     * @param resourceGroupName The name of the resource group.
+     * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param serviceName The name of the API Management service.
      * @param notificationName Notification Name Identifier.
      * @param context The context to associate with this operation.
@@ -506,9 +479,26 @@ public final class NotificationsClientImpl implements NotificationsClient {
     }
 
     /**
+     * Gets the details of the Notification specified by its identifier.
+     *
+     * @param resourceGroupName The name of the resource group. The name is case insensitive.
+     * @param serviceName The name of the API Management service.
+     * @param notificationName Notification Name Identifier.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws ManagementException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return the details of the Notification specified by its identifier.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    public NotificationContractInner get(
+        String resourceGroupName, String serviceName, NotificationName notificationName) {
+        return getWithResponse(resourceGroupName, serviceName, notificationName, Context.NONE).getValue();
+    }
+
+    /**
      * Create or Update API Management publisher notification.
      *
-     * @param resourceGroupName The name of the resource group.
+     * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param serviceName The name of the API Management service.
      * @param notificationName Notification Name Identifier.
      * @param ifMatch ETag of the Entity. Not required when creating an entity, but required when updating an entity.
@@ -564,7 +554,7 @@ public final class NotificationsClientImpl implements NotificationsClient {
     /**
      * Create or Update API Management publisher notification.
      *
-     * @param resourceGroupName The name of the resource group.
+     * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param serviceName The name of the API Management service.
      * @param notificationName Notification Name Identifier.
      * @param ifMatch ETag of the Entity. Not required when creating an entity, but required when updating an entity.
@@ -622,33 +612,7 @@ public final class NotificationsClientImpl implements NotificationsClient {
     /**
      * Create or Update API Management publisher notification.
      *
-     * @param resourceGroupName The name of the resource group.
-     * @param serviceName The name of the API Management service.
-     * @param notificationName Notification Name Identifier.
-     * @param ifMatch ETag of the Entity. Not required when creating an entity, but required when updating an entity.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return notification details on successful completion of {@link Mono}.
-     */
-    @ServiceMethod(returns = ReturnType.SINGLE)
-    private Mono<NotificationContractInner> createOrUpdateAsync(
-        String resourceGroupName, String serviceName, NotificationName notificationName, String ifMatch) {
-        return createOrUpdateWithResponseAsync(resourceGroupName, serviceName, notificationName, ifMatch)
-            .flatMap(
-                (Response<NotificationContractInner> res) -> {
-                    if (res.getValue() != null) {
-                        return Mono.just(res.getValue());
-                    } else {
-                        return Mono.empty();
-                    }
-                });
-    }
-
-    /**
-     * Create or Update API Management publisher notification.
-     *
-     * @param resourceGroupName The name of the resource group.
+     * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param serviceName The name of the API Management service.
      * @param notificationName Notification Name Identifier.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
@@ -661,38 +625,13 @@ public final class NotificationsClientImpl implements NotificationsClient {
         String resourceGroupName, String serviceName, NotificationName notificationName) {
         final String ifMatch = null;
         return createOrUpdateWithResponseAsync(resourceGroupName, serviceName, notificationName, ifMatch)
-            .flatMap(
-                (Response<NotificationContractInner> res) -> {
-                    if (res.getValue() != null) {
-                        return Mono.just(res.getValue());
-                    } else {
-                        return Mono.empty();
-                    }
-                });
+            .flatMap(res -> Mono.justOrEmpty(res.getValue()));
     }
 
     /**
      * Create or Update API Management publisher notification.
      *
-     * @param resourceGroupName The name of the resource group.
-     * @param serviceName The name of the API Management service.
-     * @param notificationName Notification Name Identifier.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return notification details.
-     */
-    @ServiceMethod(returns = ReturnType.SINGLE)
-    public NotificationContractInner createOrUpdate(
-        String resourceGroupName, String serviceName, NotificationName notificationName) {
-        final String ifMatch = null;
-        return createOrUpdateAsync(resourceGroupName, serviceName, notificationName, ifMatch).block();
-    }
-
-    /**
-     * Create or Update API Management publisher notification.
-     *
-     * @param resourceGroupName The name of the resource group.
+     * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param serviceName The name of the API Management service.
      * @param notificationName Notification Name Identifier.
      * @param ifMatch ETag of the Entity. Not required when creating an entity, but required when updating an entity.
@@ -714,9 +653,29 @@ public final class NotificationsClientImpl implements NotificationsClient {
     }
 
     /**
+     * Create or Update API Management publisher notification.
+     *
+     * @param resourceGroupName The name of the resource group. The name is case insensitive.
+     * @param serviceName The name of the API Management service.
+     * @param notificationName Notification Name Identifier.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws ManagementException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return notification details.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    public NotificationContractInner createOrUpdate(
+        String resourceGroupName, String serviceName, NotificationName notificationName) {
+        final String ifMatch = null;
+        return createOrUpdateWithResponse(resourceGroupName, serviceName, notificationName, ifMatch, Context.NONE)
+            .getValue();
+    }
+
+    /**
      * Get the next page of items.
      *
-     * @param nextLink The nextLink parameter.
+     * @param nextLink The URL to get the next list of items
+     *     <p>The nextLink parameter.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
@@ -752,7 +711,8 @@ public final class NotificationsClientImpl implements NotificationsClient {
     /**
      * Get the next page of items.
      *
-     * @param nextLink The nextLink parameter.
+     * @param nextLink The URL to get the next list of items
+     *     <p>The nextLink parameter.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.

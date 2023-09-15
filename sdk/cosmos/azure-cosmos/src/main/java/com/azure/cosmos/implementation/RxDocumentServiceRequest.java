@@ -85,13 +85,7 @@ public class RxDocumentServiceRequest implements Cloneable {
     private volatile boolean nonIdempotentWriteRetriesEnabled = false;
 
     public boolean isReadOnlyRequest() {
-        return this.operationType == OperationType.Read
-                || this.operationType == OperationType.ReadFeed
-                || this.operationType == OperationType.Head
-                || this.operationType == OperationType.HeadFeed
-                || this.operationType == OperationType.Query
-                || this.operationType == OperationType.SqlQuery
-                || this.operationType == OperationType.QueryPlan;
+        return this.operationType.isReadOnlyOperation();
     }
 
     public void setResourceAddress(String newAddress) {
@@ -105,6 +99,12 @@ public class RxDocumentServiceRequest implements Cloneable {
         } else {
             return this.operationType.equals(OperationType.ExecuteJavaScript) && isReadOnlyScript.equalsIgnoreCase(Boolean.TRUE.toString());
         }
+    }
+
+    public boolean isMetadataRequest() {
+        return (this.getOperationType() != OperationType.ExecuteJavaScript
+            && this.getResourceType() == ResourceType.StoredProcedure)
+            || this.getResourceType() != ResourceType.Document;
     }
 
     public RxDocumentServiceRequest setNonIdempotentWriteRetriesEnabled(boolean enabled) {
@@ -1170,7 +1170,7 @@ public class RxDocumentServiceRequest implements Cloneable {
             this.headers.put(HttpConstants.HttpHeaders.PRIORITY_LEVEL, priorityLevel.toString());
         }
     }
-  
+
     public Duration getResponseTimeout() {
         return responseTimeout;
     }

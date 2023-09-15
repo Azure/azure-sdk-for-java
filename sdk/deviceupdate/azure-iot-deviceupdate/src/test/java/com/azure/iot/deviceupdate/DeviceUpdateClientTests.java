@@ -9,8 +9,7 @@ import com.azure.core.http.policy.HttpLogDetailLevel;
 import com.azure.core.http.policy.HttpLogOptions;
 import com.azure.core.http.rest.PagedFlux;
 import com.azure.core.http.rest.Response;
-import com.azure.core.test.TestBase;
-import com.azure.core.test.TestMode;
+import com.azure.core.test.TestProxyTestBase;
 import com.azure.core.util.BinaryData;
 import com.azure.core.util.polling.PollerFlux;
 import com.azure.identity.DefaultAzureCredentialBuilder;
@@ -25,7 +24,7 @@ import static org.junit.jupiter.api.Assertions.assertNotNull;
 import static org.junit.jupiter.api.Assertions.assertTrue;
 import static org.junit.jupiter.api.Assertions.fail;
 
-public class DeviceUpdateClientTests extends TestBase {
+public class DeviceUpdateClientTests extends TestProxyTestBase {
 
     private DeviceUpdateAsyncClient createClient() {
         DeviceUpdateClientBuilder builder =
@@ -34,13 +33,13 @@ public class DeviceUpdateClientTests extends TestBase {
                 .instanceId(TestData.INSTANCE_ID)
                 .httpClient(HttpClient.createDefault())
                 .httpLogOptions(new HttpLogOptions().setLogLevel(HttpLogDetailLevel.BODY_AND_HEADERS));
-        if (getTestMode() == TestMode.PLAYBACK) {
+        if (interceptorManager.isPlaybackMode()) {
             builder.httpClient(interceptorManager.getPlaybackClient())
                 .credential(request -> Mono.just(new AccessToken("this_is_a_token", OffsetDateTime.MAX)));
-        } else if (getTestMode() == TestMode.RECORD) {
+        } else if (interceptorManager.isRecordMode()) {
             builder.addPolicy(interceptorManager.getRecordPolicy())
                 .credential(new DefaultAzureCredentialBuilder().build());
-        } else if (getTestMode() == TestMode.LIVE) {
+        } else if (interceptorManager.isLiveMode()) {
             builder.credential(new DefaultAzureCredentialBuilder().build());
         }
         return builder.buildAsyncClient();

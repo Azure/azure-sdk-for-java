@@ -7,7 +7,7 @@ package com.azure.resourcemanager.compute.generated;
 /** Samples for VirtualMachines ListByLocation. */
 public final class VirtualMachinesListByLocationSamples {
     /*
-     * x-ms-original-file: specification/compute/resource-manager/Microsoft.Compute/ComputeRP/stable/2023-03-01/examples/virtualMachineExamples/VirtualMachine_ListBySubscription_ByLocation.json
+     * x-ms-original-file: specification/compute/resource-manager/Microsoft.Compute/ComputeRP/stable/2023-07-01/examples/virtualMachineExamples/VirtualMachine_ListBySubscription_ByLocation.json
      */
     /**
      * Sample code: Lists all the virtual machines under the specified subscription for the specified location.

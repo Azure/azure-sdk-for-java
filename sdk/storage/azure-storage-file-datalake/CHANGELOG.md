@@ -1,6 +1,6 @@
 # Release History
 
-## 12.17.0-beta.1 (Unreleased)
+## 12.18.0-beta.1 (Unreleased)
 
 ### Features Added
 
@@ -9,6 +9,30 @@
 ### Bugs Fixed
 
 ### Other Changes
+
+## 12.17.0 (2023-09-12)
+
+### Features Added
+- Added support for service versions 2023-05-03 and 2023-08-03.
+- Added `DataLakeDirectoryClient.deleteRecursively()` which allows users to delete a directory and all of its contents recursively.
+- Added support for paginated directory delete when using AAD authentication. Note that this feature only applies to HNS storage accounts and when using token authentication.
+
+## 12.16.1 (2023-08-18)
+
+### Other Changes
+
+#### Dependency Updates
+
+- Upgraded `azure-storage-blob` from `12.23.0` to version `12.23.1`.
+- Upgraded `azure-core-http-netty` from `1.13.5` to version `1.13.6`.
+- Upgraded `azure-core` from `1.41.0` to version `1.42.0`.
+
+## 12.17.0-beta.1 (2023-08-08)
+
+### Features Added
+- Added support for service versions 2023-05-03 and 2023-08-03.
+- Added `DataLakeDirectoryClient.deleteRecursively()` which allows users to delete a directory and all of its contents recursively. 
+- Added support for paginated directory delete when using AAD authentication. Note that this feature only applies to HNS storage accounts and when using token authentication.
 
 ## 12.16.0 (2023-07-11)
 

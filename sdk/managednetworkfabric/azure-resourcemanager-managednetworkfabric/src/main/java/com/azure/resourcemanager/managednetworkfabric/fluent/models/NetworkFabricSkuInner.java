@@ -6,12 +6,13 @@ package com.azure.resourcemanager.managednetworkfabric.fluent.models;
 
 import com.azure.core.annotation.Fluent;
 import com.azure.core.management.ProxyResource;
-import com.azure.core.management.SystemData;
 import com.azure.core.util.logging.ClientLogger;
+import com.azure.resourcemanager.managednetworkfabric.models.FabricSkuType;
 import com.azure.resourcemanager.managednetworkfabric.models.ProvisioningState;
 import com.fasterxml.jackson.annotation.JsonProperty;
+import java.util.List;
 
-/** The NetworkFabricSku resource definition. */
+/** The Network Fabric SKU resource definition. */
 @Fluent
 public final class NetworkFabricSkuInner extends ProxyResource {
     /*
@@ -19,12 +20,6 @@ public final class NetworkFabricSkuInner extends ProxyResource {
      */
     @JsonProperty(value = "properties", required = true)
     private NetworkFabricSkuProperties innerProperties = new NetworkFabricSkuProperties();
-
-    /*
-     * Azure Resource Manager metadata containing createdBy and modifiedBy information.
-     */
-    @JsonProperty(value = "systemData", access = JsonProperty.Access.WRITE_ONLY)
-    private SystemData systemData;
 
     /** Creates an instance of NetworkFabricSkuInner class. */
     public NetworkFabricSkuInner() {
@@ -40,25 +35,17 @@ public final class NetworkFabricSkuInner extends ProxyResource {
     }
 
     /**
-     * Get the systemData property: Azure Resource Manager metadata containing createdBy and modifiedBy information.
-     *
-     * @return the systemData value.
-     */
-    public SystemData systemData() {
-        return this.systemData;
-    }
-
-    /**
-     * Get the type property: Type of Network Fabric Sku.
+     * Get the type property: Type of Network Fabric SKU.
      *
      * @return the type value.
      */
-    public String typePropertiesType() {
+    public FabricSkuType typePropertiesType() {
         return this.innerProperties() == null ? null : this.innerProperties().type();
     }
 
     /**
-     * Get the maxComputeRacks property: Maximum number of compute racks available for this Network Fabric SKU.
+     * Get the maxComputeRacks property: Maximum number of compute racks available for this Network Fabric SKU. The
+     * value of max count racks is 4 for 4 rack SKU and 8 for 8 rack SKU.
      *
      * @return the maxComputeRacks value.
      */
@@ -67,7 +54,8 @@ public final class NetworkFabricSkuInner extends ProxyResource {
     }
 
     /**
-     * Set the maxComputeRacks property: Maximum number of compute racks available for this Network Fabric SKU.
+     * Set the maxComputeRacks property: Maximum number of compute racks available for this Network Fabric SKU. The
+     * value of max count racks is 4 for 4 rack SKU and 8 for 8 rack SKU.
      *
      * @param maxComputeRacks the maxComputeRacks value to set.
      * @return the NetworkFabricSkuInner object itself.
@@ -81,34 +69,48 @@ public final class NetworkFabricSkuInner extends ProxyResource {
     }
 
     /**
-     * Get the minSupportedVer property: Minimum supported version.
+     * Get the maximumServerCount property: Maximum number of servers available for this Network Fabric SKU.
      *
-     * @return the minSupportedVer value.
+     * @return the maximumServerCount value.
      */
-    public String minSupportedVer() {
-        return this.innerProperties() == null ? null : this.innerProperties().minSupportedVer();
+    public Integer maximumServerCount() {
+        return this.innerProperties() == null ? null : this.innerProperties().maximumServerCount();
     }
 
     /**
-     * Get the maxSupportedVer property: Maximum supported version.
+     * Set the maximumServerCount property: Maximum number of servers available for this Network Fabric SKU.
      *
-     * @return the maxSupportedVer value.
+     * @param maximumServerCount the maximumServerCount value to set.
+     * @return the NetworkFabricSkuInner object itself.
      */
-    public String maxSupportedVer() {
-        return this.innerProperties() == null ? null : this.innerProperties().maxSupportedVer();
+    public NetworkFabricSkuInner withMaximumServerCount(Integer maximumServerCount) {
+        if (this.innerProperties() == null) {
+            this.innerProperties = new NetworkFabricSkuProperties();
+        }
+        this.innerProperties().withMaximumServerCount(maximumServerCount);
+        return this;
     }
 
     /**
-     * Get the detailsUri property: The URI gives full details of sku.
+     * Get the supportedVersions property: List of supported Network Fabric SKU versions.
      *
-     * @return the detailsUri value.
+     * @return the supportedVersions value.
      */
-    public String detailsUri() {
-        return this.innerProperties() == null ? null : this.innerProperties().detailsUri();
+    public List<String> supportedVersions() {
+        return this.innerProperties() == null ? null : this.innerProperties().supportedVersions();
     }
 
     /**
-     * Get the provisioningState property: Gets the provisioning state of the resource.
+     * Get the details property: URL providing detailed configuration of the fabric SKU.
+     *
+     * @return the details value.
+     */
+    public String details() {
+        return this.innerProperties() == null ? null : this.innerProperties().details();
+    }
+
+    /**
+     * Get the provisioningState property: Provisioning state of the resource.
      *
      * @return the provisioningState value.
      */

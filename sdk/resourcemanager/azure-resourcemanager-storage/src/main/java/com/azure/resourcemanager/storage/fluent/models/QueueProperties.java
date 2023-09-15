@@ -26,6 +26,10 @@ public final class QueueProperties {
     @JsonProperty(value = "approximateMessageCount", access = JsonProperty.Access.WRITE_ONLY)
     private Integer approximateMessageCount;
 
+    /** Creates an instance of QueueProperties class. */
+    public QueueProperties() {
+    }
+
     /**
      * Get the metadata property: A name-value pair that represents queue metadata.
      *

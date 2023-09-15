@@ -5,6 +5,7 @@
 package com.azure.communication.jobrouter.models;
 
 import com.azure.core.annotation.Fluent;
+import com.azure.core.util.ETag;
 import com.fasterxml.jackson.annotation.JsonProperty;
 
 /** Paged instance of ClassificationPolicy. */
@@ -20,7 +21,7 @@ public final class ClassificationPolicyItem {
      * (Optional) The Concurrency Token.
      */
     @JsonProperty(value = "etag")
-    private String etag;
+    private ETag etag;
 
     /**
      * Get the classificationPolicy property: A container for the rules that govern how jobs are classified.
@@ -47,7 +48,7 @@ public final class ClassificationPolicyItem {
      *
      * @return the etag value.
      */
-    public String getEtag() {
+    public ETag getEtag() {
         return this.etag;
     }
 
@@ -57,7 +58,7 @@ public final class ClassificationPolicyItem {
      * @param etag the etag value to set.
      * @return the ClassificationPolicyItem object itself.
      */
-    public ClassificationPolicyItem setEtag(String etag) {
+    public ClassificationPolicyItem setEtag(ETag etag) {
         this.etag = etag;
         return this;
     }

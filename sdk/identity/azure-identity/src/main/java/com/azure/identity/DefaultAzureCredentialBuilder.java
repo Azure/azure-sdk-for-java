@@ -43,7 +43,7 @@ import java.util.concurrent.ForkJoinPool;
  * <p><strong>Sample: Construct DefaultAzureCredential with User Assigned Managed Identity </strong></p>
  *
  * <p>User-Assigned Managed Identity (UAMI) in Azure is a feature that allows you to create an identity in
- * <a href="https://learn.microsoft.com/en-us/azure/active-directory/fundamentals/">Azure Active Directory (Azure AD)
+ * <a href="https://learn.microsoft.com/azure/active-directory/fundamentals/">Azure Active Directory (Azure AD)
  * </a> that is associated with one or more Azure resources. This identity can then be used to authenticate and
  * authorize access to various Azure services and resources. The following code sample demonstrates the creation of
  * a {@link DefaultAzureCredential} to target a user assigned managed identity, using the DefaultAzureCredentialBuilder
@@ -76,6 +76,7 @@ public class DefaultAzureCredentialBuilder extends CredentialBuilderBase<Default
      */
     public DefaultAzureCredentialBuilder() {
         this.identityClientOptions.setIdentityLogOptionsImpl(new IdentityLogOptionsImpl(true));
+        this.identityClientOptions.setChained(true);
     }
 
     /**

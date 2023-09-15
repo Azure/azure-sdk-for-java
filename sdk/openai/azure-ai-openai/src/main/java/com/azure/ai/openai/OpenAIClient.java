@@ -28,6 +28,7 @@ import com.azure.core.http.rest.RequestOptions;
 import com.azure.core.http.rest.Response;
 import com.azure.core.util.BinaryData;
 import com.azure.core.util.IterableStream;
+import com.azure.core.util.logging.ClientLogger;
 import com.azure.core.util.polling.SyncPoller;
 import java.nio.ByteBuffer;
 import reactor.core.publisher.Flux;
@@ -35,6 +36,32 @@ import reactor.core.publisher.Flux;
 /** Initializes a new instance of the synchronous OpenAIClient type. */
 @ServiceClient(builder = OpenAIClientBuilder.class)
 public final class OpenAIClient {
+
+    private static final ClientLogger LOGGER = new ClientLogger(OpenAIClient.class);
+
+    @Generated private final OpenAIClientImpl serviceClient;
+
+    private final NonAzureOpenAIClientImpl openAIServiceClient;
+
+    /**
+     * Initializes an instance of OpenAIClient class.
+     *
+     * @param serviceClient the service client implementation.
+     */
+    OpenAIClient(OpenAIClientImpl serviceClient) {
+        this.serviceClient = serviceClient;
+        openAIServiceClient = null;
+    }
+
+    /**
+     * Initializes an instance of OpenAIClient class for NonAzure Implementation.
+     *
+     * @param serviceClient the service client implementation.
+     */
+    OpenAIClient(NonAzureOpenAIClientImpl serviceClient) {
+        this.serviceClient = null;
+        openAIServiceClient = serviceClient;
+    }
 
     /**
      * Return the embeddings for a given prompt.
@@ -391,16 +418,21 @@ public final class OpenAIClient {
      * @return chat completions for the provided chat messages. Completions support a wide variety of tasks and generate
      *     text that continues from or "completes" provided prompt data.
      */
-    @Generated
     @ServiceMethod(returns = ReturnType.SINGLE)
     public ChatCompletions getChatCompletions(
             String deploymentOrModelName, ChatCompletionsOptions chatCompletionsOptions) {
-        // Generated convenience method for getChatCompletionsWithResponse
         RequestOptions requestOptions = new RequestOptions();
-        return getChatCompletionsWithResponse(
-                        deploymentOrModelName, BinaryData.fromObject(chatCompletionsOptions), requestOptions)
-                .getValue()
-                .toObject(ChatCompletions.class);
+        if (chatCompletionsOptions.getDataSources() == null || chatCompletionsOptions.getDataSources().isEmpty()) {
+            return getChatCompletionsWithResponse(
+                            deploymentOrModelName, BinaryData.fromObject(chatCompletionsOptions), requestOptions)
+                    .getValue()
+                    .toObject(ChatCompletions.class);
+        } else {
+            return getChatCompletionsWithAzureExtensionsWithResponse(
+                            deploymentOrModelName, BinaryData.fromObject(chatCompletionsOptions), requestOptions)
+                    .getValue()
+                    .toObject(ChatCompletions.class);
+        }
     }
 
     /**
@@ -425,38 +457,27 @@ public final class OpenAIClient {
             String deploymentOrModelName, ChatCompletionsOptions chatCompletionsOptions) {
         chatCompletionsOptions.setStream(true);
         RequestOptions requestOptions = new RequestOptions();
-        Flux<ByteBuffer> responseStream =
-                getChatCompletionsWithResponse(
-                                deploymentOrModelName, BinaryData.fromObject(chatCompletionsOptions), requestOptions)
-                        .getValue()
-                        .toFluxByteBuffer();
+        Flux<ByteBuffer> responseStream;
+        if (chatCompletionsOptions.getDataSources() == null || chatCompletionsOptions.getDataSources().isEmpty()) {
+            responseStream =
+                    getChatCompletionsWithResponse(
+                                    deploymentOrModelName,
+                                    BinaryData.fromObject(chatCompletionsOptions),
+                                    requestOptions)
+                            .getValue()
+                            .toFluxByteBuffer();
+        } else {
+            responseStream =
+                    getChatCompletionsWithAzureExtensionsWithResponse(
+                                    deploymentOrModelName,
+                                    BinaryData.fromObject(chatCompletionsOptions),
+                                    requestOptions)
+                            .getValue()
+                            .toFluxByteBuffer();
+        }
         OpenAIServerSentEvents<ChatCompletions> chatCompletionsStream =
                 new OpenAIServerSentEvents<>(responseStream, ChatCompletions.class);
-        return new IterableStream<ChatCompletions>(chatCompletionsStream.getEvents());
-    }
-
-    @Generated private final OpenAIClientImpl serviceClient;
-
-    private final NonAzureOpenAIClientImpl openAIServiceClient;
-
-    /**
-     * Initializes an instance of OpenAIClient class.
-     *
-     * @param serviceClient the service client implementation.
-     */
-    OpenAIClient(OpenAIClientImpl serviceClient) {
-        this.serviceClient = serviceClient;
-        openAIServiceClient = null;
-    }
-
-    /**
-     * Initializes an instance of OpenAIClient class for NonAzure Implementation.
-     *
-     * @param serviceClient the service client implementation.
-     */
-    OpenAIClient(NonAzureOpenAIClientImpl serviceClient) {
-        this.serviceClient = null;
-        openAIServiceClient = serviceClient;
+        return new IterableStream<>(chatCompletionsStream.getEvents());
     }
 
     /**
@@ -469,22 +490,23 @@ public final class OpenAIClient {
      * @throws ResourceNotFoundException thrown if the request is rejected by server on status code 404.
      * @throws ResourceModifiedException thrown if the request is rejected by server on status code 409.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the {@link ImageOperationResponse} for polling of status details for long running operations.
+     * @return the {@link ImageResponse} for the image generation result.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public ImageResponse generateImage(ImageGenerationOptions imageGenerationOptions) {
+    public ImageResponse getImages(ImageGenerationOptions imageGenerationOptions) {
         RequestOptions requestOptions = new RequestOptions();
         BinaryData imageGenerationOptionsBinaryData = BinaryData.fromObject(imageGenerationOptions);
-        return openAIServiceClient != null
-                ? openAIServiceClient
-                        .generateImageWithResponse(imageGenerationOptionsBinaryData, requestOptions)
-                        .getValue()
-                        .toObject(ImageResponse.class)
-                : beginBeginAzureBatchImageGeneration(imageGenerationOptionsBinaryData, requestOptions)
-                        .waitForCompletion()
-                        .getValue()
-                        .toObject(ImageOperationResponse.class)
-                        .getResult();
+        if (openAIServiceClient != null) {
+            return openAIServiceClient
+                    .generateImageWithResponse(imageGenerationOptionsBinaryData, requestOptions)
+                    .getValue()
+                    .toObject(ImageResponse.class);
+        } else {
+            return beginBeginAzureBatchImageGeneration(imageGenerationOptionsBinaryData, requestOptions)
+                    .getFinalResult()
+                    .toObject(ImageOperationResponse.class)
+                    .getResult();
+        }
     }
 
     /**
@@ -507,7 +529,13 @@ public final class OpenAIClient {
      * <pre>{@code
      * {
      *     id: String (Required)
-     *     status: String (Required)
+     *     created: long (Required)
+     *     expires: Long (Optional)
+     *     result (Optional): {
+     *         created: long (Required)
+     *         data: DataModelBase (Required)
+     *     }
+     *     status: String(notRunning/running/succeeded/canceled/failed) (Required)
      *     error (Optional): {
      *         code: String (Required)
      *         message: String (Required)
@@ -529,12 +557,140 @@ public final class OpenAIClient {
      * @throws ClientAuthenticationException thrown if the request is rejected by server on status code 401.
      * @throws ResourceNotFoundException thrown if the request is rejected by server on status code 404.
      * @throws ResourceModifiedException thrown if the request is rejected by server on status code 409.
-     * @return the {@link SyncPoller} for polling of status details for long running operations.
+     * @return the {@link SyncPoller} for polling of long-running operation.
      */
     @Generated
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     SyncPoller<BinaryData, BinaryData> beginBeginAzureBatchImageGeneration(
             BinaryData imageGenerationOptions, RequestOptions requestOptions) {
         return this.serviceClient.beginBeginAzureBatchImageGeneration(imageGenerationOptions, requestOptions);
+    }
+
+    /**
+     * Gets chat completions for the provided chat messages. This is an Azure-specific version of chat completions that
+     * supports integration with configured data sources and other augmentations to the base chat completions
+     * capabilities.
+     *
+     * <p><strong>Request Body Schema</strong>
+     *
+     * <pre>{@code
+     * {
+     *     messages (Required): [
+     *          (Required){
+     *             role: String(system/assistant/user/function/tool) (Required)
+     *             content: String (Required)
+     *             name: String (Optional)
+     *             function_call (Optional): {
+     *                 name: String (Required)
+     *                 arguments: String (Required)
+     *             }
+     *             context (Optional): {
+     *                 messages (Optional): [
+     *                     (recursive schema, see above)
+     *                 ]
+     *             }
+     *         }
+     *     ]
+     *     functions (Optional): [
+     *          (Optional){
+     *             name: String (Required)
+     *             description: String (Optional)
+     *             parameters: Object (Optional)
+     *         }
+     *     ]
+     *     function_call: FunctionCallModelBase (Optional)
+     *     max_tokens: Integer (Optional)
+     *     temperature: Double (Optional)
+     *     top_p: Double (Optional)
+     *     logit_bias (Optional): {
+     *         String: int (Optional)
+     *     }
+     *     user: String (Optional)
+     *     n: Integer (Optional)
+     *     stop (Optional): [
+     *         String (Optional)
+     *     ]
+     *     presence_penalty: Double (Optional)
+     *     frequency_penalty: Double (Optional)
+     *     stream: Boolean (Optional)
+     *     model: String (Optional)
+     *     dataSources (Optional): [
+     *          (Optional){
+     *             type: String(AzureCognitiveSearch) (Required)
+     *             parameters: Object (Required)
+     *         }
+     *     ]
+     * }
+     * }</pre>
+     *
+     * <p><strong>Response Body Schema</strong>
+     *
+     * <pre>{@code
+     * {
+     *     id: String (Required)
+     *     created: long (Required)
+     *     choices (Required): [
+     *          (Required){
+     *             message (Optional): {
+     *                 role: String(system/assistant/user/function/tool) (Required)
+     *                 content: String (Required)
+     *                 name: String (Optional)
+     *                 function_call (Optional): {
+     *                     name: String (Required)
+     *                     arguments: String (Required)
+     *                 }
+     *                 context (Optional): {
+     *                     messages (Optional): [
+     *                         (recursive schema, see above)
+     *                     ]
+     *                 }
+     *             }
+     *             index: int (Required)
+     *             finish_reason: String(stop/length/content_filter/function_call) (Required)
+     *             delta (Optional): (recursive schema, see delta above)
+     *             content_filter_results (Optional): {
+     *                 sexual (Optional): {
+     *                     severity: String(safe/low/medium/high) (Required)
+     *                     filtered: boolean (Required)
+     *                 }
+     *                 violence (Optional): (recursive schema, see violence above)
+     *                 hate (Optional): (recursive schema, see hate above)
+     *                 self_harm (Optional): (recursive schema, see self_harm above)
+     *             }
+     *         }
+     *     ]
+     *     prompt_annotations (Optional): [
+     *          (Optional){
+     *             prompt_index: int (Required)
+     *             content_filter_results (Optional): (recursive schema, see content_filter_results above)
+     *         }
+     *     ]
+     *     usage (Required): {
+     *         completion_tokens: int (Required)
+     *         prompt_tokens: int (Required)
+     *         total_tokens: int (Required)
+     *     }
+     * }
+     * }</pre>
+     *
+     * @param deploymentOrModelName Specifies either the model deployment name (when using Azure OpenAI) or model name
+     *     (when using non-Azure OpenAI) to use for this request.
+     * @param chatCompletionsOptions The configuration information for a chat completions request. Completions support a
+     *     wide variety of tasks and generate text that continues from or "completes" provided prompt data.
+     * @param requestOptions The options to configure the HTTP request before HTTP client sends it.
+     * @throws HttpResponseException thrown if the request is rejected by server.
+     * @throws ClientAuthenticationException thrown if the request is rejected by server on status code 401.
+     * @throws ResourceNotFoundException thrown if the request is rejected by server on status code 404.
+     * @throws ResourceModifiedException thrown if the request is rejected by server on status code 409.
+     * @return chat completions for the provided chat messages. This is an Azure-specific version of chat completions
+     *     that supports integration with configured data sources and other augmentations to the base chat completions
+     *     capabilities along with {@link Response}.
+     */
+    @Generated
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    Response<BinaryData> getChatCompletionsWithAzureExtensionsWithResponse(
+            String deploymentOrModelName, BinaryData chatCompletionsOptions, RequestOptions requestOptions) {
+        return this.serviceClient.getChatCompletionsWithAzureExtensionsWithResponse(
+                deploymentOrModelName, chatCompletionsOptions, requestOptions);
     }
 }

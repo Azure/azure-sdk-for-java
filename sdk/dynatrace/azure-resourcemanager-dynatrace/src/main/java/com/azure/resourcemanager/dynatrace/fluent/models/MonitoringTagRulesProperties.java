@@ -31,6 +31,10 @@ public final class MonitoringTagRulesProperties {
     @JsonProperty(value = "provisioningState", access = JsonProperty.Access.WRITE_ONLY)
     private ProvisioningState provisioningState;
 
+    /** Creates an instance of MonitoringTagRulesProperties class. */
+    public MonitoringTagRulesProperties() {
+    }
+
     /**
      * Get the logRules property: Set of rules for sending logs for the Monitor resource.
      *

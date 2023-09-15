@@ -13,7 +13,7 @@ import java.util.Arrays;
 /** Samples for RecoveryServices Capabilities. */
 public final class RecoveryServicesCapabilitiesSamples {
     /*
-     * x-ms-original-file: specification/recoveryservices/resource-manager/Microsoft.RecoveryServices/stable/2023-02-01/examples/Capabilities.json
+     * x-ms-original-file: specification/recoveryservices/resource-manager/Microsoft.RecoveryServices/stable/2023-04-01/examples/Capabilities.json
      */
     /**
      * Sample code: Capabilities for Microsoft.RecoveryServices/Vaults.

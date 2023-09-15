@@ -1,6 +1,6 @@
 # Release History
 
-## 1.1.0-beta.1 (Unreleased)
+## 1.1.0-beta.2 (Unreleased)
 
 ### Features Added
 
@@ -9,6 +9,63 @@
 ### Bugs Fixed
 
 ### Other Changes
+
+## 1.1.0-beta.1 (2023-07-21)
+
+- Azure Resource Manager WebPubSub client library for Java. This package contains Microsoft Azure SDK for WebPubSub Management SDK. REST API for Azure WebPubSub Service. Package tag package-2023-06-01-preview. For documentation on how to use this package, please see [Azure Management Libraries for Java](https://aka.ms/azsdk/java/mgmt).
+
+### Breaking Changes
+
+#### `models.CustomCertificate` was modified
+
+* `systemData()` was removed
+
+#### `models.WebPubSubHub` was modified
+
+* `systemData()` was removed
+
+#### `models.CustomDomain` was modified
+
+* `systemData()` was removed
+
+#### `models.SharedPrivateLinkResource` was modified
+
+* `systemData()` was removed
+
+### Features Added
+
+* `models.ServiceKind` was added
+
+* `models.Replica$UpdateStages` was added
+
+* `models.Replica` was added
+
+* `models.ReplicaList` was added
+
+* `models.Replica$DefinitionStages` was added
+
+* `models.Replica$Update` was added
+
+* `models.WebPubSubReplicas` was added
+
+* `models.Replica$Definition` was added
+
+#### `models.WebPubSubResource` was modified
+
+* `kind()` was added
+
+#### `WebPubSubManager` was modified
+
+* `webPubSubReplicas()` was added
+
+#### `models.WebPubSubResource$Definition` was modified
+
+* `withKind(models.ServiceKind)` was added
+
+#### `models.WebPubSubs` was modified
+
+* `listReplicaSkusWithResponse(java.lang.String,java.lang.String,java.lang.String,com.azure.core.util.Context)` was added
+* `listReplicaSkus(java.lang.String,java.lang.String,java.lang.String)` was added
 
 ## 1.0.0 (2023-03-23)
 

@@ -4,7 +4,6 @@
 
 package com.azure.resourcemanager.appcontainers.models;
 
-import com.azure.core.management.SystemData;
 import com.azure.core.util.Context;
 import com.azure.resourcemanager.appcontainers.fluent.models.ConnectedEnvironmentStorageInner;
 
@@ -39,13 +38,6 @@ public interface ConnectedEnvironmentStorage {
     ConnectedEnvironmentStorageProperties properties();
 
     /**
-     * Gets the systemData property: Azure Resource Manager metadata containing createdBy and modifiedBy information.
-     *
-     * @return the systemData value.
-     */
-    SystemData systemData();
-
-    /**
      * Gets the name of the resource group.
      *
      * @return the name of the resource group.
@@ -63,11 +55,13 @@ public interface ConnectedEnvironmentStorage {
     interface Definition
         extends DefinitionStages.Blank, DefinitionStages.WithParentResource, DefinitionStages.WithCreate {
     }
+
     /** The ConnectedEnvironmentStorage definition stages. */
     interface DefinitionStages {
         /** The first stage of the ConnectedEnvironmentStorage definition. */
         interface Blank extends WithParentResource {
         }
+
         /** The stage of the ConnectedEnvironmentStorage definition allowing to specify parent resource. */
         interface WithParentResource {
             /**
@@ -79,6 +73,7 @@ public interface ConnectedEnvironmentStorage {
              */
             WithCreate withExistingConnectedEnvironment(String resourceGroupName, String connectedEnvironmentName);
         }
+
         /**
          * The stage of the ConnectedEnvironmentStorage definition which contains all the minimum required properties
          * for the resource to be created, but also allows for any other optional properties to be specified.
@@ -99,6 +94,7 @@ public interface ConnectedEnvironmentStorage {
              */
             ConnectedEnvironmentStorage create(Context context);
         }
+
         /** The stage of the ConnectedEnvironmentStorage definition allowing to specify properties. */
         interface WithProperties {
             /**
@@ -110,6 +106,7 @@ public interface ConnectedEnvironmentStorage {
             WithCreate withProperties(ConnectedEnvironmentStorageProperties properties);
         }
     }
+
     /**
      * Begins update for the ConnectedEnvironmentStorage resource.
      *
@@ -134,6 +131,7 @@ public interface ConnectedEnvironmentStorage {
          */
         ConnectedEnvironmentStorage apply(Context context);
     }
+
     /** The ConnectedEnvironmentStorage update stages. */
     interface UpdateStages {
         /** The stage of the ConnectedEnvironmentStorage update allowing to specify properties. */
@@ -147,6 +145,7 @@ public interface ConnectedEnvironmentStorage {
             Update withProperties(ConnectedEnvironmentStorageProperties properties);
         }
     }
+
     /**
      * Refreshes the resource to sync with Azure.
      *

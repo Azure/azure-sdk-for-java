@@ -271,7 +271,7 @@ public final class DataProtectionManager {
                 .append("-")
                 .append("com.azure.resourcemanager.dataprotection")
                 .append("/")
-                .append("1.0.0");
+                .append("1.1.0");
             if (!Configuration.getGlobalConfiguration().get("AZURE_TELEMETRY_DISABLED", false)) {
                 userAgentBuilder
                     .append(" (")

@@ -58,6 +58,6 @@ public final class CertificatesDeleteWithResponseMockTests {
 
         manager
             .certificates()
-            .deleteWithResponse("klinhmdptysprq", "gnzxojpslsvj", "pli", com.azure.core.util.Context.NONE);
+            .deleteWithResponse("afjrqpjiyrqjcrg", "xwmzwdfkbnrz", "rpdltbq", com.azure.core.util.Context.NONE);
     }
 }

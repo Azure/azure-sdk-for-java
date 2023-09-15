@@ -13,6 +13,12 @@ import java.util.List;
 @Fluent
 public final class DatabaseListResult {
     /*
+     * Link to the next page of results
+     */
+    @JsonProperty(value = "nextLink")
+    private String nextLink;
+
+    /*
      * The list of Kusto databases.
      */
     @JsonProperty(value = "value")
@@ -20,6 +26,26 @@ public final class DatabaseListResult {
 
     /** Creates an instance of DatabaseListResult class. */
     public DatabaseListResult() {
+    }
+
+    /**
+     * Get the nextLink property: Link to the next page of results.
+     *
+     * @return the nextLink value.
+     */
+    public String nextLink() {
+        return this.nextLink;
+    }
+
+    /**
+     * Set the nextLink property: Link to the next page of results.
+     *
+     * @param nextLink the nextLink value to set.
+     * @return the DatabaseListResult object itself.
+     */
+    public DatabaseListResult withNextLink(String nextLink) {
+        this.nextLink = nextLink;
+        return this;
     }
 
     /**

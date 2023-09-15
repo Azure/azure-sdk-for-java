@@ -4,12 +4,10 @@
 
 package com.azure.resourcemanager.batch.generated;
 
-import com.azure.core.util.Context;
-
 /** Samples for BatchAccount GetByResourceGroup. */
 public final class BatchAccountGetByResourceGroupSamples {
     /*
-     * x-ms-original-file: specification/batch/resource-manager/Microsoft.Batch/stable/2022-10-01/examples/PrivateBatchAccountGet.json
+     * x-ms-original-file: specification/batch/resource-manager/Microsoft.Batch/stable/2023-05-01/examples/PrivateBatchAccountGet.json
      */
     /**
      * Sample code: PrivateBatchAccountGet.
@@ -19,11 +17,12 @@ public final class BatchAccountGetByResourceGroupSamples {
     public static void privateBatchAccountGet(com.azure.resourcemanager.batch.BatchManager manager) {
         manager
             .batchAccounts()
-            .getByResourceGroupWithResponse("default-azurebatch-japaneast", "sampleacct", Context.NONE);
+            .getByResourceGroupWithResponse(
+                "default-azurebatch-japaneast", "sampleacct", com.azure.core.util.Context.NONE);
     }
 
     /*
-     * x-ms-original-file: specification/batch/resource-manager/Microsoft.Batch/stable/2022-10-01/examples/BatchAccountGet.json
+     * x-ms-original-file: specification/batch/resource-manager/Microsoft.Batch/stable/2023-05-01/examples/BatchAccountGet.json
      */
     /**
      * Sample code: BatchAccountGet.
@@ -33,6 +32,7 @@ public final class BatchAccountGetByResourceGroupSamples {
     public static void batchAccountGet(com.azure.resourcemanager.batch.BatchManager manager) {
         manager
             .batchAccounts()
-            .getByResourceGroupWithResponse("default-azurebatch-japaneast", "sampleacct", Context.NONE);
+            .getByResourceGroupWithResponse(
+                "default-azurebatch-japaneast", "sampleacct", com.azure.core.util.Context.NONE);
     }
 }

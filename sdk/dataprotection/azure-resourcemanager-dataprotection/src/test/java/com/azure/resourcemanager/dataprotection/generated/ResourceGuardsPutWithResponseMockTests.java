@@ -35,7 +35,7 @@ public final class ResourceGuardsPutWithResponseMockTests {
         ArgumentCaptor<HttpRequest> httpRequest = ArgumentCaptor.forClass(HttpRequest.class);
 
         String responseStr =
-            "{\"properties\":{\"provisioningState\":\"Updating\",\"allowAutoApprovals\":true,\"resourceGuardOperations\":[],\"vaultCriticalOperationExclusionList\":[\"kzruswh\",\"hczznvf\"],\"description\":\"cjsxjww\"},\"eTag\":\"z\",\"location\":\"mwmxqhndvnoamld\",\"tags\":{\"flzokxco\":\"aohdjh\",\"tsxoatftgz\":\"pelnjetag\",\"vefloccsrmozihmi\":\"npbs\",\"wtxxpkyjcx\":\"g\"},\"id\":\"jxgrytfmp\",\"name\":\"ycilrmcaykggnox\",\"type\":\"ztrksxwpndf\"}";
+            "{\"properties\":{\"provisioningState\":\"Updating\",\"allowAutoApprovals\":true,\"resourceGuardOperations\":[{\"vaultCriticalOperation\":\"oy\",\"requestResourceType\":\"k\"},{\"vaultCriticalOperation\":\"aimmoiroqb\",\"requestResourceType\":\"hbragapyyr\"}],\"vaultCriticalOperationExclusionList\":[\"vbpavbopfppdbw\",\"upgahxkum\",\"sjcaacfdmmcpugm\",\"hqepvufhbzehewh\"],\"description\":\"hnl\"},\"eTag\":\"nbldxeaclgschori\",\"location\":\"rsrrmoucsofldp\",\"tags\":{\"uqibsxtkcu\":\"yfcaabeolhbhlvbm\"},\"id\":\"fbsfarfsiow\",\"name\":\"kjxnqpvwgfstmhq\",\"type\":\"kizmdksaoafclu\"}";
 
         Mockito.when(httpResponse.getStatusCode()).thenReturn(200);
         Mockito.when(httpResponse.getHeaders()).thenReturn(new HttpHeaders());
@@ -66,19 +66,18 @@ public final class ResourceGuardsPutWithResponseMockTests {
         ResourceGuardResource response =
             manager
                 .resourceGuards()
-                .define("wemxswvruunzz")
-                .withRegion("gvelfc")
-                .withExistingResourceGroup("pttaqutd")
-                .withTags(mapOf("ds", "ccbi", "b", "uwc", "nghgshej", "egstmninwjizci"))
-                .withEtag("i")
-                .withProperties(
-                    new ResourceGuard().withVaultCriticalOperationExclusionList(Arrays.asList("tixo", "ffqyinlj")))
+                .define("izrxklob")
+                .withRegion("gxqbawpcb")
+                .withExistingResourceGroup("o")
+                .withTags(mapOf("napqo", "qcy", "wwgbdv", "yuicdhzbdy"))
+                .withEtag("dd")
+                .withProperties(new ResourceGuard().withVaultCriticalOperationExclusionList(Arrays.asList("pj")))
                 .create();
 
-        Assertions.assertEquals("mwmxqhndvnoamld", response.location());
-        Assertions.assertEquals("aohdjh", response.tags().get("flzokxco"));
-        Assertions.assertEquals("z", response.etag());
-        Assertions.assertEquals("kzruswh", response.properties().vaultCriticalOperationExclusionList().get(0));
+        Assertions.assertEquals("rsrrmoucsofldp", response.location());
+        Assertions.assertEquals("yfcaabeolhbhlvbm", response.tags().get("uqibsxtkcu"));
+        Assertions.assertEquals("nbldxeaclgschori", response.etag());
+        Assertions.assertEquals("vbpavbopfppdbw", response.properties().vaultCriticalOperationExclusionList().get(0));
     }
 
     @SuppressWarnings("unchecked")

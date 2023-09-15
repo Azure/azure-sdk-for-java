@@ -7,7 +7,7 @@ package com.azure.resourcemanager.managednetworkfabric.generated;
 /** Samples for InternalNetworks Get. */
 public final class InternalNetworksGetSamples {
     /*
-     * x-ms-original-file: specification/managednetworkfabric/resource-manager/Microsoft.ManagedNetworkFabric/preview/2023-02-01-preview/examples/InternalNetworks_Get_MaximumSet_Gen.json
+     * x-ms-original-file: specification/managednetworkfabric/resource-manager/Microsoft.ManagedNetworkFabric/stable/2023-06-15/examples/InternalNetworks_Get_MaximumSet_Gen.json
      */
     /**
      * Sample code: InternalNetworks_Get_MaximumSet_Gen.
@@ -19,6 +19,6 @@ public final class InternalNetworksGetSamples {
         manager
             .internalNetworks()
             .getWithResponse(
-                "resourceGroupName", "example-l3domain", "example-internalnetwork", com.azure.core.util.Context.NONE);
+                "example-rg", "example-l3domain", "example-internalnetwork", com.azure.core.util.Context.NONE);
     }
 }

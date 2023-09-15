@@ -40,6 +40,10 @@ public final class ManagementPolicyVersion {
     @JsonProperty(value = "delete")
     private DateAfterCreation delete;
 
+    /** Creates an instance of ManagementPolicyVersion class. */
+    public ManagementPolicyVersion() {
+    }
+
     /**
      * Get the tierToCool property: The function to tier blob version to cool storage.
      *

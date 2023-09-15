@@ -460,7 +460,8 @@ public final class ServiceBusReceiverClient implements AutoCloseable {
      * invocations of receiveMessages API will throw the error to the application. Once the application receives
      * this error, the application should reset the client, i.e., close the current {@link ServiceBusReceiverClient}
      * and create a new client to continue receiving messages.
-     * <br/>
+     * </p>
+     * <p>
      * Note: A few examples of non-retriable errors are - the application attempting to connect to a queue that does not
      * exist, deleting or disabling the queue in the middle of receiving, the user explicitly initiating Geo-DR.
      * These are certain events where the Service Bus communicates to the client that a non-retriable error occurred.
@@ -492,7 +493,8 @@ public final class ServiceBusReceiverClient implements AutoCloseable {
      * invocations of receiveMessages API will throw the error to the application. Once the application receives
      * this error, the application should reset the client, i.e., close the current {@link ServiceBusReceiverClient}
      * and create a new client to continue receiving messages.
-     * <br/>
+     * </p>
+     * <p>
      * Note: A few examples of non-retriable errors are - the application attempting to connect to a queue that does not
      * exist, deleting or disabling the queue in the middle of receiving, the user explicitly initiating Geo-DR.
      * These are certain events where the Service Bus communicates to the client that a non-retriable error occurred.

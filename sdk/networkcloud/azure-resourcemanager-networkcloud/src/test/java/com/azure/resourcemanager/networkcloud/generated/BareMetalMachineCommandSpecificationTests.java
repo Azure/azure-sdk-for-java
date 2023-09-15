@@ -14,21 +14,18 @@ public final class BareMetalMachineCommandSpecificationTests {
     public void testDeserialize() throws Exception {
         BareMetalMachineCommandSpecification model =
             BinaryData
-                .fromString(
-                    "{\"arguments\":[\"vdaeyyguxakjsq\",\"hzbezkgi\",\"sidxasicdd\",\"vvjskgfmocwahp\"],\"command\":\"gat\"}")
+                .fromString("{\"arguments\":[\"z\"],\"command\":\"umwmxqhnd\"}")
                 .toObject(BareMetalMachineCommandSpecification.class);
-        Assertions.assertEquals("vdaeyyguxakjsq", model.arguments().get(0));
-        Assertions.assertEquals("gat", model.command());
+        Assertions.assertEquals("z", model.arguments().get(0));
+        Assertions.assertEquals("umwmxqhnd", model.command());
     }
 
     @org.junit.jupiter.api.Test
     public void testSerialize() throws Exception {
         BareMetalMachineCommandSpecification model =
-            new BareMetalMachineCommandSpecification()
-                .withArguments(Arrays.asList("vdaeyyguxakjsq", "hzbezkgi", "sidxasicdd", "vvjskgfmocwahp"))
-                .withCommand("gat");
+            new BareMetalMachineCommandSpecification().withArguments(Arrays.asList("z")).withCommand("umwmxqhnd");
         model = BinaryData.fromObject(model).toObject(BareMetalMachineCommandSpecification.class);
-        Assertions.assertEquals("vdaeyyguxakjsq", model.arguments().get(0));
-        Assertions.assertEquals("gat", model.command());
+        Assertions.assertEquals("z", model.arguments().get(0));
+        Assertions.assertEquals("umwmxqhnd", model.command());
     }
 }

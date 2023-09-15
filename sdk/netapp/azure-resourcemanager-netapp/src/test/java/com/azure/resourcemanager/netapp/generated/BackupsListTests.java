@@ -16,11 +16,11 @@ public final class BackupsListTests {
         BackupsList model =
             BinaryData
                 .fromString(
-                    "{\"value\":[{\"location\":\"twuoegrpkhjwni\",\"properties\":{\"backupId\":\"sluicpdggkzz\",\"creationDate\":\"2021-06-06T06:21:57Z\",\"provisioningState\":\"mpaxmodfvuefywsb\",\"size\":4032235244253302526,\"label\":\"yhrfouyftaakcpw\",\"backupType\":\"Scheduled\",\"failureReason\":\"qtmnubexkpzk\",\"volumeName\":\"ondjmq\",\"useExistingSnapshot\":true},\"id\":\"pomgkopkwhojvp\",\"name\":\"jqg\",\"type\":\"ysmocmbqfqvmkcxo\"}]}")
+                    "{\"value\":[{\"location\":\"oulpjrv\",\"properties\":{\"backupId\":\"glrvimjwosytxi\",\"creationDate\":\"2021-07-16T14:06:20Z\",\"provisioningState\":\"fcktqumiekke\",\"size\":2995905724691168353,\"label\":\"ly\",\"backupType\":\"Manual\",\"failureReason\":\"gqggebdunygae\",\"volumeName\":\"db\",\"useExistingSnapshot\":false},\"id\":\"t\",\"name\":\"xllrxcyjm\",\"type\":\"a\"},{\"location\":\"su\",\"properties\":{\"backupId\":\"r\",\"creationDate\":\"2021-01-14T00:07:34Z\",\"provisioningState\":\"mjsjqb\",\"size\":7225316446060950851,\"label\":\"xrwlyc\",\"backupType\":\"Scheduled\",\"failureReason\":\"p\",\"volumeName\":\"kgymareqnajxqug\",\"useExistingSnapshot\":false},\"id\":\"ycubeddgs\",\"name\":\"ofwq\",\"type\":\"zqalkrmnjijpx\"}]}")
                 .toObject(BackupsList.class);
-        Assertions.assertEquals("twuoegrpkhjwni", model.value().get(0).location());
-        Assertions.assertEquals("yhrfouyftaakcpw", model.value().get(0).label());
-        Assertions.assertEquals(true, model.value().get(0).useExistingSnapshot());
+        Assertions.assertEquals("oulpjrv", model.value().get(0).location());
+        Assertions.assertEquals("ly", model.value().get(0).label());
+        Assertions.assertEquals(false, model.value().get(0).useExistingSnapshot());
     }
 
     @org.junit.jupiter.api.Test
@@ -30,13 +30,11 @@ public final class BackupsListTests {
                 .withValue(
                     Arrays
                         .asList(
-                            new BackupInner()
-                                .withLocation("twuoegrpkhjwni")
-                                .withLabel("yhrfouyftaakcpw")
-                                .withUseExistingSnapshot(true)));
+                            new BackupInner().withLocation("oulpjrv").withLabel("ly").withUseExistingSnapshot(false),
+                            new BackupInner().withLocation("su").withLabel("xrwlyc").withUseExistingSnapshot(false)));
         model = BinaryData.fromObject(model).toObject(BackupsList.class);
-        Assertions.assertEquals("twuoegrpkhjwni", model.value().get(0).location());
-        Assertions.assertEquals("yhrfouyftaakcpw", model.value().get(0).label());
-        Assertions.assertEquals(true, model.value().get(0).useExistingSnapshot());
+        Assertions.assertEquals("oulpjrv", model.value().get(0).location());
+        Assertions.assertEquals("ly", model.value().get(0).label());
+        Assertions.assertEquals(false, model.value().get(0).useExistingSnapshot());
     }
 }

@@ -6,7 +6,6 @@ package com.azure.ai.openai.models;
 import com.azure.ai.openai.implementation.models.FunctionCallModelBase;
 import com.azure.ai.openai.implementation.models.FunctionCallPreset;
 import com.azure.ai.openai.implementation.models.FunctionCallPresetFunctionCallModel;
-import com.azure.ai.openai.implementation.models.FunctionDefinition;
 import com.azure.ai.openai.implementation.models.FunctionNameFunctionCallModel;
 import com.azure.core.annotation.Fluent;
 import com.azure.core.annotation.Generated;
@@ -537,6 +536,38 @@ public final class ChatCompletionsOptions {
         } else {
             this.functionCall = new FunctionNameFunctionCallModel(new FunctionName(this.functionCallConfig.getName()));
         }
+        return this;
+    }
+
+    /*
+     * The configuration entries for Azure OpenAI chat extensions that use them.
+     * This additional specification is only compatible with Azure OpenAI.
+     */
+    @Generated
+    @JsonProperty(value = "dataSources")
+    private List<AzureChatExtensionConfiguration> dataSources;
+
+    /**
+     * Get the dataSources property: The configuration entries for Azure OpenAI chat extensions that use them. This
+     * additional specification is only compatible with Azure OpenAI.
+     *
+     * @return the dataSources value.
+     */
+    @Generated
+    public List<AzureChatExtensionConfiguration> getDataSources() {
+        return this.dataSources;
+    }
+
+    /**
+     * Set the dataSources property: The configuration entries for Azure OpenAI chat extensions that use them. This
+     * additional specification is only compatible with Azure OpenAI.
+     *
+     * @param dataSources the dataSources value to set.
+     * @return the ChatCompletionsOptions object itself.
+     */
+    @Generated
+    public ChatCompletionsOptions setDataSources(List<AzureChatExtensionConfiguration> dataSources) {
+        this.dataSources = dataSources;
         return this;
     }
 }

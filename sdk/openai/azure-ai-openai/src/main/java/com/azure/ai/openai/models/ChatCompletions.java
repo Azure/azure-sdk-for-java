@@ -7,6 +7,9 @@ import com.azure.core.annotation.Generated;
 import com.azure.core.annotation.Immutable;
 import com.fasterxml.jackson.annotation.JsonCreator;
 import com.fasterxml.jackson.annotation.JsonProperty;
+import java.time.Instant;
+import java.time.OffsetDateTime;
+import java.time.ZoneOffset;
 import java.util.List;
 
 /**
@@ -38,27 +41,6 @@ public final class ChatCompletions {
     @Generated
     @JsonProperty(value = "usage")
     private CompletionsUsage usage;
-
-    /**
-     * Creates an instance of ChatCompletions class.
-     *
-     * @param id the id value to set.
-     * @param createdAt the createdAt value to set.
-     * @param choices the choices value to set.
-     * @param usage the usage value to set.
-     */
-    @Generated
-    @JsonCreator
-    private ChatCompletions(
-            @JsonProperty(value = "id") String id,
-            @JsonProperty(value = "created") int createdAt,
-            @JsonProperty(value = "choices") List<ChatChoice> choices,
-            @JsonProperty(value = "usage") CompletionsUsage usage) {
-        this.id = id;
-        this.createdAt = createdAt;
-        this.choices = choices;
-        this.usage = usage;
-    }
 
     /**
      * Get the id property: A unique identifier associated with this chat completions response.
@@ -99,7 +81,7 @@ public final class ChatCompletions {
      */
     @Generated
     @JsonProperty(value = "created")
-    private int createdAt;
+    private long createdAt;
 
     /**
      * Get the createdAt property: The first timestamp associated with generation activity for this completions
@@ -108,8 +90,8 @@ public final class ChatCompletions {
      * @return the createdAt value.
      */
     @Generated
-    public int getCreatedAt() {
-        return this.createdAt;
+    public OffsetDateTime getCreatedAt() {
+        return OffsetDateTime.ofInstant(Instant.ofEpochSecond(this.createdAt), ZoneOffset.UTC);
     }
 
     /*
@@ -129,5 +111,31 @@ public final class ChatCompletions {
     @Generated
     public List<PromptFilterResult> getPromptFilterResults() {
         return this.promptFilterResults;
+    }
+
+    /**
+     * Creates an instance of ChatCompletions class.
+     *
+     * @param id the id value to set.
+     * @param createdAt the createdAt value to set.
+     * @param choices the choices value to set.
+     * @param usage the usage value to set.
+     */
+    @Generated
+    private ChatCompletions(String id, OffsetDateTime createdAt, List<ChatChoice> choices, CompletionsUsage usage) {
+        this.id = id;
+        this.createdAt = createdAt.toEpochSecond();
+        this.choices = choices;
+        this.usage = usage;
+    }
+
+    @Generated
+    @JsonCreator
+    private ChatCompletions(
+            @JsonProperty(value = "id") String id,
+            @JsonProperty(value = "created") long createdAt,
+            @JsonProperty(value = "choices") List<ChatChoice> choices,
+            @JsonProperty(value = "usage") CompletionsUsage usage) {
+        this(id, OffsetDateTime.ofInstant(Instant.ofEpochSecond(createdAt), ZoneOffset.UTC), choices, usage);
     }
 }

@@ -59,11 +59,6 @@ public final class BackupsDeleteMockTests {
         manager
             .backups()
             .delete(
-                "fuzboyjathwtzolb",
-                "emwmdxmebwjs",
-                "jpahlxvea",
-                "f",
-                "xnmwmqtibxyijddt",
-                com.azure.core.util.Context.NONE);
+                "opqhewjptmc", "sbostzel", "dlat", "tmzlbiojlv", "hrbbpneqvcwwyy", com.azure.core.util.Context.NONE);
     }
 }

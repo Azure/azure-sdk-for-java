@@ -1,18 +1,8 @@
 @description('The base resource name.')
 param baseName string = '${resourceGroup().name}'
 
-@description('The tenant id to which the application and resources belong.')
-param tenantId string = '72f988bf-86f1-41af-91ab-2d7cd011db47'
-
-@description('The client id of the service principal used to run tests.')
-param testApplicationId string
-
 @description('This is the object id of the service principal used to run tests.')
 param testApplicationOid string
-
-@secure()
-@description('The application client secret used to run tests.')
-param testApplicationSecret string
 
 @description('Location of the resource.')
 param location string = resourceGroup().location
@@ -60,9 +50,6 @@ resource webPubSubContributor 'Microsoft.Authorization/roleAssignments@2020-04-0
   }
 }
 
-output AZURE_TENANT_ID string = tenantId
-output AZURE_CLIENT_ID string = testApplicationId
-output AZURE_CLIENT_SECRET string = testApplicationSecret
 output AZURE_SUBSCRIPTION_ID string = subscription().subscriptionId
 output AZURE_RESOURCE_GROUP_NAME string = resourceGroup().name
 output WEB_PUB_SUB_CONNECTION_STRING string = webPubSub.listKeys().primaryConnectionString

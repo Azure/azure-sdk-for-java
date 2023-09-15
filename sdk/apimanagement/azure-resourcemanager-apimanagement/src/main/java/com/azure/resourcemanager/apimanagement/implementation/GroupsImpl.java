@@ -41,22 +41,13 @@ public final class GroupsImpl implements Groups {
         return Utils.mapPage(inner, inner1 -> new GroupContractImpl(inner1, this.manager()));
     }
 
-    public void getEntityTag(String resourceGroupName, String serviceName, String groupId) {
-        this.serviceClient().getEntityTag(resourceGroupName, serviceName, groupId);
-    }
-
     public GroupsGetEntityTagResponse getEntityTagWithResponse(
         String resourceGroupName, String serviceName, String groupId, Context context) {
         return this.serviceClient().getEntityTagWithResponse(resourceGroupName, serviceName, groupId, context);
     }
 
-    public GroupContract get(String resourceGroupName, String serviceName, String groupId) {
-        GroupContractInner inner = this.serviceClient().get(resourceGroupName, serviceName, groupId);
-        if (inner != null) {
-            return new GroupContractImpl(inner, this.manager());
-        } else {
-            return null;
-        }
+    public void getEntityTag(String resourceGroupName, String serviceName, String groupId) {
+        this.serviceClient().getEntityTag(resourceGroupName, serviceName, groupId);
     }
 
     public Response<GroupContract> getWithResponse(
@@ -74,13 +65,22 @@ public final class GroupsImpl implements Groups {
         }
     }
 
-    public void delete(String resourceGroupName, String serviceName, String groupId, String ifMatch) {
-        this.serviceClient().delete(resourceGroupName, serviceName, groupId, ifMatch);
+    public GroupContract get(String resourceGroupName, String serviceName, String groupId) {
+        GroupContractInner inner = this.serviceClient().get(resourceGroupName, serviceName, groupId);
+        if (inner != null) {
+            return new GroupContractImpl(inner, this.manager());
+        } else {
+            return null;
+        }
     }
 
     public Response<Void> deleteWithResponse(
         String resourceGroupName, String serviceName, String groupId, String ifMatch, Context context) {
         return this.serviceClient().deleteWithResponse(resourceGroupName, serviceName, groupId, ifMatch, context);
+    }
+
+    public void delete(String resourceGroupName, String serviceName, String groupId, String ifMatch) {
+        this.serviceClient().delete(resourceGroupName, serviceName, groupId, ifMatch);
     }
 
     public GroupContract getById(String id) {

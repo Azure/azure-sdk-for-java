@@ -24,7 +24,7 @@ public class FunctionCallConfig {
     public static final FunctionCallConfig NONE = new FunctionCallConfig("none");
 
     /**
-     * Creates an instance of FunctionCall class.
+     * Creates an instance of FunctionCallConfig class.
      *
      * @param name the name value to set.
      */

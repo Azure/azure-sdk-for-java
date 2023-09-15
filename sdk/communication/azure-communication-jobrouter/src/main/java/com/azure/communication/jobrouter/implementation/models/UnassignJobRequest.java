@@ -11,11 +11,13 @@ import com.fasterxml.jackson.annotation.JsonProperty;
 @Fluent
 public final class UnassignJobRequest {
     /*
-     * If WaitForActivation is true, then the job is not queued for re-matching
-     * with a worker.
+     * If WaitForActivation is true, then the job is not queued for re-matching with a worker.
      */
     @JsonProperty(value = "suspendMatching")
     private Boolean suspendMatching;
+
+    /** Creates an instance of UnassignJobRequest class. */
+    public UnassignJobRequest() {}
 
     /**
      * Get the suspendMatching property: If WaitForActivation is true, then the job is not queued for re-matching with a

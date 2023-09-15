@@ -8,25 +8,24 @@ import com.azure.core.util.BinaryData;
 import com.azure.resourcemanager.elasticsan.models.Action;
 import com.azure.resourcemanager.elasticsan.models.VirtualNetworkRule;
 import org.junit.jupiter.api.Assertions;
-import org.junit.jupiter.api.Test;
 
 public final class VirtualNetworkRuleTests {
-    @Test
-    public void testDeserialize() {
+    @org.junit.jupiter.api.Test
+    public void testDeserialize() throws Exception {
         VirtualNetworkRule model =
             BinaryData
-                .fromString("{\"id\":\"vhkhixu\",\"action\":\"Allow\",\"state\":\"deprovisioning\"}")
+                .fromString("{\"id\":\"eaxib\",\"action\":\"Allow\",\"state\":\"provisioning\"}")
                 .toObject(VirtualNetworkRule.class);
-        Assertions.assertEquals("vhkhixu", model.virtualNetworkResourceId());
+        Assertions.assertEquals("eaxib", model.virtualNetworkResourceId());
         Assertions.assertEquals(Action.ALLOW, model.action());
     }
 
-    @Test
-    public void testSerialize() {
+    @org.junit.jupiter.api.Test
+    public void testSerialize() throws Exception {
         VirtualNetworkRule model =
-            new VirtualNetworkRule().withVirtualNetworkResourceId("vhkhixu").withAction(Action.ALLOW);
+            new VirtualNetworkRule().withVirtualNetworkResourceId("eaxib").withAction(Action.ALLOW);
         model = BinaryData.fromObject(model).toObject(VirtualNetworkRule.class);
-        Assertions.assertEquals("vhkhixu", model.virtualNetworkResourceId());
+        Assertions.assertEquals("eaxib", model.virtualNetworkResourceId());
         Assertions.assertEquals(Action.ALLOW, model.action());
     }
 }

@@ -6,25 +6,17 @@ package com.azure.resourcemanager.managednetworkfabric.models;
 
 import com.azure.core.annotation.Fluent;
 import com.azure.resourcemanager.managednetworkfabric.fluent.models.L2IsolationDomainPatchProperties;
-import com.fasterxml.jackson.annotation.JsonInclude;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import java.util.Map;
 
-/** The L2IsolationDomain patch resource definition. */
+/** The L2 Isolation Domain patch resource definition. */
 @Fluent
-public final class L2IsolationDomainPatch {
+public final class L2IsolationDomainPatch extends TagsUpdate {
     /*
      * Resource properties.
      */
     @JsonProperty(value = "properties")
     private L2IsolationDomainPatchProperties innerProperties;
-
-    /*
-     * Resource tags
-     */
-    @JsonProperty(value = "tags")
-    @JsonInclude(value = JsonInclude.Include.NON_NULL, content = JsonInclude.Include.ALWAYS)
-    private Map<String, String> tags;
 
     /** Creates an instance of L2IsolationDomainPatch class. */
     public L2IsolationDomainPatch() {
@@ -39,28 +31,15 @@ public final class L2IsolationDomainPatch {
         return this.innerProperties;
     }
 
-    /**
-     * Get the tags property: Resource tags.
-     *
-     * @return the tags value.
-     */
-    public Map<String, String> tags() {
-        return this.tags;
-    }
-
-    /**
-     * Set the tags property: Resource tags.
-     *
-     * @param tags the tags value to set.
-     * @return the L2IsolationDomainPatch object itself.
-     */
+    /** {@inheritDoc} */
+    @Override
     public L2IsolationDomainPatch withTags(Map<String, String> tags) {
-        this.tags = tags;
+        super.withTags(tags);
         return this;
     }
 
     /**
-     * Get the mtu property: maximum transmission unit. Default value is 1500.
+     * Get the mtu property: Maximum transmission unit. Default value is 1500.
      *
      * @return the mtu value.
      */
@@ -69,7 +48,7 @@ public final class L2IsolationDomainPatch {
     }
 
     /**
-     * Set the mtu property: maximum transmission unit. Default value is 1500.
+     * Set the mtu property: Maximum transmission unit. Default value is 1500.
      *
      * @param mtu the mtu value to set.
      * @return the L2IsolationDomainPatch object itself.
@@ -110,7 +89,9 @@ public final class L2IsolationDomainPatch {
      *
      * @throws IllegalArgumentException thrown if the instance is not valid.
      */
+    @Override
     public void validate() {
+        super.validate();
         if (innerProperties() != null) {
             innerProperties().validate();
         }

@@ -132,6 +132,7 @@
     "sdk/cosmos/azure-cosmos-spark_3-1_2-12/**",
     "sdk/cosmos/azure-cosmos-spark_3-2_2-12/**",
     "sdk/cosmos/azure-cosmos-spark_3-3_2-12/**",
+    "sdk/cosmos/azure-cosmos-spark_3-4_2-12/**",
     "sdk/core/azure-core-test/**",
     "sdk/cosmos/azure-cosmos-encryption/**",
     "sdk/cosmos/azure-cosmos-spark_3_2-12/**",
@@ -147,13 +148,15 @@
     "sdk/eventhubs/azure-messaging-eventhubs-stress/Dockerfile",
     "sdk/eventgrid/azure-messaging-eventgrid/**",
     "sdk/cosmos/azure-cosmos/**",
+    "sdk/cosmos/azure-cosmos-test/**",
     "sdk/identity/azure-identity/**",
     "sdk/keyvault/azure-security-keyvault-administration/**",
     "sdk/keyvault/azure-security-keyvault-certificates/**",
-    "sdk/keyvault/azure-security-test-keyvault-jca/**",
     "sdk/keyvault/azure-security-keyvault-jca/**",
-    "sdk/keyvault/azure-security-keyvault-secrets/**",
     "sdk/keyvault/azure-security-keyvault-keys/**",
+    "sdk/keyvault/azure-security-keyvault-secrets/**",
+    "sdk/keyvault/azure-security-test-keyvault-jca/**",
+    "sdk/keyvault/test-resources.json",
     "sdk/formrecognizer/azure-ai-formrecognizer/**",
     "sdk/core/azure-core/**",
     "sdk/maps/azure-maps-render/**",
@@ -163,6 +166,7 @@
     "sdk/maps/azure-maps-search/**",
     "sdk/monitor/azure-monitor-query/**",
     "sdk/monitor/azure-monitor-opentelemetry-exporter/**",
+    "sdk/monitor/test-resources.json",
     "sdk/modelsrepository/azure-iot-modelsrepository/**",
     "sdk/parents/azure-client-sdk-parent/**",
     "sdk/parents/azure-sdk-parent/**",
@@ -225,6 +229,7 @@
     "azurestackhci",
     "backoff",
     "boringssl",
+    "BYOD",
     "Dgpg",
     "Dskip",
     "mvnw",
@@ -676,7 +681,9 @@
       "words": [
         "Pfast",
         "Pdirect",
-	"Pmulti"
+	      "Pmulti",
+        "Psplit",
+        "Pquery"
       ]
     },
     {
@@ -731,7 +738,8 @@
     {
       "filename": "sdk/storage/azure-storage-blob-cryptography/**",
       "words": [
-        "akek"
+        "akek",
+        "azstorage"
       ]
     },
     {
@@ -1001,6 +1009,9 @@
         "Oidc",
         "oidc",
         "OIDC",
+        "otel",
+        "Otel",
+        "otlp",
         "qpid",
         "reqoest",
         "signin",

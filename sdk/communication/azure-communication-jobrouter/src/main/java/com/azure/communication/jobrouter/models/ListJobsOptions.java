@@ -15,9 +15,9 @@ import java.time.OffsetDateTime;
 public class ListJobsOptions {
 
     /**
-     * JobStateSelector.
+     * Status.
      */
-    private RouterJobStatusSelector jobStateSelector;
+    private RouterJobStatusSelector status;
 
     /**
      * QueueId.
@@ -34,8 +34,14 @@ public class ListJobsOptions {
      */
     private String classificationPolicyId;
 
+    /**
+     * ScheduledBefore.
+     */
     private OffsetDateTime scheduledBefore;
 
+    /**
+     * ScheduledAfter.
+     */
     private OffsetDateTime scheduledAfter;
 
     /**
@@ -51,11 +57,11 @@ public class ListJobsOptions {
 
     /**
      * Setter for RouterJobStatusSelector.
-     * @param jobStateSelector of type RouterJobStatusSelector.
+     * @param status of type RouterJobStatusSelector.
      * @return object of type ListJobOptions.
      */
-    public ListJobsOptions setJobStateSelector(RouterJobStatusSelector jobStateSelector) {
-        this.jobStateSelector = jobStateSelector;
+    public ListJobsOptions setStatus(RouterJobStatusSelector status) {
+        this.status = status;
         return this;
     }
 
@@ -120,11 +126,11 @@ public class ListJobsOptions {
     }
 
     /**
-     * Returns jobStateSelector.
-     * @return jobStateSelector.
+     * Returns status.
+     * @return status.
      */
-    public RouterJobStatusSelector getJobStateSelector() {
-        return this.jobStateSelector;
+    public RouterJobStatusSelector getStatus() {
+        return this.status;
     }
 
     /**

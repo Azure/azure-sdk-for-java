@@ -10,7 +10,7 @@ import java.util.List;
 
 /** BGP configuration properties. */
 @Fluent
-public final class BgpConfiguration extends AnnotationResource {
+public class BgpConfiguration extends AnnotationResource {
     /*
      * BFD configuration properties
      */
@@ -40,28 +40,28 @@ public final class BgpConfiguration extends AnnotationResource {
      * ASN of Network Fabric. Example: 65048.
      */
     @JsonProperty(value = "fabricASN", access = JsonProperty.Access.WRITE_ONLY)
-    private Integer fabricAsn;
+    private Long fabricAsn;
 
     /*
      * Peer ASN. Example: 65047.
      */
-    @JsonProperty(value = "peerASN", required = true)
-    private int peerAsn;
+    @JsonProperty(value = "peerASN")
+    private Long peerAsn;
 
     /*
-     * BGP Ipv4 ListenRange.
+     * List of BGP IPv4 Listen Range prefixes.
      */
     @JsonProperty(value = "ipv4ListenRangePrefixes")
     private List<String> ipv4ListenRangePrefixes;
 
     /*
-     * BGP Ipv6 ListenRange.
+     * List of BGP IPv6 Listen Ranges prefixes.
      */
     @JsonProperty(value = "ipv6ListenRangePrefixes")
     private List<String> ipv6ListenRangePrefixes;
 
     /*
-     * List with stringified ipv4NeighborAddresses.
+     * List with stringified IPv4 Neighbor Addresses.
      */
     @JsonProperty(value = "ipv4NeighborAddress")
     private List<NeighborAddress> ipv4NeighborAddress;
@@ -163,7 +163,7 @@ public final class BgpConfiguration extends AnnotationResource {
      *
      * @return the fabricAsn value.
      */
-    public Integer fabricAsn() {
+    public Long fabricAsn() {
         return this.fabricAsn;
     }
 
@@ -172,7 +172,7 @@ public final class BgpConfiguration extends AnnotationResource {
      *
      * @return the peerAsn value.
      */
-    public int peerAsn() {
+    public Long peerAsn() {
         return this.peerAsn;
     }
 
@@ -182,13 +182,13 @@ public final class BgpConfiguration extends AnnotationResource {
      * @param peerAsn the peerAsn value to set.
      * @return the BgpConfiguration object itself.
      */
-    public BgpConfiguration withPeerAsn(int peerAsn) {
+    public BgpConfiguration withPeerAsn(Long peerAsn) {
         this.peerAsn = peerAsn;
         return this;
     }
 
     /**
-     * Get the ipv4ListenRangePrefixes property: BGP Ipv4 ListenRange.
+     * Get the ipv4ListenRangePrefixes property: List of BGP IPv4 Listen Range prefixes.
      *
      * @return the ipv4ListenRangePrefixes value.
      */
@@ -197,7 +197,7 @@ public final class BgpConfiguration extends AnnotationResource {
     }
 
     /**
-     * Set the ipv4ListenRangePrefixes property: BGP Ipv4 ListenRange.
+     * Set the ipv4ListenRangePrefixes property: List of BGP IPv4 Listen Range prefixes.
      *
      * @param ipv4ListenRangePrefixes the ipv4ListenRangePrefixes value to set.
      * @return the BgpConfiguration object itself.
@@ -208,7 +208,7 @@ public final class BgpConfiguration extends AnnotationResource {
     }
 
     /**
-     * Get the ipv6ListenRangePrefixes property: BGP Ipv6 ListenRange.
+     * Get the ipv6ListenRangePrefixes property: List of BGP IPv6 Listen Ranges prefixes.
      *
      * @return the ipv6ListenRangePrefixes value.
      */
@@ -217,7 +217,7 @@ public final class BgpConfiguration extends AnnotationResource {
     }
 
     /**
-     * Set the ipv6ListenRangePrefixes property: BGP Ipv6 ListenRange.
+     * Set the ipv6ListenRangePrefixes property: List of BGP IPv6 Listen Ranges prefixes.
      *
      * @param ipv6ListenRangePrefixes the ipv6ListenRangePrefixes value to set.
      * @return the BgpConfiguration object itself.
@@ -228,7 +228,7 @@ public final class BgpConfiguration extends AnnotationResource {
     }
 
     /**
-     * Get the ipv4NeighborAddress property: List with stringified ipv4NeighborAddresses.
+     * Get the ipv4NeighborAddress property: List with stringified IPv4 Neighbor Addresses.
      *
      * @return the ipv4NeighborAddress value.
      */
@@ -237,7 +237,7 @@ public final class BgpConfiguration extends AnnotationResource {
     }
 
     /**
-     * Set the ipv4NeighborAddress property: List with stringified ipv4NeighborAddresses.
+     * Set the ipv4NeighborAddress property: List with stringified IPv4 Neighbor Addresses.
      *
      * @param ipv4NeighborAddress the ipv4NeighborAddress value to set.
      * @return the BgpConfiguration object itself.

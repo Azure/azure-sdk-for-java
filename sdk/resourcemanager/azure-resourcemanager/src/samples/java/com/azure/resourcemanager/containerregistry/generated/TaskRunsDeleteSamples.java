@@ -7,7 +7,7 @@ package com.azure.resourcemanager.containerregistry.generated;
 /** Samples for TaskRuns Delete. */
 public final class TaskRunsDeleteSamples {
     /*
-     * x-ms-original-file: specification/containerregistry/resource-manager/Microsoft.ContainerRegistry/preview/2019-06-01-preview/examples/TaskRunsDelete.json
+     * x-ms-original-file: mgmt_containerregistry_add_readonly/specification/containerregistry/resource-manager/Microsoft.ContainerRegistry/preview/2019-06-01-preview/examples/TaskRunsDelete.json
      */
     /**
      * Sample code: TaskRuns_Delete.

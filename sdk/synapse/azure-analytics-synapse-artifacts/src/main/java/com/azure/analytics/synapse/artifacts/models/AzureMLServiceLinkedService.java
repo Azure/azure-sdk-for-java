@@ -37,6 +37,13 @@ public class AzureMLServiceLinkedService extends LinkedService {
     private Object mlWorkspaceName;
 
     /*
+     * Type of authentication (Required to specify MSI) used to connect to AzureML. Type: string (or Expression with
+     * resultType string).
+     */
+    @JsonProperty(value = "typeProperties.authentication")
+    private Object authentication;
+
+    /*
      * The ID of the service principal used to authenticate against the endpoint of a published Azure ML Service
      * pipeline. Type: string (or Expression with resultType string).
      */
@@ -130,6 +137,28 @@ public class AzureMLServiceLinkedService extends LinkedService {
      */
     public AzureMLServiceLinkedService setMlWorkspaceName(Object mlWorkspaceName) {
         this.mlWorkspaceName = mlWorkspaceName;
+        return this;
+    }
+
+    /**
+     * Get the authentication property: Type of authentication (Required to specify MSI) used to connect to AzureML.
+     * Type: string (or Expression with resultType string).
+     *
+     * @return the authentication value.
+     */
+    public Object getAuthentication() {
+        return this.authentication;
+    }
+
+    /**
+     * Set the authentication property: Type of authentication (Required to specify MSI) used to connect to AzureML.
+     * Type: string (or Expression with resultType string).
+     *
+     * @param authentication the authentication value to set.
+     * @return the AzureMLServiceLinkedService object itself.
+     */
+    public AzureMLServiceLinkedService setAuthentication(Object authentication) {
+        this.authentication = authentication;
         return this;
     }
 

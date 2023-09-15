@@ -24,17 +24,15 @@ public final class ApiRevisionContractInner {
     private String apiRevision;
 
     /*
-     * The time the API Revision was created. The date conforms to the
-     * following format: yyyy-MM-ddTHH:mm:ssZ as specified by the ISO 8601
-     * standard.
+     * The time the API Revision was created. The date conforms to the following format: yyyy-MM-ddTHH:mm:ssZ as
+     * specified by the ISO 8601 standard.
      */
     @JsonProperty(value = "createdDateTime", access = JsonProperty.Access.WRITE_ONLY)
     private OffsetDateTime createdDateTime;
 
     /*
-     * The time the API Revision were updated. The date conforms to the
-     * following format: yyyy-MM-ddTHH:mm:ssZ as specified by the ISO 8601
-     * standard.
+     * The time the API Revision were updated. The date conforms to the following format: yyyy-MM-ddTHH:mm:ssZ as
+     * specified by the ISO 8601 standard.
      */
     @JsonProperty(value = "updatedDateTime", access = JsonProperty.Access.WRITE_ONLY)
     private OffsetDateTime updatedDateTime;
@@ -62,6 +60,10 @@ public final class ApiRevisionContractInner {
      */
     @JsonProperty(value = "isCurrent", access = JsonProperty.Access.WRITE_ONLY)
     private Boolean isCurrent;
+
+    /** Creates an instance of ApiRevisionContractInner class. */
+    public ApiRevisionContractInner() {
+    }
 
     /**
      * Get the apiId property: Identifier of the API Revision.

@@ -2,7 +2,6 @@
 // Licensed under the MIT License.
 package com.azure.cosmos.implementation.http;
 
-import io.netty.handler.codec.http.HttpMethod;
 
 import java.time.Duration;
 import java.util.Arrays;
@@ -18,8 +17,8 @@ public class HttpTimeoutPolicyControlPlaneHotPath extends HttpTimeoutPolicy {
     }
 
     public List<ResponseTimeoutAndDelays> getTimeoutList() {
-        return Collections.unmodifiableList(Arrays.asList(new ResponseTimeoutAndDelays(Duration.ofSeconds(60), 0),
-            new ResponseTimeoutAndDelays(Duration.ofSeconds(60), 1),
-            new ResponseTimeoutAndDelays(Duration.ofSeconds(60), 0)));
+        return Collections.unmodifiableList(Arrays.asList(new ResponseTimeoutAndDelays(Duration.ofMillis(500), 0),
+            new ResponseTimeoutAndDelays(Duration.ofSeconds(5), 1),
+            new ResponseTimeoutAndDelays(Duration.ofSeconds(10), 0)));
     }
 }

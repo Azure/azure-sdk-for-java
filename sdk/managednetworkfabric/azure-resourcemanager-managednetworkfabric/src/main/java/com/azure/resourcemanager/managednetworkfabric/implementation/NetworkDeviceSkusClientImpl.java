@@ -94,13 +94,13 @@ public final class NetworkDeviceSkusClientImpl implements NetworkDeviceSkusClien
     /**
      * Gets a Network Device Sku.
      *
-     * <p>Get Network Device SKU details.
+     * <p>Get a Network Device SKU details.
      *
-     * @param networkDeviceSkuName Name of the Network Device Sku.
+     * @param networkDeviceSkuName Name of the Network Device SKU.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return network Device SKU details along with {@link Response} on successful completion of {@link Mono}.
+     * @return a Network Device SKU details along with {@link Response} on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Mono<Response<NetworkDeviceSkuInner>> getWithResponseAsync(String networkDeviceSkuName) {
@@ -138,14 +138,14 @@ public final class NetworkDeviceSkusClientImpl implements NetworkDeviceSkusClien
     /**
      * Gets a Network Device Sku.
      *
-     * <p>Get Network Device SKU details.
+     * <p>Get a Network Device SKU details.
      *
-     * @param networkDeviceSkuName Name of the Network Device Sku.
+     * @param networkDeviceSkuName Name of the Network Device SKU.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return network Device SKU details along with {@link Response} on successful completion of {@link Mono}.
+     * @return a Network Device SKU details along with {@link Response} on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Mono<Response<NetworkDeviceSkuInner>> getWithResponseAsync(String networkDeviceSkuName, Context context) {
@@ -180,13 +180,13 @@ public final class NetworkDeviceSkusClientImpl implements NetworkDeviceSkusClien
     /**
      * Gets a Network Device Sku.
      *
-     * <p>Get Network Device SKU details.
+     * <p>Get a Network Device SKU details.
      *
-     * @param networkDeviceSkuName Name of the Network Device Sku.
+     * @param networkDeviceSkuName Name of the Network Device SKU.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return network Device SKU details on successful completion of {@link Mono}.
+     * @return a Network Device SKU details on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Mono<NetworkDeviceSkuInner> getAsync(String networkDeviceSkuName) {
@@ -196,14 +196,14 @@ public final class NetworkDeviceSkusClientImpl implements NetworkDeviceSkusClien
     /**
      * Gets a Network Device Sku.
      *
-     * <p>Get Network Device SKU details.
+     * <p>Get a Network Device SKU details.
      *
-     * @param networkDeviceSkuName Name of the Network Device Sku.
+     * @param networkDeviceSkuName Name of the Network Device SKU.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return network Device SKU details along with {@link Response}.
+     * @return a Network Device SKU details along with {@link Response}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Response<NetworkDeviceSkuInner> getWithResponse(String networkDeviceSkuName, Context context) {
@@ -213,13 +213,13 @@ public final class NetworkDeviceSkusClientImpl implements NetworkDeviceSkusClien
     /**
      * Gets a Network Device Sku.
      *
-     * <p>Get Network Device SKU details.
+     * <p>Get a Network Device SKU details.
      *
-     * @param networkDeviceSkuName Name of the Network Device Sku.
+     * @param networkDeviceSkuName Name of the Network Device SKU.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return network Device SKU details.
+     * @return a Network Device SKU details.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public NetworkDeviceSkuInner get(String networkDeviceSkuName) {
@@ -227,13 +227,13 @@ public final class NetworkDeviceSkusClientImpl implements NetworkDeviceSkusClien
     }
 
     /**
-     * List NetworkDeviceSkus by subscription.
+     * List Network Device SKUs by subscription.
      *
      * <p>List Network Device SKUs for the given subscription.
      *
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return list of NetworkDeviceSkus along with {@link PagedResponse} on successful completion of {@link Mono}.
+     * @return list of Network Device SKUs along with {@link PagedResponse} on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Mono<PagedResponse<NetworkDeviceSkuInner>> listSinglePageAsync() {
@@ -273,7 +273,7 @@ public final class NetworkDeviceSkusClientImpl implements NetworkDeviceSkusClien
     }
 
     /**
-     * List NetworkDeviceSkus by subscription.
+     * List Network Device SKUs by subscription.
      *
      * <p>List Network Device SKUs for the given subscription.
      *
@@ -281,7 +281,7 @@ public final class NetworkDeviceSkusClientImpl implements NetworkDeviceSkusClien
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return list of NetworkDeviceSkus along with {@link PagedResponse} on successful completion of {@link Mono}.
+     * @return list of Network Device SKUs along with {@link PagedResponse} on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Mono<PagedResponse<NetworkDeviceSkuInner>> listSinglePageAsync(Context context) {
@@ -318,13 +318,13 @@ public final class NetworkDeviceSkusClientImpl implements NetworkDeviceSkusClien
     }
 
     /**
-     * List NetworkDeviceSkus by subscription.
+     * List Network Device SKUs by subscription.
      *
      * <p>List Network Device SKUs for the given subscription.
      *
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return list of NetworkDeviceSkus as paginated response with {@link PagedFlux}.
+     * @return list of Network Device SKUs as paginated response with {@link PagedFlux}.
      */
     @ServiceMethod(returns = ReturnType.COLLECTION)
     private PagedFlux<NetworkDeviceSkuInner> listAsync() {
@@ -333,7 +333,7 @@ public final class NetworkDeviceSkusClientImpl implements NetworkDeviceSkusClien
     }
 
     /**
-     * List NetworkDeviceSkus by subscription.
+     * List Network Device SKUs by subscription.
      *
      * <p>List Network Device SKUs for the given subscription.
      *
@@ -341,7 +341,7 @@ public final class NetworkDeviceSkusClientImpl implements NetworkDeviceSkusClien
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return list of NetworkDeviceSkus as paginated response with {@link PagedFlux}.
+     * @return list of Network Device SKUs as paginated response with {@link PagedFlux}.
      */
     @ServiceMethod(returns = ReturnType.COLLECTION)
     private PagedFlux<NetworkDeviceSkuInner> listAsync(Context context) {
@@ -350,13 +350,13 @@ public final class NetworkDeviceSkusClientImpl implements NetworkDeviceSkusClien
     }
 
     /**
-     * List NetworkDeviceSkus by subscription.
+     * List Network Device SKUs by subscription.
      *
      * <p>List Network Device SKUs for the given subscription.
      *
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return list of NetworkDeviceSkus as paginated response with {@link PagedIterable}.
+     * @return list of Network Device SKUs as paginated response with {@link PagedIterable}.
      */
     @ServiceMethod(returns = ReturnType.COLLECTION)
     public PagedIterable<NetworkDeviceSkuInner> list() {
@@ -364,7 +364,7 @@ public final class NetworkDeviceSkusClientImpl implements NetworkDeviceSkusClien
     }
 
     /**
-     * List NetworkDeviceSkus by subscription.
+     * List Network Device SKUs by subscription.
      *
      * <p>List Network Device SKUs for the given subscription.
      *
@@ -372,7 +372,7 @@ public final class NetworkDeviceSkusClientImpl implements NetworkDeviceSkusClien
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return list of NetworkDeviceSkus as paginated response with {@link PagedIterable}.
+     * @return list of Network Device SKUs as paginated response with {@link PagedIterable}.
      */
     @ServiceMethod(returns = ReturnType.COLLECTION)
     public PagedIterable<NetworkDeviceSkuInner> list(Context context) {
@@ -387,7 +387,7 @@ public final class NetworkDeviceSkusClientImpl implements NetworkDeviceSkusClien
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return list of NetworkDeviceSkus along with {@link PagedResponse} on successful completion of {@link Mono}.
+     * @return list of Network Device SKUs along with {@link PagedResponse} on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Mono<PagedResponse<NetworkDeviceSkuInner>> listBySubscriptionNextSinglePageAsync(String nextLink) {
@@ -425,7 +425,7 @@ public final class NetworkDeviceSkusClientImpl implements NetworkDeviceSkusClien
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return list of NetworkDeviceSkus along with {@link PagedResponse} on successful completion of {@link Mono}.
+     * @return list of Network Device SKUs along with {@link PagedResponse} on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Mono<PagedResponse<NetworkDeviceSkuInner>> listBySubscriptionNextSinglePageAsync(

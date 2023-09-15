@@ -174,8 +174,27 @@ public class CallConnectionAsyncUnitTests extends CallAutomationUnitTestBase {
             )))
             .getCallConnectionAsync(CALL_CONNECTION_ID);
 
-        TransferCallToParticipantOptions transferCallToParticipantOptions = new TransferCallToParticipantOptions(new CommunicationUserIdentifier(CALL_TARGET_ID), null)
+        TransferCallToParticipantOptions transferCallToParticipantOptions = new TransferCallToParticipantOptions(new CommunicationUserIdentifier(CALL_TARGET_ID))
             .setOperationContext(CALL_OPERATION_CONTEXT);
+        Response<TransferCallResult> transferCallResultResponse = callConnectionAsync.transferCallToParticipantWithResponse(transferCallToParticipantOptions).block();
+
+        assertNotNull(transferCallResultResponse);
+        assertEquals(202, transferCallResultResponse.getStatusCode());
+        assertNotNull(transferCallResultResponse.getValue());
+    }
+    
+    @Test
+    public void transferToParticipantCallWithResponseWithTrasferee() {
+        CallConnectionAsync callConnectionAsync = getCallAutomationAsyncClient(new ArrayList<>(
+            Collections.singletonList(
+                new SimpleEntry<>(serializeObject(new TransferCallResponseInternal()
+                    .setOperationContext(CALL_OPERATION_CONTEXT)), 202)
+            )))
+            .getCallConnectionAsync(CALL_CONNECTION_ID);
+
+        TransferCallToParticipantOptions transferCallToParticipantOptions = new TransferCallToParticipantOptions(new CommunicationUserIdentifier(CALL_TARGET_ID))
+            .setOperationContext(CALL_OPERATION_CONTEXT)
+            .setTransferee(new CommunicationUserIdentifier(CALL_TRANSFEREE_ID));
         Response<TransferCallResult> transferCallResultResponse = callConnectionAsync.transferCallToParticipantWithResponse(transferCallToParticipantOptions).block();
 
         assertNotNull(transferCallResultResponse);

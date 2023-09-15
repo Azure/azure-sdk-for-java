@@ -26,6 +26,15 @@ public final class AccountImmutabilityPolicyState extends ExpandableStringEnum<A
     public static final AccountImmutabilityPolicyState DISABLED = fromString("Disabled");
 
     /**
+     * Creates a new instance of AccountImmutabilityPolicyState value.
+     *
+     * @deprecated Use the {@link #fromString(String)} factory method.
+     */
+    @Deprecated
+    public AccountImmutabilityPolicyState() {
+    }
+
+    /**
      * Creates or finds a AccountImmutabilityPolicyState from its string representation.
      *
      * @param name a name to look for.

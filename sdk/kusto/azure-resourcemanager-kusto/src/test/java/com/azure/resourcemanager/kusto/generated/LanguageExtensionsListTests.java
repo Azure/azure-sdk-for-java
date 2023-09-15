@@ -18,11 +18,10 @@ public final class LanguageExtensionsListTests {
         LanguageExtensionsList model =
             BinaryData
                 .fromString(
-                    "{\"value\":[{\"languageExtensionName\":\"R\",\"languageExtensionImageName\":\"Python3_10_8\"},{\"languageExtensionName\":\"R\",\"languageExtensionImageName\":\"Python3_9_12\"},{\"languageExtensionName\":\"R\",\"languageExtensionImageName\":\"R\"}]}")
+                    "{\"value\":[{\"languageExtensionName\":\"R\",\"languageExtensionImageName\":\"R\"},{\"languageExtensionName\":\"R\",\"languageExtensionImageName\":\"R\"},{\"languageExtensionName\":\"R\",\"languageExtensionImageName\":\"Python3_10_8\"}]}")
                 .toObject(LanguageExtensionsList.class);
         Assertions.assertEquals(LanguageExtensionName.R, model.value().get(0).languageExtensionName());
-        Assertions
-            .assertEquals(LanguageExtensionImageName.PYTHON3_10_8, model.value().get(0).languageExtensionImageName());
+        Assertions.assertEquals(LanguageExtensionImageName.R, model.value().get(0).languageExtensionImageName());
     }
 
     @org.junit.jupiter.api.Test
@@ -34,16 +33,15 @@ public final class LanguageExtensionsListTests {
                         .asList(
                             new LanguageExtensionInner()
                                 .withLanguageExtensionName(LanguageExtensionName.R)
-                                .withLanguageExtensionImageName(LanguageExtensionImageName.PYTHON3_10_8),
+                                .withLanguageExtensionImageName(LanguageExtensionImageName.R),
                             new LanguageExtensionInner()
                                 .withLanguageExtensionName(LanguageExtensionName.R)
-                                .withLanguageExtensionImageName(LanguageExtensionImageName.PYTHON3_9_12),
+                                .withLanguageExtensionImageName(LanguageExtensionImageName.R),
                             new LanguageExtensionInner()
                                 .withLanguageExtensionName(LanguageExtensionName.R)
-                                .withLanguageExtensionImageName(LanguageExtensionImageName.R)));
+                                .withLanguageExtensionImageName(LanguageExtensionImageName.PYTHON3_10_8)));
         model = BinaryData.fromObject(model).toObject(LanguageExtensionsList.class);
         Assertions.assertEquals(LanguageExtensionName.R, model.value().get(0).languageExtensionName());
-        Assertions
-            .assertEquals(LanguageExtensionImageName.PYTHON3_10_8, model.value().get(0).languageExtensionImageName());
+        Assertions.assertEquals(LanguageExtensionImageName.R, model.value().get(0).languageExtensionImageName());
     }
 }

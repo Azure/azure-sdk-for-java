@@ -4,12 +4,10 @@
 
 package com.azure.resourcemanager.storage.generated;
 
-import com.azure.core.util.Context;
-
 /** Samples for PrivateLinkResources ListByStorageAccount. */
 public final class PrivateLinkResourcesListByStorageAccountSamples {
     /*
-     * x-ms-original-file: specification/storage/resource-manager/Microsoft.Storage/stable/2022-09-01/examples/StorageAccountListPrivateLinkResources.json
+     * x-ms-original-file: specification/storage/resource-manager/Microsoft.Storage/stable/2023-01-01/examples/StorageAccountListPrivateLinkResources.json
      */
     /**
      * Sample code: StorageAccountListPrivateLinkResources.
@@ -22,6 +20,6 @@ public final class PrivateLinkResourcesListByStorageAccountSamples {
             .manager()
             .serviceClient()
             .getPrivateLinkResources()
-            .listByStorageAccountWithResponse("res6977", "sto2527", Context.NONE);
+            .listByStorageAccountWithResponse("res6977", "sto2527", com.azure.core.util.Context.NONE);
     }
 }

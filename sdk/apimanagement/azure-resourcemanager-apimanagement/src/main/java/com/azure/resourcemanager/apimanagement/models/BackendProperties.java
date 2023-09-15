@@ -16,6 +16,10 @@ public final class BackendProperties {
     @JsonProperty(value = "serviceFabricCluster")
     private BackendServiceFabricClusterProperties serviceFabricCluster;
 
+    /** Creates an instance of BackendProperties class. */
+    public BackendProperties() {
+    }
+
     /**
      * Get the serviceFabricCluster property: Backend Service Fabric Cluster Properties.
      *

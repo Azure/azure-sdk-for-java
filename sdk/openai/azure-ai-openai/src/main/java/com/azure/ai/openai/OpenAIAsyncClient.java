@@ -37,6 +37,34 @@ import reactor.core.publisher.Mono;
 @ServiceClient(builder = OpenAIClientBuilder.class, isAsync = true)
 public final class OpenAIAsyncClient {
 
+    @Generated private final OpenAIClientImpl serviceClient;
+
+    private final NonAzureOpenAIClientImpl openAIServiceClient;
+
+    /**
+     * Initializes an instance of OpenAIAsyncClient class by using "Azure" OpenAI service implementation. Azure OpenAI
+     * and Non-Azure OpenAI Service implementations are mutually exclusive. Both service client implementation cannot
+     * coexist because `OpenAIClient` operates either way in a mutually exclusive way.
+     *
+     * @param serviceClient the service client implementation for Azure OpenAI Service client.
+     */
+    OpenAIAsyncClient(OpenAIClientImpl serviceClient) {
+        this.serviceClient = serviceClient;
+        openAIServiceClient = null;
+    }
+
+    /**
+     * Initializes an instance of OpenAIAsyncClient class by using "Non-Azure" OpenAI service implementation. Azure
+     * OpenAI and Non-Azure OpenAI Service implementations are mutually exclusive. Both service client implementation
+     * cannot coexist because `OpenAIClient` operates either way in a mutually exclusive way.
+     *
+     * @param serviceClient the service client implementation for Non-Azure OpenAI Service client.
+     */
+    OpenAIAsyncClient(NonAzureOpenAIClientImpl serviceClient) {
+        this.serviceClient = null;
+        openAIServiceClient = serviceClient;
+    }
+
     /**
      * Return the embeddings for a given prompt.
      *
@@ -395,16 +423,21 @@ public final class OpenAIAsyncClient {
      * @return chat completions for the provided chat messages. Completions support a wide variety of tasks and generate
      *     text that continues from or "completes" provided prompt data on successful completion of {@link Mono}.
      */
-    @Generated
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<ChatCompletions> getChatCompletions(
             String deploymentOrModelName, ChatCompletionsOptions chatCompletionsOptions) {
-        // Generated convenience method for getChatCompletionsWithResponse
         RequestOptions requestOptions = new RequestOptions();
-        return getChatCompletionsWithResponse(
-                        deploymentOrModelName, BinaryData.fromObject(chatCompletionsOptions), requestOptions)
-                .flatMap(FluxUtil::toMono)
-                .map(protocolMethodData -> protocolMethodData.toObject(ChatCompletions.class));
+        if (chatCompletionsOptions.getDataSources() == null || chatCompletionsOptions.getDataSources().isEmpty()) {
+            return getChatCompletionsWithResponse(
+                            deploymentOrModelName, BinaryData.fromObject(chatCompletionsOptions), requestOptions)
+                    .flatMap(FluxUtil::toMono)
+                    .map(protocolMethodData -> protocolMethodData.toObject(ChatCompletions.class));
+        } else {
+            return getChatCompletionsWithAzureExtensionsWithResponse(
+                            deploymentOrModelName, BinaryData.fromObject(chatCompletionsOptions), requestOptions)
+                    .flatMap(FluxUtil::toMono)
+                    .map(protocolMethodData -> protocolMethodData.toObject(ChatCompletions.class));
+        }
     }
 
     /**
@@ -429,41 +462,25 @@ public final class OpenAIAsyncClient {
             String deploymentOrModelName, ChatCompletionsOptions chatCompletionsOptions) {
         chatCompletionsOptions.setStream(true);
         RequestOptions requestOptions = new RequestOptions();
-        Flux<ByteBuffer> responseStream =
-                getChatCompletionsWithResponse(
-                                deploymentOrModelName, BinaryData.fromObject(chatCompletionsOptions), requestOptions)
-                        .flatMapMany(response -> response.getValue().toFluxByteBuffer());
+        Flux<ByteBuffer> responseStream;
+        if (chatCompletionsOptions.getDataSources() == null || chatCompletionsOptions.getDataSources().isEmpty()) {
+            responseStream =
+                    getChatCompletionsWithResponse(
+                                    deploymentOrModelName,
+                                    BinaryData.fromObject(chatCompletionsOptions),
+                                    requestOptions)
+                            .flatMapMany(response -> response.getValue().toFluxByteBuffer());
+        } else {
+            responseStream =
+                    getChatCompletionsWithAzureExtensionsWithResponse(
+                                    deploymentOrModelName,
+                                    BinaryData.fromObject(chatCompletionsOptions),
+                                    requestOptions)
+                            .flatMapMany(response -> response.getValue().toFluxByteBuffer());
+        }
         OpenAIServerSentEvents<ChatCompletions> chatCompletionsStream =
                 new OpenAIServerSentEvents<>(responseStream, ChatCompletions.class);
         return chatCompletionsStream.getEvents();
-    }
-
-    @Generated private final OpenAIClientImpl serviceClient;
-
-    private final NonAzureOpenAIClientImpl openAIServiceClient;
-
-    /**
-     * Initializes an instance of OpenAIAsyncClient class by using "Azure" OpenAI service implementation. Azure OpenAI
-     * and Non-Azure OpenAI Service implementations are mutually exclusive. Both service client implementation cannot
-     * coexist because `OpenAIClient` operates either way in a mutually exclusive way.
-     *
-     * @param serviceClient the service client implementation for Azure OpenAI Service client.
-     */
-    OpenAIAsyncClient(OpenAIClientImpl serviceClient) {
-        this.serviceClient = serviceClient;
-        openAIServiceClient = null;
-    }
-
-    /**
-     * Initializes an instance of OpenAIAsyncClient class by using "Non-Azure" OpenAI service implementation. Azure
-     * OpenAI and Non-Azure OpenAI Service implementations are mutually exclusive. Both service client implementation
-     * cannot coexist because `OpenAIClient` operates either way in a mutually exclusive way.
-     *
-     * @param serviceClient the service client implementation for Non-Azure OpenAI Service client.
-     */
-    OpenAIAsyncClient(NonAzureOpenAIClientImpl serviceClient) {
-        this.serviceClient = null;
-        openAIServiceClient = serviceClient;
     }
 
     /**
@@ -479,7 +496,7 @@ public final class OpenAIAsyncClient {
      * @return the {@link Mono} with the image generation result
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Mono<ImageResponse> generateImage(ImageGenerationOptions imageGenerationOptions) {
+    public Mono<ImageResponse> getImages(ImageGenerationOptions imageGenerationOptions) {
         RequestOptions requestOptions = new RequestOptions();
         BinaryData imageGenerationOptionsBinaryData = BinaryData.fromObject(imageGenerationOptions);
         return openAIServiceClient != null
@@ -513,7 +530,13 @@ public final class OpenAIAsyncClient {
      * <pre>{@code
      * {
      *     id: String (Required)
-     *     status: String (Required)
+     *     created: long (Required)
+     *     expires: Long (Optional)
+     *     result (Optional): {
+     *         created: long (Required)
+     *         data: DataModelBase (Required)
+     *     }
+     *     status: String(notRunning/running/succeeded/canceled/failed) (Required)
      *     error (Optional): {
      *         code: String (Required)
      *         message: String (Required)
@@ -535,12 +558,140 @@ public final class OpenAIAsyncClient {
      * @throws ClientAuthenticationException thrown if the request is rejected by server on status code 401.
      * @throws ResourceNotFoundException thrown if the request is rejected by server on status code 404.
      * @throws ResourceModifiedException thrown if the request is rejected by server on status code 409.
-     * @return the {@link PollerFlux} for polling of status details for long running operations.
+     * @return the {@link PollerFlux} for polling of long-running operation.
      */
     @Generated
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     PollerFlux<BinaryData, BinaryData> beginBeginAzureBatchImageGeneration(
             BinaryData imageGenerationOptions, RequestOptions requestOptions) {
         return this.serviceClient.beginBeginAzureBatchImageGenerationAsync(imageGenerationOptions, requestOptions);
+    }
+
+    /**
+     * Gets chat completions for the provided chat messages. This is an Azure-specific version of chat completions that
+     * supports integration with configured data sources and other augmentations to the base chat completions
+     * capabilities.
+     *
+     * <p><strong>Request Body Schema</strong>
+     *
+     * <pre>{@code
+     * {
+     *     messages (Required): [
+     *          (Required){
+     *             role: String(system/assistant/user/function/tool) (Required)
+     *             content: String (Required)
+     *             name: String (Optional)
+     *             function_call (Optional): {
+     *                 name: String (Required)
+     *                 arguments: String (Required)
+     *             }
+     *             context (Optional): {
+     *                 messages (Optional): [
+     *                     (recursive schema, see above)
+     *                 ]
+     *             }
+     *         }
+     *     ]
+     *     functions (Optional): [
+     *          (Optional){
+     *             name: String (Required)
+     *             description: String (Optional)
+     *             parameters: Object (Optional)
+     *         }
+     *     ]
+     *     function_call: FunctionCallModelBase (Optional)
+     *     max_tokens: Integer (Optional)
+     *     temperature: Double (Optional)
+     *     top_p: Double (Optional)
+     *     logit_bias (Optional): {
+     *         String: int (Optional)
+     *     }
+     *     user: String (Optional)
+     *     n: Integer (Optional)
+     *     stop (Optional): [
+     *         String (Optional)
+     *     ]
+     *     presence_penalty: Double (Optional)
+     *     frequency_penalty: Double (Optional)
+     *     stream: Boolean (Optional)
+     *     model: String (Optional)
+     *     dataSources (Optional): [
+     *          (Optional){
+     *             type: String(AzureCognitiveSearch) (Required)
+     *             parameters: Object (Required)
+     *         }
+     *     ]
+     * }
+     * }</pre>
+     *
+     * <p><strong>Response Body Schema</strong>
+     *
+     * <pre>{@code
+     * {
+     *     id: String (Required)
+     *     created: long (Required)
+     *     choices (Required): [
+     *          (Required){
+     *             message (Optional): {
+     *                 role: String(system/assistant/user/function/tool) (Required)
+     *                 content: String (Required)
+     *                 name: String (Optional)
+     *                 function_call (Optional): {
+     *                     name: String (Required)
+     *                     arguments: String (Required)
+     *                 }
+     *                 context (Optional): {
+     *                     messages (Optional): [
+     *                         (recursive schema, see above)
+     *                     ]
+     *                 }
+     *             }
+     *             index: int (Required)
+     *             finish_reason: String(stop/length/content_filter/function_call) (Required)
+     *             delta (Optional): (recursive schema, see delta above)
+     *             content_filter_results (Optional): {
+     *                 sexual (Optional): {
+     *                     severity: String(safe/low/medium/high) (Required)
+     *                     filtered: boolean (Required)
+     *                 }
+     *                 violence (Optional): (recursive schema, see violence above)
+     *                 hate (Optional): (recursive schema, see hate above)
+     *                 self_harm (Optional): (recursive schema, see self_harm above)
+     *             }
+     *         }
+     *     ]
+     *     prompt_annotations (Optional): [
+     *          (Optional){
+     *             prompt_index: int (Required)
+     *             content_filter_results (Optional): (recursive schema, see content_filter_results above)
+     *         }
+     *     ]
+     *     usage (Required): {
+     *         completion_tokens: int (Required)
+     *         prompt_tokens: int (Required)
+     *         total_tokens: int (Required)
+     *     }
+     * }
+     * }</pre>
+     *
+     * @param deploymentOrModelName Specifies either the model deployment name (when using Azure OpenAI) or model name
+     *     (when using non-Azure OpenAI) to use for this request.
+     * @param chatCompletionsOptions The configuration information for a chat completions request. Completions support a
+     *     wide variety of tasks and generate text that continues from or "completes" provided prompt data.
+     * @param requestOptions The options to configure the HTTP request before HTTP client sends it.
+     * @throws HttpResponseException thrown if the request is rejected by server.
+     * @throws ClientAuthenticationException thrown if the request is rejected by server on status code 401.
+     * @throws ResourceNotFoundException thrown if the request is rejected by server on status code 404.
+     * @throws ResourceModifiedException thrown if the request is rejected by server on status code 409.
+     * @return chat completions for the provided chat messages. This is an Azure-specific version of chat completions
+     *     that supports integration with configured data sources and other augmentations to the base chat completions
+     *     capabilities along with {@link Response} on successful completion of {@link Mono}.
+     */
+    @Generated
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    Mono<Response<BinaryData>> getChatCompletionsWithAzureExtensionsWithResponse(
+            String deploymentOrModelName, BinaryData chatCompletionsOptions, RequestOptions requestOptions) {
+        return this.serviceClient.getChatCompletionsWithAzureExtensionsWithResponseAsync(
+                deploymentOrModelName, chatCompletionsOptions, requestOptions);
     }
 }

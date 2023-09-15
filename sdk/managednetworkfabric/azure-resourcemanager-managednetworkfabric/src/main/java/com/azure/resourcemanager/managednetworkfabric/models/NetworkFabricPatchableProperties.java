@@ -4,62 +4,200 @@
 
 package com.azure.resourcemanager.managednetworkfabric.models;
 
-import com.azure.core.annotation.Immutable;
+import com.azure.core.annotation.Fluent;
 import com.fasterxml.jackson.annotation.JsonProperty;
-import java.util.List;
 
 /** Network Fabric updatable properties. */
-@Immutable
+@Fluent
 public class NetworkFabricPatchableProperties {
     /*
-     * List of NetworkRack resource IDs under the Network Fabric. The number of racks allowed depends on the Network
-     * Fabric SKU.
+     * Number of compute racks associated to Network Fabric.
      */
-    @JsonProperty(value = "racks", access = JsonProperty.Access.WRITE_ONLY)
-    private List<String> racks;
+    @JsonProperty(value = "rackCount")
+    private Integer rackCount;
 
     /*
-     * List of L2IsolationDomain resource IDs under the Network Fabric.
+     * Number of servers.Possible values are from 1-16.
      */
-    @JsonProperty(value = "l2IsolationDomains", access = JsonProperty.Access.WRITE_ONLY)
-    private List<String> l2IsolationDomains;
+    @JsonProperty(value = "serverCountPerRack")
+    private Integer serverCountPerRack;
 
     /*
-     * List of L3IsolationDomain resource IDs under the Network Fabric.
+     * IPv4Prefix for Management Network. Example: 10.1.0.0/19.
      */
-    @JsonProperty(value = "l3IsolationDomains", access = JsonProperty.Access.WRITE_ONLY)
-    private List<String> l3IsolationDomains;
+    @JsonProperty(value = "ipv4Prefix")
+    private String ipv4Prefix;
+
+    /*
+     * IPv6Prefix for Management Network. Example: 3FFE:FFFF:0:CD40::/59.
+     */
+    @JsonProperty(value = "ipv6Prefix")
+    private String ipv6Prefix;
+
+    /*
+     * ASN of CE devices for CE/PE connectivity.
+     */
+    @JsonProperty(value = "fabricASN")
+    private Long fabricAsn;
+
+    /*
+     * Network and credentials configuration already applied to terminal server.
+     */
+    @JsonProperty(value = "terminalServerConfiguration")
+    private NetworkFabricPatchablePropertiesTerminalServerConfiguration terminalServerConfiguration;
+
+    /*
+     * Configuration to be used to setup the management network.
+     */
+    @JsonProperty(value = "managementNetworkConfiguration")
+    private ManagementNetworkConfigurationPatchableProperties managementNetworkConfiguration;
 
     /** Creates an instance of NetworkFabricPatchableProperties class. */
     public NetworkFabricPatchableProperties() {
     }
 
     /**
-     * Get the racks property: List of NetworkRack resource IDs under the Network Fabric. The number of racks allowed
-     * depends on the Network Fabric SKU.
+     * Get the rackCount property: Number of compute racks associated to Network Fabric.
      *
-     * @return the racks value.
+     * @return the rackCount value.
      */
-    public List<String> racks() {
-        return this.racks;
+    public Integer rackCount() {
+        return this.rackCount;
     }
 
     /**
-     * Get the l2IsolationDomains property: List of L2IsolationDomain resource IDs under the Network Fabric.
+     * Set the rackCount property: Number of compute racks associated to Network Fabric.
      *
-     * @return the l2IsolationDomains value.
+     * @param rackCount the rackCount value to set.
+     * @return the NetworkFabricPatchableProperties object itself.
      */
-    public List<String> l2IsolationDomains() {
-        return this.l2IsolationDomains;
+    public NetworkFabricPatchableProperties withRackCount(Integer rackCount) {
+        this.rackCount = rackCount;
+        return this;
     }
 
     /**
-     * Get the l3IsolationDomains property: List of L3IsolationDomain resource IDs under the Network Fabric.
+     * Get the serverCountPerRack property: Number of servers.Possible values are from 1-16.
      *
-     * @return the l3IsolationDomains value.
+     * @return the serverCountPerRack value.
      */
-    public List<String> l3IsolationDomains() {
-        return this.l3IsolationDomains;
+    public Integer serverCountPerRack() {
+        return this.serverCountPerRack;
+    }
+
+    /**
+     * Set the serverCountPerRack property: Number of servers.Possible values are from 1-16.
+     *
+     * @param serverCountPerRack the serverCountPerRack value to set.
+     * @return the NetworkFabricPatchableProperties object itself.
+     */
+    public NetworkFabricPatchableProperties withServerCountPerRack(Integer serverCountPerRack) {
+        this.serverCountPerRack = serverCountPerRack;
+        return this;
+    }
+
+    /**
+     * Get the ipv4Prefix property: IPv4Prefix for Management Network. Example: 10.1.0.0/19.
+     *
+     * @return the ipv4Prefix value.
+     */
+    public String ipv4Prefix() {
+        return this.ipv4Prefix;
+    }
+
+    /**
+     * Set the ipv4Prefix property: IPv4Prefix for Management Network. Example: 10.1.0.0/19.
+     *
+     * @param ipv4Prefix the ipv4Prefix value to set.
+     * @return the NetworkFabricPatchableProperties object itself.
+     */
+    public NetworkFabricPatchableProperties withIpv4Prefix(String ipv4Prefix) {
+        this.ipv4Prefix = ipv4Prefix;
+        return this;
+    }
+
+    /**
+     * Get the ipv6Prefix property: IPv6Prefix for Management Network. Example: 3FFE:FFFF:0:CD40::/59.
+     *
+     * @return the ipv6Prefix value.
+     */
+    public String ipv6Prefix() {
+        return this.ipv6Prefix;
+    }
+
+    /**
+     * Set the ipv6Prefix property: IPv6Prefix for Management Network. Example: 3FFE:FFFF:0:CD40::/59.
+     *
+     * @param ipv6Prefix the ipv6Prefix value to set.
+     * @return the NetworkFabricPatchableProperties object itself.
+     */
+    public NetworkFabricPatchableProperties withIpv6Prefix(String ipv6Prefix) {
+        this.ipv6Prefix = ipv6Prefix;
+        return this;
+    }
+
+    /**
+     * Get the fabricAsn property: ASN of CE devices for CE/PE connectivity.
+     *
+     * @return the fabricAsn value.
+     */
+    public Long fabricAsn() {
+        return this.fabricAsn;
+    }
+
+    /**
+     * Set the fabricAsn property: ASN of CE devices for CE/PE connectivity.
+     *
+     * @param fabricAsn the fabricAsn value to set.
+     * @return the NetworkFabricPatchableProperties object itself.
+     */
+    public NetworkFabricPatchableProperties withFabricAsn(Long fabricAsn) {
+        this.fabricAsn = fabricAsn;
+        return this;
+    }
+
+    /**
+     * Get the terminalServerConfiguration property: Network and credentials configuration already applied to terminal
+     * server.
+     *
+     * @return the terminalServerConfiguration value.
+     */
+    public NetworkFabricPatchablePropertiesTerminalServerConfiguration terminalServerConfiguration() {
+        return this.terminalServerConfiguration;
+    }
+
+    /**
+     * Set the terminalServerConfiguration property: Network and credentials configuration already applied to terminal
+     * server.
+     *
+     * @param terminalServerConfiguration the terminalServerConfiguration value to set.
+     * @return the NetworkFabricPatchableProperties object itself.
+     */
+    public NetworkFabricPatchableProperties withTerminalServerConfiguration(
+        NetworkFabricPatchablePropertiesTerminalServerConfiguration terminalServerConfiguration) {
+        this.terminalServerConfiguration = terminalServerConfiguration;
+        return this;
+    }
+
+    /**
+     * Get the managementNetworkConfiguration property: Configuration to be used to setup the management network.
+     *
+     * @return the managementNetworkConfiguration value.
+     */
+    public ManagementNetworkConfigurationPatchableProperties managementNetworkConfiguration() {
+        return this.managementNetworkConfiguration;
+    }
+
+    /**
+     * Set the managementNetworkConfiguration property: Configuration to be used to setup the management network.
+     *
+     * @param managementNetworkConfiguration the managementNetworkConfiguration value to set.
+     * @return the NetworkFabricPatchableProperties object itself.
+     */
+    public NetworkFabricPatchableProperties withManagementNetworkConfiguration(
+        ManagementNetworkConfigurationPatchableProperties managementNetworkConfiguration) {
+        this.managementNetworkConfiguration = managementNetworkConfiguration;
+        return this;
     }
 
     /**
@@ -68,5 +206,11 @@ public class NetworkFabricPatchableProperties {
      * @throws IllegalArgumentException thrown if the instance is not valid.
      */
     public void validate() {
+        if (terminalServerConfiguration() != null) {
+            terminalServerConfiguration().validate();
+        }
+        if (managementNetworkConfiguration() != null) {
+            managementNetworkConfiguration().validate();
+        }
     }
 }

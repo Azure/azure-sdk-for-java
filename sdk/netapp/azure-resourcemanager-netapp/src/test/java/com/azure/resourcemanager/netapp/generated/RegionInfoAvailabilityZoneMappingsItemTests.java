@@ -13,18 +13,18 @@ public final class RegionInfoAvailabilityZoneMappingsItemTests {
     public void testDeserialize() throws Exception {
         RegionInfoAvailabilityZoneMappingsItem model =
             BinaryData
-                .fromString("{\"availabilityZone\":\"pg\",\"isAvailable\":false}")
+                .fromString("{\"availabilityZone\":\"fbishcbkha\",\"isAvailable\":false}")
                 .toObject(RegionInfoAvailabilityZoneMappingsItem.class);
-        Assertions.assertEquals("pg", model.availabilityZone());
+        Assertions.assertEquals("fbishcbkha", model.availabilityZone());
         Assertions.assertEquals(false, model.isAvailable());
     }
 
     @org.junit.jupiter.api.Test
     public void testSerialize() throws Exception {
         RegionInfoAvailabilityZoneMappingsItem model =
-            new RegionInfoAvailabilityZoneMappingsItem().withAvailabilityZone("pg").withIsAvailable(false);
+            new RegionInfoAvailabilityZoneMappingsItem().withAvailabilityZone("fbishcbkha").withIsAvailable(false);
         model = BinaryData.fromObject(model).toObject(RegionInfoAvailabilityZoneMappingsItem.class);
-        Assertions.assertEquals("pg", model.availabilityZone());
+        Assertions.assertEquals("fbishcbkha", model.availabilityZone());
         Assertions.assertEquals(false, model.isAvailable());
     }
 }

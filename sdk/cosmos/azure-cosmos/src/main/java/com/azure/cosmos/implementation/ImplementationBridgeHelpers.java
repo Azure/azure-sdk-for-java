@@ -50,6 +50,7 @@ import com.azure.cosmos.models.CosmosClientEncryptionKeyResponse;
 import com.azure.cosmos.models.CosmosClientTelemetryConfig;
 import com.azure.cosmos.models.CosmosContainerIdentity;
 import com.azure.cosmos.models.CosmosContainerProperties;
+import com.azure.cosmos.models.CosmosItemIdentity;
 import com.azure.cosmos.models.CosmosItemRequestOptions;
 import com.azure.cosmos.models.CosmosItemResponse;
 import com.azure.cosmos.models.CosmosMetricName;
@@ -175,6 +176,7 @@ public class ImplementationBridgeHelpers {
 
         public interface PartitionKeyAccessor {
             PartitionKey toPartitionKey(PartitionKeyInternal partitionKeyInternal);
+            PartitionKey toPartitionKey(Object objectKey, PartitionKeyInternal partitionKeyInternal);
         }
     }
 
@@ -370,6 +372,9 @@ public class ImplementationBridgeHelpers {
                 CosmosItemRequestOptions cosmosItemRequestOptions,
                 WriteRetryPolicy clientDefault,
                 boolean operationDefault);
+
+            CosmosEndToEndOperationLatencyPolicyConfig getEndToEndOperationLatencyPolicyConfig(
+                CosmosItemRequestOptions options);
         }
     }
 
@@ -421,9 +426,9 @@ public class ImplementationBridgeHelpers {
                 double minRetryRate,
                 double maxRetryRate);
 
-            int getMaxMicroBatchSize(CosmosBulkExecutionOptions options);
+            int getInitialMicroBatchSize(CosmosBulkExecutionOptions options);
 
-            CosmosBulkExecutionOptions setMaxMicroBatchSize(CosmosBulkExecutionOptions options, int maxMicroBatchSize);
+            CosmosBulkExecutionOptions setInitialMicroBatchSize(CosmosBulkExecutionOptions options, int initialMicroBatchSize);
 
             int getMaxMicroBatchPayloadSizeInBytes(CosmosBulkExecutionOptions options);
 
@@ -739,6 +744,8 @@ public class ImplementationBridgeHelpers {
                 String identifier,
                 String errorMessage,
                 long transportRequestId);
+
+            boolean isNotEmpty(CosmosDiagnostics cosmosDiagnostics);
         }
     }
 
@@ -891,6 +898,12 @@ public class ImplementationBridgeHelpers {
             IFaultInjectorProvider getOrConfigureFaultInjectorProvider(
                 CosmosAsyncContainer cosmosAsyncContainer,
                 Callable<IFaultInjectorProvider> injectorProviderCallable);
+
+            <T> Mono<FeedResponse<T>> readMany(
+                CosmosAsyncContainer cosmosAsyncContainer,
+                List<CosmosItemIdentity> itemIdentityList,
+                CosmosQueryRequestOptions requestOptions,
+                Class<T> classType);
         }
     }
 

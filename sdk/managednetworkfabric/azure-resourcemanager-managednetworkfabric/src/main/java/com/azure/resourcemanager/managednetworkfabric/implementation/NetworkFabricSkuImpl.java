@@ -4,10 +4,12 @@
 
 package com.azure.resourcemanager.managednetworkfabric.implementation;
 
-import com.azure.core.management.SystemData;
 import com.azure.resourcemanager.managednetworkfabric.fluent.models.NetworkFabricSkuInner;
+import com.azure.resourcemanager.managednetworkfabric.models.FabricSkuType;
 import com.azure.resourcemanager.managednetworkfabric.models.NetworkFabricSku;
 import com.azure.resourcemanager.managednetworkfabric.models.ProvisioningState;
+import java.util.Collections;
+import java.util.List;
 
 public final class NetworkFabricSkuImpl implements NetworkFabricSku {
     private NetworkFabricSkuInner innerObject;
@@ -33,11 +35,7 @@ public final class NetworkFabricSkuImpl implements NetworkFabricSku {
         return this.innerModel().type();
     }
 
-    public SystemData systemData() {
-        return this.innerModel().systemData();
-    }
-
-    public String typePropertiesType() {
+    public FabricSkuType typePropertiesType() {
         return this.innerModel().typePropertiesType();
     }
 
@@ -45,16 +43,21 @@ public final class NetworkFabricSkuImpl implements NetworkFabricSku {
         return this.innerModel().maxComputeRacks();
     }
 
-    public String minSupportedVer() {
-        return this.innerModel().minSupportedVer();
+    public Integer maximumServerCount() {
+        return this.innerModel().maximumServerCount();
     }
 
-    public String maxSupportedVer() {
-        return this.innerModel().maxSupportedVer();
+    public List<String> supportedVersions() {
+        List<String> inner = this.innerModel().supportedVersions();
+        if (inner != null) {
+            return Collections.unmodifiableList(inner);
+        } else {
+            return Collections.emptyList();
+        }
     }
 
-    public String detailsUri() {
-        return this.innerModel().detailsUri();
+    public String details() {
+        return this.innerModel().details();
     }
 
     public ProvisioningState provisioningState() {

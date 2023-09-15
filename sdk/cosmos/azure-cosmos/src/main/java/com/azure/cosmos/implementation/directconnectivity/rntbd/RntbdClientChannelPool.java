@@ -800,11 +800,11 @@ public final class RntbdClientChannelPool implements ChannelPool {
         // Reduce the connection timeout based on the injected delay
         // The higher delay being injected, then less time left to open connection, then it is easier to get connectionTimeout exception.
         // But we would not want to use a <0 for connectionTimeout setting as netty throw exceptions.
-        long effectiveConnectTimeoutInMillis = Math.max(this.connectTimeoutInMillis - delayInMillis, 10);
+        long effectiveConnectTimeoutInMillis = Math.max(this.connectTimeoutInMillis - delayInMillis, 5);
 
         this.executor.schedule(
             () -> {
-                ChannelFuture channelFuture = this.bootstrap.clone().handler(new ChannelInitializer<Channel>() {
+                ChannelFuture channelFuture = this.bootstrap.clone().attr(POOL_KEY, this).handler(new ChannelInitializer<Channel>() {
                     @Override
                     protected void initChannel(Channel channel) throws Exception {
                         checkState(channel.eventLoop().inEventLoop());

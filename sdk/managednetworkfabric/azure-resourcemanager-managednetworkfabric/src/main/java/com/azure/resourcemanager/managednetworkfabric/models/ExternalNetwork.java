@@ -4,10 +4,8 @@
 
 package com.azure.resourcemanager.managednetworkfabric.models;
 
-import com.azure.core.management.SystemData;
 import com.azure.core.util.Context;
 import com.azure.resourcemanager.managednetworkfabric.fluent.models.ExternalNetworkInner;
-import java.util.List;
 
 /** An immutable client-side representation of ExternalNetwork. */
 public interface ExternalNetwork {
@@ -33,40 +31,11 @@ public interface ExternalNetwork {
     String type();
 
     /**
-     * Gets the systemData property: Azure Resource Manager metadata containing createdBy and modifiedBy information.
-     *
-     * @return the systemData value.
-     */
-    SystemData systemData();
-
-    /**
      * Gets the networkToNetworkInterconnectId property: Gets the networkToNetworkInterconnectId of the resource.
      *
      * @return the networkToNetworkInterconnectId value.
      */
     String networkToNetworkInterconnectId();
-
-    /**
-     * Gets the disabledOnResources property: List of resources the externalNetwork is disabled on. Can be either entire
-     * NetworkFabric or NetworkRack.
-     *
-     * @return the disabledOnResources value.
-     */
-    List<String> disabledOnResources();
-
-    /**
-     * Gets the administrativeState property: AdministrativeState of the externalNetwork. Example: Enabled | Disabled.
-     *
-     * @return the administrativeState value.
-     */
-    EnabledDisabledState administrativeState();
-
-    /**
-     * Gets the provisioningState property: Gets the provisioning state of the resource.
-     *
-     * @return the provisioningState value.
-     */
-    ProvisioningState provisioningState();
 
     /**
      * Gets the peeringOption property: Peering option list.
@@ -80,7 +49,7 @@ public interface ExternalNetwork {
      *
      * @return the optionBProperties value.
      */
-    OptionBProperties optionBProperties();
+    L3OptionBProperties optionBProperties();
 
     /**
      * Gets the optionAProperties property: option A properties object.
@@ -90,18 +59,55 @@ public interface ExternalNetwork {
     ExternalNetworkPropertiesOptionAProperties optionAProperties();
 
     /**
-     * Gets the importRoutePolicyId property: ARM resource ID of importRoutePolicy.
+     * Gets the configurationState property: Configuration state of the resource.
+     *
+     * @return the configurationState value.
+     */
+    ConfigurationState configurationState();
+
+    /**
+     * Gets the provisioningState property: Provisioning state of the resource.
+     *
+     * @return the provisioningState value.
+     */
+    ProvisioningState provisioningState();
+
+    /**
+     * Gets the administrativeState property: Administrative state of the resource.
+     *
+     * @return the administrativeState value.
+     */
+    AdministrativeState administrativeState();
+
+    /**
+     * Gets the importRoutePolicyId property: ARM Resource ID of the RoutePolicy. This is used for the backward
+     * compatibility.
      *
      * @return the importRoutePolicyId value.
      */
     String importRoutePolicyId();
 
     /**
-     * Gets the exportRoutePolicyId property: ARM resource ID of exportRoutePolicy.
+     * Gets the exportRoutePolicyId property: ARM Resource ID of the RoutePolicy. This is used for the backward
+     * compatibility.
      *
      * @return the exportRoutePolicyId value.
      */
     String exportRoutePolicyId();
+
+    /**
+     * Gets the importRoutePolicy property: Import Route Policy either IPv4 or IPv6.
+     *
+     * @return the importRoutePolicy value.
+     */
+    ImportRoutePolicy importRoutePolicy();
+
+    /**
+     * Gets the exportRoutePolicy property: Export Route Policy either IPv4 or IPv6.
+     *
+     * @return the exportRoutePolicy value.
+     */
+    ExportRoutePolicy exportRoutePolicy();
 
     /**
      * Gets the annotation property: Switch configuration description.
@@ -131,22 +137,25 @@ public interface ExternalNetwork {
             DefinitionStages.WithPeeringOption,
             DefinitionStages.WithCreate {
     }
+
     /** The ExternalNetwork definition stages. */
     interface DefinitionStages {
         /** The first stage of the ExternalNetwork definition. */
         interface Blank extends WithParentResource {
         }
+
         /** The stage of the ExternalNetwork definition allowing to specify parent resource. */
         interface WithParentResource {
             /**
              * Specifies resourceGroupName, l3IsolationDomainName.
              *
              * @param resourceGroupName The name of the resource group. The name is case insensitive.
-             * @param l3IsolationDomainName Name of the L3IsolationDomain.
+             * @param l3IsolationDomainName Name of the L3 Isolation Domain.
              * @return the next definition stage.
              */
             WithPeeringOption withExistingL3IsolationDomain(String resourceGroupName, String l3IsolationDomainName);
         }
+
         /** The stage of the ExternalNetwork definition allowing to specify peeringOption. */
         interface WithPeeringOption {
             /**
@@ -157,6 +166,7 @@ public interface ExternalNetwork {
              */
             WithCreate withPeeringOption(PeeringOption peeringOption);
         }
+
         /**
          * The stage of the ExternalNetwork definition which contains all the minimum required properties for the
          * resource to be created, but also allows for any other optional properties to be specified.
@@ -166,6 +176,8 @@ public interface ExternalNetwork {
                 DefinitionStages.WithOptionAProperties,
                 DefinitionStages.WithImportRoutePolicyId,
                 DefinitionStages.WithExportRoutePolicyId,
+                DefinitionStages.WithImportRoutePolicy,
+                DefinitionStages.WithExportRoutePolicy,
                 DefinitionStages.WithAnnotation {
             /**
              * Executes the create request.
@@ -182,6 +194,7 @@ public interface ExternalNetwork {
              */
             ExternalNetwork create(Context context);
         }
+
         /** The stage of the ExternalNetwork definition allowing to specify optionBProperties. */
         interface WithOptionBProperties {
             /**
@@ -190,8 +203,9 @@ public interface ExternalNetwork {
              * @param optionBProperties option B properties object.
              * @return the next definition stage.
              */
-            WithCreate withOptionBProperties(OptionBProperties optionBProperties);
+            WithCreate withOptionBProperties(L3OptionBProperties optionBProperties);
         }
+
         /** The stage of the ExternalNetwork definition allowing to specify optionAProperties. */
         interface WithOptionAProperties {
             /**
@@ -202,26 +216,55 @@ public interface ExternalNetwork {
              */
             WithCreate withOptionAProperties(ExternalNetworkPropertiesOptionAProperties optionAProperties);
         }
+
         /** The stage of the ExternalNetwork definition allowing to specify importRoutePolicyId. */
         interface WithImportRoutePolicyId {
             /**
-             * Specifies the importRoutePolicyId property: ARM resource ID of importRoutePolicy..
+             * Specifies the importRoutePolicyId property: ARM Resource ID of the RoutePolicy. This is used for the
+             * backward compatibility..
              *
-             * @param importRoutePolicyId ARM resource ID of importRoutePolicy.
+             * @param importRoutePolicyId ARM Resource ID of the RoutePolicy. This is used for the backward
+             *     compatibility.
              * @return the next definition stage.
              */
             WithCreate withImportRoutePolicyId(String importRoutePolicyId);
         }
+
         /** The stage of the ExternalNetwork definition allowing to specify exportRoutePolicyId. */
         interface WithExportRoutePolicyId {
             /**
-             * Specifies the exportRoutePolicyId property: ARM resource ID of exportRoutePolicy..
+             * Specifies the exportRoutePolicyId property: ARM Resource ID of the RoutePolicy. This is used for the
+             * backward compatibility..
              *
-             * @param exportRoutePolicyId ARM resource ID of exportRoutePolicy.
+             * @param exportRoutePolicyId ARM Resource ID of the RoutePolicy. This is used for the backward
+             *     compatibility.
              * @return the next definition stage.
              */
             WithCreate withExportRoutePolicyId(String exportRoutePolicyId);
         }
+
+        /** The stage of the ExternalNetwork definition allowing to specify importRoutePolicy. */
+        interface WithImportRoutePolicy {
+            /**
+             * Specifies the importRoutePolicy property: Import Route Policy either IPv4 or IPv6..
+             *
+             * @param importRoutePolicy Import Route Policy either IPv4 or IPv6.
+             * @return the next definition stage.
+             */
+            WithCreate withImportRoutePolicy(ImportRoutePolicy importRoutePolicy);
+        }
+
+        /** The stage of the ExternalNetwork definition allowing to specify exportRoutePolicy. */
+        interface WithExportRoutePolicy {
+            /**
+             * Specifies the exportRoutePolicy property: Export Route Policy either IPv4 or IPv6..
+             *
+             * @param exportRoutePolicy Export Route Policy either IPv4 or IPv6.
+             * @return the next definition stage.
+             */
+            WithCreate withExportRoutePolicy(ExportRoutePolicy exportRoutePolicy);
+        }
+
         /** The stage of the ExternalNetwork definition allowing to specify annotation. */
         interface WithAnnotation {
             /**
@@ -233,6 +276,7 @@ public interface ExternalNetwork {
             WithCreate withAnnotation(String annotation);
         }
     }
+
     /**
      * Begins update for the ExternalNetwork resource.
      *
@@ -247,6 +291,8 @@ public interface ExternalNetwork {
             UpdateStages.WithOptionAProperties,
             UpdateStages.WithImportRoutePolicyId,
             UpdateStages.WithExportRoutePolicyId,
+            UpdateStages.WithImportRoutePolicy,
+            UpdateStages.WithExportRoutePolicy,
             UpdateStages.WithAnnotation {
         /**
          * Executes the update request.
@@ -263,6 +309,7 @@ public interface ExternalNetwork {
          */
         ExternalNetwork apply(Context context);
     }
+
     /** The ExternalNetwork update stages. */
     interface UpdateStages {
         /** The stage of the ExternalNetwork update allowing to specify peeringOption. */
@@ -275,6 +322,7 @@ public interface ExternalNetwork {
              */
             Update withPeeringOption(PeeringOption peeringOption);
         }
+
         /** The stage of the ExternalNetwork update allowing to specify optionBProperties. */
         interface WithOptionBProperties {
             /**
@@ -283,8 +331,9 @@ public interface ExternalNetwork {
              * @param optionBProperties option B properties object.
              * @return the next definition stage.
              */
-            Update withOptionBProperties(OptionBProperties optionBProperties);
+            Update withOptionBProperties(L3OptionBProperties optionBProperties);
         }
+
         /** The stage of the ExternalNetwork update allowing to specify optionAProperties. */
         interface WithOptionAProperties {
             /**
@@ -293,28 +342,57 @@ public interface ExternalNetwork {
              * @param optionAProperties option A properties object.
              * @return the next definition stage.
              */
-            Update withOptionAProperties(Layer3OptionAProperties optionAProperties);
+            Update withOptionAProperties(ExternalNetworkPatchPropertiesOptionAProperties optionAProperties);
         }
+
         /** The stage of the ExternalNetwork update allowing to specify importRoutePolicyId. */
         interface WithImportRoutePolicyId {
             /**
-             * Specifies the importRoutePolicyId property: ARM resource ID of importRoutePolicy..
+             * Specifies the importRoutePolicyId property: ARM Resource ID of the RoutePolicy. This is used for the
+             * backward compatibility..
              *
-             * @param importRoutePolicyId ARM resource ID of importRoutePolicy.
+             * @param importRoutePolicyId ARM Resource ID of the RoutePolicy. This is used for the backward
+             *     compatibility.
              * @return the next definition stage.
              */
             Update withImportRoutePolicyId(String importRoutePolicyId);
         }
+
         /** The stage of the ExternalNetwork update allowing to specify exportRoutePolicyId. */
         interface WithExportRoutePolicyId {
             /**
-             * Specifies the exportRoutePolicyId property: ARM resource ID of exportRoutePolicy..
+             * Specifies the exportRoutePolicyId property: ARM Resource ID of the RoutePolicy. This is used for the
+             * backward compatibility..
              *
-             * @param exportRoutePolicyId ARM resource ID of exportRoutePolicy.
+             * @param exportRoutePolicyId ARM Resource ID of the RoutePolicy. This is used for the backward
+             *     compatibility.
              * @return the next definition stage.
              */
             Update withExportRoutePolicyId(String exportRoutePolicyId);
         }
+
+        /** The stage of the ExternalNetwork update allowing to specify importRoutePolicy. */
+        interface WithImportRoutePolicy {
+            /**
+             * Specifies the importRoutePolicy property: Import Route Policy either IPv4 or IPv6..
+             *
+             * @param importRoutePolicy Import Route Policy either IPv4 or IPv6.
+             * @return the next definition stage.
+             */
+            Update withImportRoutePolicy(ImportRoutePolicy importRoutePolicy);
+        }
+
+        /** The stage of the ExternalNetwork update allowing to specify exportRoutePolicy. */
+        interface WithExportRoutePolicy {
+            /**
+             * Specifies the exportRoutePolicy property: Export Route Policy either IPv4 or IPv6..
+             *
+             * @param exportRoutePolicy Export Route Policy either IPv4 or IPv6.
+             * @return the next definition stage.
+             */
+            Update withExportRoutePolicy(ExportRoutePolicy exportRoutePolicy);
+        }
+
         /** The stage of the ExternalNetwork update allowing to specify annotation. */
         interface WithAnnotation {
             /**
@@ -326,6 +404,7 @@ public interface ExternalNetwork {
             Update withAnnotation(String annotation);
         }
     }
+
     /**
      * Refreshes the resource to sync with Azure.
      *
@@ -350,8 +429,9 @@ public interface ExternalNetwork {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return common response for the state updates.
      */
-    void updateAdministrativeState(UpdateAdministrativeState body);
+    CommonPostActionResponseForStateUpdate updateAdministrativeState(UpdateAdministrativeState body);
 
     /**
      * Implements the operation to the underlying resources.
@@ -363,106 +443,35 @@ public interface ExternalNetwork {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return common response for the state updates.
      */
-    void updateAdministrativeState(UpdateAdministrativeState body, Context context);
+    CommonPostActionResponseForStateUpdate updateAdministrativeState(UpdateAdministrativeState body, Context context);
 
     /**
-     * Executes BGP state update operation to the underlying resources.
+     * Executes Static Route BFD state update operation to the underlying resources.
      *
-     * <p>Update BGP for externalNetwork.
+     * <p>Update Static Route BFD for external Network.
      *
      * @param body Request payload.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return common response for the state updates.
      */
-    void updateBgpAdministrativeState(UpdateAdministrativeState body);
+    CommonPostActionResponseForStateUpdate updateStaticRouteBfdAdministrativeState(UpdateAdministrativeState body);
 
     /**
-     * Executes BGP state update operation to the underlying resources.
+     * Executes Static Route BFD state update operation to the underlying resources.
      *
-     * <p>Update BGP for externalNetwork.
-     *
-     * @param body Request payload.
-     * @param context The context to associate with this operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     */
-    void updateBgpAdministrativeState(UpdateAdministrativeState body, Context context);
-
-    /**
-     * Execute BfdForBgp update operation to the underlying resources.
-     *
-     * <p>Update BfdForBgp for externalNetwork.
-     *
-     * @param body Request payload.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     */
-    void updateBfdForBgpAdministrativeState(UpdateAdministrativeState body);
-
-    /**
-     * Execute BfdForBgp update operation to the underlying resources.
-     *
-     * <p>Update BfdForBgp for externalNetwork.
+     * <p>Update Static Route BFD for external Network.
      *
      * @param body Request payload.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return common response for the state updates.
      */
-    void updateBfdForBgpAdministrativeState(UpdateAdministrativeState body, Context context);
-
-    /**
-     * Executes clearIpv6Neighbors table operation to the underlying resources.
-     *
-     * <p>clearIpv6Neighbors for externalNetwork.
-     *
-     * @param body Request payload.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     */
-    void clearIpv6Neighbors(EnableDisableOnResources body);
-
-    /**
-     * Executes clearIpv6Neighbors table operation to the underlying resources.
-     *
-     * <p>clearIpv6Neighbors for externalNetwork.
-     *
-     * @param body Request payload.
-     * @param context The context to associate with this operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     */
-    void clearIpv6Neighbors(EnableDisableOnResources body, Context context);
-
-    /**
-     * Implements the operation to the underlying resources.
-     *
-     * <p>clearArpEntries for externalNetwork.
-     *
-     * @param body Request payload.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     */
-    void clearArpEntries(EnableDisableOnResources body);
-
-    /**
-     * Implements the operation to the underlying resources.
-     *
-     * <p>clearArpEntries for externalNetwork.
-     *
-     * @param body Request payload.
-     * @param context The context to associate with this operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     */
-    void clearArpEntries(EnableDisableOnResources body, Context context);
+    CommonPostActionResponseForStateUpdate updateStaticRouteBfdAdministrativeState(
+        UpdateAdministrativeState body, Context context);
 }

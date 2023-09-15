@@ -11,6 +11,10 @@ import com.azure.resourcemanager.AzureResourceManager;
 import com.azure.resourcemanager.network.models.ApplicationGateway;
 import com.azure.core.management.Region;
 import com.azure.core.management.profile.AzureProfile;
+import com.azure.resourcemanager.network.models.ApplicationGatewaySkuName;
+import com.azure.resourcemanager.network.models.ApplicationGatewayTier;
+import com.azure.resourcemanager.network.models.PublicIPSkuType;
+import com.azure.resourcemanager.network.models.PublicIpAddress;
 import com.azure.resourcemanager.samples.Utils;
 
 import java.io.File;
@@ -70,6 +74,14 @@ public final class ManageSimpleApplicationGateway {
             System.out.println("Creating an application gateway... (this can take about 20 min)");
             long t1 = System.currentTimeMillis();
 
+            final String pipName = Utils.randomResourceName(azureResourceManager, "pip" + "-", 18);
+            PublicIpAddress publicIPAddress = azureResourceManager.publicIpAddresses().define(pipName)
+                .withRegion(Region.US_EAST)
+                .withNewResourceGroup(rgName)
+                .withSku(PublicIPSkuType.STANDARD)
+                .withStaticIP()
+                .create();
+
             ApplicationGateway applicationGateway = azureResourceManager.applicationGateways().define("myFirstAppGateway")
                     .withRegion(Region.US_EAST)
                     .withNewResourceGroup(rgName)
@@ -84,7 +96,10 @@ public final class ManageSimpleApplicationGateway {
                     .toBackendIPAddress("11.1.1.3")
                     .toBackendIPAddress("11.1.1.4")
                     .attach()
-                    .withNewPublicIpAddress()
+
+                    .withTier(ApplicationGatewayTier.WAF_V2)
+                    .withSize(ApplicationGatewaySkuName.WAF_V2)
+                    .withExistingPublicIpAddress(publicIPAddress)
                     .create();
 
             long t2 = System.currentTimeMillis();

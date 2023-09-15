@@ -5,6 +5,7 @@
 package com.azure.communication.jobrouter.models;
 
 import com.azure.core.annotation.Fluent;
+import com.azure.core.util.ETag;
 import com.fasterxml.jackson.annotation.JsonProperty;
 
 /** Paged instance of RouterWorker. */
@@ -20,7 +21,7 @@ public final class RouterWorkerItem {
      * (Optional) The Concurrency Token.
      */
     @JsonProperty(value = "etag")
-    private String etag;
+    private ETag etag;
 
     /**
      * Get the worker property: An entity for jobs to be routed to.
@@ -47,7 +48,7 @@ public final class RouterWorkerItem {
      *
      * @return the etag value.
      */
-    public String getEtag() {
+    public ETag getEtag() {
         return this.etag;
     }
 
@@ -57,7 +58,7 @@ public final class RouterWorkerItem {
      * @param etag the etag value to set.
      * @return the RouterWorkerItem object itself.
      */
-    public RouterWorkerItem setEtag(String etag) {
+    public RouterWorkerItem setEtag(ETag etag) {
         this.etag = etag;
         return this;
     }

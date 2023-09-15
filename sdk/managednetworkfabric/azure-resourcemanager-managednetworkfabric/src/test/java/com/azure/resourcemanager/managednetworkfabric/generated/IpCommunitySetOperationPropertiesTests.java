@@ -15,17 +15,17 @@ public final class IpCommunitySetOperationPropertiesTests {
     public void testDeserialize() throws Exception {
         IpCommunitySetOperationProperties model =
             BinaryData
-                .fromString("{\"set\":{\"ipCommunityIds\":[\"f\",\"nsnvpd\",\"bmikost\"]}}")
+                .fromString("{\"set\":{\"ipCommunityIds\":[\"ap\",\"bcqpfusekij\",\"minenkbivpy\"]}}")
                 .toObject(IpCommunitySetOperationProperties.class);
-        Assertions.assertEquals("f", model.set().ipCommunityIds().get(0));
+        Assertions.assertEquals("ap", model.set().ipCommunityIds().get(0));
     }
 
     @org.junit.jupiter.api.Test
     public void testSerialize() throws Exception {
         IpCommunitySetOperationProperties model =
             new IpCommunitySetOperationProperties()
-                .withSet(new IpCommunityIdList().withIpCommunityIds(Arrays.asList("f", "nsnvpd", "bmikost")));
+                .withSet(new IpCommunityIdList().withIpCommunityIds(Arrays.asList("ap", "bcqpfusekij", "minenkbivpy")));
         model = BinaryData.fromObject(model).toObject(IpCommunitySetOperationProperties.class);
-        Assertions.assertEquals("f", model.set().ipCommunityIds().get(0));
+        Assertions.assertEquals("ap", model.set().ipCommunityIds().get(0));
     }
 }

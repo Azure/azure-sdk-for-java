@@ -4,13 +4,12 @@
 
 package com.azure.resourcemanager.apimanagement.generated;
 
-import com.azure.core.util.Context;
 import com.azure.resourcemanager.apimanagement.models.QuotaCounterValueUpdateContract;
 
 /** Samples for QuotaByCounterKeys Update. */
 public final class QuotaByCounterKeysUpdateSamples {
     /*
-     * x-ms-original-file: specification/apimanagement/resource-manager/Microsoft.ApiManagement/stable/2021-08-01/examples/ApiManagementUpdateQuotaCounterKey.json
+     * x-ms-original-file: specification/apimanagement/resource-manager/Microsoft.ApiManagement/stable/2022-08-01/examples/ApiManagementUpdateQuotaCounterKey.json
      */
     /**
      * Sample code: ApiManagementUpdateQuotaCounterKey.
@@ -25,7 +24,7 @@ public final class QuotaByCounterKeysUpdateSamples {
                 "rg1",
                 "apimService1",
                 "ba",
-                new QuotaCounterValueUpdateContract().withCallsCount(0).withKbTransferred(2.5630078125),
-                Context.NONE);
+                new QuotaCounterValueUpdateContract().withCallsCount(0).withKbTransferred(2.5630078125D),
+                com.azure.core.util.Context.NONE);
     }
 }

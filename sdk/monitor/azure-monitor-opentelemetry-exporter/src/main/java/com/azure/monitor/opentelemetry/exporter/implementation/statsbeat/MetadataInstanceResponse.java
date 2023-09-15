@@ -9,7 +9,7 @@ import com.fasterxml.jackson.annotation.JsonProperty;
 /**
  * Metadata instance response from the Azure Metadata Service.
  */
-class MetadataInstanceResponse {
+public class MetadataInstanceResponse {
 
     private final String vmId;
 

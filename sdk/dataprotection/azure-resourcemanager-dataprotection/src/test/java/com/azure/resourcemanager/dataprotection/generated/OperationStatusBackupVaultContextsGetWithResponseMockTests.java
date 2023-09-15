@@ -31,7 +31,7 @@ public final class OperationStatusBackupVaultContextsGetWithResponseMockTests {
         ArgumentCaptor<HttpRequest> httpRequest = ArgumentCaptor.forClass(HttpRequest.class);
 
         String responseStr =
-            "{\"endTime\":\"2021-06-17T06:57:21Z\",\"id\":\"rbior\",\"name\":\"alywjhhgdn\",\"properties\":{\"objectType\":\"OperationExtendedInfo\"},\"startTime\":\"2020-12-26T18:57:18Z\",\"status\":\"v\"}";
+            "{\"endTime\":\"2021-08-06T17:28:28Z\",\"id\":\"mocwa\",\"name\":\"qgatjeaahhvjhhn\",\"properties\":{\"objectType\":\"OperationExtendedInfo\"},\"startTime\":\"2021-02-08T20:51:05Z\",\"status\":\"bjjidjksyxky\"}";
 
         Mockito.when(httpResponse.getStatusCode()).thenReturn(200);
         Mockito.when(httpResponse.getHeaders()).thenReturn(new HttpHeaders());
@@ -62,13 +62,13 @@ public final class OperationStatusBackupVaultContextsGetWithResponseMockTests {
         OperationResource response =
             manager
                 .operationStatusBackupVaultContexts()
-                .getWithResponse("hlvnuuepzlr", "hw", "soldweyuqdunv", com.azure.core.util.Context.NONE)
+                .getWithResponse("guxak", "sqzhzbezkg", "msidxasicddyvv", com.azure.core.util.Context.NONE)
                 .getValue();
 
-        Assertions.assertEquals(OffsetDateTime.parse("2021-06-17T06:57:21Z"), response.endTime());
-        Assertions.assertEquals("rbior", response.id());
-        Assertions.assertEquals("alywjhhgdn", response.name());
-        Assertions.assertEquals(OffsetDateTime.parse("2020-12-26T18:57:18Z"), response.startTime());
-        Assertions.assertEquals("v", response.status());
+        Assertions.assertEquals(OffsetDateTime.parse("2021-08-06T17:28:28Z"), response.endTime());
+        Assertions.assertEquals("mocwa", response.id());
+        Assertions.assertEquals("qgatjeaahhvjhhn", response.name());
+        Assertions.assertEquals(OffsetDateTime.parse("2021-02-08T20:51:05Z"), response.startTime());
+        Assertions.assertEquals("bjjidjksyxky", response.status());
     }
 }

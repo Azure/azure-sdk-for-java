@@ -7,6 +7,7 @@ import com.azure.core.http.HttpPipeline;
 import com.azure.core.http.rest.PagedIterable;
 import com.azure.core.management.Region;
 import com.azure.core.management.profile.AzureProfile;
+import com.azure.core.test.annotation.DoNotRecord;
 import com.azure.resourcemanager.compute.models.CreationSourceType;
 import com.azure.resourcemanager.compute.models.Disk;
 import com.azure.resourcemanager.compute.models.DiskCreateOption;
@@ -245,6 +246,9 @@ public class ManagedDiskOperationsTests extends ComputeManagementTest {
         Assertions.assertTrue(fromSnapshotDisk.source().sourceId().equalsIgnoreCase(snapshot.id()));
     }
 
+    // test-proxy playback
+    // reactor.core.Exceptions$OverflowException: Could not emit tick 256 due to lack of requests (interval doesn't support small downstream requests that replenish slower than the ticks)
+    @DoNotRecord(skipInPlayback = true)
     @Test
     public void canCopyStartIncrementalSnapshot() {
         rgName2 = generateRandomResourceName("rg", 15);

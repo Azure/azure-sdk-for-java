@@ -60,6 +60,39 @@ public final class PacketCoreControlPlaneVersionsImpl implements PacketCoreContr
         return Utils.mapPage(inner, inner1 -> new PacketCoreControlPlaneVersionImpl(inner1, this.manager()));
     }
 
+    public Response<PacketCoreControlPlaneVersion> getBySubscriptionWithResponse(String versionName, Context context) {
+        Response<PacketCoreControlPlaneVersionInner> inner =
+            this.serviceClient().getBySubscriptionWithResponse(versionName, context);
+        if (inner != null) {
+            return new SimpleResponse<>(
+                inner.getRequest(),
+                inner.getStatusCode(),
+                inner.getHeaders(),
+                new PacketCoreControlPlaneVersionImpl(inner.getValue(), this.manager()));
+        } else {
+            return null;
+        }
+    }
+
+    public PacketCoreControlPlaneVersion getBySubscription(String versionName) {
+        PacketCoreControlPlaneVersionInner inner = this.serviceClient().getBySubscription(versionName);
+        if (inner != null) {
+            return new PacketCoreControlPlaneVersionImpl(inner, this.manager());
+        } else {
+            return null;
+        }
+    }
+
+    public PagedIterable<PacketCoreControlPlaneVersion> listBySubscription() {
+        PagedIterable<PacketCoreControlPlaneVersionInner> inner = this.serviceClient().listBySubscription();
+        return Utils.mapPage(inner, inner1 -> new PacketCoreControlPlaneVersionImpl(inner1, this.manager()));
+    }
+
+    public PagedIterable<PacketCoreControlPlaneVersion> listBySubscription(Context context) {
+        PagedIterable<PacketCoreControlPlaneVersionInner> inner = this.serviceClient().listBySubscription(context);
+        return Utils.mapPage(inner, inner1 -> new PacketCoreControlPlaneVersionImpl(inner1, this.manager()));
+    }
+
     private PacketCoreControlPlaneVersionsClient serviceClient() {
         return this.innerClient;
     }

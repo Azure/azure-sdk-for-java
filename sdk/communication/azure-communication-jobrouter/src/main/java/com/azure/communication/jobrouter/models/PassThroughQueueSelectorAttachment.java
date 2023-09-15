@@ -9,23 +9,36 @@ import com.fasterxml.jackson.annotation.JsonProperty;
 import com.fasterxml.jackson.annotation.JsonTypeInfo;
 import com.fasterxml.jackson.annotation.JsonTypeName;
 
+import java.util.Objects;
+
 /** Attaches a queue selector where the value is passed through from the job label with the same key. */
 @JsonTypeInfo(use = JsonTypeInfo.Id.NAME, include = JsonTypeInfo.As.PROPERTY, property = "kind")
 @JsonTypeName("pass-through")
 @Fluent
 public final class PassThroughQueueSelectorAttachment extends QueueSelectorAttachment {
+    /**
+     * Creates an instance of PassThroughQueueSelectorAttachment class.
+     *
+     * @param key The label key to query against
+     * @param labelOperator Describes how the value of the label is compared to the value pass through
+     */
+    public PassThroughQueueSelectorAttachment(String key, LabelOperator labelOperator) {
+        this.key = Objects.requireNonNull(key, "'key' cannot be null.");
+        this.labelOperator = Objects.requireNonNull(labelOperator, "'labelOperator' cannot be null.");
+    }
+
     /*
      * The label key to query against
      */
     @JsonProperty(value = "key", required = true)
-    private String key;
+    private final String key;
 
     /*
      * Describes how the value of the label is compared to the value pass
      * through
      */
     @JsonProperty(value = "labelOperator", required = true)
-    private LabelOperator labelOperator;
+    private final LabelOperator labelOperator;
 
     /**
      * Get the key property: The label key to query against.
@@ -37,33 +50,11 @@ public final class PassThroughQueueSelectorAttachment extends QueueSelectorAttac
     }
 
     /**
-     * Set the key property: The label key to query against.
-     *
-     * @param key the key value to set.
-     * @return the PassThroughQueueSelectorAttachment object itself.
-     */
-    public PassThroughQueueSelectorAttachment setKey(String key) {
-        this.key = key;
-        return this;
-    }
-
-    /**
      * Get the labelOperator property: Describes how the value of the label is compared to the value pass through.
      *
      * @return the labelOperator value.
      */
     public LabelOperator getLabelOperator() {
         return this.labelOperator;
-    }
-
-    /**
-     * Set the labelOperator property: Describes how the value of the label is compared to the value pass through.
-     *
-     * @param labelOperator the labelOperator value to set.
-     * @return the PassThroughQueueSelectorAttachment object itself.
-     */
-    public PassThroughQueueSelectorAttachment setLabelOperator(LabelOperator labelOperator) {
-        this.labelOperator = labelOperator;
-        return this;
     }
 }

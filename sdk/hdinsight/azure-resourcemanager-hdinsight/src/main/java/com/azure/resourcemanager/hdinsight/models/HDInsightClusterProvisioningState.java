@@ -26,6 +26,15 @@ public final class HDInsightClusterProvisioningState extends ExpandableStringEnu
     public static final HDInsightClusterProvisioningState DELETING = fromString("Deleting");
 
     /**
+     * Creates a new instance of HDInsightClusterProvisioningState value.
+     *
+     * @deprecated Use the {@link #fromString(String)} factory method.
+     */
+    @Deprecated
+    public HDInsightClusterProvisioningState() {
+    }
+
+    /**
      * Creates or finds a HDInsightClusterProvisioningState from its string representation.
      *
      * @param name a name to look for.

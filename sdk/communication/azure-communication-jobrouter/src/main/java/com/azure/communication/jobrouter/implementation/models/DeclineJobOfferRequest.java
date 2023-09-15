@@ -12,15 +12,18 @@ import java.time.OffsetDateTime;
 @Fluent
 public final class DeclineJobOfferRequest {
     /*
-     * If the RetryOfferAt is not provided, then this job will not be offered
-     * again to the worker who declined this job unless
-     * the worker is de-registered and re-registered.  If a RetryOfferAt time
-     * is provided, then the job will be re-matched to
-     * eligible workers at the retry time in UTC.  The worker that declined the
-     * job will also be eligible for the job at that time.
+     * If the RetryOfferAt is not provided, then this job will not be offered again to the worker who declined this job
+     * unless
+     * the worker is de-registered and re-registered.  If a RetryOfferAt time is provided, then the job will be
+     * re-matched to
+     * eligible workers at the retry time in UTC.  The worker that declined the job will also be eligible for the job
+     * at that time.
      */
     @JsonProperty(value = "retryOfferAt")
     private OffsetDateTime retryOfferAt;
+
+    /** Creates an instance of DeclineJobOfferRequest class. */
+    public DeclineJobOfferRequest() {}
 
     /**
      * Get the retryOfferAt property: If the RetryOfferAt is not provided, then this job will not be offered again to

@@ -28,6 +28,12 @@ public final class DeploymentProvisioningState extends ExpandableStringEnum<Depl
     /** Static value Succeeded for DeploymentProvisioningState. */
     public static final DeploymentProvisioningState SUCCEEDED = fromString("Succeeded");
 
+    /** Static value Disabled for DeploymentProvisioningState. */
+    public static final DeploymentProvisioningState DISABLED = fromString("Disabled");
+
+    /** Static value Canceled for DeploymentProvisioningState. */
+    public static final DeploymentProvisioningState CANCELED = fromString("Canceled");
+
     /**
      * Creates a new instance of DeploymentProvisioningState value.
      *

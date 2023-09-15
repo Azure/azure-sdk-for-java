@@ -13,6 +13,8 @@ import com.azure.core.http.rest.PagedIterable;
 import com.azure.core.management.AzureEnvironment;
 import com.azure.core.management.profile.AzureProfile;
 import com.azure.resourcemanager.managednetworkfabric.ManagedNetworkFabricManager;
+import com.azure.resourcemanager.managednetworkfabric.models.CommunityActionTypes;
+import com.azure.resourcemanager.managednetworkfabric.models.Condition;
 import com.azure.resourcemanager.managednetworkfabric.models.IpPrefix;
 import java.nio.ByteBuffer;
 import java.nio.charset.StandardCharsets;
@@ -32,7 +34,7 @@ public final class IpPrefixesListMockTests {
         ArgumentCaptor<HttpRequest> httpRequest = ArgumentCaptor.forClass(HttpRequest.class);
 
         String responseStr =
-            "{\"value\":[{\"properties\":{\"ipPrefixRules\":[],\"provisioningState\":\"Updating\",\"annotation\":\"f\"},\"location\":\"jmvl\",\"tags\":{\"juid\":\"giblkujrllf\"},\"id\":\"puuyjucejik\",\"name\":\"oeo\",\"type\":\"vtzejetjklnti\"}]}";
+            "{\"value\":[{\"properties\":{\"configurationState\":\"ErrorProvisioning\",\"provisioningState\":\"Updating\",\"administrativeState\":\"Enabled\",\"ipPrefixRules\":[{\"action\":\"Permit\",\"sequenceNumber\":4323285940907635783,\"networkPrefix\":\"vzfznfgpb\",\"condition\":\"Range\",\"subnetMaskLength\":\"pympdjieask\"}],\"annotation\":\"qclnfusrgnoskkhb\"},\"location\":\"phlyyuahvyeikb\",\"tags\":{\"jnohafwm\":\"rurgbqaucpck\",\"xtugpeamet\":\"pgjl\",\"m\":\"dwxf\"},\"id\":\"xccfegsav\",\"name\":\"ghoucvka\",\"type\":\"dhoo\"}]}";
 
         Mockito.when(httpResponse.getStatusCode()).thenReturn(200);
         Mockito.when(httpResponse.getHeaders()).thenReturn(new HttpHeaders());
@@ -62,8 +64,15 @@ public final class IpPrefixesListMockTests {
 
         PagedIterable<IpPrefix> response = manager.ipPrefixes().list(com.azure.core.util.Context.NONE);
 
-        Assertions.assertEquals("jmvl", response.iterator().next().location());
-        Assertions.assertEquals("giblkujrllf", response.iterator().next().tags().get("juid"));
-        Assertions.assertEquals("f", response.iterator().next().annotation());
+        Assertions.assertEquals("phlyyuahvyeikb", response.iterator().next().location());
+        Assertions.assertEquals("rurgbqaucpck", response.iterator().next().tags().get("jnohafwm"));
+        Assertions
+            .assertEquals(CommunityActionTypes.PERMIT, response.iterator().next().ipPrefixRules().get(0).action());
+        Assertions
+            .assertEquals(4323285940907635783L, response.iterator().next().ipPrefixRules().get(0).sequenceNumber());
+        Assertions.assertEquals("vzfznfgpb", response.iterator().next().ipPrefixRules().get(0).networkPrefix());
+        Assertions.assertEquals(Condition.RANGE, response.iterator().next().ipPrefixRules().get(0).condition());
+        Assertions.assertEquals("pympdjieask", response.iterator().next().ipPrefixRules().get(0).subnetMaskLength());
+        Assertions.assertEquals("qclnfusrgnoskkhb", response.iterator().next().annotation());
     }
 }

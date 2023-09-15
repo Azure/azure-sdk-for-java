@@ -249,7 +249,7 @@ public final class SchemasImpl {
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<ResponseBase<SchemasGetByIdHeaders, Flux<ByteBuffer>>> getByIdWithResponseAsync(String id) {
         final String accept =
-                "application/json; serialization=Avro, application/json; serialization=json, text/plain; charset=utf-8";
+                "application/json; serialization=Avro, application/json; serialization=json, text/plain; charset=utf-8, text/vnd.ms.protobuf";
         return FluxUtil.withContext(
                 context ->
                         service.getById(this.client.getEndpoint(), id, this.client.getApiVersion(), accept, context));
@@ -273,7 +273,7 @@ public final class SchemasImpl {
     public Mono<ResponseBase<SchemasGetByIdHeaders, Flux<ByteBuffer>>> getByIdWithResponseAsync(
             String id, Context context) {
         final String accept =
-                "application/json; serialization=Avro, application/json; serialization=json, text/plain; charset=utf-8";
+                "application/json; serialization=Avro, application/json; serialization=json, text/plain; charset=utf-8, text/vnd.ms.protobuf";
         return service.getById(this.client.getEndpoint(), id, this.client.getApiVersion(), accept, context);
     }
 
@@ -328,7 +328,7 @@ public final class SchemasImpl {
     @ServiceMethod(returns = ReturnType.SINGLE)
     public ResponseBase<SchemasGetByIdHeaders, BinaryData> getByIdWithResponse(String id, Context context) {
         final String accept =
-                "application/json; serialization=Avro, application/json; serialization=json, text/plain; charset=utf-8";
+                "application/json; serialization=Avro, application/json; serialization=json, text/plain; charset=utf-8, text/vnd.ms.protobuf";
         return service.getByIdSync(this.client.getEndpoint(), id, this.client.getApiVersion(), accept, context);
     }
 
@@ -581,7 +581,7 @@ public final class SchemasImpl {
     public Mono<ResponseBase<SchemasGetSchemaVersionHeaders, Flux<ByteBuffer>>> getSchemaVersionWithResponseAsync(
             String groupName, String schemaName, int schemaVersion) {
         final String accept =
-                "application/json; serialization=Avro, application/json; serialization=json, text/plain; charset=utf-8";
+                "application/json; serialization=Avro, application/json; serialization=json, text/plain; charset=utf-8, text/vnd.ms.protobuf";
         return FluxUtil.withContext(
                 context ->
                         service.getSchemaVersion(
@@ -614,7 +614,7 @@ public final class SchemasImpl {
     public Mono<ResponseBase<SchemasGetSchemaVersionHeaders, Flux<ByteBuffer>>> getSchemaVersionWithResponseAsync(
             String groupName, String schemaName, int schemaVersion, Context context) {
         final String accept =
-                "application/json; serialization=Avro, application/json; serialization=json, text/plain; charset=utf-8";
+                "application/json; serialization=Avro, application/json; serialization=json, text/plain; charset=utf-8, text/vnd.ms.protobuf";
         return service.getSchemaVersion(
                 this.client.getEndpoint(),
                 groupName,
@@ -686,7 +686,7 @@ public final class SchemasImpl {
     public ResponseBase<SchemasGetSchemaVersionHeaders, BinaryData> getSchemaVersionWithResponse(
             String groupName, String schemaName, int schemaVersion, Context context) {
         final String accept =
-                "application/json; serialization=Avro, application/json; serialization=json, text/plain; charset=utf-8";
+                "application/json; serialization=Avro, application/json; serialization=json, text/plain; charset=utf-8, text/vnd.ms.protobuf";
         return service.getSchemaVersionSync(
                 this.client.getEndpoint(),
                 groupName,
