@@ -18,8 +18,8 @@ public class GetAllTextBlocklists {
                         .credential(new AzureKeyCredential(Configuration.getGlobalConfiguration().get("API_KEY")))
                         .endpoint(Configuration.getGlobalConfiguration().get("ENDPOINT"))
                         .buildClient();
-        // BEGIN:com.azure.ai.contentsafety.generated.listtextblocklists.getalltextblocklists
+        // BEGIN:com.azure.ai.contentsafety.generated.listtextblocklists
         PagedIterable<TextBlocklist> response = contentSafetyClient.listTextBlocklists();
-        // END:com.azure.ai.contentsafety.generated.listtextblocklists.getalltextblocklists
+        // END:com.azure.ai.contentsafety.generated.listtextblocklists
     }
 }

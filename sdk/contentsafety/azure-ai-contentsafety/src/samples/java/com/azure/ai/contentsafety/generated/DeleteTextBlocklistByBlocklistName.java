@@ -16,8 +16,8 @@ public class DeleteTextBlocklistByBlocklistName {
                         .credential(new AzureKeyCredential(Configuration.getGlobalConfiguration().get("API_KEY")))
                         .endpoint(Configuration.getGlobalConfiguration().get("ENDPOINT"))
                         .buildClient();
-        // BEGIN:com.azure.ai.contentsafety.generated.deletetextblocklist.deletetextblocklistbyblocklistname
+        // BEGIN:com.azure.ai.contentsafety.generated.deletetextblocklist
         contentSafetyClient.deleteTextBlocklist("TestBlocklist");
-        // END:com.azure.ai.contentsafety.generated.deletetextblocklist.deletetextblocklistbyblocklistname
+        // END:com.azure.ai.contentsafety.generated.deletetextblocklist
     }
 }

@@ -20,12 +20,12 @@ public class AddBlockItemsToTextBlocklist {
                         .credential(new AzureKeyCredential(Configuration.getGlobalConfiguration().get("API_KEY")))
                         .endpoint(Configuration.getGlobalConfiguration().get("ENDPOINT"))
                         .buildClient();
-        // BEGIN:com.azure.ai.contentsafety.generated.addblockitems.addblockitemstotextblocklist
+        // BEGIN:com.azure.ai.contentsafety.generated.addblockitems
         AddBlockItemsResult response =
                 contentSafetyClient.addBlockItems(
                         "TestBlocklist",
                         new AddBlockItemsOptions(
                                 Arrays.asList(new TextBlockItemInfo("hate").setDescription("Hate word"))));
-        // END:com.azure.ai.contentsafety.generated.addblockitems.addblockitemstotextblocklist
+        // END:com.azure.ai.contentsafety.generated.addblockitems
     }
 }

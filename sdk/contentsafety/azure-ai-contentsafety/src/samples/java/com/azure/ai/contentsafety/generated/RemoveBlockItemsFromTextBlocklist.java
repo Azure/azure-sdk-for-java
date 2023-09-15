@@ -18,9 +18,9 @@ public class RemoveBlockItemsFromTextBlocklist {
                         .credential(new AzureKeyCredential(Configuration.getGlobalConfiguration().get("API_KEY")))
                         .endpoint(Configuration.getGlobalConfiguration().get("ENDPOINT"))
                         .buildClient();
-        // BEGIN:com.azure.ai.contentsafety.generated.removeblockitems.removeblockitemsfromtextblocklist
+        // BEGIN:com.azure.ai.contentsafety.generated.removeblockitems
         contentSafetyClient.removeBlockItems(
                 "TestBlocklist", new RemoveBlockItemsOptions(Arrays.asList("9511969e-f1e3-4604-9127-05ee16c509ec")));
-        // END:com.azure.ai.contentsafety.generated.removeblockitems.removeblockitemsfromtextblocklist
+        // END:com.azure.ai.contentsafety.generated.removeblockitems
     }
 }

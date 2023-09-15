@@ -17,8 +17,8 @@ public class GetTextBlocklistByBlocklistName {
                         .credential(new AzureKeyCredential(Configuration.getGlobalConfiguration().get("API_KEY")))
                         .endpoint(Configuration.getGlobalConfiguration().get("ENDPOINT"))
                         .buildClient();
-        // BEGIN:com.azure.ai.contentsafety.generated.gettextblocklist.gettextblocklistbyblocklistname
+        // BEGIN:com.azure.ai.contentsafety.generated.gettextblocklist
         TextBlocklist response = contentSafetyClient.getTextBlocklist("TestBlocklist");
-        // END:com.azure.ai.contentsafety.generated.gettextblocklist.gettextblocklistbyblocklistname
+        // END:com.azure.ai.contentsafety.generated.gettextblocklist
     }
 }

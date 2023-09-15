@@ -17,9 +17,9 @@ public class GetBlockItemByBlocklistNameAndBlockItemId {
                         .credential(new AzureKeyCredential(Configuration.getGlobalConfiguration().get("API_KEY")))
                         .endpoint(Configuration.getGlobalConfiguration().get("ENDPOINT"))
                         .buildClient();
-        // BEGIN:com.azure.ai.contentsafety.generated.gettextblocklistitem.getblockitembyblocklistnameandblockitemid
+        // BEGIN:com.azure.ai.contentsafety.generated.gettextblocklistitem
         TextBlockItem response =
                 contentSafetyClient.getTextBlocklistItem("TestBlocklist", "9511969e-f1e3-4604-9127-05ee16c509ec");
-        // END:com.azure.ai.contentsafety.generated.gettextblocklistitem.getblockitembyblocklistnameandblockitemid
+        // END:com.azure.ai.contentsafety.generated.gettextblocklistitem
     }
 }
