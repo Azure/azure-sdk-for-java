@@ -8,6 +8,7 @@ import com.azure.core.http.HttpClient;
 import com.azure.core.http.policy.FixedDelay;
 import com.azure.core.http.policy.HttpPipelinePolicy;
 import com.azure.core.http.policy.RetryPolicy;
+import com.azure.core.test.InterceptorManager;
 import com.azure.core.test.TestMode;
 import com.azure.core.test.TestProxyTestBase;
 import com.azure.core.test.http.AssertingHttpClientBuilder;
@@ -114,7 +115,7 @@ public abstract class SearchTestBase extends TestProxyTestBase {
         SearchIndexClientBuilder builder = new SearchIndexClientBuilder()
             .endpoint(ENDPOINT)
             .credential(new AzureKeyCredential(API_KEY))
-            .httpClient(getHttpClient(true, isSync));
+            .httpClient(getHttpClient(true, interceptorManager, isSync));
 
         if (interceptorManager.isPlaybackMode()) {
             addPolicies(builder);
@@ -135,7 +136,7 @@ public abstract class SearchTestBase extends TestProxyTestBase {
         SearchIndexerClientBuilder builder = new SearchIndexerClientBuilder()
             .endpoint(ENDPOINT)
             .credential(new AzureKeyCredential(API_KEY))
-            .httpClient(getHttpClient(true, isSync));
+            .httpClient(getHttpClient(true, interceptorManager, isSync));
 
         addPolicies(builder, policies);
 
@@ -182,12 +183,13 @@ public abstract class SearchTestBase extends TestProxyTestBase {
         return getSearchClientBuilderHelper(indexName, false, isSync);
     }
 
-    private SearchClientBuilder getSearchClientBuilderHelper(String indexName, boolean wrapWithAssertingClient, boolean isSync) {
+    private SearchClientBuilder getSearchClientBuilderHelper(String indexName, boolean wrapWithAssertingClient,
+        boolean isSync) {
         SearchClientBuilder builder = new SearchClientBuilder()
             .endpoint(ENDPOINT)
             .indexName(indexName)
             .credential(new AzureKeyCredential(API_KEY))
-            .httpClient(getHttpClient(wrapWithAssertingClient, isSync));
+            .httpClient(getHttpClient(wrapWithAssertingClient, interceptorManager, isSync));
 
         if (interceptorManager.isPlaybackMode()) {
             return builder;
@@ -202,10 +204,10 @@ public abstract class SearchTestBase extends TestProxyTestBase {
         return builder;
     }
 
-    private HttpClient getHttpClient(boolean wrapWithAssertingClient, boolean isSync) {
-        HttpClient httpClient = (interceptorManager.isPlaybackMode())
-            ? interceptorManager.getPlaybackClient()
-            : HttpClient.createDefault();
+    private static HttpClient getHttpClient(boolean wrapWithAssertingClient, InterceptorManager interceptorManager,
+        boolean isSync) {
+        HttpClient httpClient = interceptorManager.isPlaybackMode()
+            ? interceptorManager.getPlaybackClient() : HttpClient.createDefault();
 
         if (wrapWithAssertingClient) {
             if (!isSync) {
