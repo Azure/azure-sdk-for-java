@@ -198,7 +198,9 @@ System.out.println("Violence severity: " + response.getViolenceResult().getSever
 #### Create or update text blocklist
 ```java com.azure.ai.contentsafety.createtextblocklist
 String blocklistName = "TestBlocklist";
-BinaryData resource = BinaryData.fromString("{\"description\":\"Test Blocklist\"}");
+Map<String, String> description = new HashMap<>();
+description.put("description", "Test Blocklist");
+BinaryData resource = BinaryData.fromObject(description);
 RequestOptions requestOptions = new RequestOptions();
 Response<BinaryData> response =
     contentSafetyClient.createOrUpdateTextBlocklistWithResponse(blocklistName, resource, requestOptions);
