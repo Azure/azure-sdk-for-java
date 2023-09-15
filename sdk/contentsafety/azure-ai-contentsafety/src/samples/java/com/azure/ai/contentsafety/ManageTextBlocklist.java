@@ -21,9 +21,7 @@ import com.azure.core.http.rest.Response;
 import com.azure.core.util.BinaryData;
 import com.azure.core.util.Configuration;
 
-import java.util.ArrayList;
-import java.util.Arrays;
-import java.util.List;
+import java.util.*;
 
 public class ManageTextBlocklist {
     public static void main(String[] args) {
@@ -38,7 +36,9 @@ public class ManageTextBlocklist {
 
         // BEGIN:com.azure.ai.contentsafety.createtextblocklist
         String blocklistName = "TestBlocklist";
-        BinaryData resource = BinaryData.fromString("{\"description\":\"Test Blocklist\"}");
+        Map<String, String> description = new HashMap<>();
+        description.put("description", "Test Blocklist");
+        BinaryData resource = BinaryData.fromObject(description);
         RequestOptions requestOptions = new RequestOptions();
         Response<BinaryData> response =
             contentSafetyClient.createOrUpdateTextBlocklistWithResponse(blocklistName, resource, requestOptions);
