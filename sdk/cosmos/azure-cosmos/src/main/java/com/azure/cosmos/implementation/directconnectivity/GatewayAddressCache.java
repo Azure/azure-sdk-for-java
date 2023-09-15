@@ -22,6 +22,7 @@ import com.azure.cosmos.implementation.JavaStreamUtils;
 import com.azure.cosmos.implementation.MetadataDiagnosticsContext;
 import com.azure.cosmos.implementation.MetadataDiagnosticsContext.MetadataDiagnostics;
 import com.azure.cosmos.implementation.MetadataDiagnosticsContext.MetadataType;
+import com.azure.cosmos.implementation.MetadataRequestRetryPolicy;
 import com.azure.cosmos.implementation.OpenConnectionResponse;
 import com.azure.cosmos.implementation.OperationType;
 import com.azure.cosmos.implementation.PartitionKeyRange;
@@ -326,6 +327,18 @@ public class GatewayAddressCache implements IAddressCache {
         String collectionRid,
         List<String> partitionKeyRangeIds,
         boolean forceRefresh) {
+
+        MetadataRequestRetryPolicy metadataRequestRetryPolicy = new MetadataRequestRetryPolicy(globalEndpointManager);
+        metadataRequestRetryPolicy.onBeforeSendRequest(request);
+
+        return BackoffRetryUtility.executeRetry(() -> this.getServerAddressesViaGatewayInternalAsync(
+            request, collectionRid, partitionKeyRangeIds, forceRefresh), metadataRequestRetryPolicy);
+    }
+
+    private Mono<List<Address>> getServerAddressesViaGatewayInternalAsync(RxDocumentServiceRequest request,
+                                                                          String collectionRid,
+                                                                          List<String> partitionKeyRangeIds,
+                                                                          boolean forceRefresh) {
         if (logger.isDebugEnabled()) {
             logger.debug("getServerAddressesViaGatewayAsync collectionRid {}, partitionKeyRangeIds {}", collectionRid,
                 JavaStreamUtils.toString(partitionKeyRangeIds, ","));
@@ -926,6 +939,13 @@ public class GatewayAddressCache implements IAddressCache {
             }
 
             for (Uri addressToBeValidated : addressesNeedToValidation) {
+
+                // replica validation should be triggered for an address with Unknown health status only when
+                // the address is used by a container / collection which was part of the warm up flow
+                if (addressToBeValidated.getHealthStatus() == Uri.HealthStatus.Unknown
+                    && !this.proactiveOpenConnectionsProcessor.isCollectionRidUnderOpenConnectionsFlow(collectionRid)) {
+                        continue;
+                }
 
                 Mono.fromFuture(this.proactiveOpenConnectionsProcessor
                         .submitOpenConnectionTaskOutsideLoop(

@@ -170,9 +170,7 @@ public class ClientRetryPolicy extends DocumentClientRetryPolicy {
         }
 
         //Meta data request check
-        boolean isMetaDataRequest = (request.getOperationType() != OperationType.ExecuteJavaScript
-            && request.getResourceType() == ResourceType.StoredProcedure)
-            || request.getResourceType() != ResourceType.Document;
+        boolean isMetaDataRequest = request.isMetadataRequest();
 
         //Meta Data Read
         if(isMetaDataRequest && request.isReadOnly()) {
