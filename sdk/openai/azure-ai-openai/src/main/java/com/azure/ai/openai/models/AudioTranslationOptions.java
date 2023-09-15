@@ -49,9 +49,7 @@ public final class AudioTranslationOptions {
     private Double temperature;
 
     /*
-     * The model name to provide as part of this transcription request.
-     * Not applicable to Azure OpenAI, where deployment information should be included in the Azure
-     * resource URI that's connected to.
+     * The model to use for this transcription request.
      */
     @Generated
     @JsonProperty(value = "model")
@@ -154,8 +152,7 @@ public final class AudioTranslationOptions {
     }
 
     /**
-     * Get the model property: The model name to provide as part of this transcription request. Not applicable to Azure
-     * OpenAI, where deployment information should be included in the Azure resource URI that's connected to.
+     * Get the model property: The model to use for this transcription request.
      *
      * @return the model value.
      */
@@ -165,8 +162,7 @@ public final class AudioTranslationOptions {
     }
 
     /**
-     * Set the model property: The model name to provide as part of this transcription request. Not applicable to Azure
-     * OpenAI, where deployment information should be included in the Azure resource URI that's connected to.
+     * Set the model property: The model to use for this transcription request.
      *
      * @param model the model value to set.
      * @return the AudioTranslationOptions object itself.

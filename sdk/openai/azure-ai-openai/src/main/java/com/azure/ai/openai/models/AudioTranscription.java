@@ -44,7 +44,7 @@ public final class AudioTranscription {
     private Double duration;
 
     /*
-     * A collection of detailed information about .
+     * A collection of information about the timing, probabilities, and other detail of each processed audio segment.
      */
     @Generated
     @JsonProperty(value = "segments")
@@ -107,7 +107,8 @@ public final class AudioTranscription {
     }
 
     /**
-     * Get the segments property: A collection of detailed information about .
+     * Get the segments property: A collection of information about the timing, probabilities, and other detail of each
+     * processed audio segment.
      *
      * @return the segments value.
      */
