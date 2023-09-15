@@ -20,7 +20,7 @@ import java.util.concurrent.atomic.AtomicReference;
 
 /**
  * <p>Authorization Code authentication in Azure is a type of authentication mechanism that allows users to
- * authenticate with <a href="https://learn.microsoft.com/en-us/azure/active-directory/fundamentals/">Azure Active
+ * authenticate with <a href="https://learn.microsoft.com/azure/active-directory/fundamentals/">Azure Active
  * Directory (Azure AD)</a> and obtain an authorization code that can be used to request an access token to access
  * Azure resources. It is a widely used authentication mechanism and is supported by a wide range of Azure services
  * and applications. It provides a secure and scalable way to authenticate users and grant them access to Azure
@@ -102,10 +102,8 @@ public class AuthorizationCodeCredential implements TokenCredential {
                                         identityClient.getTenantId(), identityClient.getClientId())));
                    if (request.isCaeEnabled()) {
                        isCaeEnabledRequestCached = true;
-                       isCaeDisabledRequestCached = false;
                    } else {
                        isCaeDisabledRequestCached = true;
-                       isCaeEnabledRequestCached = false;
                    }
                    return (AccessToken) msalToken;
                })

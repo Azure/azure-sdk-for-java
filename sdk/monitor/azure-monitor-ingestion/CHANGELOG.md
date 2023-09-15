@@ -1,14 +1,25 @@
 # Release History
 
-## 1.1.0-beta.1 (Unreleased)
+## 1.1.0 (2023-09-13)
 
 ### Features Added
-
-### Breaking Changes
-
-### Bugs Fixed
+- `LogsIngestionClient` now implements `AutoCloseable` interface and can be used in try-with-resources block.
 
 ### Other Changes
+
+#### Dependency Updates
+
+- Upgraded `azure-core` from `1.42.0` to version `1.43.0`.
+- Upgraded `azure-core-http-netty` from `1.13.6` to version `1.13.7`.
+
+## 1.0.6 (2023-08-18)
+
+### Other Changes
+
+#### Dependency Updates
+
+- Upgraded `azure-core` from `1.41.0` to version `1.42.0`.
+- Upgraded `azure-core-http-netty` from `1.13.5` to version `1.13.6`.
 
 ## 1.0.5 (2023-07-25)
 

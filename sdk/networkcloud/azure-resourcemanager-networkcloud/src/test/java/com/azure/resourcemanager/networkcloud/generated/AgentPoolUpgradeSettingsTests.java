@@ -12,14 +12,14 @@ public final class AgentPoolUpgradeSettingsTests {
     @org.junit.jupiter.api.Test
     public void testDeserialize() throws Exception {
         AgentPoolUpgradeSettings model =
-            BinaryData.fromString("{\"maxSurge\":\"bpodxunkbebxm\"}").toObject(AgentPoolUpgradeSettings.class);
-        Assertions.assertEquals("bpodxunkbebxm", model.maxSurge());
+            BinaryData.fromString("{\"maxSurge\":\"gvpgy\"}").toObject(AgentPoolUpgradeSettings.class);
+        Assertions.assertEquals("gvpgy", model.maxSurge());
     }
 
     @org.junit.jupiter.api.Test
     public void testSerialize() throws Exception {
-        AgentPoolUpgradeSettings model = new AgentPoolUpgradeSettings().withMaxSurge("bpodxunkbebxm");
+        AgentPoolUpgradeSettings model = new AgentPoolUpgradeSettings().withMaxSurge("gvpgy");
         model = BinaryData.fromObject(model).toObject(AgentPoolUpgradeSettings.class);
-        Assertions.assertEquals("bpodxunkbebxm", model.maxSurge());
+        Assertions.assertEquals("gvpgy", model.maxSurge());
     }
 }

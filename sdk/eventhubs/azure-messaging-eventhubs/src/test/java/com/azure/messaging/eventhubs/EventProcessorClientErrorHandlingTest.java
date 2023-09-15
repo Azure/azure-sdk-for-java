@@ -16,6 +16,7 @@ import com.azure.messaging.eventhubs.models.PartitionContext;
 import com.azure.messaging.eventhubs.models.PartitionEvent;
 import com.azure.messaging.eventhubs.models.PartitionOwnership;
 import com.azure.messaging.eventhubs.models.ReceiveOptions;
+import org.junit.jupiter.api.AfterEach;
 import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
@@ -28,7 +29,6 @@ import reactor.core.publisher.Flux;
 import reactor.core.publisher.Mono;
 
 import java.time.Duration;
-import java.util.HashMap;
 import java.util.List;
 import java.util.concurrent.CountDownLatch;
 import java.util.concurrent.TimeUnit;
@@ -61,11 +61,13 @@ public class EventProcessorClientErrorHandlingTest {
     @Mock
     private Meter meter;
 
+    private EventProcessorClientOptions processorOptions = new EventProcessorClientOptions();
     private CountDownLatch countDownLatch;
+    private AutoCloseable mocksCloseable;
 
     @BeforeEach
     public void setup() {
-        MockitoAnnotations.initMocks(this);
+        mocksCloseable = MockitoAnnotations.openMocks(this);
         when(eventHubClientBuilder.buildAsyncClient()).thenReturn(eventHubAsyncClient);
         when(eventHubAsyncClient.getPartitionIds()).thenReturn(Flux.just("1", "2", "3"));
         when(eventHubAsyncClient.getFullyQualifiedNamespace()).thenReturn("test-ns");
@@ -73,17 +75,35 @@ public class EventProcessorClientErrorHandlingTest {
         when(eventHubAsyncClient.getIdentifier()).thenReturn("my-client-identifier");
     }
 
+    @AfterEach
+    public void afterEach() throws Exception {
+        if (mocksCloseable != null) {
+            mocksCloseable.close();
+        }
+    }
+
     @ParameterizedTest(name = "{displayName} with [{arguments}]")
     @MethodSource("checkpointStoreSupplier")
     public void testCheckpointStoreErrors(CheckpointStore checkpointStore) throws InterruptedException {
         countDownLatch = new CountDownLatch(1);
-        EventProcessorClient client = new EventProcessorClient(eventHubClientBuilder, "cg",
-            () -> new TestPartitionProcessor(), checkpointStore, false, errorContext -> {
+
+        processorOptions.setConsumerGroup("cg")
+            .setTrackLastEnqueuedEventProperties(false)
+            .setInitialEventPositionProvider(null)
+            .setMaxBatchSize(1)
+            .setMaxWaitTime(null)
+            .setBatchReceiveMode(false)
+            .setLoadBalancerUpdateInterval(Duration.ofSeconds(10))
+            .setPartitionOwnershipExpirationInterval(Duration.ofMinutes(1))
+            .setLoadBalancingStrategy(LoadBalancingStrategy.BALANCED);
+
+        EventProcessorClient client = new EventProcessorClient(eventHubClientBuilder,
+            () -> new TestPartitionProcessor(), checkpointStore, errorContext -> {
                 countDownLatch.countDown();
                 Assertions.assertEquals("NONE", errorContext.getPartitionContext().getPartitionId());
                 Assertions.assertEquals("cg", errorContext.getPartitionContext().getConsumerGroup());
                 Assertions.assertTrue(errorContext.getThrowable() instanceof IllegalStateException);
-        }, new HashMap<>(), 1, null, false, Duration.ofSeconds(10), Duration.ofMinutes(1), LoadBalancingStrategy.BALANCED, tracer);
+        }, tracer, processorOptions);
         client.start();
         boolean completed = countDownLatch.await(3, TimeUnit.SECONDS);
         try {
@@ -101,10 +121,20 @@ public class EventProcessorClientErrorHandlingTest {
         when(eventHubAsyncClient.createConsumer("cg", DEFAULT_PREFETCH_COUNT, true)).thenReturn(eventHubConsumer);
         when(eventHubConsumer.receiveFromPartition(anyString(), any(EventPosition.class), any(ReceiveOptions.class)))
             .thenReturn(Flux.just(getEvent(eventData1)));
-        EventProcessorClient client = new EventProcessorClient(eventHubClientBuilder, "cg",
-            () -> new BadProcessEventHandler(countDownLatch), new SampleCheckpointStore(), false,
-            errorContext -> { }, new HashMap<>(), 1, null, false, Duration.ofSeconds(10), Duration.ofMinutes(1),
-            LoadBalancingStrategy.BALANCED, tracer);
+
+        processorOptions.setConsumerGroup("cg")
+            .setTrackLastEnqueuedEventProperties(false)
+            .setInitialEventPositionProvider(null)
+            .setMaxBatchSize(1)
+            .setMaxWaitTime(null)
+            .setBatchReceiveMode(false)
+            .setLoadBalancerUpdateInterval(Duration.ofSeconds(10))
+            .setPartitionOwnershipExpirationInterval(Duration.ofMinutes(1))
+            .setLoadBalancingStrategy(LoadBalancingStrategy.BALANCED);
+
+        EventProcessorClient client = new EventProcessorClient(eventHubClientBuilder,
+            () -> new BadProcessEventHandler(countDownLatch), new SampleCheckpointStore(),
+            errorContext -> { }, tracer, processorOptions);
         client.start();
         boolean completed = countDownLatch.await(3, TimeUnit.SECONDS);
         client.stop();
@@ -117,10 +147,20 @@ public class EventProcessorClientErrorHandlingTest {
         when(eventHubAsyncClient.createConsumer("cg", DEFAULT_PREFETCH_COUNT, true)).thenReturn(eventHubConsumer);
         when(eventHubConsumer.receiveFromPartition(anyString(), any(EventPosition.class), any(ReceiveOptions.class)))
             .thenReturn(Flux.just(getEvent(eventData1)));
-        EventProcessorClient client = new EventProcessorClient(eventHubClientBuilder, "cg",
-            () -> new BadInitHandler(countDownLatch), new SampleCheckpointStore(), false,
-            errorContext -> { }, new HashMap<>(), 1, null, false, Duration.ofSeconds(10), Duration.ofMinutes(1),
-            LoadBalancingStrategy.BALANCED, tracer);
+
+        processorOptions.setConsumerGroup("cg")
+            .setTrackLastEnqueuedEventProperties(false)
+            .setInitialEventPositionProvider(null)
+            .setMaxBatchSize(1)
+            .setMaxWaitTime(null)
+            .setBatchReceiveMode(false)
+            .setLoadBalancerUpdateInterval(Duration.ofSeconds(10))
+            .setPartitionOwnershipExpirationInterval(Duration.ofMinutes(1))
+            .setLoadBalancingStrategy(LoadBalancingStrategy.BALANCED);
+
+        EventProcessorClient client = new EventProcessorClient(eventHubClientBuilder,
+            () -> new BadInitHandler(countDownLatch), new SampleCheckpointStore(),
+            errorContext -> { }, tracer, processorOptions);
         client.start();
         boolean completed = countDownLatch.await(3, TimeUnit.SECONDS);
         client.stop();
@@ -134,10 +174,21 @@ public class EventProcessorClientErrorHandlingTest {
         when(eventHubAsyncClient.createConsumer("cg", DEFAULT_PREFETCH_COUNT, true)).thenReturn(eventHubConsumer);
         when(eventHubConsumer.receiveFromPartition(anyString(), any(EventPosition.class), any(ReceiveOptions.class)))
             .thenReturn(Flux.just(getEvent(eventData1)));
-        EventProcessorClient client = new EventProcessorClient(eventHubClientBuilder, "cg",
-            () -> new BadCloseHandler(countDownLatch), new SampleCheckpointStore(), false,
-            errorContext -> { }, new HashMap<>(), 1, null, false, Duration.ofSeconds(10), Duration.ofMinutes(1),
-            LoadBalancingStrategy.BALANCED, tracer);
+
+        processorOptions.setConsumerGroup("cg")
+            .setTrackLastEnqueuedEventProperties(false)
+            .setInitialEventPositionProvider(null)
+            .setMaxBatchSize(1)
+            .setMaxWaitTime(null)
+            .setBatchReceiveMode(false)
+            .setLoadBalancerUpdateInterval(Duration.ofSeconds(10))
+            .setPartitionOwnershipExpirationInterval(Duration.ofMinutes(1))
+            .setLoadBalancingStrategy(LoadBalancingStrategy.BALANCED);
+
+        EventProcessorClient client = new EventProcessorClient(eventHubClientBuilder,
+            () -> new BadCloseHandler(countDownLatch), new SampleCheckpointStore(),
+            errorContext -> { }, tracer, processorOptions);
+
         client.start();
         boolean completed = countDownLatch.await(3, TimeUnit.SECONDS);
         client.stop();

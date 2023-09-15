@@ -10,7 +10,7 @@ import java.util.Arrays;
 /** Samples for VirtualMachineScaleSets Start. */
 public final class VirtualMachineScaleSetsStartSamples {
     /*
-     * x-ms-original-file: specification/compute/resource-manager/Microsoft.Compute/ComputeRP/stable/2023-03-01/examples/virtualMachineScaleSetExamples/VirtualMachineScaleSet_Start_MinimumSet_Gen.json
+     * x-ms-original-file: specification/compute/resource-manager/Microsoft.Compute/ComputeRP/stable/2023-07-01/examples/virtualMachineScaleSetExamples/VirtualMachineScaleSet_Start_MinimumSet_Gen.json
      */
     /**
      * Sample code: VirtualMachineScaleSet_Start_MinimumSet_Gen.
@@ -27,7 +27,7 @@ public final class VirtualMachineScaleSetsStartSamples {
     }
 
     /*
-     * x-ms-original-file: specification/compute/resource-manager/Microsoft.Compute/ComputeRP/stable/2023-03-01/examples/virtualMachineScaleSetExamples/VirtualMachineScaleSet_Start_MaximumSet_Gen.json
+     * x-ms-original-file: specification/compute/resource-manager/Microsoft.Compute/ComputeRP/stable/2023-07-01/examples/virtualMachineScaleSetExamples/VirtualMachineScaleSet_Start_MaximumSet_Gen.json
      */
     /**
      * Sample code: VirtualMachineScaleSet_Start_MaximumSet_Gen.

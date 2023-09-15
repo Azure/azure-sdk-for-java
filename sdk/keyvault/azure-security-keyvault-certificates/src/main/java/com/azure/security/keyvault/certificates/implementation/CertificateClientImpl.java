@@ -87,8 +87,7 @@ public class CertificateClientImpl {
      * @param version {@link CertificateServiceVersion} of the service to be used when making requests.
      */
     public CertificateClientImpl(String vaultUrl, HttpPipeline pipeline, CertificateServiceVersion version) {
-        Objects.requireNonNull(vaultUrl,
-            KeyVaultErrorCodeStrings.getErrorString(KeyVaultErrorCodeStrings.VAULT_END_POINT_REQUIRED));
+        Objects.requireNonNull(vaultUrl, KeyVaultErrorCodeStrings.VAULT_END_POINT_REQUIRED);
 
         this.vaultUrl = vaultUrl;
         this.service = RestProxy.create(CertificateService.class, pipeline);
@@ -477,7 +476,7 @@ public class CertificateClientImpl {
                                                                              Context context);
 
         @Post("certificates/{certificate-name}/pending/merge")
-        @ExpectedResponses({200})
+        @ExpectedResponses({201})
         @UnexpectedResponseExceptionType(HttpResponseException.class)
         Mono<Response<KeyVaultCertificateWithPolicy>> mergeCertificateAsync(@HostParam("url") String url,
                                                                             @PathParam("certificate-name") String certificateName,
@@ -859,7 +858,7 @@ public class CertificateClientImpl {
                                                                   Context context);
 
         @Post("certificates/{certificate-name}/pending/merge")
-        @ExpectedResponses({200})
+        @ExpectedResponses({201})
         @UnexpectedResponseExceptionType(HttpResponseException.class)
         Response<KeyVaultCertificateWithPolicy> mergeCertificate(@HostParam("url") String url,
                                                                  @PathParam("certificate-name") String certificateName,

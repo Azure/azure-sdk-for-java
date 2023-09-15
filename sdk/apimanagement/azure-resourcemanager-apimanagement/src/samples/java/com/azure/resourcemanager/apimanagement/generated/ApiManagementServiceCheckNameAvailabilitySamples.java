@@ -4,13 +4,12 @@
 
 package com.azure.resourcemanager.apimanagement.generated;
 
-import com.azure.core.util.Context;
 import com.azure.resourcemanager.apimanagement.models.ApiManagementServiceCheckNameAvailabilityParameters;
 
 /** Samples for ApiManagementService CheckNameAvailability. */
 public final class ApiManagementServiceCheckNameAvailabilitySamples {
     /*
-     * x-ms-original-file: specification/apimanagement/resource-manager/Microsoft.ApiManagement/stable/2021-08-01/examples/ApiManagementServiceCheckNameAvailability.json
+     * x-ms-original-file: specification/apimanagement/resource-manager/Microsoft.ApiManagement/stable/2022-08-01/examples/ApiManagementServiceCheckNameAvailability.json
      */
     /**
      * Sample code: ApiManagementServiceCheckNameAvailability.
@@ -22,6 +21,7 @@ public final class ApiManagementServiceCheckNameAvailabilitySamples {
         manager
             .apiManagementServices()
             .checkNameAvailabilityWithResponse(
-                new ApiManagementServiceCheckNameAvailabilityParameters().withName("apimService1"), Context.NONE);
+                new ApiManagementServiceCheckNameAvailabilityParameters().withName("apimService1"),
+                com.azure.core.util.Context.NONE);
     }
 }

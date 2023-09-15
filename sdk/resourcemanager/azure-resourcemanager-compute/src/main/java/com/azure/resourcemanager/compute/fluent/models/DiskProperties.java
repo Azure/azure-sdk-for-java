@@ -228,6 +228,13 @@ public final class DiskProperties {
     @JsonProperty(value = "optimizedForFrequentAttach")
     private Boolean optimizedForFrequentAttach;
 
+    /*
+     * The UTC time when the ownership state of the disk was last changed i.e., the time the disk was last attached or
+     * detached from a VM or the time when the VM to which the disk was attached was deallocated or started.
+     */
+    @JsonProperty(value = "LastOwnershipUpdateTime", access = JsonProperty.Access.WRITE_ONLY)
+    private OffsetDateTime lastOwnershipUpdateTime;
+
     /** Creates an instance of DiskProperties class. */
     public DiskProperties() {
     }
@@ -805,6 +812,17 @@ public final class DiskProperties {
     public DiskProperties withOptimizedForFrequentAttach(Boolean optimizedForFrequentAttach) {
         this.optimizedForFrequentAttach = optimizedForFrequentAttach;
         return this;
+    }
+
+    /**
+     * Get the lastOwnershipUpdateTime property: The UTC time when the ownership state of the disk was last changed
+     * i.e., the time the disk was last attached or detached from a VM or the time when the VM to which the disk was
+     * attached was deallocated or started.
+     *
+     * @return the lastOwnershipUpdateTime value.
+     */
+    public OffsetDateTime lastOwnershipUpdateTime() {
+        return this.lastOwnershipUpdateTime;
     }
 
     /**

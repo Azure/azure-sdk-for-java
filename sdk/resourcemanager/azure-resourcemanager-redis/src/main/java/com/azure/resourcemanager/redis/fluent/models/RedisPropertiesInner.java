@@ -12,6 +12,7 @@ import com.azure.resourcemanager.redis.models.RedisInstanceDetails;
 import com.azure.resourcemanager.redis.models.RedisLinkedServer;
 import com.azure.resourcemanager.redis.models.Sku;
 import com.azure.resourcemanager.redis.models.TlsVersion;
+import com.azure.resourcemanager.redis.models.UpdateChannel;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import java.util.List;
 import java.util.Map;
@@ -226,6 +227,13 @@ public final class RedisPropertiesInner extends RedisCreateProperties {
     @Override
     public RedisPropertiesInner withPublicNetworkAccess(PublicNetworkAccess publicNetworkAccess) {
         super.withPublicNetworkAccess(publicNetworkAccess);
+        return this;
+    }
+
+    /** {@inheritDoc} */
+    @Override
+    public RedisPropertiesInner withUpdateChannel(UpdateChannel updateChannel) {
+        super.withUpdateChannel(updateChannel);
         return this;
     }
 

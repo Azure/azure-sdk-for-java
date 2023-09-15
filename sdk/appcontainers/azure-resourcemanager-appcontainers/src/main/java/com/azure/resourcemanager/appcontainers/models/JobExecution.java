@@ -45,7 +45,7 @@ public interface JobExecution {
     OffsetDateTime startTime();
 
     /**
-     * Gets the endTime property: Job execution start time.
+     * Gets the endTime property: Job execution end time.
      *
      * @return the endTime value.
      */

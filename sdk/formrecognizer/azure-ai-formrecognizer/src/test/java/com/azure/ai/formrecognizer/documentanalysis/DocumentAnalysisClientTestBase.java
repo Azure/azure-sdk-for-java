@@ -37,7 +37,7 @@ import java.nio.charset.StandardCharsets;
 import java.time.Duration;
 import java.time.LocalDate;
 import java.time.LocalTime;
-import java.util.Arrays;
+import java.util.Collections;
 import java.util.List;
 import java.util.Map;
 import java.util.Objects;
@@ -112,7 +112,7 @@ public abstract class DocumentAnalysisClientTestBase extends TestProxyTestBase {
     }
 
     private void setMatchers() {
-        interceptorManager.addMatchers(Arrays.asList(new BodilessMatcher()));
+        interceptorManager.addMatchers(Collections.singletonList(new BodilessMatcher()));
     }
     public DocumentModelAdministrationClientBuilder getDocumentModelAdminClientBuilder(HttpClient httpClient,
                                                                                 DocumentAnalysisServiceVersion serviceVersion,

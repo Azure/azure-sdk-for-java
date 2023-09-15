@@ -4,13 +4,12 @@
 
 package com.azure.resourcemanager.apimanagement.generated;
 
-import com.azure.core.util.Context;
 import com.azure.resourcemanager.apimanagement.models.OpenidConnectProviderContract;
 
 /** Samples for OpenIdConnectProvider Update. */
 public final class OpenIdConnectProviderUpdateSamples {
     /*
-     * x-ms-original-file: specification/apimanagement/resource-manager/Microsoft.ApiManagement/stable/2021-08-01/examples/ApiManagementUpdateOpenIdConnectProvider.json
+     * x-ms-original-file: specification/apimanagement/resource-manager/Microsoft.ApiManagement/stable/2022-08-01/examples/ApiManagementUpdateOpenIdConnectProvider.json
      */
     /**
      * Sample code: ApiManagementUpdateOpenIdConnectProvider.
@@ -22,8 +21,14 @@ public final class OpenIdConnectProviderUpdateSamples {
         OpenidConnectProviderContract resource =
             manager
                 .openIdConnectProviders()
-                .getWithResponse("rg1", "apimService1", "templateOpenIdConnect2", Context.NONE)
+                .getWithResponse("rg1", "apimService1", "templateOpenIdConnect2", com.azure.core.util.Context.NONE)
                 .getValue();
-        resource.update().withClientSecret("updatedsecret").withIfMatch("*").apply();
+        resource
+            .update()
+            .withClientSecret("updatedsecret")
+            .withUseInTestConsole(false)
+            .withUseInApiDocumentation(true)
+            .withIfMatch("*")
+            .apply();
     }
 }

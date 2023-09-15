@@ -12,13 +12,13 @@ import com.fasterxml.jackson.annotation.JsonProperty;
 @Fluent
 public final class ClassifyDocumentRequest {
     /*
-     * Document URL to classify. Either urlSource or base64Source must be specified.
+     * Document URL to classify.  Either urlSource or base64Source must be specified.
      */
     @JsonProperty(value = "urlSource")
     private String urlSource;
 
     /*
-     * Base64 encoding of the document to classify. Either urlSource or base64Source must be specified.
+     * Base64 encoding of the document to classify.  Either urlSource or base64Source must be specified.
      */
     @JsonProperty(value = "base64Source")
     private byte[] base64Source;

@@ -6,6 +6,7 @@ import com.azure.core.credential.AzureKeyCredential;
 import com.azure.core.http.ProxyOptions;
 import com.azure.cosmos.BridgeInternal;
 import com.azure.cosmos.ConsistencyLevel;
+import com.azure.cosmos.CosmosContainerProactiveInitConfig;
 import com.azure.cosmos.CosmosDiagnostics;
 import com.azure.cosmos.CosmosEndToEndOperationLatencyPolicyConfig;
 import com.azure.cosmos.SessionRetryOptions;
@@ -79,6 +80,7 @@ public class RxDocumentClientImplTest {
     private IRetryPolicyFactory resetSessionTokenRetryPolicyMock;
     private CosmosEndToEndOperationLatencyPolicyConfig endToEndOperationLatencyPolicyConfig;
     private SessionRetryOptions sessionRetryOptionsMock;
+    private CosmosContainerProactiveInitConfig containerProactiveInitConfigMock;
 
     @BeforeClass(groups = "unit")
     public void setUp() {
@@ -100,6 +102,7 @@ public class RxDocumentClientImplTest {
         this.resetSessionTokenRetryPolicyMock = Mockito.mock(IRetryPolicyFactory.class);
         this.endToEndOperationLatencyPolicyConfig = Mockito.mock(CosmosEndToEndOperationLatencyPolicyConfig.class);
         this.sessionRetryOptionsMock = Mockito.mock(SessionRetryOptions.class);
+        this.containerProactiveInitConfigMock = Mockito.mock(CosmosContainerProactiveInitConfig.class);
     }
 
     @Test(groups = {"unit"})
@@ -199,7 +202,7 @@ public class RxDocumentClientImplTest {
             .when(this.partitionKeyRangeCacheMock.tryLookupAsync(Mockito.any(), Mockito.any(), Mockito.any(), Mockito.any()))
             .thenReturn(Mono.just(dummyCollectionRoutingMap(epksPartitionKeyRangeMap)));
 
-        Mockito.when(this.resetSessionTokenRetryPolicyMock.getRequestPolicy()).thenReturn(dummyDocumentClientRetryPolicy());
+        Mockito.when(this.resetSessionTokenRetryPolicyMock.getRequestPolicy(null)).thenReturn(dummyDocumentClientRetryPolicy());
 
 
         // initialize object to be tested
@@ -220,7 +223,8 @@ public class RxDocumentClientImplTest {
             this.cosmosClientTelemetryConfigMock,
             this.clientCorrelationIdMock,
             this.endToEndOperationLatencyPolicyConfig,
-            this.sessionRetryOptionsMock);
+            this.sessionRetryOptionsMock,
+            this.containerProactiveInitConfigMock);
 
         ReflectionUtils.setCollectionCache(rxDocumentClient, this.collectionCacheMock);
         ReflectionUtils.setPartitionKeyRangeCache(rxDocumentClient, this.partitionKeyRangeCacheMock);

@@ -33,7 +33,7 @@ public final class WorkloadNetworksListDnsServicesMockTests {
         ArgumentCaptor<HttpRequest> httpRequest = ArgumentCaptor.forClass(HttpRequest.class);
 
         String responseStr =
-            "{\"value\":[{\"properties\":{\"displayName\":\"laxxulc\",\"dnsServiceIp\":\"sdosfjbjsvgjr\",\"defaultDnsZone\":\"r\",\"fqdnZones\":[\"cytdclxgccknfnwm\"],\"logLevel\":\"ERROR\",\"status\":\"FAILURE\",\"provisioningState\":\"Failed\",\"revision\":8264295614313814375},\"id\":\"ttzaefed\",\"name\":\"ihchrphkmcrjdqn\",\"type\":\"dfzpbgtgkylkdg\"}]}";
+            "{\"value\":[{\"properties\":{\"displayName\":\"qmjxlyyzglgouwtl\",\"dnsServiceIp\":\"jyuojqtobaxkjeyt\",\"defaultDnsZone\":\"lbfjkwr\",\"fqdnZones\":[\"kqbh\",\"y\",\"qunjqh\"],\"logLevel\":\"INFO\",\"status\":\"SUCCESS\",\"provisioningState\":\"Succeeded\",\"revision\":6042228062929468639},\"id\":\"kdk\",\"name\":\"fmjnnawtqa\",\"type\":\"pxuckpggq\"}]}";
 
         Mockito.when(httpResponse.getStatusCode()).thenReturn(200);
         Mockito.when(httpResponse.getHeaders()).thenReturn(new HttpHeaders());
@@ -62,13 +62,13 @@ public final class WorkloadNetworksListDnsServicesMockTests {
                     new AzureProfile("", "", AzureEnvironment.AZURE));
 
         PagedIterable<WorkloadNetworkDnsService> response =
-            manager.workloadNetworks().listDnsServices("aaeranokqgukk", "qnvb", com.azure.core.util.Context.NONE);
+            manager.workloadNetworks().listDnsServices("mhyreeudz", "av", com.azure.core.util.Context.NONE);
 
-        Assertions.assertEquals("laxxulc", response.iterator().next().displayName());
-        Assertions.assertEquals("sdosfjbjsvgjr", response.iterator().next().dnsServiceIp());
-        Assertions.assertEquals("r", response.iterator().next().defaultDnsZone());
-        Assertions.assertEquals("cytdclxgccknfnwm", response.iterator().next().fqdnZones().get(0));
-        Assertions.assertEquals(DnsServiceLogLevelEnum.ERROR, response.iterator().next().logLevel());
-        Assertions.assertEquals(8264295614313814375L, response.iterator().next().revision());
+        Assertions.assertEquals("qmjxlyyzglgouwtl", response.iterator().next().displayName());
+        Assertions.assertEquals("jyuojqtobaxkjeyt", response.iterator().next().dnsServiceIp());
+        Assertions.assertEquals("lbfjkwr", response.iterator().next().defaultDnsZone());
+        Assertions.assertEquals("kqbh", response.iterator().next().fqdnZones().get(0));
+        Assertions.assertEquals(DnsServiceLogLevelEnum.INFO, response.iterator().next().logLevel());
+        Assertions.assertEquals(6042228062929468639L, response.iterator().next().revision());
     }
 }

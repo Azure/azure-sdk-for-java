@@ -40,6 +40,10 @@ public final class MonitorResourceInner extends Resource {
     @JsonProperty(value = "identity")
     private IdentityProperties identity;
 
+    /** Creates an instance of MonitorResourceInner class. */
+    public MonitorResourceInner() {
+    }
+
     /**
      * Get the innerProperties property: The resource-specific properties for this resource.
      *

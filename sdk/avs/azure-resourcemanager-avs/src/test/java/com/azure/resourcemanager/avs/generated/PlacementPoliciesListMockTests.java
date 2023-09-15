@@ -33,7 +33,7 @@ public final class PlacementPoliciesListMockTests {
         ArgumentCaptor<HttpRequest> httpRequest = ArgumentCaptor.forClass(HttpRequest.class);
 
         String responseStr =
-            "{\"value\":[{\"properties\":{\"type\":\"PlacementPolicyProperties\",\"state\":\"Disabled\",\"displayName\":\"bpxuckpggqoweyi\",\"provisioningState\":\"Canceled\"},\"id\":\"lisn\",\"name\":\"wfl\",\"type\":\"qmp\"}]}";
+            "{\"value\":[{\"properties\":{\"type\":\"PlacementPolicyProperties\",\"state\":\"Enabled\",\"displayName\":\"gydlhqv\",\"provisioningState\":\"Canceled\"},\"id\":\"pxy\",\"name\":\"afiqgeaarbgjekg\",\"type\":\"klbyulidwcw\"}]}";
 
         Mockito.when(httpResponse.getStatusCode()).thenReturn(200);
         Mockito.when(httpResponse.getHeaders()).thenReturn(new HttpHeaders());
@@ -62,9 +62,11 @@ public final class PlacementPoliciesListMockTests {
                     new AzureProfile("", "", AzureEnvironment.AZURE));
 
         PagedIterable<PlacementPolicy> response =
-            manager.placementPolicies().list("enx", "ulkpakd", "ifmjnn", com.azure.core.util.Context.NONE);
+            manager
+                .placementPolicies()
+                .list("rupdwvnphcnzq", "pjhmqrhvthl", "iwdcxsmlzzhzd", com.azure.core.util.Context.NONE);
 
-        Assertions.assertEquals(PlacementPolicyState.DISABLED, response.iterator().next().properties().state());
-        Assertions.assertEquals("bpxuckpggqoweyi", response.iterator().next().properties().displayName());
+        Assertions.assertEquals(PlacementPolicyState.ENABLED, response.iterator().next().properties().state());
+        Assertions.assertEquals("gydlhqv", response.iterator().next().properties().displayName());
     }
 }

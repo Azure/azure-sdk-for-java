@@ -9,6 +9,11 @@ import java.util.List;
 
 /** Model representing a barcode document field. */
 public final class DocumentBarcode {
+    /**
+     * Constructs a DocumentBarcode object.
+     */
+    public DocumentBarcode() {
+    }
     /*
      * Barcode kind.
      */
@@ -65,7 +70,6 @@ public final class DocumentBarcode {
      * Set the polygon property: Bounding polygon of the barcode.
      *
      * @param polygon the polygon value to set.
-     * @return the DocumentBarcode object itself.
      */
     void setPolygon(List<Point> polygon) {
         this.polygon = polygon;

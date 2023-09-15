@@ -11,6 +11,13 @@ import java.util.List;
 /** An object representing the detected language for a given text span. */
 @Immutable
 public final class DocumentLanguage {
+
+    /**
+     * Constructs a DocumentLanguage object.
+     */
+    public DocumentLanguage() {
+    }
+
     /*
      * Detected language.  Value may an ISO 639-1 language code (ex. "en",
      * "fr") or BCP 47 language tag (ex. "zh-Hans").

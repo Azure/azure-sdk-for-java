@@ -297,11 +297,13 @@ public interface Cluster {
             DefinitionStages.WithNetworkFabricId,
             DefinitionStages.WithCreate {
     }
+
     /** The Cluster definition stages. */
     interface DefinitionStages {
         /** The first stage of the Cluster definition. */
         interface Blank extends WithLocation {
         }
+
         /** The stage of the Cluster definition allowing to specify location. */
         interface WithLocation {
             /**
@@ -320,6 +322,7 @@ public interface Cluster {
              */
             WithResourceGroup withRegion(String location);
         }
+
         /** The stage of the Cluster definition allowing to specify parent resource. */
         interface WithResourceGroup {
             /**
@@ -330,6 +333,7 @@ public interface Cluster {
              */
             WithExtendedLocation withExistingResourceGroup(String resourceGroupName);
         }
+
         /** The stage of the Cluster definition allowing to specify extendedLocation. */
         interface WithExtendedLocation {
             /**
@@ -345,6 +349,7 @@ public interface Cluster {
              */
             WithAggregatorOrSingleRackDefinition withExtendedLocation(ExtendedLocation extendedLocation);
         }
+
         /** The stage of the Cluster definition allowing to specify aggregatorOrSingleRackDefinition. */
         interface WithAggregatorOrSingleRackDefinition {
             /**
@@ -361,6 +366,7 @@ public interface Cluster {
              */
             WithClusterType withAggregatorOrSingleRackDefinition(RackDefinition aggregatorOrSingleRackDefinition);
         }
+
         /** The stage of the Cluster definition allowing to specify clusterType. */
         interface WithClusterType {
             /**
@@ -371,6 +377,7 @@ public interface Cluster {
              */
             WithClusterVersion withClusterType(ClusterType clusterType);
         }
+
         /** The stage of the Cluster definition allowing to specify clusterVersion. */
         interface WithClusterVersion {
             /**
@@ -381,6 +388,7 @@ public interface Cluster {
              */
             WithNetworkFabricId withClusterVersion(String clusterVersion);
         }
+
         /** The stage of the Cluster definition allowing to specify networkFabricId. */
         interface WithNetworkFabricId {
             /**
@@ -392,6 +400,7 @@ public interface Cluster {
              */
             WithCreate withNetworkFabricId(String networkFabricId);
         }
+
         /**
          * The stage of the Cluster definition which contains all the minimum required properties for the resource to be
          * created, but also allows for any other optional properties to be specified.
@@ -419,6 +428,7 @@ public interface Cluster {
              */
             Cluster create(Context context);
         }
+
         /** The stage of the Cluster definition allowing to specify tags. */
         interface WithTags {
             /**
@@ -429,6 +439,7 @@ public interface Cluster {
              */
             WithCreate withTags(Map<String, String> tags);
         }
+
         /** The stage of the Cluster definition allowing to specify analyticsWorkspaceId. */
         interface WithAnalyticsWorkspaceId {
             /**
@@ -441,6 +452,7 @@ public interface Cluster {
              */
             WithCreate withAnalyticsWorkspaceId(String analyticsWorkspaceId);
         }
+
         /** The stage of the Cluster definition allowing to specify clusterLocation. */
         interface WithClusterLocation {
             /**
@@ -452,6 +464,7 @@ public interface Cluster {
              */
             WithCreate withClusterLocation(String clusterLocation);
         }
+
         /** The stage of the Cluster definition allowing to specify clusterServicePrincipal. */
         interface WithClusterServicePrincipal {
             /**
@@ -467,6 +480,7 @@ public interface Cluster {
              */
             WithCreate withClusterServicePrincipal(ServicePrincipalInformation clusterServicePrincipal);
         }
+
         /** The stage of the Cluster definition allowing to specify computeDeploymentThreshold. */
         interface WithComputeDeploymentThreshold {
             /**
@@ -484,6 +498,7 @@ public interface Cluster {
              */
             WithCreate withComputeDeploymentThreshold(ValidationThreshold computeDeploymentThreshold);
         }
+
         /** The stage of the Cluster definition allowing to specify computeRackDefinitions. */
         interface WithComputeRackDefinitions {
             /**
@@ -496,6 +511,7 @@ public interface Cluster {
              */
             WithCreate withComputeRackDefinitions(List<RackDefinition> computeRackDefinitions);
         }
+
         /** The stage of the Cluster definition allowing to specify managedResourceGroupConfiguration. */
         interface WithManagedResourceGroupConfiguration {
             /**
@@ -513,6 +529,7 @@ public interface Cluster {
                 ManagedResourceGroupConfiguration managedResourceGroupConfiguration);
         }
     }
+
     /**
      * Begins update for the Cluster resource.
      *
@@ -543,6 +560,7 @@ public interface Cluster {
          */
         Cluster apply(Context context);
     }
+
     /** The Cluster update stages. */
     interface UpdateStages {
         /** The stage of the Cluster update allowing to specify tags. */
@@ -555,6 +573,7 @@ public interface Cluster {
              */
             Update withTags(Map<String, String> tags);
         }
+
         /** The stage of the Cluster update allowing to specify aggregatorOrSingleRackDefinition. */
         interface WithAggregatorOrSingleRackDefinition {
             /**
@@ -571,6 +590,7 @@ public interface Cluster {
              */
             Update withAggregatorOrSingleRackDefinition(RackDefinition aggregatorOrSingleRackDefinition);
         }
+
         /** The stage of the Cluster update allowing to specify clusterLocation. */
         interface WithClusterLocation {
             /**
@@ -582,6 +602,7 @@ public interface Cluster {
              */
             Update withClusterLocation(String clusterLocation);
         }
+
         /** The stage of the Cluster update allowing to specify clusterServicePrincipal. */
         interface WithClusterServicePrincipal {
             /**
@@ -597,6 +618,7 @@ public interface Cluster {
              */
             Update withClusterServicePrincipal(ServicePrincipalInformation clusterServicePrincipal);
         }
+
         /** The stage of the Cluster update allowing to specify computeDeploymentThreshold. */
         interface WithComputeDeploymentThreshold {
             /**
@@ -614,6 +636,7 @@ public interface Cluster {
              */
             Update withComputeDeploymentThreshold(ValidationThreshold computeDeploymentThreshold);
         }
+
         /** The stage of the Cluster update allowing to specify computeRackDefinitions. */
         interface WithComputeRackDefinitions {
             /**
@@ -627,6 +650,7 @@ public interface Cluster {
             Update withComputeRackDefinitions(List<RackDefinition> computeRackDefinitions);
         }
     }
+
     /**
      * Refreshes the resource to sync with Azure.
      *
@@ -649,8 +673,9 @@ public interface Cluster {
      *
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return the current status of an async operation.
      */
-    void deploy();
+    OperationStatusResult deploy();
 
     /**
      * Deploy the cluster to the rack.
@@ -662,8 +687,9 @@ public interface Cluster {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return the current status of an async operation.
      */
-    void deploy(ClusterDeployParameters clusterDeployParameters, Context context);
+    OperationStatusResult deploy(ClusterDeployParameters clusterDeployParameters, Context context);
 
     /**
      * Update the cluster version.
@@ -674,8 +700,9 @@ public interface Cluster {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return the current status of an async operation.
      */
-    void updateVersion(ClusterUpdateVersionParameters clusterUpdateVersionParameters);
+    OperationStatusResult updateVersion(ClusterUpdateVersionParameters clusterUpdateVersionParameters);
 
     /**
      * Update the cluster version.
@@ -687,6 +714,7 @@ public interface Cluster {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return the current status of an async operation.
      */
-    void updateVersion(ClusterUpdateVersionParameters clusterUpdateVersionParameters, Context context);
+    OperationStatusResult updateVersion(ClusterUpdateVersionParameters clusterUpdateVersionParameters, Context context);
 }

@@ -176,6 +176,7 @@ public class ImplementationBridgeHelpers {
 
         public interface PartitionKeyAccessor {
             PartitionKey toPartitionKey(PartitionKeyInternal partitionKeyInternal);
+            PartitionKey toPartitionKey(Object objectKey, PartitionKeyInternal partitionKeyInternal);
         }
     }
 
@@ -371,6 +372,9 @@ public class ImplementationBridgeHelpers {
                 CosmosItemRequestOptions cosmosItemRequestOptions,
                 WriteRetryPolicy clientDefault,
                 boolean operationDefault);
+
+            CosmosEndToEndOperationLatencyPolicyConfig getEndToEndOperationLatencyPolicyConfig(
+                CosmosItemRequestOptions options);
         }
     }
 
@@ -740,6 +744,8 @@ public class ImplementationBridgeHelpers {
                 String identifier,
                 String errorMessage,
                 long transportRequestId);
+
+            boolean isNotEmpty(CosmosDiagnostics cosmosDiagnostics);
         }
     }
 

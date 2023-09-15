@@ -7,7 +7,7 @@ package com.azure.resourcemanager.maintenance.generated;
 /** Samples for PublicMaintenanceConfigurations List. */
 public final class PublicMaintenanceConfigurationsListSamples {
     /*
-     * x-ms-original-file: specification/maintenance/resource-manager/Microsoft.Maintenance/stable/2021-05-01/examples/PublicMaintenanceConfigurations_List.json
+     * x-ms-original-file: specification/maintenance/resource-manager/Microsoft.Maintenance/stable/2023-04-01/examples/PublicMaintenanceConfigurations_List.json
      */
     /**
      * Sample code: PublicMaintenanceConfigurations_List.

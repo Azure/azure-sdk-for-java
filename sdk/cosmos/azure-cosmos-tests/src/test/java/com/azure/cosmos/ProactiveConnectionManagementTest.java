@@ -58,7 +58,7 @@ public class ProactiveConnectionManagementTest extends TestSuiteBase {
     private DatabaseAccount databaseAccount;
     private CosmosAsyncDatabase cosmosAsyncDatabase;
 
-    @BeforeClass(groups = {"multi-region"})
+    @BeforeClass(groups = {"multi-master"})
     public void beforeClass() {
         clientBuilder = new CosmosClientBuilder()
                 .endpoint(TestConfigurations.HOST)
@@ -83,7 +83,7 @@ public class ProactiveConnectionManagementTest extends TestSuiteBase {
         safeClose(dummyClient);
     }
 
-    @Test(groups = {"multi-region"}, dataProvider = "invalidProactiveContainerInitConfigs")
+    @Test(groups = {"multi-master"}, dataProvider = "invalidProactiveContainerInitConfigs")
     public void openConnectionsAndInitCachesWithInvalidCosmosClientConfig(List<String> preferredRegions, int numProactiveConnectionRegions, int numContainers, Duration aggressiveWarmupDuration) {
 
         List<CosmosAsyncContainer> asyncContainers = new ArrayList<>();
@@ -132,7 +132,7 @@ public class ProactiveConnectionManagementTest extends TestSuiteBase {
         }
     }
 
-    @Test(groups = {"multi-region"}, dataProvider = "proactiveContainerInitConfigs")
+    @Test(groups = {"multi-master"}, dataProvider = "proactiveContainerInitConfigs")
     public void openConnectionsAndInitCachesWithContainer(List<String> preferredRegions, int numProactiveConnectionRegions, int ignoredNoOfContainers, int ignoredMinConnectionPoolSize, Duration ignoredAggressiveConnectionEstablishmentDuration) {
         CosmosAsyncClient asyncClient = null;
 
@@ -191,6 +191,9 @@ public class ProactiveConnectionManagementTest extends TestSuiteBase {
             for (URI proactiveConnectionEndpoint : proactiveConnectionEndpoints) {
                 Mono.zip(asyncContainerMono, partitionKeyRangeMono)
                         .flatMapIterable(containerToPartitionKeyRanges -> {
+                            assertThat(containerToPartitionKeyRanges).isNotNull();
+                            assertThat(containerToPartitionKeyRanges.getT2()).isNotNull();
+                            assertThat(containerToPartitionKeyRanges.getT2().v).isNotNull();
                             List<ImmutablePair<PartitionKeyRange, CosmosAsyncContainer>> pkrToContainer = new ArrayList<>();
                             for (PartitionKeyRange pkr : containerToPartitionKeyRanges.getT2().v) {
                                 pkrToContainer.add(new ImmutablePair<>(pkr, containerToPartitionKeyRanges.getT1()));
@@ -227,7 +230,7 @@ public class ProactiveConnectionManagementTest extends TestSuiteBase {
         }
     }
 
-    @Test(groups = {"multi-region"}, dataProvider = "proactiveContainerInitConfigs")
+    @Test(groups = {"multi-master"}, dataProvider = "proactiveContainerInitConfigs")
     public void openConnectionsAndInitCachesWithCosmosClient_And_PerContainerConnectionPoolSize_ThroughSystemConfig(
             List<String> preferredRegions, int numProactiveConnectionRegions, int numContainers, int minConnectionPoolSizePerEndpoint, Duration ignoredAggressiveConnectionEstablishmentDuration) {
 
@@ -334,7 +337,7 @@ public class ProactiveConnectionManagementTest extends TestSuiteBase {
         }
     }
 
-    @Test(groups = {"multi-region"}, dataProvider = "proactiveContainerInitConfigs")
+    @Test(groups = {"multi-master"}, dataProvider = "proactiveContainerInitConfigs")
     public void openConnectionsAndInitCachesWithCosmosClient_And_PerContainerConnectionPoolSize_ThroughProactiveContainerInitConfig(
             List<String> preferredRegions, int numProactiveConnectionRegions, int numContainers, int minConnectionPoolSizePerEndpoint, Duration ignoredAggressiveConnectionEstablishmentDuration) {
 
@@ -449,7 +452,7 @@ public class ProactiveConnectionManagementTest extends TestSuiteBase {
         }
     }
 
-    @Test(groups = {"multi-region"}, dataProvider = "proactiveContainerInitConfigs")
+    @Test(groups = {"multi-master"}, dataProvider = "proactiveContainerInitConfigs")
     public void openConnectionsAndInitCachesWithCosmosClient_And_PerContainerConnectionPoolSize_ThroughProactiveContainerInitConfig_WithTimeout(
             List<String> preferredRegions, int numProactiveConnectionRegions, int numContainers, int minConnectionPoolSizePerEndpoint, Duration aggressiveWarmupDuration) {
 

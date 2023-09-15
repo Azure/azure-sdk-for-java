@@ -72,6 +72,8 @@ This error contains several pieces of information:
 
 Azure SDK for Java offers a consistent logging story to help aid in troubleshooting application errors and expedite their resolution. The logs produced will capture the flow of an application before reaching the terminal state to help locate the root issue. View the [logging](https://learn.microsoft.com/azure/developer/java/sdk/logging-overview) documentation for guidance to enable logging.
 
+The underlying MSAL library, MSAL4J, also has detailed logging. It is highly verbose and will include all PII including tokens. This logging is most useful when working with product support. As of v1.10.0, credentials which offer this logging will have a method called `enableUnsafeSupportLogging()`.
+
 > CAUTION: Requests and responses in the Azure Identity library contain sensitive information. Precaution must be taken to protect logs when customizing the output to avoid compromising account security.
 
 ## Troubleshoot `DefaultAzureCredential` authentication issues

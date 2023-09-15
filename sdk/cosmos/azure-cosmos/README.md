@@ -45,7 +45,7 @@ add the direct dependency to your project as follows.
 <dependency>
   <groupId>com.azure</groupId>
   <artifactId>azure-cosmos</artifactId>
-  <version>4.48.0</version>
+  <version>4.49.0</version>
 </dependency>
 ```
 [//]: # ({x-version-update-end})
@@ -293,7 +293,7 @@ or contact [opencode@microsoft.com][coc_contact] with any additional questions o
 [jdk]: https://docs.microsoft.com/java/azure/jdk/
 [slf4j]: http://www.slf4j.org/
 [maven]: https://maven.apache.org/
-[cosmos_maven]: https://search.maven.org/artifact/com.azure/azure-cosmos
+[cosmos_maven]: https://central.sonatype.com/artifact/com.azure/azure-cosmos
 [cosmos_maven_svg]: https://img.shields.io/maven-central/v/com.azure/azure-cosmos.svg
 [cla]: https://cla.microsoft.com
 [coc]: https://opensource.microsoft.com/codeofconduct/

@@ -30,6 +30,10 @@ public final class DiagnosticCollection {
     @JsonProperty(value = "nextLink")
     private String nextLink;
 
+    /** Creates an instance of DiagnosticCollection class. */
+    public DiagnosticCollection() {
+    }
+
     /**
      * Get the value property: Page values.
      *

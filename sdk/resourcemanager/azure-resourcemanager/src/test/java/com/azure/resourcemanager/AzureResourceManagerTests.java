@@ -588,7 +588,6 @@ public class AzureResourceManagerTests extends ResourceManagerTestProxyTestBase 
      *
      * @throws Exception
      */
-    @DoNotRecord(skipInPlayback = true) // TODO(weidxu)
     @Test
     public void testLoadBalancersInternetMinimum() throws Exception {
         new TestLoadBalancer().new InternetMinimal(azureResourceManager.virtualMachines().manager())
@@ -600,7 +599,6 @@ public class AzureResourceManagerTests extends ResourceManagerTestProxyTestBase 
      *
      * @throws Exception
      */
-    @DoNotRecord(skipInPlayback = true) // TODO(weidxu)
     @Test
     public void testLoadBalancersNatOnly() throws Exception {
         new TestLoadBalancer().new InternetNatOnly(azureResourceManager.virtualMachines().manager())
@@ -612,7 +610,6 @@ public class AzureResourceManagerTests extends ResourceManagerTestProxyTestBase 
      *
      * @throws Exception
      */
-    @DoNotRecord(skipInPlayback = true) // TODO(weidxu)
     @Test
     public void testLoadBalancersInternalMinimum() throws Exception {
         new TestLoadBalancer().new InternalMinimal(azureResourceManager.virtualMachines().manager())

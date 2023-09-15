@@ -112,7 +112,7 @@ public class LogDataMapper {
 
         // set standard properties
         setOperationTags(telemetryBuilder, log);
-        setTime(telemetryBuilder, log.getTimestampEpochNanos());
+        setTime(telemetryBuilder, log);
         setItemCount(telemetryBuilder, log, itemCount);
 
         // update tags
@@ -142,7 +142,7 @@ public class LogDataMapper {
 
         // set standard properties
         setOperationTags(telemetryBuilder, log);
-        setTime(telemetryBuilder, log.getTimestampEpochNanos());
+        setTime(telemetryBuilder, log);
         setItemCount(telemetryBuilder, log, itemCount);
 
         // update tags
@@ -195,9 +195,18 @@ public class LogDataMapper {
         }
     }
 
-    private static void setTime(AbstractTelemetryBuilder telemetryBuilder, long epochNanos) {
-        telemetryBuilder.setTime(FormattedTime.offSetDateTimeFromEpochNanos(epochNanos));
+    private static void setTime(AbstractTelemetryBuilder telemetryBuilder, LogRecordData log) {
+        telemetryBuilder.setTime(FormattedTime.offSetDateTimeFromEpochNanos(getTimestampEpochNanosWithFallback(log)));
     }
+
+    private static long getTimestampEpochNanosWithFallback(LogRecordData log) {
+        long timestamp = log.getTimestampEpochNanos();
+        if (timestamp != 0) {
+            return timestamp;
+        }
+        return log.getObservedTimestampEpochNanos();
+    }
+
 
     private static void setItemCount(
         AbstractTelemetryBuilder telemetryBuilder, LogRecordData log, @Nullable Long itemCount) {

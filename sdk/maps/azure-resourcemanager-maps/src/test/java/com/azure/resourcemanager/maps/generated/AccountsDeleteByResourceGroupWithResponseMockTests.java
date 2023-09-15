@@ -56,6 +56,6 @@ public final class AccountsDeleteByResourceGroupWithResponseMockTests {
                     tokenRequestContext -> Mono.just(new AccessToken("this_is_a_token", OffsetDateTime.MAX)),
                     new AzureProfile("", "", AzureEnvironment.AZURE));
 
-        manager.accounts().deleteByResourceGroupWithResponse("gdtopbobjogh", "e", com.azure.core.util.Context.NONE);
+        manager.accounts().deleteByResourceGroupWithResponse("tcc", "g", com.azure.core.util.Context.NONE);
     }
 }

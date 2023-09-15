@@ -258,7 +258,7 @@ public class TestApplicationGateway {
                 resources.manager()
                     .publicIpAddresses()
                     .define(appPublicIp)
-                    .withRegion(Region.US_EAST)
+                    .withRegion(REGION)
                     .withNewResourceGroup(groupName)
                     .withSku(PublicIPSkuType.STANDARD)
                     .withStaticIP()
@@ -298,8 +298,8 @@ public class TestApplicationGateway {
             String resourceId = createResourceId(resources.manager().subscriptionId());
             ApplicationGateway appGateway = resources.manager().applicationGateways().getById(resourceId);
             Assertions.assertNotNull(appGateway);
-            Assertions.assertEquals(ApplicationGatewayTier.STANDARD, appGateway.tier());
-            Assertions.assertEquals(ApplicationGatewaySkuName.STANDARD_SMALL, appGateway.size());
+            Assertions.assertEquals(ApplicationGatewayTier.STANDARD_V2, appGateway.tier());
+            Assertions.assertEquals(ApplicationGatewaySkuName.STANDARD_V2, appGateway.size());
             Assertions.assertEquals(1, appGateway.instanceCount());
 
             // Verify frontend ports

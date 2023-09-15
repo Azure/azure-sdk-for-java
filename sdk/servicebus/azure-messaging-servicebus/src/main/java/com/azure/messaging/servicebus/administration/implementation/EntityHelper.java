@@ -495,7 +495,9 @@ public final class EntityHelper {
                 implementation.setType("SharedAccessAuthorizationRule");
             } else {
                 final String className = rule.getClass().getName();
-                LOGGER.warning("AuthorizationRule type '{}' is unknown.", className);
+                LOGGER.atWarning()
+                    .addKeyValue("type", className)
+                    .log("AuthorizationRule type is unknown.");
                 implementation.setType(className);
             }
 

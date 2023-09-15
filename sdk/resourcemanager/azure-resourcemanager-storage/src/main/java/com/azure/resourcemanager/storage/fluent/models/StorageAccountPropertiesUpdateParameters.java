@@ -103,7 +103,7 @@ public final class StorageAccountPropertiesUpdateParameters {
 
     /*
      * Allow or disallow public access to all blobs or containers in the storage account. The default interpretation is
-     * true for this property.
+     * false for this property.
      */
     @JsonProperty(value = "allowBlobPublicAccess")
     private Boolean allowBlobPublicAccess;
@@ -124,7 +124,9 @@ public final class StorageAccountPropertiesUpdateParameters {
     private Boolean allowSharedKeyAccess;
 
     /*
-     * Allow or disallow cross AAD tenant object replication. The default interpretation is true for this property.
+     * Allow or disallow cross AAD tenant object replication. Set this property to true for new or existing accounts
+     * only if object replication policies will involve storage accounts in different AAD tenants. The default
+     * interpretation is false for new accounts to follow best security practices by default.
      */
     @JsonProperty(value = "allowCrossTenantReplication")
     private Boolean allowCrossTenantReplication;
@@ -163,6 +165,10 @@ public final class StorageAccountPropertiesUpdateParameters {
      */
     @JsonProperty(value = "dnsEndpointType")
     private DnsEndpointType dnsEndpointType;
+
+    /** Creates an instance of StorageAccountPropertiesUpdateParameters class. */
+    public StorageAccountPropertiesUpdateParameters() {
+    }
 
     /**
      * Get the customDomain property: Custom domain assigned to the storage account by the user. Name is the CNAME
@@ -424,7 +430,7 @@ public final class StorageAccountPropertiesUpdateParameters {
 
     /**
      * Get the allowBlobPublicAccess property: Allow or disallow public access to all blobs or containers in the storage
-     * account. The default interpretation is true for this property.
+     * account. The default interpretation is false for this property.
      *
      * @return the allowBlobPublicAccess value.
      */
@@ -434,7 +440,7 @@ public final class StorageAccountPropertiesUpdateParameters {
 
     /**
      * Set the allowBlobPublicAccess property: Allow or disallow public access to all blobs or containers in the storage
-     * account. The default interpretation is true for this property.
+     * account. The default interpretation is false for this property.
      *
      * @param allowBlobPublicAccess the allowBlobPublicAccess value to set.
      * @return the StorageAccountPropertiesUpdateParameters object itself.
@@ -491,8 +497,10 @@ public final class StorageAccountPropertiesUpdateParameters {
     }
 
     /**
-     * Get the allowCrossTenantReplication property: Allow or disallow cross AAD tenant object replication. The default
-     * interpretation is true for this property.
+     * Get the allowCrossTenantReplication property: Allow or disallow cross AAD tenant object replication. Set this
+     * property to true for new or existing accounts only if object replication policies will involve storage accounts
+     * in different AAD tenants. The default interpretation is false for new accounts to follow best security practices
+     * by default.
      *
      * @return the allowCrossTenantReplication value.
      */
@@ -501,8 +509,10 @@ public final class StorageAccountPropertiesUpdateParameters {
     }
 
     /**
-     * Set the allowCrossTenantReplication property: Allow or disallow cross AAD tenant object replication. The default
-     * interpretation is true for this property.
+     * Set the allowCrossTenantReplication property: Allow or disallow cross AAD tenant object replication. Set this
+     * property to true for new or existing accounts only if object replication policies will involve storage accounts
+     * in different AAD tenants. The default interpretation is false for new accounts to follow best security practices
+     * by default.
      *
      * @param allowCrossTenantReplication the allowCrossTenantReplication value to set.
      * @return the StorageAccountPropertiesUpdateParameters object itself.

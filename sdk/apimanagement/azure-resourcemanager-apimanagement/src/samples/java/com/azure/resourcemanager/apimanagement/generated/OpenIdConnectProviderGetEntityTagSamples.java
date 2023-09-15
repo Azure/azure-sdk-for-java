@@ -4,12 +4,10 @@
 
 package com.azure.resourcemanager.apimanagement.generated;
 
-import com.azure.core.util.Context;
-
 /** Samples for OpenIdConnectProvider GetEntityTag. */
 public final class OpenIdConnectProviderGetEntityTagSamples {
     /*
-     * x-ms-original-file: specification/apimanagement/resource-manager/Microsoft.ApiManagement/stable/2021-08-01/examples/ApiManagementHeadOpenIdConnectProvider.json
+     * x-ms-original-file: specification/apimanagement/resource-manager/Microsoft.ApiManagement/stable/2022-08-01/examples/ApiManagementHeadOpenIdConnectProvider.json
      */
     /**
      * Sample code: ApiManagementHeadOpenIdConnectProvider.
@@ -20,6 +18,7 @@ public final class OpenIdConnectProviderGetEntityTagSamples {
         com.azure.resourcemanager.apimanagement.ApiManagementManager manager) {
         manager
             .openIdConnectProviders()
-            .getEntityTagWithResponse("rg1", "apimService1", "templateOpenIdConnect2", Context.NONE);
+            .getEntityTagWithResponse(
+                "rg1", "apimService1", "templateOpenIdConnect2", com.azure.core.util.Context.NONE);
     }
 }

@@ -31,7 +31,7 @@ public final class WorkloadNetworksGetSegmentWithResponseMockTests {
         ArgumentCaptor<HttpRequest> httpRequest = ArgumentCaptor.forClass(HttpRequest.class);
 
         String responseStr =
-            "{\"properties\":{\"displayName\":\"kvyklxubyjaffmm\",\"connectedGateway\":\"lcqcuubgqibrt\",\"subnet\":{\"dhcpRanges\":[],\"gatewayAddress\":\"tttwgdslqxih\"},\"portVif\":[],\"status\":\"SUCCESS\",\"provisioningState\":\"Succeeded\",\"revision\":5623235409851304033},\"id\":\"ypxiutcxap\",\"name\":\"hyrpetogebjoxs\",\"type\":\"hvnh\"}";
+            "{\"properties\":{\"displayName\":\"btqwpwyawbzas\",\"connectedGateway\":\"ucljgkyexaoguya\",\"subnet\":{\"dhcpRanges\":[\"sdaultxij\",\"um\",\"qwazlnqnmcjngzq\",\"qxtbjwgnyf\"],\"gatewayAddress\":\"fzsvtuikzh\"},\"portVif\":[{\"portName\":\"lcfhmlrqryxy\"},{\"portName\":\"nzrdpsovwxz\"},{\"portName\":\"tgoe\"},{\"portName\":\"bbabp\"}],\"status\":\"SUCCESS\",\"provisioningState\":\"Failed\",\"revision\":9143914633435645680},\"id\":\"ntjlr\",\"name\":\"gjkskyrioov\",\"type\":\"idsxwaabzmifry\"}";
 
         Mockito.when(httpResponse.getStatusCode()).thenReturn(200);
         Mockito.when(httpResponse.getHeaders()).thenReturn(new HttpHeaders());
@@ -62,12 +62,13 @@ public final class WorkloadNetworksGetSegmentWithResponseMockTests {
         WorkloadNetworkSegment response =
             manager
                 .workloadNetworks()
-                .getSegmentWithResponse("mpjw", "ivqikfxcvhr", "sphuagrttikteus", com.azure.core.util.Context.NONE)
+                .getSegmentWithResponse("kmfx", "pjwogqqno", "pud", com.azure.core.util.Context.NONE)
                 .getValue();
 
-        Assertions.assertEquals("kvyklxubyjaffmm", response.displayName());
-        Assertions.assertEquals("lcqcuubgqibrt", response.connectedGateway());
-        Assertions.assertEquals("tttwgdslqxih", response.subnet().gatewayAddress());
-        Assertions.assertEquals(5623235409851304033L, response.revision());
+        Assertions.assertEquals("btqwpwyawbzas", response.displayName());
+        Assertions.assertEquals("ucljgkyexaoguya", response.connectedGateway());
+        Assertions.assertEquals("sdaultxij", response.subnet().dhcpRanges().get(0));
+        Assertions.assertEquals("fzsvtuikzh", response.subnet().gatewayAddress());
+        Assertions.assertEquals(9143914633435645680L, response.revision());
     }
 }

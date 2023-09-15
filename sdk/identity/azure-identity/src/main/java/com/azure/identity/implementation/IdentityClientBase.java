@@ -18,6 +18,7 @@ import com.azure.core.http.policy.HttpLoggingPolicy;
 import com.azure.core.http.policy.HttpPipelinePolicy;
 import com.azure.core.http.policy.HttpPolicyProviders;
 import com.azure.core.http.policy.UserAgentPolicy;
+import com.azure.core.util.ClientOptions;
 import com.azure.core.util.Configuration;
 import com.azure.core.util.CoreUtils;
 import com.azure.core.util.UserAgentUtil;
@@ -27,6 +28,7 @@ import com.azure.core.util.logging.LogLevel;
 import com.azure.core.util.serializer.JacksonAdapter;
 import com.azure.core.util.serializer.SerializerAdapter;
 import com.azure.core.util.serializer.SerializerEncoding;
+import com.azure.identity.BrowserCustomizationOptions;
 import com.azure.identity.CredentialUnavailableException;
 import com.azure.identity.DeviceCodeInfo;
 import com.azure.identity.TokenCachePersistenceOptions;
@@ -43,6 +45,7 @@ import com.microsoft.aad.msal4j.InteractiveRequestParameters;
 import com.microsoft.aad.msal4j.OnBehalfOfParameters;
 import com.microsoft.aad.msal4j.Prompt;
 import com.microsoft.aad.msal4j.PublicClientApplication;
+import com.microsoft.aad.msal4j.SystemBrowserOptions;
 import com.microsoft.aad.msal4j.TokenProviderResult;
 import com.microsoft.aad.msal4j.UserNamePasswordParameters;
 import reactor.core.publisher.Mono;
@@ -112,6 +115,7 @@ public abstract class IdentityClientBase {
     private static final String AZURE_IDENTITY_PROPERTIES = "azure-identity.properties";
     private static final String SDK_NAME = "name";
     private static final String SDK_VERSION = "version";
+    private static final ClientOptions DEFAULT_CLIENT_OPTIONS = new ClientOptions();
     private final Map<String, String> properties;
 
 
@@ -214,7 +218,10 @@ public abstract class IdentityClientBase {
         ConfidentialClientApplication.Builder applicationBuilder =
             ConfidentialClientApplication.builder(clientId, credential);
         try {
-            applicationBuilder = applicationBuilder.authority(authorityUrl).instanceDiscovery(options.isInstanceDiscoveryEnabled());
+            applicationBuilder = applicationBuilder
+                .logPii(options.isUnsafeSupportLoggingEnabled())
+                .authority(authorityUrl)
+                .instanceDiscovery(options.isInstanceDiscoveryEnabled());
 
             if (!options.isInstanceDiscoveryEnabled()) {
                 LOGGER.log(LogLevel.VERBOSE, () -> "Instance discovery and authority validation is disabled. In this"
@@ -281,7 +288,9 @@ public abstract class IdentityClientBase {
             + tenantId;
         PublicClientApplication.Builder builder = PublicClientApplication.builder(clientId);
         try {
-            builder = builder.authority(authorityUrl).instanceDiscovery(options.isInstanceDiscoveryEnabled());
+            builder = builder
+                .logPii(options.isUnsafeSupportLoggingEnabled())
+                .authority(authorityUrl).instanceDiscovery(options.isInstanceDiscoveryEnabled());
 
             if (!options.isInstanceDiscoveryEnabled()) {
                 LOGGER.log(LogLevel.VERBOSE, () -> "Instance discovery and authority validation is disabled. In this"
@@ -340,7 +349,12 @@ public abstract class IdentityClientBase {
         ConfidentialClientApplication.Builder applicationBuilder =
             ConfidentialClientApplication.builder(clientId == null ? "SYSTEM-ASSIGNED-MANAGED-IDENTITY"
                 : clientId, credential);
-        applicationBuilder.validateAuthority(false);
+
+        applicationBuilder
+            .instanceDiscovery(false)
+            .validateAuthority(false)
+            .logPii(options.isUnsafeSupportLoggingEnabled());
+
         try {
             applicationBuilder = applicationBuilder.authority(authorityUrl);
         } catch (MalformedURLException e) {
@@ -395,7 +409,9 @@ public abstract class IdentityClientBase {
                 : clientId, credential);
 
         try {
-            applicationBuilder = applicationBuilder.authority(authorityUrl).instanceDiscovery(options.isInstanceDiscoveryEnabled());
+            applicationBuilder = applicationBuilder.authority(authorityUrl)
+                .logPii(options.isUnsafeSupportLoggingEnabled())
+                .instanceDiscovery(options.isInstanceDiscoveryEnabled());
 
             if (!options.isInstanceDiscoveryEnabled()) {
                 LOGGER.log(LogLevel.VERBOSE, () -> "Instance discovery and authority validation is disabled. In this"
@@ -465,6 +481,20 @@ public abstract class IdentityClientBase {
         if (request.isCaeEnabled() && request.getClaims() != null) {
             ClaimsRequest customClaimRequest = CustomClaimRequest.formatAsClaimsRequest(request.getClaims());
             builder.claims(customClaimRequest);
+        }
+
+        BrowserCustomizationOptions browserCustomizationOptions = options.getBrowserCustomizationOptions();
+
+        if (IdentityUtil.browserCustomizationOptionsPresent(browserCustomizationOptions)) {
+            SystemBrowserOptions.SystemBrowserOptionsBuilder browserOptionsBuilder =  SystemBrowserOptions.builder();
+            if (!CoreUtils.isNullOrEmpty(browserCustomizationOptions.getSuccessMessage())) {
+                browserOptionsBuilder.htmlMessageSuccess(browserCustomizationOptions.getSuccessMessage());
+            }
+
+            if (!CoreUtils.isNullOrEmpty(browserCustomizationOptions.getErrorMessage())) {
+                browserOptionsBuilder.htmlMessageError(browserCustomizationOptions.getErrorMessage());
+            }
+            builder.systemBrowserOptions(browserOptionsBuilder.build());
         }
 
         if (loginHint != null) {
@@ -570,7 +600,9 @@ public abstract class IdentityClientBase {
                 .toOffsetDateTime().withOffsetSameInstant(ZoneOffset.UTC);
             token = new AccessToken(accessToken, expiresOn);
         } catch (IOException | InterruptedException e) {
-            throw LOGGER.logExceptionAsError(new IllegalStateException(e));
+            IllegalStateException ex = new IllegalStateException(redactInfo(e.getMessage()));
+            ex.setStackTrace(e.getStackTrace());
+            throw LOGGER.logExceptionAsError(ex);
         }
         return token;
     }
@@ -670,7 +702,9 @@ public abstract class IdentityClientBase {
                     .withOffsetSameInstant(ZoneOffset.UTC);
             token = new AccessToken(accessToken, expiresOn);
         } catch (IOException | InterruptedException e) {
-            throw LOGGER.logExceptionAsError(new IllegalStateException(e));
+            IllegalStateException ex = new IllegalStateException(redactInfo(e.getMessage()));
+            ex.setStackTrace(e.getStackTrace());
+            throw LOGGER.logExceptionAsError(ex);
         }
 
         return token;
@@ -747,15 +781,16 @@ public abstract class IdentityClientBase {
 
         HttpLogOptions httpLogOptions = (options.getHttpLogOptions() == null) ? new HttpLogOptions() : options.getHttpLogOptions();
 
-        userAgent = UserAgentUtil.toUserAgentString(CoreUtils.getApplicationId(options.getClientOptions(), httpLogOptions), clientName, clientVersion, buildConfiguration);
+        ClientOptions localClientOptions = options.getClientOptions() != null
+            ? options.getClientOptions() : DEFAULT_CLIENT_OPTIONS;
+
+        userAgent = UserAgentUtil.toUserAgentString(CoreUtils.getApplicationId(localClientOptions, httpLogOptions), clientName, clientVersion, buildConfiguration);
         policies.add(new UserAgentPolicy(userAgent));
 
-        if (options.getClientOptions() != null) {
-            List<HttpHeader> httpHeaderList = new ArrayList<>();
-            options.getClientOptions().getHeaders().forEach(header ->
-                httpHeaderList.add(new HttpHeader(header.getName(), header.getValue())));
-            policies.add(new AddHeadersPolicy(new HttpHeaders(httpHeaderList)));
-        }
+        List<HttpHeader> httpHeaderList = new ArrayList<>();
+        localClientOptions.getHeaders().forEach(header ->
+            httpHeaderList.add(new HttpHeader(header.getName(), header.getValue())));
+        policies.add(new AddHeadersPolicy(new HttpHeaders(httpHeaderList)));
 
         policies.addAll(options.getPerCallPolicies());
         HttpPolicyProviders.addBeforeRetryPolicies(policies);
@@ -765,6 +800,7 @@ public abstract class IdentityClientBase {
         HttpPolicyProviders.addAfterRetryPolicies(policies);
         policies.add(new HttpLoggingPolicy(httpLogOptions));
         return new HttpPipelineBuilder().httpClient(httpClient)
+            .clientOptions(localClientOptions)
             .policies(policies.toArray(new HttpPipelinePolicy[0])).build();
     }
 

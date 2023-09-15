@@ -2,7 +2,7 @@
 	"$schema": "https://schema.management.azure.com/schemas/2019-04-01/deploymentTemplate.json#",
 	"contentVersion": "1.0.0.0",
 	"parameters": {
-		"BaseName": {
+		"baseName": {
 			"type": "string",
 			"metadata": {
 				"description": "Name of the test ledger"
@@ -33,26 +33,42 @@
 				"description": "Application object ID for the test application"
 			}
 		},
-		"testApplicationSecret": {
-			"type": "string",
-			"metadata": {
-				"description": "Application secret for the test application"
-			}
-		}
+    "testApplicationSecret": {
+      "type": "string",
+      "metadata": {
+        "description": "Application secret for the test application"
+      }
+    },
+    "ConfidentialLedgerPrincipalPEM": {
+      "type": "string",
+      "metadata": {
+        "description": "The certificate to configure as a certBasedSecurityPrincipal."
+      }
+    },
+    "ConfidentialLedgerPrincipalPEMPK": {
+      "type": "string",
+      "metadata": {
+        "description": "The certificate to configure as a certBasedSecurityPrincipal."
+      }
+    }
 	},
-	"functions": [],
-	"variables": {},
 	"resources": [
 		{
-			"name": "[parameters('BaseName')]",
+			"name": "[parameters('baseName')]",
 			"type": "Microsoft.ConfidentialLedger/ledgers",
 			"apiVersion": "2020-12-01-preview",
-			"location": "[parameters('location')]",
+			"location": "eastus",
 			"properties": {
 				"ledgerType": "Public",
 				"aadBasedSecurityPrincipals": [
 					{
-						"principalId": "[parameters('TestApplicationId')]",
+						"principalId": "[parameters('testApplicationOid')]",
+						"ledgerRoleName": "Administrator"
+					}
+				],
+				"certBasedSecurityPrincipals": [
+					{
+						"cert": "[parameters('ConfidentialLedgerPrincipalPEM')]",
 						"ledgerRoleName": "Administrator"
 					}
 				]
@@ -61,28 +77,40 @@
 	],
 	"outputs": {
 		"AZURE_TENANT_ID": {
-            "type": "string",
-            "value": "[parameters('tenantId')]"
-        },
-        "AZURE_CLIENT_ID": {
-            "type": "string",
-            "value": "[parameters('testApplicationId')]"
-        },
-        "AZURE_CLIENT_SECRET": {
-            "type": "string",
-            "value": "[parameters('testApplicationSecret')]"
-        },
-		"LEDGER_NAME": {
 			"type": "string",
-			"value": "[parameters('BaseName')]"
+			"value": "[parameters('tenantId')]"
 		},
-		"LEDGER_URI": {
+		"AZURE_CLIENT_ID": {
 			"type": "string",
-			"value": "[concat('https://', parameters('BaseName'), '.confidential-ledger.azure.com')]"
+			"value": "[parameters('testApplicationId')]"
 		},
-		"USER_AAD": {
+		"AZURE_CLIENT_SECRET": {
+			"type": "string",
+			"value": "[parameters('testApplicationSecret')]"
+		},
+		"CONFIDENTIALLEDGER_NAME": {
+			"type": "string",
+			"value": "[parameters('baseName')]"
+		},
+		"CONFIDENTIALLEDGER_URL": {
+			"type": "string",
+			"value": "[format('https://{0}.confidential-ledger.azure.com', parameters('baseName'))]"
+		},
+		"CONFIDENTIALLEDGER_IDENTITY_URL": {
+			"type": "string",
+			"value": "https://identity.confidential-ledger.core.azure.com"
+		},
+		"CONFIDENTIALLEDGER_CLIENT_OBJECTID": {
 			"type": "string",
 			"value": "[parameters('testApplicationOid')]"
+		},
+		"CONFIDENTIALLEDGER_CLIENT_PEM": {
+			"type": "string",
+			"value": "[parameters('ConfidentialLedgerPrincipalPEM')]"
+		},
+		"CONFIDENTIALLEDGER_CLIENT_PEM_PK": {
+			"type": "string",
+			"value": "[parameters('ConfidentialLedgerPrincipalPEMPK')]"
 		}
 	}
 }

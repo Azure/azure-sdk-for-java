@@ -44,6 +44,10 @@ public final class SmbSetting {
     @JsonProperty(value = "channelEncryption")
     private String channelEncryption;
 
+    /** Creates an instance of SmbSetting class. */
+    public SmbSetting() {
+    }
+
     /**
      * Get the multichannel property: Multichannel setting. Applies to Premium FileStorage only.
      *

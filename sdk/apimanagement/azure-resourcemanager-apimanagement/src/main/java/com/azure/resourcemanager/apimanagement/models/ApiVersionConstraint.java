@@ -11,11 +11,14 @@ import com.fasterxml.jackson.annotation.JsonProperty;
 @Fluent
 public final class ApiVersionConstraint {
     /*
-     * Limit control plane API calls to API Management service with version
-     * equal to or newer than this value.
+     * Limit control plane API calls to API Management service with version equal to or newer than this value.
      */
     @JsonProperty(value = "minApiVersion")
     private String minApiVersion;
+
+    /** Creates an instance of ApiVersionConstraint class. */
+    public ApiVersionConstraint() {
+    }
 
     /**
      * Get the minApiVersion property: Limit control plane API calls to API Management service with version equal to or

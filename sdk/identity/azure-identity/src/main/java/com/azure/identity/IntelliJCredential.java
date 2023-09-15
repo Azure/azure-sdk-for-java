@@ -24,11 +24,11 @@ import java.util.concurrent.atomic.AtomicReference;
 /**
  * <p>IntelliJ IDEA is an integrated development environment (IDE) developed by JetBrains, which provides a variety of
  * features to support software development, such as code completion, debugging, and testing.
- * Azure offers <a href="https://learn.microsoft.com/en-us/azure/developer/java/toolkit-for-intellij/">Azure Toolkit
+ * Azure offers <a href="https://learn.microsoft.com/azure/developer/java/toolkit-for-intellij/">Azure Toolkit
  * for IntelliJ plugin</a> for the IntelliJ IDEA development environment. It
  * enables developers to create, test, and deploy Java applications to the Azure cloud platform. In order to
  * use the plugin authentication as a user or service principal against
- * <a href="https://learn.microsoft.com/en-us/azure/active-directory/fundamentals/">Azure Active Directory (Azure AD)
+ * <a href="https://learn.microsoft.com/azure/active-directory/fundamentals/">Azure Active Directory (Azure AD)
  * </a> is required.
  * The IntelliJCredential authenticates in a development environment and acquires a token on behalf of the
  * logged-in account in Azure Toolkit for IntelliJ. It uses the logged in user information on the IntelliJ IDE and uses

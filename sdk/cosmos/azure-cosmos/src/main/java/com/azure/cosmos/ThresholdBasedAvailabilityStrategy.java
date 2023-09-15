@@ -4,8 +4,6 @@
 package com.azure.cosmos;
 
 import java.time.Duration;
-import java.util.List;
-import java.util.stream.Collectors;
 
 /**
  * The type Threshold based retry availability strategy.
@@ -16,12 +14,15 @@ public final class ThresholdBasedAvailabilityStrategy extends AvailabilityStrate
     private final Duration threshold;
     private final Duration thresholdStep;
 
+    private final String toStringValue;
+
     /**
      * Instantiates a new Threshold based retry availability strategy.
      */
     public ThresholdBasedAvailabilityStrategy() {
         this.threshold = DEFAULT_THRESHOLD;
         this.thresholdStep = DEFAULT_THRESHOLD_STEP;
+        this.toStringValue = getCachedStringValue(DEFAULT_THRESHOLD, DEFAULT_THRESHOLD_STEP);
     }
 
     /**
@@ -35,6 +36,11 @@ public final class ThresholdBasedAvailabilityStrategy extends AvailabilityStrate
         validateDuration(thresholdStep);
         this.threshold = threshold;
         this.thresholdStep = thresholdStep;
+        this.toStringValue = getCachedStringValue(threshold, thresholdStep);
+    }
+
+    private static String getCachedStringValue(Duration threshold, Duration thresholdStep) {
+        return "{" + "threshold=" + threshold + ", step=" + thresholdStep + "}";
     }
 
     private static void validateDuration(Duration threshold) {
@@ -62,4 +68,8 @@ public final class ThresholdBasedAvailabilityStrategy extends AvailabilityStrate
         return this.thresholdStep;
     }
 
+    @Override
+    public String toString() {
+        return toStringValue;
+    }
 }

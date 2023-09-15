@@ -6,8 +6,13 @@ package com.azure.resourcemanager.maintenance.generated;
 
 import com.azure.core.util.BinaryData;
 import com.azure.resourcemanager.maintenance.fluent.models.MaintenanceConfigurationProperties;
+import com.azure.resourcemanager.maintenance.models.InputLinuxParameters;
+import com.azure.resourcemanager.maintenance.models.InputPatchConfiguration;
+import com.azure.resourcemanager.maintenance.models.InputWindowsParameters;
 import com.azure.resourcemanager.maintenance.models.MaintenanceScope;
+import com.azure.resourcemanager.maintenance.models.RebootOptions;
 import com.azure.resourcemanager.maintenance.models.Visibility;
+import java.util.Arrays;
 import java.util.HashMap;
 import java.util.Map;
 import org.junit.jupiter.api.Assertions;
@@ -18,53 +23,79 @@ public final class MaintenanceConfigurationPropertiesTests {
         MaintenanceConfigurationProperties model =
             BinaryData
                 .fromString(
-                    "{\"namespace\":\"dosyg\",\"extensionProperties\":{\"vdphlxaolthqtr\":\"aojakhmsbzjhcrz\",\"gvfcj\":\"qjbpfzfsin\",\"xjtfelluwfzit\":\"wzo\",\"qfpjk\":\"np\"},\"maintenanceScope\":\"SQLManagedInstance\",\"maintenanceWindow\":{\"startDateTime\":\"pdvhpfxxypin\",\"expirationDateTime\":\"mayhuybbkpodepoo\",\"duration\":\"nuvamiheogna\",\"timeZone\":\"zxtheotusivyevcc\",\"recurEvery\":\"ihnhun\"},\"visibility\":\"Public\"}")
+                    "{\"namespace\":\"qsqsy\",\"extensionProperties\":{\"ppofmxaxcfjpgdd\":\"bfkgukdkex\",\"zxibqeoj\":\"ocjjxhvpmouexh\"},\"maintenanceScope\":\"Resource\",\"maintenanceWindow\":{\"startDateTime\":\"vddntwn\",\"expirationDateTime\":\"icbtwnpzao\",\"duration\":\"uhrhcffcyddgl\",\"timeZone\":\"t\",\"recurEvery\":\"qkwpyeicxmqc\"},\"visibility\":\"Custom\",\"installPatches\":{\"rebootSetting\":\"Never\",\"windowsParameters\":{\"kbNumbersToExclude\":[\"uigdtopbobjog\",\"m\",\"w\"],\"kbNumbersToInclude\":[\"a\"],\"classificationsToInclude\":[\"z\",\"yvvtpgvdfgio\"],\"excludeKbsRequiringReboot\":true},\"linuxParameters\":{\"packageNameMasksToExclude\":[\"qxlngx\",\"efgugnxk\"],\"packageNameMasksToInclude\":[\"qmi\",\"tthzrvqd\"],\"classificationsToInclude\":[\"hjybigehoqfbo\"]}}}")
                 .toObject(MaintenanceConfigurationProperties.class);
-        Assertions.assertEquals("dosyg", model.namespace());
-        Assertions.assertEquals("aojakhmsbzjhcrz", model.extensionProperties().get("vdphlxaolthqtr"));
-        Assertions.assertEquals(MaintenanceScope.SQLMANAGED_INSTANCE, model.maintenanceScope());
-        Assertions.assertEquals(Visibility.PUBLIC, model.visibility());
-        Assertions.assertEquals("pdvhpfxxypin", model.startDateTime());
-        Assertions.assertEquals("mayhuybbkpodepoo", model.expirationDateTime());
-        Assertions.assertEquals("nuvamiheogna", model.duration());
-        Assertions.assertEquals("zxtheotusivyevcc", model.timeZone());
-        Assertions.assertEquals("ihnhun", model.recurEvery());
+        Assertions.assertEquals("qsqsy", model.namespace());
+        Assertions.assertEquals("bfkgukdkex", model.extensionProperties().get("ppofmxaxcfjpgdd"));
+        Assertions.assertEquals(MaintenanceScope.RESOURCE, model.maintenanceScope());
+        Assertions.assertEquals(Visibility.CUSTOM, model.visibility());
+        Assertions.assertEquals(RebootOptions.NEVER, model.installPatches().rebootSetting());
+        Assertions
+            .assertEquals("uigdtopbobjog", model.installPatches().windowsParameters().kbNumbersToExclude().get(0));
+        Assertions.assertEquals("a", model.installPatches().windowsParameters().kbNumbersToInclude().get(0));
+        Assertions.assertEquals("z", model.installPatches().windowsParameters().classificationsToInclude().get(0));
+        Assertions.assertEquals(true, model.installPatches().windowsParameters().excludeKbsRequiringReboot());
+        Assertions.assertEquals("qxlngx", model.installPatches().linuxParameters().packageNameMasksToExclude().get(0));
+        Assertions.assertEquals("qmi", model.installPatches().linuxParameters().packageNameMasksToInclude().get(0));
+        Assertions
+            .assertEquals("hjybigehoqfbo", model.installPatches().linuxParameters().classificationsToInclude().get(0));
+        Assertions.assertEquals("vddntwn", model.startDateTime());
+        Assertions.assertEquals("icbtwnpzao", model.expirationDateTime());
+        Assertions.assertEquals("uhrhcffcyddgl", model.duration());
+        Assertions.assertEquals("t", model.timeZone());
+        Assertions.assertEquals("qkwpyeicxmqc", model.recurEvery());
     }
 
     @org.junit.jupiter.api.Test
     public void testSerialize() throws Exception {
         MaintenanceConfigurationProperties model =
             new MaintenanceConfigurationProperties()
-                .withNamespace("dosyg")
-                .withExtensionProperties(
-                    mapOf(
-                        "vdphlxaolthqtr",
-                        "aojakhmsbzjhcrz",
-                        "gvfcj",
-                        "qjbpfzfsin",
-                        "xjtfelluwfzit",
-                        "wzo",
-                        "qfpjk",
-                        "np"))
-                .withMaintenanceScope(MaintenanceScope.SQLMANAGED_INSTANCE)
-                .withVisibility(Visibility.PUBLIC)
-                .withStartDateTime("pdvhpfxxypin")
-                .withExpirationDateTime("mayhuybbkpodepoo")
-                .withDuration("nuvamiheogna")
-                .withTimeZone("zxtheotusivyevcc")
-                .withRecurEvery("ihnhun");
+                .withNamespace("qsqsy")
+                .withExtensionProperties(mapOf("ppofmxaxcfjpgdd", "bfkgukdkex", "zxibqeoj", "ocjjxhvpmouexh"))
+                .withMaintenanceScope(MaintenanceScope.RESOURCE)
+                .withVisibility(Visibility.CUSTOM)
+                .withInstallPatches(
+                    new InputPatchConfiguration()
+                        .withRebootSetting(RebootOptions.NEVER)
+                        .withWindowsParameters(
+                            new InputWindowsParameters()
+                                .withKbNumbersToExclude(Arrays.asList("uigdtopbobjog", "m", "w"))
+                                .withKbNumbersToInclude(Arrays.asList("a"))
+                                .withClassificationsToInclude(Arrays.asList("z", "yvvtpgvdfgio"))
+                                .withExcludeKbsRequiringReboot(true))
+                        .withLinuxParameters(
+                            new InputLinuxParameters()
+                                .withPackageNameMasksToExclude(Arrays.asList("qxlngx", "efgugnxk"))
+                                .withPackageNameMasksToInclude(Arrays.asList("qmi", "tthzrvqd"))
+                                .withClassificationsToInclude(Arrays.asList("hjybigehoqfbo"))))
+                .withStartDateTime("vddntwn")
+                .withExpirationDateTime("icbtwnpzao")
+                .withDuration("uhrhcffcyddgl")
+                .withTimeZone("t")
+                .withRecurEvery("qkwpyeicxmqc");
         model = BinaryData.fromObject(model).toObject(MaintenanceConfigurationProperties.class);
-        Assertions.assertEquals("dosyg", model.namespace());
-        Assertions.assertEquals("aojakhmsbzjhcrz", model.extensionProperties().get("vdphlxaolthqtr"));
-        Assertions.assertEquals(MaintenanceScope.SQLMANAGED_INSTANCE, model.maintenanceScope());
-        Assertions.assertEquals(Visibility.PUBLIC, model.visibility());
-        Assertions.assertEquals("pdvhpfxxypin", model.startDateTime());
-        Assertions.assertEquals("mayhuybbkpodepoo", model.expirationDateTime());
-        Assertions.assertEquals("nuvamiheogna", model.duration());
-        Assertions.assertEquals("zxtheotusivyevcc", model.timeZone());
-        Assertions.assertEquals("ihnhun", model.recurEvery());
+        Assertions.assertEquals("qsqsy", model.namespace());
+        Assertions.assertEquals("bfkgukdkex", model.extensionProperties().get("ppofmxaxcfjpgdd"));
+        Assertions.assertEquals(MaintenanceScope.RESOURCE, model.maintenanceScope());
+        Assertions.assertEquals(Visibility.CUSTOM, model.visibility());
+        Assertions.assertEquals(RebootOptions.NEVER, model.installPatches().rebootSetting());
+        Assertions
+            .assertEquals("uigdtopbobjog", model.installPatches().windowsParameters().kbNumbersToExclude().get(0));
+        Assertions.assertEquals("a", model.installPatches().windowsParameters().kbNumbersToInclude().get(0));
+        Assertions.assertEquals("z", model.installPatches().windowsParameters().classificationsToInclude().get(0));
+        Assertions.assertEquals(true, model.installPatches().windowsParameters().excludeKbsRequiringReboot());
+        Assertions.assertEquals("qxlngx", model.installPatches().linuxParameters().packageNameMasksToExclude().get(0));
+        Assertions.assertEquals("qmi", model.installPatches().linuxParameters().packageNameMasksToInclude().get(0));
+        Assertions
+            .assertEquals("hjybigehoqfbo", model.installPatches().linuxParameters().classificationsToInclude().get(0));
+        Assertions.assertEquals("vddntwn", model.startDateTime());
+        Assertions.assertEquals("icbtwnpzao", model.expirationDateTime());
+        Assertions.assertEquals("uhrhcffcyddgl", model.duration());
+        Assertions.assertEquals("t", model.timeZone());
+        Assertions.assertEquals("qkwpyeicxmqc", model.recurEvery());
     }
 
+    // Use "Map.of" if available
     @SuppressWarnings("unchecked")
     private static <T> Map<String, T> mapOf(Object... inputs) {
         Map<String, T> map = new HashMap<>();

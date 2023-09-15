@@ -18,34 +18,35 @@ public final class ClusterMetricsConfigurationInnerTests {
         ClusterMetricsConfigurationInner model =
             BinaryData
                 .fromString(
-                    "{\"extendedLocation\":{\"name\":\"hflzokxco\",\"type\":\"pelnjetag\"},\"properties\":{\"collectionInterval\":2159915633768308562,\"detailedStatus\":\"Error\",\"detailedStatusMessage\":\"tft\",\"disabledMetrics\":[\"npbs\",\"vefloccsrmozihmi\",\"g\",\"wtxxpkyjcx\"],\"enabledMetrics\":[\"grytfmpcyci\",\"rmcaykgg\"],\"provisioningState\":\"Canceled\"},\"location\":\"ztrksxwpndf\",\"tags\":{\"jaosrxuzv\":\"nznthjtw\",\"xqdlyrtltlapr\":\"amktcqiosmgbzah\"},\"id\":\"tz\",\"name\":\"atbhjmznn\",\"type\":\"s\"}")
+                    "{\"extendedLocation\":{\"name\":\"fcsserxhtvsox\",\"type\":\"lwntsjgqrs\"},\"properties\":{\"collectionInterval\":994604483308032293,\"detailedStatus\":\"Processing\",\"detailedStatusMessage\":\"u\",\"disabledMetrics\":[\"chrszi\",\"oyuelyetn\",\"nb\"],\"enabledMetrics\":[\"ggagfln\",\"gm\",\"rwahzjmucftbyr\"],\"provisioningState\":\"Accepted\"},\"location\":\"hkpigqfusuckzmkw\",\"tags\":{\"hjnhgwydyynfsvk\":\"noxaxmqeqal\",\"ta\":\"gbv\",\"jcpeogkhnmg\":\"arfdlpukhpyrnei\"},\"id\":\"ro\",\"name\":\"xddbhfhpfpaz\",\"type\":\"zoyw\"}")
                 .toObject(ClusterMetricsConfigurationInner.class);
-        Assertions.assertEquals("ztrksxwpndf", model.location());
-        Assertions.assertEquals("nznthjtw", model.tags().get("jaosrxuzv"));
-        Assertions.assertEquals("hflzokxco", model.extendedLocation().name());
-        Assertions.assertEquals("pelnjetag", model.extendedLocation().type());
-        Assertions.assertEquals(2159915633768308562L, model.collectionInterval());
-        Assertions.assertEquals("grytfmpcyci", model.enabledMetrics().get(0));
+        Assertions.assertEquals("hkpigqfusuckzmkw", model.location());
+        Assertions.assertEquals("noxaxmqeqal", model.tags().get("hjnhgwydyynfsvk"));
+        Assertions.assertEquals("fcsserxhtvsox", model.extendedLocation().name());
+        Assertions.assertEquals("lwntsjgqrs", model.extendedLocation().type());
+        Assertions.assertEquals(994604483308032293L, model.collectionInterval());
+        Assertions.assertEquals("ggagfln", model.enabledMetrics().get(0));
     }
 
     @org.junit.jupiter.api.Test
     public void testSerialize() throws Exception {
         ClusterMetricsConfigurationInner model =
             new ClusterMetricsConfigurationInner()
-                .withLocation("ztrksxwpndf")
-                .withTags(mapOf("jaosrxuzv", "nznthjtw", "xqdlyrtltlapr", "amktcqiosmgbzah"))
-                .withExtendedLocation(new ExtendedLocation().withName("hflzokxco").withType("pelnjetag"))
-                .withCollectionInterval(2159915633768308562L)
-                .withEnabledMetrics(Arrays.asList("grytfmpcyci", "rmcaykgg"));
+                .withLocation("hkpigqfusuckzmkw")
+                .withTags(mapOf("hjnhgwydyynfsvk", "noxaxmqeqal", "ta", "gbv", "jcpeogkhnmg", "arfdlpukhpyrnei"))
+                .withExtendedLocation(new ExtendedLocation().withName("fcsserxhtvsox").withType("lwntsjgqrs"))
+                .withCollectionInterval(994604483308032293L)
+                .withEnabledMetrics(Arrays.asList("ggagfln", "gm", "rwahzjmucftbyr"));
         model = BinaryData.fromObject(model).toObject(ClusterMetricsConfigurationInner.class);
-        Assertions.assertEquals("ztrksxwpndf", model.location());
-        Assertions.assertEquals("nznthjtw", model.tags().get("jaosrxuzv"));
-        Assertions.assertEquals("hflzokxco", model.extendedLocation().name());
-        Assertions.assertEquals("pelnjetag", model.extendedLocation().type());
-        Assertions.assertEquals(2159915633768308562L, model.collectionInterval());
-        Assertions.assertEquals("grytfmpcyci", model.enabledMetrics().get(0));
+        Assertions.assertEquals("hkpigqfusuckzmkw", model.location());
+        Assertions.assertEquals("noxaxmqeqal", model.tags().get("hjnhgwydyynfsvk"));
+        Assertions.assertEquals("fcsserxhtvsox", model.extendedLocation().name());
+        Assertions.assertEquals("lwntsjgqrs", model.extendedLocation().type());
+        Assertions.assertEquals(994604483308032293L, model.collectionInterval());
+        Assertions.assertEquals("ggagfln", model.enabledMetrics().get(0));
     }
 
+    // Use "Map.of" if available
     @SuppressWarnings("unchecked")
     private static <T> Map<String, T> mapOf(Object... inputs) {
         Map<String, T> map = new HashMap<>();

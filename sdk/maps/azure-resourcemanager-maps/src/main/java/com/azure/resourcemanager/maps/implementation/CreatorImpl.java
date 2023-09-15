@@ -5,6 +5,7 @@
 package com.azure.resourcemanager.maps.implementation;
 
 import com.azure.core.management.Region;
+import com.azure.core.management.SystemData;
 import com.azure.core.util.Context;
 import com.azure.resourcemanager.maps.fluent.models.CreatorInner;
 import com.azure.resourcemanager.maps.fluent.models.CreatorProperties;
@@ -45,6 +46,10 @@ public final class CreatorImpl implements Creator, Creator.Definition, Creator.U
 
     public CreatorProperties properties() {
         return this.innerModel().properties();
+    }
+
+    public SystemData systemData() {
+        return this.innerModel().systemData();
     }
 
     public Region region() {

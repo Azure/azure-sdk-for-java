@@ -141,7 +141,7 @@ This project has adopted the [Microsoft Open Source Code of Conduct][coc]. For m
 [source_code]: https://github.com/Azure/azure-sdk-for-java/tree/main/sdk/monitor/azure-monitor-opentelemetry-exporter/src
 [azure_subscription]: https://azure.microsoft.com/free/
 [api_reference_doc]: https://docs.microsoft.com/azure/azure-monitor/overview
-[package_mvn]: https://mvnrepository.com/artifact/com.azure/opentelemetry-exporters-azuremonitor
+[package_mvn]: https://central.sonatype.com/artifact/com.azure/opentelemetry-exporters-azuremonitor
 [product_documentation]: https://docs.microsoft.com/azure/azure-monitor/overview
 [azure_cli]: https://docs.microsoft.com/cli/azure
 [azure_portal]: https://portal.azure.com

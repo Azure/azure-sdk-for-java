@@ -13,7 +13,7 @@ public final class UpdateGroupStatusTests {
         UpdateGroupStatus model =
             BinaryData
                 .fromString(
-                    "{\"status\":{\"startTime\":\"2021-08-17T01:01:15Z\",\"completedTime\":\"2021-05-08T18:49:34Z\",\"state\":\"Completed\"},\"name\":\"aierhhb\",\"members\":[{\"status\":{\"startTime\":\"2021-07-20T05:11Z\",\"completedTime\":\"2021-01-08T14:04:30Z\",\"state\":\"Stopped\"},\"name\":\"odxobnbdxkqpxok\",\"clusterResourceId\":\"ionpimexg\",\"operationId\":\"xgcp\"}]}")
+                    "{\"status\":{\"startTime\":\"2021-08-16T11:07:09Z\",\"completedTime\":\"2021-03-08T14:48:20Z\",\"state\":\"Skipped\"},\"name\":\"bavxbniwdjswzt\",\"members\":[{\"status\":{\"startTime\":\"2021-10-19T12:26:50Z\",\"completedTime\":\"2021-04-13T23:02:25Z\",\"state\":\"Completed\"},\"name\":\"zxbzpfzabglc\",\"clusterResourceId\":\"xwtctyqiklbbovpl\",\"operationId\":\"bhvgy\",\"message\":\"uosvmkfssxqukk\"}]}")
                 .toObject(UpdateGroupStatus.class);
     }
 

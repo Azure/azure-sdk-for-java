@@ -4,13 +4,12 @@
 
 package com.azure.resourcemanager.apimanagement.generated;
 
-import com.azure.core.util.Context;
 import com.azure.resourcemanager.apimanagement.models.SettingsTypeName;
 
 /** Samples for TenantSettings Get. */
 public final class TenantSettingsGetSamples {
     /*
-     * x-ms-original-file: specification/apimanagement/resource-manager/Microsoft.ApiManagement/stable/2021-08-01/examples/ApiManagementGetTenantSettings.json
+     * x-ms-original-file: specification/apimanagement/resource-manager/Microsoft.ApiManagement/stable/2022-08-01/examples/ApiManagementGetTenantSettings.json
      */
     /**
      * Sample code: ApiManagementGetTenantSettings.
@@ -19,6 +18,8 @@ public final class TenantSettingsGetSamples {
      */
     public static void apiManagementGetTenantSettings(
         com.azure.resourcemanager.apimanagement.ApiManagementManager manager) {
-        manager.tenantSettings().getWithResponse("rg1", "apimService1", SettingsTypeName.PUBLIC, Context.NONE);
+        manager
+            .tenantSettings()
+            .getWithResponse("rg1", "apimService1", SettingsTypeName.PUBLIC, com.azure.core.util.Context.NONE);
     }
 }

@@ -18,6 +18,10 @@ public final class TableServicePropertiesInner extends ProxyResource {
     @JsonProperty(value = "properties")
     private TableServicePropertiesProperties innerTableServiceProperties;
 
+    /** Creates an instance of TableServicePropertiesInner class. */
+    public TableServicePropertiesInner() {
+    }
+
     /**
      * Get the innerTableServiceProperties property: The properties of a storage account’s Table service.
      *

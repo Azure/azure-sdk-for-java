@@ -243,7 +243,7 @@ public class EncryptedBlobClientBuilderTests {
             .containerName("container")
             .key(new FakeKey("keyId", randomData), "keyWrapAlgorithm")
             .credential(new AzureSasCredential("foo"))
-            .httpClient(new UAStringTestClient("azsdk-java-azure-storage-blob/\\d+\\.\\d+\\.\\d+[-beta\\.\\d+]* azsdk-java-" + CLIENT_NAME + "/" + CLIENT_VERSION + " " + "(.)*"))
+            .httpClient(new UAStringTestClient("azstorage-clientsideencryption/1.0 azsdk-java-azure-storage-blob/\\d+\\.\\d+\\.\\d+[-beta\\.\\d+]* azsdk-java-" + CLIENT_NAME + "/" + CLIENT_VERSION + " " + "(.)*"))
             .buildEncryptedBlobClient();
 
         sendAndValidateUserAgentHeader(cryptoClient.getHttpPipeline(), cryptoClient.getBlobUrl());

@@ -1,16 +1,45 @@
 # Release History
 
-## 1.3.0-beta.1 (Unreleased)
+## 1.3.0-beta.2 (2023-09-13)
 
 ### Features Added
 
-### Breaking Changes
+- Added `MetricsQueryOptions` to `MetricsBatchQueryClient` and `MetricsBatchQueryAsyncClient` to support batch querying metrics with 
+additional options.
+
+### Other Changes
+
+#### Dependency Updates
+
+- Upgraded `azure-core` from `1.42.0` to version `1.43.0`.
+- Upgraded `azure-core-http-netty` from `1.13.6` to version `1.13.7`.
+
+## 1.2.4 (2023-08-18)
+
+### Other Changes
+
+#### Dependency Updates
+
+- Upgraded `azure-core` from `1.41.0` to version `1.42.0`.
+- Upgraded `azure-core-http-netty` from `1.13.5` to version `1.13.6`.
+
+## 1.3.0-beta.1 (2023-08-10)
+
+### Features Added
+- Added `MetricsBatchQueryClient` and `MetricsBatchQueryAsyncClient` to support batch querying metrics.
+
+### Other Changes
+
+#### Dependency Updates
+
+- Upgraded `azure-core` from `1.41.0` to version `1.42.0`.
+- Upgraded `azure-core-http-netty` from `1.13.5` to version `1.13.6`.
+
+## 1.2.3 (2023-07-28)
 
 ### Bugs Fixed
 
 - Fixed bug that disabled sovereign cloud support.
-
-### Other Changes
 
 ## 1.2.2 (2023-07-25)
 
@@ -20,7 +49,6 @@
 
 - Upgraded `azure-core` from `1.40.0` to version `1.41.0`.
 - Upgraded `azure-core-http-netty` from `1.13.4` to version `1.13.5`.
-
 
 ## 1.2.1 (2023-06-20)
 

@@ -18,7 +18,7 @@ public final class AzureBlobFileListContentSource {
     private String containerUrl;
 
     /*
-     * Path to a JSONL file within the container specifying a subset of documents for training.
+     * Path to a JSONL file within the container specifying a subset of documents.
      */
     @JsonProperty(value = "fileList", required = true)
     private String fileList;
@@ -47,8 +47,7 @@ public final class AzureBlobFileListContentSource {
     }
 
     /**
-     * Get the fileList property: Path to a JSONL file within the container specifying a subset of documents for
-     * training.
+     * Get the fileList property: Path to a JSONL file within the container specifying a subset of documents.
      *
      * @return the fileList value.
      */

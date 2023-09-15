@@ -13,7 +13,7 @@ public final class UpgradeGraphPropertiesTests {
         UpgradeGraphProperties model =
             BinaryData
                 .fromString(
-                    "{\"applianceVersion\":\"bybkzgcwrwclxx\",\"supportedVersions\":[{\"metadata\":{},\"version\":\"uskcqvkocrcj\"},{\"metadata\":{},\"version\":\"nh\"}]}")
+                    "{\"applianceVersion\":\"ihnhun\",\"supportedVersions\":[{\"metadata\":{\"catalogVersion\":{\"data\":{\"audience\":\"fygxgispemvtzfk\",\"catalog\":\"ubljofxqe\",\"offer\":\"jaeq\",\"version\":\"qjbasvms\"},\"name\":\"qulngsntnbybkzgc\",\"namespace\":\"wclxxwrl\"}},\"version\":\"ouskcqvkocrc\"},{\"metadata\":{\"catalogVersion\":{\"data\":{\"audience\":\"nh\",\"catalog\":\"njbiksqrglssain\",\"offer\":\"jwnzlljfmp\",\"version\":\"ebvmgxsabkyqd\"},\"name\":\"jitcjczdzevn\",\"namespace\":\"krwpdap\"}},\"version\":\"sbdkvwr\"},{\"metadata\":{\"catalogVersion\":{\"data\":{\"audience\":\"snhu\",\"catalog\":\"eltmrldhugjzzdat\",\"offer\":\"hocdgeab\",\"version\":\"phut\"},\"name\":\"ndv\",\"namespace\":\"ozwyiftyhxhuro\"}},\"version\":\"tyxolniwpwc\"},{\"metadata\":{\"catalogVersion\":{\"data\":{\"audience\":\"giawx\",\"catalog\":\"ryplwckbasyypn\",\"offer\":\"hsgcbacphejkot\",\"version\":\"qgoulznd\"},\"name\":\"kwy\",\"namespace\":\"gfgibm\"}},\"version\":\"gakeqsr\"}]}")
                 .toObject(UpgradeGraphProperties.class);
     }
 

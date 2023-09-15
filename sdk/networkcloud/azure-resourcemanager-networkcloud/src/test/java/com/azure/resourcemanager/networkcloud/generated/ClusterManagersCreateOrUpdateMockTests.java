@@ -35,7 +35,7 @@ public final class ClusterManagersCreateOrUpdateMockTests {
         ArgumentCaptor<HttpRequest> httpRequest = ArgumentCaptor.forClass(HttpRequest.class);
 
         String responseStr =
-            "{\"properties\":{\"analyticsWorkspaceId\":\"linhmdptysprqs\",\"availabilityZones\":[\"xojpslsvjgp\",\"iufiqwo\",\"xqvapcohh\"],\"clusterVersions\":[],\"detailedStatus\":\"Provisioning\",\"detailedStatusMessage\":\"oj\",\"fabricControllerId\":\"cxzrzdcgdzben\",\"managedResourceGroupConfiguration\":{\"location\":\"cawetzqddt\",\"name\":\"fljhznamtua\"},\"managerExtendedLocation\":{\"name\":\"zwcjjncqtj\",\"type\":\"mizvgbgatzuuvbx\"},\"provisioningState\":\"Succeeded\",\"vmSize\":\"bwggahtt\"},\"location\":\"swvajqfu\",\"tags\":{\"unwqr\":\"joqza\"},\"id\":\"zfrgqhaohcm\",\"name\":\"uocnjrohmbpyr\",\"type\":\"xameblydyvkfkm\"}";
+            "{\"properties\":{\"analyticsWorkspaceId\":\"ravaq\",\"availabilityZones\":[\"kbeba\",\"zlqbtxxwpfhn\",\"zudrtpzk\"],\"clusterVersions\":[{\"supportExpiryDate\":\"oywhczzqrhmngqbe\",\"targetClusterVersion\":\"gis\"},{\"supportExpiryDate\":\"wnykdidjchlrmpw\",\"targetClusterVersion\":\"ofldseacdhz\"},{\"supportExpiryDate\":\"kbrfgdrwji\",\"targetClusterVersion\":\"whfjsrwqrxe\"},{\"supportExpiryDate\":\"gcwvrrmdqntycna\",\"targetClusterVersion\":\"hvmaxgnuyeamcmhu\"}],\"detailedStatus\":\"Available\",\"detailedStatusMessage\":\"cehokw\",\"fabricControllerId\":\"pqtwloesqrggvrb\",\"managedResourceGroupConfiguration\":{\"location\":\"ukoila\",\"name\":\"duwjleipjlhwy\"},\"managerExtendedLocation\":{\"name\":\"zr\",\"type\":\"z\"},\"provisioningState\":\"Succeeded\",\"vmSize\":\"kkwhbgxvellvulnx\"},\"location\":\"nitmujdtvmclyymf\",\"tags\":{\"xfzuvrzmzqmzj\":\"jpddn\",\"pv\":\"rb\",\"pglaoh\":\"mdyfoebojtj\"},\"id\":\"qk\",\"name\":\"jtnqjil\",\"type\":\"ywkdcwmqsy\"}";
 
         Mockito.when(httpResponse.getStatusCode()).thenReturn(200);
         Mockito.when(httpResponse.getHeaders()).thenReturn(new HttpHeaders());
@@ -66,28 +66,29 @@ public final class ClusterManagersCreateOrUpdateMockTests {
         ClusterManager response =
             manager
                 .clusterManagers()
-                .define("s")
-                .withRegion("mjel")
-                .withExistingResourceGroup("a")
-                .withFabricControllerId("oawjqoyueay")
-                .withTags(mapOf("kjopwbeon", "cigeleohdbvqvw", "soqfyiaseqchkrt", "lkwzdqybxceakxcp"))
-                .withAnalyticsWorkspaceId("xrblmliowxihs")
-                .withAvailabilityZones(Arrays.asList("wqagnepzwa", "lsbs", "qqqagwwrxaomzi"))
+                .define("wwa")
+                .withRegion("dlh")
+                .withExistingResourceGroup("wmwwmjswen")
+                .withFabricControllerId("sjt")
+                .withTags(mapOf("nytjlk", "bdbfgrlp", "h", "smmpathubt"))
+                .withAnalyticsWorkspaceId("cleqioulndhzyo")
+                .withAvailabilityZones(Arrays.asList("ht", "llhsvidmyt"))
                 .withManagedResourceGroupConfiguration(
-                    new ManagedResourceGroupConfiguration().withLocation("cmsp").withName("yrrueqth"))
-                .withVmSize("xubmdnafcbqw")
+                    new ManagedResourceGroupConfiguration().withLocation("bninjgazlsvbzfc").withName("o"))
+                .withVmSize("lriyehqbe")
                 .create();
 
-        Assertions.assertEquals("swvajqfu", response.location());
-        Assertions.assertEquals("joqza", response.tags().get("unwqr"));
-        Assertions.assertEquals("linhmdptysprqs", response.analyticsWorkspaceId());
-        Assertions.assertEquals("xojpslsvjgp", response.availabilityZones().get(0));
-        Assertions.assertEquals("cxzrzdcgdzben", response.fabricControllerId());
-        Assertions.assertEquals("cawetzqddt", response.managedResourceGroupConfiguration().location());
-        Assertions.assertEquals("fljhznamtua", response.managedResourceGroupConfiguration().name());
-        Assertions.assertEquals("bwggahtt", response.vmSize());
+        Assertions.assertEquals("nitmujdtvmclyymf", response.location());
+        Assertions.assertEquals("jpddn", response.tags().get("xfzuvrzmzqmzj"));
+        Assertions.assertEquals("ravaq", response.analyticsWorkspaceId());
+        Assertions.assertEquals("kbeba", response.availabilityZones().get(0));
+        Assertions.assertEquals("pqtwloesqrggvrb", response.fabricControllerId());
+        Assertions.assertEquals("ukoila", response.managedResourceGroupConfiguration().location());
+        Assertions.assertEquals("duwjleipjlhwy", response.managedResourceGroupConfiguration().name());
+        Assertions.assertEquals("kkwhbgxvellvulnx", response.vmSize());
     }
 
+    // Use "Map.of" if available
     @SuppressWarnings("unchecked")
     private static <T> Map<String, T> mapOf(Object... inputs) {
         Map<String, T> map = new HashMap<>();

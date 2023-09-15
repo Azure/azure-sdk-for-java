@@ -52,6 +52,10 @@ public final class GatewayHostnameConfigurationContractImpl
         return this.innerModel().http2Enabled();
     }
 
+    public String resourceGroupName() {
+        return resourceGroupName;
+    }
+
     public GatewayHostnameConfigurationContractInner innerModel() {
         return this.innerObject;
     }

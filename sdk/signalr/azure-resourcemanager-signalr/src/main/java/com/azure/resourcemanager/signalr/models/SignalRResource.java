@@ -57,7 +57,7 @@ public interface SignalRResource {
     ResourceSku sku();
 
     /**
-     * Gets the kind property: The kind of the service, it can be SignalR or RawWebSockets.
+     * Gets the kind property: The kind of the service.
      *
      * @return the kind value.
      */
@@ -71,7 +71,7 @@ public interface SignalRResource {
     ManagedIdentity identity();
 
     /**
-     * Gets the systemData property: Metadata pertaining to creation and last modification of the resource.
+     * Gets the systemData property: Azure Resource Manager metadata containing createdBy and modifiedBy information.
      *
      * @return the systemData value.
      */
@@ -263,11 +263,13 @@ public interface SignalRResource {
             DefinitionStages.WithResourceGroup,
             DefinitionStages.WithCreate {
     }
+
     /** The SignalRResource definition stages. */
     interface DefinitionStages {
         /** The first stage of the SignalRResource definition. */
         interface Blank extends WithLocation {
         }
+
         /** The stage of the SignalRResource definition allowing to specify location. */
         interface WithLocation {
             /**
@@ -286,17 +288,18 @@ public interface SignalRResource {
              */
             WithResourceGroup withRegion(String location);
         }
+
         /** The stage of the SignalRResource definition allowing to specify parent resource. */
         interface WithResourceGroup {
             /**
              * Specifies resourceGroupName.
              *
-             * @param resourceGroupName The name of the resource group that contains the resource. You can obtain this
-             *     value from the Azure Resource Manager API or the portal.
+             * @param resourceGroupName The name of the resource group. The name is case insensitive.
              * @return the next definition stage.
              */
             WithCreate withExistingResourceGroup(String resourceGroupName);
         }
+
         /**
          * The stage of the SignalRResource definition which contains all the minimum required properties for the
          * resource to be created, but also allows for any other optional properties to be specified.
@@ -332,6 +335,7 @@ public interface SignalRResource {
              */
             SignalRResource create(Context context);
         }
+
         /** The stage of the SignalRResource definition allowing to specify tags. */
         interface WithTags {
             /**
@@ -342,6 +346,7 @@ public interface SignalRResource {
              */
             WithCreate withTags(Map<String, String> tags);
         }
+
         /** The stage of the SignalRResource definition allowing to specify sku. */
         interface WithSku {
             /**
@@ -352,16 +357,18 @@ public interface SignalRResource {
              */
             WithCreate withSku(ResourceSku sku);
         }
+
         /** The stage of the SignalRResource definition allowing to specify kind. */
         interface WithKind {
             /**
-             * Specifies the kind property: The kind of the service, it can be SignalR or RawWebSockets.
+             * Specifies the kind property: The kind of the service.
              *
-             * @param kind The kind of the service, it can be SignalR or RawWebSockets.
+             * @param kind The kind of the service.
              * @return the next definition stage.
              */
             WithCreate withKind(ServiceKind kind);
         }
+
         /** The stage of the SignalRResource definition allowing to specify identity. */
         interface WithIdentity {
             /**
@@ -372,6 +379,7 @@ public interface SignalRResource {
              */
             WithCreate withIdentity(ManagedIdentity identity);
         }
+
         /** The stage of the SignalRResource definition allowing to specify tls. */
         interface WithTls {
             /**
@@ -382,6 +390,7 @@ public interface SignalRResource {
              */
             WithCreate withTls(SignalRTlsSettings tls);
         }
+
         /** The stage of the SignalRResource definition allowing to specify features. */
         interface WithFeatures {
             /**
@@ -401,6 +410,7 @@ public interface SignalRResource {
              */
             WithCreate withFeatures(List<SignalRFeature> features);
         }
+
         /** The stage of the SignalRResource definition allowing to specify liveTraceConfiguration. */
         interface WithLiveTraceConfiguration {
             /**
@@ -412,6 +422,7 @@ public interface SignalRResource {
              */
             WithCreate withLiveTraceConfiguration(LiveTraceConfiguration liveTraceConfiguration);
         }
+
         /** The stage of the SignalRResource definition allowing to specify resourceLogConfiguration. */
         interface WithResourceLogConfiguration {
             /**
@@ -423,6 +434,7 @@ public interface SignalRResource {
              */
             WithCreate withResourceLogConfiguration(ResourceLogConfiguration resourceLogConfiguration);
         }
+
         /** The stage of the SignalRResource definition allowing to specify cors. */
         interface WithCors {
             /**
@@ -433,6 +445,7 @@ public interface SignalRResource {
              */
             WithCreate withCors(SignalRCorsSettings cors);
         }
+
         /** The stage of the SignalRResource definition allowing to specify serverless. */
         interface WithServerless {
             /**
@@ -443,6 +456,7 @@ public interface SignalRResource {
              */
             WithCreate withServerless(ServerlessSettings serverless);
         }
+
         /** The stage of the SignalRResource definition allowing to specify upstream. */
         interface WithUpstream {
             /**
@@ -453,6 +467,7 @@ public interface SignalRResource {
              */
             WithCreate withUpstream(ServerlessUpstreamSettings upstream);
         }
+
         /** The stage of the SignalRResource definition allowing to specify networkACLs. */
         interface WithNetworkACLs {
             /**
@@ -463,6 +478,7 @@ public interface SignalRResource {
              */
             WithCreate withNetworkACLs(SignalRNetworkACLs networkACLs);
         }
+
         /** The stage of the SignalRResource definition allowing to specify publicNetworkAccess. */
         interface WithPublicNetworkAccess {
             /**
@@ -477,6 +493,7 @@ public interface SignalRResource {
              */
             WithCreate withPublicNetworkAccess(String publicNetworkAccess);
         }
+
         /** The stage of the SignalRResource definition allowing to specify disableLocalAuth. */
         interface WithDisableLocalAuth {
             /**
@@ -489,6 +506,7 @@ public interface SignalRResource {
              */
             WithCreate withDisableLocalAuth(Boolean disableLocalAuth);
         }
+
         /** The stage of the SignalRResource definition allowing to specify disableAadAuth. */
         interface WithDisableAadAuth {
             /**
@@ -502,6 +520,7 @@ public interface SignalRResource {
             WithCreate withDisableAadAuth(Boolean disableAadAuth);
         }
     }
+
     /**
      * Begins update for the SignalRResource resource.
      *
@@ -540,6 +559,7 @@ public interface SignalRResource {
          */
         SignalRResource apply(Context context);
     }
+
     /** The SignalRResource update stages. */
     interface UpdateStages {
         /** The stage of the SignalRResource update allowing to specify tags. */
@@ -552,6 +572,7 @@ public interface SignalRResource {
              */
             Update withTags(Map<String, String> tags);
         }
+
         /** The stage of the SignalRResource update allowing to specify sku. */
         interface WithSku {
             /**
@@ -562,6 +583,7 @@ public interface SignalRResource {
              */
             Update withSku(ResourceSku sku);
         }
+
         /** The stage of the SignalRResource update allowing to specify identity. */
         interface WithIdentity {
             /**
@@ -572,6 +594,7 @@ public interface SignalRResource {
              */
             Update withIdentity(ManagedIdentity identity);
         }
+
         /** The stage of the SignalRResource update allowing to specify tls. */
         interface WithTls {
             /**
@@ -582,6 +605,7 @@ public interface SignalRResource {
              */
             Update withTls(SignalRTlsSettings tls);
         }
+
         /** The stage of the SignalRResource update allowing to specify features. */
         interface WithFeatures {
             /**
@@ -601,6 +625,7 @@ public interface SignalRResource {
              */
             Update withFeatures(List<SignalRFeature> features);
         }
+
         /** The stage of the SignalRResource update allowing to specify liveTraceConfiguration. */
         interface WithLiveTraceConfiguration {
             /**
@@ -612,6 +637,7 @@ public interface SignalRResource {
              */
             Update withLiveTraceConfiguration(LiveTraceConfiguration liveTraceConfiguration);
         }
+
         /** The stage of the SignalRResource update allowing to specify resourceLogConfiguration. */
         interface WithResourceLogConfiguration {
             /**
@@ -623,6 +649,7 @@ public interface SignalRResource {
              */
             Update withResourceLogConfiguration(ResourceLogConfiguration resourceLogConfiguration);
         }
+
         /** The stage of the SignalRResource update allowing to specify cors. */
         interface WithCors {
             /**
@@ -633,6 +660,7 @@ public interface SignalRResource {
              */
             Update withCors(SignalRCorsSettings cors);
         }
+
         /** The stage of the SignalRResource update allowing to specify serverless. */
         interface WithServerless {
             /**
@@ -643,6 +671,7 @@ public interface SignalRResource {
              */
             Update withServerless(ServerlessSettings serverless);
         }
+
         /** The stage of the SignalRResource update allowing to specify upstream. */
         interface WithUpstream {
             /**
@@ -653,6 +682,7 @@ public interface SignalRResource {
              */
             Update withUpstream(ServerlessUpstreamSettings upstream);
         }
+
         /** The stage of the SignalRResource update allowing to specify networkACLs. */
         interface WithNetworkACLs {
             /**
@@ -663,6 +693,7 @@ public interface SignalRResource {
              */
             Update withNetworkACLs(SignalRNetworkACLs networkACLs);
         }
+
         /** The stage of the SignalRResource update allowing to specify publicNetworkAccess. */
         interface WithPublicNetworkAccess {
             /**
@@ -677,6 +708,7 @@ public interface SignalRResource {
              */
             Update withPublicNetworkAccess(String publicNetworkAccess);
         }
+
         /** The stage of the SignalRResource update allowing to specify disableLocalAuth. */
         interface WithDisableLocalAuth {
             /**
@@ -689,6 +721,7 @@ public interface SignalRResource {
              */
             Update withDisableLocalAuth(Boolean disableLocalAuth);
         }
+
         /** The stage of the SignalRResource update allowing to specify disableAadAuth. */
         interface WithDisableAadAuth {
             /**
@@ -702,6 +735,7 @@ public interface SignalRResource {
             Update withDisableAadAuth(Boolean disableAadAuth);
         }
     }
+
     /**
      * Refreshes the resource to sync with Azure.
      *

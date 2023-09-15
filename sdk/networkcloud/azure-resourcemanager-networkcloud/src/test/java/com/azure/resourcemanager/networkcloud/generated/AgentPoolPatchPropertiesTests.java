@@ -14,20 +14,20 @@ public final class AgentPoolPatchPropertiesTests {
     public void testDeserialize() throws Exception {
         AgentPoolPatchProperties model =
             BinaryData
-                .fromString("{\"count\":5928896004596070285,\"upgradeSettings\":{\"maxSurge\":\"g\"}}")
+                .fromString("{\"count\":6504667056723146925,\"upgradeSettings\":{\"maxSurge\":\"lbqnbldxeacl\"}}")
                 .toObject(AgentPoolPatchProperties.class);
-        Assertions.assertEquals(5928896004596070285L, model.count());
-        Assertions.assertEquals("g", model.upgradeSettings().maxSurge());
+        Assertions.assertEquals(6504667056723146925L, model.count());
+        Assertions.assertEquals("lbqnbldxeacl", model.upgradeSettings().maxSurge());
     }
 
     @org.junit.jupiter.api.Test
     public void testSerialize() throws Exception {
         AgentPoolPatchProperties model =
             new AgentPoolPatchProperties()
-                .withCount(5928896004596070285L)
-                .withUpgradeSettings(new AgentPoolUpgradeSettings().withMaxSurge("g"));
+                .withCount(6504667056723146925L)
+                .withUpgradeSettings(new AgentPoolUpgradeSettings().withMaxSurge("lbqnbldxeacl"));
         model = BinaryData.fromObject(model).toObject(AgentPoolPatchProperties.class);
-        Assertions.assertEquals(5928896004596070285L, model.count());
-        Assertions.assertEquals("g", model.upgradeSettings().maxSurge());
+        Assertions.assertEquals(6504667056723146925L, model.count());
+        Assertions.assertEquals("lbqnbldxeacl", model.upgradeSettings().maxSurge());
     }
 }

@@ -9,13 +9,13 @@ import com.azure.monitor.opentelemetry.exporter.implementation.builders.MetricTe
 import com.azure.monitor.opentelemetry.exporter.implementation.logging.OperationLogger;
 import com.azure.monitor.opentelemetry.exporter.implementation.models.ContextTagKeys;
 import com.azure.monitor.opentelemetry.exporter.implementation.models.TelemetryItem;
-import com.azure.monitor.opentelemetry.exporter.implementation.utils.AksResourceAttributes;
 import com.fasterxml.jackson.annotation.JsonInclude;
 import com.fasterxml.jackson.core.JsonGenerator;
 import com.fasterxml.jackson.core.io.SerializedString;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.fasterxml.jackson.databind.SerializationFeature;
 import io.opentelemetry.sdk.common.CompletableResultCode;
+import io.opentelemetry.sdk.resources.Resource;
 
 import java.io.IOException;
 import java.io.StringWriter;
@@ -66,15 +66,18 @@ public class TelemetryItemExporter {
 
     private final TelemetryPipeline telemetryPipeline;
     private final TelemetryPipelineListener listener;
+    // TODO (trask) should this be all the resources?
+    private final Resource environmentResource;
 
     private final Set<CompletableResultCode> activeExportResults =
         Collections.newSetFromMap(new ConcurrentHashMap<>());
 
     // e.g. construct with diagnostic listener and local storage listener
     public TelemetryItemExporter(
-        TelemetryPipeline telemetryPipeline, TelemetryPipelineListener listener) {
+            TelemetryPipeline telemetryPipeline, TelemetryPipelineListener listener, Resource environmentResource) {
         this.telemetryPipeline = telemetryPipeline;
         this.listener = listener;
+        this.environmentResource = environmentResource;
     }
 
     public CompletableResultCode send(List<TelemetryItem> telemetryItems) {
@@ -151,7 +154,7 @@ public class TelemetryItemExporter {
         // Don't send _OTELRESOURCE_ custom metric when OTEL_RESOURCE_ATTRIBUTES env var is empty
         // Don't send _OTELRESOURCE_ custom metric to Statsbeat yet
         // insert _OTELRESOURCE_ at the beginning of each batch
-        if (!AksResourceAttributes.getOtelResourceAttributes().isEmpty()
+        if (!environmentResource.getAttributes().isEmpty()
             && !"Statsbeat".equals(telemetryItems.get(0).getName())) {
             telemetryItems.add(
                 0, createOtelResourceMetric(telemetryItems.get(0).getTags(), connectionString));
@@ -166,7 +169,7 @@ public class TelemetryItemExporter {
         return telemetryPipeline.send(byteBuffers, connectionString, listener);
     }
 
-    private static TelemetryItem createOtelResourceMetric(
+    private TelemetryItem createOtelResourceMetric(
         Map<String, String> existingTags, String connectionString) {
         MetricTelemetryBuilder builder = MetricTelemetryBuilder.create(_OTELRESOURCE_, 0);
         // this is needed in order to stamp iKey onto the telemetry item during serialization
@@ -181,11 +184,8 @@ public class TelemetryItemExporter {
             ContextTagKeys.AI_INTERNAL_SDK_VERSION.toString(),
             existingTags.get(ContextTagKeys.AI_INTERNAL_SDK_VERSION.toString()));
 
-        // add attributes from OTEL_RESOURCE_ATTRIBUTES
-        for (Map.Entry<String, String> entry :
-            AksResourceAttributes.getOtelResourceAttributes().entrySet()) {
-            builder.addProperty(entry.getKey(), entry.getValue());
-        }
+        environmentResource.getAttributes().forEach((k, v) -> builder.addProperty(k.getKey(), v.toString()));
+
         return builder.build();
     }
 
