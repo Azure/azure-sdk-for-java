@@ -62,6 +62,8 @@ spring.cloud.azure.appconfiguration.stores[0].enabled | Whether the store will b
 spring.cloud.azure.appconfiguration.stores[0].fail-fast | Whether to throw a `RuntimeException` or not when failing to read from App Configuration during application start-up. If an exception does occur during startup when set to false the store is skipped. | No |  true
 spring.cloud.azure.appconfiguration.stores[0].selects[0].key-filter | The key pattern used to indicate which configuration(s) will be loaded.  | No | /application/*
 spring.cloud.azure.appconfiguration.stores[0].selects[0].label-filter | The label used to indicate which configuration(s) will be loaded. | No | `${spring.profiles.active}` or if null `\0`
+spring.cloud.azure.appconfiguration.stores[0].selects[0].snapshot-name | The snapshot name used to indicate which configuration(s) will be loaded. | No | null
+ spring.cloud.azure.appconfiguration.stores[0].trim-key-prefix[0] | The prefix that will be trimmed from the key when the configuration is loaded. | No | null, unless using key-filter, then it is the key-filter
 
 Configuration Store Authentication
 
@@ -167,6 +169,75 @@ spring:
              -
               label-filter: ',${spring.profiles.active}'
 ```
+
+#### Snapshots
+
+ App Configuration snapshots allow you to freeze a moment in time of your configuration store. Snapshots are immutable. Snapshots are stored in the same configuration store as the rest of your configuration data. Snapshots are identified by a unique snapshot name. The snapshot name is a string that can contain any combination of alphanumeric characters, hyphens, and underscores. The snapshot name is case sensitive and must be unique within the configuration store.
+
+ To load configuration from a snapshot, use the following configuration:
+
+ ```yaml
+ spring:
+   cloud:
+     azure:
+       appconfiguration:
+         stores:
+          -
+            connection-string: <connection-string>
+            selects:
+              -
+               snapshot-name: <snapshot-name>
+            trim-key-prefix:
+              - /application/
+ ```
+
+ NOTE: Snapshots have to be of the composition type KEY in order to be loaded, this is to stop configuration name conflicts inside of a snapshot.
+
+ NOTE 2: If keys start with a prefix such as `/application/` a trim value is needed otherwise `/` will be converted to `.` and your key will not be mapped to `@ConfigurationProperties`
+
+ When using snapshots, key-filters and label filters aren't used. The snapshot is loaded as is. You can load multiple snapshots by adding multiple selects, even adding key and label filters to other selects.
+
+ ```yaml
+ spring:
+   cloud:
+     azure:
+       appconfiguration:
+         stores:
+          -
+            connection-string: <connection-string>
+            selects:
+              -
+               snapshot-name: <snapshot-name>
+              -
+               key-filter: <key-filter>
+               label-filter: <label-filter>
+ ```
+
+ In this case, the snapshot is loaded first then keys from the filter are loaded. If there are duplicate keys, the last key loaded has the highest priority.
+ 
+ If previously you used these keys in your application outside of a snapshot than they will most likely contain a prefix like `/application/`, when using a key filter the prefix was automatically removed, but it isn't with a snapshot, which means you have to trim your key names.
+
+ ```yaml
+ spring:
+   cloud:
+     azure:
+       appconfiguration:
+         stores:
+          -
+            connection-string: <connection-string>
+            selects:
+              -
+               snapshot-name: <snapshot-name>
+            trim:
+              - /application/
+ ```
+
+ This will trim the prefix from all keys in the snapshot, and will also trim any other keys selected if they begin with the prefix. This has also been added to the key filter, so you can use it there as well, though it overrides the key-filter name trim.
+
+
+ NOTE: If you are only using snapshots, you don't have to monitor the configuration store, as snapshots are immutable. But if you are using snapshots and other configuration data, you can still monitor the configuration store.
+
+ NOTE: If your snapshot includes feature flags they will automatically be loaded even if feature flags are disabled. If feature flags are enabled, the feature flags will be loaded, any feature flags loaded this way take priority of feature flags loaded from snapshots.
 
 #### Configuration Refresh
 

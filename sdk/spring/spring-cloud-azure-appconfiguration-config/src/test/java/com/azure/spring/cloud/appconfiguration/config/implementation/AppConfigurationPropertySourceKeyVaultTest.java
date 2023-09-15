@@ -97,7 +97,7 @@ public class AppConfigurationPropertySourceKeyVaultTest {
 
         String[] labelFilter = { "\0" };
         propertySource = new AppConfigurationApplicationSettingPropertySource(TEST_STORE_NAME, replicaClientMock,
-            keyVaultClientFactory, KEY_FILTER, labelFilter, 60);
+            keyVaultClientFactory, KEY_FILTER, labelFilter);
 
         TEST_ITEMS.add(ITEM_1);
         TEST_ITEMS.add(ITEM_2);
@@ -121,10 +121,10 @@ public class AppConfigurationPropertySourceKeyVaultTest {
 
         KeyVaultSecret secret = new KeyVaultSecret("mySecret", "mySecretValue");
         when(keyVaultClientFactory.getClient(Mockito.eq("https://test.key.vault.com"))).thenReturn(clientManagerMock);
-        when(clientManagerMock.getSecret(Mockito.any(URI.class), Mockito.anyInt())).thenReturn(secret);
+        when(clientManagerMock.getSecret(Mockito.any(URI.class))).thenReturn(secret);
 
         try {
-            propertySource.initProperties();
+            propertySource.initProperties(null);
         } catch (IOException e) {
             fail("Failed Reading in Feature Flags");
         }

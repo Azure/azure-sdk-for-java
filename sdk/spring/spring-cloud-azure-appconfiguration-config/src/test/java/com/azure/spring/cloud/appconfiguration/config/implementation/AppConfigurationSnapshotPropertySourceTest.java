@@ -2,6 +2,9 @@
 // Licensed under the MIT License.
 package com.azure.spring.cloud.appconfiguration.config.implementation;
 
+import static com.azure.spring.cloud.appconfiguration.config.implementation.AppConfigurationConstants.FEATURE_FLAG_CONTENT_TYPE;
+import static com.azure.spring.cloud.appconfiguration.config.implementation.TestConstants.FEATURE_LABEL;
+import static com.azure.spring.cloud.appconfiguration.config.implementation.TestConstants.FEATURE_VALUE;
 import static com.azure.spring.cloud.appconfiguration.config.implementation.TestConstants.TEST_CONN_STRING;
 import static com.azure.spring.cloud.appconfiguration.config.implementation.TestConstants.TEST_KEY_1;
 import static com.azure.spring.cloud.appconfiguration.config.implementation.TestConstants.TEST_KEY_2;
@@ -16,6 +19,7 @@ import static com.azure.spring.cloud.appconfiguration.config.implementation.Test
 import static com.azure.spring.cloud.appconfiguration.config.implementation.TestConstants.TEST_VALUE_2;
 import static com.azure.spring.cloud.appconfiguration.config.implementation.TestConstants.TEST_VALUE_3;
 import static com.azure.spring.cloud.appconfiguration.config.implementation.TestUtils.createItem;
+import static com.azure.spring.cloud.appconfiguration.config.implementation.TestUtils.createItemFeatureFlag;
 import static org.assertj.core.api.Assertions.assertThat;
 import static org.mockito.Mockito.when;
 
@@ -32,12 +36,15 @@ import org.mockito.Mock;
 import org.mockito.Mockito;
 import org.mockito.MockitoAnnotations;
 
+import com.azure.core.util.Configuration;
 import com.azure.data.appconfiguration.models.ConfigurationSetting;
+import com.azure.data.appconfiguration.models.FeatureFlagConfigurationSetting;
+import com.azure.spring.cloud.appconfiguration.config.implementation.http.policy.TracingInfo;
 import com.azure.spring.cloud.appconfiguration.config.implementation.properties.AppConfigurationProperties;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.fasterxml.jackson.databind.PropertyNamingStrategies;
 
-public class AppConfigurationApplicationSettingPropertySourceTest {
+public class AppConfigurationSnapshotPropertySourceTest {
 
     private static final String EMPTY_CONTENT_TYPE = "";
 
@@ -45,23 +52,33 @@ public class AppConfigurationApplicationSettingPropertySourceTest {
 
     private static final String KEY_FILTER = "/foo/";
 
-    private static final ConfigurationSetting ITEM_1 = createItem(KEY_FILTER, TEST_KEY_1, TEST_VALUE_1, TEST_LABEL_1,
-        EMPTY_CONTENT_TYPE);
+    private static final List<String> TRIM = new ArrayList<>();
 
-    private static final ConfigurationSetting ITEM_2 = createItem(KEY_FILTER, TEST_KEY_2, TEST_VALUE_2, TEST_LABEL_2,
-        EMPTY_CONTENT_TYPE);
+    private static final String SNAPSHOT_NAME = "snapshot_test";
 
-    private static final ConfigurationSetting ITEM_3 = createItem(KEY_FILTER, TEST_KEY_3, TEST_VALUE_3, TEST_LABEL_3,
-        EMPTY_CONTENT_TYPE);
+    private static final ConfigurationSetting ITEM_1 =
+        createItem(KEY_FILTER, TEST_KEY_1, TEST_VALUE_1, TEST_LABEL_1, EMPTY_CONTENT_TYPE);
 
-    private static final ConfigurationSetting ITEM_NULL = createItem(KEY_FILTER, TEST_KEY_3, TEST_VALUE_3, TEST_LABEL_3,
-        null);
+    private static final ConfigurationSetting ITEM_2 =
+        createItem(KEY_FILTER, TEST_KEY_2, TEST_VALUE_2, TEST_LABEL_2, EMPTY_CONTENT_TYPE);
+
+    private static final ConfigurationSetting ITEM_3 =
+        createItem(KEY_FILTER, TEST_KEY_3, TEST_VALUE_3, TEST_LABEL_3, EMPTY_CONTENT_TYPE);
+
+    private static final ConfigurationSetting ITEM_4 =
+        createItem("/bar/", "test_key_4", "test_value_4", "test_label_4", EMPTY_CONTENT_TYPE);
+
+    private static final FeatureFlagConfigurationSetting FEATURE_ITEM = createItemFeatureFlag(".appconfig.featureflag/",
+        "Alpha", FEATURE_VALUE, FEATURE_LABEL, FEATURE_FLAG_CONTENT_TYPE);
+
+    private static final ConfigurationSetting ITEM_NULL =
+        createItem(KEY_FILTER, TEST_KEY_3, TEST_VALUE_3, TEST_LABEL_3, null);
 
     private static final ObjectMapper MAPPER = new ObjectMapper();
 
     private List<ConfigurationSetting> testItems = new ArrayList<>();
 
-    private AppConfigurationApplicationSettingPropertySource propertySource;
+    private AppConfigurationSnapshotPropertySource propertySource;
 
     @Mock
     private AppConfigurationReplicaClient clientMock;
@@ -87,11 +104,13 @@ public class AppConfigurationApplicationSettingPropertySourceTest {
         testItems.add(ITEM_1);
         testItems.add(ITEM_2);
         testItems.add(ITEM_3);
+        testItems.add(ITEM_4);
+        testItems.add(FEATURE_ITEM);
 
-        String[] labelFilter = { "\0" };
+        TRIM.add(KEY_FILTER);
 
-        propertySource = new AppConfigurationApplicationSettingPropertySource(TEST_STORE_NAME, clientMock,
-            keyVaultClientFactoryMock, KEY_FILTER, labelFilter);
+        propertySource = new AppConfigurationSnapshotPropertySource(TEST_STORE_NAME, clientMock,
+            keyVaultClientFactoryMock, SNAPSHOT_NAME);
     }
 
     @AfterEach
@@ -102,34 +121,41 @@ public class AppConfigurationApplicationSettingPropertySourceTest {
     @Test
     public void testPropCanBeInitAndQueried() throws IOException {
         when(configurationListMock.iterator()).thenReturn(testItems.iterator());
-        when(clientMock.listSettings(Mockito.any())).thenReturn(configurationListMock)
+        when(clientMock.listSettingSnapshot(Mockito.any())).thenReturn(configurationListMock)
             .thenReturn(configurationListMock);
+        when(clientMock.getTracingInfo())
+            .thenReturn(new TracingInfo(false, false, 0, Configuration.getGlobalConfiguration()));
 
-        propertySource.initProperties(null);
+        propertySource.initProperties(TRIM);
 
         String[] keyNames = propertySource.getPropertyNames();
-        String[] expectedKeyNames = testItems.stream()
-            .map(t -> t.getKey().substring(KEY_FILTER.length())).toArray(String[]::new);
+        String[] expectedKeyNames = testItems.stream().map(t -> {
+            if (t.getKey().startsWith(".appconfig.featureflag/")) {
+                return t.getKey().replace(".appconfig.featureflag/", "feature-management.");
+            }
+            return t.getKey().replaceFirst("^" + KEY_FILTER, "").replace("/", ".");
+
+        }).toArray(String[]::new);
 
         assertThat(keyNames).containsExactlyInAnyOrder(expectedKeyNames);
 
         assertThat(propertySource.getProperty(TEST_KEY_1)).isEqualTo(TEST_VALUE_1);
         assertThat(propertySource.getProperty(TEST_KEY_2)).isEqualTo(TEST_VALUE_2);
         assertThat(propertySource.getProperty(TEST_KEY_3)).isEqualTo(TEST_VALUE_3);
+        assertThat(propertySource.getProperty(".bar.test_key_4")).isEqualTo("test_value_4");
     }
 
     @Test
     public void testPropertyNameSlashConvertedToDots() throws IOException {
-        ConfigurationSetting slashedProp = createItem(KEY_FILTER, TEST_SLASH_KEY, TEST_SLASH_VALUE, null,
-            EMPTY_CONTENT_TYPE);
+        ConfigurationSetting slashedProp =
+            createItem(KEY_FILTER, TEST_SLASH_KEY, TEST_SLASH_VALUE, null, EMPTY_CONTENT_TYPE);
         List<ConfigurationSetting> settings = new ArrayList<>();
         settings.add(slashedProp);
-        when(configurationListMock.iterator()).thenReturn(settings.iterator())
-            .thenReturn(Collections.emptyIterator());
-        when(clientMock.listSettings(Mockito.any())).thenReturn(configurationListMock)
+        when(configurationListMock.iterator()).thenReturn(settings.iterator()).thenReturn(Collections.emptyIterator());
+        when(clientMock.listSettingSnapshot(Mockito.any())).thenReturn(configurationListMock)
             .thenReturn(configurationListMock);
 
-        propertySource.initProperties(null);
+        propertySource.initProperties(TRIM);
 
         String expectedKeyName = TEST_SLASH_KEY.replace('/', '.');
         String[] actualKeyNames = propertySource.getPropertyNames();
@@ -144,15 +170,14 @@ public class AppConfigurationApplicationSettingPropertySourceTest {
     public void initNullValidContentTypeTest() throws IOException {
         List<ConfigurationSetting> items = new ArrayList<>();
         items.add(ITEM_NULL);
-        when(configurationListMock.iterator()).thenReturn(items.iterator())
-            .thenReturn(Collections.emptyIterator());
-        when(clientMock.listSettings(Mockito.any())).thenReturn(configurationListMock);
+        when(configurationListMock.iterator()).thenReturn(items.iterator()).thenReturn(Collections.emptyIterator());
+        when(clientMock.listSettingSnapshot(Mockito.any())).thenReturn(configurationListMock);
 
-        propertySource.initProperties(null);
+        propertySource.initProperties(TRIM);
 
         String[] keyNames = propertySource.getPropertyNames();
-        String[] expectedKeyNames = items.stream()
-            .map(t -> t.getKey().substring(KEY_FILTER.length())).toArray(String[]::new);
+        String[] expectedKeyNames =
+            items.stream().map(t -> t.getKey().substring(KEY_FILTER.length())).toArray(String[]::new);
 
         assertThat(keyNames).containsExactlyInAnyOrder(expectedKeyNames);
     }
