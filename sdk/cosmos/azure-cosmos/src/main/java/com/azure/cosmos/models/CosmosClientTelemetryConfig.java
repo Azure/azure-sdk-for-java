@@ -90,6 +90,11 @@ public final class CosmosClientTelemetryConfig {
         this.tracer = null;
         this.tracingOptions = null;
         this.samplingRate = 1;
+        CosmosMicrometerMetricsOptions defaultMetricsOptions = new CosmosMicrometerMetricsOptions();
+        this.isClientMetricsEnabled = defaultMetricsOptions.isEnabled();
+        if (this.isClientMetricsEnabled) {
+            this.micrometerMetricsOptions = defaultMetricsOptions;
+        }
     }
 
     /**
@@ -540,6 +545,10 @@ public final class CosmosClientTelemetryConfig {
 
                 @Override
                 public MeterRegistry getClientMetricRegistry(CosmosClientTelemetryConfig config) {
+                    if (!config.isClientMetricsEnabled) {
+                        return null;
+                    }
+
                     return config.getClientMetricRegistry();
                 }
 
@@ -600,6 +609,13 @@ public final class CosmosClientTelemetryConfig {
                 public void addDiagnosticsHandler(CosmosClientTelemetryConfig config,
                                                   CosmosDiagnosticsHandler handler) {
 
+                    for (CosmosDiagnosticsHandler existingHandler : config.diagnosticHandlers) {
+                        if (existingHandler.getClass().getCanonicalName().equals(handler.getClass().getCanonicalName())) {
+                            // Handler already had been added - this can happen for example when multiple
+                            // Cosmos(Async)Clients are created from a single CosmosClientBuilder.
+                            return;
+                        }
+                    }
                     config.diagnosticHandlers.add(handler);
                 }
 
