@@ -152,6 +152,7 @@ public class RxDocumentClientImpl implements AsyncDocumentClient, IAuthorization
     private final static
     ImplementationBridgeHelpers.CosmosQueryRequestOptionsHelper.CosmosQueryRequestOptionsAccessor qryOptAccessor =
         ImplementationBridgeHelpers.CosmosQueryRequestOptionsHelper.getCosmosQueryRequestOptionsAccessor();
+
     private static final String tempMachineId = "uuid:" + UUID.randomUUID();
     private static final AtomicInteger activeClientsCnt = new AtomicInteger(0);
     private static final Map<String, Integer> clientMap = new ConcurrentHashMap<>();
@@ -4677,6 +4678,8 @@ public class RxDocumentClientImpl implements AsyncDocumentClient, IAuthorization
         Integer maxItemCount = ModelBridgeInternal.getMaxItemCountFromQueryRequestOptions(options);
         int maxPageSize = maxItemCount != null ? maxItemCount : -1;
         final CosmosQueryRequestOptions finalCosmosQueryRequestOptions = options;
+
+        assert(ResourceType != ResourceType.Document)
         // readFeed is only used for non-document operations - no need to wire up hedging
         DocumentClientRetryPolicy retryPolicy = this.resetSessionTokenRetryPolicy.getRequestPolicy(null);
         BiFunction<String, Integer, RxDocumentServiceRequest> createRequestFunc = (continuationToken, pageSize) -> {
@@ -4904,7 +4907,11 @@ public class RxDocumentClientImpl implements AsyncDocumentClient, IAuthorization
                     this.connectionPolicy.getConnectionMode(),
                     this.partitionKeyRangeCache);
 
-            this.storeModel.enableThroughputControl(throughputControlStore);
+            if (ConnectionMode.DIRECT == this.connectionPolicy.getConnectionMode()) {
+                this.storeModel.enableThroughputControl(throughputControlStore);
+            } else {
+                this.gatewayProxy.enableThroughputControl(throughputControlStore);
+            }
         }
 
         this.throughputControlStore.enableThroughputControlGroup(group, throughputQueryMono);

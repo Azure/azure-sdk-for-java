@@ -19,14 +19,14 @@ public final class SignalRNetworkACLsTests {
         SignalRNetworkACLs model =
             BinaryData
                 .fromString(
-                    "{\"defaultAction\":\"Allow\",\"publicNetwork\":{\"allow\":[\"RESTAPI\",\"RESTAPI\"],\"deny\":[\"ServerConnection\"]},\"privateEndpoints\":[{\"name\":\"xolzdahzx\",\"allow\":[\"Trace\",\"RESTAPI\",\"ServerConnection\"],\"deny\":[\"ServerConnection\",\"Trace\",\"ServerConnection\"]},{\"name\":\"zpostmgrcfbu\",\"allow\":[\"Trace\",\"RESTAPI\",\"ServerConnection\"],\"deny\":[\"ServerConnection\",\"RESTAPI\"]},{\"name\":\"bpvjymjhx\",\"allow\":[\"ClientConnection\",\"Trace\"],\"deny\":[\"ServerConnection\",\"ClientConnection\"]}]}")
+                    "{\"defaultAction\":\"Allow\",\"publicNetwork\":{\"allow\":[\"Trace\"],\"deny\":[\"ServerConnection\",\"ServerConnection\",\"RESTAPI\",\"ClientConnection\"]},\"privateEndpoints\":[{\"name\":\"edltmmjihyeozp\",\"allow\":[\"RESTAPI\"],\"deny\":[\"RESTAPI\"]},{\"name\":\"ncyg\",\"allow\":[\"Trace\"],\"deny\":[\"RESTAPI\"]}]}")
                 .toObject(SignalRNetworkACLs.class);
         Assertions.assertEquals(AclAction.ALLOW, model.defaultAction());
-        Assertions.assertEquals(SignalRRequestType.RESTAPI, model.publicNetwork().allow().get(0));
+        Assertions.assertEquals(SignalRRequestType.TRACE, model.publicNetwork().allow().get(0));
         Assertions.assertEquals(SignalRRequestType.SERVER_CONNECTION, model.publicNetwork().deny().get(0));
-        Assertions.assertEquals(SignalRRequestType.TRACE, model.privateEndpoints().get(0).allow().get(0));
-        Assertions.assertEquals(SignalRRequestType.SERVER_CONNECTION, model.privateEndpoints().get(0).deny().get(0));
-        Assertions.assertEquals("xolzdahzx", model.privateEndpoints().get(0).name());
+        Assertions.assertEquals(SignalRRequestType.RESTAPI, model.privateEndpoints().get(0).allow().get(0));
+        Assertions.assertEquals(SignalRRequestType.RESTAPI, model.privateEndpoints().get(0).deny().get(0));
+        Assertions.assertEquals("edltmmjihyeozp", model.privateEndpoints().get(0).name());
     }
 
     @org.junit.jupiter.api.Test
@@ -36,49 +36,31 @@ public final class SignalRNetworkACLsTests {
                 .withDefaultAction(AclAction.ALLOW)
                 .withPublicNetwork(
                     new NetworkAcl()
-                        .withAllow(Arrays.asList(SignalRRequestType.RESTAPI, SignalRRequestType.RESTAPI))
-                        .withDeny(Arrays.asList(SignalRRequestType.SERVER_CONNECTION)))
+                        .withAllow(Arrays.asList(SignalRRequestType.TRACE))
+                        .withDeny(
+                            Arrays
+                                .asList(
+                                    SignalRRequestType.SERVER_CONNECTION,
+                                    SignalRRequestType.SERVER_CONNECTION,
+                                    SignalRRequestType.RESTAPI,
+                                    SignalRRequestType.CLIENT_CONNECTION)))
                 .withPrivateEndpoints(
                     Arrays
                         .asList(
                             new PrivateEndpointAcl()
-                                .withAllow(
-                                    Arrays
-                                        .asList(
-                                            SignalRRequestType.TRACE,
-                                            SignalRRequestType.RESTAPI,
-                                            SignalRRequestType.SERVER_CONNECTION))
-                                .withDeny(
-                                    Arrays
-                                        .asList(
-                                            SignalRRequestType.SERVER_CONNECTION,
-                                            SignalRRequestType.TRACE,
-                                            SignalRRequestType.SERVER_CONNECTION))
-                                .withName("xolzdahzx"),
+                                .withAllow(Arrays.asList(SignalRRequestType.RESTAPI))
+                                .withDeny(Arrays.asList(SignalRRequestType.RESTAPI))
+                                .withName("edltmmjihyeozp"),
                             new PrivateEndpointAcl()
-                                .withAllow(
-                                    Arrays
-                                        .asList(
-                                            SignalRRequestType.TRACE,
-                                            SignalRRequestType.RESTAPI,
-                                            SignalRRequestType.SERVER_CONNECTION))
-                                .withDeny(
-                                    Arrays.asList(SignalRRequestType.SERVER_CONNECTION, SignalRRequestType.RESTAPI))
-                                .withName("zpostmgrcfbu"),
-                            new PrivateEndpointAcl()
-                                .withAllow(
-                                    Arrays.asList(SignalRRequestType.CLIENT_CONNECTION, SignalRRequestType.TRACE))
-                                .withDeny(
-                                    Arrays
-                                        .asList(
-                                            SignalRRequestType.SERVER_CONNECTION, SignalRRequestType.CLIENT_CONNECTION))
-                                .withName("bpvjymjhx")));
+                                .withAllow(Arrays.asList(SignalRRequestType.TRACE))
+                                .withDeny(Arrays.asList(SignalRRequestType.RESTAPI))
+                                .withName("ncyg")));
         model = BinaryData.fromObject(model).toObject(SignalRNetworkACLs.class);
         Assertions.assertEquals(AclAction.ALLOW, model.defaultAction());
-        Assertions.assertEquals(SignalRRequestType.RESTAPI, model.publicNetwork().allow().get(0));
+        Assertions.assertEquals(SignalRRequestType.TRACE, model.publicNetwork().allow().get(0));
         Assertions.assertEquals(SignalRRequestType.SERVER_CONNECTION, model.publicNetwork().deny().get(0));
-        Assertions.assertEquals(SignalRRequestType.TRACE, model.privateEndpoints().get(0).allow().get(0));
-        Assertions.assertEquals(SignalRRequestType.SERVER_CONNECTION, model.privateEndpoints().get(0).deny().get(0));
-        Assertions.assertEquals("xolzdahzx", model.privateEndpoints().get(0).name());
+        Assertions.assertEquals(SignalRRequestType.RESTAPI, model.privateEndpoints().get(0).allow().get(0));
+        Assertions.assertEquals(SignalRRequestType.RESTAPI, model.privateEndpoints().get(0).deny().get(0));
+        Assertions.assertEquals("edltmmjihyeozp", model.privateEndpoints().get(0).name());
     }
 }

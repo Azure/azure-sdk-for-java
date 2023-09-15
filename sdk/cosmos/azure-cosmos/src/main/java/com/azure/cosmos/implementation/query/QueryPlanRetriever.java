@@ -60,6 +60,7 @@ class QueryPlanRetriever {
         request.useGatewayMode = true;
         request.setByteBuffer(ModelBridgeInternal.serializeJsonToByteBuffer(sqlQuerySpec));
 
+        // TODO @fabianm wire up clientContext
         final DocumentClientRetryPolicy retryPolicyInstance =
             queryClient.getResetSessionTokenRetryPolicy().getRequestPolicy(diagnosticsClientContext);
 
