@@ -705,8 +705,8 @@ public class RntbdTransportClient extends TransportClient {
             this.timeoutDetectionOnWriteThreshold = 1;
             this.timeoutDetectionOnWriteTimeLimit = Duration.ofSeconds(6L);
             this.preferTcpNative = true;
-            this.cancellationCountSinceLastReadThreshold = 5;
-            this.nonRespondingChannelReadDelayTimeLimit = Duration.ofSeconds(60);
+            this.cancellationCountSinceLastReadThreshold = 3;
+            this.nonRespondingChannelReadDelayTimeLimit = Duration.ofSeconds(10);
         }
 
         // endregion
