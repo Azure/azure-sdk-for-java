@@ -4,7 +4,11 @@
 package com.azure.ai.formrecognizer.documentanalysis.models;
 
 import com.azure.ai.formrecognizer.documentanalysis.implementation.util.TypedDocumentFieldHelper;
+import com.azure.json.JsonReader;
+import com.azure.json.JsonToken;
+import com.azure.json.JsonWriter;
 
+import java.io.IOException;
 import java.util.List;
 
 /**
@@ -137,5 +141,42 @@ public class TypedDocumentField<T> {
                 typedDocumentField.setConfidence(confidence);
             }
         });
+    }
+
+    /**
+     * Reads an instance of TypedDocumentField from the JsonReader.
+     *
+     * @param jsonReader The JsonReader being read.
+     * @return An instance of IndexAction if the JsonReader was pointing to an instance of it, or null if it was
+     *     pointing to JSON null.
+     * @throws IOException If an error occurs while reading the IndexAction.
+     */
+    public static TypedDocumentField fromJson(JsonReader jsonReader) throws IOException {
+        return jsonReader.readObject(
+            reader -> {
+                TypedDocumentField deserializedValue = new TypedDocumentField();
+                while (reader.nextToken() != JsonToken.END_OBJECT) {
+                    String fieldName = reader.getFieldName();
+                    reader.nextToken();
+
+                    if ("value".equals(fieldName)) {
+                        deserializedValue.setValue(reader.getFieldName());
+                    } else if ("type".equals(fieldName)) {
+                        deserializedValue.setType(DocumentFieldType.fromString(reader.getString()));
+                    } else if ("content".equals(fieldName)) {
+                        deserializedValue.setContent(reader.getString());
+                    } else if ("boundingRegions".equals(fieldName)) {
+                        deserializedValue.setBoundingRegions(
+                            reader.readArray(// BoundingRegionHelper::fromJson));
+                    } else if ("spans".equals(fieldName)) {
+                        deserializedValue.setSpans(reader.readArray(//DocumentSpanHelper::fromJson));
+                    } else if ("confidence".equals(fieldName)) {
+                        deserializedValue.setConfidence(reader.getFloat());
+                    } else {
+                        reader.skipValue();
+                    }
+                }
+                return deserializedValue;
+            });
     }
 }

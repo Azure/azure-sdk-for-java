@@ -118,19 +118,19 @@ public final class IndexAction implements JsonSerializable<IndexAction> {
     private String rawDocument;
 
     /**
-     * /** Gets the raw JSON document.
+     * Gets the raw JSON document.
      *
-     * @return The raw JSON document. /
+     * @return The raw JSON document.
      */
     public String getRawDocument() {
         return this.rawDocument;
     }
 
     /**
-     * /** Sets the raw JSON document.
+     * Sets the raw JSON document.
      *
      * @param rawDocument The raw JSON document.
-     * @return the IndexAction object itself. /
+     * @return the IndexAction object itself.
      */
     public IndexAction setRawDocument(String rawDocument) {
         this.rawDocument = rawDocument;
