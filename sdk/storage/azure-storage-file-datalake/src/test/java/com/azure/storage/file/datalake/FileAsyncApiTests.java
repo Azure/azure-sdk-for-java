@@ -3846,7 +3846,7 @@ public class FileAsyncApiTests extends DataLakeTestBase {
                 new FileQueryOptions(expression, new ByteArrayOutputStream())
                     .setInputSerialization(inSer)
                     .setOutputSerialization(outSer)))
-                .verifyError(IllegalArgumentException.class);
+                .verifyErrorSatisfies(ex -> assertInstanceOf(IllegalArgumentException.class, ex));
         });
     }
 
