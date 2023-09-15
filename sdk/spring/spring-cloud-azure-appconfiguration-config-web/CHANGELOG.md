@@ -1,6 +1,6 @@
 # Release History
 
-## 5.6.0-beta.1 (2023-09-11)
+## 5.6.0-beta.1 (2023-09-15)
 
  ### Features Added
 
