@@ -476,17 +476,20 @@ public final class ConnectionPolicy {
         return this;
     }
 
-    public synchronized ConnectionPolicy setExcludeRegions(List<String> excludeRegions) {
-        if (excludeRegions != null) {
-            this.excludeRegions = new ArrayList<>();
-            this.excludeRegions.addAll(excludeRegions);
+    public ConnectionPolicy setExcludeRegions(List<String> excludeRegions) {
+        synchronized (this.monitorObjectForExcludeRegions) {
+            if (excludeRegions != null) {
+                this.excludeRegions = new ArrayList<>();
+                this.excludeRegions.addAll(excludeRegions);
+            }
+            return this;
         }
-
-        return this;
     }
 
     public List<String> getExcludeRegions() {
-        return this.excludeRegions;
+        synchronized (this.monitorObjectForExcludeRegions) {
+            return this.excludeRegions;
+        }
     }
 
     /**

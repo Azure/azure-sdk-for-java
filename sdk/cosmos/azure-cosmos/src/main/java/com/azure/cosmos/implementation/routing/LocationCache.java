@@ -212,11 +212,11 @@ public class LocationCache {
     public UnmodifiableList<URI> getApplicableWriteEndpoints(RxDocumentServiceRequest request) {
         UnmodifiableList<URI> writeEndpoints = this.getWriteEndpoints();
 
-        if (!isExcludeRegionsConfigured(request)) {
+        List<String> effectiveExcludeRegions = connectionPolicy.getExcludeRegions();
+
+        if (!isExcludeRegionsConfigured(request, effectiveExcludeRegions)) {
             return writeEndpoints;
         }
-
-        List<String> effectiveExcludeRegions = connectionPolicy.getExcludeRegions();
 
         if (request.requestContext.getExcludeRegions() != null && !request.requestContext.getExcludeRegions().isEmpty()) {
             effectiveExcludeRegions = request.requestContext.getExcludeRegions();
@@ -233,11 +233,11 @@ public class LocationCache {
     public UnmodifiableList<URI> getApplicableReadEndpoints(RxDocumentServiceRequest request) {
         UnmodifiableList<URI> readEndpoints = this.getReadEndpoints();
 
-        if (!isExcludeRegionsConfigured(request)) {
+        List<String> effectiveExcludeRegions = connectionPolicy.getExcludeRegions();
+
+        if (!isExcludeRegionsConfigured(request, effectiveExcludeRegions)) {
             return readEndpoints;
         }
-
-        List<String> effectiveExcludeRegions = connectionPolicy.getExcludeRegions();
 
         if (request.requestContext.getExcludeRegions() != null && !request.requestContext.getExcludeRegions().isEmpty()) {
             effectiveExcludeRegions = request.requestContext.getExcludeRegions();
@@ -274,10 +274,9 @@ public class LocationCache {
         return new UnmodifiableList<>(applicableEndpoints);
     }
 
-    private boolean isExcludeRegionsConfigured(RxDocumentServiceRequest request) {
+    private boolean isExcludeRegionsConfigured(RxDocumentServiceRequest request, List<String> excludedRegionsOnClient) {
 
         List<String> excludedRegionsOnRequest = request.requestContext.getExcludeRegions();
-        List<String> excludedRegionsOnClient = connectionPolicy.getExcludeRegions();
 
         boolean isExcludedRegionsConfiguredOnRequest = !(excludedRegionsOnRequest == null || excludedRegionsOnRequest.isEmpty());
         boolean isExcludedRegionsConfiguredOnClient = !(excludedRegionsOnClient == null || excludedRegionsOnClient.isEmpty());
