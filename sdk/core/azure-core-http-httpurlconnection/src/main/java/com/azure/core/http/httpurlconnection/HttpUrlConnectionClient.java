@@ -2,8 +2,7 @@ package com.azure.core.http.httpurlconnection;
 
 import com.azure.core.http.*;
 import com.azure.core.http.httpurlconnection.implementation.HttpUrlConnectionResponse;
-import com.azure.core.util.Configuration;
-import com.azure.core.util.Context;
+import com.azure.core.util.*;
 import reactor.core.publisher.Flux;
 import reactor.core.publisher.Mono;
 import com.azure.core.http.HttpHeader;
@@ -65,13 +64,14 @@ public class HttpUrlConnectionClient implements HttpClient {
      * @return A Mono containing a HttpResponse object
      */
     public Mono<HttpResponse> sendAsync(HttpRequest httpRequest, Context context) {
+        ProgressReporter progressReporter = Contexts.with(context).getHttpRequestProgressReporter();
         HttpMethod httpMethod = httpRequest.getHttpMethod();
         if (httpMethod == HttpMethod.PATCH) {
             return sendPatchViaSocket(httpRequest);
         }
         return openConnection(httpRequest)
             .flatMap(connection -> setConnectionRequest(connection, httpRequest)
-                .then(writeRequestBody(connection, httpRequest))
+                .then(writeRequestBody(connection, httpRequest, progressReporter))
                 .then(readResponse(connection, httpRequest))
                 .doFinally(signalType -> connection.disconnect()) // Disconnect connection after processing
                 .onErrorResume(Mono::error));
@@ -145,7 +145,7 @@ public class HttpUrlConnectionClient implements HttpClient {
     }
 
     // Write the body of the request if necessary
-    private Mono<Void> writeRequestBody(HttpURLConnection connection, HttpRequest httpRequest) {
+    private Mono<Void> writeRequestBody(HttpURLConnection connection, HttpRequest httpRequest, ProgressReporter progressReporter) {
         switch(httpRequest.getHttpMethod()) {
             case POST:
             case PUT:
@@ -154,7 +154,16 @@ public class HttpUrlConnectionClient implements HttpClient {
                 if (httpRequest.getBody() != null) {
                     return Mono.fromRunnable(() -> {
                         try (DataOutputStream os = new DataOutputStream(new BufferedOutputStream(connection.getOutputStream()))) {
-                            httpRequest.getBody()
+
+                            Flux<ByteBuffer> requestBody = httpRequest.getBody();
+                            if (progressReporter != null) {
+                                requestBody = requestBody.map(buffer -> {
+                                    progressReporter.reportProgress(buffer.remaining());
+                                    return buffer;
+                                });
+                            }
+
+                            requestBody
                                 .doOnNext(buffer -> {
                                     try {
                                         byte[] bytes = new byte[buffer.remaining()];
