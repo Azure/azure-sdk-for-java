@@ -58,6 +58,7 @@ public interface DiagnosticsClientContext {
                 generator.writeStringField("machineId", ClientTelemetry.getMachineId(clientConfig));
                 generator.writeStringField("connectionMode", clientConfig.getConnectionMode().toString());
                 generator.writeNumberField("numberOfClients", clientConfig.getActiveClientsCount());
+                generator.writeStringField("excrgns", clientConfig.excludedRegionsRelatedConfig());
                 generator.writeObjectFieldStart("clientEndpoints");
                 for (Map.Entry<String, Integer> entry: clientConfig.clientMap.entrySet()) {
                     try {
@@ -78,7 +79,7 @@ public interface DiagnosticsClientContext {
                 generator.writeEndObject();
                 generator.writeStringField("consistencyCfg", clientConfig.consistencyRelatedConfig());
                 generator.writeStringField("proactiveInit", clientConfig.proactivelyInitializedContainersAsString);
-                generator.writeStringField("e2ePolicyCfg", clientConfig.endToEndOperationLatencyPolicyConfig.toString());
+                generator.writeStringField("e2ePolicyCfg", clientConfig.endToEndLatencyPolicyRelatedConfig());
             } catch (Exception e) {
                 logger.debug("unexpected failure", e);
             }
@@ -99,7 +100,6 @@ public interface DiagnosticsClientContext {
         private String httpConfigAsString;
         private String otherCfgAsString;
         private String preferredRegionsAsString;
-        private String excludeRegionsAsString;
         private String proactivelyInitializedContainersAsString;
         private CosmosEndToEndOperationLatencyPolicyConfig endToEndOperationLatencyPolicyConfig;
         private boolean endpointDiscoveryEnabled;
@@ -242,11 +242,26 @@ public interface DiagnosticsClientContext {
             return this.activeClientsCnt != null ? this.activeClientsCnt.get() : -1;
         }
 
+        public String endToEndLatencyPolicyRelatedConfig() {
+            if (this.endToEndOperationLatencyPolicyConfig == null) {
+                return "";
+            } else {
+                return this.endToEndOperationLatencyPolicyConfig.toString();
+            }
+        }
+
         private String consistencyRelatedConfigInternal() {
-            return Strings.lenientFormat("(consistency: %s, mm: %s, prgns: [%s], excrgns: [%s])", this.consistencyLevel,
+            return Strings.lenientFormat("(consistency: %s, mm: %s, prgns: [%s])", this.consistencyLevel,
                 this.multipleWriteRegionsEnabled,
-                preferredRegionsAsString,
-                this.connectionPolicy != null ? this.connectionPolicy.getExcludedRegionsAsString() : null);
+                preferredRegionsAsString);
+        }
+
+        private String excludedRegionsRelatedConfig() {
+            if (this.connectionPolicy == null) {
+                return "[]";
+            } else {
+                return this.connectionPolicy.getExcludedRegionsAsString();
+            }
         }
     }
 }

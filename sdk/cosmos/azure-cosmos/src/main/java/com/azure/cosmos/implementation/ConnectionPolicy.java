@@ -654,13 +654,18 @@ public final class ConnectionPolicy {
     }
 
     private static String constructExcludedRegionsAsString(List<String> excludeRegions) {
+
+        String substring;
+
         if (excludeRegions == null || excludeRegions.isEmpty()) {
-            return  "";
+            substring =  "";
         } else {
-            return excludeRegions
+            substring = excludeRegions
                 .stream()
                 .map(r -> SPACE_PATTERN.matcher(r.toLowerCase(Locale.ROOT)).replaceAll(""))
                 .collect(Collectors.joining(","));
         }
+
+        return "[" + substring + "]";
     }
 }
