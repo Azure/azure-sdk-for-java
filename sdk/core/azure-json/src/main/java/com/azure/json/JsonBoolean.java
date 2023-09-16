@@ -27,8 +27,8 @@ public final class JsonBoolean extends JsonElement {
      * Lazy-loading the Singleton instances of JsonBoolean of TRUE & FALSE.
      */
     private static class LoadSingleton {
-        private static final JsonBoolean TRUE = new JsonBoolean(true);
-        private static final JsonBoolean FALSE = new JsonBoolean(false);
+        static final JsonBoolean TRUE = new JsonBoolean(true);
+        static final JsonBoolean FALSE = new JsonBoolean(false);
     }
 
     /**

@@ -16,7 +16,7 @@ public final class JsonNull extends JsonElement {
      * synchronization.
      */
     private static class LoadSingleton {
-        private static final JsonNull INSTANCE = new JsonNull();
+        static final JsonNull INSTANCE = new JsonNull();
     }
 
     /**
