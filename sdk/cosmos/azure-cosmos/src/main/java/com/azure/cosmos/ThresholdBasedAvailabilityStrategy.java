@@ -4,6 +4,7 @@
 package com.azure.cosmos;
 
 import java.time.Duration;
+import java.util.concurrent.atomic.AtomicBoolean;
 
 /**
  * The type Threshold based retry availability strategy.
@@ -11,10 +12,9 @@ import java.time.Duration;
 public final class ThresholdBasedAvailabilityStrategy extends AvailabilityStrategy {
     private static final Duration DEFAULT_THRESHOLD = Duration.ofMillis(500);
     private static final Duration DEFAULT_THRESHOLD_STEP = Duration.ofMillis(100);
-    private Duration threshold;
-    private Duration thresholdStep;
-
-    private final String toStringValue;
+    private volatile Duration threshold;
+    private volatile Duration thresholdStep;
+    private String toStringValue;
 
     /**
      * Instantiates a new Threshold based retry availability strategy.
@@ -22,7 +22,7 @@ public final class ThresholdBasedAvailabilityStrategy extends AvailabilityStrate
     public ThresholdBasedAvailabilityStrategy() {
         this.threshold = DEFAULT_THRESHOLD;
         this.thresholdStep = DEFAULT_THRESHOLD_STEP;
-        this.toStringValue = getCachedStringValue(DEFAULT_THRESHOLD, DEFAULT_THRESHOLD_STEP);
+        this.toStringValue = getCachedStringValue(threshold, thresholdStep);
     }
 
     /**
@@ -39,16 +39,6 @@ public final class ThresholdBasedAvailabilityStrategy extends AvailabilityStrate
         this.toStringValue = getCachedStringValue(threshold, thresholdStep);
     }
 
-    private static String getCachedStringValue(Duration threshold, Duration thresholdStep) {
-        return "{" + "threshold=" + threshold + ", step=" + thresholdStep + "}";
-    }
-
-    private static void validateDuration(Duration threshold) {
-        if (threshold == null || threshold.isNegative()) {
-            throw new IllegalArgumentException("threshold should be a non negative Duration");
-        }
-    }
-
     /**
      * Gets threshold.
      *
@@ -57,7 +47,6 @@ public final class ThresholdBasedAvailabilityStrategy extends AvailabilityStrate
     public Duration getThreshold() {
         return this.threshold;
     }
-
 
     /**
      * Gets threshold step.
@@ -75,6 +64,7 @@ public final class ThresholdBasedAvailabilityStrategy extends AvailabilityStrate
     public void setThreshold(Duration threshold) {
         validateDuration(threshold);
         this.threshold = threshold;
+        this.toStringValue = getCachedStringValue(this.threshold, this.thresholdStep);
     }
 
     /**
@@ -85,9 +75,21 @@ public final class ThresholdBasedAvailabilityStrategy extends AvailabilityStrate
     public void setThresholdStep(Duration thresholdStep) {
         validateDuration(thresholdStep);
         this.thresholdStep = thresholdStep;
+        this.toStringValue = getCachedStringValue(this.threshold, this.thresholdStep);
     }
+
     @Override
     public String toString() {
-        return toStringValue;
+        return this.toStringValue;
+    }
+
+    private static String getCachedStringValue(Duration threshold, Duration thresholdStep) {
+        return "{" + "threshold=" + threshold + ", step=" + thresholdStep + "}";
+    }
+
+    private static void validateDuration(Duration threshold) {
+        if (threshold == null || threshold.isNegative()) {
+            throw new IllegalArgumentException("threshold should be a non negative Duration");
+        }
     }
 }
