@@ -294,7 +294,7 @@ public class JsonArray extends JsonElement {
                     this.addElement(new JsonNumber(reader.getString()));
                     break;
                 case BOOLEAN:
-                    this.addElement(new JsonBoolean(reader.getBoolean()));
+                    this.addElement(JsonBoolean.getInstance(reader.getBoolean()));
                     break;
                 case NULL:
                     this.addElement(JsonNull.getInstance());

@@ -27,7 +27,7 @@ public class JsonTesting {
 
     @Test
     public void createJsonBoolean(){
-        JsonBoolean test = new JsonBoolean();
+        JsonBoolean test = JsonBoolean.getInstance(true);
         assertTrue(test.isBoolean());
     }
 
@@ -97,13 +97,13 @@ public class JsonTesting {
 
     @Test
     public void convertJsonBooleanToString(){
-        JsonElement test = new JsonBoolean(true);
+        JsonElement test = JsonBoolean.getInstance(true);
         assertEquals("\"true\"", test.asString().toString());
     }
 
     @Test
     public void convertJsonBooleanToNumber(){
-        JsonElement test = new JsonBoolean(false);
+        JsonElement test = JsonBoolean.getInstance(false);
         assertEquals("0", test.asNumber().toString());
     }
 

@@ -5,21 +5,12 @@ import java.io.IOException;
 /**
  * Class representing the JSON boolean type
  */
-public class JsonBoolean extends JsonElement {
+public final class JsonBoolean extends JsonElement {
     /**
      * Stores the String representation of the JsonBoolean object.
      * Can only be either "true" or "false".
      */
     private String booleanValue;
-
-    /**
-     * Default constructor
-     * Default sets booleanValue to "true" through the other constructor.
-     * 
-     * TODO: may need to remove this due to design guidelines? May only want to
-     * have the public JsonBoolean(boolean value) constructor.
-     */
-    public JsonBoolean() { this(true); }
 
     /**
      * Constructor used to set the value of the JsonBoolean.
@@ -28,8 +19,17 @@ public class JsonBoolean extends JsonElement {
      * true or false. If value is true, then booleanValue set to "true"; otherwise,
      * set to "false"
      */
-    public JsonBoolean(boolean value) { this.booleanValue = (value)? "true" : "false"; }
+    private JsonBoolean(boolean value) { this.booleanValue = (value)? "true" : "false"; }
 
+    private static class LoadSingleton {
+        private static final JsonBoolean TRUE = new JsonBoolean(true);
+        private static final JsonBoolean FALSE = new JsonBoolean(false);
+    }
+
+    public static JsonBoolean getInstance(boolean value) {
+        return (value) ? LoadSingleton.TRUE : LoadSingleton.FALSE;
+    }
+    
     /**
      * Returns the String representation of the JsonBoolean object
      *

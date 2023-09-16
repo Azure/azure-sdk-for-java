@@ -335,7 +335,7 @@ public class JsonObject extends JsonElement {
                     this.addProperty(fieldName, new JsonNumber(reader.getString()));
                     break;
                 case BOOLEAN:
-                    this.addProperty(fieldName, new JsonBoolean(reader.getBoolean()));
+                    this.addProperty(fieldName, JsonBoolean.getInstance(reader.getBoolean()));
                     break;
                 case NULL:
                     this.addProperty(fieldName, JsonNull.getInstance());
