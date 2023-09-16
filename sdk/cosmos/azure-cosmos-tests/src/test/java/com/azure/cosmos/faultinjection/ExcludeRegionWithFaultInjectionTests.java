@@ -92,7 +92,7 @@ public class ExcludeRegionWithFaultInjectionTests extends TestSuiteBase {
         this.preferredRegions = this.writeRegionMap.keySet().stream().collect(Collectors.toList());
     }
 
-    // todo: add scenarios for failover on 503s after fabian's ClientRetryPolicy improvement
+    // todo: add scenarios for failover on 503s after fabian's ClientRetryPolicy/AvailabilityStrategy improvement improvement
     @DataProvider(name = "regionExclusionReadAfterCreateTestConfigs")
     public Object[][] regionExclusionReadAfterCreateTestConfigs() {
 
@@ -347,6 +347,16 @@ public class ExcludeRegionWithFaultInjectionTests extends TestSuiteBase {
         throw new IllegalStateException("This test suite is tested for 2 or 3 preferred regions");
     }
 
+    // The objective of this test suite is the following:
+    //      1. Test for two validation scenarios - where the operation fails with a 404, 503 or a 500 status code or the
+    //      operation succeeds with a 200, 201 or 204 status code.
+    //      2. Inject faults which could trigger a request to be routed to a different region such as 404/1002 or 503/21008
+    //      3. Validate the expected status of an eventually succeeding or an eventually failing request.
+    //      4. Validate the regions contacted when an operation is executed with an initial list of excluded regions and
+    //      do one more round of validation when the operation with the same operation type is re-executed after mutating
+    //      this list of excluded regions.
+    //      5. Repeat the above steps with various operation types such as a query, point reads and point writes. Choose
+    //      various combinations of regions to exclude and regions to inject faults into.
     @DataProvider(name = "regionExclusionQueryAfterCreateTestConfigs")
     public Object[][] regionExclusionQueryAfterCreateTestConfigs() {
         Function<ItemOperationInvocationParameters, OperationExecutionResult<?>> queryItemCallback =
@@ -407,7 +417,6 @@ public class ExcludeRegionWithFaultInjectionTests extends TestSuiteBase {
                     new MutationTestConfig()
                         .withFaultInjectionOperationType(FaultInjectionOperationType.QUERY_ITEM)
                         .withFaultInjectionServerErrorType(FaultInjectionServerErrorType.READ_SESSION_NOT_AVAILABLE)
-                        // applied to the preferred regions
                         .withRegionExclusionMutator(this.chooseFirstRegion)
                         .withDataPlaneOperationExecutor(queryItemCallback)
                         .withExpectedResultBeforeMutation(new ExpectedResult(
@@ -427,11 +436,10 @@ public class ExcludeRegionWithFaultInjectionTests extends TestSuiteBase {
                     "503/21008_allRegions_beforeMutation_excludeFirstRegion_afterMutation_excludeLastRegion",
                     new MutationTestConfig()
                         .withChooseInitialExclusionRegions(this.chooseFirstRegion)
-                        .withChooseFaultInjectionRegions(this.chooseFirstTwoRegions)
+                        .withChooseFaultInjectionRegions(this.chooseAllRegions)
                         .withFaultInjectionOperationType(FaultInjectionOperationType.QUERY_ITEM)
                         .withFaultInjectionServerErrorType(FaultInjectionServerErrorType.SERVICE_UNAVAILABLE)
                         .withDataPlaneOperationExecutor(queryItemCallback)
-                        // applied to the preferred regions
                         .withRegionExclusionMutator(this.chooseLastRegion)
                         .withExpectedResultBeforeMutation(new ExpectedResult(
                             HttpConstants.StatusCodes.SERVICE_UNAVAILABLE,
@@ -452,7 +460,6 @@ public class ExcludeRegionWithFaultInjectionTests extends TestSuiteBase {
                         .withFaultInjectionOperationType(FaultInjectionOperationType.QUERY_ITEM)
                         .withFaultInjectionServerErrorType(FaultInjectionServerErrorType.INTERNAL_SERVER_ERROR)
                         .withDataPlaneOperationExecutor(queryItemCallback)
-                        // applied to the preferred regions
                         .withRegionExclusionMutator(this.chooseLastRegion)
                         .withExpectedResultBeforeMutation(new ExpectedResult(
                             HttpConstants.StatusCodes.INTERNAL_SERVER_ERROR,
@@ -476,7 +483,6 @@ public class ExcludeRegionWithFaultInjectionTests extends TestSuiteBase {
                         .withFaultInjectionOperationType(FaultInjectionOperationType.QUERY_ITEM)
                         .withFaultInjectionServerErrorType(FaultInjectionServerErrorType.READ_SESSION_NOT_AVAILABLE)
                         .withDataPlaneOperationExecutor(queryItemCallback)
-                        // applied to the preferred regions
                         .withRegionExclusionMutator(this.chooseLastRegion)
                         .withExpectedResultBeforeMutation(new ExpectedResult(
                             HttpConstants.StatusCodes.OK,
@@ -484,9 +490,9 @@ public class ExcludeRegionWithFaultInjectionTests extends TestSuiteBase {
                             this.chooseLastTwoRegions.apply(this.preferredRegions)
                         ))
                         .withExpectedResultAfterMutation(new ExpectedResult(
-                        HttpConstants.StatusCodes.NOTFOUND,
-                        HttpConstants.SubStatusCodes.READ_SESSION_NOT_AVAILABLE,
-                        this.chooseFirstTwoRegions.apply(this.preferredRegions)
+                            HttpConstants.StatusCodes.NOTFOUND,
+                            HttpConstants.SubStatusCodes.READ_SESSION_NOT_AVAILABLE,
+                            this.chooseFirstTwoRegions.apply(this.preferredRegions)
                     )),
 
                 },
@@ -518,7 +524,6 @@ public class ExcludeRegionWithFaultInjectionTests extends TestSuiteBase {
                     new MutationTestConfig()
                         .withFaultInjectionOperationType(FaultInjectionOperationType.QUERY_ITEM)
                         .withFaultInjectionServerErrorType(FaultInjectionServerErrorType.READ_SESSION_NOT_AVAILABLE)
-                        // applied to the preferred regions
                         .withRegionExclusionMutator(this.chooseFirstRegion)
                         .withDataPlaneOperationExecutor(queryItemCallback)
                         .withExpectedResultBeforeMutation(new ExpectedResult(
@@ -542,7 +547,6 @@ public class ExcludeRegionWithFaultInjectionTests extends TestSuiteBase {
                         .withFaultInjectionOperationType(FaultInjectionOperationType.QUERY_ITEM)
                         .withFaultInjectionServerErrorType(FaultInjectionServerErrorType.SERVICE_UNAVAILABLE)
                         .withDataPlaneOperationExecutor(queryItemCallback)
-                        // applied to the preferred regions
                         .withRegionExclusionMutator(this.chooseLastRegion)
                         .withExpectedResultBeforeMutation(new ExpectedResult(
                             HttpConstants.StatusCodes.SERVICE_UNAVAILABLE,
@@ -563,7 +567,6 @@ public class ExcludeRegionWithFaultInjectionTests extends TestSuiteBase {
                         .withFaultInjectionOperationType(FaultInjectionOperationType.QUERY_ITEM)
                         .withFaultInjectionServerErrorType(FaultInjectionServerErrorType.INTERNAL_SERVER_ERROR)
                         .withDataPlaneOperationExecutor(queryItemCallback)
-                        // applied to the preferred regions
                         .withRegionExclusionMutator(this.chooseLastRegion)
                         .withExpectedResultBeforeMutation(new ExpectedResult(
                             HttpConstants.StatusCodes.INTERNAL_SERVER_ERROR,

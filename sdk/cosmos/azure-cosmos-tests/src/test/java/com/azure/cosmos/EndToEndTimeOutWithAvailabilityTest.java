@@ -193,7 +193,11 @@ public class EndToEndTimeOutWithAvailabilityTest extends TestSuiteBase {
             }
         }
 
-        assertThat(cosmosDiagnostics.getContactedRegionNames().size()).isEqualTo(1);
+        assertThat(cosmosDiagnostics).isNotNull();
+        CosmosDiagnosticsContext diagnosticsContext = cosmosDiagnostics.getDiagnosticsContext();
+        assertThat(diagnosticsContext).isNotNull();
+        assertThat(diagnosticsContext.getContactedRegionNames().size()).isEqualTo(1);
+
         ObjectNode diagnosticsNode = null;
 
         try {
@@ -240,7 +244,10 @@ public class EndToEndTimeOutWithAvailabilityTest extends TestSuiteBase {
             }
         }
 
-        assertThat(cosmosDiagnostics.getContactedRegionNames().size()).isGreaterThan(1);
+        assertThat(cosmosDiagnostics).isNotNull();
+        diagnosticsContext = cosmosDiagnostics.getDiagnosticsContext();
+        assertThat(diagnosticsContext).isNotNull();
+        assertThat(diagnosticsContext.getContactedRegionNames().size()).isGreaterThan(1);
 
         try {
             if (operationType == OperationType.Query) {
