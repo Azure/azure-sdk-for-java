@@ -299,18 +299,12 @@ public class JsonArray extends JsonElement {
                 case NULL:
                     this.addElement(JsonNull.getInstance());
                     break;
-                // END_DOCUMENT and END_ARRAY cases are picked up by the overall 
-                // while statement. These cases should not be reached, assuming 
-                // the JSON array being deserialised is properly formed, so 
-                // exception is thrown. 
-                case END_DOCUMENT:
-                    throw new IOException("Invalid JsonToken.END_DOCUMENT token read prematurely from deserialised JSON array. Deserialisation aborted."); 
+                
                 case END_ARRAY:
                     throw new IOException("Invalid JsonToken.END_ARRAY token read prematurely from deserialised JSON array. Deserialisation aborted."); 
-                // Case: the currently read token is a JsonToken.END_OBJECT token. 
-                // JSON array is being deserialised, not a JSON object. 
-                case END_OBJECT:
-                    throw new IOException("Invalid JsonToken.END_OBJECT token read from deserialised JSON array. JSON array is being deserialised not a JSON object. This is not a valid JSON array. Deserialisation aborted."); 
+                 
+                default:
+                    throw new IOException("Default: Invalid JsonToken. Deserialisation aborted."); 
             }
         }
     }
