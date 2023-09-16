@@ -1,7 +1,8 @@
 ## Release History
 
-### 4.46.0-beta.1 (Unreleased)
-
+### 4.45.2-hotfix (2023-09-15)
+> [!IMPORTANT]
+> We strongly recommend our customers to upgrade directly to at least 4.48.2 or above if they have been using the 4.45.2-hotfix version of `azure-cosmos`. Versions 4.46.0 - 4.48.1 will miss important fixes that have been backported to 4.45.2-hotfix.
 #### Bugs Fixed
 * Added capability to mark a region as unavailable when a request is cancelled due to end-to-end timeout and connection issues
 with the region in the direct connectivity mode. - See [PR 35586](https://github.com/Azure/azure-sdk-for-java/pull/35586)
