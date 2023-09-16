@@ -4,7 +4,6 @@
 package com.azure.cosmos;
 
 import java.time.Duration;
-import java.util.concurrent.atomic.AtomicBoolean;
 
 /**
  * The type Threshold based retry availability strategy.
@@ -22,7 +21,7 @@ public final class ThresholdBasedAvailabilityStrategy extends AvailabilityStrate
     public ThresholdBasedAvailabilityStrategy() {
         this.threshold = DEFAULT_THRESHOLD;
         this.thresholdStep = DEFAULT_THRESHOLD_STEP;
-        this.toStringValue = getCachedStringValue(threshold, thresholdStep);
+        this.toStringValue = getCachedStringValue(DEFAULT_THRESHOLD, DEFAULT_THRESHOLD_STEP);
     }
 
     /**
