@@ -14,6 +14,8 @@ import java.time.Duration;
 import java.util.ArrayList;
 import java.util.Collections;
 import java.util.List;
+import java.util.concurrent.locks.ReentrantLock;
+import java.util.concurrent.locks.ReentrantReadWriteLock;
 
 /**
  * Represents the Connection policy associated with a Cosmos client in the Azure Cosmos DB service.
@@ -52,7 +54,7 @@ public final class ConnectionPolicy {
     private int minConnectionPoolSizePerEndpoint;
     private int openConnectionsConcurrency;
     private int aggressiveWarmupConcurrency;
-    private final Object monitorObjectForExcludeRegions;
+    private final ReentrantLock reentrantLock;
 
     /**
      * Constructor.
@@ -118,7 +120,7 @@ public final class ConnectionPolicy {
         this.minConnectionPoolSizePerEndpoint = Configs.getMinConnectionPoolSizePerEndpoint();
         this.openConnectionsConcurrency = Configs.getOpenConnectionsConcurrency();
         this.aggressiveWarmupConcurrency = Configs.getAggressiveWarmupConcurrency();
-        this.monitorObjectForExcludeRegions = new Object();
+        this.reentrantLock = new ReentrantLock();
     }
 
     /**
@@ -477,19 +479,20 @@ public final class ConnectionPolicy {
     }
 
     public ConnectionPolicy setExcludeRegions(List<String> excludeRegions) {
-        synchronized (this.monitorObjectForExcludeRegions) {
+        reentrantLock.lock();
+        try {
             if (excludeRegions != null) {
                 this.excludeRegions = new ArrayList<>();
                 this.excludeRegions.addAll(excludeRegions);
             }
             return this;
+        } finally {
+            reentrantLock.unlock();
         }
     }
 
     public List<String> getExcludeRegions() {
-        synchronized (this.monitorObjectForExcludeRegions) {
-            return this.excludeRegions;
-        }
+        return this.excludeRegions;
     }
 
     /**

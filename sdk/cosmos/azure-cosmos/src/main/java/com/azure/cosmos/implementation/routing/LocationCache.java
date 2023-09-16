@@ -213,17 +213,17 @@ public class LocationCache {
         return this.getApplicableWriteEndpoints(request.requestContext.getExcludeRegions());
     }
 
-    public UnmodifiableList<URI> getApplicableWriteEndpoints(List<String> excludedRegions) {
+    public UnmodifiableList<URI> getApplicableWriteEndpoints(List<String> excludedRegionsOnRequest) {
         UnmodifiableList<URI> writeEndpoints = this.getWriteEndpoints();
 
         List<String> effectiveExcludeRegions = connectionPolicy.getExcludeRegions();
 
-        if (!isExcludeRegionsConfigured(request, effectiveExcludeRegions)) {
+        if (!isExcludeRegionsConfigured(excludedRegionsOnRequest, effectiveExcludeRegions)) {
             return writeEndpoints;
         }
 
-        if (request.requestContext.getExcludeRegions() != null && !request.requestContext.getExcludeRegions().isEmpty()) {
-            effectiveExcludeRegions = request.requestContext.getExcludeRegions();
+        if (excludedRegionsOnRequest != null && !excludedRegionsOnRequest.isEmpty()) {
+            effectiveExcludeRegions = excludedRegionsOnRequest;
         }
 
         // filter regions based on the exclude region config
@@ -238,17 +238,17 @@ public class LocationCache {
         return this.getApplicableReadEndpoints(request.requestContext.getExcludeRegions());
     }
 
-    public UnmodifiableList<URI> getApplicableReadEndpoints(List<String> excludedRegions) {
+    public UnmodifiableList<URI> getApplicableReadEndpoints(List<String> excludedRegionsOnRequest) {
         UnmodifiableList<URI> readEndpoints = this.getReadEndpoints();
 
         List<String> effectiveExcludeRegions = connectionPolicy.getExcludeRegions();
 
-        if (!isExcludeRegionsConfigured(request, effectiveExcludeRegions)) {
+        if (!isExcludeRegionsConfigured(excludedRegionsOnRequest, effectiveExcludeRegions)) {
             return readEndpoints;
         }
 
-        if (request.requestContext.getExcludeRegions() != null && !request.requestContext.getExcludeRegions().isEmpty()) {
-            effectiveExcludeRegions = request.requestContext.getExcludeRegions();
+        if (excludedRegionsOnRequest != null && !excludedRegionsOnRequest.isEmpty()) {
+            effectiveExcludeRegions = excludedRegionsOnRequest;
         }
 
         // filter regions based on the exclude region config
@@ -256,7 +256,7 @@ public class LocationCache {
             readEndpoints,
             this.locationInfo.regionNameByReadEndpoint,
             this.locationInfo.writeEndpoints.get(0), // match the fallback region used in getPreferredAvailableEndpoints
-            request.requestContext.getExcludeRegions());
+            effectiveExcludeRegions);
     }
 
     private UnmodifiableList<URI> getApplicableEndpoints(
@@ -282,10 +282,7 @@ public class LocationCache {
         return new UnmodifiableList<>(applicableEndpoints);
     }
 
-    private boolean isExcludeRegionsConfigured(RxDocumentServiceRequest request, List<String> excludedRegionsOnClient) {
-
-        List<String> excludedRegionsOnRequest = request.requestContext.getExcludeRegions();
-
+    private boolean isExcludeRegionsConfigured(List<String> excludedRegionsOnRequest, List<String> excludedRegionsOnClient) {
         boolean isExcludedRegionsConfiguredOnRequest = !(excludedRegionsOnRequest == null || excludedRegionsOnRequest.isEmpty());
         boolean isExcludedRegionsConfiguredOnClient = !(excludedRegionsOnClient == null || excludedRegionsOnClient.isEmpty());
 
@@ -641,7 +638,7 @@ public class LocationCache {
         return (UnmodifiableMap<String, URI>) UnmodifiableMap.<String, URI>unmodifiableMap(endpointsByLocation);
     }
 
-    private boolean canUseMultipleWriteLocations() {
+    public boolean canUseMultipleWriteLocations() {
         return this.useMultipleWriteLocations && this.enableMultipleWriteLocations;
     }
 
