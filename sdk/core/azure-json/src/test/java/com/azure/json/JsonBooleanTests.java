@@ -10,8 +10,6 @@ public class JsonBooleanTests {
 
         assertEquals("true", test.toString());
         assertTrue(test.isBoolean());
-        // assertTrue(test.isTrue());
-        // assertFalse(test.isFalse());
     }
 
     @Test
@@ -20,8 +18,6 @@ public class JsonBooleanTests {
 
         assertEquals("false", test.toString());
         assertTrue(test.isBoolean());
-        // assertTrue(test.isFalse());
-        // assertFalse(test.isTrue());
     }
 
   @Test
