@@ -216,14 +216,14 @@ public class LocationCache {
     public UnmodifiableList<URI> getApplicableWriteEndpoints(List<String> excludedRegionsOnRequest) {
         UnmodifiableList<URI> writeEndpoints = this.getWriteEndpoints();
 
-        List<String> effectiveExcludeRegions = connectionPolicy.getExcludedRegions();
+        List<String> effectiveExcludedRegions = connectionPolicy.getExcludedRegions();
 
-        if (!isExcludeRegionsConfigured(excludedRegionsOnRequest, effectiveExcludeRegions)) {
+        if (!isExcludeRegionsConfigured(excludedRegionsOnRequest, effectiveExcludedRegions)) {
             return writeEndpoints;
         }
 
         if (excludedRegionsOnRequest != null && !excludedRegionsOnRequest.isEmpty()) {
-            effectiveExcludeRegions = excludedRegionsOnRequest;
+            effectiveExcludedRegions = excludedRegionsOnRequest;
         }
 
         // filter regions based on the exclude region config
@@ -231,7 +231,7 @@ public class LocationCache {
             writeEndpoints,
             this.locationInfo.regionNameByWriteEndpoint,
             this.defaultEndpoint,
-            effectiveExcludeRegions);
+            effectiveExcludedRegions);
     }
 
     public UnmodifiableList<URI> getApplicableReadEndpoints(RxDocumentServiceRequest request) {

@@ -598,10 +598,10 @@ public final class CosmosAsyncClient implements Closeable {
      * routed to these excluded regions for non-retry and retry scenarios
      * for the workload executed through this instance of {@link CosmosAsyncClient}.
      *
-     * @param excludeRegions The list of regions to exclude.
+     * @param excludedRegions The list of regions to exclude.
      * */
-    public void excludeRegions(List<String> excludeRegions) {
-        this.connectionPolicy.setExcludedRegions(excludeRegions);
+    public void excludeRegions(List<String> excludedRegions) {
+        this.connectionPolicy.setExcludedRegions(excludedRegions);
     }
 
     WriteRetryPolicy getNonIdempotentWriteRetryPolicy() {
@@ -905,7 +905,7 @@ public final class CosmosAsyncClient implements Closeable {
                 }
 
                 @Override
-                public List<String> getExcludeRegions(CosmosAsyncClient client) {
+                public List<String> getExcludedRegions(CosmosAsyncClient client) {
                     return client.connectionPolicy.getExcludedRegions();
                 }
             }

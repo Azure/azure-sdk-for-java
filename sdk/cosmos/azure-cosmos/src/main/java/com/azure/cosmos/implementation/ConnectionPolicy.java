@@ -31,7 +31,7 @@ public final class ConnectionPolicy {
     private boolean endpointDiscoveryEnabled;
     private boolean multipleWriteRegionsEnabled;
     private List<String> preferredRegions;
-    private volatile List<String> excludeRegions;
+    private volatile List<String> excludedRegions;
     private boolean readRequestsFallbackEnabled;
     private ThrottlingRetryOptions throttlingRetryOptions;
     private String userAgentSuffix;
@@ -125,7 +125,7 @@ public final class ConnectionPolicy {
         this.openConnectionsConcurrency = Configs.getOpenConnectionsConcurrency();
         this.aggressiveWarmupConcurrency = Configs.getAggressiveWarmupConcurrency();
         this.reentrantLock = new ReentrantLock();
-        this.excludedRegionsAsString = constructExcludedRegionsAsString(this.excludeRegions);
+        this.excludedRegionsAsString = constructExcludedRegionsAsString(this.excludedRegions);
     }
 
     /**
@@ -483,14 +483,14 @@ public final class ConnectionPolicy {
         return this;
     }
 
-    public ConnectionPolicy setExcludedRegions(List<String> excludeRegions) {
+    public ConnectionPolicy setExcludedRegions(List<String> excludedRegions) {
         reentrantLock.lock();
         try {
-            if (excludeRegions != null) {
-                this.excludeRegions = new ArrayList<>();
-                this.excludeRegions.addAll(excludeRegions);
+            if (excludedRegions != null) {
+                this.excludedRegions = new ArrayList<>();
+                this.excludedRegions.addAll(excludedRegions);
             }
-            this.excludedRegionsAsString = constructExcludedRegionsAsString(this.excludeRegions);
+            this.excludedRegionsAsString = constructExcludedRegionsAsString(this.excludedRegions);
             return this;
         } finally {
             reentrantLock.unlock();
@@ -498,7 +498,7 @@ public final class ConnectionPolicy {
     }
 
     public List<String> getExcludedRegions() {
-        return this.excludeRegions;
+        return this.excludedRegions;
     }
 
     /**
