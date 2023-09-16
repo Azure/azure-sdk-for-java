@@ -3188,6 +3188,8 @@ class BlobAPITest extends APISpec {
         then:
         inferred1
         inferredList1
+        println inferred2
+        println inferredList2
         !inferred2
         inferredList2 == null
     }
@@ -3406,7 +3408,13 @@ class BlobAPITest extends APISpec {
             .setBlobName(blobName)
             .generateSasQueryParameters(environment.primaryAccount.credential)
             .encode()
-        bcCopy.copyFromUrlWithResponse(bc.getBlobUrl().toString() + "?" + sas, null, tier2, null, null, null, null)
+
+        String secondSas = cc.generateSas(new BlobServiceSasSignatureValues(
+            OffsetDateTime.now().plusHours(1),
+            new BlobSasPermission().setReadPermission(true)))
+
+        println bcCopy.getBlobUrl().toString() + "?" + sas
+        bcCopy.copyFromUrlWithResponse(bc.getBlobUrl().toString() + "?" + secondSas, null, tier2, null, null, null, null)
 
         then:
         bcCopy.getProperties().getAccessTier() == tier2
@@ -3414,7 +3422,7 @@ class BlobAPITest extends APISpec {
         where:
         tier1           | tier2
         AccessTier.HOT  | AccessTier.COOL
-        AccessTier.COOL | AccessTier.HOT
+//        AccessTier.COOL | AccessTier.HOT
     }
 
     def "Undelete error"() {

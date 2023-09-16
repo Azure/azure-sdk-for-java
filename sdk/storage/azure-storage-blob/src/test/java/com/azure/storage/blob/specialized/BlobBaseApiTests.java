@@ -798,7 +798,7 @@ public class BlobBaseApiTests extends BlobTestBase {
 
     @DisabledIf("com.azure.storage.blob.BlobTestBase#olderThan20191212ServiceVersion")
     @ParameterizedTest
-    @MethodSource("queryACFailSupplier")
+    @MethodSource("com.azure.storage.blob.BlobTestBase#allConditionsFailSupplier")
     public void queryACFail(OffsetDateTime modified, OffsetDateTime unmodified, String match, String noneMatch,
         String leaseID, String tags) {
         setupBlobLeaseCondition(bc, leaseID);
@@ -820,16 +820,6 @@ public class BlobBaseApiTests extends BlobTestBase {
 
         assertThrows(BlobStorageException.class,
             () -> bc.queryWithResponse(optionsOs, null, null));
-    }
-
-    private static Stream<Arguments> queryACFailSupplier() {
-        return Stream.of(Arguments.of(NEW_DATE, null, null, null, null, null),
-            Arguments.of(null, OLD_DATE, null, null, null, null),
-            Arguments.of(null, null, GARBAGE_ETAG, null, null, null),
-            Arguments.of(null, null, null, RECEIVED_ETAG, null, null),
-            Arguments.of(null, null, null, null, GARBAGE_LEASE_ID, null),
-            Arguments.of(null, null, null, null, null, "\"notfoo\" = 'notbar'")
-        );
     }
 
     static class MockProgressConsumer implements Consumer<BlobQueryProgress> {

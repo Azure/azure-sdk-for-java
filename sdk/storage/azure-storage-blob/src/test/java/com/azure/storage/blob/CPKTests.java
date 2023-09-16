@@ -74,7 +74,8 @@ public class CPKTests extends BlobTestBase {
         cpkBlockBlob.upload(DATA.getDefaultInputStream(), DATA.getDefaultDataSize());
         ByteArrayOutputStream datastream = new ByteArrayOutputStream();
 
-        BlobDownloadResponse response = cpkBlockBlob.downloadWithResponse(datastream, null, null, null, false, null, null);
+        BlobDownloadResponse response = cpkBlockBlob.downloadWithResponse(datastream, null, null, null, false, null,
+            null);
 
         assertResponseStatusCode(response, 200);
         assertArrayEquals(datastream.toByteArray(), DATA.getDefaultBytes());
@@ -138,6 +139,7 @@ public class CPKTests extends BlobTestBase {
         assertEquals(key.getKeySha256(), response.getValue().getEncryptionKeySha256());
     }
 
+    @Test
     public void putPageFromURLWithCPK() {
         String blobName = generateBlobName();
         PageBlobClient sourceBlob = cc.getBlobClient(blobName).getPageBlobClient();
@@ -211,6 +213,7 @@ public class CPKTests extends BlobTestBase {
         assertEquals(key.getKeySha256(), response.getValue().getEncryptionKeySha256());
     }
 
+    @Test
     public void setBlobMetadataWithCPK() {
         Map<String, String> metadata = new HashMap<>();
         metadata.put("foo", "bar");
@@ -222,6 +225,7 @@ public class CPKTests extends BlobTestBase {
         assertEquals(key.getKeySha256(), response.getHeaders().getValue(X_MS_ENCRYPTION_KEY_SHA256));
     }
 
+    @Test
     public void getBlobPropertiesAndMetadataWithCPK() {
         Response<BlobProperties> response = cpkExistingBlob.getPropertiesWithResponse(null, null, null);
 
@@ -236,8 +240,8 @@ public class CPKTests extends BlobTestBase {
         Response<Void> response = cpkExistingBlob.setAccessTierWithResponse(AccessTier.COOL, null, null, null, null);
 
         assertResponseStatusCode(response, 200);
-        assertTrue(Boolean.parseBoolean(response.getHeaders().getValue(Constants.HeaderConstants.SERVER_ENCRYPTED)));
-        assertEquals(key.getKeySha256(), response.getHeaders().getValue(Constants.HeaderConstants.ENCRYPTION_KEY_SHA256));
+        assertTrue(Boolean.parseBoolean(response.getHeaders().getValue(X_MS_SERVER_ENCRYPTED)));
+        assertEquals(key.getKeySha256(), response.getHeaders().getValue(X_MS_ENCRYPTION_KEY_SHA256));
     }
 
     @Test

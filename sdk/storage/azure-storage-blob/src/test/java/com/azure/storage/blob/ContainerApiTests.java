@@ -129,17 +129,20 @@ public class ContainerApiTests extends BlobTestBase {
         );
     }
 
-    @Test
-    public void createPublicAccess() {
-        List<PublicAccessType> publicAccessTypes = Arrays.asList(PublicAccessType.BLOB, PublicAccessType.CONTAINER,
-            null);
+    @ParameterizedTest
+    @MethodSource("publicAccessSupplier")
+    public void createPublicAccess(PublicAccessType publicAccess) {
+        cc = primaryBlobServiceClient.getBlobContainerClient(generateContainerName());
+        cc.createWithResponse(null, publicAccess, null, null);
+        PublicAccessType access = cc.getProperties().getBlobPublicAccess();
+        assertEquals(access, publicAccess);
+    }
 
-        for (PublicAccessType publicAccess : publicAccessTypes) {
-            cc = primaryBlobServiceClient.getBlobContainerClient(generateContainerName());
-            cc.createWithResponse(null, publicAccess, null, null);
-            PublicAccessType access = cc.getProperties().getBlobPublicAccess();
-            assertEquals(access, publicAccess);
-        }
+    private static Stream<Arguments> publicAccessSupplier() {
+        return Stream.of(
+            Arguments.of(PublicAccessType.BLOB),
+            Arguments.of(PublicAccessType.CONTAINER),
+            Arguments.of((PublicAccessType) null));
     }
 
     @Test
@@ -214,19 +217,15 @@ public class ContainerApiTests extends BlobTestBase {
         assertTrue(result.getValue());
     }
 
-    @Test
-    public void createIfNotExistsPublicAccess() {
-        List<PublicAccessType> publicAccessTypes = Arrays.asList(PublicAccessType.BLOB, PublicAccessType.CONTAINER,
-            null);
-
-        for (PublicAccessType publicAccess : publicAccessTypes) {
-            cc = primaryBlobServiceClient.getBlobContainerClient(generateContainerName());
-            Response<Boolean> result = cc.createIfNotExistsWithResponse(new BlobContainerCreateOptions()
-                .setPublicAccessType(publicAccess), null, null);
-            PublicAccessType access = cc.getProperties().getBlobPublicAccess();
-            assertEquals(access, publicAccess);
-            assertTrue(result.getValue());
-        }
+    @ParameterizedTest
+    @MethodSource("publicAccessSupplier")
+    public void createIfNotExistsPublicAccess(PublicAccessType publicAccess) {
+        cc = primaryBlobServiceClient.getBlobContainerClient(generateContainerName());
+        Response<Boolean> result = cc.createIfNotExistsWithResponse(new BlobContainerCreateOptions()
+            .setPublicAccessType(publicAccess), null, null);
+        PublicAccessType access = cc.getProperties().getBlobPublicAccess();
+        assertEquals(access, publicAccess);
+        assertTrue(result.getValue());
     }
 
     @Test
@@ -358,13 +357,11 @@ public class ContainerApiTests extends BlobTestBase {
             .setLeaseId(leaseID)
             .setIfModifiedSince(modified);
 
-        assertThrows(BlobStorageException.class, () ->
-            cc.setMetadataWithResponse(null, cac, null, null));
+        assertThrows(BlobStorageException.class, () -> cc.setMetadataWithResponse(null, cac, null, null));
     }
 
     private static Stream<Arguments> setMetadataACFailSupplier() {
         return Stream.of(
-            Arguments.of(null, null),
             Arguments.of(NEW_DATE, null),
             Arguments.of(null, GARBAGE_LEASE_ID));
     }
@@ -377,8 +374,7 @@ public class ContainerApiTests extends BlobTestBase {
             .setIfMatch(match)
             .setIfNoneMatch(noneMatch);
 
-        assertThrows(UnsupportedOperationException.class,
-            () -> cc.setMetadataWithResponse(null, mac, null, null));
+        assertThrows(UnsupportedOperationException.class, () -> cc.setMetadataWithResponse(null, mac, null, null));
     }
 
     private static Stream<Arguments> setMetadataACIllegalSupplier() {
@@ -396,17 +392,12 @@ public class ContainerApiTests extends BlobTestBase {
     }
 
     @ParameterizedTest
-    public void setAccessPolicy() {
-        List<PublicAccessType> publicAccessTypes = Arrays.asList(PublicAccessType.BLOB, PublicAccessType.CONTAINER,
-            null);
+    @MethodSource("publicAccessSupplier")
+    public void setAccessPolicy(PublicAccessType publicAccess) {
+        Response<Void> response = cc.setAccessPolicyWithResponse(publicAccess, null, null, null, null);
 
-        for (PublicAccessType publicAccess : publicAccessTypes) {
-            Response<Void> response = cc.setAccessPolicyWithResponse(publicAccess, null, null,
-                null, null);
-
-            assertTrue(validateBasicHeaders(response.getHeaders()));
-            assertEquals(cc.getProperties().getBlobPublicAccess(), publicAccess);
-        }
+        assertTrue(validateBasicHeaders(response.getHeaders()));
+        assertEquals(cc.getProperties().getBlobPublicAccess(), publicAccess);
     }
 
     @Test
@@ -425,7 +416,7 @@ public class ContainerApiTests extends BlobTestBase {
                     .plusDays(1))
                 .setPermissions("r"));
 
-        List<BlobSignedIdentifier> ids = Arrays.asList(identifier);
+        List<BlobSignedIdentifier> ids = Collections.singletonList(identifier);
 
         cc.setAccessPolicy(null, ids);
 
@@ -540,7 +531,7 @@ public class ContainerApiTests extends BlobTestBase {
                 .setStartsOn(testResourceNamer.now())
                 .setExpiresOn(testResourceNamer.now().plusDays(1))
                 .setPermissions("r"));
-        List<BlobSignedIdentifier> ids = Arrays.asList(identifier);
+        List<BlobSignedIdentifier> ids = Collections.singletonList(identifier);
         cc.setAccessPolicy(PublicAccessType.BLOB, ids);
         Response<BlobContainerAccessPolicies> response = cc.getAccessPolicyWithResponse(null, null, null);
 
@@ -772,7 +763,7 @@ public class ContainerApiTests extends BlobTestBase {
         assertNull(blob.getProperties().getCacheControl());
         assertNull(blob.getProperties().getBlobSequenceNumber());
         assertTrue(blob.getProperties().isServerEncrypted());
-        assertTrue(blob.getProperties().isAccessTierInferred());
+        assertNull(blob.getProperties().isAccessTierInferred());
         assertNull(blob.getProperties().getAccessTier());
         assertNull(blob.getProperties().getArchiveStatus());
         assertNotNull(blob.getProperties().getCreationTime());
@@ -782,7 +773,7 @@ public class ContainerApiTests extends BlobTestBase {
     @Test
     public void listPageBlobsFlat() {
         ccPremium = premiumBlobServiceClient.getBlobContainerClient(containerName);
-        ccPremium.create();
+        ccPremium.createIfNotExists();
         String name = generateBlobName();
         PageBlobClient bu = ccPremium.getBlobClient(name).getPageBlobClient();
         bu.create(512);
@@ -810,7 +801,7 @@ public class ContainerApiTests extends BlobTestBase {
         assertNull(blob.getProperties().getContentDisposition());
         assertNull(blob.getProperties().getContentLanguage());
         assertNull(blob.getProperties().getCacheControl());
-        assertNull(blob.getProperties().getBlobSequenceNumber());
+        assertEquals(0, blob.getProperties().getBlobSequenceNumber());
         assertTrue(blob.getProperties().isServerEncrypted());
         assertTrue(blob.getProperties().isAccessTierInferred());
         assertEquals(AccessTier.P10, blob.getProperties().getAccessTier());
@@ -1083,9 +1074,11 @@ public class ContainerApiTests extends BlobTestBase {
         // when: "listBlobs with async client"
         PagedFlux<BlobItem> pagedFlux = ccAsync.listBlobs(new ListBlobsOptions().setMaxResultsPerPage(pageSize));
         PagedResponse<BlobItem> pagedResponse1 = pagedFlux.byPage().blockFirst();
+        assertNotNull(pagedResponse1);
         PagedResponse<BlobItem> pagedResponse2 = pagedFlux.byPage(pagedResponse1.getContinuationToken()).blockFirst();
 
         assertEquals(pageSize, pagedResponse1.getValue().size());
+        assertNotNull(pagedResponse2);
         assertEquals(numBlobs - pageSize, pagedResponse2.getValue().size());
         assertNull(pagedResponse2.getContinuationToken());
     }
@@ -1100,7 +1093,8 @@ public class ContainerApiTests extends BlobTestBase {
         }
 
         // when: "listBlobs with sync client"
-        PagedIterable<BlobItem> pagedIterable = cc.listBlobs(new ListBlobsOptions().setMaxResultsPerPage(pageSize), null);
+        PagedIterable<BlobItem> pagedIterable = cc.listBlobs(new ListBlobsOptions().setMaxResultsPerPage(pageSize),
+            null);
         PagedResponse<BlobItem> pagedSyncResponse1 = pagedIterable.iterableByPage().iterator().next();
 
         pagedIterable = cc.listBlobs(new ListBlobsOptions().setMaxResultsPerPage(pageSize),
@@ -1115,37 +1109,43 @@ public class ContainerApiTests extends BlobTestBase {
         // when: "listBlobs with async client"
         PagedFlux<BlobItem> pagedFlux = ccAsync.listBlobs(new ListBlobsOptions().setMaxResultsPerPage(pageSize));
         PagedResponse<BlobItem> pagedResponse1 = pagedFlux.byPage().blockFirst();
+        assertNotNull(pagedResponse1);
         pagedFlux = ccAsync.listBlobs(new ListBlobsOptions().setMaxResultsPerPage(pageSize),
             pagedResponse1.getContinuationToken());
         PagedResponse<BlobItem> pagedResponse2 = pagedFlux.byPage().blockFirst();
 
         assertEquals(pageSize, pagedResponse1.getValue().size());
+        assertNotNull(pagedResponse2);
         assertEquals(numBlobs - pageSize, pagedResponse2.getValue().size());
         assertNull(pagedResponse2.getContinuationToken());
     }
 
     @DisabledIf("com.azure.storage.blob.BlobTestBase#olderThan20191212ServiceVersion")
-    @Test
-    public void listBlobsFlatRehydratePriority() {
-        List<RehydratePriority> rehydratePriorities =
-            Arrays.asList(null, RehydratePriority.STANDARD, RehydratePriority.HIGH);
+    @ParameterizedTest
+    @MethodSource("listBlobsFlatRehydratePrioritySupplier")
+    public void listBlobsFlatRehydratePriority(RehydratePriority rehydratePriority) {
+        String name = generateBlobName();
+        BlockBlobClient bc = cc.getBlobClient(name).getBlockBlobClient();
+        bc.upload(DATA.getDefaultInputStream(), 7);
 
-        for (RehydratePriority rehydratePriority : rehydratePriorities) {
-            String name = generateBlobName();
-            BlockBlobClient bc = cc.getBlobClient(name).getBlockBlobClient();
-            bc.upload(DATA.getDefaultInputStream(), 7);
-
-            if (rehydratePriority != null) {
-                bc.setAccessTier(AccessTier.ARCHIVE);
-                bc.setAccessTierWithResponse(new BlobSetAccessTierOptions(AccessTier.HOT)
-                    .setPriority(rehydratePriority), null, null);
-            }
-            BlobItem item = cc.listBlobs().iterator().next();
-            assertEquals(rehydratePriority, item.getProperties().getRehydratePriority());
+        if (rehydratePriority != null) {
+            bc.setAccessTier(AccessTier.ARCHIVE);
+            bc.setAccessTierWithResponse(new BlobSetAccessTierOptions(AccessTier.HOT)
+                .setPriority(rehydratePriority), null, null);
         }
+        BlobItem item = cc.listBlobs().iterator().next();
+        assertEquals(rehydratePriority, item.getProperties().getRehydratePriority());
+    }
+
+    private static Stream<Arguments> listBlobsFlatRehydratePrioritySupplier() {
+        return Stream.of(
+            Arguments.of((RehydratePriority) null),
+            Arguments.of(RehydratePriority.STANDARD),
+            Arguments.of(RehydratePriority.HIGH));
     }
 
     @DisabledIf("com.azure.storage.blob.BlobTestBase#olderThan20210212ServiceVersion")
+    @Test
     public void listBlobsFlatInvalidXml() {
         String blobName = "dir1/dir2/file\uFFFE.blob";
         cc.getBlobClient(blobName).getAppendBlobClient().create();
@@ -1165,11 +1165,9 @@ public class ContainerApiTests extends BlobTestBase {
         int numBlobs = 5;
         int pageResults = 3;
 
-        //List<BlobClientBase> blobs = new ArrayList<>();
         for (int i = 0; i < numBlobs; i++) {
             BlockBlobClient blob = cc.getBlobClient(generateBlobName()).getBlockBlobClient();
             blob.upload(DATA.getDefaultInputStream(), DATA.getDefaultDataSize());
-            //blobs.add(blob);
         }
 
         // when: "Consume results by page, then still have paging functionality"
@@ -1198,6 +1196,7 @@ public class ContainerApiTests extends BlobTestBase {
     */
 
     @EnabledIf("com.azure.storage.blob.BlobTestBase#isPlaybackMode")
+    @Test
     public void listBlobsFlatORS() {
         BlobContainerClient sourceContainer = primaryBlobServiceClient.getBlobContainerClient("test1");
         BlobContainerClient destContainer = alternateBlobServiceClient.getBlobContainerClient("test2");
@@ -1244,13 +1243,6 @@ public class ContainerApiTests extends BlobTestBase {
         bu.create(512);
 
         Iterator<BlobItem> blobs = cc.listBlobsByHierarchy(null).iterator();
-
-        then:
-//        assertResponseStatusCode(response, 200);
-//        headers.contentType() != null
-//        headers.requestId() != null
-//        headers.getVersion() != null
-//        headers.date() != null
         assertEquals(name, blobs.next().getName());
         assertFalse(blobs.hasNext());
     }
@@ -1424,11 +1416,12 @@ public class ContainerApiTests extends BlobTestBase {
     @ParameterizedTest
     @MethodSource("listBlobsHierOptionsFailSupplier")
     public void listBlobsHierOptionsFail(boolean snapshots, int maxResults, Class<? extends Throwable> exceptionType) {
-        ListBlobsOptions options = new ListBlobsOptions().setDetails(new BlobListDetails()
-                .setRetrieveSnapshots(snapshots)).setMaxResultsPerPage(maxResults);
-
-        assertThrows(exceptionType, () ->
-            cc.listBlobsByHierarchy(null, options, null).iterator().hasNext());
+        assertThrows(exceptionType, () -> {
+            ListBlobsOptions options = new ListBlobsOptions()
+                .setDetails(new BlobListDetails().setRetrieveSnapshots(snapshots))
+                .setMaxResultsPerPage(maxResults);
+            cc.listBlobsByHierarchy(null, options, null).iterator().hasNext();
+        });
     }
 
     private static Stream<Arguments> listBlobsHierOptionsFailSupplier() {
@@ -1533,30 +1526,26 @@ public class ContainerApiTests extends BlobTestBase {
         }
 
         // expect: "listing operation will fetch all 10 blobs, despite page size being smaller than 10"
-        assertEquals(numBlobs, cc.listBlobs(new ListBlobsOptions().setMaxResultsPerPage(pageSize), null).stream().count());
+        assertEquals(numBlobs,
+            cc.listBlobs(new ListBlobsOptions().setMaxResultsPerPage(pageSize), null).stream().count());
     }
 
     @DisabledIf("com.azure.storage.blob.BlobTestBase#olderThan20191212ServiceVersion")
-    @Test
-    public void listBlobsHierRehydratePriority() {
-        List<RehydratePriority> rehydratePriorities =
-            Arrays.asList(null, RehydratePriority.STANDARD, RehydratePriority.HIGH);
+    @ParameterizedTest
+    @MethodSource("listBlobsFlatRehydratePrioritySupplier")
+    public void listBlobsHierRehydratePriority(RehydratePriority rehydratePriority) {
+        String name = generateBlobName();
+        BlockBlobClient bc = cc.getBlobClient(name).getBlockBlobClient();
+        bc.upload(DATA.getDefaultInputStream(), 7);
 
-        for (RehydratePriority rehydratePriority : rehydratePriorities) {
-            String name = generateBlobName();
-            BlockBlobClient bc = cc.getBlobClient(name).getBlockBlobClient();
-            bc.upload(DATA.getDefaultInputStream(), 7);
-
-            if (rehydratePriority != null) {
-                bc.setAccessTier(AccessTier.ARCHIVE);
-                bc.setAccessTierWithResponse(new BlobSetAccessTierOptions(AccessTier.HOT)
-                    .setPriority(rehydratePriority), null, null);
-            }
-
-            BlobItem item = cc.listBlobsByHierarchy(null).iterator().next();
-
-            assertEquals(rehydratePriority, item.getProperties().getRehydratePriority());
+        if (rehydratePriority != null) {
+            bc.setAccessTier(AccessTier.ARCHIVE);
+            bc.setAccessTierWithResponse(new BlobSetAccessTierOptions(AccessTier.HOT)
+                .setPriority(rehydratePriority), null, null);
         }
+
+        BlobItem item = cc.listBlobsByHierarchy(null).iterator().next();
+        assertEquals(rehydratePriority, item.getProperties().getRehydratePriority());
     }
 
     @DisabledIf("com.azure.storage.blob.BlobTestBase#olderThan20191212ServiceVersion")
@@ -1594,7 +1583,7 @@ public class ContainerApiTests extends BlobTestBase {
         assertNull(blob.getProperties().getCacheControl());
         assertNull(blob.getProperties().getBlobSequenceNumber());
         assertTrue(blob.getProperties().isServerEncrypted());
-        assertTrue(blob.getProperties().isAccessTierInferred());
+        assertNull(blob.getProperties().isAccessTierInferred());
         assertNull(blob.getProperties().getAccessTier());
         assertNull(blob.getProperties().getArchiveStatus());
         assertNotNull(blob.getProperties().getCreationTime());
@@ -1629,11 +1618,9 @@ public class ContainerApiTests extends BlobTestBase {
         List<String> blobNames = Arrays.asList("foo", "bar", "baz", "foo/foo", "foo/bar", "baz/foo", "baz/foo/bar",
             "baz/bar/foo");
         byte[] data = getRandomByteArray(Constants.KB);
-        List<BlockBlobClient> blobs = new ArrayList<>();
 
         for (String blob : blobNames) {
             BlockBlobClient blockBlobClient = containerClient.getBlobClient(blob).getBlockBlobClient();
-            blobs.add(blockBlobClient);
             blockBlobClient.upload(new ByteArrayInputStream(data), Constants.KB);
         }
     }
@@ -1728,6 +1715,7 @@ public class ContainerApiTests extends BlobTestBase {
     }
 
     @DisabledIf("com.azure.storage.blob.BlobTestBase#olderThan20210410ServiceVersion")
+    @Test
     public void findBlobsMaxResults() {
         int numBlobs = 7;
         int pageResults = 3;
@@ -1788,7 +1776,13 @@ public class ContainerApiTests extends BlobTestBase {
     }
 
     @ParameterizedTest
-    @ValueSource(strings = {"中文", "az[]", "hello world", "hello/world", "hello&world", "!*'();:@&=+\\$,/?#[]"})
+    @ValueSource(strings = {"中文",
+        "az[]",
+        "hello world",
+        "hello/world",
+        "hello&world",
+        "!*'();:@&=+/$,/?#[]"
+    })
     public void createURLSpecialChars(String name) {
         // This test checks that we encode special characters in blob names correctly.
         AppendBlobClient bu2 = cc.getBlobClient(name).getAppendBlobClient();
@@ -1811,7 +1805,14 @@ public class ContainerApiTests extends BlobTestBase {
     }
 
     @ParameterizedTest
-    @ValueSource(strings = {"%E4%B8%AD%E6%96%87", "az%5B%5D", "hello%20world", "hello%2Fworld", "hello%26world", "%21%2A%27%28%29%3B%3A%40%26%3D%2B%24%2C%2F%3F%23%5B%5D"})
+    @ValueSource(strings = {
+        "%E4%B8%AD%E6%96%87",
+        "az%5B%5D",
+        "hello%20world",
+        "hello%2Fworld",
+        "hello%26world",
+        "%21%2A%27%28%29%3B%3A%40%26%3D%2B%24%2C%2F%3F%23%5B%5D"
+    })
         public void createURLSpecialCharsEncoded(String name) {
         // This test checks that we handle blob names with encoded special characters correctly.
         AppendBlobClient bu2 = cc.getBlobClient(name).getAppendBlobClient();
@@ -1822,7 +1823,8 @@ public class ContainerApiTests extends BlobTestBase {
         assertResponseStatusCode(bu2.createWithResponse(null, null, null, null, null), 201);
         assertResponseStatusCode(bu5.getPropertiesWithResponse(null, null, null), 200);
         assertResponseStatusCode(bu3.createWithResponse(512, null, null, null, null, null, null), 201);
-        assertResponseStatusCode(bu4.uploadWithResponse(DATA.getDefaultInputStream(), DATA.getDefaultDataSize(), null, null, null, null, null, null, null), 201);
+        assertResponseStatusCode(bu4.uploadWithResponse(DATA.getDefaultInputStream(), DATA.getDefaultDataSize(), null,
+            null, null, null, null, null, null), 201);
 
         Iterator<BlobItem> blobs = cc.listBlobs().iterator();
 

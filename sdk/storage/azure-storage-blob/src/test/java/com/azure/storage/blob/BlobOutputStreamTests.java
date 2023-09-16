@@ -125,7 +125,7 @@ public class BlobOutputStreamTests extends BlobTestBase {
 
     @ParameterizedTest
     @MethodSource("blockBlobOutputStreamErrorSupplier")
-    public void blockBlobOutputStreamError(Throwable exception, Exception exceptionClass) {
+    public void blockBlobOutputStreamError(Exception exception, Class<?> expectedExceptionClass) {
         StorageSharedKeyCredential credentials = new StorageSharedKeyCredential("accountName", "accountKey");
         String endpoint = "https://account.blob.core.windows.net/";
         byte[] data = getRandomByteArray(10 * Constants.MB);
@@ -141,10 +141,11 @@ public class BlobOutputStreamTests extends BlobTestBase {
 
         BlobOutputStream outputStream = blockBlobClient.getBlobOutputStream(true);
         outputStream.write(data);
-        Exception e = assertThrows(Exception.class, outputStream::close);
+        Exception e = assertThrows(IOException.class, outputStream::close);
 
-        if (exceptionClass.getClass() != IOException.class) { /* IOExceptions are not wrapped. */
-            assertInstanceOf(exceptionClass.getClass(), e.getClass());
+        if (expectedExceptionClass != IOException.class) { /* IOExceptions are not wrapped. */
+            //assertEquals(exception, e);
+            assertInstanceOf(expectedExceptionClass, e.getCause());
         }
     }
 

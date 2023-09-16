@@ -15,6 +15,7 @@ import com.azure.core.http.HttpPipelineNextPolicy;
 import com.azure.core.http.HttpPipelinePosition;
 import com.azure.core.http.HttpRequest;
 import com.azure.core.http.HttpResponse;
+import com.azure.core.http.ProxyOptions;
 import com.azure.core.http.netty.NettyAsyncHttpClientBuilder;
 import com.azure.core.http.okhttp.OkHttpAsyncHttpClientBuilder;
 import com.azure.core.http.policy.HttpPipelinePolicy;
@@ -26,6 +27,7 @@ import com.azure.core.test.models.TestProxySanitizer;
 import com.azure.core.test.models.TestProxySanitizerType;
 import com.azure.core.util.CoreUtils;
 import com.azure.core.util.FluxUtil;
+import com.azure.core.util.HttpClientOptions;
 import com.azure.core.util.ServiceVersion;
 import com.azure.core.util.logging.ClientLogger;
 import com.azure.identity.EnvironmentCredentialBuilder;
@@ -51,6 +53,7 @@ import com.azure.storage.common.test.shared.TestDataFactory;
 import com.azure.storage.common.test.shared.TestEnvironment;
 import okhttp3.ConnectionPool;
 import org.junit.jupiter.api.BeforeAll;
+import org.junit.jupiter.params.provider.Arguments;
 import reactor.core.publisher.Flux;
 import reactor.core.publisher.Mono;
 import spock.util.environment.OperatingSystem;
@@ -59,7 +62,9 @@ import java.io.File;
 import java.io.FileInputStream;
 import java.io.FileOutputStream;
 import java.io.IOException;
+import java.io.UncheckedIOException;
 import java.lang.reflect.Method;
+import java.net.InetSocketAddress;
 import java.net.MalformedURLException;
 import java.net.URL;
 import java.nio.ByteBuffer;
@@ -76,6 +81,7 @@ import java.util.Random;
 import java.util.UUID;
 import java.util.concurrent.ConcurrentHashMap;
 import java.util.concurrent.TimeUnit;
+import java.util.stream.Stream;
 import java.util.zip.CRC32;
 
 import static org.junit.jupiter.api.Assertions.assertArrayEquals;
@@ -116,6 +122,7 @@ public class BlobTestBase extends TestProxyTestBase {
     protected static final HttpHeaderName X_MS_CONTENT_CRC64 = HttpHeaderName.fromString("x-ms-content-crc64");
     protected static final HttpHeaderName X_MS_REQUEST_SERVER_ENCRYPTED =
         HttpHeaderName.fromString("x-ms-request-server-encrypted");
+    protected static final HttpHeaderName X_MS_SERVER_ENCRYPTED = HttpHeaderName.fromString("x-ms-server-encrypted");
     protected static final HttpHeaderName X_MS_ENCRYPTION_KEY_SHA256 =
         HttpHeaderName.fromString("x-ms-encryption-key-sha256");
     protected static final HttpHeaderName X_MS_BLOB_CONTENT_LENGTH =
@@ -185,7 +192,7 @@ public class BlobTestBase extends TestProxyTestBase {
         primaryBlobServiceClient = getServiceClient(ENVIRONMENT.getPrimaryAccount());
         primaryBlobServiceAsyncClient = getServiceAsyncClient(ENVIRONMENT.getPrimaryAccount());
         alternateBlobServiceClient = getServiceClient(ENVIRONMENT.getSecondaryAccount());
-        premiumBlobServiceClient = getServiceClient(ENVIRONMENT.getPrimaryAccount());
+        premiumBlobServiceClient = getServiceClient(ENVIRONMENT.getPremiumAccount());
         versionedBlobServiceClient = getServiceClient(ENVIRONMENT.getVersionedAccount());
         softDeleteServiceClient = getServiceClient(ENVIRONMENT.getSoftDeleteAccount());
 
@@ -323,20 +330,29 @@ public class BlobTestBase extends TestProxyTestBase {
     We only allow int because anything larger than 2GB (which would require a long) is left to stress/perf.
      */
     protected File getRandomFile(int size) throws IOException {
-        File file = File.createTempFile(UUID.randomUUID().toString(), ".txt");
-        file.deleteOnExit();
-        FileOutputStream fos = new FileOutputStream(file);
+        try {
+            File file = File.createTempFile(UUID.randomUUID().toString(), ".txt");
+            file.deleteOnExit();
+            try (FileOutputStream fos = new FileOutputStream(file)) {
+                if (size > Constants.MB) {
+                    byte[] data = getRandomByteArray(Constants.MB);
+                    int mbChunks = size / Constants.MB;
+                    int remaining = size % Constants.MB;
+                    for (int i = 0; i < mbChunks; i++) {
+                        fos.write(data);
+                    }
 
-        if (size > Constants.MB) {
-            for (int i = 0; i < size / Constants.MB; i++) {
-                int dataSize = Math.min(Constants.MB, size - i * Constants.MB);
-                fos.write(getRandomByteArray(dataSize));
+                    if (remaining > 0) {
+                        fos.write(data, 0, remaining);
+                    }
+                } else {
+                    fos.write(getRandomByteArray(size));
+                }
+                return file;
             }
-        } else {
-            fos.write(getRandomByteArray(size));
+        } catch (IOException e) {
+            throw new UncheckedIOException(e);
         }
-        fos.close();
-        return file;
     }
 
     /**
@@ -507,7 +523,9 @@ public class BlobTestBase extends TestProxyTestBase {
 
     protected BlobServiceClient getServiceClient(StorageSharedKeyCredential credential, String endpoint,
         HttpPipelinePolicy... policies) {
-        return getServiceClientBuilder(credential, endpoint, policies).buildClient();
+        return getServiceClientBuilder(credential, endpoint, policies)
+            //.clientOptions(new HttpClientOptions().setProxyOptions(new ProxyOptions(ProxyOptions.Type.HTTP, new InetSocketAddress("localhost", 8888))))
+            .buildClient();
     }
 
     protected BlobServiceClient getServiceClient(String sasToken, String endpoint) {
@@ -524,7 +542,9 @@ public class BlobTestBase extends TestProxyTestBase {
             .endpoint(endpoint);
 
         for (HttpPipelinePolicy policy : policies) {
-            builder.addPolicy(policy);
+            if (policy != null) {
+                builder.addPolicy(policy);
+            }
         }
 
         instrument(builder);
@@ -830,7 +850,8 @@ public class BlobTestBase extends TestProxyTestBase {
             String key = request.getUrl().toString();
 
             // Make sure that failure happens once per url.
-            if (!failureTracker.get(key)) {
+            if (failureTracker.get(key) == null) {
+                failureTracker.put(key, false);
                 return httpPipelineNextPolicy.process();
             } else {
                 failureTracker.put(key, true);
@@ -872,7 +893,7 @@ public class BlobTestBase extends TestProxyTestBase {
         return new HttpPipelinePolicy() {
             @Override
             public Mono<HttpResponse> process(HttpPipelineCallContext context, HttpPipelineNextPolicy next) {
-                context.getHttpRequest().setHeader("x-ms-version", "2017-11-09");
+                context.getHttpRequest().setHeader(X_MS_VERSION, "2017-11-09");
                 return next.process();
             }
             @Override
@@ -894,6 +915,36 @@ public class BlobTestBase extends TestProxyTestBase {
     protected static <T> Response<T> assertResponseStatusCode(Response<T> response, int expectedStatusCode) {
         assertEquals(expectedStatusCode, response.getStatusCode());
         return response;
+    }
+
+    protected static Stream<Arguments> allConditionsSupplier() {
+        return Stream.of(Arguments.of(null, null, null, null, null, null),
+            Arguments.of(OLD_DATE, null, null, null, null, null),
+            Arguments.of(null, NEW_DATE, null, null, null, null),
+            Arguments.of(null, null, RECEIVED_ETAG, null, null, null),
+            Arguments.of(null, null, null, GARBAGE_ETAG, null, null),
+            Arguments.of(null, null, null, null, RECEIVED_LEASE_ID, null),
+            Arguments.of(null, null, null, null, null, "\"foo\" = 'bar'"));
+    }
+
+    protected static Stream<Arguments> allConditionsFailSupplier() {
+        return Stream.of(
+            Arguments.of(NEW_DATE, null, null, null, null, null),
+            Arguments.of(null, OLD_DATE, null, null, null, null),
+            Arguments.of(null, null, GARBAGE_ETAG, null, null, null),
+            Arguments.of(null, null, null, RECEIVED_ETAG, null, null),
+            Arguments.of(null, null, null, null, GARBAGE_LEASE_ID, null),
+            Arguments.of(null, null, null, null, null, "\"notfoo\" = 'notbar'"));
+    }
+
+    protected static Stream<Arguments> fileACFailSupplier() {
+        return Stream.of(
+            Arguments.of(NEW_DATE, null, null, null, null),
+            Arguments.of(null, OLD_DATE, null, null, null),
+            Arguments.of(null, null, GARBAGE_ETAG, null, null),
+            Arguments.of(null, null, null, RECEIVED_ETAG, null),
+            Arguments.of(null, null, null, null, GARBAGE_LEASE_ID)
+        );
     }
 
     protected static boolean olderThan20191212ServiceVersion() {

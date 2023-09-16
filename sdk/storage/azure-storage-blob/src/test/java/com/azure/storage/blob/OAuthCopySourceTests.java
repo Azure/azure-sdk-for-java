@@ -72,6 +72,7 @@ public class OAuthCopySourceTests extends BlobTestBase {
     }
 
     // RBAC replication lag
+    @Test
     public void blockBlobUploadFromURLSourceOauth() {
         liveTestScenarioWithRetry(() -> {
             String oauthHeader = getAuthToken();
@@ -82,6 +83,7 @@ public class OAuthCopySourceTests extends BlobTestBase {
         });
     }
 
+    @Test
     public void blockBlobUploadFromURLSourceOauthFail() {
         BlobClient sourceBlob = cc.getBlobClient(generateBlobName());
         sourceBlob.upload(DATA.getDefaultBinaryData());
@@ -94,6 +96,7 @@ public class OAuthCopySourceTests extends BlobTestBase {
     }
 
     // RBAC replication lag
+    @Test
     public void blockBlobStageBlockFromURLSourceOauth() {
         liveTestScenarioWithRetry(() -> {
             String oauthHeader = getAuthToken();
@@ -124,6 +127,7 @@ public class OAuthCopySourceTests extends BlobTestBase {
     }
 
     // RBAC replication lag
+    @Test
     public void uploadPagesFromURLSourceOauth() {
         liveTestScenarioWithRetry(() -> {
             PageRange pageRange = new PageRange().setStart(0).setEnd(PageBlobClient.PAGE_BYTES - 1);
@@ -138,6 +142,7 @@ public class OAuthCopySourceTests extends BlobTestBase {
         });
     }
 
+    @Test
     public void uploadPagesFromURLSourceOauthFail() {
         PageRange pageRange = new PageRange().setStart(0).setEnd(PageBlobClient.PAGE_BYTES - 1);
         String oauthHeader = "garbage";

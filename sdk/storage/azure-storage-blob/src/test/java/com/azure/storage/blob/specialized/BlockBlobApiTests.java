@@ -675,7 +675,7 @@ public class BlockBlobApiTests extends BlobTestBase {
 
     @DisabledIf("com.azure.storage.blob.BlobTestBase#olderThan20191212ServiceVersion")
     @ParameterizedTest
-    @MethodSource("commitBlockListACSupplier")
+    @MethodSource("com.azure.storage.blob.BlobTestBase#allConditionsSupplier")
     public void commitBlockListAC(OffsetDateTime modified, OffsetDateTime unmodified, String match, String noneMatch,
         String leaseID, String tags) {
         Map<String, String> t = new HashMap<>();
@@ -695,19 +695,9 @@ public class BlockBlobApiTests extends BlobTestBase {
             null, null, bac, null, null), 201);
     }
 
-    private static Stream<Arguments> commitBlockListACSupplier() {
-        return Stream.of(Arguments.of(null, null, null, null, null, null),
-            Arguments.of(OLD_DATE, null, null, null, null, null),
-            Arguments.of(null, NEW_DATE, null, null, null, null),
-            Arguments.of(null, null, RECEIVED_ETAG, null, null, null),
-            Arguments.of(null, null, null, GARBAGE_ETAG, null, null),
-            Arguments.of(null, null, null, null, RECEIVED_LEASE_ID, null),
-            Arguments.of(null, null, null, null, null, "\"foo\" = 'bar'"));
-    }
-
     @DisabledIf("com.azure.storage.blob.BlobTestBase#olderThan20191212ServiceVersion")
     @ParameterizedTest
-    @MethodSource("commitBlockListACFailSupplier")
+    @MethodSource("com.azure.storage.blob.BlobTestBase#allConditionsSupplier")
     public void commitBlockListACFail(OffsetDateTime modified, OffsetDateTime unmodified, String match,
         String noneMatch, String leaseID, String tags) {
         noneMatch = setupBlobMatchCondition(blockBlobClient, noneMatch);
@@ -724,16 +714,6 @@ public class BlockBlobApiTests extends BlobTestBase {
             () -> blockBlobClient.commitBlockListWithResponse(null, null, null, null, bac, null, null));
         assertTrue(e.getErrorCode() == BlobErrorCode.CONDITION_NOT_MET ||
             e.getErrorCode() == BlobErrorCode.LEASE_ID_MISMATCH_WITH_BLOB_OPERATION);
-    }
-
-    private static Stream<Arguments> commitBlockListACFailSupplier() {
-        return Stream.of(
-            Arguments.of(NEW_DATE, null, null, null, null, null),
-            Arguments.of(null, OLD_DATE, null, null, null, null),
-            Arguments.of(null, null, GARBAGE_ETAG, null, null, null),
-            Arguments.of(null, null, null, RECEIVED_ETAG, null, null),
-            Arguments.of(null, null, null, null, GARBAGE_LEASE_ID, null),
-            Arguments.of(null, null, null, null, null, "\"notfoo\" = 'notbar'"));
     }
 
     @Test
@@ -1346,7 +1326,7 @@ public class BlockBlobApiTests extends BlobTestBase {
 
     @DisabledIf("com.azure.storage.blob.BlobTestBase#olderThan20191212ServiceVersion")
     @ParameterizedTest
-    @MethodSource("commitBlockListACSupplier")
+    @MethodSource("com.azure.storage.blob.BlobTestBase#allConditionsSupplier")
     public void uploadAC(OffsetDateTime modified, OffsetDateTime unmodified, String match, String noneMatch,
         String leaseID, String tags) {
         Map<String, String> t = new HashMap<>();
@@ -1368,7 +1348,7 @@ public class BlockBlobApiTests extends BlobTestBase {
 
     @DisabledIf("com.azure.storage.blob.BlobTestBase#olderThan20191212ServiceVersion")
     @ParameterizedTest
-    @MethodSource("commitBlockListACFailSupplier")
+    @MethodSource("com.azure.storage.blob.BlobTestBase#allConditionsSupplier")
     public void uploadACFail(OffsetDateTime modified, OffsetDateTime unmodified, String match, String noneMatch,
         String leaseID, String tags) {
         noneMatch = setupBlobMatchCondition(blockBlobClient, noneMatch);
@@ -2065,7 +2045,7 @@ public class BlockBlobApiTests extends BlobTestBase {
     // Only run these tests in live mode as they use variables that can't be captured.
     @EnabledIf("com.azure.storage.blob.BlobTestBase#isLiveMode")
     @ParameterizedTest
-    @MethodSource("bufferedUploadACFailSupplier")
+    @MethodSource("com.azure.storage.blob.BlobTestBase#fileACFailSupplier")
     public void bufferedUploadACFail(OffsetDateTime modified, OffsetDateTime unmodified, String match, String noneMatch,
         String leaseID) {
         blockBlobAsyncClient.upload(DATA.getDefaultFlux(), DATA.getDefaultDataSize(), true).block();
@@ -2087,14 +2067,6 @@ public class BlockBlobApiTests extends BlobTestBase {
                 assertTrue(storageException.getErrorCode() == BlobErrorCode.CONDITION_NOT_MET ||
                     storageException.getErrorCode() == BlobErrorCode.LEASE_ID_MISMATCH_WITH_BLOB_OPERATION);
             });
-    }
-
-    private static Stream<Arguments> bufferedUploadACFailSupplier() {
-        return Stream.of(Arguments.of(NEW_DATE, null, null, null, null),
-            Arguments.of(null, OLD_DATE, null, null, null),
-            Arguments.of(null, null, GARBAGE_ETAG, null, null),
-            Arguments.of(null, null, null, RECEIVED_ETAG, null),
-            Arguments.of(null, null, null, null, GARBAGE_LEASE_ID));
     }
 
     // UploadBufferPool used to lock when the number of failed stageblocks exceeded the maximum number of buffers
@@ -2308,7 +2280,7 @@ public class BlockBlobApiTests extends BlobTestBase {
         assertThrows(IllegalArgumentException.class, () -> builder.buildBlockBlobClient());
     }
 
-    @EnabledIf("com.azure.storage.blob.BlobTestBase#isServiceVersionPresent")
+    @DisabledIf("com.azure.storage.blob.BlobTestBase#isServiceVersionPresent")
     // This tests the policy is in the right place because if it were added per retry, it would be after the credentials
     // and auth would fail because we changed a signed header.
     public void perCallPolicy() {

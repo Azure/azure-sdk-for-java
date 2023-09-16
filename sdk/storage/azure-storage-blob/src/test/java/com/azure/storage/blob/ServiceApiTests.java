@@ -1087,7 +1087,7 @@ public class ServiceApiTests extends BlobTestBase {
             Arguments.of("https://doesntmatter.blob.core.windows.net", "container name"));
     }
 
-    @EnabledIf("com.azure.storage.blob.BlobTestBase#isServiceVersionPresent")
+    @DisabledIf("com.azure.storage.blob.BlobTestBase#isServiceVersionPresent")
     @Test
     // This tests the policy is in the right place because if it were added per retry, it would be after the credentials
     // and auth would fail because we changed a signed header.

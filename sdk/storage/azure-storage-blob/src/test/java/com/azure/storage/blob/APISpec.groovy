@@ -10,11 +10,13 @@ import com.azure.core.http.HttpPipelineNextPolicy
 import com.azure.core.http.HttpPipelinePosition
 import com.azure.core.http.HttpRequest
 import com.azure.core.http.HttpResponse
+import com.azure.core.http.ProxyOptions
 import com.azure.core.http.policy.HttpPipelinePolicy
 import com.azure.core.http.rest.Response
 import com.azure.core.test.TestMode
 import com.azure.core.util.CoreUtils
 import com.azure.core.util.FluxUtil
+import com.azure.core.util.HttpClientOptions
 import com.azure.identity.EnvironmentCredentialBuilder
 import com.azure.storage.blob.models.BlobErrorCode
 import com.azure.storage.blob.models.BlobProperties
@@ -167,7 +169,9 @@ class APISpec extends StorageSpec {
 
     BlobServiceClient getServiceClient(StorageSharedKeyCredential credential, String endpoint,
         HttpPipelinePolicy... policies) {
-        return getServiceClientBuilder(credential, endpoint, policies).buildClient()
+        return getServiceClientBuilder(credential, endpoint, policies)
+            //.clientOptions(new HttpClientOptions().setProxyOptions(new ProxyOptions(ProxyOptions.Type.HTTP, new InetSocketAddress("localhost", 8888))))
+            .buildClient()
     }
 
     BlobServiceClient getServiceClient(String sasToken, String endpoint) {

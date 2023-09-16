@@ -280,21 +280,19 @@ public class RetryTests extends BlobTestBase {
     @MethodSource("retriesOptionsInvalidSupplier")
     public void retriesOptionsInvalid(Integer maxTries, Integer tryTimeout, Long retryDelayInMs,
         Long maxRetryDelayInMs) {
-        retryScenario(() -> {
-            assertThrows(IllegalArgumentException.class, () ->
-                new RequestRetryOptions(null, maxTries, tryTimeout, retryDelayInMs, maxRetryDelayInMs, null));
-        });
+        retryScenario(() -> assertThrows(IllegalArgumentException.class, () ->
+            new RequestRetryOptions(null, maxTries, tryTimeout, retryDelayInMs, maxRetryDelayInMs, null)));
     }
 
     private static Stream<Arguments> retriesOptionsInvalidSupplier() {
         return Stream.of(
             Arguments.of(0, null, null, null),
             Arguments.of(null, 0, null, null),
-            Arguments.of(null, null, 0, 1),
-            Arguments.of(null, null, 1, 0),
-            Arguments.of(null, null, null, 1),
-            Arguments.of(null, null, 1, null),
-            Arguments.of(null, null, 5, 4)
+            Arguments.of(null, null, 0L, 1L),
+            Arguments.of(null, null, 1L, 0L),
+            Arguments.of(null, null, null, 1L),
+            Arguments.of(null, null, 1L, null),
+            Arguments.of(null, null, 5L, 4L)
         );
     }
 

@@ -193,18 +193,24 @@ public class BlobServiceSasModelsTests extends BlobTestBase {
     @ParameterizedTest
     @MethodSource("ensureStateResourceAndPermissionSupplier")
     public void ensureStateResourceAndPermission(String container, String blob, String snapshot, String versionId,
-        BlobSasPermission permission, String resource, String permissionString) {
+        BlobContainerSasPermission blobContainerSasPermission, BlobSasPermission blobSasPermission, String resource,
+        String permissionString) {
         OffsetDateTime expiryTime = OffsetDateTime.now().plusDays(1);
 
-        BlobSasImplUtil implUtil = new BlobSasImplUtil(new BlobServiceSasSignatureValues(expiryTime, permission),
-            container, blob, snapshot, versionId, null);
-        assertDoesNotThrow(() -> implUtil.generateSas(ENVIRONMENT.getPrimaryAccount().getCredential(), Context.NONE));
+        BlobServiceSasSignatureValues values = blobContainerSasPermission != null
+            ? new BlobServiceSasSignatureValues(expiryTime, blobContainerSasPermission) :
+            new BlobServiceSasSignatureValues(expiryTime, blobSasPermission);
+
+        BlobSasImplUtil implUtil = new BlobSasImplUtil(values, container, blob, snapshot, versionId, null);
+        implUtil.ensureState();
+        assertEquals(resource, implUtil.getResource());
+        assertEquals(permissionString, implUtil.getPermissions());
     }
 
     private static Stream<Arguments> ensureStateResourceAndPermissionSupplier() {
-        return Stream.of(Arguments.of("container", null, null, null, new BlobContainerSasPermission().setReadPermission(true).setListPermission(true), "c", "rl"),
-            Arguments.of("container", "blob", null, null, new BlobSasPermission().setReadPermission(true), "b", "r"),
-            Arguments.of("container", "blob", "snapshot", null, new BlobSasPermission().setReadPermission(true), "bs", "r"),
-            Arguments.of("container", "blob", null, "version", new BlobSasPermission().setReadPermission(true), "bv", "r"));
+        return Stream.of(Arguments.of("container", null, null, null, new BlobContainerSasPermission().setReadPermission(true).setListPermission(true), null, "c", "rl"),
+            Arguments.of("container", "blob", null, null, null, new BlobSasPermission().setReadPermission(true), "b", "r"),
+            Arguments.of("container", "blob", "snapshot", null, null, new BlobSasPermission().setReadPermission(true), "bs", "r"),
+            Arguments.of("container", "blob", null, "version", null, new BlobSasPermission().setReadPermission(true), "bv", "r"));
     }
 }

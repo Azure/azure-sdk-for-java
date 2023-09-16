@@ -28,7 +28,7 @@ public class AzuriteTests extends BlobTestBase {
         "https://azure-storage-emulator-azurite:10000/devstoreaccount1"};
 
     /*
-     * The credential information for Azurite is static and documented in numerous locations, therefore it is okay to
+     The credential information for Azurite is static and documented in numerous locations, therefore it is okay to
      have this "secret" written into public code.
      */
     private static final StorageSharedKeyCredential AZURITE_CREDENTIAL = new StorageSharedKeyCredential(

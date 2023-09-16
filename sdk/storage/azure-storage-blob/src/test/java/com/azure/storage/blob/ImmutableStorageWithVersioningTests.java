@@ -4,6 +4,7 @@
 package com.azure.storage.blob;
 
 import com.azure.core.credential.TokenCredential;
+import com.azure.core.http.HttpClient;
 import com.azure.core.http.HttpHeaders;
 import com.azure.core.http.HttpMethod;
 import com.azure.core.http.HttpPipeline;
@@ -54,6 +55,7 @@ import com.azure.storage.common.sas.AccountSasSignatureValues;
 import com.fasterxml.jackson.core.JsonProcessingException;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import org.junit.jupiter.api.AfterAll;
+import org.junit.jupiter.api.AfterEach;
 import org.junit.jupiter.api.BeforeAll;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
@@ -99,7 +101,6 @@ public class ImmutableStorageWithVersioningTests extends BlobTestBase {
     private BlobContainerClient vlwContainer;
     private BlobClient vlwBlob;
 
-    @BeforeAll
     public void setupSpec() throws MalformedURLException, JsonProcessingException {
         if (ENVIRONMENT.getTestMode() != TestMode.PLAYBACK) {
             vlwContainerName = UUID.randomUUID().toString();
@@ -139,7 +140,9 @@ public class ImmutableStorageWithVersioningTests extends BlobTestBase {
     }
 
     @BeforeEach
-    public void setup() {
+    public void setup() throws MalformedURLException, JsonProcessingException {
+        setupSpec();
+
         vlwContainer = versionedBlobServiceClient.getBlobContainerClient(
             testResourceNamer.recordValueFromConfig(vlwContainerName));
         vlwBlob = vlwContainer.getBlobClient(generateBlobName());
@@ -160,8 +163,8 @@ public class ImmutableStorageWithVersioningTests extends BlobTestBase {
         public boolean enabled;
     }
 
-    @AfterAll
-    public void cleanupSpec() throws MalformedURLException {
+    @AfterEach
+    public void cleanup() throws MalformedURLException {
         if (ENVIRONMENT.getTestMode() != TestMode.PLAYBACK) {
             HttpPipeline httpPipeline = new HttpPipelineBuilder()
                 .policies(CREDENTIAL_POLICY)
@@ -541,31 +544,29 @@ public class ImmutableStorageWithVersioningTests extends BlobTestBase {
     @DisabledIf("com.azure.storage.blob.BlobTestBase#olderThan20201002ServiceVersion")
     @EnabledIf("com.azure.storage.blob.BlobTestBase#isLiveMode")
     @ParameterizedTest
-    public void blobUpload() {
-        List<Long> blockSizes = Arrays.asList(
-            null, // Tests single shot upload
-            1L // Tests multi-part upload
-        );
+    @MethodSource("blobUploadSupplier")
+    public void blobUpload(Long blockSize) {
+        OffsetDateTime expiryTime = testResourceNamer.now().plusDays(2);
+        // The service rounds Immutability Policy Expiry to the nearest second.
+        OffsetDateTime expectedImmutabilityPolicyExpiry = expiryTime.truncatedTo(ChronoUnit.SECONDS);
+        BlobImmutabilityPolicy immutabilityPolicy = new BlobImmutabilityPolicy()
+            .setExpiryTime(expiryTime)
+            .setPolicyMode(BlobImmutabilityPolicyMode.UNLOCKED);
 
-        for (Long blockSize : blockSizes) {
-            OffsetDateTime expiryTime = testResourceNamer.now().plusDays(2);
-            // The service rounds Immutability Policy Expiry to the nearest second.
-            OffsetDateTime expectedImmutabilityPolicyExpiry = expiryTime.truncatedTo(ChronoUnit.SECONDS);
-            BlobImmutabilityPolicy immutabilityPolicy = new BlobImmutabilityPolicy()
-                .setExpiryTime(expiryTime)
-                .setPolicyMode(BlobImmutabilityPolicyMode.UNLOCKED);
+        vlwBlob.uploadWithResponse(new BlobParallelUploadOptions(DATA.getDefaultFlux())
+            .setParallelTransferOptions(new ParallelTransferOptions().setBlockSizeLong(blockSize)
+                .setMaxSingleUploadSizeLong(blockSize))
+            .setImmutabilityPolicy(immutabilityPolicy)
+            .setLegalHold(true), null, null);
 
-            vlwBlob.uploadWithResponse(new BlobParallelUploadOptions(DATA.getDefaultFlux())
-                .setParallelTransferOptions(new ParallelTransferOptions().setBlockSizeLong(blockSize)
-                    .setMaxSingleUploadSizeLong(blockSize))
-                .setImmutabilityPolicy(immutabilityPolicy)
-                .setLegalHold(true), null, null);
+        BlobProperties response = vlwBlob.getProperties();
+        assertEquals(expectedImmutabilityPolicyExpiry, response.getImmutabilityPolicy().getExpiryTime());
+        assertEquals(BlobImmutabilityPolicyMode.UNLOCKED, response.getImmutabilityPolicy().getPolicyMode());
+        assertTrue(response.hasLegalHold());
+    }
 
-            BlobProperties response = vlwBlob.getProperties();
-            assertEquals(expectedImmutabilityPolicyExpiry, response.getImmutabilityPolicy().getExpiryTime());
-            assertEquals(BlobImmutabilityPolicyMode.UNLOCKED, response.getImmutabilityPolicy().getPolicyMode());
-            assertTrue(response.hasLegalHold());
-        }
+    private static Stream<Arguments> blobUploadSupplier() {
+        return Stream.of(Arguments.of(1L), Arguments.of((Long) null));
     }
 
     @DisabledIf("com.azure.storage.blob.BlobTestBase#olderThan20201002ServiceVersion")

@@ -408,7 +408,6 @@ public class BuilderHelperTests {
         BlockBlobClient blockBlobClient = specializedBlobClientBuilder
             .buildBlockBlobClient();
 
-        then:
         StepVerifier.create(blockBlobClient.getHttpPipeline().send(request(blockBlobClient.getBlobUrl())))
             .assertNext(it -> assertEquals(200, it.getStatusCode()))
             .verifyComplete();

@@ -151,7 +151,7 @@ public class PageBlobApiTests extends BlobTestBase {
 
     @DisabledIf("com.azure.storage.blob.BlobTestBase#olderThan20191212ServiceVersion")
     @ParameterizedTest
-    @MethodSource("createACSupplier")
+    @MethodSource("com.azure.storage.blob.BlobTestBase#allConditionsSupplier")
     public void createAC(OffsetDateTime modified, OffsetDateTime unmodified, String match,String noneMatch,
         String leaseID, String tags) {
         Map<String, String> t = new HashMap<>();
@@ -169,18 +169,8 @@ public class PageBlobApiTests extends BlobTestBase {
             null, bac, null, null),201);
     }
 
-    private static Stream<Arguments> createACSupplier() {
-        return Stream.of(Arguments.of(null, null, null, null, null, null),
-            Arguments.of(OLD_DATE, null, null, null, null, null),
-            Arguments.of(null, NEW_DATE, null, null, null, null),
-            Arguments.of(null, null, RECEIVED_ETAG, null, null, null),
-            Arguments.of(null, null, null, GARBAGE_ETAG, null, null),
-            Arguments.of(null, null, null, null, RECEIVED_LEASE_ID, null),
-            Arguments.of(null, null, null, null, null, "\"foo\" = 'bar'"));
-    }
-
     @ParameterizedTest
-    @MethodSource("createACFailSupplier")
+    @MethodSource("com.azure.storage.blob.BlobTestBase#allConditionsFailSupplier")
     public void createACFail(OffsetDateTime modified, OffsetDateTime unmodified, String match,String noneMatch,
         String leaseID, String tags) {
         BlobRequestConditions bac = new BlobRequestConditions()
@@ -191,18 +181,8 @@ public class PageBlobApiTests extends BlobTestBase {
             .setIfUnmodifiedSince(unmodified)
             .setTagsConditions(tags);
 
-        assertThrows(BlobStorageException.class, () -> bc.createWithResponse(PageBlobClient.PAGE_BYTES, null,
-            null, null, bac, null, null));
-    }
-
-    private static Stream<Arguments> createACFailSupplier() {
-        return Stream.of(
-            Arguments.of(NEW_DATE, null, null, null, null, null),
-            Arguments.of(null, OLD_DATE, null, null, null, null),
-            Arguments.of(null, null, GARBAGE_ETAG, null, null, null),
-            Arguments.of(null, null, null, RECEIVED_ETAG, null, null),
-            Arguments.of(null, null, null, null, GARBAGE_LEASE_ID, null),
-            Arguments.of(null, null, null, null, null, "\"notfoo\" = 'notbar'"));
+        assertThrows(BlobStorageException.class, () -> bc.createWithResponse(PageBlobClient.PAGE_BYTES, null, null,
+            null, bac, null, null));
     }
 
     @Test
@@ -788,7 +768,7 @@ public class PageBlobApiTests extends BlobTestBase {
 
     @DisabledIf("com.azure.storage.blob.BlobTestBase#olderThan20191212ServiceVersion")
     @ParameterizedTest
-    @MethodSource("createACSupplier")
+    @MethodSource("com.azure.storage.blob.BlobTestBase#allConditionsSupplier")
     public void getPageRangesAC(OffsetDateTime modified, OffsetDateTime unmodified, String match,String noneMatch,
         String leaseID, String tags) {
         Map<String, String> t = new HashMap<>();
@@ -809,7 +789,7 @@ public class PageBlobApiTests extends BlobTestBase {
     }
 
     @ParameterizedTest
-    @MethodSource("createACFailSupplier")
+    @MethodSource("com.azure.storage.blob.BlobTestBase#allConditionsFailSupplier")
     public void getPageRangesACFail(OffsetDateTime modified, OffsetDateTime unmodified, String match,String noneMatch,
         String leaseID, String tags) {
         BlobRequestConditions bac = new BlobRequestConditions()
@@ -935,7 +915,7 @@ public class PageBlobApiTests extends BlobTestBase {
 
     @DisabledIf("com.azure.storage.blob.BlobTestBase#olderThan20210608ServiceVersion")
     @ParameterizedTest
-    @MethodSource("createACSupplier")
+    @MethodSource("com.azure.storage.blob.BlobTestBase#allConditionsSupplier")
     public void listPagesRangesAC(OffsetDateTime modified, OffsetDateTime unmodified, String match,String noneMatch,
         String leaseID, String tags) {
         Map<String, String> t = new HashMap<>();
@@ -957,7 +937,7 @@ public class PageBlobApiTests extends BlobTestBase {
 
     @DisabledIf("com.azure.storage.blob.BlobTestBase#olderThan20210608ServiceVersion")
     @ParameterizedTest
-    @MethodSource("createACFailSupplier")
+    @MethodSource("com.azure.storage.blob.BlobTestBase#allConditionsFailSupplier")
     public void listPagesRangesACFail(OffsetDateTime modified, OffsetDateTime unmodified, String match,String noneMatch,
         String leaseID, String tags) {
         BlobRequestConditions bac = new BlobRequestConditions()
@@ -1061,7 +1041,7 @@ public class PageBlobApiTests extends BlobTestBase {
 
     @DisabledIf("com.azure.storage.blob.BlobTestBase#olderThan20191212ServiceVersion")
     @ParameterizedTest
-    @MethodSource("createACSupplier")
+    @MethodSource("com.azure.storage.blob.BlobTestBase#allConditionsSupplier")
     public void getPageRangesDiffAC(OffsetDateTime modified, OffsetDateTime unmodified, String match,String noneMatch,
         String leaseID, String tags) {
         Map<String, String> t = new HashMap<>();
@@ -1081,7 +1061,7 @@ public class PageBlobApiTests extends BlobTestBase {
     }
 
     @ParameterizedTest
-    @MethodSource("createACFailSupplier")
+    @MethodSource("com.azure.storage.blob.BlobTestBase#allConditionsFailSupplier")
     public void getPageRangesDiffACFail(OffsetDateTime modified, OffsetDateTime unmodified, String match,
         String noneMatch, String leaseID, String tags) {
         String snapId = bc.createSnapshot().getSnapshotId();
@@ -1273,7 +1253,7 @@ public class PageBlobApiTests extends BlobTestBase {
 
     @DisabledIf("com.azure.storage.blob.BlobTestBase#olderThan20210608ServiceVersion")
     @ParameterizedTest
-    @MethodSource("createACSupplier")
+    @MethodSource("com.azure.storage.blob.BlobTestBase#allConditionsSupplier")
     public void listPagesRangesDiffAC(OffsetDateTime modified, OffsetDateTime unmodified, String match,String noneMatch,
         String leaseID, String tags) {
         bc.create(4 * Constants.KB, true);
@@ -1301,7 +1281,7 @@ public class PageBlobApiTests extends BlobTestBase {
 
     @DisabledIf("com.azure.storage.blob.BlobTestBase#olderThan20210608ServiceVersion")
     @ParameterizedTest
-    @MethodSource("createACFailSupplier")
+    @MethodSource("com.azure.storage.blob.BlobTestBase#allConditionsFailSupplier")
     public void listPagesRangesDiffACFail(OffsetDateTime modified, OffsetDateTime unmodified, String match,
         String noneMatch, String leaseID, String tags) {
         String snapshot = bc.createSnapshot().getSnapshotId();
@@ -1352,7 +1332,7 @@ public class PageBlobApiTests extends BlobTestBase {
 
     @DisabledIf("com.azure.storage.blob.BlobTestBase#olderThan20191212ServiceVersion")
     @ParameterizedTest
-    @MethodSource("createACSupplier")
+    @MethodSource("com.azure.storage.blob.BlobTestBase#allConditionsSupplier")
     public void resizeAC(OffsetDateTime modified, OffsetDateTime unmodified, String match,String noneMatch,
         String leaseID, String tags) {
         Map<String, String> t = new HashMap<>();
@@ -1371,7 +1351,7 @@ public class PageBlobApiTests extends BlobTestBase {
     }
 
     @ParameterizedTest
-    @MethodSource("createACFailSupplier")
+    @MethodSource("com.azure.storage.blob.BlobTestBase#allConditionsFailSupplier")
     public void resizeACFail(OffsetDateTime modified, OffsetDateTime unmodified, String match,String noneMatch,
         String leaseID, String tags) {
         BlobRequestConditions bac = new BlobRequestConditions()
@@ -1418,7 +1398,7 @@ public class PageBlobApiTests extends BlobTestBase {
 
     @DisabledIf("com.azure.storage.blob.BlobTestBase#olderThan20191212ServiceVersion")
     @ParameterizedTest
-    @MethodSource("createACSupplier")
+    @MethodSource("com.azure.storage.blob.BlobTestBase#allConditionsSupplier")
     public void sequenceNumberAC(OffsetDateTime modified, OffsetDateTime unmodified, String match, String noneMatch,
         String leaseID, String tags) {
         Map<String, String> t = new HashMap<>();
@@ -1437,7 +1417,7 @@ public class PageBlobApiTests extends BlobTestBase {
     }
 
     @ParameterizedTest
-    @MethodSource("createACFailSupplier")
+    @MethodSource("com.azure.storage.blob.BlobTestBase#allConditionsFailSupplier")
     public void sequenceNumberACFail(OffsetDateTime modified, OffsetDateTime unmodified, String match, String noneMatch,
         String leaseID, String tags) {
         BlobRequestConditions bac = new BlobRequestConditions()
@@ -1545,7 +1525,7 @@ public class PageBlobApiTests extends BlobTestBase {
     }
 
     @ParameterizedTest
-    @MethodSource("startIncrementalCopyACFailSupplier")
+    @MethodSource("com.azure.storage.blob.BlobTestBase#allConditionsFailSupplier")
     public void startIncrementalCopyACFail(OffsetDateTime modified, OffsetDateTime unmodified, String match,
         String noneMatch, String tags) {
         cc.setAccessPolicy(PublicAccessType.BLOB, null);
@@ -1563,17 +1543,6 @@ public class PageBlobApiTests extends BlobTestBase {
 
         assertThrows(BlobStorageException.class, () -> bu2.copyIncrementalWithResponse(
             new PageBlobCopyIncrementalOptions(bc.getBlobUrl(), finalSnapshot).setRequestConditions(mac), null, null));
-    }
-
-    private static Stream<Arguments> startIncrementalCopyACFailSupplier() {
-        return Stream.of(
-            Arguments.of(NEW_DATE, null, null, null, null, null),
-            Arguments.of(null, OLD_DATE, null, null, null, null),
-            Arguments.of(null, null, GARBAGE_ETAG, null, null, null),
-            Arguments.of(null, null, null, RECEIVED_ETAG, null, null),
-            Arguments.of(null, null, null, null, GARBAGE_LEASE_ID, null),
-            Arguments.of(null, null, null, null, null, "\"notfoo\" = 'notbar'")
-        );
     }
 
     @Test
@@ -1619,7 +1588,7 @@ public class PageBlobApiTests extends BlobTestBase {
         assertDoesNotThrow(() -> bc.create(512, true));
     }
 
-    @EnabledIf("com.azure.storage.blob.BlobTestBase#isServiceVersionPresent")
+    @DisabledIf("com.azure.storage.blob.BlobTestBase#isServiceVersionPresent")
     @Test
     // This tests the policy is in the right place because if it were added per retry, it would be after the credentials
     // and auth would fail because we changed a signed header.

@@ -54,6 +54,8 @@
       --add-reads com.azure.core.amqp=ALL-UNNAMED
       --add-reads com.azure.storage.common=ALL-UNNAMED
       --add-reads com.azure.storage.internal.avro=ALL-UNNAMED
+      --add-reads com.azure.storage.blob=com.azure.http.netty
+      --add-reads com.azure.storage.blob=com.azure.core.http.okhttp
     </javaModulesSurefireArgLine>
     <graalvm.disable>false</graalvm.disable>
     <parallelizeLiveTests>true</parallelizeLiveTests>

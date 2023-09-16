@@ -43,10 +43,9 @@ public class LargeBlobTests extends BlobTestBase {
 
     private BlobClient blobClient;
     private BlobAsyncClient blobAsyncClient;
-    private String blobName;
 
     @BeforeAll
-    public void setupSpec() {
+    public static void setupSpec() {
         BlobServiceClientBuilder blobServiceClientBuilder = new BlobServiceClientBuilder()
             .connectionString("UseDevelopmentStorage=true");
         blobServiceClient = blobServiceClientBuilder.buildClient();
@@ -60,7 +59,7 @@ public class LargeBlobTests extends BlobTestBase {
         BlobContainerAsyncClient blobContainerAsyncClient =
             blobServiceAsyncClient.getBlobContainerAsyncClient(containerName);
         blobContainerClient.create();
-        blobName = UUID.randomUUID().toString();
+        String blobName = UUID.randomUUID().toString();
         blobClient = blobContainerClient.getBlobClient(blobName);
         blobAsyncClient = blobContainerAsyncClient.getBlobAsyncClient(blobName);
     }

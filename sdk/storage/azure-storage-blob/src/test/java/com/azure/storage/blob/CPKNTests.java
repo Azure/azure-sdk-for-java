@@ -20,8 +20,8 @@ import static org.junit.jupiter.api.Assertions.*;
 
 public class CPKNTests extends BlobTestBase {
 
-    private String scope1 = "testscope1";
-    private String scope2 = "testscope2";
+    private final String scope1 = "testscope1";
+    private final String scope2 = "testscope2";
     private String es;
     private BlobContainerEncryptionScope ces;
     private BlobContainerClientBuilder builder;
@@ -89,7 +89,7 @@ public class CPKNTests extends BlobTestBase {
     }
 
     @Test
-    public void containerListBlobshierarchical() {
+    public void containerListBlobsHierarchical() {
         BlobContainerClient cpkncesContainer = builder
             .blobContainerEncryptionScope(ces)
             .encryptionScope(null)
@@ -122,7 +122,6 @@ public class CPKNTests extends BlobTestBase {
         Response<AppendBlobItem> response = cpknAppendBlob.appendBlockWithResponse(DATA.getDefaultInputStream(),
             DATA.getDefaultDataSize(), null, null, null, null);
 
-        then:
         assertResponseStatusCode(response, 201);
         assertTrue(response.getValue().isServerEncrypted());
         assertEquals(scope1, response.getValue().getEncryptionScope());
@@ -159,6 +158,7 @@ public class CPKNTests extends BlobTestBase {
         assertEquals(scope1, response.getValue().getEncryptionScope());
     }
 
+    @Test
     public void pageBlobPutPage() {
         cpknPageBlob.create(PageBlobClient.PAGE_BYTES);
 
@@ -191,8 +191,7 @@ public class CPKNTests extends BlobTestBase {
             .encode();
 
         Response<PageBlobItem> response = cpknPageBlob.uploadPagesFromUrlWithResponse(
-            new PageRange().setStart(0).setEnd(PageBlobClient.PAGE_BYTES - 1),
-            sourceBlob.getBlobUrl() + "?" + sas,
+            new PageRange().setStart(0).setEnd(PageBlobClient.PAGE_BYTES - 1), sourceBlob.getBlobUrl() + "?" + sas,
             null, null, null, null, null, null);
 
         assertResponseStatusCode(response, 201);
@@ -220,8 +219,8 @@ public class CPKNTests extends BlobTestBase {
         cpknPageBlob.uploadPagesWithResponse(new PageRange().setStart(0).setEnd(PageBlobClient.PAGE_BYTES - 1),
             new ByteArrayInputStream(getRandomByteArray(PageBlobClient.PAGE_BYTES)), null, null, null, null);
 
-        Response<PageBlobItem> response = cpknPageBlob.clearPagesWithResponse(new PageRange().setStart(0).setEnd(PageBlobClient.PAGE_BYTES - 1),
-            null, null, null);
+        Response<PageBlobItem> response = cpknPageBlob.clearPagesWithResponse(new PageRange().setStart(0)
+                .setEnd(PageBlobClient.PAGE_BYTES - 1), null, null, null);
 
         assertResponseStatusCode(response, 201);
     }
@@ -229,8 +228,8 @@ public class CPKNTests extends BlobTestBase {
     @Test
     public void pageBlobResize() {
         cpknPageBlob.create(PageBlobClient.PAGE_BYTES * 2);
-        Response<PageBlobItem> response = cpknPageBlob.resizeWithResponse(PageBlobClient.PAGE_BYTES * 2,
-            null, null, null);
+        Response<PageBlobItem> response = cpknPageBlob.resizeWithResponse(PageBlobClient.PAGE_BYTES * 2, null, null,
+            null);
 
         assertResponseStatusCode(response, 200);
     }
@@ -263,8 +262,8 @@ public class CPKNTests extends BlobTestBase {
         cpknBlockBlob.stageBlock(blockID, DATA.getDefaultInputStream(), DATA.getDefaultDataSize());
         List<String> ids = Collections.singletonList(blockID);
 
-        Response<BlockBlobItem> response = cpknBlockBlob.commitBlockListWithResponse(ids, null, null,
-            null, null, null, null);
+        Response<BlockBlobItem> response = cpknBlockBlob.commitBlockListWithResponse(ids, null, null, null, null, null,
+            null);
 
         assertResponseStatusCode(response, 201);
         assertTrue(response.getValue().isServerEncrypted());

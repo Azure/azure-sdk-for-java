@@ -76,7 +76,8 @@ public class StorageBlockingSinkTests {
         blockingSink.asFlux()
             .index()
             .delayElements(Duration.ofMillis(DELAY_MS)) // This simulates the slower network bound IO
-            .doOnNext(tuple -> assertEquals(buffers[Math.toIntExact(tuple.getT1())], tuple.getT2())) // Check for data integrity
+            // Check for data integrity
+            .doOnNext(tuple -> assertEquals(buffers[Math.toIntExact(tuple.getT1())], tuple.getT2()))
             .subscribe();
 
         for (int i = 0; i < num; i++) {

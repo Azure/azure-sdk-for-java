@@ -129,9 +129,9 @@ public class BlockBlobInputOutputStreamTests extends BlobTestBase {
 
     private static Stream<Arguments> uploadDownloadBlockSizeSupplier() {
         return Stream.of(
-            Arguments.of(null, 2, Arrays.asList(4 * Constants.MB, 2 * Constants.MB)), // Default
-            Arguments.of(5 * Constants.MB, 2, Arrays.asList(5 * Constants.MB, Constants.MB)), // Greater than default
-            Arguments.of(3 * Constants.MB, 2, Arrays.asList(3 * Constants.MB, 3 * Constants.MB)) // Smaller than default
+            Arguments.of(null, 2, new int[]{4 * Constants.MB, 2 * Constants.MB}), // Default
+            Arguments.of(5 * Constants.MB, 2, new int[]{5 * Constants.MB, Constants.MB}), // Greater than default
+            Arguments.of(3 * Constants.MB, 2, new int[]{3 * Constants.MB, 3 * Constants.MB}) // Smaller than default
         );
     }
 
@@ -162,18 +162,18 @@ public class BlockBlobInputOutputStreamTests extends BlobTestBase {
     private static Stream<Arguments> blobRangeSupplier() {
         return Stream.of(
             Arguments.of(0, null), // full blob
-            Arguments.of(0, 100), // Small range
-            Arguments.of(0, 4 * Constants.MB), // block size
-            Arguments.of(0, 5 * Constants.MB), // Requires multiple chunks
-            Arguments.of(0, (Constants.KB) + 1), // Range not a multiple of 1024
-            Arguments.of(0, (Constants.KB) - 1), // ""
-            Arguments.of(5, 100), // small offset
+            Arguments.of(0, 100L), // Small range
+            Arguments.of(0, 4L * Constants.MB), // block size
+            Arguments.of(0, 5L * Constants.MB), // Requires multiple chunks
+            Arguments.of(0, (Constants.KB) + 1L), // Range not a multiple of 1024
+            Arguments.of(0, (Constants.KB) - 1L), // ""
+            Arguments.of(5, 100L), // small offset
             Arguments.of(5, null), // full blob after an offset
-            Arguments.of(Constants.MB, 2 * Constants.MB), // larger offset inside first chunk
-            Arguments.of(Constants.KB, 4 * Constants.MB), // offset with range spanning chunks
-            Arguments.of(5 * Constants.MB, Constants.KB), // Range entirely in second chunk
-            Arguments.of(5 * Constants.MB, (Constants.KB) + 1), // Range not multiple of 1024
-            Arguments.of(5 * Constants.MB, (Constants.KB) - 1), // ""
+            Arguments.of(Constants.MB, 2L * Constants.MB), // larger offset inside first chunk
+            Arguments.of(Constants.KB, 4L * Constants.MB), // offset with range spanning chunks
+            Arguments.of(5 * Constants.MB, (long) Constants.KB), // Range entirely in second chunk
+            Arguments.of(5 * Constants.MB, (Constants.KB) + 1L), // Range not multiple of 1024
+            Arguments.of(5 * Constants.MB, (Constants.KB) - 1L), // ""
             Arguments.of(5 * Constants.MB, null) // rest of blob after first chunk
             );
     }
@@ -186,7 +186,7 @@ public class BlockBlobInputOutputStreamTests extends BlobTestBase {
         byte[] randomBytes = getRandomByteArray(length);
 
         BlobOutputStream outStream = bc.getBlobOutputStream(true);
-        outStream.write(randomBytes, 1 * Constants.MB, 5 * Constants.MB);
+        outStream.write(randomBytes, Constants.MB, 5 * Constants.MB);
         outStream.close();
 
         BlobInputStream inputStream = bc.openInputStream();
@@ -319,7 +319,7 @@ public class BlockBlobInputOutputStreamTests extends BlobTestBase {
 
     @DisabledIf("com.azure.storage.blob.BlobTestBase#olderThan20191212ServiceVersion")
     @Test
-    public void inputStreamConsistentReadControletagUserProvidesVersionClientChoosesEtag() throws IOException {
+    public void inputStreamConsistentReadControlEtagUserProvidesVersionClientChoosesEtag() throws IOException {
         int length = Constants.KB;
         byte[] randomBytes = getRandomByteArray(length);
         BlobContainerClient blobContainerClient = versionedBlobServiceClient.createBlobContainer(containerName);
@@ -346,7 +346,7 @@ public class BlockBlobInputOutputStreamTests extends BlobTestBase {
 
     // Error case
     @Test
-    public void inputStreamConsistentReadControletagUserProvidesOldEtag() {
+    public void inputStreamConsistentReadControlEtagUserProvidesOldEtag() {
         int length = Constants.KB;
         byte[] randomBytes = getRandomByteArray(length);
         BlobContainerClient blobContainerClient = versionedBlobServiceClient.createBlobContainer(containerName);
@@ -369,6 +369,7 @@ public class BlockBlobInputOutputStreamTests extends BlobTestBase {
     }
 
     @DisabledIf("com.azure.storage.blob.BlobTestBase#olderThan20191212ServiceVersion")
+    @Test
     public void inputStreamConsistentReadControlVersionClientChoosesVersion() throws IOException {
         int length = Constants.KB;
         byte[] randomBytes = getRandomByteArray(length);
@@ -394,7 +395,7 @@ public class BlockBlobInputOutputStreamTests extends BlobTestBase {
 
     @DisabledIf("com.azure.storage.blob.BlobTestBase#olderThan20191212ServiceVersion")
     @Test
-    public void inputStreamConsistentReadControlversionUserProvidesVersion() throws IOException {
+    public void inputStreamConsistentReadControlVersionUserProvidesVersion() throws IOException {
         int length = Constants.KB;
         byte[] randomBytes = getRandomByteArray(length);
         BlobContainerClient blobContainerClient = versionedBlobServiceClient.createBlobContainer(containerName);
@@ -421,6 +422,7 @@ public class BlockBlobInputOutputStreamTests extends BlobTestBase {
     }
 
     @DisabledIf("com.azure.storage.blob.BlobTestBase#olderThan20191212ServiceVersion")
+    @Test
     public void inputStreamConsistentReadControlVersionUserProvidesVersionAndEtag() throws IOException {
         int length = Constants.KB;
         byte[] randomBytes = getRandomByteArray(length);
