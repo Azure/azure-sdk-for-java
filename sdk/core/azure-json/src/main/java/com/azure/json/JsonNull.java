@@ -11,11 +11,20 @@ public final class JsonNull extends JsonElement {
     private JsonNull() { }
 
     /**
-     * Returns the single instance of JsonNull.
-     * 
-     * @return JsonNull instance.
+     * Helper class to hold Singleton instance.
+     * - Thread-safe lazy-initialization of the JsonNull object without explicit 
+     * synchronization.
      */
-    public static final JsonNull INSTANCE = new JsonNull();
+    private static class LoadSingleton {
+        private static final JsonNull INSTANCE = new JsonNull();
+    }
+
+    /**
+     * Returns the single instance of the JsonNull class.
+     * 
+     * @return The JsonNull instance, representing the JsonNull Object.
+     */
+    public static JsonNull getInstance() { return LoadSingleton.INSTANCE; }
 
     /**
      * Stores the String representation of the current state of the JsonNull
@@ -23,13 +32,6 @@ public final class JsonNull extends JsonElement {
      * Always set to "null". Cannot be changed.
      */
     private final String nullValue = "null";
-
-    /**
-     * Returns the single instance of the JsonNull class.
-     * 
-     * @return The JsonNull instance, representing the JSON null value.
-     */
-    public static JsonNull getInstance() { return INSTANCE; }
 
     /**
      * Returns the String representation of the JsonNull object
