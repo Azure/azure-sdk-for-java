@@ -19,6 +19,7 @@ import com.azure.cosmos.implementation.HttpConstants;
 import com.azure.cosmos.implementation.TestConfigurations;
 import com.azure.cosmos.implementation.Utils;
 import com.azure.cosmos.implementation.throughputControl.TestItem;
+import com.azure.cosmos.models.CosmosItemRequestOptions;
 import com.azure.cosmos.models.CosmosItemResponse;
 import com.azure.cosmos.models.CosmosPatchItemRequestOptions;
 import com.azure.cosmos.models.CosmosPatchOperations;
@@ -208,6 +209,26 @@ public class ExcludeRegionWithFaultInjectionTests extends TestSuiteBase {
                             HttpConstants.StatusCodes.SERVICE_UNAVAILABLE,
                             HttpConstants.SubStatusCodes.SERVER_GENERATED_503,
                             this.chooseFirstRegion.apply(this.preferredRegions)
+                    ))
+                },
+                {
+                    "503/21008_firstRegion_beforeMutation_excludeFirstRegion_afterMutation_excludeNoRegions",
+                    new MutationTestConfig()
+                        .withChooseInitialExclusionRegions(this.chooseFirstRegion)
+                        .withChooseFaultInjectionRegions(this.chooseFirstRegion)
+                        .withFaultInjectionOperationType(FaultInjectionOperationType.READ_ITEM)
+                        .withFaultInjectionServerErrorType(FaultInjectionServerErrorType.SERVICE_UNAVAILABLE)
+                        .withDataPlaneOperationExecutor(readItemCallback)
+                        .withRegionExclusionMutator((regions) -> new ArrayList<>())
+                        .withExpectedResultBeforeMutation(new ExpectedResult(
+                            HttpConstants.StatusCodes.OK,
+                            HttpConstants.SubStatusCodes.UNKNOWN,
+                            this.chooseLastRegion.apply(this.preferredRegions)
+                        ))
+                        .withExpectedResultAfterMutation(new ExpectedResult(
+                            HttpConstants.StatusCodes.OK,
+                            HttpConstants.SubStatusCodes.UNKNOWN,
+                            this.chooseAllRegions.apply(this.preferredRegions)
                     ))
                 },
                 {
@@ -453,6 +474,26 @@ public class ExcludeRegionWithFaultInjectionTests extends TestSuiteBase {
                     ))
                 },
                 {
+                    "503/21008_firstRegion_beforeMutation_excludeFirstRegion_afterMutation_excludeNoRegions",
+                    new MutationTestConfig()
+                        .withChooseInitialExclusionRegions(this.chooseFirstRegion)
+                        .withChooseFaultInjectionRegions(this.chooseFirstRegion)
+                        .withFaultInjectionOperationType(FaultInjectionOperationType.QUERY_ITEM)
+                        .withFaultInjectionServerErrorType(FaultInjectionServerErrorType.SERVICE_UNAVAILABLE)
+                        .withDataPlaneOperationExecutor(queryItemCallback)
+                        .withRegionExclusionMutator((regions) -> new ArrayList<>())
+                        .withExpectedResultBeforeMutation(new ExpectedResult(
+                            HttpConstants.StatusCodes.OK,
+                            HttpConstants.SubStatusCodes.UNKNOWN,
+                            this.chooseLastRegion.apply(this.preferredRegions)
+                        ))
+                        .withExpectedResultAfterMutation(new ExpectedResult(
+                            HttpConstants.StatusCodes.OK,
+                            HttpConstants.SubStatusCodes.UNKNOWN,
+                            this.chooseAllRegions.apply(this.preferredRegions)
+                    ))
+                },
+                {
                     "500/0_allRegions_beforeMutation_excludeFirstRegion_afterMutation_excludeSecondRegion",
                     new MutationTestConfig()
                         .withChooseInitialExclusionRegions(this.chooseFirstRegion)
@@ -594,11 +635,14 @@ public class ExcludeRegionWithFaultInjectionTests extends TestSuiteBase {
 
                 try {
 
+                    CosmosItemRequestOptions itemRequestOptions = new CosmosItemRequestOptions();
+                    itemRequestOptions.setNonIdempotentWriteRetryPolicy(params.nonIdempotentWriteRetriesEnabled, true);
+
                     CosmosItemResponse<TestItem> response = params.cosmosAsyncContainer
                         .createItem(
                             new TestItem(newDocumentId, newDocumentId, newDocumentId),
                             new PartitionKey(newDocumentId),
-                            null)
+                            itemRequestOptions)
                         .block();
 
                     return new OperationExecutionResult<>(response);
@@ -622,13 +666,17 @@ public class ExcludeRegionWithFaultInjectionTests extends TestSuiteBase {
                 TestItem alreadyCreatedItem = params.createdItem;
                 alreadyCreatedItem.setProp(UUID.randomUUID().toString());
 
+                CosmosItemRequestOptions itemRequestOptions = new CosmosItemRequestOptions();
+                itemRequestOptions.setNonIdempotentWriteRetryPolicy(params.nonIdempotentWriteRetriesEnabled, true);
+
                 try {
 
                     CosmosItemResponse<TestItem> response = params.cosmosAsyncContainer
                         .replaceItem(
                            alreadyCreatedItem,
                            alreadyCreatedItem.getId(),
-                           new PartitionKey(alreadyCreatedItem.getId()))
+                           new PartitionKey(alreadyCreatedItem.getId()),
+                           itemRequestOptions)
                         .block();
 
                     return new OperationExecutionResult<>(response);
@@ -650,12 +698,16 @@ public class ExcludeRegionWithFaultInjectionTests extends TestSuiteBase {
 
                 TestItem alreadyCreatedItem = params.createdItem;
 
+                CosmosItemRequestOptions itemRequestOptions = new CosmosItemRequestOptions();
+                itemRequestOptions.setNonIdempotentWriteRetryPolicy(params.nonIdempotentWriteRetriesEnabled, true);
+
                 try {
 
                     CosmosItemResponse<?> response = params.cosmosAsyncContainer
                         .deleteItem(
                             alreadyCreatedItem.getId(),
-                            new PartitionKey(alreadyCreatedItem.getId()))
+                            new PartitionKey(alreadyCreatedItem.getId()),
+                            itemRequestOptions)
                         .block();
 
                     return new OperationExecutionResult<>(response);
@@ -677,13 +729,16 @@ public class ExcludeRegionWithFaultInjectionTests extends TestSuiteBase {
 
                 TestItem alreadyCreatedItem = params.createdItem;
                 alreadyCreatedItem.setProp(UUID.randomUUID().toString());
-                
+
+                CosmosItemRequestOptions itemRequestOptions = new CosmosItemRequestOptions();
+                itemRequestOptions.setNonIdempotentWriteRetryPolicy(params.nonIdempotentWriteRetriesEnabled, true);
+
                 try {
                     
                     CosmosItemResponse<TestItem> response = params.cosmosAsyncContainer.upsertItem(
                         alreadyCreatedItem, 
                         new PartitionKey(alreadyCreatedItem.getId()),
-                        null).block();
+                        itemRequestOptions).block();
                     
                     return new OperationExecutionResult<>(response);
                     
@@ -705,12 +760,15 @@ public class ExcludeRegionWithFaultInjectionTests extends TestSuiteBase {
 
                 TestItem newItem = TestItem.createNewItem();
 
+                CosmosItemRequestOptions itemRequestOptions = new CosmosItemRequestOptions();
+                itemRequestOptions.setNonIdempotentWriteRetryPolicy(params.nonIdempotentWriteRetriesEnabled, true);
+
                 try {
 
                     CosmosItemResponse<TestItem> response = params.cosmosAsyncContainer.upsertItem(
                         newItem,
                         new PartitionKey(newItem.getId()),
-                        null).block();
+                        itemRequestOptions).block();
 
                     return new OperationExecutionResult<>(response);
 
@@ -732,18 +790,15 @@ public class ExcludeRegionWithFaultInjectionTests extends TestSuiteBase {
                 CosmosPatchOperations patchOperations = CosmosPatchOperations.create();
                 patchOperations.add("/newField", UUID.randomUUID().toString());
 
-                if (params.nonIdempotentWriteRetriesEnabled) {
-                    params.options.setNonIdempotentWriteRetryPolicy(
-                        true, true
-                    );
-                }
+                CosmosPatchItemRequestOptions patchItemRequestOptions = new CosmosPatchItemRequestOptions();
+                patchItemRequestOptions.setNonIdempotentWriteRetryPolicy(params.nonIdempotentWriteRetriesEnabled, true);
 
                 try {
                     CosmosItemResponse<TestItem> response = params.cosmosAsyncContainer.patchItem(
                         params.createdItem.getId(),
                         new PartitionKey(params.createdItem.getId()),
                         patchOperations,
-                        params.options,
+                        patchItemRequestOptions,
                         TestItem.class
                     ).block();
 
@@ -877,9 +932,261 @@ public class ExcludeRegionWithFaultInjectionTests extends TestSuiteBase {
                             this.chooseFirstRegion.apply(this.preferredRegions)
                         ))
                         .withExpectedResultAfterMutation(new ExpectedResult(
-                        HttpConstants.StatusCodes.OK,
+                            HttpConstants.StatusCodes.OK,
+                            HttpConstants.SubStatusCodes.UNKNOWN,
+                            this.chooseAllRegions.apply(this.preferredRegions)
+                    )),
+                },
+                {
+                    "create_503/21008_firstRegion_beforeMutation_excludeLastRegion_afterMutation_excludeNoRegions_nonIdempotentWrite_true",
+                    new MutationTestConfig()
+                        .withChooseFaultInjectionRegions(this.chooseFirstRegion)
+                        .withChooseInitialExclusionRegions(this.chooseLastRegion)
+                        .withDataPlaneOperationExecutor(createAnotherItemCallback)
+                        .withFaultInjectionServerErrorType(FaultInjectionServerErrorType.SERVICE_UNAVAILABLE)
+                        .withRegionExclusionMutator((regions) -> new ArrayList<>())
+                        .withFaultInjectionOperationType(FaultInjectionOperationType.CREATE_ITEM)
+                        .withNonIdempotentWritesEnabled(true)
+                        .withExpectedResultBeforeMutation(new ExpectedResult(
+                            HttpConstants.StatusCodes.SERVICE_UNAVAILABLE,
+                            HttpConstants.SubStatusCodes.SERVER_GENERATED_503,
+                            this.chooseFirstRegion.apply(this.preferredRegions)
+                        ))
+                        .withExpectedResultAfterMutation(new ExpectedResult(
+                            HttpConstants.StatusCodes.CREATED,
+                            HttpConstants.SubStatusCodes.UNKNOWN,
+                            this.chooseAllRegions.apply(this.preferredRegions)
+                    )),
+                },
+                {
+                    "create_503/21008_firstRegion_beforeMutation_excludeLastRegion_afterMutation_excludeNoRegions_nonIdempotentWrite_false",
+                    new MutationTestConfig()
+                        .withChooseFaultInjectionRegions(this.chooseFirstRegion)
+                        .withChooseInitialExclusionRegions(this.chooseLastRegion)
+                        .withDataPlaneOperationExecutor(createAnotherItemCallback)
+                        .withFaultInjectionServerErrorType(FaultInjectionServerErrorType.SERVICE_UNAVAILABLE)
+                        .withRegionExclusionMutator((regions) -> new ArrayList<>())
+                        .withFaultInjectionOperationType(FaultInjectionOperationType.CREATE_ITEM)
+                        .withNonIdempotentWritesEnabled(false)
+                        .withExpectedResultBeforeMutation(new ExpectedResult(
+                            HttpConstants.StatusCodes.SERVICE_UNAVAILABLE,
+                            HttpConstants.SubStatusCodes.SERVER_GENERATED_503,
+                            this.chooseFirstRegion.apply(this.preferredRegions)
+                        ))
+                        .withExpectedResultAfterMutation(new ExpectedResult(
+                            HttpConstants.StatusCodes.SERVICE_UNAVAILABLE,
+                            HttpConstants.SubStatusCodes.SERVER_GENERATED_503,
+                            this.chooseFirstRegion.apply(this.preferredRegions)
+                    )),
+                },
+                {
+                    "create_503/21008_firstRegion_beforeMutation_excludeLastRegion_afterMutation_excludeNoRegions_nonIdempotentWrite_true",
+                    new MutationTestConfig()
+                        .withChooseFaultInjectionRegions(this.chooseFirstRegion)
+                        .withChooseInitialExclusionRegions(this.chooseLastRegion)
+                        .withDataPlaneOperationExecutor(createAnotherItemCallback)
+                        .withFaultInjectionServerErrorType(FaultInjectionServerErrorType.SERVICE_UNAVAILABLE)
+                        .withRegionExclusionMutator((regions) -> new ArrayList<>())
+                        .withFaultInjectionOperationType(FaultInjectionOperationType.CREATE_ITEM)
+                        .withNonIdempotentWritesEnabled(true)
+                        .withExpectedResultBeforeMutation(new ExpectedResult(
+                            HttpConstants.StatusCodes.SERVICE_UNAVAILABLE,
+                            HttpConstants.SubStatusCodes.SERVER_GENERATED_503,
+                            this.chooseFirstRegion.apply(this.preferredRegions)
+                        ))
+                        .withExpectedResultAfterMutation(new ExpectedResult(
+                        HttpConstants.StatusCodes.CREATED,
                         HttpConstants.SubStatusCodes.UNKNOWN,
                         this.chooseAllRegions.apply(this.preferredRegions)
+                    )),
+                },
+                {
+                    "replace_503/21008_firstRegion_beforeMutation_excludeLastRegion_afterMutation_excludeNoRegions_nonIdempotentWrite_false",
+                    new MutationTestConfig()
+                        .withChooseFaultInjectionRegions(this.chooseFirstRegion)
+                        .withChooseInitialExclusionRegions(this.chooseLastRegion)
+                        .withDataPlaneOperationExecutor(replaceItemCallback)
+                        .withFaultInjectionServerErrorType(FaultInjectionServerErrorType.SERVICE_UNAVAILABLE)
+                        .withRegionExclusionMutator((regions) -> new ArrayList<>())
+                        .withFaultInjectionOperationType(FaultInjectionOperationType.REPLACE_ITEM)
+                        .withNonIdempotentWritesEnabled(false)
+                        .withExpectedResultBeforeMutation(new ExpectedResult(
+                            HttpConstants.StatusCodes.SERVICE_UNAVAILABLE,
+                            HttpConstants.SubStatusCodes.SERVER_GENERATED_503,
+                            this.chooseFirstRegion.apply(this.preferredRegions)
+                        ))
+                        .withExpectedResultAfterMutation(new ExpectedResult(
+                        HttpConstants.StatusCodes.SERVICE_UNAVAILABLE,
+                        HttpConstants.SubStatusCodes.SERVER_GENERATED_503,
+                        this.chooseFirstRegion.apply(this.preferredRegions)
+                    )),
+                },
+                {
+                    "replace_503/21008_firstRegion_beforeMutation_excludeLastRegion_afterMutation_excludeNoRegions_nonIdempotentWrite_true",
+                    new MutationTestConfig()
+                        .withChooseFaultInjectionRegions(this.chooseFirstRegion)
+                        .withChooseInitialExclusionRegions(this.chooseLastRegion)
+                        .withDataPlaneOperationExecutor(replaceItemCallback)
+                        .withFaultInjectionServerErrorType(FaultInjectionServerErrorType.SERVICE_UNAVAILABLE)
+                        .withRegionExclusionMutator((regions) -> new ArrayList<>())
+                        .withFaultInjectionOperationType(FaultInjectionOperationType.REPLACE_ITEM)
+                        .withNonIdempotentWritesEnabled(true)
+                        .withExpectedResultBeforeMutation(new ExpectedResult(
+                            HttpConstants.StatusCodes.SERVICE_UNAVAILABLE,
+                            HttpConstants.SubStatusCodes.SERVER_GENERATED_503,
+                            this.chooseFirstRegion.apply(this.preferredRegions)
+                        ))
+                        .withExpectedResultAfterMutation(new ExpectedResult(
+                            HttpConstants.StatusCodes.OK,
+                            HttpConstants.SubStatusCodes.UNKNOWN,
+                            this.chooseAllRegions.apply(this.preferredRegions)
+                    )),
+                },
+                {
+                    "upsertExistingItem_503/21008_firstRegion_beforeMutation_excludeLastRegion_afterMutation_excludeNoRegions_nonIdempotentWrite_false",
+                    new MutationTestConfig()
+                        .withChooseFaultInjectionRegions(this.chooseFirstRegion)
+                        .withChooseInitialExclusionRegions(this.chooseLastRegion)
+                        .withDataPlaneOperationExecutor(upsertExistingItemCallback)
+                        .withFaultInjectionServerErrorType(FaultInjectionServerErrorType.SERVICE_UNAVAILABLE)
+                        .withRegionExclusionMutator((regions) -> new ArrayList<>())
+                        .withFaultInjectionOperationType(FaultInjectionOperationType.UPSERT_ITEM)
+                        .withNonIdempotentWritesEnabled(false)
+                        .withExpectedResultBeforeMutation(new ExpectedResult(
+                            HttpConstants.StatusCodes.SERVICE_UNAVAILABLE,
+                            HttpConstants.SubStatusCodes.SERVER_GENERATED_503,
+                            this.chooseFirstRegion.apply(this.preferredRegions)
+                        ))
+                        .withExpectedResultAfterMutation(new ExpectedResult(
+                            HttpConstants.StatusCodes.SERVICE_UNAVAILABLE,
+                            HttpConstants.SubStatusCodes.SERVER_GENERATED_503,
+                            this.chooseFirstRegion.apply(this.preferredRegions)
+                    )),
+                },
+                {
+                    "upsertExistingItem_503/21008_firstRegion_beforeMutation_excludeLastRegion_afterMutation_excludeNoRegions_nonIdempotentWrite_true",
+                    new MutationTestConfig()
+                        .withChooseFaultInjectionRegions(this.chooseFirstRegion)
+                        .withChooseInitialExclusionRegions(this.chooseLastRegion)
+                        .withDataPlaneOperationExecutor(upsertExistingItemCallback)
+                        .withFaultInjectionServerErrorType(FaultInjectionServerErrorType.SERVICE_UNAVAILABLE)
+                        .withRegionExclusionMutator((regions) -> new ArrayList<>())
+                        .withFaultInjectionOperationType(FaultInjectionOperationType.UPSERT_ITEM)
+                        .withNonIdempotentWritesEnabled(true)
+                        .withExpectedResultBeforeMutation(new ExpectedResult(
+                            HttpConstants.StatusCodes.SERVICE_UNAVAILABLE,
+                            HttpConstants.SubStatusCodes.SERVER_GENERATED_503,
+                            this.chooseFirstRegion.apply(this.preferredRegions)
+                        ))
+                        .withExpectedResultAfterMutation(new ExpectedResult(
+                            HttpConstants.StatusCodes.OK,
+                            HttpConstants.SubStatusCodes.UNKNOWN,
+                            this.chooseAllRegions.apply(this.preferredRegions)
+                    )),
+                },
+                {
+                    "upsertNonExistingItem_503/21008_firstRegion_beforeMutation_excludeLastRegion_afterMutation_excludeNoRegions_nonIdempotentWrite_false",
+                    new MutationTestConfig()
+                        .withChooseFaultInjectionRegions(this.chooseFirstRegion)
+                        .withChooseInitialExclusionRegions(this.chooseLastRegion)
+                        .withDataPlaneOperationExecutor(upsertNonExistingItemCallback)
+                        .withFaultInjectionServerErrorType(FaultInjectionServerErrorType.SERVICE_UNAVAILABLE)
+                        .withRegionExclusionMutator((regions) -> new ArrayList<>())
+                        .withFaultInjectionOperationType(FaultInjectionOperationType.UPSERT_ITEM)
+                        .withNonIdempotentWritesEnabled(false)
+                        .withExpectedResultBeforeMutation(new ExpectedResult(
+                            HttpConstants.StatusCodes.SERVICE_UNAVAILABLE,
+                            HttpConstants.SubStatusCodes.SERVER_GENERATED_503,
+                            this.chooseFirstRegion.apply(this.preferredRegions)
+                        ))
+                        .withExpectedResultAfterMutation(new ExpectedResult(
+                            HttpConstants.StatusCodes.SERVICE_UNAVAILABLE,
+                            HttpConstants.SubStatusCodes.SERVER_GENERATED_503,
+                            this.chooseFirstRegion.apply(this.preferredRegions)
+                    )),
+                },
+                {
+                    "upsertNonExistingItem_503/21008_firstRegion_beforeMutation_excludeLastRegion_afterMutation_excludeNoRegions_nonIdempotentWrite_true",
+                    new MutationTestConfig()
+                        .withChooseFaultInjectionRegions(this.chooseFirstRegion)
+                        .withChooseInitialExclusionRegions(this.chooseLastRegion)
+                        .withDataPlaneOperationExecutor(upsertNonExistingItemCallback)
+                        .withFaultInjectionServerErrorType(FaultInjectionServerErrorType.SERVICE_UNAVAILABLE)
+                        .withRegionExclusionMutator((regions) -> new ArrayList<>())
+                        .withFaultInjectionOperationType(FaultInjectionOperationType.UPSERT_ITEM)
+                        .withNonIdempotentWritesEnabled(true)
+                        .withExpectedResultBeforeMutation(new ExpectedResult(
+                            HttpConstants.StatusCodes.SERVICE_UNAVAILABLE,
+                            HttpConstants.SubStatusCodes.SERVER_GENERATED_503,
+                            this.chooseFirstRegion.apply(this.preferredRegions)
+                        ))
+                        .withExpectedResultAfterMutation(new ExpectedResult(
+                            HttpConstants.StatusCodes.CREATED,
+                            HttpConstants.SubStatusCodes.UNKNOWN,
+                            this.chooseAllRegions.apply(this.preferredRegions)
+                    )),
+                },
+                {
+                    "delete_503/21008_firstRegion_beforeMutation_excludeLastRegion_afterMutation_excludeNoRegions_nonIdempotentWrite_false",
+                    new MutationTestConfig()
+                        .withChooseFaultInjectionRegions(this.chooseFirstRegion)
+                        .withChooseInitialExclusionRegions(this.chooseLastRegion)
+                        .withDataPlaneOperationExecutor(deleteItemCallback)
+                        .withFaultInjectionServerErrorType(FaultInjectionServerErrorType.SERVICE_UNAVAILABLE)
+                        .withRegionExclusionMutator((regions) -> new ArrayList<>())
+                        .withFaultInjectionOperationType(FaultInjectionOperationType.DELETE_ITEM)
+                        .withNonIdempotentWritesEnabled(false)
+                        .withExpectedResultBeforeMutation(new ExpectedResult(
+                            HttpConstants.StatusCodes.SERVICE_UNAVAILABLE,
+                            HttpConstants.SubStatusCodes.SERVER_GENERATED_503,
+                            this.chooseFirstRegion.apply(this.preferredRegions)
+                        ))
+                        .withExpectedResultAfterMutation(new ExpectedResult(
+                            HttpConstants.StatusCodes.SERVICE_UNAVAILABLE,
+                            HttpConstants.SubStatusCodes.SERVER_GENERATED_503,
+                            this.chooseFirstRegion.apply(this.preferredRegions)
+                    )),
+                },
+                {
+                    "delete_503/21008_firstRegion_beforeMutation_excludeLastRegion_afterMutation_excludeNoRegions_nonIdempotentWrite_true",
+                    new MutationTestConfig()
+                        .withChooseFaultInjectionRegions(this.chooseFirstRegion)
+                        .withChooseInitialExclusionRegions(this.chooseLastRegion)
+                        .withDataPlaneOperationExecutor(deleteItemCallback)
+                        .withFaultInjectionServerErrorType(FaultInjectionServerErrorType.SERVICE_UNAVAILABLE)
+                        .withRegionExclusionMutator((regions) -> new ArrayList<>())
+                        .withFaultInjectionOperationType(FaultInjectionOperationType.DELETE_ITEM)
+                        .withNonIdempotentWritesEnabled(true)
+                        .withExpectedResultBeforeMutation(new ExpectedResult(
+                            HttpConstants.StatusCodes.SERVICE_UNAVAILABLE,
+                            HttpConstants.SubStatusCodes.SERVER_GENERATED_503,
+                            this.chooseFirstRegion.apply(this.preferredRegions)
+                        ))
+                        .withExpectedResultAfterMutation(new ExpectedResult(
+                            HttpConstants.StatusCodes.NO_CONTENT,
+                            HttpConstants.SubStatusCodes.UNKNOWN,
+                            this.chooseAllRegions.apply(this.preferredRegions)
+                    )),
+                },
+                {
+                    "patch_503/21008_firstRegion_beforeMutation_excludeLastRegion_afterMutation_excludeNoRegions_nonIdempotentWrite_false",
+                    new MutationTestConfig()
+                        .withChooseFaultInjectionRegions(this.chooseFirstRegion)
+                        .withChooseInitialExclusionRegions(this.chooseLastRegion)
+                        .withDataPlaneOperationExecutor(patchItemCallback)
+                        .withFaultInjectionServerErrorType(FaultInjectionServerErrorType.SERVICE_UNAVAILABLE)
+                        .withRegionExclusionMutator((regions) -> new ArrayList<>())
+                        .withFaultInjectionOperationType(FaultInjectionOperationType.PATCH_ITEM)
+                        .withNonIdempotentWritesEnabled(false)
+                        .withExpectedResultBeforeMutation(new ExpectedResult(
+                            HttpConstants.StatusCodes.SERVICE_UNAVAILABLE,
+                            HttpConstants.SubStatusCodes.SERVER_GENERATED_503,
+                            this.chooseFirstRegion.apply(this.preferredRegions)
+                        ))
+                        .withExpectedResultAfterMutation(new ExpectedResult(
+                            HttpConstants.StatusCodes.SERVICE_UNAVAILABLE,
+                            HttpConstants.SubStatusCodes.SERVER_GENERATED_503,
+                            this.chooseFirstRegion.apply(this.preferredRegions)
                     )),
                 }
             };
@@ -1081,6 +1388,7 @@ public class ExcludeRegionWithFaultInjectionTests extends TestSuiteBase {
 
             params.cosmosAsyncContainer = containerForClientWithPreferredRegions;
             params.createdItem = createdItem;
+            params.nonIdempotentWriteRetriesEnabled = mutationTestConfig.nonIdempotentWritesEnabled;
 
             OperationExecutionResult<?> operationExecutionResultBeforeMutation = dataPlaneOperationExecutor.apply(params);
             validateResponse(operationExecutionResultBeforeMutation, mutationTestConfig.expectedResultBeforeMutation);
@@ -1413,7 +1721,6 @@ public class ExcludeRegionWithFaultInjectionTests extends TestSuiteBase {
 
     private static class ItemOperationInvocationParameters {
         public boolean nonIdempotentWriteRetriesEnabled;
-        public CosmosPatchItemRequestOptions options;
         public CosmosAsyncContainer cosmosAsyncContainer;
         public TestItem createdItem;
     }
