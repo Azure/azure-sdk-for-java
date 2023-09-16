@@ -600,8 +600,8 @@ public final class CosmosAsyncClient implements Closeable {
      *
      * @param excludeRegions The list of regions to exclude.
      * */
-    public void setExcludeRegions(List<String> excludeRegions) {
-        this.connectionPolicy.setExcludeRegions(excludeRegions);
+    public void excludeRegions(List<String> excludeRegions) {
+        this.connectionPolicy.setExcludedRegions(excludeRegions);
     }
 
     WriteRetryPolicy getNonIdempotentWriteRetryPolicy() {
@@ -906,7 +906,7 @@ public final class CosmosAsyncClient implements Closeable {
 
                 @Override
                 public List<String> getExcludeRegions(CosmosAsyncClient client) {
-                    return client.connectionPolicy.getExcludeRegions();
+                    return client.connectionPolicy.getExcludedRegions();
                 }
             }
         );

@@ -1088,7 +1088,7 @@ public class ExcludeRegionWithFaultInjectionTests extends TestSuiteBase {
             Function<List<String>, List<String>> regionExclusionMutators = mutationTestConfig.regionExclusionMutator;
 
             List<String> mutatedExcludedRegions = regionExclusionMutators.apply(this.preferredRegions);
-            clientWithPreferredRegions.setExcludeRegions(mutatedExcludedRegions);
+            clientWithPreferredRegions.excludeRegions(mutatedExcludedRegions);
 
             OperationExecutionResult<?> operationExecutionResultAfterMutation = dataPlaneOperationExecutor.apply(params);
             validateResponse(operationExecutionResultAfterMutation, mutationTestConfig.expectedResultAfterMutation);

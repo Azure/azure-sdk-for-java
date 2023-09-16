@@ -129,7 +129,7 @@ public class CosmosClientBuilder implements
     private String userAgentSuffix;
     private ThrottlingRetryOptions throttlingRetryOptions;
     private List<String> preferredRegions;
-    private List<String> excludeRegions;
+    private List<String> excludedRegions;
     private boolean endpointDiscoveryEnabled = true;
     private boolean multipleWriteRegionsEnabled = true;
     private boolean readRequestsFallbackEnabled = true;
@@ -888,8 +888,8 @@ public class CosmosClientBuilder implements
      * @return current CosmosClientBuilder.
      * */
     public CosmosClientBuilder excludeRegions(List<String> excludeRegions) {
-        this.excludeRegions = new ArrayList<>();
-        this.excludeRegions.addAll(excludeRegions);
+        this.excludedRegions = new ArrayList<>();
+        this.excludedRegions.addAll(excludeRegions);
         return this;
     }
 
@@ -900,11 +900,11 @@ public class CosmosClientBuilder implements
      *
      * @return the list of regions to exclude.
      * */
-    public List<String> getExcludeRegions() {
-        if (this.excludeRegions == null) {
+    public List<String> getExcludedRegions() {
+        if (this.excludedRegions == null) {
             return null;
         }
-        return UnmodifiableList.unmodifiableList(this.excludeRegions);
+        return UnmodifiableList.unmodifiableList(this.excludedRegions);
     }
 
     SessionRetryOptions getSessionRetryOptions() {
@@ -1140,7 +1140,7 @@ public class CosmosClientBuilder implements
             this.connectionPolicy = new ConnectionPolicy(gatewayConnectionConfig);
         }
         this.connectionPolicy.setPreferredRegions(this.preferredRegions);
-        this.connectionPolicy.setExcludeRegions(this.excludeRegions);
+        this.connectionPolicy.setExcludedRegions(this.excludedRegions);
         this.connectionPolicy.setUserAgentSuffix(this.userAgentSuffix);
         this.connectionPolicy.setThrottlingRetryOptions(this.throttlingRetryOptions);
         this.connectionPolicy.setEndpointDiscoveryEnabled(this.endpointDiscoveryEnabled);
@@ -1178,9 +1178,9 @@ public class CosmosClientBuilder implements
             }
         }
 
-        if (excludeRegions != null) {
+        if (excludedRegions != null) {
             // validate excludeRegions
-            excludeRegions.forEach(
+            excludedRegions.forEach(
                 excludeRegion -> {
                     Preconditions.checkArgument(StringUtils.trimToNull(excludeRegion) != null, "excludeRegion can't be empty");
                     String trimmedPreferredRegion = excludeRegion.toLowerCase(Locale.ROOT).replace(" ", "");
