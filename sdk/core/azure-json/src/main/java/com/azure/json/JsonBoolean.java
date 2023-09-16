@@ -19,13 +19,24 @@ public final class JsonBoolean extends JsonElement {
      * true or false. If value is true, then booleanValue set to "true"; otherwise,
      * set to "false"
      */
-    private JsonBoolean(boolean value) { this.booleanValue = (value)? "true" : "false"; }
+    private JsonBoolean(boolean value) { 
+        this.booleanValue = (value) ? "true" : "false"; 
+    }
 
+    /**
+     * Lazy-loading the Singleton instances of JsonBoolean of TRUE & FALSE.
+     */
     private static class LoadSingleton {
         private static final JsonBoolean TRUE = new JsonBoolean(true);
         private static final JsonBoolean FALSE = new JsonBoolean(false);
     }
 
+    /**
+     * Returns the Singleton instance of JsonBoolean for the specified boolean value.
+     *
+     * @param value The boolean value for which to obtain the JsonBoolean instance.
+     * @return The Singleton instance of JsonBoolean representing the specified boolean value. 
+     */
     public static JsonBoolean getInstance(boolean value) {
         return (value) ? LoadSingleton.TRUE : LoadSingleton.FALSE;
     }
