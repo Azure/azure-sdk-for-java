@@ -39,23 +39,24 @@ public class FluxTraceTest {
             .then(() -> messagesPublisher.next(message))
             .assertNext(m -> {
                 switch (receiverKind) {
-                    case ASYNC_RECEIVER :
-                    case PROCESSOR:
+                    case SYNC_RECEIVER:
+                        assertEquals(0, tracer.getStartedSpans().size());
+                        break;
+                    default:
                         assertEquals(1, tracer.getStartedSpans().size());
                         assertEquals("ServiceBus.process", tracer.getStartedSpans().get(0));
                         break;
-                    case SYNC_RECEIVER:
-                        assertEquals(0, tracer.getStartedSpans().size());
                 }
             })
             .thenCancel()
             .verify(DEFAULT_TIMEOUT);
     }
 
-    @Test
-    public void nullMessage() {
+    @ParameterizedTest
+    @EnumSource(ReceiverKind.class)
+    public void nullMessage(ReceiverKind receiverKind) {
         TestTracer tracer = new TestTracer();
-        ServiceBusReceiverInstrumentation instrumentation = new ServiceBusReceiverInstrumentation(tracer, null, "fqdn", "entityPath", null, ReceiverKind.ASYNC_RECEIVER);
+        ServiceBusReceiverInstrumentation instrumentation = new ServiceBusReceiverInstrumentation(tracer, null, "fqdn", "entityPath", null, receiverKind);
         FluxTrace fluxTrace = new FluxTrace(messagesPublisher.flux(), instrumentation);
 
         StepVerifier.create(fluxTrace)
