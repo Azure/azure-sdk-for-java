@@ -78,7 +78,7 @@ public interface DiagnosticsClientContext {
                 generator.writeEndObject();
                 generator.writeStringField("consistencyCfg", clientConfig.consistencyRelatedConfig());
                 generator.writeStringField("proactiveInit", clientConfig.proactivelyInitializedContainersAsString);
-                generator.writeStringField("e2ePolicyCfg", clientConfig.endToEndOperationLatencyPolicyConfigAsString);
+                generator.writeStringField("e2ePolicyCfg", clientConfig.endToEndOperationLatencyPolicyConfig.toString());
             } catch (Exception e) {
                 logger.debug("unexpected failure", e);
             }
@@ -101,15 +101,14 @@ public interface DiagnosticsClientContext {
         private String preferredRegionsAsString;
         private String excludeRegionsAsString;
         private String proactivelyInitializedContainersAsString;
-
-        private String endToEndOperationLatencyPolicyConfigAsString;
+        private CosmosEndToEndOperationLatencyPolicyConfig endToEndOperationLatencyPolicyConfig;
         private boolean endpointDiscoveryEnabled;
         private boolean multipleWriteRegionsEnabled;
-
         private String rntbdConfigAsString;
         private ConnectionMode connectionMode;
         private String machineId;
         private boolean replicaValidationEnabled = Configs.isReplicaAddressValidationEnabled();
+        private ConnectionPolicy connectionPolicy;
 
         public DiagnosticsClientConfig withMachineId(String machineId) {
             this.machineId = machineId;
@@ -153,15 +152,8 @@ public interface DiagnosticsClientContext {
             return this;
         }
 
-        public DiagnosticsClientConfig withExcludeRegions(List<String> excludeRegions) {
-            if (excludeRegions == null || excludeRegions.isEmpty()) {
-                this.excludeRegionsAsString = "";
-            } else {
-                this.excludeRegionsAsString = excludeRegions
-                    .stream()
-                    .map(r -> DiagnosticsClientConfigSerializer.SPACE_PATTERN.matcher(r.toLowerCase(Locale.ROOT)).replaceAll(""))
-                    .collect(Collectors.joining(","));
-            }
+        public DiagnosticsClientConfig withConnectionPolicy(ConnectionPolicy connectionPolicy) {
+            this.connectionPolicy = connectionPolicy;
             return this;
         }
 
@@ -180,12 +172,7 @@ public interface DiagnosticsClientContext {
         public DiagnosticsClientConfig withEndToEndOperationLatencyPolicy(
             CosmosEndToEndOperationLatencyPolicyConfig config) {
 
-            if (config == null) {
-                this.endToEndOperationLatencyPolicyConfigAsString = "";
-            } else {
-                this.endToEndOperationLatencyPolicyConfigAsString = config.toString();
-            }
-
+            this.endToEndOperationLatencyPolicyConfig = config;
             return this;
         }
 
@@ -259,7 +246,7 @@ public interface DiagnosticsClientContext {
             return Strings.lenientFormat("(consistency: %s, mm: %s, prgns: [%s], excrgns: [%s])", this.consistencyLevel,
                 this.multipleWriteRegionsEnabled,
                 preferredRegionsAsString,
-                this.excludeRegionsAsString);
+                this.connectionPolicy != null ? this.connectionPolicy.getExcludedRegionsAsString() : null);
         }
     }
 }

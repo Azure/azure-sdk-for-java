@@ -216,7 +216,7 @@ public class LocationCache {
     public UnmodifiableList<URI> getApplicableWriteEndpoints(List<String> excludedRegionsOnRequest) {
         UnmodifiableList<URI> writeEndpoints = this.getWriteEndpoints();
 
-        List<String> effectiveExcludeRegions = connectionPolicy.getExcludeRegions();
+        List<String> effectiveExcludeRegions = connectionPolicy.getExcludedRegions();
 
         if (!isExcludeRegionsConfigured(excludedRegionsOnRequest, effectiveExcludeRegions)) {
             return writeEndpoints;
@@ -241,7 +241,7 @@ public class LocationCache {
     public UnmodifiableList<URI> getApplicableReadEndpoints(List<String> excludedRegionsOnRequest) {
         UnmodifiableList<URI> readEndpoints = this.getReadEndpoints();
 
-        List<String> effectiveExcludeRegions = connectionPolicy.getExcludeRegions();
+        List<String> effectiveExcludeRegions = connectionPolicy.getExcludedRegions();
 
         if (!isExcludeRegionsConfigured(excludedRegionsOnRequest, effectiveExcludeRegions)) {
             return readEndpoints;

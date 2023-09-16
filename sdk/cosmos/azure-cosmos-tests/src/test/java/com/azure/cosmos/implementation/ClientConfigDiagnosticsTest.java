@@ -6,6 +6,7 @@ package com.azure.cosmos.implementation;
 import com.azure.cosmos.ConnectionMode;
 import com.azure.cosmos.CosmosContainerProactiveInitConfig;
 import com.azure.cosmos.CosmosContainerProactiveInitConfigBuilder;
+import com.azure.cosmos.DirectConnectionConfig;
 import com.azure.cosmos.implementation.directconnectivity.RntbdTransportClient;
 import com.azure.cosmos.implementation.guava25.collect.ImmutableList;
 import com.azure.cosmos.implementation.http.HttpClientConfig;
@@ -203,7 +204,8 @@ public class ClientConfigDiagnosticsTest {
         httpConfig.withNetworkRequestTimeout(Duration.ofSeconds(18));
         diagnosticsClientConfig.withGatewayHttpClientConfig(httpConfig.toDiagnosticsString());
         diagnosticsClientConfig.withPreferredRegions(ImmutableList.of("west us 1", "west us 2"));
-        diagnosticsClientConfig.withExcludeRegions(ImmutableList.of("west us 2"));
+        diagnosticsClientConfig.withConnectionPolicy(
+            new ConnectionPolicy(DirectConnectionConfig.getDefaultConfig()).setExcludedRegions(ImmutableList.of("west us 2")));
         diagnosticsClientConfig.withConnectionSharingAcrossClientsEnabled(true);
         diagnosticsClientConfig.withEndpointDiscoveryEnabled(true);
         diagnosticsClientConfig.withClientMap(new HashMap<>());

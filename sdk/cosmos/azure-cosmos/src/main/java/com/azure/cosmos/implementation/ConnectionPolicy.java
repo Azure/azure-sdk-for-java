@@ -14,8 +14,10 @@ import java.time.Duration;
 import java.util.ArrayList;
 import java.util.Collections;
 import java.util.List;
+import java.util.Locale;
 import java.util.concurrent.locks.ReentrantLock;
-import java.util.concurrent.locks.ReentrantReadWriteLock;
+import java.util.regex.Pattern;
+import java.util.stream.Collectors;
 
 /**
  * Represents the Connection policy associated with a Cosmos client in the Azure Cosmos DB service.
@@ -55,6 +57,8 @@ public final class ConnectionPolicy {
     private int openConnectionsConcurrency;
     private int aggressiveWarmupConcurrency;
     private final ReentrantLock reentrantLock;
+    private String excludedRegionsAsString;
+    private static final Pattern SPACE_PATTERN = Pattern.compile(" ");
 
     /**
      * Constructor.
@@ -121,6 +125,7 @@ public final class ConnectionPolicy {
         this.openConnectionsConcurrency = Configs.getOpenConnectionsConcurrency();
         this.aggressiveWarmupConcurrency = Configs.getAggressiveWarmupConcurrency();
         this.reentrantLock = new ReentrantLock();
+        this.excludedRegionsAsString = constructExcludedRegionsAsString(this.excludeRegions);
     }
 
     /**
@@ -478,20 +483,21 @@ public final class ConnectionPolicy {
         return this;
     }
 
-    public ConnectionPolicy setExcludeRegions(List<String> excludeRegions) {
+    public ConnectionPolicy setExcludedRegions(List<String> excludeRegions) {
         reentrantLock.lock();
         try {
             if (excludeRegions != null) {
                 this.excludeRegions = new ArrayList<>();
                 this.excludeRegions.addAll(excludeRegions);
             }
+            this.excludedRegionsAsString = constructExcludedRegionsAsString(this.excludeRegions);
             return this;
         } finally {
             reentrantLock.unlock();
         }
     }
 
-    public List<String> getExcludeRegions() {
+    public List<String> getExcludedRegions() {
         return this.excludeRegions;
     }
 
@@ -612,6 +618,10 @@ public final class ConnectionPolicy {
         return minConnectionPoolSizePerEndpoint;
     }
 
+    public String getExcludedRegionsAsString() {
+        return this.excludedRegionsAsString;
+    }
+
     @Override
     public String toString() {
         return "ConnectionPolicy{" +
@@ -641,5 +651,16 @@ public final class ConnectionPolicy {
             ", openConnectionsConcurrency=" + openConnectionsConcurrency +
             ", aggressiveWarmupConcurrency=" + aggressiveWarmupConcurrency +
             '}';
+    }
+
+    private static String constructExcludedRegionsAsString(List<String> excludeRegions) {
+        if (excludeRegions == null || excludeRegions.isEmpty()) {
+            return  "";
+        } else {
+            return excludeRegions
+                .stream()
+                .map(r -> SPACE_PATTERN.matcher(r.toLowerCase(Locale.ROOT)).replaceAll(""))
+                .collect(Collectors.joining(","));
+        }
     }
 }
