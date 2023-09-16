@@ -125,7 +125,6 @@ public final class ConnectionPolicy {
         this.openConnectionsConcurrency = Configs.getOpenConnectionsConcurrency();
         this.aggressiveWarmupConcurrency = Configs.getAggressiveWarmupConcurrency();
         this.reentrantLock = new ReentrantLock();
-        this.excludedRegionsAsString = constructExcludedRegionsAsString(this.excludedRegions);
     }
 
     /**
