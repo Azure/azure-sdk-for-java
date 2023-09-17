@@ -10,6 +10,7 @@ import com.azure.core.http.policy.HttpLogDetailLevel;
 import com.azure.core.http.policy.HttpLogOptions;
 import com.azure.core.http.policy.HttpPipelinePolicy;
 import com.azure.core.util.ClientOptions;
+import com.azure.core.util.logging.ClientLogger;
 import com.azure.monitor.opentelemetry.exporter.implementation.configuration.ConnectionString;
 import io.opentelemetry.sdk.autoconfigure.AutoConfiguredOpenTelemetrySdkBuilder;
 
@@ -22,6 +23,8 @@ import java.util.Objects;
  */
 public final class AzureMonitorExporterBuilder {
 
+    private static final ClientLogger LOGGER = new ClientLogger(AzureMonitorExporterBuilder.class);
+
     private ConnectionString connectionString;
 
     // http pipeline configuration
@@ -32,6 +35,7 @@ public final class AzureMonitorExporterBuilder {
     private ClientOptions clientOptions;
     private HttpPipeline httpPipeline;
 
+    @SuppressWarnings("FieldCanBeLocal")
     private AzureMonitorExporterServiceVersion serviceVersion;
 
     /**
@@ -45,7 +49,7 @@ public final class AzureMonitorExporterBuilder {
      * settings are ignored.
      *
      * @param httpPipeline The HTTP pipeline to use for sending service requests and receiving
-     *                     responses.
+     * responses.
      * @return The updated {@link AzureMonitorExporterBuilder} object.
      */
     public AzureMonitorExporterBuilder httpPipeline(HttpPipeline httpPipeline) {
@@ -70,7 +74,7 @@ public final class AzureMonitorExporterBuilder {
      * <p>If logLevel is not provided, default value of {@link HttpLogDetailLevel#NONE} is set.
      *
      * @param httpLogOptions The logging configuration to use when sending and receiving HTTP
-     *                       requests/responses.
+     * requests/responses.
      * @return The updated {@link AzureMonitorExporterBuilder} object.
      */
     public AzureMonitorExporterBuilder httpLogOptions(HttpLogOptions httpLogOptions) {
@@ -107,7 +111,7 @@ public final class AzureMonitorExporterBuilder {
      *
      * @param connectionString The connection string for the Azure Monitor resource.
      * @return The updated {@link AzureMonitorExporterBuilder} object.
-     * @throws NullPointerException     If the connection string is {@code null}.
+     * @throws NullPointerException If the connection string is {@code null}.
      * @throws IllegalArgumentException If the connection string is invalid.
      */
     public AzureMonitorExporterBuilder connectionString(String connectionString) {
@@ -151,26 +155,31 @@ public final class AzureMonitorExporterBuilder {
         LazyHttpPipeline lazyHttpPipeline = new LazyHttpPipeline(credential, httpClient, httpLogOptions,
             httpPipelinePolicies, clientOptions, httpPipeline);
         AzureMonitorExporterBuilderHelper helper =
-            new AzureMonitorExporterBuilderHelper(serviceVersion, lazyConnectionString, lazyTelemetryItemExporter, lazyHttpPipeline);
+            new AzureMonitorExporterBuilderHelper(lazyConnectionString, lazyTelemetryItemExporter, lazyHttpPipeline);
         helper.build(sdkBuilder);
     }
 
     private void validate() {
         if (httpPipeline != null) {
             if (credential != null) {
-                throw new IllegalStateException("'credential' is not supported when custom 'httpPipeline' is specified");
+                throw LOGGER.logExceptionAsError(new IllegalStateException(
+                    "'credential' is not supported when custom 'httpPipeline' is specified"));
             }
             if (httpClient != null) {
-                throw new IllegalStateException("'httpClient' is not supported when custom 'httpPipeline' is specified");
+                throw LOGGER.logExceptionAsError(new IllegalStateException(
+                    "'httpClient' is not supported when custom 'httpPipeline' is specified"));
             }
             if (httpLogOptions != null) {
-                throw new IllegalStateException("'httpLogOptions' is not supported when custom 'httpPipeline' is specified");
+                throw LOGGER.logExceptionAsError(new IllegalStateException(
+                    "'httpLogOptions' is not supported when custom 'httpPipeline' is specified"));
             }
             if (!httpPipelinePolicies.isEmpty()) {
-                throw new IllegalStateException("'httpPipelinePolicies' is not supported when custom 'httpPipeline' is specified");
+                throw LOGGER.logExceptionAsError(new IllegalStateException(
+                    "'httpPipelinePolicies' is not supported when custom 'httpPipeline' is specified"));
             }
             if (clientOptions != null) {
-                throw new IllegalStateException("'clientOptions' is not supported when custom 'httpPipeline' is specified");
+                throw LOGGER.logExceptionAsError(new IllegalStateException(
+                    "'clientOptions' is not supported when custom 'httpPipeline' is specified"));
             }
         }
     }

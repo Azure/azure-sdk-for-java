@@ -35,18 +35,13 @@ import static java.util.concurrent.TimeUnit.MINUTES;
 
 class AzureMonitorExporterBuilderHelper {
 
-    // TODO (trask) this is unused
-    private final AzureMonitorExporterServiceVersion serviceVersion;
-
     private final LazyConnectionString connectionString;
     private final LazyHttpPipeline httpPipeline;
     private final LazyTelemetryItemExporter telemetryItemExporter;
 
-    AzureMonitorExporterBuilderHelper(AzureMonitorExporterServiceVersion serviceVersion,
-                                      LazyConnectionString connectionString,
+    AzureMonitorExporterBuilderHelper(LazyConnectionString connectionString,
                                       LazyTelemetryItemExporter telemetryItemExporter,
                                       LazyHttpPipeline httpPipeline) {
-        this.serviceVersion = serviceVersion;
         this.connectionString = connectionString;
         this.telemetryItemExporter = telemetryItemExporter;
         this.httpPipeline = httpPipeline;
