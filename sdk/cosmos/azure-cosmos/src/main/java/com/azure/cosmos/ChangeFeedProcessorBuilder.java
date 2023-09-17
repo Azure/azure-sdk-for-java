@@ -208,7 +208,7 @@ public class ChangeFeedProcessorBuilder {
         return this;
     }
 
-
+    @Beta(value = Beta.SinceVersion.V4_50_0, warningText = Beta.PREVIEW_SUBJECT_TO_CHANGE_WARNING)
     public ChangeFeedProcessorBuilder handleAllVersionsAndDeletesChanges(
         BiConsumer<List<ChangeFeedProcessorItem>, ChangeFeedProcessorContext<ChangeFeedProcessorItem>> biConsumer) {
 
@@ -278,6 +278,13 @@ public class ChangeFeedProcessorBuilder {
                             this.leaseContainer,
                             this.incrementalModeLeaseConsumerEpkVersion,
                             this.changeFeedProcessorOptions);
+                    } else if (this.incrementalModeLeaseConsumerWithContextEpkVersion != null) {
+                        changeFeedProcessor = new com.azure.cosmos.implementation.changefeed.epkversion.IncrementalChangeFeedProcessorImpl(
+                            this.hostName,
+                            this.feedContainer,
+                            this.leaseContainer,
+                            this.incrementalModeLeaseConsumerWithContextEpkVersion,
+                            this.changeFeedProcessorOptions);
                     } else if (this.incrementalModeLeaseConsumerPkRangeIdVersion != null) {
                         changeFeedProcessor = new com.azure.cosmos.implementation.changefeed.epkversion.IncrementalChangeFeedProcessorImpl(
                             this.hostName,
@@ -315,11 +322,13 @@ public class ChangeFeedProcessorBuilder {
     }
 
     private boolean isFullFidelityConsumerDefined() {
-        return this.fullFidelityModeLeaseConsumer != null;
+        return this.fullFidelityModeLeaseConsumer != null || this.fullFidelityModeLeaseWithContextConsumer != null;
     }
 
     private boolean isIncrementalConsumerDefined() {
-        return this.incrementalModeLeaseConsumerEpkVersion != null || this.incrementalModeLeaseConsumerPkRangeIdVersion != null;
+        return this.incrementalModeLeaseConsumerEpkVersion != null
+            || this.incrementalModeLeaseConsumerPkRangeIdVersion != null
+            || this.incrementalModeLeaseConsumerWithContextEpkVersion != null;
     }
 
     private void validateChangeFeedProcessorOptions() {

@@ -17,14 +17,14 @@ import java.util.function.Consumer;
 public class DefaultObserver<T> implements ChangeFeedObserver<T> {
     private static final Logger log = LoggerFactory.getLogger(DefaultObserver.class);
     private final Consumer<List<T>> consumer;
-    private final BiConsumer<List<T>, ChangeFeedProcessorContext> biconsumer;
+    private final BiConsumer<List<T>, ChangeFeedProcessorContext<T>> biconsumer;
 
     public DefaultObserver(Consumer<List<T>> consumer) {
         this.consumer = consumer;
         this.biconsumer = null;
     }
 
-    public DefaultObserver(BiConsumer<List<T>, ChangeFeedProcessorContext> biconsumer) {
+    public DefaultObserver(BiConsumer<List<T>, ChangeFeedProcessorContext<T>> biconsumer) {
         this.biconsumer = biconsumer;
         this.consumer = null;
     }
