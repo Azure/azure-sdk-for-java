@@ -241,14 +241,14 @@ public class LocationCache {
     public UnmodifiableList<URI> getApplicableReadEndpoints(List<String> excludedRegionsOnRequest) {
         UnmodifiableList<URI> readEndpoints = this.getReadEndpoints();
 
-        List<String> effectiveExcludeRegions = connectionPolicy.getExcludedRegions();
+        List<String> effectiveExcludedRegions = connectionPolicy.getExcludedRegions();
 
-        if (!isExcludeRegionsConfigured(excludedRegionsOnRequest, effectiveExcludeRegions)) {
+        if (!isExcludeRegionsConfigured(excludedRegionsOnRequest, effectiveExcludedRegions)) {
             return readEndpoints;
         }
 
         if (excludedRegionsOnRequest != null && !excludedRegionsOnRequest.isEmpty()) {
-            effectiveExcludeRegions = excludedRegionsOnRequest;
+            effectiveExcludedRegions = excludedRegionsOnRequest;
         }
 
         // filter regions based on the exclude region config
@@ -256,7 +256,7 @@ public class LocationCache {
             readEndpoints,
             this.locationInfo.regionNameByReadEndpoint,
             this.locationInfo.writeEndpoints.get(0), // match the fallback region used in getPreferredAvailableEndpoints
-            effectiveExcludeRegions);
+            effectiveExcludedRegions);
     }
 
     private UnmodifiableList<URI> getApplicableEndpoints(

@@ -884,12 +884,12 @@ public class CosmosClientBuilder implements
      * routed to these excluded regions for non-retry and retry scenarios
      * for the workload executed through this instance of {@link CosmosClient} / {@link CosmosAsyncClient}.
      *
-     * @param excludeRegions The list of regions to exclude.
+     * @param excludedRegions The list of regions to exclude.
      * @return current CosmosClientBuilder.
      * */
-    public CosmosClientBuilder excludeRegions(List<String> excludeRegions) {
+    public CosmosClientBuilder excludeRegions(List<String> excludedRegions) {
         this.excludedRegions = new ArrayList<>();
-        this.excludedRegions.addAll(excludeRegions);
+        this.excludedRegions.addAll(excludedRegions);
         return this;
     }
 
