@@ -3,6 +3,7 @@
 package com.azure.cosmos.implementation.changefeed.pkversion;
 
 import com.azure.cosmos.ChangeFeedProcessor;
+import com.azure.cosmos.ChangeFeedProcessorContext;
 import com.azure.cosmos.ConsistencyLevel;
 import com.azure.cosmos.CosmosAsyncContainer;
 import com.azure.cosmos.implementation.apachecommons.lang.StringUtils;
@@ -46,6 +47,7 @@ import java.util.Collections;
 import java.util.List;
 import java.util.Map;
 import java.util.concurrent.ConcurrentHashMap;
+import java.util.function.BiConsumer;
 import java.util.function.Consumer;
 
 import static com.azure.cosmos.CosmosBridgeInternal.getContextClient;
@@ -121,6 +123,33 @@ public class IncrementalChangeFeedProcessorImpl implements ChangeFeedProcessor, 
         this.feedContextClient.setScheduler(this.scheduler);
         this.leaseContextClient.setScheduler(this.scheduler);
         this.observerFactory = new DefaultObserverFactory<>(consumer);
+    }
+
+    public IncrementalChangeFeedProcessorImpl(
+        String hostName,
+        CosmosAsyncContainer feedContainer,
+        CosmosAsyncContainer leaseContainer,
+        BiConsumer<List<JsonNode>, ChangeFeedProcessorContext<JsonNode>> biConsumer,
+        ChangeFeedProcessorOptions changeFeedProcessorOptions) {
+
+        checkNotNull(hostName, "Argument 'hostName' can not be null");
+        checkNotNull(feedContainer, "Argument 'feedContainer' can not be null");
+        checkNotNull(biConsumer, "Argument 'biConsumer' can not be null");
+
+        if (changeFeedProcessorOptions == null) {
+            changeFeedProcessorOptions = new ChangeFeedProcessorOptions();
+        }
+        this.validateChangeFeedProcessorOptions(changeFeedProcessorOptions);
+        this.validateLeaseContainer(leaseContainer);
+
+        this.hostName = hostName;
+        this.changeFeedProcessorOptions = changeFeedProcessorOptions;
+        this.feedContextClient = new ChangeFeedContextClientImpl(feedContainer);
+        this.leaseContextClient = new ChangeFeedContextClientImpl(leaseContainer);
+        this.scheduler = this.changeFeedProcessorOptions.getScheduler();
+        this.feedContextClient.setScheduler(this.scheduler);
+        this.leaseContextClient.setScheduler(this.scheduler);
+        this.observerFactory = new DefaultObserverFactory<>(biConsumer);
     }
 
     private void validateChangeFeedProcessorOptions(ChangeFeedProcessorOptions changeFeedProcessorOptions) {
