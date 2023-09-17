@@ -83,4 +83,8 @@ public class HttpUrlConnectionResponse extends HttpResponse {
             return Flux.fromIterable(bufferedBody);
         }
     }
+
+    public HttpResponse buffer() {
+        return this;
+    }
 }
