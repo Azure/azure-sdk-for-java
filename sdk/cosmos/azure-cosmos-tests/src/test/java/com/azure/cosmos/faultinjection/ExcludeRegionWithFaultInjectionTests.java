@@ -96,11 +96,11 @@ public class ExcludeRegionWithFaultInjectionTests extends TestSuiteBase {
     //    2. chooseInitialExclusionRegions: list of regions to exclude configured when building CosmosClient / CosmosAsyncClient
     //    3. faultInjectionOperationType: the operation type for which the fault is to be injected
     //    4. faultInjectionServerErrorType: the type of fault to inject
-    //    5. regionExclusionMutator: the list of exclude region to be set on an existing client thereby mutating previously configured excluded region
+    //    5. regionExclusionMutator: the list of excluded regions to be set on an existing client thereby mutating previously configured excluded regions
     //    6. dataPlaneOperationExecutor: the callback which executes the data plane operation
     //    7. expectedResultBeforeMutation: the expected result before the excluded regions mutation is done
     //    8. expectedResultAfterMutation: the expected result after the excluded regions mutation is done
-    //    9. nonIdempotentWritesEnabled: a boolean flag to denote whether non-idempotent writes are enabled or not
+    //    9. nonIdempotentWritesEnabled: a boolean flag to denote whether non-idempotent retry of writes are enabled or not
     //    10. patchItemRequestOptionsForCallbackAfterMutation: a CosmosItemRequestOptions instance configured to be set on the data plane operation
     //    after mutation is done. used by patchItemCallback
     //    11. itemRequestOptionsForCallbackAfterMutation: a CosmosItemRequestOptions instance configured to be set on the data plane operation
