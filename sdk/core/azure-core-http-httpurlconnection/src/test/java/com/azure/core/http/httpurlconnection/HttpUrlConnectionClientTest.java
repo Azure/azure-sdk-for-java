@@ -107,7 +107,7 @@ public class HttpUrlConnectionClientTest {
 
     @Test
     public void responseBodyAsStringAsyncWithCharset() {
-        HttpClient client = new HttpUrlConnectionClientBuilder().build();
+        HttpClient client = new HttpUrlConnectionClientProvider().createInstance();
         StepVerifier.create(doRequest(client, "/short").flatMap(HttpResponse::getBodyAsByteArray))
             .assertNext(result -> assertArrayEquals(SHORT_BODY, result))
             .verifyComplete();
@@ -253,7 +253,7 @@ public class HttpUrlConnectionClientTest {
     @Test
     public void testBufferedResponse() {
         Context context = new Context("azure-eagerly-read-response", true);
-        HttpClient client = new HttpUrlConnectionClientBuilder().build();
+        HttpClient client = new HttpUrlConnectionClientProvider().createInstance();
 
         StepVerifier.create(getResponse(client, "/short", context).flatMapMany(HttpResponse::getBody))
             .assertNext(buffer -> assertArrayEquals(SHORT_BODY, buffer.array()))
@@ -271,7 +271,7 @@ public class HttpUrlConnectionClientTest {
     @Test
     public void testEmptyBufferedResponse() {
         Context context = new Context("azure-eagerly-read-response", true);
-        HttpClient client = new HttpUrlConnectionClientBuilder().build();
+        HttpClient client = new HttpUrlConnectionClientProvider().createInstance();
 
         StepVerifier.create(getResponse(client, "/empty", context).flatMapMany(HttpResponse::getBody),
                 EMPTY_INITIAL_REQUEST_OPTIONS)
@@ -281,7 +281,7 @@ public class HttpUrlConnectionClientTest {
     }
 
     private static Mono<HttpResponse> getResponse(String path) {
-        HttpClient client = new HttpUrlConnectionClientBuilder().build();
+        HttpClient client = new HttpUrlConnectionClientProvider().createInstance();
         return getResponse(client, path, Context.NONE);
     }
 
@@ -310,7 +310,7 @@ public class HttpUrlConnectionClientTest {
     }
 
     private static void checkBodyReceived(byte[] expectedBody, String path) {
-        HttpClient client = new HttpUrlConnectionClientBuilder().build();
+        HttpClient client = new HttpUrlConnectionClientProvider().createInstance();
         StepVerifier.create(doRequest(client, path).flatMap(HttpResponse::getBodyAsByteArray))
             .assertNext(bytes -> assertArrayEquals(expectedBody, bytes))
             .verifyComplete();
