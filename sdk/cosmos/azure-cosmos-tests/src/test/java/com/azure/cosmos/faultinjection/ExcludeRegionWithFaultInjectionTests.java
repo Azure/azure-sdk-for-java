@@ -79,6 +79,34 @@ public class ExcludeRegionWithFaultInjectionTests extends TestSuiteBase {
         super(cosmosClientBuilder);
     }
 
+    // The objective of this test suite is the following:
+    //      1. Test for two validation scenarios - where the operation fails with a 404, 503 or a 500 status code or the
+    //      operation succeeds with a 200, 201 or 204 status code.
+    //      2. Inject faults which could trigger a request to be routed to a different region such as 404/1002 or 503/21008
+    //      3. Validate the expected status of an eventually succeeding or an eventually failing request.
+    //      4. Validate the regions contacted when an operation is executed with an initial list of excluded regions and
+    //      do one more round of validation when the operation with the same operation type is re-executed after mutating
+    //      this list of excluded regions.
+    //      5. Validate the regions contacted when an operation is executed with CosmosItemRequestOptions / CosmosQueryRequestOptions
+    //      with excluded regions set on the request option. Here, client-level excluded regions is overridden.
+    //      6. Repeat the above steps with various operation types such as a query, point reads and point writes. Choose
+    //      various combinations of regions to exclude and regions to inject faults into.
+    // MutationTestConfig is used to encapsulate all test related configs, here is a description of each property:
+    //    chooseFaultInjectionRegions: list of regions to inject a fault into
+    //    chooseInitialExclusionRegions: list of regions to exclude configured when building CosmosClient / CosmosAsyncClient
+    //    faultInjectionOperationType: the operation type for which the fault is to be injected
+    //    faultInjectionServerErrorType: the type of fault to inject
+    //    regionExclusionMutator: the list of exclude region to be set on an existing client thereby mutating previously configured excluded region
+    //    dataPlaneOperationExecutor: the callback which executes the data plane operation
+    //    expectedResultBeforeMutation: the expected result before the excluded regions mutation is done
+    //    expectedResultAfterMutation: the expected result after the excluded regions mutation is done
+    //    nonIdempotentWritesEnabled: a boolean flag to denote whether non-idempotent writes are enabled or not
+    //    patchItemRequestOptionsForCallbackAfterMutation: a CosmosItemRequestOptions instance configured to be set on the data plane operation
+    //    after mutation is done. used by patchItemCallback
+    //    itemRequestOptionsForCallbackAfterMutation: a CosmosItemRequestOptions instance configured to be set on the data plane operation
+    //    after mutation is done.
+    //    queryRequestOptions: a CosmosItemRequestOptions instance configured to be set on the data plane operation
+    //    after mutation is done. used by the queryItemCallback
     @BeforeClass(groups = {"multi-master"})
     public void beforeClass() {
         this.cosmosAsyncClient = getClientBuilder().buildAsyncClient();
@@ -93,7 +121,6 @@ public class ExcludeRegionWithFaultInjectionTests extends TestSuiteBase {
         this.preferredRegions = this.writeRegionMap.keySet().stream().collect(Collectors.toList());
     }
 
-    // todo: add scenarios for failover on 503s after fabian's ClientRetryPolicy/AvailabilityStrategy improvement improvement
     @DataProvider(name = "regionExclusionReadAfterCreateTestConfigs")
     public Object[][] regionExclusionReadAfterCreateTestConfigs() {
 
@@ -368,16 +395,6 @@ public class ExcludeRegionWithFaultInjectionTests extends TestSuiteBase {
         throw new IllegalStateException("This test suite is tested for 2 or 3 preferred regions");
     }
 
-    // The objective of this test suite is the following:
-    //      1. Test for two validation scenarios - where the operation fails with a 404, 503 or a 500 status code or the
-    //      operation succeeds with a 200, 201 or 204 status code.
-    //      2. Inject faults which could trigger a request to be routed to a different region such as 404/1002 or 503/21008
-    //      3. Validate the expected status of an eventually succeeding or an eventually failing request.
-    //      4. Validate the regions contacted when an operation is executed with an initial list of excluded regions and
-    //      do one more round of validation when the operation with the same operation type is re-executed after mutating
-    //      this list of excluded regions.
-    //      5. Repeat the above steps with various operation types such as a query, point reads and point writes. Choose
-    //      various combinations of regions to exclude and regions to inject faults into.
     @DataProvider(name = "regionExclusionQueryAfterCreateTestConfigs")
     public Object[][] regionExclusionQueryAfterCreateTestConfigs() {
         Function<ItemOperationInvocationParameters, OperationExecutionResult<?>> queryItemCallback =
@@ -386,7 +403,8 @@ public class ExcludeRegionWithFaultInjectionTests extends TestSuiteBase {
                 TestItem alreadyCreatedItem = params.createdItem;
 
                 String query = String.format("SELECT * FROM c WHERE c.id = '%s'", alreadyCreatedItem.getId());
-                CosmosQueryRequestOptions queryRequestOptions = new CosmosQueryRequestOptions();
+                CosmosQueryRequestOptions queryRequestOptions = params.queryRequestOptions != null
+                    ? params.queryRequestOptions : new CosmosQueryRequestOptions();
 
                 SqlQuerySpec sqlQuerySpec = new SqlQuerySpec(query);
 
@@ -482,6 +500,28 @@ public class ExcludeRegionWithFaultInjectionTests extends TestSuiteBase {
                         .withFaultInjectionServerErrorType(FaultInjectionServerErrorType.SERVICE_UNAVAILABLE)
                         .withDataPlaneOperationExecutor(queryItemCallback)
                         .withRegionExclusionMutator((regions) -> new ArrayList<>())
+                        .withExpectedResultBeforeMutation(new ExpectedResult(
+                            HttpConstants.StatusCodes.OK,
+                            HttpConstants.SubStatusCodes.UNKNOWN,
+                            this.chooseLastRegion.apply(this.preferredRegions)
+                        ))
+                        .withExpectedResultAfterMutation(new ExpectedResult(
+                            HttpConstants.StatusCodes.OK,
+                            HttpConstants.SubStatusCodes.UNKNOWN,
+                            this.chooseAllRegions.apply(this.preferredRegions)
+                    ))
+                },
+                {
+                    "503/21008_firstRegion_beforeMutation_excludeFirstRegion_afterMutation_excludeNoRegions_requestOptionsOverride",
+                    new MutationTestConfig()
+                        .withChooseInitialExclusionRegions(this.chooseFirstRegion)
+                        .withChooseFaultInjectionRegions(this.chooseFirstRegion)
+                        .withFaultInjectionOperationType(FaultInjectionOperationType.QUERY_ITEM)
+                        .withFaultInjectionServerErrorType(FaultInjectionServerErrorType.SERVICE_UNAVAILABLE)
+                        .withDataPlaneOperationExecutor(queryItemCallback)
+                        .withRegionExclusionMutator((regions) -> new ArrayList<>())
+                        .withQueryRequestOptionsForCallbackAfterMutation(
+                            new CosmosQueryRequestOptions().setExcludedRegions(this.chooseLastRegion.apply(this.preferredRegions)))
                         .withExpectedResultBeforeMutation(new ExpectedResult(
                             HttpConstants.StatusCodes.OK,
                             HttpConstants.SubStatusCodes.UNKNOWN,
@@ -635,7 +675,9 @@ public class ExcludeRegionWithFaultInjectionTests extends TestSuiteBase {
 
                 try {
 
-                    CosmosItemRequestOptions itemRequestOptions = new CosmosItemRequestOptions();
+                    CosmosItemRequestOptions itemRequestOptions = params.itemRequestOptionsForCallbackAfterMutation != null ?
+                        params.itemRequestOptionsForCallbackAfterMutation : new CosmosItemRequestOptions();
+
                     itemRequestOptions.setNonIdempotentWriteRetryPolicy(params.nonIdempotentWriteRetriesEnabled, true);
 
                     CosmosItemResponse<TestItem> response = params.cosmosAsyncContainer
@@ -666,7 +708,9 @@ public class ExcludeRegionWithFaultInjectionTests extends TestSuiteBase {
                 TestItem alreadyCreatedItem = params.createdItem;
                 alreadyCreatedItem.setProp(UUID.randomUUID().toString());
 
-                CosmosItemRequestOptions itemRequestOptions = new CosmosItemRequestOptions();
+                CosmosItemRequestOptions itemRequestOptions = params.itemRequestOptionsForCallbackAfterMutation != null ?
+                    params.itemRequestOptionsForCallbackAfterMutation : new CosmosItemRequestOptions();
+
                 itemRequestOptions.setNonIdempotentWriteRetryPolicy(params.nonIdempotentWriteRetriesEnabled, true);
 
                 try {
@@ -698,7 +742,9 @@ public class ExcludeRegionWithFaultInjectionTests extends TestSuiteBase {
 
                 TestItem alreadyCreatedItem = params.createdItem;
 
-                CosmosItemRequestOptions itemRequestOptions = new CosmosItemRequestOptions();
+                CosmosItemRequestOptions itemRequestOptions = params.itemRequestOptionsForCallbackAfterMutation != null ?
+                    params.itemRequestOptionsForCallbackAfterMutation : new CosmosItemRequestOptions();
+
                 itemRequestOptions.setNonIdempotentWriteRetryPolicy(params.nonIdempotentWriteRetriesEnabled, true);
 
                 try {
@@ -730,7 +776,9 @@ public class ExcludeRegionWithFaultInjectionTests extends TestSuiteBase {
                 TestItem alreadyCreatedItem = params.createdItem;
                 alreadyCreatedItem.setProp(UUID.randomUUID().toString());
 
-                CosmosItemRequestOptions itemRequestOptions = new CosmosItemRequestOptions();
+                CosmosItemRequestOptions itemRequestOptions = params.itemRequestOptionsForCallbackAfterMutation != null ?
+                    params.itemRequestOptionsForCallbackAfterMutation : new CosmosItemRequestOptions();
+
                 itemRequestOptions.setNonIdempotentWriteRetryPolicy(params.nonIdempotentWriteRetriesEnabled, true);
 
                 try {
@@ -760,7 +808,9 @@ public class ExcludeRegionWithFaultInjectionTests extends TestSuiteBase {
 
                 TestItem newItem = TestItem.createNewItem();
 
-                CosmosItemRequestOptions itemRequestOptions = new CosmosItemRequestOptions();
+                CosmosItemRequestOptions itemRequestOptions = params.itemRequestOptionsForCallbackAfterMutation != null ?
+                params.itemRequestOptionsForCallbackAfterMutation : new CosmosItemRequestOptions();
+
                 itemRequestOptions.setNonIdempotentWriteRetryPolicy(params.nonIdempotentWriteRetriesEnabled, true);
 
                 try {
@@ -790,7 +840,9 @@ public class ExcludeRegionWithFaultInjectionTests extends TestSuiteBase {
                 CosmosPatchOperations patchOperations = CosmosPatchOperations.create();
                 patchOperations.add("/newField", UUID.randomUUID().toString());
 
-                CosmosPatchItemRequestOptions patchItemRequestOptions = new CosmosPatchItemRequestOptions();
+                CosmosItemRequestOptions patchItemRequestOptions = params.patchItemRequestOptionsForCallbackAfterMutation != null ?
+                    params.patchItemRequestOptionsForCallbackAfterMutation : new CosmosPatchItemRequestOptions();
+
                 patchItemRequestOptions.setNonIdempotentWriteRetryPolicy(params.nonIdempotentWriteRetriesEnabled, true);
 
                 try {
@@ -798,7 +850,7 @@ public class ExcludeRegionWithFaultInjectionTests extends TestSuiteBase {
                         params.createdItem.getId(),
                         new PartitionKey(params.createdItem.getId()),
                         patchOperations,
-                        patchItemRequestOptions,
+                        (CosmosPatchItemRequestOptions) patchItemRequestOptions,
                         TestItem.class
                     ).block();
 
@@ -1043,6 +1095,29 @@ public class ExcludeRegionWithFaultInjectionTests extends TestSuiteBase {
                     )),
                 },
                 {
+                    "replace_503/21008_firstRegion_beforeMutation_excludeLastRegion_afterMutation_excludeNoRegions_nonIdempotentWrite_true_requestOptionsOverride_excludeLastRegion",
+                    new MutationTestConfig()
+                        .withChooseFaultInjectionRegions(this.chooseFirstRegion)
+                        .withChooseInitialExclusionRegions(this.chooseLastRegion)
+                        .withDataPlaneOperationExecutor(replaceItemCallback)
+                        .withFaultInjectionServerErrorType(FaultInjectionServerErrorType.SERVICE_UNAVAILABLE)
+                        .withRegionExclusionMutator((regions) -> new ArrayList<>())
+                        .withFaultInjectionOperationType(FaultInjectionOperationType.REPLACE_ITEM)
+                        .withNonIdempotentWritesEnabled(true)
+                        .withItemRequestOptionsForCallbackAfterMutation(
+                            new CosmosItemRequestOptions().setExcludedRegions(this.chooseLastRegion.apply(this.preferredRegions)))
+                        .withExpectedResultBeforeMutation(new ExpectedResult(
+                            HttpConstants.StatusCodes.SERVICE_UNAVAILABLE,
+                            HttpConstants.SubStatusCodes.SERVER_GENERATED_503,
+                            this.chooseFirstRegion.apply(this.preferredRegions)
+                        ))
+                        .withExpectedResultAfterMutation(new ExpectedResult(
+                            HttpConstants.StatusCodes.SERVICE_UNAVAILABLE,
+                            HttpConstants.SubStatusCodes.SERVER_GENERATED_503,
+                            this.chooseFirstRegion.apply(this.preferredRegions)
+                    )),
+                },
+                {
                     "upsertExistingItem_503/21008_firstRegion_beforeMutation_excludeLastRegion_afterMutation_excludeNoRegions_nonIdempotentWrite_false",
                     new MutationTestConfig()
                         .withChooseFaultInjectionRegions(this.chooseFirstRegion)
@@ -1178,6 +1253,50 @@ public class ExcludeRegionWithFaultInjectionTests extends TestSuiteBase {
                         .withRegionExclusionMutator((regions) -> new ArrayList<>())
                         .withFaultInjectionOperationType(FaultInjectionOperationType.PATCH_ITEM)
                         .withNonIdempotentWritesEnabled(false)
+                        .withExpectedResultBeforeMutation(new ExpectedResult(
+                            HttpConstants.StatusCodes.SERVICE_UNAVAILABLE,
+                            HttpConstants.SubStatusCodes.SERVER_GENERATED_503,
+                            this.chooseFirstRegion.apply(this.preferredRegions)
+                        ))
+                        .withExpectedResultAfterMutation(new ExpectedResult(
+                            HttpConstants.StatusCodes.SERVICE_UNAVAILABLE,
+                            HttpConstants.SubStatusCodes.SERVER_GENERATED_503,
+                            this.chooseFirstRegion.apply(this.preferredRegions)
+                    )),
+                },
+                {
+                    "patch_503/21008_firstRegion_beforeMutation_excludeLastRegion_afterMutation_excludeNoRegions_nonIdempotentWrite_true",
+                    new MutationTestConfig()
+                        .withChooseFaultInjectionRegions(this.chooseFirstRegion)
+                        .withChooseInitialExclusionRegions(this.chooseLastRegion)
+                        .withDataPlaneOperationExecutor(patchItemCallback)
+                        .withFaultInjectionServerErrorType(FaultInjectionServerErrorType.SERVICE_UNAVAILABLE)
+                        .withRegionExclusionMutator((regions) -> new ArrayList<>())
+                        .withFaultInjectionOperationType(FaultInjectionOperationType.PATCH_ITEM)
+                        .withNonIdempotentWritesEnabled(true)
+                        .withExpectedResultBeforeMutation(new ExpectedResult(
+                            HttpConstants.StatusCodes.SERVICE_UNAVAILABLE,
+                            HttpConstants.SubStatusCodes.SERVER_GENERATED_503,
+                            this.chooseFirstRegion.apply(this.preferredRegions)
+                        ))
+                        .withExpectedResultAfterMutation(new ExpectedResult(
+                            HttpConstants.StatusCodes.OK,
+                            HttpConstants.SubStatusCodes.UNKNOWN,
+                            this.chooseAllRegions.apply(this.preferredRegions)
+                    )),
+                },
+                {
+                    "patch_503/21008_firstRegion_beforeMutation_excludeLastRegion_afterMutation_excludeNoRegions_nonIdempotentWrite_true_requestOptionsOverride",
+                    new MutationTestConfig()
+                        .withChooseFaultInjectionRegions(this.chooseFirstRegion)
+                        .withChooseInitialExclusionRegions(this.chooseLastRegion)
+                        .withDataPlaneOperationExecutor(patchItemCallback)
+                        .withFaultInjectionServerErrorType(FaultInjectionServerErrorType.SERVICE_UNAVAILABLE)
+                        .withRegionExclusionMutator((regions) -> new ArrayList<>())
+                        .withFaultInjectionOperationType(FaultInjectionOperationType.PATCH_ITEM)
+                        .withPatchRequestOptionsForCallbackAfterMutation(
+                            new CosmosPatchItemRequestOptions().setExcludedRegions(this.chooseLastRegion.apply(this.preferredRegions)))
+                        .withNonIdempotentWritesEnabled(true)
                         .withExpectedResultBeforeMutation(new ExpectedResult(
                             HttpConstants.StatusCodes.SERVICE_UNAVAILABLE,
                             HttpConstants.SubStatusCodes.SERVER_GENERATED_503,
@@ -1397,6 +1516,9 @@ public class ExcludeRegionWithFaultInjectionTests extends TestSuiteBase {
 
             List<String> mutatedExcludedRegions = regionExclusionMutators.apply(this.preferredRegions);
             clientWithPreferredRegions.excludeRegions(mutatedExcludedRegions);
+
+            params.itemRequestOptionsForCallbackAfterMutation = mutationTestConfig.itemRequestOptionsForCallbackAfterMutation;
+            params.patchItemRequestOptionsForCallbackAfterMutation = mutationTestConfig.patchItemRequestOptionsForCallbackAfterMutation;
 
             OperationExecutionResult<?> operationExecutionResultAfterMutation = dataPlaneOperationExecutor.apply(params);
             validateResponse(operationExecutionResultAfterMutation, mutationTestConfig.expectedResultAfterMutation);
@@ -1668,6 +1790,9 @@ public class ExcludeRegionWithFaultInjectionTests extends TestSuiteBase {
         private ExpectedResult expectedResultBeforeMutation = null;
         private ExpectedResult expectedResultAfterMutation = null;
         private boolean nonIdempotentWritesEnabled = false;
+        private CosmosItemRequestOptions patchItemRequestOptionsForCallbackAfterMutation = null;
+        private CosmosItemRequestOptions itemRequestOptionsForCallbackAfterMutation = null;
+        private CosmosQueryRequestOptions queryRequestOptions = null;
 
         public MutationTestConfig withChooseFaultInjectionRegions(
             Function<List<String>, List<String>> chooseFaultInjectionRegions) {
@@ -1717,11 +1842,29 @@ public class ExcludeRegionWithFaultInjectionTests extends TestSuiteBase {
             this.nonIdempotentWritesEnabled = nonIdempotentWritesEnabled;
             return this;
         }
+
+        public MutationTestConfig withItemRequestOptionsForCallbackAfterMutation(CosmosItemRequestOptions itemRequestOptions) {
+            this.itemRequestOptionsForCallbackAfterMutation = itemRequestOptions;
+            return this;
+        }
+
+        public MutationTestConfig withPatchRequestOptionsForCallbackAfterMutation(CosmosItemRequestOptions patchItemRequestOptions) {
+            this.patchItemRequestOptionsForCallbackAfterMutation = patchItemRequestOptions;
+            return this;
+        }
+
+        public MutationTestConfig withQueryRequestOptionsForCallbackAfterMutation(CosmosQueryRequestOptions queryRequestOptions) {
+            this.queryRequestOptions = queryRequestOptions;
+            return this;
+        }
     }
 
     private static class ItemOperationInvocationParameters {
         public boolean nonIdempotentWriteRetriesEnabled;
         public CosmosAsyncContainer cosmosAsyncContainer;
         public TestItem createdItem;
+        public CosmosItemRequestOptions itemRequestOptionsForCallbackAfterMutation;
+        public CosmosItemRequestOptions patchItemRequestOptionsForCallbackAfterMutation;
+        public CosmosQueryRequestOptions queryRequestOptions;
     }
 }
