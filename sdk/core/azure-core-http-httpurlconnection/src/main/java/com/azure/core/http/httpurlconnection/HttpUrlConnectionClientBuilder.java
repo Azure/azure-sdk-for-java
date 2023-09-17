@@ -75,6 +75,11 @@ public class HttpUrlConnectionClientBuilder {
                 buildProxyOptions.getPassword()));
         }
 
+        if (buildProxyOptions != null && buildProxyOptions.getType() != ProxyOptions.Type.HTTP
+            && buildProxyOptions.getType() != null) {
+            throw new IllegalArgumentException("Invalid proxy");
+        }
+
         return new HttpUrlConnectionClient(connectionTimeout, buildProxyOptions, executor, buildConfiguration);
     }
 
