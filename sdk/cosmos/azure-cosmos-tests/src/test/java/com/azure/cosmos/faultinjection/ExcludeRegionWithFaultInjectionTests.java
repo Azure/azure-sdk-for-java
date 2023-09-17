@@ -82,7 +82,7 @@ public class ExcludeRegionWithFaultInjectionTests extends TestSuiteBase {
     // The objective of this test suite is the following:
     //      1. Test for two validation scenarios - where the operation fails with a 404, 503 or a 500 status code or the
     //      operation succeeds with a 200, 201 or 204 status code.
-    //      2. Inject faults which could trigger a request to be routed to a different region such as 404/1002 or 503/21008
+    //      2. Inject faults which could trigger a request to be routed to a different region such as 404/1002 or 503/21008.
     //      3. Validate the expected status of an eventually succeeding or an eventually failing request.
     //      4. Validate the regions contacted when an operation is executed with an initial list of excluded regions and
     //      do one more round of validation when the operation with the same operation type is re-executed after mutating
@@ -92,20 +92,20 @@ public class ExcludeRegionWithFaultInjectionTests extends TestSuiteBase {
     //      6. Repeat the above steps with various operation types such as a query, point reads and point writes. Choose
     //      various combinations of regions to exclude and regions to inject faults into.
     // MutationTestConfig is used to encapsulate all test related configs, here is a description of each property:
-    //    chooseFaultInjectionRegions: list of regions to inject a fault into
-    //    chooseInitialExclusionRegions: list of regions to exclude configured when building CosmosClient / CosmosAsyncClient
-    //    faultInjectionOperationType: the operation type for which the fault is to be injected
-    //    faultInjectionServerErrorType: the type of fault to inject
-    //    regionExclusionMutator: the list of exclude region to be set on an existing client thereby mutating previously configured excluded region
-    //    dataPlaneOperationExecutor: the callback which executes the data plane operation
-    //    expectedResultBeforeMutation: the expected result before the excluded regions mutation is done
-    //    expectedResultAfterMutation: the expected result after the excluded regions mutation is done
-    //    nonIdempotentWritesEnabled: a boolean flag to denote whether non-idempotent writes are enabled or not
-    //    patchItemRequestOptionsForCallbackAfterMutation: a CosmosItemRequestOptions instance configured to be set on the data plane operation
+    //    1. chooseFaultInjectionRegions: list of regions to inject a fault into
+    //    2. chooseInitialExclusionRegions: list of regions to exclude configured when building CosmosClient / CosmosAsyncClient
+    //    3. faultInjectionOperationType: the operation type for which the fault is to be injected
+    //    4. faultInjectionServerErrorType: the type of fault to inject
+    //    5. regionExclusionMutator: the list of exclude region to be set on an existing client thereby mutating previously configured excluded region
+    //    6. dataPlaneOperationExecutor: the callback which executes the data plane operation
+    //    7. expectedResultBeforeMutation: the expected result before the excluded regions mutation is done
+    //    8. expectedResultAfterMutation: the expected result after the excluded regions mutation is done
+    //    9. nonIdempotentWritesEnabled: a boolean flag to denote whether non-idempotent writes are enabled or not
+    //    10. patchItemRequestOptionsForCallbackAfterMutation: a CosmosItemRequestOptions instance configured to be set on the data plane operation
     //    after mutation is done. used by patchItemCallback
-    //    itemRequestOptionsForCallbackAfterMutation: a CosmosItemRequestOptions instance configured to be set on the data plane operation
+    //    11. itemRequestOptionsForCallbackAfterMutation: a CosmosItemRequestOptions instance configured to be set on the data plane operation
     //    after mutation is done.
-    //    queryRequestOptions: a CosmosItemRequestOptions instance configured to be set on the data plane operation
+    //    12. queryRequestOptions: a CosmosItemRequestOptions instance configured to be set on the data plane operation
     //    after mutation is done. used by the queryItemCallback
     @BeforeClass(groups = {"multi-master"})
     public void beforeClass() {

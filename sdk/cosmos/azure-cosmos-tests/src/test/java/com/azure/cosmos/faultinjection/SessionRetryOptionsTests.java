@@ -66,7 +66,7 @@ public class SessionRetryOptionsTests extends TestSuiteBase {
     private Map<String, String> writeRegionMap;
     private static ImplementationBridgeHelpers.CosmosSessionRetryOptionsHelper.CosmosSessionRetryOptionsAccessor sessionRetryOptionsAccessor
         = ImplementationBridgeHelpers.CosmosSessionRetryOptionsHelper.getCosmosSessionRetryOptionsAccessor();
-    private Consumer<SessionRetryOptions> regionSwitchHintToggler = ((sessionRetryOptions) -> {
+    private final Consumer<SessionRetryOptions> regionSwitchHintToggler = ((sessionRetryOptions) -> {
 
         CosmosRegionSwitchHint regionSwitchHint = sessionRetryOptionsAccessor.getRegionSwitchHint(sessionRetryOptions);
 
@@ -82,6 +82,13 @@ public class SessionRetryOptionsTests extends TestSuiteBase {
         super(cosmosClientBuilder);
     }
 
+    // The objective of this test suite is the following:
+    //      1. Test for scenarios where REMOTE_REGION_PREFERRED or LOCAL_REGION_PREFERRED.
+    //      is set through SessionRetryOptions while building CosmosClient / CosmosAsyncClient.
+    //      2. Test for various data plane operations such as point reads, point writes and query.
+    //      3. Validate by determining the time taken to return a success response (typically with a 200, 201 or 204 status code).
+    //      With REMOTE_REGION_PREFERRED, a response is bubbled up much quicker than the overall retry window of around 5s (default).
+    //      4. Check for dynamic configurability on SessionRetryOptions by switching b/w REMOTE_REGION_PREFERRED or LOCAL_REGION_PREFERRED.
     @BeforeClass(groups = {"multi-master"}, timeOut = SETUP_TIMEOUT)
     public void beforeClass() {
         cosmosAsyncClient = getClientBuilder().buildAsyncClient();
