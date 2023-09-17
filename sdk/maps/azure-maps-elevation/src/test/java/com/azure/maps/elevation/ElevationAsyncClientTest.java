@@ -3,37 +3,24 @@
 
 package com.azure.maps.elevation;
 
-import static org.junit.jupiter.api.Assertions.assertEquals;
+import com.azure.core.exception.HttpResponseException;
+import com.azure.core.http.HttpClient;
+import com.azure.core.models.GeoBoundingBox;
+import com.azure.core.models.GeoPosition;
+import org.junit.jupiter.api.Assertions;
+import org.junit.jupiter.params.ParameterizedTest;
+import org.junit.jupiter.params.provider.MethodSource;
+import reactor.test.StepVerifier;
 
 import java.io.IOException;
 import java.time.Duration;
 import java.util.Arrays;
 
-import com.azure.core.exception.HttpResponseException;
-import com.azure.core.http.HttpClient;
-import com.azure.core.models.GeoBoundingBox;
-import com.azure.core.models.GeoPosition;
-
-import org.junit.jupiter.api.AfterAll;
-import org.junit.jupiter.api.Assertions;
-import org.junit.jupiter.api.BeforeAll;
-import org.junit.jupiter.params.ParameterizedTest;
-import org.junit.jupiter.params.provider.MethodSource;
-
-import reactor.test.StepVerifier;
+import static org.junit.jupiter.api.Assertions.assertEquals;
 
 public class ElevationAsyncClientTest extends ElevationClientTestBase {
     private static final String DISPLAY_NAME_WITH_ARGUMENTS = "{displayName} with [{arguments}]";
-
-    @BeforeAll
-    public static void beforeAll() {
-        StepVerifier.setDefaultTimeout(Duration.ofSeconds(30));
-    }
-
-    @AfterAll
-    public static void afterAll() {
-        StepVerifier.resetDefaultTimeout();
-    }
+    private static final Duration DEFAULT_TIMEOUT = Duration.ofSeconds(30);
 
     private ElevationAsyncClient getElevationAsyncClient(HttpClient httpClient, ElevationServiceVersion serviceVersion) {
         return getElevationAsyncClientBuilder(httpClient, serviceVersion).buildAsyncClient();
@@ -51,7 +38,9 @@ public class ElevationAsyncClientTest extends ElevationClientTestBase {
                 } catch (IOException e) {
                     Assertions.fail("Unable to get data for points");
                 }
-            }).verifyComplete();
+            })
+            .expectComplete()
+            .verify(DEFAULT_TIMEOUT);
     }
 
     // Test async get data for points with response
@@ -67,7 +56,9 @@ public class ElevationAsyncClientTest extends ElevationClientTestBase {
                 } catch (IOException e) {
                     Assertions.fail("Unable to get data for points");
                 }
-            }).verifyComplete();
+            })
+            .expectComplete()
+            .verify(DEFAULT_TIMEOUT);
     }
 
     // Case 2: 400 invalid input
@@ -76,10 +67,11 @@ public class ElevationAsyncClientTest extends ElevationClientTestBase {
     public void testAsyncInvalidGetDataForPointsWithResponse(HttpClient httpClient, ElevationServiceVersion serviceVersion) {
         ElevationAsyncClient client = getElevationAsyncClient(httpClient, serviceVersion);
         StepVerifier.create(client.getDataForPointsWithResponse(Arrays.asList(new GeoPosition(-100000000, 46.84646479863713), new GeoPosition(-121.68853362143818, 46.856464798637127)), null))
-            .verifyErrorSatisfies(ex -> {
+            .expectErrorSatisfies(ex -> {
                 final HttpResponseException httpResponseException = (HttpResponseException) ex;
                 assertEquals(400, httpResponseException.getResponse().getStatusCode());
-            });
+            })
+            .verify(DEFAULT_TIMEOUT);
     }
 
     // Test async get data for polyline
@@ -96,7 +88,9 @@ public class ElevationAsyncClientTest extends ElevationClientTestBase {
                 } catch (IOException e) {
                     Assertions.fail("Unable to get data for polyline");
                 }
-            }).verifyComplete();
+            })
+            .expectComplete()
+            .verify(DEFAULT_TIMEOUT);
     }
 
     // Test async get data for polyline with response
@@ -114,7 +108,9 @@ public class ElevationAsyncClientTest extends ElevationClientTestBase {
                 } catch (IOException e) {
                     Assertions.fail("Unable to get data for polyline");
                 }
-            }).verifyComplete();
+            })
+            .expectComplete()
+            .verify(DEFAULT_TIMEOUT);
     }
 
     // Case 2: 400 invalid input
@@ -125,10 +121,11 @@ public class ElevationAsyncClientTest extends ElevationClientTestBase {
         StepVerifier.create(client.getDataForPolylineWithResponse(Arrays.asList(
                 new GeoPosition(-1000000, 46.84646479863713),
                 new GeoPosition(-121.65853362143818, 46.85646479863713)), 5, null))
-            .verifyErrorSatisfies(ex -> {
+            .expectErrorSatisfies(ex -> {
                 final HttpResponseException httpResponseException = (HttpResponseException) ex;
                 assertEquals(400, httpResponseException.getResponse().getStatusCode());
-            });
+            })
+            .verify(DEFAULT_TIMEOUT);
     }
 
     // Test get data for bounding box
@@ -144,7 +141,9 @@ public class ElevationAsyncClientTest extends ElevationClientTestBase {
                 } catch (IOException e) {
                     Assertions.fail("Unable to get data for bounding box");
                 }
-            }).verifyComplete();
+            })
+            .expectComplete()
+            .verify(DEFAULT_TIMEOUT);
     }
 
     // Test async get data for bounding box with response
@@ -161,7 +160,9 @@ public class ElevationAsyncClientTest extends ElevationClientTestBase {
                 } catch (IOException e) {
                     Assertions.fail("Unable to get data for bounding box");
                 }
-            }).verifyComplete();
+            })
+            .expectComplete()
+            .verify(DEFAULT_TIMEOUT);
     }
 
     // Case 2: 400 invalid input
@@ -171,9 +172,10 @@ public class ElevationAsyncClientTest extends ElevationClientTestBase {
         ElevationAsyncClient client = getElevationAsyncClient(httpClient, serviceVersion);
         StepVerifier.create(client.getDataForBoundingBoxWithResponse(new GeoBoundingBox(-121.668533621438f, 46.8464647986371f,
                 -10000000f, 46.8564647986371f), 3, 3, null))
-            .verifyErrorSatisfies(ex -> {
+            .expectErrorSatisfies(ex -> {
                 final HttpResponseException httpResponseException = (HttpResponseException) ex;
                 assertEquals(400, httpResponseException.getResponse().getStatusCode());
-            });
+            })
+            .verify(DEFAULT_TIMEOUT);
     }
 }

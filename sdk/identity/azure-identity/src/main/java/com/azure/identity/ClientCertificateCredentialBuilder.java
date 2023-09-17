@@ -94,7 +94,7 @@ public class ClientCertificateCredentialBuilder extends AadCredentialBuilderBase
      * @param certificate the input stream containing the PEM certificate
      * @return An updated instance of this builder.
      */
-    ClientCertificateCredentialBuilder pemCertificate(InputStream certificate) {
+    public ClientCertificateCredentialBuilder pemCertificate(InputStream certificate) {
         this.clientCertificate = certificate;
         return this;
     }
@@ -102,10 +102,15 @@ public class ClientCertificateCredentialBuilder extends AadCredentialBuilderBase
     /**
      * Sets the path and password of the PFX certificate for authenticating to AAD.
      *
+     * @deprecated This API is deprecated and will be removed. Specify the PFX certificate via
+     * {@link ClientCertificateCredentialBuilder#pfxCertificate(String)} API and client certificate password via
+     * the {@link ClientCertificateCredentialBuilder#clientCertificatePassword(String)} API as applicable.
+     *
      * @param certificatePath the password protected PFX file containing the certificate
      * @param clientCertificatePassword the password protecting the PFX file
      * @return An updated instance of this builder.
      */
+    @Deprecated
     public ClientCertificateCredentialBuilder pfxCertificate(String certificatePath,
                                                              String clientCertificatePassword) {
         this.clientCertificatePath = certificatePath;
@@ -114,15 +119,34 @@ public class ClientCertificateCredentialBuilder extends AadCredentialBuilderBase
     }
 
     /**
+     * Sets the path of the PFX certificate for authenticating to AAD.
+     *
+     * @param certificatePath the password protected PFX file containing the certificate
+     * @return An updated instance of this builder.
+     */
+    public ClientCertificateCredentialBuilder pfxCertificate(String certificatePath) {
+        this.clientCertificatePath = certificatePath;
+        return this;
+    }
+
+    /**
      * Sets the input stream holding the PFX certificate and its password for authenticating to AAD.
      *
      * @param certificate the input stream containing the password protected PFX certificate
-     * @param clientCertificatePassword the password protecting the PFX file
      * @return An updated instance of this builder.
      */
-    ClientCertificateCredentialBuilder pfxCertificate(InputStream certificate,
-                                                             String clientCertificatePassword) {
+    public ClientCertificateCredentialBuilder pfxCertificate(InputStream certificate) {
         this.clientCertificate = certificate;
+        return this;
+    }
+
+    /**
+     * Sets the password of the client certificate for authenticating to AAD.
+     *
+     * @param clientCertificatePassword the password protecting the certificate
+     * @return An updated instance of this builder.
+     */
+    public ClientCertificateCredentialBuilder clientCertificatePassword(String clientCertificatePassword) {
         this.clientCertificatePassword = clientCertificatePassword;
         return this;
     }

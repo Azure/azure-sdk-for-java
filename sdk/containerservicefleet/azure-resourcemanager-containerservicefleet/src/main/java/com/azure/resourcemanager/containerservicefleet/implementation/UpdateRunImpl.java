@@ -4,7 +4,6 @@
 
 package com.azure.resourcemanager.containerservicefleet.implementation;
 
-import com.azure.core.management.SystemData;
 import com.azure.core.util.Context;
 import com.azure.resourcemanager.containerservicefleet.fluent.models.UpdateRunInner;
 import com.azure.resourcemanager.containerservicefleet.models.ManagedClusterUpdate;
@@ -32,10 +31,6 @@ public final class UpdateRunImpl implements UpdateRun, UpdateRun.Definition, Upd
 
     public String etag() {
         return this.innerModel().etag();
-    }
-
-    public SystemData systemData() {
-        return this.innerModel().systemData();
     }
 
     public UpdateRunProvisioningState provisioningState() {
