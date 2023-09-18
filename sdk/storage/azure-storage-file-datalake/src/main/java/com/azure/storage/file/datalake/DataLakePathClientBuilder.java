@@ -26,7 +26,9 @@ import com.azure.core.util.CoreUtils;
 import com.azure.core.util.HttpClientOptions;
 import com.azure.core.util.logging.ClientLogger;
 import com.azure.storage.blob.BlobClientBuilder;
+import com.azure.storage.blob.BlobServiceClientBuilder;
 import com.azure.storage.blob.BlobUrlParts;
+import com.azure.storage.blob.models.BlobAudience;
 import com.azure.storage.common.StorageSharedKeyCredential;
 import com.azure.storage.common.Utility;
 import com.azure.storage.common.policy.RequestRetryOptions;
@@ -35,6 +37,7 @@ import com.azure.storage.file.datalake.implementation.util.DataLakeImplUtils;
 import com.azure.storage.file.datalake.implementation.util.TransformUtils;
 import com.azure.storage.file.datalake.implementation.models.CpkInfo;
 import com.azure.storage.file.datalake.models.CustomerProvidedKey;
+import com.azure.storage.file.datalake.models.DataLakeAudience;
 
 import java.net.MalformedURLException;
 import java.net.URL;
@@ -93,6 +96,7 @@ public final class DataLakePathClientBuilder implements
     private Configuration configuration;
     private DataLakeServiceVersion version;
     private CpkInfo customerProvidedKey;
+    private DataLakeAudience dataLakeAudience;
 
     /**
      * Creates a builder instance that is able to configure and construct {@link DataLakeFileClient FileClients}, {@link
@@ -162,9 +166,9 @@ public final class DataLakePathClientBuilder implements
         DataLakeServiceVersion serviceVersion = version != null ? version : DataLakeServiceVersion.getLatest();
 
         HttpPipeline pipeline = (httpPipeline != null) ? httpPipeline : BuilderHelper.buildPipeline(
-            storageSharedKeyCredential, tokenCredential, azureSasCredential,
-            endpoint, retryOptions, coreRetryOptions, logOptions,
-            clientOptions, httpClient, perCallPolicies, perRetryPolicies, configuration, LOGGER);
+            storageSharedKeyCredential, tokenCredential, azureSasCredential, endpoint, retryOptions, coreRetryOptions,
+            logOptions, clientOptions, httpClient, perCallPolicies, perRetryPolicies, configuration, LOGGER,
+            dataLakeAudience);
 
         return new DataLakeFileAsyncClient(pipeline, endpoint, serviceVersion, accountName, dataLakeFileSystemName,
             pathName, blobClientBuilder.buildAsyncClient().getBlockBlobAsyncClient(), azureSasCredential,
@@ -228,9 +232,9 @@ public final class DataLakePathClientBuilder implements
         DataLakeServiceVersion serviceVersion = version != null ? version : DataLakeServiceVersion.getLatest();
 
         HttpPipeline pipeline = (httpPipeline != null) ? httpPipeline : BuilderHelper.buildPipeline(
-            storageSharedKeyCredential, tokenCredential, azureSasCredential, endpoint,
-            retryOptions, coreRetryOptions, logOptions,
-            clientOptions, httpClient, perCallPolicies, perRetryPolicies, configuration, LOGGER);
+            storageSharedKeyCredential, tokenCredential, azureSasCredential, endpoint, retryOptions, coreRetryOptions,
+            logOptions, clientOptions, httpClient, perCallPolicies, perRetryPolicies, configuration, LOGGER,
+            dataLakeAudience);
 
         return new DataLakeDirectoryAsyncClient(pipeline, endpoint, serviceVersion, accountName, dataLakeFileSystemName,
             pathName, blobClientBuilder.buildAsyncClient().getBlockBlobAsyncClient(), azureSasCredential,
@@ -630,6 +634,18 @@ public final class DataLakePathClientBuilder implements
                 .setEncryptionAlgorithm(customerProvidedKey.getEncryptionAlgorithm());
         }
 
+        return this;
+    }
+
+
+    /**
+     * Sets the Audience to use for authentication with Azure Active Directory (AAD). The audience is not considered
+     * when using a shared key.
+     * @param audience {@link DataLakeAudience} to be used when requesting a token from Azure Active Directory (AAD).
+     * @return the updated DataLakePathClientBuilder object
+     */
+    public DataLakePathClientBuilder dataLakeAudience(DataLakeAudience audience) {
+        this.dataLakeAudience = audience;
         return this;
     }
 }

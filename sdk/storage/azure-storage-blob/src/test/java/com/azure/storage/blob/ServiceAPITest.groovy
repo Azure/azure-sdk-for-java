@@ -5,12 +5,14 @@ package com.azure.storage.blob
 
 import com.azure.core.http.rest.Response
 import com.azure.core.test.TestMode
+import com.azure.core.test.utils.MockTokenCredential
 import com.azure.core.util.BinaryData
 import com.azure.core.util.Context
 import com.azure.core.util.paging.ContinuablePage
 import com.azure.identity.DefaultAzureCredentialBuilder
 import com.azure.storage.blob.models.BlobAccessPolicy
 import com.azure.storage.blob.models.BlobAnalyticsLogging
+import com.azure.storage.blob.models.BlobAudience
 import com.azure.storage.blob.models.BlobContainerItem
 import com.azure.storage.blob.models.BlobContainerListDetails
 import com.azure.storage.blob.models.BlobCorsRule
@@ -58,7 +60,7 @@ class ServiceAPITest extends APISpec {
 
     def setup() {
         setup:
-        // We shouldnt be getting to the network layer anyway
+        // We shouldn't be getting to the network layer anyway
         anonymousClient = new BlobServiceClientBuilder()
             .endpoint(environment.primaryAccount.blobEndpoint)
             .buildClient()
@@ -1206,6 +1208,52 @@ class ServiceAPITest extends APISpec {
         // Confirming the behavior of the api when the container is in the deleting state.
         // After delete has been called once but before it has been garbage collected
         response2.getStatusCode() == 202
+    }
+
+    def "Default Audience"() {
+        setup:
+        def aadService = getContainerClientBuilderWithTokenCredential(cc.getBlobContainerUrl())
+            .blobAudience(BlobAudience.getPublicAudience()).buildClient()
+
+        expect:
+        aadService.getProperties() != null
+    }
+
+    def "Custom audience"() {
+        setup:
+        def audience = new BlobAudience(String.format("https://%s.blob.core.windows.net", cc.getAccountName()))
+        def aadService = getContainerClientBuilderWithTokenCredential(cc.getBlobContainerUrl())
+            .blobAudience(audience).buildClient()
+
+        expect:
+        aadService.getProperties() != null
+    }
+
+    def "Storage account audience"() {
+        setup:
+        def aadService = getContainerClientBuilderWithTokenCredential(cc.getBlobContainerUrl())
+            .blobAudience(BlobAudience.getBlobServiceAccountAudience(cc.getAccountName())).buildClient()
+
+        expect:
+        aadService.getProperties() != null
+    }
+
+    def "Audience error"() {
+        setup:
+        def audience = new BlobAudience("https://badaudience.blob.core.windows.net")
+
+        def aadService = new BlobServiceClientBuilder()
+            .endpoint(cc.getBlobContainerUrl())
+            .credential(new MockTokenCredential())
+            .blobAudience(audience)
+            .buildClient()
+
+        when:
+        aadService.getProperties()
+
+        then:
+        def e = thrown(BlobStorageException)
+        e.getErrorCode() == BlobErrorCode.INVALID_AUTHENTICATION_INFO
     }
 
     @LiveOnly

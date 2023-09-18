@@ -240,6 +240,27 @@ class APISpec extends StorageSpec {
         return builder
     }
 
+    BlobContainerClientBuilder getContainerClientBuilderWithTokenCredential(String endpoint, HttpPipelinePolicy... policies) {
+        BlobContainerClientBuilder builder = new BlobContainerClientBuilder()
+            .endpoint(endpoint)
+
+        for (HttpPipelinePolicy policy : policies) {
+            builder.addPolicy(policy)
+        }
+
+        if (environment.testMode != TestMode.PLAYBACK) {
+            // AZURE_TENANT_ID, AZURE_CLIENT_ID, AZURE_CLIENT_SECRET
+            builder.credential(new EnvironmentCredentialBuilder().build())
+        } else {
+            // Running in playback, we don't have access to the AAD environment variables, just use SharedKeyCredential.
+            builder.credential(environment.primaryAccount.credential)
+        }
+
+        instrument(builder)
+
+        return builder
+    }
+
     BlobAsyncClient getBlobAsyncClient(StorageSharedKeyCredential credential, String endpoint, String blobName) {
         BlobClientBuilder builder = new BlobClientBuilder()
             .endpoint(endpoint)
@@ -276,6 +297,27 @@ class APISpec extends StorageSpec {
         instrument(builder)
 
         return builder.credential(credential).buildClient()
+    }
+
+    BlobClientBuilder getBlobClientBuilderWithTokenCredential(String endpoint, HttpPipelinePolicy... policies) {
+        BlobClientBuilder builder = new BlobClientBuilder()
+            .endpoint(endpoint)
+
+        for (HttpPipelinePolicy policy : policies) {
+            builder.addPolicy(policy)
+        }
+
+        if (environment.testMode != TestMode.PLAYBACK) {
+            // AZURE_TENANT_ID, AZURE_CLIENT_ID, AZURE_CLIENT_SECRET
+            builder.credential(new EnvironmentCredentialBuilder().build())
+        } else {
+            // Running in playback, we don't have access to the AAD environment variables, just use SharedKeyCredential.
+            builder.credential(environment.primaryAccount.credential)
+        }
+
+        instrument(builder)
+
+        return builder
     }
 
     BlobAsyncClient getBlobAsyncClient(StorageSharedKeyCredential credential, String endpoint, HttpPipelinePolicy... policies) {
@@ -326,6 +368,26 @@ class APISpec extends StorageSpec {
         instrument(builder)
 
         return builder.credential(credential)
+    }
+
+    SpecializedBlobClientBuilder getSpecializedBuilderWithTokenCredential(String endpoint, HttpPipelinePolicy... policies) {
+        def builder = new SpecializedBlobClientBuilder().endpoint(endpoint)
+
+        for (HttpPipelinePolicy policy : policies) {
+            builder.addPolicy(policy)
+        }
+
+        if (environment.testMode != TestMode.PLAYBACK) {
+            // AZURE_TENANT_ID, AZURE_CLIENT_ID, AZURE_CLIENT_SECRET
+            builder.credential(new EnvironmentCredentialBuilder().build())
+        } else {
+            // Running in playback, we don't have access to the AAD environment variables, just use SharedKeyCredential.
+            builder.credential(environment.primaryAccount.credential)
+        }
+
+        instrument(builder)
+
+        return builder
     }
 
     static BlobLeaseClient createLeaseClient(BlobClientBase blobClient) {

@@ -29,6 +29,7 @@ import com.azure.storage.file.datalake.models.AccessControlChanges;
 import com.azure.storage.file.datalake.models.AccessControlType;
 import com.azure.storage.file.datalake.models.AccessTier;
 import com.azure.storage.file.datalake.models.DataLakeAclChangeFailedException;
+import com.azure.storage.file.datalake.models.DataLakeAudience;
 import com.azure.storage.file.datalake.models.DataLakeRequestConditions;
 import com.azure.storage.file.datalake.models.DataLakeStorageException;
 import com.azure.storage.file.datalake.models.LeaseStateType;
@@ -3417,6 +3418,19 @@ public class DirectoryApiTests extends DataLakeTestBase {
         }
 
         fail("Expected a request to time out.");
+    }
+
+    @Test
+    public void defaultAudience() {
+        DataLakeDirectoryClient aadDirClient = getPathClientBuilderWithTokenCredential(
+            dataLakeFileSystemClient.getFileSystemUrl(), dc.getDirectoryName()).buildDirectoryClient();
+
+        assertTrue(aadDirClient.exists());
+    }
+
+    @Test
+    public void customAudience() {
+        DataLakeAudience audience;
     }
 
     private static boolean olderThan20200210ServiceVersion() {

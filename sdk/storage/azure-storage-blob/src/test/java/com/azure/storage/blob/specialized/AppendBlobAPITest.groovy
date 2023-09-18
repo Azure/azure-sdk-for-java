@@ -4,9 +4,14 @@
 package com.azure.storage.blob.specialized
 
 import com.azure.core.exception.UnexpectedLengthException
+import com.azure.core.http.policy.HttpPipelinePolicy
+import com.azure.core.test.TestMode
+import com.azure.core.test.utils.MockTokenCredential
 import com.azure.core.util.Context
+import com.azure.identity.EnvironmentCredentialBuilder
 import com.azure.storage.blob.APISpec
 import com.azure.storage.blob.BlobServiceVersion
+import com.azure.storage.blob.models.BlobAudience
 import com.azure.storage.blob.options.AppendBlobCreateOptions
 import com.azure.storage.blob.models.AppendBlobRequestConditions
 import com.azure.storage.blob.models.BlobErrorCode
@@ -837,6 +842,54 @@ class AppendBlobAPITest extends APISpec {
         null     | null       | null        | receivedEtag | null           | null
         null     | null       | null        | null         | garbageLeaseID | null
         null     | null       | null        | null         | null           | 1
+    }
+
+    def "Default audience"() {
+        setup:
+        def aadBlob = getSpecializedBuilderWithTokenCredential(bc.getBlobUrl())
+            .blobAudience(BlobAudience.getPublicAudience())
+            .buildAppendBlobClient()
+
+        expect:
+        aadBlob.exists()
+    }
+
+    def "Custom audience"() {
+        setup:
+        def audience = new BlobAudience(String.format("https://%s.blob.core.windows.net", cc.getAccountName()))
+
+        def aadBlob = getSpecializedBuilderWithTokenCredential(bc.getBlobUrl())
+            .blobAudience(audience)
+            .buildAppendBlobClient()
+
+        expect:
+        aadBlob.exists()
+    }
+
+    def "Storage account audience"() {
+        setup:
+        def aadBlob = getSpecializedBuilderWithTokenCredential(bc.getBlobUrl())
+            .blobAudience(BlobAudience.getBlobServiceAccountAudience(cc.getAccountName()))
+            .buildAppendBlobClient()
+
+        expect:
+        aadBlob.exists()
+    }
+
+    def "Audience error"() {
+        setup:
+        def audience = new BlobAudience("https://badaudience.blob.core.windows.net")
+
+        def aadBlob = new SpecializedBlobClientBuilder().endpoint(bc.getBlobUrl())
+            .credential(new MockTokenCredential())
+            .blobAudience(audience).buildAppendBlobClient()
+
+        when:
+        aadBlob.exists()
+
+        then:
+        def e = thrown(BlobStorageException)
+        e.getErrorCode() == BlobErrorCode.INVALID_AUTHENTICATION_INFO
     }
 
     @IgnoreIf( { getEnvironment().serviceVersion != null } )

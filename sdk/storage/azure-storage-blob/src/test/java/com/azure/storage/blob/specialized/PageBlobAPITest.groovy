@@ -5,11 +5,13 @@ package com.azure.storage.blob.specialized
 
 import com.azure.core.exception.UnexpectedLengthException
 import com.azure.core.http.HttpRange
+import com.azure.core.test.utils.MockTokenCredential
 import com.azure.core.util.CoreUtils
 import com.azure.storage.blob.APISpec
 import com.azure.storage.blob.BlobContainerClient
 import com.azure.storage.blob.BlobServiceClient
 import com.azure.storage.blob.BlobServiceVersion
+import com.azure.storage.blob.models.BlobAudience
 import com.azure.storage.blob.models.BlobErrorCode
 import com.azure.storage.blob.models.BlobHttpHeaders
 import com.azure.storage.blob.models.BlobRange
@@ -1847,6 +1849,54 @@ class PageBlobAPITest extends APISpec {
 
         then:
         thrown(BlobStorageException)
+    }
+
+    def "Default audience"() {
+        setup:
+        def aadBlob = getSpecializedBuilderWithTokenCredential(bc.getBlobUrl())
+            .blobAudience(BlobAudience.getPublicAudience())
+            .buildPageBlobClient()
+
+        expect:
+        aadBlob.exists()
+    }
+
+    def "Custom audience"() {
+        setup:
+        def audience = new BlobAudience(String.format("https://%s.blob.core.windows.net", cc.getAccountName()))
+
+        def aadBlob = getSpecializedBuilderWithTokenCredential(bc.getBlobUrl())
+            .blobAudience(audience)
+            .buildPageBlobClient()
+
+        expect:
+        aadBlob.exists()
+    }
+
+    def "Storage account audience"() {
+        setup:
+        def aadBlob = getSpecializedBuilderWithTokenCredential(bc.getBlobUrl())
+            .blobAudience(BlobAudience.getBlobServiceAccountAudience(cc.getAccountName()))
+            .buildPageBlobClient()
+
+        expect:
+        aadBlob.exists()
+    }
+
+    def "Audience error"() {
+        setup:
+        def audience = new BlobAudience("https://badaudience.blob.core.windows.net")
+
+        def aadBlob = new SpecializedBlobClientBuilder().endpoint(bc.getBlobUrl())
+            .credential(new MockTokenCredential())
+            .blobAudience(audience).buildPageBlobClient()
+
+        when:
+        aadBlob.exists()
+
+        then:
+        def e = thrown(BlobStorageException)
+        e.getErrorCode() == BlobErrorCode.INVALID_AUTHENTICATION_INFO
     }
 
     def "Get Container Name"() {

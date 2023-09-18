@@ -28,6 +28,7 @@ import com.azure.core.util.Configuration;
 import com.azure.core.util.CoreUtils;
 import com.azure.identity.ClientSecretCredentialBuilder;
 import com.azure.identity.EnvironmentCredentialBuilder;
+import com.azure.storage.blob.BlobServiceClientBuilder;
 import com.azure.storage.common.StorageSharedKeyCredential;
 import com.azure.storage.common.implementation.Constants;
 import com.azure.storage.common.policy.RequestRetryOptions;
@@ -384,8 +385,7 @@ public class DataLakeTestBase extends TestProxyTestBase {
             .buildFileClient();
     }
 
-    protected DataLakeDirectoryClient getDirectoryClient(StorageSharedKeyCredential credential,
-        String endpoint,
+    protected DataLakeDirectoryClient getDirectoryClient(StorageSharedKeyCredential credential, String endpoint,
         String pathName) {
         DataLakePathClientBuilder builder = new DataLakePathClientBuilder().endpoint(endpoint).pathName(pathName);
 
@@ -394,10 +394,8 @@ public class DataLakeTestBase extends TestProxyTestBase {
             .buildDirectoryClient();
     }
 
-    protected DataLakeDirectoryClient getDirectoryClient(StorageSharedKeyCredential credential,
-        String endpoint,
-        String pathName,
-        HttpPipelinePolicy... policies) {
+    protected DataLakeDirectoryClient getDirectoryClient(StorageSharedKeyCredential credential, String endpoint,
+        String pathName, HttpPipelinePolicy... policies) {
         DataLakePathClientBuilder builder = new DataLakePathClientBuilder().endpoint(endpoint).pathName(pathName);
 
         for (HttpPipelinePolicy policy : policies) {
@@ -407,6 +405,28 @@ public class DataLakeTestBase extends TestProxyTestBase {
         return instrument(builder)
             .credential(credential)
             .buildDirectoryClient();
+    }
+
+    protected DataLakePathClientBuilder setOauthCredentials(DataLakePathClientBuilder builder) {
+        if (ENVIRONMENT.getTestMode() != TestMode.PLAYBACK) {
+            // AZURE_TENANT_ID, AZURE_CLIENT_ID, AZURE_CLIENT_SECRET
+            return builder.credential(new EnvironmentCredentialBuilder().build());
+        } else {
+            // Running in playback, we don't have access to the AAD environment variables, just use SharedKeyCredential.
+            return builder.credential(ENVIRONMENT.getPrimaryAccount().getCredential());
+        }
+    }
+
+    protected DataLakePathClientBuilder getPathClientBuilderWithTokenCredential(String endpoint, String pathName,
+        HttpPipelinePolicy... policies) {
+        DataLakePathClientBuilder builder = new DataLakePathClientBuilder().endpoint(endpoint).pathName(pathName);
+        setOauthCredentials(builder);
+
+        for (HttpPipelinePolicy policy : policies) {
+            builder.addPolicy(policy);
+        }
+
+        return instrument(builder);
     }
 
     protected DataLakePathClientBuilder getPathClientBuilder(StorageSharedKeyCredential credential, String endpoint,

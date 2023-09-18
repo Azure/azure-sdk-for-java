@@ -5,12 +5,14 @@ package com.azure.storage.blob
 
 
 import com.azure.core.http.rest.Response
+import com.azure.core.test.utils.MockTokenCredential
 import com.azure.core.util.Context
 import com.azure.core.util.paging.ContinuablePage
 import com.azure.identity.DefaultAzureCredentialBuilder
 import com.azure.storage.blob.models.AccessTier
 import com.azure.storage.blob.models.AppendBlobItem
 import com.azure.storage.blob.models.BlobAccessPolicy
+import com.azure.storage.blob.models.BlobAudience
 import com.azure.storage.blob.models.BlobErrorCode
 import com.azure.storage.blob.models.BlobListDetails
 import com.azure.storage.blob.models.BlobProperties
@@ -34,6 +36,7 @@ import com.azure.storage.blob.options.FindBlobsOptions
 import com.azure.storage.blob.options.PageBlobCreateOptions
 import com.azure.storage.blob.specialized.AppendBlobClient
 import com.azure.storage.blob.specialized.BlobClientBase
+import com.azure.storage.blob.specialized.SpecializedBlobClientBuilder
 import com.azure.storage.common.Utility
 import com.azure.storage.common.implementation.Constants
 import com.azure.storage.common.test.shared.extensions.PlaybackOnly
@@ -2185,6 +2188,50 @@ class ContainerAPITest extends APISpec {
 
         then:
         notThrown(BlobStorageException)
+    }
+
+    def "Default Audience"() {
+        setup:
+        def aadContainer = getContainerClientBuilderWithTokenCredential(cc.getBlobContainerUrl())
+            .blobAudience(BlobAudience.getPublicAudience()).buildClient()
+
+        expect:
+        aadContainer.exists()
+    }
+
+    def "Custom audience"() {
+        setup:
+        def audience = new BlobAudience(String.format("https://%s.blob.core.windows.net", cc.getAccountName()))
+        def aadContainer = getContainerClientBuilderWithTokenCredential(cc.getBlobContainerUrl())
+            .blobAudience(audience).buildClient()
+
+        expect:
+        aadContainer.exists()
+    }
+
+    def "Storage account audience"() {
+        setup:
+        def aadContainer = getContainerClientBuilderWithTokenCredential(cc.getBlobContainerUrl())
+            .blobAudience(BlobAudience.getBlobServiceAccountAudience(cc.getAccountName())).buildClient()
+
+        expect:
+        aadContainer.exists()
+    }
+
+    def "Audience error"() {
+        setup:
+        def audience = new BlobAudience("https://badaudience.blob.core.windows.net")
+
+        def aadContainer = getContainerClientBuilder(cc.getBlobContainerUrl())
+            .credential(new MockTokenCredential())
+            .blobAudience(audience).buildClient()
+
+        when:
+        aadContainer.exists()
+
+        then:
+        def e = thrown(BlobStorageException)
+        e.getErrorCode() == BlobErrorCode.INVALID_AUTHENTICATION_INFO
     }
 
     def "Get account info"() {

@@ -8,6 +8,7 @@ import com.azure.core.http.HttpPipelineNextPolicy
 import com.azure.core.http.HttpResponse
 import com.azure.core.http.RequestConditions
 import com.azure.core.http.policy.HttpPipelinePolicy
+import com.azure.core.test.utils.MockTokenCredential
 import com.azure.core.util.BinaryData
 import com.azure.core.util.CoreUtils
 import com.azure.core.util.HttpClientOptions
@@ -16,6 +17,7 @@ import com.azure.core.util.polling.LongRunningOperationStatus
 import com.azure.identity.DefaultAzureCredentialBuilder
 import com.azure.storage.blob.models.AccessTier
 import com.azure.storage.blob.models.ArchiveStatus
+import com.azure.storage.blob.models.BlobAudience
 import com.azure.storage.blob.models.BlobBeginCopySourceRequestConditions
 import com.azure.storage.blob.models.BlobCopySourceTagsMode
 import com.azure.storage.blob.models.BlobErrorCode
@@ -3425,6 +3427,50 @@ class BlobAPITest extends APISpec {
 
         then:
         thrown(BlobStorageException)
+    }
+
+    def "Default Audience"() {
+        setup:
+        def aadBlob = getBlobClientBuilderWithTokenCredential(bc.getBlobUrl())
+            .blobAudience(BlobAudience.getPublicAudience()).buildClient()
+
+        expect:
+        aadBlob.exists()
+    }
+
+    def "Custom audience"() {
+        setup:
+        def audience = new BlobAudience(String.format("https://%s.blob.core.windows.net", cc.getAccountName()))
+        def aadBlob = getBlobClientBuilderWithTokenCredential(bc.getBlobUrl())
+            .blobAudience(audience).buildClient()
+
+        expect:
+        aadBlob.exists()
+    }
+
+    def "Storage account audience"() {
+        setup:
+        def aadBlob = getBlobClientBuilderWithTokenCredential(bc.getBlobUrl())
+            .blobAudience(BlobAudience.getBlobServiceAccountAudience(cc.getAccountName())).buildClient()
+
+        expect:
+        aadBlob.exists()
+    }
+
+    def "Audience error"() {
+        setup:
+        def audience = new BlobAudience("https://badaudience.blob.core.windows.net")
+
+        def aadBlob = new BlobClientBuilder().endpoint(bc.getBlobUrl())
+            .credential(new MockTokenCredential())
+            .blobAudience(audience).buildClient()
+
+        when:
+        aadBlob.exists()
+
+        then:
+        def e = thrown(BlobStorageException)
+        e.getErrorCode() == BlobErrorCode.INVALID_AUTHENTICATION_INFO
     }
 
     def "Get account info"() {

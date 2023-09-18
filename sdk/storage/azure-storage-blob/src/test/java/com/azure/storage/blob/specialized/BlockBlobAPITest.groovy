@@ -11,6 +11,7 @@ import com.azure.core.http.HttpPipelineNextPolicy
 import com.azure.core.http.HttpRequest
 import com.azure.core.http.HttpResponse
 import com.azure.core.http.policy.HttpPipelinePolicy
+import com.azure.core.test.utils.MockTokenCredential
 import com.azure.core.util.BinaryData
 import com.azure.core.util.Context
 import com.azure.core.util.FluxUtil
@@ -25,6 +26,7 @@ import com.azure.storage.blob.BlobUrlParts
 import com.azure.storage.blob.ProgressReceiver
 import com.azure.storage.blob.implementation.models.BlockBlobsPutBlobFromUrlHeaders
 import com.azure.storage.blob.models.AccessTier
+import com.azure.storage.blob.models.BlobAudience
 import com.azure.storage.blob.models.BlobCopySourceTagsMode
 import com.azure.storage.blob.models.BlobErrorCode
 import com.azure.storage.blob.models.BlobHttpHeaders
@@ -2685,5 +2687,53 @@ class BlockBlobAPITest extends APISpec {
         blockBlobItem.getEncryptionKeySha256() == null
         blockBlobItem.getEncryptionScope() == null
         blockBlobItem.getVersionId() == null
+    }
+
+    def "Default audience"() {
+        setup:
+        def aadBlob = getSpecializedBuilderWithTokenCredential(blockBlobClient.getBlobUrl())
+            .blobAudience(BlobAudience.getPublicAudience())
+            .buildBlockBlobClient()
+
+        expect:
+        aadBlob.exists()
+    }
+
+    def "Custom audience"() {
+        setup:
+        def audience = new BlobAudience(String.format("https://%s.blob.core.windows.net", cc.getAccountName()))
+
+        def aadBlob = getSpecializedBuilderWithTokenCredential(blockBlobClient.getBlobUrl())
+            .blobAudience(audience)
+            .buildBlockBlobClient()
+
+        expect:
+        aadBlob.exists()
+    }
+
+    def "Storage account audience"() {
+        setup:
+        def aadBlob = getSpecializedBuilderWithTokenCredential(blockBlobClient.getBlobUrl())
+            .blobAudience(BlobAudience.getBlobServiceAccountAudience(cc.getAccountName()))
+            .buildBlockBlobClient()
+
+        expect:
+        aadBlob.exists()
+    }
+
+    def "Audience error"() {
+        setup:
+        def audience = new BlobAudience("https://badaudience.blob.core.windows.net")
+
+        def aadBlob = new SpecializedBlobClientBuilder().endpoint(blockBlobClient.getBlobUrl())
+            .credential(new MockTokenCredential())
+            .blobAudience(audience).buildBlockBlobClient()
+
+        when:
+        aadBlob.exists()
+
+        then:
+        def e = thrown(BlobStorageException)
+        e.getErrorCode() == BlobErrorCode.INVALID_AUTHENTICATION_INFO
     }
 }
