@@ -786,6 +786,7 @@ public final class OpenAIAsyncClient {
     }
 
     /**
+     * Gets the transcription of the audio file passed with additional metadata
      *
      * @param deploymentOrModelName Specifies either the model deployment name (when using Azure OpenAI) or model name
      * (when using non-Azure OpenAI) to use for this request.
@@ -833,6 +834,7 @@ public final class OpenAIAsyncClient {
     }
 
     /**
+     * Gets the transcription of the audio file passed in the form of a String
      *
      * @param deploymentOrModelName Specifies either the model deployment name (when using Azure OpenAI) or model name
      * (when using non-Azure OpenAI) to use for this request.
@@ -880,6 +882,7 @@ public final class OpenAIAsyncClient {
     }
 
     /**
+     * Gets the transcription of the translation of the audio file passed with additional metadata
      *
      * @param deploymentOrModelName Specifies either the model deployment name (when using Azure OpenAI) or model name
      * (when using non-Azure OpenAI) to use for this request.
@@ -927,6 +930,7 @@ public final class OpenAIAsyncClient {
     }
 
     /**
+     * Gets the transcription of the translation of the audio file passed in the form of a String
      *
      * @param deploymentOrModelName Specifies either the model deployment name (when using Azure OpenAI) or model name
      * (when using non-Azure OpenAI) to use for this request.
