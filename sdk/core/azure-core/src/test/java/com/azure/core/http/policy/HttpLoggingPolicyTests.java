@@ -439,9 +439,8 @@ public class HttpLoggingPolicyTests {
         HttpLogMessage expectedResponse = HttpLogMessage.response(url, responseBody, 200)
             .setHeaders(responseHeaders);
 
-        StepVerifier.create(pipeline.send(request, CONTEXT)
-                .flatMap(response -> FluxUtil.collectBytesInByteBufferStream(response.getBody()))
-                .doFinally(s -> {
+        StepVerifier.create(pipeline.send(request, CONTEXT).flatMap(response ->
+                Mono.using(() -> response, r -> FluxUtil.collectBytesInByteBufferStream(r.getBody()), ignored -> {
                     String logString = convertOutputStreamToString(logCaptureStream);
                     List<HttpLogMessage> messages = HttpLogMessage.fromString(logString);
                     assertEquals(3, messages.size());
@@ -449,7 +448,7 @@ public class HttpLoggingPolicyTests {
                     expectedRetry1.assertEqual(messages.get(0), logLevel, LogLevel.INFORMATIONAL);
                     expectedRetry2.assertEqual(messages.get(1), logLevel, LogLevel.INFORMATIONAL);
                     expectedResponse.assertEqual(messages.get(2), logLevel, LogLevel.INFORMATIONAL);
-                }))
+                })))
             .assertNext(body -> assertArraysEqual(responseBody, body))
             .verifyComplete();
     }
@@ -481,9 +480,8 @@ public class HttpLoggingPolicyTests {
         HttpLogMessage expectedResponse = HttpLogMessage.response(url, responseBody, 200)
             .setHeaders(responseHeaders);
 
-        StepVerifier.create(pipeline.send(request, CONTEXT)
-                .flatMap(response -> FluxUtil.collectBytesInByteBufferStream(response.getBody()))
-                .doFinally(s -> {
+        StepVerifier.create(pipeline.send(request, CONTEXT).flatMap(response ->
+                Mono.using(() -> response, r -> FluxUtil.collectBytesInByteBufferStream(r.getBody()), ignored -> {
                     String logString = convertOutputStreamToString(logCaptureStream);
 
                     List<HttpLogMessage> messages = HttpLogMessage.fromString(logString);
@@ -491,7 +489,7 @@ public class HttpLoggingPolicyTests {
 
                     expectedRequest.assertEqual(messages.get(0), logLevel, LogLevel.VERBOSE);
                     expectedResponse.assertEqual(messages.get(1), logLevel, LogLevel.VERBOSE);
-                }))
+                })))
             .assertNext(body -> assertArraysEqual(responseBody, body))
             .verifyComplete();
     }

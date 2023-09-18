@@ -11,6 +11,7 @@ import com.azure.core.http.ProxyOptions;
 import com.azure.core.http.netty.implementation.AzureNettyHttpClientContext;
 import com.azure.core.http.netty.implementation.NettyAsyncHttpBufferedResponse;
 import com.azure.core.http.netty.implementation.NettyAsyncHttpResponse;
+import com.azure.core.http.netty.implementation.Utility;
 import com.azure.core.implementation.util.BinaryDataContent;
 import com.azure.core.implementation.util.BinaryDataHelper;
 import com.azure.core.implementation.util.ByteArrayContent;
@@ -292,15 +293,14 @@ class NettyAsyncHttpClient implements HttpClient {
             // For now, eagerlyReadResponse and ignoreResponseBody works the same.
 //            if (ignoreResponseBody) {
 //                AtomicBoolean firstNext = new AtomicBoolean(true);
-//                return reactorNettyConnection.inbound().receive()
+//                return Mono.using(() -> reactorNettyConnection, connection -> connection.inbound().receive()
 //                    .doOnNext(ignored -> {
 //                        if (!firstNext.compareAndSet(true, false)) {
 //                            LOGGER.log(LogLevel.WARNING, () -> "Received HTTP response body when one wasn't expected. "
 //                                + "Response body will be ignored as directed.");
 //                        }
 //                    })
-//                    .ignoreElements()
-//                    .doFinally(ignored -> closeConnection(reactorNettyConnection))
+//                    .ignoreElements(), Utility::closeConnection)
 //                    .then(Mono.fromSupplier(() -> new NettyAsyncHttpBufferedResponse(reactorNettyResponse, restRequest,
 //                        EMPTY_BYTES, headersEagerlyConverted)));
 //            }
@@ -311,11 +311,11 @@ class NettyAsyncHttpClient implements HttpClient {
              */
             if (eagerlyReadResponse || ignoreResponseBody) {
                 // Set up the body flux and dispose the connection once it has been received.
-                return reactorNettyConnection.inbound().receive().aggregate().asByteArray()
-                    .doFinally(ignored -> closeConnection(reactorNettyConnection))
+                return Mono.using(() -> reactorNettyConnection, connection -> connection.inbound().receive()
+                    .aggregate().asByteArray()
                     .switchIfEmpty(Mono.just(EMPTY_BYTES))
                     .map(bytes -> new NettyAsyncHttpBufferedResponse(reactorNettyResponse, restRequest, bytes,
-                        headersEagerlyConverted));
+                        headersEagerlyConverted)), Utility::closeConnection);
             } else {
                 return Mono.just(new NettyAsyncHttpResponse(reactorNettyResponse, reactorNettyConnection, restRequest,
                     disableBufferCopy, headersEagerlyConverted));
