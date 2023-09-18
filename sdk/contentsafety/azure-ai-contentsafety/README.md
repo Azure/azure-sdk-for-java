@@ -18,7 +18,8 @@ Various documentation is available to help you get started
 ### Prerequisites
 
 - [Java Development Kit (JDK)][jdk] with version 8 or above
-- [Azure Subscription][azure_subscription]
+- You need an [Azure subscription][azure_sub] to use this package.
+- An existing [Azure AI Content Safety][contentsafety_overview] instance.
 
 ### Adding the package to your product
 
@@ -245,8 +246,23 @@ contentSafetyClient.removeBlockItems(blocklistName, new RemoveBlockItemsOptions(
 contentSafetyClient.deleteTextBlocklist(blocklistName);
 ```
 ## Troubleshooting
+### General
+
+Azure AI Content Safety client library will raise exceptions defined in [Azure Core][azure_core_exception]. Error codes are defined as below:
+
+|Error Code	|Possible reasons	|Suggestions|
+|-----------|-------------------|-----------|
+|InvalidRequestBody	|One or more fields in the request body do not match the API definition.	|1. Check the API version you specified in the API call.<br>2. Check the corresponding API definition for the API version you selected.|
+|InvalidResourceName	|The resource name you specified in the URL does not meet the requirements, like the blocklist name, blocklist term ID, etc.	|1. Check the API version you specified in the API call.<br>2. Check whether the given name has invalid characters according to the API definition.|
+|ResourceNotFound	|The resource you specified in the URL may not exist, like the blocklist name.	|1. Check the API version you specified in the API call.<br>2. Double check the existence of the resource specified in the URL.|
+|InternalError	|Some unexpected situations on the server side have been triggered.	|1. You may want to retry a few times after a small period and see it the issue happens again.<br>2. Contact Azure Support if this issue persists.|
+|ServerBusy	|The server side cannot process the request temporarily.	|1. You may want to retry a few times after a small period and see it the issue happens again.<br>2.Contact Azure Support if this issue persists.|
+|TooManyRequests	|The current RPS has exceeded the quota for your current SKU.	|1. Check the pricing table to understand the RPS quota.<br>2.Contact Azure Support if you need more QPS.|
 
 ## Next steps
+### Additional documentation
+
+For more extensive documentation on Azure Content Safety, see the [Azure AI Content Safety][contentsafety_overview] on docs.microsoft.com.
 
 ## Contributing
 
