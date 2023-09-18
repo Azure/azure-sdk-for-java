@@ -22,7 +22,7 @@ public interface ApiReleasesClient {
      * used to rollback to previous revisions. Results will be paged and can be constrained by the $top and $skip
      * parameters.
      *
-     * @param resourceGroupName The name of the resource group.
+     * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param serviceName The name of the API Management service.
      * @param apiId API identifier. Must be unique in the current API Management service instance.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
@@ -38,7 +38,7 @@ public interface ApiReleasesClient {
      * used to rollback to previous revisions. Results will be paged and can be constrained by the $top and $skip
      * parameters.
      *
-     * @param resourceGroupName The name of the resource group.
+     * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param serviceName The name of the API Management service.
      * @param apiId API identifier. Must be unique in the current API Management service instance.
      * @param filter | Field | Usage | Supported operators | Supported functions
@@ -65,21 +65,7 @@ public interface ApiReleasesClient {
     /**
      * Returns the etag of an API release.
      *
-     * @param resourceGroupName The name of the resource group.
-     * @param serviceName The name of the API Management service.
-     * @param apiId API identifier. Must be unique in the current API Management service instance.
-     * @param releaseId Release identifier within an API. Must be unique in the current API Management service instance.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     */
-    @ServiceMethod(returns = ReturnType.SINGLE)
-    void getEntityTag(String resourceGroupName, String serviceName, String apiId, String releaseId);
-
-    /**
-     * Returns the etag of an API release.
-     *
-     * @param resourceGroupName The name of the resource group.
+     * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param serviceName The name of the API Management service.
      * @param apiId API identifier. Must be unique in the current API Management service instance.
      * @param releaseId Release identifier within an API. Must be unique in the current API Management service instance.
@@ -94,24 +80,23 @@ public interface ApiReleasesClient {
         String resourceGroupName, String serviceName, String apiId, String releaseId, Context context);
 
     /**
-     * Returns the details of an API release.
+     * Returns the etag of an API release.
      *
-     * @param resourceGroupName The name of the resource group.
+     * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param serviceName The name of the API Management service.
      * @param apiId API identifier. Must be unique in the current API Management service instance.
      * @param releaseId Release identifier within an API. Must be unique in the current API Management service instance.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return apiRelease details.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    ApiReleaseContractInner get(String resourceGroupName, String serviceName, String apiId, String releaseId);
+    void getEntityTag(String resourceGroupName, String serviceName, String apiId, String releaseId);
 
     /**
      * Returns the details of an API release.
      *
-     * @param resourceGroupName The name of the resource group.
+     * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param serviceName The name of the API Management service.
      * @param apiId API identifier. Must be unique in the current API Management service instance.
      * @param releaseId Release identifier within an API. Must be unique in the current API Management service instance.
@@ -126,30 +111,24 @@ public interface ApiReleasesClient {
         String resourceGroupName, String serviceName, String apiId, String releaseId, Context context);
 
     /**
-     * Creates a new Release for the API.
+     * Returns the details of an API release.
      *
-     * @param resourceGroupName The name of the resource group.
+     * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param serviceName The name of the API Management service.
      * @param apiId API identifier. Must be unique in the current API Management service instance.
      * @param releaseId Release identifier within an API. Must be unique in the current API Management service instance.
-     * @param parameters Create parameters.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return apiRelease details.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    ApiReleaseContractInner createOrUpdate(
-        String resourceGroupName,
-        String serviceName,
-        String apiId,
-        String releaseId,
-        ApiReleaseContractInner parameters);
+    ApiReleaseContractInner get(String resourceGroupName, String serviceName, String apiId, String releaseId);
 
     /**
      * Creates a new Release for the API.
      *
-     * @param resourceGroupName The name of the resource group.
+     * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param serviceName The name of the API Management service.
      * @param apiId API identifier. Must be unique in the current API Management service instance.
      * @param releaseId Release identifier within an API. Must be unique in the current API Management service instance.
@@ -172,33 +151,30 @@ public interface ApiReleasesClient {
         Context context);
 
     /**
-     * Updates the details of the release of the API specified by its identifier.
+     * Creates a new Release for the API.
      *
-     * @param resourceGroupName The name of the resource group.
+     * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param serviceName The name of the API Management service.
      * @param apiId API identifier. Must be unique in the current API Management service instance.
      * @param releaseId Release identifier within an API. Must be unique in the current API Management service instance.
-     * @param ifMatch ETag of the Entity. ETag should match the current entity state from the header response of the GET
-     *     request or it should be * for unconditional update.
-     * @param parameters API Release Update parameters.
+     * @param parameters Create parameters.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return apiRelease details.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    ApiReleaseContractInner update(
+    ApiReleaseContractInner createOrUpdate(
         String resourceGroupName,
         String serviceName,
         String apiId,
         String releaseId,
-        String ifMatch,
         ApiReleaseContractInner parameters);
 
     /**
      * Updates the details of the release of the API specified by its identifier.
      *
-     * @param resourceGroupName The name of the resource group.
+     * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param serviceName The name of the API Management service.
      * @param apiId API identifier. Must be unique in the current API Management service instance.
      * @param releaseId Release identifier within an API. Must be unique in the current API Management service instance.
@@ -222,25 +198,33 @@ public interface ApiReleasesClient {
         Context context);
 
     /**
-     * Deletes the specified release in the API.
+     * Updates the details of the release of the API specified by its identifier.
      *
-     * @param resourceGroupName The name of the resource group.
+     * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param serviceName The name of the API Management service.
      * @param apiId API identifier. Must be unique in the current API Management service instance.
      * @param releaseId Release identifier within an API. Must be unique in the current API Management service instance.
      * @param ifMatch ETag of the Entity. ETag should match the current entity state from the header response of the GET
      *     request or it should be * for unconditional update.
+     * @param parameters API Release Update parameters.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return apiRelease details.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    void delete(String resourceGroupName, String serviceName, String apiId, String releaseId, String ifMatch);
+    ApiReleaseContractInner update(
+        String resourceGroupName,
+        String serviceName,
+        String apiId,
+        String releaseId,
+        String ifMatch,
+        ApiReleaseContractInner parameters);
 
     /**
      * Deletes the specified release in the API.
      *
-     * @param resourceGroupName The name of the resource group.
+     * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param serviceName The name of the API Management service.
      * @param apiId API identifier. Must be unique in the current API Management service instance.
      * @param releaseId Release identifier within an API. Must be unique in the current API Management service instance.
@@ -255,4 +239,20 @@ public interface ApiReleasesClient {
     @ServiceMethod(returns = ReturnType.SINGLE)
     Response<Void> deleteWithResponse(
         String resourceGroupName, String serviceName, String apiId, String releaseId, String ifMatch, Context context);
+
+    /**
+     * Deletes the specified release in the API.
+     *
+     * @param resourceGroupName The name of the resource group. The name is case insensitive.
+     * @param serviceName The name of the API Management service.
+     * @param apiId API identifier. Must be unique in the current API Management service instance.
+     * @param releaseId Release identifier within an API. Must be unique in the current API Management service instance.
+     * @param ifMatch ETag of the Entity. ETag should match the current entity state from the header response of the GET
+     *     request or it should be * for unconditional update.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    void delete(String resourceGroupName, String serviceName, String apiId, String releaseId, String ifMatch);
 }

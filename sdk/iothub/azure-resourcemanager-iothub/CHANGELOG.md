@@ -1,14 +1,40 @@
 # Release History
 
-## 1.2.0-beta.4 (Unreleased)
+## 1.2.0-beta.4 (2023-09-18)
 
-### Features Added
+- Azure Resource Manager IotHub client library for Java. This package contains Microsoft Azure SDK for IotHub Management SDK. Use this API to manage the IoT hubs in your Azure subscription. Package tag package-preview-2023-06. For documentation on how to use this package, please see [Azure Management Libraries for Java](https://aka.ms/azsdk/java/mgmt).
 
 ### Breaking Changes
 
-### Bugs Fixed
+#### `models.RoutingCosmosDBSqlApiProperties` was modified
 
-### Other Changes
+* `withCollectionName(java.lang.String)` was removed
+* `collectionName()` was removed
+
+#### `models.RoutingEndpoints` was modified
+
+* `withCosmosDBSqlCollections(java.util.List)` was removed
+* `cosmosDBSqlCollections()` was removed
+
+#### `models.ErrorDetails` was modified
+
+* `getHttpStatusCode()` was removed
+
+### Features Added
+
+#### `models.RoutingCosmosDBSqlApiProperties` was modified
+
+* `containerName()` was added
+* `withContainerName(java.lang.String)` was added
+
+#### `models.RoutingEndpoints` was modified
+
+* `withCosmosDBSqlContainers(java.util.List)` was added
+* `cosmosDBSqlContainers()` was added
+
+#### `models.ErrorDetails` was modified
+
+* `httpStatusCode()` was added
 
 ## 1.2.0-beta.3 (2023-04-18)
 

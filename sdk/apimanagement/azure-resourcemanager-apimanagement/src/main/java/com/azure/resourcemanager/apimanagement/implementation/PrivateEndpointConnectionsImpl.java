@@ -45,17 +45,6 @@ public final class PrivateEndpointConnectionsImpl implements PrivateEndpointConn
         return Utils.mapPage(inner, inner1 -> new PrivateEndpointConnectionImpl(inner1, this.manager()));
     }
 
-    public PrivateEndpointConnection getByName(
-        String resourceGroupName, String serviceName, String privateEndpointConnectionName) {
-        PrivateEndpointConnectionInner inner =
-            this.serviceClient().getByName(resourceGroupName, serviceName, privateEndpointConnectionName);
-        if (inner != null) {
-            return new PrivateEndpointConnectionImpl(inner, this.manager());
-        } else {
-            return null;
-        }
-    }
-
     public Response<PrivateEndpointConnection> getByNameWithResponse(
         String resourceGroupName, String serviceName, String privateEndpointConnectionName, Context context) {
         Response<PrivateEndpointConnectionInner> inner =
@@ -73,6 +62,17 @@ public final class PrivateEndpointConnectionsImpl implements PrivateEndpointConn
         }
     }
 
+    public PrivateEndpointConnection getByName(
+        String resourceGroupName, String serviceName, String privateEndpointConnectionName) {
+        PrivateEndpointConnectionInner inner =
+            this.serviceClient().getByName(resourceGroupName, serviceName, privateEndpointConnectionName);
+        if (inner != null) {
+            return new PrivateEndpointConnectionImpl(inner, this.manager());
+        } else {
+            return null;
+        }
+    }
+
     public void delete(String resourceGroupName, String serviceName, String privateEndpointConnectionName) {
         this.serviceClient().delete(resourceGroupName, serviceName, privateEndpointConnectionName);
     }
@@ -80,16 +80,6 @@ public final class PrivateEndpointConnectionsImpl implements PrivateEndpointConn
     public void delete(
         String resourceGroupName, String serviceName, String privateEndpointConnectionName, Context context) {
         this.serviceClient().delete(resourceGroupName, serviceName, privateEndpointConnectionName, context);
-    }
-
-    public PrivateLinkResourceListResult listPrivateLinkResources(String resourceGroupName, String serviceName) {
-        PrivateLinkResourceListResultInner inner =
-            this.serviceClient().listPrivateLinkResources(resourceGroupName, serviceName);
-        if (inner != null) {
-            return new PrivateLinkResourceListResultImpl(inner, this.manager());
-        } else {
-            return null;
-        }
     }
 
     public Response<PrivateLinkResourceListResult> listPrivateLinkResourcesWithResponse(
@@ -107,12 +97,11 @@ public final class PrivateEndpointConnectionsImpl implements PrivateEndpointConn
         }
     }
 
-    public PrivateLinkResource getPrivateLinkResource(
-        String resourceGroupName, String serviceName, String privateLinkSubResourceName) {
-        PrivateLinkResourceInner inner =
-            this.serviceClient().getPrivateLinkResource(resourceGroupName, serviceName, privateLinkSubResourceName);
+    public PrivateLinkResourceListResult listPrivateLinkResources(String resourceGroupName, String serviceName) {
+        PrivateLinkResourceListResultInner inner =
+            this.serviceClient().listPrivateLinkResources(resourceGroupName, serviceName);
         if (inner != null) {
-            return new PrivateLinkResourceImpl(inner, this.manager());
+            return new PrivateLinkResourceListResultImpl(inner, this.manager());
         } else {
             return null;
         }
@@ -131,6 +120,17 @@ public final class PrivateEndpointConnectionsImpl implements PrivateEndpointConn
                 inner.getStatusCode(),
                 inner.getHeaders(),
                 new PrivateLinkResourceImpl(inner.getValue(), this.manager()));
+        } else {
+            return null;
+        }
+    }
+
+    public PrivateLinkResource getPrivateLinkResource(
+        String resourceGroupName, String serviceName, String privateLinkSubResourceName) {
+        PrivateLinkResourceInner inner =
+            this.serviceClient().getPrivateLinkResource(resourceGroupName, serviceName, privateLinkSubResourceName);
+        if (inner != null) {
+            return new PrivateLinkResourceImpl(inner, this.manager());
         } else {
             return null;
         }

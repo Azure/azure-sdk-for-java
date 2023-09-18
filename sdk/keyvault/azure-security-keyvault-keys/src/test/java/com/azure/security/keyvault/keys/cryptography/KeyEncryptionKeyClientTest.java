@@ -5,6 +5,7 @@ package com.azure.security.keyvault.keys.cryptography;
 
 import com.azure.core.cryptography.KeyEncryptionKey;
 import com.azure.core.http.HttpClient;
+import com.azure.security.keyvault.keys.implementation.models.SecretKey;
 import com.azure.security.keyvault.keys.models.JsonWebKey;
 import com.azure.security.keyvault.keys.models.KeyOperation;
 import com.azure.security.keyvault.secrets.SecretClient;
@@ -23,7 +24,7 @@ import static org.junit.jupiter.api.Assertions.assertArrayEquals;
 
 public class KeyEncryptionKeyClientTest extends KeyEncryptionKeyClientTestBase {
     protected KeyEncryptionKey keyEncryptionKey;
-    private KeyVaultSecret secretKey;
+    private SecretKey secretKey;
 
     @Override
     protected void beforeTest() {

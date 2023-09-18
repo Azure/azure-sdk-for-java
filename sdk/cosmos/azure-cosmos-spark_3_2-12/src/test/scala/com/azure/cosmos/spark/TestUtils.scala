@@ -282,11 +282,15 @@ trait CosmosContainer extends CosmosDatabase {
   }
 
   def queryItems(query: String): List[ObjectNode] = {
-    cosmosClient.getDatabase(cosmosDatabase).getContainer(cosmosContainer)
-      .queryItems(query, classOf[ObjectNode])
-      .toIterable
-      .asScala
-      .toList
+    queryItems(query, cosmosDatabase, cosmosContainer)
+  }
+
+  def queryItems(query: String, databaseName: String, containerName: String): List[ObjectNode] = {
+    cosmosClient.getDatabase(databaseName).getContainer(containerName)
+        .queryItems(query, classOf[ObjectNode])
+        .toIterable
+        .asScala
+        .toList
   }
 
   def readAllItems(): List[ObjectNode] = {

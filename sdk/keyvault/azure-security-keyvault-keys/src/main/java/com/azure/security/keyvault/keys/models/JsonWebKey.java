@@ -775,14 +775,13 @@ public class JsonWebKey {
      * @throws IllegalStateException if an instance of EC key pair cannot be generated
      */
     public KeyPair toEc(boolean includePrivateParameters, Provider provider) {
-
-        if (provider == null) {
-            // Our default provider for this class
-            provider = Security.getProvider("SunEC");
-        }
-
         if (!KeyType.EC.equals(keyType) && !KeyType.EC_HSM.equals(keyType)) {
             throw LOGGER.logExceptionAsError(new IllegalArgumentException("Not an EC key."));
+        }
+
+        if (provider == null) {
+            // Our default provider for this class.
+            provider = Security.getProvider("SunEC");
         }
 
         try {
@@ -792,19 +791,19 @@ public class JsonWebKey {
             kpg.initialize(gps);
 
             // Generate dummy keypair to get parameter spec.
-            KeyPair apair = kpg.generateKeyPair();
-            ECPublicKey apub = (ECPublicKey) apair.getPublic();
-            ECParameterSpec aspec = apub.getParams();
+            KeyPair keyPair = kpg.generateKeyPair();
+            ECPublicKey publicKey = (ECPublicKey) keyPair.getPublic();
+            ECParameterSpec ecParameterSpec = publicKey.getParams();
 
             ECPoint ecPoint = new ECPoint(new BigInteger(1, x), new BigInteger(1, y));
 
             KeyPair realKeyPair;
 
             if (includePrivateParameters) {
-                realKeyPair = new KeyPair(getEcPublicKey(ecPoint, aspec, provider),
-                    getEcPrivateKey(d, aspec, provider));
+                realKeyPair = new KeyPair(getEcPublicKey(ecPoint, ecParameterSpec, provider),
+                    getEcPrivateKey(d, ecParameterSpec, provider));
             } else {
-                realKeyPair = new KeyPair(getEcPublicKey(ecPoint, aspec, provider), null);
+                realKeyPair = new KeyPair(getEcPublicKey(ecPoint, ecParameterSpec, provider), null);
             }
 
             return realKeyPair;
@@ -822,20 +821,20 @@ public class JsonWebKey {
      * @return the JSON web key, converted from EC key pair.
      */
     public static JsonWebKey fromEc(KeyPair keyPair, Provider provider) {
+        ECPublicKey publicKey = (ECPublicKey) keyPair.getPublic();
+        JsonWebKey jsonWebKey = new JsonWebKey()
+            .setKeyType(KeyType.EC)
+            .setCurveName(getCurveFromKeyPair(keyPair, provider))
+            .setX(publicKey.getW().getAffineX().toByteArray())
+            .setY(publicKey.getW().getAffineY().toByteArray())
+            .setKeyType(KeyType.EC);
+        ECPrivateKey ecPrivateKey = (ECPrivateKey) keyPair.getPrivate();
 
-        ECPublicKey apub = (ECPublicKey) keyPair.getPublic();
-        ECPoint point = apub.getW();
-        ECPrivateKey apriv = (ECPrivateKey) keyPair.getPrivate();
-
-        if (apriv != null) {
-            return new JsonWebKey().setKeyType(KeyType.EC).setCurveName(getCurveFromKeyPair(keyPair, provider))
-                .setX(point.getAffineX().toByteArray()).setY(point.getAffineY().toByteArray())
-                .setD(apriv.getS().toByteArray()).setKeyType(KeyType.EC);
-        } else {
-            return new JsonWebKey().setKeyType(KeyType.EC).setCurveName(getCurveFromKeyPair(keyPair, provider))
-                .setX(point.getAffineX().toByteArray()).setY(point.getAffineY().toByteArray())
-                .setKeyType(KeyType.EC);
+        if (ecPrivateKey != null) {
+            jsonWebKey.setD(ecPrivateKey.getS().toByteArray());
         }
+
+        return jsonWebKey;
     }
 
     /**
@@ -1047,6 +1046,7 @@ public class JsonWebKey {
 
     private boolean isValidEc() {
         boolean ecPointParameters = (x != null && y != null);
+
         if (!ecPointParameters || crv == null) {
             return false;
         }
@@ -1057,6 +1057,7 @@ public class JsonWebKey {
     private boolean isValidEcHsm() {
         // MAY have public key parameters
         boolean ecPointParameters = (x != null && y != null);
+
         if ((ecPointParameters && crv == null) || (!ecPointParameters && crv != null)) {
             return false;
         }

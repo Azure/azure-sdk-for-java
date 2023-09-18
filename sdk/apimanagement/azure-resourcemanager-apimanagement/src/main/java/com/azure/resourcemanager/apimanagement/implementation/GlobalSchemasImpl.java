@@ -42,22 +42,13 @@ public final class GlobalSchemasImpl implements GlobalSchemas {
         return Utils.mapPage(inner, inner1 -> new GlobalSchemaContractImpl(inner1, this.manager()));
     }
 
-    public void getEntityTag(String resourceGroupName, String serviceName, String schemaId) {
-        this.serviceClient().getEntityTag(resourceGroupName, serviceName, schemaId);
-    }
-
     public GlobalSchemasGetEntityTagResponse getEntityTagWithResponse(
         String resourceGroupName, String serviceName, String schemaId, Context context) {
         return this.serviceClient().getEntityTagWithResponse(resourceGroupName, serviceName, schemaId, context);
     }
 
-    public GlobalSchemaContract get(String resourceGroupName, String serviceName, String schemaId) {
-        GlobalSchemaContractInner inner = this.serviceClient().get(resourceGroupName, serviceName, schemaId);
-        if (inner != null) {
-            return new GlobalSchemaContractImpl(inner, this.manager());
-        } else {
-            return null;
-        }
+    public void getEntityTag(String resourceGroupName, String serviceName, String schemaId) {
+        this.serviceClient().getEntityTag(resourceGroupName, serviceName, schemaId);
     }
 
     public Response<GlobalSchemaContract> getWithResponse(
@@ -75,13 +66,22 @@ public final class GlobalSchemasImpl implements GlobalSchemas {
         }
     }
 
-    public void delete(String resourceGroupName, String serviceName, String schemaId, String ifMatch) {
-        this.serviceClient().delete(resourceGroupName, serviceName, schemaId, ifMatch);
+    public GlobalSchemaContract get(String resourceGroupName, String serviceName, String schemaId) {
+        GlobalSchemaContractInner inner = this.serviceClient().get(resourceGroupName, serviceName, schemaId);
+        if (inner != null) {
+            return new GlobalSchemaContractImpl(inner, this.manager());
+        } else {
+            return null;
+        }
     }
 
     public Response<Void> deleteWithResponse(
         String resourceGroupName, String serviceName, String schemaId, String ifMatch, Context context) {
         return this.serviceClient().deleteWithResponse(resourceGroupName, serviceName, schemaId, ifMatch, context);
+    }
+
+    public void delete(String resourceGroupName, String serviceName, String schemaId, String ifMatch) {
+        this.serviceClient().delete(resourceGroupName, serviceName, schemaId, ifMatch);
     }
 
     public GlobalSchemaContract getById(String id) {

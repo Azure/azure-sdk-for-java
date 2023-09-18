@@ -13,6 +13,7 @@ import com.azure.resourcemanager.network.models.AdminState;
 import com.azure.resourcemanager.network.models.BgpSettings;
 import com.azure.resourcemanager.network.models.ExtendedLocation;
 import com.azure.resourcemanager.network.models.ProvisioningState;
+import com.azure.resourcemanager.network.models.VirtualNetworkGatewayAutoScaleConfiguration;
 import com.azure.resourcemanager.network.models.VirtualNetworkGatewayPolicyGroup;
 import com.azure.resourcemanager.network.models.VirtualNetworkGatewaySku;
 import com.azure.resourcemanager.network.models.VirtualNetworkGatewayType;
@@ -123,6 +124,30 @@ public final class VirtualNetworkGatewayInner extends Resource {
     @Override
     public VirtualNetworkGatewayInner withTags(Map<String, String> tags) {
         super.withTags(tags);
+        return this;
+    }
+
+    /**
+     * Get the autoScaleConfiguration property: Autoscale configuration for virutal network gateway.
+     *
+     * @return the autoScaleConfiguration value.
+     */
+    public VirtualNetworkGatewayAutoScaleConfiguration autoScaleConfiguration() {
+        return this.innerProperties() == null ? null : this.innerProperties().autoScaleConfiguration();
+    }
+
+    /**
+     * Set the autoScaleConfiguration property: Autoscale configuration for virutal network gateway.
+     *
+     * @param autoScaleConfiguration the autoScaleConfiguration value to set.
+     * @return the VirtualNetworkGatewayInner object itself.
+     */
+    public VirtualNetworkGatewayInner withAutoScaleConfiguration(
+        VirtualNetworkGatewayAutoScaleConfiguration autoScaleConfiguration) {
+        if (this.innerProperties() == null) {
+            this.innerProperties = new VirtualNetworkGatewayPropertiesFormat();
+        }
+        this.innerProperties().withAutoScaleConfiguration(autoScaleConfiguration);
         return this;
     }
 

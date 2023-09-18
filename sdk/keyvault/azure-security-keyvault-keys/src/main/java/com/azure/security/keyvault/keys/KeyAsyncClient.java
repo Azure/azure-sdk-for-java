@@ -70,9 +70,27 @@ import static com.azure.security.keyvault.keys.implementation.models.KeyVaultKey
  * The {@link KeyAsyncClient} provides asynchronous methods to manage {@link KeyVaultKey keys} in the Azure Key Vault.
  * The client supports creating, retrieving, updating, deleting, purging, backing up, restoring, listing, releasing
  * and rotating the {@link KeyVaultKey keys}. The client also supports listing {@link DeletedKey deleted keys} for a
- * soft-delete enabled Azure Key Vault.
+ * soft-delete enabled key vault.
  *
- * <p><strong>Samples to construct the async client</strong></p>
+ * <h2>Getting Started</h2>
+ *
+ * <p>In order to interact with the Azure Key Vault service, you will need to create an instance of the
+ * {@link KeyAsyncClient} class, a vault url and a credential object.</p>
+ *
+ * <p>The examples shown in this document use a credential object named DefaultAzureCredential for authentication,
+ * which is appropriate for most scenarios, including local development and production environments. Additionally,
+ * we recommend using a
+ * <a href="https://learn.microsoft.com/azure/active-directory/managed-identities-azure-resources/">
+ * managed identity</a> for authentication in production environments.
+ * You can find more information on different ways of authenticating and their corresponding credential types in the
+ * <a href="https://learn.microsoft.com/java/api/overview/azure/identity-readme?view=azure-java-stable">
+ * Azure Identity documentation"</a>.</p>
+ *
+ * <p><strong>Sample: Construct Asynchronous Key Client</strong></p>
+ *
+ * <p>The following code sample demonstrates the creation of a {@link KeyAsyncClient}, using the
+ * {@link KeyClientBuilder} to configure it.</p>
+ *
  * <!-- src_embed com.azure.security.keyvault.keys.KeyAsyncClient.instantiation -->
  * <pre>
  * KeyAsyncClient keyAsyncClient = new KeyClientBuilder&#40;&#41;
@@ -82,8 +100,78 @@ import static com.azure.security.keyvault.keys.implementation.models.KeyVaultKey
  * </pre>
  * <!-- end com.azure.security.keyvault.keys.KeyAsyncClient.instantiation -->
  *
+ * <br/>
+ *
+ * <hr/>
+ *
+ * <h2>Create a Cryptographic Key</h2>
+ * The {@link KeyAsyncClient} can be used to create a key in the key vault.
+ *
+ * <p><strong>Code Sample:</strong></p>
+ * <p>The following code sample demonstrates how to asynchronously create a cryptographic key in the key vault,
+ * using the {@link KeyAsyncClient#createKey(String, KeyType)} API.</p>
+ *
+ * <!-- src_embed com.azure.security.keyvault.keys.KeyAsyncClient.createKey#String-KeyType -->
+ * <pre>
+ * keyAsyncClient.createKey&#40;&quot;keyName&quot;, KeyType.EC&#41;
+ *     .contextWrite&#40;Context.of&#40;&quot;key1&quot;, &quot;value1&quot;, &quot;key2&quot;, &quot;value2&quot;&#41;&#41;
+ *     .subscribe&#40;key -&gt;
+ *         System.out.printf&#40;&quot;Created key with name: %s and id: %s %n&quot;, key.getName&#40;&#41;,
+ *             key.getId&#40;&#41;&#41;&#41;;
+ * </pre>
+ * <!-- end com.azure.security.keyvault.keys.KeyAsyncClient.createKey#String-KeyType -->
+ *
+ * <p><strong>Note:</strong> For the synchronous sample, refer to {@link KeyClient}.</p>
+ *
+ * <br/>
+ *
+ * <hr/>
+ *
+ * <h2>Get a Cryptographic Key</h2>
+ * The {@link KeyAsyncClient} can be used to retrieve a key from the key vault.
+ *
+ * <p><strong>Code Sample:</strong></p>
+ * <p>The following code sample demonstrates how to asynchronously retrieve a key from the key vault, using
+ * the {@link KeyAsyncClient#getKey(String)} API.</p>
+ *
+ * <!-- src_embed com.azure.security.keyvault.keys.KeyAsyncClient.getKey#String -->
+ * <pre>
+ * keyAsyncClient.getKey&#40;&quot;keyName&quot;&#41;
+ *     .contextWrite&#40;Context.of&#40;&quot;key1&quot;, &quot;value1&quot;, &quot;key2&quot;, &quot;value2&quot;&#41;&#41;
+ *     .subscribe&#40;key -&gt;
+ *         System.out.printf&#40;&quot;Created key with name: %s and: id %s%n&quot;, key.getName&#40;&#41;,
+ *             key.getId&#40;&#41;&#41;&#41;;
+ * </pre>
+ * <!-- end com.azure.security.keyvault.keys.KeyAsyncClient.getKey#String -->
+ *
+ * <p><strong>Note:</strong> For the synchronous sample, refer to {@link KeyClient}.</p>
+ *
+ * <br/>
+ *
+ * <hr/>
+ *
+ * <h2>Delete a Cryptographic Key</h2>
+ * The {@link KeyAsyncClient} can be used to delete a key from the key vault.
+ *
+ * <p><strong>Code Sample:</strong></p>
+ * <p>The following code sample demonstrates how to asynchronously delete a key from the
+ * key vault, using the {@link KeyAsyncClient#beginDeleteKey(String)} API.</p>
+ *
+ * <!-- src_embed com.azure.security.keyvault.keys.KeyAsyncClient.deleteKey#String -->
+ * <pre>
+ * keyAsyncClient.beginDeleteKey&#40;&quot;keyName&quot;&#41;
+ *     .subscribe&#40;pollResponse -&gt; &#123;
+ *         System.out.printf&#40;&quot;Deletion status: %s%n&quot;, pollResponse.getStatus&#40;&#41;&#41;;
+ *         System.out.printf&#40;&quot;Key name: %s%n&quot;, pollResponse.getValue&#40;&#41;.getName&#40;&#41;&#41;;
+ *         System.out.printf&#40;&quot;Key delete date: %s%n&quot;, pollResponse.getValue&#40;&#41;.getDeletedOn&#40;&#41;&#41;;
+ *     &#125;&#41;;
+ * </pre>
+ * <!-- end com.azure.security.keyvault.keys.KeyAsyncClient.deleteKey#String -->
+ *
+ * <p><strong>Note:</strong> For the synchronous sample, refer to {@link KeyClient}.</p>
+ *
+ * @see com.azure.security.keyvault.keys
  * @see KeyClientBuilder
- * @see PagedFlux
  */
 @ServiceClient(builder = KeyClientBuilder.class, isAsync = true,
                serviceInterfaces = KeyClientImpl.KeyClientService.class)
@@ -839,20 +927,10 @@ public final class KeyAsyncClient {
     public Mono<Response<KeyVaultKey>> getKeyWithResponse(String name, String version) {
         try {
             return implClient.getKeyWithResponseAsync(vaultUrl, name, version)
-                .onErrorMap(KeyVaultErrorException.class, KeyAsyncClient::mapGetKeyException)
+                .onErrorMap(KeyVaultErrorException.class, KeyVaultKeysUtils::mapGetKeyException)
                 .map(response -> new SimpleResponse<>(response, createKeyVaultKey(response.getValue())));
         } catch (RuntimeException e) {
             return monoError(LOGGER, e);
-        }
-    }
-
-    static HttpResponseException mapGetKeyException(KeyVaultErrorException ex) {
-        if (ex.getResponse().getStatusCode() == 403) {
-            return new ResourceModifiedException(ex.getMessage(), ex.getResponse(), ex.getValue());
-        } else if (ex.getResponse().getStatusCode() == 404) {
-            return new ResourceNotFoundException(ex.getMessage(), ex.getResponse(), ex.getValue());
-        } else {
-            return ex;
         }
     }
 

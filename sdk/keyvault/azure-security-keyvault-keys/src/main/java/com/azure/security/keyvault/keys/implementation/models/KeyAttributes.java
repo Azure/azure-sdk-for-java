@@ -134,15 +134,17 @@ public final class KeyAttributes extends Attributes {
                         if ("enabled".equals(fieldName)) {
                             deserializedKeyAttributes.setEnabled(reader.getNullable(JsonReader::getBoolean));
                         } else if ("nbf".equals(fieldName)) {
-                            deserializedKeyAttributes.setNotBefore(
-                                    OffsetDateTime.ofInstant(
-                                            Instant.ofEpochSecond(reader.getNullable(JsonReader::getLong)),
-                                            ZoneOffset.UTC));
+                            Long notBefore = reader.getNullable(JsonReader::getLong);
+                            if (notBefore != null) {
+                                deserializedKeyAttributes.setNotBefore(
+                                        OffsetDateTime.ofInstant(Instant.ofEpochSecond(notBefore), ZoneOffset.UTC));
+                            }
                         } else if ("exp".equals(fieldName)) {
-                            deserializedKeyAttributes.setExpires(
-                                    OffsetDateTime.ofInstant(
-                                            Instant.ofEpochSecond(reader.getNullable(JsonReader::getLong)),
-                                            ZoneOffset.UTC));
+                            Long expires = reader.getNullable(JsonReader::getLong);
+                            if (expires != null) {
+                                deserializedKeyAttributes.setExpires(
+                                        OffsetDateTime.ofInstant(Instant.ofEpochSecond(expires), ZoneOffset.UTC));
+                            }
                         } else if ("created".equals(fieldName)) {
                             deserializedKeyAttributes.setCreated(reader.getNullable(JsonReader::getLong));
                         } else if ("updated".equals(fieldName)) {

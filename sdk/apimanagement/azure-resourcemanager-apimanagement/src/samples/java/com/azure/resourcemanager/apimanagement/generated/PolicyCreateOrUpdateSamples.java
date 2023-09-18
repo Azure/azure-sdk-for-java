@@ -4,7 +4,6 @@
 
 package com.azure.resourcemanager.apimanagement.generated;
 
-import com.azure.core.util.Context;
 import com.azure.resourcemanager.apimanagement.fluent.models.PolicyContractInner;
 import com.azure.resourcemanager.apimanagement.models.PolicyContentFormat;
 import com.azure.resourcemanager.apimanagement.models.PolicyIdName;
@@ -12,7 +11,7 @@ import com.azure.resourcemanager.apimanagement.models.PolicyIdName;
 /** Samples for Policy CreateOrUpdate. */
 public final class PolicyCreateOrUpdateSamples {
     /*
-     * x-ms-original-file: specification/apimanagement/resource-manager/Microsoft.ApiManagement/stable/2021-08-01/examples/ApiManagementCreatePolicy.json
+     * x-ms-original-file: specification/apimanagement/resource-manager/Microsoft.ApiManagement/stable/2022-08-01/examples/ApiManagementCreatePolicy.json
      */
     /**
      * Sample code: ApiManagementCreatePolicy.
@@ -37,6 +36,6 @@ public final class PolicyCreateOrUpdateSamples {
                             + "</policies>")
                     .withFormat(PolicyContentFormat.XML),
                 null,
-                Context.NONE);
+                com.azure.core.util.Context.NONE);
     }
 }

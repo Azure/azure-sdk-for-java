@@ -16,6 +16,10 @@ public final class AccessInformationUpdateParameterProperties {
     @JsonProperty(value = "enabled")
     private Boolean enabled;
 
+    /** Creates an instance of AccessInformationUpdateParameterProperties class. */
+    public AccessInformationUpdateParameterProperties() {
+    }
+
     /**
      * Get the enabled property: Determines whether direct access is enabled.
      *

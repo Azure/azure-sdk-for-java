@@ -17,6 +17,12 @@ public final class ComposeDocumentModelOptions {
     private String modelId;
 
     /**
+     * Create a ComposeDocumentModelOptions instance.
+     */
+    public ComposeDocumentModelOptions() {
+    }
+
+    /**
      * Get the optional model description defined by the user.
      *
      * @return the modelName.

@@ -7,7 +7,7 @@ package com.azure.resourcemanager.signalr.generated;
 /** Samples for SignalRSharedPrivateLinkResources Get. */
 public final class SignalRSharedPrivateLinkResourcesGetSamples {
     /*
-     * x-ms-original-file: specification/signalr/resource-manager/Microsoft.SignalRService/stable/2023-02-01/examples/SignalRSharedPrivateLinkResources_Get.json
+     * x-ms-original-file: specification/signalr/resource-manager/Microsoft.SignalRService/preview/2023-06-01-preview/examples/SignalRSharedPrivateLinkResources_Get.json
      */
     /**
      * Sample code: SignalRSharedPrivateLinkResources_Get.

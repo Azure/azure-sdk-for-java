@@ -38,6 +38,7 @@ import reactor.core.publisher.Mono;
  * TokenCredential onBehalfOfCredential = new OnBehalfOfCredentialBuilder&#40;&#41;
  *     .clientId&#40;&quot;&lt;app-client-ID&gt;&quot;&#41;
  *     .clientSecret&#40;&quot;&lt;app-Client-Secret&gt;&quot;&#41;
+ *     .tenantId&#40;&quot;&lt;app-tenant-ID&gt;&quot;&#41;
  *     .userAssertion&#40;&quot;&lt;user-assertion&gt;&quot;&#41;
  *     .build&#40;&#41;;
  * </pre>

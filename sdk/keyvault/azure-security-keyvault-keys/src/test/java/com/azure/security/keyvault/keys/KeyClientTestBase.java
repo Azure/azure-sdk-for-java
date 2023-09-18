@@ -12,6 +12,7 @@ import com.azure.core.http.HttpResponse;
 import com.azure.core.http.policy.ExponentialBackoffOptions;
 import com.azure.core.http.policy.FixedDelayOptions;
 import com.azure.core.http.policy.RetryOptions;
+import com.azure.core.test.TestMode;
 import com.azure.core.test.TestProxyTestBase;
 import com.azure.core.test.models.BodilessMatcher;
 import com.azure.core.test.models.CustomMatcher;
@@ -77,6 +78,8 @@ public abstract class KeyClientTestBase extends TestProxyTestBase {
 
     protected boolean isHsmEnabled = false;
     protected boolean runManagedHsmTest = false;
+    protected boolean runReleaseKeyTest = getTestMode() == TestMode.PLAYBACK
+        || Configuration.getGlobalConfiguration().get("AZURE_KEYVAULT_ATTESTATION_URL") != null;
 
     void beforeTestSetup() {
         System.getProperties().put("IS_SKIP_ROTATION_POLICY_TEST",

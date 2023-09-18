@@ -1100,6 +1100,20 @@
     <Bug pattern="URF_UNREAD_FIELD"/>
   </Match>
 
+  <!-- Suppress URF_UNREAD_FIELD, the fields are read but during serialization -->
+  <Match>
+    <Class name="com.azure.cosmos.implementation.ClientSideRequestStatistics$StoreResponseStatistics"/>
+    <Field name="e2ePolicyCfg"/>
+    <Bug pattern="URF_UNREAD_FIELD"/>
+  </Match>
+
+  <!-- Suppress URF_UNREAD_FIELD, the fields are read but during serialization -->
+  <Match>
+    <Class name="com.azure.cosmos.implementation.ClientSideRequestStatistics$StoreResponseStatistics"/>
+    <Field name="excludedRegions"/>
+    <Bug pattern="URF_UNREAD_FIELD"/>
+  </Match>
+
   <!-- The entire class is unused. Bug: https://github.com/Azure/azure-sdk-for-java/issues/9075 -->
   <Match>
     <Class name="com.azure.cosmos.implementation.changefeed.implementation.RemainingWorkEstimatorImpl"/>
@@ -2670,5 +2684,12 @@
     <Class name="com.azure.sdk.build.tool.util.logging.MojoLogger"/>
     <Field name="instance"/>
     <Bug pattern="LI_LAZY_INIT_STATIC"/>
+  </Match>
+
+  <!-- False positive, complaining about dereference of null 'source' on some paths, which can't happen based on the null validation checks. -->
+  <Match>
+    <Class name="com.azure.core.util.io.IOUtils"/>
+    <Method name="transfer"/>
+    <Bug pattern="NP_NULL_ON_SOME_PATH"/>
   </Match>
 </FindBugsFilter>

@@ -56,8 +56,6 @@ public final class SignalRPrivateEndpointConnectionsDeleteMockTests {
                     tokenRequestContext -> Mono.just(new AccessToken("this_is_a_token", OffsetDateTime.MAX)),
                     new AzureProfile("", "", AzureEnvironment.AZURE));
 
-        manager
-            .signalRPrivateEndpointConnections()
-            .delete("jjoqkagf", "sxtta", "gzxnfaazpxdtnk", com.azure.core.util.Context.NONE);
+        manager.signalRPrivateEndpointConnections().delete("ggcvk", "y", "izrzb", com.azure.core.util.Context.NONE);
     }
 }

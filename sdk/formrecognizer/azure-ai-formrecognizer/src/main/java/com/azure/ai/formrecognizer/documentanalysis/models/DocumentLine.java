@@ -15,8 +15,17 @@ import java.util.List;
  */
 @Immutable
 public final class DocumentLine {
-    // Ignore custom getters in the class to prevent serialization and deserialization issues
 
+    /**
+     * Constructs a DocumentLine object.
+     */
+    public DocumentLine() {
+        this.spans = new ArrayList<>();
+        this.boundingPolygon = new ArrayList<>();
+        this.pageWords = new ArrayList<>();
+    }
+
+    // Ignore custom getters in the class to prevent serialization and deserialization issues
     /*
      * Concatenated content of the contained elements in reading order.
      */

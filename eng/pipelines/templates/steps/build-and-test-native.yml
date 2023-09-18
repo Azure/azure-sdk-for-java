@@ -135,7 +135,7 @@ steps:
       testResultsFiles: '**/TEST-*.xml'
       searchFolder: '$(System.DefaultWorkingDirectory)/sdk'
       mergeTestResults: true
-      testRunTitle: $(Agent.JobName)
+      testRunTitle: '$(Agent.JobName)_attempt_$(System.JobAttempt)'
       ${{ if ne(parameters.TestResultsFiles, '') }}:
         testResultsFiles: ${{ parameters.TestResultsFiles }}
 

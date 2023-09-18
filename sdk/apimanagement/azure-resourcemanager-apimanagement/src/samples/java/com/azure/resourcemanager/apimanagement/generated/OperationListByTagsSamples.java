@@ -4,12 +4,10 @@
 
 package com.azure.resourcemanager.apimanagement.generated;
 
-import com.azure.core.util.Context;
-
 /** Samples for Operation ListByTags. */
 public final class OperationListByTagsSamples {
     /*
-     * x-ms-original-file: specification/apimanagement/resource-manager/Microsoft.ApiManagement/stable/2021-08-01/examples/ApiManagementListApiOperationsByTags.json
+     * x-ms-original-file: specification/apimanagement/resource-manager/Microsoft.ApiManagement/stable/2022-08-01/examples/ApiManagementListApiOperationsByTags.json
      */
     /**
      * Sample code: ApiManagementListApiOperationsByTags.
@@ -18,6 +16,8 @@ public final class OperationListByTagsSamples {
      */
     public static void apiManagementListApiOperationsByTags(
         com.azure.resourcemanager.apimanagement.ApiManagementManager manager) {
-        manager.operations().listByTags("rg1", "apimService1", "a1", null, null, null, null, Context.NONE);
+        manager
+            .operations()
+            .listByTags("rg1", "apimService1", "a1", null, null, null, null, com.azure.core.util.Context.NONE);
     }
 }

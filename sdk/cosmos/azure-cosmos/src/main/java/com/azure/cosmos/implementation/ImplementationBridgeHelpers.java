@@ -176,6 +176,7 @@ public class ImplementationBridgeHelpers {
 
         public interface PartitionKeyAccessor {
             PartitionKey toPartitionKey(PartitionKeyInternal partitionKeyInternal);
+            PartitionKey toPartitionKey(Object objectKey, PartitionKeyInternal partitionKeyInternal);
         }
     }
 
@@ -371,6 +372,9 @@ public class ImplementationBridgeHelpers {
                 CosmosItemRequestOptions cosmosItemRequestOptions,
                 WriteRetryPolicy clientDefault,
                 boolean operationDefault);
+
+            CosmosEndToEndOperationLatencyPolicyConfig getEndToEndOperationLatencyPolicyConfig(
+                CosmosItemRequestOptions options);
         }
     }
 
@@ -410,11 +414,6 @@ public class ImplementationBridgeHelpers {
                 OperationContextAndListenerTuple operationContext);
 
             OperationContextAndListenerTuple getOperationContext(CosmosBulkExecutionOptions options);
-
-            void setOrderingPreserved(CosmosBulkExecutionOptions options,
-                                            boolean preserveOrdering);
-
-            boolean isOrderingPreserved(CosmosBulkExecutionOptions options);
 
             <T> T getLegacyBatchScopedContext(CosmosBulkExecutionOptions options);
 
@@ -745,6 +744,8 @@ public class ImplementationBridgeHelpers {
                 String identifier,
                 String errorMessage,
                 long transportRequestId);
+
+            boolean isNotEmpty(CosmosDiagnostics cosmosDiagnostics);
         }
     }
 
@@ -1338,8 +1339,6 @@ public class ImplementationBridgeHelpers {
 
         public interface CosmosExceptionAccessor {
             CosmosException createCosmosException(int statusCode, Exception innerException);
-            CosmosException createCosmosException(int statusCode, String message, Map<String, String> responseHeaders,
-                                                  Exception exception);
             List<String> getReplicaStatusList(CosmosException cosmosException);
             CosmosException setRntbdChannelStatistics(CosmosException cosmosException, RntbdChannelStatistics rntbdChannelStatistics);
             RntbdChannelStatistics getRntbdChannelStatistics(CosmosException cosmosException);

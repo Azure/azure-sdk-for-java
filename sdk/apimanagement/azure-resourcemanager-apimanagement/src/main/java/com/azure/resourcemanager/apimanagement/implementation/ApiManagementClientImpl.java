@@ -15,6 +15,7 @@ import com.azure.core.management.exception.ManagementException;
 import com.azure.core.management.polling.PollResult;
 import com.azure.core.management.polling.PollerFactory;
 import com.azure.core.util.Context;
+import com.azure.core.util.CoreUtils;
 import com.azure.core.util.logging.ClientLogger;
 import com.azure.core.util.polling.AsyncPollResponse;
 import com.azure.core.util.polling.LongRunningOperationStatus;
@@ -40,8 +41,14 @@ import com.azure.resourcemanager.apimanagement.fluent.ApiRevisionsClient;
 import com.azure.resourcemanager.apimanagement.fluent.ApiSchemasClient;
 import com.azure.resourcemanager.apimanagement.fluent.ApiTagDescriptionsClient;
 import com.azure.resourcemanager.apimanagement.fluent.ApiVersionSetsClient;
+import com.azure.resourcemanager.apimanagement.fluent.ApiWikisClient;
+import com.azure.resourcemanager.apimanagement.fluent.ApiWikisOperationsClient;
 import com.azure.resourcemanager.apimanagement.fluent.ApisClient;
+import com.azure.resourcemanager.apimanagement.fluent.AuthorizationAccessPoliciesClient;
+import com.azure.resourcemanager.apimanagement.fluent.AuthorizationLoginLinksClient;
+import com.azure.resourcemanager.apimanagement.fluent.AuthorizationProvidersClient;
 import com.azure.resourcemanager.apimanagement.fluent.AuthorizationServersClient;
+import com.azure.resourcemanager.apimanagement.fluent.AuthorizationsClient;
 import com.azure.resourcemanager.apimanagement.fluent.BackendsClient;
 import com.azure.resourcemanager.apimanagement.fluent.CachesClient;
 import com.azure.resourcemanager.apimanagement.fluent.CertificatesClient;
@@ -50,12 +57,15 @@ import com.azure.resourcemanager.apimanagement.fluent.ContentTypesClient;
 import com.azure.resourcemanager.apimanagement.fluent.DelegationSettingsClient;
 import com.azure.resourcemanager.apimanagement.fluent.DeletedServicesClient;
 import com.azure.resourcemanager.apimanagement.fluent.DiagnosticsClient;
+import com.azure.resourcemanager.apimanagement.fluent.DocumentationsClient;
 import com.azure.resourcemanager.apimanagement.fluent.EmailTemplatesClient;
 import com.azure.resourcemanager.apimanagement.fluent.GatewayApisClient;
 import com.azure.resourcemanager.apimanagement.fluent.GatewayCertificateAuthoritiesClient;
 import com.azure.resourcemanager.apimanagement.fluent.GatewayHostnameConfigurationsClient;
 import com.azure.resourcemanager.apimanagement.fluent.GatewaysClient;
 import com.azure.resourcemanager.apimanagement.fluent.GlobalSchemasClient;
+import com.azure.resourcemanager.apimanagement.fluent.GraphQLApiResolverPoliciesClient;
+import com.azure.resourcemanager.apimanagement.fluent.GraphQLApiResolversClient;
 import com.azure.resourcemanager.apimanagement.fluent.GroupUsersClient;
 import com.azure.resourcemanager.apimanagement.fluent.GroupsClient;
 import com.azure.resourcemanager.apimanagement.fluent.IdentityProvidersClient;
@@ -71,6 +81,8 @@ import com.azure.resourcemanager.apimanagement.fluent.OperationsClient;
 import com.azure.resourcemanager.apimanagement.fluent.OutboundNetworkDependenciesEndpointsClient;
 import com.azure.resourcemanager.apimanagement.fluent.PoliciesClient;
 import com.azure.resourcemanager.apimanagement.fluent.PolicyDescriptionsClient;
+import com.azure.resourcemanager.apimanagement.fluent.PolicyFragmentsClient;
+import com.azure.resourcemanager.apimanagement.fluent.PortalConfigsClient;
 import com.azure.resourcemanager.apimanagement.fluent.PortalRevisionsClient;
 import com.azure.resourcemanager.apimanagement.fluent.PortalSettingsClient;
 import com.azure.resourcemanager.apimanagement.fluent.PrivateEndpointConnectionsClient;
@@ -78,6 +90,8 @@ import com.azure.resourcemanager.apimanagement.fluent.ProductApisClient;
 import com.azure.resourcemanager.apimanagement.fluent.ProductGroupsClient;
 import com.azure.resourcemanager.apimanagement.fluent.ProductPoliciesClient;
 import com.azure.resourcemanager.apimanagement.fluent.ProductSubscriptionsClient;
+import com.azure.resourcemanager.apimanagement.fluent.ProductWikisClient;
+import com.azure.resourcemanager.apimanagement.fluent.ProductWikisOperationsClient;
 import com.azure.resourcemanager.apimanagement.fluent.ProductsClient;
 import com.azure.resourcemanager.apimanagement.fluent.QuotaByCounterKeysClient;
 import com.azure.resourcemanager.apimanagement.fluent.QuotaByPeriodKeysClient;
@@ -104,22 +118,17 @@ import java.nio.ByteBuffer;
 import java.nio.charset.Charset;
 import java.nio.charset.StandardCharsets;
 import java.time.Duration;
-import java.util.Map;
 import reactor.core.publisher.Flux;
 import reactor.core.publisher.Mono;
 
 /** Initializes a new instance of the ApiManagementClientImpl type. */
 @ServiceClient(builder = ApiManagementClientBuilder.class)
 public final class ApiManagementClientImpl implements ApiManagementClient {
-    /**
-     * Subscription credentials which uniquely identify Microsoft Azure subscription. The subscription ID forms part of
-     * the URI for every service call.
-     */
+    /** The ID of the target subscription. */
     private final String subscriptionId;
 
     /**
-     * Gets Subscription credentials which uniquely identify Microsoft Azure subscription. The subscription ID forms
-     * part of the URI for every service call.
+     * Gets The ID of the target subscription.
      *
      * @return the subscriptionId value.
      */
@@ -259,6 +268,30 @@ public final class ApiManagementClientImpl implements ApiManagementClient {
         return this.tags;
     }
 
+    /** The GraphQLApiResolversClient object to access its operations. */
+    private final GraphQLApiResolversClient graphQLApiResolvers;
+
+    /**
+     * Gets the GraphQLApiResolversClient object to access its operations.
+     *
+     * @return the GraphQLApiResolversClient object.
+     */
+    public GraphQLApiResolversClient getGraphQLApiResolvers() {
+        return this.graphQLApiResolvers;
+    }
+
+    /** The GraphQLApiResolverPoliciesClient object to access its operations. */
+    private final GraphQLApiResolverPoliciesClient graphQLApiResolverPolicies;
+
+    /**
+     * Gets the GraphQLApiResolverPoliciesClient object to access its operations.
+     *
+     * @return the GraphQLApiResolverPoliciesClient object.
+     */
+    public GraphQLApiResolverPoliciesClient getGraphQLApiResolverPolicies() {
+        return this.graphQLApiResolverPolicies;
+    }
+
     /** The ApiProductsClient object to access its operations. */
     private final ApiProductsClient apiProducts;
 
@@ -367,6 +400,30 @@ public final class ApiManagementClientImpl implements ApiManagementClient {
         return this.operations;
     }
 
+    /** The ApiWikisClient object to access its operations. */
+    private final ApiWikisClient apiWikis;
+
+    /**
+     * Gets the ApiWikisClient object to access its operations.
+     *
+     * @return the ApiWikisClient object.
+     */
+    public ApiWikisClient getApiWikis() {
+        return this.apiWikis;
+    }
+
+    /** The ApiWikisOperationsClient object to access its operations. */
+    private final ApiWikisOperationsClient apiWikisOperations;
+
+    /**
+     * Gets the ApiWikisOperationsClient object to access its operations.
+     *
+     * @return the ApiWikisOperationsClient object.
+     */
+    public ApiWikisOperationsClient getApiWikisOperations() {
+        return this.apiWikisOperations;
+    }
+
     /** The ApiExportsClient object to access its operations. */
     private final ApiExportsClient apiExports;
 
@@ -401,6 +458,54 @@ public final class ApiManagementClientImpl implements ApiManagementClient {
      */
     public AuthorizationServersClient getAuthorizationServers() {
         return this.authorizationServers;
+    }
+
+    /** The AuthorizationProvidersClient object to access its operations. */
+    private final AuthorizationProvidersClient authorizationProviders;
+
+    /**
+     * Gets the AuthorizationProvidersClient object to access its operations.
+     *
+     * @return the AuthorizationProvidersClient object.
+     */
+    public AuthorizationProvidersClient getAuthorizationProviders() {
+        return this.authorizationProviders;
+    }
+
+    /** The AuthorizationsClient object to access its operations. */
+    private final AuthorizationsClient authorizations;
+
+    /**
+     * Gets the AuthorizationsClient object to access its operations.
+     *
+     * @return the AuthorizationsClient object.
+     */
+    public AuthorizationsClient getAuthorizations() {
+        return this.authorizations;
+    }
+
+    /** The AuthorizationLoginLinksClient object to access its operations. */
+    private final AuthorizationLoginLinksClient authorizationLoginLinks;
+
+    /**
+     * Gets the AuthorizationLoginLinksClient object to access its operations.
+     *
+     * @return the AuthorizationLoginLinksClient object.
+     */
+    public AuthorizationLoginLinksClient getAuthorizationLoginLinks() {
+        return this.authorizationLoginLinks;
+    }
+
+    /** The AuthorizationAccessPoliciesClient object to access its operations. */
+    private final AuthorizationAccessPoliciesClient authorizationAccessPolicies;
+
+    /**
+     * Gets the AuthorizationAccessPoliciesClient object to access its operations.
+     *
+     * @return the AuthorizationAccessPoliciesClient object.
+     */
+    public AuthorizationAccessPoliciesClient getAuthorizationAccessPolicies() {
+        return this.authorizationAccessPolicies;
     }
 
     /** The BackendsClient object to access its operations. */
@@ -763,6 +868,30 @@ public final class ApiManagementClientImpl implements ApiManagementClient {
         return this.policyDescriptions;
     }
 
+    /** The PolicyFragmentsClient object to access its operations. */
+    private final PolicyFragmentsClient policyFragments;
+
+    /**
+     * Gets the PolicyFragmentsClient object to access its operations.
+     *
+     * @return the PolicyFragmentsClient object.
+     */
+    public PolicyFragmentsClient getPolicyFragments() {
+        return this.policyFragments;
+    }
+
+    /** The PortalConfigsClient object to access its operations. */
+    private final PortalConfigsClient portalConfigs;
+
+    /**
+     * Gets the PortalConfigsClient object to access its operations.
+     *
+     * @return the PortalConfigsClient object.
+     */
+    public PortalConfigsClient getPortalConfigs() {
+        return this.portalConfigs;
+    }
+
     /** The PortalRevisionsClient object to access its operations. */
     private final PortalRevisionsClient portalRevisions;
 
@@ -893,6 +1022,30 @@ public final class ApiManagementClientImpl implements ApiManagementClient {
      */
     public ProductPoliciesClient getProductPolicies() {
         return this.productPolicies;
+    }
+
+    /** The ProductWikisClient object to access its operations. */
+    private final ProductWikisClient productWikis;
+
+    /**
+     * Gets the ProductWikisClient object to access its operations.
+     *
+     * @return the ProductWikisClient object.
+     */
+    public ProductWikisClient getProductWikis() {
+        return this.productWikis;
+    }
+
+    /** The ProductWikisOperationsClient object to access its operations. */
+    private final ProductWikisOperationsClient productWikisOperations;
+
+    /**
+     * Gets the ProductWikisOperationsClient object to access its operations.
+     *
+     * @return the ProductWikisOperationsClient object.
+     */
+    public ProductWikisOperationsClient getProductWikisOperations() {
+        return this.productWikisOperations;
     }
 
     /** The QuotaByCounterKeysClient object to access its operations. */
@@ -1099,6 +1252,18 @@ public final class ApiManagementClientImpl implements ApiManagementClient {
         return this.userConfirmationPasswords;
     }
 
+    /** The DocumentationsClient object to access its operations. */
+    private final DocumentationsClient documentations;
+
+    /**
+     * Gets the DocumentationsClient object to access its operations.
+     *
+     * @return the DocumentationsClient object.
+     */
+    public DocumentationsClient getDocumentations() {
+        return this.documentations;
+    }
+
     /**
      * Initializes an instance of ApiManagementClient client.
      *
@@ -1106,8 +1271,7 @@ public final class ApiManagementClientImpl implements ApiManagementClient {
      * @param serializerAdapter The serializer to serialize an object into a string.
      * @param defaultPollInterval The default poll interval for long-running operation.
      * @param environment The Azure environment.
-     * @param subscriptionId Subscription credentials which uniquely identify Microsoft Azure subscription. The
-     *     subscription ID forms part of the URI for every service call.
+     * @param subscriptionId The ID of the target subscription.
      * @param endpoint server parameter.
      */
     ApiManagementClientImpl(
@@ -1122,13 +1286,15 @@ public final class ApiManagementClientImpl implements ApiManagementClient {
         this.defaultPollInterval = defaultPollInterval;
         this.subscriptionId = subscriptionId;
         this.endpoint = endpoint;
-        this.apiVersion = "2021-08-01";
+        this.apiVersion = "2022-08-01";
         this.apis = new ApisClientImpl(this);
         this.apiRevisions = new ApiRevisionsClientImpl(this);
         this.apiReleases = new ApiReleasesClientImpl(this);
         this.apiOperations = new ApiOperationsClientImpl(this);
         this.apiOperationPolicies = new ApiOperationPoliciesClientImpl(this);
         this.tags = new TagsClientImpl(this);
+        this.graphQLApiResolvers = new GraphQLApiResolversClientImpl(this);
+        this.graphQLApiResolverPolicies = new GraphQLApiResolverPoliciesClientImpl(this);
         this.apiProducts = new ApiProductsClientImpl(this);
         this.apiPolicies = new ApiPoliciesClientImpl(this);
         this.apiSchemas = new ApiSchemasClientImpl(this);
@@ -1138,9 +1304,15 @@ public final class ApiManagementClientImpl implements ApiManagementClient {
         this.apiIssueAttachments = new ApiIssueAttachmentsClientImpl(this);
         this.apiTagDescriptions = new ApiTagDescriptionsClientImpl(this);
         this.operations = new OperationsClientImpl(this);
+        this.apiWikis = new ApiWikisClientImpl(this);
+        this.apiWikisOperations = new ApiWikisOperationsClientImpl(this);
         this.apiExports = new ApiExportsClientImpl(this);
         this.apiVersionSets = new ApiVersionSetsClientImpl(this);
         this.authorizationServers = new AuthorizationServersClientImpl(this);
+        this.authorizationProviders = new AuthorizationProvidersClientImpl(this);
+        this.authorizations = new AuthorizationsClientImpl(this);
+        this.authorizationLoginLinks = new AuthorizationLoginLinksClientImpl(this);
+        this.authorizationAccessPolicies = new AuthorizationAccessPoliciesClientImpl(this);
         this.backends = new BackendsClientImpl(this);
         this.caches = new CachesClientImpl(this);
         this.certificates = new CertificatesClientImpl(this);
@@ -1171,6 +1343,8 @@ public final class ApiManagementClientImpl implements ApiManagementClient {
         this.outboundNetworkDependenciesEndpoints = new OutboundNetworkDependenciesEndpointsClientImpl(this);
         this.policies = new PoliciesClientImpl(this);
         this.policyDescriptions = new PolicyDescriptionsClientImpl(this);
+        this.policyFragments = new PolicyFragmentsClientImpl(this);
+        this.portalConfigs = new PortalConfigsClientImpl(this);
         this.portalRevisions = new PortalRevisionsClientImpl(this);
         this.portalSettings = new PortalSettingsClientImpl(this);
         this.signInSettings = new SignInSettingsClientImpl(this);
@@ -1182,6 +1356,8 @@ public final class ApiManagementClientImpl implements ApiManagementClient {
         this.productGroups = new ProductGroupsClientImpl(this);
         this.productSubscriptions = new ProductSubscriptionsClientImpl(this);
         this.productPolicies = new ProductPoliciesClientImpl(this);
+        this.productWikis = new ProductWikisClientImpl(this);
+        this.productWikisOperations = new ProductWikisOperationsClientImpl(this);
         this.quotaByCounterKeys = new QuotaByCounterKeysClientImpl(this);
         this.quotaByPeriodKeys = new QuotaByPeriodKeysClientImpl(this);
         this.regions = new RegionsClientImpl(this);
@@ -1199,6 +1375,7 @@ public final class ApiManagementClientImpl implements ApiManagementClient {
         this.userSubscriptions = new UserSubscriptionsClientImpl(this);
         this.userIdentities = new UserIdentitiesClientImpl(this);
         this.userConfirmationPasswords = new UserConfirmationPasswordsClientImpl(this);
+        this.documentations = new DocumentationsClientImpl(this);
     }
 
     /**
@@ -1217,10 +1394,7 @@ public final class ApiManagementClientImpl implements ApiManagementClient {
      * @return the merged context.
      */
     public Context mergeContext(Context context) {
-        for (Map.Entry<Object, Object> entry : this.getContext().getValues().entrySet()) {
-            context = context.addData(entry.getKey(), entry.getValue());
-        }
-        return context;
+        return CoreUtils.mergeContexts(this.getContext(), context);
     }
 
     /**
