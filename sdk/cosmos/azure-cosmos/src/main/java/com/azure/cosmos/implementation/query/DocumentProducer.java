@@ -9,9 +9,11 @@ import com.azure.cosmos.implementation.Exceptions;
 import com.azure.cosmos.implementation.HttpConstants;
 import com.azure.cosmos.implementation.ImplementationBridgeHelpers;
 import com.azure.cosmos.implementation.ObservableHelper;
+import com.azure.cosmos.implementation.OperationType;
 import com.azure.cosmos.implementation.PartitionKeyRange;
 import com.azure.cosmos.implementation.QueryMetrics;
 import com.azure.cosmos.implementation.QueryMetricsConstants;
+import com.azure.cosmos.implementation.ResourceType;
 import com.azure.cosmos.implementation.RxDocumentServiceRequest;
 import com.azure.cosmos.implementation.Utils;
 import com.azure.cosmos.implementation.apachecommons.lang.StringUtils;
@@ -36,7 +38,6 @@ import java.util.Collections;
 import java.util.List;
 import java.util.Locale;
 import java.util.UUID;
-import java.util.concurrent.Callable;
 import java.util.function.BiFunction;
 import java.util.function.Function;
 import java.util.function.Supplier;
@@ -98,7 +99,7 @@ class DocumentProducer<T> {
     protected final String collectionLink;
     protected final TriFunction<FeedRangeEpkImpl, String, Integer, RxDocumentServiceRequest> createRequestFunc;
     protected final Function<RxDocumentServiceRequest, Mono<FeedResponse<T>>> executeRequestFuncWithRetries;
-    protected final Callable<DocumentClientRetryPolicy> createRetryPolicyFunc;
+    protected final Supplier<DocumentClientRetryPolicy> createRetryPolicyFunc;
     protected final int pageSize;
     protected final UUID correlatedActivityId;
     public int top;
@@ -114,7 +115,7 @@ class DocumentProducer<T> {
             TriFunction<FeedRangeEpkImpl, String, Integer, RxDocumentServiceRequest> createRequestFunc,
             Function<RxDocumentServiceRequest, Mono<FeedResponse<T>>> executeRequestFunc,
             String collectionLink,
-            Callable<DocumentClientRetryPolicy> createRetryPolicyFunc,
+            Supplier<DocumentClientRetryPolicy> createRetryPolicyFunc,
             Class<T> resourceType ,
             UUID correlatedActivityId,
             int initialPageSize, // = -1,
@@ -132,30 +133,38 @@ class DocumentProducer<T> {
         this.fetchSchedulingMetrics.ready();
         this.fetchExecutionRangeAccumulator = new FetchExecutionRangeAccumulator(feedRange.getRange().toString());
         this.operationContextTextProvider = operationContextTextProvider;
-        // TODO @fabianm wire up clientContext - hedging needs to be applied here
+
+        BiFunction<Supplier<DocumentClientRetryPolicy>, RxDocumentServiceRequest, Mono<FeedResponse<T>>>
+            executeFeedOperationCore = (clientRetryPolicyFactory, request) -> {
+            DocumentClientRetryPolicy finalRetryPolicy = clientRetryPolicyFactory.get();
+            return ObservableHelper.inlineIfPossibleAsObs(
+                () -> {
+                    if(finalRetryPolicy != null) {
+                        finalRetryPolicy.onBeforeSendRequest(request);
+                    }
+
+                    ++retries;
+                    return executeRequestFunc.apply(request);
+                }, finalRetryPolicy);
+        };
+
         this.executeRequestFuncWithRetries = request -> {
             retries = -1;
             this.fetchSchedulingMetrics.start();
             this.fetchExecutionRangeAccumulator.beginFetchRange();
-            DocumentClientRetryPolicy retryPolicy = null;
-            if (createRetryPolicyFunc != null) {
-                try {
-                    retryPolicy = createRetryPolicyFunc.call();
-                } catch (Exception e) {
-                    return Mono.error(e);
-                }
-            }
 
-            DocumentClientRetryPolicy finalRetryPolicy = retryPolicy;
-            return ObservableHelper.inlineIfPossibleAsObs(
-                    () -> {
-                        if(finalRetryPolicy != null) {
-                            finalRetryPolicy.onBeforeSendRequest(request);
-                        }
+            return this.client.executeFeedOperationWithAvailabilityStrategy(
+                ResourceType.Document,
+                OperationType.Query,
+                () -> {
+                    if (createRetryPolicyFunc != null) {
+                        return createRetryPolicyFunc.get();
+                    }
 
-                        ++retries;
-                        return executeRequestFunc.apply(request);
-                    }, retryPolicy);
+                    return null;
+                },
+                request,
+                executeFeedOperationCore);
         };
 
         this.correlatedActivityId = correlatedActivityId;

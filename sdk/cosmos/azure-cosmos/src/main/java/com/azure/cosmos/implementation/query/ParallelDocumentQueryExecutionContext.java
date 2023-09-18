@@ -474,7 +474,7 @@ public class ParallelDocumentQueryExecutionContext<T>
             Map<String, String> commonRequestHeaders,
             TriFunction<FeedRangeEpkImpl, String, Integer, RxDocumentServiceRequest> createRequestFunc,
             Function<RxDocumentServiceRequest, Mono<FeedResponse<T>>> executeFunc,
-            Callable<DocumentClientRetryPolicy> createRetryPolicyFunc, FeedRangeEpkImpl feedRange) {
+            Supplier<DocumentClientRetryPolicy> createRetryPolicyFunc, FeedRangeEpkImpl feedRange) {
         return new DocumentProducer<>(client,
                 collectionRid,
                 cosmosQueryRequestOptions,

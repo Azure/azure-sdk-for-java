@@ -153,8 +153,6 @@ public class DefaultDocumentQueryExecutionContext<T> extends DocumentQueryExecut
         IPartitionKeyRangeCache partitionKeyRangeCache =  this.client.getPartitionKeyRangeCache();
         DocumentClientRetryPolicy retryPolicyInstance = this.client.getResetSessionTokenRetryPolicy().getRequestPolicy(this.diagnosticsClientContext);
 
-        // TODO @fabianm wire up clientContext - hedging needs to be applied here
-
         retryPolicyInstance = new InvalidPartitionExceptionRetryPolicy(
             collectionCache,
             retryPolicyInstance,

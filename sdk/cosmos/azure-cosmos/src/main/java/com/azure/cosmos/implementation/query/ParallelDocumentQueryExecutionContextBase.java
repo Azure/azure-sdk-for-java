@@ -29,6 +29,7 @@ import java.util.UUID;
 import java.util.concurrent.Callable;
 import java.util.concurrent.atomic.AtomicBoolean;
 import java.util.function.Function;
+import java.util.function.Supplier;
 
 /**
  * While this class is public, but it is not part of our published public APIs.
@@ -119,7 +120,7 @@ public abstract class ParallelDocumentQueryExecutionContextBase<T>
                                                                   TriFunction<FeedRangeEpkImpl, String, Integer, RxDocumentServiceRequest> createRequestFunc,
                                                                   Function<RxDocumentServiceRequest,
                                                                   Mono<FeedResponse<T>>> executeFunc,
-                                                                  Callable<DocumentClientRetryPolicy> createRetryPolicyFunc,
+                                                                  Supplier<DocumentClientRetryPolicy> createRetryPolicyFunc,
                                                                   FeedRangeEpkImpl feedRange);
 
     @Override

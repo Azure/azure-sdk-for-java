@@ -60,7 +60,11 @@ class QueryPlanRetriever {
         request.useGatewayMode = true;
         request.setByteBuffer(ModelBridgeInternal.serializeJsonToByteBuffer(sqlQuerySpec));
 
-        // TODO @fabianm wire up clientContext
+        // TODO @fabianm wire up clientContext - No availability strategy (hedging) for query plan -
+        // hedging is currently only enabled for actual backend interactions - not gateway calls
+        // For now this is expected - and given the plans around Optimistic query plan retrieval and eventually
+        // getting query plan from backend - not gateway - this is a reasonable scoping decision. But probably
+        // worth revisiting this decision in a few months
         final DocumentClientRetryPolicy retryPolicyInstance =
             queryClient.getResetSessionTokenRetryPolicy().getRequestPolicy(diagnosticsClientContext);
 

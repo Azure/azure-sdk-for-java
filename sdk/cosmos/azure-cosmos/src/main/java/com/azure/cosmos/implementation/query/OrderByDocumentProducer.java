@@ -47,7 +47,7 @@ class OrderByDocumentProducer extends DocumentProducer<Document> {
             Function<RxDocumentServiceRequest, Mono<FeedResponse<Document>>> executeRequestFunc,
             FeedRangeEpkImpl feedRange,
             String collectionLink,
-            Callable<DocumentClientRetryPolicy> createRetryPolicyFunc,
+            Supplier<DocumentClientRetryPolicy> createRetryPolicyFunc,
             Class<Document> resourceType,
             UUID correlatedActivityId,
             int initialPageSize,
