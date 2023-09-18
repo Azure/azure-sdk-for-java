@@ -16,6 +16,7 @@ import java.util.Collections;
 import java.util.List;
 import java.util.Locale;
 import java.util.concurrent.locks.ReentrantLock;
+import java.util.concurrent.locks.ReentrantReadWriteLock;
 import java.util.regex.Pattern;
 import java.util.stream.Collectors;
 
@@ -31,7 +32,7 @@ public final class ConnectionPolicy {
     private boolean endpointDiscoveryEnabled;
     private boolean multipleWriteRegionsEnabled;
     private List<String> preferredRegions;
-    private volatile List<String> excludedRegions;
+    private List<String> excludedRegions;
     private boolean readRequestsFallbackEnabled;
     private ThrottlingRetryOptions throttlingRetryOptions;
     private String userAgentSuffix;
@@ -56,7 +57,7 @@ public final class ConnectionPolicy {
     private int minConnectionPoolSizePerEndpoint;
     private int openConnectionsConcurrency;
     private int aggressiveWarmupConcurrency;
-    private final ReentrantLock reentrantLock;
+    private final ReentrantReadWriteLock reentrantReadWriteLock;
     private String excludedRegionsAsString;
     private static final Pattern SPACE_PATTERN = Pattern.compile(" ");
 
@@ -124,7 +125,7 @@ public final class ConnectionPolicy {
         this.minConnectionPoolSizePerEndpoint = Configs.getMinConnectionPoolSizePerEndpoint();
         this.openConnectionsConcurrency = Configs.getOpenConnectionsConcurrency();
         this.aggressiveWarmupConcurrency = Configs.getAggressiveWarmupConcurrency();
-        this.reentrantLock = new ReentrantLock();
+        this.reentrantReadWriteLock = new ReentrantReadWriteLock();
     }
 
     /**
@@ -483,7 +484,7 @@ public final class ConnectionPolicy {
     }
 
     public ConnectionPolicy setExcludedRegions(List<String> excludedRegions) {
-        reentrantLock.lock();
+        reentrantReadWriteLock.writeLock().lock();
         try {
             if (excludedRegions != null) {
                 this.excludedRegions = new ArrayList<>();
@@ -492,12 +493,17 @@ public final class ConnectionPolicy {
             this.excludedRegionsAsString = constructExcludedRegionsAsString(this.excludedRegions);
             return this;
         } finally {
-            reentrantLock.unlock();
+            reentrantReadWriteLock.writeLock().unlock();
         }
     }
 
     public List<String> getExcludedRegions() {
-        return this.excludedRegions;
+        reentrantReadWriteLock.readLock().lock();
+        try {
+            return this.excludedRegions;
+        } finally {
+            reentrantReadWriteLock.readLock().unlock();
+        }
     }
 
     /**
