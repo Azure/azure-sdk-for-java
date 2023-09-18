@@ -267,6 +267,9 @@ public final class TelemetryItem {
     }
 
     private void populateFromTag(String contextTagKey, Map<String, String> resourceFromTags) {
+        if (tags == null) {
+            return;
+        }
         String roleName = tags.get(contextTagKey);
         if (roleName != null) {
             resourceFromTags.put(contextTagKey, roleName);

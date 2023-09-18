@@ -185,7 +185,7 @@ public final class AzureMonitorExporterBuilder {
      *
      * @param connectionString The connection string for the Azure Monitor resource.
      * @return The updated {@link AzureMonitorExporterBuilder} object.
-     * @throws NullPointerException     If the connection string is {@code null}.
+     * @throws NullPointerException If the connection string is {@code null}.
      * @throws IllegalArgumentException If the connection string is invalid.
      */
     public AzureMonitorExporterBuilder connectionString(String connectionString) {
