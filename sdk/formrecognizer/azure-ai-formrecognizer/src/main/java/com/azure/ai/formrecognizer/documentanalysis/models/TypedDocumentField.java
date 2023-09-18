@@ -3,12 +3,13 @@
 
 package com.azure.ai.formrecognizer.documentanalysis.models;
 
+import com.azure.ai.formrecognizer.documentanalysis.implementation.util.DocumentSpanHelper;
 import com.azure.ai.formrecognizer.documentanalysis.implementation.util.TypedDocumentFieldHelper;
 import com.azure.json.JsonReader;
 import com.azure.json.JsonToken;
-import com.azure.json.JsonWriter;
 
 import java.io.IOException;
+import java.util.ArrayList;
 import java.util.List;
 
 /**
@@ -158,7 +159,6 @@ public class TypedDocumentField<T> {
                 while (reader.nextToken() != JsonToken.END_OBJECT) {
                     String fieldName = reader.getFieldName();
                     reader.nextToken();
-
                     if ("value".equals(fieldName)) {
                         deserializedValue.setValue(reader.getFieldName());
                     } else if ("type".equals(fieldName)) {
@@ -167,16 +167,96 @@ public class TypedDocumentField<T> {
                         deserializedValue.setContent(reader.getString());
                     } else if ("boundingRegions".equals(fieldName)) {
                         deserializedValue.setBoundingRegions(
-                            reader.readArray(// BoundingRegionHelper::fromJson));
+                            reader.readArray(TypedDocumentField::boundingRegionFromJson));
                     } else if ("spans".equals(fieldName)) {
-                        deserializedValue.setSpans(reader.readArray(//DocumentSpanHelper::fromJson));
+                        deserializedValue.setSpans(reader.readArray(TypedDocumentField::documentSpanFromJson));
                     } else if ("confidence".equals(fieldName)) {
                         deserializedValue.setConfidence(reader.getFloat());
                     } else {
-                        reader.skipValue();
+                        reader.skipChildren();
                     }
                 }
                 return deserializedValue;
+            });
+    }
+
+    private static DocumentSpan documentSpanFromJson(JsonReader jsonReader) {
+        return jsonReader.readObject(
+            reader -> {
+                boolean offsetFound = false;
+                int offset = 0;
+                boolean lengthFound = false;
+                int length = 0;
+                while (reader.nextToken() != JsonToken.END_OBJECT) {
+                    String fieldName = reader.getFieldName();
+                    reader.nextToken();
+
+                    if ("offset".equals(fieldName)) {
+                        offset = reader.getInt();
+                        offsetFound = true;
+                    } else if ("length".equals(fieldName)) {
+                        length = reader.getInt();
+                        lengthFound = true;
+                    } else {
+                        reader.skipChildren();
+                    }
+                }
+                if (offsetFound && lengthFound) {
+                    DocumentSpan
+                        deserializedDocumentSpan = new DocumentSpanHelper.DocumentSpanAccessor()offset, length);
+
+                    return deserializedDocumentSpan;
+                }
+                List<String> missingProperties = new ArrayList<>();
+                if (!offsetFound) {
+                    missingProperties.add("offset");
+                }
+                if (!lengthFound) {
+                    missingProperties.add("length");
+                }
+
+                throw new IllegalStateException(
+                    "Missing required property/properties: " + String.join(", ", missingProperties));
+            });
+    }
+
+    public static BoundingRegion boundingRegionFromJson(JsonReader jsonReader) throws IOException {
+        return jsonReader.readObject(
+            reader -> {
+                boolean pageNumberFound = false;
+                int pageNumber = 0;
+                boolean polygonFound = false;
+                List<Float> polygon = null;
+                while (reader.nextToken() != JsonToken.END_OBJECT) {
+                    String fieldName = reader.getFieldName();
+                    reader.nextToken();
+
+                    if ("pageNumber".equals(fieldName)) {
+                        pageNumber = reader.getInt();
+                        pageNumberFound = true;
+                    } else if ("polygon".equals(fieldName)) {
+                        polygon = reader.readArray(reader1 -> reader1.getFloat());
+                        polygonFound = true;
+                    } else {
+                        reader.skipChildren();
+                    }
+                }
+                if (pageNumberFound && polygonFound) {
+                    com.azure.ai.formrecognizer.documentanalysis.implementation.models.BoundingRegion
+                        deserializedBoundingRegion = new com.azure.ai.formrecognizer.documentanalysis.models.BoundingRegion(pageNumber, polygon);
+
+                    return deserializedBoundingRegion;
+                }
+                List<String> missingProperties = new ArrayList<>();
+                if (!pageNumberFound) {
+                    missingProperties.add("pageNumber");
+                }
+                if (!polygonFound) {
+                    missingProperties.add("polygon");
+                }
+
+                throw new IllegalStateException(
+                    "Missing required property/properties: " + String.join(", ", missingProperties));
             });
     }
 }
