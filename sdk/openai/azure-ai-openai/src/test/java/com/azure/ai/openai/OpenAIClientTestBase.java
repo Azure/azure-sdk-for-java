@@ -40,6 +40,7 @@ import com.azure.core.util.Configuration;
 import org.junit.jupiter.api.Test;
 
 import java.nio.file.Path;
+import java.nio.file.Paths;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
@@ -251,7 +252,7 @@ public abstract class OpenAIClientTestBase extends TestProxyTestBase {
     }
 
     static Path openTestResourceFile(String fileName) {
-        return Path.of("src/test/resources/" + fileName);
+        return Paths.get("src/test/resources/" + fileName);
     }
 
     static void assertCompletions(int choicesPerPrompt, Completions actual) {
