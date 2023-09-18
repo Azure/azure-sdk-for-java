@@ -4696,7 +4696,7 @@ public class RxDocumentClientImpl implements AsyncDocumentClient, IAuthorization
         int maxPageSize = maxItemCount != null ? maxItemCount : -1;
         final CosmosQueryRequestOptions finalCosmosQueryRequestOptions = options;
 
-        assert(resourceType == ResourceType.Document);
+        assert(resourceType != ResourceType.Document);
         // readFeed is only used for non-document operations - no need to wire up hedging
         DocumentClientRetryPolicy retryPolicy = this.resetSessionTokenRetryPolicy.getRequestPolicy(null);
         BiFunction<String, Integer, RxDocumentServiceRequest> createRequestFunc = (continuationToken, pageSize) -> {
