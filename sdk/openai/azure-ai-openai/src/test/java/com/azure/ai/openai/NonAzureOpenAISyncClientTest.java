@@ -438,7 +438,7 @@ public class NonAzureOpenAISyncClientTest extends OpenAIClientTestBase {
             translationOptions.setResponseFormat(AudioTranscriptionFormat.VERBOSE_JSON);
 
             AudioTranscription translation = client.getAudioTranslation(modelId, translationOptions, fileName);
-            assertAudioTranscriptionVerboseJson(translation,"It's raining today.", AudioTaskLabel.TRANSCRIBE);
+            assertAudioTranscriptionVerboseJson(translation,"It's raining today.", AudioTaskLabel.TRANSLATE);
         });
     }
 
