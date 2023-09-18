@@ -31,7 +31,7 @@ public final class IotHubResourcesListEventHubConsumerGroupsMockTests {
         ArgumentCaptor<HttpRequest> httpRequest = ArgumentCaptor.forClass(HttpRequest.class);
 
         String responseStr =
-            "{\"value\":[{\"properties\":{\"kgjubgdknnqvsazn\":\"datalxqtvcofudfl\"},\"etag\":\"tor\",\"id\":\"dsg\",\"name\":\"a\",\"type\":\"mkycgra\"}]}";
+            "{\"value\":[{\"properties\":{\"sbjjc\":\"datadpfuvg\",\"udutnco\":\"datanvxbvt\",\"xqtvcofu\":\"datamr\",\"vkg\":\"dataf\"},\"etag\":\"bgdknnqv\",\"id\":\"aznqntoru\",\"name\":\"sgsahmkycgr\",\"type\":\"uwjuetaeburuvdmo\"}]}";
 
         Mockito.when(httpResponse.getStatusCode()).thenReturn(200);
         Mockito.when(httpResponse.getHeaders()).thenReturn(new HttpHeaders());
@@ -62,6 +62,7 @@ public final class IotHubResourcesListEventHubConsumerGroupsMockTests {
         PagedIterable<EventHubConsumerGroupInfo> response =
             manager
                 .iotHubResources()
-                .listEventHubConsumerGroups("vxb", "t", "udutnco", com.azure.core.util.Context.NONE);
+                .listEventHubConsumerGroups(
+                    "priolx", "rjaltolmncw", "obqwcsdbnwdcfh", com.azure.core.util.Context.NONE);
     }
 }
