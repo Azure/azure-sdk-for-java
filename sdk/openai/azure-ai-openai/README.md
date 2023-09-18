@@ -291,7 +291,7 @@ for (ImageLocation imageLocation : images.getData()) {
 For a complete sample example, see sample [Image Generation][sample_image_generation].
 
 ### Audio Transcription
-The OpenAI service starts supporting `audio transcription` since model `Whisper`. 
+The OpenAI service starts supporting `audio transcription` with the introduction of `Whisper` models. 
 The following code snippet shows how to use the service to transcribe audio.
 
 ```java readme-sample-audioTranscription
@@ -310,7 +310,7 @@ For a complete sample example, see sample [Audio Transcription][sample_audio_tra
 Please refer to the service documentation for a conceptual discussion of [Whisper][microsoft_docs_whisper_model].
 
 ### Audio Translation
-The OpenAI service starts supporting `audio translation` since model `Whisper`.
+The OpenAI service starts supporting `audio translation` with the introduction of `Whisper` models.
 The following code snippet shows how to use the service to translate audio.
 
 ```java readme-sample-audioTranslation
