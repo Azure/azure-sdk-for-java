@@ -1515,14 +1515,11 @@ public class FileAsyncApiTests extends DataLakeTestBase {
         fc.flush(DATA.getDefaultDataSizeLong(), true).block();
 
         StepVerifier.create(fc.readToFile(testFile.getPath(), true))
-            .assertNext(r -> {
-                try {
-                    assertEquals(DATA.getDefaultText(), new String(Files.readAllBytes(testFile.toPath()), StandardCharsets.UTF_8));
-                } catch (IOException e) {
-                    throw new RuntimeException(e);
-                }
-            })
+            .assertNext(Assertions::assertNotNull)
             .verifyComplete();
+
+        assertEquals(DATA.getDefaultText(), new String(Files.readAllBytes(testFile.toPath()), StandardCharsets.UTF_8));
+
     }
 
     @Test
