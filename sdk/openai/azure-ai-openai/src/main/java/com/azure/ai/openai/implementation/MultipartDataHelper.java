@@ -44,7 +44,7 @@ public class MultipartDataHelper {
     /**
      * Line separator for the multipart HTTP request.
      */
-    private final String CRLF = "\r\n";
+    private final String crlf = "\r\n";
 
     /**
      * Default constructor used in the code. The boundary is a random value.
@@ -85,8 +85,7 @@ public class MultipartDataHelper {
             byte[] file = audioTranslationOptions.getFile();
             List<MultipartField> fields = formatAudioTranslationOptions(audioTranslationOptions);
             return serializeRequestFields(file, fields, fileName);
-        }
-        else if (requestOptions instanceof AudioTranscriptionOptions) {
+        } else if (requestOptions instanceof AudioTranscriptionOptions) {
             AudioTranscriptionOptions audioTranscriptionOptions = (AudioTranscriptionOptions) requestOptions;
             byte[] file = audioTranscriptionOptions.getFile();
             List<MultipartField> fields = formatAudioTranscriptionOptions(audioTranscriptionOptions);
@@ -103,15 +102,14 @@ public class MultipartDataHelper {
      * @param fileName the name of the file passed in the "file" field of the request object.
      * @return a structure containing the marshalled data and its length.
      */
-    private MultipartDataSerializationResult serializeRequestFields (
-        byte[] file, List<MultipartField> fields, String fileName) {
+    private MultipartDataSerializationResult serializeRequestFields(byte[] file, List<MultipartField> fields, String fileName) {
         ByteArrayOutputStream byteArrayOutputStream = new ByteArrayOutputStream();
 
         // Multipart preamble
         String fileFieldPreamble = partSeparator
-            + CRLF + "Content-Disposition: form-data; name=\"file\"; filename=\""
+            + crlf + "Content-Disposition: form-data; name=\"file\"; filename=\""
             + fileName + "\""
-            + CRLF + "Content-Type: application/octet-stream" + CRLF + CRLF;
+            + crlf + "Content-Type: application/octet-stream" + crlf + crlf;
         try {
             // Writing the file into the request as a byte stream
             byteArrayOutputStream.write(fileFieldPreamble.getBytes(encoderCharset));
@@ -121,7 +119,7 @@ public class MultipartDataHelper {
             for (MultipartField field : fields) {
                 byteArrayOutputStream.write(serializeField(field));
             }
-            byteArrayOutputStream.write((CRLF + endMarker).getBytes(encoderCharset));
+            byteArrayOutputStream.write((crlf + endMarker).getBytes(encoderCharset));
         } catch (IOException e) {
             throw new RuntimeException(e);
         }
@@ -143,19 +141,16 @@ public class MultipartDataHelper {
                 audioTranslationOptions.getResponseFormat().toString()));
         }
         if (audioTranslationOptions.getModel() != null) {
-            fields.add(new MultipartField(
-                    "model",
+            fields.add(new MultipartField("model",
                     audioTranslationOptions.getModel()
             ));
         }
         if (audioTranslationOptions.getPrompt() != null) {
-            fields.add( new MultipartField(
-                "prompt",
+            fields.add(new MultipartField("prompt",
                 audioTranslationOptions.getPrompt()));
         }
         if (audioTranslationOptions.getTemperature() != null) {
-            fields.add(new MultipartField(
-                "temperature",
+            fields.add(new MultipartField("temperature",
                 String.valueOf(audioTranslationOptions.getTemperature())));
         }
         return fields;
@@ -169,29 +164,24 @@ public class MultipartDataHelper {
     private List<MultipartField> formatAudioTranscriptionOptions(AudioTranscriptionOptions audioTranscriptionOptions) {
         List<MultipartField> fields = new ArrayList<>();
         if (audioTranscriptionOptions.getResponseFormat() != null) {
-            fields.add(new MultipartField(
-                "response_format",
+            fields.add(new MultipartField("response_format",
                 audioTranscriptionOptions.getResponseFormat().toString()));
         }
         if (audioTranscriptionOptions.getModel() != null) {
-            fields.add(new MultipartField(
-                    "model",
+            fields.add(new MultipartField("model",
                     audioTranscriptionOptions.getModel()
             ));
         }
         if (audioTranscriptionOptions.getPrompt() != null) {
-            fields.add( new MultipartField(
-                "prompt",
+            fields.add(new MultipartField("prompt",
                 audioTranscriptionOptions.getPrompt()));
         }
         if (audioTranscriptionOptions.getTemperature() != null) {
-            fields.add(new MultipartField(
-                "temperature",
+            fields.add(new MultipartField("temperature",
                 String.valueOf(audioTranscriptionOptions.getTemperature())));
         }
         if (audioTranscriptionOptions.getLanguage() != null) {
-            fields.add(new MultipartField(
-                "language",
+            fields.add(new MultipartField("language",
                 audioTranscriptionOptions.getLanguage()));
         }
         return fields;
@@ -203,9 +193,9 @@ public class MultipartDataHelper {
      * @return byte[] representation of a field for a multipart HTTP request
      */
     private byte[] serializeField(MultipartField field) {
-        String serialized = CRLF + partSeparator
-            + CRLF + "Content-Disposition: form-data; name=\""
-            + field.getWireName() + "\"" + CRLF + CRLF
+        String serialized = crlf + partSeparator
+            + crlf + "Content-Disposition: form-data; name=\""
+            + field.getWireName() + "\"" + crlf + crlf
             + field.getValue();
 
         return serialized.getBytes(encoderCharset);

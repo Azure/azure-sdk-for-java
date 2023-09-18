@@ -24,8 +24,8 @@ public class MultipartDataHelperTest {
     public void serializeAudioTranslationOptionsAllFields() {
         MultipartDataHelper helper = new MultipartDataHelper(new TestBoundaryGenerator());
         byte[] file = new byte[] {73, 32, 115, 104, 111, 117, 108, 100, 32, 104, 97, 118, 101, 32, 116, 104, 111, 117,
-                103, 104, 116, 32, 111, 102, 32, 97, 32, 103, 111, 111, 100, 32, 101, 97, 115, 116, 101, 114, 32, 101,
-                103, 103};
+            103, 104, 116, 32, 111, 102, 32, 97, 32, 103, 111, 111, 100, 32, 101, 97, 115, 116, 101, 114, 32, 101,
+            103, 103};
         String fileName = "file_name.wav";
         AudioTranslationOptions translationOptions = new AudioTranslationOptions(file);
         translationOptions.setModel("model_name")
@@ -49,8 +49,8 @@ public class MultipartDataHelperTest {
     public void serializeAudioTranscriptionOptionsAllFields() {
         MultipartDataHelper helper = new MultipartDataHelper(new TestBoundaryGenerator());
         byte[] file = new byte[] {73, 32, 115, 104, 111, 117, 108, 100, 32, 104, 97, 118, 101, 32, 116, 104, 111, 117,
-                103, 104, 116, 32, 111, 102, 32, 97, 32, 103, 111, 111, 100, 32, 101, 97, 115, 116, 101, 114, 32, 101,
-                103, 103};
+            103, 104, 116, 32, 111, 102, 32, 97, 32, 103, 111, 111, 100, 32, 101, 97, 115, 116, 101, 114, 32, 101,
+            103, 103};
         String fileName = "file_name.wav";
         AudioTranscriptionOptions transcriptionOptions = new AudioTranscriptionOptions(file);
         transcriptionOptions.setModel("model_name")

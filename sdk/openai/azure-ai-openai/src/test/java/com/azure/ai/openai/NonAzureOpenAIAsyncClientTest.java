@@ -340,7 +340,7 @@ public class NonAzureOpenAIAsyncClientTest extends OpenAIClientTestBase {
 
             StepVerifier.create(client.getAudioTranscription(deploymentName, transcriptionOptions, fileName))
                     .assertNext(transcription ->
-                            assertAudioTranscriptionSimpleJson(transcription,BATMAN_TRANSCRIPTION))
+                            assertAudioTranscriptionSimpleJson(transcription, BATMAN_TRANSCRIPTION))
                     .verifyComplete();
         });
     }
@@ -438,8 +438,8 @@ public class NonAzureOpenAIAsyncClientTest extends OpenAIClientTestBase {
             AudioTranscriptionOptions transcriptionOptions = new AudioTranscriptionOptions(file);
 
             for (AudioTranscriptionFormat format: wrongFormats) {
-            transcriptionOptions.setResponseFormat(format);
-            StepVerifier.create(client.getAudioTranscriptionText(modelId, transcriptionOptions, fileName))
+                transcriptionOptions.setResponseFormat(format);
+                StepVerifier.create(client.getAudioTranscriptionText(modelId, transcriptionOptions, fileName))
                     .verifyErrorSatisfies(error -> assertTrue(error instanceof IllegalArgumentException));
             }
         });
@@ -459,10 +459,10 @@ public class NonAzureOpenAIAsyncClientTest extends OpenAIClientTestBase {
             byte[] file = BinaryData.fromFile(openTestResourceFile(fileName)).toBytes();
             AudioTranscriptionOptions transcriptionOptions = new AudioTranscriptionOptions(file);
 
-            for(AudioTranscriptionFormat format: wrongFormats) {
+            for (AudioTranscriptionFormat format: wrongFormats) {
                 transcriptionOptions.setResponseFormat(format);
                 StepVerifier.create(client.getAudioTranscription(modelId, transcriptionOptions, fileName))
-                        .verifyErrorSatisfies(error -> assertTrue(error instanceof IllegalArgumentException));
+                    .verifyErrorSatisfies(error -> assertTrue(error instanceof IllegalArgumentException));
             }
         });
     }
@@ -478,9 +478,9 @@ public class NonAzureOpenAIAsyncClientTest extends OpenAIClientTestBase {
             translationOptions.setResponseFormat(AudioTranscriptionFormat.JSON);
 
             StepVerifier.create(client.getAudioTranslation(modelId, translationOptions, fileName))
-                    .assertNext(translation ->
-                        assertAudioTranscriptionSimpleJson(translation,"It's raining today."))
-                    .verifyComplete();
+                .assertNext(translation ->
+                    assertAudioTranscriptionSimpleJson(translation, "It's raining today."))
+                .verifyComplete();
         });
     }
 
@@ -495,9 +495,9 @@ public class NonAzureOpenAIAsyncClientTest extends OpenAIClientTestBase {
             translationOptions.setResponseFormat(AudioTranscriptionFormat.VERBOSE_JSON);
 
             StepVerifier.create(client.getAudioTranslation(modelId, translationOptions, fileName))
-                    .assertNext(translation ->
-                        assertAudioTranscriptionVerboseJson(translation,"It's raining today.", AudioTaskLabel.TRANSLATE))
-                    .verifyComplete();
+                .assertNext(translation ->
+                    assertAudioTranscriptionVerboseJson(translation, "It's raining today.", AudioTaskLabel.TRANSLATE))
+                .verifyComplete();
         });
     }
 
@@ -512,9 +512,9 @@ public class NonAzureOpenAIAsyncClientTest extends OpenAIClientTestBase {
             translationOptions.setResponseFormat(AudioTranscriptionFormat.TEXT);
 
             StepVerifier.create(client.getAudioTranslationText(modelId, translationOptions, fileName))
-                    .assertNext(translation -> {
-                        assertEquals("It's raining today.\n", translation);
-                    }).verifyComplete();
+                .assertNext(translation -> {
+                    assertEquals("It's raining today.\n", translation);
+                }).verifyComplete();
         });
     }
 
@@ -551,14 +551,14 @@ public class NonAzureOpenAIAsyncClientTest extends OpenAIClientTestBase {
             translationOptions.setResponseFormat(AudioTranscriptionFormat.VTT);
 
             StepVerifier.create(client.getAudioTranslationText(modelId, translationOptions, fileName))
-                    .assertNext(translation -> {
-                        // Start value according to spec
-                        assertTrue(translation.startsWith("WEBVTT\n"));
-                        // First sequence starts at timestamp 0. Note: unlike SRT, the millisecond separator is a "."
-                        assertTrue(translation.contains("00:00:00.000 --> "));
-                        // Actual translation value
-                        assertTrue(translation.contains("It's raining today."));
-                    }).verifyComplete();
+                .assertNext(translation -> {
+                    // Start value according to spec
+                    assertTrue(translation.startsWith("WEBVTT\n"));
+                    // First sequence starts at timestamp 0. Note: unlike SRT, the millisecond separator is a "."
+                    assertTrue(translation.contains("00:00:00.000 --> "));
+                    // Actual translation value
+                    assertTrue(translation.contains("It's raining today."));
+                }).verifyComplete();
         });
     }
 
@@ -575,10 +575,10 @@ public class NonAzureOpenAIAsyncClientTest extends OpenAIClientTestBase {
             byte[] file = BinaryData.fromFile(openTestResourceFile(fileName)).toBytes();
             AudioTranslationOptions translationOptions = new AudioTranslationOptions(file);
 
-            for(AudioTranscriptionFormat format: wrongFormats) {
+            for (AudioTranscriptionFormat format: wrongFormats) {
                 translationOptions.setResponseFormat(format);
                 StepVerifier.create(client.getAudioTranslationText(modelId, translationOptions, fileName))
-                        .verifyErrorSatisfies(error -> assertTrue(error instanceof IllegalArgumentException));
+                    .verifyErrorSatisfies(error -> assertTrue(error instanceof IllegalArgumentException));
             }
         });
     }
@@ -597,10 +597,10 @@ public class NonAzureOpenAIAsyncClientTest extends OpenAIClientTestBase {
             byte[] file = BinaryData.fromFile(openTestResourceFile(fileName)).toBytes();
             AudioTranslationOptions translationOptions = new AudioTranslationOptions(file);
 
-            for(AudioTranscriptionFormat format: wrongFormats) {
+            for (AudioTranscriptionFormat format: wrongFormats) {
                 translationOptions.setResponseFormat(format);
                 StepVerifier.create(client.getAudioTranslation(modelId, translationOptions, fileName))
-                        .verifyErrorSatisfies(error -> assertTrue(error instanceof IllegalArgumentException));
+                    .verifyErrorSatisfies(error -> assertTrue(error instanceof IllegalArgumentException));
             }
         });
     }
