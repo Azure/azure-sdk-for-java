@@ -3842,12 +3842,17 @@ public class FileAsyncApiTests extends DataLakeTestBase {
         String expression = "SELECT * from BlobStorage";
 
         liveTestScenarioWithRetry(() -> {
-            StepVerifier.create(fc.queryWithResponse(
+            /*StepVerifier.create(fc.queryWithResponse(
                 new FileQueryOptions(expression, new ByteArrayOutputStream())
                     .setInputSerialization(inSer)
                     .setOutputSerialization(outSer)))
                 .expectError(IllegalArgumentException.class)
-                .verify();
+                .verify();*/
+
+            assertThrows(IllegalArgumentException.class, () -> fc.queryWithResponse(
+                new FileQueryOptions(expression, new ByteArrayOutputStream())
+                    .setInputSerialization(inSer)
+                    .setOutputSerialization(outSer)).block());
         });
     }
 
