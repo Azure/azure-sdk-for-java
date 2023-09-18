@@ -4,7 +4,7 @@ import com.azure.cosmos.ChangeFeedProcessorContext;
 import com.azure.cosmos.implementation.changefeed.ChangeFeedObserverContext;
 import com.azure.cosmos.models.FeedResponse;
 
-public final class ChangeFeedProcessorContextImpl<T> extends ChangeFeedProcessorContext<T> {
+public final class ChangeFeedProcessorContextImpl<T> implements ChangeFeedProcessorContext<T> {
 
     private final ChangeFeedObserverContext<T> changeFeedObserverContext;
 

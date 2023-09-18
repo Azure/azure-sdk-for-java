@@ -141,7 +141,7 @@ public class ChangeFeedProcessorBuilder {
         return this;
     }
 
-    public ChangeFeedProcessorBuilder handleChanges(BiConsumer<List<JsonNode>, ChangeFeedProcessorContext<JsonNode>> biConsumer) {
+    ChangeFeedProcessorBuilder handleChanges(BiConsumer<List<JsonNode>, ChangeFeedProcessorContext<JsonNode>> biConsumer) {
 
         checkArgument(
             this.incrementalModeLeaseConsumerEpkVersion == null,
@@ -190,7 +190,8 @@ public class ChangeFeedProcessorBuilder {
         return this;
     }
 
-    public ChangeFeedProcessorBuilder handleLatestVersionChanges(BiConsumer<List<ChangeFeedProcessorItem>, ChangeFeedProcessorContext<ChangeFeedProcessorItem>> biConsumer) {
+    ChangeFeedProcessorBuilder handleLatestVersionChanges(
+        BiConsumer<List<ChangeFeedProcessorItem>, ChangeFeedProcessorContext<ChangeFeedProcessorItem>> biConsumer) {
 
         checkArgument(
             this.incrementalModeLeaseConsumerPkRangeIdVersion == null,

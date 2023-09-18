@@ -5,7 +5,7 @@ package com.azure.cosmos;
 
 import com.azure.cosmos.models.FeedResponse;
 
-public abstract class ChangeFeedProcessorContext<T> {
-    public abstract String getLeaseToken();
-    public abstract FeedResponse<T> getFeedResponse();
+public interface ChangeFeedProcessorContext<T> {
+    String getLeaseToken();
+    FeedResponse<T> getFeedResponse();
 }
