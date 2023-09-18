@@ -12,7 +12,7 @@ import com.azure.cosmos.implementation.ImplementationBridgeHelpers;
  * */
 public final class SessionRetryOptions {
 
-    private CosmosRegionSwitchHint regionSwitchHint;
+    private volatile CosmosRegionSwitchHint regionSwitchHint;
 
     /**
      * Instantiates {@link SessionRetryOptions}
