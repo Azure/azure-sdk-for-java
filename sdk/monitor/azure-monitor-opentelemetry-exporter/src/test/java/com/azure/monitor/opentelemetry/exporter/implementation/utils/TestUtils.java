@@ -12,6 +12,7 @@ import com.azure.monitor.opentelemetry.exporter.implementation.models.TelemetryI
 import io.opentelemetry.sdk.OpenTelemetrySdk;
 import io.opentelemetry.sdk.autoconfigure.AutoConfiguredOpenTelemetrySdk;
 import io.opentelemetry.sdk.autoconfigure.AutoConfiguredOpenTelemetrySdkBuilder;
+import io.opentelemetry.sdk.resources.Resource;
 
 import java.util.ArrayList;
 import java.util.Collections;
@@ -57,6 +58,8 @@ public final class TestUtils {
         monitorBase.setBaseData(data);
         telemetry.setData(monitorBase);
         telemetry.setTime(FormattedTime.offSetDateTimeFromNow());
+
+        telemetry.setResource(Resource.empty());
 
         return telemetry;
     }
