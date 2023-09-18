@@ -3,9 +3,6 @@
 
 package com.azure.security.keyvault.keys.cryptography.implementation;
 
-import com.azure.security.keyvault.keys.cryptography.implementation.ICryptoTransform;
-import com.azure.security.keyvault.keys.cryptography.implementation.SymmetricEncryptionAlgorithm;
-
 import javax.crypto.BadPaddingException;
 import javax.crypto.Cipher;
 import javax.crypto.IllegalBlockSizeException;

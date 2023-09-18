@@ -16,8 +16,6 @@ import com.azure.security.keyvault.keys.cryptography.models.SignatureAlgorithm;
 import com.azure.security.keyvault.keys.cryptography.models.UnwrapResult;
 import com.azure.security.keyvault.keys.cryptography.models.VerifyResult;
 import com.azure.security.keyvault.keys.cryptography.models.WrapResult;
-import com.azure.security.keyvault.keys.implementation.KeyClientImpl;
-import com.azure.security.keyvault.keys.implementation.SecretMinClientImpl;
 import com.azure.security.keyvault.keys.models.JsonWebKey;
 import reactor.core.publisher.Mono;
 
@@ -35,9 +33,8 @@ class EcKeyCryptographyClient extends LocalKeyCryptographyClient {
 
     private KeyPair keyPair;
 
-    EcKeyCryptographyClient(JsonWebKey key, KeyClientImpl keyClient, SecretMinClientImpl secretClient, String vaultUrl,
-        String keyCollection, String keyName, String keyVersion) {
-        super(keyClient, secretClient, vaultUrl, keyCollection, keyName, keyVersion);
+    EcKeyCryptographyClient(JsonWebKey key, CryptographyClientImpl implClient) {
+        super(implClient);
 
         this.provider = Security.getProvider("SunEC");
         this.keyPair = key.toEc(key.hasPrivateKey(), provider);
@@ -118,7 +115,7 @@ class EcKeyCryptographyClient extends LocalKeyCryptographyClient {
 
         if (baseAlgorithm == null) {
             if (serviceClientAvailable()) {
-                return keyClient.signAsync(algorithm, digest, context);
+                return implClient.signAsync(algorithm, digest, context);
             }
 
             return Mono.error(new NoSuchAlgorithmException(algorithm.toString()));
@@ -128,7 +125,7 @@ class EcKeyCryptographyClient extends LocalKeyCryptographyClient {
 
         if (keyPair.getPrivate() == null) {
             if (serviceClientAvailable()) {
-                return serviceClient.signAsync(algorithm, digest, context);
+                return implClient.signAsync(algorithm, digest, context);
             }
 
             return Mono.error(
@@ -159,7 +156,7 @@ class EcKeyCryptographyClient extends LocalKeyCryptographyClient {
 
         if (baseAlgorithm == null) {
             if (serviceClientAvailable()) {
-                return serviceClient.sign(algorithm, digest, context);
+                return implClient.sign(algorithm, digest, context);
             }
 
             throw LOGGER.logExceptionAsError(new RuntimeException(new NoSuchAlgorithmException(algorithm.toString())));
@@ -169,7 +166,7 @@ class EcKeyCryptographyClient extends LocalKeyCryptographyClient {
 
         if (keyPair.getPrivate() == null) {
             if (serviceClientAvailable()) {
-                return serviceClient.sign(algorithm, digest, context);
+                return implClient.sign(algorithm, digest, context);
             }
 
             throw LOGGER.logExceptionAsError(
@@ -221,7 +218,7 @@ class EcKeyCryptographyClient extends LocalKeyCryptographyClient {
 
         if (baseAlgorithm == null) {
             if (serviceClientAvailable()) {
-                return serviceClient.verifyAsync(algorithm, digest, signature, context);
+                return implClient.verifyAsync(algorithm, digest, signature, context);
             }
 
             return Mono.error(new NoSuchAlgorithmException(algorithm.toString()));
@@ -231,7 +228,7 @@ class EcKeyCryptographyClient extends LocalKeyCryptographyClient {
 
         if (keyPair.getPublic() == null) {
             if (serviceClientAvailable()) {
-                return serviceClient.verifyAsync(algorithm, digest, signature, context);
+                return implClient.verifyAsync(algorithm, digest, signature, context);
             }
 
             return Mono.error(
@@ -268,7 +265,7 @@ class EcKeyCryptographyClient extends LocalKeyCryptographyClient {
 
         if (baseAlgorithm == null) {
             if (serviceClientAvailable()) {
-                return serviceClient.verify(algorithm, digest, signature, context);
+                return implClient.verify(algorithm, digest, signature, context);
             }
 
             throw LOGGER.logExceptionAsError(new RuntimeException(new NoSuchAlgorithmException(algorithm.toString())));
@@ -278,7 +275,7 @@ class EcKeyCryptographyClient extends LocalKeyCryptographyClient {
 
         if (keyPair.getPublic() == null) {
             if (serviceClientAvailable()) {
-                return serviceClient.verify(algorithm, digest, signature, context);
+                return implClient.verify(algorithm, digest, signature, context);
             }
 
             throw LOGGER.logExceptionAsError(
@@ -384,6 +381,6 @@ class EcKeyCryptographyClient extends LocalKeyCryptographyClient {
     }
 
     private boolean serviceClientAvailable() {
-        return keyClient != null;
+        return implClient != null;
     }
 }

@@ -2,20 +2,26 @@
 // Licensed under the MIT License.
 package com.azure.security.keyvault.keys.implementation.models;
 
-import com.fasterxml.jackson.annotation.JsonProperty;
+import com.azure.json.JsonReader;
+import com.azure.json.JsonSerializable;
+import com.azure.json.JsonToken;
+import com.azure.json.JsonWriter;
+import com.azure.security.keyvault.keys.implementation.KeyVaultKeysUtils;
 
-import java.util.Map;
+import java.io.IOException;
+import java.time.Instant;
+import java.time.OffsetDateTime;
+import java.time.ZoneOffset;
 import java.util.Objects;
 
 /**
  * Secret key
  */
-public final class SecretKey {
+public final class SecretKey implements JsonSerializable<SecretKey> {
 
     /*
      * The value of the secret.
      */
-    @JsonProperty(value = "value")
     private String value;
 
     /*
@@ -89,40 +95,90 @@ public final class SecretKey {
         return this;
     }
 
-    @JsonProperty(value = "id")
-    private void unpackId(String id) {
-        properties.unpackId(id);
+    @Override
+    public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
+        jsonWriter.writeStartObject().writeStringField("value", this.value);
+
+        if (properties != null) {
+            jsonWriter.writeMapField("tags", properties.getTags(), JsonWriter::writeString)
+                .writeStringField("contentType", properties.getContentType())
+                .writeStartObject("attributes")
+                .writeBooleanField("enabled", properties.isEnabled());
+            if (properties.getNotBefore() != null) {
+
+                jsonWriter.writeNumberField("nbf", properties.getNotBefore().toEpochSecond());
+            }
+            if (properties.getExpiresOn() != null) {
+                jsonWriter.writeNumberField("exp", properties.getExpiresOn().toEpochSecond());
+            }
+            jsonWriter.writeEndObject();
+        }
+        return jsonWriter.writeEndObject();
     }
 
-    /*
-     * Unpacks the attributes json response and updates the variables in the Secret Attributes object.
-     * Uses Lazy Update to set values for variables id, tags, contentType, managed and keyId as these variables are
-     * part of main json body and not attributes json body when the secret response comes from list Secrets operations.
-     * @param attributes The key value mapping of the Secret attributes
+    /**
+     * Reads an instance of SecretKey from the JsonReader.
+     *
+     * @param jsonReader The JsonReader being read.
+     * @return An instance of SecretKey if the JsonReader was pointing to an instance of it, or null if it was
+     *     pointing to JSON null.
+     * @throws IllegalStateException If the deserialized JSON object was missing any required properties.
+     * @throws IOException If an error occurs while reading the SecretKey.
      */
-    @JsonProperty("attributes")
-    @SuppressWarnings("unchecked")
-    private void unpackAttributes(Map<String, Object> attributes) {
-        properties.unpackAttributes(attributes);
-    }
+    public static SecretKey fromJson(JsonReader jsonReader) throws IOException {
+        return jsonReader.readObject(reader -> {
+            SecretKey secretKey = new SecretKey();
+            while (reader.nextToken() != JsonToken.END_OBJECT) {
+                String fieldName = reader.getFieldName();
+                reader.nextToken();
 
-    @JsonProperty("managed")
-    private void unpackManaged(Boolean managed) {
-        properties.managed = managed;
-    }
+                if ("value".equals(fieldName)) {
+                    secretKey.value = reader.getString();
+                } else if ("id".equals(fieldName)) {
+                    secretKey.properties.id = reader.getString();
+                    KeyVaultKeysUtils.unpackId(secretKey.properties.id, name -> secretKey.properties.name = name,
+                        version -> secretKey.properties.version = version);
+                } else if ("contentType".equals(fieldName)) {
+                    secretKey.properties.contentType = reader.getString();
+                } else if ("attributes".equals(fieldName)) {
+                    while (reader.nextToken() != JsonToken.END_OBJECT) {
+                        fieldName = reader.getFieldName();
+                        reader.nextToken();
 
-    @JsonProperty("kid")
-    private void unpackKid(String kid) {
-        properties.keyId = kid;
-    }
+                        if ("enabled".equals(fieldName)) {
+                            secretKey.properties.enabled = reader.getNullable(JsonReader::getBoolean);
+                        } else if ("nbf".equals(fieldName)) {
+                            secretKey.properties.notBefore = reader.getNullable(nonNull ->
+                                OffsetDateTime.ofInstant(Instant.ofEpochSecond(nonNull.getLong()), ZoneOffset.UTC));
+                        } else if ("exp".equals(fieldName)) {
+                            secretKey.properties.expiresOn = reader.getNullable(nonNull ->
+                                OffsetDateTime.ofInstant(Instant.ofEpochSecond(nonNull.getLong()), ZoneOffset.UTC));
+                        } else if ("created".equals(fieldName)) {
+                            secretKey.properties.createdOn = reader.getNullable(nonNull ->
+                                OffsetDateTime.ofInstant(Instant.ofEpochSecond(nonNull.getLong()), ZoneOffset.UTC));
+                        } else if ("updated".equals(fieldName)) {
+                            secretKey.properties.updatedOn = reader.getNullable(nonNull ->
+                                OffsetDateTime.ofInstant(Instant.ofEpochSecond(nonNull.getLong()), ZoneOffset.UTC));
+                        } else if ("recoverableDays".equals(fieldName)) {
+                            secretKey.properties.recoverableDays = reader.getNullable(JsonReader::getInt);
+                        } else if ("recoveryLevel".equals(fieldName)) {
+                            secretKey.properties.recoveryLevel = reader.getString();
+                        } else {
+                            reader.skipChildren();
+                        }
+                    }
+                } else if ("tags".equals(fieldName)) {
+                    secretKey.properties.tags = reader.readMap(JsonReader::getString);
+                } else if ("kid".equals(fieldName)) {
+                    secretKey.properties.keyId = reader.getString();
+                } else if ("managed".equals(fieldName)) {
+                    secretKey.properties.managed = reader.getNullable(JsonReader::getBoolean);
+                } else {
+                    reader.skipChildren();
+                }
+            }
 
-    @JsonProperty("contentType")
-    private void unpackContentType(String contentType) {
-        properties.contentType = contentType;
-    }
-
-    @JsonProperty("tags")
-    private void unpackTags(Map<String, String> tags) {
-        properties.tags = tags;
+            return secretKey;
+        });
     }
 }

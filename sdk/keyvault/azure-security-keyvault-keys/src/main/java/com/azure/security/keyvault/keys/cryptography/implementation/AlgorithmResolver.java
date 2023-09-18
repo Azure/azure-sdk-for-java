@@ -6,7 +6,7 @@ package com.azure.security.keyvault.keys.cryptography.implementation;
 import java.util.HashMap;
 import java.util.Map;
 
-class AlgorithmResolver {
+final class AlgorithmResolver {
 
     static final AlgorithmResolver DEFAULT;
 

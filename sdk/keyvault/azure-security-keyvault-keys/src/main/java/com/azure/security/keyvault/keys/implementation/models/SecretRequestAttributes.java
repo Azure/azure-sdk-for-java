@@ -3,8 +3,12 @@
 package com.azure.security.keyvault.keys.implementation.models;
 
 import com.azure.core.annotation.Fluent;
-import com.fasterxml.jackson.annotation.JsonProperty;
+import com.azure.json.JsonReader;
+import com.azure.json.JsonSerializable;
+import com.azure.json.JsonToken;
+import com.azure.json.JsonWriter;
 
+import java.io.IOException;
 import java.time.Instant;
 import java.time.OffsetDateTime;
 import java.time.ZoneOffset;
@@ -13,7 +17,7 @@ import java.time.ZoneOffset;
  * The object attributes managed by the Cryptography service.
  */
 @Fluent
-public final class SecretRequestAttributes {
+public final class SecretRequestAttributes implements JsonSerializable<SecretRequestAttributes> {
 
     /**
      * Creates an instance of SecretRequestAttributes. Reads secretProperties.notBefore, secretProperties.expires and
@@ -30,46 +34,42 @@ public final class SecretRequestAttributes {
         this.enabled = secretProperties.isEnabled();
     }
 
+    private SecretRequestAttributes() {
+    }
+
     /*
      * The secret value.
      */
-    @JsonProperty(value = "value")
     private String value;
 
     /*
      * The secret id.
      */
-    @JsonProperty(value = "id")
     private String id;
 
     /*
      * Determines whether the object is enabled.
      */
-    @JsonProperty(value = "enabled")
     private Boolean enabled;
 
     /*
      * Not before date in UTC.
      */
-    @JsonProperty(value = "nbf")
     private Long notBefore;
 
     /*
      * Expiry date in UTC.
      */
-    @JsonProperty(value = "exp")
     private Long expires;
 
     /*
      * Creation time in UTC.
      */
-    @JsonProperty(value = "created", access = JsonProperty.Access.WRITE_ONLY)
     private Long created;
 
     /*
      * Last updated time in UTC.
      */
-    @JsonProperty(value = "updated", access = JsonProperty.Access.WRITE_ONLY)
     private Long updated;
 
     /**
@@ -168,5 +168,54 @@ public final class SecretRequestAttributes {
             return null;
         }
         return  OffsetDateTime.ofInstant(Instant.ofEpochMilli(this.updated * 1000L), ZoneOffset.UTC);
+    }
+
+    @Override
+    public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
+        return jsonWriter.writeStartObject()
+            .writeStringField("value", value)
+            .writeStringField("id", id)
+            .writeBooleanField("enabled", enabled)
+            .writeNumberField("nbf", notBefore)
+            .writeNumberField("exp", expires)
+            .writeEndObject();
+    }
+
+    /**
+     * Reads a JSON stream into a {@link SecretRequestAttributes}.
+     *
+     * @param jsonReader The {@link JsonReader} being read.
+     * @return An instance of {@link SecretRequestAttributes} that the JSON stream represented, may return null.
+     * @throws IOException If a {@link SecretRequestAttributes} fails to be read from the {@code jsonReader}.
+     */
+    public static SecretRequestAttributes fromJson(JsonReader jsonReader) throws IOException {
+        return jsonReader.readObject(reader -> {
+            SecretRequestAttributes attributes = new SecretRequestAttributes();
+
+            while (reader.nextToken() != JsonToken.END_OBJECT) {
+                String fieldName = reader.getFieldName();
+                reader.nextToken();
+
+                if ("value".equals(fieldName)) {
+                    attributes.value = reader.getString();
+                } else if ("id".equals(fieldName)) {
+                    attributes.id = reader.getString();
+                } else if ("enabled".equals(fieldName)) {
+                    attributes.enabled = reader.getNullable(JsonReader::getBoolean);
+                } else if ("nbf".equals(fieldName)) {
+                    attributes.notBefore = reader.getNullable(JsonReader::getLong);
+                } else if ("exp".equals(fieldName)) {
+                    attributes.expires = reader.getNullable(JsonReader::getLong);
+                } else if ("created".equals(fieldName)) {
+                    attributes.created = reader.getNullable(JsonReader::getLong);
+                } else if ("updated".equals(fieldName)) {
+                    attributes.updated = reader.getNullable(JsonReader::getLong);
+                } else {
+                    reader.skipChildren();
+                }
+            }
+
+            return attributes;
+        });
     }
 }

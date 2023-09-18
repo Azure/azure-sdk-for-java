@@ -4,8 +4,12 @@ package com.azure.security.keyvault.keys.cryptography.implementation;
 
 import com.azure.core.util.CoreUtils;
 import com.azure.core.util.logging.ClientLogger;
-import com.azure.security.keyvault.keys.implementation.KeyClientImpl;
-import com.azure.security.keyvault.keys.implementation.SecretMinClientImpl;
+import com.azure.security.keyvault.keys.cryptography.models.EncryptionAlgorithm;
+import com.azure.security.keyvault.keys.cryptography.models.KeyWrapAlgorithm;
+import com.azure.security.keyvault.keys.cryptography.models.SignatureAlgorithm;
+import com.azure.security.keyvault.keys.implementation.models.JsonWebKeyEncryptionAlgorithm;
+import com.azure.security.keyvault.keys.implementation.models.JsonWebKeySignatureAlgorithm;
+import com.azure.security.keyvault.keys.implementation.models.SecretKey;
 import com.azure.security.keyvault.keys.models.JsonWebKey;
 import com.azure.security.keyvault.keys.models.KeyOperation;
 import com.azure.security.keyvault.keys.models.KeyType;
@@ -13,7 +17,9 @@ import com.azure.security.keyvault.keys.models.KeyType;
 import java.net.MalformedURLException;
 import java.net.URL;
 import java.util.Arrays;
+import java.util.Base64;
 import java.util.List;
+import java.util.Objects;
 
 import static com.azure.security.keyvault.keys.models.KeyType.EC;
 import static com.azure.security.keyvault.keys.models.KeyType.EC_HSM;
@@ -60,9 +66,8 @@ public final class CryptographyUtils {
         }
     }
 
-    public static LocalKeyCryptographyClient initializeCryptoClient(JsonWebKey jsonWebKey, KeyClientImpl keyClient,
-        SecretMinClientImpl secretClient, String vaultUrl, String keyCollection, String keyName, String keyVersion,
-        ClientLogger logger) {
+    public static LocalKeyCryptographyClient initializeCryptoClient(JsonWebKey jsonWebKey,
+        CryptographyClientImpl implClient, ClientLogger logger) {
         if (!KeyType.values().contains(jsonWebKey.getKeyType())) {
             throw logger.logExceptionAsError(new IllegalArgumentException(String.format(
                 "The JSON Web Key type: %s is not supported.", jsonWebKey.getKeyType().toString())));
@@ -70,14 +75,11 @@ public final class CryptographyUtils {
 
         try {
             if (jsonWebKey.getKeyType().equals(RSA) || jsonWebKey.getKeyType().equals(RSA_HSM)) {
-                return new RsaKeyCryptographyClient(jsonWebKey, keyClient, secretClient, vaultUrl, keyCollection,
-                    keyName, keyVersion);
+                return new RsaKeyCryptographyClient(jsonWebKey, implClient);
             } else if (jsonWebKey.getKeyType().equals(EC) || jsonWebKey.getKeyType().equals(EC_HSM)) {
-                return new EcKeyCryptographyClient(jsonWebKey, keyClient, secretClient, vaultUrl, keyCollection,
-                    keyName, keyVersion);
+                return new EcKeyCryptographyClient(jsonWebKey, implClient);
             } else if (jsonWebKey.getKeyType().equals(OCT) || jsonWebKey.getKeyType().equals(OCT_HSM)) {
-                return new AesKeyCryptographyClient(jsonWebKey, keyClient, secretClient, vaultUrl, keyCollection,
-                    keyName, keyVersion);
+                return new AesKeyCryptographyClient(jsonWebKey, implClient);
             }
         } catch (RuntimeException e) {
             throw logger.logExceptionAsError(new RuntimeException("Could not initialize local cryptography client.",
@@ -135,5 +137,25 @@ public final class CryptographyUtils {
         }
 
         return difference == 0;
+    }
+
+    static JsonWebKey transformSecretKey(SecretKey secretKey) {
+        return new JsonWebKey().setId(secretKey.getId())
+            .setK(Base64.getUrlDecoder().decode(secretKey.getValue()))
+            .setKeyType(KeyType.OCT)
+            .setKeyOps(Arrays.asList(KeyOperation.WRAP_KEY, KeyOperation.UNWRAP_KEY, KeyOperation.ENCRYPT,
+                KeyOperation.DECRYPT));
+    }
+
+    static JsonWebKeyEncryptionAlgorithm mapKeyEncryptionAlgorithm(EncryptionAlgorithm algorithm) {
+        return JsonWebKeyEncryptionAlgorithm.fromString(Objects.toString(algorithm, null));
+    }
+
+    static JsonWebKeySignatureAlgorithm mapKeySignatureAlgorithm(SignatureAlgorithm algorithm) {
+        return JsonWebKeySignatureAlgorithm.fromString(Objects.toString(algorithm, null));
+    }
+
+    static JsonWebKeyEncryptionAlgorithm mapWrapAlgorithm(KeyWrapAlgorithm algorithm) {
+        return JsonWebKeyEncryptionAlgorithm.fromString(Objects.toString(algorithm, null));
     }
 }

@@ -15,9 +15,10 @@ import com.azure.core.test.models.TestProxyRequestMatcher;
 import com.azure.core.test.utils.MockTokenCredential;
 import com.azure.core.util.Configuration;
 import com.azure.identity.ClientSecretCredentialBuilder;
+import com.azure.security.keyvault.keys.KeyClientBuilder;
+import com.azure.security.keyvault.keys.KeyServiceVersion;
+import com.azure.security.keyvault.keys.cryptography.implementation.CryptographyClientImpl;
 import com.azure.security.keyvault.keys.implementation.KeyVaultCredentialPolicy;
-import com.azure.security.keyvault.secrets.SecretClientBuilder;
-import com.azure.security.keyvault.secrets.SecretServiceVersion;
 import org.junit.jupiter.api.Test;
 
 import java.time.Duration;
@@ -62,13 +63,11 @@ public abstract class KeyEncryptionKeyClientTestBase extends TestProxyTestBase {
         }
     }
 
-    SecretClientBuilder getSecretClientBuilder(HttpClient httpClient, String endpoint,
-        CryptographyServiceVersion serviceVersion) {
-        SecretServiceVersion secretServiceVersion = SecretServiceVersion.valueOf(serviceVersion.name());
+    KeyClientBuilder getKeyClientBuilder(HttpClient httpClient, String endpoint, KeyServiceVersion serviceVersion) {
 
-        SecretClientBuilder builder = new SecretClientBuilder()
+        KeyClientBuilder builder = new KeyClientBuilder()
             .vaultUrl(endpoint)
-            .serviceVersion(secretServiceVersion)
+            .serviceVersion(serviceVersion)
             .credential(getTokenCredentialAndSetMatchers())
             .httpClient(httpClient);
 
@@ -81,6 +80,27 @@ public abstract class KeyEncryptionKeyClientTestBase extends TestProxyTestBase {
                 ? builder.addPolicy(interceptorManager.getRecordPolicy())
                 : builder;
         }
+    }
+
+    CryptographyClientImpl getCryptographyClientImpl(HttpClient httpClient, String keyId,
+        CryptographyServiceVersion serviceVersion) {
+        CryptographyClientBuilder builder = new CryptographyClientBuilder()
+            .keyIdentifier(keyId)
+            .serviceVersion(serviceVersion)
+            .credential(getTokenCredentialAndSetMatchers())
+            .httpClient(httpClient);
+
+        if (interceptorManager.isPlaybackMode()) {
+            builder.retryOptions(PLAYBACK_RETRY_OPTIONS);
+        } else {
+            builder.retryOptions(LIVE_RETRY_OPTIONS);
+
+            if (interceptorManager.isRecordMode()) {
+                builder.addPolicy(interceptorManager.getRecordPolicy());
+            }
+        }
+
+        return builder.buildClient().implClient;
     }
 
     private TokenCredential getTokenCredentialAndSetMatchers() {

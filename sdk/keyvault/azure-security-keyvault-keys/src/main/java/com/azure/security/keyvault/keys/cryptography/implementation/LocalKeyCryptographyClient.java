@@ -15,27 +15,14 @@ import com.azure.security.keyvault.keys.cryptography.models.SignatureAlgorithm;
 import com.azure.security.keyvault.keys.cryptography.models.UnwrapResult;
 import com.azure.security.keyvault.keys.cryptography.models.VerifyResult;
 import com.azure.security.keyvault.keys.cryptography.models.WrapResult;
-import com.azure.security.keyvault.keys.implementation.KeyClientImpl;
-import com.azure.security.keyvault.keys.implementation.SecretMinClientImpl;
 import com.azure.security.keyvault.keys.models.JsonWebKey;
 import reactor.core.publisher.Mono;
 
 public abstract class LocalKeyCryptographyClient {
-    final KeyClientImpl keyClient;
-    final SecretMinClientImpl secretClient;
-    final String vaultUrl;
-    final String keyCollection;
-    final String keyName;
-    final String keyVersion;
+    final CryptographyClientImpl implClient;
 
-    LocalKeyCryptographyClient(KeyClientImpl keyClient, SecretMinClientImpl secretClient, String vaultUrl,
-        String keyCollection, String keyName, String keyVersion) {
-        this.keyClient = keyClient;
-        this.secretClient = secretClient;
-        this.vaultUrl = vaultUrl;
-        this.keyCollection = keyCollection;
-        this.keyName = keyName;
-        this.keyVersion = keyVersion;
+    LocalKeyCryptographyClient(CryptographyClientImpl implClient) {
+        this.implClient = implClient;
     }
 
     public abstract Mono<EncryptResult> encryptAsync(EncryptionAlgorithm algorithm,

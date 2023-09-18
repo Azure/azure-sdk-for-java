@@ -3,8 +3,12 @@
 package com.azure.security.keyvault.keys.implementation.models;
 
 import com.azure.core.annotation.Fluent;
-import com.fasterxml.jackson.annotation.JsonProperty;
+import com.azure.json.JsonReader;
+import com.azure.json.JsonSerializable;
+import com.azure.json.JsonToken;
+import com.azure.json.JsonWriter;
 
+import java.io.IOException;
 import java.util.Map;
 
 
@@ -12,29 +16,25 @@ import java.util.Map;
  * Represents a set of request options used in REST requests intitiated by Cryptography service.
  */
 @Fluent
-public final class SecretRequestParameters {
+public final class SecretRequestParameters implements JsonSerializable<SecretRequestParameters> {
     /*
      * The value of the secret.
      */
-    @JsonProperty(value = "value", required = true)
     private String value;
 
     /*
      * Application specific metadata in the form of key-value pairs.
      */
-    @JsonProperty(value = "tags")
     private Map<String, String> tags;
 
     /*
      * Type of the secret value such as a password.
      */
-    @JsonProperty(value = "contentType")
     private String contentType;
 
     /*
      * The secret management attributes.
      */
-    @JsonProperty(value = "attributes")
     private SecretRequestAttributes secretRequestAttributes;
 
     /**
@@ -117,4 +117,45 @@ public final class SecretRequestParameters {
         return this;
     }
 
+    @Override
+    public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
+        return jsonWriter.writeStartObject()
+            .writeStringField("value", value)
+            .writeMapField("tags", tags, JsonWriter::writeString)
+            .writeStringField("contentType", contentType)
+            .writeJsonField("attributes", secretRequestAttributes)
+            .writeEndObject();
+    }
+
+    /**
+     * Reads a JSON stream into a {@link SecretRequestParameters}.
+     *
+     * @param jsonReader The {@link JsonReader} being read.
+     * @return An instance of {@link SecretRequestParameters} that the JSON stream represented, may return null.
+     * @throws IOException If a {@link SecretRequestParameters} fails to be read from the {@code jsonReader}.
+     */
+    public static SecretRequestParameters fromJson(JsonReader jsonReader) throws IOException {
+        return jsonReader.readObject(reader -> {
+            SecretRequestParameters attributes = new SecretRequestParameters();
+
+            while (reader.nextToken() != JsonToken.END_OBJECT) {
+                String fieldName = reader.getFieldName();
+                reader.nextToken();
+
+                if ("value".equals(fieldName)) {
+                    attributes.value = reader.getString();
+                } else if ("tags".equals(fieldName)) {
+                    attributes.tags = reader.readMap(JsonReader::getString);
+                } else if ("contentType".equals(fieldName)) {
+                    attributes.contentType = reader.getString();
+                } else if ("attributes".equals(fieldName)) {
+                    attributes.secretRequestAttributes = SecretRequestAttributes.fromJson(reader);
+                } else {
+                    reader.skipChildren();
+                }
+            }
+
+            return attributes;
+        });
+    }
 }

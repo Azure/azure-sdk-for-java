@@ -5,11 +5,11 @@ package com.azure.security.keyvault.keys.cryptography;
 
 import com.azure.core.cryptography.KeyEncryptionKey;
 import com.azure.core.http.HttpClient;
+import com.azure.core.util.Context;
+import com.azure.security.keyvault.keys.cryptography.implementation.CryptographyClientImpl;
 import com.azure.security.keyvault.keys.implementation.models.SecretKey;
 import com.azure.security.keyvault.keys.models.JsonWebKey;
 import com.azure.security.keyvault.keys.models.KeyOperation;
-import com.azure.security.keyvault.secrets.SecretClient;
-import com.azure.security.keyvault.secrets.models.KeyVaultSecret;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.params.ParameterizedTest;
 import org.junit.jupiter.params.provider.MethodSource;
@@ -24,7 +24,6 @@ import static org.junit.jupiter.api.Assertions.assertArrayEquals;
 
 public class KeyEncryptionKeyClientTest extends KeyEncryptionKeyClientTestBase {
     protected KeyEncryptionKey keyEncryptionKey;
-    private SecretKey secretKey;
 
     @Override
     protected void beforeTest() {
@@ -36,9 +35,11 @@ public class KeyEncryptionKeyClientTest extends KeyEncryptionKeyClientTestBase {
         HttpClient actualHttpClient = buildSyncAssertingClient(interceptorManager.isPlaybackMode()
             ? interceptorManager.getPlaybackClient() : httpClient);
 
-        SecretClient secretClient = getSecretClientBuilder(actualHttpClient, getEndpoint(),
-            serviceVersion).buildClient();
-        secretKey = secretClient.setSecret(secretName, Base64.getEncoder().encodeToString(kek));
+        String keyId = getEndpoint() + "/" + secretName;
+        CryptographyClientImpl implClient = getCryptographyClientImpl(actualHttpClient, keyId, serviceVersion);
+        SecretKey secretKey = implClient
+            .setSecretKey(new SecretKey(secretName, Base64.getEncoder().encodeToString(kek)), Context.NONE)
+            .getValue();
 
         keyEncryptionKey = getKeyEncryptionKeyClientBuilder(actualHttpClient, serviceVersion)
             .buildKeyEncryptionKey(secretKey.getId());

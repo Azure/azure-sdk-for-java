@@ -9,7 +9,6 @@ import com.azure.core.annotation.ServiceMethod;
 import com.azure.core.exception.ResourceNotFoundException;
 import com.azure.core.http.HttpPipeline;
 import com.azure.core.http.rest.Response;
-import com.azure.core.http.rest.SimpleResponse;
 import com.azure.core.util.FluxUtil;
 import com.azure.core.util.logging.ClientLogger;
 import com.azure.security.keyvault.keys.cryptography.implementation.CryptographyClientImpl;
@@ -27,27 +26,18 @@ import com.azure.security.keyvault.keys.cryptography.models.UnwrapResult;
 import com.azure.security.keyvault.keys.cryptography.models.VerifyResult;
 import com.azure.security.keyvault.keys.cryptography.models.WrapResult;
 import com.azure.security.keyvault.keys.implementation.KeyClientImpl;
-import com.azure.security.keyvault.keys.implementation.KeyVaultKeysUtils;
 import com.azure.security.keyvault.keys.implementation.SecretMinClientImpl;
-import com.azure.security.keyvault.keys.implementation.models.KeyVaultErrorException;
 import com.azure.security.keyvault.keys.models.JsonWebKey;
 import com.azure.security.keyvault.keys.models.KeyOperation;
 import com.azure.security.keyvault.keys.models.KeyVaultKey;
 import reactor.core.publisher.Mono;
 
-import java.util.List;
 import java.util.Objects;
 
 import static com.azure.core.util.FluxUtil.monoError;
 import static com.azure.core.util.FluxUtil.withContext;
-import static com.azure.security.keyvault.keys.cryptography.CryptographyClient.mapKeyEncryptionAlgorithm;
-import static com.azure.security.keyvault.keys.cryptography.CryptographyClient.mapKeySignatureAlgorithm;
-import static com.azure.security.keyvault.keys.cryptography.CryptographyClient.mapWrapAlgorithm;
-import static com.azure.security.keyvault.keys.cryptography.CryptographyClient.transformSecretKey;
 import static com.azure.security.keyvault.keys.cryptography.implementation.CryptographyUtils.checkKeyPermissions;
 import static com.azure.security.keyvault.keys.cryptography.implementation.CryptographyUtils.initializeCryptoClient;
-import static com.azure.security.keyvault.keys.cryptography.implementation.CryptographyUtils.unpackAndValidateId;
-import static com.azure.security.keyvault.keys.implementation.models.KeyVaultKeysModelsUtils.createKeyVaultKey;
 
 /**
  * The {@link CryptographyAsyncClient} provides asynchronous methods to perform cryptographic operations using
@@ -81,17 +71,11 @@ import static com.azure.security.keyvault.keys.implementation.models.KeyVaultKey
 public class CryptographyAsyncClient {
     private static final ClientLogger LOGGER = new ClientLogger(CryptographyAsyncClient.class);
 
-    private final String vaultUrl;
-    private final String keyCollection;
-    private final String keyName;
-    private final String keyVersion;
-
     private final HttpPipeline pipeline;
 
     private LocalKeyCryptographyClient localKeyCryptographyClient;
 
-    final KeyClientImpl keyClient;
-    final SecretMinClientImpl secretClient;
+    final CryptographyClientImpl implClient;
     final String keyId;
 
     JsonWebKey key;
@@ -104,18 +88,9 @@ public class CryptographyAsyncClient {
      * @param version {@link CryptographyServiceVersion} of the service to be used when making requests.
      */
     CryptographyAsyncClient(String keyId, HttpPipeline pipeline, CryptographyServiceVersion version) {
-        //Arrays.asList(vaultUrl, keyCollection, keyName, keyVersion);
-        List<String> data = unpackAndValidateId(keyId, LOGGER);
-
-        this.vaultUrl = data.get(0);
-        this.keyCollection = data.get(1);
-        this.keyName = data.get(2);
-        this.keyVersion = data.get(3);
-
         this.keyId = keyId;
         this.pipeline = pipeline;
-        this.keyClient = new KeyClientImpl(pipeline, version.getVersion());
-        this.secretClient = new SecretMinClientImpl(pipeline, version.getVersion());
+        this.implClient = new CryptographyClientImpl(keyId, pipeline, version);
         this.key = null;
     }
 
@@ -140,16 +115,11 @@ public class CryptographyAsyncClient {
             throw new IllegalArgumentException("The JSON Web Key's key type property is not configured.");
         }
 
-        this.vaultUrl = null;
-        this.keyCollection = null;
-        this.keyName = null;
-        this.keyVersion = null;
         this.key = jsonWebKey;
         this.keyId = jsonWebKey.getId();
         this.pipeline = null;
-        this.keyClient = null;
-        this.secretClient = null;
-        this.localKeyCryptographyClient = initializeCryptoClient(key, null, null, null, null, null, null, LOGGER);
+        this.implClient = null;
+        this.localKeyCryptographyClient = initializeCryptoClient(key, null, LOGGER);
     }
 
     /**
@@ -212,11 +182,9 @@ public class CryptographyAsyncClient {
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<Response<KeyVaultKey>> getKeyWithResponse() {
-        if (keyClient != null) {
+        if (implClient != null) {
             try {
-                return keyClient.getKeyWithResponseAsync(vaultUrl, keyName, keyVersion)
-                    .onErrorMap(KeyVaultErrorException.class, KeyVaultKeysUtils::mapGetKeyException)
-                    .map(response -> new SimpleResponse<>(response, createKeyVaultKey(response.getValue())));
+                return implClient.getKeyAsync();
             } catch (RuntimeException e) {
                 return monoError(LOGGER, e);
             }
@@ -228,8 +196,7 @@ public class CryptographyAsyncClient {
 
     Mono<JsonWebKey> getSecretKey() {
         try {
-            return withContext(context -> secretClient.getSecretWithResponseAsync(vaultUrl, keyName, keyVersion,
-                context).map(response -> transformSecretKey(response.getValue())));
+            return implClient.getSecretKeyAsync();
         } catch (RuntimeException ex) {
             return monoError(LOGGER, ex);
         }
@@ -289,12 +256,9 @@ public class CryptographyAsyncClient {
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<EncryptResult> encrypt(EncryptionAlgorithm algorithm, byte[] plaintext) {
         try {
-            return ensureValidKeyAvailable().flatMap(available -> {
+            return withContext(context -> ensureValidKeyAvailable().flatMap(available -> {
                 if (!available) {
-                    return keyClient.encryptAsync(vaultUrl, keyName, keyVersion, mapKeyEncryptionAlgorithm(algorithm),
-                        plaintext, null, null, null)
-                        .map(result -> new EncryptResult(result.getResult(), algorithm, keyId, result.getIv(),
-                            result.getAuthenticationTag(), result.getAdditionalAuthenticatedData()));
+                    return implClient.encryptAsync(algorithm, plaintext, context);
                 }
 
                 if (!checkKeyPermissions(key.getKeyOps(), KeyOperation.ENCRYPT)) {
@@ -302,9 +266,8 @@ public class CryptographyAsyncClient {
                         "Encrypt operation is missing permission/not supported for key with id: %s", key.getId()))));
                 }
 
-                return withContext(context -> localKeyCryptographyClient.encryptAsync(algorithm, plaintext, key,
-                    context));
-            });
+                return localKeyCryptographyClient.encryptAsync(algorithm, plaintext, key, context);
+            }));
         } catch (RuntimeException ex) {
             return monoError(LOGGER, ex);
         }
@@ -368,14 +331,9 @@ public class CryptographyAsyncClient {
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<EncryptResult> encrypt(EncryptParameters encryptParameters) {
         try {
-            return ensureValidKeyAvailable().flatMap(available -> {
+            return withContext(context -> ensureValidKeyAvailable().flatMap(available -> {
                 if (!available) {
-                    return keyClient.encryptAsync(vaultUrl, keyName, keyVersion,
-                            mapKeyEncryptionAlgorithm(encryptParameters.getAlgorithm()),
-                            encryptParameters.getPlainText(), encryptParameters.getIv(),
-                            encryptParameters.getAdditionalAuthenticatedData(), null)
-                        .map(result -> new EncryptResult(result.getResult(), encryptParameters.getAlgorithm(), keyId,
-                            result.getIv(), result.getAuthenticationTag(), result.getAdditionalAuthenticatedData()));
+                    return implClient.encryptAsync(encryptParameters, context);
                 }
 
                 if (!checkKeyPermissions(key.getKeyOps(), KeyOperation.ENCRYPT)) {
@@ -383,8 +341,8 @@ public class CryptographyAsyncClient {
                         "Encrypt operation is missing permission/not supported for key with id: %s", key.getId()))));
                 }
 
-                return withContext(context -> localKeyCryptographyClient.encryptAsync(encryptParameters, key, context));
-            });
+                return localKeyCryptographyClient.encryptAsync(encryptParameters, key, context);
+            }));
         } catch (RuntimeException ex) {
             return monoError(LOGGER, ex);
         }
@@ -442,11 +400,9 @@ public class CryptographyAsyncClient {
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<DecryptResult> decrypt(EncryptionAlgorithm algorithm, byte[] ciphertext) {
         try {
-            return ensureValidKeyAvailable().flatMap(available -> {
+            return withContext(context -> ensureValidKeyAvailable().flatMap(available -> {
                 if (!available) {
-                    return keyClient.decryptAsync(vaultUrl, keyName, keyVersion,
-                        mapKeyEncryptionAlgorithm(algorithm), ciphertext, null, null, null)
-                        .map(result -> new DecryptResult(result.getResult(), algorithm, keyId));
+                    return implClient.decryptAsync(algorithm, ciphertext, context);
                 }
 
                 if (!checkKeyPermissions(key.getKeyOps(), KeyOperation.DECRYPT)) {
@@ -454,9 +410,8 @@ public class CryptographyAsyncClient {
                         "Decrypt operation is not allowed for key with id: %s", key.getId()))));
                 }
 
-                return withContext(context -> localKeyCryptographyClient.decryptAsync(algorithm, ciphertext, key,
-                    context));
-            });
+                return localKeyCryptographyClient.decryptAsync(algorithm, ciphertext, key, context);
+            }));
         } catch (RuntimeException ex) {
             return monoError(LOGGER, ex);
         }
@@ -518,13 +473,9 @@ public class CryptographyAsyncClient {
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<DecryptResult> decrypt(DecryptParameters decryptParameters) {
         try {
-            return ensureValidKeyAvailable().flatMap(available -> {
+            return withContext(context -> ensureValidKeyAvailable().flatMap(available -> {
                 if (!available) {
-                    return keyClient.decryptAsync(vaultUrl, keyName, keyVersion,
-                        mapKeyEncryptionAlgorithm(decryptParameters.getAlgorithm()), decryptParameters.getCipherText(),
-                        decryptParameters.getIv(), decryptParameters.getAdditionalAuthenticatedData(),
-                        decryptParameters.getAuthenticationTag())
-                        .map(result -> new DecryptResult(result.getResult(), decryptParameters.getAlgorithm(), keyId));
+                    return implClient.decryptAsync(decryptParameters, context);
                 }
 
                 if (!checkKeyPermissions(key.getKeyOps(), KeyOperation.DECRYPT)) {
@@ -532,8 +483,8 @@ public class CryptographyAsyncClient {
                         "Decrypt operation is not allowed for key with id: %s", key.getId()))));
                 }
 
-                return withContext(context -> localKeyCryptographyClient.decryptAsync(decryptParameters, key, context));
-            });
+                return localKeyCryptographyClient.decryptAsync(decryptParameters, key, context);
+            }));
         } catch (RuntimeException ex) {
             return monoError(LOGGER, ex);
         }
@@ -585,11 +536,9 @@ public class CryptographyAsyncClient {
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<SignResult> sign(SignatureAlgorithm algorithm, byte[] digest) {
         try {
-            return ensureValidKeyAvailable().flatMap(available -> {
+            return withContext(context -> ensureValidKeyAvailable().flatMap(available -> {
                 if (!available) {
-                    return keyClient.signAsync(vaultUrl, keyName, keyVersion, mapKeySignatureAlgorithm(algorithm),
-                        digest)
-                        .map(result -> new SignResult(result.getResult(), algorithm, keyId));
+                    return implClient.signAsync(algorithm, digest, context);
                 }
 
                 if (!checkKeyPermissions(key.getKeyOps(), KeyOperation.SIGN)) {
@@ -597,8 +546,8 @@ public class CryptographyAsyncClient {
                         "Sign operation is not allowed for key with id: %s", key.getId()))));
                 }
 
-                return withContext(context -> localKeyCryptographyClient.signAsync(algorithm, digest, key, context));
-            });
+                return localKeyCryptographyClient.signAsync(algorithm, digest, key, context);
+            }));
         } catch (RuntimeException ex) {
             return monoError(LOGGER, ex);
         }
@@ -653,11 +602,9 @@ public class CryptographyAsyncClient {
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<VerifyResult> verify(SignatureAlgorithm algorithm, byte[] digest, byte[] signature) {
         try {
-            return ensureValidKeyAvailable().flatMap(available -> {
+            return withContext(context -> ensureValidKeyAvailable().flatMap(available -> {
                 if (!available) {
-                    return keyClient.verifyAsync(vaultUrl, keyName, keyVersion, mapKeySignatureAlgorithm(algorithm),
-                        digest, signature)
-                        .map(result -> new VerifyResult(result.isValue(), algorithm, keyId));
+                    return implClient.verifyAsync(algorithm, digest, signature, context);
                 }
 
                 if (!checkKeyPermissions(key.getKeyOps(), KeyOperation.VERIFY)) {
@@ -665,9 +612,8 @@ public class CryptographyAsyncClient {
                         "Verify operation is not allowed for key with id: %s", key.getId()))));
                 }
 
-                return withContext(context -> localKeyCryptographyClient.verifyAsync(algorithm, digest, signature, key,
-                    context));
-            });
+                return localKeyCryptographyClient.verifyAsync(algorithm, digest, signature, key, context);
+            }));
         } catch (RuntimeException ex) {
             return monoError(LOGGER, ex);
         }
@@ -717,11 +663,10 @@ public class CryptographyAsyncClient {
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<WrapResult> wrapKey(KeyWrapAlgorithm algorithm, byte[] key) {
         try {
-            return ensureValidKeyAvailable().flatMap(available -> {
+            return withContext(context -> ensureValidKeyAvailable().flatMap(available -> {
                 if (!available) {
-                    return keyClient.wrapKeyAsync(vaultUrl, keyName, keyVersion, mapWrapAlgorithm(algorithm), key, null,
-                        null, null)
-                        .map(result -> new WrapResult(result.getResult(), algorithm, keyId));
+                    return implClient.wrapKeyAsync(algorithm, key, context);
+
                 }
 
                 if (!checkKeyPermissions(this.key.getKeyOps(), KeyOperation.WRAP_KEY)) {
@@ -729,9 +674,8 @@ public class CryptographyAsyncClient {
                         "Wrap kKey operation is not allowed for key with id: %s", this.key.getId()))));
                 }
 
-                return withContext(context -> localKeyCryptographyClient.wrapKeyAsync(algorithm, key, this.key,
-                    context));
-            });
+                return localKeyCryptographyClient.wrapKeyAsync(algorithm, key, this.key, context);
+            }));
         } catch (RuntimeException ex) {
             return monoError(LOGGER, ex);
         }
@@ -784,11 +728,9 @@ public class CryptographyAsyncClient {
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<UnwrapResult> unwrapKey(KeyWrapAlgorithm algorithm, byte[] encryptedKey) {
         try {
-            return ensureValidKeyAvailable().flatMap(available -> {
+            return withContext(context -> ensureValidKeyAvailable().flatMap(available -> {
                 if (!available) {
-                    return keyClient.unwrapKeyAsync(vaultUrl, keyName, keyVersion, mapWrapAlgorithm(algorithm),
-                        encryptedKey, null, null, null)
-                        .map(result -> new UnwrapResult(result.getResult(), algorithm, keyId));
+                    return implClient.unwrapKeyAsync(algorithm, encryptedKey, context);
                 }
 
                 if (!checkKeyPermissions(key.getKeyOps(), KeyOperation.UNWRAP_KEY)) {
@@ -796,9 +738,8 @@ public class CryptographyAsyncClient {
                         "Unwrap key operation is not allowed for key with id: %s", key.getId()))));
                 }
 
-                return withContext(context -> localKeyCryptographyClient.unwrapKeyAsync(algorithm, encryptedKey, key,
-                    context));
-            });
+                return localKeyCryptographyClient.unwrapKeyAsync(algorithm, encryptedKey, key, context);
+            }));
         } catch (RuntimeException ex) {
             return monoError(LOGGER, ex);
         }
@@ -848,10 +789,9 @@ public class CryptographyAsyncClient {
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<SignResult> signData(SignatureAlgorithm algorithm, byte[] data) {
         try {
-            return ensureValidKeyAvailable().flatMap(available -> {
+            return withContext(context -> ensureValidKeyAvailable().flatMap(available -> {
                 if (!available) {
-                    return keyClient.signAsync(vaultUrl, keyName, keyVersion, mapKeySignatureAlgorithm(algorithm), data)
-                        .map(result -> new SignResult(result.getResult(), algorithm, keyId));
+                    return implClient.signDataAsync(algorithm, data, context);
                 }
 
                 if (!checkKeyPermissions(key.getKeyOps(), KeyOperation.SIGN)) {
@@ -859,8 +799,8 @@ public class CryptographyAsyncClient {
                         "Sign operation is not allowed for key with id: %s", key.getId()))));
                 }
 
-                return withContext(context -> localKeyCryptographyClient.signDataAsync(algorithm, data, key, context));
-            });
+                return localKeyCryptographyClient.signDataAsync(algorithm, data, key, context);
+            }));
         } catch (RuntimeException ex) {
             return monoError(LOGGER, ex);
         }
@@ -914,11 +854,9 @@ public class CryptographyAsyncClient {
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<VerifyResult> verifyData(SignatureAlgorithm algorithm, byte[] data, byte[] signature) {
         try {
-            return ensureValidKeyAvailable().flatMap(available -> {
+            return withContext(context -> ensureValidKeyAvailable().flatMap(available -> {
                 if (!available) {
-                    return keyClient.verifyAsync(vaultUrl, keyName, keyVersion, mapKeySignatureAlgorithm(algorithm),
-                        data, signature)
-                        .map(result -> new VerifyResult(result.isValue(), algorithm, keyId));
+                    return implClient.verifyDataAsync(algorithm, data, signature, context);
                 }
 
                 if (!checkKeyPermissions(key.getKeyOps(), KeyOperation.VERIFY)) {
@@ -926,23 +864,22 @@ public class CryptographyAsyncClient {
                         "Verify operation is not allowed for key with id: " + key.getId())));
                 }
 
-                return withContext(context -> localKeyCryptographyClient.verifyDataAsync(algorithm, data, signature,
-                    key, context));
-            });
+                return localKeyCryptographyClient.verifyDataAsync(algorithm, data, signature, key, context);
+            }));
         } catch (RuntimeException ex) {
             return monoError(LOGGER, ex);
         }
     }
 
     private Mono<Boolean> ensureValidKeyAvailable() {
-        boolean keyNotAvailable = (key == null && keyCollection != null);
+        boolean keyNotAvailable = (key == null && implClient.getKeyCollection() != null);
         boolean keyNotValid = (key != null && !key.isValid());
 
         if (!keyNotAvailable && !keyNotValid) {
             return Mono.just(true);
         }
 
-        Mono<JsonWebKey> jsonWebKeyMono = (keyCollection.equals(CryptographyUtils.SECRETS_COLLECTION))
+        Mono<JsonWebKey> jsonWebKeyMono = (implClient.getKeyCollection().equals(CryptographyUtils.SECRETS_COLLECTION))
             ? getSecretKey() : getKey().map(KeyVaultKey::getKey);
 
         return jsonWebKeyMono.map(jsonWebKey -> {
@@ -950,8 +887,7 @@ public class CryptographyAsyncClient {
 
             if (key.isValid()) {
                 if (localKeyCryptographyClient == null) {
-                    localKeyCryptographyClient = initializeCryptoClient(key, keyClient, secretClient, vaultUrl,
-                        keyCollection, keyName, keyVersion, LOGGER);
+                    localKeyCryptographyClient = initializeCryptoClient(key, implClient, LOGGER);
                 }
 
                 return true;

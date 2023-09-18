@@ -9,9 +9,9 @@ import com.azure.core.annotation.ServiceMethod;
 import com.azure.core.exception.ResourceNotFoundException;
 import com.azure.core.http.HttpPipeline;
 import com.azure.core.http.rest.Response;
-import com.azure.core.http.rest.SimpleResponse;
 import com.azure.core.util.Context;
 import com.azure.core.util.logging.ClientLogger;
+import com.azure.security.keyvault.keys.cryptography.implementation.CryptographyClientImpl;
 import com.azure.security.keyvault.keys.cryptography.implementation.CryptographyUtils;
 import com.azure.security.keyvault.keys.cryptography.implementation.LocalKeyCryptographyClient;
 import com.azure.security.keyvault.keys.cryptography.models.DecryptParameters;
@@ -26,30 +26,16 @@ import com.azure.security.keyvault.keys.cryptography.models.UnwrapResult;
 import com.azure.security.keyvault.keys.cryptography.models.VerifyResult;
 import com.azure.security.keyvault.keys.cryptography.models.WrapResult;
 import com.azure.security.keyvault.keys.implementation.KeyClientImpl;
-import com.azure.security.keyvault.keys.implementation.KeyVaultKeysUtils;
 import com.azure.security.keyvault.keys.implementation.SecretMinClientImpl;
-import com.azure.security.keyvault.keys.implementation.models.JsonWebKeyEncryptionAlgorithm;
-import com.azure.security.keyvault.keys.implementation.models.JsonWebKeySignatureAlgorithm;
-import com.azure.security.keyvault.keys.implementation.models.KeyBundle;
-import com.azure.security.keyvault.keys.implementation.models.KeyOperationResult;
-import com.azure.security.keyvault.keys.implementation.models.KeyVerifyResult;
-import com.azure.security.keyvault.keys.implementation.models.SecretKey;
 import com.azure.security.keyvault.keys.models.JsonWebKey;
 import com.azure.security.keyvault.keys.models.KeyOperation;
-import com.azure.security.keyvault.keys.models.KeyType;
 import com.azure.security.keyvault.keys.models.KeyVaultKey;
 import reactor.core.publisher.Mono;
 
-import java.util.Arrays;
-import java.util.Base64;
-import java.util.List;
 import java.util.Objects;
 
 import static com.azure.security.keyvault.keys.cryptography.implementation.CryptographyUtils.checkKeyPermissions;
 import static com.azure.security.keyvault.keys.cryptography.implementation.CryptographyUtils.initializeCryptoClient;
-import static com.azure.security.keyvault.keys.cryptography.implementation.CryptographyUtils.unpackAndValidateId;
-import static com.azure.security.keyvault.keys.implementation.KeyVaultKeysUtils.callWithMappedException;
-import static com.azure.security.keyvault.keys.implementation.models.KeyVaultKeysModelsUtils.createKeyVaultKey;
 
 /**
  * The {@link CryptographyClient} provides synchronous methods to perform cryptographic operations using asymmetric and
@@ -151,16 +137,10 @@ import static com.azure.security.keyvault.keys.implementation.models.KeyVaultKey
 public class CryptographyClient {
     private static final ClientLogger LOGGER = new ClientLogger(CryptographyClient.class);
 
-    private final String vaultUrl;
-    private final String keyCollection;
-    private final String keyName;
-    private final String keyVersion;
-
     private volatile boolean localOperationNotSupported = false;
     private LocalKeyCryptographyClient localKeyCryptographyClient;
 
-    final KeyClientImpl keyClient;
-    final SecretMinClientImpl secretClient;
+    final CryptographyClientImpl implClient;
     final String keyId;
 
     volatile JsonWebKey key;
@@ -173,17 +153,9 @@ public class CryptographyClient {
      * @param version {@link CryptographyServiceVersion} of the service to be used when making requests.
      */
     CryptographyClient(String keyId, HttpPipeline pipeline, CryptographyServiceVersion version) {
-        //Arrays.asList(vaultUrl, keyCollection, keyName, keyVersion);
-        List<String> data = unpackAndValidateId(keyId, LOGGER);
-
-        this.vaultUrl = data.get(0);
-        this.keyCollection = data.get(1);
-        this.keyName = data.get(2);
-        this.keyVersion = data.get(3);
+        this.implClient = new CryptographyClientImpl(keyId, pipeline, version);
 
         this.keyId = keyId;
-        this.keyClient = new KeyClientImpl(pipeline, version.getVersion());
-        this.secretClient = new SecretMinClientImpl(pipeline, version.getVersion());
         this.key = null;
     }
 
@@ -208,15 +180,10 @@ public class CryptographyClient {
             throw new IllegalArgumentException("The JSON Web Key's key type property is not configured.");
         }
 
-        this.vaultUrl = null;
-        this.keyCollection = null;
-        this.keyName = null;
-        this.keyVersion = null;
         this.key = jsonWebKey;
         this.keyId = jsonWebKey.getId();
-        this.keyClient = null;
-        this.secretClient = null;
-        this.localKeyCryptographyClient = initializeCryptoClient(key, null, null, null, null, null, null, LOGGER);
+        this.implClient = null;
+        this.localKeyCryptographyClient = initializeCryptoClient(key, null, LOGGER);
     }
 
     /**
@@ -270,12 +237,8 @@ public class CryptographyClient {
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Response<KeyVaultKey> getKeyWithResponse(Context context) {
-        if (keyClient != null) {
-            Response<KeyBundle> response = callWithMappedException(() ->
-                keyClient.getKeyWithResponse(vaultUrl, keyName, keyVersion, context),
-                KeyVaultKeysUtils::mapGetKeyException);
-
-            return new SimpleResponse<>(response, createKeyVaultKey(response.getValue()));
+        if (implClient != null) {
+            return implClient.getKey(context);
         } else {
             throw LOGGER.logExceptionAsError(
                 new UnsupportedOperationException("Operation not supported when in operating local-only mode"));
@@ -284,19 +247,10 @@ public class CryptographyClient {
 
     JsonWebKey getSecretKey() {
         try {
-            return transformSecretKey(secretClient.getSecretWithResponse(vaultUrl, keyName, keyVersion, Context.NONE)
-                .getValue());
+            return implClient.getSecretKey();
         } catch (RuntimeException e) {
             throw LOGGER.logExceptionAsError(e);
         }
-    }
-
-    static JsonWebKey transformSecretKey(SecretKey secretKey) {
-        return new JsonWebKey().setId(secretKey.getId())
-            .setK(Base64.getUrlDecoder().decode(secretKey.getValue()))
-            .setKeyType(KeyType.OCT)
-            .setKeyOps(Arrays.asList(KeyOperation.WRAP_KEY, KeyOperation.UNWRAP_KEY, KeyOperation.ENCRYPT,
-                KeyOperation.DECRYPT));
     }
 
     /**
@@ -404,11 +358,8 @@ public class CryptographyClient {
     @ServiceMethod(returns = ReturnType.SINGLE)
     public EncryptResult encrypt(EncryptionAlgorithm algorithm, byte[] plaintext, Context context) {
         if (!isValidKeyLocallyAvailable()) {
-            KeyOperationResult result = keyClient.encryptWithResponse(vaultUrl, keyName, keyVersion,
-                mapKeyEncryptionAlgorithm(algorithm), plaintext, null, null, null, context).getValue();
+            return implClient.encrypt(algorithm, plaintext, context);
 
-            return new EncryptResult(result.getResult(), algorithm, keyId, result.getIv(),
-                result.getAuthenticationTag(), result.getAdditionalAuthenticatedData());
         }
 
         if (!checkKeyPermissions(key.getKeyOps(), KeyOperation.ENCRYPT)) {
@@ -417,10 +368,6 @@ public class CryptographyClient {
         }
 
         return localKeyCryptographyClient.encrypt(algorithm, plaintext, key, context);
-    }
-
-    static JsonWebKeyEncryptionAlgorithm mapKeyEncryptionAlgorithm(EncryptionAlgorithm algorithm) {
-        return JsonWebKeyEncryptionAlgorithm.fromString(Objects.toString(algorithm, null));
     }
 
     /**
@@ -479,13 +426,7 @@ public class CryptographyClient {
     @ServiceMethod(returns = ReturnType.SINGLE)
     public EncryptResult encrypt(EncryptParameters encryptParameters, Context context) {
         if (!isValidKeyLocallyAvailable()) {
-            KeyOperationResult result = keyClient.encryptWithResponse(vaultUrl, keyName, keyVersion,
-                mapKeyEncryptionAlgorithm(encryptParameters.getAlgorithm()), encryptParameters.getPlainText(),
-                encryptParameters.getIv(), encryptParameters.getAdditionalAuthenticatedData(), null, context)
-                .getValue();
-
-            return new EncryptResult(result.getResult(), encryptParameters.getAlgorithm(), keyId, result.getIv(),
-                result.getAuthenticationTag(), result.getAdditionalAuthenticatedData());
+            return implClient.encrypt(encryptParameters, context);
         }
 
         if (!checkKeyPermissions(key.getKeyOps(), KeyOperation.ENCRYPT)) {
@@ -605,10 +546,7 @@ public class CryptographyClient {
     @ServiceMethod(returns = ReturnType.SINGLE)
     public DecryptResult decrypt(EncryptionAlgorithm algorithm, byte[] ciphertext, Context context) {
         if (!isValidKeyLocallyAvailable()) {
-            KeyOperationResult result = keyClient.decryptWithResponse(vaultUrl, keyName, keyVersion,
-                mapKeyEncryptionAlgorithm(algorithm), ciphertext, null, null, null, context).getValue();
-
-            return new DecryptResult(result.getResult(), algorithm, keyId);
+            return implClient.decrypt(algorithm, ciphertext, context);
         }
 
         if (!checkKeyPermissions(key.getKeyOps(), KeyOperation.DECRYPT)) {
@@ -677,12 +615,7 @@ public class CryptographyClient {
     @ServiceMethod(returns = ReturnType.SINGLE)
     public DecryptResult decrypt(DecryptParameters decryptParameters, Context context) {
         if (!isValidKeyLocallyAvailable()) {
-            KeyOperationResult result = keyClient.decryptWithResponse(vaultUrl, keyName, keyVersion,
-                mapKeyEncryptionAlgorithm(decryptParameters.getAlgorithm()), decryptParameters.getCipherText(),
-                decryptParameters.getIv(), decryptParameters.getAdditionalAuthenticatedData(),
-                decryptParameters.getAuthenticationTag(), context).getValue();
-
-            return new DecryptResult(result.getResult(), decryptParameters.getAlgorithm(), keyId);
+            return implClient.decrypt(decryptParameters, context);
         }
 
         if (!checkKeyPermissions(key.getKeyOps(), KeyOperation.DECRYPT)) {
@@ -783,10 +716,7 @@ public class CryptographyClient {
     @ServiceMethod(returns = ReturnType.SINGLE)
     public SignResult sign(SignatureAlgorithm algorithm, byte[] digest, Context context) {
         if (!isValidKeyLocallyAvailable()) {
-            KeyOperationResult result = keyClient.signWithResponse(vaultUrl, keyName, keyVersion,
-                mapKeySignatureAlgorithm(algorithm), digest, context).getValue();
-
-            return new SignResult(result.getResult(), algorithm, keyId);
+            return implClient.sign(algorithm, digest, context);
         }
 
         if (!checkKeyPermissions(key.getKeyOps(), KeyOperation.SIGN)) {
@@ -795,10 +725,6 @@ public class CryptographyClient {
         }
 
         return localKeyCryptographyClient.sign(algorithm, digest, key, context);
-    }
-
-    static JsonWebKeySignatureAlgorithm mapKeySignatureAlgorithm(SignatureAlgorithm algorithm) {
-        return JsonWebKeySignatureAlgorithm.fromString(Objects.toString(algorithm, null));
     }
 
     /**
@@ -899,10 +825,7 @@ public class CryptographyClient {
     @ServiceMethod(returns = ReturnType.SINGLE)
     public VerifyResult verify(SignatureAlgorithm algorithm, byte[] digest, byte[] signature, Context context) {
         if (!isValidKeyLocallyAvailable()) {
-            KeyVerifyResult result = keyClient.verifyWithResponse(vaultUrl, keyName, keyVersion,
-                mapKeySignatureAlgorithm(algorithm), digest, signature, context).getValue();
-
-            return new VerifyResult(result.isValue(), algorithm, keyId);
+            return implClient.verify(algorithm, digest, signature, context);
         }
 
         if (!checkKeyPermissions(key.getKeyOps(), KeyOperation.VERIFY)) {
@@ -1001,10 +924,7 @@ public class CryptographyClient {
     @ServiceMethod(returns = ReturnType.SINGLE)
     public WrapResult wrapKey(KeyWrapAlgorithm algorithm, byte[] key, Context context) {
         if (!isValidKeyLocallyAvailable()) {
-            KeyOperationResult result = keyClient.wrapKeyWithResponse(vaultUrl, keyName, keyVersion,
-                mapWrapAlgorithm(algorithm), key, null, null, null, context).getValue();
-
-            return new WrapResult(result.getResult(), algorithm, keyId);
+            return implClient.wrapKey(algorithm, key, context);
         }
 
         if (!checkKeyPermissions(this.key.getKeyOps(), KeyOperation.WRAP_KEY)) {
@@ -1013,10 +933,6 @@ public class CryptographyClient {
         }
 
         return localKeyCryptographyClient.wrapKey(algorithm, key, this.key, context);
-    }
-
-    static JsonWebKeyEncryptionAlgorithm mapWrapAlgorithm(KeyWrapAlgorithm algorithm) {
-        return JsonWebKeyEncryptionAlgorithm.fromString(Objects.toString(algorithm, null));
     }
 
     /**
@@ -1115,10 +1031,7 @@ public class CryptographyClient {
     @ServiceMethod(returns = ReturnType.SINGLE)
     public UnwrapResult unwrapKey(KeyWrapAlgorithm algorithm, byte[] encryptedKey, Context context) {
         if (!isValidKeyLocallyAvailable()) {
-            KeyOperationResult result = keyClient.unwrapKeyWithResponse(vaultUrl, keyName, keyVersion,
-                mapWrapAlgorithm(algorithm), encryptedKey, null, null, null, context).getValue();
-
-            return new UnwrapResult(result.getResult(), algorithm, keyId);
+            return implClient.unwrapKey(algorithm, encryptedKey, context);
         }
 
         if (!checkKeyPermissions(key.getKeyOps(), KeyOperation.UNWRAP_KEY)) {
@@ -1213,10 +1126,7 @@ public class CryptographyClient {
     @ServiceMethod(returns = ReturnType.SINGLE)
     public SignResult signData(SignatureAlgorithm algorithm, byte[] data, Context context) {
         if (!isValidKeyLocallyAvailable()) {
-            KeyOperationResult result = keyClient.signWithResponse(vaultUrl, keyName, keyVersion,
-                mapKeySignatureAlgorithm(algorithm), data, context).getValue();
-
-            return new SignResult(result.getResult(), algorithm, keyId);
+            return implClient.signData(algorithm, data, context);
         }
 
         if (!checkKeyPermissions(key.getKeyOps(), KeyOperation.SIGN)) {
@@ -1322,10 +1232,7 @@ public class CryptographyClient {
     @ServiceMethod(returns = ReturnType.SINGLE)
     public VerifyResult verifyData(SignatureAlgorithm algorithm, byte[] data, byte[] signature, Context context) {
         if (!isValidKeyLocallyAvailable()) {
-            KeyVerifyResult result = keyClient.verifyWithResponse(vaultUrl, keyName, keyVersion,
-                mapKeySignatureAlgorithm(algorithm), data, signature, context).getValue();
-
-            return new VerifyResult(result.isValue(), algorithm, keyId);
+            return implClient.verifyData(algorithm, data, signature, context);
         }
 
         if (!checkKeyPermissions(key.getKeyOps(), KeyOperation.VERIFY)) {
@@ -1341,10 +1248,10 @@ public class CryptographyClient {
             return false;
         }
 
-        boolean keyNotAvailable = (key == null && keyCollection != null);
+        boolean keyNotAvailable = (key == null && implClient.getKeyCollection() != null);
 
         if (keyNotAvailable) {
-            if (Objects.equals(keyCollection, CryptographyUtils.SECRETS_COLLECTION)) {
+            if (Objects.equals(implClient.getKeyCollection(), CryptographyUtils.SECRETS_COLLECTION)) {
                 key = getSecretKey();
             } else {
                 key = getKey().getKey();
@@ -1357,8 +1264,7 @@ public class CryptographyClient {
 
         if (localKeyCryptographyClient == null) {
             try {
-                localKeyCryptographyClient = initializeCryptoClient(key, keyClient, secretClient, vaultUrl,
-                    keyCollection, keyName, keyVersion, LOGGER);
+                localKeyCryptographyClient = initializeCryptoClient(key, implClient, LOGGER);
             } catch (RuntimeException e) {
                 localOperationNotSupported = true;
 
@@ -1372,6 +1278,6 @@ public class CryptographyClient {
     }
 
     String getVaultUrl() {
-        return vaultUrl;
+        return implClient.getVaultUrl();
     }
 }

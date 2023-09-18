@@ -3,11 +3,9 @@
 package com.azure.security.keyvault.keys.cryptography;
 
 import com.azure.core.http.HttpClient;
-import com.azure.core.http.HttpPipeline;
 import com.azure.core.test.TestMode;
 import com.azure.core.util.Configuration;
 import com.azure.security.keyvault.keys.KeyClient;
-import com.azure.security.keyvault.keys.KeyClientBuilder;
 import com.azure.security.keyvault.keys.KeyServiceVersion;
 import com.azure.security.keyvault.keys.models.JsonWebKey;
 import com.azure.security.keyvault.keys.models.KeyOperation;
@@ -20,6 +18,7 @@ import javax.crypto.SecretKey;
 import javax.crypto.spec.SecretKeySpec;
 import java.util.Arrays;
 
+import static com.azure.security.keyvault.keys.TestUtils.buildAsyncAssertingClient;
 import static com.azure.security.keyvault.keys.cryptography.TestHelper.DISPLAY_NAME_WITH_ARGUMENTS;
 import static org.junit.jupiter.api.Assertions.assertArrayEquals;
 
@@ -39,18 +38,15 @@ public class KeyEncryptionKeyClientManagedHsmTest extends KeyEncryptionKeyClient
     }
 
     private void setupKeyAndClient(JsonWebKey jsonWebKey, HttpClient httpClient, CryptographyServiceVersion serviceVersion) {
-        HttpPipeline pipeline = getHttpPipeline(httpClient);
+        httpClient = buildAsyncAssertingClient(interceptorManager.isPlaybackMode()
+            ? interceptorManager.getPlaybackClient() : httpClient);
 
         if (keyVaultKey == null) {
-            KeyClient keyClient = new KeyClientBuilder()
-                .vaultUrl(getEndpoint())
-                .pipeline(pipeline)
-                .serviceVersion(KeyServiceVersion.valueOf(serviceVersion.name()))
+            KeyClient keyClient = getKeyClientBuilder(httpClient, getEndpoint(),
+                KeyServiceVersion.valueOf(serviceVersion.name()))
                 .buildClient();
             keyVaultKey = keyClient.importKey(testResourceNamer.randomName("symmetricKey", 20), jsonWebKey);
-            keyEncryptionKey = new KeyEncryptionKeyClientBuilder()
-                .pipeline(pipeline)
-                .serviceVersion(serviceVersion)
+            keyEncryptionKey = getKeyEncryptionKeyClientBuilder(httpClient, serviceVersion)
                 .buildKeyEncryptionKey(keyVaultKey.getId());
         }
     }

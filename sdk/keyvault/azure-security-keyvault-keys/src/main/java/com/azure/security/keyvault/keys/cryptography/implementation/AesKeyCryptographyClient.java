@@ -17,8 +17,6 @@ import com.azure.security.keyvault.keys.cryptography.models.SignatureAlgorithm;
 import com.azure.security.keyvault.keys.cryptography.models.UnwrapResult;
 import com.azure.security.keyvault.keys.cryptography.models.VerifyResult;
 import com.azure.security.keyvault.keys.cryptography.models.WrapResult;
-import com.azure.security.keyvault.keys.implementation.KeyClientImpl;
-import com.azure.security.keyvault.keys.implementation.SecretMinClientImpl;
 import com.azure.security.keyvault.keys.models.JsonWebKey;
 import reactor.core.publisher.Mono;
 
@@ -33,9 +31,8 @@ class AesKeyCryptographyClient extends LocalKeyCryptographyClient {
 
     static final int AES_BLOCK_SIZE = 16;
 
-    AesKeyCryptographyClient(JsonWebKey key, KeyClientImpl keyClient, SecretMinClientImpl secretClient, String vaultUrl,
-        String keyCollection, String keyName, String keyVersion) {
-        super(keyClient, secretClient, vaultUrl, keyCollection, keyName, keyVersion);
+    AesKeyCryptographyClient(JsonWebKey key, CryptographyClientImpl implClient) {
+        super(implClient);
         this.key = key.toAes().getEncoded();
     }
 

@@ -8,11 +8,19 @@ import com.azure.core.exception.ResourceNotFoundException;
 import com.azure.core.http.HttpPipeline;
 import com.azure.core.util.CoreUtils;
 import com.azure.core.util.logging.ClientLogger;
+import com.azure.json.JsonReader;
 import com.azure.security.keyvault.keys.KeyServiceVersion;
 import com.azure.security.keyvault.keys.cryptography.CryptographyClientBuilder;
 import com.azure.security.keyvault.keys.cryptography.CryptographyServiceVersion;
 import com.azure.security.keyvault.keys.implementation.models.KeyVaultErrorException;
 
+import java.io.IOException;
+import java.net.MalformedURLException;
+import java.net.URL;
+import java.time.Instant;
+import java.time.OffsetDateTime;
+import java.time.ZoneOffset;
+import java.util.function.Consumer;
 import java.util.function.Function;
 import java.util.function.Supplier;
 
@@ -99,5 +107,32 @@ public final class KeyVaultKeysUtils {
         } else {
             return ex;
         }
+    }
+
+    public static void unpackId(String id, Consumer<String> nameConsumer, Consumer<String> versionConsumer) {
+        if (CoreUtils.isNullOrEmpty(id)) {
+            return;
+        }
+
+        try {
+            URL url = new URL(id);
+            String[] tokens = url.getPath().split("/");
+
+            if (tokens.length >= 3) {
+                nameConsumer.accept(tokens[2]);
+            }
+
+            if (tokens.length >= 4) {
+                versionConsumer.accept(tokens[3]);
+            }
+        } catch (MalformedURLException e) {
+            // Should never come here.
+            LOGGER.error("Received Malformed Secret Id URL from KV Service");
+        }
+    }
+
+    public static OffsetDateTime epochToOffsetDateTime(JsonReader epochReader) throws IOException {
+        Instant instant = Instant.ofEpochMilli(epochReader.getLong() * 1000L);
+        return OffsetDateTime.ofInstant(instant, ZoneOffset.UTC);
     }
 }
