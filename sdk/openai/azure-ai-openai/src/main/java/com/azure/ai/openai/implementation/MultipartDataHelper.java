@@ -44,7 +44,7 @@ public class MultipartDataHelper {
     /**
      * Line separator for the multipart HTTP request.
      */
-    private final String crlf = "\r\n";
+    private static final String CRLF = "\r\n";
 
     /**
      * Default constructor used in the code. The boundary is a random value.
@@ -107,9 +107,9 @@ public class MultipartDataHelper {
 
         // Multipart preamble
         String fileFieldPreamble = partSeparator
-            + crlf + "Content-Disposition: form-data; name=\"file\"; filename=\""
+            + CRLF + "Content-Disposition: form-data; name=\"file\"; filename=\""
             + fileName + "\""
-            + crlf + "Content-Type: application/octet-stream" + crlf + crlf;
+            + CRLF + "Content-Type: application/octet-stream" + CRLF + CRLF;
         try {
             // Writing the file into the request as a byte stream
             byteArrayOutputStream.write(fileFieldPreamble.getBytes(encoderCharset));
@@ -119,7 +119,7 @@ public class MultipartDataHelper {
             for (MultipartField field : fields) {
                 byteArrayOutputStream.write(serializeField(field));
             }
-            byteArrayOutputStream.write((crlf + endMarker).getBytes(encoderCharset));
+            byteArrayOutputStream.write((CRLF + endMarker).getBytes(encoderCharset));
         } catch (IOException e) {
             throw new RuntimeException(e);
         }
@@ -193,9 +193,9 @@ public class MultipartDataHelper {
      * @return byte[] representation of a field for a multipart HTTP request
      */
     private byte[] serializeField(MultipartField field) {
-        String serialized = crlf + partSeparator
-            + crlf + "Content-Disposition: form-data; name=\""
-            + field.getWireName() + "\"" + crlf + crlf
+        String serialized = CRLF + partSeparator
+            + CRLF + "Content-Disposition: form-data; name=\""
+            + field.getWireName() + "\"" + CRLF + CRLF
             + field.getValue();
 
         return serialized.getBytes(encoderCharset);
