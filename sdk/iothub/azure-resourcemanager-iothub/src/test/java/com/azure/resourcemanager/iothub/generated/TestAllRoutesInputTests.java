@@ -20,39 +20,38 @@ public final class TestAllRoutesInputTests {
         TestAllRoutesInput model =
             BinaryData
                 .fromString(
-                    "{\"routingSource\":\"DigitalTwinChangeEvents\",\"message\":{\"body\":\"uaceopzfqrhhu\",\"appProperties\":{\"ahzxctobgbk\":\"ppcqeqxolz\",\"mgrcfbu\":\"moizpos\",\"mjh\":\"rmfqjhhkxbpvj\"},\"systemProperties\":{\"tswb\":\"yngudivk\"}},\"twin\":{\"tags\":\"datavszjfauvjfdxxi\",\"properties\":{\"desired\":\"datavtcqaqtdo\",\"reported\":\"datacbxvwvxyslqbh\"}}}")
+                    "{\"routingSource\":\"TwinChangeEvents\",\"message\":{\"body\":\"psslqlfmm\",\"appProperties\":{\"d\":\"bglzpswi\",\"bzmnvdfznud\":\"cwyhzdxssa\",\"xzb\":\"od\",\"dzu\":\"cblylpstdbhhxsr\"},\"systemProperties\":{\"wjmy\":\"scdntnevf\"}},\"twin\":{\"tags\":\"datasslswtmweriof\",\"properties\":{\"desired\":\"dataqsemwabne\",\"reported\":\"datahhszh\"}}}")
                 .toObject(TestAllRoutesInput.class);
-        Assertions.assertEquals(RoutingSource.DIGITAL_TWIN_CHANGE_EVENTS, model.routingSource());
-        Assertions.assertEquals("uaceopzfqrhhu", model.message().body());
-        Assertions.assertEquals("ppcqeqxolz", model.message().appProperties().get("ahzxctobgbk"));
-        Assertions.assertEquals("yngudivk", model.message().systemProperties().get("tswb"));
+        Assertions.assertEquals(RoutingSource.TWIN_CHANGE_EVENTS, model.routingSource());
+        Assertions.assertEquals("psslqlfmm", model.message().body());
+        Assertions.assertEquals("bglzpswi", model.message().appProperties().get("d"));
+        Assertions.assertEquals("scdntnevf", model.message().systemProperties().get("wjmy"));
     }
 
     @org.junit.jupiter.api.Test
     public void testSerialize() throws Exception {
         TestAllRoutesInput model =
             new TestAllRoutesInput()
-                .withRoutingSource(RoutingSource.DIGITAL_TWIN_CHANGE_EVENTS)
+                .withRoutingSource(RoutingSource.TWIN_CHANGE_EVENTS)
                 .withMessage(
                     new RoutingMessage()
-                        .withBody("uaceopzfqrhhu")
+                        .withBody("psslqlfmm")
                         .withAppProperties(
-                            mapOf("ahzxctobgbk", "ppcqeqxolz", "mgrcfbu", "moizpos", "mjh", "rmfqjhhkxbpvj"))
-                        .withSystemProperties(mapOf("tswb", "yngudivk")))
+                            mapOf("d", "bglzpswi", "bzmnvdfznud", "cwyhzdxssa", "xzb", "od", "dzu", "cblylpstdbhhxsr"))
+                        .withSystemProperties(mapOf("wjmy", "scdntnevf")))
                 .withTwin(
                     new RoutingTwin()
-                        .withTags("datavszjfauvjfdxxi")
+                        .withTags("datasslswtmweriof")
                         .withProperties(
-                            new RoutingTwinProperties()
-                                .withDesired("datavtcqaqtdo")
-                                .withReported("datacbxvwvxyslqbh")));
+                            new RoutingTwinProperties().withDesired("dataqsemwabne").withReported("datahhszh")));
         model = BinaryData.fromObject(model).toObject(TestAllRoutesInput.class);
-        Assertions.assertEquals(RoutingSource.DIGITAL_TWIN_CHANGE_EVENTS, model.routingSource());
-        Assertions.assertEquals("uaceopzfqrhhu", model.message().body());
-        Assertions.assertEquals("ppcqeqxolz", model.message().appProperties().get("ahzxctobgbk"));
-        Assertions.assertEquals("yngudivk", model.message().systemProperties().get("tswb"));
+        Assertions.assertEquals(RoutingSource.TWIN_CHANGE_EVENTS, model.routingSource());
+        Assertions.assertEquals("psslqlfmm", model.message().body());
+        Assertions.assertEquals("bglzpswi", model.message().appProperties().get("d"));
+        Assertions.assertEquals("scdntnevf", model.message().systemProperties().get("wjmy"));
     }
 
+    // Use "Map.of" if available
     @SuppressWarnings("unchecked")
     private static <T> Map<String, T> mapOf(Object... inputs) {
         Map<String, T> map = new HashMap<>();
