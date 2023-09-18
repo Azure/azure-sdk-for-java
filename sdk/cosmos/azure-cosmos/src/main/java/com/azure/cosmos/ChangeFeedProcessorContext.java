@@ -7,5 +7,4 @@ import com.azure.cosmos.models.FeedResponse;
 
 public interface ChangeFeedProcessorContext<T> {
     String getLeaseToken();
-    FeedResponse<T> getFeedResponse();
 }

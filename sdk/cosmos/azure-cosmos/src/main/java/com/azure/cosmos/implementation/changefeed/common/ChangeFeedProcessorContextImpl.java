@@ -24,14 +24,4 @@ public final class ChangeFeedProcessorContextImpl<T> implements ChangeFeedProces
 
         return changeFeedObserverContext.getLeaseToken();
     }
-
-    @Override
-    public FeedResponse<T> getFeedResponse() {
-
-        if (changeFeedObserverContext == null) {
-            throw new IllegalStateException("changeFeedObserverContext cannot be null!");
-        }
-
-        return changeFeedObserverContext.getFeedResponse();
-    }
 }
