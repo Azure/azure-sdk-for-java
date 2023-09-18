@@ -2676,4 +2676,11 @@
     <Field name="instance"/>
     <Bug pattern="LI_LAZY_INIT_STATIC"/>
   </Match>
+
+  <!-- Returning a new copy of the object is not necessary -->
+  <Match>
+    <Class name="~com\.azure\.ai\.openai\.models\.(AudioTranscriptionOptions|AudioTranslationOptions)"/>
+    <Method name="&lt;init&gt;"/>
+    <Bug pattern="EI_EXPOSE_REP2"/>
+  </Match>
 </FindBugsFilter>
