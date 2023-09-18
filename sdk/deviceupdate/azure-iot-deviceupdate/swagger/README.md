@@ -20,6 +20,7 @@ autorest --java --use=C:/work/autorest.java
 
 ## Generate autorest code
 ```yaml
+use: '@autorest/java@4.1.19'
 input-file: https://raw.githubusercontent.com/Azure/azure-rest-api-specs/d7c9be23749467be1aea18f02ba2f4948a39db6a/specification/deviceupdate/data-plane/Microsoft.DeviceUpdate/stable/2022-10-01/deviceupdate.json
 java: true
 output-folder: ../

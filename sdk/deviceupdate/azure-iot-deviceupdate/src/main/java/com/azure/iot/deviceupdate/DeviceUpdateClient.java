@@ -17,20 +17,21 @@ import com.azure.core.http.rest.RequestOptions;
 import com.azure.core.http.rest.Response;
 import com.azure.core.util.BinaryData;
 import com.azure.core.util.polling.SyncPoller;
+import com.azure.iot.deviceupdate.implementation.DeviceUpdatesImpl;
 
 /** Initializes a new instance of the synchronous DeviceUpdateClient type. */
 @ServiceClient(builder = DeviceUpdateClientBuilder.class)
 public final class DeviceUpdateClient {
-    @Generated private final DeviceUpdateAsyncClient client;
+    @Generated private final DeviceUpdatesImpl serviceClient;
 
     /**
      * Initializes an instance of DeviceUpdateClient class.
      *
-     * @param client the async client.
+     * @param serviceClient the service client implementation.
      */
     @Generated
-    DeviceUpdateClient(DeviceUpdateAsyncClient client) {
-        this.client = client;
+    DeviceUpdateClient(DeviceUpdatesImpl serviceClient) {
+        this.serviceClient = serviceClient;
     }
 
     /**
@@ -51,48 +52,43 @@ public final class DeviceUpdateClient {
      *
      * <pre>{@code
      * {
-     *     value (Required): [
+     *     updateId (Required): {
+     *         provider: String (Required)
+     *         name: String (Required)
+     *         version: String (Required)
+     *     }
+     *     description: String (Optional)
+     *     friendlyName: String (Optional)
+     *     isDeployable: Boolean (Optional)
+     *     updateType: String (Optional)
+     *     installedCriteria: String (Optional)
+     *     compatibility (Required): [
      *          (Required){
-     *             updateId (Required): {
-     *                 provider: String (Required)
-     *                 name: String (Required)
-     *                 version: String (Required)
-     *             }
-     *             description: String (Optional)
-     *             friendlyName: String (Optional)
-     *             isDeployable: Boolean (Optional)
-     *             updateType: String (Optional)
-     *             installedCriteria: String (Optional)
-     *             compatibility (Required): [
-     *                  (Required){
-     *                     String: String (Required)
-     *                 }
-     *             ]
-     *             instructions (Optional): {
-     *                 steps (Required): [
-     *                      (Required){
-     *                         type: String(Inline/Reference) (Optional)
-     *                         description: String (Optional)
-     *                         handler: String (Optional)
-     *                         handlerProperties: Object (Optional)
-     *                         files (Optional): [
-     *                             String (Optional)
-     *                         ]
-     *                         updateId (Optional): (recursive schema, see updateId above)
-     *                     }
-     *                 ]
-     *             }
-     *             referencedBy (Optional): [
-     *                 (recursive schema, see above)
-     *             ]
-     *             scanResult: String (Optional)
-     *             manifestVersion: String (Required)
-     *             importedDateTime: OffsetDateTime (Required)
-     *             createdDateTime: OffsetDateTime (Required)
-     *             etag: String (Optional)
+     *             String: String (Required)
      *         }
      *     ]
-     *     nextLink: String (Optional)
+     *     instructions (Optional): {
+     *         steps (Required): [
+     *              (Required){
+     *                 type: String(Inline/Reference) (Optional)
+     *                 description: String (Optional)
+     *                 handler: String (Optional)
+     *                 handlerProperties: Object (Optional)
+     *                 files (Optional): [
+     *                     String (Optional)
+     *                 ]
+     *                 updateId (Optional): (recursive schema, see updateId above)
+     *             }
+     *         ]
+     *     }
+     *     referencedBy (Optional): [
+     *         (recursive schema, see above)
+     *     ]
+     *     scanResult: String (Optional)
+     *     manifestVersion: String (Required)
+     *     importedDateTime: OffsetDateTime (Required)
+     *     createdDateTime: OffsetDateTime (Required)
+     *     etag: String (Optional)
      * }
      * }</pre>
      *
@@ -107,7 +103,7 @@ public final class DeviceUpdateClient {
     @Generated
     @ServiceMethod(returns = ReturnType.COLLECTION)
     public PagedIterable<BinaryData> listUpdates(RequestOptions requestOptions) {
-        return new PagedIterable<>(this.client.listUpdates(requestOptions));
+        return this.serviceClient.listUpdates(requestOptions);
     }
 
     /**
@@ -194,7 +190,7 @@ public final class DeviceUpdateClient {
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     public SyncPoller<BinaryData, BinaryData> beginImportUpdate(
             BinaryData updateToImport, RequestOptions requestOptions) {
-        return this.client.beginImportUpdate(updateToImport, requestOptions).getSyncPoller();
+        return this.serviceClient.beginImportUpdate(updateToImport, requestOptions);
     }
 
     /**
@@ -268,7 +264,7 @@ public final class DeviceUpdateClient {
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Response<BinaryData> getUpdateWithResponse(
             String provider, String name, String version, RequestOptions requestOptions) {
-        return this.client.getUpdateWithResponse(provider, name, version, requestOptions).block();
+        return this.serviceClient.getUpdateWithResponse(provider, name, version, requestOptions);
     }
 
     /**
@@ -287,9 +283,9 @@ public final class DeviceUpdateClient {
      */
     @Generated
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
-    public SyncPoller<BinaryData, BinaryData> beginDeleteUpdate(
+    public SyncPoller<BinaryData, Void> beginDeleteUpdate(
             String provider, String name, String version, RequestOptions requestOptions) {
-        return this.client.beginDeleteUpdate(provider, name, version, requestOptions).getSyncPoller();
+        return this.serviceClient.beginDeleteUpdate(provider, name, version, requestOptions);
     }
 
     /**
@@ -298,12 +294,7 @@ public final class DeviceUpdateClient {
      * <p><strong>Response Body Schema</strong>
      *
      * <pre>{@code
-     * {
-     *     value (Required): [
-     *         String (Required)
-     *     ]
-     *     nextLink: String (Optional)
-     * }
+     * String
      * }</pre>
      *
      * @param requestOptions The options to configure the HTTP request before HTTP client sends it.
@@ -317,7 +308,7 @@ public final class DeviceUpdateClient {
     @Generated
     @ServiceMethod(returns = ReturnType.COLLECTION)
     public PagedIterable<BinaryData> listProviders(RequestOptions requestOptions) {
-        return new PagedIterable<>(this.client.listProviders(requestOptions));
+        return this.serviceClient.listProviders(requestOptions);
     }
 
     /**
@@ -326,12 +317,7 @@ public final class DeviceUpdateClient {
      * <p><strong>Response Body Schema</strong>
      *
      * <pre>{@code
-     * {
-     *     value (Required): [
-     *         String (Required)
-     *     ]
-     *     nextLink: String (Optional)
-     * }
+     * String
      * }</pre>
      *
      * @param provider Update provider.
@@ -346,7 +332,7 @@ public final class DeviceUpdateClient {
     @Generated
     @ServiceMethod(returns = ReturnType.COLLECTION)
     public PagedIterable<BinaryData> listNames(String provider, RequestOptions requestOptions) {
-        return new PagedIterable<>(this.client.listNames(provider, requestOptions));
+        return this.serviceClient.listNames(provider, requestOptions);
     }
 
     /**
@@ -365,12 +351,7 @@ public final class DeviceUpdateClient {
      * <p><strong>Response Body Schema</strong>
      *
      * <pre>{@code
-     * {
-     *     value (Required): [
-     *         String (Required)
-     *     ]
-     *     nextLink: String (Optional)
-     * }
+     * String
      * }</pre>
      *
      * @param provider Update provider.
@@ -386,7 +367,7 @@ public final class DeviceUpdateClient {
     @Generated
     @ServiceMethod(returns = ReturnType.COLLECTION)
     public PagedIterable<BinaryData> listVersions(String provider, String name, RequestOptions requestOptions) {
-        return new PagedIterable<>(this.client.listVersions(provider, name, requestOptions));
+        return this.serviceClient.listVersions(provider, name, requestOptions);
     }
 
     /**
@@ -395,12 +376,7 @@ public final class DeviceUpdateClient {
      * <p><strong>Response Body Schema</strong>
      *
      * <pre>{@code
-     * {
-     *     value (Required): [
-     *         String (Required)
-     *     ]
-     *     nextLink: String (Optional)
-     * }
+     * String
      * }</pre>
      *
      * @param provider Update provider.
@@ -418,7 +394,7 @@ public final class DeviceUpdateClient {
     @ServiceMethod(returns = ReturnType.COLLECTION)
     public PagedIterable<BinaryData> listFiles(
             String provider, String name, String version, RequestOptions requestOptions) {
-        return new PagedIterable<>(this.client.listFiles(provider, name, version, requestOptions));
+        return this.serviceClient.listFiles(provider, name, version, requestOptions);
     }
 
     /**
@@ -487,7 +463,7 @@ public final class DeviceUpdateClient {
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Response<BinaryData> getFileWithResponse(
             String provider, String name, String version, String fileId, RequestOptions requestOptions) {
-        return this.client.getFileWithResponse(provider, name, version, fileId, requestOptions).block();
+        return this.serviceClient.getFileWithResponse(provider, name, version, fileId, requestOptions);
     }
 
     /**
@@ -509,42 +485,37 @@ public final class DeviceUpdateClient {
      *
      * <pre>{@code
      * {
-     *     value (Required): [
-     *          (Required){
-     *             operationId: String (Required)
-     *             status: String(NotStarted/Running/Succeeded/Failed) (Required)
-     *             update (Optional): {
-     *                 updateId (Required): {
-     *                     provider: String (Required)
-     *                     name: String (Required)
-     *                     version: String (Required)
-     *                 }
-     *                 description: String (Optional)
-     *                 friendlyName: String (Optional)
-     *             }
-     *             resourceLocation: String (Optional)
-     *             error (Optional): {
-     *                 code: String (Required)
-     *                 message: String (Required)
-     *                 target: String (Optional)
-     *                 details (Optional): [
-     *                     (recursive schema, see above)
-     *                 ]
-     *                 innererror (Optional): {
-     *                     code: String (Required)
-     *                     message: String (Optional)
-     *                     errorDetail: String (Optional)
-     *                     innerError (Optional): (recursive schema, see innerError above)
-     *                 }
-     *                 occurredDateTime: OffsetDateTime (Optional)
-     *             }
-     *             traceId: String (Optional)
-     *             lastActionDateTime: OffsetDateTime (Required)
-     *             createdDateTime: OffsetDateTime (Required)
-     *             etag: String (Optional)
+     *     operationId: String (Required)
+     *     status: String(NotStarted/Running/Succeeded/Failed) (Required)
+     *     update (Optional): {
+     *         updateId (Required): {
+     *             provider: String (Required)
+     *             name: String (Required)
+     *             version: String (Required)
      *         }
-     *     ]
-     *     nextLink: String (Optional)
+     *         description: String (Optional)
+     *         friendlyName: String (Optional)
+     *     }
+     *     resourceLocation: String (Optional)
+     *     error (Optional): {
+     *         code: String (Required)
+     *         message: String (Required)
+     *         target: String (Optional)
+     *         details (Optional): [
+     *             (recursive schema, see above)
+     *         ]
+     *         innererror (Optional): {
+     *             code: String (Required)
+     *             message: String (Optional)
+     *             errorDetail: String (Optional)
+     *             innerError (Optional): (recursive schema, see innerError above)
+     *         }
+     *         occurredDateTime: OffsetDateTime (Optional)
+     *     }
+     *     traceId: String (Optional)
+     *     lastActionDateTime: OffsetDateTime (Required)
+     *     createdDateTime: OffsetDateTime (Required)
+     *     etag: String (Optional)
      * }
      * }</pre>
      *
@@ -558,7 +529,7 @@ public final class DeviceUpdateClient {
     @Generated
     @ServiceMethod(returns = ReturnType.COLLECTION)
     public PagedIterable<BinaryData> listOperationStatuses(RequestOptions requestOptions) {
-        return new PagedIterable<>(this.client.listOperationStatuses(requestOptions));
+        return this.serviceClient.listOperationStatuses(requestOptions);
     }
 
     /**
@@ -623,6 +594,6 @@ public final class DeviceUpdateClient {
     @Generated
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Response<BinaryData> getOperationStatusWithResponse(String operationId, RequestOptions requestOptions) {
-        return this.client.getOperationStatusWithResponse(operationId, requestOptions).block();
+        return this.serviceClient.getOperationStatusWithResponse(operationId, requestOptions);
     }
 }
