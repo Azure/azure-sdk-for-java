@@ -15,22 +15,22 @@ public final class CertificateDescriptionInnerTests {
         CertificateDescriptionInner model =
             BinaryData
                 .fromString(
-                    "{\"properties\":{\"subject\":\"mond\",\"expiry\":\"Thu, 01 Apr 2021 23:21:50"
-                        + " GMT\",\"thumbprint\":\"xvy\",\"isVerified\":false,\"created\":\"Fri, 01 Oct 2021 02:55:48"
-                        + " GMT\",\"updated\":\"Mon, 25 Jan 2021 05:21:40"
-                        + " GMT\",\"certificate\":\"whojvp\"},\"etag\":\"qgxy\",\"id\":\"mocmbqfqvmk\",\"name\":\"xozap\",\"type\":\"helxprglya\"}")
+                    "{\"properties\":{\"subject\":\"hqmibzyhwit\",\"expiry\":\"Tue, 19 Jan 2021 20:22:32"
+                        + " GMT\",\"thumbprint\":\"yynpcdpumnzgmwz\",\"isVerified\":false,\"created\":\"Tue, 29 Dec"
+                        + " 2020 02:38:39 GMT\",\"updated\":\"Sat, 13 Nov 2021 04:07:40"
+                        + " GMT\",\"certificate\":\"orgjhxbldt\"},\"etag\":\"wrlkdmtn\",\"id\":\"vokotllxdyh\",\"name\":\"syocogjltdtbnnha\",\"type\":\"oocrkvcikhnv\"}")
                 .toObject(CertificateDescriptionInner.class);
         Assertions.assertEquals(false, model.properties().isVerified());
-        Assertions.assertEquals("whojvp", model.properties().certificate());
+        Assertions.assertEquals("orgjhxbldt", model.properties().certificate());
     }
 
     @org.junit.jupiter.api.Test
     public void testSerialize() throws Exception {
         CertificateDescriptionInner model =
             new CertificateDescriptionInner()
-                .withProperties(new CertificateProperties().withIsVerified(false).withCertificate("whojvp"));
+                .withProperties(new CertificateProperties().withIsVerified(false).withCertificate("orgjhxbldt"));
         model = BinaryData.fromObject(model).toObject(CertificateDescriptionInner.class);
         Assertions.assertEquals(false, model.properties().isVerified());
-        Assertions.assertEquals("whojvp", model.properties().certificate());
+        Assertions.assertEquals("orgjhxbldt", model.properties().certificate());
     }
 }

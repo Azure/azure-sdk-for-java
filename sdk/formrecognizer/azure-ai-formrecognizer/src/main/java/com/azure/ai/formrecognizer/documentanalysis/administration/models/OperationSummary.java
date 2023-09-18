@@ -12,6 +12,13 @@ import java.util.Map;
 /** OperationSummary. */
 @Immutable
 public final class OperationSummary {
+
+    /**
+     * Creates a OperationSummary object.
+     */
+    public OperationSummary() {
+    }
+
     /*
      * Operation ID
      */

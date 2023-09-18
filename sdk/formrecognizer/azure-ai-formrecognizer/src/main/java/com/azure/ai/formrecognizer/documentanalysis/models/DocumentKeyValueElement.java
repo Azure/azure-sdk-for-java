@@ -13,6 +13,12 @@ import java.util.List;
  */
 @Immutable
 public final class DocumentKeyValueElement {
+    /**
+     * Constructs a DocumentKeyValueElement object.
+     */
+    public DocumentKeyValueElement() {
+    }
+
     /*
      * Concatenated content of the key-value element in reading order.
      */

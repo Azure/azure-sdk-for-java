@@ -59,6 +59,6 @@ public final class IotHubResourcesDeleteEventHubConsumerGroupWithResponseMockTes
         manager
             .iotHubResources()
             .deleteEventHubConsumerGroupWithResponse(
-                "qgsfraoyzkoow", "lmnguxaw", "aldsy", "uximerqfobw", com.azure.core.util.Context.NONE);
+                "i", "ybxarzgszu", "oxciqopidoamcio", "hkh", com.azure.core.util.Context.NONE);
     }
 }

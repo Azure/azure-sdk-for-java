@@ -13,7 +13,7 @@ public final class IotHubCapacityTests {
         IotHubCapacity model =
             BinaryData
                 .fromString(
-                    "{\"minimum\":2874780118088744582,\"maximum\":9144697658006681867,\"default\":8641218324516083606,\"scaleType\":\"Manual\"}")
+                    "{\"minimum\":3064589321807470193,\"maximum\":2903733515306491145,\"default\":354375671209585609,\"scaleType\":\"None\"}")
                 .toObject(IotHubCapacity.class);
     }
 

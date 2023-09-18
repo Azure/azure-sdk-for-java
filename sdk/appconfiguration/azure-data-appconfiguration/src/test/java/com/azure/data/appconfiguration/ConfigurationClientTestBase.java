@@ -13,7 +13,7 @@ import com.azure.data.appconfiguration.implementation.ConfigurationClientCredent
 import com.azure.data.appconfiguration.implementation.ConfigurationSettingHelper;
 import com.azure.data.appconfiguration.models.CompositionType;
 import com.azure.data.appconfiguration.models.ConfigurationSetting;
-import com.azure.data.appconfiguration.models.ConfigurationSettingSnapshot;
+import com.azure.data.appconfiguration.models.ConfigurationSettingsSnapshot;
 import com.azure.data.appconfiguration.models.FeatureFlagConfigurationSetting;
 import com.azure.data.appconfiguration.models.FeatureFlagFilter;
 import com.azure.data.appconfiguration.models.SecretReferenceConfigurationSetting;
@@ -185,6 +185,25 @@ public abstract class ConfigurationClientTestBase extends TestProxyTestBase {
     }
 
     @Test
+    public abstract void featureFlagConfigurationSettingUnknownAttributesArePreserved(HttpClient httpClient,
+        ConfigurationServiceVersion serviceVersion);
+
+    void featureFlagConfigurationSettingUnknownAttributesArePreservedRunner(
+        Consumer<FeatureFlagConfigurationSetting> testRunner) {
+        String key = getKey();
+        FeatureFlagConfigurationSetting featureFlagX = getFeatureFlagConfigurationSetting(key, "Feature Flag X");
+        String valueWithAdditionalFieldAtFirstLayer =
+            String.format(
+                "{\"id\":\"%s\",\"k1\":\"v1\",\"description\":\"%s\",\"display_name\":\"%s\",\"enabled\":%s,"
+                + "\"conditions\":{\"requirement_type\":\"All\",\"client_filters\":"
+                + "[{\"name\":\"Microsoft.Percentage\",\"parameters\":{\"Value\":\"30\"}}]"
+                + "},\"additional_field\":\"additional_value\"}", featureFlagX.getFeatureId(),
+                featureFlagX.getDescription(), featureFlagX.getDisplayName(), featureFlagX.isEnabled());
+        featureFlagX.setValue(valueWithAdditionalFieldAtFirstLayer);
+        testRunner.accept(featureFlagX);
+    }
+
+    @Test
     public abstract void setSecretReferenceConfigurationSettingConvenience(HttpClient httpClient,
         ConfigurationServiceVersion serviceVersion);
 
@@ -193,6 +212,20 @@ public abstract class ConfigurationClientTestBase extends TestProxyTestBase {
         String key = getKey();
         testRunner.accept(new SecretReferenceConfigurationSetting(key, "https://localhost"),
             new SecretReferenceConfigurationSetting(key, "https://localhost/100"));
+    }
+
+    @Test
+    public abstract void secretReferenceConfigurationSettingUnknownAttributesArePreserved(HttpClient httpClient,
+        ConfigurationServiceVersion serviceVersion);
+
+    void secretReferenceConfigurationSettingUnknownAttributesArePreservedRunner(
+        Consumer<SecretReferenceConfigurationSetting> testRunner) {
+        String key = getKey();
+        String valueWithAdditionalFields =
+            "{\"uri\":\"uriValue\",\"objectFiledName\":{\"unknown\":\"unknown\",\"unknown2\":\"unknown2\"},"
+                + "\"arrayFieldName\":[{\"name\":\"Microsoft.Percentage\",\"parameters\":{\"Value\":\"30\"}}]}";
+
+        testRunner.accept(new SecretReferenceConfigurationSetting(key, valueWithAdditionalFields));
     }
 
     @Test
@@ -577,7 +610,13 @@ public abstract class ConfigurationClientTestBase extends TestProxyTestBase {
     public abstract void listSnapshots(HttpClient httpClient, ConfigurationServiceVersion serviceVersion);
 
     @Test
+    public abstract void listSnapshotsWithFields(HttpClient httpClient, ConfigurationServiceVersion serviceVersion);
+
+    @Test
     public abstract void listSettingFromSnapshot(HttpClient httpClient, ConfigurationServiceVersion serviceVersion);
+
+    @Test
+    public abstract void listSettingFromSnapshotWithFields(HttpClient httpClient, ConfigurationServiceVersion serviceVersion);
 
     /**
      * Helper method to verify that the RestResponse matches what was expected. This method assumes a response status of 200.
@@ -818,20 +857,20 @@ public abstract class ConfigurationClientTestBase extends TestProxyTestBase {
                 .setValue(getFeatureFlagConfigurationSettingValue(key));
     }
 
-    void assertConfigurationSettingSnapshotWithResponse(int expectedStatusCode, String name,
+    void assertConfigurationSettingsSnapshotWithResponse(int expectedStatusCode, String name,
         SnapshotStatus snapshotStatus, List<SnapshotSettingFilter> filters, CompositionType compositionType,
         Duration retentionPeriod, Long size, Long itemCount, Map<String, String> tags,
-        Response<ConfigurationSettingSnapshot> response) {
+        Response<ConfigurationSettingsSnapshot> response) {
         assertNotNull(response);
         assertEquals(expectedStatusCode, response.getStatusCode());
 
-        assertEqualsConfigurationSettingSnapshot(name, snapshotStatus, filters, compositionType, retentionPeriod,
+        assertEqualsConfigurationSettingsSnapshot(name, snapshotStatus, filters, compositionType, retentionPeriod,
             size, itemCount, tags, response.getValue());
     }
 
-    void assertEqualsConfigurationSettingSnapshot(String name, SnapshotStatus snapshotStatus,
+    void assertEqualsConfigurationSettingsSnapshot(String name, SnapshotStatus snapshotStatus,
         List<SnapshotSettingFilter> filters, CompositionType compositionType, Duration retentionPeriod, Long size,
-        Long itemCount, Map<String, String> tags, ConfigurationSettingSnapshot actualSnapshot) {
+        Long itemCount, Map<String, String> tags, ConfigurationSettingsSnapshot actualSnapshot) {
         assertEquals(name, actualSnapshot.getName());
         assertEquals(snapshotStatus, actualSnapshot.getStatus());
         assertEqualsSnapshotFilters(filters, actualSnapshot.getFilters());
@@ -839,7 +878,7 @@ public abstract class ConfigurationClientTestBase extends TestProxyTestBase {
         assertEquals(retentionPeriod, actualSnapshot.getRetentionPeriod());
         assertNotNull(actualSnapshot.getCreatedAt());
         assertEquals(itemCount, actualSnapshot.getItemCount());
-        assertNotNull(actualSnapshot.getSize());
+        assertNotNull(actualSnapshot.getSizeInBytes());
         assertNotNull(actualSnapshot.getETag());
 
         if (!CoreUtils.isNullOrEmpty(tags)) {

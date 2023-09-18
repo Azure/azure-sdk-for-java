@@ -97,7 +97,8 @@ class ServiceBusSenderAsyncClientIntegrationTest extends IntegrationTestBase {
 
         // Assert & Act
         StepVerifier.create(sender.sendMessage(message).doOnSuccess(aVoid -> messagesPending.incrementAndGet()))
-            .verifyComplete();
+            .expectComplete()
+            .verify(TIMEOUT);
     }
 
     /**
@@ -113,12 +114,8 @@ class ServiceBusSenderAsyncClientIntegrationTest extends IntegrationTestBase {
         final List<ServiceBusMessage> messages = TestUtils.getServiceBusMessages(count, UUID.randomUUID().toString(), CONTENTS_BYTES);
 
         // Assert & Act
-        StepVerifier.create(
-                sender.sendMessages(messages)
-                    .doOnSuccess(aVoid ->
-                        messages.forEach(serviceBusMessage -> messagesPending.incrementAndGet())
-                    )
-            )
+        StepVerifier.create(sender.sendMessages(messages)
+                .doOnSuccess(aVoid -> messages.forEach(serviceBusMessage -> messagesPending.incrementAndGet())))
             .expectComplete()
             .verify(TIMEOUT);
     }
@@ -145,7 +142,8 @@ class ServiceBusSenderAsyncClientIntegrationTest extends IntegrationTestBase {
 
                     return sender.sendMessages(batch).doOnSuccess(aVoid -> messagesPending.incrementAndGet());
                 }))
-            .verifyComplete();
+            .expectComplete()
+            .verify(TIMEOUT);
     }
 
     /**
@@ -189,19 +187,24 @@ class ServiceBusSenderAsyncClientIntegrationTest extends IntegrationTestBase {
                     transaction.set(transactionContext);
                     assertNotNull(transaction);
                 })
-                .verifyComplete();
+                .expectComplete()
+                .verify(TIMEOUT);
             assertNotNull(transaction.get());
 
             StepVerifier.create(sender.sendMessages(messages, transaction.get()))
-                .verifyComplete();
+                .expectComplete()
+                .verify(TIMEOUT);
             StepVerifier.create(destination1ViaSender.sendMessages(messages, transaction.get()))
-                .verifyComplete();
+                .expectComplete()
+                .verify(TIMEOUT);
             StepVerifier.create(destination1ViaSender.sendMessages(messages, transaction.get()))
-                .verifyComplete();
+                .expectComplete()
+                .verify(TIMEOUT);
 
             StepVerifier.create(destination1ViaSender.commitTransaction(transaction.get())
                 .delaySubscription(Duration.ofSeconds(1)))
-                .verifyComplete();
+                .expectComplete()
+                .verify(TIMEOUT);
 
             // Assert
             // Verify message is received by final destination Entity
@@ -214,7 +217,8 @@ class ServiceBusSenderAsyncClientIntegrationTest extends IntegrationTestBase {
                     assertMessageEquals(receivedMessage, messageId, isSessionEnabled);
                     messagesPending.decrementAndGet();
                 })
-                .verifyComplete();
+                .expectComplete()
+                .verify(TIMEOUT);
 
             // Verify, intermediate-via queue has it delivered to intermediate Entity.
             StepVerifier.create(receiver.receiveMessages().take(total).timeout(shortTimeout))
@@ -222,7 +226,8 @@ class ServiceBusSenderAsyncClientIntegrationTest extends IntegrationTestBase {
                     assertMessageEquals(receivedMessage, messageId, isSessionEnabled);
                     messagesPending.decrementAndGet();
                 })
-                .verifyComplete();
+                .expectComplete()
+                .verify(TIMEOUT);
         } finally {
             destination1Receiver.close();
             destination1ViaSender.close();
@@ -273,18 +278,23 @@ class ServiceBusSenderAsyncClientIntegrationTest extends IntegrationTestBase {
                 transaction.set(transactionContext);
                 assertNotNull(transaction);
             })
-            .verifyComplete();
+            .expectComplete()
+            .verify(TIMEOUT);
         assertNotNull(transaction.get());
 
         StepVerifier.create(intermediateSender.sendMessages(messages, transaction.get()))
-            .verifyComplete();
+            .expectComplete()
+            .verify(TIMEOUT);
         StepVerifier.create(destination1ViaSender.sendMessages(messages, transaction.get()))
-            .verifyComplete();
+            .expectComplete()
+            .verify(TIMEOUT);
         StepVerifier.create(destination1ViaSender.sendMessages(messages, transaction.get()))
-            .verifyComplete();
+            .expectComplete()
+            .verify(TIMEOUT);
 
         StepVerifier.create(destination1ViaSender.commitTransaction(transaction.get()).delaySubscription(Duration.ofSeconds(1)))
-            .verifyComplete();
+            .expectComplete()
+            .verify(TIMEOUT);
 
         // Assert
         // Verify message is received by final destination Entity
@@ -297,7 +307,8 @@ class ServiceBusSenderAsyncClientIntegrationTest extends IntegrationTestBase {
                 assertMessageEquals(receivedMessage, messageId, isSessionEnabled);
                 messagesPending.decrementAndGet();
             })
-            .verifyComplete();
+            .expectComplete()
+            .verify(TIMEOUT);
 
         // Verify, intermediate-via topic has it delivered to intermediate Entity.
         StepVerifier.create(intermediateReceiver.receiveMessages().take(total).timeout(shortTimeout))
@@ -305,7 +316,8 @@ class ServiceBusSenderAsyncClientIntegrationTest extends IntegrationTestBase {
                 assertMessageEquals(receivedMessage, messageId, isSessionEnabled);
                 messagesPending.decrementAndGet();
             })
-            .verifyComplete();
+            .expectComplete()
+            .verify(TIMEOUT);
     }
 
     /**
@@ -332,15 +344,18 @@ class ServiceBusSenderAsyncClientIntegrationTest extends IntegrationTestBase {
                 transaction.set(transactionContext);
                 assertNotNull(transaction);
             })
-            .verifyComplete();
+            .expectComplete()
+            .verify(TIMEOUT);
         assertNotNull(transaction.get());
 
         // Assert & Act
         StepVerifier.create(sender.sendMessages(messages, transaction.get()))
-            .verifyComplete();
+            .expectComplete()
+            .verify(TIMEOUT);
         if (isCommit) {
             StepVerifier.create(sender.commitTransaction(transaction.get()).delaySubscription(Duration.ofSeconds(1)))
-                .verifyComplete();
+                .expectComplete()
+                .verify(TIMEOUT);
             StepVerifier.create(receiver.receiveMessages().take(total))
                 .assertNext(receivedMessage -> {
                     System.out.println("1");
@@ -361,7 +376,8 @@ class ServiceBusSenderAsyncClientIntegrationTest extends IntegrationTestBase {
                 .verify(shortTimeout);
         } else {
             StepVerifier.create(sender.rollbackTransaction(transaction.get()).delaySubscription(Duration.ofSeconds(1)))
-                .verifyComplete();
+                .expectComplete()
+                .verify(TIMEOUT);
             StepVerifier.create(receiver.receiveMessages().take(total))
                 .verifyTimeout(shortTimeout);
         }
@@ -387,7 +403,7 @@ class ServiceBusSenderAsyncClientIntegrationTest extends IntegrationTestBase {
                 return sender.sendMessages(batch).doOnSuccess(aVoid -> messagesPending.incrementAndGet());
             }))
             .expectComplete()
-            .verify();
+            .verify(TIMEOUT);
     }
 
     /**
@@ -411,22 +427,26 @@ class ServiceBusSenderAsyncClientIntegrationTest extends IntegrationTestBase {
                 transaction.set(transactionContext);
                 assertNotNull(transaction);
             })
-            .verifyComplete();
+            .expectComplete()
+            .verify(TIMEOUT);
         StepVerifier.create(sender.scheduleMessage(message, OffsetDateTime.now().plusSeconds(5), transaction.get()))
             .assertNext(sequenceNumber -> {
                 assertNotNull(sequenceNumber);
                 assertTrue(sequenceNumber.intValue() > 0);
             })
-            .verifyComplete();
+            .expectComplete()
+            .verify(TIMEOUT);
 
         StepVerifier.create(sender.commitTransaction(transaction.get()))
-            .verifyComplete();
+            .expectComplete()
+            .verify(TIMEOUT);
         StepVerifier.create(Mono.delay(scheduleDuration).then(receiver.receiveMessages().next()))
             .assertNext(receivedMessage -> {
                 assertMessageEquals(receivedMessage, messageId, isSessionEnabled);
                 messagesPending.decrementAndGet();
             })
-            .verifyComplete();
+            .expectComplete()
+            .verify(TIMEOUT);
     }
 
     /**
@@ -457,16 +477,19 @@ class ServiceBusSenderAsyncClientIntegrationTest extends IntegrationTestBase {
                 transaction.set(transactionContext);
                 assertNotNull(transaction);
             })
-            .verifyComplete();
+            .expectComplete()
+            .verify(TIMEOUT);
 
         StepVerifier.create(sender.scheduleMessages(messages, OffsetDateTime.now().plus(scheduleDuration), transaction.get()).collectList())
             .assertNext(longs -> {
                 assertEquals(total, longs.size());
             })
-            .verifyComplete();
+            .expectComplete()
+            .verify(TIMEOUT);
 
         StepVerifier.create(sender.commitTransaction(transaction.get()))
-            .verifyComplete();
+            .expectComplete()
+            .verify(TIMEOUT);
 
         StepVerifier.create(Mono.delay(scheduleDuration).thenMany(receiver.receiveMessages().take(total)))
             .assertNext(receivedMessage -> {
@@ -479,7 +502,7 @@ class ServiceBusSenderAsyncClientIntegrationTest extends IntegrationTestBase {
             })
             .thenAwait(shortWait)
             .thenCancel()
-            .verify();
+            .verify(TIMEOUT);
     }
 
     /**
@@ -507,7 +530,8 @@ class ServiceBusSenderAsyncClientIntegrationTest extends IntegrationTestBase {
         Assertions.assertEquals(total, seqNumbers.size());
 
         StepVerifier.create(sender.cancelScheduledMessages(seqNumbers))
-            .verifyComplete();
+            .expectComplete()
+            .verify(TIMEOUT);
 
         // The messages should have been cancelled and we should not find any messages.
         StepVerifier.create(receiver.receiveMessages().take(total))

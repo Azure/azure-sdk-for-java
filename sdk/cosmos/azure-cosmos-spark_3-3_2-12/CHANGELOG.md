@@ -9,6 +9,7 @@
 #### Bugs Fixed
 
 #### Other Changes
+* Reduce noisy log in `ThroughputControlHelper` from `INFO` to `DEBUG` - See [PR 36653](https://github.com/Azure/azure-sdk-for-java/pull/36653)
 
 ### 4.21.1 (2023-08-28)
 

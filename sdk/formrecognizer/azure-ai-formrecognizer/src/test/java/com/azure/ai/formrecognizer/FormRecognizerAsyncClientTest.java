@@ -23,8 +23,6 @@ import com.azure.ai.formrecognizer.training.models.CustomFormModel;
 import com.azure.core.exception.HttpResponseException;
 import com.azure.core.http.HttpClient;
 import com.azure.core.util.polling.SyncPoller;
-import org.junit.jupiter.api.AfterAll;
-import org.junit.jupiter.api.BeforeAll;
 import org.junit.jupiter.api.Disabled;
 import org.junit.jupiter.params.ParameterizedTest;
 import org.junit.jupiter.params.provider.MethodSource;
@@ -54,16 +52,6 @@ import static org.junit.jupiter.api.Assertions.assertThrows;
 public class FormRecognizerAsyncClientTest extends FormRecognizerClientTestBase {
 
     private FormRecognizerAsyncClient client;
-
-    @BeforeAll
-    static void beforeAll() {
-        StepVerifier.setDefaultTimeout(Duration.ofSeconds(30));
-    }
-
-    @AfterAll
-    static void afterAll() {
-        StepVerifier.resetDefaultTimeout();
-    }
 
     private FormRecognizerAsyncClient getFormRecognizerAsyncClient(HttpClient httpClient,
                                                                    FormRecognizerServiceVersion serviceVersion) {
@@ -263,13 +251,11 @@ public class FormRecognizerAsyncClientTest extends FormRecognizerClientTestBase 
     @MethodSource("com.azure.ai.formrecognizer.TestUtils#getTestParameters")
     public void recognizeReceiptInvalidSourceUrl(HttpClient httpClient, FormRecognizerServiceVersion serviceVersion) {
         client = getFormRecognizerAsyncClient(httpClient, serviceVersion);
-        invalidSourceUrlRunner((invalidSourceUrl) -> {
-            assertThrows(HttpResponseException.class,
-                () -> client.beginRecognizeReceiptsFromUrl(invalidSourceUrl)
-                    .setPollInterval(durationTestMode)
-                    .getSyncPoller()
-                    .getFinalResult());
-        });
+        invalidSourceUrlRunner((invalidSourceUrl) -> assertThrows(HttpResponseException.class,
+            () -> client.beginRecognizeReceiptsFromUrl(invalidSourceUrl)
+                .setPollInterval(durationTestMode)
+                .getSyncPoller()
+                .getFinalResult()));
     }
 
     /**
@@ -411,12 +397,10 @@ public class FormRecognizerAsyncClientTest extends FormRecognizerClientTestBase 
     public void recognizeContentFromDamagedPdf(HttpClient httpClient,
                                                FormRecognizerServiceVersion serviceVersion) {
         client = getFormRecognizerAsyncClient(httpClient, serviceVersion);
-        damagedPdfDataRunner((data, dataLength) -> {
-            assertThrows(HttpResponseException.class,
-                () -> client.beginRecognizeContent(toFluxByteBuffer(data), dataLength)
-                    .setPollInterval(durationTestMode)
-                    .getSyncPoller().getFinalResult());
-        });
+        damagedPdfDataRunner((data, dataLength) -> assertThrows(HttpResponseException.class,
+            () -> client.beginRecognizeContent(toFluxByteBuffer(data), dataLength)
+                .setPollInterval(durationTestMode)
+                .getSyncPoller().getFinalResult()));
     }
 
     @ParameterizedTest(name = DISPLAY_NAME_WITH_ARGUMENTS)
@@ -578,11 +562,9 @@ public class FormRecognizerAsyncClientTest extends FormRecognizerClientTestBase 
     @MethodSource("com.azure.ai.formrecognizer.TestUtils#getTestParameters")
     public void recognizeContentInvalidSourceUrl(HttpClient httpClient, FormRecognizerServiceVersion serviceVersion) {
         client = getFormRecognizerAsyncClient(httpClient, serviceVersion);
-        invalidSourceUrlRunner((invalidSourceUrl) -> {
-            assertThrows(HttpResponseException.class,
-                () -> client.beginRecognizeContentFromUrl(invalidSourceUrl)
-                .setPollInterval(durationTestMode).getSyncPoller().getFinalResult());
-        });
+        invalidSourceUrlRunner((invalidSourceUrl) -> assertThrows(HttpResponseException.class,
+            () -> client.beginRecognizeContentFromUrl(invalidSourceUrl)
+            .setPollInterval(durationTestMode).getSyncPoller().getFinalResult()));
     }
 
     @ParameterizedTest(name = DISPLAY_NAME_WITH_ARGUMENTS)
@@ -1178,12 +1160,13 @@ public class FormRecognizerAsyncClientTest extends FormRecognizerClientTestBase 
             CustomFormModel createdModel = syncPoller.getFinalResult();
             StepVerifier.create(client.beginRecognizeCustomFormsFromUrl(createdModel.getModelId(), INVALID_URL)
                 .setPollInterval(durationTestMode))
-                .verifyErrorSatisfies(throwable -> {
+                .expectErrorSatisfies(throwable -> {
                     final HttpResponseException httpResponseException = (HttpResponseException) throwable;
                     final FormRecognizerErrorInformation errorInformation =
                         (FormRecognizerErrorInformation) httpResponseException.getValue();
                     assertEquals(INVALID_SOURCE_URL_ERROR_CODE, errorInformation.getErrorCode());
-                });
+                })
+                .verify(Duration.ofSeconds(30));
         });
     }
 
@@ -1587,13 +1570,11 @@ public class FormRecognizerAsyncClientTest extends FormRecognizerClientTestBase 
     public void recognizeBusinessCardInvalidSourceUrl(HttpClient httpClient,
                                                       FormRecognizerServiceVersion serviceVersion) {
         client = getFormRecognizerAsyncClient(httpClient, serviceVersion);
-        invalidSourceUrlRunner((invalidSourceUrl) -> {
-            assertThrows(HttpResponseException.class,
-                () -> client.beginRecognizeBusinessCardsFromUrl(invalidSourceUrl)
-                        .setPollInterval(durationTestMode)
-                        .getSyncPoller()
-                        .getFinalResult());
-        });
+        invalidSourceUrlRunner((invalidSourceUrl) -> assertThrows(HttpResponseException.class,
+            () -> client.beginRecognizeBusinessCardsFromUrl(invalidSourceUrl)
+                    .setPollInterval(durationTestMode)
+                    .getSyncPoller()
+                    .getFinalResult()));
     }
 
     /**

@@ -374,7 +374,7 @@ public final class ServiceBusProcessorClient implements AutoCloseable {
                 @SuppressWarnings("try")
                 @Override
                 public void onNext(ServiceBusMessageContext serviceBusMessageContext) {
-                    Context span = serviceBusMessageContext.getMessage().getContext();
+                    Context span = serviceBusMessageContext.getMessage() != null ? serviceBusMessageContext.getMessage().getContext() : Context.NONE;
                     Exception exception = null;
                     AutoCloseable scope = tracer.makeSpanCurrent(span);
                     try {

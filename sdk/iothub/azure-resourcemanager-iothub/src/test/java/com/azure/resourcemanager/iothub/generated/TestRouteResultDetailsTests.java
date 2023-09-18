@@ -6,6 +6,7 @@ package com.azure.resourcemanager.iothub.generated;
 
 import com.azure.core.util.BinaryData;
 import com.azure.resourcemanager.iothub.models.RouteCompilationError;
+import com.azure.resourcemanager.iothub.models.RouteErrorPosition;
 import com.azure.resourcemanager.iothub.models.RouteErrorRange;
 import com.azure.resourcemanager.iothub.models.RouteErrorSeverity;
 import com.azure.resourcemanager.iothub.models.TestRouteResultDetails;
@@ -18,10 +19,14 @@ public final class TestRouteResultDetailsTests {
         TestRouteResultDetails model =
             BinaryData
                 .fromString(
-                    "{\"compilationErrors\":[{\"message\":\"ikdowwquuvx\",\"severity\":\"error\",\"location\":{}},{\"message\":\"hhqzonosgg\",\"severity\":\"error\",\"location\":{}}]}")
+                    "{\"compilationErrors\":[{\"message\":\"ksmond\",\"severity\":\"warning\",\"location\":{\"start\":{\"line\":882489574,\"column\":336917419},\"end\":{\"line\":1838860649,\"column\":11863753}}}]}")
                 .toObject(TestRouteResultDetails.class);
-        Assertions.assertEquals("ikdowwquuvx", model.compilationErrors().get(0).message());
-        Assertions.assertEquals(RouteErrorSeverity.ERROR, model.compilationErrors().get(0).severity());
+        Assertions.assertEquals("ksmond", model.compilationErrors().get(0).message());
+        Assertions.assertEquals(RouteErrorSeverity.WARNING, model.compilationErrors().get(0).severity());
+        Assertions.assertEquals(882489574, model.compilationErrors().get(0).location().start().line());
+        Assertions.assertEquals(336917419, model.compilationErrors().get(0).location().start().column());
+        Assertions.assertEquals(1838860649, model.compilationErrors().get(0).location().end().line());
+        Assertions.assertEquals(11863753, model.compilationErrors().get(0).location().end().column());
     }
 
     @org.junit.jupiter.api.Test
@@ -32,15 +37,18 @@ public final class TestRouteResultDetailsTests {
                     Arrays
                         .asList(
                             new RouteCompilationError()
-                                .withMessage("ikdowwquuvx")
-                                .withSeverity(RouteErrorSeverity.ERROR)
-                                .withLocation(new RouteErrorRange()),
-                            new RouteCompilationError()
-                                .withMessage("hhqzonosgg")
-                                .withSeverity(RouteErrorSeverity.ERROR)
-                                .withLocation(new RouteErrorRange())));
+                                .withMessage("ksmond")
+                                .withSeverity(RouteErrorSeverity.WARNING)
+                                .withLocation(
+                                    new RouteErrorRange()
+                                        .withStart(new RouteErrorPosition().withLine(882489574).withColumn(336917419))
+                                        .withEnd(new RouteErrorPosition().withLine(1838860649).withColumn(11863753)))));
         model = BinaryData.fromObject(model).toObject(TestRouteResultDetails.class);
-        Assertions.assertEquals("ikdowwquuvx", model.compilationErrors().get(0).message());
-        Assertions.assertEquals(RouteErrorSeverity.ERROR, model.compilationErrors().get(0).severity());
+        Assertions.assertEquals("ksmond", model.compilationErrors().get(0).message());
+        Assertions.assertEquals(RouteErrorSeverity.WARNING, model.compilationErrors().get(0).severity());
+        Assertions.assertEquals(882489574, model.compilationErrors().get(0).location().start().line());
+        Assertions.assertEquals(336917419, model.compilationErrors().get(0).location().start().column());
+        Assertions.assertEquals(1838860649, model.compilationErrors().get(0).location().end().line());
+        Assertions.assertEquals(11863753, model.compilationErrors().get(0).location().end().column());
     }
 }
