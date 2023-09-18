@@ -889,7 +889,11 @@ public class CosmosClientBuilder implements
      * */
     public CosmosClientBuilder excludeRegions(List<String> excludedRegions) {
         this.excludedRegions = new ArrayList<>();
-        this.excludedRegions.addAll(excludedRegions);
+
+        if (excludedRegions != null) {
+            this.excludedRegions.addAll(excludedRegions);
+        }
+
         return this;
     }
 
@@ -900,11 +904,8 @@ public class CosmosClientBuilder implements
      *
      * @return the list of regions to exclude.
      * */
-    public List<String> getExcludedRegions() {
-        if (this.excludedRegions == null) {
-            return null;
-        }
-        return UnmodifiableList.unmodifiableList(this.excludedRegions);
+    List<String> getExcludedRegions() {
+        return this.excludedRegions == null ? Collections.emptyList() : UnmodifiableList.unmodifiableList(this.excludedRegions);
     }
 
     SessionRetryOptions getSessionRetryOptions() {
