@@ -420,7 +420,7 @@ public class OpenAISyncClientTest extends OpenAIClientTestBase {
             transcriptionOptions.setResponseFormat(AudioTranscriptionFormat.JSON);
 
             AudioTranscription transcription = client.getAudioTranscription(deploymentName, transcriptionOptions, fileName);
-            assertAudioTranscriptionSimpleJson(transcription,BATMAN_TRANSCRIPTION);
+            assertAudioTranscriptionSimpleJson(transcription, BATMAN_TRANSCRIPTION);
         });
     }
 

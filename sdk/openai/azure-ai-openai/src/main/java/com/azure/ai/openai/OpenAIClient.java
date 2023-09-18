@@ -739,7 +739,8 @@ public final class OpenAIClient {
         acceptedFormats.add(AudioTranscriptionFormat.JSON);
         acceptedFormats.add(AudioTranscriptionFormat.VERBOSE_JSON);
         if (!acceptedFormats.contains(audioTranscriptionOptions.getResponseFormat())) {
-            throw new IllegalArgumentException("This operation does not support the requested audio format");
+            throw LOGGER.logThrowableAsError(
+                new IllegalArgumentException("This operation does not support the requested audio format"));
         }
         // embedding the `model` in the request for non-Azure case
         if (this.openAIServiceClient != null) {
@@ -786,7 +787,8 @@ public final class OpenAIClient {
         acceptedFormats.add(AudioTranscriptionFormat.VTT);
         acceptedFormats.add(AudioTranscriptionFormat.SRT);
         if (!acceptedFormats.contains(audioTranscriptionOptions.getResponseFormat())) {
-            throw new IllegalArgumentException("This operation does not support the requested audio format");
+            throw LOGGER.logThrowableAsError(
+                new IllegalArgumentException("This operation does not support the requested audio format"));
         }
         // embedding the `model` in the request for non-Azure case
         if (this.openAIServiceClient != null) {
