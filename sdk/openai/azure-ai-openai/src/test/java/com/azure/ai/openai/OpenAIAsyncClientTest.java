@@ -35,6 +35,7 @@ import reactor.test.StepVerifier;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.Iterator;
+import java.util.List;
 
 import static com.azure.ai.openai.TestUtils.DISPLAY_NAME_WITH_ARGUMENTS;
 import static org.junit.jupiter.api.Assertions.*;
@@ -576,18 +577,20 @@ public class OpenAIAsyncClientTest extends OpenAIClientTestBase {
     @MethodSource("com.azure.ai.openai.TestUtils#getTestParameters")
     public void testGetAudioTranscriptionTextWrongFormats(HttpClient httpClient, OpenAIServiceVersion serviceVersion) {
         client = getOpenAIAsyncClient(httpClient, serviceVersion);
+        List<AudioTranscriptionFormat> wrongFormats = Arrays.asList(
+                AudioTranscriptionFormat.JSON,
+                AudioTranscriptionFormat.VERBOSE_JSON
+        );
 
         getAudioTranscriptionRunner((deploymentName, fileName) -> {
             byte[] file = BinaryData.fromFile(openTestResourceFile(fileName)).toBytes();
             AudioTranscriptionOptions transcriptionOptions = new AudioTranscriptionOptions(file);
 
-            transcriptionOptions.setResponseFormat(AudioTranscriptionFormat.JSON);
-            StepVerifier.create(client.getAudioTranscriptionText(deploymentName, transcriptionOptions, fileName))
-                    .verifyErrorSatisfies(error -> assertTrue(error instanceof IllegalArgumentException));
-
-            transcriptionOptions.setResponseFormat(AudioTranscriptionFormat.VERBOSE_JSON);
-            StepVerifier.create(client.getAudioTranscriptionText(deploymentName, transcriptionOptions, fileName))
-                    .verifyErrorSatisfies(error -> assertTrue(error instanceof IllegalArgumentException));
+            for (AudioTranscriptionFormat format: wrongFormats) {
+                transcriptionOptions.setResponseFormat(format);
+                StepVerifier.create(client.getAudioTranscriptionText(deploymentName, transcriptionOptions, fileName))
+                        .verifyErrorSatisfies(error -> assertTrue(error instanceof IllegalArgumentException));
+            }
         });
     }
 
@@ -595,22 +598,21 @@ public class OpenAIAsyncClientTest extends OpenAIClientTestBase {
     @MethodSource("com.azure.ai.openai.TestUtils#getTestParameters")
     public void testGetAudioTranscriptionJsonWrongFormats(HttpClient httpClient, OpenAIServiceVersion serviceVersion) {
         client = getOpenAIAsyncClient(httpClient, serviceVersion);
+        List<AudioTranscriptionFormat> wrongFormats = Arrays.asList(
+                AudioTranscriptionFormat.TEXT,
+                AudioTranscriptionFormat.SRT,
+                AudioTranscriptionFormat.VTT
+        );
 
         getAudioTranscriptionRunner((deploymentName, fileName) -> {
             byte[] file = BinaryData.fromFile(openTestResourceFile(fileName)).toBytes();
             AudioTranscriptionOptions transcriptionOptions = new AudioTranscriptionOptions(file);
 
-            transcriptionOptions.setResponseFormat(AudioTranscriptionFormat.TEXT);
-            StepVerifier.create(client.getAudioTranscription(deploymentName, transcriptionOptions, fileName))
-                    .verifyErrorSatisfies(error -> assertTrue(error instanceof IllegalArgumentException));
-
-            transcriptionOptions.setResponseFormat(AudioTranscriptionFormat.SRT);
-            StepVerifier.create(client.getAudioTranscription(deploymentName, transcriptionOptions, fileName))
-                    .verifyErrorSatisfies(error -> assertTrue(error instanceof IllegalArgumentException));
-
-            transcriptionOptions.setResponseFormat(AudioTranscriptionFormat.VTT);
-            StepVerifier.create(client.getAudioTranscription(deploymentName, transcriptionOptions, fileName))
-                    .verifyErrorSatisfies(error -> assertTrue(error instanceof IllegalArgumentException));
+            for (AudioTranscriptionFormat format: wrongFormats) {
+                transcriptionOptions.setResponseFormat(format);
+                StepVerifier.create(client.getAudioTranscription(deploymentName, transcriptionOptions, fileName))
+                        .verifyErrorSatisfies(error -> assertTrue(error instanceof IllegalArgumentException));
+            }
         });
     }
 
@@ -713,18 +715,20 @@ public class OpenAIAsyncClientTest extends OpenAIClientTestBase {
     @MethodSource("com.azure.ai.openai.TestUtils#getTestParameters")
     public void testGetAudioTranslationTextWrongFormats(HttpClient httpClient, OpenAIServiceVersion serviceVersion) {
         client = getOpenAIAsyncClient(httpClient, serviceVersion);
+        List<AudioTranscriptionFormat> wrongFormats = Arrays.asList(
+                AudioTranscriptionFormat.JSON,
+                AudioTranscriptionFormat.VERBOSE_JSON
+        );
 
         getAudioTranslationRunner((deploymentName, fileName) -> {
             byte[] file = BinaryData.fromFile(openTestResourceFile(fileName)).toBytes();
             AudioTranslationOptions translationOptions = new AudioTranslationOptions(file);
 
-            translationOptions.setResponseFormat(AudioTranscriptionFormat.JSON);
-            StepVerifier.create(client.getAudioTranslationText(deploymentName, translationOptions, fileName))
-                            .verifyErrorSatisfies(error -> assertTrue(error instanceof IllegalArgumentException));
-
-            translationOptions.setResponseFormat(AudioTranscriptionFormat.VERBOSE_JSON);
-            StepVerifier.create(client.getAudioTranslationText(deploymentName, translationOptions, fileName))
-                    .verifyErrorSatisfies(error -> assertTrue(error instanceof IllegalArgumentException));
+            for (AudioTranscriptionFormat format: wrongFormats) {
+                translationOptions.setResponseFormat(format);
+                StepVerifier.create(client.getAudioTranslationText(deploymentName, translationOptions, fileName))
+                                .verifyErrorSatisfies(error -> assertTrue(error instanceof IllegalArgumentException));
+            }
         });
     }
 
@@ -732,22 +736,21 @@ public class OpenAIAsyncClientTest extends OpenAIClientTestBase {
     @MethodSource("com.azure.ai.openai.TestUtils#getTestParameters")
     public void testGetAudioTranslationJsonWrongFormats(HttpClient httpClient, OpenAIServiceVersion serviceVersion) {
         client = getOpenAIAsyncClient(httpClient, serviceVersion);
+        List<AudioTranscriptionFormat> wrongFormats = Arrays.asList(
+                AudioTranscriptionFormat.TEXT,
+                AudioTranscriptionFormat.SRT,
+                AudioTranscriptionFormat.VTT
+        );
 
         getAudioTranslationRunner((deploymentName, fileName) -> {
             byte[] file = BinaryData.fromFile(openTestResourceFile(fileName)).toBytes();
             AudioTranslationOptions translationOptions = new AudioTranslationOptions(file);
 
-            translationOptions.setResponseFormat(AudioTranscriptionFormat.TEXT);
-            StepVerifier.create(client.getAudioTranslation(deploymentName, translationOptions, fileName))
-                    .verifyErrorSatisfies(error -> assertTrue(error instanceof IllegalArgumentException));
-
-            translationOptions.setResponseFormat(AudioTranscriptionFormat.SRT);
-            StepVerifier.create(client.getAudioTranslation(deploymentName, translationOptions, fileName))
-                    .verifyErrorSatisfies(error -> assertTrue(error instanceof IllegalArgumentException));
-
-            translationOptions.setResponseFormat(AudioTranscriptionFormat.VTT);
-            StepVerifier.create(client.getAudioTranslation(deploymentName, translationOptions, fileName))
-                    .verifyErrorSatisfies(error -> assertTrue(error instanceof IllegalArgumentException));
+            for (AudioTranscriptionFormat format: wrongFormats) {
+                translationOptions.setResponseFormat(format);
+                StepVerifier.create(client.getAudioTranslation(deploymentName, translationOptions, fileName))
+                        .verifyErrorSatisfies(error -> assertTrue(error instanceof IllegalArgumentException));
+            }
         });
     }
 }

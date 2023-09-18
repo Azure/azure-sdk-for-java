@@ -35,6 +35,7 @@ import com.azure.core.http.rest.RequestOptions;
 import com.azure.core.http.rest.Response;
 import com.azure.core.util.BinaryData;
 import com.azure.core.util.FluxUtil;
+import com.azure.core.util.logging.ClientLogger;
 import com.azure.core.util.polling.PollerFlux;
 import reactor.core.publisher.Flux;
 import reactor.core.publisher.Mono;
@@ -43,11 +44,15 @@ import java.nio.ByteBuffer;
 import java.util.ArrayList;
 import java.util.List;
 
+import static com.azure.core.util.FluxUtil.monoError;
+
 /** Initializes a new instance of the asynchronous OpenAIClient type. */
 @ServiceClient(builder = OpenAIClientBuilder.class, isAsync = true)
 public final class OpenAIAsyncClient {
 
     @Generated private final OpenAIClientImpl serviceClient;
+
+    private static final ClientLogger LOGGER = new ClientLogger(OpenAIAsyncClient.class);
 
     private final NonAzureOpenAIClientImpl openAIServiceClient;
 
@@ -896,8 +901,8 @@ public final class OpenAIAsyncClient {
         acceptedFormats.add(AudioTranscriptionFormat.JSON);
         acceptedFormats.add(AudioTranscriptionFormat.VERBOSE_JSON);
         if (!acceptedFormats.contains(audioTranslationOptions.getResponseFormat())) {
-            return Mono.error(
-                    new IllegalArgumentException("This operation does not support the requested audio format"));
+            return monoError(
+                    LOGGER, new IllegalArgumentException("This operation does not support the requested audio format"));
         }
         // embedding the `model` in the request for non-Azure case
         if (this.openAIServiceClient != null) {
@@ -944,8 +949,8 @@ public final class OpenAIAsyncClient {
         acceptedFormats.add(AudioTranscriptionFormat.VTT);
         acceptedFormats.add(AudioTranscriptionFormat.SRT);
         if (!acceptedFormats.contains(audioTranslationOptions.getResponseFormat())) {
-            return Mono.error(
-                    new IllegalArgumentException("This operation does not support the requested audio format"));
+            return monoError(
+                    LOGGER, new IllegalArgumentException("This operation does not support the requested audio format"));
         }
         // embedding the `model` in the request for non-Azure case
         if (this.openAIServiceClient != null) {

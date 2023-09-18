@@ -30,6 +30,7 @@ import org.junit.jupiter.params.ParameterizedTest;
 import org.junit.jupiter.params.provider.MethodSource;
 
 import java.util.Arrays;
+import java.util.List;
 
 import static com.azure.ai.openai.TestUtils.DISPLAY_NAME_WITH_ARGUMENTS;
 import static org.junit.jupiter.api.Assertions.assertEquals;
@@ -370,20 +371,21 @@ public class NonAzureOpenAISyncClientTest extends OpenAIClientTestBase {
     @MethodSource("com.azure.ai.openai.TestUtils#getTestParameters")
     public void testGetAudioTranscriptionTextWrongFormats(HttpClient httpClient, OpenAIServiceVersion serviceVersion) {
         client = getNonAzureOpenAISyncClient(httpClient);
+        List<AudioTranscriptionFormat> wrongFormats = Arrays.asList(
+                AudioTranscriptionFormat.JSON,
+                AudioTranscriptionFormat.VERBOSE_JSON
+        );
 
         getAudioTranscriptionRunnerForNonAzure((modelId, fileName) -> {
             byte[] file = BinaryData.fromFile(openTestResourceFile(fileName)).toBytes();
             AudioTranscriptionOptions transcriptionOptions = new AudioTranscriptionOptions(file);
 
-            transcriptionOptions.setResponseFormat(AudioTranscriptionFormat.JSON);
-            assertThrows(IllegalArgumentException.class, () -> {
-                client.getAudioTranscriptionText(modelId, transcriptionOptions, fileName);
-            });
-
-            transcriptionOptions.setResponseFormat(AudioTranscriptionFormat.VERBOSE_JSON);
-            assertThrows(IllegalArgumentException.class, () -> {
-                client.getAudioTranscriptionText(modelId, transcriptionOptions, fileName);
-            });
+            for(AudioTranscriptionFormat format: wrongFormats) {
+                transcriptionOptions.setResponseFormat(format);
+                assertThrows(IllegalArgumentException.class, () -> {
+                    client.getAudioTranscriptionText(modelId, transcriptionOptions, fileName);
+                });
+            }
         });
     }
 
@@ -391,25 +393,22 @@ public class NonAzureOpenAISyncClientTest extends OpenAIClientTestBase {
     @MethodSource("com.azure.ai.openai.TestUtils#getTestParameters")
     public void testGetAudioTranscriptionJsonWrongFormats(HttpClient httpClient, OpenAIServiceVersion serviceVersion) {
         client = getNonAzureOpenAISyncClient(httpClient);
+        List<AudioTranscriptionFormat> wrongFormats = Arrays.asList(
+                AudioTranscriptionFormat.TEXT,
+                AudioTranscriptionFormat.SRT,
+                AudioTranscriptionFormat.VTT
+        );
 
         getAudioTranscriptionRunnerForNonAzure((modelId, fileName) -> {
             byte[] file = BinaryData.fromFile(openTestResourceFile(fileName)).toBytes();
             AudioTranscriptionOptions transcriptionOptions = new AudioTranscriptionOptions(file);
 
-            transcriptionOptions.setResponseFormat(AudioTranscriptionFormat.TEXT);
-            assertThrows(IllegalArgumentException.class, () -> {
-                client.getAudioTranscription(modelId, transcriptionOptions, fileName);
-            });
-
-            transcriptionOptions.setResponseFormat(AudioTranscriptionFormat.SRT);
-            assertThrows(IllegalArgumentException.class, () -> {
-                client.getAudioTranscription(modelId, transcriptionOptions, fileName);
-            });
-
-            transcriptionOptions.setResponseFormat(AudioTranscriptionFormat.VTT);
-            assertThrows(IllegalArgumentException.class, () -> {
-                client.getAudioTranscription(modelId, transcriptionOptions, fileName);
-            });
+            for(AudioTranscriptionFormat format: wrongFormats) {
+                transcriptionOptions.setResponseFormat(format);
+                assertThrows(IllegalArgumentException.class, () -> {
+                    client.getAudioTranscription(modelId, transcriptionOptions, fileName);
+                });
+            }
         });
     }
 
@@ -502,20 +501,21 @@ public class NonAzureOpenAISyncClientTest extends OpenAIClientTestBase {
     @MethodSource("com.azure.ai.openai.TestUtils#getTestParameters")
     public void testGetAudioTranslationTextWrongFormats(HttpClient httpClient, OpenAIServiceVersion serviceVersion) {
         client = getNonAzureOpenAISyncClient(httpClient);
+        List<AudioTranscriptionFormat> wrongFormats = Arrays.asList(
+                AudioTranscriptionFormat.JSON,
+                AudioTranscriptionFormat.VERBOSE_JSON
+        );
 
         getAudioTranslationRunnerForNonAzure((modelId, fileName) -> {
             byte[] file = BinaryData.fromFile(openTestResourceFile(fileName)).toBytes();
             AudioTranslationOptions translationOptions = new AudioTranslationOptions(file);
 
-            translationOptions.setResponseFormat(AudioTranscriptionFormat.JSON);
-            assertThrows(IllegalArgumentException.class, () -> {
-                client.getAudioTranslationText(modelId, translationOptions, fileName);
-            });
-
-            translationOptions.setResponseFormat(AudioTranscriptionFormat.VERBOSE_JSON);
-            assertThrows(IllegalArgumentException.class, () -> {
-                client.getAudioTranslationText(modelId, translationOptions, fileName);
-            });
+            for(AudioTranscriptionFormat format: wrongFormats) {
+                translationOptions.setResponseFormat(format);
+                assertThrows(IllegalArgumentException.class, () -> {
+                    client.getAudioTranslationText(modelId, translationOptions, fileName);
+                });
+            }
         });
     }
 
@@ -523,25 +523,22 @@ public class NonAzureOpenAISyncClientTest extends OpenAIClientTestBase {
     @MethodSource("com.azure.ai.openai.TestUtils#getTestParameters")
     public void testGetAudioTranslationJsonWrongFormats(HttpClient httpClient, OpenAIServiceVersion serviceVersion) {
         client = getNonAzureOpenAISyncClient(httpClient);
+        List<AudioTranscriptionFormat> wrongFormats = Arrays.asList(
+                AudioTranscriptionFormat.TEXT,
+                AudioTranscriptionFormat.SRT,
+                AudioTranscriptionFormat.VTT
+        );
 
         getAudioTranslationRunnerForNonAzure((modelId, fileName) -> {
             byte[] file = BinaryData.fromFile(openTestResourceFile(fileName)).toBytes();
             AudioTranslationOptions translationOptions = new AudioTranslationOptions(file);
 
-            translationOptions.setResponseFormat(AudioTranscriptionFormat.TEXT);
-            assertThrows(IllegalArgumentException.class, () -> {
-                client.getAudioTranslation(modelId, translationOptions, fileName);
-            });
-
-            translationOptions.setResponseFormat(AudioTranscriptionFormat.SRT);
-            assertThrows(IllegalArgumentException.class, () -> {
-                client.getAudioTranslation(modelId, translationOptions, fileName);
-            });
-
-            translationOptions.setResponseFormat(AudioTranscriptionFormat.VTT);
-            assertThrows(IllegalArgumentException.class, () -> {
-                client.getAudioTranslation(modelId, translationOptions, fileName);
-            });
+            for(AudioTranscriptionFormat format: wrongFormats) {
+                translationOptions.setResponseFormat(format);
+                assertThrows(IllegalArgumentException.class, () -> {
+                    client.getAudioTranslation(modelId, translationOptions, fileName);
+                });
+            }
         });
     }
 }
