@@ -30,6 +30,7 @@ import org.testng.annotations.BeforeClass;
 import org.testng.annotations.DataProvider;
 import org.testng.annotations.Factory;
 import org.testng.annotations.Test;
+import reactor.core.publisher.Flux;
 import reactor.core.publisher.Mono;
 import reactor.test.StepVerifier;
 
@@ -70,26 +71,29 @@ public class EndToEndTimeOutValidationTests extends TestSuiteBase {
     @DataProvider(name = "endToEndOperationTimeoutMutationConfigs")
     public Object[][] endToEndOperationTimeoutMutationConfigs() {
 
-        Function<ItemOperationInvocationParameters, Mono<CosmosItemResponse<TestObject>>> readOperationExecutor
-            = (opWrapper) -> executeReadOperation(opWrapper);
-        Function<ItemOperationInvocationParameters, Mono<CosmosItemResponse<TestObject>>> createOperationExecutor
-            = (opWrapper) -> executeCreateOperation(opWrapper);
-        Function<ItemOperationInvocationParameters, Mono<CosmosItemResponse<Object>>> deleteOperationExecutor
-            = (opWrapper) -> executeDeleteOperation(opWrapper);
-        Function<ItemOperationInvocationParameters, Mono<CosmosItemResponse<Object>>> replaceOperationExecutor
-            = (opWrapper) -> executeReplaceOperation(opWrapper);
-        Function<ItemOperationInvocationParameters, Mono<CosmosItemResponse<Object>>> upsertOperationExecutor
-            = (opWrapper) -> executeUpsertOperation(opWrapper);
-        Function<ItemOperationInvocationParameters, Mono<CosmosItemResponse<TestObject>>> patchOperationExecutor
-            = (opWrapper) -> executePatchOperation(opWrapper);
+        Function<ItemOperationInvocationParameters, OperationExecutionResult<?>> readOperationExecutor
+            = (opWrapper) -> new OperationExecutionResult<>(executeReadOperation(opWrapper));
+        Function<ItemOperationInvocationParameters, OperationExecutionResult<?>> createOperationExecutor
+            = (opWrapper) -> new OperationExecutionResult<>(executeCreateOperation(opWrapper));
+        Function<ItemOperationInvocationParameters, OperationExecutionResult<?>> deleteOperationExecutor
+            = (opWrapper) -> new OperationExecutionResult<>(executeDeleteOperation(opWrapper));
+        Function<ItemOperationInvocationParameters, OperationExecutionResult<?>> replaceOperationExecutor
+            = (opWrapper) -> new OperationExecutionResult<>(executeReplaceOperation(opWrapper));
+        Function<ItemOperationInvocationParameters, OperationExecutionResult<?>> upsertOperationExecutor
+            = (opWrapper) -> new OperationExecutionResult<>(executeUpsertOperation(opWrapper));
+        Function<ItemOperationInvocationParameters, OperationExecutionResult<?>> patchOperationExecutor
+            = (opWrapper) -> new OperationExecutionResult<>(executePatchOperation(opWrapper));
+        Function<ItemOperationInvocationParameters, OperationExecutionResult<?>> queryOperationExecutor
+            = (opWrapper) -> new OperationExecutionResult<>(executeQueryOperation(opWrapper));
 
         return new Object[][] {
-            {readOperationExecutor, FaultInjectionOperationType.READ_ITEM},
-            {createOperationExecutor, FaultInjectionOperationType.CREATE_ITEM},
-            {deleteOperationExecutor, FaultInjectionOperationType.DELETE_ITEM},
-            {replaceOperationExecutor, FaultInjectionOperationType.REPLACE_ITEM},
-            {upsertOperationExecutor, FaultInjectionOperationType.UPSERT_ITEM},
-            {patchOperationExecutor, FaultInjectionOperationType.PATCH_ITEM},
+            {readOperationExecutor, FaultInjectionOperationType.READ_ITEM, true},
+            {createOperationExecutor, FaultInjectionOperationType.CREATE_ITEM, true},
+            {deleteOperationExecutor, FaultInjectionOperationType.DELETE_ITEM, true},
+            {replaceOperationExecutor, FaultInjectionOperationType.REPLACE_ITEM, true},
+            {upsertOperationExecutor, FaultInjectionOperationType.UPSERT_ITEM, true},
+            {patchOperationExecutor, FaultInjectionOperationType.PATCH_ITEM, true},
+            {queryOperationExecutor, FaultInjectionOperationType.QUERY_ITEM, false},
         };
     }
 
@@ -294,8 +298,9 @@ public class EndToEndTimeOutValidationTests extends TestSuiteBase {
 
     @Test(groups = { "simple" }, dataProvider = "endToEndOperationTimeoutMutationConfigs")
     public void clientLevelEndToEndTimeoutMutationForPointOperation(
-        Function<ItemOperationInvocationParameters, Mono<CosmosItemResponse<TestObject>>> operationExecutor,
-        FaultInjectionOperationType faultInjectionOperationType) {
+        Function<ItemOperationInvocationParameters, OperationExecutionResult<?>> operationExecutor,
+        FaultInjectionOperationType faultInjectionOperationType,
+        boolean isPointOperation) {
 
         if (getClientBuilder().buildConnectionPolicy().getConnectionMode() != ConnectionMode.DIRECT) {
             throw new SkipException("Injecting fault relevant to the direct connectivity mode.");
@@ -322,34 +327,74 @@ public class EndToEndTimeOutValidationTests extends TestSuiteBase {
             CosmosAsyncContainer cosmosAsyncContainer = cosmosAsyncClient.getDatabase(dbname)
                                                                          .getContainer(containerName);
 
-            Mono<CosmosItemResponse<TestObject>> cosmosItemResponseMonoWithLowerE2ETimeout =
-                operationExecutor.apply(new ItemOperationInvocationParameters(new TestObject(
-                    UUID.randomUUID().toString(),
-                    "name123",
-                    1,
-                    UUID.randomUUID().toString()
-                ), cosmosAsyncContainer));
+            if (isPointOperation) {
+                Mono<?> responseObservableLowerE2ETimeout =
+                    operationExecutor.apply(new ItemOperationInvocationParameters(new TestObject(
+                        UUID.randomUUID().toString(),
+                        "name123",
+                        1,
+                        UUID.randomUUID().toString()
+                    ), cosmosAsyncContainer)).getMonoObservable();
 
-            injectFailure(cosmosAsyncContainer, faultInjectionOperationType, true);
+                injectFailure(cosmosAsyncContainer, faultInjectionOperationType, true);
 
-            verifyExpectError(cosmosItemResponseMonoWithLowerE2ETimeout);
+                StepVerifier.create(responseObservableLowerE2ETimeout)
+                            .expectErrorMatches(throwable -> throwable instanceof OperationCancelledException
+                                && ((OperationCancelledException) throwable).getSubStatusCode()
+                                == HttpConstants.SubStatusCodes.CLIENT_OPERATION_TIMEOUT)
+                            .verify();
 
-            cosmosEndToEndOperationLatencyPolicyConfig.setEndToEndOperationTimeout(Duration.ofSeconds(5));
+                cosmosEndToEndOperationLatencyPolicyConfig.setEndToEndOperationTimeout(Duration.ofSeconds(5));
 
-            Mono<CosmosItemResponse<TestObject>> cosmosItemResponseMonoWithHigherE2ETimeout =
-                operationExecutor.apply(new ItemOperationInvocationParameters(new TestObject(
-                    UUID.randomUUID().toString(),
-                    "name123",
-                    1,
-                    UUID.randomUUID().toString()
-                ), cosmosAsyncContainer));
+                responseObservableLowerE2ETimeout =
+                    operationExecutor.apply(new ItemOperationInvocationParameters(new TestObject(
+                        UUID.randomUUID().toString(),
+                        "name123",
+                        1,
+                        UUID.randomUUID().toString()
+                    ), cosmosAsyncContainer)).getMonoObservable();
 
-            // with increased endToEndOperationTimeout, we shouldn't see
-            // an end-to-end timeout based cancellation
-            StepVerifier.create(cosmosItemResponseMonoWithHigherE2ETimeout)
-                        .expectNextCount(1)
-                        .expectComplete()
-                        .verify();
+                // with increased endToEndOperationTimeout, we shouldn't see
+                // an end-to-end timeout based cancellation
+                StepVerifier.create(responseObservableLowerE2ETimeout)
+                            .expectNextCount(1)
+                            .expectComplete()
+                            .verify();
+            } else {
+                CosmosPagedFlux<?> responseObservableLowerE2ETimeout =
+                    operationExecutor.apply(new ItemOperationInvocationParameters(new TestObject(
+                        UUID.randomUUID().toString(),
+                        "name123",
+                        1,
+                        UUID.randomUUID().toString()
+                    ), cosmosAsyncContainer)).getCosmosPagedFluxObservable();
+
+                injectFailure(cosmosAsyncContainer, faultInjectionOperationType, true);
+
+                StepVerifier.create(responseObservableLowerE2ETimeout)
+                            .expectErrorMatches(throwable -> throwable instanceof OperationCancelledException
+                                && ((OperationCancelledException) throwable).getSubStatusCode()
+                                == HttpConstants.SubStatusCodes.CLIENT_OPERATION_TIMEOUT)
+                            .verify();
+
+                cosmosEndToEndOperationLatencyPolicyConfig.setEndToEndOperationTimeout(Duration.ofSeconds(5));
+
+                responseObservableLowerE2ETimeout =
+                    operationExecutor.apply(new ItemOperationInvocationParameters(new TestObject(
+                        UUID.randomUUID().toString(),
+                        "name123",
+                        1,
+                        UUID.randomUUID().toString()
+                    ), cosmosAsyncContainer)).getCosmosPagedFluxObservable();
+
+                // with increased endToEndOperationTimeout, we shouldn't see
+                // an end-to-end timeout based cancellation
+                StepVerifier.create(responseObservableLowerE2ETimeout)
+                            .expectNextCount(1)
+                            .expectComplete()
+                            .verify();
+            }
+
 
         } finally {
             // delete the database
@@ -413,6 +458,19 @@ public class EndToEndTimeOutValidationTests extends TestSuiteBase {
         CosmosPatchOperations patchOperations = CosmosPatchOperations.create().add("/" + "newProperty", "newVal");
 
         return cosmosAsyncContainer.patchItem(testObject.getId(), new PartitionKey(testObject.getMypk()), patchOperations, TestObject.class);
+    }
+
+    private static CosmosPagedFlux<TestObject> executeQueryOperation(ItemOperationInvocationParameters operationWrapper) {
+        CosmosAsyncContainer cosmosAsyncContainer = operationWrapper.cosmosAsyncContainer;
+        TestObject testObject = operationWrapper.testObject;
+
+        cosmosAsyncContainer.createItem(testObject).block();
+
+        String query = String.format("SELECT * FROM c WHERE c.id = '%s'", testObject.getId());
+
+        SqlQuerySpec sqlQuerySpec = new SqlQuerySpec(query);
+
+        return cosmosAsyncContainer.queryItems(sqlQuerySpec, new CosmosQueryRequestOptions(), TestObject.class);
     }
 
     private FaultInjectionRule injectFailure(
@@ -537,6 +595,35 @@ public class EndToEndTimeOutValidationTests extends TestSuiteBase {
 
             this.testObject = testObject;
             this.cosmosAsyncContainer = cosmosAsyncContainer;
+        }
+    }
+
+    private static class OperationExecutionResult<T> {
+        private Mono<CosmosItemResponse<T>> itemResponseMono;
+        private CosmosPagedFlux<T> queryResponseFlux;
+
+        OperationExecutionResult(Mono<CosmosItemResponse<T>> itemResponseMono) {
+            this.itemResponseMono = itemResponseMono;
+        }
+
+        OperationExecutionResult(CosmosPagedFlux<T> queryResponseFlux) {
+            this.queryResponseFlux = queryResponseFlux;
+        }
+
+        Mono<CosmosItemResponse<T>> getMonoObservable() {
+            if (itemResponseMono != null) {
+                return itemResponseMono;
+            }
+
+            return null;
+        }
+
+        CosmosPagedFlux<T> getCosmosPagedFluxObservable() {
+            if (queryResponseFlux != null) {
+                return queryResponseFlux;
+            }
+
+            return null;
         }
     }
 }
