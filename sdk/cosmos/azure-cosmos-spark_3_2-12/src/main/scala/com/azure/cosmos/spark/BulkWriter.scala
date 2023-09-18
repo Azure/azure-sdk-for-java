@@ -80,7 +80,6 @@ class BulkWriter(container: CosmosAsyncContainer,
   private val pendingTasksCompleted = lock.newCondition
   private val pendingRetries = new AtomicLong(0)
   private val activeTasks = new AtomicInteger(0)
-  private val errorCaptureFirstException = new AtomicReference[Throwable]()
   private val errorCaptureExceptionList = new java.util.ArrayList[Throwable]()
   private val bulkInputEmitter: Sinks.Many[CosmosItemOperation] = Sinks.many().unicast().onBackpressureBuffer()
 
@@ -779,7 +778,7 @@ class BulkWriter(container: CosmosAsyncContainer,
             var activeTasksSnapshot = activeTasks.get()
             var pendingRetriesSnapshot = pendingRetries.get()
             while ((pendingRetriesSnapshot > 0 || activeTasksSnapshot > 0)
-              && errorCaptureFirstException.get == null) {
+              && errorCaptureExceptionList.size() == 0) {
               log.logInfo(
                 s"Waiting for pending activeTasks $activeTasksSnapshot and/or pendingRetries " +
                   s"$pendingRetriesSnapshot,  Context: ${operationContext.toString} ${getThreadInfo}")
@@ -867,10 +866,10 @@ class BulkWriter(container: CosmosAsyncContainer,
     lock.lock()
     try {
       val activeTasksLeftSnapshot = activeTasks.decrementAndGet()
-      val exceptionSnapshot = errorCaptureFirstException.get()
+      val exceptionSnapshot = errorCaptureExceptionList.size()
       log.logTrace(s"markTaskCompletion, Active tasks left: $activeTasksLeftSnapshot, " +
         s"error: $exceptionSnapshot, Context: ${operationContext.toString} ${getThreadInfo}")
-      if (activeTasksLeftSnapshot == 0 || exceptionSnapshot != null) {
+      if (activeTasksLeftSnapshot == 0 || exceptionSnapshot != 0) {
         pendingTasksCompleted.signal()
       }
     } finally {
