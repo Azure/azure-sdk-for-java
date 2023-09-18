@@ -10,12 +10,15 @@ import com.azure.core.http.policy.HttpLogDetailLevel;
 import com.azure.core.http.policy.HttpLogOptions;
 import com.azure.core.http.policy.HttpPipelinePolicy;
 import com.azure.core.util.ClientOptions;
+import com.azure.core.util.CoreUtils;
 import com.azure.core.util.logging.ClientLogger;
 import com.azure.monitor.opentelemetry.exporter.implementation.configuration.ConnectionString;
+import com.azure.monitor.opentelemetry.exporter.implementation.pipeline.TelemetryItemExporter;
 import io.opentelemetry.sdk.autoconfigure.AutoConfiguredOpenTelemetrySdkBuilder;
 
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Map;
 import java.util.Objects;
 
 /**
@@ -25,18 +28,31 @@ public final class AzureMonitorExporterBuilder {
 
     private static final ClientLogger LOGGER = new ClientLogger(AzureMonitorExporterBuilder.class);
 
-    private ConnectionString connectionString;
+    private static final String APPLICATIONINSIGHTS_CONNECTION_STRING =
+        "APPLICATIONINSIGHTS_CONNECTION_STRING";
+    private static final String APPLICATIONINSIGHTS_AUTHENTICATION_SCOPE =
+        "https://monitor.azure.com//.default";
 
-    // http pipeline configuration
+    private static final Map<String, String> PROPERTIES =
+        CoreUtils.getProperties("azure-monitor-opentelemetry-exporter.properties");
+
+    private ConnectionString connectionString;
     private TokenCredential credential;
+
+    // suppress warnings is needed in ApplicationInsights-Java repo, can be removed when upstreaming
+    @SuppressWarnings({"UnusedVariable", "FieldCanBeLocal"})
+    private AzureMonitorExporterServiceVersion serviceVersion;
+
+    private HttpPipeline httpPipeline;
     private HttpClient httpClient;
     private HttpLogOptions httpLogOptions;
     private final List<HttpPipelinePolicy> httpPipelinePolicies = new ArrayList<>();
     private ClientOptions clientOptions;
-    private HttpPipeline httpPipeline;
 
-    @SuppressWarnings("FieldCanBeLocal")
-    private AzureMonitorExporterServiceVersion serviceVersion;
+    // these are only populated after the builder is frozen
+    private HttpPipeline theHttpPipeline;
+    private TelemetryItemExporter theTelemetryItemExporter;
+    private ConnectionString theConnectionString;
 
     /**
      * Creates an instance of {@link AzureMonitorExporterBuilder}.
@@ -148,39 +164,9 @@ public final class AzureMonitorExporterBuilder {
      * @param sdkBuilder the {@link AutoConfiguredOpenTelemetrySdkBuilder} in which to install the azure monitor exporter.
      */
     public void build(AutoConfiguredOpenTelemetrySdkBuilder sdkBuilder) {
-        validate();
-
-        LazyConnectionString lazyConnectionString = new LazyConnectionString(connectionString);
-        LazyTelemetryItemExporter lazyTelemetryItemExporter = new LazyTelemetryItemExporter();
-        LazyHttpPipeline lazyHttpPipeline = new LazyHttpPipeline(credential, httpClient, httpLogOptions,
-            httpPipelinePolicies, clientOptions, httpPipeline);
+        // FREEZE THE BUILDER
         AzureMonitorExporterBuilderHelper helper =
-            new AzureMonitorExporterBuilderHelper(lazyConnectionString, lazyTelemetryItemExporter, lazyHttpPipeline);
+            new AzureMonitorExporterBuilderHelper(connectionStringBuilder, telemetryItemExporterBuilder, httpPipelineBuilder);
         helper.build(sdkBuilder);
-    }
-
-    private void validate() {
-        if (httpPipeline != null) {
-            if (credential != null) {
-                throw LOGGER.logExceptionAsError(new IllegalStateException(
-                    "'credential' is not supported when custom 'httpPipeline' is specified"));
-            }
-            if (httpClient != null) {
-                throw LOGGER.logExceptionAsError(new IllegalStateException(
-                    "'httpClient' is not supported when custom 'httpPipeline' is specified"));
-            }
-            if (httpLogOptions != null) {
-                throw LOGGER.logExceptionAsError(new IllegalStateException(
-                    "'httpLogOptions' is not supported when custom 'httpPipeline' is specified"));
-            }
-            if (!httpPipelinePolicies.isEmpty()) {
-                throw LOGGER.logExceptionAsError(new IllegalStateException(
-                    "'httpPipelinePolicies' is not supported when custom 'httpPipeline' is specified"));
-            }
-            if (clientOptions != null) {
-                throw LOGGER.logExceptionAsError(new IllegalStateException(
-                    "'clientOptions' is not supported when custom 'httpPipeline' is specified"));
-            }
-        }
     }
 }

@@ -35,16 +35,16 @@ import static java.util.concurrent.TimeUnit.MINUTES;
 
 class AzureMonitorExporterBuilderHelper {
 
-    private final LazyConnectionString connectionString;
-    private final LazyHttpPipeline httpPipeline;
-    private final LazyTelemetryItemExporter telemetryItemExporter;
+    private final ConnectionStringBuilder connectionStringBuilder;
+    private final HttpPipelineBuilder httpPipelineBuilder;
+    private final TelemetryItemExporterBuilder telemetryItemExporterBuilder;
 
-    AzureMonitorExporterBuilderHelper(LazyConnectionString connectionString,
-                                      LazyTelemetryItemExporter telemetryItemExporter,
-                                      LazyHttpPipeline httpPipeline) {
-        this.connectionString = connectionString;
-        this.telemetryItemExporter = telemetryItemExporter;
-        this.httpPipeline = httpPipeline;
+    AzureMonitorExporterBuilderHelper(ConnectionStringBuilder connectionStringBuilder,
+                                      TelemetryItemExporterBuilder telemetryItemExporterBuilder,
+                                      HttpPipelineBuilder httpPipelineBuilder) {
+        this.connectionStringBuilder = connectionStringBuilder;
+        this.telemetryItemExporterBuilder = telemetryItemExporterBuilder;
+        this.httpPipelineBuilder = httpPipelineBuilder;
     }
 
 
@@ -126,7 +126,7 @@ class AzureMonitorExporterBuilderHelper {
     }
 
     private TelemetryItemExporter getTelemetryItemExporter(ConfigProperties configProperties) {
-        return telemetryItemExporter.get(httpPipeline.get(), configProperties);
+        return telemetryItemExporterBuilder.build(httpPipelineBuilder.build(), configProperties);
     }
 
     private SpanDataMapper createSpanDataMapper(ConfigProperties configProperties) {
@@ -138,7 +138,7 @@ class AzureMonitorExporterBuilderHelper {
     }
 
     private BiConsumer<AbstractTelemetryBuilder, Resource> createDefaultPopulator(ConfigProperties configProperties) {
-        ConnectionString connectionString = this.connectionString.get(configProperties);
+        ConnectionString connectionString = this.connectionStringBuilder.build(configProperties);
         return (builder, resource) -> {
             builder.setConnectionString(connectionString);
             builder.addTag(

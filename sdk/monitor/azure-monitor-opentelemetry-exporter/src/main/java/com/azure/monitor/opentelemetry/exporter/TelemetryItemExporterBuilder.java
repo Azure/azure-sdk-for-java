@@ -16,14 +16,13 @@ import io.opentelemetry.sdk.autoconfigure.spi.ConfigProperties;
 
 import java.io.File;
 
-class LazyTelemetryItemExporter {
+class TelemetryItemExporterBuilder {
 
-    private static final ClientLogger LOGGER = new ClientLogger(LazyTelemetryItemExporter.class);
-
+    private static final ClientLogger LOGGER = new ClientLogger(TelemetryItemExporterBuilder.class);
 
     private TelemetryItemExporter telemetryItemExporter;
 
-    synchronized TelemetryItemExporter get(HttpPipeline httpPipeline, ConfigProperties configProperties) {
+    TelemetryItemExporter build(HttpPipeline httpPipeline, ConfigProperties configProperties) {
         if (telemetryItemExporter == null) {
             telemetryItemExporter = create(httpPipeline, configProperties);
         }
