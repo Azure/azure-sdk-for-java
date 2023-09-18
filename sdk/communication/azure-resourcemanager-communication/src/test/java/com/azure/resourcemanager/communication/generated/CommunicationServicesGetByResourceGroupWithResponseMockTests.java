@@ -13,6 +13,7 @@ import com.azure.core.management.AzureEnvironment;
 import com.azure.core.management.profile.AzureProfile;
 import com.azure.resourcemanager.communication.CommunicationManager;
 import com.azure.resourcemanager.communication.models.CommunicationServiceResource;
+import com.azure.resourcemanager.communication.models.ManagedServiceIdentityType;
 import java.nio.ByteBuffer;
 import java.nio.charset.StandardCharsets;
 import java.time.OffsetDateTime;
@@ -31,7 +32,7 @@ public final class CommunicationServicesGetByResourceGroupWithResponseMockTests 
         ArgumentCaptor<HttpRequest> httpRequest = ArgumentCaptor.forClass(HttpRequest.class);
 
         String responseStr =
-            "{\"properties\":{\"provisioningState\":\"Deleting\",\"hostName\":\"xdbabphlwr\",\"dataLocation\":\"lfktsths\",\"notificationHubId\":\"ocmnyyazttbtwwrq\",\"version\":\"edckzywbiexzfey\",\"immutableResourceId\":\"axibxujw\",\"linkedDomains\":[\"walm\",\"zyoxaepdkzjan\",\"ux\",\"hdwbavxbniwdjs\"]},\"location\":\"tsdbpgn\",\"tags\":{\"pzxbz\":\"x\"},\"id\":\"fzab\",\"name\":\"lcuhxwtctyqiklb\",\"type\":\"ovplw\"}";
+            "{\"properties\":{\"provisioningState\":\"Running\",\"hostName\":\"vmkfssxqu\",\"dataLocation\":\"kfplgmgsxnk\",\"notificationHubId\":\"kde\",\"version\":\"pvlopwiyighxpkd\",\"immutableResourceId\":\"baiuebbaumny\",\"linkedDomains\":[\"edeojnabc\"]},\"identity\":{\"principalId\":\"9ca91c4c-eb77-48ff-8df7-d7d30dd80067\",\"tenantId\":\"626adb71-13ff-4e78-93db-c9c10d1e889d\",\"type\":\"None\",\"userAssignedIdentities\":{\"ebtfhvpesap\":{\"principalId\":\"5efe3ae4-5dda-4b46-a657-863c7d7a3134\",\"clientId\":\"ec5a4207-5b87-4d64-8ad0-c932e18734c4\"},\"dqmh\":{\"principalId\":\"c721a48d-37cd-4722-9efb-5846687230ab\",\"clientId\":\"6e7d41fd-0909-4b2c-94cc-8360097e88c0\"},\"htldwk\":{\"principalId\":\"77d62b26-1736-4568-85b6-89536e6d799a\",\"clientId\":\"1f043065-64cf-49cc-a1a8-0d1b57934b86\"}}},\"location\":\"xuutkncwscwsv\",\"tags\":{\"rupqsxvnmicy\":\"togt\",\"vei\":\"vce\",\"dhbt\":\"ovnotyfjfcnjbkcn\"},\"id\":\"kphywpnvjto\",\"name\":\"nermcl\",\"type\":\"plpho\"}";
 
         Mockito.when(httpResponse.getStatusCode()).thenReturn(200);
         Mockito.when(httpResponse.getHeaders()).thenReturn(new HttpHeaders());
@@ -62,12 +63,13 @@ public final class CommunicationServicesGetByResourceGroupWithResponseMockTests 
         CommunicationServiceResource response =
             manager
                 .communicationServices()
-                .getByResourceGroupWithResponse("nrs", "nlqidybyxczf", com.azure.core.util.Context.NONE)
+                .getByResourceGroupWithResponse("ovplw", "bhvgy", com.azure.core.util.Context.NONE)
                 .getValue();
 
-        Assertions.assertEquals("tsdbpgn", response.location());
-        Assertions.assertEquals("x", response.tags().get("pzxbz"));
-        Assertions.assertEquals("lfktsths", response.dataLocation());
-        Assertions.assertEquals("walm", response.linkedDomains().get(0));
+        Assertions.assertEquals("xuutkncwscwsv", response.location());
+        Assertions.assertEquals("togt", response.tags().get("rupqsxvnmicy"));
+        Assertions.assertEquals(ManagedServiceIdentityType.NONE, response.identity().type());
+        Assertions.assertEquals("kfplgmgsxnk", response.dataLocation());
+        Assertions.assertEquals("edeojnabc", response.linkedDomains().get(0));
     }
 }
