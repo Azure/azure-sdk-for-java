@@ -11,15 +11,13 @@ import reactor.core.publisher.Mono;
 
 import java.nio.ByteBuffer;
 import java.nio.charset.Charset;
-import java.util.ArrayList;
 import java.util.List;
 import java.util.Map;
 
 public class HttpUrlConnectionResponse extends HttpResponse {
     private final int statusCode;
     private final HttpHeaders headers;
-    private Flux<ByteBuffer> body;
-    private List<ByteBuffer> bufferedBody;
+    private final Flux<ByteBuffer> body;
 
     public HttpUrlConnectionResponse(HttpRequest request, int statusCode, Map<String, List<String>> headers, Flux<ByteBuffer> body) {
         super(request);
@@ -30,8 +28,7 @@ public class HttpUrlConnectionResponse extends HttpResponse {
                 this.headers.add(header.getKey(), headerValue);
             }
         }
-        this.body = body;
-        this.bufferedBody = new ArrayList<>();
+        this.body = body.cache();
     }
 
     @Override
@@ -77,11 +74,7 @@ public class HttpUrlConnectionResponse extends HttpResponse {
 
     @Override
     public Flux<ByteBuffer> getBody() {
-        if (bufferedBody.isEmpty()) {
-            return body.doOnNext(bufferedBody::add).doOnTerminate(() -> body = Flux.fromIterable(bufferedBody));
-        } else {
-            return Flux.fromIterable(bufferedBody);
-        }
+        return body;
     }
 
     public HttpResponse buffer() {
