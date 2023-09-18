@@ -1,6 +1,6 @@
 # Release History
 
-## 12.3.15 (2023-09-13)
+## 12.3.15 (2023-09-18)
 
 ### Bugs Fixed
 - Fixed bug where delete entity did not work on entities with empty primary keys.[(33390)](https://github.com/Azure/azure-sdk-for-java/issues/36690)
