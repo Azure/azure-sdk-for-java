@@ -489,7 +489,7 @@ public class OpenAIAsyncClientTest extends OpenAIClientTestBase {
 
             StepVerifier.create(client.getAudioTranscription(deploymentName, transcriptionOptions, fileName))
                 .assertNext(transcription ->
-                    assertAudioTranscriptionSimpleJson(transcription,BATMAN_TRANSCRIPTION))
+                    assertAudioTranscriptionSimpleJson(transcription, BATMAN_TRANSCRIPTION))
                 .verifyComplete();
         });
     }
@@ -628,8 +628,8 @@ public class OpenAIAsyncClientTest extends OpenAIClientTestBase {
 
             StepVerifier.create(client.getAudioTranslation(deploymentName, translationOptions, fileName))
                 .assertNext(translation ->
-                        assertAudioTranscriptionSimpleJson(translation,"It's raining today."))
-                    .verifyComplete();
+                    assertAudioTranscriptionSimpleJson(translation, "It's raining today."))
+                .verifyComplete();
         });
     }
 
@@ -645,7 +645,7 @@ public class OpenAIAsyncClientTest extends OpenAIClientTestBase {
 
             StepVerifier.create(client.getAudioTranslation(deploymentName, translationOptions, fileName))
                 .assertNext(translation ->
-                    assertAudioTranscriptionVerboseJson(translation,"It's raining today.", AudioTaskLabel.TRANSLATE))
+                    assertAudioTranscriptionVerboseJson(translation, "It's raining today.", AudioTaskLabel.TRANSLATE))
                 .verifyComplete();
         });
     }

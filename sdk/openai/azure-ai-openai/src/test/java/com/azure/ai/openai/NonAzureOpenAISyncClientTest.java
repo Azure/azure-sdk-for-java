@@ -292,7 +292,7 @@ public class NonAzureOpenAISyncClientTest extends OpenAIClientTestBase {
             transcriptionOptions.setResponseFormat(AudioTranscriptionFormat.JSON);
 
             AudioTranscription transcription = client.getAudioTranscription(modelId, transcriptionOptions, fileName);
-            assertAudioTranscriptionSimpleJson(transcription,BATMAN_TRANSCRIPTION);
+            assertAudioTranscriptionSimpleJson(transcription, BATMAN_TRANSCRIPTION);
         });
     }
 
@@ -380,7 +380,7 @@ public class NonAzureOpenAISyncClientTest extends OpenAIClientTestBase {
             byte[] file = BinaryData.fromFile(openTestResourceFile(fileName)).toBytes();
             AudioTranscriptionOptions transcriptionOptions = new AudioTranscriptionOptions(file);
 
-            for(AudioTranscriptionFormat format: wrongFormats) {
+            for (AudioTranscriptionFormat format: wrongFormats) {
                 transcriptionOptions.setResponseFormat(format);
                 assertThrows(IllegalArgumentException.class, () -> {
                     client.getAudioTranscriptionText(modelId, transcriptionOptions, fileName);
@@ -403,7 +403,7 @@ public class NonAzureOpenAISyncClientTest extends OpenAIClientTestBase {
             byte[] file = BinaryData.fromFile(openTestResourceFile(fileName)).toBytes();
             AudioTranscriptionOptions transcriptionOptions = new AudioTranscriptionOptions(file);
 
-            for(AudioTranscriptionFormat format: wrongFormats) {
+            for (AudioTranscriptionFormat format: wrongFormats) {
                 transcriptionOptions.setResponseFormat(format);
                 assertThrows(IllegalArgumentException.class, () -> {
                     client.getAudioTranscription(modelId, transcriptionOptions, fileName);
@@ -423,7 +423,7 @@ public class NonAzureOpenAISyncClientTest extends OpenAIClientTestBase {
             translationOptions.setResponseFormat(AudioTranscriptionFormat.JSON);
 
             AudioTranscription translation = client.getAudioTranslation(modelId, translationOptions, fileName);
-            assertAudioTranscriptionSimpleJson(translation,"It's raining today.");
+            assertAudioTranscriptionSimpleJson(translation, "It's raining today.");
         });
     }
 
@@ -438,7 +438,7 @@ public class NonAzureOpenAISyncClientTest extends OpenAIClientTestBase {
             translationOptions.setResponseFormat(AudioTranscriptionFormat.VERBOSE_JSON);
 
             AudioTranscription translation = client.getAudioTranslation(modelId, translationOptions, fileName);
-            assertAudioTranscriptionVerboseJson(translation,"It's raining today.", AudioTaskLabel.TRANSLATE);
+            assertAudioTranscriptionVerboseJson(translation, "It's raining today.", AudioTaskLabel.TRANSLATE);
         });
     }
 
@@ -510,7 +510,7 @@ public class NonAzureOpenAISyncClientTest extends OpenAIClientTestBase {
             byte[] file = BinaryData.fromFile(openTestResourceFile(fileName)).toBytes();
             AudioTranslationOptions translationOptions = new AudioTranslationOptions(file);
 
-            for(AudioTranscriptionFormat format: wrongFormats) {
+            for (AudioTranscriptionFormat format: wrongFormats) {
                 translationOptions.setResponseFormat(format);
                 assertThrows(IllegalArgumentException.class, () -> {
                     client.getAudioTranslationText(modelId, translationOptions, fileName);
@@ -533,7 +533,7 @@ public class NonAzureOpenAISyncClientTest extends OpenAIClientTestBase {
             byte[] file = BinaryData.fromFile(openTestResourceFile(fileName)).toBytes();
             AudioTranslationOptions translationOptions = new AudioTranslationOptions(file);
 
-            for(AudioTranscriptionFormat format: wrongFormats) {
+            for (AudioTranscriptionFormat format: wrongFormats) {
                 translationOptions.setResponseFormat(format);
                 assertThrows(IllegalArgumentException.class, () -> {
                     client.getAudioTranslation(modelId, translationOptions, fileName);
