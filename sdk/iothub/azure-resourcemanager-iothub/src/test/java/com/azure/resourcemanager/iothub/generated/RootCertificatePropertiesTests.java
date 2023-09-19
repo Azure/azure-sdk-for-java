@@ -13,15 +13,15 @@ public final class RootCertificatePropertiesTests {
     public void testDeserialize() throws Exception {
         RootCertificateProperties model =
             BinaryData
-                .fromString("{\"enableRootCertificateV2\":false,\"lastUpdatedTimeUtc\":\"2021-01-10T16:47:02Z\"}")
+                .fromString("{\"enableRootCertificateV2\":true,\"lastUpdatedTimeUtc\":\"2021-08-16T02:09:31Z\"}")
                 .toObject(RootCertificateProperties.class);
-        Assertions.assertEquals(false, model.enableRootCertificateV2());
+        Assertions.assertEquals(true, model.enableRootCertificateV2());
     }
 
     @org.junit.jupiter.api.Test
     public void testSerialize() throws Exception {
-        RootCertificateProperties model = new RootCertificateProperties().withEnableRootCertificateV2(false);
+        RootCertificateProperties model = new RootCertificateProperties().withEnableRootCertificateV2(true);
         model = BinaryData.fromObject(model).toObject(RootCertificateProperties.class);
-        Assertions.assertEquals(false, model.enableRootCertificateV2());
+        Assertions.assertEquals(true, model.enableRootCertificateV2());
     }
 }

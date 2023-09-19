@@ -23,6 +23,7 @@ import java.nio.charset.StandardCharsets;
 import java.time.OffsetDateTime;
 import java.util.HashMap;
 import java.util.Map;
+import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.Test;
 import org.mockito.ArgumentCaptor;
 import org.mockito.Mockito;
@@ -36,7 +37,8 @@ public final class IotHubResourcesTestAllRoutesWithResponseMockTests {
         HttpResponse httpResponse = Mockito.mock(HttpResponse.class);
         ArgumentCaptor<HttpRequest> httpRequest = ArgumentCaptor.forClass(HttpRequest.class);
 
-        String responseStr = "{\"routes\":[{}]}";
+        String responseStr =
+            "{\"routes\":[{\"properties\":{\"name\":\"xccedcpnmdyodn\",\"source\":\"DeviceLifecycleEvents\",\"condition\":\"ltjcvnhltiugcxna\",\"endpointNames\":[\"wxqibyq\",\"nyowxwlmdjrkvfg\",\"vfvpdbodaciz\"],\"isEnabled\":false}},{\"properties\":{\"name\":\"lhkrribdeibqipqk\",\"source\":\"MqttBrokerMessages\",\"condition\":\"xndzwm\",\"endpointNames\":[\"efajpj\",\"rwkq\",\"yhgbijtjivfx\",\"sjabibs\"],\"isEnabled\":true}},{\"properties\":{\"name\":\"awfsdjpvkvpbjxbk\",\"source\":\"TwinChangeEvents\",\"condition\":\"kd\",\"endpointNames\":[\"cjabudurgkakmo\"],\"isEnabled\":true}}]}";
 
         Mockito.when(httpResponse.getStatusCode()).thenReturn(200);
         Mockito.when(httpResponse.getHeaders()).thenReturn(new HttpHeaders());
@@ -68,26 +70,34 @@ public final class IotHubResourcesTestAllRoutesWithResponseMockTests {
             manager
                 .iotHubResources()
                 .testAllRoutesWithResponse(
-                    "ygqukyhejh",
-                    "isxgfp",
+                    "eypqwdxggicccn",
+                    "qhuexm",
                     new TestAllRoutesInput()
-                        .withRoutingSource(RoutingSource.DEVICE_CONNECTION_STATE_EVENTS)
+                        .withRoutingSource(RoutingSource.DIGITAL_TWIN_CHANGE_EVENTS)
                         .withMessage(
                             new RoutingMessage()
-                                .withBody("pv")
-                                .withAppProperties(mapOf("swibyr", "pqvujzraehtwdwrf"))
-                                .withSystemProperties(mapOf("hevxcced", "bhshfwpracstwity")))
+                                .withBody("tvlz")
+                                .withAppProperties(
+                                    mapOf("sdtclusiypbs", "mhzrn", "ygqukyhejh", "gytguslfead", "lolp", "isxgfp"))
+                                .withSystemProperties(mapOf("vu", "srp", "r", "zraehtwd")))
                         .withTwin(
                             new RoutingTwin()
-                                .withTags("datamd")
+                                .withTags("datawib")
                                 .withProperties(
                                     new RoutingTwinProperties()
-                                        .withDesired("datanwzxltjcv")
-                                        .withReported("dataltiugcxnavv"))),
+                                        .withDesired("datadl")
+                                        .withReported("datashfwpracstwity"))),
                     com.azure.core.util.Context.NONE)
                 .getValue();
+
+        Assertions.assertEquals("xccedcpnmdyodn", response.routes().get(0).properties().name());
+        Assertions.assertEquals(RoutingSource.DEVICE_LIFECYCLE_EVENTS, response.routes().get(0).properties().source());
+        Assertions.assertEquals("ltjcvnhltiugcxna", response.routes().get(0).properties().condition());
+        Assertions.assertEquals("wxqibyq", response.routes().get(0).properties().endpointNames().get(0));
+        Assertions.assertEquals(false, response.routes().get(0).properties().isEnabled());
     }
 
+    // Use "Map.of" if available
     @SuppressWarnings("unchecked")
     private static <T> Map<String, T> mapOf(Object... inputs) {
         Map<String, T> map = new HashMap<>();

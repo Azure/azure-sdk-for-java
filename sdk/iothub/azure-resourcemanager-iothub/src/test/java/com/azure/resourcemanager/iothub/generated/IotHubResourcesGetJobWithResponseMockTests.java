@@ -30,9 +30,9 @@ public final class IotHubResourcesGetJobWithResponseMockTests {
         ArgumentCaptor<HttpRequest> httpRequest = ArgumentCaptor.forClass(HttpRequest.class);
 
         String responseStr =
-            "{\"jobId\":\"fozbhdmsmlmzqhof\",\"startTimeUtc\":\"Wed, 05 May 2021 04:42:21 GMT\",\"endTimeUtc\":\"Tue,"
-                + " 16 Nov 2021 17:43:34"
-                + " GMT\",\"type\":\"readDeviceProperties\",\"status\":\"failed\",\"failureReason\":\"xicslfao\",\"statusMessage\":\"piyylhalnswhccsp\",\"parentJobId\":\"aivwitqscywu\"}";
+            "{\"jobId\":\"kgtdlmkkze\",\"startTimeUtc\":\"Sun, 20 Dec 2020 17:30:39 GMT\",\"endTimeUtc\":\"Thu, 23 Sep"
+                + " 2021 16:40:17"
+                + " GMT\",\"type\":\"readDeviceProperties\",\"status\":\"unknown\",\"failureReason\":\"sttwvogvbbe\",\"statusMessage\":\"cngqqmoakufgmjz\",\"parentJobId\":\"rdgrtw\"}";
 
         Mockito.when(httpResponse.getStatusCode()).thenReturn(200);
         Mockito.when(httpResponse.getHeaders()).thenReturn(new HttpHeaders());
@@ -63,7 +63,7 @@ public final class IotHubResourcesGetJobWithResponseMockTests {
         JobResponse response =
             manager
                 .iotHubResources()
-                .getJobWithResponse("enuuzkopbm", "nrfdw", "yuhhziu", com.azure.core.util.Context.NONE)
+                .getJobWithResponse("ykutwpf", "pagmhrskdsnf", "sd", com.azure.core.util.Context.NONE)
                 .getValue();
     }
 }

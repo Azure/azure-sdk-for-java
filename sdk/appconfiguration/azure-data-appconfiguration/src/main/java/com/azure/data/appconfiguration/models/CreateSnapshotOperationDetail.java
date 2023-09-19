@@ -24,6 +24,11 @@ public final class CreateSnapshotOperationDetail {
     }
 
     /**
+     * Construct a {@link CreateSnapshotOperationDetail} object.
+     */
+    public CreateSnapshotOperationDetail() {}
+
+    /**
      * Gets the operationId property of the {@link CreateSnapshotOperationDetail}.
      *
      * @return The operationId property of the {@link CreateSnapshotOperationDetail}.

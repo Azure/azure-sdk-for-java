@@ -6,6 +6,8 @@
 
 ### Breaking Changes
 
+- Replaced usage of class `AzureKeyCredential` by `KeyCredential`.
+
 ### Bugs Fixed
 
 ### Other Changes
