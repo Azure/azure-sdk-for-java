@@ -970,6 +970,13 @@ public class CosmosAsyncContainer {
                 client.getEffectiveDiagnosticsThresholds(queryOptionsAccessor.getDiagnosticsThresholds(options)));
 
             setContinuationTokenAndMaxItemCount(pagedFluxOptions, options);
+            // for certain scenarios, the option will not be equal to nonNullOptions
+            // make sure the maxItemCount and continuationToken also being set on the original request options
+            // so the maxItemCount still being honored in following scenarios:
+            // Step 1 - query(option).byPage(pageSize)
+            // Step 2 - query(option).byPage() -> pageSize from step 1 is still being honored
+            setContinuationTokenAndMaxItemCount(pagedFluxOptions, nonNullOptions);
+
             ImplementationBridgeHelpers
                 .CosmosQueryRequestOptionsHelper
                 .getCosmosQueryRequestOptionsAccessor()
