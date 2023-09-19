@@ -6,6 +6,7 @@ package com.azure.ai.openai.implementation;
 import com.azure.ai.openai.models.AudioTranscriptionOptions;
 import com.azure.ai.openai.models.AudioTranslationOptions;
 import com.azure.core.util.BinaryData;
+import com.azure.core.util.logging.ClientLogger;
 
 import java.io.ByteArrayOutputStream;
 import java.io.IOException;
@@ -19,6 +20,7 @@ import java.util.List;
  * in multipart HTTP requests according to RFC7578.
  */
 public class MultipartDataHelper {
+    private static final ClientLogger LOGGER = new ClientLogger(MultipartDataHelper.class);
 
     /**
      * Value to be used as part of the divider for the multipart requests.
@@ -49,14 +51,14 @@ public class MultipartDataHelper {
      * Default constructor used in the code. The boundary is a random value.
      */
     public MultipartDataHelper() {
-        // We can't use randomly generated UUIDs for now. Generating a test session record won't match
-        // the newly generated UUID for the test run instance
-        // this(UUID.randomUUID().toString().substring(0, 16));
+        // TODO: We can't use randomly generated UUIDs for now. Generating a test session record won't match the
+        //       newly generated UUID for the test run instance this(UUID.randomUUID().toString().substring(0, 16));
         this("29580623-3d02-4a");
     }
 
     /**
      * Constructor accepting a boundary generator. Used for testing.
+     *
      * @param boundary The value to be used as "boundary".
      */
     public MultipartDataHelper(String boundary) {
@@ -66,6 +68,7 @@ public class MultipartDataHelper {
     }
 
     /**
+     * Gets the "boundary" value.
      *
      * @return the "boundary" value.
      */
@@ -74,12 +77,13 @@ public class MultipartDataHelper {
     }
 
     /**
-     * This methods marshals the passed request into ready to be sent
-     * @param requestOptions object to be marshalled for the multipart HTTP request
-     * @param fileName the name of the file that is being sent as a part of this request
-     * @return the marshalled data and its length
+     * This method marshals the passed request into ready to be sent.
+     *
+     * @param requestOptions Object to be marshalled for the multipart HTTP request.
+     * @param fileName The name of the file that is being sent as a part of this request.
      * @param <T> {@link AudioTranscriptionOptions} and {@link AudioTranslationOptions} are the only types supported.
      *           This represents the type information of the request object.
+     * @return the marshalled data and its length.
      */
     public <T> MultipartDataSerializationResult serializeRequest(T requestOptions, String fileName) {
         if (requestOptions instanceof AudioTranslationOptions) {
@@ -93,11 +97,13 @@ public class MultipartDataHelper {
             List<MultipartField> fields = formatAudioTranscriptionOptions(audioTranscriptionOptions);
             return serializeRequestFields(file, fields, fileName);
         } else {
-            throw new IllegalArgumentException("Only AudioTranslationOptions and AudioTranscriptionOptions currently supported");
+            throw LOGGER.logThrowableAsError(new IllegalArgumentException(
+                "Only AudioTranslationOptions and AudioTranscriptionOptions currently supported"));
         }
     }
 
     /**
+     * This helper method marshals the passed request fields.
      *
      * @param file is the byte[] representation of the file in the request object.
      * @param fields a list of the members other than the file in the request object.
@@ -131,9 +137,10 @@ public class MultipartDataHelper {
     }
 
     /**
-     * Adds member fields apart from the file to the multipart HTTP request
-     * @param audioTranslationOptions request object
-     * @return a list of the fields in the request (except for "file")
+     * Adds member fields apart from the file to the multipart HTTP request.
+     *
+     * @param audioTranslationOptions The configuration information for an audio translation request.
+     * @return a list of the fields in the request (except for "file").
      */
     private List<MultipartField> formatAudioTranslationOptions(AudioTranslationOptions audioTranslationOptions) {
         List<MultipartField> fields = new ArrayList<>();
@@ -159,9 +166,10 @@ public class MultipartDataHelper {
     }
 
     /**
-     * Adds member fields apart from the file to the multipart HTTP request
-     * @param audioTranscriptionOptions request object
-     * @return a list of the fields in the request (except for "file")
+     * Adds member fields apart from the file to the multipart HTTP request.
+     *
+     * @param audioTranscriptionOptions The configuration information for an audio transcription request.
+     * @return a list of the fields in the request (except for "file").
      */
     private List<MultipartField> formatAudioTranscriptionOptions(AudioTranscriptionOptions audioTranscriptionOptions) {
         List<MultipartField> fields = new ArrayList<>();
@@ -190,9 +198,10 @@ public class MultipartDataHelper {
     }
 
     /**
-     * This method formats a field for a multipart HTTP request and returns its byte[] representation
-     * @param field the field of the request to be marshalled
-     * @return byte[] representation of a field for a multipart HTTP request
+     * This method formats a field for a multipart HTTP request and returns its byte[] representation.
+     *
+     * @param field the field of the request to be marshalled.
+     * @return byte[] representation of a field for a multipart HTTP request.
      */
     private byte[] serializeField(MultipartField field) {
         String serialized = CRLF + partSeparator

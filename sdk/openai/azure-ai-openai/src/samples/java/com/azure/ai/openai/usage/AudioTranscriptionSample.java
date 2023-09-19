@@ -42,8 +42,5 @@ public class AudioTranscriptionSample {
         AudioTranscription transcription = client.getAudioTranscription(deploymentOrModelId, fileName, transcriptionOptions);
 
         System.out.println("Transcription: " + transcription.getText());
-
     }
-
-
 }
