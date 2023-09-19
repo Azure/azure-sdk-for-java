@@ -4,8 +4,11 @@
 
 package com.azure.ai.contentsafety.generated;
 
-import com.azure.ai.contentsafety.models.*;
-
+import com.azure.ai.contentsafety.models.AnalyzeTextOptions;
+import com.azure.ai.contentsafety.models.AnalyzeTextResult;
+import com.azure.ai.contentsafety.models.TextAnalyzeSeverityResult;
+import com.azure.ai.contentsafety.models.TextBlocklistMatchResult;
+import com.azure.ai.contentsafety.models.TextCategory;
 import java.util.List;
 import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.Disabled;
@@ -21,36 +24,28 @@ public final class AnalyzeTextTests extends ContentSafetyClientTestBase {
 
         // response assertion
         Assertions.assertNotNull(response);
-
+        // verify property "blocklistsMatchResults"
         List<TextBlocklistMatchResult> responseBlocklistsMatchResults = response.getBlocklistsMatchResults();
         Assertions.assertEquals(0, responseBlocklistsMatchResults.size());
+        // verify property "hateResult"
         TextAnalyzeSeverityResult responseHateResult = response.getHateResult();
         Assertions.assertNotNull(responseHateResult);
-
-        TextCategory responseHateResultCategory = responseHateResult.getCategory();
-        Assertions.assertEquals(TextCategory.HATE, responseHateResultCategory);
-        int responseHateResultSeverity = responseHateResult.getSeverity();
-        Assertions.assertEquals(0, responseHateResultSeverity);
+        Assertions.assertEquals(TextCategory.HATE, responseHateResult.getCategory());
+        Assertions.assertEquals(0, responseHateResult.getSeverity());
+        // verify property "selfHarmResult"
         TextAnalyzeSeverityResult responseSelfHarmResult = response.getSelfHarmResult();
         Assertions.assertNotNull(responseSelfHarmResult);
-
-        TextCategory responseSelfHarmResultCategory = responseSelfHarmResult.getCategory();
-        Assertions.assertEquals(TextCategory.SELF_HARM, responseSelfHarmResultCategory);
-        int responseSelfHarmResultSeverity = responseSelfHarmResult.getSeverity();
-        Assertions.assertEquals(0, responseSelfHarmResultSeverity);
+        Assertions.assertEquals(TextCategory.SELF_HARM, responseSelfHarmResult.getCategory());
+        Assertions.assertEquals(0, responseSelfHarmResult.getSeverity());
+        // verify property "sexualResult"
         TextAnalyzeSeverityResult responseSexualResult = response.getSexualResult();
         Assertions.assertNotNull(responseSexualResult);
-
-        TextCategory responseSexualResultCategory = responseSexualResult.getCategory();
-        Assertions.assertEquals(TextCategory.SEXUAL, responseSexualResultCategory);
-        int responseSexualResultSeverity = responseSexualResult.getSeverity();
-        Assertions.assertEquals(0, responseSexualResultSeverity);
+        Assertions.assertEquals(TextCategory.SEXUAL, responseSexualResult.getCategory());
+        Assertions.assertEquals(0, responseSexualResult.getSeverity());
+        // verify property "violenceResult"
         TextAnalyzeSeverityResult responseViolenceResult = response.getViolenceResult();
         Assertions.assertNotNull(responseViolenceResult);
-
-        TextCategory responseViolenceResultCategory = responseViolenceResult.getCategory();
-        Assertions.assertEquals(TextCategory.VIOLENCE, responseViolenceResultCategory);
-        int responseViolenceResultSeverity = responseViolenceResult.getSeverity();
-        Assertions.assertEquals(0, responseViolenceResultSeverity);
+        Assertions.assertEquals(TextCategory.VIOLENCE, responseViolenceResult.getCategory());
+        Assertions.assertEquals(0, responseViolenceResult.getSeverity());
     }
 }

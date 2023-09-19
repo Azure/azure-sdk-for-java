@@ -56,7 +56,7 @@ String endpoint = Configuration.getGlobalConfiguration().get("CONTENT_SAFETY_END
 String key = Configuration.getGlobalConfiguration().get("CONTENT_SAFETY_KEY");
 
 ContentSafetyClient contentSafetyClient = new ContentSafetyClientBuilder()
-    .credential(new AzureKeyCredential(key))
+    .credential(new KeyCredential(key))
     .endpoint(endpoint).buildClient();
 ```
 
@@ -114,7 +114,7 @@ The following section provides several code snippets covering some of the most c
 String endpoint = Configuration.getGlobalConfiguration().get("CONTENT_SAFETY_ENDPOINT");
 String key = Configuration.getGlobalConfiguration().get("CONTENT_SAFETY_KEY");
 ContentSafetyClient contentSafetyClient = new ContentSafetyClientBuilder()
-    .credential(new AzureKeyCredential(key))
+    .credential(new KeyCredential(key))
     .endpoint(endpoint).buildClient();
 
 AnalyzeTextResult response = contentSafetyClient.analyzeText(new AnalyzeTextOptions("This is text example"));
@@ -155,13 +155,13 @@ String endpoint = Configuration.getGlobalConfiguration().get("CONTENT_SAFETY_END
 String key = Configuration.getGlobalConfiguration().get("CONTENT_SAFETY_KEY");
 
 ContentSafetyClient contentSafetyClient = new ContentSafetyClientBuilder()
-    .credential(new AzureKeyCredential(key))
+    .credential(new KeyCredential(key))
     .endpoint(endpoint).buildClient();
 
 ImageData image = new ImageData();
 String cwd = System.getProperty("user.dir");
-String absolutePath = cwd + "./src/image.jpg";
-image.setContent(Files.readAllBytes(Paths.get(absolutePath)));
+String source = "/src/samples/resources/image.jpg";
+image.setContent(Files.readAllBytes(Paths.get(cwd, source)));
 
 AnalyzeImageResult response =
         contentSafetyClient.analyzeImage(new AnalyzeImageOptions(image));

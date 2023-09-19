@@ -8,7 +8,7 @@ package com.azure.ai.contentsafety;
 // If you wish to modify these files, please copy them out of the 'generated' package, and modify there.
 // See https://aka.ms/azsdk/dpg/java/tests for guide on adding a test.
 
-import com.azure.core.credential.AzureKeyCredential;
+import com.azure.core.credential.KeyCredential;
 import com.azure.core.http.HttpClient;
 import com.azure.core.http.policy.HttpLogDetailLevel;
 import com.azure.core.http.policy.HttpLogOptions;
@@ -25,7 +25,7 @@ class ContentSafetyClientTestBase extends TestProxyTestBase {
         String key = Configuration.getGlobalConfiguration().get("CONTENT_SAFETY_KEY", "00000000000000000000000000000000");
         ContentSafetyClientBuilder contentSafetyClientbuilder =
             new ContentSafetyClientBuilder()
-                .credential(new AzureKeyCredential(key))
+                .credential(new KeyCredential(key))
                 .endpoint(endpoint)
                 .httpClient(HttpClient.createDefault())
                 .httpLogOptions(new HttpLogOptions().setLogLevel(HttpLogDetailLevel.BASIC));

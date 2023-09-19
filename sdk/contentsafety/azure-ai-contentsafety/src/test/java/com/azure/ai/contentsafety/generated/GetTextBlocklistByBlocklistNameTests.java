@@ -19,10 +19,9 @@ public final class GetTextBlocklistByBlocklistNameTests extends ContentSafetyCli
 
         // response assertion
         Assertions.assertNotNull(response);
-
-        String responseBlocklistName = response.getBlocklistName();
-        Assertions.assertEquals("TestBlocklist", responseBlocklistName);
-        String responseDescription = response.getDescription();
-        Assertions.assertEquals("Test Blocklist", responseDescription);
+        // verify property "blocklistName"
+        Assertions.assertEquals("TestBlocklist", response.getBlocklistName());
+        // verify property "description"
+        Assertions.assertEquals("Test Blocklist", response.getDescription());
     }
 }

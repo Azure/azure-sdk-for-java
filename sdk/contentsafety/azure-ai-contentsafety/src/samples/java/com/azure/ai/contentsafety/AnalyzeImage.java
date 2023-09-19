@@ -7,7 +7,7 @@ package com.azure.ai.contentsafety;
 import com.azure.ai.contentsafety.models.AnalyzeImageOptions;
 import com.azure.ai.contentsafety.models.AnalyzeImageResult;
 import com.azure.ai.contentsafety.models.ImageData;
-import com.azure.core.credential.AzureKeyCredential;
+import com.azure.core.credential.KeyCredential;
 import com.azure.core.util.Configuration;
 
 import java.io.IOException;
@@ -21,13 +21,13 @@ public class AnalyzeImage {
         String key = Configuration.getGlobalConfiguration().get("CONTENT_SAFETY_KEY");
 
         ContentSafetyClient contentSafetyClient = new ContentSafetyClientBuilder()
-            .credential(new AzureKeyCredential(key))
+            .credential(new KeyCredential(key))
             .endpoint(endpoint).buildClient();
 
         ImageData image = new ImageData();
         String cwd = System.getProperty("user.dir");
-        String absolutePath = cwd + "./src/image.jpg";
-        image.setContent(Files.readAllBytes(Paths.get(absolutePath)));
+        String source = "/src/samples/resources/image.jpg";
+        image.setContent(Files.readAllBytes(Paths.get(cwd, source)));
 
         AnalyzeImageResult response =
                 contentSafetyClient.analyzeImage(new AnalyzeImageOptions(image));

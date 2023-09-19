@@ -20,12 +20,11 @@ public final class GetBlockItemByBlocklistNameAndBlockItemIdTests extends Conten
 
         // response assertion
         Assertions.assertNotNull(response);
-
-        String responseBlockItemId = response.getBlockItemId();
-        Assertions.assertEquals("9511969e-f1e3-4604-9127-05ee16c509ec", responseBlockItemId);
-        String responseDescription = response.getDescription();
-        Assertions.assertEquals("Hate word", responseDescription);
-        String responseText = response.getText();
-        Assertions.assertEquals("hate", responseText);
+        // verify property "blockItemId"
+        Assertions.assertEquals("9511969e-f1e3-4604-9127-05ee16c509ec", response.getBlockItemId());
+        // verify property "description"
+        Assertions.assertEquals("Hate word", response.getDescription());
+        // verify property "text"
+        Assertions.assertEquals("hate", response.getText());
     }
 }

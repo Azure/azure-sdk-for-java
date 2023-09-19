@@ -28,16 +28,12 @@ public final class AddBlockItemsToTextBlocklistTests extends ContentSafetyClient
 
         // response assertion
         Assertions.assertNotNull(response);
-
+        // verify property "value"
         List<TextBlockItem> responseValue = response.getValue();
         TextBlockItem responseValueFirstItem = responseValue.iterator().next();
         Assertions.assertNotNull(responseValueFirstItem);
-
-        String responseValueFirstItemBlockItemId = responseValueFirstItem.getBlockItemId();
-        Assertions.assertEquals("9511969e-f1e3-4604-9127-05ee16c509ec", responseValueFirstItemBlockItemId);
-        String responseValueFirstItemDescription = responseValueFirstItem.getDescription();
-        Assertions.assertEquals("Hate word", responseValueFirstItemDescription);
-        String responseValueFirstItemText = responseValueFirstItem.getText();
-        Assertions.assertEquals("hate", responseValueFirstItemText);
+        Assertions.assertEquals("9511969e-f1e3-4604-9127-05ee16c509ec", responseValueFirstItem.getBlockItemId());
+        Assertions.assertEquals("Hate word", responseValueFirstItem.getDescription());
+        Assertions.assertEquals("hate", responseValueFirstItem.getText());
     }
 }

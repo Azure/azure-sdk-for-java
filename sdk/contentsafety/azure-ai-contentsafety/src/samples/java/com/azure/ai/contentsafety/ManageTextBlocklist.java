@@ -13,7 +13,7 @@ import com.azure.ai.contentsafety.models.AnalyzeTextOptions;
 import com.azure.ai.contentsafety.models.AnalyzeTextResult;
 import com.azure.ai.contentsafety.models.TextBlocklist;
 import com.azure.ai.contentsafety.models.AddBlockItemsOptions;
-import com.azure.core.credential.AzureKeyCredential;
+import com.azure.core.credential.KeyCredential;
 import com.azure.core.exception.HttpResponseException;
 import com.azure.core.http.rest.PagedIterable;
 import com.azure.core.http.rest.RequestOptions;
@@ -34,7 +34,7 @@ public class ManageTextBlocklist {
         String key = Configuration.getGlobalConfiguration().get("CONTENT_SAFETY_KEY");
 
         ContentSafetyClient contentSafetyClient = new ContentSafetyClientBuilder()
-            .credential(new AzureKeyCredential(key))
+            .credential(new KeyCredential(key))
             .endpoint(endpoint).buildClient();
         // END:com.azure.ai.contentsafety.createClient
 

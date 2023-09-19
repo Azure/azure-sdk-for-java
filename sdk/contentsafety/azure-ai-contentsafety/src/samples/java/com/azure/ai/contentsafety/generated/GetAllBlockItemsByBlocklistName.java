@@ -7,7 +7,7 @@ package com.azure.ai.contentsafety.generated;
 import com.azure.ai.contentsafety.ContentSafetyClient;
 import com.azure.ai.contentsafety.ContentSafetyClientBuilder;
 import com.azure.ai.contentsafety.models.TextBlockItem;
-import com.azure.core.credential.AzureKeyCredential;
+import com.azure.core.credential.KeyCredential;
 import com.azure.core.http.rest.PagedIterable;
 import com.azure.core.util.Configuration;
 
@@ -15,11 +15,11 @@ public class GetAllBlockItemsByBlocklistName {
     public static void main(String[] args) {
         ContentSafetyClient contentSafetyClient =
                 new ContentSafetyClientBuilder()
-                        .credential(new AzureKeyCredential(Configuration.getGlobalConfiguration().get("API_KEY")))
+                        .credential(new KeyCredential(Configuration.getGlobalConfiguration().get("API_KEY")))
                         .endpoint(Configuration.getGlobalConfiguration().get("ENDPOINT"))
                         .buildClient();
-        // BEGIN:com.azure.ai.contentsafety.generated.listtextblocklistitems
+        // BEGIN:com.azure.ai.contentsafety.generated.listtextblocklistitems.getallblockitemsbyblocklistname
         PagedIterable<TextBlockItem> response = contentSafetyClient.listTextBlocklistItems("TestBlocklist", null, null);
-        // END:com.azure.ai.contentsafety.generated.listtextblocklistitems
+        // END:com.azure.ai.contentsafety.generated.listtextblocklistitems.getallblockitemsbyblocklistname
     }
 }
