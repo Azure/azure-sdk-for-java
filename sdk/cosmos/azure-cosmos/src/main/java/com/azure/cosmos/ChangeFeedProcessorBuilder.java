@@ -141,6 +141,23 @@ public class ChangeFeedProcessorBuilder {
         return this;
     }
 
+    /**
+     * Sets a {@link BiConsumer} function which will be called to process changes for LatestVersion change feed mode.
+     * Attention! This API is not merge proof, please use {@link #handleLatestVersionChanges(BiConsumer)} instead.
+     *
+     * <!-- src_embed com.azure.cosmos.changeFeedProcessor.handleChanges -->
+     * <pre>
+     * .handleChanges&#40;&#40;docs, context&#41; -&gt; &#123;
+     *     for &#40;JsonNode item : docs&#41; &#123;
+     *         &#47;&#47; Implementation for handling and processing of each JsonNode item goes here
+     *     &#125;
+     * &#125;&#41;
+     * </pre>
+     * <!-- end com.azure.cosmos.changeFeedProcessor.handleChanges -->
+     *
+     * @param biConsumer the {@link BiConsumer} to call for handling the feeds along with a {@link ChangeFeedProcessorContext} instance.
+     * @return current Builder.
+     */
     ChangeFeedProcessorBuilder handleChanges(BiConsumer<List<JsonNode>, ChangeFeedProcessorContext<JsonNode>> biConsumer) {
 
         checkArgument(
@@ -154,7 +171,7 @@ public class ChangeFeedProcessorBuilder {
             "handleChanges consumer has already been defined"
         );
 
-        checkNotNull(biConsumer, "Argument 'consumer' can not be null");
+        checkNotNull(biConsumer, "Argument 'biConsumer' can not be null");
 
         this.incrementalModeLeaseConsumerWithContextPkRangeIdVersion = biConsumer;
         this.changeFeedMode = ChangeFeedMode.INCREMENTAL;
@@ -190,13 +207,31 @@ public class ChangeFeedProcessorBuilder {
         return this;
     }
 
-
+    /**
+     * Sets a {@link BiConsumer} function which will be called to process changes for LatestVersion change feed mode.
+     *
+     * <!-- src_embed com.azure.cosmos.latestVersionChanges.handleChanges -->
+     * <pre>
+     * .handleLatestVersionChanges&#40;&#40;changeFeedProcessorItems, context&#41; -&gt; &#123;
+     *     for &#40;ChangeFeedProcessorItem item : changeFeedProcessorItems&#41; &#123;
+     *         &#47;&#47; Implementation for handling and processing of each change feed item goes here
+     *     &#125;
+     * &#125;&#41;
+     * </pre>
+     * <!-- end com.azure.cosmos.latestVersionChanges.handleChanges -->
+     *
+     * @param biConsumer the {@link BiConsumer} to call for handling the feeds along with a {@link ChangeFeedProcessorContext} instance.
+     * @return current Builder.
+     */
     ChangeFeedProcessorBuilder handleLatestVersionChanges(
         BiConsumer<List<ChangeFeedProcessorItem>, ChangeFeedProcessorContext<ChangeFeedProcessorItem>> biConsumer) {
 
         checkArgument(
             this.incrementalModeLeaseConsumerPkRangeIdVersion == null,
             "handleChanges consumer has already been defined");
+        checkArgument(
+            this.incrementalModeLeaseConsumerWithContextPkRangeIdVersion == null,
+            "handleChanges biConsumer has already been defined");
         checkArgument(
             this.incrementalModeLeaseConsumerEpkVersion == null,
             "handleLatestVersionChanges consumer has already been defined");
@@ -226,6 +261,10 @@ public class ChangeFeedProcessorBuilder {
      */
     @Beta(value = Beta.SinceVersion.V4_37_0, warningText = Beta.PREVIEW_SUBJECT_TO_CHANGE_WARNING)
     public ChangeFeedProcessorBuilder handleAllVersionsAndDeletesChanges(Consumer<List<ChangeFeedProcessorItem>> consumer) {
+        checkNotNull(consumer, "consumer cannot be null");
+        checkArgument(this.fullFidelityModeLeaseWithContextConsumer == null,
+            "handleAllVersionsAndDeletesChanges biConsumer has already been defined.");
+
         this.fullFidelityModeLeaseConsumer = consumer;
         this.changeFeedMode = ChangeFeedMode.FULL_FIDELITY;
         this.leaseVersion = LeaseVersion.EPK_RANGE_BASED_LEASE;
@@ -233,7 +272,7 @@ public class ChangeFeedProcessorBuilder {
     }
 
     /**
-     * Sets a consumer function which will be called to process changes for AllVersionsAndDeletes change feed mode.
+     * Sets a {@link BiConsumer} function which will be called to process changes for AllVersionsAndDeletes change feed mode.
      *
      * <!-- src_embed com.azure.cosmos.allVersionsAndDeletesChangeFeedProcessor.handleChanges -->
      * <pre>
@@ -251,6 +290,11 @@ public class ChangeFeedProcessorBuilder {
     @Beta(value = Beta.SinceVersion.V4_50_0, warningText = Beta.PREVIEW_SUBJECT_TO_CHANGE_WARNING)
     public ChangeFeedProcessorBuilder handleAllVersionsAndDeletesChanges(
         BiConsumer<List<ChangeFeedProcessorItem>, ChangeFeedProcessorContext<ChangeFeedProcessorItem>> biConsumer) {
+
+        checkNotNull(biConsumer, "biConsumer cannot be null");
+        checkArgument(this.fullFidelityModeLeaseConsumer == null,
+            "handleAllVersionsAndDeletesChanges consumer has already been defined.");
+
         this.fullFidelityModeLeaseWithContextConsumer = biConsumer;
         this.changeFeedMode = ChangeFeedMode.FULL_FIDELITY;
         this.leaseVersion = LeaseVersion.EPK_RANGE_BASED_LEASE;
