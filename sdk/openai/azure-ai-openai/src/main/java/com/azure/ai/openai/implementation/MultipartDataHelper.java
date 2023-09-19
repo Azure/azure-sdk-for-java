@@ -13,7 +13,6 @@ import java.nio.charset.Charset;
 import java.nio.charset.StandardCharsets;
 import java.util.ArrayList;
 import java.util.List;
-import java.util.UUID;
 
 /**
  * Helper class for marshaling {@link AudioTranscriptionOptions} and {@link AudioTranslationOptions} objects to be used
