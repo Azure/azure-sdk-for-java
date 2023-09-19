@@ -1,16 +1,17 @@
 # Release History
 
-## 1.4.0-beta.3 (Unreleased)
+## 1.3.10 (2023-09-19)
 
 ### Features Added
 
 - Add support for protobuf schema format.
 
-### Breaking Changes
-
-### Bugs Fixed
-
 ### Other Changes
+
+#### Dependency Updates
+
+- Upgraded `azure-core` from `1.42.0` to version `1.43.0`.
+- Upgraded `azure-core-http-netty` from `1.13.6` to version `1.13.7`.
 
 ## 1.3.9 (2023-08-18)
 
