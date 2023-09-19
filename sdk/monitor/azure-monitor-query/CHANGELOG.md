@@ -8,6 +8,9 @@
 
 ### Bugs Fixed
 
+- Fixed the issue with `MetricsQueryClient` and `MetricsQueryAsyncClient` where the `listMetricDefinitions` method was returning 
+`MetricsDefinition` objects with null values for `supportedAggregationTypes`.
+
 ### Other Changes
 
 ## 1.3.0-beta.2 (2023-09-13)
