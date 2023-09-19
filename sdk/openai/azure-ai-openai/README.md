@@ -302,7 +302,7 @@ byte[] file = BinaryData.fromFile(filePath).toBytes();
 AudioTranscriptionOptions transcriptionOptions = new AudioTranscriptionOptions(file)
     .setResponseFormat(AudioTranscriptionFormat.JSON);
 
-AudioTranscription transcription = client.getAudioTranscription("{deploymentOrModelId}", transcriptionOptions, fileName);
+AudioTranscription transcription = client.getAudioTranscription("{deploymentOrModelId}", fileName, transcriptionOptions);
 
 System.out.println("Transcription: " + transcription.getText());
 ```
@@ -321,7 +321,7 @@ byte[] file = BinaryData.fromFile(filePath).toBytes();
 AudioTranslationOptions translationOptions = new AudioTranslationOptions(file)
     .setResponseFormat(AudioTranscriptionFormat.JSON);
 
-AudioTranscription translation = client.getAudioTranslation("{deploymentOrModelId}", translationOptions, fileName);
+AudioTranscription translation = client.getAudioTranslation("{deploymentOrModelId}", fileName, translationOptions);
 
 System.out.println("Translation: " + translation.getText());
 ```
