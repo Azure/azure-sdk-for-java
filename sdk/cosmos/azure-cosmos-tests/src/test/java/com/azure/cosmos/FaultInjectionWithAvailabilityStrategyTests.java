@@ -23,6 +23,7 @@ import com.azure.cosmos.models.CosmosQueryRequestOptions;
 import com.azure.cosmos.models.FeedResponse;
 import com.azure.cosmos.models.PartitionKey;
 import com.azure.cosmos.models.PartitionKeyDefinition;
+import com.azure.cosmos.models.ThroughputProperties;
 import com.azure.cosmos.rx.TestSuiteBase;
 import com.azure.cosmos.test.faultinjection.CosmosFaultInjectionHelper;
 import com.azure.cosmos.test.faultinjection.FaultInjectionCondition;
@@ -63,6 +64,7 @@ import static org.assertj.core.api.AssertionsForClassTypes.fail;
 
 @SuppressWarnings("SameParameterValue")
 public class FaultInjectionWithAvailabilityStrategyTests extends TestSuiteBase {
+    private static final int PHYSICAL_PARTITION_COUNT = 3;
     private static final ObjectMapper OBJECT_MAPPER = new ObjectMapper();
     private final static Logger logger = LoggerFactory.getLogger(FaultInjectionWithAvailabilityStrategyTests.class);
 
@@ -232,21 +234,20 @@ public class FaultInjectionWithAvailabilityStrategyTests extends TestSuiteBase {
                     }
                 };
 
-            this.validateDiagnosticsContextHasDiagnosticsForOnlyFirstRegion =
-                (ctx) -> {
-                    logger.info(
-                        "Diagnostics Context to evaluate: {}",
-                        ctx != null ? ctx.toJson() : "NULL");
+            this.validateDiagnosticsContextHasDiagnosticsForOnlyFirstRegion = (ctx) -> {
+                logger.info(
+                    "Diagnostics Context to evaluate: {}",
+                    ctx != null ? ctx.toJson() : "NULL");
 
-                    assertThat(ctx).isNotNull();
-                    if (ctx != null) {
-                        assertThat(ctx.getDiagnostics()).isNotNull();
-                        assertThat(ctx.getDiagnostics().size()).isEqualTo(1);
-                        assertThat(ctx.getContactedRegionNames().size()).isEqualTo(1);
-                        assertThat(ctx.getContactedRegionNames().iterator().next())
-                            .isEqualTo(this.writeableRegions.get(0).toLowerCase(Locale.ROOT));
-                    }
-                };
+                assertThat(ctx).isNotNull();
+                if (ctx != null) {
+                    assertThat(ctx.getDiagnostics()).isNotNull();
+                    assertThat(ctx.getDiagnostics().size()).isEqualTo(1);
+                    assertThat(ctx.getContactedRegionNames().size()).isEqualTo(1);
+                    assertThat(ctx.getContactedRegionNames().iterator().next())
+                        .isEqualTo(this.writeableRegions.get(0).toLowerCase(Locale.ROOT));
+                }
+            };
 
             this.injectReadSessionNotAvailableIntoAllRegions =
                 (c, operationType) -> injectReadSessionNotAvailableError(c, this.writeableRegions, operationType);
@@ -737,7 +738,10 @@ public class FaultInjectionWithAvailabilityStrategyTests extends TestSuiteBase {
             readItemCallback,
             faultInjectionCallback,
             validateStatusCode,
-            validateDiagnosticsContext);
+            validateDiagnosticsContext,
+            null,
+            0,
+            0);
     }
 
     @DataProvider(name = "testConfigs_writeAfterCreation")
@@ -1531,47 +1535,160 @@ public class FaultInjectionWithAvailabilityStrategyTests extends TestSuiteBase {
             actionAfterInitialCreation,
             faultInjectionCallback,
             validateStatusCode,
-            validateDiagnosticsContext);
+            validateDiagnosticsContext,
+            null,
+            0,
+            0);
+    }
+
+    private CosmosResponseWrapper queryReturnsTotalRecordCountCore(
+        String query,
+        ItemOperationInvocationParameters params,
+        int requestedPageSize
+    ) {
+        CosmosQueryRequestOptions queryOptions = new CosmosQueryRequestOptions();
+        CosmosEndToEndOperationLatencyPolicyConfig e2ePolicy = ImplementationBridgeHelpers
+            .CosmosItemRequestOptionsHelper
+            .getCosmosItemRequestOptionsAccessor()
+            .getEndToEndOperationLatencyPolicyConfig(params.options);
+        queryOptions.setCosmosEndToEndOperationLatencyPolicyConfig(e2ePolicy);
+
+        CosmosPagedFlux<ObjectNode> queryPagedFlux = params.container.queryItems(
+            query,
+            queryOptions,
+            ObjectNode.class
+        );
+
+        List<FeedResponse<ObjectNode>> returnedPages =
+            queryPagedFlux.byPage(requestedPageSize).collectList().block();
+
+        CosmosDiagnosticsContext foundCtx = null;
+
+        if (returnedPages.isEmpty()) {
+            return new CosmosResponseWrapper(
+                null,
+                HttpConstants.StatusCodes.NOTFOUND,
+                NO_QUERY_PAGE_SUB_STATUS_CODE,
+                null);
+        }
+
+        long totalRecordCount = 0L;
+        for (FeedResponse<ObjectNode> page: returnedPages) {
+            if (foundCtx == null && page.getCosmosDiagnostics() != null) {
+                foundCtx = page.getCosmosDiagnostics().getDiagnosticsContext();
+            } else {
+                assertThat(foundCtx).isSameAs(page.getCosmosDiagnostics().getDiagnosticsContext());
+            }
+
+            if (page.getResults() != null && page.getResults().size() > 0) {
+                totalRecordCount += page.getResults().size();
+            }
+        }
+
+        return new CosmosResponseWrapper(
+            foundCtx,
+            HttpConstants.StatusCodes.OK,
+            HttpConstants.SubStatusCodes.UNKNOWN,
+            totalRecordCount);
     }
 
     @DataProvider(name = "testConfigs_queryAfterCreation")
     public Object[][] testConfigs_queryAfterCreation() {
-        BiFunction<String, ItemOperationInvocationParameters, CosmosResponseWrapper> queryReturnsFirstNonEmptyPage = (query, params) -> {
 
-            CosmosQueryRequestOptions queryOptions = new CosmosQueryRequestOptions();
-            CosmosEndToEndOperationLatencyPolicyConfig e2ePolicy = ImplementationBridgeHelpers
-                .CosmosItemRequestOptionsHelper
-                .getCosmosItemRequestOptionsAccessor()
-                .getEndToEndOperationLatencyPolicyConfig(params.options);
-            queryOptions.setCosmosEndToEndOperationLatencyPolicyConfig(e2ePolicy);
+        final int ENOUGH_DOCS_SAME_PK_TO_EXCEED_PAGE_SIZE = 10;
+        final int NO_OTHER_DOCS_WITH_SAME_PK = 0;
+        final int ENOUGH_DOCS_OTHER_PK_TO_HIT_EVERY_PARTITION = PHYSICAL_PARTITION_COUNT * 10;
 
-            CosmosPagedFlux<ObjectNode> queryPagedFlux = params.container.queryItems(
-                query,
-                queryOptions,
-                ObjectNode.class
-            );
+        BiFunction<String, ItemOperationInvocationParameters, CosmosResponseWrapper> queryReturnsTotalRecordCountWithDefaultPageSize = (query, params) ->
+            queryReturnsTotalRecordCountCore(query, params, 100);
 
-            List<FeedResponse<ObjectNode>> returnedPages =
-                queryPagedFlux.byPage(100).collectList().block();
+        BiFunction<String, ItemOperationInvocationParameters, CosmosResponseWrapper> queryReturnsTotalRecordCountWithPageSizeOne = (query, params) ->
+            queryReturnsTotalRecordCountCore(query, params, 1);
 
-            for (FeedResponse<ObjectNode> page: returnedPages) {
-                if (page.getResults() != null && page.getResults().size() > 0) {
-                    return new CosmosResponseWrapper(page);
-                }
+        BiConsumer<CosmosResponseWrapper, Long>  validateExpectedRecordCount = (response, expectedRecordCount) -> {
+            if (expectedRecordCount != null) {
+                assertThat(response).isNotNull();
+                assertThat(response.getTotalRecordCount()).isNotNull();
+                assertThat(response.getTotalRecordCount()).isEqualTo(expectedRecordCount);
             }
-
-            return new CosmosResponseWrapper(
-                null,
-                HttpConstants.StatusCodes.NOTFOUND,
-                NO_QUERY_PAGE_SUB_STATUS_CODE);
         };
 
+        Consumer<CosmosResponseWrapper> validateExactlyOneRecordReturned =
+            (response) -> validateExpectedRecordCount.accept(response, 1L);
+
+        Consumer<CosmosResponseWrapper> validateAllRecordsSameIdReturned =
+            (response) -> validateExpectedRecordCount.accept(
+                response,
+                1L + ENOUGH_DOCS_OTHER_PK_TO_HIT_EVERY_PARTITION);
+
+        Consumer<CosmosResponseWrapper> validateAllRecordsSamePartitionReturned =
+            (response) -> validateExpectedRecordCount.accept(
+                response,
+                1L + ENOUGH_DOCS_SAME_PK_TO_EXCEED_PAGE_SIZE);
+
         Function<ItemOperationInvocationParameters, String> singlePartitionQueryGenerator = (params) ->
-            "SELECT * FROM c WHERE c.id = '"
-                + params.idAndPkValuePair.getLeft()
-                + "' AND c.mypk = '"
+            "SELECT * FROM c WHERE c.mypk = '"
                 +  params.idAndPkValuePair.getRight()
                 + "'";
+
+        Function<ItemOperationInvocationParameters, String> crossPartitionQueryGenerator = (params) ->
+            "SELECT * FROM c WHERE CONTAINS (c.id, '"
+                + params.idAndPkValuePair.getLeft()
+                + "')";
+
+        Consumer<CosmosDiagnosticsContext>  validateSinglePartitionQueryDiagnosticsContextForOnlyFirstRegion =
+            (ctx) -> {
+                this.validateDiagnosticsContextHasDiagnosticsForOnlyFirstRegion.accept(ctx);
+                CosmosDiagnostics singleDiagnostics = ctx.getDiagnostics().iterator().next();
+                assertThat(singleDiagnostics.getFeedResponseDiagnostics()).isNotNull();
+                assertThat(singleDiagnostics.getFeedResponseDiagnostics().getQueryPlanDiagnosticsContext()).isNotNull();
+                assertThat(singleDiagnostics.getFeedResponseDiagnostics().getClientSideRequestStatistics()).isNotNull();
+                assertThat(singleDiagnostics.getFeedResponseDiagnostics().getClientSideRequestStatistics().size()).isEqualTo(1);
+            };
+
+        BiConsumer<CosmosDiagnosticsContext, Integer> validateQueryDiagnosticsContext =
+            (ctx, expectedDiagnosticsCount) -> {
+                logger.info(
+                    "Diagnostics Context to evaluate: {}",
+                    ctx != null ? ctx.toJson() : "NULL");
+
+                assertThat(ctx).isNotNull();
+                if (ctx != null) {
+                    assertThat(ctx.getDiagnostics()).isNotNull();
+                    assertThat(ctx.getDiagnostics().size()).isEqualTo(expectedDiagnosticsCount);
+                    assertThat(ctx.getContactedRegionNames().size()).isEqualTo(1);
+                    assertThat(ctx.getContactedRegionNames().iterator().next())
+                        .isEqualTo(this.writeableRegions.get(0).toLowerCase(Locale.ROOT));
+
+                    CosmosDiagnostics[] diagnostics = ctx.getDiagnostics().toArray(new CosmosDiagnostics[0]);
+                    assertThat(diagnostics.length).isEqualTo(expectedDiagnosticsCount);
+
+                    // Query plan should only exist for first partition
+                    // All partitions should return single page - because total document count is less than maxItemCount
+                    CosmosDiagnostics firstDiagnostics = diagnostics[0];
+                    assertThat(firstDiagnostics.getFeedResponseDiagnostics()).isNotNull();
+                    assertThat(firstDiagnostics.getFeedResponseDiagnostics().getQueryPlanDiagnosticsContext()).isNotNull();
+                    assertThat(firstDiagnostics.getFeedResponseDiagnostics().getClientSideRequestStatistics()).isNotNull();
+                    assertThat(firstDiagnostics.getFeedResponseDiagnostics().getClientSideRequestStatistics().size()).isEqualTo(1);
+
+                    for (int i = 1; i < expectedDiagnosticsCount; i++) {
+                        CosmosDiagnostics subsequentDiagnostics = diagnostics[i];
+                        assertThat(subsequentDiagnostics.getFeedResponseDiagnostics()).isNotNull();
+                        assertThat(subsequentDiagnostics.getFeedResponseDiagnostics().getQueryPlanDiagnosticsContext()).isNull();
+                        assertThat(subsequentDiagnostics.getFeedResponseDiagnostics().getClientSideRequestStatistics()).isNotNull();
+                        assertThat(subsequentDiagnostics.getFeedResponseDiagnostics().getClientSideRequestStatistics().size()).isEqualTo(1);
+                    }
+                }
+            };
+
+        Consumer<CosmosDiagnosticsContext> validateOnePagePerPartitionQueryDiagnosticsContextForOnlyFirstRegion =
+            (ctx) -> validateQueryDiagnosticsContext.accept(ctx, PHYSICAL_PARTITION_COUNT);
+
+        Consumer<CosmosDiagnosticsContext> validatePageSizeOneForAllDocsSamePKQueryDiagnosticsContextForOnlyFirstRegion =
+            (ctx) -> validateQueryDiagnosticsContext.accept(ctx, 1 + (int)ENOUGH_DOCS_SAME_PK_TO_EXCEED_PAGE_SIZE);
+
+        Consumer<CosmosDiagnosticsContext> validatePageSizeOneAllDocsSameIdQueryDiagnosticsContextForOnlyFirstRegion =
+            (ctx) -> validateQueryDiagnosticsContext.accept(ctx, 1 + (int)ENOUGH_DOCS_OTHER_PK_TO_HIT_EVERY_PARTITION);
 
         return new Object[][] {
             // CONFIG description
@@ -1587,15 +1704,60 @@ public class FaultInjectionWithAvailabilityStrategyTests extends TestSuiteBase {
             //    Diagnostics context validation callback
             // },
             new Object[] {
-                "FirstNonEmptyPage_AllGood_NoAvailabilityStrategy",
+                "DefaultPageSize_SinglePartition_AllGood_NoAvailabilityStrategy",
                 Duration.ofSeconds(1),
                 noAvailabilityStrategy,
                 noRegionSwitchHint,
                 singlePartitionQueryGenerator,
-                queryReturnsFirstNonEmptyPage,
+                queryReturnsTotalRecordCountWithDefaultPageSize,
                 noFailureInjection,
                 validateStatusCodeIs200Ok,
-                validateDiagnosticsContextHasDiagnosticsForOnlyFirstRegion
+                validateSinglePartitionQueryDiagnosticsContextForOnlyFirstRegion,
+                validateExactlyOneRecordReturned,
+                ENOUGH_DOCS_OTHER_PK_TO_HIT_EVERY_PARTITION,
+                NO_OTHER_DOCS_WITH_SAME_PK
+            },
+            new Object[] {
+                "DefaultPageSize_CrossPartition_AllGood_NoAvailabilityStrategy",
+                Duration.ofSeconds(1),
+                noAvailabilityStrategy,
+                noRegionSwitchHint,
+                crossPartitionQueryGenerator,
+                queryReturnsTotalRecordCountWithDefaultPageSize,
+                noFailureInjection,
+                validateStatusCodeIs200Ok,
+                validateOnePagePerPartitionQueryDiagnosticsContextForOnlyFirstRegion,
+                validateAllRecordsSameIdReturned,
+                ENOUGH_DOCS_OTHER_PK_TO_HIT_EVERY_PARTITION,
+                NO_OTHER_DOCS_WITH_SAME_PK
+            },
+            new Object[] {
+                "PageSizeOne_SinglePartition_AllGood_NoAvailabilityStrategy",
+                Duration.ofSeconds(1),
+                noAvailabilityStrategy,
+                noRegionSwitchHint,
+                singlePartitionQueryGenerator,
+                queryReturnsTotalRecordCountWithPageSizeOne,
+                noFailureInjection,
+                validateStatusCodeIs200Ok,
+                validatePageSizeOneForAllDocsSamePKQueryDiagnosticsContextForOnlyFirstRegion,
+                validateAllRecordsSamePartitionReturned,
+                ENOUGH_DOCS_OTHER_PK_TO_HIT_EVERY_PARTITION,
+                ENOUGH_DOCS_SAME_PK_TO_EXCEED_PAGE_SIZE
+            },
+            new Object[] {
+                "PageSizeOne_CrossPartition_AllGood_NoAvailabilityStrategy",
+                Duration.ofSeconds(1),
+                noAvailabilityStrategy,
+                noRegionSwitchHint,
+                crossPartitionQueryGenerator,
+                queryReturnsTotalRecordCountWithPageSizeOne,
+                noFailureInjection,
+                validateStatusCodeIs200Ok,
+                validatePageSizeOneAllDocsSameIdQueryDiagnosticsContextForOnlyFirstRegion,
+                validateAllRecordsSameIdReturned,
+                ENOUGH_DOCS_OTHER_PK_TO_HIT_EVERY_PARTITION,
+                NO_OTHER_DOCS_WITH_SAME_PK
             },
         };
     }
@@ -1610,7 +1772,10 @@ public class FaultInjectionWithAvailabilityStrategyTests extends TestSuiteBase {
         BiFunction<String, ItemOperationInvocationParameters, CosmosResponseWrapper> queryExecution,
         BiConsumer<CosmosAsyncContainer, FaultInjectionOperationType> faultInjectionCallback,
         BiConsumer<Integer, Integer> validateStatusCode,
-        Consumer<CosmosDiagnosticsContext> validateDiagnosticsContext) {
+        Consumer<CosmosDiagnosticsContext> validateDiagnosticsContext,
+        Consumer<CosmosResponseWrapper> responseValidator,
+        int numberOfOtherDocumentsWithSameId,
+        int numberOfOtherDocumentsWithSamePk) {
 
         execute(
             testCaseId,
@@ -1622,7 +1787,10 @@ public class FaultInjectionWithAvailabilityStrategyTests extends TestSuiteBase {
             (params) -> queryExecution.apply(queryGenerator.apply(params), params),
             faultInjectionCallback,
             validateStatusCode,
-            validateDiagnosticsContext);
+            validateDiagnosticsContext,
+            responseValidator,
+            numberOfOtherDocumentsWithSameId,
+            numberOfOtherDocumentsWithSamePk);
     }
 
     private static ObjectNode createTestItemAsJson(String id, String pkValue) {
@@ -1646,7 +1814,9 @@ public class FaultInjectionWithAvailabilityStrategyTests extends TestSuiteBase {
             .createContainerIfNotExists(
                 new CosmosContainerProperties(
                     containerId,
-                    new PartitionKeyDefinition().setPaths(Arrays.asList("/mypk"))))
+                    new PartitionKeyDefinition().setPaths(Arrays.asList("/mypk"))),
+                // for PHYSICAL_PARTITION_COUNT partitions
+                ThroughputProperties.createManualThroughput(6_000 * PHYSICAL_PARTITION_COUNT))
             .block();
 
         return databaseWithSeveralWriteableRegions.getContainer(containerId);
@@ -1781,7 +1951,10 @@ public class FaultInjectionWithAvailabilityStrategyTests extends TestSuiteBase {
         Function<ItemOperationInvocationParameters, CosmosResponseWrapper> actionAfterInitialCreation,
         BiConsumer<CosmosAsyncContainer, FaultInjectionOperationType> faultInjectionCallback,
         BiConsumer<Integer, Integer> validateStatusCode,
-        Consumer<CosmosDiagnosticsContext> validateDiagnosticsContext) {
+        Consumer<CosmosDiagnosticsContext> validateDiagnosticsContext,
+        Consumer<CosmosResponseWrapper> validateResponse,
+        int numberOfOtherDocumentsWithSameId,
+        int numberOfOtherDocumentsWithSamePk) {
 
         logger.info("START {}", testCaseId);
 
@@ -1796,6 +1969,18 @@ public class FaultInjectionWithAvailabilityStrategyTests extends TestSuiteBase {
                 .getContainer(this.testContainerId);
 
             testContainer.createItem(createdItem).block();
+
+            for (int i = 0; i < numberOfOtherDocumentsWithSameId; i++) {
+                String additionalPK = UUID.randomUUID().toString();
+                testContainer.createItem(new CosmosDiagnosticsTest.TestItem(documentId, additionalPK)).block();
+            }
+
+            for (int i = 0; i < numberOfOtherDocumentsWithSamePk; i++) {
+                String sharedPK = documentId;
+                String additionalDocumentId = UUID.randomUUID().toString();
+                testContainer.createItem(new CosmosDiagnosticsTest.TestItem(additionalDocumentId, sharedPK)).block();
+            }
+
             if (faultInjectionCallback != null) {
                 faultInjectionCallback.accept(testContainer, faultInjectionOperationType);
             }
@@ -1834,6 +2019,9 @@ public class FaultInjectionWithAvailabilityStrategyTests extends TestSuiteBase {
                     fail("Response is null");
                 } else {
                     validateStatusCode.accept(response.getStatusCode(), null);
+                    if (validateResponse != null) {
+                        validateResponse.accept(response);
+                    }
                 }
                 validateDiagnosticsContext.accept(diagnosticsContext);
             } catch (Exception e) {
@@ -1904,6 +2092,8 @@ public class FaultInjectionWithAvailabilityStrategyTests extends TestSuiteBase {
         private final Integer statusCode;
         private final Integer subStatusCode;
 
+        private final Long totalRecordCount;
+
         public CosmosResponseWrapper(CosmosItemResponse itemResponse) {
             if (itemResponse.getDiagnostics() != null &&
                 itemResponse.getDiagnostics().getDiagnosticsContext() != null) {
@@ -1915,6 +2105,7 @@ public class FaultInjectionWithAvailabilityStrategyTests extends TestSuiteBase {
 
             this.statusCode = itemResponse.getStatusCode();
             this.subStatusCode = null;
+            this.totalRecordCount = itemResponse.getItem() != null ? 1L : 0L;
         }
 
         public CosmosResponseWrapper(CosmosException exception) {
@@ -1928,25 +2119,14 @@ public class FaultInjectionWithAvailabilityStrategyTests extends TestSuiteBase {
 
             this.statusCode = exception.getStatusCode();
             this.subStatusCode = exception.getSubStatusCode();
+            this.totalRecordCount = null;
         }
 
-        public CosmosResponseWrapper(FeedResponse<ObjectNode> feedResponse) {
-            if (feedResponse.getCosmosDiagnostics() != null &&
-                feedResponse.getCosmosDiagnostics().getDiagnosticsContext() != null) {
-
-                this.diagnosticsContext = feedResponse.getCosmosDiagnostics().getDiagnosticsContext();
-            } else {
-                this.diagnosticsContext = null;
-            }
-
-            this.statusCode = 200;
-            this.subStatusCode = 0;
-        }
-
-        public CosmosResponseWrapper(CosmosDiagnosticsContext ctx, int statusCode, Integer subStatusCode) {
+        public CosmosResponseWrapper(CosmosDiagnosticsContext ctx, int statusCode, Integer subStatusCode, Long totalRecordCount) {
             this.diagnosticsContext = ctx;
             this.statusCode = statusCode;
             this.subStatusCode = subStatusCode;
+            this.totalRecordCount = totalRecordCount;
         }
 
         public CosmosDiagnosticsContext getDiagnosticsContext() {
@@ -1961,6 +2141,9 @@ public class FaultInjectionWithAvailabilityStrategyTests extends TestSuiteBase {
             return this.subStatusCode;
         }
 
+        public Long getTotalRecordCount() {
+            return this.totalRecordCount;
+        }
     }
 
     private static class ItemOperationInvocationParameters {
