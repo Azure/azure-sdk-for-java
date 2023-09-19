@@ -12,21 +12,12 @@ import com.azure.cosmos.implementation.ImplementationBridgeHelpers;
  * */
 public final class SessionRetryOptions {
 
-    private volatile CosmosRegionSwitchHint regionSwitchHint;
+    private final CosmosRegionSwitchHint regionSwitchHint;
 
     /**
      * Instantiates {@link SessionRetryOptions}
      * */
     SessionRetryOptions(CosmosRegionSwitchHint regionSwitchHint) {
-        this.regionSwitchHint = regionSwitchHint;
-    }
-
-    /**
-     * Sets the {@link CosmosRegionSwitchHint} instance to use.
-     *
-     * @param regionSwitchHint the region switch hint to use.
-     * */
-    public void setRegionSwitchHint(CosmosRegionSwitchHint regionSwitchHint) {
         this.regionSwitchHint = regionSwitchHint;
     }
 

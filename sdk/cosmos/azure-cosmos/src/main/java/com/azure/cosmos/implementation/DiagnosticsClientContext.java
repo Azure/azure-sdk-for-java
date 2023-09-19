@@ -79,7 +79,7 @@ public interface DiagnosticsClientContext {
                 generator.writeEndObject();
                 generator.writeStringField("consistencyCfg", clientConfig.consistencyRelatedConfig());
                 generator.writeStringField("proactiveInit", clientConfig.proactivelyInitializedContainersAsString);
-                generator.writeStringField("e2ePolicyCfg", clientConfig.endToEndLatencyPolicyRelatedConfig());
+                generator.writeStringField("e2ePolicyCfg", clientConfig.endToEndOperationLatencyPolicyConfigAsString);
             } catch (Exception e) {
                 logger.debug("unexpected failure", e);
             }
@@ -101,7 +101,8 @@ public interface DiagnosticsClientContext {
         private String otherCfgAsString;
         private String preferredRegionsAsString;
         private String proactivelyInitializedContainersAsString;
-        private CosmosEndToEndOperationLatencyPolicyConfig endToEndOperationLatencyPolicyConfig;
+
+        private String endToEndOperationLatencyPolicyConfigAsString;
         private boolean endpointDiscoveryEnabled;
         private boolean multipleWriteRegionsEnabled;
         private String rntbdConfigAsString;
@@ -172,7 +173,12 @@ public interface DiagnosticsClientContext {
         public DiagnosticsClientConfig withEndToEndOperationLatencyPolicy(
             CosmosEndToEndOperationLatencyPolicyConfig config) {
 
-            this.endToEndOperationLatencyPolicyConfig = config;
+            if (config == null) {
+                this.endToEndOperationLatencyPolicyConfigAsString = "";
+            } else {
+                this.endToEndOperationLatencyPolicyConfigAsString = config.toString();
+            }
+
             return this;
         }
 
@@ -240,14 +246,6 @@ public interface DiagnosticsClientContext {
 
         public int getActiveClientsCount() {
             return this.activeClientsCnt != null ? this.activeClientsCnt.get() : -1;
-        }
-
-        public String endToEndLatencyPolicyRelatedConfig() {
-            if (this.endToEndOperationLatencyPolicyConfig == null) {
-                return "";
-            } else {
-                return this.endToEndOperationLatencyPolicyConfig.toString();
-            }
         }
 
         private String consistencyRelatedConfigInternal() {

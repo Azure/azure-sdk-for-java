@@ -10,11 +10,12 @@ import java.time.Duration;
  * This enables requests to get cancelled by the client once the specified timeout is reached
  */
 public final class CosmosEndToEndOperationLatencyPolicyConfig {
-
     private final boolean isEnabled;
-    private volatile Duration endToEndOperationTimeout;
+    private final Duration endToEndOperationTimeout;
+
     private final AvailabilityStrategy availabilityStrategy;
 
+    private final String toStringValue;
 
     /**
      * Constructor
@@ -32,6 +33,7 @@ public final class CosmosEndToEndOperationLatencyPolicyConfig {
         this.isEnabled = isEnabled;
         this.endToEndOperationTimeout = endToEndOperationTimeout;
         this.availabilityStrategy = availabilityStrategy;
+        this.toStringValue = this.createStringRepresentation();
     }
 
     /**
@@ -61,23 +63,9 @@ public final class CosmosEndToEndOperationLatencyPolicyConfig {
         return availabilityStrategy;
     }
 
-    /**
-     * Sets the end to end operation timeout
-     *
-     * @param endToEndOperationTimeout the end to end operation timeout
-     */
-    public void setEndToEndOperationTimeout(Duration endToEndOperationTimeout) {
-
-        if (endToEndOperationTimeout == null) {
-            throw new IllegalArgumentException("end-to-end operation timeout cannot be set to null.");
-        }
-
-        this.endToEndOperationTimeout = endToEndOperationTimeout;
-    }
-
     @Override
     public String toString() {
-        return this.createStringRepresentation();
+        return this.toStringValue;
     }
 
     private String createStringRepresentation() {
@@ -96,4 +84,5 @@ public final class CosmosEndToEndOperationLatencyPolicyConfig {
             ", as=" + availabilityStrategyAsString +
             "}";
     }
+
 }

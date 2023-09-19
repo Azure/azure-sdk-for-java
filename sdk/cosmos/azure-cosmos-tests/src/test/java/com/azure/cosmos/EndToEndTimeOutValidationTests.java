@@ -8,7 +8,6 @@ import com.azure.cosmos.implementation.TestConfigurations;
 import com.azure.cosmos.models.CosmosContainerProperties;
 import com.azure.cosmos.models.CosmosItemRequestOptions;
 import com.azure.cosmos.models.CosmosItemResponse;
-import com.azure.cosmos.models.CosmosPatchOperations;
 import com.azure.cosmos.models.CosmosQueryRequestOptions;
 import com.azure.cosmos.models.PartitionKey;
 import com.azure.cosmos.models.SqlQuerySpec;
@@ -27,10 +26,8 @@ import com.azure.cosmos.test.implementation.faultinjection.FaultInjectorProvider
 import com.azure.cosmos.util.CosmosPagedFlux;
 import org.testng.SkipException;
 import org.testng.annotations.BeforeClass;
-import org.testng.annotations.DataProvider;
 import org.testng.annotations.Factory;
 import org.testng.annotations.Test;
-import reactor.core.publisher.Flux;
 import reactor.core.publisher.Mono;
 import reactor.test.StepVerifier;
 
@@ -40,7 +37,6 @@ import java.util.Arrays;
 import java.util.List;
 import java.util.Random;
 import java.util.UUID;
-import java.util.function.Function;
 
 public class EndToEndTimeOutValidationTests extends TestSuiteBase {
     private static final int DEFAULT_NUM_DOCUMENTS = 100;
@@ -66,35 +62,6 @@ public class EndToEndTimeOutValidationTests extends TestSuiteBase {
         truncateCollection(createdContainer);
 
         createdDocuments.addAll(this.insertDocuments(DEFAULT_NUM_DOCUMENTS, null, createdContainer));
-    }
-
-    @DataProvider(name = "endToEndOperationTimeoutMutationConfigs")
-    public Object[][] endToEndOperationTimeoutMutationConfigs() {
-
-        Function<ItemOperationInvocationParameters, OperationExecutionResult<?>> readOperationExecutor
-            = (opWrapper) -> new OperationExecutionResult<>(executeReadOperation(opWrapper));
-        Function<ItemOperationInvocationParameters, OperationExecutionResult<?>> createOperationExecutor
-            = (opWrapper) -> new OperationExecutionResult<>(executeCreateOperation(opWrapper));
-        Function<ItemOperationInvocationParameters, OperationExecutionResult<?>> deleteOperationExecutor
-            = (opWrapper) -> new OperationExecutionResult<>(executeDeleteOperation(opWrapper));
-        Function<ItemOperationInvocationParameters, OperationExecutionResult<?>> replaceOperationExecutor
-            = (opWrapper) -> new OperationExecutionResult<>(executeReplaceOperation(opWrapper));
-        Function<ItemOperationInvocationParameters, OperationExecutionResult<?>> upsertOperationExecutor
-            = (opWrapper) -> new OperationExecutionResult<>(executeUpsertOperation(opWrapper));
-        Function<ItemOperationInvocationParameters, OperationExecutionResult<?>> patchOperationExecutor
-            = (opWrapper) -> new OperationExecutionResult<>(executePatchOperation(opWrapper));
-        Function<ItemOperationInvocationParameters, OperationExecutionResult<?>> queryOperationExecutor
-            = (opWrapper) -> new OperationExecutionResult<>(executeQueryOperation(opWrapper));
-
-        return new Object[][] {
-            {readOperationExecutor, FaultInjectionOperationType.READ_ITEM, true},
-            {createOperationExecutor, FaultInjectionOperationType.CREATE_ITEM, true},
-            {deleteOperationExecutor, FaultInjectionOperationType.DELETE_ITEM, true},
-            {replaceOperationExecutor, FaultInjectionOperationType.REPLACE_ITEM, true},
-            {upsertOperationExecutor, FaultInjectionOperationType.UPSERT_ITEM, true},
-            {patchOperationExecutor, FaultInjectionOperationType.PATCH_ITEM, true},
-            {queryOperationExecutor, FaultInjectionOperationType.QUERY_ITEM, false},
-        };
     }
 
     @Test(groups = {"simple"}, timeOut = 10000L)
@@ -294,184 +261,9 @@ public class EndToEndTimeOutValidationTests extends TestSuiteBase {
             // delete the database
             cosmosAsyncClient.getDatabase(dbname).delete().block();
         }
+
     }
 
-    @Test(groups = { "simple" }, dataProvider = "endToEndOperationTimeoutMutationConfigs")
-    public void clientLevelEndToEndTimeoutMutationForPointOperation(
-        Function<ItemOperationInvocationParameters, OperationExecutionResult<?>> operationExecutor,
-        FaultInjectionOperationType faultInjectionOperationType,
-        boolean isPointOperation) {
-
-        if (getClientBuilder().buildConnectionPolicy().getConnectionMode() != ConnectionMode.DIRECT) {
-            throw new SkipException("Injecting fault relevant to the direct connectivity mode.");
-        }
-
-        CosmosEndToEndOperationLatencyPolicyConfig cosmosEndToEndOperationLatencyPolicyConfig =
-            new CosmosEndToEndOperationLatencyPolicyConfigBuilder(Duration.ofSeconds(1)).build();
-
-        CosmosClientBuilder builder = new CosmosClientBuilder()
-            .endpoint(TestConfigurations.HOST)
-            .endToEndOperationLatencyPolicyConfig(cosmosEndToEndOperationLatencyPolicyConfig)
-            .credential(credential);
-
-        CosmosAsyncClient cosmosAsyncClient = builder.buildAsyncClient();
-
-        String dbname = "db_" + UUID.randomUUID();
-        String containerName = "container_" + UUID.randomUUID();
-
-        try {
-            CosmosContainerProperties properties = new CosmosContainerProperties(containerName, "/mypk");
-            cosmosAsyncClient.createDatabaseIfNotExists(dbname).block();
-            cosmosAsyncClient.getDatabase(dbname)
-                             .createContainerIfNotExists(properties).block();
-            CosmosAsyncContainer cosmosAsyncContainer = cosmosAsyncClient.getDatabase(dbname)
-                                                                         .getContainer(containerName);
-
-            if (isPointOperation) {
-                Mono<?> responseObservableLowerE2ETimeout =
-                    operationExecutor.apply(new ItemOperationInvocationParameters(new TestObject(
-                        UUID.randomUUID().toString(),
-                        "name123",
-                        1,
-                        UUID.randomUUID().toString()
-                    ), cosmosAsyncContainer)).getMonoObservable();
-
-                injectFailure(cosmosAsyncContainer, faultInjectionOperationType, true);
-
-                StepVerifier.create(responseObservableLowerE2ETimeout)
-                            .expectErrorMatches(throwable -> throwable instanceof OperationCancelledException
-                                && ((OperationCancelledException) throwable).getSubStatusCode()
-                                == HttpConstants.SubStatusCodes.CLIENT_OPERATION_TIMEOUT)
-                            .verify();
-
-                cosmosEndToEndOperationLatencyPolicyConfig.setEndToEndOperationTimeout(Duration.ofSeconds(5));
-
-                responseObservableLowerE2ETimeout =
-                    operationExecutor.apply(new ItemOperationInvocationParameters(new TestObject(
-                        UUID.randomUUID().toString(),
-                        "name123",
-                        1,
-                        UUID.randomUUID().toString()
-                    ), cosmosAsyncContainer)).getMonoObservable();
-
-                // with increased endToEndOperationTimeout, we shouldn't see
-                // an end-to-end timeout based cancellation
-                StepVerifier.create(responseObservableLowerE2ETimeout)
-                            .expectNextCount(1)
-                            .expectComplete()
-                            .verify();
-            } else {
-                CosmosPagedFlux<?> responseObservableLowerE2ETimeout =
-                    operationExecutor.apply(new ItemOperationInvocationParameters(new TestObject(
-                        UUID.randomUUID().toString(),
-                        "name123",
-                        1,
-                        UUID.randomUUID().toString()
-                    ), cosmosAsyncContainer)).getCosmosPagedFluxObservable();
-
-                injectFailure(cosmosAsyncContainer, faultInjectionOperationType, true);
-
-                StepVerifier.create(responseObservableLowerE2ETimeout)
-                            .expectErrorMatches(throwable -> throwable instanceof OperationCancelledException
-                                && ((OperationCancelledException) throwable).getSubStatusCode()
-                                == HttpConstants.SubStatusCodes.CLIENT_OPERATION_TIMEOUT)
-                            .verify();
-
-                cosmosEndToEndOperationLatencyPolicyConfig.setEndToEndOperationTimeout(Duration.ofSeconds(5));
-
-                responseObservableLowerE2ETimeout =
-                    operationExecutor.apply(new ItemOperationInvocationParameters(new TestObject(
-                        UUID.randomUUID().toString(),
-                        "name123",
-                        1,
-                        UUID.randomUUID().toString()
-                    ), cosmosAsyncContainer)).getCosmosPagedFluxObservable();
-
-                // with increased endToEndOperationTimeout, we shouldn't see
-                // an end-to-end timeout based cancellation
-                StepVerifier.create(responseObservableLowerE2ETimeout)
-                            .expectNextCount(1)
-                            .expectComplete()
-                            .verify();
-            }
-
-
-        } finally {
-            // delete the database
-            cosmosAsyncClient.getDatabase(dbname).delete().block();
-        }
-    }
-
-    private static Mono<CosmosItemResponse<TestObject>> executeReadOperation(ItemOperationInvocationParameters operationWrapper) {
-        TestObject testObject = operationWrapper.testObject;
-        CosmosAsyncContainer cosmosAsyncContainer = operationWrapper.cosmosAsyncContainer;
-
-        cosmosAsyncContainer.createItem(testObject).block();
-
-        return cosmosAsyncContainer.readItem(testObject.getId(), new PartitionKey(testObject.getMypk()), TestObject.class);
-    }
-
-    private static Mono<CosmosItemResponse<TestObject>> executeCreateOperation(ItemOperationInvocationParameters operationWrapper) {
-        CosmosAsyncContainer cosmosAsyncContainer = operationWrapper.cosmosAsyncContainer;
-        TestObject testObject = operationWrapper.testObject;
-
-        return cosmosAsyncContainer.createItem(testObject);
-    }
-
-    private static Mono<CosmosItemResponse<Object>> executeDeleteOperation(ItemOperationInvocationParameters operationWrapper) {
-        CosmosAsyncContainer cosmosAsyncContainer = operationWrapper.cosmosAsyncContainer;
-        TestObject testObject = operationWrapper.testObject;
-
-        cosmosAsyncContainer.createItem(testObject).block();
-
-        return cosmosAsyncContainer.deleteItem(testObject.getId(), new PartitionKey(testObject.getMypk()));
-    }
-
-    private static Mono<CosmosItemResponse<Object>> executeReplaceOperation(ItemOperationInvocationParameters operationWrapper) {
-        CosmosAsyncContainer cosmosAsyncContainer = operationWrapper.cosmosAsyncContainer;
-        TestObject testObject = operationWrapper.testObject;
-
-        cosmosAsyncContainer.createItem(testObject).block();
-
-        testObject.prop = testObject.prop + 1;
-
-        return cosmosAsyncContainer.replaceItem(testObject, testObject.getId(), new PartitionKey(testObject.getMypk()));
-    }
-
-    private static Mono<CosmosItemResponse<Object>> executeUpsertOperation(ItemOperationInvocationParameters operationWrapper) {
-        CosmosAsyncContainer cosmosAsyncContainer = operationWrapper.cosmosAsyncContainer;
-        TestObject testObject = operationWrapper.testObject;
-
-        cosmosAsyncContainer.createItem(testObject).block();
-
-        testObject.prop = testObject.prop + 1;
-
-        return cosmosAsyncContainer.upsertItem(testObject, new PartitionKey(testObject.getMypk()), null);
-    }
-
-    private static Mono<CosmosItemResponse<TestObject>> executePatchOperation(ItemOperationInvocationParameters operationWrapper) {
-        CosmosAsyncContainer cosmosAsyncContainer = operationWrapper.cosmosAsyncContainer;
-        TestObject testObject = operationWrapper.testObject;
-
-        cosmosAsyncContainer.createItem(testObject).block();
-
-        CosmosPatchOperations patchOperations = CosmosPatchOperations.create().add("/" + "newProperty", "newVal");
-
-        return cosmosAsyncContainer.patchItem(testObject.getId(), new PartitionKey(testObject.getMypk()), patchOperations, TestObject.class);
-    }
-
-    private static CosmosPagedFlux<TestObject> executeQueryOperation(ItemOperationInvocationParameters operationWrapper) {
-        CosmosAsyncContainer cosmosAsyncContainer = operationWrapper.cosmosAsyncContainer;
-        TestObject testObject = operationWrapper.testObject;
-
-        cosmosAsyncContainer.createItem(testObject).block();
-
-        String query = String.format("SELECT * FROM c WHERE c.id = '%s'", testObject.getId());
-
-        SqlQuerySpec sqlQuerySpec = new SqlQuerySpec(query);
-
-        return cosmosAsyncContainer.queryItems(sqlQuerySpec, new CosmosQueryRequestOptions(), TestObject.class);
-    }
 
     private FaultInjectionRule injectFailure(
         CosmosAsyncContainer container,
@@ -583,47 +375,6 @@ public class EndToEndTimeOutValidationTests extends TestSuiteBase {
 
         public String getConstantProp() {
             return constantProp;
-        }
-    }
-
-    private static class ItemOperationInvocationParameters {
-        private TestObject testObject;
-        private CosmosAsyncContainer cosmosAsyncContainer;
-        ItemOperationInvocationParameters(
-            TestObject testObject,
-            CosmosAsyncContainer cosmosAsyncContainer) {
-
-            this.testObject = testObject;
-            this.cosmosAsyncContainer = cosmosAsyncContainer;
-        }
-    }
-
-    private static class OperationExecutionResult<T> {
-        private Mono<CosmosItemResponse<T>> itemResponseMono;
-        private CosmosPagedFlux<T> queryResponseFlux;
-
-        OperationExecutionResult(Mono<CosmosItemResponse<T>> itemResponseMono) {
-            this.itemResponseMono = itemResponseMono;
-        }
-
-        OperationExecutionResult(CosmosPagedFlux<T> queryResponseFlux) {
-            this.queryResponseFlux = queryResponseFlux;
-        }
-
-        Mono<CosmosItemResponse<T>> getMonoObservable() {
-            if (itemResponseMono != null) {
-                return itemResponseMono;
-            }
-
-            return null;
-        }
-
-        CosmosPagedFlux<T> getCosmosPagedFluxObservable() {
-            if (queryResponseFlux != null) {
-                return queryResponseFlux;
-            }
-
-            return null;
         }
     }
 }
