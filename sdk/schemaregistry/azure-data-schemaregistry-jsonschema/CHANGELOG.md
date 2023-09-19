@@ -6,10 +6,6 @@
 
 - Add initial beta release for JSON schema.
 
-### Breaking Changes
-
-### Bugs Fixed
-
 ### Other Changes
 
 #### Dependency Updates
