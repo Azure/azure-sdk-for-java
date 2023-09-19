@@ -18,31 +18,22 @@ public final class ArmIdentityTests {
         ArmIdentity model =
             BinaryData
                 .fromString(
-                    "{\"principalId\":\"ec\",\"tenantId\":\"odebfqkkrbmpu\",\"type\":\"SystemAssigned,"
-                        + " UserAssigned\",\"userAssignedIdentities\":{\"y\":{\"principalId\":\"lzlfbxzpuz\",\"clientId\":\"ispnqzahmgkbrp\"},\"buynhijggm\":{\"principalId\":\"ibnuqqkpik\",\"clientId\":\"rgvtqag\"},\"jrunmpxtt\":{\"principalId\":\"fsiarbutr\",\"clientId\":\"pnazzm\"},\"qidybyx\":{\"principalId\":\"hrbnlankxmyskpbh\",\"clientId\":\"btkcxywnytnrsyn\"}}}")
+                    "{\"principalId\":\"osvmk\",\"tenantId\":\"sxqu\",\"type\":\"SystemAssigned\",\"userAssignedIdentities\":{\"i\":{\"principalId\":\"mg\",\"clientId\":\"nkjzkdeslpvlop\"}}}")
                 .toObject(ArmIdentity.class);
-        Assertions.assertEquals(ResourceIdentityType.SYSTEM_ASSIGNED_USER_ASSIGNED, model.type());
+        Assertions.assertEquals(ResourceIdentityType.SYSTEM_ASSIGNED, model.type());
     }
 
     @org.junit.jupiter.api.Test
     public void testSerialize() throws Exception {
         ArmIdentity model =
             new ArmIdentity()
-                .withType(ResourceIdentityType.SYSTEM_ASSIGNED_USER_ASSIGNED)
-                .withUserAssignedIdentities(
-                    mapOf(
-                        "y",
-                        new ArmUserIdentity(),
-                        "buynhijggm",
-                        new ArmUserIdentity(),
-                        "jrunmpxtt",
-                        new ArmUserIdentity(),
-                        "qidybyx",
-                        new ArmUserIdentity()));
+                .withType(ResourceIdentityType.SYSTEM_ASSIGNED)
+                .withUserAssignedIdentities(mapOf("i", new ArmUserIdentity()));
         model = BinaryData.fromObject(model).toObject(ArmIdentity.class);
-        Assertions.assertEquals(ResourceIdentityType.SYSTEM_ASSIGNED_USER_ASSIGNED, model.type());
+        Assertions.assertEquals(ResourceIdentityType.SYSTEM_ASSIGNED, model.type());
     }
 
+    // Use "Map.of" if available
     @SuppressWarnings("unchecked")
     private static <T> Map<String, T> mapOf(Object... inputs) {
         Map<String, T> map = new HashMap<>();

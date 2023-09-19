@@ -14,17 +14,16 @@ public final class IotHubPropertiesDeviceStreamsTests {
     public void testDeserialize() throws Exception {
         IotHubPropertiesDeviceStreams model =
             BinaryData
-                .fromString("{\"streamingEndpoints\":[\"pcyvahfnljkyqx\",\"vuujq\",\"idokgjlj\"]}")
+                .fromString("{\"streamingEndpoints\":[\"xytxhpzxbz\",\"fzab\"]}")
                 .toObject(IotHubPropertiesDeviceStreams.class);
-        Assertions.assertEquals("pcyvahfnljkyqx", model.streamingEndpoints().get(0));
+        Assertions.assertEquals("xytxhpzxbz", model.streamingEndpoints().get(0));
     }
 
     @org.junit.jupiter.api.Test
     public void testSerialize() throws Exception {
         IotHubPropertiesDeviceStreams model =
-            new IotHubPropertiesDeviceStreams()
-                .withStreamingEndpoints(Arrays.asList("pcyvahfnljkyqx", "vuujq", "idokgjlj"));
+            new IotHubPropertiesDeviceStreams().withStreamingEndpoints(Arrays.asList("xytxhpzxbz", "fzab"));
         model = BinaryData.fromObject(model).toObject(IotHubPropertiesDeviceStreams.class);
-        Assertions.assertEquals("pcyvahfnljkyqx", model.streamingEndpoints().get(0));
+        Assertions.assertEquals("xytxhpzxbz", model.streamingEndpoints().get(0));
     }
 }
