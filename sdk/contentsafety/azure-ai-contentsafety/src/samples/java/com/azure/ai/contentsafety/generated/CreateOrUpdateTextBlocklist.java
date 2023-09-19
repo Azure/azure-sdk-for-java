@@ -19,11 +19,11 @@ public class CreateOrUpdateTextBlocklist {
                         .credential(new KeyCredential(Configuration.getGlobalConfiguration().get("API_KEY")))
                         .endpoint(Configuration.getGlobalConfiguration().get("ENDPOINT"))
                         .buildClient();
-        // BEGIN:com.azure.ai.contentsafety.generated.createorupdatetextblocklist.createorupdatetextblocklist
+        // BEGIN:com.azure.ai.contentsafety.generated.createorupdatetextblocklist
         BinaryData resource = BinaryData.fromString("{\"description\":\"Test Blocklist\"}");
         RequestOptions requestOptions = new RequestOptions();
         Response<BinaryData> response =
                 contentSafetyClient.createOrUpdateTextBlocklistWithResponse("TestBlocklist", resource, requestOptions);
-        // END:com.azure.ai.contentsafety.generated.createorupdatetextblocklist.createorupdatetextblocklist
+        // END:com.azure.ai.contentsafety.generated.createorupdatetextblocklist
     }
 }
