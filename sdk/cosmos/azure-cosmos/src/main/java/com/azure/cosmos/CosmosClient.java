@@ -333,10 +333,10 @@ public final class CosmosClient implements Closeable {
      * routed to these excluded regions for non-retry and retry scenarios
      * for the workload executed through this instance of {@link CosmosClient}.
      *
-     * @param excludeRegions The list of regions to exclude.
+     * @param excludedRegions The list of regions to exclude.
      * */
-    public void setExcludedRegions(List<String> excludeRegions) {
-        this.asyncClientWrapper.setExcludedRegions(excludeRegions);
+    public void setExcludedRegions(List<String> excludedRegions) {
+        this.asyncClientWrapper.setExcludedRegions(excludedRegions);
     }
 
     static void initialize() {
