@@ -1415,6 +1415,10 @@ public class IncrementalChangeFeedProcessorTest extends TestSuiteBase {
                 // corresponding to each partition, a lease should have been recorded
                 assertThat(receivedLeaseTokensFromContext.size()).isGreaterThanOrEqualTo(3);
                 assertThat(receivedLeaseTokensFromContext.size()).isEqualTo(receivedLeaseTokensFromCfpState.size());
+
+                for (String leaseToken : receivedLeaseTokensFromContext) {
+                    assertThat(receivedLeaseTokensFromContext.contains(leaseToken)).isTrue();
+                }
             }
 
             // Wait for the feed processor to shutdown.

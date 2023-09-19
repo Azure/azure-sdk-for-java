@@ -1091,7 +1091,7 @@ public class IncrementalChangeFeedProcessorTest extends TestSuiteBase {
         try {
             List<InternalObjectNode> createdDocuments = new ArrayList<>();
             Map<String, JsonNode> receivedDocuments = new ConcurrentHashMap<>();
-            Set<String> receivedLeaseTokensThroughContext = ConcurrentHashMap.newKeySet();
+            Set<String> receivedLeaseTokensFromContext = ConcurrentHashMap.newKeySet();
             Set<String> receivedLeaseTokensThroughCfpState = ConcurrentHashMap.newKeySet();
 
             LeaseStateMonitor leaseStateMonitor = new LeaseStateMonitor();
@@ -1129,7 +1129,7 @@ public class IncrementalChangeFeedProcessorTest extends TestSuiteBase {
                 TestUtils
                     .injectHandleLatestVersionChangesBiConsumerToChangeFeedProcessor(
                         changeFeedProcessorBuilderForMonitoredContainer,
-                        changeFeedProcessorHandlerWithContext(receivedDocuments, receivedLeaseTokensThroughContext));
+                        changeFeedProcessorHandlerWithContext(receivedDocuments, receivedLeaseTokensFromContext));
             } else {
                 changeFeedProcessorBuilderForMonitoredContainer = changeFeedProcessorBuilderForMonitoredContainer
                     .handleLatestVersionChanges(changeFeedProcessorHandler(receivedDocuments));
@@ -1291,13 +1291,17 @@ public class IncrementalChangeFeedProcessorTest extends TestSuiteBase {
                 .as("Continuation tokens for the leases after split should advance from parent value; parent: %d", leaseStateMonitor.parentContinuationToken).isTrue();
 
             if (isContextRequired) {
-                assertThat(receivedLeaseTokensThroughContext).isNotNull();
+                assertThat(receivedLeaseTokensFromContext).isNotNull();
                 // before a split, the smallest possible container would have 1 physical partition
                 // after a split, such a container would have 2 child partitions
                 // if change feed has been drained from both the parent and child partitions, then
                 // corresponding to each partition, a lease should have been recorded
-                assertThat(receivedLeaseTokensThroughContext.size()).isGreaterThanOrEqualTo(3);
-                assertThat(receivedLeaseTokensThroughContext.size()).isEqualTo(receivedLeaseTokensThroughCfpState.size());
+                assertThat(receivedLeaseTokensFromContext.size()).isGreaterThanOrEqualTo(3);
+                assertThat(receivedLeaseTokensFromContext.size()).isEqualTo(receivedLeaseTokensThroughCfpState.size());
+
+                for (String leaseToken : receivedLeaseTokensFromContext) {
+                    assertThat(receivedLeaseTokensFromContext.contains(leaseToken)).isTrue();
+                }
             }
 
             // Wait for the feed processor to shutdown.
