@@ -487,8 +487,7 @@ public final class ConnectionPolicy {
         reentrantReadWriteLock.writeLock().lock();
         try {
             if (excludedRegions != null) {
-                this.excludedRegions = new ArrayList<>();
-                this.excludedRegions.addAll(excludedRegions);
+                this.excludedRegions = new ArrayList<>(excludedRegions);
             }
             this.excludedRegionsAsString = constructExcludedRegionsAsString(this.excludedRegions);
             return this;

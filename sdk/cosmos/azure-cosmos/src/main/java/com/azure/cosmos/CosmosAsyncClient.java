@@ -615,7 +615,12 @@ public final class CosmosAsyncClient implements Closeable {
      * */
     public List<String> getExcludedRegions() {
         List<String> excludedRegions = this.connectionPolicy.getExcludedRegions();
-        return excludedRegions == null ? Collections.emptyList() : UnmodifiableList.unmodifiableList(excludedRegions);
+
+        if (excludedRegions == null) {
+            return new ArrayList<>();
+        }
+
+        return new ArrayList<>(excludedRegions);
     }
 
     WriteRetryPolicy getNonIdempotentWriteRetryPolicy() {
