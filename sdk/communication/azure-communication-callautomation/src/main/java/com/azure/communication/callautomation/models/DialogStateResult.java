@@ -61,4 +61,12 @@ public class DialogStateResult {
         this.dialogId = dialogStateResponse.getDialogId();
         this.operationContext = dialogStateResponse.getOperationContext();
     }
+
+    public String getDialogId() {
+        return dialogId;
+    }
+
+    public String getOperationContext() {
+        return operationContext;
+    }
 }

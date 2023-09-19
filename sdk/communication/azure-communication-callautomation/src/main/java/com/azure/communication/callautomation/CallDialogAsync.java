@@ -23,9 +23,9 @@ public final class CallDialogAsync {
     private final String callConnectionId;
     private final ClientLogger logger;
 
-    public CallDialogAsync(CallDialogsImpl callDialogInternal, String callConnectionId) {
-        this.dialogsInternal = callDialogInternal;
+    public CallDialogAsync(String callConnectionId, CallDialogsImpl callDialogInternal) {
         this.callConnectionId = callConnectionId;
+        this.dialogsInternal = callDialogInternal;
         this.logger = new ClientLogger(CallDialogAsync.class);
     }
 
