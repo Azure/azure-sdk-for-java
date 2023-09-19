@@ -1613,6 +1613,9 @@ public class FaultInjectionWithAvailabilityStrategyTests extends TestSuiteBase {
             }
         };
 
+        Consumer<CosmosResponseWrapper> validateEmptyResults =
+            (response) -> validateExpectedRecordCount.accept(response, 0L);
+
         Consumer<CosmosResponseWrapper> validateExactlyOneRecordReturned =
             (response) -> validateExpectedRecordCount.accept(response, 1L);
 
@@ -1631,10 +1634,18 @@ public class FaultInjectionWithAvailabilityStrategyTests extends TestSuiteBase {
                 +  params.idAndPkValuePair.getRight()
                 + "'";
 
+        Function<ItemOperationInvocationParameters, String> singlePartitionEmptyResultQueryGenerator = (params) ->
+            "SELECT * FROM c WHERE c.mypk = '"
+                +  params.idAndPkValuePair.getRight()
+                + "' and c.id = 'NotExistingId'";
+
         Function<ItemOperationInvocationParameters, String> crossPartitionQueryGenerator = (params) ->
             "SELECT * FROM c WHERE CONTAINS (c.id, '"
                 + params.idAndPkValuePair.getLeft()
                 + "')";
+
+        Function<ItemOperationInvocationParameters, String> crossPartitionEmptyResultQueryGenerator = (params) ->
+            "SELECT * FROM c WHERE CONTAINS (c.id, 'NotExistingId')";
 
         Consumer<CosmosDiagnosticsContext>  validateSinglePartitionQueryDiagnosticsContextForOnlyFirstRegion =
             (ctx) -> {
@@ -1756,6 +1767,35 @@ public class FaultInjectionWithAvailabilityStrategyTests extends TestSuiteBase {
                 validateStatusCodeIs200Ok,
                 validatePageSizeOneAllDocsSameIdQueryDiagnosticsContextForOnlyFirstRegion,
                 validateAllRecordsSameIdReturned,
+                ENOUGH_DOCS_OTHER_PK_TO_HIT_EVERY_PARTITION,
+                NO_OTHER_DOCS_WITH_SAME_PK
+            },
+            new Object[] {
+                "EmptyResults_SinglePartition_AllGood_NoAvailabilityStrategy",
+                Duration.ofSeconds(1),
+                noAvailabilityStrategy,
+                noRegionSwitchHint,
+                singlePartitionEmptyResultQueryGenerator,
+                queryReturnsTotalRecordCountWithPageSizeOne,
+                noFailureInjection,
+                validateStatusCodeIs200Ok,
+                validateSinglePartitionQueryDiagnosticsContextForOnlyFirstRegion,
+                validateEmptyResults,
+                ENOUGH_DOCS_OTHER_PK_TO_HIT_EVERY_PARTITION,
+                NO_OTHER_DOCS_WITH_SAME_PK
+            },
+            new Object[] {
+                "EmptyResults_CrossPartition_AllGood_NoAvailabilityStrategy",
+                Duration.ofSeconds(1),
+                noAvailabilityStrategy,
+                noRegionSwitchHint,
+                crossPartitionEmptyResultQueryGenerator,
+                queryReturnsTotalRecordCountWithPageSizeOne,
+                noFailureInjection,
+                validateStatusCodeIs200Ok,
+                // empty pages are skipped except for the last one
+                validateSinglePartitionQueryDiagnosticsContextForOnlyFirstRegion,
+                validateEmptyResults,
                 ENOUGH_DOCS_OTHER_PK_TO_HIT_EVERY_PARTITION,
                 NO_OTHER_DOCS_WITH_SAME_PK
             },
