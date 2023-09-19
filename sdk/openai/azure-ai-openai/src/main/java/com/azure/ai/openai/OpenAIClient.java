@@ -37,11 +37,10 @@ import com.azure.core.util.BinaryData;
 import com.azure.core.util.IterableStream;
 import com.azure.core.util.logging.ClientLogger;
 import com.azure.core.util.polling.SyncPoller;
-import reactor.core.publisher.Flux;
-
 import java.nio.ByteBuffer;
 import java.util.ArrayList;
 import java.util.List;
+import reactor.core.publisher.Flux;
 
 /** Initializes a new instance of the synchronous OpenAIClient type. */
 @ServiceClient(builder = OpenAIClientBuilder.class)
@@ -721,7 +720,7 @@ public final class OpenAIClient {
      * the written language corresponding to the language it was spoken in.
      *
      * @param deploymentOrModelName Specifies either the model deployment name (when using Azure OpenAI) or model name
-     * (when using non-Azure OpenAI) to use for this request.
+     *     (when using non-Azure OpenAI) to use for this request.
      * @param fileName The file name that is represented in the {@code file} field of {@link AudioTranscriptionOptions}.
      * @param audioTranscriptionOptions The configuration information for an audio transcription request.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
@@ -768,7 +767,7 @@ public final class OpenAIClient {
      * the written language corresponding to the language it was spoken in.
      *
      * @param deploymentOrModelName Specifies either the model deployment name (when using Azure OpenAI) or model name
-     * (when using non-Azure OpenAI) to use for this request.
+     *     (when using non-Azure OpenAI) to use for this request.
      * @param fileName The file name that is represented in the {@code file} field of {@link AudioTranscriptionOptions}.
      * @param audioTranscriptionOptions The configuration information for an audio transcription request.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
@@ -815,7 +814,7 @@ public final class OpenAIClient {
      * Gets English language transcribed text and associated metadata from provided spoken audio file data.
      *
      * @param deploymentOrModelName Specifies either the model deployment name (when using Azure OpenAI) or model name
-     * (when using non-Azure OpenAI) to use for this request.
+     *     (when using non-Azure OpenAI) to use for this request.
      * @param fileName The file name that is represented in the {@code file} field of {@link AudioTranslationOptions}.
      * @param audioTranslationOptions The configuration information for an audio translation request.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
@@ -824,12 +823,12 @@ public final class OpenAIClient {
      * @throws ResourceNotFoundException thrown if the request is rejected by server on status code 404.
      * @throws ResourceModifiedException thrown if the request is rejected by server on status code 409.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return {@link AudioTranscription} english language transcribed text and associated metadata from provided
-     * spoken audio file data.
+     * @return {@link AudioTranscription} english language transcribed text and associated metadata from provided spoken
+     *     audio file data.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public AudioTranscription getAudioTranslation(String deploymentOrModelName, String fileName,
-        AudioTranslationOptions audioTranslationOptions) {
+    public AudioTranscription getAudioTranslation(
+            String deploymentOrModelName, String fileName, AudioTranslationOptions audioTranslationOptions) {
         // checking allowed formats for a JSON response
         List<AudioTranscriptionFormat> acceptedFormats = new ArrayList<>();
         acceptedFormats.add(AudioTranscriptionFormat.JSON);
@@ -862,7 +861,7 @@ public final class OpenAIClient {
      * Gets English language transcribed text and associated metadata from provided spoken audio file data.
      *
      * @param deploymentOrModelName Specifies either the model deployment name (when using Azure OpenAI) or model name
-     *  (when using non-Azure OpenAI) to use for this request.
+     *     (when using non-Azure OpenAI) to use for this request.
      * @param fileName The file name that is represented in the {@code file} field of {@link AudioTranslationOptions}.
      * @param audioTranslationOptions The configuration information for an audio translation request.
      * @throws IllegalArgumentException thrown if parameters fail the validation.

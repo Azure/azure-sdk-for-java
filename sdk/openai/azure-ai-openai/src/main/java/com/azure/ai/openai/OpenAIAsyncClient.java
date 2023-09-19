@@ -789,7 +789,7 @@ public final class OpenAIAsyncClient {
      * the written language corresponding to the language it was spoken in.
      *
      * @param deploymentOrModelName Specifies either the model deployment name (when using Azure OpenAI) or model name
-     * (when using non-Azure OpenAI) to use for this request.
+     *     (when using non-Azure OpenAI) to use for this request.
      * @param fileName The file name that is represented in the {@code file} field of {@link AudioTranscriptionOptions}
      * @param audioTranscriptionOptions The configuration information for an audio transcription request.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
@@ -798,8 +798,8 @@ public final class OpenAIAsyncClient {
      * @throws ResourceNotFoundException thrown if the request is rejected by server on status code 404.
      * @throws ResourceModifiedException thrown if the request is rejected by server on status code 409.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return {@link AudioTranscription} transcribed text and associated metadata from provided spoken audio data
-     * on successful completion of {@link Mono}.
+     * @return {@link AudioTranscription} transcribed text and associated metadata from provided spoken audio data on
+     *     successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<AudioTranscription> getAudioTranscription(
@@ -837,7 +837,7 @@ public final class OpenAIAsyncClient {
      * the written language corresponding to the language it was spoken in.
      *
      * @param deploymentOrModelName Specifies either the model deployment name (when using Azure OpenAI) or model name
-     * (when using non-Azure OpenAI) to use for this request.
+     *     (when using non-Azure OpenAI) to use for this request.
      * @param fileName The file name that is represented in the {@code file} field of {@link AudioTranscriptionOptions}
      * @param audioTranscriptionOptions The configuration information for an audio transcription request.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
@@ -885,7 +885,7 @@ public final class OpenAIAsyncClient {
      * Gets English language transcribed text and associated metadata from provided spoken audio file data.
      *
      * @param deploymentOrModelName Specifies either the model deployment name (when using Azure OpenAI) or model name
-     * (when using non-Azure OpenAI) to use for this request.
+     *     (when using non-Azure OpenAI) to use for this request.
      * @param fileName The file name that is represented in the {@code file} field of {@link AudioTranslationOptions}
      * @param audioTranslationOptions The configuration information for an audio translation request.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
@@ -894,8 +894,8 @@ public final class OpenAIAsyncClient {
      * @throws ResourceNotFoundException thrown if the request is rejected by server on status code 404.
      * @throws ResourceModifiedException thrown if the request is rejected by server on status code 409.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return {@link AudioTranscription} english language transcribed text and associated metadata from provided
-     * spoken audio file data on successful completion of {@link Mono}.
+     * @return {@link AudioTranscription} english language transcribed text and associated metadata from provided spoken
+     *     audio file data on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<AudioTranscription> getAudioTranslation(
@@ -932,7 +932,7 @@ public final class OpenAIAsyncClient {
      * Gets English language transcribed text and associated metadata from provided spoken audio file data.
      *
      * @param deploymentOrModelName Specifies either the model deployment name (when using Azure OpenAI) or model name
-     * (when using non-Azure OpenAI) to use for this request.
+     *     (when using non-Azure OpenAI) to use for this request.
      * @param fileName The file name that is represented in the {@code file} field of {@link AudioTranslationOptions}.
      * @param audioTranslationOptions The configuration information for an audio translation request.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
@@ -942,7 +942,7 @@ public final class OpenAIAsyncClient {
      * @throws ResourceModifiedException thrown if the request is rejected by server on status code 409.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return english language transcribed text and associated metadata from provided spoken audio file data on
-     *      successful completion of {@link Mono}.
+     *     successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<String> getAudioTranslationText(
