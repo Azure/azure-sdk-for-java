@@ -16,6 +16,7 @@ public final class AnalyzeTextTests extends ContentSafetyClientTestBase {
         // method invocation
         AnalyzeTextResult response = contentSafetyClient.analyzeText(new AnalyzeTextOptions("This is text example"));
 
+        
         // response assertion
         Assertions.assertNotNull(response);
 
