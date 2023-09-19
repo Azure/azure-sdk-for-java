@@ -10,9 +10,16 @@ import com.azure.identity.DefaultAzureCredentialBuilder;
 import com.azure.messaging.servicebus.administration.ServiceBusAdministrationAsyncClient;
 import com.azure.messaging.servicebus.administration.ServiceBusAdministrationClient;
 import com.azure.messaging.servicebus.administration.ServiceBusAdministrationClientBuilder;
+import com.azure.messaging.servicebus.administration.models.CorrelationRuleFilter;
+import com.azure.messaging.servicebus.administration.models.CreateQueueOptions;
+import com.azure.messaging.servicebus.administration.models.CreateRuleOptions;
+import com.azure.messaging.servicebus.administration.models.CreateSubscriptionOptions;
 import com.azure.messaging.servicebus.administration.models.QueueProperties;
 import com.azure.messaging.servicebus.administration.models.SubscriptionProperties;
+import com.azure.messaging.servicebus.administration.models.TopicProperties;
 import org.junit.jupiter.api.Test;
+
+import java.time.Duration;
 
 /**
  * Class contains sample code snippets that will be used in javadocs.
@@ -82,6 +89,49 @@ public class ServiceBusAdministrationClientJavaDocCodeSamples {
     }
 
     /**
+     * Creates a queue synchronously.
+     */
+    @Test
+    public void createQueueOptions() {
+        // BEGIN: com.azure.messaging.servicebus.administration.servicebusadministrationclient.createqueue#string-createqueuepptions
+        CreateQueueOptions queueOptions = new CreateQueueOptions()
+            .setLockDuration(Duration.ofMinutes(2))
+            .setMaxDeliveryCount(15);
+
+        QueueProperties queue = client.createQueue("my-new-queue", queueOptions);
+        System.out.printf("Queue created. Name: %s. Lock Duration: %s.%n",
+            queue.getName(), queue.getLockDuration());
+        // END: com.azure.messaging.servicebus.administration.servicebusadministrationclient.createqueue#string-createqueuepptions
+    }
+
+    @Test
+    public void createTopicAndSubscription() {
+        // BEGIN: com.azure.messaging.servicebus.administration.servicebusadministrationclient.createsubscription#string-string-string
+        String topicName = "my-new-topic";
+        TopicProperties topic = client.createTopic(topicName);
+
+        String subscriptionName = "high-importance-subscription";
+        String ruleName = "important-messages-filter";
+        CreateSubscriptionOptions subscriptionOptions = new CreateSubscriptionOptions()
+            .setMaxDeliveryCount(15)
+            .setLockDuration(Duration.ofMinutes(2));
+
+        CorrelationRuleFilter ruleFilter = new CorrelationRuleFilter()
+            .setCorrelationId("important-messages");
+        ruleFilter.getProperties().put("importance", "high");
+
+        CreateRuleOptions createRuleOptions = new CreateRuleOptions()
+            .setFilter(ruleFilter);
+
+        SubscriptionProperties subscription = client.createSubscription(topicName, subscriptionName, ruleName,
+            subscriptionOptions, createRuleOptions);
+
+        System.out.printf("Subscription created. Name: %s. Topic name: %s. Lock Duration: %s.%n",
+            subscription.getSubscriptionName(), subscription.getTopicName(), subscription.getLockDuration());
+        // END: com.azure.messaging.servicebus.administration.servicebusadministrationclient.createsubscription#string-string-string
+    }
+
+    /**
      * Creates a queue asynchronously.
      */
     @Test
@@ -100,6 +150,25 @@ public class ServiceBusAdministrationClientJavaDocCodeSamples {
                 System.err.println("Error creating queue: " + error);
             });
         // END: com.azure.messaging.servicebus.administration.servicebusadministrationasyncclient.createqueue#string
+    }
+    /**
+     * Creates a queue synchronously.
+     */
+
+    @Test
+    public void updateQueueOptions() {
+        // BEGIN: com.azure.messaging.servicebus.administration.servicebusadministrationclient.updatequeue
+        QueueProperties queue = client.getQueue("queue-that-exists");
+
+        queue.setLockDuration(Duration.ofMinutes(3))
+            .setMaxDeliveryCount(15)
+            .setDeadLetteringOnMessageExpiration(true);
+
+        QueueProperties updatedQueue = client.updateQueue(queue);
+
+        System.out.printf("Queue updated. Name: %s. Lock duration: %s. Max delivery count: %s.%n",
+            updatedQueue.getName(), updatedQueue.getLockDuration(), updatedQueue.getMaxDeliveryCount());
+        // END: com.azure.messaging.servicebus.administration.servicebusadministrationclient.updatequeue
     }
 
     /**
