@@ -39,7 +39,7 @@ public class AudioTranscriptionSample {
         AudioTranscriptionOptions transcriptionOptions = new AudioTranscriptionOptions(file)
             .setResponseFormat(AudioTranscriptionFormat.JSON);
 
-        AudioTranscription transcription = client.getAudioTranscription(deploymentOrModelId, transcriptionOptions, fileName);
+        AudioTranscription transcription = client.getAudioTranscription(deploymentOrModelId, fileName, transcriptionOptions);
 
         System.out.println("Transcription: " + transcription.getText());
 

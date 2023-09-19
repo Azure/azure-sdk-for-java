@@ -38,7 +38,7 @@ public class AudioTranslationSample {
         AudioTranslationOptions translationOptions = new AudioTranslationOptions(file)
             .setResponseFormat(AudioTranscriptionFormat.JSON);
 
-        AudioTranscription translation = client.getAudioTranslation(deploymentOrModelId, translationOptions, fileName);
+        AudioTranscription translation = client.getAudioTranslation(deploymentOrModelId, fileName, translationOptions);
 
         System.out.println("Translation: " + translation.getText());
     }

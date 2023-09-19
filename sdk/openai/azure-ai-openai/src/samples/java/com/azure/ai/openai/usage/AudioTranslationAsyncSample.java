@@ -38,7 +38,7 @@ public class AudioTranslationAsyncSample {
         AudioTranslationOptions translationOptions = new AudioTranslationOptions(file)
             .setResponseFormat(AudioTranscriptionFormat.JSON);
 
-        client.getAudioTranslation(deploymentOrModelId, translationOptions, fileName)
+        client.getAudioTranslation(deploymentOrModelId, fileName, translationOptions)
             .subscribe(translation -> {
                 System.out.println("Translation: " + translation.getText());
             });

@@ -39,7 +39,7 @@ public class AudioTranscriptionAsyncSample {
         AudioTranscriptionOptions transcriptionOptions = new AudioTranscriptionOptions(file)
             .setResponseFormat(AudioTranscriptionFormat.JSON);
 
-        client.getAudioTranscription(deploymentOrModelId, transcriptionOptions, fileName)
+        client.getAudioTranscription(deploymentOrModelId, fileName, transcriptionOptions)
             .subscribe(transcription -> {
                 System.out.println("Transcription: " + transcription.getText());
             });

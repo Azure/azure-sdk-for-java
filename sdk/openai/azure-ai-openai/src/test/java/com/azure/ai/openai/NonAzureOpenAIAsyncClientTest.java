@@ -338,7 +338,7 @@ public class NonAzureOpenAIAsyncClientTest extends OpenAIClientTestBase {
             AudioTranscriptionOptions transcriptionOptions = new AudioTranscriptionOptions(file);
             transcriptionOptions.setResponseFormat(AudioTranscriptionFormat.JSON);
 
-            StepVerifier.create(client.getAudioTranscription(deploymentName, transcriptionOptions, fileName))
+            StepVerifier.create(client.getAudioTranscription(deploymentName, fileName, transcriptionOptions))
                     .assertNext(transcription ->
                             assertAudioTranscriptionSimpleJson(transcription, BATMAN_TRANSCRIPTION))
                     .verifyComplete();
@@ -355,7 +355,7 @@ public class NonAzureOpenAIAsyncClientTest extends OpenAIClientTestBase {
             AudioTranscriptionOptions transcriptionOptions = new AudioTranscriptionOptions(file);
             transcriptionOptions.setResponseFormat(AudioTranscriptionFormat.VERBOSE_JSON);
 
-            StepVerifier.create(client.getAudioTranscription(deploymentName, transcriptionOptions, fileName))
+            StepVerifier.create(client.getAudioTranscription(deploymentName, fileName, transcriptionOptions))
                     .assertNext(transcription ->
                             assertAudioTranscriptionVerboseJson(transcription, BATMAN_TRANSCRIPTION, AudioTaskLabel.TRANSCRIBE))
                     .verifyComplete();
@@ -372,7 +372,7 @@ public class NonAzureOpenAIAsyncClientTest extends OpenAIClientTestBase {
             AudioTranscriptionOptions transcriptionOptions = new AudioTranscriptionOptions(file);
             transcriptionOptions.setResponseFormat(AudioTranscriptionFormat.TEXT);
 
-            StepVerifier.create(client.getAudioTranscriptionText(deploymentName, transcriptionOptions, fileName))
+            StepVerifier.create(client.getAudioTranscriptionText(deploymentName, fileName, transcriptionOptions))
                     .assertNext(transcription ->
                             // A plain/text request adds a line break as an artifact. Also observed for translations
                             assertEquals(BATMAN_TRANSCRIPTION + "\n", transcription))
@@ -390,7 +390,7 @@ public class NonAzureOpenAIAsyncClientTest extends OpenAIClientTestBase {
             AudioTranscriptionOptions transcriptionOptions = new AudioTranscriptionOptions(file);
             transcriptionOptions.setResponseFormat(AudioTranscriptionFormat.SRT);
 
-            StepVerifier.create(client.getAudioTranscriptionText(modelId, transcriptionOptions, fileName))
+            StepVerifier.create(client.getAudioTranscriptionText(modelId, fileName, transcriptionOptions))
                     .assertNext(translation -> {
                         // Sequence number
                         assertTrue(translation.contains("1\n"));
@@ -412,7 +412,7 @@ public class NonAzureOpenAIAsyncClientTest extends OpenAIClientTestBase {
             AudioTranscriptionOptions transcriptionOptions = new AudioTranscriptionOptions(file);
             transcriptionOptions.setResponseFormat(AudioTranscriptionFormat.VTT);
 
-            StepVerifier.create(client.getAudioTranscriptionText(modelId, transcriptionOptions, fileName))
+            StepVerifier.create(client.getAudioTranscriptionText(modelId, fileName, transcriptionOptions))
                     .assertNext(translation -> {
                         // Start value according to spec
                         assertTrue(translation.startsWith("WEBVTT\n"));
@@ -439,7 +439,7 @@ public class NonAzureOpenAIAsyncClientTest extends OpenAIClientTestBase {
 
             for (AudioTranscriptionFormat format: wrongFormats) {
                 transcriptionOptions.setResponseFormat(format);
-                StepVerifier.create(client.getAudioTranscriptionText(modelId, transcriptionOptions, fileName))
+                StepVerifier.create(client.getAudioTranscriptionText(modelId, fileName, transcriptionOptions))
                     .verifyErrorSatisfies(error -> assertTrue(error instanceof IllegalArgumentException));
             }
         });
@@ -461,7 +461,7 @@ public class NonAzureOpenAIAsyncClientTest extends OpenAIClientTestBase {
 
             for (AudioTranscriptionFormat format: wrongFormats) {
                 transcriptionOptions.setResponseFormat(format);
-                StepVerifier.create(client.getAudioTranscription(modelId, transcriptionOptions, fileName))
+                StepVerifier.create(client.getAudioTranscription(modelId, fileName, transcriptionOptions))
                     .verifyErrorSatisfies(error -> assertTrue(error instanceof IllegalArgumentException));
             }
         });
@@ -477,7 +477,7 @@ public class NonAzureOpenAIAsyncClientTest extends OpenAIClientTestBase {
             AudioTranslationOptions translationOptions = new AudioTranslationOptions(file);
             translationOptions.setResponseFormat(AudioTranscriptionFormat.JSON);
 
-            StepVerifier.create(client.getAudioTranslation(modelId, translationOptions, fileName))
+            StepVerifier.create(client.getAudioTranslation(modelId, fileName, translationOptions))
                 .assertNext(translation ->
                     assertAudioTranscriptionSimpleJson(translation, "It's raining today."))
                 .verifyComplete();
@@ -494,7 +494,7 @@ public class NonAzureOpenAIAsyncClientTest extends OpenAIClientTestBase {
             AudioTranslationOptions translationOptions = new AudioTranslationOptions(file);
             translationOptions.setResponseFormat(AudioTranscriptionFormat.VERBOSE_JSON);
 
-            StepVerifier.create(client.getAudioTranslation(modelId, translationOptions, fileName))
+            StepVerifier.create(client.getAudioTranslation(modelId, fileName, translationOptions))
                 .assertNext(translation ->
                     assertAudioTranscriptionVerboseJson(translation, "It's raining today.", AudioTaskLabel.TRANSLATE))
                 .verifyComplete();
@@ -511,7 +511,7 @@ public class NonAzureOpenAIAsyncClientTest extends OpenAIClientTestBase {
             AudioTranslationOptions translationOptions = new AudioTranslationOptions(file);
             translationOptions.setResponseFormat(AudioTranscriptionFormat.TEXT);
 
-            StepVerifier.create(client.getAudioTranslationText(modelId, translationOptions, fileName))
+            StepVerifier.create(client.getAudioTranslationText(modelId, fileName, translationOptions))
                 .assertNext(translation -> {
                     assertEquals("It's raining today.\n", translation);
                 }).verifyComplete();
@@ -528,7 +528,7 @@ public class NonAzureOpenAIAsyncClientTest extends OpenAIClientTestBase {
             AudioTranslationOptions translationOptions = new AudioTranslationOptions(file);
             translationOptions.setResponseFormat(AudioTranscriptionFormat.SRT);
 
-            StepVerifier.create(client.getAudioTranslationText(modelId, translationOptions, fileName))
+            StepVerifier.create(client.getAudioTranslationText(modelId, fileName, translationOptions))
                     .assertNext(translation -> {
                         // Sequence number
                         assertTrue(translation.contains("1\n"));
@@ -550,7 +550,7 @@ public class NonAzureOpenAIAsyncClientTest extends OpenAIClientTestBase {
             AudioTranslationOptions translationOptions = new AudioTranslationOptions(file);
             translationOptions.setResponseFormat(AudioTranscriptionFormat.VTT);
 
-            StepVerifier.create(client.getAudioTranslationText(modelId, translationOptions, fileName))
+            StepVerifier.create(client.getAudioTranslationText(modelId, fileName, translationOptions))
                 .assertNext(translation -> {
                     // Start value according to spec
                     assertTrue(translation.startsWith("WEBVTT\n"));
@@ -577,7 +577,7 @@ public class NonAzureOpenAIAsyncClientTest extends OpenAIClientTestBase {
 
             for (AudioTranscriptionFormat format: wrongFormats) {
                 translationOptions.setResponseFormat(format);
-                StepVerifier.create(client.getAudioTranslationText(modelId, translationOptions, fileName))
+                StepVerifier.create(client.getAudioTranslationText(modelId, fileName, translationOptions))
                     .verifyErrorSatisfies(error -> assertTrue(error instanceof IllegalArgumentException));
             }
         });
@@ -599,7 +599,7 @@ public class NonAzureOpenAIAsyncClientTest extends OpenAIClientTestBase {
 
             for (AudioTranscriptionFormat format: wrongFormats) {
                 translationOptions.setResponseFormat(format);
-                StepVerifier.create(client.getAudioTranslation(modelId, translationOptions, fileName))
+                StepVerifier.create(client.getAudioTranslation(modelId, fileName, translationOptions))
                     .verifyErrorSatisfies(error -> assertTrue(error instanceof IllegalArgumentException));
             }
         });

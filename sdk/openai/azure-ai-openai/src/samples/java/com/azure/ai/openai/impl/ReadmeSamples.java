@@ -238,7 +238,7 @@ public final class ReadmeSamples {
         AudioTranscriptionOptions transcriptionOptions = new AudioTranscriptionOptions(file)
             .setResponseFormat(AudioTranscriptionFormat.JSON);
 
-        AudioTranscription transcription = client.getAudioTranscription("{deploymentOrModelId}", transcriptionOptions, fileName);
+        AudioTranscription transcription = client.getAudioTranscription("{deploymentOrModelId}", fileName, transcriptionOptions);
 
         System.out.println("Transcription: " + transcription.getText());
         // END: readme-sample-audioTranscription
@@ -253,7 +253,7 @@ public final class ReadmeSamples {
         AudioTranslationOptions translationOptions = new AudioTranslationOptions(file)
             .setResponseFormat(AudioTranscriptionFormat.JSON);
 
-        AudioTranscription translation = client.getAudioTranslation("{deploymentOrModelId}", translationOptions, fileName);
+        AudioTranscription translation = client.getAudioTranslation("{deploymentOrModelId}", fileName, translationOptions);
 
         System.out.println("Translation: " + translation.getText());
         // END: readme-sample-audioTranslation
