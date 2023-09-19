@@ -349,8 +349,7 @@ public final class CosmosClient implements Closeable {
      * @return the list of regions to exclude.
      * */
     public List<String> getExcludedRegions() {
-        List<String> excludedRegions = this.asyncClientWrapper.getExcludedRegions();
-        return excludedRegions == null ? Collections.emptyList() : UnmodifiableList.unmodifiableList(excludedRegions);
+        return this.asyncClientWrapper.getExcludedRegions();
     }
 
     static void initialize() {
