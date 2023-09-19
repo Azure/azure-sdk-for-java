@@ -15,7 +15,7 @@ public final class EventHubConsumerGroupInfoInnerTests {
         EventHubConsumerGroupInfoInner model =
             BinaryData
                 .fromString(
-                    "{\"properties\":{\"ow\":\"databm\",\"qlveualupjmkh\":\"datawpr\",\"riplrbpbewtg\":\"dataxobbcswsrt\"},\"etag\":\"gblcgwxzvlvq\",\"id\":\"jkbegibtnmxiebww\",\"name\":\"loayqcgw\",\"type\":\"tzjuzgwyzmhtxo\"}")
+                    "{\"properties\":{\"ali\":\"dataisgwbnbbeldawkz\",\"hashsfwxosow\":\"dataurqhaka\"},\"etag\":\"cugicjoox\",\"id\":\"j\",\"name\":\"bwpucwwfvovbv\",\"type\":\"euecivyhzceuoj\"}")
                 .toObject(EventHubConsumerGroupInfoInner.class);
     }
 
@@ -23,7 +23,7 @@ public final class EventHubConsumerGroupInfoInnerTests {
     public void testSerialize() throws Exception {
         EventHubConsumerGroupInfoInner model =
             new EventHubConsumerGroupInfoInner()
-                .withProperties(mapOf("ow", "databm", "qlveualupjmkh", "datawpr", "riplrbpbewtg", "dataxobbcswsrt"));
+                .withProperties(mapOf("ali", "dataisgwbnbbeldawkz", "hashsfwxosow", "dataurqhaka"));
         model = BinaryData.fromObject(model).toObject(EventHubConsumerGroupInfoInner.class);
     }
 
