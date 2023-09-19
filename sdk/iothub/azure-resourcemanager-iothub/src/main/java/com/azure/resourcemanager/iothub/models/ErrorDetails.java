@@ -26,7 +26,7 @@ public final class ErrorDetails extends ManagementError {
      *
      * @return the httpStatusCode value.
      */
-    public String getHttpStatusCode() {
+    public String httpStatusCode() {
         return this.httpStatusCode;
     }
 

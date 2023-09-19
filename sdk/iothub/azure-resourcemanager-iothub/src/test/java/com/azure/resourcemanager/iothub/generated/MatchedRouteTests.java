@@ -17,12 +17,12 @@ public final class MatchedRouteTests {
         MatchedRoute model =
             BinaryData
                 .fromString(
-                    "{\"properties\":{\"name\":\"gynduha\",\"source\":\"DigitalTwinChangeEvents\",\"condition\":\"lkthu\",\"endpointNames\":[\"qolbgyc\",\"uie\",\"tgccymvaolpss\",\"qlfmmdnbb\"],\"isEnabled\":true}}")
+                    "{\"properties\":{\"name\":\"ttdumorppxebmnzb\",\"source\":\"DeviceConnectionStateEvents\",\"condition\":\"jpglkfgohdne\",\"endpointNames\":[\"lfphsdyhtozfikd\"],\"isEnabled\":true}}")
                 .toObject(MatchedRoute.class);
-        Assertions.assertEquals("gynduha", model.properties().name());
-        Assertions.assertEquals(RoutingSource.DIGITAL_TWIN_CHANGE_EVENTS, model.properties().source());
-        Assertions.assertEquals("lkthu", model.properties().condition());
-        Assertions.assertEquals("qolbgyc", model.properties().endpointNames().get(0));
+        Assertions.assertEquals("ttdumorppxebmnzb", model.properties().name());
+        Assertions.assertEquals(RoutingSource.DEVICE_CONNECTION_STATE_EVENTS, model.properties().source());
+        Assertions.assertEquals("jpglkfgohdne", model.properties().condition());
+        Assertions.assertEquals("lfphsdyhtozfikd", model.properties().endpointNames().get(0));
         Assertions.assertEquals(true, model.properties().isEnabled());
     }
 
@@ -32,16 +32,16 @@ public final class MatchedRouteTests {
             new MatchedRoute()
                 .withProperties(
                     new RouteProperties()
-                        .withName("gynduha")
-                        .withSource(RoutingSource.DIGITAL_TWIN_CHANGE_EVENTS)
-                        .withCondition("lkthu")
-                        .withEndpointNames(Arrays.asList("qolbgyc", "uie", "tgccymvaolpss", "qlfmmdnbb"))
+                        .withName("ttdumorppxebmnzb")
+                        .withSource(RoutingSource.DEVICE_CONNECTION_STATE_EVENTS)
+                        .withCondition("jpglkfgohdne")
+                        .withEndpointNames(Arrays.asList("lfphsdyhtozfikd"))
                         .withIsEnabled(true));
         model = BinaryData.fromObject(model).toObject(MatchedRoute.class);
-        Assertions.assertEquals("gynduha", model.properties().name());
-        Assertions.assertEquals(RoutingSource.DIGITAL_TWIN_CHANGE_EVENTS, model.properties().source());
-        Assertions.assertEquals("lkthu", model.properties().condition());
-        Assertions.assertEquals("qolbgyc", model.properties().endpointNames().get(0));
+        Assertions.assertEquals("ttdumorppxebmnzb", model.properties().name());
+        Assertions.assertEquals(RoutingSource.DEVICE_CONNECTION_STATE_EVENTS, model.properties().source());
+        Assertions.assertEquals("jpglkfgohdne", model.properties().condition());
+        Assertions.assertEquals("lfphsdyhtozfikd", model.properties().endpointNames().get(0));
         Assertions.assertEquals(true, model.properties().isEnabled());
     }
 }

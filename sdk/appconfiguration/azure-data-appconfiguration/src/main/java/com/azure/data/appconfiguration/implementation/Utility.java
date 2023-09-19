@@ -29,15 +29,15 @@ public class Utility {
     private static final String HTTP_REST_PROXY_SYNC_PROXY_ENABLE = "com.azure.core.http.restproxy.syncproxy.enable";
     public static final String APP_CONFIG_TRACING_NAMESPACE_VALUE = "Microsoft.AppConfiguration";
 
-    static final String ID = "id";
-    static final String DESCRIPTION = "description";
-    static final String DISPLAY_NAME = "display_name";
-    static final String ENABLED = "enabled";
-    static final String CONDITIONS = "conditions";
-    static final String CLIENT_FILTERS = "client_filters";
-    static final String NAME = "name";
-    static final String PARAMETERS = "parameters";
-    static final String URI = "uri";
+    public static final String ID = "id";
+    public static final String DESCRIPTION = "description";
+    public static final String DISPLAY_NAME = "display_name";
+    public static final String ENABLED = "enabled";
+    public static final String CONDITIONS = "conditions";
+    public static final String CLIENT_FILTERS = "client_filters";
+    public static final String NAME = "name";
+    public static final String PARAMETERS = "parameters";
+    public static final String URI = "uri";
 
     /**
      * Represents any value in Etag.

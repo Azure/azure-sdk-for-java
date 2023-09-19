@@ -18,29 +18,24 @@ public final class EndpointHealthDataListResultTests {
         EndpointHealthDataListResult model =
             BinaryData
                 .fromString(
-                    "{\"value\":[{\"endpointId\":\"zvahapjy\",\"healthStatus\":\"dead\",\"lastKnownError\":\"gqzcjr\",\"lastKnownErrorTime\":\"Sat,"
-                        + " 03 Apr 2021 19:52:37 GMT\",\"lastSuccessfulSendAttemptTime\":\"Sat, 05 Jun 2021 18:59:27"
-                        + " GMT\",\"lastSendAttemptTime\":\"Sat, 04 Sep 2021 18:51:43"
-                        + " GMT\"},{\"endpointId\":\"lxkvu\",\"healthStatus\":\"degraded\",\"lastKnownError\":\"ovawjvzunlu\",\"lastKnownErrorTime\":\"Thu,"
-                        + " 05 Aug 2021 22:08:57 GMT\",\"lastSuccessfulSendAttemptTime\":\"Thu, 21 Jan 2021 11:08:17"
-                        + " GMT\",\"lastSendAttemptTime\":\"Thu, 11 Mar 2021 05:06:45"
-                        + " GMT\"},{\"endpointId\":\"i\",\"healthStatus\":\"healthy\",\"lastKnownError\":\"pjzu\",\"lastKnownErrorTime\":\"Tue,"
-                        + " 12 Oct 2021 12:24:32 GMT\",\"lastSuccessfulSendAttemptTime\":\"Mon, 21 Jun 2021 03:54:01"
-                        + " GMT\",\"lastSendAttemptTime\":\"Wed, 03 Nov 2021 21:00:46"
-                        + " GMT\"},{\"endpointId\":\"skzbb\",\"healthStatus\":\"dead\",\"lastKnownError\":\"mv\",\"lastKnownErrorTime\":\"Wed,"
-                        + " 24 Feb 2021 15:47:12 GMT\",\"lastSuccessfulSendAttemptTime\":\"Mon, 22 Mar 2021 15:40:44"
-                        + " GMT\",\"lastSendAttemptTime\":\"Thu, 01 Jul 2021 08:04:50 GMT\"}],\"nextLink\":\"uh\"}")
+                    "{\"value\":[{\"endpointId\":\"tfdygpfqb\",\"healthStatus\":\"unhealthy\",\"lastKnownError\":\"op\",\"lastKnownErrorTime\":\"Thu,"
+                        + " 15 Apr 2021 23:44:21 GMT\",\"lastSuccessfulSendAttemptTime\":\"Mon, 11 Oct 2021 15:02:03"
+                        + " GMT\",\"lastSendAttemptTime\":\"Mon, 29 Mar 2021 02:40:43"
+                        + " GMT\"},{\"endpointId\":\"opppcqeq\",\"healthStatus\":\"healthy\",\"lastKnownError\":\"dahzxctobg\",\"lastKnownErrorTime\":\"Wed,"
+                        + " 01 Sep 2021 00:32:36 GMT\",\"lastSuccessfulSendAttemptTime\":\"Tue, 02 Mar 2021 22:54:24"
+                        + " GMT\",\"lastSendAttemptTime\":\"Fri, 29 Jan 2021 19:09:38"
+                        + " GMT\"}],\"nextLink\":\"ostmgrcf\"}")
                 .toObject(EndpointHealthDataListResult.class);
-        Assertions.assertEquals("zvahapjy", model.value().get(0).endpointId());
-        Assertions.assertEquals(EndpointHealthStatus.DEAD, model.value().get(0).healthStatus());
-        Assertions.assertEquals("gqzcjr", model.value().get(0).lastKnownError());
+        Assertions.assertEquals("tfdygpfqb", model.value().get(0).endpointId());
+        Assertions.assertEquals(EndpointHealthStatus.UNHEALTHY, model.value().get(0).healthStatus());
+        Assertions.assertEquals("op", model.value().get(0).lastKnownError());
         Assertions
-            .assertEquals(OffsetDateTime.parse("2021-04-03T19:52:37Z"), model.value().get(0).lastKnownErrorTime());
+            .assertEquals(OffsetDateTime.parse("2021-04-15T23:44:21Z"), model.value().get(0).lastKnownErrorTime());
         Assertions
             .assertEquals(
-                OffsetDateTime.parse("2021-06-05T18:59:27Z"), model.value().get(0).lastSuccessfulSendAttemptTime());
+                OffsetDateTime.parse("2021-10-11T15:02:03Z"), model.value().get(0).lastSuccessfulSendAttemptTime());
         Assertions
-            .assertEquals(OffsetDateTime.parse("2021-09-04T18:51:43Z"), model.value().get(0).lastSendAttemptTime());
+            .assertEquals(OffsetDateTime.parse("2021-03-29T02:40:43Z"), model.value().get(0).lastSendAttemptTime());
     }
 
     @org.junit.jupiter.api.Test
@@ -51,43 +46,29 @@ public final class EndpointHealthDataListResultTests {
                     Arrays
                         .asList(
                             new EndpointHealthDataInner()
-                                .withEndpointId("zvahapjy")
-                                .withHealthStatus(EndpointHealthStatus.DEAD)
-                                .withLastKnownError("gqzcjr")
-                                .withLastKnownErrorTime(OffsetDateTime.parse("2021-04-03T19:52:37Z"))
-                                .withLastSuccessfulSendAttemptTime(OffsetDateTime.parse("2021-06-05T18:59:27Z"))
-                                .withLastSendAttemptTime(OffsetDateTime.parse("2021-09-04T18:51:43Z")),
+                                .withEndpointId("tfdygpfqb")
+                                .withHealthStatus(EndpointHealthStatus.UNHEALTHY)
+                                .withLastKnownError("op")
+                                .withLastKnownErrorTime(OffsetDateTime.parse("2021-04-15T23:44:21Z"))
+                                .withLastSuccessfulSendAttemptTime(OffsetDateTime.parse("2021-10-11T15:02:03Z"))
+                                .withLastSendAttemptTime(OffsetDateTime.parse("2021-03-29T02:40:43Z")),
                             new EndpointHealthDataInner()
-                                .withEndpointId("lxkvu")
-                                .withHealthStatus(EndpointHealthStatus.DEGRADED)
-                                .withLastKnownError("ovawjvzunlu")
-                                .withLastKnownErrorTime(OffsetDateTime.parse("2021-08-05T22:08:57Z"))
-                                .withLastSuccessfulSendAttemptTime(OffsetDateTime.parse("2021-01-21T11:08:17Z"))
-                                .withLastSendAttemptTime(OffsetDateTime.parse("2021-03-11T05:06:45Z")),
-                            new EndpointHealthDataInner()
-                                .withEndpointId("i")
+                                .withEndpointId("opppcqeq")
                                 .withHealthStatus(EndpointHealthStatus.HEALTHY)
-                                .withLastKnownError("pjzu")
-                                .withLastKnownErrorTime(OffsetDateTime.parse("2021-10-12T12:24:32Z"))
-                                .withLastSuccessfulSendAttemptTime(OffsetDateTime.parse("2021-06-21T03:54:01Z"))
-                                .withLastSendAttemptTime(OffsetDateTime.parse("2021-11-03T21:00:46Z")),
-                            new EndpointHealthDataInner()
-                                .withEndpointId("skzbb")
-                                .withHealthStatus(EndpointHealthStatus.DEAD)
-                                .withLastKnownError("mv")
-                                .withLastKnownErrorTime(OffsetDateTime.parse("2021-02-24T15:47:12Z"))
-                                .withLastSuccessfulSendAttemptTime(OffsetDateTime.parse("2021-03-22T15:40:44Z"))
-                                .withLastSendAttemptTime(OffsetDateTime.parse("2021-07-01T08:04:50Z"))));
+                                .withLastKnownError("dahzxctobg")
+                                .withLastKnownErrorTime(OffsetDateTime.parse("2021-09-01T00:32:36Z"))
+                                .withLastSuccessfulSendAttemptTime(OffsetDateTime.parse("2021-03-02T22:54:24Z"))
+                                .withLastSendAttemptTime(OffsetDateTime.parse("2021-01-29T19:09:38Z"))));
         model = BinaryData.fromObject(model).toObject(EndpointHealthDataListResult.class);
-        Assertions.assertEquals("zvahapjy", model.value().get(0).endpointId());
-        Assertions.assertEquals(EndpointHealthStatus.DEAD, model.value().get(0).healthStatus());
-        Assertions.assertEquals("gqzcjr", model.value().get(0).lastKnownError());
+        Assertions.assertEquals("tfdygpfqb", model.value().get(0).endpointId());
+        Assertions.assertEquals(EndpointHealthStatus.UNHEALTHY, model.value().get(0).healthStatus());
+        Assertions.assertEquals("op", model.value().get(0).lastKnownError());
         Assertions
-            .assertEquals(OffsetDateTime.parse("2021-04-03T19:52:37Z"), model.value().get(0).lastKnownErrorTime());
+            .assertEquals(OffsetDateTime.parse("2021-04-15T23:44:21Z"), model.value().get(0).lastKnownErrorTime());
         Assertions
             .assertEquals(
-                OffsetDateTime.parse("2021-06-05T18:59:27Z"), model.value().get(0).lastSuccessfulSendAttemptTime());
+                OffsetDateTime.parse("2021-10-11T15:02:03Z"), model.value().get(0).lastSuccessfulSendAttemptTime());
         Assertions
-            .assertEquals(OffsetDateTime.parse("2021-09-04T18:51:43Z"), model.value().get(0).lastSendAttemptTime());
+            .assertEquals(OffsetDateTime.parse("2021-03-29T02:40:43Z"), model.value().get(0).lastSendAttemptTime());
     }
 }

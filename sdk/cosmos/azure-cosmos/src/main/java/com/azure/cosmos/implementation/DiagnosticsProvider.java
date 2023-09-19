@@ -148,6 +148,27 @@ public final class DiagnosticsProvider {
         return this.tracer.isEnabled() && this.tracer != EnabledNoOpTracer.INSTANCE;
     }
 
+    public String getTraceConfigLog() {
+        StringBuilder sb = new StringBuilder();
+        sb.append(this.isEnabled());
+        sb.append(", ");
+        sb.append(this.isRealTracer());
+        sb.append(", ");
+        sb.append(this.tracer.getClass().getCanonicalName());
+        if (!this.diagnosticHandlers.isEmpty()) {
+            sb.append(", [");
+            for (int i = 0; i < this.diagnosticHandlers.size(); i++) {
+                if (i > 0) {
+                    sb.append(", ");
+                }
+                sb.append(this.diagnosticHandlers.get(i).getClass().getCanonicalName());
+            }
+            sb.append("]");
+        }
+
+        return sb.toString();
+    }
+
     public CosmosClientTelemetryConfig getClientTelemetryConfig() {
         return this.telemetryConfig;
     }

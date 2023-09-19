@@ -16,27 +16,27 @@ public final class RoutingMessageTests {
         RoutingMessage model =
             BinaryData
                 .fromString(
-                    "{\"body\":\"xoblytkbl\",\"appProperties\":{\"rn\":\"wwwfbkr\",\"bfovasrruvwbhsq\":\"vshqjohxcr\",\"gjb\":\"sub\",\"rfbjf\":\"rxbpyb\"},\"systemProperties\":{\"zbexilzznfqqnvw\":\"ssotftpv\"}}")
+                    "{\"body\":\"plvwiwubmwmbes\",\"appProperties\":{\"wtppjflcxogaoko\":\"k\"},\"systemProperties\":{\"fzxmhhvhgureodkw\":\"nsikvmkqzeqqkdl\"}}")
                 .toObject(RoutingMessage.class);
-        Assertions.assertEquals("xoblytkbl", model.body());
-        Assertions.assertEquals("wwwfbkr", model.appProperties().get("rn"));
-        Assertions.assertEquals("ssotftpv", model.systemProperties().get("zbexilzznfqqnvw"));
+        Assertions.assertEquals("plvwiwubmwmbes", model.body());
+        Assertions.assertEquals("k", model.appProperties().get("wtppjflcxogaoko"));
+        Assertions.assertEquals("nsikvmkqzeqqkdl", model.systemProperties().get("fzxmhhvhgureodkw"));
     }
 
     @org.junit.jupiter.api.Test
     public void testSerialize() throws Exception {
         RoutingMessage model =
             new RoutingMessage()
-                .withBody("xoblytkbl")
-                .withAppProperties(
-                    mapOf("rn", "wwwfbkr", "bfovasrruvwbhsq", "vshqjohxcr", "gjb", "sub", "rfbjf", "rxbpyb"))
-                .withSystemProperties(mapOf("zbexilzznfqqnvw", "ssotftpv"));
+                .withBody("plvwiwubmwmbes")
+                .withAppProperties(mapOf("wtppjflcxogaoko", "k"))
+                .withSystemProperties(mapOf("fzxmhhvhgureodkw", "nsikvmkqzeqqkdl"));
         model = BinaryData.fromObject(model).toObject(RoutingMessage.class);
-        Assertions.assertEquals("xoblytkbl", model.body());
-        Assertions.assertEquals("wwwfbkr", model.appProperties().get("rn"));
-        Assertions.assertEquals("ssotftpv", model.systemProperties().get("zbexilzznfqqnvw"));
+        Assertions.assertEquals("plvwiwubmwmbes", model.body());
+        Assertions.assertEquals("k", model.appProperties().get("wtppjflcxogaoko"));
+        Assertions.assertEquals("nsikvmkqzeqqkdl", model.systemProperties().get("fzxmhhvhgureodkw"));
     }
 
+    // Use "Map.of" if available
     @SuppressWarnings("unchecked")
     private static <T> Map<String, T> mapOf(Object... inputs) {
         Map<String, T> map = new HashMap<>();
