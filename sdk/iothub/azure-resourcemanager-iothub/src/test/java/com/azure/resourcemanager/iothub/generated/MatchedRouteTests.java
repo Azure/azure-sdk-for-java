@@ -17,13 +17,13 @@ public final class MatchedRouteTests {
         MatchedRoute model =
             BinaryData
                 .fromString(
-                    "{\"properties\":{\"name\":\"ttdumorppxebmnzb\",\"source\":\"DeviceConnectionStateEvents\",\"condition\":\"jpglkfgohdne\",\"endpointNames\":[\"lfphsdyhtozfikd\"],\"isEnabled\":true}}")
+                    "{\"properties\":{\"name\":\"mubyynt\",\"source\":\"TwinChangeEvents\",\"condition\":\"bqtkoievseotgqr\",\"endpointNames\":[\"tmuwlauwzi\",\"xbmp\",\"cjefuzmu\",\"pbttdum\"],\"isEnabled\":false}}")
                 .toObject(MatchedRoute.class);
-        Assertions.assertEquals("ttdumorppxebmnzb", model.properties().name());
-        Assertions.assertEquals(RoutingSource.DEVICE_CONNECTION_STATE_EVENTS, model.properties().source());
-        Assertions.assertEquals("jpglkfgohdne", model.properties().condition());
-        Assertions.assertEquals("lfphsdyhtozfikd", model.properties().endpointNames().get(0));
-        Assertions.assertEquals(true, model.properties().isEnabled());
+        Assertions.assertEquals("mubyynt", model.properties().name());
+        Assertions.assertEquals(RoutingSource.TWIN_CHANGE_EVENTS, model.properties().source());
+        Assertions.assertEquals("bqtkoievseotgqr", model.properties().condition());
+        Assertions.assertEquals("tmuwlauwzi", model.properties().endpointNames().get(0));
+        Assertions.assertEquals(false, model.properties().isEnabled());
     }
 
     @org.junit.jupiter.api.Test
@@ -32,16 +32,16 @@ public final class MatchedRouteTests {
             new MatchedRoute()
                 .withProperties(
                     new RouteProperties()
-                        .withName("ttdumorppxebmnzb")
-                        .withSource(RoutingSource.DEVICE_CONNECTION_STATE_EVENTS)
-                        .withCondition("jpglkfgohdne")
-                        .withEndpointNames(Arrays.asList("lfphsdyhtozfikd"))
-                        .withIsEnabled(true));
+                        .withName("mubyynt")
+                        .withSource(RoutingSource.TWIN_CHANGE_EVENTS)
+                        .withCondition("bqtkoievseotgqr")
+                        .withEndpointNames(Arrays.asList("tmuwlauwzi", "xbmp", "cjefuzmu", "pbttdum"))
+                        .withIsEnabled(false));
         model = BinaryData.fromObject(model).toObject(MatchedRoute.class);
-        Assertions.assertEquals("ttdumorppxebmnzb", model.properties().name());
-        Assertions.assertEquals(RoutingSource.DEVICE_CONNECTION_STATE_EVENTS, model.properties().source());
-        Assertions.assertEquals("jpglkfgohdne", model.properties().condition());
-        Assertions.assertEquals("lfphsdyhtozfikd", model.properties().endpointNames().get(0));
-        Assertions.assertEquals(true, model.properties().isEnabled());
+        Assertions.assertEquals("mubyynt", model.properties().name());
+        Assertions.assertEquals(RoutingSource.TWIN_CHANGE_EVENTS, model.properties().source());
+        Assertions.assertEquals("bqtkoievseotgqr", model.properties().condition());
+        Assertions.assertEquals("tmuwlauwzi", model.properties().endpointNames().get(0));
+        Assertions.assertEquals(false, model.properties().isEnabled());
     }
 }

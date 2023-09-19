@@ -12,18 +12,16 @@ public final class NameTests {
     @org.junit.jupiter.api.Test
     public void testDeserialize() throws Exception {
         Name model =
-            BinaryData
-                .fromString("{\"value\":\"nduhavhqlkthum\",\"localizedValue\":\"olbgycduiertgccy\"}")
-                .toObject(Name.class);
-        Assertions.assertEquals("nduhavhqlkthum", model.value());
-        Assertions.assertEquals("olbgycduiertgccy", model.localizedValue());
+            BinaryData.fromString("{\"value\":\"fbkrvrnsvs\",\"localizedValue\":\"johxcrsb\"}").toObject(Name.class);
+        Assertions.assertEquals("fbkrvrnsvs", model.value());
+        Assertions.assertEquals("johxcrsb", model.localizedValue());
     }
 
     @org.junit.jupiter.api.Test
     public void testSerialize() throws Exception {
-        Name model = new Name().withValue("nduhavhqlkthum").withLocalizedValue("olbgycduiertgccy");
+        Name model = new Name().withValue("fbkrvrnsvs").withLocalizedValue("johxcrsb");
         model = BinaryData.fromObject(model).toObject(Name.class);
-        Assertions.assertEquals("nduhavhqlkthum", model.value());
-        Assertions.assertEquals("olbgycduiertgccy", model.localizedValue());
+        Assertions.assertEquals("fbkrvrnsvs", model.value());
+        Assertions.assertEquals("johxcrsb", model.localizedValue());
     }
 }

@@ -16,24 +16,25 @@ public final class RoutingMessageTests {
         RoutingMessage model =
             BinaryData
                 .fromString(
-                    "{\"body\":\"plvwiwubmwmbes\",\"appProperties\":{\"wtppjflcxogaoko\":\"k\"},\"systemProperties\":{\"fzxmhhvhgureodkw\":\"nsikvmkqzeqqkdl\"}}")
+                    "{\"body\":\"aolps\",\"appProperties\":{\"d\":\"lfmmdnbbglzpswi\",\"bzmnvdfznud\":\"cwyhzdxssa\",\"xzb\":\"od\"},\"systemProperties\":{\"hxsrzdzucersc\":\"lylpstdb\",\"iwjmygtdssls\":\"ntnev\",\"emwabnet\":\"tmweriofzpyq\"}}")
                 .toObject(RoutingMessage.class);
-        Assertions.assertEquals("plvwiwubmwmbes", model.body());
-        Assertions.assertEquals("k", model.appProperties().get("wtppjflcxogaoko"));
-        Assertions.assertEquals("nsikvmkqzeqqkdl", model.systemProperties().get("fzxmhhvhgureodkw"));
+        Assertions.assertEquals("aolps", model.body());
+        Assertions.assertEquals("lfmmdnbbglzpswi", model.appProperties().get("d"));
+        Assertions.assertEquals("lylpstdb", model.systemProperties().get("hxsrzdzucersc"));
     }
 
     @org.junit.jupiter.api.Test
     public void testSerialize() throws Exception {
         RoutingMessage model =
             new RoutingMessage()
-                .withBody("plvwiwubmwmbes")
-                .withAppProperties(mapOf("wtppjflcxogaoko", "k"))
-                .withSystemProperties(mapOf("fzxmhhvhgureodkw", "nsikvmkqzeqqkdl"));
+                .withBody("aolps")
+                .withAppProperties(mapOf("d", "lfmmdnbbglzpswi", "bzmnvdfznud", "cwyhzdxssa", "xzb", "od"))
+                .withSystemProperties(
+                    mapOf("hxsrzdzucersc", "lylpstdb", "iwjmygtdssls", "ntnev", "emwabnet", "tmweriofzpyq"));
         model = BinaryData.fromObject(model).toObject(RoutingMessage.class);
-        Assertions.assertEquals("plvwiwubmwmbes", model.body());
-        Assertions.assertEquals("k", model.appProperties().get("wtppjflcxogaoko"));
-        Assertions.assertEquals("nsikvmkqzeqqkdl", model.systemProperties().get("fzxmhhvhgureodkw"));
+        Assertions.assertEquals("aolps", model.body());
+        Assertions.assertEquals("lfmmdnbbglzpswi", model.appProperties().get("d"));
+        Assertions.assertEquals("lylpstdb", model.systemProperties().get("hxsrzdzucersc"));
     }
 
     // Use "Map.of" if available
