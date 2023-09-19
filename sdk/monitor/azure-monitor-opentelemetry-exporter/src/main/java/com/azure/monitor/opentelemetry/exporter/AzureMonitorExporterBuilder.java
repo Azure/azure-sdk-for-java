@@ -237,6 +237,8 @@ public final class AzureMonitorExporterBuilder {
      * environment variable "APPLICATIONINSIGHTS_CONNECTION_STRING" is not set.
      */
     public SpanExporter buildTraceExporter() {
+        internalBuildAndFreeze();
+        // TODO (trask) how to pass along configuration properties?
         return buildTraceExporter(DefaultConfigProperties.createForTest(Collections.emptyMap()));
     }
 
@@ -252,6 +254,8 @@ public final class AzureMonitorExporterBuilder {
      * environment variable "APPLICATIONINSIGHTS_CONNECTION_STRING" is not set.
      */
     public MetricExporter buildMetricExporter() {
+        internalBuildAndFreeze();
+        // TODO (trask) how to pass along configuration properties?
         return buildMetricExporter(DefaultConfigProperties.createForTest(Collections.emptyMap()));
     }
 
@@ -264,6 +268,8 @@ public final class AzureMonitorExporterBuilder {
      * environment variable "APPLICATIONINSIGHTS_CONNECTION_STRING" is not set.
      */
     public LogRecordExporter buildLogRecordExporter() {
+        internalBuildAndFreeze();
+        // TODO (trask) how to pass along configuration properties?
         return buildLogRecordExporter(DefaultConfigProperties.createForTest(Collections.emptyMap()));
     }
 
@@ -273,11 +279,7 @@ public final class AzureMonitorExporterBuilder {
      * @param sdkBuilder the {@link AutoConfiguredOpenTelemetrySdkBuilder} in which to install the azure monitor exporter.
      */
     public void build(AutoConfiguredOpenTelemetrySdkBuilder sdkBuilder) {
-        if (!frozen) {
-            builtHttpPipeline = createHttpPipeline();
-            builtTelemetryItemExporter = createTelemetryItemExporter();
-            frozen = true;
-        }
+        internalBuildAndFreeze();
 
         sdkBuilder.addPropertiesSupplier(() -> {
             Map<String, String> props = new HashMap<>();
@@ -332,7 +334,16 @@ public final class AzureMonitorExporterBuilder {
             ));
     }
 
+    private void internalBuildAndFreeze() {
+        if (!frozen) {
+            builtHttpPipeline = createHttpPipeline();
+            builtTelemetryItemExporter = createTelemetryItemExporter();
+            frozen = true;
+        }
+    }
+
     private SpanExporter buildTraceExporter(ConfigProperties configProperties) {
+
         return new AzureMonitorTraceExporter(createSpanDataMapper(configProperties), builtTelemetryItemExporter);
     }
 
