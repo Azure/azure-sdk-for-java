@@ -50,7 +50,7 @@ The API key can be found in the [Azure Portal][azure_portal] or by running the f
 ```bash
 az cognitiveservices account keys list --name "<resource-name>" --resource-group "<resource-group-name>"
 ```
-#### Create a ContentSafetyClient with AzureKeyCredential
+#### Create a ContentSafetyClient with KeyCredential
 ```java com.azure.ai.contentsafety.createClient
 String endpoint = Configuration.getGlobalConfiguration().get("CONTENT_SAFETY_ENDPOINT");
 String key = Configuration.getGlobalConfiguration().get("CONTENT_SAFETY_KEY");
