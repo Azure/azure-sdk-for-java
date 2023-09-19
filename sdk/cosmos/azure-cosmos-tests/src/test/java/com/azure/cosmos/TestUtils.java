@@ -16,7 +16,7 @@ public class TestUtils {
     }
 
     // todo: @abhmohanty - remove when handleChanges with biConsumer is made public
-    public static ChangeFeedProcessorBuilder injectHandleLatestChangesBiConsumerWithContext(
+    public static ChangeFeedProcessorBuilder injectHandleChangesBiConsumerWithContext(
         ChangeFeedProcessorBuilder builder, BiConsumer<List<JsonNode>, ChangeFeedProcessorContext<JsonNode>> biConsumer) {
         builder = builder.handleChanges(biConsumer);
         return builder;

@@ -1296,8 +1296,8 @@ public class IncrementalChangeFeedProcessorTest extends TestSuiteBase {
         }
     }
 
-    @Test(groups = { "split" }, timeOut = 160 * CHANGE_FEED_PROCESSOR_TIMEOUT)
-    public void readFeedDocumentsAfterSplit_maxScaleCount() throws InterruptedException {
+    @Test(groups = { "split" }, dataProvider = "contextTestConfigs", timeOut = 160 * CHANGE_FEED_PROCESSOR_TIMEOUT)
+    public void readFeedDocumentsAfterSplit_maxScaleCount(boolean isContextRequired) throws InterruptedException {
         CosmosAsyncContainer createdFeedCollectionForSplit = createFeedCollection(FEED_COLLECTION_THROUGHPUT);
         CosmosAsyncContainer createdLeaseCollection = createLeaseCollection(2 * LEASE_COLLECTION_THROUGHPUT);
 
@@ -1311,13 +1311,13 @@ public class IncrementalChangeFeedProcessorTest extends TestSuiteBase {
             int partitionCountBeforeSplit = createdFeedCollectionForSplit.getFeedRanges().block().size();
             List<InternalObjectNode> createdDocuments = new ArrayList<>();
             Map<String, JsonNode> receivedDocuments = new ConcurrentHashMap<>();
+            Set<String> receivedLeaseTokens = ConcurrentHashMap.newKeySet();
 
             // generate a first batch of documents
             setupReadFeedDocuments(createdDocuments, receivedDocuments, createdFeedCollectionForSplit, FEED_COUNT);
 
-            changeFeedProcessor1 = new ChangeFeedProcessorBuilder()
+            ChangeFeedProcessorBuilder changeFeedProcessorBuilder1 = new ChangeFeedProcessorBuilder()
                 .hostName(changeFeedProcessor1HostName)
-                .handleLatestVersionChanges(changeFeedProcessorHandler(receivedDocuments))
                 .feedContainer(createdFeedCollectionForSplit)
                 .leaseContainer(createdLeaseCollection)
                 .options(new ChangeFeedProcessorOptions()
@@ -1327,8 +1327,18 @@ public class IncrementalChangeFeedProcessorTest extends TestSuiteBase {
                     .setLeaseAcquireInterval(Duration.ofSeconds(1))
                     .setMaxScaleCount(partitionCountBeforeSplit) // set to match the partition count
                     .setLeaseRenewInterval(Duration.ofSeconds(2))
-                )
-                .buildChangeFeedProcessor();
+                );
+
+            if (isContextRequired) {
+                TestUtils.injectHandleLatestVersionChangesBiConsumerToChangeFeedProcessor(
+                    changeFeedProcessorBuilder1,
+                    changeFeedProcessorHandlerWithContext(receivedDocuments, receivedLeaseTokens));
+            } else {
+                changeFeedProcessorBuilder1 = changeFeedProcessorBuilder1
+                    .handleLatestVersionChanges(changeFeedProcessorHandler(receivedDocuments));
+            }
+
+            changeFeedProcessor1 = changeFeedProcessorBuilder1.buildChangeFeedProcessor();
 
             changeFeedProcessor1
                 .start()
@@ -1384,9 +1394,8 @@ public class IncrementalChangeFeedProcessorTest extends TestSuiteBase {
             assertThat(host1Leases).isEqualTo(partitionCountBeforeSplit);
 
             // now starts a new change feed processor
-            changeFeedProcessor2 = new ChangeFeedProcessorBuilder()
+            ChangeFeedProcessorBuilder changeFeedProcessorBuilder2 = new ChangeFeedProcessorBuilder()
                 .hostName(changeFeedProcessor2HostName)
-                .handleLatestVersionChanges(changeFeedProcessorHandler(receivedDocuments))
                 .feedContainer(createdFeedCollectionForSplit)
                 .leaseContainer(createdLeaseCollection)
                 .options(new ChangeFeedProcessorOptions()
@@ -1396,8 +1405,18 @@ public class IncrementalChangeFeedProcessorTest extends TestSuiteBase {
                     .setLeaseAcquireInterval(Duration.ofSeconds(1))
                     .setMaxScaleCount(partitionCountBeforeSplit) // set to match the partition count
                     .setLeaseRenewInterval(Duration.ofSeconds(2))
-                )
-                .buildChangeFeedProcessor();
+                );
+
+            if (isContextRequired) {
+                TestUtils.injectHandleLatestVersionChangesBiConsumerToChangeFeedProcessor(
+                    changeFeedProcessorBuilder2,
+                    changeFeedProcessorHandlerWithContext(receivedDocuments, receivedLeaseTokens));
+            } else {
+                changeFeedProcessorBuilder2 = changeFeedProcessorBuilder2
+                    .handleLatestVersionChanges(changeFeedProcessorHandler(receivedDocuments));
+            }
+
+            changeFeedProcessor2 = changeFeedProcessorBuilder2.buildChangeFeedProcessor();
 
             changeFeedProcessor2
                 .start()
@@ -1411,6 +1430,15 @@ public class IncrementalChangeFeedProcessorTest extends TestSuiteBase {
 
             // Wait for the feed processor to receive and process the second batch of documents.
             waitToReceiveDocuments(receivedDocuments, 2 * CHANGE_FEED_PROCESSOR_TIMEOUT, FEED_COUNT*2);
+
+            if (isContextRequired) {
+                assertThat(receivedLeaseTokens).isNotNull();
+                // before a split, the smallest possible container would have 1 physical partition
+                // after a split, such a container would have 2 child partitions
+                // if change feed has been drained from both the parent and child partitions, then
+                // corresponding to each partition, a lease should have been recorded
+                assertThat(receivedLeaseTokens.size()).isGreaterThanOrEqualTo(3);
+            }
 
             changeFeedProcessor1
                 .stop()

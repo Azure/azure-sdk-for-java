@@ -369,7 +369,8 @@ public class ChangeFeedProcessorBuilder {
     private boolean isIncrementalConsumerDefined() {
         return this.incrementalModeLeaseConsumerEpkVersion != null
             || this.incrementalModeLeaseConsumerPkRangeIdVersion != null
-            || this.incrementalModeLeaseConsumerWithContextEpkVersion != null;
+            || this.incrementalModeLeaseConsumerWithContextEpkVersion != null
+            || this.incrementalModeLeaseConsumerWithContextPkRangeIdVersion != null;
     }
 
     private void validateChangeFeedProcessorOptions() {

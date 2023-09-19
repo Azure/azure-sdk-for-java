@@ -94,9 +94,11 @@ public class FullFidelityChangeFeedProcessorTest extends TestSuiteBase {
                 .leaseContainer(createdLeaseCollection);
 
             if (isContextRequired) {
-                changeFeedProcessorBuilder = changeFeedProcessorBuilder.handleAllVersionsAndDeletesChanges(changeFeedProcessorHandlerWithContext(receivedDocuments));
+                changeFeedProcessorBuilder = changeFeedProcessorBuilder
+                    .handleAllVersionsAndDeletesChanges(changeFeedProcessorHandlerWithContext(receivedDocuments));
             } else {
-                changeFeedProcessorBuilder = changeFeedProcessorBuilder.handleAllVersionsAndDeletesChanges(changeFeedProcessorHandler(receivedDocuments));
+                changeFeedProcessorBuilder = changeFeedProcessorBuilder
+                    .handleAllVersionsAndDeletesChanges(changeFeedProcessorHandler(receivedDocuments));
             }
 
             ChangeFeedProcessor changeFeedProcessor = changeFeedProcessorBuilder.buildChangeFeedProcessor();
