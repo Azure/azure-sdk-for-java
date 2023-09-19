@@ -14,6 +14,7 @@ import com.azure.core.test.models.TestProxySanitizer;
 import com.azure.core.test.utils.HttpURLConnectionHttpClient;
 import com.azure.core.test.utils.TestProxyUtils;
 import com.azure.core.util.Context;
+import com.azure.core.util.logging.ClientLogger;
 import com.azure.core.util.serializer.JacksonAdapter;
 import com.azure.core.util.serializer.SerializerAdapter;
 import com.azure.core.util.serializer.SerializerEncoding;
@@ -32,6 +33,7 @@ import java.util.LinkedList;
 import java.util.List;
 import java.util.Map;
 import java.util.Queue;
+import java.util.concurrent.TimeUnit;
 
 import static com.azure.core.test.implementation.TestingHelpers.X_RECORDING_FILE_LOCATION;
 import static com.azure.core.test.implementation.TestingHelpers.X_RECORDING_ID;
@@ -46,6 +48,7 @@ import static com.azure.core.test.utils.TestProxyUtils.loadSanitizers;
  */
 public class TestProxyPlaybackClient implements HttpClient {
 
+    private static final ClientLogger LOGGER = new ClientLogger(TestProxyPlaybackClient.class);
     private final HttpClient client;
     private final URL proxyUrl;
     private String xRecordingId;
@@ -93,7 +96,7 @@ public class TestProxyPlaybackClient implements HttpClient {
             throw new RuntimeException(e);
         }
 
-        try (HttpResponse response = client.sendSync(request, Context.NONE)) {
+        try (HttpResponse response = sendRequestWithRetries(request)) {
             checkForTestProxyErrors(response);
             xRecordingId = response.getHeaderValue(X_RECORDING_ID);
             xRecordingFileLocation = new String(Base64.getUrlDecoder().decode(
@@ -127,13 +130,41 @@ public class TestProxyPlaybackClient implements HttpClient {
         }
     }
 
+    private HttpResponse sendRequestWithRetries(HttpRequest request) {
+        return sendRequestWithRetries(request, Context.NONE);
+    }
+
+    private HttpResponse sendRequestWithRetries(HttpRequest request, Context context) {
+        int retries = 0;
+        while (true) {
+            try {
+                HttpResponse response = client.sendSync(request, Context.NONE);
+                if (response.getStatusCode() / 100 != 2) {
+                    throw new RuntimeException("Test proxy returned a non-successful status code. " + response.getStatusCode());
+                }
+                return response;
+            } catch (Exception e) {
+                retries++;
+                if(retries >= 3) {
+                    throw e;
+                }
+                try {
+                    TimeUnit.SECONDS.sleep(1);
+                } catch (InterruptedException ex) {
+                    throw new RuntimeException(ex);
+                }
+                LOGGER.warning("Retrying request to test proxy. Retry attempt: " + retries);
+            }
+        }
+    }
+
     /**
      * Stops playback of a test recording.
      */
     public void stopPlayback() {
         HttpRequest request = new HttpRequest(HttpMethod.POST, proxyUrl + "/playback/stop")
             .setHeader(X_RECORDING_ID, xRecordingId);
-        client.sendSync(request, Context.NONE).close();
+        sendRequestWithRetries(request);
     }
 
     /**
@@ -189,10 +220,11 @@ public class TestProxyPlaybackClient implements HttpClient {
      */
     public void addProxySanitization(List<TestProxySanitizer> sanitizers) {
         if (isPlayingBack()) {
-            HttpRequest request = createAddSanitizersRequest(sanitizers, proxyUrl)
-                .setHeader(X_RECORDING_ID, xRecordingId);
-
-            client.sendSync(request, Context.NONE).close();
+            getSanitizerRequests(sanitizers, proxyUrl)
+                .forEach(request -> {
+                    request.setHeader(X_RECORDING_ID, xRecordingId);
+                    sendRequestWithRetries(request);
+                });
         } else {
             this.sanitizers.addAll(sanitizers);
         }
@@ -210,7 +242,7 @@ public class TestProxyPlaybackClient implements HttpClient {
             }
             matcherRequests.forEach(request -> {
                 request.setHeader(X_RECORDING_ID, xRecordingId);
-                client.sendSync(request, Context.NONE).close();
+                sendRequestWithRetries(request);
             });
         } else {
             this.matchers.addAll(matchers);
