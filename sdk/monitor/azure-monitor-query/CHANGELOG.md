@@ -9,7 +9,7 @@
 ### Bugs Fixed
 
 - Fixed the issue with `MetricsQueryClient` and `MetricsQueryAsyncClient` where the `listMetricDefinitions` method was returning 
-`MetricsDefinition` objects with null values for `supportedAggregationTypes`.
+`MetricsDefinition` objects with null values for `supportedAggregationTypes`.[(#36698)](https://github.com/Azure/azure-sdk-for-java/issues/36698)
 
 ### Other Changes
 
