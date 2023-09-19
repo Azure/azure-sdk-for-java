@@ -2123,8 +2123,7 @@ public final class TaskClient {
      *     network exception.
      * @throws InterruptedException Exception thrown if any thread has interrupted the current thread.
      */
-    public void createTasks(String jobId, List<BatchTaskCreateParameters> taskList)
-            throws RuntimeException, InterruptedException {
+    public void createTasks(String jobId, List<BatchTaskCreateParameters> taskList) {
         createTasks(jobId, taskList, null);
     }
 
@@ -2276,8 +2275,7 @@ public final class TaskClient {
     public void createTasks(
             String jobId,
             List<BatchTaskCreateParameters> taskList,
-            BatchClientParallelOptions batchClientParallelOptions)
-            throws RuntimeException, InterruptedException {
+            BatchClientParallelOptions batchClientParallelOptions) {
         int threadNumber = 1;
         // Get user defined thread number
         if (batchClientParallelOptions != null) {
