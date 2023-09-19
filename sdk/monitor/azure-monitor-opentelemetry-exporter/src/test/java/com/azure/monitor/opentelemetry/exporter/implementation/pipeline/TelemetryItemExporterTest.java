@@ -10,6 +10,7 @@ import com.azure.core.http.HttpRequest;
 import com.azure.core.http.HttpResponse;
 import com.azure.core.util.FluxUtil;
 import com.azure.monitor.opentelemetry.exporter.implementation.MockHttpResponse;
+import com.azure.monitor.opentelemetry.exporter.implementation.NoopTracer;
 import com.azure.monitor.opentelemetry.exporter.implementation.localstorage.LocalStorageTelemetryPipelineListener;
 import com.azure.monitor.opentelemetry.exporter.implementation.models.ContextTagKeys;
 import com.azure.monitor.opentelemetry.exporter.implementation.models.TelemetryItem;
@@ -60,7 +61,9 @@ public class TelemetryItemExporterTest {
     File tempFolder;
 
     private TelemetryItemExporter getExporter() {
-        HttpPipelineBuilder pipelineBuilder = new HttpPipelineBuilder().httpClient(recordingHttpClient);
+        HttpPipelineBuilder pipelineBuilder = new HttpPipelineBuilder()
+            .httpClient(recordingHttpClient)
+            .tracer(new NoopTracer());
         TelemetryPipeline telemetryPipeline = new TelemetryPipeline(pipelineBuilder.build());
 
         return new TelemetryItemExporter(
