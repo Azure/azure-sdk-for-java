@@ -108,7 +108,8 @@ import static com.azure.messaging.servicebus.administration.implementation.Entit
  *
  * <p><strong>Sample: Edit an existing subscription</strong></p>
  *
- * <p>The following code sample demonstrates updating an existing subscription.</p>
+ * <p>The following code sample demonstrates updating an existing subscription.  Users should fetch the subscription's
+ * properties, modify the properties, and then pass the object to update method.</p>
  *
  * <!-- src_embed com.azure.messaging.servicebus.administration.servicebusadministrationasyncclient.updatesubscription#subscriptionproperties -->
  * <pre>
