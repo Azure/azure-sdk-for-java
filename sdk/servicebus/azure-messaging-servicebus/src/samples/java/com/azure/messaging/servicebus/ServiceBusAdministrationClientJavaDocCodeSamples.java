@@ -118,7 +118,7 @@ public class ServiceBusAdministrationClientJavaDocCodeSamples {
      */
     @Test
     public void createQueueOptions() {
-        // BEGIN: com.azure.messaging.servicebus.administration.servicebusadministrationclient.createqueue#string-createqueuepptions
+        // BEGIN: com.azure.messaging.servicebus.administration.servicebusadministrationclient.createqueue#string-createqueuepoptions
         CreateQueueOptions queueOptions = new CreateQueueOptions()
             .setLockDuration(Duration.ofMinutes(2))
             .setMaxDeliveryCount(15);
@@ -126,7 +126,7 @@ public class ServiceBusAdministrationClientJavaDocCodeSamples {
         QueueProperties queue = client.createQueue("my-new-queue", queueOptions);
         System.out.printf("Queue created. Name: %s. Lock Duration: %s.%n",
             queue.getName(), queue.getLockDuration());
-        // END: com.azure.messaging.servicebus.administration.servicebusadministrationclient.createqueue#string-createqueuepptions
+        // END: com.azure.messaging.servicebus.administration.servicebusadministrationclient.createqueue#string-createqueuepoptions
     }
 
     /**

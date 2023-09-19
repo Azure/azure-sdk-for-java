@@ -74,7 +74,7 @@
  * {@link com.azure.messaging.servicebus.administration.models.CreateQueueOptions} are not passed in, default values
  * are used to create the queue.</p>
  *
- * <!-- src_embed com.azure.messaging.servicebus.administration.servicebusadministrationclient.createqueue#string-createqueuepptions -->
+ * <!-- src_embed com.azure.messaging.servicebus.administration.servicebusadministrationclient.createqueue#string-createqueuepoptions -->
  * <pre>
  * CreateQueueOptions queueOptions = new CreateQueueOptions&#40;&#41;
  *     .setLockDuration&#40;Duration.ofMinutes&#40;2&#41;&#41;
@@ -84,7 +84,7 @@
  * System.out.printf&#40;&quot;Queue created. Name: %s. Lock Duration: %s.%n&quot;,
  *     queue.getName&#40;&#41;, queue.getLockDuration&#40;&#41;&#41;;
  * </pre>
- * <!-- end com.azure.messaging.servicebus.administration.servicebusadministrationclient.createqueue#string-createqueuepptions -->
+ * <!-- end com.azure.messaging.servicebus.administration.servicebusadministrationclient.createqueue#string-createqueuepoptions -->
  *
  * <p><strong>Sample: Update a queue</strong></p>
  *
