@@ -4,6 +4,7 @@
 package com.azure.messaging.servicebus;
 
 import com.azure.core.credential.TokenCredential;
+import com.azure.core.exception.AzureException;
 import com.azure.core.http.policy.FixedDelayOptions;
 import com.azure.core.http.policy.HttpLogDetailLevel;
 import com.azure.core.http.policy.HttpLogOptions;
@@ -177,6 +178,20 @@ public class ServiceBusAdministrationClientJavaDocCodeSamples {
                 System.err.println("Error creating queue: " + error);
             });
         // END: com.azure.messaging.servicebus.administration.servicebusadministrationasyncclient.createqueue#string
+    }
+
+    /**
+     * Delete a queue.
+     */
+    @Test
+    public void deleteQueue() {
+        // BEGIN: com.azure.messaging.servicebus.administration.servicebusadministrationclient.deletequeue
+        try {
+            client.deleteQueue("my-existing-queue");
+        } catch (AzureException exception) {
+            System.err.println("Exception occurred deleting queue: " + exception);
+        }
+        // END: com.azure.messaging.servicebus.administration.servicebusadministrationclient.deletequeue
     }
 
     /**
