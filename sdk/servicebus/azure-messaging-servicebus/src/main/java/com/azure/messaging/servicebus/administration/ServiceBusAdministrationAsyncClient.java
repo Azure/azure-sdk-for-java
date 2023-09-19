@@ -65,7 +65,28 @@ import static com.azure.messaging.servicebus.administration.implementation.Entit
  * An <b>asynchronous</b> client for managing a Service Bus namespace. Instantiated via
  * {@link ServiceBusAdministrationClientBuilder}.
  *
- * <p><strong>Create a queue</strong></p>
+ * <p><strong>Sample: Create the async client</strong></p>
+ *
+ * <p>The follow code sample demonstrates the creation of the async administration client with retry options and HTTP
+ * log options configured.</p>
+ *
+ * <!-- src_embed com.azure.messaging.servicebus.administration.servicebusadministrationasyncclient.construct#retryoptions -->
+ * <pre>
+ * &#47;&#47; DefaultAzureCredential creates a credential based on the environment it is executed in.
+ * TokenCredential credential = new DefaultAzureCredentialBuilder&#40;&#41;.build&#40;&#41;;
+ *
+ * RetryOptions retryOptions = new RetryOptions&#40;new FixedDelayOptions&#40;4, Duration.ofSeconds&#40;20&#41;&#41;&#41;;
+ *
+ * &#47;&#47; &quot;&lt;&lt;fully-qualified-namespace&gt;&gt;&quot; will look similar to &quot;&#123;your-namespace&#125;.servicebus.windows.net&quot;
+ * ServiceBusAdministrationAsyncClient client = new ServiceBusAdministrationClientBuilder&#40;&#41;
+ *     .credential&#40;&quot;&lt;&lt;fully-qualified-namespace&gt;&gt;&quot;, credential&#41;
+ *     .retryOptions&#40;retryOptions&#41;
+ *     .httpLogOptions&#40;new HttpLogOptions&#40;&#41;.setLogLevel&#40;HttpLogDetailLevel.HEADERS&#41;&#41;
+ *     .buildAsyncClient&#40;&#41;;
+ * </pre>
+ * <!-- end com.azure.messaging.servicebus.administration.servicebusadministrationasyncclient.construct#retryoptions -->
+ *
+ * <p><strong>Sample: Create a queue</strong></p>
  * <!-- src_embed com.azure.messaging.servicebus.administration.servicebusadministrationasyncclient.createqueue#string -->
  * <pre>
  * &#47;&#47; `.subscribe&#40;&#41;` is a non-blocking call. It'll move onto the next
@@ -79,7 +100,7 @@ import static com.azure.messaging.servicebus.administration.implementation.Entit
  * </pre>
  * <!-- end com.azure.messaging.servicebus.administration.servicebusadministrationasyncclient.createqueue#string -->
  *
- * <p><strong>Edit an existing subscription</strong></p>
+ * <p><strong>Sample: Edit an existing subscription</strong></p>
  * <!-- src_embed com.azure.messaging.servicebus.administration.servicebusadministrationasyncclient.updatesubscription#subscriptionproperties -->
  * <pre>
  * &#47;&#47; To update the subscription we have to:
@@ -108,7 +129,7 @@ import static com.azure.messaging.servicebus.administration.implementation.Entit
  * </pre>
  * <!-- end com.azure.messaging.servicebus.administration.servicebusadministrationasyncclient.updatesubscription#subscriptionproperties -->
  *
- * <p><strong>List all queues</strong></p>
+ * <p><strong>Sample: List all queues</strong></p>
  * <!-- src_embed com.azure.messaging.servicebus.administration.servicebusadministrationasyncclient.listQueues -->
  * <pre>
  * &#47;&#47; `.subscribe&#40;&#41;` is a non-blocking call. It'll move onto the next
