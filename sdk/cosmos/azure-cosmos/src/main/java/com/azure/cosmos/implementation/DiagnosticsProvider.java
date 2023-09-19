@@ -600,18 +600,14 @@ public final class DiagnosticsProvider {
      * @param publisher publisher to run.
      * @return wrapped publisher.
      */
-    public <T> Flux<T> runUnderSpanInContext(Flux<T> publisher, CosmosPagedFluxOptions options) {
+    public <T> Flux<T> runUnderSpanInContext(Flux<T> publisher) {
+        return propagatingFlux.flatMap(ignored -> publisher);
+    }
 
+    public boolean shouldSampleOutOperation(CosmosPagedFluxOptions options) {
         final double samplingRateSnapshot = clientTelemetryConfigAccessor.getSamplingRate(this.telemetryConfig);
-
         options.setSamplingRateSnapshot(samplingRateSnapshot);
-
-        if (shouldSampleOutOperation(samplingRateSnapshot)) {
-            return publisher;
-        }
-
-        return propagatingFlux
-            .flatMap(ignored -> publisher);
+        return shouldSampleOutOperation(samplingRateSnapshot);
     }
 
     private boolean shouldSampleOutOperation(double samplingRate) {
