@@ -111,8 +111,8 @@
  * <p><strong>Sample: Create a topic, subscription, and rule</strong></p>
  *
  * <p>The following code sample demonstrates the creation of a Service Bus topic and subscription.  The subscription
- * filters for messages with a correlation id {@code "important-messages"} and has a {@code "importance"} property set
- * to {@code "high"}.  Consequently, all high importance messages will be delivered to the
+ * filters for messages with a correlation id {@code "emails"} and has a {@code "importance"} property set
+ * to {@code "high"}.  Consequently, all high importance Service Bus messages will be delivered to the
  * {@code "high-importance-subscription"} subscription. See
  * <a href="https://learn.microsoft.com/azure/service-bus-messaging/topic-filters">Topic filters</a> for additional
  * information.</p>
@@ -123,13 +123,13 @@
  * TopicProperties topic = client.createTopic&#40;topicName&#41;;
  *
  * String subscriptionName = &quot;high-importance-subscription&quot;;
- * String ruleName = &quot;important-messages-filter&quot;;
+ * String ruleName = &quot;important-emails-filter&quot;;
  * CreateSubscriptionOptions subscriptionOptions = new CreateSubscriptionOptions&#40;&#41;
  *     .setMaxDeliveryCount&#40;15&#41;
  *     .setLockDuration&#40;Duration.ofMinutes&#40;2&#41;&#41;;
  *
  * CorrelationRuleFilter ruleFilter = new CorrelationRuleFilter&#40;&#41;
- *     .setCorrelationId&#40;&quot;important-messages&quot;&#41;;
+ *     .setCorrelationId&#40;&quot;emails&quot;&#41;;
  * ruleFilter.getProperties&#40;&#41;.put&#40;&quot;importance&quot;, &quot;high&quot;&#41;;
  *
  * CreateRuleOptions createRuleOptions = new CreateRuleOptions&#40;&#41;

@@ -18,8 +18,14 @@ import com.azure.messaging.servicebus.administration.models.CreateQueueOptions;
 import com.azure.messaging.servicebus.administration.models.CreateRuleOptions;
 import com.azure.messaging.servicebus.administration.models.CreateSubscriptionOptions;
 import com.azure.messaging.servicebus.administration.models.QueueProperties;
+import com.azure.messaging.servicebus.administration.models.RuleAction;
+import com.azure.messaging.servicebus.administration.models.RuleFilter;
+import com.azure.messaging.servicebus.administration.models.RuleProperties;
+import com.azure.messaging.servicebus.administration.models.SqlRuleAction;
+import com.azure.messaging.servicebus.administration.models.SqlRuleFilter;
 import com.azure.messaging.servicebus.administration.models.SubscriptionProperties;
 import com.azure.messaging.servicebus.administration.models.TopicProperties;
+import com.azure.messaging.servicebus.administration.models.TrueRuleFilter;
 import org.junit.jupiter.api.Test;
 
 import java.time.Duration;
@@ -139,13 +145,13 @@ public class ServiceBusAdministrationClientJavaDocCodeSamples {
         TopicProperties topic = client.createTopic(topicName);
 
         String subscriptionName = "high-importance-subscription";
-        String ruleName = "important-messages-filter";
+        String ruleName = "important-emails-filter";
         CreateSubscriptionOptions subscriptionOptions = new CreateSubscriptionOptions()
             .setMaxDeliveryCount(15)
             .setLockDuration(Duration.ofMinutes(2));
 
         CorrelationRuleFilter ruleFilter = new CorrelationRuleFilter()
-            .setCorrelationId("important-messages");
+            .setCorrelationId("emails");
         ruleFilter.getProperties().put("importance", "high");
 
         CreateRuleOptions createRuleOptions = new CreateRuleOptions()
@@ -178,6 +184,53 @@ public class ServiceBusAdministrationClientJavaDocCodeSamples {
                 System.err.println("Error creating queue: " + error);
             });
         // END: com.azure.messaging.servicebus.administration.servicebusadministrationasyncclient.createqueue#string
+    }
+
+    /**
+     * Creates a rule that subscribes to all messages.
+     */
+    @Test
+    public void createTrueRuleFilter() {
+        // BEGIN: com.azure.messaging.servicebus.administration.servicebusadministrationclient.createRule
+        String topicName = "my-existing-topic";
+        String subscriptionName = "all-messages-subscription";
+        String ruleName = "true-filter";
+
+        RuleFilter alwaysTrueRule = new TrueRuleFilter();
+        CreateRuleOptions createRuleOptions = new CreateRuleOptions()
+            .setFilter(alwaysTrueRule);
+
+        RuleProperties rule = client.createRule(topicName, ruleName, subscriptionName, createRuleOptions);
+
+        System.out.printf("Rule '%s' created for topic %s, subscription %s. Filter: %s%n", rule.getName(), topicName,
+            subscriptionName, rule.getFilter());
+        // END: com.azure.messaging.servicebus.administration.servicebusadministrationclient.createRule
+    }
+
+    /**
+     * Creates a rule that matches messages with correlationId = "email", has a user-defined property
+     * {@link ServiceBusMessage#getApplicationProperties()} called "sender" with the name 'joseph' and
+     * "importance" = 'high'.  Then it sets the "importance" value to 'critical'.
+     */
+    @Test
+    public void createSqlRuleFilterAndAction() {
+        // BEGIN: com.azure.messaging.servicebus.administration.servicebusadministrationclient.createRule#string-string-string-createRuleOptions
+        String topicName = "emails";
+        String subscriptionName = "important-emails";
+        String ruleName = "emails-from-joseph";
+
+        RuleFilter sqlRuleFilter = new SqlRuleFilter(
+            "sys.CorrelationId = 'email' AND sender = 'joseph' AND (importance IS NULL OR importance = 'high')");
+        RuleAction sqlRuleAction = new SqlRuleAction("SET importance = 'critical';");
+        CreateRuleOptions createRuleOptions = new CreateRuleOptions()
+            .setFilter(sqlRuleFilter)
+            .setAction(sqlRuleAction);
+
+        RuleProperties rule = client.createRule(topicName, ruleName, subscriptionName, createRuleOptions);
+
+        System.out.printf("Rule '%s' created for topic %s, subscription %s. Filter: %s%n", rule.getName(), topicName,
+            subscriptionName, rule.getFilter());
+        // END: com.azure.messaging.servicebus.administration.servicebusadministrationclient.createRule#string-string-string-createRuleOptions
     }
 
     /**
