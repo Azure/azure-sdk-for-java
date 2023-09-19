@@ -1,12 +1,6 @@
 ## Release History
 
-### 4.22.0-beta.1 (Unreleased)
-
-#### Features Added
-
-#### Breaking Changes
-
-#### Bugs Fixed
+### 4.22.0 (2023-09-19)
 
 #### Other Changes
 * Reduce noisy log in `ThroughputControlHelper` from `INFO` to `DEBUG` - See [PR 36653](https://github.com/Azure/azure-sdk-for-java/pull/36653) 
