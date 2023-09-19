@@ -5,6 +5,7 @@ package com.azure.cosmos;
 
 import com.azure.core.annotation.ServiceClient;
 import com.azure.cosmos.implementation.ImplementationBridgeHelpers;
+import com.azure.cosmos.implementation.apachecommons.collections.list.UnmodifiableList;
 import com.azure.cosmos.models.CosmosDatabaseProperties;
 import com.azure.cosmos.models.CosmosDatabaseRequestOptions;
 import com.azure.cosmos.models.CosmosDatabaseResponse;
@@ -18,6 +19,7 @@ import reactor.core.publisher.Mono;
 
 import java.io.Closeable;
 import java.time.Duration;
+import java.util.Collections;
 import java.util.List;
 
 /**
@@ -337,6 +339,18 @@ public final class CosmosClient implements Closeable {
      * */
     public void setExcludedRegions(List<String> excludedRegions) {
         this.asyncClientWrapper.setExcludedRegions(excludedRegions);
+    }
+
+    /**
+     * Gets the regions to exclude from the list of preferred regions. This means the request will not be
+     * routed to these excluded regions for non-retry and retry scenarios
+     * for the workload executed through this instance of {@link CosmosAsyncClient}.
+     *
+     * @return the list of regions to exclude.
+     * */
+    public List<String> getExcludedRegions() {
+        List<String> excludedRegions = this.asyncClientWrapper.getExcludedRegions();
+        return excludedRegions == null ? Collections.emptyList() : UnmodifiableList.unmodifiableList(excludedRegions);
     }
 
     static void initialize() {

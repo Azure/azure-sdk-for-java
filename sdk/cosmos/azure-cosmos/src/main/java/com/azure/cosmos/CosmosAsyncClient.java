@@ -20,6 +20,7 @@ import com.azure.cosmos.implementation.RequestOptions;
 import com.azure.cosmos.implementation.ResourceType;
 import com.azure.cosmos.implementation.Strings;
 import com.azure.cosmos.implementation.WriteRetryPolicy;
+import com.azure.cosmos.implementation.apachecommons.collections.list.UnmodifiableList;
 import com.azure.cosmos.implementation.clienttelemetry.ClientMetricsDiagnosticsHandler;
 import com.azure.cosmos.implementation.clienttelemetry.ClientTelemetry;
 import com.azure.cosmos.implementation.clienttelemetry.ClientTelemetryDiagnosticsHandler;
@@ -56,6 +57,7 @@ import java.io.Closeable;
 import java.net.URI;
 import java.time.Duration;
 import java.util.ArrayList;
+import java.util.Collections;
 import java.util.EnumSet;
 import java.util.List;
 import java.util.Objects;
@@ -598,10 +600,22 @@ public final class CosmosAsyncClient implements Closeable {
      * routed to these excluded regions for non-retry and retry scenarios
      * for the workload executed through this instance of {@link CosmosAsyncClient}.
      *
-     * @param excludedRegions The list of regions to exclude.
+     * @param excludedRegions the list of regions to exclude.
      * */
     public void setExcludedRegions(List<String> excludedRegions) {
         this.connectionPolicy.setExcludedRegions(excludedRegions);
+    }
+
+    /**
+     * Gets the regions to exclude from the list of preferred regions. This means the request will not be
+     * routed to these excluded regions for non-retry and retry scenarios
+     * for the workload executed through this instance of {@link CosmosAsyncClient}.
+     *
+     * @return the list of regions to exclude.
+     * */
+    public List<String> getExcludedRegions() {
+        List<String> excludedRegions = this.connectionPolicy.getExcludedRegions();
+        return excludedRegions == null ? Collections.emptyList() : UnmodifiableList.unmodifiableList(excludedRegions);
     }
 
     WriteRetryPolicy getNonIdempotentWriteRetryPolicy() {

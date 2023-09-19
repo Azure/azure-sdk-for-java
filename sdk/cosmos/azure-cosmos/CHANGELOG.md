@@ -8,6 +8,8 @@
   * `CosmosClientBuilder#excludeRegions`
   * `CosmosClient#setExcludedRegions`
   * `CosmosAsyncClient#setExcludedRegions`
+  * `CosmosClient#getExcludedRegions`
+  * `CosmosAsyncClient#getExcludedRegions`
 
 #### Breaking Changes
 
