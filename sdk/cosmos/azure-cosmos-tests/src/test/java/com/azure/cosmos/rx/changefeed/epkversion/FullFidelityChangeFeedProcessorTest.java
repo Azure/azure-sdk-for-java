@@ -4,6 +4,7 @@ package com.azure.cosmos.rx.changefeed.epkversion;
 
 import com.azure.cosmos.ChangeFeedProcessor;
 import com.azure.cosmos.ChangeFeedProcessorBuilder;
+import com.azure.cosmos.ChangeFeedProcessorContext;
 import com.azure.cosmos.CosmosAsyncClient;
 import com.azure.cosmos.CosmosAsyncContainer;
 import com.azure.cosmos.CosmosAsyncDatabase;
@@ -30,6 +31,7 @@ import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.testng.annotations.AfterClass;
 import org.testng.annotations.BeforeClass;
+import org.testng.annotations.DataProvider;
 import org.testng.annotations.Factory;
 import org.testng.annotations.Test;
 import reactor.core.publisher.Flux;
@@ -44,6 +46,7 @@ import java.util.List;
 import java.util.Map;
 import java.util.UUID;
 import java.util.concurrent.ConcurrentHashMap;
+import java.util.function.BiConsumer;
 import java.util.function.Consumer;
 
 import static org.assertj.core.api.Assertions.assertThat;
@@ -67,9 +70,14 @@ public class FullFidelityChangeFeedProcessorTest extends TestSuiteBase {
         super(clientBuilder);
     }
 
+    @DataProvider
+    public Object[] contextTestConfigs() {
+        return new Object[] {true, false};
+    }
+
     // Using this test to verify basic functionality
-    @Test(groups = { "emulator" }, timeOut = 50 * CHANGE_FEED_PROCESSOR_TIMEOUT)
-    public void fullFidelityChangeFeedProcessorStartFromNow() throws InterruptedException {
+    @Test(groups = { "emulator" }, dataProvider = "contextTestConfigs", timeOut = 50 * CHANGE_FEED_PROCESSOR_TIMEOUT)
+    public void fullFidelityChangeFeedProcessorStartFromNow(boolean isContextRequired) throws InterruptedException {
         CosmosAsyncContainer createdFeedCollection = createFeedCollection(FEED_COLLECTION_THROUGHPUT);
         CosmosAsyncContainer createdLeaseCollection = createLeaseCollection(LEASE_COLLECTION_THROUGHPUT);
 
@@ -77,19 +85,37 @@ public class FullFidelityChangeFeedProcessorTest extends TestSuiteBase {
             List<InternalObjectNode> createdDocuments = new ArrayList<>();
             Map<String, ChangeFeedProcessorItem> receivedDocuments = new ConcurrentHashMap<>();
             ChangeFeedProcessorOptions changeFeedProcessorOptions = new ChangeFeedProcessorOptions();
-            ChangeFeedProcessor changeFeedProcessor = new ChangeFeedProcessorBuilder()
+
+            Consumer<List<ChangeFeedProcessorItem>> consumer = (docs) -> {
+                log.info("START processing from thread {}", Thread.currentThread().getId());
+                for (ChangeFeedProcessorItem item : docs) {
+                    processItem(item, receivedDocuments);
+                }
+                log.info("END processing from thread {}", Thread.currentThread().getId());
+            };
+
+            BiConsumer<List<ChangeFeedProcessorItem>, ChangeFeedProcessorContext<ChangeFeedProcessorItem>> biConsumer = (docs, context) -> {
+                log.info("START processing from thread {}", Thread.currentThread().getId());
+                for (ChangeFeedProcessorItem item : docs) {
+                    processItem(item, receivedDocuments);
+                }
+                validateChangeFeedProcessorContext(context);
+                log.info("END processing from thread {}", Thread.currentThread().getId());
+            };
+
+            ChangeFeedProcessorBuilder changeFeedProcessorBuilder = new ChangeFeedProcessorBuilder()
                 .options(changeFeedProcessorOptions)
                 .hostName(hostName)
-                .handleAllVersionsAndDeletesChanges((List<ChangeFeedProcessorItem> docs) -> {
-                    log.info("START processing from thread {}", Thread.currentThread().getId());
-                    for (ChangeFeedProcessorItem item : docs) {
-                        processItem(item, receivedDocuments);
-                    }
-                    log.info("END processing from thread {}", Thread.currentThread().getId());
-                })
                 .feedContainer(createdFeedCollection)
-                .leaseContainer(createdLeaseCollection)
-                .buildChangeFeedProcessor();
+                .leaseContainer(createdLeaseCollection);
+
+            if (isContextRequired) {
+                changeFeedProcessorBuilder = changeFeedProcessorBuilder.handleAllVersionsAndDeletesChanges(biConsumer);
+            } else {
+                changeFeedProcessorBuilder = changeFeedProcessorBuilder.handleAllVersionsAndDeletesChanges(consumer);
+            }
+
+            ChangeFeedProcessor changeFeedProcessor = changeFeedProcessorBuilder.buildChangeFeedProcessor();
 
             try {
                 changeFeedProcessor.start().subscribeOn(Schedulers.boundedElastic())
@@ -131,8 +157,8 @@ public class FullFidelityChangeFeedProcessorTest extends TestSuiteBase {
 
 
     // Using this test to verify basic functionality
-    @Test(groups = { "emulator" }, timeOut = 50 * CHANGE_FEED_PROCESSOR_TIMEOUT)
-    public void fullFidelityChangeFeedProcessorStartFromContinuationToken() throws InterruptedException {
+    @Test(groups = { "emulator" }, dataProvider = "contextTestConfigs", timeOut = 50 * CHANGE_FEED_PROCESSOR_TIMEOUT)
+    public void fullFidelityChangeFeedProcessorStartFromContinuationToken(boolean isContextRequired) throws InterruptedException {
         CosmosAsyncContainer createdFeedCollection = createFeedCollection(FEED_COLLECTION_THROUGHPUT);
         CosmosAsyncContainer createdLeaseCollection = createLeaseCollection(LEASE_COLLECTION_THROUGHPUT);
 
@@ -140,19 +166,37 @@ public class FullFidelityChangeFeedProcessorTest extends TestSuiteBase {
             List<InternalObjectNode> createdDocuments = new ArrayList<>();
             Map<String, ChangeFeedProcessorItem> receivedDocuments = new ConcurrentHashMap<>();
             ChangeFeedProcessorOptions changeFeedProcessorOptions = new ChangeFeedProcessorOptions();
-            ChangeFeedProcessor changeFeedProcessor = new ChangeFeedProcessorBuilder()
+
+            Consumer<List<ChangeFeedProcessorItem>> consumer = (docs) -> {
+                log.info("START processing from thread {}", Thread.currentThread().getId());
+                for (ChangeFeedProcessorItem item : docs) {
+                    processItem(item, receivedDocuments);
+                }
+                log.info("END processing from thread {}", Thread.currentThread().getId());
+            };
+
+            BiConsumer<List<ChangeFeedProcessorItem>, ChangeFeedProcessorContext<ChangeFeedProcessorItem>> biConsumer = (docs, context) -> {
+                log.info("START processing from thread {}", Thread.currentThread().getId());
+                for (ChangeFeedProcessorItem item : docs) {
+                    processItem(item, receivedDocuments);
+                }
+                validateChangeFeedProcessorContext(context);
+                log.info("END processing from thread {}", Thread.currentThread().getId());
+            };
+
+            ChangeFeedProcessorBuilder changeFeedProcessorBuilder = new ChangeFeedProcessorBuilder()
                 .options(changeFeedProcessorOptions)
                 .hostName(hostName)
-                .handleAllVersionsAndDeletesChanges((List<ChangeFeedProcessorItem> docs) -> {
-                    log.info("START processing from thread {}", Thread.currentThread().getId());
-                    for (ChangeFeedProcessorItem item : docs) {
-                        processItem(item, receivedDocuments);
-                    }
-                    log.info("END processing from thread {}", Thread.currentThread().getId());
-                })
                 .feedContainer(createdFeedCollection)
-                .leaseContainer(createdLeaseCollection)
-                .buildChangeFeedProcessor();
+                .leaseContainer(createdLeaseCollection);
+
+            if (isContextRequired) {
+                changeFeedProcessorBuilder = changeFeedProcessorBuilder.handleAllVersionsAndDeletesChanges(biConsumer);
+            } else {
+                changeFeedProcessorBuilder = changeFeedProcessorBuilder.handleAllVersionsAndDeletesChanges(consumer);
+            }
+
+            ChangeFeedProcessor changeFeedProcessor = changeFeedProcessorBuilder.buildChangeFeedProcessor();
 
             try {
                 changeFeedProcessor.start().subscribeOn(Schedulers.boundedElastic())
@@ -906,6 +950,13 @@ public class FullFidelityChangeFeedProcessorTest extends TestSuiteBase {
         for (InternalObjectNode item : createdDocuments) {
             assertThat(receivedDocuments.containsKey(item.getId())).as("Document with getId: " + item.getId()).isTrue();
         }
+    }
+
+    <T> void validateChangeFeedProcessorContext(ChangeFeedProcessorContext<T> changeFeedProcessorContext) {
+
+        String leaseToken = changeFeedProcessorContext.getLeaseToken();
+
+        assertThat(leaseToken).isNotNull();
     }
 
     private Consumer<List<ChangeFeedProcessorItem>> fullFidelityChangeFeedProcessorHandler(Map<String, ChangeFeedProcessorItem> receivedDocuments) {

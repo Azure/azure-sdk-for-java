@@ -190,6 +190,7 @@ public class ChangeFeedProcessorBuilder {
         return this;
     }
 
+
     ChangeFeedProcessorBuilder handleLatestVersionChanges(
         BiConsumer<List<ChangeFeedProcessorItem>, ChangeFeedProcessorContext<ChangeFeedProcessorItem>> biConsumer) {
 
@@ -231,6 +232,22 @@ public class ChangeFeedProcessorBuilder {
         return this;
     }
 
+    /**
+     * Sets a consumer function which will be called to process changes for AllVersionsAndDeletes change feed mode.
+     *
+     * <!-- src_embed com.azure.cosmos.allVersionsAndDeletesChangeFeedProcessor.handleChanges -->
+     * <pre>
+     * .handleAllVersionsAndDeletesChanges&#40;&#40;docs,context&#41; -&gt; &#123;
+     *     for &#40;ChangeFeedProcessorItem item : docs&#41; &#123;
+     *         &#47;&#47; Implementation for handling and processing of each ChangeFeedProcessorItem item goes here
+     *     &#125;
+     * &#125;&#41;
+     * </pre>
+     * <!-- end com.azure.cosmos.allVersionsAndDeletesChangeFeedProcessor.handleChanges -->
+     *
+     * @param biConsumer the {@link BiConsumer} to call for handling the feeds and the {@link ChangeFeedProcessorContext} instance.
+     * @return current Builder.
+     */
     @Beta(value = Beta.SinceVersion.V4_50_0, warningText = Beta.PREVIEW_SUBJECT_TO_CHANGE_WARNING)
     public ChangeFeedProcessorBuilder handleAllVersionsAndDeletesChanges(
         BiConsumer<List<ChangeFeedProcessorItem>, ChangeFeedProcessorContext<ChangeFeedProcessorItem>> biConsumer) {
