@@ -2697,11 +2697,18 @@
     <Method name="transfer"/>
     <Bug pattern="NP_NULL_ON_SOME_PATH"/>
   </Match>
-  
+
    <!-- Returning a new copy of the object is not necessary -->
   <Match>
     <Class name="~com\.azure\.ai\.openai\.models\.(AudioTranscriptionOptions|AudioTranslationOptions)"/>
     <Method name="&lt;init&gt;"/>
     <Bug pattern="EI_EXPOSE_REP2"/>
+  </Match>
+
+  <!-- False positive, it throws an IllegalArgumentException if non-exist method parameter type passed.-->
+  <Match>
+    <Class name="com.azure.ai.openai.implementation.MultipartDataHelper"/>
+    <Method name="serializeRequest"/>
+    <Bug pattern="BC_UNCONFIRMED_CAST_OF_RETURN_VALUE"/>
   </Match>
 </FindBugsFilter>

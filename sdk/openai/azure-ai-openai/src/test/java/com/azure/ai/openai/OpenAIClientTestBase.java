@@ -128,7 +128,6 @@ public abstract class OpenAIClientTestBase extends TestProxyTestBase {
         }
     }
 
-
     @Test
     public abstract void testGetCompletions(HttpClient httpClient, OpenAIServiceVersion serviceVersion);
 
