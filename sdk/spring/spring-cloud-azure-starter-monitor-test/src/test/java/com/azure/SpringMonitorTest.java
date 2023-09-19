@@ -8,6 +8,7 @@ import com.azure.core.http.HttpPipelineBuilder;
 import com.azure.core.http.policy.HttpPipelinePolicy;
 import com.azure.monitor.applicationinsights.spring.OpenTelemetryVersionCheckRunner;
 import com.azure.monitor.opentelemetry.exporter.implementation.models.MessageData;
+import com.azure.monitor.opentelemetry.exporter.implementation.models.MetricsData;
 import com.azure.monitor.opentelemetry.exporter.implementation.models.MonitorDomain;
 import com.azure.monitor.opentelemetry.exporter.implementation.models.RemoteDependencyData;
 import com.azure.monitor.opentelemetry.exporter.implementation.models.RequestData;
@@ -132,8 +133,16 @@ public class SpringMonitorTest {
     assertThat(customValidationPolicy.url)
         .isEqualTo(new URL("https://test.in.applicationinsights.azure.com/v2.1/track"));
 
-    Queue<TelemetryItem> telemetryItems = customValidationPolicy.actualTelemetryItems;
-    List<String> telemetryTypes = telemetryItems.stream().map(TelemetryItem::getName).collect(Collectors.toList());
+    List<TelemetryItem> telemetryItems = customValidationPolicy.actualTelemetryItems.stream()
+        .filter(item -> {
+          MonitorDomain baseData = item.getData().getBaseData();
+          return !(baseData instanceof MetricsData)
+              || ((MetricsData) baseData).getMetrics().stream().noneMatch(metricDataPoint -> metricDataPoint.getName().equals("_OTELRESOURCE_"));
+        })
+        .collect(Collectors.toList());
+    List<String> telemetryTypes = telemetryItems.stream()
+        .map(TelemetryItem::getName)
+        .collect(Collectors.toList());
 
     // TODO (alzimmer): In some test runs there ends up being 4 telemetry items, in others 5.
     //  This needs to be investigated on why this is happening, it always ends up being the 'Request' telemetry item.
