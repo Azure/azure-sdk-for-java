@@ -20,9 +20,11 @@ import static org.junit.jupiter.api.Assertions.assertThrows;
  */
 public class MultipartDataHelperTest {
 
+    private static final String TEST_BOUNDARY = "test-boundary";
+
     @Test
     public void serializeAudioTranslationOptionsAllFields() {
-        MultipartDataHelper helper = new MultipartDataHelper(new TestBoundaryGenerator());
+        MultipartDataHelper helper = new MultipartDataHelper(TEST_BOUNDARY);
         byte[] file = new byte[] {73, 32, 115, 104, 111, 117, 108, 100, 32, 104, 97, 118, 101, 32, 116, 104, 111, 117,
             103, 104, 116, 32, 111, 102, 32, 97, 32, 103, 111, 111, 100, 32, 101, 97, 115, 116, 101, 114, 32, 101,
             103, 103};
@@ -47,7 +49,7 @@ public class MultipartDataHelperTest {
 
     @Test
     public void serializeAudioTranscriptionOptionsAllFields() {
-        MultipartDataHelper helper = new MultipartDataHelper(new TestBoundaryGenerator());
+        MultipartDataHelper helper = new MultipartDataHelper(TEST_BOUNDARY);
         byte[] file = new byte[] {73, 32, 115, 104, 111, 117, 108, 100, 32, 104, 97, 118, 101, 32, 116, 104, 111, 117,
             103, 104, 116, 32, 111, 102, 32, 97, 32, 103, 111, 111, 100, 32, 101, 97, 115, 116, 101, 114, 32, 101,
             103, 103};
@@ -74,7 +76,7 @@ public class MultipartDataHelperTest {
 
     @Test
     public void serializeAudioTranslationOptionsNoFields() {
-        MultipartDataHelper helper = new MultipartDataHelper(new TestBoundaryGenerator());
+        MultipartDataHelper helper = new MultipartDataHelper(TEST_BOUNDARY);
         byte[] file = new byte[] {};
         String fileName = "file_name.wav";
         AudioTranslationOptions translationOptions = new AudioTranslationOptions(file);
@@ -89,7 +91,7 @@ public class MultipartDataHelperTest {
 
     @Test
     public void serializeAudioTranscriptionOptionsNoFields() {
-        MultipartDataHelper helper = new MultipartDataHelper(new TestBoundaryGenerator());
+        MultipartDataHelper helper = new MultipartDataHelper(TEST_BOUNDARY);
         byte[] file = new byte[] {};
         String fileName = "file_name.wav";
         AudioTranscriptionOptions transcriptionOptions = new AudioTranscriptionOptions(file);
@@ -105,7 +107,7 @@ public class MultipartDataHelperTest {
     @Test
     public void serializeUnsupportedType() {
         assertThrows(IllegalArgumentException.class, () -> {
-            MultipartDataHelper helper = new MultipartDataHelper(new TestBoundaryGenerator());
+            MultipartDataHelper helper = new MultipartDataHelper(TEST_BOUNDARY);
             EmbeddingsOptions embeddingsOptions = new EmbeddingsOptions(new ArrayList<>());
             helper.serializeRequest(embeddingsOptions, "path/to/file");
         });

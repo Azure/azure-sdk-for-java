@@ -50,15 +50,18 @@ public class MultipartDataHelper {
      * Default constructor used in the code. The boundary is a random value.
      */
     public MultipartDataHelper() {
-        this(() -> UUID.randomUUID().toString().substring(0, 16));
+        // We can't use randomly generated UUIDs for now. Generating a test session record won't match
+        // the newly generated UUID for the test run instance
+        // this(UUID.randomUUID().toString().substring(0, 16));
+        this("29580623-3d02-4a");
     }
 
     /**
      * Constructor accepting a boundary generator. Used for testing.
-     * @param boundaryGenerator Generates the value for "boundary".
+     * @param boundary The value to be used as "boundary".
      */
-    public MultipartDataHelper(MultipartBoundaryGenerator boundaryGenerator) {
-        this.boundary = boundaryGenerator.generateBoundary();
+    public MultipartDataHelper(String boundary) {
+        this.boundary = boundary;
         partSeparator = "--" + boundary;
         endMarker = partSeparator + "--";
     }
