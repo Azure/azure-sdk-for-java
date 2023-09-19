@@ -14,7 +14,7 @@ public final class RoutingTwinTests {
         RoutingTwin model =
             BinaryData
                 .fromString(
-                    "{\"tags\":\"dataqtaruoujmkcjhwq\",\"properties\":{\"desired\":\"datar\",\"reported\":\"datan\"}}")
+                    "{\"tags\":\"datadagxtibqd\",\"properties\":{\"desired\":\"datawakbogqxndl\",\"reported\":\"datagxhuriplbp\"}}")
                 .toObject(RoutingTwin.class);
     }
 
@@ -22,8 +22,9 @@ public final class RoutingTwinTests {
     public void testSerialize() throws Exception {
         RoutingTwin model =
             new RoutingTwin()
-                .withTags("dataqtaruoujmkcjhwq")
-                .withProperties(new RoutingTwinProperties().withDesired("datar").withReported("datan"));
+                .withTags("datadagxtibqd")
+                .withProperties(
+                    new RoutingTwinProperties().withDesired("datawakbogqxndl").withReported("datagxhuriplbp"));
         model = BinaryData.fromObject(model).toObject(RoutingTwin.class);
     }
 }

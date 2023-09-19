@@ -31,7 +31,7 @@ public final class IotHubResourcesGetQuotaMetricsMockTests {
         ArgumentCaptor<HttpRequest> httpRequest = ArgumentCaptor.forClass(HttpRequest.class);
 
         String responseStr =
-            "{\"value\":[{\"name\":\"bwemhairs\",\"currentValue\":2396598992556522813,\"maxValue\":1910924176223083649}]}";
+            "{\"value\":[{\"name\":\"uhhziuiefozbhdm\",\"currentValue\":41888991515235103,\"maxValue\":5817084203386777544}]}";
 
         Mockito.when(httpResponse.getStatusCode()).thenReturn(200);
         Mockito.when(httpResponse.getHeaders()).thenReturn(new HttpHeaders());
@@ -60,6 +60,6 @@ public final class IotHubResourcesGetQuotaMetricsMockTests {
                     new AzureProfile("", "", AzureEnvironment.AZURE));
 
         PagedIterable<IotHubQuotaMetricInfo> response =
-            manager.iotHubResources().getQuotaMetrics("gwol", "h", com.azure.core.util.Context.NONE);
+            manager.iotHubResources().getQuotaMetrics("enuuzkopbm", "nrfdw", com.azure.core.util.Context.NONE);
     }
 }

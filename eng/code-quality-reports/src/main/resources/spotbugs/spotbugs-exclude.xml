@@ -1105,6 +1105,20 @@
     <Bug pattern="URF_UNREAD_FIELD"/>
   </Match>
 
+  <!-- Suppress URF_UNREAD_FIELD, the fields are read but during serialization -->
+  <Match>
+    <Class name="com.azure.cosmos.implementation.ClientSideRequestStatistics$StoreResponseStatistics"/>
+    <Field name="e2ePolicyCfg"/>
+    <Bug pattern="URF_UNREAD_FIELD"/>
+  </Match>
+
+  <!-- Suppress URF_UNREAD_FIELD, the fields are read but during serialization -->
+  <Match>
+    <Class name="com.azure.cosmos.implementation.ClientSideRequestStatistics$StoreResponseStatistics"/>
+    <Field name="excludedRegions"/>
+    <Bug pattern="URF_UNREAD_FIELD"/>
+  </Match>
+
   <!-- The entire class is unused. Bug: https://github.com/Azure/azure-sdk-for-java/issues/9075 -->
   <Match>
     <Class name="com.azure.cosmos.implementation.changefeed.implementation.RemainingWorkEstimatorImpl"/>
