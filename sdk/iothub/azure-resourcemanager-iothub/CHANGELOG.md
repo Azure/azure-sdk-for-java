@@ -30,10 +30,6 @@
 * `cosmosDBSqlContainers()` was added
 * `withCosmosDBSqlContainers(java.util.List)` was added
 
-#### `models.ErrorDetails` was modified
-
-* `httpStatusCode()` was added
-
 #### `models.IotHubDescription` was modified
 
 * `resourceGroupName()` was added
