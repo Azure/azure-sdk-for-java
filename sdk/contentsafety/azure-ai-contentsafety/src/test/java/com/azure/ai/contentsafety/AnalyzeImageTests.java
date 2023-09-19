@@ -18,7 +18,7 @@ public final class AnalyzeImageTests extends ContentSafetyClientTestBase {
         // method invocation
         ImageData image = new ImageData();
         String cwd = System.getProperty("user.dir");
-        String source = "/src/test/resources/image.jpg";
+        String source = "/src/samples/resources/image.jpg";
         image.setContent(Files.readAllBytes(Paths.get(cwd, source)));
 
         AnalyzeImageResult response =
