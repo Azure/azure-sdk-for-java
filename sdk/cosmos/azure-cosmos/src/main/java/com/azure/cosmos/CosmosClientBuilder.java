@@ -888,12 +888,7 @@ public class CosmosClientBuilder implements
      * @return current CosmosClientBuilder.
      * */
     public CosmosClientBuilder excludeRegions(List<String> excludedRegions) {
-        this.excludedRegions = new ArrayList<>();
-
-        if (excludedRegions != null) {
-            this.excludedRegions.addAll(excludedRegions);
-        }
-
+        this.excludedRegions = excludedRegions;
         return this;
     }
 
@@ -1239,10 +1234,10 @@ public class CosmosClientBuilder implements
 
             // NOTE: if changing the logging below - do not log any confidential info like master key credentials etc.
             logger.info("Cosmos Client with (Correlation) ID [{}] started up in [{}] ms with the following " +
-                    "configuration: serviceEndpoint [{}], preferredRegions [{}], connectionPolicy [{}], " +
+                    "configuration: serviceEndpoint [{}], preferredRegions [{}], excludedRegions [{}], connectionPolicy [{}], " +
                     "consistencyLevel [{}], contentResponseOnWriteEnabled [{}], sessionCapturingOverride [{}], " +
                     "connectionSharingAcrossClients [{}], clientTelemetryEnabled [{}], proactiveContainerInit [{}], diagnostics [{}], tracing [{}]",
-                client.getContextClient().getClientCorrelationId(), time, getEndpoint(), getPreferredRegions(),
+                client.getContextClient().getClientCorrelationId(), time, getEndpoint(), getPreferredRegions(), getExcludedRegions(),
                 getConnectionPolicy(), getConsistencyLevel(), isContentResponseOnWriteEnabled(),
                 isSessionCapturingOverrideEnabled(), isConnectionSharingAcrossClientsEnabled(),
                 isClientTelemetryEnabled(), getProactiveContainerInitConfig(), diagnosticsCfg, tracingCfg);

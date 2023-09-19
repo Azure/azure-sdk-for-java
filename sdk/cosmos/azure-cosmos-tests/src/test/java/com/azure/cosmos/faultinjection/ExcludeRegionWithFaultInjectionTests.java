@@ -1507,7 +1507,7 @@ public class ExcludeRegionWithFaultInjectionTests extends TestSuiteBase {
             Function<List<String>, List<String>> regionExclusionMutators = mutationTestConfig.regionExclusionMutator;
 
             List<String> mutatedExcludedRegions = regionExclusionMutators.apply(this.preferredRegions);
-            clientWithPreferredRegions.excludeRegions(mutatedExcludedRegions);
+            clientWithPreferredRegions.setExcludedRegions(mutatedExcludedRegions);
 
             params.itemRequestOptionsForCallbackAfterMutation = mutationTestConfig.itemRequestOptionsForCallbackAfterMutation;
             params.patchItemRequestOptionsForCallbackAfterMutation = mutationTestConfig.patchItemRequestOptionsForCallbackAfterMutation;

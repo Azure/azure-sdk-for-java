@@ -600,7 +600,7 @@ public final class CosmosAsyncClient implements Closeable {
      *
      * @param excludedRegions The list of regions to exclude.
      * */
-    public void excludeRegions(List<String> excludedRegions) {
+    public void setExcludedRegions(List<String> excludedRegions) {
         this.connectionPolicy.setExcludedRegions(excludedRegions);
     }
 

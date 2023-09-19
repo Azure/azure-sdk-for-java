@@ -125,6 +125,7 @@ public final class ConnectionPolicy {
         this.openConnectionsConcurrency = Configs.getOpenConnectionsConcurrency();
         this.aggressiveWarmupConcurrency = Configs.getAggressiveWarmupConcurrency();
         this.reentrantReadWriteLock = new ReentrantReadWriteLock();
+        this.excludedRegionsAsString = "";
     }
 
     /**
@@ -654,6 +655,7 @@ public final class ConnectionPolicy {
             ", minConnectionPoolSizePerEndpoint=" + minConnectionPoolSizePerEndpoint +
             ", openConnectionsConcurrency=" + openConnectionsConcurrency +
             ", aggressiveWarmupConcurrency=" + aggressiveWarmupConcurrency +
+            ", excludedRegions=" + excludedRegionsAsString +
             '}';
     }
 
