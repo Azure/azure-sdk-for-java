@@ -299,6 +299,19 @@
           "code": "java.annotation.added",
           "new": "class com.azure.cosmos.models.ChangeFeedProcessorItem",
           "justification": "Modifies the type of changeFeedMetaData from ChangeFeedMetaData to JsonNode."
+        },
+        {
+          "ignore": true,
+          "code": "java.field.addedStaticField",
+          "new": "field com.azure.data.schemaregistry.SchemaRegistryVersion.V2022_10",
+          "justification": "Another version of Schema Registry API released."
+        },
+        {
+          "regex": true,
+          "ignore": true,
+          "code": "java.field.addedStaticField",
+          "new": "field com\\.azure\\.data\\.schemaregistry\\.models\\.SchemaFormat\\.(CUSTOM|JSON)",
+          "justification": "Additional schema formats are supported by Schema Registry."
         }
       ]
     }
