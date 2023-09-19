@@ -1328,7 +1328,8 @@ public class IncrementalChangeFeedProcessorTest extends TestSuiteBase {
             int partitionCountBeforeSplit = createdFeedCollectionForSplit.getFeedRanges().block().size();
             List<InternalObjectNode> createdDocuments = new ArrayList<>();
             Map<String, JsonNode> receivedDocuments = new ConcurrentHashMap<>();
-            Set<String> receivedLeaseTokens = ConcurrentHashMap.newKeySet();
+            Set<String> receivedLeaseTokensFromContext = ConcurrentHashMap.newKeySet();
+            Set<String> receivedLeaseTokensFromCfpState = ConcurrentHashMap.newKeySet();
 
             // generate a first batch of documents
             setupReadFeedDocuments(createdDocuments, receivedDocuments, createdFeedCollectionForSplit, FEED_COUNT);
@@ -1349,7 +1350,7 @@ public class IncrementalChangeFeedProcessorTest extends TestSuiteBase {
             if (isContextRequired) {
                 TestUtils.injectHandleLatestVersionChangesBiConsumerToChangeFeedProcessor(
                     changeFeedProcessorBuilder1,
-                    changeFeedProcessorHandlerWithContext(receivedDocuments, receivedLeaseTokens));
+                    changeFeedProcessorHandlerWithContext(receivedDocuments, receivedLeaseTokensFromContext));
             } else {
                 changeFeedProcessorBuilder1 = changeFeedProcessorBuilder1
                     .handleLatestVersionChanges(changeFeedProcessorHandler(receivedDocuments));
@@ -1369,6 +1370,13 @@ public class IncrementalChangeFeedProcessorTest extends TestSuiteBase {
 
             // Wait for the feed processor to receive and process the second batch of documents.
             waitToReceiveDocuments(receivedDocuments, 2 * CHANGE_FEED_PROCESSOR_TIMEOUT, FEED_COUNT);
+            List<ChangeFeedProcessorState> cfpStatesBeforeSplit = changeFeedProcessor1.getCurrentState().map(Function.identity()).block();
+
+            if (cfpStatesBeforeSplit != null) {
+                for (ChangeFeedProcessorState cfpState : cfpStatesBeforeSplit) {
+                    receivedLeaseTokensFromCfpState.add(cfpState.getLeaseToken());
+                }
+            }
 
             // increase throughput to force a single partition collection to go through a split
             createdFeedCollectionForSplit
@@ -1427,7 +1435,7 @@ public class IncrementalChangeFeedProcessorTest extends TestSuiteBase {
             if (isContextRequired) {
                 TestUtils.injectHandleLatestVersionChangesBiConsumerToChangeFeedProcessor(
                     changeFeedProcessorBuilder2,
-                    changeFeedProcessorHandlerWithContext(receivedDocuments, receivedLeaseTokens));
+                    changeFeedProcessorHandlerWithContext(receivedDocuments, receivedLeaseTokensFromContext));
             } else {
                 changeFeedProcessorBuilder2 = changeFeedProcessorBuilder2
                     .handleLatestVersionChanges(changeFeedProcessorHandler(receivedDocuments));
@@ -1448,13 +1456,34 @@ public class IncrementalChangeFeedProcessorTest extends TestSuiteBase {
             // Wait for the feed processor to receive and process the second batch of documents.
             waitToReceiveDocuments(receivedDocuments, 2 * CHANGE_FEED_PROCESSOR_TIMEOUT, FEED_COUNT*2);
 
+            List<ChangeFeedProcessorState> cfpStatesAfterSplitFromCfp1 = changeFeedProcessor1.getCurrentState().map(Function.identity()).block();
+
+            if (cfpStatesAfterSplitFromCfp1 != null) {
+                for (ChangeFeedProcessorState cfpState : cfpStatesAfterSplitFromCfp1) {
+                    receivedLeaseTokensFromCfpState.add(cfpState.getLeaseToken());
+                }
+            }
+
+            List<ChangeFeedProcessorState> cfpStatesAfterSplitFromCfp2 = changeFeedProcessor2.getCurrentState().map(Function.identity()).block();
+
+            if (cfpStatesAfterSplitFromCfp2 != null) {
+                for (ChangeFeedProcessorState cfpState : cfpStatesAfterSplitFromCfp2) {
+                    receivedLeaseTokensFromCfpState.add(cfpState.getLeaseToken());
+                }
+            }
+
             if (isContextRequired) {
-                assertThat(receivedLeaseTokens).isNotNull();
+                assertThat(receivedLeaseTokensFromContext).isNotNull();
                 // before a split, the smallest possible container would have 1 physical partition
                 // after a split, such a container would have 2 child partitions
                 // if change feed has been drained from both the parent and child partitions, then
                 // corresponding to each partition, a lease should have been recorded
-                assertThat(receivedLeaseTokens.size()).isGreaterThanOrEqualTo(3);
+                assertThat(receivedLeaseTokensFromContext.size()).isGreaterThanOrEqualTo(3);
+                assertThat(receivedLeaseTokensFromContext.size()).isEqualTo(receivedLeaseTokensFromCfpState.size());
+
+                for (String leaseToken : receivedLeaseTokensFromContext) {
+                    assertThat(receivedLeaseTokensFromCfpState.contains(leaseToken)).isTrue();
+                }
             }
 
             changeFeedProcessor1
