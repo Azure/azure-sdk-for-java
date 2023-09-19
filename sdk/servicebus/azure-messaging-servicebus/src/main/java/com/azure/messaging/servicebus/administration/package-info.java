@@ -29,13 +29,19 @@
  *     copy of every message sent to the topic.  Each subscription has a filter.  Filters, also known as rules, are
  *     applied to each message to determine whether they will be published to the subscription.</li>
  *
- *     <li><strong>Rules:</strong></li>
- *     <li><strong>Filters:</strong></li>
+ *     <li><strong>Rule Filters:</strong>  A filter, associated with a subscription, that is tested against every
+ *     message sent to a Service Bus topic.  If the filter returns true, a copy of the message is published to that
+ *     subscription.  There are 3 types of filters: SQL filters, boolean filters, and correlation filters.  More
+ *     information can be found in: <a href="https://learn.microsoft.com/azure/service-bus-messaging/topic-filters">
+ *         Topic filters</a>.</li>
+ *
+ *     <li><strong><a href="https://learn.microsoft.com/azure/service-bus-messaging/topic-filters#actions">Rule Actions
+ *     </a>:</strong> A modification applied to a Service Bus message when it matches the associated rule filter.</li>
  * </ul>
  *
  * <h2>Getting Started</h2>
  *
- * <p>Service clients are the point of interaction for developers to use Azure Event Hubs.
+ * <p>Service clients are the point of interaction for developers to use Azure Service Bus.
  * {@link com.azure.messaging.servicebus.administration.ServiceBusAdministrationClient} and
  * {@link com.azure.messaging.servicebus.administration.ServiceBusAdministrationAsyncClient} are the sync and async
  * clients for managing entities in the Service Bus namespace.</p>
