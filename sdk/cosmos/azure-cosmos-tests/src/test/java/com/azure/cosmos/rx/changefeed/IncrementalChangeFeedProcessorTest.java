@@ -1,14 +1,16 @@
 // Copyright (c) Microsoft Corporation. All rights reserved.
 // Licensed under the MIT License.
 
-package com.azure.cosmos.rx.changefeed.epkversion;
+package com.azure.cosmos.rx.changefeed;
 
 import com.azure.cosmos.ChangeFeedProcessor;
 import com.azure.cosmos.ChangeFeedProcessorBuilder;
+import com.azure.cosmos.ChangeFeedProcessorContext;
 import com.azure.cosmos.CosmosAsyncClient;
 import com.azure.cosmos.CosmosAsyncContainer;
 import com.azure.cosmos.CosmosAsyncDatabase;
 import com.azure.cosmos.CosmosClientBuilder;
+import com.azure.cosmos.TestUtils;
 import com.azure.cosmos.implementation.AsyncDocumentClient;
 import com.azure.cosmos.implementation.DatabaseAccount;
 import com.azure.cosmos.implementation.DatabaseAccountLocation;
@@ -44,6 +46,7 @@ import org.testng.annotations.AfterClass;
 import org.testng.annotations.AfterMethod;
 import org.testng.annotations.BeforeClass;
 import org.testng.annotations.BeforeMethod;
+import org.testng.annotations.DataProvider;
 import org.testng.annotations.Factory;
 import org.testng.annotations.Test;
 import reactor.core.publisher.Flux;
@@ -61,10 +64,11 @@ import java.util.Collections;
 import java.util.Iterator;
 import java.util.List;
 import java.util.Map;
+import java.util.Set;
 import java.util.UUID;
 import java.util.concurrent.Callable;
 import java.util.concurrent.ConcurrentHashMap;
-import java.util.concurrent.ThreadLocalRandom;
+import java.util.function.BiConsumer;
 import java.util.function.Consumer;
 
 import static com.azure.cosmos.BridgeInternal.extractContainerSelfLink;
@@ -97,19 +101,24 @@ public class IncrementalChangeFeedProcessorTest extends TestSuiteBase {
         super(clientBuilder);
     }
 
-    @Test(groups = {"query" }, timeOut = 2 * TIMEOUT)
-    public void readFeedDocumentsStartFromBeginning() throws InterruptedException {
+    @DataProvider(name = "contextTestConfigs")
+    public Object[] contextTestConfigs() {
+        return new Object[] {true, false};
+    }
+
+    @Test(groups = {"query"}, dataProvider = "contextTestConfigs", timeOut = 2 * TIMEOUT)
+    public void readFeedDocumentsStartFromBeginning(boolean isContextRequired) throws InterruptedException {
         CosmosAsyncContainer createdFeedCollection = createFeedCollection(FEED_COLLECTION_THROUGHPUT);
         CosmosAsyncContainer createdLeaseCollection = createLeaseCollection(LEASE_COLLECTION_THROUGHPUT);
 
         try {
             List<InternalObjectNode> createdDocuments = new ArrayList<>();
             Map<String, JsonNode> receivedDocuments = new ConcurrentHashMap<>();
+            Set<String> receivedLeaseTokens = ConcurrentHashMap.newKeySet();
             setupReadFeedDocuments(createdDocuments, receivedDocuments, createdFeedCollection, FEED_COUNT);
 
-            changeFeedProcessor = new ChangeFeedProcessorBuilder()
+            ChangeFeedProcessorBuilder changeFeedProcessorBuilder = new ChangeFeedProcessorBuilder()
                 .hostName(hostName)
-                .handleLatestVersionChanges(changeFeedProcessorHandler(receivedDocuments))
                 .feedContainer(createdFeedCollection)
                 .leaseContainer(createdLeaseCollection)
                 .options(new ChangeFeedProcessorOptions()
@@ -121,8 +130,17 @@ public class IncrementalChangeFeedProcessorTest extends TestSuiteBase {
                     .setMaxItemCount(10)
                     .setStartFromBeginning(true)
                     .setMaxScaleCount(0) // unlimited
-                )
-                .buildChangeFeedProcessor();
+                );
+
+            if (isContextRequired) {
+                TestUtils.injectHandleLatestVersionChangesBiConsumerToChangeFeedProcessor(
+                    changeFeedProcessorBuilder, changeFeedProcessorHandlerWithContext(receivedDocuments, receivedLeaseTokens));
+            } else {
+                changeFeedProcessorBuilder = changeFeedProcessorBuilder
+                    .handleLatestVersionChanges(changeFeedProcessorHandler(receivedDocuments));
+            }
+
+            changeFeedProcessor = changeFeedProcessorBuilder.buildChangeFeedProcessor();
 
             try {
                 changeFeedProcessor.start().subscribeOn(Schedulers.boundedElastic())
@@ -144,6 +162,12 @@ public class IncrementalChangeFeedProcessorTest extends TestSuiteBase {
                 assertThat(receivedDocuments.containsKey(item.getId())).as("Document with getId: " + item.getId()).isTrue();
             }
 
+            if (isContextRequired) {
+                assertThat(receivedLeaseTokens).isNotNull();
+                assertThat(receivedLeaseTokens).isNotEmpty();
+                assertThat(receivedLeaseTokens.size()).isEqualTo(1);
+            }
+
             // Wait for the feed processor to shutdown.
             Thread.sleep(CHANGE_FEED_PROCESSOR_TIMEOUT);
         } finally {
@@ -155,23 +179,17 @@ public class IncrementalChangeFeedProcessorTest extends TestSuiteBase {
         }
     }
 
-    @Test(groups = { "query" }, timeOut = 50 * CHANGE_FEED_PROCESSOR_TIMEOUT)
-    public void readFeedDocumentsStartFromCustomDate() throws InterruptedException {
+    @Test(groups = { "query" }, dataProvider = "contextTestConfigs", timeOut = 50 * CHANGE_FEED_PROCESSOR_TIMEOUT)
+    public void readFeedDocumentsStartFromCustomDate(boolean isContextRequired) throws InterruptedException {
         CosmosAsyncContainer createdFeedCollection = createFeedCollection(FEED_COLLECTION_THROUGHPUT);
         CosmosAsyncContainer createdLeaseCollection = createLeaseCollection(LEASE_COLLECTION_THROUGHPUT);
 
         try {
             List<InternalObjectNode> createdDocuments = new ArrayList<>();
             Map<String, JsonNode> receivedDocuments = new ConcurrentHashMap<>();
-            ChangeFeedProcessor changeFeedProcessor = new ChangeFeedProcessorBuilder()
+            Set<String> receivedLeaseTokens = ConcurrentHashMap.newKeySet();
+            ChangeFeedProcessorBuilder changeFeedProcessorBuilder = new ChangeFeedProcessorBuilder()
                 .hostName(hostName)
-                .handleLatestVersionChanges((List<ChangeFeedProcessorItem> docs) -> {
-                    logger.info("START processing from thread {}", Thread.currentThread().getId());
-                    for (ChangeFeedProcessorItem item : docs) {
-                        processItem(item, receivedDocuments);
-                    }
-                    logger.info("END processing from thread {}", Thread.currentThread().getId());
-                })
                 .feedContainer(createdFeedCollection)
                 .leaseContainer(createdLeaseCollection)
                 .options(new ChangeFeedProcessorOptions()
@@ -184,8 +202,17 @@ public class IncrementalChangeFeedProcessorTest extends TestSuiteBase {
                     .setStartTime(ZonedDateTime.now(ZoneOffset.UTC).minusDays(1).toInstant())
                     .setMinScaleCount(1)
                     .setMaxScaleCount(3)
-                )
-                .buildChangeFeedProcessor();
+                );
+
+            if (isContextRequired) {
+                TestUtils.injectHandleLatestVersionChangesBiConsumerToChangeFeedProcessor(
+                    changeFeedProcessorBuilder, changeFeedProcessorHandlerWithContext(receivedDocuments, receivedLeaseTokens));
+            } else {
+                changeFeedProcessorBuilder = changeFeedProcessorBuilder
+                    .handleLatestVersionChanges(changeFeedProcessorHandler(receivedDocuments));
+            }
+
+            changeFeedProcessor = changeFeedProcessorBuilder.buildChangeFeedProcessor();
 
             try {
                 changeFeedProcessor.start().subscribeOn(Schedulers.boundedElastic())
@@ -207,6 +234,12 @@ public class IncrementalChangeFeedProcessorTest extends TestSuiteBase {
 
             for (InternalObjectNode item : createdDocuments) {
                 assertThat(receivedDocuments.containsKey(item.getId())).as("Document with getId: " + item.getId()).isTrue();
+            }
+
+            if (isContextRequired) {
+                assertThat(receivedLeaseTokens).isNotNull();
+                assertThat(receivedLeaseTokens).isNotEmpty();
+                assertThat(receivedLeaseTokens.size()).isEqualTo(1);
             }
 
             // Wait for the feed processor to shutdown.
@@ -1590,6 +1623,19 @@ public class IncrementalChangeFeedProcessorTest extends TestSuiteBase {
         };
     }
 
+    private BiConsumer<List<ChangeFeedProcessorItem>, ChangeFeedProcessorContext<ChangeFeedProcessorItem>> changeFeedProcessorHandlerWithContext(
+        Map<String, JsonNode> receivedDocuments, Set<String> receivedLeaseTokens) {
+        return (docs, context) -> {
+            logger.info("START processing from thread in test {}", Thread.currentThread().getId());
+            for (ChangeFeedProcessorItem item : docs) {
+                processItem(item, receivedDocuments);
+            }
+            validateChangeFeedProcessorContext(context);
+            processChangeFeedProcessorContext(context, receivedLeaseTokens);
+            logger.info("END processing from thread {}", Thread.currentThread().getId());
+        };
+    }
+
     private Consumer<List<ChangeFeedProcessorItem>> changeFeedProcessorHandlerWithCallback(
         Map<String, JsonNode> receivedDocuments,
         Callable<Boolean> callBackFunc) {
@@ -1708,6 +1754,13 @@ public class IncrementalChangeFeedProcessorTest extends TestSuiteBase {
         waitIfNeededForReplicasToCatchUp(getClientBuilder());
     }
 
+    <T> void validateChangeFeedProcessorContext(ChangeFeedProcessorContext<T> changeFeedProcessorContext) {
+
+        String leaseToken = changeFeedProcessorContext.getLeaseToken();
+
+        assertThat(leaseToken).isNotNull();
+    }
+
     private InternalObjectNode getDocumentDefinition() {
         String uuid = UUID.randomUUID().toString();
         InternalObjectNode doc = new InternalObjectNode(String.format("{ "
@@ -1754,6 +1807,21 @@ public class IncrementalChangeFeedProcessorTest extends TestSuiteBase {
             }
         }
         receivedDocuments.put(item.getCurrent().get("id").asText(), item.getCurrent());
+    }
+
+    private static synchronized void processChangeFeedProcessorContext(
+        ChangeFeedProcessorContext<ChangeFeedProcessorItem> context,
+        Set<String> receivedLeaseTokens) {
+
+        if (context == null) {
+            fail("The context cannot be null.");
+        }
+
+        if (context.getLeaseToken() == null || context.getLeaseToken().isEmpty()) {
+            fail("The lease token cannot be null or empty.");
+        }
+
+        receivedLeaseTokens.add(context.getLeaseToken());
     }
 
     class LeaseStateMonitor {

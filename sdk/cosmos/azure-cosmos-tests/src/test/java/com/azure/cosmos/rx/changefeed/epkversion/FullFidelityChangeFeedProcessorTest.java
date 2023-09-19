@@ -25,6 +25,7 @@ import com.azure.cosmos.models.SqlParameter;
 import com.azure.cosmos.models.SqlQuerySpec;
 import com.azure.cosmos.rx.TestSuiteBase;
 import com.fasterxml.jackson.core.JsonProcessingException;
+import com.fasterxml.jackson.databind.JsonNode;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import org.apache.commons.lang3.RandomStringUtils;
 import org.slf4j.Logger;
@@ -86,23 +87,6 @@ public class FullFidelityChangeFeedProcessorTest extends TestSuiteBase {
             Map<String, ChangeFeedProcessorItem> receivedDocuments = new ConcurrentHashMap<>();
             ChangeFeedProcessorOptions changeFeedProcessorOptions = new ChangeFeedProcessorOptions();
 
-            Consumer<List<ChangeFeedProcessorItem>> consumer = (docs) -> {
-                log.info("START processing from thread {}", Thread.currentThread().getId());
-                for (ChangeFeedProcessorItem item : docs) {
-                    processItem(item, receivedDocuments);
-                }
-                log.info("END processing from thread {}", Thread.currentThread().getId());
-            };
-
-            BiConsumer<List<ChangeFeedProcessorItem>, ChangeFeedProcessorContext<ChangeFeedProcessorItem>> biConsumer = (docs, context) -> {
-                log.info("START processing from thread {}", Thread.currentThread().getId());
-                for (ChangeFeedProcessorItem item : docs) {
-                    processItem(item, receivedDocuments);
-                }
-                validateChangeFeedProcessorContext(context);
-                log.info("END processing from thread {}", Thread.currentThread().getId());
-            };
-
             ChangeFeedProcessorBuilder changeFeedProcessorBuilder = new ChangeFeedProcessorBuilder()
                 .options(changeFeedProcessorOptions)
                 .hostName(hostName)
@@ -110,9 +94,9 @@ public class FullFidelityChangeFeedProcessorTest extends TestSuiteBase {
                 .leaseContainer(createdLeaseCollection);
 
             if (isContextRequired) {
-                changeFeedProcessorBuilder = changeFeedProcessorBuilder.handleAllVersionsAndDeletesChanges(biConsumer);
+                changeFeedProcessorBuilder = changeFeedProcessorBuilder.handleAllVersionsAndDeletesChanges(changeFeedProcessorHandlerWithContext(receivedDocuments));
             } else {
-                changeFeedProcessorBuilder = changeFeedProcessorBuilder.handleAllVersionsAndDeletesChanges(consumer);
+                changeFeedProcessorBuilder = changeFeedProcessorBuilder.handleAllVersionsAndDeletesChanges(changeFeedProcessorHandler(receivedDocuments));
             }
 
             ChangeFeedProcessor changeFeedProcessor = changeFeedProcessorBuilder.buildChangeFeedProcessor();
@@ -167,23 +151,6 @@ public class FullFidelityChangeFeedProcessorTest extends TestSuiteBase {
             Map<String, ChangeFeedProcessorItem> receivedDocuments = new ConcurrentHashMap<>();
             ChangeFeedProcessorOptions changeFeedProcessorOptions = new ChangeFeedProcessorOptions();
 
-            Consumer<List<ChangeFeedProcessorItem>> consumer = (docs) -> {
-                log.info("START processing from thread {}", Thread.currentThread().getId());
-                for (ChangeFeedProcessorItem item : docs) {
-                    processItem(item, receivedDocuments);
-                }
-                log.info("END processing from thread {}", Thread.currentThread().getId());
-            };
-
-            BiConsumer<List<ChangeFeedProcessorItem>, ChangeFeedProcessorContext<ChangeFeedProcessorItem>> biConsumer = (docs, context) -> {
-                log.info("START processing from thread {}", Thread.currentThread().getId());
-                for (ChangeFeedProcessorItem item : docs) {
-                    processItem(item, receivedDocuments);
-                }
-                validateChangeFeedProcessorContext(context);
-                log.info("END processing from thread {}", Thread.currentThread().getId());
-            };
-
             ChangeFeedProcessorBuilder changeFeedProcessorBuilder = new ChangeFeedProcessorBuilder()
                 .options(changeFeedProcessorOptions)
                 .hostName(hostName)
@@ -191,9 +158,11 @@ public class FullFidelityChangeFeedProcessorTest extends TestSuiteBase {
                 .leaseContainer(createdLeaseCollection);
 
             if (isContextRequired) {
-                changeFeedProcessorBuilder = changeFeedProcessorBuilder.handleAllVersionsAndDeletesChanges(biConsumer);
+                changeFeedProcessorBuilder = changeFeedProcessorBuilder.handleAllVersionsAndDeletesChanges(
+                    changeFeedProcessorHandlerWithContext(receivedDocuments));
             } else {
-                changeFeedProcessorBuilder = changeFeedProcessorBuilder.handleAllVersionsAndDeletesChanges(consumer);
+                changeFeedProcessorBuilder = changeFeedProcessorBuilder.handleAllVersionsAndDeletesChanges(
+                    changeFeedProcessorHandler(receivedDocuments));
             }
 
             ChangeFeedProcessor changeFeedProcessor = changeFeedProcessorBuilder.buildChangeFeedProcessor();
@@ -921,6 +890,28 @@ public class FullFidelityChangeFeedProcessorTest extends TestSuiteBase {
             // Allow some time for the collections to be deleted before exiting.
             Thread.sleep(500);
         }
+    }
+
+    private Consumer<List<ChangeFeedProcessorItem>> changeFeedProcessorHandler(Map<String, ChangeFeedProcessorItem> receivedDocuments) {
+        return docs -> {
+            logger.info("START processing from thread in test {}", Thread.currentThread().getId());
+            for (ChangeFeedProcessorItem item : docs) {
+                processItem(item, receivedDocuments);
+            }
+            logger.info("END processing from thread {}", Thread.currentThread().getId());
+        };
+    }
+
+    private BiConsumer<List<ChangeFeedProcessorItem>, ChangeFeedProcessorContext<ChangeFeedProcessorItem>> changeFeedProcessorHandlerWithContext(
+        Map<String, ChangeFeedProcessorItem> receivedDocuments) {
+        return (docs, context) -> {
+            logger.info("START processing from thread in test {}", Thread.currentThread().getId());
+            for (ChangeFeedProcessorItem item : docs) {
+                processItem(item, receivedDocuments);
+            }
+            validateChangeFeedProcessorContext(context);
+            logger.info("END processing from thread {}", Thread.currentThread().getId());
+        };
     }
 
     void validateChangeFeedProcessing(ChangeFeedProcessor changeFeedProcessor, List<InternalObjectNode> createdDocuments, Map<String, ChangeFeedProcessorItem> receivedDocuments, int sleepTime) throws InterruptedException {

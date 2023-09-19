@@ -237,7 +237,7 @@ public class ChangeFeedProcessorBuilder {
      *
      * <!-- src_embed com.azure.cosmos.allVersionsAndDeletesChangeFeedProcessor.handleChanges -->
      * <pre>
-     * .handleAllVersionsAndDeletesChanges&#40;&#40;docs,context&#41; -&gt; &#123;
+     * .handleAllVersionsAndDeletesChanges&#40;docs -&gt; &#123;
      *     for &#40;ChangeFeedProcessorItem item : docs&#41; &#123;
      *         &#47;&#47; Implementation for handling and processing of each ChangeFeedProcessorItem item goes here
      *     &#125;
@@ -251,7 +251,6 @@ public class ChangeFeedProcessorBuilder {
     @Beta(value = Beta.SinceVersion.V4_50_0, warningText = Beta.PREVIEW_SUBJECT_TO_CHANGE_WARNING)
     public ChangeFeedProcessorBuilder handleAllVersionsAndDeletesChanges(
         BiConsumer<List<ChangeFeedProcessorItem>, ChangeFeedProcessorContext<ChangeFeedProcessorItem>> biConsumer) {
-
         this.fullFidelityModeLeaseWithContextConsumer = biConsumer;
         this.changeFeedMode = ChangeFeedMode.FULL_FIDELITY;
         this.leaseVersion = LeaseVersion.EPK_RANGE_BASED_LEASE;
