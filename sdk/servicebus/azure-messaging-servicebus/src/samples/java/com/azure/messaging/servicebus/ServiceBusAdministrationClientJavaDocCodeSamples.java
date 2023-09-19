@@ -95,7 +95,6 @@ public class ServiceBusAdministrationClientJavaDocCodeSamples {
         client.createQueue("my-new-queue").block();
     }
 
-
     /**
      * Creates a queue synchronously.
      */
@@ -129,6 +128,9 @@ public class ServiceBusAdministrationClientJavaDocCodeSamples {
         // END: com.azure.messaging.servicebus.administration.servicebusadministrationclient.createqueue#string-createqueuepptions
     }
 
+    /**
+     * Creates a topic and a subscription with a rule.
+     */
     @Test
     public void createTopicAndSubscription() {
         // BEGIN: com.azure.messaging.servicebus.administration.servicebusadministrationclient.createsubscription#string-string-string
@@ -178,9 +180,25 @@ public class ServiceBusAdministrationClientJavaDocCodeSamples {
     }
 
     /**
+     * Delete a queue asynchronously.
+     */
+    @Test
+    public void deleteQueueAsync() {
+        // BEGIN: com.azure.messaging.servicebus.administration.servicebusadministrationasyncclient.deletequeue
+        // `.subscribe()` is a non-blocking call. It'll move onto the next
+        // instruction after setting up the `consumer`, `errorConsumer`, `completeConsumer` callbacks.
+        asyncClient.deleteQueue("my-existing-queue").subscribe(unused -> {
+        }, error -> {
+            System.err.println("Error deleting queue: " + error);
+        }, () -> {
+            System.out.println("Deleted queue.");
+        });
+        // END: com.azure.messaging.servicebus.administration.servicebusadministrationasyncclient.deletequeue
+    }
+
+    /**
      * Creates a queue synchronously.
      */
-
     @Test
     public void updateQueueOptions() {
         // BEGIN: com.azure.messaging.servicebus.administration.servicebusadministrationclient.updatequeue
