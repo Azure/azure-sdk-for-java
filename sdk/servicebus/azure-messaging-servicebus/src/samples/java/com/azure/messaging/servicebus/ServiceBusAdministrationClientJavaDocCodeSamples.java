@@ -4,8 +4,10 @@
 package com.azure.messaging.servicebus;
 
 import com.azure.core.credential.TokenCredential;
+import com.azure.core.http.policy.FixedDelayOptions;
 import com.azure.core.http.policy.HttpLogDetailLevel;
 import com.azure.core.http.policy.HttpLogOptions;
+import com.azure.core.http.policy.RetryOptions;
 import com.azure.identity.DefaultAzureCredentialBuilder;
 import com.azure.messaging.servicebus.administration.ServiceBusAdministrationAsyncClient;
 import com.azure.messaging.servicebus.administration.ServiceBusAdministrationClient;
@@ -70,6 +72,29 @@ public class ServiceBusAdministrationClientJavaDocCodeSamples {
             .buildAsyncClient();
         // END: com.azure.messaging.servicebus.administration.servicebusadministrationasyncclient.instantiation
     }
+
+    /**
+     * Creates {@link ServiceBusAdministrationAsyncClient} using Azure Identity and sets some log options.
+     */
+    @Test
+    public void createAdministrationAsyncClientHttpLogOptions() {
+        // BEGIN: com.azure.messaging.servicebus.administration.servicebusadministrationasyncclient.construct#retryoptions
+        // DefaultAzureCredential creates a credential based on the environment it is executed in.
+        TokenCredential credential = new DefaultAzureCredentialBuilder().build();
+
+        RetryOptions retryOptions = new RetryOptions(new FixedDelayOptions(4, Duration.ofSeconds(20)));
+
+        // "<<fully-qualified-namespace>>" will look similar to "{your-namespace}.servicebus.windows.net"
+        ServiceBusAdministrationAsyncClient client = new ServiceBusAdministrationClientBuilder()
+            .credential("<<fully-qualified-namespace>>", credential)
+            .retryOptions(retryOptions)
+            .httpLogOptions(new HttpLogOptions().setLogLevel(HttpLogDetailLevel.HEADERS))
+            .buildAsyncClient();
+        // END: com.azure.messaging.servicebus.administration.servicebusadministrationasyncclient.construct#retryoptions
+
+        client.createQueue("my-new-queue").block();
+    }
+
 
     /**
      * Creates a queue synchronously.
@@ -151,6 +176,7 @@ public class ServiceBusAdministrationClientJavaDocCodeSamples {
             });
         // END: com.azure.messaging.servicebus.administration.servicebusadministrationasyncclient.createqueue#string
     }
+
     /**
      * Creates a queue synchronously.
      */
