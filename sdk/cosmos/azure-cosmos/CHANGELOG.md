@@ -8,6 +8,7 @@
 #### Breaking Changes
 
 #### Bugs Fixed
+* Fixed an issue where `sampleDiagnostics` is not being honored for `query. See [PR 36840](https://github.com/Azure/azure-sdk-for-java/pull/36840)
 
 #### Other Changes
 * Handling negative end-to-end timeouts provided more gracefully by throwing a `CosmsoException` (`OperationCancelledException`) instead of `IllegalArgumentException`. - See [PR 36507](https://github.com/Azure/azure-sdk-for-java/pull/36507)
