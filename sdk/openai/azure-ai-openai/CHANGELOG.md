@@ -4,6 +4,10 @@
 
 ### Features Added
 
+- Support for `Whisper` endpoints was added.
+- Translation and Transcription of audio files is available
+- The above features are available both in Azure and non-Azure OpenAI
+
 ### Breaking Changes
 
 - Replaced usage of class `AzureKeyCredential` by `KeyCredential`.

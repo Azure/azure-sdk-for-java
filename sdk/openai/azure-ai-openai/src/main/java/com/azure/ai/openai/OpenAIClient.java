@@ -4,9 +4,15 @@
 package com.azure.ai.openai;
 
 import com.azure.ai.openai.implementation.CompletionsUtils;
+import com.azure.ai.openai.implementation.MultipartDataHelper;
+import com.azure.ai.openai.implementation.MultipartDataSerializationResult;
 import com.azure.ai.openai.implementation.NonAzureOpenAIClientImpl;
 import com.azure.ai.openai.implementation.OpenAIClientImpl;
 import com.azure.ai.openai.implementation.OpenAIServerSentEvents;
+import com.azure.ai.openai.models.AudioTranscription;
+import com.azure.ai.openai.models.AudioTranscriptionFormat;
+import com.azure.ai.openai.models.AudioTranscriptionOptions;
+import com.azure.ai.openai.models.AudioTranslationOptions;
 import com.azure.ai.openai.models.ChatCompletions;
 import com.azure.ai.openai.models.ChatCompletionsOptions;
 import com.azure.ai.openai.models.Completions;
@@ -24,6 +30,7 @@ import com.azure.core.exception.ClientAuthenticationException;
 import com.azure.core.exception.HttpResponseException;
 import com.azure.core.exception.ResourceModifiedException;
 import com.azure.core.exception.ResourceNotFoundException;
+import com.azure.core.http.HttpHeaderName;
 import com.azure.core.http.rest.RequestOptions;
 import com.azure.core.http.rest.Response;
 import com.azure.core.util.BinaryData;
@@ -31,6 +38,8 @@ import com.azure.core.util.IterableStream;
 import com.azure.core.util.logging.ClientLogger;
 import com.azure.core.util.polling.SyncPoller;
 import java.nio.ByteBuffer;
+import java.util.ArrayList;
+import java.util.List;
 import reactor.core.publisher.Flux;
 
 /** Initializes a new instance of the synchronous OpenAIClient type. */
@@ -657,6 +666,18 @@ public final class OpenAIClient {
      *                 violence (Optional): (recursive schema, see violence above)
      *                 hate (Optional): (recursive schema, see hate above)
      *                 self_harm (Optional): (recursive schema, see self_harm above)
+     *                 error (Optional): {
+     *                     code: String (Required)
+     *                     message: String (Required)
+     *                     target: String (Optional)
+     *                     details (Optional): [
+     *                         (recursive schema, see above)
+     *                     ]
+     *                     innererror (Optional): {
+     *                         code: String (Optional)
+     *                         innererror (Optional): (recursive schema, see innererror above)
+     *                     }
+     *                 }
      *             }
      *         }
      *     ]
@@ -693,5 +714,504 @@ public final class OpenAIClient {
             String deploymentOrModelName, BinaryData chatCompletionsOptions, RequestOptions requestOptions) {
         return this.serviceClient.getChatCompletionsWithAzureExtensionsWithResponse(
                 deploymentOrModelName, chatCompletionsOptions, requestOptions);
+    }
+
+    /**
+     * Gets transcribed text and associated metadata from provided spoken audio file data. Audio will be transcribed in
+     * the written language corresponding to the language it was spoken in.
+     *
+     * @param deploymentOrModelName Specifies either the model deployment name (when using Azure OpenAI) or model name
+     *     (when using non-Azure OpenAI) to use for this request.
+     * @param fileName The file name that is represented in the {@code file} field of {@link AudioTranscriptionOptions}.
+     * @param audioTranscriptionOptions The configuration information for an audio transcription request.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws HttpResponseException thrown if the request is rejected by server.
+     * @throws ClientAuthenticationException thrown if the request is rejected by server on status code 401.
+     * @throws ResourceNotFoundException thrown if the request is rejected by server on status code 404.
+     * @throws ResourceModifiedException thrown if the request is rejected by server on status code 409.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return {@link AudioTranscription} transcribed text and associated metadata from provided spoken audio data.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    public AudioTranscription getAudioTranscription(
+            String deploymentOrModelName, String fileName, AudioTranscriptionOptions audioTranscriptionOptions) {
+        // checking allowed formats for a JSON response
+        List<AudioTranscriptionFormat> acceptedFormats = new ArrayList<>();
+        acceptedFormats.add(AudioTranscriptionFormat.JSON);
+        acceptedFormats.add(AudioTranscriptionFormat.VERBOSE_JSON);
+        if (!acceptedFormats.contains(audioTranscriptionOptions.getResponseFormat())) {
+            throw LOGGER.logExceptionAsError(
+                    new IllegalArgumentException("This operation does not support the requested audio format"));
+        }
+        // embedding the `model` in the request for non-Azure case
+        if (this.openAIServiceClient != null) {
+            audioTranscriptionOptions.setModel(deploymentOrModelName);
+        }
+        MultipartDataHelper helper = new MultipartDataHelper();
+        MultipartDataSerializationResult result = helper.serializeRequest(audioTranscriptionOptions, fileName);
+        String multipartBoundary = helper.getBoundary();
+        RequestOptions requestOptions = new RequestOptions();
+        requestOptions
+                .setHeader(HttpHeaderName.CONTENT_TYPE, "multipart/form-data;" + " boundary=" + multipartBoundary)
+                .setHeader(HttpHeaderName.CONTENT_LENGTH, String.valueOf(result.getDataLength()));
+        Response<BinaryData> response =
+                openAIServiceClient != null
+                        ? this.openAIServiceClient.getAudioTranscriptionAsPlainTextWithResponse(
+                                deploymentOrModelName, result.getData(), requestOptions)
+                        : this.serviceClient.getAudioTranscriptionAsPlainTextWithResponse(
+                                deploymentOrModelName, result.getData(), requestOptions);
+        return response.getValue().toObject(AudioTranscription.class);
+    }
+
+    /**
+     * Gets transcribed text and associated metadata from provided spoken audio file data. Audio will be transcribed in
+     * the written language corresponding to the language it was spoken in.
+     *
+     * @param deploymentOrModelName Specifies either the model deployment name (when using Azure OpenAI) or model name
+     *     (when using non-Azure OpenAI) to use for this request.
+     * @param fileName The file name that is represented in the {@code file} field of {@link AudioTranscriptionOptions}.
+     * @param audioTranscriptionOptions The configuration information for an audio transcription request.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws HttpResponseException thrown if the request is rejected by server.
+     * @throws ClientAuthenticationException thrown if the request is rejected by server on status code 401.
+     * @throws ResourceNotFoundException thrown if the request is rejected by server on status code 404.
+     * @throws ResourceModifiedException thrown if the request is rejected by server on status code 409.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return transcribed text and associated metadata from provided spoken audio data.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    public String getAudioTranscriptionText(
+            String deploymentOrModelName, String fileName, AudioTranscriptionOptions audioTranscriptionOptions) {
+        // checking allowed formats for a plain text response
+        List<AudioTranscriptionFormat> acceptedFormats = new ArrayList<>();
+        acceptedFormats.add(AudioTranscriptionFormat.TEXT);
+        acceptedFormats.add(AudioTranscriptionFormat.VTT);
+        acceptedFormats.add(AudioTranscriptionFormat.SRT);
+        if (!acceptedFormats.contains(audioTranscriptionOptions.getResponseFormat())) {
+            throw LOGGER.logExceptionAsError(
+                    new IllegalArgumentException("This operation does not support the requested audio format"));
+        }
+        // embedding the `model` in the request for non-Azure case
+        if (this.openAIServiceClient != null) {
+            audioTranscriptionOptions.setModel(deploymentOrModelName);
+        }
+        MultipartDataHelper helper = new MultipartDataHelper();
+        MultipartDataSerializationResult result = helper.serializeRequest(audioTranscriptionOptions, fileName);
+        String multipartBoundary = helper.getBoundary();
+        RequestOptions requestOptions = new RequestOptions();
+        requestOptions
+                .setHeader(HttpHeaderName.CONTENT_TYPE, "multipart/form-data;" + " boundary=" + multipartBoundary)
+                .setHeader(HttpHeaderName.CONTENT_LENGTH, String.valueOf(result.getDataLength()));
+        Response<BinaryData> response =
+                openAIServiceClient != null
+                        ? this.openAIServiceClient.getAudioTranscriptionAsPlainTextWithResponse(
+                                deploymentOrModelName, result.getData(), requestOptions)
+                        : this.serviceClient.getAudioTranscriptionAsPlainTextWithResponse(
+                                deploymentOrModelName, result.getData(), requestOptions);
+        return response.getValue().toString();
+    }
+
+    /**
+     * Gets English language transcribed text and associated metadata from provided spoken audio file data.
+     *
+     * @param deploymentOrModelName Specifies either the model deployment name (when using Azure OpenAI) or model name
+     *     (when using non-Azure OpenAI) to use for this request.
+     * @param fileName The file name that is represented in the {@code file} field of {@link AudioTranslationOptions}.
+     * @param audioTranslationOptions The configuration information for an audio translation request.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws HttpResponseException thrown if the request is rejected by server.
+     * @throws ClientAuthenticationException thrown if the request is rejected by server on status code 401.
+     * @throws ResourceNotFoundException thrown if the request is rejected by server on status code 404.
+     * @throws ResourceModifiedException thrown if the request is rejected by server on status code 409.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return {@link AudioTranscription} english language transcribed text and associated metadata from provided spoken
+     *     audio file data.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    public AudioTranscription getAudioTranslation(
+            String deploymentOrModelName, String fileName, AudioTranslationOptions audioTranslationOptions) {
+        // checking allowed formats for a JSON response
+        List<AudioTranscriptionFormat> acceptedFormats = new ArrayList<>();
+        acceptedFormats.add(AudioTranscriptionFormat.JSON);
+        acceptedFormats.add(AudioTranscriptionFormat.VERBOSE_JSON);
+        if (!acceptedFormats.contains(audioTranslationOptions.getResponseFormat())) {
+            throw LOGGER.logExceptionAsError(
+                    new IllegalArgumentException("This operation does not support the requested audio format"));
+        }
+        // embedding the `model` in the request for non-Azure case
+        if (this.openAIServiceClient != null) {
+            audioTranslationOptions.setModel(deploymentOrModelName);
+        }
+        MultipartDataHelper helper = new MultipartDataHelper();
+        MultipartDataSerializationResult result = helper.serializeRequest(audioTranslationOptions, fileName);
+        String multipartBoundary = helper.getBoundary();
+        RequestOptions requestOptions = new RequestOptions();
+        requestOptions
+                .setHeader(HttpHeaderName.CONTENT_TYPE, "multipart/form-data;" + " boundary=" + multipartBoundary)
+                .setHeader(HttpHeaderName.CONTENT_LENGTH, String.valueOf(result.getDataLength()));
+        Response<BinaryData> response =
+                openAIServiceClient != null
+                        ? this.openAIServiceClient.getAudioTranslationAsPlainTextWithResponse(
+                                deploymentOrModelName, result.getData(), requestOptions)
+                        : this.serviceClient.getAudioTranslationAsPlainTextWithResponse(
+                                deploymentOrModelName, result.getData(), requestOptions);
+        return response.getValue().toObject(AudioTranscription.class);
+    }
+
+    /**
+     * Gets English language transcribed text and associated metadata from provided spoken audio file data.
+     *
+     * @param deploymentOrModelName Specifies either the model deployment name (when using Azure OpenAI) or model name
+     *     (when using non-Azure OpenAI) to use for this request.
+     * @param fileName The file name that is represented in the {@code file} field of {@link AudioTranslationOptions}.
+     * @param audioTranslationOptions The configuration information for an audio translation request.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws HttpResponseException thrown if the request is rejected by server.
+     * @throws ClientAuthenticationException thrown if the request is rejected by server on status code 401.
+     * @throws ResourceNotFoundException thrown if the request is rejected by server on status code 404.
+     * @throws ResourceModifiedException thrown if the request is rejected by server on status code 409.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return english language transcribed text and associated metadata from provided spoken audio file data.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    public String getAudioTranslationText(
+            String deploymentOrModelName, String fileName, AudioTranslationOptions audioTranslationOptions) {
+        // checking allowed formats for a plain text response
+        List<AudioTranscriptionFormat> acceptedFormats = new ArrayList<>();
+        acceptedFormats.add(AudioTranscriptionFormat.TEXT);
+        acceptedFormats.add(AudioTranscriptionFormat.VTT);
+        acceptedFormats.add(AudioTranscriptionFormat.SRT);
+        if (!acceptedFormats.contains(audioTranslationOptions.getResponseFormat())) {
+            throw LOGGER.logExceptionAsError(
+                    new IllegalArgumentException("This operation does not support the requested audio format"));
+        }
+        // embedding the `model` in the request for non-Azure case
+        if (this.openAIServiceClient != null) {
+            audioTranslationOptions.setModel(deploymentOrModelName);
+        }
+        MultipartDataHelper helper = new MultipartDataHelper();
+        MultipartDataSerializationResult result = helper.serializeRequest(audioTranslationOptions, fileName);
+        String multipartBoundary = helper.getBoundary();
+        RequestOptions requestOptions = new RequestOptions();
+        requestOptions
+                .setHeader(HttpHeaderName.CONTENT_TYPE, "multipart/form-data;" + " boundary=" + multipartBoundary)
+                .setHeader(HttpHeaderName.CONTENT_LENGTH, String.valueOf(result.getDataLength()));
+        Response<BinaryData> response =
+                openAIServiceClient != null
+                        ? this.openAIServiceClient.getAudioTranslationAsPlainTextWithResponse(
+                                deploymentOrModelName, result.getData(), requestOptions)
+                        : this.serviceClient.getAudioTranslationAsPlainTextWithResponse(
+                                deploymentOrModelName, result.getData(), requestOptions);
+        return response.getValue().toString();
+    }
+
+    /**
+     * Gets transcribed text and associated metadata from provided spoken audio data. Audio will be transcribed in the
+     * written language corresponding to the language it was spoken in.
+     *
+     * <p><strong>Request Body Schema</strong>
+     *
+     * <pre>{@code
+     * {
+     *     file: byte[] (Required)
+     *     response_format: String(json/verbose_json/text/srt/vtt) (Optional)
+     *     language: String (Optional)
+     *     prompt: String (Optional)
+     *     temperature: Double (Optional)
+     *     model: String (Optional)
+     * }
+     * }</pre>
+     *
+     * <p><strong>Response Body Schema</strong>
+     *
+     * <pre>{@code
+     * {
+     *     text: String (Required)
+     *     task: String(transcribe/translate) (Optional)
+     *     language: String (Optional)
+     *     duration: Double (Optional)
+     *     segments (Optional): [
+     *          (Optional){
+     *             id: int (Required)
+     *             start: double (Required)
+     *             end: double (Required)
+     *             text: String (Required)
+     *             temperature: double (Required)
+     *             avg_logprob: double (Required)
+     *             compression_ratio: double (Required)
+     *             no_speech_prob: double (Required)
+     *             tokens (Required): [
+     *                 int (Required)
+     *             ]
+     *             seek: int (Required)
+     *         }
+     *     ]
+     * }
+     * }</pre>
+     *
+     * @param deploymentOrModelName Specifies either the model deployment name (when using Azure OpenAI) or model name
+     *     (when using non-Azure OpenAI) to use for this request.
+     * @param audioTranscriptionOptions The configuration information for an audio transcription request.
+     * @param requestOptions The options to configure the HTTP request before HTTP client sends it.
+     * @throws HttpResponseException thrown if the request is rejected by server.
+     * @throws ClientAuthenticationException thrown if the request is rejected by server on status code 401.
+     * @throws ResourceNotFoundException thrown if the request is rejected by server on status code 404.
+     * @throws ResourceModifiedException thrown if the request is rejected by server on status code 409.
+     * @return transcribed text and associated metadata from provided spoken audio data along with {@link Response}.
+     */
+    @Generated
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    public Response<BinaryData> getAudioTranscriptionAsResponseObjectWithResponse(
+            String deploymentOrModelName, BinaryData audioTranscriptionOptions, RequestOptions requestOptions) {
+        return this.serviceClient.getAudioTranscriptionAsResponseObjectWithResponse(
+                deploymentOrModelName, audioTranscriptionOptions, requestOptions);
+    }
+
+    /**
+     * Gets transcribed text and associated metadata from provided spoken audio data. Audio will be transcribed in the
+     * written language corresponding to the language it was spoken in.
+     *
+     * <p><strong>Request Body Schema</strong>
+     *
+     * <pre>{@code
+     * {
+     *     file: byte[] (Required)
+     *     response_format: String(json/verbose_json/text/srt/vtt) (Optional)
+     *     language: String (Optional)
+     *     prompt: String (Optional)
+     *     temperature: Double (Optional)
+     *     model: String (Optional)
+     * }
+     * }</pre>
+     *
+     * <p><strong>Response Body Schema</strong>
+     *
+     * <pre>{@code
+     * String
+     * }</pre>
+     *
+     * @param deploymentOrModelName Specifies either the model deployment name (when using Azure OpenAI) or model name
+     *     (when using non-Azure OpenAI) to use for this request.
+     * @param audioTranscriptionOptions The configuration information for an audio transcription request.
+     * @param requestOptions The options to configure the HTTP request before HTTP client sends it.
+     * @throws HttpResponseException thrown if the request is rejected by server.
+     * @throws ClientAuthenticationException thrown if the request is rejected by server on status code 401.
+     * @throws ResourceNotFoundException thrown if the request is rejected by server on status code 404.
+     * @throws ResourceModifiedException thrown if the request is rejected by server on status code 409.
+     * @return transcribed text and associated metadata from provided spoken audio data along with {@link Response}.
+     */
+    @Generated
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    public Response<BinaryData> getAudioTranscriptionAsPlainTextWithResponse(
+            String deploymentOrModelName, BinaryData audioTranscriptionOptions, RequestOptions requestOptions) {
+        return this.serviceClient.getAudioTranscriptionAsPlainTextWithResponse(
+                deploymentOrModelName, audioTranscriptionOptions, requestOptions);
+    }
+
+    /**
+     * Gets English language transcribed text and associated metadata from provided spoken audio data.
+     *
+     * <p><strong>Request Body Schema</strong>
+     *
+     * <pre>{@code
+     * {
+     *     file: byte[] (Required)
+     *     response_format: String(json/verbose_json/text/srt/vtt) (Optional)
+     *     prompt: String (Optional)
+     *     temperature: Double (Optional)
+     *     model: String (Optional)
+     * }
+     * }</pre>
+     *
+     * <p><strong>Response Body Schema</strong>
+     *
+     * <pre>{@code
+     * {
+     *     text: String (Required)
+     *     task: String(transcribe/translate) (Optional)
+     *     language: String (Optional)
+     *     duration: Double (Optional)
+     *     segments (Optional): [
+     *          (Optional){
+     *             id: int (Required)
+     *             start: double (Required)
+     *             end: double (Required)
+     *             text: String (Required)
+     *             temperature: double (Required)
+     *             avg_logprob: double (Required)
+     *             compression_ratio: double (Required)
+     *             no_speech_prob: double (Required)
+     *             tokens (Required): [
+     *                 int (Required)
+     *             ]
+     *             seek: int (Required)
+     *         }
+     *     ]
+     * }
+     * }</pre>
+     *
+     * @param deploymentOrModelName Specifies either the model deployment name (when using Azure OpenAI) or model name
+     *     (when using non-Azure OpenAI) to use for this request.
+     * @param audioTranslationOptions The configuration information for an audio translation request.
+     * @param requestOptions The options to configure the HTTP request before HTTP client sends it.
+     * @throws HttpResponseException thrown if the request is rejected by server.
+     * @throws ClientAuthenticationException thrown if the request is rejected by server on status code 401.
+     * @throws ResourceNotFoundException thrown if the request is rejected by server on status code 404.
+     * @throws ResourceModifiedException thrown if the request is rejected by server on status code 409.
+     * @return english language transcribed text and associated metadata from provided spoken audio data along with
+     *     {@link Response}.
+     */
+    @Generated
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    public Response<BinaryData> getAudioTranslationAsResponseObjectWithResponse(
+            String deploymentOrModelName, BinaryData audioTranslationOptions, RequestOptions requestOptions) {
+        return this.serviceClient.getAudioTranslationAsResponseObjectWithResponse(
+                deploymentOrModelName, audioTranslationOptions, requestOptions);
+    }
+
+    /**
+     * Gets English language transcribed text and associated metadata from provided spoken audio data.
+     *
+     * <p><strong>Request Body Schema</strong>
+     *
+     * <pre>{@code
+     * {
+     *     file: byte[] (Required)
+     *     response_format: String(json/verbose_json/text/srt/vtt) (Optional)
+     *     prompt: String (Optional)
+     *     temperature: Double (Optional)
+     *     model: String (Optional)
+     * }
+     * }</pre>
+     *
+     * <p><strong>Response Body Schema</strong>
+     *
+     * <pre>{@code
+     * String
+     * }</pre>
+     *
+     * @param deploymentOrModelName Specifies either the model deployment name (when using Azure OpenAI) or model name
+     *     (when using non-Azure OpenAI) to use for this request.
+     * @param audioTranslationOptions The configuration information for an audio translation request.
+     * @param requestOptions The options to configure the HTTP request before HTTP client sends it.
+     * @throws HttpResponseException thrown if the request is rejected by server.
+     * @throws ClientAuthenticationException thrown if the request is rejected by server on status code 401.
+     * @throws ResourceNotFoundException thrown if the request is rejected by server on status code 404.
+     * @throws ResourceModifiedException thrown if the request is rejected by server on status code 409.
+     * @return english language transcribed text and associated metadata from provided spoken audio data along with
+     *     {@link Response}.
+     */
+    @Generated
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    public Response<BinaryData> getAudioTranslationAsPlainTextWithResponse(
+            String deploymentOrModelName, BinaryData audioTranslationOptions, RequestOptions requestOptions) {
+        return this.serviceClient.getAudioTranslationAsPlainTextWithResponse(
+                deploymentOrModelName, audioTranslationOptions, requestOptions);
+    }
+
+    /**
+     * Gets transcribed text and associated metadata from provided spoken audio data. Audio will be transcribed in the
+     * written language corresponding to the language it was spoken in.
+     *
+     * @param deploymentOrModelName Specifies either the model deployment name (when using Azure OpenAI) or model name
+     *     (when using non-Azure OpenAI) to use for this request.
+     * @param audioTranscriptionOptions The configuration information for an audio transcription request.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws HttpResponseException thrown if the request is rejected by server.
+     * @throws ClientAuthenticationException thrown if the request is rejected by server on status code 401.
+     * @throws ResourceNotFoundException thrown if the request is rejected by server on status code 404.
+     * @throws ResourceModifiedException thrown if the request is rejected by server on status code 409.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return transcribed text and associated metadata from provided spoken audio data.
+     */
+    @Generated
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    public AudioTranscription getAudioTranscriptionAsResponseObject(
+            String deploymentOrModelName, AudioTranscriptionOptions audioTranscriptionOptions) {
+        // Generated convenience method for getAudioTranscriptionAsResponseObjectWithResponse
+        RequestOptions requestOptions = new RequestOptions();
+        return getAudioTranscriptionAsResponseObjectWithResponse(
+                        deploymentOrModelName, BinaryData.fromObject(audioTranscriptionOptions), requestOptions)
+                .getValue()
+                .toObject(AudioTranscription.class);
+    }
+
+    /**
+     * Gets transcribed text and associated metadata from provided spoken audio data. Audio will be transcribed in the
+     * written language corresponding to the language it was spoken in.
+     *
+     * @param deploymentOrModelName Specifies either the model deployment name (when using Azure OpenAI) or model name
+     *     (when using non-Azure OpenAI) to use for this request.
+     * @param audioTranscriptionOptions The configuration information for an audio transcription request.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws HttpResponseException thrown if the request is rejected by server.
+     * @throws ClientAuthenticationException thrown if the request is rejected by server on status code 401.
+     * @throws ResourceNotFoundException thrown if the request is rejected by server on status code 404.
+     * @throws ResourceModifiedException thrown if the request is rejected by server on status code 409.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return transcribed text and associated metadata from provided spoken audio data.
+     */
+    @Generated
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    public String getAudioTranscriptionAsPlainText(
+            String deploymentOrModelName, AudioTranscriptionOptions audioTranscriptionOptions) {
+        // Generated convenience method for getAudioTranscriptionAsPlainTextWithResponse
+        RequestOptions requestOptions = new RequestOptions();
+        return getAudioTranscriptionAsPlainTextWithResponse(
+                        deploymentOrModelName, BinaryData.fromObject(audioTranscriptionOptions), requestOptions)
+                .getValue()
+                .toObject(String.class);
+    }
+
+    /**
+     * Gets English language transcribed text and associated metadata from provided spoken audio data.
+     *
+     * @param deploymentOrModelName Specifies either the model deployment name (when using Azure OpenAI) or model name
+     *     (when using non-Azure OpenAI) to use for this request.
+     * @param audioTranslationOptions The configuration information for an audio translation request.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws HttpResponseException thrown if the request is rejected by server.
+     * @throws ClientAuthenticationException thrown if the request is rejected by server on status code 401.
+     * @throws ResourceNotFoundException thrown if the request is rejected by server on status code 404.
+     * @throws ResourceModifiedException thrown if the request is rejected by server on status code 409.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return english language transcribed text and associated metadata from provided spoken audio data.
+     */
+    @Generated
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    public AudioTranscription getAudioTranslationAsResponseObject(
+            String deploymentOrModelName, AudioTranslationOptions audioTranslationOptions) {
+        // Generated convenience method for getAudioTranslationAsResponseObjectWithResponse
+        RequestOptions requestOptions = new RequestOptions();
+        return getAudioTranslationAsResponseObjectWithResponse(
+                        deploymentOrModelName, BinaryData.fromObject(audioTranslationOptions), requestOptions)
+                .getValue()
+                .toObject(AudioTranscription.class);
+    }
+
+    /**
+     * Gets English language transcribed text and associated metadata from provided spoken audio data.
+     *
+     * @param deploymentOrModelName Specifies either the model deployment name (when using Azure OpenAI) or model name
+     *     (when using non-Azure OpenAI) to use for this request.
+     * @param audioTranslationOptions The configuration information for an audio translation request.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws HttpResponseException thrown if the request is rejected by server.
+     * @throws ClientAuthenticationException thrown if the request is rejected by server on status code 401.
+     * @throws ResourceNotFoundException thrown if the request is rejected by server on status code 404.
+     * @throws ResourceModifiedException thrown if the request is rejected by server on status code 409.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return english language transcribed text and associated metadata from provided spoken audio data.
+     */
+    @Generated
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    public String getAudioTranslationAsPlainText(
+            String deploymentOrModelName, AudioTranslationOptions audioTranslationOptions) {
+        // Generated convenience method for getAudioTranslationAsPlainTextWithResponse
+        RequestOptions requestOptions = new RequestOptions();
+        return getAudioTranslationAsPlainTextWithResponse(
+                        deploymentOrModelName, BinaryData.fromObject(audioTranslationOptions), requestOptions)
+                .getValue()
+                .toObject(String.class);
     }
 }
