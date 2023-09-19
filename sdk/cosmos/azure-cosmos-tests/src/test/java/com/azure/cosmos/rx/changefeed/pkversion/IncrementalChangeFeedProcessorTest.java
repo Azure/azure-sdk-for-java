@@ -67,6 +67,7 @@ import java.util.concurrent.Callable;
 import java.util.concurrent.ConcurrentHashMap;
 import java.util.function.BiConsumer;
 import java.util.function.Consumer;
+import java.util.function.Function;
 
 import static com.azure.cosmos.BridgeInternal.extractContainerSelfLink;
 import static com.azure.cosmos.CosmosBridgeInternal.getContextClient;
@@ -1216,7 +1217,9 @@ public class IncrementalChangeFeedProcessorTest extends TestSuiteBase {
         try {
             List<InternalObjectNode> createdDocuments = new ArrayList<>();
             Map<String, JsonNode> receivedDocuments = new ConcurrentHashMap<>();
-            Set<String> receivedLeaseTokens = ConcurrentHashMap.newKeySet();
+            Set<String> receivedLeaseTokensFromContext = ConcurrentHashMap.newKeySet();
+            Set<String> receivedLeaseTokensFromCfpState = ConcurrentHashMap.newKeySet();
+
             LeaseStateMonitor leaseStateMonitor = new LeaseStateMonitor();
 
             // create a monitoring CFP for ensuring the leases are updating as expected
@@ -1252,7 +1255,7 @@ public class IncrementalChangeFeedProcessorTest extends TestSuiteBase {
             if (isContextRequired) {
                 TestUtils.injectHandleChangesBiConsumerWithContext(
                     changeFeedProcessorBuilder,
-                    changeFeedProcessorHandlerWithContext(receivedDocuments, receivedLeaseTokens));
+                    changeFeedProcessorHandlerWithContext(receivedDocuments, receivedLeaseTokensFromContext));
             } else {
                 changeFeedProcessorBuilder = changeFeedProcessorBuilder.handleChanges(changeFeedProcessorHandler(receivedDocuments));
             }
@@ -1279,6 +1282,13 @@ public class IncrementalChangeFeedProcessorTest extends TestSuiteBase {
                             } catch (InterruptedException e) {
                                 throw new RuntimeException("Interrupted exception", e);
                             }
+                        })
+                        .then(changeFeedProcessor.getCurrentState())
+                        .flatMap(cfpStates -> {
+                            for (ChangeFeedProcessorState cfpState : cfpStates) {
+                                receivedLeaseTokensFromCfpState.add(cfpState.getLeaseToken());
+                            }
+                            return Mono.empty();
                         })
                         .then(
                             // increase throughput to force a single partition collection to go through a split
@@ -1378,8 +1388,15 @@ public class IncrementalChangeFeedProcessorTest extends TestSuiteBase {
             changeFeedProcessor.stop().subscribeOn(Schedulers.boundedElastic()).timeout(Duration.ofMillis(CHANGE_FEED_PROCESSOR_TIMEOUT)).subscribe();
             leaseMonitoringChangeFeedProcessor.stop().subscribeOn(Schedulers.boundedElastic()).timeout(Duration.ofMillis(CHANGE_FEED_PROCESSOR_TIMEOUT)).subscribe();
 
-            int leaseCount = changeFeedProcessor.getCurrentState() .map(List::size).block();
+            List<ChangeFeedProcessorState> cfpStates = changeFeedProcessor.getCurrentState().map(Function.identity()).block();
+            int leaseCount = cfpStates != null ? cfpStates.size() : 0;
             assertThat(leaseCount > 1).as("Found %d leases", leaseCount).isTrue();
+
+            if (leaseCount > 0) {
+                for (ChangeFeedProcessorState cfpState : cfpStates) {
+                    receivedLeaseTokensFromCfpState.add(cfpState.getLeaseToken());
+                }
+            }
 
             assertThat(receivedDocuments.size()).isEqualTo(createdDocuments.size());
             for (InternalObjectNode item : createdDocuments) {
@@ -1391,12 +1408,13 @@ public class IncrementalChangeFeedProcessorTest extends TestSuiteBase {
                 .as("Continuation tokens for the leases after split should advance from parent value; parent: %d", leaseStateMonitor.parentContinuationToken).isTrue();
 
             if (isContextRequired) {
-                assertThat(receivedLeaseTokens).isNotNull();
+                assertThat(receivedLeaseTokensFromContext).isNotNull();
                 // before a split, the smallest possible container would have 1 physical partition
                 // after a split, such a container would have 2 child partitions
                 // if change feed has been drained from both the parent and child partitions, then
                 // corresponding to each partition, a lease should have been recorded
-                assertThat(receivedLeaseTokens.size()).isGreaterThanOrEqualTo(3);
+                assertThat(receivedLeaseTokensFromContext.size()).isGreaterThanOrEqualTo(3);
+                assertThat(receivedLeaseTokensFromContext.size()).isEqualTo(receivedLeaseTokensFromCfpState.size());
             }
 
             // Wait for the feed processor to shutdown.
