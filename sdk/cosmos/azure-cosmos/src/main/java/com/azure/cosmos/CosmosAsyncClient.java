@@ -903,11 +903,6 @@ public final class CosmosAsyncClient implements Closeable {
                 public DiagnosticsProvider getDiagnosticsProvider(CosmosAsyncClient client) {
                     return client.getDiagnosticsProvider();
                 }
-
-                @Override
-                public List<String> getExcludedRegions(CosmosAsyncClient client) {
-                    return client.connectionPolicy.getExcludedRegions();
-                }
             }
         );
     }

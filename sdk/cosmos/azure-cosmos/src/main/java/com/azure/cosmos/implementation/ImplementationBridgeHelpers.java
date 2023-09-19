@@ -1264,8 +1264,6 @@ public class ImplementationBridgeHelpers {
                 CosmosDiagnosticsThresholds operationLevelThresholds);
 
             DiagnosticsProvider getDiagnosticsProvider(CosmosAsyncClient client);
-
-            List<String> getExcludedRegions(CosmosAsyncClient client);
         }
     }
 
