@@ -626,18 +626,50 @@ public final class CallMediaAsync {
     public Mono<Void> startHoldMusicAsync(CommunicationIdentifier targetParticipant,
                                                               PlaySource playSourceInfo,
                                                               boolean loop) {
+        return startHoldMusicWithResponseAsync(targetParticipant, playSourceInfo, loop).then();
+    }
+
+    /**
+     * Holds participant in call.
+     * @param targetParticipant the target.
+     * @param playSourceInfo audio to play.
+     * @param loop to repeat.
+     * @return Response for successful operation.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    public Mono<Response<Void>> startHoldMusicWithResponseAsync(CommunicationIdentifier targetParticipant,
+                                          PlaySource playSourceInfo,
+                                          boolean loop) {
+        return withContext(context -> startHoldMusicWithResponseInternal(targetParticipant, playSourceInfo, loop, context));
+    }
+
+    Mono<Response<Void>> startHoldMusicWithResponseInternal(CommunicationIdentifier targetParticipant,
+                                                                    PlaySource playSourceInfo,
+                                                                    boolean loop,
+                                                                    Context context) {
         try {
-            Context context = Context.NONE;
+            context = context == null ? Context.NONE : context;
+
             HoldParticipantRequestInternal request = new HoldParticipantRequestInternal()
                 .setParticipantToHold(CommunicationIdentifierConverter.convert(targetParticipant))
                 .setPlaySourceInfo(convertPlaySourceToPlaySourceInternal(playSourceInfo))
                 .setLoop(loop);
 
             return contentsInternal
-                .startHoldMusicAsync(callConnectionId, request, context);
+                .startHoldMusicWithResponseAsync(callConnectionId, request, context);
         } catch (RuntimeException ex) {
             return monoError(logger, ex);
         }
+    }
+
+    /**
+     * Removes hold from participant in call.
+     * @param targetParticipant the target.
+     * @return Response for successful operation.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    public Mono<Void> stopHoldMusicAsync(CommunicationIdentifier targetParticipant) {
+        return stopHoldMusicWithResponseAsync(targetParticipant).then();
     }
 
     /**
@@ -646,14 +678,19 @@ public final class CallMediaAsync {
      * @return Response for successful operation.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Mono<Void> stopHoldMusicAsync(CommunicationIdentifier targetParticipant) {
+    public Mono<Response<Void>> stopHoldMusicWithResponseAsync(CommunicationIdentifier targetParticipant) {
+        return withContext(context -> stopHoldMusicWithResponseInternal(targetParticipant, context));
+    }
+
+    Mono<Response<Void>> stopHoldMusicWithResponseInternal(CommunicationIdentifier targetParticipant,
+                                                            Context context) {
         try {
-            Context context = Context.NONE;
+            context = context == null ? Context.NONE : context;
             UnholdParticipantRequestInternal request = new UnholdParticipantRequestInternal()
                 .setParticipantToUnhold(CommunicationIdentifierConverter.convert(targetParticipant));
 
             return contentsInternal
-                .stopHoldMusicAsync(callConnectionId, request, context);
+                .stopHoldMusicWithResponseAsync(callConnectionId, request, context);
         } catch (RuntimeException ex) {
             return monoError(logger, ex);
         }
