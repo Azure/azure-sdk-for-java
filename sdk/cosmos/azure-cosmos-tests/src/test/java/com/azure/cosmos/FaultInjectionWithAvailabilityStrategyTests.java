@@ -38,6 +38,7 @@ import com.azure.cosmos.test.faultinjection.FaultInjectionServerErrorType;
 import com.azure.cosmos.util.CosmosPagedFlux;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.fasterxml.jackson.databind.node.ObjectNode;
+import org.apache.logging.log4j.util.TriConsumer;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.testng.annotations.AfterClass;
@@ -1634,6 +1635,11 @@ public class FaultInjectionWithAvailabilityStrategyTests extends TestSuiteBase {
                 +  params.idAndPkValuePair.getRight()
                 + "'";
 
+        Function<ItemOperationInvocationParameters, String> singlePartitionWithAggregatesAndOrderByQueryGenerator = (params) ->
+            "SELECT DISTINCT c.id FROM c WHERE c.mypk = '"
+                +  params.idAndPkValuePair.getRight()
+                + "' ORDER BY c.id";
+
         Function<ItemOperationInvocationParameters, String> singlePartitionEmptyResultQueryGenerator = (params) ->
             "SELECT * FROM c WHERE c.mypk = '"
                 +  params.idAndPkValuePair.getRight()
@@ -1641,6 +1647,11 @@ public class FaultInjectionWithAvailabilityStrategyTests extends TestSuiteBase {
 
         Function<ItemOperationInvocationParameters, String> crossPartitionQueryGenerator = (params) ->
             "SELECT * FROM c WHERE CONTAINS (c.id, '"
+                + params.idAndPkValuePair.getLeft()
+                + "')";
+
+        Function<ItemOperationInvocationParameters, String> crossPartitionWithAggregatesAndOrderByQueryGenerator = (params) ->
+            "SELECT DISTINCT c.id FROM c WHERE CONTAINS (c.id, '"
                 + params.idAndPkValuePair.getLeft()
                 + "')";
 
@@ -1680,26 +1691,32 @@ public class FaultInjectionWithAvailabilityStrategyTests extends TestSuiteBase {
                     assertThat(firstDiagnostics.getFeedResponseDiagnostics()).isNotNull();
                     assertThat(firstDiagnostics.getFeedResponseDiagnostics().getQueryPlanDiagnosticsContext()).isNotNull();
                     assertThat(firstDiagnostics.getFeedResponseDiagnostics().getClientSideRequestStatistics()).isNotNull();
-                    assertThat(firstDiagnostics.getFeedResponseDiagnostics().getClientSideRequestStatistics().size()).isEqualTo(1);
+                    assertThat(firstDiagnostics.getFeedResponseDiagnostics().getClientSideRequestStatistics().size()).isGreaterThanOrEqualTo(1);
 
                     for (int i = 1; i < expectedDiagnosticsCount; i++) {
                         CosmosDiagnostics subsequentDiagnostics = diagnostics[i];
                         assertThat(subsequentDiagnostics.getFeedResponseDiagnostics()).isNotNull();
                         assertThat(subsequentDiagnostics.getFeedResponseDiagnostics().getQueryPlanDiagnosticsContext()).isNull();
                         assertThat(subsequentDiagnostics.getFeedResponseDiagnostics().getClientSideRequestStatistics()).isNotNull();
-                        assertThat(subsequentDiagnostics.getFeedResponseDiagnostics().getClientSideRequestStatistics().size()).isEqualTo(1);
+                        assertThat(subsequentDiagnostics.getFeedResponseDiagnostics().getClientSideRequestStatistics().size()).isGreaterThanOrEqualTo(1);
                     }
                 }
             };
 
         Consumer<CosmosDiagnosticsContext> validateOnePagePerPartitionQueryDiagnosticsContextForOnlyFirstRegion =
-            (ctx) -> validateQueryDiagnosticsContext.accept(ctx, PHYSICAL_PARTITION_COUNT);
+            (ctx) -> validateQueryDiagnosticsContext.accept(
+                ctx,
+                PHYSICAL_PARTITION_COUNT);
 
         Consumer<CosmosDiagnosticsContext> validatePageSizeOneForAllDocsSamePKQueryDiagnosticsContextForOnlyFirstRegion =
-            (ctx) -> validateQueryDiagnosticsContext.accept(ctx, 1 + (int)ENOUGH_DOCS_SAME_PK_TO_EXCEED_PAGE_SIZE);
+            (ctx) -> validateQueryDiagnosticsContext.accept(
+                ctx,
+                1 + ENOUGH_DOCS_SAME_PK_TO_EXCEED_PAGE_SIZE);
 
         Consumer<CosmosDiagnosticsContext> validatePageSizeOneAllDocsSameIdQueryDiagnosticsContextForOnlyFirstRegion =
-            (ctx) -> validateQueryDiagnosticsContext.accept(ctx, 1 + (int)ENOUGH_DOCS_OTHER_PK_TO_HIT_EVERY_PARTITION);
+            (ctx) -> validateQueryDiagnosticsContext.accept(
+                ctx,
+                1 + (int)ENOUGH_DOCS_OTHER_PK_TO_HIT_EVERY_PARTITION);
 
         return new Object[][] {
             // CONFIG description
@@ -1796,6 +1813,34 @@ public class FaultInjectionWithAvailabilityStrategyTests extends TestSuiteBase {
                 // empty pages are skipped except for the last one
                 validateSinglePartitionQueryDiagnosticsContextForOnlyFirstRegion,
                 validateEmptyResults,
+                ENOUGH_DOCS_OTHER_PK_TO_HIT_EVERY_PARTITION,
+                NO_OTHER_DOCS_WITH_SAME_PK
+            },
+            new Object[] {
+                "AggregatesAndOrderBy_PageSizeOne_SinglePartition_AllGood_NoAvailabilityStrategy",
+                Duration.ofSeconds(1),
+                noAvailabilityStrategy,
+                noRegionSwitchHint,
+                singlePartitionWithAggregatesAndOrderByQueryGenerator,
+                queryReturnsTotalRecordCountWithPageSizeOne,
+                noFailureInjection,
+                validateStatusCodeIs200Ok,
+                validatePageSizeOneForAllDocsSamePKQueryDiagnosticsContextForOnlyFirstRegion,
+                validateAllRecordsSamePartitionReturned,
+                ENOUGH_DOCS_OTHER_PK_TO_HIT_EVERY_PARTITION,
+                ENOUGH_DOCS_SAME_PK_TO_EXCEED_PAGE_SIZE
+            },
+            new Object[] {
+                "AggregatesAndOrderBy_PageSizeOne_CrossPartition_AllGood_NoAvailabilityStrategy",
+                Duration.ofSeconds(1),
+                noAvailabilityStrategy,
+                noRegionSwitchHint,
+                crossPartitionWithAggregatesAndOrderByQueryGenerator,
+                queryReturnsTotalRecordCountWithPageSizeOne,
+                noFailureInjection,
+                validateStatusCodeIs200Ok,
+                validatePageSizeOneAllDocsSameIdQueryDiagnosticsContextForOnlyFirstRegion,
+                validateExactlyOneRecordReturned,
                 ENOUGH_DOCS_OTHER_PK_TO_HIT_EVERY_PARTITION,
                 NO_OTHER_DOCS_WITH_SAME_PK
             },
