@@ -35,7 +35,6 @@ import com.azure.core.util.tracing.TracerProvider;
 import com.azure.security.keyvault.secrets.implementation.KeyVaultCredentialPolicy;
 import com.azure.security.keyvault.secrets.implementation.KeyVaultErrorCodeStrings;
 import com.azure.security.keyvault.secrets.implementation.SecretClientImpl;
-import com.azure.security.keyvault.secrets.models.KeyVaultSecret;
 import com.azure.security.keyvault.secrets.models.KeyVaultSecretIdentifier;
 
 import java.net.MalformedURLException;
@@ -51,12 +50,6 @@ import java.util.Map;
  * SecretClientBuilder#buildClient() buildClient} respectively.
  * It constructs an instance of the desired client.
  *
- * <p>The {@link SecretClient}/{@link SecretAsyncClient}  both provide synchronous/asynchronous methods to manage
- * {@link KeyVaultSecret secrets} in the Azure Key Vault. The client supports creating, retrieving, updating,
- * deleting, purging, backing up, restoring, and listing the {@link KeyVaultSecret secrets}. The client also support
- * listing {@link com.azure.security.keyvault.secrets.models.DeletedSecret deleted secrets} for a soft-delete enabled
- * Azure Key Vault.</p>
- *
  * <p> The minimal configuration options required by {@link SecretClientBuilder secretClientBuilder} to build
  * {@link SecretAsyncClient} are {@link String vaultUrl} and {@link TokenCredential credential}. </p>
  *
@@ -65,6 +58,7 @@ import java.util.Map;
  * SecretAsyncClient secretAsyncClient = new SecretClientBuilder&#40;&#41;
  *     .credential&#40;new DefaultAzureCredentialBuilder&#40;&#41;.build&#40;&#41;&#41;
  *     .vaultUrl&#40;&quot;&lt;your-key-vault-url&gt;&quot;&#41;
+ *     .httpLogOptions&#40;new HttpLogOptions&#40;&#41;.setLogLevel&#40;HttpLogDetailLevel.BODY_AND_HEADERS&#41;&#41;
  *     .buildAsyncClient&#40;&#41;;
  * </pre>
  * <!-- end com.azure.security.keyvault.secrets.SecretAsyncClient.instantiation -->
@@ -75,6 +69,7 @@ import java.util.Map;
  * SecretClient secretClient = new SecretClientBuilder&#40;&#41;
  *     .credential&#40;new DefaultAzureCredentialBuilder&#40;&#41;.build&#40;&#41;&#41;
  *     .vaultUrl&#40;&quot;&lt;your-key-vault-url&gt;&quot;&#41;
+ *     .httpLogOptions&#40;new HttpLogOptions&#40;&#41;.setLogLevel&#40;HttpLogDetailLevel.BODY_AND_HEADERS&#41;&#41;
  *     .buildClient&#40;&#41;;
  * </pre>
  * <!-- end com.azure.security.keyvault.SecretClient.instantiation -->
@@ -110,7 +105,6 @@ public final class SecretClientBuilder implements
     // Please see <a href=https://docs.microsoft.com/azure/azure-resource-manager/management/azure-services-resource-providers>here</a>
     // for more information on Azure resource provider namespaces.
     private static final String KEYVAULT_TRACING_NAMESPACE_VALUE = "Microsoft.KeyVault";
-    private static final ClientOptions DEFAULT_CLIENT_OPTIONS = new ClientOptions();
     private final List<HttpPipelinePolicy> perCallPolicies;
     private final List<HttpPipelinePolicy> perRetryPolicies;
     private final Map<String, String> properties;
@@ -155,7 +149,7 @@ public final class SecretClientBuilder implements
      * and {@link #retryPolicy(RetryPolicy)} have been set.
      */
     public SecretClient buildClient() {
-        return new SecretClient(buildInnerClient(), vaultUrl);
+        return new SecretClient(buildInnerClient());
     }
 
     /**
@@ -177,7 +171,7 @@ public final class SecretClientBuilder implements
      * and {@link #retryPolicy(RetryPolicy)} have been set.
      */
     public SecretAsyncClient buildAsyncClient() {
-        return new SecretAsyncClient(buildInnerClient(), vaultUrl);
+        return new SecretAsyncClient(buildInnerClient());
     }
 
 
@@ -194,7 +188,7 @@ public final class SecretClientBuilder implements
         SecretServiceVersion serviceVersion = version != null ? version : SecretServiceVersion.getLatest();
 
         if (pipeline != null) {
-            return new SecretClientImpl(pipeline, serviceVersion.getVersion());
+            return new SecretClientImpl(vaultUrl, pipeline, serviceVersion);
         }
 
         if (credential == null) {
@@ -209,16 +203,15 @@ public final class SecretClientBuilder implements
 
         httpLogOptions = (httpLogOptions == null) ? new HttpLogOptions() : httpLogOptions;
 
-        ClientOptions localClientOptions = clientOptions != null
-            ? clientOptions : DEFAULT_CLIENT_OPTIONS;
-
-        policies.add(new UserAgentPolicy(CoreUtils.getApplicationId(localClientOptions, httpLogOptions), clientName,
+        policies.add(new UserAgentPolicy(CoreUtils.getApplicationId(clientOptions, httpLogOptions), clientName,
             clientVersion, buildConfiguration));
 
-        List<HttpHeader> httpHeaderList = new ArrayList<>();
-        localClientOptions.getHeaders().forEach(header ->
-            httpHeaderList.add(new HttpHeader(header.getName(), header.getValue())));
-        policies.add(new AddHeadersPolicy(new HttpHeaders(httpHeaderList)));
+        if (clientOptions != null) {
+            List<HttpHeader> httpHeaderList = new ArrayList<>();
+            clientOptions.getHeaders().forEach(header ->
+                httpHeaderList.add(new HttpHeader(header.getName(), header.getValue())));
+            policies.add(new AddHeadersPolicy(new HttpHeaders(httpHeaderList)));
+        }
 
         // Add per call additional policies.
         policies.addAll(perCallPolicies);
@@ -235,18 +228,17 @@ public final class SecretClientBuilder implements
         HttpPolicyProviders.addAfterRetryPolicies(policies);
         policies.add(new HttpLoggingPolicy(httpLogOptions));
 
-        TracingOptions tracingOptions = localClientOptions.getTracingOptions();
+        TracingOptions tracingOptions = clientOptions == null ? null : clientOptions.getTracingOptions();
         Tracer tracer = TracerProvider.getDefaultProvider()
             .createTracer(clientName, clientVersion, KEYVAULT_TRACING_NAMESPACE_VALUE, tracingOptions);
 
         HttpPipeline pipeline = new HttpPipelineBuilder()
             .policies(policies.toArray(new HttpPipelinePolicy[0]))
             .httpClient(httpClient)
-            .clientOptions(localClientOptions)
             .tracer(tracer)
             .build();
 
-        return new SecretClientImpl(pipeline, serviceVersion.getVersion());
+        return new SecretClientImpl(vaultUrl, pipeline, serviceVersion);
     }
 
     /**
