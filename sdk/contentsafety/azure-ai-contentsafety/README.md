@@ -40,7 +40,7 @@ You can find the endpoint for your Azure AI Content Safety service resource usin
 
 ```bash
 # Get the endpoint for the Azure AI Content Safety service resource
-az cognitiveservices account show --name "resource-name" --resource-group "resource-group-name" --query "properties.endpoint"
+az cognitiveservices account show --name "<resource-name>" --resource-group "<resource-group-name>" --query "properties.endpoint"
 ```
 
 #### Get the API key
