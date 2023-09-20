@@ -853,15 +853,18 @@ public final class OpenAIClient {
      *     audio file data along with {@link Response}..
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Response<AudioTranscription> getAudioTranslationWithResponse(String deploymentOrModelName, String fileName,
-        AudioTranslationOptions audioTranslationOptions, RequestOptions requestOptions) {
+    public Response<AudioTranscription> getAudioTranslationWithResponse(
+            String deploymentOrModelName,
+            String fileName,
+            AudioTranslationOptions audioTranslationOptions,
+            RequestOptions requestOptions) {
         // checking allowed formats for a JSON response
         List<AudioTranscriptionFormat> acceptedFormats = new ArrayList<>();
         acceptedFormats.add(AudioTranscriptionFormat.JSON);
         acceptedFormats.add(AudioTranscriptionFormat.VERBOSE_JSON);
         if (!acceptedFormats.contains(audioTranslationOptions.getResponseFormat())) {
             throw LOGGER.logExceptionAsError(
-                new IllegalArgumentException("This operation does not support the requested audio format"));
+                    new IllegalArgumentException("This operation does not support the requested audio format"));
         }
         // embedding the `model` in the request for non-Azure case
         if (this.openAIServiceClient != null) {
@@ -871,19 +874,20 @@ public final class OpenAIClient {
         MultipartDataSerializationResult result = helper.serializeRequest(audioTranslationOptions, fileName);
         String multipartBoundary = helper.getBoundary();
         if (requestOptions == null) {
-            requestOptions = new RequestOptions()
-                .setHeader(HttpHeaderName.CONTENT_TYPE, "multipart/form-data;" + " boundary=" + multipartBoundary)
-                .setHeader(HttpHeaderName.CONTENT_LENGTH, String.valueOf(result.getDataLength()));
+            requestOptions =
+                    new RequestOptions()
+                            .setHeader(
+                                    HttpHeaderName.CONTENT_TYPE,
+                                    "multipart/form-data;" + " boundary=" + multipartBoundary)
+                            .setHeader(HttpHeaderName.CONTENT_LENGTH, String.valueOf(result.getDataLength()));
         }
         Response<BinaryData> response =
-            openAIServiceClient != null
-                ? this.openAIServiceClient.getAudioTranslationAsPlainTextWithResponse(
-                deploymentOrModelName, result.getData(), requestOptions)
-                : this.serviceClient.getAudioTranslationAsPlainTextWithResponse(
-                deploymentOrModelName, result.getData(), requestOptions);
-        return
-            new SimpleResponse<>(response,
-                response.getValue().toObject(AudioTranscription.class));
+                openAIServiceClient != null
+                        ? this.openAIServiceClient.getAudioTranslationAsPlainTextWithResponse(
+                                deploymentOrModelName, result.getData(), requestOptions)
+                        : this.serviceClient.getAudioTranslationAsPlainTextWithResponse(
+                                deploymentOrModelName, result.getData(), requestOptions);
+        return new SimpleResponse<>(response, response.getValue().toObject(AudioTranscription.class));
     }
 
     /**
@@ -904,8 +908,8 @@ public final class OpenAIClient {
     @ServiceMethod(returns = ReturnType.SINGLE)
     public String getAudioTranslationText(
             String deploymentOrModelName, String fileName, AudioTranslationOptions audioTranslationOptions) {
-        return getAudioTranslationTextWithResponse(
-                deploymentOrModelName, fileName, audioTranslationOptions, null).getValue();
+        return getAudioTranslationTextWithResponse(deploymentOrModelName, fileName, audioTranslationOptions, null)
+                .getValue();
     }
 
     /**
@@ -923,11 +927,14 @@ public final class OpenAIClient {
      * @throws ResourceModifiedException thrown if the request is rejected by server on status code 409.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return english language transcribed text and associated metadata from provided spoken audio file data along with
-     *  {@link Response}.
+     *     {@link Response}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Response<String> getAudioTranslationTextWithResponse(String deploymentOrModelName, String fileName,
-        AudioTranslationOptions audioTranslationOptions, RequestOptions requestOptions) {
+    public Response<String> getAudioTranslationTextWithResponse(
+            String deploymentOrModelName,
+            String fileName,
+            AudioTranslationOptions audioTranslationOptions,
+            RequestOptions requestOptions) {
         // checking allowed formats for a plain text response
         List<AudioTranscriptionFormat> acceptedFormats = new ArrayList<>();
         acceptedFormats.add(AudioTranscriptionFormat.TEXT);
@@ -935,7 +942,7 @@ public final class OpenAIClient {
         acceptedFormats.add(AudioTranscriptionFormat.SRT);
         if (!acceptedFormats.contains(audioTranslationOptions.getResponseFormat())) {
             throw LOGGER.logExceptionAsError(
-                new IllegalArgumentException("This operation does not support the requested audio format"));
+                    new IllegalArgumentException("This operation does not support the requested audio format"));
         }
         // embedding the `model` in the request for non-Azure case
         if (this.openAIServiceClient != null) {
@@ -945,18 +952,20 @@ public final class OpenAIClient {
         MultipartDataSerializationResult result = helper.serializeRequest(audioTranslationOptions, fileName);
         String multipartBoundary = helper.getBoundary();
         if (requestOptions == null) {
-            requestOptions = new RequestOptions()
-                .setHeader(HttpHeaderName.CONTENT_TYPE, "multipart/form-data;" + " boundary=" + multipartBoundary)
-                .setHeader(HttpHeaderName.CONTENT_LENGTH, String.valueOf(result.getDataLength()));
+            requestOptions =
+                    new RequestOptions()
+                            .setHeader(
+                                    HttpHeaderName.CONTENT_TYPE,
+                                    "multipart/form-data;" + " boundary=" + multipartBoundary)
+                            .setHeader(HttpHeaderName.CONTENT_LENGTH, String.valueOf(result.getDataLength()));
         }
         Response<BinaryData> response =
-            openAIServiceClient != null
-                ? this.openAIServiceClient.getAudioTranslationAsPlainTextWithResponse(
-                deploymentOrModelName, result.getData(), requestOptions)
-                : this.serviceClient.getAudioTranslationAsPlainTextWithResponse(
-                deploymentOrModelName, result.getData(), requestOptions);
-        return
-            new SimpleResponse<>(response, response.getValue().toString());
+                openAIServiceClient != null
+                        ? this.openAIServiceClient.getAudioTranslationAsPlainTextWithResponse(
+                                deploymentOrModelName, result.getData(), requestOptions)
+                        : this.serviceClient.getAudioTranslationAsPlainTextWithResponse(
+                                deploymentOrModelName, result.getData(), requestOptions);
+        return new SimpleResponse<>(response, response.getValue().toString());
     }
 
     /**
