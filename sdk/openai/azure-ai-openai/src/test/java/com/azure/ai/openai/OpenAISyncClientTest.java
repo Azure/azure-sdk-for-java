@@ -366,7 +366,7 @@ public class OpenAISyncClientTest extends OpenAIClientTestBase {
     @ParameterizedTest(name = DISPLAY_NAME_WITH_ARGUMENTS)
     @MethodSource("com.azure.ai.openai.TestUtils#getTestParameters")
     public void testChatCompletionsBasicSearchExtension(HttpClient httpClient, OpenAIServiceVersion serviceVersion) {
-        client = getOpenAIClient(httpClient, OpenAIServiceVersion.V2023_08_01_PREVIEW);
+        client = getOpenAIClient(httpClient, serviceVersion);
 
         getChatCompletionsAzureChatSearchRunner((deploymentName, chatCompletionsOptions) -> {
             AzureCognitiveSearchChatExtensionConfiguration cognitiveSearchConfiguration =
@@ -390,7 +390,7 @@ public class OpenAISyncClientTest extends OpenAIClientTestBase {
     @ParameterizedTest(name = DISPLAY_NAME_WITH_ARGUMENTS)
     @MethodSource("com.azure.ai.openai.TestUtils#getTestParameters")
     public void testChatCompletionsStreamingBasicSearchExtension(HttpClient httpClient, OpenAIServiceVersion serviceVersion) {
-        client = getOpenAIClient(httpClient, OpenAIServiceVersion.V2023_08_01_PREVIEW);
+        client = getOpenAIClient(httpClient, serviceVersion);
 
         getChatCompletionsAzureChatSearchRunner((deploymentName, chatCompletionsOptions) -> {
             AzureCognitiveSearchChatExtensionConfiguration cognitiveSearchConfiguration =
