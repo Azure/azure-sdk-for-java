@@ -39,25 +39,7 @@ import com.azure.security.keyvault.keys.models.ReleaseKeyResult;
  * rotating the {@link KeyVaultKey keys}. The client also supports listing {@link DeletedKey deleted keys} for a
  * soft-delete enabled Azure Key Vault.
  *
- * <h2>Getting Started</h2>
- *
- * <p>In order to interact with the Azure Key Vault service, you will need to create an instance of the
- * {@link KeyClient} class, a vault url and a credential object.</p>
- *
- * <p>The examples shown in this document use a credential object named DefaultAzureCredential for authentication,
- * which is appropriate for most scenarios, including local development and production environments. Additionally,
- * we recommend using a
- * <a href="https://learn.microsoft.com/azure/active-directory/managed-identities-azure-resources/">
- * managed identity</a> for authentication in production environments.
- * You can find more information on different ways of authenticating and their corresponding credential types in the
- * <a href="https://learn.microsoft.com/java/api/overview/azure/identity-readme?view=azure-java-stable">
- * Azure Identity documentation"</a>.</p>
- *
- * <p><strong>Sample: Construct Synchronous Key Client</strong></p>
- *
- * <p>The following code sample demonstrates the creation of a {@link KeyClient}, using the {@link KeyClientBuilder}
- * to configure it.</p>
- *
+ * <p><strong>Samples to construct the sync client</strong></p>
  * <!-- src_embed com.azure.security.keyvault.keys.KeyClient.instantiation -->
  * <pre>
  * KeyClient keyClient = new KeyClientBuilder&#40;&#41;
@@ -67,80 +49,8 @@ import com.azure.security.keyvault.keys.models.ReleaseKeyResult;
  * </pre>
  * <!-- end com.azure.security.keyvault.keys.KeyClient.instantiation -->
  *
- * <br/>
- *
- * <hr/>
- *
- * <h2>Create a Cryptographic Key</h2>
- * The {@link KeyClient} can be used to create a key in the key vault.
- *
- * <p><strong>Code Sample:</strong></p>
- * <p>The following code sample demonstrates how to synchronously create a cryptographic key in the key vault,
- * using the {@link KeyClient#createKey(String, KeyType)} API.</p>
- *
- * <!-- src_embed com.azure.security.keyvault.keys.KeyClient.createKey#String-KeyType -->
- * <pre>
- * KeyVaultKey key = keyClient.createKey&#40;&quot;keyName&quot;, KeyType.EC&#41;;
- * System.out.printf&#40;&quot;Created key with name: %s and id: %s%n&quot;, key.getName&#40;&#41;, key.getId&#40;&#41;&#41;;
- * </pre>
- * <!-- end com.azure.security.keyvault.keys.KeyClient.createKey#String-KeyType -->
- *
- * <p><strong>Note:</strong> For the asynchronous sample, refer to {@link KeyAsyncClient}.</p>
- *
- * <br/>
- *
- * <hr/>
- *
- * <h2>Get a Cryptographic Key</h2>
- * The {@link KeyClient} can be used to retrieve a key from the key vault.
- *
- * <p><strong>Code Sample:</strong></p>
- * <p>The following code sample demonstrates how to synchronously retrieve a key from the key vault, using
- * the {@link KeyClient#getKey(String)} API.</p>
- *
- * <!-- src_embed com.azure.security.keyvault.keys.KeyClient.getKey#String -->
- * <pre>
- * KeyVaultKey keyWithVersionValue = keyClient.getKey&#40;&quot;keyName&quot;&#41;;
- *
- * System.out.printf&#40;&quot;Retrieved key with name: %s and: id %s%n&quot;, keyWithVersionValue.getName&#40;&#41;,
- *     keyWithVersionValue.getId&#40;&#41;&#41;;
- * </pre>
- * <!-- end com.azure.security.keyvault.keys.KeyClient.getKey#String -->
- *
- * <p><strong>Note:</strong> For the asynchronous sample, refer to {@link KeyAsyncClient}.</p>
- *
- * <br/>
- *
- * <hr/>
- *
- * <h2>Delete a Cryptographic Key</h2>
- * The {@link KeyClient} can be used to delete a key from the key vault.
- *
- * <p><strong>Code Sample:</strong></p>
- * <p>The following code sample demonstrates how to synchronously delete a key from the
- * key vault, using the {@link KeyClient#beginDeleteKey(String)} API.</p>
- *
- * <!-- src_embed com.azure.security.keyvault.keys.KeyClient.deleteKey#String -->
- * <pre>
- * SyncPoller&lt;DeletedKey, Void&gt; deleteKeyPoller = keyClient.beginDeleteKey&#40;&quot;keyName&quot;&#41;;
- * PollResponse&lt;DeletedKey&gt; deleteKeyPollResponse = deleteKeyPoller.poll&#40;&#41;;
- *
- * &#47;&#47; Deleted date only works for SoftDelete Enabled Key Vault.
- * DeletedKey deletedKey = deleteKeyPollResponse.getValue&#40;&#41;;
- *
- * System.out.printf&#40;&quot;Key delete date: %s%n&quot;, deletedKey.getDeletedOn&#40;&#41;&#41;;
- * System.out.printf&#40;&quot;Deleted key's recovery id: %s%n&quot;, deletedKey.getRecoveryId&#40;&#41;&#41;;
- *
- * &#47;&#47; Key is being deleted on the server.
- * deleteKeyPoller.waitForCompletion&#40;&#41;;
- * &#47;&#47; Key is deleted
- * </pre>
- * <!-- end com.azure.security.keyvault.keys.KeyClient.deleteKey#String -->
- *
- * <p><strong>Note:</strong> For the asynchronous sample, refer to {@link KeyAsyncClient}.</p>
- *
- * @see com.azure.security.keyvault.keys
  * @see KeyClientBuilder
+ * @see PagedIterable
  */
 @ServiceClient(builder = KeyClientBuilder.class, serviceInterfaces = KeyClientImpl.KeyService.class)
 public final class KeyClient {
@@ -217,6 +127,7 @@ public final class KeyClient {
      * <!-- src_embed com.azure.security.keyvault.keys.KeyClient.createKey#String-KeyType -->
      * <pre>
      * KeyVaultKey key = keyClient.createKey&#40;&quot;keyName&quot;, KeyType.EC&#41;;
+     *
      * System.out.printf&#40;&quot;Created key with name: %s and id: %s%n&quot;, key.getName&#40;&#41;, key.getId&#40;&#41;&#41;;
      * </pre>
      * <!-- end com.azure.security.keyvault.keys.KeyClient.createKey#String-KeyType -->
@@ -527,7 +438,7 @@ public final class KeyClient {
      * <p><strong>Code Samples</strong></p>
      * <p>Creates a new {@link KeyVaultKey symmetric key}. The {@link KeyVaultKey key} activates in one day and expires
      * in one year. Prints out the details of the newly {@link KeyVaultKey created key}.</p>
-     * <!-- src_embed com.azure.security.keyvault.keys.KeyClient.createOctKey#CreateOctKeyOptions -->
+     * <!-- src_embed com.azure.security.keyvault.keys.async.KeyClient.createOctKey#CreateOctKeyOptions -->
      * <pre>
      * CreateOctKeyOptions createOctKeyOptions = new CreateOctKeyOptions&#40;&quot;keyName&quot;&#41;
      *     .setNotBefore&#40;OffsetDateTime.now&#40;&#41;.plusDays&#40;1&#41;&#41;
@@ -536,7 +447,7 @@ public final class KeyClient {
      *
      * System.out.printf&#40;&quot;Created key with name: %s and id: %s%n&quot;, octKey.getName&#40;&#41;, octKey.getId&#40;&#41;&#41;;
      * </pre>
-     * <!-- end com.azure.security.keyvault.keys.KeyClient.createOctKey#CreateOctKeyOptions -->
+     * <!-- end com.azure.security.keyvault.keys.async.KeyClient.createOctKey#CreateOctKeyOptions -->
      *
      * @param createOctKeyOptions The {@link CreateOctKeyOptions options object} containing information about the
      * {@link KeyVaultKey symmetric key} being created.
@@ -568,7 +479,7 @@ public final class KeyClient {
      * <p><strong>Code Samples</strong></p>
      * <p>Creates a new {@link KeyVaultKey symmetric key}. The {@link KeyVaultKey key} activates in one day and expires
      * in one year. Prints out the details of the newly {@link KeyVaultKey created key}.</p>
-     * <!-- src_embed com.azure.security.keyvault.keys.KeyClient.createOctKey#CreateOctKeyOptions-Context -->
+     * <!-- src_embed com.azure.security.keyvault.keys.async.KeyClient.createOctKey#CreateOctKeyOptions-Context -->
      * <pre>
      * CreateOctKeyOptions createOctKeyOptions = new CreateOctKeyOptions&#40;&quot;keyName&quot;&#41;
      *     .setNotBefore&#40;OffsetDateTime.now&#40;&#41;.plusDays&#40;1&#41;&#41;
@@ -579,7 +490,7 @@ public final class KeyClient {
      * System.out.printf&#40;&quot;Created key with name: %s and: id %s%n&quot;, createOctKeyResponse.getValue&#40;&#41;.getName&#40;&#41;,
      *     createOctKeyResponse.getValue&#40;&#41;.getId&#40;&#41;&#41;;
      * </pre>
-     * <!-- end com.azure.security.keyvault.keys.KeyClient.createOctKey#CreateOctKeyOptions-Context -->
+     * <!-- end com.azure.security.keyvault.keys.async.KeyClient.createOctKey#CreateOctKeyOptions-Context -->
      *
      * @param createOctKeyOptions The {@link CreateOctKeyOptions options object} containing information about the
      * {@link KeyVaultKey symmetric key} being created.
@@ -938,7 +849,7 @@ public final class KeyClient {
      */
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     public SyncPoller<DeletedKey, Void> beginDeleteKey(String name) {
-        return implClient.beginDeleteKey(name, Context.NONE);
+        return implClient.beginDeleteKeyAsync(name).getSyncPoller();
     }
 
     /**
@@ -1084,7 +995,7 @@ public final class KeyClient {
      */
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     public SyncPoller<KeyVaultKey, Void> beginRecoverDeletedKey(String name) {
-        return implClient.beginRecoverDeletedKey(name, Context.NONE);
+        return implClient.beginRecoverDeletedKeyAsync(name).getSyncPoller();
     }
 
     /**
@@ -1332,7 +1243,7 @@ public final class KeyClient {
      */
     @ServiceMethod(returns = ReturnType.COLLECTION)
     public PagedIterable<KeyProperties> listPropertiesOfKeys(Context context) {
-        return implClient.listPropertiesOfKeys(context);
+        return new PagedIterable<>(implClient.listPropertiesOfKeys(context));
     }
 
     /**
@@ -1411,7 +1322,7 @@ public final class KeyClient {
      */
     @ServiceMethod(returns = ReturnType.COLLECTION)
     public PagedIterable<DeletedKey> listDeletedKeys(Context context) {
-        return implClient.listDeletedKeys(context);
+        return new PagedIterable<>(implClient.listDeletedKeys(context));
     }
 
     /**
@@ -1510,7 +1421,7 @@ public final class KeyClient {
      */
     @ServiceMethod(returns = ReturnType.COLLECTION)
     public PagedIterable<KeyProperties> listPropertiesOfKeyVersions(String name, Context context) {
-        return implClient.listPropertiesOfKeyVersions(name, context);
+        return new PagedIterable<>(implClient.listPropertiesOfKeyVersions(name, context));
     }
 
     /**
@@ -1618,7 +1529,7 @@ public final class KeyClient {
      *
      * @param name The name of the {@link KeyVaultKey key} to release.
      * @param version The version of the key to release. If this is empty or {@code null}, this call is equivalent to
-     * calling {@link KeyClient#releaseKey(String, String)}, with the latest key version being released.
+     * calling {@link KeyAsyncClient#releaseKey(String, String)}, with the latest key version being released.
      * @param targetAttestationToken The attestation assertion for the target of the {@link KeyVaultKey key} release.
      *
      * @return The key release result containing the {@link KeyVaultKey released key}.
@@ -1660,7 +1571,7 @@ public final class KeyClient {
      *
      * @param name The name of the {@link KeyVaultKey key} to release.
      * @param version The version of the {@link KeyVaultKey key} to release. If this is empty or {@code null}, this call
-     * is equivalent to calling {@link KeyClient#releaseKey(String, String)}, with the latest key version being
+     * is equivalent to calling {@link KeyAsyncClient#releaseKey(String, String)}, with the latest key version being
      * released.
      * @param targetAttestationToken The attestation assertion for the target of the key release.
      * @param releaseKeyOptions Additional {@link ReleaseKeyOptions options} for releasing a {@link KeyVaultKey key}.

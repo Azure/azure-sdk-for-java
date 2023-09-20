@@ -75,7 +75,7 @@ import java.util.Map;
  * </pre>
  * <!-- end com.azure.security.keyvault.keys.KeyAsyncClient.instantiation.withHttpClient -->
  *
- * <p> The minimal configuration options required by {@link KeyClientBuilder keyClientBuilder} to build {@link
+ * <p> The minimal configuration options required by {@link KeyClientBuilder secretClientBuilder} to build {@link
  * KeyClient} are {@link String vaultUrl} and {@link TokenCredential credential}. </p>
  *
  * <!-- src_embed com.azure.security.keyvault.keys.KeyClient.instantiation -->
@@ -104,7 +104,6 @@ public final class KeyClientBuilder implements
     // Please see <a href=https://docs.microsoft.com/azure/azure-resource-manager/management/azure-services-resource-providers>here</a>
     // for more information on Azure resource provider namespaces.
     private static final String KEYVAULT_TRACING_NAMESPACE_VALUE = "Microsoft.KeyVault";
-    private static final ClientOptions DEFAULT_CLIENT_OPTIONS = new ClientOptions();
 
     private final List<HttpPipelinePolicy> perCallPolicies;
     private final List<HttpPipelinePolicy> perRetryPolicies;
@@ -202,15 +201,15 @@ public final class KeyClientBuilder implements
 
         httpLogOptions = (httpLogOptions == null) ? new HttpLogOptions() : httpLogOptions;
 
-        ClientOptions localClientOptions = clientOptions != null ? clientOptions : DEFAULT_CLIENT_OPTIONS;
-
-        policies.add(new UserAgentPolicy(CoreUtils.getApplicationId(localClientOptions, httpLogOptions), clientName,
+        policies.add(new UserAgentPolicy(CoreUtils.getApplicationId(clientOptions, httpLogOptions), clientName,
             clientVersion, buildConfiguration));
 
-        List<HttpHeader> httpHeaderList = new ArrayList<>();
-        localClientOptions.getHeaders().forEach(header ->
-            httpHeaderList.add(new HttpHeader(header.getName(), header.getValue())));
-        policies.add(new AddHeadersPolicy(new HttpHeaders(httpHeaderList)));
+        if (clientOptions != null) {
+            List<HttpHeader> httpHeaderList = new ArrayList<>();
+            clientOptions.getHeaders().forEach(header ->
+                httpHeaderList.add(new HttpHeader(header.getName(), header.getValue())));
+            policies.add(new AddHeadersPolicy(new HttpHeaders(httpHeaderList)));
+        }
 
         // Add per call additional policies.
         policies.addAll(perCallPolicies);
@@ -226,7 +225,7 @@ public final class KeyClientBuilder implements
         HttpPolicyProviders.addAfterRetryPolicies(policies);
         policies.add(new HttpLoggingPolicy(httpLogOptions));
 
-        TracingOptions tracingOptions = localClientOptions.getTracingOptions();
+        TracingOptions tracingOptions = clientOptions == null ? null : clientOptions.getTracingOptions();
         Tracer tracer = TracerProvider.getDefaultProvider()
             .createTracer(clientName, clientVersion, KEYVAULT_TRACING_NAMESPACE_VALUE, tracingOptions);
 
@@ -234,7 +233,6 @@ public final class KeyClientBuilder implements
             .policies(policies.toArray(new HttpPipelinePolicy[0]))
             .httpClient(httpClient)
             .tracer(tracer)
-            .clientOptions(localClientOptions)
             .build();
 
         return new KeyClientImpl(vaultUrl, pipeline, serviceVersion);
