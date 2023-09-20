@@ -90,13 +90,13 @@ public class RegistryArtifactTests extends ContainerRegistryClientsTestBase {
     }
 
     private RegistryArtifactAsync getRegistryArtifactAsyncClient(String digest) {
-        return getContainerRegistryBuilder(buildAsyncAssertingClient(interceptorManager.isPlaybackMode() ? interceptorManager.getPlaybackClient() : httpClient))
+        return getContainerRegistryBuilder(buildAsyncAssertingClient(httpClient == null ? interceptorManager.getPlaybackClient() : httpClient))
             .buildAsyncClient()
             .getArtifact(repositoryName, digest);
     }
 
     private RegistryArtifact getRegistryArtifactClient(String digest) {
-        return getContainerRegistryBuilder(buildSyncAssertingClient(interceptorManager.isPlaybackMode() ? interceptorManager.getPlaybackClient() : httpClient))
+        return getContainerRegistryBuilder(buildSyncAssertingClient(httpClient == null ? interceptorManager.getPlaybackClient() : httpClient))
             .buildClient()
             .getArtifact(repositoryName, digest);
     }
