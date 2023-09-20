@@ -1,0 +1,95 @@
+{
+  "networkCallRecords" : [ {
+    "Method" : "PUT",
+    "Uri" : "https://REDACTED.blob.core.windows.net/2598d35f02598d35fadc2532895f9b7a11a9948b9aa5?restype=container",
+    "Headers" : {
+      "x-ms-version" : "2023-08-03",
+      "x-ms-client-request-id" : "a0e4fe0f-8e83-42e5-8673-efeba8efe3f8",
+      "user-agent" : "azsdk-java-azure-storage-blob/12.25.0-beta.1 (11.0.16.1; Windows 11; 10.0)"
+    },
+    "Response" : {
+      "x-ms-version" : "2023-08-03",
+      "Server" : "Windows-Azure-Blob/1.0 Microsoft-HTTPAPI/2.0",
+      "ETag" : "0x8DBBA09C15B1BFC",
+      "Last-Modified" : "Wed, 20 Sep 2023 18:45:26 GMT",
+      "retry-after" : "0",
+      "Content-Length" : "0",
+      "StatusCode" : "201",
+      "x-ms-request-id" : "df14da69-b01e-002e-06f2-eb6fa6000000",
+      "Date" : "Wed, 20 Sep 2023 18:45:26 GMT",
+      "x-ms-client-request-id" : "a0e4fe0f-8e83-42e5-8673-efeba8efe3f8"
+    },
+    "Exception" : null
+  }, {
+    "Method" : "PUT",
+    "Uri" : "https://REDACTED.blob.core.windows.net?restype=service&comp=properties",
+    "Headers" : {
+      "x-ms-version" : "2023-08-03",
+      "content-type" : "application/xml",
+      "x-ms-client-request-id" : "e4503c36-7ead-4c8c-8508-d7b81fcf920c",
+      "user-agent" : "azsdk-java-azure-storage-blob/12.25.0-beta.1 (11.0.16.1; Windows 11; 10.0)"
+    },
+    "Response" : {
+      "x-ms-version" : "2023-08-03",
+      "Server" : "Windows-Azure-Blob/1.0 Microsoft-HTTPAPI/2.0",
+      "retry-after" : "0",
+      "Content-Length" : "0",
+      "StatusCode" : "202",
+      "x-ms-request-id" : "df14daf5-b01e-002e-05f2-eb6fa6000000",
+      "Date" : "Wed, 20 Sep 2023 18:45:26 GMT",
+      "x-ms-client-request-id" : "e4503c36-7ead-4c8c-8508-d7b81fcf920c"
+    },
+    "Exception" : null
+  }, {
+    "Method" : "GET",
+    "Uri" : "https://REDACTED.blob.core.windows.net/2598d35f02598d35fadc2532895f9b7a11a9948b9aa5?restype=container",
+    "Headers" : {
+      "x-ms-version" : "2023-08-03",
+      "x-ms-client-request-id" : "512425a2-1f50-45fc-bd58-5236a18725dd",
+      "user-agent" : "azsdk-java-azure-storage-blob/12.25.0-beta.1 (11.0.16.1; Windows 11; 10.0)"
+    },
+    "Response" : {
+      "x-ms-immutable-storage-with-versioning-enabled" : "false",
+      "x-ms-lease-status" : "unlocked",
+      "x-ms-version" : "2023-08-03",
+      "Server" : "Windows-Azure-Blob/1.0 Microsoft-HTTPAPI/2.0",
+      "Access-Control-Allow-Origin" : "*",
+      "x-ms-lease-state" : "available",
+      "x-ms-deny-encryption-scope-override" : "false",
+      "Last-Modified" : "Wed, 20 Sep 2023 18:45:26 GMT",
+      "retry-after" : "0",
+      "StatusCode" : "200",
+      "Date" : "Wed, 20 Sep 2023 18:45:27 GMT",
+      "x-ms-has-legal-hold" : "false",
+      "Access-Control-Expose-Headers" : "x-ms-client-request-id",
+      "x-ms-default-encryption-scope" : "$account-encryption-key",
+      "ETag" : "0x8DBBA09C15B1BFC",
+      "x-ms-has-immutability-policy" : "false",
+      "Content-Length" : "0",
+      "x-ms-request-id" : "df14dc99-b01e-002e-7ef2-eb6fa6000000",
+      "x-ms-client-request-id" : "512425a2-1f50-45fc-bd58-5236a18725dd"
+    },
+    "Exception" : null
+  }, {
+    "Method" : "PUT",
+    "Uri" : "https://REDACTED.blob.core.windows.net?restype=service&comp=properties",
+    "Headers" : {
+      "x-ms-version" : "2023-08-03",
+      "content-type" : "application/xml",
+      "x-ms-client-request-id" : "e332b27e-58ca-4db2-a3f1-63b7c918a326",
+      "user-agent" : "azsdk-java-azure-storage-blob/12.25.0-beta.1 (11.0.16.1; Windows 11; 10.0)"
+    },
+    "Response" : {
+      "x-ms-version" : "2023-08-03",
+      "Server" : "Windows-Azure-Blob/1.0 Microsoft-HTTPAPI/2.0",
+      "retry-after" : "0",
+      "Content-Length" : "0",
+      "StatusCode" : "202",
+      "x-ms-request-id" : "df14dcb7-b01e-002e-19f2-eb6fa6000000",
+      "Date" : "Wed, 20 Sep 2023 18:45:27 GMT",
+      "x-ms-client-request-id" : "e332b27e-58ca-4db2-a3f1-63b7c918a326"
+    },
+    "Exception" : null
+  } ],
+  "variables" : [ "2598d35f02598d35fadc2532895f9b7a11a9948b9aa5", "2598d35f16968e6c", "2598d35f53647673" ]
+}

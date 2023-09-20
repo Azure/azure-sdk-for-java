@@ -1,0 +1,47 @@
+{
+  "networkCallRecords" : [ {
+    "Method" : "PUT",
+    "Uri" : "https://REDACTED.blob.core.windows.net/099b28a60099b28a604c7134304e7ce27b2894c0db49?restype=container",
+    "Headers" : {
+      "x-ms-version" : "2023-08-03",
+      "x-ms-client-request-id" : "fed5d130-7b3b-4820-9c2e-dcfdd104a21b",
+      "user-agent" : "azsdk-java-azure-storage-blob/12.25.0-beta.1 (11.0.16.1; Windows 11; 10.0)"
+    },
+    "Response" : {
+      "x-ms-version" : "2023-08-03",
+      "Server" : "Windows-Azure-Blob/1.0 Microsoft-HTTPAPI/2.0",
+      "ETag" : "0x8DBBA104F70659D",
+      "Last-Modified" : "Wed, 20 Sep 2023 19:32:21 GMT",
+      "retry-after" : "0",
+      "Content-Length" : "0",
+      "StatusCode" : "201",
+      "x-ms-request-id" : "1b058351-a01e-0040-2df9-eb3a89000000",
+      "Date" : "Wed, 20 Sep 2023 19:32:21 GMT",
+      "x-ms-client-request-id" : "fed5d130-7b3b-4820-9c2e-dcfdd104a21b"
+    },
+    "Exception" : null
+  }, {
+    "Method" : "PUT",
+    "Uri" : "https://REDACTED.blob.core.windows.net/099b28a60099b28a604c7134304e7ce27b2894c0db49/099b28a61099b28a604c864729a60169585004c3692c",
+    "Headers" : {
+      "x-ms-version" : "2023-08-03",
+      "x-ms-client-request-id" : "0a6f5cca-84fe-4dd3-a3fd-7b127d862162",
+      "user-agent" : "azsdk-java-azure-storage-blob/12.25.0-beta.1 (11.0.16.1; Windows 11; 10.0)"
+    },
+    "Response" : {
+      "x-ms-version" : "2023-08-03",
+      "Server" : "Windows-Azure-Blob/1.0 Microsoft-HTTPAPI/2.0",
+      "ETag" : "0x8DBBA104F90F338",
+      "Last-Modified" : "Wed, 20 Sep 2023 19:32:22 GMT",
+      "retry-after" : "0",
+      "Content-Length" : "0",
+      "StatusCode" : "201",
+      "x-ms-request-server-encrypted" : "true",
+      "x-ms-request-id" : "1b0583ab-a01e-0040-05f9-eb3a89000000",
+      "Date" : "Wed, 20 Sep 2023 19:32:21 GMT",
+      "x-ms-client-request-id" : "0a6f5cca-84fe-4dd3-a3fd-7b127d862162"
+    },
+    "Exception" : null
+  } ],
+  "variables" : [ "099b28a60099b28a604c7134304e7ce27b2894c0db49", "099b28a61099b28a604c864729a60169585004c3692c" ]
+}

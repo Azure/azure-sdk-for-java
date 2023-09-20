@@ -1,0 +1,48 @@
+{
+  "networkCallRecords" : [ {
+    "Method" : "PUT",
+    "Uri" : "https://REDACTED.blob.core.windows.net/830b8f070830b8f07dcb0350535e03197a469448f8c6?restype=container",
+    "Headers" : {
+      "x-ms-version" : "2023-08-03",
+      "x-ms-client-request-id" : "66347632-9d73-458b-877b-ab499a687a84",
+      "user-agent" : "azsdk-java-azure-storage-blob/12.25.0-beta.1 (11.0.16.1; Windows 11; 10.0)"
+    },
+    "Response" : {
+      "x-ms-version" : "2023-08-03",
+      "Server" : "Windows-Azure-Blob/1.0 Microsoft-HTTPAPI/2.0",
+      "ETag" : "0x8DBBA0989DBBE27",
+      "Last-Modified" : "Wed, 20 Sep 2023 18:43:53 GMT",
+      "retry-after" : "0",
+      "Content-Length" : "0",
+      "StatusCode" : "201",
+      "x-ms-request-id" : "e7dfe6af-101e-0008-3af2-eb27be000000",
+      "Date" : "Wed, 20 Sep 2023 18:43:52 GMT",
+      "x-ms-client-request-id" : "66347632-9d73-458b-877b-ab499a687a84"
+    },
+    "Exception" : null
+  }, {
+    "Method" : "GET",
+    "Uri" : "https://REDACTED.blob.core.windows.net/830b8f070830b8f07dcb0350535e03197a469448f8c6?restype=container",
+    "Headers" : {
+      "x-ms-version" : "2023-08-03",
+      "x-ms-client-request-id" : "9d194a50-3290-45fd-bcf8-da0fae2f0e0b",
+      "user-agent" : "azsdk-java-azure-storage-blob/12.25.0-beta.1 (11.0.16.1; Windows 11; 10.0)"
+    },
+    "Response" : {
+      "Access-Control-Expose-Headers" : "x-ms-client-request-id",
+      "Server" : "Microsoft-HTTPAPI/2.0",
+      "Access-Control-Allow-Origin" : "*",
+      "WWW-Authenticate" : "Bearer authorization_uri=https://login.microsoftonline.com/72f988bf-86f1-41af-91ab-2d7cd011db47/oauth2/authorize resource_id=https://storage.azure.com",
+      "x-ms-error-code" : "InvalidAuthenticationInfo",
+      "retry-after" : "0",
+      "Content-Length" : "397",
+      "StatusCode" : "401",
+      "x-ms-request-id" : "e7dfe6e7-101e-0008-6cf2-eb27be000000",
+      "Body" : "<?xml version=\"1.0\" encoding=\"utf-8\"?><Error><Code>InvalidAuthenticationInfo</Code><Message>Server failed to authenticate the request. Please refer to the information in the www-authenticate header.\nRequestId:e7dfe6e7-101e-0008-6cf2-eb27be000000\nTime:2023-09-20T18:43:53.4887935Z</Message><AuthenticationErrorDetail>The access token was missing or malformed.</AuthenticationErrorDetail></Error>",
+      "Date" : "Wed, 20 Sep 2023 18:43:53 GMT",
+      "Content-Type" : "application/xml"
+    },
+    "Exception" : null
+  } ],
+  "variables" : [ "830b8f070830b8f07dcb0350535e03197a469448f8c6", "830b8f07339162f7", "830b8f078763378a" ]
+}

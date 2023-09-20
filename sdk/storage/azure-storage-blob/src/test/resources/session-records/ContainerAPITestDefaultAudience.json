@@ -1,0 +1,55 @@
+{
+  "networkCallRecords" : [ {
+    "Method" : "PUT",
+    "Uri" : "https://REDACTED.blob.core.windows.net/3c317ab603c317ab6c6f259946cb95bc1f9ca4c0eb94?restype=container",
+    "Headers" : {
+      "x-ms-version" : "2023-08-03",
+      "x-ms-client-request-id" : "605fe2e1-cb96-4899-bc95-8db6bfb0cdc5",
+      "user-agent" : "azsdk-java-azure-storage-blob/12.25.0-beta.1 (11.0.16.1; Windows 11; 10.0)"
+    },
+    "Response" : {
+      "x-ms-version" : "2023-08-03",
+      "Server" : "Windows-Azure-Blob/1.0 Microsoft-HTTPAPI/2.0",
+      "ETag" : "0x8DBBA08A86ECBA3",
+      "Last-Modified" : "Wed, 20 Sep 2023 18:37:35 GMT",
+      "retry-after" : "0",
+      "Content-Length" : "0",
+      "StatusCode" : "201",
+      "x-ms-request-id" : "a9cbf0e3-801e-0068-39f1-eb5b21000000",
+      "Date" : "Wed, 20 Sep 2023 18:37:34 GMT",
+      "x-ms-client-request-id" : "605fe2e1-cb96-4899-bc95-8db6bfb0cdc5"
+    },
+    "Exception" : null
+  }, {
+    "Method" : "GET",
+    "Uri" : "https://REDACTED.blob.core.windows.net/3c317ab603c317ab6c6f259946cb95bc1f9ca4c0eb94?restype=container",
+    "Headers" : {
+      "x-ms-version" : "2023-08-03",
+      "x-ms-client-request-id" : "4ddc90d2-5d53-404a-aaaa-5915510157ea",
+      "user-agent" : "azsdk-java-azure-storage-blob/12.25.0-beta.1 (11.0.16.1; Windows 11; 10.0)"
+    },
+    "Response" : {
+      "x-ms-immutable-storage-with-versioning-enabled" : "false",
+      "x-ms-lease-status" : "unlocked",
+      "x-ms-version" : "2023-08-03",
+      "Server" : "Windows-Azure-Blob/1.0 Microsoft-HTTPAPI/2.0",
+      "Access-Control-Allow-Origin" : "*",
+      "x-ms-lease-state" : "available",
+      "x-ms-deny-encryption-scope-override" : "false",
+      "Last-Modified" : "Wed, 20 Sep 2023 18:37:35 GMT",
+      "retry-after" : "0",
+      "StatusCode" : "200",
+      "Date" : "Wed, 20 Sep 2023 18:37:35 GMT",
+      "x-ms-has-legal-hold" : "false",
+      "Access-Control-Expose-Headers" : "x-ms-client-request-id",
+      "x-ms-default-encryption-scope" : "$account-encryption-key",
+      "ETag" : "0x8DBBA08A86ECBA3",
+      "x-ms-has-immutability-policy" : "false",
+      "Content-Length" : "0",
+      "x-ms-request-id" : "a9cbf480-801e-0068-7af1-eb5b21000000",
+      "x-ms-client-request-id" : "4ddc90d2-5d53-404a-aaaa-5915510157ea"
+    },
+    "Exception" : null
+  } ],
+  "variables" : [ "3c317ab603c317ab6c6f259946cb95bc1f9ca4c0eb94", "3c317ab607378048", "3c317ab664201d06" ]
+}

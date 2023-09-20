@@ -1,0 +1,95 @@
+{
+  "networkCallRecords" : [ {
+    "Method" : "PUT",
+    "Uri" : "https://REDACTED.blob.core.windows.net/fe19361a0fe19361a7c907704580e59ebdffd41ba9c8?restype=container",
+    "Headers" : {
+      "x-ms-version" : "2023-08-03",
+      "x-ms-client-request-id" : "fa9ffd5a-96b8-4b9d-9a62-c443be26db08",
+      "user-agent" : "azsdk-java-azure-storage-blob/12.25.0-beta.1 (11.0.16.1; Windows 11; 10.0)"
+    },
+    "Response" : {
+      "x-ms-version" : "2023-08-03",
+      "Server" : "Windows-Azure-Blob/1.0 Microsoft-HTTPAPI/2.0",
+      "ETag" : "0x8DBBA09EEB377A6",
+      "Last-Modified" : "Wed, 20 Sep 2023 18:46:42 GMT",
+      "retry-after" : "0",
+      "Content-Length" : "0",
+      "StatusCode" : "201",
+      "x-ms-request-id" : "c9cbbd3a-b01e-004c-44f2-ebad81000000",
+      "Date" : "Wed, 20 Sep 2023 18:46:41 GMT",
+      "x-ms-client-request-id" : "fa9ffd5a-96b8-4b9d-9a62-c443be26db08"
+    },
+    "Exception" : null
+  }, {
+    "Method" : "PUT",
+    "Uri" : "https://REDACTED.blob.core.windows.net?restype=service&comp=properties",
+    "Headers" : {
+      "x-ms-version" : "2023-08-03",
+      "content-type" : "application/xml",
+      "x-ms-client-request-id" : "b4201d43-fc35-4509-8d60-d60a1cea7d42",
+      "user-agent" : "azsdk-java-azure-storage-blob/12.25.0-beta.1 (11.0.16.1; Windows 11; 10.0)"
+    },
+    "Response" : {
+      "x-ms-version" : "2023-08-03",
+      "Server" : "Windows-Azure-Blob/1.0 Microsoft-HTTPAPI/2.0",
+      "retry-after" : "0",
+      "Content-Length" : "0",
+      "StatusCode" : "202",
+      "x-ms-request-id" : "c9cbbdc6-b01e-004c-49f2-ebad81000000",
+      "Date" : "Wed, 20 Sep 2023 18:46:41 GMT",
+      "x-ms-client-request-id" : "b4201d43-fc35-4509-8d60-d60a1cea7d42"
+    },
+    "Exception" : null
+  }, {
+    "Method" : "GET",
+    "Uri" : "https://REDACTED.blob.core.windows.net/fe19361a0fe19361a7c907704580e59ebdffd41ba9c8?restype=container",
+    "Headers" : {
+      "x-ms-version" : "2023-08-03",
+      "x-ms-client-request-id" : "e4229e12-bcde-4539-968a-278f43e895f0",
+      "user-agent" : "azsdk-java-azure-storage-blob/12.25.0-beta.1 (11.0.16.1; Windows 11; 10.0)"
+    },
+    "Response" : {
+      "x-ms-immutable-storage-with-versioning-enabled" : "false",
+      "x-ms-lease-status" : "unlocked",
+      "x-ms-version" : "2023-08-03",
+      "Server" : "Windows-Azure-Blob/1.0 Microsoft-HTTPAPI/2.0",
+      "Access-Control-Allow-Origin" : "*",
+      "x-ms-lease-state" : "available",
+      "x-ms-deny-encryption-scope-override" : "false",
+      "Last-Modified" : "Wed, 20 Sep 2023 18:46:42 GMT",
+      "retry-after" : "0",
+      "StatusCode" : "200",
+      "Date" : "Wed, 20 Sep 2023 18:46:42 GMT",
+      "x-ms-has-legal-hold" : "false",
+      "Access-Control-Expose-Headers" : "x-ms-client-request-id",
+      "x-ms-default-encryption-scope" : "$account-encryption-key",
+      "ETag" : "0x8DBBA09EEB377A6",
+      "x-ms-has-immutability-policy" : "false",
+      "Content-Length" : "0",
+      "x-ms-request-id" : "c9cbc01c-b01e-004c-70f2-ebad81000000",
+      "x-ms-client-request-id" : "e4229e12-bcde-4539-968a-278f43e895f0"
+    },
+    "Exception" : null
+  }, {
+    "Method" : "PUT",
+    "Uri" : "https://REDACTED.blob.core.windows.net?restype=service&comp=properties",
+    "Headers" : {
+      "x-ms-version" : "2023-08-03",
+      "content-type" : "application/xml",
+      "x-ms-client-request-id" : "2ebb05bf-6b7c-497e-b514-083199df068a",
+      "user-agent" : "azsdk-java-azure-storage-blob/12.25.0-beta.1 (11.0.16.1; Windows 11; 10.0)"
+    },
+    "Response" : {
+      "x-ms-version" : "2023-08-03",
+      "Server" : "Windows-Azure-Blob/1.0 Microsoft-HTTPAPI/2.0",
+      "retry-after" : "0",
+      "Content-Length" : "0",
+      "StatusCode" : "202",
+      "x-ms-request-id" : "c9cbc057-b01e-004c-28f2-ebad81000000",
+      "Date" : "Wed, 20 Sep 2023 18:46:43 GMT",
+      "x-ms-client-request-id" : "2ebb05bf-6b7c-497e-b514-083199df068a"
+    },
+    "Exception" : null
+  } ],
+  "variables" : [ "fe19361a0fe19361a7c907704580e59ebdffd41ba9c8", "fe19361a41412ef3", "fe19361a27851a54" ]
+}

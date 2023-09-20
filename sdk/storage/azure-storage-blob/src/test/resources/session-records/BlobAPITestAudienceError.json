@@ -1,0 +1,50 @@
+{
+  "networkCallRecords" : [ {
+    "Method" : "PUT",
+    "Uri" : "https://REDACTED.blob.core.windows.net/ea3546650ea3546652d581186700772455208495ba18?restype=container",
+    "Headers" : {
+      "x-ms-version" : "2023-08-03",
+      "x-ms-client-request-id" : "b2104398-a299-4f90-aa4f-d27626da6bd2",
+      "user-agent" : "azsdk-java-azure-storage-blob/12.25.0-beta.1 (11.0.16.1; Windows 11; 10.0)"
+    },
+    "Response" : {
+      "x-ms-version" : "2023-08-03",
+      "Server" : "Windows-Azure-Blob/1.0 Microsoft-HTTPAPI/2.0",
+      "ETag" : "0x8DBBA087A8791FA",
+      "Last-Modified" : "Wed, 20 Sep 2023 18:36:18 GMT",
+      "retry-after" : "0",
+      "Content-Length" : "0",
+      "StatusCode" : "201",
+      "x-ms-request-id" : "466f3f3c-d01e-0017-56f1-eb94ba000000",
+      "Date" : "Wed, 20 Sep 2023 18:36:17 GMT",
+      "x-ms-client-request-id" : "b2104398-a299-4f90-aa4f-d27626da6bd2"
+    },
+    "Exception" : null
+  }, {
+    "Method" : "PUT",
+    "Uri" : "https://REDACTED.blob.core.windows.net/ea3546650ea3546652d581186700772455208495ba18/ea3546651ea3546652d508525ca76a528d1904658b72",
+    "Headers" : {
+      "x-ms-version" : "2023-08-03",
+      "content-type" : "application/octet-stream",
+      "x-ms-client-request-id" : "1fef2efd-2570-42ba-899a-3b44e6306b5c",
+      "user-agent" : "azsdk-java-azure-storage-blob/12.25.0-beta.1 (11.0.16.1; Windows 11; 10.0)"
+    },
+    "Response" : {
+      "x-ms-version" : "2023-08-03",
+      "Server" : "Windows-Azure-Blob/1.0 Microsoft-HTTPAPI/2.0",
+      "x-ms-content-crc64" : "6RYQPwaVsyQ=",
+      "Last-Modified" : "Wed, 20 Sep 2023 18:36:18 GMT",
+      "retry-after" : "0",
+      "StatusCode" : "201",
+      "x-ms-request-server-encrypted" : "true",
+      "Date" : "Wed, 20 Sep 2023 18:36:17 GMT",
+      "Content-MD5" : "wh+Wm18D0z1D4E+PE252gg==",
+      "ETag" : "0x8DBBA087AA831F9",
+      "Content-Length" : "0",
+      "x-ms-request-id" : "466f3fa3-d01e-0017-34f1-eb94ba000000",
+      "x-ms-client-request-id" : "1fef2efd-2570-42ba-899a-3b44e6306b5c"
+    },
+    "Exception" : null
+  } ],
+  "variables" : [ "ea3546650ea3546652d581186700772455208495ba18", "ea3546651ea3546652d508525ca76a528d1904658b72" ]
+}
