@@ -1548,7 +1548,7 @@ public final class OpenAIClientImpl {
      *     successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    private Mono<Response<BinaryData>> beginAzureBatchImageGenerationWithResponseAsync(
+    public Mono<Response<BinaryData>> beginAzureBatchImageGenerationWithResponseAsync(
             BinaryData imageGenerationOptions, RequestOptions requestOptions) {
         final String accept = "application/json";
         return FluxUtil.withContext(
