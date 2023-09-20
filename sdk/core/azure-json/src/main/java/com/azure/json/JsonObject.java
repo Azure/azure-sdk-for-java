@@ -6,7 +6,7 @@ import java.io.StringWriter;
 import java.io.Writer;
 import java.util.LinkedHashMap;
 import java.util.Map;
-import java.util.Map.Entry;
+import java.util.Set;
 
 /**
  * Class representing the JSON object type.
@@ -69,8 +69,8 @@ public class JsonObject extends JsonElement {
         if(element != null) {
             // Case: element is a String or Character, therefore value stores
             // element as a JsonString
-            if((element instanceof String) || (element instanceof Character)) { 
-                value = new JsonString(String.valueOf(element)); 
+            if((element instanceof String) || (element instanceof Character)) {
+                value = new JsonString(String.valueOf(element));
             }
 
             // Case: element is a Number, therefore value stores element as a
@@ -291,11 +291,80 @@ public class JsonObject extends JsonElement {
 //        return "{" + jsonOutput + "}";
 //    }
 
+
+    @Override
+    public JsonObject setProperty(String key, JsonElement element) throws IOException {
+        if (properties.containsKey(key)){
+            this.properties.replace(key, element);
+            return this;
+        } else {
+            throw new IOException("Key" + key + " does not currently exist");
+        }
+    }
+
     /**
      * @return boolean of whether this JsonElement object is of type JsonObject.
      */
+
+    @Override
+    public JsonObject removeProperty(String key) throws IOException {
+        if (properties.containsKey(key)){
+            this.properties.remove(key);
+            return this;
+        } else {
+            throw new IOException("Key" + key + " does not currently exist");
+        }
+    }
+
+
     @Override
     public boolean isObject() { return true; }
+
+    @Override
+    public JsonArray asArray() {
+        JsonArray output = new JsonArray();
+        Set<String> keys = properties.keySet();
+        for (String key: keys){
+            output.addElement(properties.get(key));
+        }
+        return output;
+    }
+
+    @Override
+    public JsonObject asObject() {
+        return this;
+    }
+
+    @Override
+    public JsonBoolean asBoolean() {
+        if (properties.size() >= 1){
+            return properties.get(properties.keySet().iterator().next()).asBoolean(); //Should only get the first element.
+        } else {
+            return new JsonBoolean();
+        }
+    }
+
+    @Override
+    public JsonNumber asNumber() {
+        if (properties.size() >= 1){
+            return properties.get(properties.keySet().iterator().next()).asNumber(); //Should only get the first element.
+        } else {
+            return new JsonNumber();
+        }
+    }
+    @Override
+    public JsonString asString() {
+        if (properties.size() >= 1){
+            return properties.get(properties.keySet().iterator().next()).asString(); //Should only get the first element.
+        } else {
+            return new JsonString();
+        }
+    }
+
+
+
+
+
 
     /**
      * @return String representation of the JsonObject. This functionality is
@@ -350,8 +419,8 @@ public class JsonObject extends JsonElement {
                     throw new IOException("Invalid JsonToken.END_OBJECT token read prematurely from deserialised JSON object. Deserialisation aborted.");
                 // Case: the currently read token is a JsonToken.END_ARRAY token.
                 // JSON object is being deserialised, not a JSON array.
-                case END_ARRAY:
-                    throw new IOException("Invalid JsonToken.END_ARRAY token read from deserialised JSON object. JSON object is being deserialised not a JSON array. This is not a valid JSON object. Deserialisation aborted.");
+              //  case END_ARRAY:
+                 //   throw new IOException("Invalid JsonToken.END_ARRAY token read from deserialised JSON object. JSON object is being deserialised not a JSON array. This is not a valid JSON object. Deserialisation aborted.");
             }
             token = reader.nextToken();
         }

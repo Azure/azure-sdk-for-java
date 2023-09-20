@@ -21,7 +21,7 @@ public class JsonNumber extends JsonElement {
      *
      * TODO: may need to double check that 0 is correctly cast to a Number type
      */
-    public JsonNumber() { this(0); }
+    public JsonNumber() { }//this(0); }
 
     public JsonNumber(String value) {
         try {
@@ -51,7 +51,13 @@ public class JsonNumber extends JsonElement {
      * current state of this JsonNumber object.
      */
     @Override
-    public String toString() { return this.numberValue.toString(); }
+    public String toString() {
+        try {
+            return this.numberValue.toString();
+        } catch (NullPointerException e){
+            return null;
+        }
+    }
 
     /**
      * @return boolean of whether this JsonElement object is of type JsonNumber.
@@ -70,6 +76,46 @@ public class JsonNumber extends JsonElement {
 
     */
 
+    @Override
+    public JsonArray asArray() {
+        JsonArray output = new JsonArray();
+        output.addElement(this);
+        return output;
+    }
+
+    @Override
+    public JsonObject asObject() {
+        JsonObject output = new JsonObject();
+        output.addProperty("Value", this);
+        return output;
+    }
+
+    @Override
+    public JsonBoolean asBoolean() {
+        try {
+            if (numberValue.floatValue() == 1) {
+                return new JsonBoolean(true);
+            } else {
+                return new JsonBoolean(false);
+            }
+        } catch (NullPointerException e){
+            return new JsonBoolean();
+        }
+    }
+
+    @Override
+    public JsonNumber asNumber() {
+        return this;
+    }
+    @Override
+    public JsonString asString() {
+        try {
+            return new JsonString(numberValue.toString());
+        } catch (NullPointerException e){
+            return new JsonString();
+        }
+    }
+
     /**
      * @param jsonWriter JsonWriter that the serialized JsonNumber is written to.
      * @return JsonWriter state after the serialized JsonNumber has been written
@@ -80,7 +126,13 @@ public class JsonNumber extends JsonElement {
      */
     @Override
     public JsonWriter serialize(JsonWriter jsonWriter) throws IOException {
-        jsonWriter.writeInt(this.numberValue.intValue());
+        int integerForm = this.numberValue.intValue();
+        float floatForm = this.numberValue.floatValue();
+        if (integerForm == floatForm){
+            jsonWriter.writeInt(integerForm);
+        } else {
+            jsonWriter.writeFloat(floatForm);
+        }
         return jsonWriter;
     }
 }

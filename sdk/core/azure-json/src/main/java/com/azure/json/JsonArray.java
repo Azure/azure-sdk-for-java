@@ -19,20 +19,20 @@ public class JsonArray extends JsonElement {
     private List<JsonElement> elements = new ArrayList<>(0);
 
     /**
-     * Default constructor. 
+     * Default constructor.
      */
     public JsonArray() {
         super();
     }
 
     /**
-     * Constructor used to construct JsonArray from a JsonReader. 
-     * 
-     * If the developer knows they want to build an array from JSON, then they 
-     * can bypass the JsonBuilder and just use this constructor directly. 
-     * 
-     * @param reader The opened JsonReader to construct the JsonArray object from. 
-     * @throws IOException Thrown when the build method call throws an IOException. 
+     * Constructor used to construct JsonArray from a JsonReader.
+     *
+     * If the developer knows they want to build an array from JSON, then they
+     * can bypass the JsonBuilder and just use this constructor directly.
+     *
+     * @param reader The opened JsonReader to construct the JsonArray object from.
+     * @throws IOException Thrown when the build method call throws an IOException.
      */
     public JsonArray(JsonReader reader) throws IOException {
         super();
@@ -47,13 +47,13 @@ public class JsonArray extends JsonElement {
      * types: object, array, string, number, boolean, and null
      * @return JsonArray object representing the new state of the JsonArray object
      * after the addition of the new JsonElement object appended.
-     * @throws IllegalArgumentException Thrown when a null JsonElement is passed. 
-     * Instantiated JsonElements must be passed. Must pass instantiated JsonNull 
-     * to represent JSON null value. 
+     * @throws IllegalArgumentException Thrown when a null JsonElement is passed.
+     * Instantiated JsonElements must be passed. Must pass instantiated JsonNull
+     * to represent JSON null value.
      */
     public JsonArray addElement(JsonElement element) throws IllegalArgumentException {
-        if (element == null) { 
-            throw new IllegalArgumentException("Cannot add a null JsonElement to the JsonArray. Use a JsonNull object to represent a valid JSON null value."); 
+        if (element == null) {
+            throw new IllegalArgumentException("Cannot add a null JsonElement to the JsonArray. Use a JsonNull object to represent a valid JSON null value.");
         }
         this.elements.add(element);
         return this;
@@ -70,17 +70,21 @@ public class JsonArray extends JsonElement {
      * object and where to shift from
      * @return JsonArray object representing the new state of the JsonArray object
      * after the addition of the new JsonElement object.
-     * @throws IllegalArgumentException Thrown when a null JsonElement is passed. 
-     * Instantiated JsonElements must be passed. Must pass instantiated JsonNull 
-     * to represent JSON null value. 
-     * @throws IndexOutOfBoundsException Thrown when index parameter is < 0 or 
-     * > size() 
+     * @throws IllegalArgumentException Thrown when a null JsonElement is passed.
+     * Instantiated JsonElements must be passed. Must pass instantiated JsonNull
+     * to represent JSON null value.
+     * @throws IndexOutOfBoundsException Thrown when index parameter is < 0 or
+     * > size()
      */
     public JsonArray addElement(int index, JsonElement element) throws IllegalArgumentException, IndexOutOfBoundsException {
-        if (element == null) { 
-            throw new IllegalArgumentException("Cannot add a null JsonElement to the JsonArray. Use a JsonNull object to represent a valid JSON null value."); 
+        if (element == null) {
+            throw new IllegalArgumentException("Cannot add a null JsonElement to the JsonArray. Use a JsonNull object to represent a valid JSON null value.");
         }
-        this.elements.add(index, element);
+        if (index > elements.size()){
+            this.elements.add(element);
+        } else {
+            this.elements.add(index, element);
+        }
         return this;
     }
 
@@ -94,15 +98,15 @@ public class JsonArray extends JsonElement {
      * JsonElement with the newly specified JsonElement object
      * @return JsonArray object representing the new state of the JsonArray object
      * after the setting of the new JsonElement object at index.
-     * @throws IllegalArgumentException Thrown when a null JsonElement is passed. 
-     * Instantiated JsonElements must be passed. Must pass instantiated JsonNull 
-     * to represent JSON null value. 
-     * @throws IndexOutOfBoundsException Thrown when index parameter is < 0 or 
-     * >= size() 
+     * @throws IllegalArgumentException Thrown when a null JsonElement is passed.
+     * Instantiated JsonElements must be passed. Must pass instantiated JsonNull
+     * to represent JSON null value.
+     * @throws IndexOutOfBoundsException Thrown when index parameter is < 0 or
+     * >= size()
      */
     public JsonArray setElement(int index, JsonElement element) throws IllegalArgumentException, IndexOutOfBoundsException {
-        if (element == null) { 
-            throw new IllegalArgumentException("Cannot set a null JsonElement in the JsonArray. Use a JsonNull object to represent a valid JSON null value."); 
+        if (element == null) {
+            throw new IllegalArgumentException("Cannot set a null JsonElement in the JsonArray. Use a JsonNull object to represent a valid JSON null value.");
         }
         this.elements.set(index, element);
         return this;
@@ -114,28 +118,32 @@ public class JsonArray extends JsonElement {
      * @param index the index specifying which JsonElement from the JsonArray
      * object to return.
      * @return the JsonElement by index from the JsonArray
-     * @throws IndexOutOfBoundsException Thrown when index parameter is < 0 or 
-     * >= size() 
+     * @throws IndexOutOfBoundsException Thrown when index parameter is < 0 or
+     * >= size()
      */
     public JsonElement getElement(int index) throws IndexOutOfBoundsException {
         return this.elements.get(index);
     }
 
     /**
-     * Removes a specified element according to its index from the JsonArray, 
-     * shifting the existing elements from that index to the left and decrementing 
+     * Removes a specified element according to its index from the JsonArray,
+     * shifting the existing elements from that index to the left and decrementing
      * the size of the JsonArray by 1.
      *
      * @param index the index specifying which JsonElement from the JsonArray
      * object to remove.
-     * @return the resulting JsonArray after the specified JsonElement has been 
-     * removed. 
-     * @throws IndexOutOfBoundsException Thrown when index parameter is < 0 or 
-     * >= size() 
+     * @return the resulting JsonArray after the specified JsonElement has been
+     * removed.
+     * @throws IndexOutOfBoundsException Thrown when index parameter is < 0 or
+     * >= size()
      */
     public JsonElement removeElement(int index) throws IndexOutOfBoundsException {
         this.elements.remove(index);
         return this;
+    }
+
+    public int arrayLength(){
+        return elements.size();
     }
 
     /**
@@ -178,11 +186,11 @@ public class JsonArray extends JsonElement {
     }
 
     /**
-     * Takes a JsonWriter and uses it to serialize the JsonArray object. At 
-     * every step, it utilises serialize() method, which is inherited from the 
-     * parent. This means essentially it doesn't matter what JsonElement is 
-     * passed in to the add method, all it has to do is pass the JsonWriter to 
-     * the serialize() method of whatever JsonElement it is using, and it will 
+     * Takes a JsonWriter and uses it to serialize the JsonArray object. At
+     * every step, it utilises serialize() method, which is inherited from the
+     * parent. This means essentially it doesn't matter what JsonElement is
+     * passed in to the add method, all it has to do is pass the JsonWriter to
+     * the serialize() method of whatever JsonElement it is using, and it will
      * serialize.
      *
      * @param jsonWriter the JsonWriter to use
@@ -190,9 +198,9 @@ public class JsonArray extends JsonElement {
      * @throws IOException if the JsonWriter throws an exception
      */
     public JsonWriter serialize(JsonWriter jsonWriter) throws IOException {
-        // Start writing the array into jsonWriter, if it hits another array or 
-        // object, then pass the writer in to that objects serialize (which will 
-        // call this method again) and then return the writer to here. This will 
+        // Start writing the array into jsonWriter, if it hits another array or
+        // object, then pass the writer in to that objects serialize (which will
+        // call this method again) and then return the writer to here. This will
         // unnest the lot.
 
         jsonWriter.writeStartArray();
@@ -250,6 +258,47 @@ public class JsonArray extends JsonElement {
     @Override
     public boolean isArray() { return true; }
 
+    @Override
+    public JsonArray asArray() { return this;}
+    @Override
+    public JsonObject asObject() {
+        JsonObject output = new JsonObject();
+        for (int i = 0; i < elements.size(); i++){
+            String keyword = "Value";
+            if (i > 0){
+                keyword += i;
+            }
+            output.addProperty(keyword, elements.get(i));
+        }
+        return output;
+    }
+
+    @Override
+    public JsonBoolean asBoolean() {
+        if (elements.size() >= 1){
+            return elements.get(0).asBoolean();
+        } else {
+            return new JsonBoolean();
+        }
+    }
+
+    @Override
+    public JsonNumber asNumber() {
+        if (elements.size() >= 1){
+            return elements.get(0).asNumber();
+        } else {
+            return new JsonNumber();
+        }
+    }
+    @Override
+    public JsonString asString() {
+        if (elements.size() >= 1){
+            return elements.get(0).asString();
+        } else {
+            return new JsonString();
+        }
+    }
+
     /**
      * @return String representation of the JsonArray. This functionality is
      * defined within the toJson method.
@@ -264,23 +313,23 @@ public class JsonArray extends JsonElement {
     }
 
     /**
-     * Builds the JsonArray from an opened JsonReader. 
-     * 
-     * JsonReader is passed to the nested JsonElements to recursively build. 
-     * 
-     * @param reader the JsonReader to build the JsonArray from. 
-     * @throws IOException Thrown when build is aborted due to encountering an 
-     * invalid JsonToken indicating a improperly formed JsonArray. 
+     * Builds the JsonArray from an opened JsonReader.
+     *
+     * JsonReader is passed to the nested JsonElements to recursively build.
+     *
+     * @param reader the JsonReader to build the JsonArray from.
+     * @throws IOException Thrown when build is aborted due to encountering an
+     * invalid JsonToken indicating a improperly formed JsonArray.
      */
     private void build(JsonReader reader) throws IOException {
         while (reader.currentToken() != JsonToken.END_ARRAY) {
             JsonToken token = reader.nextToken();
 
             switch (token) {
-                // Case: the currently read token is a JsonToken.FIELD_NAME token. 
-                // No field names should be present within a valid JSON array.  
+                // Case: the currently read token is a JsonToken.FIELD_NAME token.
+                // No field names should be present within a valid JSON array.
                 case FIELD_NAME:
-                    throw new IOException("Invalid JsonToken.FIELD_NAME token read from deserialised JSON array. This is not a valid JSON array. Deserialisation aborted."); 
+                    throw new IOException("Invalid JsonToken.FIELD_NAME token read from deserialised JSON array. This is not a valid JSON array. Deserialisation aborted.");
                 case START_OBJECT:
                     this.addElement(new JsonObject(reader));
                     break;
@@ -299,12 +348,23 @@ public class JsonArray extends JsonElement {
                 case NULL:
                     this.addElement(JsonNull.getInstance());
                     break;
-                
+
                 case END_ARRAY:
-                    throw new IOException("Invalid JsonToken.END_ARRAY token read prematurely from deserialised JSON array. Deserialisation aborted."); 
-                 
+                    //throw new IOException("Invalid JsonToken.END_ARRAY token read prematurely from deserialised JSON array. Deserialisation aborted.");
+                    break;
+
+                    /*
+                    IMPORTANT!!!!!!
+                    Even though it is apparently never supposed to get to END_ARRAY, it does, and throwing an error
+                    means all user input that involves an array will fail. Either this should not throw an exception at
+                    all, or the cases where it should must be more clearly specified.
+                     */
+
+
+
+
                 default:
-                    throw new IOException("Default: Invalid JsonToken. Deserialisation aborted."); 
+                    throw new IOException("Default: Invalid JsonToken. Deserialisation aborted.");
             }
         }
     }

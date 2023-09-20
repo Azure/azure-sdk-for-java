@@ -6,13 +6,13 @@ import java.io.IOException;
  * Class representing the JSON null type
  */
 public final class JsonNull extends JsonElement {
-    
+
     // Private constructor enforcing Singleton pattern.
     private JsonNull() { }
 
     /**
      * Helper class to hold Singleton instance.
-     * - Thread-safe lazy-initialization of the JsonNull object without explicit 
+     * - Thread-safe lazy-initialization of the JsonNull object without explicit
      * synchronization.
      */
     private static class LoadSingleton {
@@ -21,7 +21,7 @@ public final class JsonNull extends JsonElement {
 
     /**
      * Returns the single instance of the JsonNull class.
-     * 
+     *
      * @return The JsonNull instance, representing the JsonNull Object.
      */
     public static JsonNull getInstance() { return LoadSingleton.INSTANCE; }
@@ -48,12 +48,29 @@ public final class JsonNull extends JsonElement {
     @Override
     public boolean isNull() { return true; }
 
-    /** 
-     * @param jsonWriter JsonWriter that the serialized JsonNull is written to. 
-     * @return JsonWriter state after the serialized JsonNull has been written 
-     * to it. 
-     * @throws IOException Thrown when JsonWriter.writeNull call throws an 
-     * IOException. 
+    @Override
+    public JsonArray asArray() {
+        JsonArray output = new JsonArray();
+        output.addElement(this);
+        return output;
+    }
+
+    @Override
+    public JsonObject asObject() {
+        JsonObject output = new JsonObject();
+        output.addProperty("Value", this);
+        return output;
+    }
+
+    @Override
+    public JsonString asString() { return new JsonString(nullValue); }
+
+    /**
+     * @param jsonWriter JsonWriter that the serialized JsonNull is written to.
+     * @return JsonWriter state after the serialized JsonNull has been written
+     * to it.
+     * @throws IOException Thrown when JsonWriter.writeNull call throws an
+     * IOException.
      */
     @Override
     public JsonWriter serialize(JsonWriter jsonWriter) throws IOException {

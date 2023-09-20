@@ -208,8 +208,8 @@ public abstract class JsonElement {
      * @return
      * @throws InvalidJsonDataTypeException
      */
-    public JsonObject setProperty(String key, Object element) throws InvalidJsonDataTypeException {
-        if(this.isObject()) {
+    public JsonObject setProperty(String key, JsonElement element) throws InvalidJsonDataTypeException, IOException {
+     if(this.isObject()) {
             return (this.asObject()).setProperty(key, element);
         } else {
             throw new InvalidJsonDataTypeException();
@@ -236,7 +236,7 @@ public abstract class JsonElement {
      * @return
      * @throws InvalidJsonDataTypeException
      */
-    public JsonElement removeProperty(String key) throws InvalidJsonDataTypeException {
+    public JsonElement removeProperty(String key) throws InvalidJsonDataTypeException, IOException {
         if (this.isObject()) {
             return (this.asObject()).removeProperty(key);
         } else {
@@ -305,27 +305,28 @@ public abstract class JsonElement {
     /**
      * @return
      */
-    public JsonArray asArray() { return (JsonArray)this; }
+    public JsonArray asArray() { return new JsonArray();}
+
 
     /**
      * @return
      */
-    public JsonObject asObject() { return (JsonObject)this; }
+    public JsonObject asObject() { return new JsonObject(); }
 
     /**
      * @return
      */
-    public JsonBoolean asBoolean() { return (JsonBoolean)this; }
+    public JsonBoolean asBoolean() { return new JsonBoolean(); }
 
     /**
      * @return
      */
-    public JsonNull asNull() { return (JsonNull)this; }
+    public JsonNull asNull() { return JsonNull.getInstance(); }
 
     /**
      * @return
      */
-    public JsonNumber asNumber() { return (JsonNumber)this; }
+    public JsonNumber asNumber() { return new JsonNumber(); }
 
     /**
      * @return
