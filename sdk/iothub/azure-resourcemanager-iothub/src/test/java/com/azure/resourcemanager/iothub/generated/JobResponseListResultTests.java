@@ -15,21 +15,18 @@ public final class JobResponseListResultTests {
         JobResponseListResult model =
             BinaryData
                 .fromString(
-                    "{\"value\":[{\"jobId\":\"vxqtayriwwroyqbe\",\"startTimeUtc\":\"Fri, 25 Jun 2021 11:51:15"
-                        + " GMT\",\"endTimeUtc\":\"Sun, 11 Apr 2021 16:05:14"
-                        + " GMT\",\"type\":\"readDeviceProperties\",\"status\":\"failed\",\"failureReason\":\"ojvknmefqsgzvaha\",\"statusMessage\":\"y\",\"parentJobId\":\"pvgqzcjrvxdjzlm\"},{\"jobId\":\"xkvugfhzov\",\"startTimeUtc\":\"Tue,"
-                        + " 06 Apr 2021 17:45:34 GMT\",\"endTimeUtc\":\"Mon, 30 Aug 2021 15:15:07"
-                        + " GMT\",\"type\":\"readDeviceProperties\",\"status\":\"enqueued\",\"failureReason\":\"hnnpr\",\"statusMessage\":\"i\",\"parentJobId\":\"ilpjzuaejxdult\"},{\"jobId\":\"zbbtdzumveek\",\"startTimeUtc\":\"Mon,"
-                        + " 08 Feb 2021 12:29:03 GMT\",\"endTimeUtc\":\"Fri, 03 Sep 2021 13:43:44"
-                        + " GMT\",\"type\":\"factoryResetDevice\",\"status\":\"running\",\"failureReason\":\"bsjyofdx\",\"statusMessage\":\"us\",\"parentJobId\":\"touwaboekqv\"}],\"nextLink\":\"lns\"}")
+                    "{\"value\":[{\"jobId\":\"wgqwgxhn\",\"startTimeUtc\":\"Sun, 10 Oct 2021 16:17:48"
+                        + " GMT\",\"endTimeUtc\":\"Mon, 23 Aug 2021 08:34:37"
+                        + " GMT\",\"type\":\"export\",\"status\":\"enqueued\",\"failureReason\":\"gklwn\",\"statusMessage\":\"hjdauwhvylwz\",\"parentJobId\":\"dhxujznbmpo\"},{\"jobId\":\"wpr\",\"startTimeUtc\":\"Sun,"
+                        + " 10 Jan 2021 20:10:28 GMT\",\"endTimeUtc\":\"Tue, 11 May 2021 15:12:41"
+                        + " GMT\",\"type\":\"import\",\"status\":\"enqueued\",\"failureReason\":\"j\",\"statusMessage\":\"hfxobbcswsrtj\",\"parentJobId\":\"plrbpbewtghf\"}],\"nextLink\":\"lcgwxzvlvqh\"}")
                 .toObject(JobResponseListResult.class);
     }
 
     @org.junit.jupiter.api.Test
     public void testSerialize() throws Exception {
         JobResponseListResult model =
-            new JobResponseListResult()
-                .withValue(Arrays.asList(new JobResponseInner(), new JobResponseInner(), new JobResponseInner()));
+            new JobResponseListResult().withValue(Arrays.asList(new JobResponseInner(), new JobResponseInner()));
         model = BinaryData.fromObject(model).toObject(JobResponseListResult.class);
     }
 }

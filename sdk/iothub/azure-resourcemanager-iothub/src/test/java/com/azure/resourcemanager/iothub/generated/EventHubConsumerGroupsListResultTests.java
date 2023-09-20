@@ -17,7 +17,7 @@ public final class EventHubConsumerGroupsListResultTests {
         EventHubConsumerGroupsListResult model =
             BinaryData
                 .fromString(
-                    "{\"value\":[{\"properties\":{\"txhdzh\":\"datamoyrxvwfudwpz\",\"rxsbkyvp\":\"datarqjbhckfrl\"},\"etag\":\"anuzbpzkafkuw\",\"id\":\"crnwbmeh\",\"name\":\"seyvj\",\"type\":\"srtslhspkdeem\"},{\"properties\":{\"gkvtmelmqkrhah\":\"datamx\"},\"etag\":\"juahaquhcdhmdual\",\"id\":\"exq\",\"name\":\"vfadmws\",\"type\":\"crgvxpvgom\"},{\"properties\":{\"e\":\"datamisgwbnb\",\"urqhaka\":\"datadawkzbali\"},\"etag\":\"ashsfwxos\",\"id\":\"w\",\"name\":\"xcug\",\"type\":\"cjooxdjebwpucwwf\"},{\"properties\":{\"zceuojgjrw\":\"databvmeuecivy\",\"x\":\"dataueiotwmcdyt\"},\"etag\":\"txnrjaw\",\"id\":\"qwgxhniskx\",\"name\":\"bkpyc\",\"type\":\"klwndnhjdauwhv\"}],\"nextLink\":\"wzbtdhxu\"}")
+                    "{\"value\":[{\"properties\":{\"aofmxagkvtme\":\"datalhspkdee\"},\"etag\":\"qkrhahvljua\",\"id\":\"aquhcdhm\",\"name\":\"ualaexqpvfadmw\",\"type\":\"rcrgvx\"}],\"nextLink\":\"gomz\"}")
                 .toObject(EventHubConsumerGroupsListResult.class);
     }
 
@@ -29,12 +29,7 @@ public final class EventHubConsumerGroupsListResultTests {
                     Arrays
                         .asList(
                             new EventHubConsumerGroupInfoInner()
-                                .withProperties(mapOf("txhdzh", "datamoyrxvwfudwpz", "rxsbkyvp", "datarqjbhckfrl")),
-                            new EventHubConsumerGroupInfoInner().withProperties(mapOf("gkvtmelmqkrhah", "datamx")),
-                            new EventHubConsumerGroupInfoInner()
-                                .withProperties(mapOf("e", "datamisgwbnb", "urqhaka", "datadawkzbali")),
-                            new EventHubConsumerGroupInfoInner()
-                                .withProperties(mapOf("zceuojgjrw", "databvmeuecivy", "x", "dataueiotwmcdyt"))));
+                                .withProperties(mapOf("aofmxagkvtme", "datalhspkdee"))));
         model = BinaryData.fromObject(model).toObject(EventHubConsumerGroupsListResult.class);
     }
 
