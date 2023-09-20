@@ -41,34 +41,15 @@ import static com.azure.core.util.FluxUtil.monoError;
 import static com.azure.core.util.FluxUtil.withContext;
 
 /**
- * The CertificateAsyncClient provides asynchronous methods to manage {@link KeyVaultCertificate certifcates} in
- * a key vault. The client supports creating, retrieving, updating, merging, deleting, purging, backing up,
- * restoring and listing the {@link KeyVaultCertificate certificates}. The client also supports listing
- * {@link DeletedCertificate deleted certificates} for a soft-delete enabled key vault.
+ * The CertificateAsyncClient provides asynchronous methods to manage {@link KeyVaultCertificate certifcates} in the Azure Key Vault. The client
+ * supports creating, retrieving, updating, merging, deleting, purging, backing up, restoring and listing the
+ * {@link KeyVaultCertificate certificates}. The client also supports listing {@link DeletedCertificate deleted certificates} for
+ * a soft-delete enabled Azure Key Vault.
  *
- * <p>The client further allows creating, retrieving, updating, deleting and listing the
- * {@link CertificateIssuer certificate issuers}. The client also supports creating, listing and deleting
- * {@link CertificateContact certificate contacts}.</p>
+ * <p>The client further allows creating, retrieving, updating, deleting and listing the {@link CertificateIssuer certificate issuers}. The client also supports
+ * creating, listing and deleting {@link CertificateContact certificate contacts}</p>
  *
- * <h2>Getting Started</h2>
- *
- * <p>In order to interact with the Azure Key Vault service, you will need to create an instance of the
- * {@link CertificateAsyncClient} class, a vault url and a credential object.</p>
- *
- * <p>The examples shown in this document use a credential object named DefaultAzureCredential for authentication,
- * which is appropriate for most scenarios, including local development and production environments. Additionally,
- * we recommend using a
- * <a href="https://learn.microsoft.com/azure/active-directory/managed-identities-azure-resources/">
- * managed identity</a> for authentication in production environments.
- * You can find more information on different ways of authenticating and their corresponding credential types in the
- * <a href="https://learn.microsoft.com/java/api/overview/azure/identity-readme?view=azure-java-stable">
- * Azure Identity documentation"</a>.</p>
- *
- * <p><strong>Sample: Construct Asynchronous Certificate Client</strong></p>
- *
- * <p>The following code sample demonstrates the creation of a
- * {@link com.azure.security.keyvault.certificates.CertificateAsyncClient}, using the
- * {@link com.azure.security.keyvault.certificates.CertificateClientBuilder} to configure it.</p>
+ * <p><strong>Samples to construct the async client</strong></p>
  *
  * <!-- src_embed com.azure.security.keyvault.certificates.CertificateAsyncClient.instantiation -->
  * <pre>
@@ -80,81 +61,8 @@ import static com.azure.core.util.FluxUtil.withContext;
  * </pre>
  * <!-- end com.azure.security.keyvault.certificates.CertificateAsyncClient.instantiation -->
  *
- * <br/>
- *
- * <hr/>
- *
- * <h2>Create a Certificate</h2>
- * The {@link CertificateAsyncClient} can be used to create a certificate in the key vault.
- *
- * <p><strong>Code Sample:</strong></p>
- * <p>The following code sample demonstrates how to asynchronously create a certificate in the key vault,
- * using the {@link CertificateAsyncClient#beginCreateCertificate(String, CertificatePolicy)} API.</p>
- *
- * <!-- src_embed com.azure.security.keyvault.certificates.CertificateAsyncClient.beginCreateCertificate#String-CertificatePolicy -->
- * <pre>
- * CertificatePolicy certPolicy = new CertificatePolicy&#40;&quot;Self&quot;, &quot;CN=SelfSignedJavaPkcs12&quot;&#41;;
- * certificateAsyncClient.beginCreateCertificate&#40;&quot;certificateName&quot;, certPolicy&#41;
- *     .subscribe&#40;pollResponse -&gt; &#123;
- *         System.out.println&#40;&quot;---------------------------------------------------------------------------------&quot;&#41;;
- *         System.out.println&#40;pollResponse.getStatus&#40;&#41;&#41;;
- *         System.out.println&#40;pollResponse.getValue&#40;&#41;.getStatus&#40;&#41;&#41;;
- *         System.out.println&#40;pollResponse.getValue&#40;&#41;.getStatusDetails&#40;&#41;&#41;;
- *     &#125;&#41;;
- * </pre>
- * <!-- end com.azure.security.keyvault.certificates.CertificateAsyncClient.beginCreateCertificate#String-CertificatePolicy -->
- *
- * <p><strong>Note:</strong> For the synchronous sample, refer to {@link CertificateClient}.</p>
- *
- * <br/>
- *
- * <hr/>
- *
- * <h2>Get a Certificate</h2>
- * The {@link CertificateAsyncClient} can be used to retrieve a certificate from the key vault.
- *
- * <p><strong>Code Sample:</strong></p>
- * <p>The following code sample demonstrates how to asynchronously retrieve a certificate from the key vault, using
- * the {@link CertificateAsyncClient#getCertificate(String)} API.</p>
- *
- * <!-- src_embed com.azure.security.keyvault.certificates.CertificateAsyncClient.getCertificate#String -->
- * <pre>
- * certificateAsyncClient.getCertificate&#40;&quot;certificateName&quot;&#41;
- *     .contextWrite&#40;Context.of&#40;key1, value1, key2, value2&#41;&#41;
- *     .subscribe&#40;certificateResponse -&gt;
- *         System.out.printf&#40;&quot;Certificate is returned with name %s and secretId %s %n&quot;,
- *             certificateResponse.getProperties&#40;&#41;.getName&#40;&#41;, certificateResponse.getSecretId&#40;&#41;&#41;&#41;;
- * </pre>
- * <!-- end com.azure.security.keyvault.certificates.CertificateAsyncClient.getCertificate#String -->
- *
- * <p><strong>Note:</strong> For the synchronous sample, refer to {@link CertificateClient}.</p>
- *
- * <br/>
- *
- * <hr/>
- *
- * <h2>Delete a Certificate</h2>
- * The {@link CertificateAsyncClient} can be used to delete a certificate from the key vault.
- *
- * <p><strong>Code Sample:</strong></p>
- * <p>The following code sample demonstrates how to asynchronously delete a certificate from the Azure
- * KeyVault, using the {@link CertificateAsyncClient#beginDeleteCertificate(String)} API.</p>
- *
- * <!-- src_embed com.azure.security.keyvault.certificates.CertificateAsyncClient.beginDeleteCertificate#String -->
- * <pre>
- * certificateAsyncClient.beginDeleteCertificate&#40;&quot;certificateName&quot;&#41;
- *     .subscribe&#40;pollResponse -&gt; &#123;
- *         System.out.println&#40;&quot;Delete Status: &quot; + pollResponse.getStatus&#40;&#41;.toString&#40;&#41;&#41;;
- *         System.out.println&#40;&quot;Delete Certificate Name: &quot; + pollResponse.getValue&#40;&#41;.getName&#40;&#41;&#41;;
- *         System.out.println&#40;&quot;Certificate Delete Date: &quot; + pollResponse.getValue&#40;&#41;.getDeletedOn&#40;&#41;.toString&#40;&#41;&#41;;
- *     &#125;&#41;;
- * </pre>
- * <!-- end com.azure.security.keyvault.certificates.CertificateAsyncClient.beginDeleteCertificate#String -->
- *
- * <p><strong>Note:</strong> For the synchronous sample, refer to {@link CertificateClient}.</p>
- *
- * @see com.azure.security.keyvault.certificates
  * @see CertificateClientBuilder
+ * @see PagedFlux
  */
 @ServiceClient(builder = CertificateClientBuilder.class, isAsync = true, serviceInterfaces = CertificateClientImpl.CertificateService.class)
 public final class CertificateAsyncClient {
@@ -220,7 +128,7 @@ public final class CertificateAsyncClient {
      */
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     public PollerFlux<CertificateOperation, KeyVaultCertificateWithPolicy> beginCreateCertificate(String certificateName, CertificatePolicy policy, Boolean isEnabled, Map<String, String> tags) {
-        return implClient.beginCreateCertificateAsync(certificateName, policy, isEnabled, tags);
+        return implClient.beginCreateCertificate(certificateName, policy, isEnabled, tags);
     }
 
     /**
@@ -280,7 +188,7 @@ public final class CertificateAsyncClient {
      */
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     public PollerFlux<CertificateOperation, KeyVaultCertificateWithPolicy> getCertificateOperation(String certificateName) {
-        return implClient.getCertificateOperationAsync(certificateName);
+        return implClient.getCertificateOperation(certificateName);
     }
 
     /**
@@ -521,7 +429,7 @@ public final class CertificateAsyncClient {
      */
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     public PollerFlux<DeletedCertificate, Void> beginDeleteCertificate(String certificateName) {
-        return implClient.beginDeleteCertificateAsync(certificateName);
+        return implClient.beginDeleteCertificate(certificateName);
     }
 
     /**
@@ -679,7 +587,7 @@ public final class CertificateAsyncClient {
      */
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     public PollerFlux<KeyVaultCertificateWithPolicy, Void> beginRecoverDeletedCertificate(String certificateName) {
-        return implClient.beginRecoverDeletedCertificateAsync(certificateName);
+        return implClient.beginRecoverDeletedCertificate(certificateName);
     }
 
     /**
@@ -832,7 +740,7 @@ public final class CertificateAsyncClient {
      */
     @ServiceMethod(returns = ReturnType.COLLECTION)
     public PagedFlux<CertificateProperties> listPropertiesOfCertificates(boolean includePending) {
-        return implClient.listPropertiesOfCertificatesAsync(includePending);
+        return implClient.listPropertiesOfCertificates(includePending);
     }
 
     /**
@@ -859,11 +767,11 @@ public final class CertificateAsyncClient {
      */
     @ServiceMethod(returns = ReturnType.COLLECTION)
     public PagedFlux<CertificateProperties> listPropertiesOfCertificates() {
-        return implClient.listPropertiesOfCertificatesAsync();
+        return implClient.listPropertiesOfCertificates();
     }
 
     PagedFlux<CertificateProperties> listPropertiesOfCertificates(boolean includePending, Context context) {
-        return implClient.listPropertiesOfCertificatesAsync(includePending, context);
+        return implClient.listPropertiesOfCertificates(includePending, context);
     }
 
 
@@ -889,7 +797,7 @@ public final class CertificateAsyncClient {
      */
     @ServiceMethod(returns = ReturnType.COLLECTION)
     public PagedFlux<DeletedCertificate> listDeletedCertificates() {
-        return implClient.listDeletedCertificatesAsync();
+        return implClient.listDeletedCertificates();
     }
 
     /**
@@ -915,11 +823,11 @@ public final class CertificateAsyncClient {
      */
     @ServiceMethod(returns = ReturnType.COLLECTION)
     public PagedFlux<DeletedCertificate> listDeletedCertificates(boolean includePending) {
-        return implClient.listDeletedCertificatesAsync(includePending);
+        return implClient.listDeletedCertificates(includePending);
     }
 
     PagedFlux<DeletedCertificate> listDeletedCertificates(Boolean includePending, Context context) {
-        return implClient.listDeletedCertificatesAsync(includePending, context);
+        return implClient.listDeletedCertificates(includePending, context);
     }
 
     /**
@@ -949,11 +857,11 @@ public final class CertificateAsyncClient {
      */
     @ServiceMethod(returns = ReturnType.COLLECTION)
     public PagedFlux<CertificateProperties> listPropertiesOfCertificateVersions(String certificateName) {
-        return implClient.listPropertiesOfCertificateVersionsAsync(certificateName);
+        return implClient.listPropertiesOfCertificateVersions(certificateName);
     }
 
     PagedFlux<CertificateProperties> listPropertiesOfCertificateVersions(String certificateName, Context context) {
-        return implClient.listPropertiesOfCertificateVersionsAsync(certificateName, context);
+        return implClient.listPropertiesOfCertificateVersions(certificateName, context);
     }
 
     /**
@@ -1391,7 +1299,7 @@ public final class CertificateAsyncClient {
      */
     @ServiceMethod(returns = ReturnType.COLLECTION)
     public PagedFlux<IssuerProperties> listPropertiesOfIssuers() {
-        return implClient.listPropertiesOfIssuersAsync();
+        return implClient.listPropertiesOfIssuers();
     }
 
     /**
@@ -1498,7 +1406,7 @@ public final class CertificateAsyncClient {
      */
     @ServiceMethod(returns = ReturnType.COLLECTION)
     public PagedFlux<CertificateContact> setContacts(List<CertificateContact> contacts) {
-        return implClient.setContactsAsync(contacts);
+        return implClient.setContacts(contacts);
     }
 
 
@@ -1521,7 +1429,7 @@ public final class CertificateAsyncClient {
      */
     @ServiceMethod(returns = ReturnType.COLLECTION)
     public PagedFlux<CertificateContact> listContacts() {
-        return implClient.listContactsAsync();
+        return implClient.listContacts();
     }
 
     /**
@@ -1543,7 +1451,7 @@ public final class CertificateAsyncClient {
      */
     @ServiceMethod(returns = ReturnType.COLLECTION)
     public PagedFlux<CertificateContact> deleteContacts() {
-        return implClient.deleteContactsAsync();
+        return implClient.deleteContacts();
     }
 
     /**

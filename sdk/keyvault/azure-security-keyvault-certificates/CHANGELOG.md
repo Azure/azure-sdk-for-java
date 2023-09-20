@@ -1,17 +1,5 @@
 # Release History
 
-## 4.6.0-beta.1 (Unreleased)
-
-### Features Added
-
-### Breaking Changes
-
-### Bugs Fixed
-- Fixed response code for certificate merging operations from `200` to the correct `201`. 
-([#36260]https://github.com/Azure/azure-sdk-for-java/issues/36260))
-
-### Other Changes
-
 ## 4.5.5 (2023-08-21)
 
 ### Other Changes
@@ -39,15 +27,16 @@
 - Upgraded `azure-core` from `1.39.0` to version `1.40.0`.
 - Upgraded `azure-core-http-netty` from `1.13.3` to version `1.13.4`.
 
+
 ## 4.5.2 (2023-05-23)
 
 ### Other Changes
-- Migrate Test recordings to assets repo.
 
 #### Dependency Updates
 
 - Upgraded `azure-core-http-netty` from `1.13.2` to version `1.13.3`.
 - Upgraded `azure-core` from `1.38.0` to version `1.39.0`.
+
 
 ## 4.5.1 (2023-04-20)
 
