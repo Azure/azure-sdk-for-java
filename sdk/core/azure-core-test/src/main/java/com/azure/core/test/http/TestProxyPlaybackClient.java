@@ -92,16 +92,12 @@ public class TestProxyPlaybackClient implements HttpClient {
                     SerializerEncoding.JSON))
                 .setHeader(HttpHeaderName.ACCEPT, "application/json")
                 .setHeader(HttpHeaderName.CONTENT_TYPE, "application/json");
-        } catch (IOException e) {
-            throw new RuntimeException(e);
-        }
-
-        try (HttpResponse response = sendRequestWithRetries(request)) {
+            HttpResponse response = sendRequestWithRetries(request);
             checkForTestProxyErrors(response);
             xRecordingId = response.getHeaderValue(X_RECORDING_ID);
             xRecordingFileLocation
                 = new String(Base64.getUrlDecoder().decode(
-                    response.getHeaders().get(X_RECORDING_FILE_LOCATION).getValue()), StandardCharsets.UTF_8);
+                response.getHeaders().get(X_RECORDING_FILE_LOCATION).getValue()), StandardCharsets.UTF_8);
             addProxySanitization(this.sanitizers);
             addMatcherRequests(this.matchers);
             String body = response.getBodyAsString().block();
@@ -132,10 +128,6 @@ public class TestProxyPlaybackClient implements HttpClient {
     }
 
     private HttpResponse sendRequestWithRetries(HttpRequest request) {
-        return sendRequestWithRetries(request, Context.NONE);
-    }
-
-    private HttpResponse sendRequestWithRetries(HttpRequest request, Context context) {
         int retries = 0;
         while (true) {
             try {
@@ -146,16 +138,20 @@ public class TestProxyPlaybackClient implements HttpClient {
                 return response;
             } catch (Exception e) {
                 retries++;
-                if(retries >= 3) {
+                if (retries >= 3) {
                     throw e;
                 }
-                try {
-                    TimeUnit.SECONDS.sleep(1);
-                } catch (InterruptedException ex) {
-                    throw new RuntimeException(ex);
-                }
+                sleep(1);
                 LOGGER.warning("Retrying request to test proxy. Retry attempt: " + retries);
             }
+        }
+    }
+
+    private void sleep(int durationInSeconds) {
+        try {
+            TimeUnit.SECONDS.sleep(durationInSeconds);
+        } catch (InterruptedException e) {
+            throw new RuntimeException(e);
         }
     }
 
