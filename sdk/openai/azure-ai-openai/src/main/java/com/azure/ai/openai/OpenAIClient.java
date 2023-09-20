@@ -33,6 +33,7 @@ import com.azure.core.exception.ResourceNotFoundException;
 import com.azure.core.http.HttpHeaderName;
 import com.azure.core.http.rest.RequestOptions;
 import com.azure.core.http.rest.Response;
+import com.azure.core.http.rest.SimpleResponse;
 import com.azure.core.util.BinaryData;
 import com.azure.core.util.IterableStream;
 import com.azure.core.util.logging.ClientLogger;
@@ -830,6 +831,33 @@ public final class OpenAIClient {
     @ServiceMethod(returns = ReturnType.SINGLE)
     public AudioTranscription getAudioTranslation(
             String deploymentOrModelName, String fileName, AudioTranslationOptions audioTranslationOptions) {
+        return getAudioTranslationWithResponse(deploymentOrModelName, fileName, audioTranslationOptions, null)
+                .getValue();
+    }
+
+    /**
+     * Gets English language transcribed text and associated metadata from provided spoken audio file data.
+     *
+     * @param deploymentOrModelName Specifies either the model deployment name (when using Azure OpenAI) or model name
+     *     (when using non-Azure OpenAI) to use for this request.
+     * @param fileName The file name that is represented in the {@code file} field of {@link AudioTranslationOptions}.
+     * @param audioTranslationOptions The configuration information for an audio translation request.
+     * @param requestOptions The options to configure the HTTP request before HTTP client sends it.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws HttpResponseException thrown if the request is rejected by server.
+     * @throws ClientAuthenticationException thrown if the request is rejected by server on status code 401.
+     * @throws ResourceNotFoundException thrown if the request is rejected by server on status code 404.
+     * @throws ResourceModifiedException thrown if the request is rejected by server on status code 409.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return {@link AudioTranscription} english language transcribed text and associated metadata from provided spoken
+     *     audio file data along with {@link Response}..
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    public Response<AudioTranscription> getAudioTranslationWithResponse(
+            String deploymentOrModelName,
+            String fileName,
+            AudioTranslationOptions audioTranslationOptions,
+            RequestOptions requestOptions) {
         // checking allowed formats for a JSON response
         List<AudioTranscriptionFormat> acceptedFormats = new ArrayList<>();
         acceptedFormats.add(AudioTranscriptionFormat.JSON);
@@ -845,17 +873,21 @@ public final class OpenAIClient {
         MultipartDataHelper helper = new MultipartDataHelper();
         MultipartDataSerializationResult result = helper.serializeRequest(audioTranslationOptions, fileName);
         String multipartBoundary = helper.getBoundary();
-        RequestOptions requestOptions = new RequestOptions();
-        requestOptions
-                .setHeader(HttpHeaderName.CONTENT_TYPE, "multipart/form-data;" + " boundary=" + multipartBoundary)
-                .setHeader(HttpHeaderName.CONTENT_LENGTH, String.valueOf(result.getDataLength()));
+        if (requestOptions == null) {
+            requestOptions =
+                    new RequestOptions()
+                            .setHeader(
+                                    HttpHeaderName.CONTENT_TYPE,
+                                    "multipart/form-data;" + " boundary=" + multipartBoundary)
+                            .setHeader(HttpHeaderName.CONTENT_LENGTH, String.valueOf(result.getDataLength()));
+        }
         Response<BinaryData> response =
                 openAIServiceClient != null
                         ? this.openAIServiceClient.getAudioTranslationAsPlainTextWithResponse(
                                 deploymentOrModelName, result.getData(), requestOptions)
                         : this.serviceClient.getAudioTranslationAsPlainTextWithResponse(
                                 deploymentOrModelName, result.getData(), requestOptions);
-        return response.getValue().toObject(AudioTranscription.class);
+        return new SimpleResponse<>(response, response.getValue().toObject(AudioTranscription.class));
     }
 
     /**
@@ -876,6 +908,33 @@ public final class OpenAIClient {
     @ServiceMethod(returns = ReturnType.SINGLE)
     public String getAudioTranslationText(
             String deploymentOrModelName, String fileName, AudioTranslationOptions audioTranslationOptions) {
+        return getAudioTranslationTextWithResponse(deploymentOrModelName, fileName, audioTranslationOptions, null)
+                .getValue();
+    }
+
+    /**
+     * Gets English language transcribed text and associated metadata from provided spoken audio file data.
+     *
+     * @param deploymentOrModelName Specifies either the model deployment name (when using Azure OpenAI) or model name
+     *     (when using non-Azure OpenAI) to use for this request.
+     * @param fileName The file name that is represented in the {@code file} field of {@link AudioTranslationOptions}.
+     * @param audioTranslationOptions The configuration information for an audio translation request.
+     * @param requestOptions The options to configure the HTTP request before HTTP client sends it.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws HttpResponseException thrown if the request is rejected by server.
+     * @throws ClientAuthenticationException thrown if the request is rejected by server on status code 401.
+     * @throws ResourceNotFoundException thrown if the request is rejected by server on status code 404.
+     * @throws ResourceModifiedException thrown if the request is rejected by server on status code 409.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return english language transcribed text and associated metadata from provided spoken audio file data along with
+     *     {@link Response}.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    public Response<String> getAudioTranslationTextWithResponse(
+            String deploymentOrModelName,
+            String fileName,
+            AudioTranslationOptions audioTranslationOptions,
+            RequestOptions requestOptions) {
         // checking allowed formats for a plain text response
         List<AudioTranscriptionFormat> acceptedFormats = new ArrayList<>();
         acceptedFormats.add(AudioTranscriptionFormat.TEXT);
@@ -892,17 +951,21 @@ public final class OpenAIClient {
         MultipartDataHelper helper = new MultipartDataHelper();
         MultipartDataSerializationResult result = helper.serializeRequest(audioTranslationOptions, fileName);
         String multipartBoundary = helper.getBoundary();
-        RequestOptions requestOptions = new RequestOptions();
-        requestOptions
-                .setHeader(HttpHeaderName.CONTENT_TYPE, "multipart/form-data;" + " boundary=" + multipartBoundary)
-                .setHeader(HttpHeaderName.CONTENT_LENGTH, String.valueOf(result.getDataLength()));
+        if (requestOptions == null) {
+            requestOptions =
+                    new RequestOptions()
+                            .setHeader(
+                                    HttpHeaderName.CONTENT_TYPE,
+                                    "multipart/form-data;" + " boundary=" + multipartBoundary)
+                            .setHeader(HttpHeaderName.CONTENT_LENGTH, String.valueOf(result.getDataLength()));
+        }
         Response<BinaryData> response =
                 openAIServiceClient != null
                         ? this.openAIServiceClient.getAudioTranslationAsPlainTextWithResponse(
                                 deploymentOrModelName, result.getData(), requestOptions)
                         : this.serviceClient.getAudioTranslationAsPlainTextWithResponse(
                                 deploymentOrModelName, result.getData(), requestOptions);
-        return response.getValue().toString();
+        return new SimpleResponse<>(response, response.getValue().toString());
     }
 
     /**
