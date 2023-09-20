@@ -352,9 +352,10 @@ public final class OpenAIClient {
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Response<Embeddings> getEmbeddingsWithResponse(
-        String deploymentOrModelName, EmbeddingsOptions embeddingsOptions, RequestOptions requestOptions) {
-        Response<BinaryData> response = getEmbeddingsWithResponse(deploymentOrModelName,
-            BinaryData.fromObject(embeddingsOptions), requestOptions);
+            String deploymentOrModelName, EmbeddingsOptions embeddingsOptions, RequestOptions requestOptions) {
+        Response<BinaryData> response =
+                getEmbeddingsWithResponse(
+                        deploymentOrModelName, BinaryData.fromObject(embeddingsOptions), requestOptions);
         return new SimpleResponse<>(response, response.getValue().toObject(Embeddings.class));
     }
 
@@ -441,9 +442,10 @@ public final class OpenAIClient {
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Response<Completions> getCompletionsWithResponse(
-        String deploymentOrModelName, CompletionsOptions completionsOptions, RequestOptions requestOptions) {
-        Response<BinaryData> response = getCompletionsWithResponse(deploymentOrModelName,
-            BinaryData.fromObject(completionsOptions), requestOptions);
+            String deploymentOrModelName, CompletionsOptions completionsOptions, RequestOptions requestOptions) {
+        Response<BinaryData> response =
+                getCompletionsWithResponse(
+                        deploymentOrModelName, BinaryData.fromObject(completionsOptions), requestOptions);
         return new SimpleResponse<>(response, response.getValue().toObject(Completions.class));
     }
 
@@ -521,9 +523,12 @@ public final class OpenAIClient {
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Response<ChatCompletions> getChatCompletionsWithResponse(
-        String deploymentOrModelName, ChatCompletionsOptions chatCompletionsOptions, RequestOptions requestOptions) {
-        Response<BinaryData> response = getChatCompletionsWithResponse(deploymentOrModelName,
-            BinaryData.fromObject(chatCompletionsOptions), requestOptions);
+            String deploymentOrModelName,
+            ChatCompletionsOptions chatCompletionsOptions,
+            RequestOptions requestOptions) {
+        Response<BinaryData> response =
+                getChatCompletionsWithResponse(
+                        deploymentOrModelName, BinaryData.fromObject(chatCompletionsOptions), requestOptions);
         return new SimpleResponse<>(response, response.getValue().toObject(ChatCompletions.class));
     }
 
@@ -549,7 +554,10 @@ public final class OpenAIClient {
     public Embeddings getEmbeddings(String deploymentOrModelName, EmbeddingsOptions embeddingsOptions) {
         // Generated convenience method for getEmbeddingsWithResponse
         RequestOptions requestOptions = new RequestOptions();
-        return getEmbeddingsWithResponse(deploymentOrModelName, embeddingsOptions, requestOptions).getValue();
+        return getEmbeddingsWithResponse(
+                        deploymentOrModelName, BinaryData.fromObject(embeddingsOptions), requestOptions)
+                .getValue()
+                .toObject(Embeddings.class);
     }
 
     /**
@@ -574,8 +582,10 @@ public final class OpenAIClient {
     public Completions getCompletions(String deploymentOrModelName, CompletionsOptions completionsOptions) {
         // Generated convenience method for getCompletionsWithResponse
         RequestOptions requestOptions = new RequestOptions();
-        return getCompletionsWithResponse(deploymentOrModelName, completionsOptions, requestOptions)
-                .getValue();
+        return getCompletionsWithResponse(
+                        deploymentOrModelName, BinaryData.fromObject(completionsOptions), requestOptions)
+                .getValue()
+                .toObject(Completions.class);
     }
 
     /**
@@ -654,7 +664,7 @@ public final class OpenAIClient {
         RequestOptions requestOptions = new RequestOptions();
         if (chatCompletionsOptions.getDataSources() == null || chatCompletionsOptions.getDataSources().isEmpty()) {
             return getChatCompletionsWithResponse(deploymentOrModelName, chatCompletionsOptions, requestOptions)
-                .getValue();
+                    .getValue();
         } else {
             return getChatCompletionsWithAzureExtensionsWithResponse(
                             deploymentOrModelName, BinaryData.fromObject(chatCompletionsOptions), requestOptions)

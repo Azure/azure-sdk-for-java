@@ -363,10 +363,10 @@ public final class OpenAIAsyncClient {
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<Response<Embeddings>> getEmbeddingsWithResponse(
-        String deploymentOrModelName, EmbeddingsOptions embeddingsOptions, RequestOptions requestOptions) {
-        return getEmbeddingsWithResponse(deploymentOrModelName, BinaryData.fromObject(embeddingsOptions),
-            requestOptions)
-            .map(response -> new SimpleResponse<>(response, response.getValue().toObject(Embeddings.class)));
+            String deploymentOrModelName, EmbeddingsOptions embeddingsOptions, RequestOptions requestOptions) {
+        return getEmbeddingsWithResponse(
+                        deploymentOrModelName, BinaryData.fromObject(embeddingsOptions), requestOptions)
+                .map(response -> new SimpleResponse<>(response, response.getValue().toObject(Embeddings.class)));
     }
 
     /**
@@ -453,10 +453,10 @@ public final class OpenAIAsyncClient {
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<Response<Completions>> getCompletionsWithResponse(
-        String deploymentOrModelName, CompletionsOptions completionsOptions, RequestOptions requestOptions) {
-        return getCompletionsWithResponse(deploymentOrModelName, BinaryData.fromObject(completionsOptions),
-            requestOptions)
-            .map(response -> new SimpleResponse<>(response, response.getValue().toObject(Completions.class)));
+            String deploymentOrModelName, CompletionsOptions completionsOptions, RequestOptions requestOptions) {
+        return getCompletionsWithResponse(
+                        deploymentOrModelName, BinaryData.fromObject(completionsOptions), requestOptions)
+                .map(response -> new SimpleResponse<>(response, response.getValue().toObject(Completions.class)));
     }
 
     /**
@@ -534,10 +534,12 @@ public final class OpenAIAsyncClient {
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<Response<ChatCompletions>> getChatCompletionsWithResponse(
-        String deploymentOrModelName, ChatCompletionsOptions chatCompletionsOptions, RequestOptions requestOptions) {
-        return getChatCompletionsWithResponse(deploymentOrModelName, BinaryData.fromObject(chatCompletionsOptions),
-            requestOptions)
-            .map(response -> new SimpleResponse<>(response, response.getValue().toObject(ChatCompletions.class)));
+            String deploymentOrModelName,
+            ChatCompletionsOptions chatCompletionsOptions,
+            RequestOptions requestOptions) {
+        return getChatCompletionsWithResponse(
+                        deploymentOrModelName, BinaryData.fromObject(chatCompletionsOptions), requestOptions)
+                .map(response -> new SimpleResponse<>(response, response.getValue().toObject(ChatCompletions.class)));
     }
 
     /**
@@ -563,8 +565,10 @@ public final class OpenAIAsyncClient {
     public Mono<Embeddings> getEmbeddings(String deploymentOrModelName, EmbeddingsOptions embeddingsOptions) {
         // Generated convenience method for getEmbeddingsWithResponse
         RequestOptions requestOptions = new RequestOptions();
-        return getEmbeddingsWithResponse(deploymentOrModelName, embeddingsOptions, requestOptions)
-            .flatMap(FluxUtil::toMono);
+        return getEmbeddingsWithResponse(
+                        deploymentOrModelName, BinaryData.fromObject(embeddingsOptions), requestOptions)
+                .flatMap(FluxUtil::toMono)
+                .map(protocolMethodData -> protocolMethodData.toObject(Embeddings.class));
     }
 
     /**
@@ -589,8 +593,10 @@ public final class OpenAIAsyncClient {
     public Mono<Completions> getCompletions(String deploymentOrModelName, CompletionsOptions completionsOptions) {
         // Generated convenience method for getCompletionsWithResponse
         RequestOptions requestOptions = new RequestOptions();
-        return getCompletionsWithResponse(deploymentOrModelName, completionsOptions, requestOptions)
-            .flatMap(FluxUtil::toMono);
+        return getCompletionsWithResponse(
+                        deploymentOrModelName, BinaryData.fromObject(completionsOptions), requestOptions)
+                .flatMap(FluxUtil::toMono)
+                .map(protocolMethodData -> protocolMethodData.toObject(Completions.class));
     }
 
     /**
@@ -666,8 +672,7 @@ public final class OpenAIAsyncClient {
             String deploymentOrModelName, ChatCompletionsOptions chatCompletionsOptions) {
         RequestOptions requestOptions = new RequestOptions();
         if (chatCompletionsOptions.getDataSources() == null || chatCompletionsOptions.getDataSources().isEmpty()) {
-            return getChatCompletionsWithResponse(
-                            deploymentOrModelName, chatCompletionsOptions, requestOptions)
+            return getChatCompletionsWithResponse(deploymentOrModelName, chatCompletionsOptions, requestOptions)
                     .flatMap(FluxUtil::toMono);
         } else {
             return getChatCompletionsWithAzureExtensionsWithResponse(
