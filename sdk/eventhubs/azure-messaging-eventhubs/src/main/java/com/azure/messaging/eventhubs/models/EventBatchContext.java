@@ -6,17 +6,16 @@ package com.azure.messaging.eventhubs.models;
 import com.azure.messaging.eventhubs.CheckpointStore;
 import com.azure.messaging.eventhubs.EventData;
 import com.azure.messaging.eventhubs.EventProcessorClientBuilder;
-import reactor.core.publisher.Mono;
 
 import java.time.Duration;
 import java.util.List;
 import java.util.Objects;
 import java.util.function.Consumer;
+import reactor.core.publisher.Mono;
 
 /**
  * A class that contains a batch of {@link EventData} and the partition information the event batch belongs to. This is
- * given to the {@link EventProcessorClientBuilder#processEventBatch(Consumer, int)} and
- * {@link EventProcessorClientBuilder#processEventBatch(Consumer, int, Duration)} handlers each
+ * given to the {@link EventProcessorClientBuilder#processEventBatch(Consumer, int) processEventBatch} handler each
  * time an event batch is received from the Event Hub. This class also includes methods to update checkpoint in
  * {@link CheckpointStore} and retrieve the last enqueued event information.
  *
@@ -31,7 +30,7 @@ public class EventBatchContext {
     private final LastEnqueuedEventProperties lastEnqueuedEventProperties;
 
     /**
-     * Creates an instance of {@link EventBatchContext}.
+     * Creates an instance of {@link EventContext}.
      *
      * @param partitionContext The partition information associated with the received event.
      * @param events The list of events received from Event Hub.
@@ -39,7 +38,7 @@ public class EventBatchContext {
      * @param lastEnqueuedEventProperties The properties of the last enqueued event in this partition. If {@link
      * EventProcessorClientBuilder#trackLastEnqueuedEventProperties(boolean)} is set to {@code false}, this will be
      * {@code null}.
-     * @throws NullPointerException If {@code partitionContext}, {@code events}, or {@code checkpointStore} is null.
+     * @throws NullPointerException If {@code partitionContext}, {@code eventData} or {@code checkpointStore} is null.
      */
     public EventBatchContext(PartitionContext partitionContext, List<EventData> events,
         CheckpointStore checkpointStore, LastEnqueuedEventProperties lastEnqueuedEventProperties) {
@@ -60,9 +59,7 @@ public class EventBatchContext {
     }
 
     /**
-     * Returns a list of event data received from Event Hub.  An empty list can be returned if
-     * {@link EventProcessorClientBuilder#processEventBatch(Consumer, int, Duration)} was used to construct the
-     * processor.  This means that no events were received during the specified duration.
+     * Returns a list of event data received from Event Hub.
      *
      * @return The list of event data received from Event Hub.
      */

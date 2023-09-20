@@ -19,8 +19,10 @@ import com.azure.messaging.eventhubs.models.EventPosition;
 import com.azure.messaging.eventhubs.models.LastEnqueuedEventProperties;
 import com.azure.messaging.eventhubs.models.PartitionContext;
 import org.apache.qpid.proton.message.Message;
+import org.junit.jupiter.api.AfterAll;
 import org.junit.jupiter.api.AfterEach;
 import org.junit.jupiter.api.Assertions;
+import org.junit.jupiter.api.BeforeAll;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.params.ParameterizedTest;
@@ -62,7 +64,6 @@ class EventHubPartitionAsyncConsumerTest {
     private static final ClientLogger LOGGER = new ClientLogger(EventHubPartitionAsyncConsumerTest.class);
     private static final EventHubsConsumerInstrumentation DEFAULT_INSTRUMENTATION =
         new EventHubsConsumerInstrumentation(null, null, HOSTNAME, EVENT_HUB_NAME, CONSUMER_GROUP, false);
-    private static final Duration DEFAULT_TIMEOUT = Duration.ofSeconds(30);
     @Mock
     private AmqpReceiveLink link1;
     @Mock
@@ -88,6 +89,16 @@ class EventHubPartitionAsyncConsumerTest {
 
     private AmqpReceiveLinkProcessor linkProcessor;
     private EventHubPartitionAsyncConsumer consumer;
+
+    @BeforeAll
+    static void beforeAll() {
+        StepVerifier.setDefaultTimeout(Duration.ofSeconds(30));
+    }
+
+    @AfterAll
+    static void afterAll() {
+        StepVerifier.resetDefaultTimeout();
+    }
 
     @BeforeEach
     void setup() {
@@ -157,7 +168,7 @@ class EventHubPartitionAsyncConsumerTest {
                 Assertions.assertSame(event2, partitionEvent.getData());
             })
             .thenCancel()
-            .verify(DEFAULT_TIMEOUT);
+            .verify();
 
         Assertions.assertTrue(linkProcessor.isTerminated());
         Assertions.assertSame(originalPosition, currentPosition.get().get());
@@ -209,7 +220,7 @@ class EventHubPartitionAsyncConsumerTest {
                 Assertions.assertSame(event2, partitionEvent.getData());
             })
             .thenCancel()
-            .verify(DEFAULT_TIMEOUT);
+            .verify();
 
         // Assert that we have the current offset.
         final EventPosition firstPosition = currentPosition.get().get();
@@ -219,7 +230,7 @@ class EventHubPartitionAsyncConsumerTest {
 
         StepVerifier.create(consumer.receive())
             .expectComplete()
-            .verify(DEFAULT_TIMEOUT);
+            .verify();
 
         consumer.close();
 

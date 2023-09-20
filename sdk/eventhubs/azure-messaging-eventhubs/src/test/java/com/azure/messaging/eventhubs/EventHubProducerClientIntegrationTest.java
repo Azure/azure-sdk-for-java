@@ -9,8 +9,6 @@ import com.azure.messaging.eventhubs.models.SendOptions;
 import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.Tag;
 import org.junit.jupiter.api.Test;
-import org.junit.jupiter.api.parallel.Execution;
-import org.junit.jupiter.api.parallel.ExecutionMode;
 
 import java.util.Arrays;
 import java.util.List;
@@ -21,7 +19,6 @@ import static java.nio.charset.StandardCharsets.UTF_8;
  * Tests for synchronous {@link EventHubProducerClient}.
  */
 @Tag(TestUtils.INTEGRATION)
-@Execution(ExecutionMode.SAME_THREAD)
 class EventHubProducerClientIntegrationTest extends IntegrationTestBase {
     private static final String PARTITION_ID = "2";
     private EventHubProducerClient producer;

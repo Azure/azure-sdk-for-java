@@ -27,6 +27,7 @@ import reactor.core.publisher.Flux;
 import reactor.core.scheduler.Scheduler;
 import reactor.core.scheduler.Schedulers;
 
+import java.time.Duration;
 import java.util.List;
 import java.util.Map;
 import java.util.concurrent.ConcurrentHashMap;
@@ -59,9 +60,13 @@ class PartitionPumpManager {
     private final Map<String, PartitionPump> partitionPumps = new ConcurrentHashMap<>();
     private final Supplier<PartitionProcessor> partitionProcessorFactory;
     private final EventHubClientBuilder eventHubClientBuilder;
+    private final boolean trackLastEnqueuedEventProperties;
+    private final Map<String, EventPosition> initialPartitionEventPosition;
+    private final Duration maxWaitTime;
+    private final int maxBatchSize;
+    private final boolean batchReceiveMode;
     private final int prefetch;
     private final EventHubsTracer tracer;
-    private final EventProcessorClientOptions options;
 
     /**
      * Creates an instance of partition pump manager.
@@ -71,15 +76,29 @@ class PartitionPumpManager {
      * PartitionProcessor} when new partition pumps are started.
      * @param eventHubClientBuilder The client builder used to create new clients (and new connections) for each
      * partition processed by this {@link EventProcessorClient}.
+     * @param trackLastEnqueuedEventProperties If set to {@code true}, all events received by this EventProcessorClient
+     * will also include the last enqueued event properties for its respective partitions.
      * @param tracer Tracing helper.
-     * @param options Configuration options.
+     * @param initialPartitionEventPosition Map of initial event positions for partition ids.
+     * @param maxBatchSize The maximum batch size to receive per users' process handler invocation.
+     * @param maxWaitTime The maximum time to wait to receive a batch or a single event.
+     * @param batchReceiveMode The boolean value indicating if this processor is configured to receive in batches or
+     * single events.
      */
-    PartitionPumpManager(CheckpointStore checkpointStore, Supplier<PartitionProcessor> partitionProcessorFactory,
-        EventHubClientBuilder eventHubClientBuilder, EventHubsTracer tracer, EventProcessorClientOptions options) {
+    PartitionPumpManager(CheckpointStore checkpointStore,
+        Supplier<PartitionProcessor> partitionProcessorFactory, EventHubClientBuilder eventHubClientBuilder,
+        boolean trackLastEnqueuedEventProperties, EventHubsTracer tracer,
+        Map<String, EventPosition> initialPartitionEventPosition, int maxBatchSize, Duration maxWaitTime,
+        boolean batchReceiveMode) {
         this.checkpointStore = checkpointStore;
         this.partitionProcessorFactory = partitionProcessorFactory;
         this.eventHubClientBuilder = eventHubClientBuilder;
-        this.options = options;
+        this.trackLastEnqueuedEventProperties = trackLastEnqueuedEventProperties;
+        this.initialPartitionEventPosition = initialPartitionEventPosition;
+        this.maxBatchSize = maxBatchSize;
+        this.maxWaitTime = maxWaitTime;
+        this.batchReceiveMode = batchReceiveMode;
+
         this.prefetch = eventHubClientBuilder.getPrefetchCount() == null
             ? EventHubClientBuilder.DEFAULT_PREFETCH_COUNT
             : eventHubClientBuilder.getPrefetchCount();
@@ -149,12 +168,9 @@ class PartitionPumpManager {
      * @param claimedOwnership The details of partition ownership for which new partition pump is requested to start.
      */
     void startPartitionPump(PartitionOwnership claimedOwnership, Checkpoint checkpoint) {
-
-        final String partitionId = claimedOwnership.getPartitionId();
-
-        if (partitionPumps.containsKey(partitionId)) {
+        if (partitionPumps.containsKey(claimedOwnership.getPartitionId())) {
             LOGGER.atVerbose()
-                .addKeyValue(PARTITION_ID_KEY, partitionId)
+                .addKeyValue(PARTITION_ID_KEY, claimedOwnership.getPartitionId())
                 .log("Consumer is already running.");
 
             return;
@@ -162,35 +178,49 @@ class PartitionPumpManager {
 
         try {
             PartitionContext partitionContext = new PartitionContext(claimedOwnership.getFullyQualifiedNamespace(),
-                claimedOwnership.getEventHubName(), claimedOwnership.getConsumerGroup(), partitionId);
+                claimedOwnership.getEventHubName(), claimedOwnership.getConsumerGroup(),
+                claimedOwnership.getPartitionId());
             PartitionProcessor partitionProcessor = this.partitionProcessorFactory.get();
 
             InitializationContext initializationContext = new InitializationContext(partitionContext);
             partitionProcessor.initialize(initializationContext);
 
-            EventPosition startFromEventPosition = getInitialEventPosition(partitionId, checkpoint);
+            EventPosition startFromEventPosition;
+            // A checkpoint indicates the last known successfully processed event.
+            // So, the event position to start a new partition processing should be exclusive of the
+            // offset/sequence number in the checkpoint. If no checkpoint is available, start from
+            // the position in set in the InitializationContext (either the earliest event in the partition or
+            // the user provided initial position)
+            if (checkpoint != null && checkpoint.getOffset() != null) {
+                startFromEventPosition = EventPosition.fromOffset(checkpoint.getOffset());
+            } else if (checkpoint != null && checkpoint.getSequenceNumber() != null) {
+                startFromEventPosition = EventPosition.fromSequenceNumber(checkpoint.getSequenceNumber());
+            } else if (initialPartitionEventPosition.containsKey(claimedOwnership.getPartitionId())) {
+                startFromEventPosition = initialPartitionEventPosition.get(claimedOwnership.getPartitionId());
+            } else {
+                startFromEventPosition = EventPosition.latest();
+            }
 
             LOGGER.atInfo()
-                .addKeyValue(PARTITION_ID_KEY, partitionId)
+                .addKeyValue(PARTITION_ID_KEY, claimedOwnership.getPartitionId())
                 .addKeyValue("eventPosition", startFromEventPosition)
                 .log("Starting event processing.");
 
-            ReceiveOptions receiveOptions = new ReceiveOptions()
-                .setOwnerLevel(0L)
-                .setTrackLastEnqueuedEventProperties(options.isTrackLastEnqueuedEventProperties());
+            ReceiveOptions receiveOptions = new ReceiveOptions().setOwnerLevel(0L)
+                .setTrackLastEnqueuedEventProperties(trackLastEnqueuedEventProperties);
 
             Scheduler scheduler = Schedulers.newBoundedElastic(schedulerSize,
-                MAXIMUM_QUEUE_SIZE, "partition-pump-" + partitionId);
+                MAXIMUM_QUEUE_SIZE, "partition-pump-" + claimedOwnership.getPartitionId());
             EventHubConsumerAsyncClient eventHubConsumer = eventHubClientBuilder.buildAsyncClient()
                 .createConsumer(claimedOwnership.getConsumerGroup(), prefetch, true);
-            PartitionPump partitionPump = new PartitionPump(partitionId, eventHubConsumer,
+            PartitionPump partitionPump = new PartitionPump(claimedOwnership.getPartitionId(), eventHubConsumer,
                 scheduler);
 
-            partitionPumps.put(partitionId, partitionPump);
+            partitionPumps.put(claimedOwnership.getPartitionId(), partitionPump);
             //@formatter:off
             Flux<Flux<PartitionEvent>> partitionEventFlux;
             Flux<PartitionEvent> receiver = eventHubConsumer
-                .receiveFromPartition(partitionId, startFromEventPosition, receiveOptions)
+                .receiveFromPartition(claimedOwnership.getPartitionId(), startFromEventPosition, receiveOptions)
                 .doOnNext(partitionEvent -> {
                     if (LOGGER.canLogAtLevel(LogLevel.VERBOSE)) {
                         LOGGER.atVerbose()
@@ -201,11 +231,11 @@ class PartitionPumpManager {
                     }
                 });
 
-            if (options.getMaxWaitTime() != null) {
-                partitionEventFlux = ReactorShim.windowTimeout(receiver, options.getMaxBatchSize(),
-                    options.getMaxWaitTime());
+            if (maxWaitTime != null) {
+                partitionEventFlux = ReactorShim.windowTimeout(receiver, maxBatchSize, maxWaitTime);
             } else {
-                partitionEventFlux = receiver.window(options.getMaxBatchSize());
+                partitionEventFlux = receiver
+                    .window(maxBatchSize);
             }
             partitionEventFlux
                 .concatMap(Flux::collectList)
@@ -223,19 +253,18 @@ class PartitionPumpManager {
                     });
             //@formatter:on
         } catch (Exception ex) {
-            if (partitionPumps.containsKey(partitionId)) {
-                cleanup(claimedOwnership, partitionPumps.get(partitionId));
+            if (partitionPumps.containsKey(claimedOwnership.getPartitionId())) {
+                cleanup(claimedOwnership, partitionPumps.get(claimedOwnership.getPartitionId()));
             }
             throw LOGGER.atError()
-                .addKeyValue(PARTITION_ID_KEY, partitionId)
+                .addKeyValue(PARTITION_ID_KEY, claimedOwnership.getPartitionId())
                 .log(new PartitionProcessorException(
-                    "Error occurred while starting partition pump for partition " + partitionId,
+                    "Error occurred while starting partition pump for partition " + claimedOwnership.getPartitionId(),
                     ex));
         }
     }
 
-    private void processEvent(PartitionContext partitionContext, PartitionProcessor partitionProcessor,
-        EventContext eventContext) {
+    private void processEvent(PartitionContext partitionContext, PartitionProcessor partitionProcessor, EventContext eventContext) {
 
         EventData eventData = eventContext.getEventData();
         try {
@@ -268,7 +297,7 @@ class PartitionPumpManager {
         AutoCloseable scope = null;
 
         try {
-            if (options.isBatchReceiveMode()) {
+            if (batchReceiveMode) {
                 LastEnqueuedEventProperties[] lastEnqueuedEventProperties = new LastEnqueuedEventProperties[1];
                 List<EventData> eventDataList = partitionEventBatch.stream()
                     .map(partitionEvent -> {
@@ -330,29 +359,6 @@ class PartitionPumpManager {
 
     Map<String, PartitionPump> getPartitionPumps() {
         return this.partitionPumps;
-    }
-
-    EventPosition getInitialEventPosition(String partitionId, Checkpoint checkpoint) {
-        // A checkpoint indicates the last known successfully processed event.
-        // So, the event position to start a new partition processing should be exclusive of the
-        // offset/sequence number in the checkpoint. If no checkpoint is available, start from
-        // the position in set in the InitializationContext (either the earliest event in the partition or
-        // the user provided initial position)
-        if (checkpoint != null && checkpoint.getOffset() != null) {
-            return EventPosition.fromOffset(checkpoint.getOffset());
-        } else if (checkpoint != null && checkpoint.getSequenceNumber() != null) {
-            return EventPosition.fromSequenceNumber(checkpoint.getSequenceNumber());
-        }
-
-        if (options.getInitialEventPositionProvider() != null) {
-            final EventPosition initialPosition = options.getInitialEventPositionProvider().apply(partitionId);
-
-            if (initialPosition != null) {
-                return initialPosition;
-            }
-        }
-
-        return EventPosition.latest();
     }
 
     private void handleError(PartitionOwnership claimedOwnership, PartitionPump partitionPump,

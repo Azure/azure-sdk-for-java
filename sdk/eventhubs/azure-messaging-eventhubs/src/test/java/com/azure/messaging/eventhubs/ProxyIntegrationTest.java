@@ -34,6 +34,7 @@ class ProxyIntegrationTest extends IntegrationTestBase {
 
     private EventHubProducerClient sender;
     private SendOptions sendOptions;
+
     ProxyIntegrationTest() {
         super(new ClientLogger(ProxyIntegrationTest.class));
     }
@@ -44,14 +45,19 @@ class ProxyIntegrationTest extends IntegrationTestBase {
 
         Assumptions.assumeTrue(proxyOptions != null, "Cannot run proxy integration tests without setting proxy configuration.");
 
-        sender = toClose(new EventHubClientBuilder()
+        sender = new EventHubClientBuilder()
             .connectionString(getConnectionString())
             .retry(new AmqpRetryOptions().setMaxRetries(0))
             .proxyOptions(proxyOptions)
             .transportType(AmqpTransportType.AMQP_WEB_SOCKETS)
-            .buildProducerClient());
+            .buildProducerClient();
 
         sendOptions = new SendOptions().setPartitionId(PARTITION_ID);
+    }
+
+    @Override
+    protected void afterTest() {
+        dispose(sender);
     }
 
     /**
@@ -70,13 +76,13 @@ class ProxyIntegrationTest extends IntegrationTestBase {
         // Arrange
         final int numberOfEvents = 15;
         final String messageId = UUID.randomUUID().toString();
-        final EventHubProducerAsyncClient producer = toClose(new EventHubClientBuilder()
-            .connectionString(getConnectionString()).buildAsyncProducerClient());
-
-        final EventHubConsumerClient receiver = toClose(new EventHubClientBuilder()
+        final EventHubProducerAsyncClient producer = new EventHubClientBuilder()
+            .connectionString(getConnectionString()).buildAsyncProducerClient();
+        final EventHubConsumerClient receiver = new EventHubClientBuilder()
                 .connectionString(getConnectionString())
                 .consumerGroup(EventHubClientBuilder.DEFAULT_CONSUMER_GROUP_NAME)
-                .buildConsumerClient());
+                .buildConsumerClient();
+
         producer.send(TestUtils.getEvents(numberOfEvents, messageId), sendOptions).block();
 
         // Act

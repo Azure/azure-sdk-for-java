@@ -12,8 +12,10 @@ import com.azure.core.amqp.exception.AmqpException;
 import com.azure.core.amqp.implementation.AmqpReceiveLink;
 import com.azure.messaging.eventhubs.implementation.instrumentation.EventHubsConsumerInstrumentation;
 import org.apache.qpid.proton.message.Message;
+import org.junit.jupiter.api.AfterAll;
 import org.junit.jupiter.api.AfterEach;
 import org.junit.jupiter.api.Assertions;
+import org.junit.jupiter.api.BeforeAll;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.mockito.ArgumentCaptor;
@@ -52,7 +54,6 @@ class AmqpReceiveLinkProcessorTest {
     private static final int PREFETCH = 5;
     private static final EventHubsConsumerInstrumentation DEFAULT_INSTRUMENTATION =
         new EventHubsConsumerInstrumentation(null, null, "hostname", "hubname", "$Default", false);
-    private static final Duration DEFAULT_TIMEOUT = Duration.ofSeconds(10);
 
     @Mock
     private AmqpReceiveLink link1;
@@ -76,6 +77,16 @@ class AmqpReceiveLinkProcessorTest {
     private final TestPublisher<Message> messageProcessor = TestPublisher.createCold();
     private AmqpReceiveLinkProcessor linkProcessor;
     private AutoCloseable mockCloseable;
+
+    @BeforeAll
+    static void beforeAll() {
+        StepVerifier.setDefaultTimeout(Duration.ofSeconds(10));
+    }
+
+    @AfterAll
+    static void afterAll() {
+        StepVerifier.resetDefaultTimeout();
+    }
 
     @BeforeEach
     void setup() {
@@ -132,7 +143,7 @@ class AmqpReceiveLinkProcessorTest {
             .expectNext(message1)
             .expectNext(message2)
             .thenCancel()
-            .verify(DEFAULT_TIMEOUT);
+            .verify();
 
         assertTrue(processor.isTerminated());
         assertFalse(processor.hasError());
@@ -166,7 +177,7 @@ class AmqpReceiveLinkProcessorTest {
             .then(() -> messageProcessor.next(message1))
             .expectNext(message1)
             .thenCancel()
-            .verify(DEFAULT_TIMEOUT);
+            .verify();
 
         verify(link1).setEmptyCreditListener(creditSupplierCaptor.capture());
 
@@ -222,7 +233,7 @@ class AmqpReceiveLinkProcessorTest {
         // The second time we subscribe, we expect that it'll throw.
         StepVerifier.create(processor)
             .expectError(IllegalStateException.class)
-            .verify(DEFAULT_TIMEOUT);
+            .verify();
     }
 
     /**
@@ -269,9 +280,10 @@ class AmqpReceiveLinkProcessorTest {
             })
             .expectNext(message3)
             .expectNext(message4)
-            .then(() -> processor.cancel())
-            .expectComplete()
-            .verify(DEFAULT_TIMEOUT);
+            .then(() -> {
+                processor.cancel();
+            })
+            .verifyComplete();
 
         assertTrue(processor.isTerminated());
         assertFalse(processor.hasError());
@@ -306,7 +318,9 @@ class AmqpReceiveLinkProcessorTest {
                 messageProcessor.next(message1);
             })
             .expectNext(message1)
-            .then(() -> endpointProcessor.error(amqpException))
+            .then(() -> {
+                endpointProcessor.error(amqpException);
+            })
             .expectErrorSatisfies(error -> {
                 assertTrue(error instanceof AmqpException);
                 AmqpException exception = (AmqpException) error;
@@ -315,7 +329,7 @@ class AmqpReceiveLinkProcessorTest {
                 Assertions.assertEquals(amqpException.getErrorCondition(), exception.getErrorCondition());
                 Assertions.assertEquals(amqpException.getMessage(), exception.getMessage());
             })
-            .verify(DEFAULT_TIMEOUT);
+            .verify();
 
         assertTrue(processor.isTerminated());
         assertTrue(processor.hasError());
@@ -381,7 +395,7 @@ class AmqpReceiveLinkProcessorTest {
             .expectNext(message1)
             .then(() -> endpointProcessor.complete())
             .thenCancel()
-            .verify(DEFAULT_TIMEOUT);
+            .verify();
 
         assertTrue(processor.isTerminated());
     }
@@ -417,7 +431,7 @@ class AmqpReceiveLinkProcessorTest {
             .expectNextCount(backpressure)
             .thenAwait(Duration.ofSeconds(2))
             .thenCancel()
-            .verify(DEFAULT_TIMEOUT);
+            .verify();
     }
 
     @Test
@@ -438,7 +452,7 @@ class AmqpReceiveLinkProcessorTest {
             .expectNext(message2)
             .then(() -> endpointProcessor.complete())
             .expectComplete()
-            .verify(DEFAULT_TIMEOUT);
+            .verify();
 
         assertTrue(processor.isTerminated());
         assertFalse(processor.hasError());
@@ -472,7 +486,7 @@ class AmqpReceiveLinkProcessorTest {
             .expectNext(message1)
             .expectNext(message2)
             .thenCancel()
-            .verify(DEFAULT_TIMEOUT);
+            .verify();
 
         assertTrue(processor.isTerminated());
         assertFalse(processor.hasError());
@@ -512,7 +526,7 @@ class AmqpReceiveLinkProcessorTest {
             })
             .expectNextCount(backpressure)
             .thenCancel()
-            .verify(DEFAULT_TIMEOUT);
+            .verify();
 
         assertTrue(processor.isTerminated());
         assertFalse(processor.hasError());
@@ -565,7 +579,7 @@ class AmqpReceiveLinkProcessorTest {
             })
             .expectNextCount(nextRequest)
             .thenCancel()
-            .verify(DEFAULT_TIMEOUT);
+            .verify();
 
         assertTrue(processor.isTerminated());
         assertFalse(processor.hasError());

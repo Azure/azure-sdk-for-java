@@ -24,8 +24,7 @@ import java.util.Objects;
 
 /**
  * A class for aggregating {@link EventData} into a single, size-limited, batch. It is treated as a single message when
- * sent to the Azure Event Hubs service.  {@link EventDataBatch} is recommended in scenarios requiring high throughput
- * for publishing events.
+ * sent to the Azure Event Hubs service.
  *
  * @see EventHubProducerClient#createBatch()
  * @see EventHubProducerClient#createBatch(CreateBatchOptions)
