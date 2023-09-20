@@ -39,6 +39,7 @@ import reactor.core.publisher.Mono;
 
 import java.net.URI;
 import java.time.Duration;
+import java.time.Instant;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.Collections;
@@ -480,6 +481,8 @@ public class ProactiveConnectionManagementTest extends TestSuiteBase {
                     .setAggressiveWarmupDuration(aggressiveWarmupDuration)
                     .build();
 
+            Instant clientBuildStart = Instant.now();
+
             clientWithOpenConnections = new CosmosClientBuilder()
                     .endpoint(TestConfigurations.HOST)
                     .key(TestConfigurations.MASTER_KEY)
@@ -488,6 +491,12 @@ public class ProactiveConnectionManagementTest extends TestSuiteBase {
                     .openConnectionsAndInitCaches(proactiveContainerInitConfig)
                     .directMode()
                     .buildAsyncClient();
+
+            Instant clientBuildEnd = Instant.now();
+
+            assertThat(
+                Duration.between(clientBuildStart, clientBuildEnd).minus(Duration.ofSeconds(5)).compareTo(aggressiveWarmupDuration) < 0 ||
+                    Duration.between(clientBuildStart, clientBuildEnd).compareTo(aggressiveWarmupDuration) < 0).isTrue();
 
             Thread.sleep(5);
 
@@ -585,7 +594,8 @@ public class ProactiveConnectionManagementTest extends TestSuiteBase {
         // configure list of preferredLocation, no of proactive connection regions, no of containers, min connection pool size per endpoint, connection warm up timeout
         return new Object[][]{
                 new Object[]{preferredLocations, 2, 3, 4, Duration.ofMillis(250)},
-                new Object[]{preferredLocations, 2, 3, 5, Duration.ofMillis(1000)}
+                new Object[]{preferredLocations, 2, 3, 5, Duration.ofMillis(1000)},
+            new Object[]{preferredLocations, 2, 3, 5, Duration.ofMinutes(1000)},
         };
     }
 
