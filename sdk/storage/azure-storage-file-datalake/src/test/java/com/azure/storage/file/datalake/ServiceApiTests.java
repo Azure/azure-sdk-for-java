@@ -11,12 +11,14 @@ import com.azure.core.util.Context;
 import com.azure.identity.DefaultAzureCredentialBuilder;
 import com.azure.storage.blob.BlobContainerClient;
 import com.azure.storage.blob.BlobUrlParts;
+import com.azure.storage.blob.models.BlobErrorCode;
 import com.azure.storage.common.ParallelTransferOptions;
 import com.azure.storage.common.sas.AccountSasPermission;
 import com.azure.storage.common.sas.AccountSasResourceType;
 import com.azure.storage.common.sas.AccountSasService;
 import com.azure.storage.common.sas.AccountSasSignatureValues;
 import com.azure.storage.file.datalake.models.DataLakeAnalyticsLogging;
+import com.azure.storage.file.datalake.models.DataLakeAudience;
 import com.azure.storage.file.datalake.models.DataLakeCorsRule;
 import com.azure.storage.file.datalake.models.DataLakeMetrics;
 import com.azure.storage.file.datalake.models.DataLakeRetentionPolicy;
@@ -694,6 +696,47 @@ public class ServiceApiTests extends DataLakeTestBase {
         serviceClientBuilder.connectionString(connectionString);
 
         assertDoesNotThrow(serviceClientBuilder::buildClient);
+    }
+
+    @Test
+    public void defaultAudience() {
+        DataLakeServiceClient aadServiceClient = getOAuthServiceClientBuilder()
+            .dataLakeAudience(DataLakeAudience.getPublicAudience())
+            .buildClient();
+
+        assertNotNull(aadServiceClient.getProperties());
+    }
+
+    @Test
+    public void customAudience() {
+        DataLakeAudience audience = new DataLakeAudience(String.format("https://%s.blob.core.windows.net",
+            primaryDataLakeServiceClient.getAccountName()));
+        DataLakeServiceClient aadServiceClient = getOAuthServiceClientBuilder()
+            .dataLakeAudience(audience)
+            .buildClient();
+
+        assertNotNull(aadServiceClient.getProperties());
+    }
+
+    @Test
+    public void storageAccountAudience() {
+        DataLakeServiceClient aadServiceClient = getOAuthServiceClientBuilder()
+            .dataLakeAudience(DataLakeAudience.getDataLakeServiceAccountAudience(
+                primaryDataLakeServiceClient.getAccountName()))
+            .buildClient();
+
+        assertNotNull(aadServiceClient.getProperties());
+    }
+
+    @Test
+    public void audienceError() {
+        DataLakeAudience audience = new DataLakeAudience("https://badaudience.blob.core.windows.net");
+        DataLakeServiceClient aadServiceClient = getOAuthServiceClientBuilder()
+            .dataLakeAudience(audience)
+            .buildClient();
+
+        DataLakeStorageException e = assertThrows(DataLakeStorageException.class, aadServiceClient::getProperties);
+        assertEquals(BlobErrorCode.INVALID_AUTHENTICATION_INFO.toString(), e.getErrorCode());
     }
 
 //    @Test

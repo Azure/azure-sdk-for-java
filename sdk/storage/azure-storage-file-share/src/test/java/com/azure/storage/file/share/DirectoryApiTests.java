@@ -7,12 +7,14 @@ import com.azure.core.http.HttpHeaderName;
 import com.azure.core.http.rest.PagedResponse;
 import com.azure.core.http.rest.Response;
 import com.azure.core.util.HttpClientOptions;
+import com.azure.storage.blob.models.BlobErrorCode;
 import com.azure.storage.common.StorageSharedKeyCredential;
 import com.azure.storage.common.implementation.Constants;
 import com.azure.storage.common.policy.RequestRetryOptions;
 import com.azure.storage.file.share.models.CloseHandlesInfo;
 import com.azure.storage.file.share.models.HandleItem;
 import com.azure.storage.file.share.models.NtfsFileAttributes;
+import com.azure.storage.file.share.models.ShareAudience;
 import com.azure.storage.file.share.models.ShareDirectoryInfo;
 import com.azure.storage.file.share.models.ShareDirectoryProperties;
 import com.azure.storage.file.share.models.ShareDirectorySetMetadataInfo;
@@ -1634,5 +1636,54 @@ public class DirectoryApiTests extends FileShareTestBase {
                 }
             }
         }
+    }
+
+    @Test
+    public void defaultAudience() {
+        ShareDirectoryClient aadDirClient = getFileClientBuilderWithTokenCredential(
+            primaryFileServiceClient.getFileServiceUrl())
+            .shareAudience(ShareAudience.getPublicAudience())
+            .shareName(primaryDirectoryClient.getShareName())
+            .buildDirectoryClient();
+
+        assertTrue(aadDirClient.exists());
+    }
+
+    @Test
+    public void customAudience() {
+        ShareAudience audience = new ShareAudience(String.format("https://%s.file.core.windows.net",
+            primaryDirectoryClient.getAccountName()));
+        ShareDirectoryClient aadDirClient = getFileClientBuilderWithTokenCredential(
+            primaryFileServiceClient.getFileServiceUrl())
+            .shareAudience(audience)
+            .shareName(primaryDirectoryClient.getShareName())
+            .buildDirectoryClient();
+
+        assertTrue(aadDirClient.exists());
+    }
+
+    @Test
+    public void storageAccountAudience() {
+        ShareDirectoryClient aadDirClient = getFileClientBuilderWithTokenCredential(
+            primaryFileServiceClient.getFileServiceUrl())
+            .shareAudience(ShareAudience.getShareServiceAccountAudience(
+                primaryDirectoryClient.getAccountName()))
+            .shareName(primaryDirectoryClient.getShareName())
+            .buildDirectoryClient();
+
+        assertTrue(aadDirClient.exists());
+    }
+
+    @Test
+    public void audienceError() {
+        ShareAudience audience = new ShareAudience("https://badaudience.file.core.windows.net");
+        ShareDirectoryClient aadDirClient = getFileClientBuilderWithTokenCredential(
+            shareClient.getAccountUrl())
+            .shareAudience(audience)
+            .shareName(primaryDirectoryClient.getShareName())
+            .buildDirectoryClient();
+
+        ShareStorageException e = assertThrows(ShareStorageException.class, aadDirClient::exists);
+        assertEquals(ShareErrorCode.INVALID_AUTHENTICATION_INFO, e.getErrorCode());
     }
 }

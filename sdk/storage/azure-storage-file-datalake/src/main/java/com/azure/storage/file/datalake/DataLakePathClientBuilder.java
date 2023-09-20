@@ -26,9 +26,7 @@ import com.azure.core.util.CoreUtils;
 import com.azure.core.util.HttpClientOptions;
 import com.azure.core.util.logging.ClientLogger;
 import com.azure.storage.blob.BlobClientBuilder;
-import com.azure.storage.blob.BlobServiceClientBuilder;
 import com.azure.storage.blob.BlobUrlParts;
-import com.azure.storage.blob.models.BlobAudience;
 import com.azure.storage.common.StorageSharedKeyCredential;
 import com.azure.storage.common.Utility;
 import com.azure.storage.common.policy.RequestRetryOptions;
@@ -636,7 +634,6 @@ public final class DataLakePathClientBuilder implements
 
         return this;
     }
-
 
     /**
      * Sets the Audience to use for authentication with Azure Active Directory (AAD). The audience is not considered

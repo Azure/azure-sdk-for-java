@@ -33,6 +33,7 @@ import com.azure.storage.common.policy.RequestRetryOptions;
 import com.azure.storage.queue.implementation.AzureQueueStorageImpl;
 import com.azure.storage.queue.implementation.AzureQueueStorageImplBuilder;
 import com.azure.storage.queue.implementation.util.BuilderHelper;
+import com.azure.storage.queue.models.QueueAudience;
 import com.azure.storage.queue.models.QueueMessageDecodingError;
 import reactor.core.publisher.Mono;
 import java.util.ArrayList;
@@ -158,6 +159,7 @@ public final class QueueServiceClientBuilder implements
     private QueueMessageEncoding messageEncoding = QueueMessageEncoding.NONE;
     private Function<QueueMessageDecodingError, Mono<Void>> processMessageDecodingErrorAsyncHandler;
     private Consumer<QueueMessageDecodingError> processMessageDecodingErrorHandler;
+    private QueueAudience queueAudience;
 
     /**
      * Creates a builder instance that is able to configure and construct {@link QueueServiceClient QueueServiceClients}
@@ -696,14 +698,26 @@ public final class QueueServiceClientBuilder implements
 
     private AzureQueueStorageImpl createAzureQueueStorageImpl(QueueServiceVersion version) {
         HttpPipeline pipeline = (httpPipeline != null) ? httpPipeline : BuilderHelper.buildPipeline(
-            storageSharedKeyCredential, tokenCredential, azureSasCredential, sasToken,
-            endpoint, retryOptions, coreRetryOptions, logOptions,
-            clientOptions, httpClient, perCallPolicies, perRetryPolicies, configuration, LOGGER);
+            storageSharedKeyCredential, tokenCredential, azureSasCredential, sasToken, endpoint, retryOptions,
+            coreRetryOptions, logOptions, clientOptions, httpClient, perCallPolicies, perRetryPolicies, configuration,
+            LOGGER, queueAudience);
 
         return new AzureQueueStorageImplBuilder()
             .url(endpoint)
             .pipeline(pipeline)
             .version(version.getVersion())
             .buildClient();
+    }
+
+
+    /**
+     * Sets the Audience to use for authentication with Azure Active Directory (AAD). The audience is not considered
+     * when using a shared key.
+     * @param audience {@link QueueAudience} to be used when requesting a token from Azure Active Directory (AAD).
+     * @return the updated QueueServiceClientBuilder object
+     */
+    public QueueServiceClientBuilder queueAudience(QueueAudience audience) {
+        this.queueAudience = audience;
+        return this;
     }
 }

@@ -26,6 +26,7 @@ import com.azure.storage.file.share.models.FileRange;
 import com.azure.storage.file.share.models.HandleItem;
 import com.azure.storage.file.share.models.NtfsFileAttributes;
 import com.azure.storage.file.share.models.PermissionCopyModeType;
+import com.azure.storage.file.share.models.ShareAudience;
 import com.azure.storage.file.share.models.ShareErrorCode;
 import com.azure.storage.file.share.models.ShareFileCopyInfo;
 import com.azure.storage.file.share.models.ShareFileDownloadHeaders;
@@ -2651,5 +2652,49 @@ class FileApiTests extends FileShareTestBase {
 
         Response<ShareFileProperties> response = fileClient.getPropertiesWithResponse(null, null);
         assertEquals(response.getHeaders().getValue(X_MS_VERSION), "2017-11-09");
+    }
+
+    @Test
+    public void defaultAudience() {
+        ShareFileClient aadFileClient = getFileClientBuilderWithTokenCredential(
+            primaryFileServiceClient.getFileServiceUrl())
+            .shareAudience(ShareAudience.getPublicAudience())
+            .buildFileClient();
+
+        assertTrue(aadFileClient.exists());
+    }
+
+    @Test
+    public void customAudience() {
+        ShareAudience audience = new ShareAudience(String.format("https://%s.file.core.windows.net",
+            shareClient.getAccountName()));
+        ShareFileClient aadFileClient = getFileClientBuilderWithTokenCredential(
+            primaryFileServiceClient.getFileServiceUrl())
+            .shareAudience(audience)
+            .buildFileClient();
+
+        assertTrue(aadFileClient.exists());
+    }
+
+    @Test
+    public void storageAccountAudience() {
+        ShareFileClient aadFileClient = getFileClientBuilderWithTokenCredential(
+            primaryFileServiceClient.getFileServiceUrl())
+            .shareAudience(ShareAudience.getShareServiceAccountAudience(shareClient.getAccountName()))
+            .buildFileClient();
+
+        assertTrue(aadFileClient.exists());
+    }
+
+    @Test
+    public void audienceError() {
+        ShareAudience audience = new ShareAudience("https://badaudience.file.core.windows.net");
+        ShareFileClient aadFileClient = getFileClientBuilderWithTokenCredential(
+            primaryFileServiceClient.getFileServiceUrl())
+            .shareAudience(audience)
+            .buildFileClient();
+
+        ShareStorageException e = assertThrows(ShareStorageException.class, aadFileClient::exists);
+        assertEquals(ShareErrorCode.INVALID_AUTHENTICATION_INFO, e.getErrorCode());
     }
 }

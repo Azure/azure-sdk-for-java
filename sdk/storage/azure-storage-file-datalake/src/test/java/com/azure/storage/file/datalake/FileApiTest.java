@@ -23,6 +23,7 @@ import com.azure.storage.common.test.shared.policy.MockFailureResponsePolicy;
 import com.azure.storage.common.test.shared.policy.MockRetryRangeResponsePolicy;
 import com.azure.storage.file.datalake.models.AccessControlChangeResult;
 import com.azure.storage.file.datalake.models.AccessTier;
+import com.azure.storage.file.datalake.models.DataLakeAudience;
 import com.azure.storage.file.datalake.models.DataLakeRequestConditions;
 import com.azure.storage.file.datalake.models.DataLakeStorageException;
 import com.azure.storage.file.datalake.models.DownloadRetryOptions;
@@ -4173,6 +4174,51 @@ public class FileApiTest extends DataLakeTestBase {
 
         assertThrows(IllegalStateException.class,
             () -> fc.uploadWithResponse(new FileParallelUploadOptions(input, size), Duration.ofNanos(5L), null));
+    }
+
+    @Test
+    public void defaultAudience() {
+        DataLakeFileClient aadFileClient = getPathClientBuilderWithTokenCredential(
+            dataLakeFileSystemClient.getFileSystemUrl(), fc.getFileName())
+            .dataLakeAudience(DataLakeAudience.getPublicAudience())
+            .buildFileClient();
+
+        assertTrue(aadFileClient.exists());
+    }
+
+    @Test
+    public void customAudience() {
+        DataLakeAudience audience = new DataLakeAudience(String.format("https://%s.blob.core.windows.net",
+            dataLakeFileSystemClient.getAccountName()));
+        DataLakeFileClient aadFileClient = getPathClientBuilderWithTokenCredential(
+            dataLakeFileSystemClient.getFileSystemUrl(), fc.getFileName())
+            .dataLakeAudience(audience)
+            .buildFileClient();
+
+        assertTrue(aadFileClient.exists());
+    }
+
+    @Test
+    public void storageAccountAudience() {
+        DataLakeFileClient aadFileClient = getPathClientBuilderWithTokenCredential(
+            dataLakeFileSystemClient.getFileSystemUrl(), fc.getFileName())
+            .dataLakeAudience(DataLakeAudience.getDataLakeServiceAccountAudience(
+                dataLakeFileSystemClient.getAccountName()))
+            .buildFileClient();
+
+        assertTrue(aadFileClient.exists());
+    }
+
+    @Test
+    public void audienceError() {
+        DataLakeAudience audience = new DataLakeAudience("https://badaudience.blob.core.windows.net");
+        DataLakeFileClient aadFileClient = getPathClientBuilderWithTokenCredential(
+            dataLakeFileSystemClient.getFileSystemUrl(), fc.getFileName())
+            .dataLakeAudience(audience)
+            .buildFileClient();
+
+        DataLakeStorageException e = assertThrows(DataLakeStorageException.class, aadFileClient::exists);
+        assertEquals(BlobErrorCode.INVALID_AUTHENTICATION_INFO.toString(), e.getErrorCode());
     }
 
     // This tests the policy is in the right place because if it were added per retry, it would be after the credentials

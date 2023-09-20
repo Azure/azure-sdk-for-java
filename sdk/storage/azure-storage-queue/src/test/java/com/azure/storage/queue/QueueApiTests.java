@@ -10,6 +10,7 @@ import com.azure.identity.DefaultAzureCredentialBuilder;
 import com.azure.storage.common.StorageSharedKeyCredential;
 import com.azure.storage.queue.models.PeekedMessageItem;
 import com.azure.storage.queue.models.QueueAccessPolicy;
+import com.azure.storage.queue.models.QueueAudience;
 import com.azure.storage.queue.models.QueueErrorCode;
 import com.azure.storage.queue.models.QueueMessageItem;
 import com.azure.storage.queue.models.QueueProperties;
@@ -842,5 +843,45 @@ public class QueueApiTests extends QueueTestBase {
     private QueueClient getBase64Client() {
         return queueServiceBuilderHelper().messageEncoding(QueueMessageEncoding.BASE64).buildClient()
             .getQueueClient(queueName);
+    }
+
+    @Test
+    public void defaultAudience() {
+        QueueClient aadQueue = getOAuthQueueClientBuilder(primaryQueueServiceClient.getQueueServiceUrl())
+            .queueAudience(QueueAudience.getPublicAudience())
+            .buildClient();
+
+        assertNotNull(aadQueue.getProperties());
+    }
+
+    @Test
+    public void customAudience() {
+        QueueAudience audience = new QueueAudience(String.format("https://%s.queue.core.windows.net",
+            queueClient.getAccountName()));
+        QueueClient aadQueue = getOAuthQueueClientBuilder(primaryQueueServiceClient.getQueueServiceUrl())
+            .queueAudience(audience)
+            .buildClient();
+
+        assertNotNull(aadQueue.getProperties());
+    }
+
+    @Test
+    public void storageAccountAudience() {
+        QueueClient aadQueue = getOAuthQueueClientBuilder(primaryQueueServiceClient.getQueueServiceUrl())
+            .queueAudience(QueueAudience.getShareServiceAccountAudience(queueClient.getAccountName()))
+            .buildClient();
+
+        assertNotNull(aadQueue.getProperties());
+    }
+
+    @Test
+    public void audienceError() {
+        QueueAudience audience = new QueueAudience("https://badaudience.file.core.windows.net");
+        QueueClient aadQueue = getOAuthQueueClientBuilder(primaryQueueServiceClient.getQueueServiceUrl())
+            .queueAudience(audience)
+            .buildClient();
+
+        QueueStorageException e = assertThrows(QueueStorageException.class, aadQueue::getProperties);
+        assertEquals(QueueErrorCode.INVALID_AUTHENTICATION_INFO, e.getErrorCode());
     }
 }

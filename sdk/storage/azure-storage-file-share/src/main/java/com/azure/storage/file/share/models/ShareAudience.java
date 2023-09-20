@@ -1,10 +1,10 @@
-package com.azure.storage.file.datalake.models;
+package com.azure.storage.file.share.models;
 
 /**
  * The audience to be used when requesting a token from Azure Active Directory (AAD).
  * Note: This audience only has an effect when authenticating a TokenCredential.
  */
-public class DataLakeAudience implements Comparable<DataLakeAudience> {
+public class ShareAudience implements Comparable<ShareAudience> {
     private final String audience;
 
     /**
@@ -16,7 +16,7 @@ public class DataLakeAudience implements Comparable<DataLakeAudience> {
      *
      * @param audience The Azure Active Directory audience to use when forming authorization scopes.
      */
-    public DataLakeAudience(String audience) {
+    public ShareAudience(String audience) {
         this.audience = audience;
     }
 
@@ -26,9 +26,9 @@ public class DataLakeAudience implements Comparable<DataLakeAudience> {
      *
      * @return public default audience.
      */
-    public static DataLakeAudience getPublicAudience() {
+    public static ShareAudience getPublicAudience() {
         String publicAudience = "https://storage.azure.com/";
-        return new DataLakeAudience(publicAudience);
+        return new ShareAudience(publicAudience);
     }
 
     /**
@@ -36,14 +36,14 @@ public class DataLakeAudience implements Comparable<DataLakeAudience> {
      * that specific Azure Storage account and service only.
      *
      * @param storageAccountName The storage account name used to populate the service endpoint.
-     * @return the audience with the datalake service endpoint.
+     * @return the audience with the file service endpoint.
      */
-    public static DataLakeAudience getDataLakeServiceAccountAudience(String storageAccountName) {
-        return new DataLakeAudience(String.format("https://%s.blob.core.windows.net/", storageAccountName));
+    public static ShareAudience getShareServiceAccountAudience(String storageAccountName) {
+        return new ShareAudience(String.format("https://%s.file.core.windows.net/", storageAccountName));
     }
 
     /**
-     * Get the audience for the datalake account.
+     * Get the audience for the file share account.
      *
      * @return the audience.
      */
@@ -52,14 +52,14 @@ public class DataLakeAudience implements Comparable<DataLakeAudience> {
     }
 
     @Override
-    public int compareTo(DataLakeAudience other) {
+    public int compareTo(ShareAudience other) {
         return this.audience.compareTo(other.audience);
     }
 
     @Override
     public boolean equals(Object obj) {
-        if (obj instanceof DataLakeAudience) {
-            return this.audience.equals(((DataLakeAudience) obj).audience);
+        if (obj instanceof ShareAudience) {
+            return this.audience.equals(((ShareAudience) obj).audience);
         }
         return false;
     }

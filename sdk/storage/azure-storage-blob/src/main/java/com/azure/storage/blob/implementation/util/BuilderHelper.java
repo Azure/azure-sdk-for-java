@@ -78,6 +78,7 @@ public final class BuilderHelper {
      * @param perRetryPolicies Additional {@link HttpPipelinePolicy policies} to set in the pipeline per retry.
      * @param configuration Configuration store contain environment settings.
      * @param logger {@link ClientLogger} used to log any exception.
+     * @param blobAudience {@link BlobAudience} used to determine the audience of the blob.
      * @return A new {@link HttpPipeline} from the passed values.
      */
     public static HttpPipeline buildPipeline(

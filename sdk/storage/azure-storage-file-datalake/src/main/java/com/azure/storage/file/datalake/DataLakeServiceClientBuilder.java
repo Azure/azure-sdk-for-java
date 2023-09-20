@@ -36,6 +36,7 @@ import com.azure.storage.file.datalake.implementation.util.BuilderHelper;
 import com.azure.storage.file.datalake.implementation.util.DataLakeImplUtils;
 import com.azure.storage.file.datalake.implementation.util.TransformUtils;
 import com.azure.storage.file.datalake.models.CustomerProvidedKey;
+import com.azure.storage.file.datalake.models.DataLakeAudience;
 import com.azure.storage.file.datalake.options.FileSystemEncryptionScopeOptions;
 
 import java.net.MalformedURLException;
@@ -89,6 +90,7 @@ public class DataLakeServiceClientBuilder implements
     private Configuration configuration;
     private DataLakeServiceVersion version;
     private FileSystemEncryptionScopeOptions fileSystemEncryptionScopeOptions;
+    private DataLakeAudience dataLakeAudience;
 
     /**
      * Creates a builder instance that is able to configure and construct {@link DataLakeServiceClient
@@ -125,9 +127,9 @@ public class DataLakeServiceClientBuilder implements
         DataLakeServiceVersion serviceVersion = version != null ? version : DataLakeServiceVersion.getLatest();
 
         HttpPipeline pipeline = (httpPipeline != null) ? httpPipeline : BuilderHelper.buildPipeline(
-            storageSharedKeyCredential, tokenCredential, azureSasCredential,
-            endpoint, retryOptions, coreRetryOptions, logOptions,
-            clientOptions, httpClient, perCallPolicies, perRetryPolicies, configuration, LOGGER);
+            storageSharedKeyCredential, tokenCredential, azureSasCredential, endpoint, retryOptions, coreRetryOptions,
+            logOptions, clientOptions, httpClient, perCallPolicies, perRetryPolicies, configuration, LOGGER,
+            dataLakeAudience);
 
         return new DataLakeServiceAsyncClient(pipeline, endpoint, serviceVersion, accountName,
             blobServiceClientBuilder.buildAsyncClient(), azureSasCredential, tokenCredential != null);
@@ -514,6 +516,17 @@ public class DataLakeServiceClientBuilder implements
      */
     public DataLakeServiceClientBuilder encryptionScope(String encryptionScope) {
         blobServiceClientBuilder.encryptionScope(encryptionScope);
+        return this;
+    }
+
+    /**
+     * Sets the Audience to use for authentication with Azure Active Directory (AAD). The audience is not considered
+     * when using a shared key.
+     * @param audience {@link DataLakeAudience} to be used when requesting a token from Azure Active Directory (AAD).
+     * @return the updated DataLakeServiceClientBuilder object
+     */
+    public DataLakeServiceClientBuilder dataLakeAudience(DataLakeAudience audience) {
+        this.dataLakeAudience = audience;
         return this;
     }
 }

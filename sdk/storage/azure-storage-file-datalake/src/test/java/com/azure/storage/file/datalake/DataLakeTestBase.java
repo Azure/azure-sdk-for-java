@@ -202,6 +202,10 @@ public class DataLakeTestBase extends TestProxyTestBase {
     }
 
     protected DataLakeServiceClient getOAuthServiceClient() {
+        return getOAuthServiceClientBuilder().buildClient();
+    }
+
+    protected DataLakeServiceClientBuilder getOAuthServiceClientBuilder() {
         DataLakeServiceClientBuilder builder = new DataLakeServiceClientBuilder()
             .endpoint(ENVIRONMENT.getDataLakeAccount().getDataLakeEndpoint());
 
@@ -215,18 +219,18 @@ public class DataLakeTestBase extends TestProxyTestBase {
                 && !CoreUtils.isNullOrEmpty(configuration.get(Configuration.PROPERTY_AZURE_CLIENT_ID))
                 && !CoreUtils.isNullOrEmpty(configuration.get(Configuration.PROPERTY_AZURE_CLIENT_SECRET))) {
                 // AZURE_TENANT_ID, AZURE_CLIENT_ID, AZURE_CLIENT_SECRET
-                return builder.credential(new EnvironmentCredentialBuilder().build()).buildClient();
+                return builder.credential(new EnvironmentCredentialBuilder().build());
             } else {
                 // STORAGE_TENANT_ID, STORAGE_CLIENT_ID, STORAGE_CLIENT_SECRET
                 return builder.credential(new ClientSecretCredentialBuilder()
                     .tenantId(configuration.get("STORAGE_TENANT_ID"))
                     .clientId(configuration.get("STORAGE_CLIENT_ID"))
                     .clientSecret(configuration.get("STORAGE_CLIENT_SECRET"))
-                    .build()).buildClient();
+                    .build());
             }
         } else {
             // Running in playback, use the mock credential.
-            return builder.credential(new MockTokenCredential()).buildClient();
+            return builder.credential(new MockTokenCredential());
         }
     }
 
@@ -408,12 +412,28 @@ public class DataLakeTestBase extends TestProxyTestBase {
     }
 
     protected DataLakePathClientBuilder setOauthCredentials(DataLakePathClientBuilder builder) {
-        if (ENVIRONMENT.getTestMode() != TestMode.PLAYBACK) {
-            // AZURE_TENANT_ID, AZURE_CLIENT_ID, AZURE_CLIENT_SECRET
-            return builder.credential(new EnvironmentCredentialBuilder().build());
+        instrument(builder);
+
+        Configuration configuration = Configuration.getGlobalConfiguration();
+        if (!interceptorManager.isPlaybackMode()) {
+            // Determine whether to use the environment credential based on the shared configurations or to use the
+            // credential based on resource deployment.
+            if (!CoreUtils.isNullOrEmpty(configuration.get(Configuration.PROPERTY_AZURE_TENANT_ID))
+                && !CoreUtils.isNullOrEmpty(configuration.get(Configuration.PROPERTY_AZURE_CLIENT_ID))
+                && !CoreUtils.isNullOrEmpty(configuration.get(Configuration.PROPERTY_AZURE_CLIENT_SECRET))) {
+                // AZURE_TENANT_ID, AZURE_CLIENT_ID, AZURE_CLIENT_SECRET
+                return builder.credential(new EnvironmentCredentialBuilder().build());
+            } else {
+                // STORAGE_TENANT_ID, STORAGE_CLIENT_ID, STORAGE_CLIENT_SECRET
+                return builder.credential(new ClientSecretCredentialBuilder()
+                    .tenantId(configuration.get("STORAGE_TENANT_ID"))
+                    .clientId(configuration.get("STORAGE_CLIENT_ID"))
+                    .clientSecret(configuration.get("STORAGE_CLIENT_SECRET"))
+                    .build());
+            }
         } else {
-            // Running in playback, we don't have access to the AAD environment variables, just use SharedKeyCredential.
-            return builder.credential(ENVIRONMENT.getPrimaryAccount().getCredential());
+            // Running in playback, use the mock credential.
+            return builder.credential(new MockTokenCredential());
         }
     }
 
@@ -450,6 +470,18 @@ public class DataLakeTestBase extends TestProxyTestBase {
     protected DataLakeFileSystemClientBuilder getFileSystemClientBuilder(String endpoint) {
         DataLakeFileSystemClientBuilder builder = new DataLakeFileSystemClientBuilder().endpoint(endpoint);
 
+        return instrument(builder);
+    }
+
+    protected DataLakeFileSystemClientBuilder getFileSystemClientBuilderWithTokenCredential(String endpoint) {
+        DataLakeFileSystemClientBuilder builder = new DataLakeFileSystemClientBuilder().endpoint(endpoint);
+        if (ENVIRONMENT.getTestMode() != TestMode.PLAYBACK) {
+            // AZURE_TENANT_ID, AZURE_CLIENT_ID, AZURE_CLIENT_SECRET
+            builder.credential(new EnvironmentCredentialBuilder().build());
+        } else {
+            // Running in playback, we don't have access to the AAD environment variables, just use SharedKeyCredential.
+            builder.credential(ENVIRONMENT.getPrimaryAccount().getCredential());
+        }
         return instrument(builder);
     }
 

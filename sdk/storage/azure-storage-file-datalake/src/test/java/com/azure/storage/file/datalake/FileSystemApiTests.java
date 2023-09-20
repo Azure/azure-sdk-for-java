@@ -12,6 +12,7 @@ import com.azure.storage.blob.BlobUrlParts;
 import com.azure.storage.blob.models.BlobErrorCode;
 import com.azure.storage.common.Utility;
 import com.azure.storage.file.datalake.models.DataLakeAccessPolicy;
+import com.azure.storage.file.datalake.models.DataLakeAudience;
 import com.azure.storage.file.datalake.models.DataLakeRequestConditions;
 import com.azure.storage.file.datalake.models.DataLakeSignedIdentifier;
 import com.azure.storage.file.datalake.models.DataLakeStorageException;
@@ -2211,6 +2212,51 @@ public class FileSystemApiTests extends DataLakeTestBase {
 
         assertNotNull(resp.getETag());
         assertNotNull(resp.getLastModified());
+    }
+
+    @Test
+    public void defaultAudience() {
+        DataLakeFileSystemClient aadFsClient =
+            getFileSystemClientBuilderWithTokenCredential(dataLakeFileSystemClient.getFileSystemUrl())
+                .dataLakeAudience(DataLakeAudience.getPublicAudience())
+                .buildClient();
+
+        assertTrue(aadFsClient.exists());
+    }
+
+    @Test
+    public void customAudience() {
+        DataLakeAudience audience = new DataLakeAudience(String.format("https://%s.blob.core.windows.net",
+            dataLakeFileSystemClient.getAccountName()));
+        DataLakeFileSystemClient aadFsClient =
+            getFileSystemClientBuilderWithTokenCredential(dataLakeFileSystemClient.getFileSystemUrl())
+                .dataLakeAudience(audience)
+                .buildClient();
+
+        assertTrue(aadFsClient.exists());
+    }
+
+    @Test
+    public void storageAccountAudience() {
+        DataLakeFileSystemClient aadFsClient =
+            getFileSystemClientBuilderWithTokenCredential(dataLakeFileSystemClient.getFileSystemUrl())
+                .dataLakeAudience(DataLakeAudience.getDataLakeServiceAccountAudience(
+                    dataLakeFileSystemClient.getAccountName()))
+                .buildClient();
+
+        assertTrue(aadFsClient.exists());
+    }
+
+    @Test
+    public void audienceError() {
+        DataLakeAudience audience = new DataLakeAudience("https://badaudience.blob.core.windows.net");
+        DataLakeFileSystemClient aadFsClient =
+            getFileSystemClientBuilderWithTokenCredential(dataLakeFileSystemClient.getFileSystemUrl())
+                .dataLakeAudience(audience)
+                .buildClient();
+
+        DataLakeStorageException e = assertThrows(DataLakeStorageException.class, aadFsClient::exists);
+        assertEquals(BlobErrorCode.INVALID_AUTHENTICATION_INFO.toString(), e.getErrorCode());
     }
 
     // This tests the policy is in the right place because if it were added per retry, it would be after the credentials
