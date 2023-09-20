@@ -5,18 +5,15 @@
 package com.azure.security.keyvault.administration.implementation.models;
 
 import com.azure.core.annotation.Fluent;
-import com.azure.json.JsonReader;
-import com.azure.json.JsonSerializable;
-import com.azure.json.JsonToken;
-import com.azure.json.JsonWriter;
-import java.io.IOException;
+import com.fasterxml.jackson.annotation.JsonProperty;
 
 /** Role Definitions filter. */
 @Fluent
-public final class RoleDefinitionFilter implements JsonSerializable<RoleDefinitionFilter> {
+public final class RoleDefinitionFilter {
     /*
      * Returns role definition with the specific name.
      */
+    @JsonProperty(value = "roleName")
     private String roleName;
 
     /** Creates an instance of RoleDefinitionFilter class. */
@@ -40,39 +37,5 @@ public final class RoleDefinitionFilter implements JsonSerializable<RoleDefiniti
     public RoleDefinitionFilter setRoleName(String roleName) {
         this.roleName = roleName;
         return this;
-    }
-
-    @Override
-    public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
-        jsonWriter.writeStartObject();
-        jsonWriter.writeStringField("roleName", this.roleName);
-        return jsonWriter.writeEndObject();
-    }
-
-    /**
-     * Reads an instance of RoleDefinitionFilter from the JsonReader.
-     *
-     * @param jsonReader The JsonReader being read.
-     * @return An instance of RoleDefinitionFilter if the JsonReader was pointing to an instance of it, or null if it
-     *     was pointing to JSON null.
-     * @throws IOException If an error occurs while reading the RoleDefinitionFilter.
-     */
-    public static RoleDefinitionFilter fromJson(JsonReader jsonReader) throws IOException {
-        return jsonReader.readObject(
-                reader -> {
-                    RoleDefinitionFilter deserializedRoleDefinitionFilter = new RoleDefinitionFilter();
-                    while (reader.nextToken() != JsonToken.END_OBJECT) {
-                        String fieldName = reader.getFieldName();
-                        reader.nextToken();
-
-                        if ("roleName".equals(fieldName)) {
-                            deserializedRoleDefinitionFilter.roleName = reader.getString();
-                        } else {
-                            reader.skipChildren();
-                        }
-                    }
-
-                    return deserializedRoleDefinitionFilter;
-                });
     }
 }
