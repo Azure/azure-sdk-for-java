@@ -3,6 +3,8 @@
 
 package com.azure.cosmos;
 
+import com.azure.cosmos.util.Beta;
+
 import java.util.function.BiConsumer;
 
 /**
@@ -10,6 +12,7 @@ import java.util.function.BiConsumer;
  * processed when {@link  ChangeFeedProcessorBuilder#handleAllVersionsAndDeletesChanges(BiConsumer)}
  * lambda is invoked.
  * */
+@Beta(value = Beta.SinceVersion.V4_50_0, warningText = Beta.PREVIEW_SUBJECT_TO_CHANGE_WARNING)
 public interface ChangeFeedProcessorContext {
     /**
      * Gets the lease token corresponding to the source of
