@@ -133,7 +133,8 @@ public class TestProxyPlaybackClient implements HttpClient {
             try {
                 HttpResponse response = client.sendSync(request, Context.NONE);
                 if (response.getStatusCode() / 100 != 2) {
-                    throw new RuntimeException("Test proxy returned a non-successful status code. " + response.getStatusCode());
+                    throw new RuntimeException("Test proxy returned a non-successful status code. "
+                        + response.getStatusCode() + "; response: " + response.getBodyAsString().block());
                 }
                 return response;
             } catch (Exception e) {
