@@ -213,9 +213,9 @@ public class JsonTesting {
 
     //Section 4: Modify existing Entries
     @Test
-    public void objectSetProperty() throws InvalidJsonDataTypeException {
+    public void objectSetProperty() throws InvalidJsonDataTypeException, IOException {
         JsonElement test = new JsonObject().addProperty("First", "Keyword");
-        test.asObject().setProperty("First", "Replaced");
+        test.asObject().setProperty("First", new JsonString("Replaced"));
         assertEquals("\"Replaced\"", test.asObject().getProperty("First").toString());
     }
 

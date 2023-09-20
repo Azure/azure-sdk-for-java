@@ -135,7 +135,7 @@ public class JsonOutputTests {
     }
 
     @Test
-    public void complexJSONIsolatedEdited(){
+    public void complexJSONIsolatedEdited() throws IOException {
         String expected = "{\"James\":\"Anderson\",\"Mary\":\"Jones\",\"John\":\"Williams\"}";
         JsonObject jsonObj = new JsonObject();
         // Adding properties - showcasing addProperty.
@@ -148,7 +148,7 @@ public class JsonOutputTests {
     }
 
     @Test
-    public void complexJSONChaining(){
+    public void complexJSONChaining() throws IOException {
         String expected = "{\"Mary\":\"Jones\",\"John\":\"Williams\"}";
         JsonObject jsonObj = new JsonObject();
         jsonObj.addProperty("James", new JsonString("Anderson"))

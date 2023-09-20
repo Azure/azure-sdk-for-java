@@ -202,7 +202,7 @@ public abstract class JsonElement {
      * @return
      * @throws InvalidJsonDataTypeException
      */
-    public JsonObject setProperty(String key, Object element) throws InvalidJsonDataTypeException {
+    public JsonObject setProperty(String key, JsonElement element) throws InvalidJsonDataTypeException, IOException {
         // Case:
         if(this.isObject()) { return (this.asObject()).setProperty(key, element); }
         // Case:
@@ -228,7 +228,7 @@ public abstract class JsonElement {
      * @return
      * @throws InvalidJsonDataTypeException
      */
-    public JsonObject removeProperty(String key) throws InvalidJsonDataTypeException {
+    public JsonObject removeProperty(String key) throws InvalidJsonDataTypeException, IOException {
         // Case:
         if(this.isObject()){
             JsonObject output = this.asObject();

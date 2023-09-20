@@ -22,7 +22,7 @@ public class JsonConversionTests {
     Converting to JsonNumber:
         JsonString: If value is a numeral (eg: "1"), parse the text as int or decimal and convert. Otherwise, fails.
         JsonNull: Fails
-        JsonBoolean: If true, converts to 1. If false converts to 0.
+        JsonBoolean: If true, converts to 0. If false converts to 1.
 
     Converting to JsonString:
         JsonNumber, JsonBoolean and JsonNull: simply get value from toString and set that as the value.

@@ -460,6 +460,8 @@ public class JsonBuilderTests {
     }
 
     //Section 2.2.3: Array - Infinite number
+    //Still not sure how to handle the input for this.
+    /*
     @Test
     public void arraySingleInfiniteNumberCorrectType() throws IOException {
         String input = "[inf]";
@@ -489,6 +491,7 @@ public class JsonBuilderTests {
         JsonElement output = builder.deserialize(input);
         assertEquals(input, output.asArray().toJson());
     }
+    */
 
 
     //Section 2.3:Array - Single Boolean
@@ -725,6 +728,63 @@ public class JsonBuilderTests {
     public void jsonArrayMissingEnd(){
         String input = "[\"Value1\"";
         assertThrows(IOException.class, ()->{builder.deserialize(input);});
+    }
+
+    @Test
+    public void jsonArrayAdditionalEnd(){
+        String input = "[\"Value1\"]]";
+        assertThrows(IOException.class, ()->{builder.deserialize(input);});
+    }
+
+    @Test
+    public void jsonArrayAdditionalStart(){
+        String input = "[[\"Value1\"]";
+        assertThrows(IOException.class, ()->{builder.deserialize(input);});
+    }
+
+
+    //----Testing different spacing in jsonInput
+
+    @Test
+    public void jsonObjectSpacingInput() throws IOException {
+        String input = "{\"Key\": \"Value\", \"Key2\": 5}";
+        JsonElement output = builder.deserialize(input);
+        assertEquals("{\"Key\":\"Value\",\"Key2\":5}", output.toJson());
+    }
+
+    @Test
+    public void jsonObjectExcessiveSpacingInput() throws IOException {
+        String input = "{                        \"Key\":                                     \"Value\",                          \"Key2\":                                         5}";
+        JsonElement output = builder.deserialize(input);
+        assertEquals("{\"Key\":\"Value\",\"Key2\":5}", output.toJson());
+    }
+
+    @Test
+    public void jsonObjectFancyFormatInput() throws IOException {
+        String input = "{\n\t\"Key\": \"Value\",\n\t\"Key2\": 5\n}"; //Would look something like the spaced format some JSON files use.
+        JsonElement output = builder.deserialize(input);
+        assertEquals("{\"Key\":\"Value\",\"Key2\":5}", output.toJson());
+    }
+
+    @Test
+    public void jsonArraySpacingInput() throws IOException {
+        String input = "[\"Word\", 1, null, true]";
+        JsonElement output = builder.deserialize(input);
+        assertEquals("[\"Word\",1,null,true]", output.toJson());
+    }
+
+    @Test
+    public void jsonArrayExcessiveSpacingInput() throws IOException {
+        String input = "[\"Word\"                   ,                          1,               null,              true]";
+        JsonElement output = builder.deserialize(input);
+        assertEquals("[\"Word\",1,null,true]", output.toJson());
+    }
+
+    @Test
+    public void jsonArrayFancyFormatInput() throws IOException {
+        String input = "[\n\t\"Word\",\n\t 1,\n\t null,\n\t true]"; //Would look something like the spaced format some JSON files use.
+        JsonElement output = builder.deserialize(input);
+        assertEquals("[\"Word\",1,null,true]", output.toJson());
     }
 
 

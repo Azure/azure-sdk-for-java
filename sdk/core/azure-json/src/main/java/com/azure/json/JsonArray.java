@@ -80,7 +80,11 @@ public class JsonArray extends JsonElement {
         if (element == null) {
             throw new IllegalArgumentException("Cannot add a null JsonElement to the JsonArray. Use a JsonNull object to represent a valid JSON null value.");
         }
-        this.elements.add(index, element);
+        if (index > elements.size()){
+            this.elements.add(element);
+        } else {
+            this.elements.add(index, element);
+        }
         return this;
     }
 
@@ -320,9 +324,7 @@ public class JsonArray extends JsonElement {
     private void build(JsonReader reader) throws IOException {
         while (reader.currentToken() != JsonToken.END_ARRAY) {
             JsonToken token = reader.nextToken();
-            if (token == JsonToken.END_ARRAY){
-                System.out.println("You sneaky devil");
-            }
+
 
             switch (token) {
                 // Case: the currently read token is a JsonToken.FIELD_NAME token.
@@ -351,14 +353,17 @@ public class JsonArray extends JsonElement {
                 // while statement. These cases should not be reached, assuming
                 // the JSON array being deserialised is properly formed, so
                 // exception is thrown.
-                case END_DOCUMENT:
-                    throw new IOException("Invalid JsonToken.END_DOCUMENT token read prematurely from deserialised JSON array. Deserialisation aborted.");
+  //              case END_DOCUMENT:
+   //                 throw new IOException("Invalid JsonToken.END_DOCUMENT token read prematurely from deserialised JSON array. Deserialisation aborted.");
                 case END_ARRAY:
-                    throw new IOException("Invalid JsonToken.END_ARRAY token read prematurely from deserialised JSON array. Deserialisation aborted.");
+                    break;
+         //           throw new IOException("Invalid JsonToken.END_ARRAY token read prematurely from deserialised JSON array. Deserialisation aborted.");
                 // Case: the currently read token is a JsonToken.END_OBJECT token.
                 // JSON array is being deserialised, not a JSON object.
-                case END_OBJECT:
-                    throw new IOException("Invalid JsonToken.END_OBJECT token read from deserialised JSON array. JSON array is being deserialised not a JSON object. This is not a valid JSON array. Deserialisation aborted.");
+     //           case END_OBJECT:
+      //              throw new IOException("Invalid JsonToken.END_OBJECT token read from deserialised JSON array. JSON array is being deserialised not a JSON object. This is not a valid JSON array. Deserialisation aborted.");
+                default:
+                    throw new IOException();
             }
         }
     }

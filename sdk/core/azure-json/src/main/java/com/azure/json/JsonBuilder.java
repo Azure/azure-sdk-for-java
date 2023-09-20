@@ -118,7 +118,8 @@ public class JsonBuilder {
                 // Invalid JsonToken token cases:
                 // NOTE: previous comment mentioned "In theory the reader takes care of this"
                 case END_ARRAY:
-                    throw new IOException("Invalid JsonToken.END_ARRAY token read from deserialised JSON. Deserialisation aborted.");
+                    break;
+      //              throw new IOException("Invalid JsonToken.END_ARRAY token read from deserialised JSON. Deserialisation aborted.");
                 case END_OBJECT:
                     throw new IOException("Invalid JsonToken.END_OBJECT token read from deserialised JSON. Deserialisation aborted.");
                 case FIELD_NAME:
@@ -141,9 +142,6 @@ public class JsonBuilder {
                     throw new IOException("Invalid token deserialised from JsonReader. Deserialisation aborted.");
             }
             token = reader.nextToken();
-            if (token == JsonToken.END_ARRAY){
-                System.out.println("You sneaky devil HOLY SHIT");
-            }
         }
         return output;
     }

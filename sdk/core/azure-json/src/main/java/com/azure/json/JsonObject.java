@@ -293,14 +293,29 @@ public class JsonObject extends JsonElement {
 //        return "{" + jsonOutput + "}";
 //    }
 
+
+    @Override
+    public JsonObject setProperty(String key, JsonElement element) throws IOException {
+        if (properties.containsKey(key)){
+            this.properties.replace(key, element);
+            return this;
+        } else {
+            throw new IOException("Key" + key + " does not currently exist");
+        }
+    }
+
     /**
      * @return boolean of whether this JsonElement object is of type JsonObject.
      */
 
     @Override
-    public JsonObject removeProperty(String key){
-        this.properties.remove(key);
-        return this;
+    public JsonObject removeProperty(String key) throws IOException {
+        if (properties.containsKey(key)){
+            this.properties.remove(key);
+            return this;
+        } else {
+            throw new IOException("Key" + key + " does not currently exist");
+        }
     }
 
 
@@ -406,8 +421,8 @@ public class JsonObject extends JsonElement {
                     throw new IOException("Invalid JsonToken.END_OBJECT token read prematurely from deserialised JSON object. Deserialisation aborted.");
                 // Case: the currently read token is a JsonToken.END_ARRAY token.
                 // JSON object is being deserialised, not a JSON array.
-                case END_ARRAY:
-                    throw new IOException("Invalid JsonToken.END_ARRAY token read from deserialised JSON object. JSON object is being deserialised not a JSON array. This is not a valid JSON object. Deserialisation aborted.");
+              //  case END_ARRAY:
+                 //   throw new IOException("Invalid JsonToken.END_ARRAY token read from deserialised JSON object. JSON object is being deserialised not a JSON array. This is not a valid JSON object. Deserialisation aborted.");
             }
             token = reader.nextToken();
         }
