@@ -10,13 +10,13 @@ import com.azure.communication.phonenumbers.models.PhoneNumberCountry;
 import com.azure.communication.phonenumbers.models.PhoneNumberLocality;
 import com.azure.communication.phonenumbers.models.PhoneNumberOffering;
 import com.azure.communication.phonenumbers.models.PhoneNumberOperation;
-import com.azure.communication.phonenumbers.models.PhoneNumberOperationStatus;
 import com.azure.communication.phonenumbers.models.PhoneNumberSearchOptions;
 import com.azure.communication.phonenumbers.models.PhoneNumberSearchResult;
 import com.azure.communication.phonenumbers.models.PhoneNumberType;
 import com.azure.communication.phonenumbers.models.PurchasePhoneNumbersResult;
 import com.azure.communication.phonenumbers.models.PurchasedPhoneNumber;
 import com.azure.communication.phonenumbers.models.ReleasePhoneNumberResult;
+import com.azure.communication.phonenumbers.models.PhoneNumberOperationStatus;
 import com.azure.core.http.HttpClient;
 import com.azure.core.http.rest.PagedIterable;
 import com.azure.core.http.rest.Response;
@@ -118,7 +118,7 @@ public class PhoneNumbersClientIntegrationTest extends PhoneNumbersIntegrationTe
         PollResponse<PhoneNumberOperation> response = poller.waitForCompletion();
         if (LongRunningOperationStatus.SUCCESSFULLY_COMPLETED == response.getStatus()) {
             PhoneNumberSearchResult searchResult = poller.getFinalResult();
-            String phoneNumber = searchResult.getPhoneNumbers().get(0);
+            String phoneNumber = redactIfPlaybackMode(searchResult.getPhoneNumbers().get(0));
             PollResponse<PhoneNumberOperation> purchaseOperationResponse = beginPurchasePhoneNumbersHelper(httpClient,
                     searchResult.getSearchId(), "beginPurchasePhoneNumbersWithoutContextSync", false)
                     .waitForCompletion();
@@ -140,7 +140,7 @@ public class PhoneNumbersClientIntegrationTest extends PhoneNumbersIntegrationTe
         PollResponse<PhoneNumberOperation> response = poller.waitForCompletion();
         if (LongRunningOperationStatus.SUCCESSFULLY_COMPLETED == response.getStatus()) {
             PhoneNumberSearchResult searchResult = poller.getFinalResult();
-            String phoneNumber = searchResult.getPhoneNumbers().get(0);
+            String phoneNumber = redactIfPlaybackMode(searchResult.getPhoneNumbers().get(0));
             PollResponse<PhoneNumberOperation> purchaseOperationResponse = beginPurchasePhoneNumbersHelper(httpClient,
                     searchResult.getSearchId(), "beginPurchasePhoneNumbersSync", true).waitForCompletion();
             assertEquals(LongRunningOperationStatus.SUCCESSFULLY_COMPLETED, purchaseOperationResponse.getStatus());
@@ -156,7 +156,7 @@ public class PhoneNumbersClientIntegrationTest extends PhoneNumbersIntegrationTe
     @MethodSource("com.azure.core.test.TestBase#getHttpClients")
     @DisabledIfEnvironmentVariable(named = "COMMUNICATION_SKIP_INT_PHONENUMBERS_TEST", matches = "(?i)(true)")
     public void beginUpdatePhoneNumberCapabilitiesWithoutContext(HttpClient httpClient) {
-        String phoneNumber = getTestPhoneNumber();
+        String phoneNumber = redactIfPlaybackMode(getTestPhoneNumber());
         PollResponse<PhoneNumberOperation> result = beginUpdatePhoneNumberCapabilitiesHelper(httpClient, phoneNumber,
                 "beginUpdatePhoneNumberCapabilitiesWithoutContextSync", false).waitForCompletion();
         assertEquals(LongRunningOperationStatus.SUCCESSFULLY_COMPLETED, result.getStatus());
@@ -168,7 +168,7 @@ public class PhoneNumbersClientIntegrationTest extends PhoneNumbersIntegrationTe
     @DisabledIfEnvironmentVariable(named = "COMMUNICATION_SKIP_INT_PHONENUMBERS_TEST", matches = "(?i)(true)")
     @DisabledIfEnvironmentVariable(named = "SKIP_UPDATE_CAPABILITIES_LIVE_TESTS", matches = "(?i)(true)")
     public void beginUpdatePhoneNumberCapabilities(HttpClient httpClient) {
-        String phoneNumber = getTestPhoneNumber();
+        String phoneNumber = redactIfPlaybackMode(getTestPhoneNumber());
         PollResponse<PhoneNumberOperation> result = beginUpdatePhoneNumberCapabilitiesHelper(httpClient, phoneNumber,
                 "beginUpdatePhoneNumberCapabilities", true).waitForCompletion();
         assertEquals(LongRunningOperationStatus.SUCCESSFULLY_COMPLETED, result.getStatus());
