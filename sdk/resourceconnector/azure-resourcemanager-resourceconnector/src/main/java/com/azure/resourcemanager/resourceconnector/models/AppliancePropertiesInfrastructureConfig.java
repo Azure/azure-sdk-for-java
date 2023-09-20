@@ -16,6 +16,10 @@ public final class AppliancePropertiesInfrastructureConfig {
     @JsonProperty(value = "provider")
     private Provider provider;
 
+    /** Creates an instance of AppliancePropertiesInfrastructureConfig class. */
+    public AppliancePropertiesInfrastructureConfig() {
+    }
+
     /**
      * Get the provider property: Information about the connected appliance.
      *

@@ -20,7 +20,7 @@ public class HandleReauthentication {
 
         // Fetch an Azure AD token to be used for authentication. This token will be used as the password.
         // Note: The Scopes parameter will change as the Azure AD Authentication support hits public preview and eventually GA's.
-        TokenRequestContext trc = new TokenRequestContext().addScopes("https://*.cacheinfra.windows.net:10225/appid/.default");
+        TokenRequestContext trc = new TokenRequestContext().addScopes("acca5fbb-b7e4-4009-81f1-37e38fd66d78/.default");
         AccessToken accessToken = getAccessToken(defaultAzureCredential, trc);
 
         // SSL connection is required.
@@ -58,7 +58,6 @@ public class HandleReauthentication {
 
         // Close the Jedis Client
         jedis.close();
-
     }
 
     // Helper Code

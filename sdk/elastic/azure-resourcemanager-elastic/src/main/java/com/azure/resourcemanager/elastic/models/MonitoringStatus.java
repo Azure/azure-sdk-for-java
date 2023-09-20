@@ -17,6 +17,15 @@ public final class MonitoringStatus extends ExpandableStringEnum<MonitoringStatu
     public static final MonitoringStatus DISABLED = fromString("Disabled");
 
     /**
+     * Creates a new instance of MonitoringStatus value.
+     *
+     * @deprecated Use the {@link #fromString(String)} factory method.
+     */
+    @Deprecated
+    public MonitoringStatus() {
+    }
+
+    /**
      * Creates or finds a MonitoringStatus from its string representation.
      *
      * @param name a name to look for.

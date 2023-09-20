@@ -36,7 +36,7 @@ public final class TagRulesListByNewRelicMonitorResourceMockTests {
         ArgumentCaptor<HttpRequest> httpRequest = ArgumentCaptor.forClass(HttpRequest.class);
 
         String responseStr =
-            "{\"value\":[{\"properties\":{\"provisioningState\":\"Failed\",\"logRules\":{\"sendAadLogs\":\"Disabled\",\"sendSubscriptionLogs\":\"Disabled\",\"sendActivityLogs\":\"Disabled\",\"filteringTags\":[]},\"metricRules\":{\"sendMetrics\":\"Enabled\",\"filteringTags\":[],\"userEmail\":\"fuflrwdmhdlx\"}},\"id\":\"rxsagafcnihgwqa\",\"name\":\"nedgfbc\",\"type\":\"kcvqvpke\"}]}";
+            "{\"value\":[{\"properties\":{\"provisioningState\":\"Deleting\",\"logRules\":{\"sendAadLogs\":\"Enabled\",\"sendSubscriptionLogs\":\"Disabled\",\"sendActivityLogs\":\"Disabled\",\"filteringTags\":[]},\"metricRules\":{\"sendMetrics\":\"Enabled\",\"filteringTags\":[],\"userEmail\":\"brh\"}},\"id\":\"xsdqrhzoymibmrqy\",\"name\":\"bahwfl\",\"type\":\"szdtmhrkwof\"}]}";
 
         Mockito.when(httpResponse.getStatusCode()).thenReturn(200);
         Mockito.when(httpResponse.getHeaders()).thenReturn(new HttpHeaders());
@@ -65,17 +65,15 @@ public final class TagRulesListByNewRelicMonitorResourceMockTests {
                     new AzureProfile("", "", AzureEnvironment.AZURE));
 
         PagedIterable<TagRule> response =
-            manager
-                .tagRules()
-                .listByNewRelicMonitorResource("wdsjnkalju", "iiswacffgdkzze", com.azure.core.util.Context.NONE);
+            manager.tagRules().listByNewRelicMonitorResource("helxprglya", "dd", com.azure.core.util.Context.NONE);
 
-        Assertions.assertEquals(SendAadLogsStatus.DISABLED, response.iterator().next().logRules().sendAadLogs());
+        Assertions.assertEquals(SendAadLogsStatus.ENABLED, response.iterator().next().logRules().sendAadLogs());
         Assertions
             .assertEquals(
                 SendSubscriptionLogsStatus.DISABLED, response.iterator().next().logRules().sendSubscriptionLogs());
         Assertions
             .assertEquals(SendActivityLogsStatus.DISABLED, response.iterator().next().logRules().sendActivityLogs());
         Assertions.assertEquals(SendMetricsStatus.ENABLED, response.iterator().next().metricRules().sendMetrics());
-        Assertions.assertEquals("fuflrwdmhdlx", response.iterator().next().metricRules().userEmail());
+        Assertions.assertEquals("brh", response.iterator().next().metricRules().userEmail());
     }
 }

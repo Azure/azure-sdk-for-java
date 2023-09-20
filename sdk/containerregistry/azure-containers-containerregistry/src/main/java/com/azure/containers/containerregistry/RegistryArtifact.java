@@ -244,7 +244,7 @@ public final class RegistryArtifact {
 
             return new SimpleResponse<>(internalResponse,
                 ArtifactManifestPropertiesHelper.create(internalResponse.getValue()));
-        } catch (HttpResponseException exception) {
+        } catch (AcrErrorsException exception) {
             throw LOGGER.logExceptionAsError(mapAcrErrorsException(exception));
         }
     }

@@ -9,9 +9,10 @@ import org.junit.jupiter.api.Test;
 
 import static org.junit.jupiter.api.Assertions.assertFalse;
 import static org.junit.jupiter.api.Assertions.assertNotNull;
+import static org.junit.jupiter.api.Assertions.assertSame;
 import static org.junit.jupiter.api.Assertions.assertThrows;
 
-public class OpenTelemetryTracerProviderTests { 
+public class OpenTelemetryTracerProviderTests {
     @Test
     public void noopTracer() {
         Tracer tracer = TracerProvider.getDefaultProvider().createTracer("foo", null, null, null);
@@ -22,5 +23,10 @@ public class OpenTelemetryTracerProviderTests {
     @Test
     public void invalidParams() {
         assertThrows(NullPointerException.class, () -> TracerProvider.getDefaultProvider().createTracer(null, null, null, null));
+    }
+
+    @Test
+    public void getProviderReturnsOtelProvider() {
+        assertSame(OpenTelemetryTracerProvider.class, new OpenTelemetryTracingOptions().getTracerProvider());
     }
 }

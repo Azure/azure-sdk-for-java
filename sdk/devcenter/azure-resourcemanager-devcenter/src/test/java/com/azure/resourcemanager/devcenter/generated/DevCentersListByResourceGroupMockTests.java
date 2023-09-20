@@ -12,7 +12,6 @@ import com.azure.core.http.HttpResponse;
 import com.azure.core.http.rest.PagedIterable;
 import com.azure.core.management.AzureEnvironment;
 import com.azure.core.management.profile.AzureProfile;
-import com.azure.core.util.Context;
 import com.azure.resourcemanager.devcenter.DevCenterManager;
 import com.azure.resourcemanager.devcenter.models.DevCenter;
 import com.azure.resourcemanager.devcenter.models.ManagedServiceIdentityType;
@@ -34,7 +33,7 @@ public final class DevCentersListByResourceGroupMockTests {
         ArgumentCaptor<HttpRequest> httpRequest = ArgumentCaptor.forClass(HttpRequest.class);
 
         String responseStr =
-            "{\"value\":[{\"properties\":{\"provisioningState\":\"NotSpecified\",\"devCenterUri\":\"hfwpracstwit\"},\"identity\":{\"principalId\":\"4158bb19-2a5e-4ace-8f80-ae7740871014\",\"tenantId\":\"b3be5ba5-4938-487f-b793-6fb806b904c1\",\"type\":\"SystemAssigned\",\"userAssignedIdentities\":{}},\"location\":\"edcpnmdyodnwzxl\",\"tags\":{\"avvwxqi\":\"vnhltiugcx\",\"unyowxwl\":\"y\",\"odacizs\":\"djrkvfgbvfvpd\"},\"id\":\"q\",\"name\":\"hkr\",\"type\":\"ibdeibq\"}]}";
+            "{\"value\":[{\"properties\":{\"provisioningState\":\"Deleted\",\"devCenterUri\":\"ljagrqmqhl\"},\"identity\":{\"principalId\":\"7296589f-b0cf-40ce-ab12-e9d0fed9b3b8\",\"tenantId\":\"fe414ed4-0140-41b4-95e4-8508c98a7a7d\",\"type\":\"SystemAssigned\",\"userAssignedIdentities\":{}},\"location\":\"nalghfkvtvsexso\",\"tags\":{\"hmzk\":\"luqhhahhxv\"},\"id\":\"pjgwwspug\",\"name\":\"ftqsxhqxujxuk\",\"type\":\"dxdigr\"}]}";
 
         Mockito.when(httpResponse.getStatusCode()).thenReturn(200);
         Mockito.when(httpResponse.getHeaders()).thenReturn(new HttpHeaders());
@@ -62,10 +61,11 @@ public final class DevCentersListByResourceGroupMockTests {
                     tokenRequestContext -> Mono.just(new AccessToken("this_is_a_token", OffsetDateTime.MAX)),
                     new AzureProfile("", "", AzureEnvironment.AZURE));
 
-        PagedIterable<DevCenter> response = manager.devCenters().listByResourceGroup("swibyr", 403427600, Context.NONE);
+        PagedIterable<DevCenter> response =
+            manager.devCenters().listByResourceGroup("dhszfjv", 29574674, com.azure.core.util.Context.NONE);
 
-        Assertions.assertEquals("edcpnmdyodnwzxl", response.iterator().next().location());
-        Assertions.assertEquals("vnhltiugcx", response.iterator().next().tags().get("avvwxqi"));
+        Assertions.assertEquals("nalghfkvtvsexso", response.iterator().next().location());
+        Assertions.assertEquals("luqhhahhxv", response.iterator().next().tags().get("hmzk"));
         Assertions
             .assertEquals(ManagedServiceIdentityType.SYSTEM_ASSIGNED, response.iterator().next().identity().type());
     }

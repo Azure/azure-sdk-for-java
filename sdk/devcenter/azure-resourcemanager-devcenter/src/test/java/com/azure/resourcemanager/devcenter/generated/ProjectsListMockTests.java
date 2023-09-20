@@ -12,7 +12,6 @@ import com.azure.core.http.HttpResponse;
 import com.azure.core.http.rest.PagedIterable;
 import com.azure.core.management.AzureEnvironment;
 import com.azure.core.management.profile.AzureProfile;
-import com.azure.core.util.Context;
 import com.azure.resourcemanager.devcenter.DevCenterManager;
 import com.azure.resourcemanager.devcenter.models.Project;
 import java.nio.ByteBuffer;
@@ -33,7 +32,7 @@ public final class ProjectsListMockTests {
         ArgumentCaptor<HttpRequest> httpRequest = ArgumentCaptor.forClass(HttpRequest.class);
 
         String responseStr =
-            "{\"value\":[{\"properties\":{\"provisioningState\":\"Creating\",\"devCenterUri\":\"z\",\"devCenterId\":\"gamv\",\"description\":\"ho\"},\"location\":\"qzudphq\",\"tags\":{\"nwcvtbvkayhmtnv\":\"dkfw\",\"zcjaesgvvsccy\":\"qiatkzwpcnp\",\"hwyg\":\"jguq\",\"semdwzrmu\":\"lvdnkfx\"},\"id\":\"apfcqdpsq\",\"name\":\"qvpsvuoymg\",\"type\":\"celve\"}]}";
+            "{\"value\":[{\"properties\":{\"provisioningState\":\"Updated\",\"devCenterUri\":\"glikkxwslolb\",\"devCenterId\":\"vuzlm\",\"description\":\"elfk\",\"maxDevBoxesPerUser\":1554558708},\"location\":\"crpw\",\"tags\":{\"w\":\"znoigbrn\",\"jjoqkagf\":\"wkpnbsaz\"},\"id\":\"sxtta\",\"name\":\"gzxnfaazpxdtnk\",\"type\":\"mkqjj\"}]}";
 
         Mockito.when(httpResponse.getStatusCode()).thenReturn(200);
         Mockito.when(httpResponse.getHeaders()).thenReturn(new HttpHeaders());
@@ -61,11 +60,12 @@ public final class ProjectsListMockTests {
                     tokenRequestContext -> Mono.just(new AccessToken("this_is_a_token", OffsetDateTime.MAX)),
                     new AzureProfile("", "", AzureEnvironment.AZURE));
 
-        PagedIterable<Project> response = manager.projects().list(1001527531, Context.NONE);
+        PagedIterable<Project> response = manager.projects().list(1090066080, com.azure.core.util.Context.NONE);
 
-        Assertions.assertEquals("qzudphq", response.iterator().next().location());
-        Assertions.assertEquals("dkfw", response.iterator().next().tags().get("nwcvtbvkayhmtnv"));
-        Assertions.assertEquals("gamv", response.iterator().next().devCenterId());
-        Assertions.assertEquals("ho", response.iterator().next().description());
+        Assertions.assertEquals("crpw", response.iterator().next().location());
+        Assertions.assertEquals("znoigbrn", response.iterator().next().tags().get("w"));
+        Assertions.assertEquals("vuzlm", response.iterator().next().devCenterId());
+        Assertions.assertEquals("elfk", response.iterator().next().description());
+        Assertions.assertEquals(1554558708, response.iterator().next().maxDevBoxesPerUser());
     }
 }

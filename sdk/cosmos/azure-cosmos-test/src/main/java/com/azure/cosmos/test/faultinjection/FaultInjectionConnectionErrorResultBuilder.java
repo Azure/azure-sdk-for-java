@@ -41,7 +41,7 @@ public final class FaultInjectionConnectionErrorResultBuilder {
      * @return the builder.
      */
     public FaultInjectionConnectionErrorResultBuilder threshold(double threshold) {
-        checkArgument(threshold > 0 && threshold <= 1, "Argument 'threshold' should be between [0, 1)");
+        checkArgument(threshold > 0 && threshold <= 1, "Argument 'threshold' should be between (0, 1]");
         this.threshold = threshold;
         return this;
     }

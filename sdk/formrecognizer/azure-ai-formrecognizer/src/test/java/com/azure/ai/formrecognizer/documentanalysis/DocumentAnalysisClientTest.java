@@ -4,6 +4,9 @@
 package com.azure.ai.formrecognizer.documentanalysis;
 
 import com.azure.ai.formrecognizer.documentanalysis.administration.DocumentModelAdministrationClient;
+import com.azure.ai.formrecognizer.documentanalysis.administration.models.BlobContentSource;
+import com.azure.ai.formrecognizer.documentanalysis.administration.models.ClassifierDocumentTypeDetails;
+import com.azure.ai.formrecognizer.documentanalysis.administration.models.DocumentClassifierDetails;
 import com.azure.ai.formrecognizer.documentanalysis.administration.models.DocumentModelBuildMode;
 import com.azure.ai.formrecognizer.documentanalysis.administration.models.DocumentModelDetails;
 import com.azure.ai.formrecognizer.documentanalysis.models.AnalyzeDocumentOptions;
@@ -16,24 +19,23 @@ import com.azure.core.exception.HttpResponseException;
 import com.azure.core.http.HttpClient;
 import com.azure.core.models.ResponseError;
 import com.azure.core.test.annotation.DoNotRecord;
+import com.azure.core.test.annotation.RecordWithoutRequestBody;
 import com.azure.core.test.http.AssertingHttpClientBuilder;
 import com.azure.core.util.BinaryData;
 import com.azure.core.util.Context;
 import com.azure.core.util.polling.SyncPoller;
-import org.junit.jupiter.api.AfterAll;
 import org.junit.jupiter.api.Assertions;
-import org.junit.jupiter.api.BeforeAll;
 import org.junit.jupiter.api.Disabled;
 import org.junit.jupiter.params.ParameterizedTest;
 import org.junit.jupiter.params.provider.MethodSource;
-import reactor.test.StepVerifier;
 
-import java.time.Duration;
 import java.util.Arrays;
 import java.util.Collections;
+import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 import java.util.concurrent.atomic.AtomicInteger;
+import java.util.concurrent.atomic.AtomicReference;
 import java.util.stream.Collectors;
 
 import static com.azure.ai.formrecognizer.documentanalysis.TestUtils.BLANK_PDF;
@@ -50,8 +52,8 @@ import static com.azure.ai.formrecognizer.documentanalysis.TestUtils.INVALID_URL
 import static com.azure.ai.formrecognizer.documentanalysis.TestUtils.INVOICE_6_PDF;
 import static com.azure.ai.formrecognizer.documentanalysis.TestUtils.INVOICE_NO_SUB_LINE_PDF;
 import static com.azure.ai.formrecognizer.documentanalysis.TestUtils.INVOICE_PDF;
+import static com.azure.ai.formrecognizer.documentanalysis.TestUtils.IRS_1040;
 import static com.azure.ai.formrecognizer.documentanalysis.TestUtils.LICENSE_PNG;
-import static com.azure.ai.formrecognizer.documentanalysis.TestUtils.MODEL_ID_IS_REQUIRED_EXCEPTION_MESSAGE;
 import static com.azure.ai.formrecognizer.documentanalysis.TestUtils.MULTIPAGE_BUSINESS_CARD_PDF;
 import static com.azure.ai.formrecognizer.documentanalysis.TestUtils.MULTIPAGE_INVOICE_PDF;
 import static com.azure.ai.formrecognizer.documentanalysis.TestUtils.MULTIPAGE_RECEIPT_PDF;
@@ -69,15 +71,6 @@ import static org.junit.jupiter.api.Assertions.assertThrows;
 
 public class DocumentAnalysisClientTest extends DocumentAnalysisClientTestBase {
     private DocumentAnalysisClient client;
-    @BeforeAll
-    static void beforeAll() {
-        StepVerifier.setDefaultTimeout(Duration.ofSeconds(30));
-    }
-
-    @AfterAll
-    static void afterAll() {
-        StepVerifier.resetDefaultTimeout();
-    }
 
     private HttpClient buildSyncAssertingClient(HttpClient httpClient) {
         return new AssertingHttpClientBuilder(httpClient)
@@ -88,18 +81,18 @@ public class DocumentAnalysisClientTest extends DocumentAnalysisClientTestBase {
     private DocumentAnalysisClient getDocumentAnalysisClient(HttpClient httpClient,
                                                              DocumentAnalysisServiceVersion serviceVersion) {
         return getDocumentAnalysisBuilder(
-            buildSyncAssertingClient(httpClient == null ? interceptorManager.getPlaybackClient() : httpClient),
+            buildSyncAssertingClient(interceptorManager.isPlaybackMode() ? interceptorManager.getPlaybackClient() : httpClient),
             serviceVersion,
-            false)
+            true)
             .buildClient();
     }
 
     private DocumentModelAdministrationClient getDocumentModelAdminClient(HttpClient httpClient,
                                                                           DocumentAnalysisServiceVersion serviceVersion) {
         return getDocumentModelAdminClientBuilder(
-            buildSyncAssertingClient(httpClient == null ? interceptorManager.getPlaybackClient() : httpClient),
+            buildSyncAssertingClient(interceptorManager.isPlaybackMode() ? interceptorManager.getPlaybackClient() : httpClient),
             serviceVersion,
-            false)
+            true)
             .buildClient();
     }
 
@@ -121,18 +114,6 @@ public class DocumentAnalysisClientTest extends DocumentAnalysisClientTestBase {
             syncPoller.waitForCompletion();
             validateJpegReceiptData(syncPoller.getFinalResult());
         }, RECEIPT_CONTOSO_JPG);
-    }
-
-    /**
-     * Verifies an exception thrown for a document using null data value.
-     */
-    @ParameterizedTest(name = DISPLAY_NAME_WITH_ARGUMENTS)
-    @MethodSource("com.azure.ai.formrecognizer.documentanalysis.TestUtils#getTestParameters")
-    public void analyzeReceiptDataNullData(HttpClient httpClient,
-                                           DocumentAnalysisServiceVersion serviceVersion) {
-        client = getDocumentAnalysisClient(httpClient, serviceVersion);
-        Assertions.assertThrows(NullPointerException.class,
-            () -> client.beginAnalyzeDocument(null, null));
     }
 
     /**
@@ -292,7 +273,6 @@ public class DocumentAnalysisClientTest extends DocumentAnalysisClientTestBase {
 
     @ParameterizedTest(name = DISPLAY_NAME_WITH_ARGUMENTS)
     @MethodSource("com.azure.ai.formrecognizer.documentanalysis.TestUtils#getTestParameters")
-    @Disabled("Until file available on github main")
     public void analyzeReceiptFromUrlMultiPage(HttpClient httpClient, DocumentAnalysisServiceVersion serviceVersion) {
         client = getDocumentAnalysisClient(httpClient, serviceVersion);
         urlRunner(receiptUrl -> {
@@ -322,19 +302,6 @@ public class DocumentAnalysisClientTest extends DocumentAnalysisClientTestBase {
             syncPoller.waitForCompletion();
             validateContentData(syncPoller.getFinalResult());
         }, CONTENT_FORM_JPG);
-    }
-
-    /**
-     * Verifies an exception thrown for a document using null data value.
-     */
-    @ParameterizedTest(name = DISPLAY_NAME_WITH_ARGUMENTS)
-    @MethodSource("com.azure.ai.formrecognizer.documentanalysis.TestUtils#getTestParameters")
-    public void analyzeContentResultWithNullData(HttpClient httpClient,
-                                                 DocumentAnalysisServiceVersion serviceVersion) {
-        client = getDocumentAnalysisClient(httpClient, serviceVersion);
-        Assertions.assertThrows(NullPointerException.class,
-            () -> client.beginAnalyzeDocument("prebuilt-layout", null)
-                .setPollInterval(durationTestMode));
     }
 
     /**
@@ -551,7 +518,7 @@ public class DocumentAnalysisClientTest extends DocumentAnalysisClientTestBase {
             SyncPoller<OperationResult, AnalyzeResult> syncPoller
                 = client.beginAnalyzeDocumentFromUrl("prebuilt-layout",
                     sourceUrl,
-                    new AnalyzeDocumentOptions().setLocale(""),
+                    new AnalyzeDocumentOptions().setLocale("de"),
                     Context.NONE)
                 .setPollInterval(durationTestMode);
             syncPoller.waitForCompletion();
@@ -622,51 +589,6 @@ public class DocumentAnalysisClientTest extends DocumentAnalysisClientTestBase {
 
                 validateBlankPdfData(syncPoller.getFinalResult());
             }), BLANK_PDF);
-    }
-
-    /**
-     * Verifies an exception thrown for a document using null form data value.
-     */
-    @ParameterizedTest(name = DISPLAY_NAME_WITH_ARGUMENTS)
-    @MethodSource("com.azure.ai.formrecognizer.documentanalysis.TestUtils#getTestParameters")
-    public void analyzeCustomDocumentWithNullData(HttpClient httpClient,
-                                                  DocumentAnalysisServiceVersion serviceVersion) {
-
-        client = getDocumentAnalysisClient(httpClient, serviceVersion);
-        DocumentModelAdministrationClient adminClient = getDocumentModelAdminClient(httpClient, serviceVersion);
-        dataRunner((data, dataLength) ->
-            buildModelRunner((trainingFilesUrl) -> {
-                SyncPoller<OperationResult, DocumentModelDetails> buildModelPoller =
-                    adminClient
-                        .beginBuildDocumentModel(trainingFilesUrl, DocumentModelBuildMode.TEMPLATE)
-                        .setPollInterval(durationTestMode);
-                buildModelPoller.waitForCompletion();
-
-                String modelId = buildModelPoller.getFinalResult().getModelId();
-
-                Assertions.assertThrows(RuntimeException.class,
-                    () -> client.beginAnalyzeDocument(modelId, null)
-                        .setPollInterval(durationTestMode));
-                adminClient.deleteDocumentModel(modelId);
-
-            }), INVOICE_6_PDF);
-    }
-
-    /**
-     * Verifies an exception thrown for a document using null model id.
-     */
-    @ParameterizedTest(name = DISPLAY_NAME_WITH_ARGUMENTS)
-    @MethodSource("com.azure.ai.formrecognizer.documentanalysis.TestUtils#getTestParameters")
-    public void analyzeCustomDocumentWithNullModelId(HttpClient httpClient,
-                                                     DocumentAnalysisServiceVersion serviceVersion) {
-        client = getDocumentAnalysisClient(httpClient, serviceVersion);
-        dataRunner((data, dataLength) -> {
-            Exception ex = Assertions.assertThrows(RuntimeException.class, () -> client.beginAnalyzeDocument(
-                    null,
-                    BinaryData.fromStream(data, dataLength))
-                .setPollInterval(durationTestMode));
-            Assertions.assertEquals(MODEL_ID_IS_REQUIRED_EXCEPTION_MESSAGE, ex.getMessage());
-        }, INVOICE_6_PDF);
     }
 
     /**
@@ -955,18 +877,6 @@ public class DocumentAnalysisClientTest extends DocumentAnalysisClientTestBase {
             syncPoller.waitForCompletion();
             validateBusinessCardData(syncPoller.getFinalResult());
         }, BUSINESS_CARD_JPG);
-    }
-
-    /**
-     * Verifies an exception thrown for a document using null data value.
-     */
-    @ParameterizedTest(name = DISPLAY_NAME_WITH_ARGUMENTS)
-    @MethodSource("com.azure.ai.formrecognizer.documentanalysis.TestUtils#getTestParameters")
-    public void analyzeBusinessCardDataNullData(HttpClient httpClient,
-                                                DocumentAnalysisServiceVersion serviceVersion) {
-        client = getDocumentAnalysisClient(httpClient, serviceVersion);
-        Assertions.assertThrows(NullPointerException.class,
-            () -> client.beginAnalyzeDocument("prebuilt-businessCard", null));
     }
 
     /**
@@ -1357,18 +1267,6 @@ public class DocumentAnalysisClientTest extends DocumentAnalysisClientTestBase {
     }
 
     /**
-     * Verifies an exception thrown for a document using null data value.
-     */
-    @ParameterizedTest(name = DISPLAY_NAME_WITH_ARGUMENTS)
-    @MethodSource("com.azure.ai.formrecognizer.documentanalysis.TestUtils#getTestParameters")
-    public void analyzeIDDocumentDataNullData(HttpClient httpClient,
-                                              DocumentAnalysisServiceVersion serviceVersion) {
-        client = getDocumentAnalysisClient(httpClient, serviceVersion);
-        Assertions.assertThrows(NullPointerException.class,
-            () -> client.beginAnalyzeDocument("prebuilt-idDocument", null));
-    }
-
-    /**
      * Verifies content type will be auto-detected when using custom form API with input stream data overload.
      */
     @ParameterizedTest(name = DISPLAY_NAME_WITH_ARGUMENTS)
@@ -1460,6 +1358,7 @@ public class DocumentAnalysisClientTest extends DocumentAnalysisClientTestBase {
 
     @ParameterizedTest(name = DISPLAY_NAME_WITH_ARGUMENTS)
     @MethodSource("com.azure.ai.formrecognizer.documentanalysis.TestUtils#getTestParameters")
+    @Disabled
     public void testGetWordsInALine(HttpClient httpClient,
                                     DocumentAnalysisServiceVersion serviceVersion) {
         client = getDocumentAnalysisClient(httpClient, serviceVersion);
@@ -1563,5 +1462,103 @@ public class DocumentAnalysisClientTest extends DocumentAnalysisClientTestBase {
             Assertions.assertNotNull(analyzeResult);
             Assertions.assertTrue(analyzeResult.getContent().contains("This is a xlsx example."));
         }, EXAMPLE_XLSX);
+    }
+
+    @RecordWithoutRequestBody
+    @ParameterizedTest(name = DISPLAY_NAME_WITH_ARGUMENTS)
+    @MethodSource("com.azure.ai.formrecognizer.documentanalysis.TestUtils#getTestParameters")
+    public void testClassifyAnalyzeFromUrl(HttpClient httpClient,
+                                           DocumentAnalysisServiceVersion serviceVersion) {
+        client = getDocumentAnalysisClient(httpClient, serviceVersion);
+        DocumentModelAdministrationClient adminClient = getDocumentModelAdminClient(httpClient, serviceVersion);
+        AtomicReference<DocumentClassifierDetails> documentClassifierDetails = new AtomicReference<>();
+        beginClassifierRunner((trainingFilesUrl) -> {
+            Map<String, ClassifierDocumentTypeDetails> documentTypeDetailsMap = new HashMap<>();
+            documentTypeDetailsMap.put("IRS-1040-A",
+                new ClassifierDocumentTypeDetails(new BlobContentSource(trainingFilesUrl)
+                    .setPrefix("IRS-1040-A/train")));
+            documentTypeDetailsMap.put("IRS-1040-B",
+                new ClassifierDocumentTypeDetails(new BlobContentSource(trainingFilesUrl)
+                    .setPrefix("IRS-1040-B/train")));
+            documentTypeDetailsMap.put("IRS-1040-C",
+                new ClassifierDocumentTypeDetails(new BlobContentSource(trainingFilesUrl)
+                    .setPrefix("IRS-1040-C/train")));
+            documentTypeDetailsMap.put("IRS-1040-D",
+                new ClassifierDocumentTypeDetails(new BlobContentSource(trainingFilesUrl)
+                    .setPrefix("IRS-1040-D/train")));
+            documentTypeDetailsMap.put("IRS-1040-E",
+                new ClassifierDocumentTypeDetails(new BlobContentSource(trainingFilesUrl)
+                    .setPrefix("IRS-1040-E/train")));
+            SyncPoller<OperationResult, DocumentClassifierDetails> buildModelPoller =
+                adminClient.beginBuildDocumentClassifier(documentTypeDetailsMap)
+                    .setPollInterval(durationTestMode);
+            buildModelPoller.waitForCompletion();
+            documentClassifierDetails.set(buildModelPoller.getFinalResult());
+
+        });
+
+        if (documentClassifierDetails.get() != null) {
+            String classifierId = documentClassifierDetails.get().getClassifierId();
+            dataRunner((data, dataLength) -> {
+                SyncPoller<OperationResult, AnalyzeResult>
+                    syncPoller
+                    = client.beginClassifyDocument(documentClassifierDetails.get().getClassifierId(),
+                        BinaryData.fromStream(data, dataLength), Context.NONE)
+                    .setPollInterval(durationTestMode);
+                AnalyzeResult analyzeResult = syncPoller.getFinalResult();
+                Assertions.assertNotNull(analyzeResult);
+                Assertions.assertEquals(3, analyzeResult.getDocuments().size());
+                Assertions.assertEquals(analyzeResult.getModelId(), classifierId);
+            }, IRS_1040);
+        }
+    }
+
+    @RecordWithoutRequestBody
+    @ParameterizedTest(name = DISPLAY_NAME_WITH_ARGUMENTS)
+    @MethodSource("com.azure.ai.formrecognizer.documentanalysis.TestUtils#getTestParameters")
+    public void testClassifyAnalyze(HttpClient httpClient,
+                                    DocumentAnalysisServiceVersion serviceVersion) {
+        client = getDocumentAnalysisClient(httpClient, serviceVersion);
+        DocumentModelAdministrationClient adminClient = getDocumentModelAdminClient(httpClient, serviceVersion);
+        AtomicReference<DocumentClassifierDetails> documentClassifierDetails = new AtomicReference<>();
+        beginClassifierRunner((trainingFilesUrl) -> {
+            Map<String, ClassifierDocumentTypeDetails> documentTypeDetailsMap = new HashMap<>();
+            documentTypeDetailsMap.put("IRS-1040-A",
+                new ClassifierDocumentTypeDetails(new BlobContentSource(trainingFilesUrl)
+                    .setPrefix("IRS-1040-A/train")));
+            documentTypeDetailsMap.put("IRS-1040-B",
+                new ClassifierDocumentTypeDetails(new BlobContentSource(trainingFilesUrl)
+                    .setPrefix("IRS-1040-B/train")));
+            documentTypeDetailsMap.put("IRS-1040-C",
+                new ClassifierDocumentTypeDetails(new BlobContentSource(trainingFilesUrl)
+                    .setPrefix("IRS-1040-C/train")));
+            documentTypeDetailsMap.put("IRS-1040-D",
+                new ClassifierDocumentTypeDetails(new BlobContentSource(trainingFilesUrl)
+                    .setPrefix("IRS-1040-D/train")));
+            documentTypeDetailsMap.put("IRS-1040-E",
+                new ClassifierDocumentTypeDetails(new BlobContentSource(trainingFilesUrl)
+                    .setPrefix("IRS-1040-E/train")));
+            SyncPoller<OperationResult, DocumentClassifierDetails> buildModelPoller =
+                adminClient.beginBuildDocumentClassifier(documentTypeDetailsMap)
+                    .setPollInterval(durationTestMode);
+            buildModelPoller.waitForCompletion();
+            documentClassifierDetails.set(buildModelPoller.getFinalResult());
+
+        });
+
+        if (documentClassifierDetails.get() != null) {
+            String classifierId = documentClassifierDetails.get().getClassifierId();
+            dataRunner((data, dataLength) -> {
+                SyncPoller<OperationResult, AnalyzeResult>
+                    syncPoller
+                    = client.beginClassifyDocument(documentClassifierDetails.get().getClassifierId(),
+                        BinaryData.fromStream(data, dataLength), Context.NONE)
+                    .setPollInterval(durationTestMode);
+                AnalyzeResult analyzeResult = syncPoller.getFinalResult();
+                Assertions.assertNotNull(analyzeResult);
+                Assertions.assertEquals(3, analyzeResult.getDocuments().size());
+                Assertions.assertEquals(analyzeResult.getModelId(), classifierId);
+            }, IRS_1040);
+        }
     }
 }

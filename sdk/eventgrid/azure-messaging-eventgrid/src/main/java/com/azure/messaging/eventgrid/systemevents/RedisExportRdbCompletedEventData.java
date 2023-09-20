@@ -29,6 +29,9 @@ public final class RedisExportRdbCompletedEventData {
     @JsonProperty(value = "status")
     private String status;
 
+    /** Creates an instance of RedisExportRdbCompletedEventData class. */
+    public RedisExportRdbCompletedEventData() {}
+
     /**
      * Get the timestamp property: The time at which the event occurred.
      *

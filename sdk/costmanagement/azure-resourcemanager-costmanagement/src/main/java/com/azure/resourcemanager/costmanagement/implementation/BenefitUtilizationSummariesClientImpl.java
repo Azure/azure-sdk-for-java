@@ -61,8 +61,7 @@ public final class BenefitUtilizationSummariesClientImpl implements BenefitUtili
     public interface BenefitUtilizationSummariesService {
         @Headers({"Content-Type: application/json"})
         @Get(
-            "/providers/Microsoft.Billing/billingAccounts/{billingAccountId}/providers/Microsoft.CostManagement"
-                + "/benefitUtilizationSummaries")
+            "/providers/Microsoft.Billing/billingAccounts/{billingAccountId}/providers/Microsoft.CostManagement/benefitUtilizationSummaries")
         @ExpectedResponses({200})
         @UnexpectedResponseExceptionType(ManagementException.class)
         Mono<Response<BenefitUtilizationSummariesListResult>> listByBillingAccountId(
@@ -76,8 +75,7 @@ public final class BenefitUtilizationSummariesClientImpl implements BenefitUtili
 
         @Headers({"Content-Type: application/json"})
         @Get(
-            "/providers/Microsoft.Billing/billingAccounts/{billingAccountId}/billingProfiles/{billingProfileId}"
-                + "/providers/Microsoft.CostManagement/benefitUtilizationSummaries")
+            "/providers/Microsoft.Billing/billingAccounts/{billingAccountId}/billingProfiles/{billingProfileId}/providers/Microsoft.CostManagement/benefitUtilizationSummaries")
         @ExpectedResponses({200})
         @UnexpectedResponseExceptionType(ManagementException.class)
         Mono<Response<BenefitUtilizationSummariesListResult>> listByBillingProfileId(
@@ -92,8 +90,7 @@ public final class BenefitUtilizationSummariesClientImpl implements BenefitUtili
 
         @Headers({"Content-Type: application/json"})
         @Get(
-            "/providers/Microsoft.BillingBenefits/savingsPlanOrders/{savingsPlanOrderId}/providers"
-                + "/Microsoft.CostManagement/benefitUtilizationSummaries")
+            "/providers/Microsoft.BillingBenefits/savingsPlanOrders/{savingsPlanOrderId}/providers/Microsoft.CostManagement/benefitUtilizationSummaries")
         @ExpectedResponses({200})
         @UnexpectedResponseExceptionType(ManagementException.class)
         Mono<Response<BenefitUtilizationSummariesListResult>> listBySavingsPlanOrder(
@@ -107,8 +104,7 @@ public final class BenefitUtilizationSummariesClientImpl implements BenefitUtili
 
         @Headers({"Content-Type: application/json"})
         @Get(
-            "/providers/Microsoft.BillingBenefits/savingsPlanOrders/{savingsPlanOrderId}/savingsPlans/{savingsPlanId}"
-                + "/providers/Microsoft.CostManagement/benefitUtilizationSummaries")
+            "/providers/Microsoft.BillingBenefits/savingsPlanOrders/{savingsPlanOrderId}/savingsPlans/{savingsPlanId}/providers/Microsoft.CostManagement/benefitUtilizationSummaries")
         @ExpectedResponses({200})
         @UnexpectedResponseExceptionType(ManagementException.class)
         Mono<Response<BenefitUtilizationSummariesListResult>> listBySavingsPlanId(

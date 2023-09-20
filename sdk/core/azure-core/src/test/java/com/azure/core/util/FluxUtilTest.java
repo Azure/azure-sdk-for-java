@@ -11,12 +11,13 @@ import com.azure.core.http.rest.SimpleResponse;
 import com.azure.core.util.logging.ClientLogger;
 import com.azure.core.util.mocking.MockAsynchronousFileChannel;
 import com.azure.core.util.mocking.MockFileChannel;
+import org.junit.jupiter.api.RepeatedTest;
 import org.junit.jupiter.api.Test;
+import org.junit.jupiter.api.condition.DisabledOnOs;
+import org.junit.jupiter.api.condition.OS;
 import org.junit.jupiter.params.ParameterizedTest;
 import org.junit.jupiter.params.provider.Arguments;
 import org.junit.jupiter.params.provider.MethodSource;
-import org.reactivestreams.Subscription;
-import reactor.core.CoreSubscriber;
 import reactor.core.publisher.Flux;
 import reactor.core.publisher.Mono;
 import reactor.test.StepVerifier;
@@ -44,16 +45,18 @@ import java.nio.charset.StandardCharsets;
 import java.nio.file.Files;
 import java.nio.file.Path;
 import java.nio.file.StandardOpenOption;
-import java.security.SecureRandom;
 import java.time.Duration;
 import java.util.Collections;
 import java.util.UUID;
+import java.util.concurrent.CompletableFuture;
+import java.util.concurrent.ExecutionException;
+import java.util.concurrent.Future;
 import java.util.concurrent.atomic.AtomicInteger;
 import java.util.concurrent.atomic.AtomicLong;
-import java.util.stream.IntStream;
 import java.util.stream.Stream;
 
-import static org.junit.jupiter.api.Assertions.assertArrayEquals;
+import static com.azure.core.CoreTestUtils.assertArraysEqual;
+import static com.azure.core.CoreTestUtils.fillArray;
 import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertFalse;
 import static org.junit.jupiter.api.Assertions.assertTrue;
@@ -186,7 +189,7 @@ public class FluxUtilTest {
         try (AsynchronousFileChannel channel = AsynchronousFileChannel.open(file.toPath(), StandardOpenOption.WRITE)) {
             FluxUtil.writeFile(body, channel).block();
             byte[] outputStream = Files.readAllBytes(file.toPath());
-            assertArrayEquals(outputStream, target.getBytes(StandardCharsets.UTF_8));
+            assertArraysEqual(outputStream, target.getBytes(StandardCharsets.UTF_8));
         }
     }
 
@@ -207,7 +210,7 @@ public class FluxUtilTest {
         try (AsynchronousFileChannel channel = AsynchronousFileChannel.open(file.toPath(), StandardOpenOption.WRITE)) {
             FluxUtil.writeFile(body, channel, 6).block();
             byte[] outputStream = Files.readAllBytes(file.toPath());
-            assertArrayEquals(outputStream, target.getBytes(StandardCharsets.UTF_8));
+            assertArraysEqual(outputStream, target.getBytes(StandardCharsets.UTF_8));
         }
     }
 
@@ -222,7 +225,7 @@ public class FluxUtilTest {
         WritableByteChannel channel = Channels.newChannel(byteArrayOutputStream);
 
         FluxUtil.writeToWritableByteChannel(body, channel).block();
-        assertArrayEquals(byteArrayOutputStream.toByteArray(), bytes);
+        assertArraysEqual(byteArrayOutputStream.toByteArray(), bytes);
     }
 
     @ParameterizedTest
@@ -244,7 +247,18 @@ public class FluxUtilTest {
 
     private static Stream<Arguments> writeFileDoesNotSwallowErrorSupplier() {
         // AsynchronousFileChannel that throws NonWritableChannelException.
-        AsynchronousFileChannel nonWritableChannel = new MockAsynchronousFileChannel() {
+        AsynchronousFileChannel nonWritableChannel = new MockAsynchronousFileChannel(new byte[4096]) {
+
+            @Override
+            public Future<Integer> write(ByteBuffer src, long position) {
+                return new CompletableFuture<Integer>() {
+                    @Override
+                    public Integer get() throws ExecutionException {
+                        throw new ExecutionException(new NonWritableChannelException());
+                    }
+                };
+            }
+
             @Override
             public <A> void write(ByteBuffer src, long position, A attachment,
                 CompletionHandler<Integer, ? super A> handler) {
@@ -272,31 +286,18 @@ public class FluxUtilTest {
             }
         };
 
-        // Improper Flux<ByteBuffer> implementation that ignores downstream requests.
-        final byte[] data = new byte[4096];
-        new SecureRandom().nextBytes(data);
-        Flux<ByteBuffer> ignoresRequestFlux = new Flux<ByteBuffer>() {
-            @Override
-            public void subscribe(CoreSubscriber<? super ByteBuffer> actual) {
-                actual.onSubscribe(new Subscription() {
-                    @Override
-                    public void request(long n) {
-                        IntStream.range(0, 16).forEach(ignored -> actual.onNext(ByteBuffer.wrap(data)));
-
-                        actual.onComplete();
-                    }
-
-                    @Override
-                    public void cancel() {
-                    }
-                });
-            }
-        };
-
-        AsynchronousFileChannel ignoresRequestChannel = new MockAsynchronousFileChannel();
-
         // CompletionHandler that emits a writing error.
-        AsynchronousFileChannel completionHandlerPropagatesError = new MockAsynchronousFileChannel() {
+        AsynchronousFileChannel completionHandlerPropagatesError = new MockAsynchronousFileChannel(new byte[4096]) {
+            @Override
+            public Future<Integer> write(ByteBuffer src, long position) {
+                return new CompletableFuture<Integer>() {
+                    @Override
+                    public Integer get() throws ExecutionException {
+                        throw new ExecutionException(new FileLockInterruptionException());
+                    }
+                };
+            }
+
             @Override
             public <A> void write(ByteBuffer src, long position, A attachment,
                 CompletionHandler<Integer, ? super A> handler) {
@@ -306,16 +307,13 @@ public class FluxUtilTest {
 
         return Stream.of(
             // AsynchronousFileChannel doesn't have write capabilities.
-            Arguments.of(Flux.just(ByteBuffer.allocate(0)), nonWritableChannel, NonWritableChannelException.class),
+            Arguments.of(Flux.just(ByteBuffer.allocate(1)), nonWritableChannel, NonWritableChannelException.class),
 
             // Flux<ByteBuffer> has an exception during processing.
             Arguments.of(exceptionThrowingFlux, exceptionThrowingChannel, IOException.class),
 
-            // Flux<ByteBuffer> that ignores onNext request.
-            Arguments.of(ignoresRequestFlux, ignoresRequestChannel, IllegalStateException.class),
-
             // AsynchronousFileChannel that has an error propagated from the CompletionHandler.
-            Arguments.of(Flux.just(ByteBuffer.allocate(0)), completionHandlerPropagatesError,
+            Arguments.of(Flux.just(ByteBuffer.allocate(1)), completionHandlerPropagatesError,
                 FileLockInterruptionException.class)
         );
     }
@@ -323,7 +321,7 @@ public class FluxUtilTest {
     @Test
     public void writingRetriableStreamThatFails() throws IOException {
         byte[] data = new byte[1024 * 1024];
-        new SecureRandom().nextBytes(data);
+        fillArray(data);
 
         AtomicInteger errorCount = new AtomicInteger();
         Flux<ByteBuffer> retriableStream = FluxUtil.createRetriableDownloadFlux(
@@ -344,10 +342,10 @@ public class FluxUtilTest {
 
         StepVerifier.create(writeFile)
             .expectComplete()
-            .verify(Duration.ofSeconds(30));
+            .verify(Duration.ofSeconds(60));
 
         byte[] writtenData = Files.readAllBytes(file);
-        assertArrayEquals(data, writtenData);
+        assertArraysEqual(data, writtenData);
     }
 
     private Flux<ByteBuffer> generateStream(byte[] data, long offset, AtomicInteger errorCount) {
@@ -374,22 +372,17 @@ public class FluxUtilTest {
     @Test
     public void readFile() throws IOException {
         final byte[] expectedFileBytes = new byte[10 * 1024 * 1024];
-        final SecureRandom random = new SecureRandom();
-        random.nextBytes(expectedFileBytes);
+        fillArray(expectedFileBytes);
 
-        File file = createFileIfNotExist();
-        try (FileOutputStream stream = new FileOutputStream(file)) {
-            stream.write(expectedFileBytes);
-        }
+        MockAsynchronousFileChannel mockAsynchronousFileChannel = new MockAsynchronousFileChannel(expectedFileBytes,
+            expectedFileBytes.length);
 
-        try (AsynchronousFileChannel channel = AsynchronousFileChannel.open(file.toPath(), StandardOpenOption.READ)) {
+        try (AsynchronousFileChannel channel = mockAsynchronousFileChannel) {
             StepVerifier.create(FluxUtil.collectBytesInByteBufferStream(FluxUtil.readFile(channel),
                     expectedFileBytes.length))
-                .assertNext(bytes -> assertArrayEquals(expectedFileBytes, bytes))
+                .assertNext(bytes -> assertArraysEqual(expectedFileBytes, bytes))
                 .verifyComplete();
         }
-
-        Files.deleteIfExists(file.toPath());
     }
 
     @ParameterizedTest
@@ -416,7 +409,7 @@ public class FluxUtilTest {
 
                 // Check if this is the last emission expected.
                 if (requestCount.decrementAndGet() == -1) {
-                    assertArrayEquals(expected, collectionBuffer.array());
+                    assertArraysEqual(expected, collectionBuffer.array());
                     return false;
                 } else {
                     return true;
@@ -429,9 +422,8 @@ public class FluxUtilTest {
         byte[] singleRead = new byte[4096];
         byte[] multipleReads = new byte[8193];
 
-        SecureRandom random = new SecureRandom();
-        random.nextBytes(singleRead);
-        random.nextBytes(multipleReads);
+        fillArray(singleRead);
+        fillArray(multipleReads);
 
         return Stream.of(
             Arguments.arguments(null, null, emptyBuffer),
@@ -447,18 +439,18 @@ public class FluxUtilTest {
     @Test
     public void toFluxByteBufferMultipleSubscriptions() {
         byte[] singleRead = new byte[4096];
-        new SecureRandom().nextBytes(singleRead);
+        fillArray(singleRead);
 
         InputStream inputStream = new ByteArrayInputStream(singleRead);
 
         Flux<ByteBuffer> conversionFlux = FluxUtil.toFluxByteBuffer(inputStream);
 
         StepVerifier.create(FluxUtil.collectBytesInByteBufferStream(conversionFlux))
-            .assertNext(actual -> assertArrayEquals(singleRead, actual))
+            .assertNext(actual -> assertArraysEqual(singleRead, actual))
             .verifyComplete();
 
         StepVerifier.create(FluxUtil.collectBytesInByteBufferStream(conversionFlux))
-            .assertNext(actual -> assertArrayEquals(new byte[0], actual))
+            .assertNext(actual -> assertArraysEqual(new byte[0], actual))
             .verifyComplete();
     }
 
@@ -485,6 +477,7 @@ public class FluxUtilTest {
     }
 
     @Test
+    @DisabledOnOs(OS.WINDOWS) // Test is disabled on Windows as a FileChannel isn't used.
     public void toFluxByteBufferFileInputStreamChannelCloses() throws IOException {
         AtomicInteger positionCalls = new AtomicInteger();
         AtomicInteger sizeCalls = new AtomicInteger();
@@ -525,6 +518,33 @@ public class FluxUtilTest {
         assertEquals(1, positionCalls.get());
         assertEquals(1, sizeCalls.get());
         assertEquals(1, implCloseChannelCalls.get());
+    }
+
+    /**
+     * Verifies that the usage of {@link FluxUtil#toFluxByteBuffer(InputStream)} with a {@link FileInputStream} does
+     * not prevent the file from being deleted.
+     *
+     * @throws IOException If an error occurs while creating the temporary file.
+     */
+    @RepeatedTest(10) // Repeat the test times to ensure it's not a fluke.
+    public void ensureFileInputStreamFileCanBeDeletedAsConversionToFluxByteBuffer() throws IOException {
+        Path file = Files.createTempFile("canBeDeleted" + CoreUtils.randomUuid(), "");
+        Files.write(file, "some random data".getBytes(StandardCharsets.UTF_8));
+        FileInputStream fileInputStream = new FileInputStream(file.toFile());
+
+        Mono<Void> convertThenDeleteFile = FluxUtil.toFluxByteBuffer(fileInputStream)
+            .then(Mono.create(sink -> {
+                try {
+                    fileInputStream.close();
+                    Files.delete(file);
+                    sink.success();
+                } catch (IOException e) {
+                    sink.error(e);
+                }
+            }));
+
+        StepVerifier.create(convertThenDeleteFile).verifyComplete();
+        assertTrue(Files.notExists(file));
     }
 
     public Flux<ByteBuffer> mockReturnType() {

@@ -23,24 +23,6 @@ public final class ImageReference {
     @JsonProperty(value = "exactVersion", access = JsonProperty.Access.WRITE_ONLY)
     private String exactVersion;
 
-    /*
-     * The image publisher.
-     */
-    @JsonProperty(value = "publisher")
-    private String publisher;
-
-    /*
-     * The image offer.
-     */
-    @JsonProperty(value = "offer")
-    private String offer;
-
-    /*
-     * The image sku.
-     */
-    @JsonProperty(value = "sku")
-    private String sku;
-
     /** Creates an instance of ImageReference class. */
     public ImageReference() {
     }
@@ -73,66 +55,6 @@ public final class ImageReference {
      */
     public String exactVersion() {
         return this.exactVersion;
-    }
-
-    /**
-     * Get the publisher property: The image publisher.
-     *
-     * @return the publisher value.
-     */
-    public String publisher() {
-        return this.publisher;
-    }
-
-    /**
-     * Set the publisher property: The image publisher.
-     *
-     * @param publisher the publisher value to set.
-     * @return the ImageReference object itself.
-     */
-    public ImageReference withPublisher(String publisher) {
-        this.publisher = publisher;
-        return this;
-    }
-
-    /**
-     * Get the offer property: The image offer.
-     *
-     * @return the offer value.
-     */
-    public String offer() {
-        return this.offer;
-    }
-
-    /**
-     * Set the offer property: The image offer.
-     *
-     * @param offer the offer value to set.
-     * @return the ImageReference object itself.
-     */
-    public ImageReference withOffer(String offer) {
-        this.offer = offer;
-        return this;
-    }
-
-    /**
-     * Get the sku property: The image sku.
-     *
-     * @return the sku value.
-     */
-    public String sku() {
-        return this.sku;
-    }
-
-    /**
-     * Set the sku property: The image sku.
-     *
-     * @param sku the sku value to set.
-     * @return the ImageReference object itself.
-     */
-    public ImageReference withSku(String sku) {
-        this.sku = sku;
-        return this;
     }
 
     /**

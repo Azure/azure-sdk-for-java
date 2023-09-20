@@ -23,6 +23,10 @@ public final class ContainerGroupPropertiesInstanceView {
     @JsonProperty(value = "state", access = JsonProperty.Access.WRITE_ONLY)
     private String state;
 
+    /** Creates an instance of ContainerGroupPropertiesInstanceView class. */
+    public ContainerGroupPropertiesInstanceView() {
+    }
+
     /**
      * Get the events property: The events of this container group.
      *

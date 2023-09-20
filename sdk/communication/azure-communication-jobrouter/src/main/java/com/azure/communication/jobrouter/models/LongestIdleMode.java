@@ -13,5 +13,27 @@ import com.fasterxml.jackson.annotation.JsonTypeName;
 @JsonTypeName("longest-idle")
 @Fluent
 public final class LongestIdleMode extends DistributionMode {
+    /** Creates an instance of LongestIdleMode class. */
+    public LongestIdleMode() {}
 
+    /** {@inheritDoc} */
+    @Override
+    public LongestIdleMode setMinConcurrentOffers(Integer minConcurrentOffers) {
+        super.setMinConcurrentOffers(minConcurrentOffers);
+        return this;
+    }
+
+    /** {@inheritDoc} */
+    @Override
+    public LongestIdleMode setMaxConcurrentOffers(Integer maxConcurrentOffers) {
+        super.setMaxConcurrentOffers(maxConcurrentOffers);
+        return this;
+    }
+
+    /** {@inheritDoc} */
+    @Override
+    public LongestIdleMode setBypassSelectors(Boolean bypassSelectors) {
+        super.setBypassSelectors(bypassSelectors);
+        return this;
+    }
 }

@@ -21,6 +21,10 @@ public final class StorageBlobDeadLetterDestination extends DeadLetterDestinatio
     @JsonProperty(value = "properties")
     private StorageBlobDeadLetterDestinationProperties innerProperties;
 
+    /** Creates an instance of StorageBlobDeadLetterDestination class. */
+    public StorageBlobDeadLetterDestination() {
+    }
+
     /**
      * Get the innerProperties property: The properties of the Storage Blob based deadletter destination.
      *

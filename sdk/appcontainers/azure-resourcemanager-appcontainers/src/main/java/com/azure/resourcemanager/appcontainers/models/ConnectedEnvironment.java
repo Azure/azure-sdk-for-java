@@ -4,6 +4,7 @@
 
 package com.azure.resourcemanager.appcontainers.models;
 
+import com.azure.core.http.rest.Response;
 import com.azure.core.management.Region;
 import com.azure.core.management.SystemData;
 import com.azure.core.util.Context;
@@ -139,11 +140,13 @@ public interface ConnectedEnvironment {
             DefinitionStages.WithResourceGroup,
             DefinitionStages.WithCreate {
     }
+
     /** The ConnectedEnvironment definition stages. */
     interface DefinitionStages {
         /** The first stage of the ConnectedEnvironment definition. */
         interface Blank extends WithLocation {
         }
+
         /** The stage of the ConnectedEnvironment definition allowing to specify location. */
         interface WithLocation {
             /**
@@ -162,6 +165,7 @@ public interface ConnectedEnvironment {
              */
             WithResourceGroup withRegion(String location);
         }
+
         /** The stage of the ConnectedEnvironment definition allowing to specify parent resource. */
         interface WithResourceGroup {
             /**
@@ -172,6 +176,7 @@ public interface ConnectedEnvironment {
              */
             WithCreate withExistingResourceGroup(String resourceGroupName);
         }
+
         /**
          * The stage of the ConnectedEnvironment definition which contains all the minimum required properties for the
          * resource to be created, but also allows for any other optional properties to be specified.
@@ -197,6 +202,7 @@ public interface ConnectedEnvironment {
              */
             ConnectedEnvironment create(Context context);
         }
+
         /** The stage of the ConnectedEnvironment definition allowing to specify tags. */
         interface WithTags {
             /**
@@ -207,6 +213,7 @@ public interface ConnectedEnvironment {
              */
             WithCreate withTags(Map<String, String> tags);
         }
+
         /** The stage of the ConnectedEnvironment definition allowing to specify extendedLocation. */
         interface WithExtendedLocation {
             /**
@@ -217,6 +224,7 @@ public interface ConnectedEnvironment {
              */
             WithCreate withExtendedLocation(ExtendedLocation extendedLocation);
         }
+
         /** The stage of the ConnectedEnvironment definition allowing to specify staticIp. */
         interface WithStaticIp {
             /**
@@ -227,6 +235,7 @@ public interface ConnectedEnvironment {
              */
             WithCreate withStaticIp(String staticIp);
         }
+
         /** The stage of the ConnectedEnvironment definition allowing to specify daprAIConnectionString. */
         interface WithDaprAIConnectionString {
             /**
@@ -239,6 +248,7 @@ public interface ConnectedEnvironment {
              */
             WithCreate withDaprAIConnectionString(String daprAIConnectionString);
         }
+
         /** The stage of the ConnectedEnvironment definition allowing to specify customDomainConfiguration. */
         interface WithCustomDomainConfiguration {
             /**
@@ -250,6 +260,7 @@ public interface ConnectedEnvironment {
             WithCreate withCustomDomainConfiguration(CustomDomainConfiguration customDomainConfiguration);
         }
     }
+
     /**
      * Begins update for the ConnectedEnvironment resource.
      *
@@ -279,6 +290,7 @@ public interface ConnectedEnvironment {
          */
         ConnectedEnvironment apply(Context context);
     }
+
     /** The ConnectedEnvironment update stages. */
     interface UpdateStages {
         /** The stage of the ConnectedEnvironment update allowing to specify tags. */
@@ -291,6 +303,7 @@ public interface ConnectedEnvironment {
              */
             Update withTags(Map<String, String> tags);
         }
+
         /** The stage of the ConnectedEnvironment update allowing to specify extendedLocation. */
         interface WithExtendedLocation {
             /**
@@ -301,6 +314,7 @@ public interface ConnectedEnvironment {
              */
             Update withExtendedLocation(ExtendedLocation extendedLocation);
         }
+
         /** The stage of the ConnectedEnvironment update allowing to specify staticIp. */
         interface WithStaticIp {
             /**
@@ -311,6 +325,7 @@ public interface ConnectedEnvironment {
              */
             Update withStaticIp(String staticIp);
         }
+
         /** The stage of the ConnectedEnvironment update allowing to specify daprAIConnectionString. */
         interface WithDaprAIConnectionString {
             /**
@@ -323,6 +338,7 @@ public interface ConnectedEnvironment {
              */
             Update withDaprAIConnectionString(String daprAIConnectionString);
         }
+
         /** The stage of the ConnectedEnvironment update allowing to specify customDomainConfiguration. */
         interface WithCustomDomainConfiguration {
             /**
@@ -334,6 +350,7 @@ public interface ConnectedEnvironment {
             Update withCustomDomainConfiguration(CustomDomainConfiguration customDomainConfiguration);
         }
     }
+
     /**
      * Refreshes the resource to sync with Azure.
      *
@@ -348,4 +365,34 @@ public interface ConnectedEnvironment {
      * @return the refreshed resource.
      */
     ConnectedEnvironment refresh(Context context);
+
+    /**
+     * Checks the resource connectedEnvironmentName availability.
+     *
+     * <p>Checks if resource connectedEnvironmentName is available.
+     *
+     * @param checkNameAvailabilityRequest The check connectedEnvironmentName availability request.
+     * @param context The context to associate with this operation.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws com.azure.resourcemanager.appcontainers.models.DefaultErrorResponseErrorException thrown if the request
+     *     is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return the check availability result along with {@link Response}.
+     */
+    Response<CheckNameAvailabilityResponse> checkNameAvailabilityWithResponse(
+        CheckNameAvailabilityRequest checkNameAvailabilityRequest, Context context);
+
+    /**
+     * Checks the resource connectedEnvironmentName availability.
+     *
+     * <p>Checks if resource connectedEnvironmentName is available.
+     *
+     * @param checkNameAvailabilityRequest The check connectedEnvironmentName availability request.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws com.azure.resourcemanager.appcontainers.models.DefaultErrorResponseErrorException thrown if the request
+     *     is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return the check availability result.
+     */
+    CheckNameAvailabilityResponse checkNameAvailability(CheckNameAvailabilityRequest checkNameAvailabilityRequest);
 }

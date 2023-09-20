@@ -4,18 +4,22 @@
 package com.azure.core.test;
 
 import com.azure.core.http.HttpClient;
+import com.azure.core.http.HttpHeaderName;
+import com.azure.core.http.HttpHeaders;
 import com.azure.core.http.HttpMethod;
 import com.azure.core.http.HttpPipeline;
 import com.azure.core.http.HttpPipelineBuilder;
 import com.azure.core.http.HttpRequest;
 import com.azure.core.http.HttpResponse;
+import com.azure.core.http.policy.RedirectPolicy;
 import com.azure.core.test.annotation.DoNotRecord;
+import com.azure.core.test.annotation.RecordWithoutRequestBody;
 import com.azure.core.test.http.TestProxyTestServer;
 import com.azure.core.test.models.CustomMatcher;
 import com.azure.core.test.models.TestProxySanitizer;
 import com.azure.core.test.models.TestProxySanitizerType;
 import com.azure.core.test.utils.HttpURLConnectionHttpClient;
-import com.azure.core.test.utils.TestUtils;
+import com.azure.core.test.utils.TestProxyUtils;
 import com.azure.core.util.Context;
 import com.azure.core.util.UrlBuilder;
 import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
@@ -27,9 +31,9 @@ import org.junit.jupiter.api.BeforeAll;
 import org.junit.jupiter.api.Tag;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.condition.DisabledIfEnvironmentVariable;
+import org.junit.jupiter.api.condition.DisabledIfSystemProperty;
 
 import java.io.BufferedReader;
-import java.io.File;
 import java.io.IOException;
 import java.io.UncheckedIOException;
 import java.net.MalformedURLException;
@@ -43,6 +47,8 @@ import java.util.List;
 import java.util.Map;
 
 import static org.junit.jupiter.api.Assertions.assertEquals;
+import static org.junit.jupiter.api.Assertions.assertNotNull;
+import static org.junit.jupiter.api.Assertions.assertNull;
 import static org.junit.jupiter.api.Assertions.assertThrows;
 import static org.junit.jupiter.api.Assertions.assertTrue;
 
@@ -53,27 +59,31 @@ import static org.junit.jupiter.api.Assertions.assertTrue;
 // These tests override the environment variable so they can test playback and record in the same test run.
 // This strategy fails if we are in a LIVE test mode, so we'll just skip these entirely if that's the case.
 @DisabledIfEnvironmentVariable(named = "AZURE_TEST_MODE", matches = "(LIVE|live|Live)")
+@DisabledIfSystemProperty(named = "AZURE_TEST_MODE", matches = "(LIVE|live|Live)")
 public class TestProxyTests extends TestProxyTestBase {
+    public static final String TEST_DATA = "{\"test\":\"proxy\"}";
     static TestProxyTestServer server;
     private static final ObjectMapper RECORD_MAPPER = new ObjectMapper().enable(SerializationFeature.INDENT_OUTPUT);
 
-    private static List<TestProxySanitizer> customSanitizer = new ArrayList<>();
+    private static final List<TestProxySanitizer> CUSTOM_SANITIZER = new ArrayList<>();
 
     public static final String REDACTED = "REDACTED";
+    private static final HttpHeaderName OCP_APIM_SUBSCRIPTION_KEY =
+        HttpHeaderName.fromString("Ocp-Apim-Subscription-Key");
 
     static {
-        customSanitizer.add(new TestProxySanitizer("$..modelId", null, REDACTED, TestProxySanitizerType.BODY_KEY));
-        customSanitizer.add(new TestProxySanitizer("TableName\\\"*:*\\\"(?<tablename>.*)\\\"", REDACTED, TestProxySanitizerType.BODY_REGEX).setGroupForReplace("tablename"));
+        CUSTOM_SANITIZER.add(new TestProxySanitizer("$..modelId", null, REDACTED, TestProxySanitizerType.BODY_KEY));
+        CUSTOM_SANITIZER.add(new TestProxySanitizer("TableName\\\"*:*\\\"(?<tablename>.*)\\\"", REDACTED,
+            TestProxySanitizerType.BODY_REGEX).setGroupForReplace("tablename"));
     }
 
     @BeforeAll
     public static void setupClass() {
         server = new TestProxyTestServer();
-        TestProxyTestBase.setup();
+
     }
     @AfterAll
     public static void teardownClass() {
-        TestProxyTestBase.teardown();
         server.close();
     }
     @Test
@@ -92,9 +102,10 @@ public class TestProxyTests extends TestProxyTestBase {
         testResourceNamer.randomName("test", 10);
         testResourceNamer.now();
         HttpRequest request = new HttpRequest(HttpMethod.GET, url);
-        HttpResponse response = pipeline.sendSync(request, Context.NONE);
 
-        assertEquals(200, response.getStatusCode());
+        try (HttpResponse response = pipeline.sendSync(request, Context.NONE)) {
+            assertEquals(200, response.getStatusCode());
+        }
     }
 
     @Test
@@ -123,7 +134,7 @@ public class TestProxyTests extends TestProxyTestBase {
     @Tag("Playback")
     public void testMismatch() {
         HttpClient client = interceptorManager.getPlaybackClient();
-        URL url = null;
+        URL url;
         try {
             url = new UrlBuilder().setHost("localhost").setPort(3000).setScheme("http").setPath("first/path").toUrl();
         } catch (MalformedURLException e) {
@@ -136,12 +147,13 @@ public class TestProxyTests extends TestProxyTestBase {
 
     @Test
     @Tag("Record")
+    @RecordWithoutRequestBody
     public void testRecordWithPath() {
         HttpURLConnectionHttpClient client = new HttpURLConnectionHttpClient();
         HttpPipeline pipeline = new HttpPipelineBuilder()
             .httpClient(client)
             .policies(interceptorManager.getRecordPolicy()).build();
-        URL url = null;
+        URL url;
         try {
             url = new UrlBuilder().setHost("localhost").setPort(3000).setPath("first/path").setScheme("http").toUrl();
         } catch (MalformedURLException e) {
@@ -149,10 +161,13 @@ public class TestProxyTests extends TestProxyTestBase {
         }
         testResourceNamer.randomName("test", 10);
         testResourceNamer.now();
-        HttpRequest request = new HttpRequest(HttpMethod.GET, url);
-        HttpResponse response = pipeline.sendSync(request, Context.NONE);
+        HttpRequest request = new HttpRequest(HttpMethod.POST, url).setBody(TEST_DATA)
+            .setHeader(HttpHeaderName.CONTENT_TYPE, "application/json")
+            .setHeader(HttpHeaderName.CONTENT_LENGTH, String.valueOf(TEST_DATA.length()));
 
-        assertEquals(200, response.getStatusCode());
+        try (HttpResponse response = pipeline.sendSync(request, Context.NONE)) {
+            assertEquals(200, response.getStatusCode());
+        }
     }
 
     @Test
@@ -162,7 +177,7 @@ public class TestProxyTests extends TestProxyTestBase {
         HttpPipeline pipeline = new HttpPipelineBuilder()
             .httpClient(client)
             .policies(interceptorManager.getRecordPolicy()).build();
-        URL url = null;
+        URL url;
         try {
             url = new UrlBuilder().setHost("localhost").setPort(3000).setPath("echoheaders").setScheme("http").toUrl();
         } catch (MalformedURLException e) {
@@ -170,12 +185,13 @@ public class TestProxyTests extends TestProxyTestBase {
         }
         testResourceNamer.randomName("test", 10);
         testResourceNamer.now();
-        HttpRequest request = new HttpRequest(HttpMethod.GET, url);
-        request.setHeader("header1", "value1");
-        request.setHeader("header2", "value2");
-        HttpResponse response = pipeline.sendSync(request, Context.NONE);
+        HttpRequest request = new HttpRequest(HttpMethod.GET, url)
+            .setHeader(HttpHeaderName.fromString("header1"), "value1")
+            .setHeader(HttpHeaderName.fromString("header2"), "value2");
 
-        assertEquals(200, response.getStatusCode());
+        try (HttpResponse response = pipeline.sendSync(request, Context.NONE)) {
+            assertEquals(200, response.getStatusCode());
+        }
     }
 
     @Test
@@ -184,17 +200,22 @@ public class TestProxyTests extends TestProxyTestBase {
 
         HttpClient client = interceptorManager.getPlaybackClient();
 
-        URL url = null;
+        URL url;
         try {
             url = new UrlBuilder().setHost("localhost").setPort(3000).setPath("first/path").setScheme("http").toUrl();
         } catch (MalformedURLException e) {
             throw new RuntimeException(e);
         }
 
-        HttpRequest request = new HttpRequest(HttpMethod.GET, url);
-        HttpResponse response = client.sendSync(request, Context.NONE);
-        assertEquals("first path", response.getBodyAsString().block());
-        assertEquals(200, response.getStatusCode());
+        HttpRequest request = new HttpRequest(HttpMethod.GET, url)
+            // For this test set an Accept header as most HttpClients will use a default which could result in this
+            // test being flaky
+            .setHeader(HttpHeaderName.ACCEPT, "*/*");
+
+        try (HttpResponse response = client.sendSync(request, Context.NONE)) {
+            assertEquals("first path", response.getBodyAsBinaryData().toString());
+            assertEquals(200, response.getStatusCode());
+        }
     }
 
     @Test
@@ -212,15 +233,14 @@ public class TestProxyTests extends TestProxyTestBase {
     }
 
     @Test
-    @Tag("Record")
+    @Tag("Playback")
     public void testRecordWithRedaction() {
-        HttpURLConnectionHttpClient client = new HttpURLConnectionHttpClient();
 
-        interceptorManager.addSanitizers(customSanitizer);
+        interceptorManager.addSanitizers(CUSTOM_SANITIZER);
+        HttpClient client = interceptorManager.getPlaybackClient();
 
         HttpPipeline pipeline = new HttpPipelineBuilder()
-            .httpClient(client)
-            .policies(interceptorManager.getRecordPolicy()).build();
+            .httpClient(client).build();
         URL url;
         try {
             url = new UrlBuilder()
@@ -233,31 +253,36 @@ public class TestProxyTests extends TestProxyTestBase {
             throw new RuntimeException(e);
         }
 
-        HttpRequest request = new HttpRequest(HttpMethod.GET, url);
-        request.setHeader("Ocp-Apim-Subscription-Key", "SECRET_API_KEY");
-        request.setHeader("Content-Type", "application/json");
+        HttpRequest request = new HttpRequest(HttpMethod.GET, url)
+            .setHeader(OCP_APIM_SUBSCRIPTION_KEY, "SECRET_API_KEY")
+            .setHeader(HttpHeaderName.CONTENT_TYPE, "application/json")
+            // For this test set an Accept header as most HttpClients will use a default which could result in this
+            // test being flaky
+            .setHeader(HttpHeaderName.ACCEPT, "*/*");
 
-        HttpResponse response = pipeline.sendSync(request, Context.NONE);
+        try (HttpResponse response = pipeline.sendSync(request, Context.NONE)) {
 
-        assertEquals(response.getStatusCode(), 200);
+            assertEquals(response.getStatusCode(), 200);
 
-        assertEquals(200, response.getStatusCode());
-        RecordedTestProxyData recordedTestProxyData = readDataFromFile();
-        RecordedTestProxyData.TestProxyDataRecord record = recordedTestProxyData.getTestProxyDataRecords().get(0);
-        // default sanitizers
-        assertEquals("http://REDACTED/fr/path/1", record.getUri());
-        assertEquals(REDACTED, record.getHeaders().get("Ocp-Apim-Subscription-Key"));
-        // custom sanitizers
-        assertEquals(REDACTED, record.getResponse().get("modelId"));
-        assertTrue(record.getResponse().get("Operation-Location").startsWith("https://REDACTED/fr/models//905a58f9-131e-42b8-8410-493ab1517d62"));
-
+            assertEquals(200, response.getStatusCode());
+            RecordedTestProxyData recordedTestProxyData = readDataFromFile();
+            RecordedTestProxyData.TestProxyDataRecord record = recordedTestProxyData.getTestProxyDataRecords().get(0);
+            // default sanitizers
+            assertEquals("http://REDACTED/fr/path/1", record.getUri());
+            assertEquals(REDACTED, record.getHeaders().get("Ocp-Apim-Subscription-Key"));
+            assertTrue(record.getResponseHeaders().get("Operation-Location")
+                .startsWith("https://REDACTED/fr/models//905a58f9-131e-42b8-8410-493ab1517d62"));
+            // custom sanitizers
+            assertEquals(REDACTED, record.getResponse().get("modelId"));
+        }
     }
 
     @Test
     @Tag("Playback")
     public void testPlaybackWithRedaction() {
-        interceptorManager.addSanitizers(customSanitizer);
-        interceptorManager.addMatchers(new ArrayList<>(Arrays.asList(new CustomMatcher().setExcludedHeaders(Arrays.asList("Ocp-Apim-Subscription-Key")))));
+        interceptorManager.addSanitizers(CUSTOM_SANITIZER);
+        interceptorManager.addMatchers(new ArrayList<>(Arrays.asList(new CustomMatcher()
+            .setExcludedHeaders(Arrays.asList("Ocp-Apim-Subscription-Key")))));
         HttpClient client = interceptorManager.getPlaybackClient();
         URL url;
 
@@ -271,25 +296,28 @@ public class TestProxyTests extends TestProxyTestBase {
         } catch (MalformedURLException e) {
             throw new RuntimeException(e);
         }
-        HttpRequest request = new HttpRequest(HttpMethod.GET, url);
-        request.setHeader("Ocp-Apim-Subscription-Key", "SECRET_API_KEY");
-        request.setHeader("Content-Type", "application/json");
+        HttpRequest request = new HttpRequest(HttpMethod.GET, url)
+            .setHeader(OCP_APIM_SUBSCRIPTION_KEY, "SECRET_API_KEY")
+            .setHeader(HttpHeaderName.CONTENT_TYPE, "application/json")
+            // For this test set an Accept header as most HttpClients will use a default which could result in this
+            // test being flaky
+            .setHeader(HttpHeaderName.ACCEPT, "*/*");
 
-        HttpResponse response = client.sendSync(request, Context.NONE);
-
-        assertEquals(200, response.getStatusCode());
+        try (HttpResponse response = client.sendSync(request, Context.NONE)) {
+            assertEquals(200, response.getStatusCode());
+        }
     }
 
     @Test
-    @Tag("Record")
+    @Tag("Playback")
     public void testBodyRegexRedactRecord() {
-        HttpURLConnectionHttpClient client = new HttpURLConnectionHttpClient();
+        HttpClient client = interceptorManager.getPlaybackClient();
 
-        interceptorManager.addSanitizers(customSanitizer);
+        interceptorManager.addSanitizers(CUSTOM_SANITIZER);
+        interceptorManager.addMatchers(new CustomMatcher().setHeadersKeyOnlyMatch(Arrays.asList("Accept")));
 
         HttpPipeline pipeline = new HttpPipelineBuilder()
-            .httpClient(client)
-            .policies(interceptorManager.getRecordPolicy()).build();
+            .httpClient(client).build();
         URL url;
         try {
             url = new UrlBuilder()
@@ -303,13 +331,11 @@ public class TestProxyTests extends TestProxyTestBase {
         }
 
         HttpRequest request = new HttpRequest(HttpMethod.GET, url);
-        request.setHeader("Content-Type", "application/json");
+        request.setHeader(HttpHeaderName.CONTENT_TYPE, "application/json");
 
-        HttpResponse response = pipeline.sendSync(request, Context.NONE);
-
-        assertEquals(response.getStatusCode(), 200);
-
-        assertEquals(200, response.getStatusCode());
+        try (HttpResponse response = pipeline.sendSync(request, Context.NONE)) {
+            assertEquals(200, response.getStatusCode());
+        }
 
         RecordedTestProxyData recordedTestProxyData = readDataFromFile();
         RecordedTestProxyData.TestProxyDataRecord record = recordedTestProxyData.getTestProxyDataRecords().get(0);
@@ -324,11 +350,66 @@ public class TestProxyTests extends TestProxyTestBase {
         assertEquals(record.getResponse().get("TableName"), REDACTED);
     }
 
-    private RecordedTestProxyData readDataFromFile() {
-        String filePath = Paths.get(TestUtils.getRecordFolder().getPath(), this.testContextManager.getTestPlaybackRecordingName()) + ".json";
+    @Test
+    @Tag("Live")
+    public void canGetTestProxyVersion() {
+        String version = TestProxyUtils.getTestProxyVersion(this.getTestClassPath());
+        assertNotNull(version);
+    }
 
-        File recordFile = new File(filePath);
-        try (BufferedReader reader = Files.newBufferedReader(recordFile.toPath())) {
+    @Test
+    @Tag("Record")
+    public void testResetTestProxyData() {
+        HttpURLConnectionHttpClient client = new HttpURLConnectionHttpClient();
+
+        final HttpPipeline pipeline = new HttpPipelineBuilder()
+            .httpClient(client)
+            .policies(interceptorManager.getRecordPolicy())
+            .build();
+
+        try (HttpResponse response = pipeline.sendSync(new HttpRequest(HttpMethod.GET, "http://localhost:3000"),
+            Context.NONE)) {
+            assertEquals(200, response.getStatusCode());
+            HttpHeaders headers = response.getRequest().getHeaders();
+            assertNull(headers.get(HttpHeaderName.fromString("x-recording-upstream-base-uri")));
+            assertNull(headers.get(HttpHeaderName.fromString("x-recording-mode")));
+            assertNull(headers.get(HttpHeaderName.fromString("x-recording-id")));
+            assertNull(headers.get(HttpHeaderName.fromString("x-recording-skip")));
+        }
+    }
+
+    @Test
+    @Tag("Record")
+    public void testRecordWithRedirect() {
+        HttpURLConnectionHttpClient client = new HttpURLConnectionHttpClient();
+
+        HttpPipeline pipeline = new HttpPipelineBuilder()
+            .httpClient(client)
+            .policies(new RedirectPolicy(), interceptorManager.getRecordPolicy()).build();
+        URL url;
+        try {
+            url = new UrlBuilder()
+                .setHost("localhost")
+                .setPath("/getRedirect")
+                .setPort(3000)
+                .setScheme("http")
+                .toUrl();
+        } catch (MalformedURLException e) {
+            throw new RuntimeException(e);
+        }
+
+        HttpRequest request = new HttpRequest(HttpMethod.GET, url);
+
+        try (HttpResponse response = pipeline.sendSync(request, Context.NONE)) {
+            assertEquals(200, response.getStatusCode());
+            assertEquals("http://localhost:3000/echoheaders", response.getRequest().getUrl().toString());
+            assertNull(response.getRequest().getHeaders().get(HttpHeaderName.fromString("x-recording-upstream-base-uri")));
+        }
+    }
+
+    private RecordedTestProxyData readDataFromFile() {
+        try {
+            BufferedReader reader = Files.newBufferedReader(Paths.get(interceptorManager.getRecordingFileLocation()));
             return RECORD_MAPPER.readValue(reader, RecordedTestProxyData.class);
         } catch (IOException ex) {
             throw new UncheckedIOException(ex);

@@ -26,32 +26,33 @@ public final class ServiceBusActiveMessagesAvailableWithNoListenersEventData {
     private String requestUri;
 
     /*
-     * The entity type of the Microsoft.ServiceBus resource. Could be one of
-     * 'queue' or 'subscriber'.
+     * The entity type of the Microsoft.ServiceBus resource. Could be one of 'queue' or 'subscriber'.
      */
     @JsonProperty(value = "entityType")
     private String entityType;
 
     /*
-     * The name of the Microsoft.ServiceBus queue. If the entity type is of
-     * type 'subscriber', then this value will be null.
+     * The name of the Microsoft.ServiceBus queue. If the entity type is of type 'subscriber', then this value will be
+     * null.
      */
     @JsonProperty(value = "queueName")
     private String queueName;
 
     /*
-     * The name of the Microsoft.ServiceBus topic. If the entity type is of
-     * type 'queue', then this value will be null.
+     * The name of the Microsoft.ServiceBus topic. If the entity type is of type 'queue', then this value will be null.
      */
     @JsonProperty(value = "topicName")
     private String topicName;
 
     /*
-     * The name of the Microsoft.ServiceBus topic's subscription. If the entity
-     * type is of type 'queue', then this value will be null.
+     * The name of the Microsoft.ServiceBus topic's subscription. If the entity type is of type 'queue', then this
+     * value will be null.
      */
     @JsonProperty(value = "subscriptionName")
     private String subscriptionName;
+
+    /** Creates an instance of ServiceBusActiveMessagesAvailableWithNoListenersEventData class. */
+    public ServiceBusActiveMessagesAvailableWithNoListenersEventData() {}
 
     /**
      * Get the namespaceName property: The namespace name of the Microsoft.ServiceBus resource.

@@ -62,8 +62,7 @@ public final class CommunityGalleryImageVersionsClientImpl implements CommunityG
     public interface CommunityGalleryImageVersionsService {
         @Headers({"Content-Type: application/json"})
         @Get(
-            "/subscriptions/{subscriptionId}/providers/Microsoft.Compute/locations/{location}/communityGalleries"
-                + "/{publicGalleryName}/images/{galleryImageName}/versions/{galleryImageVersionName}")
+            "/subscriptions/{subscriptionId}/providers/Microsoft.Compute/locations/{location}/communityGalleries/{publicGalleryName}/images/{galleryImageName}/versions/{galleryImageVersionName}")
         @ExpectedResponses({200})
         @UnexpectedResponseExceptionType(ApiErrorException.class)
         Mono<Response<CommunityGalleryImageVersionInner>> get(
@@ -79,8 +78,7 @@ public final class CommunityGalleryImageVersionsClientImpl implements CommunityG
 
         @Headers({"Content-Type: application/json"})
         @Get(
-            "/subscriptions/{subscriptionId}/providers/Microsoft.Compute/locations/{location}/communityGalleries"
-                + "/{publicGalleryName}/images/{galleryImageName}/versions")
+            "/subscriptions/{subscriptionId}/providers/Microsoft.Compute/locations/{location}/communityGalleries/{publicGalleryName}/images/{galleryImageName}/versions")
         @ExpectedResponses({200})
         @UnexpectedResponseExceptionType(ApiErrorException.class)
         Mono<Response<CommunityGalleryImageVersionList>> list(

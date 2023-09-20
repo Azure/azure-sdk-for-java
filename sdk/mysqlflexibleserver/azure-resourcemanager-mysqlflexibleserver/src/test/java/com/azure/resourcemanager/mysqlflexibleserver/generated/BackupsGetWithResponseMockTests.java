@@ -31,7 +31,7 @@ public final class BackupsGetWithResponseMockTests {
         ArgumentCaptor<HttpRequest> httpRequest = ArgumentCaptor.forClass(HttpRequest.class);
 
         String responseStr =
-            "{\"properties\":{\"backupType\":\"xtccmg\",\"completedTime\":\"2021-02-11T06:40:02Z\",\"source\":\"ytlmoyrxvwfud\"},\"id\":\"zntxhdz\",\"name\":\"lrqjbhckfr\",\"type\":\"hrxsbk\"}";
+            "{\"properties\":{\"backupType\":\"ooxdjebwpuc\",\"completedTime\":\"2021-03-31T11:05:30Z\",\"source\":\"ovbvmeueciv\"},\"id\":\"zceuojgjrw\",\"name\":\"ueiotwmcdyt\",\"type\":\"x\"}";
 
         Mockito.when(httpResponse.getStatusCode()).thenReturn(200);
         Mockito.when(httpResponse.getHeaders()).thenReturn(new HttpHeaders());
@@ -62,11 +62,11 @@ public final class BackupsGetWithResponseMockTests {
         ServerBackup response =
             manager
                 .backups()
-                .getWithResponse("tazqugxywpmueefj", "wfqkquj", "dsuyonobgla", com.azure.core.util.Context.NONE)
+                .getWithResponse("urqhaka", "hashsfwxosow", "xcug", com.azure.core.util.Context.NONE)
                 .getValue();
 
-        Assertions.assertEquals("xtccmg", response.backupType());
-        Assertions.assertEquals(OffsetDateTime.parse("2021-02-11T06:40:02Z"), response.completedTime());
-        Assertions.assertEquals("ytlmoyrxvwfud", response.source());
+        Assertions.assertEquals("ooxdjebwpuc", response.backupType());
+        Assertions.assertEquals(OffsetDateTime.parse("2021-03-31T11:05:30Z"), response.completedTime());
+        Assertions.assertEquals("ovbvmeueciv", response.source());
     }
 }

@@ -17,11 +17,11 @@ public final class ConfigurationListForBatchUpdateTests {
         ConfigurationListForBatchUpdate model =
             BinaryData
                 .fromString(
-                    "{\"value\":[{\"name\":\"hanufhfcbjysagi\",\"properties\":{\"value\":\"qhabifpikxwcz\",\"source\":\"scnpqxuhivy\"}},{\"name\":\"iwbybrkxvdumjg\",\"properties\":{\"value\":\"wvukx\",\"source\":\"udccsnhsjc\"}}],\"resetAllToDefault\":\"True\"}")
+                    "{\"value\":[{\"name\":\"skcqvkocrcjd\",\"properties\":{\"value\":\"nh\",\"source\":\"njbiksqrglssain\"}},{\"name\":\"jwnzlljfmp\",\"properties\":{\"value\":\"bvmgxsabkyqduuji\",\"source\":\"jczdzevndh\"}},{\"name\":\"wpdappdsbdkv\",\"properties\":{\"value\":\"jfeusnh\",\"source\":\"je\"}}],\"resetAllToDefault\":\"True\"}")
                 .toObject(ConfigurationListForBatchUpdate.class);
-        Assertions.assertEquals("hanufhfcbjysagi", model.value().get(0).name());
-        Assertions.assertEquals("qhabifpikxwcz", model.value().get(0).value());
-        Assertions.assertEquals("scnpqxuhivy", model.value().get(0).source());
+        Assertions.assertEquals("skcqvkocrcjd", model.value().get(0).name());
+        Assertions.assertEquals("nh", model.value().get(0).value());
+        Assertions.assertEquals("njbiksqrglssain", model.value().get(0).source());
         Assertions.assertEquals(ResetAllToDefault.TRUE, model.resetAllToDefault());
     }
 
@@ -33,18 +33,22 @@ public final class ConfigurationListForBatchUpdateTests {
                     Arrays
                         .asList(
                             new ConfigurationForBatchUpdate()
-                                .withName("hanufhfcbjysagi")
-                                .withValue("qhabifpikxwcz")
-                                .withSource("scnpqxuhivy"),
+                                .withName("skcqvkocrcjd")
+                                .withValue("nh")
+                                .withSource("njbiksqrglssain"),
                             new ConfigurationForBatchUpdate()
-                                .withName("iwbybrkxvdumjg")
-                                .withValue("wvukx")
-                                .withSource("udccsnhsjc")))
+                                .withName("jwnzlljfmp")
+                                .withValue("bvmgxsabkyqduuji")
+                                .withSource("jczdzevndh"),
+                            new ConfigurationForBatchUpdate()
+                                .withName("wpdappdsbdkv")
+                                .withValue("jfeusnh")
+                                .withSource("je")))
                 .withResetAllToDefault(ResetAllToDefault.TRUE);
         model = BinaryData.fromObject(model).toObject(ConfigurationListForBatchUpdate.class);
-        Assertions.assertEquals("hanufhfcbjysagi", model.value().get(0).name());
-        Assertions.assertEquals("qhabifpikxwcz", model.value().get(0).value());
-        Assertions.assertEquals("scnpqxuhivy", model.value().get(0).source());
+        Assertions.assertEquals("skcqvkocrcjd", model.value().get(0).name());
+        Assertions.assertEquals("nh", model.value().get(0).value());
+        Assertions.assertEquals("njbiksqrglssain", model.value().get(0).source());
         Assertions.assertEquals(ResetAllToDefault.TRUE, model.resetAllToDefault());
     }
 }

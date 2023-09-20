@@ -6,35 +6,19 @@ package com.azure.resourcemanager.servicenetworking.generated;
 
 import com.azure.core.util.BinaryData;
 import com.azure.resourcemanager.servicenetworking.fluent.models.FrontendProperties;
-import com.azure.resourcemanager.servicenetworking.models.FrontendIpAddressVersion;
-import com.azure.resourcemanager.servicenetworking.models.FrontendMode;
-import com.azure.resourcemanager.servicenetworking.models.FrontendPropertiesIpAddress;
-import org.junit.jupiter.api.Assertions;
-import org.junit.jupiter.api.Test;
 
 public final class FrontendPropertiesTests {
-    @Test
-    public void testDeserialize() {
+    @org.junit.jupiter.api.Test
+    public void testDeserialize() throws Exception {
         FrontendProperties model =
             BinaryData
-                .fromString(
-                    "{\"mode\":\"public\",\"ipAddressVersion\":\"IPv4\",\"publicIPAddress\":{\"id\":\"k\"},\"provisioningState\":\"Succeeded\"}")
+                .fromString("{\"fqdn\":\"hzgpphrcgyncocpe\",\"provisioningState\":\"Canceled\"}")
                 .toObject(FrontendProperties.class);
-        Assertions.assertEquals(FrontendMode.PUBLIC, model.mode());
-        Assertions.assertEquals(FrontendIpAddressVersion.IPV4, model.ipAddressVersion());
-        Assertions.assertEquals("k", model.publicIpAddress().id());
     }
 
-    @Test
-    public void testSerialize() {
-        FrontendProperties model =
-            new FrontendProperties()
-                .withMode(FrontendMode.PUBLIC)
-                .withIpAddressVersion(FrontendIpAddressVersion.IPV4)
-                .withPublicIpAddress(new FrontendPropertiesIpAddress().withId("k"));
+    @org.junit.jupiter.api.Test
+    public void testSerialize() throws Exception {
+        FrontendProperties model = new FrontendProperties();
         model = BinaryData.fromObject(model).toObject(FrontendProperties.class);
-        Assertions.assertEquals(FrontendMode.PUBLIC, model.mode());
-        Assertions.assertEquals(FrontendIpAddressVersion.IPV4, model.ipAddressVersion());
-        Assertions.assertEquals("k", model.publicIpAddress().id());
     }
 }

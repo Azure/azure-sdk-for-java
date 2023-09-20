@@ -5,6 +5,7 @@
 package com.azure.resourcemanager.kubernetesconfiguration.fluent.models;
 
 import com.azure.core.annotation.Fluent;
+import com.azure.resourcemanager.kubernetesconfiguration.models.AzureBlobDefinition;
 import com.azure.resourcemanager.kubernetesconfiguration.models.BucketDefinition;
 import com.azure.resourcemanager.kubernetesconfiguration.models.FluxComplianceState;
 import com.azure.resourcemanager.kubernetesconfiguration.models.GitRepositoryDefinition;
@@ -29,8 +30,8 @@ public final class FluxConfigurationProperties {
     private ScopeType scope;
 
     /*
-     * The namespace to which this configuration is installed to. Maximum of
-     * 253 lower case alphanumeric characters, hyphen and period only.
+     * The namespace to which this configuration is installed to. Maximum of 253 lower case alphanumeric characters,
+     * hyphen and period only.
      */
     @JsonProperty(value = "namespace")
     private String namespace;
@@ -42,8 +43,7 @@ public final class FluxConfigurationProperties {
     private SourceKindType sourceKind;
 
     /*
-     * Whether this configuration should suspend its reconciliation of its
-     * kustomizations and sources.
+     * Whether this configuration should suspend its reconciliation of its kustomizations and sources.
      */
     @JsonProperty(value = "suspend")
     private Boolean suspend;
@@ -61,32 +61,34 @@ public final class FluxConfigurationProperties {
     private BucketDefinition bucket;
 
     /*
-     * Array of kustomizations used to reconcile the artifact pulled by the
-     * source type on the cluster.
+     * Parameters to reconcile to the AzureBlob source kind type.
+     */
+    @JsonProperty(value = "azureBlob")
+    private AzureBlobDefinition azureBlob;
+
+    /*
+     * Array of kustomizations used to reconcile the artifact pulled by the source type on the cluster.
      */
     @JsonProperty(value = "kustomizations")
     @JsonInclude(value = JsonInclude.Include.NON_NULL, content = JsonInclude.Include.ALWAYS)
     private Map<String, KustomizationDefinition> kustomizations;
 
     /*
-     * Key-value pairs of protected configuration settings for the
-     * configuration
+     * Key-value pairs of protected configuration settings for the configuration
      */
     @JsonProperty(value = "configurationProtectedSettings")
     @JsonInclude(value = JsonInclude.Include.NON_NULL, content = JsonInclude.Include.ALWAYS)
     private Map<String, String> configurationProtectedSettings;
 
     /*
-     * Statuses of the Flux Kubernetes resources created by the
-     * fluxConfiguration or created by the managed objects provisioned by the
-     * fluxConfiguration.
+     * Statuses of the Flux Kubernetes resources created by the fluxConfiguration or created by the managed objects
+     * provisioned by the fluxConfiguration.
      */
     @JsonProperty(value = "statuses", access = JsonProperty.Access.WRITE_ONLY)
     private List<ObjectStatusDefinition> statuses;
 
     /*
-     * Public Key associated with this fluxConfiguration (either generated
-     * within the cluster or provided by the user).
+     * Public Key associated with this fluxConfiguration (either generated within the cluster or provided by the user).
      */
     @JsonProperty(value = "repositoryPublicKey", access = JsonProperty.Access.WRITE_ONLY)
     private String repositoryPublicKey;
@@ -104,15 +106,14 @@ public final class FluxConfigurationProperties {
     private OffsetDateTime sourceUpdatedAt;
 
     /*
-     * Datetime the fluxConfiguration synced its status on the cluster with
-     * Azure.
+     * Datetime the fluxConfiguration synced its status on the cluster with Azure.
      */
     @JsonProperty(value = "statusUpdatedAt", access = JsonProperty.Access.WRITE_ONLY)
     private OffsetDateTime statusUpdatedAt;
 
     /*
-     * Combined status of the Flux Kubernetes resources created by the
-     * fluxConfiguration or created by the managed objects.
+     * Combined status of the Flux Kubernetes resources created by the fluxConfiguration or created by the managed
+     * objects.
      */
     @JsonProperty(value = "complianceState", access = JsonProperty.Access.WRITE_ONLY)
     private FluxComplianceState complianceState;
@@ -128,6 +129,10 @@ public final class FluxConfigurationProperties {
      */
     @JsonProperty(value = "errorMessage", access = JsonProperty.Access.WRITE_ONLY)
     private String errorMessage;
+
+    /** Creates an instance of FluxConfigurationProperties class. */
+    public FluxConfigurationProperties() {
+    }
 
     /**
      * Get the scope property: Scope at which the operator will be installed.
@@ -250,6 +255,26 @@ public final class FluxConfigurationProperties {
      */
     public FluxConfigurationProperties withBucket(BucketDefinition bucket) {
         this.bucket = bucket;
+        return this;
+    }
+
+    /**
+     * Get the azureBlob property: Parameters to reconcile to the AzureBlob source kind type.
+     *
+     * @return the azureBlob value.
+     */
+    public AzureBlobDefinition azureBlob() {
+        return this.azureBlob;
+    }
+
+    /**
+     * Set the azureBlob property: Parameters to reconcile to the AzureBlob source kind type.
+     *
+     * @param azureBlob the azureBlob value to set.
+     * @return the FluxConfigurationProperties object itself.
+     */
+    public FluxConfigurationProperties withAzureBlob(AzureBlobDefinition azureBlob) {
+        this.azureBlob = azureBlob;
         return this;
     }
 
@@ -384,6 +409,9 @@ public final class FluxConfigurationProperties {
         }
         if (bucket() != null) {
             bucket().validate();
+        }
+        if (azureBlob() != null) {
+            azureBlob().validate();
         }
         if (kustomizations() != null) {
             kustomizations()

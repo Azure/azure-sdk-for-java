@@ -9,7 +9,6 @@ import com.azure.core.http.HttpPipelineNextSyncPolicy;
 import com.azure.core.http.HttpResponse;
 import com.azure.core.util.UrlBuilder;
 import com.azure.core.util.logging.ClientLogger;
-import com.azure.core.util.logging.LogLevel;
 import reactor.core.publisher.Mono;
 
 import java.net.MalformedURLException;
@@ -25,7 +24,9 @@ public class HostPolicy implements HttpPipelinePolicy {
     private final HttpPipelineSyncPolicy inner = new HttpPipelineSyncPolicy() {
         @Override
         protected void beforeSendingRequest(HttpPipelineCallContext context) {
-            LOGGER.log(LogLevel.VERBOSE, () -> "Setting host to " + host);
+            LOGGER.atVerbose()
+                .addKeyValue("host", host)
+                .log("Setting host");
 
             final UrlBuilder urlBuilder = UrlBuilder.parse(context.getHttpRequest().getUrl());
             try {

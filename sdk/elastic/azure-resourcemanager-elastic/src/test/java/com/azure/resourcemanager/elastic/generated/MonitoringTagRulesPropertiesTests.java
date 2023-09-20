@@ -12,53 +12,56 @@ import com.azure.resourcemanager.elastic.models.ProvisioningState;
 import com.azure.resourcemanager.elastic.models.TagAction;
 import java.util.Arrays;
 import org.junit.jupiter.api.Assertions;
-import org.junit.jupiter.api.Test;
 
 public final class MonitoringTagRulesPropertiesTests {
-    @Test
-    public void testDeserialize() {
+    @org.junit.jupiter.api.Test
+    public void testDeserialize() throws Exception {
         MonitoringTagRulesProperties model =
             BinaryData
                 .fromString(
-                    "{\"provisioningState\":\"Canceled\",\"logRules\":{\"sendAadLogs\":false,\"sendSubscriptionLogs\":false,\"sendActivityLogs\":true,\"filteringTags\":[{\"name\":\"xhvpmoue\",\"value\":\"dzxibqeojnxqbzvd\",\"action\":\"Include\"},{\"name\":\"ndei\",\"value\":\"twnpzaoqvuhrhcf\",\"action\":\"Include\"}]}}")
+                    "{\"provisioningState\":\"Deleting\",\"logRules\":{\"sendAadLogs\":false,\"sendSubscriptionLogs\":false,\"sendActivityLogs\":false,\"filteringTags\":[{\"name\":\"tqajzyulpkudjkrl\",\"value\":\"bzhfepgzgqexz\",\"action\":\"Include\"},{\"name\":\"scpai\",\"value\":\"hhbcsglummajtjao\",\"action\":\"Exclude\"},{\"name\":\"nbdxk\",\"value\":\"xo\",\"action\":\"Exclude\"}]}}")
                 .toObject(MonitoringTagRulesProperties.class);
-        Assertions.assertEquals(ProvisioningState.CANCELED, model.provisioningState());
+        Assertions.assertEquals(ProvisioningState.DELETING, model.provisioningState());
         Assertions.assertEquals(false, model.logRules().sendAadLogs());
         Assertions.assertEquals(false, model.logRules().sendSubscriptionLogs());
-        Assertions.assertEquals(true, model.logRules().sendActivityLogs());
-        Assertions.assertEquals("xhvpmoue", model.logRules().filteringTags().get(0).name());
-        Assertions.assertEquals("dzxibqeojnxqbzvd", model.logRules().filteringTags().get(0).value());
+        Assertions.assertEquals(false, model.logRules().sendActivityLogs());
+        Assertions.assertEquals("tqajzyulpkudjkrl", model.logRules().filteringTags().get(0).name());
+        Assertions.assertEquals("bzhfepgzgqexz", model.logRules().filteringTags().get(0).value());
         Assertions.assertEquals(TagAction.INCLUDE, model.logRules().filteringTags().get(0).action());
     }
 
-    @Test
-    public void testSerialize() {
+    @org.junit.jupiter.api.Test
+    public void testSerialize() throws Exception {
         MonitoringTagRulesProperties model =
             new MonitoringTagRulesProperties()
-                .withProvisioningState(ProvisioningState.CANCELED)
+                .withProvisioningState(ProvisioningState.DELETING)
                 .withLogRules(
                     new LogRules()
                         .withSendAadLogs(false)
                         .withSendSubscriptionLogs(false)
-                        .withSendActivityLogs(true)
+                        .withSendActivityLogs(false)
                         .withFilteringTags(
                             Arrays
                                 .asList(
                                     new FilteringTag()
-                                        .withName("xhvpmoue")
-                                        .withValue("dzxibqeojnxqbzvd")
+                                        .withName("tqajzyulpkudjkrl")
+                                        .withValue("bzhfepgzgqexz")
                                         .withAction(TagAction.INCLUDE),
                                     new FilteringTag()
-                                        .withName("ndei")
-                                        .withValue("twnpzaoqvuhrhcf")
-                                        .withAction(TagAction.INCLUDE))));
+                                        .withName("scpai")
+                                        .withValue("hhbcsglummajtjao")
+                                        .withAction(TagAction.EXCLUDE),
+                                    new FilteringTag()
+                                        .withName("nbdxk")
+                                        .withValue("xo")
+                                        .withAction(TagAction.EXCLUDE))));
         model = BinaryData.fromObject(model).toObject(MonitoringTagRulesProperties.class);
-        Assertions.assertEquals(ProvisioningState.CANCELED, model.provisioningState());
+        Assertions.assertEquals(ProvisioningState.DELETING, model.provisioningState());
         Assertions.assertEquals(false, model.logRules().sendAadLogs());
         Assertions.assertEquals(false, model.logRules().sendSubscriptionLogs());
-        Assertions.assertEquals(true, model.logRules().sendActivityLogs());
-        Assertions.assertEquals("xhvpmoue", model.logRules().filteringTags().get(0).name());
-        Assertions.assertEquals("dzxibqeojnxqbzvd", model.logRules().filteringTags().get(0).value());
+        Assertions.assertEquals(false, model.logRules().sendActivityLogs());
+        Assertions.assertEquals("tqajzyulpkudjkrl", model.logRules().filteringTags().get(0).name());
+        Assertions.assertEquals("bzhfepgzgqexz", model.logRules().filteringTags().get(0).value());
         Assertions.assertEquals(TagAction.INCLUDE, model.logRules().filteringTags().get(0).action());
     }
 }

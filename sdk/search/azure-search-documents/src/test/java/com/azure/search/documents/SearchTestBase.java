@@ -8,8 +8,9 @@ import com.azure.core.http.HttpClient;
 import com.azure.core.http.policy.FixedDelay;
 import com.azure.core.http.policy.HttpPipelinePolicy;
 import com.azure.core.http.policy.RetryPolicy;
-import com.azure.core.test.TestBase;
+import com.azure.core.test.InterceptorManager;
 import com.azure.core.test.TestMode;
+import com.azure.core.test.TestProxyTestBase;
 import com.azure.core.test.http.AssertingHttpClientBuilder;
 import com.azure.core.util.Configuration;
 import com.azure.core.util.logging.ClientLogger;
@@ -43,16 +44,22 @@ import com.azure.search.documents.indexes.models.TextWeights;
 
 import java.io.IOException;
 import java.io.UncheckedIOException;
+import java.text.DateFormat;
+import java.text.ParseException;
+import java.text.SimpleDateFormat;
 import java.time.Duration;
 import java.util.Arrays;
 import java.util.Collections;
+import java.util.Date;
 import java.util.HashMap;
 import java.util.Locale;
 import java.util.Map;
+import java.util.TimeZone;
 import java.util.function.BiConsumer;
 
 import static com.azure.search.documents.TestHelpers.BLOB_DATASOURCE_NAME;
 import static com.azure.search.documents.TestHelpers.HOTEL_INDEX_NAME;
+import static com.azure.search.documents.TestHelpers.ISO8601_FORMAT;
 import static com.azure.search.documents.TestHelpers.SQL_DATASOURCE_NAME;
 import static com.azure.search.documents.indexes.DataSourceTests.FAKE_AZURE_SQL_CONNECTION_STRING;
 import static org.junit.jupiter.api.Assertions.assertEquals;
@@ -62,7 +69,7 @@ import static org.junit.jupiter.api.Assertions.assertNotNull;
 /**
  * Abstract base class for all Search API tests
  */
-public abstract class SearchTestBase extends TestBase {
+public abstract class SearchTestBase extends TestProxyTestBase {
     protected static final String HOTELS_TESTS_INDEX_DATA_JSON = "HotelsTestsIndexData.json";
     protected static final String ENDPOINT = Configuration.getGlobalConfiguration()
         .get("SEARCH_SERVICE_ENDPOINT", "https://playback.search.windows.net");
@@ -72,15 +79,13 @@ public abstract class SearchTestBase extends TestBase {
 
     private static final String STORAGE_CONNECTION_STRING = Configuration.getGlobalConfiguration()
         .get("SEARCH_STORAGE_CONNECTION_STRING", "connectionString");
-    private static final String BLOB_CONTAINER_NAME = Configuration.getGlobalConfiguration()
-        .get("SEARCH_STORAGE_CONTAINER_NAME", "container");
+    private static final String BLOB_CONTAINER_NAME = "searchcontainer";
 
     protected static final TestMode TEST_MODE = initializeTestMode();
 
     private static final String FAKE_DESCRIPTION = "Some data source";
 
     static final String HOTELS_DATA_JSON = "HotelsDataArray.json";
-    static final String HOTELS_DATA_JSON_WITHOUT_FR_DESCRIPTION = "HotelsDataArrayWithoutFr.json";
 
     static final RetryPolicy SERVICE_THROTTLE_SAFE_RETRY_POLICY =
         new RetryPolicy(new FixedDelay(3, Duration.ofSeconds(60)));
@@ -110,7 +115,7 @@ public abstract class SearchTestBase extends TestBase {
         SearchIndexClientBuilder builder = new SearchIndexClientBuilder()
             .endpoint(ENDPOINT)
             .credential(new AzureKeyCredential(API_KEY))
-            .httpClient(getHttpClient(true, isSync));
+            .httpClient(getHttpClient(true, interceptorManager, isSync));
 
         if (interceptorManager.isPlaybackMode()) {
             addPolicies(builder);
@@ -131,7 +136,7 @@ public abstract class SearchTestBase extends TestBase {
         SearchIndexerClientBuilder builder = new SearchIndexerClientBuilder()
             .endpoint(ENDPOINT)
             .credential(new AzureKeyCredential(API_KEY))
-            .httpClient(getHttpClient(true, isSync));
+            .httpClient(getHttpClient(true, interceptorManager, isSync));
 
         addPolicies(builder, policies);
 
@@ -178,12 +183,13 @@ public abstract class SearchTestBase extends TestBase {
         return getSearchClientBuilderHelper(indexName, false, isSync);
     }
 
-    private SearchClientBuilder getSearchClientBuilderHelper(String indexName, boolean wrapWithAssertingClient, boolean isSync) {
+    private SearchClientBuilder getSearchClientBuilderHelper(String indexName, boolean wrapWithAssertingClient,
+        boolean isSync) {
         SearchClientBuilder builder = new SearchClientBuilder()
             .endpoint(ENDPOINT)
             .indexName(indexName)
             .credential(new AzureKeyCredential(API_KEY))
-            .httpClient(getHttpClient(wrapWithAssertingClient, isSync));
+            .httpClient(getHttpClient(wrapWithAssertingClient, interceptorManager, isSync));
 
         if (interceptorManager.isPlaybackMode()) {
             return builder;
@@ -198,10 +204,10 @@ public abstract class SearchTestBase extends TestBase {
         return builder;
     }
 
-    private HttpClient getHttpClient(boolean wrapWithAssertingClient, boolean isSync) {
-        HttpClient httpClient = (interceptorManager.isPlaybackMode())
-            ? interceptorManager.getPlaybackClient()
-            : HttpClient.createDefault();
+    private static HttpClient getHttpClient(boolean wrapWithAssertingClient, InterceptorManager interceptorManager,
+        boolean isSync) {
+        HttpClient httpClient = interceptorManager.isPlaybackMode()
+            ? interceptorManager.getPlaybackClient() : HttpClient.createDefault();
 
         if (wrapWithAssertingClient) {
             if (!isSync) {
@@ -455,5 +461,17 @@ public abstract class SearchTestBase extends TestBase {
 
             comparisonFunction.accept(expected, actual);
         });
+    }
+
+    @SuppressWarnings({"UseOfObsoleteDateTimeApi"})
+    protected static Date parseDate(String dateString) {
+        DateFormat dateFormat = new SimpleDateFormat(ISO8601_FORMAT);
+        dateFormat.setTimeZone(TimeZone.getTimeZone("UTC"));
+
+        try {
+            return dateFormat.parse(dateString);
+        } catch (ParseException ex) {
+            throw new RuntimeException(ex);
+        }
     }
 }

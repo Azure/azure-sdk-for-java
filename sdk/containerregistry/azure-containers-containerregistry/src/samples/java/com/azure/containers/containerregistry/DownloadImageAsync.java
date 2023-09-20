@@ -126,7 +126,7 @@ public class DownloadImageAsync {
         // BEGIN: com.azure.containers.containerregistry.getManifestAsync
         contentClient.getManifest("latest")
             .doOnNext(downloadResult -> {
-                if (ManifestMediaType.OCI_MANIFEST.equals(downloadResult.getManifestMediaType())
+                if (ManifestMediaType.OCI_IMAGE_MANIFEST.equals(downloadResult.getManifestMediaType())
                     || ManifestMediaType.DOCKER_MANIFEST.equals(downloadResult.getManifestMediaType())) {
                     OciImageManifest manifest = downloadResult.getManifest().toObject(OciImageManifest.class);
                     System.out.println("Got OCI manifest");
@@ -149,7 +149,7 @@ public class DownloadImageAsync {
         contentClient.getManifestWithResponse("latest")
             .doOnNext(response -> {
                 GetManifestResult manifestResult = response.getValue();
-                if (ManifestMediaType.OCI_MANIFEST.equals(manifestResult.getManifestMediaType())
+                if (ManifestMediaType.OCI_IMAGE_MANIFEST.equals(manifestResult.getManifestMediaType())
                     || ManifestMediaType.DOCKER_MANIFEST.equals(manifestResult.getManifestMediaType())) {
                     OciImageManifest manifest = manifestResult.getManifest().toObject(OciImageManifest.class);
                     System.out.println("Got OCI manifest");

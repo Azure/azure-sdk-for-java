@@ -32,7 +32,7 @@ public final class AutomationsListByResourceGroupMockTests {
         ArgumentCaptor<HttpRequest> httpRequest = ArgumentCaptor.forClass(HttpRequest.class);
 
         String responseStr =
-            "{\"value\":[{\"properties\":{\"description\":\"svkolru\",\"isEnabled\":true,\"scopes\":[],\"sources\":[],\"actions\":[]},\"location\":\"yebrazwzlpzbtzu\",\"tags\":{\"ocmbezacf\":\"kipfsdyepf\",\"yqejga\":\"ztgaz\",\"zmffngdyfcixrh\":\"okctgkppgkqzkc\"},\"id\":\"cqvhoejgoiutgwrm\",\"name\":\"a\",\"type\":\"p\"}]}";
+            "{\"value\":[{\"properties\":{\"description\":\"zboimyfpqdo\",\"isEnabled\":true,\"scopes\":[],\"sources\":[],\"actions\":[]},\"location\":\"fvpctfji\",\"tags\":{\"vuldbkkejjk\":\"ffgkuhznw\"},\"id\":\"igaw\",\"name\":\"azmxjqi\",\"type\":\"h\"}]}";
 
         Mockito.when(httpResponse.getStatusCode()).thenReturn(200);
         Mockito.when(httpResponse.getHeaders()).thenReturn(new HttpHeaders());
@@ -61,11 +61,11 @@ public final class AutomationsListByResourceGroupMockTests {
                     new AzureProfile("", "", AzureEnvironment.AZURE));
 
         PagedIterable<Automation> response =
-            manager.automations().listByResourceGroup("kxitds", com.azure.core.util.Context.NONE);
+            manager.automations().listByResourceGroup("trnzpducdaaktu", com.azure.core.util.Context.NONE);
 
-        Assertions.assertEquals("yebrazwzlpzbtzu", response.iterator().next().location());
-        Assertions.assertEquals("kipfsdyepf", response.iterator().next().tags().get("ocmbezacf"));
-        Assertions.assertEquals("svkolru", response.iterator().next().description());
+        Assertions.assertEquals("fvpctfji", response.iterator().next().location());
+        Assertions.assertEquals("ffgkuhznw", response.iterator().next().tags().get("vuldbkkejjk"));
+        Assertions.assertEquals("zboimyfpqdo", response.iterator().next().description());
         Assertions.assertEquals(true, response.iterator().next().isEnabled());
     }
 }

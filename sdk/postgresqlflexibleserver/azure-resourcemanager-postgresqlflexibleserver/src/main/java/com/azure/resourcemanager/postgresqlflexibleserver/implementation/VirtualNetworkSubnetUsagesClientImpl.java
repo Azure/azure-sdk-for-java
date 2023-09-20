@@ -57,8 +57,7 @@ public final class VirtualNetworkSubnetUsagesClientImpl implements VirtualNetwor
     public interface VirtualNetworkSubnetUsagesService {
         @Headers({"Content-Type: application/json"})
         @Post(
-            "/subscriptions/{subscriptionId}/providers/Microsoft.DBforPostgreSQL/locations/{locationName}"
-                + "/checkVirtualNetworkSubnetUsage")
+            "/subscriptions/{subscriptionId}/providers/Microsoft.DBforPostgreSQL/locations/{locationName}/checkVirtualNetworkSubnetUsage")
         @ExpectedResponses({200})
         @UnexpectedResponseExceptionType(ManagementException.class)
         Mono<Response<VirtualNetworkSubnetUsageResultInner>> execute(
@@ -83,7 +82,7 @@ public final class VirtualNetworkSubnetUsagesClientImpl implements VirtualNetwor
      *     completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    private Mono<Response<VirtualNetworkSubnetUsageResultInner>> executeWithResponseAsync(
+    public Mono<Response<VirtualNetworkSubnetUsageResultInner>> executeWithResponseAsync(
         String locationName, VirtualNetworkSubnetUsageParameter parameters) {
         if (this.client.getEndpoint() == null) {
             return Mono
@@ -180,7 +179,7 @@ public final class VirtualNetworkSubnetUsagesClientImpl implements VirtualNetwor
      * @return virtual network subnet usage for a given vNet resource id on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    private Mono<VirtualNetworkSubnetUsageResultInner> executeAsync(
+    public Mono<VirtualNetworkSubnetUsageResultInner> executeAsync(
         String locationName, VirtualNetworkSubnetUsageParameter parameters) {
         return executeWithResponseAsync(locationName, parameters).flatMap(res -> Mono.justOrEmpty(res.getValue()));
     }

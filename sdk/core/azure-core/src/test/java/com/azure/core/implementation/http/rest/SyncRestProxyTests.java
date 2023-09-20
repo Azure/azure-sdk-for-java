@@ -112,8 +112,9 @@ public class SyncRestProxyTests {
 
         TestInterface testInterface = RestProxy.create(TestInterface.class, pipeline);
         byte[] bytes = "hello".getBytes();
-        Response<Void> response = testInterface.testMethod(BinaryData.fromStream(new ByteArrayInputStream(bytes)),
-            "application/json", (long) bytes.length, Context.NONE);
+        Response<Void> response = testInterface.testMethod(BinaryData.fromStream(
+            new ByteArrayInputStream(bytes), (long) bytes.length), "application/json", (long) bytes.length,
+            Context.NONE);
         assertEquals(200, response.getStatusCode());
     }
 

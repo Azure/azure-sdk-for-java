@@ -13,6 +13,8 @@ import com.azure.core.amqp.exception.AmqpException;
 import com.azure.core.amqp.exception.OperationCancelledException;
 import com.azure.core.amqp.implementation.handler.SendLinkHandler;
 import com.azure.core.util.AsyncCloseable;
+import com.azure.core.util.CoreUtils;
+import com.azure.core.util.FluxUtil;
 import com.azure.core.util.logging.ClientLogger;
 import org.apache.qpid.proton.Proton;
 import org.apache.qpid.proton.amqp.Binary;
@@ -25,6 +27,8 @@ import org.apache.qpid.proton.amqp.messaging.Released;
 import org.apache.qpid.proton.amqp.transaction.Declared;
 import org.apache.qpid.proton.amqp.transport.DeliveryState;
 import org.apache.qpid.proton.amqp.transport.ErrorCondition;
+import org.apache.qpid.proton.codec.CompositeReadableBuffer;
+import org.apache.qpid.proton.codec.ReadableBuffer;
 import org.apache.qpid.proton.engine.Delivery;
 import org.apache.qpid.proton.engine.EndpointState;
 import org.apache.qpid.proton.engine.Sender;
@@ -43,6 +47,7 @@ import java.io.Serializable;
 import java.nio.BufferOverflowException;
 import java.time.Duration;
 import java.time.Instant;
+import java.util.Arrays;
 import java.util.Comparator;
 import java.util.List;
 import java.util.Locale;
@@ -264,51 +269,103 @@ class ReactorSender implements AmqpSendLink, AsyncCloseable, AutoCloseable {
 
         return getLinkSize()
             .flatMap(maxMessageSize -> {
-                final Message firstMessage = messageBatch.get(0);
+                int totalEncodedSize = 0;
+                final CompositeReadableBuffer buffer = new CompositeReadableBuffer();
 
-                // proton-j doesn't support multiple dataSections to be part of AmqpMessage
-                // here's the alternate approach provided by them: https://github.com/apache/qpid-proton/pull/54
-                final Message batchMessage = Proton.message();
-                batchMessage.setMessageAnnotations(firstMessage.getMessageAnnotations());
-
-                final int maxMessageSizeTemp = maxMessageSize;
-
-                final byte[] bytes = new byte[maxMessageSizeTemp];
-                int encodedSize = batchMessage.encode(bytes, 0, maxMessageSizeTemp);
-                int byteArrayOffset = encodedSize;
-
-                for (final Message amqpMessage : messageBatch) {
-                    final Message messageWrappedByData = Proton.message();
-
-                    int payloadSize = messageSerializer.getSize(amqpMessage);
-                    int allocationSize =
-                        Math.min(payloadSize + MAX_AMQP_HEADER_SIZE_BYTES, maxMessageSizeTemp);
-
-                    byte[] messageBytes = new byte[allocationSize];
-                    int messageSizeBytes = amqpMessage.encode(messageBytes, 0, allocationSize);
-                    messageWrappedByData.setBody(new Data(new Binary(messageBytes, 0, messageSizeBytes)));
-
-                    try {
-                        encodedSize =
-                            messageWrappedByData
-                                .encode(bytes, byteArrayOffset, maxMessageSizeTemp - byteArrayOffset - 1);
-                    } catch (BufferOverflowException exception) {
-                        final String message =
-                            String.format(Locale.US,
-                                "Size of the payload exceeded maximum message size: %s kb",
-                                maxMessageSizeTemp / 1024);
-                        final AmqpException error = new AmqpException(false,
-                            AmqpErrorCondition.LINK_PAYLOAD_SIZE_EXCEEDED, message, exception,
-                            handler.getErrorContext(sender));
-
-                        return Mono.error(error);
+                final byte[] envelopBytes = batchEnvelopBytes(messageBatch.get(0), maxMessageSize);
+                if (envelopBytes.length > 0) {
+                    totalEncodedSize += envelopBytes.length;
+                    if (totalEncodedSize > maxMessageSize) {
+                        return batchBufferOverflowError(maxMessageSize);
                     }
-
-                    byteArrayOffset = byteArrayOffset + encodedSize;
+                    buffer.append(envelopBytes);
                 }
 
-                return send(bytes, byteArrayOffset, AmqpConstants.AMQP_BATCH_MESSAGE_FORMAT, deliveryState);
+                for (final Message message : messageBatch) {
+                    final byte[] sectionBytes = batchBinaryDataSectionBytes(message, maxMessageSize);
+                    if (sectionBytes.length > 0) {
+                        totalEncodedSize += sectionBytes.length;
+                        if (totalEncodedSize > maxMessageSize) {
+                            return batchBufferOverflowError(maxMessageSize);
+                        }
+                        buffer.append(sectionBytes);
+                    } else {
+                        logger.info("Ignoring the empty message org.apache.qpid.proton.message.message@{} in the batch.",
+                            Integer.toHexString(System.identityHashCode(message)));
+                    }
+                }
+
+                return send(buffer, AmqpConstants.AMQP_BATCH_MESSAGE_FORMAT, deliveryState);
             }).then();
+    }
+
+    private byte[] batchEnvelopBytes(Message envelopMessage, int maxMessageSize) {
+        // Proton-j doesn't support multiple dataSections to be part of AmqpMessage.
+        // Here's the alternate approach provided: https://github.com/apache/qpid-proton/pull/54
+        final Message message = Proton.message();
+        message.setMessageAnnotations(envelopMessage.getMessageAnnotations());
+
+        // Set partition identifier properties of the first message on batch message
+        if ((envelopMessage.getMessageId() instanceof String)
+            && !CoreUtils.isNullOrEmpty((String) envelopMessage.getMessageId())) {
+
+            message.setMessageId(envelopMessage.getMessageId());
+        }
+
+        if (!CoreUtils.isNullOrEmpty(envelopMessage.getGroupId())) {
+            message.setGroupId(envelopMessage.getGroupId());
+        }
+
+        final int size = messageSerializer.getSize(message);
+        final int allocationSize = Math.min(size + MAX_AMQP_HEADER_SIZE_BYTES, maxMessageSize);
+        final byte[] encodedBytes = new byte[allocationSize];
+        final int encodedSize = message.encode(encodedBytes, 0, allocationSize);
+        // This copyOf copying is just few bytes for envelop.
+        return Arrays.copyOf(encodedBytes, encodedSize);
+    }
+
+    private byte[] batchBinaryDataSectionBytes(Message sectionMessage, int maxMessageSize) {
+        final int size = messageSerializer.getSize(sectionMessage);
+        final int allocationSize = Math.min(size + MAX_AMQP_HEADER_SIZE_BYTES, maxMessageSize);
+        final byte[] encodedBytes = new byte[allocationSize];
+        final int encodedSize = sectionMessage.encode(encodedBytes, 0, allocationSize);
+
+        final Message message = Proton.message();
+        final Data binaryData = new Data(new Binary(encodedBytes, 0, encodedSize));
+        message.setBody(binaryData);
+        final int binaryRawSize = binaryData.getValue().getLength();
+        // Precompute the "amqp:data:binary" encoded size -
+        final int binaryEncodedSize = binaryEncodedSize(binaryRawSize);
+        // ^ this pre-computation avoids allocating byte[] 'arr1' of estimated encoded size (to pass to message.encode(arr1,))
+        // and a second allocation of byte[] 'arr2' with exact encoded size (returned from message.encode(arr1,)) then
+        // copying encoded size bytes from 'arr1' to 'arr2'. Skipping extra allocations and CPU cycles for copying.
+        final byte[] binaryEncodedBytes = new byte[binaryEncodedSize];
+        message.encode(binaryEncodedBytes, 0, binaryEncodedSize);
+        return binaryEncodedBytes;
+    }
+
+    private Mono<Void> batchBufferOverflowError(int maxMessageSize) {
+        return FluxUtil.monoError(logger, new AmqpException(false, AmqpErrorCondition.LINK_PAYLOAD_SIZE_EXCEEDED,
+            String.format(Locale.US, "Size of the payload exceeded maximum message size: %s kb", maxMessageSize / 1024),
+            new BufferOverflowException(), handler.getErrorContext(sender)));
+    }
+
+    /**
+     * Compute the encoded size when encoding a binary data of given size per Amqp 1.0 spec "amqp:data:binary" format.
+     *
+     * @param binaryRawSize the length of the binary data.
+     * @return the encoded size.
+     */
+    private int binaryEncodedSize(int binaryRawSize) {
+        if (binaryRawSize <= 255) {
+            // [0x00,0x53,0x75,0xa0,{byte(Data.Binary.Length)},{Data.Binary.bytes}]
+            // The AMQP 1.0 spec format ^ for amqp:data:binary when the raw bytes length is <= 255.
+            return 5 + binaryRawSize;
+        } else {
+            // [0x00,0x53,0x75,0xb0,{int(Data.Binary.Length)},{Data.Binary.bytes}]
+            // The AMQP 1.0 spec format ^ for amqp:data:binary when the raw bytes length is > 255.
+            return  8 + binaryRawSize;
+        }
     }
 
     @Override
@@ -344,7 +401,7 @@ class ReactorSender implements AmqpSendLink, AsyncCloseable, AutoCloseable {
             }
 
             return RetryUtil.withRetry(getEndpointStates().takeUntil(state -> state == AmqpEndpointState.ACTIVE),
-                retryOptions, activeTimeoutMessage)
+                    retryOptions, activeTimeoutMessage)
                 .then(Mono.fromCallable(() -> {
                     final UnsignedLong remoteMaxMessageSize = sender.getRemoteMaxMessageSize();
                     if (remoteMaxMessageSize != null) {
@@ -414,6 +471,7 @@ class ReactorSender implements AmqpSendLink, AsyncCloseable, AutoCloseable {
             sender.close();
         };
 
+        // @formatter:off
         return Mono.fromRunnable(() -> {
             try {
                 reactorProvider.getReactorDispatcher().invoke(closeWork);
@@ -430,6 +488,7 @@ class ReactorSender implements AmqpSendLink, AsyncCloseable, AutoCloseable {
             }
         }).then(isClosedMono.asMono())
             .publishOn(Schedulers.boundedElastic());
+        // @formatter:on
     }
 
     /**
@@ -443,14 +502,22 @@ class ReactorSender implements AmqpSendLink, AsyncCloseable, AutoCloseable {
 
     @Override
     public Mono<DeliveryState> send(byte[] bytes, int arrayOffset, int messageFormat, DeliveryState deliveryState) {
-        final Flux<EndpointState> activeEndpointFlux = RetryUtil.withRetry(
-            handler.getEndpointStates().takeUntil(state -> state == EndpointState.ACTIVE), retryOptions,
-            activeTimeoutMessage);
-
-        return activeEndpointFlux.then(Mono.create(sink -> {
+        return onEndpointActive().then(Mono.create(sink -> {
             sendWork(new RetriableWorkItem(bytes, arrayOffset, messageFormat, sink, retryOptions.getTryTimeout(),
                 deliveryState, metricsProvider));
         }));
+    }
+
+    Mono<DeliveryState> send(ReadableBuffer buffer, int messageFormat, DeliveryState deliveryState) {
+        return onEndpointActive().then(Mono.create(sink -> {
+            sendWork(new RetriableWorkItem(buffer, messageFormat, sink, retryOptions.getTryTimeout(),
+                deliveryState, metricsProvider));
+        }));
+    }
+
+    private Flux<EndpointState> onEndpointActive() {
+        return RetryUtil.withRetry(handler.getEndpointStates().takeUntil(state -> state == EndpointState.ACTIVE),
+            retryOptions, activeTimeoutMessage);
     }
 
     /**
@@ -522,10 +589,7 @@ class ReactorSender implements AmqpSendLink, AsyncCloseable, AutoCloseable {
                 if (workItem.isDeliveryStateProvided()) {
                     delivery.disposition(workItem.getDeliveryState());
                 }
-                sentMsgSize = sender.send(workItem.getMessage(), 0, workItem.getEncodedMessageSize());
-                assert sentMsgSize == workItem.getEncodedMessageSize()
-                    : "Contract of the ProtonJ library for Sender. Send API changed";
-
+                workItem.send(sender);
                 linkAdvance = sender.advance();
             } catch (Exception exception) {
                 sendException = exception;

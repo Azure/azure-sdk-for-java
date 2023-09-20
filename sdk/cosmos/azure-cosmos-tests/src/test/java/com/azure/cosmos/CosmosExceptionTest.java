@@ -52,6 +52,18 @@ import static com.azure.cosmos.implementation.HttpConstants.StatusCodes.RETRY_WI
 import static com.azure.cosmos.implementation.HttpConstants.StatusCodes.SERVICE_UNAVAILABLE;
 import static com.azure.cosmos.implementation.HttpConstants.StatusCodes.TOO_MANY_REQUESTS;
 import static com.azure.cosmos.implementation.HttpConstants.StatusCodes.UNAUTHORIZED;
+import static com.azure.cosmos.implementation.HttpConstants.SubStatusCodes.COMPLETING_PARTITION_MIGRATION_EXCEEDED_RETRY_LIMIT;
+import static com.azure.cosmos.implementation.HttpConstants.SubStatusCodes.COMPLETING_SPLIT_EXCEEDED_RETRY_LIMIT;
+import static com.azure.cosmos.implementation.HttpConstants.SubStatusCodes.GLOBAL_STRONG_WRITE_BARRIER_NOT_MET;
+import static com.azure.cosmos.implementation.HttpConstants.SubStatusCodes.NAME_CACHE_IS_STALE_EXCEEDED_RETRY_LIMIT;
+import static com.azure.cosmos.implementation.HttpConstants.SubStatusCodes.NO_VALID_STORE_RESPONSE;
+import static com.azure.cosmos.implementation.HttpConstants.SubStatusCodes.PARTITION_KEY_RANGE_GONE_EXCEEDED_RETRY_LIMIT;
+import static com.azure.cosmos.implementation.HttpConstants.SubStatusCodes.READ_QUORUM_NOT_MET;
+import static com.azure.cosmos.implementation.HttpConstants.SubStatusCodes.SERVER_GENERATED_408;
+import static com.azure.cosmos.implementation.HttpConstants.SubStatusCodes.SERVER_GENERATED_410;
+import static com.azure.cosmos.implementation.HttpConstants.SubStatusCodes.SERVER_GENERATED_503;
+import static com.azure.cosmos.implementation.HttpConstants.SubStatusCodes.TIMEOUT_GENERATED_410;
+import static com.azure.cosmos.implementation.HttpConstants.SubStatusCodes.TRANSPORT_GENERATED_410;
 import static com.azure.cosmos.implementation.guava27.Strings.lenientFormat;
 import static org.assertj.core.api.Assertions.assertThat;
 import static org.testng.Assert.assertEquals;
@@ -128,6 +140,21 @@ public class CosmosExceptionTest {
         }
     }
 
+    @Test(groups = { "unit" }, dataProvider = "subStatusTypes")
+    public void subStatusCodeIsCorrect(Class<CosmosException> type, int expectedStatusCode, int expectedSubStatusCode) {
+        try {
+            Constructor<CosmosException> constructor = type.getDeclaredConstructor(String.class, HttpHeaders.class, URI.class, Integer.TYPE);
+            constructor.setAccessible(true);
+            final CosmosException instance = constructor.newInstance("some-message", null, null, expectedSubStatusCode);
+            assertEquals(instance.getStatusCode(), expectedStatusCode);
+            assertEquals(instance.getSubStatusCode(), expectedSubStatusCode);
+            assertThat(instance.toString()).contains("\"userAgent\":\"" + Utils.getUserAgent());
+        } catch (IllegalAccessException | InstantiationException | NoSuchMethodException | InvocationTargetException error) {
+            String message = lenientFormat("could not create instance of %s due to %s", type, error);
+            throw new AssertionError(message, error);
+        }
+    }
+
     @Test(groups = { "unit" })
     public void throttlingBackOffDurationShouldBeCappedAt5Seconds() throws URISyntaxException {
         HttpHeaders headers = new HttpHeaders();
@@ -170,6 +197,24 @@ public class CosmosExceptionTest {
             { RetryWithException.class, RETRY_WITH },
             { ServiceUnavailableException.class, SERVICE_UNAVAILABLE },
             { UnauthorizedException.class, UNAUTHORIZED }
+        };
+    }
+
+    @DataProvider(name = "subStatusTypes")
+    private static Object[][] subStatusTypes() {
+        return new Object[][] {
+            { GoneException.class, GONE,  TRANSPORT_GENERATED_410},
+            { GoneException.class, GONE,  TIMEOUT_GENERATED_410},
+            { GoneException.class, GONE,  SERVER_GENERATED_410},
+            { GoneException.class, GONE,  GLOBAL_STRONG_WRITE_BARRIER_NOT_MET},
+            { GoneException.class, GONE,  READ_QUORUM_NOT_MET},
+            { GoneException.class, GONE,  NO_VALID_STORE_RESPONSE},
+            { GoneException.class, GONE,  SERVER_GENERATED_408},
+            { GoneException.class, GONE,  COMPLETING_PARTITION_MIGRATION_EXCEEDED_RETRY_LIMIT},
+            { GoneException.class, GONE,  COMPLETING_SPLIT_EXCEEDED_RETRY_LIMIT},
+            { GoneException.class, GONE,  NAME_CACHE_IS_STALE_EXCEEDED_RETRY_LIMIT},
+            { GoneException.class, GONE,  PARTITION_KEY_RANGE_GONE_EXCEEDED_RETRY_LIMIT},
+            { ServiceUnavailableException.class, SERVICE_UNAVAILABLE, SERVER_GENERATED_503 }
         };
     }
 }

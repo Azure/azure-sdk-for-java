@@ -8,13 +8,10 @@ import com.azure.core.util.ExpandableStringEnum;
 import com.fasterxml.jackson.annotation.JsonCreator;
 import java.util.Collection;
 
-/** the types of identities associated with this resource; currently restricted to 'SystemAssigned and UserAssigned'. */
+/** the types of identities associated with this resource; currently restricted to 'None and UserAssigned'. */
 public final class IdentityType extends ExpandableStringEnum<IdentityType> {
     /** Static value None for IdentityType. */
     public static final IdentityType NONE = fromString("None");
-
-    /** Static value SystemAssigned for IdentityType. */
-    public static final IdentityType SYSTEM_ASSIGNED = fromString("SystemAssigned");
 
     /** Static value UserAssigned for IdentityType. */
     public static final IdentityType USER_ASSIGNED = fromString("UserAssigned");

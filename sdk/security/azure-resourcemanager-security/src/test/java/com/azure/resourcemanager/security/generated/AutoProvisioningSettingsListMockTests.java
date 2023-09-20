@@ -33,7 +33,7 @@ public final class AutoProvisioningSettingsListMockTests {
         ArgumentCaptor<HttpRequest> httpRequest = ArgumentCaptor.forClass(HttpRequest.class);
 
         String responseStr =
-            "{\"value\":[{\"properties\":{\"autoProvision\":\"Off\"},\"id\":\"vstclg\",\"name\":\"rvwerfwxbsmtb\",\"type\":\"jj\"}]}";
+            "{\"value\":[{\"properties\":{\"autoProvision\":\"On\"},\"id\":\"dneyttlr\",\"name\":\"xivcbkutpumlt\",\"type\":\"jflu\"}]}";
 
         Mockito.when(httpResponse.getStatusCode()).thenReturn(200);
         Mockito.when(httpResponse.getHeaders()).thenReturn(new HttpHeaders());
@@ -64,6 +64,6 @@ public final class AutoProvisioningSettingsListMockTests {
         PagedIterable<AutoProvisioningSetting> response =
             manager.autoProvisioningSettings().list(com.azure.core.util.Context.NONE);
 
-        Assertions.assertEquals(AutoProvision.OFF, response.iterator().next().autoProvision());
+        Assertions.assertEquals(AutoProvision.ON, response.iterator().next().autoProvision());
     }
 }

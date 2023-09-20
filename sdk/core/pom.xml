@@ -27,6 +27,7 @@
     <module>azure-core-test</module>
     <module>azure-core-tracing-opentelemetry</module>
     <module>azure-core-tracing-opentelemetry-samples</module>
+    <module>azure-core-version-tests</module>
     <module>azure-json</module>
     <module>azure-json-gson</module>
     <module>azure-json-reflect</module>

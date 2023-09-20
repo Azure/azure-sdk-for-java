@@ -17,6 +17,15 @@ public final class BindingType extends ExpandableStringEnum<BindingType> {
     public static final BindingType SNI_ENABLED = fromString("SniEnabled");
 
     /**
+     * Creates a new instance of BindingType value.
+     *
+     * @deprecated Use the {@link #fromString(String)} factory method.
+     */
+    @Deprecated
+    public BindingType() {
+    }
+
+    /**
      * Creates or finds a BindingType from its string representation.
      *
      * @param name a name to look for.

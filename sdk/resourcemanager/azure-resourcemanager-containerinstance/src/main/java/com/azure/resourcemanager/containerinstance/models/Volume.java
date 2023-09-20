@@ -44,6 +44,10 @@ public final class Volume {
     @JsonProperty(value = "gitRepo")
     private GitRepoVolume gitRepo;
 
+    /** Creates an instance of Volume class. */
+    public Volume() {
+    }
+
     /**
      * Get the name property: The name of the volume.
      *

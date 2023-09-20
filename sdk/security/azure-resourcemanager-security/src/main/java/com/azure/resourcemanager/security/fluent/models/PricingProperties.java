@@ -6,18 +6,19 @@ package com.azure.resourcemanager.security.fluent.models;
 
 import com.azure.core.annotation.Fluent;
 import com.azure.core.util.logging.ClientLogger;
+import com.azure.resourcemanager.security.models.Extension;
 import com.azure.resourcemanager.security.models.PricingTier;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import java.time.Duration;
+import java.time.OffsetDateTime;
 import java.util.List;
 
 /** Pricing properties for the relevant scope. */
 @Fluent
 public final class PricingProperties {
     /*
-     * The pricing tier value. Microsoft Defender for Cloud is provided in two pricing tiers: free and standard, with
-     * the standard tier available with a trial period. The standard tier offers advanced security capabilities, while
-     * the free tier offers basic security features.
+     * The pricing tier value. Microsoft Defender for Cloud is provided in two pricing tiers: free and standard. The
+     * standard tier offers advanced security capabilities, while the free tier offers basic security features.
      */
     @JsonProperty(value = "pricingTier", required = true)
     private PricingTier pricingTier;
@@ -36,6 +37,13 @@ public final class PricingProperties {
     private Duration freeTrialRemainingTime;
 
     /*
+     * Optional. If `pricingTier` is `Standard` then this property holds the date of the last time the `pricingTier`
+     * was set to `Standard`, when available (e.g 2023-03-01T12:42:42.1921106Z).
+     */
+    @JsonProperty(value = "enablementTime", access = JsonProperty.Access.WRITE_ONLY)
+    private OffsetDateTime enablementTime;
+
+    /*
      * Optional. True if the plan is deprecated. If there are replacing plans they will appear in `replacedBy` property
      */
     @JsonProperty(value = "deprecated", access = JsonProperty.Access.WRITE_ONLY)
@@ -47,14 +55,20 @@ public final class PricingProperties {
     @JsonProperty(value = "replacedBy", access = JsonProperty.Access.WRITE_ONLY)
     private List<String> replacedBy;
 
+    /*
+     * Optional. List of extensions offered under a plan.
+     */
+    @JsonProperty(value = "extensions")
+    private List<Extension> extensions;
+
     /** Creates an instance of PricingProperties class. */
     public PricingProperties() {
     }
 
     /**
      * Get the pricingTier property: The pricing tier value. Microsoft Defender for Cloud is provided in two pricing
-     * tiers: free and standard, with the standard tier available with a trial period. The standard tier offers advanced
-     * security capabilities, while the free tier offers basic security features.
+     * tiers: free and standard. The standard tier offers advanced security capabilities, while the free tier offers
+     * basic security features.
      *
      * @return the pricingTier value.
      */
@@ -64,8 +78,8 @@ public final class PricingProperties {
 
     /**
      * Set the pricingTier property: The pricing tier value. Microsoft Defender for Cloud is provided in two pricing
-     * tiers: free and standard, with the standard tier available with a trial period. The standard tier offers advanced
-     * security capabilities, while the free tier offers basic security features.
+     * tiers: free and standard. The standard tier offers advanced security capabilities, while the free tier offers
+     * basic security features.
      *
      * @param pricingTier the pricingTier value to set.
      * @return the PricingProperties object itself.
@@ -108,6 +122,16 @@ public final class PricingProperties {
     }
 
     /**
+     * Get the enablementTime property: Optional. If `pricingTier` is `Standard` then this property holds the date of
+     * the last time the `pricingTier` was set to `Standard`, when available (e.g 2023-03-01T12:42:42.1921106Z).
+     *
+     * @return the enablementTime value.
+     */
+    public OffsetDateTime enablementTime() {
+        return this.enablementTime;
+    }
+
+    /**
      * Get the deprecated property: Optional. True if the plan is deprecated. If there are replacing plans they will
      * appear in `replacedBy` property.
      *
@@ -128,6 +152,26 @@ public final class PricingProperties {
     }
 
     /**
+     * Get the extensions property: Optional. List of extensions offered under a plan.
+     *
+     * @return the extensions value.
+     */
+    public List<Extension> extensions() {
+        return this.extensions;
+    }
+
+    /**
+     * Set the extensions property: Optional. List of extensions offered under a plan.
+     *
+     * @param extensions the extensions value to set.
+     * @return the PricingProperties object itself.
+     */
+    public PricingProperties withExtensions(List<Extension> extensions) {
+        this.extensions = extensions;
+        return this;
+    }
+
+    /**
      * Validates the instance.
      *
      * @throws IllegalArgumentException thrown if the instance is not valid.
@@ -137,6 +181,9 @@ public final class PricingProperties {
             throw LOGGER
                 .logExceptionAsError(
                     new IllegalArgumentException("Missing required property pricingTier in model PricingProperties"));
+        }
+        if (extensions() != null) {
+            extensions().forEach(e -> e.validate());
         }
     }
 

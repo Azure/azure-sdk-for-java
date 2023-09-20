@@ -3,6 +3,7 @@
 
 package com.azure.core.http.jdk.httpclient;
 
+import com.azure.core.http.HttpHeaderName;
 import com.azure.core.implementation.util.BinaryDataContent;
 import com.azure.core.implementation.util.BinaryDataHelper;
 import com.azure.core.implementation.util.ByteArrayContent;
@@ -23,7 +24,6 @@ import static java.net.http.HttpRequest.BodyPublishers.fromPublisher;
 import static java.net.http.HttpRequest.BodyPublishers.noBody;
 import static java.net.http.HttpRequest.BodyPublishers.ofByteArray;
 import static java.net.http.HttpRequest.BodyPublishers.ofInputStream;
-import static java.net.http.HttpRequest.BodyPublishers.ofString;
 
 final class BodyPublisherUtils {
     private BodyPublisherUtils() {
@@ -37,7 +37,8 @@ final class BodyPublisherUtils {
      * @param progressReporter optional progress reporter.
      * @return the request BodyPublisher
      */
-    public static HttpRequest.BodyPublisher toBodyPublisher(com.azure.core.http.HttpRequest request, ProgressReporter progressReporter) {
+    public static HttpRequest.BodyPublisher toBodyPublisher(com.azure.core.http.HttpRequest request,
+        ProgressReporter progressReporter) {
         BinaryData body = request.getBodyAsBinaryData();
         if (body == null) {
             return noBody();
@@ -45,10 +46,12 @@ final class BodyPublisherUtils {
 
         HttpRequest.BodyPublisher publisher;
         BinaryDataContent bodyContent = BinaryDataHelper.getContent(body);
-        if (bodyContent instanceof ByteArrayContent) {
+        if (bodyContent instanceof ByteArrayContent
+            || bodyContent instanceof StringContent
+            || bodyContent instanceof SerializableContent) {
+            // String and serializable content also uses ofByteArray as ofString is just a wrapper for this,
+            // so we might as well own the handling.
             publisher = ofByteArray(bodyContent.toBytes());
-        } else if (bodyContent instanceof StringContent || bodyContent instanceof SerializableContent) {
-            publisher = ofString(bodyContent.toString());
         } else {
             if (bodyContent instanceof FileContent || bodyContent instanceof InputStreamContent) {
                 publisher = ofInputStream(bodyContent::toStream);
@@ -56,7 +59,8 @@ final class BodyPublisherUtils {
                 publisher = fromPublisher(JdkFlowAdapter.publisherToFlowPublisher(request.getBody()));
             }
 
-            publisher = toBodyPublisherWithLength(publisher, request.getHeaders().getValue("content-length"));
+            publisher = toBodyPublisherWithLength(publisher, request.getHeaders()
+                .getValue(HttpHeaderName.CONTENT_LENGTH));
         }
 
         return getPublisherWithReporter(publisher, progressReporter);

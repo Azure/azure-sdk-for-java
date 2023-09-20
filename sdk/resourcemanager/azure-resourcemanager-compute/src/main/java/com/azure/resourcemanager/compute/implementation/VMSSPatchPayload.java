@@ -107,7 +107,7 @@ class VMSSPatchPayload {
                     != null) {
                     networkProfile
                         .withNetworkInterfaceConfigurations(
-                            new ArrayList<VirtualMachineScaleSetUpdateNetworkConfiguration>());
+                            new ArrayList<>());
                     for (VirtualMachineScaleSetNetworkConfiguration nicConfig
                         : scaleSet
                             .innerModel()
@@ -122,10 +122,9 @@ class VMSSPatchPayload {
                         nicPatchConfig.withName(nicConfig.name());
                         nicPatchConfig.withNetworkSecurityGroup(nicConfig.networkSecurityGroup());
                         nicPatchConfig.withPrimary(nicConfig.primary());
-                        nicPatchConfig.withId(nicConfig.id());
                         if (nicConfig.ipConfigurations() != null) {
                             nicPatchConfig
-                                .withIpConfigurations(new ArrayList<VirtualMachineScaleSetUpdateIpConfiguration>());
+                                .withIpConfigurations(new ArrayList<>());
                             for (VirtualMachineScaleSetIpConfiguration ipConfig : nicConfig.ipConfigurations()) {
                                 VirtualMachineScaleSetUpdateIpConfiguration patchIpConfig =
                                     new VirtualMachineScaleSetUpdateIpConfiguration();
@@ -139,7 +138,6 @@ class VMSSPatchPayload {
                                 patchIpConfig.withPrimary(ipConfig.primary());
                                 patchIpConfig.withPrivateIpAddressVersion(ipConfig.privateIpAddressVersion());
                                 patchIpConfig.withSubnet(ipConfig.subnet());
-                                patchIpConfig.withId(ipConfig.id());
                                 if (ipConfig.publicIpAddressConfiguration() != null) {
                                     patchIpConfig
                                         .withPublicIpAddressConfiguration(
@@ -156,7 +154,7 @@ class VMSSPatchPayload {
                                         .withName(ipConfig.publicIpAddressConfiguration().name());
                                 }
                                 if (ipConfig.applicationSecurityGroups() != null) {
-                                    patchIpConfig.withApplicationSecurityGroups(new ArrayList<SubResource>());
+                                    patchIpConfig.withApplicationSecurityGroups(new ArrayList<>());
                                     for (SubResource asg : ipConfig.applicationSecurityGroups()) {
                                         patchIpConfig
                                             .applicationSecurityGroups()

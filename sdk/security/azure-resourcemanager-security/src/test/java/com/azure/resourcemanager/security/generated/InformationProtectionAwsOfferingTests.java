@@ -15,9 +15,9 @@ public final class InformationProtectionAwsOfferingTests {
         InformationProtectionAwsOffering model =
             BinaryData
                 .fromString(
-                    "{\"offeringType\":\"InformationProtectionAws\",\"informationProtection\":{\"cloudRoleArn\":\"mkxettcsloj\"},\"description\":\"qid\"}")
+                    "{\"offeringType\":\"InformationProtectionAws\",\"informationProtection\":{\"cloudRoleArn\":\"ytt\"},\"description\":\"knwfrkebsmhpdujd\"}")
                 .toObject(InformationProtectionAwsOffering.class);
-        Assertions.assertEquals("mkxettcsloj", model.informationProtection().cloudRoleArn());
+        Assertions.assertEquals("ytt", model.informationProtection().cloudRoleArn());
     }
 
     @org.junit.jupiter.api.Test
@@ -25,8 +25,8 @@ public final class InformationProtectionAwsOfferingTests {
         InformationProtectionAwsOffering model =
             new InformationProtectionAwsOffering()
                 .withInformationProtection(
-                    new InformationProtectionAwsOfferingInformationProtection().withCloudRoleArn("mkxettcsloj"));
+                    new InformationProtectionAwsOfferingInformationProtection().withCloudRoleArn("ytt"));
         model = BinaryData.fromObject(model).toObject(InformationProtectionAwsOffering.class);
-        Assertions.assertEquals("mkxettcsloj", model.informationProtection().cloudRoleArn());
+        Assertions.assertEquals("ytt", model.informationProtection().cloudRoleArn());
     }
 }

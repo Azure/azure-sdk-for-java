@@ -25,6 +25,7 @@ import com.azure.cosmos.implementation.Configs;
 import com.azure.cosmos.implementation.ConnectionPolicy;
 import com.azure.cosmos.implementation.FailureValidator;
 import com.azure.cosmos.implementation.FeedResponseListValidator;
+import com.azure.cosmos.implementation.ImplementationBridgeHelpers;
 import com.azure.cosmos.implementation.InternalObjectNode;
 import com.azure.cosmos.implementation.PathParser;
 import com.azure.cosmos.implementation.Resource;
@@ -199,7 +200,7 @@ public class TestSuiteBase extends CosmosAsyncClientTest {
         }
     }
 
-    @BeforeSuite(groups = {"simple", "long", "direct", "multi-region", "multi-master", "emulator"}, timeOut = SUITE_SETUP_TIMEOUT)
+    @BeforeSuite(groups = {"simple", "long", "direct", "multi-region", "multi-master", "emulator", "split", "query"}, timeOut = SUITE_SETUP_TIMEOUT)
     public static void beforeSuite() {
 
         logger.info("beforeSuite Started");
@@ -215,7 +216,7 @@ public class TestSuiteBase extends CosmosAsyncClientTest {
         }
     }
 
-    @AfterSuite(groups = {"simple", "long", "direct", "multi-region", "multi-master", "emulator"}, timeOut = SUITE_SHUTDOWN_TIMEOUT)
+    @AfterSuite(groups = {"simple", "long", "direct", "multi-region", "multi-master", "emulator", "split", "query"}, timeOut = SUITE_SHUTDOWN_TIMEOUT)
     public static void afterSuite() {
 
         logger.info("afterSuite Started");
@@ -969,6 +970,13 @@ public class TestSuiteBase extends CosmosAsyncClientTest {
         };
     }
 
+    @DataProvider
+    public static Object[][] clientBuilderSolelyDirectWithSessionConsistency() {
+        return new Object[][]{
+                {createDirectRxDocumentClient(ConsistencyLevel.SESSION, Protocol.TCP, false, null, true, true)}
+        };
+    }
+
     static ConsistencyLevel parseConsistency(String consistency) {
         if (consistency != null) {
             consistency = CaseFormat.UPPER_CAMEL.to(CaseFormat.UPPER_UNDERSCORE, consistency).trim();
@@ -1037,9 +1045,10 @@ public class TestSuiteBase extends CosmosAsyncClientTest {
     }
 
     @DataProvider
-    public static Object[][] simpleClientBuildersForDirectTcpWithoutRetryOnThrottledRequests() {
+    public static Object[][] simpleClientBuildersWithoutRetryOnThrottledRequests() {
         return new Object[][]{
-            {createDirectRxDocumentClient(ConsistencyLevel.SESSION, Protocol.TCP, false, null, true, false)},
+            { createDirectRxDocumentClient(ConsistencyLevel.SESSION, Protocol.TCP, false, null, true, false) },
+            { createGatewayRxDocumentClient(ConsistencyLevel.SESSION, false, null, true, false) }
         };
     }
 
@@ -1311,6 +1320,10 @@ public class TestSuiteBase extends CosmosAsyncClientTest {
             .preferredRegions(preferredRegions)
             .contentResponseOnWriteEnabled(contentResponseOnWriteEnabled)
             .consistencyLevel(consistencyLevel);
+        ImplementationBridgeHelpers
+            .CosmosClientBuilderHelper
+            .getCosmosClientBuilderAccessor()
+            .buildConnectionPolicy(builder);
 
         if (!retryOnThrottledRequests) {
             builder.throttlingRetryOptions(new ThrottlingRetryOptions().setMaxRetryAttemptsOnThrottledRequests(0));

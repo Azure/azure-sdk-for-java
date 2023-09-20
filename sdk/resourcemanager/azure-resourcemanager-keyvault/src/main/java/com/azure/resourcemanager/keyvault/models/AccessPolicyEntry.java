@@ -40,6 +40,10 @@ public final class AccessPolicyEntry {
     @JsonProperty(value = "permissions", required = true)
     private Permissions permissions;
 
+    /** Creates an instance of AccessPolicyEntry class. */
+    public AccessPolicyEntry() {
+    }
+
     /**
      * Get the tenantId property: The Azure Active Directory tenant ID that should be used for authenticating requests
      * to the key vault.

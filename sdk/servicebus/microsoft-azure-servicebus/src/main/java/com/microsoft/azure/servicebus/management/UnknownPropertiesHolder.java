@@ -13,22 +13,22 @@ import org.w3c.dom.Node;
  * received and send them back in the same order in UpdateEntity call.
  */
 class UnknownPropertiesHolder {
-	
+
 	private List<Element> unknownProperties;
-	
+
 	synchronized void addUnknownProperty(Element property) {
 		if (this.unknownProperties == null)
 		{
 			this.unknownProperties = new ArrayList<Element>();
 		}
-		
+
 		this.unknownProperties.add(property);
 	}
-	
-	List<Element> getUnknownProperties() {
+
+	synchronized List<Element> getUnknownProperties() {
 		return this.unknownProperties;
 	}
-	
+
 	synchronized void appendUnknownPropertiesToDescriptionElement(Element descriptionElement) {
 		if (this.unknownProperties != null) {
 			for (Element unknownElement : this.unknownProperties) {
@@ -37,5 +37,5 @@ class UnknownPropertiesHolder {
 			}
 		}
 	}
-	
+
 }

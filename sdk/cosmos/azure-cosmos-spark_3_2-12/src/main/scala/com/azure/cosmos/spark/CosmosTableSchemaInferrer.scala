@@ -119,6 +119,7 @@ private object CosmosTableSchemaInferrer
       val queryOptions = new CosmosQueryRequestOptions()
       queryOptions.setMaxBufferedItemCount(cosmosInferenceConfig.inferSchemaSamplingSize)
       queryOptions.setDedicatedGatewayRequestOptions(cosmosReadConfig.dedicatedGatewayRequestOptions)
+      ThroughputControlHelper.populateThroughputControlGroupName(queryOptions, cosmosReadConfig.throughputControlConfig)
 
       val queryText = cosmosInferenceConfig.inferSchemaQuery match {
         case None =>
@@ -215,7 +216,7 @@ private object CosmosTableSchemaInferrer
       case decimalNode: DecimalNode if decimalNode.isInt => IntegerType
       case arrayNode: ArrayNode => inferDataTypeFromArrayNode(arrayNode, allowNullForInferredProperties) match {
         case Some(valueType) => ArrayType(valueType)
-        case None => NullType
+        case None => ArrayType(NullType)
       }
       case objectNode: ObjectNode =>
         inferDataTypeFromObjectNode(

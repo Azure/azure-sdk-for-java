@@ -13,13 +13,9 @@ import org.junit.jupiter.params.ParameterizedTest;
 import org.junit.jupiter.params.provider.Arguments;
 import org.junit.jupiter.params.provider.MethodSource;
 
-import java.util.ArrayList;
-import java.util.HashMap;
+import java.util.Collections;
 import java.util.List;
-import java.util.Map;
-import java.util.stream.Collectors;
 import java.util.stream.Stream;
-import java.util.stream.StreamSupport;
 
 import static com.azure.data.appconfiguration.implementation.ConfigurationSettingDeserializationHelper.FEATURE_FLAG_CONTENT_TYPE;
 import static com.azure.data.appconfiguration.implementation.ConfigurationSettingDeserializationHelper.SECRET_REFERENCE_CONTENT_TYPE;
@@ -37,7 +33,7 @@ public class ConfigurationSettingDeserializerTest {
     private static final String SECRET_REFERENCE_URI_VALUE = "https://localhost";
     private static final String SETTING_VALUE = "world";
     private static final String FEATURE_FLAG_VALUE_JSON =
-        "{\"id\":\"hello\",\"description\":null,\"display_name\":\"Feature Flag X\",\"enabled\":false,"
+        "{\"id\":\"hello\",\"display_name\":\"Feature Flag X\",\"enabled\":false,"
             + "\"conditions\":{\"client_filters\":[{\"name\":\"Microsoft.Percentage\",\"parameters\":"
             + "{\"Value\":\"30\"}}]}}";
 
@@ -52,88 +48,68 @@ public class ConfigurationSettingDeserializerTest {
 
     @Test
     public void parseFeatureFlagValueTest() {
-        assertFeatureFlagConfigurationSetting(getFeatureFlagConfigurationSetting(KEY,
-            FEATURE_FLAG_DISPLAY_NAME), parseFeatureFlagValue(FEATURE_FLAG_VALUE_JSON));
+        assertFeatureFlagConfigurationSetting(getFeatureFlagConfigurationSetting(),
+            parseFeatureFlagValue(FEATURE_FLAG_VALUE_JSON));
     }
 
     @Test
     public void parseSecretReferenceFieldValueTest() {
-        assertSecretReferenceConfigurationSetting(getSecretReferenceConfigurationSetting(KEY,
-            SECRET_REFERENCE_URI_VALUE), parseSecretReferenceFieldValue(KEY, SECRET_REFERENCE_VALUE_JSON));
+        assertSecretReferenceConfigurationSetting(getSecretReferenceConfigurationSetting(),
+            parseSecretReferenceFieldValue(KEY, SECRET_REFERENCE_VALUE_JSON));
     }
 
     @ParameterizedTest
     @MethodSource("deserializeSupplier")
-    public <T extends ConfigurationSetting> void deserialize(String json, Class<T> type, T expectedGeo) {
+    public <T extends ConfigurationSetting> void deserialize(String json, T expectedGeo) {
         if (expectedGeo instanceof FeatureFlagConfigurationSetting) {
             final KeyValue mockFeatureFlagSetting = new KeyValue()
-                                          .setKey(".appconfig.featureflag/hello")
-                                          .setValue(FEATURE_FLAG_VALUE_JSON)
-                                          .setContentType(FEATURE_FLAG_CONTENT_TYPE);
+                .setKey(".appconfig.featureflag/hello")
+                .setValue(FEATURE_FLAG_VALUE_JSON)
+                .setContentType(FEATURE_FLAG_CONTENT_TYPE);
             assertFeatureFlagConfigurationSetting(
                 (FeatureFlagConfigurationSetting) expectedGeo,
                 (FeatureFlagConfigurationSetting) toConfigurationSetting(mockFeatureFlagSetting));
         } else if (expectedGeo instanceof SecretReferenceConfigurationSetting) {
             final KeyValue mockSecretReferenceSetting = new KeyValue()
-                                                            .setKey(KEY)
-                                                            .setValue(SECRET_REFERENCE_VALUE_JSON)
-                                                            .setContentType(SECRET_REFERENCE_CONTENT_TYPE);
+                .setKey(KEY)
+                .setValue(SECRET_REFERENCE_VALUE_JSON)
+                .setContentType(SECRET_REFERENCE_CONTENT_TYPE);
             assertSecretReferenceConfigurationSetting(
                 (SecretReferenceConfigurationSetting) expectedGeo,
                 (SecretReferenceConfigurationSetting) toConfigurationSetting(mockSecretReferenceSetting));
         } else {
             final KeyValue mockSetting = new KeyValue()
-                                             .setKey(KEY)
-                                             .setValue(SETTING_VALUE);
+                .setKey(KEY)
+                .setValue(SETTING_VALUE);
             assertConfigurationSetting(expectedGeo, toConfigurationSetting(mockSetting));
         }
     }
 
     public static Stream<Arguments> deserializeSupplier() {
         return Stream.of(
-            Arguments.of(deserializerFeatureFlagConfigurationSettingSupplier(
-                getFeatureFlagConfigurationSetting(KEY, FEATURE_FLAG_DISPLAY_NAME))),
-            Arguments.of(deserializerSecretReferenceConfigurationSettingSupplier(
-                getSecretReferenceConfigurationSetting(KEY, SECRET_REFERENCE_URI_VALUE))),
-            Arguments.of(deserializerConfigurationSettingSupplier(
-                getConfigurationSetting(KEY, SETTING_VALUE)))
+            Arguments.of(FEATURE_FLAG_VALUE_JSON, getFeatureFlagConfigurationSetting()),
+            Arguments.of(SECRET_REFERENCE_JSON, getSecretReferenceConfigurationSetting()),
+            Arguments.of(CONFIGURATION_SETTING_JSON, getConfigurationSetting())
         );
     }
 
-    public static Object[] deserializerFeatureFlagConfigurationSettingSupplier(
-        FeatureFlagConfigurationSetting featureSetting) {
-        return new Object[]{FEATURE_FLAG_VALUE_JSON, FeatureFlagConfigurationSetting.class, featureSetting};
+    private static FeatureFlagConfigurationSetting getFeatureFlagConfigurationSetting() {
+        List<FeatureFlagFilter> filters = Collections.singletonList(new FeatureFlagFilter("Microsoft.Percentage")
+            .setParameters(Collections.singletonMap("Value", "30")));
+
+        return new FeatureFlagConfigurationSetting(KEY, false)
+            .setDisplayName(FEATURE_FLAG_DISPLAY_NAME)
+            .setClientFilters(filters)
+            .setValue(FEATURE_FLAG_VALUE_JSON);
     }
 
-    public static Object[] deserializerSecretReferenceConfigurationSettingSupplier(
-        SecretReferenceConfigurationSetting secretReferenceSetting) {
-        return new Object[]{SECRET_REFERENCE_JSON, SecretReferenceConfigurationSetting.class, secretReferenceSetting};
+    private static ConfigurationSetting getConfigurationSetting() {
+        return new ConfigurationSetting().setKey(KEY).setValue(SETTING_VALUE);
     }
 
-    public static Object[] deserializerConfigurationSettingSupplier(ConfigurationSetting setting) {
-        return new Object[]{CONFIGURATION_SETTING_JSON, ConfigurationSetting.class, setting};
-    }
-
-    private static FeatureFlagConfigurationSetting getFeatureFlagConfigurationSetting(String key, String displayName) {
-        Map<String, Object> parameters = new HashMap<>();
-        parameters.put("Value", "30");
-        final List<FeatureFlagFilter> filters = new ArrayList<>();
-        filters.add(new FeatureFlagFilter("Microsoft.Percentage")
-                        .setParameters(parameters));
-
-        return new FeatureFlagConfigurationSetting(key, false)
-                   .setDisplayName(displayName)
-                   .setClientFilters(filters)
-                   .setValue(FEATURE_FLAG_VALUE_JSON);
-    }
-
-    private static ConfigurationSetting getConfigurationSetting(String key, String value) {
-        return new ConfigurationSetting().setKey(key).setValue(value);
-    }
-
-    private static SecretReferenceConfigurationSetting getSecretReferenceConfigurationSetting(String key,
-        String secretReference) {
-        return new SecretReferenceConfigurationSetting(key, secretReference).setValue(SECRET_REFERENCE_VALUE_JSON);
+    private static SecretReferenceConfigurationSetting getSecretReferenceConfigurationSetting() {
+        return new SecretReferenceConfigurationSetting(KEY, SECRET_REFERENCE_URI_VALUE)
+            .setValue(SECRET_REFERENCE_VALUE_JSON);
     }
 
     private static void assertFeatureFlagConfigurationSetting(FeatureFlagConfigurationSetting expect,
@@ -145,19 +121,16 @@ public class ConfigurationSettingDeserializerTest {
         assertClientFilters(expect.getClientFilters(), actual.getClientFilters());
     }
 
-    private static void assertClientFilters(Iterable<FeatureFlagFilter> expect, Iterable<FeatureFlagFilter> actual) {
+    private static void assertClientFilters(List<FeatureFlagFilter> expect, List<FeatureFlagFilter> actual) {
         if (expect == null || actual == null) {
             assertEquals(expect, actual);
+            return;
         }
 
-        final List<FeatureFlagFilter> expectList = StreamSupport.stream(expect.spliterator(), false)
-                                                       .collect(Collectors.toList());
-        final List<FeatureFlagFilter> actualList = StreamSupport.stream(actual.spliterator(), false)
-                                                       .collect(Collectors.toList());
-        assertEquals(expectList.size(), actualList.size());
-        for (int i = 0; i < expectList.size(); i++) {
-            final FeatureFlagFilter expectFilter = expectList.get(i);
-            final FeatureFlagFilter actualFilter = actualList.get(i);
+        assertEquals(expect.size(), actual.size());
+        for (int i = 0; i < expect.size(); i++) {
+            FeatureFlagFilter expectFilter = expect.get(i);
+            FeatureFlagFilter actualFilter = actual.get(i);
             assertEquals(expectFilter.getName(), actualFilter.getName());
             assertEquals(expectFilter.getParameters(), actualFilter.getParameters());
         }

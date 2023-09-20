@@ -5,6 +5,7 @@
 package com.azure.resourcemanager.databox.fluent.models;
 
 import com.azure.core.annotation.Immutable;
+import com.azure.resourcemanager.databox.models.DatacenterAddressResponse;
 import com.azure.resourcemanager.databox.models.ScheduleAvailabilityResponse;
 import com.azure.resourcemanager.databox.models.TransportAvailabilityResponse;
 import com.fasterxml.jackson.annotation.JsonProperty;
@@ -23,6 +24,12 @@ public final class RegionConfigurationResponseInner {
      */
     @JsonProperty(value = "transportAvailabilityResponse", access = JsonProperty.Access.WRITE_ONLY)
     private TransportAvailabilityResponse transportAvailabilityResponse;
+
+    /*
+     * Datacenter address for given sku in a region.
+     */
+    @JsonProperty(value = "datacenterAddressResponse", access = JsonProperty.Access.WRITE_ONLY)
+    private DatacenterAddressResponse datacenterAddressResponse;
 
     /** Creates an instance of RegionConfigurationResponseInner class. */
     public RegionConfigurationResponseInner() {
@@ -47,6 +54,15 @@ public final class RegionConfigurationResponseInner {
     }
 
     /**
+     * Get the datacenterAddressResponse property: Datacenter address for given sku in a region.
+     *
+     * @return the datacenterAddressResponse value.
+     */
+    public DatacenterAddressResponse datacenterAddressResponse() {
+        return this.datacenterAddressResponse;
+    }
+
+    /**
      * Validates the instance.
      *
      * @throws IllegalArgumentException thrown if the instance is not valid.
@@ -57,6 +73,9 @@ public final class RegionConfigurationResponseInner {
         }
         if (transportAvailabilityResponse() != null) {
             transportAvailabilityResponse().validate();
+        }
+        if (datacenterAddressResponse() != null) {
+            datacenterAddressResponse().validate();
         }
     }
 }

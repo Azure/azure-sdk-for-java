@@ -6,6 +6,7 @@ package com.azure.resourcemanager.security.generated;
 
 import com.azure.core.util.BinaryData;
 import com.azure.resourcemanager.security.models.DefenderForDatabasesGcpOfferingArcAutoProvisioning;
+import com.azure.resourcemanager.security.models.DefenderForDatabasesGcpOfferingArcAutoProvisioningConfiguration;
 import org.junit.jupiter.api.Assertions;
 
 public final class DefenderForDatabasesGcpOfferingArcAutoProvisioningTests {
@@ -13,16 +14,26 @@ public final class DefenderForDatabasesGcpOfferingArcAutoProvisioningTests {
     public void testDeserialize() throws Exception {
         DefenderForDatabasesGcpOfferingArcAutoProvisioning model =
             BinaryData
-                .fromString("{\"enabled\":false}")
+                .fromString(
+                    "{\"enabled\":false,\"configuration\":{\"proxy\":\"ztv\",\"privateLinkScope\":\"mwwmjswenaww\"}}")
                 .toObject(DefenderForDatabasesGcpOfferingArcAutoProvisioning.class);
         Assertions.assertEquals(false, model.enabled());
+        Assertions.assertEquals("ztv", model.configuration().proxy());
+        Assertions.assertEquals("mwwmjswenaww", model.configuration().privateLinkScope());
     }
 
     @org.junit.jupiter.api.Test
     public void testSerialize() throws Exception {
         DefenderForDatabasesGcpOfferingArcAutoProvisioning model =
-            new DefenderForDatabasesGcpOfferingArcAutoProvisioning().withEnabled(false);
+            new DefenderForDatabasesGcpOfferingArcAutoProvisioning()
+                .withEnabled(false)
+                .withConfiguration(
+                    new DefenderForDatabasesGcpOfferingArcAutoProvisioningConfiguration()
+                        .withProxy("ztv")
+                        .withPrivateLinkScope("mwwmjswenaww"));
         model = BinaryData.fromObject(model).toObject(DefenderForDatabasesGcpOfferingArcAutoProvisioning.class);
         Assertions.assertEquals(false, model.enabled());
+        Assertions.assertEquals("ztv", model.configuration().proxy());
+        Assertions.assertEquals("mwwmjswenaww", model.configuration().privateLinkScope());
     }
 }

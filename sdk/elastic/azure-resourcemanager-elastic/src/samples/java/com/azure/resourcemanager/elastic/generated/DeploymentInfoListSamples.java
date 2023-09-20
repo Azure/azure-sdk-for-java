@@ -4,12 +4,10 @@
 
 package com.azure.resourcemanager.elastic.generated;
 
-import com.azure.core.util.Context;
-
 /** Samples for DeploymentInfo List. */
 public final class DeploymentInfoListSamples {
     /*
-     * x-ms-original-file: specification/elastic/resource-manager/Microsoft.Elastic/preview/2022-07-01-preview/examples/DeploymentInfo_List.json
+     * x-ms-original-file: specification/elastic/resource-manager/Microsoft.Elastic/preview/2023-02-01-preview/examples/DeploymentInfo_List.json
      */
     /**
      * Sample code: DeploymentInfo_List.
@@ -17,6 +15,6 @@ public final class DeploymentInfoListSamples {
      * @param manager Entry point to ElasticManager.
      */
     public static void deploymentInfoList(com.azure.resourcemanager.elastic.ElasticManager manager) {
-        manager.deploymentInfoes().listWithResponse("myResourceGroup", "myMonitor", Context.NONE);
+        manager.deploymentInfoes().listWithResponse("myResourceGroup", "myMonitor", com.azure.core.util.Context.NONE);
     }
 }

@@ -10,7 +10,7 @@ import com.azure.resourcemanager.databox.models.RegionConfigurationRequest;
 /** Samples for Service RegionConfiguration. */
 public final class ServiceRegionConfigurationSamples {
     /*
-     * x-ms-original-file: specification/databox/resource-manager/Microsoft.DataBox/stable/2021-03-01/examples/RegionConfiguration.json
+     * x-ms-original-file: specification/databox/resource-manager/Microsoft.DataBox/stable/2022-12-01/examples/RegionConfiguration.json
      */
     /**
      * Sample code: RegionConfiguration.

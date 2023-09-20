@@ -177,7 +177,8 @@ public class ThroughputContainerController implements IThroughputContainerContro
             .flatMap(maxThroughput -> {
                 this.maxContainerThroughput.set(maxThroughput);
                 return Mono.just(this);
-            });
+            })
+            .switchIfEmpty(Mono.just(this));
     }
 
     private Mono<Integer> resolveContainerMaxThroughputCore() {

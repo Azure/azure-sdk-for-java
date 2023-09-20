@@ -11,11 +11,11 @@ import com.azure.resourcemanager.voiceservices.models.CheckNameAvailabilityRespo
 public final class CheckNameAvailabilityResponseImpl implements CheckNameAvailabilityResponse {
     private CheckNameAvailabilityResponseInner innerObject;
 
-    private final com.azure.resourcemanager.voiceservices.VoiceservicesManager serviceManager;
+    private final com.azure.resourcemanager.voiceservices.VoiceServicesManager serviceManager;
 
     CheckNameAvailabilityResponseImpl(
         CheckNameAvailabilityResponseInner innerObject,
-        com.azure.resourcemanager.voiceservices.VoiceservicesManager serviceManager) {
+        com.azure.resourcemanager.voiceservices.VoiceServicesManager serviceManager) {
         this.innerObject = innerObject;
         this.serviceManager = serviceManager;
     }
@@ -36,7 +36,7 @@ public final class CheckNameAvailabilityResponseImpl implements CheckNameAvailab
         return this.innerObject;
     }
 
-    private com.azure.resourcemanager.voiceservices.VoiceservicesManager manager() {
+    private com.azure.resourcemanager.voiceservices.VoiceServicesManager manager() {
         return this.serviceManager;
     }
 }

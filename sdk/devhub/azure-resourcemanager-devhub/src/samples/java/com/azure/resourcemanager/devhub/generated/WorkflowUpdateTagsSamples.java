@@ -4,7 +4,6 @@
 
 package com.azure.resourcemanager.devhub.generated;
 
-import com.azure.core.util.Context;
 import com.azure.resourcemanager.devhub.models.Workflow;
 import java.util.HashMap;
 import java.util.Map;
@@ -12,7 +11,7 @@ import java.util.Map;
 /** Samples for Workflow UpdateTags. */
 public final class WorkflowUpdateTagsSamples {
     /*
-     * x-ms-original-file: specification/developerhub/resource-manager/Microsoft.DevHub/preview/2022-04-01-preview/examples/Workflow_UpdateTags.json
+     * x-ms-original-file: specification/developerhub/resource-manager/Microsoft.DevHub/preview/2022-10-11-preview/examples/Workflow_UpdateTags.json
      */
     /**
      * Sample code: Update Managed Cluster Tags.
@@ -21,7 +20,10 @@ public final class WorkflowUpdateTagsSamples {
      */
     public static void updateManagedClusterTags(com.azure.resourcemanager.devhub.DevHubManager manager) {
         Workflow resource =
-            manager.workflows().getByResourceGroupWithResponse("resourceGroup1", "workflow1", Context.NONE).getValue();
+            manager
+                .workflows()
+                .getByResourceGroupWithResponse("resourceGroup1", "workflow1", com.azure.core.util.Context.NONE)
+                .getValue();
         resource.update().withTags(mapOf("promote", "false", "resourceEnv", "testing")).apply();
     }
 

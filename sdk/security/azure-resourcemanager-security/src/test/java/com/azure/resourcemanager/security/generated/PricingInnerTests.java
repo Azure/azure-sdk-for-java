@@ -6,7 +6,12 @@ package com.azure.resourcemanager.security.generated;
 
 import com.azure.core.util.BinaryData;
 import com.azure.resourcemanager.security.fluent.models.PricingInner;
+import com.azure.resourcemanager.security.models.Extension;
+import com.azure.resourcemanager.security.models.IsEnabled;
 import com.azure.resourcemanager.security.models.PricingTier;
+import java.util.Arrays;
+import java.util.HashMap;
+import java.util.Map;
 import org.junit.jupiter.api.Assertions;
 
 public final class PricingInnerTests {
@@ -15,17 +20,42 @@ public final class PricingInnerTests {
         PricingInner model =
             BinaryData
                 .fromString(
-                    "{\"properties\":{\"pricingTier\":\"Free\",\"subPlan\":\"keqsrxybzqqedq\",\"freeTrialRemainingTime\":\"PT5H43M53S\",\"deprecated\":true,\"replacedBy\":[\"ouf\",\"mmnkzsmodmgl\",\"ugpbkw\",\"mutduqktaps\"]},\"id\":\"wgcu\",\"name\":\"rtumkdosvq\",\"type\":\"hbmdgbbjfdd\"}")
+                    "{\"properties\":{\"pricingTier\":\"Standard\",\"subPlan\":\"dqytbciqfouflmm\",\"freeTrialRemainingTime\":\"PT108H50M46S\",\"enablementTime\":\"2021-02-23T09:34:26Z\",\"deprecated\":false,\"replacedBy\":[\"lougpbkw\",\"mutduqktaps\"],\"extensions\":[{\"name\":\"cuertu\",\"isEnabled\":\"True\",\"additionalExtensionProperties\":{}}]},\"id\":\"svqwhbmdgbbjfd\",\"name\":\"gmbmbexppbh\",\"type\":\"q\"}")
                 .toObject(PricingInner.class);
-        Assertions.assertEquals(PricingTier.FREE, model.pricingTier());
-        Assertions.assertEquals("keqsrxybzqqedq", model.subPlan());
+        Assertions.assertEquals(PricingTier.STANDARD, model.pricingTier());
+        Assertions.assertEquals("dqytbciqfouflmm", model.subPlan());
+        Assertions.assertEquals("cuertu", model.extensions().get(0).name());
+        Assertions.assertEquals(IsEnabled.TRUE, model.extensions().get(0).isEnabled());
     }
 
     @org.junit.jupiter.api.Test
     public void testSerialize() throws Exception {
-        PricingInner model = new PricingInner().withPricingTier(PricingTier.FREE).withSubPlan("keqsrxybzqqedq");
+        PricingInner model =
+            new PricingInner()
+                .withPricingTier(PricingTier.STANDARD)
+                .withSubPlan("dqytbciqfouflmm")
+                .withExtensions(
+                    Arrays
+                        .asList(
+                            new Extension()
+                                .withName("cuertu")
+                                .withIsEnabled(IsEnabled.TRUE)
+                                .withAdditionalExtensionProperties(mapOf())));
         model = BinaryData.fromObject(model).toObject(PricingInner.class);
-        Assertions.assertEquals(PricingTier.FREE, model.pricingTier());
-        Assertions.assertEquals("keqsrxybzqqedq", model.subPlan());
+        Assertions.assertEquals(PricingTier.STANDARD, model.pricingTier());
+        Assertions.assertEquals("dqytbciqfouflmm", model.subPlan());
+        Assertions.assertEquals("cuertu", model.extensions().get(0).name());
+        Assertions.assertEquals(IsEnabled.TRUE, model.extensions().get(0).isEnabled());
+    }
+
+    @SuppressWarnings("unchecked")
+    private static <T> Map<String, T> mapOf(Object... inputs) {
+        Map<String, T> map = new HashMap<>();
+        for (int i = 0; i < inputs.length; i += 2) {
+            String key = (String) inputs[i];
+            T value = (T) inputs[i + 1];
+            map.put(key, value);
+        }
+        return map;
     }
 }

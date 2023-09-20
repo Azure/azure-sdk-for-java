@@ -34,6 +34,9 @@ public final class MachineLearningServicesModelRegisteredEventData {
     @JsonProperty(value = "modelProperties")
     private Object modelProperties;
 
+    /** Creates an instance of MachineLearningServicesModelRegisteredEventData class. */
+    public MachineLearningServicesModelRegisteredEventData() {}
+
     /**
      * Get the modelName property: The name of the model that was registered.
      *

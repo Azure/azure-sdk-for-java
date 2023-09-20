@@ -56,6 +56,6 @@ public final class ConnectorsDeleteWithResponseMockTests {
                     tokenRequestContext -> Mono.just(new AccessToken("this_is_a_token", OffsetDateTime.MAX)),
                     new AzureProfile("", "", AzureEnvironment.AZURE));
 
-        manager.connectors().deleteWithResponse("bafeb", com.azure.core.util.Context.NONE);
+        manager.connectors().deleteWithResponse("dueurgmcdcpkshl", com.azure.core.util.Context.NONE);
     }
 }

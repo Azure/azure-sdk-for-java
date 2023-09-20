@@ -30,7 +30,7 @@ public final class TasksGetResourceGroupLevelTaskWithResponseMockTests {
         ArgumentCaptor<HttpRequest> httpRequest = ArgumentCaptor.forClass(HttpRequest.class);
 
         String responseStr =
-            "{\"properties\":{\"state\":\"nwoqartwy\",\"creationTimeUtc\":\"2021-05-19T08:43:04Z\",\"securityTaskParameters\":{\"name\":\"advatdavuqmcb\",\"\":{}},\"lastStateChangeTimeUtc\":\"2021-11-04T00:59:22Z\",\"subState\":\"bjlquv\"},\"id\":\"ezcjumvpsi\",\"name\":\"ioyoiglkmiq\",\"type\":\"nnraclibbfqpspkl\"}";
+            "{\"properties\":{\"state\":\"disnuepywyjln\",\"creationTimeUtc\":\"2021-05-30T04:46:23Z\",\"securityTaskParameters\":{\"name\":\"ttdiia\",\"\":{}},\"lastStateChangeTimeUtc\":\"2021-04-13T20:18:06Z\",\"subState\":\"zjihweebiphr\"},\"id\":\"vcjwqwoqsratj\",\"name\":\"dhzybsp\",\"type\":\"jhfrzgdkkagv\"}";
 
         Mockito.when(httpResponse.getStatusCode()).thenReturn(200);
         Mockito.when(httpResponse.getHeaders()).thenReturn(new HttpHeaders());
@@ -62,7 +62,7 @@ public final class TasksGetResourceGroupLevelTaskWithResponseMockTests {
             manager
                 .tasks()
                 .getResourceGroupLevelTaskWithResponse(
-                    "kldmaxxijv", "kwsdgkj", "yacwrasekwefc", com.azure.core.util.Context.NONE)
+                    "yvliq", "ipsejbsvsia", "eswhd", com.azure.core.util.Context.NONE)
                 .getValue();
     }
 }

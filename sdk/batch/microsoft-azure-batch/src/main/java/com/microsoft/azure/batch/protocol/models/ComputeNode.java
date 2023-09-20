@@ -166,6 +166,11 @@ public class ComputeNode {
      * 'remoteUser', a 'certs' directory is created in the user's home
      * directory (e.g., /home/{user-name}/certs) and Certificates are placed in
      * that directory.
+     *
+     * Warning: This property is deprecated and will be removed after February,
+     * 2024. Please use the [Azure KeyVault
+     * Extension](https://learn.microsoft.com/azure/batch/batch-certificate-migration-guide)
+     * instead.
      */
     @JsonProperty(value = "certificateReferences")
     private List<CertificateReference> certificateReferences;
@@ -545,6 +550,7 @@ public class ComputeNode {
 
     /**
      * Get for Windows Nodes, the Batch service installs the Certificates to the specified Certificate store and location. For Linux Compute Nodes, the Certificates are stored in a directory inside the Task working directory and an environment variable AZ_BATCH_CERTIFICATES_DIR is supplied to the Task to query for this location. For Certificates with visibility of 'remoteUser', a 'certs' directory is created in the user's home directory (e.g., /home/{user-name}/certs) and Certificates are placed in that directory.
+     Warning: This property is deprecated and will be removed after February, 2024. Please use the [Azure KeyVault Extension](https://learn.microsoft.com/azure/batch/batch-certificate-migration-guide) instead.
      *
      * @return the certificateReferences value
      */
@@ -554,6 +560,7 @@ public class ComputeNode {
 
     /**
      * Set for Windows Nodes, the Batch service installs the Certificates to the specified Certificate store and location. For Linux Compute Nodes, the Certificates are stored in a directory inside the Task working directory and an environment variable AZ_BATCH_CERTIFICATES_DIR is supplied to the Task to query for this location. For Certificates with visibility of 'remoteUser', a 'certs' directory is created in the user's home directory (e.g., /home/{user-name}/certs) and Certificates are placed in that directory.
+     Warning: This property is deprecated and will be removed after February, 2024. Please use the [Azure KeyVault Extension](https://learn.microsoft.com/azure/batch/batch-certificate-migration-guide) instead.
      *
      * @param certificateReferences the certificateReferences value to set
      * @return the ComputeNode object itself.

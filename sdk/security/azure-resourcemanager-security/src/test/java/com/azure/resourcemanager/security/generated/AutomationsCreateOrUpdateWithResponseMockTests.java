@@ -34,7 +34,7 @@ public final class AutomationsCreateOrUpdateWithResponseMockTests {
         ArgumentCaptor<HttpRequest> httpRequest = ArgumentCaptor.forClass(HttpRequest.class);
 
         String responseStr =
-            "{\"properties\":{\"description\":\"huulriqbyo\",\"isEnabled\":false,\"scopes\":[],\"sources\":[],\"actions\":[]},\"location\":\"br\",\"tags\":{\"oardnagttpu\":\"tfyhcdjws\",\"plkys\":\"pbpgnrholhujbfwx\",\"yjprxslw\":\"l\",\"hfvhuwzbxpcqz\":\"dmcvhtbbz\"},\"id\":\"ihotjecohmxv\",\"name\":\"lrrskap\",\"type\":\"xwieexuyade\"}";
+            "{\"properties\":{\"description\":\"tnp\",\"isEnabled\":true,\"scopes\":[],\"sources\":[],\"actions\":[]},\"location\":\"rqxw\",\"tags\":{\"tfdoadtx\":\"tdrh\",\"ctkbbxuha\":\"pgehpadkmdzgsszx\"},\"id\":\"lsi\",\"name\":\"ncclabvoyngsuxxc\",\"type\":\"bmyqjog\"}";
 
         Mockito.when(httpResponse.getStatusCode()).thenReturn(200);
         Mockito.when(httpResponse.getHeaders()).thenReturn(new HttpHeaders());
@@ -65,21 +65,21 @@ public final class AutomationsCreateOrUpdateWithResponseMockTests {
         Automation response =
             manager
                 .automations()
-                .define("sdohz")
-                .withRegion("wktlepowa")
-                .withExistingResourceGroup("atecaa")
-                .withTags(mapOf("jgcq", "xu"))
-                .withDescription("cbdaom")
-                .withIsEnabled(false)
+                .define("e")
+                .withRegion("xsm")
+                .withExistingResourceGroup("hquhczygxvhajp")
+                .withTags(mapOf("ud", "pwirfljfewxqouo", "nqi", "mckaprh", "ihkkyowl", "jgencdgmoque"))
+                .withDescription("nwh")
+                .withIsEnabled(true)
                 .withScopes(Arrays.asList())
                 .withSources(Arrays.asList())
                 .withActions(Arrays.asList())
                 .create();
 
-        Assertions.assertEquals("br", response.location());
-        Assertions.assertEquals("tfyhcdjws", response.tags().get("oardnagttpu"));
-        Assertions.assertEquals("huulriqbyo", response.description());
-        Assertions.assertEquals(false, response.isEnabled());
+        Assertions.assertEquals("rqxw", response.location());
+        Assertions.assertEquals("tdrh", response.tags().get("tfdoadtx"));
+        Assertions.assertEquals("tnp", response.description());
+        Assertions.assertEquals(true, response.isEnabled());
     }
 
     @SuppressWarnings("unchecked")

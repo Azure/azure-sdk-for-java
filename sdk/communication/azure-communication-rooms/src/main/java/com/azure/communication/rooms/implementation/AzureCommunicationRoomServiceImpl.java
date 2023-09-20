@@ -74,6 +74,18 @@ public final class AzureCommunicationRoomServiceImpl {
         return this.rooms;
     }
 
+    /** The ParticipantsImpl object to access its operations. */
+    private final ParticipantsImpl participants;
+
+    /**
+     * Gets the ParticipantsImpl object to access its operations.
+     *
+     * @return the ParticipantsImpl object.
+     */
+    public ParticipantsImpl getParticipants() {
+        return this.participants;
+    }
+
     /**
      * Initializes an instance of AzureCommunicationRoomService client.
      *
@@ -116,5 +128,6 @@ public final class AzureCommunicationRoomServiceImpl {
         this.endpoint = endpoint;
         this.apiVersion = apiVersion;
         this.rooms = new RoomsImpl(this);
+        this.participants = new ParticipantsImpl(this);
     }
 }

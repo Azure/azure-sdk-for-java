@@ -16,6 +16,10 @@ public final class ContainerGroupDiagnostics {
     @JsonProperty(value = "logAnalytics")
     private LogAnalytics logAnalytics;
 
+    /** Creates an instance of ContainerGroupDiagnostics class. */
+    public ContainerGroupDiagnostics() {
+    }
+
     /**
      * Get the logAnalytics property: Container group log analytics information.
      *

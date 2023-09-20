@@ -4,6 +4,7 @@
 package com.azure.core;
 
 import com.azure.core.http.HttpClient;
+import com.azure.core.http.HttpHeaderName;
 import com.azure.core.http.HttpMethod;
 import com.azure.core.http.HttpPipeline;
 import com.azure.core.http.HttpPipelineBuilder;
@@ -34,7 +35,6 @@ import static org.junit.jupiter.api.Assertions.assertEquals;
  * Contains tests for {@link UserAgentPolicy}.
  */
 public class UserAgentTests {
-    private static final String USER_AGENT = "User-Agent";
     private static final ConfigurationSource EMPTY_SOURCE = new TestConfigurationSource();
 
     @ParameterizedTest(name = "{displayName} [{index}]")
@@ -42,7 +42,7 @@ public class UserAgentTests {
     public void validateUserAgentPolicyHandling(UserAgentPolicy userAgentPolicy, String expected) {
         HttpPipeline pipeline = new HttpPipelineBuilder()
             .httpClient(new ValidationHttpClient(request ->
-                assertEquals(expected, request.getHeaders().getValue(USER_AGENT))))
+                assertEquals(expected, request.getHeaders().getValue(HttpHeaderName.USER_AGENT))))
             .policies(userAgentPolicy)
             .build();
 
@@ -60,7 +60,7 @@ public class UserAgentTests {
     public void userAgentPolicyAfterRetryPolicy(UserAgentPolicy userAgentPolicy, String expected) {
         HttpPipeline pipeline = new HttpPipelineBuilder()
             .httpClient(new RetryValidationHttpClient(request ->
-                assertEquals(expected, request.getHeaders().getValue(USER_AGENT))))
+                assertEquals(expected, request.getHeaders().getValue(HttpHeaderName.USER_AGENT))))
             .policies(new RetryPolicy(new FixedDelay(5, Duration.ofMillis(10))))
             .policies(userAgentPolicy)
             .build();
@@ -79,7 +79,7 @@ public class UserAgentTests {
     public void multipleUserAgentPolicies(UserAgentPolicy userAgentPolicy, String expected) {
         HttpPipeline pipeline = new HttpPipelineBuilder()
             .httpClient(new ValidationHttpClient(request ->
-                assertEquals(expected, request.getHeaders().getValue(USER_AGENT))))
+                assertEquals(expected, request.getHeaders().getValue(HttpHeaderName.USER_AGENT))))
             .policies(userAgentPolicy, userAgentPolicy)
             .build();
 
@@ -98,7 +98,7 @@ public class UserAgentTests {
         String overrideUserAgent = "overrideUserAgent";
         HttpPipeline pipeline = new HttpPipelineBuilder()
             .httpClient(new ValidationHttpClient(request ->
-                assertEquals(overrideUserAgent, request.getHeaders().getValue(USER_AGENT))))
+                assertEquals(overrideUserAgent, request.getHeaders().getValue(HttpHeaderName.USER_AGENT))))
             .policies(userAgentPolicy)
             .build();
 
@@ -118,7 +118,8 @@ public class UserAgentTests {
         String appendUserAgent = "appendUserAgent";
         HttpPipeline pipeline = new HttpPipelineBuilder()
             .httpClient(new ValidationHttpClient(request ->
-                assertEquals(expected + " " + appendUserAgent, request.getHeaders().getValue(USER_AGENT))))
+                assertEquals(expected + " " + appendUserAgent, request.getHeaders()
+                    .getValue(HttpHeaderName.USER_AGENT))))
             .policies(userAgentPolicy)
             .build();
 
@@ -138,13 +139,15 @@ public class UserAgentTests {
         String appendUserAgent = "appendUserAgent";
         HttpPipeline pipeline = new HttpPipelineBuilder()
             .httpClient(new ValidationHttpClient(request ->
-                assertEquals(expected + " " + appendUserAgent, request.getHeaders().getValue(USER_AGENT))))
+                assertEquals(expected + " " + appendUserAgent, request.getHeaders()
+                    .getValue(HttpHeaderName.USER_AGENT))))
             .policies(userAgentPolicy)
             .build();
 
-        HttpResponse response = pipeline.sendSync(new HttpRequest(HttpMethod.GET, "http://localhost"),
-            new Context(UserAgentPolicy.APPEND_USER_AGENT_CONTEXT_KEY, appendUserAgent));
-        assertEquals(200, response.getStatusCode());
+        try (HttpResponse response = pipeline.sendSync(new HttpRequest(HttpMethod.GET, "http://localhost"),
+            new Context(UserAgentPolicy.APPEND_USER_AGENT_CONTEXT_KEY, appendUserAgent))) {
+            assertEquals(200, response.getStatusCode());
+        }
     }
 
     @SuppressWarnings("deprecation")

@@ -32,7 +32,7 @@ public final class DatabasesListByServerMockTests {
         ArgumentCaptor<HttpRequest> httpRequest = ArgumentCaptor.forClass(HttpRequest.class);
 
         String responseStr =
-            "{\"value\":[{\"properties\":{\"charset\":\"ygpfqb\",\"collation\":\"ceopzfqrhhuaopp\"},\"id\":\"qeqxo\",\"name\":\"z\",\"type\":\"ahzxctobgbk\"}]}";
+            "{\"value\":[{\"properties\":{\"charset\":\"ucerscdntnevfi\",\"collation\":\"mygtdssls\"},\"id\":\"mweriofzpy\",\"name\":\"semwabnet\",\"type\":\"hhszh\"}]}";
 
         Mockito.when(httpResponse.getStatusCode()).thenReturn(200);
         Mockito.when(httpResponse.getHeaders()).thenReturn(new HttpHeaders());
@@ -61,9 +61,9 @@ public final class DatabasesListByServerMockTests {
                     new AzureProfile("", "", AzureEnvironment.AZURE));
 
         PagedIterable<Database> response =
-            manager.databases().listByServer("zzhxgktrm", "ucnapkteoellwp", com.azure.core.util.Context.NONE);
+            manager.databases().listByServer("xzb", "cblylpstdbhhxsr", com.azure.core.util.Context.NONE);
 
-        Assertions.assertEquals("ygpfqb", response.iterator().next().charset());
-        Assertions.assertEquals("ceopzfqrhhuaopp", response.iterator().next().collation());
+        Assertions.assertEquals("ucerscdntnevfi", response.iterator().next().charset());
+        Assertions.assertEquals("mygtdssls", response.iterator().next().collation());
     }
 }

@@ -25,18 +25,6 @@ public class AddDatePolicy implements HttpPipelinePolicy {
             .withZone(ZoneOffset.UTC)
             .withLocale(Locale.US);
 
-    private static final HttpPipelineSyncPolicy INNER = new HttpPipelineSyncPolicy() {
-        @Override
-        protected void beforeSendingRequest(HttpPipelineCallContext context) {
-            OffsetDateTime now = OffsetDateTime.now(ZoneOffset.UTC);
-            try {
-                context.getHttpRequest().setHeader(HttpHeaderName.DATE, DateTimeRfc1123.toRfc1123String(now));
-            } catch (IllegalArgumentException ignored) {
-                context.getHttpRequest().setHeader(HttpHeaderName.DATE, FORMATTER.format(now));
-            }
-        }
-    };
-
     /**
      * Creates a new instance of {@link AddDatePolicy}.
      */
@@ -45,11 +33,24 @@ public class AddDatePolicy implements HttpPipelinePolicy {
 
     @Override
     public Mono<HttpResponse> process(HttpPipelineCallContext context, HttpPipelineNextPolicy next) {
-        return INNER.process(context, next);
+        return Mono.defer(() -> {
+            setDate(context);
+            return next.process();
+        });
     }
 
     @Override
     public HttpResponse processSync(HttpPipelineCallContext context, HttpPipelineNextSyncPolicy next) {
-        return INNER.processSync(context, next);
+        setDate(context);
+        return next.processSync();
+    }
+
+    private static void setDate(HttpPipelineCallContext context) {
+        OffsetDateTime now = OffsetDateTime.now(ZoneOffset.UTC);
+        try {
+            context.getHttpRequest().setHeader(HttpHeaderName.DATE, DateTimeRfc1123.toRfc1123String(now));
+        } catch (IllegalArgumentException ignored) {
+            context.getHttpRequest().setHeader(HttpHeaderName.DATE, FORMATTER.format(now));
+        }
     }
 }

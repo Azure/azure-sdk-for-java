@@ -19,7 +19,7 @@ public final class AddressValueHelper {
      *
      * @param addressValueAccessor The accessor.
      */
-    public static void setAccessor(final AddressValueHelper.AddressValueAccessor addressValueAccessor) {
+    public static void setAccessor(final AddressValueAccessor addressValueAccessor) {
         accessor = addressValueAccessor;
     }
 
@@ -35,6 +35,18 @@ public final class AddressValueHelper {
         void setPostalCode(AddressValue addressValue, String postalCode);
         void setCountryRegion(AddressValue addressValue, String countryRegion);
         void setStreetAddress(AddressValue addressValue, String streetAddress);
+
+        void setUnit(AddressValue addressValue, String unit);
+
+        void setCityDistrict(AddressValue addressValue, String cityDistrict);
+
+        void setStateDistrict(AddressValue addressValue, String stateDistrict);
+
+        void setSuburb(AddressValue addressValue, String suburb);
+
+        void setHouse(AddressValue addressValue, String house);
+
+        void setLevel(AddressValue addressValue, String level);
     }
     static void setPoBox(AddressValue addressValue, String poBox) {
         accessor.setPoBox(addressValue, poBox);
@@ -66,5 +78,29 @@ public final class AddressValueHelper {
 
     static void setStreetAddress(AddressValue addressValue, String streetAddress) {
         accessor.setStreetAddress(addressValue, streetAddress);
+    }
+
+    static void setUnit(AddressValue addressValue, String unit) {
+        accessor.setUnit(addressValue, unit);
+    }
+
+    static void setCityDistrict(AddressValue addressValue, String cityDistrict) {
+        accessor.setCityDistrict(addressValue, cityDistrict);
+    }
+
+    static void setStateDistrict(AddressValue addressValue, String stateDistrict) {
+        accessor.setStateDistrict(addressValue, stateDistrict);
+    }
+
+    static void setSuburb(AddressValue addressValue, String suburb) {
+        accessor.setSuburb(addressValue, suburb);
+    }
+
+    static void setHouse(AddressValue addressValue, String house) {
+        accessor.setHouse(addressValue, house);
+    }
+
+    static void setLevel(AddressValue addressValue, String level) {
+        accessor.setLevel(addressValue, level);
     }
 }

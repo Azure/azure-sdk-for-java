@@ -30,7 +30,7 @@ public final class LocationsGetWithResponseMockTests {
         ArgumentCaptor<HttpRequest> httpRequest = ArgumentCaptor.forClass(HttpRequest.class);
 
         String responseStr =
-            "{\"properties\":\"dataymdjfua\",\"id\":\"roqvqpilrgu\",\"name\":\"canlduwzorxs\",\"type\":\"mxaqklxym\"}";
+            "{\"properties\":\"datacqydey\",\"id\":\"vskiczd\",\"name\":\"rjeizik\",\"type\":\"qaboohxbms\"}";
 
         Mockito.when(httpResponse.getStatusCode()).thenReturn(200);
         Mockito.when(httpResponse.getHeaders()).thenReturn(new HttpHeaders());
@@ -58,6 +58,7 @@ public final class LocationsGetWithResponseMockTests {
                     tokenRequestContext -> Mono.just(new AccessToken("this_is_a_token", OffsetDateTime.MAX)),
                     new AzureProfile("", "", AzureEnvironment.AZURE));
 
-        AscLocation response = manager.locations().getWithResponse("mtum", com.azure.core.util.Context.NONE).getValue();
+        AscLocation response =
+            manager.locations().getWithResponse("ighctxbxmo", com.azure.core.util.Context.NONE).getValue();
     }
 }

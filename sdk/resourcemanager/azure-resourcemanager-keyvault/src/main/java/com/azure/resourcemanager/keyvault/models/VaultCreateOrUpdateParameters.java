@@ -32,6 +32,10 @@ public final class VaultCreateOrUpdateParameters {
     @JsonProperty(value = "properties", required = true)
     private VaultProperties properties;
 
+    /** Creates an instance of VaultCreateOrUpdateParameters class. */
+    public VaultCreateOrUpdateParameters() {
+    }
+
     /**
      * Get the location property: The supported Azure location where the key vault should be created.
      *

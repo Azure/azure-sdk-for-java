@@ -13,6 +13,9 @@ import java.util.Map;
  */
 @Fluent
 public final class MediaJobOutputProcessingEventData extends MediaJobOutputStateChangeEventData {
+    /** Creates an instance of MediaJobOutputProcessingEventData class. */
+    public MediaJobOutputProcessingEventData() {}
+
     /** {@inheritDoc} */
     @Override
     public MediaJobOutputProcessingEventData setOutput(MediaJobOutput output) {

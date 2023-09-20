@@ -13,24 +13,23 @@ public final class GovernanceAssignmentAdditionalDataTests {
     public void testDeserialize() throws Exception {
         GovernanceAssignmentAdditionalData model =
             BinaryData
-                .fromString(
-                    "{\"ticketNumber\":465206787,\"ticketLink\":\"dkfnozoeoqbvj\",\"ticketStatus\":\"efgwbmqjc\"}")
+                .fromString("{\"ticketNumber\":885021040,\"ticketLink\":\"njuhpsprkzya\",\"ticketStatus\":\"ia\"}")
                 .toObject(GovernanceAssignmentAdditionalData.class);
-        Assertions.assertEquals(465206787, model.ticketNumber());
-        Assertions.assertEquals("dkfnozoeoqbvj", model.ticketLink());
-        Assertions.assertEquals("efgwbmqjc", model.ticketStatus());
+        Assertions.assertEquals(885021040, model.ticketNumber());
+        Assertions.assertEquals("njuhpsprkzya", model.ticketLink());
+        Assertions.assertEquals("ia", model.ticketStatus());
     }
 
     @org.junit.jupiter.api.Test
     public void testSerialize() throws Exception {
         GovernanceAssignmentAdditionalData model =
             new GovernanceAssignmentAdditionalData()
-                .withTicketNumber(465206787)
-                .withTicketLink("dkfnozoeoqbvj")
-                .withTicketStatus("efgwbmqjc");
+                .withTicketNumber(885021040)
+                .withTicketLink("njuhpsprkzya")
+                .withTicketStatus("ia");
         model = BinaryData.fromObject(model).toObject(GovernanceAssignmentAdditionalData.class);
-        Assertions.assertEquals(465206787, model.ticketNumber());
-        Assertions.assertEquals("dkfnozoeoqbvj", model.ticketLink());
-        Assertions.assertEquals("efgwbmqjc", model.ticketStatus());
+        Assertions.assertEquals(885021040, model.ticketNumber());
+        Assertions.assertEquals("njuhpsprkzya", model.ticketLink());
+        Assertions.assertEquals("ia", model.ticketStatus());
     }
 }

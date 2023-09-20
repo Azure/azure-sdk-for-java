@@ -249,7 +249,7 @@ public final class RenderClientImplBuilder
             this.host = "https://atlas.microsoft.com";
         }
         if (apiVersion == null) {
-            this.apiVersion = "2.1";
+            this.apiVersion = "2022-08-01";
         }
         if (serializerAdapter == null) {
             this.serializerAdapter = JacksonAdapter.createDefaultSerializerAdapter();

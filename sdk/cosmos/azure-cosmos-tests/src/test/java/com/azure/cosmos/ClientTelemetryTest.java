@@ -264,10 +264,12 @@ public class ClientTelemetryTest extends TestSuiteBase {
 
     @SuppressWarnings("unchecked")
     @Test(groups = {"long"}, dataProvider = "useProxy", timeOut = TIMEOUT)
+    @Ignore("Stage Juno endpoint is only available for staging accounts")
     public void clientTelemetryWithStageJunoEndpoint(boolean useProxy) throws InterruptedException, NoSuchFieldException,
         IllegalAccessException {
         CosmosClient cosmosClient = null;
         String databaseId = UUID.randomUUID().toString();
+
         try {
             String whiteListedAccountForTelemetry = System.getProperty("COSMOS.CLIENT_TELEMETRY_COSMOS_ACCOUNT");
             assertThat(whiteListedAccountForTelemetry).isNotNull();
@@ -348,6 +350,27 @@ public class ClientTelemetryTest extends TestSuiteBase {
 
             // clear system property
             System.clearProperty("COSMOS.CLIENT_TELEMETRY_PROXY_OPTIONS_CONFIG");
+        }
+    }
+
+    @Test(groups = {"emulator"}, timeOut = TIMEOUT)
+    public void clientTelemetryUseBaseUserAgent() {
+        CosmosAsyncClient client = null;
+        String userAgentSuffix = "clientTelemetryUseBaseUserAgent";
+
+        try {
+            client = new CosmosClientBuilder()
+                .key(TestConfigurations.MASTER_KEY)
+                .endpoint(TestConfigurations.HOST)
+                .userAgentSuffix(userAgentSuffix)
+                .buildAsyncClient();
+
+            ClientTelemetry clientTelemetry = client.getContextClient().getClientTelemetry();
+            assertThat(clientTelemetry.getClientTelemetryInfo().getUserAgent().contains(userAgentSuffix)).isFalse();
+        } finally {
+            if (client != null) {
+                client.close();
+            }
         }
     }
 

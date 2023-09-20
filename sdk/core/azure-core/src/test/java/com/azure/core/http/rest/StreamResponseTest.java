@@ -24,19 +24,17 @@ import java.nio.channels.Channels;
 import java.nio.file.Files;
 import java.nio.file.Path;
 import java.nio.file.StandardOpenOption;
-import java.util.Random;
 import java.util.concurrent.atomic.AtomicBoolean;
 import java.util.concurrent.atomic.AtomicInteger;
 import java.util.stream.Stream;
 
-import static org.junit.jupiter.api.Assertions.assertArrayEquals;
+import static com.azure.core.CoreTestUtils.assertArraysEqual;
+import static com.azure.core.CoreTestUtils.fillArray;
 import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertSame;
 import static org.junit.jupiter.api.Assertions.assertTrue;
 
 public class StreamResponseTest {
-
-    private static final Random RANDOM = new Random();
     private static final int RESPONSE_CODE = 206;
 
     private final AtomicInteger closeCalls = new AtomicInteger();
@@ -48,7 +46,7 @@ public class StreamResponseTest {
     @BeforeEach
     public void setup() {
         responseValue = new byte[128];
-        RANDOM.nextBytes(responseValue);
+        fillArray(responseValue);
         response = new MockHttpResponse(request, RESPONSE_CODE, headers, responseValue) {
             @Override
             public void close() {
@@ -162,7 +160,7 @@ public class StreamResponseTest {
                         })
                 ).verifyComplete();
 
-                assertArrayEquals(responseValue, Files.readAllBytes(tempFile));
+                assertArraysEqual(responseValue, Files.readAllBytes(tempFile));
             } catch (IOException e) {
                 throw new RuntimeException(e);
             }
@@ -176,7 +174,7 @@ public class StreamResponseTest {
             ByteArrayOutputStream bos = new ByteArrayOutputStream();
             streamResponse.writeValueTo(Channels.newChannel(bos));
 
-            assertArrayEquals(responseValue, bos.toByteArray());
+            assertArraysEqual(responseValue, bos.toByteArray());
         });
     }
 

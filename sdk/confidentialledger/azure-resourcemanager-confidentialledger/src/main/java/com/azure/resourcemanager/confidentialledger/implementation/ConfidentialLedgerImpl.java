@@ -31,14 +31,6 @@ public final class ConfidentialLedgerImpl
         return this.innerModel().type();
     }
 
-    public LedgerProperties properties() {
-        return this.innerModel().properties();
-    }
-
-    public SystemData systemData() {
-        return this.innerModel().systemData();
-    }
-
     public String location() {
         return this.innerModel().location();
     }
@@ -50,6 +42,14 @@ public final class ConfidentialLedgerImpl
         } else {
             return Collections.emptyMap();
         }
+    }
+
+    public LedgerProperties properties() {
+        return this.innerModel().properties();
+    }
+
+    public SystemData systemData() {
+        return this.innerModel().systemData();
     }
 
     public Region region() {

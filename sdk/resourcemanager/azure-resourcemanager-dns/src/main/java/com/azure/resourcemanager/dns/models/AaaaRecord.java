@@ -5,20 +5,20 @@
 package com.azure.resourcemanager.dns.models;
 
 import com.azure.core.annotation.Fluent;
-import com.azure.core.util.logging.ClientLogger;
-import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonProperty;
 
 /** An AAAA record. */
 @Fluent
 public final class AaaaRecord {
-    @JsonIgnore private final ClientLogger logger = new ClientLogger(AaaaRecord.class);
-
     /*
      * The IPv6 address of this AAAA record.
      */
     @JsonProperty(value = "ipv6Address")
     private String ipv6Address;
+
+    /** Creates an instance of AaaaRecord class. */
+    public AaaaRecord() {
+    }
 
     /**
      * Get the ipv6Address property: The IPv6 address of this AAAA record.

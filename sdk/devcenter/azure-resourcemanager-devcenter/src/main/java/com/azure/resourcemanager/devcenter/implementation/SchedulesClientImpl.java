@@ -68,8 +68,7 @@ public final class SchedulesClientImpl implements SchedulesClient {
     public interface SchedulesService {
         @Headers({"Content-Type: application/json"})
         @Get(
-            "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.DevCenter/projects"
-                + "/{projectName}/pools/{poolName}/schedules")
+            "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.DevCenter/projects/{projectName}/pools/{poolName}/schedules")
         @ExpectedResponses({200})
         @UnexpectedResponseExceptionType(ManagementException.class)
         Mono<Response<ScheduleListResult>> listByPool(
@@ -85,8 +84,7 @@ public final class SchedulesClientImpl implements SchedulesClient {
 
         @Headers({"Content-Type: application/json"})
         @Get(
-            "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.DevCenter/projects"
-                + "/{projectName}/pools/{poolName}/schedules/{scheduleName}")
+            "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.DevCenter/projects/{projectName}/pools/{poolName}/schedules/{scheduleName}")
         @ExpectedResponses({200})
         @UnexpectedResponseExceptionType(ManagementException.class)
         Mono<Response<ScheduleInner>> get(
@@ -103,8 +101,7 @@ public final class SchedulesClientImpl implements SchedulesClient {
 
         @Headers({"Content-Type: application/json"})
         @Put(
-            "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.DevCenter/projects"
-                + "/{projectName}/pools/{poolName}/schedules/{scheduleName}")
+            "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.DevCenter/projects/{projectName}/pools/{poolName}/schedules/{scheduleName}")
         @ExpectedResponses({200, 201})
         @UnexpectedResponseExceptionType(ManagementException.class)
         Mono<Response<Flux<ByteBuffer>>> createOrUpdate(
@@ -122,8 +119,7 @@ public final class SchedulesClientImpl implements SchedulesClient {
 
         @Headers({"Content-Type: application/json"})
         @Patch(
-            "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.DevCenter/projects"
-                + "/{projectName}/pools/{poolName}/schedules/{scheduleName}")
+            "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.DevCenter/projects/{projectName}/pools/{poolName}/schedules/{scheduleName}")
         @ExpectedResponses({200, 202})
         @UnexpectedResponseExceptionType(ManagementException.class)
         Mono<Response<Flux<ByteBuffer>>> update(
@@ -141,8 +137,7 @@ public final class SchedulesClientImpl implements SchedulesClient {
 
         @Headers({"Content-Type: application/json"})
         @Delete(
-            "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.DevCenter/projects"
-                + "/{projectName}/pools/{poolName}/schedules/{scheduleName}")
+            "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.DevCenter/projects/{projectName}/pools/{poolName}/schedules/{scheduleName}")
         @ExpectedResponses({200, 202, 204})
         @UnexpectedResponseExceptionType(ManagementException.class)
         Mono<Response<Flux<ByteBuffer>>> delete(
@@ -836,7 +831,8 @@ public final class SchedulesClientImpl implements SchedulesClient {
     public SyncPoller<PollResult<ScheduleInner>, ScheduleInner> beginCreateOrUpdate(
         String resourceGroupName, String projectName, String poolName, String scheduleName, ScheduleInner body) {
         final Integer top = null;
-        return beginCreateOrUpdateAsync(resourceGroupName, projectName, poolName, scheduleName, body, top)
+        return this
+            .beginCreateOrUpdateAsync(resourceGroupName, projectName, poolName, scheduleName, body, top)
             .getSyncPoller();
     }
 
@@ -864,7 +860,8 @@ public final class SchedulesClientImpl implements SchedulesClient {
         ScheduleInner body,
         Integer top,
         Context context) {
-        return beginCreateOrUpdateAsync(resourceGroupName, projectName, poolName, scheduleName, body, top, context)
+        return this
+            .beginCreateOrUpdateAsync(resourceGroupName, projectName, poolName, scheduleName, body, top, context)
             .getSyncPoller();
     }
 
@@ -1251,7 +1248,7 @@ public final class SchedulesClientImpl implements SchedulesClient {
     public SyncPoller<PollResult<ScheduleInner>, ScheduleInner> beginUpdate(
         String resourceGroupName, String projectName, String poolName, String scheduleName, ScheduleUpdate body) {
         final Integer top = null;
-        return beginUpdateAsync(resourceGroupName, projectName, poolName, scheduleName, body, top).getSyncPoller();
+        return this.beginUpdateAsync(resourceGroupName, projectName, poolName, scheduleName, body, top).getSyncPoller();
     }
 
     /**
@@ -1278,7 +1275,8 @@ public final class SchedulesClientImpl implements SchedulesClient {
         ScheduleUpdate body,
         Integer top,
         Context context) {
-        return beginUpdateAsync(resourceGroupName, projectName, poolName, scheduleName, body, top, context)
+        return this
+            .beginUpdateAsync(resourceGroupName, projectName, poolName, scheduleName, body, top, context)
             .getSyncPoller();
     }
 
@@ -1624,7 +1622,7 @@ public final class SchedulesClientImpl implements SchedulesClient {
     public SyncPoller<PollResult<Void>, Void> beginDelete(
         String resourceGroupName, String projectName, String poolName, String scheduleName) {
         final Integer top = null;
-        return beginDeleteAsync(resourceGroupName, projectName, poolName, scheduleName, top).getSyncPoller();
+        return this.beginDeleteAsync(resourceGroupName, projectName, poolName, scheduleName, top).getSyncPoller();
     }
 
     /**
@@ -1649,7 +1647,9 @@ public final class SchedulesClientImpl implements SchedulesClient {
         String scheduleName,
         Integer top,
         Context context) {
-        return beginDeleteAsync(resourceGroupName, projectName, poolName, scheduleName, top, context).getSyncPoller();
+        return this
+            .beginDeleteAsync(resourceGroupName, projectName, poolName, scheduleName, top, context)
+            .getSyncPoller();
     }
 
     /**

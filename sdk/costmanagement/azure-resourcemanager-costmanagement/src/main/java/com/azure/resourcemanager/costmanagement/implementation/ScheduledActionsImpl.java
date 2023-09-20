@@ -52,9 +52,9 @@ public final class ScheduledActionsImpl implements ScheduledActions {
     }
 
     public Response<ScheduledAction> createOrUpdateWithResponse(
-        String name, ScheduledActionInner scheduledAction, Context context) {
+        String name, ScheduledActionInner scheduledAction, String ifMatch, Context context) {
         Response<ScheduledActionInner> inner =
-            this.serviceClient().createOrUpdateWithResponse(name, scheduledAction, context);
+            this.serviceClient().createOrUpdateWithResponse(name, scheduledAction, ifMatch, context);
         if (inner != null) {
             return new SimpleResponse<>(
                 inner.getRequest(),

@@ -56,6 +56,6 @@ public final class AlertsSuppressionRulesDeleteWithResponseMockTests {
                     tokenRequestContext -> Mono.just(new AccessToken("this_is_a_token", OffsetDateTime.MAX)),
                     new AzureProfile("", "", AzureEnvironment.AZURE));
 
-        manager.alertsSuppressionRules().deleteWithResponse("q", com.azure.core.util.Context.NONE);
+        manager.alertsSuppressionRules().deleteWithResponse("bkl", com.azure.core.util.Context.NONE);
     }
 }

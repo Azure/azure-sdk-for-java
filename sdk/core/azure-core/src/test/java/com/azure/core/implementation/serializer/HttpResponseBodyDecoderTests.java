@@ -42,7 +42,7 @@ import java.util.List;
 import java.util.Map;
 import java.util.stream.Stream;
 
-import static org.junit.jupiter.api.Assertions.assertArrayEquals;
+import static com.azure.core.CoreTestUtils.assertArraysEqual;
 import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertFalse;
 import static org.junit.jupiter.api.Assertions.assertNull;
@@ -248,8 +248,8 @@ public class HttpResponseBodyDecoderTests {
                 assertTrue(actual instanceof List);
                 @SuppressWarnings("unchecked") List<byte[]> decoded = (List<byte[]>) actual;
                 assertEquals(2, decoded.size());
-                assertArrayEquals(base64Urls.get(0).decodedBytes(), decoded.get(0));
-                assertArrayEquals(base64Urls.get(1).decodedBytes(), decoded.get(1));
+                assertArraysEqual(base64Urls.get(0).decodedBytes(), decoded.get(0));
+                assertArraysEqual(base64Urls.get(1).decodedBytes(), decoded.get(1));
             }).verifyComplete();
     }
 

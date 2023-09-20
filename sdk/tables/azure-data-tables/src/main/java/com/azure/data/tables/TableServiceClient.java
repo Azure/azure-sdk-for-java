@@ -18,8 +18,8 @@ import com.azure.core.util.logging.ClientLogger;
 import com.azure.core.util.serializer.SerializerAdapter;
 import com.azure.data.tables.implementation.AzureTableImpl;
 import com.azure.data.tables.implementation.AzureTableImplBuilder;
-import com.azure.data.tables.implementation.ModelHelper;
 import com.azure.data.tables.implementation.TableAccountSasGenerator;
+import com.azure.data.tables.implementation.TableItemAccessHelper;
 import com.azure.data.tables.implementation.TablePaged;
 import com.azure.data.tables.implementation.TableSasUtils;
 import com.azure.data.tables.implementation.TableUtils;
@@ -514,7 +514,7 @@ public final class TableServiceClient {
         }
 
         final List<TableItem> tables = tableResponsePropertiesList.stream()
-            .map(ModelHelper::createItem).collect(Collectors.toList());
+            .map(TableItemAccessHelper::createItem).collect(Collectors.toList());
 
         return new TablePaged(response, tables, response.getDeserializedHeaders().getXMsContinuationNextTableName());
     }
@@ -605,7 +605,11 @@ public final class TableServiceClient {
      * TableServiceProperties properties = new TableServiceProperties&#40;&#41;
      *     .setHourMetrics&#40;new TableServiceMetrics&#40;&#41;
      *         .setVersion&#40;&quot;1.0&quot;&#41;
-     *         .setEnabled&#40;true&#41;&#41;
+     *         .setEnabled&#40;true&#41;
+     *         .setIncludeApis&#40;true&#41;
+     *         .setRetentionPolicy&#40;new TableServiceRetentionPolicy&#40;&#41;
+     *             .setEnabled&#40;true&#41;
+     *             .setDaysToRetain&#40;5&#41;&#41;&#41;
      *     .setLogging&#40;new TableServiceLogging&#40;&#41;
      *         .setAnalyticsVersion&#40;&quot;1.0&quot;&#41;
      *         .setReadLogged&#40;true&#41;
@@ -642,7 +646,11 @@ public final class TableServiceClient {
      * TableServiceProperties myProperties = new TableServiceProperties&#40;&#41;
      *     .setHourMetrics&#40;new TableServiceMetrics&#40;&#41;
      *         .setVersion&#40;&quot;1.0&quot;&#41;
-     *         .setEnabled&#40;true&#41;&#41;
+     *         .setEnabled&#40;true&#41;
+     *         .setIncludeApis&#40;true&#41;
+     *         .setRetentionPolicy&#40;new TableServiceRetentionPolicy&#40;&#41;
+     *             .setEnabled&#40;true&#41;
+     *             .setDaysToRetain&#40;5&#41;&#41;&#41;
      *     .setLogging&#40;new TableServiceLogging&#40;&#41;
      *         .setAnalyticsVersion&#40;&quot;1.0&quot;&#41;
      *         .setReadLogged&#40;true&#41;

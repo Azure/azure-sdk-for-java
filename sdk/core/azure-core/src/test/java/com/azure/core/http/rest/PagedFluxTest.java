@@ -3,6 +3,7 @@
 
 package com.azure.core.http.rest;
 
+import com.azure.core.http.HttpHeaderName;
 import com.azure.core.http.HttpHeaders;
 import com.azure.core.http.HttpMethod;
 import com.azure.core.http.HttpRequest;
@@ -256,8 +257,9 @@ public class PagedFluxTest {
     }
 
     private PagedFlux<Integer> getIntegerPagedFlux(int noOfPages) {
-        HttpHeaders httpHeaders = new HttpHeaders().set("header1", "value1")
-            .set("header2", "value2");
+        HttpHeaders httpHeaders = new HttpHeaders()
+            .set(HttpHeaderName.fromString("header1"), "value1")
+            .set(HttpHeaderName.fromString("header2"), "value2");
         HttpRequest httpRequest = new HttpRequest(HttpMethod.GET, "http://localhost");
 
         String deserializedHeaders = "header1,value1,header2,value2";
@@ -276,8 +278,9 @@ public class PagedFluxTest {
     }
 
     private PagedFlux<Integer> getIntegerPagedFluxSinglePage() {
-        HttpHeaders httpHeaders = new HttpHeaders().set("header1", "value1")
-            .set("header2", "value2");
+        HttpHeaders httpHeaders = new HttpHeaders()
+            .set(HttpHeaderName.fromString("header1"), "value1")
+            .set(HttpHeaderName.fromString("header2"), "value2");
         HttpRequest httpRequest = new HttpRequest(HttpMethod.GET, "http://localhost");
 
         String deserializedHeaders = "header1,value1,header2,value2";

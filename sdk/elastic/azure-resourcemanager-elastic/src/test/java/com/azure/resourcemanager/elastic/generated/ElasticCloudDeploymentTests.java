@@ -6,20 +6,19 @@ package com.azure.resourcemanager.elastic.generated;
 
 import com.azure.core.util.BinaryData;
 import com.azure.resourcemanager.elastic.models.ElasticCloudDeployment;
-import org.junit.jupiter.api.Test;
 
 public final class ElasticCloudDeploymentTests {
-    @Test
-    public void testDeserialize() {
+    @org.junit.jupiter.api.Test
+    public void testDeserialize() throws Exception {
         ElasticCloudDeployment model =
             BinaryData
                 .fromString(
-                    "{\"name\":\"bmbexppbhtqqro\",\"deploymentId\":\"p\",\"azureSubscriptionId\":\"s\",\"elasticsearchRegion\":\"gbquxigj\",\"elasticsearchServiceUrl\":\"gzjaoyfhrtxilne\",\"kibanaServiceUrl\":\"ujysvle\",\"kibanaSsoUrl\":\"vfqawrlyxwjkcpr\"}")
+                    "{\"name\":\"wclxxwrl\",\"deploymentId\":\"ouskcqvkocrc\",\"azureSubscriptionId\":\"kwt\",\"elasticsearchRegion\":\"xbnjbiksq\",\"elasticsearchServiceUrl\":\"lssai\",\"kibanaServiceUrl\":\"p\",\"kibanaSsoUrl\":\"nzl\"}")
                 .toObject(ElasticCloudDeployment.class);
     }
 
-    @Test
-    public void testSerialize() {
+    @org.junit.jupiter.api.Test
+    public void testSerialize() throws Exception {
         ElasticCloudDeployment model = new ElasticCloudDeployment();
         model = BinaryData.fromObject(model).toObject(ElasticCloudDeployment.class);
     }

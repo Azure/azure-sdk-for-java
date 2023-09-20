@@ -39,6 +39,10 @@ public final class VirtualNetworkLinkProperties {
     @JsonProperty(value = "provisioningState", access = JsonProperty.Access.WRITE_ONLY)
     private ProvisioningState provisioningState;
 
+    /** Creates an instance of VirtualNetworkLinkProperties class. */
+    public VirtualNetworkLinkProperties() {
+    }
+
     /**
      * Get the virtualNetwork property: The reference of the virtual network.
      *

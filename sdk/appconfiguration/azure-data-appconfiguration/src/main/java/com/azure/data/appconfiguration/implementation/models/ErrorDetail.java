@@ -5,35 +5,35 @@
 package com.azure.data.appconfiguration.implementation.models;
 
 import com.azure.core.annotation.Fluent;
-import com.fasterxml.jackson.annotation.JsonCreator;
-import com.fasterxml.jackson.annotation.JsonProperty;
+import com.azure.json.JsonReader;
+import com.azure.json.JsonSerializable;
+import com.azure.json.JsonToken;
+import com.azure.json.JsonWriter;
+import java.io.IOException;
+import java.util.ArrayList;
 import java.util.List;
 
 /** The details of an error. */
 @Fluent
-public final class ErrorDetail {
+public final class ErrorDetail implements JsonSerializable<ErrorDetail> {
     /*
      * One of a server-defined set of error codes.
      */
-    @JsonProperty(value = "code", required = true)
-    private String code;
+    private final String code;
 
     /*
      * A human-readable representation of the error.
      */
-    @JsonProperty(value = "message", required = true)
-    private String message;
+    private final String message;
 
     /*
      * An array of details about specific errors that led to this reported error.
      */
-    @JsonProperty(value = "details")
     private List<ErrorDetail> details;
 
     /*
      * An object containing more specific information than the current object about the error.
      */
-    @JsonProperty(value = "innererror")
     private InnerError innererror;
 
     /**
@@ -42,10 +42,7 @@ public final class ErrorDetail {
      * @param code the code value to set.
      * @param message the message value to set.
      */
-    @JsonCreator
-    public ErrorDetail(
-            @JsonProperty(value = "code", required = true) String code,
-            @JsonProperty(value = "message", required = true) String message) {
+    public ErrorDetail(String code, String message) {
         this.code = code;
         this.message = message;
     }
@@ -108,5 +105,71 @@ public final class ErrorDetail {
     public ErrorDetail setInnererror(InnerError innererror) {
         this.innererror = innererror;
         return this;
+    }
+
+    @Override
+    public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
+        jsonWriter.writeStartObject();
+        jsonWriter.writeStringField("code", this.code);
+        jsonWriter.writeStringField("message", this.message);
+        jsonWriter.writeArrayField("details", this.details, (writer, element) -> writer.writeJson(element));
+        jsonWriter.writeJsonField("innererror", this.innererror);
+        return jsonWriter.writeEndObject();
+    }
+
+    /**
+     * Reads an instance of ErrorDetail from the JsonReader.
+     *
+     * @param jsonReader The JsonReader being read.
+     * @return An instance of ErrorDetail if the JsonReader was pointing to an instance of it, or null if it was
+     *     pointing to JSON null.
+     * @throws IllegalStateException If the deserialized JSON object was missing any required properties.
+     * @throws IOException If an error occurs while reading the ErrorDetail.
+     */
+    public static ErrorDetail fromJson(JsonReader jsonReader) throws IOException {
+        return jsonReader.readObject(
+                reader -> {
+                    boolean codeFound = false;
+                    String code = null;
+                    boolean messageFound = false;
+                    String message = null;
+                    List<ErrorDetail> details = null;
+                    InnerError innererror = null;
+                    while (reader.nextToken() != JsonToken.END_OBJECT) {
+                        String fieldName = reader.getFieldName();
+                        reader.nextToken();
+
+                        if ("code".equals(fieldName)) {
+                            code = reader.getString();
+                            codeFound = true;
+                        } else if ("message".equals(fieldName)) {
+                            message = reader.getString();
+                            messageFound = true;
+                        } else if ("details".equals(fieldName)) {
+                            details = reader.readArray(reader1 -> ErrorDetail.fromJson(reader1));
+                        } else if ("innererror".equals(fieldName)) {
+                            innererror = InnerError.fromJson(reader);
+                        } else {
+                            reader.skipChildren();
+                        }
+                    }
+                    if (codeFound && messageFound) {
+                        ErrorDetail deserializedErrorDetail = new ErrorDetail(code, message);
+                        deserializedErrorDetail.details = details;
+                        deserializedErrorDetail.innererror = innererror;
+
+                        return deserializedErrorDetail;
+                    }
+                    List<String> missingProperties = new ArrayList<>();
+                    if (!codeFound) {
+                        missingProperties.add("code");
+                    }
+                    if (!messageFound) {
+                        missingProperties.add("message");
+                    }
+
+                    throw new IllegalStateException(
+                            "Missing required property/properties: " + String.join(", ", missingProperties));
+                });
     }
 }

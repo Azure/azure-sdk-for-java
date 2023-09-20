@@ -30,7 +30,7 @@ public final class RulesEnginesGetWithResponseMockTests {
         ArgumentCaptor<HttpRequest> httpRequest = ArgumentCaptor.forClass(HttpRequest.class);
 
         String responseStr =
-            "{\"properties\":{\"resourceState\":\"Enabling\",\"rules\":[]},\"id\":\"ohmcwsld\",\"name\":\"izetpw\",\"type\":\"ralllibphb\"}";
+            "{\"properties\":{\"resourceState\":\"Disabled\",\"rules\":[]},\"id\":\"zjb\",\"name\":\"yzsxjrkambtrne\",\"type\":\"vmnvu\"}";
 
         Mockito.when(httpResponse.getStatusCode()).thenReturn(200);
         Mockito.when(httpResponse.getHeaders()).thenReturn(new HttpHeaders());
@@ -61,7 +61,7 @@ public final class RulesEnginesGetWithResponseMockTests {
         RulesEngine response =
             manager
                 .rulesEngines()
-                .getWithResponse("ssjhoiftxfkf", "egprhptil", "ucb", com.azure.core.util.Context.NONE)
+                .getWithResponse("fmo", "uxrkjp", "dwxf", com.azure.core.util.Context.NONE)
                 .getValue();
     }
 }

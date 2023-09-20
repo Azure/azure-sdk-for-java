@@ -42,6 +42,7 @@ public class StoreResponseDiagnostics {
     private final String exceptionResponseHeaders;
     private final List<String> replicaStatusList;
     private final String faultInjectionRuleId;
+    private final List<String> faultInjectionEvaluationResults;
 
     public static StoreResponseDiagnostics createStoreResponseDiagnostics(
         StoreResponse storeResponse,
@@ -79,6 +80,7 @@ public class StoreResponseDiagnostics {
         this.exceptionResponseHeaders = null;
         this.replicaStatusList = storeResponse.getReplicaStatusList();
         this.faultInjectionRuleId = storeResponse.getFaultInjectionRuleId();
+        this.faultInjectionEvaluationResults = storeResponse.getFaultInjectionRuleEvaluationResults();
     }
 
     private StoreResponseDiagnostics(CosmosException e, RxDocumentServiceRequest rxDocumentServiceRequest) {
@@ -107,7 +109,15 @@ public class StoreResponseDiagnostics {
         this.exceptionResponseHeaders = e.getResponseHeaders() != null ? e.getResponseHeaders().toString() : null;
         this.replicaStatusList = ImplementationBridgeHelpers.CosmosExceptionHelper.getCosmosExceptionAccessor().getReplicaStatusList(e);
         this.faultInjectionRuleId =
-            ImplementationBridgeHelpers.CosmosExceptionHelper.getCosmosExceptionAccessor().getFaultInjectionRuleId(e);
+            ImplementationBridgeHelpers
+                .CosmosExceptionHelper
+                .getCosmosExceptionAccessor()
+                .getFaultInjectionRuleId(e);
+        this.faultInjectionEvaluationResults =
+            ImplementationBridgeHelpers
+                .CosmosExceptionHelper
+                .getCosmosExceptionAccessor()
+                .getFaultInjectionEvaluationResults(e);
     }
 
     public int getStatusCode() {
@@ -180,6 +190,10 @@ public class StoreResponseDiagnostics {
 
     public String getFaultInjectionRuleId() {
         return this.faultInjectionRuleId;
+    }
+
+    public List<String> getFaultInjectionEvaluationResults() {
+        return this.faultInjectionEvaluationResults;
     }
 
     public List<String> getReplicaStatusList() { return this.replicaStatusList; }

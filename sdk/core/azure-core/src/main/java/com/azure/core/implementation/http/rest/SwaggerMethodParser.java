@@ -22,7 +22,6 @@ import com.azure.core.annotation.ReturnValueWireType;
 import com.azure.core.annotation.UnexpectedResponseExceptionType;
 import com.azure.core.exception.HttpResponseException;
 import com.azure.core.http.ContentType;
-import com.azure.core.http.HttpHeader;
 import com.azure.core.http.HttpHeaders;
 import com.azure.core.http.HttpMethod;
 import com.azure.core.http.rest.Page;
@@ -120,6 +119,7 @@ public class SwaggerMethodParser implements HttpResponseDecodeData {
         this(SwaggerInterfaceParser.getInstance(swaggerMethod.getDeclaringClass()), swaggerMethod);
     }
 
+    @SuppressWarnings("deprecation")
     SwaggerMethodParser(SwaggerInterfaceParser interfaceParser, Method swaggerMethod) {
         this.rawHost = interfaceParser.getHost();
 
@@ -385,10 +385,9 @@ public class SwaggerMethodParser implements HttpResponseDecodeData {
      * @param httpHeaders The {@link HttpHeaders} where the header values will be set.
      * @param serializer {@link SerializerAdapter} that is used to serialize the header values.
      */
+    @SuppressWarnings("deprecation")
     public void setHeaders(Object[] swaggerMethodArguments, HttpHeaders httpHeaders, SerializerAdapter serializer) {
-        for (HttpHeader header : headers) {
-            httpHeaders.set(header.getName(), header.getValuesList());
-        }
+        httpHeaders.setAllHttpHeaders(headers);
 
         if (swaggerMethodArguments == null) {
             return;

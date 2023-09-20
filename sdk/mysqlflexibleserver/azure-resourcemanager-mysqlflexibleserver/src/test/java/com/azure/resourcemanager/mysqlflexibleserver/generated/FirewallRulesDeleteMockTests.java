@@ -56,6 +56,6 @@ public final class FirewallRulesDeleteMockTests {
                     tokenRequestContext -> Mono.just(new AccessToken("this_is_a_token", OffsetDateTime.MAX)),
                     new AzureProfile("", "", AzureEnvironment.AZURE));
 
-        manager.firewallRules().delete("ohxcrsbfova", "rruvwbhsq", "sub", com.azure.core.util.Context.NONE);
+        manager.firewallRules().delete("podxunkb", "bxmubyynt", "lrb", com.azure.core.util.Context.NONE);
     }
 }

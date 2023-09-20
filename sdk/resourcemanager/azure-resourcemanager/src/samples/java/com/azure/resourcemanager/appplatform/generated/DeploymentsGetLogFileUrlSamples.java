@@ -9,7 +9,7 @@ import com.azure.core.util.Context;
 /** Samples for Deployments GetLogFileUrl. */
 public final class DeploymentsGetLogFileUrlSamples {
     /*
-     * x-ms-original-file: specification/appplatform/resource-manager/Microsoft.AppPlatform/stable/2022-04-01/examples/Deployments_GetLogFileUrl.json
+     * x-ms-original-file: specification/appplatform/resource-manager/Microsoft.AppPlatform/stable/2022-12-01/examples/Deployments_GetLogFileUrl.json
      */
     /**
      * Sample code: Deployments_GetLogFileUrl.

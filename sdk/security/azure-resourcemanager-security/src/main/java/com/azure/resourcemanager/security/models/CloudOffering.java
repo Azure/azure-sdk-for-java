@@ -32,7 +32,9 @@ import com.fasterxml.jackson.annotation.JsonTypeName;
     @JsonSubTypes.Type(name = "DefenderCspmAws", value = DefenderCspmAwsOffering.class),
     @JsonSubTypes.Type(name = "DefenderCspmGcp", value = DefenderCspmGcpOffering.class),
     @JsonSubTypes.Type(name = "DefenderForDevOpsGithub", value = DefenderForDevOpsGithubOffering.class),
-    @JsonSubTypes.Type(name = "DefenderForDevOpsAzureDevOps", value = DefenderForDevOpsAzureDevOpsOffering.class)
+    @JsonSubTypes.Type(name = "DefenderForDevOpsAzureDevOps", value = DefenderForDevOpsAzureDevOpsOffering.class),
+    @JsonSubTypes.Type(name = "CspmMonitorGitLab", value = CspmMonitorGitLabOffering.class),
+    @JsonSubTypes.Type(name = "DefenderForDevOpsGitLab", value = DefenderForDevOpsGitLabOffering.class)
 })
 @Immutable
 public class CloudOffering {

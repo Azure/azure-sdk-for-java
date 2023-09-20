@@ -29,6 +29,10 @@ public final class IpFilterRule {
     @JsonProperty(value = "ipMask", required = true)
     private String ipMask;
 
+    /** Creates an instance of IpFilterRule class. */
+    public IpFilterRule() {
+    }
+
     /**
      * Get the filterName property: The name of the IP filter rule.
      *

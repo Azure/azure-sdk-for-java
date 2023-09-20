@@ -59,6 +59,6 @@ public final class AlertsUpdateResourceGroupLevelStateToDismissWithResponseMockT
         manager
             .alerts()
             .updateResourceGroupLevelStateToDismissWithResponse(
-                "ayyzivrmitc", "qlhchwhrktjle", "fibfiplhx", com.azure.core.util.Context.NONE);
+                "dfddtullygtav", "zcxdfweapyfmlxrl", "phraspifleim", com.azure.core.util.Context.NONE);
     }
 }

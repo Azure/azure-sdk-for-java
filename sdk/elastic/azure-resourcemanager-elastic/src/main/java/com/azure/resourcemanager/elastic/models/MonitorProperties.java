@@ -54,6 +54,12 @@ public final class MonitorProperties {
     @JsonProperty(value = "liftrResourcePreference", access = JsonProperty.Access.WRITE_ONLY)
     private Integer liftrResourcePreference;
 
+    /*
+     * Flag to determine if User API Key has to be generated and shared.
+     */
+    @JsonProperty(value = "generateApiKey")
+    private Boolean generateApiKey;
+
     /** Creates an instance of MonitorProperties class. */
     public MonitorProperties() {
     }
@@ -178,6 +184,26 @@ public final class MonitorProperties {
      */
     public Integer liftrResourcePreference() {
         return this.liftrResourcePreference;
+    }
+
+    /**
+     * Get the generateApiKey property: Flag to determine if User API Key has to be generated and shared.
+     *
+     * @return the generateApiKey value.
+     */
+    public Boolean generateApiKey() {
+        return this.generateApiKey;
+    }
+
+    /**
+     * Set the generateApiKey property: Flag to determine if User API Key has to be generated and shared.
+     *
+     * @param generateApiKey the generateApiKey value to set.
+     * @return the MonitorProperties object itself.
+     */
+    public MonitorProperties withGenerateApiKey(Boolean generateApiKey) {
+        this.generateApiKey = generateApiKey;
+        return this;
     }
 
     /**

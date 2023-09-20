@@ -8,27 +8,26 @@ import com.azure.core.util.BinaryData;
 import com.azure.resourcemanager.appcontainers.models.AllowedPrincipals;
 import java.util.Arrays;
 import org.junit.jupiter.api.Assertions;
-import org.junit.jupiter.api.Test;
 
 public final class AllowedPrincipalsTests {
-    @Test
-    public void testDeserialize() {
+    @org.junit.jupiter.api.Test
+    public void testDeserialize() throws Exception {
         AllowedPrincipals model =
             BinaryData
-                .fromString("{\"groups\":[\"urzafb\",\"jjgpb\",\"oq\"],\"identities\":[\"klj\",\"vbqid\"]}")
+                .fromString("{\"groups\":[\"xhcr\",\"nohjt\"],\"identities\":[\"h\",\"soifiyipjxsqw\",\"gr\"]}")
                 .toObject(AllowedPrincipals.class);
-        Assertions.assertEquals("urzafb", model.groups().get(0));
-        Assertions.assertEquals("klj", model.identities().get(0));
+        Assertions.assertEquals("xhcr", model.groups().get(0));
+        Assertions.assertEquals("h", model.identities().get(0));
     }
 
-    @Test
-    public void testSerialize() {
+    @org.junit.jupiter.api.Test
+    public void testSerialize() throws Exception {
         AllowedPrincipals model =
             new AllowedPrincipals()
-                .withGroups(Arrays.asList("urzafb", "jjgpb", "oq"))
-                .withIdentities(Arrays.asList("klj", "vbqid"));
+                .withGroups(Arrays.asList("xhcr", "nohjt"))
+                .withIdentities(Arrays.asList("h", "soifiyipjxsqw", "gr"));
         model = BinaryData.fromObject(model).toObject(AllowedPrincipals.class);
-        Assertions.assertEquals("urzafb", model.groups().get(0));
-        Assertions.assertEquals("klj", model.identities().get(0));
+        Assertions.assertEquals("xhcr", model.groups().get(0));
+        Assertions.assertEquals("h", model.identities().get(0));
     }
 }

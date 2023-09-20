@@ -7,6 +7,8 @@ import com.azure.core.annotation.Immutable;
 import com.azure.core.util.ExpandableStringEnum;
 import com.fasterxml.jackson.annotation.JsonCreator;
 
+import java.util.Collection;
+
 /**
  * The {@link EntityCertainty} model.
  */
@@ -36,5 +38,10 @@ public final class EntityCertainty extends ExpandableStringEnum<EntityCertainty>
     @JsonCreator
     public static EntityCertainty fromString(String name) {
         return fromString(name, EntityCertainty.class);
+    }
+
+    /** @return known EntityCertainty values. */
+    public static Collection<EntityCertainty> values() {
+        return values(EntityCertainty.class);
     }
 }

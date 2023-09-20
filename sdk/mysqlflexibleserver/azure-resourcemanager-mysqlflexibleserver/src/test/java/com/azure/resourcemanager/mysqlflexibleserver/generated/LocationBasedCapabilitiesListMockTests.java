@@ -31,7 +31,7 @@ public final class LocationBasedCapabilitiesListMockTests {
         ArgumentCaptor<HttpRequest> httpRequest = ArgumentCaptor.forClass(HttpRequest.class);
 
         String responseStr =
-            "{\"value\":[{\"zone\":\"fqka\",\"supportedHAMode\":[\"iipfpubj\",\"bwwift\"],\"supportedGeoBackupRegions\":[\"kvpuvksgplsaknyn\",\"synljphuopxodl\",\"iyntorzihle\",\"sjswsrms\"],\"supportedFlexibleServerEditions\":[{\"name\":\"pzbchck\",\"supportedStorageEditions\":[],\"supportedServerVersions\":[]},{\"name\":\"xiy\",\"supportedStorageEditions\":[],\"supportedServerVersions\":[]}]}]}";
+            "{\"value\":[{\"zone\":\"jwosytxitcskfck\",\"supportedHAMode\":[\"miekkezzikhlyfjh\",\"gqggebdunygae\",\"idb\"],\"supportedGeoBackupRegions\":[\"t\",\"xllrxcyjm\"],\"supportedFlexibleServerEditions\":[{\"name\":\"uvarmywdmjsjq\",\"supportedStorageEditions\":[],\"supportedServerVersions\":[]},{\"name\":\"xrwlyc\",\"supportedStorageEditions\":[],\"supportedServerVersions\":[]},{\"name\":\"xkgymareqnajxqu\",\"supportedStorageEditions\":[],\"supportedServerVersions\":[]},{\"name\":\"ubeddg\",\"supportedStorageEditions\":[],\"supportedServerVersions\":[]}]}]}";
 
         Mockito.when(httpResponse.getStatusCode()).thenReturn(200);
         Mockito.when(httpResponse.getHeaders()).thenReturn(new HttpHeaders());
@@ -60,6 +60,6 @@ public final class LocationBasedCapabilitiesListMockTests {
                     new AzureProfile("", "", AzureEnvironment.AZURE));
 
         PagedIterable<CapabilityProperties> response =
-            manager.locationBasedCapabilities().list("uu", com.azure.core.util.Context.NONE);
+            manager.locationBasedCapabilities().list("jrvxaglrv", com.azure.core.util.Context.NONE);
     }
 }

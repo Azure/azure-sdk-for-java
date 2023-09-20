@@ -4,20 +4,18 @@
 
 package com.azure.resourcemanager.resourceconnector.generated;
 
-import com.azure.core.util.Context;
-
 /** Samples for Appliances ListByResourceGroup. */
 public final class AppliancesListByResourceGroupSamples {
     /*
-     * x-ms-original-file: specification/resourceconnector/resource-manager/Microsoft.ResourceConnector/preview/2022-04-15-preview/examples/AppliancesListByResourceGroup.json
+     * x-ms-original-file: specification/resourceconnector/resource-manager/Microsoft.ResourceConnector/stable/2022-10-27/examples/AppliancesListByResourceGroup.json
      */
     /**
      * Sample code: List Appliances by resource group.
      *
-     * @param manager Entry point to AppliancesManager.
+     * @param manager Entry point to ResourceConnectorManager.
      */
     public static void listAppliancesByResourceGroup(
-        com.azure.resourcemanager.resourceconnector.AppliancesManager manager) {
-        manager.appliances().listByResourceGroup("testresourcegroup", Context.NONE);
+        com.azure.resourcemanager.resourceconnector.ResourceConnectorManager manager) {
+        manager.appliances().listByResourceGroup("testresourcegroup", com.azure.core.util.Context.NONE);
     }
 }

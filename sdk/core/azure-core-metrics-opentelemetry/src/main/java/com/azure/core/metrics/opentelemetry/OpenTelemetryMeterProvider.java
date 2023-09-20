@@ -76,9 +76,9 @@ public final class OpenTelemetryMeterProvider implements MeterProvider {
      *
      * Tracer tracer = openTelemetry.getTracer&#40;&quot;azure-core-samples&quot;&#41;;
      *
-     * &#47;&#47; pass custom OpenTelemetry SdkMeterProvider to MetricsOptions
+     * &#47;&#47; pass custom OpenTelemetry instance to MetricsOptions
      * MetricsOptions metricsOptions = new OpenTelemetryMetricsOptions&#40;&#41;
-     *     .setProvider&#40;openTelemetry.getMeterProvider&#40;&#41;&#41;;
+     *     .setOpenTelemetry&#40;openTelemetry&#41;;
      *
      * &#47;&#47; configure Azure Client to use customized MetricOptions
      * AzureClient sampleClient = new AzureClientBuilder&#40;&#41;

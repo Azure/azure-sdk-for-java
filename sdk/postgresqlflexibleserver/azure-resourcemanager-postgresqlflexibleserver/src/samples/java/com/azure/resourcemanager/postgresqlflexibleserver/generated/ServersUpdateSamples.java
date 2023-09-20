@@ -7,6 +7,7 @@ package com.azure.resourcemanager.postgresqlflexibleserver.generated;
 import com.azure.resourcemanager.postgresqlflexibleserver.models.ActiveDirectoryAuthEnum;
 import com.azure.resourcemanager.postgresqlflexibleserver.models.ArmServerKeyType;
 import com.azure.resourcemanager.postgresqlflexibleserver.models.AuthConfig;
+import com.azure.resourcemanager.postgresqlflexibleserver.models.AzureManagedDiskPerformanceTiers;
 import com.azure.resourcemanager.postgresqlflexibleserver.models.Backup;
 import com.azure.resourcemanager.postgresqlflexibleserver.models.CreateModeForUpdate;
 import com.azure.resourcemanager.postgresqlflexibleserver.models.DataEncryption;
@@ -18,6 +19,7 @@ import com.azure.resourcemanager.postgresqlflexibleserver.models.ServerVersion;
 import com.azure.resourcemanager.postgresqlflexibleserver.models.Sku;
 import com.azure.resourcemanager.postgresqlflexibleserver.models.SkuTier;
 import com.azure.resourcemanager.postgresqlflexibleserver.models.Storage;
+import com.azure.resourcemanager.postgresqlflexibleserver.models.StorageAutoGrow;
 import com.azure.resourcemanager.postgresqlflexibleserver.models.UserAssignedIdentity;
 import com.azure.resourcemanager.postgresqlflexibleserver.models.UserIdentity;
 import java.util.HashMap;
@@ -26,7 +28,7 @@ import java.util.Map;
 /** Samples for Servers Update. */
 public final class ServersUpdateSamples {
     /*
-     * x-ms-original-file: specification/postgresql/resource-manager/Microsoft.DBforPostgreSQL/stable/2022-12-01/examples/ServerUpdateWithAadAuthEnabled.json
+     * x-ms-original-file: specification/postgresql/resource-manager/Microsoft.DBforPostgreSQL/preview/2023-03-01-preview/examples/ServerUpdateWithAadAuthEnabled.json
      */
     /**
      * Sample code: ServerUpdateWithAadAuthEnabled.
@@ -44,7 +46,11 @@ public final class ServersUpdateSamples {
             .update()
             .withSku(new Sku().withName("Standard_D8s_v3").withTier(SkuTier.GENERAL_PURPOSE))
             .withAdministratorLoginPassword("newpassword")
-            .withStorage(new Storage().withStorageSizeGB(1024))
+            .withStorage(
+                new Storage()
+                    .withStorageSizeGB(1024)
+                    .withAutoGrow(StorageAutoGrow.DISABLED)
+                    .withTier(AzureManagedDiskPerformanceTiers.P30))
             .withBackup(new Backup().withBackupRetentionDays(20))
             .withAuthConfig(
                 new AuthConfig()
@@ -56,7 +62,7 @@ public final class ServersUpdateSamples {
     }
 
     /*
-     * x-ms-original-file: specification/postgresql/resource-manager/Microsoft.DBforPostgreSQL/stable/2022-12-01/examples/ServerUpdateWithDataEncryptionEnabled.json
+     * x-ms-original-file: specification/postgresql/resource-manager/Microsoft.DBforPostgreSQL/preview/2023-03-01-preview/examples/ServerUpdateWithDataEncryptionEnabled.json
      */
     /**
      * Sample code: ServerUpdateWithDataEncryptionEnabled.
@@ -77,24 +83,28 @@ public final class ServersUpdateSamples {
                 new UserAssignedIdentity()
                     .withUserAssignedIdentities(
                         mapOf(
+                            "/subscriptions/ffffffff-ffff-ffff-ffff-ffffffffffff/resourceGroups/testresourcegroup/providers/Microsoft.ManagedIdentity/userAssignedIdentities/test-geo-usermanagedidentity",
+                            new UserIdentity(),
                             "/subscriptions/ffffffff-ffff-ffff-ffff-ffffffffffff/resourceGroups/testresourcegroup/providers/Microsoft.ManagedIdentity/userAssignedIdentities/test-usermanagedidentity",
                             new UserIdentity()))
                     .withType(IdentityType.USER_ASSIGNED))
             .withAdministratorLoginPassword("newpassword")
-            .withStorage(new Storage().withStorageSizeGB(1024))
             .withBackup(new Backup().withBackupRetentionDays(20))
             .withDataEncryption(
                 new DataEncryption()
                     .withPrimaryKeyUri("fakeTokenPlaceholder")
                     .withPrimaryUserAssignedIdentityId(
                         "/subscriptions/ffffffff-ffff-ffff-ffff-ffffffffffff/resourceGroups/testresourcegroup/providers/Microsoft.ManagedIdentity/userAssignedIdentities/test-usermanagedidentity")
+                    .withGeoBackupKeyUri("fakeTokenPlaceholder")
+                    .withGeoBackupUserAssignedIdentityId(
+                        "/subscriptions/ffffffff-ffff-ffff-ffff-ffffffffffff/resourceGroups/testresourcegroup/providers/Microsoft.ManagedIdentity/userAssignedIdentities/test-geo-usermanagedidentity")
                     .withType(ArmServerKeyType.AZURE_KEY_VAULT))
             .withCreateMode(CreateModeForUpdate.UPDATE)
             .apply();
     }
 
     /*
-     * x-ms-original-file: specification/postgresql/resource-manager/Microsoft.DBforPostgreSQL/stable/2022-12-01/examples/ServerUpdate.json
+     * x-ms-original-file: specification/postgresql/resource-manager/Microsoft.DBforPostgreSQL/preview/2023-03-01-preview/examples/ServerUpdate.json
      */
     /**
      * Sample code: ServerUpdate.
@@ -111,14 +121,18 @@ public final class ServersUpdateSamples {
             .update()
             .withSku(new Sku().withName("Standard_D8s_v3").withTier(SkuTier.GENERAL_PURPOSE))
             .withAdministratorLoginPassword("newpassword")
-            .withStorage(new Storage().withStorageSizeGB(1024))
+            .withStorage(
+                new Storage()
+                    .withStorageSizeGB(1024)
+                    .withAutoGrow(StorageAutoGrow.ENABLED)
+                    .withTier(AzureManagedDiskPerformanceTiers.P30))
             .withBackup(new Backup().withBackupRetentionDays(20))
             .withCreateMode(CreateModeForUpdate.UPDATE)
             .apply();
     }
 
     /*
-     * x-ms-original-file: specification/postgresql/resource-manager/Microsoft.DBforPostgreSQL/stable/2022-12-01/examples/ServerUpdateWithMajorVersionUpgrade.json
+     * x-ms-original-file: specification/postgresql/resource-manager/Microsoft.DBforPostgreSQL/preview/2023-03-01-preview/examples/ServerUpdateWithMajorVersionUpgrade.json
      */
     /**
      * Sample code: ServerUpdateWithMajorVersionUpgrade.
@@ -136,7 +150,7 @@ public final class ServersUpdateSamples {
     }
 
     /*
-     * x-ms-original-file: specification/postgresql/resource-manager/Microsoft.DBforPostgreSQL/stable/2022-12-01/examples/ServerUpdateWithCustomerMaintenanceWindow.json
+     * x-ms-original-file: specification/postgresql/resource-manager/Microsoft.DBforPostgreSQL/preview/2023-03-01-preview/examples/ServerUpdateWithCustomerMaintenanceWindow.json
      */
     /**
      * Sample code: ServerUpdateWithCustomerMaintenanceWindow.

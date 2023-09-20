@@ -31,7 +31,7 @@ public final class WebPubSubsCheckNameAvailabilityWithResponseMockTests {
         HttpResponse httpResponse = Mockito.mock(HttpResponse.class);
         ArgumentCaptor<HttpRequest> httpRequest = ArgumentCaptor.forClass(HttpRequest.class);
 
-        String responseStr = "{\"nameAvailable\":false,\"reason\":\"ncvokotllxdyhg\",\"message\":\"ocogj\"}";
+        String responseStr = "{\"nameAvailable\":true,\"reason\":\"spave\",\"message\":\"r\"}";
 
         Mockito.when(httpResponse.getStatusCode()).thenReturn(200);
         Mockito.when(httpResponse.getHeaders()).thenReturn(new HttpHeaders());
@@ -63,13 +63,13 @@ public final class WebPubSubsCheckNameAvailabilityWithResponseMockTests {
             manager
                 .webPubSubs()
                 .checkNameAvailabilityWithResponse(
-                    "ynpcdpumnzgmwznm",
-                    new NameAvailabilityParameters().withType("biknsorgjhxbld").withName("lwwrl"),
+                    "zsdymbrnysuxmpra",
+                    new NameAvailabilityParameters().withType("wgck").withName("ocxvdfffwafqr"),
                     com.azure.core.util.Context.NONE)
                 .getValue();
 
-        Assertions.assertEquals(false, response.nameAvailable());
-        Assertions.assertEquals("ncvokotllxdyhg", response.reason());
-        Assertions.assertEquals("ocogj", response.message());
+        Assertions.assertEquals(true, response.nameAvailable());
+        Assertions.assertEquals("spave", response.reason());
+        Assertions.assertEquals("r", response.message());
     }
 }

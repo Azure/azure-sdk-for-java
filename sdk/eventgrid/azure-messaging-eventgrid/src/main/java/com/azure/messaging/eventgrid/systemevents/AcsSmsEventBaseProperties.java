@@ -28,6 +28,9 @@ public class AcsSmsEventBaseProperties {
     @JsonProperty(value = "to")
     private String to;
 
+    /** Creates an instance of AcsSmsEventBaseProperties class. */
+    public AcsSmsEventBaseProperties() {}
+
     /**
      * Get the messageId property: The identity of the SMS message.
      *

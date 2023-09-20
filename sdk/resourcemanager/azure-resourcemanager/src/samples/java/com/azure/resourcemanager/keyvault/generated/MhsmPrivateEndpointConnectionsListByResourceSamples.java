@@ -4,12 +4,10 @@
 
 package com.azure.resourcemanager.keyvault.generated;
 
-import com.azure.core.util.Context;
-
 /** Samples for MhsmPrivateEndpointConnections ListByResource. */
 public final class MhsmPrivateEndpointConnectionsListByResourceSamples {
     /*
-     * x-ms-original-file: specification/keyvault/resource-manager/Microsoft.KeyVault/stable/2021-10-01/examples/ManagedHsm_ListPrivateEndpointConnectionsByResource.json
+     * x-ms-original-file: specification/keyvault/resource-manager/Microsoft.KeyVault/stable/2023-02-01/examples/ManagedHsm_ListPrivateEndpointConnectionsByResource.json
      */
     /**
      * Sample code: List managed HSM Pools in a subscription.
@@ -22,6 +20,6 @@ public final class MhsmPrivateEndpointConnectionsListByResourceSamples {
             .manager()
             .serviceClient()
             .getMhsmPrivateEndpointConnections()
-            .listByResource("sample-group", "sample-mhsm", Context.NONE);
+            .listByResource("sample-group", "sample-mhsm", com.azure.core.util.Context.NONE);
     }
 }

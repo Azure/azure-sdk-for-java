@@ -31,7 +31,7 @@ public final class AdvancedThreatProtectionsCreateWithResponseMockTests {
         ArgumentCaptor<HttpRequest> httpRequest = ArgumentCaptor.forClass(HttpRequest.class);
 
         String responseStr =
-            "{\"properties\":{\"isEnabled\":false},\"id\":\"j\",\"name\":\"nqzocrdzg\",\"type\":\"zeunt\"}";
+            "{\"properties\":{\"isEnabled\":true},\"id\":\"lwljss\",\"name\":\"ctsnldkpwol\",\"type\":\"isubxbteog\"}";
 
         Mockito.when(httpResponse.getStatusCode()).thenReturn(200);
         Mockito.when(httpResponse.getHeaders()).thenReturn(new HttpHeaders());
@@ -60,13 +60,8 @@ public final class AdvancedThreatProtectionsCreateWithResponseMockTests {
                     new AzureProfile("", "", AzureEnvironment.AZURE));
 
         AdvancedThreatProtectionSetting response =
-            manager
-                .advancedThreatProtections()
-                .define()
-                .withExistingResourceId("xdqaolfylnkkb")
-                .withIsEnabled(false)
-                .create();
+            manager.advancedThreatProtections().define().withExistingResourceId("ezay").withIsEnabled(true).create();
 
-        Assertions.assertEquals(false, response.isEnabled());
+        Assertions.assertEquals(true, response.isEnabled());
     }
 }

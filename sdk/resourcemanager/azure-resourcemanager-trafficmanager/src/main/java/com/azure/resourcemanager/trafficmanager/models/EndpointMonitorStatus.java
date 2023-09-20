@@ -28,6 +28,18 @@ public final class EndpointMonitorStatus extends ExpandableStringEnum<EndpointMo
     /** Static value Stopped for EndpointMonitorStatus. */
     public static final EndpointMonitorStatus STOPPED = fromString("Stopped");
 
+    /** Static value Unmonitored for EndpointMonitorStatus. */
+    public static final EndpointMonitorStatus UNMONITORED = fromString("Unmonitored");
+
+    /**
+     * Creates a new instance of EndpointMonitorStatus value.
+     *
+     * @deprecated Use the {@link #fromString(String)} factory method.
+     */
+    @Deprecated
+    public EndpointMonitorStatus() {
+    }
+
     /**
      * Creates or finds a EndpointMonitorStatus from its string representation.
      *

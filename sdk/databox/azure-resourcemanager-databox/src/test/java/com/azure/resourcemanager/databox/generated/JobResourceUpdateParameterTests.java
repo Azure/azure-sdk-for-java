@@ -19,32 +19,32 @@ public final class JobResourceUpdateParameterTests {
         JobResourceUpdateParameter model =
             BinaryData
                 .fromString(
-                    "{\"properties\":{\"details\":{}},\"tags\":{\"lopwiyig\":\"deslp\"},\"identity\":{\"type\":\"kdwzbaiuebbaumny\",\"principalId\":\"ped\",\"tenantId\":\"jn\",\"userAssignedIdentities\":{\"jjdhtld\":{\"principalId\":\"hsmtxpsiebtfhvp\",\"clientId\":\"apskrdqm\"},\"vnm\":{\"principalId\":\"yzxuutkncw\",\"clientId\":\"wsvlxotogtwrupqs\"},\"dhbt\":{\"principalId\":\"ykvceoveil\",\"clientId\":\"notyfjfcnjbkcn\"}}}}")
+                    "{\"properties\":{\"details\":{}},\"tags\":{\"xqpvfadmw\":\"quhcdhmduala\",\"vgomz\":\"rcrgvx\"},\"identity\":{\"type\":\"isgwbnbbeldawkz\",\"principalId\":\"liourqhak\",\"tenantId\":\"hashsfwxosow\",\"userAssignedIdentities\":{\"vo\":{\"principalId\":\"gicjooxdjeb\",\"clientId\":\"ucww\"},\"otwmcdyt\":{\"principalId\":\"vmeueci\",\"clientId\":\"hzceuojgjrwjue\"},\"qwgxhniskx\":{\"principalId\":\"wit\",\"clientId\":\"rjaw\"}}}}")
                 .toObject(JobResourceUpdateParameter.class);
-        Assertions.assertEquals("deslp", model.tags().get("lopwiyig"));
-        Assertions.assertEquals("kdwzbaiuebbaumny", model.identity().type());
+        Assertions.assertEquals("quhcdhmduala", model.tags().get("xqpvfadmw"));
+        Assertions.assertEquals("isgwbnbbeldawkz", model.identity().type());
     }
 
     @org.junit.jupiter.api.Test
     public void testSerialize() throws Exception {
         JobResourceUpdateParameter model =
             new JobResourceUpdateParameter()
-                .withTags(mapOf("lopwiyig", "deslp"))
+                .withTags(mapOf("xqpvfadmw", "quhcdhmduala", "vgomz", "rcrgvx"))
                 .withIdentity(
                     new ResourceIdentity()
-                        .withType("kdwzbaiuebbaumny")
+                        .withType("isgwbnbbeldawkz")
                         .withUserAssignedIdentities(
                             mapOf(
-                                "jjdhtld",
+                                "vo",
                                 new UserAssignedIdentity(),
-                                "vnm",
+                                "otwmcdyt",
                                 new UserAssignedIdentity(),
-                                "dhbt",
+                                "qwgxhniskx",
                                 new UserAssignedIdentity())))
                 .withDetails(new UpdateJobDetails());
         model = BinaryData.fromObject(model).toObject(JobResourceUpdateParameter.class);
-        Assertions.assertEquals("deslp", model.tags().get("lopwiyig"));
-        Assertions.assertEquals("kdwzbaiuebbaumny", model.identity().type());
+        Assertions.assertEquals("quhcdhmduala", model.tags().get("xqpvfadmw"));
+        Assertions.assertEquals("isgwbnbbeldawkz", model.identity().type());
     }
 
     @SuppressWarnings("unchecked")

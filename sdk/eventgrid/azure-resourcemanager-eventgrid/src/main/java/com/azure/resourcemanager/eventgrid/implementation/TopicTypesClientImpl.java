@@ -57,7 +57,7 @@ public final class TopicTypesClientImpl implements TopicTypesClient {
      */
     @Host("{$host}")
     @ServiceInterface(name = "EventGridManagementC")
-    private interface TopicTypesService {
+    public interface TopicTypesService {
         @Headers({"Content-Type: application/json"})
         @Get("/providers/Microsoft.EventGrid/topicTypes")
         @ExpectedResponses({200})
@@ -92,7 +92,9 @@ public final class TopicTypesClientImpl implements TopicTypesClient {
     }
 
     /**
-     * List all registered topic types.
+     * List topic types.
+     *
+     * <p>List all registered topic types.
      *
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
@@ -119,7 +121,9 @@ public final class TopicTypesClientImpl implements TopicTypesClient {
     }
 
     /**
-     * List all registered topic types.
+     * List topic types.
+     *
+     * <p>List all registered topic types.
      *
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
@@ -147,7 +151,9 @@ public final class TopicTypesClientImpl implements TopicTypesClient {
     }
 
     /**
-     * List all registered topic types.
+     * List topic types.
+     *
+     * <p>List all registered topic types.
      *
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
@@ -159,7 +165,9 @@ public final class TopicTypesClientImpl implements TopicTypesClient {
     }
 
     /**
-     * List all registered topic types.
+     * List topic types.
+     *
+     * <p>List all registered topic types.
      *
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
@@ -173,7 +181,9 @@ public final class TopicTypesClientImpl implements TopicTypesClient {
     }
 
     /**
-     * List all registered topic types.
+     * List topic types.
+     *
+     * <p>List all registered topic types.
      *
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
@@ -185,7 +195,9 @@ public final class TopicTypesClientImpl implements TopicTypesClient {
     }
 
     /**
-     * List all registered topic types.
+     * List topic types.
+     *
+     * <p>List all registered topic types.
      *
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
@@ -199,7 +211,9 @@ public final class TopicTypesClientImpl implements TopicTypesClient {
     }
 
     /**
-     * Get information about a topic type.
+     * Get a topic type.
+     *
+     * <p>Get information about a topic type.
      *
      * @param topicTypeName Name of the topic type.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
@@ -227,7 +241,9 @@ public final class TopicTypesClientImpl implements TopicTypesClient {
     }
 
     /**
-     * Get information about a topic type.
+     * Get a topic type.
+     *
+     * <p>Get information about a topic type.
      *
      * @param topicTypeName Name of the topic type.
      * @param context The context to associate with this operation.
@@ -253,7 +269,9 @@ public final class TopicTypesClientImpl implements TopicTypesClient {
     }
 
     /**
-     * Get information about a topic type.
+     * Get a topic type.
+     *
+     * <p>Get information about a topic type.
      *
      * @param topicTypeName Name of the topic type.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
@@ -267,21 +285,9 @@ public final class TopicTypesClientImpl implements TopicTypesClient {
     }
 
     /**
-     * Get information about a topic type.
+     * Get a topic type.
      *
-     * @param topicTypeName Name of the topic type.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return information about a topic type.
-     */
-    @ServiceMethod(returns = ReturnType.SINGLE)
-    public TopicTypeInfoInner get(String topicTypeName) {
-        return getAsync(topicTypeName).block();
-    }
-
-    /**
-     * Get information about a topic type.
+     * <p>Get information about a topic type.
      *
      * @param topicTypeName Name of the topic type.
      * @param context The context to associate with this operation.
@@ -296,7 +302,25 @@ public final class TopicTypesClientImpl implements TopicTypesClient {
     }
 
     /**
-     * List event types for a topic type.
+     * Get a topic type.
+     *
+     * <p>Get information about a topic type.
+     *
+     * @param topicTypeName Name of the topic type.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws ManagementException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return information about a topic type.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    public TopicTypeInfoInner get(String topicTypeName) {
+        return getWithResponse(topicTypeName, Context.NONE).getValue();
+    }
+
+    /**
+     * List event types.
+     *
+     * <p>List event types for a topic type.
      *
      * @param topicTypeName Name of the topic type.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
@@ -331,7 +355,9 @@ public final class TopicTypesClientImpl implements TopicTypesClient {
     }
 
     /**
-     * List event types for a topic type.
+     * List event types.
+     *
+     * <p>List event types for a topic type.
      *
      * @param topicTypeName Name of the topic type.
      * @param context The context to associate with this operation.
@@ -363,7 +389,9 @@ public final class TopicTypesClientImpl implements TopicTypesClient {
     }
 
     /**
-     * List event types for a topic type.
+     * List event types.
+     *
+     * <p>List event types for a topic type.
      *
      * @param topicTypeName Name of the topic type.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
@@ -377,7 +405,9 @@ public final class TopicTypesClientImpl implements TopicTypesClient {
     }
 
     /**
-     * List event types for a topic type.
+     * List event types.
+     *
+     * <p>List event types for a topic type.
      *
      * @param topicTypeName Name of the topic type.
      * @param context The context to associate with this operation.
@@ -392,7 +422,9 @@ public final class TopicTypesClientImpl implements TopicTypesClient {
     }
 
     /**
-     * List event types for a topic type.
+     * List event types.
+     *
+     * <p>List event types for a topic type.
      *
      * @param topicTypeName Name of the topic type.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
@@ -406,7 +438,9 @@ public final class TopicTypesClientImpl implements TopicTypesClient {
     }
 
     /**
-     * List event types for a topic type.
+     * List event types.
+     *
+     * <p>List event types for a topic type.
      *
      * @param topicTypeName Name of the topic type.
      * @param context The context to associate with this operation.

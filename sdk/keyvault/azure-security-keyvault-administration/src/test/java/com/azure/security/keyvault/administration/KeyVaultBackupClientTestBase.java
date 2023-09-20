@@ -3,10 +3,6 @@
 package com.azure.security.keyvault.administration;
 
 import com.azure.core.http.HttpClient;
-import com.azure.core.http.HttpPipeline;
-import com.azure.core.http.HttpPipelineBuilder;
-import com.azure.core.http.policy.HttpPipelinePolicy;
-import com.azure.core.test.TestMode;
 import com.azure.core.util.Configuration;
 import com.azure.storage.blob.BlobServiceClient;
 import com.azure.storage.blob.BlobServiceClientBuilder;
@@ -19,28 +15,14 @@ import org.junit.jupiter.api.Test;
 
 import java.time.OffsetDateTime;
 import java.time.ZoneOffset;
-import java.util.List;
 
 public abstract class KeyVaultBackupClientTestBase extends KeyVaultAdministrationClientTestBase {
     protected final String blobStorageUrl = IS_MANAGED_HSM_DEPLOYED
         ? getStorageEndpoint() + Configuration.getGlobalConfiguration().get("BLOB_CONTAINER_NAME")
-        : "https://azsdktests.blob.core.windows.net/backup";
-    protected final String sasToken = IS_MANAGED_HSM_DEPLOYED ? generateSasToken() : "someSasToken";
+        : "https://azkvrecordtestsprim.blob.core.windows.net/backup";
+    protected final String sasToken = IS_MANAGED_HSM_DEPLOYED ? generateSasToken() : "REDACTED";
 
-    protected HttpPipeline getPipeline(HttpClient httpClient, boolean forCleanup) {
-        List<HttpPipelinePolicy> policies = getPolicies();
-
-        if (getTestMode() == TestMode.RECORD && !forCleanup) {
-            policies.add(interceptorManager.getRecordPolicy());
-        }
-
-        return new HttpPipelineBuilder()
-            .policies(policies.toArray(new HttpPipelinePolicy[0]))
-            .httpClient(httpClient == null ? interceptorManager.getPlaybackClient() : httpClient)
-            .build();
-    }
-
-    protected KeyVaultBackupClientBuilder getClientBuilder(HttpClient httpClient, boolean forCleanup) {
+    KeyVaultBackupClientBuilder getClientBuilder(HttpClient httpClient, boolean forCleanup) {
         return new KeyVaultBackupClientBuilder()
             .vaultUrl(getEndpoint())
             .pipeline(getPipeline(httpClient, forCleanup));

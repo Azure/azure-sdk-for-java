@@ -6,7 +6,10 @@ import com.azure.core.credential.AzureKeyCredential;
 import com.azure.core.http.ProxyOptions;
 import com.azure.cosmos.BridgeInternal;
 import com.azure.cosmos.ConsistencyLevel;
+import com.azure.cosmos.CosmosContainerProactiveInitConfig;
 import com.azure.cosmos.CosmosDiagnostics;
+import com.azure.cosmos.CosmosEndToEndOperationLatencyPolicyConfig;
+import com.azure.cosmos.SessionRetryOptions;
 import com.azure.cosmos.implementation.apachecommons.lang.tuple.ImmutablePair;
 import com.azure.cosmos.implementation.caches.RxClientCollectionCache;
 import com.azure.cosmos.implementation.caches.RxPartitionKeyRangeCache;
@@ -75,6 +78,9 @@ public class RxDocumentClientImplTest {
     private RxClientCollectionCache collectionCacheMock;
     private RxPartitionKeyRangeCache partitionKeyRangeCacheMock;
     private IRetryPolicyFactory resetSessionTokenRetryPolicyMock;
+    private CosmosEndToEndOperationLatencyPolicyConfig endToEndOperationLatencyPolicyConfig;
+    private SessionRetryOptions sessionRetryOptionsMock;
+    private CosmosContainerProactiveInitConfig containerProactiveInitConfigMock;
 
     @BeforeClass(groups = "unit")
     public void setUp() {
@@ -94,6 +100,9 @@ public class RxDocumentClientImplTest {
         this.collectionCacheMock = Mockito.mock(RxClientCollectionCache.class);
         this.partitionKeyRangeCacheMock = Mockito.mock(RxPartitionKeyRangeCache.class);
         this.resetSessionTokenRetryPolicyMock = Mockito.mock(IRetryPolicyFactory.class);
+        this.endToEndOperationLatencyPolicyConfig = Mockito.mock(CosmosEndToEndOperationLatencyPolicyConfig.class);
+        this.sessionRetryOptionsMock = Mockito.mock(SessionRetryOptions.class);
+        this.containerProactiveInitConfigMock = Mockito.mock(CosmosContainerProactiveInitConfig.class);
     }
 
     @Test(groups = {"unit"})
@@ -178,6 +187,7 @@ public class RxDocumentClientImplTest {
                 Mockito.any(),
                 Mockito.any(),
                 Mockito.any(),
+                Mockito.any(),
                 Mockito.any()
             ))
             .thenReturn(Flux.just(dummyExecutionContextForQuery(queryResults, headersForQueries)));
@@ -192,7 +202,7 @@ public class RxDocumentClientImplTest {
             .when(this.partitionKeyRangeCacheMock.tryLookupAsync(Mockito.any(), Mockito.any(), Mockito.any(), Mockito.any()))
             .thenReturn(Mono.just(dummyCollectionRoutingMap(epksPartitionKeyRangeMap)));
 
-        Mockito.when(this.resetSessionTokenRetryPolicyMock.getRequestPolicy()).thenReturn(dummyDocumentClientRetryPolicy());
+        Mockito.when(this.resetSessionTokenRetryPolicyMock.getRequestPolicy(null)).thenReturn(dummyDocumentClientRetryPolicy());
 
 
         // initialize object to be tested
@@ -211,8 +221,10 @@ public class RxDocumentClientImplTest {
             this.metadataCachesSnapshotMock,
             this.apiTypeMock,
             this.cosmosClientTelemetryConfigMock,
-            this.clientCorrelationIdMock
-        );
+            this.clientCorrelationIdMock,
+            this.endToEndOperationLatencyPolicyConfig,
+            this.sessionRetryOptionsMock,
+            this.containerProactiveInitConfigMock);
 
         ReflectionUtils.setCollectionCache(rxDocumentClient, this.collectionCacheMock);
         ReflectionUtils.setPartitionKeyRangeCache(rxDocumentClient, this.partitionKeyRangeCacheMock);
@@ -394,7 +406,12 @@ public class RxDocumentClientImplTest {
 
             @Override
             public CosmosDiagnostics createDiagnostics() {
-                return BridgeInternal.createCosmosDiagnostics(this) ;
+                return diagnosticsAccessor.create(this, 1d) ;
+            }
+
+            @Override
+            public String getUserAgent() {
+                return Utils.getUserAgent();
             }
         }, storeResponse);
 
@@ -404,7 +421,7 @@ public class RxDocumentClientImplTest {
     }
 
     private static CosmosDiagnostics dummyCosmosDiagnostics() {
-        return BridgeInternal.createCosmosDiagnostics(new DiagnosticsClientContext() {
+        return diagnosticsAccessor.create(new DiagnosticsClientContext() {
             @Override
             public DiagnosticsClientConfig getConfig() {
                 return new DiagnosticsClientConfig();
@@ -414,6 +431,11 @@ public class RxDocumentClientImplTest {
             public CosmosDiagnostics createDiagnostics() {
                 return null;
             }
-        });
+
+            @Override
+            public String getUserAgent() {
+                return Utils.getUserAgent();
+            }
+        }, 1d);
     }
 }

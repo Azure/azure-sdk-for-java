@@ -17,6 +17,10 @@ public final class ContainerExec {
     @JsonProperty(value = "command")
     private List<String> command;
 
+    /** Creates an instance of ContainerExec class. */
+    public ContainerExec() {
+    }
+
     /**
      * Get the command property: The commands to execute within the container.
      *

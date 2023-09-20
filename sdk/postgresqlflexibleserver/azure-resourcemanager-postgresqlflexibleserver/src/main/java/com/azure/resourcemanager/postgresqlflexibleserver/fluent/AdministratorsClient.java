@@ -6,13 +6,18 @@ package com.azure.resourcemanager.postgresqlflexibleserver.fluent;
 
 import com.azure.core.annotation.ReturnType;
 import com.azure.core.annotation.ServiceMethod;
+import com.azure.core.http.rest.PagedFlux;
 import com.azure.core.http.rest.PagedIterable;
 import com.azure.core.http.rest.Response;
 import com.azure.core.management.polling.PollResult;
 import com.azure.core.util.Context;
+import com.azure.core.util.polling.PollerFlux;
 import com.azure.core.util.polling.SyncPoller;
 import com.azure.resourcemanager.postgresqlflexibleserver.fluent.models.ActiveDirectoryAdministratorInner;
 import com.azure.resourcemanager.postgresqlflexibleserver.models.ActiveDirectoryAdministratorAdd;
+import java.nio.ByteBuffer;
+import reactor.core.publisher.Flux;
+import reactor.core.publisher.Mono;
 
 /** An instance of this class provides access to all the operations defined in AdministratorsClient. */
 public interface AdministratorsClient {
@@ -26,6 +31,39 @@ public interface AdministratorsClient {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return represents an Active Directory administrator along with {@link Response} on successful completion of
+     *     {@link Mono}.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    Mono<Response<Flux<ByteBuffer>>> createWithResponseAsync(
+        String resourceGroupName, String serverName, String objectId, ActiveDirectoryAdministratorAdd parameters);
+
+    /**
+     * Creates a new server.
+     *
+     * @param resourceGroupName The name of the resource group. The name is case insensitive.
+     * @param serverName The name of the server.
+     * @param objectId Guid of the objectId for the administrator.
+     * @param parameters The required parameters for adding an active directory administrator for a server.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return the {@link PollerFlux} for polling of represents an Active Directory administrator.
+     */
+    @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
+    PollerFlux<PollResult<ActiveDirectoryAdministratorInner>, ActiveDirectoryAdministratorInner> beginCreateAsync(
+        String resourceGroupName, String serverName, String objectId, ActiveDirectoryAdministratorAdd parameters);
+
+    /**
+     * Creates a new server.
+     *
+     * @param resourceGroupName The name of the resource group. The name is case insensitive.
+     * @param serverName The name of the server.
+     * @param objectId Guid of the objectId for the administrator.
+     * @param parameters The required parameters for adding an active directory administrator for a server.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return the {@link SyncPoller} for polling of represents an Active Directory administrator.
      */
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
@@ -63,6 +101,22 @@ public interface AdministratorsClient {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return represents an Active Directory administrator on successful completion of {@link Mono}.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    Mono<ActiveDirectoryAdministratorInner> createAsync(
+        String resourceGroupName, String serverName, String objectId, ActiveDirectoryAdministratorAdd parameters);
+
+    /**
+     * Creates a new server.
+     *
+     * @param resourceGroupName The name of the resource group. The name is case insensitive.
+     * @param serverName The name of the server.
+     * @param objectId Guid of the objectId for the administrator.
+     * @param parameters The required parameters for adding an active directory administrator for a server.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return represents an Active Directory administrator.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
@@ -89,6 +143,35 @@ public interface AdministratorsClient {
         String objectId,
         ActiveDirectoryAdministratorAdd parameters,
         Context context);
+
+    /**
+     * Deletes an Active Directory Administrator associated with the server.
+     *
+     * @param resourceGroupName The name of the resource group. The name is case insensitive.
+     * @param serverName The name of the server.
+     * @param objectId Guid of the objectId for the administrator.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return the {@link Response} on successful completion of {@link Mono}.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    Mono<Response<Flux<ByteBuffer>>> deleteWithResponseAsync(
+        String resourceGroupName, String serverName, String objectId);
+
+    /**
+     * Deletes an Active Directory Administrator associated with the server.
+     *
+     * @param resourceGroupName The name of the resource group. The name is case insensitive.
+     * @param serverName The name of the server.
+     * @param objectId Guid of the objectId for the administrator.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return the {@link PollerFlux} for polling of long-running operation.
+     */
+    @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
+    PollerFlux<PollResult<Void>, Void> beginDeleteAsync(String resourceGroupName, String serverName, String objectId);
 
     /**
      * Deletes an Active Directory Administrator associated with the server.
@@ -129,6 +212,20 @@ public interface AdministratorsClient {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return A {@link Mono} that completes when a successful response is received.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    Mono<Void> deleteAsync(String resourceGroupName, String serverName, String objectId);
+
+    /**
+     * Deletes an Active Directory Administrator associated with the server.
+     *
+     * @param resourceGroupName The name of the resource group. The name is case insensitive.
+     * @param serverName The name of the server.
+     * @param objectId Guid of the objectId for the administrator.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     void delete(String resourceGroupName, String serverName, String objectId);
@@ -146,6 +243,35 @@ public interface AdministratorsClient {
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     void delete(String resourceGroupName, String serverName, String objectId, Context context);
+
+    /**
+     * Gets information about a server.
+     *
+     * @param resourceGroupName The name of the resource group. The name is case insensitive.
+     * @param serverName The name of the server.
+     * @param objectId Guid of the objectId for the administrator.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return information about a server along with {@link Response} on successful completion of {@link Mono}.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    Mono<Response<ActiveDirectoryAdministratorInner>> getWithResponseAsync(
+        String resourceGroupName, String serverName, String objectId);
+
+    /**
+     * Gets information about a server.
+     *
+     * @param resourceGroupName The name of the resource group. The name is case insensitive.
+     * @param serverName The name of the server.
+     * @param objectId Guid of the objectId for the administrator.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return information about a server on successful completion of {@link Mono}.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    Mono<ActiveDirectoryAdministratorInner> getAsync(String resourceGroupName, String serverName, String objectId);
 
     /**
      * Gets information about a server.
@@ -176,6 +302,19 @@ public interface AdministratorsClient {
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     ActiveDirectoryAdministratorInner get(String resourceGroupName, String serverName, String objectId);
+
+    /**
+     * List all the AAD administrators for a given server.
+     *
+     * @param resourceGroupName The name of the resource group. The name is case insensitive.
+     * @param serverName The name of the server.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return a list of active directory administrators as paginated response with {@link PagedFlux}.
+     */
+    @ServiceMethod(returns = ReturnType.COLLECTION)
+    PagedFlux<ActiveDirectoryAdministratorInner> listByServerAsync(String resourceGroupName, String serverName);
 
     /**
      * List all the AAD administrators for a given server.

@@ -14,15 +14,15 @@ public final class ProfileListTests {
         ProfileList model =
             BinaryData
                 .fromString(
-                    "{\"value\":[{\"properties\":{\"resourceState\":\"Creating\",\"enabledState\":\"Disabled\"},\"etag\":\"xpyb\",\"location\":\"zm\",\"tags\":{\"bejhphoycmsxa\":\"tzopbsphrupidgsy\"},\"id\":\"bhdxbm\",\"name\":\"qioqjzehtbmu\",\"type\":\"p\"},{\"properties\":{\"resourceState\":\"Disabling\",\"enabledState\":\"Enabled\"},\"etag\":\"wlrxyb\",\"location\":\"soqijg\",\"tags\":{\"btcqq\":\"bpazlobcufpdzn\",\"lhqgnufooojy\":\"nq\",\"zlhjxrifkwmrvkt\":\"ifsqesaagdfmg\",\"ajpsquc\":\"izntocipao\"},\"id\":\"poyfdkfogkn\",\"name\":\"gjofjd\",\"type\":\"eqsrdeupewnwreit\"},{\"properties\":{\"resourceState\":\"Enabled\",\"enabledState\":\"Disabled\"},\"etag\":\"arhmofcqhsmy\",\"location\":\"rkdtmlxh\",\"tags\":{\"jtxukcdm\":\"k\",\"yrlhmwhfpmrqobm\":\"arcryuanzwuxzdxt\",\"knryrtihfxtij\":\"u\"},\"id\":\"pzvgnwzsymglzufc\",\"name\":\"zk\",\"type\":\"hdbihan\"}],\"nextLink\":\"hfcbjysa\"}")
+                    "{\"value\":[{\"properties\":{\"resourceState\":\"Disabling\",\"enabledState\":\"Enabled\"},\"etag\":\"zi\",\"location\":\"fjawneaivxwczel\",\"tags\":{\"lsfeaenwabfatkld\":\"r\",\"oulpjrv\":\"xbjhwuaanozjosph\"},\"id\":\"ag\",\"name\":\"rvimjwosytxitcsk\",\"type\":\"cktqumiekkezzi\"},{\"properties\":{\"resourceState\":\"Disabling\",\"enabledState\":\"Disabled\"},\"etag\":\"dgqggebdu\",\"location\":\"ygaeqidbqfatpxl\",\"tags\":{\"dmjsjqb\":\"cyjmoadsuvarmy\",\"yc\":\"hhyxxrw\",\"kgymareqnajxqug\":\"duhpk\",\"ubeddg\":\"hky\"},\"id\":\"sofwqmzqalkrmnji\",\"name\":\"pxacqqudfn\",\"type\":\"yxbaaabjyvayf\"},{\"properties\":{\"resourceState\":\"Enabled\",\"enabledState\":\"Enabled\"},\"etag\":\"uzqogsexnevf\",\"location\":\"nwnwme\",\"tags\":{\"judpfrxt\":\"yyceuzsoi\",\"paxh\":\"thzvaytdwkqbrqu\",\"qoaxoruzfgs\":\"xiilivpdtiirqt\",\"zwl\":\"uyfxrxxleptramxj\"},\"id\":\"nwxuqlcvydyp\",\"name\":\"tdooaoj\",\"type\":\"niodkooeb\"},{\"properties\":{\"resourceState\":\"Disabled\",\"enabledState\":\"Disabled\"},\"etag\":\"msbvdkcrodtjinf\",\"location\":\"jlfltkacjvefkdlf\",\"tags\":{\"qblylsyxkqj\":\"ggkfpagaowpul\",\"gxsds\":\"sjervti\"},\"id\":\"uem\",\"name\":\"sbzkf\",\"type\":\"beyvpnqicvinvkjj\"}],\"nextLink\":\"xrbuukzclew\"}")
                 .toObject(ProfileList.class);
-        Assertions.assertEquals("hfcbjysa", model.nextLink());
+        Assertions.assertEquals("xrbuukzclew", model.nextLink());
     }
 
     @org.junit.jupiter.api.Test
     public void testSerialize() throws Exception {
-        ProfileList model = new ProfileList().withNextLink("hfcbjysa");
+        ProfileList model = new ProfileList().withNextLink("xrbuukzclew");
         model = BinaryData.fromObject(model).toObject(ProfileList.class);
-        Assertions.assertEquals("hfcbjysa", model.nextLink());
+        Assertions.assertEquals("xrbuukzclew", model.nextLink());
     }
 }

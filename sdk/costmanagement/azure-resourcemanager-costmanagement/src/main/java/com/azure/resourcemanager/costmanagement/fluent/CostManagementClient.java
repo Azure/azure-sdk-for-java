@@ -10,13 +10,6 @@ import java.time.Duration;
 /** The interface for CostManagementClient class. */
 public interface CostManagementClient {
     /**
-     * Gets ETag of the Entity. Not required when creating an entity, but required when updating an entity.
-     *
-     * @return the ifMatch value.
-     */
-    String getIfMatch();
-
-    /**
      * Gets server parameter.
      *
      * @return the endpoint value.

@@ -32,7 +32,7 @@ public final class CustomEntityStoreAssignmentsListByResourceGroupMockTests {
         ArgumentCaptor<HttpRequest> httpRequest = ArgumentCaptor.forClass(HttpRequest.class);
 
         String responseStr =
-            "{\"value\":[{\"properties\":{\"principal\":\"lwcjsqggjhffb\",\"entityStoreDatabaseLink\":\"qrkijpeuq\"},\"id\":\"sdxeqztvxwmwwmjs\",\"name\":\"en\",\"type\":\"wwa\"}]}";
+            "{\"value\":[{\"properties\":{\"principal\":\"d\",\"entityStoreDatabaseLink\":\"bfdyjduss\"},\"id\":\"yszekbhwlka\",\"name\":\"ggkrehbf\",\"type\":\"n\"}]}";
 
         Mockito.when(httpResponse.getStatusCode()).thenReturn(200);
         Mockito.when(httpResponse.getHeaders()).thenReturn(new HttpHeaders());
@@ -61,9 +61,9 @@ public final class CustomEntityStoreAssignmentsListByResourceGroupMockTests {
                     new AzureProfile("", "", AzureEnvironment.AZURE));
 
         PagedIterable<CustomEntityStoreAssignment> response =
-            manager.customEntityStoreAssignments().listByResourceGroup("kxiuxqggvqr", com.azure.core.util.Context.NONE);
+            manager.customEntityStoreAssignments().listByResourceGroup("buhoduchv", com.azure.core.util.Context.NONE);
 
-        Assertions.assertEquals("lwcjsqggjhffb", response.iterator().next().principal());
-        Assertions.assertEquals("qrkijpeuq", response.iterator().next().entityStoreDatabaseLink());
+        Assertions.assertEquals("d", response.iterator().next().principal());
+        Assertions.assertEquals("bfdyjduss", response.iterator().next().entityStoreDatabaseLink());
     }
 }

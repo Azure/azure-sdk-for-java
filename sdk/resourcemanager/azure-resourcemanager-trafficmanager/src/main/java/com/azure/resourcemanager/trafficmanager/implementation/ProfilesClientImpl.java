@@ -69,7 +69,7 @@ public final class ProfilesClientImpl
      */
     @Host("{$host}")
     @ServiceInterface(name = "TrafficManagerManage")
-    private interface ProfilesService {
+    public interface ProfilesService {
         @Headers({"Content-Type: application/json"})
         @Post("/providers/Microsoft.Network/checkTrafficManagerNameAvailability")
         @ExpectedResponses({200})
@@ -82,9 +82,20 @@ public final class ProfilesClientImpl
             Context context);
 
         @Headers({"Content-Type: application/json"})
+        @Post("/subscriptions/{subscriptionId}/providers/Microsoft.Network/checkTrafficManagerNameAvailabilityV2")
+        @ExpectedResponses({200})
+        @UnexpectedResponseExceptionType(ManagementException.class)
+        Mono<Response<TrafficManagerNameAvailabilityInner>> checkTrafficManagerNameAvailabilityV2(
+            @HostParam("$host") String endpoint,
+            @PathParam("subscriptionId") String subscriptionId,
+            @QueryParam("api-version") String apiVersion,
+            @BodyParam("application/json") CheckTrafficManagerRelativeDnsNameAvailabilityParameters parameters,
+            @HeaderParam("Accept") String accept,
+            Context context);
+
+        @Headers({"Content-Type: application/json"})
         @Get(
-            "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Network"
-                + "/trafficmanagerprofiles")
+            "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Network/trafficmanagerprofiles")
         @ExpectedResponses({200})
         @UnexpectedResponseExceptionType(ManagementException.class)
         Mono<Response<ProfileListResult>> listByResourceGroup(
@@ -108,8 +119,7 @@ public final class ProfilesClientImpl
 
         @Headers({"Content-Type: application/json"})
         @Get(
-            "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Network"
-                + "/trafficmanagerprofiles/{profileName}")
+            "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Network/trafficmanagerprofiles/{profileName}")
         @ExpectedResponses({200})
         @UnexpectedResponseExceptionType(ManagementException.class)
         Mono<Response<ProfileInner>> getByResourceGroup(
@@ -123,8 +133,7 @@ public final class ProfilesClientImpl
 
         @Headers({"Content-Type: application/json"})
         @Put(
-            "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Network"
-                + "/trafficmanagerprofiles/{profileName}")
+            "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Network/trafficmanagerprofiles/{profileName}")
         @ExpectedResponses({200, 201})
         @UnexpectedResponseExceptionType(ManagementException.class)
         Mono<Response<ProfileInner>> createOrUpdate(
@@ -139,8 +148,7 @@ public final class ProfilesClientImpl
 
         @Headers({"Content-Type: application/json"})
         @Delete(
-            "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Network"
-                + "/trafficmanagerprofiles/{profileName}")
+            "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Network/trafficmanagerprofiles/{profileName}")
         @ExpectedResponses({200, 204})
         @UnexpectedResponseExceptionType(ManagementException.class)
         Mono<Response<DeleteOperationResultInner>> delete(
@@ -154,8 +162,7 @@ public final class ProfilesClientImpl
 
         @Headers({"Content-Type: application/json"})
         @Patch(
-            "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Network"
-                + "/trafficmanagerprofiles/{profileName}")
+            "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Network/trafficmanagerprofiles/{profileName}")
         @ExpectedResponses({200})
         @UnexpectedResponseExceptionType(ManagementException.class)
         Mono<Response<ProfileInner>> update(
@@ -290,9 +297,149 @@ public final class ProfilesClientImpl
     }
 
     /**
+     * Checks the availability of a Traffic Manager Relative DNS name.
+     *
+     * @param parameters The Traffic Manager name parameters supplied to the CheckTrafficManagerNameAvailability
+     *     operation.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws ManagementException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return class representing a Traffic Manager Name Availability response along with {@link Response} on successful
+     *     completion of {@link Mono}.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    public Mono<Response<TrafficManagerNameAvailabilityInner>> checkTrafficManagerNameAvailabilityV2WithResponseAsync(
+        CheckTrafficManagerRelativeDnsNameAvailabilityParameters parameters) {
+        if (this.client.getEndpoint() == null) {
+            return Mono
+                .error(
+                    new IllegalArgumentException(
+                        "Parameter this.client.getEndpoint() is required and cannot be null."));
+        }
+        if (this.client.getSubscriptionId() == null) {
+            return Mono
+                .error(
+                    new IllegalArgumentException(
+                        "Parameter this.client.getSubscriptionId() is required and cannot be null."));
+        }
+        if (parameters == null) {
+            return Mono.error(new IllegalArgumentException("Parameter parameters is required and cannot be null."));
+        } else {
+            parameters.validate();
+        }
+        final String accept = "application/json";
+        return FluxUtil
+            .withContext(
+                context ->
+                    service
+                        .checkTrafficManagerNameAvailabilityV2(
+                            this.client.getEndpoint(),
+                            this.client.getSubscriptionId(),
+                            this.client.getApiVersion(),
+                            parameters,
+                            accept,
+                            context))
+            .contextWrite(context -> context.putAll(FluxUtil.toReactorContext(this.client.getContext()).readOnly()));
+    }
+
+    /**
+     * Checks the availability of a Traffic Manager Relative DNS name.
+     *
+     * @param parameters The Traffic Manager name parameters supplied to the CheckTrafficManagerNameAvailability
+     *     operation.
+     * @param context The context to associate with this operation.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws ManagementException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return class representing a Traffic Manager Name Availability response along with {@link Response} on successful
+     *     completion of {@link Mono}.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    private Mono<Response<TrafficManagerNameAvailabilityInner>> checkTrafficManagerNameAvailabilityV2WithResponseAsync(
+        CheckTrafficManagerRelativeDnsNameAvailabilityParameters parameters, Context context) {
+        if (this.client.getEndpoint() == null) {
+            return Mono
+                .error(
+                    new IllegalArgumentException(
+                        "Parameter this.client.getEndpoint() is required and cannot be null."));
+        }
+        if (this.client.getSubscriptionId() == null) {
+            return Mono
+                .error(
+                    new IllegalArgumentException(
+                        "Parameter this.client.getSubscriptionId() is required and cannot be null."));
+        }
+        if (parameters == null) {
+            return Mono.error(new IllegalArgumentException("Parameter parameters is required and cannot be null."));
+        } else {
+            parameters.validate();
+        }
+        final String accept = "application/json";
+        context = this.client.mergeContext(context);
+        return service
+            .checkTrafficManagerNameAvailabilityV2(
+                this.client.getEndpoint(),
+                this.client.getSubscriptionId(),
+                this.client.getApiVersion(),
+                parameters,
+                accept,
+                context);
+    }
+
+    /**
+     * Checks the availability of a Traffic Manager Relative DNS name.
+     *
+     * @param parameters The Traffic Manager name parameters supplied to the CheckTrafficManagerNameAvailability
+     *     operation.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws ManagementException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return class representing a Traffic Manager Name Availability response on successful completion of {@link Mono}.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    public Mono<TrafficManagerNameAvailabilityInner> checkTrafficManagerNameAvailabilityV2Async(
+        CheckTrafficManagerRelativeDnsNameAvailabilityParameters parameters) {
+        return checkTrafficManagerNameAvailabilityV2WithResponseAsync(parameters)
+            .flatMap(res -> Mono.justOrEmpty(res.getValue()));
+    }
+
+    /**
+     * Checks the availability of a Traffic Manager Relative DNS name.
+     *
+     * @param parameters The Traffic Manager name parameters supplied to the CheckTrafficManagerNameAvailability
+     *     operation.
+     * @param context The context to associate with this operation.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws ManagementException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return class representing a Traffic Manager Name Availability response along with {@link Response}.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    public Response<TrafficManagerNameAvailabilityInner> checkTrafficManagerNameAvailabilityV2WithResponse(
+        CheckTrafficManagerRelativeDnsNameAvailabilityParameters parameters, Context context) {
+        return checkTrafficManagerNameAvailabilityV2WithResponseAsync(parameters, context).block();
+    }
+
+    /**
+     * Checks the availability of a Traffic Manager Relative DNS name.
+     *
+     * @param parameters The Traffic Manager name parameters supplied to the CheckTrafficManagerNameAvailability
+     *     operation.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws ManagementException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return class representing a Traffic Manager Name Availability response.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    public TrafficManagerNameAvailabilityInner checkTrafficManagerNameAvailabilityV2(
+        CheckTrafficManagerRelativeDnsNameAvailabilityParameters parameters) {
+        return checkTrafficManagerNameAvailabilityV2WithResponse(parameters, Context.NONE).getValue();
+    }
+
+    /**
      * Lists all Traffic Manager profiles within a resource group.
      *
-     * @param resourceGroupName The name of the resource group containing the Traffic Manager profiles to be listed.
+     * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
@@ -339,7 +486,7 @@ public final class ProfilesClientImpl
     /**
      * Lists all Traffic Manager profiles within a resource group.
      *
-     * @param resourceGroupName The name of the resource group containing the Traffic Manager profiles to be listed.
+     * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
@@ -385,7 +532,7 @@ public final class ProfilesClientImpl
     /**
      * Lists all Traffic Manager profiles within a resource group.
      *
-     * @param resourceGroupName The name of the resource group containing the Traffic Manager profiles to be listed.
+     * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
@@ -399,7 +546,7 @@ public final class ProfilesClientImpl
     /**
      * Lists all Traffic Manager profiles within a resource group.
      *
-     * @param resourceGroupName The name of the resource group containing the Traffic Manager profiles to be listed.
+     * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
@@ -414,7 +561,7 @@ public final class ProfilesClientImpl
     /**
      * Lists all Traffic Manager profiles within a resource group.
      *
-     * @param resourceGroupName The name of the resource group containing the Traffic Manager profiles to be listed.
+     * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
@@ -428,7 +575,7 @@ public final class ProfilesClientImpl
     /**
      * Lists all Traffic Manager profiles within a resource group.
      *
-     * @param resourceGroupName The name of the resource group containing the Traffic Manager profiles to be listed.
+     * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
@@ -574,7 +721,7 @@ public final class ProfilesClientImpl
     /**
      * Gets a Traffic Manager profile.
      *
-     * @param resourceGroupName The name of the resource group containing the Traffic Manager profile.
+     * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param profileName The name of the Traffic Manager profile.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
@@ -622,7 +769,7 @@ public final class ProfilesClientImpl
     /**
      * Gets a Traffic Manager profile.
      *
-     * @param resourceGroupName The name of the resource group containing the Traffic Manager profile.
+     * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param profileName The name of the Traffic Manager profile.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
@@ -668,7 +815,7 @@ public final class ProfilesClientImpl
     /**
      * Gets a Traffic Manager profile.
      *
-     * @param resourceGroupName The name of the resource group containing the Traffic Manager profile.
+     * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param profileName The name of the Traffic Manager profile.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
@@ -684,7 +831,7 @@ public final class ProfilesClientImpl
     /**
      * Gets a Traffic Manager profile.
      *
-     * @param resourceGroupName The name of the resource group containing the Traffic Manager profile.
+     * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param profileName The name of the Traffic Manager profile.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
@@ -701,7 +848,7 @@ public final class ProfilesClientImpl
     /**
      * Gets a Traffic Manager profile.
      *
-     * @param resourceGroupName The name of the resource group containing the Traffic Manager profile.
+     * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param profileName The name of the Traffic Manager profile.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
@@ -716,7 +863,7 @@ public final class ProfilesClientImpl
     /**
      * Create or update a Traffic Manager profile.
      *
-     * @param resourceGroupName The name of the resource group containing the Traffic Manager profile.
+     * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param profileName The name of the Traffic Manager profile.
      * @param parameters The Traffic Manager profile parameters supplied to the CreateOrUpdate operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
@@ -772,7 +919,7 @@ public final class ProfilesClientImpl
     /**
      * Create or update a Traffic Manager profile.
      *
-     * @param resourceGroupName The name of the resource group containing the Traffic Manager profile.
+     * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param profileName The name of the Traffic Manager profile.
      * @param parameters The Traffic Manager profile parameters supplied to the CreateOrUpdate operation.
      * @param context The context to associate with this operation.
@@ -826,7 +973,7 @@ public final class ProfilesClientImpl
     /**
      * Create or update a Traffic Manager profile.
      *
-     * @param resourceGroupName The name of the resource group containing the Traffic Manager profile.
+     * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param profileName The name of the Traffic Manager profile.
      * @param parameters The Traffic Manager profile parameters supplied to the CreateOrUpdate operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
@@ -844,7 +991,7 @@ public final class ProfilesClientImpl
     /**
      * Create or update a Traffic Manager profile.
      *
-     * @param resourceGroupName The name of the resource group containing the Traffic Manager profile.
+     * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param profileName The name of the Traffic Manager profile.
      * @param parameters The Traffic Manager profile parameters supplied to the CreateOrUpdate operation.
      * @param context The context to associate with this operation.
@@ -862,7 +1009,7 @@ public final class ProfilesClientImpl
     /**
      * Create or update a Traffic Manager profile.
      *
-     * @param resourceGroupName The name of the resource group containing the Traffic Manager profile.
+     * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param profileName The name of the Traffic Manager profile.
      * @param parameters The Traffic Manager profile parameters supplied to the CreateOrUpdate operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
@@ -878,7 +1025,7 @@ public final class ProfilesClientImpl
     /**
      * Deletes a Traffic Manager profile.
      *
-     * @param resourceGroupName The name of the resource group containing the Traffic Manager profile to be deleted.
+     * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param profileName The name of the Traffic Manager profile to be deleted.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
@@ -927,7 +1074,7 @@ public final class ProfilesClientImpl
     /**
      * Deletes a Traffic Manager profile.
      *
-     * @param resourceGroupName The name of the resource group containing the Traffic Manager profile to be deleted.
+     * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param profileName The name of the Traffic Manager profile to be deleted.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
@@ -974,7 +1121,7 @@ public final class ProfilesClientImpl
     /**
      * Deletes a Traffic Manager profile.
      *
-     * @param resourceGroupName The name of the resource group containing the Traffic Manager profile to be deleted.
+     * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param profileName The name of the Traffic Manager profile to be deleted.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
@@ -989,7 +1136,7 @@ public final class ProfilesClientImpl
     /**
      * Deletes a Traffic Manager profile.
      *
-     * @param resourceGroupName The name of the resource group containing the Traffic Manager profile to be deleted.
+     * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param profileName The name of the Traffic Manager profile to be deleted.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
@@ -1006,7 +1153,7 @@ public final class ProfilesClientImpl
     /**
      * Deletes a Traffic Manager profile.
      *
-     * @param resourceGroupName The name of the resource group containing the Traffic Manager profile to be deleted.
+     * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param profileName The name of the Traffic Manager profile to be deleted.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
@@ -1021,7 +1168,7 @@ public final class ProfilesClientImpl
     /**
      * Update a Traffic Manager profile.
      *
-     * @param resourceGroupName The name of the resource group containing the Traffic Manager profile.
+     * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param profileName The name of the Traffic Manager profile.
      * @param parameters The Traffic Manager profile parameters supplied to the Update operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
@@ -1077,7 +1224,7 @@ public final class ProfilesClientImpl
     /**
      * Update a Traffic Manager profile.
      *
-     * @param resourceGroupName The name of the resource group containing the Traffic Manager profile.
+     * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param profileName The name of the Traffic Manager profile.
      * @param parameters The Traffic Manager profile parameters supplied to the Update operation.
      * @param context The context to associate with this operation.
@@ -1131,7 +1278,7 @@ public final class ProfilesClientImpl
     /**
      * Update a Traffic Manager profile.
      *
-     * @param resourceGroupName The name of the resource group containing the Traffic Manager profile.
+     * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param profileName The name of the Traffic Manager profile.
      * @param parameters The Traffic Manager profile parameters supplied to the Update operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
@@ -1148,7 +1295,7 @@ public final class ProfilesClientImpl
     /**
      * Update a Traffic Manager profile.
      *
-     * @param resourceGroupName The name of the resource group containing the Traffic Manager profile.
+     * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param profileName The name of the Traffic Manager profile.
      * @param parameters The Traffic Manager profile parameters supplied to the Update operation.
      * @param context The context to associate with this operation.
@@ -1166,7 +1313,7 @@ public final class ProfilesClientImpl
     /**
      * Update a Traffic Manager profile.
      *
-     * @param resourceGroupName The name of the resource group containing the Traffic Manager profile.
+     * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param profileName The name of the Traffic Manager profile.
      * @param parameters The Traffic Manager profile parameters supplied to the Update operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.

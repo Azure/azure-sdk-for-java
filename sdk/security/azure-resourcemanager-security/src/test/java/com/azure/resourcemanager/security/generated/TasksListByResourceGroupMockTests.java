@@ -31,7 +31,7 @@ public final class TasksListByResourceGroupMockTests {
         ArgumentCaptor<HttpRequest> httpRequest = ArgumentCaptor.forClass(HttpRequest.class);
 
         String responseStr =
-            "{\"value\":[{\"properties\":{\"state\":\"iphmsexroqrn\",\"creationTimeUtc\":\"2021-06-23T15:02:24Z\",\"securityTaskParameters\":{\"name\":\"vonfeeqgpkr\",\"\":{}},\"lastStateChangeTimeUtc\":\"2021-09-21T21:02:11Z\",\"subState\":\"nixxo\"},\"id\":\"wzkyf\",\"name\":\"nwpiwxeiicrm\",\"type\":\"e\"}]}";
+            "{\"value\":[{\"properties\":{\"state\":\"aqidoyzltgiomqo\",\"creationTimeUtc\":\"2021-08-16T07:59:27Z\",\"securityTaskParameters\":{\"name\":\"aeapfsergd\",\"\":{}},\"lastStateChangeTimeUtc\":\"2021-04-15T19:12:02Z\",\"subState\":\"acyh\"},\"id\":\"qwbp\",\"name\":\"qncjubkhjozfymcw\",\"type\":\"bupyv\"}]}";
 
         Mockito.when(httpResponse.getStatusCode()).thenReturn(200);
         Mockito.when(httpResponse.getHeaders()).thenReturn(new HttpHeaders());
@@ -60,6 +60,6 @@ public final class TasksListByResourceGroupMockTests {
                     new AzureProfile("", "", AzureEnvironment.AZURE));
 
         PagedIterable<SecurityTask> response =
-            manager.tasks().listByResourceGroup("ng", "rbf", "xyxz", com.azure.core.util.Context.NONE);
+            manager.tasks().listByResourceGroup("n", "abwmvogljsv", "pgidnw", com.azure.core.util.Context.NONE);
     }
 }

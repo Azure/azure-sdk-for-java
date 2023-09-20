@@ -4,12 +4,10 @@
 
 package com.azure.resourcemanager.eventgrid.generated;
 
-import com.azure.core.util.Context;
-
 /** Samples for PartnerNamespaces GetByResourceGroup. */
 public final class PartnerNamespacesGetByResourceGroupSamples {
     /*
-     * x-ms-original-file: specification/eventgrid/resource-manager/Microsoft.EventGrid/stable/2022-06-15/examples/PartnerNamespaces_Get.json
+     * x-ms-original-file: specification/eventgrid/resource-manager/Microsoft.EventGrid/preview/2023-06-01-preview/examples/PartnerNamespaces_Get.json
      */
     /**
      * Sample code: PartnerNamespaces_Get.
@@ -19,6 +17,7 @@ public final class PartnerNamespacesGetByResourceGroupSamples {
     public static void partnerNamespacesGet(com.azure.resourcemanager.eventgrid.EventGridManager manager) {
         manager
             .partnerNamespaces()
-            .getByResourceGroupWithResponse("examplerg", "examplePartnerNamespaceName1", Context.NONE);
+            .getByResourceGroupWithResponse(
+                "examplerg", "examplePartnerNamespaceName1", com.azure.core.util.Context.NONE);
     }
 }

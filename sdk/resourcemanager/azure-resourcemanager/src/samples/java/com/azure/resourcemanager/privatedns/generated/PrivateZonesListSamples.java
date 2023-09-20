@@ -4,8 +4,6 @@
 
 package com.azure.resourcemanager.privatedns.generated;
 
-import com.azure.core.util.Context;
-
 /** Samples for PrivateZones List. */
 public final class PrivateZonesListSamples {
     /*
@@ -17,6 +15,11 @@ public final class PrivateZonesListSamples {
      * @param azure The entry point for accessing resource management APIs in Azure.
      */
     public static void gETPrivateDNSZoneBySubscription(com.azure.resourcemanager.AzureResourceManager azure) {
-        azure.privateDnsZones().manager().serviceClient().getPrivateZones().list(null, Context.NONE);
+        azure
+            .privateDnsZones()
+            .manager()
+            .serviceClient()
+            .getPrivateZones()
+            .list(null, com.azure.core.util.Context.NONE);
     }
 }

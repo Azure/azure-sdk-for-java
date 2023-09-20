@@ -4,7 +4,6 @@
 
 package com.azure.resourcemanager.keyvault.generated;
 
-import com.azure.core.util.Context;
 import com.azure.resourcemanager.keyvault.fluent.models.ManagedHsmInner;
 import com.azure.resourcemanager.keyvault.models.ManagedHsmProperties;
 import com.azure.resourcemanager.keyvault.models.ManagedHsmSku;
@@ -18,7 +17,7 @@ import java.util.UUID;
 /** Samples for ManagedHsms CreateOrUpdate. */
 public final class ManagedHsmsCreateOrUpdateSamples {
     /*
-     * x-ms-original-file: specification/keyvault/resource-manager/Microsoft.KeyVault/stable/2021-10-01/examples/ManagedHsm_CreateOrUpdate.json
+     * x-ms-original-file: specification/keyvault/resource-manager/Microsoft.KeyVault/stable/2023-02-01/examples/ManagedHsm_CreateOrUpdate.json
      */
     /**
      * Sample code: Create a new managed HSM Pool or update an existing managed HSM Pool.
@@ -46,8 +45,8 @@ public final class ManagedHsmsCreateOrUpdateSamples {
                             .withInitialAdminObjectIds(Arrays.asList("00000000-0000-0000-0000-000000000000"))
                             .withEnableSoftDelete(true)
                             .withSoftDeleteRetentionInDays(90)
-                            .withEnablePurgeProtection(true)),
-                Context.NONE);
+                            .withEnablePurgeProtection(false)),
+                com.azure.core.util.Context.NONE);
     }
 
     @SuppressWarnings("unchecked")

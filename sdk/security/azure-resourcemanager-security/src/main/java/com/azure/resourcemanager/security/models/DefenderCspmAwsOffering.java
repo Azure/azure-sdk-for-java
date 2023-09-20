@@ -9,7 +9,7 @@ import com.fasterxml.jackson.annotation.JsonProperty;
 import com.fasterxml.jackson.annotation.JsonTypeInfo;
 import com.fasterxml.jackson.annotation.JsonTypeName;
 
-/** The CSPM P1 for Aws offering. */
+/** The CSPM P1 for AWS offering. */
 @JsonTypeInfo(use = JsonTypeInfo.Id.NAME, include = JsonTypeInfo.As.PROPERTY, property = "offeringType")
 @JsonTypeName("DefenderCspmAws")
 @Fluent
@@ -19,6 +19,18 @@ public final class DefenderCspmAwsOffering extends CloudOffering {
      */
     @JsonProperty(value = "vmScanners")
     private DefenderCspmAwsOfferingVmScanners vmScanners;
+
+    /*
+     * The Microsoft Defender Data Sensitivity discovery configuration
+     */
+    @JsonProperty(value = "dataSensitivityDiscovery")
+    private DefenderCspmAwsOfferingDataSensitivityDiscovery dataSensitivityDiscovery;
+
+    /*
+     * The databases DSPM configuration
+     */
+    @JsonProperty(value = "databasesDspm")
+    private DefenderCspmAwsOfferingDatabasesDspm databasesDspm;
 
     /** Creates an instance of DefenderCspmAwsOffering class. */
     public DefenderCspmAwsOffering() {
@@ -45,6 +57,47 @@ public final class DefenderCspmAwsOffering extends CloudOffering {
     }
 
     /**
+     * Get the dataSensitivityDiscovery property: The Microsoft Defender Data Sensitivity discovery configuration.
+     *
+     * @return the dataSensitivityDiscovery value.
+     */
+    public DefenderCspmAwsOfferingDataSensitivityDiscovery dataSensitivityDiscovery() {
+        return this.dataSensitivityDiscovery;
+    }
+
+    /**
+     * Set the dataSensitivityDiscovery property: The Microsoft Defender Data Sensitivity discovery configuration.
+     *
+     * @param dataSensitivityDiscovery the dataSensitivityDiscovery value to set.
+     * @return the DefenderCspmAwsOffering object itself.
+     */
+    public DefenderCspmAwsOffering withDataSensitivityDiscovery(
+        DefenderCspmAwsOfferingDataSensitivityDiscovery dataSensitivityDiscovery) {
+        this.dataSensitivityDiscovery = dataSensitivityDiscovery;
+        return this;
+    }
+
+    /**
+     * Get the databasesDspm property: The databases DSPM configuration.
+     *
+     * @return the databasesDspm value.
+     */
+    public DefenderCspmAwsOfferingDatabasesDspm databasesDspm() {
+        return this.databasesDspm;
+    }
+
+    /**
+     * Set the databasesDspm property: The databases DSPM configuration.
+     *
+     * @param databasesDspm the databasesDspm value to set.
+     * @return the DefenderCspmAwsOffering object itself.
+     */
+    public DefenderCspmAwsOffering withDatabasesDspm(DefenderCspmAwsOfferingDatabasesDspm databasesDspm) {
+        this.databasesDspm = databasesDspm;
+        return this;
+    }
+
+    /**
      * Validates the instance.
      *
      * @throws IllegalArgumentException thrown if the instance is not valid.
@@ -54,6 +107,12 @@ public final class DefenderCspmAwsOffering extends CloudOffering {
         super.validate();
         if (vmScanners() != null) {
             vmScanners().validate();
+        }
+        if (dataSensitivityDiscovery() != null) {
+            dataSensitivityDiscovery().validate();
+        }
+        if (databasesDspm() != null) {
+            databasesDspm().validate();
         }
     }
 }

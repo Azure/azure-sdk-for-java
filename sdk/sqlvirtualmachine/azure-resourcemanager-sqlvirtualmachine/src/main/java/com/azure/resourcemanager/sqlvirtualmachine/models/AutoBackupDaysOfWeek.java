@@ -32,6 +32,15 @@ public final class AutoBackupDaysOfWeek extends ExpandableStringEnum<AutoBackupD
     public static final AutoBackupDaysOfWeek SUNDAY = fromString("Sunday");
 
     /**
+     * Creates a new instance of AutoBackupDaysOfWeek value.
+     *
+     * @deprecated Use the {@link #fromString(String)} factory method.
+     */
+    @Deprecated
+    public AutoBackupDaysOfWeek() {
+    }
+
+    /**
      * Creates or finds a AutoBackupDaysOfWeek from its string representation.
      *
      * @param name a name to look for.

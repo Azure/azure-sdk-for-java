@@ -7,6 +7,8 @@ import javax.xml.namespace.QName;
 import javax.xml.stream.XMLStreamException;
 import java.time.OffsetDateTime;
 
+import static com.azure.xml.AzureXmlTestUtils.getRootElementName;
+
 public class NamespaceProperties implements XmlSerializable<NamespaceProperties> {
     private String alias;
     private OffsetDateTime createdTime;
@@ -158,7 +160,12 @@ public class NamespaceProperties implements XmlSerializable<NamespaceProperties>
 
     @Override
     public XmlWriter toXml(XmlWriter xmlWriter) throws XMLStreamException {
-        xmlWriter.writeStartElement("NamespaceInfo");
+        return toXml(xmlWriter, null);
+    }
+
+    @Override
+    public XmlWriter toXml(XmlWriter xmlWriter, String rootElementName) throws XMLStreamException {
+        xmlWriter.writeStartElement(getRootElementName(rootElementName, "NamespaceInfo"));
         xmlWriter.writeNamespace("http://schemas.microsoft.com/netservices/2010/10/servicebus/connect");
         xmlWriter.writeStringElement("Alias", alias);
         xmlWriter.writeStringElement("CreatedTime", createdTime == null ? null : createdTime.toString());
@@ -172,61 +179,58 @@ public class NamespaceProperties implements XmlSerializable<NamespaceProperties>
     }
 
     public static NamespaceProperties fromXml(XmlReader xmlReader) throws XMLStreamException {
-        if (xmlReader.currentToken() != XmlToken.START_ELEMENT) {
-            xmlReader.nextElement();
-        }
+        return fromXml(xmlReader, null);
+    }
 
-        if (xmlReader.currentToken() != XmlToken.START_ELEMENT) {
-            throw new IllegalStateException("Illegal start of XML deserialization. "
-                + "Expected 'XmlToken.START_ELEMENT' but it was: 'XmlToken." + xmlReader.currentToken() + "'.");
-        }
+    public static NamespaceProperties fromXml(XmlReader xmlReader, String rootElementName) throws XMLStreamException {
+        return xmlReader.readObject("http://schemas.microsoft.com/netservices/2010/10/servicebus/connect",
+            getRootElementName(rootElementName, "NamespaceInfo"), reader -> {
 
-        String expectedNamespaceUri = "http://schemas.microsoft.com/netservices/2010/10/servicebus/connect";
+                String alias = null;
+                OffsetDateTime createdTime = null;
+                MessagingSku messagingSku = null;
+                Integer messagingUnits = null;
+                OffsetDateTime modifiedTime = null;
+                String name = null;
+                NamespaceType namespaceType = null;
 
-        QName qName = xmlReader.getElementName();
-        if (!"NamespaceInfo".equals(qName.getLocalPart()) || !expectedNamespaceUri.equals(qName.getNamespaceURI())) {
-            throw new IllegalStateException("Expected XML element to be 'NamespaceInfo' in namespace "
-                + "'" + expectedNamespaceUri + "' but it was: "
-                + "{'" + qName.getNamespaceURI() + "'}'" + qName.getLocalPart() + "'.");
-        }
+                while (xmlReader.nextElement() != XmlToken.END_ELEMENT) {
+                    QName qName = xmlReader.getElementName();
+                    String localPart = qName.getLocalPart();
+                    String namespaceUri = qName.getNamespaceURI();
 
-        String alias = null;
-        OffsetDateTime createdTime = null;
-        MessagingSku messagingSku = null;
-        Integer messagingUnits = null;
-        OffsetDateTime modifiedTime = null;
-        String name = null;
-        NamespaceType namespaceType = null;
+                    if ("Alias".equals(localPart)
+                        && "http://schemas.microsoft.com/netservices/2010/10/servicebus/connect".equals(namespaceUri)) {
+                        alias = xmlReader.getStringElement();
+                    } else if ("CreatedTime".equals(localPart)
+                        && "http://schemas.microsoft.com/netservices/2010/10/servicebus/connect".equals(namespaceUri)) {
+                        createdTime = OffsetDateTime.parse(xmlReader.getStringElement());
+                    } else if ("MessagingSKU".equals(localPart)
+                        && "http://schemas.microsoft.com/netservices/2010/10/servicebus/connect".equals(namespaceUri)) {
+                        messagingSku = MessagingSku.fromString(xmlReader.getStringElement());
+                    } else if ("MessagingUnits".equals(localPart)
+                        && "http://schemas.microsoft.com/netservices/2010/10/servicebus/connect".equals(namespaceUri)) {
+                        messagingUnits = xmlReader.getIntElement();
+                    } else if ("ModifiedTime".equals(localPart)
+                        && "http://schemas.microsoft.com/netservices/2010/10/servicebus/connect".equals(namespaceUri)) {
+                        modifiedTime = OffsetDateTime.parse(xmlReader.getStringElement());
+                    } else if ("Name".equals(localPart)
+                        && "http://schemas.microsoft.com/netservices/2010/10/servicebus/connect".equals(namespaceUri)) {
+                        name = xmlReader.getStringElement();
+                    } else if ("NamespaceType".equals(localPart)
+                        && "http://schemas.microsoft.com/netservices/2010/10/servicebus/connect".equals(namespaceUri)) {
+                        namespaceType = NamespaceType.fromString(xmlReader.getStringElement());
+                    }
+                }
 
-        while (xmlReader.nextElement() != XmlToken.END_ELEMENT) {
-            qName = xmlReader.getElementName();
-            String localPart = qName.getLocalPart();
-            String namespaceUri = qName.getNamespaceURI();
-
-            if ("Alias".equals(localPart) && expectedNamespaceUri.equals(namespaceUri)) {
-                alias = xmlReader.getStringElement();
-            } else if ("CreatedTime".equals(localPart) && expectedNamespaceUri.equals(namespaceUri)) {
-                createdTime = OffsetDateTime.parse(xmlReader.getStringElement());
-            } else if ("MessagingSKU".equals(localPart) && expectedNamespaceUri.equals(namespaceUri)) {
-                messagingSku = MessagingSku.fromString(xmlReader.getStringElement());
-            } else if ("MessagingUnits".equals(localPart) && expectedNamespaceUri.equals(namespaceUri)) {
-                messagingUnits = xmlReader.getIntElement();
-            } else if ("ModifiedTime".equals(localPart) && expectedNamespaceUri.equals(namespaceUri)) {
-                modifiedTime = OffsetDateTime.parse(xmlReader.getStringElement());
-            } else if ("Name".equals(localPart) && expectedNamespaceUri.equals(namespaceUri)) {
-                name = xmlReader.getStringElement();
-            } else if ("NamespaceType".equals(localPart) && expectedNamespaceUri.equals(namespaceUri)) {
-                namespaceType = NamespaceType.fromString(xmlReader.getStringElement());
-            }
-        }
-
-        return new NamespaceProperties()
-            .setAlias(alias)
-            .setCreatedTime(createdTime)
-            .setMessagingSku(messagingSku)
-            .setMessagingUnits(messagingUnits)
-            .setModifiedTime(modifiedTime)
-            .setName(name)
-            .setNamespaceType(namespaceType);
+                return new NamespaceProperties()
+                    .setAlias(alias)
+                    .setCreatedTime(createdTime)
+                    .setMessagingSku(messagingSku)
+                    .setMessagingUnits(messagingUnits)
+                    .setModifiedTime(modifiedTime)
+                    .setName(name)
+                    .setNamespaceType(namespaceType);
+            });
     }
 }

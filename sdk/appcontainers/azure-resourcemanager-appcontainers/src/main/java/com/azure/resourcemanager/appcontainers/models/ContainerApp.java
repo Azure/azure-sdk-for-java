@@ -65,6 +65,15 @@ public interface ContainerApp {
     ManagedServiceIdentity identity();
 
     /**
+     * Gets the managedBy property: The fully qualified resource ID of the resource that manages this resource.
+     * Indicates if this resource is managed by another Azure resource. If this is present, complete mode deployment
+     * will not delete the resource if it is removed from the template since it is managed by another resource.
+     *
+     * @return the managedBy value.
+     */
+    String managedBy();
+
+    /**
      * Gets the systemData property: Azure Resource Manager metadata containing createdBy and modifiedBy information.
      *
      * @return the systemData value.
@@ -93,11 +102,11 @@ public interface ContainerApp {
     String environmentId();
 
     /**
-     * Gets the workloadProfileType property: Workload profile type to pin for container app execution.
+     * Gets the workloadProfileName property: Workload profile name to pin for container app execution.
      *
-     * @return the workloadProfileType value.
+     * @return the workloadProfileName value.
      */
-    String workloadProfileType();
+    String workloadProfileName();
 
     /**
      * Gets the latestRevisionName property: Name of the latest revision of the Container App.
@@ -105,6 +114,13 @@ public interface ContainerApp {
      * @return the latestRevisionName value.
      */
     String latestRevisionName();
+
+    /**
+     * Gets the latestReadyRevisionName property: Name of the latest ready revision of the Container App.
+     *
+     * @return the latestReadyRevisionName value.
+     */
+    String latestReadyRevisionName();
 
     /**
      * Gets the latestRevisionFqdn property: Fully Qualified Domain Name of the latest revision of the Container App.
@@ -183,11 +199,13 @@ public interface ContainerApp {
             DefinitionStages.WithResourceGroup,
             DefinitionStages.WithCreate {
     }
+
     /** The ContainerApp definition stages. */
     interface DefinitionStages {
         /** The first stage of the ContainerApp definition. */
         interface Blank extends WithLocation {
         }
+
         /** The stage of the ContainerApp definition allowing to specify location. */
         interface WithLocation {
             /**
@@ -206,6 +224,7 @@ public interface ContainerApp {
              */
             WithResourceGroup withRegion(String location);
         }
+
         /** The stage of the ContainerApp definition allowing to specify parent resource. */
         interface WithResourceGroup {
             /**
@@ -216,6 +235,7 @@ public interface ContainerApp {
              */
             WithCreate withExistingResourceGroup(String resourceGroupName);
         }
+
         /**
          * The stage of the ContainerApp definition which contains all the minimum required properties for the resource
          * to be created, but also allows for any other optional properties to be specified.
@@ -224,9 +244,10 @@ public interface ContainerApp {
             extends DefinitionStages.WithTags,
                 DefinitionStages.WithExtendedLocation,
                 DefinitionStages.WithIdentity,
+                DefinitionStages.WithManagedBy,
                 DefinitionStages.WithManagedEnvironmentId,
                 DefinitionStages.WithEnvironmentId,
-                DefinitionStages.WithWorkloadProfileType,
+                DefinitionStages.WithWorkloadProfileName,
                 DefinitionStages.WithConfiguration,
                 DefinitionStages.WithTemplate {
             /**
@@ -244,6 +265,7 @@ public interface ContainerApp {
              */
             ContainerApp create(Context context);
         }
+
         /** The stage of the ContainerApp definition allowing to specify tags. */
         interface WithTags {
             /**
@@ -254,6 +276,7 @@ public interface ContainerApp {
              */
             WithCreate withTags(Map<String, String> tags);
         }
+
         /** The stage of the ContainerApp definition allowing to specify extendedLocation. */
         interface WithExtendedLocation {
             /**
@@ -264,6 +287,7 @@ public interface ContainerApp {
              */
             WithCreate withExtendedLocation(ExtendedLocation extendedLocation);
         }
+
         /** The stage of the ContainerApp definition allowing to specify identity. */
         interface WithIdentity {
             /**
@@ -276,6 +300,23 @@ public interface ContainerApp {
              */
             WithCreate withIdentity(ManagedServiceIdentity identity);
         }
+
+        /** The stage of the ContainerApp definition allowing to specify managedBy. */
+        interface WithManagedBy {
+            /**
+             * Specifies the managedBy property: The fully qualified resource ID of the resource that manages this
+             * resource. Indicates if this resource is managed by another Azure resource. If this is present, complete
+             * mode deployment will not delete the resource if it is removed from the template since it is managed by
+             * another resource..
+             *
+             * @param managedBy The fully qualified resource ID of the resource that manages this resource. Indicates if
+             *     this resource is managed by another Azure resource. If this is present, complete mode deployment will
+             *     not delete the resource if it is removed from the template since it is managed by another resource.
+             * @return the next definition stage.
+             */
+            WithCreate withManagedBy(String managedBy);
+        }
+
         /** The stage of the ContainerApp definition allowing to specify managedEnvironmentId. */
         interface WithManagedEnvironmentId {
             /**
@@ -286,6 +327,7 @@ public interface ContainerApp {
              */
             WithCreate withManagedEnvironmentId(String managedEnvironmentId);
         }
+
         /** The stage of the ContainerApp definition allowing to specify environmentId. */
         interface WithEnvironmentId {
             /**
@@ -296,16 +338,18 @@ public interface ContainerApp {
              */
             WithCreate withEnvironmentId(String environmentId);
         }
-        /** The stage of the ContainerApp definition allowing to specify workloadProfileType. */
-        interface WithWorkloadProfileType {
+
+        /** The stage of the ContainerApp definition allowing to specify workloadProfileName. */
+        interface WithWorkloadProfileName {
             /**
-             * Specifies the workloadProfileType property: Workload profile type to pin for container app execution..
+             * Specifies the workloadProfileName property: Workload profile name to pin for container app execution..
              *
-             * @param workloadProfileType Workload profile type to pin for container app execution.
+             * @param workloadProfileName Workload profile name to pin for container app execution.
              * @return the next definition stage.
              */
-            WithCreate withWorkloadProfileType(String workloadProfileType);
+            WithCreate withWorkloadProfileName(String workloadProfileName);
         }
+
         /** The stage of the ContainerApp definition allowing to specify configuration. */
         interface WithConfiguration {
             /**
@@ -316,6 +360,7 @@ public interface ContainerApp {
              */
             WithCreate withConfiguration(Configuration configuration);
         }
+
         /** The stage of the ContainerApp definition allowing to specify template. */
         interface WithTemplate {
             /**
@@ -327,6 +372,7 @@ public interface ContainerApp {
             WithCreate withTemplate(Template template);
         }
     }
+
     /**
      * Begins update for the ContainerApp resource.
      *
@@ -339,7 +385,8 @@ public interface ContainerApp {
         extends UpdateStages.WithTags,
             UpdateStages.WithExtendedLocation,
             UpdateStages.WithIdentity,
-            UpdateStages.WithWorkloadProfileType,
+            UpdateStages.WithManagedBy,
+            UpdateStages.WithWorkloadProfileName,
             UpdateStages.WithConfiguration,
             UpdateStages.WithTemplate {
         /**
@@ -357,6 +404,7 @@ public interface ContainerApp {
          */
         ContainerApp apply(Context context);
     }
+
     /** The ContainerApp update stages. */
     interface UpdateStages {
         /** The stage of the ContainerApp update allowing to specify tags. */
@@ -369,6 +417,7 @@ public interface ContainerApp {
              */
             Update withTags(Map<String, String> tags);
         }
+
         /** The stage of the ContainerApp update allowing to specify extendedLocation. */
         interface WithExtendedLocation {
             /**
@@ -379,6 +428,7 @@ public interface ContainerApp {
              */
             Update withExtendedLocation(ExtendedLocation extendedLocation);
         }
+
         /** The stage of the ContainerApp update allowing to specify identity. */
         interface WithIdentity {
             /**
@@ -391,16 +441,34 @@ public interface ContainerApp {
              */
             Update withIdentity(ManagedServiceIdentity identity);
         }
-        /** The stage of the ContainerApp update allowing to specify workloadProfileType. */
-        interface WithWorkloadProfileType {
+
+        /** The stage of the ContainerApp update allowing to specify managedBy. */
+        interface WithManagedBy {
             /**
-             * Specifies the workloadProfileType property: Workload profile type to pin for container app execution..
+             * Specifies the managedBy property: The fully qualified resource ID of the resource that manages this
+             * resource. Indicates if this resource is managed by another Azure resource. If this is present, complete
+             * mode deployment will not delete the resource if it is removed from the template since it is managed by
+             * another resource..
              *
-             * @param workloadProfileType Workload profile type to pin for container app execution.
+             * @param managedBy The fully qualified resource ID of the resource that manages this resource. Indicates if
+             *     this resource is managed by another Azure resource. If this is present, complete mode deployment will
+             *     not delete the resource if it is removed from the template since it is managed by another resource.
              * @return the next definition stage.
              */
-            Update withWorkloadProfileType(String workloadProfileType);
+            Update withManagedBy(String managedBy);
         }
+
+        /** The stage of the ContainerApp update allowing to specify workloadProfileName. */
+        interface WithWorkloadProfileName {
+            /**
+             * Specifies the workloadProfileName property: Workload profile name to pin for container app execution..
+             *
+             * @param workloadProfileName Workload profile name to pin for container app execution.
+             * @return the next definition stage.
+             */
+            Update withWorkloadProfileName(String workloadProfileName);
+        }
+
         /** The stage of the ContainerApp update allowing to specify configuration. */
         interface WithConfiguration {
             /**
@@ -411,6 +479,7 @@ public interface ContainerApp {
              */
             Update withConfiguration(Configuration configuration);
         }
+
         /** The stage of the ContainerApp update allowing to specify template. */
         interface WithTemplate {
             /**
@@ -422,6 +491,7 @@ public interface ContainerApp {
             Update withTemplate(Template template);
         }
     }
+
     /**
      * Refreshes the resource to sync with Azure.
      *
@@ -488,7 +558,10 @@ public interface ContainerApp {
      *
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
+     * @throws com.azure.resourcemanager.appcontainers.models.DefaultErrorResponseErrorException thrown if the request
+     *     is rejected by server.
+     * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server on
+     *     status code 404.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return auth token for a container app along with {@link Response}.
      */
@@ -497,9 +570,56 @@ public interface ContainerApp {
     /**
      * Get auth token for a container app.
      *
-     * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
+     * @throws com.azure.resourcemanager.appcontainers.models.DefaultErrorResponseErrorException thrown if the request
+     *     is rejected by server.
+     * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server on
+     *     status code 404.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return auth token for a container app.
      */
     ContainerAppAuthToken getAuthToken();
+
+    /**
+     * Start a container app.
+     *
+     * @throws com.azure.resourcemanager.appcontainers.models.DefaultErrorResponseErrorException thrown if the request
+     *     is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return container App.
+     */
+    ContainerApp start();
+
+    /**
+     * Start a container app.
+     *
+     * @param context The context to associate with this operation.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws com.azure.resourcemanager.appcontainers.models.DefaultErrorResponseErrorException thrown if the request
+     *     is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return container App.
+     */
+    ContainerApp start(Context context);
+
+    /**
+     * Stop a container app.
+     *
+     * @throws com.azure.resourcemanager.appcontainers.models.DefaultErrorResponseErrorException thrown if the request
+     *     is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return container App.
+     */
+    ContainerApp stop();
+
+    /**
+     * Stop a container app.
+     *
+     * @param context The context to associate with this operation.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws com.azure.resourcemanager.appcontainers.models.DefaultErrorResponseErrorException thrown if the request
+     *     is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return container App.
+     */
+    ContainerApp stop(Context context);
 }

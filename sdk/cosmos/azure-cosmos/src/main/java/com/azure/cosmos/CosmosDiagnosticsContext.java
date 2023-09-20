@@ -4,12 +4,16 @@
 package com.azure.cosmos;
 
 import com.azure.cosmos.implementation.ClientSideRequestStatistics;
+import com.azure.cosmos.implementation.CosmosDiagnosticsSystemUsageSnapshot;
 import com.azure.cosmos.implementation.DistinctClientSideRequestStatisticsCollection;
 import com.azure.cosmos.implementation.FeedResponseDiagnostics;
 import com.azure.cosmos.implementation.ImplementationBridgeHelpers;
 import com.azure.cosmos.implementation.OperationType;
+import com.azure.cosmos.implementation.RequestTimeline;
 import com.azure.cosmos.implementation.ResourceType;
 import com.azure.cosmos.implementation.Utils;
+import com.azure.cosmos.implementation.directconnectivity.StoreResponseDiagnostics;
+import com.azure.cosmos.implementation.directconnectivity.StoreResultDiagnostics;
 import com.fasterxml.jackson.core.JsonProcessingException;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.fasterxml.jackson.databind.node.ArrayNode;
@@ -17,13 +21,15 @@ import com.fasterxml.jackson.databind.node.ObjectNode;
 
 import java.time.Duration;
 import java.time.Instant;
+import java.util.ArrayList;
 import java.util.Collection;
+import java.util.List;
+import java.util.Map;
 import java.util.Set;
 import java.util.TreeSet;
 import java.util.concurrent.ConcurrentLinkedDeque;
 import java.util.concurrent.atomic.AtomicBoolean;
 import java.util.concurrent.atomic.AtomicInteger;
-import java.util.function.BiFunction;
 
 import static com.azure.cosmos.implementation.guava25.base.Preconditions.checkNotNull;
 import static com.azure.cosmos.implementation.guava25.base.Preconditions.checkState;
@@ -52,7 +58,11 @@ public final class CosmosDiagnosticsContext {
     private final Integer maxItemCount;
     private final CosmosDiagnosticsThresholds thresholds;
     private final String operationId;
+    private final String trackingId;
 
+    private final String connectionMode;
+
+    private final String userAgent;
     private Throwable finalError;
     private Instant startTime = null;
     private Duration duration = null;
@@ -65,6 +75,12 @@ public final class CosmosDiagnosticsContext {
     private String cachedRequestDiagnostics = null;
     private final AtomicBoolean isCompleted = new AtomicBoolean(false);
 
+    private Map<String, Object> systemUsage;
+
+    private Double samplingRateSnapshot;
+
+    private ArrayList<CosmosDiagnosticsRequestInfo> requestInfo = null;
+
     CosmosDiagnosticsContext(
         String spanName,
         String accountName,
@@ -76,7 +92,10 @@ public final class CosmosDiagnosticsContext {
         String operationId,
         ConsistencyLevel consistencyLevel,
         Integer maxItemCount,
-        CosmosDiagnosticsThresholds thresholds) {
+        CosmosDiagnosticsThresholds thresholds,
+        String trackingId,
+        String connectionMode,
+        String userAgent) {
 
         checkNotNull(spanName, "Argument 'spanName' must not be null.");
         checkNotNull(accountName, "Argument 'accountName' must not be null.");
@@ -85,6 +104,8 @@ public final class CosmosDiagnosticsContext {
         checkNotNull(operationType, "Argument 'operationType' must not be null.");
         checkNotNull(consistencyLevel, "Argument 'consistencyLevel' must not be null.");
         checkNotNull(thresholds, "Argument 'thresholds' must not be null.");
+        checkNotNull(connectionMode, "Argument 'connectionMode' must not be null.");
+        checkNotNull(userAgent, "Argument 'userAgent' must not be null.");
 
         this.spanName = spanName;
         this.accountName = accountName;
@@ -100,6 +121,9 @@ public final class CosmosDiagnosticsContext {
         this.consistencyLevel = consistencyLevel;
         this.maxItemCount = maxItemCount;
         this.thresholds = thresholds;
+        this.trackingId = trackingId;
+        this.userAgent = userAgent;
+        this.connectionMode = connectionMode;
     }
 
     /**
@@ -146,6 +170,15 @@ public final class CosmosDiagnosticsContext {
      */
     public String getOperationType() {
         return this.operationTypeString;
+    }
+
+    /**
+     * The trackingId of a write operation. Will be null for read-/query- or feed operations or when non-idempotent
+     * writes are disabled for writes or only enabled without trackingId propagation.
+     * @return the trackingId of an operation
+     */
+    public String getTrackingId() {
+        return this.trackingId;
     }
 
     /**
@@ -239,11 +272,19 @@ public final class CosmosDiagnosticsContext {
 
     void addDiagnostics(CosmosDiagnostics cosmosDiagnostics) {
         checkNotNull(cosmosDiagnostics, "Argument 'cosmosDiagnostics' must not be null.");
+        if (cosmosDiagnostics.getDiagnosticsContext() == this) {
+            return;
+        }
+
         synchronized (this.spanName) {
+            if (this.samplingRateSnapshot != null) {
+                diagAccessor.setSamplingRateSnapshot(cosmosDiagnostics, this.samplingRateSnapshot);
+            }
             this.addRequestSize(diagAccessor.getRequestPayloadSizeInBytes(cosmosDiagnostics));
             this.addResponseSize(diagAccessor.getTotalResponsePayloadSizeInBytes(cosmosDiagnostics));
             this.diagnostics.add(cosmosDiagnostics);
             this.cachedRequestDiagnostics = null;
+            this.requestInfo = null;
             cosmosDiagnostics.setDiagnosticsContext(this);
         }
     }
@@ -331,6 +372,24 @@ public final class CosmosDiagnosticsContext {
         return regionsContacted;
     }
 
+    /**
+     * Returns the system usage
+     * NOTE: this information is not included in the json representation returned from {@link #toJson()} because it
+     * is usually only relevant when thresholds are violated, in which case the entire diagnostics json-string is
+     * included. Calling this method will lazily collect the system usage - which can be useful when writing
+     * a custom {@link CosmosDiagnosticsHandler}
+     * @return the system usage
+     */
+    public Map<String, Object> getSystemUsage() {
+        synchronized (this.spanName) {
+            Map<String, Object> snapshot = this.systemUsage;
+            if (snapshot != null) {
+                return snapshot;
+            }
+
+            return this.systemUsage = ClientSideRequestStatistics.fetchSystemInformation().toMap();
+        }
+    }
 
     /**
      * Returns the number of retries and/or attempts for speculative processing.
@@ -401,7 +460,7 @@ public final class CosmosDiagnosticsContext {
 
     /**
      * A flag indicating whether the operation should be considered failed or not based on the status code handling
-     * rules in {@link CosmosDiagnosticsThresholds#setIsFailureHandler(BiFunction)}
+     * rules in {@link CosmosDiagnosticsThresholds#setFailureHandler(java.util.function.BiPredicate)}
      * @return a flag indicating whether the operation should be considered failed or not
      */
     public boolean isFailure() {
@@ -449,6 +508,13 @@ public final class CosmosDiagnosticsContext {
         }
     }
 
+    synchronized void setSamplingRateSnapshot(double samplingRate) {
+        this.samplingRateSnapshot = samplingRate;
+        for (CosmosDiagnostics d : this.diagnostics) {
+            diagAccessor.setSamplingRateSnapshot(d, samplingRate);
+        }
+    }
+
     String getRequestDiagnostics() {
         ObjectNode ctxNode = mapper.createObjectNode();
 
@@ -462,6 +528,9 @@ public final class CosmosDiagnosticsContext {
         ctxNode.put("operation", this.operationType.toString());
         if (!this.operationId.isEmpty()) {
             ctxNode.put("operationId", this.operationId);
+        }
+        if (this.trackingId != null && !this.trackingId.isEmpty()) {
+            ctxNode.put("trackingId", this.trackingId);
         }
         ctxNode.put("consistency", this.consistencyLevel.toString());
         ctxNode.put("status", this.statusCode);
@@ -481,7 +550,11 @@ public final class CosmosDiagnosticsContext {
         }
 
         if (this.finalError != null) {
-            ctxNode.put("exception", this.finalError.toString());
+            if (this.finalError instanceof CosmosException) {
+                ctxNode.put("exception", ((CosmosException)this.finalError).toString(false));
+            } else {
+                ctxNode.put("exception", this.finalError.getMessage());
+            }
         }
 
         if (this.diagnostics != null && this.diagnostics.size() > 0) {
@@ -530,7 +603,234 @@ public final class CosmosDiagnosticsContext {
                 return snapshot;
             }
 
+            this.systemUsage = ClientSideRequestStatistics.fetchSystemInformation().toMap();
             return this.cachedRequestDiagnostics = getRequestDiagnostics();
+        }
+    }
+
+    /**
+     * Gets the UserAgent header value used by the client issuing this operation
+     * NOTE: this information is not included in the json representation returned from {@link #toJson()} because it
+     * is usually only relevant when thresholds are violated, in which case the entire diagnostics json-string is
+     * included.
+     * @return the UserAgent header value used for the client that issued this operation
+     */
+    public String getUserAgent() {
+        return this.userAgent;
+    }
+
+    /**
+     * Returns the connection mode used in the client.
+     * NOTE: this information is not included in the json representation returned from {@link #toJson()} because it
+     * is usually only relevant when thresholds are violated, in which case the entire diagnostics json-string is
+     * included.
+     * @return the connection mode used in the client.
+     */
+    public String getConnectionMode() {
+        return this.connectionMode;
+    }
+
+    private static void addRequestInfoForGatewayStatistics(
+        ClientSideRequestStatistics requestStats,
+        List<CosmosDiagnosticsRequestInfo> requestInfo) {
+
+        List<ClientSideRequestStatistics.GatewayStatistics> gatewayStatsList = requestStats.getGatewayStatisticsList();
+
+        if (gatewayStatsList == null || gatewayStatsList.size() == 0) {
+            return;
+        }
+
+        for (ClientSideRequestStatistics.GatewayStatistics gatewayStats : gatewayStatsList) {
+            CosmosDiagnosticsRequestInfo info = new CosmosDiagnosticsRequestInfo(
+                requestStats.getActivityId(),
+                null,
+                gatewayStats.getPartitionKeyRangeId(),
+                gatewayStats.getResourceType() + ":" + gatewayStats.getOperationType(),
+                requestStats.getRequestStartTimeUTC(),
+                requestStats.getDuration(),
+                null,
+                gatewayStats.getRequestCharge(),
+                gatewayStats.getResponsePayloadSizeInBytes(),
+                gatewayStats.getStatusCode(),
+                gatewayStats.getSubStatusCode(),
+                new ArrayList<>()
+            );
+
+            requestInfo.add(info);
+        }
+    }
+
+    private static void addRequestInfoForStoreResponses(
+        ClientSideRequestStatistics requestStats,
+        List<CosmosDiagnosticsRequestInfo> requestInfo,
+        List<ClientSideRequestStatistics.StoreResponseStatistics> storeResponses) {
+
+        for (ClientSideRequestStatistics.StoreResponseStatistics responseStats: storeResponses) {
+
+            StoreResultDiagnostics resultDiagnostics = responseStats.getStoreResult();
+            if (resultDiagnostics == null) {
+                continue;
+            }
+
+            StoreResponseDiagnostics responseDiagnostics = resultDiagnostics.getStoreResponseDiagnostics();
+
+            String partitionId = null;
+            String[] partitionAndReplicaId = resultDiagnostics.getPartitionAndReplicaId();
+            if (partitionAndReplicaId.length == 2) {
+                partitionId = partitionAndReplicaId[0];
+            }
+
+            List<CosmosDiagnosticsRequestEvent> events = new ArrayList<>();
+            String pkRangeId = "";
+            double requestCharge = 0;
+            int responsePayloadLength = 0;
+            int statusCode = 0;
+            int subStatusCode = 0;
+            String activityId = requestStats.getActivityId();
+            if (responseDiagnostics != null) {
+                activityId = responseDiagnostics.getActivityId();
+                requestCharge = responseDiagnostics.getRequestCharge();
+                responsePayloadLength = responseDiagnostics.getResponsePayloadLength();
+                statusCode = responseDiagnostics.getStatusCode();
+                subStatusCode = responseDiagnostics.getSubStatusCode();
+                if (responseDiagnostics.getPartitionKeyRangeId() != null) {
+                    pkRangeId = responseDiagnostics.getPartitionKeyRangeId();
+                }
+                RequestTimeline timeline = responseDiagnostics.getRequestTimeline();
+                timeline.forEach( e -> {
+                    if (e.getStartTime() != null && e.getDuration() != null && !e.getDuration().equals(Duration.ZERO)) {
+                        events.add(new CosmosDiagnosticsRequestEvent(e.getStartTime(), e.getDuration(), e.getName()));
+                    }
+                });
+            }
+
+            Duration backendLatency = null;
+            if (resultDiagnostics.getBackendLatencyInMs() != null) {
+                backendLatency = Duration.ofNanos((long)(resultDiagnostics.getBackendLatencyInMs() * 1000000d));
+            }
+
+            CosmosDiagnosticsRequestInfo info = new CosmosDiagnosticsRequestInfo(
+                activityId,
+                partitionId,
+                pkRangeId,
+                responseStats.getRequestResourceType() + ":" + responseStats.getRequestOperationType(),
+                requestStats.getRequestStartTimeUTC(),
+                responseStats.getDuration(),
+                backendLatency,
+                requestCharge,
+                responsePayloadLength,
+                statusCode,
+                subStatusCode,
+                events
+            );
+
+            requestInfo.add(info);
+        }
+    }
+
+    private void addRequestInfoForAddressResolution(
+        ClientSideRequestStatistics requestStats,
+        List<CosmosDiagnosticsRequestInfo> requestInfo,
+        Map<String, ClientSideRequestStatistics.AddressResolutionStatistics> addressResolutionStatisticsMap
+    ) {
+        if (addressResolutionStatisticsMap == null || addressResolutionStatisticsMap.isEmpty()) {
+            return;
+        }
+
+        for (Map.Entry<String, ClientSideRequestStatistics.AddressResolutionStatistics> current
+            : addressResolutionStatisticsMap.entrySet()) {
+
+            ClientSideRequestStatistics.AddressResolutionStatistics addressResolutionStatistics = current.getValue();
+            String addressResolutionActivityId = current.getKey();
+
+            if (addressResolutionStatistics.isInflightRequest() ||
+                addressResolutionStatistics.getEndTimeUTC() == null) {
+
+                // skipping inflight or failed address resolution statistics
+                // capturing error count etc. won't make sense here - request diagnostic
+                // logs are the right way to debug those - not metrics
+                continue;
+            }
+
+            Duration latency = Duration.between(
+                addressResolutionStatistics.getStartTimeUTC(),
+                addressResolutionStatistics.getEndTimeUTC());
+
+            StringBuilder sb = new StringBuilder();
+            sb.append("AddressResolution|");
+            sb.append(addressResolutionStatistics.getTargetEndpoint());
+            sb.append("|");
+            if (addressResolutionStatistics.isForceRefresh()) {
+                sb.append("1|");
+            } else {
+                sb.append("0|");
+            }
+
+            if (addressResolutionStatistics.isForceCollectionRoutingMapRefresh()) {
+                sb.append("1");
+            } else {
+                sb.append("0");
+            }
+
+            CosmosDiagnosticsRequestInfo info = new CosmosDiagnosticsRequestInfo(
+                addressResolutionActivityId,
+                null,
+                null,
+                sb.toString(),
+                addressResolutionStatistics.getStartTimeUTC(),
+                latency,
+                null,
+                0,
+                0,
+                0,
+                0,
+                new ArrayList<>()
+            );
+
+            requestInfo.add(info);
+        }
+    }
+
+    /**
+     * Gets a collection of {@link CosmosDiagnosticsRequestInfo} records providing more information about
+     * individual requests issued in the transport layer to process this operation.
+     * NOTE: this information is not included in the json representation returned from {@link #toJson()} because it
+     * is usually only relevant when thresholds are violated, in which case the entire diagnostics json-string is
+     * included. Calling this method will lazily collect the user agent - which can be useful when writing
+     * a custom {@link CosmosDiagnosticsHandler}
+     * @return a collection of {@link CosmosDiagnosticsRequestInfo} records providing more information about
+     * individual requests issued in the transport layer to process this operation.
+     */
+    public Collection<CosmosDiagnosticsRequestInfo> getRequestInfo() {
+        synchronized (this.spanName) {
+            ArrayList<CosmosDiagnosticsRequestInfo> snapshot = this.requestInfo;
+            if (snapshot != null) {
+                return snapshot;
+            }
+
+            snapshot = new ArrayList<>();
+            for (ClientSideRequestStatistics requestStats: this.getDistinctCombinedClientSideRequestStatistics()) {
+                addRequestInfoForStoreResponses(
+                    requestStats,
+                    snapshot,
+                    requestStats.getResponseStatisticsList());
+
+                addRequestInfoForStoreResponses(
+                    requestStats,
+                    snapshot,
+                    requestStats.getSupplementalResponseStatisticsList());
+
+                addRequestInfoForGatewayStatistics(requestStats, snapshot);
+
+                addRequestInfoForAddressResolution(
+                    requestStats,
+                    snapshot,
+                    requestStats.getAddressResolutionStatistics());
+            }
+
+            this.requestInfo = snapshot;
+
+            return snapshot;
         }
     }
 
@@ -551,7 +851,8 @@ public final class CosmosDiagnosticsContext {
                                                            ResourceType resourceType, OperationType operationType,
                                                            String operationId,
                                                            ConsistencyLevel consistencyLevel, Integer maxItemCount,
-                                                           CosmosDiagnosticsThresholds thresholds) {
+                                                           CosmosDiagnosticsThresholds thresholds, String trackingId,
+                                                           String connectionMode, String userAgent) {
 
                         return new CosmosDiagnosticsContext(
                             spanName,
@@ -564,7 +865,15 @@ public final class CosmosDiagnosticsContext {
                             operationId,
                             consistencyLevel,
                             maxItemCount,
-                            thresholds);
+                            thresholds,
+                            trackingId,
+                            connectionMode,
+                            userAgent);
+                    }
+
+                    @Override
+                    public CosmosDiagnosticsSystemUsageSnapshot createSystemUsageSnapshot(String cpu, String used, String available, int cpuCount) {
+                        return new CosmosDiagnosticsSystemUsageSnapshot(cpu, used, available, cpuCount);
                     }
 
                     @Override
@@ -664,6 +973,12 @@ public final class CosmosDiagnosticsContext {
                     public String getSpanName(CosmosDiagnosticsContext ctx) {
                         checkNotNull(ctx, "Argument 'ctx' must not be null.");
                         return ctx.getSpanName();
+                    }
+
+                    @Override
+                    public void setSamplingRateSnapshot(CosmosDiagnosticsContext ctx, double samplingRate) {
+                        checkNotNull(ctx, "Argument 'ctx' must not be null.");
+                        ctx.setSamplingRateSnapshot(samplingRate);
                     }
                 });
     }

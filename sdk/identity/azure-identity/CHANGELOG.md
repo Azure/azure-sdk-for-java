@@ -1,14 +1,120 @@
 # Release History
 
+## 1.11.0-beta.1 (Unreleased)
+
+### Features Added
+
+### Breaking Changes
+
+### Bugs Fixed
+
+### Other Changes
+
+## 1.10.1 (2023-09-10)
+
+### Other Changes
+#### Dependency Updates
+- Upgraded `azure-core` from `1.42.0` to version `1.43.0`.
+- Upgraded `azure-core-http-netty` from `1.13.6` to version `1.13.7`.
+
+## 1.10.0 (2023-08-09)
+
+### Features Added
+- Added `BrowserCustomizationOptions` to `InteractiveBrowserCredentialBuilder` to allow for customization of the browser window.
+
+### Other Changes
+- Renamed `enableSupportLogging` to `enableUnsafeSupportLogging`. This is a breaking change from 1.10.0-beta.1.
+- `DefaultAzureCredential` will try all developer credentials. Previously if a developer credential attempted to acquire a token and failed, it would stop the chain. Deployed credentials are unaffected.
+
+#### Dependency Updates
+- Upgraded `azure-core` from `1.41.0` to version `1.42.0`.
+- Upgraded `azure-core-http-netty` from `1.13.5` to version `1.13.6`.
+
+
+## 1.10.0-beta.1 (2023-07-24)
+
+### Features Added
+- Added CAE Authentication support for Service principal authentication.
+- Added the ability to log PII from MSAL using new `enableSupportLogging` API.
+
+### Other Changes
+
+#### Behavioral Breaking Change
+- CAE Authentication is disabled by default. It needs to be enabled by invoking `setEnableCae` on `TokenRequestContext` class.
+
+## 1.9.2 (2023-07-10)
+
+### Bugs Fixed
+- Azure CLI and Azure Developer CLI no longer pass `organizations` as a tenant value when retrieving a token. [#34387](https://github.com/Azure/azure-sdk-for-java/issues/34387)
+- `WorkloadIdentityCredential` now uses the tenant value specified in `DefaultAzureCredential` when authenticating with Azure Identity. [#35619](https://github.com/Azure/azure-sdk-for-java/pull/35619)
+
+### Other Changes
+#### Dependency Updates
+- Upgraded `azure-core` from `1.40.0` to version `1.41.0`.
+- Upgraded `azure-core-http-netty` from `1.13.4` to version `1.13.5`.
+
+## 1.9.1 (2023-06-06)
+
+### Other Changes
+#### Behavioral breaking change 
+- Moved `AzureDeveloperCliCredential` to the end of the `DefaultAzureCredential` chain.
+
+#### Dependency Updates
+- Upgraded `azure-core` from `1.38.0` to version `1.39.0`.
+- Upgraded `azure-core-http-netty` from `1.13.3` to version `1.13.4`.
+
+## 1.9.0 (2023-05-08)
+
+### Features Added
+
+#### Features Generally Available from v1.9.0-beta3
+- Added configurable timeout for developer credentials (Azure CLI, Azure Developer CLI)
+- Added `WorkloadIdentityCredential` to authenticate using workload identity in Azure Kubernetes.
+
+### Other Changes
+- renamed `DefaultAzureCredential.processTimeout` to `credentialProcessTimeout`.
+
+#### Dependency Updates
+- Upgraded `azure-core` from `1.38.0` to version `1.39.0`.
+
+## 1.8.3 (2023-05-01)
+
+### Other Changes
+
+#### Dependency Updates
+- Upgraded `msal4j` from `1.13.7` to version `1.13.8`.
+- Upgraded `msal4j-persistence-extension` from `1.1.0` to version `1.2.0`.
+
+## 1.9.0-beta.3 (2023-04-13)
+
+### Bugs Fixed
+- Add `disableInstanceDiscovery` to `DefaultAzureCredentialBuilder`
+
+### Other Changes
+- Removed feature from previous betas to compute refresh values for managed identity tokens.
+
+## 1.8.2 (2023-04-10)
+
+### Bugs Fixed
+
+- Fixed a bug in managed identity not properly URLEncoding a value. [#34375](https://github.com/Azure/azure-sdk-for-java/pull/34375)
+
+### Other Changes
+
+#### Dependency Updates
+- Upgraded `azure-core` from `1.37.0` to version `1.38.0`.
+- Upgraded `azure-core-http-netty` from `1.13.1` to version `1.13.2`.
+- Upgraded `msal4j` from `1.13.5` to version `1.13.7`.
+
 ## 1.9.0-beta.2 (2023-03-16)
 
 ### Features Added
 - Added CAE support to service principal authentication.
 - Pass more detailed refresh policy for managed identity tokens to MSAL.
+- Add configurable timeout for developer credentials (Azure CLI, Azure Developer CLI)
 
 ### Bugs Fixed
 - Fixed detection logic for az/azd.
-- Add `disableInstanceDiscovery` to `DefaultAzureCredentialBuilder`
 
 ## 1.8.1 (2023-03-06)
 

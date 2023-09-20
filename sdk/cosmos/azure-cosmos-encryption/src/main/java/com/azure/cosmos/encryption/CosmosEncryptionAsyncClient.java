@@ -222,7 +222,7 @@ public final class CosmosEncryptionAsyncClient implements Closeable {
             throw new IllegalArgumentException("Container without client encryption policy cannot be used");
         }
 
-        if (cosmosContainerResponse.getProperties().getClientEncryptionPolicy().getPolicyFormatVersion() > 1) {
+        if (cosmosContainerResponse.getProperties().getClientEncryptionPolicy().getPolicyFormatVersion() > 2) {
             throw new UnsupportedOperationException("This version of the Encryption library cannot be used with this " +
                 "container. Please upgrade to the latest version of the same.");
         }

@@ -36,6 +36,12 @@ public final class ExportRdbParameters {
     @JsonProperty(value = "preferred-data-archive-auth-method")
     private String preferredDataArchiveAuthMethod;
 
+    /*
+     * Subscription id of the storage container for data to be exported using ManagedIdentity.
+     */
+    @JsonProperty(value = "storage-subscription-id")
+    private String storageSubscriptionId;
+
     /** Creates an instance of ExportRdbParameters class. */
     public ExportRdbParameters() {
     }
@@ -119,6 +125,28 @@ public final class ExportRdbParameters {
      */
     public ExportRdbParameters withPreferredDataArchiveAuthMethod(String preferredDataArchiveAuthMethod) {
         this.preferredDataArchiveAuthMethod = preferredDataArchiveAuthMethod;
+        return this;
+    }
+
+    /**
+     * Get the storageSubscriptionId property: Subscription id of the storage container for data to be exported using
+     * ManagedIdentity.
+     *
+     * @return the storageSubscriptionId value.
+     */
+    public String storageSubscriptionId() {
+        return this.storageSubscriptionId;
+    }
+
+    /**
+     * Set the storageSubscriptionId property: Subscription id of the storage container for data to be exported using
+     * ManagedIdentity.
+     *
+     * @param storageSubscriptionId the storageSubscriptionId value to set.
+     * @return the ExportRdbParameters object itself.
+     */
+    public ExportRdbParameters withStorageSubscriptionId(String storageSubscriptionId) {
+        this.storageSubscriptionId = storageSubscriptionId;
         return this;
     }
 

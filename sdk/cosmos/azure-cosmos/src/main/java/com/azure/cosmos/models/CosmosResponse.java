@@ -47,6 +47,9 @@ public class CosmosResponse<T> {
     /**
      * Gets the maximum size limit for this entity (in megabytes (MB) for server resources and in count for master
      * resources).
+     * <p>
+     * For CosmosContainer, users will need to set {@link CosmosContainerRequestOptions#setQuotaInfoEnabled(boolean)} to true
+     * to get the quota information.
      *
      * @return the max resource quota.
      */

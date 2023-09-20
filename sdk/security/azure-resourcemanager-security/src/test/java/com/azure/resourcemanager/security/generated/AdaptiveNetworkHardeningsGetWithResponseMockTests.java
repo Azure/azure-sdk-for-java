@@ -31,7 +31,7 @@ public final class AdaptiveNetworkHardeningsGetWithResponseMockTests {
         ArgumentCaptor<HttpRequest> httpRequest = ArgumentCaptor.forClass(HttpRequest.class);
 
         String responseStr =
-            "{\"properties\":{\"rules\":[],\"rulesCalculationTime\":\"2021-07-26T18:28:35Z\",\"effectiveNetworkSecurityGroups\":[]},\"id\":\"mnn\",\"name\":\"ixyxvqbanosjt\",\"type\":\"irnb\"}";
+            "{\"properties\":{\"rules\":[],\"rulesCalculationTime\":\"2021-08-13T04:35:03Z\",\"effectiveNetworkSecurityGroups\":[]},\"id\":\"ybkekym\",\"name\":\"fztsi\",\"type\":\"sc\"}";
 
         Mockito.when(httpResponse.getStatusCode()).thenReturn(200);
         Mockito.when(httpResponse.getHeaders()).thenReturn(new HttpHeaders());
@@ -62,9 +62,9 @@ public final class AdaptiveNetworkHardeningsGetWithResponseMockTests {
         AdaptiveNetworkHardening response =
             manager
                 .adaptiveNetworkHardenings()
-                .getWithResponse("q", "btimpkjblor", "s", "hqhud", "musuaawja", com.azure.core.util.Context.NONE)
+                .getWithResponse("ktwtk", "ih", "pfliwo", "nguuzhwvla", "p", com.azure.core.util.Context.NONE)
                 .getValue();
 
-        Assertions.assertEquals(OffsetDateTime.parse("2021-07-26T18:28:35Z"), response.rulesCalculationTime());
+        Assertions.assertEquals(OffsetDateTime.parse("2021-08-13T04:35:03Z"), response.rulesCalculationTime());
     }
 }

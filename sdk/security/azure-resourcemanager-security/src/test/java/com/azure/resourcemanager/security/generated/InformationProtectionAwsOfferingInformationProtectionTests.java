@@ -13,16 +13,16 @@ public final class InformationProtectionAwsOfferingInformationProtectionTests {
     public void testDeserialize() throws Exception {
         InformationProtectionAwsOfferingInformationProtection model =
             BinaryData
-                .fromString("{\"cloudRoleArn\":\"toqxjh\"}")
+                .fromString("{\"cloudRoleArn\":\"atolekscbc\"}")
                 .toObject(InformationProtectionAwsOfferingInformationProtection.class);
-        Assertions.assertEquals("toqxjh", model.cloudRoleArn());
+        Assertions.assertEquals("atolekscbc", model.cloudRoleArn());
     }
 
     @org.junit.jupiter.api.Test
     public void testSerialize() throws Exception {
         InformationProtectionAwsOfferingInformationProtection model =
-            new InformationProtectionAwsOfferingInformationProtection().withCloudRoleArn("toqxjh");
+            new InformationProtectionAwsOfferingInformationProtection().withCloudRoleArn("atolekscbc");
         model = BinaryData.fromObject(model).toObject(InformationProtectionAwsOfferingInformationProtection.class);
-        Assertions.assertEquals("toqxjh", model.cloudRoleArn());
+        Assertions.assertEquals("atolekscbc", model.cloudRoleArn());
     }
 }

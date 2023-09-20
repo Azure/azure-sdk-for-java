@@ -24,13 +24,6 @@ public interface MySqlManagementClient {
     String getEndpoint();
 
     /**
-     * Gets Api Version.
-     *
-     * @return the apiVersion value.
-     */
-    String getApiVersion();
-
-    /**
      * Gets The HTTP pipeline to send requests through.
      *
      * @return the httpPipeline value.
@@ -45,11 +38,25 @@ public interface MySqlManagementClient {
     Duration getDefaultPollInterval();
 
     /**
+     * Gets the AzureADAdministratorsClient object to access its operations.
+     *
+     * @return the AzureADAdministratorsClient object.
+     */
+    AzureADAdministratorsClient getAzureADAdministrators();
+
+    /**
      * Gets the BackupsClient object to access its operations.
      *
      * @return the BackupsClient object.
      */
     BackupsClient getBackups();
+
+    /**
+     * Gets the BackupAndExportsClient object to access its operations.
+     *
+     * @return the BackupAndExportsClient object.
+     */
+    BackupAndExportsClient getBackupAndExports();
 
     /**
      * Gets the ConfigurationsClient object to access its operations.
@@ -134,11 +141,4 @@ public interface MySqlManagementClient {
      * @return the OperationsClient object.
      */
     OperationsClient getOperations();
-
-    /**
-     * Gets the AzureADAdministratorsClient object to access its operations.
-     *
-     * @return the AzureADAdministratorsClient object.
-     */
-    AzureADAdministratorsClient getAzureADAdministrators();
 }

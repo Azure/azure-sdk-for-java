@@ -119,6 +119,39 @@ public final class ReadWriteDatabase extends DatabaseInner {
     }
 
     /**
+     * Get the keyVaultProperties property: KeyVault properties for the database encryption.
+     *
+     * @return the keyVaultProperties value.
+     */
+    public KeyVaultProperties keyVaultProperties() {
+        return this.innerProperties() == null ? null : this.innerProperties().keyVaultProperties();
+    }
+
+    /**
+     * Set the keyVaultProperties property: KeyVault properties for the database encryption.
+     *
+     * @param keyVaultProperties the keyVaultProperties value to set.
+     * @return the ReadWriteDatabase object itself.
+     */
+    public ReadWriteDatabase withKeyVaultProperties(KeyVaultProperties keyVaultProperties) {
+        if (this.innerProperties() == null) {
+            this.innerProperties = new ReadWriteDatabaseProperties();
+        }
+        this.innerProperties().withKeyVaultProperties(keyVaultProperties);
+        return this;
+    }
+
+    /**
+     * Get the suspensionDetails property: The database suspension details. If the database is suspended, this object
+     * contains information related to the database's suspension state.
+     *
+     * @return the suspensionDetails value.
+     */
+    public SuspensionDetails suspensionDetails() {
+        return this.innerProperties() == null ? null : this.innerProperties().suspensionDetails();
+    }
+
+    /**
      * Validates the instance.
      *
      * @throws IllegalArgumentException thrown if the instance is not valid.

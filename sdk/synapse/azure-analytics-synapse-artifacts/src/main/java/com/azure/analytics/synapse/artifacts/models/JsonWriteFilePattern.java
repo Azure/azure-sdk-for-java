@@ -17,6 +17,14 @@ public final class JsonWriteFilePattern extends ExpandableStringEnum<JsonWriteFi
     public static final JsonWriteFilePattern ARRAY_OF_OBJECTS = fromString("arrayOfObjects");
 
     /**
+     * Creates a new instance of JsonWriteFilePattern value.
+     *
+     * @deprecated Use the {@link #fromString(String)} factory method.
+     */
+    @Deprecated
+    public JsonWriteFilePattern() {}
+
+    /**
      * Creates or finds a JsonWriteFilePattern from its string representation.
      *
      * @param name a name to look for.

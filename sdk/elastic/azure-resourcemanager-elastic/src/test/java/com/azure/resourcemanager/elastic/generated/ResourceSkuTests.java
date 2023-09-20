@@ -7,19 +7,18 @@ package com.azure.resourcemanager.elastic.generated;
 import com.azure.core.util.BinaryData;
 import com.azure.resourcemanager.elastic.models.ResourceSku;
 import org.junit.jupiter.api.Assertions;
-import org.junit.jupiter.api.Test;
 
 public final class ResourceSkuTests {
-    @Test
-    public void testDeserialize() {
-        ResourceSku model = BinaryData.fromString("{\"name\":\"jqul\"}").toObject(ResourceSku.class);
-        Assertions.assertEquals("jqul", model.name());
+    @org.junit.jupiter.api.Test
+    public void testDeserialize() throws Exception {
+        ResourceSku model = BinaryData.fromString("{\"name\":\"joxzjnchgejspodm\"}").toObject(ResourceSku.class);
+        Assertions.assertEquals("joxzjnchgejspodm", model.name());
     }
 
-    @Test
-    public void testSerialize() {
-        ResourceSku model = new ResourceSku().withName("jqul");
+    @org.junit.jupiter.api.Test
+    public void testSerialize() throws Exception {
+        ResourceSku model = new ResourceSku().withName("joxzjnchgejspodm");
         model = BinaryData.fromObject(model).toObject(ResourceSku.class);
-        Assertions.assertEquals("jqul", model.name());
+        Assertions.assertEquals("joxzjnchgejspodm", model.name());
     }
 }

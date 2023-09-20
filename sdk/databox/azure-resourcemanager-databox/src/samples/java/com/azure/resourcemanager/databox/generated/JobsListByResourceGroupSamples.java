@@ -7,7 +7,7 @@ package com.azure.resourcemanager.databox.generated;
 /** Samples for Jobs ListByResourceGroup. */
 public final class JobsListByResourceGroupSamples {
     /*
-     * x-ms-original-file: specification/databox/resource-manager/Microsoft.DataBox/stable/2021-03-01/examples/JobsListByResourceGroup.json
+     * x-ms-original-file: specification/databox/resource-manager/Microsoft.DataBox/stable/2022-12-01/examples/JobsListByResourceGroup.json
      */
     /**
      * Sample code: JobsListByResourceGroup.
@@ -15,6 +15,6 @@ public final class JobsListByResourceGroupSamples {
      * @param manager Entry point to DataBoxManager.
      */
     public static void jobsListByResourceGroup(com.azure.resourcemanager.databox.DataBoxManager manager) {
-        manager.jobs().listByResourceGroup("SdkRg5154", null, com.azure.core.util.Context.NONE);
+        manager.jobs().listByResourceGroup("YourResourceGroupName", null, com.azure.core.util.Context.NONE);
     }
 }

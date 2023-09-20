@@ -78,7 +78,7 @@ public final class CheckNameAvailabilitiesClientImpl implements CheckNameAvailab
      *     Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    private Mono<Response<NameAvailabilityInner>> executeWithResponseAsync(
+    public Mono<Response<NameAvailabilityInner>> executeWithResponseAsync(
         CheckNameAvailabilityRequest nameAvailabilityRequest) {
         if (this.client.getEndpoint() == null) {
             return Mono
@@ -169,7 +169,7 @@ public final class CheckNameAvailabilitiesClientImpl implements CheckNameAvailab
      * @return represents a resource name availability on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    private Mono<NameAvailabilityInner> executeAsync(CheckNameAvailabilityRequest nameAvailabilityRequest) {
+    public Mono<NameAvailabilityInner> executeAsync(CheckNameAvailabilityRequest nameAvailabilityRequest) {
         return executeWithResponseAsync(nameAvailabilityRequest).flatMap(res -> Mono.justOrEmpty(res.getValue()));
     }
 

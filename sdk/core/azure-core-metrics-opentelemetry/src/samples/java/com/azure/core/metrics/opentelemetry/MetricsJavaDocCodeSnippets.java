@@ -93,9 +93,9 @@ public class MetricsJavaDocCodeSnippets {
             .registerMetricReader(PeriodicMetricReader.builder(OtlpGrpcMetricExporter.builder().build()).build())
             .build();
 
-        // Pass OpenTelemetry meterProvider to MetricsOptions.
+        // Pass OpenTelemetry instance to MetricsOptions.
         MetricsOptions customMetricsOptions = new OpenTelemetryMetricsOptions()
-            .setProvider(meterProvider);
+            .setOpenTelemetry(OpenTelemetrySdk.builder().setMeterProvider(meterProvider).build());
 
         // configure Azure Client to use customMetricsOptions - it will use meterProvider
         // to create meters and instruments
@@ -133,9 +133,9 @@ public class MetricsJavaDocCodeSnippets {
 
         Tracer tracer = openTelemetry.getTracer("azure-core-samples");
 
-        // pass custom OpenTelemetry SdkMeterProvider to MetricsOptions
+        // pass custom OpenTelemetry instance to MetricsOptions
         MetricsOptions metricsOptions = new OpenTelemetryMetricsOptions()
-            .setProvider(openTelemetry.getMeterProvider());
+            .setOpenTelemetry(openTelemetry);
 
         // configure Azure Client to use customized MetricOptions
         AzureClient sampleClient = new AzureClientBuilder()

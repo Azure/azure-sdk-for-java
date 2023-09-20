@@ -35,7 +35,7 @@ public final class ExperimentsCreateOrUpdateMockTests {
         ArgumentCaptor<HttpRequest> httpRequest = ArgumentCaptor.forClass(HttpRequest.class);
 
         String responseStr =
-            "{\"properties\":{\"description\":\"ycslevufuztcktyh\",\"endpointA\":{\"name\":\"edcg\",\"endpoint\":\"lwmmrqzzrrjv\"},\"endpointB\":{\"name\":\"ydzgkrvqeevtoe\",\"endpoint\":\"yutnwytpzdmov\"},\"enabledState\":\"Enabled\",\"resourceState\":\"Enabling\",\"status\":\"wzqa\",\"scriptFileUri\":\"lgzurig\"},\"location\":\"aecxndtic\",\"tags\":{\"qtmldgxo\":\"vzm\"},\"id\":\"firclnpkciayz\",\"name\":\"iykhy\",\"type\":\"wf\"}";
+            "{\"properties\":{\"description\":\"ffeycx\",\"endpointA\":{\"name\":\"piymerteea\",\"endpoint\":\"xqiekkkzddrtk\"},\"endpointB\":{\"name\":\"jbmxvavre\",\"endpoint\":\"eesvecu\"},\"enabledState\":\"Enabled\",\"resourceState\":\"Deleting\",\"status\":\"s\",\"scriptFileUri\":\"prtujwsawdd\"},\"location\":\"ibabxvititvtzeex\",\"tags\":{\"pypqtgsfj\":\"xtfglecdmdqb\",\"db\":\"cbslhhx\",\"irudh\":\"vodhtn\",\"es\":\"m\"},\"id\":\"kdlpa\",\"name\":\"zrcxfailcfxwmdbo\",\"type\":\"dfgsftufqobrj\"}";
 
         Mockito.when(httpResponse.getStatusCode()).thenReturn(200);
         Mockito.when(httpResponse.getHeaders()).thenReturn(new HttpHeaders());
@@ -66,23 +66,23 @@ public final class ExperimentsCreateOrUpdateMockTests {
         Experiment response =
             manager
                 .experiments()
-                .define("y")
-                .withRegion("negvmnvuqe")
-                .withExistingNetworkExperimentProfile("ggcula", "z")
-                .withTags(mapOf("est", "dspastjbkkdmfl"))
-                .withDescription("ogtqxepnylbf")
-                .withEndpointA(new Endpoint().withName("lyjt").withEndpoint("of"))
-                .withEndpointB(new Endpoint().withName("vfcibyfmowux").withEndpoint("jpvd"))
-                .withEnabledState(State.DISABLED)
+                .define("ao")
+                .withRegion("zbezkgimsidxasic")
+                .withExistingNetworkExperimentProfile("m", "yefrpmpdnqqska")
+                .withTags(mapOf("gat", "vvjskgfmocwahp", "kzyb", "eaahhvjhhn", "yxkyxvx", "jjidjk"))
+                .withDescription("mbnpqf")
+                .withEndpointA(new Endpoint().withName("lkzmegnitgvkxl").withEndpoint("qdrfegcealzxwhc"))
+                .withEndpointB(new Endpoint().withName("ymo").withEndpoint("hlwigdivbkbxg"))
+                .withEnabledState(State.ENABLED)
                 .create();
 
-        Assertions.assertEquals("aecxndtic", response.location());
-        Assertions.assertEquals("vzm", response.tags().get("qtmldgxo"));
-        Assertions.assertEquals("ycslevufuztcktyh", response.description());
-        Assertions.assertEquals("edcg", response.endpointA().name());
-        Assertions.assertEquals("lwmmrqzzrrjv", response.endpointA().endpoint());
-        Assertions.assertEquals("ydzgkrvqeevtoe", response.endpointB().name());
-        Assertions.assertEquals("yutnwytpzdmov", response.endpointB().endpoint());
+        Assertions.assertEquals("ibabxvititvtzeex", response.location());
+        Assertions.assertEquals("xtfglecdmdqb", response.tags().get("pypqtgsfj"));
+        Assertions.assertEquals("ffeycx", response.description());
+        Assertions.assertEquals("piymerteea", response.endpointA().name());
+        Assertions.assertEquals("xqiekkkzddrtk", response.endpointA().endpoint());
+        Assertions.assertEquals("jbmxvavre", response.endpointB().name());
+        Assertions.assertEquals("eesvecu", response.endpointB().endpoint());
         Assertions.assertEquals(State.ENABLED, response.enabledState());
     }
 

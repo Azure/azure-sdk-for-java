@@ -55,8 +55,7 @@ public final class ExternalUsersClientImpl implements ExternalUsersClient {
     public interface ExternalUsersService {
         @Headers({"Content-Type: application/json"})
         @Post(
-            "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Elastic/monitors"
-                + "/{monitorName}/createOrUpdateExternalUser")
+            "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Elastic/monitors/{monitorName}/createOrUpdateExternalUser")
         @ExpectedResponses({200})
         @UnexpectedResponseExceptionType(ManagementException.class)
         Mono<Response<ExternalUserCreationResponseInner>> createOrUpdate(

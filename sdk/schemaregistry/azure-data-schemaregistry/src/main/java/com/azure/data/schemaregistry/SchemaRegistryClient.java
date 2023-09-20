@@ -17,10 +17,10 @@ import com.azure.core.util.logging.ClientLogger;
 import com.azure.data.schemaregistry.implementation.AzureSchemaRegistryImpl;
 import com.azure.data.schemaregistry.implementation.SchemaRegistryHelper;
 import com.azure.data.schemaregistry.implementation.models.ErrorException;
-import com.azure.data.schemaregistry.implementation.models.SchemasGetSchemaVersionHeaders;
-import com.azure.data.schemaregistry.implementation.models.SchemasQueryIdByContentHeaders;
 import com.azure.data.schemaregistry.implementation.models.SchemaFormatImpl;
 import com.azure.data.schemaregistry.implementation.models.SchemasGetByIdHeaders;
+import com.azure.data.schemaregistry.implementation.models.SchemasGetSchemaVersionHeaders;
+import com.azure.data.schemaregistry.implementation.models.SchemasQueryIdByContentHeaders;
 import com.azure.data.schemaregistry.implementation.models.SchemasRegisterHeaders;
 import com.azure.data.schemaregistry.models.SchemaFormat;
 import com.azure.data.schemaregistry.models.SchemaProperties;
@@ -34,13 +34,42 @@ import java.io.UncheckedIOException;
 import java.nio.charset.StandardCharsets;
 import java.util.Objects;
 
-
 /**
- * HTTP-based client that interacts with Azure Schema Registry service to store and retrieve schemas on demand.
+ * {@link SchemaRegistryClient} is an HTTP-based client that interacts with Azure Schema Registry service to store and
+ * retrieve schemas on demand.   Azure Schema Registry supports multiple schema formats such as Avro, JSON, and custom
+ * formats.
  *
- * <p><strong>Register a schema</strong></p>
- * Registering a schema returns a unique schema id that can be used to quickly associate payloads with that schema.
- * <!-- src_embed com.azure.data.schemaregistry.schemaregistryclient.registerschema -->
+ * <p><strong>Sample: Construct a {@link SchemaRegistryClient}</strong></p>
+ *
+ * <p>The following code sample demonstrates the creation of the synchronous client
+ * {@link com.azure.data.schemaregistry.SchemaRegistryClient}.  The {@code fullyQualifiedNamespace} is the Event Hubs
+ * Namespace's host name.  It is listed under the "Essentials" panel after navigating to the Event Hubs Namespace via
+ * Azure Portal.  The credential used is {@code DefaultAzureCredential} for authentication, which is appropriate
+ * for most scenarios, including local development and production environments. Additionally, we recommend using
+ * <a href="https://learn.microsoft.com/azure/active-directory/managed-identities-azure-resources/">managed identity</a>
+ * for authentication in production environments.
+ * You can find more information on different ways of authenticating and their corresponding credential types in the
+ * <a href="https://learn.microsoft.com/java/api/overview/azure/identity-readme">Azure Identity documentation"</a>.
+ * </p>
+ *
+ * <!-- src_embed com.azure.data.schemaregistry.schemaregistryclient.construct -->
+ * <pre>
+ * DefaultAzureCredential azureCredential = new DefaultAzureCredentialBuilder&#40;&#41;
+ *     .build&#40;&#41;;
+ * SchemaRegistryClient client = new SchemaRegistryClientBuilder&#40;&#41;
+ *     .fullyQualifiedNamespace&#40;&quot;https:&#47;&#47;&lt;your-schema-registry-endpoint&gt;.servicebus.windows.net&quot;&#41;
+ *     .credential&#40;azureCredential&#41;
+ *     .buildClient&#40;&#41;;
+ * </pre>
+ * <!-- end com.azure.data.schemaregistry.schemaregistryclient.construct -->
+ *
+ * <p><strong>Sample: Register a schema</strong></p>
+ *
+ * <p>The following code sample demonstrates registering an Avro schema.  The
+ * {@link com.azure.data.schemaregistry.models.SchemaProperties} returned contains the schema's id.  This id uniquely
+ * identifies the schema and can be used to quickly associate payloads with that schema.</p>
+ *
+ * <!-- src_embed com.azure.data.schemaregistry.schemaregistryclient.registerschema-avro -->
  * <pre>
  * String schema = &quot;&#123;&#92;&quot;type&#92;&quot;:&#92;&quot;enum&#92;&quot;,&#92;&quot;name&#92;&quot;:&#92;&quot;TEST&#92;&quot;,&#92;&quot;symbols&#92;&quot;:[&#92;&quot;UNIT&#92;&quot;,&#92;&quot;INTEGRATION&#92;&quot;]&#125;&quot;;
  * SchemaProperties properties = client.registerSchema&#40;&quot;&#123;schema-group&#125;&quot;, &quot;&#123;schema-name&#125;&quot;, schema,
@@ -48,10 +77,16 @@ import java.util.Objects;
  *
  * System.out.printf&#40;&quot;Schema id: %s, schema format: %s%n&quot;, properties.getId&#40;&#41;, properties.getFormat&#40;&#41;&#41;;
  * </pre>
- * <!-- end com.azure.data.schemaregistry.schemaregistryclient.registerschema -->
+ * <!-- end com.azure.data.schemaregistry.schemaregistryclient.registerschema-avro -->
  *
- * <p><strong>Get a schema</strong></p>
- * <!-- src_embed com.azure.data.schemaregistry.schemaregistryclient.getSchema -->
+ * <p><strong>Sample: Getting the schema using a schema id</strong></p>
+ *
+ * <p>The following code sample demonstrates how to fetch a schema using its schema id.  The schema id can be found in
+ * {@link com.azure.data.schemaregistry.models.SchemaProperties#getId()} when a schema is registered or using
+ * {@link com.azure.data.schemaregistry.SchemaRegistryClient#getSchemaProperties(java.lang.String, java.lang.String, java.lang.String, com.azure.data.schemaregistry.models.SchemaFormat)}.
+ * </p>
+ *
+ * <!-- src_embed com.azure.data.schemaregistry.schemaregistryclient.getschema -->
  * <pre>
  * SchemaRegistrySchema schema = client.getSchema&#40;&quot;&#123;schema-id&#125;&quot;&#41;;
  *
@@ -59,27 +94,67 @@ import java.util.Objects;
  *     schema.getProperties&#40;&#41;.getFormat&#40;&#41;&#41;;
  * System.out.println&#40;&quot;Schema contents: &quot; + schema.getDefinition&#40;&#41;&#41;;
  * </pre>
- * <!-- end com.azure.data.schemaregistry.schemaregistryclient.getSchema -->
+ * <!-- end com.azure.data.schemaregistry.schemaregistryclient.getschema -->
  *
- * <p><strong>Get a schema's properties</strong></p>
- * <!-- src_embed com.azure.data.schemaregistry.schemaregistryclient.getSchemaProperties -->
+ * <p><strong>Sample: Get a schema's properties</strong></p>
+ *
+ * <p>The following code sample demonstrates how to get a schema's properties given its schema contents.  Fetching
+ * schema properties is useful in cases where developers want to get the unique schema id.</p>
+ *
+ * <!-- src_embed com.azure.data.schemaregistry.schemaregistryclient.getschemaproperties -->
  * <pre>
- * String schema = &quot;&#123;&#92;&quot;type&#92;&quot;:&#92;&quot;enum&#92;&quot;,&#92;&quot;name&#92;&quot;:&#92;&quot;TEST&#92;&quot;,&#92;&quot;symbols&#92;&quot;:[&#92;&quot;UNIT&#92;&quot;,&#92;&quot;INTEGRATION&#92;&quot;]&#125;&quot;;
- * SchemaProperties properties = client.getSchemaProperties&#40;&quot;&#123;schema-group&#125;&quot;, &quot;&#123;schema-name&#125;&quot;, schema,
- *     SchemaFormat.AVRO&#41;;
+ * String schemaContent = &quot;&#123;&#92;n&quot;
+ *     + &quot;    &#92;&quot;type&#92;&quot; : &#92;&quot;record&#92;&quot;,  &#92;n&quot;
+ *     + &quot;    &#92;&quot;namespace&#92;&quot; : &#92;&quot;SampleSchemaNameSpace&#92;&quot;, &#92;n&quot;
+ *     + &quot;    &#92;&quot;name&#92;&quot; : &#92;&quot;Person&#92;&quot;, &#92;n&quot;
+ *     + &quot;    &#92;&quot;fields&#92;&quot; : [&#92;n&quot;
+ *     + &quot;        &#123; &#92;n&quot;
+ *     + &quot;            &#92;&quot;name&#92;&quot; : &#92;&quot;FirstName&#92;&quot; , &#92;&quot;type&#92;&quot; : &#92;&quot;string&#92;&quot; &#92;n&quot;
+ *     + &quot;        &#125;, &#92;n&quot;
+ *     + &quot;        &#123; &#92;n&quot;
+ *     + &quot;            &#92;&quot;name&#92;&quot; : &#92;&quot;LastName&#92;&quot;, &#92;&quot;type&#92;&quot; : &#92;&quot;string&#92;&quot; &#92;n&quot;
+ *     + &quot;        &#125;&#92;n&quot;
+ *     + &quot;    ]&#92;n&quot;
+ *     + &quot;&#125;&quot;;
+ * SchemaProperties properties = client.getSchemaProperties&#40;&quot;&#123;schema-group&#125;&quot;, &quot;&#123;schema-name&#125;&quot;,
+ *     schemaContent, SchemaFormat.AVRO&#41;;
  *
- * System.out.println&#40;&quot;The schema id: &quot; + properties.getId&#40;&#41;&#41;;
+ * System.out.println&#40;&quot;Schema id: &quot; + properties.getId&#40;&#41;&#41;;
+ * System.out.println&#40;&quot;Format: &quot; + properties.getFormat&#40;&#41;&#41;;
+ * System.out.println&#40;&quot;Version: &quot; + properties.getVersion&#40;&#41;&#41;;
  * </pre>
- * <!-- end com.azure.data.schemaregistry.schemaregistryclient.getSchemaProperties -->
+ * <!-- end com.azure.data.schemaregistry.schemaregistryclient.getschemaproperties -->
  *
- * @see SchemaRegistryClientBuilder Builder object instantiation and additional samples.
+ * <p><strong>Sample: Get a schema with its HTTP response</strong></p>
+ *
+ * <p>The following code sample demonstrates how to get a schema using its group name, schema name, and version number.
+ * In addition, it gets the underlying HTTP response that backs this service call.  This is useful in cases where
+ * customers want more insight into the HTTP request/response.</p>
+ *
+ * <!-- src_embed com.azure.data.schemaregistry.schemaregistryclient.getschemawithresponse -->
+ * <pre>
+ * Response&lt;SchemaRegistrySchema&gt; response = client.getSchemaWithResponse&#40;&quot;&#123;group-name&#125;&quot;,
+ *     &quot;&#123;schema-name&#125;&quot;, 1, Context.NONE&#41;;
+ *
+ * System.out.println&#40;&quot;Headers in HTTP response: &quot;&#41;;
+ * response.getHeaders&#40;&#41;.forEach&#40;header -&gt; System.out.printf&#40;&quot;%s: %s%n&quot;, header.getName&#40;&#41;, header.getValue&#40;&#41;&#41;&#41;;
+ *
+ * SchemaRegistrySchema schema = response.getValue&#40;&#41;;
+ *
+ * System.out.printf&#40;&quot;Schema id: %s, schema format: %s%n&quot;, schema.getProperties&#40;&#41;.getId&#40;&#41;,
+ *     schema.getProperties&#40;&#41;.getFormat&#40;&#41;&#41;;
+ * System.out.println&#40;&quot;Schema contents: &quot; + schema.getDefinition&#40;&#41;&#41;;
+ * </pre>
+ * <!-- end com.azure.data.schemaregistry.schemaregistryclient.getschemawithresponse -->
+ *
+ * @see SchemaRegistryClientBuilder
+ * @see SchemaRegistryAsyncClient
  */
 @ServiceClient(builder = SchemaRegistryClientBuilder.class)
 public final class SchemaRegistryClient {
     private static final String HTTP_REST_PROXY_SYNC_PROXY_ENABLE = "com.azure.core.http.restproxy.syncproxy.enable";
     private final ClientLogger logger = new ClientLogger(SchemaRegistryClient.class);
     private final AzureSchemaRegistryImpl restService;
-
 
     SchemaRegistryClient(AzureSchemaRegistryImpl restService) {
         this.restService = restService;
@@ -98,13 +173,14 @@ public final class SchemaRegistryClient {
     }
 
     /**
-     * Registers a new schema in the specified schema group with the given schema name. If a schema
-     * <b>does not exist</b>does not exist with the same {@code groupName}, {@code name}, {@code format}, and
-     * {@code schemaDefinition}, it is added to the Schema Registry Instance and assigned a schema id. If a schema
-     * exists with a matching {@code groupName}, {@code name}, {@code format}, and {@code schemaDefinition}, the id of
-     * that schema is returned. If the Schema Registry instance contains an existing {@code groupName}, {@code name},
-     * and {@code format} but the {@code schemaDefinition} is different, it is considered a new version, and schema id
-     * is assigned to it.
+     * <p>Registers a new schema in the specified schema group with the given schema name.</p>
+     *
+     * <p>If a schema <b>does not exist</b> with the same {@code groupName}, {@code name}, {@code format}, and
+     * {@code schemaDefinition}, it is added to Schema Registry. If a schema exists with a matching {@code groupName},
+     * {@code name}, {@code format}, and {@code schemaDefinition}, the id of that schema is returned. If the Schema
+     * Registry instance contains an existing {@code groupName}, {@code name}, and {@code format} but the
+     * {@code schemaDefinition} is different, it is considered a new version; it will receive a new schema id and that
+     * will be returned.</p>
      *
      * @param groupName The schema group.
      * @param name The schema name.
@@ -124,19 +200,20 @@ public final class SchemaRegistryClient {
     }
 
     /**
-     * Registers a new schema in the specified schema group with the given schema name. If a schema
-     * <b>does not exist</b>does not exist with the same {@code groupName}, {@code name}, {@code format}, and
-     * {@code schemaDefinition}, it is added to the Schema Registry Instance and assigned a schema id. If a schema
-     * exists with a matching {@code groupName}, {@code name}, {@code format}, and {@code schemaDefinition}, the id of
-     * that schema is returned. If the Schema Registry instance contains an existing {@code groupName}, {@code name},
-     * and {@code format} but the {@code schemaDefinition} is different, it is considered a new version, and schema id
-     * is assigned to it.
+     * <p>Registers a new schema in the specified schema group with the given schema name.</p>
+     *
+     * <p>If a schema <b>does not exist</b> with the same {@code groupName}, {@code name}, {@code format}, and
+     * {@code schemaDefinition}, it is added to Schema Registry. If a schema exists with a matching {@code groupName},
+     * {@code name}, {@code format}, and {@code schemaDefinition}, the id of that schema is returned. If the Schema
+     * Registry instance contains an existing {@code groupName}, {@code name}, and {@code format} but the
+     * {@code schemaDefinition} is different, it is considered a new version; it will receive a new schema id and that
+     * will be returned.</p>
      *
      * @param groupName The schema group.
      * @param name The schema name.
      * @param schemaDefinition The string representation of the schema.
      * @param format The serialization type of this schema.
-     * @param context The context to pass to the Http pipeline.
+     * @param context The context to pass to the HTTP pipeline.
      *
      * @return The schema properties on successful registration of the schema.
      *

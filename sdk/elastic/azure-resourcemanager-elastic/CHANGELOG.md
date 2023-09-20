@@ -1,6 +1,6 @@
 # Release History
 
-## 1.0.0-beta.3 (Unreleased)
+## 1.0.0-beta.5 (Unreleased)
 
 ### Features Added
 
@@ -9,6 +9,84 @@
 ### Bugs Fixed
 
 ### Other Changes
+
+## 1.0.0-beta.4 (2023-05-23)
+
+- Azure Resource Manager elastic client library for Java. This package contains Microsoft Azure SDK for elastic Management SDK.  Package tag package-2023-02-01-preview. For documentation on how to use this package, please see [Azure Management Libraries for Java](https://aka.ms/azsdk/java/mgmt).
+
+### Breaking Changes
+
+#### `models.ElasticVersionsListResponse` was modified
+
+* `java.util.List value()` -> `java.util.List value()`
+* `innerModel()` was removed
+* `java.lang.String nextLink()` -> `java.lang.String nextLink()`
+
+#### `models.UserApiKeyResponse` was modified
+
+* `apiKey()` was removed
+
+#### `models.ElasticVersions` was modified
+
+* `models.ElasticVersionsListResponse list(java.lang.String)` -> `com.azure.core.http.rest.PagedIterable list(java.lang.String)`
+* `listWithResponse(java.lang.String,com.azure.core.util.Context)` was removed
+
+### Features Added
+
+* `models.ElasticVersionListProperties` was added
+
+* `models.ElasticVersionListFormat` was added
+
+* `models.UserApiKeyResponseProperties` was added
+
+#### `models.ElasticVersionsListResponse` was modified
+
+* `withValue(java.util.List)` was added
+* `validate()` was added
+* `withNextLink(java.lang.String)` was added
+
+#### `models.UserApiKeyResponse` was modified
+
+* `properties()` was added
+
+#### `models.ElasticVersions` was modified
+
+* `list(java.lang.String,com.azure.core.util.Context)` was added
+
+## 1.0.0-beta.3 (2023-04-18)
+
+- Azure Resource Manager elastic client library for Java. This package contains Microsoft Azure SDK for elastic Management SDK.  Package tag package-2023-02-01-preview. For documentation on how to use this package, please see [Azure Management Libraries for Java](https://aka.ms/azsdk/java/mgmt).
+
+### Features Added
+
+* `models.MarketplaceSaaSInfoMarketplaceSubscription` was added
+
+* `models.Organizations` was added
+
+* `models.UserEmailId` was added
+
+* `models.ElasticVersionsListResponse` was added
+
+* `models.UserApiKeyResponse` was added
+
+* `models.MarketplaceSaaSInfo` was added
+
+* `models.ElasticVersions` was added
+
+#### `models.DeploymentInfoResponse` was modified
+
+* `deploymentUrl()` was added
+* `marketplaceSaasInfo()` was added
+
+#### `models.MonitorProperties` was modified
+
+* `generateApiKey()` was added
+* `withGenerateApiKey(java.lang.Boolean)` was added
+
+#### `ElasticManager` was modified
+
+* `elasticVersions()` was added
+* `organizations()` was added
 
 ## 1.0.0-beta.2 (2022-11-23)
 

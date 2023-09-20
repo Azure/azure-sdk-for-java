@@ -9,7 +9,7 @@ import com.fasterxml.jackson.annotation.JsonProperty;
 
 /** Describes a single user-assigned identity associated with the application. */
 @Fluent
-public class UserIdentity {
+public final class UserIdentity {
     /*
      * the object identifier of the Service Principal which this identity represents.
      */

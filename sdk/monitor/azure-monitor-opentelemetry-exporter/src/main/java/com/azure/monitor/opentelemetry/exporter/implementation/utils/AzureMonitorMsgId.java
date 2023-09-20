@@ -21,7 +21,8 @@ public enum AzureMonitorMsgId {
     EXPORTER_MAPPING_ERROR("2110"),
     BATCH_ITEM_PROCESSOR_ERROR("2111"),
     APP_ID_ERROR("2112"),
-    FRIENDLY_NETWORK_ERROR("2113");
+    FRIENDLY_NETWORK_ERROR("2113"),
+    FAIL_TO_SEND_STATSBEAT_ERROR("2114");
 
     private final String value;
 

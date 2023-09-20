@@ -8,32 +8,61 @@ import com.azure.core.annotation.Fluent;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import java.util.List;
 
-/** Collection of participants in a room. */
+/** A collection of participants in a room. */
 @Fluent
 public final class ParticipantsCollection {
     /*
-     * Room Participants.
+     * A collection of participants.
      */
-    @JsonProperty(value = "participants", required = true)
-    private List<RoomParticipant> participants;
+    @JsonProperty(value = "value", required = true)
+    private List<RoomParticipant> value;
+
+    /*
+     * If there are more participants that can be retrieved, the next link will be populated.
+     */
+    @JsonProperty(value = "nextLink")
+    private String nextLink;
+
+    /** Creates an instance of ParticipantsCollection class. */
+    public ParticipantsCollection() {}
 
     /**
-     * Get the participants property: Room Participants.
+     * Get the value property: A collection of participants.
      *
-     * @return the participants value.
+     * @return the value value.
      */
-    public List<RoomParticipant> getParticipants() {
-        return this.participants;
+    public List<RoomParticipant> getValue() {
+        return this.value;
     }
 
     /**
-     * Set the participants property: Room Participants.
+     * Set the value property: A collection of participants.
      *
-     * @param participants the participants value to set.
+     * @param value the value value to set.
      * @return the ParticipantsCollection object itself.
      */
-    public ParticipantsCollection setParticipants(List<RoomParticipant> participants) {
-        this.participants = participants;
+    public ParticipantsCollection setValue(List<RoomParticipant> value) {
+        this.value = value;
+        return this;
+    }
+
+    /**
+     * Get the nextLink property: If there are more participants that can be retrieved, the next link will be populated.
+     *
+     * @return the nextLink value.
+     */
+    public String getNextLink() {
+        return this.nextLink;
+    }
+
+    /**
+     * Set the nextLink property: If there are more participants that can be retrieved, the next link will be populated.
+     *
+     * @param nextLink the nextLink value to set.
+     * @return the ParticipantsCollection object itself.
+     */
+    public ParticipantsCollection setNextLink(String nextLink) {
+        this.nextLink = nextLink;
         return this;
     }
 }

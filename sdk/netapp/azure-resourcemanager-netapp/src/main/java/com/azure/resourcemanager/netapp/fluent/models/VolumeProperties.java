@@ -171,7 +171,7 @@ public final class VolumeProperties {
 
     /*
      * If enabled (true) the volume will contain a read-only snapshot directory which provides access to each of the
-     * volume's snapshots (default to true).
+     * volume's snapshots (defaults to true).
      */
     @JsonProperty(value = "snapshotDirectoryVisible")
     private Boolean snapshotDirectoryVisible;
@@ -223,6 +223,12 @@ public final class VolumeProperties {
      */
     @JsonProperty(value = "throughputMibps")
     private Float throughputMibps;
+
+    /*
+     * Actual throughput in MiB/s for auto qosType volumes calculated based on size and serviceLevel
+     */
+    @JsonProperty(value = "actualThroughputMibps", access = JsonProperty.Access.WRITE_ONLY)
+    private Float actualThroughputMibps;
 
     /*
      * Source of key used to encrypt data in volume. Applicable if NetApp account has encryption.keySource =
@@ -389,6 +395,14 @@ public final class VolumeProperties {
      */
     @JsonProperty(value = "isLargeVolume")
     private Boolean isLargeVolume;
+
+    /*
+     * Originating Resource Id
+     *
+     * Id of the snapshot or backup that the volume is restored from.
+     */
+    @JsonProperty(value = "originatingResourceId", access = JsonProperty.Access.WRITE_ONLY)
+    private String originatingResourceId;
 
     /** Creates an instance of VolumeProperties class. */
     public VolumeProperties() {
@@ -764,7 +778,7 @@ public final class VolumeProperties {
 
     /**
      * Get the snapshotDirectoryVisible property: If enabled (true) the volume will contain a read-only snapshot
-     * directory which provides access to each of the volume's snapshots (default to true).
+     * directory which provides access to each of the volume's snapshots (defaults to true).
      *
      * @return the snapshotDirectoryVisible value.
      */
@@ -774,7 +788,7 @@ public final class VolumeProperties {
 
     /**
      * Set the snapshotDirectoryVisible property: If enabled (true) the volume will contain a read-only snapshot
-     * directory which provides access to each of the volume's snapshots (default to true).
+     * directory which provides access to each of the volume's snapshots (defaults to true).
      *
      * @param snapshotDirectoryVisible the snapshotDirectoryVisible value to set.
      * @return the VolumeProperties object itself.
@@ -940,6 +954,16 @@ public final class VolumeProperties {
     public VolumeProperties withThroughputMibps(Float throughputMibps) {
         this.throughputMibps = throughputMibps;
         return this;
+    }
+
+    /**
+     * Get the actualThroughputMibps property: Actual throughput in MiB/s for auto qosType volumes calculated based on
+     * size and serviceLevel.
+     *
+     * @return the actualThroughputMibps value.
+     */
+    public Float actualThroughputMibps() {
+        return this.actualThroughputMibps;
     }
 
     /**
@@ -1376,6 +1400,17 @@ public final class VolumeProperties {
     public VolumeProperties withIsLargeVolume(Boolean isLargeVolume) {
         this.isLargeVolume = isLargeVolume;
         return this;
+    }
+
+    /**
+     * Get the originatingResourceId property: Originating Resource Id
+     *
+     * <p>Id of the snapshot or backup that the volume is restored from.
+     *
+     * @return the originatingResourceId value.
+     */
+    public String originatingResourceId() {
+        return this.originatingResourceId;
     }
 
     /**

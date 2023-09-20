@@ -5,7 +5,6 @@
 package com.azure.data.appconfiguration.models;
 
 import com.azure.core.util.ExpandableStringEnum;
-import com.fasterxml.jackson.annotation.JsonCreator;
 import java.util.Collection;
 
 /** The desired status of the snapshot. */
@@ -36,7 +35,6 @@ public final class SnapshotStatus extends ExpandableStringEnum<SnapshotStatus> {
      * @param name a name to look for.
      * @return the corresponding SnapshotStatus.
      */
-    @JsonCreator
     public static SnapshotStatus fromString(String name) {
         return fromString(name, SnapshotStatus.class);
     }

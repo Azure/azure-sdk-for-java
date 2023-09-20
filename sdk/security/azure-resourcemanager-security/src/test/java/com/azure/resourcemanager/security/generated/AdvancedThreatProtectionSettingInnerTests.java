@@ -14,15 +14,15 @@ public final class AdvancedThreatProtectionSettingInnerTests {
         AdvancedThreatProtectionSettingInner model =
             BinaryData
                 .fromString(
-                    "{\"properties\":{\"isEnabled\":false},\"id\":\"gbquxigj\",\"name\":\"jgzjaoyfhrtx\",\"type\":\"lnerkujysvleju\"}")
+                    "{\"properties\":{\"isEnabled\":true},\"id\":\"ijcmmx\",\"name\":\"cufufsrpymz\",\"type\":\"dnsezcxtbzs\"}")
                 .toObject(AdvancedThreatProtectionSettingInner.class);
-        Assertions.assertEquals(false, model.isEnabled());
+        Assertions.assertEquals(true, model.isEnabled());
     }
 
     @org.junit.jupiter.api.Test
     public void testSerialize() throws Exception {
-        AdvancedThreatProtectionSettingInner model = new AdvancedThreatProtectionSettingInner().withIsEnabled(false);
+        AdvancedThreatProtectionSettingInner model = new AdvancedThreatProtectionSettingInner().withIsEnabled(true);
         model = BinaryData.fromObject(model).toObject(AdvancedThreatProtectionSettingInner.class);
-        Assertions.assertEquals(false, model.isEnabled());
+        Assertions.assertEquals(true, model.isEnabled());
     }
 }

@@ -31,6 +31,10 @@ public final class MessagingEndpointProperties {
     @JsonProperty(value = "maxDeliveryCount")
     private Integer maxDeliveryCount;
 
+    /** Creates an instance of MessagingEndpointProperties class. */
+    public MessagingEndpointProperties() {
+    }
+
     /**
      * Get the lockDurationAsIso8601 property: The lock duration. See:
      * https://docs.microsoft.com/azure/iot-hub/iot-hub-devguide-file-upload.

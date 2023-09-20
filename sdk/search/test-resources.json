@@ -46,8 +46,7 @@
   "variables": {
     "searchServiceName": "[concat('azs-java-', parameters('baseName'))]",
     "searchApiVersion": "2020-03-13",
-    "storageAccountName": "[concat('azsstg', parameters('baseName'))]",
-    "storageContainerName": "[concat('azscontainer', parameters('baseName'))]",
+    "storageAccountName": "[concat('search', parameters('baseName'))]",
     "storageApiVersion": "2019-06-01"
   },
   "resources": [
@@ -86,7 +85,7 @@
       "resources": [
         {
           "type": "Microsoft.Storage/storageAccounts/blobServices/containers",
-          "name": "[concat(variables('storageAccountName'), '/default/', variables('storageContainerName'))]",
+          "name": "[concat(variables('storageAccountName'), '/default/', 'searchcontainer')]",
           "apiVersion": "[variables('storageApiVersion')]",
           "properties": {},
           "dependsOn": [
@@ -112,10 +111,6 @@
     "SEARCH_STORAGE_CONNECTION_STRING": {
       "type": "string",
       "value": "[concat('DefaultEndpointsProtocol=https;AccountName=', variables('storageAccountName'), ';AccountKey=', listKeys(variables('storageAccountName'), variables('storageApiVersion')).keys[0].value, ';EndpointSuffix=', parameters('storageEndpointSuffix'))]"
-    },
-    "SEARCH_STORAGE_CONTAINER_NAME": {
-      "type": "string",
-      "value": "[variables('storageContainerName')]"
     }
   }
 }

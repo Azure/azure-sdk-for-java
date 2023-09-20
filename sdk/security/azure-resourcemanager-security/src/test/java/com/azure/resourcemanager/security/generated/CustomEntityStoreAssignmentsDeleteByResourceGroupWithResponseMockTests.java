@@ -58,6 +58,6 @@ public final class CustomEntityStoreAssignmentsDeleteByResourceGroupWithResponse
 
         manager
             .customEntityStoreAssignments()
-            .deleteByResourceGroupWithResponse("fbcpaqktkrumzu", "dkyzbfvxov", com.azure.core.util.Context.NONE);
+            .deleteByResourceGroupWithResponse("jfowxwy", "vcxjsgbipcukdvek", com.azure.core.util.Context.NONE);
     }
 }

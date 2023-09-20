@@ -28,6 +28,12 @@ public final class GcpProjectDetails {
     @JsonProperty(value = "workloadIdentityPoolId", access = JsonProperty.Access.WRITE_ONLY)
     private String workloadIdentityPoolId;
 
+    /*
+     * GCP project name
+     */
+    @JsonProperty(value = "projectName", access = JsonProperty.Access.WRITE_ONLY)
+    private String projectName;
+
     /** Creates an instance of GcpProjectDetails class. */
     public GcpProjectDetails() {
     }
@@ -79,6 +85,15 @@ public final class GcpProjectDetails {
      */
     public String workloadIdentityPoolId() {
         return this.workloadIdentityPoolId;
+    }
+
+    /**
+     * Get the projectName property: GCP project name.
+     *
+     * @return the projectName value.
+     */
+    public String projectName() {
+        return this.projectName;
     }
 
     /**

@@ -106,21 +106,6 @@ public interface MhsmPrivateEndpointConnectionsClient {
      * @param name Name of the managed HSM Pool.
      * @param privateEndpointConnectionName Name of the private endpoint connection associated with the managed hsm
      *     pool.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws com.azure.resourcemanager.keyvault.models.ErrorException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the specified private endpoint connection associated with the managed HSM Pool.
-     */
-    @ServiceMethod(returns = ReturnType.SINGLE)
-    MhsmPrivateEndpointConnectionInner get(String resourceGroupName, String name, String privateEndpointConnectionName);
-
-    /**
-     * Gets the specified private endpoint connection associated with the managed HSM Pool.
-     *
-     * @param resourceGroupName Name of the resource group that contains the managed HSM pool.
-     * @param name Name of the managed HSM Pool.
-     * @param privateEndpointConnectionName Name of the private endpoint connection associated with the managed hsm
-     *     pool.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.resourcemanager.keyvault.models.ErrorException thrown if the request is rejected by server.
@@ -131,6 +116,21 @@ public interface MhsmPrivateEndpointConnectionsClient {
     @ServiceMethod(returns = ReturnType.SINGLE)
     Response<MhsmPrivateEndpointConnectionInner> getWithResponse(
         String resourceGroupName, String name, String privateEndpointConnectionName, Context context);
+
+    /**
+     * Gets the specified private endpoint connection associated with the managed HSM Pool.
+     *
+     * @param resourceGroupName Name of the resource group that contains the managed HSM pool.
+     * @param name Name of the managed HSM Pool.
+     * @param privateEndpointConnectionName Name of the private endpoint connection associated with the managed hsm
+     *     pool.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws com.azure.resourcemanager.keyvault.models.ErrorException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return the specified private endpoint connection associated with the managed HSM Pool.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    MhsmPrivateEndpointConnectionInner get(String resourceGroupName, String name, String privateEndpointConnectionName);
 
     /**
      * Updates the specified private endpoint connection associated with the managed hsm pool.
@@ -180,26 +180,6 @@ public interface MhsmPrivateEndpointConnectionsClient {
      * @param privateEndpointConnectionName Name of the private endpoint connection associated with the managed hsm
      *     pool.
      * @param properties The intended state of private endpoint connection.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return private endpoint connection resource.
-     */
-    @ServiceMethod(returns = ReturnType.SINGLE)
-    MhsmPrivateEndpointConnectionInner put(
-        String resourceGroupName,
-        String name,
-        String privateEndpointConnectionName,
-        MhsmPrivateEndpointConnectionInner properties);
-
-    /**
-     * Updates the specified private endpoint connection associated with the managed hsm pool.
-     *
-     * @param resourceGroupName Name of the resource group that contains the managed HSM pool.
-     * @param name Name of the managed HSM Pool.
-     * @param privateEndpointConnectionName Name of the private endpoint connection associated with the managed hsm
-     *     pool.
-     * @param properties The intended state of private endpoint connection.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
@@ -213,6 +193,26 @@ public interface MhsmPrivateEndpointConnectionsClient {
         String privateEndpointConnectionName,
         MhsmPrivateEndpointConnectionInner properties,
         Context context);
+
+    /**
+     * Updates the specified private endpoint connection associated with the managed hsm pool.
+     *
+     * @param resourceGroupName Name of the resource group that contains the managed HSM pool.
+     * @param name Name of the managed HSM Pool.
+     * @param privateEndpointConnectionName Name of the private endpoint connection associated with the managed hsm
+     *     pool.
+     * @param properties The intended state of private endpoint connection.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return private endpoint connection resource.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    MhsmPrivateEndpointConnectionInner put(
+        String resourceGroupName,
+        String name,
+        String privateEndpointConnectionName,
+        MhsmPrivateEndpointConnectionInner properties);
 
     /**
      * Deletes the specified private endpoint connection associated with the managed hsm pool.

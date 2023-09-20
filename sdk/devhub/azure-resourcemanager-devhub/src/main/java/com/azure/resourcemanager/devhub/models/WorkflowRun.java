@@ -4,12 +4,12 @@
 
 package com.azure.resourcemanager.devhub.models;
 
-import com.azure.core.annotation.Immutable;
+import com.azure.core.annotation.Fluent;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import java.time.OffsetDateTime;
 
 /** The WorkflowRun model. */
-@Immutable
+@Fluent
 public final class WorkflowRun {
     /*
      * Describes if the workflow run succeeded.
@@ -28,6 +28,16 @@ public final class WorkflowRun {
      */
     @JsonProperty(value = "lastRunAt", access = JsonProperty.Access.WRITE_ONLY)
     private OffsetDateTime lastRunAt;
+
+    /*
+     * Describes the status of the workflow run
+     */
+    @JsonProperty(value = "workflowRunStatus")
+    private WorkflowRunStatus workflowRunStatus;
+
+    /** Creates an instance of WorkflowRun class. */
+    public WorkflowRun() {
+    }
 
     /**
      * Get the succeeded property: Describes if the workflow run succeeded.
@@ -54,6 +64,26 @@ public final class WorkflowRun {
      */
     public OffsetDateTime lastRunAt() {
         return this.lastRunAt;
+    }
+
+    /**
+     * Get the workflowRunStatus property: Describes the status of the workflow run.
+     *
+     * @return the workflowRunStatus value.
+     */
+    public WorkflowRunStatus workflowRunStatus() {
+        return this.workflowRunStatus;
+    }
+
+    /**
+     * Set the workflowRunStatus property: Describes the status of the workflow run.
+     *
+     * @param workflowRunStatus the workflowRunStatus value to set.
+     * @return the WorkflowRun object itself.
+     */
+    public WorkflowRun withWorkflowRunStatus(WorkflowRunStatus workflowRunStatus) {
+        this.workflowRunStatus = workflowRunStatus;
+        return this;
     }
 
     /**

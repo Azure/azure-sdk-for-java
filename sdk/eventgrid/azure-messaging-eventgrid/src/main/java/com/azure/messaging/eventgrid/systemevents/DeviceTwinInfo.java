@@ -11,8 +11,7 @@ import com.fasterxml.jackson.annotation.JsonProperty;
 @Fluent
 public final class DeviceTwinInfo {
     /*
-     * Authentication type used for this device: either SAS, SelfSigned, or
-     * CertificateAuthority.
+     * Authentication type used for this device: either SAS, SelfSigned, or CertificateAuthority.
      */
     @JsonProperty(value = "authenticationType")
     private String authenticationType;
@@ -36,8 +35,8 @@ public final class DeviceTwinInfo {
     private String deviceId;
 
     /*
-     * A piece of information that describes the content of the device twin.
-     * Each etag is guaranteed to be unique per device twin.
+     * A piece of information that describes the content of the device twin. Each etag is guaranteed to be unique per
+     * device twin.
      */
     @JsonProperty(value = "etag")
     private String etag;
@@ -67,20 +66,21 @@ public final class DeviceTwinInfo {
     private String statusUpdateTime;
 
     /*
-     * An integer that is incremented by one each time the device twin is
-     * updated.
+     * An integer that is incremented by one each time the device twin is updated.
      */
     @JsonProperty(value = "version")
     private Float version;
 
     /*
-     * The thumbprint is a unique value for the x509 certificate, commonly used
-     * to find a particular certificate in a certificate store. The thumbprint
-     * is dynamically generated using the SHA1 algorithm, and does not
-     * physically exist in the certificate.
+     * The thumbprint is a unique value for the x509 certificate, commonly used to find a particular certificate in a
+     * certificate store. The thumbprint is dynamically generated using the SHA1 algorithm, and does not physically
+     * exist in the certificate.
      */
     @JsonProperty(value = "x509Thumbprint")
     private DeviceTwinInfoX509Thumbprint x509Thumbprint;
+
+    /** Creates an instance of DeviceTwinInfo class. */
+    public DeviceTwinInfo() {}
 
     /**
      * Get the authenticationType property: Authentication type used for this device: either SAS, SelfSigned, or

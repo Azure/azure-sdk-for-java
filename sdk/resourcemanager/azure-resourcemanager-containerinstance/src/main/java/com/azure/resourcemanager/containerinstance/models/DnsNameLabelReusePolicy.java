@@ -8,7 +8,14 @@ import com.azure.core.util.ExpandableStringEnum;
 import com.fasterxml.jackson.annotation.JsonCreator;
 import java.util.Collection;
 
-/** Defines values for DnsNameLabelReusePolicy. */
+/**
+ * The value representing the security enum. The 'Unsecure' value is the default value if not selected and means the
+ * object's domain name label is not secured against subdomain takeover. The 'TenantReuse' value is the default value if
+ * selected and means the object's domain name label can be reused within the same tenant. The 'SubscriptionReuse' value
+ * means the object's domain name label can be reused within the same subscription. The 'ResourceGroupReuse' value means
+ * the object's domain name label can be reused within the same resource group. The 'NoReuse' value means the object's
+ * domain name label cannot be reused within the same resource group, subscription, or tenant.
+ */
 public final class DnsNameLabelReusePolicy extends ExpandableStringEnum<DnsNameLabelReusePolicy> {
     /** Static value Unsecure for DnsNameLabelReusePolicy. */
     public static final DnsNameLabelReusePolicy UNSECURE = fromString("Unsecure");
@@ -26,6 +33,15 @@ public final class DnsNameLabelReusePolicy extends ExpandableStringEnum<DnsNameL
     public static final DnsNameLabelReusePolicy NOREUSE = fromString("Noreuse");
 
     /**
+     * Creates a new instance of DnsNameLabelReusePolicy value.
+     *
+     * @deprecated Use the {@link #fromString(String)} factory method.
+     */
+    @Deprecated
+    public DnsNameLabelReusePolicy() {
+    }
+
+    /**
      * Creates or finds a DnsNameLabelReusePolicy from its string representation.
      *
      * @param name a name to look for.
@@ -36,7 +52,11 @@ public final class DnsNameLabelReusePolicy extends ExpandableStringEnum<DnsNameL
         return fromString(name, DnsNameLabelReusePolicy.class);
     }
 
-    /** @return known DnsNameLabelReusePolicy values. */
+    /**
+     * Gets known DnsNameLabelReusePolicy values.
+     *
+     * @return known DnsNameLabelReusePolicy values.
+     */
     public static Collection<DnsNameLabelReusePolicy> values() {
         return values(DnsNameLabelReusePolicy.class);
     }

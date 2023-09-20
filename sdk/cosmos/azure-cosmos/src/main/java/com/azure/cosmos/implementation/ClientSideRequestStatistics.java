@@ -8,6 +8,7 @@ import com.azure.cosmos.implementation.directconnectivity.StoreResponseDiagnosti
 import com.azure.cosmos.implementation.directconnectivity.StoreResultDiagnostics;
 import com.azure.cosmos.implementation.faultinjection.FaultInjectionRequestContext;
 import com.fasterxml.jackson.annotation.JsonIgnore;
+import com.fasterxml.jackson.annotation.JsonInclude;
 import com.fasterxml.jackson.core.JsonGenerator;
 import com.fasterxml.jackson.databind.SerializerProvider;
 import com.fasterxml.jackson.databind.annotation.JsonSerialize;
@@ -21,10 +22,12 @@ import java.util.ArrayList;
 import java.util.Collections;
 import java.util.HashMap;
 import java.util.HashSet;
+import java.util.LinkedHashSet;
 import java.util.List;
 import java.util.Map;
 import java.util.Objects;
 import java.util.Set;
+import java.util.UUID;
 
 @JsonSerialize(using = ClientSideRequestStatistics.ClientSideRequestStatisticsSerializer.class)
 public class ClientSideRequestStatistics {
@@ -43,10 +46,13 @@ public class ClientSideRequestStatistics {
     private Set<URI> locationEndpointsContacted;
     private RetryContext retryContext;
     private FaultInjectionRequestContext requestContext;
-    private GatewayStatistics gatewayStatistics;
+    private List<GatewayStatistics> gatewayStatisticsList;
     private MetadataDiagnosticsContext metadataDiagnosticsContext;
     private SerializationDiagnosticsContext serializationDiagnosticsContext;
     private int requestPayloadSizeInBytes = 0;
+    private final String userAgent;
+
+    private double samplingRateSnapshot = 1;
 
     public ClientSideRequestStatistics(DiagnosticsClientContext diagnosticsClientContext) {
         this.diagnosticsClientConfig = diagnosticsClientContext.getConfig();
@@ -54,6 +60,7 @@ public class ClientSideRequestStatistics {
         this.requestEndTimeUTC = Instant.now();
         this.responseStatisticsList = new ArrayList<>();
         this.supplementalResponseStatisticsList = new ArrayList<>();
+        this.gatewayStatisticsList = new ArrayList<>();
         this.addressResolutionStatistics = new HashMap<>();
         this.contactedReplicas = Collections.synchronizedList(new ArrayList<>());
         this.failedReplicas = Collections.synchronizedSet(new HashSet<>());
@@ -63,6 +70,8 @@ public class ClientSideRequestStatistics {
         this.serializationDiagnosticsContext = new SerializationDiagnosticsContext();
         this.retryContext = new RetryContext();
         this.requestPayloadSizeInBytes = 0;
+        this.userAgent = diagnosticsClientContext.getUserAgent();
+        this.samplingRateSnapshot = 1;
     }
 
     public ClientSideRequestStatistics(ClientSideRequestStatistics toBeCloned) {
@@ -71,6 +80,7 @@ public class ClientSideRequestStatistics {
         this.requestEndTimeUTC = toBeCloned.requestEndTimeUTC;
         this.responseStatisticsList = new ArrayList<>(toBeCloned.responseStatisticsList);
         this.supplementalResponseStatisticsList = new ArrayList<>(toBeCloned.supplementalResponseStatisticsList);
+        this.gatewayStatisticsList = new ArrayList<>(toBeCloned.gatewayStatisticsList);
         this.addressResolutionStatistics = new HashMap<>(toBeCloned.addressResolutionStatistics);
         this.contactedReplicas = Collections.synchronizedList(new ArrayList<>(toBeCloned.contactedReplicas));
         this.failedReplicas = Collections.synchronizedSet(new HashSet<>(toBeCloned.failedReplicas));
@@ -82,6 +92,8 @@ public class ClientSideRequestStatistics {
             new SerializationDiagnosticsContext(toBeCloned.serializationDiagnosticsContext);
         this.retryContext = new RetryContext(toBeCloned.retryContext);
         this.requestPayloadSizeInBytes = toBeCloned.requestPayloadSizeInBytes;
+        this.userAgent = toBeCloned.userAgent;
+        this.samplingRateSnapshot = toBeCloned.samplingRateSnapshot;
     }
 
     @JsonIgnore
@@ -116,20 +128,30 @@ public class ClientSideRequestStatistics {
         Instant responseTime = Instant.now();
 
         StoreResponseStatistics storeResponseStatistics = new StoreResponseStatistics();
-        storeResponseStatistics.requestStartTimeUTC = this.requestStartTimeUTC;
+        storeResponseStatistics.requestStartTimeUTC = this.extractRequestStartTime(storeResultDiagnostics);
         storeResponseStatistics.requestResponseTimeUTC = responseTime;
         storeResponseStatistics.storeResult = storeResultDiagnostics;
         storeResponseStatistics.requestOperationType = request.getOperationType();
         storeResponseStatistics.requestResourceType = request.getResourceType();
         storeResponseStatistics.requestSessionToken = request.getHeaders().get(HttpConstants.HttpHeaders.SESSION_TOKEN);
+        storeResponseStatistics.e2ePolicyCfg = null;
+        storeResponseStatistics.excludedRegions = null;
         activityId = request.getActivityId().toString();
 
         this.requestPayloadSizeInBytes = request.getContentLength();
 
         URI locationEndPoint = null;
         if (request.requestContext != null) {
-            if (request.requestContext.locationEndpointToRoute != null) {
-                locationEndPoint = request.requestContext.locationEndpointToRoute;
+            if (request.requestContext.getEndToEndOperationLatencyPolicyConfig() != null) {
+                storeResponseStatistics.e2ePolicyCfg =
+                    request.requestContext.getEndToEndOperationLatencyPolicyConfig().toString();
+            }
+
+            locationEndPoint = request.requestContext.locationEndpointToRoute;
+
+            List<String> excludedRegions = request.requestContext.getExcludeRegions();
+            if (excludedRegions != null && !excludedRegions.isEmpty()) {
+                storeResponseStatistics.excludedRegions = String.join(", ", excludedRegions);
             }
         }
 
@@ -155,7 +177,10 @@ public class ClientSideRequestStatistics {
     }
 
     public void recordGatewayResponse(
-        RxDocumentServiceRequest rxDocumentServiceRequest, StoreResponseDiagnostics storeResponseDiagnostics, GlobalEndpointManager globalEndpointManager) {
+        RxDocumentServiceRequest rxDocumentServiceRequest,
+        StoreResponseDiagnostics storeResponseDiagnostics,
+        GlobalEndpointManager globalEndpointManager) {
+
         Instant responseTime = Instant.now();
 
         synchronized (this) {
@@ -174,22 +199,27 @@ public class ClientSideRequestStatistics {
                 this.locationEndpointsContacted.add(locationEndPoint);
             }
 
-            this.gatewayStatistics = new GatewayStatistics();
+            GatewayStatistics gatewayStatistics = new GatewayStatistics();
             if (rxDocumentServiceRequest != null) {
-                this.gatewayStatistics.operationType = rxDocumentServiceRequest.getOperationType();
-                this.gatewayStatistics.resourceType = rxDocumentServiceRequest.getResourceType();
+                gatewayStatistics.operationType = rxDocumentServiceRequest.getOperationType();
+                gatewayStatistics.resourceType = rxDocumentServiceRequest.getResourceType();
                 this.requestPayloadSizeInBytes = rxDocumentServiceRequest.getContentLength();
             }
-            this.gatewayStatistics.statusCode = storeResponseDiagnostics.getStatusCode();
-            this.gatewayStatistics.subStatusCode = storeResponseDiagnostics.getSubStatusCode();
-            this.gatewayStatistics.sessionToken = storeResponseDiagnostics.getSessionTokenAsString();
-            this.gatewayStatistics.requestCharge = storeResponseDiagnostics.getRequestCharge();
-            this.gatewayStatistics.requestTimeline = storeResponseDiagnostics.getRequestTimeline();
-            this.gatewayStatistics.partitionKeyRangeId = storeResponseDiagnostics.getPartitionKeyRangeId();
-            this.gatewayStatistics.exceptionMessage = storeResponseDiagnostics.getExceptionMessage();
-            this.gatewayStatistics.exceptionResponseHeaders = storeResponseDiagnostics.getExceptionResponseHeaders();
-            this.gatewayStatistics.responsePayloadSizeInBytes = storeResponseDiagnostics.getResponsePayloadLength();
+            gatewayStatistics.statusCode = storeResponseDiagnostics.getStatusCode();
+            gatewayStatistics.subStatusCode = storeResponseDiagnostics.getSubStatusCode();
+            gatewayStatistics.sessionToken = storeResponseDiagnostics.getSessionTokenAsString();
+            gatewayStatistics.requestCharge = storeResponseDiagnostics.getRequestCharge();
+            gatewayStatistics.requestTimeline = storeResponseDiagnostics.getRequestTimeline();
+            gatewayStatistics.partitionKeyRangeId = storeResponseDiagnostics.getPartitionKeyRangeId();
+            gatewayStatistics.exceptionMessage = storeResponseDiagnostics.getExceptionMessage();
+            gatewayStatistics.exceptionResponseHeaders = storeResponseDiagnostics.getExceptionResponseHeaders();
+            gatewayStatistics.responsePayloadSizeInBytes = storeResponseDiagnostics.getResponsePayloadLength();
+            gatewayStatistics.faultInjectionRuleId = storeResponseDiagnostics.getFaultInjectionRuleId();
+            gatewayStatistics.faultInjectionEvaluationResults = storeResponseDiagnostics.getFaultInjectionEvaluationResults();
+
             this.activityId = storeResponseDiagnostics.getActivityId();
+
+            this.gatewayStatisticsList.add(gatewayStatistics);
         }
     }
 
@@ -201,7 +231,7 @@ public class ClientSideRequestStatistics {
         URI targetEndpoint,
         boolean forceRefresh,
         boolean forceCollectionRoutingMapRefresh) {
-        String identifier = Utils
+        String identifier = UUID
             .randomUUID()
             .toString();
 
@@ -219,7 +249,11 @@ public class ClientSideRequestStatistics {
         return identifier;
     }
 
-    public void recordAddressResolutionEnd(String identifier, String exceptionMessage) {
+    public void recordAddressResolutionEnd(
+        String identifier,
+        String exceptionMessage,
+        String faultInjectionId,
+        List<String> faultInjectionEvaluationResult) {
         if (StringUtils.isEmpty(identifier)) {
             return;
         }
@@ -239,6 +273,184 @@ public class ClientSideRequestStatistics {
             resolutionStatistics.endTimeUTC = responseTime;
             resolutionStatistics.exceptionMessage = exceptionMessage;
             resolutionStatistics.inflightRequest = false;
+            resolutionStatistics.faultInjectionRuleId = faultInjectionId;
+            resolutionStatistics.faultInjectionEvaluationResults = faultInjectionEvaluationResult;
+        }
+    }
+
+    private void mergeContactedReplicas(List<URI> otherContactedReplicas) {
+        if (otherContactedReplicas == null) {
+            return;
+        }
+
+        if (this.contactedReplicas == null || this.contactedReplicas.isEmpty()) {
+            this.contactedReplicas = otherContactedReplicas;
+            return;
+        }
+
+        LinkedHashSet<URI> totalContactedReplicas = new LinkedHashSet<>();
+        totalContactedReplicas.addAll(otherContactedReplicas);
+        totalContactedReplicas.addAll(this.contactedReplicas);
+
+        this.setContactedReplicas(new ArrayList<>(totalContactedReplicas));
+    }
+
+    private void mergeSupplementalResponses(List<StoreResponseStatistics> other) {
+        if (other == null) {
+            return;
+        }
+
+        if (this.supplementalResponseStatisticsList == null || this.supplementalResponseStatisticsList.isEmpty()) {
+            this.supplementalResponseStatisticsList = other;
+            return;
+        }
+
+        this.supplementalResponseStatisticsList.addAll(other);
+    }
+
+    private void mergeResponseStatistics(List<StoreResponseStatistics> other) {
+        if (other == null) {
+            return;
+        }
+
+        if (this.responseStatisticsList == null || this.responseStatisticsList.isEmpty()) {
+            this.responseStatisticsList = other;
+            return;
+        }
+
+        this.responseStatisticsList.addAll(other);
+        this.responseStatisticsList.sort(
+            (StoreResponseStatistics left, StoreResponseStatistics right) -> {
+                if (left == null || left.requestStartTimeUTC == null) {
+                    return -1;
+                }
+
+                if (right == null || right.requestStartTimeUTC == null) {
+                    return 1;
+                }
+                return left.requestStartTimeUTC.compareTo(right.requestStartTimeUTC);
+            }
+        );
+    }
+
+    private void mergeAddressResolutionStatistics(
+        Map<String, AddressResolutionStatistics> otherAddressResolutionStatistics) {
+        if (otherAddressResolutionStatistics == null) {
+            return;
+        }
+
+        if (this.addressResolutionStatistics == null || this.addressResolutionStatistics.isEmpty()) {
+            this.addressResolutionStatistics = otherAddressResolutionStatistics;
+            return;
+        }
+
+        for (Map.Entry<String, AddressResolutionStatistics> pair : otherAddressResolutionStatistics.entrySet()) {
+            this.addressResolutionStatistics.putIfAbsent(
+                pair.getKey(),
+                pair.getValue());
+        }
+    }
+
+    private void mergeFailedReplica(Set<URI> other) {
+        if (other == null) {
+            return;
+        }
+
+        if (this.failedReplicas == null || this.failedReplicas.isEmpty()) {
+            this.failedReplicas = other;
+            return;
+        }
+
+        for (URI uri : other) {
+            this.failedReplicas.add(uri);
+        }
+    }
+
+    private void mergeLocationEndpointsContacted(Set<URI> other) {
+        if (other == null) {
+            return;
+        }
+
+        if (this.locationEndpointsContacted == null || this.locationEndpointsContacted.isEmpty()) {
+            this.locationEndpointsContacted = other;
+            return;
+        }
+
+        for (URI uri : other) {
+            this.locationEndpointsContacted.add(uri);
+        }
+    }
+
+    private void mergeRegionsContacted(Set<String> other) {
+        if (other == null) {
+            return;
+        }
+
+        if (this.regionsContacted == null || this.regionsContacted.isEmpty()) {
+            this.regionsContacted = other;
+            return;
+        }
+
+        for (String region : other) {
+            this.regionsContacted.add(region);
+        }
+    }
+
+    private void mergeStartTime(Instant other) {
+        if (other == null) {
+            return;
+        }
+
+        if (this.requestStartTimeUTC == null || this.requestStartTimeUTC.isAfter(other)) {
+            this.requestStartTimeUTC = other;
+        }
+    }
+
+    private void mergeEndTime(Instant other) {
+        if (other == null || this.requestEndTimeUTC == null) {
+            return;
+        }
+
+        if (this.requestEndTimeUTC.isBefore(other)) {
+            this.requestEndTimeUTC = other;
+        }
+    }
+
+    private Instant extractRequestStartTime(StoreResultDiagnostics storeResultDiagnostics){
+        if (storeResultDiagnostics == null
+            || storeResultDiagnostics.getStoreResponseDiagnostics() == null) {
+            return null;
+        }
+
+        RequestTimeline requestTimeline = storeResultDiagnostics.getStoreResponseDiagnostics().getRequestTimeline();
+
+        return requestTimeline != null ? requestTimeline.getRequestStartTimeUTC() : null;
+    }
+
+    public void recordContributingPointOperation(ClientSideRequestStatistics other) {
+        this.mergeClientSideRequestStatistics(other);
+    }
+
+    public void mergeClientSideRequestStatistics(ClientSideRequestStatistics other) {
+        if (other == null) {
+            return;
+        }
+
+        this.mergeAddressResolutionStatistics(other.addressResolutionStatistics);
+        this.mergeContactedReplicas(other.contactedReplicas);
+        this.mergeFailedReplica(other.failedReplicas);
+        this.mergeLocationEndpointsContacted(other.locationEndpointsContacted);
+        this.mergeRegionsContacted(other.regionsContacted);
+        this.mergeStartTime(other.requestStartTimeUTC);
+        this.mergeEndTime(other.requestEndTimeUTC);
+        this.mergeSupplementalResponses(other.supplementalResponseStatisticsList);
+        this.mergeResponseStatistics(other.responseStatisticsList);
+        this.requestPayloadSizeInBytes = Math.max(this.requestPayloadSizeInBytes, other.requestPayloadSizeInBytes);
+
+        if (this.retryContext == null) {
+            this.retryContext = other.retryContext;
+        } else {
+            this.retryContext.merge(other.retryContext);
         }
     }
 
@@ -294,13 +506,14 @@ public class ClientSideRequestStatistics {
         return responseStatisticsList;
     }
 
+    @JsonIgnore
+    public String getUserAgent() {
+        return this.userAgent;
+    }
+
     public int getMaxResponsePayloadSizeInBytes() {
         if (responseStatisticsList == null || responseStatisticsList.isEmpty()) {
-            if (this.gatewayStatistics != null) {
-                return this.gatewayStatistics.responsePayloadSizeInBytes;
-            }
-
-            return 0;
+            return this.getMaxResponsePayloadSizeInBytesFromGateway();
         }
 
         int maxResponsePayloadSizeInBytes = 0;
@@ -319,16 +532,39 @@ public class ClientSideRequestStatistics {
         return maxResponsePayloadSizeInBytes;
     }
 
+    private int getMaxResponsePayloadSizeInBytesFromGateway() {
+        if (this.gatewayStatisticsList == null || this.gatewayStatisticsList.size() == 0) {
+            return 0;
+        }
+
+        int maxResponsePayloadSizeInBytes = 0;
+        for (GatewayStatistics gatewayStatistics : this.gatewayStatisticsList) {
+            maxResponsePayloadSizeInBytes = Math.max(maxResponsePayloadSizeInBytes, gatewayStatistics.responsePayloadSizeInBytes);
+        }
+
+        return maxResponsePayloadSizeInBytes;
+    }
+
     public List<StoreResponseStatistics> getSupplementalResponseStatisticsList() {
         return supplementalResponseStatisticsList;
+    }
+
+    public String getActivityId() {
+        return this.activityId;
     }
 
     public Map<String, AddressResolutionStatistics> getAddressResolutionStatistics() {
         return addressResolutionStatistics;
     }
 
-    public GatewayStatistics getGatewayStatistics() {
-        return gatewayStatistics;
+    public List<GatewayStatistics> getGatewayStatisticsList() {
+        return this.gatewayStatisticsList;
+    }
+
+    public ClientSideRequestStatistics setSamplingRateSnapshot(double samplingRateSnapshot) {
+        this.samplingRateSnapshot = samplingRateSnapshot;
+
+        return this;
     }
 
     public static class StoreResponseStatistics {
@@ -345,6 +581,12 @@ public class ClientSideRequestStatistics {
         @JsonSerialize
         private String requestSessionToken;
 
+        @JsonSerialize
+        private String e2ePolicyCfg;
+
+        @JsonSerialize
+        private String excludedRegions;
+
         @JsonIgnore
         private String regionName;
 
@@ -356,6 +598,10 @@ public class ClientSideRequestStatistics {
             return requestResponseTimeUTC;
         }
 
+        public Instant getRequestStartTimeUTC() {
+            return requestStartTimeUTC;
+        }
+
         public ResourceType getRequestResourceType() {
             return requestResourceType;
         }
@@ -365,7 +611,6 @@ public class ClientSideRequestStatistics {
         }
 
         public String getRegionName() { return regionName; }
-
 
         public String getRequestSessionToken() { return requestSessionToken; }
 
@@ -385,29 +630,6 @@ public class ClientSideRequestStatistics {
         }
     }
 
-    public static class SystemInformation {
-        private String usedMemory;
-        private String availableMemory;
-        private String systemCpuLoad;
-        private int availableProcessors;
-
-        public String getUsedMemory() {
-            return usedMemory;
-        }
-
-        public String getAvailableMemory() {
-            return availableMemory;
-        }
-
-        public String getSystemCpuLoad() {
-            return systemCpuLoad;
-        }
-
-        public int getAvailableProcessors() {
-            return availableProcessors;
-        }
-    }
-
     public static class ClientSideRequestStatisticsSerializer extends StdSerializer<ClientSideRequestStatistics> {
 
         private static final long serialVersionUID = -2746532297176812860L;
@@ -424,7 +646,7 @@ public class ClientSideRequestStatistics {
             Duration duration = statistics
                 .getDuration();
             long requestLatency = duration != null ? duration.toMillis() : 0;
-            generator.writeStringField("userAgent", Utils.getUserAgent());
+            generator.writeStringField("userAgent", statistics.userAgent);
             generator.writeStringField("activityId", statistics.activityId);
             generator.writeNumberField("requestLatencyInMs", requestLatency);
             generator.writeStringField("requestStartTimeUTC", DiagnosticsInstantSerializer.fromInstant(statistics.requestStartTimeUTC));
@@ -436,10 +658,11 @@ public class ClientSideRequestStatistics {
             generator.writeObjectField("retryContext", statistics.retryContext);
             generator.writeObjectField("metadataDiagnosticsContext", statistics.getMetadataDiagnosticsContext());
             generator.writeObjectField("serializationDiagnosticsContext", statistics.getSerializationDiagnosticsContext());
-            generator.writeObjectField("gatewayStatistics", statistics.gatewayStatistics);
+            generator.writeObjectField("gatewayStatisticsList", statistics.gatewayStatisticsList);
+            generator.writeObjectField("samplingRateSnapshot", statistics.samplingRateSnapshot);
 
             try {
-                SystemInformation systemInformation = fetchSystemInformation();
+                CosmosDiagnosticsSystemUsageSnapshot systemInformation = fetchSystemInformation();
                 generator.writeObjectField("systemInformation", systemInformation);
             } catch (Exception e) {
                 // Error while evaluating system information, do nothing
@@ -476,6 +699,10 @@ public class ClientSideRequestStatistics {
         private boolean forceRefresh;
         @JsonSerialize
         private boolean forceCollectionRoutingMapRefresh;
+        @JsonInclude(JsonInclude.Include.NON_NULL)
+        private String faultInjectionRuleId;
+        @JsonInclude(JsonInclude.Include.NON_NULL)
+        private List<String> faultInjectionEvaluationResults;
 
         // If one replica return error we start address call in parallel,
         // on other replica  valid response, we end the current user request,
@@ -510,8 +737,17 @@ public class ClientSideRequestStatistics {
         public boolean isForceCollectionRoutingMapRefresh() {
             return forceCollectionRoutingMapRefresh;
         }
+
+        public String getFaultInjectionRuleId() {
+            return faultInjectionRuleId;
+        }
+
+        public List<String> getFaultInjectionEvaluationResults() {
+            return faultInjectionEvaluationResults;
+        }
     }
 
+    @JsonSerialize(using = GatewayStatistics.GatewayStatisticsSerializer.class)
     public static class GatewayStatistics {
         private String sessionToken;
         private OperationType operationType;
@@ -525,6 +761,8 @@ public class ClientSideRequestStatistics {
         private String exceptionResponseHeaders;
 
         private int responsePayloadSizeInBytes;
+        private String faultInjectionRuleId;
+        private List<String> faultInjectionEvaluationResults;
 
         public String getSessionToken() {
             return sessionToken;
@@ -566,23 +804,90 @@ public class ClientSideRequestStatistics {
             return exceptionResponseHeaders;
         }
 
-        public int getResponsePayloadSizeInBytes() { return this.responsePayloadSizeInBytes; }
+        public int getResponsePayloadSizeInBytes() {
+            return this.responsePayloadSizeInBytes;
+        }
+
+        public String getFaultInjectionRuleId() {
+            return faultInjectionRuleId;
+        }
+
+        public List<String> getFaultInjectionEvaluationResults() {
+            return faultInjectionEvaluationResults;
+        }
+
+        public static class GatewayStatisticsSerializer extends StdSerializer<GatewayStatistics> {
+            private static final long serialVersionUID = 1L;
+
+            public GatewayStatisticsSerializer(){
+                super(GatewayStatistics.class);
+            }
+
+            @Override
+            public void serialize(GatewayStatistics gatewayStatistics,
+                                  JsonGenerator jsonGenerator,
+                                  SerializerProvider serializerProvider) throws IOException {
+                jsonGenerator.writeStartObject();
+                jsonGenerator.writeStringField("sessionToken", gatewayStatistics.getSessionToken());
+                jsonGenerator.writeStringField("operationType", gatewayStatistics.getOperationType().toString());
+                jsonGenerator.writeStringField("resourceType", gatewayStatistics.getResourceType().toString());
+                jsonGenerator.writeNumberField("statusCode", gatewayStatistics.getStatusCode());
+                jsonGenerator.writeNumberField("subStatusCode", gatewayStatistics.getSubStatusCode());
+                jsonGenerator.writeNumberField("requestCharge", gatewayStatistics.getRequestCharge());
+                jsonGenerator.writeObjectField("requestTimeline", gatewayStatistics.getRequestTimeline());
+                jsonGenerator.writeStringField("partitionKeyRangeId", gatewayStatistics.getPartitionKeyRangeId());
+                jsonGenerator.writeNumberField("responsePayloadSizeInBytes", gatewayStatistics.getResponsePayloadSizeInBytes());
+                this.writeNonNullStringField(jsonGenerator, "exceptionMessage", gatewayStatistics.getExceptionMessage());
+                this.writeNonNullStringField(jsonGenerator, "exceptionResponseHeaders", gatewayStatistics.getExceptionResponseHeaders());
+                this.writeNonNullStringField(jsonGenerator, "faultInjectionRuleId", gatewayStatistics.getFaultInjectionRuleId());
+
+                if (StringUtils.isEmpty(gatewayStatistics.getFaultInjectionRuleId())) {
+                    this.writeNonEmptyStringArrayField(
+                        jsonGenerator,
+                        "faultInjectionEvaluationResults",
+                        gatewayStatistics.getFaultInjectionEvaluationResults());
+                }
+
+                jsonGenerator.writeEndObject();
+            }
+
+            private void writeNonNullStringField(JsonGenerator jsonGenerator, String fieldName, String value) throws IOException {
+                if (value == null) {
+                    return;
+                }
+
+                jsonGenerator.writeStringField(fieldName, value);
+            }
+
+            private void writeNonEmptyStringArrayField(JsonGenerator jsonGenerator, String fieldName, List<String> values) throws IOException {
+                if (values == null || values.isEmpty()) {
+                    return;
+                }
+
+                jsonGenerator.writeObjectField(fieldName, values);
+            }
+        }
     }
 
-    public static SystemInformation fetchSystemInformation() {
-        SystemInformation systemInformation = new SystemInformation();
+    public static CosmosDiagnosticsSystemUsageSnapshot fetchSystemInformation() {
         Runtime runtime = Runtime.getRuntime();
         long totalMemory = runtime.totalMemory() / 1024;
         long freeMemory = runtime.freeMemory() / 1024;
         long maxMemory = runtime.maxMemory() / 1024;
-        systemInformation.usedMemory = totalMemory - freeMemory + " KB";
-        systemInformation.availableMemory = (maxMemory - (totalMemory - freeMemory)) + " KB";
-        systemInformation.availableProcessors = runtime.availableProcessors();
+
 
         // TODO: other system related info also can be captured using a similar approach
-        systemInformation.systemCpuLoad = CpuMemoryMonitor
+        String systemCpu = CpuMemoryMonitor
             .getCpuLoad()
             .toString();
-        return systemInformation;
+
+        return ImplementationBridgeHelpers
+            .CosmosDiagnosticsContextHelper
+            .getCosmosDiagnosticsContextAccessor()
+            .createSystemUsageSnapshot(
+                systemCpu,
+                totalMemory - freeMemory + " KB",
+                (maxMemory - (totalMemory - freeMemory)) + " KB",
+                runtime.availableProcessors());
     }
 }

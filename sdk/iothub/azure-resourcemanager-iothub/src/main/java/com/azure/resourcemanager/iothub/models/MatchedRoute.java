@@ -16,6 +16,10 @@ public final class MatchedRoute {
     @JsonProperty(value = "properties")
     private RouteProperties properties;
 
+    /** Creates an instance of MatchedRoute class. */
+    public MatchedRoute() {
+    }
+
     /**
      * Get the properties property: Properties of routes that matched.
      *

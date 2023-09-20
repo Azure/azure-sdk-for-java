@@ -17,6 +17,10 @@ public final class AccessInformationCreateParameters {
     @JsonProperty(value = "properties")
     private AccessInformationCreateParameterProperties innerProperties;
 
+    /** Creates an instance of AccessInformationCreateParameters class. */
+    public AccessInformationCreateParameters() {
+    }
+
     /**
      * Get the innerProperties property: Tenant access information update parameter properties.
      *

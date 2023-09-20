@@ -23,14 +23,10 @@ import com.azure.core.test.annotation.DoNotRecord;
 import com.azure.core.util.Context;
 import com.azure.core.util.CoreUtils;
 import io.netty.handler.codec.http.HttpResponseStatus;
-import org.junit.jupiter.api.AfterAll;
-import org.junit.jupiter.api.BeforeAll;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.params.ParameterizedTest;
 import org.junit.jupiter.params.provider.MethodSource;
-import reactor.test.StepVerifier;
 
-import java.time.Duration;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.Collections;
@@ -41,7 +37,6 @@ import java.util.concurrent.atomic.AtomicReference;
 import java.util.stream.Collectors;
 
 import static com.azure.ai.metricsadvisor.TestUtils.DATAFEED_ID_REQUIRED_ERROR;
-import static com.azure.ai.metricsadvisor.TestUtils.DEFAULT_SUBSCRIBER_TIMEOUT_SECONDS;
 import static com.azure.ai.metricsadvisor.TestUtils.DISPLAY_NAME_WITH_ARGUMENTS;
 import static com.azure.ai.metricsadvisor.TestUtils.INCORRECT_UUID;
 import static com.azure.ai.metricsadvisor.TestUtils.INCORRECT_UUID_ERROR;
@@ -67,16 +62,6 @@ import static org.junit.jupiter.api.Assertions.assertTrue;
 public class DataFeedClientTest extends DataFeedTestBase {
     private MetricsAdvisorAdministrationClient client;
 
-    @BeforeAll
-    static void beforeAll() {
-        StepVerifier.setDefaultTimeout(Duration.ofSeconds(DEFAULT_SUBSCRIBER_TIMEOUT_SECONDS));
-    }
-
-    @AfterAll
-    static void afterAll() {
-        StepVerifier.resetDefaultTimeout();
-    }
-
     /**
      * Verifies the result of the list data feed method when no options specified.
      */
@@ -86,7 +71,7 @@ public class DataFeedClientTest extends DataFeedTestBase {
         final AtomicReference<List<String>> expectedDataFeedIdList = new AtomicReference<List<String>>();
         try {
             // Arrange
-            client = getMetricsAdvisorAdministrationBuilder(httpClient, serviceVersion).buildClient();
+            client = getMetricsAdvisorAdministrationBuilder(httpClient, serviceVersion, true).buildClient();
             listDataFeedRunner(inputDataFeedList -> {
                 List<DataFeed> actualDataFeedList = new ArrayList<>();
                 List<DataFeed> expectedDataFeedList =
@@ -131,7 +116,7 @@ public class DataFeedClientTest extends DataFeedTestBase {
     @MethodSource("com.azure.ai.metricsadvisor.TestUtils#getTestParameters")
     void testListDataFeedTop3(HttpClient httpClient, MetricsAdvisorServiceVersion serviceVersion) {
         // Arrange
-        client = getMetricsAdvisorAdministrationBuilder(httpClient, serviceVersion).buildClient();
+        client = getMetricsAdvisorAdministrationBuilder(httpClient, serviceVersion, true).buildClient();
 
         // Act & Assert
         int pageCount = 0;
@@ -158,7 +143,7 @@ public class DataFeedClientTest extends DataFeedTestBase {
         try {
             // Arrange
             final int[] pageCount = {0};
-            client = getMetricsAdvisorAdministrationBuilder(httpClient, serviceVersion).buildClient();
+            client = getMetricsAdvisorAdministrationBuilder(httpClient, serviceVersion, true).buildClient();
             creatDataFeedRunner(expectedDataFeed -> {
                 // Act & Assert
                 final DataFeed createdDataFeed = client.createDataFeed(expectedDataFeed);
@@ -197,7 +182,7 @@ public class DataFeedClientTest extends DataFeedTestBase {
     // @MethodSource("com.azure.ai.metricsadvisor.TestUtils#getTestParameters")
     // void testListDataFeedSkip(HttpClient httpClient, MetricsAdvisorServiceVersion serviceVersion) {
     //     // Arrange
-    //     client = getMetricsAdvisorAdministrationBuilder(httpClient, serviceVersion).buildClient();
+    //     client = getMetricsAdvisorAdministrationBuilder(httpClient, serviceVersion, true).buildClient();
     //     final ArrayList<DataFeed> actualDataFeedList = new ArrayList<>();
     //     final ArrayList<DataFeed> expectedList = new ArrayList<>();
     //
@@ -218,7 +203,7 @@ public class DataFeedClientTest extends DataFeedTestBase {
     @MethodSource("com.azure.ai.metricsadvisor.TestUtils#getTestParameters")
     void testListDataFeedFilterBySourceType(HttpClient httpClient, MetricsAdvisorServiceVersion serviceVersion) {
         // Arrange
-        client = getMetricsAdvisorAdministrationBuilder(httpClient, serviceVersion).buildClient();
+        client = getMetricsAdvisorAdministrationBuilder(httpClient, serviceVersion, true).buildClient();
 
         // Act & Assert
         client.listDataFeeds(
@@ -235,7 +220,7 @@ public class DataFeedClientTest extends DataFeedTestBase {
     @MethodSource("com.azure.ai.metricsadvisor.TestUtils#getTestParameters")
     void testListDataFeedFilterByStatus(HttpClient httpClient, MetricsAdvisorServiceVersion serviceVersion) {
         // Arrange
-        client = getMetricsAdvisorAdministrationBuilder(httpClient, serviceVersion).buildClient();
+        client = getMetricsAdvisorAdministrationBuilder(httpClient, serviceVersion, true).buildClient();
 
         // Act & Assert
         int pageCount = 0;
@@ -260,7 +245,7 @@ public class DataFeedClientTest extends DataFeedTestBase {
     @MethodSource("com.azure.ai.metricsadvisor.TestUtils#getTestParameters")
     void testListDataFeedFilterByGranularityType(HttpClient httpClient, MetricsAdvisorServiceVersion serviceVersion) {
         // Arrange
-        client = getMetricsAdvisorAdministrationBuilder(httpClient, serviceVersion).buildClient();
+        client = getMetricsAdvisorAdministrationBuilder(httpClient, serviceVersion, true).buildClient();
 
         // Act & Assert
         int[] pageCount = new int[] {0};
@@ -319,7 +304,7 @@ public class DataFeedClientTest extends DataFeedTestBase {
         final AtomicReference<String> dataFeedId = new AtomicReference<>();
         try {
             // Arrange
-            client = getMetricsAdvisorAdministrationBuilder(httpClient, serviceVersion).buildClient();
+            client = getMetricsAdvisorAdministrationBuilder(httpClient, serviceVersion, true).buildClient();
             creatDataFeedRunner(dataFeed -> {
                 final DataFeed createdDataFeed = client.createDataFeed(dataFeed);
 
@@ -350,7 +335,7 @@ public class DataFeedClientTest extends DataFeedTestBase {
         final AtomicReference<String> dataFeedId = new AtomicReference<>();
         try {
             // Arrange
-            client = getMetricsAdvisorAdministrationBuilder(httpClient, serviceVersion).buildClient();
+            client = getMetricsAdvisorAdministrationBuilder(httpClient, serviceVersion, true).buildClient();
             creatDataFeedRunner(expectedDataFeed -> {
                 // Act & Assert
                 final DataFeed createdDataFeed = client.createDataFeed(expectedDataFeed);
@@ -375,7 +360,7 @@ public class DataFeedClientTest extends DataFeedTestBase {
     public void createBlobDataFeed(HttpClient httpClient, MetricsAdvisorServiceVersion serviceVersion) {
         final AtomicReference<String> dataFeedId = new AtomicReference<>();
         try {
-            client = getMetricsAdvisorAdministrationBuilder(httpClient, serviceVersion).buildClient();
+            client = getMetricsAdvisorAdministrationBuilder(httpClient, serviceVersion, true).buildClient();
             // Arrange
             creatDataFeedRunner(expectedDataFeed -> {
                 // Act & Assert
@@ -401,7 +386,7 @@ public class DataFeedClientTest extends DataFeedTestBase {
     public void createCosmosDataFeed(HttpClient httpClient, MetricsAdvisorServiceVersion serviceVersion) {
         final AtomicReference<String> dataFeedId = new AtomicReference<>();
         try {
-            client = getMetricsAdvisorAdministrationBuilder(httpClient, serviceVersion).buildClient();
+            client = getMetricsAdvisorAdministrationBuilder(httpClient, serviceVersion, true).buildClient();
             // Arrange
             creatDataFeedRunner(expectedDataFeed -> {
 
@@ -428,7 +413,7 @@ public class DataFeedClientTest extends DataFeedTestBase {
     public void createAppInsightsDataFeed(HttpClient httpClient, MetricsAdvisorServiceVersion serviceVersion) {
         final AtomicReference<String> dataFeedId = new AtomicReference<>();
         try {
-            client = getMetricsAdvisorAdministrationBuilder(httpClient, serviceVersion).buildClient();
+            client = getMetricsAdvisorAdministrationBuilder(httpClient, serviceVersion, true).buildClient();
             // Arrange
             creatDataFeedRunner(expectedDataFeed -> {
 
@@ -455,7 +440,7 @@ public class DataFeedClientTest extends DataFeedTestBase {
     public void createExplorerDataFeed(HttpClient httpClient, MetricsAdvisorServiceVersion serviceVersion) {
         final AtomicReference<String> dataFeedId = new AtomicReference<>();
         try {
-            client = getMetricsAdvisorAdministrationBuilder(httpClient, serviceVersion).buildClient();
+            client = getMetricsAdvisorAdministrationBuilder(httpClient, serviceVersion, true).buildClient();
             // Arrange
             creatDataFeedRunner(expectedDataFeed -> {
                 // Act & Assert
@@ -481,7 +466,7 @@ public class DataFeedClientTest extends DataFeedTestBase {
     public void createAzureTableDataFeed(HttpClient httpClient, MetricsAdvisorServiceVersion serviceVersion) {
         final AtomicReference<String> dataFeedId = new AtomicReference<>();
         try {
-            client = getMetricsAdvisorAdministrationBuilder(httpClient, serviceVersion).buildClient();
+            client = getMetricsAdvisorAdministrationBuilder(httpClient, serviceVersion, true).buildClient();
             // Arrange
             creatDataFeedRunner(expectedDataFeed -> {
                 // Act & Assert
@@ -507,7 +492,7 @@ public class DataFeedClientTest extends DataFeedTestBase {
     public void createInfluxDataFeed(HttpClient httpClient, MetricsAdvisorServiceVersion serviceVersion) {
         final AtomicReference<String> dataFeedId = new AtomicReference<>();
         try {
-            client = getMetricsAdvisorAdministrationBuilder(httpClient, serviceVersion).buildClient();
+            client = getMetricsAdvisorAdministrationBuilder(httpClient, serviceVersion, true).buildClient();
             // Arrange
             creatDataFeedRunner(expectedDataFeed -> {
                 // Act & Assert
@@ -533,7 +518,7 @@ public class DataFeedClientTest extends DataFeedTestBase {
     public void createMongoDBDataFeed(HttpClient httpClient, MetricsAdvisorServiceVersion serviceVersion) {
         final AtomicReference<String> dataFeedId = new AtomicReference<>();
         try {
-            client = getMetricsAdvisorAdministrationBuilder(httpClient, serviceVersion).buildClient();
+            client = getMetricsAdvisorAdministrationBuilder(httpClient, serviceVersion, true).buildClient();
             // Arrange
             creatDataFeedRunner(expectedDataFeed -> {
                 // Act & Assert
@@ -560,7 +545,7 @@ public class DataFeedClientTest extends DataFeedTestBase {
         final AtomicReference<String> dataFeedId = new AtomicReference<>();
         try {
             // Arrange
-            client = getMetricsAdvisorAdministrationBuilder(httpClient, serviceVersion).buildClient();
+            client = getMetricsAdvisorAdministrationBuilder(httpClient, serviceVersion, true).buildClient();
 
             creatDataFeedRunner(expectedDataFeed -> {
                 // Act & Assert
@@ -587,7 +572,7 @@ public class DataFeedClientTest extends DataFeedTestBase {
         final AtomicReference<String> dataFeedId = new AtomicReference<>();
         try {
             // Arrange
-            client = getMetricsAdvisorAdministrationBuilder(httpClient, serviceVersion).buildClient();
+            client = getMetricsAdvisorAdministrationBuilder(httpClient, serviceVersion, true).buildClient();
             creatDataFeedRunner(expectedDataFeed -> {
                 // Act & Assert
                 final DataFeed createdDataFeed = client.createDataFeed(expectedDataFeed);
@@ -613,7 +598,7 @@ public class DataFeedClientTest extends DataFeedTestBase {
         final AtomicReference<String> dataFeedId = new AtomicReference<>();
         try {
             // Arrange
-            client = getMetricsAdvisorAdministrationBuilder(httpClient, serviceVersion).buildClient();
+            client = getMetricsAdvisorAdministrationBuilder(httpClient, serviceVersion, true).buildClient();
             creatDataFeedRunner(expectedDataFeed -> {
                 // Act & Assert
                 final DataFeed createdDataFeed = client.createDataFeed(expectedDataFeed);
@@ -639,7 +624,7 @@ public class DataFeedClientTest extends DataFeedTestBase {
         final AtomicReference<String> dataFeedId = new AtomicReference<>();
         try {
             // Arrange
-            client = getMetricsAdvisorAdministrationBuilder(httpClient, serviceVersion).buildClient();
+            client = getMetricsAdvisorAdministrationBuilder(httpClient, serviceVersion, true).buildClient();
             creatDataFeedRunner(expectedDataFeed -> {
                 // Act & Assert
                 final DataFeed createdDataFeed = client.createDataFeed(expectedDataFeed);
@@ -661,7 +646,7 @@ public class DataFeedClientTest extends DataFeedTestBase {
     @MethodSource("com.azure.ai.metricsadvisor.TestUtils#getTestParameters")
     void createDataFeedRequiredParams(HttpClient httpClient, MetricsAdvisorServiceVersion serviceVersion) {
         // Arrange
-        client = getMetricsAdvisorAdministrationBuilder(httpClient, serviceVersion).buildClient();
+        client = getMetricsAdvisorAdministrationBuilder(httpClient, serviceVersion, true).buildClient();
         creatDataFeedRunner(expectedDataFeed -> {
             // Act & Assert
             Exception ex = assertThrows(NullPointerException.class, () -> client.createDataFeed(null));
@@ -719,7 +704,7 @@ public class DataFeedClientTest extends DataFeedTestBase {
     @MethodSource("com.azure.ai.metricsadvisor.TestUtils#getTestParameters")
     public void deleteDataFeedIdWithResponse(HttpClient httpClient, MetricsAdvisorServiceVersion serviceVersion) {
         // Arrange
-        client = getMetricsAdvisorAdministrationBuilder(httpClient, serviceVersion).buildClient();
+        client = getMetricsAdvisorAdministrationBuilder(httpClient, serviceVersion, true).buildClient();
         creatDataFeedRunner(dataFeed -> {
             final DataFeed createdDataFeed = client.createDataFeed(dataFeed);
 
@@ -743,7 +728,7 @@ public class DataFeedClientTest extends DataFeedTestBase {
         final AtomicReference<String> dataFeedId = new AtomicReference<>();
         try {
             // Arrange
-            client = getMetricsAdvisorAdministrationBuilder(httpClient, serviceVersion).buildClient();
+            client = getMetricsAdvisorAdministrationBuilder(httpClient, serviceVersion, true).buildClient();
             DataFeedMetric dataFeedMetric = new DataFeedMetric("cost");
             DataFeedMetric dataFeedMetric2 = new DataFeedMetric("cost");
 

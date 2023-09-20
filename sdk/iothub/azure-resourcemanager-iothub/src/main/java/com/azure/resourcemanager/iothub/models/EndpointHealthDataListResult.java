@@ -24,6 +24,10 @@ public final class EndpointHealthDataListResult {
     @JsonProperty(value = "nextLink", access = JsonProperty.Access.WRITE_ONLY)
     private String nextLink;
 
+    /** Creates an instance of EndpointHealthDataListResult class. */
+    public EndpointHealthDataListResult() {
+    }
+
     /**
      * Get the value property: JSON-serialized array of Endpoint health data.
      *

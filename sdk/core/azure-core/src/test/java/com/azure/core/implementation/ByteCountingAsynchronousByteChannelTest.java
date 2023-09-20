@@ -7,31 +7,27 @@ import com.azure.core.util.PartialWriteAsynchronousChannel;
 import com.azure.core.util.ProgressReporter;
 import com.azure.core.util.io.IOUtils;
 import com.azure.core.util.mocking.MockAsynchronousByteChannel;
+import com.azure.core.util.mocking.MockAsynchronousFileChannel;
 import org.junit.jupiter.api.Test;
 
 import java.io.IOException;
 import java.nio.ByteBuffer;
 import java.nio.channels.AsynchronousByteChannel;
-import java.nio.channels.AsynchronousFileChannel;
 import java.nio.channels.CompletionHandler;
-import java.nio.file.Files;
-import java.nio.file.Path;
-import java.nio.file.StandardOpenOption;
-import java.util.Random;
 import java.util.concurrent.CompletableFuture;
 import java.util.concurrent.ConcurrentLinkedQueue;
 import java.util.concurrent.ExecutionException;
+import java.util.concurrent.ThreadLocalRandom;
 import java.util.concurrent.atomic.AtomicInteger;
 
-import static org.junit.jupiter.api.Assertions.assertArrayEquals;
+import static com.azure.core.CoreTestUtils.assertArraysEqual;
+import static com.azure.core.CoreTestUtils.fillArray;
 import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertFalse;
 import static org.junit.jupiter.api.Assertions.assertThrows;
 import static org.junit.jupiter.api.Assertions.assertTrue;
 
 public class ByteCountingAsynchronousByteChannelTest {
-
-    private static final Random RANDOM = new Random();
 
     @Test
     public void testCtor() {
@@ -79,17 +75,17 @@ public class ByteCountingAsynchronousByteChannelTest {
     @Test
     public void canWriteAndCountBytes() throws IOException, ExecutionException, InterruptedException {
         byte[] data = new byte[10 * 1204 + 127];
-        RANDOM.nextBytes(data);
-        Path tempFile = Files.createTempFile("bytecountingtest", null);
-        tempFile.toFile().deleteOnExit();
+        fillArray(data);
+
+        byte[] written = new byte[data.length];
+        MockAsynchronousFileChannel mockAsynchronousByteChannel = new MockAsynchronousFileChannel(written);
 
         try (ByteCountingAsynchronousByteChannel channel = new ByteCountingAsynchronousByteChannel(
-            IOUtils.toAsynchronousByteChannel(AsynchronousFileChannel.open(tempFile, StandardOpenOption.WRITE), 0),
-            null, null)) {
+            IOUtils.toAsynchronousByteChannel(mockAsynchronousByteChannel, 0), null, null)) {
 
             int position = 0;
             while (position < data.length) {
-                int size = 1 + RANDOM.nextInt(128);
+                int size = 1 + ThreadLocalRandom.current().nextInt(128);
                 size = Math.min(size, data.length - position);
                 ByteBuffer buffer = ByteBuffer.wrap(data, position, size);
 
@@ -113,23 +109,23 @@ public class ByteCountingAsynchronousByteChannelTest {
             }
         }
 
-        assertArrayEquals(data, Files.readAllBytes(tempFile));
+        assertArraysEqual(data, written);
     }
 
     @Test
     public void canWriteAndCountBytesWithFuture() throws IOException, ExecutionException, InterruptedException {
         byte[] data = new byte[10 * 1204 + 127];
-        RANDOM.nextBytes(data);
-        Path tempFile = Files.createTempFile("bytecountingtest", null);
-        tempFile.toFile().deleteOnExit();
+        fillArray(data);
+
+        byte[] written = new byte[data.length];
+        MockAsynchronousFileChannel mockAsynchronousByteChannel = new MockAsynchronousFileChannel(written);
 
         try (ByteCountingAsynchronousByteChannel channel = new ByteCountingAsynchronousByteChannel(
-            IOUtils.toAsynchronousByteChannel(AsynchronousFileChannel.open(tempFile, StandardOpenOption.WRITE), 0),
-            null, null)) {
+            IOUtils.toAsynchronousByteChannel(mockAsynchronousByteChannel, 0), null, null)) {
 
             int position = 0;
             while (position < data.length) {
-                int size = 1 + RANDOM.nextInt(128);
+                int size = 1 + ThreadLocalRandom.current().nextInt(128);
                 size = Math.min(size, data.length - position);
                 ByteBuffer buffer = ByteBuffer.wrap(data, position, size);
                 position += channel.write(buffer).get();
@@ -138,23 +134,24 @@ public class ByteCountingAsynchronousByteChannelTest {
             }
         }
 
-        assertArrayEquals(data, Files.readAllBytes(tempFile));
+        assertArraysEqual(data, written);
     }
 
     @Test
     public void canWriteAndCountBytesWithPartialWrites() throws IOException, ExecutionException, InterruptedException {
         byte[] data = new byte[10 * 1204 + 127];
-        Path tempFile = Files.createTempFile("bytecountingtest", null);
-        tempFile.toFile().deleteOnExit();
+        fillArray(data);
 
-        try (ByteCountingAsynchronousByteChannel channel =
-                new ByteCountingAsynchronousByteChannel(new PartialWriteAsynchronousChannel(
-                    IOUtils.toAsynchronousByteChannel(AsynchronousFileChannel.open(tempFile, StandardOpenOption.WRITE), 0)),
-                    null, null)) {
+        byte[] written = new byte[data.length];
+        MockAsynchronousFileChannel mockAsynchronousByteChannel = new MockAsynchronousFileChannel(written);
+
+        try (ByteCountingAsynchronousByteChannel channel = new ByteCountingAsynchronousByteChannel(
+            new PartialWriteAsynchronousChannel(IOUtils.toAsynchronousByteChannel(mockAsynchronousByteChannel, 0)),
+            null, null)) {
 
             int position = 0;
             while (position < data.length) {
-                int size = 1 + RANDOM.nextInt(128);
+                int size = 1 + ThreadLocalRandom.current().nextInt(128);
                 size = Math.min(size, data.length - position);
                 ByteBuffer buffer = ByteBuffer.wrap(data, position, size);
 
@@ -178,23 +175,24 @@ public class ByteCountingAsynchronousByteChannelTest {
             }
         }
 
-        assertArrayEquals(data, Files.readAllBytes(tempFile));
+        assertArraysEqual(data, written);
     }
 
     @Test
     public void canWriteAndCountBytesWithPartialWritesWithFuture() throws IOException, ExecutionException, InterruptedException {
         byte[] data = new byte[10 * 1204 + 127];
-        Path tempFile = Files.createTempFile("bytecountingtest", null);
-        tempFile.toFile().deleteOnExit();
+        fillArray(data);
 
-        try (ByteCountingAsynchronousByteChannel channel =
-                new ByteCountingAsynchronousByteChannel(new PartialWriteAsynchronousChannel(
-                    IOUtils.toAsynchronousByteChannel(AsynchronousFileChannel.open(tempFile, StandardOpenOption.WRITE), 0)),
-                    null, null)) {
+        byte[] written = new byte[data.length];
+        MockAsynchronousFileChannel mockAsynchronousByteChannel = new MockAsynchronousFileChannel(written);
+
+        try (ByteCountingAsynchronousByteChannel channel = new ByteCountingAsynchronousByteChannel(
+            new PartialWriteAsynchronousChannel(IOUtils.toAsynchronousByteChannel(mockAsynchronousByteChannel, 0)),
+            null, null)) {
 
             int position = 0;
             while (position < data.length) {
-                int size = 1 + RANDOM.nextInt(128);
+                int size = 1 + ThreadLocalRandom.current().nextInt(128);
                 size = Math.min(size, data.length - position);
                 ByteBuffer buffer = ByteBuffer.wrap(data, position, size);
 
@@ -204,15 +202,16 @@ public class ByteCountingAsynchronousByteChannelTest {
             }
         }
 
-        assertArrayEquals(data, Files.readAllBytes(tempFile));
+        assertArraysEqual(data, written);
     }
 
     @Test
     public void canWriteAndCountBytesWithProgressReporting() throws IOException, ExecutionException, InterruptedException {
         byte[] data = new byte[10 * 1204 + 127];
-        RANDOM.nextBytes(data);
-        Path tempFile = Files.createTempFile("bytecountingtest", null);
-        tempFile.toFile().deleteOnExit();
+        fillArray(data);
+
+        byte[] written = new byte[data.length];
+        MockAsynchronousFileChannel mockAsynchronousByteChannel = new MockAsynchronousFileChannel(written);
 
         ConcurrentLinkedQueue<Long> writeProgresses = new ConcurrentLinkedQueue<>();
         ProgressReporter writeProgressReporter = ProgressReporter.withProgressListener(writeProgresses::add);
@@ -220,12 +219,12 @@ public class ByteCountingAsynchronousByteChannelTest {
         ProgressReporter readProgressReporter = ProgressReporter.withProgressListener(readProgresses::add);
 
         try (ByteCountingAsynchronousByteChannel channel = new ByteCountingAsynchronousByteChannel(
-            IOUtils.toAsynchronousByteChannel(AsynchronousFileChannel.open(tempFile, StandardOpenOption.WRITE), 0),
-            readProgressReporter, writeProgressReporter)) {
+            IOUtils.toAsynchronousByteChannel(mockAsynchronousByteChannel, 0), readProgressReporter,
+            writeProgressReporter)) {
 
             int position = 0;
             while (position < data.length) {
-                int size = 1 + RANDOM.nextInt(128);
+                int size = 1 + ThreadLocalRandom.current().nextInt(128);
                 size = Math.min(size, data.length - position);
                 ByteBuffer buffer = ByteBuffer.wrap(data, position, size);
 
@@ -251,15 +250,16 @@ public class ByteCountingAsynchronousByteChannelTest {
             }
         }
 
-        assertArrayEquals(data, Files.readAllBytes(tempFile));
+        assertArraysEqual(data, written);
     }
 
     @Test
     public void canWriteAndCountBytesWithProgressReportingWithFuture() throws IOException, ExecutionException, InterruptedException {
         byte[] data = new byte[10 * 1204 + 127];
-        RANDOM.nextBytes(data);
-        Path tempFile = Files.createTempFile("bytecountingtest", null);
-        tempFile.toFile().deleteOnExit();
+        fillArray(data);
+
+        byte[] written = new byte[data.length];
+        MockAsynchronousFileChannel mockAsynchronousByteChannel = new MockAsynchronousFileChannel(written);
 
         ConcurrentLinkedQueue<Long> writeProgresses = new ConcurrentLinkedQueue<>();
         ProgressReporter writeProgressReporter = ProgressReporter.withProgressListener(writeProgresses::add);
@@ -267,12 +267,12 @@ public class ByteCountingAsynchronousByteChannelTest {
         ProgressReporter readProgressReporter = ProgressReporter.withProgressListener(readProgresses::add);
 
         try (ByteCountingAsynchronousByteChannel channel = new ByteCountingAsynchronousByteChannel(
-            IOUtils.toAsynchronousByteChannel(AsynchronousFileChannel.open(tempFile, StandardOpenOption.WRITE), 0),
+            IOUtils.toAsynchronousByteChannel(mockAsynchronousByteChannel, 0),
             readProgressReporter, writeProgressReporter)) {
 
             int position = 0;
             while (position < data.length) {
-                int size = 1 + RANDOM.nextInt(128);
+                int size = 1 + ThreadLocalRandom.current().nextInt(128);
                 size = Math.min(size, data.length - position);
                 ByteBuffer buffer = ByteBuffer.wrap(data, position, size);
 
@@ -284,29 +284,29 @@ public class ByteCountingAsynchronousByteChannelTest {
             }
         }
 
-        assertArrayEquals(data, Files.readAllBytes(tempFile));
+        assertArraysEqual(data, written);
     }
 
     @Test
     public void canWriteAndCountBytesWithProgressReportingWithPartialWrites() throws IOException, ExecutionException, InterruptedException {
         byte[] data = new byte[10 * 1204 + 127];
-        RANDOM.nextBytes(data);
-        Path tempFile = Files.createTempFile("bytecountingtest", null);
-        tempFile.toFile().deleteOnExit();
+        fillArray(data);
+
+        byte[] written = new byte[data.length];
+        MockAsynchronousFileChannel mockAsynchronousByteChannel = new MockAsynchronousFileChannel(written);
 
         ConcurrentLinkedQueue<Long> writeProgresses = new ConcurrentLinkedQueue<>();
         ProgressReporter writeProgressReporter = ProgressReporter.withProgressListener(writeProgresses::add);
         ConcurrentLinkedQueue<Long> readProgresses = new ConcurrentLinkedQueue<>();
         ProgressReporter readProgressReporter = ProgressReporter.withProgressListener(readProgresses::add);
 
-        try (ByteCountingAsynchronousByteChannel channel =
-                new ByteCountingAsynchronousByteChannel(new PartialWriteAsynchronousChannel(
-                    IOUtils.toAsynchronousByteChannel(AsynchronousFileChannel.open(tempFile, StandardOpenOption.WRITE), 0)),
-                    readProgressReporter, writeProgressReporter)) {
+        try (ByteCountingAsynchronousByteChannel channel = new ByteCountingAsynchronousByteChannel(
+            new PartialWriteAsynchronousChannel(IOUtils.toAsynchronousByteChannel(mockAsynchronousByteChannel, 0)),
+                readProgressReporter, writeProgressReporter)) {
 
             int position = 0;
             while (position < data.length) {
-                int size = 1 + RANDOM.nextInt(128);
+                int size = 1 + ThreadLocalRandom.current().nextInt(128);
                 size = Math.min(size, data.length - position);
                 ByteBuffer buffer = ByteBuffer.wrap(data, position, size);
 
@@ -332,29 +332,29 @@ public class ByteCountingAsynchronousByteChannelTest {
             }
         }
 
-        assertArrayEquals(data, Files.readAllBytes(tempFile));
+        assertArraysEqual(data, written);
     }
 
     @Test
     public void canWriteAndCountBytesWithProgressReportingWithPartialWritesWithFuture() throws IOException, ExecutionException, InterruptedException {
         byte[] data = new byte[10 * 1204 + 127];
-        RANDOM.nextBytes(data);
-        Path tempFile = Files.createTempFile("bytecountingtest", null);
-        tempFile.toFile().deleteOnExit();
+        fillArray(data);
+
+        byte[] written = new byte[data.length];
+        MockAsynchronousFileChannel mockAsynchronousByteChannel = new MockAsynchronousFileChannel(written);
 
         ConcurrentLinkedQueue<Long> writeProgresses = new ConcurrentLinkedQueue<>();
         ProgressReporter writeProgressReporter = ProgressReporter.withProgressListener(writeProgresses::add);
         ConcurrentLinkedQueue<Long> readProgresses = new ConcurrentLinkedQueue<>();
         ProgressReporter readProgressReporter = ProgressReporter.withProgressListener(readProgresses::add);
 
-        try (ByteCountingAsynchronousByteChannel channel =
-                new ByteCountingAsynchronousByteChannel(new PartialWriteAsynchronousChannel(
-                    IOUtils.toAsynchronousByteChannel(AsynchronousFileChannel.open(tempFile, StandardOpenOption.WRITE), 0)),
-                    readProgressReporter, writeProgressReporter)) {
+        try (ByteCountingAsynchronousByteChannel channel = new ByteCountingAsynchronousByteChannel(
+            new PartialWriteAsynchronousChannel(IOUtils.toAsynchronousByteChannel(mockAsynchronousByteChannel, 0)),
+            readProgressReporter, writeProgressReporter)) {
 
             int position = 0;
             while (position < data.length) {
-                int size = 1 + RANDOM.nextInt(128);
+                int size = 1 + ThreadLocalRandom.current().nextInt(128);
                 size = Math.min(size, data.length - position);
                 ByteBuffer buffer = ByteBuffer.wrap(data, position, size);
 
@@ -366,26 +366,24 @@ public class ByteCountingAsynchronousByteChannelTest {
             }
         }
 
-        assertArrayEquals(data, Files.readAllBytes(tempFile));
+        assertArraysEqual(data, written);
     }
 
     @Test
     public void canReadAndCountBytes() throws IOException, ExecutionException, InterruptedException {
         byte[] data = new byte[10 * 1204 + 127];
-        RANDOM.nextBytes(data);
-        Path tempFile = Files.createTempFile("bytecountingtest", null);
-        tempFile.toFile().deleteOnExit();
-        Files.write(tempFile, data);
+        fillArray(data);
+
+        MockAsynchronousFileChannel mockAsynchronousByteChannel = new MockAsynchronousFileChannel(data, data.length);
         ByteBuffer readData = ByteBuffer.allocate(data.length);
 
         try (ByteCountingAsynchronousByteChannel channel = new ByteCountingAsynchronousByteChannel(
-            IOUtils.toAsynchronousByteChannel(AsynchronousFileChannel.open(tempFile, StandardOpenOption.READ), 0),
-            null, null)) {
+            IOUtils.toAsynchronousByteChannel(mockAsynchronousByteChannel, 0), null, null)) {
 
             int position = 0;
             int read = 0;
             while (read >= 0) {
-                int size = 1 + RANDOM.nextInt(128);
+                int size = 1 + ThreadLocalRandom.current().nextInt(128);
                 ByteBuffer buffer = ByteBuffer.allocate(size);
                 CompletableFuture<Integer> future = new CompletableFuture<>();
                 channel.read(buffer, "foo", new CompletionHandler<Integer, String>() {
@@ -412,16 +410,15 @@ public class ByteCountingAsynchronousByteChannelTest {
             }
         }
 
-        assertArrayEquals(data, readData.array());
+        assertArraysEqual(data, readData.array());
     }
 
     @Test
     public void canReadAndCountBytesWithProgressReporting() throws IOException, ExecutionException, InterruptedException {
         byte[] data = new byte[10 * 1204 + 127];
-        RANDOM.nextBytes(data);
-        Path tempFile = Files.createTempFile("bytecountingtest", null);
-        tempFile.toFile().deleteOnExit();
-        Files.write(tempFile, data);
+        fillArray(data);
+
+        MockAsynchronousFileChannel mockAsynchronousByteChannel = new MockAsynchronousFileChannel(data, data.length);
         ByteBuffer readData = ByteBuffer.allocate(data.length);
 
         ConcurrentLinkedQueue<Long> writeProgresses = new ConcurrentLinkedQueue<>();
@@ -430,13 +427,13 @@ public class ByteCountingAsynchronousByteChannelTest {
         ProgressReporter readProgressReporter = ProgressReporter.withProgressListener(readProgresses::add);
 
         try (ByteCountingAsynchronousByteChannel channel = new ByteCountingAsynchronousByteChannel(
-            IOUtils.toAsynchronousByteChannel(AsynchronousFileChannel.open(tempFile, StandardOpenOption.READ), 0),
+            IOUtils.toAsynchronousByteChannel(mockAsynchronousByteChannel, 0),
             readProgressReporter, writeProgressReporter)) {
 
             int position = 0;
             int read = 0;
             while (read >= 0) {
-                int size = 1 + RANDOM.nextInt(128);
+                int size = 1 + ThreadLocalRandom.current().nextInt(128);
                 ByteBuffer buffer = ByteBuffer.allocate(size);
                 CompletableFuture<Integer> future = new CompletableFuture<>();
                 channel.read(buffer, "foo", new CompletionHandler<Integer, String>() {
@@ -465,26 +462,24 @@ public class ByteCountingAsynchronousByteChannelTest {
             }
         }
 
-        assertArrayEquals(data, readData.array());
+        assertArraysEqual(data, readData.array());
     }
 
     @Test
     public void canReadAndCountBytesWithFuture() throws IOException, ExecutionException, InterruptedException {
         byte[] data = new byte[10 * 1204 + 127];
-        RANDOM.nextBytes(data);
-        Path tempFile = Files.createTempFile("bytecountingtest", null);
-        tempFile.toFile().deleteOnExit();
-        Files.write(tempFile, data);
+        fillArray(data);
+
+        MockAsynchronousFileChannel mockAsynchronousByteChannel = new MockAsynchronousFileChannel(data, data.length);
         ByteBuffer readData = ByteBuffer.allocate(data.length);
 
         try (ByteCountingAsynchronousByteChannel channel = new ByteCountingAsynchronousByteChannel(
-            IOUtils.toAsynchronousByteChannel(AsynchronousFileChannel.open(tempFile, StandardOpenOption.READ), 0),
-            null, null)) {
+            IOUtils.toAsynchronousByteChannel(mockAsynchronousByteChannel, 0), null, null)) {
 
             int position = 0;
             int read = 0;
             while (read >= 0) {
-                int size = 1 + RANDOM.nextInt(128);
+                int size = 1 + ThreadLocalRandom.current().nextInt(128);
                 ByteBuffer buffer = ByteBuffer.allocate(size);
                 read = channel.read(buffer).get();
                 if (read >= 0) {
@@ -497,16 +492,15 @@ public class ByteCountingAsynchronousByteChannelTest {
             }
         }
 
-        assertArrayEquals(data, Files.readAllBytes(tempFile));
+        assertArraysEqual(data, readData.array());
     }
 
     @Test
     public void canReadAndCountBytesWithFutureWithProgressReporting() throws IOException, ExecutionException, InterruptedException {
         byte[] data = new byte[10 * 1204 + 127];
-        RANDOM.nextBytes(data);
-        Path tempFile = Files.createTempFile("bytecountingtest", null);
-        tempFile.toFile().deleteOnExit();
-        Files.write(tempFile, data);
+        fillArray(data);
+
+        MockAsynchronousFileChannel mockAsynchronousByteChannel = new MockAsynchronousFileChannel(data, data.length);
         ByteBuffer readData = ByteBuffer.allocate(data.length);
 
         ConcurrentLinkedQueue<Long> writeProgresses = new ConcurrentLinkedQueue<>();
@@ -515,13 +509,13 @@ public class ByteCountingAsynchronousByteChannelTest {
         ProgressReporter readProgressReporter = ProgressReporter.withProgressListener(readProgresses::add);
 
         try (ByteCountingAsynchronousByteChannel channel = new ByteCountingAsynchronousByteChannel(
-            IOUtils.toAsynchronousByteChannel(AsynchronousFileChannel.open(tempFile, StandardOpenOption.READ), 0),
+            IOUtils.toAsynchronousByteChannel(mockAsynchronousByteChannel, 0),
             readProgressReporter, writeProgressReporter)) {
 
             int position = 0;
             int read = 0;
             while (read >= 0) {
-                int size = 1 + RANDOM.nextInt(128);
+                int size = 1 + ThreadLocalRandom.current().nextInt(128);
                 ByteBuffer buffer = ByteBuffer.allocate(size);
                 read = channel.read(buffer).get();
                 if (read >= 0) {
@@ -536,6 +530,6 @@ public class ByteCountingAsynchronousByteChannelTest {
             }
         }
 
-        assertArrayEquals(data, Files.readAllBytes(tempFile));
+        assertArraysEqual(data, readData.array());
     }
 }

@@ -3,6 +3,7 @@
 
 package com.azure.core.management.implementation.polling;
 
+import com.azure.core.http.HttpHeaderName;
 import com.azure.core.http.HttpHeaders;
 import com.azure.core.http.HttpMethod;
 import com.azure.core.http.HttpPipeline;
@@ -220,7 +221,7 @@ public final class PollOperation {
      * @return the HttpRequest with decoration.
      */
     private static HttpRequest decorateRequest(HttpRequest httpRequest) {
-        return httpRequest.setHeader("Accept", "application/json");
+        return httpRequest.setHeader(HttpHeaderName.ACCEPT, "application/json");
     }
 
     /**

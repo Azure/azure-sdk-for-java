@@ -253,12 +253,12 @@ public final class NewRelicMonitorResourceImpl
         return serviceManager.monitors().listAppServices(resourceGroupName, monitorName, request, context);
     }
 
-    public Response<Void> switchBillingWithResponse(SwitchBillingRequest request, Context context) {
+    public Response<NewRelicMonitorResource> switchBillingWithResponse(SwitchBillingRequest request, Context context) {
         return serviceManager.monitors().switchBillingWithResponse(resourceGroupName, monitorName, request, context);
     }
 
-    public void switchBilling(SwitchBillingRequest request) {
-        serviceManager.monitors().switchBilling(resourceGroupName, monitorName, request);
+    public NewRelicMonitorResource switchBilling(SwitchBillingRequest request) {
+        return serviceManager.monitors().switchBilling(resourceGroupName, monitorName, request);
     }
 
     public PagedIterable<VMInfo> listHosts(HostsGetRequest request) {

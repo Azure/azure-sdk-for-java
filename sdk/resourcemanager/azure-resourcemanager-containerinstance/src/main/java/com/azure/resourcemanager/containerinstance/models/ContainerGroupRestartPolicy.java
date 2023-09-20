@@ -8,7 +8,10 @@ import com.azure.core.util.ExpandableStringEnum;
 import com.fasterxml.jackson.annotation.JsonCreator;
 import java.util.Collection;
 
-/** Defines values for ContainerGroupRestartPolicy. */
+/**
+ * Restart policy for all containers within the container group. - `Always` Always restart - `OnFailure` Restart on
+ * failure - `Never` Never restart.
+ */
 public final class ContainerGroupRestartPolicy extends ExpandableStringEnum<ContainerGroupRestartPolicy> {
     /** Static value Always for ContainerGroupRestartPolicy. */
     public static final ContainerGroupRestartPolicy ALWAYS = fromString("Always");
@@ -18,6 +21,15 @@ public final class ContainerGroupRestartPolicy extends ExpandableStringEnum<Cont
 
     /** Static value Never for ContainerGroupRestartPolicy. */
     public static final ContainerGroupRestartPolicy NEVER = fromString("Never");
+
+    /**
+     * Creates a new instance of ContainerGroupRestartPolicy value.
+     *
+     * @deprecated Use the {@link #fromString(String)} factory method.
+     */
+    @Deprecated
+    public ContainerGroupRestartPolicy() {
+    }
 
     /**
      * Creates or finds a ContainerGroupRestartPolicy from its string representation.
@@ -30,7 +42,11 @@ public final class ContainerGroupRestartPolicy extends ExpandableStringEnum<Cont
         return fromString(name, ContainerGroupRestartPolicy.class);
     }
 
-    /** @return known ContainerGroupRestartPolicy values. */
+    /**
+     * Gets known ContainerGroupRestartPolicy values.
+     *
+     * @return known ContainerGroupRestartPolicy values.
+     */
     public static Collection<ContainerGroupRestartPolicy> values() {
         return values(ContainerGroupRestartPolicy.class);
     }

@@ -18,6 +18,10 @@ public final class EventTypesListResult {
     @JsonProperty(value = "value")
     private List<EventTypeInner> value;
 
+    /** Creates an instance of EventTypesListResult class. */
+    public EventTypesListResult() {
+    }
+
     /**
      * Get the value property: A collection of event types.
      *

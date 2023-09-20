@@ -29,6 +29,10 @@ public final class TestRouteInput {
     @JsonProperty(value = "twin")
     private RoutingTwin twin;
 
+    /** Creates an instance of TestRouteInput class. */
+    public TestRouteInput() {
+    }
+
     /**
      * Get the message property: Routing message.
      *

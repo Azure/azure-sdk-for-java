@@ -60,10 +60,6 @@ public final class TasksUpdateResourceGroupLevelTaskStateWithResponseMockTests {
         manager
             .tasks()
             .updateResourceGroupLevelTaskStateWithResponse(
-                "dydgnhautwukex",
-                "gpmnmabe",
-                "dqilwgdfpf",
-                TaskUpdateActionType.CLOSE,
-                com.azure.core.util.Context.NONE);
+                "ukhsusmmorf", "zhwilzzh", "ijmri", TaskUpdateActionType.ACTIVATE, com.azure.core.util.Context.NONE);
     }
 }

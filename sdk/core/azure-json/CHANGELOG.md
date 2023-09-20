@@ -1,6 +1,6 @@
 # Release History
 
-## 1.0.0-beta.4 (Unreleased)
+## 1.2.0-beta.1 (Unreleased)
 
 ### Features Added
 
@@ -9,6 +9,27 @@
 ### Bugs Fixed
 
 ### Other Changes
+
+## 1.1.0 (2023-08-04)
+
+### Features Added
+- Added `getRawText` method to `JsonReader`
+
+## 1.0.1 (2023-05-04)
+
+### Other Changes
+
+- Changed `UncheckedIOException` to `IOException` in `JsonReader.reset` method as it's checked with `IOException`.
+- Changed max nesting depth in `JsonReader.readUntyped` from 1000 to 999.
+
+## 1.0.0 (2023-04-07)
+
+- Initial GA. Please see the README for more information.
+
+### Breaking Changes
+
+- Renamed `JsonReader.resetSupported` to `JsonReader.isResetSupported`.
+- Removed all overloads in `JsonProvider` that didn't accept `JsonOptions`.
 
 ## 1.0.0-beta.3 (2023-03-02)
 

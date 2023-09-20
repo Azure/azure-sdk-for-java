@@ -18,8 +18,6 @@ import reactor.core.publisher.Mono;
 
 import java.util.Objects;
 
-import static com.azure.core.util.AuthorizationChallengeHandler.WWW_AUTHENTICATE;
-
 /**
  * The pipeline policy that applies a token credential to an HTTP request with "Bearer" scheme.
  */
@@ -98,9 +96,9 @@ public class BearerTokenAuthenticationPolicy implements HttpPipelinePolicy {
         HttpPipelineNextPolicy nextPolicy = next.clone();
 
         return authorizeRequest(context)
-            .then(Mono.defer(() -> next.process()))
+            .then(Mono.defer(next::process))
             .flatMap(httpResponse -> {
-                String authHeader = httpResponse.getHeaderValue(WWW_AUTHENTICATE);
+                String authHeader = httpResponse.getHeaderValue(HttpHeaderName.WWW_AUTHENTICATE);
                 if (httpResponse.getStatusCode() == 401 && authHeader != null) {
                     return authorizeRequestOnChallenge(context, httpResponse).flatMap(retry -> {
                         if (retry) {
@@ -132,7 +130,7 @@ public class BearerTokenAuthenticationPolicy implements HttpPipelinePolicy {
 
         authorizeRequestSync(context);
         HttpResponse httpResponse = next.processSync();
-        String authHeader = httpResponse.getHeaderValue(WWW_AUTHENTICATE);
+        String authHeader = httpResponse.getHeaderValue(HttpHeaderName.WWW_AUTHENTICATE);
         if (httpResponse.getStatusCode() == 401 && authHeader != null) {
             if (authorizeRequestOnChallengeSync(context, httpResponse)) {
                 // Both Netty and OkHttp expect the requestBody to be closed after the response has been read.

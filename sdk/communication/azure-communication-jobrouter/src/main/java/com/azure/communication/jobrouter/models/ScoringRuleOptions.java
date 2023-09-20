@@ -12,7 +12,8 @@ import java.util.List;
 @Fluent
 public final class ScoringRuleOptions {
     /*
-     * (Optional) Set batch size when AllowScoringBatchOfWorkers is set to true
+     * (Optional) Set batch size when AllowScoringBatchOfWorkers is set to
+     * true. Defaults to 20 if not configured.
      */
     @JsonProperty(value = "batchSize")
     private Integer batchSize;
@@ -47,7 +48,8 @@ public final class ScoringRuleOptions {
     private Boolean descendingOrder;
 
     /**
-     * Get the batchSize property: (Optional) Set batch size when AllowScoringBatchOfWorkers is set to true.
+     * Get the batchSize property: (Optional) Set batch size when AllowScoringBatchOfWorkers is set to true. Defaults to
+     * 20 if not configured.
      *
      * @return the batchSize value.
      */
@@ -56,7 +58,8 @@ public final class ScoringRuleOptions {
     }
 
     /**
-     * Set the batchSize property: (Optional) Set batch size when AllowScoringBatchOfWorkers is set to true.
+     * Set the batchSize property: (Optional) Set batch size when AllowScoringBatchOfWorkers is set to true. Defaults to
+     * 20 if not configured.
      *
      * @param batchSize the batchSize value to set.
      * @return the ScoringRuleOptions object itself.

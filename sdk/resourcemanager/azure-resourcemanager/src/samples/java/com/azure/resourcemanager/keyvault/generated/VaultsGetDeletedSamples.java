@@ -4,12 +4,10 @@
 
 package com.azure.resourcemanager.keyvault.generated;
 
-import com.azure.core.util.Context;
-
 /** Samples for Vaults GetDeleted. */
 public final class VaultsGetDeletedSamples {
     /*
-     * x-ms-original-file: specification/keyvault/resource-manager/Microsoft.KeyVault/stable/2021-10-01/examples/getDeletedVault.json
+     * x-ms-original-file: specification/keyvault/resource-manager/Microsoft.KeyVault/stable/2023-02-01/examples/getDeletedVault.json
      */
     /**
      * Sample code: Retrieve a deleted vault.
@@ -22,6 +20,6 @@ public final class VaultsGetDeletedSamples {
             .manager()
             .serviceClient()
             .getVaults()
-            .getDeletedWithResponse("sample-vault", "westus", Context.NONE);
+            .getDeletedWithResponse("sample-vault", "westus", com.azure.core.util.Context.NONE);
     }
 }

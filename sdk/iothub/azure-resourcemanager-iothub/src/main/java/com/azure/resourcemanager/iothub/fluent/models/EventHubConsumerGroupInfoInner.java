@@ -26,6 +26,10 @@ public final class EventHubConsumerGroupInfoInner extends ProxyResource {
     @JsonProperty(value = "etag", access = JsonProperty.Access.WRITE_ONLY)
     private String etag;
 
+    /** Creates an instance of EventHubConsumerGroupInfoInner class. */
+    public EventHubConsumerGroupInfoInner() {
+    }
+
     /**
      * Get the properties property: The tags.
      *

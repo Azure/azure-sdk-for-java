@@ -24,6 +24,10 @@ public final class SharedAccessSignatureAuthorizationRuleListResult {
     @JsonProperty(value = "nextLink", access = JsonProperty.Access.WRITE_ONLY)
     private String nextLink;
 
+    /** Creates an instance of SharedAccessSignatureAuthorizationRuleListResult class. */
+    public SharedAccessSignatureAuthorizationRuleListResult() {
+    }
+
     /**
      * Get the value property: The list of shared access policies.
      *

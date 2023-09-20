@@ -3,6 +3,8 @@
 
 package com.azure.cosmos.models;
 
+import java.util.Objects;
+
 /**
  * Encapsulates the PartitionKey/id tuple that uniquely identifies a CosmosItem
  */
@@ -46,5 +48,18 @@ public final class CosmosItemIdentity {
      */
     public String getId() {
         return this.id;
+    }
+
+    @Override
+    public boolean equals(Object o) {
+        if (this == o) return true;
+        if (o == null || getClass() != o.getClass()) return false;
+        CosmosItemIdentity that = (CosmosItemIdentity) o;
+        return Objects.equals(partitionKey, that.partitionKey) && Objects.equals(id, that.id);
+    }
+
+    @Override
+    public int hashCode() {
+        return Objects.hash(partitionKey.toString(), id);
     }
 }

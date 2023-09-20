@@ -35,6 +35,10 @@ public final class Permissions {
     @JsonProperty(value = "storage")
     private List<StoragePermissions> storage;
 
+    /** Creates an instance of Permissions class. */
+    public Permissions() {
+    }
+
     /**
      * Get the keys property: Permissions to keys.
      *

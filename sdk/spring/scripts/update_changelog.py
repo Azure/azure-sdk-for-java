@@ -33,8 +33,13 @@ def get_change_log_content(spring_boot_dependencies_version, spring_cloud_depend
 def update_changelog(spring_boot_dependencies_version, spring_cloud_dependencies_version, target_file):
     with open(target_file, 'r', encoding = 'utf-8') as file:
         file_content = file.read()
-        insert_position = file_content.find('(Unreleased)') + len('(Unreleased)')
-        insert_content = get_change_log_content(spring_boot_dependencies_version, spring_cloud_dependencies_version)
+        pos = file_content.find('(Unreleased)')
+        if pos == -1:
+            insert_position = file_content.find('# Release History') + len('# Release History')
+            insert_content = '\n# (Unreleased)' + get_change_log_content(spring_boot_dependencies_version, spring_cloud_dependencies_version)
+        else:
+            insert_content = get_change_log_content(spring_boot_dependencies_version, spring_cloud_dependencies_version)
+            insert_position = pos + len('(Unreleased)')
         final_content = file_content[:insert_position] + insert_content + file_content[insert_position:]
     with open(target_file, 'r+', encoding = 'utf-8') as file:
         file.writelines(final_content)

@@ -35,7 +35,8 @@ public final class DevCentersCreateOrUpdateMockTests {
         ArgumentCaptor<HttpRequest> httpRequest = ArgumentCaptor.forClass(HttpRequest.class);
 
         String responseStr =
-            "{\"properties\":{\"provisioningState\":\"Succeeded\",\"devCenterUri\":\"dhszfjv\"},\"identity\":{\"principalId\":\"76a1a0f6-be18-4551-8ef6-bc4e975f65a0\",\"tenantId\":\"b25e406a-3f34-476b-bbb3-7743a40acae4\",\"type\":\"UserAssigned\",\"userAssignedIdentities\":{}},\"location\":\"a\",\"tags\":{\"ojnal\":\"mqhldvrii\",\"qhhahhxvrhmzkwpj\":\"hfkvtvsexsowuel\",\"ughftqsx\":\"wws\"},\"id\":\"qxujxukndxd\",\"name\":\"grjguufzd\",\"type\":\"syqtfi\"}";
+            "{\"properties\":{\"provisioningState\":\"Succeeded\",\"devCenterUri\":\"nhlmctlpdng\"},\"identity\":{\"principalId\":\"22435d35-0662-42ef-8921-a3af5d7b070b\",\"tenantId\":\"29c37418-7cea-464d-8235-fc1d40a2e08b\",\"type\":\"SystemAssigned,"
+                + " UserAssigned\",\"userAssignedIdentities\":{}},\"location\":\"ixkwmyijejveg\",\"tags\":{\"xexccbdreaxhcexd\":\"pna\",\"nhyjsv\":\"rvqahqkghtpwi\",\"vrvmtgjqppyost\":\"ycxzbfvoo\",\"myhgfipnsxkmc\":\"on\"},\"id\":\"a\",\"name\":\"krrjrea\",\"type\":\"xt\"}";
 
         Mockito.when(httpResponse.getStatusCode()).thenReturn(200);
         Mockito.when(httpResponse.getHeaders()).thenReturn(new HttpHeaders());
@@ -66,19 +67,19 @@ public final class DevCentersCreateOrUpdateMockTests {
         DevCenter response =
             manager
                 .devCenters()
-                .define("hneuyowqkd")
-                .withRegion("zimejzanlfzx")
-                .withExistingResourceGroup("smwutwbdsrezpd")
-                .withTags(mapOf("okixrjqcir", "rmbzo", "szrnwo", "zpfrla"))
+                .define("wccsnjvcdwxlpqek")
+                .withRegion("dhtmdvypgikd")
+                .withExistingResourceGroup("edkowepbqpcrfk")
+                .withTags(mapOf("rvqqaatj", "ywkbirryuzhlhkjo", "ioolvrwxkvtkkgll", "nrvgoupmfiibfgg"))
                 .withIdentity(
                     new ManagedServiceIdentity()
-                        .withType(ManagedServiceIdentityType.SYSTEM_ASSIGNED)
+                        .withType(ManagedServiceIdentityType.USER_ASSIGNED)
                         .withUserAssignedIdentities(mapOf()))
                 .create();
 
-        Assertions.assertEquals("a", response.location());
-        Assertions.assertEquals("mqhldvrii", response.tags().get("ojnal"));
-        Assertions.assertEquals(ManagedServiceIdentityType.USER_ASSIGNED, response.identity().type());
+        Assertions.assertEquals("ixkwmyijejveg", response.location());
+        Assertions.assertEquals("pna", response.tags().get("xexccbdreaxhcexd"));
+        Assertions.assertEquals(ManagedServiceIdentityType.SYSTEM_ASSIGNED_USER_ASSIGNED, response.identity().type());
     }
 
     @SuppressWarnings("unchecked")

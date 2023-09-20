@@ -16,30 +16,23 @@ public final class ApiCollectionPropertiesTests {
         ApiCollectionProperties model =
             BinaryData
                 .fromString(
-                    "{\"displayName\":\"tgqztwhghmup\",\"additionalData\":{\"bklqpxz\":\"jtcdxabbujftaben\",\"nlzafwxudgnh\":\"cafeddw\",\"pbeme\":\"ookrtalvnbw\",\"kyrdnqodx\":\"uclvdjj\"}}")
+                    "{\"displayName\":\"y\",\"additionalData\":{\"fkak\":\"mwineof\",\"knyuxgvttxpn\":\"oldtvevboclzhz\",\"ids\":\"upzaamrdixtre\",\"l\":\"yskbruff\"}}")
                 .toObject(ApiCollectionProperties.class);
-        Assertions.assertEquals("tgqztwhghmup", model.displayName());
-        Assertions.assertEquals("jtcdxabbujftaben", model.additionalData().get("bklqpxz"));
+        Assertions.assertEquals("y", model.displayName());
+        Assertions.assertEquals("mwineof", model.additionalData().get("fkak"));
     }
 
     @org.junit.jupiter.api.Test
     public void testSerialize() throws Exception {
         ApiCollectionProperties model =
             new ApiCollectionProperties()
-                .withDisplayName("tgqztwhghmup")
+                .withDisplayName("y")
                 .withAdditionalData(
                     mapOf(
-                        "bklqpxz",
-                        "jtcdxabbujftaben",
-                        "nlzafwxudgnh",
-                        "cafeddw",
-                        "pbeme",
-                        "ookrtalvnbw",
-                        "kyrdnqodx",
-                        "uclvdjj"));
+                        "fkak", "mwineof", "knyuxgvttxpn", "oldtvevboclzhz", "ids", "upzaamrdixtre", "l", "yskbruff"));
         model = BinaryData.fromObject(model).toObject(ApiCollectionProperties.class);
-        Assertions.assertEquals("tgqztwhghmup", model.displayName());
-        Assertions.assertEquals("jtcdxabbujftaben", model.additionalData().get("bklqpxz"));
+        Assertions.assertEquals("y", model.displayName());
+        Assertions.assertEquals("mwineof", model.additionalData().get("fkak"));
     }
 
     @SuppressWarnings("unchecked")

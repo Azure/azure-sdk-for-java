@@ -54,6 +54,10 @@ public final class CertificateProperties {
     @JsonProperty(value = "certificate")
     private String certificate;
 
+    /** Creates an instance of CertificateProperties class. */
+    public CertificateProperties() {
+    }
+
     /**
      * Get the subject property: The certificate's subject name.
      *

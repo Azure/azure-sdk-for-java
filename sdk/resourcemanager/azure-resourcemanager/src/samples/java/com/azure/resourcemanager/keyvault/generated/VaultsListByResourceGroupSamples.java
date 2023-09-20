@@ -4,12 +4,10 @@
 
 package com.azure.resourcemanager.keyvault.generated;
 
-import com.azure.core.util.Context;
-
 /** Samples for Vaults ListByResourceGroup. */
 public final class VaultsListByResourceGroupSamples {
     /*
-     * x-ms-original-file: specification/keyvault/resource-manager/Microsoft.KeyVault/stable/2021-10-01/examples/listVaultByResourceGroup.json
+     * x-ms-original-file: specification/keyvault/resource-manager/Microsoft.KeyVault/stable/2023-02-01/examples/listVaultByResourceGroup.json
      */
     /**
      * Sample code: List vaults in the specified resource group.
@@ -17,6 +15,11 @@ public final class VaultsListByResourceGroupSamples {
      * @param azure The entry point for accessing resource management APIs in Azure.
      */
     public static void listVaultsInTheSpecifiedResourceGroup(com.azure.resourcemanager.AzureResourceManager azure) {
-        azure.vaults().manager().serviceClient().getVaults().listByResourceGroup("sample-group", 1, Context.NONE);
+        azure
+            .vaults()
+            .manager()
+            .serviceClient()
+            .getVaults()
+            .listByResourceGroup("sample-group", 1, com.azure.core.util.Context.NONE);
     }
 }

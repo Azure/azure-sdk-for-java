@@ -18,15 +18,14 @@ import java.util.Map;
 @Fluent
 public final class CloudEvent {
     /*
-     * An identifier for the event. The combination of id and source must be
-     * unique for each distinct event.
+     * An identifier for the event. The combination of id and source must be unique for each distinct event.
      */
     @JsonProperty(value = "id", required = true)
     private String id;
 
     /*
-     * Identifies the context in which an event happened. The combination of id
-     * and source must be unique for each distinct event.
+     * Identifies the context in which an event happened. The combination of id and source must be unique for each
+     * distinct event.
      */
     @JsonProperty(value = "source", required = true)
     private String source;
@@ -74,17 +73,18 @@ public final class CloudEvent {
     private String datacontenttype;
 
     /*
-     * This describes the subject of the event in the context of the event
-     * producer (identified by source).
+     * This describes the subject of the event in the context of the event producer (identified by source).
      */
     @JsonProperty(value = "subject")
     private String subject;
 
     /*
-     * Properties of an event published to an Event Grid topic using the
-     * CloudEvent 1.0 Schema
+     * Properties of an event published to an Event Grid topic using the CloudEvent 1.0 Schema
      */
     @JsonIgnore private Map<String, Object> additionalProperties;
+
+    /** Creates an instance of CloudEvent class. */
+    public CloudEvent() {}
 
     /**
      * Get the id property: An identifier for the event. The combination of id and source must be unique for each

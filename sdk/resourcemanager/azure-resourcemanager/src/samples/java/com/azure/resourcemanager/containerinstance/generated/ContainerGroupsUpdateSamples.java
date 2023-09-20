@@ -5,14 +5,13 @@
 package com.azure.resourcemanager.containerinstance.generated;
 
 import com.azure.core.management.Resource;
-import com.azure.core.util.Context;
 import java.util.HashMap;
 import java.util.Map;
 
 /** Samples for ContainerGroups Update. */
 public final class ContainerGroupsUpdateSamples {
     /*
-     * x-ms-original-file: specification/containerinstance/resource-manager/Microsoft.ContainerInstance/stable/2021-10-01/examples/ContainerGroupsUpdate.json
+     * x-ms-original-file: specification/containerinstance/resource-manager/Microsoft.ContainerInstance/stable/2023-05-01/examples/ContainerGroupsUpdate.json
      */
     /**
      * Sample code: ContainerGroupsUpdate.
@@ -28,8 +27,8 @@ public final class ContainerGroupsUpdateSamples {
             .updateWithResponse(
                 "demoResource",
                 "demo1",
-                new Resource().withTags(mapOf("tag1key", "tag1Value", "tag2key", "tag2Value")),
-                Context.NONE);
+                new Resource().withTags(mapOf("tag1key", "fakeTokenPlaceholder", "tag2key", "fakeTokenPlaceholder")),
+                com.azure.core.util.Context.NONE);
     }
 
     @SuppressWarnings("unchecked")

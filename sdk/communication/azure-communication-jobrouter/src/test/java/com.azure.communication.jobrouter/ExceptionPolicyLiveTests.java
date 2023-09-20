@@ -4,11 +4,12 @@
 package com.azure.communication.jobrouter;
 
 import com.azure.communication.jobrouter.models.CancelExceptionAction;
+import com.azure.communication.jobrouter.models.CreateExceptionPolicyOptions;
 import com.azure.communication.jobrouter.models.ExceptionAction;
 import com.azure.communication.jobrouter.models.ExceptionPolicy;
 import com.azure.communication.jobrouter.models.ExceptionRule;
 import com.azure.communication.jobrouter.models.QueueLengthExceptionTrigger;
-import com.azure.communication.jobrouter.models.options.CreateExceptionPolicyOptions;
+import com.azure.core.http.HttpClient;
 import org.junit.jupiter.params.ParameterizedTest;
 import org.junit.jupiter.params.provider.MethodSource;
 
@@ -18,20 +19,13 @@ import java.util.Map;
 import static org.junit.jupiter.api.Assertions.assertEquals;
 
 public class ExceptionPolicyLiveTests extends JobRouterTestBase {
-    private RouterAdministrationClient routerAdminClient;
-
-    @Override
-    protected void beforeTest() {
-        routerAdminClient = clientSetup(httpPipeline -> new RouterAdministrationClientBuilder()
-            .connectionString(getConnectionString())
-            .pipeline(httpPipeline)
-            .buildClient());
-    }
+    private JobRouterAdministrationClient routerAdminClient;
 
     @ParameterizedTest
     @MethodSource("com.azure.core.test.TestBase#getHttpClients")
-    public void createExceptionPolicy() {
+    public void createExceptionPolicy(HttpClient httpClient) {
         // Setup
+        routerAdminClient = getRouterAdministrationClient(httpClient);
         String exceptionPolicyId = String.format("%s-CreateExceptionPolicy-ExceptionPolicy", JAVA_LIVE_TESTS);
         String exceptionPolicyName = String.format("%s-Name", exceptionPolicyId);
 
@@ -45,10 +39,7 @@ public class ExceptionPolicyLiveTests extends JobRouterTestBase {
             }
         };
 
-        ExceptionRule exceptionRule = new ExceptionRule()
-            .setTrigger(new QueueLengthExceptionTrigger()
-                .setThreshold(1))
-            .setActions(exceptionActions);
+        ExceptionRule exceptionRule = new ExceptionRule(new QueueLengthExceptionTrigger(1), exceptionActions);
 
         Map<String, ExceptionRule> exceptionRules = new HashMap<String, ExceptionRule>() {
             {

@@ -17,6 +17,15 @@ public final class ElasticDeploymentStatus extends ExpandableStringEnum<ElasticD
     public static final ElasticDeploymentStatus UNHEALTHY = fromString("Unhealthy");
 
     /**
+     * Creates a new instance of ElasticDeploymentStatus value.
+     *
+     * @deprecated Use the {@link #fromString(String)} factory method.
+     */
+    @Deprecated
+    public ElasticDeploymentStatus() {
+    }
+
+    /**
      * Creates or finds a ElasticDeploymentStatus from its string representation.
      *
      * @param name a name to look for.

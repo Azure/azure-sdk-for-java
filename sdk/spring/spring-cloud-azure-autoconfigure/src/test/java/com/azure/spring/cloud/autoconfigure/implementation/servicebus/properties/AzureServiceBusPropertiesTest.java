@@ -69,9 +69,9 @@ class AzureServiceBusPropertiesTest {
     @Test
     void domainNameOverrideCloud() {
         AzureServiceBusProperties serviceBusProperties = new AzureServiceBusProperties();
-        serviceBusProperties.setDomainName(AzureEnvironmentProperties.AZURE_GERMANY.getServiceBusDomainName());
+        serviceBusProperties.setDomainName(AzureEnvironmentProperties.AZURE_US_GOVERNMENT.getServiceBusDomainName());
         serviceBusProperties.getProfile().setCloudType(AZURE_CHINA);
-        assertEquals(AzureEnvironmentProperties.AZURE_GERMANY.getServiceBusDomainName(),
+        assertEquals(AzureEnvironmentProperties.AZURE_US_GOVERNMENT.getServiceBusDomainName(),
                 serviceBusProperties.getDomainName());
     }
 

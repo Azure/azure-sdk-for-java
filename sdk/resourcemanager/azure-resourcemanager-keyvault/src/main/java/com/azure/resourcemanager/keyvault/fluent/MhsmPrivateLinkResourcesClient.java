@@ -46,19 +46,6 @@ public interface MhsmPrivateLinkResourcesClient {
      *
      * @param resourceGroupName Name of the resource group that contains the managed HSM pool.
      * @param name Name of the managed HSM Pool.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the private link resources supported for the managed hsm pool.
-     */
-    @ServiceMethod(returns = ReturnType.SINGLE)
-    MhsmPrivateLinkResourceListResultInner listByMhsmResource(String resourceGroupName, String name);
-
-    /**
-     * Gets the private link resources supported for the managed hsm pool.
-     *
-     * @param resourceGroupName Name of the resource group that contains the managed HSM pool.
-     * @param name Name of the managed HSM Pool.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
@@ -68,4 +55,17 @@ public interface MhsmPrivateLinkResourcesClient {
     @ServiceMethod(returns = ReturnType.SINGLE)
     Response<MhsmPrivateLinkResourceListResultInner> listByMhsmResourceWithResponse(
         String resourceGroupName, String name, Context context);
+
+    /**
+     * Gets the private link resources supported for the managed hsm pool.
+     *
+     * @param resourceGroupName Name of the resource group that contains the managed HSM pool.
+     * @param name Name of the managed HSM Pool.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return the private link resources supported for the managed hsm pool.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    MhsmPrivateLinkResourceListResultInner listByMhsmResource(String resourceGroupName, String name);
 }

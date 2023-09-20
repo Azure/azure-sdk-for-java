@@ -18,9 +18,9 @@ public final class SecurityConnectorPropertiesTests {
         SecurityConnectorProperties model =
             BinaryData
                 .fromString(
-                    "{\"hierarchyIdentifier\":\"dhxiidlopedbwd\",\"hierarchyIdentifierTrialEndDate\":\"2021-09-29T16:17:54Z\",\"environmentName\":\"GCP\",\"offerings\":[{\"offeringType\":\"CloudOffering\",\"description\":\"bmdnafcbqwre\"},{\"offeringType\":\"CloudOffering\",\"description\":\"ela\"},{\"offeringType\":\"CloudOffering\",\"description\":\"cigeleohdbvqvw\"}],\"environmentData\":{\"environmentType\":\"EnvironmentData\"}}")
+                    "{\"hierarchyIdentifier\":\"okcvtlubses\",\"hierarchyIdentifierTrialEndDate\":\"2021-01-02T05:52:53Z\",\"environmentName\":\"GCP\",\"offerings\":[{\"offeringType\":\"CloudOffering\",\"description\":\"hunlpirykycnd\"}],\"environmentData\":{\"environmentType\":\"EnvironmentData\"}}")
                 .toObject(SecurityConnectorProperties.class);
-        Assertions.assertEquals("dhxiidlopedbwd", model.hierarchyIdentifier());
+        Assertions.assertEquals("okcvtlubses", model.hierarchyIdentifier());
         Assertions.assertEquals(CloudName.GCP, model.environmentName());
     }
 
@@ -28,12 +28,12 @@ public final class SecurityConnectorPropertiesTests {
     public void testSerialize() throws Exception {
         SecurityConnectorProperties model =
             new SecurityConnectorProperties()
-                .withHierarchyIdentifier("dhxiidlopedbwd")
+                .withHierarchyIdentifier("okcvtlubses")
                 .withEnvironmentName(CloudName.GCP)
-                .withOfferings(Arrays.asList(new CloudOffering(), new CloudOffering(), new CloudOffering()))
+                .withOfferings(Arrays.asList(new CloudOffering()))
                 .withEnvironmentData(new EnvironmentData());
         model = BinaryData.fromObject(model).toObject(SecurityConnectorProperties.class);
-        Assertions.assertEquals("dhxiidlopedbwd", model.hierarchyIdentifier());
+        Assertions.assertEquals("okcvtlubses", model.hierarchyIdentifier());
         Assertions.assertEquals(CloudName.GCP, model.environmentName());
     }
 }

@@ -13,7 +13,7 @@ public final class VolumeRelocationPropertiesTests {
     public void testDeserialize() throws Exception {
         VolumeRelocationProperties model =
             BinaryData
-                .fromString("{\"relocationRequested\":false,\"readyToBeFinalized\":true}")
+                .fromString("{\"relocationRequested\":false,\"readyToBeFinalized\":false}")
                 .toObject(VolumeRelocationProperties.class);
         Assertions.assertEquals(false, model.relocationRequested());
     }

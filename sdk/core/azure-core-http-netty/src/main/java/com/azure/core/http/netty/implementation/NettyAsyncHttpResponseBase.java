@@ -3,6 +3,7 @@
 
 package com.azure.core.http.netty.implementation;
 
+import com.azure.core.http.HttpHeaderName;
 import com.azure.core.http.HttpHeaders;
 import com.azure.core.http.HttpRequest;
 import com.azure.core.http.HttpResponse;
@@ -23,6 +24,7 @@ public abstract class NettyAsyncHttpResponseBase extends HttpResponse {
     //private NettyToAzureCoreHttpHeadersWrapper headers;
     private final HttpHeaders headers;
 
+    @SuppressWarnings("deprecation")
     NettyAsyncHttpResponseBase(HttpClientResponse reactorNettyResponse, HttpRequest httpRequest,
         boolean headersEagerlyConverted) {
         super(httpRequest);
@@ -52,8 +54,14 @@ public abstract class NettyAsyncHttpResponseBase extends HttpResponse {
     }
 
     @Override
+    @Deprecated
     public final String getHeaderValue(String name) {
         return headers.getValue(name);
+    }
+
+    @Override
+    public final String getHeaderValue(HttpHeaderName headerName) {
+        return headers.getValue(headerName);
     }
 
     @Override

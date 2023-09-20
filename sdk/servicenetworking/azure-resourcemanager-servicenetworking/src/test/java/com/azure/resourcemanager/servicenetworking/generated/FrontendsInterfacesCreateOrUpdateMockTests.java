@@ -13,9 +13,6 @@ import com.azure.core.management.AzureEnvironment;
 import com.azure.core.management.profile.AzureProfile;
 import com.azure.resourcemanager.servicenetworking.TrafficControllerManager;
 import com.azure.resourcemanager.servicenetworking.models.Frontend;
-import com.azure.resourcemanager.servicenetworking.models.FrontendIpAddressVersion;
-import com.azure.resourcemanager.servicenetworking.models.FrontendMode;
-import com.azure.resourcemanager.servicenetworking.models.FrontendPropertiesIpAddress;
 import java.nio.ByteBuffer;
 import java.nio.charset.StandardCharsets;
 import java.time.OffsetDateTime;
@@ -36,7 +33,7 @@ public final class FrontendsInterfacesCreateOrUpdateMockTests {
         ArgumentCaptor<HttpRequest> httpRequest = ArgumentCaptor.forClass(HttpRequest.class);
 
         String responseStr =
-            "{\"properties\":{\"mode\":\"public\",\"ipAddressVersion\":\"IPv4\",\"publicIPAddress\":{\"id\":\"deslp\"},\"provisioningState\":\"Succeeded\"},\"location\":\"wiyighxpkdw\",\"tags\":{\"upedeojnabckhs\":\"iuebbaumny\",\"ie\":\"txp\",\"jdhtldwkyzxu\":\"tfhvpesapskrdqmh\",\"svlxotogtwrup\":\"tkncwsc\"},\"id\":\"sx\",\"name\":\"nmic\",\"type\":\"kvceoveilovnotyf\"}";
+            "{\"properties\":{\"fqdn\":\"ceoveilovno\",\"provisioningState\":\"Succeeded\"},\"location\":\"fcnj\",\"tags\":{\"kphywpnvjto\":\"nxdhbt\"},\"id\":\"nermcl\",\"name\":\"plpho\",\"type\":\"uscrpabgyepsb\"}";
 
         Mockito.when(httpResponse.getStatusCode()).thenReturn(200);
         Mockito.when(httpResponse.getHeaders()).thenReturn(new HttpHeaders());
@@ -67,20 +64,14 @@ public final class FrontendsInterfacesCreateOrUpdateMockTests {
         Frontend response =
             manager
                 .frontendsInterfaces()
-                .define("hdwbavxbniwdjs")
-                .withRegion("b")
-                .withExistingTrafficController("zyoxaepdkzjan", "ux")
-                .withTags(mapOf("lwzbhvgyugu", "uhxwtctyqiklbbov"))
-                .withMode(FrontendMode.PUBLIC)
-                .withIpAddressVersion(FrontendIpAddressVersion.IPV4)
-                .withPublicIpAddress(new FrontendPropertiesIpAddress().withId("gnxytxhpzxbz"))
+                .define("vlopwiyighx")
+                .withRegion("m")
+                .withExistingTrafficController("mg", "xnkjzkdesl")
+                .withTags(mapOf("txp", "upedeojnabckhs", "tfhvpesapskrdqmh", "ie", "tkncwsc", "jdhtldwkyzxu"))
                 .create();
 
-        Assertions.assertEquals("wiyighxpkdw", response.location());
-        Assertions.assertEquals("iuebbaumny", response.tags().get("upedeojnabckhs"));
-        Assertions.assertEquals(FrontendMode.PUBLIC, response.mode());
-        Assertions.assertEquals(FrontendIpAddressVersion.IPV4, response.ipAddressVersion());
-        Assertions.assertEquals("deslp", response.publicIpAddress().id());
+        Assertions.assertEquals("fcnj", response.location());
+        Assertions.assertEquals("nxdhbt", response.tags().get("kphywpnvjto"));
     }
 
     @SuppressWarnings("unchecked")

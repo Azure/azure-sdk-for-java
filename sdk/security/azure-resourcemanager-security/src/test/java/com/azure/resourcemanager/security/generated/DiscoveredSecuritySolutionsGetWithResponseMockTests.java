@@ -32,7 +32,7 @@ public final class DiscoveredSecuritySolutionsGetWithResponseMockTests {
         ArgumentCaptor<HttpRequest> httpRequest = ArgumentCaptor.forClass(HttpRequest.class);
 
         String responseStr =
-            "{\"properties\":{\"securityFamily\":\"Va\",\"offer\":\"azpzdqwuz\",\"publisher\":\"cmcokxizekuv\",\"sku\":\"rjwuca\"},\"location\":\"zvajbvbnkrdem\",\"id\":\"idackzidgzwdyd\",\"name\":\"misvpztd\",\"type\":\"vykpxkqe\"}";
+            "{\"properties\":{\"securityFamily\":\"Va\",\"offer\":\"wushlcxpbl\",\"publisher\":\"lhh\",\"sku\":\"zpfkis\"},\"location\":\"idqzsaaoqdsgpto\",\"id\":\"xjqfiafcnlrtbfi\",\"name\":\"zzcaoijolbuauk\",\"type\":\"wieopexelxqdw\"}";
 
         Mockito.when(httpResponse.getStatusCode()).thenReturn(200);
         Mockito.when(httpResponse.getHeaders()).thenReturn(new HttpHeaders());
@@ -63,12 +63,12 @@ public final class DiscoveredSecuritySolutionsGetWithResponseMockTests {
         DiscoveredSecuritySolution response =
             manager
                 .discoveredSecuritySolutions()
-                .getWithResponse("ard", "vs", "c", com.azure.core.util.Context.NONE)
+                .getWithResponse("biwksde", "yxsbfpz", "oikvntwcz", com.azure.core.util.Context.NONE)
                 .getValue();
 
         Assertions.assertEquals(SecurityFamily.VA, response.securityFamily());
-        Assertions.assertEquals("azpzdqwuz", response.offer());
-        Assertions.assertEquals("cmcokxizekuv", response.publisher());
-        Assertions.assertEquals("rjwuca", response.sku());
+        Assertions.assertEquals("wushlcxpbl", response.offer());
+        Assertions.assertEquals("lhh", response.publisher());
+        Assertions.assertEquals("zpfkis", response.sku());
     }
 }

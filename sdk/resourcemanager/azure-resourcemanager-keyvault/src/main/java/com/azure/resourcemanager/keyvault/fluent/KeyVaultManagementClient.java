@@ -88,6 +88,13 @@ public interface KeyVaultManagementClient {
     MhsmPrivateLinkResourcesClient getMhsmPrivateLinkResources();
 
     /**
+     * Gets the MhsmRegionsClient object to access its operations.
+     *
+     * @return the MhsmRegionsClient object.
+     */
+    MhsmRegionsClient getMhsmRegions();
+
+    /**
      * Gets the OperationsClient object to access its operations.
      *
      * @return the OperationsClient object.

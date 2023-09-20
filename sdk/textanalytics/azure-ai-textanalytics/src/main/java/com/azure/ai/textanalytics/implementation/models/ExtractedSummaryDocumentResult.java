@@ -10,7 +10,7 @@ import java.util.List;
 
 /** The ExtractedSummaryDocumentResult model. */
 @Fluent
-public class ExtractedSummaryDocumentResult extends DocumentResult {
+public final class ExtractedSummaryDocumentResult extends DocumentResult {
     /*
      * A ranked list of sentences representing the extracted summary.
      */

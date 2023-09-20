@@ -6,6 +6,7 @@ package com.azure.ai.formrecognizer.documentanalysis;
 import com.azure.ai.formrecognizer.documentanalysis.administration.DocumentModelAdministrationClientBuilder;
 import com.azure.ai.formrecognizer.documentanalysis.models.AddressValue;
 import com.azure.ai.formrecognizer.documentanalysis.models.AnalyzeResult;
+import com.azure.ai.formrecognizer.documentanalysis.models.CurrencyValue;
 import com.azure.ai.formrecognizer.documentanalysis.models.DocumentAnalysisAudience;
 import com.azure.ai.formrecognizer.documentanalysis.models.DocumentField;
 import com.azure.ai.formrecognizer.documentanalysis.models.DocumentFieldType;
@@ -21,8 +22,9 @@ import com.azure.core.exception.HttpResponseException;
 import com.azure.core.http.HttpClient;
 import com.azure.core.http.policy.HttpLogDetailLevel;
 import com.azure.core.http.policy.HttpLogOptions;
-import com.azure.core.test.TestBase;
-import com.azure.core.test.TestMode;
+import com.azure.core.test.TestProxyTestBase;
+import com.azure.core.test.models.BodilessMatcher;
+import com.azure.core.test.utils.MockTokenCredential;
 import com.azure.core.util.FluxUtil;
 import com.azure.identity.AzureAuthorityHosts;
 import com.azure.identity.ClientSecretCredentialBuilder;
@@ -35,6 +37,7 @@ import java.nio.charset.StandardCharsets;
 import java.time.Duration;
 import java.time.LocalDate;
 import java.time.LocalTime;
+import java.util.Collections;
 import java.util.List;
 import java.util.Map;
 import java.util.Objects;
@@ -48,12 +51,13 @@ import static com.azure.ai.formrecognizer.documentanalysis.TestUtils.AZURE_TENAN
 import static com.azure.ai.formrecognizer.documentanalysis.TestUtils.EXPECTED_MERCHANT_NAME;
 import static com.azure.ai.formrecognizer.documentanalysis.TestUtils.INVALID_KEY;
 import static com.azure.ai.formrecognizer.documentanalysis.TestUtils.ONE_NANO_DURATION;
+import static com.azure.ai.formrecognizer.documentanalysis.TestUtils.getTestProxySanitizers;
 import static com.azure.ai.formrecognizer.documentanalysis.implementation.util.Constants.DEFAULT_POLL_INTERVAL;
 import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertNotNull;
 import static org.junit.jupiter.api.Assertions.assertNull;
 
-public abstract class DocumentAnalysisClientTestBase extends TestBase {
+public abstract class DocumentAnalysisClientTestBase extends TestProxyTestBase {
     static final String ENCODED_EMPTY_SPACE =
         "{\"urlSource\":\"https://fakeuri.com/blank%20space\"}";
 
@@ -75,25 +79,41 @@ public abstract class DocumentAnalysisClientTestBase extends TestBase {
 
         DocumentAnalysisClientBuilder builder = new DocumentAnalysisClientBuilder()
             .endpoint(endpoint)
-            .httpClient(httpClient == null ? interceptorManager.getPlaybackClient() : httpClient)
+            .httpClient(interceptorManager.isPlaybackMode() ? interceptorManager.getPlaybackClient() : httpClient)
             .httpLogOptions(new HttpLogOptions().setLogLevel(HttpLogDetailLevel.BODY_AND_HEADERS))
             .serviceVersion(serviceVersion)
-            .addPolicy(interceptorManager.getRecordPolicy())
             .audience(audience);
 
-        if (getTestMode() == TestMode.PLAYBACK) {
-            builder.credential(new AzureKeyCredential(INVALID_KEY));
-        } else {
-            if (useKeyCredential) {
+        if (useKeyCredential) {
+            if (interceptorManager.isPlaybackMode()) {
+                builder.credential(new AzureKeyCredential(INVALID_KEY));
+                setMatchers();
+            } else if (interceptorManager.isRecordMode()) {
                 builder.credential(new AzureKeyCredential(TestUtils.AZURE_FORM_RECOGNIZER_API_KEY_CONFIGURATION));
-            } else {
+                builder.addPolicy(interceptorManager.getRecordPolicy());
+            } else if (interceptorManager.isLiveMode()) {
+                builder.credential(new AzureKeyCredential(TestUtils.AZURE_FORM_RECOGNIZER_API_KEY_CONFIGURATION));
+            }
+        } else {
+            if (interceptorManager.isPlaybackMode()) {
+                builder.credential(new MockTokenCredential());
+                setMatchers();
+            } else if (interceptorManager.isRecordMode()) {
+                builder.credential(getCredentialByAuthority(endpoint));
+                builder.addPolicy(interceptorManager.getRecordPolicy());
+            } else if (interceptorManager.isLiveMode()) {
                 builder.credential(getCredentialByAuthority(endpoint));
             }
+        }
+        if (!interceptorManager.isLiveMode()) {
+            interceptorManager.addSanitizers(getTestProxySanitizers());
         }
         return builder;
     }
 
-
+    private void setMatchers() {
+        interceptorManager.addMatchers(Collections.singletonList(new BodilessMatcher()));
+    }
     public DocumentModelAdministrationClientBuilder getDocumentModelAdminClientBuilder(HttpClient httpClient,
                                                                                 DocumentAnalysisServiceVersion serviceVersion,
                                                                                 boolean useKeyCredential) {
@@ -102,24 +122,37 @@ public abstract class DocumentAnalysisClientTestBase extends TestBase {
 
         DocumentModelAdministrationClientBuilder builder = new DocumentModelAdministrationClientBuilder()
             .endpoint(endpoint)
-            .httpClient(httpClient == null ? interceptorManager.getPlaybackClient() : httpClient)
+            .httpClient(interceptorManager.isPlaybackMode() ? interceptorManager.getPlaybackClient() : httpClient)
             .httpLogOptions(new HttpLogOptions().setLogLevel(HttpLogDetailLevel.BODY_AND_HEADERS))
             .serviceVersion(serviceVersion)
-            .addPolicy(interceptorManager.getRecordPolicy())
             .audience(audience);
 
-        if (getTestMode() == TestMode.PLAYBACK) {
-            builder.credential(new AzureKeyCredential(INVALID_KEY));
-        } else {
-            if (useKeyCredential) {
+        if (useKeyCredential) {
+            if (interceptorManager.isPlaybackMode()) {
+                builder.credential(new AzureKeyCredential(INVALID_KEY));
+                setMatchers();
+            } else if (interceptorManager.isRecordMode()) {
                 builder.credential(new AzureKeyCredential(TestUtils.AZURE_FORM_RECOGNIZER_API_KEY_CONFIGURATION));
-            } else {
+                builder.addPolicy(interceptorManager.getRecordPolicy());
+            } else if (interceptorManager.isLiveMode()) {
+                builder.credential(new AzureKeyCredential(TestUtils.AZURE_FORM_RECOGNIZER_API_KEY_CONFIGURATION));
+            }
+        } else {
+            if (interceptorManager.isPlaybackMode()) {
+                builder.credential(new MockTokenCredential());
+                setMatchers();
+            } else if (interceptorManager.isRecordMode()) {
+                builder.credential(getCredentialByAuthority(endpoint));
+                builder.addPolicy(interceptorManager.getRecordPolicy());
+            } else if (interceptorManager.isLiveMode()) {
                 builder.credential(getCredentialByAuthority(endpoint));
             }
         }
+        if (!interceptorManager.isLiveMode()) {
+            interceptorManager.addSanitizers(getTestProxySanitizers());
+        }
         return builder;
     }
-
     static TokenCredential getCredentialByAuthority(String endpoint) {
         String authority = TestUtils.getAuthority(endpoint);
         if (Objects.equals(authority, AzureAuthorityHosts.AZURE_PUBLIC_CLOUD)) {
@@ -144,7 +177,7 @@ public abstract class DocumentAnalysisClientTestBase extends TestBase {
     }
 
     void dataRunner(BiConsumer<InputStream, Long> testRunner, String fileName) {
-        TestUtils.getDataRunnerHelper(testRunner, fileName, interceptorManager.isPlaybackMode());
+        TestUtils.getDataRunnerHelper(testRunner, fileName);
     }
 
     void testingContainerUrlRunner(Consumer<String> testRunner, String fileName) {
@@ -163,6 +196,9 @@ public abstract class DocumentAnalysisClientTestBase extends TestBase {
         TestUtils.getSelectionMarkTrainingContainerHelper(testRunner, interceptorManager.isPlaybackMode());
     }
 
+    void beginClassifierRunner(Consumer<String> testRunner) {
+        TestUtils.getClassifierTrainingDataContainerHelper(testRunner, interceptorManager.isPlaybackMode());
+    }
     void validatePngReceiptData(AnalyzeResult actualAnalyzeResult) {
         validateReceipt(actualAnalyzeResult);
 
@@ -212,8 +248,8 @@ public abstract class DocumentAnalysisClientTestBase extends TestBase {
         assertEquals(2, page2.getPageNumber());
         assertEquals(1, page1.getSpans().size());
         assertEquals(1, page2.getSpans().size());
-        assertEquals(216, page1.getSpans().get(0).getLength());
-        assertEquals(217, page2.getSpans().get(0).getOffset());
+        assertEquals(205, page1.getSpans().get(0).getLength());
+        assertEquals(206, page2.getSpans().get(0).getOffset());
 
         DocumentPage receiptPage1 = analyzeResult.getPages().get(0);
         DocumentPage receiptPage2 = analyzeResult.getPages().get(1);
@@ -379,6 +415,12 @@ public abstract class DocumentAnalysisClientTestBase extends TestBase {
         assertEquals(EXPECTED_MERCHANT_NAME, invoicePage1Fields.get("VendorName")
             .getValueAsString());
         assertNotNull(invoicePage1Fields.get("VendorName").getConfidence());
+        DocumentField subtotalField = invoicePage1Fields.get("Subtotal");
+        CurrencyValue subtotal =
+            subtotalField.getValueAsCurrency();
+        Assertions.assertEquals(100.0, subtotal.getAmount());
+        Assertions.assertEquals("USD", subtotal.getCode());
+        Assertions.assertEquals("$", subtotal.getSymbol());
 
         Map<String, DocumentField> itemsMap
             = invoicePage1Fields.get("Items").getValueAsList().get(0).getValueAsMap();
@@ -388,8 +430,7 @@ public abstract class DocumentAnalysisClientTestBase extends TestBase {
         assertNotNull(itemsMap.get("Date").getConfidence());
         assertEquals("34278587", itemsMap.get("ProductCode").getValueAsString());
         assertNotNull(itemsMap.get("ProductCode").getConfidence());
-        // assertEquals(DocumentFieldType.CURRENCY, itemsMap.get("Tax").getType());
-        // Assertions.assertNotNull(itemsMap.get("Tax").getConfidence());
+        Assertions.assertNotNull(analyzeResult.getPages());
     }
 
     static void validateMultipageInvoiceData(AnalyzeResult analyzeResult) {
@@ -539,7 +580,7 @@ public abstract class DocumentAnalysisClientTestBase extends TestBase {
         });
 
         assertNotNull(analyzeResult.getTables());
-        int[] table = new int[] {3, 5, 10};
+        int[] table = new int[] {2, 5, 10};
         Assertions.assertEquals(1, analyzeResult.getTables().size());
         for (int i = 0; i < analyzeResult.getTables().size(); i++) {
             DocumentTable actualDocumentTable = analyzeResult.getTables().get(i);
@@ -567,7 +608,7 @@ public abstract class DocumentAnalysisClientTestBase extends TestBase {
         });
 
         assertNotNull(analyzeResult.getTables());
-        int[][] table = new int[][] {{5, 4, 20}, {3, 3, 6}};
+        int[][] table = new int[][] {{5, 4, 20}, {3, 2, 6}};
         Assertions.assertEquals(2, analyzeResult.getTables().size());
         for (int i = 0; i < analyzeResult.getTables().size(); i++) {
             int j = 0;

@@ -56,6 +56,6 @@ public final class AccountBackupsDeleteMockTests {
                     tokenRequestContext -> Mono.just(new AccessToken("this_is_a_token", OffsetDateTime.MAX)),
                     new AzureProfile("", "", AzureEnvironment.AZURE));
 
-        manager.accountBackups().delete("xotngfdguge", "zihgrkyu", "zabs", com.azure.core.util.Context.NONE);
+        manager.accountBackups().delete("tswbzuwfmd", "ragegi", "vcjfelisdjubggb", com.azure.core.util.Context.NONE);
     }
 }

@@ -22,6 +22,12 @@ public final class LinkConnectionTargetDatabaseTypeProperties {
     @JsonProperty(value = "dropExistingTargetTableOnStart")
     private Boolean dropExistingTargetTableOnStart;
 
+    /*
+     * Action on existing target table. If not specified, 'FailOnNonEmptyTable' action is used.
+     */
+    @JsonProperty(value = "actionOnExistingTargetTable")
+    private ActionOnExistingTargetTable actionOnExistingTargetTable;
+
     /** Creates an instance of LinkConnectionTargetDatabaseTypeProperties class. */
     public LinkConnectionTargetDatabaseTypeProperties() {}
 
@@ -65,6 +71,29 @@ public final class LinkConnectionTargetDatabaseTypeProperties {
     public LinkConnectionTargetDatabaseTypeProperties setDropExistingTargetTableOnStart(
             Boolean dropExistingTargetTableOnStart) {
         this.dropExistingTargetTableOnStart = dropExistingTargetTableOnStart;
+        return this;
+    }
+
+    /**
+     * Get the actionOnExistingTargetTable property: Action on existing target table. If not specified,
+     * 'FailOnNonEmptyTable' action is used.
+     *
+     * @return the actionOnExistingTargetTable value.
+     */
+    public ActionOnExistingTargetTable getActionOnExistingTargetTable() {
+        return this.actionOnExistingTargetTable;
+    }
+
+    /**
+     * Set the actionOnExistingTargetTable property: Action on existing target table. If not specified,
+     * 'FailOnNonEmptyTable' action is used.
+     *
+     * @param actionOnExistingTargetTable the actionOnExistingTargetTable value to set.
+     * @return the LinkConnectionTargetDatabaseTypeProperties object itself.
+     */
+    public LinkConnectionTargetDatabaseTypeProperties setActionOnExistingTargetTable(
+            ActionOnExistingTargetTable actionOnExistingTargetTable) {
+        this.actionOnExistingTargetTable = actionOnExistingTargetTable;
         return this;
     }
 }

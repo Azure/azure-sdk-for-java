@@ -3,6 +3,7 @@
 
 package com.azure.core.test.utils;
 
+import com.azure.core.util.UrlBuilder;
 import com.azure.core.util.logging.ClientLogger;
 import com.azure.core.util.logging.LogLevel;
 import org.apache.commons.compress.archivers.ArchiveEntry;
@@ -31,10 +32,9 @@ import java.util.zip.GZIPInputStream;
  */
 public final class TestProxyDownloader {
     private static final ClientLogger LOGGER = new ClientLogger(TestProxyDownloader.class);
-    private static final String TEST_PROXY_TAG = "test-proxy_1.0.0-dev.20230125.14";
     private static final Path PROXY_PATH = Paths.get(System.getProperty("java.io.tmpdir"), "test-proxy");
-    private static final String TEST_PROXY_VERSION_FILE = "test-proxy-version.txt";
 
+    private static String testProxyTag;
     private TestProxyDownloader() { }
 
     /**
@@ -47,8 +47,10 @@ public final class TestProxyDownloader {
 
     /**
      * Requests that the test proxy be downloaded and unpacked. If it is already present this is a no-op.
+     * @param testClassPath the test class path
      */
-    public static void installTestProxy() {
+    public static void installTestProxy(Path testClassPath) {
+        testProxyTag = TestProxyUtils.getTestProxyVersion(testClassPath);
         if (!checkDownloadedVersion()) {
             PlatformInfo platformInfo = new PlatformInfo();
             downloadProxy(platformInfo);
@@ -128,7 +130,7 @@ public final class TestProxyDownloader {
         LOGGER.log(LogLevel.INFORMATIONAL, () -> "Downloading test proxy. This may take a few moments.");
 
         try {
-            URL url = new URL(getProxyDownloadUrl(platformInfo));
+            URL url = UrlBuilder.parse(getProxyDownloadUrl(platformInfo)).toUrl();
             Files.copy(url.openStream(),
                 getZipFileLocation(platformInfo.getExtension()),
                 StandardCopyOption.REPLACE_EXISTING);
@@ -146,7 +148,7 @@ public final class TestProxyDownloader {
     private static void updateDownloadedFileVersion() {
         Path filePath = getFileVersionPath();
         try {
-            Files.write(filePath, Arrays.asList(TEST_PROXY_TAG));
+            Files.write(filePath, Arrays.asList(testProxyTag));
         } catch (IOException e) {
             throw new RuntimeException("Failed to write version data to file", e);
         }
@@ -163,7 +165,7 @@ public final class TestProxyDownloader {
         } catch (IOException e) {
             throw new RuntimeException("Failed to read version data from file", e);
         }
-        return fileVersion.equals(TEST_PROXY_TAG);
+        return fileVersion.equals(testProxyTag);
     }
 
     private static Path getFileVersionPath() {
@@ -171,8 +173,8 @@ public final class TestProxyDownloader {
     }
 
     private static String getProxyDownloadUrl(PlatformInfo platformInfo) {
-        return String.format("https://github.com/Azure/azure-sdk-tools/releases/download/%s/test-proxy-standalone-%s-%s.%s",
-            TEST_PROXY_TAG,
+        return String.format("https://github.com/Azure/azure-sdk-tools/releases/download/Azure.Sdk.Tools.TestProxy_%s/test-proxy-standalone-%s-%s.%s",
+            testProxyTag,
             platformInfo.getPlatform(),
             platformInfo.getArchitecture(),
             platformInfo.getExtension());

@@ -20,6 +20,15 @@ public final class TestResultStatus extends ExpandableStringEnum<TestResultStatu
     public static final TestResultStatus TRUE = fromString("true");
 
     /**
+     * Creates a new instance of TestResultStatus value.
+     *
+     * @deprecated Use the {@link #fromString(String)} factory method.
+     */
+    @Deprecated
+    public TestResultStatus() {
+    }
+
+    /**
      * Creates or finds a TestResultStatus from its string representation.
      *
      * @param name a name to look for.

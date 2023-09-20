@@ -5,7 +5,7 @@
 package com.azure.resourcemanager.devcenter.fluent.models;
 
 import com.azure.core.annotation.Fluent;
-import com.azure.resourcemanager.devcenter.models.EnableStatus;
+import com.azure.resourcemanager.devcenter.models.EnvironmentTypeEnableStatus;
 import com.azure.resourcemanager.devcenter.models.ProjectEnvironmentTypeUpdatePropertiesCreatorRoleAssignment;
 import com.azure.resourcemanager.devcenter.models.UserRoleAssignmentValue;
 import com.fasterxml.jackson.annotation.JsonInclude;
@@ -26,7 +26,7 @@ public class ProjectEnvironmentTypeUpdateProperties {
      * Defines whether this Environment Type can be used in this Project.
      */
     @JsonProperty(value = "status")
-    private EnableStatus status;
+    private EnvironmentTypeEnableStatus status;
 
     /*
      * The role definition assigned to the environment creator on backing resources.
@@ -73,7 +73,7 @@ public class ProjectEnvironmentTypeUpdateProperties {
      *
      * @return the status value.
      */
-    public EnableStatus status() {
+    public EnvironmentTypeEnableStatus status() {
         return this.status;
     }
 
@@ -83,7 +83,7 @@ public class ProjectEnvironmentTypeUpdateProperties {
      * @param status the status value to set.
      * @return the ProjectEnvironmentTypeUpdateProperties object itself.
      */
-    public ProjectEnvironmentTypeUpdateProperties withStatus(EnableStatus status) {
+    public ProjectEnvironmentTypeUpdateProperties withStatus(EnvironmentTypeEnableStatus status) {
         this.status = status;
         return this;
     }

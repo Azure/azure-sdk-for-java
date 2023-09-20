@@ -33,6 +33,12 @@ public final class TextSource extends PlaySource {
     @JsonProperty(value = "voiceName")
     private String voiceName;
 
+    /*
+     * Endpoint where the Custom Voice was deployed.
+     */
+    @JsonProperty(value = "customVoiceEndpointId")
+    private String customVoiceEndpointId;
+
     /**
      * Get the text property: Text for the cognitive service to be played.
      *
@@ -110,6 +116,26 @@ public final class TextSource extends PlaySource {
      */
     public TextSource setVoiceName(String voiceName) {
         this.voiceName = voiceName;
+        return this;
+    }
+
+    /**
+     * Get the customVoiceEndpointId property: Endpoint where the custom voice was deployed.
+     *
+     * @return the customVoiceEndpointId value.
+     */
+    public String getCustomVoiceEndpointId() {
+        return this.customVoiceEndpointId;
+    }
+
+    /**
+     * Set the customVoiceEndpointId property: Endpoint where the custom voice was deployed.
+     *
+     * @param customVoiceEndpointId the customVoiceEndpointId value to set.
+     * @return the TextSourceInternal object itself.
+     */
+    public TextSource setCustomVoiceEndpointId(String customVoiceEndpointId) {
+        this.customVoiceEndpointId = customVoiceEndpointId;
         return this;
     }
 }

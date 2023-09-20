@@ -46,8 +46,8 @@ public final class VirtualMachineScaleSetOSProfile {
 
     /*
      * Specifies a base-64 encoded string of custom data. The base-64 encoded string is decoded to a binary array that
-     * is saved as a file on the Virtual Machine. The maximum length of the binary array is 65535 bytes. <br><br> For
-     * using cloud-init for your VM, see [Using cloud-init to customize a Linux VM during
+     * is saved as a file on the Virtual Machine. The maximum length of the binary array is 65535 bytes. For using
+     * cloud-init for your VM, see [Using cloud-init to customize a Linux VM during
      * creation](https://docs.microsoft.com/azure/virtual-machines/linux/using-cloud-init)
      */
     @JsonProperty(value = "customData")
@@ -60,7 +60,7 @@ public final class VirtualMachineScaleSetOSProfile {
     private WindowsConfiguration windowsConfiguration;
 
     /*
-     * Specifies the Linux operating system settings on the virtual machine. <br><br>For a list of supported Linux
+     * Specifies the Linux operating system settings on the virtual machine. For a list of supported Linux
      * distributions, see [Linux on Azure-Endorsed
      * Distributions](https://docs.microsoft.com/azure/virtual-machines/linux/endorsed-distros).
      */
@@ -78,8 +78,8 @@ public final class VirtualMachineScaleSetOSProfile {
     private List<VaultSecretGroup> secrets;
 
     /*
-     * Specifies whether extension operations should be allowed on the virtual machine scale set. <br><br>This may only
-     * be set to False when no extensions are present on the virtual machine scale set.
+     * Specifies whether extension operations should be allowed on the virtual machine scale set. This may only be set
+     * to False when no extensions are present on the virtual machine scale set.
      */
     @JsonProperty(value = "allowExtensionOperations")
     private Boolean allowExtensionOperations;
@@ -191,8 +191,8 @@ public final class VirtualMachineScaleSetOSProfile {
     /**
      * Get the customData property: Specifies a base-64 encoded string of custom data. The base-64 encoded string is
      * decoded to a binary array that is saved as a file on the Virtual Machine. The maximum length of the binary array
-     * is 65535 bytes. &lt;br&gt;&lt;br&gt; For using cloud-init for your VM, see [Using cloud-init to customize a Linux
-     * VM during creation](https://docs.microsoft.com/azure/virtual-machines/linux/using-cloud-init).
+     * is 65535 bytes. For using cloud-init for your VM, see [Using cloud-init to customize a Linux VM during
+     * creation](https://docs.microsoft.com/azure/virtual-machines/linux/using-cloud-init).
      *
      * @return the customData value.
      */
@@ -203,8 +203,8 @@ public final class VirtualMachineScaleSetOSProfile {
     /**
      * Set the customData property: Specifies a base-64 encoded string of custom data. The base-64 encoded string is
      * decoded to a binary array that is saved as a file on the Virtual Machine. The maximum length of the binary array
-     * is 65535 bytes. &lt;br&gt;&lt;br&gt; For using cloud-init for your VM, see [Using cloud-init to customize a Linux
-     * VM during creation](https://docs.microsoft.com/azure/virtual-machines/linux/using-cloud-init).
+     * is 65535 bytes. For using cloud-init for your VM, see [Using cloud-init to customize a Linux VM during
+     * creation](https://docs.microsoft.com/azure/virtual-machines/linux/using-cloud-init).
      *
      * @param customData the customData value to set.
      * @return the VirtualMachineScaleSetOSProfile object itself.
@@ -235,8 +235,8 @@ public final class VirtualMachineScaleSetOSProfile {
     }
 
     /**
-     * Get the linuxConfiguration property: Specifies the Linux operating system settings on the virtual machine.
-     * &lt;br&gt;&lt;br&gt;For a list of supported Linux distributions, see [Linux on Azure-Endorsed
+     * Get the linuxConfiguration property: Specifies the Linux operating system settings on the virtual machine. For a
+     * list of supported Linux distributions, see [Linux on Azure-Endorsed
      * Distributions](https://docs.microsoft.com/azure/virtual-machines/linux/endorsed-distros).
      *
      * @return the linuxConfiguration value.
@@ -246,8 +246,8 @@ public final class VirtualMachineScaleSetOSProfile {
     }
 
     /**
-     * Set the linuxConfiguration property: Specifies the Linux operating system settings on the virtual machine.
-     * &lt;br&gt;&lt;br&gt;For a list of supported Linux distributions, see [Linux on Azure-Endorsed
+     * Set the linuxConfiguration property: Specifies the Linux operating system settings on the virtual machine. For a
+     * list of supported Linux distributions, see [Linux on Azure-Endorsed
      * Distributions](https://docs.microsoft.com/azure/virtual-machines/linux/endorsed-distros).
      *
      * @param linuxConfiguration the linuxConfiguration value to set.
@@ -288,8 +288,8 @@ public final class VirtualMachineScaleSetOSProfile {
 
     /**
      * Get the allowExtensionOperations property: Specifies whether extension operations should be allowed on the
-     * virtual machine scale set. &lt;br&gt;&lt;br&gt;This may only be set to False when no extensions are present on
-     * the virtual machine scale set.
+     * virtual machine scale set. This may only be set to False when no extensions are present on the virtual machine
+     * scale set.
      *
      * @return the allowExtensionOperations value.
      */
@@ -299,8 +299,8 @@ public final class VirtualMachineScaleSetOSProfile {
 
     /**
      * Set the allowExtensionOperations property: Specifies whether extension operations should be allowed on the
-     * virtual machine scale set. &lt;br&gt;&lt;br&gt;This may only be set to False when no extensions are present on
-     * the virtual machine scale set.
+     * virtual machine scale set. This may only be set to False when no extensions are present on the virtual machine
+     * scale set.
      *
      * @param allowExtensionOperations the allowExtensionOperations value to set.
      * @return the VirtualMachineScaleSetOSProfile object itself.

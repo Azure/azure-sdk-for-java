@@ -10,12 +10,28 @@ import com.fasterxml.jackson.annotation.JsonProperty;
 /** Represents the capacity a job in this channel will consume from a worker. */
 @Fluent
 public final class ChannelConfiguration {
-    /*
+    /**
+     * Creates an instance of ChannelConfiguration class.
+     *
+     * @param capacityCostPerJob the capacityCostPerJob value to set.
+     */
+    public ChannelConfiguration(int capacityCostPerJob) {
+        this.capacityCostPerJob = capacityCostPerJob;
+    }
+
+    /**
      * The amount of capacity that an instance of a job of this channel will
-     * consume of the total worker capacity.
+     * consume of the total worker.
      */
     @JsonProperty(value = "capacityCostPerJob", required = true)
-    private int capacityCostPerJob;
+    private final int capacityCostPerJob;
+
+    /**
+     * The maximum number of jobs that can be supported concurrently for this
+     * channel.
+     */
+    @JsonProperty(value = "maxNumberOfJobs")
+    private Integer maxNumberOfJobs;
 
     /**
      * Get the capacityCostPerJob property: The amount of capacity that an instance of a job of this channel will
@@ -28,14 +44,22 @@ public final class ChannelConfiguration {
     }
 
     /**
-     * Set the capacityCostPerJob property: The amount of capacity that an instance of a job of this channel will
-     * consume of the total worker capacity.
+     * Get the maxNumberOfJobs property: The maximum number of jobs that can be supported concurrently for this channel.
      *
-     * @param capacityCostPerJob the capacityCostPerJob value to set.
+     * @return the maxNumberOfJobs value.
+     */
+    public Integer getMaxNumberOfJobs() {
+        return this.maxNumberOfJobs;
+    }
+
+    /**
+     * Set the maxNumberOfJobs property: The maximum number of jobs that can be supported concurrently for this channel.
+     *
+     * @param maxNumberOfJobs the maxNumberOfJobs value to set.
      * @return the ChannelConfiguration object itself.
      */
-    public ChannelConfiguration setCapacityCostPerJob(int capacityCostPerJob) {
-        this.capacityCostPerJob = capacityCostPerJob;
+    public ChannelConfiguration setMaxNumberOfJobs(Integer maxNumberOfJobs) {
+        this.maxNumberOfJobs = maxNumberOfJobs;
         return this;
     }
 }

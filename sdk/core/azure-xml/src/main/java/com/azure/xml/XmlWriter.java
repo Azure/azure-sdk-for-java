@@ -136,6 +136,19 @@ public abstract class XmlWriter implements AutoCloseable {
     public abstract XmlWriter writeNamespace(String namespaceUri) throws XMLStreamException;
 
     /**
+     * Writes an XML namespace with a specified prefix.
+     * <p>
+     * If the {@code namespacePrefix} is null or {@code xmlns} calling this method is equivalent to
+     * {@link #writeNamespace(String)}.
+     *
+     * @param namespacePrefix Prefix that the namespace binds.
+     * @param namespaceUri Namespace URI to bind to the prefix.
+     * @return The updated XmlWriter object.
+     * @throws XMLStreamException If the XML namespace cannot be written.
+     */
+    public abstract XmlWriter writeNamespace(String namespacePrefix, String namespaceUri) throws XMLStreamException;
+
+    /**
      * Writes a String attribute ({@code attribute="value"}).
      *
      * @param localName Name of the attribute.
@@ -681,7 +694,23 @@ public abstract class XmlWriter implements AutoCloseable {
      * @throws XMLStreamException If the XML object cannot be written.
      */
     public final XmlWriter writeXml(XmlSerializable<?> value)  throws XMLStreamException {
-        return value == null ? this : value.toXml(this);
+        return writeXml(value, null);
+    }
+
+    /**
+     * Writes an {@link XmlSerializable} object.
+     * <p>
+     * If the {@code value} is null this is a no-op.
+     * <p>
+     * If {@code rootElementName} is null this is the same as calling {@link #writeXml(XmlSerializable)}.
+     *
+     * @param value {@link XmlSerializable} object to write.
+     * @param rootElementName Override of the XML element name defined by the object.
+     * @return The updated XmlWriter object.
+     * @throws XMLStreamException If the XML object cannot be written.
+     */
+    public final XmlWriter writeXml(XmlSerializable<?> value, String rootElementName) throws XMLStreamException {
+        return value == null ? this : value.toXml(this, rootElementName);
     }
 
     /**

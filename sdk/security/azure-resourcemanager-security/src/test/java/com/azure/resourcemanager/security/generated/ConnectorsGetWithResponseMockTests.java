@@ -32,7 +32,7 @@ public final class ConnectorsGetWithResponseMockTests {
         ArgumentCaptor<HttpRequest> httpRequest = ArgumentCaptor.forClass(HttpRequest.class);
 
         String responseStr =
-            "{\"properties\":{\"hybridComputeSettings\":{\"hybridComputeProvisioningState\":\"Expired\",\"autoProvision\":\"Off\",\"resourceGroupName\":\"xezm\",\"region\":\"kjgpjeuxsphlokfp\"},\"authenticationDetails\":{\"authenticationType\":\"AuthenticationDetailsProperties\",\"authenticationProvisioningState\":\"Invalid\",\"grantedPermissions\":[]}},\"id\":\"vfbhwb\",\"name\":\"qufv\",\"type\":\"gnrglaqrwyamb\"}";
+            "{\"properties\":{\"hybridComputeSettings\":{\"hybridComputeProvisioningState\":\"Invalid\",\"autoProvision\":\"On\",\"resourceGroupName\":\"dh\",\"region\":\"ojvlirknucosaw\"},\"authenticationDetails\":{\"authenticationType\":\"AuthenticationDetailsProperties\",\"authenticationProvisioningState\":\"Expired\",\"grantedPermissions\":[]}},\"id\":\"lgpyaixihz\",\"name\":\"jjtsm\",\"type\":\"ydqfttkacy\"}";
 
         Mockito.when(httpResponse.getStatusCode()).thenReturn(200);
         Mockito.when(httpResponse.getHeaders()).thenReturn(new HttpHeaders());
@@ -61,10 +61,10 @@ public final class ConnectorsGetWithResponseMockTests {
                     new AzureProfile("", "", AzureEnvironment.AZURE));
 
         ConnectorSetting response =
-            manager.connectors().getWithResponse("dr", com.azure.core.util.Context.NONE).getValue();
+            manager.connectors().getWithResponse("d", com.azure.core.util.Context.NONE).getValue();
 
-        Assertions.assertEquals(AutoProvision.OFF, response.hybridComputeSettings().autoProvision());
-        Assertions.assertEquals("xezm", response.hybridComputeSettings().resourceGroupName());
-        Assertions.assertEquals("kjgpjeuxsphlokfp", response.hybridComputeSettings().region());
+        Assertions.assertEquals(AutoProvision.ON, response.hybridComputeSettings().autoProvision());
+        Assertions.assertEquals("dh", response.hybridComputeSettings().resourceGroupName());
+        Assertions.assertEquals("ojvlirknucosaw", response.hybridComputeSettings().region());
     }
 }

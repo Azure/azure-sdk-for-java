@@ -4,7 +4,6 @@
 
 package com.azure.resourcemanager.privatedns.generated;
 
-import com.azure.core.util.Context;
 import com.azure.resourcemanager.privatedns.fluent.models.RecordSetInner;
 import com.azure.resourcemanager.privatedns.models.ARecord;
 import com.azure.resourcemanager.privatedns.models.AaaaRecord;
@@ -41,12 +40,12 @@ public final class RecordSetsCreateOrUpdateSamples {
                 RecordType.TXT,
                 "recordTXT",
                 new RecordSetInner()
-                    .withMetadata(mapOf("key1", "value1"))
+                    .withMetadata(mapOf("key1", "fakeTokenPlaceholder"))
                     .withTtl(3600L)
                     .withTxtRecords(Arrays.asList(new TxtRecord().withValue(Arrays.asList("string1", "string2")))),
                 null,
                 null,
-                Context.NONE);
+                com.azure.core.util.Context.NONE);
     }
 
     /*
@@ -69,12 +68,12 @@ public final class RecordSetsCreateOrUpdateSamples {
                 RecordType.AAAA,
                 "recordAAAA",
                 new RecordSetInner()
-                    .withMetadata(mapOf("key1", "value1"))
+                    .withMetadata(mapOf("key1", "fakeTokenPlaceholder"))
                     .withTtl(3600L)
                     .withAaaaRecords(Arrays.asList(new AaaaRecord().withIpv6Address("::1"))),
                 null,
                 null,
-                Context.NONE);
+                com.azure.core.util.Context.NONE);
     }
 
     /*
@@ -97,7 +96,7 @@ public final class RecordSetsCreateOrUpdateSamples {
                 RecordType.SOA,
                 "@",
                 new RecordSetInner()
-                    .withMetadata(mapOf("key1", "value1"))
+                    .withMetadata(mapOf("key1", "fakeTokenPlaceholder"))
                     .withTtl(3600L)
                     .withSoaRecord(
                         new SoaRecord()
@@ -109,7 +108,7 @@ public final class RecordSetsCreateOrUpdateSamples {
                             .withExpireTime(2419200L)),
                 null,
                 null,
-                Context.NONE);
+                com.azure.core.util.Context.NONE);
     }
 
     /*
@@ -132,13 +131,13 @@ public final class RecordSetsCreateOrUpdateSamples {
                 RecordType.MX,
                 "recordMX",
                 new RecordSetInner()
-                    .withMetadata(mapOf("key1", "value1"))
+                    .withMetadata(mapOf("key1", "fakeTokenPlaceholder"))
                     .withTtl(3600L)
                     .withMxRecords(
                         Arrays.asList(new MxRecord().withPreference(0).withExchange("mail.privatezone1.com"))),
                 null,
                 null,
-                Context.NONE);
+                com.azure.core.util.Context.NONE);
     }
 
     /*
@@ -161,12 +160,12 @@ public final class RecordSetsCreateOrUpdateSamples {
                 RecordType.CNAME,
                 "recordCNAME",
                 new RecordSetInner()
-                    .withMetadata(mapOf("key1", "value1"))
+                    .withMetadata(mapOf("key1", "fakeTokenPlaceholder"))
                     .withTtl(3600L)
                     .withCnameRecord(new CnameRecord().withCname("contoso.com")),
                 null,
                 null,
-                Context.NONE);
+                com.azure.core.util.Context.NONE);
     }
 
     /*
@@ -189,12 +188,12 @@ public final class RecordSetsCreateOrUpdateSamples {
                 RecordType.PTR,
                 "1",
                 new RecordSetInner()
-                    .withMetadata(mapOf("key1", "value1"))
+                    .withMetadata(mapOf("key1", "fakeTokenPlaceholder"))
                     .withTtl(3600L)
                     .withPtrRecords(Arrays.asList(new PtrRecord().withPtrdname("localhost"))),
                 null,
                 null,
-                Context.NONE);
+                com.azure.core.util.Context.NONE);
     }
 
     /*
@@ -217,12 +216,12 @@ public final class RecordSetsCreateOrUpdateSamples {
                 RecordType.A,
                 "recordA",
                 new RecordSetInner()
-                    .withMetadata(mapOf("key1", "value1"))
+                    .withMetadata(mapOf("key1", "fakeTokenPlaceholder"))
                     .withTtl(3600L)
                     .withARecords(Arrays.asList(new ARecord().withIpv4Address("1.2.3.4"))),
                 null,
                 null,
-                Context.NONE);
+                com.azure.core.util.Context.NONE);
     }
 
     /*
@@ -245,7 +244,7 @@ public final class RecordSetsCreateOrUpdateSamples {
                 RecordType.SRV,
                 "recordSRV",
                 new RecordSetInner()
-                    .withMetadata(mapOf("key1", "value1"))
+                    .withMetadata(mapOf("key1", "fakeTokenPlaceholder"))
                     .withTtl(3600L)
                     .withSrvRecords(
                         Arrays
@@ -253,7 +252,7 @@ public final class RecordSetsCreateOrUpdateSamples {
                                 new SrvRecord().withPriority(0).withWeight(10).withPort(80).withTarget("contoso.com"))),
                 null,
                 null,
-                Context.NONE);
+                com.azure.core.util.Context.NONE);
     }
 
     @SuppressWarnings("unchecked")

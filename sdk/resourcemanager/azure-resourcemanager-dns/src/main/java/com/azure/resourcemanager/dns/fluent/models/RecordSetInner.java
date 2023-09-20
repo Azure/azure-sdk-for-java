@@ -7,7 +7,6 @@ package com.azure.resourcemanager.dns.fluent.models;
 import com.azure.core.annotation.Fluent;
 import com.azure.core.management.ProxyResource;
 import com.azure.core.management.SubResource;
-import com.azure.core.util.logging.ClientLogger;
 import com.azure.resourcemanager.dns.models.ARecord;
 import com.azure.resourcemanager.dns.models.AaaaRecord;
 import com.azure.resourcemanager.dns.models.CaaRecord;
@@ -18,7 +17,6 @@ import com.azure.resourcemanager.dns.models.PtrRecord;
 import com.azure.resourcemanager.dns.models.SoaRecord;
 import com.azure.resourcemanager.dns.models.SrvRecord;
 import com.azure.resourcemanager.dns.models.TxtRecord;
-import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import java.util.List;
 import java.util.Map;
@@ -26,8 +24,6 @@ import java.util.Map;
 /** Describes a DNS record set (a collection of DNS records with the same name and type). */
 @Fluent
 public final class RecordSetInner extends ProxyResource {
-    @JsonIgnore private final ClientLogger logger = new ClientLogger(RecordSetInner.class);
-
     /*
      * The etag of the record set.
      */
@@ -39,6 +35,10 @@ public final class RecordSetInner extends ProxyResource {
      */
     @JsonProperty(value = "properties")
     private RecordSetProperties innerProperties;
+
+    /** Creates an instance of RecordSetInner class. */
+    public RecordSetInner() {
+    }
 
     /**
      * Get the etag property: The etag of the record set.

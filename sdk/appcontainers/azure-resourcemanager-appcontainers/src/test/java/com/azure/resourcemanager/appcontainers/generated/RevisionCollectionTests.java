@@ -8,23 +8,21 @@ import com.azure.core.util.BinaryData;
 import com.azure.resourcemanager.appcontainers.fluent.models.RevisionInner;
 import com.azure.resourcemanager.appcontainers.models.RevisionCollection;
 import java.util.Arrays;
-import org.junit.jupiter.api.Test;
 
 public final class RevisionCollectionTests {
-    @Test
-    public void testDeserialize() {
+    @org.junit.jupiter.api.Test
+    public void testDeserialize() throws Exception {
         RevisionCollection model =
             BinaryData
                 .fromString(
-                    "{\"value\":[{\"properties\":{\"createdTime\":\"2021-01-15T08:47:59Z\",\"lastActiveTime\":\"2021-05-14T06:41:01Z\",\"fqdn\":\"jabibsystawf\",\"active\":true,\"replicas\":591359047,\"trafficWeight\":226758731,\"provisioningError\":\"jxbkzbzkdvn\",\"healthState\":\"Healthy\",\"provisioningState\":\"Deprovisioned\"},\"id\":\"urgkakmokzhjjk\",\"name\":\"ffhmouwqlgzr\",\"type\":\"zeeyebi\"},{\"properties\":{\"createdTime\":\"2021-08-01T17:17:52Z\",\"lastActiveTime\":\"2021-02-02T12:35:30Z\",\"fqdn\":\"lbjbsyb\",\"active\":false,\"replicas\":146564330,\"trafficWeight\":1583288095,\"provisioningError\":\"mfpgv\",\"healthState\":\"None\",\"provisioningState\":\"Failed\"},\"id\":\"ltha\",\"name\":\"fxssm\",\"type\":\"u\"},{\"properties\":{\"createdTime\":\"2021-10-23T07:29:01Z\",\"lastActiveTime\":\"2021-01-02T11:55:22Z\",\"fqdn\":\"zpdrhneu\",\"active\":false,\"replicas\":150720980,\"trafficWeight\":2008248365,\"provisioningError\":\"i\",\"healthState\":\"None\",\"provisioningState\":\"Deprovisioned\"},\"id\":\"gpikpzimejza\",\"name\":\"lfzxiavrmbzonoki\",\"type\":\"rjqc\"}],\"nextLink\":\"gzpfrla\"}")
+                    "{\"value\":[{\"properties\":{\"createdTime\":\"2021-02-22T10:12:12Z\",\"lastActiveTime\":\"2021-10-17T14:02:40Z\",\"fqdn\":\"vxwc\",\"template\":{\"revisionSuffix\":\"pcirelsfeaen\",\"terminationGracePeriodSeconds\":6089881890484118319,\"initContainers\":[{}],\"containers\":[{},{},{}],\"scale\":{\"minReplicas\":1993086714,\"maxReplicas\":863801878,\"rules\":[{},{}]},\"volumes\":[{},{},{},{}],\"serviceBinds\":[{}]},\"active\":false,\"replicas\":2046993019,\"trafficWeight\":443965325,\"provisioningError\":\"youlp\",\"healthState\":\"None\",\"provisioningState\":\"Deprovisioning\",\"runningState\":\"Stopped\"},\"id\":\"rvimjwosytxitcsk\",\"name\":\"cktqumiekkezzi\",\"type\":\"hlyfjhdgqgg\"},{\"properties\":{\"createdTime\":\"2021-11-21T10:43:47Z\",\"lastActiveTime\":\"2021-04-09T06:20:49Z\",\"fqdn\":\"aeqidbqfatpxll\",\"template\":{\"revisionSuffix\":\"yjmoadsu\",\"terminationGracePeriodSeconds\":1027634010219173638,\"initContainers\":[{},{},{},{}],\"containers\":[{},{}],\"scale\":{\"minReplicas\":1651100345,\"maxReplicas\":1483853053,\"rules\":[{},{}]},\"volumes\":[{},{},{}],\"serviceBinds\":[{},{}]},\"active\":true,\"replicas\":288329779,\"trafficWeight\":1115314881,\"provisioningError\":\"uhpkxkgymar\",\"healthState\":\"Unhealthy\",\"provisioningState\":\"Deprovisioning\",\"runningState\":\"Processing\"},\"id\":\"ugjhky\",\"name\":\"ubeddg\",\"type\":\"sofwqmzqalkrmnji\"}],\"nextLink\":\"xacqqudfnbyx\"}")
                 .toObject(RevisionCollection.class);
     }
 
-    @Test
-    public void testSerialize() {
+    @org.junit.jupiter.api.Test
+    public void testSerialize() throws Exception {
         RevisionCollection model =
-            new RevisionCollection()
-                .withValue(Arrays.asList(new RevisionInner(), new RevisionInner(), new RevisionInner()));
+            new RevisionCollection().withValue(Arrays.asList(new RevisionInner(), new RevisionInner()));
         model = BinaryData.fromObject(model).toObject(RevisionCollection.class);
     }
 }

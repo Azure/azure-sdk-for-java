@@ -10,7 +10,7 @@ import com.azure.core.http.policy.FixedDelay;
 import com.azure.core.http.policy.HttpLogDetailLevel;
 import com.azure.core.http.policy.HttpLogOptions;
 import com.azure.core.http.policy.RetryPolicy;
-import com.azure.core.test.TestBase;
+import com.azure.core.test.TestProxyTestBase;
 import com.azure.core.test.annotation.DoNotRecord;
 import com.azure.core.test.http.MockHttpResponse;
 import com.azure.core.util.ClientOptions;
@@ -27,7 +27,6 @@ import java.util.function.BiConsumer;
 import java.util.function.Consumer;
 import java.util.function.Function;
 
-import static com.azure.ai.formrecognizer.FormRecognizerClientTestBase.INVALID_ENDPOINT;
 import static com.azure.ai.formrecognizer.FormTrainingClientTestBase.AZURE_FORM_RECOGNIZER_API_KEY;
 import static com.azure.ai.formrecognizer.FormTrainingClientTestBase.AZURE_FORM_RECOGNIZER_ENDPOINT;
 import static com.azure.ai.formrecognizer.TestUtils.CONTENT_FORM_JPG;
@@ -44,7 +43,7 @@ import static org.junit.jupiter.api.Assertions.assertTrue;
 /**
  * Tests for Form Recognizer client builder
  */
-public class FormRecognizerClientBuilderTest extends TestBase {
+public class FormRecognizerClientBuilderTest extends TestProxyTestBase {
     /**
      * Test client builder with invalid API key
      */
@@ -99,27 +98,12 @@ public class FormRecognizerClientBuilderTest extends TestBase {
     }
 
     /**
-     * Test for invalid endpoint, which throws connection refused exception message.
-     */
-    @ParameterizedTest(name = DISPLAY_NAME_WITH_ARGUMENTS)
-    @MethodSource("com.azure.ai.formrecognizer.TestUtils#getTestParameters")
-    public void clientBuilderWithInvalidEndpoint(HttpClient httpClient, FormRecognizerServiceVersion serviceVersion) {
-        clientBuilderWithDefaultPipelineRunner(httpClient, serviceVersion, clientBuilder -> (input) -> {
-            assertThrows(RuntimeException.class,
-                () -> clientBuilder.endpoint(INVALID_ENDPOINT)
-                    .retryPolicy(new RetryPolicy(new FixedDelay(3, Duration.ofMillis(1))))
-                    .buildClient()
-                    .beginRecognizeContentFromUrl(input).getFinalResult());
-        });
-    }
-
-    /**
      * Test for an valid http endpoint, which throws HTTPS requirement exception message.
      */
     @ParameterizedTest(name = DISPLAY_NAME_WITH_ARGUMENTS)
     @MethodSource("com.azure.ai.formrecognizer.TestUtils#getTestParameters")
     public void clientBuilderWithHttpEndpoint(HttpClient httpClient, FormRecognizerServiceVersion serviceVersion) {
-        clientBuilderWithDefaultPipelineRunner(httpClient, serviceVersion, clientBuilder -> (input) -> {
+        clientBuilderWithNoRecordPipelineRunner(httpClient, serviceVersion, clientBuilder -> (input) -> {
             assertThrows(RuntimeException.class, () -> clientBuilder.endpoint(VALID_HTTP_LOCALHOST)
                 .retryPolicy(new RetryPolicy(new FixedDelay(3, Duration.ofMillis(1))))
                 .buildClient()
@@ -235,6 +219,17 @@ public class FormRecognizerClientBuilderTest extends TestBase {
         testRunner.apply(clientBuilder).accept(URL_TEST_FILE_FORMAT + CONTENT_FORM_JPG);
     }
 
+    void clientBuilderWithNoRecordPipelineRunner(HttpClient httpClient, FormRecognizerServiceVersion serviceVersion,
+                                                Function<FormRecognizerClientBuilder, Consumer<String>> testRunner) {
+        final FormRecognizerClientBuilder clientBuilder = new FormRecognizerClientBuilder()
+            .credential(new AzureKeyCredential(getApiKey()))
+            .endpoint(getEndpoint())
+            .httpClient(httpClient)
+            .serviceVersion(serviceVersion);
+
+        testRunner.apply(clientBuilder).accept(URL_TEST_FILE_FORMAT + CONTENT_FORM_JPG);
+    }
+
     /**
      * Create a client builder with endpoint and API key credential.
      *
@@ -247,10 +242,10 @@ public class FormRecognizerClientBuilderTest extends TestBase {
         final FormRecognizerClientBuilder clientBuilder = new FormRecognizerClientBuilder()
             .credential(credential)
             .endpoint(endpoint)
-            .httpClient(httpClient == null ? interceptorManager.getPlaybackClient() : httpClient)
+            .httpClient(interceptorManager.isPlaybackMode() ? interceptorManager.getPlaybackClient() : httpClient)
             .serviceVersion(serviceVersion);
 
-        if (!interceptorManager.isPlaybackMode()) {
+        if (interceptorManager.isRecordMode()) {
             clientBuilder.addPolicy(interceptorManager.getRecordPolicy());
         }
 

@@ -32,7 +32,7 @@ public final class SecureScoreControlsListMockTests {
         ArgumentCaptor<HttpRequest> httpRequest = ArgumentCaptor.forClass(HttpRequest.class);
 
         String responseStr =
-            "{\"value\":[{\"properties\":{\"displayName\":\"c\",\"score\":{\"max\":608086489,\"current\":20.71861361145678,\"percentage\":91.48005616081188},\"healthyResourceCount\":1604761288,\"unhealthyResourceCount\":757726906,\"notApplicableResourceCount\":1621292104,\"weight\":2132460385933748590,\"definition\":{\"id\":\"alh\",\"name\":\"ubhg\",\"type\":\"phetxdqc\"}},\"id\":\"yctajqz\",\"name\":\"vale\",\"type\":\"xb\"}]}";
+            "{\"value\":[{\"properties\":{\"displayName\":\"guyfazbkocbygvt\",\"score\":{\"max\":106120688,\"current\":11.396655943253176,\"percentage\":58.146251073289655},\"healthyResourceCount\":1344169378,\"unhealthyResourceCount\":1548281648,\"notApplicableResourceCount\":341199959,\"weight\":7359298779721457095,\"definition\":{\"id\":\"boozflyacagaed\",\"name\":\"oiqclmgdtwgab\",\"type\":\"xfkuzbw\"}},\"id\":\"ecooyvhtuqbp\",\"name\":\"lniibncg\",\"type\":\"gdvcdqhftz\"}]}";
 
         Mockito.when(httpResponse.getStatusCode()).thenReturn(200);
         Mockito.when(httpResponse.getHeaders()).thenReturn(new HttpHeaders());

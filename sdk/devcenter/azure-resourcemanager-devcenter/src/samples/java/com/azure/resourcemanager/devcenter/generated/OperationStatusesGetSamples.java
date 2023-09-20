@@ -4,12 +4,10 @@
 
 package com.azure.resourcemanager.devcenter.generated;
 
-import com.azure.core.util.Context;
-
 /** Samples for OperationStatuses Get. */
 public final class OperationStatusesGetSamples {
     /*
-     * x-ms-original-file: specification/devcenter/resource-manager/Microsoft.DevCenter/preview/2022-11-11-preview/examples/OperationStatus_Get.json
+     * x-ms-original-file: specification/devcenter/resource-manager/Microsoft.DevCenter/stable/2023-04-01/examples/OperationStatus_Get.json
      */
     /**
      * Sample code: Get OperationStatus.
@@ -17,6 +15,8 @@ public final class OperationStatusesGetSamples {
      * @param manager Entry point to DevCenterManager.
      */
     public static void getOperationStatus(com.azure.resourcemanager.devcenter.DevCenterManager manager) {
-        manager.operationStatuses().getWithResponse("westus3", "3fa1a29d-e807-488d-81d1-f1c5456a08cd", Context.NONE);
+        manager
+            .operationStatuses()
+            .getWithResponse("westus3", "3fa1a29d-e807-488d-81d1-f1c5456a08cd", com.azure.core.util.Context.NONE);
     }
 }

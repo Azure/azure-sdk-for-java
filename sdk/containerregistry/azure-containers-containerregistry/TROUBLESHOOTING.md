@@ -165,10 +165,12 @@ try {
     System.out.printf("Uploaded blob: digest - '%s', size - %s\n", uploadResult.getDigest(),
         uploadResult.getSizeInBytes());
 } catch (HttpResponseException ex) {
-    if (ex.getCause() instanceof AcrErrorsException) {
-        AcrErrorsException acrErrors = (AcrErrorsException) ex.getCause();
-        for (AcrErrorInfo info : acrErrors.getValue().getErrors()) {
-            System.out.printf("Uploaded blob failed: code '%s'\n", info.getCode());
+    if (ex.getValue() instanceof ResponseError) {
+        ResponseError error = (ResponseError) ex.getValue();
+        System.out.printf("Upload failed: code '%s'\n", error.getCode());
+        if ("BLOB_UPLOAD_INVALID".equals(error.getCode())) {
+            System.out.println("Transient upload issue, starting upload over");
+            // retry upload
         }
     }
 }

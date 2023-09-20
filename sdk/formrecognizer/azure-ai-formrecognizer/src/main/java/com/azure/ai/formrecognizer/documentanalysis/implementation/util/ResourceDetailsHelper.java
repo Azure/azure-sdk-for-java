@@ -3,6 +3,7 @@
 
 package com.azure.ai.formrecognizer.documentanalysis.implementation.util;
 
+import com.azure.ai.formrecognizer.documentanalysis.administration.models.QuotaDetails;
 import com.azure.ai.formrecognizer.documentanalysis.administration.models.ResourceDetails;
 
 /**
@@ -20,6 +21,9 @@ public final class ResourceDetailsHelper {
     public interface ResourceDetailsAccessor {
         void setDocumentModelCount(ResourceDetails resourceDetails, int documentModelCount);
         void setDocumentModelLimit(ResourceDetails resourceDetails, int documentModelLimit);
+
+        void setCustomNeuralDocumentModelBuilds(
+            ResourceDetails resourceDetails, QuotaDetails quotaDetails);
     }
 
     /**
@@ -37,5 +41,9 @@ public final class ResourceDetailsHelper {
 
     static void setDocumentModelLimit(ResourceDetails resourceDetails, int documentModelLimit) {
         accessor.setDocumentModelLimit(resourceDetails, documentModelLimit);
+    }
+
+    static void setCustomNeuralDocumentModelBuilds(ResourceDetails resourceDetails, QuotaDetails quotaDetails) {
+        accessor.setCustomNeuralDocumentModelBuilds(resourceDetails, quotaDetails);
     }
 }

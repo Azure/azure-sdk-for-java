@@ -27,11 +27,7 @@ public final class RecordingContentInternal extends ExpandableStringEnum<Recordi
         return fromString(name, RecordingContentInternal.class);
     }
 
-    /**
-     * Gets known RecordingContentInternal values.
-     *
-     * @return known RecordingContentInternal values.
-     */
+    /** @return known RecordingContentInternal values. */
     public static Collection<RecordingContentInternal> values() {
         return values(RecordingContentInternal.class);
     }

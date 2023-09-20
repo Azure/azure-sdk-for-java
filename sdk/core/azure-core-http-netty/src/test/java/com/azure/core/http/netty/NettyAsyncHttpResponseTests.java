@@ -3,6 +3,7 @@
 
 package com.azure.core.http.netty;
 
+import com.azure.core.http.HttpHeaderName;
 import com.azure.core.http.HttpMethod;
 import com.azure.core.http.HttpRequest;
 import com.azure.core.http.netty.implementation.NettyAsyncHttpResponse;
@@ -54,7 +55,6 @@ public class NettyAsyncHttpResponseTests {
         when(reactorNettyResponse.status()).thenReturn(HttpResponseStatus.OK);
 
         NettyAsyncHttpResponse response = new NettyAsyncHttpResponse(reactorNettyResponse, null, REQUEST, false, false);
-
         assertEquals(200, response.getStatusCode());
     }
 
@@ -71,8 +71,8 @@ public class NettyAsyncHttpResponseTests {
             reactorNettyResponse, null, REQUEST, false, false)
             .getHeaders();
 
-        assertEquals("aValue", actualHeaders.getValue("aHeader"));
-        assertEquals("anotherValue", actualHeaders.getValue("anotherHeader"));
+        assertEquals("aValue", actualHeaders.getValue(HttpHeaderName.fromString("aHeader")));
+        assertEquals("anotherValue", actualHeaders.getValue(HttpHeaderName.fromString("anotherHeader")));
     }
 
     @Test

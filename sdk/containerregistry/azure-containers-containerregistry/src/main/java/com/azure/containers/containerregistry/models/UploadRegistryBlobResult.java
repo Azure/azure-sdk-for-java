@@ -4,10 +4,12 @@
 package com.azure.containers.containerregistry.models;
 
 import com.azure.containers.containerregistry.implementation.ConstructorAccessors;
+import com.azure.core.annotation.Immutable;
 
 /**
 * The result from uploading the blob.
 */
+@Immutable
 public final class UploadRegistryBlobResult {
     static {
         ConstructorAccessors.setUploadRegistryBlobResultAccessor(UploadRegistryBlobResult::new);

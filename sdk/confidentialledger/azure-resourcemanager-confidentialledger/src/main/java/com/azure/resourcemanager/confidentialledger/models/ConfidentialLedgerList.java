@@ -19,11 +19,14 @@ public final class ConfidentialLedgerList {
     private List<ConfidentialLedgerInner> value;
 
     /*
-     * The URL the client should use to fetch the next page (per server side
-     * paging).
+     * The URL the client should use to fetch the next page (per server side paging).
      */
     @JsonProperty(value = "nextLink")
     private String nextLink;
+
+    /** Creates an instance of ConfidentialLedgerList class. */
+    public ConfidentialLedgerList() {
+    }
 
     /**
      * Get the value property: List of Confidential Ledgers.

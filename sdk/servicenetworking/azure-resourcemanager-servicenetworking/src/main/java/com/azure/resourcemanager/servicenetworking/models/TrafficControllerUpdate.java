@@ -19,12 +19,6 @@ public final class TrafficControllerUpdate {
     @JsonInclude(value = JsonInclude.Include.NON_NULL, content = JsonInclude.Include.ALWAYS)
     private Map<String, String> tags;
 
-    /*
-     * The updatable properties of the TrafficController.
-     */
-    @JsonProperty(value = "properties")
-    private Object properties;
-
     /** Creates an instance of TrafficControllerUpdate class. */
     public TrafficControllerUpdate() {
     }
@@ -46,26 +40,6 @@ public final class TrafficControllerUpdate {
      */
     public TrafficControllerUpdate withTags(Map<String, String> tags) {
         this.tags = tags;
-        return this;
-    }
-
-    /**
-     * Get the properties property: The updatable properties of the TrafficController.
-     *
-     * @return the properties value.
-     */
-    public Object properties() {
-        return this.properties;
-    }
-
-    /**
-     * Set the properties property: The updatable properties of the TrafficController.
-     *
-     * @param properties the properties value to set.
-     * @return the TrafficControllerUpdate object itself.
-     */
-    public TrafficControllerUpdate withProperties(Object properties) {
-        this.properties = properties;
         return this;
     }
 

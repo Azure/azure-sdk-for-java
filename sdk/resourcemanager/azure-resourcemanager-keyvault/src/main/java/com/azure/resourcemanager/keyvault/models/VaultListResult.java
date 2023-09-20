@@ -24,6 +24,10 @@ public final class VaultListResult {
     @JsonProperty(value = "nextLink")
     private String nextLink;
 
+    /** Creates an instance of VaultListResult class. */
+    public VaultListResult() {
+    }
+
     /**
      * Get the value property: The list of vaults.
      *

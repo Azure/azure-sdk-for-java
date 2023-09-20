@@ -25,7 +25,7 @@ public final class ManagedRuleSet {
     private String ruleSetVersion;
 
     /*
-     * Defines the action to take when a managed rule set score threshold is met.
+     * Defines the rule set action.
      */
     @JsonProperty(value = "ruleSetAction")
     private ManagedRuleSetActionType ruleSetAction;
@@ -87,7 +87,7 @@ public final class ManagedRuleSet {
     }
 
     /**
-     * Get the ruleSetAction property: Defines the action to take when a managed rule set score threshold is met.
+     * Get the ruleSetAction property: Defines the rule set action.
      *
      * @return the ruleSetAction value.
      */
@@ -96,7 +96,7 @@ public final class ManagedRuleSet {
     }
 
     /**
-     * Set the ruleSetAction property: Defines the action to take when a managed rule set score threshold is met.
+     * Set the ruleSetAction property: Defines the rule set action.
      *
      * @param ruleSetAction the ruleSetAction value to set.
      * @return the ManagedRuleSet object itself.

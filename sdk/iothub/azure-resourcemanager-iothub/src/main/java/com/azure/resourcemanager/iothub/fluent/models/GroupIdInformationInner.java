@@ -36,6 +36,10 @@ public final class GroupIdInformationInner {
     @JsonProperty(value = "properties", required = true)
     private GroupIdInformationProperties properties;
 
+    /** Creates an instance of GroupIdInformationInner class. */
+    public GroupIdInformationInner() {
+    }
+
     /**
      * Get the id property: The resource identifier.
      *

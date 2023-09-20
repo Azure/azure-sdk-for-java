@@ -28,6 +28,10 @@ public final class RegistryStatisticsInner {
     @JsonProperty(value = "disabledDeviceCount", access = JsonProperty.Access.WRITE_ONLY)
     private Long disabledDeviceCount;
 
+    /** Creates an instance of RegistryStatisticsInner class. */
+    public RegistryStatisticsInner() {
+    }
+
     /**
      * Get the totalDeviceCount property: The total count of devices in the identity registry.
      *

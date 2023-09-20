@@ -33,7 +33,8 @@ public final class MonitorsListHostsMockTests {
         HttpResponse httpResponse = Mockito.mock(HttpResponse.class);
         ArgumentCaptor<HttpRequest> httpRequest = ArgumentCaptor.forClass(HttpRequest.class);
 
-        String responseStr = "{\"value\":[{\"vmId\":\"hhuao\",\"agentVersion\":\"pcqeqx\",\"agentStatus\":\"z\"}]}";
+        String responseStr =
+            "{\"value\":[{\"vmId\":\"otftpvjzbexilz\",\"agentVersion\":\"fqqnvwpmqtaruo\",\"agentStatus\":\"mkcjhwqytjrybn\"}]}";
 
         Mockito.when(httpResponse.getStatusCode()).thenReturn(200);
         Mockito.when(httpResponse.getHeaders()).thenReturn(new HttpHeaders());
@@ -65,15 +66,13 @@ public final class MonitorsListHostsMockTests {
             manager
                 .monitors()
                 .listHosts(
-                    "gylgqgitxmedjvcs",
-                    "ynqwwncwzzhxgk",
-                    new HostsGetRequest()
-                        .withVmIds(Arrays.asList("gucnapkte", "ellwptfdy"))
-                        .withUserEmail("pfqbuaceopzf"),
+                    "bfovasrruvwbhsq",
+                    "sub",
+                    new HostsGetRequest().withVmIds(Arrays.asList("birx")).withUserEmail("pybsrfbjfdtw"),
                     com.azure.core.util.Context.NONE);
 
-        Assertions.assertEquals("hhuao", response.iterator().next().vmId());
-        Assertions.assertEquals("pcqeqx", response.iterator().next().agentVersion());
-        Assertions.assertEquals("z", response.iterator().next().agentStatus());
+        Assertions.assertEquals("otftpvjzbexilz", response.iterator().next().vmId());
+        Assertions.assertEquals("fqqnvwpmqtaruo", response.iterator().next().agentVersion());
+        Assertions.assertEquals("mkcjhwqytjrybn", response.iterator().next().agentStatus());
     }
 }

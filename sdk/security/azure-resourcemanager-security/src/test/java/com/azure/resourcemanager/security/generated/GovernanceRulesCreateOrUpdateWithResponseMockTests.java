@@ -38,7 +38,7 @@ public final class GovernanceRulesCreateOrUpdateWithResponseMockTests {
         ArgumentCaptor<HttpRequest> httpRequest = ArgumentCaptor.forClass(HttpRequest.class);
 
         String responseStr =
-            "{\"properties\":{\"tenantId\":\"ol\",\"displayName\":\"wil\",\"description\":\"gojfsqe\",\"remediationTimeframe\":\"uxjxhfxf\",\"isGracePeriod\":true,\"rulePriority\":1987568238,\"isDisabled\":false,\"ruleType\":\"ServiceNow\",\"sourceResourceType\":\"Assessments\",\"excludedScopes\":[\"mxbmbrwgzzxljbkh\",\"sdplaumydmhw\",\"qjfyx\",\"dgtokvqbvwg\"],\"conditionSets\":[\"dataw\",\"datapvxakglhpsesrfga\"],\"includeMemberScopes\":false,\"ownerSource\":{\"type\":\"Manually\",\"value\":\"xcgdhyhgoqgso\"},\"governanceEmailNotification\":{\"disableManagerEmailNotification\":true,\"disableOwnerEmailNotification\":true},\"metadata\":{\"createdBy\":\"b\",\"createdOn\":\"2021-03-05T15:00:41Z\",\"updatedBy\":\"spglq\",\"updatedOn\":\"2021-05-23T05:40:58Z\"}},\"id\":\"tdahneaoovtyjzti\",\"name\":\"fwjlof\",\"type\":\"ekfsrm\"}";
+            "{\"properties\":{\"tenantId\":\"jqjpv\",\"displayName\":\"aihxjtgzgtaiywbq\",\"description\":\"oig\",\"remediationTimeframe\":\"fsgsa\",\"isGracePeriod\":false,\"rulePriority\":1919322541,\"isDisabled\":false,\"ruleType\":\"ServiceNow\",\"sourceResourceType\":\"Assessments\",\"excludedScopes\":[\"qlxspmrj\",\"tryldsxebuhsxr\",\"nmgsdaluyckhef\"],\"conditionSets\":[\"datahs\"],\"includeMemberScopes\":false,\"ownerSource\":{\"type\":\"Manually\",\"value\":\"pxebjlud\"},\"governanceEmailNotification\":{\"disableManagerEmailNotification\":true,\"disableOwnerEmailNotification\":true},\"metadata\":{\"createdBy\":\"xdtpry\",\"createdOn\":\"2021-05-23T11:25:30Z\",\"updatedBy\":\"nsewouxl\",\"updatedOn\":\"2021-04-21T21:20:48Z\"}},\"id\":\"vvyljurkepose\",\"name\":\"qqylmpctwjwds\",\"type\":\"lzmkxerxxxotee\"}";
 
         Mockito.when(httpResponse.getStatusCode()).thenReturn(200);
         Mockito.when(httpResponse.getHeaders()).thenReturn(new HttpHeaders());
@@ -69,43 +69,42 @@ public final class GovernanceRulesCreateOrUpdateWithResponseMockTests {
         GovernanceRule response =
             manager
                 .governanceRules()
-                .define("tbqgdirdamm")
-                .withExistingScope("shtkutzc")
-                .withDisplayName("dgfttmd")
-                .withDescription("geoagfuof")
-                .withRemediationTimeframe("xodwxm")
-                .withIsGracePeriod(true)
-                .withRulePriority(2110518274)
+                .define("lhpses")
+                .withExistingScope("zpvxak")
+                .withDisplayName("goqg")
+                .withDescription("yqyxyjrcbqpbis")
+                .withRemediationTimeframe("lqjoxtda")
+                .withIsGracePeriod(false)
+                .withRulePriority(352859817)
                 .withIsDisabled(false)
                 .withRuleType(GovernanceRuleType.INTEGRATED)
                 .withSourceResourceType(GovernanceRuleSourceResourceType.ASSESSMENTS)
-                .withExcludedScopes(Arrays.asList("evmdm", "enlrstgf", "zljdnci", "tjva"))
-                .withConditionSets(
-                    Arrays.asList("datayznm", "datagcdogcvucgy", "dataoxuwhttnzqsaqm", "databgszplusdek"))
-                .withIncludeMemberScopes(true)
+                .withExcludedScopes(Arrays.asList("ztivfwjl", "fzekfsrm", "uklajvcfoc", "hapejov"))
+                .withConditionSets(Arrays.asList("datawxn", "datawhhnoyrzaa", "dataee", "datapmjen"))
+                .withIncludeMemberScopes(false)
                 .withOwnerSource(
                     new GovernanceRuleOwnerSource()
                         .withType(GovernanceRuleOwnerSourceType.MANUALLY)
-                        .withValue("sgpgvokyejidbd"))
+                        .withValue("axxcrxoxdj"))
                 .withGovernanceEmailNotification(
                     new GovernanceRuleEmailNotification()
-                        .withDisableManagerEmailNotification(true)
+                        .withDisableManagerEmailNotification(false)
                         .withDisableOwnerEmailNotification(false))
                 .withMetadata(new GovernanceRuleMetadata())
                 .create();
 
-        Assertions.assertEquals("wil", response.displayName());
-        Assertions.assertEquals("gojfsqe", response.description());
-        Assertions.assertEquals("uxjxhfxf", response.remediationTimeframe());
-        Assertions.assertEquals(true, response.isGracePeriod());
-        Assertions.assertEquals(1987568238, response.rulePriority());
+        Assertions.assertEquals("aihxjtgzgtaiywbq", response.displayName());
+        Assertions.assertEquals("oig", response.description());
+        Assertions.assertEquals("fsgsa", response.remediationTimeframe());
+        Assertions.assertEquals(false, response.isGracePeriod());
+        Assertions.assertEquals(1919322541, response.rulePriority());
         Assertions.assertEquals(false, response.isDisabled());
         Assertions.assertEquals(GovernanceRuleType.SERVICE_NOW, response.ruleType());
         Assertions.assertEquals(GovernanceRuleSourceResourceType.ASSESSMENTS, response.sourceResourceType());
-        Assertions.assertEquals("mxbmbrwgzzxljbkh", response.excludedScopes().get(0));
+        Assertions.assertEquals("qlxspmrj", response.excludedScopes().get(0));
         Assertions.assertEquals(false, response.includeMemberScopes());
         Assertions.assertEquals(GovernanceRuleOwnerSourceType.MANUALLY, response.ownerSource().type());
-        Assertions.assertEquals("xcgdhyhgoqgso", response.ownerSource().value());
+        Assertions.assertEquals("pxebjlud", response.ownerSource().value());
         Assertions.assertEquals(true, response.governanceEmailNotification().disableManagerEmailNotification());
         Assertions.assertEquals(true, response.governanceEmailNotification().disableOwnerEmailNotification());
     }

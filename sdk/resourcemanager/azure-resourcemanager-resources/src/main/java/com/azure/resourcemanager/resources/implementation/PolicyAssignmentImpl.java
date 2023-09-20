@@ -3,6 +3,7 @@
 
 package com.azure.resourcemanager.resources.implementation;
 
+import com.azure.resourcemanager.resources.fluentcore.arm.ResourceUtils;
 import com.azure.resourcemanager.resources.models.EnforcementMode;
 import com.azure.resourcemanager.resources.models.GenericResource;
 import com.azure.resourcemanager.resources.models.ParameterValuesValue;
@@ -119,7 +120,7 @@ final class PolicyAssignmentImpl extends
 
     @Override
     public Mono<PolicyAssignment> createResourceAsync() {
-        return innerCollection.createAsync(this.scope, name(), innerModel())
+        return innerCollection.createAsync(ResourceUtils.encodeResourceId(this.scope), name(), innerModel())
                 .map(innerToFluentMap(this));
     }
 
@@ -130,7 +131,7 @@ final class PolicyAssignmentImpl extends
 
     @Override
     protected Mono<PolicyAssignmentInner> getInnerAsync() {
-        return innerCollection.getAsync(innerModel().scope(), name());
+        return innerCollection.getAsync(ResourceUtils.encodeResourceId(innerModel().scope()), name());
     }
 
     @Override

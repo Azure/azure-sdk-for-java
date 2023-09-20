@@ -17,6 +17,15 @@ public final class DefaultAction extends ExpandableStringEnum<DefaultAction> {
     public static final DefaultAction ALLOW = fromString("Allow");
 
     /**
+     * Creates a new instance of DefaultAction value.
+     *
+     * @deprecated Use the {@link #fromString(String)} factory method.
+     */
+    @Deprecated
+    public DefaultAction() {
+    }
+
+    /**
      * Creates or finds a DefaultAction from its string representation.
      *
      * @param name a name to look for.

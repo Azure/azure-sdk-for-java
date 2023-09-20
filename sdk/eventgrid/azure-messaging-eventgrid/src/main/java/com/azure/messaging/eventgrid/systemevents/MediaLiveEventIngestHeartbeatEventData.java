@@ -113,6 +113,9 @@ public final class MediaLiveEventIngestHeartbeatEventData {
 
     static final ClientLogger LOGGER = new ClientLogger(MediaLiveEventIngestHeartbeatEventData.class);
 
+    /** Creates an instance of MediaLiveEventIngestHeartbeatEventData class. */
+    public MediaLiveEventIngestHeartbeatEventData() {}
+
     /**
      * Get the trackType property: Gets the type of the track (Audio / Video).
      *

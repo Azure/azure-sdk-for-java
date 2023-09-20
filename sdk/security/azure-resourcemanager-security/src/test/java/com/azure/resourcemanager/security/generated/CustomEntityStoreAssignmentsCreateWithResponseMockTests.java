@@ -31,7 +31,7 @@ public final class CustomEntityStoreAssignmentsCreateWithResponseMockTests {
         ArgumentCaptor<HttpRequest> httpRequest = ArgumentCaptor.forClass(HttpRequest.class);
 
         String responseStr =
-            "{\"properties\":{\"principal\":\"kya\",\"entityStoreDatabaseLink\":\"hpmwhqnucsk\"},\"id\":\"hsidsjtdlpbnin\",\"name\":\"gazlsvbz\",\"type\":\"cpuo\"}";
+            "{\"properties\":{\"principal\":\"wzm\",\"entityStoreDatabaseLink\":\"lrixysfnimsq\"},\"id\":\"wwwmhkruwaedrym\",\"name\":\"mlqoinhzduew\",\"type\":\"hapfjiik\"}";
 
         Mockito.when(httpResponse.getStatusCode()).thenReturn(200);
         Mockito.when(httpResponse.getHeaders()).thenReturn(new HttpHeaders());
@@ -62,12 +62,12 @@ public final class CustomEntityStoreAssignmentsCreateWithResponseMockTests {
         CustomEntityStoreAssignment response =
             manager
                 .customEntityStoreAssignments()
-                .define("agyw")
-                .withExistingResourceGroup("glxpnovyoanfbcsw")
-                .withPrincipal("igvjrktp")
+                .define("qgsdr")
+                .withExistingResourceGroup("bh")
+                .withPrincipal("tjxophgerhsmv")
                 .create();
 
-        Assertions.assertEquals("kya", response.principal());
-        Assertions.assertEquals("hpmwhqnucsk", response.entityStoreDatabaseLink());
+        Assertions.assertEquals("wzm", response.principal());
+        Assertions.assertEquals("lrixysfnimsq", response.entityStoreDatabaseLink());
     }
 }

@@ -11,13 +11,15 @@ import com.fasterxml.jackson.annotation.JsonProperty;
 @Fluent
 public final class DeviceConnectionStateEventInfo {
     /*
-     * Sequence number is string representation of a hexadecimal number. string
-     * compare can be used to identify the larger number because both in ASCII
-     * and HEX numbers come after alphabets. If you are converting the string
-     * to hex, then the number is a 256 bit number.
+     * Sequence number is string representation of a hexadecimal number. string compare can be used to identify the
+     * larger number because both in ASCII and HEX numbers come after alphabets. If you are converting the string to
+     * hex, then the number is a 256 bit number.
      */
     @JsonProperty(value = "sequenceNumber")
     private String sequenceNumber;
+
+    /** Creates an instance of DeviceConnectionStateEventInfo class. */
+    public DeviceConnectionStateEventInfo() {}
 
     /**
      * Get the sequenceNumber property: Sequence number is string representation of a hexadecimal number. string compare

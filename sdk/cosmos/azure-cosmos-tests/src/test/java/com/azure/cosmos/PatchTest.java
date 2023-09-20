@@ -49,7 +49,7 @@ public class PatchTest extends TestSuiteBase {
         this.client.close();
     }
 
-    @Test(groups = {  "emulator"  }, timeOut = TIMEOUT * 100)
+    @Test(groups = {  "emulator"  }, timeOut = TIMEOUT * 10)
     public void itemConditionalPatchSuccess() {
         ToDoActivity testItem = ToDoActivity.createRandomItem(this.container);
 
@@ -114,7 +114,7 @@ public class PatchTest extends TestSuiteBase {
         assertThat(responsePass.getItem()).isEqualTo(patchedItem);
     }
 
-    @Test(groups = {  "emulator"  }, timeOut = TIMEOUT * 100)
+    @Test(groups = {  "emulator"  }, timeOut = TIMEOUT * 10)
     public void itemPatchSuccess() {
         ToDoActivity testItem = ToDoActivity.createRandomItem(this.container);
         ToDoActivity testItem1 = ToDoActivity.createRandomItem(this.container);
@@ -167,7 +167,7 @@ public class PatchTest extends TestSuiteBase {
         assertThat(response.getItem()).isEqualTo(patchedItem);
     }
 
-    @Test(groups = {  "emulator"  }, timeOut = TIMEOUT * 100)
+    @Test(groups = {  "emulator"  }, timeOut = TIMEOUT * 10)
     public void itemPatchContentResponseOnWriteEnabled() {
         ToDoActivity testItem = ToDoActivity.createRandomItem(this.container);
 
@@ -284,7 +284,7 @@ public class PatchTest extends TestSuiteBase {
         }
     }
 
-    @Test(groups = {  "emulator"  }, timeOut = TIMEOUT * 100)
+    @Test(groups = {  "emulator"  }, timeOut = TIMEOUT * 10)
     public void itemPatchSuccessForNullValue() {
         // Null value should be allowed for add, set, and replace
 

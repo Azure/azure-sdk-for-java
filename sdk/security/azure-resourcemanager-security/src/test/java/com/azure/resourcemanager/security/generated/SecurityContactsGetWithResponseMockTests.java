@@ -33,7 +33,7 @@ public final class SecurityContactsGetWithResponseMockTests {
         ArgumentCaptor<HttpRequest> httpRequest = ArgumentCaptor.forClass(HttpRequest.class);
 
         String responseStr =
-            "{\"properties\":{\"emails\":\"eizikgqaboohxbms\",\"phone\":\"cqsxrmdvewu\",\"alertNotifications\":{\"state\":\"Failed\",\"minimalSeverity\":\"Low\"},\"notificationsByRole\":{\"state\":\"Unsupported\",\"roles\":[]}},\"id\":\"ejkbvhhdaurgho\",\"name\":\"xaex\",\"type\":\"k\"}";
+            "{\"properties\":{\"emails\":\"glhrfo\",\"phone\":\"wecr\",\"alertNotifications\":{\"state\":\"Passed\",\"minimalSeverity\":\"Medium\"},\"notificationsByRole\":{\"state\":\"Skipped\",\"roles\":[]}},\"id\":\"ovppqibukklvzrlr\",\"name\":\"l\",\"type\":\"cme\"}";
 
         Mockito.when(httpResponse.getStatusCode()).thenReturn(200);
         Mockito.when(httpResponse.getHeaders()).thenReturn(new HttpHeaders());
@@ -62,12 +62,12 @@ public final class SecurityContactsGetWithResponseMockTests {
                     new AzureProfile("", "", AzureEnvironment.AZURE));
 
         SecurityContact response =
-            manager.securityContacts().getWithResponse("skiczd", com.azure.core.util.Context.NONE).getValue();
+            manager.securityContacts().getWithResponse("xl", com.azure.core.util.Context.NONE).getValue();
 
-        Assertions.assertEquals("eizikgqaboohxbms", response.emails());
-        Assertions.assertEquals("cqsxrmdvewu", response.phone());
-        Assertions.assertEquals(State.FAILED, response.alertNotifications().state());
-        Assertions.assertEquals(MinimalSeverity.LOW, response.alertNotifications().minimalSeverity());
-        Assertions.assertEquals(State.UNSUPPORTED, response.notificationsByRole().state());
+        Assertions.assertEquals("glhrfo", response.emails());
+        Assertions.assertEquals("wecr", response.phone());
+        Assertions.assertEquals(State.PASSED, response.alertNotifications().state());
+        Assertions.assertEquals(MinimalSeverity.MEDIUM, response.alertNotifications().minimalSeverity());
+        Assertions.assertEquals(State.SKIPPED, response.notificationsByRole().state());
     }
 }

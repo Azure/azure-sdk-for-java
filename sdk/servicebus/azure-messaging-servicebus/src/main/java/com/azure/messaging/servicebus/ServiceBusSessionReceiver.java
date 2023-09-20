@@ -7,6 +7,7 @@ import com.azure.core.amqp.implementation.MessageSerializer;
 import com.azure.core.util.AsyncCloseable;
 import com.azure.core.util.CoreUtils;
 import com.azure.core.util.logging.ClientLogger;
+import com.azure.core.util.logging.LoggingEventBuilder;
 import com.azure.messaging.servicebus.implementation.LockContainer;
 import com.azure.messaging.servicebus.implementation.ServiceBusConstants;
 import com.azure.messaging.servicebus.implementation.ServiceBusReceiveLink;
@@ -27,6 +28,7 @@ import java.util.concurrent.atomic.AtomicReference;
 import java.util.function.Function;
 
 import static com.azure.core.amqp.implementation.ClientConstants.ENTITY_PATH_KEY;
+import static com.azure.core.amqp.implementation.ClientConstants.LINK_NAME_KEY;
 import static com.azure.messaging.servicebus.implementation.ServiceBusConstants.MESSAGE_ID_LOGGING_KEY;
 import static com.azure.messaging.servicebus.implementation.ServiceBusConstants.SESSION_ID_KEY;
 
@@ -44,8 +46,8 @@ class ServiceBusSessionReceiver implements AsyncCloseable, AutoCloseable {
     // also, the lock is removed after the completion of the message disposition.
     private final LockContainer<OffsetDateTime> lockContainer;
     private final AtomicReference<OffsetDateTime> sessionLockedUntil = new AtomicReference<>();
-    private final AtomicReference<String> sessionId = new AtomicReference<>();
     private final AtomicReference<LockRenewalOperation> renewalOperation = new AtomicReference<>();
+    private final String sessionId;
     private final ServiceBusReceiveLink receiveLink;
     private final Disposable.Composite subscriptions;
     private final Flux<ServiceBusMessageContext> receivedMessages;
@@ -58,31 +60,35 @@ class ServiceBusSessionReceiver implements AsyncCloseable, AutoCloseable {
      * Creates a receiver for the first available session.
      *
      * @param receiveLink Service Bus receive link for available session.
+     * @param sessionId Identifier of the Service Bus Session that the receiver is associated with.
      * @param messageSerializer Serializes and deserializes messages from Service Bus.
      * @param retryOptions Retry options for the receiver.
      * @param prefetch Number of messages to prefetch from session.
-     * @param disposeOnIdle true to dispose the session receiver if there are no more messages and the receiver is
-     *     idle.
      * @param scheduler The scheduler to publish messages on.
      * @param renewSessionLock Function to renew the session lock.
      * @param maxSessionLockRenewDuration Maximum time to renew the session lock for. {@code null} or {@link
      *     Duration#ZERO} to disable session lock renewal.
+     * @param sessionIdleTimeout Timeout after which session receiver will be disposed if there are no more messages
+     *                           and the receiver is idle. Set it to {@code null} to not dispose receiver.
      */
-    ServiceBusSessionReceiver(ServiceBusReceiveLink receiveLink, MessageSerializer messageSerializer,
-        AmqpRetryOptions retryOptions, int prefetch, boolean disposeOnIdle, Scheduler scheduler,
-        Function<String, Mono<OffsetDateTime>> renewSessionLock, Duration maxSessionLockRenewDuration) {
+    ServiceBusSessionReceiver(String sessionId, ServiceBusReceiveLink receiveLink, MessageSerializer messageSerializer,
+        AmqpRetryOptions retryOptions, int prefetch, Scheduler scheduler,
+        Function<String, Mono<OffsetDateTime>> renewSessionLock, Duration maxSessionLockRenewDuration, Duration sessionIdleTimeout) {
 
+        this.sessionId = sessionId;
         this.receiveLink = receiveLink;
         this.lockContainer = new LockContainer<>(ServiceBusConstants.OPERATION_TIMEOUT);
         this.retryOptions = retryOptions;
 
         receiveLink.setEmptyCreditListener(() -> 0);
 
-        final Flux<ServiceBusMessageContext> receivedMessagesFlux = receiveLink
+        this.receivedMessages = receiveLink
             .receive()
             .publishOn(scheduler)
             .doOnSubscribe(subscription -> {
-                LOGGER.verbose("Adding prefetch to receive link.");
+                withReceiveLinkInformation(LOGGER.atVerbose()).addKeyValue("prefetch", prefetch)
+                    .log("Adding prefetch to receive link.");
+
                 if (prefetch > 0) {
                     receiveLink.addCredits(prefetch).subscribe();
                 }
@@ -95,12 +101,12 @@ class ServiceBusSessionReceiver implements AsyncCloseable, AutoCloseable {
                 }
             })
             .limitRate(1)
+            // Continue receiving messages from the underlying AMQP link unless it is cancelled by another source.
             .takeUntilOther(cancelReceiveProcessor)
             .map(message -> {
                 final ServiceBusReceivedMessage deserialized = messageSerializer.deserialize(message,
                     ServiceBusReceivedMessage.class);
 
-                //TODO (conniey): For session receivers, do they have a message lock token?
                 if (!CoreUtils.isNullOrEmpty(deserialized.getLockToken()) && deserialized.getLockedUntil() != null) {
                     lockContainer.addOrUpdate(deserialized.getLockToken(), deserialized.getLockedUntil(),
                         deserialized.getLockedUntil());
@@ -114,8 +120,7 @@ class ServiceBusSessionReceiver implements AsyncCloseable, AutoCloseable {
                 return new ServiceBusMessageContext(deserialized);
             })
             .onErrorResume(error -> {
-                LOGGER.atWarning()
-                    .addKeyValue(SESSION_ID_KEY, sessionId)
+                withReceiveLinkInformation(LOGGER.atWarning())
                     .log("Error occurred. Ending session.", error);
 
                 return Mono.just(new ServiceBusMessageContext(getSessionId(), error));
@@ -138,38 +143,31 @@ class ServiceBusSessionReceiver implements AsyncCloseable, AutoCloseable {
                 messageReceivedSink.next(token);
             });
 
-        this.receivedMessages = Flux.concat(receivedMessagesFlux, cancelReceiveProcessor);
         this.subscriptions = Disposables.composite();
 
         // Creates a subscription that disposes/closes the receiver when there are no more messages in the session and
         // receiver is idle.
-        if (disposeOnIdle) {
+        if (sessionIdleTimeout != null) {
             this.subscriptions.add(Flux.switchOnNext(messageReceivedEmitter
-                .map((String lockToken) -> Mono.delay(this.retryOptions.getTryTimeout())))
+                .map((String lockToken) -> Mono.delay(sessionIdleTimeout)))
                 .subscribe(item -> {
-                    LOGGER.atInfo()
-                        .addKeyValue(ENTITY_PATH_KEY,  receiveLink.getEntityPath())
-                        .addKeyValue(SESSION_ID_KEY, sessionId.get())
-                        .addKeyValue("timeout", retryOptions.getTryTimeout())
+                    withReceiveLinkInformation(LOGGER.atInfo())
+                        .addKeyValue("timeout", sessionIdleTimeout)
                         .log("Did not a receive message within timeout.");
                     cancelReceiveProcessor.onComplete();
                 }));
         }
 
-        this.subscriptions.add(receiveLink.getSessionId().subscribe(id -> {
-            if (!sessionId.compareAndSet(null, id)) {
-                LOGGER.atWarning()
-                    .addKeyValue("existingSessionId", sessionId.get())
-                    .addKeyValue("returnedSessionId", id)
-                    .log("Another method set sessionId.");
-            }
-        }));
         this.subscriptions.add(receiveLink.getSessionLockedUntil().subscribe(lockedUntil -> {
             if (!sessionLockedUntil.compareAndSet(null, lockedUntil)) {
-                LOGGER.info("SessionLockedUntil was already set: {}", sessionLockedUntil);
+                withReceiveLinkInformation(LOGGER.atInfo())
+                    .addKeyValue("existingLockToken", sessionLockedUntil.get())
+                    .addKeyValue("newLockToken", lockedUntil)
+                    .log("SessionLockedUntil was already set.");
+
                 return;
             }
-            this.renewalOperation.compareAndSet(null, new LockRenewalOperation(sessionId.get(),
+            this.renewalOperation.compareAndSet(null, new LockRenewalOperation(sessionId,
                 maxSessionLockRenewDuration, true, renewSessionLock, lockedUntil));
         }));
     }
@@ -199,7 +197,7 @@ class ServiceBusSessionReceiver implements AsyncCloseable, AutoCloseable {
     }
 
     String getSessionId() {
-        return sessionId.get();
+        return sessionId;
     }
 
     /**
@@ -246,5 +244,11 @@ class ServiceBusSessionReceiver implements AsyncCloseable, AutoCloseable {
     @Override
     public void close() {
         closeAsync().block(retryOptions.getTryTimeout());
+    }
+
+    private LoggingEventBuilder withReceiveLinkInformation(LoggingEventBuilder builder) {
+        return builder.addKeyValue(SESSION_ID_KEY, sessionId)
+            .addKeyValue(ENTITY_PATH_KEY, receiveLink.getEntityPath())
+            .addKeyValue(LINK_NAME_KEY, receiveLink.getLinkName());
     }
 }

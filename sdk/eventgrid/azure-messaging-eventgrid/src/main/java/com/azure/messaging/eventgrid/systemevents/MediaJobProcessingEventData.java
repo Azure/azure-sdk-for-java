@@ -13,6 +13,9 @@ import java.util.Map;
  */
 @Fluent
 public final class MediaJobProcessingEventData extends MediaJobStateChangeEventData {
+    /** Creates an instance of MediaJobProcessingEventData class. */
+    public MediaJobProcessingEventData() {}
+
     /** {@inheritDoc} */
     @Override
     public MediaJobProcessingEventData setCorrelationData(Map<String, String> correlationData) {

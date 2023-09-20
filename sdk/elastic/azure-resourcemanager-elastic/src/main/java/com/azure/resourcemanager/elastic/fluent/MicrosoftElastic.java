@@ -59,6 +59,13 @@ public interface MicrosoftElastic {
     MonitorsClient getMonitors();
 
     /**
+     * Gets the ElasticVersionsClient object to access its operations.
+     *
+     * @return the ElasticVersionsClient object.
+     */
+    ElasticVersionsClient getElasticVersions();
+
+    /**
      * Gets the MonitoredResourcesClient object to access its operations.
      *
      * @return the MonitoredResourcesClient object.
@@ -176,4 +183,11 @@ public interface MicrosoftElastic {
      * @return the TrafficFiltersClient object.
      */
     TrafficFiltersClient getTrafficFilters();
+
+    /**
+     * Gets the OrganizationsClient object to access its operations.
+     *
+     * @return the OrganizationsClient object.
+     */
+    OrganizationsClient getOrganizations();
 }

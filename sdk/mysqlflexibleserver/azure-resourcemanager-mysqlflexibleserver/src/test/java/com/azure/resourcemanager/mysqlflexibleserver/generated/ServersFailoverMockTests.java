@@ -56,6 +56,6 @@ public final class ServersFailoverMockTests {
                     tokenRequestContext -> Mono.just(new AccessToken("this_is_a_token", OffsetDateTime.MAX)),
                     new AzureProfile("", "", AzureEnvironment.AZURE));
 
-        manager.servers().failover("tbobz", "opcjwvnhd", com.azure.core.util.Context.NONE);
+        manager.servers().failover("plsaknynfsynljph", "op", com.azure.core.util.Context.NONE);
     }
 }

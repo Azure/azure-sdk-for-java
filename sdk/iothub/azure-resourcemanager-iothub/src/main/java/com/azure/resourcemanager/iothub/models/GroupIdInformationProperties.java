@@ -29,6 +29,10 @@ public final class GroupIdInformationProperties {
     @JsonProperty(value = "requiredZoneNames")
     private List<String> requiredZoneNames;
 
+    /** Creates an instance of GroupIdInformationProperties class. */
+    public GroupIdInformationProperties() {
+    }
+
     /**
      * Get the groupId property: The group id.
      *

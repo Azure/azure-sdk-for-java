@@ -37,7 +37,7 @@ public final class FrontDoorsCreateOrUpdateMockTests {
         ArgumentCaptor<HttpRequest> httpRequest = ArgumentCaptor.forClass(HttpRequest.class);
 
         String responseStr =
-            "{\"properties\":{\"resourceState\":\"Creating\",\"provisioningState\":\"Succeeded\",\"cname\":\"zbezkgimsidxasic\",\"frontdoorId\":\"yvvjskgfmo\",\"rulesEngines\":[],\"friendlyName\":\"pqg\",\"routingRules\":[],\"loadBalancingSettings\":[],\"healthProbeSettings\":[],\"backendPools\":[],\"frontendEndpoints\":[],\"backendPoolsSettings\":{\"enforceCertificateNameCheck\":\"Enabled\",\"sendRecvTimeoutSeconds\":1107314593},\"enabledState\":\"Disabled\"},\"location\":\"bjjidjksyxky\",\"tags\":{\"nljlageuaulx\":\"evblbje\",\"svxeizzgwklnsr\":\"nsmjbnkppxynen\"},\"id\":\"ffeycx\",\"name\":\"ktp\",\"type\":\"ymerteeammxq\"}";
+            "{\"properties\":{\"resourceState\":\"Deleting\",\"provisioningState\":\"Succeeded\",\"cname\":\"szqujizdvoq\",\"frontdoorId\":\"ibyowbblgyavutp\",\"rulesEngines\":[],\"extendedProperties\":{\"xkcgxxlxsffgcvi\":\"oismsksbpimlqol\"},\"friendlyName\":\"zdwlvwlyoupfgfb\",\"routingRules\":[],\"loadBalancingSettings\":[],\"healthProbeSettings\":[],\"backendPools\":[],\"frontendEndpoints\":[],\"backendPoolsSettings\":{\"enforceCertificateNameCheck\":\"Enabled\",\"sendRecvTimeoutSeconds\":610597873},\"enabledState\":\"Disabled\"},\"location\":\"fttsttk\",\"tags\":{\"ctxtgzukxi\":\"hbq\",\"xrxc\":\"mmqtgqqqxhr\",\"azivjlfrqttbajl\":\"juisavokqdzf\",\"kqqfk\":\"atnwxyiopi\"},\"id\":\"vscx\",\"name\":\"dmligovibrxk\",\"type\":\"mloazuru\"}";
 
         Mockito.when(httpResponse.getStatusCode()).thenReturn(200);
         Mockito.when(httpResponse.getHeaders()).thenReturn(new HttpHeaders());
@@ -68,11 +68,20 @@ public final class FrontDoorsCreateOrUpdateMockTests {
         FrontDoor response =
             manager
                 .frontDoors()
-                .define("ijouwivkxoyzunb")
-                .withRegion("nitgvkxlz")
-                .withExistingResourceGroup("xhnfhqly")
-                .withTags(mapOf("cealzxwh", "rfe"))
-                .withFriendlyName("ao")
+                .define("coebjvewzcj")
+                .withRegion("lvnuuepzlrph")
+                .withExistingResourceGroup("rjfut")
+                .withTags(
+                    mapOf(
+                        "vmnnrw",
+                        "oldweyuqdu",
+                        "wjhhgdnhxmsivf",
+                        "biorktal",
+                        "zaofjchvcyy",
+                        "miloxggdufiqndie",
+                        "gdotcubiipuipwo",
+                        "s"))
+                .withFriendlyName("jcrxgibbdaxcon")
                 .withRoutingRules(Arrays.asList())
                 .withLoadBalancingSettings(Arrays.asList())
                 .withHealthProbeSettings(Arrays.asList())
@@ -80,19 +89,19 @@ public final class FrontDoorsCreateOrUpdateMockTests {
                 .withFrontendEndpoints(Arrays.asList())
                 .withBackendPoolsSettings(
                     new BackendPoolsSettings()
-                        .withEnforceCertificateNameCheck(EnforceCertificateNameCheckEnabledState.DISABLED)
-                        .withSendRecvTimeoutSeconds(1084640594))
+                        .withEnforceCertificateNameCheck(EnforceCertificateNameCheckEnabledState.ENABLED)
+                        .withSendRecvTimeoutSeconds(1406759128))
                 .withEnabledState(FrontDoorEnabledState.DISABLED)
                 .create();
 
-        Assertions.assertEquals("bjjidjksyxky", response.location());
-        Assertions.assertEquals("evblbje", response.tags().get("nljlageuaulx"));
-        Assertions.assertEquals("pqg", response.friendlyName());
+        Assertions.assertEquals("fttsttk", response.location());
+        Assertions.assertEquals("hbq", response.tags().get("ctxtgzukxi"));
+        Assertions.assertEquals("zdwlvwlyoupfgfb", response.friendlyName());
         Assertions
             .assertEquals(
                 EnforceCertificateNameCheckEnabledState.ENABLED,
                 response.backendPoolsSettings().enforceCertificateNameCheck());
-        Assertions.assertEquals(1107314593, response.backendPoolsSettings().sendRecvTimeoutSeconds());
+        Assertions.assertEquals(610597873, response.backendPoolsSettings().sendRecvTimeoutSeconds());
         Assertions.assertEquals(FrontDoorEnabledState.DISABLED, response.enabledState());
     }
 

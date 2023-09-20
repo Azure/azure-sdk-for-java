@@ -12,7 +12,7 @@ public final class DefenderCspmGcpOfferingTests {
     public void testDeserialize() throws Exception {
         DefenderCspmGcpOffering model =
             BinaryData
-                .fromString("{\"offeringType\":\"DefenderCspmGcp\",\"description\":\"vzkwwwncknr\"}")
+                .fromString("{\"offeringType\":\"DefenderCspmGcp\",\"description\":\"lyymffhmjpddny\"}")
                 .toObject(DefenderCspmGcpOffering.class);
     }
 

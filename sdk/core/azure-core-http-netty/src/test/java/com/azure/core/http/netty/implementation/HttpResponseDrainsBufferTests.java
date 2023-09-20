@@ -8,7 +8,7 @@ import com.azure.core.http.HttpMethod;
 import com.azure.core.http.HttpRequest;
 import com.azure.core.http.HttpResponse;
 import com.azure.core.http.netty.NettyAsyncHttpClientProvider;
-import com.github.tomakehurst.wiremock.WireMockServer;
+import com.azure.core.test.http.LocalTestServer;
 import io.netty.util.ResourceLeakDetector;
 import io.netty.util.ResourceLeakDetectorFactory;
 import org.junit.jupiter.api.AfterAll;
@@ -24,6 +24,7 @@ import reactor.core.publisher.Mono;
 import reactor.core.scheduler.Schedulers;
 import reactor.test.StepVerifier;
 
+import javax.servlet.ServletException;
 import java.io.IOException;
 import java.nio.ByteBuffer;
 import java.nio.channels.AsynchronousByteChannel;
@@ -38,9 +39,6 @@ import java.util.concurrent.Future;
 import java.util.concurrent.atomic.AtomicInteger;
 import java.util.function.Function;
 
-import static com.github.tomakehurst.wiremock.client.WireMock.aResponse;
-import static com.github.tomakehurst.wiremock.client.WireMock.get;
-import static com.github.tomakehurst.wiremock.core.WireMockConfiguration.wireMockConfig;
 import static org.junit.jupiter.api.Assertions.assertEquals;
 
 /**
@@ -56,7 +54,7 @@ public class HttpResponseDrainsBufferTests {
     private static final byte[] LONG_BODY = new byte[1024 * 1024]; // 1 MB
 
     private static ResourceLeakDetector.Level originalLevel;
-    private static WireMockServer wireMockServer;
+    private static LocalTestServer server;
     private static String url;
 
     static {
@@ -68,20 +66,23 @@ public class HttpResponseDrainsBufferTests {
         new TestResourceLeakDetectorFactory();
 
     @BeforeAll
-    public static void setupMockServer() {
+    public static void startTestServer() {
         originalLevel = ResourceLeakDetector.getLevel();
         ResourceLeakDetector.setLevel(ResourceLeakDetector.Level.PARANOID);
 
-        wireMockServer = new WireMockServer(wireMockConfig()
-            .dynamicPort()
-            .disableRequestJournal()
-            .asynchronousResponseEnabled(true)
-            .gzipDisabled(true));
+        server = new LocalTestServer((req, resp, requestBody) -> {
+            if ("GET".equals(req.getMethod()) && LONG_BODY_PATH.equals(req.getServletPath())) {
+                resp.setStatus(200);
+                resp.setContentLength(LONG_BODY.length);
+                resp.setContentType("application/octet-stream");
+                resp.getOutputStream().write(LONG_BODY);
+            } else {
+                throw new ServletException("Unexpected request: " + req.getMethod() + " " + req.getServletPath());
+            }
+        });
 
-        wireMockServer.stubFor(get(LONG_BODY_PATH).willReturn(aResponse().withBody(LONG_BODY)));
-        wireMockServer.start();
-
-        url = wireMockServer.baseUrl() + LONG_BODY_PATH;
+        server.start();
+        url = server.getHttpUri() + LONG_BODY_PATH;
     }
 
     @BeforeEach
@@ -96,10 +97,10 @@ public class HttpResponseDrainsBufferTests {
     }
 
     @AfterAll
-    public static void tearDownMockServer() {
+    public static void stopTestServer() {
         ResourceLeakDetector.setLevel(originalLevel);
-        if (wireMockServer != null) {
-            wireMockServer.shutdown();
+        if (server != null) {
+            server.stop();
         }
     }
 
@@ -221,7 +222,8 @@ public class HttpResponseDrainsBufferTests {
 
             sink.next(callCount);
             return callCount + 1;
-        }).concatMap(ignored -> httpClient.send(new HttpRequest(HttpMethod.GET, url)).flatMap(responseConsumer))
+        })
+            .concatMap(ignored -> httpClient.send(new HttpRequest(HttpMethod.GET, url)).flatMap(responseConsumer))
             .parallel(10)
             .runOn(Schedulers.boundedElastic())
             .then();

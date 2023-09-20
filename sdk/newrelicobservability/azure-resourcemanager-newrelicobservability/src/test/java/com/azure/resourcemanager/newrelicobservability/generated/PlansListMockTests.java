@@ -36,7 +36,7 @@ public final class PlansListMockTests {
         ArgumentCaptor<HttpRequest> httpRequest = ArgumentCaptor.forClass(HttpRequest.class);
 
         String responseStr =
-            "{\"value\":[{\"properties\":{\"planData\":{\"usageType\":\"COMMITTED\",\"billingCycle\":\"MONTHLY\",\"planDetails\":\"hdneuelfph\",\"effectiveDate\":\"2021-11-10T22:29:39Z\"},\"orgCreationSource\":\"LIFTR\",\"accountCreationSource\":\"LIFTR\"},\"id\":\"ikdowwquuvx\",\"name\":\"xclvit\",\"type\":\"hqzonosggbhcoh\"}]}";
+            "{\"value\":[{\"properties\":{\"planData\":{\"usageType\":\"PAYG\",\"billingCycle\":\"YEARLY\",\"planDetails\":\"jmquxvypomgk\",\"effectiveDate\":\"2021-08-12T00:08:05Z\"},\"orgCreationSource\":\"NEWRELIC\",\"accountCreationSource\":\"LIFTR\"},\"id\":\"pajqgxysm\",\"name\":\"cmbqfqvmk\",\"type\":\"xozap\"}]}";
 
         Mockito.when(httpResponse.getStatusCode()).thenReturn(200);
         Mockito.when(httpResponse.getHeaders()).thenReturn(new HttpHeaders());
@@ -65,15 +65,15 @@ public final class PlansListMockTests {
                     new AzureProfile("", "", AzureEnvironment.AZURE));
 
         PagedIterable<PlanDataResource> response =
-            manager.plans().list("d", "morppxebmnzbtbh", com.azure.core.util.Context.NONE);
+            manager.plans().list("yzvqt", "nubexk", com.azure.core.util.Context.NONE);
 
-        Assertions.assertEquals(UsageType.COMMITTED, response.iterator().next().planData().usageType());
-        Assertions.assertEquals(BillingCycle.MONTHLY, response.iterator().next().planData().billingCycle());
-        Assertions.assertEquals("hdneuelfph", response.iterator().next().planData().planDetails());
+        Assertions.assertEquals(UsageType.PAYG, response.iterator().next().planData().usageType());
+        Assertions.assertEquals(BillingCycle.YEARLY, response.iterator().next().planData().billingCycle());
+        Assertions.assertEquals("jmquxvypomgk", response.iterator().next().planData().planDetails());
         Assertions
             .assertEquals(
-                OffsetDateTime.parse("2021-11-10T22:29:39Z"), response.iterator().next().planData().effectiveDate());
-        Assertions.assertEquals(OrgCreationSource.LIFTR, response.iterator().next().orgCreationSource());
+                OffsetDateTime.parse("2021-08-12T00:08:05Z"), response.iterator().next().planData().effectiveDate());
+        Assertions.assertEquals(OrgCreationSource.NEWRELIC, response.iterator().next().orgCreationSource());
         Assertions.assertEquals(AccountCreationSource.LIFTR, response.iterator().next().accountCreationSource());
     }
 }

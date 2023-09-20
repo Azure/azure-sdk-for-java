@@ -3,6 +3,7 @@
 
 package com.azure.core.http.rest;
 
+import com.azure.core.http.HttpHeaderName;
 import com.azure.core.http.HttpMethod;
 import com.azure.core.util.BinaryData;
 
@@ -19,6 +20,7 @@ public class RequestOptionsJavaDocCodeSnippets {
      * Sample to demonstrate how to create an instance of {@link RequestOptions}.
      * @return An instance of {@link RequestOptions}.
      */
+    @SuppressWarnings("deprecation")
     public RequestOptions createInstance() {
         // BEGIN: com.azure.core.http.rest.requestoptions.instantiation
         RequestOptions options = new RequestOptions()
@@ -69,7 +71,7 @@ public class RequestOptionsJavaDocCodeSnippets {
                 .setUrl("https://petstore.example.com/pet")
                 .setHttpMethod(HttpMethod.POST)
                 .setBody(requestBodyStr)
-                .setHeader("Content-Type", "application/json"));
+                .setHeader(HttpHeaderName.CONTENT_TYPE, "application/json"));
         // END: com.azure.core.http.rest.requestoptions.postrequest
         return options;
     }

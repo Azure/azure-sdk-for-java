@@ -9,9 +9,8 @@ import com.fasterxml.jackson.annotation.JsonCreator;
 import java.util.Collection;
 
 /**
- * The pricing tier value. Microsoft Defender for Cloud is provided in two pricing tiers: free and standard, with the
- * standard tier available with a trial period. The standard tier offers advanced security capabilities, while the free
- * tier offers basic security features.
+ * The pricing tier value. Microsoft Defender for Cloud is provided in two pricing tiers: free and standard. The
+ * standard tier offers advanced security capabilities, while the free tier offers basic security features.
  */
 public final class PricingTier extends ExpandableStringEnum<PricingTier> {
     /** Static value Free for PricingTier. */

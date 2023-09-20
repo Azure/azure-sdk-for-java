@@ -62,18 +62,6 @@ public interface Workflows {
      *
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param workflowName The name of the workflow resource.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return a workflow.
-     */
-    Workflow getByResourceGroup(String resourceGroupName, String workflowName);
-
-    /**
-     * Gets a workflow.
-     *
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param workflowName The name of the workflow resource.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
@@ -83,16 +71,16 @@ public interface Workflows {
     Response<Workflow> getByResourceGroupWithResponse(String resourceGroupName, String workflowName, Context context);
 
     /**
-     * Deletes a workflow.
+     * Gets a workflow.
      *
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param workflowName The name of the workflow resource.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return delete response if content must be provided on delete operation.
+     * @return a workflow.
      */
-    DeleteWorkflowResponse deleteByResourceGroup(String resourceGroupName, String workflowName);
+    Workflow getByResourceGroup(String resourceGroupName, String workflowName);
 
     /**
      * Deletes a workflow.
@@ -105,7 +93,20 @@ public interface Workflows {
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return delete response if content must be provided on delete operation along with {@link Response}.
      */
-    Response<DeleteWorkflowResponse> deleteWithResponse(String resourceGroupName, String workflowName, Context context);
+    Response<DeleteWorkflowResponse> deleteByResourceGroupWithResponse(
+        String resourceGroupName, String workflowName, Context context);
+
+    /**
+     * Deletes a workflow.
+     *
+     * @param resourceGroupName The name of the resource group. The name is case insensitive.
+     * @param workflowName The name of the workflow resource.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return delete response if content must be provided on delete operation.
+     */
+    DeleteWorkflowResponse deleteByResourceGroup(String resourceGroupName, String workflowName);
 
     /**
      * Gets a workflow.

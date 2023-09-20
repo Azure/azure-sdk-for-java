@@ -16,6 +16,10 @@ public final class EncryptionProperties {
     @JsonProperty(value = "keyVaultProperties")
     private KeyVaultProperties keyVaultProperties;
 
+    /** Creates an instance of EncryptionProperties class. */
+    public EncryptionProperties() {
+    }
+
     /**
      * Get the keyVaultProperties property: Key vault properties.
      *

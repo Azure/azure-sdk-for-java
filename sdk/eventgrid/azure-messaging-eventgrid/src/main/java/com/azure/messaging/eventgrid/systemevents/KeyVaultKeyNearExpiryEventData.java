@@ -52,6 +52,9 @@ public final class KeyVaultKeyNearExpiryEventData {
     @JsonProperty(value = "EXP")
     private Float exp;
 
+    /** Creates an instance of KeyVaultKeyNearExpiryEventData class. */
+    public KeyVaultKeyNearExpiryEventData() {}
+
     /**
      * Get the id property: The id of the object that triggered this event.
      *

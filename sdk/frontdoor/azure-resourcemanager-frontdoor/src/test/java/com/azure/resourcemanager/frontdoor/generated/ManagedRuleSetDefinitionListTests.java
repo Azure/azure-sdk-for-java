@@ -14,15 +14,15 @@ public final class ManagedRuleSetDefinitionListTests {
         ManagedRuleSetDefinitionList model =
             BinaryData
                 .fromString(
-                    "{\"value\":[{\"properties\":{\"provisioningState\":\"vqahqkghtpwi\",\"ruleSetId\":\"hyjsvfycx\",\"ruleSetType\":\"fvoow\",\"ruleSetVersion\":\"vmtgjqppy\",\"ruleGroups\":[]},\"location\":\"tronzmyhgfi\",\"tags\":{\"fxtsgum\":\"xkmcwaekrrjre\"},\"id\":\"jglikkxwslolb\",\"name\":\"pvuzlmv\",\"type\":\"elfk\"},{\"properties\":{\"provisioningState\":\"lcrpw\",\"ruleSetId\":\"eznoig\",\"ruleSetType\":\"njwmwkpnbsazejj\",\"ruleSetVersion\":\"kagfhsxtt\",\"ruleGroups\":[]},\"location\":\"gzxnfaazpxdtnk\",\"tags\":{\"rkpyouaibrebqaay\":\"qjjlwuen\",\"ixqtn\":\"j\",\"ffiakp\":\"ttezlw\",\"tmmjihyeozph\":\"pqqmted\"},\"id\":\"wau\",\"name\":\"qncygupkvi\",\"type\":\"mdscwxqupev\"},{\"properties\":{\"provisioningState\":\"stotxh\",\"ruleSetId\":\"ujbypelmcuvhixb\",\"ruleSetType\":\"yfwnylr\",\"ruleSetVersion\":\"o\",\"ruleGroups\":[]},\"location\":\"ttpkiwkkbnujrywv\",\"tags\":{\"wiithtywub\":\"bfpncurdo\",\"fdntwjchrdgoih\":\"cbihwqk\",\"luudfdlwggytsb\":\"umwctondz\"},\"id\":\"tov\",\"name\":\"tgseinqfiufxqkn\",\"type\":\"irgne\"}],\"nextLink\":\"twqmsniffcdmqnr\"}")
+                    "{\"value\":[{\"properties\":{\"provisioningState\":\"rl\",\"ruleSetId\":\"ugjzzdatqxhocdge\",\"ruleSetType\":\"lgphu\",\"ruleSetVersion\":\"cndvkaozwyiftyhx\",\"ruleGroups\":[]},\"location\":\"rokft\",\"tags\":{\"klryplwck\":\"lniwpwcukjfkgiaw\",\"pnddhsgcbacphejk\":\"asy\",\"ndlik\":\"tynqgoul\"},\"id\":\"yqkgfg\",\"name\":\"bmadgak\",\"type\":\"qsrxybzqqed\"},{\"properties\":{\"provisioningState\":\"bciqfouflm\",\"ruleSetId\":\"kzsmodm\",\"ruleSetType\":\"ougpbkwt\",\"ruleSetVersion\":\"tduqktapspwgcuer\",\"ruleGroups\":[]},\"location\":\"mkdo\",\"tags\":{\"bbjfddgmbmbexp\":\"whbmd\"},\"id\":\"bhtqqrolfpfpsa\",\"name\":\"gbquxigj\",\"type\":\"jgzjaoyfhrtx\"}],\"nextLink\":\"n\"}")
                 .toObject(ManagedRuleSetDefinitionList.class);
-        Assertions.assertEquals("twqmsniffcdmqnr", model.nextLink());
+        Assertions.assertEquals("n", model.nextLink());
     }
 
     @org.junit.jupiter.api.Test
     public void testSerialize() throws Exception {
-        ManagedRuleSetDefinitionList model = new ManagedRuleSetDefinitionList().withNextLink("twqmsniffcdmqnr");
+        ManagedRuleSetDefinitionList model = new ManagedRuleSetDefinitionList().withNextLink("n");
         model = BinaryData.fromObject(model).toObject(ManagedRuleSetDefinitionList.class);
-        Assertions.assertEquals("twqmsniffcdmqnr", model.nextLink());
+        Assertions.assertEquals("n", model.nextLink());
     }
 }

@@ -15,33 +15,33 @@ import java.util.List;
 @Fluent
 public class MapsGeofenceEventProperties {
     /*
-     * Lists of the geometry ID of the geofence which is expired relative to
-     * the user time in the request.
+     * Lists of the geometry ID of the geofence which is expired relative to the user time in the request.
      */
     @JsonProperty(value = "expiredGeofenceGeometryId")
     private List<String> expiredGeofenceGeometryId;
 
     /*
-     * Lists the fence geometries that either fully contain the coordinate
-     * position or have an overlap with the searchBuffer around the fence.
+     * Lists the fence geometries that either fully contain the coordinate position or have an overlap with the
+     * searchBuffer around the fence.
      */
     @JsonProperty(value = "geometries")
     private List<MapsGeofenceGeometry> geometries;
 
     /*
-     * Lists of the geometry ID of the geofence which is in invalid period
-     * relative to the user time in the request.
+     * Lists of the geometry ID of the geofence which is in invalid period relative to the user time in the request.
      */
     @JsonProperty(value = "invalidPeriodGeofenceGeometryId")
     private List<String> invalidPeriodGeofenceGeometryId;
 
     /*
-     * True if at least one event is published to the Azure Maps event
-     * subscriber, false if no event is published to the Azure Maps event
-     * subscriber.
+     * True if at least one event is published to the Azure Maps event subscriber, false if no event is published to
+     * the Azure Maps event subscriber.
      */
     @JsonProperty(value = "isEventPublished")
     private Boolean isEventPublished;
+
+    /** Creates an instance of MapsGeofenceEventProperties class. */
+    public MapsGeofenceEventProperties() {}
 
     /**
      * Get the expiredGeofenceGeometryId property: Lists of the geometry ID of the geofence which is expired relative to

@@ -8,20 +8,20 @@ import com.azure.core.util.BinaryData;
 import com.azure.resourcemanager.elastic.models.IdentityProperties;
 import com.azure.resourcemanager.elastic.models.ManagedIdentityTypes;
 import org.junit.jupiter.api.Assertions;
-import org.junit.jupiter.api.Test;
 
 public final class IdentityPropertiesTests {
-    @Test
-    public void testDeserialize() {
+    @org.junit.jupiter.api.Test
+    public void testDeserialize() throws Exception {
         IdentityProperties model =
             BinaryData
-                .fromString("{\"principalId\":\"ewmdw\",\"tenantId\":\"eiachboosflnr\",\"type\":\"SystemAssigned\"}")
+                .fromString(
+                    "{\"principalId\":\"kbasyypn\",\"tenantId\":\"hsgcbacphejkot\",\"type\":\"SystemAssigned\"}")
                 .toObject(IdentityProperties.class);
         Assertions.assertEquals(ManagedIdentityTypes.SYSTEM_ASSIGNED, model.type());
     }
 
-    @Test
-    public void testSerialize() {
+    @org.junit.jupiter.api.Test
+    public void testSerialize() throws Exception {
         IdentityProperties model = new IdentityProperties().withType(ManagedIdentityTypes.SYSTEM_ASSIGNED);
         model = BinaryData.fromObject(model).toObject(IdentityProperties.class);
         Assertions.assertEquals(ManagedIdentityTypes.SYSTEM_ASSIGNED, model.type());

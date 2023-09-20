@@ -4,8 +4,11 @@
 package com.azure.cosmos.implementation.faultinjection;
 
 import java.net.URI;
+import java.util.ArrayList;
+import java.util.List;
 import java.util.Map;
 import java.util.concurrent.ConcurrentHashMap;
+import java.util.concurrent.atomic.AtomicBoolean;
 
 /***
  * Only used in fault injection.
@@ -16,6 +19,8 @@ import java.util.concurrent.ConcurrentHashMap;
 public class FaultInjectionRequestContext {
     private final Map<String, Integer> hitCountByRuleMap;
     private final Map<Long, String> transportRequestIdRuleIdMap;
+    private final Map<Long, List<String>> transportRequestIdRuleEvaluationMap;
+    private final AtomicBoolean addressForceRefreshed;
 
     private volatile URI locationEndpointToRoute;
 
@@ -29,11 +34,15 @@ public class FaultInjectionRequestContext {
     public FaultInjectionRequestContext(FaultInjectionRequestContext cloneContext) {
         this.hitCountByRuleMap = cloneContext.hitCountByRuleMap;
         this.transportRequestIdRuleIdMap = new ConcurrentHashMap<>();
+        this.transportRequestIdRuleEvaluationMap = new ConcurrentHashMap<>();
+        this.addressForceRefreshed = new AtomicBoolean(false);
     }
 
     public FaultInjectionRequestContext() {
         this.hitCountByRuleMap = new ConcurrentHashMap<>();
         this.transportRequestIdRuleIdMap = new ConcurrentHashMap<>();
+        this.transportRequestIdRuleEvaluationMap = new ConcurrentHashMap<>();
+        this.addressForceRefreshed = new AtomicBoolean(false);
     }
 
     public void applyFaultInjectionRule(long transportId, String ruleId) {
@@ -49,11 +58,32 @@ public class FaultInjectionRequestContext {
         this.transportRequestIdRuleIdMap.put(transportId, ruleId);
     }
 
+    public void recordFaultInjectionRuleEvaluation(long transportId, String ruleEvaluationResult) {
+        this.transportRequestIdRuleEvaluationMap.compute(transportId, (id, evaluations) -> {
+            if (evaluations == null) {
+                evaluations = new ArrayList<>();
+            }
+
+            evaluations.add(ruleEvaluationResult);
+            return evaluations;
+        });
+    }
+
+    public void recordAddressForceRefreshed(boolean forceRefreshed) {
+        if (forceRefreshed) {
+            this.addressForceRefreshed.compareAndSet(false, true);
+        }
+    }
+
+    public boolean getAddressForceRefreshed() {
+        return this.addressForceRefreshed.get();
+    }
+
     public int getFaultInjectionRuleApplyCount(String ruleId) {
         return this.hitCountByRuleMap.getOrDefault(ruleId, 0);
     }
-    public String getFaultInjectionRuleId(long transportRequesetId) {
-        return this.transportRequestIdRuleIdMap.getOrDefault(transportRequesetId, null);
+    public String getFaultInjectionRuleId(long transportRequestId) {
+        return this.transportRequestIdRuleIdMap.getOrDefault(transportRequestId, null);
     }
 
     public void setLocationEndpointToRoute(URI locationEndpointToRoute) {
@@ -62,6 +92,10 @@ public class FaultInjectionRequestContext {
 
     public URI getLocationEndpointToRoute() {
         return this.locationEndpointToRoute;
+    }
+
+    public List<String> getFaultInjectionRuleEvaluationResults(long transportRequestId) {
+        return this.transportRequestIdRuleEvaluationMap.getOrDefault(transportRequestId, null);
     }
 }
 

@@ -34,6 +34,10 @@ public final class HybridConnectionConfig {
     @JsonProperty(value = "token", access = JsonProperty.Access.WRITE_ONLY)
     private String token;
 
+    /** Creates an instance of HybridConnectionConfig class. */
+    public HybridConnectionConfig() {
+    }
+
     /**
      * Get the expirationTime property: Timestamp when this token will be expired.
      *

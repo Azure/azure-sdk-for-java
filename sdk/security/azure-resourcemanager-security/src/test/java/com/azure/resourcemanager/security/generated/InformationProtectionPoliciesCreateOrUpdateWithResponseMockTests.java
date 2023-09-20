@@ -33,7 +33,7 @@ public final class InformationProtectionPoliciesCreateOrUpdateWithResponseMockTe
         ArgumentCaptor<HttpRequest> httpRequest = ArgumentCaptor.forClass(HttpRequest.class);
 
         String responseStr =
-            "{\"properties\":{\"lastModifiedUtc\":\"2021-10-17T07:38:01Z\",\"version\":\"mftzgyy\",\"labels\":{},\"informationTypes\":{}},\"id\":\"gekdfqnht\",\"name\":\"wdowrczfjjn\",\"type\":\"uxxrkkmhmnulwemp\"}";
+            "{\"properties\":{\"lastModifiedUtc\":\"2021-09-28T10:09:58Z\",\"version\":\"ugggzlfbgrdcgu\",\"labels\":{},\"informationTypes\":{}},\"id\":\"dylperpilttjzgc\",\"name\":\"fcm\",\"type\":\"pfb\"}";
 
         Mockito.when(httpResponse.getStatusCode()).thenReturn(200);
         Mockito.when(httpResponse.getHeaders()).thenReturn(new HttpHeaders());
@@ -64,8 +64,8 @@ public final class InformationProtectionPoliciesCreateOrUpdateWithResponseMockTe
         InformationProtectionPolicy response =
             manager
                 .informationProtectionPolicies()
-                .define(InformationProtectionPolicyName.CUSTOM)
-                .withExistingScope("kzfzqxjosho")
+                .define(InformationProtectionPolicyName.EFFECTIVE)
+                .withExistingScope("auwazcgwd")
                 .withLabels(mapOf())
                 .withInformationTypes(mapOf())
                 .create();

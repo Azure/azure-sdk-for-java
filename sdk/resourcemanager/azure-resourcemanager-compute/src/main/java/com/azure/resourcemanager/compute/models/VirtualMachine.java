@@ -25,6 +25,7 @@ import com.azure.resourcemanager.resources.fluentcore.model.Updatable;
 import com.azure.resourcemanager.storage.models.StorageAccount;
 import reactor.core.publisher.Mono;
 
+import java.time.OffsetDateTime;
 import java.util.List;
 import java.util.Map;
 import java.util.Set;
@@ -421,6 +422,24 @@ public interface VirtualMachine
 
     /** @return whether vTPM is enabled on the virtual machine */
     boolean isVTpmEnabled();
+
+    /** @return the time at which the Virtual Machine resource was created */
+    OffsetDateTime timeCreated();
+
+    /**
+     * Gets the delete options for the primary network interface.
+     *
+     * @return the delete options for the primary network interface
+     */
+    DeleteOptions primaryNetworkInterfaceDeleteOptions();
+
+    /**
+     * Gets the delete options for the given network interface.
+     *
+     * @param networkInterfaceId resource ID of the network interface
+     * @return the delete options for the network interface
+     */
+    DeleteOptions networkInterfaceDeleteOptions(String networkInterfaceId);
 
     // Setters
     //
@@ -2488,6 +2507,47 @@ public interface VirtualMachine
              */
             Update withoutVTpm();
         }
+
+        /** The stage of the VM update allowing to change delete options of resources attached to this VM . */
+        interface WithDeleteOptions {
+            /**
+             * Specifies delete options for the OS disk of the VM.
+             *
+             * @param deleteOptions delete options for the OS disk
+             * @return the next stage of the update
+             */
+            Update withOsDiskDeleteOptions(DeleteOptions deleteOptions);
+
+            /**
+             * Specifies delete options for the primary network interface of the VM.
+             *
+             * @param deleteOptions delete options for the primary network interface
+             * @return the next stage of the update
+             */
+            Update withPrimaryNetworkInterfaceDeleteOptions(DeleteOptions deleteOptions);
+
+            /**
+             * Specifies delete options for the network interfaces attached to the VM.
+             * <p>This operation only affects existing <strong>attached</strong> network interfaces. Any newly-attached
+             * network interfaces that appear before {@link Update#apply()} won't be affected.</p>
+             *
+             * @param deleteOptions delete options for the network interfaces
+             * @param nicIds resource IDs of the network interfaces
+             * @return the next stage of the update
+             */
+            Update withNetworkInterfacesDeleteOptions(DeleteOptions deleteOptions, String... nicIds);
+
+            /**
+             * Specifies delete options for the existing data disk attached to the VM.
+             * <p>This operation only affects existing <strong>attached</strong> data disks. Any newly-attached data disks
+             * that appear before {@link Update#apply()} won't be affected.</p>
+             *
+             * @param deleteOptions delete options for the data disk
+             * @param luns the disk LUNs to update
+             * @return the next stage of the update
+             */
+            Update withDataDisksDeleteOptions(DeleteOptions deleteOptions, Integer... luns);
+        }
     }
 
     /** The template for an update operation, containing all the settings that can be modified. */
@@ -2506,7 +2566,8 @@ public interface VirtualMachine
             UpdateStages.WithLicenseType,
             UpdateStages.WithAdditionalCapacities,
             UpdateStages.WithOSDisk,
-            UpdateStages.WithSecurityFeatures {
+            UpdateStages.WithSecurityFeatures,
+            UpdateStages.WithDeleteOptions {
         /**
          * Specifies the encryption settings for the OS Disk.
          *

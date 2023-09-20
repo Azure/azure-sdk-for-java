@@ -17,11 +17,11 @@ public final class RulesEngineInnerTests {
         RulesEngineInner model =
             BinaryData
                 .fromString(
-                    "{\"properties\":{\"resourceState\":\"Enabled\",\"rules\":[{\"name\":\"q\",\"priority\":567516658,\"matchConditions\":[],\"matchProcessingBehavior\":\"Stop\"},{\"name\":\"rsbfovasrruvw\",\"priority\":2145299291,\"matchConditions\":[],\"matchProcessingBehavior\":\"Stop\"},{\"name\":\"sub\",\"priority\":794984845,\"matchConditions\":[],\"matchProcessingBehavior\":\"Continue\"},{\"name\":\"rxbpyb\",\"priority\":1098405292,\"matchConditions\":[],\"matchProcessingBehavior\":\"Stop\"}]},\"id\":\"fdtwssotft\",\"name\":\"vjz\",\"type\":\"exilzznfqqnvwpmq\"}")
+                    "{\"properties\":{\"resourceState\":\"Enabled\",\"rules\":[{\"name\":\"lpvlopw\",\"priority\":1665401728,\"matchConditions\":[],\"matchProcessingBehavior\":\"Continue\"},{\"name\":\"xpkd\",\"priority\":344801541,\"matchConditions\":[],\"matchProcessingBehavior\":\"Stop\"}]},\"id\":\"uebbaumnyqup\",\"name\":\"deoj\",\"type\":\"a\"}")
                 .toObject(RulesEngineInner.class);
-        Assertions.assertEquals("q", model.rules().get(0).name());
-        Assertions.assertEquals(567516658, model.rules().get(0).priority());
-        Assertions.assertEquals(MatchProcessingBehavior.STOP, model.rules().get(0).matchProcessingBehavior());
+        Assertions.assertEquals("lpvlopw", model.rules().get(0).name());
+        Assertions.assertEquals(1665401728, model.rules().get(0).priority());
+        Assertions.assertEquals(MatchProcessingBehavior.CONTINUE, model.rules().get(0).matchProcessingBehavior());
     }
 
     @org.junit.jupiter.api.Test
@@ -32,28 +32,18 @@ public final class RulesEngineInnerTests {
                     Arrays
                         .asList(
                             new RulesEngineRule()
-                                .withName("q")
-                                .withPriority(567516658)
-                                .withMatchConditions(Arrays.asList())
-                                .withMatchProcessingBehavior(MatchProcessingBehavior.STOP),
-                            new RulesEngineRule()
-                                .withName("rsbfovasrruvw")
-                                .withPriority(2145299291)
-                                .withMatchConditions(Arrays.asList())
-                                .withMatchProcessingBehavior(MatchProcessingBehavior.STOP),
-                            new RulesEngineRule()
-                                .withName("sub")
-                                .withPriority(794984845)
+                                .withName("lpvlopw")
+                                .withPriority(1665401728)
                                 .withMatchConditions(Arrays.asList())
                                 .withMatchProcessingBehavior(MatchProcessingBehavior.CONTINUE),
                             new RulesEngineRule()
-                                .withName("rxbpyb")
-                                .withPriority(1098405292)
+                                .withName("xpkd")
+                                .withPriority(344801541)
                                 .withMatchConditions(Arrays.asList())
                                 .withMatchProcessingBehavior(MatchProcessingBehavior.STOP)));
         model = BinaryData.fromObject(model).toObject(RulesEngineInner.class);
-        Assertions.assertEquals("q", model.rules().get(0).name());
-        Assertions.assertEquals(567516658, model.rules().get(0).priority());
-        Assertions.assertEquals(MatchProcessingBehavior.STOP, model.rules().get(0).matchProcessingBehavior());
+        Assertions.assertEquals("lpvlopw", model.rules().get(0).name());
+        Assertions.assertEquals(1665401728, model.rules().get(0).priority());
+        Assertions.assertEquals(MatchProcessingBehavior.CONTINUE, model.rules().get(0).matchProcessingBehavior());
     }
 }

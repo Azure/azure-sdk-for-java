@@ -20,6 +20,10 @@ public final class ManagedHsmInner extends ManagedHsmResource {
     @JsonProperty(value = "properties")
     private ManagedHsmProperties properties;
 
+    /** Creates an instance of ManagedHsmInner class. */
+    public ManagedHsmInner() {
+    }
+
     /**
      * Get the properties property: Properties of the managed HSM.
      *

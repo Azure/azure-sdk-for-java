@@ -5,8 +5,10 @@
 package com.azure.resourcemanager.containerservice.fluent.models;
 
 import com.azure.core.annotation.Fluent;
+import com.azure.resourcemanager.containerservice.models.ClusterUpgradeSettings;
 import com.azure.resourcemanager.containerservice.models.ContainerServiceLinuxProfile;
 import com.azure.resourcemanager.containerservice.models.ContainerServiceNetworkProfile;
+import com.azure.resourcemanager.containerservice.models.KubernetesSupportPlan;
 import com.azure.resourcemanager.containerservice.models.ManagedClusterAadProfile;
 import com.azure.resourcemanager.containerservice.models.ManagedClusterAddonProfile;
 import com.azure.resourcemanager.containerservice.models.ManagedClusterAgentPoolProfile;
@@ -172,6 +174,12 @@ public final class ManagedClusterProperties {
     private Boolean enableRbac;
 
     /*
+     * The support plan for the Managed Cluster. If unspecified, the default is 'KubernetesOfficial'.
+     */
+    @JsonProperty(value = "supportPlan")
+    private KubernetesSupportPlan supportPlan;
+
+    /*
      * (DEPRECATED) Whether to enable Kubernetes pod security policy (preview). PodSecurityPolicy was deprecated in
      * Kubernetes v1.21, and removed from Kubernetes in v1.25. Learn more at https://aka.ms/k8s/psp and
      * https://aka.ms/aks/psp.
@@ -198,6 +206,12 @@ public final class ManagedClusterProperties {
      */
     @JsonProperty(value = "autoUpgradeProfile")
     private ManagedClusterAutoUpgradeProfile autoUpgradeProfile;
+
+    /*
+     * Settings for upgrading a cluster.
+     */
+    @JsonProperty(value = "upgradeSettings")
+    private ClusterUpgradeSettings upgradeSettings;
 
     /*
      * Parameters to be applied to the cluster-autoscaler when enabled
@@ -633,6 +647,28 @@ public final class ManagedClusterProperties {
     }
 
     /**
+     * Get the supportPlan property: The support plan for the Managed Cluster. If unspecified, the default is
+     * 'KubernetesOfficial'.
+     *
+     * @return the supportPlan value.
+     */
+    public KubernetesSupportPlan supportPlan() {
+        return this.supportPlan;
+    }
+
+    /**
+     * Set the supportPlan property: The support plan for the Managed Cluster. If unspecified, the default is
+     * 'KubernetesOfficial'.
+     *
+     * @param supportPlan the supportPlan value to set.
+     * @return the ManagedClusterProperties object itself.
+     */
+    public ManagedClusterProperties withSupportPlan(KubernetesSupportPlan supportPlan) {
+        this.supportPlan = supportPlan;
+        return this;
+    }
+
+    /**
      * Get the enablePodSecurityPolicy property: (DEPRECATED) Whether to enable Kubernetes pod security policy
      * (preview). PodSecurityPolicy was deprecated in Kubernetes v1.21, and removed from Kubernetes in v1.25. Learn more
      * at https://aka.ms/k8s/psp and https://aka.ms/aks/psp.
@@ -717,6 +753,26 @@ public final class ManagedClusterProperties {
      */
     public ManagedClusterProperties withAutoUpgradeProfile(ManagedClusterAutoUpgradeProfile autoUpgradeProfile) {
         this.autoUpgradeProfile = autoUpgradeProfile;
+        return this;
+    }
+
+    /**
+     * Get the upgradeSettings property: Settings for upgrading a cluster.
+     *
+     * @return the upgradeSettings value.
+     */
+    public ClusterUpgradeSettings upgradeSettings() {
+        return this.upgradeSettings;
+    }
+
+    /**
+     * Set the upgradeSettings property: Settings for upgrading a cluster.
+     *
+     * @param upgradeSettings the upgradeSettings value to set.
+     * @return the ManagedClusterProperties object itself.
+     */
+    public ManagedClusterProperties withUpgradeSettings(ClusterUpgradeSettings upgradeSettings) {
+        this.upgradeSettings = upgradeSettings;
         return this;
     }
 
@@ -1027,6 +1083,9 @@ public final class ManagedClusterProperties {
         }
         if (autoUpgradeProfile() != null) {
             autoUpgradeProfile().validate();
+        }
+        if (upgradeSettings() != null) {
+            upgradeSettings().validate();
         }
         if (autoScalerProfile() != null) {
             autoScalerProfile().validate();

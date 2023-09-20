@@ -16,6 +16,10 @@ public final class CertificateVerificationDescription {
     @JsonProperty(value = "certificate")
     private String certificate;
 
+    /** Creates an instance of CertificateVerificationDescription class. */
+    public CertificateVerificationDescription() {
+    }
+
     /**
      * Get the certificate property: base-64 representation of X509 certificate .cer file or just .pem file content.
      *

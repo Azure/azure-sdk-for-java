@@ -13,8 +13,10 @@ import com.azure.core.management.polling.PollResult;
 import com.azure.core.util.Context;
 import com.azure.core.util.polling.PollerFlux;
 import com.azure.core.util.polling.SyncPoller;
+import com.azure.resourcemanager.keyvault.fluent.models.CheckMhsmNameAvailabilityResultInner;
 import com.azure.resourcemanager.keyvault.fluent.models.DeletedManagedHsmInner;
 import com.azure.resourcemanager.keyvault.fluent.models.ManagedHsmInner;
+import com.azure.resourcemanager.keyvault.models.CheckMhsmNameAvailabilityParameters;
 import com.azure.resourcemanager.resources.fluentcore.collection.InnerSupportsDelete;
 import com.azure.resourcemanager.resources.fluentcore.collection.InnerSupportsGet;
 import com.azure.resourcemanager.resources.fluentcore.collection.InnerSupportsListing;
@@ -357,19 +359,6 @@ public interface ManagedHsmsClient
      *
      * @param resourceGroupName Name of the resource group that contains the managed HSM pool.
      * @param name The name of the managed HSM Pool.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws com.azure.resourcemanager.keyvault.models.ErrorException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the specified managed HSM Pool.
-     */
-    @ServiceMethod(returns = ReturnType.SINGLE)
-    ManagedHsmInner getByResourceGroup(String resourceGroupName, String name);
-
-    /**
-     * Gets the specified managed HSM Pool.
-     *
-     * @param resourceGroupName Name of the resource group that contains the managed HSM pool.
-     * @param name The name of the managed HSM Pool.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.resourcemanager.keyvault.models.ErrorException thrown if the request is rejected by server.
@@ -378,6 +367,19 @@ public interface ManagedHsmsClient
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     Response<ManagedHsmInner> getByResourceGroupWithResponse(String resourceGroupName, String name, Context context);
+
+    /**
+     * Gets the specified managed HSM Pool.
+     *
+     * @param resourceGroupName Name of the resource group that contains the managed HSM pool.
+     * @param name The name of the managed HSM Pool.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws com.azure.resourcemanager.keyvault.models.ErrorException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return the specified managed HSM Pool.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    ManagedHsmInner getByResourceGroup(String resourceGroupName, String name);
 
     /**
      * The List operation gets information about the managed HSM Pools associated with the subscription and within the
@@ -542,19 +544,6 @@ public interface ManagedHsmsClient
      *
      * @param name The name of the deleted managed HSM.
      * @param location The location of the deleted managed HSM.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws com.azure.resourcemanager.keyvault.models.ErrorException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the specified deleted managed HSM.
-     */
-    @ServiceMethod(returns = ReturnType.SINGLE)
-    DeletedManagedHsmInner getDeleted(String name, String location);
-
-    /**
-     * Gets the specified deleted managed HSM.
-     *
-     * @param name The name of the deleted managed HSM.
-     * @param location The location of the deleted managed HSM.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.resourcemanager.keyvault.models.ErrorException thrown if the request is rejected by server.
@@ -563,6 +552,19 @@ public interface ManagedHsmsClient
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     Response<DeletedManagedHsmInner> getDeletedWithResponse(String name, String location, Context context);
+
+    /**
+     * Gets the specified deleted managed HSM.
+     *
+     * @param name The name of the deleted managed HSM.
+     * @param location The location of the deleted managed HSM.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws com.azure.resourcemanager.keyvault.models.ErrorException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return the specified deleted managed HSM.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    DeletedManagedHsmInner getDeleted(String name, String location);
 
     /**
      * Permanently deletes the specified managed HSM.
@@ -654,4 +656,57 @@ public interface ManagedHsmsClient
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     void purgeDeleted(String name, String location, Context context);
+
+    /**
+     * Checks that the managed hsm name is valid and is not already in use.
+     *
+     * @param mhsmName The name of the managed hsm.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return the CheckMhsmNameAvailability operation response along with {@link Response} on successful completion of
+     *     {@link Mono}.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    Mono<Response<CheckMhsmNameAvailabilityResultInner>> checkMhsmNameAvailabilityWithResponseAsync(
+        CheckMhsmNameAvailabilityParameters mhsmName);
+
+    /**
+     * Checks that the managed hsm name is valid and is not already in use.
+     *
+     * @param mhsmName The name of the managed hsm.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return the CheckMhsmNameAvailability operation response on successful completion of {@link Mono}.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    Mono<CheckMhsmNameAvailabilityResultInner> checkMhsmNameAvailabilityAsync(
+        CheckMhsmNameAvailabilityParameters mhsmName);
+
+    /**
+     * Checks that the managed hsm name is valid and is not already in use.
+     *
+     * @param mhsmName The name of the managed hsm.
+     * @param context The context to associate with this operation.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return the CheckMhsmNameAvailability operation response along with {@link Response}.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    Response<CheckMhsmNameAvailabilityResultInner> checkMhsmNameAvailabilityWithResponse(
+        CheckMhsmNameAvailabilityParameters mhsmName, Context context);
+
+    /**
+     * Checks that the managed hsm name is valid and is not already in use.
+     *
+     * @param mhsmName The name of the managed hsm.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return the CheckMhsmNameAvailability operation response.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    CheckMhsmNameAvailabilityResultInner checkMhsmNameAvailability(CheckMhsmNameAvailabilityParameters mhsmName);
 }

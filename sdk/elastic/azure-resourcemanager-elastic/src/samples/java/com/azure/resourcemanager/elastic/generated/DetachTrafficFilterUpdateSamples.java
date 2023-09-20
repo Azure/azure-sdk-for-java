@@ -4,12 +4,10 @@
 
 package com.azure.resourcemanager.elastic.generated;
 
-import com.azure.core.util.Context;
-
 /** Samples for DetachTrafficFilter Update. */
 public final class DetachTrafficFilterUpdateSamples {
     /*
-     * x-ms-original-file: specification/elastic/resource-manager/Microsoft.Elastic/preview/2022-07-01-preview/examples/DetachTrafficFilters_Update.json
+     * x-ms-original-file: specification/elastic/resource-manager/Microsoft.Elastic/preview/2023-02-01-preview/examples/DetachTrafficFilters_Update.json
      */
     /**
      * Sample code: DetachTrafficFilter_Update.
@@ -19,6 +17,7 @@ public final class DetachTrafficFilterUpdateSamples {
     public static void detachTrafficFilterUpdate(com.azure.resourcemanager.elastic.ElasticManager manager) {
         manager
             .detachTrafficFilters()
-            .update("myResourceGroup", "myMonitor", "31d91b5afb6f4c2eaaf104c97b1991dd", Context.NONE);
+            .update(
+                "myResourceGroup", "myMonitor", "31d91b5afb6f4c2eaaf104c97b1991dd", com.azure.core.util.Context.NONE);
     }
 }

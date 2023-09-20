@@ -11,7 +11,6 @@ import com.azure.core.http.HttpRequest;
 import com.azure.core.http.HttpResponse;
 import com.azure.core.management.AzureEnvironment;
 import com.azure.core.management.profile.AzureProfile;
-import com.azure.core.util.Context;
 import com.azure.resourcemanager.devcenter.DevCenterManager;
 import com.azure.resourcemanager.devcenter.models.Gallery;
 import java.nio.ByteBuffer;
@@ -32,7 +31,7 @@ public final class GalleriesGetWithResponseMockTests {
         ArgumentCaptor<HttpRequest> httpRequest = ArgumentCaptor.forClass(HttpRequest.class);
 
         String responseStr =
-            "{\"properties\":{\"provisioningState\":\"Running\",\"galleryResourceId\":\"mrfhirctymox\"},\"id\":\"tpipiwyczuhx\",\"name\":\"cpqjlihhyu\",\"type\":\"pskasdvlmfwdg\"}";
+            "{\"properties\":{\"provisioningState\":\"StorageProvisioningFailed\",\"galleryResourceId\":\"kl\"},\"id\":\"pluodpv\",\"name\":\"uudl\",\"type\":\"zibt\"}";
 
         Mockito.when(httpResponse.getStatusCode()).thenReturn(200);
         Mockito.when(httpResponse.getHeaders()).thenReturn(new HttpHeaders());
@@ -60,8 +59,9 @@ public final class GalleriesGetWithResponseMockTests {
                     tokenRequestContext -> Mono.just(new AccessToken("this_is_a_token", OffsetDateTime.MAX)),
                     new AzureProfile("", "", AzureEnvironment.AZURE));
 
-        Gallery response = manager.galleries().getWithResponse("n", "bgye", "rymsgaojfmw", Context.NONE).getValue();
+        Gallery response =
+            manager.galleries().getWithResponse("n", "tbaxk", "xywr", com.azure.core.util.Context.NONE).getValue();
 
-        Assertions.assertEquals("mrfhirctymox", response.galleryResourceId());
+        Assertions.assertEquals("kl", response.galleryResourceId());
     }
 }

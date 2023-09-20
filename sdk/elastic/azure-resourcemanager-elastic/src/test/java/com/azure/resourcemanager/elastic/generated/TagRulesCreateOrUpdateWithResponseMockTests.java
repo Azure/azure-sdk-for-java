@@ -35,7 +35,7 @@ public final class TagRulesCreateOrUpdateWithResponseMockTests {
         ArgumentCaptor<HttpRequest> httpRequest = ArgumentCaptor.forClass(HttpRequest.class);
 
         String responseStr =
-            "{\"properties\":{\"provisioningState\":\"Succeeded\",\"logRules\":{\"sendAadLogs\":false,\"sendSubscriptionLogs\":true,\"sendActivityLogs\":true,\"filteringTags\":[]}},\"id\":\"vmeueci\",\"name\":\"yhz\",\"type\":\"euojgjrwju\"}";
+            "{\"properties\":{\"provisioningState\":\"Creating\",\"logRules\":{\"sendAadLogs\":true,\"sendSubscriptionLogs\":true,\"sendActivityLogs\":false,\"filteringTags\":[]}},\"id\":\"fvjrbirphxepcy\",\"name\":\"ahfn\",\"type\":\"jky\"}";
 
         Mockito.when(httpResponse.getStatusCode()).thenReturn(200);
         Mockito.when(httpResponse.getHeaders()).thenReturn(new HttpHeaders());
@@ -66,22 +66,22 @@ public final class TagRulesCreateOrUpdateWithResponseMockTests {
         MonitoringTagRules response =
             manager
                 .tagRules()
-                .define("urqhaka")
-                .withExistingMonitor("bnbbeldawkz", "ali")
+                .define("senhwlrs")
+                .withExistingMonitor("uconuqszfkbey", "ewrmjmwvvjektc")
                 .withProperties(
                     new MonitoringTagRulesProperties()
-                        .withProvisioningState(ProvisioningState.SUCCEEDED)
+                        .withProvisioningState(ProvisioningState.ACCEPTED)
                         .withLogRules(
                             new LogRules()
-                                .withSendAadLogs(true)
+                                .withSendAadLogs(false)
                                 .withSendSubscriptionLogs(false)
-                                .withSendActivityLogs(true)
+                                .withSendActivityLogs(false)
                                 .withFilteringTags(Arrays.asList())))
                 .create();
 
-        Assertions.assertEquals(ProvisioningState.SUCCEEDED, response.properties().provisioningState());
-        Assertions.assertEquals(false, response.properties().logRules().sendAadLogs());
+        Assertions.assertEquals(ProvisioningState.CREATING, response.properties().provisioningState());
+        Assertions.assertEquals(true, response.properties().logRules().sendAadLogs());
         Assertions.assertEquals(true, response.properties().logRules().sendSubscriptionLogs());
-        Assertions.assertEquals(true, response.properties().logRules().sendActivityLogs());
+        Assertions.assertEquals(false, response.properties().logRules().sendActivityLogs());
     }
 }

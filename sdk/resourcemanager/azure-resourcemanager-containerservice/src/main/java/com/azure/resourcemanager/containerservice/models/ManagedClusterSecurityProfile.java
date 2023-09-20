@@ -23,6 +23,19 @@ public final class ManagedClusterSecurityProfile {
     @JsonProperty(value = "azureKeyVaultKms")
     private AzureKeyVaultKms azureKeyVaultKms;
 
+    /*
+     * Workload identity settings for the security profile. Workload identity enables Kubernetes applications to access
+     * Azure cloud resources securely with Azure AD. See https://aka.ms/aks/wi for more details.
+     */
+    @JsonProperty(value = "workloadIdentity")
+    private ManagedClusterSecurityProfileWorkloadIdentity workloadIdentity;
+
+    /*
+     * Image Cleaner settings for the security profile.
+     */
+    @JsonProperty(value = "imageCleaner")
+    private ManagedClusterSecurityProfileImageCleaner imageCleaner;
+
     /** Creates an instance of ManagedClusterSecurityProfile class. */
     public ManagedClusterSecurityProfile() {
     }
@@ -70,6 +83,51 @@ public final class ManagedClusterSecurityProfile {
     }
 
     /**
+     * Get the workloadIdentity property: Workload identity settings for the security profile. Workload identity enables
+     * Kubernetes applications to access Azure cloud resources securely with Azure AD. See https://aka.ms/aks/wi for
+     * more details.
+     *
+     * @return the workloadIdentity value.
+     */
+    public ManagedClusterSecurityProfileWorkloadIdentity workloadIdentity() {
+        return this.workloadIdentity;
+    }
+
+    /**
+     * Set the workloadIdentity property: Workload identity settings for the security profile. Workload identity enables
+     * Kubernetes applications to access Azure cloud resources securely with Azure AD. See https://aka.ms/aks/wi for
+     * more details.
+     *
+     * @param workloadIdentity the workloadIdentity value to set.
+     * @return the ManagedClusterSecurityProfile object itself.
+     */
+    public ManagedClusterSecurityProfile withWorkloadIdentity(
+        ManagedClusterSecurityProfileWorkloadIdentity workloadIdentity) {
+        this.workloadIdentity = workloadIdentity;
+        return this;
+    }
+
+    /**
+     * Get the imageCleaner property: Image Cleaner settings for the security profile.
+     *
+     * @return the imageCleaner value.
+     */
+    public ManagedClusterSecurityProfileImageCleaner imageCleaner() {
+        return this.imageCleaner;
+    }
+
+    /**
+     * Set the imageCleaner property: Image Cleaner settings for the security profile.
+     *
+     * @param imageCleaner the imageCleaner value to set.
+     * @return the ManagedClusterSecurityProfile object itself.
+     */
+    public ManagedClusterSecurityProfile withImageCleaner(ManagedClusterSecurityProfileImageCleaner imageCleaner) {
+        this.imageCleaner = imageCleaner;
+        return this;
+    }
+
+    /**
      * Validates the instance.
      *
      * @throws IllegalArgumentException thrown if the instance is not valid.
@@ -80,6 +138,12 @@ public final class ManagedClusterSecurityProfile {
         }
         if (azureKeyVaultKms() != null) {
             azureKeyVaultKms().validate();
+        }
+        if (workloadIdentity() != null) {
+            workloadIdentity().validate();
+        }
+        if (imageCleaner() != null) {
+            imageCleaner().validate();
         }
     }
 }

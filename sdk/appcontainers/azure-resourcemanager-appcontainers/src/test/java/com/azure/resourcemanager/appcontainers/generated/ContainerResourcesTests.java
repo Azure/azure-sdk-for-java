@@ -7,25 +7,24 @@ package com.azure.resourcemanager.appcontainers.generated;
 import com.azure.core.util.BinaryData;
 import com.azure.resourcemanager.appcontainers.models.ContainerResources;
 import org.junit.jupiter.api.Assertions;
-import org.junit.jupiter.api.Test;
 
 public final class ContainerResourcesTests {
-    @Test
-    public void testDeserialize() {
+    @org.junit.jupiter.api.Test
+    public void testDeserialize() throws Exception {
         ContainerResources model =
             BinaryData
                 .fromString(
-                    "{\"cpu\":4.018076144198646,\"memory\":\"byuqerpqlp\",\"ephemeralStorage\":\"cciuqgbdbutau\"}")
+                    "{\"cpu\":4.886296094520515,\"memory\":\"muwlauwzizxbm\",\"ephemeralStorage\":\"cjefuzmu\"}")
                 .toObject(ContainerResources.class);
-        Assertions.assertEquals(4.018076144198646D, model.cpu());
-        Assertions.assertEquals("byuqerpqlp", model.memory());
+        Assertions.assertEquals(4.886296094520515D, model.cpu());
+        Assertions.assertEquals("muwlauwzizxbm", model.memory());
     }
 
-    @Test
-    public void testSerialize() {
-        ContainerResources model = new ContainerResources().withCpu(4.018076144198646D).withMemory("byuqerpqlp");
+    @org.junit.jupiter.api.Test
+    public void testSerialize() throws Exception {
+        ContainerResources model = new ContainerResources().withCpu(4.886296094520515D).withMemory("muwlauwzizxbm");
         model = BinaryData.fromObject(model).toObject(ContainerResources.class);
-        Assertions.assertEquals(4.018076144198646D, model.cpu());
-        Assertions.assertEquals("byuqerpqlp", model.memory());
+        Assertions.assertEquals(4.886296094520515D, model.cpu());
+        Assertions.assertEquals("muwlauwzizxbm", model.memory());
     }
 }

@@ -22,6 +22,9 @@ public final class EnvironmentType extends ExpandableStringEnum<EnvironmentType>
     /** Static value AzureDevOpsScope for EnvironmentType. */
     public static final EnvironmentType AZURE_DEV_OPS_SCOPE = fromString("AzureDevOpsScope");
 
+    /** Static value GitlabScope for EnvironmentType. */
+    public static final EnvironmentType GITLAB_SCOPE = fromString("GitlabScope");
+
     /**
      * Creates a new instance of EnvironmentType value.
      *

@@ -9,11 +9,7 @@ import com.azure.core.management.SystemData;
 import com.azure.core.util.Context;
 import com.azure.resourcemanager.servicenetworking.fluent.models.FrontendInner;
 import com.azure.resourcemanager.servicenetworking.models.Frontend;
-import com.azure.resourcemanager.servicenetworking.models.FrontendIpAddressVersion;
-import com.azure.resourcemanager.servicenetworking.models.FrontendMode;
-import com.azure.resourcemanager.servicenetworking.models.FrontendPropertiesIpAddress;
 import com.azure.resourcemanager.servicenetworking.models.FrontendUpdate;
-import com.azure.resourcemanager.servicenetworking.models.FrontendUpdateProperties;
 import com.azure.resourcemanager.servicenetworking.models.ProvisioningState;
 import java.util.Collections;
 import java.util.Map;
@@ -52,16 +48,8 @@ public final class FrontendImpl implements Frontend, Frontend.Definition, Fronte
         return this.innerModel().systemData();
     }
 
-    public FrontendMode mode() {
-        return this.innerModel().mode();
-    }
-
-    public FrontendIpAddressVersion ipAddressVersion() {
-        return this.innerModel().ipAddressVersion();
-    }
-
-    public FrontendPropertiesIpAddress publicIpAddress() {
-        return this.innerModel().publicIpAddress();
+    public String fqdn() {
+        return this.innerModel().fqdn();
     }
 
     public ProvisioningState provisioningState() {
@@ -201,26 +189,6 @@ public final class FrontendImpl implements Frontend, Frontend.Definition, Fronte
             this.updateProperties.withTags(tags);
             return this;
         }
-    }
-
-    public FrontendImpl withMode(FrontendMode mode) {
-        this.innerModel().withMode(mode);
-        return this;
-    }
-
-    public FrontendImpl withIpAddressVersion(FrontendIpAddressVersion ipAddressVersion) {
-        this.innerModel().withIpAddressVersion(ipAddressVersion);
-        return this;
-    }
-
-    public FrontendImpl withPublicIpAddress(FrontendPropertiesIpAddress publicIpAddress) {
-        this.innerModel().withPublicIpAddress(publicIpAddress);
-        return this;
-    }
-
-    public FrontendImpl withProperties(FrontendUpdateProperties properties) {
-        this.updateProperties.withProperties(properties);
-        return this;
     }
 
     private boolean isInCreateMode() {

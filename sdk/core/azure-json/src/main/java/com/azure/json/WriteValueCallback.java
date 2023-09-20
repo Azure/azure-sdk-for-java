@@ -10,6 +10,8 @@ import java.io.IOException;
  *
  * @param <T> First type of the callback.
  * @param <U> Second type of the callback.
+ *
+ * @see JsonWriter
  */
 @FunctionalInterface
 public interface WriteValueCallback<T, U> {

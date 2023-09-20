@@ -8,6 +8,7 @@ import org.junit.jupiter.api.MethodOrderer;
 import org.junit.jupiter.api.Order;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.TestMethodOrder;
+import org.junit.jupiter.api.parallel.Isolated;
 import reactor.core.publisher.Mono;
 
 import java.util.concurrent.atomic.AtomicInteger;
@@ -18,6 +19,7 @@ import static org.junit.jupiter.api.Assertions.assertThrows;
 // We're indirectly testing JUnit extension
 // Therefore we use ordering to sequence state mutations.
 @TestMethodOrder(MethodOrderer.OrderAnnotation.class)
+@Isolated
 public class SyncAsyncExtensionTest {
     private static final AtomicInteger SYNC_INVOCATIONS = new AtomicInteger();
     private static final AtomicInteger ASYNC_INVOCATIONS = new AtomicInteger();

@@ -8,13 +8,31 @@ import com.azure.core.annotation.Fluent;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import com.fasterxml.jackson.annotation.JsonTypeInfo;
 import com.fasterxml.jackson.annotation.JsonTypeName;
-import java.util.List;
 
-/** Describes a set of label selectors that will be attached if the given condition resolves to true. */
+import java.util.List;
+import java.util.Objects;
+
+/** Describes a set of worker selectors that will be attached if the given condition resolves to true. */
 @JsonTypeInfo(use = JsonTypeInfo.Id.NAME, include = JsonTypeInfo.As.PROPERTY, property = "kind")
 @JsonTypeName("conditional")
 @Fluent
 public final class ConditionalWorkerSelectorAttachment extends WorkerSelectorAttachment {
+    /**
+     * Creates an instance of ConditionalWorkerSelectorAttachment class.
+     *
+     * @param condition A rule of one of the following types:
+     * StaticRule:  A rule providing static rules that always return the same
+     * result, regardless of input.
+     * DirectMapRule:  A rule that return the same labels as the input labels.
+     * ExpressionRule: A rule providing inline expression rules.
+     * AzureFunctionRule: A rule providing a binding to an HTTP Triggered Azure Function.
+     * @param workerSelectors the worker selectors to attach
+     */
+    public ConditionalWorkerSelectorAttachment(RouterRule condition, List<RouterWorkerSelector> workerSelectors) {
+        this.condition = Objects.requireNonNull(condition, "'condition' cannot be null.");
+        this.workerSelectors = Objects.requireNonNull(workerSelectors, "'workerSelectors' cannot be null.");
+    }
+
     /*
      * A rule of one of the following types:
      *
@@ -24,22 +42,25 @@ public final class ConditionalWorkerSelectorAttachment extends WorkerSelectorAtt
      * ExpressionRule: A rule providing inline expression rules.
      * AzureFunctionRule: A rule providing a binding to an HTTP Triggered Azure
      * Function.
+     * WebhookRule: A rule providing a binding to a webserver following
+     * OAuth2.0 authentication protocol.
      */
     @JsonProperty(value = "condition", required = true)
-    private RouterRule condition;
+    private final RouterRule condition;
 
     /*
-     * The label selectors to attach
+     * The worker selectors to attach
      */
-    @JsonProperty(value = "labelSelectors", required = true)
-    private List<WorkerSelector> labelSelectors;
+    @JsonProperty(value = "workerSelectors", required = true)
+    private final List<RouterWorkerSelector> workerSelectors;
 
     /**
      * Get the condition property: A rule of one of the following types:
      *
      * <p>StaticRule: A rule providing static rules that always return the same result, regardless of input.
      * DirectMapRule: A rule that return the same labels as the input labels. ExpressionRule: A rule providing inline
-     * expression rules. AzureFunctionRule: A rule providing a binding to an HTTP Triggered Azure Function.
+     * expression rules. AzureFunctionRule: A rule providing a binding to an HTTP Triggered Azure Function. WebhookRule:
+     * A rule providing a binding to a webserver following OAuth2.0 authentication protocol.
      *
      * @return the condition value.
      */
@@ -48,37 +69,11 @@ public final class ConditionalWorkerSelectorAttachment extends WorkerSelectorAtt
     }
 
     /**
-     * Set the condition property: A rule of one of the following types:
+     * Get the workerSelectors property: The worker selectors to attach.
      *
-     * <p>StaticRule: A rule providing static rules that always return the same result, regardless of input.
-     * DirectMapRule: A rule that return the same labels as the input labels. ExpressionRule: A rule providing inline
-     * expression rules. AzureFunctionRule: A rule providing a binding to an HTTP Triggered Azure Function.
-     *
-     * @param condition the condition value to set.
-     * @return the ConditionalWorkerSelectorAttachment object itself.
+     * @return the workerSelectors value.
      */
-    public ConditionalWorkerSelectorAttachment setCondition(RouterRule condition) {
-        this.condition = condition;
-        return this;
-    }
-
-    /**
-     * Get the labelSelectors property: The label selectors to attach.
-     *
-     * @return the labelSelectors value.
-     */
-    public List<WorkerSelector> getLabelSelectors() {
-        return this.labelSelectors;
-    }
-
-    /**
-     * Set the labelSelectors property: The label selectors to attach.
-     *
-     * @param labelSelectors the labelSelectors value to set.
-     * @return the ConditionalWorkerSelectorAttachment object itself.
-     */
-    public ConditionalWorkerSelectorAttachment setLabelSelectors(List<WorkerSelector> labelSelectors) {
-        this.labelSelectors = labelSelectors;
-        return this;
+    public List<RouterWorkerSelector> getWorkerSelectors() {
+        return this.workerSelectors;
     }
 }

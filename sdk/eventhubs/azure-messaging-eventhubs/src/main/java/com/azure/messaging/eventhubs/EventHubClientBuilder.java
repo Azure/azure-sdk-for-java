@@ -69,63 +69,121 @@ import static com.azure.messaging.eventhubs.implementation.ClientConstants.CONNE
  * <strong>Credentials are required</strong> to perform operations against Azure Event Hubs. They can be set by using
  * one of the following methods:
  * <ul>
- * <li>{@link #connectionString(String) connectionString(String)} with a connection string to a specific Event Hub.
- * </li>
- * <li>{@link #connectionString(String, String) connectionString(String, String)} with an Event Hub <i>namespace</i>
- * connection string and the Event Hub name.</li>
- * <li>{@link #credential(String, String, TokenCredential) credential(String, String, TokenCredential)} with the
- * fully qualified namespace, Event Hub name, and a set of credentials authorized to use the Event Hub.
- * </li>
+ *      <li>{@link #connectionString(String)} with a connection string to a specific Event Hub.</li>
+ *      <li>{@link #connectionString(String, String)} with an Event Hub <i>namespace</i> connection string and the Event
+ *      Hub name.</li>
+ *      <li>{@link #credential(String, String, TokenCredential)} with the fully qualified namespace, Event Hub name, and
+ *      a set of credentials authorized to use the Event Hub.</li>
+ *      <li>{@link #credential(String, String, AzureSasCredential)} with the fully qualified namespace, Event Hub name,
+ *      and a shared access signature for the Event Hub.</li>
+ *      <li>{@link #credential(String, String, AzureNamedKeyCredential)} with the fully qualified namespace,
+ *      Event Hub name, and a named key credential.  The named key can be found in the Azure Portal by navigating to the
+ *      Event Hub resource, selecting "Shared access policies" under the Settings section.</li>
+ *      <li>{@link #credential(TokenCredential)}, {@link #credential(AzureSasCredential)}, and
+ *      {@link #credential(AzureNamedKeyCredential)} overloads can be used with its respective credentials.
+ *      {@link #fullyQualifiedNamespace(String)} and {@link #eventHubName(String)} must be set as well.</li>
  * </ul>
  *
  * <p>
- * In addition, the <strong>consumer group</strong> is required when creating {@link EventHubConsumerAsyncClient} or
+ * In addition, the {@link #consumerGroup(String)} is required when creating {@link EventHubConsumerAsyncClient} or
  * {@link EventHubConsumerClient}.
  * </p>
  *
- * <p><strong>Creating an asynchronous {@link EventHubProducerAsyncClient} using Event Hubs namespace connection string
- * </strong></p>
- * <p>In the sample, the namespace connection string is used to create an asynchronous Event Hub producer. Notice that
- * {@code "EntityPath"} <b>is not</b> a component in the connection string.</p>
+ * <p>The credential used in the following samples is {@code DefaultAzureCredential} for authentication. It is
+ * appropriate for most scenarios, including local development and production environments. Additionally, we recommend
+ * using
+ * <a href="https://learn.microsoft.com/azure/active-directory/managed-identities-azure-resources/">managed identity</a>
+ * for authentication in production environments.  You can find more information on different ways of authenticating and
+ * their corresponding credential types in the
+ * <a href="https://learn.microsoft.com/java/api/overview/azure/identity-readme">Azure Identity documentation"</a>.
+ * </p>
  *
- * <!-- src_embed com.azure.messaging.eventhubs.eventhubasyncproducerclient.instantiation -->
+ * <p><strong>Sample: Construct a {@link EventHubProducerAsyncClient}</strong></p>
+ *
+ * <p>The following code sample demonstrates the creation of the asynchronous client
+ * {@link EventHubProducerAsyncClient}.  The {@code fullyQualifiedNamespace} is the Event Hubs Namespace's host name.
+ * It is listed under the "Essentials" panel after navigating to the Event Hubs Namespace via Azure Portal. The
+ * credential used is {@code DefaultAzureCredential} because it combines commonly used credentials in deployment and
+ * development and chooses the credential to used based on its running environment.</p>
+ *
+ * <!-- src_embed com.azure.messaging.eventhubs.eventhubproducerasyncclient.construct -->
  * <pre>
- * &#47;&#47; The required parameter is a way to authenticate with Event Hubs using credentials.
- * &#47;&#47; The connectionString provides a way to authenticate with Event Hub.
+ * TokenCredential credential = new DefaultAzureCredentialBuilder&#40;&#41;.build&#40;&#41;;
+ *
+ * &#47;&#47; &quot;&lt;&lt;fully-qualified-namespace&gt;&gt;&quot; will look similar to &quot;&#123;your-namespace&#125;.servicebus.windows.net&quot;
+ * &#47;&#47; &quot;&lt;&lt;event-hub-name&gt;&gt;&quot; will be the name of the Event Hub instance you created inside the Event Hubs namespace.
  * EventHubProducerAsyncClient producer = new EventHubClientBuilder&#40;&#41;
- *     .connectionString&#40;
- *         &quot;Endpoint=&#123;fully-qualified-namespace&#125;;SharedAccessKeyName=&#123;policy-name&#125;;SharedAccessKey=&#123;key&#125;&quot;,
- *         &quot;event-hub-name&quot;&#41;
+ *     .credential&#40;&quot;&lt;&lt;fully-qualified-namespace&gt;&gt;&quot;, &quot;&lt;&lt;event-hub-name&gt;&gt;&quot;,
+ *         credential&#41;
  *     .buildAsyncProducerClient&#40;&#41;;
  * </pre>
- * <!-- end com.azure.messaging.eventhubs.eventhubasyncproducerclient.instantiation -->
+ * <!-- end com.azure.messaging.eventhubs.eventhubproducerasyncclient.construct -->
  *
- * <p><strong>Creating a synchronous {@link EventHubConsumerClient} using an Event Hub instance connection string
- * </strong></p>
- * <p>In the sample, the namespace connection string is used to create a synchronous Event Hub consumer. Notice that
- * {@code "EntityPath"} <b>is</b> in the connection string.</p>
+ * <p><strong>Sample: Construct a {@link EventHubConsumerAsyncClient}</strong></p>
  *
- * <!-- src_embed com.azure.messaging.eventhubs.eventhubconsumerclient.instantiation -->
+ * <p>The following code sample demonstrates the creation of the asynchronous client
+ * {@link EventHubConsumerAsyncClient}.  The {@code fullyQualifiedNamespace} is the Event Hubs Namespace's host name.
+ * It is listed under the "Essentials" panel after navigating to the Event Hubs Namespace via Azure Portal. The
+ * {@code consumerGroup} is found by navigating to the Event Hub instance, and selecting "Consumer groups" under the
+ * "Entities" panel.  The {@link #consumerGroup(String)} is required for creating consumer clients.  The credential
+ * used is {@code DefaultAzureCredential} because it combines commonly used credentials in deployment and development
+ * and chooses the credential to used based on its running environment.</p>
+ *
+ * <!-- src_embed com.azure.messaging.eventhubs.eventhubconsumerasyncclient.construct -->
  * <pre>
- * &#47;&#47; The required parameters are `consumerGroup`, and a way to authenticate with Event Hubs using credentials.
- * EventHubConsumerClient consumer = new EventHubClientBuilder&#40;&#41;
- *     .connectionString&#40;&quot;Endpoint=&#123;fully-qualified-namespace&#125;;SharedAccessKeyName=&#123;policy-name&#125;;&quot;
- *         + &quot;SharedAccessKey=&#123;key&#125;;Entity-Path=&#123;hub-name&#125;&quot;&#41;
- *     .consumerGroup&#40;&quot;$DEFAULT&quot;&#41;
- *     .buildConsumerClient&#40;&#41;;
+ * TokenCredential credential = new DefaultAzureCredentialBuilder&#40;&#41;.build&#40;&#41;;
+ *
+ * &#47;&#47; &quot;&lt;&lt;fully-qualified-namespace&gt;&gt;&quot; will look similar to &quot;&#123;your-namespace&#125;.servicebus.windows.net&quot;
+ * &#47;&#47; &quot;&lt;&lt;event-hub-name&gt;&gt;&quot; will be the name of the Event Hub instance you created inside the Event Hubs namespace.
+ * EventHubConsumerAsyncClient consumer = new EventHubClientBuilder&#40;&#41;
+ *     .credential&#40;&quot;&lt;&lt;fully-qualified-namespace&gt;&gt;&quot;, &quot;&lt;&lt;event-hub-name&gt;&gt;&quot;,
+ *         credential&#41;
+ *     .consumerGroup&#40;EventHubClientBuilder.DEFAULT_CONSUMER_GROUP_NAME&#41;
+ *     .buildAsyncConsumerClient&#40;&#41;;
  * </pre>
- * <!-- end com.azure.messaging.eventhubs.eventhubconsumerclient.instantiation -->
+ * <!-- end com.azure.messaging.eventhubs.eventhubconsumerasyncclient.construct -->
  *
- * <p><strong>Creating producers and consumers that share the same connection</strong></p>
- * <p>By default, a dedicated connection is created for each producer and consumer created from the builder. If users
- * wish to use the same underlying connection, they can toggle {@link #shareConnection() shareConnection()}.</p>
+ * <p><strong>Sample: Creating a client using web sockets and custom retry options</strong></p>
  *
- * <!-- src_embed com.azure.messaging.eventhubs.eventhubclientbuilder.instantiation -->
+ * <p>By default, the AMQP port 5671 is used, but clients can use web sockets, port 443.  Customers can replace the
+ * {@link AmqpRetryOptions#AmqpRetryOptions() default retry options} with their own policy.
+ * The retry options are used when recovering from transient failures in the underlying AMQP connection and performing
+ * any operations that require a response from the service.</p>
+ *
+ * <!-- src_embed com.azure.messaging.eventhubs.eventhubproducerclient.websockets.construct -->
  * <pre>
- * &#47;&#47; Toggling `shareConnection` instructs the builder to use the same underlying connection
- * &#47;&#47; for each consumer or producer created using the same builder instance.
+ * TokenCredential credential = new DefaultAzureCredentialBuilder&#40;&#41;.build&#40;&#41;;
+ *
+ * AmqpRetryOptions customRetryOptions = new AmqpRetryOptions&#40;&#41;
+ *     .setMaxRetries&#40;5&#41;
+ *     .setMode&#40;AmqpRetryMode.FIXED&#41;
+ *     .setTryTimeout&#40;Duration.ofSeconds&#40;60&#41;&#41;;
+ *
+ * &#47;&#47; &quot;&lt;&lt;fully-qualified-namespace&gt;&gt;&quot; will look similar to &quot;&#123;your-namespace&#125;.servicebus.windows.net&quot;
+ * &#47;&#47; &quot;&lt;&lt;event-hub-name&gt;&gt;&quot; will be the name of the Event Hub instance you created inside the Event Hubs namespace.
+ * EventHubProducerClient producer = new EventHubClientBuilder&#40;&#41;
+ *     .credential&#40;&quot;&lt;&lt;fully-qualified-namespace&gt;&gt;&quot;, &quot;&lt;&lt;event-hub-name&gt;&gt;&quot;,
+ *         credential&#41;
+ *     .transportType&#40;AmqpTransportType.AMQP_WEB_SOCKETS&#41;
+ *     .buildProducerClient&#40;&#41;;
+ * </pre>
+ * <!-- end com.azure.messaging.eventhubs.eventhubproducerclient.websockets.construct -->
+ *
+ * <p><strong>Sample: Creating producers and consumers that share the same connection</strong></p>
+ *
+ * <p>By default, a dedicated connection is created for each producer and consumer created from the builder. If users
+ * wish to use the same underlying connection, they can toggle {@link #shareConnection()}.  This underlying connection
+ * is closed when all clients created from this builder instance are disposed.</p>
+ *
+ * <!-- src_embed com.azure.messaging.eventhubs.eventhubclientbuilder.shareconnection.construct -->
+ * <pre>
+ * TokenCredential credential = new DefaultAzureCredentialBuilder&#40;&#41;.build&#40;&#41;;
+ *
+ * &#47;&#47; &quot;&lt;&lt;fully-qualified-namespace&gt;&gt;&quot; will look similar to &quot;&#123;your-namespace&#125;.servicebus.windows.net&quot;
+ * &#47;&#47; &quot;&lt;&lt;event-hub-name&gt;&gt;&quot; will be the name of the Event Hub instance you created inside the Event Hubs namespace.
  * EventHubClientBuilder builder = new EventHubClientBuilder&#40;&#41;
- *     .connectionString&#40;&quot;event-hubs-instance-connection-string&quot;&#41;
+ *     .credential&#40;&quot;&lt;&lt;fully-qualified-namespace&gt;&gt;&quot;, &quot;&lt;&lt;event-hub-name&gt;&gt;&quot;,
+ *         credential&#41;
  *     .shareConnection&#40;&#41;;
  *
  * &#47;&#47; Both the producer and consumer created share the same underlying connection.
@@ -134,7 +192,7 @@ import static com.azure.messaging.eventhubs.implementation.ClientConstants.CONNE
  *     .consumerGroup&#40;&quot;my-consumer-group&quot;&#41;
  *     .buildAsyncConsumerClient&#40;&#41;;
  * </pre>
- * <!-- end com.azure.messaging.eventhubs.eventhubclientbuilder.instantiation -->
+ * <!-- end com.azure.messaging.eventhubs.eventhubclientbuilder.shareconnection.construct -->
  *
  * @see EventHubProducerAsyncClient
  * @see EventHubProducerClient

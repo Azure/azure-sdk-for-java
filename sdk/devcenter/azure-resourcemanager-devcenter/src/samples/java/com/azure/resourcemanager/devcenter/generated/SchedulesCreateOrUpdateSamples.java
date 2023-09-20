@@ -4,14 +4,14 @@
 
 package com.azure.resourcemanager.devcenter.generated;
 
-import com.azure.resourcemanager.devcenter.models.EnableStatus;
+import com.azure.resourcemanager.devcenter.models.ScheduleEnableStatus;
 import com.azure.resourcemanager.devcenter.models.ScheduledFrequency;
 import com.azure.resourcemanager.devcenter.models.ScheduledType;
 
 /** Samples for Schedules CreateOrUpdate. */
 public final class SchedulesCreateOrUpdateSamples {
     /*
-     * x-ms-original-file: specification/devcenter/resource-manager/Microsoft.DevCenter/preview/2022-11-11-preview/examples/Schedules_CreateDailyShutdownPoolSchedule.json
+     * x-ms-original-file: specification/devcenter/resource-manager/Microsoft.DevCenter/stable/2023-04-01/examples/Schedules_CreateDailyShutdownPoolSchedule.json
      */
     /**
      * Sample code: Schedules_CreateDailyShutdownPoolSchedule.
@@ -28,7 +28,7 @@ public final class SchedulesCreateOrUpdateSamples {
             .withFrequency(ScheduledFrequency.DAILY)
             .withTime("17:30")
             .withTimeZone("America/Los_Angeles")
-            .withState(EnableStatus.ENABLED)
+            .withState(ScheduleEnableStatus.ENABLED)
             .create();
     }
 }

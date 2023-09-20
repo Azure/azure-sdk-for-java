@@ -10,7 +10,30 @@ import java.util.Map;
 /** Samples for Projects CreateOrUpdate. */
 public final class ProjectsCreateOrUpdateSamples {
     /*
-     * x-ms-original-file: specification/devcenter/resource-manager/Microsoft.DevCenter/preview/2022-11-11-preview/examples/Projects_Put.json
+     * x-ms-original-file: specification/devcenter/resource-manager/Microsoft.DevCenter/stable/2023-04-01/examples/Projects_PutWithMaxDevBoxPerUser.json
+     */
+    /**
+     * Sample code: Projects_CreateOrUpdateWithLimitsPerDev.
+     *
+     * @param manager Entry point to DevCenterManager.
+     */
+    public static void projectsCreateOrUpdateWithLimitsPerDev(
+        com.azure.resourcemanager.devcenter.DevCenterManager manager) {
+        manager
+            .projects()
+            .define("DevProject")
+            .withRegion("centralus")
+            .withExistingResourceGroup("rg1")
+            .withTags(mapOf("CostCenter", "R&D"))
+            .withDevCenterId(
+                "/subscriptions/0ac520ee-14c0-480f-b6c9-0a90c58ffff/resourceGroups/rg1/providers/Microsoft.DevCenter/devcenters/Contoso")
+            .withDescription("This is my first project.")
+            .withMaxDevBoxesPerUser(3)
+            .create();
+    }
+
+    /*
+     * x-ms-original-file: specification/devcenter/resource-manager/Microsoft.DevCenter/stable/2023-04-01/examples/Projects_Put.json
      */
     /**
      * Sample code: Projects_CreateOrUpdate.

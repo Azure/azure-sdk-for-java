@@ -15,12 +15,12 @@ public final class AmqpC2DRejectedMessagesNotInAllowedRangeTests {
         AmqpC2DRejectedMessagesNotInAllowedRange model =
             BinaryData
                 .fromString(
-                    "{\"ruleType\":\"AmqpC2DRejectedMessagesNotInAllowedRange\",\"timeWindowSize\":\"PT13H41M23S\",\"minThreshold\":101751518,\"maxThreshold\":826900900,\"displayName\":\"ytxtdgu\",\"description\":\"lbpktg\",\"isEnabled\":false}")
+                    "{\"ruleType\":\"AmqpC2DRejectedMessagesNotInAllowedRange\",\"timeWindowSize\":\"PT118H2M58S\",\"minThreshold\":1648107284,\"maxThreshold\":1284555207,\"displayName\":\"rfmvlihcvjdrqcrj\",\"description\":\"h\",\"isEnabled\":false}")
                 .toObject(AmqpC2DRejectedMessagesNotInAllowedRange.class);
         Assertions.assertEquals(false, model.isEnabled());
-        Assertions.assertEquals(101751518, model.minThreshold());
-        Assertions.assertEquals(826900900, model.maxThreshold());
-        Assertions.assertEquals(Duration.parse("PT13H41M23S"), model.timeWindowSize());
+        Assertions.assertEquals(1648107284, model.minThreshold());
+        Assertions.assertEquals(1284555207, model.maxThreshold());
+        Assertions.assertEquals(Duration.parse("PT118H2M58S"), model.timeWindowSize());
     }
 
     @org.junit.jupiter.api.Test
@@ -28,13 +28,13 @@ public final class AmqpC2DRejectedMessagesNotInAllowedRangeTests {
         AmqpC2DRejectedMessagesNotInAllowedRange model =
             new AmqpC2DRejectedMessagesNotInAllowedRange()
                 .withIsEnabled(false)
-                .withMinThreshold(101751518)
-                .withMaxThreshold(826900900)
-                .withTimeWindowSize(Duration.parse("PT13H41M23S"));
+                .withMinThreshold(1648107284)
+                .withMaxThreshold(1284555207)
+                .withTimeWindowSize(Duration.parse("PT118H2M58S"));
         model = BinaryData.fromObject(model).toObject(AmqpC2DRejectedMessagesNotInAllowedRange.class);
         Assertions.assertEquals(false, model.isEnabled());
-        Assertions.assertEquals(101751518, model.minThreshold());
-        Assertions.assertEquals(826900900, model.maxThreshold());
-        Assertions.assertEquals(Duration.parse("PT13H41M23S"), model.timeWindowSize());
+        Assertions.assertEquals(1648107284, model.minThreshold());
+        Assertions.assertEquals(1284555207, model.maxThreshold());
+        Assertions.assertEquals(Duration.parse("PT118H2M58S"), model.timeWindowSize());
     }
 }

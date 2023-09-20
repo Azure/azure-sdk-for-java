@@ -12,7 +12,7 @@ public final class SubscriptionQuotaItemPropertiesTests {
     public void testDeserialize() throws Exception {
         SubscriptionQuotaItemProperties model =
             BinaryData
-                .fromString("{\"current\":169768909,\"default\":934868772}")
+                .fromString("{\"current\":278176639,\"default\":599264802}")
                 .toObject(SubscriptionQuotaItemProperties.class);
     }
 

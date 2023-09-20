@@ -50,18 +50,19 @@ public final class MachineLearningServicesDatasetDriftDetectedEventData {
     private Double driftCoefficient;
 
     /*
-     * The start time of the target dataset time series that resulted in drift
-     * detection.
+     * The start time of the target dataset time series that resulted in drift detection.
      */
     @JsonProperty(value = "startTime")
     private OffsetDateTime startTime;
 
     /*
-     * The end time of the target dataset time series that resulted in drift
-     * detection.
+     * The end time of the target dataset time series that resulted in drift detection.
      */
     @JsonProperty(value = "endTime")
     private OffsetDateTime endTime;
+
+    /** Creates an instance of MachineLearningServicesDatasetDriftDetectedEventData class. */
+    public MachineLearningServicesDatasetDriftDetectedEventData() {}
 
     /**
      * Get the dataDriftId property: The ID of the data drift monitor that triggered the event.

@@ -42,7 +42,7 @@ public final class MonitorsCreateOrUpdateMockTests {
         ArgumentCaptor<HttpRequest> httpRequest = ArgumentCaptor.forClass(HttpRequest.class);
 
         String responseStr =
-            "{\"properties\":{\"provisioningState\":\"Succeeded\",\"monitoringStatus\":\"Enabled\",\"marketplaceSubscriptionStatus\":\"Suspended\",\"marketplaceSubscriptionId\":\"pswiydmcwyh\",\"newRelicAccountProperties\":{\"userId\":\"ss\"},\"userInfo\":{\"firstName\":\"vdfznudaodvxzb\",\"lastName\":\"blylpstdbh\",\"emailAddress\":\"srzdzucerscdn\",\"phoneNumber\":\"evfiwjmygt\",\"country\":\"slswtm\"},\"planData\":{\"usageType\":\"PAYG\",\"billingCycle\":\"MONTHLY\",\"planDetails\":\"pyqs\",\"effectiveDate\":\"2021-06-06T05:20:48Z\"},\"liftrResourceCategory\":\"Unknown\",\"liftrResourcePreference\":792180038,\"orgCreationSource\":\"NEWRELIC\",\"accountCreationSource\":\"NEWRELIC\"},\"identity\":{\"principalId\":\"a33037ed-f83c-469d-bb38-f80fc867d6a7\",\"tenantId\":\"6a6cba0a-fdd0-492c-9a74-1d473e6092eb\",\"type\":\"UserAssigned\",\"userAssignedIdentities\":{}},\"location\":\"vwiwubmwmbesld\",\"tags\":{\"z\":\"wtppjflcxogaoko\",\"fzxmhhvhgureodkw\":\"nsikvmkqzeqqkdl\"},\"id\":\"bdagxt\",\"name\":\"bqdxbx\",\"type\":\"akbogqxndlkzgxh\"}";
+            "{\"properties\":{\"provisioningState\":\"Succeeded\",\"monitoringStatus\":\"Disabled\",\"marketplaceSubscriptionStatus\":\"Active\",\"marketplaceSubscriptionId\":\"tgqr\",\"newRelicAccountProperties\":{\"userId\":\"muwlauwzizxbm\"},\"userInfo\":{\"firstName\":\"u\",\"lastName\":\"uvpb\",\"emailAddress\":\"d\",\"phoneNumber\":\"orppxebmnzbtb\",\"country\":\"pglkf\"},\"planData\":{\"usageType\":\"PAYG\",\"billingCycle\":\"MONTHLY\",\"planDetails\":\"el\",\"effectiveDate\":\"2021-04-04T13:11:17Z\"},\"liftrResourceCategory\":\"MonitorLogs\",\"liftrResourcePreference\":314213768,\"orgCreationSource\":\"NEWRELIC\",\"accountCreationSource\":\"NEWRELIC\"},\"identity\":{\"principalId\":\"1be7716f-5649-47e7-9220-3cf2fedbeb8d\",\"tenantId\":\"9aa28025-d8d0-4611-a2ed-7f90fe46c74c\",\"type\":\"UserAssigned\",\"userAssignedIdentities\":{}},\"location\":\"uuvxz\",\"tags\":{\"zonosgg\":\"vithh\",\"ljuti\":\"hcohfwdsjnk\",\"wkfvhqcrailvp\":\"swacffgdkzz\",\"wdmhdlxyjrxs\":\"ppfufl\"},\"id\":\"gafcnihgwqapnedg\",\"name\":\"bcvkcvqvpkeq\",\"type\":\"cvdrhvoodsot\"}";
 
         Mockito.when(httpResponse.getStatusCode()).thenReturn(200);
         Mockito.when(httpResponse.getHeaders()).thenReturn(new HttpHeaders());
@@ -73,46 +73,52 @@ public final class MonitorsCreateOrUpdateMockTests {
         NewRelicMonitorResource response =
             manager
                 .monitors()
-                .define("qtdo")
-                .withRegion("taruoujmkcj")
-                .withExistingResourceGroup("ivetvtcq")
+                .define("l")
+                .withRegion("hszhedplvwiwu")
+                .withExistingResourceGroup("ertgccymva")
                 .withTags(
-                    mapOf("ervnaenqpehi", "ytjrybnwjewgdr", "mifthnzdnd", "doy", "nayqi", "l", "hqlkthumaqo", "ynduha"))
+                    mapOf(
+                        "dnkwwtppjflcxog",
+                        "mbes",
+                        "qqkdltfzxmhhvhgu",
+                        "okonzmnsikvmkqz",
+                        "xtibqdxbxwakbog",
+                        "eodkwobda"))
                 .withIdentity(
                     new ManagedServiceIdentity()
-                        .withType(ManagedServiceIdentityType.SYSTEM_ASSIGNED)
+                        .withType(ManagedServiceIdentityType.NONE)
                         .withUserAssignedIdentities(mapOf()))
-                .withNewRelicAccountProperties(new NewRelicAccountProperties().withUserId("obl"))
+                .withNewRelicAccountProperties(new NewRelicAccountProperties().withUserId("wyhzdx"))
                 .withUserInfo(
                     new UserInfo()
-                        .withFirstName("pe")
-                        .withLastName("wfbkrvrns")
-                        .withEmailAddress("hqjohxcrsbfova")
-                        .withPhoneNumber("ruvw")
-                        .withCountry("sqfsubcgjbirxb"))
+                        .withFirstName("mnvdfzn")
+                        .withLastName("ao")
+                        .withEmailAddress("xzb")
+                        .withPhoneNumber("blylpstdbh")
+                        .withCountry("srzdzucerscdn"))
                 .withPlanData(
                     new PlanData()
                         .withUsageType(UsageType.COMMITTED)
-                        .withBillingCycle(BillingCycle.YEARLY)
-                        .withPlanDetails("jfdtwssotftpvj")
-                        .withEffectiveDate(OffsetDateTime.parse("2021-04-19T06:05:29Z")))
+                        .withBillingCycle(BillingCycle.WEEKLY)
+                        .withPlanDetails("jmygtdsslswtmwer")
+                        .withEffectiveDate(OffsetDateTime.parse("2021-09-22T20:42:28Z")))
                 .withOrgCreationSource(OrgCreationSource.LIFTR)
                 .withAccountCreationSource(AccountCreationSource.LIFTR)
                 .create();
 
-        Assertions.assertEquals("vwiwubmwmbesld", response.location());
-        Assertions.assertEquals("wtppjflcxogaoko", response.tags().get("z"));
+        Assertions.assertEquals("uuvxz", response.location());
+        Assertions.assertEquals("vithh", response.tags().get("zonosgg"));
         Assertions.assertEquals(ManagedServiceIdentityType.USER_ASSIGNED, response.identity().type());
-        Assertions.assertEquals("ss", response.newRelicAccountProperties().userId());
-        Assertions.assertEquals("vdfznudaodvxzb", response.userInfo().firstName());
-        Assertions.assertEquals("blylpstdbh", response.userInfo().lastName());
-        Assertions.assertEquals("srzdzucerscdn", response.userInfo().emailAddress());
-        Assertions.assertEquals("evfiwjmygt", response.userInfo().phoneNumber());
-        Assertions.assertEquals("slswtm", response.userInfo().country());
+        Assertions.assertEquals("muwlauwzizxbm", response.newRelicAccountProperties().userId());
+        Assertions.assertEquals("u", response.userInfo().firstName());
+        Assertions.assertEquals("uvpb", response.userInfo().lastName());
+        Assertions.assertEquals("d", response.userInfo().emailAddress());
+        Assertions.assertEquals("orppxebmnzbtb", response.userInfo().phoneNumber());
+        Assertions.assertEquals("pglkf", response.userInfo().country());
         Assertions.assertEquals(UsageType.PAYG, response.planData().usageType());
         Assertions.assertEquals(BillingCycle.MONTHLY, response.planData().billingCycle());
-        Assertions.assertEquals("pyqs", response.planData().planDetails());
-        Assertions.assertEquals(OffsetDateTime.parse("2021-06-06T05:20:48Z"), response.planData().effectiveDate());
+        Assertions.assertEquals("el", response.planData().planDetails());
+        Assertions.assertEquals(OffsetDateTime.parse("2021-04-04T13:11:17Z"), response.planData().effectiveDate());
         Assertions.assertEquals(OrgCreationSource.NEWRELIC, response.orgCreationSource());
         Assertions.assertEquals(AccountCreationSource.NEWRELIC, response.accountCreationSource());
     }

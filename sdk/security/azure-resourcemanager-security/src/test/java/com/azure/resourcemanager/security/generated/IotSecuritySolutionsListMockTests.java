@@ -36,7 +36,7 @@ public final class IotSecuritySolutionsListMockTests {
         ArgumentCaptor<HttpRequest> httpRequest = ArgumentCaptor.forClass(HttpRequest.class);
 
         String responseStr =
-            "{\"value\":[{\"location\":\"ljuxl\",\"properties\":{\"workspace\":\"ctvtf\",\"displayName\":\"mskdch\",\"status\":\"Disabled\",\"export\":[\"RawEvents\",\"RawEvents\",\"RawEvents\",\"RawEvents\"],\"disabledDataSources\":[\"TwinData\",\"TwinData\"],\"iotHubs\":[\"falkzazm\",\"oke\",\"gjqafkmkrokzr\"],\"userDefinedResources\":{\"query\":\"qetwpqrtvaozn\",\"querySubscriptions\":[]},\"autoDiscoveredResources\":[\"xiezeagmceit\",\"ugedh\"],\"recommendationsConfiguration\":[],\"unmaskedIpLoggingStatus\":\"Disabled\",\"additionalWorkspaces\":[]},\"tags\":{\"fsyrledjc\":\"syjdeolctae\"},\"id\":\"stbvtqig\",\"name\":\"xzvsgeafgf\",\"type\":\"sehxlzsxezp\"}]}";
+            "{\"value\":[{\"location\":\"utmdpvozg\",\"properties\":{\"workspace\":\"bknlzcl\",\"displayName\":\"tzeyowmndcovd\",\"status\":\"Enabled\",\"export\":[\"RawEvents\"],\"disabledDataSources\":[\"TwinData\"],\"iotHubs\":[\"mk\",\"fruwkud\",\"bcpftxudqyemebun\",\"ucmci\"],\"userDefinedResources\":{\"query\":\"nee\",\"querySubscriptions\":[]},\"autoDiscoveredResources\":[\"auwcg\",\"efnoh\",\"itranizerwguda\",\"mxubvfbngfcoce\"],\"recommendationsConfiguration\":[],\"unmaskedIpLoggingStatus\":\"Enabled\",\"additionalWorkspaces\":[]},\"tags\":{\"vhl\":\"ztraud\",\"tmojhvrztnvgyshq\":\"dculregp\",\"zlpykcfazzwjcay\":\"dgrtwmew\"},\"id\":\"rzrr\",\"name\":\"nsyby\",\"type\":\"polwzrghsrlei\"}]}";
 
         Mockito.when(httpResponse.getStatusCode()).thenReturn(200);
         Mockito.when(httpResponse.getHeaders()).thenReturn(new HttpHeaders());
@@ -65,17 +65,17 @@ public final class IotSecuritySolutionsListMockTests {
                     new AzureProfile("", "", AzureEnvironment.AZURE));
 
         PagedIterable<IoTSecuritySolutionModel> response =
-            manager.iotSecuritySolutions().list("wakwseivmakxhys", com.azure.core.util.Context.NONE);
+            manager.iotSecuritySolutions().list("q", com.azure.core.util.Context.NONE);
 
-        Assertions.assertEquals("ljuxl", response.iterator().next().location());
-        Assertions.assertEquals("syjdeolctae", response.iterator().next().tags().get("fsyrledjc"));
-        Assertions.assertEquals("ctvtf", response.iterator().next().workspace());
-        Assertions.assertEquals("mskdch", response.iterator().next().displayName());
-        Assertions.assertEquals(SecuritySolutionStatus.DISABLED, response.iterator().next().status());
+        Assertions.assertEquals("utmdpvozg", response.iterator().next().location());
+        Assertions.assertEquals("ztraud", response.iterator().next().tags().get("vhl"));
+        Assertions.assertEquals("bknlzcl", response.iterator().next().workspace());
+        Assertions.assertEquals("tzeyowmndcovd", response.iterator().next().displayName());
+        Assertions.assertEquals(SecuritySolutionStatus.ENABLED, response.iterator().next().status());
         Assertions.assertEquals(ExportData.RAW_EVENTS, response.iterator().next().export().get(0));
         Assertions.assertEquals(DataSource.TWIN_DATA, response.iterator().next().disabledDataSources().get(0));
-        Assertions.assertEquals("falkzazm", response.iterator().next().iotHubs().get(0));
-        Assertions.assertEquals("qetwpqrtvaozn", response.iterator().next().userDefinedResources().query());
-        Assertions.assertEquals(UnmaskedIpLoggingStatus.DISABLED, response.iterator().next().unmaskedIpLoggingStatus());
+        Assertions.assertEquals("mk", response.iterator().next().iotHubs().get(0));
+        Assertions.assertEquals("nee", response.iterator().next().userDefinedResources().query());
+        Assertions.assertEquals(UnmaskedIpLoggingStatus.ENABLED, response.iterator().next().unmaskedIpLoggingStatus());
     }
 }

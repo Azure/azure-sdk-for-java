@@ -66,6 +66,10 @@ public final class PrivateZoneProperties {
     @JsonProperty(value = "internalId", access = JsonProperty.Access.WRITE_ONLY)
     private String internalId;
 
+    /** Creates an instance of PrivateZoneProperties class. */
+    public PrivateZoneProperties() {
+    }
+
     /**
      * Get the maxNumberOfRecordSets property: The maximum number of record sets that can be created in this Private DNS
      * zone. This is a read-only property and any attempt to set this value will be ignored.

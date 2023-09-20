@@ -12,14 +12,14 @@ public final class ValidateCustomDomainInputTests {
     @org.junit.jupiter.api.Test
     public void testDeserialize() throws Exception {
         ValidateCustomDomainInput model =
-            BinaryData.fromString("{\"hostName\":\"xgfpelolppv\"}").toObject(ValidateCustomDomainInput.class);
-        Assertions.assertEquals("xgfpelolppv", model.hostname());
+            BinaryData.fromString("{\"hostName\":\"dvwvgpio\"}").toObject(ValidateCustomDomainInput.class);
+        Assertions.assertEquals("dvwvgpio", model.hostname());
     }
 
     @org.junit.jupiter.api.Test
     public void testSerialize() throws Exception {
-        ValidateCustomDomainInput model = new ValidateCustomDomainInput().withHostname("xgfpelolppv");
+        ValidateCustomDomainInput model = new ValidateCustomDomainInput().withHostname("dvwvgpio");
         model = BinaryData.fromObject(model).toObject(ValidateCustomDomainInput.class);
-        Assertions.assertEquals("xgfpelolppv", model.hostname());
+        Assertions.assertEquals("dvwvgpio", model.hostname());
     }
 }

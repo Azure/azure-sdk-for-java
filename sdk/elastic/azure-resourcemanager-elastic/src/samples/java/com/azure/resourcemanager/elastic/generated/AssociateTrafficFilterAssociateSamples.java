@@ -4,12 +4,10 @@
 
 package com.azure.resourcemanager.elastic.generated;
 
-import com.azure.core.util.Context;
-
 /** Samples for AssociateTrafficFilter Associate. */
 public final class AssociateTrafficFilterAssociateSamples {
     /*
-     * x-ms-original-file: specification/elastic/resource-manager/Microsoft.Elastic/preview/2022-07-01-preview/examples/AssociateTrafficFilter_Update.json
+     * x-ms-original-file: specification/elastic/resource-manager/Microsoft.Elastic/preview/2023-02-01-preview/examples/AssociateTrafficFilter_Update.json
      */
     /**
      * Sample code: AssociateTrafficFilter_Associate.
@@ -19,6 +17,7 @@ public final class AssociateTrafficFilterAssociateSamples {
     public static void associateTrafficFilterAssociate(com.azure.resourcemanager.elastic.ElasticManager manager) {
         manager
             .associateTrafficFilters()
-            .associate("myResourceGroup", "myMonitor", "31d91b5afb6f4c2eaaf104c97b1991dd", Context.NONE);
+            .associate(
+                "myResourceGroup", "myMonitor", "31d91b5afb6f4c2eaaf104c97b1991dd", com.azure.core.util.Context.NONE);
     }
 }

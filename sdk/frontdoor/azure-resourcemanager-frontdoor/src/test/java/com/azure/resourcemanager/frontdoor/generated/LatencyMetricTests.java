@@ -13,7 +13,7 @@ public final class LatencyMetricTests {
         LatencyMetric model =
             BinaryData
                 .fromString(
-                    "{\"name\":\"vhezrkgqhcj\",\"endDateTimeUTC\":\"fovgmkqsleyyvxy\",\"aValue\":16.411882,\"bValue\":90.606155,\"delta\":4.740429,\"deltaPercent\":98.90796,\"aCLower95CI\":82.56238,\"aHUpper95CI\":10.539704,\"bCLower95CI\":26.154089,\"bUpper95CI\":85.224434}")
+                    "{\"name\":\"hbxvvyhgsopbyrqu\",\"endDateTimeUTC\":\"g\",\"aValue\":15.345794,\"bValue\":22.12206,\"delta\":32.447994,\"deltaPercent\":93.44803,\"aCLower95CI\":62.546974,\"aHUpper95CI\":29.160892,\"bCLower95CI\":0.5899191,\"bUpper95CI\":92.239586}")
                 .toObject(LatencyMetric.class);
     }
 

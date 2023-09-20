@@ -4,6 +4,7 @@ package com.azure.core.test.http;
 
 import com.azure.core.http.ContentType;
 import com.azure.core.http.HttpClient;
+import com.azure.core.http.HttpHeaderName;
 import com.azure.core.http.HttpHeaders;
 import com.azure.core.http.HttpRequest;
 import com.azure.core.http.HttpResponse;
@@ -29,6 +30,8 @@ import java.util.regex.Pattern;
 public final class PlaybackClient implements HttpClient {
     private static final String X_MS_CLIENT_REQUEST_ID = "x-ms-client-request-id";
     private static final String X_MS_ENCRYPTION_KEY_SHA256 = "x-ms-encryption-key-sha256";
+    private static final HttpHeaderName X_MS_ENCRYPTION_KEY_SHA256_HEADER =
+        HttpHeaderName.fromString(X_MS_ENCRYPTION_KEY_SHA256);
 
     // Pattern that matches all '//' in a URL that aren't prefixed by 'http:' or 'https:'.
     private static final Pattern DOUBLE_SLASH_CLEANER = Pattern.compile("(?<!https?:)//");
@@ -106,21 +109,16 @@ public final class PlaybackClient implements HttpClient {
 
         // Overwrite the request header if any.
         if (networkCallRecord.getHeaders().containsKey(X_MS_CLIENT_REQUEST_ID)) {
-            request.setHeader(X_MS_CLIENT_REQUEST_ID, networkCallRecord.getHeaders().get(X_MS_CLIENT_REQUEST_ID));
+            request.setHeader(HttpHeaderName.X_MS_CLIENT_REQUEST_ID,
+                networkCallRecord.getHeaders().get(X_MS_CLIENT_REQUEST_ID));
         }
-        if (request.getHeaders().getValue(X_MS_ENCRYPTION_KEY_SHA256) != null) {
+        if (request.getHeaders().getValue(X_MS_ENCRYPTION_KEY_SHA256_HEADER) != null) {
             networkCallRecord.getResponse().put(X_MS_ENCRYPTION_KEY_SHA256,
-                request.getHeaders().getValue(X_MS_ENCRYPTION_KEY_SHA256));
+                request.getHeaders().getValue(X_MS_ENCRYPTION_KEY_SHA256_HEADER));
         }
 
         int recordStatusCode = Integer.parseInt(networkCallRecord.getResponse().get("StatusCode"));
-        HttpHeaders headers = new HttpHeaders();
-
-        for (Map.Entry<String, String> pair : networkCallRecord.getResponse().entrySet()) {
-            if (!pair.getKey().equals("StatusCode") && !pair.getKey().equals("Body")) {
-                headers.set(pair.getKey(), applyReplacementRules(pair.getValue()));
-            }
-        }
+        HttpHeaders headers = getHeaders(networkCallRecord);
 
         String rawBody = networkCallRecord.getResponse().get("Body");
         byte[] bytes = null;
@@ -165,7 +163,7 @@ public final class PlaybackClient implements HttpClient {
             }
 
             if (bytes.length > 0) {
-                headers.set("Content-Length", String.valueOf(bytes.length));
+                headers.set(HttpHeaderName.CONTENT_LENGTH, String.valueOf(bytes.length));
             }
         }
 
@@ -188,6 +186,19 @@ public final class PlaybackClient implements HttpClient {
             urlBuilder.setQueryParameter("sig", "REDACTED");
         }
 
-        return String.format("%s%s", urlBuilder.getPath(), urlBuilder.getQueryString());
+        return urlBuilder.getPath() + urlBuilder.getQueryString();
+    }
+
+    @SuppressWarnings("deprecation")
+    private HttpHeaders getHeaders(NetworkCallRecord networkCallRecord) {
+        HttpHeaders headers = new HttpHeaders();
+
+        for (Map.Entry<String, String> pair : networkCallRecord.getResponse().entrySet()) {
+            if (!pair.getKey().equals("StatusCode") && !pair.getKey().equals("Body")) {
+                headers.set(pair.getKey(), applyReplacementRules(pair.getValue()));
+            }
+        }
+
+        return headers;
     }
 }

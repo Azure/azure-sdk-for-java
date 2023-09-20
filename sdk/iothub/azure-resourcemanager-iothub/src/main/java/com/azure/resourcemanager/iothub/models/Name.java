@@ -22,6 +22,10 @@ public final class Name {
     @JsonProperty(value = "localizedValue")
     private String localizedValue;
 
+    /** Creates an instance of Name class. */
+    public Name() {
+    }
+
     /**
      * Get the value property: IotHub type.
      *

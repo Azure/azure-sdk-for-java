@@ -4,12 +4,10 @@
 
 package com.azure.resourcemanager.confidentialledger.generated;
 
-import com.azure.core.util.Context;
-
 /** Samples for Ledger ListByResourceGroup. */
 public final class LedgerListByResourceGroupSamples {
     /*
-     * x-ms-original-file: specification/confidentialledger/resource-manager/Microsoft.ConfidentialLedger/stable/2022-05-13/examples/ConfidentialLedger_List.json
+     * x-ms-original-file: specification/confidentialledger/resource-manager/Microsoft.ConfidentialLedger/preview/2023-01-26-preview/examples/ConfidentialLedger_List.json
      */
     /**
      * Sample code: ConfidentialLedgerList.
@@ -18,6 +16,6 @@ public final class LedgerListByResourceGroupSamples {
      */
     public static void confidentialLedgerList(
         com.azure.resourcemanager.confidentialledger.ConfidentialLedgerManager manager) {
-        manager.ledgers().listByResourceGroup("DummyResourceGroupName", null, Context.NONE);
+        manager.ledgers().listByResourceGroup("DummyResourceGroupName", null, com.azure.core.util.Context.NONE);
     }
 }

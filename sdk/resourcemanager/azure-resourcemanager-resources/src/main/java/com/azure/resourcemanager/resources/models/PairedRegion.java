@@ -18,7 +18,7 @@ public final class PairedRegion {
 
     /*
      * The fully qualified ID of the location. For example,
-     * /subscriptions/00000000-0000-0000-0000-000000000000/locations/westus.
+     * /subscriptions/8d65815f-a5b6-402f-9298-045155da7d74/locations/westus.
      */
     @JsonProperty(value = "id", access = JsonProperty.Access.WRITE_ONLY)
     private String id;
@@ -44,7 +44,7 @@ public final class PairedRegion {
 
     /**
      * Get the id property: The fully qualified ID of the location. For example,
-     * /subscriptions/00000000-0000-0000-0000-000000000000/locations/westus.
+     * /subscriptions/8d65815f-a5b6-402f-9298-045155da7d74/locations/westus.
      *
      * @return the id value.
      */

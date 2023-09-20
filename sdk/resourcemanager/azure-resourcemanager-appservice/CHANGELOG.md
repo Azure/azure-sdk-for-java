@@ -1,6 +1,6 @@
 # Release History
 
-## 2.26.0-beta.1 (Unreleased)
+## 2.31.0-beta.1 (Unreleased)
 
 ### Features Added
 
@@ -9,6 +9,55 @@
 ### Bugs Fixed
 
 ### Other Changes
+
+## 2.30.0 (2023-08-25)
+
+### Other Changes
+
+#### Dependency Updates
+
+- Updated core dependency from resources.
+
+## 2.29.0 (2023-07-28)
+
+### Features Added
+
+- Supported `withContainerSize` for `FunctionApp`.
+
+### Bugs Fixed
+
+- Updated SKU that automatically set Function App "Always On".
+Function App on `FREE`, `SHARED`, `DYNAMIC` (consumption plan), `ELASTIC_PREMIUM` (premium plan), `ELASTIC_ISOLATED` App Service has "Always On" turned off.
+
+## 2.28.0 (2023-06-25)
+
+### Other Changes
+
+#### Dependency Updates
+
+- Updated core dependency from resources.
+
+## 2.27.0 (2023-05-25)
+
+### Other Changes
+
+#### Dependency Updates
+
+- Updated core dependency from resources.
+
+## 2.26.1 (2023-04-25)
+
+### Breaking Changes
+
+- Changed to use AAD Auth for Kudu deployment.
+
+## 2.26.0 (2023-04-21)
+
+### Other Changes
+
+#### Dependency Updates
+
+- Updated core dependency from resources.
 
 ## 2.25.0 (2023-03-24)
 

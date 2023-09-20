@@ -33,7 +33,7 @@ public final class RegulatoryComplianceControlsListMockTests {
         ArgumentCaptor<HttpRequest> httpRequest = ArgumentCaptor.forClass(HttpRequest.class);
 
         String responseStr =
-            "{\"value\":[{\"properties\":{\"description\":\"rhwv\",\"state\":\"Failed\",\"passedAssessments\":1502515308,\"failedAssessments\":902896501,\"skippedAssessments\":1216537782},\"id\":\"ybsjrc\",\"name\":\"rvtz\",\"type\":\"nrbctbhpjhxpcvrd\"}]}";
+            "{\"value\":[{\"properties\":{\"description\":\"wxiplkyso\",\"state\":\"Failed\",\"passedAssessments\":67847643,\"failedAssessments\":1371951498,\"skippedAssessments\":658802312},\"id\":\"whdmcvhtbbz\",\"name\":\"hfvhuwzbxpcqz\",\"type\":\"ihotjecohmxv\"}]}";
 
         Mockito.when(httpResponse.getStatusCode()).thenReturn(200);
         Mockito.when(httpResponse.getHeaders()).thenReturn(new HttpHeaders());
@@ -62,7 +62,9 @@ public final class RegulatoryComplianceControlsListMockTests {
                     new AzureProfile("", "", AzureEnvironment.AZURE));
 
         PagedIterable<RegulatoryComplianceControl> response =
-            manager.regulatoryComplianceControls().list("njc", "hmocgjshg", com.azure.core.util.Context.NONE);
+            manager
+                .regulatoryComplianceControls()
+                .list("yhcdjwsuoardnag", "tpufpbpgnrholhu", com.azure.core.util.Context.NONE);
 
         Assertions.assertEquals(State.FAILED, response.iterator().next().state());
     }

@@ -17,6 +17,9 @@ public final class AcsRecordingStorageInfoProperties {
     @JsonProperty(value = "recordingChunks")
     private List<AcsRecordingChunkInfoProperties> recordingChunks;
 
+    /** Creates an instance of AcsRecordingStorageInfoProperties class. */
+    public AcsRecordingStorageInfoProperties() {}
+
     /**
      * Get the recordingChunks property: List of details of recording chunks information.
      *

@@ -5,13 +5,14 @@ package com.azure.core.tracing.opentelemetry;
 
 import com.azure.core.util.Context;
 import com.azure.core.util.tracing.Tracer;
+import io.opentelemetry.api.OpenTelemetry;
 import io.opentelemetry.api.baggage.Baggage;
 import io.opentelemetry.api.trace.Span;
 import io.opentelemetry.api.trace.SpanContext;
 import io.opentelemetry.api.trace.TraceFlags;
 import io.opentelemetry.api.trace.TraceState;
-import io.opentelemetry.api.trace.TracerProvider;
 import io.opentelemetry.context.Scope;
+import io.opentelemetry.sdk.OpenTelemetrySdk;
 import io.opentelemetry.sdk.trace.IdGenerator;
 import io.opentelemetry.sdk.trace.SdkTracerProvider;
 import org.junit.jupiter.api.Test;
@@ -30,9 +31,10 @@ import static org.junit.jupiter.api.Assertions.assertTrue;
 @SuppressWarnings("deprecation")
 public class ContextPropagationTests {
 
-    private static final TracerProvider TRACER_PROVIDER = SdkTracerProvider.builder().build();
+    private static final SdkTracerProvider TRACER_PROVIDER = SdkTracerProvider.builder().build();
+    private static final OpenTelemetry OPEN_TELEMETRY = OpenTelemetrySdk.builder().setTracerProvider(TRACER_PROVIDER).build();
     private static final Tracer TRACER = new OpenTelemetryTracer("test", null, null,
-        new OpenTelemetryTracingOptions().setProvider(TRACER_PROVIDER));
+        new OpenTelemetryTracingOptions().setOpenTelemetry(OPEN_TELEMETRY));
     @Test
     public void extractContextEmpty() {
         // Act

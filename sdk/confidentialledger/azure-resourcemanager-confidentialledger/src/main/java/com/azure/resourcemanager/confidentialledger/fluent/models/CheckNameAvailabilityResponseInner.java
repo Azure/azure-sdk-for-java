@@ -29,6 +29,10 @@ public final class CheckNameAvailabilityResponseInner {
     @JsonProperty(value = "message")
     private String message;
 
+    /** Creates an instance of CheckNameAvailabilityResponseInner class. */
+    public CheckNameAvailabilityResponseInner() {
+    }
+
     /**
      * Get the nameAvailable property: Indicates if the resource name is available.
      *

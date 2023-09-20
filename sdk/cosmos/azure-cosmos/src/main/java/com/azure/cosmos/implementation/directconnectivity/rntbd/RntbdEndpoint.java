@@ -4,7 +4,9 @@
 package com.azure.cosmos.implementation.directconnectivity.rntbd;
 
 import com.azure.cosmos.implementation.UserAgentContainer;
+import com.azure.cosmos.implementation.directconnectivity.AddressSelector;
 import com.azure.cosmos.implementation.directconnectivity.IAddressResolver;
+import com.azure.cosmos.implementation.directconnectivity.Uri;
 import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import io.micrometer.core.instrument.Tag;
@@ -83,6 +85,12 @@ public interface RntbdEndpoint extends AutoCloseable {
         double threshold,
         Class<?> eventType);
 
+    int getMinChannelsRequired();
+
+    void setMinChannelsRequired(int minChannelsRequired);
+
+    Uri getAddressUri();
+
     // endregion
 
     // region Methods
@@ -109,12 +117,20 @@ public interface RntbdEndpoint extends AutoCloseable {
 
         int evictions();
 
-        RntbdEndpoint createIfAbsent(URI serviceEndpoint, URI physicalAddress);
+        RntbdEndpoint createIfAbsent(
+            URI serviceEndpoint,
+            Uri addressUri,
+            ProactiveOpenConnectionsProcessor proactiveOpenConnectionsProcessor,
+            int minRequiredChannelsForEndpoint,
+            AddressSelector addressSelector);
+
         RntbdEndpoint get(URI physicalAddress);
 
         IAddressResolver getAddressResolver();
 
         Stream<RntbdEndpoint> list();
+
+        boolean isClosed();
     }
 
     final class Config {
@@ -292,6 +308,21 @@ public interface RntbdEndpoint extends AutoCloseable {
         @JsonProperty
         public long timeoutDetectionOnWriteTimeLimitInNanos() {
             return this.options.timeoutDetectionOnWriteTimeLimit().toNanos();
+        }
+
+        @JsonProperty
+        public long nonRespondingChannelReadDelayTimeLimitInNanos() {
+            return this.options.nonRespondingChannelReadDelayTimeLimit().toNanos();
+        }
+
+        @JsonProperty
+        public int cancellationCountSinceLastReadThreshold() {
+            return this.options.cancellationCountSinceLastReadThreshold();
+        }
+
+        @JsonProperty
+        public int minConnectionPoolSizePerEndpoint() {
+            return this.options.minConnectionPoolSizePerEndpoint();
         }
 
         @Override

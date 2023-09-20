@@ -58,6 +58,6 @@ public final class ApiCollectionOffboardingsDeleteWithResponseMockTests {
 
         manager
             .apiCollectionOffboardings()
-            .deleteWithResponse("yyhigqkzjuqw", "ajquzxpixhyoi", "nfdbgsoscienezf", com.azure.core.util.Context.NONE);
+            .deleteWithResponse("rnrnjrcufmbgacnr", "fdtncmspsanma", "eubkqiqmlf", com.azure.core.util.Context.NONE);
     }
 }

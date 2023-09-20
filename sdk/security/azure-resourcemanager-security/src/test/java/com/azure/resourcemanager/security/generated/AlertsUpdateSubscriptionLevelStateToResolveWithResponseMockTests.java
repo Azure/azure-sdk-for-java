@@ -59,6 +59,6 @@ public final class AlertsUpdateSubscriptionLevelStateToResolveWithResponseMockTe
         manager
             .alerts()
             .updateSubscriptionLevelStateToResolveWithResponse(
-                "ombcdtajdopggo", "wj", com.azure.core.util.Context.NONE);
+                "kftbaewhte", "loamfmxtllfltym", com.azure.core.util.Context.NONE);
     }
 }

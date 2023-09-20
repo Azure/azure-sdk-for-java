@@ -20,6 +20,15 @@ public final class TlsVersion extends ExpandableStringEnum<TlsVersion> {
     public static final TlsVersion ONE_TWO = fromString("1.2");
 
     /**
+     * Creates a new instance of TlsVersion value.
+     *
+     * @deprecated Use the {@link #fromString(String)} factory method.
+     */
+    @Deprecated
+    public TlsVersion() {
+    }
+
+    /**
      * Creates or finds a TlsVersion from its string representation.
      *
      * @param name a name to look for.

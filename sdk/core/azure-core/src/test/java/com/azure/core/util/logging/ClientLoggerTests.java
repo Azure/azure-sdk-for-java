@@ -918,6 +918,23 @@ public class ClientLoggerTests {
         assertTrue(logValues.contains(expectedStackTrace));
     }
 
+    @ParameterizedTest
+    @MethodSource("provideLogLevels")
+    public void logAtLevel(LogLevel level) {
+        setupLogLevel(LogLevel.INFORMATIONAL.getLogLevel());
+        ClientLogger logger = new ClientLogger(ClientLoggerTests.class);
+
+        logger.atLevel(level)
+            .addKeyValue("connectionId", "foo")
+            .addKeyValue("linkName", "bar")
+            .log("message");
+
+        assertMessage(
+            "{\"az.sdk.message\":\"message\",\"connectionId\":\"foo\",\"linkName\":\"bar\"}",
+            byteArraySteamToString(logCaptureStream),
+            LogLevel.INFORMATIONAL,
+            level);
+    }
 
     private String stackTraceToString(Throwable exception) {
         StringWriter stringWriter = new StringWriter();

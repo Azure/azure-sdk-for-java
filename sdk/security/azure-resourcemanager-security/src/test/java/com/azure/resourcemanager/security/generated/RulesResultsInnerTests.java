@@ -16,7 +16,7 @@ public final class RulesResultsInnerTests {
         RulesResultsInner model =
             BinaryData
                 .fromString(
-                    "{\"value\":[{\"properties\":{\"results\":[]},\"id\":\"elqkaadlkn\",\"name\":\"foanniyopetx\",\"type\":\"vcnrly\"},{\"properties\":{\"results\":[]},\"id\":\"caephbl\",\"name\":\"wqpatvbqsdtcj\",\"type\":\"ctvivuzqymtuo\"},{\"properties\":{\"results\":[]},\"id\":\"tgitsqhzvbrzc\",\"name\":\"banf\",\"type\":\"ndscxmxeatk\"},{\"properties\":{\"results\":[]},\"id\":\"wnrdjyibqbnaom\",\"name\":\"jrmkuhmaxljalf\",\"type\":\"hcjmo\"}]}")
+                    "{\"value\":[{\"properties\":{\"results\":[]},\"id\":\"clcdigptajbrzmq\",\"name\":\"ucycijo\",\"type\":\"lxiutgjcyzyzjdnr\"},{\"properties\":{\"results\":[]},\"id\":\"txjeaoqaqbzgy\",\"name\":\"fwwvuatbwbqam\",\"type\":\"e\"},{\"properties\":{\"results\":[]},\"id\":\"yslpkcvmw\",\"name\":\"auxxepmyw\",\"type\":\"ormcqmic\"}]}")
                 .toObject(RulesResultsInner.class);
     }
 
@@ -27,8 +27,6 @@ public final class RulesResultsInnerTests {
                 .withValue(
                     Arrays
                         .asList(
-                            new RuleResultsInner()
-                                .withProperties(new RuleResultsProperties().withResults(Arrays.asList())),
                             new RuleResultsInner()
                                 .withProperties(new RuleResultsProperties().withResults(Arrays.asList())),
                             new RuleResultsInner()

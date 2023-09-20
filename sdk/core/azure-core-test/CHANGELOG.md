@@ -1,6 +1,6 @@
 # Release History
 
-## 1.16.0-beta.1 (Unreleased)
+## 1.21.0-beta.1 (Unreleased)
 
 ### Features Added
 
@@ -9,6 +9,100 @@
 ### Bugs Fixed
 
 ### Other Changes
+
+## 1.20.0 (2023-09-07)
+
+### Features Added
+
+- Added `TestProxyRecordingOptions` model representing the transport layer options to send to the test proxy when recording.
+
+### Other Changes
+
+#### Dependency Updates
+
+- Upgraded `azure-core` from `1.42.0` to `1.43.0`.
+
+## 1.19.0 (2023-08-04)
+
+### Features Added
+- Add helper methods for adding sanitizers and matchers
+- Updated the list of headers to redact to include "subscription-key"
+
+### Other Changes
+
+#### Dependency Updates
+
+- Upgraded `azure-core` from `1.41.0` to `1.42.0`.
+
+## 1.18.1 (2023-07-06)
+
+### Other Changes
+
+#### Dependency Updates
+
+- Upgraded `azure-core` from `1.40.0` to `1.41.0`.
+
+## 1.18.0 (2023-06-02)
+
+### Features Added
+
+- Enabled ability to use test playback records from the assets repo, removing the need to maintain them in `azure-sdk-for-java`.
+
+### Other Changes
+
+#### Dependency Updates
+
+- Upgraded `azure-core` from `1.39.0` to `1.40.0`.
+
+## 1.17.0 (2023-05-04)
+
+### Features Added
+
+- Enabled ability to skip matching request bodies with Test Proxy. ([#34631](https://github.com/Azure/azure-sdk-for-java/pull/34631))
+
+### Bugs Fixed
+
+- Updated command line for Test Proxy to match changes it had with options. ([#34748](https://github.com/Azure/azure-sdk-for-java/pull/34748))
+
+### Other Changes
+
+- Include names of long-running tests if test run takes longer than 30 minutes. ([#34374](https://github.com/Azure/azure-sdk-for-java/pull/34374))
+
+#### Dependency Updates
+
+- Upgraded `azure-core` from `1.38.0` to `1.39.0`.
+
+## 1.16.2 (2023-04-19)
+
+### Bugs fixed
+- Refactored startup of test-proxy instances to properly work in multi-threaded situations.
+
+## 1.16.1 (2023-04-13)
+
+### Bugs Fixed
+
+- Updated timeout values for waiting for test proxy initialization.
+
+## 1.16.0 (2023-04-07)
+
+### Features Added
+
+- Added `InterceptorManager.isRecordMode` to determine if the testing mode is `RECORD`.
+- Added support for generic regex `TestProxySanitizer`.
+
+### Bugs Fixed
+
+- Fixed a bug where the URL would remain the Test Proxy URL instead of the service URL being called through the proxy.
+- Fixed a bug where Test Proxy headers could be added multiple times to only be set once.
+- Fixed a bug where multiple thread could try to download and start the test proxy resulting in random failures.
+
+### Other Changes
+
+- Added `Operation-Location` and `api-key` as default headers to redact when using Test Proxy.
+
+#### Dependency Updates
+
+- Upgraded `azure-core` from `1.37.0` to `1.38.0`.
 
 ## 1.15.0 (2023-03-02)
 

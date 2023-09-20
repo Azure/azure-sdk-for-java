@@ -12,9 +12,9 @@ public final class OperationsListSamples {
     /**
      * Sample code: OperationsList.
      *
-     * @param manager Entry point to VoiceservicesManager.
+     * @param manager Entry point to VoiceServicesManager.
      */
-    public static void operationsList(com.azure.resourcemanager.voiceservices.VoiceservicesManager manager) {
+    public static void operationsList(com.azure.resourcemanager.voiceservices.VoiceServicesManager manager) {
         manager.operations().list(com.azure.core.util.Context.NONE);
     }
 }

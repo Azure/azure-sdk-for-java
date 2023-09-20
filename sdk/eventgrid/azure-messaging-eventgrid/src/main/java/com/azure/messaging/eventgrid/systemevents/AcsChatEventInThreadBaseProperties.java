@@ -22,6 +22,9 @@ public class AcsChatEventInThreadBaseProperties {
     @JsonProperty(value = "threadId")
     private String threadId;
 
+    /** Creates an instance of AcsChatEventInThreadBaseProperties class. */
+    public AcsChatEventInThreadBaseProperties() {}
+
     /**
      * Get the transactionId property: The transaction id will be used as co-relation vector.
      *

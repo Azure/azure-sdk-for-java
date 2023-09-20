@@ -60,6 +60,10 @@ public final class CertificatePropertiesWithNonce {
     @JsonProperty(value = "certificate", access = JsonProperty.Access.WRITE_ONLY)
     private String certificate;
 
+    /** Creates an instance of CertificatePropertiesWithNonce class. */
+    public CertificatePropertiesWithNonce() {
+    }
+
     /**
      * Get the subject property: The certificate's subject name.
      *

@@ -41,6 +41,10 @@ public final class TagProperty {
     @JsonProperty(value = "upn", access = JsonProperty.Access.WRITE_ONLY)
     private String upn;
 
+    /** Creates an instance of TagProperty class. */
+    public TagProperty() {
+    }
+
     /**
      * Get the tag property: The tag value.
      *

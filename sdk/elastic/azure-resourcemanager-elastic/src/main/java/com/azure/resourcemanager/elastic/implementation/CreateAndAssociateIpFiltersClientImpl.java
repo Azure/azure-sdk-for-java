@@ -59,9 +59,8 @@ public final class CreateAndAssociateIpFiltersClientImpl implements CreateAndAss
     public interface CreateAndAssociateIpFiltersService {
         @Headers({"Content-Type: application/json"})
         @Post(
-            "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Elastic/monitors"
-                + "/{monitorName}/createAndAssociateIPFilter")
-        @ExpectedResponses({201})
+            "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Elastic/monitors/{monitorName}/createAndAssociateIPFilter")
+        @ExpectedResponses({200, 202})
         @UnexpectedResponseExceptionType(ManagementException.class)
         Mono<Response<Flux<ByteBuffer>>> create(
             @HostParam("$host") String endpoint,
@@ -258,7 +257,7 @@ public final class CreateAndAssociateIpFiltersClientImpl implements CreateAndAss
     public SyncPoller<PollResult<Void>, Void> beginCreate(String resourceGroupName, String monitorName) {
         final String ips = null;
         final String name = null;
-        return beginCreateAsync(resourceGroupName, monitorName, ips, name).getSyncPoller();
+        return this.beginCreateAsync(resourceGroupName, monitorName, ips, name).getSyncPoller();
     }
 
     /**
@@ -277,7 +276,7 @@ public final class CreateAndAssociateIpFiltersClientImpl implements CreateAndAss
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     public SyncPoller<PollResult<Void>, Void> beginCreate(
         String resourceGroupName, String monitorName, String ips, String name, Context context) {
-        return beginCreateAsync(resourceGroupName, monitorName, ips, name, context).getSyncPoller();
+        return this.beginCreateAsync(resourceGroupName, monitorName, ips, name, context).getSyncPoller();
     }
 
     /**

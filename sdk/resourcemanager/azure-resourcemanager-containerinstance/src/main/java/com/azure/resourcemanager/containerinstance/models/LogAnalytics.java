@@ -44,6 +44,10 @@ public final class LogAnalytics {
     @JsonProperty(value = "workspaceResourceId")
     private String workspaceResourceId;
 
+    /** Creates an instance of LogAnalytics class. */
+    public LogAnalytics() {
+    }
+
     /**
      * Get the workspaceId property: The workspace id for log analytics.
      *

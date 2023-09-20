@@ -9,26 +9,25 @@ import com.azure.resourcemanager.appcontainers.models.DiagnosticSupportTopic;
 import com.azure.resourcemanager.appcontainers.models.DiagnosticsDefinition;
 import java.util.Arrays;
 import org.junit.jupiter.api.Assertions;
-import org.junit.jupiter.api.Test;
 
 public final class DiagnosticsDefinitionTests {
-    @Test
-    public void testDeserialize() {
+    @org.junit.jupiter.api.Test
+    public void testDeserialize() throws Exception {
         DiagnosticsDefinition model =
             BinaryData
                 .fromString(
-                    "{\"id\":\"wmd\",\"name\":\"wpklvxw\",\"description\":\"gdxpg\",\"author\":\"chisze\",\"category\":\"nb\",\"supportTopicList\":[{\"id\":\"gibbdaxc\",\"pesId\":\"fozauorsuk\"},{\"id\":\"wbqpl\",\"pesId\":\"vnuuepzl\"}],\"analysisTypes\":[\"wzsoldweyuqdunv\"],\"type\":\"nrwrbiork\",\"score\":33.805977}")
+                    "{\"id\":\"yjkqabqgzslesjcb\",\"name\":\"rnntiewdjcv\",\"description\":\"uwrbehwagoh\",\"author\":\"f\",\"category\":\"mrqemvvhmx\",\"supportTopicList\":[{\"id\":\"futacoebjvewzc\",\"pesId\":\"nmwcpmgu\"},{\"id\":\"draufactkah\",\"pesId\":\"v\"}],\"analysisTypes\":[\"ziuxxpshnee\"],\"type\":\"lfg\",\"score\":26.94627}")
                 .toObject(DiagnosticsDefinition.class);
-        Assertions.assertEquals("wzsoldweyuqdunv", model.analysisTypes().get(0));
+        Assertions.assertEquals("ziuxxpshnee", model.analysisTypes().get(0));
     }
 
-    @Test
-    public void testSerialize() {
+    @org.junit.jupiter.api.Test
+    public void testSerialize() throws Exception {
         DiagnosticsDefinition model =
             new DiagnosticsDefinition()
                 .withSupportTopicList(Arrays.asList(new DiagnosticSupportTopic(), new DiagnosticSupportTopic()))
-                .withAnalysisTypes(Arrays.asList("wzsoldweyuqdunv"));
+                .withAnalysisTypes(Arrays.asList("ziuxxpshnee"));
         model = BinaryData.fromObject(model).toObject(DiagnosticsDefinition.class);
-        Assertions.assertEquals("wzsoldweyuqdunv", model.analysisTypes().get(0));
+        Assertions.assertEquals("ziuxxpshnee", model.analysisTypes().get(0));
     }
 }

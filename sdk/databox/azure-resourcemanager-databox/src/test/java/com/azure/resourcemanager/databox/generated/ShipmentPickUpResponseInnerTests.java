@@ -12,7 +12,7 @@ public final class ShipmentPickUpResponseInnerTests {
     public void testDeserialize() throws Exception {
         ShipmentPickUpResponseInner model =
             BinaryData
-                .fromString("{\"confirmationNumber\":\"omzlfmi\",\"readyByTime\":\"2021-07-30T19:47:24Z\"}")
+                .fromString("{\"confirmationNumber\":\"jixisxyawjoyaqcs\",\"readyByTime\":\"2021-01-14T07:52:43Z\"}")
                 .toObject(ShipmentPickUpResponseInner.class);
     }
 

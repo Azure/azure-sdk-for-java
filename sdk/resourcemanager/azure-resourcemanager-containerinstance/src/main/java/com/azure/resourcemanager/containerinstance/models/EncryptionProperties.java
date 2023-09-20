@@ -29,6 +29,16 @@ public final class EncryptionProperties {
     @JsonProperty(value = "keyVersion", required = true)
     private String keyVersion;
 
+    /*
+     * The keyvault managed identity.
+     */
+    @JsonProperty(value = "identity")
+    private String identity;
+
+    /** Creates an instance of EncryptionProperties class. */
+    public EncryptionProperties() {
+    }
+
     /**
      * Get the vaultBaseUrl property: The keyvault base url.
      *
@@ -86,6 +96,26 @@ public final class EncryptionProperties {
      */
     public EncryptionProperties withKeyVersion(String keyVersion) {
         this.keyVersion = keyVersion;
+        return this;
+    }
+
+    /**
+     * Get the identity property: The keyvault managed identity.
+     *
+     * @return the identity value.
+     */
+    public String identity() {
+        return this.identity;
+    }
+
+    /**
+     * Set the identity property: The keyvault managed identity.
+     *
+     * @param identity the identity value to set.
+     * @return the EncryptionProperties object itself.
+     */
+    public EncryptionProperties withIdentity(String identity) {
+        this.identity = identity;
         return this;
     }
 

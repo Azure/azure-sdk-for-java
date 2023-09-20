@@ -13,6 +13,7 @@ import com.azure.resourcemanager.trafficmanager.models.EndpointPropertiesCustomH
 import com.azure.resourcemanager.trafficmanager.models.EndpointPropertiesSubnetsItem;
 import com.azure.resourcemanager.trafficmanager.models.EndpointStatus;
 import com.azure.resourcemanager.trafficmanager.models.EndpointType;
+import com.azure.resourcemanager.trafficmanager.models.EndpointTypes;
 import com.azure.resourcemanager.trafficmanager.models.GeographicLocation;
 import com.azure.resourcemanager.trafficmanager.models.TrafficManagerEndpoint;
 import com.azure.resourcemanager.trafficmanager.models.TrafficManagerProfile;
@@ -395,7 +396,7 @@ class TrafficManagerEndpointImpl
             .createOrUpdateAsync(
                 this.parent().resourceGroupName(),
                 this.parent().name(),
-                this.endpointType().localName(),
+                EndpointTypes.fromString(this.endpointType().localName()),
                 this.name(),
                 this.innerModel())
             .map(
@@ -415,7 +416,10 @@ class TrafficManagerEndpointImpl
         return this
             .client
             .deleteAsync(
-                this.parent().resourceGroupName(), this.parent().name(), this.endpointType().localName(), this.name())
+                this.parent().resourceGroupName(),
+                this.parent().name(),
+                EndpointTypes.fromString(this.endpointType().localName()),
+                this.name())
             .then();
     }
 
@@ -429,7 +433,10 @@ class TrafficManagerEndpointImpl
         return this
             .client
             .getAsync(
-                this.parent().resourceGroupName(), this.parent().name(), this.endpointType().toString(), this.name());
+                this.parent().resourceGroupName(),
+                this.parent().name(),
+                EndpointTypes.fromString(this.endpointType().toString()),
+                this.name());
     }
 
     void withEndpointType(EndpointType endpointType) {

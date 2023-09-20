@@ -20,11 +20,14 @@ public final class AssociationsInterfaceCreateOrUpdateSamples {
     public static void putAssociation(com.azure.resourcemanager.servicenetworking.TrafficControllerManager manager) {
         manager
             .associationsInterfaces()
-            .define("associatedvnet-1")
-            .withRegion("West US")
-            .withExistingTrafficController("rg1", "TC1")
+            .define("as1")
+            .withRegion("NorthCentralUS")
+            .withExistingTrafficController("rg1", "tc1")
             .withAssociationType(AssociationType.SUBNETS)
-            .withSubnet(new AssociationSubnet().withId("subnetFullRef"))
+            .withSubnet(
+                new AssociationSubnet()
+                    .withId(
+                        "/subscriptions/subid/resourceGroups/rg1/providers/Microsoft.Network/virtualNetworks/vnet-tc/subnets/tc-subnet"))
             .create();
     }
 }

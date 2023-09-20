@@ -4,9 +4,6 @@
 
 package com.azure.data.appconfiguration.implementation.models;
 
-import com.fasterxml.jackson.annotation.JsonCreator;
-import com.fasterxml.jackson.annotation.JsonValue;
-
 /** The current status of the operation. */
 public enum State {
     /** Enum value NotStarted. */
@@ -37,7 +34,6 @@ public enum State {
      * @param value the serialized value to parse.
      * @return the parsed State object, or null if unable to parse.
      */
-    @JsonCreator
     public static State fromString(String value) {
         if (value == null) {
             return null;
@@ -52,7 +48,6 @@ public enum State {
     }
 
     /** {@inheritDoc} */
-    @JsonValue
     @Override
     public String toString() {
         return this.value;

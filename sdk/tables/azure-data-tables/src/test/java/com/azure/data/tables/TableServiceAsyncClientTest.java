@@ -3,12 +3,14 @@
 
 package com.azure.data.tables;
 
+import com.azure.core.credential.TokenCredential;
 import com.azure.core.http.HttpClient;
 import com.azure.core.http.policy.ExponentialBackoff;
 import com.azure.core.http.policy.HttpLogDetailLevel;
 import com.azure.core.http.policy.HttpLogOptions;
 import com.azure.core.http.policy.RetryPolicy;
 import com.azure.core.test.http.AssertingHttpClientBuilder;
+import com.azure.core.test.utils.MockTokenCredential;
 import com.azure.core.util.Configuration;
 import com.azure.data.tables.models.ListTablesOptions;
 import com.azure.data.tables.models.TableEntity;
@@ -24,13 +26,9 @@ import com.azure.data.tables.sas.TableAccountSasService;
 import com.azure.data.tables.sas.TableAccountSasSignatureValues;
 import com.azure.data.tables.sas.TableSasIpRange;
 import com.azure.data.tables.sas.TableSasProtocol;
-import com.azure.identity.ClientSecretCredential;
 import com.azure.identity.ClientSecretCredentialBuilder;
-import org.junit.jupiter.api.AfterAll;
 import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.Assumptions;
-import org.junit.jupiter.api.BeforeAll;
-import org.junit.jupiter.api.Disabled;
 import org.junit.jupiter.api.Test;
 import reactor.test.StepVerifier;
 
@@ -53,7 +51,7 @@ import static org.junit.jupiter.api.Assertions.assertTrue;
  * Tests methods for {@link TableServiceAsyncClient}.
  */
 public class TableServiceAsyncClientTest extends TableServiceClientTestBase {
-    private static final Duration TIMEOUT = Duration.ofSeconds(100);
+    private static final Duration DEFAULT_TIMEOUT = Duration.ofSeconds(100);
     private static final HttpClient DEFAULT_HTTP_CLIENT = HttpClient.createDefault();
     private static final boolean IS_COSMOS_TEST = TestUtils.isCosmosTest();
 
@@ -66,20 +64,9 @@ public class TableServiceAsyncClientTest extends TableServiceClientTestBase {
             .build();
     }
 
-    @BeforeAll
-    static void beforeAll() {
-        StepVerifier.setDefaultTimeout(TIMEOUT);
-    }
-
-    @AfterAll
-    static void afterAll() {
-        StepVerifier.resetDefaultTimeout();
-    }
-
     @Override
     protected void beforeTest() {
         final String connectionString = TestUtils.getConnectionString(interceptorManager.isPlaybackMode());
-
         serviceClient = getClientBuilder(connectionString).buildAsyncClient();
     }
 
@@ -92,7 +79,7 @@ public class TableServiceAsyncClientTest extends TableServiceClientTestBase {
         StepVerifier.create(serviceClient.createTable(tableName))
             .assertNext(Assertions::assertNotNull)
             .expectComplete()
-            .verify();
+            .verify(DEFAULT_TIMEOUT);
     }
 
     /**
@@ -108,15 +95,19 @@ public class TableServiceAsyncClientTest extends TableServiceClientTestBase {
         // Arrange
         String tableName = testResourceNamer.randomName("tableName", 20);
 
+        TokenCredential credential = null;
+        if (interceptorManager.isPlaybackMode()) {
+            credential = new MockTokenCredential();
+        } else {
         // The tenant ID does not matter as the correct on will be extracted from the authentication challenge in
         // contained in the response the server provides to a first "naive" unauthenticated request.
-        final ClientSecretCredential credential = new ClientSecretCredentialBuilder()
-            .clientId(Configuration.getGlobalConfiguration().get("TABLES_CLIENT_ID", "clientId"))
-            .clientSecret(Configuration.getGlobalConfiguration().get("TABLES_CLIENT_SECRET", "clientSecret"))
-            .tenantId(testResourceNamer.randomUuid())
-            .additionallyAllowedTenants("*")
-            .build();
-
+            credential = new ClientSecretCredentialBuilder()
+                .clientId(Configuration.getGlobalConfiguration().get("TABLES_CLIENT_ID", "clientId"))
+                .clientSecret(Configuration.getGlobalConfiguration().get("TABLES_CLIENT_SECRET", "clientSecret"))
+                .tenantId(testResourceNamer.randomUuid())
+                .additionallyAllowedTenants("*")
+                .build();
+        }
         final TableServiceAsyncClient tableServiceAsyncClient =
             getClientBuilder(Configuration.getGlobalConfiguration().get("TABLES_ENDPOINT",
                 "https://tablestests.table.core.windows.com"), credential, true).buildAsyncClient();
@@ -126,7 +117,7 @@ public class TableServiceAsyncClientTest extends TableServiceClientTestBase {
         StepVerifier.create(tableServiceAsyncClient.createTable(tableName))
             .assertNext(Assertions::assertNotNull)
             .expectComplete()
-            .verify();
+            .verify(DEFAULT_TIMEOUT);
 
         tableName = testResourceNamer.randomName("tableName", 20);
 
@@ -134,7 +125,7 @@ public class TableServiceAsyncClientTest extends TableServiceClientTestBase {
         StepVerifier.create(tableServiceAsyncClient.createTable(tableName))
             .assertNext(Assertions::assertNotNull)
             .expectComplete()
-            .verify();
+            .verify(DEFAULT_TIMEOUT);
     }
 
     @Test
@@ -150,20 +141,20 @@ public class TableServiceAsyncClientTest extends TableServiceClientTestBase {
                 assertNotNull(response.getValue());
             })
             .expectComplete()
-            .verify();
+            .verify(DEFAULT_TIMEOUT);
     }
 
     @Test
     public void serviceCreateTableFailsIfExists() {
         // Arrange
         String tableName = testResourceNamer.randomName("test", 20);
-        serviceClient.createTable(tableName).block(TIMEOUT);
+        serviceClient.createTable(tableName).block(DEFAULT_TIMEOUT);
 
         //Act & Assert
         StepVerifier.create(serviceClient.createTable(tableName))
             .expectErrorMatches(e -> e instanceof TableServiceException
                 && ((TableServiceException) e).getResponse().getStatusCode() == 409)
-            .verify();
+            .verify(DEFAULT_TIMEOUT);
     }
 
     @Test
@@ -175,19 +166,19 @@ public class TableServiceAsyncClientTest extends TableServiceClientTestBase {
         StepVerifier.create(serviceClient.createTableIfNotExists(tableName))
             .assertNext(Assertions::assertNotNull)
             .expectComplete()
-            .verify();
+            .verify(DEFAULT_TIMEOUT);
     }
 
     @Test
     public void serviceCreateTableIfNotExistsSucceedsIfExists() {
         // Arrange
         String tableName = testResourceNamer.randomName("test", 20);
-        serviceClient.createTable(tableName).block(TIMEOUT);
+        serviceClient.createTable(tableName).block(DEFAULT_TIMEOUT);
 
         //Act & Assert
         StepVerifier.create(serviceClient.createTableIfNotExists(tableName))
             .expectComplete()
-            .verify();
+            .verify(DEFAULT_TIMEOUT);
     }
 
     @Test
@@ -203,7 +194,7 @@ public class TableServiceAsyncClientTest extends TableServiceClientTestBase {
                 assertNotNull(response.getValue());
             })
             .expectComplete()
-            .verify();
+            .verify(DEFAULT_TIMEOUT);
     }
 
     @Test
@@ -211,7 +202,7 @@ public class TableServiceAsyncClientTest extends TableServiceClientTestBase {
         // Arrange
         String tableName = testResourceNamer.randomName("test", 20);
         int expectedStatusCode = 409;
-        serviceClient.createTable(tableName).block(TIMEOUT);
+        serviceClient.createTable(tableName).block(DEFAULT_TIMEOUT);
 
         //Act & Assert
         StepVerifier.create(serviceClient.createTableIfNotExistsWithResponse(tableName))
@@ -220,19 +211,19 @@ public class TableServiceAsyncClientTest extends TableServiceClientTestBase {
                 assertNull(response.getValue());
             })
             .expectComplete()
-            .verify();
+            .verify(DEFAULT_TIMEOUT);
     }
 
     @Test
     public void serviceDeleteTable() {
         // Arrange
         final String tableName = testResourceNamer.randomName("test", 20);
-        serviceClient.createTable(tableName).block(TIMEOUT);
+        serviceClient.createTable(tableName).block(DEFAULT_TIMEOUT);
 
         //Act & Assert
         StepVerifier.create(serviceClient.deleteTable(tableName))
             .expectComplete()
-            .verify();
+            .verify(DEFAULT_TIMEOUT);
     }
 
     @Test
@@ -243,7 +234,7 @@ public class TableServiceAsyncClientTest extends TableServiceClientTestBase {
         //Act & Assert
         StepVerifier.create(serviceClient.deleteTable(tableName))
             .expectComplete()
-            .verify();
+            .verify(DEFAULT_TIMEOUT);
     }
 
     @Test
@@ -257,7 +248,7 @@ public class TableServiceAsyncClientTest extends TableServiceClientTestBase {
         StepVerifier.create(serviceClient.deleteTableWithResponse(tableName))
             .assertNext(response -> assertEquals(expectedStatusCode, response.getStatusCode()))
             .expectComplete()
-            .verify();
+            .verify(DEFAULT_TIMEOUT);
     }
 
     @Test
@@ -270,7 +261,7 @@ public class TableServiceAsyncClientTest extends TableServiceClientTestBase {
         StepVerifier.create(serviceClient.deleteTableWithResponse(tableName))
             .assertNext(response -> assertEquals(expectedStatusCode, response.getStatusCode()))
             .expectComplete()
-            .verify();
+            .verify(DEFAULT_TIMEOUT);
     }
 
     @Test
@@ -278,15 +269,15 @@ public class TableServiceAsyncClientTest extends TableServiceClientTestBase {
         // Arrange
         final String tableName = testResourceNamer.randomName("test", 20);
         final String tableName2 = testResourceNamer.randomName("test", 20);
-        serviceClient.createTable(tableName).block(TIMEOUT);
-        serviceClient.createTable(tableName2).block(TIMEOUT);
+        serviceClient.createTable(tableName).block(DEFAULT_TIMEOUT);
+        serviceClient.createTable(tableName2).block(DEFAULT_TIMEOUT);
 
         // Act & Assert
         StepVerifier.create(serviceClient.listTables())
             .expectNextCount(2)
             .thenConsumeWhile(x -> true)
             .expectComplete()
-            .verify();
+            .verify(DEFAULT_TIMEOUT);
     }
 
     @Test
@@ -295,8 +286,8 @@ public class TableServiceAsyncClientTest extends TableServiceClientTestBase {
         final String tableName = testResourceNamer.randomName("test", 20);
         final String tableName2 = testResourceNamer.randomName("test", 20);
         ListTablesOptions options = new ListTablesOptions().setFilter("TableName eq '" + tableName + "'");
-        serviceClient.createTable(tableName).block(TIMEOUT);
-        serviceClient.createTable(tableName2).block(TIMEOUT);
+        serviceClient.createTable(tableName).block(DEFAULT_TIMEOUT);
+        serviceClient.createTable(tableName2).block(DEFAULT_TIMEOUT);
 
         // Act & Assert
         StepVerifier.create(serviceClient.listTables(options))
@@ -304,7 +295,7 @@ public class TableServiceAsyncClientTest extends TableServiceClientTestBase {
             .expectNextCount(0)
             .thenConsumeWhile(x -> true)
             .expectComplete()
-            .verify();
+            .verify(DEFAULT_TIMEOUT);
     }
 
     @Test
@@ -314,23 +305,23 @@ public class TableServiceAsyncClientTest extends TableServiceClientTestBase {
         final String tableName2 = testResourceNamer.randomName("test", 20);
         final String tableName3 = testResourceNamer.randomName("test", 20);
         ListTablesOptions options = new ListTablesOptions().setTop(2);
-        serviceClient.createTable(tableName).block(TIMEOUT);
-        serviceClient.createTable(tableName2).block(TIMEOUT);
-        serviceClient.createTable(tableName3).block(TIMEOUT);
+        serviceClient.createTable(tableName).block(DEFAULT_TIMEOUT);
+        serviceClient.createTable(tableName2).block(DEFAULT_TIMEOUT);
+        serviceClient.createTable(tableName3).block(DEFAULT_TIMEOUT);
 
         // Act & Assert
         StepVerifier.create(serviceClient.listTables(options))
             .expectNextCount(2)
             .thenConsumeWhile(x -> true)
             .expectComplete()
-            .verify();
+            .verify(DEFAULT_TIMEOUT);
     }
 
     @Test
     public void serviceGetTableClient() {
         // Arrange
         final String tableName = testResourceNamer.randomName("test", 20);
-        serviceClient.createTable(tableName).block(TIMEOUT);
+        serviceClient.createTable(tableName).block(DEFAULT_TIMEOUT);
 
         TableAsyncClient tableClient = serviceClient.getTableClient(tableName);
 
@@ -402,11 +393,10 @@ public class TableServiceAsyncClientTest extends TableServiceClientTestBase {
     }
 
     @Test
-    @Disabled
     // Disabling as this currently fails and prevents merging https://github.com/Azure/azure-sdk-for-java/pull/28522.
     // TODO: Will fix in a separate PR. -vicolina
     public void canUseSasTokenToCreateValidTableClient() {
-        final OffsetDateTime expiryTime = OffsetDateTime.of(2021, 12, 12, 0, 0, 0, 0, ZoneOffset.UTC);
+        final OffsetDateTime expiryTime = OffsetDateTime.of(2023, 12, 12, 0, 0, 0, 0, ZoneOffset.UTC);
         final TableAccountSasPermission permissions = TableAccountSasPermission.parse("a");
         final TableAccountSasService services = new TableAccountSasService().setTableAccess(true);
         final TableAccountSasResourceType resourceTypes = new TableAccountSasResourceType().setObject(true);
@@ -420,7 +410,7 @@ public class TableServiceAsyncClientTest extends TableServiceClientTestBase {
         final String sas = serviceClient.generateAccountSas(sasSignatureValues);
         final String tableName = testResourceNamer.randomName("test", 20);
 
-        serviceClient.createTable(tableName).block(TIMEOUT);
+        serviceClient.createTable(tableName).block(DEFAULT_TIMEOUT);
 
         final TableClientBuilder tableClientBuilder = new TableClientBuilder()
             .httpLogOptions(new HttpLogOptions().setLogLevel(HttpLogDetailLevel.BODY_AND_HEADERS))
@@ -452,7 +442,7 @@ public class TableServiceAsyncClientTest extends TableServiceClientTestBase {
         StepVerifier.create(tableAsyncClient.createEntityWithResponse(entity))
             .assertNext(response -> assertEquals(expectedStatusCode, response.getStatusCode()))
             .expectComplete()
-            .verify();
+            .verify(DEFAULT_TIMEOUT);
     }
 
     @Test
@@ -501,7 +491,7 @@ public class TableServiceAsyncClientTest extends TableServiceClientTestBase {
                 assertNotNull(response.getHeaders().getValue("x-ms-version"));
             })
             .expectComplete()
-            .verify();
+            .verify(DEFAULT_TIMEOUT);
 
         // Service properties may take up to 30s to take effect. If they weren't already in place, wait.
         sleepIfRunningAgainstService(30000);
@@ -509,7 +499,7 @@ public class TableServiceAsyncClientTest extends TableServiceClientTestBase {
         StepVerifier.create(serviceClient.getProperties())
             .assertNext(retrievedProperties -> assertPropertiesEquals(sentProperties, retrievedProperties))
             .expectComplete()
-            .verify();
+            .verify(DEFAULT_TIMEOUT);
     }
 
     @Test
@@ -541,6 +531,6 @@ public class TableServiceAsyncClientTest extends TableServiceClientTestBase {
                 assertNotNull(statistics.getGeoReplication().getLastSyncTime());
             })
             .expectComplete()
-            .verify();
+            .verify(DEFAULT_TIMEOUT);
     }
 }

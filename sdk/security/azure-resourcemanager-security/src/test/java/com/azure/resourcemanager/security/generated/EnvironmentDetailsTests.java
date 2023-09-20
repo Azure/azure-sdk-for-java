@@ -14,29 +14,29 @@ public final class EnvironmentDetailsTests {
         EnvironmentDetails model =
             BinaryData
                 .fromString(
-                    "{\"nativeResourceId\":\"dotjvdk\",\"environmentHierarchyId\":\"swskuk\",\"organizationalHierarchyId\":\"asbvw\",\"subscriptionId\":\"pkxkdtxfk\",\"tenantId\":\"lq\"}")
+                    "{\"nativeResourceId\":\"lohap\",\"environmentHierarchyId\":\"nfszpyglqdhmrjz\",\"organizationalHierarchyId\":\"l\",\"subscriptionId\":\"pjby\",\"tenantId\":\"sjoqcjenkyhfqzvs\"}")
                 .toObject(EnvironmentDetails.class);
-        Assertions.assertEquals("dotjvdk", model.nativeResourceId());
-        Assertions.assertEquals("swskuk", model.environmentHierarchyId());
-        Assertions.assertEquals("asbvw", model.organizationalHierarchyId());
-        Assertions.assertEquals("pkxkdtxfk", model.subscriptionId());
-        Assertions.assertEquals("lq", model.tenantId());
+        Assertions.assertEquals("lohap", model.nativeResourceId());
+        Assertions.assertEquals("nfszpyglqdhmrjz", model.environmentHierarchyId());
+        Assertions.assertEquals("l", model.organizationalHierarchyId());
+        Assertions.assertEquals("pjby", model.subscriptionId());
+        Assertions.assertEquals("sjoqcjenkyhfqzvs", model.tenantId());
     }
 
     @org.junit.jupiter.api.Test
     public void testSerialize() throws Exception {
         EnvironmentDetails model =
             new EnvironmentDetails()
-                .withNativeResourceId("dotjvdk")
-                .withEnvironmentHierarchyId("swskuk")
-                .withOrganizationalHierarchyId("asbvw")
-                .withSubscriptionId("pkxkdtxfk")
-                .withTenantId("lq");
+                .withNativeResourceId("lohap")
+                .withEnvironmentHierarchyId("nfszpyglqdhmrjz")
+                .withOrganizationalHierarchyId("l")
+                .withSubscriptionId("pjby")
+                .withTenantId("sjoqcjenkyhfqzvs");
         model = BinaryData.fromObject(model).toObject(EnvironmentDetails.class);
-        Assertions.assertEquals("dotjvdk", model.nativeResourceId());
-        Assertions.assertEquals("swskuk", model.environmentHierarchyId());
-        Assertions.assertEquals("asbvw", model.organizationalHierarchyId());
-        Assertions.assertEquals("pkxkdtxfk", model.subscriptionId());
-        Assertions.assertEquals("lq", model.tenantId());
+        Assertions.assertEquals("lohap", model.nativeResourceId());
+        Assertions.assertEquals("nfszpyglqdhmrjz", model.environmentHierarchyId());
+        Assertions.assertEquals("l", model.organizationalHierarchyId());
+        Assertions.assertEquals("pjby", model.subscriptionId());
+        Assertions.assertEquals("sjoqcjenkyhfqzvs", model.tenantId());
     }
 }

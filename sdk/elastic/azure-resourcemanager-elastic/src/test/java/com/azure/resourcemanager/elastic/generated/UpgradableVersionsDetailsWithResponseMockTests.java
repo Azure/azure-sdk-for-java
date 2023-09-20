@@ -11,7 +11,6 @@ import com.azure.core.http.HttpRequest;
 import com.azure.core.http.HttpResponse;
 import com.azure.core.management.AzureEnvironment;
 import com.azure.core.management.profile.AzureProfile;
-import com.azure.core.util.Context;
 import com.azure.resourcemanager.elastic.ElasticManager;
 import com.azure.resourcemanager.elastic.models.UpgradableVersionsList;
 import java.nio.ByteBuffer;
@@ -31,8 +30,7 @@ public final class UpgradableVersionsDetailsWithResponseMockTests {
         HttpResponse httpResponse = Mockito.mock(HttpResponse.class);
         ArgumentCaptor<HttpRequest> httpRequest = ArgumentCaptor.forClass(HttpRequest.class);
 
-        String responseStr =
-            "{\"currentVersion\":\"plrbpbewtghf\",\"upgradableVersions\":[\"c\",\"wxzvlvqhjkb\",\"gibtnm\"]}";
+        String responseStr = "{\"currentVersion\":\"gvtqagnbuynh\",\"upgradableVersions\":[\"gmebfsiarbutrcv\"]}";
 
         Mockito.when(httpResponse.getStatusCode()).thenReturn(200);
         Mockito.when(httpResponse.getHeaders()).thenReturn(new HttpHeaders());
@@ -61,9 +59,12 @@ public final class UpgradableVersionsDetailsWithResponseMockTests {
                     new AzureProfile("", "", AzureEnvironment.AZURE));
 
         UpgradableVersionsList response =
-            manager.upgradableVersions().detailsWithResponse("upjm", "hfxobbcswsrtj", Context.NONE).getValue();
+            manager
+                .upgradableVersions()
+                .detailsWithResponse("y", "hibnuqqkpika", com.azure.core.util.Context.NONE)
+                .getValue();
 
-        Assertions.assertEquals("plrbpbewtghf", response.currentVersion());
-        Assertions.assertEquals("c", response.upgradableVersions().get(0));
+        Assertions.assertEquals("gvtqagnbuynh", response.currentVersion());
+        Assertions.assertEquals("gmebfsiarbutrcv", response.upgradableVersions().get(0));
     }
 }

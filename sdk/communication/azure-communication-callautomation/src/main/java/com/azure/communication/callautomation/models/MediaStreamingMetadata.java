@@ -4,7 +4,7 @@
 package com.azure.communication.callautomation.models;
 
 /** The MediaStreamingMetadata model. */
-public class MediaStreamingMetadata extends MediaStreamingPackageBase {
+public final class MediaStreamingMetadata extends MediaStreamingPackageBase {
 
     /*
      * The mediaSubscriptionId.

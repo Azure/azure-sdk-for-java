@@ -28,6 +28,10 @@ public final class TestAllRoutesInput {
     @JsonProperty(value = "twin")
     private RoutingTwin twin;
 
+    /** Creates an instance of TestAllRoutesInput class. */
+    public TestAllRoutesInput() {
+    }
+
     /**
      * Get the routingSource property: Routing source.
      *

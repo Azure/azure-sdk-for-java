@@ -32,7 +32,7 @@ public final class NetworkExperimentProfilesGetByResourceGroupWithResponseMockTe
         ArgumentCaptor<HttpRequest> httpRequest = ArgumentCaptor.forClass(HttpRequest.class);
 
         String responseStr =
-            "{\"properties\":{\"resourceState\":\"Creating\",\"enabledState\":\"Enabled\"},\"etag\":\"eorfm\",\"location\":\"uiqtqzfavy\",\"tags\":{\"jkqa\":\"qybaryeua\",\"cbhernntiewdj\":\"qgzsles\"},\"id\":\"vbquwr\",\"name\":\"ehwagoh\",\"type\":\"uffkmrqemvvh\"}";
+            "{\"properties\":{\"resourceState\":\"Disabled\",\"enabledState\":\"Disabled\"},\"etag\":\"cli\",\"location\":\"hzvhxnkomtkubo\",\"tags\":{\"vqagtltdhlf\":\"nvdxzxhihfrbbc\",\"vgtrdcnifmzzs\":\"qojpy\"},\"id\":\"ymbrnysuxmpraf\",\"name\":\"g\",\"type\":\"khocxvdfffwaf\"}";
 
         Mockito.when(httpResponse.getStatusCode()).thenReturn(200);
         Mockito.when(httpResponse.getHeaders()).thenReturn(new HttpHeaders());
@@ -63,12 +63,12 @@ public final class NetworkExperimentProfilesGetByResourceGroupWithResponseMockTe
         Profile response =
             manager
                 .networkExperimentProfiles()
-                .getByResourceGroupWithResponse("dyg", "ookk", com.azure.core.util.Context.NONE)
+                .getByResourceGroupWithResponse("b", "huzqgn", com.azure.core.util.Context.NONE)
                 .getValue();
 
-        Assertions.assertEquals("uiqtqzfavy", response.location());
-        Assertions.assertEquals("qybaryeua", response.tags().get("jkqa"));
-        Assertions.assertEquals("eorfm", response.etag());
-        Assertions.assertEquals(State.ENABLED, response.enabledState());
+        Assertions.assertEquals("hzvhxnkomtkubo", response.location());
+        Assertions.assertEquals("nvdxzxhihfrbbc", response.tags().get("vqagtltdhlf"));
+        Assertions.assertEquals("cli", response.etag());
+        Assertions.assertEquals(State.DISABLED, response.enabledState());
     }
 }

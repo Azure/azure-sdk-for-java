@@ -14,6 +14,15 @@ public final class SkuFamily extends ExpandableStringEnum<SkuFamily> {
     public static final SkuFamily A = fromString("A");
 
     /**
+     * Creates a new instance of SkuFamily value.
+     *
+     * @deprecated Use the {@link #fromString(String)} factory method.
+     */
+    @Deprecated
+    public SkuFamily() {
+    }
+
+    /**
      * Creates or finds a SkuFamily from its string representation.
      *
      * @param name a name to look for.

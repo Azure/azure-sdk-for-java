@@ -4,7 +4,6 @@
 
 package com.azure.resourcemanager.keyvault.generated;
 
-import com.azure.core.util.Context;
 import com.azure.resourcemanager.keyvault.models.AccessPolicyEntry;
 import com.azure.resourcemanager.keyvault.models.CertificatePermissions;
 import com.azure.resourcemanager.keyvault.models.KeyPermissions;
@@ -21,7 +20,7 @@ import java.util.UUID;
 /** Samples for Vaults Update. */
 public final class VaultsUpdateSamples {
     /*
-     * x-ms-original-file: specification/keyvault/resource-manager/Microsoft.KeyVault/stable/2021-10-01/examples/updateVault.json
+     * x-ms-original-file: specification/keyvault/resource-manager/Microsoft.KeyVault/stable/2023-02-01/examples/updateVault.json
      */
     /**
      * Sample code: Update an existing vault.
@@ -101,6 +100,6 @@ public final class VaultsUpdateSamples {
                             .withEnabledForDiskEncryption(true)
                             .withEnabledForTemplateDeployment(true)
                             .withPublicNetworkAccess("Enabled")),
-                Context.NONE);
+                com.azure.core.util.Context.NONE);
     }
 }

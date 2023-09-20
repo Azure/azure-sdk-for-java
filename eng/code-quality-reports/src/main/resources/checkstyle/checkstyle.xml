@@ -408,5 +408,7 @@ page at http://checkstyle.sourceforge.net/config.html -->
     <!-- CUSTOM CHECKS -->
     <!-- Ensures caught exceptions are included as exception cause in subsequently thrown exception -->
     <module name="com.azure.tools.checkstyle.checks.UseCaughtExceptionCauseCheck"/>
+
+    <module name="com.azure.tools.checkstyle.checks.StepVerifierCheck"/>
   </module>
 </module>

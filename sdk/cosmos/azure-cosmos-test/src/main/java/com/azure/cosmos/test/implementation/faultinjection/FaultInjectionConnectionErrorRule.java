@@ -11,6 +11,7 @@ import java.net.URI;
 import java.time.Duration;
 import java.time.Instant;
 import java.util.List;
+import java.util.Map;
 import java.util.concurrent.atomic.AtomicLong;
 
 import static com.azure.cosmos.implementation.guava25.base.Preconditions.checkArgument;
@@ -61,6 +62,11 @@ public class FaultInjectionConnectionErrorRule implements IFaultInjectionRuleInt
     @Override
     public long getHitCount() {
         return this.hitCount.get();
+    }
+
+    @Override
+    public Map<String, Long> getHitCountDetails() {
+        return null;
     }
 
     @Override

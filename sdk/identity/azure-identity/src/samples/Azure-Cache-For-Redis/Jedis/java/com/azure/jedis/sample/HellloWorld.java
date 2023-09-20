@@ -19,7 +19,7 @@ public class HellloWorld {
         // Note: The Scopes parameter will change as the Azure AD Authentication support hits public preview and eventually GA's.
         String token = defaultAzureCredential
             .getToken(new TokenRequestContext()
-                .addScopes("https://*.cacheinfra.windows.net:10225/appid/.default")).block().getToken();
+                .addScopes("acca5fbb-b7e4-4009-81f1-37e38fd66d78/.default")).block().getToken();
 
         // SSL connection is required.
         boolean useSsl = true;

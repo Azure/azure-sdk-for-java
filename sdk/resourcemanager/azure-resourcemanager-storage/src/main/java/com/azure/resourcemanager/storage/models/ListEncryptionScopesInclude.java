@@ -20,6 +20,15 @@ public final class ListEncryptionScopesInclude extends ExpandableStringEnum<List
     public static final ListEncryptionScopesInclude DISABLED = fromString("Disabled");
 
     /**
+     * Creates a new instance of ListEncryptionScopesInclude value.
+     *
+     * @deprecated Use the {@link #fromString(String)} factory method.
+     */
+    @Deprecated
+    public ListEncryptionScopesInclude() {
+    }
+
+    /**
      * Creates or finds a ListEncryptionScopesInclude from its string representation.
      *
      * @param name a name to look for.

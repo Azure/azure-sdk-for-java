@@ -16,21 +16,21 @@ public final class ApiCollectionResponseInnerTests {
         ApiCollectionResponseInner model =
             BinaryData
                 .fromString(
-                    "{\"properties\":{\"displayName\":\"qxuwyvca\",\"additionalData\":{\"vbsizusjszlbscm\":\"v\"}},\"id\":\"lzijiufehgmvflnw\",\"name\":\"v\",\"type\":\"kxrerlniylylyfwx\"}")
+                    "{\"properties\":{\"displayName\":\"zealbmqkyo\",\"additionalData\":{\"mbtsuahxsg\":\"vf\",\"wsdrnpxqwodif\":\"jcmmzrrscub\"}},\"id\":\"jxcjrmmuabwib\",\"name\":\"jogjonmc\",\"type\":\"e\"}")
                 .toObject(ApiCollectionResponseInner.class);
-        Assertions.assertEquals("qxuwyvca", model.displayName());
-        Assertions.assertEquals("v", model.additionalData().get("vbsizusjszlbscm"));
+        Assertions.assertEquals("zealbmqkyo", model.displayName());
+        Assertions.assertEquals("vf", model.additionalData().get("mbtsuahxsg"));
     }
 
     @org.junit.jupiter.api.Test
     public void testSerialize() throws Exception {
         ApiCollectionResponseInner model =
             new ApiCollectionResponseInner()
-                .withDisplayName("qxuwyvca")
-                .withAdditionalData(mapOf("vbsizusjszlbscm", "v"));
+                .withDisplayName("zealbmqkyo")
+                .withAdditionalData(mapOf("mbtsuahxsg", "vf", "wsdrnpxqwodif", "jcmmzrrscub"));
         model = BinaryData.fromObject(model).toObject(ApiCollectionResponseInner.class);
-        Assertions.assertEquals("qxuwyvca", model.displayName());
-        Assertions.assertEquals("v", model.additionalData().get("vbsizusjszlbscm"));
+        Assertions.assertEquals("zealbmqkyo", model.displayName());
+        Assertions.assertEquals("vf", model.additionalData().get("mbtsuahxsg"));
     }
 
     @SuppressWarnings("unchecked")

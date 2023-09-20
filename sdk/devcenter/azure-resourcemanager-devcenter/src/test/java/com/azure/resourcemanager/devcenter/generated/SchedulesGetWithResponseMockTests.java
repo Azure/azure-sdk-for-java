@@ -11,10 +11,9 @@ import com.azure.core.http.HttpRequest;
 import com.azure.core.http.HttpResponse;
 import com.azure.core.management.AzureEnvironment;
 import com.azure.core.management.profile.AzureProfile;
-import com.azure.core.util.Context;
 import com.azure.resourcemanager.devcenter.DevCenterManager;
-import com.azure.resourcemanager.devcenter.models.EnableStatus;
 import com.azure.resourcemanager.devcenter.models.Schedule;
+import com.azure.resourcemanager.devcenter.models.ScheduleEnableStatus;
 import com.azure.resourcemanager.devcenter.models.ScheduledFrequency;
 import com.azure.resourcemanager.devcenter.models.ScheduledType;
 import java.nio.ByteBuffer;
@@ -35,7 +34,7 @@ public final class SchedulesGetWithResponseMockTests {
         ArgumentCaptor<HttpRequest> httpRequest = ArgumentCaptor.forClass(HttpRequest.class);
 
         String responseStr =
-            "{\"properties\":{\"provisioningState\":\"NotSpecified\",\"type\":\"StopDevBox\",\"frequency\":\"Daily\",\"time\":\"kdlpa\",\"timeZone\":\"rcxfailcfxwmdb\",\"state\":\"Disabled\"},\"id\":\"gsftufqobrjlnacg\",\"name\":\"ckknhxkizvy\",\"type\":\"nrzvuljraaer\"}";
+            "{\"properties\":{\"provisioningState\":\"Created\",\"type\":\"StopDevBox\",\"frequency\":\"Daily\",\"time\":\"qzmiza\",\"timeZone\":\"kan\",\"state\":\"Enabled\"},\"id\":\"n\",\"name\":\"zhajoylhjlmuo\",\"type\":\"xprimrsop\"}";
 
         Mockito.when(httpResponse.getStatusCode()).thenReturn(200);
         Mockito.when(httpResponse.getHeaders()).thenReturn(new HttpHeaders());
@@ -66,13 +65,13 @@ public final class SchedulesGetWithResponseMockTests {
         Schedule response =
             manager
                 .schedules()
-                .getWithResponse("gsfjac", "slhhxudbxv", "d", "tnsi", 531273427, Context.NONE)
+                .getWithResponse("ucb", "qtgdqohmcwsl", "riz", "tpwb", 188552555, com.azure.core.util.Context.NONE)
                 .getValue();
 
         Assertions.assertEquals(ScheduledType.STOP_DEV_BOX, response.typePropertiesType());
         Assertions.assertEquals(ScheduledFrequency.DAILY, response.frequency());
-        Assertions.assertEquals("kdlpa", response.time());
-        Assertions.assertEquals("rcxfailcfxwmdb", response.timeZone());
-        Assertions.assertEquals(EnableStatus.DISABLED, response.state());
+        Assertions.assertEquals("qzmiza", response.time());
+        Assertions.assertEquals("kan", response.timeZone());
+        Assertions.assertEquals(ScheduleEnableStatus.ENABLED, response.state());
     }
 }

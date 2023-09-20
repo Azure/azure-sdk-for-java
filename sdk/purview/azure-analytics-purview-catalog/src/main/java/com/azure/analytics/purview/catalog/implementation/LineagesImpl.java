@@ -72,6 +72,26 @@ public final class LineagesImpl {
                 RequestOptions requestOptions,
                 Context context);
 
+        @Get("/atlas/v2/lineage/{guid}")
+        @ExpectedResponses({200})
+        @UnexpectedResponseExceptionType(
+                value = ClientAuthenticationException.class,
+                code = {401})
+        @UnexpectedResponseExceptionType(
+                value = ResourceNotFoundException.class,
+                code = {404})
+        @UnexpectedResponseExceptionType(
+                value = ResourceModifiedException.class,
+                code = {409})
+        @UnexpectedResponseExceptionType(HttpResponseException.class)
+        Response<BinaryData> getLineageGraphSync(
+                @HostParam("Endpoint") String endpoint,
+                @PathParam("guid") String guid,
+                @QueryParam("direction") String direction,
+                @HeaderParam("Accept") String accept,
+                RequestOptions requestOptions,
+                Context context);
+
         @Get("/lineage/{guid}/next/")
         @ExpectedResponses({200})
         @UnexpectedResponseExceptionType(
@@ -85,6 +105,27 @@ public final class LineagesImpl {
                 code = {409})
         @UnexpectedResponseExceptionType(HttpResponseException.class)
         Mono<Response<BinaryData>> nextPageLineage(
+                @HostParam("Endpoint") String endpoint,
+                @PathParam("guid") String guid,
+                @QueryParam("direction") String direction,
+                @QueryParam("api-version") String apiVersion,
+                @HeaderParam("Accept") String accept,
+                RequestOptions requestOptions,
+                Context context);
+
+        @Get("/lineage/{guid}/next/")
+        @ExpectedResponses({200})
+        @UnexpectedResponseExceptionType(
+                value = ClientAuthenticationException.class,
+                code = {401})
+        @UnexpectedResponseExceptionType(
+                value = ResourceNotFoundException.class,
+                code = {404})
+        @UnexpectedResponseExceptionType(
+                value = ResourceModifiedException.class,
+                code = {409})
+        @UnexpectedResponseExceptionType(HttpResponseException.class)
+        Response<BinaryData> nextPageLineageSync(
                 @HostParam("Endpoint") String endpoint,
                 @PathParam("guid") String guid,
                 @QueryParam("direction") String direction,
@@ -112,6 +153,26 @@ public final class LineagesImpl {
                 @HeaderParam("Accept") String accept,
                 RequestOptions requestOptions,
                 Context context);
+
+        @Get("/atlas/v2/lineage/uniqueAttribute/type/{typeName}")
+        @ExpectedResponses({200})
+        @UnexpectedResponseExceptionType(
+                value = ClientAuthenticationException.class,
+                code = {401})
+        @UnexpectedResponseExceptionType(
+                value = ResourceNotFoundException.class,
+                code = {404})
+        @UnexpectedResponseExceptionType(
+                value = ResourceModifiedException.class,
+                code = {409})
+        @UnexpectedResponseExceptionType(HttpResponseException.class)
+        Response<BinaryData> getLineageByUniqueAttributeSync(
+                @HostParam("Endpoint") String endpoint,
+                @PathParam("typeName") String typeName,
+                @QueryParam("direction") String direction,
+                @HeaderParam("Accept") String accept,
+                RequestOptions requestOptions,
+                Context context);
     }
 
     /**
@@ -128,100 +189,102 @@ public final class LineagesImpl {
      *     <tr><td>getDerivedLineage</td><td>Boolean</td><td>No</td><td>True to include derived lineage in the response</td></tr>
      * </table>
      *
+     * You can add these to a request with {@link RequestOptions#addQueryParam}
+     *
      * <p><strong>Response Body Schema</strong>
      *
      * <pre>{@code
      * {
-     *     baseEntityGuid: String
-     *     guidEntityMap: {
-     *         String: {
-     *             attributes: {
-     *                 String: Object
+     *     baseEntityGuid: String (Optional)
+     *     guidEntityMap (Optional): {
+     *         String (Optional): {
+     *             attributes (Optional): {
+     *                 String: Object (Optional)
      *             }
-     *             typeName: String
-     *             lastModifiedTS: String
-     *             classificationNames: [
-     *                 String
+     *             typeName: String (Optional)
+     *             lastModifiedTS: String (Optional)
+     *             classificationNames (Optional): [
+     *                 String (Optional)
      *             ]
-     *             classifications: [
-     *                 {
-     *                     attributes: {
-     *                         String: Object
+     *             classifications (Optional): [
+     *                  (Optional){
+     *                     attributes (Optional): {
+     *                         String: Object (Optional)
      *                     }
-     *                     typeName: String
-     *                     lastModifiedTS: String
-     *                     entityGuid: String
-     *                     entityStatus: String(ACTIVE/DELETED)
-     *                     removePropagationsOnEntityDelete: Boolean
-     *                     validityPeriods: [
-     *                         {
-     *                             endTime: String
-     *                             startTime: String
-     *                             timeZone: String
+     *                     typeName: String (Optional)
+     *                     lastModifiedTS: String (Optional)
+     *                     entityGuid: String (Optional)
+     *                     entityStatus: String(ACTIVE/DELETED) (Optional)
+     *                     removePropagationsOnEntityDelete: Boolean (Optional)
+     *                     validityPeriods (Optional): [
+     *                          (Optional){
+     *                             endTime: String (Optional)
+     *                             startTime: String (Optional)
+     *                             timeZone: String (Optional)
      *                         }
      *                     ]
-     *                     source: String
-     *                     sourceDetails: {
-     *                         String: Object
+     *                     source: String (Optional)
+     *                     sourceDetails (Optional): {
+     *                         String: Object (Optional)
      *                     }
      *                 }
      *             ]
-     *             displayText: String
-     *             guid: String
-     *             isIncomplete: Boolean
-     *             labels: [
-     *                 String
+     *             displayText: String (Optional)
+     *             guid: String (Optional)
+     *             isIncomplete: Boolean (Optional)
+     *             labels (Optional): [
+     *                 String (Optional)
      *             ]
-     *             meaningNames: [
-     *                 String
+     *             meaningNames (Optional): [
+     *                 String (Optional)
      *             ]
-     *             meanings: [
-     *                 {
-     *                     confidence: Integer
-     *                     createdBy: String
-     *                     description: String
-     *                     displayText: String
-     *                     expression: String
-     *                     relationGuid: String
-     *                     source: String
-     *                     status: String(DISCOVERED/PROPOSED/IMPORTED/VALIDATED/DEPRECATED/OBSOLETE/OTHER)
-     *                     steward: String
-     *                     termGuid: String
+     *             meanings (Optional): [
+     *                  (Optional){
+     *                     confidence: Integer (Optional)
+     *                     createdBy: String (Optional)
+     *                     description: String (Optional)
+     *                     displayText: String (Optional)
+     *                     expression: String (Optional)
+     *                     relationGuid: String (Optional)
+     *                     source: String (Optional)
+     *                     status: String(DISCOVERED/PROPOSED/IMPORTED/VALIDATED/DEPRECATED/OBSOLETE/OTHER) (Optional)
+     *                     steward: String (Optional)
+     *                     termGuid: String (Optional)
      *                 }
      *             ]
-     *             status: String(ACTIVE/DELETED)
+     *             status: String(ACTIVE/DELETED) (Optional)
      *         }
      *     }
-     *     widthCounts: {
-     *         String: {
-     *             String: Object
+     *     widthCounts (Optional): {
+     *         String (Optional): {
+     *             String: Object (Optional)
      *         }
      *     }
-     *     lineageDepth: Integer
-     *     lineageWidth: Integer
-     *     includeParent: Boolean
-     *     childrenCount: Integer
-     *     lineageDirection: String(INPUT/OUTPUT/BOTH)
-     *     parentRelations: [
-     *         {
-     *             childEntityId: String
-     *             relationshipId: String
-     *             parentEntityId: String
+     *     lineageDepth: Integer (Optional)
+     *     lineageWidth: Integer (Optional)
+     *     includeParent: Boolean (Optional)
+     *     childrenCount: Integer (Optional)
+     *     lineageDirection: String(INPUT/OUTPUT/BOTH) (Optional)
+     *     parentRelations (Optional): [
+     *          (Optional){
+     *             childEntityId: String (Optional)
+     *             relationshipId: String (Optional)
+     *             parentEntityId: String (Optional)
      *         }
      *     ]
-     *     relations: [
-     *         {
-     *             fromEntityId: String
-     *             relationshipId: String
-     *             toEntityId: String
+     *     relations (Optional): [
+     *          (Optional){
+     *             fromEntityId: String (Optional)
+     *             relationshipId: String (Optional)
+     *             toEntityId: String (Optional)
      *         }
      *     ]
      * }
      * }</pre>
      *
      * @param guid The globally unique identifier of the entity.
-     * @param direction The direction of the lineage, which could be INPUT, OUTPUT or BOTH. Allowed values: BOTH, INPUT,
-     *     OUTPUT.
+     * @param direction The direction of the lineage, which could be INPUT, OUTPUT or BOTH. Allowed values: "BOTH",
+     *     "INPUT", "OUTPUT".
      * @param requestOptions The options to configure the HTTP request before HTTP client sends it.
      * @throws HttpResponseException thrown if the request is rejected by server.
      * @throws ClientAuthenticationException thrown if the request is rejected by server on status code 401.
@@ -254,224 +317,102 @@ public final class LineagesImpl {
      *     <tr><td>getDerivedLineage</td><td>Boolean</td><td>No</td><td>True to include derived lineage in the response</td></tr>
      * </table>
      *
+     * You can add these to a request with {@link RequestOptions#addQueryParam}
+     *
      * <p><strong>Response Body Schema</strong>
      *
      * <pre>{@code
      * {
-     *     baseEntityGuid: String
-     *     guidEntityMap: {
-     *         String: {
-     *             attributes: {
-     *                 String: Object
+     *     baseEntityGuid: String (Optional)
+     *     guidEntityMap (Optional): {
+     *         String (Optional): {
+     *             attributes (Optional): {
+     *                 String: Object (Optional)
      *             }
-     *             typeName: String
-     *             lastModifiedTS: String
-     *             classificationNames: [
-     *                 String
+     *             typeName: String (Optional)
+     *             lastModifiedTS: String (Optional)
+     *             classificationNames (Optional): [
+     *                 String (Optional)
      *             ]
-     *             classifications: [
-     *                 {
-     *                     attributes: {
-     *                         String: Object
+     *             classifications (Optional): [
+     *                  (Optional){
+     *                     attributes (Optional): {
+     *                         String: Object (Optional)
      *                     }
-     *                     typeName: String
-     *                     lastModifiedTS: String
-     *                     entityGuid: String
-     *                     entityStatus: String(ACTIVE/DELETED)
-     *                     removePropagationsOnEntityDelete: Boolean
-     *                     validityPeriods: [
-     *                         {
-     *                             endTime: String
-     *                             startTime: String
-     *                             timeZone: String
+     *                     typeName: String (Optional)
+     *                     lastModifiedTS: String (Optional)
+     *                     entityGuid: String (Optional)
+     *                     entityStatus: String(ACTIVE/DELETED) (Optional)
+     *                     removePropagationsOnEntityDelete: Boolean (Optional)
+     *                     validityPeriods (Optional): [
+     *                          (Optional){
+     *                             endTime: String (Optional)
+     *                             startTime: String (Optional)
+     *                             timeZone: String (Optional)
      *                         }
      *                     ]
-     *                     source: String
-     *                     sourceDetails: {
-     *                         String: Object
+     *                     source: String (Optional)
+     *                     sourceDetails (Optional): {
+     *                         String: Object (Optional)
      *                     }
      *                 }
      *             ]
-     *             displayText: String
-     *             guid: String
-     *             isIncomplete: Boolean
-     *             labels: [
-     *                 String
+     *             displayText: String (Optional)
+     *             guid: String (Optional)
+     *             isIncomplete: Boolean (Optional)
+     *             labels (Optional): [
+     *                 String (Optional)
      *             ]
-     *             meaningNames: [
-     *                 String
+     *             meaningNames (Optional): [
+     *                 String (Optional)
      *             ]
-     *             meanings: [
-     *                 {
-     *                     confidence: Integer
-     *                     createdBy: String
-     *                     description: String
-     *                     displayText: String
-     *                     expression: String
-     *                     relationGuid: String
-     *                     source: String
-     *                     status: String(DISCOVERED/PROPOSED/IMPORTED/VALIDATED/DEPRECATED/OBSOLETE/OTHER)
-     *                     steward: String
-     *                     termGuid: String
+     *             meanings (Optional): [
+     *                  (Optional){
+     *                     confidence: Integer (Optional)
+     *                     createdBy: String (Optional)
+     *                     description: String (Optional)
+     *                     displayText: String (Optional)
+     *                     expression: String (Optional)
+     *                     relationGuid: String (Optional)
+     *                     source: String (Optional)
+     *                     status: String(DISCOVERED/PROPOSED/IMPORTED/VALIDATED/DEPRECATED/OBSOLETE/OTHER) (Optional)
+     *                     steward: String (Optional)
+     *                     termGuid: String (Optional)
      *                 }
      *             ]
-     *             status: String(ACTIVE/DELETED)
+     *             status: String(ACTIVE/DELETED) (Optional)
      *         }
      *     }
-     *     widthCounts: {
-     *         String: {
-     *             String: Object
+     *     widthCounts (Optional): {
+     *         String (Optional): {
+     *             String: Object (Optional)
      *         }
      *     }
-     *     lineageDepth: Integer
-     *     lineageWidth: Integer
-     *     includeParent: Boolean
-     *     childrenCount: Integer
-     *     lineageDirection: String(INPUT/OUTPUT/BOTH)
-     *     parentRelations: [
-     *         {
-     *             childEntityId: String
-     *             relationshipId: String
-     *             parentEntityId: String
+     *     lineageDepth: Integer (Optional)
+     *     lineageWidth: Integer (Optional)
+     *     includeParent: Boolean (Optional)
+     *     childrenCount: Integer (Optional)
+     *     lineageDirection: String(INPUT/OUTPUT/BOTH) (Optional)
+     *     parentRelations (Optional): [
+     *          (Optional){
+     *             childEntityId: String (Optional)
+     *             relationshipId: String (Optional)
+     *             parentEntityId: String (Optional)
      *         }
      *     ]
-     *     relations: [
-     *         {
-     *             fromEntityId: String
-     *             relationshipId: String
-     *             toEntityId: String
+     *     relations (Optional): [
+     *          (Optional){
+     *             fromEntityId: String (Optional)
+     *             relationshipId: String (Optional)
+     *             toEntityId: String (Optional)
      *         }
      *     ]
      * }
      * }</pre>
      *
      * @param guid The globally unique identifier of the entity.
-     * @param direction The direction of the lineage, which could be INPUT, OUTPUT or BOTH. Allowed values: BOTH, INPUT,
-     *     OUTPUT.
-     * @param requestOptions The options to configure the HTTP request before HTTP client sends it.
-     * @param context The context to associate with this operation.
-     * @throws HttpResponseException thrown if the request is rejected by server.
-     * @throws ClientAuthenticationException thrown if the request is rejected by server on status code 401.
-     * @throws ResourceNotFoundException thrown if the request is rejected by server on status code 404.
-     * @throws ResourceModifiedException thrown if the request is rejected by server on status code 409.
-     * @return lineage info of the entity specified by GUID along with {@link Response} on successful completion of
-     *     {@link Mono}.
-     */
-    @ServiceMethod(returns = ReturnType.SINGLE)
-    public Mono<Response<BinaryData>> getLineageGraphWithResponseAsync(
-            String guid, String direction, RequestOptions requestOptions, Context context) {
-        final String accept = "application/json";
-        return service.getLineageGraph(this.client.getEndpoint(), guid, direction, accept, requestOptions, context);
-    }
-
-    /**
-     * Get lineage info of the entity specified by GUID.
-     *
-     * <p><strong>Query Parameters</strong>
-     *
-     * <table border="1">
-     *     <caption>Query Parameters</caption>
-     *     <tr><th>Name</th><th>Type</th><th>Required</th><th>Description</th></tr>
-     *     <tr><td>depth</td><td>Integer</td><td>No</td><td>The number of hops for lineage.</td></tr>
-     *     <tr><td>width</td><td>Integer</td><td>No</td><td>The number of max expanding width in lineage.</td></tr>
-     *     <tr><td>includeParent</td><td>Boolean</td><td>No</td><td>True to include the parent chain in the response.</td></tr>
-     *     <tr><td>getDerivedLineage</td><td>Boolean</td><td>No</td><td>True to include derived lineage in the response</td></tr>
-     * </table>
-     *
-     * <p><strong>Response Body Schema</strong>
-     *
-     * <pre>{@code
-     * {
-     *     baseEntityGuid: String
-     *     guidEntityMap: {
-     *         String: {
-     *             attributes: {
-     *                 String: Object
-     *             }
-     *             typeName: String
-     *             lastModifiedTS: String
-     *             classificationNames: [
-     *                 String
-     *             ]
-     *             classifications: [
-     *                 {
-     *                     attributes: {
-     *                         String: Object
-     *                     }
-     *                     typeName: String
-     *                     lastModifiedTS: String
-     *                     entityGuid: String
-     *                     entityStatus: String(ACTIVE/DELETED)
-     *                     removePropagationsOnEntityDelete: Boolean
-     *                     validityPeriods: [
-     *                         {
-     *                             endTime: String
-     *                             startTime: String
-     *                             timeZone: String
-     *                         }
-     *                     ]
-     *                     source: String
-     *                     sourceDetails: {
-     *                         String: Object
-     *                     }
-     *                 }
-     *             ]
-     *             displayText: String
-     *             guid: String
-     *             isIncomplete: Boolean
-     *             labels: [
-     *                 String
-     *             ]
-     *             meaningNames: [
-     *                 String
-     *             ]
-     *             meanings: [
-     *                 {
-     *                     confidence: Integer
-     *                     createdBy: String
-     *                     description: String
-     *                     displayText: String
-     *                     expression: String
-     *                     relationGuid: String
-     *                     source: String
-     *                     status: String(DISCOVERED/PROPOSED/IMPORTED/VALIDATED/DEPRECATED/OBSOLETE/OTHER)
-     *                     steward: String
-     *                     termGuid: String
-     *                 }
-     *             ]
-     *             status: String(ACTIVE/DELETED)
-     *         }
-     *     }
-     *     widthCounts: {
-     *         String: {
-     *             String: Object
-     *         }
-     *     }
-     *     lineageDepth: Integer
-     *     lineageWidth: Integer
-     *     includeParent: Boolean
-     *     childrenCount: Integer
-     *     lineageDirection: String(INPUT/OUTPUT/BOTH)
-     *     parentRelations: [
-     *         {
-     *             childEntityId: String
-     *             relationshipId: String
-     *             parentEntityId: String
-     *         }
-     *     ]
-     *     relations: [
-     *         {
-     *             fromEntityId: String
-     *             relationshipId: String
-     *             toEntityId: String
-     *         }
-     *     ]
-     * }
-     * }</pre>
-     *
-     * @param guid The globally unique identifier of the entity.
-     * @param direction The direction of the lineage, which could be INPUT, OUTPUT or BOTH. Allowed values: BOTH, INPUT,
-     *     OUTPUT.
+     * @param direction The direction of the lineage, which could be INPUT, OUTPUT or BOTH. Allowed values: "BOTH",
+     *     "INPUT", "OUTPUT".
      * @param requestOptions The options to configure the HTTP request before HTTP client sends it.
      * @throws HttpResponseException thrown if the request is rejected by server.
      * @throws ClientAuthenticationException thrown if the request is rejected by server on status code 401.
@@ -482,7 +423,9 @@ public final class LineagesImpl {
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Response<BinaryData> getLineageGraphWithResponse(
             String guid, String direction, RequestOptions requestOptions) {
-        return getLineageGraphWithResponseAsync(guid, direction, requestOptions).block();
+        final String accept = "application/json";
+        return service.getLineageGraphSync(
+                this.client.getEndpoint(), guid, direction, accept, requestOptions, Context.NONE);
     }
 
     /**
@@ -498,100 +441,102 @@ public final class LineagesImpl {
      *     <tr><td>limit</td><td>Integer</td><td>No</td><td>The page size - by default there is no paging.</td></tr>
      * </table>
      *
+     * You can add these to a request with {@link RequestOptions#addQueryParam}
+     *
      * <p><strong>Response Body Schema</strong>
      *
      * <pre>{@code
      * {
-     *     baseEntityGuid: String
-     *     guidEntityMap: {
-     *         String: {
-     *             attributes: {
-     *                 String: Object
+     *     baseEntityGuid: String (Optional)
+     *     guidEntityMap (Optional): {
+     *         String (Optional): {
+     *             attributes (Optional): {
+     *                 String: Object (Optional)
      *             }
-     *             typeName: String
-     *             lastModifiedTS: String
-     *             classificationNames: [
-     *                 String
+     *             typeName: String (Optional)
+     *             lastModifiedTS: String (Optional)
+     *             classificationNames (Optional): [
+     *                 String (Optional)
      *             ]
-     *             classifications: [
-     *                 {
-     *                     attributes: {
-     *                         String: Object
+     *             classifications (Optional): [
+     *                  (Optional){
+     *                     attributes (Optional): {
+     *                         String: Object (Optional)
      *                     }
-     *                     typeName: String
-     *                     lastModifiedTS: String
-     *                     entityGuid: String
-     *                     entityStatus: String(ACTIVE/DELETED)
-     *                     removePropagationsOnEntityDelete: Boolean
-     *                     validityPeriods: [
-     *                         {
-     *                             endTime: String
-     *                             startTime: String
-     *                             timeZone: String
+     *                     typeName: String (Optional)
+     *                     lastModifiedTS: String (Optional)
+     *                     entityGuid: String (Optional)
+     *                     entityStatus: String(ACTIVE/DELETED) (Optional)
+     *                     removePropagationsOnEntityDelete: Boolean (Optional)
+     *                     validityPeriods (Optional): [
+     *                          (Optional){
+     *                             endTime: String (Optional)
+     *                             startTime: String (Optional)
+     *                             timeZone: String (Optional)
      *                         }
      *                     ]
-     *                     source: String
-     *                     sourceDetails: {
-     *                         String: Object
+     *                     source: String (Optional)
+     *                     sourceDetails (Optional): {
+     *                         String: Object (Optional)
      *                     }
      *                 }
      *             ]
-     *             displayText: String
-     *             guid: String
-     *             isIncomplete: Boolean
-     *             labels: [
-     *                 String
+     *             displayText: String (Optional)
+     *             guid: String (Optional)
+     *             isIncomplete: Boolean (Optional)
+     *             labels (Optional): [
+     *                 String (Optional)
      *             ]
-     *             meaningNames: [
-     *                 String
+     *             meaningNames (Optional): [
+     *                 String (Optional)
      *             ]
-     *             meanings: [
-     *                 {
-     *                     confidence: Integer
-     *                     createdBy: String
-     *                     description: String
-     *                     displayText: String
-     *                     expression: String
-     *                     relationGuid: String
-     *                     source: String
-     *                     status: String(DISCOVERED/PROPOSED/IMPORTED/VALIDATED/DEPRECATED/OBSOLETE/OTHER)
-     *                     steward: String
-     *                     termGuid: String
+     *             meanings (Optional): [
+     *                  (Optional){
+     *                     confidence: Integer (Optional)
+     *                     createdBy: String (Optional)
+     *                     description: String (Optional)
+     *                     displayText: String (Optional)
+     *                     expression: String (Optional)
+     *                     relationGuid: String (Optional)
+     *                     source: String (Optional)
+     *                     status: String(DISCOVERED/PROPOSED/IMPORTED/VALIDATED/DEPRECATED/OBSOLETE/OTHER) (Optional)
+     *                     steward: String (Optional)
+     *                     termGuid: String (Optional)
      *                 }
      *             ]
-     *             status: String(ACTIVE/DELETED)
+     *             status: String(ACTIVE/DELETED) (Optional)
      *         }
      *     }
-     *     widthCounts: {
-     *         String: {
-     *             String: Object
+     *     widthCounts (Optional): {
+     *         String (Optional): {
+     *             String: Object (Optional)
      *         }
      *     }
-     *     lineageDepth: Integer
-     *     lineageWidth: Integer
-     *     includeParent: Boolean
-     *     childrenCount: Integer
-     *     lineageDirection: String(INPUT/OUTPUT/BOTH)
-     *     parentRelations: [
-     *         {
-     *             childEntityId: String
-     *             relationshipId: String
-     *             parentEntityId: String
+     *     lineageDepth: Integer (Optional)
+     *     lineageWidth: Integer (Optional)
+     *     includeParent: Boolean (Optional)
+     *     childrenCount: Integer (Optional)
+     *     lineageDirection: String(INPUT/OUTPUT/BOTH) (Optional)
+     *     parentRelations (Optional): [
+     *          (Optional){
+     *             childEntityId: String (Optional)
+     *             relationshipId: String (Optional)
+     *             parentEntityId: String (Optional)
      *         }
      *     ]
-     *     relations: [
-     *         {
-     *             fromEntityId: String
-     *             relationshipId: String
-     *             toEntityId: String
+     *     relations (Optional): [
+     *          (Optional){
+     *             fromEntityId: String (Optional)
+     *             relationshipId: String (Optional)
+     *             toEntityId: String (Optional)
      *         }
      *     ]
      * }
      * }</pre>
      *
      * @param guid The globally unique identifier of the entity.
-     * @param direction The direction of the lineage, which could be INPUT, OUTPUT or BOTH. Allowed values: BOTH, INPUT,
-     *     OUTPUT.
+     * @param direction The direction of the lineage, which could be INPUT, OUTPUT or BOTH. Allowed values: "BOTH",
+     *     "INPUT", "OUTPUT".
      * @param requestOptions The options to configure the HTTP request before HTTP client sends it.
      * @throws HttpResponseException thrown if the request is rejected by server.
      * @throws ClientAuthenticationException thrown if the request is rejected by server on status code 401.
@@ -628,229 +573,102 @@ public final class LineagesImpl {
      *     <tr><td>limit</td><td>Integer</td><td>No</td><td>The page size - by default there is no paging.</td></tr>
      * </table>
      *
+     * You can add these to a request with {@link RequestOptions#addQueryParam}
+     *
      * <p><strong>Response Body Schema</strong>
      *
      * <pre>{@code
      * {
-     *     baseEntityGuid: String
-     *     guidEntityMap: {
-     *         String: {
-     *             attributes: {
-     *                 String: Object
+     *     baseEntityGuid: String (Optional)
+     *     guidEntityMap (Optional): {
+     *         String (Optional): {
+     *             attributes (Optional): {
+     *                 String: Object (Optional)
      *             }
-     *             typeName: String
-     *             lastModifiedTS: String
-     *             classificationNames: [
-     *                 String
+     *             typeName: String (Optional)
+     *             lastModifiedTS: String (Optional)
+     *             classificationNames (Optional): [
+     *                 String (Optional)
      *             ]
-     *             classifications: [
-     *                 {
-     *                     attributes: {
-     *                         String: Object
+     *             classifications (Optional): [
+     *                  (Optional){
+     *                     attributes (Optional): {
+     *                         String: Object (Optional)
      *                     }
-     *                     typeName: String
-     *                     lastModifiedTS: String
-     *                     entityGuid: String
-     *                     entityStatus: String(ACTIVE/DELETED)
-     *                     removePropagationsOnEntityDelete: Boolean
-     *                     validityPeriods: [
-     *                         {
-     *                             endTime: String
-     *                             startTime: String
-     *                             timeZone: String
+     *                     typeName: String (Optional)
+     *                     lastModifiedTS: String (Optional)
+     *                     entityGuid: String (Optional)
+     *                     entityStatus: String(ACTIVE/DELETED) (Optional)
+     *                     removePropagationsOnEntityDelete: Boolean (Optional)
+     *                     validityPeriods (Optional): [
+     *                          (Optional){
+     *                             endTime: String (Optional)
+     *                             startTime: String (Optional)
+     *                             timeZone: String (Optional)
      *                         }
      *                     ]
-     *                     source: String
-     *                     sourceDetails: {
-     *                         String: Object
+     *                     source: String (Optional)
+     *                     sourceDetails (Optional): {
+     *                         String: Object (Optional)
      *                     }
      *                 }
      *             ]
-     *             displayText: String
-     *             guid: String
-     *             isIncomplete: Boolean
-     *             labels: [
-     *                 String
+     *             displayText: String (Optional)
+     *             guid: String (Optional)
+     *             isIncomplete: Boolean (Optional)
+     *             labels (Optional): [
+     *                 String (Optional)
      *             ]
-     *             meaningNames: [
-     *                 String
+     *             meaningNames (Optional): [
+     *                 String (Optional)
      *             ]
-     *             meanings: [
-     *                 {
-     *                     confidence: Integer
-     *                     createdBy: String
-     *                     description: String
-     *                     displayText: String
-     *                     expression: String
-     *                     relationGuid: String
-     *                     source: String
-     *                     status: String(DISCOVERED/PROPOSED/IMPORTED/VALIDATED/DEPRECATED/OBSOLETE/OTHER)
-     *                     steward: String
-     *                     termGuid: String
+     *             meanings (Optional): [
+     *                  (Optional){
+     *                     confidence: Integer (Optional)
+     *                     createdBy: String (Optional)
+     *                     description: String (Optional)
+     *                     displayText: String (Optional)
+     *                     expression: String (Optional)
+     *                     relationGuid: String (Optional)
+     *                     source: String (Optional)
+     *                     status: String(DISCOVERED/PROPOSED/IMPORTED/VALIDATED/DEPRECATED/OBSOLETE/OTHER) (Optional)
+     *                     steward: String (Optional)
+     *                     termGuid: String (Optional)
      *                 }
      *             ]
-     *             status: String(ACTIVE/DELETED)
+     *             status: String(ACTIVE/DELETED) (Optional)
      *         }
      *     }
-     *     widthCounts: {
-     *         String: {
-     *             String: Object
+     *     widthCounts (Optional): {
+     *         String (Optional): {
+     *             String: Object (Optional)
      *         }
      *     }
-     *     lineageDepth: Integer
-     *     lineageWidth: Integer
-     *     includeParent: Boolean
-     *     childrenCount: Integer
-     *     lineageDirection: String(INPUT/OUTPUT/BOTH)
-     *     parentRelations: [
-     *         {
-     *             childEntityId: String
-     *             relationshipId: String
-     *             parentEntityId: String
+     *     lineageDepth: Integer (Optional)
+     *     lineageWidth: Integer (Optional)
+     *     includeParent: Boolean (Optional)
+     *     childrenCount: Integer (Optional)
+     *     lineageDirection: String(INPUT/OUTPUT/BOTH) (Optional)
+     *     parentRelations (Optional): [
+     *          (Optional){
+     *             childEntityId: String (Optional)
+     *             relationshipId: String (Optional)
+     *             parentEntityId: String (Optional)
      *         }
      *     ]
-     *     relations: [
-     *         {
-     *             fromEntityId: String
-     *             relationshipId: String
-     *             toEntityId: String
+     *     relations (Optional): [
+     *          (Optional){
+     *             fromEntityId: String (Optional)
+     *             relationshipId: String (Optional)
+     *             toEntityId: String (Optional)
      *         }
      *     ]
      * }
      * }</pre>
      *
      * @param guid The globally unique identifier of the entity.
-     * @param direction The direction of the lineage, which could be INPUT, OUTPUT or BOTH. Allowed values: BOTH, INPUT,
-     *     OUTPUT.
-     * @param requestOptions The options to configure the HTTP request before HTTP client sends it.
-     * @param context The context to associate with this operation.
-     * @throws HttpResponseException thrown if the request is rejected by server.
-     * @throws ClientAuthenticationException thrown if the request is rejected by server on status code 401.
-     * @throws ResourceNotFoundException thrown if the request is rejected by server on status code 404.
-     * @throws ResourceModifiedException thrown if the request is rejected by server on status code 409.
-     * @return atlasLineageInfo along with {@link Response} on successful completion of {@link Mono}.
-     */
-    @ServiceMethod(returns = ReturnType.SINGLE)
-    public Mono<Response<BinaryData>> nextPageLineageWithResponseAsync(
-            String guid, String direction, RequestOptions requestOptions, Context context) {
-        final String accept = "application/json";
-        return service.nextPageLineage(
-                this.client.getEndpoint(),
-                guid,
-                direction,
-                this.client.getServiceVersion().getVersion(),
-                accept,
-                requestOptions,
-                context);
-    }
-
-    /**
-     * Return immediate next page lineage info about entity with pagination.
-     *
-     * <p><strong>Query Parameters</strong>
-     *
-     * <table border="1">
-     *     <caption>Query Parameters</caption>
-     *     <tr><th>Name</th><th>Type</th><th>Required</th><th>Description</th></tr>
-     *     <tr><td>getDerivedLineage</td><td>Boolean</td><td>No</td><td>True to include derived lineage in the response</td></tr>
-     *     <tr><td>offset</td><td>Integer</td><td>No</td><td>The offset for pagination purpose.</td></tr>
-     *     <tr><td>limit</td><td>Integer</td><td>No</td><td>The page size - by default there is no paging.</td></tr>
-     * </table>
-     *
-     * <p><strong>Response Body Schema</strong>
-     *
-     * <pre>{@code
-     * {
-     *     baseEntityGuid: String
-     *     guidEntityMap: {
-     *         String: {
-     *             attributes: {
-     *                 String: Object
-     *             }
-     *             typeName: String
-     *             lastModifiedTS: String
-     *             classificationNames: [
-     *                 String
-     *             ]
-     *             classifications: [
-     *                 {
-     *                     attributes: {
-     *                         String: Object
-     *                     }
-     *                     typeName: String
-     *                     lastModifiedTS: String
-     *                     entityGuid: String
-     *                     entityStatus: String(ACTIVE/DELETED)
-     *                     removePropagationsOnEntityDelete: Boolean
-     *                     validityPeriods: [
-     *                         {
-     *                             endTime: String
-     *                             startTime: String
-     *                             timeZone: String
-     *                         }
-     *                     ]
-     *                     source: String
-     *                     sourceDetails: {
-     *                         String: Object
-     *                     }
-     *                 }
-     *             ]
-     *             displayText: String
-     *             guid: String
-     *             isIncomplete: Boolean
-     *             labels: [
-     *                 String
-     *             ]
-     *             meaningNames: [
-     *                 String
-     *             ]
-     *             meanings: [
-     *                 {
-     *                     confidence: Integer
-     *                     createdBy: String
-     *                     description: String
-     *                     displayText: String
-     *                     expression: String
-     *                     relationGuid: String
-     *                     source: String
-     *                     status: String(DISCOVERED/PROPOSED/IMPORTED/VALIDATED/DEPRECATED/OBSOLETE/OTHER)
-     *                     steward: String
-     *                     termGuid: String
-     *                 }
-     *             ]
-     *             status: String(ACTIVE/DELETED)
-     *         }
-     *     }
-     *     widthCounts: {
-     *         String: {
-     *             String: Object
-     *         }
-     *     }
-     *     lineageDepth: Integer
-     *     lineageWidth: Integer
-     *     includeParent: Boolean
-     *     childrenCount: Integer
-     *     lineageDirection: String(INPUT/OUTPUT/BOTH)
-     *     parentRelations: [
-     *         {
-     *             childEntityId: String
-     *             relationshipId: String
-     *             parentEntityId: String
-     *         }
-     *     ]
-     *     relations: [
-     *         {
-     *             fromEntityId: String
-     *             relationshipId: String
-     *             toEntityId: String
-     *         }
-     *     ]
-     * }
-     * }</pre>
-     *
-     * @param guid The globally unique identifier of the entity.
-     * @param direction The direction of the lineage, which could be INPUT, OUTPUT or BOTH. Allowed values: BOTH, INPUT,
-     *     OUTPUT.
+     * @param direction The direction of the lineage, which could be INPUT, OUTPUT or BOTH. Allowed values: "BOTH",
+     *     "INPUT", "OUTPUT".
      * @param requestOptions The options to configure the HTTP request before HTTP client sends it.
      * @throws HttpResponseException thrown if the request is rejected by server.
      * @throws ClientAuthenticationException thrown if the request is rejected by server on status code 401.
@@ -861,7 +679,15 @@ public final class LineagesImpl {
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Response<BinaryData> nextPageLineageWithResponse(
             String guid, String direction, RequestOptions requestOptions) {
-        return nextPageLineageWithResponseAsync(guid, direction, requestOptions).block();
+        final String accept = "application/json";
+        return service.nextPageLineageSync(
+                this.client.getEndpoint(),
+                guid,
+                direction,
+                this.client.getServiceVersion().getVersion(),
+                accept,
+                requestOptions,
+                Context.NONE);
     }
 
     /**
@@ -885,100 +711,102 @@ public final class LineagesImpl {
      *     <tr><td>getDerivedLineage</td><td>Boolean</td><td>No</td><td>True to include derived lineage in the response</td></tr>
      * </table>
      *
+     * You can add these to a request with {@link RequestOptions#addQueryParam}
+     *
      * <p><strong>Response Body Schema</strong>
      *
      * <pre>{@code
      * {
-     *     baseEntityGuid: String
-     *     guidEntityMap: {
-     *         String: {
-     *             attributes: {
-     *                 String: Object
+     *     baseEntityGuid: String (Optional)
+     *     guidEntityMap (Optional): {
+     *         String (Optional): {
+     *             attributes (Optional): {
+     *                 String: Object (Optional)
      *             }
-     *             typeName: String
-     *             lastModifiedTS: String
-     *             classificationNames: [
-     *                 String
+     *             typeName: String (Optional)
+     *             lastModifiedTS: String (Optional)
+     *             classificationNames (Optional): [
+     *                 String (Optional)
      *             ]
-     *             classifications: [
-     *                 {
-     *                     attributes: {
-     *                         String: Object
+     *             classifications (Optional): [
+     *                  (Optional){
+     *                     attributes (Optional): {
+     *                         String: Object (Optional)
      *                     }
-     *                     typeName: String
-     *                     lastModifiedTS: String
-     *                     entityGuid: String
-     *                     entityStatus: String(ACTIVE/DELETED)
-     *                     removePropagationsOnEntityDelete: Boolean
-     *                     validityPeriods: [
-     *                         {
-     *                             endTime: String
-     *                             startTime: String
-     *                             timeZone: String
+     *                     typeName: String (Optional)
+     *                     lastModifiedTS: String (Optional)
+     *                     entityGuid: String (Optional)
+     *                     entityStatus: String(ACTIVE/DELETED) (Optional)
+     *                     removePropagationsOnEntityDelete: Boolean (Optional)
+     *                     validityPeriods (Optional): [
+     *                          (Optional){
+     *                             endTime: String (Optional)
+     *                             startTime: String (Optional)
+     *                             timeZone: String (Optional)
      *                         }
      *                     ]
-     *                     source: String
-     *                     sourceDetails: {
-     *                         String: Object
+     *                     source: String (Optional)
+     *                     sourceDetails (Optional): {
+     *                         String: Object (Optional)
      *                     }
      *                 }
      *             ]
-     *             displayText: String
-     *             guid: String
-     *             isIncomplete: Boolean
-     *             labels: [
-     *                 String
+     *             displayText: String (Optional)
+     *             guid: String (Optional)
+     *             isIncomplete: Boolean (Optional)
+     *             labels (Optional): [
+     *                 String (Optional)
      *             ]
-     *             meaningNames: [
-     *                 String
+     *             meaningNames (Optional): [
+     *                 String (Optional)
      *             ]
-     *             meanings: [
-     *                 {
-     *                     confidence: Integer
-     *                     createdBy: String
-     *                     description: String
-     *                     displayText: String
-     *                     expression: String
-     *                     relationGuid: String
-     *                     source: String
-     *                     status: String(DISCOVERED/PROPOSED/IMPORTED/VALIDATED/DEPRECATED/OBSOLETE/OTHER)
-     *                     steward: String
-     *                     termGuid: String
+     *             meanings (Optional): [
+     *                  (Optional){
+     *                     confidence: Integer (Optional)
+     *                     createdBy: String (Optional)
+     *                     description: String (Optional)
+     *                     displayText: String (Optional)
+     *                     expression: String (Optional)
+     *                     relationGuid: String (Optional)
+     *                     source: String (Optional)
+     *                     status: String(DISCOVERED/PROPOSED/IMPORTED/VALIDATED/DEPRECATED/OBSOLETE/OTHER) (Optional)
+     *                     steward: String (Optional)
+     *                     termGuid: String (Optional)
      *                 }
      *             ]
-     *             status: String(ACTIVE/DELETED)
+     *             status: String(ACTIVE/DELETED) (Optional)
      *         }
      *     }
-     *     widthCounts: {
-     *         String: {
-     *             String: Object
+     *     widthCounts (Optional): {
+     *         String (Optional): {
+     *             String: Object (Optional)
      *         }
      *     }
-     *     lineageDepth: Integer
-     *     lineageWidth: Integer
-     *     includeParent: Boolean
-     *     childrenCount: Integer
-     *     lineageDirection: String(INPUT/OUTPUT/BOTH)
-     *     parentRelations: [
-     *         {
-     *             childEntityId: String
-     *             relationshipId: String
-     *             parentEntityId: String
+     *     lineageDepth: Integer (Optional)
+     *     lineageWidth: Integer (Optional)
+     *     includeParent: Boolean (Optional)
+     *     childrenCount: Integer (Optional)
+     *     lineageDirection: String(INPUT/OUTPUT/BOTH) (Optional)
+     *     parentRelations (Optional): [
+     *          (Optional){
+     *             childEntityId: String (Optional)
+     *             relationshipId: String (Optional)
+     *             parentEntityId: String (Optional)
      *         }
      *     ]
-     *     relations: [
-     *         {
-     *             fromEntityId: String
-     *             relationshipId: String
-     *             toEntityId: String
+     *     relations (Optional): [
+     *          (Optional){
+     *             fromEntityId: String (Optional)
+     *             relationshipId: String (Optional)
+     *             toEntityId: String (Optional)
      *         }
      *     ]
      * }
      * }</pre>
      *
      * @param typeName The name of the type.
-     * @param direction The direction of the lineage, which could be INPUT, OUTPUT or BOTH. Allowed values: BOTH, INPUT,
-     *     OUTPUT.
+     * @param direction The direction of the lineage, which could be INPUT, OUTPUT or BOTH. Allowed values: "BOTH",
+     *     "INPUT", "OUTPUT".
      * @param requestOptions The options to configure the HTTP request before HTTP client sends it.
      * @throws HttpResponseException thrown if the request is rejected by server.
      * @throws ClientAuthenticationException thrown if the request is rejected by server on status code 401.
@@ -1017,231 +845,102 @@ public final class LineagesImpl {
      *     <tr><td>getDerivedLineage</td><td>Boolean</td><td>No</td><td>True to include derived lineage in the response</td></tr>
      * </table>
      *
+     * You can add these to a request with {@link RequestOptions#addQueryParam}
+     *
      * <p><strong>Response Body Schema</strong>
      *
      * <pre>{@code
      * {
-     *     baseEntityGuid: String
-     *     guidEntityMap: {
-     *         String: {
-     *             attributes: {
-     *                 String: Object
+     *     baseEntityGuid: String (Optional)
+     *     guidEntityMap (Optional): {
+     *         String (Optional): {
+     *             attributes (Optional): {
+     *                 String: Object (Optional)
      *             }
-     *             typeName: String
-     *             lastModifiedTS: String
-     *             classificationNames: [
-     *                 String
+     *             typeName: String (Optional)
+     *             lastModifiedTS: String (Optional)
+     *             classificationNames (Optional): [
+     *                 String (Optional)
      *             ]
-     *             classifications: [
-     *                 {
-     *                     attributes: {
-     *                         String: Object
+     *             classifications (Optional): [
+     *                  (Optional){
+     *                     attributes (Optional): {
+     *                         String: Object (Optional)
      *                     }
-     *                     typeName: String
-     *                     lastModifiedTS: String
-     *                     entityGuid: String
-     *                     entityStatus: String(ACTIVE/DELETED)
-     *                     removePropagationsOnEntityDelete: Boolean
-     *                     validityPeriods: [
-     *                         {
-     *                             endTime: String
-     *                             startTime: String
-     *                             timeZone: String
+     *                     typeName: String (Optional)
+     *                     lastModifiedTS: String (Optional)
+     *                     entityGuid: String (Optional)
+     *                     entityStatus: String(ACTIVE/DELETED) (Optional)
+     *                     removePropagationsOnEntityDelete: Boolean (Optional)
+     *                     validityPeriods (Optional): [
+     *                          (Optional){
+     *                             endTime: String (Optional)
+     *                             startTime: String (Optional)
+     *                             timeZone: String (Optional)
      *                         }
      *                     ]
-     *                     source: String
-     *                     sourceDetails: {
-     *                         String: Object
+     *                     source: String (Optional)
+     *                     sourceDetails (Optional): {
+     *                         String: Object (Optional)
      *                     }
      *                 }
      *             ]
-     *             displayText: String
-     *             guid: String
-     *             isIncomplete: Boolean
-     *             labels: [
-     *                 String
+     *             displayText: String (Optional)
+     *             guid: String (Optional)
+     *             isIncomplete: Boolean (Optional)
+     *             labels (Optional): [
+     *                 String (Optional)
      *             ]
-     *             meaningNames: [
-     *                 String
+     *             meaningNames (Optional): [
+     *                 String (Optional)
      *             ]
-     *             meanings: [
-     *                 {
-     *                     confidence: Integer
-     *                     createdBy: String
-     *                     description: String
-     *                     displayText: String
-     *                     expression: String
-     *                     relationGuid: String
-     *                     source: String
-     *                     status: String(DISCOVERED/PROPOSED/IMPORTED/VALIDATED/DEPRECATED/OBSOLETE/OTHER)
-     *                     steward: String
-     *                     termGuid: String
+     *             meanings (Optional): [
+     *                  (Optional){
+     *                     confidence: Integer (Optional)
+     *                     createdBy: String (Optional)
+     *                     description: String (Optional)
+     *                     displayText: String (Optional)
+     *                     expression: String (Optional)
+     *                     relationGuid: String (Optional)
+     *                     source: String (Optional)
+     *                     status: String(DISCOVERED/PROPOSED/IMPORTED/VALIDATED/DEPRECATED/OBSOLETE/OTHER) (Optional)
+     *                     steward: String (Optional)
+     *                     termGuid: String (Optional)
      *                 }
      *             ]
-     *             status: String(ACTIVE/DELETED)
+     *             status: String(ACTIVE/DELETED) (Optional)
      *         }
      *     }
-     *     widthCounts: {
-     *         String: {
-     *             String: Object
+     *     widthCounts (Optional): {
+     *         String (Optional): {
+     *             String: Object (Optional)
      *         }
      *     }
-     *     lineageDepth: Integer
-     *     lineageWidth: Integer
-     *     includeParent: Boolean
-     *     childrenCount: Integer
-     *     lineageDirection: String(INPUT/OUTPUT/BOTH)
-     *     parentRelations: [
-     *         {
-     *             childEntityId: String
-     *             relationshipId: String
-     *             parentEntityId: String
+     *     lineageDepth: Integer (Optional)
+     *     lineageWidth: Integer (Optional)
+     *     includeParent: Boolean (Optional)
+     *     childrenCount: Integer (Optional)
+     *     lineageDirection: String(INPUT/OUTPUT/BOTH) (Optional)
+     *     parentRelations (Optional): [
+     *          (Optional){
+     *             childEntityId: String (Optional)
+     *             relationshipId: String (Optional)
+     *             parentEntityId: String (Optional)
      *         }
      *     ]
-     *     relations: [
-     *         {
-     *             fromEntityId: String
-     *             relationshipId: String
-     *             toEntityId: String
+     *     relations (Optional): [
+     *          (Optional){
+     *             fromEntityId: String (Optional)
+     *             relationshipId: String (Optional)
+     *             toEntityId: String (Optional)
      *         }
      *     ]
      * }
      * }</pre>
      *
      * @param typeName The name of the type.
-     * @param direction The direction of the lineage, which could be INPUT, OUTPUT or BOTH. Allowed values: BOTH, INPUT,
-     *     OUTPUT.
-     * @param requestOptions The options to configure the HTTP request before HTTP client sends it.
-     * @param context The context to associate with this operation.
-     * @throws HttpResponseException thrown if the request is rejected by server.
-     * @throws ClientAuthenticationException thrown if the request is rejected by server on status code 401.
-     * @throws ResourceNotFoundException thrown if the request is rejected by server on status code 404.
-     * @throws ResourceModifiedException thrown if the request is rejected by server on status code 409.
-     * @return atlasLineageInfo along with {@link Response} on successful completion of {@link Mono}.
-     */
-    @ServiceMethod(returns = ReturnType.SINGLE)
-    public Mono<Response<BinaryData>> getLineageByUniqueAttributeWithResponseAsync(
-            String typeName, String direction, RequestOptions requestOptions, Context context) {
-        final String accept = "application/json";
-        return service.getLineageByUniqueAttribute(
-                this.client.getEndpoint(), typeName, direction, accept, requestOptions, context);
-    }
-
-    /**
-     * Returns lineage info about entity.
-     *
-     * <p>In addition to the typeName path parameter, attribute key-value pair(s) can be provided in the following
-     * format
-     *
-     * <p>attr:[attrName]=[attrValue]
-     *
-     * <p>NOTE: The attrName and attrValue should be unique across entities, eg. qualifiedName.
-     *
-     * <p><strong>Query Parameters</strong>
-     *
-     * <table border="1">
-     *     <caption>Query Parameters</caption>
-     *     <tr><th>Name</th><th>Type</th><th>Required</th><th>Description</th></tr>
-     *     <tr><td>depth</td><td>Integer</td><td>No</td><td>The number of hops for lineage.</td></tr>
-     *     <tr><td>width</td><td>Integer</td><td>No</td><td>The number of max expanding width in lineage.</td></tr>
-     *     <tr><td>includeParent</td><td>Boolean</td><td>No</td><td>True to include the parent chain in the response.</td></tr>
-     *     <tr><td>getDerivedLineage</td><td>Boolean</td><td>No</td><td>True to include derived lineage in the response</td></tr>
-     * </table>
-     *
-     * <p><strong>Response Body Schema</strong>
-     *
-     * <pre>{@code
-     * {
-     *     baseEntityGuid: String
-     *     guidEntityMap: {
-     *         String: {
-     *             attributes: {
-     *                 String: Object
-     *             }
-     *             typeName: String
-     *             lastModifiedTS: String
-     *             classificationNames: [
-     *                 String
-     *             ]
-     *             classifications: [
-     *                 {
-     *                     attributes: {
-     *                         String: Object
-     *                     }
-     *                     typeName: String
-     *                     lastModifiedTS: String
-     *                     entityGuid: String
-     *                     entityStatus: String(ACTIVE/DELETED)
-     *                     removePropagationsOnEntityDelete: Boolean
-     *                     validityPeriods: [
-     *                         {
-     *                             endTime: String
-     *                             startTime: String
-     *                             timeZone: String
-     *                         }
-     *                     ]
-     *                     source: String
-     *                     sourceDetails: {
-     *                         String: Object
-     *                     }
-     *                 }
-     *             ]
-     *             displayText: String
-     *             guid: String
-     *             isIncomplete: Boolean
-     *             labels: [
-     *                 String
-     *             ]
-     *             meaningNames: [
-     *                 String
-     *             ]
-     *             meanings: [
-     *                 {
-     *                     confidence: Integer
-     *                     createdBy: String
-     *                     description: String
-     *                     displayText: String
-     *                     expression: String
-     *                     relationGuid: String
-     *                     source: String
-     *                     status: String(DISCOVERED/PROPOSED/IMPORTED/VALIDATED/DEPRECATED/OBSOLETE/OTHER)
-     *                     steward: String
-     *                     termGuid: String
-     *                 }
-     *             ]
-     *             status: String(ACTIVE/DELETED)
-     *         }
-     *     }
-     *     widthCounts: {
-     *         String: {
-     *             String: Object
-     *         }
-     *     }
-     *     lineageDepth: Integer
-     *     lineageWidth: Integer
-     *     includeParent: Boolean
-     *     childrenCount: Integer
-     *     lineageDirection: String(INPUT/OUTPUT/BOTH)
-     *     parentRelations: [
-     *         {
-     *             childEntityId: String
-     *             relationshipId: String
-     *             parentEntityId: String
-     *         }
-     *     ]
-     *     relations: [
-     *         {
-     *             fromEntityId: String
-     *             relationshipId: String
-     *             toEntityId: String
-     *         }
-     *     ]
-     * }
-     * }</pre>
-     *
-     * @param typeName The name of the type.
-     * @param direction The direction of the lineage, which could be INPUT, OUTPUT or BOTH. Allowed values: BOTH, INPUT,
-     *     OUTPUT.
+     * @param direction The direction of the lineage, which could be INPUT, OUTPUT or BOTH. Allowed values: "BOTH",
+     *     "INPUT", "OUTPUT".
      * @param requestOptions The options to configure the HTTP request before HTTP client sends it.
      * @throws HttpResponseException thrown if the request is rejected by server.
      * @throws ClientAuthenticationException thrown if the request is rejected by server on status code 401.
@@ -1252,6 +951,8 @@ public final class LineagesImpl {
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Response<BinaryData> getLineageByUniqueAttributeWithResponse(
             String typeName, String direction, RequestOptions requestOptions) {
-        return getLineageByUniqueAttributeWithResponseAsync(typeName, direction, requestOptions).block();
+        final String accept = "application/json";
+        return service.getLineageByUniqueAttributeSync(
+                this.client.getEndpoint(), typeName, direction, accept, requestOptions, Context.NONE);
     }
 }

@@ -4,12 +4,10 @@
 
 package com.azure.resourcemanager.elastic.generated;
 
-import com.azure.core.util.Context;
-
 /** Samples for CreateAndAssociateIpFilter Create. */
 public final class CreateAndAssociateIpFilterCreateSamples {
     /*
-     * x-ms-original-file: specification/elastic/resource-manager/Microsoft.Elastic/preview/2022-07-01-preview/examples/IPTrafficFilter_Create.json
+     * x-ms-original-file: specification/elastic/resource-manager/Microsoft.Elastic/preview/2023-02-01-preview/examples/IPTrafficFilter_Create.json
      */
     /**
      * Sample code: createAndAssociateIPFilter_Create.
@@ -19,6 +17,11 @@ public final class CreateAndAssociateIpFilterCreateSamples {
     public static void createAndAssociateIPFilterCreate(com.azure.resourcemanager.elastic.ElasticManager manager) {
         manager
             .createAndAssociateIpFilters()
-            .create("myResourceGroup", "myMonitor", "192.168.131.0, 192.168.132.6/22", null, Context.NONE);
+            .create(
+                "myResourceGroup",
+                "myMonitor",
+                "192.168.131.0, 192.168.132.6/22",
+                null,
+                com.azure.core.util.Context.NONE);
     }
 }

@@ -14,6 +14,15 @@ public final class ManagedIdentityTypes extends ExpandableStringEnum<ManagedIden
     public static final ManagedIdentityTypes SYSTEM_ASSIGNED = fromString("SystemAssigned");
 
     /**
+     * Creates a new instance of ManagedIdentityTypes value.
+     *
+     * @deprecated Use the {@link #fromString(String)} factory method.
+     */
+    @Deprecated
+    public ManagedIdentityTypes() {
+    }
+
+    /**
      * Creates or finds a ManagedIdentityTypes from its string representation.
      *
      * @param name a name to look for.

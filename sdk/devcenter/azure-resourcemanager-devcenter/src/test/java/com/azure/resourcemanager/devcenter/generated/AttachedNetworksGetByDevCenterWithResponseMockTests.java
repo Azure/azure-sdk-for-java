@@ -11,7 +11,6 @@ import com.azure.core.http.HttpRequest;
 import com.azure.core.http.HttpResponse;
 import com.azure.core.management.AzureEnvironment;
 import com.azure.core.management.profile.AzureProfile;
-import com.azure.core.util.Context;
 import com.azure.resourcemanager.devcenter.DevCenterManager;
 import com.azure.resourcemanager.devcenter.models.AttachedNetworkConnection;
 import java.nio.ByteBuffer;
@@ -32,7 +31,7 @@ public final class AttachedNetworksGetByDevCenterWithResponseMockTests {
         ArgumentCaptor<HttpRequest> httpRequest = ArgumentCaptor.forClass(HttpRequest.class);
 
         String responseStr =
-            "{\"properties\":{\"provisioningState\":\"Updating\",\"networkConnectionId\":\"kgthrrghxjbd\",\"networkConnectionLocation\":\"xvcxgfrpdsofbshr\",\"healthCheckStatus\":\"Passed\",\"domainJoinType\":\"HybridAzureADJoin\"},\"id\":\"wdvzyy\",\"name\":\"ycnunvjsrtk\",\"type\":\"awnopqgikyzirtxd\"}";
+            "{\"properties\":{\"provisioningState\":\"Running\",\"networkConnectionId\":\"jdz\",\"networkConnectionLocation\":\"cvdsrhnj\",\"healthCheckStatus\":\"Passed\",\"domainJoinType\":\"HybridAzureADJoin\"},\"id\":\"novqfzge\",\"name\":\"jdftuljltd\",\"type\":\"ceamtm\"}";
 
         Mockito.when(httpResponse.getStatusCode()).thenReturn(200);
         Mockito.when(httpResponse.getHeaders()).thenReturn(new HttpHeaders());
@@ -63,9 +62,9 @@ public final class AttachedNetworksGetByDevCenterWithResponseMockTests {
         AttachedNetworkConnection response =
             manager
                 .attachedNetworks()
-                .getByDevCenterWithResponse("tw", "sgogczhonnxk", "lgnyhmo", Context.NONE)
+                .getByDevCenterWithResponse("wrykqgai", "mvikl", "ydv", com.azure.core.util.Context.NONE)
                 .getValue();
 
-        Assertions.assertEquals("kgthrrghxjbd", response.networkConnectionId());
+        Assertions.assertEquals("jdz", response.networkConnectionId());
     }
 }

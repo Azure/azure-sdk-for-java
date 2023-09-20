@@ -28,6 +28,10 @@ public final class IotHubQuotaMetricInfoInner {
     @JsonProperty(value = "maxValue", access = JsonProperty.Access.WRITE_ONLY)
     private Long maxValue;
 
+    /** Creates an instance of IotHubQuotaMetricInfoInner class. */
+    public IotHubQuotaMetricInfoInner() {
+    }
+
     /**
      * Get the name property: The name of the quota metric.
      *

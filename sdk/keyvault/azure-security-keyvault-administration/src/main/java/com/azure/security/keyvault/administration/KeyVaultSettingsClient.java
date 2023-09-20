@@ -35,9 +35,9 @@ import java.util.Objects;
  */
 @ServiceClient(builder = KeyVaultSettingsClientBuilder.class)
 public final class KeyVaultSettingsClient {
+    private static final ClientLogger LOGGER = new ClientLogger(KeyVaultSettingsClient.class);
     private final String vaultUrl;
     private final KeyVaultSettingsClientImpl implClient;
-    private final ClientLogger logger = new ClientLogger(KeyVaultSettingsClient.class);
 
     /**
      * Initializes an instance of {@link KeyVaultSettingsClient} class.
@@ -74,9 +74,7 @@ public final class KeyVaultSettingsClient {
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public KeyVaultSetting updateSetting(KeyVaultSetting setting) {
-        Objects.requireNonNull(setting,
-            String.format(KeyVaultErrorCodeStrings.getErrorString(KeyVaultErrorCodeStrings.PARAMETER_REQUIRED),
-                "'setting'"));
+        Objects.requireNonNull(setting, String.format(KeyVaultErrorCodeStrings.PARAMETER_REQUIRED, "'setting'"));
 
         try {
             String settingValue = null;
@@ -88,7 +86,7 @@ public final class KeyVaultSettingsClient {
             return KeyVaultSettingsAsyncClient.transformToKeyVaultSetting(
                 implClient.updateSetting(vaultUrl, setting.getName(), settingValue));
         } catch (RuntimeException e) {
-            throw logger.logExceptionAsError(e);
+            throw LOGGER.logExceptionAsError(e);
         }
     }
 
@@ -120,9 +118,7 @@ public final class KeyVaultSettingsClient {
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Response<KeyVaultSetting> updateSettingWithResponse(KeyVaultSetting setting, Context context) {
-        Objects.requireNonNull(setting,
-            String.format(KeyVaultErrorCodeStrings.getErrorString(KeyVaultErrorCodeStrings.PARAMETER_REQUIRED),
-                "'setting'"));
+        Objects.requireNonNull(setting, String.format(KeyVaultErrorCodeStrings.PARAMETER_REQUIRED, "'setting'"));
 
         try {
             String settingValue = null;
@@ -137,7 +133,7 @@ public final class KeyVaultSettingsClient {
             return new SimpleResponse<>(response,
                 KeyVaultSettingsAsyncClient.transformToKeyVaultSetting(response.getValue()));
         } catch (RuntimeException e) {
-            throw logger.logExceptionAsError(e);
+            throw LOGGER.logExceptionAsError(e);
         }
     }
 
@@ -167,7 +163,7 @@ public final class KeyVaultSettingsClient {
         try {
             return KeyVaultSettingsAsyncClient.transformToKeyVaultSetting(this.implClient.getSetting(vaultUrl, name));
         } catch (RuntimeException e) {
-            throw logger.logExceptionAsError(e);
+            throw LOGGER.logExceptionAsError(e);
         }
     }
 
@@ -204,7 +200,7 @@ public final class KeyVaultSettingsClient {
             return new SimpleResponse<>(response,
                 KeyVaultSettingsAsyncClient.transformToKeyVaultSetting(response.getValue()));
         } catch (RuntimeException e) {
-            throw logger.logExceptionAsError(e);
+            throw LOGGER.logExceptionAsError(e);
         }
     }
 
@@ -241,7 +237,7 @@ public final class KeyVaultSettingsClient {
 
             return new KeyVaultGetSettingsResult(keyVaultSettings);
         } catch (RuntimeException e) {
-            throw logger.logExceptionAsError(e);
+            throw LOGGER.logExceptionAsError(e);
         }
     }
 
@@ -287,7 +283,7 @@ public final class KeyVaultSettingsClient {
 
             return new SimpleResponse<>(response, new KeyVaultGetSettingsResult(keyVaultSettings));
         } catch (RuntimeException e) {
-            throw logger.logExceptionAsError(e);
+            throw LOGGER.logExceptionAsError(e);
         }
     }
 }

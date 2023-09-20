@@ -4,7 +4,6 @@
 
 package com.azure.resourcemanager.keyvault.generated;
 
-import com.azure.core.util.Context;
 import com.azure.resourcemanager.keyvault.fluent.models.MhsmPrivateEndpointConnectionInner;
 import com.azure.resourcemanager.keyvault.models.MhsmPrivateLinkServiceConnectionState;
 import com.azure.resourcemanager.keyvault.models.PrivateEndpointServiceConnectionStatus;
@@ -12,7 +11,7 @@ import com.azure.resourcemanager.keyvault.models.PrivateEndpointServiceConnectio
 /** Samples for MhsmPrivateEndpointConnections Put. */
 public final class MhsmPrivateEndpointConnectionsPutSamples {
     /*
-     * x-ms-original-file: specification/keyvault/resource-manager/Microsoft.KeyVault/stable/2021-10-01/examples/ManagedHsm_putPrivateEndpointConnection.json
+     * x-ms-original-file: specification/keyvault/resource-manager/Microsoft.KeyVault/stable/2023-02-01/examples/ManagedHsm_putPrivateEndpointConnection.json
      */
     /**
      * Sample code: ManagedHsmPutPrivateEndpointConnection.
@@ -34,6 +33,6 @@ public final class MhsmPrivateEndpointConnectionsPutSamples {
                         new MhsmPrivateLinkServiceConnectionState()
                             .withStatus(PrivateEndpointServiceConnectionStatus.APPROVED)
                             .withDescription("My name is Joe and I'm approving this.")),
-                Context.NONE);
+                com.azure.core.util.Context.NONE);
     }
 }

@@ -30,6 +30,10 @@ public final class DnsConfiguration {
     @JsonProperty(value = "options")
     private String options;
 
+    /** Creates an instance of DnsConfiguration class. */
+    public DnsConfiguration() {
+    }
+
     /**
      * Get the nameServers property: The DNS servers for the container group.
      *

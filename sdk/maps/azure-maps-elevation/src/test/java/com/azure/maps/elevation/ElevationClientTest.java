@@ -61,7 +61,7 @@ public class ElevationClientTest extends ElevationClientTestBase {
     public void testGetDataForPolyline(HttpClient httpClient, ElevationServiceVersion serviceVersion) throws IOException {
         client = getElevationClient(httpClient, serviceVersion);
         ElevationResult actualResult = client.getDataForPolyline(Arrays.asList(
-            new GeoPosition(-121.66853362143818, 46.84646479863713), 
+            new GeoPosition(-121.66853362143818, 46.84646479863713),
             new GeoPosition(-121.65853362143818, 46.85646479863713)), 5);
         ElevationResult expectedResult = TestUtils.getExpectedDataForPolyline();
         validateGetDataForPolyline(actualResult, expectedResult);
@@ -74,7 +74,7 @@ public class ElevationClientTest extends ElevationClientTestBase {
     public void testGetDataForPolylineWithResponse(HttpClient httpClient, ElevationServiceVersion serviceVersion) throws IOException {
         client = getElevationClient(httpClient, serviceVersion);
         validateGetDataForPolylineWithResponse(TestUtils.getExpectedDataForPolyline(), 200, client.getDataForPolylineWithResponse(Arrays.asList(
-            new GeoPosition(-121.66853362143818, 46.84646479863713), 
+            new GeoPosition(-121.66853362143818, 46.84646479863713),
             new GeoPosition(-121.65853362143818, 46.85646479863713)), 5, null));
     }
 
@@ -85,7 +85,7 @@ public class ElevationClientTest extends ElevationClientTestBase {
         client = getElevationClient(httpClient, serviceVersion);
         final HttpResponseException httpResponseException = assertThrows(HttpResponseException.class,
             () -> client.getDataForPolylineWithResponse(Arrays.asList(
-                new GeoPosition(-1000000000, 46.84646479863713), 
+                new GeoPosition(-1000000000, 46.84646479863713),
                 new GeoPosition(-121.65853362143818, 46.85646479863713)), 5, null));
         assertEquals(400, httpResponseException.getResponse().getStatusCode());
     }
@@ -95,7 +95,7 @@ public class ElevationClientTest extends ElevationClientTestBase {
     @MethodSource("com.azure.maps.elevation.TestUtils#getTestParameters")
     public void testGetDataForBoundingBox(HttpClient httpClient, ElevationServiceVersion serviceVersion) throws IOException {
         client = getElevationClient(httpClient, serviceVersion);
-        ElevationResult actualResult = client.getDataForBoundingBox(new GeoBoundingBox(-121.668533621438, 46.8464647986371, 
+        ElevationResult actualResult = client.getDataForBoundingBox(new GeoBoundingBox(-121.668533621438, 46.8464647986371,
             -121.658533621438, 46.8564647986371), 3, 3);
         ElevationResult expectedResult = TestUtils.getExpectedDataForBoundingBox();
         validateGetDataForBoundingBox(actualResult, expectedResult);
@@ -107,7 +107,7 @@ public class ElevationClientTest extends ElevationClientTestBase {
     @MethodSource("com.azure.maps.elevation.TestUtils#getTestParameters")
     public void testGetDataForBoundingBoxWithResponse(HttpClient httpClient, ElevationServiceVersion serviceVersion) throws IOException {
         client = getElevationClient(httpClient, serviceVersion);
-        validateGetDataForBoundingBoxWithResponse(TestUtils.getExpectedDataForBoundingBox(), 200, client.getDataForBoundingBoxWithResponse(new GeoBoundingBox(-121.668533621438f, 46.8464647986371f, 
+        validateGetDataForBoundingBoxWithResponse(TestUtils.getExpectedDataForBoundingBox(), 200, client.getDataForBoundingBoxWithResponse(new GeoBoundingBox(-121.668533621438f, 46.8464647986371f,
             -121.658533621438f, 46.8564647986371f), 3, 3, null));
     }
 
@@ -117,7 +117,7 @@ public class ElevationClientTest extends ElevationClientTestBase {
     public void testInvalidGetDataForBoundingBoxWithResponse(HttpClient httpClient, ElevationServiceVersion serviceVersion) throws IOException {
         client = getElevationClient(httpClient, serviceVersion);
         final HttpResponseException httpResponseException = assertThrows(HttpResponseException.class,
-            () -> client.getDataForBoundingBoxWithResponse(new GeoBoundingBox(-10000000f, 46.8464647986371f, 
+            () -> client.getDataForBoundingBoxWithResponse(new GeoBoundingBox(-10000000f, 46.8464647986371f,
             -121.658533621438f, 46.8564647986371f), 3, 3, null));
         assertEquals(400, httpResponseException.getResponse().getStatusCode());
     }

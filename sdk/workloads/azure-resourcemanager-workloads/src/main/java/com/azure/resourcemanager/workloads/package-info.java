@@ -6,7 +6,7 @@
  * Package containing the classes for WorkloadsClient. Workloads client provides access to various workload
  * operations.&lt;br&gt;Azure Center for SAP solutions is currently in PREVIEW. See the [Azure Center for SAP solutions
  * - Legal
- * Terms](https://learn.microsoft.com/en-us/legal/azure-center-for-sap-solutions/azure-center-for-sap-solutions-legal-terms)
+ * Terms](https://learn.microsoft.com/legal/azure-center-for-sap-solutions/azure-center-for-sap-solutions-legal-terms)
  * for legal notices applicable to Azure Center for SAP solutions.
  */
 package com.azure.resourcemanager.workloads;

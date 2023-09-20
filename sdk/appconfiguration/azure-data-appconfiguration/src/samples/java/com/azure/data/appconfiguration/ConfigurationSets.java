@@ -3,25 +3,24 @@
 
 package com.azure.data.appconfiguration;
 
+import com.azure.data.appconfiguration.models.ComplexConfiguration;
 import com.azure.data.appconfiguration.models.ConfigurationSetting;
 import com.azure.data.appconfiguration.models.SettingSelector;
-import com.azure.models.ComplexConfiguration;
-import com.fasterxml.jackson.core.JsonProcessingException;
-import com.fasterxml.jackson.databind.ObjectMapper;
+import com.azure.json.JsonProviders;
+import com.azure.json.JsonWriter;
 import reactor.core.publisher.Flux;
 import reactor.core.publisher.Mono;
 
+import java.io.ByteArrayOutputStream;
 import java.io.IOException;
 
 /**
- * Sample demonstrates how to use Azure App Configuration to switch between "beta" and "production"
- * configuration sets.
+ * Sample demonstrates how to use Azure App Configuration to switch between "beta" and "production" configuration sets.
  *
  * <p>
  * In the sample, the user stores a connection string for a resource and a complex configuration object.
- * {@link ComplexConfiguration}
- * The {@link ComplexConfiguration} is serialized into a JSON string and read out from the service as a
- * strongly-typed typed object.
+ * {@link ComplexConfiguration} The {@link ComplexConfiguration} is serialized into a JSON string and read out from the
+ * service as a strongly-typed typed object.
  * </p>
  */
 public class ConfigurationSets {
@@ -29,8 +28,6 @@ public class ConfigurationSets {
     private static final String COMPLEX_SETTING_KEY = "complex-setting";
     private static final String BETA = "beta";
     private static final String PRODUCTION = "production";
-
-    private static final ObjectMapper MAPPER = new ObjectMapper();
 
     /**
      * Entry point to the configuration set sample. Creates two sets of configuration values and fetches values from the
@@ -51,8 +48,14 @@ public class ConfigurationSets {
 
         // Demonstrates two different complex objects being stored in Azure App Configuration; one used for beta and the
         // other used for production.
-        ComplexConfiguration betaSetting = new ComplexConfiguration().endpointUri("https://beta.endpoint.com").name("beta-name").numberOfInstances(1);
-        ComplexConfiguration productionSetting = new ComplexConfiguration().endpointUri("https://production.endpoint.com").name("production-name").numberOfInstances(2);
+        ComplexConfiguration betaSetting = new ComplexConfiguration()
+            .endpointUri("https://beta.endpoint.com")
+            .name("beta-name")
+            .numberOfInstances(1);
+        ComplexConfiguration productionSetting = new ComplexConfiguration()
+            .endpointUri("https://production.endpoint.com")
+            .name("production-name")
+            .numberOfInstances(2);
 
         // Adding one configuration set for beta testing and another for production to Azure App Configuration.
         // blockLast() is added here to prevent execution before both sets of configuration values have been added to
@@ -70,10 +73,11 @@ public class ConfigurationSets {
             System.out.println("Key: " + setting.getKey());
             if ("application/json".equals(setting.getContentType())) {
                 try {
-                    ComplexConfiguration kv = MAPPER.readValue(setting.getValue(), ComplexConfiguration.class);
+                    ComplexConfiguration kv = ComplexConfiguration.fromJson(
+                        JsonProviders.createReader(setting.getValue()));
                     System.out.println("Value: " + kv.toString());
                 } catch (IOException e) {
-                    System.err.println(String.format("Could not deserialize %s%n%s", setting.getValue(), e.toString()));
+                    System.err.printf("Could not deserialize %s%n%s%n", setting.getValue(), e);
                 }
             } else {
                 System.out.println("Value: " + setting.getValue());
@@ -92,18 +96,26 @@ public class ConfigurationSets {
      * Adds the "connection-string" and "key-vault" configuration settings
      */
     private static Mono<Void> addConfigurations(ConfigurationAsyncClient client, String configurationSet,
-                                                String storageEndpoint, ComplexConfiguration complexConfiguration) throws JsonProcessingException {
+        String storageEndpoint, ComplexConfiguration complexConfiguration) throws IOException {
         ConfigurationSetting endpointSetting = new ConfigurationSetting()
             .setKey(CONNECTION_STRING_KEY)
             .setLabel(configurationSet)
             .setValue(storageEndpoint);
-        ConfigurationSetting keyVaultSetting = new ConfigurationSetting()
-            .setKey(COMPLEX_SETTING_KEY)
-            .setLabel(configurationSet)
-            .setValue(MAPPER.writeValueAsString(complexConfiguration))
-            .setContentType("application/json");
 
-        return Flux.merge(client.addConfigurationSetting(keyVaultSetting.getKey(), keyVaultSetting.getLabel(), keyVaultSetting.getValue()),
-            client.addConfigurationSetting(endpointSetting.getKey(), endpointSetting.getLabel(), endpointSetting.getValue())).then();
+        try (ByteArrayOutputStream outputStream = new ByteArrayOutputStream();
+             JsonWriter writer = JsonProviders.createWriter(outputStream)) {
+            complexConfiguration.toJson(writer).flush();
+
+            ConfigurationSetting keyVaultSetting = new ConfigurationSetting()
+                .setKey(COMPLEX_SETTING_KEY)
+                .setLabel(configurationSet)
+                .setValue(outputStream.toString())
+                .setContentType("application/json");
+
+            return Flux.merge(client.addConfigurationSetting(keyVaultSetting.getKey(), keyVaultSetting.getLabel(),
+                    keyVaultSetting.getValue()), client.addConfigurationSetting(endpointSetting.getKey(),
+                    endpointSetting.getLabel(), endpointSetting.getValue()))
+                .then();
+        }
     }
 }

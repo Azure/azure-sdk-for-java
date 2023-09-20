@@ -12,7 +12,6 @@ import com.azure.core.http.HttpResponse;
 import com.azure.core.http.rest.PagedIterable;
 import com.azure.core.management.AzureEnvironment;
 import com.azure.core.management.profile.AzureProfile;
-import com.azure.core.util.Context;
 import com.azure.resourcemanager.servicenetworking.TrafficControllerManager;
 import com.azure.resourcemanager.servicenetworking.models.TrafficController;
 import java.nio.ByteBuffer;
@@ -33,7 +32,7 @@ public final class TrafficControllerInterfacesListMockTests {
         ArgumentCaptor<HttpRequest> httpRequest = ArgumentCaptor.forClass(HttpRequest.class);
 
         String responseStr =
-            "{\"value\":[{\"properties\":{\"configurationEndpoints\":[\"jthjqkwpyei\",\"xmqci\",\"q\"],\"frontends\":[],\"associations\":[],\"provisioningState\":\"Updating\"},\"location\":\"gdtopbobjogh\",\"tags\":{\"m\":\"u\"},\"id\":\"uhrzayvvt\",\"name\":\"gvdfgiotkftutq\",\"type\":\"ln\"}]}";
+            "{\"value\":[{\"properties\":{\"configurationEndpoints\":[\"wsubisnja\",\"pmng\",\"zscxaqwo\"],\"frontends\":[],\"associations\":[],\"provisioningState\":\"Deleting\"},\"location\":\"vpk\",\"tags\":{\"ase\":\"xnj\",\"enjbdlwtgrhp\":\"pheoflokeyy\",\"umasxazjpq\":\"jp\",\"ualhbxxhejj\":\"e\"},\"id\":\"zvdudgwdslfhotwm\",\"name\":\"ynpwlbj\",\"type\":\"pgacftadehxnlty\"}]}";
 
         Mockito.when(httpResponse.getStatusCode()).thenReturn(200);
         Mockito.when(httpResponse.getHeaders()).thenReturn(new HttpHeaders());
@@ -61,9 +60,10 @@ public final class TrafficControllerInterfacesListMockTests {
                     tokenRequestContext -> Mono.just(new AccessToken("this_is_a_token", OffsetDateTime.MAX)),
                     new AzureProfile("", "", AzureEnvironment.AZURE));
 
-        PagedIterable<TrafficController> response = manager.trafficControllerInterfaces().list(Context.NONE);
+        PagedIterable<TrafficController> response =
+            manager.trafficControllerInterfaces().list(com.azure.core.util.Context.NONE);
 
-        Assertions.assertEquals("gdtopbobjogh", response.iterator().next().location());
-        Assertions.assertEquals("u", response.iterator().next().tags().get("m"));
+        Assertions.assertEquals("vpk", response.iterator().next().location());
+        Assertions.assertEquals("xnj", response.iterator().next().tags().get("ase"));
     }
 }

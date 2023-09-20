@@ -12,8 +12,9 @@ import com.azure.core.http.policy.HttpLogDetailLevel;
 import com.azure.core.http.policy.HttpLogOptions;
 import com.azure.core.http.policy.RetryOptions;
 import com.azure.core.http.policy.RetryPolicy;
-import com.azure.core.test.TestBase;
+import com.azure.core.test.TestProxyTestBase;
 import com.azure.core.test.annotation.DoNotRecord;
+import com.azure.core.test.models.CustomMatcher;
 import com.azure.core.util.Configuration;
 import com.azure.core.util.Context;
 import com.azure.identity.DefaultAzureCredentialBuilder;
@@ -23,11 +24,13 @@ import org.junit.jupiter.params.ParameterizedTest;
 import org.junit.jupiter.params.provider.MethodSource;
 
 import java.time.Duration;
+import java.util.Arrays;
 import java.util.function.Consumer;
 
 import static com.azure.ai.metricsadvisor.TestUtils.AZURE_METRICS_ADVISOR_ENDPOINT;
 import static com.azure.ai.metricsadvisor.TestUtils.DISPLAY_NAME_WITH_ARGUMENTS;
 import static com.azure.ai.metricsadvisor.TestUtils.INVALID_ENDPOINT;
+import static com.azure.ai.metricsadvisor.TestUtils.getEmailSanitizers;
 import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertNotNull;
 import static org.junit.jupiter.api.Assertions.assertThrows;
@@ -35,7 +38,7 @@ import static org.junit.jupiter.api.Assertions.assertThrows;
 /**
  * Tests for Metrics Advisor client builder
  */
-public class MetricsAdvisorClientBuilderTest extends TestBase {
+public class MetricsAdvisorClientBuilderTest extends TestProxyTestBase {
     private static final String METRIC_ID = "b6c0649c-0c51-4aa6-82b6-3c3b0aa55066";
     private static final int PAGE_SIZE = 10;
     private static final int LISTING_LIMIT = 100;
@@ -185,13 +188,17 @@ public class MetricsAdvisorClientBuilderTest extends TestBase {
         final MetricsAdvisorClientBuilder clientBuilder = new MetricsAdvisorClientBuilder()
             .credential(credential)
             .endpoint(endpoint)
-            .httpClient(httpClient == null ? interceptorManager.getPlaybackClient() : httpClient)
+            .httpClient(interceptorManager.isPlaybackMode() ? interceptorManager.getPlaybackClient() : httpClient)
             .serviceVersion(serviceVersion);
 
-        if (!interceptorManager.isPlaybackMode()) {
-            clientBuilder.addPolicy(interceptorManager.getRecordPolicy());
+        if (!interceptorManager.isLiveMode()) {
+            interceptorManager.addSanitizers(getEmailSanitizers());
         }
-
+        if (interceptorManager.isRecordMode()) {
+            clientBuilder.addPolicy(interceptorManager.getRecordPolicy());
+        } else if (interceptorManager.isPlaybackMode()) {
+            interceptorManager.addMatchers(Arrays.asList(new CustomMatcher().setHeadersKeyOnlyMatch(Arrays.asList("x-api-key"))));
+        }
         return clientBuilder;
     }
 

@@ -19,11 +19,11 @@ public final class SecurityConnectorsListTests {
         SecurityConnectorsList model =
             BinaryData
                 .fromString(
-                    "{\"value\":[{\"properties\":{\"hierarchyIdentifier\":\"p\",\"hierarchyIdentifierTrialEndDate\":\"2021-02-22T22:51:57Z\",\"environmentName\":\"GCP\",\"offerings\":[]},\"location\":\"dzsylollgtrczz\",\"tags\":{\"p\":\"xzji\",\"defxrdc\":\"uaurkihcir\",\"nurnnq\":\"xnbkkj\"},\"id\":\"nqbpi\",\"name\":\"xqltgrd\",\"type\":\"gypxrxvbfihwuhvc\"}],\"nextLink\":\"fsrb\"}")
+                    "{\"value\":[{\"properties\":{\"hierarchyIdentifier\":\"ifrkgwltxeqipx\",\"hierarchyIdentifierTrialEndDate\":\"2021-05-11T17:28:43Z\",\"environmentName\":\"GCP\",\"offerings\":[]},\"location\":\"fayorpravkjoges\",\"tags\":{\"kvwjtqpkevmy\":\"nsmjkwynqxaekqs\",\"gxannnoytzposewx\":\"tjcrspxklurccl\",\"dfaifyzyzeyuube\":\"gpxvkqmaupxvpi\",\"l\":\"ds\"},\"id\":\"ytoithgygvfl\",\"name\":\"gvdihoynkrxwetwk\",\"type\":\"rcyrucpcunnu\"},{\"properties\":{\"hierarchyIdentifier\":\"moenodnaien\",\"hierarchyIdentifierTrialEndDate\":\"2021-09-25T15:40:50Z\",\"environmentName\":\"GCP\",\"offerings\":[]},\"location\":\"nelqkaadl\",\"tags\":{\"vcnrly\":\"foanniyopetx\"},\"id\":\"nucaephblkwqpat\",\"name\":\"bqsdtcjbctvi\",\"type\":\"uzqymtuowog\"}],\"nextLink\":\"it\"}")
                 .toObject(SecurityConnectorsList.class);
-        Assertions.assertEquals("dzsylollgtrczz", model.value().get(0).location());
-        Assertions.assertEquals("xzji", model.value().get(0).tags().get("p"));
-        Assertions.assertEquals("p", model.value().get(0).hierarchyIdentifier());
+        Assertions.assertEquals("fayorpravkjoges", model.value().get(0).location());
+        Assertions.assertEquals("nsmjkwynqxaekqs", model.value().get(0).tags().get("kvwjtqpkevmy"));
+        Assertions.assertEquals("ifrkgwltxeqipx", model.value().get(0).hierarchyIdentifier());
         Assertions.assertEquals(CloudName.GCP, model.value().get(0).environmentName());
     }
 
@@ -35,15 +35,30 @@ public final class SecurityConnectorsListTests {
                     Arrays
                         .asList(
                             new SecurityConnectorInner()
-                                .withLocation("dzsylollgtrczz")
-                                .withTags(mapOf("p", "xzji", "defxrdc", "uaurkihcir", "nurnnq", "xnbkkj"))
-                                .withHierarchyIdentifier("p")
+                                .withLocation("fayorpravkjoges")
+                                .withTags(
+                                    mapOf(
+                                        "kvwjtqpkevmy",
+                                        "nsmjkwynqxaekqs",
+                                        "gxannnoytzposewx",
+                                        "tjcrspxklurccl",
+                                        "dfaifyzyzeyuube",
+                                        "gpxvkqmaupxvpi",
+                                        "l",
+                                        "ds"))
+                                .withHierarchyIdentifier("ifrkgwltxeqipx")
+                                .withEnvironmentName(CloudName.GCP)
+                                .withOfferings(Arrays.asList()),
+                            new SecurityConnectorInner()
+                                .withLocation("nelqkaadl")
+                                .withTags(mapOf("vcnrly", "foanniyopetx"))
+                                .withHierarchyIdentifier("moenodnaien")
                                 .withEnvironmentName(CloudName.GCP)
                                 .withOfferings(Arrays.asList())));
         model = BinaryData.fromObject(model).toObject(SecurityConnectorsList.class);
-        Assertions.assertEquals("dzsylollgtrczz", model.value().get(0).location());
-        Assertions.assertEquals("xzji", model.value().get(0).tags().get("p"));
-        Assertions.assertEquals("p", model.value().get(0).hierarchyIdentifier());
+        Assertions.assertEquals("fayorpravkjoges", model.value().get(0).location());
+        Assertions.assertEquals("nsmjkwynqxaekqs", model.value().get(0).tags().get("kvwjtqpkevmy"));
+        Assertions.assertEquals("ifrkgwltxeqipx", model.value().get(0).hierarchyIdentifier());
         Assertions.assertEquals(CloudName.GCP, model.value().get(0).environmentName());
     }
 

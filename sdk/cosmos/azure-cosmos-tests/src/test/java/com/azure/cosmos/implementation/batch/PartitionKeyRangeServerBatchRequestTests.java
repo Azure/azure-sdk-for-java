@@ -96,7 +96,7 @@ public class PartitionKeyRangeServerBatchRequestTests {
         assertThat(serverOperationBatchRequest.getBatchPendingOperations().get(0).getId()).isEqualTo(operations.get(2).getId());
     }
 
-    @Test(groups = {"unit"}, timeOut = TIMEOUT * 100)
+    @Test(groups = {"unit"}, timeOut = TIMEOUT * 10)
     public void partitionKeyRangeServerBatchRequestSizeTests() {
 
         int docSizeInBytes = 250;

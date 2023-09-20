@@ -15,10 +15,10 @@ public final class UpstreamAuthSettingsTests {
     public void testDeserialize() throws Exception {
         UpstreamAuthSettings model =
             BinaryData
-                .fromString("{\"type\":\"None\",\"managedIdentity\":{\"resource\":\"fbjfdtwssotftpvj\"}}")
+                .fromString("{\"type\":\"None\",\"managedIdentity\":{\"resource\":\"ktgplcr\"}}")
                 .toObject(UpstreamAuthSettings.class);
         Assertions.assertEquals(UpstreamAuthType.NONE, model.type());
-        Assertions.assertEquals("fbjfdtwssotftpvj", model.managedIdentity().resource());
+        Assertions.assertEquals("ktgplcr", model.managedIdentity().resource());
     }
 
     @org.junit.jupiter.api.Test
@@ -26,9 +26,9 @@ public final class UpstreamAuthSettingsTests {
         UpstreamAuthSettings model =
             new UpstreamAuthSettings()
                 .withType(UpstreamAuthType.NONE)
-                .withManagedIdentity(new ManagedIdentitySettings().withResource("fbjfdtwssotftpvj"));
+                .withManagedIdentity(new ManagedIdentitySettings().withResource("ktgplcr"));
         model = BinaryData.fromObject(model).toObject(UpstreamAuthSettings.class);
         Assertions.assertEquals(UpstreamAuthType.NONE, model.type());
-        Assertions.assertEquals("fbjfdtwssotftpvj", model.managedIdentity().resource());
+        Assertions.assertEquals("ktgplcr", model.managedIdentity().resource());
     }
 }

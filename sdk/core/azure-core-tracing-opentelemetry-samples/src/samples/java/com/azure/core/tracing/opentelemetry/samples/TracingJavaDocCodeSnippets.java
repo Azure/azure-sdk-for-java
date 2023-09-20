@@ -10,10 +10,12 @@ import com.azure.core.util.Context;
 import com.azure.core.util.TracingOptions;
 import com.azure.core.util.tracing.TracerProvider;
 import io.opentelemetry.api.GlobalOpenTelemetry;
+import io.opentelemetry.api.OpenTelemetry;
 import io.opentelemetry.api.trace.Span;
 import io.opentelemetry.api.trace.Tracer;
 import io.opentelemetry.context.Scope;
 import io.opentelemetry.exporter.logging.LoggingSpanExporter;
+import io.opentelemetry.sdk.OpenTelemetrySdk;
 import io.opentelemetry.sdk.trace.SdkTracerProvider;
 import io.opentelemetry.sdk.trace.export.SimpleSpanProcessor;
 
@@ -64,9 +66,10 @@ public class TracingJavaDocCodeSnippets {
             .addSpanProcessor(SimpleSpanProcessor.create(LoggingSpanExporter.create()))
             .build();
 
-        // Pass OpenTelemetry tracerProvider to TracingOptions.
+        OpenTelemetry openTelemetry = OpenTelemetrySdk.builder().setTracerProvider(tracerProvider).build();
+        // Pass OpenTelemetry container to TracingOptions.
         TracingOptions customTracingOptions = new OpenTelemetryTracingOptions()
-            .setProvider(tracerProvider);
+            .setOpenTelemetry(openTelemetry);
 
         // configure Azure Client to use customTracingOptions - it will use tracerProvider
         // to create tracers

@@ -22,8 +22,7 @@ public final class PartnerTopicProperties {
     private UUID partnerRegistrationImmutableId;
 
     /*
-     * Source associated with this partner topic. This represents a unique
-     * partner resource.
+     * Source associated with this partner topic. This represents a unique partner resource.
      */
     @JsonProperty(value = "source")
     private String source;
@@ -35,8 +34,7 @@ public final class PartnerTopicProperties {
     private EventTypeInfo eventTypeInfo;
 
     /*
-     * Expiration time of the partner topic. If this timer expires while the
-     * partner topic is still never activated,
+     * Expiration time of the partner topic. If this timer expires while the partner topic is still never activated,
      * the partner topic and corresponding event channel are deleted.
      */
     @JsonProperty(value = "expirationTimeIfNotActivatedUtc")
@@ -55,21 +53,22 @@ public final class PartnerTopicProperties {
     private PartnerTopicActivationState activationState;
 
     /*
-     * Friendly description about the topic. This can be set by the
-     * publisher/partner to show custom description for the customer partner
-     * topic.
-     * This will be helpful to remove any ambiguity of the origin of creation
-     * of the partner topic for the customer.
+     * Friendly description about the topic. This can be set by the publisher/partner to show custom description for
+     * the customer partner topic.
+     * This will be helpful to remove any ambiguity of the origin of creation of the partner topic for the customer.
      */
     @JsonProperty(value = "partnerTopicFriendlyDescription")
     private String partnerTopicFriendlyDescription;
 
     /*
-     * Context or helpful message that can be used during the approval process
-     * by the subscriber.
+     * Context or helpful message that can be used during the approval process by the subscriber.
      */
     @JsonProperty(value = "messageForActivation")
     private String messageForActivation;
+
+    /** Creates an instance of PartnerTopicProperties class. */
+    public PartnerTopicProperties() {
+    }
 
     /**
      * Get the partnerRegistrationImmutableId property: The immutableId of the corresponding partner registration.

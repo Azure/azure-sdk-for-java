@@ -32,6 +32,13 @@ public interface Deployment {
     String type();
 
     /**
+     * Gets the sku property: The resource model definition representing SKU.
+     *
+     * @return the sku value.
+     */
+    Sku sku();
+
+    /**
      * Gets the systemData property: Metadata pertaining to creation and last modification of the resource.
      *
      * @return the systemData value.
@@ -70,11 +77,13 @@ public interface Deployment {
     interface Definition
         extends DefinitionStages.Blank, DefinitionStages.WithParentResource, DefinitionStages.WithCreate {
     }
+
     /** The Deployment definition stages. */
     interface DefinitionStages {
         /** The first stage of the Deployment definition. */
         interface Blank extends WithParentResource {
         }
+
         /** The stage of the Deployment definition allowing to specify parent resource. */
         interface WithParentResource {
             /**
@@ -86,11 +95,12 @@ public interface Deployment {
              */
             WithCreate withExistingAccount(String resourceGroupName, String accountName);
         }
+
         /**
          * The stage of the Deployment definition which contains all the minimum required properties for the resource to
          * be created, but also allows for any other optional properties to be specified.
          */
-        interface WithCreate extends DefinitionStages.WithProperties {
+        interface WithCreate extends DefinitionStages.WithSku, DefinitionStages.WithProperties {
             /**
              * Executes the create request.
              *
@@ -106,6 +116,18 @@ public interface Deployment {
              */
             Deployment create(Context context);
         }
+
+        /** The stage of the Deployment definition allowing to specify sku. */
+        interface WithSku {
+            /**
+             * Specifies the sku property: The resource model definition representing SKU.
+             *
+             * @param sku The resource model definition representing SKU.
+             * @return the next definition stage.
+             */
+            WithCreate withSku(Sku sku);
+        }
+
         /** The stage of the Deployment definition allowing to specify properties. */
         interface WithProperties {
             /**
@@ -117,6 +139,7 @@ public interface Deployment {
             WithCreate withProperties(DeploymentProperties properties);
         }
     }
+
     /**
      * Begins update for the Deployment resource.
      *
@@ -125,7 +148,7 @@ public interface Deployment {
     Deployment.Update update();
 
     /** The template for Deployment update. */
-    interface Update extends UpdateStages.WithProperties {
+    interface Update extends UpdateStages.WithSku, UpdateStages.WithProperties {
         /**
          * Executes the update request.
          *
@@ -141,8 +164,20 @@ public interface Deployment {
          */
         Deployment apply(Context context);
     }
+
     /** The Deployment update stages. */
     interface UpdateStages {
+        /** The stage of the Deployment update allowing to specify sku. */
+        interface WithSku {
+            /**
+             * Specifies the sku property: The resource model definition representing SKU.
+             *
+             * @param sku The resource model definition representing SKU.
+             * @return the next definition stage.
+             */
+            Update withSku(Sku sku);
+        }
+
         /** The stage of the Deployment update allowing to specify properties. */
         interface WithProperties {
             /**
@@ -154,6 +189,7 @@ public interface Deployment {
             Update withProperties(DeploymentProperties properties);
         }
     }
+
     /**
      * Refreshes the resource to sync with Azure.
      *

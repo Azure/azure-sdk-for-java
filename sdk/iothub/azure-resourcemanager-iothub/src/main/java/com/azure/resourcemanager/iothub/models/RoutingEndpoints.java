@@ -41,10 +41,14 @@ public final class RoutingEndpoints {
     private List<RoutingStorageContainerProperties> storageContainers;
 
     /*
-     * The list of Cosmos DB collection endpoints that IoT hub routes messages to, based on the routing rules.
+     * The list of Cosmos DB container endpoints that IoT hub routes messages to, based on the routing rules.
      */
-    @JsonProperty(value = "cosmosDBSqlCollections")
-    private List<RoutingCosmosDBSqlApiProperties> cosmosDBSqlCollections;
+    @JsonProperty(value = "cosmosDBSqlContainers")
+    private List<RoutingCosmosDBSqlApiProperties> cosmosDBSqlContainers;
+
+    /** Creates an instance of RoutingEndpoints class. */
+    public RoutingEndpoints() {
+    }
 
     /**
      * Get the serviceBusQueues property: The list of Service Bus queue endpoints that IoT hub routes the messages to,
@@ -135,24 +139,24 @@ public final class RoutingEndpoints {
     }
 
     /**
-     * Get the cosmosDBSqlCollections property: The list of Cosmos DB collection endpoints that IoT hub routes messages
+     * Get the cosmosDBSqlContainers property: The list of Cosmos DB container endpoints that IoT hub routes messages
      * to, based on the routing rules.
      *
-     * @return the cosmosDBSqlCollections value.
+     * @return the cosmosDBSqlContainers value.
      */
-    public List<RoutingCosmosDBSqlApiProperties> cosmosDBSqlCollections() {
-        return this.cosmosDBSqlCollections;
+    public List<RoutingCosmosDBSqlApiProperties> cosmosDBSqlContainers() {
+        return this.cosmosDBSqlContainers;
     }
 
     /**
-     * Set the cosmosDBSqlCollections property: The list of Cosmos DB collection endpoints that IoT hub routes messages
+     * Set the cosmosDBSqlContainers property: The list of Cosmos DB container endpoints that IoT hub routes messages
      * to, based on the routing rules.
      *
-     * @param cosmosDBSqlCollections the cosmosDBSqlCollections value to set.
+     * @param cosmosDBSqlContainers the cosmosDBSqlContainers value to set.
      * @return the RoutingEndpoints object itself.
      */
-    public RoutingEndpoints withCosmosDBSqlCollections(List<RoutingCosmosDBSqlApiProperties> cosmosDBSqlCollections) {
-        this.cosmosDBSqlCollections = cosmosDBSqlCollections;
+    public RoutingEndpoints withCosmosDBSqlContainers(List<RoutingCosmosDBSqlApiProperties> cosmosDBSqlContainers) {
+        this.cosmosDBSqlContainers = cosmosDBSqlContainers;
         return this;
     }
 
@@ -174,8 +178,8 @@ public final class RoutingEndpoints {
         if (storageContainers() != null) {
             storageContainers().forEach(e -> e.validate());
         }
-        if (cosmosDBSqlCollections() != null) {
-            cosmosDBSqlCollections().forEach(e -> e.validate());
+        if (cosmosDBSqlContainers() != null) {
+            cosmosDBSqlContainers().forEach(e -> e.validate());
         }
     }
 }

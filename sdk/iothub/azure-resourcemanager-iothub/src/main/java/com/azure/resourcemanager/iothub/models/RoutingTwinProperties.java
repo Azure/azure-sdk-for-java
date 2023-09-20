@@ -22,6 +22,10 @@ public final class RoutingTwinProperties {
     @JsonProperty(value = "reported")
     private Object reported;
 
+    /** Creates an instance of RoutingTwinProperties class. */
+    public RoutingTwinProperties() {
+    }
+
     /**
      * Get the desired property: Twin desired properties.
      *

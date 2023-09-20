@@ -8,7 +8,7 @@ import com.azure.core.util.ExpandableStringEnum;
 import com.fasterxml.jackson.annotation.JsonCreator;
 import java.util.Collection;
 
-/** Defines values for LoggerType. */
+/** Logger type. */
 public final class LoggerType extends ExpandableStringEnum<LoggerType> {
     /** Static value azureEventHub for LoggerType. */
     public static final LoggerType AZURE_EVENT_HUB = fromString("azureEventHub");
@@ -18,6 +18,15 @@ public final class LoggerType extends ExpandableStringEnum<LoggerType> {
 
     /** Static value azureMonitor for LoggerType. */
     public static final LoggerType AZURE_MONITOR = fromString("azureMonitor");
+
+    /**
+     * Creates a new instance of LoggerType value.
+     *
+     * @deprecated Use the {@link #fromString(String)} factory method.
+     */
+    @Deprecated
+    public LoggerType() {
+    }
 
     /**
      * Creates or finds a LoggerType from its string representation.
@@ -30,7 +39,11 @@ public final class LoggerType extends ExpandableStringEnum<LoggerType> {
         return fromString(name, LoggerType.class);
     }
 
-    /** @return known LoggerType values. */
+    /**
+     * Gets known LoggerType values.
+     *
+     * @return known LoggerType values.
+     */
     public static Collection<LoggerType> values() {
         return values(LoggerType.class);
     }

@@ -4,12 +4,10 @@
 
 package com.azure.resourcemanager.apimanagement.generated;
 
-import com.azure.core.util.Context;
-
 /** Samples for UserConfirmationPassword Send. */
 public final class UserConfirmationPasswordSendSamples {
     /*
-     * x-ms-original-file: specification/apimanagement/resource-manager/Microsoft.ApiManagement/stable/2021-08-01/examples/ApiManagementUserConfirmationPasswordSend.json
+     * x-ms-original-file: specification/apimanagement/resource-manager/Microsoft.ApiManagement/stable/2022-08-01/examples/ApiManagementUserConfirmationPasswordSend.json
      */
     /**
      * Sample code: ApiManagementUserConfirmationPasswordSend.
@@ -20,6 +18,7 @@ public final class UserConfirmationPasswordSendSamples {
         com.azure.resourcemanager.apimanagement.ApiManagementManager manager) {
         manager
             .userConfirmationPasswords()
-            .sendWithResponse("rg1", "apimService1", "57127d485157a511ace86ae7", null, Context.NONE);
+            .sendWithResponse(
+                "rg1", "apimService1", "57127d485157a511ace86ae7", null, com.azure.core.util.Context.NONE);
     }
 }

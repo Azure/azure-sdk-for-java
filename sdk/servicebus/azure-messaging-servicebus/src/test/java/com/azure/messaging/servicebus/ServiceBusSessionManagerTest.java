@@ -13,20 +13,18 @@ import com.azure.core.amqp.models.CbsAuthorizationType;
 import com.azure.core.credential.TokenCredential;
 import com.azure.core.util.ClientOptions;
 import com.azure.core.util.logging.ClientLogger;
-import com.azure.core.util.tracing.Tracer;
 import com.azure.messaging.servicebus.implementation.MessagingEntityType;
 import com.azure.messaging.servicebus.implementation.ServiceBusAmqpConnection;
 import com.azure.messaging.servicebus.implementation.ServiceBusConnectionProcessor;
 import com.azure.messaging.servicebus.implementation.ServiceBusConstants;
 import com.azure.messaging.servicebus.implementation.ServiceBusManagementNode;
 import com.azure.messaging.servicebus.implementation.ServiceBusReceiveLink;
+import com.azure.messaging.servicebus.implementation.instrumentation.ServiceBusTracer;
 import com.azure.messaging.servicebus.models.ServiceBusReceiveMode;
 import org.apache.qpid.proton.amqp.messaging.Accepted;
 import org.apache.qpid.proton.engine.SslDomain;
 import org.apache.qpid.proton.message.Message;
-import org.junit.jupiter.api.AfterAll;
 import org.junit.jupiter.api.AfterEach;
-import org.junit.jupiter.api.BeforeAll;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.TestInfo;
@@ -55,6 +53,7 @@ import java.util.concurrent.TimeUnit;
 import java.util.concurrent.atomic.AtomicBoolean;
 import java.util.concurrent.atomic.AtomicInteger;
 
+import static com.azure.messaging.servicebus.ReceiverOptions.createUnnamedSessionOptions;
 import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertFalse;
 import static org.junit.jupiter.api.Assertions.assertNotNull;
@@ -78,18 +77,18 @@ class ServiceBusSessionManagerTest {
     private static final ClientOptions CLIENT_OPTIONS = new ClientOptions();
     private static final Duration TIMEOUT = Duration.ofSeconds(10);
     private static final Duration MAX_LOCK_RENEWAL = Duration.ofSeconds(5);
-
+    private static final Duration SESSION_IDLE_TIMEOUT = Duration.ofSeconds(20);
+    private static final Duration DEFAULT_TIMEOUT = Duration.ofSeconds(60);
     private static final String NAMESPACE = "my-namespace-foo.net";
     private static final String ENTITY_PATH = "queue-name";
     private static final MessagingEntityType ENTITY_TYPE = MessagingEntityType.QUEUE;
     private static final String CLIENT_IDENTIFIER = "my-client-identifier";
-
+    private static final ServiceBusTracer NOOP_TRACER = new ServiceBusTracer(null, NAMESPACE, ENTITY_PATH);
     private static final ClientLogger LOGGER = new ClientLogger(ServiceBusReceiverAsyncClientTest.class);
     private final ReplayProcessor<AmqpEndpointState> endpointProcessor = ReplayProcessor.cacheLast();
     private final FluxSink<AmqpEndpointState> endpointSink = endpointProcessor.sink(FluxSink.OverflowStrategy.BUFFER);
     private final EmitterProcessor<Message> messageProcessor = EmitterProcessor.create();
     private final FluxSink<Message> messageSink = messageProcessor.sink(FluxSink.OverflowStrategy.BUFFER);
-    private final Tracer tracer = null;
 
     private ServiceBusConnectionProcessor connectionProcessor;
     private ServiceBusSessionManager sessionManager;
@@ -107,17 +106,6 @@ class ServiceBusSessionManagerTest {
     private ServiceBusManagementNode managementNode;
     @Captor
     private ArgumentCaptor<String> linkNameCaptor;
-
-
-    @BeforeAll
-    static void beforeAll() {
-        StepVerifier.setDefaultTimeout(Duration.ofSeconds(60));
-    }
-
-    @AfterAll
-    static void afterAll() {
-        StepVerifier.resetDefaultTimeout();
-    }
 
     @BeforeEach
     void beforeEach(TestInfo testInfo) {
@@ -176,9 +164,9 @@ class ServiceBusSessionManagerTest {
     @Test
     void properties() {
         // Arrange
-        ReceiverOptions receiverOptions = new ReceiverOptions(ServiceBusReceiveMode.PEEK_LOCK, 1, MAX_LOCK_RENEWAL, false, null, 5);
+        ReceiverOptions receiverOptions = createUnnamedSessionOptions(ServiceBusReceiveMode.PEEK_LOCK, 1, MAX_LOCK_RENEWAL, false, 5, SESSION_IDLE_TIMEOUT);
         sessionManager = new ServiceBusSessionManager(ENTITY_PATH, ENTITY_TYPE, connectionProcessor,
-            messageSerializer, receiverOptions, CLIENT_IDENTIFIER);
+            messageSerializer, receiverOptions, CLIENT_IDENTIFIER, NOOP_TRACER);
 
         // Act & Assert
         assertEquals(CLIENT_IDENTIFIER, sessionManager.getIdentifier());
@@ -187,14 +175,14 @@ class ServiceBusSessionManagerTest {
     @Test
     void receiveNull() {
         // Arrange
-        ReceiverOptions receiverOptions = new ReceiverOptions(ServiceBusReceiveMode.PEEK_LOCK, 1, MAX_LOCK_RENEWAL, false, null, 5);
+        ReceiverOptions receiverOptions = createUnnamedSessionOptions(ServiceBusReceiveMode.PEEK_LOCK, 1, MAX_LOCK_RENEWAL, false, 5, SESSION_IDLE_TIMEOUT);
         sessionManager = new ServiceBusSessionManager(ENTITY_PATH, ENTITY_TYPE, connectionProcessor,
-            messageSerializer, receiverOptions, CLIENT_IDENTIFIER);
+            messageSerializer, receiverOptions, CLIENT_IDENTIFIER, NOOP_TRACER);
 
         // Act & Assert
         StepVerifier.create(sessionManager.receive())
             .expectError(NullPointerException.class)
-            .verify();
+            .verify(DEFAULT_TIMEOUT);
     }
 
     /**
@@ -203,10 +191,9 @@ class ServiceBusSessionManagerTest {
     @Test
     void singleUnnamedSession() {
         // Arrange
-        ReceiverOptions receiverOptions = new ReceiverOptions(ServiceBusReceiveMode.PEEK_LOCK, 1, MAX_LOCK_RENEWAL, false, null,
-            5);
+        ReceiverOptions receiverOptions = createUnnamedSessionOptions(ServiceBusReceiveMode.PEEK_LOCK, 1, MAX_LOCK_RENEWAL, false, 5, SESSION_IDLE_TIMEOUT);
         sessionManager = new ServiceBusSessionManager(ENTITY_PATH, ENTITY_TYPE, connectionProcessor,
-            messageSerializer, receiverOptions, CLIENT_IDENTIFIER);
+            messageSerializer, receiverOptions, CLIENT_IDENTIFIER, NOOP_TRACER);
 
         final String sessionId = "session-1";
         final String lockToken = "a-lock-token";
@@ -258,10 +245,10 @@ class ServiceBusSessionManagerTest {
     @Test
     void singleUnnamedSessionLockRenew() {
         // Arrange
-        ReceiverOptions receiverOptions = new ReceiverOptions(ServiceBusReceiveMode.PEEK_LOCK, 1, MAX_LOCK_RENEWAL, false, null,
-            1);
+        ReceiverOptions receiverOptions = createUnnamedSessionOptions(ServiceBusReceiveMode.PEEK_LOCK, 1, MAX_LOCK_RENEWAL, false,
+            1, SESSION_IDLE_TIMEOUT);
         sessionManager = new ServiceBusSessionManager(ENTITY_PATH, ENTITY_TYPE, connectionProcessor,
-            messageSerializer, receiverOptions, CLIENT_IDENTIFIER);
+            messageSerializer, receiverOptions, CLIENT_IDENTIFIER, NOOP_TRACER);
 
         final String sessionId = "session-1";
         final String lockToken = "a-lock-token";
@@ -316,10 +303,10 @@ class ServiceBusSessionManagerTest {
     @Test
     void multipleSessions() {
         // Arrange
-        final ReceiverOptions receiverOptions = new ReceiverOptions(ServiceBusReceiveMode.PEEK_LOCK, 1, MAX_LOCK_RENEWAL, true,
-            null, 5);
+        final ReceiverOptions receiverOptions = createUnnamedSessionOptions(ServiceBusReceiveMode.PEEK_LOCK, 1, MAX_LOCK_RENEWAL, true,
+            5, SESSION_IDLE_TIMEOUT);
         sessionManager = new ServiceBusSessionManager(ENTITY_PATH, ENTITY_TYPE, connectionProcessor,
-            messageSerializer, receiverOptions, CLIENT_IDENTIFIER);
+            messageSerializer, receiverOptions, CLIENT_IDENTIFIER, NOOP_TRACER);
 
         final int numberOfMessages = 5;
         final Callable<OffsetDateTime> onRenewal = () -> OffsetDateTime.now().plus(Duration.ofSeconds(5));
@@ -432,7 +419,7 @@ class ServiceBusSessionManagerTest {
             })
             .thenAwait(Duration.ofSeconds(15))
             .thenCancel()
-            .verify();
+            .verify(DEFAULT_TIMEOUT);
     }
 
 
@@ -444,11 +431,11 @@ class ServiceBusSessionManagerTest {
         // Arrange
         final int expectedLinksCreated = 2;
         final Callable<OffsetDateTime> onRenewal = () -> OffsetDateTime.now().plus(Duration.ofSeconds(5));
-        final ReceiverOptions receiverOptions = new ReceiverOptions(ServiceBusReceiveMode.PEEK_LOCK, 1, Duration.ZERO, false,
-            null, 1);
+        final ReceiverOptions receiverOptions = createUnnamedSessionOptions(ServiceBusReceiveMode.PEEK_LOCK, 1, Duration.ZERO, false,
+            1, SESSION_IDLE_TIMEOUT);
 
         sessionManager = new ServiceBusSessionManager(ENTITY_PATH, ENTITY_TYPE, connectionProcessor,
-            messageSerializer, receiverOptions, CLIENT_IDENTIFIER);
+            messageSerializer, receiverOptions, CLIENT_IDENTIFIER, NOOP_TRACER);
 
         final String sessionId = "session-1";
         final String linkName = "my-link-name";
@@ -494,12 +481,12 @@ class ServiceBusSessionManagerTest {
         StepVerifier.create(sessionManager.receive())
             .thenAwait(Duration.ofSeconds(5))
             .thenCancel()
-            .verify();
+            .verify(DEFAULT_TIMEOUT);
 
         StepVerifier.create(sessionManager.receive())
             .thenAwait(Duration.ofSeconds(5))
             .thenCancel()
-            .verify();
+            .verify(DEFAULT_TIMEOUT);
 
         verify(connection, times(2)).createReceiveLink(linkNameCaptor.capture(), eq(ENTITY_PATH), any(
             ServiceBusReceiveMode.class), isNull(),
@@ -517,10 +504,10 @@ class ServiceBusSessionManagerTest {
     @Test
     void singleUnnamedSessionCleanupAfterTimeout() {
         // Arrange
-        ReceiverOptions receiverOptions = new ReceiverOptions(ServiceBusReceiveMode.PEEK_LOCK, 1, MAX_LOCK_RENEWAL, false, null,
-            2);
+        ReceiverOptions receiverOptions = createUnnamedSessionOptions(ServiceBusReceiveMode.PEEK_LOCK, 1, MAX_LOCK_RENEWAL, false,
+            2, SESSION_IDLE_TIMEOUT);
         sessionManager = new ServiceBusSessionManager(ENTITY_PATH, ENTITY_TYPE, connectionProcessor,
-            messageSerializer, receiverOptions, CLIENT_IDENTIFIER);
+            messageSerializer, receiverOptions, CLIENT_IDENTIFIER, NOOP_TRACER);
 
         final String sessionId = "session-1";
         final String lockToken = "a-lock-token";
@@ -556,11 +543,11 @@ class ServiceBusSessionManagerTest {
                 try {
                     TimeUnit.SECONDS.sleep(TIMEOUT.getSeconds());
                     assertNull(sessionManager.getLinkName(sessionId));
-                } catch (InterruptedException e) { }
+                } catch (InterruptedException ignored) { }
 
             })
             .thenCancel()
-            .verify();
+            .verify(DEFAULT_TIMEOUT);
     }
 
     private static void assertMessageEquals(String sessionId, ServiceBusReceivedMessage expected,

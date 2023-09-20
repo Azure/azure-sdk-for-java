@@ -16,16 +16,15 @@ import com.azure.containers.containerregistry.implementation.models.ContainerReg
 import com.azure.containers.containerregistry.models.GetManifestResult;
 import com.azure.containers.containerregistry.models.ManifestMediaType;
 import com.azure.containers.containerregistry.models.OciImageManifest;
-import com.azure.containers.containerregistry.models.UploadRegistryBlobResult;
 import com.azure.containers.containerregistry.models.SetManifestOptions;
 import com.azure.containers.containerregistry.models.SetManifestResult;
+import com.azure.containers.containerregistry.models.UploadRegistryBlobResult;
 import com.azure.core.annotation.ReturnType;
 import com.azure.core.annotation.ServiceClient;
 import com.azure.core.annotation.ServiceMethod;
 import com.azure.core.exception.ClientAuthenticationException;
 import com.azure.core.exception.HttpResponseException;
 import com.azure.core.exception.ServiceResponseException;
-import com.azure.core.http.HttpHeaderName;
 import com.azure.core.http.HttpPipeline;
 import com.azure.core.http.HttpRange;
 import com.azure.core.http.HttpResponse;
@@ -37,12 +36,11 @@ import com.azure.core.util.Context;
 import com.azure.core.util.logging.ClientLogger;
 import com.azure.core.util.tracing.Tracer;
 
+import java.io.ByteArrayOutputStream;
 import java.io.IOException;
 import java.io.InputStream;
 import java.io.UncheckedIOException;
 import java.nio.ByteBuffer;
-import java.nio.channels.Channels;
-import java.nio.channels.ReadableByteChannel;
 import java.nio.channels.WritableByteChannel;
 import java.security.MessageDigest;
 import java.util.Objects;
@@ -60,7 +58,6 @@ import static com.azure.containers.containerregistry.implementation.UtilsImpl.ge
 import static com.azure.containers.containerregistry.implementation.UtilsImpl.mapAcrErrorsException;
 import static com.azure.containers.containerregistry.implementation.UtilsImpl.toGetManifestResponse;
 import static com.azure.containers.containerregistry.implementation.UtilsImpl.validateDigest;
-import static com.azure.containers.containerregistry.implementation.UtilsImpl.validateResponseHeaderDigest;
 import static com.azure.core.util.CoreUtils.bytesToHexString;
 
 /**
@@ -130,7 +127,7 @@ public final class ContainerRegistryContentClient {
     @ServiceMethod(returns = ReturnType.SINGLE)
     public SetManifestResult setManifest(OciImageManifest manifest, String tag) {
         Objects.requireNonNull(manifest, "'manifest' cannot be null.");
-        return setManifestWithResponse(BinaryData.fromObject(manifest), tag, ManifestMediaType.OCI_MANIFEST, Context.NONE).getValue();
+        return setManifestWithResponse(BinaryData.fromObject(manifest), tag, ManifestMediaType.OCI_IMAGE_MANIFEST, Context.NONE).getValue();
     }
 
     /**
@@ -161,8 +158,6 @@ public final class ContainerRegistryContentClient {
 
     /**
      * Uploads a blob to the repository in chunks of 4MB.
-     * Use this method to upload relatively small content that fits into memory. For large content use
-     * {@link ContainerRegistryContentClient#uploadBlob(ReadableByteChannel, Context)} overload.
      *
      * <p><strong>Code Samples</strong></p>
      *
@@ -184,10 +179,12 @@ public final class ContainerRegistryContentClient {
      *     System.out.printf&#40;&quot;Uploaded blob: digest - '%s', size - %s&#92;n&quot;, uploadResult.getDigest&#40;&#41;,
      *         uploadResult.getSizeInBytes&#40;&#41;&#41;;
      * &#125; catch &#40;HttpResponseException ex&#41; &#123;
-     *     if &#40;ex.getCause&#40;&#41; instanceof AcrErrorsException&#41; &#123;
-     *         AcrErrorsException acrErrors = &#40;AcrErrorsException&#41; ex.getCause&#40;&#41;;
-     *         for &#40;AcrErrorInfo info : acrErrors.getValue&#40;&#41;.getErrors&#40;&#41;&#41; &#123;
-     *             System.out.printf&#40;&quot;Uploaded blob failed: code '%s'&#92;n&quot;, info.getCode&#40;&#41;&#41;;
+     *     if &#40;ex.getValue&#40;&#41; instanceof ResponseError&#41; &#123;
+     *         ResponseError error = &#40;ResponseError&#41; ex.getValue&#40;&#41;;
+     *         System.out.printf&#40;&quot;Upload failed: code '%s'&#92;n&quot;, error.getCode&#40;&#41;&#41;;
+     *         if &#40;&quot;BLOB_UPLOAD_INVALID&quot;.equals&#40;error.getCode&#40;&#41;&#41;&#41; &#123;
+     *             System.out.println&#40;&quot;Transient upload issue, starting upload over&quot;&#41;;
+     *             &#47;&#47; retry upload
      *         &#125;
      *     &#125;
      * &#125;
@@ -201,17 +198,7 @@ public final class ContainerRegistryContentClient {
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public UploadRegistryBlobResult uploadBlob(BinaryData content) {
-        Objects.requireNonNull(content, "'content' cannot be null.");
-        InputStream stream = content.toStream();
-        try {
-            return uploadBlob(Channels.newChannel(stream), Context.NONE);
-        } finally {
-            try {
-                stream.close();
-            } catch (IOException e) {
-                LOGGER.warning("Failed to close the stream", e);
-            }
-        }
+        return uploadBlob(content, Context.NONE);
     }
 
     /**
@@ -219,15 +206,14 @@ public final class ContainerRegistryContentClient {
      *
      * <p><strong>Code Samples</strong></p>
      *
-     * <!-- src_embed com.azure.containers.containerregistry.uploadStream -->
+     * <!-- src_embed com.azure.containers.containerregistry.uploadFile -->
      * <pre>
-     * try &#40;FileInputStream content = new FileInputStream&#40;&quot;artifact.tar.gz&quot;&#41;&#41; &#123;
-     *     UploadRegistryBlobResult uploadResult = contentClient.uploadBlob&#40;content.getChannel&#40;&#41;, Context.NONE&#41;;
-     *     System.out.printf&#40;&quot;Uploaded blob: digest - '%s', size - %s&#92;n&quot;,
-     *         uploadResult.getDigest&#40;&#41;, uploadResult.getSizeInBytes&#40;&#41;&#41;;
-     * &#125;
+     * BinaryData content = BinaryData.fromFile&#40;Paths.get&#40;&quot;artifact.tar.gz&quot;, CHUNK_SIZE&#41;&#41;;
+     * UploadRegistryBlobResult uploadResult = contentClient.uploadBlob&#40;content, Context.NONE&#41;;
+     * System.out.printf&#40;&quot;Uploaded blob: digest - '%s', size - %s&#92;n&quot;,
+     *     uploadResult.getDigest&#40;&#41;, uploadResult.getSizeInBytes&#40;&#41;&#41;;
      * </pre>
-     * <!-- end com.azure.containers.containerregistry.uploadStream -->
+     * <!-- end com.azure.containers.containerregistry.uploadFile -->
      *
      * @param content The blob content.
      * @param context Additional context that is passed through the Http pipeline during the service call.
@@ -236,9 +222,19 @@ public final class ContainerRegistryContentClient {
      * @throws NullPointerException thrown if the {@code stream} is {@code null}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public UploadRegistryBlobResult uploadBlob(ReadableByteChannel content, Context context) {
+    public UploadRegistryBlobResult uploadBlob(BinaryData content, Context context) {
         Objects.requireNonNull(content, "'content' cannot be null.");
-        return runWithTracing(UPLOAD_BLOB_SPAN_NAME, (span) -> uploadBlobInternal(content, span), context);
+
+        InputStream stream = content.toStream();
+        try {
+            return runWithTracing(UPLOAD_BLOB_SPAN_NAME, (span) -> uploadBlobInternal(stream, span), context);
+        } finally {
+            try {
+                stream.close();
+            } catch (IOException e) {
+                LOGGER.warning("Failed to close the stream", e);
+            }
+        }
     }
 
     /**
@@ -252,7 +248,7 @@ public final class ContainerRegistryContentClient {
      * <pre>
      * GetManifestResult latestResult = contentClient.getManifest&#40;&quot;latest&quot;&#41;;
      * if &#40;ManifestMediaType.DOCKER_MANIFEST.equals&#40;latestResult.getManifestMediaType&#40;&#41;&#41;
-     *     || ManifestMediaType.OCI_MANIFEST.equals&#40;latestResult.getManifestMediaType&#40;&#41;&#41;&#41; &#123;
+     *     || ManifestMediaType.OCI_IMAGE_MANIFEST.equals&#40;latestResult.getManifestMediaType&#40;&#41;&#41;&#41; &#123;
      *     OciImageManifest manifest = latestResult.getManifest&#40;&#41;.toObject&#40;OciImageManifest.class&#41;;
      * &#125; else &#123;
      *     throw new IllegalArgumentException&#40;&quot;Unexpected manifest type: &quot; + latestResult.getManifestMediaType&#40;&#41;&#41;;
@@ -391,8 +387,8 @@ public final class ContainerRegistryContentClient {
         Objects.requireNonNull(digest, "'digest' cannot be null.");
 
         try {
-            Response<BinaryData> streamResponse = blobsImpl.deleteBlobWithResponse(repositoryName, digest, context);
-            return deleteResponseToSuccess(streamResponse);
+            Response<Void> response = blobsImpl.deleteBlobWithResponse(repositoryName, digest, context);
+            return deleteResponseToSuccess(response);
         } catch (HttpResponseException ex) {
             if (ex.getResponse().getStatusCode() == 404) {
                 HttpResponse response = ex.getResponse();
@@ -445,7 +441,7 @@ public final class ContainerRegistryContentClient {
         }
     }
 
-    private UploadRegistryBlobResult uploadBlobInternal(ReadableByteChannel stream, Context context) {
+    private UploadRegistryBlobResult uploadBlobInternal(InputStream stream, Context context) {
         MessageDigest sha256 = createSha256();
         byte[] buffer = new byte[CHUNK_SIZE];
 
@@ -478,28 +474,32 @@ public final class ContainerRegistryContentClient {
                 blobsImpl.completeUploadWithResponse(digest, location, chunk, chunk == null ? null : chunk.getLength(), context);
 
             return ConstructorAccessors.createUploadRegistryBlobResult(completeUploadResponse.getDeserializedHeaders().getDockerContentDigest(), streamLength);
-        } catch (AcrErrorsException ex) {
-            throw LOGGER.logExceptionAsError(mapAcrErrorsException(ex));
+        } catch (AcrErrorsException exception) {
+            throw LOGGER.logExceptionAsError(mapAcrErrorsException(exception));
         }
     }
 
-    private BinaryData readChunk(ReadableByteChannel stream, MessageDigest sha256, byte[] buffer) {
-        ByteBuffer byteBuffer = ByteBuffer.wrap(buffer);
-        while (byteBuffer.position() < CHUNK_SIZE) {
+    private BinaryData readChunk(InputStream stream, MessageDigest sha256, byte[] buffer) {
+        int position = 0;
+        while (position < CHUNK_SIZE) {
             try {
-                if (stream.read(byteBuffer) < 0) {
+                int read = stream.read(buffer, position, CHUNK_SIZE - position);
+                if (read < 0) {
                     break;
                 }
+                position += read;
             } catch (IOException ex) {
                 throw LOGGER.logExceptionAsError(new UncheckedIOException(ex));
             }
         }
-        if (byteBuffer.position() == 0) {
+        if (position == 0) {
             return null;
         }
 
-        byteBuffer.flip();
-        sha256.update(byteBuffer.asReadOnlyBuffer());
+        sha256.update(buffer, 0, position);
+
+        ByteBuffer byteBuffer = ByteBuffer.wrap(buffer);
+        byteBuffer.limit(position);
         return BinaryData.fromByteBuffer(byteBuffer);
     }
 
@@ -530,12 +530,17 @@ public final class ContainerRegistryContentClient {
 
         MessageDigest sha256 = createSha256();
         try {
-            Response<BinaryData> lastChunk = readRange(digest, new HttpRange(0, (long) CHUNK_SIZE), channel, sha256, context);
-            validateResponseHeaderDigest(digest, lastChunk.getHeaders());
+            HttpRange range = new HttpRange(0, (long) CHUNK_SIZE);
+            // TODO (limolkova) https://github.com/Azure/azure-sdk-for-java/issues/34400
+            context = context.addData("azure-eagerly-read-response", true);
+            Response<BinaryData> lastChunk = blobsImpl.getChunkWithResponse(repositoryName, digest, range.toString(), context);
+            long blobSize = getBlobSize(lastChunk.getHeaders());
+            long length = writeChunk(lastChunk, sha256, channel);
 
-            long blobSize = getBlobSize(lastChunk.getHeaders().get(HttpHeaderName.CONTENT_RANGE));
-            for (long p = lastChunk.getValue().getLength(); p < blobSize; p += CHUNK_SIZE) {
-                readRange(digest, new HttpRange(p, (long) CHUNK_SIZE), channel, sha256, context);
+            for (long p = length; p < blobSize; p += CHUNK_SIZE) {
+                range = new HttpRange(p, (long) CHUNK_SIZE);
+                lastChunk = blobsImpl.getChunkWithResponse(repositoryName, digest, range.toString(), context);
+                writeChunk(lastChunk, sha256, channel);
             }
         } catch (AcrErrorsException exception) {
             throw LOGGER.logExceptionAsError(mapAcrErrorsException(exception));
@@ -546,18 +551,37 @@ public final class ContainerRegistryContentClient {
         return context;
     }
 
-    private Response<BinaryData> readRange(String digest, HttpRange range, WritableByteChannel channel, MessageDigest sha256, Context context) {
-        Response<BinaryData> response = blobsImpl.getChunkWithResponse(repositoryName, digest, range.toString(), context);
-
-        ByteBuffer buffer = response.getValue().toByteBuffer();
+    private long writeChunk(Response<BinaryData> response, MessageDigest sha256, WritableByteChannel channel) {
+        InputStream content = response.getValue().toStream();
+        ByteBuffer buffer = ByteBuffer.wrap(getBytes(content));
         sha256.update(buffer.asReadOnlyBuffer());
         try {
             channel.write(buffer);
         } catch (IOException e) {
             throw LOGGER.logExceptionAsError(new UncheckedIOException(e));
+        } finally {
+            try {
+                content.close();
+            } catch (IOException e) {
+                throw LOGGER.logExceptionAsError(new UncheckedIOException(e));
+            }
         }
 
-        return response;
+        return buffer.limit();
+    }
+
+    private byte[] getBytes(InputStream stream) {
+        try {
+            ByteArrayOutputStream dataOutputBuffer = new ByteArrayOutputStream();
+            int nRead;
+            byte[] data = new byte[8192];
+            while ((nRead = stream.read(data, 0, data.length)) != -1) {
+                dataOutputBuffer.write(data, 0, nRead);
+            }
+            return dataOutputBuffer.toByteArray();
+        } catch (IOException ex) {
+            throw LOGGER.logExceptionAsError(new UncheckedIOException(ex));
+        }
     }
 
     private <T> T runWithTracing(String spanName, Function<Context, T> operation, Context context) {

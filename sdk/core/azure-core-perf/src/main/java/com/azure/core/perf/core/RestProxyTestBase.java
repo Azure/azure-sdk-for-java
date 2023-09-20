@@ -209,7 +209,7 @@ public abstract class RestProxyTestBase<TOptions extends CorePerfStressOptions> 
                 inputStream.mark(Long.MAX_VALUE);
                 return () -> {
                     inputStream.reset();
-                    return BinaryData.fromStream(inputStream);
+                    return BinaryData.fromStream(inputStream, size);
                 };
             default:
                 throw new IllegalArgumentException("Unknown binary data source " + options.getBinaryDataSource());

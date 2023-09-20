@@ -15,10 +15,10 @@ public final class CspmMonitorGcpOfferingTests {
         CspmMonitorGcpOffering model =
             BinaryData
                 .fromString(
-                    "{\"offeringType\":\"CspmMonitorGcp\",\"nativeCloudConnection\":{\"workloadIdentityProviderId\":\"s\",\"serviceAccountEmailAddress\":\"tkbtnqlrngl\"},\"description\":\"biipsnawwlqkznx\"}")
+                    "{\"offeringType\":\"CspmMonitorGcp\",\"nativeCloudConnection\":{\"workloadIdentityProviderId\":\"nqimwbzxpdcldp\",\"serviceAccountEmailAddress\":\"wnsnlaimouxwks\"},\"description\":\"udmfcoibiczius\"}")
                 .toObject(CspmMonitorGcpOffering.class);
-        Assertions.assertEquals("s", model.nativeCloudConnection().workloadIdentityProviderId());
-        Assertions.assertEquals("tkbtnqlrngl", model.nativeCloudConnection().serviceAccountEmailAddress());
+        Assertions.assertEquals("nqimwbzxpdcldp", model.nativeCloudConnection().workloadIdentityProviderId());
+        Assertions.assertEquals("wnsnlaimouxwks", model.nativeCloudConnection().serviceAccountEmailAddress());
     }
 
     @org.junit.jupiter.api.Test
@@ -27,10 +27,10 @@ public final class CspmMonitorGcpOfferingTests {
             new CspmMonitorGcpOffering()
                 .withNativeCloudConnection(
                     new CspmMonitorGcpOfferingNativeCloudConnection()
-                        .withWorkloadIdentityProviderId("s")
-                        .withServiceAccountEmailAddress("tkbtnqlrngl"));
+                        .withWorkloadIdentityProviderId("nqimwbzxpdcldp")
+                        .withServiceAccountEmailAddress("wnsnlaimouxwks"));
         model = BinaryData.fromObject(model).toObject(CspmMonitorGcpOffering.class);
-        Assertions.assertEquals("s", model.nativeCloudConnection().workloadIdentityProviderId());
-        Assertions.assertEquals("tkbtnqlrngl", model.nativeCloudConnection().serviceAccountEmailAddress());
+        Assertions.assertEquals("nqimwbzxpdcldp", model.nativeCloudConnection().workloadIdentityProviderId());
+        Assertions.assertEquals("wnsnlaimouxwks", model.nativeCloudConnection().serviceAccountEmailAddress());
     }
 }

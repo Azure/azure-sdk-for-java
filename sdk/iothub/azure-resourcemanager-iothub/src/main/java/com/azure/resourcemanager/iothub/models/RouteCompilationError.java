@@ -28,6 +28,10 @@ public final class RouteCompilationError {
     @JsonProperty(value = "location")
     private RouteErrorRange location;
 
+    /** Creates an instance of RouteCompilationError class. */
+    public RouteCompilationError() {
+    }
+
     /**
      * Get the message property: Route error message.
      *

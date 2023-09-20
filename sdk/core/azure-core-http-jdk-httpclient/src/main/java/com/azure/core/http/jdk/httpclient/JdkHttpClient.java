@@ -145,7 +145,8 @@ class JdkHttpClient implements HttpClient {
             case HEAD:
                 return builder.method("HEAD", noBody()).build();
             default:
-                java.net.http.HttpRequest.BodyPublisher bodyPublisher = BodyPublisherUtils.toBodyPublisher(request, progressReporter);
+                java.net.http.HttpRequest.BodyPublisher bodyPublisher = BodyPublisherUtils.toBodyPublisher(request,
+                    progressReporter);
                 return builder.method(request.getHttpMethod().toString(), bodyPublisher).build();
         }
     }
@@ -192,6 +193,7 @@ class JdkHttpClient implements HttpClient {
      * @param headers the JDK Http headers
      * @return the azure-core Http headers
      */
+    @SuppressWarnings("deprecation")
     static HttpHeaders fromJdkHttpHeaders(java.net.http.HttpHeaders headers) {
         final HttpHeaders httpHeaders = new HttpHeaders();
 

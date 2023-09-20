@@ -8,25 +8,27 @@ import com.azure.core.util.BinaryData;
 import com.azure.resourcemanager.appcontainers.models.AzureActiveDirectoryLogin;
 import java.util.Arrays;
 import org.junit.jupiter.api.Assertions;
-import org.junit.jupiter.api.Test;
 
 public final class AzureActiveDirectoryLoginTests {
-    @Test
-    public void testDeserialize() {
+    @org.junit.jupiter.api.Test
+    public void testDeserialize() throws Exception {
         AzureActiveDirectoryLogin model =
             BinaryData
-                .fromString("{\"loginParameters\":[\"eju\"],\"disableWWWAuthenticate\":true}")
+                .fromString(
+                    "{\"loginParameters\":[\"kzsmodm\",\"lougpbkw\",\"mutduqktaps\"],\"disableWWWAuthenticate\":false}")
                 .toObject(AzureActiveDirectoryLogin.class);
-        Assertions.assertEquals("eju", model.loginParameters().get(0));
-        Assertions.assertEquals(true, model.disableWwwAuthenticate());
+        Assertions.assertEquals("kzsmodm", model.loginParameters().get(0));
+        Assertions.assertEquals(false, model.disableWwwAuthenticate());
     }
 
-    @Test
-    public void testSerialize() {
+    @org.junit.jupiter.api.Test
+    public void testSerialize() throws Exception {
         AzureActiveDirectoryLogin model =
-            new AzureActiveDirectoryLogin().withLoginParameters(Arrays.asList("eju")).withDisableWwwAuthenticate(true);
+            new AzureActiveDirectoryLogin()
+                .withLoginParameters(Arrays.asList("kzsmodm", "lougpbkw", "mutduqktaps"))
+                .withDisableWwwAuthenticate(false);
         model = BinaryData.fromObject(model).toObject(AzureActiveDirectoryLogin.class);
-        Assertions.assertEquals("eju", model.loginParameters().get(0));
-        Assertions.assertEquals(true, model.disableWwwAuthenticate());
+        Assertions.assertEquals("kzsmodm", model.loginParameters().get(0));
+        Assertions.assertEquals(false, model.disableWwwAuthenticate());
     }
 }

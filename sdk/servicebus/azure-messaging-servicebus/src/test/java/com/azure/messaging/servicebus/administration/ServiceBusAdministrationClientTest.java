@@ -5,6 +5,7 @@ package com.azure.messaging.servicebus.administration;
 
 import com.azure.core.http.rest.PagedIterable;
 import com.azure.core.http.rest.Response;
+import com.azure.core.http.rest.SimpleResponse;
 import com.azure.core.util.Context;
 import com.azure.messaging.servicebus.administration.implementation.EntitiesImpl;
 import com.azure.messaging.servicebus.administration.implementation.EntityHelper;
@@ -12,29 +13,29 @@ import com.azure.messaging.servicebus.administration.implementation.RulesImpl;
 import com.azure.messaging.servicebus.administration.implementation.ServiceBusManagementClientImpl;
 import com.azure.messaging.servicebus.administration.implementation.ServiceBusManagementSerializer;
 import com.azure.messaging.servicebus.administration.implementation.SubscriptionsImpl;
-import com.azure.messaging.servicebus.administration.implementation.models.QueueDescription;
-import com.azure.messaging.servicebus.administration.implementation.models.QueueDescriptionEntry;
-import com.azure.messaging.servicebus.administration.implementation.models.QueueDescriptionEntryContent;
-import com.azure.messaging.servicebus.administration.implementation.models.QueueDescriptionFeed;
-import com.azure.messaging.servicebus.administration.implementation.models.ResponseLink;
+import com.azure.messaging.servicebus.administration.implementation.models.QueueDescriptionEntryContentImpl;
+import com.azure.messaging.servicebus.administration.implementation.models.QueueDescriptionEntryImpl;
+import com.azure.messaging.servicebus.administration.implementation.models.QueueDescriptionFeedImpl;
+import com.azure.messaging.servicebus.administration.implementation.models.QueueDescriptionImpl;
+import com.azure.messaging.servicebus.administration.implementation.models.ResponseLinkImpl;
+import com.azure.messaging.servicebus.administration.implementation.models.RuleDescriptionEntryImpl;
+import com.azure.messaging.servicebus.administration.implementation.models.SubscriptionDescriptionEntryImpl;
+import com.azure.messaging.servicebus.administration.implementation.models.TitleImpl;
 import com.azure.messaging.servicebus.administration.models.CreateQueueOptions;
 import com.azure.messaging.servicebus.administration.models.QueueProperties;
 import com.azure.messaging.servicebus.administration.models.QueueRuntimeProperties;
 import io.netty.handler.codec.http.HttpResponseStatus;
-import org.junit.jupiter.api.AfterAll;
 import org.junit.jupiter.api.AfterEach;
-import org.junit.jupiter.api.BeforeAll;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.mockito.Mock;
 import org.mockito.Mockito;
 import org.mockito.MockitoAnnotations;
-import reactor.test.StepVerifier;
 
 import java.io.IOException;
 import java.time.Duration;
 import java.util.Arrays;
-import java.util.HashMap;
+import java.util.Collections;
 import java.util.List;
 
 import static org.junit.jupiter.api.Assertions.assertEquals;
@@ -52,8 +53,6 @@ class ServiceBusAdministrationClientTest {
     @Mock
     private ServiceBusManagementClientImpl serviceClient;
     @Mock
-    private Response<Object> voidResponse;
-    @Mock
     private EntitiesImpl entitys;
     @Mock
     private RulesImpl rules;
@@ -62,18 +61,19 @@ class ServiceBusAdministrationClientTest {
     @Mock
     private ServiceBusManagementSerializer serializer;
 
-    @Mock
-    QueueProperties queuePropertiesResult;
+    private QueueProperties queuePropertiesResult;
 
     @Mock
-    QueueDescriptionEntryContent queueDescriptionEntryContent;
-    @Mock
-    QueueDescription mockQueueDesc;
+    private QueueDescriptionEntryContentImpl queueDescriptionEntryContent;
 
     @Mock
-    QueueDescriptionEntry queueDescriptionEntry;
+    private QueueDescriptionImpl mockQueueDesc;
+
     @Mock
-    Response<Object> objectResponse;
+    private QueueDescriptionEntryImpl queueDescriptionEntry;
+
+    @Mock
+    private Response<Object> objectResponse;
 
     private final Context context = new Context("foo", "bar").addData("baz", "boo");
     private final String queueName = "some-queue";
@@ -84,18 +84,6 @@ class ServiceBusAdministrationClientTest {
     private final String dummyEndpoint = "endpoint.servicebus.foo";
 
     private AutoCloseable mockClosable;
-    private ServiceBusAdministrationAsyncClient asyncClient;
-    private HashMap<String, String> map = new HashMap<>();
-
-    @BeforeAll
-    static void beforeAll() {
-        StepVerifier.setDefaultTimeout(Duration.ofSeconds(5));
-    }
-
-    @AfterAll
-    static void afterAll() {
-        StepVerifier.resetDefaultTimeout();
-    }
 
     @BeforeEach
     void beforeEach() throws IOException {
@@ -106,18 +94,17 @@ class ServiceBusAdministrationClientTest {
         when(serviceClient.getSubscriptions()).thenReturn(subscriptions);
         when(serviceClient.getRules()).thenReturn(rules);
 
-        when(queuePropertiesResult.getName()).thenReturn(queueName);
+        queuePropertiesResult = EntityHelper.toModel(new QueueDescriptionImpl());
+        EntityHelper.setQueueName(queuePropertiesResult, queueName);
         when(mockQueueDesc.getMaxDeliveryCount()).thenReturn(10);
         when(queueDescriptionEntry.getContent()).thenReturn(queueDescriptionEntryContent);
-        map.put("", queueName);
-        when(queueDescriptionEntry.getTitle()).thenReturn(map);
+        when(queueDescriptionEntry.getTitle()).thenReturn(new TitleImpl().setContent(queueName));
 
-        when(serializer.deserialize(anyString(), eq(QueueDescriptionEntry.class))).thenReturn(queueDescriptionEntry);
+        when(serializer.deserialize(anyString(), eq(QueueDescriptionEntryImpl.class))).thenReturn(queueDescriptionEntry);
 
         when(objectResponse.getValue()).thenReturn(queueDescriptionEntry);
-        when(entitys.<QueueDescriptionEntry>putSyncWithResponse(any(), any(), any(), any())).thenReturn(objectResponse);
+        when(entitys.<QueueDescriptionEntryImpl>putWithResponse(any(), any(), any(), any())).thenReturn(objectResponse);
 
-        asyncClient = new ServiceBusAdministrationAsyncClient(serviceClient, serializer);
         client = new ServiceBusAdministrationClient(serviceClient, serializer);
     }
 
@@ -137,7 +124,7 @@ class ServiceBusAdministrationClientTest {
         final CreateQueueOptions options = new CreateQueueOptions()
             .setMaxDeliveryCount(4)
             .setAutoDeleteOnIdle(Duration.ofSeconds(30));
-        final QueueDescription queueDescription = EntityHelper.getQueueDescription(options);
+        final QueueDescriptionImpl queueDescription = EntityHelper.getQueueDescription(options);
         final QueueProperties expected = EntityHelper.toModel(queueDescription);
         when(queueDescriptionEntryContent.getQueueDescription()).thenReturn(queueDescription);
 
@@ -160,7 +147,7 @@ class ServiceBusAdministrationClientTest {
         final CreateQueueOptions options = new CreateQueueOptions()
             .setMaxDeliveryCount(4)
             .setAutoDeleteOnIdle(Duration.ofSeconds(30));
-        final QueueDescription queueDescription = EntityHelper.getQueueDescription(options);
+        final QueueDescriptionImpl queueDescription = EntityHelper.getQueueDescription(options);
         final QueueProperties expected = EntityHelper.toModel(queueDescription);
 
         when(queueDescriptionEntryContent.getQueueDescription()).thenReturn(queueDescription);
@@ -177,20 +164,21 @@ class ServiceBusAdministrationClientTest {
     @Test
     void deleteQueue() {
         // Arrange
-        when(entitys.deleteSyncWithResponse(eq(queueName), any())).thenReturn(voidResponse);
+        Response<Object> voidResponse = new SimpleResponse<>(null, 0, null, null);
+        when(entitys.deleteWithResponse(eq(queueName), any())).thenReturn(voidResponse);
 
         // Act
         client.deleteQueue(queueName);
 
         // Assert
-        verify(entitys).deleteSyncWithResponse(eq(queueName), any());
+        verify(entitys).deleteWithResponse(eq(queueName), any());
     }
 
     @Test
     void deleteQueueWithResponse() {
         // Arrange
-        when(entitys.deleteSyncWithResponse(any(), any())).thenReturn(voidResponse);
-        when(voidResponse.getStatusCode()).thenReturn(HttpResponseStatus.NO_CONTENT.code());
+        Response<Object> voidResponse = new SimpleResponse<>(null, 204, null, null);
+        when(entitys.deleteWithResponse(any(), any())).thenReturn(voidResponse);
 
         // Act
         final Response<Void> actual = client.deleteQueueWithResponse(queueName, context);
@@ -202,21 +190,22 @@ class ServiceBusAdministrationClientTest {
     @Test
     void deleteRule() {
         // Arrange
-        when(rules.deleteSyncWithResponse(eq(topicName), eq(subscriptionName), eq(ruleName), any())).thenReturn(
-            voidResponse);
+        Response<RuleDescriptionEntryImpl> voidResponse = new SimpleResponse<>(null, 0, null, null);
+        when(rules.deleteWithResponse(eq(topicName), eq(subscriptionName), eq(ruleName), any()))
+            .thenReturn(voidResponse);
 
         // Act
         client.deleteRule(topicName, subscriptionName, ruleName);
 
         // Assert
-        verify(rules).deleteSyncWithResponse(eq(topicName), eq(subscriptionName), eq(ruleName), any());
+        verify(rules).deleteWithResponse(eq(topicName), eq(subscriptionName), eq(ruleName), any());
     }
 
     @Test
     void deleteRuleWithResponse() {
         // Arrange
-        when(rules.deleteSyncWithResponse(any(), any(), any(), any())).thenReturn(voidResponse);
-        when(voidResponse.getStatusCode()).thenReturn(HttpResponseStatus.NO_CONTENT.code());
+        Response<RuleDescriptionEntryImpl> voidResponse = new SimpleResponse<>(null, 204, null, null);
+        when(rules.deleteWithResponse(any(), any(), any(), any())).thenReturn(voidResponse);
 
         // Act
         final Response<Void> actual = client.deleteRuleWithResponse(topicName, subscriptionName, ruleName, context);
@@ -228,21 +217,21 @@ class ServiceBusAdministrationClientTest {
     @Test
     void deleteSubscription() {
         // Arrange
-        when(subscriptions.deleteSyncWithResponse(eq(topicName), eq(subscriptionName), any())).thenReturn(voidResponse);
-        when(voidResponse.getStatusCode()).thenReturn(HttpResponseStatus.NO_CONTENT.code());
+        Response<SubscriptionDescriptionEntryImpl> voidResponse = new SimpleResponse<>(null, 204, null, null);
+        when(subscriptions.deleteWithResponse(eq(topicName), eq(subscriptionName), any())).thenReturn(voidResponse);
 
         // Act
         client.deleteSubscription(topicName, subscriptionName);
 
         // Assert
-        verify(subscriptions).deleteSyncWithResponse(eq(topicName), eq(subscriptionName), any());
+        verify(subscriptions).deleteWithResponse(eq(topicName), eq(subscriptionName), any());
     }
 
     @Test
     void deleteSubscriptionWithResponse() {
         // Arrange
-        when(subscriptions.deleteSyncWithResponse(any(), any(), any())).thenReturn(voidResponse);
-        when(voidResponse.getStatusCode()).thenReturn(HttpResponseStatus.NO_CONTENT.code());
+        Response<SubscriptionDescriptionEntryImpl> voidResponse = new SimpleResponse<>(null, 204, null, null);
+        when(subscriptions.deleteWithResponse(any(), any(), any())).thenReturn(voidResponse);
 
         // Act
         final Response<Void> actual = client.deleteSubscriptionWithResponse(topicName, subscriptionName, context);
@@ -254,20 +243,21 @@ class ServiceBusAdministrationClientTest {
     @Test
     void deleteTopic() {
         // Arrange
-        when(entitys.deleteSyncWithResponse(any(), any())).thenReturn(voidResponse);
+        Response<Object> voidResponse = new SimpleResponse<>(null, 0, null, null);
+        when(entitys.deleteWithResponse(any(), any())).thenReturn(voidResponse);
 
         // Act
         client.deleteTopic(topicName);
 
         // Assert
-        verify(entitys).deleteSyncWithResponse(any(), any());
+        verify(entitys).deleteWithResponse(any(), any());
     }
 
     @Test
     void deleteTopicWithResponse() {
         // Arrange
-        when(entitys.deleteSyncWithResponse(any(), any())).thenReturn(voidResponse);
-        when(voidResponse.getStatusCode()).thenReturn(HttpResponseStatus.NO_CONTENT.code());
+        Response<Object> voidResponse = new SimpleResponse<>(null, 204, null, null);
+        when(entitys.deleteWithResponse(any(), any())).thenReturn(voidResponse);
 
         // Act
         final Response<Void> actual = client.deleteTopicWithResponse(topicName, context);
@@ -280,7 +270,7 @@ class ServiceBusAdministrationClientTest {
     void getQueue() {
         // Arrange
         when(queueDescriptionEntryContent.getQueueDescription()).thenReturn(mockQueueDesc);
-        when(entitys.<QueueDescriptionEntry>getSyncWithResponse(any(), any(), any())).thenReturn(objectResponse);
+        when(entitys.<QueueDescriptionEntryImpl>getWithResponse(any(), any(), any())).thenReturn(objectResponse);
 
         // Act
         final QueueProperties actual = client.getQueue(queueName);
@@ -293,7 +283,7 @@ class ServiceBusAdministrationClientTest {
     void getQueueWithResponse() {
         // Arrange
         when(queueDescriptionEntryContent.getQueueDescription()).thenReturn(mockQueueDesc);
-        when(entitys.<QueueDescriptionEntry>getSyncWithResponse(any(), any(), any())).thenReturn(objectResponse);
+        when(entitys.<QueueDescriptionEntryImpl>getWithResponse(any(), any(), any())).thenReturn(objectResponse);
 
         // Act
         final Response<QueueProperties> actual = client.getQueueWithResponse(queueName, context);
@@ -306,7 +296,7 @@ class ServiceBusAdministrationClientTest {
     void getQueueRuntimeProperties() {
         // Arrange
         when(queueDescriptionEntryContent.getQueueDescription()).thenReturn(mockQueueDesc);
-        when(entitys.<QueueDescriptionEntry>getSyncWithResponse(any(), any(), any())).thenReturn(objectResponse);
+        when(entitys.<QueueDescriptionEntryImpl>getWithResponse(any(), any(), any())).thenReturn(objectResponse);
 
         // Act
         final QueueRuntimeProperties actual = client.getQueueRuntimeProperties(queueName);
@@ -316,10 +306,10 @@ class ServiceBusAdministrationClientTest {
     }
 
     @Test
-    void getQueueRuntimePropertiesWithResponse() throws IOException {
+    void getQueueRuntimePropertiesWithResponse() {
         // Arrange
         when(queueDescriptionEntryContent.getQueueDescription()).thenReturn(mockQueueDesc);
-        when(entitys.<QueueDescriptionEntry>getSyncWithResponse(any(), any(), any())).thenReturn(objectResponse);
+        when(entitys.<QueueDescriptionEntryImpl>getWithResponse(any(), any(), any())).thenReturn(objectResponse);
 
         // Act
         final Response<QueueRuntimeProperties> actual = client.getQueueRuntimePropertiesWithResponse(queueName, context);
@@ -332,10 +322,10 @@ class ServiceBusAdministrationClientTest {
     void listQueues() throws IOException {
         // Arrange
         when(queueDescriptionEntryContent.getQueueDescription()).thenReturn(mockQueueDesc);
-        final QueueDescriptionFeed feed = mock(QueueDescriptionFeed.class);
-        when(serializer.deserialize(anyString(), eq(QueueDescriptionFeed.class))).thenReturn(feed);
-        when(feed.getEntry()).thenReturn(Arrays.asList(queueDescriptionEntry));
-        when(serviceClient.<QueueDescriptionEntry>listEntitiesSyncWithResponse(any(), any(), any(), any())).thenReturn(
+        final QueueDescriptionFeedImpl feed = mock(QueueDescriptionFeedImpl.class);
+        when(serializer.deserialize(anyString(), eq(QueueDescriptionFeedImpl.class))).thenReturn(feed);
+        when(feed.getEntry()).thenReturn(Collections.singletonList(queueDescriptionEntry));
+        when(serviceClient.<QueueDescriptionEntryImpl>listEntitiesWithResponse(any(), any(), any(), any())).thenReturn(
             objectResponse);
         final List<QueueProperties> queues = Arrays.asList(queuePropertiesResult);
 
@@ -351,22 +341,20 @@ class ServiceBusAdministrationClientTest {
     void listQueuesWithContext() throws IOException {
         // Arrange
         when(queueDescriptionEntryContent.getQueueDescription()).thenReturn(mockQueueDesc);
-        final QueueDescriptionFeed feed = mock(QueueDescriptionFeed.class);
-        when(serializer.deserialize(anyString(), eq(QueueDescriptionFeed.class))).thenReturn(feed);
-        when(feed.getEntry()).thenReturn(Arrays.asList(queueDescriptionEntry));
-        when(feed.getLink()).thenReturn(Arrays.asList(new ResponseLink().setRel("next").setHref("https://foo.bar.net?api-version=2021-05&$skip=1"))).thenReturn(Arrays.asList(new ResponseLink().setRel("notNext")));
-        when(serviceClient.<QueueDescriptionEntry>listEntitiesSyncWithResponse(any(), any(), any(), any())).thenReturn(
+        final QueueDescriptionFeedImpl feed = mock(QueueDescriptionFeedImpl.class);
+        when(serializer.deserialize(anyString(), eq(QueueDescriptionFeedImpl.class))).thenReturn(feed);
+        when(feed.getEntry()).thenReturn(Collections.singletonList(queueDescriptionEntry));
+        when(feed.getLink()).thenReturn(Collections.singletonList(new ResponseLinkImpl().setRel("next").setHref("https://foo.bar.net?api-version=2021-05&$skip=1"))).thenReturn(Arrays.asList(new ResponseLinkImpl().setRel("notNext")));
+        when(serviceClient.<QueueDescriptionEntryImpl>listEntitiesWithResponse(any(), any(), any(), any())).thenReturn(
             objectResponse);
         final List<QueueProperties> queues = Arrays.asList(queuePropertiesResult);
 
-        final List<QueueProperties> firstPage = queues;
-        final List<QueueProperties> secondPage = queues;
         // Act
         final PagedIterable<QueueProperties> queueDescriptions = client.listQueues(context);
 
         // Assert
         final long size = queueDescriptions.stream().count();
-        final long expectedSize = firstPage.size() + secondPage.size();
+        final long expectedSize = queues.size() + queues.size();
 
         assertEquals(expectedSize, size);
     }
@@ -377,12 +365,12 @@ class ServiceBusAdministrationClientTest {
         final CreateQueueOptions options = new CreateQueueOptions()
             .setMaxDeliveryCount(4)
             .setAutoDeleteOnIdle(Duration.ofSeconds(30));
-        final QueueDescription queueDescription = EntityHelper.getQueueDescription(options);
+        final QueueDescriptionImpl queueDescription = EntityHelper.getQueueDescription(options);
         final QueueProperties description = EntityHelper.toModel(queueDescription);
         final QueueProperties expected = EntityHelper.toModel(queueDescription);
 
         when(queueDescriptionEntryContent.getQueueDescription()).thenReturn(queueDescription);
-        when(entitys.<QueueDescriptionEntry>putSyncWithResponse(any(), any(), any(), any())).thenReturn(objectResponse);
+        when(entitys.<QueueDescriptionEntryImpl>putWithResponse(any(), any(), any(), any())).thenReturn(objectResponse);
 
         // Act
         final QueueProperties actual = client.updateQueue(description);
@@ -398,12 +386,12 @@ class ServiceBusAdministrationClientTest {
         final CreateQueueOptions options = new CreateQueueOptions()
             .setMaxDeliveryCount(4)
             .setAutoDeleteOnIdle(Duration.ofSeconds(30));
-        final QueueDescription queueDescription = EntityHelper.getQueueDescription(options);
+        final QueueDescriptionImpl queueDescription = EntityHelper.getQueueDescription(options);
         final QueueProperties description = EntityHelper.toModel(queueDescription);
         final QueueProperties expected = EntityHelper.toModel(queueDescription);
 
         when(queueDescriptionEntryContent.getQueueDescription()).thenReturn(queueDescription);
-        when(entitys.<QueueDescriptionEntry>putSyncWithResponse(any(), any(), any(), any())).thenReturn(objectResponse);
+        when(entitys.<QueueDescriptionEntryImpl>putWithResponse(any(), any(), any(), any())).thenReturn(objectResponse);
 
         // Act
         final Response<QueueProperties> actual = client.updateQueueWithResponse(description, context);

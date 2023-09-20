@@ -11,7 +11,6 @@ import com.azure.core.http.HttpRequest;
 import com.azure.core.http.HttpResponse;
 import com.azure.core.management.AzureEnvironment;
 import com.azure.core.management.profile.AzureProfile;
-import com.azure.core.util.Context;
 import com.azure.resourcemanager.hdinsight.HDInsightManager;
 import com.azure.resourcemanager.hdinsight.models.ClusterConfigurations;
 import java.nio.ByteBuffer;
@@ -32,7 +31,7 @@ public final class ConfigurationsListWithResponseMockTests {
         ArgumentCaptor<HttpRequest> httpRequest = ArgumentCaptor.forClass(HttpRequest.class);
 
         String responseStr =
-            "{\"configurations\":{\"irpghriypoqeyh\":{\"mq\":\"eeebtijvacv\",\"nw\":\"bqqxlaj\",\"afgaoqlt\":\"acevehjkuyx\",\"gv\":\"aeylinm\"},\"vmqfoud\":{\"kprlpyznuc\":\"h\",\"fuxtyasiibmiybnn\":\"qdsmexiit\",\"hnmgixhcm\":\"stgnl\"},\"xhugcm\":{\"ndm\":\"hcgyyprotwyp\"},\"ftpmdtzfjltfv\":{\"rb\":\"avlg\"}}}";
+            "{\"configurations\":{\"uvqejosovyrrle\":{\"pedwqsl\":\"whqjjyslurlpshhk\",\"ndcbrwi\":\"rhmpqvwwsk\"}}}";
 
         Mockito.when(httpResponse.getStatusCode()).thenReturn(200);
         Mockito.when(httpResponse.getHeaders()).thenReturn(new HttpHeaders());
@@ -61,8 +60,11 @@ public final class ConfigurationsListWithResponseMockTests {
                     new AzureProfile("", "", AzureEnvironment.AZURE));
 
         ClusterConfigurations response =
-            manager.configurations().listWithResponse("czbgomfgbeg", "qgleohibetnluank", Context.NONE).getValue();
+            manager
+                .configurations()
+                .listWithResponse("plkeuachtomflryt", "wfpfmdgycx", com.azure.core.util.Context.NONE)
+                .getValue();
 
-        Assertions.assertEquals("eeebtijvacv", response.configurations().get("irpghriypoqeyh").get("mq"));
+        Assertions.assertEquals("whqjjyslurlpshhk", response.configurations().get("uvqejosovyrrle").get("pedwqsl"));
     }
 }

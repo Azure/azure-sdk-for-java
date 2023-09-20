@@ -12,7 +12,6 @@ import com.azure.core.http.HttpResponse;
 import com.azure.core.http.rest.PagedIterable;
 import com.azure.core.management.AzureEnvironment;
 import com.azure.core.management.profile.AzureProfile;
-import com.azure.core.util.Context;
 import com.azure.resourcemanager.appcontainers.ContainerAppsApiManager;
 import com.azure.resourcemanager.appcontainers.models.WorkloadProfileStates;
 import java.nio.ByteBuffer;
@@ -33,7 +32,7 @@ public final class ManagedEnvironmentsListWorkloadProfileStatesMockTests {
         ArgumentCaptor<HttpRequest> httpRequest = ArgumentCaptor.forClass(HttpRequest.class);
 
         String responseStr =
-            "{\"value\":[{\"properties\":{\"minimumCount\":1932910769,\"maximumCount\":356571550,\"currentCount\":150383679},\"id\":\"ygjbmzyospspsh\",\"name\":\"kfkyjp\",\"type\":\"sp\"}]}";
+            "{\"value\":[{\"properties\":{\"minimumCount\":1521065056,\"maximumCount\":1869442572,\"currentCount\":1373287799},\"id\":\"ycnlbvgjcodk\",\"name\":\"gjiiytssiki\",\"type\":\"bcufqbvntn\"}]}";
 
         Mockito.when(httpResponse.getStatusCode()).thenReturn(200);
         Mockito.when(httpResponse.getHeaders()).thenReturn(new HttpHeaders());
@@ -62,10 +61,12 @@ public final class ManagedEnvironmentsListWorkloadProfileStatesMockTests {
                     new AzureProfile("", "", AzureEnvironment.AZURE));
 
         PagedIterable<WorkloadProfileStates> response =
-            manager.managedEnvironments().listWorkloadProfileStates("zdvpiw", "xqszdtmaajquh", Context.NONE);
+            manager
+                .managedEnvironments()
+                .listWorkloadProfileStates("cgqtag", "rclsso", com.azure.core.util.Context.NONE);
 
-        Assertions.assertEquals(1932910769, response.iterator().next().properties().minimumCount());
-        Assertions.assertEquals(356571550, response.iterator().next().properties().maximumCount());
-        Assertions.assertEquals(150383679, response.iterator().next().properties().currentCount());
+        Assertions.assertEquals(1521065056, response.iterator().next().properties().minimumCount());
+        Assertions.assertEquals(1869442572, response.iterator().next().properties().maximumCount());
+        Assertions.assertEquals(1373287799, response.iterator().next().properties().currentCount());
     }
 }

@@ -55,6 +55,10 @@ public final class EndpointHealthDataInner {
     @JsonProperty(value = "lastSendAttemptTime")
     private DateTimeRfc1123 lastSendAttemptTime;
 
+    /** Creates an instance of EndpointHealthDataInner class. */
+    public EndpointHealthDataInner() {
+    }
+
     /**
      * Get the endpointId property: Id of the endpoint.
      *

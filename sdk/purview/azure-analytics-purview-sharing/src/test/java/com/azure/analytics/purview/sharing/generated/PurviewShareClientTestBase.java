@@ -8,6 +8,8 @@ import com.azure.analytics.purview.sharing.ReceivedSharesClient;
 import com.azure.analytics.purview.sharing.ReceivedSharesClientBuilder;
 import com.azure.analytics.purview.sharing.SentSharesClient;
 import com.azure.analytics.purview.sharing.SentSharesClientBuilder;
+import com.azure.analytics.purview.sharing.ShareResourcesClient;
+import com.azure.analytics.purview.sharing.ShareResourcesClientBuilder;
 import com.azure.core.credential.AccessToken;
 import com.azure.core.http.HttpClient;
 import com.azure.core.http.policy.HttpLogDetailLevel;
@@ -23,6 +25,8 @@ class PurviewShareClientTestBase extends TestBase {
     protected ReceivedSharesClient receivedSharesClient;
 
     protected SentSharesClient sentSharesClient;
+
+    protected ShareResourcesClient shareResourcesClient;
 
     @Override
     protected void beforeTest() {
@@ -61,5 +65,23 @@ class PurviewShareClientTestBase extends TestBase {
             sentSharesClientbuilder.credential(new DefaultAzureCredentialBuilder().build());
         }
         sentSharesClient = sentSharesClientbuilder.buildClient();
+
+        ShareResourcesClientBuilder shareResourcesClientbuilder =
+                new ShareResourcesClientBuilder()
+                        .endpoint(Configuration.getGlobalConfiguration().get("ENDPOINT", "endpoint"))
+                        .httpClient(HttpClient.createDefault())
+                        .httpLogOptions(new HttpLogOptions().setLogLevel(HttpLogDetailLevel.BASIC));
+        if (getTestMode() == TestMode.PLAYBACK) {
+            shareResourcesClientbuilder
+                    .httpClient(interceptorManager.getPlaybackClient())
+                    .credential(request -> Mono.just(new AccessToken("this_is_a_token", OffsetDateTime.MAX)));
+        } else if (getTestMode() == TestMode.RECORD) {
+            shareResourcesClientbuilder
+                    .addPolicy(interceptorManager.getRecordPolicy())
+                    .credential(new DefaultAzureCredentialBuilder().build());
+        } else if (getTestMode() == TestMode.LIVE) {
+            shareResourcesClientbuilder.credential(new DefaultAzureCredentialBuilder().build());
+        }
+        shareResourcesClient = shareResourcesClientbuilder.buildClient();
     }
 }

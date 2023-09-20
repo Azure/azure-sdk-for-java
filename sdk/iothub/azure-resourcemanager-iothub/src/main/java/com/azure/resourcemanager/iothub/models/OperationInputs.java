@@ -17,6 +17,10 @@ public final class OperationInputs {
     @JsonProperty(value = "name", required = true)
     private String name;
 
+    /** Creates an instance of OperationInputs class. */
+    public OperationInputs() {
+    }
+
     /**
      * Get the name property: The name of the IoT hub to check.
      *

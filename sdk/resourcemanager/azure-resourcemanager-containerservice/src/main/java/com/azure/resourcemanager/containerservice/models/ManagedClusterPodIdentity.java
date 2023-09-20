@@ -10,7 +10,7 @@ import com.fasterxml.jackson.annotation.JsonProperty;
 
 /** Details about the pod identity assigned to the Managed Cluster. */
 @Fluent
-public class ManagedClusterPodIdentity {
+public final class ManagedClusterPodIdentity {
     /*
      * The name of the pod identity.
      */

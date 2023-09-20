@@ -208,9 +208,11 @@ public final class UrlBuilder {
     }
 
     /**
-     * Get the query that has been assigned to this UrlBuilder.
+     * Get a view of the query that has been assigned to this UrlBuilder.
+     * <p>
+     * Changes to the {@link Map} returned by this API won't be reflected in the UrlBuilder.
      *
-     * @return the query that has been assigned to this UrlBuilder.
+     * @return A view of the query that has been assigned to this UrlBuilder.
      */
     public Map<String, String> getQuery() {
         initializeQuery();
@@ -245,7 +247,7 @@ public final class UrlBuilder {
             return;
         }
 
-        stringBuilder.append("?");
+        stringBuilder.append('?');
 
         boolean first = true;
 
@@ -270,10 +272,10 @@ public final class UrlBuilder {
     private static boolean writeQueryValues(StringBuilder builder, String key, List<String> values, boolean first) {
         for (String value : values) {
             if (!first) {
-                builder.append("&");
+                builder.append('&');
             }
 
-            builder.append(key).append("=").append(value);
+            builder.append(key).append('=').append(value);
             first = false;
         }
 
@@ -307,7 +309,7 @@ public final class UrlBuilder {
                     break;
 
                 case QUERY:
-                    ImplUtils.parseQueryParameters(tokenText).forEachRemaining(queryParam ->
+                    CoreUtils.parseQueryParameters(tokenText).forEachRemaining(queryParam ->
                         addQueryParameter(queryParam.getKey(), queryParam.getValue()));
                     break;
 
@@ -325,7 +327,9 @@ public final class UrlBuilder {
      * @throws MalformedURLException if the URL is not fully formed.
      */
     public URL toUrl() throws MalformedURLException {
-        return new URL(toString());
+        // Continue using new URL constructor here as URI either cannot accept certain characters in the path or
+        // escapes '/', depending on the API used to create the URI.
+        return ImplUtils.createUrl(toString());
     }
 
     /**
@@ -353,7 +357,7 @@ public final class UrlBuilder {
         }
 
         if (port != null) {
-            result.append(":");
+            result.append(':');
             result.append(port);
         }
 

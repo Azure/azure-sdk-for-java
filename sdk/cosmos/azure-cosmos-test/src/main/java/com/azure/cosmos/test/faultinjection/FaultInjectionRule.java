@@ -9,6 +9,7 @@ import com.azure.cosmos.test.implementation.ImplementationBridgeHelpers;
 import java.net.URI;
 import java.time.Duration;
 import java.util.List;
+import java.util.Map;
 import java.util.stream.Collectors;
 
 import static com.azure.cosmos.implementation.guava25.base.Preconditions.checkNotNull;
@@ -127,6 +128,15 @@ public final class FaultInjectionRule {
      */
     public long getHitCount() {
         return this.effectiveRule == null ? 0 : this.effectiveRule.getHitCount();
+    }
+
+    /**
+     * Get the details of how many times the rule has applied.
+     *
+     * @return the hit count details map.
+     */
+    public Map<String, Long> getHitCountDetails() {
+        return this.effectiveRule == null ? null : this.effectiveRule.getHitCountDetails();
     }
 
     /***

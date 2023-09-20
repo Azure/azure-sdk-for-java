@@ -30,7 +30,7 @@ public final class IotSecuritySolutionAnalyticsListWithResponseMockTests {
         ArgumentCaptor<HttpRequest> httpRequest = ArgumentCaptor.forClass(HttpRequest.class);
 
         String responseStr =
-            "{\"value\":[{\"id\":\"ceazfpxgnmqvz\",\"name\":\"luyqqaiossscyvai\",\"type\":\"ppuacvfyeowp\"},{\"id\":\"x\",\"name\":\"jdhsoy\",\"type\":\"hpvtyqftteh\"},{\"id\":\"boujstkfvv\",\"name\":\"shxcdedsuenygnxc\",\"type\":\"jtfrnquktrfn\"}],\"nextLink\":\"nlrxsmyltrwntfmt\"}";
+            "{\"value\":[{\"id\":\"bjgmnzj\",\"name\":\"t\",\"type\":\"mrxkhlobvv\"},{\"id\":\"hvhd\",\"name\":\"qayfl\",\"type\":\"iyu\"}],\"nextLink\":\"n\"}";
 
         Mockito.when(httpResponse.getStatusCode()).thenReturn(200);
         Mockito.when(httpResponse.getHeaders()).thenReturn(new HttpHeaders());
@@ -61,7 +61,7 @@ public final class IotSecuritySolutionAnalyticsListWithResponseMockTests {
         IoTSecuritySolutionAnalyticsModelList response =
             manager
                 .iotSecuritySolutionAnalytics()
-                .listWithResponse("gfii", "rykwlefk", com.azure.core.util.Context.NONE)
+                .listWithResponse("aaqgzeka", "clyzgs", com.azure.core.util.Context.NONE)
                 .getValue();
     }
 }

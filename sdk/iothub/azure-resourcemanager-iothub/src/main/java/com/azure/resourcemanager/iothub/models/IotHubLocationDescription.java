@@ -24,6 +24,10 @@ public final class IotHubLocationDescription {
     @JsonProperty(value = "role")
     private IotHubReplicaRoleType role;
 
+    /** Creates an instance of IotHubLocationDescription class. */
+    public IotHubLocationDescription() {
+    }
+
     /**
      * Get the location property: The name of the Azure region.
      *

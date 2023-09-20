@@ -22,10 +22,9 @@ public class ApprovalRequestReject {
         // BEGIN:com.azure.analytics.purview.workflow.generated.rejectapprovaltask.approvalrequestreject
         BinaryData approvalResponseComment = BinaryData.fromString("{\"comment\":\"Thanks for raising this!\"}");
         RequestOptions requestOptions = new RequestOptions();
-        String taskId = "98d98e2c-23fa-4157-a3f8-ff8ce5cc095c";
         Response<Void> response =
                 purviewWorkflowClient.rejectApprovalTaskWithResponse(
-                    taskId, approvalResponseComment, requestOptions);
+                        "98d98e2c-23fa-4157-a3f8-ff8ce5cc095c", approvalResponseComment, requestOptions);
         // END:com.azure.analytics.purview.workflow.generated.rejectapprovaltask.approvalrequestreject
     }
 }

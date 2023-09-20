@@ -33,7 +33,7 @@ public final class SecurityConnectorApplicationsListMockTests {
         ArgumentCaptor<HttpRequest> httpRequest = ArgumentCaptor.forClass(HttpRequest.class);
 
         String responseStr =
-            "{\"value\":[{\"properties\":{\"displayName\":\"zgbjbhrpgi\",\"description\":\"ttcucrcm\",\"sourceResourceType\":\"Assessments\",\"conditionSets\":[\"dataxp\",\"datajiwifhbksldttoh\"]},\"id\":\"clnaihtg\",\"name\":\"iqikvllr\",\"type\":\"tpmglxkoikmtr\"}]}";
+            "{\"value\":[{\"properties\":{\"displayName\":\"stifgufyjf\",\"description\":\"qiyv\",\"sourceResourceType\":\"Assessments\",\"conditionSets\":[\"dataokgw\",\"datasymzqhrqpf\",\"datalpe\"]},\"id\":\"tznxlu\",\"name\":\"aujqbbgsimwejlwb\",\"type\":\"bpjzobdwbcpraswk\"}]}";
 
         Mockito.when(httpResponse.getStatusCode()).thenReturn(200);
         Mockito.when(httpResponse.getHeaders()).thenReturn(new HttpHeaders());
@@ -62,10 +62,10 @@ public final class SecurityConnectorApplicationsListMockTests {
                     new AzureProfile("", "", AzureEnvironment.AZURE));
 
         PagedIterable<Application> response =
-            manager.securityConnectorApplications().list("osnqliwkmzojfe", "yalhtgm", com.azure.core.util.Context.NONE);
+            manager.securityConnectorApplications().list("izzn", "uf", com.azure.core.util.Context.NONE);
 
-        Assertions.assertEquals("zgbjbhrpgi", response.iterator().next().displayName());
-        Assertions.assertEquals("ttcucrcm", response.iterator().next().description());
+        Assertions.assertEquals("stifgufyjf", response.iterator().next().displayName());
+        Assertions.assertEquals("qiyv", response.iterator().next().description());
         Assertions
             .assertEquals(ApplicationSourceResourceType.ASSESSMENTS, response.iterator().next().sourceResourceType());
     }

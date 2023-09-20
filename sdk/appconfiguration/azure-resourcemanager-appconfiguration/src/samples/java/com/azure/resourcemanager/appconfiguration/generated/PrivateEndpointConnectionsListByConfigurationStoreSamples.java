@@ -4,12 +4,10 @@
 
 package com.azure.resourcemanager.appconfiguration.generated;
 
-import com.azure.core.util.Context;
-
 /** Samples for PrivateEndpointConnections ListByConfigurationStore. */
 public final class PrivateEndpointConnectionsListByConfigurationStoreSamples {
     /*
-     * x-ms-original-file: specification/appconfiguration/resource-manager/Microsoft.AppConfiguration/stable/2022-05-01/examples/ConfigurationStoresListPrivateEndpointConnections.json
+     * x-ms-original-file: specification/appconfiguration/resource-manager/Microsoft.AppConfiguration/stable/2023-03-01/examples/ConfigurationStoresListPrivateEndpointConnections.json
      */
     /**
      * Sample code: PrivateEndpointConnection_List.
@@ -18,6 +16,8 @@ public final class PrivateEndpointConnectionsListByConfigurationStoreSamples {
      */
     public static void privateEndpointConnectionList(
         com.azure.resourcemanager.appconfiguration.AppConfigurationManager manager) {
-        manager.privateEndpointConnections().listByConfigurationStore("myResourceGroup", "contoso", Context.NONE);
+        manager
+            .privateEndpointConnections()
+            .listByConfigurationStore("myResourceGroup", "contoso", com.azure.core.util.Context.NONE);
     }
 }

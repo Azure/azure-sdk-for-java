@@ -44,6 +44,12 @@ public final class DefenderForServersGcpOffering extends CloudOffering {
     @JsonProperty(value = "subPlan")
     private DefenderForServersGcpOfferingSubPlan subPlan;
 
+    /*
+     * The Microsoft Defender for Server VM scanning configuration
+     */
+    @JsonProperty(value = "vmScanners")
+    private DefenderForServersGcpOfferingVmScanners vmScanners;
+
     /** Creates an instance of DefenderForServersGcpOffering class. */
     public DefenderForServersGcpOffering() {
     }
@@ -153,6 +159,26 @@ public final class DefenderForServersGcpOffering extends CloudOffering {
     }
 
     /**
+     * Get the vmScanners property: The Microsoft Defender for Server VM scanning configuration.
+     *
+     * @return the vmScanners value.
+     */
+    public DefenderForServersGcpOfferingVmScanners vmScanners() {
+        return this.vmScanners;
+    }
+
+    /**
+     * Set the vmScanners property: The Microsoft Defender for Server VM scanning configuration.
+     *
+     * @param vmScanners the vmScanners value to set.
+     * @return the DefenderForServersGcpOffering object itself.
+     */
+    public DefenderForServersGcpOffering withVmScanners(DefenderForServersGcpOfferingVmScanners vmScanners) {
+        this.vmScanners = vmScanners;
+        return this;
+    }
+
+    /**
      * Validates the instance.
      *
      * @throws IllegalArgumentException thrown if the instance is not valid.
@@ -174,6 +200,9 @@ public final class DefenderForServersGcpOffering extends CloudOffering {
         }
         if (subPlan() != null) {
             subPlan().validate();
+        }
+        if (vmScanners() != null) {
+            vmScanners().validate();
         }
     }
 }

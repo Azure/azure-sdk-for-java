@@ -25,8 +25,8 @@ public final class VirtualMachineScaleSetDataDisk {
     private int lun;
 
     /*
-     * Specifies the caching requirements. <br><br> Possible values are: <br><br> **None** <br><br> **ReadOnly**
-     * <br><br> **ReadWrite** <br><br> Default: **None for Standard storage. ReadOnly for Premium storage**
+     * Specifies the caching requirements. Possible values are: **None,** **ReadOnly,** **ReadWrite.** The default
+     * values are: **None for Standard storage. ReadOnly for Premium storage.**
      */
     @JsonProperty(value = "caching")
     private CachingTypes caching;
@@ -45,8 +45,8 @@ public final class VirtualMachineScaleSetDataDisk {
 
     /*
      * Specifies the size of an empty data disk in gigabytes. This element can be used to overwrite the size of the
-     * disk in a virtual machine image. <br><br> diskSizeGB is the number of bytes x 1024^3 for the disk and the value
-     * cannot be larger than 1023
+     * disk in a virtual machine image. The property diskSizeGB is the number of bytes x 1024^3 for the disk and the
+     * value cannot be larger than 1023.
      */
     @JsonProperty(value = "diskSizeGB")
     private Integer diskSizeGB;
@@ -127,9 +127,8 @@ public final class VirtualMachineScaleSetDataDisk {
     }
 
     /**
-     * Get the caching property: Specifies the caching requirements. &lt;br&gt;&lt;br&gt; Possible values are:
-     * &lt;br&gt;&lt;br&gt; **None** &lt;br&gt;&lt;br&gt; **ReadOnly** &lt;br&gt;&lt;br&gt; **ReadWrite**
-     * &lt;br&gt;&lt;br&gt; Default: **None for Standard storage. ReadOnly for Premium storage**.
+     * Get the caching property: Specifies the caching requirements. Possible values are: **None,** **ReadOnly,**
+     * **ReadWrite.** The default values are: **None for Standard storage. ReadOnly for Premium storage.**.
      *
      * @return the caching value.
      */
@@ -138,9 +137,8 @@ public final class VirtualMachineScaleSetDataDisk {
     }
 
     /**
-     * Set the caching property: Specifies the caching requirements. &lt;br&gt;&lt;br&gt; Possible values are:
-     * &lt;br&gt;&lt;br&gt; **None** &lt;br&gt;&lt;br&gt; **ReadOnly** &lt;br&gt;&lt;br&gt; **ReadWrite**
-     * &lt;br&gt;&lt;br&gt; Default: **None for Standard storage. ReadOnly for Premium storage**.
+     * Set the caching property: Specifies the caching requirements. Possible values are: **None,** **ReadOnly,**
+     * **ReadWrite.** The default values are: **None for Standard storage. ReadOnly for Premium storage.**.
      *
      * @param caching the caching value to set.
      * @return the VirtualMachineScaleSetDataDisk object itself.
@@ -194,8 +192,8 @@ public final class VirtualMachineScaleSetDataDisk {
 
     /**
      * Get the diskSizeGB property: Specifies the size of an empty data disk in gigabytes. This element can be used to
-     * overwrite the size of the disk in a virtual machine image. &lt;br&gt;&lt;br&gt; diskSizeGB is the number of bytes
-     * x 1024^3 for the disk and the value cannot be larger than 1023.
+     * overwrite the size of the disk in a virtual machine image. The property diskSizeGB is the number of bytes x
+     * 1024^3 for the disk and the value cannot be larger than 1023.
      *
      * @return the diskSizeGB value.
      */
@@ -205,8 +203,8 @@ public final class VirtualMachineScaleSetDataDisk {
 
     /**
      * Set the diskSizeGB property: Specifies the size of an empty data disk in gigabytes. This element can be used to
-     * overwrite the size of the disk in a virtual machine image. &lt;br&gt;&lt;br&gt; diskSizeGB is the number of bytes
-     * x 1024^3 for the disk and the value cannot be larger than 1023.
+     * overwrite the size of the disk in a virtual machine image. The property diskSizeGB is the number of bytes x
+     * 1024^3 for the disk and the value cannot be larger than 1023.
      *
      * @param diskSizeGB the diskSizeGB value to set.
      * @return the VirtualMachineScaleSetDataDisk object itself.

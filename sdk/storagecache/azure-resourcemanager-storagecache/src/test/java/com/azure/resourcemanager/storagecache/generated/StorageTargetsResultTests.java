@@ -18,9 +18,9 @@ public final class StorageTargetsResultTests {
         StorageTargetsResult model =
             BinaryData
                 .fromString(
-                    "{\"nextLink\":\"cq\",\"value\":[{\"properties\":{\"junctions\":[],\"targetType\":\"nfs3\",\"provisioningState\":\"Canceled\",\"state\":\"Ready\",\"allocationPercentage\":1172540413},\"location\":\"xv\",\"id\":\"u\",\"name\":\"wpzntxhdzh\",\"type\":\"rqjbhckfrl\"}]}")
+                    "{\"nextLink\":\"cjefuzmu\",\"value\":[{\"properties\":{\"junctions\":[],\"targetType\":\"nfs3\",\"provisioningState\":\"Canceled\",\"state\":\"Ready\",\"allocationPercentage\":964392835},\"location\":\"zbtbhj\",\"id\":\"lkfg\",\"name\":\"hdneuelfph\",\"type\":\"dyhtozfikdowwquu\"},{\"properties\":{\"junctions\":[],\"targetType\":\"clfs\",\"provisioningState\":\"Succeeded\",\"state\":\"Busy\",\"allocationPercentage\":176578322},\"location\":\"osggbhc\",\"id\":\"fwdsj\",\"name\":\"ka\",\"type\":\"jutiiswacff\"},{\"properties\":{\"junctions\":[],\"targetType\":\"blobNfs\",\"provisioningState\":\"Failed\",\"state\":\"Flushing\",\"allocationPercentage\":875285248},\"location\":\"ilvpnppfuflrwd\",\"id\":\"dlxyjrxs\",\"name\":\"gafcnihgwqapnedg\",\"type\":\"bcvkcvqvpkeq\"}]}")
                 .toObject(StorageTargetsResult.class);
-        Assertions.assertEquals("cq", model.nextLink());
+        Assertions.assertEquals("cjefuzmu", model.nextLink());
         Assertions.assertEquals(StorageTargetType.NFS3, model.value().get(0).targetType());
         Assertions.assertEquals(OperationalStateType.READY, model.value().get(0).state());
     }
@@ -29,16 +29,24 @@ public final class StorageTargetsResultTests {
     public void testSerialize() throws Exception {
         StorageTargetsResult model =
             new StorageTargetsResult()
-                .withNextLink("cq")
+                .withNextLink("cjefuzmu")
                 .withValue(
                     Arrays
                         .asList(
                             new StorageTargetInner()
                                 .withJunctions(Arrays.asList())
                                 .withTargetType(StorageTargetType.NFS3)
-                                .withState(OperationalStateType.READY)));
+                                .withState(OperationalStateType.READY),
+                            new StorageTargetInner()
+                                .withJunctions(Arrays.asList())
+                                .withTargetType(StorageTargetType.CLFS)
+                                .withState(OperationalStateType.BUSY),
+                            new StorageTargetInner()
+                                .withJunctions(Arrays.asList())
+                                .withTargetType(StorageTargetType.BLOB_NFS)
+                                .withState(OperationalStateType.FLUSHING)));
         model = BinaryData.fromObject(model).toObject(StorageTargetsResult.class);
-        Assertions.assertEquals("cq", model.nextLink());
+        Assertions.assertEquals("cjefuzmu", model.nextLink());
         Assertions.assertEquals(StorageTargetType.NFS3, model.value().get(0).targetType());
         Assertions.assertEquals(OperationalStateType.READY, model.value().get(0).state());
     }

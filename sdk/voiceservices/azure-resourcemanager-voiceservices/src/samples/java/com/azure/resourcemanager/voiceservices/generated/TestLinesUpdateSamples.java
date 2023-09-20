@@ -14,9 +14,9 @@ public final class TestLinesUpdateSamples {
     /**
      * Sample code: UpdateTestLineResource.
      *
-     * @param manager Entry point to VoiceservicesManager.
+     * @param manager Entry point to VoiceServicesManager.
      */
-    public static void updateTestLineResource(com.azure.resourcemanager.voiceservices.VoiceservicesManager manager) {
+    public static void updateTestLineResource(com.azure.resourcemanager.voiceservices.VoiceServicesManager manager) {
         TestLine resource =
             manager
                 .testLines()

@@ -6,6 +6,7 @@ package com.azure.resourcemanager.security.generated;
 
 import com.azure.core.util.BinaryData;
 import com.azure.resourcemanager.security.models.DefenderForServersGcpOfferingArcAutoProvisioning;
+import com.azure.resourcemanager.security.models.DefenderForServersGcpOfferingArcAutoProvisioningConfiguration;
 import org.junit.jupiter.api.Assertions;
 
 public final class DefenderForServersGcpOfferingArcAutoProvisioningTests {
@@ -13,16 +14,26 @@ public final class DefenderForServersGcpOfferingArcAutoProvisioningTests {
     public void testDeserialize() throws Exception {
         DefenderForServersGcpOfferingArcAutoProvisioning model =
             BinaryData
-                .fromString("{\"enabled\":false}")
+                .fromString(
+                    "{\"enabled\":false,\"configuration\":{\"proxy\":\"gfb\",\"privateLinkScope\":\"tlpqagynoi\"}}")
                 .toObject(DefenderForServersGcpOfferingArcAutoProvisioning.class);
         Assertions.assertEquals(false, model.enabled());
+        Assertions.assertEquals("gfb", model.configuration().proxy());
+        Assertions.assertEquals("tlpqagynoi", model.configuration().privateLinkScope());
     }
 
     @org.junit.jupiter.api.Test
     public void testSerialize() throws Exception {
         DefenderForServersGcpOfferingArcAutoProvisioning model =
-            new DefenderForServersGcpOfferingArcAutoProvisioning().withEnabled(false);
+            new DefenderForServersGcpOfferingArcAutoProvisioning()
+                .withEnabled(false)
+                .withConfiguration(
+                    new DefenderForServersGcpOfferingArcAutoProvisioningConfiguration()
+                        .withProxy("gfb")
+                        .withPrivateLinkScope("tlpqagynoi"));
         model = BinaryData.fromObject(model).toObject(DefenderForServersGcpOfferingArcAutoProvisioning.class);
         Assertions.assertEquals(false, model.enabled());
+        Assertions.assertEquals("gfb", model.configuration().proxy());
+        Assertions.assertEquals("tlpqagynoi", model.configuration().privateLinkScope());
     }
 }

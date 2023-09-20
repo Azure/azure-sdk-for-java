@@ -4,12 +4,10 @@
 
 package com.azure.resourcemanager.eventgrid.generated;
 
-import com.azure.core.util.Context;
-
 /** Samples for PartnerRegistrations ListByResourceGroup. */
 public final class PartnerRegistrationsListByResourceGroupSamples {
     /*
-     * x-ms-original-file: specification/eventgrid/resource-manager/Microsoft.EventGrid/stable/2022-06-15/examples/PartnerRegistrations_ListByResourceGroup.json
+     * x-ms-original-file: specification/eventgrid/resource-manager/Microsoft.EventGrid/preview/2023-06-01-preview/examples/PartnerRegistrations_ListByResourceGroup.json
      */
     /**
      * Sample code: PartnerRegistrations_ListByResourceGroup.
@@ -18,6 +16,6 @@ public final class PartnerRegistrationsListByResourceGroupSamples {
      */
     public static void partnerRegistrationsListByResourceGroup(
         com.azure.resourcemanager.eventgrid.EventGridManager manager) {
-        manager.partnerRegistrations().listByResourceGroup("examplerg", null, null, Context.NONE);
+        manager.partnerRegistrations().listByResourceGroup("examplerg", null, null, com.azure.core.util.Context.NONE);
     }
 }

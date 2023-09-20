@@ -8,9 +8,9 @@ import com.azure.core.annotation.Fluent;
 import com.fasterxml.jackson.annotation.JsonProperty;
 
 /**
- * Specifies the Spot-Try-Restore properties for the virtual machine scale set. &lt;br&gt;&lt;br&gt; With this property
- * customer can enable or disable automatic restore of the evicted Spot VMSS VM instances opportunistically based on
- * capacity availability and pricing constraint.
+ * Specifies the Spot-Try-Restore properties for the virtual machine scale set. With this property customer can enable
+ * or disable automatic restore of the evicted Spot VMSS VM instances opportunistically based on capacity availability
+ * and pricing constraint.
  */
 @Fluent
 public final class SpotRestorePolicy {

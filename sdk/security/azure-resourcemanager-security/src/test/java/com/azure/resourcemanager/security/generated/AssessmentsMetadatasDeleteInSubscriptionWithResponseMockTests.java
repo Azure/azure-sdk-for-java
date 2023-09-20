@@ -56,8 +56,6 @@ public final class AssessmentsMetadatasDeleteInSubscriptionWithResponseMockTests
                     tokenRequestContext -> Mono.just(new AccessToken("this_is_a_token", OffsetDateTime.MAX)),
                     new AzureProfile("", "", AzureEnvironment.AZURE));
 
-        manager
-            .assessmentsMetadatas()
-            .deleteInSubscriptionWithResponse("hdeeljslkyozdsfz", com.azure.core.util.Context.NONE);
+        manager.assessmentsMetadatas().deleteInSubscriptionWithResponse("buwvorba", com.azure.core.util.Context.NONE);
     }
 }

@@ -12,7 +12,6 @@ import com.azure.core.http.HttpResponse;
 import com.azure.core.http.rest.PagedIterable;
 import com.azure.core.management.AzureEnvironment;
 import com.azure.core.management.profile.AzureProfile;
-import com.azure.core.util.Context;
 import com.azure.resourcemanager.elastic.ElasticManager;
 import com.azure.resourcemanager.elastic.models.MonitoringTagRules;
 import com.azure.resourcemanager.elastic.models.ProvisioningState;
@@ -34,7 +33,7 @@ public final class TagRulesListMockTests {
         ArgumentCaptor<HttpRequest> httpRequest = ArgumentCaptor.forClass(HttpRequest.class);
 
         String responseStr =
-            "{\"value\":[{\"properties\":{\"provisioningState\":\"Canceled\",\"logRules\":{\"sendAadLogs\":true,\"sendSubscriptionLogs\":true,\"sendActivityLogs\":true,\"filteringTags\":[]}},\"id\":\"p\",\"name\":\"kafkuwbcrnwbm\",\"type\":\"hhseyv\"}]}";
+            "{\"value\":[{\"properties\":{\"provisioningState\":\"NotSpecified\",\"logRules\":{\"sendAadLogs\":false,\"sendSubscriptionLogs\":true,\"sendActivityLogs\":true,\"filteringTags\":[]}},\"id\":\"eamdp\",\"name\":\"agalpbuxwgipwhon\",\"type\":\"wkgshwa\"}]}";
 
         Mockito.when(httpResponse.getStatusCode()).thenReturn(200);
         Mockito.when(httpResponse.getHeaders()).thenReturn(new HttpHeaders());
@@ -62,11 +61,12 @@ public final class TagRulesListMockTests {
                     tokenRequestContext -> Mono.just(new AccessToken("this_is_a_token", OffsetDateTime.MAX)),
                     new AzureProfile("", "", AzureEnvironment.AZURE));
 
-        PagedIterable<MonitoringTagRules> response = manager.tagRules().list("qj", "hckfrlhrx", Context.NONE);
+        PagedIterable<MonitoringTagRules> response =
+            manager.tagRules().list("cwif", "jttgzf", com.azure.core.util.Context.NONE);
 
         Assertions
-            .assertEquals(ProvisioningState.CANCELED, response.iterator().next().properties().provisioningState());
-        Assertions.assertEquals(true, response.iterator().next().properties().logRules().sendAadLogs());
+            .assertEquals(ProvisioningState.NOT_SPECIFIED, response.iterator().next().properties().provisioningState());
+        Assertions.assertEquals(false, response.iterator().next().properties().logRules().sendAadLogs());
         Assertions.assertEquals(true, response.iterator().next().properties().logRules().sendSubscriptionLogs());
         Assertions.assertEquals(true, response.iterator().next().properties().logRules().sendActivityLogs());
     }

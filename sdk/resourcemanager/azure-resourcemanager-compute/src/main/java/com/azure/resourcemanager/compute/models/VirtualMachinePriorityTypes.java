@@ -9,9 +9,8 @@ import com.fasterxml.jackson.annotation.JsonCreator;
 import java.util.Collection;
 
 /**
- * Specifies the priority for a standalone virtual machine or the virtual machines in the scale set.
- * &lt;br&gt;&lt;br&gt; 'Low' enum will be deprecated in the future, please use 'Spot' as the enum to deploy Azure Spot
- * VM/VMSS.
+ * Specifies the priority for a standalone virtual machine or the virtual machines in the scale set. 'Low' enum will be
+ * deprecated in the future, please use 'Spot' as the enum to deploy Azure Spot VM/VMSS.
  */
 public final class VirtualMachinePriorityTypes extends ExpandableStringEnum<VirtualMachinePriorityTypes> {
     /** Static value Regular for VirtualMachinePriorityTypes. */

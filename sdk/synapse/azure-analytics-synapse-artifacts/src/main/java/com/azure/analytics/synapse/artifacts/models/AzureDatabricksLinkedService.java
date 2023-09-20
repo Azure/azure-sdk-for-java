@@ -146,6 +146,12 @@ public class AzureDatabricksLinkedService extends LinkedService {
     @JsonProperty(value = "typeProperties.policyId")
     private Object policyId;
 
+    /*
+     * The credential reference containing authentication information.
+     */
+    @JsonProperty(value = "typeProperties.credential")
+    private CredentialReference credential;
+
     /** Creates an instance of AzureDatabricksLinkedService class. */
     public AzureDatabricksLinkedService() {}
 
@@ -554,6 +560,26 @@ public class AzureDatabricksLinkedService extends LinkedService {
      */
     public AzureDatabricksLinkedService setPolicyId(Object policyId) {
         this.policyId = policyId;
+        return this;
+    }
+
+    /**
+     * Get the credential property: The credential reference containing authentication information.
+     *
+     * @return the credential value.
+     */
+    public CredentialReference getCredential() {
+        return this.credential;
+    }
+
+    /**
+     * Set the credential property: The credential reference containing authentication information.
+     *
+     * @param credential the credential value to set.
+     * @return the AzureDatabricksLinkedService object itself.
+     */
+    public AzureDatabricksLinkedService setCredential(CredentialReference credential) {
+        this.credential = credential;
         return this;
     }
 

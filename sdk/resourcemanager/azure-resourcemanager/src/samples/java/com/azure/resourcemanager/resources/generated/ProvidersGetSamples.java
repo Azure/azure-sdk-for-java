@@ -7,7 +7,7 @@ package com.azure.resourcemanager.resources.generated;
 /** Samples for Providers Get. */
 public final class ProvidersGetSamples {
     /*
-     * x-ms-original-file: specification/resources/resource-manager/Microsoft.Resources/stable/2021-01-01/examples/GetProvider.json
+     * x-ms-original-file: specification/resources/resource-manager/Microsoft.Resources/stable/2022-09-01/examples/GetProvider.json
      */
     /**
      * Sample code: Get provider.

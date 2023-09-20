@@ -8,7 +8,7 @@ import com.azure.core.util.ExpandableStringEnum;
 import com.fasterxml.jackson.annotation.JsonCreator;
 import java.util.Collection;
 
-/** Defines values for LedgerType. */
+/** Type of the ledger. Private means transaction data is encrypted. */
 public final class LedgerType extends ExpandableStringEnum<LedgerType> {
     /** Static value Unknown for LedgerType. */
     public static final LedgerType UNKNOWN = fromString("Unknown");
@@ -18,6 +18,15 @@ public final class LedgerType extends ExpandableStringEnum<LedgerType> {
 
     /** Static value Private for LedgerType. */
     public static final LedgerType PRIVATE = fromString("Private");
+
+    /**
+     * Creates a new instance of LedgerType value.
+     *
+     * @deprecated Use the {@link #fromString(String)} factory method.
+     */
+    @Deprecated
+    public LedgerType() {
+    }
 
     /**
      * Creates or finds a LedgerType from its string representation.

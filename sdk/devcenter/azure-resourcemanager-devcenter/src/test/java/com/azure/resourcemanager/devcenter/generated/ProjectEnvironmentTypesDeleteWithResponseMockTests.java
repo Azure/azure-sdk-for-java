@@ -11,7 +11,6 @@ import com.azure.core.http.HttpRequest;
 import com.azure.core.http.HttpResponse;
 import com.azure.core.management.AzureEnvironment;
 import com.azure.core.management.profile.AzureProfile;
-import com.azure.core.util.Context;
 import com.azure.resourcemanager.devcenter.DevCenterManager;
 import java.nio.ByteBuffer;
 import java.nio.charset.StandardCharsets;
@@ -57,6 +56,8 @@ public final class ProjectEnvironmentTypesDeleteWithResponseMockTests {
                     tokenRequestContext -> Mono.just(new AccessToken("this_is_a_token", OffsetDateTime.MAX)),
                     new AzureProfile("", "", AzureEnvironment.AZURE));
 
-        manager.projectEnvironmentTypes().deleteWithResponse("ril", "zapeewchpx", "ktwkuziyc", Context.NONE);
+        manager
+            .projectEnvironmentTypes()
+            .deleteWithResponse("vgtrdcnifmzzs", "ymbrnysuxmpraf", "g", com.azure.core.util.Context.NONE);
     }
 }

@@ -100,7 +100,7 @@ public class DefaultAzureCredentialTest {
         // mock
         try (MockedConstruction<IdentityClient> mocked = mockConstruction(IdentityClient.class, (identityClient, context) -> {
             when(identityClient.authenticateWithAzureDeveloperCli(request)).thenReturn(Mono.empty());
-            when(identityClient.authenticateWithExchangeToken(request)).thenReturn(TestUtils.getMockAccessToken(token1, expiresAt));
+            when(identityClient.authenticateWithWorkloadIdentityConfidentialClient(request)).thenReturn(TestUtils.getMockAccessToken(token1, expiresAt));
         }); MockedConstruction<IntelliJCredential> ijcredential = mockConstruction(IntelliJCredential.class, (intelliJCredential, context) -> {
             when(intelliJCredential.getToken(request)).thenReturn(Mono.empty());
         })) {
@@ -130,7 +130,7 @@ public class DefaultAzureCredentialTest {
 
         // mock
         try (MockedConstruction<IdentityClient> mocked = mockConstruction(IdentityClient.class, (identityClient, context) -> {
-            when(identityClient.authenticateWithExchangeToken(request)).thenReturn(TestUtils.getMockAccessToken(token1, expiresAt));
+            when(identityClient.authenticateWithWorkloadIdentityConfidentialClient(request)).thenReturn(TestUtils.getMockAccessToken(token1, expiresAt));
         })) {
             // test
             String clientId = "dummy-client-id";
@@ -226,6 +226,7 @@ public class DefaultAzureCredentialTest {
         try (MockedConstruction<IdentityClient> mocked = mockConstruction(IdentityClient.class, (identityClient, context) -> {
             when(identityClient.authenticateWithAzureDeveloperCli(request)).thenReturn(TestUtils.getMockAccessToken(token1, expiresAt));
             when(identityClient.authenticateWithAzureCli(request)).thenReturn(Mono.empty());
+            when(identityClient.authenticateWithAzurePowerShell(request)).thenReturn(Mono.empty());
             when(identityClient.authenticateWithManagedIdentityConfidentialClient(request)).thenReturn(Mono.empty());
             when(identityClient.authenticateWithSharedTokenCache(request, null)).thenReturn(Mono.empty());
             when(identityClient.authenticateWithIntelliJ(request)).thenReturn(Mono.empty());

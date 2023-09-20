@@ -25,6 +25,9 @@ public final class CloudName extends ExpandableStringEnum<CloudName> {
     /** Static value AzureDevOps for CloudName. */
     public static final CloudName AZURE_DEV_OPS = fromString("AzureDevOps");
 
+    /** Static value GitLab for CloudName. */
+    public static final CloudName GIT_LAB = fromString("GitLab");
+
     /**
      * Creates a new instance of CloudName value.
      *

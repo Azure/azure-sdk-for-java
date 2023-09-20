@@ -14,6 +14,13 @@ import java.util.Map;
  * The OperationDetails model.
  */
 public class OperationDetails {
+
+    /**
+     * Creates an instance of OperationDetails.
+     */
+    public OperationDetails() {
+    }
+
     private String operationId;
     private OperationStatus status;
     private Integer percentCompleted;
@@ -23,6 +30,7 @@ public class OperationDetails {
     private OffsetDateTime lastUpdatedOn;
     private OperationKind kind;
     private Map<String, String> tags;
+    private String serviceVersion;
 
    /**
      * Get the Date and time (UTC) when the analyze operation was submitted.
@@ -144,6 +152,23 @@ public class OperationDetails {
     private void setTags(Map<String, String> tags) {
         this.tags = tags;
     }
+    /**
+     * Get the Service version used to create this document classifier.
+     *
+     * @return the serviceVersion value.
+     */
+    public String getServiceVersion() {
+        return this.serviceVersion;
+    }
+
+    /**
+     * Set the API version used to create this document classifier.
+     *
+     * @param serviceVersion the service version value to set.
+     */
+    void setServiceVersion(String serviceVersion) {
+        this.serviceVersion = serviceVersion;
+    }
 
     static {
         OperationDetailsHelper.setAccessor(new OperationDetailsHelper.OperationDetailsAccessor() {
@@ -181,6 +206,11 @@ public class OperationDetails {
 
             public void setTags(OperationDetails operationDetails, Map<String, String> tags) {
                 operationDetails.setTags(tags);
+            }
+
+            @Override
+            public void setServiceVersion(OperationDetails operationDetails, String serviceVersion) {
+                operationDetails.setServiceVersion(serviceVersion);
             }
         });
     }

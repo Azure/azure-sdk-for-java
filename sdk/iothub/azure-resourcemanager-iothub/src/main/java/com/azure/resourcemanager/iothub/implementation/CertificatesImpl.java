@@ -31,15 +31,6 @@ public final class CertificatesImpl implements Certificates {
         this.serviceManager = serviceManager;
     }
 
-    public CertificateListDescription listByIotHub(String resourceGroupName, String resourceName) {
-        CertificateListDescriptionInner inner = this.serviceClient().listByIotHub(resourceGroupName, resourceName);
-        if (inner != null) {
-            return new CertificateListDescriptionImpl(inner, this.manager());
-        } else {
-            return null;
-        }
-    }
-
     public Response<CertificateListDescription> listByIotHubWithResponse(
         String resourceGroupName, String resourceName, Context context) {
         Response<CertificateListDescriptionInner> inner =
@@ -55,10 +46,10 @@ public final class CertificatesImpl implements Certificates {
         }
     }
 
-    public CertificateDescription get(String resourceGroupName, String resourceName, String certificateName) {
-        CertificateDescriptionInner inner = this.serviceClient().get(resourceGroupName, resourceName, certificateName);
+    public CertificateListDescription listByIotHub(String resourceGroupName, String resourceName) {
+        CertificateListDescriptionInner inner = this.serviceClient().listByIotHub(resourceGroupName, resourceName);
         if (inner != null) {
-            return new CertificateDescriptionImpl(inner, this.manager());
+            return new CertificateListDescriptionImpl(inner, this.manager());
         } else {
             return null;
         }
@@ -79,8 +70,13 @@ public final class CertificatesImpl implements Certificates {
         }
     }
 
-    public void delete(String resourceGroupName, String resourceName, String certificateName, String ifMatch) {
-        this.serviceClient().delete(resourceGroupName, resourceName, certificateName, ifMatch);
+    public CertificateDescription get(String resourceGroupName, String resourceName, String certificateName) {
+        CertificateDescriptionInner inner = this.serviceClient().get(resourceGroupName, resourceName, certificateName);
+        if (inner != null) {
+            return new CertificateDescriptionImpl(inner, this.manager());
+        } else {
+            return null;
+        }
     }
 
     public Response<Void> deleteWithResponse(
@@ -90,15 +86,8 @@ public final class CertificatesImpl implements Certificates {
             .deleteWithResponse(resourceGroupName, resourceName, certificateName, ifMatch, context);
     }
 
-    public CertificateWithNonceDescription generateVerificationCode(
-        String resourceGroupName, String resourceName, String certificateName, String ifMatch) {
-        CertificateWithNonceDescriptionInner inner =
-            this.serviceClient().generateVerificationCode(resourceGroupName, resourceName, certificateName, ifMatch);
-        if (inner != null) {
-            return new CertificateWithNonceDescriptionImpl(inner, this.manager());
-        } else {
-            return null;
-        }
+    public void delete(String resourceGroupName, String resourceName, String certificateName, String ifMatch) {
+        this.serviceClient().delete(resourceGroupName, resourceName, certificateName, ifMatch);
     }
 
     public Response<CertificateWithNonceDescription> generateVerificationCodeWithResponse(
@@ -119,18 +108,12 @@ public final class CertificatesImpl implements Certificates {
         }
     }
 
-    public CertificateDescription verify(
-        String resourceGroupName,
-        String resourceName,
-        String certificateName,
-        String ifMatch,
-        CertificateVerificationDescription certificateVerificationBody) {
-        CertificateDescriptionInner inner =
-            this
-                .serviceClient()
-                .verify(resourceGroupName, resourceName, certificateName, ifMatch, certificateVerificationBody);
+    public CertificateWithNonceDescription generateVerificationCode(
+        String resourceGroupName, String resourceName, String certificateName, String ifMatch) {
+        CertificateWithNonceDescriptionInner inner =
+            this.serviceClient().generateVerificationCode(resourceGroupName, resourceName, certificateName, ifMatch);
         if (inner != null) {
-            return new CertificateDescriptionImpl(inner, this.manager());
+            return new CertificateWithNonceDescriptionImpl(inner, this.manager());
         } else {
             return null;
         }
@@ -154,6 +137,23 @@ public final class CertificatesImpl implements Certificates {
                 inner.getStatusCode(),
                 inner.getHeaders(),
                 new CertificateDescriptionImpl(inner.getValue(), this.manager()));
+        } else {
+            return null;
+        }
+    }
+
+    public CertificateDescription verify(
+        String resourceGroupName,
+        String resourceName,
+        String certificateName,
+        String ifMatch,
+        CertificateVerificationDescription certificateVerificationBody) {
+        CertificateDescriptionInner inner =
+            this
+                .serviceClient()
+                .verify(resourceGroupName, resourceName, certificateName, ifMatch, certificateVerificationBody);
+        if (inner != null) {
+            return new CertificateDescriptionImpl(inner, this.manager());
         } else {
             return null;
         }

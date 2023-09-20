@@ -5,6 +5,7 @@ package com.azure.core.credential;
 
 import com.azure.core.util.logging.ClientLogger;
 import com.azure.core.util.logging.LogLevel;
+import com.azure.core.util.logging.LoggingEventBuilder;
 import reactor.core.publisher.Mono;
 import reactor.core.publisher.Sinks;
 
@@ -25,14 +26,6 @@ public class SimpleTokenCache {
     private static final Duration REFRESH_OFFSET = Duration.ofMinutes(5);
     // SimpleTokenCache is commonly used, use a static logger.
     private static final ClientLogger LOGGER = new ClientLogger(SimpleTokenCache.class);
-
-    private static final String NO_CACHE_ACQUIRED = "Acquired a new access token.";
-    private static final String NO_CACHE_FAILED = "Failed to acquire a new access token.";
-
-    private static final String NEGATIVE_TTE = " seconds after expiry. Retry may be attempted after "
-        + REFRESH_DELAY_STRING + " seconds.";
-    private static final String POSITIVE_TTE = " seconds before expiry. Retry may be attempted after "
-        + REFRESH_DELAY_STRING + " seconds. The token currently cached will be used.";
 
     private final AtomicReference<Sinks.One<AccessToken>> wip;
     private volatile AccessToken cache;
@@ -98,15 +91,15 @@ public class SimpleTokenCache {
                             AccessToken accessToken = signal.get();
                             Throwable error = signal.getThrowable();
                             if (signal.isOnNext() && accessToken != null) { // SUCCESS
-                                LOGGER.log(LogLevel.INFORMATIONAL,
-                                    () -> refreshLog(cache, now, "Acquired a new access token", true));
+                                buildTokenRefreshLog(LogLevel.INFORMATIONAL, cache, now)
+                                    .log("Acquired a new access token");
                                 cache = accessToken;
                                 sinksOne.tryEmitValue(accessToken);
                                 nextTokenRefresh = OffsetDateTime.now().plus(REFRESH_DELAY);
                                 return Mono.just(accessToken);
                             } else if (signal.isOnError() && error != null) { // ERROR
-                                LOGGER.log(LogLevel.ERROR,
-                                    () -> refreshLog(cache, now, "Failed to acquire a new access token", false));
+                                buildTokenRefreshLog(LogLevel.ERROR, cache, now)
+                                    .log("Failed to acquire a new access token");
                                 nextTokenRefresh = OffsetDateTime.now().plus(REFRESH_DELAY);
                                 return fallback.switchIfEmpty(Mono.error(() -> error));
                             } else { // NO REFRESH
@@ -140,13 +133,17 @@ public class SimpleTokenCache {
         return wip.get();
     }
 
-    private static String refreshLog(AccessToken cache, OffsetDateTime now, String log, boolean acquired) {
-        if (cache == null) {
-            return acquired ? NO_CACHE_ACQUIRED : NO_CACHE_FAILED;
+    private static LoggingEventBuilder buildTokenRefreshLog(LogLevel level, AccessToken cache, OffsetDateTime now) {
+        LoggingEventBuilder logBuilder = LOGGER.atLevel(level);
+        if (cache == null || !LOGGER.canLogAtLevel(level)) {
+            return logBuilder;
         }
 
         Duration tte = Duration.between(now, cache.getExpiresAt());
-
-        return log + " at " + tte.abs().getSeconds() + (tte.isNegative() ? NEGATIVE_TTE : POSITIVE_TTE);
+        return logBuilder
+                .addKeyValue("expiresAt", cache.getExpiresAt())
+                .addKeyValue("tteSeconds", String.valueOf(tte.abs().getSeconds()))
+                .addKeyValue("retryAfterSeconds", REFRESH_DELAY_STRING)
+                .addKeyValue("expired", tte.isNegative());
     }
 }

@@ -3,13 +3,24 @@
 
 package com.azure.monitor.query.implementation.logs.models;
 
+import com.azure.core.http.rest.Response;
+import com.azure.core.http.rest.SimpleResponse;
+import com.azure.core.models.ResponseError;
+import com.azure.core.util.BinaryData;
+import com.azure.core.util.Context;
+import com.azure.core.util.CoreUtils;
 import com.azure.core.util.logging.ClientLogger;
 import com.azure.core.util.serializer.TypeReference;
 import com.azure.monitor.query.LogsQueryAsyncClient;
 import com.azure.monitor.query.models.LogsBatchQuery;
+import com.azure.monitor.query.models.LogsBatchQueryResult;
+import com.azure.monitor.query.models.LogsBatchQueryResultCollection;
 import com.azure.monitor.query.models.LogsColumnType;
 import com.azure.monitor.query.models.LogsQueryOptions;
+import com.azure.monitor.query.models.LogsQueryResult;
 import com.azure.monitor.query.models.LogsTable;
+import com.azure.monitor.query.models.LogsTableCell;
+import com.azure.monitor.query.models.LogsTableColumn;
 import com.azure.monitor.query.models.LogsTableRow;
 import com.azure.monitor.query.models.QueryTimeInterval;
 
@@ -17,6 +28,7 @@ import java.lang.reflect.Field;
 import java.time.Duration;
 import java.util.ArrayList;
 import java.util.Arrays;
+import java.util.Comparator;
 import java.util.List;
 import java.util.Locale;
 import java.util.Map;
@@ -26,6 +38,9 @@ import java.util.stream.Collectors;
  * Helper to access package-private method of {@link LogsBatchQuery} from {@link LogsQueryAsyncClient}.
  */
 public final class LogsQueryHelper {
+    public static final String AZURE_RESPONSE_TIMEOUT = "azure-response-timeout";
+    public static final int CLIENT_TIMEOUT_BUFFER = 5;
+
     private static final ClientLogger LOGGER = new ClientLogger(LogsQueryHelper.class);
     private static BatchQueryAccessor accessor;
 
@@ -153,9 +168,9 @@ public final class LogsQueryHelper {
     }
 
     /**
-     * Returns this {@link com.azure.core.experimental.models.TimeInterval} in ISO 8601 string format.
+     * Returns this {@link QueryTimeInterval} in ISO 8601 string format.
      *
-     * @return ISO 8601 formatted string representation of this {@link com.azure.core.experimental.models.TimeInterval} instance.
+     * @return ISO 8601 formatted string representation of this {@link QueryTimeInterval} instance.
      */
     public static String toIso8601Format(QueryTimeInterval timeInterval) {
         if (timeInterval.getStartTime() != null && timeInterval.getEndTime() != null) {
@@ -171,5 +186,115 @@ public final class LogsQueryHelper {
         }
 
         return timeInterval.getDuration() == null ? null : timeInterval.getDuration().toString();
+    }
+
+
+    public static Context updateContext(Duration serverTimeout, Context context) {
+        if (serverTimeout != null) {
+            return context.addData(AZURE_RESPONSE_TIMEOUT, serverTimeout.plusSeconds(CLIENT_TIMEOUT_BUFFER));
+        }
+        return context;
+    }
+
+    public static List<String> getAllWorkspaces(LogsQueryOptions options) {
+        if (options != null) {
+            return options.getAdditionalWorkspaces();
+        }
+        return null;
+    }
+
+
+    public static Response<LogsQueryResult> convertToLogQueryResult(Response<QueryResults> response) {
+        QueryResults queryResults = response.getValue();
+        LogsQueryResult logsQueryResult = getLogsQueryResult(queryResults.getTables(), queryResults.getStatistics(),
+            queryResults.getRender(), queryResults.getError());
+        return new SimpleResponse<>(response.getRequest(), response.getStatusCode(),
+            response.getHeaders(), logsQueryResult);
+    }
+
+    public static LogsQueryResult getLogsQueryResult(List<Table> innerTables, Object innerStats,
+                                               Object innerVisualization, ErrorInfo innerError) {
+        List<LogsTable> tables = null;
+
+        if (innerTables != null) {
+            tables = new ArrayList<>();
+            for (Table table : innerTables) {
+                List<LogsTableCell> tableCells = new ArrayList<>();
+                List<LogsTableRow> tableRows = new ArrayList<>();
+                List<LogsTableColumn> tableColumns = new ArrayList<>();
+                LogsTable logsTable = new LogsTable(tableCells, tableRows, tableColumns);
+                tables.add(logsTable);
+                List<List<Object>> rows = table.getRows();
+
+                for (int i = 0; i < rows.size(); i++) {
+                    List<Object> row = rows.get(i);
+                    LogsTableRow tableRow = new LogsTableRow(i, new ArrayList<>());
+                    tableRows.add(tableRow);
+                    for (int j = 0; j < row.size(); j++) {
+                        LogsColumnType columnType = table.getColumns().get(j).getType() == null
+                            ? null
+                            : LogsColumnType.fromString(table.getColumns().get(j).getType().toString());
+                        LogsTableCell cell = new LogsTableCell(table.getColumns().get(j).getName(),
+                            columnType, j, i,
+                            row.get(j));
+                        tableCells.add(cell);
+                        tableRow.getRow().add(cell);
+                    }
+                }
+            }
+        }
+
+        BinaryData queryStatistics = null;
+
+        if (innerStats != null) {
+            queryStatistics = BinaryData.fromObject(innerStats);
+        }
+
+        BinaryData queryVisualization = null;
+        if (innerVisualization != null) {
+            queryVisualization = BinaryData.fromObject(innerVisualization);
+        }
+
+        LogsQueryResult logsQueryResult = new LogsQueryResult(tables, queryStatistics, queryVisualization,
+            mapLogsQueryError(innerError));
+        return logsQueryResult;
+    }
+
+    public static ResponseError mapLogsQueryError(ErrorInfo errors) {
+        if (errors != null) {
+            ErrorInfo innerError = errors.getInnererror();
+            ErrorInfo currentError = errors.getInnererror();
+            while (currentError != null) {
+                innerError = currentError.getInnererror();
+                currentError = currentError.getInnererror();
+            }
+            String code = errors.getCode();
+            if (errors.getCode() != null && innerError != null && errors.getCode().equals(innerError.getCode())) {
+                code = innerError.getCode();
+            }
+            return new ResponseError(code, errors.getMessage());
+        }
+
+        return null;
+    }
+
+    public static Response<LogsBatchQueryResultCollection> convertToLogQueryBatchResult(Response<BatchResponse> response) {
+        List<LogsBatchQueryResult> batchResults = new ArrayList<>();
+        LogsBatchQueryResultCollection logsBatchQueryResultCollection = new LogsBatchQueryResultCollection(batchResults);
+
+        BatchResponse batchResponse = response.getValue();
+
+        for (BatchQueryResponse singleQueryResponse : batchResponse.getResponses()) {
+
+            BatchQueryResults queryResults = singleQueryResponse.getBody();
+            LogsQueryResult logsQueryResult = getLogsQueryResult(queryResults.getTables(),
+                queryResults.getStatistics(), queryResults.getRender(), queryResults.getError());
+            LogsBatchQueryResult logsBatchQueryResult = new LogsBatchQueryResult(singleQueryResponse.getId(),
+                singleQueryResponse.getStatus(), logsQueryResult.getAllTables(), logsQueryResult.getStatistics(),
+                logsQueryResult.getVisualization(), logsQueryResult.getError());
+            batchResults.add(logsBatchQueryResult);
+        }
+        batchResults.sort(Comparator.comparingInt(o -> Integer.parseInt(o.getId())));
+        return new SimpleResponse<>(response.getRequest(), response.getStatusCode(), response.getHeaders(), logsBatchQueryResultCollection);
     }
 }

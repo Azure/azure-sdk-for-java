@@ -7,34 +7,33 @@ package com.azure.resourcemanager.appcontainers.generated;
 import com.azure.core.util.BinaryData;
 import com.azure.resourcemanager.appcontainers.models.TrafficWeight;
 import org.junit.jupiter.api.Assertions;
-import org.junit.jupiter.api.Test;
 
 public final class TrafficWeightTests {
-    @Test
-    public void testDeserialize() {
+    @org.junit.jupiter.api.Test
+    public void testDeserialize() throws Exception {
         TrafficWeight model =
             BinaryData
                 .fromString(
-                    "{\"revisionName\":\"nbmpowuwprzq\",\"weight\":706936275,\"latestRevision\":false,\"label\":\"upjm\"}")
+                    "{\"revisionName\":\"trmgucnapkte\",\"weight\":1950925712,\"latestRevision\":false,\"label\":\"tfdygpfqb\"}")
                 .toObject(TrafficWeight.class);
-        Assertions.assertEquals("nbmpowuwprzq", model.revisionName());
-        Assertions.assertEquals(706936275, model.weight());
+        Assertions.assertEquals("trmgucnapkte", model.revisionName());
+        Assertions.assertEquals(1950925712, model.weight());
         Assertions.assertEquals(false, model.latestRevision());
-        Assertions.assertEquals("upjm", model.label());
+        Assertions.assertEquals("tfdygpfqb", model.label());
     }
 
-    @Test
-    public void testSerialize() {
+    @org.junit.jupiter.api.Test
+    public void testSerialize() throws Exception {
         TrafficWeight model =
             new TrafficWeight()
-                .withRevisionName("nbmpowuwprzq")
-                .withWeight(706936275)
+                .withRevisionName("trmgucnapkte")
+                .withWeight(1950925712)
                 .withLatestRevision(false)
-                .withLabel("upjm");
+                .withLabel("tfdygpfqb");
         model = BinaryData.fromObject(model).toObject(TrafficWeight.class);
-        Assertions.assertEquals("nbmpowuwprzq", model.revisionName());
-        Assertions.assertEquals(706936275, model.weight());
+        Assertions.assertEquals("trmgucnapkte", model.revisionName());
+        Assertions.assertEquals(1950925712, model.weight());
         Assertions.assertEquals(false, model.latestRevision());
-        Assertions.assertEquals("upjm", model.label());
+        Assertions.assertEquals("tfdygpfqb", model.label());
     }
 }

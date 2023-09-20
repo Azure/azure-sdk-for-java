@@ -30,7 +30,7 @@ public final class IotSecuritySolutionAnalyticsGetWithResponseMockTests {
         ArgumentCaptor<HttpRequest> httpRequest = ArgumentCaptor.forClass(HttpRequest.class);
 
         String responseStr =
-            "{\"properties\":{\"metrics\":{\"high\":7285033545433450966,\"medium\":9172989756236841499,\"low\":2053584358116124699},\"unhealthyDeviceCount\":3302215545380544215,\"devicesMetrics\":[],\"topAlertedDevices\":[],\"mostPrevalentDeviceAlerts\":[],\"mostPrevalentDeviceRecommendations\":[]},\"id\":\"kcyqhyqqzzd\",\"name\":\"ykeys\",\"type\":\"ewfopazdazg\"}";
+            "{\"properties\":{\"metrics\":{\"high\":5542611774329052681,\"medium\":6661372100363486743,\"low\":3710990785713505162},\"unhealthyDeviceCount\":7761016592414796563,\"devicesMetrics\":[],\"topAlertedDevices\":[],\"mostPrevalentDeviceAlerts\":[],\"mostPrevalentDeviceRecommendations\":[]},\"id\":\"tjoxztfw\",\"name\":\"qchvczevjn\",\"type\":\"cta\"}";
 
         Mockito.when(httpResponse.getStatusCode()).thenReturn(200);
         Mockito.when(httpResponse.getHeaders()).thenReturn(new HttpHeaders());
@@ -61,7 +61,7 @@ public final class IotSecuritySolutionAnalyticsGetWithResponseMockTests {
         IoTSecuritySolutionAnalyticsModel response =
             manager
                 .iotSecuritySolutionAnalytics()
-                .getWithResponse("g", "jdxwnazkurrdre", com.azure.core.util.Context.NONE)
+                .getWithResponse("u", "t", com.azure.core.util.Context.NONE)
                 .getValue();
     }
 }

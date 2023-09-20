@@ -41,6 +41,10 @@ public class OperationEntityBaseContract {
     @JsonProperty(value = "policies")
     private String policies;
 
+    /** Creates an instance of OperationEntityBaseContract class. */
+    public OperationEntityBaseContract() {
+    }
+
     /**
      * Get the templateParameters property: Collection of URL template parameters.
      *

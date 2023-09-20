@@ -4,12 +4,10 @@
 
 package com.azure.resourcemanager.elastic.generated;
 
-import com.azure.core.util.Context;
-
 /** Samples for TagRules List. */
 public final class TagRulesListSamples {
     /*
-     * x-ms-original-file: specification/elastic/resource-manager/Microsoft.Elastic/preview/2022-07-01-preview/examples/TagRules_List.json
+     * x-ms-original-file: specification/elastic/resource-manager/Microsoft.Elastic/preview/2023-02-01-preview/examples/TagRules_List.json
      */
     /**
      * Sample code: TagRules_List.
@@ -17,6 +15,6 @@ public final class TagRulesListSamples {
      * @param manager Entry point to ElasticManager.
      */
     public static void tagRulesList(com.azure.resourcemanager.elastic.ElasticManager manager) {
-        manager.tagRules().list("myResourceGroup", "myMonitor", Context.NONE);
+        manager.tagRules().list("myResourceGroup", "myMonitor", com.azure.core.util.Context.NONE);
     }
 }

@@ -4,17 +4,19 @@
 package com.azure.communication.jobrouter;
 
 import com.azure.communication.jobrouter.models.ClassificationPolicy;
+import com.azure.communication.jobrouter.models.CreateClassificationPolicyOptions;
 import com.azure.communication.jobrouter.models.DistributionPolicy;
-import com.azure.communication.jobrouter.models.JobQueue;
 import com.azure.communication.jobrouter.models.LabelOperator;
-import com.azure.communication.jobrouter.models.QueueSelector;
+import com.azure.communication.jobrouter.models.LabelValue;
 import com.azure.communication.jobrouter.models.QueueSelectorAttachment;
-import com.azure.communication.jobrouter.models.StaticQueueSelector;
-import com.azure.communication.jobrouter.models.StaticRule;
-import com.azure.communication.jobrouter.models.StaticWorkerSelector;
-import com.azure.communication.jobrouter.models.WorkerSelector;
+import com.azure.communication.jobrouter.models.RouterQueue;
+import com.azure.communication.jobrouter.models.RouterQueueSelector;
+import com.azure.communication.jobrouter.models.RouterWorkerSelector;
+import com.azure.communication.jobrouter.models.StaticQueueSelectorAttachment;
+import com.azure.communication.jobrouter.models.StaticRouterRule;
+import com.azure.communication.jobrouter.models.StaticWorkerSelectorAttachment;
 import com.azure.communication.jobrouter.models.WorkerSelectorAttachment;
-import com.azure.communication.jobrouter.models.options.CreateClassificationPolicyOptions;
+import com.azure.core.http.HttpClient;
 import org.junit.jupiter.params.ParameterizedTest;
 import org.junit.jupiter.params.provider.MethodSource;
 
@@ -24,25 +26,18 @@ import java.util.List;
 import static org.junit.jupiter.api.Assertions.assertEquals;
 
 public class ClassificationPolicyLiveTests extends JobRouterTestBase {
-    private RouterAdministrationClient routerAdminClient;
-
-    @Override
-    protected void beforeTest() {
-        routerAdminClient = clientSetup(httpPipeline -> new RouterAdministrationClientBuilder()
-            .connectionString(getConnectionString())
-            .pipeline(httpPipeline)
-            .buildClient());
-    }
+    private JobRouterAdministrationClient routerAdminClient;
 
     @ParameterizedTest
     @MethodSource("com.azure.core.test.TestBase#getHttpClients")
-    public void createClassificationPolicy() {
+    public void createClassificationPolicy(HttpClient httpClient) {
         // Setup
+        routerAdminClient = getRouterAdministrationClient(httpClient);
         String distributionPolicyId = String.format("%s-DistributionPolicy", JAVA_LIVE_TESTS);
         DistributionPolicy distributionPolicy = createDistributionPolicy(routerAdminClient, distributionPolicyId);
 
         String queueId = String.format("%s-Queue", JAVA_LIVE_TESTS);
-        JobQueue jobQueue = createQueue(routerAdminClient, queueId, distributionPolicy.getId());
+        RouterQueue jobQueue = createQueue(routerAdminClient, queueId, distributionPolicy.getId());
 
         String classificationPolicyId = String.format("%s-ClassificationPolicy", JAVA_LIVE_TESTS);
         String classificationPolicyName = String.format("%s-Name", classificationPolicyId);
@@ -50,11 +45,8 @@ public class ClassificationPolicyLiveTests extends JobRouterTestBase {
         /**
          * Create queue selectors.
          */
-        StaticQueueSelector staticQueueSelector = new StaticQueueSelector()
-            .setLabelSelector(new QueueSelector()
-                .setKey("queueId")
-                .setLabelOperator(LabelOperator.EQUAL)
-                .setValue(queueId));
+        StaticQueueSelectorAttachment staticQueueSelector = new StaticQueueSelectorAttachment(
+            new RouterQueueSelector("queueId", LabelOperator.EQUAL, new LabelValue(queueId)));
 
         List<QueueSelectorAttachment> queueSelectors = new ArrayList<QueueSelectorAttachment>() {
             {
@@ -66,11 +58,8 @@ public class ClassificationPolicyLiveTests extends JobRouterTestBase {
         /**
          * Create worker selectors.
          */
-        StaticWorkerSelector staticWorkerSelector = new StaticWorkerSelector()
-            .setLabelSelector(new WorkerSelector()
-                .setKey("key")
-                .setLabelOperator(LabelOperator.EQUAL)
-                .setValue("value"));
+        StaticWorkerSelectorAttachment staticWorkerSelector = new StaticWorkerSelectorAttachment(
+            new RouterWorkerSelector("key", LabelOperator.EQUAL, new LabelValue("value")));
 
         List<WorkerSelectorAttachment> workerSelectors = new ArrayList<WorkerSelectorAttachment>() {
             {
@@ -82,13 +71,12 @@ public class ClassificationPolicyLiveTests extends JobRouterTestBase {
          * Create classification policy
          */
         CreateClassificationPolicyOptions createClassificationPolicyOptions = new CreateClassificationPolicyOptions(
-            classificationPolicyId,
-            classificationPolicyName,
-            new StaticRule().setValue(1),
-            workerSelectors,
-            queueSelectors,
-            jobQueue.getId()
-        );
+            classificationPolicyId)
+            .setName(classificationPolicyName)
+            .setPrioritizationRule(new StaticRouterRule(new LabelValue(1)))
+            .setWorkerSelectors(workerSelectors)
+            .setQueueSelectors(queueSelectors)
+            .setFallbackQueueId(jobQueue.getId());
 
         // Action
         ClassificationPolicy result = routerAdminClient.createClassificationPolicy(createClassificationPolicyOptions);

@@ -45,6 +45,10 @@ public final class RouteProperties {
     @JsonProperty(value = "isEnabled", required = true)
     private boolean isEnabled;
 
+    /** Creates an instance of RouteProperties class. */
+    public RouteProperties() {
+    }
+
     /**
      * Get the name property: The name of the route. The name can only include alphanumeric characters, periods,
      * underscores, hyphens, has a maximum length of 64 characters, and must be unique.

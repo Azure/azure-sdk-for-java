@@ -13,10 +13,18 @@ public final class FaultInjectionServerErrorResult implements IFaultInjectionRes
     private final Integer times;
     private final Duration delay;
 
-    FaultInjectionServerErrorResult(FaultInjectionServerErrorType serverErrorTypes, Integer times, Duration delay) {
+    private final Boolean suppressServiceRequests;
+
+    FaultInjectionServerErrorResult(
+        FaultInjectionServerErrorType serverErrorTypes,
+        Integer times,
+        Duration delay,
+        Boolean suppressServiceRequests) {
+
         this.serverErrorType = serverErrorTypes;
         this.times = times;
         this.delay = delay;
+        this.suppressServiceRequests = suppressServiceRequests;
     }
 
     /***
@@ -45,6 +53,16 @@ public final class FaultInjectionServerErrorResult implements IFaultInjectionRes
      */
     public Duration getDelay() {
         return delay;
+    }
+
+    /***
+     * Get a flag indicating whether service requests should be suppressed. If not specified (null) the default
+     * behavior is applied - only sending the request to the service when the delay is lower
+     * than the network request timeout.
+     * @return a flag indicating whether service requests should be suppressed.
+     */
+    public Boolean getSuppressServiceRequests() {
+        return this.suppressServiceRequests;
     }
 
     @Override

@@ -4,12 +4,10 @@
 
 package com.azure.resourcemanager.devcenter.generated;
 
-import com.azure.core.util.Context;
-
 /** Samples for EnvironmentTypes ListByDevCenter. */
 public final class EnvironmentTypesListByDevCenterSamples {
     /*
-     * x-ms-original-file: specification/devcenter/resource-manager/Microsoft.DevCenter/preview/2022-11-11-preview/examples/EnvironmentTypes_List.json
+     * x-ms-original-file: specification/devcenter/resource-manager/Microsoft.DevCenter/stable/2023-04-01/examples/EnvironmentTypes_List.json
      */
     /**
      * Sample code: EnvironmentTypes_ListByDevCenter.
@@ -17,6 +15,6 @@ public final class EnvironmentTypesListByDevCenterSamples {
      * @param manager Entry point to DevCenterManager.
      */
     public static void environmentTypesListByDevCenter(com.azure.resourcemanager.devcenter.DevCenterManager manager) {
-        manager.environmentTypes().listByDevCenter("rg1", "Contoso", null, Context.NONE);
+        manager.environmentTypes().listByDevCenter("rg1", "Contoso", null, com.azure.core.util.Context.NONE);
     }
 }

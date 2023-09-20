@@ -24,6 +24,10 @@ public final class DeletedConfigurationStoreListResult {
     @JsonProperty(value = "nextLink")
     private String nextLink;
 
+    /** Creates an instance of DeletedConfigurationStoreListResult class. */
+    public DeletedConfigurationStoreListResult() {
+    }
+
     /**
      * Get the value property: The list of deleted configuration store.
      *

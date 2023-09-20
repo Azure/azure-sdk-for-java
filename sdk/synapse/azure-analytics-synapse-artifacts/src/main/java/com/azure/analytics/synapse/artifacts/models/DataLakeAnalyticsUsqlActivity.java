@@ -249,6 +249,20 @@ public class DataLakeAnalyticsUsqlActivity extends ExecutionActivity {
 
     /** {@inheritDoc} */
     @Override
+    public DataLakeAnalyticsUsqlActivity setState(ActivityState state) {
+        super.setState(state);
+        return this;
+    }
+
+    /** {@inheritDoc} */
+    @Override
+    public DataLakeAnalyticsUsqlActivity setOnInactiveMarkAs(ActivityOnInactiveMarkAs onInactiveMarkAs) {
+        super.setOnInactiveMarkAs(onInactiveMarkAs);
+        return this;
+    }
+
+    /** {@inheritDoc} */
+    @Override
     public DataLakeAnalyticsUsqlActivity setDependsOn(List<ActivityDependency> dependsOn) {
         super.setDependsOn(dependsOn);
         return this;

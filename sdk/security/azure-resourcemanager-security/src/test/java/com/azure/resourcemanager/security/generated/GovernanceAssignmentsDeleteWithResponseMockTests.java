@@ -56,8 +56,6 @@ public final class GovernanceAssignmentsDeleteWithResponseMockTests {
                     tokenRequestContext -> Mono.just(new AccessToken("this_is_a_token", OffsetDateTime.MAX)),
                     new AzureProfile("", "", AzureEnvironment.AZURE));
 
-        manager
-            .governanceAssignments()
-            .deleteWithResponse("hsxrznmgsdaluyc", "hefr", "hs", com.azure.core.util.Context.NONE);
+        manager.governanceAssignments().deleteWithResponse("iqegm", "db", "ohcwhpyv", com.azure.core.util.Context.NONE);
     }
 }

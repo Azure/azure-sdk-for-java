@@ -56,6 +56,15 @@ public final class StoragePermissions extends ExpandableStringEnum<StoragePermis
     public static final StoragePermissions DELETESAS = fromString("deletesas");
 
     /**
+     * Creates a new instance of StoragePermissions value.
+     *
+     * @deprecated Use the {@link #fromString(String)} factory method.
+     */
+    @Deprecated
+    public StoragePermissions() {
+    }
+
+    /**
      * Creates or finds a StoragePermissions from its string representation.
      *
      * @param name a name to look for.

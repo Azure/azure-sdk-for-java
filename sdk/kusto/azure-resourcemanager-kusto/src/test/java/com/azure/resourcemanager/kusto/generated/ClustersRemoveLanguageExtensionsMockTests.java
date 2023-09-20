@@ -64,24 +64,18 @@ public final class ClustersRemoveLanguageExtensionsMockTests {
         manager
             .clusters()
             .removeLanguageExtensions(
-                "qolj",
-                "kcgxxlxsffgcvi",
+                "lhjlmuoyxprimr",
+                "opteecj",
                 new LanguageExtensionsList()
                     .withValue(
                         Arrays
                             .asList(
                                 new LanguageExtensionInner()
-                                    .withLanguageExtensionName(LanguageExtensionName.R)
+                                    .withLanguageExtensionName(LanguageExtensionName.PYTHON)
                                     .withLanguageExtensionImageName(LanguageExtensionImageName.R),
                                 new LanguageExtensionInner()
-                                    .withLanguageExtensionName(LanguageExtensionName.R)
-                                    .withLanguageExtensionImageName(LanguageExtensionImageName.R),
-                                new LanguageExtensionInner()
-                                    .withLanguageExtensionName(LanguageExtensionName.R)
-                                    .withLanguageExtensionImageName(LanguageExtensionImageName.PYTHON3_6_5),
-                                new LanguageExtensionInner()
-                                    .withLanguageExtensionName(LanguageExtensionName.R)
-                                    .withLanguageExtensionImageName(LanguageExtensionImageName.R))),
+                                    .withLanguageExtensionName(LanguageExtensionName.PYTHON)
+                                    .withLanguageExtensionImageName(LanguageExtensionImageName.PYTHON3_6_5))),
                 com.azure.core.util.Context.NONE);
     }
 }

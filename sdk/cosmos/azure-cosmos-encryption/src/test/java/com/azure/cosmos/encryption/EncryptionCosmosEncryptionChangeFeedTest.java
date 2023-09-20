@@ -264,7 +264,7 @@ public class EncryptionCosmosEncryptionChangeFeedTest extends TestSuiteBase {
     }
 
     private CosmosEncryptionAsyncContainer createFeedCollection() {
-        ClientEncryptionPolicy clientEncryptionPolicy = new ClientEncryptionPolicy(getPaths());
+        ClientEncryptionPolicy clientEncryptionPolicy = new ClientEncryptionPolicy(getPaths(2), 2);
         String containerId = UUID.randomUUID().toString();
         CosmosContainerProperties properties = new CosmosContainerProperties(containerId, "/mypk");
         properties.setClientEncryptionPolicy(clientEncryptionPolicy);

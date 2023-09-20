@@ -7,25 +7,30 @@ package com.azure.resourcemanager.devcenter.generated;
 import com.azure.core.util.BinaryData;
 import com.azure.resourcemanager.devcenter.fluent.models.ProjectProperties;
 import org.junit.jupiter.api.Assertions;
-import org.junit.jupiter.api.Test;
 
 public final class ProjectPropertiesTests {
-    @Test
-    public void testDeserialize() {
+    @org.junit.jupiter.api.Test
+    public void testDeserialize() throws Exception {
         ProjectProperties model =
             BinaryData
                 .fromString(
-                    "{\"provisioningState\":\"Deleting\",\"devCenterUri\":\"bquxigjy\",\"devCenterId\":\"zjaoyfhrtxil\",\"description\":\"rkujy\"}")
+                    "{\"provisioningState\":\"Updated\",\"devCenterUri\":\"ol\",\"devCenterId\":\"fpsalgbqu\",\"description\":\"gjyjgzjaoyfhrtxi\",\"maxDevBoxesPerUser\":1620894991}")
                 .toObject(ProjectProperties.class);
-        Assertions.assertEquals("zjaoyfhrtxil", model.devCenterId());
-        Assertions.assertEquals("rkujy", model.description());
+        Assertions.assertEquals("fpsalgbqu", model.devCenterId());
+        Assertions.assertEquals("gjyjgzjaoyfhrtxi", model.description());
+        Assertions.assertEquals(1620894991, model.maxDevBoxesPerUser());
     }
 
-    @Test
-    public void testSerialize() {
-        ProjectProperties model = new ProjectProperties().withDevCenterId("zjaoyfhrtxil").withDescription("rkujy");
+    @org.junit.jupiter.api.Test
+    public void testSerialize() throws Exception {
+        ProjectProperties model =
+            new ProjectProperties()
+                .withDevCenterId("fpsalgbqu")
+                .withDescription("gjyjgzjaoyfhrtxi")
+                .withMaxDevBoxesPerUser(1620894991);
         model = BinaryData.fromObject(model).toObject(ProjectProperties.class);
-        Assertions.assertEquals("zjaoyfhrtxil", model.devCenterId());
-        Assertions.assertEquals("rkujy", model.description());
+        Assertions.assertEquals("fpsalgbqu", model.devCenterId());
+        Assertions.assertEquals("gjyjgzjaoyfhrtxi", model.description());
+        Assertions.assertEquals(1620894991, model.maxDevBoxesPerUser());
     }
 }

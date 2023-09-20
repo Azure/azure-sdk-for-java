@@ -68,7 +68,19 @@ public final class EventSubscriptionsClientImpl implements EventSubscriptionsCli
      */
     @Host("{$host}")
     @ServiceInterface(name = "EventGridManagementC")
-    private interface EventSubscriptionsService {
+    public interface EventSubscriptionsService {
+        @Headers({"Content-Type: application/json"})
+        @Post("/{scope}/providers/Microsoft.EventGrid/eventSubscriptions/{eventSubscriptionName}/getDeliveryAttributes")
+        @ExpectedResponses({200})
+        @UnexpectedResponseExceptionType(ManagementException.class)
+        Mono<Response<DeliveryAttributeListResultInner>> getDeliveryAttributes(
+            @HostParam("$host") String endpoint,
+            @PathParam(value = "scope", encoded = true) String scope,
+            @PathParam("eventSubscriptionName") String eventSubscriptionName,
+            @QueryParam("api-version") String apiVersion,
+            @HeaderParam("Accept") String accept,
+            Context context);
+
         @Headers({"Content-Type: application/json"})
         @Get("/{scope}/providers/Microsoft.EventGrid/eventSubscriptions/{eventSubscriptionName}")
         @ExpectedResponses({200})
@@ -145,8 +157,7 @@ public final class EventSubscriptionsClientImpl implements EventSubscriptionsCli
 
         @Headers({"Content-Type: application/json"})
         @Get(
-            "/subscriptions/{subscriptionId}/providers/Microsoft.EventGrid/topicTypes/{topicTypeName}"
-                + "/eventSubscriptions")
+            "/subscriptions/{subscriptionId}/providers/Microsoft.EventGrid/topicTypes/{topicTypeName}/eventSubscriptions")
         @ExpectedResponses({200})
         @UnexpectedResponseExceptionType(ManagementException.class)
         Mono<Response<EventSubscriptionsListResult>> listGlobalBySubscriptionForTopicType(
@@ -161,8 +172,7 @@ public final class EventSubscriptionsClientImpl implements EventSubscriptionsCli
 
         @Headers({"Content-Type: application/json"})
         @Get(
-            "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.EventGrid"
-                + "/eventSubscriptions")
+            "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.EventGrid/eventSubscriptions")
         @ExpectedResponses({200})
         @UnexpectedResponseExceptionType(ManagementException.class)
         Mono<Response<EventSubscriptionsListResult>> listByResourceGroup(
@@ -177,8 +187,7 @@ public final class EventSubscriptionsClientImpl implements EventSubscriptionsCli
 
         @Headers({"Content-Type: application/json"})
         @Get(
-            "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.EventGrid"
-                + "/topicTypes/{topicTypeName}/eventSubscriptions")
+            "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.EventGrid/topicTypes/{topicTypeName}/eventSubscriptions")
         @ExpectedResponses({200})
         @UnexpectedResponseExceptionType(ManagementException.class)
         Mono<Response<EventSubscriptionsListResult>> listGlobalByResourceGroupForTopicType(
@@ -208,8 +217,7 @@ public final class EventSubscriptionsClientImpl implements EventSubscriptionsCli
 
         @Headers({"Content-Type: application/json"})
         @Get(
-            "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.EventGrid/locations"
-                + "/{location}/eventSubscriptions")
+            "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.EventGrid/locations/{location}/eventSubscriptions")
         @ExpectedResponses({200})
         @UnexpectedResponseExceptionType(ManagementException.class)
         Mono<Response<EventSubscriptionsListResult>> listRegionalByResourceGroup(
@@ -225,8 +233,7 @@ public final class EventSubscriptionsClientImpl implements EventSubscriptionsCli
 
         @Headers({"Content-Type: application/json"})
         @Get(
-            "/subscriptions/{subscriptionId}/providers/Microsoft.EventGrid/locations/{location}/topicTypes"
-                + "/{topicTypeName}/eventSubscriptions")
+            "/subscriptions/{subscriptionId}/providers/Microsoft.EventGrid/locations/{location}/topicTypes/{topicTypeName}/eventSubscriptions")
         @ExpectedResponses({200})
         @UnexpectedResponseExceptionType(ManagementException.class)
         Mono<Response<EventSubscriptionsListResult>> listRegionalBySubscriptionForTopicType(
@@ -242,8 +249,7 @@ public final class EventSubscriptionsClientImpl implements EventSubscriptionsCli
 
         @Headers({"Content-Type: application/json"})
         @Get(
-            "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.EventGrid/locations"
-                + "/{location}/topicTypes/{topicTypeName}/eventSubscriptions")
+            "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.EventGrid/locations/{location}/topicTypes/{topicTypeName}/eventSubscriptions")
         @ExpectedResponses({200})
         @UnexpectedResponseExceptionType(ManagementException.class)
         Mono<Response<EventSubscriptionsListResult>> listRegionalByResourceGroupForTopicType(
@@ -260,8 +266,7 @@ public final class EventSubscriptionsClientImpl implements EventSubscriptionsCli
 
         @Headers({"Content-Type: application/json"})
         @Get(
-            "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/{providerNamespace}"
-                + "/{resourceTypeName}/{resourceName}/providers/Microsoft.EventGrid/eventSubscriptions")
+            "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/{providerNamespace}/{resourceTypeName}/{resourceName}/providers/Microsoft.EventGrid/eventSubscriptions")
         @ExpectedResponses({200})
         @UnexpectedResponseExceptionType(ManagementException.class)
         Mono<Response<EventSubscriptionsListResult>> listByResource(
@@ -279,8 +284,7 @@ public final class EventSubscriptionsClientImpl implements EventSubscriptionsCli
 
         @Headers({"Content-Type: application/json"})
         @Get(
-            "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.EventGrid/domains"
-                + "/{domainName}/topics/{topicName}/providers/Microsoft.EventGrid/eventSubscriptions")
+            "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.EventGrid/domains/{domainName}/topics/{topicName}/providers/Microsoft.EventGrid/eventSubscriptions")
         @ExpectedResponses({200})
         @UnexpectedResponseExceptionType(ManagementException.class)
         Mono<Response<EventSubscriptionsListResult>> listByDomainTopic(
@@ -292,18 +296,6 @@ public final class EventSubscriptionsClientImpl implements EventSubscriptionsCli
             @QueryParam("api-version") String apiVersion,
             @QueryParam("$filter") String filter,
             @QueryParam("$top") Integer top,
-            @HeaderParam("Accept") String accept,
-            Context context);
-
-        @Headers({"Content-Type: application/json"})
-        @Post("/{scope}/providers/Microsoft.EventGrid/eventSubscriptions/{eventSubscriptionName}/getDeliveryAttributes")
-        @ExpectedResponses({200})
-        @UnexpectedResponseExceptionType(ManagementException.class)
-        Mono<Response<DeliveryAttributeListResultInner>> getDeliveryAttributes(
-            @HostParam("$host") String endpoint,
-            @PathParam(value = "scope", encoded = true) String scope,
-            @PathParam("eventSubscriptionName") String eventSubscriptionName,
-            @QueryParam("api-version") String apiVersion,
             @HeaderParam("Accept") String accept,
             Context context);
 
@@ -409,7 +401,180 @@ public final class EventSubscriptionsClientImpl implements EventSubscriptionsCli
     }
 
     /**
-     * Get properties of an event subscription.
+     * Get delivery attributes for an event subscription.
+     *
+     * <p>Get all delivery attributes for an event subscription.
+     *
+     * @param scope The scope of the event subscription. The scope can be a subscription, or a resource group, or a top
+     *     level resource belonging to a resource provider namespace, or an EventGrid topic. For example, use
+     *     '/subscriptions/{subscriptionId}/' for a subscription,
+     *     '/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}' for a resource group, and
+     *     '/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/{resourceProviderNamespace}/{resourceType}/{resourceName}'
+     *     for a resource, and
+     *     '/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.EventGrid/topics/{topicName}'
+     *     for an EventGrid topic.
+     * @param eventSubscriptionName Name of the event subscription.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws ManagementException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return all delivery attributes for an event subscription along with {@link Response} on successful completion of
+     *     {@link Mono}.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    private Mono<Response<DeliveryAttributeListResultInner>> getDeliveryAttributesWithResponseAsync(
+        String scope, String eventSubscriptionName) {
+        if (this.client.getEndpoint() == null) {
+            return Mono
+                .error(
+                    new IllegalArgumentException(
+                        "Parameter this.client.getEndpoint() is required and cannot be null."));
+        }
+        if (scope == null) {
+            return Mono.error(new IllegalArgumentException("Parameter scope is required and cannot be null."));
+        }
+        if (eventSubscriptionName == null) {
+            return Mono
+                .error(new IllegalArgumentException("Parameter eventSubscriptionName is required and cannot be null."));
+        }
+        final String accept = "application/json";
+        return FluxUtil
+            .withContext(
+                context ->
+                    service
+                        .getDeliveryAttributes(
+                            this.client.getEndpoint(),
+                            scope,
+                            eventSubscriptionName,
+                            this.client.getApiVersion(),
+                            accept,
+                            context))
+            .contextWrite(context -> context.putAll(FluxUtil.toReactorContext(this.client.getContext()).readOnly()));
+    }
+
+    /**
+     * Get delivery attributes for an event subscription.
+     *
+     * <p>Get all delivery attributes for an event subscription.
+     *
+     * @param scope The scope of the event subscription. The scope can be a subscription, or a resource group, or a top
+     *     level resource belonging to a resource provider namespace, or an EventGrid topic. For example, use
+     *     '/subscriptions/{subscriptionId}/' for a subscription,
+     *     '/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}' for a resource group, and
+     *     '/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/{resourceProviderNamespace}/{resourceType}/{resourceName}'
+     *     for a resource, and
+     *     '/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.EventGrid/topics/{topicName}'
+     *     for an EventGrid topic.
+     * @param eventSubscriptionName Name of the event subscription.
+     * @param context The context to associate with this operation.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws ManagementException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return all delivery attributes for an event subscription along with {@link Response} on successful completion of
+     *     {@link Mono}.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    private Mono<Response<DeliveryAttributeListResultInner>> getDeliveryAttributesWithResponseAsync(
+        String scope, String eventSubscriptionName, Context context) {
+        if (this.client.getEndpoint() == null) {
+            return Mono
+                .error(
+                    new IllegalArgumentException(
+                        "Parameter this.client.getEndpoint() is required and cannot be null."));
+        }
+        if (scope == null) {
+            return Mono.error(new IllegalArgumentException("Parameter scope is required and cannot be null."));
+        }
+        if (eventSubscriptionName == null) {
+            return Mono
+                .error(new IllegalArgumentException("Parameter eventSubscriptionName is required and cannot be null."));
+        }
+        final String accept = "application/json";
+        context = this.client.mergeContext(context);
+        return service
+            .getDeliveryAttributes(
+                this.client.getEndpoint(), scope, eventSubscriptionName, this.client.getApiVersion(), accept, context);
+    }
+
+    /**
+     * Get delivery attributes for an event subscription.
+     *
+     * <p>Get all delivery attributes for an event subscription.
+     *
+     * @param scope The scope of the event subscription. The scope can be a subscription, or a resource group, or a top
+     *     level resource belonging to a resource provider namespace, or an EventGrid topic. For example, use
+     *     '/subscriptions/{subscriptionId}/' for a subscription,
+     *     '/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}' for a resource group, and
+     *     '/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/{resourceProviderNamespace}/{resourceType}/{resourceName}'
+     *     for a resource, and
+     *     '/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.EventGrid/topics/{topicName}'
+     *     for an EventGrid topic.
+     * @param eventSubscriptionName Name of the event subscription.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws ManagementException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return all delivery attributes for an event subscription on successful completion of {@link Mono}.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    private Mono<DeliveryAttributeListResultInner> getDeliveryAttributesAsync(
+        String scope, String eventSubscriptionName) {
+        return getDeliveryAttributesWithResponseAsync(scope, eventSubscriptionName)
+            .flatMap(res -> Mono.justOrEmpty(res.getValue()));
+    }
+
+    /**
+     * Get delivery attributes for an event subscription.
+     *
+     * <p>Get all delivery attributes for an event subscription.
+     *
+     * @param scope The scope of the event subscription. The scope can be a subscription, or a resource group, or a top
+     *     level resource belonging to a resource provider namespace, or an EventGrid topic. For example, use
+     *     '/subscriptions/{subscriptionId}/' for a subscription,
+     *     '/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}' for a resource group, and
+     *     '/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/{resourceProviderNamespace}/{resourceType}/{resourceName}'
+     *     for a resource, and
+     *     '/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.EventGrid/topics/{topicName}'
+     *     for an EventGrid topic.
+     * @param eventSubscriptionName Name of the event subscription.
+     * @param context The context to associate with this operation.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws ManagementException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return all delivery attributes for an event subscription along with {@link Response}.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    public Response<DeliveryAttributeListResultInner> getDeliveryAttributesWithResponse(
+        String scope, String eventSubscriptionName, Context context) {
+        return getDeliveryAttributesWithResponseAsync(scope, eventSubscriptionName, context).block();
+    }
+
+    /**
+     * Get delivery attributes for an event subscription.
+     *
+     * <p>Get all delivery attributes for an event subscription.
+     *
+     * @param scope The scope of the event subscription. The scope can be a subscription, or a resource group, or a top
+     *     level resource belonging to a resource provider namespace, or an EventGrid topic. For example, use
+     *     '/subscriptions/{subscriptionId}/' for a subscription,
+     *     '/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}' for a resource group, and
+     *     '/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/{resourceProviderNamespace}/{resourceType}/{resourceName}'
+     *     for a resource, and
+     *     '/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.EventGrid/topics/{topicName}'
+     *     for an EventGrid topic.
+     * @param eventSubscriptionName Name of the event subscription.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws ManagementException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return all delivery attributes for an event subscription.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    public DeliveryAttributeListResultInner getDeliveryAttributes(String scope, String eventSubscriptionName) {
+        return getDeliveryAttributesWithResponse(scope, eventSubscriptionName, Context.NONE).getValue();
+    }
+
+    /**
+     * Get an event subscription.
+     *
+     * <p>Get properties of an event subscription.
      *
      * @param scope The scope of the event subscription. The scope can be a subscription, or a resource group, or a top
      *     level resource belonging to a resource provider namespace, or an EventGrid topic. For example, use
@@ -456,7 +621,9 @@ public final class EventSubscriptionsClientImpl implements EventSubscriptionsCli
     }
 
     /**
-     * Get properties of an event subscription.
+     * Get an event subscription.
+     *
+     * <p>Get properties of an event subscription.
      *
      * @param scope The scope of the event subscription. The scope can be a subscription, or a resource group, or a top
      *     level resource belonging to a resource provider namespace, or an EventGrid topic. For example, use
@@ -496,7 +663,9 @@ public final class EventSubscriptionsClientImpl implements EventSubscriptionsCli
     }
 
     /**
-     * Get properties of an event subscription.
+     * Get an event subscription.
+     *
+     * <p>Get properties of an event subscription.
      *
      * @param scope The scope of the event subscription. The scope can be a subscription, or a resource group, or a top
      *     level resource belonging to a resource provider namespace, or an EventGrid topic. For example, use
@@ -518,29 +687,9 @@ public final class EventSubscriptionsClientImpl implements EventSubscriptionsCli
     }
 
     /**
-     * Get properties of an event subscription.
+     * Get an event subscription.
      *
-     * @param scope The scope of the event subscription. The scope can be a subscription, or a resource group, or a top
-     *     level resource belonging to a resource provider namespace, or an EventGrid topic. For example, use
-     *     '/subscriptions/{subscriptionId}/' for a subscription,
-     *     '/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}' for a resource group, and
-     *     '/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/{resourceProviderNamespace}/{resourceType}/{resourceName}'
-     *     for a resource, and
-     *     '/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.EventGrid/topics/{topicName}'
-     *     for an EventGrid topic.
-     * @param eventSubscriptionName Name of the event subscription.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return properties of an event subscription.
-     */
-    @ServiceMethod(returns = ReturnType.SINGLE)
-    public EventSubscriptionInner get(String scope, String eventSubscriptionName) {
-        return getAsync(scope, eventSubscriptionName).block();
-    }
-
-    /**
-     * Get properties of an event subscription.
+     * <p>Get properties of an event subscription.
      *
      * @param scope The scope of the event subscription. The scope can be a subscription, or a resource group, or a top
      *     level resource belonging to a resource provider namespace, or an EventGrid topic. For example, use
@@ -564,8 +713,34 @@ public final class EventSubscriptionsClientImpl implements EventSubscriptionsCli
     }
 
     /**
-     * Asynchronously creates a new event subscription or updates an existing event subscription based on the specified
-     * scope.
+     * Get an event subscription.
+     *
+     * <p>Get properties of an event subscription.
+     *
+     * @param scope The scope of the event subscription. The scope can be a subscription, or a resource group, or a top
+     *     level resource belonging to a resource provider namespace, or an EventGrid topic. For example, use
+     *     '/subscriptions/{subscriptionId}/' for a subscription,
+     *     '/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}' for a resource group, and
+     *     '/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/{resourceProviderNamespace}/{resourceType}/{resourceName}'
+     *     for a resource, and
+     *     '/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.EventGrid/topics/{topicName}'
+     *     for an EventGrid topic.
+     * @param eventSubscriptionName Name of the event subscription.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws ManagementException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return properties of an event subscription.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    public EventSubscriptionInner get(String scope, String eventSubscriptionName) {
+        return getWithResponse(scope, eventSubscriptionName, Context.NONE).getValue();
+    }
+
+    /**
+     * Create or update an event subscription.
+     *
+     * <p>Asynchronously creates a new event subscription or updates an existing event subscription based on the
+     * specified scope.
      *
      * @param scope The identifier of the resource to which the event subscription needs to be created or updated. The
      *     scope can be a subscription, or a resource group, or a top level resource belonging to a resource provider
@@ -622,8 +797,10 @@ public final class EventSubscriptionsClientImpl implements EventSubscriptionsCli
     }
 
     /**
-     * Asynchronously creates a new event subscription or updates an existing event subscription based on the specified
-     * scope.
+     * Create or update an event subscription.
+     *
+     * <p>Asynchronously creates a new event subscription or updates an existing event subscription based on the
+     * specified scope.
      *
      * @param scope The identifier of the resource to which the event subscription needs to be created or updated. The
      *     scope can be a subscription, or a resource group, or a top level resource belonging to a resource provider
@@ -678,8 +855,10 @@ public final class EventSubscriptionsClientImpl implements EventSubscriptionsCli
     }
 
     /**
-     * Asynchronously creates a new event subscription or updates an existing event subscription based on the specified
-     * scope.
+     * Create or update an event subscription.
+     *
+     * <p>Asynchronously creates a new event subscription or updates an existing event subscription based on the
+     * specified scope.
      *
      * @param scope The identifier of the resource to which the event subscription needs to be created or updated. The
      *     scope can be a subscription, or a resource group, or a top level resource belonging to a resource provider
@@ -713,8 +892,10 @@ public final class EventSubscriptionsClientImpl implements EventSubscriptionsCli
     }
 
     /**
-     * Asynchronously creates a new event subscription or updates an existing event subscription based on the specified
-     * scope.
+     * Create or update an event subscription.
+     *
+     * <p>Asynchronously creates a new event subscription or updates an existing event subscription based on the
+     * specified scope.
      *
      * @param scope The identifier of the resource to which the event subscription needs to be created or updated. The
      *     scope can be a subscription, or a resource group, or a top level resource belonging to a resource provider
@@ -750,8 +931,10 @@ public final class EventSubscriptionsClientImpl implements EventSubscriptionsCli
     }
 
     /**
-     * Asynchronously creates a new event subscription or updates an existing event subscription based on the specified
-     * scope.
+     * Create or update an event subscription.
+     *
+     * <p>Asynchronously creates a new event subscription or updates an existing event subscription based on the
+     * specified scope.
      *
      * @param scope The identifier of the resource to which the event subscription needs to be created or updated. The
      *     scope can be a subscription, or a resource group, or a top level resource belonging to a resource provider
@@ -772,12 +955,14 @@ public final class EventSubscriptionsClientImpl implements EventSubscriptionsCli
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     public SyncPoller<PollResult<EventSubscriptionInner>, EventSubscriptionInner> beginCreateOrUpdate(
         String scope, String eventSubscriptionName, EventSubscriptionInner eventSubscriptionInfo) {
-        return beginCreateOrUpdateAsync(scope, eventSubscriptionName, eventSubscriptionInfo).getSyncPoller();
+        return this.beginCreateOrUpdateAsync(scope, eventSubscriptionName, eventSubscriptionInfo).getSyncPoller();
     }
 
     /**
-     * Asynchronously creates a new event subscription or updates an existing event subscription based on the specified
-     * scope.
+     * Create or update an event subscription.
+     *
+     * <p>Asynchronously creates a new event subscription or updates an existing event subscription based on the
+     * specified scope.
      *
      * @param scope The identifier of the resource to which the event subscription needs to be created or updated. The
      *     scope can be a subscription, or a resource group, or a top level resource belonging to a resource provider
@@ -799,12 +984,16 @@ public final class EventSubscriptionsClientImpl implements EventSubscriptionsCli
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     public SyncPoller<PollResult<EventSubscriptionInner>, EventSubscriptionInner> beginCreateOrUpdate(
         String scope, String eventSubscriptionName, EventSubscriptionInner eventSubscriptionInfo, Context context) {
-        return beginCreateOrUpdateAsync(scope, eventSubscriptionName, eventSubscriptionInfo, context).getSyncPoller();
+        return this
+            .beginCreateOrUpdateAsync(scope, eventSubscriptionName, eventSubscriptionInfo, context)
+            .getSyncPoller();
     }
 
     /**
-     * Asynchronously creates a new event subscription or updates an existing event subscription based on the specified
-     * scope.
+     * Create or update an event subscription.
+     *
+     * <p>Asynchronously creates a new event subscription or updates an existing event subscription based on the
+     * specified scope.
      *
      * @param scope The identifier of the resource to which the event subscription needs to be created or updated. The
      *     scope can be a subscription, or a resource group, or a top level resource belonging to a resource provider
@@ -831,8 +1020,10 @@ public final class EventSubscriptionsClientImpl implements EventSubscriptionsCli
     }
 
     /**
-     * Asynchronously creates a new event subscription or updates an existing event subscription based on the specified
-     * scope.
+     * Create or update an event subscription.
+     *
+     * <p>Asynchronously creates a new event subscription or updates an existing event subscription based on the
+     * specified scope.
      *
      * @param scope The identifier of the resource to which the event subscription needs to be created or updated. The
      *     scope can be a subscription, or a resource group, or a top level resource belonging to a resource provider
@@ -860,8 +1051,10 @@ public final class EventSubscriptionsClientImpl implements EventSubscriptionsCli
     }
 
     /**
-     * Asynchronously creates a new event subscription or updates an existing event subscription based on the specified
-     * scope.
+     * Create or update an event subscription.
+     *
+     * <p>Asynchronously creates a new event subscription or updates an existing event subscription based on the
+     * specified scope.
      *
      * @param scope The identifier of the resource to which the event subscription needs to be created or updated. The
      *     scope can be a subscription, or a resource group, or a top level resource belonging to a resource provider
@@ -886,8 +1079,10 @@ public final class EventSubscriptionsClientImpl implements EventSubscriptionsCli
     }
 
     /**
-     * Asynchronously creates a new event subscription or updates an existing event subscription based on the specified
-     * scope.
+     * Create or update an event subscription.
+     *
+     * <p>Asynchronously creates a new event subscription or updates an existing event subscription based on the
+     * specified scope.
      *
      * @param scope The identifier of the resource to which the event subscription needs to be created or updated. The
      *     scope can be a subscription, or a resource group, or a top level resource belonging to a resource provider
@@ -913,7 +1108,9 @@ public final class EventSubscriptionsClientImpl implements EventSubscriptionsCli
     }
 
     /**
-     * Delete an existing event subscription.
+     * Delete an event subscription.
+     *
+     * <p>Delete an existing event subscription.
      *
      * @param scope The scope of the event subscription. The scope can be a subscription, or a resource group, or a top
      *     level resource belonging to a resource provider namespace, or an EventGrid topic. For example, use
@@ -958,7 +1155,9 @@ public final class EventSubscriptionsClientImpl implements EventSubscriptionsCli
     }
 
     /**
-     * Delete an existing event subscription.
+     * Delete an event subscription.
+     *
+     * <p>Delete an existing event subscription.
      *
      * @param scope The scope of the event subscription. The scope can be a subscription, or a resource group, or a top
      *     level resource belonging to a resource provider namespace, or an EventGrid topic. For example, use
@@ -997,7 +1196,9 @@ public final class EventSubscriptionsClientImpl implements EventSubscriptionsCli
     }
 
     /**
-     * Delete an existing event subscription.
+     * Delete an event subscription.
+     *
+     * <p>Delete an existing event subscription.
      *
      * @param scope The scope of the event subscription. The scope can be a subscription, or a resource group, or a top
      *     level resource belonging to a resource provider namespace, or an EventGrid topic. For example, use
@@ -1023,7 +1224,9 @@ public final class EventSubscriptionsClientImpl implements EventSubscriptionsCli
     }
 
     /**
-     * Delete an existing event subscription.
+     * Delete an event subscription.
+     *
+     * <p>Delete an existing event subscription.
      *
      * @param scope The scope of the event subscription. The scope can be a subscription, or a resource group, or a top
      *     level resource belonging to a resource provider namespace, or an EventGrid topic. For example, use
@@ -1051,7 +1254,9 @@ public final class EventSubscriptionsClientImpl implements EventSubscriptionsCli
     }
 
     /**
-     * Delete an existing event subscription.
+     * Delete an event subscription.
+     *
+     * <p>Delete an existing event subscription.
      *
      * @param scope The scope of the event subscription. The scope can be a subscription, or a resource group, or a top
      *     level resource belonging to a resource provider namespace, or an EventGrid topic. For example, use
@@ -1069,11 +1274,13 @@ public final class EventSubscriptionsClientImpl implements EventSubscriptionsCli
      */
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     public SyncPoller<PollResult<Void>, Void> beginDelete(String scope, String eventSubscriptionName) {
-        return beginDeleteAsync(scope, eventSubscriptionName).getSyncPoller();
+        return this.beginDeleteAsync(scope, eventSubscriptionName).getSyncPoller();
     }
 
     /**
-     * Delete an existing event subscription.
+     * Delete an event subscription.
+     *
+     * <p>Delete an existing event subscription.
      *
      * @param scope The scope of the event subscription. The scope can be a subscription, or a resource group, or a top
      *     level resource belonging to a resource provider namespace, or an EventGrid topic. For example, use
@@ -1092,11 +1299,13 @@ public final class EventSubscriptionsClientImpl implements EventSubscriptionsCli
      */
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     public SyncPoller<PollResult<Void>, Void> beginDelete(String scope, String eventSubscriptionName, Context context) {
-        return beginDeleteAsync(scope, eventSubscriptionName, context).getSyncPoller();
+        return this.beginDeleteAsync(scope, eventSubscriptionName, context).getSyncPoller();
     }
 
     /**
-     * Delete an existing event subscription.
+     * Delete an event subscription.
+     *
+     * <p>Delete an existing event subscription.
      *
      * @param scope The scope of the event subscription. The scope can be a subscription, or a resource group, or a top
      *     level resource belonging to a resource provider namespace, or an EventGrid topic. For example, use
@@ -1118,7 +1327,9 @@ public final class EventSubscriptionsClientImpl implements EventSubscriptionsCli
     }
 
     /**
-     * Delete an existing event subscription.
+     * Delete an event subscription.
+     *
+     * <p>Delete an existing event subscription.
      *
      * @param scope The scope of the event subscription. The scope can be a subscription, or a resource group, or a top
      *     level resource belonging to a resource provider namespace, or an EventGrid topic. For example, use
@@ -1143,7 +1354,9 @@ public final class EventSubscriptionsClientImpl implements EventSubscriptionsCli
     }
 
     /**
-     * Delete an existing event subscription.
+     * Delete an event subscription.
+     *
+     * <p>Delete an existing event subscription.
      *
      * @param scope The scope of the event subscription. The scope can be a subscription, or a resource group, or a top
      *     level resource belonging to a resource provider namespace, or an EventGrid topic. For example, use
@@ -1164,7 +1377,9 @@ public final class EventSubscriptionsClientImpl implements EventSubscriptionsCli
     }
 
     /**
-     * Delete an existing event subscription.
+     * Delete an event subscription.
+     *
+     * <p>Delete an existing event subscription.
      *
      * @param scope The scope of the event subscription. The scope can be a subscription, or a resource group, or a top
      *     level resource belonging to a resource provider namespace, or an EventGrid topic. For example, use
@@ -1186,7 +1401,9 @@ public final class EventSubscriptionsClientImpl implements EventSubscriptionsCli
     }
 
     /**
-     * Asynchronously updates an existing event subscription.
+     * Update an event subscription.
+     *
+     * <p>Asynchronously updates an existing event subscription.
      *
      * @param scope The scope of existing event subscription. The scope can be a subscription, or a resource group, or a
      *     top level resource belonging to a resource provider namespace, or an EventGrid topic. For example, use
@@ -1246,7 +1463,9 @@ public final class EventSubscriptionsClientImpl implements EventSubscriptionsCli
     }
 
     /**
-     * Asynchronously updates an existing event subscription.
+     * Update an event subscription.
+     *
+     * <p>Asynchronously updates an existing event subscription.
      *
      * @param scope The scope of existing event subscription. The scope can be a subscription, or a resource group, or a
      *     top level resource belonging to a resource provider namespace, or an EventGrid topic. For example, use
@@ -1305,7 +1524,9 @@ public final class EventSubscriptionsClientImpl implements EventSubscriptionsCli
     }
 
     /**
-     * Asynchronously updates an existing event subscription.
+     * Update an event subscription.
+     *
+     * <p>Asynchronously updates an existing event subscription.
      *
      * @param scope The scope of existing event subscription. The scope can be a subscription, or a resource group, or a
      *     top level resource belonging to a resource provider namespace, or an EventGrid topic. For example, use
@@ -1340,7 +1561,9 @@ public final class EventSubscriptionsClientImpl implements EventSubscriptionsCli
     }
 
     /**
-     * Asynchronously updates an existing event subscription.
+     * Update an event subscription.
+     *
+     * <p>Asynchronously updates an existing event subscription.
      *
      * @param scope The scope of existing event subscription. The scope can be a subscription, or a resource group, or a
      *     top level resource belonging to a resource provider namespace, or an EventGrid topic. For example, use
@@ -1378,7 +1601,9 @@ public final class EventSubscriptionsClientImpl implements EventSubscriptionsCli
     }
 
     /**
-     * Asynchronously updates an existing event subscription.
+     * Update an event subscription.
+     *
+     * <p>Asynchronously updates an existing event subscription.
      *
      * @param scope The scope of existing event subscription. The scope can be a subscription, or a resource group, or a
      *     top level resource belonging to a resource provider namespace, or an EventGrid topic. For example, use
@@ -1400,11 +1625,13 @@ public final class EventSubscriptionsClientImpl implements EventSubscriptionsCli
         String scope,
         String eventSubscriptionName,
         EventSubscriptionUpdateParameters eventSubscriptionUpdateParameters) {
-        return beginUpdateAsync(scope, eventSubscriptionName, eventSubscriptionUpdateParameters).getSyncPoller();
+        return this.beginUpdateAsync(scope, eventSubscriptionName, eventSubscriptionUpdateParameters).getSyncPoller();
     }
 
     /**
-     * Asynchronously updates an existing event subscription.
+     * Update an event subscription.
+     *
+     * <p>Asynchronously updates an existing event subscription.
      *
      * @param scope The scope of existing event subscription. The scope can be a subscription, or a resource group, or a
      *     top level resource belonging to a resource provider namespace, or an EventGrid topic. For example, use
@@ -1428,12 +1655,15 @@ public final class EventSubscriptionsClientImpl implements EventSubscriptionsCli
         String eventSubscriptionName,
         EventSubscriptionUpdateParameters eventSubscriptionUpdateParameters,
         Context context) {
-        return beginUpdateAsync(scope, eventSubscriptionName, eventSubscriptionUpdateParameters, context)
+        return this
+            .beginUpdateAsync(scope, eventSubscriptionName, eventSubscriptionUpdateParameters, context)
             .getSyncPoller();
     }
 
     /**
-     * Asynchronously updates an existing event subscription.
+     * Update an event subscription.
+     *
+     * <p>Asynchronously updates an existing event subscription.
      *
      * @param scope The scope of existing event subscription. The scope can be a subscription, or a resource group, or a
      *     top level resource belonging to a resource provider namespace, or an EventGrid topic. For example, use
@@ -1461,7 +1691,9 @@ public final class EventSubscriptionsClientImpl implements EventSubscriptionsCli
     }
 
     /**
-     * Asynchronously updates an existing event subscription.
+     * Update an event subscription.
+     *
+     * <p>Asynchronously updates an existing event subscription.
      *
      * @param scope The scope of existing event subscription. The scope can be a subscription, or a resource group, or a
      *     top level resource belonging to a resource provider namespace, or an EventGrid topic. For example, use
@@ -1491,7 +1723,9 @@ public final class EventSubscriptionsClientImpl implements EventSubscriptionsCli
     }
 
     /**
-     * Asynchronously updates an existing event subscription.
+     * Update an event subscription.
+     *
+     * <p>Asynchronously updates an existing event subscription.
      *
      * @param scope The scope of existing event subscription. The scope can be a subscription, or a resource group, or a
      *     top level resource belonging to a resource provider namespace, or an EventGrid topic. For example, use
@@ -1517,7 +1751,9 @@ public final class EventSubscriptionsClientImpl implements EventSubscriptionsCli
     }
 
     /**
-     * Asynchronously updates an existing event subscription.
+     * Update an event subscription.
+     *
+     * <p>Asynchronously updates an existing event subscription.
      *
      * @param scope The scope of existing event subscription. The scope can be a subscription, or a resource group, or a
      *     top level resource belonging to a resource provider namespace, or an EventGrid topic. For example, use
@@ -1545,7 +1781,9 @@ public final class EventSubscriptionsClientImpl implements EventSubscriptionsCli
     }
 
     /**
-     * Get the full endpoint URL for an event subscription.
+     * Get full URL of an event subscription.
+     *
+     * <p>Get the full endpoint URL for an event subscription.
      *
      * @param scope The scope of the event subscription. The scope can be a subscription, or a resource group, or a top
      *     level resource belonging to a resource provider namespace, or an EventGrid topic. For example, use
@@ -1594,7 +1832,9 @@ public final class EventSubscriptionsClientImpl implements EventSubscriptionsCli
     }
 
     /**
-     * Get the full endpoint URL for an event subscription.
+     * Get full URL of an event subscription.
+     *
+     * <p>Get the full endpoint URL for an event subscription.
      *
      * @param scope The scope of the event subscription. The scope can be a subscription, or a resource group, or a top
      *     level resource belonging to a resource provider namespace, or an EventGrid topic. For example, use
@@ -1636,7 +1876,9 @@ public final class EventSubscriptionsClientImpl implements EventSubscriptionsCli
     }
 
     /**
-     * Get the full endpoint URL for an event subscription.
+     * Get full URL of an event subscription.
+     *
+     * <p>Get the full endpoint URL for an event subscription.
      *
      * @param scope The scope of the event subscription. The scope can be a subscription, or a resource group, or a top
      *     level resource belonging to a resource provider namespace, or an EventGrid topic. For example, use
@@ -1659,29 +1901,9 @@ public final class EventSubscriptionsClientImpl implements EventSubscriptionsCli
     }
 
     /**
-     * Get the full endpoint URL for an event subscription.
+     * Get full URL of an event subscription.
      *
-     * @param scope The scope of the event subscription. The scope can be a subscription, or a resource group, or a top
-     *     level resource belonging to a resource provider namespace, or an EventGrid topic. For example, use
-     *     '/subscriptions/{subscriptionId}/' for a subscription,
-     *     '/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}' for a resource group, and
-     *     '/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/{resourceProviderNamespace}/{resourceType}/{resourceName}'
-     *     for a resource, and
-     *     '/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.EventGrid/topics/{topicName}'
-     *     for an EventGrid topic.
-     * @param eventSubscriptionName Name of the event subscription.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the full endpoint URL for an event subscription.
-     */
-    @ServiceMethod(returns = ReturnType.SINGLE)
-    public EventSubscriptionFullUrlInner getFullUrl(String scope, String eventSubscriptionName) {
-        return getFullUrlAsync(scope, eventSubscriptionName).block();
-    }
-
-    /**
-     * Get the full endpoint URL for an event subscription.
+     * <p>Get the full endpoint URL for an event subscription.
      *
      * @param scope The scope of the event subscription. The scope can be a subscription, or a resource group, or a top
      *     level resource belonging to a resource provider namespace, or an EventGrid topic. For example, use
@@ -1705,7 +1927,33 @@ public final class EventSubscriptionsClientImpl implements EventSubscriptionsCli
     }
 
     /**
-     * List all aggregated global event subscriptions under a specific Azure subscription.
+     * Get full URL of an event subscription.
+     *
+     * <p>Get the full endpoint URL for an event subscription.
+     *
+     * @param scope The scope of the event subscription. The scope can be a subscription, or a resource group, or a top
+     *     level resource belonging to a resource provider namespace, or an EventGrid topic. For example, use
+     *     '/subscriptions/{subscriptionId}/' for a subscription,
+     *     '/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}' for a resource group, and
+     *     '/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/{resourceProviderNamespace}/{resourceType}/{resourceName}'
+     *     for a resource, and
+     *     '/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.EventGrid/topics/{topicName}'
+     *     for an EventGrid topic.
+     * @param eventSubscriptionName Name of the event subscription.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws ManagementException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return the full endpoint URL for an event subscription.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    public EventSubscriptionFullUrlInner getFullUrl(String scope, String eventSubscriptionName) {
+        return getFullUrlWithResponse(scope, eventSubscriptionName, Context.NONE).getValue();
+    }
+
+    /**
+     * Get an aggregated list of all global event subscriptions under an Azure subscription.
+     *
+     * <p>List all aggregated global event subscriptions under a specific Azure subscription.
      *
      * @param filter The query used to filter the search results using OData syntax. Filtering is permitted on the
      *     'name' property only and with limited number of OData operations. These operations are: the 'contains'
@@ -1761,7 +2009,9 @@ public final class EventSubscriptionsClientImpl implements EventSubscriptionsCli
     }
 
     /**
-     * List all aggregated global event subscriptions under a specific Azure subscription.
+     * Get an aggregated list of all global event subscriptions under an Azure subscription.
+     *
+     * <p>List all aggregated global event subscriptions under a specific Azure subscription.
      *
      * @param filter The query used to filter the search results using OData syntax. Filtering is permitted on the
      *     'name' property only and with limited number of OData operations. These operations are: the 'contains'
@@ -1816,7 +2066,9 @@ public final class EventSubscriptionsClientImpl implements EventSubscriptionsCli
     }
 
     /**
-     * List all aggregated global event subscriptions under a specific Azure subscription.
+     * Get an aggregated list of all global event subscriptions under an Azure subscription.
+     *
+     * <p>List all aggregated global event subscriptions under a specific Azure subscription.
      *
      * @param filter The query used to filter the search results using OData syntax. Filtering is permitted on the
      *     'name' property only and with limited number of OData operations. These operations are: the 'contains'
@@ -1838,7 +2090,9 @@ public final class EventSubscriptionsClientImpl implements EventSubscriptionsCli
     }
 
     /**
-     * List all aggregated global event subscriptions under a specific Azure subscription.
+     * Get an aggregated list of all global event subscriptions under an Azure subscription.
+     *
+     * <p>List all aggregated global event subscriptions under a specific Azure subscription.
      *
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
@@ -1853,7 +2107,9 @@ public final class EventSubscriptionsClientImpl implements EventSubscriptionsCli
     }
 
     /**
-     * List all aggregated global event subscriptions under a specific Azure subscription.
+     * Get an aggregated list of all global event subscriptions under an Azure subscription.
+     *
+     * <p>List all aggregated global event subscriptions under a specific Azure subscription.
      *
      * @param filter The query used to filter the search results using OData syntax. Filtering is permitted on the
      *     'name' property only and with limited number of OData operations. These operations are: the 'contains'
@@ -1877,7 +2133,9 @@ public final class EventSubscriptionsClientImpl implements EventSubscriptionsCli
     }
 
     /**
-     * List all aggregated global event subscriptions under a specific Azure subscription.
+     * Get an aggregated list of all global event subscriptions under an Azure subscription.
+     *
+     * <p>List all aggregated global event subscriptions under a specific Azure subscription.
      *
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
@@ -1891,7 +2149,9 @@ public final class EventSubscriptionsClientImpl implements EventSubscriptionsCli
     }
 
     /**
-     * List all aggregated global event subscriptions under a specific Azure subscription.
+     * Get an aggregated list of all global event subscriptions under an Azure subscription.
+     *
+     * <p>List all aggregated global event subscriptions under a specific Azure subscription.
      *
      * @param filter The query used to filter the search results using OData syntax. Filtering is permitted on the
      *     'name' property only and with limited number of OData operations. These operations are: the 'contains'
@@ -1913,7 +2173,9 @@ public final class EventSubscriptionsClientImpl implements EventSubscriptionsCli
     }
 
     /**
-     * List all global event subscriptions under an Azure subscription for a topic type.
+     * List all global event subscriptions for a topic type.
+     *
+     * <p>List all global event subscriptions under an Azure subscription for a topic type.
      *
      * @param topicTypeName Name of the topic type.
      * @param filter The query used to filter the search results using OData syntax. Filtering is permitted on the
@@ -1975,7 +2237,9 @@ public final class EventSubscriptionsClientImpl implements EventSubscriptionsCli
     }
 
     /**
-     * List all global event subscriptions under an Azure subscription for a topic type.
+     * List all global event subscriptions for a topic type.
+     *
+     * <p>List all global event subscriptions under an Azure subscription for a topic type.
      *
      * @param topicTypeName Name of the topic type.
      * @param filter The query used to filter the search results using OData syntax. Filtering is permitted on the
@@ -2035,7 +2299,9 @@ public final class EventSubscriptionsClientImpl implements EventSubscriptionsCli
     }
 
     /**
-     * List all global event subscriptions under an Azure subscription for a topic type.
+     * List all global event subscriptions for a topic type.
+     *
+     * <p>List all global event subscriptions under an Azure subscription for a topic type.
      *
      * @param topicTypeName Name of the topic type.
      * @param filter The query used to filter the search results using OData syntax. Filtering is permitted on the
@@ -2060,7 +2326,9 @@ public final class EventSubscriptionsClientImpl implements EventSubscriptionsCli
     }
 
     /**
-     * List all global event subscriptions under an Azure subscription for a topic type.
+     * List all global event subscriptions for a topic type.
+     *
+     * <p>List all global event subscriptions under an Azure subscription for a topic type.
      *
      * @param topicTypeName Name of the topic type.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
@@ -2078,7 +2346,9 @@ public final class EventSubscriptionsClientImpl implements EventSubscriptionsCli
     }
 
     /**
-     * List all global event subscriptions under an Azure subscription for a topic type.
+     * List all global event subscriptions for a topic type.
+     *
+     * <p>List all global event subscriptions under an Azure subscription for a topic type.
      *
      * @param topicTypeName Name of the topic type.
      * @param filter The query used to filter the search results using OData syntax. Filtering is permitted on the
@@ -2104,7 +2374,9 @@ public final class EventSubscriptionsClientImpl implements EventSubscriptionsCli
     }
 
     /**
-     * List all global event subscriptions under an Azure subscription for a topic type.
+     * List all global event subscriptions for a topic type.
+     *
+     * <p>List all global event subscriptions under an Azure subscription for a topic type.
      *
      * @param topicTypeName Name of the topic type.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
@@ -2120,7 +2392,9 @@ public final class EventSubscriptionsClientImpl implements EventSubscriptionsCli
     }
 
     /**
-     * List all global event subscriptions under an Azure subscription for a topic type.
+     * List all global event subscriptions for a topic type.
+     *
+     * <p>List all global event subscriptions under an Azure subscription for a topic type.
      *
      * @param topicTypeName Name of the topic type.
      * @param filter The query used to filter the search results using OData syntax. Filtering is permitted on the
@@ -2144,7 +2418,9 @@ public final class EventSubscriptionsClientImpl implements EventSubscriptionsCli
     }
 
     /**
-     * List all global event subscriptions under a specific Azure subscription and resource group.
+     * List all global event subscriptions under an Azure subscription and resource group.
+     *
+     * <p>List all global event subscriptions under a specific Azure subscription and resource group.
      *
      * @param resourceGroupName The name of the resource group within the user's subscription.
      * @param filter The query used to filter the search results using OData syntax. Filtering is permitted on the
@@ -2207,7 +2483,9 @@ public final class EventSubscriptionsClientImpl implements EventSubscriptionsCli
     }
 
     /**
-     * List all global event subscriptions under a specific Azure subscription and resource group.
+     * List all global event subscriptions under an Azure subscription and resource group.
+     *
+     * <p>List all global event subscriptions under a specific Azure subscription and resource group.
      *
      * @param resourceGroupName The name of the resource group within the user's subscription.
      * @param filter The query used to filter the search results using OData syntax. Filtering is permitted on the
@@ -2268,7 +2546,9 @@ public final class EventSubscriptionsClientImpl implements EventSubscriptionsCli
     }
 
     /**
-     * List all global event subscriptions under a specific Azure subscription and resource group.
+     * List all global event subscriptions under an Azure subscription and resource group.
+     *
+     * <p>List all global event subscriptions under a specific Azure subscription and resource group.
      *
      * @param resourceGroupName The name of the resource group within the user's subscription.
      * @param filter The query used to filter the search results using OData syntax. Filtering is permitted on the
@@ -2293,7 +2573,9 @@ public final class EventSubscriptionsClientImpl implements EventSubscriptionsCli
     }
 
     /**
-     * List all global event subscriptions under a specific Azure subscription and resource group.
+     * List all global event subscriptions under an Azure subscription and resource group.
+     *
+     * <p>List all global event subscriptions under a specific Azure subscription and resource group.
      *
      * @param resourceGroupName The name of the resource group within the user's subscription.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
@@ -2311,7 +2593,9 @@ public final class EventSubscriptionsClientImpl implements EventSubscriptionsCli
     }
 
     /**
-     * List all global event subscriptions under a specific Azure subscription and resource group.
+     * List all global event subscriptions under an Azure subscription and resource group.
+     *
+     * <p>List all global event subscriptions under a specific Azure subscription and resource group.
      *
      * @param resourceGroupName The name of the resource group within the user's subscription.
      * @param filter The query used to filter the search results using OData syntax. Filtering is permitted on the
@@ -2337,7 +2621,9 @@ public final class EventSubscriptionsClientImpl implements EventSubscriptionsCli
     }
 
     /**
-     * List all global event subscriptions under a specific Azure subscription and resource group.
+     * List all global event subscriptions under an Azure subscription and resource group.
+     *
+     * <p>List all global event subscriptions under a specific Azure subscription and resource group.
      *
      * @param resourceGroupName The name of the resource group within the user's subscription.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
@@ -2353,7 +2639,9 @@ public final class EventSubscriptionsClientImpl implements EventSubscriptionsCli
     }
 
     /**
-     * List all global event subscriptions under a specific Azure subscription and resource group.
+     * List all global event subscriptions under an Azure subscription and resource group.
+     *
+     * <p>List all global event subscriptions under a specific Azure subscription and resource group.
      *
      * @param resourceGroupName The name of the resource group within the user's subscription.
      * @param filter The query used to filter the search results using OData syntax. Filtering is permitted on the
@@ -2377,7 +2665,9 @@ public final class EventSubscriptionsClientImpl implements EventSubscriptionsCli
     }
 
     /**
-     * List all global event subscriptions under a resource group for a specific topic type.
+     * List all global event subscriptions under a resource group for a topic type.
+     *
+     * <p>List all global event subscriptions under a resource group for a specific topic type.
      *
      * @param resourceGroupName The name of the resource group within the user's subscription.
      * @param topicTypeName Name of the topic type.
@@ -2445,7 +2735,9 @@ public final class EventSubscriptionsClientImpl implements EventSubscriptionsCli
     }
 
     /**
-     * List all global event subscriptions under a resource group for a specific topic type.
+     * List all global event subscriptions under a resource group for a topic type.
+     *
+     * <p>List all global event subscriptions under a resource group for a specific topic type.
      *
      * @param resourceGroupName The name of the resource group within the user's subscription.
      * @param topicTypeName Name of the topic type.
@@ -2511,7 +2803,9 @@ public final class EventSubscriptionsClientImpl implements EventSubscriptionsCli
     }
 
     /**
-     * List all global event subscriptions under a resource group for a specific topic type.
+     * List all global event subscriptions under a resource group for a topic type.
+     *
+     * <p>List all global event subscriptions under a resource group for a specific topic type.
      *
      * @param resourceGroupName The name of the resource group within the user's subscription.
      * @param topicTypeName Name of the topic type.
@@ -2537,7 +2831,9 @@ public final class EventSubscriptionsClientImpl implements EventSubscriptionsCli
     }
 
     /**
-     * List all global event subscriptions under a resource group for a specific topic type.
+     * List all global event subscriptions under a resource group for a topic type.
+     *
+     * <p>List all global event subscriptions under a resource group for a specific topic type.
      *
      * @param resourceGroupName The name of the resource group within the user's subscription.
      * @param topicTypeName Name of the topic type.
@@ -2557,7 +2853,9 @@ public final class EventSubscriptionsClientImpl implements EventSubscriptionsCli
     }
 
     /**
-     * List all global event subscriptions under a resource group for a specific topic type.
+     * List all global event subscriptions under a resource group for a topic type.
+     *
+     * <p>List all global event subscriptions under a resource group for a specific topic type.
      *
      * @param resourceGroupName The name of the resource group within the user's subscription.
      * @param topicTypeName Name of the topic type.
@@ -2586,7 +2884,9 @@ public final class EventSubscriptionsClientImpl implements EventSubscriptionsCli
     }
 
     /**
-     * List all global event subscriptions under a resource group for a specific topic type.
+     * List all global event subscriptions under a resource group for a topic type.
+     *
+     * <p>List all global event subscriptions under a resource group for a specific topic type.
      *
      * @param resourceGroupName The name of the resource group within the user's subscription.
      * @param topicTypeName Name of the topic type.
@@ -2605,7 +2905,9 @@ public final class EventSubscriptionsClientImpl implements EventSubscriptionsCli
     }
 
     /**
-     * List all global event subscriptions under a resource group for a specific topic type.
+     * List all global event subscriptions under a resource group for a topic type.
+     *
+     * <p>List all global event subscriptions under a resource group for a specific topic type.
      *
      * @param resourceGroupName The name of the resource group within the user's subscription.
      * @param topicTypeName Name of the topic type.
@@ -2631,7 +2933,9 @@ public final class EventSubscriptionsClientImpl implements EventSubscriptionsCli
     }
 
     /**
-     * List all event subscriptions from the given location under a specific Azure subscription.
+     * List all regional event subscriptions under an Azure subscription.
+     *
+     * <p>List all event subscriptions from the given location under a specific Azure subscription.
      *
      * @param location Name of the location.
      * @param filter The query used to filter the search results using OData syntax. Filtering is permitted on the
@@ -2693,7 +2997,9 @@ public final class EventSubscriptionsClientImpl implements EventSubscriptionsCli
     }
 
     /**
-     * List all event subscriptions from the given location under a specific Azure subscription.
+     * List all regional event subscriptions under an Azure subscription.
+     *
+     * <p>List all event subscriptions from the given location under a specific Azure subscription.
      *
      * @param location Name of the location.
      * @param filter The query used to filter the search results using OData syntax. Filtering is permitted on the
@@ -2753,7 +3059,9 @@ public final class EventSubscriptionsClientImpl implements EventSubscriptionsCli
     }
 
     /**
-     * List all event subscriptions from the given location under a specific Azure subscription.
+     * List all regional event subscriptions under an Azure subscription.
+     *
+     * <p>List all event subscriptions from the given location under a specific Azure subscription.
      *
      * @param location Name of the location.
      * @param filter The query used to filter the search results using OData syntax. Filtering is permitted on the
@@ -2778,7 +3086,9 @@ public final class EventSubscriptionsClientImpl implements EventSubscriptionsCli
     }
 
     /**
-     * List all event subscriptions from the given location under a specific Azure subscription.
+     * List all regional event subscriptions under an Azure subscription.
+     *
+     * <p>List all event subscriptions from the given location under a specific Azure subscription.
      *
      * @param location Name of the location.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
@@ -2796,7 +3106,9 @@ public final class EventSubscriptionsClientImpl implements EventSubscriptionsCli
     }
 
     /**
-     * List all event subscriptions from the given location under a specific Azure subscription.
+     * List all regional event subscriptions under an Azure subscription.
+     *
+     * <p>List all event subscriptions from the given location under a specific Azure subscription.
      *
      * @param location Name of the location.
      * @param filter The query used to filter the search results using OData syntax. Filtering is permitted on the
@@ -2822,7 +3134,9 @@ public final class EventSubscriptionsClientImpl implements EventSubscriptionsCli
     }
 
     /**
-     * List all event subscriptions from the given location under a specific Azure subscription.
+     * List all regional event subscriptions under an Azure subscription.
+     *
+     * <p>List all event subscriptions from the given location under a specific Azure subscription.
      *
      * @param location Name of the location.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
@@ -2838,7 +3152,9 @@ public final class EventSubscriptionsClientImpl implements EventSubscriptionsCli
     }
 
     /**
-     * List all event subscriptions from the given location under a specific Azure subscription.
+     * List all regional event subscriptions under an Azure subscription.
+     *
+     * <p>List all event subscriptions from the given location under a specific Azure subscription.
      *
      * @param location Name of the location.
      * @param filter The query used to filter the search results using OData syntax. Filtering is permitted on the
@@ -2862,7 +3178,9 @@ public final class EventSubscriptionsClientImpl implements EventSubscriptionsCli
     }
 
     /**
-     * List all event subscriptions from the given location under a specific Azure subscription and resource group.
+     * List all regional event subscriptions under an Azure subscription and resource group.
+     *
+     * <p>List all event subscriptions from the given location under a specific Azure subscription and resource group.
      *
      * @param resourceGroupName The name of the resource group within the user's subscription.
      * @param location Name of the location.
@@ -2930,7 +3248,9 @@ public final class EventSubscriptionsClientImpl implements EventSubscriptionsCli
     }
 
     /**
-     * List all event subscriptions from the given location under a specific Azure subscription and resource group.
+     * List all regional event subscriptions under an Azure subscription and resource group.
+     *
+     * <p>List all event subscriptions from the given location under a specific Azure subscription and resource group.
      *
      * @param resourceGroupName The name of the resource group within the user's subscription.
      * @param location Name of the location.
@@ -2996,7 +3316,9 @@ public final class EventSubscriptionsClientImpl implements EventSubscriptionsCli
     }
 
     /**
-     * List all event subscriptions from the given location under a specific Azure subscription and resource group.
+     * List all regional event subscriptions under an Azure subscription and resource group.
+     *
+     * <p>List all event subscriptions from the given location under a specific Azure subscription and resource group.
      *
      * @param resourceGroupName The name of the resource group within the user's subscription.
      * @param location Name of the location.
@@ -3022,7 +3344,9 @@ public final class EventSubscriptionsClientImpl implements EventSubscriptionsCli
     }
 
     /**
-     * List all event subscriptions from the given location under a specific Azure subscription and resource group.
+     * List all regional event subscriptions under an Azure subscription and resource group.
+     *
+     * <p>List all event subscriptions from the given location under a specific Azure subscription and resource group.
      *
      * @param resourceGroupName The name of the resource group within the user's subscription.
      * @param location Name of the location.
@@ -3042,7 +3366,9 @@ public final class EventSubscriptionsClientImpl implements EventSubscriptionsCli
     }
 
     /**
-     * List all event subscriptions from the given location under a specific Azure subscription and resource group.
+     * List all regional event subscriptions under an Azure subscription and resource group.
+     *
+     * <p>List all event subscriptions from the given location under a specific Azure subscription and resource group.
      *
      * @param resourceGroupName The name of the resource group within the user's subscription.
      * @param location Name of the location.
@@ -3069,7 +3395,9 @@ public final class EventSubscriptionsClientImpl implements EventSubscriptionsCli
     }
 
     /**
-     * List all event subscriptions from the given location under a specific Azure subscription and resource group.
+     * List all regional event subscriptions under an Azure subscription and resource group.
+     *
+     * <p>List all event subscriptions from the given location under a specific Azure subscription and resource group.
      *
      * @param resourceGroupName The name of the resource group within the user's subscription.
      * @param location Name of the location.
@@ -3087,7 +3415,9 @@ public final class EventSubscriptionsClientImpl implements EventSubscriptionsCli
     }
 
     /**
-     * List all event subscriptions from the given location under a specific Azure subscription and resource group.
+     * List all regional event subscriptions under an Azure subscription and resource group.
+     *
+     * <p>List all event subscriptions from the given location under a specific Azure subscription and resource group.
      *
      * @param resourceGroupName The name of the resource group within the user's subscription.
      * @param location Name of the location.
@@ -3112,7 +3442,9 @@ public final class EventSubscriptionsClientImpl implements EventSubscriptionsCli
     }
 
     /**
-     * List all event subscriptions from the given location under a specific Azure subscription and topic type.
+     * List all regional event subscriptions under an Azure subscription for a topic type.
+     *
+     * <p>List all event subscriptions from the given location under a specific Azure subscription and topic type.
      *
      * @param location Name of the location.
      * @param topicTypeName Name of the topic type.
@@ -3179,7 +3511,9 @@ public final class EventSubscriptionsClientImpl implements EventSubscriptionsCli
     }
 
     /**
-     * List all event subscriptions from the given location under a specific Azure subscription and topic type.
+     * List all regional event subscriptions under an Azure subscription for a topic type.
+     *
+     * <p>List all event subscriptions from the given location under a specific Azure subscription and topic type.
      *
      * @param location Name of the location.
      * @param topicTypeName Name of the topic type.
@@ -3244,7 +3578,9 @@ public final class EventSubscriptionsClientImpl implements EventSubscriptionsCli
     }
 
     /**
-     * List all event subscriptions from the given location under a specific Azure subscription and topic type.
+     * List all regional event subscriptions under an Azure subscription for a topic type.
+     *
+     * <p>List all event subscriptions from the given location under a specific Azure subscription and topic type.
      *
      * @param location Name of the location.
      * @param topicTypeName Name of the topic type.
@@ -3270,7 +3606,9 @@ public final class EventSubscriptionsClientImpl implements EventSubscriptionsCli
     }
 
     /**
-     * List all event subscriptions from the given location under a specific Azure subscription and topic type.
+     * List all regional event subscriptions under an Azure subscription for a topic type.
+     *
+     * <p>List all event subscriptions from the given location under a specific Azure subscription and topic type.
      *
      * @param location Name of the location.
      * @param topicTypeName Name of the topic type.
@@ -3290,7 +3628,9 @@ public final class EventSubscriptionsClientImpl implements EventSubscriptionsCli
     }
 
     /**
-     * List all event subscriptions from the given location under a specific Azure subscription and topic type.
+     * List all regional event subscriptions under an Azure subscription for a topic type.
+     *
+     * <p>List all event subscriptions from the given location under a specific Azure subscription and topic type.
      *
      * @param location Name of the location.
      * @param topicTypeName Name of the topic type.
@@ -3317,7 +3657,9 @@ public final class EventSubscriptionsClientImpl implements EventSubscriptionsCli
     }
 
     /**
-     * List all event subscriptions from the given location under a specific Azure subscription and topic type.
+     * List all regional event subscriptions under an Azure subscription for a topic type.
+     *
+     * <p>List all event subscriptions from the given location under a specific Azure subscription and topic type.
      *
      * @param location Name of the location.
      * @param topicTypeName Name of the topic type.
@@ -3335,7 +3677,9 @@ public final class EventSubscriptionsClientImpl implements EventSubscriptionsCli
     }
 
     /**
-     * List all event subscriptions from the given location under a specific Azure subscription and topic type.
+     * List all regional event subscriptions under an Azure subscription for a topic type.
+     *
+     * <p>List all event subscriptions from the given location under a specific Azure subscription and topic type.
      *
      * @param location Name of the location.
      * @param topicTypeName Name of the topic type.
@@ -3361,8 +3705,10 @@ public final class EventSubscriptionsClientImpl implements EventSubscriptionsCli
     }
 
     /**
-     * List all event subscriptions from the given location under a specific Azure subscription and resource group and
-     * topic type.
+     * List all regional event subscriptions under an Azure subscription and resource group for a topic type.
+     *
+     * <p>List all event subscriptions from the given location under a specific Azure subscription and resource group
+     * and topic type.
      *
      * @param resourceGroupName The name of the resource group within the user's subscription.
      * @param location Name of the location.
@@ -3435,8 +3781,10 @@ public final class EventSubscriptionsClientImpl implements EventSubscriptionsCli
     }
 
     /**
-     * List all event subscriptions from the given location under a specific Azure subscription and resource group and
-     * topic type.
+     * List all regional event subscriptions under an Azure subscription and resource group for a topic type.
+     *
+     * <p>List all event subscriptions from the given location under a specific Azure subscription and resource group
+     * and topic type.
      *
      * @param resourceGroupName The name of the resource group within the user's subscription.
      * @param location Name of the location.
@@ -3507,8 +3855,10 @@ public final class EventSubscriptionsClientImpl implements EventSubscriptionsCli
     }
 
     /**
-     * List all event subscriptions from the given location under a specific Azure subscription and resource group and
-     * topic type.
+     * List all regional event subscriptions under an Azure subscription and resource group for a topic type.
+     *
+     * <p>List all event subscriptions from the given location under a specific Azure subscription and resource group
+     * and topic type.
      *
      * @param resourceGroupName The name of the resource group within the user's subscription.
      * @param location Name of the location.
@@ -3537,8 +3887,10 @@ public final class EventSubscriptionsClientImpl implements EventSubscriptionsCli
     }
 
     /**
-     * List all event subscriptions from the given location under a specific Azure subscription and resource group and
-     * topic type.
+     * List all regional event subscriptions under an Azure subscription and resource group for a topic type.
+     *
+     * <p>List all event subscriptions from the given location under a specific Azure subscription and resource group
+     * and topic type.
      *
      * @param resourceGroupName The name of the resource group within the user's subscription.
      * @param location Name of the location.
@@ -3561,8 +3913,10 @@ public final class EventSubscriptionsClientImpl implements EventSubscriptionsCli
     }
 
     /**
-     * List all event subscriptions from the given location under a specific Azure subscription and resource group and
-     * topic type.
+     * List all regional event subscriptions under an Azure subscription and resource group for a topic type.
+     *
+     * <p>List all event subscriptions from the given location under a specific Azure subscription and resource group
+     * and topic type.
      *
      * @param resourceGroupName The name of the resource group within the user's subscription.
      * @param location Name of the location.
@@ -3592,8 +3946,10 @@ public final class EventSubscriptionsClientImpl implements EventSubscriptionsCli
     }
 
     /**
-     * List all event subscriptions from the given location under a specific Azure subscription and resource group and
-     * topic type.
+     * List all regional event subscriptions under an Azure subscription and resource group for a topic type.
+     *
+     * <p>List all event subscriptions from the given location under a specific Azure subscription and resource group
+     * and topic type.
      *
      * @param resourceGroupName The name of the resource group within the user's subscription.
      * @param location Name of the location.
@@ -3613,8 +3969,10 @@ public final class EventSubscriptionsClientImpl implements EventSubscriptionsCli
     }
 
     /**
-     * List all event subscriptions from the given location under a specific Azure subscription and resource group and
-     * topic type.
+     * List all regional event subscriptions under an Azure subscription and resource group for a topic type.
+     *
+     * <p>List all event subscriptions from the given location under a specific Azure subscription and resource group
+     * and topic type.
      *
      * @param resourceGroupName The name of the resource group within the user's subscription.
      * @param location Name of the location.
@@ -3642,7 +4000,9 @@ public final class EventSubscriptionsClientImpl implements EventSubscriptionsCli
     }
 
     /**
-     * List all event subscriptions that have been created for a specific resource.
+     * List all event subscriptions.
+     *
+     * <p>List all event subscriptions that have been created for a specific resource.
      *
      * @param resourceGroupName The name of the resource group within the user's subscription.
      * @param providerNamespace Namespace of the provider of the topic.
@@ -3727,7 +4087,9 @@ public final class EventSubscriptionsClientImpl implements EventSubscriptionsCli
     }
 
     /**
-     * List all event subscriptions that have been created for a specific resource.
+     * List all event subscriptions.
+     *
+     * <p>List all event subscriptions that have been created for a specific resource.
      *
      * @param resourceGroupName The name of the resource group within the user's subscription.
      * @param providerNamespace Namespace of the provider of the topic.
@@ -3811,7 +4173,9 @@ public final class EventSubscriptionsClientImpl implements EventSubscriptionsCli
     }
 
     /**
-     * List all event subscriptions that have been created for a specific resource.
+     * List all event subscriptions.
+     *
+     * <p>List all event subscriptions that have been created for a specific resource.
      *
      * @param resourceGroupName The name of the resource group within the user's subscription.
      * @param providerNamespace Namespace of the provider of the topic.
@@ -3846,7 +4210,9 @@ public final class EventSubscriptionsClientImpl implements EventSubscriptionsCli
     }
 
     /**
-     * List all event subscriptions that have been created for a specific resource.
+     * List all event subscriptions.
+     *
+     * <p>List all event subscriptions that have been created for a specific resource.
      *
      * @param resourceGroupName The name of the resource group within the user's subscription.
      * @param providerNamespace Namespace of the provider of the topic.
@@ -3870,7 +4236,9 @@ public final class EventSubscriptionsClientImpl implements EventSubscriptionsCli
     }
 
     /**
-     * List all event subscriptions that have been created for a specific resource.
+     * List all event subscriptions.
+     *
+     * <p>List all event subscriptions that have been created for a specific resource.
      *
      * @param resourceGroupName The name of the resource group within the user's subscription.
      * @param providerNamespace Namespace of the provider of the topic.
@@ -3907,7 +4275,9 @@ public final class EventSubscriptionsClientImpl implements EventSubscriptionsCli
     }
 
     /**
-     * List all event subscriptions that have been created for a specific resource.
+     * List all event subscriptions.
+     *
+     * <p>List all event subscriptions that have been created for a specific resource.
      *
      * @param resourceGroupName The name of the resource group within the user's subscription.
      * @param providerNamespace Namespace of the provider of the topic.
@@ -3928,7 +4298,9 @@ public final class EventSubscriptionsClientImpl implements EventSubscriptionsCli
     }
 
     /**
-     * List all event subscriptions that have been created for a specific resource.
+     * List all event subscriptions.
+     *
+     * <p>List all event subscriptions that have been created for a specific resource.
      *
      * @param resourceGroupName The name of the resource group within the user's subscription.
      * @param providerNamespace Namespace of the provider of the topic.
@@ -3963,7 +4335,9 @@ public final class EventSubscriptionsClientImpl implements EventSubscriptionsCli
     }
 
     /**
-     * List all event subscriptions that have been created for a specific domain topic.
+     * List all event subscriptions for a specific domain topic.
+     *
+     * <p>List all event subscriptions that have been created for a specific domain topic.
      *
      * @param resourceGroupName The name of the resource group within the user's subscription.
      * @param domainName Name of the top level domain.
@@ -4036,7 +4410,9 @@ public final class EventSubscriptionsClientImpl implements EventSubscriptionsCli
     }
 
     /**
-     * List all event subscriptions that have been created for a specific domain topic.
+     * List all event subscriptions for a specific domain topic.
+     *
+     * <p>List all event subscriptions that have been created for a specific domain topic.
      *
      * @param resourceGroupName The name of the resource group within the user's subscription.
      * @param domainName Name of the top level domain.
@@ -4107,7 +4483,9 @@ public final class EventSubscriptionsClientImpl implements EventSubscriptionsCli
     }
 
     /**
-     * List all event subscriptions that have been created for a specific domain topic.
+     * List all event subscriptions for a specific domain topic.
+     *
+     * <p>List all event subscriptions that have been created for a specific domain topic.
      *
      * @param resourceGroupName The name of the resource group within the user's subscription.
      * @param domainName Name of the top level domain.
@@ -4134,7 +4512,9 @@ public final class EventSubscriptionsClientImpl implements EventSubscriptionsCli
     }
 
     /**
-     * List all event subscriptions that have been created for a specific domain topic.
+     * List all event subscriptions for a specific domain topic.
+     *
+     * <p>List all event subscriptions that have been created for a specific domain topic.
      *
      * @param resourceGroupName The name of the resource group within the user's subscription.
      * @param domainName Name of the top level domain.
@@ -4155,7 +4535,9 @@ public final class EventSubscriptionsClientImpl implements EventSubscriptionsCli
     }
 
     /**
-     * List all event subscriptions that have been created for a specific domain topic.
+     * List all event subscriptions for a specific domain topic.
+     *
+     * <p>List all event subscriptions that have been created for a specific domain topic.
      *
      * @param resourceGroupName The name of the resource group within the user's subscription.
      * @param domainName Name of the top level domain.
@@ -4183,7 +4565,9 @@ public final class EventSubscriptionsClientImpl implements EventSubscriptionsCli
     }
 
     /**
-     * List all event subscriptions that have been created for a specific domain topic.
+     * List all event subscriptions for a specific domain topic.
+     *
+     * <p>List all event subscriptions that have been created for a specific domain topic.
      *
      * @param resourceGroupName The name of the resource group within the user's subscription.
      * @param domainName Name of the top level domain.
@@ -4202,7 +4586,9 @@ public final class EventSubscriptionsClientImpl implements EventSubscriptionsCli
     }
 
     /**
-     * List all event subscriptions that have been created for a specific domain topic.
+     * List all event subscriptions for a specific domain topic.
+     *
+     * <p>List all event subscriptions that have been created for a specific domain topic.
      *
      * @param resourceGroupName The name of the resource group within the user's subscription.
      * @param domainName Name of the top level domain.
@@ -4229,170 +4615,10 @@ public final class EventSubscriptionsClientImpl implements EventSubscriptionsCli
     }
 
     /**
-     * Get all delivery attributes for an event subscription.
-     *
-     * @param scope The scope of the event subscription. The scope can be a subscription, or a resource group, or a top
-     *     level resource belonging to a resource provider namespace, or an EventGrid topic. For example, use
-     *     '/subscriptions/{subscriptionId}/' for a subscription,
-     *     '/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}' for a resource group, and
-     *     '/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/{resourceProviderNamespace}/{resourceType}/{resourceName}'
-     *     for a resource, and
-     *     '/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.EventGrid/topics/{topicName}'
-     *     for an EventGrid topic.
-     * @param eventSubscriptionName Name of the event subscription.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return all delivery attributes for an event subscription along with {@link Response} on successful completion of
-     *     {@link Mono}.
-     */
-    @ServiceMethod(returns = ReturnType.SINGLE)
-    private Mono<Response<DeliveryAttributeListResultInner>> getDeliveryAttributesWithResponseAsync(
-        String scope, String eventSubscriptionName) {
-        if (this.client.getEndpoint() == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter this.client.getEndpoint() is required and cannot be null."));
-        }
-        if (scope == null) {
-            return Mono.error(new IllegalArgumentException("Parameter scope is required and cannot be null."));
-        }
-        if (eventSubscriptionName == null) {
-            return Mono
-                .error(new IllegalArgumentException("Parameter eventSubscriptionName is required and cannot be null."));
-        }
-        final String accept = "application/json";
-        return FluxUtil
-            .withContext(
-                context ->
-                    service
-                        .getDeliveryAttributes(
-                            this.client.getEndpoint(),
-                            scope,
-                            eventSubscriptionName,
-                            this.client.getApiVersion(),
-                            accept,
-                            context))
-            .contextWrite(context -> context.putAll(FluxUtil.toReactorContext(this.client.getContext()).readOnly()));
-    }
-
-    /**
-     * Get all delivery attributes for an event subscription.
-     *
-     * @param scope The scope of the event subscription. The scope can be a subscription, or a resource group, or a top
-     *     level resource belonging to a resource provider namespace, or an EventGrid topic. For example, use
-     *     '/subscriptions/{subscriptionId}/' for a subscription,
-     *     '/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}' for a resource group, and
-     *     '/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/{resourceProviderNamespace}/{resourceType}/{resourceName}'
-     *     for a resource, and
-     *     '/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.EventGrid/topics/{topicName}'
-     *     for an EventGrid topic.
-     * @param eventSubscriptionName Name of the event subscription.
-     * @param context The context to associate with this operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return all delivery attributes for an event subscription along with {@link Response} on successful completion of
-     *     {@link Mono}.
-     */
-    @ServiceMethod(returns = ReturnType.SINGLE)
-    private Mono<Response<DeliveryAttributeListResultInner>> getDeliveryAttributesWithResponseAsync(
-        String scope, String eventSubscriptionName, Context context) {
-        if (this.client.getEndpoint() == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter this.client.getEndpoint() is required and cannot be null."));
-        }
-        if (scope == null) {
-            return Mono.error(new IllegalArgumentException("Parameter scope is required and cannot be null."));
-        }
-        if (eventSubscriptionName == null) {
-            return Mono
-                .error(new IllegalArgumentException("Parameter eventSubscriptionName is required and cannot be null."));
-        }
-        final String accept = "application/json";
-        context = this.client.mergeContext(context);
-        return service
-            .getDeliveryAttributes(
-                this.client.getEndpoint(), scope, eventSubscriptionName, this.client.getApiVersion(), accept, context);
-    }
-
-    /**
-     * Get all delivery attributes for an event subscription.
-     *
-     * @param scope The scope of the event subscription. The scope can be a subscription, or a resource group, or a top
-     *     level resource belonging to a resource provider namespace, or an EventGrid topic. For example, use
-     *     '/subscriptions/{subscriptionId}/' for a subscription,
-     *     '/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}' for a resource group, and
-     *     '/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/{resourceProviderNamespace}/{resourceType}/{resourceName}'
-     *     for a resource, and
-     *     '/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.EventGrid/topics/{topicName}'
-     *     for an EventGrid topic.
-     * @param eventSubscriptionName Name of the event subscription.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return all delivery attributes for an event subscription on successful completion of {@link Mono}.
-     */
-    @ServiceMethod(returns = ReturnType.SINGLE)
-    private Mono<DeliveryAttributeListResultInner> getDeliveryAttributesAsync(
-        String scope, String eventSubscriptionName) {
-        return getDeliveryAttributesWithResponseAsync(scope, eventSubscriptionName)
-            .flatMap(res -> Mono.justOrEmpty(res.getValue()));
-    }
-
-    /**
-     * Get all delivery attributes for an event subscription.
-     *
-     * @param scope The scope of the event subscription. The scope can be a subscription, or a resource group, or a top
-     *     level resource belonging to a resource provider namespace, or an EventGrid topic. For example, use
-     *     '/subscriptions/{subscriptionId}/' for a subscription,
-     *     '/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}' for a resource group, and
-     *     '/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/{resourceProviderNamespace}/{resourceType}/{resourceName}'
-     *     for a resource, and
-     *     '/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.EventGrid/topics/{topicName}'
-     *     for an EventGrid topic.
-     * @param eventSubscriptionName Name of the event subscription.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return all delivery attributes for an event subscription.
-     */
-    @ServiceMethod(returns = ReturnType.SINGLE)
-    public DeliveryAttributeListResultInner getDeliveryAttributes(String scope, String eventSubscriptionName) {
-        return getDeliveryAttributesAsync(scope, eventSubscriptionName).block();
-    }
-
-    /**
-     * Get all delivery attributes for an event subscription.
-     *
-     * @param scope The scope of the event subscription. The scope can be a subscription, or a resource group, or a top
-     *     level resource belonging to a resource provider namespace, or an EventGrid topic. For example, use
-     *     '/subscriptions/{subscriptionId}/' for a subscription,
-     *     '/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}' for a resource group, and
-     *     '/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/{resourceProviderNamespace}/{resourceType}/{resourceName}'
-     *     for a resource, and
-     *     '/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.EventGrid/topics/{topicName}'
-     *     for an EventGrid topic.
-     * @param eventSubscriptionName Name of the event subscription.
-     * @param context The context to associate with this operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return all delivery attributes for an event subscription along with {@link Response}.
-     */
-    @ServiceMethod(returns = ReturnType.SINGLE)
-    public Response<DeliveryAttributeListResultInner> getDeliveryAttributesWithResponse(
-        String scope, String eventSubscriptionName, Context context) {
-        return getDeliveryAttributesWithResponseAsync(scope, eventSubscriptionName, context).block();
-    }
-
-    /**
      * Get the next page of items.
      *
-     * @param nextLink The nextLink parameter.
+     * @param nextLink The URL to get the next list of items
+     *     <p>The nextLink parameter.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
@@ -4429,7 +4655,8 @@ public final class EventSubscriptionsClientImpl implements EventSubscriptionsCli
     /**
      * Get the next page of items.
      *
-     * @param nextLink The nextLink parameter.
+     * @param nextLink The URL to get the next list of items
+     *     <p>The nextLink parameter.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
@@ -4467,7 +4694,8 @@ public final class EventSubscriptionsClientImpl implements EventSubscriptionsCli
     /**
      * Get the next page of items.
      *
-     * @param nextLink The nextLink parameter.
+     * @param nextLink The URL to get the next list of items
+     *     <p>The nextLink parameter.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
@@ -4507,7 +4735,8 @@ public final class EventSubscriptionsClientImpl implements EventSubscriptionsCli
     /**
      * Get the next page of items.
      *
-     * @param nextLink The nextLink parameter.
+     * @param nextLink The URL to get the next list of items
+     *     <p>The nextLink parameter.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
@@ -4545,7 +4774,8 @@ public final class EventSubscriptionsClientImpl implements EventSubscriptionsCli
     /**
      * Get the next page of items.
      *
-     * @param nextLink The nextLink parameter.
+     * @param nextLink The URL to get the next list of items
+     *     <p>The nextLink parameter.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
@@ -4582,7 +4812,8 @@ public final class EventSubscriptionsClientImpl implements EventSubscriptionsCli
     /**
      * Get the next page of items.
      *
-     * @param nextLink The nextLink parameter.
+     * @param nextLink The URL to get the next list of items
+     *     <p>The nextLink parameter.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
@@ -4620,7 +4851,8 @@ public final class EventSubscriptionsClientImpl implements EventSubscriptionsCli
     /**
      * Get the next page of items.
      *
-     * @param nextLink The nextLink parameter.
+     * @param nextLink The URL to get the next list of items
+     *     <p>The nextLink parameter.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
@@ -4661,7 +4893,8 @@ public final class EventSubscriptionsClientImpl implements EventSubscriptionsCli
     /**
      * Get the next page of items.
      *
-     * @param nextLink The nextLink parameter.
+     * @param nextLink The URL to get the next list of items
+     *     <p>The nextLink parameter.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
@@ -4699,7 +4932,8 @@ public final class EventSubscriptionsClientImpl implements EventSubscriptionsCli
     /**
      * Get the next page of items.
      *
-     * @param nextLink The nextLink parameter.
+     * @param nextLink The URL to get the next list of items
+     *     <p>The nextLink parameter.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
@@ -4736,7 +4970,8 @@ public final class EventSubscriptionsClientImpl implements EventSubscriptionsCli
     /**
      * Get the next page of items.
      *
-     * @param nextLink The nextLink parameter.
+     * @param nextLink The URL to get the next list of items
+     *     <p>The nextLink parameter.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
@@ -4774,7 +5009,8 @@ public final class EventSubscriptionsClientImpl implements EventSubscriptionsCli
     /**
      * Get the next page of items.
      *
-     * @param nextLink The nextLink parameter.
+     * @param nextLink The URL to get the next list of items
+     *     <p>The nextLink parameter.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
@@ -4813,7 +5049,8 @@ public final class EventSubscriptionsClientImpl implements EventSubscriptionsCli
     /**
      * Get the next page of items.
      *
-     * @param nextLink The nextLink parameter.
+     * @param nextLink The URL to get the next list of items
+     *     <p>The nextLink parameter.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
@@ -4851,7 +5088,8 @@ public final class EventSubscriptionsClientImpl implements EventSubscriptionsCli
     /**
      * Get the next page of items.
      *
-     * @param nextLink The nextLink parameter.
+     * @param nextLink The URL to get the next list of items
+     *     <p>The nextLink parameter.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
@@ -4892,7 +5130,8 @@ public final class EventSubscriptionsClientImpl implements EventSubscriptionsCli
     /**
      * Get the next page of items.
      *
-     * @param nextLink The nextLink parameter.
+     * @param nextLink The URL to get the next list of items
+     *     <p>The nextLink parameter.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
@@ -4930,7 +5169,8 @@ public final class EventSubscriptionsClientImpl implements EventSubscriptionsCli
     /**
      * Get the next page of items.
      *
-     * @param nextLink The nextLink parameter.
+     * @param nextLink The URL to get the next list of items
+     *     <p>The nextLink parameter.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
@@ -4971,7 +5211,8 @@ public final class EventSubscriptionsClientImpl implements EventSubscriptionsCli
     /**
      * Get the next page of items.
      *
-     * @param nextLink The nextLink parameter.
+     * @param nextLink The URL to get the next list of items
+     *     <p>The nextLink parameter.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
@@ -5009,7 +5250,8 @@ public final class EventSubscriptionsClientImpl implements EventSubscriptionsCli
     /**
      * Get the next page of items.
      *
-     * @param nextLink The nextLink parameter.
+     * @param nextLink The URL to get the next list of items
+     *     <p>The nextLink parameter.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
@@ -5045,7 +5287,8 @@ public final class EventSubscriptionsClientImpl implements EventSubscriptionsCli
     /**
      * Get the next page of items.
      *
-     * @param nextLink The nextLink parameter.
+     * @param nextLink The URL to get the next list of items
+     *     <p>The nextLink parameter.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
@@ -5083,7 +5326,8 @@ public final class EventSubscriptionsClientImpl implements EventSubscriptionsCli
     /**
      * Get the next page of items.
      *
-     * @param nextLink The nextLink parameter.
+     * @param nextLink The URL to get the next list of items
+     *     <p>The nextLink parameter.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
@@ -5119,7 +5363,8 @@ public final class EventSubscriptionsClientImpl implements EventSubscriptionsCli
     /**
      * Get the next page of items.
      *
-     * @param nextLink The nextLink parameter.
+     * @param nextLink The URL to get the next list of items
+     *     <p>The nextLink parameter.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.

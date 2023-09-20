@@ -3,6 +3,7 @@
 
 package com.azure.core.util.serializer;
 
+import com.azure.core.http.HttpHeaderName;
 import com.azure.core.http.HttpHeaders;
 import com.azure.core.util.DateTimeRfc1123;
 import com.fasterxml.jackson.annotation.JsonProperty;
@@ -31,11 +32,11 @@ public class StronglyTypedHeadersBenchmark {
     private static final JacksonAdapter MAPPER = new JacksonAdapter();
 
     private static final HttpHeaders HEADERS = new HttpHeaders()
-        .set("Date", "Tue, 04 May 2021 23:22:58 GMT")
-        .set("Content-Length", "12345")
-        .set("Content-Type", "application/json")
-        .set("Last-Modified", "Tue, 04 May 2021 23:22:58 GMT")
-        .set("eTag", "0x8D90F538E5DF4FD");
+        .set(HttpHeaderName.DATE, "Tue, 04 May 2021 23:22:58 GMT")
+        .set(HttpHeaderName.CONTENT_LENGTH, "12345")
+        .set(HttpHeaderName.CONTENT_TYPE, "application/json")
+        .set(HttpHeaderName.LAST_MODIFIED, "Tue, 04 May 2021 23:22:58 GMT")
+        .set(HttpHeaderName.ETAG, "0x8D90F538E5DF4FD");
 
     @Benchmark
     public void jacksonDatabindConvertSomeProperties(Blackhole blackhole) throws IOException {
@@ -155,7 +156,7 @@ public class StronglyTypedHeadersBenchmark {
 
         public OffsetDateTime getDate() {
             if (!hasDateBeenDeserialized) {
-                date = new DateTimeRfc1123(rawHeaders.getValue("Date"));
+                date = new DateTimeRfc1123(rawHeaders.getValue(HttpHeaderName.DATE));
                 hasDateBeenDeserialized = true;
             }
 
@@ -164,7 +165,7 @@ public class StronglyTypedHeadersBenchmark {
 
         public int getContentLength() {
             if (!hasContentLengthBeenDeserialized) {
-                contentLength = Integer.parseInt(rawHeaders.getValue("Content-Length"));
+                contentLength = Integer.parseInt(rawHeaders.getValue(HttpHeaderName.CONTENT_LENGTH));
                 hasContentLengthBeenDeserialized = true;
             }
 
@@ -173,7 +174,7 @@ public class StronglyTypedHeadersBenchmark {
 
         public String getContentType() {
             if (!hasContentTypeBeenDeserialized) {
-                contentType = rawHeaders.getValue("Content-Type");
+                contentType = rawHeaders.getValue(HttpHeaderName.CONTENT_TYPE);
                 hasContentTypeBeenDeserialized = true;
             }
 
@@ -182,7 +183,7 @@ public class StronglyTypedHeadersBenchmark {
 
         public OffsetDateTime getLastModified() {
             if (!hasLastModifiedBeenDeserialized) {
-                lastModified = new DateTimeRfc1123(rawHeaders.getValue("Last-Modified"));
+                lastModified = new DateTimeRfc1123(rawHeaders.getValue(HttpHeaderName.LAST_MODIFIED));
                 hasLastModifiedBeenDeserialized = true;
             }
 
@@ -191,7 +192,7 @@ public class StronglyTypedHeadersBenchmark {
 
         public String getETag() {
             if (!hasETagBeenDeserialized) {
-                eTag = rawHeaders.getValue("eTag");
+                eTag = rawHeaders.getValue(HttpHeaderName.ETAG);
                 hasETagBeenDeserialized = true;
             }
 
@@ -211,11 +212,11 @@ public class StronglyTypedHeadersBenchmark {
         private final String eTag;
 
         Eager(HttpHeaders rawHeaders) {
-            date = new DateTimeRfc1123(rawHeaders.getValue("Date"));
-            contentLength = Integer.parseInt(rawHeaders.getValue("Content-Length"));
-            contentType = rawHeaders.getValue("Content-Type");
-            lastModified = new DateTimeRfc1123(rawHeaders.getValue("Last-Modified"));
-            eTag = rawHeaders.getValue("eTag");
+            date = new DateTimeRfc1123(rawHeaders.getValue(HttpHeaderName.DATE));
+            contentLength = Integer.parseInt(rawHeaders.getValue(HttpHeaderName.CONTENT_LENGTH));
+            contentType = rawHeaders.getValue(HttpHeaderName.CONTENT_TYPE);
+            lastModified = new DateTimeRfc1123(rawHeaders.getValue(HttpHeaderName.LAST_MODIFIED));
+            eTag = rawHeaders.getValue(HttpHeaderName.ETAG);
         }
 
         public OffsetDateTime getDate() {

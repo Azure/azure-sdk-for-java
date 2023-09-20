@@ -8,7 +8,7 @@ import com.azure.core.util.ExpandableStringEnum;
 import com.fasterxml.jackson.annotation.JsonCreator;
 import java.util.Collection;
 
-/** Defines values for ProvisioningState. */
+/** Object representing ProvisioningState for Confidential Ledger. */
 public final class ProvisioningState extends ExpandableStringEnum<ProvisioningState> {
     /** Static value Unknown for ProvisioningState. */
     public static final ProvisioningState UNKNOWN = fromString("Unknown");
@@ -30,6 +30,15 @@ public final class ProvisioningState extends ExpandableStringEnum<ProvisioningSt
 
     /** Static value Updating for ProvisioningState. */
     public static final ProvisioningState UPDATING = fromString("Updating");
+
+    /**
+     * Creates a new instance of ProvisioningState value.
+     *
+     * @deprecated Use the {@link #fromString(String)} factory method.
+     */
+    @Deprecated
+    public ProvisioningState() {
+    }
 
     /**
      * Creates or finds a ProvisioningState from its string representation.

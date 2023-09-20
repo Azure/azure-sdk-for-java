@@ -14,10 +14,9 @@ public final class CheckNameAvailabilityInputTests {
     public void testDeserialize() throws Exception {
         CheckNameAvailabilityInput model =
             BinaryData
-                .fromString(
-                    "{\"name\":\"osvexcsonpclhoc\",\"type\":\"Microsoft.Network/frontDoors/frontendEndpoints\"}")
+                .fromString("{\"name\":\"odgmaajrmvdjwz\",\"type\":\"Microsoft.Network/frontDoors/frontendEndpoints\"}")
                 .toObject(CheckNameAvailabilityInput.class);
-        Assertions.assertEquals("osvexcsonpclhoc", model.name());
+        Assertions.assertEquals("odgmaajrmvdjwz", model.name());
         Assertions.assertEquals(ResourceType.MICROSOFT_NETWORK_FRONT_DOORS_FRONTEND_ENDPOINTS, model.type());
     }
 
@@ -25,10 +24,10 @@ public final class CheckNameAvailabilityInputTests {
     public void testSerialize() throws Exception {
         CheckNameAvailabilityInput model =
             new CheckNameAvailabilityInput()
-                .withName("osvexcsonpclhoc")
+                .withName("odgmaajrmvdjwz")
                 .withType(ResourceType.MICROSOFT_NETWORK_FRONT_DOORS_FRONTEND_ENDPOINTS);
         model = BinaryData.fromObject(model).toObject(CheckNameAvailabilityInput.class);
-        Assertions.assertEquals("osvexcsonpclhoc", model.name());
+        Assertions.assertEquals("odgmaajrmvdjwz", model.name());
         Assertions.assertEquals(ResourceType.MICROSOFT_NETWORK_FRONT_DOORS_FRONTEND_ENDPOINTS, model.type());
     }
 }

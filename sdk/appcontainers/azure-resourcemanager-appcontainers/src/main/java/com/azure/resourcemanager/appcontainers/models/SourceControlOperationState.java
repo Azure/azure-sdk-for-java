@@ -23,6 +23,15 @@ public final class SourceControlOperationState extends ExpandableStringEnum<Sour
     public static final SourceControlOperationState CANCELED = fromString("Canceled");
 
     /**
+     * Creates a new instance of SourceControlOperationState value.
+     *
+     * @deprecated Use the {@link #fromString(String)} factory method.
+     */
+    @Deprecated
+    public SourceControlOperationState() {
+    }
+
+    /**
      * Creates or finds a SourceControlOperationState from its string representation.
      *
      * @param name a name to look for.

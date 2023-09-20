@@ -34,7 +34,7 @@ public final class NetworkExperimentProfilesCreateOrUpdateMockTests {
         ArgumentCaptor<HttpRequest> httpRequest = ArgumentCaptor.forClass(HttpRequest.class);
 
         String responseStr =
-            "{\"properties\":{\"resourceState\":\"Deleting\",\"enabledState\":\"Enabled\"},\"etag\":\"ibbdaxconfoza\",\"location\":\"orsukokwbqp\",\"tags\":{\"phwzsoldweyuqdu\":\"vnuuepzl\",\"biorktal\":\"vmnnrw\",\"miloxggdufiqndie\":\"wjhhgdnhxmsivf\"},\"id\":\"zaofjchvcyy\",\"name\":\"s\",\"type\":\"gdotcubiipuipwo\"}";
+            "{\"properties\":{\"resourceState\":\"Enabled\",\"enabledState\":\"Disabled\"},\"etag\":\"dp\",\"location\":\"s\",\"tags\":{\"mi\":\"btgkbugrjqctoj\",\"eypefojyqd\":\"of\",\"hlhzdsqtzbsrgno\":\"cuplcplcwkhih\",\"teyowclu\":\"cjhfgmvecactxmw\"},\"id\":\"ovekqvgqouwi\",\"name\":\"zmpjwyiv\",\"type\":\"ikf\"}";
 
         Mockito.when(httpResponse.getStatusCode()).thenReturn(200);
         Mockito.when(httpResponse.getHeaders()).thenReturn(new HttpHeaders());
@@ -65,18 +65,27 @@ public final class NetworkExperimentProfilesCreateOrUpdateMockTests {
         Profile response =
             manager
                 .networkExperimentProfiles()
-                .define("znmwcp")
-                .withRegion("kulfg")
-                .withExistingResourceGroup("guaadraufactkahz")
-                .withTags(mapOf("rds", "ubkwdle", "hminyflnorwmduv", "tujbazpju"))
-                .withEtag("uxxpshne")
+                .define("hrv")
+                .withRegion("ydvfvfcjnae")
+                .withExistingResourceGroup("bunzozudh")
+                .withTags(
+                    mapOf(
+                        "fukiscvwmzhw",
+                        "rvhmgor",
+                        "nzeyqxtjj",
+                        "lefaxvxilcbtgn",
+                        "vodggxdbee",
+                        "zqlqhyc",
+                        "wiuagydwqf",
+                        "mieknlraria"))
+                .withEtag("xcdyuibhmfdnb")
                 .withEnabledState(State.DISABLED)
                 .create();
 
-        Assertions.assertEquals("orsukokwbqp", response.location());
-        Assertions.assertEquals("vnuuepzl", response.tags().get("phwzsoldweyuqdu"));
-        Assertions.assertEquals("ibbdaxconfoza", response.etag());
-        Assertions.assertEquals(State.ENABLED, response.enabledState());
+        Assertions.assertEquals("s", response.location());
+        Assertions.assertEquals("btgkbugrjqctoj", response.tags().get("mi"));
+        Assertions.assertEquals("dp", response.etag());
+        Assertions.assertEquals(State.DISABLED, response.enabledState());
     }
 
     @SuppressWarnings("unchecked")

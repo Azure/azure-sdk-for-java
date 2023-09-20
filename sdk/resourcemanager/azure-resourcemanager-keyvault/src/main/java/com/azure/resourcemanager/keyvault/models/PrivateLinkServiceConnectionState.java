@@ -28,6 +28,10 @@ public final class PrivateLinkServiceConnectionState {
     @JsonProperty(value = "actionsRequired")
     private ActionsRequired actionsRequired;
 
+    /** Creates an instance of PrivateLinkServiceConnectionState class. */
+    public PrivateLinkServiceConnectionState() {
+    }
+
     /**
      * Get the status property: Indicates whether the connection has been approved, rejected or removed by the key vault
      * owner.

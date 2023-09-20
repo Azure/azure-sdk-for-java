@@ -4,7 +4,6 @@
 
 package com.azure.resourcemanager.resourceconnector.generated;
 
-import com.azure.core.util.Context;
 import com.azure.resourcemanager.resourceconnector.models.Appliance;
 import java.util.HashMap;
 import java.util.Map;
@@ -12,22 +11,23 @@ import java.util.Map;
 /** Samples for Appliances Update. */
 public final class AppliancesUpdateSamples {
     /*
-     * x-ms-original-file: specification/resourceconnector/resource-manager/Microsoft.ResourceConnector/preview/2022-04-15-preview/examples/AppliancesPatch.json
+     * x-ms-original-file: specification/resourceconnector/resource-manager/Microsoft.ResourceConnector/stable/2022-10-27/examples/AppliancesPatch.json
      */
     /**
      * Sample code: Update Appliance.
      *
-     * @param manager Entry point to AppliancesManager.
+     * @param manager Entry point to ResourceConnectorManager.
      */
-    public static void updateAppliance(com.azure.resourcemanager.resourceconnector.AppliancesManager manager) {
+    public static void updateAppliance(com.azure.resourcemanager.resourceconnector.ResourceConnectorManager manager) {
         Appliance resource =
             manager
                 .appliances()
-                .getByResourceGroupWithResponse("testresourcegroup", "appliance01", Context.NONE)
+                .getByResourceGroupWithResponse("testresourcegroup", "appliance01", com.azure.core.util.Context.NONE)
                 .getValue();
-        resource.update().withTags(mapOf("key", "value")).apply();
+        resource.update().withTags(mapOf("key", "fakeTokenPlaceholder")).apply();
     }
 
+    // Use "Map.of" if available
     @SuppressWarnings("unchecked")
     private static <T> Map<String, T> mapOf(Object... inputs) {
         Map<String, T> map = new HashMap<>();

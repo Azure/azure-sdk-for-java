@@ -30,7 +30,7 @@ public final class SecuritySolutionsReferenceDatasListWithResponseMockTests {
         ArgumentCaptor<HttpRequest> httpRequest = ArgumentCaptor.forClass(HttpRequest.class);
 
         String responseStr =
-            "{\"value\":[{\"location\":\"fojiunrlsh\",\"id\":\"uknsykdtoi\",\"name\":\"oancdrco\",\"type\":\"nvxuldxonckb\"},{\"location\":\"blfxlupibaqzi\",\"id\":\"xz\",\"name\":\"zweghlwwbogvg\",\"type\":\"klqiyndveqel\"},{\"location\":\"fvdstrkzxsgt\",\"id\":\"ns\",\"name\":\"lr\",\"type\":\"smovpi\"}]}";
+            "{\"value\":[{\"location\":\"iljpibk\",\"id\":\"xyxyaux\",\"name\":\"eddobmcnltm\",\"type\":\"ytkujsq\"}]}";
 
         Mockito.when(httpResponse.getStatusCode()).thenReturn(200);
         Mockito.when(httpResponse.getHeaders()).thenReturn(new HttpHeaders());

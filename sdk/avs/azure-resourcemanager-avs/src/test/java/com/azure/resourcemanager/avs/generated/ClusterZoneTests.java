@@ -12,7 +12,7 @@ public final class ClusterZoneTests {
     public void testDeserialize() throws Exception {
         ClusterZone model =
             BinaryData
-                .fromString("{\"hosts\":[\"klyaxuconu\",\"szfkbe\",\"pewr\"],\"zone\":\"mwvvjektcxsenhw\"}")
+                .fromString("{\"hosts\":[\"pnapnyiropuh\",\"igvpgylg\",\"git\",\"medjvcslynqwwncw\"],\"zone\":\"hxg\"}")
                 .toObject(ClusterZone.class);
     }
 

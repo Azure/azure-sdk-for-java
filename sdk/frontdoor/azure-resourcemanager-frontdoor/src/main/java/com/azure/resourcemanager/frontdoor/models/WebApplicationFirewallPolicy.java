@@ -286,13 +286,7 @@ public interface WebApplicationFirewallPolicy {
     WebApplicationFirewallPolicy.Update update();
 
     /** The template for WebApplicationFirewallPolicy update. */
-    interface Update
-        extends UpdateStages.WithTags,
-            UpdateStages.WithEtag,
-            UpdateStages.WithSku,
-            UpdateStages.WithPolicySettings,
-            UpdateStages.WithCustomRules,
-            UpdateStages.WithManagedRules {
+    interface Update extends UpdateStages.WithTags {
         /**
          * Executes the update request.
          *
@@ -319,59 +313,6 @@ public interface WebApplicationFirewallPolicy {
              * @return the next definition stage.
              */
             Update withTags(Map<String, String> tags);
-        }
-        /** The stage of the WebApplicationFirewallPolicy update allowing to specify etag. */
-        interface WithEtag {
-            /**
-             * Specifies the etag property: Gets a unique read-only string that changes whenever the resource is
-             * updated..
-             *
-             * @param etag Gets a unique read-only string that changes whenever the resource is updated.
-             * @return the next definition stage.
-             */
-            Update withEtag(String etag);
-        }
-        /** The stage of the WebApplicationFirewallPolicy update allowing to specify sku. */
-        interface WithSku {
-            /**
-             * Specifies the sku property: The pricing tier of web application firewall policy. Defaults to
-             * Classic_AzureFrontDoor if not specified..
-             *
-             * @param sku The pricing tier of web application firewall policy. Defaults to Classic_AzureFrontDoor if not
-             *     specified.
-             * @return the next definition stage.
-             */
-            Update withSku(Sku sku);
-        }
-        /** The stage of the WebApplicationFirewallPolicy update allowing to specify policySettings. */
-        interface WithPolicySettings {
-            /**
-             * Specifies the policySettings property: Describes settings for the policy..
-             *
-             * @param policySettings Describes settings for the policy.
-             * @return the next definition stage.
-             */
-            Update withPolicySettings(PolicySettings policySettings);
-        }
-        /** The stage of the WebApplicationFirewallPolicy update allowing to specify customRules. */
-        interface WithCustomRules {
-            /**
-             * Specifies the customRules property: Describes custom rules inside the policy..
-             *
-             * @param customRules Describes custom rules inside the policy.
-             * @return the next definition stage.
-             */
-            Update withCustomRules(CustomRuleList customRules);
-        }
-        /** The stage of the WebApplicationFirewallPolicy update allowing to specify managedRules. */
-        interface WithManagedRules {
-            /**
-             * Specifies the managedRules property: Describes managed rules inside the policy..
-             *
-             * @param managedRules Describes managed rules inside the policy.
-             * @return the next definition stage.
-             */
-            Update withManagedRules(ManagedRuleSetList managedRules);
         }
     }
     /**

@@ -14,18 +14,18 @@ public final class OperationResultPropertiesTests {
         OperationResultProperties model =
             BinaryData
                 .fromString(
-                    "{\"operationKind\":\"xwabmqoe\",\"provisioningState\":\"Running\",\"operationState\":\"rvtp\"}")
+                    "{\"operationKind\":\"irctymoxoftpipiw\",\"provisioningState\":\"Canceled\",\"operationState\":\"hxacpqjlihhyu\"}")
                 .toObject(OperationResultProperties.class);
-        Assertions.assertEquals("xwabmqoe", model.operationKind());
-        Assertions.assertEquals("rvtp", model.operationState());
+        Assertions.assertEquals("irctymoxoftpipiw", model.operationKind());
+        Assertions.assertEquals("hxacpqjlihhyu", model.operationState());
     }
 
     @org.junit.jupiter.api.Test
     public void testSerialize() throws Exception {
         OperationResultProperties model =
-            new OperationResultProperties().withOperationKind("xwabmqoe").withOperationState("rvtp");
+            new OperationResultProperties().withOperationKind("irctymoxoftpipiw").withOperationState("hxacpqjlihhyu");
         model = BinaryData.fromObject(model).toObject(OperationResultProperties.class);
-        Assertions.assertEquals("xwabmqoe", model.operationKind());
-        Assertions.assertEquals("rvtp", model.operationState());
+        Assertions.assertEquals("irctymoxoftpipiw", model.operationKind());
+        Assertions.assertEquals("hxacpqjlihhyu", model.operationState());
     }
 }

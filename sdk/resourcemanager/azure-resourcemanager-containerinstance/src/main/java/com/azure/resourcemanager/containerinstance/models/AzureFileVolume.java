@@ -18,8 +18,7 @@ public final class AzureFileVolume {
     private String shareName;
 
     /*
-     * The flag indicating whether the Azure File shared mounted as a volume is
-     * read-only.
+     * The flag indicating whether the Azure File shared mounted as a volume is read-only.
      */
     @JsonProperty(value = "readOnly")
     private Boolean readOnly;
@@ -35,6 +34,10 @@ public final class AzureFileVolume {
      */
     @JsonProperty(value = "storageAccountKey")
     private String storageAccountKey;
+
+    /** Creates an instance of AzureFileVolume class. */
+    public AzureFileVolume() {
+    }
 
     /**
      * Get the shareName property: The name of the Azure File share to be mounted as a volume.

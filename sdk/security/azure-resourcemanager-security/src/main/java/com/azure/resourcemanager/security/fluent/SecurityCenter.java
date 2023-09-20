@@ -353,13 +353,6 @@ public interface SecurityCenter {
     SoftwareInventoriesClient getSoftwareInventories();
 
     /**
-     * Gets the SecurityConnectorsClient object to access its operations.
-     *
-     * @return the SecurityConnectorsClient object.
-     */
-    SecurityConnectorsClient getSecurityConnectors();
-
-    /**
      * Gets the GovernanceRulesClient object to access its operations.
      *
      * @return the GovernanceRulesClient object.
@@ -456,4 +449,18 @@ public interface SecurityCenter {
      * @return the SqlVulnerabilityAssessmentBaselineRulesClient object.
      */
     SqlVulnerabilityAssessmentBaselineRulesClient getSqlVulnerabilityAssessmentBaselineRules();
+
+    /**
+     * Gets the SecurityConnectorsClient object to access its operations.
+     *
+     * @return the SecurityConnectorsClient object.
+     */
+    SecurityConnectorsClient getSecurityConnectors();
+
+    /**
+     * Gets the SecurityOperatorsClient object to access its operations.
+     *
+     * @return the SecurityOperatorsClient object.
+     */
+    SecurityOperatorsClient getSecurityOperators();
 }

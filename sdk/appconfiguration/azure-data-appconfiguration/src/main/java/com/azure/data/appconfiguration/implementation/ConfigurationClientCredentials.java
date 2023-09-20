@@ -2,8 +2,12 @@
 // Licensed under the MIT License.
 package com.azure.data.appconfiguration.implementation;
 
+import com.azure.core.http.HttpHeaderName;
+import com.azure.core.http.HttpHeaders;
+import com.azure.core.http.HttpRequest;
 import com.azure.core.util.BinaryData;
 import com.azure.core.util.CoreUtils;
+import com.azure.core.util.DateTimeRfc1123;
 import com.azure.core.util.logging.ClientLogger;
 import com.azure.data.appconfiguration.ConfigurationClientBuilder;
 import reactor.core.Exceptions;
@@ -14,55 +18,38 @@ import java.net.MalformedURLException;
 import java.net.URL;
 import java.nio.ByteBuffer;
 import java.nio.charset.StandardCharsets;
-import java.security.InvalidKeyException;
+import java.security.GeneralSecurityException;
 import java.security.MessageDigest;
-import java.security.NoSuchAlgorithmException;
 import java.time.OffsetDateTime;
 import java.time.ZoneOffset;
-import java.time.format.DateTimeFormatter;
-import java.util.Arrays;
 import java.util.Base64;
-import java.util.HashMap;
 import java.util.Locale;
-import java.util.Map;
-import java.util.stream.Collectors;
 
 import static com.azure.data.appconfiguration.implementation.FakeCredentialConstants.SECRET_PLACEHOLDER;
 
 /**
- * Credentials that authorizes requests to Azure App Configuration. It uses content within the HTTP request to
- * generate the correct "Authorization" header value. {@link ConfigurationCredentialsPolicy} ensures that the content
- * exists in the HTTP request so that a valid authorization value is generated.
+ * Credentials that authorizes requests to Azure App Configuration. It uses content within the HTTP request to generate
+ * the correct "Authorization" header value. {@link ConfigurationCredentialsPolicy} ensures that the content exists in
+ * the HTTP request so that a valid authorization value is generated.
  *
  * @see ConfigurationCredentialsPolicy
  * @see ConfigurationClientBuilder
  */
 public class ConfigurationClientCredentials {
-    private final ClientLogger logger = new ClientLogger(ConfigurationClientCredentials.class);
-
+    private static final ClientLogger LOGGER = new ClientLogger(ConfigurationClientCredentials.class);
     private static final ByteBuffer EMPTY_BYTE_BUFFER = ByteBuffer.allocate(0);
-    private static final String HOST_HEADER = "Host";
-    private static final String DATE_HEADER = "Date";
-    private static final String CONTENT_HASH_HEADER = "x-ms-content-sha256";
-    private static final String[] SIGNED_HEADERS = new String[]{HOST_HEADER, DATE_HEADER, CONTENT_HASH_HEADER };
-    private static final String AUTHORIZATION_HEADER = "Authorization";
+    static final HttpHeaderName X_MS_CONTENT_SHA256 = HttpHeaderName.fromString("x-ms-content-sha256");
 
     private final CredentialInformation credentials;
-    private final AuthorizationHeaderProvider headerProvider;
 
     /**
      * Creates an instance that is able to authorize requests to Azure App Configuration service.
      *
      * @param connectionString Connection string in the format "endpoint={endpoint_value};id={id_value};
-     *     secret={secret_value}"
-     * @throws NoSuchAlgorithmException When the HMAC-SHA256 MAC algorithm cannot be instantiated.
-     * @throws InvalidKeyException When the {@code connectionString} secret is invalid and cannot instantiate the
-     *     HMAC-SHA256 algorithm.
+     * secret={secret_value}"
      */
-    public ConfigurationClientCredentials(String connectionString)
-        throws InvalidKeyException, NoSuchAlgorithmException {
+    public ConfigurationClientCredentials(String connectionString) {
         credentials = new CredentialInformation(connectionString);
-        headerProvider = new AuthorizationHeaderProvider(credentials);
     }
 
     /**
@@ -74,84 +61,56 @@ public class ConfigurationClientCredentials {
         return this.credentials.baseUri().toString();
     }
 
+
     /**
-     * Gets a list of headers to add to a request to authenticate it to the Azure APp Configuration service.
+     * Sets the {@code Authorization} header on the request.
      *
-     * @param url the request url
-     * @param httpMethod the request HTTP method
-     * @param binaryData the body content of the request
-     * @return a map of headers to add for authorization
-     * @throws NoSuchAlgorithmException If the SHA-256 algorithm doesn't exist.
+     * @param httpRequest The request being authenticated.
      */
-    Map<String, String> getAuthorizationHeaders(URL url, String httpMethod, BinaryData binaryData) {
+    void setAuthorizationHeaders(HttpRequest httpRequest) {
+        BinaryData binaryData = httpRequest.getBodyAsBinaryData();
         final ByteBuffer byteBuffer = binaryData == null ? EMPTY_BYTE_BUFFER : binaryData.toByteBuffer();
 
-        MessageDigest messageDigest;
         try {
-            messageDigest = MessageDigest.getInstance("SHA-256");
-        } catch (NoSuchAlgorithmException e) {
-            throw logger.logExceptionAsError(Exceptions.propagate(e));
-        }
-        messageDigest.update(byteBuffer);
-
-        return headerProvider.getAuthenticationHeaders(
-            url,
-            httpMethod,
-            messageDigest);
-    }
-
-    private static class AuthorizationHeaderProvider {
-        private final String signedHeadersValue = String.join(";", SIGNED_HEADERS);
-        private static final String HMAC_SHA256 = "HMAC-SHA256 Credential=%s&SignedHeaders=%s&Signature=%s";
-        private final CredentialInformation credentials;
-        private final Mac sha256HMAC;
-
-        AuthorizationHeaderProvider(CredentialInformation credentials)
-            throws NoSuchAlgorithmException, InvalidKeyException {
-            this.credentials = credentials;
-
-            sha256HMAC = Mac.getInstance("HmacSHA256");
+            // Initialize everything that may throw first.
+            MessageDigest messageDigest = MessageDigest.getInstance("SHA-256");
+            Mac sha256HMAC = Mac.getInstance("HmacSHA256");
             sha256HMAC.init(new SecretKeySpec(credentials.secret(), "HmacSHA256"));
-        }
 
-        private Map<String, String> getAuthenticationHeaders(final URL url, final String httpMethod,
-                                                             final MessageDigest messageDigest) {
-            final Map<String, String> headers = new HashMap<>();
-            final String contentHash = Base64.getEncoder().encodeToString(messageDigest.digest());
+            messageDigest.update(byteBuffer.duplicate());
 
-            // All three of these headers are used by ConfigurationClientCredentials to generate the
-            // Authentication header value. So, we need to ensure that they exist.
-            headers.put(HOST_HEADER, url.getHost());
-            headers.put(CONTENT_HASH_HEADER, contentHash);
+            String contentHash = Base64.getEncoder().encodeToString(messageDigest.digest());
 
-            if (headers.get(DATE_HEADER) == null) {
-                String utcNow = OffsetDateTime.now(ZoneOffset.UTC).format(DateTimeFormatter.RFC_1123_DATE_TIME);
-                headers.put(DATE_HEADER, utcNow);
-            }
-
-            addSignatureHeader(url, httpMethod, headers);
-            return headers;
-        }
-
-        private void addSignatureHeader(final URL url, final String httpMethod, final Map<String, String> httpHeaders) {
+            URL url = httpRequest.getUrl();
             String pathAndQuery = url.getPath();
             if (url.getQuery() != null) {
                 pathAndQuery += '?' + url.getQuery();
             }
 
-            final String signed = Arrays.stream(SIGNED_HEADERS)
-                .map(httpHeaders::get)
-                .collect(Collectors.joining(";"));
+            HttpHeaders headers = httpRequest.getHeaders();
+            String date = headers.getValue(HttpHeaderName.DATE);
+            if (date == null) {
+                date = DateTimeRfc1123.toRfc1123String(OffsetDateTime.now(ZoneOffset.UTC));
+                headers.set(HttpHeaderName.DATE, date);
+            }
+
+            String signed = url.getHost() + ";" + date + ";" + contentHash;
+
+            headers.set(HttpHeaderName.HOST, url.getHost())
+                .set(X_MS_CONTENT_SHA256, contentHash);
 
             // String-To-Sign=HTTP_METHOD + '\n' + path_and_query + '\n' + signed_headers_values
             // Signed headers: "host;x-ms-date;x-ms-content-sha256"
             // The line separator has to be \n. Using %n with String.format will result in a 401 from the service.
-            String stringToSign = httpMethod.toUpperCase(Locale.US) + "\n" + pathAndQuery + "\n" + signed;
+            String stringToSign = httpRequest.getHttpMethod().toString().toUpperCase(Locale.US)
+                + "\n" + pathAndQuery + "\n" + signed;
 
-            final String signature =
-                Base64.getEncoder().encodeToString(sha256HMAC.doFinal(stringToSign.getBytes(StandardCharsets.UTF_8)));
-            httpHeaders.put(AUTHORIZATION_HEADER,
-                String.format(HMAC_SHA256, credentials.id(), signedHeadersValue, signature));
+            String signature = Base64.getEncoder()
+                .encodeToString(sha256HMAC.doFinal(stringToSign.getBytes(StandardCharsets.UTF_8)));
+            headers.set(HttpHeaderName.AUTHORIZATION, "HMAC-SHA256 Credential=" + credentials.id()
+                + "&SignedHeaders=Host;Date;x-ms-content-sha256&Signature=" + signature);
+        } catch (GeneralSecurityException e) {
+            throw LOGGER.logExceptionAsError(Exceptions.propagate(e));
         }
     }
 
@@ -192,17 +151,16 @@ public class ConfigurationClientCredentials {
 
             for (String arg : args) {
                 String segment = arg.trim();
-                String lowerCase = segment.toLowerCase(Locale.US);
 
-                if (lowerCase.startsWith(ENDPOINT)) {
+                if (ENDPOINT.regionMatches(true, 0, segment, 0, ENDPOINT.length())) {
                     try {
                         baseUri = new URL(segment.substring(ENDPOINT.length()));
                     } catch (MalformedURLException ex) {
                         throw new IllegalArgumentException(ex);
                     }
-                } else if (lowerCase.startsWith(ID)) {
+                } else if (ID.regionMatches(true, 0, segment, 0, ID.length())) {
                     id = segment.substring(ID.length());
-                } else if (lowerCase.startsWith(SECRET)) {
+                } else if (SECRET.regionMatches(true, 0, segment, 0, SECRET.length())) {
                     String secretBase64 = segment.substring(SECRET.length());
                     secret = Base64.getDecoder().decode(secretBase64);
                 }
@@ -212,7 +170,8 @@ public class ConfigurationClientCredentials {
             this.id = id;
             this.secret = secret;
 
-            if (this.baseUri == null || CoreUtils.isNullOrEmpty(this.id) || this.secret == null) {
+            if (this.baseUri == null || CoreUtils.isNullOrEmpty(this.id)
+                || this.secret == null || this.secret.length == 0) {
                 throw new IllegalArgumentException("Could not parse 'connectionString'."
                     + " Expected format: 'endpoint={endpoint};id={id};secret={secret}'. Actual:" + connectionString);
             }

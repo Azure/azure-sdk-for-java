@@ -1,14 +1,75 @@
 # Release History
 
-## 2.26.0-beta.1 (Unreleased)
+## 2.31.0-beta.1 (Unreleased)
 
 ### Features Added
+
+- Supported `listByVirtualMachineScaleSet` for `VirtualMachines`.
 
 ### Breaking Changes
 
 ### Bugs Fixed
 
+- Fixed a bug that `VirtualMachineCustomImages.getById()` returns `HyperVGenerationTypes.V1` for all instances. ([#36619](https://github.com/Azure/azure-sdk-for-java/issues/36619))
+
 ### Other Changes
+
+## 2.30.0 (2023-08-25)
+
+### Features Added
+
+- Supported updating delete options for OS disk, data disks and network interfaces attached to `VirtualMachine`.
+
+### Bugs Fixed
+
+- Fixed bug that create proximity placement group with `VirtualMachineScaleSet` fails. ([#36417](https://github.com/Azure/azure-sdk-for-java/issues/36417))
+
+### Other Changes
+
+#### Dependency Updates
+
+- Updated `api-version` to `2023-07-01`.
+
+## 2.29.0 (2023-07-28)
+
+### Other Changes
+
+#### Dependency Updates
+
+- Updated core dependency from resources.
+
+## 2.28.0 (2023-06-25)
+
+### Features Added
+
+- Supported `withLogicalSectorSizeInBytes` in `Disk`.
+- Supported `PREMIUM_V2_LRS` in `DiskSkuTypes`.
+
+## 2.27.0 (2023-05-25)
+
+### Other Changes
+
+#### Dependency Updates
+
+- Updated core dependency from resources.
+
+## 2.26.0 (2023-04-21)
+
+### Features Added
+
+- Supported `timeCreated()` in `VirtualMachineScaleSetVM` and `VirtualMachine`.
+
+### Breaking Changes
+
+- Changed type from `ApiEntityReference` to `DiskRestorePointAttributes` of `diskRestorePoint` property in `RestorePointSourceVMDataDisk` and `RestorePointSourceVmosDisk` class.
+- Removed some setters in `RestorePointSourceMetadata`, `RestorePointSourceVmosDisk`, `RestorePointSourceVmosDisk` class. It should not affect customer, as these properties are read-only.
+- Removed `id` property from classes. It should not affect customer, as these properties does not exist in runtime.
+
+### Other Changes
+
+#### Dependency Updates
+
+- Updated `api-version` to `2023-03-01`.
 
 ## 2.25.0 (2023-03-24)
 

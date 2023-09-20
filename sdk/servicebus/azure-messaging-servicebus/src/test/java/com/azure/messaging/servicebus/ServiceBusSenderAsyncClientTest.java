@@ -29,16 +29,15 @@ import com.azure.messaging.servicebus.implementation.ServiceBusAmqpConnection;
 import com.azure.messaging.servicebus.implementation.ServiceBusConnectionProcessor;
 import com.azure.messaging.servicebus.implementation.ServiceBusConstants;
 import com.azure.messaging.servicebus.implementation.ServiceBusManagementNode;
+import com.azure.messaging.servicebus.implementation.instrumentation.ServiceBusSenderInstrumentation;
 import com.azure.messaging.servicebus.models.CreateMessageBatchOptions;
 import org.apache.qpid.proton.amqp.messaging.Section;
 import org.apache.qpid.proton.amqp.transaction.TransactionalState;
 import org.apache.qpid.proton.amqp.transport.DeliveryState;
 import org.apache.qpid.proton.engine.SslDomain;
 import org.apache.qpid.proton.message.Message;
-import org.junit.jupiter.api.AfterAll;
 import org.junit.jupiter.api.AfterEach;
 import org.junit.jupiter.api.Assertions;
-import org.junit.jupiter.api.BeforeAll;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.mockito.ArgumentCaptor;
@@ -103,6 +102,7 @@ class ServiceBusSenderAsyncClientTest {
     private static final String TXN_ID_STRING = "1";
     private static final String CLIENT_IDENTIFIER = "my-client-identifier";
     private static final ServiceBusSenderInstrumentation DEFAULT_INSTRUMENTATION = new ServiceBusSenderInstrumentation(null, null, NAMESPACE, ENTITY_NAME);
+    private static final Duration DEFAULT_TIMEOUT = Duration.ofSeconds(30);
     @Mock
     private AmqpSendLink sendLink;
     @Mock
@@ -145,16 +145,6 @@ class ServiceBusSenderAsyncClientTest {
     private ServiceBusSenderAsyncClient sender;
     private ServiceBusConnectionProcessor connectionProcessor;
     private ConnectionOptions connectionOptions;
-
-    @BeforeAll
-    static void beforeAll() {
-        StepVerifier.setDefaultTimeout(Duration.ofSeconds(30));
-    }
-
-    @AfterAll
-    static void afterAll() {
-        StepVerifier.resetDefaultTimeout();
-    }
 
     @BeforeEach
     void setup() {
@@ -209,7 +199,8 @@ class ServiceBusSenderAsyncClientTest {
     @Test
     void createBatchNull() {
         StepVerifier.create(sender.createMessageBatch(null))
-            .verifyErrorMatches(error -> error instanceof NullPointerException);
+            .expectErrorMatches(error -> error instanceof NullPointerException)
+            .verify(DEFAULT_TIMEOUT);
     }
 
     /**
@@ -228,7 +219,8 @@ class ServiceBusSenderAsyncClientTest {
                 Assertions.assertEquals(MAX_MESSAGE_LENGTH_BYTES, batch.getMaxSizeInBytes());
                 Assertions.assertEquals(0, batch.getCount());
             })
-            .verifyComplete();
+            .expectComplete()
+            .verify(DEFAULT_TIMEOUT);
     }
 
     /**
@@ -252,7 +244,7 @@ class ServiceBusSenderAsyncClientTest {
         // Act & Assert
         StepVerifier.create(sender.createMessageBatch(options))
             .expectError(ServiceBusException.class)
-            .verify();
+            .verify(DEFAULT_TIMEOUT);
     }
 
     /**
@@ -287,14 +279,16 @@ class ServiceBusSenderAsyncClientTest {
                 Assertions.assertEquals(batchSize, batch.getMaxSizeInBytes());
                 Assertions.assertTrue(batch.tryAddMessage(event));
             })
-            .verifyComplete();
+            .expectComplete()
+            .verify(DEFAULT_TIMEOUT);
 
         StepVerifier.create(sender.createMessageBatch(options))
             .assertNext(batch -> {
                 Assertions.assertEquals(batchSize, batch.getMaxSizeInBytes());
                 Assertions.assertFalse(batch.tryAddMessage(tooLargeEvent));
             })
-            .verifyComplete();
+            .expectComplete()
+            .verify(DEFAULT_TIMEOUT);
     }
 
     @Test
@@ -315,7 +309,8 @@ class ServiceBusSenderAsyncClientTest {
 
         // Act & Assert
         StepVerifier.create(sender.scheduleMessages(messages, instant))
-            .verifyError(ServiceBusException.class);
+            .expectError(ServiceBusException.class)
+            .verify(DEFAULT_TIMEOUT);
 
         verify(managementNode, never()).schedule(any(), eq(instant), anyInt(), eq(LINK_NAME), isNull());
     }
@@ -344,7 +339,8 @@ class ServiceBusSenderAsyncClientTest {
 
         // Act
         StepVerifier.create(sender.sendMessages(batch, transactionContext))
-            .verifyComplete();
+            .expectComplete()
+            .verify(DEFAULT_TIMEOUT);
 
         // Assert
         verify(sendLink).send(messagesCaptor.capture(), amqpDeliveryStateCaptor.capture());
@@ -381,7 +377,8 @@ class ServiceBusSenderAsyncClientTest {
         when(sendLink.send(anyList())).thenReturn(Mono.empty());
         // Act
         StepVerifier.create(sender.sendMessages(batch))
-            .verifyComplete();
+            .expectComplete()
+            .verify(DEFAULT_TIMEOUT);
 
         // Assert
         verify(sendLink).send(messagesCaptor.capture());
@@ -440,7 +437,8 @@ class ServiceBusSenderAsyncClientTest {
 
         // Act
         StepVerifier.create(sender.sendMessages(batch))
-            .verifyComplete();
+            .expectComplete()
+            .verify(DEFAULT_TIMEOUT);
 
         // Assert
         verify(tracer1, times(4))
@@ -448,6 +446,88 @@ class ServiceBusSenderAsyncClientTest {
         verify(tracer1, times(1))
             .start(eq("ServiceBus.send"), any(StartSpanOptions.class), any(Context.class));
         verify(tracer1, times(5)).end(isNull(), isNull(), any(Context.class));
+    }
+
+    @Test
+    @SuppressWarnings("unchecked")
+    void sendCancelledIsInstrumented() {
+        // Arrange
+        final Tracer tracer1 = mock(Tracer.class);
+        final TestMeter meter = new TestMeter();
+        when(tracer1.isEnabled()).thenReturn(true);
+        ServiceBusSenderInstrumentation instrumentation = new ServiceBusSenderInstrumentation(tracer1, meter, NAMESPACE, ENTITY_NAME);
+
+        sender = new ServiceBusSenderAsyncClient(ENTITY_NAME, MessagingEntityType.QUEUE, connectionProcessor,
+            retryOptions, instrumentation, serializer, onClientClose, null, CLIENT_IDENTIFIER);
+
+        when(connection.createSendLink(eq(ENTITY_NAME), eq(ENTITY_NAME), eq(retryOptions), isNull(), eq(CLIENT_IDENTIFIER)))
+            .thenReturn(Mono.just(sendLink));
+
+        when(sendLink.send(any(Message.class))).thenAnswer(i -> Mono.delay(Duration.ofSeconds(10)).then());
+
+        when(tracer1.start(eq("ServiceBus.message"), any(), any(Context.class))).thenAnswer(
+            invocation -> invocation.getArgument(2, Context.class)
+                .addData(SPAN_CONTEXT_KEY, "span"));
+
+        when(tracer1.start(eq("ServiceBus.send"), any(), any(Context.class))).thenAnswer(
+            invocation -> invocation.getArgument(2, Context.class)
+                .addData(PARENT_TRACE_CONTEXT_KEY, "trace-context")
+        );
+
+        doAnswer(invocation -> null).when(tracer1).injectContext(any(), any(Context.class));
+
+        // Act
+        sender.sendMessage(new ServiceBusMessage(BinaryData.fromBytes(TEST_CONTENTS.toBytes())))
+            .toFuture().cancel(true);
+
+        // Assert
+        verify(tracer1, times(1))
+            .start(eq("ServiceBus.message"), any(StartSpanOptions.class), any(Context.class));
+        verify(tracer1, times(1))
+            .start(eq("ServiceBus.send"), any(StartSpanOptions.class), any(Context.class));
+        verify(tracer1, times(1)).end(eq("cancelled"), isNull(), any(Context.class));
+
+        TestCounter sentMessagesCounter = meter.getCounters().get("messaging.servicebus.messages.sent");
+        assertNotNull(sentMessagesCounter);
+        assertEquals(1, sentMessagesCounter.getMeasurements().size());
+
+        TestMeasurement<Long> measurement1 = sentMessagesCounter.getMeasurements().get(0);
+        assertEquals(1, measurement1.getValue());
+
+        Map<String, Object> attributes1 = measurement1.getAttributes();
+        assertEquals(3, attributes1.size());
+        assertCommonMetricAttributes(attributes1, "cancelled");
+    }
+
+    @Test
+    @SuppressWarnings("unchecked")
+    void sendCancelledMetricsOnly() {
+        // Arrange
+        final TestMeter meter = new TestMeter();
+        ServiceBusSenderInstrumentation instrumentation = new ServiceBusSenderInstrumentation(null, meter, NAMESPACE, ENTITY_NAME);
+
+        sender = new ServiceBusSenderAsyncClient(ENTITY_NAME, MessagingEntityType.QUEUE, connectionProcessor,
+            retryOptions, instrumentation, serializer, onClientClose, null, CLIENT_IDENTIFIER);
+
+        when(connection.createSendLink(eq(ENTITY_NAME), eq(ENTITY_NAME), eq(retryOptions), isNull(), eq(CLIENT_IDENTIFIER)))
+            .thenReturn(Mono.just(sendLink));
+
+        when(sendLink.send(any(Message.class))).thenAnswer(i -> Mono.delay(Duration.ofSeconds(10)).then());
+
+        // Act
+        sender.sendMessage(new ServiceBusMessage(BinaryData.fromBytes(TEST_CONTENTS.toBytes())))
+            .toFuture().cancel(true);
+
+        TestCounter sentMessagesCounter = meter.getCounters().get("messaging.servicebus.messages.sent");
+        assertNotNull(sentMessagesCounter);
+        assertEquals(1, sentMessagesCounter.getMeasurements().size());
+
+        TestMeasurement<Long> measurement1 = sentMessagesCounter.getMeasurements().get(0);
+        assertEquals(1, measurement1.getValue());
+
+        Map<String, Object> attributes1 = measurement1.getAttributes();
+        assertEquals(3, attributes1.size());
+        assertCommonMetricAttributes(attributes1, "cancelled");
     }
 
     @Test
@@ -466,7 +546,8 @@ class ServiceBusSenderAsyncClientTest {
         // Act
         StepVerifier.create(sender.sendMessage(new ServiceBusMessage(TEST_CONTENTS))
                 .then(sender.sendMessage(new ServiceBusMessage(TEST_CONTENTS))))
-            .verifyComplete();
+            .expectComplete()
+            .verify(DEFAULT_TIMEOUT);
 
         // Assert
         TestCounter sentMessagesCounter = meter.getCounters().get("messaging.servicebus.messages.sent");
@@ -481,9 +562,9 @@ class ServiceBusSenderAsyncClientTest {
         Map<String, Object> attributes1 = measurement1.getAttributes();
         Map<String, Object> attributes2 = measurement2.getAttributes();
         assertEquals(3, attributes1.size());
-        assertCommonMetricAttributes(attributes1, true);
+        assertCommonMetricAttributes(attributes1, "ok");
         assertEquals(3, attributes2.size());
-        assertCommonMetricAttributes(attributes2, true);
+        assertCommonMetricAttributes(attributes2, "ok");
     }
 
     @Test
@@ -510,7 +591,8 @@ class ServiceBusSenderAsyncClientTest {
 
         // Act
         StepVerifier.create(sender.sendMessage(new ServiceBusMessage(TEST_CONTENTS)))
-            .verifyComplete();
+            .expectComplete()
+            .verify(DEFAULT_TIMEOUT);
 
         // Assert
         TestCounter sentMessagesCounter = meter.getCounters().get("messaging.servicebus.messages.sent");
@@ -519,7 +601,7 @@ class ServiceBusSenderAsyncClientTest {
 
         Map<String, Object> attributes = measurement.getAttributes();
         assertEquals(3, attributes.size());
-        assertCommonMetricAttributes(attributes, true);
+        assertCommonMetricAttributes(attributes, "ok");
         assertEquals(span, measurement.getContext());
     }
 
@@ -543,7 +625,8 @@ class ServiceBusSenderAsyncClientTest {
 
         // Act
         StepVerifier.create(sender.sendMessages(batch))
-            .verifyComplete();
+            .expectComplete()
+            .verify(DEFAULT_TIMEOUT);
 
         // Assert
         TestCounter sentMessagesCounter = meter.getCounters().get("messaging.servicebus.messages.sent");
@@ -551,7 +634,7 @@ class ServiceBusSenderAsyncClientTest {
         assertEquals(2, measurement.getValue());
 
         assertEquals(3,  measurement.getAttributes().size());
-        assertCommonMetricAttributes(measurement.getAttributes(), true);
+        assertCommonMetricAttributes(measurement.getAttributes(), "ok");
     }
 
     @Test
@@ -570,7 +653,7 @@ class ServiceBusSenderAsyncClientTest {
         // Act
         StepVerifier.create(sender.sendMessage(new ServiceBusMessage(TEST_CONTENTS)))
             .expectError()
-            .verify();
+            .verify(DEFAULT_TIMEOUT);
 
         // Assert
         TestCounter sentMessagesCounter = meter.getCounters().get("messaging.servicebus.messages.sent");
@@ -579,7 +662,7 @@ class ServiceBusSenderAsyncClientTest {
 
         Map<String, Object> attributes = measurement.getAttributes();
         assertEquals(3, attributes.size());
-        assertCommonMetricAttributes(attributes, false);
+        assertCommonMetricAttributes(attributes, "error");
     }
 
     /**
@@ -598,7 +681,8 @@ class ServiceBusSenderAsyncClientTest {
 
         // Act
         StepVerifier.create(sender.sendMessages(messages, transactionContext))
-            .verifyComplete();
+            .expectComplete()
+            .verify(DEFAULT_TIMEOUT);
 
         // Assert
         verify(sendLink).send(messagesCaptor.capture(), amqpDeliveryStateCaptor.capture());
@@ -629,7 +713,8 @@ class ServiceBusSenderAsyncClientTest {
 
         // Act
         StepVerifier.create(sender.sendMessages(messages))
-            .verifyComplete();
+            .expectComplete()
+            .verify(DEFAULT_TIMEOUT);
 
         // Assert
         verify(sendLink).send(messagesCaptor.capture());
@@ -656,8 +741,9 @@ class ServiceBusSenderAsyncClientTest {
 
         // Act & Assert
         StepVerifier.create(sender.sendMessages(messages))
-            .verifyErrorMatches(error -> error instanceof ServiceBusException
-                && ((ServiceBusException) error).getReason() == ServiceBusFailureReason.MESSAGE_SIZE_EXCEEDED);
+            .expectErrorMatches(error -> error instanceof ServiceBusException
+                && ((ServiceBusException) error).getReason() == ServiceBusFailureReason.MESSAGE_SIZE_EXCEEDED)
+            .verify(DEFAULT_TIMEOUT);
 
         verify(sendLink, never()).send(anyList());
     }
@@ -673,8 +759,9 @@ class ServiceBusSenderAsyncClientTest {
 
         // Act & Assert
         StepVerifier.create(sender.sendMessage(message))
-                .verifyErrorMatches(error -> error instanceof ServiceBusException
-                        && ((ServiceBusException) error).getReason() == ServiceBusFailureReason.MESSAGE_SIZE_EXCEEDED);
+            .expectErrorMatches(error -> error instanceof ServiceBusException
+                && ((ServiceBusException) error).getReason() == ServiceBusFailureReason.MESSAGE_SIZE_EXCEEDED)
+            .verify(DEFAULT_TIMEOUT);
 
         verify(sendLink, never()).send(anyList());
     }
@@ -695,7 +782,8 @@ class ServiceBusSenderAsyncClientTest {
 
         // Act
         StepVerifier.create(sender.sendMessage(testData, transactionContext))
-            .verifyComplete();
+            .expectComplete()
+            .verify(DEFAULT_TIMEOUT);
 
         // Assert
         verify(sendLink, times(1)).send(any(org.apache.qpid.proton.message.Message.class), any(DeliveryState.class));
@@ -729,7 +817,8 @@ class ServiceBusSenderAsyncClientTest {
 
         // Act
         StepVerifier.create(sender.sendMessage(testData))
-            .verifyComplete();
+            .expectComplete()
+            .verify(DEFAULT_TIMEOUT);
 
         // Assert
         verify(sendLink, times(1)).send(any(org.apache.qpid.proton.message.Message.class));
@@ -754,7 +843,8 @@ class ServiceBusSenderAsyncClientTest {
         // Act & Assert
         StepVerifier.create(sender.scheduleMessage(message, instant))
             .expectNext(sequenceNumberReturned)
-            .verifyComplete();
+            .expectComplete()
+            .verify(DEFAULT_TIMEOUT);
 
         verify(managementNode).schedule(sbMessagesCaptor.capture(), eq(instant), eq(MAX_MESSAGE_LENGTH_BYTES), eq(LINK_NAME), isNull());
         List<ServiceBusMessage> actualMessages = sbMessagesCaptor.getValue();
@@ -777,7 +867,8 @@ class ServiceBusSenderAsyncClientTest {
         // Act & Assert
         StepVerifier.create(sender.scheduleMessage(message, instant, transactionContext))
             .expectNext(sequenceNumberReturned)
-            .verifyComplete();
+            .expectComplete()
+            .verify(DEFAULT_TIMEOUT);
 
         verify(managementNode).schedule(sbMessagesCaptor.capture(), eq(instant), eq(MAX_MESSAGE_LENGTH_BYTES), eq(LINK_NAME), argThat(e -> e.getTransactionId().equals(transactionContext.getTransactionId())));
         List<ServiceBusMessage> actualMessages = sbMessagesCaptor.getValue();
@@ -794,7 +885,8 @@ class ServiceBusSenderAsyncClientTest {
 
         // Act & Assert
         StepVerifier.create(sender.cancelScheduledMessage(sequenceNumberReturned))
-            .verifyComplete();
+            .expectComplete()
+            .verify(DEFAULT_TIMEOUT);
 
         verify(managementNode).cancelScheduledMessages(sequenceNumberCaptor.capture(), isNull());
         Iterable<Long> actualSequenceNumbers = sequenceNumberCaptor.getValue();
@@ -820,7 +912,8 @@ class ServiceBusSenderAsyncClientTest {
 
         // Act & Assert
         StepVerifier.create(sender.cancelScheduledMessages(sequenceNumbers))
-            .verifyComplete();
+            .expectComplete()
+            .verify(DEFAULT_TIMEOUT);
 
         verify(managementNode).cancelScheduledMessages(sequenceNumberCaptor.capture(), isNull());
         Iterable<Long> actualSequenceNumbers = sequenceNumberCaptor.getValue();
@@ -858,7 +951,8 @@ class ServiceBusSenderAsyncClientTest {
 
         // Act
         StepVerifier.create(sender.sendMessages(messages))
-            .verifyComplete();
+            .expectComplete()
+            .verify(DEFAULT_TIMEOUT);
 
         // Assert
         verify(sendLink).send(messagesCaptor.capture());
@@ -901,10 +995,10 @@ class ServiceBusSenderAsyncClientTest {
         verify(onClientClose).run();
     }
 
-    private void assertCommonMetricAttributes(Map<String, Object> attributes, boolean success) {
+    private void assertCommonMetricAttributes(Map<String, Object> attributes, String status) {
         assertEquals(NAMESPACE, attributes.get("hostName"));
         assertEquals(ENTITY_NAME, attributes.get("entityName"));
-        assertEquals(success ? "ok" : "error", attributes.get("status"));
+        assertEquals(status, attributes.get("status"));
     }
 
     private void assertStartOptions(StartSpanOptions startOpts, SpanKind kind, int linkCount) {

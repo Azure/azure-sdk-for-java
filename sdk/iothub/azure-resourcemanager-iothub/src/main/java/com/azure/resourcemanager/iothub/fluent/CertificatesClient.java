@@ -22,22 +22,6 @@ public interface CertificatesClient {
      *
      * @param resourceGroupName The name of the resource group that contains the IoT hub.
      * @param resourceName The name of the IoT hub.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws com.azure.resourcemanager.iothub.models.ErrorDetailsException thrown if the request is rejected by
-     *     server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the JSON-serialized array of Certificate objects.
-     */
-    @ServiceMethod(returns = ReturnType.SINGLE)
-    CertificateListDescriptionInner listByIotHub(String resourceGroupName, String resourceName);
-
-    /**
-     * Get the certificate list.
-     *
-     * <p>Returns the list of certificates.
-     *
-     * @param resourceGroupName The name of the resource group that contains the IoT hub.
-     * @param resourceName The name of the IoT hub.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.resourcemanager.iothub.models.ErrorDetailsException thrown if the request is rejected by
@@ -50,21 +34,20 @@ public interface CertificatesClient {
         String resourceGroupName, String resourceName, Context context);
 
     /**
-     * Get the certificate.
+     * Get the certificate list.
      *
-     * <p>Returns the certificate.
+     * <p>Returns the list of certificates.
      *
      * @param resourceGroupName The name of the resource group that contains the IoT hub.
      * @param resourceName The name of the IoT hub.
-     * @param certificateName The name of the certificate.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.resourcemanager.iothub.models.ErrorDetailsException thrown if the request is rejected by
      *     server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the X509 Certificate.
+     * @return the JSON-serialized array of Certificate objects.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    CertificateDescriptionInner get(String resourceGroupName, String resourceName, String certificateName);
+    CertificateListDescriptionInner listByIotHub(String resourceGroupName, String resourceName);
 
     /**
      * Get the certificate.
@@ -86,14 +69,13 @@ public interface CertificatesClient {
         String resourceGroupName, String resourceName, String certificateName, Context context);
 
     /**
-     * Upload the certificate to the IoT hub.
+     * Get the certificate.
      *
-     * <p>Adds new or replaces existing certificate.
+     * <p>Returns the certificate.
      *
      * @param resourceGroupName The name of the resource group that contains the IoT hub.
      * @param resourceName The name of the IoT hub.
      * @param certificateName The name of the certificate.
-     * @param certificateDescription The certificate body.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.resourcemanager.iothub.models.ErrorDetailsException thrown if the request is rejected by
      *     server.
@@ -101,11 +83,7 @@ public interface CertificatesClient {
      * @return the X509 Certificate.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    CertificateDescriptionInner createOrUpdate(
-        String resourceGroupName,
-        String resourceName,
-        String certificateName,
-        CertificateDescriptionInner certificateDescription);
+    CertificateDescriptionInner get(String resourceGroupName, String resourceName, String certificateName);
 
     /**
      * Upload the certificate to the IoT hub.
@@ -135,21 +113,26 @@ public interface CertificatesClient {
         Context context);
 
     /**
-     * Delete an X509 certificate.
+     * Upload the certificate to the IoT hub.
      *
-     * <p>Deletes an existing X509 certificate or does nothing if it does not exist.
+     * <p>Adds new or replaces existing certificate.
      *
      * @param resourceGroupName The name of the resource group that contains the IoT hub.
      * @param resourceName The name of the IoT hub.
      * @param certificateName The name of the certificate.
-     * @param ifMatch ETag of the Certificate.
+     * @param certificateDescription The certificate body.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.resourcemanager.iothub.models.ErrorDetailsException thrown if the request is rejected by
      *     server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return the X509 Certificate.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    void delete(String resourceGroupName, String resourceName, String certificateName, String ifMatch);
+    CertificateDescriptionInner createOrUpdate(
+        String resourceGroupName,
+        String resourceName,
+        String certificateName,
+        CertificateDescriptionInner certificateDescription);
 
     /**
      * Delete an X509 certificate.
@@ -172,10 +155,9 @@ public interface CertificatesClient {
         String resourceGroupName, String resourceName, String certificateName, String ifMatch, Context context);
 
     /**
-     * Generate verification code for proof of possession flow.
+     * Delete an X509 certificate.
      *
-     * <p>Generates verification code for proof of possession flow. The verification code will be used to generate a
-     * leaf certificate.
+     * <p>Deletes an existing X509 certificate or does nothing if it does not exist.
      *
      * @param resourceGroupName The name of the resource group that contains the IoT hub.
      * @param resourceName The name of the IoT hub.
@@ -185,11 +167,9 @@ public interface CertificatesClient {
      * @throws com.azure.resourcemanager.iothub.models.ErrorDetailsException thrown if the request is rejected by
      *     server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the X509 Certificate.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    CertificateWithNonceDescriptionInner generateVerificationCode(
-        String resourceGroupName, String resourceName, String certificateName, String ifMatch);
+    void delete(String resourceGroupName, String resourceName, String certificateName, String ifMatch);
 
     /**
      * Generate verification code for proof of possession flow.
@@ -213,16 +193,15 @@ public interface CertificatesClient {
         String resourceGroupName, String resourceName, String certificateName, String ifMatch, Context context);
 
     /**
-     * Verify certificate's private key possession.
+     * Generate verification code for proof of possession flow.
      *
-     * <p>Verifies the certificate's private key possession by providing the leaf cert issued by the verifying pre
-     * uploaded certificate.
+     * <p>Generates verification code for proof of possession flow. The verification code will be used to generate a
+     * leaf certificate.
      *
      * @param resourceGroupName The name of the resource group that contains the IoT hub.
      * @param resourceName The name of the IoT hub.
      * @param certificateName The name of the certificate.
      * @param ifMatch ETag of the Certificate.
-     * @param certificateVerificationBody The name of the certificate.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.resourcemanager.iothub.models.ErrorDetailsException thrown if the request is rejected by
      *     server.
@@ -230,12 +209,8 @@ public interface CertificatesClient {
      * @return the X509 Certificate.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    CertificateDescriptionInner verify(
-        String resourceGroupName,
-        String resourceName,
-        String certificateName,
-        String ifMatch,
-        CertificateVerificationDescription certificateVerificationBody);
+    CertificateWithNonceDescriptionInner generateVerificationCode(
+        String resourceGroupName, String resourceName, String certificateName, String ifMatch);
 
     /**
      * Verify certificate's private key possession.
@@ -263,4 +238,29 @@ public interface CertificatesClient {
         String ifMatch,
         CertificateVerificationDescription certificateVerificationBody,
         Context context);
+
+    /**
+     * Verify certificate's private key possession.
+     *
+     * <p>Verifies the certificate's private key possession by providing the leaf cert issued by the verifying pre
+     * uploaded certificate.
+     *
+     * @param resourceGroupName The name of the resource group that contains the IoT hub.
+     * @param resourceName The name of the IoT hub.
+     * @param certificateName The name of the certificate.
+     * @param ifMatch ETag of the Certificate.
+     * @param certificateVerificationBody The name of the certificate.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws com.azure.resourcemanager.iothub.models.ErrorDetailsException thrown if the request is rejected by
+     *     server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return the X509 Certificate.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    CertificateDescriptionInner verify(
+        String resourceGroupName,
+        String resourceName,
+        String certificateName,
+        String ifMatch,
+        CertificateVerificationDescription certificateVerificationBody);
 }

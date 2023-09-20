@@ -7,14 +7,14 @@ package com.azure.resourcemanager.frontdoor.generated;
 /** Samples for Policies ListByResourceGroup. */
 public final class PoliciesListByResourceGroupSamples {
     /*
-     * x-ms-original-file: specification/frontdoor/resource-manager/Microsoft.Network/stable/2020-11-01/examples/WafListPolicies.json
+     * x-ms-original-file: specification/frontdoor/resource-manager/Microsoft.Network/stable/2022-05-01/examples/WafListPolicies.json
      */
     /**
-     * Sample code: List Policies in a Resource Group.
+     * Sample code: Get all Policies in a Resource Group.
      *
      * @param manager Entry point to FrontDoorManager.
      */
-    public static void listPoliciesInAResourceGroup(com.azure.resourcemanager.frontdoor.FrontDoorManager manager) {
+    public static void getAllPoliciesInAResourceGroup(com.azure.resourcemanager.frontdoor.FrontDoorManager manager) {
         manager.policies().listByResourceGroup("rg1", com.azure.core.util.Context.NONE);
     }
 }

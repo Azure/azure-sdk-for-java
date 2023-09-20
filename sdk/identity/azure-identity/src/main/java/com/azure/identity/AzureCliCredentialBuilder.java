@@ -7,17 +7,19 @@ import com.azure.core.util.logging.ClientLogger;
 import com.azure.identity.implementation.util.IdentityUtil;
 import com.azure.identity.implementation.util.ValidationUtil;
 
+import java.time.Duration;
 import java.util.Arrays;
 import java.util.List;
+import java.util.Objects;
 
 /**
  * Fluent credential builder for instantiating a {@link AzureCliCredential}.
  *
  * <p>The Azure CLI is a command-line tool that allows users to manage Azure resources from their local machine or
  * terminal. It allows users to
- * <a href="https://learn.microsoft.com/en-us/cli/azure/authenticate-azure-cli">authenticate interactively</a> as a
+ * <a href="https://learn.microsoft.com/cli/azure/authenticate-azure-cli">authenticate interactively</a> as a
  * user and/or a service principal against
- * <a href="https://learn.microsoft.com/en-us/azure/active-directory/fundamentals/">Azure Active Directory (Azure AD)
+ * <a href="https://learn.microsoft.com/azure/active-directory/fundamentals/">Azure Active Directory (Azure AD)
  * </a>. The AzureCliCredential authenticates in a development environment and acquires a token on behalf of the
  * logged-in user or service principal in Azure CLI. It acts as the Azure CLI logged in user or service principal
  * and executes an Azure CLI command underneath to authenticate the application against Azure Active Directory.</p>
@@ -52,6 +54,18 @@ public class AzureCliCredentialBuilder extends CredentialBuilderBase<AzureCliCre
     public AzureCliCredentialBuilder tenantId(String tenantId) {
         ValidationUtil.validateTenantIdCharacterRange(tenantId, LOGGER);
         this.tenantId = tenantId;
+        return this;
+    }
+
+    /**
+     * Specifies a {@link Duration} timeout for calling the Azure CLI. The timeout period is applied on the Azure CLI
+     * command execution process invoked by the credential
+     * @param processTimeout The {@link Duration} to wait.
+     * @return An updated instance of this builder with the timeout specified.
+     */
+    public AzureCliCredentialBuilder processTimeout(Duration processTimeout) {
+        Objects.requireNonNull(processTimeout);
+        this.identityClientOptions.setCredentialProcessTimeout(processTimeout);
         return this;
     }
 

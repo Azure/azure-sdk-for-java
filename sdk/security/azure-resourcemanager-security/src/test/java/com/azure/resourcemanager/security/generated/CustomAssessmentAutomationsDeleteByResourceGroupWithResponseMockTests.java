@@ -58,6 +58,6 @@ public final class CustomAssessmentAutomationsDeleteByResourceGroupWithResponseM
 
         manager
             .customAssessmentAutomations()
-            .deleteByResourceGroupWithResponse("ka", "n", com.azure.core.util.Context.NONE);
+            .deleteByResourceGroupWithResponse("u", "lzladltxkpbqh", com.azure.core.util.Context.NONE);
     }
 }

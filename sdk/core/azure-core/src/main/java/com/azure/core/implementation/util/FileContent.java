@@ -131,12 +131,14 @@ public class FileContent extends BinaryDataContent {
     @Override
     public InputStream toStream() {
         try {
-            return new SliceInputStream(
-                new BufferedInputStream(new FileInputStream(file.toFile()), chunkSize),
-                position, length);
+            return new SliceInputStream(new BufferedInputStream(getFileInputStream(), chunkSize), position, length);
         } catch (FileNotFoundException e) {
             throw LOGGER.logExceptionAsError(new UncheckedIOException("File not found " + file, e));
         }
+    }
+
+    protected FileInputStream getFileInputStream() throws FileNotFoundException {
+        return new FileInputStream(file.toFile());
     }
 
     @Override
@@ -145,6 +147,10 @@ public class FileContent extends BinaryDataContent {
             throw LOGGER.logExceptionAsError(new IllegalStateException(TOO_LARGE_FOR_BYTE_ARRAY + length));
         }
 
+        return toByteBufferInternal();
+    }
+
+    protected ByteBuffer toByteBufferInternal() {
         /*
          * A mapping, once established, is not dependent upon the file channel that was used to create it.
          * Closing the channel, in particular, has no effect upon the validity of the mapping.
@@ -169,7 +175,7 @@ public class FileContent extends BinaryDataContent {
             });
     }
 
-    AsynchronousFileChannel openAsynchronousFileChannel() throws IOException {
+    protected AsynchronousFileChannel openAsynchronousFileChannel() throws IOException {
         return AsynchronousFileChannel.open(file, StandardOpenOption.READ);
     }
 

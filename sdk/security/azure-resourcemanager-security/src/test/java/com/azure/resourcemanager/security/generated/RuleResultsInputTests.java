@@ -13,17 +13,21 @@ public final class RuleResultsInputTests {
     @org.junit.jupiter.api.Test
     public void testDeserialize() throws Exception {
         RuleResultsInput model =
-            BinaryData.fromString("{\"latestScan\":false,\"results\":[[\"w\"]]}").toObject(RuleResultsInput.class);
+            BinaryData
+                .fromString("{\"latestScan\":false,\"results\":[[\"gvxvatv\",\"rkdlb\",\"bqxvhcsyhzlwxae\"]]}")
+                .toObject(RuleResultsInput.class);
         Assertions.assertEquals(false, model.latestScan());
-        Assertions.assertEquals("w", model.results().get(0).get(0));
+        Assertions.assertEquals("gvxvatv", model.results().get(0).get(0));
     }
 
     @org.junit.jupiter.api.Test
     public void testSerialize() throws Exception {
         RuleResultsInput model =
-            new RuleResultsInput().withLatestScan(false).withResults(Arrays.asList(Arrays.asList("w")));
+            new RuleResultsInput()
+                .withLatestScan(false)
+                .withResults(Arrays.asList(Arrays.asList("gvxvatv", "rkdlb", "bqxvhcsyhzlwxae")));
         model = BinaryData.fromObject(model).toObject(RuleResultsInput.class);
         Assertions.assertEquals(false, model.latestScan());
-        Assertions.assertEquals("w", model.results().get(0).get(0));
+        Assertions.assertEquals("gvxvatv", model.results().get(0).get(0));
     }
 }

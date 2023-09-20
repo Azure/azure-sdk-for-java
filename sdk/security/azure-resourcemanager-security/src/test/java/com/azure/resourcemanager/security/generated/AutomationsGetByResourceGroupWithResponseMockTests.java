@@ -31,7 +31,7 @@ public final class AutomationsGetByResourceGroupWithResponseMockTests {
         ArgumentCaptor<HttpRequest> httpRequest = ArgumentCaptor.forClass(HttpRequest.class);
 
         String responseStr =
-            "{\"properties\":{\"description\":\"iqm\",\"isEnabled\":true,\"scopes\":[],\"sources\":[],\"actions\":[]},\"location\":\"grvgpomxp\",\"tags\":{\"wiqbuoutm\":\"tsdfjyieso\",\"gbww\":\"yzgleofjs\"},\"id\":\"vdajfwn\",\"name\":\"cf\",\"type\":\"aciq\"}";
+            "{\"properties\":{\"description\":\"rhhmojusu\",\"isEnabled\":false,\"scopes\":[],\"sources\":[],\"actions\":[]},\"location\":\"xoia\",\"tags\":{\"dxku\":\"fxwcco\",\"shavljqkx\":\"mkczynuhhoqe\",\"kgzukwdrnzkjth\":\"rqolnthbb\"},\"id\":\"ceyjnc\",\"name\":\"mlfuyfjbp\",\"type\":\"iddhlrufzc\"}";
 
         Mockito.when(httpResponse.getStatusCode()).thenReturn(200);
         Mockito.when(httpResponse.getHeaders()).thenReturn(new HttpHeaders());
@@ -62,12 +62,12 @@ public final class AutomationsGetByResourceGroupWithResponseMockTests {
         Automation response =
             manager
                 .automations()
-                .getByResourceGroupWithResponse("hazyntacihnco", "mip", com.azure.core.util.Context.NONE)
+                .getByResourceGroupWithResponse("jjsbcmlzaahzbhur", "olk", com.azure.core.util.Context.NONE)
                 .getValue();
 
-        Assertions.assertEquals("grvgpomxp", response.location());
-        Assertions.assertEquals("tsdfjyieso", response.tags().get("wiqbuoutm"));
-        Assertions.assertEquals("iqm", response.description());
-        Assertions.assertEquals(true, response.isEnabled());
+        Assertions.assertEquals("xoia", response.location());
+        Assertions.assertEquals("fxwcco", response.tags().get("dxku"));
+        Assertions.assertEquals("rhhmojusu", response.description());
+        Assertions.assertEquals(false, response.isEnabled());
     }
 }

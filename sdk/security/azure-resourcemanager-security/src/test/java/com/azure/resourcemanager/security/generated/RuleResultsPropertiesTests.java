@@ -14,10 +14,9 @@ public final class RuleResultsPropertiesTests {
     public void testDeserialize() throws Exception {
         RuleResultsProperties model =
             BinaryData
-                .fromString(
-                    "{\"results\":[[\"toi\",\"hgygvfltgvd\",\"hoynk\"],[\"wetwkdr\",\"yrucpcunnuzdq\",\"moenodnaien\",\"qh\"]]}")
+                .fromString("{\"results\":[[\"lgjmtbd\",\"vcqguefzh\"],[\"p\",\"eqdurelyujlfyoum\"]]}")
                 .toObject(RuleResultsProperties.class);
-        Assertions.assertEquals("toi", model.results().get(0).get(0));
+        Assertions.assertEquals("lgjmtbd", model.results().get(0).get(0));
     }
 
     @org.junit.jupiter.api.Test
@@ -25,11 +24,8 @@ public final class RuleResultsPropertiesTests {
         RuleResultsProperties model =
             new RuleResultsProperties()
                 .withResults(
-                    Arrays
-                        .asList(
-                            Arrays.asList("toi", "hgygvfltgvd", "hoynk"),
-                            Arrays.asList("wetwkdr", "yrucpcunnuzdq", "moenodnaien", "qh")));
+                    Arrays.asList(Arrays.asList("lgjmtbd", "vcqguefzh"), Arrays.asList("p", "eqdurelyujlfyoum")));
         model = BinaryData.fromObject(model).toObject(RuleResultsProperties.class);
-        Assertions.assertEquals("toi", model.results().get(0).get(0));
+        Assertions.assertEquals("lgjmtbd", model.results().get(0).get(0));
     }
 }

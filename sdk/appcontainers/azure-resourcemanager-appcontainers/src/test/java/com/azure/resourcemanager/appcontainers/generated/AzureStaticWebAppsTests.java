@@ -8,27 +8,26 @@ import com.azure.core.util.BinaryData;
 import com.azure.resourcemanager.appcontainers.models.AzureStaticWebApps;
 import com.azure.resourcemanager.appcontainers.models.AzureStaticWebAppsRegistration;
 import org.junit.jupiter.api.Assertions;
-import org.junit.jupiter.api.Test;
 
 public final class AzureStaticWebAppsTests {
-    @Test
-    public void testDeserialize() {
+    @org.junit.jupiter.api.Test
+    public void testDeserialize() throws Exception {
         AzureStaticWebApps model =
             BinaryData
-                .fromString("{\"enabled\":true,\"registration\":{\"clientId\":\"gpphrcgyn\"}}")
+                .fromString("{\"enabled\":false,\"registration\":{\"clientId\":\"icbtwnpzao\"}}")
                 .toObject(AzureStaticWebApps.class);
-        Assertions.assertEquals(true, model.enabled());
-        Assertions.assertEquals("gpphrcgyn", model.registration().clientId());
+        Assertions.assertEquals(false, model.enabled());
+        Assertions.assertEquals("icbtwnpzao", model.registration().clientId());
     }
 
-    @Test
-    public void testSerialize() {
+    @org.junit.jupiter.api.Test
+    public void testSerialize() throws Exception {
         AzureStaticWebApps model =
             new AzureStaticWebApps()
-                .withEnabled(true)
-                .withRegistration(new AzureStaticWebAppsRegistration().withClientId("gpphrcgyn"));
+                .withEnabled(false)
+                .withRegistration(new AzureStaticWebAppsRegistration().withClientId("icbtwnpzao"));
         model = BinaryData.fromObject(model).toObject(AzureStaticWebApps.class);
-        Assertions.assertEquals(true, model.enabled());
-        Assertions.assertEquals("gpphrcgyn", model.registration().clientId());
+        Assertions.assertEquals(false, model.enabled());
+        Assertions.assertEquals("icbtwnpzao", model.registration().clientId());
     }
 }

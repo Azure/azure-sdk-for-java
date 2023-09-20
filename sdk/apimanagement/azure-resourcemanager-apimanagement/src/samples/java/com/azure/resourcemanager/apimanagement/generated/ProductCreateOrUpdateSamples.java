@@ -7,7 +7,7 @@ package com.azure.resourcemanager.apimanagement.generated;
 /** Samples for Product CreateOrUpdate. */
 public final class ProductCreateOrUpdateSamples {
     /*
-     * x-ms-original-file: specification/apimanagement/resource-manager/Microsoft.ApiManagement/stable/2021-08-01/examples/ApiManagementCreateProduct.json
+     * x-ms-original-file: specification/apimanagement/resource-manager/Microsoft.ApiManagement/stable/2022-08-01/examples/ApiManagementCreateProduct.json
      */
     /**
      * Sample code: ApiManagementCreateProduct.

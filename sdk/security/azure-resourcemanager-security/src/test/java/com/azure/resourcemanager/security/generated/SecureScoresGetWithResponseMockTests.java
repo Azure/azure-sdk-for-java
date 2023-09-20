@@ -30,7 +30,7 @@ public final class SecureScoresGetWithResponseMockTests {
         ArgumentCaptor<HttpRequest> httpRequest = ArgumentCaptor.forClass(HttpRequest.class);
 
         String responseStr =
-            "{\"properties\":{\"displayName\":\"ncmazdf\",\"score\":{\"max\":1279170591,\"current\":13.84566534862498,\"percentage\":35.10432232712567},\"weight\":648873720582303192},\"id\":\"npv\",\"name\":\"rsz\",\"type\":\"bwtdr\"}";
+            "{\"properties\":{\"displayName\":\"trvrkpsab\",\"score\":{\"max\":690664463,\"current\":1.6527198888620198,\"percentage\":57.52426811501905},\"weight\":3311361133230112709},\"id\":\"lpyeu\",\"name\":\"kppdi\",\"type\":\"qb\"}";
 
         Mockito.when(httpResponse.getStatusCode()).thenReturn(200);
         Mockito.when(httpResponse.getHeaders()).thenReturn(new HttpHeaders());
@@ -59,6 +59,6 @@ public final class SecureScoresGetWithResponseMockTests {
                     new AzureProfile("", "", AzureEnvironment.AZURE));
 
         SecureScoreItem response =
-            manager.secureScores().getWithResponse("wqhdgsjsa", com.azure.core.util.Context.NONE).getValue();
+            manager.secureScores().getWithResponse("qutibhl", com.azure.core.util.Context.NONE).getValue();
     }
 }

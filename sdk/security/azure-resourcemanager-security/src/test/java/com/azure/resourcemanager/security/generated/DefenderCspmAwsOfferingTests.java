@@ -6,6 +6,8 @@ package com.azure.resourcemanager.security.generated;
 
 import com.azure.core.util.BinaryData;
 import com.azure.resourcemanager.security.models.DefenderCspmAwsOffering;
+import com.azure.resourcemanager.security.models.DefenderCspmAwsOfferingDataSensitivityDiscovery;
+import com.azure.resourcemanager.security.models.DefenderCspmAwsOfferingDatabasesDspm;
 import com.azure.resourcemanager.security.models.DefenderCspmAwsOfferingVmScanners;
 import com.azure.resourcemanager.security.models.DefenderCspmAwsOfferingVmScannersConfiguration;
 import com.azure.resourcemanager.security.models.ScanningMode;
@@ -19,12 +21,16 @@ public final class DefenderCspmAwsOfferingTests {
         DefenderCspmAwsOffering model =
             BinaryData
                 .fromString(
-                    "{\"offeringType\":\"DefenderCspmAws\",\"vmScanners\":{\"enabled\":true,\"configuration\":{\"cloudRoleArn\":\"sivmfogdrtbfcmk\",\"scanningMode\":\"Default\",\"exclusionTags\":{\"xkecifhocj\":\"cwjjxsgmbawvif\",\"txvcm\":\"wkloozr\",\"yeyng\":\"funlcpxxvi\",\"rquv\":\"g\"}}},\"description\":\"gglpmcrdcuelj\"}")
+                    "{\"offeringType\":\"DefenderCspmAws\",\"vmScanners\":{\"enabled\":false,\"configuration\":{\"cloudRoleArn\":\"e\",\"scanningMode\":\"Default\",\"exclusionTags\":{\"ktjtgra\":\"llbvgwzsfftedous\",\"fkbebauzl\":\"aqo\"}}},\"dataSensitivityDiscovery\":{\"enabled\":false,\"cloudRoleArn\":\"wpfhnjzudrtpzkgm\"},\"databasesDspm\":{\"enabled\":false,\"cloudRoleArn\":\"hczzqrhm\"},\"description\":\"qbedygisrzwn\"}")
                 .toObject(DefenderCspmAwsOffering.class);
-        Assertions.assertEquals(true, model.vmScanners().enabled());
-        Assertions.assertEquals("sivmfogdrtbfcmk", model.vmScanners().configuration().cloudRoleArn());
+        Assertions.assertEquals(false, model.vmScanners().enabled());
+        Assertions.assertEquals("e", model.vmScanners().configuration().cloudRoleArn());
         Assertions.assertEquals(ScanningMode.DEFAULT, model.vmScanners().configuration().scanningMode());
-        Assertions.assertEquals("cwjjxsgmbawvif", model.vmScanners().configuration().exclusionTags().get("xkecifhocj"));
+        Assertions.assertEquals("llbvgwzsfftedous", model.vmScanners().configuration().exclusionTags().get("ktjtgra"));
+        Assertions.assertEquals(false, model.dataSensitivityDiscovery().enabled());
+        Assertions.assertEquals("wpfhnjzudrtpzkgm", model.dataSensitivityDiscovery().cloudRoleArn());
+        Assertions.assertEquals(false, model.databasesDspm().enabled());
+        Assertions.assertEquals("hczzqrhm", model.databasesDspm().cloudRoleArn());
     }
 
     @org.junit.jupiter.api.Test
@@ -33,26 +39,27 @@ public final class DefenderCspmAwsOfferingTests {
             new DefenderCspmAwsOffering()
                 .withVmScanners(
                     new DefenderCspmAwsOfferingVmScanners()
-                        .withEnabled(true)
+                        .withEnabled(false)
                         .withConfiguration(
                             new DefenderCspmAwsOfferingVmScannersConfiguration()
-                                .withCloudRoleArn("sivmfogdrtbfcmk")
+                                .withCloudRoleArn("e")
                                 .withScanningMode(ScanningMode.DEFAULT)
-                                .withExclusionTags(
-                                    mapOf(
-                                        "xkecifhocj",
-                                        "cwjjxsgmbawvif",
-                                        "txvcm",
-                                        "wkloozr",
-                                        "yeyng",
-                                        "funlcpxxvi",
-                                        "rquv",
-                                        "g"))));
+                                .withExclusionTags(mapOf("ktjtgra", "llbvgwzsfftedous", "fkbebauzl", "aqo"))))
+                .withDataSensitivityDiscovery(
+                    new DefenderCspmAwsOfferingDataSensitivityDiscovery()
+                        .withEnabled(false)
+                        .withCloudRoleArn("wpfhnjzudrtpzkgm"))
+                .withDatabasesDspm(
+                    new DefenderCspmAwsOfferingDatabasesDspm().withEnabled(false).withCloudRoleArn("hczzqrhm"));
         model = BinaryData.fromObject(model).toObject(DefenderCspmAwsOffering.class);
-        Assertions.assertEquals(true, model.vmScanners().enabled());
-        Assertions.assertEquals("sivmfogdrtbfcmk", model.vmScanners().configuration().cloudRoleArn());
+        Assertions.assertEquals(false, model.vmScanners().enabled());
+        Assertions.assertEquals("e", model.vmScanners().configuration().cloudRoleArn());
         Assertions.assertEquals(ScanningMode.DEFAULT, model.vmScanners().configuration().scanningMode());
-        Assertions.assertEquals("cwjjxsgmbawvif", model.vmScanners().configuration().exclusionTags().get("xkecifhocj"));
+        Assertions.assertEquals("llbvgwzsfftedous", model.vmScanners().configuration().exclusionTags().get("ktjtgra"));
+        Assertions.assertEquals(false, model.dataSensitivityDiscovery().enabled());
+        Assertions.assertEquals("wpfhnjzudrtpzkgm", model.dataSensitivityDiscovery().cloudRoleArn());
+        Assertions.assertEquals(false, model.databasesDspm().enabled());
+        Assertions.assertEquals("hczzqrhm", model.databasesDspm().cloudRoleArn());
     }
 
     @SuppressWarnings("unchecked")

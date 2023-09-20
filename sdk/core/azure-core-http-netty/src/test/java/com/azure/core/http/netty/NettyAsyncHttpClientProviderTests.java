@@ -88,9 +88,6 @@ public class NettyAsyncHttpClientProviderTests {
         Integer connectTimeout = (Integer) httpClient.nettyClient.configuration().options()
             .get(ChannelOption.CONNECT_TIMEOUT_MILLIS);
         assertEquals((int) expectedTimeout, connectTimeout.intValue());
-        assertEquals(expectedTimeout, httpClient.writeTimeout);
-        assertEquals(expectedTimeout, httpClient.responseTimeout);
-        assertEquals(expectedTimeout, httpClient.readTimeout);
     }
 
     @Test

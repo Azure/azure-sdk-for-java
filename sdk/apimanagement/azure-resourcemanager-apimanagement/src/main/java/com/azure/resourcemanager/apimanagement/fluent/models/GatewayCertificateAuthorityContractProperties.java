@@ -16,6 +16,10 @@ public final class GatewayCertificateAuthorityContractProperties {
     @JsonProperty(value = "isTrusted")
     private Boolean isTrusted;
 
+    /** Creates an instance of GatewayCertificateAuthorityContractProperties class. */
+    public GatewayCertificateAuthorityContractProperties() {
+    }
+
     /**
      * Get the isTrusted property: Determines whether certificate authority is trusted.
      *

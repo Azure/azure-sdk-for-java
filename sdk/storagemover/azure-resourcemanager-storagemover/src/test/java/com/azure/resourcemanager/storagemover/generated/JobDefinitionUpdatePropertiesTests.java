@@ -14,23 +14,24 @@ public final class JobDefinitionUpdatePropertiesTests {
     public void testDeserialize() throws Exception {
         JobDefinitionUpdateProperties model =
             BinaryData
-                .fromString("{\"description\":\"mkqsleyyv\",\"copyMode\":\"Mirror\",\"agentName\":\"pkc\"}")
+                .fromString(
+                    "{\"description\":\"ivkwlzuvccfwnfnb\",\"copyMode\":\"Additive\",\"agentName\":\"onlebxetqgtzxdpn\"}")
                 .toObject(JobDefinitionUpdateProperties.class);
-        Assertions.assertEquals("mkqsleyyv", model.description());
-        Assertions.assertEquals(CopyMode.MIRROR, model.copyMode());
-        Assertions.assertEquals("pkc", model.agentName());
+        Assertions.assertEquals("ivkwlzuvccfwnfnb", model.description());
+        Assertions.assertEquals(CopyMode.ADDITIVE, model.copyMode());
+        Assertions.assertEquals("onlebxetqgtzxdpn", model.agentName());
     }
 
     @org.junit.jupiter.api.Test
     public void testSerialize() throws Exception {
         JobDefinitionUpdateProperties model =
             new JobDefinitionUpdateProperties()
-                .withDescription("mkqsleyyv")
-                .withCopyMode(CopyMode.MIRROR)
-                .withAgentName("pkc");
+                .withDescription("ivkwlzuvccfwnfnb")
+                .withCopyMode(CopyMode.ADDITIVE)
+                .withAgentName("onlebxetqgtzxdpn");
         model = BinaryData.fromObject(model).toObject(JobDefinitionUpdateProperties.class);
-        Assertions.assertEquals("mkqsleyyv", model.description());
-        Assertions.assertEquals(CopyMode.MIRROR, model.copyMode());
-        Assertions.assertEquals("pkc", model.agentName());
+        Assertions.assertEquals("ivkwlzuvccfwnfnb", model.description());
+        Assertions.assertEquals(CopyMode.ADDITIVE, model.copyMode());
+        Assertions.assertEquals("onlebxetqgtzxdpn", model.agentName());
     }
 }

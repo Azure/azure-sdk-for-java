@@ -23,6 +23,12 @@ public final class AnswerCallRequestInternal {
     private String callbackUri;
 
     /*
+     * A customer set value used to track the answering of a call.
+     */
+    @JsonProperty(value = "operationContext")
+    private String operationContext;
+
+    /*
      * Media Streaming Configuration.
      */
     @JsonProperty(value = "mediaStreamingConfiguration")
@@ -35,10 +41,10 @@ public final class AnswerCallRequestInternal {
     private String azureCognitiveServicesEndpointUrl;
 
     /*
-     * The identifier of the contoso app which answers the call
+     * The identifier of the call automation entity which answers the call
      */
     @JsonProperty(value = "answeredByIdentifier")
-    private CommunicationIdentifierModel answeredByIdentifier;
+    private CommunicationUserIdentifierModel answeredByIdentifier;
 
     /**
      * Get the incomingCallContext property: The context associated with the call.
@@ -77,6 +83,26 @@ public final class AnswerCallRequestInternal {
      */
     public AnswerCallRequestInternal setCallbackUri(String callbackUri) {
         this.callbackUri = callbackUri;
+        return this;
+    }
+
+    /**
+     * Get the operationContext property: A customer set value used to track the answering of a call.
+     *
+     * @return the operationContext value.
+     */
+    public String getOperationContext() {
+        return this.operationContext;
+    }
+
+    /**
+     * Set the operationContext property: A customer set value used to track the answering of a call.
+     *
+     * @param operationContext the operationContext value to set.
+     * @return the AnswerCallRequestInternal object itself.
+     */
+    public AnswerCallRequestInternal setOperationContext(String operationContext) {
+        this.operationContext = operationContext;
         return this;
     }
 
@@ -124,21 +150,21 @@ public final class AnswerCallRequestInternal {
     }
 
     /**
-     * Get the answeredByIdentifier property: The identifier of the contoso app which answers the call.
+     * Get the answeredByIdentifier property: The identifier of the call automation entity which answers the call.
      *
      * @return the answeredByIdentifier value.
      */
-    public CommunicationIdentifierModel getAnsweredByIdentifier() {
+    public CommunicationUserIdentifierModel getAnsweredByIdentifier() {
         return this.answeredByIdentifier;
     }
 
     /**
-     * Set the answeredByIdentifier property: The identifier of the contoso app which answers the call.
+     * Set the answeredByIdentifier property: The identifier of the call automation entity which answers the call.
      *
      * @param answeredByIdentifier the answeredByIdentifier value to set.
      * @return the AnswerCallRequestInternal object itself.
      */
-    public AnswerCallRequestInternal setAnsweredByIdentifier(CommunicationIdentifierModel answeredByIdentifier) {
+    public AnswerCallRequestInternal setAnsweredByIdentifier(CommunicationUserIdentifierModel answeredByIdentifier) {
         this.answeredByIdentifier = answeredByIdentifier;
         return this;
     }

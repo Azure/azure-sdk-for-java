@@ -7,22 +7,21 @@ package com.azure.resourcemanager.appcontainers.generated;
 import com.azure.core.util.BinaryData;
 import com.azure.resourcemanager.appcontainers.models.AuthPlatform;
 import org.junit.jupiter.api.Assertions;
-import org.junit.jupiter.api.Test;
 
 public final class AuthPlatformTests {
-    @Test
-    public void testDeserialize() {
+    @org.junit.jupiter.api.Test
+    public void testDeserialize() throws Exception {
         AuthPlatform model =
-            BinaryData.fromString("{\"enabled\":true,\"runtimeVersion\":\"yahux\"}").toObject(AuthPlatform.class);
+            BinaryData.fromString("{\"enabled\":true,\"runtimeVersion\":\"dvkaozw\"}").toObject(AuthPlatform.class);
         Assertions.assertEquals(true, model.enabled());
-        Assertions.assertEquals("yahux", model.runtimeVersion());
+        Assertions.assertEquals("dvkaozw", model.runtimeVersion());
     }
 
-    @Test
-    public void testSerialize() {
-        AuthPlatform model = new AuthPlatform().withEnabled(true).withRuntimeVersion("yahux");
+    @org.junit.jupiter.api.Test
+    public void testSerialize() throws Exception {
+        AuthPlatform model = new AuthPlatform().withEnabled(true).withRuntimeVersion("dvkaozw");
         model = BinaryData.fromObject(model).toObject(AuthPlatform.class);
         Assertions.assertEquals(true, model.enabled());
-        Assertions.assertEquals("yahux", model.runtimeVersion());
+        Assertions.assertEquals("dvkaozw", model.runtimeVersion());
     }
 }

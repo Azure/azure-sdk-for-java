@@ -12,6 +12,12 @@ import com.fasterxml.jackson.annotation.JsonProperty;
 @Immutable
 public final class UsageInner {
     /*
+     * Id of the usage result
+     */
+    @JsonProperty(value = "id", access = JsonProperty.Access.WRITE_ONLY)
+    private String id;
+
+    /*
      * Unit of the usage result
      */
     @JsonProperty(value = "unit", access = JsonProperty.Access.WRITE_ONLY)
@@ -34,6 +40,19 @@ public final class UsageInner {
      */
     @JsonProperty(value = "name", access = JsonProperty.Access.WRITE_ONLY)
     private UsageName name;
+
+    /** Creates an instance of UsageInner class. */
+    public UsageInner() {
+    }
+
+    /**
+     * Get the id property: Id of the usage result.
+     *
+     * @return the id value.
+     */
+    public String id() {
+        return this.id;
+    }
 
     /**
      * Get the unit property: Unit of the usage result.

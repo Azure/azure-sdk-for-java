@@ -58,6 +58,6 @@ public final class AssessmentsDeleteByResourceGroupWithResponseMockTests {
 
         manager
             .assessments()
-            .deleteByResourceGroupWithResponse("crzge", "qxbpiatwfauje", com.azure.core.util.Context.NONE);
+            .deleteByResourceGroupWithResponse("dtmvecdhdyswcrp", "veajczxvlgsrg", com.azure.core.util.Context.NONE);
     }
 }

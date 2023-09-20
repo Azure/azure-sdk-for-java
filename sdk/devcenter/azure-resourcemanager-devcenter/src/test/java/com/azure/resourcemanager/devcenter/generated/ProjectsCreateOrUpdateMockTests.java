@@ -33,7 +33,7 @@ public final class ProjectsCreateOrUpdateMockTests {
         ArgumentCaptor<HttpRequest> httpRequest = ArgumentCaptor.forClass(HttpRequest.class);
 
         String responseStr =
-            "{\"properties\":{\"provisioningState\":\"Succeeded\",\"devCenterUri\":\"w\",\"devCenterId\":\"kpnb\",\"description\":\"zejjoqk\"},\"location\":\"fhsxttaugz\",\"tags\":{\"pxdtnkdmkq\":\"aa\",\"ou\":\"jlwuenvrkp\",\"aays\":\"ibreb\",\"zlwfffiakp\":\"kixqtnqtt\"},\"id\":\"pqqmted\",\"name\":\"tmmjihyeozph\",\"type\":\"wau\"}";
+            "{\"properties\":{\"provisioningState\":\"Succeeded\",\"devCenterUri\":\"nu\",\"devCenterId\":\"jsrtk\",\"description\":\"wnopqgikyzirtx\",\"maxDevBoxesPerUser\":543574693},\"location\":\"zejntps\",\"tags\":{\"ieoxorggufhyaomt\":\"ioilqukrydxtq\",\"jzhpjbibgjmfx\":\"ghhavgrvkffo\"},\"id\":\"mv\",\"name\":\"cluyovwxnbkf\",\"type\":\"zzxscyhwzdgiruj\"}";
 
         Mockito.when(httpResponse.getStatusCode()).thenReturn(200);
         Mockito.when(httpResponse.getHeaders()).thenReturn(new HttpHeaders());
@@ -64,18 +64,20 @@ public final class ProjectsCreateOrUpdateMockTests {
         Project response =
             manager
                 .projects()
-                .define("exdrrvqahqkg")
-                .withRegion("gjqppy")
-                .withExistingResourceGroup("dreaxh")
-                .withTags(mapOf("sxkm", "ronzmyhgfip", "hjglikk", "waekrrjreafxtsgu", "uzlm", "wslolbqp"))
-                .withDevCenterId("xzb")
-                .withDescription("oowvrv")
+                .define("fcdmqnrojlpijn")
+                .withRegion("krlgnyhm")
+                .withExistingResourceGroup("nepttwqmsni")
+                .withTags(mapOf("thrrgh", "xkk", "gf", "jbdhqxvc"))
+                .withDevCenterId("asxifto")
+                .withDescription("yzhftwesgogczh")
+                .withMaxDevBoxesPerUser(1907577103)
                 .create();
 
-        Assertions.assertEquals("fhsxttaugz", response.location());
-        Assertions.assertEquals("aa", response.tags().get("pxdtnkdmkq"));
-        Assertions.assertEquals("kpnb", response.devCenterId());
-        Assertions.assertEquals("zejjoqk", response.description());
+        Assertions.assertEquals("zejntps", response.location());
+        Assertions.assertEquals("ioilqukrydxtq", response.tags().get("ieoxorggufhyaomt"));
+        Assertions.assertEquals("jsrtk", response.devCenterId());
+        Assertions.assertEquals("wnopqgikyzirtx", response.description());
+        Assertions.assertEquals(543574693, response.maxDevBoxesPerUser());
     }
 
     @SuppressWarnings("unchecked")

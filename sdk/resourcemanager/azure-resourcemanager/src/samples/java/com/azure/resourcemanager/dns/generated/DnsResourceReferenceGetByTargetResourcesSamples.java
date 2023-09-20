@@ -5,7 +5,6 @@
 package com.azure.resourcemanager.dns.generated;
 
 import com.azure.core.management.SubResource;
-import com.azure.core.util.Context;
 import com.azure.resourcemanager.dns.models.DnsResourceReferenceRequest;
 import java.util.Arrays;
 
@@ -33,6 +32,6 @@ public final class DnsResourceReferenceGetByTargetResourcesSamples {
                                 new SubResource()
                                     .withId(
                                         "/subscriptions/subid/resourceGroups/rg1/providers/Microsoft.Network/trafficManagerProfiles/testpp2"))),
-                Context.NONE);
+                com.azure.core.util.Context.NONE);
     }
 }

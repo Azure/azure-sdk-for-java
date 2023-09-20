@@ -31,7 +31,7 @@ public final class ApiCollectionOnboardingsCreateWithResponseMockTests {
         ArgumentCaptor<HttpRequest> httpRequest = ArgumentCaptor.forClass(HttpRequest.class);
 
         String responseStr =
-            "{\"properties\":{\"displayName\":\"mpe\",\"additionalData\":{\"snstl\":\"giqasifub\",\"uweuiy\":\"wqpjnxjkhtupsvy\",\"b\":\"fwkztsms\"}},\"id\":\"vy\",\"name\":\"lznfhkqytkztado\",\"type\":\"gfzdgjfcycrsvl\"}";
+            "{\"properties\":{\"displayName\":\"xkwyk\",\"additionalData\":{\"ykhkg\":\"ndx\"}},\"id\":\"apvd\",\"name\":\"t\",\"type\":\"peerscd\"}";
 
         Mockito.when(httpResponse.getStatusCode()).thenReturn(200);
         Mockito.when(httpResponse.getHeaders()).thenReturn(new HttpHeaders());
@@ -62,10 +62,10 @@ public final class ApiCollectionOnboardingsCreateWithResponseMockTests {
         ApiCollectionResponse response =
             manager
                 .apiCollectionOnboardings()
-                .createWithResponse("xplhpeva", "yntvzjyielbq", "vvbq", com.azure.core.util.Context.NONE)
+                .createWithResponse("tkihonikzs", "zfffjilzfbpnt", "gkensckhbmcarmo", com.azure.core.util.Context.NONE)
                 .getValue();
 
-        Assertions.assertEquals("mpe", response.displayName());
-        Assertions.assertEquals("giqasifub", response.additionalData().get("snstl"));
+        Assertions.assertEquals("xkwyk", response.displayName());
+        Assertions.assertEquals("ndx", response.additionalData().get("ykhkg"));
     }
 }

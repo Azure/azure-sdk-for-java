@@ -67,8 +67,7 @@ public final class AdministratorsClientImpl implements AdministratorsClient {
     public interface AdministratorsService {
         @Headers({"Content-Type: application/json"})
         @Put(
-            "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.DBforPostgreSQL"
-                + "/flexibleServers/{serverName}/administrators/{objectId}")
+            "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.DBforPostgreSQL/flexibleServers/{serverName}/administrators/{objectId}")
         @ExpectedResponses({200, 201, 202})
         @UnexpectedResponseExceptionType(ManagementException.class)
         Mono<Response<Flux<ByteBuffer>>> create(
@@ -84,8 +83,7 @@ public final class AdministratorsClientImpl implements AdministratorsClient {
 
         @Headers({"Content-Type: application/json"})
         @Delete(
-            "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.DBforPostgreSQL"
-                + "/flexibleServers/{serverName}/administrators/{objectId}")
+            "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.DBforPostgreSQL/flexibleServers/{serverName}/administrators/{objectId}")
         @ExpectedResponses({200, 202, 204})
         @UnexpectedResponseExceptionType(ManagementException.class)
         Mono<Response<Flux<ByteBuffer>>> delete(
@@ -100,8 +98,7 @@ public final class AdministratorsClientImpl implements AdministratorsClient {
 
         @Headers({"Content-Type: application/json"})
         @Get(
-            "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.DBforPostgreSQL"
-                + "/flexibleServers/{serverName}/administrators/{objectId}")
+            "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.DBforPostgreSQL/flexibleServers/{serverName}/administrators/{objectId}")
         @ExpectedResponses({200})
         @UnexpectedResponseExceptionType(ManagementException.class)
         Mono<Response<ActiveDirectoryAdministratorInner>> get(
@@ -116,8 +113,7 @@ public final class AdministratorsClientImpl implements AdministratorsClient {
 
         @Headers({"Content-Type: application/json"})
         @Get(
-            "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.DBforPostgreSQL"
-                + "/flexibleServers/{serverName}/administrators")
+            "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.DBforPostgreSQL/flexibleServers/{serverName}/administrators")
         @ExpectedResponses({200})
         @UnexpectedResponseExceptionType(ManagementException.class)
         Mono<Response<AdministratorListResult>> listByServer(
@@ -154,7 +150,7 @@ public final class AdministratorsClientImpl implements AdministratorsClient {
      *     {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    private Mono<Response<Flux<ByteBuffer>>> createWithResponseAsync(
+    public Mono<Response<Flux<ByteBuffer>>> createWithResponseAsync(
         String resourceGroupName, String serverName, String objectId, ActiveDirectoryAdministratorAdd parameters) {
         if (this.client.getEndpoint() == null) {
             return Mono
@@ -277,7 +273,7 @@ public final class AdministratorsClientImpl implements AdministratorsClient {
      * @return the {@link PollerFlux} for polling of represents an Active Directory administrator.
      */
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
-    private PollerFlux<PollResult<ActiveDirectoryAdministratorInner>, ActiveDirectoryAdministratorInner>
+    public PollerFlux<PollResult<ActiveDirectoryAdministratorInner>, ActiveDirectoryAdministratorInner>
         beginCreateAsync(
             String resourceGroupName, String serverName, String objectId, ActiveDirectoryAdministratorAdd parameters) {
         Mono<Response<Flux<ByteBuffer>>> mono =
@@ -380,7 +376,7 @@ public final class AdministratorsClientImpl implements AdministratorsClient {
      * @return represents an Active Directory administrator on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    private Mono<ActiveDirectoryAdministratorInner> createAsync(
+    public Mono<ActiveDirectoryAdministratorInner> createAsync(
         String resourceGroupName, String serverName, String objectId, ActiveDirectoryAdministratorAdd parameters) {
         return beginCreateAsync(resourceGroupName, serverName, objectId, parameters)
             .last()
@@ -465,7 +461,7 @@ public final class AdministratorsClientImpl implements AdministratorsClient {
      * @return the {@link Response} on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    private Mono<Response<Flux<ByteBuffer>>> deleteWithResponseAsync(
+    public Mono<Response<Flux<ByteBuffer>>> deleteWithResponseAsync(
         String resourceGroupName, String serverName, String objectId) {
         if (this.client.getEndpoint() == null) {
             return Mono
@@ -569,7 +565,7 @@ public final class AdministratorsClientImpl implements AdministratorsClient {
      * @return the {@link PollerFlux} for polling of long-running operation.
      */
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
-    private PollerFlux<PollResult<Void>, Void> beginDeleteAsync(
+    public PollerFlux<PollResult<Void>, Void> beginDeleteAsync(
         String resourceGroupName, String serverName, String objectId) {
         Mono<Response<Flux<ByteBuffer>>> mono = deleteWithResponseAsync(resourceGroupName, serverName, objectId);
         return this
@@ -648,7 +644,7 @@ public final class AdministratorsClientImpl implements AdministratorsClient {
      * @return A {@link Mono} that completes when a successful response is received.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    private Mono<Void> deleteAsync(String resourceGroupName, String serverName, String objectId) {
+    public Mono<Void> deleteAsync(String resourceGroupName, String serverName, String objectId) {
         return beginDeleteAsync(resourceGroupName, serverName, objectId)
             .last()
             .flatMap(this.client::getLroFinalResultOrError);
@@ -716,7 +712,7 @@ public final class AdministratorsClientImpl implements AdministratorsClient {
      * @return information about a server along with {@link Response} on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    private Mono<Response<ActiveDirectoryAdministratorInner>> getWithResponseAsync(
+    public Mono<Response<ActiveDirectoryAdministratorInner>> getWithResponseAsync(
         String resourceGroupName, String serverName, String objectId) {
         if (this.client.getEndpoint() == null) {
             return Mono
@@ -820,7 +816,7 @@ public final class AdministratorsClientImpl implements AdministratorsClient {
      * @return information about a server on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    private Mono<ActiveDirectoryAdministratorInner> getAsync(
+    public Mono<ActiveDirectoryAdministratorInner> getAsync(
         String resourceGroupName, String serverName, String objectId) {
         return getWithResponseAsync(resourceGroupName, serverName, objectId)
             .flatMap(res -> Mono.justOrEmpty(res.getValue()));
@@ -985,8 +981,7 @@ public final class AdministratorsClientImpl implements AdministratorsClient {
      * @return a list of active directory administrators as paginated response with {@link PagedFlux}.
      */
     @ServiceMethod(returns = ReturnType.COLLECTION)
-    private PagedFlux<ActiveDirectoryAdministratorInner> listByServerAsync(
-        String resourceGroupName, String serverName) {
+    public PagedFlux<ActiveDirectoryAdministratorInner> listByServerAsync(String resourceGroupName, String serverName) {
         return new PagedFlux<>(
             () -> listByServerSinglePageAsync(resourceGroupName, serverName),
             nextLink -> listByServerNextSinglePageAsync(nextLink));

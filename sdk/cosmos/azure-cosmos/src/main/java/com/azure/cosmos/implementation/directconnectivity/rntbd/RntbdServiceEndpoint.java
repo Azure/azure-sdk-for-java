@@ -8,13 +8,16 @@ import com.azure.cosmos.CosmosException;
 import com.azure.cosmos.implementation.GoneException;
 import com.azure.cosmos.implementation.HttpConstants;
 import com.azure.cosmos.implementation.OpenConnectionResponse;
+import com.azure.cosmos.implementation.RxDocumentServiceRequest;
 import com.azure.cosmos.implementation.clienttelemetry.ClientTelemetry;
 import com.azure.cosmos.implementation.clienttelemetry.ClientTelemetryMetrics;
 import com.azure.cosmos.implementation.clienttelemetry.MetricCategory;
 import com.azure.cosmos.implementation.clienttelemetry.TagName;
+import com.azure.cosmos.implementation.directconnectivity.AddressSelector;
 import com.azure.cosmos.implementation.directconnectivity.IAddressResolver;
 import com.azure.cosmos.implementation.directconnectivity.RntbdTransportClient;
 import com.azure.cosmos.implementation.directconnectivity.TransportException;
+import com.azure.cosmos.implementation.directconnectivity.Uri;
 import com.azure.cosmos.implementation.faultinjection.RntbdServerErrorInjector;
 import com.azure.cosmos.implementation.guava25.collect.ImmutableMap;
 import com.fasterxml.jackson.core.JsonGenerator;
@@ -26,6 +29,7 @@ import io.netty.bootstrap.Bootstrap;
 import io.netty.channel.AdaptiveRecvByteBufAllocator;
 import io.netty.channel.Channel;
 import io.netty.channel.ChannelOption;
+import io.netty.channel.ConnectTimeoutException;
 import io.netty.channel.EventLoopGroup;
 import io.netty.channel.epoll.EpollChannelOption;
 import io.netty.handler.logging.LogLevel;
@@ -93,6 +97,8 @@ public final class RntbdServiceEndpoint implements RntbdEndpoint {
     private final RntbdDurableEndpointMetrics durableMetrics;
     private String lastFaultInjectionRuleId;
     private Instant lastFaultInjectionTimestamp;
+    private int minChannelsRequired;
+    private final Uri addressUri;
 
     // endregion
 
@@ -103,15 +109,20 @@ public final class RntbdServiceEndpoint implements RntbdEndpoint {
         final Config config,
         final EventLoopGroup group,
         final RntbdRequestTimer timer,
-        final URI physicalAddress,
+        final Uri addressUri,
         final ClientTelemetry clientTelemetry,
         final RntbdServerErrorInjector faultInjectionInterceptors,
         final URI serviceEndpoint,
-        final RntbdDurableEndpointMetrics durableMetrics) {
+        final RntbdDurableEndpointMetrics durableMetrics,
+        final ProactiveOpenConnectionsProcessor proactiveOpenConnectionsProcessor,
+        final int minChannelsRequired,
+        final AddressSelector addressSelector) {
 
         this.durableMetrics = durableMetrics;
-        this.serverKey = RntbdUtils.getServerKey(physicalAddress);
+        this.addressUri = addressUri;
+        this.serverKey = RntbdUtils.getServerKey(addressUri.getURI());
         this.serviceEndpoint = serviceEndpoint;
+        this.minChannelsRequired = minChannelsRequired;
 
         final Bootstrap bootstrap = this.getBootStrap(group, config);
 
@@ -138,7 +149,7 @@ public final class RntbdServiceEndpoint implements RntbdEndpoint {
         this.maxConcurrentRequests = config.maxConcurrentRequestsPerEndpoint();
 
         this.connectionStateListener = this.provider.addressResolver != null && config.isConnectionEndpointRediscoveryEnabled()
-            ? new RntbdConnectionStateListener(this) : null;
+            ? new RntbdConnectionStateListener(this, proactiveOpenConnectionsProcessor, addressSelector) : null;
 
         this.channelPool =
             new RntbdClientChannelPool(
@@ -328,6 +339,21 @@ public final class RntbdServiceEndpoint implements RntbdEndpoint {
         this.channelPool.injectConnectionErrors(faultInjectionRuleId, threshold, eventType);
     }
 
+    @Override
+    public int getMinChannelsRequired() {
+        return this.minChannelsRequired;
+    }
+
+    @Override
+    public void setMinChannelsRequired(int minChannelsRequired) {
+        this.minChannelsRequired = minChannelsRequired;
+    }
+
+    @Override
+    public Uri getAddressUri() {
+        return this.addressUri;
+    }
+
     // endregion
 
     // region Methods
@@ -421,13 +447,18 @@ public final class RntbdServiceEndpoint implements RntbdEndpoint {
             requestRecord.args().physicalAddressUri().setConnected();
 
             openConnectionResponse =
-                new OpenConnectionResponse(requestRecord.args().physicalAddressUri(), true);
+                new OpenConnectionResponse(
+                        requestRecord.args().physicalAddressUri(),
+                        true,
+                        null,
+                        this.channelsMetrics());
         } else {
             openConnectionResponse =
                 new OpenConnectionResponse(
                     requestRecord.args().physicalAddressUri(),
                     false,
-                    openChannelFuture.cause());
+                    openChannelFuture.cause(),
+                    this.channelsMetrics());
         }
 
         requestRecord.complete(openConnectionResponse);
@@ -569,10 +600,20 @@ public final class RntbdServiceEndpoint implements RntbdEndpoint {
                 lenientFormat("failed to establish connection to %s due to %s", this.remoteAddress, reason),
                 cause instanceof Exception ? (Exception) cause : new IOException(reason, cause),
                 ImmutableMap.of(HttpHeaders.ACTIVITY_ID, activityId.toString()),
-                requestArgs.replicaPath()
+                requestArgs.replicaPath(),
+                HttpConstants.SubStatusCodes.TRANSPORT_GENERATED_410
             );
 
-            BridgeInternal.setRequestHeaders(goneException, requestArgs.serviceRequest().getHeaders());
+            RxDocumentServiceRequest serviceRequest = requestArgs.serviceRequest();
+            BridgeInternal.setRequestHeaders(goneException, serviceRequest.getHeaders());
+
+            if (serviceRequest.requestContext != null) {
+                serviceRequest.requestContext.forceRefreshAddressCache = true;
+            }
+
+            if (connectionStateListener != null) {
+                connectionStateListener.attemptBackgroundAddressRefresh(serviceRequest, goneException);
+            }
             requestRecord.completeExceptionally(goneException);
         }
 
@@ -616,7 +657,6 @@ public final class RntbdServiceEndpoint implements RntbdEndpoint {
     public static final class Provider implements RntbdEndpoint.Provider {
 
         private static final Logger logger = LoggerFactory.getLogger(Provider.class);
-
         private final AtomicBoolean closed;
         private final Config config;
         private final ConcurrentHashMap<String, RntbdEndpoint> endpoints;
@@ -727,11 +767,15 @@ public final class RntbdServiceEndpoint implements RntbdEndpoint {
         }
 
         @Override
-        public RntbdEndpoint createIfAbsent(final URI serviceEndpoint, final URI physicalAddress) {
+        public RntbdEndpoint createIfAbsent(
+            final URI serviceEndpoint,
+            final Uri addressUri,
+            ProactiveOpenConnectionsProcessor proactiveOpenConnectionsProcessor,
+            int minRequiredChannelsForEndpoint,
+            AddressSelector addressSelector) {
             return endpoints.computeIfAbsent(
-                physicalAddress.getAuthority(),
+                addressUri.getURI().getAuthority(),
                 authority -> {
-
                     RntbdDurableEndpointMetrics durableEndpointMetrics = durableMetrics.computeIfAbsent(
                         authority,
                         ignoreMe -> new RntbdDurableEndpointMetrics()
@@ -742,11 +786,14 @@ public final class RntbdServiceEndpoint implements RntbdEndpoint {
                         this.config,
                         this.eventLoopGroup,
                         this.requestTimer,
-                        physicalAddress,
+                        addressUri,
                         this.clientTelemetry,
                         this.serverErrorInjector,
                         serviceEndpoint,
-                        durableEndpointMetrics);
+                        durableEndpointMetrics,
+                        proactiveOpenConnectionsProcessor,
+                        minRequiredChannelsForEndpoint,
+                        addressSelector);
 
                     durableEndpointMetrics.setEndpoint(endpoint);
 
@@ -767,6 +814,11 @@ public final class RntbdServiceEndpoint implements RntbdEndpoint {
         @Override
         public Stream<RntbdEndpoint> list() {
             return this.endpoints.values().stream();
+        }
+
+        @Override
+        public boolean isClosed() {
+            return this.closed.get();
         }
 
         private void evict(final RntbdEndpoint endpoint) {

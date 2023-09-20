@@ -35,6 +35,10 @@ public final class ContainerHttpGet {
     @JsonProperty(value = "httpHeaders")
     private List<HttpHeader> httpHeaders;
 
+    /** Creates an instance of ContainerHttpGet class. */
+    public ContainerHttpGet() {
+    }
+
     /**
      * Get the path property: The path to probe.
      *

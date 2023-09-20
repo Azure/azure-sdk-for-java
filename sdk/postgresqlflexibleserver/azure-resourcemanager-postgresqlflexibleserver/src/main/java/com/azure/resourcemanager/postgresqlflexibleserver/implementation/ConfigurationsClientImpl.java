@@ -67,8 +67,7 @@ public final class ConfigurationsClientImpl implements ConfigurationsClient {
     public interface ConfigurationsService {
         @Headers({"Content-Type: application/json"})
         @Get(
-            "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.DBforPostgreSQL"
-                + "/flexibleServers/{serverName}/configurations")
+            "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.DBforPostgreSQL/flexibleServers/{serverName}/configurations")
         @ExpectedResponses({200})
         @UnexpectedResponseExceptionType(ManagementException.class)
         Mono<Response<ConfigurationListResult>> listByServer(
@@ -82,8 +81,7 @@ public final class ConfigurationsClientImpl implements ConfigurationsClient {
 
         @Headers({"Content-Type: application/json"})
         @Get(
-            "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.DBforPostgreSQL"
-                + "/flexibleServers/{serverName}/configurations/{configurationName}")
+            "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.DBforPostgreSQL/flexibleServers/{serverName}/configurations/{configurationName}")
         @ExpectedResponses({200})
         @UnexpectedResponseExceptionType(ManagementException.class)
         Mono<Response<ConfigurationInner>> get(
@@ -98,8 +96,7 @@ public final class ConfigurationsClientImpl implements ConfigurationsClient {
 
         @Headers({"Content-Type: application/json"})
         @Patch(
-            "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.DBforPostgreSQL"
-                + "/flexibleServers/{serverName}/configurations/{configurationName}")
+            "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.DBforPostgreSQL/flexibleServers/{serverName}/configurations/{configurationName}")
         @ExpectedResponses({200, 201, 202})
         @UnexpectedResponseExceptionType(ManagementException.class)
         Mono<Response<Flux<ByteBuffer>>> update(
@@ -115,8 +112,7 @@ public final class ConfigurationsClientImpl implements ConfigurationsClient {
 
         @Headers({"Content-Type: application/json"})
         @Put(
-            "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.DBforPostgreSQL"
-                + "/flexibleServers/{serverName}/configurations/{configurationName}")
+            "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.DBforPostgreSQL/flexibleServers/{serverName}/configurations/{configurationName}")
         @ExpectedResponses({200, 201, 202})
         @UnexpectedResponseExceptionType(ManagementException.class)
         Mono<Response<Flux<ByteBuffer>>> put(
@@ -266,7 +262,7 @@ public final class ConfigurationsClientImpl implements ConfigurationsClient {
      * @return a list of server configurations as paginated response with {@link PagedFlux}.
      */
     @ServiceMethod(returns = ReturnType.COLLECTION)
-    private PagedFlux<ConfigurationInner> listByServerAsync(String resourceGroupName, String serverName) {
+    public PagedFlux<ConfigurationInner> listByServerAsync(String resourceGroupName, String serverName) {
         return new PagedFlux<>(
             () -> listByServerSinglePageAsync(resourceGroupName, serverName),
             nextLink -> listByServerNextSinglePageAsync(nextLink));
@@ -336,7 +332,7 @@ public final class ConfigurationsClientImpl implements ConfigurationsClient {
      *     {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    private Mono<Response<ConfigurationInner>> getWithResponseAsync(
+    public Mono<Response<ConfigurationInner>> getWithResponseAsync(
         String resourceGroupName, String serverName, String configurationName) {
         if (this.client.getEndpoint() == null) {
             return Mono
@@ -443,7 +439,7 @@ public final class ConfigurationsClientImpl implements ConfigurationsClient {
      * @return information about a configuration of server on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    private Mono<ConfigurationInner> getAsync(String resourceGroupName, String serverName, String configurationName) {
+    public Mono<ConfigurationInner> getAsync(String resourceGroupName, String serverName, String configurationName) {
         return getWithResponseAsync(resourceGroupName, serverName, configurationName)
             .flatMap(res -> Mono.justOrEmpty(res.getValue()));
     }
@@ -495,7 +491,7 @@ public final class ConfigurationsClientImpl implements ConfigurationsClient {
      * @return represents a Configuration along with {@link Response} on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    private Mono<Response<Flux<ByteBuffer>>> updateWithResponseAsync(
+    public Mono<Response<Flux<ByteBuffer>>> updateWithResponseAsync(
         String resourceGroupName, String serverName, String configurationName, ConfigurationForUpdate parameters) {
         if (this.client.getEndpoint() == null) {
             return Mono
@@ -619,7 +615,7 @@ public final class ConfigurationsClientImpl implements ConfigurationsClient {
      * @return the {@link PollerFlux} for polling of represents a Configuration.
      */
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
-    private PollerFlux<PollResult<ConfigurationInner>, ConfigurationInner> beginUpdateAsync(
+    public PollerFlux<PollResult<ConfigurationInner>, ConfigurationInner> beginUpdateAsync(
         String resourceGroupName, String serverName, String configurationName, ConfigurationForUpdate parameters) {
         Mono<Response<Flux<ByteBuffer>>> mono =
             updateWithResponseAsync(resourceGroupName, serverName, configurationName, parameters);
@@ -718,7 +714,7 @@ public final class ConfigurationsClientImpl implements ConfigurationsClient {
      * @return represents a Configuration on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    private Mono<ConfigurationInner> updateAsync(
+    public Mono<ConfigurationInner> updateAsync(
         String resourceGroupName, String serverName, String configurationName, ConfigurationForUpdate parameters) {
         return beginUpdateAsync(resourceGroupName, serverName, configurationName, parameters)
             .last()
@@ -804,7 +800,7 @@ public final class ConfigurationsClientImpl implements ConfigurationsClient {
      * @return represents a Configuration along with {@link Response} on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    private Mono<Response<Flux<ByteBuffer>>> putWithResponseAsync(
+    public Mono<Response<Flux<ByteBuffer>>> putWithResponseAsync(
         String resourceGroupName, String serverName, String configurationName, ConfigurationInner parameters) {
         if (this.client.getEndpoint() == null) {
             return Mono
@@ -928,7 +924,7 @@ public final class ConfigurationsClientImpl implements ConfigurationsClient {
      * @return the {@link PollerFlux} for polling of represents a Configuration.
      */
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
-    private PollerFlux<PollResult<ConfigurationInner>, ConfigurationInner> beginPutAsync(
+    public PollerFlux<PollResult<ConfigurationInner>, ConfigurationInner> beginPutAsync(
         String resourceGroupName, String serverName, String configurationName, ConfigurationInner parameters) {
         Mono<Response<Flux<ByteBuffer>>> mono =
             putWithResponseAsync(resourceGroupName, serverName, configurationName, parameters);
@@ -1027,7 +1023,7 @@ public final class ConfigurationsClientImpl implements ConfigurationsClient {
      * @return represents a Configuration on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    private Mono<ConfigurationInner> putAsync(
+    public Mono<ConfigurationInner> putAsync(
         String resourceGroupName, String serverName, String configurationName, ConfigurationInner parameters) {
         return beginPutAsync(resourceGroupName, serverName, configurationName, parameters)
             .last()

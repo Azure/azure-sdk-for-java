@@ -23,6 +23,10 @@ public final class CapabilitiesListResult {
     @JsonProperty(value = "nextLink")
     private String nextLink;
 
+    /** Creates an instance of CapabilitiesListResult class. */
+    public CapabilitiesListResult() {
+    }
+
     /**
      * Get the value property: The list of capabilities.
      *

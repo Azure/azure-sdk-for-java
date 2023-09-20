@@ -5,20 +5,20 @@
 package com.azure.resourcemanager.dns.models;
 
 import com.azure.core.annotation.Fluent;
-import com.azure.core.util.logging.ClientLogger;
-import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonProperty;
 
 /** An A record. */
 @Fluent
 public final class ARecord {
-    @JsonIgnore private final ClientLogger logger = new ClientLogger(ARecord.class);
-
     /*
      * The IPv4 address of this A record.
      */
     @JsonProperty(value = "ipv4Address")
     private String ipv4Address;
+
+    /** Creates an instance of ARecord class. */
+    public ARecord() {
+    }
 
     /**
      * Get the ipv4Address property: The IPv4 address of this A record.

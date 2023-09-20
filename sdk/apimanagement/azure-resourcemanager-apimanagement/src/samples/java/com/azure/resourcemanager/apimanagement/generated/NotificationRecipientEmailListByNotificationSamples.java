@@ -4,13 +4,12 @@
 
 package com.azure.resourcemanager.apimanagement.generated;
 
-import com.azure.core.util.Context;
 import com.azure.resourcemanager.apimanagement.models.NotificationName;
 
 /** Samples for NotificationRecipientEmail ListByNotification. */
 public final class NotificationRecipientEmailListByNotificationSamples {
     /*
-     * x-ms-original-file: specification/apimanagement/resource-manager/Microsoft.ApiManagement/stable/2021-08-01/examples/ApiManagementListNotificationRecipientEmails.json
+     * x-ms-original-file: specification/apimanagement/resource-manager/Microsoft.ApiManagement/stable/2022-08-01/examples/ApiManagementListNotificationRecipientEmails.json
      */
     /**
      * Sample code: ApiManagementListNotificationRecipientEmails.
@@ -22,6 +21,9 @@ public final class NotificationRecipientEmailListByNotificationSamples {
         manager
             .notificationRecipientEmails()
             .listByNotificationWithResponse(
-                "rg1", "apimService1", NotificationName.REQUEST_PUBLISHER_NOTIFICATION_MESSAGE, Context.NONE);
+                "rg1",
+                "apimService1",
+                NotificationName.REQUEST_PUBLISHER_NOTIFICATION_MESSAGE,
+                com.azure.core.util.Context.NONE);
     }
 }

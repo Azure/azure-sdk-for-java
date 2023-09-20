@@ -5,6 +5,7 @@
 package com.azure.resourcemanager.appcontainers.generated;
 
 import com.azure.resourcemanager.appcontainers.models.Action;
+import com.azure.resourcemanager.appcontainers.models.Affinity;
 import com.azure.resourcemanager.appcontainers.models.AppProtocol;
 import com.azure.resourcemanager.appcontainers.models.BindingType;
 import com.azure.resourcemanager.appcontainers.models.Configuration;
@@ -14,16 +15,21 @@ import com.azure.resourcemanager.appcontainers.models.ContainerAppProbeHttpGet;
 import com.azure.resourcemanager.appcontainers.models.ContainerAppProbeHttpGetHttpHeadersItem;
 import com.azure.resourcemanager.appcontainers.models.ContainerAppProbeTcpSocket;
 import com.azure.resourcemanager.appcontainers.models.ContainerResources;
+import com.azure.resourcemanager.appcontainers.models.CorsPolicy;
 import com.azure.resourcemanager.appcontainers.models.CustomDomain;
 import com.azure.resourcemanager.appcontainers.models.CustomScaleRule;
 import com.azure.resourcemanager.appcontainers.models.Dapr;
 import com.azure.resourcemanager.appcontainers.models.Ingress;
+import com.azure.resourcemanager.appcontainers.models.IngressClientCertificateMode;
+import com.azure.resourcemanager.appcontainers.models.IngressStickySessions;
 import com.azure.resourcemanager.appcontainers.models.IngressTransportMethod;
 import com.azure.resourcemanager.appcontainers.models.InitContainer;
 import com.azure.resourcemanager.appcontainers.models.IpSecurityRestrictionRule;
 import com.azure.resourcemanager.appcontainers.models.LogLevel;
 import com.azure.resourcemanager.appcontainers.models.Scale;
 import com.azure.resourcemanager.appcontainers.models.ScaleRule;
+import com.azure.resourcemanager.appcontainers.models.Service;
+import com.azure.resourcemanager.appcontainers.models.ServiceBind;
 import com.azure.resourcemanager.appcontainers.models.TcpScaleRule;
 import com.azure.resourcemanager.appcontainers.models.Template;
 import com.azure.resourcemanager.appcontainers.models.TrafficWeight;
@@ -35,7 +41,7 @@ import java.util.Map;
 /** Samples for ContainerApps CreateOrUpdate. */
 public final class ContainerAppsCreateOrUpdateSamples {
     /*
-     * x-ms-original-file: specification/app/resource-manager/Microsoft.App/preview/2022-06-01-preview/examples/ContainerApps_CreateOrUpdate.json
+     * x-ms-original-file: specification/app/resource-manager/Microsoft.App/stable/2023-05-01/examples/ContainerApps_CreateOrUpdate.json
      */
     /**
      * Sample code: Create or Update Container App.
@@ -51,7 +57,7 @@ public final class ContainerAppsCreateOrUpdateSamples {
             .withExistingResourceGroup("rg")
             .withEnvironmentId(
                 "/subscriptions/34adfa4f-cedf-4dc0-ba29-b6d1a69ab345/resourceGroups/rg/providers/Microsoft.App/managedEnvironments/demokube")
-            .withWorkloadProfileType("GeneralPurpose")
+            .withWorkloadProfileName("My-GP-01")
             .withConfiguration(
                 new Configuration()
                     .withIngress(
@@ -92,7 +98,17 @@ public final class ContainerAppsCreateOrUpdateSamples {
                                             .withDescription(
                                                 "Allowing all IP's within the subnet below to access containerapp")
                                             .withIpAddressRange("192.168.1.1/8")
-                                            .withAction(Action.ALLOW))))
+                                            .withAction(Action.ALLOW)))
+                            .withStickySessions(new IngressStickySessions().withAffinity(Affinity.STICKY))
+                            .withClientCertificateMode(IngressClientCertificateMode.ACCEPT)
+                            .withCorsPolicy(
+                                new CorsPolicy()
+                                    .withAllowedOrigins(Arrays.asList("https://a.test.com", "https://b.test.com"))
+                                    .withAllowedMethods(Arrays.asList("GET", "POST"))
+                                    .withAllowedHeaders(Arrays.asList("HEADER1", "HEADER2"))
+                                    .withExposeHeaders(Arrays.asList("HEADER3", "HEADER4"))
+                                    .withMaxAge(1234)
+                                    .withAllowCredentials(true)))
                     .withDapr(
                         new Dapr()
                             .withEnabled(true)
@@ -102,7 +118,8 @@ public final class ContainerAppsCreateOrUpdateSamples {
                             .withHttpMaxRequestSize(10)
                             .withLogLevel(LogLevel.DEBUG)
                             .withEnableApiLogging(true))
-                    .withMaxInactiveRevisions(10))
+                    .withMaxInactiveRevisions(10)
+                    .withService(new Service().withType("redis")))
             .withTemplate(
                 new Template()
                     .withInitContainers(
@@ -149,12 +166,19 @@ public final class ContainerAppsCreateOrUpdateSamples {
                                             .withCustom(
                                                 new CustomScaleRule()
                                                     .withType("http")
-                                                    .withMetadata(mapOf("concurrentRequests", "50")))))))
+                                                    .withMetadata(mapOf("concurrentRequests", "50"))))))
+                    .withServiceBinds(
+                        Arrays
+                            .asList(
+                                new ServiceBind()
+                                    .withServiceId(
+                                        "/subscriptions/34adfa4f-cedf-4dc0-ba29-b6d1a69ab345/resourceGroups/rg/providers/Microsoft.App/containerApps/redisService")
+                                    .withName("redisService"))))
             .create();
     }
 
     /*
-     * x-ms-original-file: specification/app/resource-manager/Microsoft.App/preview/2022-06-01-preview/examples/ContainerApps_TcpApp_CreateOrUpdate.json
+     * x-ms-original-file: specification/app/resource-manager/Microsoft.App/stable/2023-05-01/examples/ContainerApps_TcpApp_CreateOrUpdate.json
      */
     /**
      * Sample code: Create or Update Tcp App.
@@ -214,6 +238,71 @@ public final class ContainerAppsCreateOrUpdateSamples {
             .create();
     }
 
+    /*
+     * x-ms-original-file: specification/app/resource-manager/Microsoft.App/stable/2023-05-01/examples/ContainerApps_ManagedBy_CreateOrUpdate.json
+     */
+    /**
+     * Sample code: Create or Update ManagedBy App.
+     *
+     * @param manager Entry point to ContainerAppsApiManager.
+     */
+    public static void createOrUpdateManagedByApp(
+        com.azure.resourcemanager.appcontainers.ContainerAppsApiManager manager) {
+        manager
+            .containerApps()
+            .define("testcontainerAppManagedBy")
+            .withRegion("East US")
+            .withExistingResourceGroup("rg")
+            .withManagedBy(
+                "/subscriptions/34adfa4f-cedf-4dc0-ba29-b6d1a69ab345/resourceGroups/rg/providers/Microsoft.AppPlatform/Spring/springapp")
+            .withEnvironmentId(
+                "/subscriptions/34adfa4f-cedf-4dc0-ba29-b6d1a69ab345/resourceGroups/rg/providers/Microsoft.App/managedEnvironments/demokube")
+            .withConfiguration(
+                new Configuration()
+                    .withIngress(
+                        new Ingress()
+                            .withExternal(true)
+                            .withTargetPort(3000)
+                            .withExposedPort(4000)
+                            .withTransport(IngressTransportMethod.TCP)
+                            .withTraffic(
+                                Arrays
+                                    .asList(
+                                        new TrafficWeight()
+                                            .withRevisionName("testcontainerAppManagedBy-ab1234")
+                                            .withWeight(100)))))
+            .withTemplate(
+                new Template()
+                    .withContainers(
+                        Arrays
+                            .asList(
+                                new Container()
+                                    .withImage("repo/testcontainerAppManagedBy:v1")
+                                    .withName("testcontainerAppManagedBy")
+                                    .withProbes(
+                                        Arrays
+                                            .asList(
+                                                new ContainerAppProbe()
+                                                    .withInitialDelaySeconds(3)
+                                                    .withPeriodSeconds(3)
+                                                    .withTcpSocket(new ContainerAppProbeTcpSocket().withPort(8080))
+                                                    .withType(Type.LIVENESS)))))
+                    .withScale(
+                        new Scale()
+                            .withMinReplicas(1)
+                            .withMaxReplicas(5)
+                            .withRules(
+                                Arrays
+                                    .asList(
+                                        new ScaleRule()
+                                            .withName("tcpscalingrule")
+                                            .withTcp(
+                                                new TcpScaleRule()
+                                                    .withMetadata(mapOf("concurrentConnections", "50")))))))
+            .create();
+    }
+
+    // Use "Map.of" if available
     @SuppressWarnings("unchecked")
     private static <T> Map<String, T> mapOf(Object... inputs) {
         Map<String, T> map = new HashMap<>();

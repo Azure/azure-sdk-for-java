@@ -62,6 +62,15 @@ public final class CertificatePermissions extends ExpandableStringEnum<Certifica
     public static final CertificatePermissions RESTORE = fromString("restore");
 
     /**
+     * Creates a new instance of CertificatePermissions value.
+     *
+     * @deprecated Use the {@link #fromString(String)} factory method.
+     */
+    @Deprecated
+    public CertificatePermissions() {
+    }
+
+    /**
      * Creates or finds a CertificatePermissions from its string representation.
      *
      * @param name a name to look for.

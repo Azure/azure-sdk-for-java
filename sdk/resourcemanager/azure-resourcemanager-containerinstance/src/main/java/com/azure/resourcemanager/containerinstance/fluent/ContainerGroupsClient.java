@@ -29,9 +29,11 @@ public interface ContainerGroupsClient
         InnerSupportsListing<ContainerGroupInner>,
         InnerSupportsDelete<ContainerGroupInner> {
     /**
-     * Get a list of container groups in the specified subscription. This operation returns properties of each container
-     * group including containers, image registry credentials, restart policy, IP address type, OS type, state, and
-     * volumes.
+     * Get a list of container groups in the specified subscription.
+     *
+     * <p>Get a list of container groups in the specified subscription. This operation returns properties of each
+     * container group including containers, image registry credentials, restart policy, IP address type, OS type,
+     * state, and volumes.
      *
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
@@ -41,9 +43,11 @@ public interface ContainerGroupsClient
     PagedFlux<ContainerGroupInner> listAsync();
 
     /**
-     * Get a list of container groups in the specified subscription. This operation returns properties of each container
-     * group including containers, image registry credentials, restart policy, IP address type, OS type, state, and
-     * volumes.
+     * Get a list of container groups in the specified subscription.
+     *
+     * <p>Get a list of container groups in the specified subscription. This operation returns properties of each
+     * container group including containers, image registry credentials, restart policy, IP address type, OS type,
+     * state, and volumes.
      *
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
@@ -54,9 +58,11 @@ public interface ContainerGroupsClient
     PagedIterable<ContainerGroupInner> list();
 
     /**
-     * Get a list of container groups in the specified subscription. This operation returns properties of each container
-     * group including containers, image registry credentials, restart policy, IP address type, OS type, state, and
-     * volumes.
+     * Get a list of container groups in the specified subscription.
+     *
+     * <p>Get a list of container groups in the specified subscription. This operation returns properties of each
+     * container group including containers, image registry credentials, restart policy, IP address type, OS type,
+     * state, and volumes.
      *
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
@@ -69,9 +75,11 @@ public interface ContainerGroupsClient
     PagedIterable<ContainerGroupInner> list(Context context);
 
     /**
-     * Get a list of container groups in a specified subscription and resource group. This operation returns properties
-     * of each container group including containers, image registry credentials, restart policy, IP address type, OS
-     * type, state, and volumes.
+     * Get a list of container groups in the specified subscription and resource group.
+     *
+     * <p>Get a list of container groups in a specified subscription and resource group. This operation returns
+     * properties of each container group including containers, image registry credentials, restart policy, IP address
+     * type, OS type, state, and volumes.
      *
      * @param resourceGroupName The name of the resource group.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
@@ -84,9 +92,11 @@ public interface ContainerGroupsClient
     PagedFlux<ContainerGroupInner> listByResourceGroupAsync(String resourceGroupName);
 
     /**
-     * Get a list of container groups in a specified subscription and resource group. This operation returns properties
-     * of each container group including containers, image registry credentials, restart policy, IP address type, OS
-     * type, state, and volumes.
+     * Get a list of container groups in the specified subscription and resource group.
+     *
+     * <p>Get a list of container groups in a specified subscription and resource group. This operation returns
+     * properties of each container group including containers, image registry credentials, restart policy, IP address
+     * type, OS type, state, and volumes.
      *
      * @param resourceGroupName The name of the resource group.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
@@ -99,9 +109,11 @@ public interface ContainerGroupsClient
     PagedIterable<ContainerGroupInner> listByResourceGroup(String resourceGroupName);
 
     /**
-     * Get a list of container groups in a specified subscription and resource group. This operation returns properties
-     * of each container group including containers, image registry credentials, restart policy, IP address type, OS
-     * type, state, and volumes.
+     * Get a list of container groups in the specified subscription and resource group.
+     *
+     * <p>Get a list of container groups in a specified subscription and resource group. This operation returns
+     * properties of each container group including containers, image registry credentials, restart policy, IP address
+     * type, OS type, state, and volumes.
      *
      * @param resourceGroupName The name of the resource group.
      * @param context The context to associate with this operation.
@@ -115,7 +127,9 @@ public interface ContainerGroupsClient
     PagedIterable<ContainerGroupInner> listByResourceGroup(String resourceGroupName, Context context);
 
     /**
-     * Gets the properties of the specified container group in the specified subscription and resource group. The
+     * Get the properties of the specified container group.
+     *
+     * <p>Gets the properties of the specified container group in the specified subscription and resource group. The
      * operation returns the properties of each container group including containers, image registry credentials,
      * restart policy, IP address type, OS type, state, and volumes.
      *
@@ -132,7 +146,9 @@ public interface ContainerGroupsClient
         String resourceGroupName, String containerGroupName);
 
     /**
-     * Gets the properties of the specified container group in the specified subscription and resource group. The
+     * Get the properties of the specified container group.
+     *
+     * <p>Gets the properties of the specified container group in the specified subscription and resource group. The
      * operation returns the properties of each container group including containers, image registry credentials,
      * restart policy, IP address type, OS type, state, and volumes.
      *
@@ -148,22 +164,9 @@ public interface ContainerGroupsClient
     Mono<ContainerGroupInner> getByResourceGroupAsync(String resourceGroupName, String containerGroupName);
 
     /**
-     * Gets the properties of the specified container group in the specified subscription and resource group. The
-     * operation returns the properties of each container group including containers, image registry credentials,
-     * restart policy, IP address type, OS type, state, and volumes.
+     * Get the properties of the specified container group.
      *
-     * @param resourceGroupName The name of the resource group.
-     * @param containerGroupName The name of the container group.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the properties of the specified container group in the specified subscription and resource group.
-     */
-    @ServiceMethod(returns = ReturnType.SINGLE)
-    ContainerGroupInner getByResourceGroup(String resourceGroupName, String containerGroupName);
-
-    /**
-     * Gets the properties of the specified container group in the specified subscription and resource group. The
+     * <p>Gets the properties of the specified container group in the specified subscription and resource group. The
      * operation returns the properties of each container group including containers, image registry credentials,
      * restart policy, IP address type, OS type, state, and volumes.
      *
@@ -181,7 +184,26 @@ public interface ContainerGroupsClient
         String resourceGroupName, String containerGroupName, Context context);
 
     /**
-     * Create or update container groups with specified configurations.
+     * Get the properties of the specified container group.
+     *
+     * <p>Gets the properties of the specified container group in the specified subscription and resource group. The
+     * operation returns the properties of each container group including containers, image registry credentials,
+     * restart policy, IP address type, OS type, state, and volumes.
+     *
+     * @param resourceGroupName The name of the resource group.
+     * @param containerGroupName The name of the container group.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return the properties of the specified container group in the specified subscription and resource group.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    ContainerGroupInner getByResourceGroup(String resourceGroupName, String containerGroupName);
+
+    /**
+     * Create or update container groups.
+     *
+     * <p>Create or update container groups with specified configurations.
      *
      * @param resourceGroupName The name of the resource group.
      * @param containerGroupName The name of the container group.
@@ -196,7 +218,9 @@ public interface ContainerGroupsClient
         String resourceGroupName, String containerGroupName, ContainerGroupInner containerGroup);
 
     /**
-     * Create or update container groups with specified configurations.
+     * Create or update container groups.
+     *
+     * <p>Create or update container groups with specified configurations.
      *
      * @param resourceGroupName The name of the resource group.
      * @param containerGroupName The name of the container group.
@@ -211,7 +235,9 @@ public interface ContainerGroupsClient
         String resourceGroupName, String containerGroupName, ContainerGroupInner containerGroup);
 
     /**
-     * Create or update container groups with specified configurations.
+     * Create or update container groups.
+     *
+     * <p>Create or update container groups with specified configurations.
      *
      * @param resourceGroupName The name of the resource group.
      * @param containerGroupName The name of the container group.
@@ -226,7 +252,9 @@ public interface ContainerGroupsClient
         String resourceGroupName, String containerGroupName, ContainerGroupInner containerGroup);
 
     /**
-     * Create or update container groups with specified configurations.
+     * Create or update container groups.
+     *
+     * <p>Create or update container groups with specified configurations.
      *
      * @param resourceGroupName The name of the resource group.
      * @param containerGroupName The name of the container group.
@@ -242,7 +270,9 @@ public interface ContainerGroupsClient
         String resourceGroupName, String containerGroupName, ContainerGroupInner containerGroup, Context context);
 
     /**
-     * Create or update container groups with specified configurations.
+     * Create or update container groups.
+     *
+     * <p>Create or update container groups with specified configurations.
      *
      * @param resourceGroupName The name of the resource group.
      * @param containerGroupName The name of the container group.
@@ -257,7 +287,9 @@ public interface ContainerGroupsClient
         String resourceGroupName, String containerGroupName, ContainerGroupInner containerGroup);
 
     /**
-     * Create or update container groups with specified configurations.
+     * Create or update container groups.
+     *
+     * <p>Create or update container groups with specified configurations.
      *
      * @param resourceGroupName The name of the resource group.
      * @param containerGroupName The name of the container group.
@@ -272,7 +304,9 @@ public interface ContainerGroupsClient
         String resourceGroupName, String containerGroupName, ContainerGroupInner containerGroup);
 
     /**
-     * Create or update container groups with specified configurations.
+     * Create or update container groups.
+     *
+     * <p>Create or update container groups with specified configurations.
      *
      * @param resourceGroupName The name of the resource group.
      * @param containerGroupName The name of the container group.
@@ -288,7 +322,9 @@ public interface ContainerGroupsClient
         String resourceGroupName, String containerGroupName, ContainerGroupInner containerGroup, Context context);
 
     /**
-     * Updates container group tags with specified values.
+     * Update container groups.
+     *
+     * <p>Updates container group tags with specified values.
      *
      * @param resourceGroupName The name of the resource group.
      * @param containerGroupName The name of the container group.
@@ -303,7 +339,9 @@ public interface ContainerGroupsClient
         String resourceGroupName, String containerGroupName, Resource resource);
 
     /**
-     * Updates container group tags with specified values.
+     * Update container groups.
+     *
+     * <p>Updates container group tags with specified values.
      *
      * @param resourceGroupName The name of the resource group.
      * @param containerGroupName The name of the container group.
@@ -317,21 +355,9 @@ public interface ContainerGroupsClient
     Mono<ContainerGroupInner> updateAsync(String resourceGroupName, String containerGroupName, Resource resource);
 
     /**
-     * Updates container group tags with specified values.
+     * Update container groups.
      *
-     * @param resourceGroupName The name of the resource group.
-     * @param containerGroupName The name of the container group.
-     * @param resource The container group resource with just the tags to be updated.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return a container group.
-     */
-    @ServiceMethod(returns = ReturnType.SINGLE)
-    ContainerGroupInner update(String resourceGroupName, String containerGroupName, Resource resource);
-
-    /**
-     * Updates container group tags with specified values.
+     * <p>Updates container group tags with specified values.
      *
      * @param resourceGroupName The name of the resource group.
      * @param containerGroupName The name of the container group.
@@ -347,7 +373,25 @@ public interface ContainerGroupsClient
         String resourceGroupName, String containerGroupName, Resource resource, Context context);
 
     /**
-     * Delete the specified container group in the specified subscription and resource group. The operation does not
+     * Update container groups.
+     *
+     * <p>Updates container group tags with specified values.
+     *
+     * @param resourceGroupName The name of the resource group.
+     * @param containerGroupName The name of the container group.
+     * @param resource The container group resource with just the tags to be updated.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return a container group.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    ContainerGroupInner update(String resourceGroupName, String containerGroupName, Resource resource);
+
+    /**
+     * Delete the specified container group.
+     *
+     * <p>Delete the specified container group in the specified subscription and resource group. The operation does not
      * delete other resources provided by the user, such as volumes.
      *
      * @param resourceGroupName The name of the resource group.
@@ -361,7 +405,9 @@ public interface ContainerGroupsClient
     Mono<Response<Flux<ByteBuffer>>> deleteWithResponseAsync(String resourceGroupName, String containerGroupName);
 
     /**
-     * Delete the specified container group in the specified subscription and resource group. The operation does not
+     * Delete the specified container group.
+     *
+     * <p>Delete the specified container group in the specified subscription and resource group. The operation does not
      * delete other resources provided by the user, such as volumes.
      *
      * @param resourceGroupName The name of the resource group.
@@ -376,7 +422,9 @@ public interface ContainerGroupsClient
         String resourceGroupName, String containerGroupName);
 
     /**
-     * Delete the specified container group in the specified subscription and resource group. The operation does not
+     * Delete the specified container group.
+     *
+     * <p>Delete the specified container group in the specified subscription and resource group. The operation does not
      * delete other resources provided by the user, such as volumes.
      *
      * @param resourceGroupName The name of the resource group.
@@ -391,7 +439,9 @@ public interface ContainerGroupsClient
         String resourceGroupName, String containerGroupName);
 
     /**
-     * Delete the specified container group in the specified subscription and resource group. The operation does not
+     * Delete the specified container group.
+     *
+     * <p>Delete the specified container group in the specified subscription and resource group. The operation does not
      * delete other resources provided by the user, such as volumes.
      *
      * @param resourceGroupName The name of the resource group.
@@ -407,7 +457,9 @@ public interface ContainerGroupsClient
         String resourceGroupName, String containerGroupName, Context context);
 
     /**
-     * Delete the specified container group in the specified subscription and resource group. The operation does not
+     * Delete the specified container group.
+     *
+     * <p>Delete the specified container group in the specified subscription and resource group. The operation does not
      * delete other resources provided by the user, such as volumes.
      *
      * @param resourceGroupName The name of the resource group.
@@ -421,7 +473,9 @@ public interface ContainerGroupsClient
     Mono<ContainerGroupInner> deleteAsync(String resourceGroupName, String containerGroupName);
 
     /**
-     * Delete the specified container group in the specified subscription and resource group. The operation does not
+     * Delete the specified container group.
+     *
+     * <p>Delete the specified container group in the specified subscription and resource group. The operation does not
      * delete other resources provided by the user, such as volumes.
      *
      * @param resourceGroupName The name of the resource group.
@@ -435,7 +489,9 @@ public interface ContainerGroupsClient
     ContainerGroupInner delete(String resourceGroupName, String containerGroupName);
 
     /**
-     * Delete the specified container group in the specified subscription and resource group. The operation does not
+     * Delete the specified container group.
+     *
+     * <p>Delete the specified container group in the specified subscription and resource group. The operation does not
      * delete other resources provided by the user, such as volumes.
      *
      * @param resourceGroupName The name of the resource group.
@@ -450,7 +506,9 @@ public interface ContainerGroupsClient
     ContainerGroupInner delete(String resourceGroupName, String containerGroupName, Context context);
 
     /**
-     * Restarts all containers in a container group in place. If container image has updates, new image will be
+     * Restarts all containers in a container group.
+     *
+     * <p>Restarts all containers in a container group in place. If container image has updates, new image will be
      * downloaded.
      *
      * @param resourceGroupName The name of the resource group.
@@ -464,7 +522,9 @@ public interface ContainerGroupsClient
     Mono<Response<Flux<ByteBuffer>>> restartWithResponseAsync(String resourceGroupName, String containerGroupName);
 
     /**
-     * Restarts all containers in a container group in place. If container image has updates, new image will be
+     * Restarts all containers in a container group.
+     *
+     * <p>Restarts all containers in a container group in place. If container image has updates, new image will be
      * downloaded.
      *
      * @param resourceGroupName The name of the resource group.
@@ -478,7 +538,9 @@ public interface ContainerGroupsClient
     PollerFlux<PollResult<Void>, Void> beginRestartAsync(String resourceGroupName, String containerGroupName);
 
     /**
-     * Restarts all containers in a container group in place. If container image has updates, new image will be
+     * Restarts all containers in a container group.
+     *
+     * <p>Restarts all containers in a container group in place. If container image has updates, new image will be
      * downloaded.
      *
      * @param resourceGroupName The name of the resource group.
@@ -492,7 +554,9 @@ public interface ContainerGroupsClient
     SyncPoller<PollResult<Void>, Void> beginRestart(String resourceGroupName, String containerGroupName);
 
     /**
-     * Restarts all containers in a container group in place. If container image has updates, new image will be
+     * Restarts all containers in a container group.
+     *
+     * <p>Restarts all containers in a container group in place. If container image has updates, new image will be
      * downloaded.
      *
      * @param resourceGroupName The name of the resource group.
@@ -508,7 +572,9 @@ public interface ContainerGroupsClient
         String resourceGroupName, String containerGroupName, Context context);
 
     /**
-     * Restarts all containers in a container group in place. If container image has updates, new image will be
+     * Restarts all containers in a container group.
+     *
+     * <p>Restarts all containers in a container group in place. If container image has updates, new image will be
      * downloaded.
      *
      * @param resourceGroupName The name of the resource group.
@@ -522,7 +588,9 @@ public interface ContainerGroupsClient
     Mono<Void> restartAsync(String resourceGroupName, String containerGroupName);
 
     /**
-     * Restarts all containers in a container group in place. If container image has updates, new image will be
+     * Restarts all containers in a container group.
+     *
+     * <p>Restarts all containers in a container group in place. If container image has updates, new image will be
      * downloaded.
      *
      * @param resourceGroupName The name of the resource group.
@@ -535,7 +603,9 @@ public interface ContainerGroupsClient
     void restart(String resourceGroupName, String containerGroupName);
 
     /**
-     * Restarts all containers in a container group in place. If container image has updates, new image will be
+     * Restarts all containers in a container group.
+     *
+     * <p>Restarts all containers in a container group in place. If container image has updates, new image will be
      * downloaded.
      *
      * @param resourceGroupName The name of the resource group.
@@ -549,7 +619,9 @@ public interface ContainerGroupsClient
     void restart(String resourceGroupName, String containerGroupName, Context context);
 
     /**
-     * Stops all containers in a container group. Compute resources will be deallocated and billing will stop.
+     * Stops all containers in a container group.
+     *
+     * <p>Stops all containers in a container group. Compute resources will be deallocated and billing will stop.
      *
      * @param resourceGroupName The name of the resource group.
      * @param containerGroupName The name of the container group.
@@ -562,7 +634,9 @@ public interface ContainerGroupsClient
     Mono<Response<Void>> stopWithResponseAsync(String resourceGroupName, String containerGroupName);
 
     /**
-     * Stops all containers in a container group. Compute resources will be deallocated and billing will stop.
+     * Stops all containers in a container group.
+     *
+     * <p>Stops all containers in a container group. Compute resources will be deallocated and billing will stop.
      *
      * @param resourceGroupName The name of the resource group.
      * @param containerGroupName The name of the container group.
@@ -575,19 +649,9 @@ public interface ContainerGroupsClient
     Mono<Void> stopAsync(String resourceGroupName, String containerGroupName);
 
     /**
-     * Stops all containers in a container group. Compute resources will be deallocated and billing will stop.
+     * Stops all containers in a container group.
      *
-     * @param resourceGroupName The name of the resource group.
-     * @param containerGroupName The name of the container group.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     */
-    @ServiceMethod(returns = ReturnType.SINGLE)
-    void stop(String resourceGroupName, String containerGroupName);
-
-    /**
-     * Stops all containers in a container group. Compute resources will be deallocated and billing will stop.
+     * <p>Stops all containers in a container group. Compute resources will be deallocated and billing will stop.
      *
      * @param resourceGroupName The name of the resource group.
      * @param containerGroupName The name of the container group.
@@ -601,7 +665,23 @@ public interface ContainerGroupsClient
     Response<Void> stopWithResponse(String resourceGroupName, String containerGroupName, Context context);
 
     /**
-     * Starts all containers in a container group. Compute resources will be allocated and billing will start.
+     * Stops all containers in a container group.
+     *
+     * <p>Stops all containers in a container group. Compute resources will be deallocated and billing will stop.
+     *
+     * @param resourceGroupName The name of the resource group.
+     * @param containerGroupName The name of the container group.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    void stop(String resourceGroupName, String containerGroupName);
+
+    /**
+     * Starts all containers in a container group.
+     *
+     * <p>Starts all containers in a container group. Compute resources will be allocated and billing will start.
      *
      * @param resourceGroupName The name of the resource group.
      * @param containerGroupName The name of the container group.
@@ -614,7 +694,9 @@ public interface ContainerGroupsClient
     Mono<Response<Flux<ByteBuffer>>> startWithResponseAsync(String resourceGroupName, String containerGroupName);
 
     /**
-     * Starts all containers in a container group. Compute resources will be allocated and billing will start.
+     * Starts all containers in a container group.
+     *
+     * <p>Starts all containers in a container group. Compute resources will be allocated and billing will start.
      *
      * @param resourceGroupName The name of the resource group.
      * @param containerGroupName The name of the container group.
@@ -627,7 +709,9 @@ public interface ContainerGroupsClient
     PollerFlux<PollResult<Void>, Void> beginStartAsync(String resourceGroupName, String containerGroupName);
 
     /**
-     * Starts all containers in a container group. Compute resources will be allocated and billing will start.
+     * Starts all containers in a container group.
+     *
+     * <p>Starts all containers in a container group. Compute resources will be allocated and billing will start.
      *
      * @param resourceGroupName The name of the resource group.
      * @param containerGroupName The name of the container group.
@@ -640,7 +724,9 @@ public interface ContainerGroupsClient
     SyncPoller<PollResult<Void>, Void> beginStart(String resourceGroupName, String containerGroupName);
 
     /**
-     * Starts all containers in a container group. Compute resources will be allocated and billing will start.
+     * Starts all containers in a container group.
+     *
+     * <p>Starts all containers in a container group. Compute resources will be allocated and billing will start.
      *
      * @param resourceGroupName The name of the resource group.
      * @param containerGroupName The name of the container group.
@@ -654,7 +740,9 @@ public interface ContainerGroupsClient
     SyncPoller<PollResult<Void>, Void> beginStart(String resourceGroupName, String containerGroupName, Context context);
 
     /**
-     * Starts all containers in a container group. Compute resources will be allocated and billing will start.
+     * Starts all containers in a container group.
+     *
+     * <p>Starts all containers in a container group. Compute resources will be allocated and billing will start.
      *
      * @param resourceGroupName The name of the resource group.
      * @param containerGroupName The name of the container group.
@@ -667,7 +755,9 @@ public interface ContainerGroupsClient
     Mono<Void> startAsync(String resourceGroupName, String containerGroupName);
 
     /**
-     * Starts all containers in a container group. Compute resources will be allocated and billing will start.
+     * Starts all containers in a container group.
+     *
+     * <p>Starts all containers in a container group. Compute resources will be allocated and billing will start.
      *
      * @param resourceGroupName The name of the resource group.
      * @param containerGroupName The name of the container group.
@@ -679,7 +769,9 @@ public interface ContainerGroupsClient
     void start(String resourceGroupName, String containerGroupName);
 
     /**
-     * Starts all containers in a container group. Compute resources will be allocated and billing will start.
+     * Starts all containers in a container group.
+     *
+     * <p>Starts all containers in a container group. Compute resources will be allocated and billing will start.
      *
      * @param resourceGroupName The name of the resource group.
      * @param containerGroupName The name of the container group.
@@ -692,7 +784,9 @@ public interface ContainerGroupsClient
     void start(String resourceGroupName, String containerGroupName, Context context);
 
     /**
-     * Gets all the network dependencies for this container group to allow complete control of network setting and
+     * Get all network dependencies for container group.
+     *
+     * <p>Gets all the network dependencies for this container group to allow complete control of network setting and
      * configuration. For container groups, this will always be an empty list.
      *
      * @param resourceGroupName The name of the resource group.
@@ -708,7 +802,9 @@ public interface ContainerGroupsClient
         String resourceGroupName, String containerGroupName);
 
     /**
-     * Gets all the network dependencies for this container group to allow complete control of network setting and
+     * Get all network dependencies for container group.
+     *
+     * <p>Gets all the network dependencies for this container group to allow complete control of network setting and
      * configuration. For container groups, this will always be an empty list.
      *
      * @param resourceGroupName The name of the resource group.
@@ -724,22 +820,9 @@ public interface ContainerGroupsClient
         String resourceGroupName, String containerGroupName);
 
     /**
-     * Gets all the network dependencies for this container group to allow complete control of network setting and
-     * configuration. For container groups, this will always be an empty list.
+     * Get all network dependencies for container group.
      *
-     * @param resourceGroupName The name of the resource group.
-     * @param containerGroupName The name of the container group.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return all the network dependencies for this container group to allow complete control of network setting and
-     *     configuration.
-     */
-    @ServiceMethod(returns = ReturnType.SINGLE)
-    List<String> getOutboundNetworkDependenciesEndpoints(String resourceGroupName, String containerGroupName);
-
-    /**
-     * Gets all the network dependencies for this container group to allow complete control of network setting and
+     * <p>Gets all the network dependencies for this container group to allow complete control of network setting and
      * configuration. For container groups, this will always be an empty list.
      *
      * @param resourceGroupName The name of the resource group.
@@ -754,4 +837,21 @@ public interface ContainerGroupsClient
     @ServiceMethod(returns = ReturnType.SINGLE)
     Response<List<String>> getOutboundNetworkDependenciesEndpointsWithResponse(
         String resourceGroupName, String containerGroupName, Context context);
+
+    /**
+     * Get all network dependencies for container group.
+     *
+     * <p>Gets all the network dependencies for this container group to allow complete control of network setting and
+     * configuration. For container groups, this will always be an empty list.
+     *
+     * @param resourceGroupName The name of the resource group.
+     * @param containerGroupName The name of the container group.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return all the network dependencies for this container group to allow complete control of network setting and
+     *     configuration.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    List<String> getOutboundNetworkDependenciesEndpoints(String resourceGroupName, String containerGroupName);
 }

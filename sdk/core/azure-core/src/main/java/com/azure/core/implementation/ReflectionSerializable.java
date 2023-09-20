@@ -5,9 +5,12 @@ package com.azure.core.implementation;
 
 import com.azure.core.util.logging.ClientLogger;
 import com.azure.core.util.logging.LogLevel;
+import com.azure.json.JsonProviders;
+import com.azure.json.JsonReader;
+import com.azure.json.JsonSerializable;
+import com.azure.json.JsonWriter;
 
 import javax.xml.stream.XMLStreamException;
-import java.io.Closeable;
 import java.io.IOException;
 import java.io.OutputStream;
 import java.lang.invoke.MethodHandle;
@@ -27,15 +30,6 @@ import java.util.function.Function;
  */
 public final class ReflectionSerializable {
     private static final ClientLogger LOGGER = new ClientLogger(ReflectionSerializable.class);
-
-    private static final Class<?> JSON_SERIALIZABLE;
-    private static final Class<?> JSON_READER;
-
-    private static final IOExceptionCallable<Closeable> JSON_READER_CREATOR;
-    private static final IOExceptionCallable<Closeable> JSON_WRITER_CREATOR;
-    private static final IOExceptionCallable<Object> JSON_WRITER_WRITE_JSON_SERIALIZABLE;
-    private static final IOExceptionCallable<Object> JSON_WRITER_FLUSH;
-    static final boolean JSON_SERIALIZABLE_SUPPORTED;
     private static final Map<Class<?>, MethodHandle> FROM_JSON_CACHE;
 
     private static final Class<?> XML_SERIALIZABLE;
@@ -50,54 +44,7 @@ public final class ReflectionSerializable {
     private static final Map<Class<?>, MethodHandle> FROM_XML_CACHE;
 
     static {
-        Class<?> jsonSerializable = null;
-        Class<?> jsonReader = null;
-        IOExceptionCallable<Closeable> jsonReaderCreator = null;
-        IOExceptionCallable<Closeable> jsonWriterCreator = null;
-        IOExceptionCallable<Object> jsonWriterWriteJsonSerializable = null;
-        IOExceptionCallable<Object> jsonWriterFlush = null;
-        boolean jsonSerializableSupported = false;
-        try {
-            jsonSerializable = Class.forName("com.azure.json.JsonSerializable");
-            jsonReader = Class.forName("com.azure.json.JsonReader");
-
-            Class<?> jsonProviders = Class.forName("com.azure.json.JsonProviders");
-            MethodHandles.Lookup lookup = ReflectionUtils.getLookupToUse(jsonProviders);
-
-            MethodHandle handle = lookup.unreflect(jsonProviders.getDeclaredMethod("createReader", byte[].class));
-            jsonReaderCreator = createJsonCallable(Closeable.class, handle);
-
-            handle = lookup.unreflect(jsonProviders.getDeclaredMethod("createWriter", OutputStream.class));
-            jsonWriterCreator = createJsonCallable(Closeable.class, handle);
-
-            Class<?> jsonWriter = Class.forName("com.azure.json.JsonWriter");
-
-            handle = lookup.unreflect(jsonWriter.getDeclaredMethod("writeJson", jsonSerializable));
-            jsonWriterWriteJsonSerializable = createJsonCallable(Object.class, handle);
-
-            handle = lookup.unreflect(jsonWriter.getDeclaredMethod("flush"));
-            jsonWriterFlush = createJsonCallable(Object.class, handle);
-
-            jsonSerializableSupported = true;
-        } catch (Throwable e) {
-            if (e instanceof LinkageError || e instanceof Exception) {
-                LOGGER.log(LogLevel.VERBOSE, () -> "JsonSerializable serialization and deserialization isn't "
-                    + "supported. If it is required add a dependency of 'com.azure:azure-json', or another "
-                    + "dependencies which include 'com.azure:azure-json' as a transitive dependency. If your "
-                    + "application runs as expected this informational message can be ignored.");
-            } else {
-                throw (Error) e;
-            }
-        }
-
-        JSON_SERIALIZABLE = jsonSerializable;
-        JSON_READER = jsonReader;
-        JSON_READER_CREATOR = jsonReaderCreator;
-        JSON_WRITER_CREATOR = jsonWriterCreator;
-        JSON_WRITER_WRITE_JSON_SERIALIZABLE = jsonWriterWriteJsonSerializable;
-        JSON_WRITER_FLUSH = jsonWriterFlush;
-        JSON_SERIALIZABLE_SUPPORTED = jsonSerializableSupported;
-        FROM_JSON_CACHE = JSON_SERIALIZABLE_SUPPORTED ? new ConcurrentHashMap<>() : null;
+        FROM_JSON_CACHE = new ConcurrentHashMap<>();
 
         Class<?> xmlSerializable = null;
         Class<?> xmlReader = null;
@@ -161,7 +108,7 @@ public final class ReflectionSerializable {
      * @return Whether {@code bodyContentClass} can be used as {@code JsonSerializable}.
      */
     public static boolean supportsJsonSerializable(Class<?> bodyContentClass) {
-        return JSON_SERIALIZABLE_SUPPORTED && JSON_SERIALIZABLE.isAssignableFrom(bodyContentClass);
+        return JsonSerializable.class.isAssignableFrom(bodyContentClass);
     }
 
     /**
@@ -171,7 +118,8 @@ public final class ReflectionSerializable {
      * @return The {@link ByteBuffer} representing the serialized {@code jsonSerializable}.
      * @throws IOException If an error occurs during serialization.
      */
-    public static ByteBuffer serializeJsonSerializableToByteBuffer(Object jsonSerializable) throws IOException {
+    public static ByteBuffer serializeJsonSerializableToByteBuffer(JsonSerializable<?> jsonSerializable)
+        throws IOException {
         return serializeJsonSerializableWithReturn(jsonSerializable, AccessibleByteArrayOutputStream::toByteBuffer);
     }
 
@@ -182,7 +130,7 @@ public final class ReflectionSerializable {
      * @return The {@code byte[]} representing the serialized {@code jsonSerializable}.
      * @throws IOException If an error occurs during serialization.
      */
-    public static byte[] serializeJsonSerializableToBytes(Object jsonSerializable) throws IOException {
+    public static byte[] serializeJsonSerializableToBytes(JsonSerializable<?> jsonSerializable) throws IOException {
         return serializeJsonSerializableWithReturn(jsonSerializable, AccessibleByteArrayOutputStream::toByteArray);
     }
 
@@ -193,16 +141,15 @@ public final class ReflectionSerializable {
      * @return The {@link String} representing the serialized {@code jsonSerializable}.
      * @throws IOException If an error occurs during serialization.
      */
-    public static String serializeJsonSerializableToString(Object jsonSerializable) throws IOException {
+    public static String serializeJsonSerializableToString(JsonSerializable<?> jsonSerializable) throws IOException {
         return serializeJsonSerializableWithReturn(jsonSerializable, aos -> aos.toString(StandardCharsets.UTF_8));
     }
 
-    private static <T> T serializeJsonSerializableWithReturn(Object jsonSerializable,
+    private static <T> T serializeJsonSerializableWithReturn(JsonSerializable<?> jsonSerializable,
         Function<AccessibleByteArrayOutputStream, T> returner) throws IOException {
         try (AccessibleByteArrayOutputStream outputStream = new AccessibleByteArrayOutputStream();
-             Closeable jsonWriter = JSON_WRITER_CREATOR.call(outputStream)) {
-            JSON_WRITER_WRITE_JSON_SERIALIZABLE.call(jsonWriter, jsonSerializable);
-            JSON_WRITER_FLUSH.call(jsonWriter);
+             JsonWriter jsonWriter = JsonProviders.createWriter(outputStream)) {
+            jsonWriter.writeJson(jsonSerializable).flush();
 
             return returner.apply(outputStream);
         }
@@ -215,11 +162,10 @@ public final class ReflectionSerializable {
      * @param outputStream Where the serialized {@code JsonSerializable} will be written.
      * @throws IOException If an error occurs during serialization.
      */
-    public static void serializeJsonSerializableIntoOutputStream(Object jsonSerializable, OutputStream outputStream)
-        throws IOException {
-        try (Closeable jsonWriter = JSON_WRITER_CREATOR.call(outputStream)) {
-            JSON_WRITER_WRITE_JSON_SERIALIZABLE.call(jsonWriter, jsonSerializable);
-            JSON_WRITER_FLUSH.call(jsonWriter);
+    public static void serializeJsonSerializableIntoOutputStream(JsonSerializable<?> jsonSerializable,
+        OutputStream outputStream) throws IOException {
+        try (JsonWriter jsonWriter = JsonProviders.createWriter(outputStream)) {
+            jsonWriter.writeJson(jsonSerializable).flush();
         }
     }
 
@@ -232,10 +178,6 @@ public final class ReflectionSerializable {
      * @throws IOException If an error occurs during deserialization.
      */
     public static Object deserializeAsJsonSerializable(Class<?> jsonSerializable, byte[] json) throws IOException {
-        if (!JSON_SERIALIZABLE_SUPPORTED) {
-            return null;
-        }
-
         if (FROM_JSON_CACHE.size() >= 10000) {
             FROM_JSON_CACHE.clear();
         }
@@ -243,13 +185,13 @@ public final class ReflectionSerializable {
         MethodHandle readJson = FROM_JSON_CACHE.computeIfAbsent(jsonSerializable, clazz -> {
             try {
                 MethodHandles.Lookup lookup = ReflectionUtils.getLookupToUse(clazz);
-                return lookup.unreflect(jsonSerializable.getDeclaredMethod("fromJson", JSON_READER));
+                return lookup.unreflect(jsonSerializable.getDeclaredMethod("fromJson", JsonReader.class));
             } catch (Exception e) {
                 throw LOGGER.logExceptionAsError(new IllegalStateException(e));
             }
         });
 
-        try (Closeable jsonReader = JSON_READER_CREATOR.call((Object) json)) {
+        try (JsonReader jsonReader = JsonProviders.createReader(json)) {
             return readJson.invoke(jsonReader);
         } catch (Throwable e) {
             if (e instanceof IOException) {
@@ -378,39 +320,6 @@ public final class ReflectionSerializable {
                 throw (Error) e;
             }
         }
-    }
-
-    /**
-     * Similar to {@link java.util.concurrent.Callable} except it's checked with an {@link IOException} and accepts
-     * parameters.
-     *
-     * @param <T> Type returned by the callable.
-     */
-    private interface IOExceptionCallable<T> {
-        /**
-         * Computes a result or throws if it's unable to do so.
-         *
-         * @param parameters Parameters used to compute the result.
-         * @return The result.
-         * @throws IOException If a result is unable to be computed.
-         */
-        T call(Object... parameters) throws IOException;
-    }
-
-    private static <T> IOExceptionCallable<T> createJsonCallable(Class<T> returnType, MethodHandle methodHandle) {
-        return parameters -> {
-            try {
-                return returnType.cast(methodHandle.invokeWithArguments(parameters));
-            } catch (Throwable throwable) {
-                if (throwable instanceof Error) {
-                    throw (Error) throwable;
-                } else if (throwable instanceof IOException) {
-                    throw (IOException) throwable;
-                } else {
-                    throw new IOException(throwable);
-                }
-            }
-        };
     }
 
     /**

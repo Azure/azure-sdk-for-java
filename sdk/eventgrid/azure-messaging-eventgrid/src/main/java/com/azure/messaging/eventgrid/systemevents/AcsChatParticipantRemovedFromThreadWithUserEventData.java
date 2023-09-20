@@ -32,6 +32,9 @@ public final class AcsChatParticipantRemovedFromThreadWithUserEventData extends 
     @JsonProperty(value = "participantRemoved")
     private AcsChatThreadParticipantProperties participantRemoved;
 
+    /** Creates an instance of AcsChatParticipantRemovedFromThreadWithUserEventData class. */
+    public AcsChatParticipantRemovedFromThreadWithUserEventData() {}
+
     /**
      * Get the time property: The time at which the user was removed to the thread.
      *

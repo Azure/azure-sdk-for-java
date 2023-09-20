@@ -32,7 +32,7 @@ public final class SecureScoreControlsListBySecureScoreMockTests {
         ArgumentCaptor<HttpRequest> httpRequest = ArgumentCaptor.forClass(HttpRequest.class);
 
         String responseStr =
-            "{\"value\":[{\"properties\":{\"displayName\":\"c\",\"score\":{\"max\":1933000706,\"current\":49.17110669356194,\"percentage\":77.01443273434127},\"healthyResourceCount\":1845875117,\"unhealthyResourceCount\":1356433517,\"notApplicableResourceCount\":629728874,\"weight\":6833733008370189091,\"definition\":{\"id\":\"soxinu\",\"name\":\"jlzkdrocqsxy\",\"type\":\"qqt\"}},\"id\":\"miwdwisvnme\",\"name\":\"lajamca\",\"type\":\"yh\"}]}";
+            "{\"value\":[{\"properties\":{\"displayName\":\"nmtsdixc\",\"score\":{\"max\":960368157,\"current\":2.0148335508080595,\"percentage\":32.94154583908292},\"healthyResourceCount\":653289494,\"unhealthyResourceCount\":623500871,\"notApplicableResourceCount\":807131676,\"weight\":7585046270567652176,\"definition\":{\"id\":\"qzoof\",\"name\":\"nqjsvepfbhtleber\",\"type\":\"yljeknfqnwjjqx\"}},\"id\":\"wkdnjrxgkrhwiehy\",\"name\":\"pnowawonoehrguql\",\"type\":\"fwafbjz\"}]}";
 
         Mockito.when(httpResponse.getStatusCode()).thenReturn(200);
         Mockito.when(httpResponse.getHeaders()).thenReturn(new HttpHeaders());
@@ -63,6 +63,6 @@ public final class SecureScoreControlsListBySecureScoreMockTests {
         PagedIterable<SecureScoreControlDetails> response =
             manager
                 .secureScoreControls()
-                .listBySecureScore("wgzwllxzlhhfi", ExpandControlsEnum.DEFINITION, com.azure.core.util.Context.NONE);
+                .listBySecureScore("lxvhhyqqegatxgrz", ExpandControlsEnum.DEFINITION, com.azure.core.util.Context.NONE);
     }
 }

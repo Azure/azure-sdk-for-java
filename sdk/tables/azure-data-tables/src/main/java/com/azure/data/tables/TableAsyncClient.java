@@ -20,9 +20,11 @@ import com.azure.core.util.serializer.SerializerAdapter;
 import com.azure.data.tables.implementation.AzureTableImpl;
 import com.azure.data.tables.implementation.AzureTableImplBuilder;
 import com.azure.data.tables.implementation.EntityPaged;
-import com.azure.data.tables.implementation.ModelHelper;
+import com.azure.data.tables.implementation.TableEntityAccessHelper;
+import com.azure.data.tables.implementation.TableItemAccessHelper;
 import com.azure.data.tables.implementation.TableSasGenerator;
 import com.azure.data.tables.implementation.TableSasUtils;
+import com.azure.data.tables.implementation.TableTransactionActionResponseAccessHelper;
 import com.azure.data.tables.implementation.TableUtils;
 import com.azure.data.tables.implementation.TransactionalBatchImpl;
 import com.azure.data.tables.implementation.models.OdataMetadataFormat;
@@ -63,7 +65,6 @@ import java.util.List;
 import java.util.Map;
 import java.util.stream.Collectors;
 
-import static com.azure.core.util.CoreUtils.isNullOrEmpty;
 import static com.azure.core.util.FluxUtil.monoError;
 import static com.azure.core.util.FluxUtil.withContext;
 import static com.azure.data.tables.implementation.TableUtils.applyOptionalTimeout;
@@ -96,7 +97,6 @@ import static com.azure.data.tables.implementation.TableUtils.toTableServiceErro
  */
 @ServiceClient(builder = TableClientBuilder.class, isAsync = true)
 public final class TableAsyncClient {
-    private static final String DELIMITER_CONTINUATION_TOKEN = ";";
     private final ClientLogger logger = new ClientLogger(TableAsyncClient.class);
     private final String tableName;
     private final AzureTableImpl tablesImplementation;
@@ -293,7 +293,7 @@ public final class TableAsyncClient {
                 .onErrorMap(TableUtils::mapThrowableToTableServiceException)
                 .map(response ->
                     new SimpleResponse<>(response,
-                        ModelHelper.createItem(new TableResponseProperties().setTableName(tableName))));
+                        TableItemAccessHelper.createItem(new TableResponseProperties().setTableName(tableName))));
         } catch (RuntimeException ex) {
             return monoError(logger, ex);
         }
@@ -827,6 +827,7 @@ public final class TableAsyncClient {
      * @return A {@link Mono} containing the {@link Response HTTP response}.
      *
      * @throws TableServiceException If the request is rejected by the service.
+     * @throws IllegalArgumentException If 'partitionKey' or 'rowKey' is null.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<Response<Void>> deleteEntityWithResponse(TableEntity entity, boolean ifUnchanged) {
@@ -839,7 +840,7 @@ public final class TableAsyncClient {
         context = TableUtils.setContext(context);
         eTag = ifUnchanged ? eTag : "*";
 
-        if (isNullOrEmpty(partitionKey) || isNullOrEmpty(rowKey)) {
+        if (partitionKey == null || rowKey == null) {
             return monoError(logger, new IllegalArgumentException("'partitionKey' and 'rowKey' cannot be null."));
         }
 
@@ -948,17 +949,12 @@ public final class TableAsyncClient {
             return Mono.empty();
         }
 
-        String[] split = token.split(DELIMITER_CONTINUATION_TOKEN, 2);
-
-        if (split.length == 0) {
-            return monoError(logger, new RuntimeException(
-                "Split done incorrectly, must have partition key: " + token));
+        try {
+            String[] split = TableUtils.getKeysFromToken(token);
+            return listEntities(split[0], split[1], context, options, resultType);
+        } catch (RuntimeException ex) {
+            return monoError(logger, ex);
         }
-
-        String nextPartitionKey = split[0];
-        String nextRowKey = split.length > 1 ? split[1] : null;
-
-        return listEntities(nextPartitionKey, nextRowKey, context, options, resultType);
     }
 
     private <T extends TableEntity> Mono<PagedResponse<T>> listEntities(String nextPartitionKey, String nextRowKey,
@@ -995,7 +991,7 @@ public final class TableAsyncClient {
                     }
 
                     final List<T> entities = entityResponseValue.stream()
-                        .map(ModelHelper::createEntity)
+                        .map(TableEntityAccessHelper::createEntity)
                         .map(e -> EntityHelper.convertToSubclass(e, resultType, logger))
                         .collect(Collectors.toList());
 
@@ -1080,8 +1076,8 @@ public final class TableAsyncClient {
      * @return A {@link Mono} containing the {@link Response HTTP response} that in turn contains the
      * {@link TableEntity entity}.
      *
-     * @throws IllegalArgumentException If the provided {@code partitionKey} or {@code rowKey} are {@code null} or
-     * empty, or if the {@code select} OData query option is malformed.
+     * @throws IllegalArgumentException If the provided {@code partitionKey} or {@code rowKey} are {@code null}
+     * or if the {@code select} OData query option is malformed.
      * @throws TableServiceException If no {@link TableEntity entity} with the provided {@code partitionKey} and
      * {@code rowKey} exists within the table.
      */
@@ -1100,7 +1096,7 @@ public final class TableAsyncClient {
             queryOptions.setSelect(String.join(",", select));
         }
 
-        if (isNullOrEmpty(partitionKey) || isNullOrEmpty(rowKey)) {
+        if (partitionKey == null || rowKey == null) {
             return monoError(logger, new IllegalArgumentException("'partitionKey' and 'rowKey' cannot be null."));
         }
 
@@ -1121,7 +1117,7 @@ public final class TableAsyncClient {
                     }
 
                     // Deserialize the first entity.
-                    final TableEntity entity = ModelHelper.createEntity(matchingEntity);
+                    final TableEntity entity = TableEntityAccessHelper.createEntity(matchingEntity);
                     sink.next(new SimpleResponse<>(response.getRequest(), response.getStatusCode(),
                         response.getHeaders(), EntityHelper.convertToSubclass(entity, resultType, logger)));
                 });
@@ -1608,7 +1604,7 @@ public final class TableAsyncClient {
 
             // Attempt to attach a sub-request to each batch sub-response
             if (changes != null && changes.getContents().get(i) != null) {
-                ModelHelper.updateTableTransactionActionResponse(subResponse,
+                TableTransactionActionResponseAccessHelper.updateTableTransactionActionResponse(subResponse,
                     changes.getContents().get(i).getHttpRequest());
             }
 

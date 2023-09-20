@@ -62,6 +62,10 @@ public final class JobResponseInner {
     @JsonProperty(value = "parentJobId", access = JsonProperty.Access.WRITE_ONLY)
     private String parentJobId;
 
+    /** Creates an instance of JobResponseInner class. */
+    public JobResponseInner() {
+    }
+
     /**
      * Get the jobId property: The job identifier.
      *

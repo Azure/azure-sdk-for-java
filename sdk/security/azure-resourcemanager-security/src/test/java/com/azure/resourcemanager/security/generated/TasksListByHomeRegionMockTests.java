@@ -31,7 +31,7 @@ public final class TasksListByHomeRegionMockTests {
         ArgumentCaptor<HttpRequest> httpRequest = ArgumentCaptor.forClass(HttpRequest.class);
 
         String responseStr =
-            "{\"value\":[{\"properties\":{\"state\":\"buvczldbglzoutb\",\"creationTimeUtc\":\"2021-08-20T05:59:52Z\",\"securityTaskParameters\":{\"name\":\"ekaj\",\"\":{}},\"lastStateChangeTimeUtc\":\"2021-09-26T19:49:32Z\",\"subState\":\"snorbjg\"},\"id\":\"nzjotvmr\",\"name\":\"khlobvvjbhvhdi\",\"type\":\"ayfluiyuosnu\"}]}";
+            "{\"value\":[{\"properties\":{\"state\":\"f\",\"creationTimeUtc\":\"2021-08-20T00:28:15Z\",\"securityTaskParameters\":{\"name\":\"pmomihz\",\"\":{}},\"lastStateChangeTimeUtc\":\"2021-03-14T23:39:17Z\",\"subState\":\"pkcdpreyxely\"},\"id\":\"cghf\",\"name\":\"rufssjyg\",\"type\":\"sfxrkbhammgm\"}]}";
 
         Mockito.when(httpResponse.getStatusCode()).thenReturn(200);
         Mockito.when(httpResponse.getHeaders()).thenReturn(new HttpHeaders());
@@ -60,6 +60,6 @@ public final class TasksListByHomeRegionMockTests {
                     new AzureProfile("", "", AzureEnvironment.AZURE));
 
         PagedIterable<SecurityTask> response =
-            manager.tasks().listByHomeRegion("gdnk", "fgmwd", com.azure.core.util.Context.NONE);
+            manager.tasks().listByHomeRegion("cdgzseznux", "euairaabmdlqjb", com.azure.core.util.Context.NONE);
     }
 }

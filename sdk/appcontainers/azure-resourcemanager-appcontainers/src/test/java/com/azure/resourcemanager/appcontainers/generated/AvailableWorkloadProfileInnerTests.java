@@ -8,44 +8,42 @@ import com.azure.core.util.BinaryData;
 import com.azure.resourcemanager.appcontainers.fluent.models.AvailableWorkloadProfileInner;
 import com.azure.resourcemanager.appcontainers.models.Applicability;
 import com.azure.resourcemanager.appcontainers.models.AvailableWorkloadProfileProperties;
-import com.azure.resourcemanager.appcontainers.models.Category;
 import org.junit.jupiter.api.Assertions;
-import org.junit.jupiter.api.Test;
 
 public final class AvailableWorkloadProfileInnerTests {
-    @Test
-    public void testDeserialize() {
+    @org.junit.jupiter.api.Test
+    public void testDeserialize() throws Exception {
         AvailableWorkloadProfileInner model =
             BinaryData
                 .fromString(
-                    "{\"location\":\"ruzslzoj\",\"properties\":{\"billingMeterCategory\":\"PremiumSkuMemoryOptimized\",\"applicability\":\"Custom\",\"cores\":1500212037,\"memoryGiB\":1889500647,\"displayName\":\"ngfdgugeyzihgrky\"},\"id\":\"zabs\",\"name\":\"mfp\",\"type\":\"hojeevy\"}")
+                    "{\"location\":\"efovgmk\",\"properties\":{\"category\":\"eyyvxyqjpkcat\",\"applicability\":\"LocationDefault\",\"cores\":1698610201,\"memoryGiB\":1035421848,\"displayName\":\"czsqpjhvm\"},\"id\":\"ajvnysounqe\",\"name\":\"a\",\"type\":\"oaeupfhyhltrpmo\"}")
                 .toObject(AvailableWorkloadProfileInner.class);
-        Assertions.assertEquals("ruzslzoj", model.location());
-        Assertions.assertEquals(Category.PREMIUM_SKU_MEMORY_OPTIMIZED, model.properties().billingMeterCategory());
-        Assertions.assertEquals(Applicability.CUSTOM, model.properties().applicability());
-        Assertions.assertEquals(1500212037, model.properties().cores());
-        Assertions.assertEquals(1889500647, model.properties().memoryGiB());
-        Assertions.assertEquals("ngfdgugeyzihgrky", model.properties().displayName());
+        Assertions.assertEquals("efovgmk", model.location());
+        Assertions.assertEquals("eyyvxyqjpkcat", model.properties().category());
+        Assertions.assertEquals(Applicability.LOCATION_DEFAULT, model.properties().applicability());
+        Assertions.assertEquals(1698610201, model.properties().cores());
+        Assertions.assertEquals(1035421848, model.properties().memoryGiB());
+        Assertions.assertEquals("czsqpjhvm", model.properties().displayName());
     }
 
-    @Test
-    public void testSerialize() {
+    @org.junit.jupiter.api.Test
+    public void testSerialize() throws Exception {
         AvailableWorkloadProfileInner model =
             new AvailableWorkloadProfileInner()
-                .withLocation("ruzslzoj")
+                .withLocation("efovgmk")
                 .withProperties(
                     new AvailableWorkloadProfileProperties()
-                        .withBillingMeterCategory(Category.PREMIUM_SKU_MEMORY_OPTIMIZED)
-                        .withApplicability(Applicability.CUSTOM)
-                        .withCores(1500212037)
-                        .withMemoryGiB(1889500647)
-                        .withDisplayName("ngfdgugeyzihgrky"));
+                        .withCategory("eyyvxyqjpkcat")
+                        .withApplicability(Applicability.LOCATION_DEFAULT)
+                        .withCores(1698610201)
+                        .withMemoryGiB(1035421848)
+                        .withDisplayName("czsqpjhvm"));
         model = BinaryData.fromObject(model).toObject(AvailableWorkloadProfileInner.class);
-        Assertions.assertEquals("ruzslzoj", model.location());
-        Assertions.assertEquals(Category.PREMIUM_SKU_MEMORY_OPTIMIZED, model.properties().billingMeterCategory());
-        Assertions.assertEquals(Applicability.CUSTOM, model.properties().applicability());
-        Assertions.assertEquals(1500212037, model.properties().cores());
-        Assertions.assertEquals(1889500647, model.properties().memoryGiB());
-        Assertions.assertEquals("ngfdgugeyzihgrky", model.properties().displayName());
+        Assertions.assertEquals("efovgmk", model.location());
+        Assertions.assertEquals("eyyvxyqjpkcat", model.properties().category());
+        Assertions.assertEquals(Applicability.LOCATION_DEFAULT, model.properties().applicability());
+        Assertions.assertEquals(1698610201, model.properties().cores());
+        Assertions.assertEquals(1035421848, model.properties().memoryGiB());
+        Assertions.assertEquals("czsqpjhvm", model.properties().displayName());
     }
 }

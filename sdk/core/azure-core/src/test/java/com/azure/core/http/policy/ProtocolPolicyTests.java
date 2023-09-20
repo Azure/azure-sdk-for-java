@@ -13,8 +13,8 @@ import com.azure.core.http.clients.NoOpHttpClient;
 import com.azure.core.util.Context;
 
 import java.net.MalformedURLException;
-import java.net.URL;
 
+import static com.azure.core.CoreTestUtils.createUrl;
 import static org.junit.jupiter.api.Assertions.assertEquals;
 
 public class ProtocolPolicyTests {
@@ -59,6 +59,6 @@ public class ProtocolPolicyTests {
     }
 
     private static HttpRequest createHttpRequest(String url) throws MalformedURLException {
-        return new HttpRequest(HttpMethod.GET, new URL(url));
+        return new HttpRequest(HttpMethod.GET, createUrl(url));
     }
 }

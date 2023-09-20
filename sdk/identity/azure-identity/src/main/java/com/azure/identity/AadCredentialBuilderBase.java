@@ -111,14 +111,33 @@ public abstract class AadCredentialBuilderBase<T extends AadCredentialBuilderBas
     }
 
     /**
-     * Disables instance discovery.
+     * Disables the setting which determines whether or not instance discovery is performed when attempting to
+     * authenticate. This will completely disable both instance discovery and authority validation.
+     * This functionality is intended for use in scenarios where the metadata endpoint cannot be reached, such as in
+     * private clouds or Azure Stack. The process of instance discovery entails retrieving authority metadata from
+     * https://login.microsoft.com/ to validate the authority. By utilizing this API, the validation of the authority
+     * is disabled. As a result, it is crucial to ensure that the configured authority host is valid and trustworthy.
      *
      * @return An updated instance of this builder with instance discovery disabled.
      */
     @SuppressWarnings("unchecked")
 
     public T disableInstanceDiscovery() {
-        this.identityClientOptions.disableInstanceDisovery();
+        this.identityClientOptions.disableInstanceDiscovery();
+        return (T) this;
+    }
+
+    /**
+     * Enables additional support logging for public and confidential client applications. This enables
+     * PII logging in MSAL4J as described <a href="https://learn.microsoft.com/azure/active-directory/develop/msal-logging-java#personal-and-organization-information">here.</a>
+     *
+     * <p><b>This operation will log PII including tokens. It should only be used when directed by support.</b>
+     *
+     * @return An updated instance of this builder with additional support logging enabled.
+     */
+    @SuppressWarnings("unchecked")
+    public T enableUnsafeSupportLogging() {
+        this.identityClientOptions.enableUnsafeSupportLogging();
         return (T) this;
     }
 }

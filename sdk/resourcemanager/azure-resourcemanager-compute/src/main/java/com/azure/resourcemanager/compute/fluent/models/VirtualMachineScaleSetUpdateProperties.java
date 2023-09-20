@@ -8,7 +8,9 @@ import com.azure.core.annotation.Fluent;
 import com.azure.core.management.SubResource;
 import com.azure.resourcemanager.compute.models.AdditionalCapabilities;
 import com.azure.resourcemanager.compute.models.AutomaticRepairsPolicy;
+import com.azure.resourcemanager.compute.models.PriorityMixPolicy;
 import com.azure.resourcemanager.compute.models.ScaleInPolicy;
+import com.azure.resourcemanager.compute.models.SpotRestorePolicy;
 import com.azure.resourcemanager.compute.models.UpgradePolicy;
 import com.azure.resourcemanager.compute.models.VirtualMachineScaleSetUpdateVMProfile;
 import com.fasterxml.jackson.annotation.JsonProperty;
@@ -75,6 +77,18 @@ public final class VirtualMachineScaleSetUpdateProperties {
      */
     @JsonProperty(value = "proximityPlacementGroup")
     private SubResource proximityPlacementGroup;
+
+    /*
+     * Specifies the desired targets for mixing Spot and Regular priority VMs within the same VMSS Flex instance.
+     */
+    @JsonProperty(value = "priorityMixPolicy")
+    private PriorityMixPolicy priorityMixPolicy;
+
+    /*
+     * Specifies the Spot Restore properties for the virtual machine scale set.
+     */
+    @JsonProperty(value = "spotRestorePolicy")
+    private SpotRestorePolicy spotRestorePolicy;
 
     /** Creates an instance of VirtualMachineScaleSetUpdateProperties class. */
     public VirtualMachineScaleSetUpdateProperties() {
@@ -281,6 +295,48 @@ public final class VirtualMachineScaleSetUpdateProperties {
     }
 
     /**
+     * Get the priorityMixPolicy property: Specifies the desired targets for mixing Spot and Regular priority VMs within
+     * the same VMSS Flex instance.
+     *
+     * @return the priorityMixPolicy value.
+     */
+    public PriorityMixPolicy priorityMixPolicy() {
+        return this.priorityMixPolicy;
+    }
+
+    /**
+     * Set the priorityMixPolicy property: Specifies the desired targets for mixing Spot and Regular priority VMs within
+     * the same VMSS Flex instance.
+     *
+     * @param priorityMixPolicy the priorityMixPolicy value to set.
+     * @return the VirtualMachineScaleSetUpdateProperties object itself.
+     */
+    public VirtualMachineScaleSetUpdateProperties withPriorityMixPolicy(PriorityMixPolicy priorityMixPolicy) {
+        this.priorityMixPolicy = priorityMixPolicy;
+        return this;
+    }
+
+    /**
+     * Get the spotRestorePolicy property: Specifies the Spot Restore properties for the virtual machine scale set.
+     *
+     * @return the spotRestorePolicy value.
+     */
+    public SpotRestorePolicy spotRestorePolicy() {
+        return this.spotRestorePolicy;
+    }
+
+    /**
+     * Set the spotRestorePolicy property: Specifies the Spot Restore properties for the virtual machine scale set.
+     *
+     * @param spotRestorePolicy the spotRestorePolicy value to set.
+     * @return the VirtualMachineScaleSetUpdateProperties object itself.
+     */
+    public VirtualMachineScaleSetUpdateProperties withSpotRestorePolicy(SpotRestorePolicy spotRestorePolicy) {
+        this.spotRestorePolicy = spotRestorePolicy;
+        return this;
+    }
+
+    /**
      * Validates the instance.
      *
      * @throws IllegalArgumentException thrown if the instance is not valid.
@@ -300,6 +356,12 @@ public final class VirtualMachineScaleSetUpdateProperties {
         }
         if (scaleInPolicy() != null) {
             scaleInPolicy().validate();
+        }
+        if (priorityMixPolicy() != null) {
+            priorityMixPolicy().validate();
+        }
+        if (spotRestorePolicy() != null) {
+            spotRestorePolicy().validate();
         }
     }
 }

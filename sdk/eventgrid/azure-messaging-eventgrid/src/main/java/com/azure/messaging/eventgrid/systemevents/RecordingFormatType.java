@@ -8,7 +8,7 @@ import com.azure.core.util.ExpandableStringEnum;
 import com.fasterxml.jackson.annotation.JsonCreator;
 import java.util.Collection;
 
-/** Defines values for RecordingFormatType. */
+/** The recording format type - Mp4, Mp3, Wav. */
 public final class RecordingFormatType extends ExpandableStringEnum<RecordingFormatType> {
     /** Static value Wav for RecordingFormatType. */
     public static final RecordingFormatType WAV = fromString("Wav");
@@ -18,6 +18,14 @@ public final class RecordingFormatType extends ExpandableStringEnum<RecordingFor
 
     /** Static value Mp4 for RecordingFormatType. */
     public static final RecordingFormatType MP4 = fromString("Mp4");
+
+    /**
+     * Creates a new instance of RecordingFormatType value.
+     *
+     * @deprecated Use the {@link #fromString(String)} factory method.
+     */
+    @Deprecated
+    public RecordingFormatType() {}
 
     /**
      * Creates or finds a RecordingFormatType from its string representation.

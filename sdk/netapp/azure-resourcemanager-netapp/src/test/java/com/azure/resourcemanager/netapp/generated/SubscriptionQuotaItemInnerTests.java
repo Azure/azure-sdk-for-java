@@ -13,7 +13,7 @@ public final class SubscriptionQuotaItemInnerTests {
         SubscriptionQuotaItemInner model =
             BinaryData
                 .fromString(
-                    "{\"properties\":{\"current\":524649765,\"default\":1465460192},\"id\":\"ajrmvdjwzrlovmc\",\"name\":\"whijcoejctbza\",\"type\":\"s\"}")
+                    "{\"properties\":{\"current\":124550903,\"default\":1175944343},\"id\":\"kbldngkpocipa\",\"name\":\"yxoegukgjnp\",\"type\":\"ucgygevqz\"}")
                 .toObject(SubscriptionQuotaItemInner.class);
     }
 

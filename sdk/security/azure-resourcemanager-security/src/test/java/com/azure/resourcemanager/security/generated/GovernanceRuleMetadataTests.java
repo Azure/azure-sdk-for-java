@@ -13,7 +13,7 @@ public final class GovernanceRuleMetadataTests {
         GovernanceRuleMetadata model =
             BinaryData
                 .fromString(
-                    "{\"createdBy\":\"gzwx\",\"createdOn\":\"2021-07-10T06:33:57Z\",\"updatedBy\":\"cvogygzyvne\",\"updatedOn\":\"2021-06-04T20:52:49Z\"}")
+                    "{\"createdBy\":\"dvrmazlpd\",\"createdOn\":\"2021-01-11T12:00:50Z\",\"updatedBy\":\"ymzvla\",\"updatedOn\":\"2021-05-17T23:09:54Z\"}")
                 .toObject(GovernanceRuleMetadata.class);
     }
 

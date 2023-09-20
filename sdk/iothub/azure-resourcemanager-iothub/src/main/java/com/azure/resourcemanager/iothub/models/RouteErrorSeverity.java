@@ -17,6 +17,15 @@ public final class RouteErrorSeverity extends ExpandableStringEnum<RouteErrorSev
     public static final RouteErrorSeverity WARNING = fromString("warning");
 
     /**
+     * Creates a new instance of RouteErrorSeverity value.
+     *
+     * @deprecated Use the {@link #fromString(String)} factory method.
+     */
+    @Deprecated
+    public RouteErrorSeverity() {
+    }
+
+    /**
      * Creates or finds a RouteErrorSeverity from its string representation.
      *
      * @param name a name to look for.

@@ -8,11 +8,10 @@ import com.azure.core.util.BinaryData;
 import com.azure.resourcemanager.elastic.fluent.models.OperationResultInner;
 import com.azure.resourcemanager.elastic.models.OperationDisplay;
 import org.junit.jupiter.api.Assertions;
-import org.junit.jupiter.api.Test;
 
 public final class OperationResultInnerTests {
-    @Test
-    public void testDeserialize() {
+    @org.junit.jupiter.api.Test
+    public void testDeserialize() throws Exception {
         OperationResultInner model =
             BinaryData
                 .fromString(
@@ -27,8 +26,8 @@ public final class OperationResultInnerTests {
         Assertions.assertEquals("txukcdmp", model.origin());
     }
 
-    @Test
-    public void testSerialize() {
+    @org.junit.jupiter.api.Test
+    public void testSerialize() throws Exception {
         OperationResultInner model =
             new OperationResultInner()
                 .withName("nygj")

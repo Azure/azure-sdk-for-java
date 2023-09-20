@@ -48,6 +48,10 @@ public final class IotHubDescriptionInner extends Resource {
     @JsonProperty(value = "systemData", access = JsonProperty.Access.WRITE_ONLY)
     private SystemData systemData;
 
+    /** Creates an instance of IotHubDescriptionInner class. */
+    public IotHubDescriptionInner() {
+    }
+
     /**
      * Get the etag property: The Etag field is *not* required. If it is provided in the response body, it must also be
      * provided as a header per the normal ETag convention.

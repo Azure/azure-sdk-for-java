@@ -5,24 +5,31 @@ package com.azure.core.test.utils;
 
 import com.azure.core.http.HttpClient;
 import com.azure.core.http.HttpHeader;
+import com.azure.core.http.HttpHeaderName;
 import com.azure.core.http.HttpHeaders;
 import com.azure.core.http.HttpRequest;
 import com.azure.core.http.HttpResponse;
 import com.azure.core.util.BinaryData;
 import com.azure.core.util.Context;
+import com.azure.core.util.Contexts;
+import com.azure.core.util.CoreUtils;
+import com.azure.core.util.FluxUtil;
+import com.azure.core.util.ProgressReporter;
 import reactor.core.publisher.Flux;
 import reactor.core.publisher.Mono;
 
+import java.io.BufferedInputStream;
 import java.io.BufferedOutputStream;
+import java.io.ByteArrayInputStream;
+import java.io.ByteArrayOutputStream;
 import java.io.IOException;
 import java.io.InputStream;
 import java.io.UncheckedIOException;
 import java.net.HttpURLConnection;
 import java.nio.ByteBuffer;
+import java.nio.channels.AsynchronousByteChannel;
+import java.nio.channels.WritableByteChannel;
 import java.nio.charset.Charset;
-import java.nio.charset.StandardCharsets;
-import java.util.List;
-import java.util.Map;
 
 /**
  * A {@link HttpClient} that uses the JDK {@link HttpURLConnection}.
@@ -32,14 +39,9 @@ public class HttpURLConnectionHttpClient implements HttpClient {
     @Override
     public HttpResponse sendSync(HttpRequest request, Context context) {
         HttpURLConnection connection = null;
-
         try {
             connection = (HttpURLConnection) request.getUrl().openConnection();
-            connection.setRequestMethod(request.getHttpMethod().name());
-
-            setHeadersOnRequest(request, connection);
-            setBodyOnRequest(request, connection);
-            connection.connect();
+            createConnection(connection, request, context);
 
             return createHttpResponse(connection, request);
         } catch (IOException e) {
@@ -53,14 +55,15 @@ public class HttpURLConnectionHttpClient implements HttpClient {
 
     @Override
     public Mono<HttpResponse> send(HttpRequest request) {
+        return send(request, Context.NONE);
+    }
+
+    @Override
+    public Mono<HttpResponse> send(HttpRequest request, Context context) {
         HttpURLConnection connection = null;
         try {
             connection = (HttpURLConnection) request.getUrl().openConnection();
-            connection.setRequestMethod(request.getHttpMethod().toString());
-
-            setHeadersOnRequest(request, connection);
-            setBodyOnRequest(request, connection);
-            connection.connect();
+            createConnection(connection, request, context);
             return Mono.just(createHttpResponse(connection, request));
         } catch (IOException e) {
             throw new UncheckedIOException(e);
@@ -69,6 +72,13 @@ public class HttpURLConnectionHttpClient implements HttpClient {
                 connection.disconnect();
             }
         }
+    }
+    private void createConnection(HttpURLConnection connection, HttpRequest request, Context context) throws IOException {
+        connection.setRequestMethod(request.getHttpMethod().name());
+        setHeadersOnRequest(request, connection);
+        setBodyOnRequest(request, connection, Contexts.with(context).getHttpRequestProgressReporter());
+        connection.setInstanceFollowRedirects(false);
+        connection.connect();
     }
 
     private HttpResponse createHttpResponse(HttpURLConnection connection, HttpRequest request) {
@@ -80,13 +90,18 @@ public class HttpURLConnectionHttpClient implements HttpClient {
         return new HttpURLResponse(connection, request);
     }
 
-    private static void setBodyOnRequest(HttpRequest request, HttpURLConnection connection) {
+    private static void setBodyOnRequest(HttpRequest request, HttpURLConnection connection,
+        ProgressReporter progressReporter) {
         try {
             BinaryData body = request.getBodyAsBinaryData();
             if (body != null) {
                 connection.setDoOutput(true);
                 try (BufferedOutputStream stream = new BufferedOutputStream(connection.getOutputStream())) {
-                    stream.write(body.toBytes());
+                    byte[] bodyBytes = body.toBytes();
+                    if (progressReporter != null) {
+                        progressReporter.reportProgress(bodyBytes.length);
+                    }
+                    stream.write(bodyBytes);
                     stream.flush();
                 }
             }
@@ -101,14 +116,14 @@ public class HttpURLConnectionHttpClient implements HttpClient {
             for (HttpHeader header : headers) {
                 String name = header.getName();
 
-                connection.setRequestProperty(name, headers.getValue(name));
+                header.getValuesList().forEach(value -> connection.addRequestProperty(name, value));
             }
         }
     }
 
     private static class HttpURLResponse extends HttpResponse {
         private final HttpURLConnection connection;
-        private final ByteBuffer body;
+        private final byte[] body;
 
         /**
          * Creates an instance of {@link HttpResponse}.
@@ -132,25 +147,40 @@ public class HttpURLConnectionHttpClient implements HttpClient {
             super(request);
             this.connection = connection;
             try {
-
-                byte[] bytes = null;
                 if (connection.getResponseCode() >= 100 && connection.getResponseCode() < 400) {
-                    bytes = BinaryData.fromStream(connection.getInputStream()).toBytes();
+                    InputStream inputStream = connection.getInputStream();
+                    body = readResponseBytes(inputStream);
                 } else {
                     InputStream inputStream = connection.getErrorStream();
-                    if (inputStream != null) {
-                        bytes = BinaryData.fromStream(inputStream).toBytes();
-                    }
-                }
-                if (bytes != null) {
-                    this.body = ByteBuffer.wrap(bytes);
-                } else {
-                    this.body = null;
+                    body = readResponseBytes(inputStream);
                 }
             } catch (IOException e) {
-                throw new UncheckedIOException(e);
-            }
+                // Handle connection exception and retrieve error information
+                int responseCode = -1;
+                String responseMessage = "Unknown error";
+                try {
+                    responseCode = connection.getResponseCode();
+                    responseMessage = connection.getResponseMessage();
+                } catch (IOException ignored) {
 
+                }
+
+                throw new UncheckedIOException(String.format("Connection failed: %s, %s", responseCode,
+                    responseMessage), e);
+            }
+        }
+
+        private static byte[] readResponseBytes(InputStream inputStream) throws IOException {
+            BufferedInputStream bufferedInputStream = new BufferedInputStream(inputStream);
+            ByteArrayOutputStream byteArrayOutputStream = new ByteArrayOutputStream();
+            byte[] buffer = new byte[8192];
+            int bytesRead;
+            while ((bytesRead = bufferedInputStream.read(buffer)) != -1) {
+                byteArrayOutputStream.write(buffer, 0, bytesRead);
+            }
+            bufferedInputStream.close();
+            byteArrayOutputStream.close();
+            return byteArrayOutputStream.toByteArray();
         }
 
         @Override
@@ -163,39 +193,69 @@ public class HttpURLConnectionHttpClient implements HttpClient {
         }
 
         @Override
+        @Deprecated
         public String getHeaderValue(String name) {
             return connection.getHeaderField(name);
         }
 
         @Override
+        public String getHeaderValue(HttpHeaderName headerName) {
+            return connection.getHeaderField(headerName.getCaseInsensitiveName());
+        }
+
+        @Override
         public HttpHeaders getHeaders() {
-            HttpHeaders ret = new HttpHeaders();
-            for (Map.Entry<String, List<String>> entry : connection.getHeaderFields().entrySet()) {
-                for (String value : entry.getValue()) {
-                    ret.add(entry.getKey(), value);
-                }
-            }
-            return ret;
+            return new HttpHeaders().setAll(connection.getHeaderFields());
         }
 
         @Override
         public Flux<ByteBuffer> getBody() {
-            return Flux.just(body);
+            return Mono.fromSupplier(() -> ByteBuffer.wrap(body)).flux();
         }
 
         @Override
         public Mono<byte[]> getBodyAsByteArray() {
-            return Mono.just(body.array());
+            return Mono.just(body);
         }
 
         @Override
         public Mono<String> getBodyAsString() {
-            return Mono.just(new String(body.array(), StandardCharsets.UTF_8));
+            return Mono.just(CoreUtils.bomAwareToString(body, getHeaderValue(HttpHeaderName.CONTENT_TYPE)));
         }
 
         @Override
         public Mono<String> getBodyAsString(Charset charset) {
-            return Mono.just(new String(body.array(), charset));
+            return Mono.just(new String(body, charset));
+        }
+
+        @Override
+        public BinaryData getBodyAsBinaryData() {
+            return BinaryData.fromBytes(body);
+        }
+
+        @Override
+        public Mono<InputStream> getBodyAsInputStream() {
+            return Mono.fromSupplier(() -> new ByteArrayInputStream(body));
+        }
+
+        @Override
+        public Mono<Void> writeBodyToAsync(AsynchronousByteChannel channel) {
+            return FluxUtil.writeToAsynchronousByteChannel(getBody(), channel);
+        }
+
+        @Override
+        public void writeBodyTo(WritableByteChannel channel) throws IOException {
+            channel.write(ByteBuffer.wrap(body));
+        }
+
+        @Override
+        public HttpResponse buffer() {
+            return this;
+        }
+
+        @Override
+        public void close() {
+            connection.disconnect();
         }
     }
 }

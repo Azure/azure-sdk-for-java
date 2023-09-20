@@ -46,6 +46,10 @@ public final class UserSubscriptionQuota {
     @JsonProperty(value = "name")
     private Name name;
 
+    /** Creates an instance of UserSubscriptionQuota class. */
+    public UserSubscriptionQuota() {
+    }
+
     /**
      * Get the id property: IotHub type id.
      *

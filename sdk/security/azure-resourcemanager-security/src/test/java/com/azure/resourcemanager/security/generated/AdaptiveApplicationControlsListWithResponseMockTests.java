@@ -30,7 +30,7 @@ public final class AdaptiveApplicationControlsListWithResponseMockTests {
         ArgumentCaptor<HttpRequest> httpRequest = ArgumentCaptor.forClass(HttpRequest.class);
 
         String responseStr =
-            "{\"value\":[{\"location\":\"qggweeiwdh\",\"id\":\"mnc\",\"name\":\"bf\",\"type\":\"uscstunmlh\"},{\"location\":\"fbklciichgjsysmv\",\"id\":\"o\",\"name\":\"gwxfkzsi\",\"type\":\"cuvbdujgcwxvec\"},{\"location\":\"wjtrdxriza\",\"id\":\"bbgiarksykpgdqxw\",\"name\":\"b\",\"type\":\"rwiqrxhacl\"},{\"location\":\"osqkptjqgk\",\"id\":\"fmmainwhedxkpbq\",\"name\":\"unt\",\"type\":\"buizazzelwg\"}]}";
+            "{\"value\":[{\"location\":\"pfuofixcnpcfykkp\",\"id\":\"ycpawm\",\"name\":\"jp\",\"type\":\"dpwrp\"},{\"location\":\"pcf\",\"id\":\"fwzlgzawkgyepeya\",\"name\":\"nnidmdiawpzxk\",\"type\":\"rntmkctdhu\"}]}";
 
         Mockito.when(httpResponse.getStatusCode()).thenReturn(200);
         Mockito.when(httpResponse.getHeaders()).thenReturn(new HttpHeaders());

@@ -15,7 +15,6 @@ import com.azure.cosmos.implementation.DocumentCollection;
 import com.azure.cosmos.implementation.HttpClientUnderTestWrapper;
 import com.azure.cosmos.implementation.HttpConstants;
 import com.azure.cosmos.implementation.IAuthorizationTokenProvider;
-import com.azure.cosmos.implementation.IOpenConnectionsHandler;
 import com.azure.cosmos.implementation.OperationType;
 import com.azure.cosmos.implementation.RequestOptions;
 import com.azure.cosmos.implementation.ResourceType;
@@ -24,6 +23,8 @@ import com.azure.cosmos.implementation.RxDocumentServiceRequest;
 import com.azure.cosmos.implementation.TestConfigurations;
 import com.azure.cosmos.implementation.TestSuiteBase;
 import com.azure.cosmos.implementation.Utils;
+import com.azure.cosmos.implementation.directconnectivity.rntbd.OpenConnectionTask;
+import com.azure.cosmos.implementation.directconnectivity.rntbd.ProactiveOpenConnectionsProcessor;
 import com.azure.cosmos.implementation.guava25.collect.ImmutableList;
 import com.azure.cosmos.implementation.guava25.collect.Lists;
 import com.azure.cosmos.implementation.http.HttpClient;
@@ -42,7 +43,6 @@ import org.testng.annotations.BeforeClass;
 import org.testng.annotations.DataProvider;
 import org.testng.annotations.Factory;
 import org.testng.annotations.Test;
-import reactor.core.publisher.Flux;
 import reactor.core.publisher.Mono;
 
 import java.lang.reflect.Field;
@@ -116,6 +116,14 @@ public class GatewayAddressCacheTest extends TestSuiteBase {
         };
     }
 
+    @DataProvider(name = "isCollectionUnderWarmUpFlowArgsProvider")
+    public Object[] isCollectionUnderWarmUpFlowArgsProvider() {
+        return new Object[] {
+            // isCollectionUnderWarmUpFlow
+            true, false
+        };
+    }
+
     @Test(groups = { "direct" }, dataProvider = "targetPartitionsKeyRangeListAndCollectionLinkParams", timeOut = TIMEOUT)
     public void getServerAddressesViaGateway(List<String> partitionKeyRangeIds,
                                              String collectionLink,
@@ -135,7 +143,9 @@ public class GatewayAddressCacheTest extends TestSuiteBase {
                 null,
                 null,
                 ConnectionPolicy.getDefaultPolicy(),
+                null,
                 null);
+
         for (int i = 0; i < 2; i++) {
             RxDocumentServiceRequest req =
                 RxDocumentServiceRequest.create(mockDiagnosticsClientContext(), OperationType.Create, ResourceType.Document,
@@ -174,7 +184,9 @@ public class GatewayAddressCacheTest extends TestSuiteBase {
                                                             null,
                                                             null,
                                                             ConnectionPolicy.getDefaultPolicy(),
+                                                            null,
                                                             null);
+
         for (int i = 0; i < 2; i++) {
             RxDocumentServiceRequest req =
                 RxDocumentServiceRequest.create(mockDiagnosticsClientContext(), OperationType.Create, ResourceType.Database,
@@ -214,6 +226,7 @@ public class GatewayAddressCacheTest extends TestSuiteBase {
         Configs configs = ConfigsBuilder.instance().withProtocol(protocol).build();
         URI serviceEndpoint = new URI(TestConfigurations.HOST);
         IAuthorizationTokenProvider authorizationTokenProvider = (RxDocumentClientImpl) client;
+        ProactiveOpenConnectionsProcessor proactiveOpenConnectionsProcessorMock = Mockito.mock(ProactiveOpenConnectionsProcessor.class);
 
         GatewayAddressCache cache = new GatewayAddressCache(mockDiagnosticsClientContext(), serviceEndpoint,
                                                             protocol,
@@ -223,6 +236,7 @@ public class GatewayAddressCacheTest extends TestSuiteBase {
                                                             null,
                                                             null,
                                                             ConnectionPolicy.getDefaultPolicy(),
+                                                            proactiveOpenConnectionsProcessorMock,
                                                             null);
 
         RxDocumentServiceRequest req =
@@ -249,10 +263,10 @@ public class GatewayAddressCacheTest extends TestSuiteBase {
     @DataProvider(name = "openAsyncTargetAndTargetPartitionsKeyRangeAndCollectionLinkParams")
     public Object[][] openAsyncTargetAndPartitionsKeyRangeTargetAndCollectionLinkParams() {
         return new Object[][] {
-                // openAsync target partition key range ids, target partition key range id, collection link
-                { ImmutableList.of("0", "1"), "0", getNameBasedCollectionLink() },
-                { ImmutableList.of("0", "1"), "1", getNameBasedCollectionLink() },
-                { ImmutableList.of("0", "1"), "1", getCollectionSelfLink() },
+                // openAsync target partition key range ids, target partition key range id, collection link, is collection under warm up flow
+                { ImmutableList.of("0", "1"), "0", getNameBasedCollectionLink(), true },
+                { ImmutableList.of("0", "1"), "1", getNameBasedCollectionLink(), true },
+                { ImmutableList.of("0", "1"), "1", getCollectionSelfLink(), false },
         };
     }
 
@@ -262,15 +276,14 @@ public class GatewayAddressCacheTest extends TestSuiteBase {
     public void tryGetAddresses_ForDataPartitions_AddressCachedByOpenAsync_NoHttpRequest(
             List<String> allPartitionKeyRangeIds,
             String partitionKeyRangeId,
-            String collectionLink) throws Exception {
+            String collectionLink,
+            boolean isCollectionUnderWarmUpFlow) throws Exception {
         Configs configs = new Configs();
         HttpClientUnderTestWrapper httpClientWrapper = getHttpClientUnderTestWrapper(configs);
 
         URI serviceEndpoint = new URI(TestConfigurations.HOST);
         IAuthorizationTokenProvider authorizationTokenProvider = (RxDocumentClientImpl) client;
-
-        IOpenConnectionsHandler openConnectionsHandler = Mockito.mock(IOpenConnectionsHandler.class);
-        Mockito.when(openConnectionsHandler.openConnections(Mockito.any(), Mockito.any(), Mockito.any())).thenReturn(Flux.empty());
+        ProactiveOpenConnectionsProcessor proactiveOpenConnectionsProcessorMock = Mockito.mock(ProactiveOpenConnectionsProcessor.class);
 
         GatewayAddressCache cache = new GatewayAddressCache(mockDiagnosticsClientContext(),
                                                             serviceEndpoint,
@@ -281,20 +294,22 @@ public class GatewayAddressCacheTest extends TestSuiteBase {
                                                             null,
                                                             null,
                                                             ConnectionPolicy.getDefaultPolicy(),
-                                                            openConnectionsHandler);
+                                                            proactiveOpenConnectionsProcessorMock,
+                                                            null);
 
         String collectionRid = createdCollection.getResourceId();
 
         List<PartitionKeyRangeIdentity> pkriList = allPartitionKeyRangeIds.stream().map(
                 pkri -> new PartitionKeyRangeIdentity(collectionRid, pkri)).collect(Collectors.toList());
 
-        cache.openConnectionsAndInitCaches(createdCollection, pkriList).blockLast();
+        cache.resolveAddressesAndInitCaches(
+                collectionLink,
+                createdCollection,
+                pkriList)
+                .blockLast();
 
         assertThat(httpClientWrapper.capturedRequests).asList().hasSize(1);
         httpClientWrapper.capturedRequests.clear();
-        Mockito
-            .verify(openConnectionsHandler, Mockito.times(allPartitionKeyRangeIds.size()))
-            .openConnections(Mockito.any(), Mockito.any(), Mockito.any());
 
         RxDocumentServiceRequest req =
                 RxDocumentServiceRequest.create(mockDiagnosticsClientContext(), OperationType.Create, ResourceType.Document,
@@ -328,15 +343,17 @@ public class GatewayAddressCacheTest extends TestSuiteBase {
     public void tryGetAddresses_ForDataPartitions_ForceRefresh(
             List<String> allPartitionKeyRangeIds,
             String partitionKeyRangeId,
-            String collectionLink) throws Exception {
+            String collectionLink,
+            boolean isCollectionUnderWarmUpFlow) throws Exception {
         Configs configs = new Configs();
         HttpClientUnderTestWrapper httpClientWrapper = getHttpClientUnderTestWrapper(configs);
 
         URI serviceEndpoint = new URI(TestConfigurations.HOST);
         IAuthorizationTokenProvider authorizationTokenProvider = (RxDocumentClientImpl) client;
 
-        IOpenConnectionsHandler openConnectionsHandler = Mockito.mock(IOpenConnectionsHandler.class);
-        Mockito.when(openConnectionsHandler.openConnections(Mockito.any(), Mockito.any(), Mockito.any())).thenReturn(Flux.empty());
+        ProactiveOpenConnectionsProcessor proactiveOpenConnectionsProcessorMock = Mockito.mock(ProactiveOpenConnectionsProcessor.class);
+        Uri addressUriMock = Mockito.mock(Uri.class);
+        OpenConnectionTask dummyOpenConnectionsTask = new OpenConnectionTask("", serviceEndpoint, addressUriMock, Configs.getMinConnectionPoolSizePerEndpoint());
 
         GatewayAddressCache cache = new GatewayAddressCache(mockDiagnosticsClientContext(),
                                                             serviceEndpoint,
@@ -347,30 +364,66 @@ public class GatewayAddressCacheTest extends TestSuiteBase {
                                                             null,
                                                             null,
                                                             ConnectionPolicy.getDefaultPolicy(),
-                                                            openConnectionsHandler);
+                                                            proactiveOpenConnectionsProcessorMock,
+                                                            null);
 
         String collectionRid = createdCollection.getResourceId();
 
         List<PartitionKeyRangeIdentity> pkriList = allPartitionKeyRangeIds.stream().map(
                 pkri -> new PartitionKeyRangeIdentity(collectionRid, pkri)).collect(Collectors.toList());
 
-        cache.openConnectionsAndInitCaches(createdCollection, pkriList).blockLast();
+        Mockito.when(proactiveOpenConnectionsProcessorMock.submitOpenConnectionTaskOutsideLoop(Mockito.any(), Mockito.any(), Mockito.any(), Mockito.anyInt()))
+                .thenReturn(dummyOpenConnectionsTask);
+
+        cache.resolveAddressesAndInitCaches(collectionLink, createdCollection, pkriList).blockLast();
 
         assertThat(httpClientWrapper.capturedRequests).asList().hasSize(1);
         httpClientWrapper.capturedRequests.clear();
-        Mockito
-            .verify(openConnectionsHandler, Mockito.times(allPartitionKeyRangeIds.size()))
-            .openConnections(Mockito.any(), Mockito.any(), Mockito.any());
 
         RxDocumentServiceRequest req =
                 RxDocumentServiceRequest.create(mockDiagnosticsClientContext(), OperationType.Create, ResourceType.Document,
                         collectionLink,
                         new Database(), new HashMap<>());
 
+        if (isCollectionUnderWarmUpFlow) {
+            Mockito
+                .when(proactiveOpenConnectionsProcessorMock.isCollectionRidUnderOpenConnectionsFlow(Mockito.anyString()))
+                .thenReturn(true);
+        } else {
+            Mockito
+                .when(proactiveOpenConnectionsProcessorMock.isCollectionRidUnderOpenConnectionsFlow(Mockito.anyString()))
+                .thenReturn(false);
+        }
+
         PartitionKeyRangeIdentity partitionKeyRangeIdentity = new PartitionKeyRangeIdentity(collectionRid, partitionKeyRangeId);
         Mono<Utils.ValueHolder<AddressInformation[]>> addressesInfosFromCacheObs = cache.tryGetAddresses(req, partitionKeyRangeIdentity, true);
         ArrayList<AddressInformation> addressInfosFromCache = Lists.newArrayList(getSuccessResult(addressesInfosFromCacheObs, TIMEOUT).v);
 
+        // isCollectionRidUnderOpenConnectionsFlow is called 6 times
+        // 1. as forceRefreshPartitionAddresses = true, this invokes isCollectionRidUnderOpenConnectionsFlow eventually
+        // refreshing collectionRid->addresses map maintained by proactiveOpenConnectionsProcessor to track containers / addresses
+        // under connection warm up flow
+        // 2. replica validation will get triggered in case of unhealthyPending / unknown addresses, replica validation will do a
+        // submitOpenConnectionTaskOutsideLoop for each of these addresses but before that it will also do
+        // isCollectionRidUnderOpenConnectionsFlow check to determine the no. of connections to open
+        // 3. it needs to be checked if the replicas (up for validation) with Unknown health status are used by a container which
+        // is part of the warm up flow - isCollectionRidUnderOpenConnectionsFlow is called here again for each replica
+        Mockito.verify(proactiveOpenConnectionsProcessorMock, Mockito.times(6))
+                .isCollectionRidUnderOpenConnectionsFlow(Mockito.any());
+
+        if (isCollectionUnderWarmUpFlow) {
+            // if the collection is under the warm up flow and the replica health status is Unknown / UnhealthyPending
+            // status then trigger replica validation for this replica address
+            Mockito.verify(proactiveOpenConnectionsProcessorMock, Mockito.atLeastOnce())
+                   .submitOpenConnectionTaskOutsideLoop(Mockito.any(), Mockito.any(), Mockito.any(), Mockito.anyInt());
+        } else {
+            // if the collection is not under the warm up flow and the replica health status is Unknown
+            // then don't trigger replica validation for this replica address
+            Mockito.verify(proactiveOpenConnectionsProcessorMock, Mockito.never())
+                   .submitOpenConnectionTaskOutsideLoop(Mockito.any(), Mockito.any(), Mockito.any(), Mockito.anyInt());
+        }
+
+        Mockito.clearInvocations(proactiveOpenConnectionsProcessorMock);
         // no new request is made
         assertThat(httpClientWrapper.capturedRequests)
                 .describedAs("force refresh fetched from gateway")
@@ -394,17 +447,16 @@ public class GatewayAddressCacheTest extends TestSuiteBase {
     public void tryGetAddresses_ForDataPartitions_Suboptimal_Refresh(
             List<String> allPartitionKeyRangeIds,
             String partitionKeyRangeId,
-            String collectionLink) throws Exception {
+            String collectionLink,
+            boolean isCollectionUnderWarmUpFlow) throws Exception {
         Configs configs = new Configs();
         HttpClientUnderTestWrapper httpClientWrapper = getHttpClientUnderTestWrapper(configs);
 
         URI serviceEndpoint = new URI(TestConfigurations.HOST);
         IAuthorizationTokenProvider authorizationTokenProvider = (RxDocumentClientImpl) client;
-
-        IOpenConnectionsHandler openConnectionsHandler = Mockito.mock(IOpenConnectionsHandler.class);
-        Mockito
-            .when(openConnectionsHandler.openConnections(Mockito.any(), Mockito.any(), Mockito.any()))
-            .thenReturn(Flux.empty());
+        ProactiveOpenConnectionsProcessor proactiveOpenConnectionsProcessorMock = Mockito.mock(ProactiveOpenConnectionsProcessor.class);
+        Uri addressUriMock = Mockito.mock(Uri.class);
+        OpenConnectionTask dummyOpenConnectionsTask = new OpenConnectionTask("", serviceEndpoint, addressUriMock, Configs.getMinConnectionPoolSizePerEndpoint());
 
         int suboptimalRefreshTime = 2;
 
@@ -418,29 +470,59 @@ public class GatewayAddressCacheTest extends TestSuiteBase {
                                                                 null,
                                                                 null,
                                                                 ConnectionPolicy.getDefaultPolicy(),
-                                                                openConnectionsHandler);
+                                                                proactiveOpenConnectionsProcessorMock,
+                                                                null);
 
         String collectionRid = createdCollection.getResourceId();
 
         List<PartitionKeyRangeIdentity> pkriList = allPartitionKeyRangeIds.stream().map(
                 pkri -> new PartitionKeyRangeIdentity(collectionRid, pkri)).collect(Collectors.toList());
 
-        origCache.openConnectionsAndInitCaches(createdCollection, pkriList).blockLast();
+        Mockito.when(proactiveOpenConnectionsProcessorMock.submitOpenConnectionTaskOutsideLoop(Mockito.any(), Mockito.any(), Mockito.any(), Mockito.anyInt()))
+                .thenReturn(dummyOpenConnectionsTask);
+
+        origCache.resolveAddressesAndInitCaches(collectionLink, createdCollection, pkriList).blockLast();
 
         assertThat(httpClientWrapper.capturedRequests).asList().hasSize(1);
         httpClientWrapper.capturedRequests.clear();
-        Mockito
-            .verify(openConnectionsHandler, Mockito.times(allPartitionKeyRangeIds.size()))
-            .openConnections(Mockito.any(), Mockito.any(), Mockito.any());
 
         RxDocumentServiceRequest req =
                 RxDocumentServiceRequest.create(mockDiagnosticsClientContext(), OperationType.Create, ResourceType.Document,
                         collectionLink,
                         new Database(), new HashMap<>());
 
+        if (isCollectionUnderWarmUpFlow) {
+            Mockito
+                .when(proactiveOpenConnectionsProcessorMock.isCollectionRidUnderOpenConnectionsFlow(Mockito.anyString()))
+                .thenReturn(true);
+        } else {
+            Mockito
+                .when(proactiveOpenConnectionsProcessorMock.isCollectionRidUnderOpenConnectionsFlow(Mockito.anyString()))
+                .thenReturn(false);
+        }
+
         PartitionKeyRangeIdentity partitionKeyRangeIdentity = new PartitionKeyRangeIdentity(collectionRid, partitionKeyRangeId);
         Mono<Utils.ValueHolder<AddressInformation[]>> addressesInfosFromCacheObs = origCache.tryGetAddresses(req, partitionKeyRangeIdentity, true);
         ArrayList<AddressInformation> addressInfosFromCache = Lists.newArrayList(getSuccessResult(addressesInfosFromCacheObs, TIMEOUT).v);
+
+        // isCollectionRidUnderOpenConnectionsFlow called 6 times
+        // 1. as forceRefreshPartitionAddresses = true, this invokes isCollectionRidUnderOpenConnectionsFlow eventually
+        // refreshing collectionRid->addresses map maintained by proactiveOpenConnectionsProcessor to track containers / addresses
+        // under connection warm up flow
+        // 2. replica validation will get triggered in case of unhealthyPending / unknown addresses, replica validation will do a
+        // submitOpenConnectionTaskOutsideLoop for each of these addresses but before that it will also do
+        // isCollectionRidUnderOpenConnectionsFlow check to determine the no. of connections to open
+        // 3. it needs to be checked if the replicas (up for validation) with Unknown health status are used by a container which
+        // is part of the warm up flow - isCollectionRidUnderOpenConnectionsFlow is called here again for each replica
+        Mockito.verify(proactiveOpenConnectionsProcessorMock, Mockito.times(6))
+               .isCollectionRidUnderOpenConnectionsFlow(Mockito.any());
+        if (isCollectionUnderWarmUpFlow) {
+            Mockito.verify(proactiveOpenConnectionsProcessorMock, Mockito.atLeastOnce())
+                   .submitOpenConnectionTaskOutsideLoop(Mockito.any(), Mockito.any(), Mockito.any(), Mockito.anyInt());
+        } else {
+            Mockito.verify(proactiveOpenConnectionsProcessorMock, Mockito.never())
+                   .submitOpenConnectionTaskOutsideLoop(Mockito.any(), Mockito.any(), Mockito.any(), Mockito.anyInt());
+        }
 
         // no new request is made
         assertThat(httpClientWrapper.capturedRequests)
@@ -521,9 +603,6 @@ public class GatewayAddressCacheTest extends TestSuiteBase {
         URI serviceEndpoint = new URI(TestConfigurations.HOST);
         IAuthorizationTokenProvider authorizationTokenProvider = (RxDocumentClientImpl) client;
 
-        IOpenConnectionsHandler openConnectionsHandler = Mockito.mock(IOpenConnectionsHandler.class);
-        Mockito.when(openConnectionsHandler.openConnections(Mockito.any(), Mockito.any(), Mockito.any())).thenReturn(Flux.empty());
-
         GatewayAddressCache cache = new GatewayAddressCache(mockDiagnosticsClientContext(),
                                                             serviceEndpoint,
                                                             protocol,
@@ -532,7 +611,8 @@ public class GatewayAddressCacheTest extends TestSuiteBase {
                                                             getHttpClient(configs),
                                                             null,
                                                             null,
-                                                            ConnectionPolicy.getDefaultPolicy(),
+                                                            null,
+                                                            null,
                                                             null);
 
         RxDocumentServiceRequest req =
@@ -584,6 +664,7 @@ public class GatewayAddressCacheTest extends TestSuiteBase {
                                                             null,
                                                             null,
                                                             ConnectionPolicy.getDefaultPolicy(),
+                                                            null,
                                                             null);
 
         RxDocumentServiceRequest req =
@@ -634,6 +715,7 @@ public class GatewayAddressCacheTest extends TestSuiteBase {
                                                             null,
                                                             null,
                                                             ConnectionPolicy.getDefaultPolicy(),
+                                                            null,
                                                             null);
 
         RxDocumentServiceRequest req =
@@ -691,6 +773,7 @@ public class GatewayAddressCacheTest extends TestSuiteBase {
                                                                 ApiType.SQL,
                                                                 null,
                                                                 ConnectionPolicy.getDefaultPolicy(),
+                                                                null,
                                                                 null);
 
         GatewayAddressCache spyCache = Mockito.spy(origCache);
@@ -788,6 +871,7 @@ public class GatewayAddressCacheTest extends TestSuiteBase {
                                                                 null,
                                                                 null,
                                                                 ConnectionPolicy.getDefaultPolicy(),
+                                                                null,
                                                                 null);
 
         GatewayAddressCache spyCache = Mockito.spy(origCache);
@@ -877,13 +961,14 @@ public class GatewayAddressCacheTest extends TestSuiteBase {
 
     @SuppressWarnings("unchecked")
     @Test(groups = { "direct" }, dataProvider = "replicaValidationArgsProvider", timeOut = TIMEOUT)
-    public void tryGetAddress_replicaValidationTests(boolean replicaValidationEnabled, boolean openConnectionAndInitCaches) throws Exception {
+    public void tryGetAddress_replicaValidationTests(boolean replicaValidationEnabled, boolean submitOpenConnectionTasksAndInitCaches) throws Exception {
         Configs configs = ConfigsBuilder.instance().withProtocol(Protocol.TCP).build();
         URI serviceEndpoint = new URI(TestConfigurations.HOST);
         IAuthorizationTokenProvider authorizationTokenProvider = (RxDocumentClientImpl) client;
         HttpClientUnderTestWrapper httpClientWrapper = getHttpClientUnderTestWrapper(configs);
-        IOpenConnectionsHandler openConnectionsHandlerMock = Mockito.mock(IOpenConnectionsHandler.class);
-        Mockito.when(openConnectionsHandlerMock.openConnections(Mockito.any(), Mockito.any(), Mockito.any())).thenReturn(Flux.empty()); // what returned here does not really matter
+        ProactiveOpenConnectionsProcessor proactiveOpenConnectionsProcessorMock = Mockito.mock(ProactiveOpenConnectionsProcessor.class);
+        Uri addressUriMock = Mockito.mock(Uri.class);
+        OpenConnectionTask dummyOpenConnectionsTask = new OpenConnectionTask("", serviceEndpoint, addressUriMock, Configs.getMinConnectionPoolSizePerEndpoint());
 
         if (replicaValidationEnabled) {
             System.setProperty("COSMOS.REPLICA_ADDRESS_VALIDATION_ENABLED", "true");
@@ -903,7 +988,8 @@ public class GatewayAddressCacheTest extends TestSuiteBase {
                 null,
                 null,
                 ConnectionPolicy.getDefaultPolicy(),
-                openConnectionsHandlerMock);
+                proactiveOpenConnectionsProcessorMock,
+                null);
 
         RxDocumentServiceRequest req =
                 RxDocumentServiceRequest.create(
@@ -914,15 +1000,21 @@ public class GatewayAddressCacheTest extends TestSuiteBase {
                         new Database(),
                         new HashMap<>());
 
-        if (openConnectionAndInitCaches) {
+        if (submitOpenConnectionTasksAndInitCaches) {
             List<PartitionKeyRangeIdentity> pkriList = Arrays.asList(new PartitionKeyRangeIdentity("0"));
-            cache.openConnectionsAndInitCaches(createdCollection, pkriList).blockLast();
-            Mockito.clearInvocations(openConnectionsHandlerMock);
+            cache.resolveAddressesAndInitCaches(createdCollection.getSelfLink(), createdCollection, pkriList).blockLast();
+            Mockito.verify(proactiveOpenConnectionsProcessorMock, Mockito.times(1))
+                    .recordCollectionRidsAndUrisUnderOpenConnectionsAndInitCaches(Mockito.any(), Mockito.any());
+            Mockito.clearInvocations(proactiveOpenConnectionsProcessorMock);
             httpClientWrapper.capturedRequests.clear();
+            Mockito.when(proactiveOpenConnectionsProcessorMock.isCollectionRidUnderOpenConnectionsFlow(Mockito.anyString())).thenReturn(true);
         }
 
         PartitionKeyRangeIdentity partitionKeyRangeIdentity = new PartitionKeyRangeIdentity(createdCollection.getResourceId(), "0");
         boolean forceRefreshPartitionAddresses = true;
+
+        Mockito.when(proactiveOpenConnectionsProcessorMock.submitOpenConnectionTaskOutsideLoop(Mockito.any(), Mockito.any(), Mockito.any(), Mockito.anyInt()))
+                .thenReturn(dummyOpenConnectionsTask);
 
         Mono<Utils.ValueHolder<AddressInformation[]>> addressesInfosFromCacheObs =
                 cache.tryGetAddresses(req, partitionKeyRangeIdentity, forceRefreshPartitionAddresses);
@@ -935,27 +1027,50 @@ public class GatewayAddressCacheTest extends TestSuiteBase {
                 .asList().hasSize(1);
 
         if (replicaValidationEnabled) {
-            ArgumentCaptor<List<Uri>> openConnectionArguments = ArgumentCaptor.forClass(List.class);
+            ArgumentCaptor<Uri> openConnectionArguments = ArgumentCaptor.forClass(Uri.class);
             ArgumentCaptor<URI> serviceEndpointArguments = ArgumentCaptor.forClass(URI.class);
 
-            if (openConnectionAndInitCaches) {
-                // If openConnectionAndInitCaches is called, then replica validation will also include for unknown status
+            if (submitOpenConnectionTasksAndInitCaches) {
+
+                // If submitOpenConnectionTasksAndInitCaches is called, then replica validation will also include for unknown status
+                // isCollectionRidUnderOpenConnectionsFlow called 6 times
+                // 1. as forceRefreshPartitionAddresses = true, this invokes isCollectionRidUnderOpenConnectionsFlow eventually
+                // refreshing collectionRid->addresses map maintained by proactiveOpenConnectionsProcessor to track containers / addresses
+                // under connection warm up flow
+                // 2. replica validation will get triggered in case of unhealthyPending / unknown addresses, replica validation will do a
+                // submitOpenConnectionTaskOutsideLoop for each of these addresses but before that it will also do
+                // isCollectionRidUnderOpenConnectionsFlow check to determine the no. of connections to open
+                // 3. it needs to be checked if the replicas (up for validation) with Unknown health status are used by a container which
+                // is part of the warm-up flow - isCollectionRidUnderOpenConnectionsFlow is called here again (called up to 4 times - 1 for each replica)
+                // for a given physical partition
                 Mockito
-                    .verify(openConnectionsHandlerMock, Mockito.times(1))
-                    .openConnections(Mockito.any(), serviceEndpointArguments.capture(), openConnectionArguments.capture());
-                assertThat(openConnectionArguments.getValue()).hasSize(addressInfosFromCache.size());
+                    .verify(proactiveOpenConnectionsProcessorMock, Mockito.atLeastOnce())
+                    .submitOpenConnectionTaskOutsideLoop(Mockito.any(), serviceEndpointArguments.capture(), openConnectionArguments.capture(), Mockito.anyInt());
+                assertThat(openConnectionArguments.getAllValues()).hasSize(addressInfosFromCache.size());
+                Mockito.verify(proactiveOpenConnectionsProcessorMock, Mockito.times(6))
+                        .isCollectionRidUnderOpenConnectionsFlow(Mockito.any());
             } else {
                 // Open connection will only be called for unhealthyPending status address
                 Mockito
-                    .verify(openConnectionsHandlerMock, Mockito.times(0))
-                    .openConnections(Mockito.any(), serviceEndpointArguments.capture(), openConnectionArguments.capture());
+                    .verify(proactiveOpenConnectionsProcessorMock, Mockito.times(0))
+                    .submitOpenConnectionTaskOutsideLoop(Mockito.any(), serviceEndpointArguments.capture(), openConnectionArguments.capture(), Mockito.anyInt());
+                // isCollectionRidUnderOpenConnectionsFlow called once
+                // 1. as forceRefreshPartitionAddresses = true, this invokes isCollectionRidUnderOpenConnectionsFlow eventually
+                // refreshing collectionRid->addresses map maintained by proactiveOpenConnectionsProcessor to track containers / addresses
+                // under connection warm up flow
+                // 2. replica validation will get triggered only in case of unhealthyPending addresses (if no connection warm up is used at all),
+                Mockito.verify(proactiveOpenConnectionsProcessorMock, Mockito.times(1))
+                        .isCollectionRidUnderOpenConnectionsFlow(Mockito.any());
             }
         } else {
-            Mockito.verify(openConnectionsHandlerMock, Mockito.never()).openConnections(Mockito.any(), Mockito.any(), Mockito.any());
+            Mockito.verify(proactiveOpenConnectionsProcessorMock, Mockito.never())
+                    .submitOpenConnectionTaskOutsideLoop(Mockito.any(), Mockito.any(), Mockito.any(), Mockito.anyInt());
+            Mockito.verify(proactiveOpenConnectionsProcessorMock, Mockito.times(1))
+                    .isCollectionRidUnderOpenConnectionsFlow(Mockito.any());
         }
 
         httpClientWrapper.capturedRequests.clear();
-        Mockito.clearInvocations(openConnectionsHandlerMock);
+        Mockito.clearInvocations(proactiveOpenConnectionsProcessorMock);
 
         // Mark one of the uri as unhealthy, one as unknown, others as connected
         // and then force refresh the addresses again, make sure the health status of the uri is reserved
@@ -985,7 +1100,7 @@ public class GatewayAddressCacheTest extends TestSuiteBase {
         // validate connected status will be reserved
         // validate unhealthy status will change into unhealthyPending status
         // Validate openConnection will be called for addresses in unhealthyPending status
-        // Validate openConnection will be called for addresses in unknown status if openConnectionAndInitCaches is called
+        // Validate openConnection will be called for addresses in unknown status if submitOpenConnectionTasksAndInitCaches is called
         for (AddressInformation addressInformation : refreshedAddresses) {
             if (addressInformation.getPhysicalUri().equals(unknownAddressUri)) {
                 assertThat(addressInformation.getPhysicalUri().getHealthStatus()).isEqualTo(Unknown);
@@ -997,20 +1112,21 @@ public class GatewayAddressCacheTest extends TestSuiteBase {
         }
 
         if (replicaValidationEnabled) {
-            ArgumentCaptor<List<Uri>> openConnectionArguments = ArgumentCaptor.forClass(List.class);
+            ArgumentCaptor<Uri> openConnectionArguments = ArgumentCaptor.forClass(Uri.class);
             ArgumentCaptor<URI> serviceEndpointArguments = ArgumentCaptor.forClass(URI.class);
 
             Mockito
-                .verify(openConnectionsHandlerMock, Mockito.times(1))
-                .openConnections(Mockito.any(), serviceEndpointArguments.capture(), openConnectionArguments.capture());
-            if (openConnectionAndInitCaches) {
-                assertThat(openConnectionArguments.getValue()).containsExactlyElementsOf(Arrays.asList(unhealthyAddressUri, unknownAddressUri));
+                .verify(proactiveOpenConnectionsProcessorMock, Mockito.atLeastOnce())
+                .submitOpenConnectionTaskOutsideLoop(Mockito.any(), serviceEndpointArguments.capture(), openConnectionArguments.capture(), Mockito.anyInt());
+            if (submitOpenConnectionTasksAndInitCaches) {
+                assertThat(openConnectionArguments.getAllValues()).containsExactlyElementsOf(Arrays.asList(unhealthyAddressUri, unknownAddressUri));
             } else {
-                assertThat(openConnectionArguments.getValue()).containsExactly(unhealthyAddressUri);
+                assertThat(openConnectionArguments.getAllValues()).containsExactly(unhealthyAddressUri);
             }
 
         } else {
-            Mockito.verify(openConnectionsHandlerMock, Mockito.never()).openConnections(Mockito.any(), Mockito.any(), Mockito.any());
+            Mockito.verify(proactiveOpenConnectionsProcessorMock, Mockito.never())
+                    .submitOpenConnectionTaskOutsideLoop(Mockito.any(), Mockito.any(), Mockito.any(), Mockito.anyInt());
         }
 
         System.clearProperty("COSMOS.REPLICA_ADDRESS_VALIDATION_ENABLED");
@@ -1022,8 +1138,7 @@ public class GatewayAddressCacheTest extends TestSuiteBase {
         URI serviceEndpoint = new URI(TestConfigurations.HOST);
         IAuthorizationTokenProvider authorizationTokenProvider = (RxDocumentClientImpl) client;
         HttpClientUnderTestWrapper httpClientWrapper = getHttpClientUnderTestWrapper(configs);
-        IOpenConnectionsHandler openConnectionsHandlerMock = Mockito.mock(IOpenConnectionsHandler.class);
-        Mockito.when(openConnectionsHandlerMock.openConnections(Mockito.any(), Mockito.any(), Mockito.any())).thenReturn(Flux.empty()); // what returned here does not really matter
+        ProactiveOpenConnectionsProcessor proactiveOpenConnectionsProcessorMock = Mockito.mock(ProactiveOpenConnectionsProcessor.class);
 
         GatewayAddressCache cache = new GatewayAddressCache(
                 mockDiagnosticsClientContext(),
@@ -1035,7 +1150,8 @@ public class GatewayAddressCacheTest extends TestSuiteBase {
                 null,
                 null,
                 ConnectionPolicy.getDefaultPolicy(),
-                openConnectionsHandlerMock);
+                proactiveOpenConnectionsProcessorMock,
+                null);
 
         RxDocumentServiceRequest req =
                 RxDocumentServiceRequest.create(
@@ -1062,7 +1178,7 @@ public class GatewayAddressCacheTest extends TestSuiteBase {
         // Mark all the uris in connected status
         // Setup request failedEndpoints, and then refresh addresses again(with forceRefresh = false), confirm the failed endpoint uri is marked as unhealthy
         httpClientWrapper.capturedRequests.clear();
-        Mockito.clearInvocations(openConnectionsHandlerMock);
+        Mockito.clearInvocations(proactiveOpenConnectionsProcessorMock);
         for (AddressInformation address : addressInfosFromCache) {
             address.getPhysicalUri().setConnected();
         }
@@ -1084,8 +1200,7 @@ public class GatewayAddressCacheTest extends TestSuiteBase {
         URI serviceEndpoint = new URI(TestConfigurations.HOST);
         IAuthorizationTokenProvider authorizationTokenProvider = (RxDocumentClientImpl) client;
         HttpClientUnderTestWrapper httpClientWrapper = getHttpClientUnderTestWrapper(configs);
-        IOpenConnectionsHandler openConnectionsHandlerMock = Mockito.mock(IOpenConnectionsHandler.class);
-        Mockito.when(openConnectionsHandlerMock.openConnections(Mockito.any(), Mockito.any(), Mockito.any())).thenReturn(Flux.empty()); // what returned here does not really matter
+        ProactiveOpenConnectionsProcessor proactiveOpenConnectionsProcessorMock = Mockito.mock(ProactiveOpenConnectionsProcessor.class);
 
         GatewayAddressCache cache = new GatewayAddressCache(
                 mockDiagnosticsClientContext(),
@@ -1097,7 +1212,8 @@ public class GatewayAddressCacheTest extends TestSuiteBase {
                 null,
                 null,
                 ConnectionPolicy.getDefaultPolicy(),
-                openConnectionsHandlerMock);
+                proactiveOpenConnectionsProcessorMock,
+                null);
 
         RxDocumentServiceRequest req =
                 RxDocumentServiceRequest.create(
@@ -1117,19 +1233,27 @@ public class GatewayAddressCacheTest extends TestSuiteBase {
         ArrayList<AddressInformation> addressInfosFromCache =
                 Lists.newArrayList(getSuccessResult(addressesInfosFromCacheObs, TIMEOUT).v);
 
+        // isCollectionRidUnderOpenConnectionsFlow is not called since forceRefreshPartitionAddresses=false
+        // and replicaValidationScope just has 'Unhealthy'
+        Mockito.verify(proactiveOpenConnectionsProcessorMock, Mockito.times(0))
+                .isCollectionRidUnderOpenConnectionsFlow(Mockito.any());
+
+        Mockito.verify(proactiveOpenConnectionsProcessorMock, Mockito.times(0))
+                .submitOpenConnectionTaskOutsideLoop(Mockito.any(), Mockito.any(), Mockito.any(), Mockito.anyInt());
+
         assertThat(httpClientWrapper.capturedRequests)
                 .describedAs("getAddress will read addresses from gateway")
                 .asList().hasSize(1);
 
+        Mockito.clearInvocations(proactiveOpenConnectionsProcessorMock);
         httpClientWrapper.capturedRequests.clear();
-        Mockito.clearInvocations(openConnectionsHandlerMock);
 
         // mark one of the uri as unhealthy, and validate the address cache will be refreshed after 1 min
         Uri unhealthyAddressUri = addressInfosFromCache.get(0).getPhysicalUri();
         unhealthyAddressUri.setUnhealthy();
-        Field lastUnhealthyTimestampField = Uri.class.getDeclaredField("lastUnhealthyTimestamp");
-        lastUnhealthyTimestampField.setAccessible(true);
-        lastUnhealthyTimestampField.set(unhealthyAddressUri, Instant.now().minusMillis(Duration.ofMinutes(1).toMillis()));
+        Field lastTransitionToUnhealthyTimestampField = Uri.class.getDeclaredField("lastTransitionToUnhealthyTimestamp");
+        lastTransitionToUnhealthyTimestampField.setAccessible(true);
+        lastTransitionToUnhealthyTimestampField.set(unhealthyAddressUri, Instant.now().minusMillis(Duration.ofMinutes(1).toMillis()));
 
         // using forceRefresh false
         // but as there is one address has been stuck in unhealthy status for more than 1 min,
@@ -1145,17 +1269,120 @@ public class GatewayAddressCacheTest extends TestSuiteBase {
                 .describedAs("getAddress will read addresses from gateway")
                 .asList().hasSize(1);
         assertThat(cachedAddresses).hasSize(addressInfosFromCache.size()).containsAll(addressInfosFromCache);
+
+        // isCollectionRidUnderOpenConnectionsFlow called 2 times
+        // 1. forceRefreshPartitionAddresses = false but when addresses are unhealthy for long enough, the SDK does a forceRefresh=true for addresses
+        // which refreshes collectionRid->addresses map maintained by proactiveOpenConnectionsProcessor to track containers / addresses
+        // under connection warm up flow, the refresh of this map only happens if isCollectionRidUnderOpenConnectionsFlow is true
+        // 2. replica validation will get triggered in case of unhealthyPending addresses, replica validation will do a
+        // submitOpenConnectionTaskOutsideLoop for each of these addresses but before that it will also do
+        // isCollectionRidUnderOpenConnectionsFlow check to determine the no. of connections to open
+        Mockito.verify(proactiveOpenConnectionsProcessorMock, Mockito.times(2))
+                .isCollectionRidUnderOpenConnectionsFlow(Mockito.any());
+
+        Mockito.verify(proactiveOpenConnectionsProcessorMock, Mockito.times(1))
+                .submitOpenConnectionTaskOutsideLoop(Mockito.any(), Mockito.any(), Mockito.any(), Mockito.anyInt());
     }
 
-    @SuppressWarnings({"unchecked", "rawtypes"})
-    @Test(groups = { "direct" }, timeOut = TIMEOUT)
-    public void validateReplicaAddressesTests() throws URISyntaxException, NoSuchMethodException, InvocationTargetException, IllegalAccessException {
+    @Test(groups = {"direct"}, timeOut = 2 * TIMEOUT)
+    public void tryGetAddress_repeatedlySetUnhealthyStatus_forceRefresh() throws InterruptedException, URISyntaxException {
         Configs configs = ConfigsBuilder.instance().withProtocol(Protocol.TCP).build();
         URI serviceEndpoint = new URI(TestConfigurations.HOST);
         IAuthorizationTokenProvider authorizationTokenProvider = (RxDocumentClientImpl) client;
         HttpClientUnderTestWrapper httpClientWrapper = getHttpClientUnderTestWrapper(configs);
-        IOpenConnectionsHandler openConnectionsHandlerMock = Mockito.mock(IOpenConnectionsHandler.class);
-        Mockito.when(openConnectionsHandlerMock.openConnections(Mockito.any(), Mockito.any(), Mockito.any())).thenReturn(Flux.empty()); // what returned here does not really matter
+        ProactiveOpenConnectionsProcessor proactiveOpenConnectionsProcessorMock = Mockito.mock(ProactiveOpenConnectionsProcessor.class);
+
+        GatewayAddressCache cache = new GatewayAddressCache(
+            mockDiagnosticsClientContext(),
+            serviceEndpoint,
+            Protocol.TCP,
+            authorizationTokenProvider,
+            null,
+            httpClientWrapper.getSpyHttpClient(),
+            null,
+            null,
+            ConnectionPolicy.getDefaultPolicy(),
+            proactiveOpenConnectionsProcessorMock,
+            null);
+
+        RxDocumentServiceRequest req =
+            RxDocumentServiceRequest.create(
+                mockDiagnosticsClientContext(),
+                OperationType.Create,
+                ResourceType.Document,
+                getCollectionSelfLink(),
+                new Database(),
+                new HashMap<>());
+
+        PartitionKeyRangeIdentity partitionKeyRangeIdentity = new PartitionKeyRangeIdentity(createdCollection.getResourceId(), "0");
+        boolean forceRefreshPartitionAddresses = false;
+
+        Mono<Utils.ValueHolder<AddressInformation[]>> addressesInfosFromCacheObs =
+            cache.tryGetAddresses(req, partitionKeyRangeIdentity, forceRefreshPartitionAddresses);
+
+        ArrayList<AddressInformation> addressInfosFromCache =
+            Lists.newArrayList(getSuccessResult(addressesInfosFromCacheObs, TIMEOUT).v);
+
+        // isCollectionRidUnderOpenConnectionsFlow is not called since forceRefreshPartitionAddresses=false
+        // and replicaValidationScope just has 'Unhealthy'
+        Mockito.verify(proactiveOpenConnectionsProcessorMock, Mockito.times(0))
+               .isCollectionRidUnderOpenConnectionsFlow(Mockito.any());
+
+        Mockito.verify(proactiveOpenConnectionsProcessorMock, Mockito.times(0))
+               .submitOpenConnectionTaskOutsideLoop(Mockito.any(), Mockito.any(), Mockito.any(), Mockito.anyInt());
+
+        assertThat(httpClientWrapper.capturedRequests)
+            .describedAs("getAddress will read addresses from gateway")
+            .asList().hasSize(1);
+
+        Mockito.clearInvocations(proactiveOpenConnectionsProcessorMock);
+        httpClientWrapper.capturedRequests.clear();
+
+        // mark one of the uri as unhealthy, and validate the address cache will be refreshed after 1 min
+        Uri unhealthyAddressUri = addressInfosFromCache.get(0).getPhysicalUri();
+        unhealthyAddressUri.setUnhealthy();
+        Thread.sleep(60 * 1000);
+        // setting uri as Unhealthy on a still Unhealthy uri should still cause address refresh to be triggerred
+        unhealthyAddressUri.setUnhealthy();
+        // using forceRefresh false
+        // but as there is one address has been stuck in unhealthy status for more than 1 min,
+        // so after getting the addresses, it will refresh the cache
+        ArrayList<AddressInformation> cachedAddresses =
+            Lists.newArrayList(getSuccessResult(cache.tryGetAddresses(req, partitionKeyRangeIdentity, false), TIMEOUT).v);
+
+        // since the refresh will happen asynchronously in the background, wait here some time for it to happen
+        Thread.sleep(500);
+
+        // validate the cache will be refreshed
+        assertThat(httpClientWrapper.capturedRequests)
+            .describedAs("getAddress will read addresses from gateway")
+            .asList().hasSize(1);
+        assertThat(cachedAddresses).hasSize(addressInfosFromCache.size()).containsAll(addressInfosFromCache);
+
+        // isCollectionRidUnderOpenConnectionsFlow called twice
+        // 1. forceRefreshPartitionAddresses = false but when addresses are unhealthy for long enough, the SDK does a forceRefresh=true for addresses
+        // which refreshes collectionRid->addresses map maintained by proactiveOpenConnectionsProcessor to track containers / addresses
+        // under connection warm up flow, the refresh of this map only happens if isCollectionRidUnderOpenConnectionsFlow is true
+        // 2. replica validation will get triggered in case of unhealthyPending / unknown addresses, replica validation will do a
+        // submitOpenConnectionTaskOutsideLoop for each of these addresses but before that it will also do
+        // isCollectionRidUnderOpenConnectionsFlow check to determine the no. of connections to open
+        Mockito.verify(proactiveOpenConnectionsProcessorMock, Mockito.times(2))
+               .isCollectionRidUnderOpenConnectionsFlow(Mockito.any());
+
+        Mockito.verify(proactiveOpenConnectionsProcessorMock, Mockito.times(1))
+               .submitOpenConnectionTaskOutsideLoop(Mockito.any(), Mockito.any(), Mockito.any(), Mockito.anyInt());
+    }
+
+    @SuppressWarnings({"unchecked", "rawtypes"})
+    @Test(groups = { "direct" }, dataProvider = "isCollectionUnderWarmUpFlowArgsProvider", timeOut = TIMEOUT)
+    public void validateReplicaAddressesTests(boolean isCollectionUnderWarmUpFlow) throws URISyntaxException, NoSuchMethodException, InvocationTargetException, IllegalAccessException {
+        Configs configs = ConfigsBuilder.instance().withProtocol(Protocol.TCP).build();
+        URI serviceEndpoint = new URI(TestConfigurations.HOST);
+        IAuthorizationTokenProvider authorizationTokenProvider = (RxDocumentClientImpl) client;
+        HttpClientUnderTestWrapper httpClientWrapper = getHttpClientUnderTestWrapper(configs);
+        ProactiveOpenConnectionsProcessor proactiveOpenConnectionsProcessorMock = Mockito.mock(ProactiveOpenConnectionsProcessor.class);
+        Uri addressUriMock = Mockito.mock(Uri.class);
+        OpenConnectionTask dummyOpenConnectionsTask = new OpenConnectionTask("", serviceEndpoint, addressUriMock, Configs.getMinConnectionPoolSizePerEndpoint());
 
         GatewayAddressCache cache = new GatewayAddressCache(
                 mockDiagnosticsClientContext(),
@@ -1167,7 +1394,10 @@ public class GatewayAddressCacheTest extends TestSuiteBase {
                 null,
                 null,
                 ConnectionPolicy.getDefaultPolicy(),
-                openConnectionsHandlerMock);
+                proactiveOpenConnectionsProcessorMock,
+                null);
+
+        Mockito.when(proactiveOpenConnectionsProcessorMock.submitOpenConnectionTaskOutsideLoop(Mockito.any(), Mockito.any(), Mockito.any(), Mockito.anyInt())).thenReturn(dummyOpenConnectionsTask);
 
         Method validateReplicaAddressesMethod =
             GatewayAddressCache.class.getDeclaredMethod("validateReplicaAddresses", new Class[] { String.class, AddressInformation[].class });
@@ -1194,23 +1424,55 @@ public class GatewayAddressCacheTest extends TestSuiteBase {
         replicaValidationScopes.add(Unknown);
         replicaValidationScopes.add(UnhealthyPending);
 
+        if (isCollectionUnderWarmUpFlow) {
+            Mockito
+                .when(proactiveOpenConnectionsProcessorMock.isCollectionRidUnderOpenConnectionsFlow(Mockito.anyString()))
+                .thenReturn(true);
+        } else {
+            Mockito
+                .when(proactiveOpenConnectionsProcessorMock.isCollectionRidUnderOpenConnectionsFlow(Mockito.anyString()))
+                .thenReturn(false);
+        }
+
         validateReplicaAddressesMethod
             .invoke(
                 cache,
                 new Object[]{ createdCollection.getResourceId(), new AddressInformation[]{ address1, address2, address3, address4 }}) ;
 
         // Validate openConnection will only be called for address in unhealthyPending status
-        ArgumentCaptor<List<Uri>> openConnectionArguments = ArgumentCaptor.forClass(List.class);
+        ArgumentCaptor<Uri> openConnectionArguments = ArgumentCaptor.forClass(Uri.class);
         ArgumentCaptor<URI> serviceEndpointArguments = ArgumentCaptor.forClass(URI.class);
-        Mockito
-            .verify(openConnectionsHandlerMock, Mockito.times(1))
-            .openConnections(Mockito.any(), serviceEndpointArguments.capture(), openConnectionArguments.capture());
 
-        assertThat(openConnectionArguments.getValue()).containsExactlyElementsOf(
+        if (isCollectionUnderWarmUpFlow) {
+            Mockito
+                .verify(proactiveOpenConnectionsProcessorMock, Mockito.times(2))
+                .submitOpenConnectionTaskOutsideLoop(Mockito.any(), serviceEndpointArguments.capture(), openConnectionArguments.capture(), Mockito.anyInt());
+
+            // when collection is under warm up flow both Unknown and UnhealthyPending are in the scope
+            // for replica validation
+            // address4 is in an UnhealthyPending state (prioritize UnhealthyPending for replica validation)
+            // and address2 is in an Unknown state
+            assertThat(openConnectionArguments.getAllValues()).containsExactlyElementsOf(
                 Arrays.asList(address4, address2)
-                        .stream()
-                        .map(addressInformation -> addressInformation.getPhysicalUri())
-                        .collect(Collectors.toList()));
+                      .stream()
+                      .map(addressInformation -> addressInformation.getPhysicalUri())
+                      .collect(Collectors.toList()));
+        } else {
+            // when collection is not under warm up flow only UnhealthyPending is in the scope
+            // for replica validation
+            // address4 is in an UnhealthyPending state (prioritize UnhealthyPending for replica validation)
+            // and address2 is in an Unknown state (excluded from replica validation)
+            Mockito
+                .verify(proactiveOpenConnectionsProcessorMock, Mockito.times(1))
+                .submitOpenConnectionTaskOutsideLoop(Mockito.any(), serviceEndpointArguments.capture(), openConnectionArguments.capture(), Mockito.anyInt());
+
+            // Only address4 is in an UnhealthyPending state
+            assertThat(openConnectionArguments.getAllValues()).containsExactlyElementsOf(
+                Arrays.asList(address4)
+                      .stream()
+                      .map(addressInformation -> addressInformation.getPhysicalUri())
+                      .collect(Collectors.toList()));
+        }
     }
 
     @SuppressWarnings("rawtypes")
@@ -1220,8 +1482,6 @@ public class GatewayAddressCacheTest extends TestSuiteBase {
         URI serviceEndpoint = new URI(TestConfigurations.HOST);
         IAuthorizationTokenProvider authorizationTokenProvider = (RxDocumentClientImpl) client;
         HttpClientUnderTestWrapper httpClientWrapper = getHttpClientUnderTestWrapper(configs);
-        IOpenConnectionsHandler openConnectionsHandlerMock = Mockito.mock(IOpenConnectionsHandler.class);
-        Mockito.when(openConnectionsHandlerMock.openConnections(Mockito.any(), Mockito.any(), Mockito.any())).thenReturn(Flux.empty()); // what returned here does not really matter
 
         GatewayAddressCache cache = new GatewayAddressCache(
                 mockDiagnosticsClientContext(),
@@ -1233,7 +1493,8 @@ public class GatewayAddressCacheTest extends TestSuiteBase {
                 null,
                 null,
                 ConnectionPolicy.getDefaultPolicy(),
-                openConnectionsHandlerMock);
+                null,
+                null);
 
         // connected status
         AddressInformation address1 = new AddressInformation(true, true, "rntbd://127.0.0.1:1", Protocol.TCP);

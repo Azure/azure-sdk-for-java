@@ -8,13 +8,22 @@ import com.azure.core.util.ExpandableStringEnum;
 import com.fasterxml.jackson.annotation.JsonCreator;
 import java.util.Collection;
 
-/** Defines values for ContainerInstanceOperationsOrigin. */
+/** The intended executor of the operation. */
 public final class ContainerInstanceOperationsOrigin extends ExpandableStringEnum<ContainerInstanceOperationsOrigin> {
     /** Static value User for ContainerInstanceOperationsOrigin. */
     public static final ContainerInstanceOperationsOrigin USER = fromString("User");
 
     /** Static value System for ContainerInstanceOperationsOrigin. */
     public static final ContainerInstanceOperationsOrigin SYSTEM = fromString("System");
+
+    /**
+     * Creates a new instance of ContainerInstanceOperationsOrigin value.
+     *
+     * @deprecated Use the {@link #fromString(String)} factory method.
+     */
+    @Deprecated
+    public ContainerInstanceOperationsOrigin() {
+    }
 
     /**
      * Creates or finds a ContainerInstanceOperationsOrigin from its string representation.
@@ -27,7 +36,11 @@ public final class ContainerInstanceOperationsOrigin extends ExpandableStringEnu
         return fromString(name, ContainerInstanceOperationsOrigin.class);
     }
 
-    /** @return known ContainerInstanceOperationsOrigin values. */
+    /**
+     * Gets known ContainerInstanceOperationsOrigin values.
+     *
+     * @return known ContainerInstanceOperationsOrigin values.
+     */
     public static Collection<ContainerInstanceOperationsOrigin> values() {
         return values(ContainerInstanceOperationsOrigin.class);
     }

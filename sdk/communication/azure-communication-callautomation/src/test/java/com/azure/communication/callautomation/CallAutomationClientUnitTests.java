@@ -31,7 +31,7 @@ public class CallAutomationClientUnitTests extends CallAutomationUnitTestBase {
     @Test
     public void createCall() {
         CommunicationUserIdentifier caller = new CommunicationUserIdentifier(CALL_CALLER_ID);
-        
+
         CallAutomationClient callAutomationClient = getCallAutomationClientWithSourceIdentity(caller, new ArrayList<>(
             Collections.singletonList(
                 new SimpleEntry<>(generateCallProperties(CALL_CONNECTION_ID, CALL_SERVER_CALL_ID,
@@ -39,7 +39,7 @@ public class CallAutomationClientUnitTests extends CallAutomationUnitTestBase {
             )));
         List<CommunicationIdentifier> targets = new ArrayList<>(Collections.singletonList(new CommunicationUserIdentifier(CALL_TARGET_ID)));
 
-        CreateCallResult createCallResult = callAutomationClient.createCall(targets, CALL_CALLBACK_URL);
+        CreateCallResult createCallResult = callAutomationClient.createGroupCall(targets, CALL_CALLBACK_URL);
 
         assertNotNull(createCallResult);
     }
@@ -56,7 +56,7 @@ public class CallAutomationClientUnitTests extends CallAutomationUnitTestBase {
         CreateGroupCallOptions callOptions = new CreateGroupCallOptions(targets, CALL_CALLBACK_URL);
         callOptions.setOperationContext(CALL_SUBJECT);
 
-        Response<CreateCallResult> createCallResult = callAutomationClient.createCallWithResponse(callOptions, Context.NONE);
+        Response<CreateCallResult> createCallResult = callAutomationClient.createGroupCallWithResponse(callOptions, Context.NONE);
 
         assertNotNull(createCallResult);
         assertEquals(201, createCallResult.getStatusCode());

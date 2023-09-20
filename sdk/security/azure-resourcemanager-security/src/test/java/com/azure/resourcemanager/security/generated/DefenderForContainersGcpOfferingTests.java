@@ -16,16 +16,16 @@ public final class DefenderForContainersGcpOfferingTests {
         DefenderForContainersGcpOffering model =
             BinaryData
                 .fromString(
-                    "{\"offeringType\":\"DefenderForContainersGcp\",\"nativeCloudConnection\":{\"serviceAccountEmailAddress\":\"tz\",\"workloadIdentityProviderId\":\"ypefcpczshnuqnda\"},\"dataPipelineNativeCloudConnection\":{\"serviceAccountEmailAddress\":\"pfkhuytuszxhmt\",\"workloadIdentityProviderId\":\"vegwqiukvz\"},\"auditLogsAutoProvisioningFlag\":false,\"defenderAgentAutoProvisioningFlag\":true,\"policyAgentAutoProvisioningFlag\":true,\"description\":\"okgkskjivbs\"}")
+                    "{\"offeringType\":\"DefenderForContainersGcp\",\"nativeCloudConnection\":{\"serviceAccountEmailAddress\":\"anfbc\",\"workloadIdentityProviderId\":\"qagywvtxig\"},\"dataPipelineNativeCloudConnection\":{\"serviceAccountEmailAddress\":\"ktpgaeukyawohp\",\"workloadIdentityProviderId\":\"hqnucs\"},\"auditLogsAutoProvisioningFlag\":true,\"defenderAgentAutoProvisioningFlag\":false,\"policyAgentAutoProvisioningFlag\":false,\"description\":\"tdlpbn\"}")
                 .toObject(DefenderForContainersGcpOffering.class);
-        Assertions.assertEquals("tz", model.nativeCloudConnection().serviceAccountEmailAddress());
-        Assertions.assertEquals("ypefcpczshnuqnda", model.nativeCloudConnection().workloadIdentityProviderId());
+        Assertions.assertEquals("anfbc", model.nativeCloudConnection().serviceAccountEmailAddress());
+        Assertions.assertEquals("qagywvtxig", model.nativeCloudConnection().workloadIdentityProviderId());
         Assertions
-            .assertEquals("pfkhuytuszxhmt", model.dataPipelineNativeCloudConnection().serviceAccountEmailAddress());
-        Assertions.assertEquals("vegwqiukvz", model.dataPipelineNativeCloudConnection().workloadIdentityProviderId());
-        Assertions.assertEquals(false, model.auditLogsAutoProvisioningFlag());
-        Assertions.assertEquals(true, model.defenderAgentAutoProvisioningFlag());
-        Assertions.assertEquals(true, model.policyAgentAutoProvisioningFlag());
+            .assertEquals("ktpgaeukyawohp", model.dataPipelineNativeCloudConnection().serviceAccountEmailAddress());
+        Assertions.assertEquals("hqnucs", model.dataPipelineNativeCloudConnection().workloadIdentityProviderId());
+        Assertions.assertEquals(true, model.auditLogsAutoProvisioningFlag());
+        Assertions.assertEquals(false, model.defenderAgentAutoProvisioningFlag());
+        Assertions.assertEquals(false, model.policyAgentAutoProvisioningFlag());
     }
 
     @org.junit.jupiter.api.Test
@@ -34,23 +34,23 @@ public final class DefenderForContainersGcpOfferingTests {
             new DefenderForContainersGcpOffering()
                 .withNativeCloudConnection(
                     new DefenderForContainersGcpOfferingNativeCloudConnection()
-                        .withServiceAccountEmailAddress("tz")
-                        .withWorkloadIdentityProviderId("ypefcpczshnuqnda"))
+                        .withServiceAccountEmailAddress("anfbc")
+                        .withWorkloadIdentityProviderId("qagywvtxig"))
                 .withDataPipelineNativeCloudConnection(
                     new DefenderForContainersGcpOfferingDataPipelineNativeCloudConnection()
-                        .withServiceAccountEmailAddress("pfkhuytuszxhmt")
-                        .withWorkloadIdentityProviderId("vegwqiukvz"))
-                .withAuditLogsAutoProvisioningFlag(false)
-                .withDefenderAgentAutoProvisioningFlag(true)
-                .withPolicyAgentAutoProvisioningFlag(true);
+                        .withServiceAccountEmailAddress("ktpgaeukyawohp")
+                        .withWorkloadIdentityProviderId("hqnucs"))
+                .withAuditLogsAutoProvisioningFlag(true)
+                .withDefenderAgentAutoProvisioningFlag(false)
+                .withPolicyAgentAutoProvisioningFlag(false);
         model = BinaryData.fromObject(model).toObject(DefenderForContainersGcpOffering.class);
-        Assertions.assertEquals("tz", model.nativeCloudConnection().serviceAccountEmailAddress());
-        Assertions.assertEquals("ypefcpczshnuqnda", model.nativeCloudConnection().workloadIdentityProviderId());
+        Assertions.assertEquals("anfbc", model.nativeCloudConnection().serviceAccountEmailAddress());
+        Assertions.assertEquals("qagywvtxig", model.nativeCloudConnection().workloadIdentityProviderId());
         Assertions
-            .assertEquals("pfkhuytuszxhmt", model.dataPipelineNativeCloudConnection().serviceAccountEmailAddress());
-        Assertions.assertEquals("vegwqiukvz", model.dataPipelineNativeCloudConnection().workloadIdentityProviderId());
-        Assertions.assertEquals(false, model.auditLogsAutoProvisioningFlag());
-        Assertions.assertEquals(true, model.defenderAgentAutoProvisioningFlag());
-        Assertions.assertEquals(true, model.policyAgentAutoProvisioningFlag());
+            .assertEquals("ktpgaeukyawohp", model.dataPipelineNativeCloudConnection().serviceAccountEmailAddress());
+        Assertions.assertEquals("hqnucs", model.dataPipelineNativeCloudConnection().workloadIdentityProviderId());
+        Assertions.assertEquals(true, model.auditLogsAutoProvisioningFlag());
+        Assertions.assertEquals(false, model.defenderAgentAutoProvisioningFlag());
+        Assertions.assertEquals(false, model.policyAgentAutoProvisioningFlag());
     }
 }

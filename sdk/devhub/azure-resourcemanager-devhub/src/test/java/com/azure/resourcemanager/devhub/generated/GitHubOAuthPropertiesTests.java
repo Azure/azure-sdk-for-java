@@ -7,20 +7,19 @@ package com.azure.resourcemanager.devhub.generated;
 import com.azure.core.util.BinaryData;
 import com.azure.resourcemanager.devhub.fluent.models.GitHubOAuthProperties;
 import org.junit.jupiter.api.Assertions;
-import org.junit.jupiter.api.Test;
 
 public final class GitHubOAuthPropertiesTests {
-    @Test
-    public void testDeserialize() {
+    @org.junit.jupiter.api.Test
+    public void testDeserialize() throws Exception {
         GitHubOAuthProperties model =
-            BinaryData.fromString("{\"username\":\"n\"}").toObject(GitHubOAuthProperties.class);
-        Assertions.assertEquals("n", model.username());
+            BinaryData.fromString("{\"username\":\"wvukx\"}").toObject(GitHubOAuthProperties.class);
+        Assertions.assertEquals("wvukx", model.username());
     }
 
-    @Test
-    public void testSerialize() {
-        GitHubOAuthProperties model = new GitHubOAuthProperties().withUsername("n");
+    @org.junit.jupiter.api.Test
+    public void testSerialize() throws Exception {
+        GitHubOAuthProperties model = new GitHubOAuthProperties().withUsername("wvukx");
         model = BinaryData.fromObject(model).toObject(GitHubOAuthProperties.class);
-        Assertions.assertEquals("n", model.username());
+        Assertions.assertEquals("wvukx", model.username());
     }
 }

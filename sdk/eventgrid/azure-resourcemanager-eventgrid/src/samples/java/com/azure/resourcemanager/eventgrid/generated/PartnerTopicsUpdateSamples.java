@@ -4,7 +4,6 @@
 
 package com.azure.resourcemanager.eventgrid.generated;
 
-import com.azure.core.util.Context;
 import com.azure.resourcemanager.eventgrid.models.PartnerTopic;
 import java.util.HashMap;
 import java.util.Map;
@@ -12,7 +11,7 @@ import java.util.Map;
 /** Samples for PartnerTopics Update. */
 public final class PartnerTopicsUpdateSamples {
     /*
-     * x-ms-original-file: specification/eventgrid/resource-manager/Microsoft.EventGrid/stable/2022-06-15/examples/PartnerTopics_Update.json
+     * x-ms-original-file: specification/eventgrid/resource-manager/Microsoft.EventGrid/preview/2023-06-01-preview/examples/PartnerTopics_Update.json
      */
     /**
      * Sample code: PartnerTopics_Update.
@@ -23,7 +22,8 @@ public final class PartnerTopicsUpdateSamples {
         PartnerTopic resource =
             manager
                 .partnerTopics()
-                .getByResourceGroupWithResponse("examplerg", "examplePartnerTopicName1", Context.NONE)
+                .getByResourceGroupWithResponse(
+                    "examplerg", "examplePartnerTopicName1", com.azure.core.util.Context.NONE)
                 .getValue();
         resource.update().withTags(mapOf("tag1", "value1", "tag2", "value2")).apply();
     }

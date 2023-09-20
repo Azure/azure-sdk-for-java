@@ -9,7 +9,7 @@ import com.fasterxml.jackson.annotation.JsonProperty;
 
 /** Identity of the Extension resource in an AKS cluster. */
 @Fluent
-public class ExtensionPropertiesAksAssignedIdentity {
+public final class ExtensionPropertiesAksAssignedIdentity {
     /*
      * The principal ID of resource identity.
      */
@@ -27,6 +27,10 @@ public class ExtensionPropertiesAksAssignedIdentity {
      */
     @JsonProperty(value = "type")
     private AksIdentityType type;
+
+    /** Creates an instance of ExtensionPropertiesAksAssignedIdentity class. */
+    public ExtensionPropertiesAksAssignedIdentity() {
+    }
 
     /**
      * Get the principalId property: The principal ID of resource identity.

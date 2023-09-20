@@ -18,6 +18,12 @@ public final class ContainerServiceNetworkProfile {
     private NetworkPlugin networkPlugin;
 
     /*
+     * The mode the network plugin should use.
+     */
+    @JsonProperty(value = "networkPluginMode")
+    private NetworkPluginMode networkPluginMode;
+
+    /*
      * Network policy used for building the Kubernetes network.
      */
     @JsonProperty(value = "networkPolicy")
@@ -30,6 +36,12 @@ public final class ContainerServiceNetworkProfile {
      */
     @JsonProperty(value = "networkMode")
     private NetworkMode networkMode;
+
+    /*
+     * Network dataplane used in the Kubernetes cluster.
+     */
+    @JsonProperty(value = "networkDataplane")
+    private NetworkDataplane networkDataplane;
 
     /*
      * A CIDR notation IP range from which to assign pod IPs when kubenet is used.
@@ -50,13 +62,6 @@ public final class ContainerServiceNetworkProfile {
      */
     @JsonProperty(value = "dnsServiceIP")
     private String dnsServiceIp;
-
-    /*
-     * A CIDR notation IP range assigned to the Docker bridge network. It must not overlap with any Subnet IP ranges or
-     * the Kubernetes service address range.
-     */
-    @JsonProperty(value = "dockerBridgeCidr")
-    private String dockerBridgeCidr;
 
     /*
      * The outbound (egress) routing method.
@@ -140,6 +145,26 @@ public final class ContainerServiceNetworkProfile {
     }
 
     /**
+     * Get the networkPluginMode property: The mode the network plugin should use.
+     *
+     * @return the networkPluginMode value.
+     */
+    public NetworkPluginMode networkPluginMode() {
+        return this.networkPluginMode;
+    }
+
+    /**
+     * Set the networkPluginMode property: The mode the network plugin should use.
+     *
+     * @param networkPluginMode the networkPluginMode value to set.
+     * @return the ContainerServiceNetworkProfile object itself.
+     */
+    public ContainerServiceNetworkProfile withNetworkPluginMode(NetworkPluginMode networkPluginMode) {
+        this.networkPluginMode = networkPluginMode;
+        return this;
+    }
+
+    /**
      * Get the networkPolicy property: Network policy used for building the Kubernetes network.
      *
      * @return the networkPolicy value.
@@ -180,6 +205,26 @@ public final class ContainerServiceNetworkProfile {
      */
     public ContainerServiceNetworkProfile withNetworkMode(NetworkMode networkMode) {
         this.networkMode = networkMode;
+        return this;
+    }
+
+    /**
+     * Get the networkDataplane property: Network dataplane used in the Kubernetes cluster.
+     *
+     * @return the networkDataplane value.
+     */
+    public NetworkDataplane networkDataplane() {
+        return this.networkDataplane;
+    }
+
+    /**
+     * Set the networkDataplane property: Network dataplane used in the Kubernetes cluster.
+     *
+     * @param networkDataplane the networkDataplane value to set.
+     * @return the ContainerServiceNetworkProfile object itself.
+     */
+    public ContainerServiceNetworkProfile withNetworkDataplane(NetworkDataplane networkDataplane) {
+        this.networkDataplane = networkDataplane;
         return this;
     }
 
@@ -244,28 +289,6 @@ public final class ContainerServiceNetworkProfile {
      */
     public ContainerServiceNetworkProfile withDnsServiceIp(String dnsServiceIp) {
         this.dnsServiceIp = dnsServiceIp;
-        return this;
-    }
-
-    /**
-     * Get the dockerBridgeCidr property: A CIDR notation IP range assigned to the Docker bridge network. It must not
-     * overlap with any Subnet IP ranges or the Kubernetes service address range.
-     *
-     * @return the dockerBridgeCidr value.
-     */
-    public String dockerBridgeCidr() {
-        return this.dockerBridgeCidr;
-    }
-
-    /**
-     * Set the dockerBridgeCidr property: A CIDR notation IP range assigned to the Docker bridge network. It must not
-     * overlap with any Subnet IP ranges or the Kubernetes service address range.
-     *
-     * @param dockerBridgeCidr the dockerBridgeCidr value to set.
-     * @return the ContainerServiceNetworkProfile object itself.
-     */
-    public ContainerServiceNetworkProfile withDockerBridgeCidr(String dockerBridgeCidr) {
-        this.dockerBridgeCidr = dockerBridgeCidr;
         return this;
     }
 

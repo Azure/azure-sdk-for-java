@@ -5,6 +5,9 @@ package com.azure.json;
 
 /**
  * Token types used when reading JSON content.
+ *
+ * @see JsonReader
+ * @see JsonWriter
  */
 public enum JsonToken {
     /**

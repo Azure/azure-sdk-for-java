@@ -14,8 +14,10 @@ import com.azure.core.util.Context;
 import com.azure.core.util.polling.PollerFlux;
 import com.azure.core.util.polling.SyncPoller;
 import com.azure.resourcemanager.network.fluent.models.BgpConnectionInner;
-import com.azure.resourcemanager.network.fluent.models.PeerRouteListInner;
+import com.azure.resourcemanager.network.models.PeerRoute;
 import java.nio.ByteBuffer;
+import java.util.List;
+import java.util.Map;
 import reactor.core.publisher.Flux;
 import reactor.core.publisher.Mono;
 
@@ -353,7 +355,8 @@ public interface VirtualHubBgpConnectionsClient {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return list of virtual router peer routes along with {@link Response} on successful completion of {@link Mono}.
+     * @return map from virtual router instance to list of peer routes along with {@link Response} on successful
+     *     completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     Mono<Response<Flux<ByteBuffer>>> listLearnedRoutesWithResponseAsync(
@@ -368,10 +371,10 @@ public interface VirtualHubBgpConnectionsClient {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the {@link PollerFlux} for polling of list of virtual router peer routes.
+     * @return the {@link PollerFlux} for polling of map from virtual router instance to list of peer routes.
      */
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
-    PollerFlux<PollResult<PeerRouteListInner>, PeerRouteListInner> beginListLearnedRoutesAsync(
+    PollerFlux<PollResult<Map<String, List<PeerRoute>>>, Map<String, List<PeerRoute>>> beginListLearnedRoutesAsync(
         String resourceGroupName, String hubName, String connectionName);
 
     /**
@@ -383,10 +386,10 @@ public interface VirtualHubBgpConnectionsClient {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the {@link SyncPoller} for polling of list of virtual router peer routes.
+     * @return the {@link SyncPoller} for polling of map from virtual router instance to list of peer routes.
      */
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
-    SyncPoller<PollResult<PeerRouteListInner>, PeerRouteListInner> beginListLearnedRoutes(
+    SyncPoller<PollResult<Map<String, List<PeerRoute>>>, Map<String, List<PeerRoute>>> beginListLearnedRoutes(
         String resourceGroupName, String hubName, String connectionName);
 
     /**
@@ -399,10 +402,10 @@ public interface VirtualHubBgpConnectionsClient {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the {@link SyncPoller} for polling of list of virtual router peer routes.
+     * @return the {@link SyncPoller} for polling of map from virtual router instance to list of peer routes.
      */
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
-    SyncPoller<PollResult<PeerRouteListInner>, PeerRouteListInner> beginListLearnedRoutes(
+    SyncPoller<PollResult<Map<String, List<PeerRoute>>>, Map<String, List<PeerRoute>>> beginListLearnedRoutes(
         String resourceGroupName, String hubName, String connectionName, Context context);
 
     /**
@@ -414,10 +417,11 @@ public interface VirtualHubBgpConnectionsClient {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return list of virtual router peer routes on successful completion of {@link Mono}.
+     * @return map from virtual router instance to list of peer routes on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    Mono<PeerRouteListInner> listLearnedRoutesAsync(String resourceGroupName, String hubName, String connectionName);
+    Mono<Map<String, List<PeerRoute>>> listLearnedRoutesAsync(
+        String resourceGroupName, String hubName, String connectionName);
 
     /**
      * Retrieves a list of routes the virtual hub bgp connection has learned.
@@ -428,10 +432,10 @@ public interface VirtualHubBgpConnectionsClient {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return list of virtual router peer routes.
+     * @return map from virtual router instance to list of peer routes.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    PeerRouteListInner listLearnedRoutes(String resourceGroupName, String hubName, String connectionName);
+    Map<String, List<PeerRoute>> listLearnedRoutes(String resourceGroupName, String hubName, String connectionName);
 
     /**
      * Retrieves a list of routes the virtual hub bgp connection has learned.
@@ -443,10 +447,10 @@ public interface VirtualHubBgpConnectionsClient {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return list of virtual router peer routes.
+     * @return map from virtual router instance to list of peer routes.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    PeerRouteListInner listLearnedRoutes(
+    Map<String, List<PeerRoute>> listLearnedRoutes(
         String resourceGroupName, String hubName, String connectionName, Context context);
 
     /**
@@ -458,7 +462,8 @@ public interface VirtualHubBgpConnectionsClient {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return list of virtual router peer routes along with {@link Response} on successful completion of {@link Mono}.
+     * @return map from virtual router instance to list of peer routes along with {@link Response} on successful
+     *     completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     Mono<Response<Flux<ByteBuffer>>> listAdvertisedRoutesWithResponseAsync(
@@ -473,10 +478,10 @@ public interface VirtualHubBgpConnectionsClient {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the {@link PollerFlux} for polling of list of virtual router peer routes.
+     * @return the {@link PollerFlux} for polling of map from virtual router instance to list of peer routes.
      */
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
-    PollerFlux<PollResult<PeerRouteListInner>, PeerRouteListInner> beginListAdvertisedRoutesAsync(
+    PollerFlux<PollResult<Map<String, List<PeerRoute>>>, Map<String, List<PeerRoute>>> beginListAdvertisedRoutesAsync(
         String resourceGroupName, String hubName, String connectionName);
 
     /**
@@ -488,10 +493,10 @@ public interface VirtualHubBgpConnectionsClient {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the {@link SyncPoller} for polling of list of virtual router peer routes.
+     * @return the {@link SyncPoller} for polling of map from virtual router instance to list of peer routes.
      */
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
-    SyncPoller<PollResult<PeerRouteListInner>, PeerRouteListInner> beginListAdvertisedRoutes(
+    SyncPoller<PollResult<Map<String, List<PeerRoute>>>, Map<String, List<PeerRoute>>> beginListAdvertisedRoutes(
         String resourceGroupName, String hubName, String connectionName);
 
     /**
@@ -504,10 +509,10 @@ public interface VirtualHubBgpConnectionsClient {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the {@link SyncPoller} for polling of list of virtual router peer routes.
+     * @return the {@link SyncPoller} for polling of map from virtual router instance to list of peer routes.
      */
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
-    SyncPoller<PollResult<PeerRouteListInner>, PeerRouteListInner> beginListAdvertisedRoutes(
+    SyncPoller<PollResult<Map<String, List<PeerRoute>>>, Map<String, List<PeerRoute>>> beginListAdvertisedRoutes(
         String resourceGroupName, String hubName, String connectionName, Context context);
 
     /**
@@ -519,10 +524,11 @@ public interface VirtualHubBgpConnectionsClient {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return list of virtual router peer routes on successful completion of {@link Mono}.
+     * @return map from virtual router instance to list of peer routes on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    Mono<PeerRouteListInner> listAdvertisedRoutesAsync(String resourceGroupName, String hubName, String connectionName);
+    Mono<Map<String, List<PeerRoute>>> listAdvertisedRoutesAsync(
+        String resourceGroupName, String hubName, String connectionName);
 
     /**
      * Retrieves a list of routes the virtual hub bgp connection is advertising to the specified peer.
@@ -533,10 +539,10 @@ public interface VirtualHubBgpConnectionsClient {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return list of virtual router peer routes.
+     * @return map from virtual router instance to list of peer routes.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    PeerRouteListInner listAdvertisedRoutes(String resourceGroupName, String hubName, String connectionName);
+    Map<String, List<PeerRoute>> listAdvertisedRoutes(String resourceGroupName, String hubName, String connectionName);
 
     /**
      * Retrieves a list of routes the virtual hub bgp connection is advertising to the specified peer.
@@ -548,9 +554,9 @@ public interface VirtualHubBgpConnectionsClient {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return list of virtual router peer routes.
+     * @return map from virtual router instance to list of peer routes.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    PeerRouteListInner listAdvertisedRoutes(
+    Map<String, List<PeerRoute>> listAdvertisedRoutes(
         String resourceGroupName, String hubName, String connectionName, Context context);
 }

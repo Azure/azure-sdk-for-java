@@ -22,6 +22,10 @@ public final class CertBasedSecurityPrincipal {
     @JsonProperty(value = "ledgerRoleName")
     private LedgerRoleName ledgerRoleName;
 
+    /** Creates an instance of CertBasedSecurityPrincipal class. */
+    public CertBasedSecurityPrincipal() {
+    }
+
     /**
      * Get the cert property: Public key of the user cert (.pem or .cer).
      *

@@ -20,6 +20,14 @@ public final class MessagingSku extends ExpandableStringEnum<MessagingSku> {
     public static final MessagingSku PREMIUM = fromString("Premium");
 
     /**
+     * Creates a new instance of MessagingSku value.
+     *
+     * @deprecated Use the {@link #fromString(String)} factory method.
+     */
+    @Deprecated
+    public MessagingSku() {}
+
+    /**
      * Creates or finds a MessagingSku from its string representation.
      *
      * @param name a name to look for.

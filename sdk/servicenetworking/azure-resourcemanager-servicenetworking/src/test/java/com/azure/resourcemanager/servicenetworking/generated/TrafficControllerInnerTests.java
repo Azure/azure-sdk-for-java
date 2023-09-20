@@ -9,22 +9,21 @@ import com.azure.resourcemanager.servicenetworking.fluent.models.TrafficControll
 import java.util.HashMap;
 import java.util.Map;
 import org.junit.jupiter.api.Assertions;
-import org.junit.jupiter.api.Test;
 
 public final class TrafficControllerInnerTests {
-    @Test
-    public void testDeserialize() {
+    @org.junit.jupiter.api.Test
+    public void testDeserialize() throws Exception {
         TrafficControllerInner model =
             BinaryData
                 .fromString(
-                    "{\"properties\":{\"configurationEndpoints\":[\"vnipjox\",\"jnchgej\",\"podmailzydehojwy\"],\"frontends\":[{\"id\":\"xinpmqnjaq\"},{\"id\":\"ixjsprozvcputeg\"},{\"id\":\"vwmf\"}],\"associations\":[{\"id\":\"scmdvpjhulsuu\"}],\"provisioningState\":\"Failed\"},\"location\":\"ozkrwfndiodjpslw\",\"tags\":{\"azakl\":\"pvwryoqpsoacc\",\"fdosyg\":\"lahbcryff\",\"hcrzevd\":\"xpaojakhmsbz\",\"qjbpfzfsin\":\"hlxaolthqtr\"},\"id\":\"gvfcj\",\"name\":\"wzo\",\"type\":\"xjtfelluwfzit\"}")
+                    "{\"properties\":{\"configurationEndpoints\":[\"vnipjox\",\"jnchgej\",\"podmailzydehojwy\"],\"frontends\":[{\"id\":\"xinpmqnjaq\"},{\"id\":\"ixjsprozvcputeg\"},{\"id\":\"vwmf\"}],\"associations\":[{\"id\":\"scmdvpjhulsuu\"}],\"provisioningState\":\"Updating\"},\"location\":\"ozkrwfndiodjpslw\",\"tags\":{\"azakl\":\"pvwryoqpsoacc\",\"fdosyg\":\"lahbcryff\",\"hcrzevd\":\"xpaojakhmsbz\",\"qjbpfzfsin\":\"hlxaolthqtr\"},\"id\":\"gvfcj\",\"name\":\"wzo\",\"type\":\"xjtfelluwfzit\"}")
                 .toObject(TrafficControllerInner.class);
         Assertions.assertEquals("ozkrwfndiodjpslw", model.location());
         Assertions.assertEquals("pvwryoqpsoacc", model.tags().get("azakl"));
     }
 
-    @Test
-    public void testSerialize() {
+    @org.junit.jupiter.api.Test
+    public void testSerialize() throws Exception {
         TrafficControllerInner model =
             new TrafficControllerInner()
                 .withLocation("ozkrwfndiodjpslw")

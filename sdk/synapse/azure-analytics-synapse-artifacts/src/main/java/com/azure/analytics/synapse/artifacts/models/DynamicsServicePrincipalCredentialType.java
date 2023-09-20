@@ -23,6 +23,14 @@ public final class DynamicsServicePrincipalCredentialType
             fromString("ServicePrincipalCert");
 
     /**
+     * Creates a new instance of DynamicsServicePrincipalCredentialType value.
+     *
+     * @deprecated Use the {@link #fromString(String)} factory method.
+     */
+    @Deprecated
+    public DynamicsServicePrincipalCredentialType() {}
+
+    /**
      * Creates or finds a DynamicsServicePrincipalCredentialType from its string representation.
      *
      * @param name a name to look for.

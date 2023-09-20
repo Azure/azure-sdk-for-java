@@ -7,6 +7,7 @@ package com.azure.resourcemanager.containerinstance.fluent.models;
 import com.azure.core.annotation.Fluent;
 import com.azure.resourcemanager.containerinstance.models.EnvironmentVariable;
 import com.azure.resourcemanager.containerinstance.models.InitContainerPropertiesDefinitionInstanceView;
+import com.azure.resourcemanager.containerinstance.models.SecurityContextDefinition;
 import com.azure.resourcemanager.containerinstance.models.VolumeMount;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import java.util.List;
@@ -43,6 +44,16 @@ public final class InitContainerPropertiesDefinition {
      */
     @JsonProperty(value = "volumeMounts")
     private List<VolumeMount> volumeMounts;
+
+    /*
+     * The container security properties.
+     */
+    @JsonProperty(value = "securityContext")
+    private SecurityContextDefinition securityContext;
+
+    /** Creates an instance of InitContainerPropertiesDefinition class. */
+    public InitContainerPropertiesDefinition() {
+    }
 
     /**
      * Get the image property: The image of the init container.
@@ -134,6 +145,26 @@ public final class InitContainerPropertiesDefinition {
     }
 
     /**
+     * Get the securityContext property: The container security properties.
+     *
+     * @return the securityContext value.
+     */
+    public SecurityContextDefinition securityContext() {
+        return this.securityContext;
+    }
+
+    /**
+     * Set the securityContext property: The container security properties.
+     *
+     * @param securityContext the securityContext value to set.
+     * @return the InitContainerPropertiesDefinition object itself.
+     */
+    public InitContainerPropertiesDefinition withSecurityContext(SecurityContextDefinition securityContext) {
+        this.securityContext = securityContext;
+        return this;
+    }
+
+    /**
      * Validates the instance.
      *
      * @throws IllegalArgumentException thrown if the instance is not valid.
@@ -147,6 +178,9 @@ public final class InitContainerPropertiesDefinition {
         }
         if (volumeMounts() != null) {
             volumeMounts().forEach(e -> e.validate());
+        }
+        if (securityContext() != null) {
+            securityContext().validate();
         }
     }
 }

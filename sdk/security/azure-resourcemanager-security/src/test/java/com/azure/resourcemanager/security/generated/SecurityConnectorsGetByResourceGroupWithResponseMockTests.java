@@ -32,7 +32,7 @@ public final class SecurityConnectorsGetByResourceGroupWithResponseMockTests {
         ArgumentCaptor<HttpRequest> httpRequest = ArgumentCaptor.forClass(HttpRequest.class);
 
         String responseStr =
-            "{\"properties\":{\"hierarchyIdentifier\":\"vjhxmnrqst\",\"hierarchyIdentifierTrialEndDate\":\"2021-05-22T19:48:50Z\",\"environmentName\":\"GCP\",\"offerings\":[],\"environmentData\":{\"environmentType\":\"EnvironmentData\"}},\"location\":\"gicvnpvvdh\",\"tags\":{\"mvcdsvmwbitek\":\"aqyqipsl\",\"vfiybxqichgyb\":\"tfo\",\"zulrqt\":\"zdqekivycpzcvd\",\"pzl\":\"htre\"},\"id\":\"ryfmxmdu\",\"name\":\"zf\",\"type\":\"giln\"}";
+            "{\"properties\":{\"hierarchyIdentifier\":\"j\",\"hierarchyIdentifierTrialEndDate\":\"2021-02-19T19:03:45Z\",\"environmentName\":\"GitLab\",\"offerings\":[],\"environmentData\":{\"environmentType\":\"EnvironmentData\"}},\"location\":\"fcjis\",\"tags\":{\"ampqocl\":\"dbxotfb\"},\"id\":\"nnmxynlsuqbwzstr\",\"name\":\"tgvpatr\",\"type\":\"jjktfin\"}";
 
         Mockito.when(httpResponse.getStatusCode()).thenReturn(200);
         Mockito.when(httpResponse.getHeaders()).thenReturn(new HttpHeaders());
@@ -63,12 +63,12 @@ public final class SecurityConnectorsGetByResourceGroupWithResponseMockTests {
         SecurityConnector response =
             manager
                 .securityConnectors()
-                .getByResourceGroupWithResponse("iqbcbgv", "btsertoxa", com.azure.core.util.Context.NONE)
+                .getByResourceGroupWithResponse("rrxyxwjezbfqpl", "yuekdcpvuftrsvjm", com.azure.core.util.Context.NONE)
                 .getValue();
 
-        Assertions.assertEquals("gicvnpvvdh", response.location());
-        Assertions.assertEquals("aqyqipsl", response.tags().get("mvcdsvmwbitek"));
-        Assertions.assertEquals("vjhxmnrqst", response.hierarchyIdentifier());
-        Assertions.assertEquals(CloudName.GCP, response.environmentName());
+        Assertions.assertEquals("fcjis", response.location());
+        Assertions.assertEquals("dbxotfb", response.tags().get("ampqocl"));
+        Assertions.assertEquals("j", response.hierarchyIdentifier());
+        Assertions.assertEquals(CloudName.GIT_LAB, response.environmentName());
     }
 }

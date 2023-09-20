@@ -17,6 +17,10 @@ public final class TestRouteResultDetails {
     @JsonProperty(value = "compilationErrors")
     private List<RouteCompilationError> compilationErrors;
 
+    /** Creates an instance of TestRouteResultDetails class. */
+    public TestRouteResultDetails() {
+    }
+
     /**
      * Get the compilationErrors property: JSON-serialized list of route compilation errors.
      *

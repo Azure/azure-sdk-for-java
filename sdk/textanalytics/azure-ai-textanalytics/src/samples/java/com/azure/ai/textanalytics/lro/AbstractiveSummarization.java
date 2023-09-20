@@ -5,12 +5,12 @@ package com.azure.ai.textanalytics.lro;
 
 import com.azure.ai.textanalytics.TextAnalyticsClient;
 import com.azure.ai.textanalytics.TextAnalyticsClientBuilder;
-import com.azure.ai.textanalytics.models.AbstractSummaryOperationDetail;
-import com.azure.ai.textanalytics.models.AbstractSummaryOptions;
-import com.azure.ai.textanalytics.models.AbstractSummaryResult;
+import com.azure.ai.textanalytics.models.AbstractiveSummaryOperationDetail;
+import com.azure.ai.textanalytics.models.AbstractiveSummaryOptions;
+import com.azure.ai.textanalytics.models.AbstractiveSummaryResult;
 import com.azure.ai.textanalytics.models.AbstractiveSummary;
-import com.azure.ai.textanalytics.models.SummaryContext;
-import com.azure.ai.textanalytics.util.AbstractSummaryPagedIterable;
+import com.azure.ai.textanalytics.models.AbstractiveSummaryContext;
+import com.azure.ai.textanalytics.util.AbstractiveSummaryPagedIterable;
 import com.azure.core.credential.AzureKeyCredential;
 import com.azure.core.util.polling.SyncPoller;
 
@@ -53,24 +53,24 @@ public class AbstractiveSummarization {
                 + "foundational component of this aspiration, if grounded with external knowledge sources in "
                 + "the downstream AI tasks.");
 
-        SyncPoller<AbstractSummaryOperationDetail, AbstractSummaryPagedIterable> syncPoller =
+        SyncPoller<AbstractiveSummaryOperationDetail, AbstractiveSummaryPagedIterable> syncPoller =
             client.beginAbstractSummary(documents,
                 "en",
-                new AbstractSummaryOptions().setDisplayName("{tasks_display_name}").setSentenceCount(3));
+                new AbstractiveSummaryOptions().setDisplayName("{tasks_display_name}").setSentenceCount(3));
         syncPoller.waitForCompletion();
         syncPoller.getFinalResult().forEach(resultCollection -> {
-            for (AbstractSummaryResult documentResult : resultCollection) {
+            for (AbstractiveSummaryResult documentResult : resultCollection) {
                 if (!documentResult.isError()) {
-                    System.out.println("\tAbstract summary sentences:");
+                    System.out.println("\tAbstractive summary sentences:");
                     for (AbstractiveSummary summarySentence : documentResult.getSummaries()) {
                         System.out.printf("\t\t Summary text: %s.%n", summarySentence.getText());
-                        for (SummaryContext summaryContext : summarySentence.getContexts()) {
+                        for (AbstractiveSummaryContext abstractiveSummaryContext : summarySentence.getContexts()) {
                             System.out.printf("\t\t offset: %d, length: %d%n",
-                                summaryContext.getOffset(), summaryContext.getLength());
+                                abstractiveSummaryContext.getOffset(), abstractiveSummaryContext.getLength());
                         }
                     }
                 } else {
-                    System.out.printf("\tCannot get abstract summary. Error: %s%n",
+                    System.out.printf("\tCannot get abstractive summary. Error: %s%n",
                         documentResult.getError().getMessage());
                 }
             }

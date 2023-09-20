@@ -32,7 +32,7 @@ public final class WorkloadNetworksListPublicIPsMockTests {
         ArgumentCaptor<HttpRequest> httpRequest = ArgumentCaptor.forClass(HttpRequest.class);
 
         String responseStr =
-            "{\"value\":[{\"properties\":{\"displayName\":\"ypuuwwltvuqjctze\",\"numberOfPublicIPs\":8680603894606049464,\"publicIPBlock\":\"zzhmkd\",\"provisioningState\":\"Building\"},\"id\":\"flyh\",\"name\":\"xcudchxgsr\",\"type\":\"oldforobw\"}]}";
+            "{\"value\":[{\"properties\":{\"displayName\":\"vsg\",\"numberOfPublicIPs\":8376929795743898853,\"publicIPBlock\":\"fz\",\"provisioningState\":\"Failed\"},\"id\":\"uxmmkjsvthnwp\",\"name\":\"tekovmri\",\"type\":\"iattgplu\"}]}";
 
         Mockito.when(httpResponse.getStatusCode()).thenReturn(200);
         Mockito.when(httpResponse.getHeaders()).thenReturn(new HttpHeaders());
@@ -61,9 +61,9 @@ public final class WorkloadNetworksListPublicIPsMockTests {
                     new AzureProfile("", "", AzureEnvironment.AZURE));
 
         PagedIterable<WorkloadNetworkPublicIp> response =
-            manager.workloadNetworks().listPublicIPs("lvidizozs", "bccxjmonfdgn", com.azure.core.util.Context.NONE);
+            manager.workloadNetworks().listPublicIPs("bakclacjfrnxous", "au", com.azure.core.util.Context.NONE);
 
-        Assertions.assertEquals("ypuuwwltvuqjctze", response.iterator().next().displayName());
-        Assertions.assertEquals(8680603894606049464L, response.iterator().next().numberOfPublicIPs());
+        Assertions.assertEquals("vsg", response.iterator().next().displayName());
+        Assertions.assertEquals(8376929795743898853L, response.iterator().next().numberOfPublicIPs());
     }
 }

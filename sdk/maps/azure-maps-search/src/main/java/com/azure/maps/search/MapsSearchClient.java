@@ -58,7 +58,7 @@ public final class MapsSearchClient {
     /**
      * Initializes an instance of Searches client.
      *
-     * @param serviceClient the service client implementation.
+     * @param asyncClient the service client implementation.
      */
     MapsSearchClient(MapsSearchAsyncClient asyncClient) {
         this.asyncClient = asyncClient;
@@ -587,7 +587,7 @@ public final class MapsSearchClient {
 
     /**
      * Search Address
-     * 
+     *
      * <!-- src_embed com.azure.maps.search.sync.search_address -->
      * <pre>
      * System.out.println&#40;&quot;Search Address:&quot;&#41;;

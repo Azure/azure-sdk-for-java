@@ -17,11 +17,15 @@ public final class ContainerAttachResponseInner {
     private String webSocketUri;
 
     /*
-     * The password to the output stream from the attach. Send as an
-     * Authorization header value when connecting to the websocketUri.
+     * The password to the output stream from the attach. Send as an Authorization header value when connecting to the
+     * websocketUri.
      */
     @JsonProperty(value = "password")
     private String password;
+
+    /** Creates an instance of ContainerAttachResponseInner class. */
+    public ContainerAttachResponseInner() {
+    }
 
     /**
      * Get the webSocketUri property: The uri for the output stream from the attach.

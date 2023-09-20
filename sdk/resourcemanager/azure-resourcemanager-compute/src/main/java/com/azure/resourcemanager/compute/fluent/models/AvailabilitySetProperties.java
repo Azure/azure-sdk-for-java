@@ -33,7 +33,7 @@ public final class AvailabilitySetProperties {
 
     /*
      * Specifies information about the proximity placement group that the availability set should be assigned to.
-     * <br><br>Minimum api-version: 2018-04-01.
+     * Minimum api-version: 2018-04-01.
      */
     @JsonProperty(value = "proximityPlacementGroup")
     private SubResource proximityPlacementGroup;
@@ -110,7 +110,7 @@ public final class AvailabilitySetProperties {
 
     /**
      * Get the proximityPlacementGroup property: Specifies information about the proximity placement group that the
-     * availability set should be assigned to. &lt;br&gt;&lt;br&gt;Minimum api-version: 2018-04-01.
+     * availability set should be assigned to. Minimum api-version: 2018-04-01.
      *
      * @return the proximityPlacementGroup value.
      */
@@ -120,7 +120,7 @@ public final class AvailabilitySetProperties {
 
     /**
      * Set the proximityPlacementGroup property: Specifies information about the proximity placement group that the
-     * availability set should be assigned to. &lt;br&gt;&lt;br&gt;Minimum api-version: 2018-04-01.
+     * availability set should be assigned to. Minimum api-version: 2018-04-01.
      *
      * @param proximityPlacementGroup the proximityPlacementGroup value to set.
      * @return the AvailabilitySetProperties object itself.

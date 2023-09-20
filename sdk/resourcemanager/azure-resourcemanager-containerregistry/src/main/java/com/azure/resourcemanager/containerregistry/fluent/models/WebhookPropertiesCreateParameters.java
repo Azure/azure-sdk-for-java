@@ -19,7 +19,7 @@ public final class WebhookPropertiesCreateParameters {
     /*
      * The service URI for the webhook to post notifications.
      */
-    @JsonProperty(value = "serviceUri", required = true)
+    @JsonProperty(value = "serviceUri")
     private String serviceUri;
 
     /*

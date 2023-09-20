@@ -58,6 +58,6 @@ public final class ManagedPrivateEndpointsDeleteMockTests {
 
         manager
             .managedPrivateEndpoints()
-            .delete("dlcgqlsismjqfr", "dgamquhiosrsj", "ivfcdisyirnx", com.azure.core.util.Context.NONE);
+            .delete("amlbnseqacjjvpil", "uooqjagmdit", "ueio", com.azure.core.util.Context.NONE);
     }
 }

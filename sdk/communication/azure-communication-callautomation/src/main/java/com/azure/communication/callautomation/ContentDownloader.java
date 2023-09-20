@@ -3,8 +3,6 @@
 package com.azure.communication.callautomation;
 
 import com.azure.communication.callautomation.implementation.Constants;
-import com.azure.communication.callautomation.implementation.accesshelpers.ErrorConstructorProxy;
-import com.azure.communication.callautomation.models.CallingServerErrorException;
 import com.azure.communication.callautomation.models.ParallelDownloadOptions;
 import com.azure.core.exception.HttpResponseException;
 import com.azure.core.http.HttpMethod;
@@ -49,36 +47,36 @@ class ContentDownloader {
     }
 
     Mono<Response<Void>> downloadToStreamWithResponse(
-        String sourceEndpoint,
+        String sourceUrl,
         OutputStream destinationStream,
         HttpRange httpRange,
         Context context) {
-        return downloadStreamWithResponse(sourceEndpoint, httpRange, context)
+        return downloadStreamWithResponse(sourceUrl, httpRange, context)
             .flatMap(response -> FluxUtil.writeToOutputStream(response.getValue(), destinationStream)
                 .thenReturn(new SimpleResponse<>(response.getRequest(), response.getStatusCode(),
                     response.getHeaders(), null)));
     }
 
     Mono<Response<Flux<ByteBuffer>>> downloadStreamWithResponse(
-        String sourceEndpoint,
+        String sourceUrl,
         HttpRange httpRange,
         Context context) {
-        Mono<HttpResponse> httpResponse = makeDownloadRequest(sourceEndpoint, httpRange, context);
+        Mono<HttpResponse> httpResponse = makeDownloadRequest(sourceUrl, httpRange, context);
         return httpResponse.map(response -> {
-            Flux<ByteBuffer> result = getFluxStream(response, sourceEndpoint, httpRange, context);
+            Flux<ByteBuffer> result = getFluxStream(response, sourceUrl, httpRange, context);
             return new SimpleResponse<>(response.getRequest(), response.getStatusCode(),
                 response.getHeaders(), result);
         });
     }
 
     Mono<Response<Void>> downloadToFileWithResponse(
-        String sourceEndpoint,
+        String sourceUrl,
         AsynchronousFileChannel destinationFile,
         ParallelDownloadOptions parallelDownloadOptions,
         Context context) {
 
         Function<HttpRange, Mono<Response<Flux<ByteBuffer>>>> downloadFunc =
-            range -> downloadStreamWithResponse(sourceEndpoint, range, context);
+            range -> downloadStreamWithResponse(sourceUrl, range, context);
 
         return downloadFirstChunk(parallelDownloadOptions, downloadFunc)
             .flatMap(setupTuple2 -> {
@@ -106,16 +104,16 @@ class ContentDownloader {
 
     private Flux<ByteBuffer> getFluxStream(
         HttpResponse httpResponse,
-        String sourceEndpoint,
+        String sourceUrl,
         HttpRange httpRange,
         Context context) {
         return FluxUtil.createRetriableDownloadFlux(
             () -> getResponseBody(httpResponse),
             (Throwable throwable, Long aLong) -> {
-                if (throwable instanceof CallingServerErrorException) {
-                    CallingServerErrorException exception = (CallingServerErrorException) throwable;
+                if (throwable instanceof HttpResponseException) {
+                    HttpResponseException exception = (HttpResponseException) throwable;
                     if (exception.getResponse().getStatusCode() == 416) {
-                        return  makeDownloadRequest(sourceEndpoint, null, context)
+                        return  makeDownloadRequest(sourceUrl, null, context)
                             .map(this::getResponseBody)
                             .flux()
                             .flatMap(flux -> flux);
@@ -129,7 +127,7 @@ class ContentDownloader {
                     range = new HttpRange(aLong + 1);
                 }
 
-                return makeDownloadRequest(sourceEndpoint, range, context)
+                return makeDownloadRequest(sourceUrl, range, context)
                     .map(this::getResponseBody)
                     .flux()
                     .flatMap(flux -> flux);
@@ -143,13 +141,11 @@ class ContentDownloader {
             case 200:
             case 206:
                 return response.getBody();
-            case 416:   // Retriable with new HttpRange, potentially bytes=0-
-                return FluxUtil.fluxError(logger,
-                    ErrorConstructorProxy.create(new HttpResponseException(formatExceptionMessage(response), response))
-                );
+            case 416:   // Retrievable with new HttpRange, potentially bytes=0-
+                return FluxUtil.fluxError(logger, new HttpResponseException(formatExceptionMessage(response), response));
             default:
                 throw logger.logExceptionAsError(
-                    ErrorConstructorProxy.create(new HttpResponseException(formatExceptionMessage(response), response))
+                    new HttpResponseException(formatExceptionMessage(response), response)
                 );
         }
     }
@@ -159,11 +155,11 @@ class ContentDownloader {
     }
 
     private Mono<HttpResponse> makeDownloadRequest(
-        String sourceEndpoint,
+        String sourceUrl,
         HttpRange httpRange,
         Context context) {
-        HttpRequest request = getHttpRequest(sourceEndpoint, httpRange);
-        URL urlToSignWith = getUrlToSignRequestWith(sourceEndpoint);
+        HttpRequest request = getHttpRequest(sourceUrl, httpRange);
+        URL urlToSignWith = getUrlToSignRequestWith(sourceUrl);
 
         Context finalContext;
         if (context == null) {
@@ -175,9 +171,9 @@ class ContentDownloader {
         return httpPipeline.send(request, finalContext);
     }
 
-    private URL getUrlToSignRequestWith(String endpoint) {
+    private URL getUrlToSignRequestWith(String url) {
         try {
-            String path = new URL(endpoint).getPath();
+            String path = new URL(url).getPath();
 
             if (path.startsWith("/")) {
                 path = path.substring(1);
@@ -189,8 +185,8 @@ class ContentDownloader {
         }
     }
 
-    private HttpRequest getHttpRequest(String sourceEndpoint, HttpRange httpRange) {
-        HttpRequest request = new HttpRequest(HttpMethod.GET, sourceEndpoint);
+    private HttpRequest getHttpRequest(String sourceUrl, HttpRange httpRange) {
+        HttpRequest request = new HttpRequest(HttpMethod.GET, sourceUrl);
 
         if (null != httpRange) {
             request.setHeader(Constants.HeaderNames.RANGE, httpRange.toString());

@@ -18,14 +18,12 @@ import java.time.Duration;
 @ServiceClientBuilder(serviceClients = {MicrosoftResourceHealthImpl.class})
 public final class MicrosoftResourceHealthBuilder {
     /*
-     * Subscription credentials which uniquely identify Microsoft Azure subscription. The subscription ID forms part of
-     * the URI for every service call.
+     * The ID of the target subscription.
      */
     private String subscriptionId;
 
     /**
-     * Sets Subscription credentials which uniquely identify Microsoft Azure subscription. The subscription ID forms
-     * part of the URI for every service call.
+     * Sets The ID of the target subscription.
      *
      * @param subscriptionId the subscriptionId value.
      * @return the MicrosoftResourceHealthBuilder.

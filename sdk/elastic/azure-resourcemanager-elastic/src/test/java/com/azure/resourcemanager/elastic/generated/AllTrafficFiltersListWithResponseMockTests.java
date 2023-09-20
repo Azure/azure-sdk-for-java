@@ -11,7 +11,6 @@ import com.azure.core.http.HttpRequest;
 import com.azure.core.http.HttpResponse;
 import com.azure.core.management.AzureEnvironment;
 import com.azure.core.management.profile.AzureProfile;
-import com.azure.core.util.Context;
 import com.azure.resourcemanager.elastic.ElasticManager;
 import com.azure.resourcemanager.elastic.models.ElasticTrafficFilterResponse;
 import com.azure.resourcemanager.elastic.models.Type;
@@ -33,7 +32,7 @@ public final class AllTrafficFiltersListWithResponseMockTests {
         ArgumentCaptor<HttpRequest> httpRequest = ArgumentCaptor.forClass(HttpRequest.class);
 
         String responseStr =
-            "{\"rulesets\":[{\"id\":\"yzm\",\"name\":\"xongmtsavjcbpwxq\",\"description\":\"rknftguvriuhprwm\",\"region\":\"vxqtayriwwroyqbe\",\"type\":\"azure_private_endpoint\",\"includeByDefault\":true,\"rules\":[]},{\"id\":\"cnojvknmefqsg\",\"name\":\"ah\",\"description\":\"jyzhpvgq\",\"region\":\"j\",\"type\":\"azure_private_endpoint\",\"includeByDefault\":false,\"rules\":[]}]}";
+            "{\"rulesets\":[{\"id\":\"bh\",\"name\":\"nlankxmyskpb\",\"description\":\"nbtkcxywnytnr\",\"region\":\"nlqidybyxczf\",\"type\":\"azure_private_endpoint\",\"includeByDefault\":false,\"rules\":[]},{\"id\":\"abphlw\",\"name\":\"lfktsths\",\"description\":\"ocmnyyazttbtwwrq\",\"region\":\"edckzywbiexzfey\",\"type\":\"ip\",\"includeByDefault\":false,\"rules\":[]},{\"id\":\"jwbhqwalmuz\",\"name\":\"xaepdkzjancuxr\",\"description\":\"wbavxbniwdj\",\"region\":\"zt\",\"type\":\"ip\",\"includeByDefault\":true,\"rules\":[]}]}";
 
         Mockito.when(httpResponse.getStatusCode()).thenReturn(200);
         Mockito.when(httpResponse.getHeaders()).thenReturn(new HttpHeaders());
@@ -62,13 +61,16 @@ public final class AllTrafficFiltersListWithResponseMockTests {
                     new AzureProfile("", "", AzureEnvironment.AZURE));
 
         ElasticTrafficFilterResponse response =
-            manager.allTrafficFilters().listWithResponse("iebwwaloayqcgwrt", "j", Context.NONE).getValue();
+            manager
+                .allTrafficFilters()
+                .listWithResponse("na", "zmhjrunmp", com.azure.core.util.Context.NONE)
+                .getValue();
 
-        Assertions.assertEquals("yzm", response.rulesets().get(0).id());
-        Assertions.assertEquals("xongmtsavjcbpwxq", response.rulesets().get(0).name());
-        Assertions.assertEquals("rknftguvriuhprwm", response.rulesets().get(0).description());
-        Assertions.assertEquals("vxqtayriwwroyqbe", response.rulesets().get(0).region());
+        Assertions.assertEquals("bh", response.rulesets().get(0).id());
+        Assertions.assertEquals("nlankxmyskpb", response.rulesets().get(0).name());
+        Assertions.assertEquals("nbtkcxywnytnr", response.rulesets().get(0).description());
+        Assertions.assertEquals("nlqidybyxczf", response.rulesets().get(0).region());
         Assertions.assertEquals(Type.AZURE_PRIVATE_ENDPOINT, response.rulesets().get(0).type());
-        Assertions.assertEquals(true, response.rulesets().get(0).includeByDefault());
+        Assertions.assertEquals(false, response.rulesets().get(0).includeByDefault());
     }
 }

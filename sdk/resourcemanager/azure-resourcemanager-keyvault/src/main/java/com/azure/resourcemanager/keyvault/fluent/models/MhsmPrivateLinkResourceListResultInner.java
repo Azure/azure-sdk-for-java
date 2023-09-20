@@ -18,6 +18,10 @@ public final class MhsmPrivateLinkResourceListResultInner {
     @JsonProperty(value = "value")
     private List<MhsmPrivateLinkResource> value;
 
+    /** Creates an instance of MhsmPrivateLinkResourceListResultInner class. */
+    public MhsmPrivateLinkResourceListResultInner() {
+    }
+
     /**
      * Get the value property: Array of private link resources.
      *

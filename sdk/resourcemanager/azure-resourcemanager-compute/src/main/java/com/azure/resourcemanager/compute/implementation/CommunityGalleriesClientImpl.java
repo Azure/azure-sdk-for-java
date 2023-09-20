@@ -53,8 +53,7 @@ public final class CommunityGalleriesClientImpl implements CommunityGalleriesCli
     public interface CommunityGalleriesService {
         @Headers({"Content-Type: application/json"})
         @Get(
-            "/subscriptions/{subscriptionId}/providers/Microsoft.Compute/locations/{location}/communityGalleries"
-                + "/{publicGalleryName}")
+            "/subscriptions/{subscriptionId}/providers/Microsoft.Compute/locations/{location}/communityGalleries/{publicGalleryName}")
         @ExpectedResponses({200})
         @UnexpectedResponseExceptionType(ApiErrorException.class)
         Mono<Response<CommunityGalleryInner>> get(

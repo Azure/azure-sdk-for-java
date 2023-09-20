@@ -24,6 +24,10 @@ public final class ApplianceListResult {
     @JsonProperty(value = "value", access = JsonProperty.Access.WRITE_ONLY)
     private List<ApplianceInner> value;
 
+    /** Creates an instance of ApplianceListResult class. */
+    public ApplianceListResult() {
+    }
+
     /**
      * Get the nextLink property: The URL to use for getting the next set of results.
      *

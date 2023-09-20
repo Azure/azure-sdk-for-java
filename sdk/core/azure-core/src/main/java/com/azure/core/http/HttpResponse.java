@@ -48,7 +48,9 @@ public abstract class HttpResponse implements Closeable {
      *
      * @param name the name of the header to lookup.
      * @return the value of the header, or null if the header doesn't exist in the response.
+     * @deprecated Use {@link #getHeaderValue(HttpHeaderName)} as it provides better performance.
      */
+    @Deprecated
     public abstract String getHeaderValue(String name);
 
     /**

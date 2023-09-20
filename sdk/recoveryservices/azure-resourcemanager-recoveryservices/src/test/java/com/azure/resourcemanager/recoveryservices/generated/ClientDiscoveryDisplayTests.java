@@ -14,26 +14,26 @@ public final class ClientDiscoveryDisplayTests {
         ClientDiscoveryDisplay model =
             BinaryData
                 .fromString(
-                    "{\"provider\":\"qn\",\"resource\":\"oczvy\",\"operation\":\"qrvkdv\",\"description\":\"llr\"}")
+                    "{\"provider\":\"wutttxfvjrbi\",\"resource\":\"hxepcyvahfnlj\",\"operation\":\"qxj\",\"description\":\"ujqgidok\"}")
                 .toObject(ClientDiscoveryDisplay.class);
-        Assertions.assertEquals("qn", model.provider());
-        Assertions.assertEquals("oczvy", model.resource());
-        Assertions.assertEquals("qrvkdv", model.operation());
-        Assertions.assertEquals("llr", model.description());
+        Assertions.assertEquals("wutttxfvjrbi", model.provider());
+        Assertions.assertEquals("hxepcyvahfnlj", model.resource());
+        Assertions.assertEquals("qxj", model.operation());
+        Assertions.assertEquals("ujqgidok", model.description());
     }
 
     @org.junit.jupiter.api.Test
     public void testSerialize() throws Exception {
         ClientDiscoveryDisplay model =
             new ClientDiscoveryDisplay()
-                .withProvider("qn")
-                .withResource("oczvy")
-                .withOperation("qrvkdv")
-                .withDescription("llr");
+                .withProvider("wutttxfvjrbi")
+                .withResource("hxepcyvahfnlj")
+                .withOperation("qxj")
+                .withDescription("ujqgidok");
         model = BinaryData.fromObject(model).toObject(ClientDiscoveryDisplay.class);
-        Assertions.assertEquals("qn", model.provider());
-        Assertions.assertEquals("oczvy", model.resource());
-        Assertions.assertEquals("qrvkdv", model.operation());
-        Assertions.assertEquals("llr", model.description());
+        Assertions.assertEquals("wutttxfvjrbi", model.provider());
+        Assertions.assertEquals("hxepcyvahfnlj", model.resource());
+        Assertions.assertEquals("qxj", model.operation());
+        Assertions.assertEquals("ujqgidok", model.description());
     }
 }

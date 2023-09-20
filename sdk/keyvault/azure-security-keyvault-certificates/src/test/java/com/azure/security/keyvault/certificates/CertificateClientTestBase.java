@@ -17,8 +17,13 @@ import com.azure.core.http.policy.HttpPolicyProviders;
 import com.azure.core.http.policy.RetryPolicy;
 import com.azure.core.http.policy.RetryStrategy;
 import com.azure.core.http.policy.UserAgentPolicy;
-import com.azure.core.test.TestBase;
-import com.azure.core.test.TestMode;
+import com.azure.core.test.TestProxyTestBase;
+import com.azure.core.test.models.BodilessMatcher;
+import com.azure.core.test.models.CustomMatcher;
+import com.azure.core.test.models.TestProxyRequestMatcher;
+import com.azure.core.test.models.TestProxySanitizer;
+import com.azure.core.test.models.TestProxySanitizerType;
+import com.azure.core.test.utils.MockTokenCredential;
 import com.azure.core.util.Configuration;
 import com.azure.core.util.CoreUtils;
 import com.azure.identity.ClientSecretCredentialBuilder;
@@ -34,23 +39,28 @@ import com.azure.security.keyvault.certificates.models.CertificatePolicy;
 import com.azure.security.keyvault.certificates.models.CertificatePolicyAction;
 import com.azure.security.keyvault.certificates.models.ImportCertificateOptions;
 import com.azure.security.keyvault.certificates.models.KeyVaultCertificate;
-import com.azure.security.keyvault.certificates.models.KeyVaultCertificateWithPolicy;
 import com.azure.security.keyvault.certificates.models.LifetimeAction;
 import com.azure.security.keyvault.certificates.models.WellKnownIssuerNames;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.params.provider.Arguments;
 
-import java.io.BufferedReader;
 import java.io.ByteArrayInputStream;
-import java.io.FileReader;
 import java.io.IOException;
+import java.nio.file.Files;
+import java.nio.file.Paths;
+import java.security.KeyFactory;
+import java.security.NoSuchAlgorithmException;
+import java.security.PrivateKey;
 import java.security.cert.CertificateException;
 import java.security.cert.CertificateFactory;
 import java.security.cert.X509Certificate;
+import java.security.spec.InvalidKeySpecException;
+import java.security.spec.PKCS8EncodedKeySpec;
 import java.time.Duration;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.Base64;
+import java.util.Collections;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
@@ -59,12 +69,13 @@ import java.util.function.BiConsumer;
 import java.util.function.Consumer;
 import java.util.stream.Stream;
 
-import static com.azure.security.keyvault.certificates.FakeCredentialInTest.FAKE_CERTIFICATE_CONTENT;
+import static com.azure.security.keyvault.certificates.FakeCredentialsForTests.FAKE_CERTIFICATE;
+import static com.azure.security.keyvault.certificates.FakeCredentialsForTests.FAKE_PEM_CERTIFICATE;
 import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertNotNull;
 import static org.junit.jupiter.api.Assertions.fail;
 
-public abstract class CertificateClientTestBase extends TestBase {
+public abstract class CertificateClientTestBase extends TestProxyTestBase {
     static final String DISPLAY_NAME_WITH_ARGUMENTS = "{displayName} with [{arguments}]";
     private static final String SDK_NAME = "client_name";
     private static final String SDK_VERSION = "client_version";
@@ -81,6 +92,7 @@ public abstract class CertificateClientTestBase extends TestBase {
     }
 
     void beforeTestSetup() {
+        KeyVaultCredentialPolicy.clearCache();
     }
 
     HttpPipeline getHttpPipeline(HttpClient httpClient) {
@@ -88,7 +100,7 @@ public abstract class CertificateClientTestBase extends TestBase {
     }
 
     HttpPipeline getHttpPipeline(HttpClient httpClient, String testTenantId) {
-        TokenCredential credential = null;
+        TokenCredential credential;
 
         if (!interceptorManager.isPlaybackMode()) {
             String clientId = Configuration.getGlobalConfiguration().get("AZURE_KEYVAULT_CLIENT_ID");
@@ -107,6 +119,19 @@ public abstract class CertificateClientTestBase extends TestBase {
                 .tenantId(tenantId)
                 .additionallyAllowedTenants("*")
                 .build();
+
+            if (interceptorManager.isRecordMode()) {
+                List<TestProxySanitizer> customSanitizers = new ArrayList<>();
+                customSanitizers.add(new TestProxySanitizer("value", "-----BEGIN PRIVATE KEY-----\\n(.+\\n)*-----END PRIVATE KEY-----\\n", "-----BEGIN PRIVATE KEY-----\\nREDACTED\\n-----END PRIVATE KEY-----\\n", TestProxySanitizerType.BODY_KEY));
+                interceptorManager.addSanitizers(customSanitizers);
+            }
+        } else {
+            credential = new MockTokenCredential();
+
+            List<TestProxyRequestMatcher> customMatchers = new ArrayList<>();
+            customMatchers.add(new BodilessMatcher());
+            customMatchers.add(new CustomMatcher().setExcludedHeaders(Collections.singletonList("Authorization")));
+            interceptorManager.addMatchers(customMatchers);
         }
 
         // Closest to API goes first, closest to wire goes last.
@@ -121,19 +146,20 @@ public abstract class CertificateClientTestBase extends TestBase {
         policies.add(new RetryPolicy(strategy));
 
         if (credential != null) {
-            policies.add(new KeyVaultCredentialPolicy(credential, false));
+            // If in playback mode, disable the challenge resource verification.
+            policies.add(new KeyVaultCredentialPolicy(credential, interceptorManager.isPlaybackMode()));
         }
 
         HttpPolicyProviders.addAfterRetryPolicies(policies);
         policies.add(new HttpLoggingPolicy(new HttpLogOptions().setLogLevel(HttpLogDetailLevel.BODY_AND_HEADERS)));
 
-        if (getTestMode() == TestMode.RECORD) {
+        if (interceptorManager.isRecordMode()) {
             policies.add(interceptorManager.getRecordPolicy());
         }
 
         return new HttpPipelineBuilder()
             .policies(policies.toArray(new HttpPipelinePolicy[0]))
-            .httpClient(httpClient == null ? interceptorManager.getPlaybackClient() : httpClient)
+            .httpClient(interceptorManager.isPlaybackMode() ? interceptorManager.getPlaybackClient() : httpClient)
             .build();
     }
 
@@ -464,7 +490,7 @@ public abstract class CertificateClientTestBase extends TestBase {
         tags.put("key", "val");
 
         ImportCertificateOptions importCertificateOptions =
-            new ImportCertificateOptions(certificateName, Base64.getDecoder().decode(FAKE_CERTIFICATE_CONTENT))
+            new ImportCertificateOptions(certificateName, Base64.getDecoder().decode(FAKE_CERTIFICATE))
                 .setPassword(certificatePassword)
                 .setEnabled(true)
                 .setTags(tags);
@@ -477,8 +503,7 @@ public abstract class CertificateClientTestBase extends TestBase {
         throws IOException;
 
     void importPemCertificateRunner(Consumer<ImportCertificateOptions> testRunner) throws IOException {
-
-        byte[] certificateContent = readCertificate("pemCert.pem");
+        byte[] certificateContent = FAKE_PEM_CERTIFICATE.getBytes();
 
         String certificateName = testResourceNamer.randomName("importCertPem", 25);
         HashMap<String, String> tags = new HashMap<>();
@@ -493,21 +518,19 @@ public abstract class CertificateClientTestBase extends TestBase {
     }
 
     @Test
+    public abstract void mergeCertificate(HttpClient httpClient, CertificateServiceVersion serviceVersion);
+
+    @Test
     public abstract void mergeCertificateNotFound(HttpClient httpClient, CertificateServiceVersion serviceVersion);
+    protected PrivateKey loadPrivateKey(String filename)
+        throws IOException, NoSuchAlgorithmException, InvalidKeySpecException {
 
-    private byte[] readCertificate(String certName) throws IOException {
-        String pemPath = getClass().getClassLoader().getResource(certName).getPath();
-        StringBuilder pemCert = new StringBuilder();
+        byte[] keyBytes = Files.readAllBytes(Paths.get("src", "test", "resources", filename));
 
-        try (BufferedReader br = new BufferedReader(new FileReader(pemPath))) {
-            String line;
+        PKCS8EncodedKeySpec spec = new PKCS8EncodedKeySpec(keyBytes);
+        KeyFactory kf = KeyFactory.getInstance("RSA");
 
-            while ((line = br.readLine()) != null) {
-                pemCert.append(line).append("\n");
-            }
-        }
-
-        return pemCert.toString().getBytes();
+        return kf.generatePrivate(spec);
     }
 
     @SuppressWarnings("ArraysAsListWithZeroOrOneArgument")
@@ -544,13 +567,12 @@ public abstract class CertificateClientTestBase extends TestBase {
         return hexString.toString().replace("-", "");
     }
 
-    X509Certificate loadCerToX509Certificate(KeyVaultCertificateWithPolicy certificate)
-        throws CertificateException, IOException {
+    X509Certificate loadCerToX509Certificate(byte[] certificate) throws CertificateException, IOException {
+        assertNotNull(certificate);
 
-        assertNotNull(certificate.getCer());
-
-        ByteArrayInputStream cerStream = new ByteArrayInputStream(certificate.getCer());
+        ByteArrayInputStream cerStream = new ByteArrayInputStream(certificate);
         CertificateFactory certificateFactory = CertificateFactory.getInstance("X.509");
+
         X509Certificate x509Certificate = (X509Certificate) certificateFactory.generateCertificate(cerStream);
 
         cerStream.close();
@@ -626,7 +648,7 @@ public abstract class CertificateClientTestBase extends TestBase {
 
     public String getEndpoint() {
         final String endpoint =
-            Configuration.getGlobalConfiguration().get("AZURE_KEYVAULT_ENDPOINT", "http://localhost:8080");
+            Configuration.getGlobalConfiguration().get("AZURE_KEYVAULT_ENDPOINT", "https://localhost:8080");
 
         Objects.requireNonNull(endpoint);
 

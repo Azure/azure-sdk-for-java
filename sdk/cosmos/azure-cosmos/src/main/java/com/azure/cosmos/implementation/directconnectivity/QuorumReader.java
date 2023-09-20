@@ -9,6 +9,7 @@ import com.azure.cosmos.CosmosException;
 import com.azure.cosmos.implementation.CosmosSchedulers;
 import com.azure.cosmos.implementation.DiagnosticsClientContext;
 import com.azure.cosmos.implementation.GoneException;
+import com.azure.cosmos.implementation.HttpConstants;
 import com.azure.cosmos.implementation.InternalServerErrorException;
 import com.azure.cosmos.implementation.Configs;
 import com.azure.cosmos.implementation.IAuthorizationTokenProvider;
@@ -202,7 +203,7 @@ public class QuorumReader {
                             case QuorumNotSelected:
                                 if (hasPerformedReadFromPrimary.v) {
                                     logger.warn("QuorumNotSelected: Primary read already attempted. Quorum could not be selected after retrying on secondaries.");
-                                    return Flux.error(new GoneException(RMResources.ReadQuorumNotMet));
+                                    return Flux.error(new GoneException(RMResources.ReadQuorumNotMet, HttpConstants.SubStatusCodes.READ_QUORUM_NOT_MET));
                                 }
 
                                 logger.warn("QuorumNotSelected: Quorum could not be selected with read quorum of {}", readQuorumValue);
@@ -226,7 +227,7 @@ public class QuorumReader {
                                             hasPerformedReadFromPrimary.v = true;
                                         } else {
                                             logger.warn("QuorumNotSelected: Could not get successful response from ReadPrimary");
-                                            return Flux.error(new GoneException(String.format(RMResources.ReadQuorumNotMet, readQuorumValue)));
+                                            return Flux.error(new GoneException(String.format(RMResources.ReadQuorumNotMet, readQuorumValue), HttpConstants.SubStatusCodes.READ_QUORUM_NOT_MET));
                                         }
 
                                                     return Flux.empty();
@@ -250,7 +251,8 @@ public class QuorumReader {
                     return Flux.error(new GoneException(
                            String.format(
                                RMResources.ReadQuorumNotMet,
-                               readQuorumValue)));
+                               readQuorumValue),
+                               HttpConstants.SubStatusCodes.READ_QUORUM_NOT_MET));
                    }))
                    .take(1)
                    .single();
@@ -412,7 +414,7 @@ public class QuorumReader {
                     logger.error(message);
 
                     // throw exception instead of returning inconsistent result.
-                    return Mono.error(new GoneException(String.format(RMResources.ReadQuorumNotMet, readQuorum)));
+                    return Mono.error(new GoneException(String.format(RMResources.ReadQuorumNotMet, readQuorum), HttpConstants.SubStatusCodes.READ_QUORUM_NOT_MET));
 
                 }
 

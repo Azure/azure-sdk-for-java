@@ -4,10 +4,6 @@
 
 package com.azure.resourcemanager.servicenetworking.generated;
 
-import com.azure.resourcemanager.servicenetworking.models.FrontendIpAddressVersion;
-import com.azure.resourcemanager.servicenetworking.models.FrontendMode;
-import com.azure.resourcemanager.servicenetworking.models.FrontendPropertiesIpAddress;
-
 /** Samples for FrontendsInterface CreateOrUpdate. */
 public final class FrontendsInterfaceCreateOrUpdateSamples {
     /*
@@ -21,12 +17,9 @@ public final class FrontendsInterfaceCreateOrUpdateSamples {
     public static void putFrontend(com.azure.resourcemanager.servicenetworking.TrafficControllerManager manager) {
         manager
             .frontendsInterfaces()
-            .define("publicIp1")
-            .withRegion("West US")
-            .withExistingTrafficController("rg1", "TC1")
-            .withMode(FrontendMode.PUBLIC)
-            .withIpAddressVersion(FrontendIpAddressVersion.IPV4)
-            .withPublicIpAddress(new FrontendPropertiesIpAddress().withId("resourceUriAsString"))
+            .define("fe1")
+            .withRegion("NorthCentralUS")
+            .withExistingTrafficController("rg1", "tc1")
             .create();
     }
 }

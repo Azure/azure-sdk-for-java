@@ -16,14 +16,14 @@ public final class CefExternalSecuritySolutionTests {
         CefExternalSecuritySolution model =
             BinaryData
                 .fromString(
-                    "{\"kind\":\"CEF\",\"properties\":{\"hostname\":\"ssoljom\",\"agent\":\"tfy\",\"lastEventReceived\":\"lbvgjc\",\"deviceVendor\":\"kk\",\"deviceType\":\"iiy\",\"workspace\":{\"id\":\"ikizbcu\"},\"\":{\"hcekxgnlykm\":\"datavntnrgmqso\",\"doksqdtiwlwxlbon\":\"datacpwzv\",\"qicqchygt\":\"dataqba\",\"epubdp\":\"dataxbyja\"}},\"location\":\"yqvgxia\",\"id\":\"detv\",\"name\":\"hkxdxuwsaifmc\",\"type\":\"nosbz\"}")
+                    "{\"kind\":\"CEF\",\"properties\":{\"hostname\":\"qacdmkxwxdcvjwcy\",\"agent\":\"akeciqchx\",\"lastEventReceived\":\"uicdsiwdfmmpzhzz\",\"deviceVendor\":\"ywrgyngydgr\",\"deviceType\":\"n\",\"workspace\":{\"id\":\"iqao\"},\"\":{\"lvlmfej\":\"datarkclamg\"}},\"location\":\"qey\",\"id\":\"gltygxhqfgq\",\"name\":\"ayejsxtlgflwfgz\",\"type\":\"iucijjcea\"}")
                 .toObject(CefExternalSecuritySolution.class);
-        Assertions.assertEquals("kk", model.properties().deviceVendor());
-        Assertions.assertEquals("iiy", model.properties().deviceType());
-        Assertions.assertEquals("ikizbcu", model.properties().workspace().id());
-        Assertions.assertEquals("ssoljom", model.properties().hostname());
-        Assertions.assertEquals("tfy", model.properties().agent());
-        Assertions.assertEquals("lbvgjc", model.properties().lastEventReceived());
+        Assertions.assertEquals("ywrgyngydgr", model.properties().deviceVendor());
+        Assertions.assertEquals("n", model.properties().deviceType());
+        Assertions.assertEquals("iqao", model.properties().workspace().id());
+        Assertions.assertEquals("qacdmkxwxdcvjwcy", model.properties().hostname());
+        Assertions.assertEquals("akeciqchx", model.properties().agent());
+        Assertions.assertEquals("uicdsiwdfmmpzhzz", model.properties().lastEventReceived());
     }
 
     @org.junit.jupiter.api.Test
@@ -32,18 +32,18 @@ public final class CefExternalSecuritySolutionTests {
             new CefExternalSecuritySolution()
                 .withProperties(
                     new CefSolutionProperties()
-                        .withDeviceVendor("kk")
-                        .withDeviceType("iiy")
-                        .withWorkspace(new ConnectedWorkspace().withId("ikizbcu"))
-                        .withHostname("ssoljom")
-                        .withAgent("tfy")
-                        .withLastEventReceived("lbvgjc"));
+                        .withDeviceVendor("ywrgyngydgr")
+                        .withDeviceType("n")
+                        .withWorkspace(new ConnectedWorkspace().withId("iqao"))
+                        .withHostname("qacdmkxwxdcvjwcy")
+                        .withAgent("akeciqchx")
+                        .withLastEventReceived("uicdsiwdfmmpzhzz"));
         model = BinaryData.fromObject(model).toObject(CefExternalSecuritySolution.class);
-        Assertions.assertEquals("kk", model.properties().deviceVendor());
-        Assertions.assertEquals("iiy", model.properties().deviceType());
-        Assertions.assertEquals("ikizbcu", model.properties().workspace().id());
-        Assertions.assertEquals("ssoljom", model.properties().hostname());
-        Assertions.assertEquals("tfy", model.properties().agent());
-        Assertions.assertEquals("lbvgjc", model.properties().lastEventReceived());
+        Assertions.assertEquals("ywrgyngydgr", model.properties().deviceVendor());
+        Assertions.assertEquals("n", model.properties().deviceType());
+        Assertions.assertEquals("iqao", model.properties().workspace().id());
+        Assertions.assertEquals("qacdmkxwxdcvjwcy", model.properties().hostname());
+        Assertions.assertEquals("akeciqchx", model.properties().agent());
+        Assertions.assertEquals("uicdsiwdfmmpzhzz", model.properties().lastEventReceived());
     }
 }

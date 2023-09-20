@@ -11,7 +11,6 @@ import com.azure.core.http.HttpRequest;
 import com.azure.core.http.HttpResponse;
 import com.azure.core.management.AzureEnvironment;
 import com.azure.core.management.profile.AzureProfile;
-import com.azure.core.util.Context;
 import com.azure.resourcemanager.elastic.ElasticManager;
 import com.azure.resourcemanager.elastic.models.OperationName;
 import com.azure.resourcemanager.elastic.models.VMCollectionUpdate;
@@ -62,9 +61,9 @@ public final class VMCollectionsUpdateWithResponseMockTests {
         manager
             .vMCollections()
             .updateWithResponse(
-                "pow",
-                "wpr",
-                new VMCollectionUpdate().withVmResourceId("lve").withOperationName(OperationName.ADD),
-                Context.NONE);
+                "gr",
+                "wflzlfbxzpuzy",
+                new VMCollectionUpdate().withVmResourceId("spnqzahmgkb").withOperationName(OperationName.DELETE),
+                com.azure.core.util.Context.NONE);
     }
 }

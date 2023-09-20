@@ -5,6 +5,7 @@
 package com.azure.resourcemanager.databox.generated;
 
 import com.azure.core.util.BinaryData;
+import com.azure.resourcemanager.databox.models.DatacenterAddressRequest;
 import com.azure.resourcemanager.databox.models.RegionConfigurationRequest;
 import com.azure.resourcemanager.databox.models.ScheduleAvailabilityRequest;
 import com.azure.resourcemanager.databox.models.SkuName;
@@ -17,11 +18,13 @@ public final class RegionConfigurationRequestTests {
         RegionConfigurationRequest model =
             BinaryData
                 .fromString(
-                    "{\"scheduleAvailabilityRequest\":{\"skuName\":\"ScheduleAvailabilityRequest\",\"storageLocation\":\"fvovbvmeuecivy\",\"country\":\"ce\"},\"transportAvailabilityRequest\":{\"skuName\":\"DataBoxHeavy\"}}")
+                    "{\"scheduleAvailabilityRequest\":{\"skuName\":\"ScheduleAvailabilityRequest\",\"storageLocation\":\"gvpgy\",\"country\":\"qgitxmed\"},\"transportAvailabilityRequest\":{\"skuName\":\"DataBoxHeavy\"},\"datacenterAddressRequest\":{\"storageLocation\":\"ynqwwncwzzhxgk\",\"skuName\":\"DataBoxDisk\"}}")
                 .toObject(RegionConfigurationRequest.class);
-        Assertions.assertEquals("fvovbvmeuecivy", model.scheduleAvailabilityRequest().storageLocation());
-        Assertions.assertEquals("ce", model.scheduleAvailabilityRequest().country());
+        Assertions.assertEquals("gvpgy", model.scheduleAvailabilityRequest().storageLocation());
+        Assertions.assertEquals("qgitxmed", model.scheduleAvailabilityRequest().country());
         Assertions.assertEquals(SkuName.DATA_BOX_HEAVY, model.transportAvailabilityRequest().skuName());
+        Assertions.assertEquals("ynqwwncwzzhxgk", model.datacenterAddressRequest().storageLocation());
+        Assertions.assertEquals(SkuName.DATA_BOX_DISK, model.datacenterAddressRequest().skuName());
     }
 
     @org.junit.jupiter.api.Test
@@ -29,12 +32,18 @@ public final class RegionConfigurationRequestTests {
         RegionConfigurationRequest model =
             new RegionConfigurationRequest()
                 .withScheduleAvailabilityRequest(
-                    new ScheduleAvailabilityRequest().withStorageLocation("fvovbvmeuecivy").withCountry("ce"))
+                    new ScheduleAvailabilityRequest().withStorageLocation("gvpgy").withCountry("qgitxmed"))
                 .withTransportAvailabilityRequest(
-                    new TransportAvailabilityRequest().withSkuName(SkuName.DATA_BOX_HEAVY));
+                    new TransportAvailabilityRequest().withSkuName(SkuName.DATA_BOX_HEAVY))
+                .withDatacenterAddressRequest(
+                    new DatacenterAddressRequest()
+                        .withStorageLocation("ynqwwncwzzhxgk")
+                        .withSkuName(SkuName.DATA_BOX_DISK));
         model = BinaryData.fromObject(model).toObject(RegionConfigurationRequest.class);
-        Assertions.assertEquals("fvovbvmeuecivy", model.scheduleAvailabilityRequest().storageLocation());
-        Assertions.assertEquals("ce", model.scheduleAvailabilityRequest().country());
+        Assertions.assertEquals("gvpgy", model.scheduleAvailabilityRequest().storageLocation());
+        Assertions.assertEquals("qgitxmed", model.scheduleAvailabilityRequest().country());
         Assertions.assertEquals(SkuName.DATA_BOX_HEAVY, model.transportAvailabilityRequest().skuName());
+        Assertions.assertEquals("ynqwwncwzzhxgk", model.datacenterAddressRequest().storageLocation());
+        Assertions.assertEquals(SkuName.DATA_BOX_DISK, model.datacenterAddressRequest().skuName());
     }
 }

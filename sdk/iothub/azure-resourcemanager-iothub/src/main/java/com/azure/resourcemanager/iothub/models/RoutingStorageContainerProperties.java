@@ -95,6 +95,10 @@ public final class RoutingStorageContainerProperties {
     @JsonProperty(value = "encoding")
     private RoutingStorageContainerPropertiesEncoding encoding;
 
+    /** Creates an instance of RoutingStorageContainerProperties class. */
+    public RoutingStorageContainerProperties() {
+    }
+
     /**
      * Get the id property: Id of the storage container endpoint.
      *

@@ -18,22 +18,22 @@ public final class IdentityDataTests {
         IdentityData model =
             BinaryData
                 .fromString(
-                    "{\"principalId\":\"ehzzvypyqrim\",\"tenantId\":\"npvswjdkirso\",\"type\":\"SystemAssigned,"
-                        + " UserAssigned\",\"userAssignedIdentities\":{\"znorcj\":{\"principalId\":\"crmnohjtckwhds\",\"clientId\":\"fiyipjxsqwpgrj\"}}}")
+                    "{\"principalId\":\"vvtpgvdfgio\",\"tenantId\":\"ftutqxlngxlefgu\",\"type\":\"None\",\"userAssignedIdentities\":{\"oqfbowskanyk\":{\"principalId\":\"xdqmidtthzrvqdra\",\"clientId\":\"jybige\"}}}")
                 .toObject(IdentityData.class);
-        Assertions.assertEquals(ResourceIdentityType.SYSTEM_ASSIGNED_USER_ASSIGNED, model.type());
+        Assertions.assertEquals(ResourceIdentityType.NONE, model.type());
     }
 
     @org.junit.jupiter.api.Test
     public void testSerialize() throws Exception {
         IdentityData model =
             new IdentityData()
-                .withType(ResourceIdentityType.SYSTEM_ASSIGNED_USER_ASSIGNED)
-                .withUserAssignedIdentities(mapOf("znorcj", new UserIdentity()));
+                .withType(ResourceIdentityType.NONE)
+                .withUserAssignedIdentities(mapOf("oqfbowskanyk", new UserIdentity()));
         model = BinaryData.fromObject(model).toObject(IdentityData.class);
-        Assertions.assertEquals(ResourceIdentityType.SYSTEM_ASSIGNED_USER_ASSIGNED, model.type());
+        Assertions.assertEquals(ResourceIdentityType.NONE, model.type());
     }
 
+    // Use "Map.of" if available
     @SuppressWarnings("unchecked")
     private static <T> Map<String, T> mapOf(Object... inputs) {
         Map<String, T> map = new HashMap<>();

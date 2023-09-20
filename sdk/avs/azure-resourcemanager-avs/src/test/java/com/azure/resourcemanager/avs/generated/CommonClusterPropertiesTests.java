@@ -15,20 +15,18 @@ public final class CommonClusterPropertiesTests {
         CommonClusterProperties model =
             BinaryData
                 .fromString(
-                    "{\"clusterSize\":1636345438,\"provisioningState\":\"Deleting\",\"clusterId\":632380018,\"hosts\":[\"pusuesn\",\"wd\",\"jbavorxzdm\",\"hctbqvudwxdn\"]}")
+                    "{\"clusterSize\":1271650742,\"provisioningState\":\"Canceled\",\"clusterId\":1239569697,\"hosts\":[\"uosvmkfssxqukk\"]}")
                 .toObject(CommonClusterProperties.class);
-        Assertions.assertEquals(1636345438, model.clusterSize());
-        Assertions.assertEquals("pusuesn", model.hosts().get(0));
+        Assertions.assertEquals(1271650742, model.clusterSize());
+        Assertions.assertEquals("uosvmkfssxqukk", model.hosts().get(0));
     }
 
     @org.junit.jupiter.api.Test
     public void testSerialize() throws Exception {
         CommonClusterProperties model =
-            new CommonClusterProperties()
-                .withClusterSize(1636345438)
-                .withHosts(Arrays.asList("pusuesn", "wd", "jbavorxzdm", "hctbqvudwxdn"));
+            new CommonClusterProperties().withClusterSize(1271650742).withHosts(Arrays.asList("uosvmkfssxqukk"));
         model = BinaryData.fromObject(model).toObject(CommonClusterProperties.class);
-        Assertions.assertEquals(1636345438, model.clusterSize());
-        Assertions.assertEquals("pusuesn", model.hosts().get(0));
+        Assertions.assertEquals(1271650742, model.clusterSize());
+        Assertions.assertEquals("uosvmkfssxqukk", model.hosts().get(0));
     }
 }

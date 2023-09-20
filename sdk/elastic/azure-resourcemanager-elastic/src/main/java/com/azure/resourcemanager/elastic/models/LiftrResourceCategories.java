@@ -17,6 +17,15 @@ public final class LiftrResourceCategories extends ExpandableStringEnum<LiftrRes
     public static final LiftrResourceCategories MONITOR_LOGS = fromString("MonitorLogs");
 
     /**
+     * Creates a new instance of LiftrResourceCategories value.
+     *
+     * @deprecated Use the {@link #fromString(String)} factory method.
+     */
+    @Deprecated
+    public LiftrResourceCategories() {
+    }
+
+    /**
      * Creates or finds a LiftrResourceCategories from its string representation.
      *
      * @param name a name to look for.

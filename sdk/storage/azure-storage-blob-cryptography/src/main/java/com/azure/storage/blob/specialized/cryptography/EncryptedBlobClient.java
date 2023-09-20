@@ -80,7 +80,7 @@ import static com.azure.storage.blob.specialized.cryptography.CryptographyConsta
 @ServiceClient(builder = EncryptedBlobClientBuilder.class)
 public class EncryptedBlobClient extends BlobClient {
     private static final ClientLogger LOGGER = new ClientLogger(EncryptedBlobClient.class);
-    private final EncryptedBlobAsyncClient encryptedBlobAsyncClient;
+    final EncryptedBlobAsyncClient encryptedBlobAsyncClient;
 
     /**
      * Package-private constructor for use by {@link BlobClientBuilder}.
@@ -486,12 +486,12 @@ public class EncryptedBlobClient extends BlobClient {
             this.getPropertiesWithResponse(requestConditions, timeout, context).getValue();
 
         requestConditions.setIfMatch(initialProperties.getETag());
-        if (initialProperties.getMetadata().get(ENCRYPTION_DATA_KEY) != null) {
-            context = context.addData(ENCRYPTION_DATA_KEY, EncryptionData.getAndValidateEncryptionData(
-                initialProperties.getMetadata().get(ENCRYPTION_DATA_KEY),
-                encryptedBlobAsyncClient.isEncryptionRequired()));
-        }
 
+        String encryptionDataKey = StorageImplUtils.getEncryptionDataKey(initialProperties.getMetadata());
+        if (encryptionDataKey != null) {
+            context = context.addData(ENCRYPTION_DATA_KEY, EncryptionData.getAndValidateEncryptionData(
+                encryptionDataKey, encryptedBlobAsyncClient.isEncryptionRequired()));
+        }
         return context;
     }
 

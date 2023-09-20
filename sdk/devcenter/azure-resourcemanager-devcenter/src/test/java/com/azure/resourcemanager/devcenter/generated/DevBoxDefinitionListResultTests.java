@@ -6,20 +6,19 @@ package com.azure.resourcemanager.devcenter.generated;
 
 import com.azure.core.util.BinaryData;
 import com.azure.resourcemanager.devcenter.models.DevBoxDefinitionListResult;
-import org.junit.jupiter.api.Test;
 
 public final class DevBoxDefinitionListResultTests {
-    @Test
-    public void testDeserialize() {
+    @org.junit.jupiter.api.Test
+    public void testDeserialize() throws Exception {
         DevBoxDefinitionListResult model =
             BinaryData
                 .fromString(
-                    "{\"value\":[{\"properties\":{\"provisioningState\":\"RolloutInProgress\",\"imageValidationStatus\":\"Succeeded\",\"osStorageType\":\"gklwn\",\"hibernateSupport\":\"Enabled\"},\"location\":\"dauwhvylwzbtd\",\"tags\":{\"pow\":\"jznb\",\"qlveualupjmkh\":\"wpr\"},\"id\":\"xobbcswsrt\",\"name\":\"riplrbpbewtg\",\"type\":\"fgb\"}],\"nextLink\":\"gw\"}")
+                    "{\"value\":[{\"properties\":{\"provisioningState\":\"Running\",\"imageValidationStatus\":\"Pending\",\"osStorageType\":\"urqhaka\",\"hibernateSupport\":\"Enabled\"},\"location\":\"hsfwxosowzxcug\",\"tags\":{\"wfvovbv\":\"ooxdjebwpuc\",\"jrwjueiotwm\":\"euecivyhzceuoj\",\"rjaw\":\"dytdxwitx\"},\"id\":\"qwgxhniskx\",\"name\":\"bkpyc\",\"type\":\"klwndnhjdauwhv\"},{\"properties\":{\"provisioningState\":\"Creating\",\"imageValidationStatus\":\"Pending\",\"osStorageType\":\"znbmpowuwprzq\",\"hibernateSupport\":\"Enabled\"},\"location\":\"alupjm\",\"tags\":{\"riplrbpbewtg\":\"xobbcswsrt\",\"c\":\"fgb\",\"gibtnm\":\"wxzvlvqhjkb\"},\"id\":\"iebwwaloayqcgwrt\",\"name\":\"j\",\"type\":\"zg\"},{\"properties\":{\"provisioningState\":\"RolloutInProgress\",\"imageValidationStatus\":\"TimedOut\",\"osStorageType\":\"ts\",\"hibernateSupport\":\"Enabled\"},\"location\":\"bp\",\"tags\":{\"rknftguvriuhprwm\":\"p\",\"bexrmcq\":\"yvxqtayriwwroy\",\"e\":\"bycnojvkn\",\"zhpvgqzcjrvxd\":\"qsgzvahapj\"},\"id\":\"zlmwlxkvugfhz\",\"name\":\"vawjvzunlu\",\"type\":\"hnnpr\"},{\"properties\":{\"provisioningState\":\"TransientFailure\",\"imageValidationStatus\":\"Pending\",\"osStorageType\":\"aejxd\",\"hibernateSupport\":\"Enabled\"},\"location\":\"kzbbtd\",\"tags\":{\"sjyofdx\":\"veekgpwozuhkfp\"},\"id\":\"uusdttouwa\",\"name\":\"oekqvk\",\"type\":\"lns\"}],\"nextLink\":\"bxwyjsflhhcaa\"}")
                 .toObject(DevBoxDefinitionListResult.class);
     }
 
-    @Test
-    public void testSerialize() {
+    @org.junit.jupiter.api.Test
+    public void testSerialize() throws Exception {
         DevBoxDefinitionListResult model = new DevBoxDefinitionListResult();
         model = BinaryData.fromObject(model).toObject(DevBoxDefinitionListResult.class);
     }

@@ -13,7 +13,7 @@ public final class GovernanceAssignmentsListTests {
         GovernanceAssignmentsList model =
             BinaryData
                 .fromString(
-                    "{\"value\":[{\"properties\":{\"owner\":\"qtlffhzbk\",\"remediationDueDate\":\"2021-02-09T15:59:01Z\",\"isGracePeriod\":false},\"id\":\"fqnvhnqoewdogi\",\"name\":\"etesypvidbztjhqt\",\"type\":\"b\"},{\"properties\":{\"owner\":\"ynkbwetnju\",\"remediationDueDate\":\"2021-07-10T00:36:33Z\",\"isGracePeriod\":true},\"id\":\"yaupia\",\"name\":\"cxnafbwqrooh\",\"type\":\"uovmaonurjt\"},{\"properties\":{\"owner\":\"hihpvecmsl\",\"remediationDueDate\":\"2021-01-23T19:57:44Z\",\"isGracePeriod\":true},\"id\":\"lt\",\"name\":\"sjuscvsfxigctmg\",\"type\":\"uupb\"}],\"nextLink\":\"qccydrtceukdq\"}")
+                    "{\"value\":[{\"properties\":{\"owner\":\"ny\",\"remediationDueDate\":\"2021-07-02T15:24:24Z\",\"isGracePeriod\":true},\"id\":\"nsrpmeyy\",\"name\":\"pkpatlbijpzgsks\",\"type\":\"fhfv\"}],\"nextLink\":\"mknbnxwcdommpv\"}")
                 .toObject(GovernanceAssignmentsList.class);
     }
 

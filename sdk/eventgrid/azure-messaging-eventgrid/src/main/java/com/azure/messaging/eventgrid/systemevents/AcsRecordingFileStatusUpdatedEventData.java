@@ -54,6 +54,9 @@ public final class AcsRecordingFileStatusUpdatedEventData {
     @JsonProperty(value = "sessionEndReason")
     private String sessionEndReason;
 
+    /** Creates an instance of AcsRecordingFileStatusUpdatedEventData class. */
+    public AcsRecordingFileStatusUpdatedEventData() {}
+
     /**
      * Get the recordingStorageInfo property: The details of recording storage information.
      *

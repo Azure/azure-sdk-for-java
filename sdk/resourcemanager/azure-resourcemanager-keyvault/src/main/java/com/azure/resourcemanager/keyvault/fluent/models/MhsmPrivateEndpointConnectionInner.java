@@ -28,6 +28,10 @@ public final class MhsmPrivateEndpointConnectionInner extends ManagedHsmResource
     @JsonProperty(value = "etag")
     private String etag;
 
+    /** Creates an instance of MhsmPrivateEndpointConnectionInner class. */
+    public MhsmPrivateEndpointConnectionInner() {
+    }
+
     /**
      * Get the innerProperties property: Resource properties.
      *

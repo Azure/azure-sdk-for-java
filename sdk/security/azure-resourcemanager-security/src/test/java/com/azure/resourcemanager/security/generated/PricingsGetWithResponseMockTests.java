@@ -32,7 +32,7 @@ public final class PricingsGetWithResponseMockTests {
         ArgumentCaptor<HttpRequest> httpRequest = ArgumentCaptor.forClass(HttpRequest.class);
 
         String responseStr =
-            "{\"properties\":{\"pricingTier\":\"Free\",\"subPlan\":\"yewhfjsrwq\",\"freeTrialRemainingTime\":\"PT198H58M33S\",\"deprecated\":false,\"replacedBy\":[\"wvrrmdqn\"]},\"id\":\"ycnawthvmaxgnuy\",\"name\":\"a\",\"type\":\"cmh\"}";
+            "{\"properties\":{\"pricingTier\":\"Standard\",\"subPlan\":\"rxhjnltcet\",\"freeTrialRemainingTime\":\"PT64H42M27S\",\"enablementTime\":\"2021-02-07T05:21:42Z\",\"deprecated\":false,\"replacedBy\":[\"qkwaruwd\"],\"extensions\":[]},\"id\":\"zxoebwgjxb\",\"name\":\"banbaupwtzv\",\"type\":\"aklozk\"}";
 
         Mockito.when(httpResponse.getStatusCode()).thenReturn(200);
         Mockito.when(httpResponse.getHeaders()).thenReturn(new HttpHeaders());
@@ -60,10 +60,9 @@ public final class PricingsGetWithResponseMockTests {
                     tokenRequestContext -> Mono.just(new AccessToken("this_is_a_token", OffsetDateTime.MAX)),
                     new AzureProfile("", "", AzureEnvironment.AZURE));
 
-        Pricing response =
-            manager.pricings().getWithResponse("hztxkbrfgd", com.azure.core.util.Context.NONE).getValue();
+        Pricing response = manager.pricings().getWithResponse("glzrs", com.azure.core.util.Context.NONE).getValue();
 
-        Assertions.assertEquals(PricingTier.FREE, response.pricingTier());
-        Assertions.assertEquals("yewhfjsrwq", response.subPlan());
+        Assertions.assertEquals(PricingTier.STANDARD, response.pricingTier());
+        Assertions.assertEquals("rxhjnltcet", response.subPlan());
     }
 }

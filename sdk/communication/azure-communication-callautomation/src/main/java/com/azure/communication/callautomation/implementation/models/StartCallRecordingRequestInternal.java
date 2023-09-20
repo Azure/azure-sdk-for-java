@@ -55,6 +55,17 @@ public final class StartCallRecordingRequestInternal {
     private List<CommunicationIdentifierModel> audioChannelParticipantOrdering;
 
     /*
+     * The channel affinity of call recording
+     * When 'recordingChannelType' is set to 'unmixed', if channelAffinity is
+     * not specified, 'channel' will be automatically assigned.
+     * Channel-Participant mapping details can be found in the metadata of the
+     * recording.
+     * ///
+     */
+    @JsonProperty(value = "channelAffinity")
+    private List<ChannelAffinityInternal> channelAffinity;
+
+    /*
      * Optional property to specify location where recording will be stored
      */
     @JsonProperty(value = "externalStorage")
@@ -186,6 +197,30 @@ public final class StartCallRecordingRequestInternal {
     public StartCallRecordingRequestInternal setAudioChannelParticipantOrdering(
             List<CommunicationIdentifierModel> audioChannelParticipantOrdering) {
         this.audioChannelParticipantOrdering = audioChannelParticipantOrdering;
+        return this;
+    }
+
+    /**
+     * Get the channelAffinity property: The channel affinity of call recording When 'recordingChannelType' is set to
+     * 'unmixed', if channelAffinity is not specified, 'channel' will be automatically assigned. Channel-Participant
+     * mapping details can be found in the metadata of the recording. ///.
+     *
+     * @return the channelAffinity value.
+     */
+    public List<ChannelAffinityInternal> getChannelAffinity() {
+        return this.channelAffinity;
+    }
+
+    /**
+     * Set the channelAffinity property: The channel affinity of call recording When 'recordingChannelType' is set to
+     * 'unmixed', if channelAffinity is not specified, 'channel' will be automatically assigned. Channel-Participant
+     * mapping details can be found in the metadata of the recording. ///.
+     *
+     * @param channelAffinity the channelAffinity value to set.
+     * @return the StartCallRecordingRequestInternal object itself.
+     */
+    public StartCallRecordingRequestInternal setChannelAffinity(List<ChannelAffinityInternal> channelAffinity) {
+        this.channelAffinity = channelAffinity;
         return this;
     }
 

@@ -11,11 +11,13 @@ import com.azure.core.amqp.exception.AmqpException;
 import com.azure.core.amqp.implementation.AmqpSendLink;
 import com.azure.core.amqp.implementation.ErrorContextProvider;
 import com.azure.core.amqp.implementation.MessageSerializer;
+import com.azure.core.amqp.implementation.RequestResponseChannelClosedException;
 import com.azure.core.annotation.ServiceClient;
 import com.azure.core.util.CoreUtils;
 import com.azure.core.util.logging.ClientLogger;
 import com.azure.messaging.servicebus.implementation.MessagingEntityType;
 import com.azure.messaging.servicebus.implementation.ServiceBusConnectionProcessor;
+import com.azure.messaging.servicebus.implementation.instrumentation.ServiceBusSenderInstrumentation;
 import com.azure.messaging.servicebus.implementation.instrumentation.ServiceBusTracer;
 import com.azure.messaging.servicebus.models.CreateMessageBatchOptions;
 import org.apache.qpid.proton.amqp.Binary;
@@ -382,7 +384,7 @@ public final class ServiceBusSenderAsyncClient implements AutoCloseable {
 
         final int maxSize = options.getMaximumSizeInBytes();
 
-        return getSendLink().flatMap(link -> link.getLinkSize().flatMap(size -> {
+        final Mono<ServiceBusMessageBatch> createBatch = getSendLink().flatMap(link -> link.getLinkSize().flatMap(size -> {
             final int maximumLinkSize = size > 0
                 ? size
                 : MAX_MESSAGE_LENGTH_BYTES;
@@ -397,9 +399,20 @@ public final class ServiceBusSenderAsyncClient implements AutoCloseable {
                 ? maxSize
                 : maximumLinkSize;
 
-            return Mono.just(
-                new ServiceBusMessageBatch(batchSize, link::getErrorContext, tracer, messageSerializer));
-        })).onErrorMap(this::mapError);
+            return Mono.just(new ServiceBusMessageBatch(batchSize, link::getErrorContext, tracer, messageSerializer));
+        })).onErrorMap(RequestResponseChannelClosedException.class,
+            e -> {
+                // When the current connection is being disposed, the connectionProcessor can produce a new connection
+                // if downstream request. In this context, treat RequestResponseChannelClosedException from
+                // the RequestResponseChannel scoped to the current connection being disposed as retry-able so that retry
+                // can obtain new connection.
+                return new AmqpException(true, e.getMessage(), e, null);
+            });
+
+        // Similar to the companion API 'send', the 'create-batch' can also make network calls, so retry in case of transient errors.
+        return withRetry(createBatch, retryOptions,
+            String.format("entityPath[%s]: Creating batch timed out.", entityName))
+            .onErrorMap(this::mapError);
     }
 
     /**
@@ -513,7 +526,7 @@ public final class ServiceBusSenderAsyncClient implements AutoCloseable {
                         .flatMap(connection -> connection.getManagementNode(entityName, entityType))
                         .flatMapMany(managementNode -> managementNode.schedule(messageBatch.getMessages(), scheduledEnqueueTime,
                             messageBatch.getMaxSizeInBytes(), linkName.get(), transactionContext)),
-                    messageBatch.getMessages(), ServiceBusMessage::getContext)
+                    messageBatch.getMessages())
             ).onErrorMap(this::mapError);
     }
 
@@ -769,10 +782,17 @@ public final class ServiceBusSenderAsyncClient implements AutoCloseable {
                     ? link.send(messages.get(0))
                     : link.send(messages);
             }
-        });
+        }).onErrorMap(RequestResponseChannelClosedException.class,
+            e -> {
+                // When the current connection is being disposed, the connectionProcessor can produce a new connection
+                // if downstream request. In this context, treat RequestResponseChannelClosedException from
+                // the RequestResponseChannel scoped to the current connection being disposed as retry-able so that retry
+                // can obtain new connection.
+                return new AmqpException(true, e.getMessage(), e, null);
+            });
 
         final Mono<Void> sendWithRetry = withRetry(sendMessage, retryOptions,
-            String.format("entityPath[%s], partitionId[%s]: Sending messages timed out.", entityName, batch.getCount()))
+            String.format("entityPath[%s], messages-count[%s]: Sending messages timed out.", entityName, batch.getCount()))
             .onErrorMap(this::mapError);
 
         return instrumentation.instrumentSendBatch("ServiceBus.send", sendWithRetry, batch.getMessages());

@@ -19,6 +19,10 @@ public final class PartnerRegistrationUpdateParameters {
     @JsonInclude(value = JsonInclude.Include.NON_NULL, content = JsonInclude.Include.ALWAYS)
     private Map<String, String> tags;
 
+    /** Creates an instance of PartnerRegistrationUpdateParameters class. */
+    public PartnerRegistrationUpdateParameters() {
+    }
+
     /**
      * Get the tags property: Tags of the partner registration resource.
      *

@@ -17,12 +17,12 @@ public final class CacheConfigurationTests {
         CacheConfiguration model =
             BinaryData
                 .fromString(
-                    "{\"queryParameterStripDirective\":\"StripOnly\",\"queryParameters\":\"v\",\"dynamicCompression\":\"Enabled\",\"cacheDuration\":\"PT143H45M1S\"}")
+                    "{\"queryParameterStripDirective\":\"StripOnly\",\"queryParameters\":\"xhojuj\",\"dynamicCompression\":\"Disabled\",\"cacheDuration\":\"PT46H54M10S\"}")
                 .toObject(CacheConfiguration.class);
         Assertions.assertEquals(FrontDoorQuery.STRIP_ONLY, model.queryParameterStripDirective());
-        Assertions.assertEquals("v", model.queryParameters());
-        Assertions.assertEquals(DynamicCompressionEnabled.ENABLED, model.dynamicCompression());
-        Assertions.assertEquals(Duration.parse("PT143H45M1S"), model.cacheDuration());
+        Assertions.assertEquals("xhojuj", model.queryParameters());
+        Assertions.assertEquals(DynamicCompressionEnabled.DISABLED, model.dynamicCompression());
+        Assertions.assertEquals(Duration.parse("PT46H54M10S"), model.cacheDuration());
     }
 
     @org.junit.jupiter.api.Test
@@ -30,13 +30,13 @@ public final class CacheConfigurationTests {
         CacheConfiguration model =
             new CacheConfiguration()
                 .withQueryParameterStripDirective(FrontDoorQuery.STRIP_ONLY)
-                .withQueryParameters("v")
-                .withDynamicCompression(DynamicCompressionEnabled.ENABLED)
-                .withCacheDuration(Duration.parse("PT143H45M1S"));
+                .withQueryParameters("xhojuj")
+                .withDynamicCompression(DynamicCompressionEnabled.DISABLED)
+                .withCacheDuration(Duration.parse("PT46H54M10S"));
         model = BinaryData.fromObject(model).toObject(CacheConfiguration.class);
         Assertions.assertEquals(FrontDoorQuery.STRIP_ONLY, model.queryParameterStripDirective());
-        Assertions.assertEquals("v", model.queryParameters());
-        Assertions.assertEquals(DynamicCompressionEnabled.ENABLED, model.dynamicCompression());
-        Assertions.assertEquals(Duration.parse("PT143H45M1S"), model.cacheDuration());
+        Assertions.assertEquals("xhojuj", model.queryParameters());
+        Assertions.assertEquals(DynamicCompressionEnabled.DISABLED, model.dynamicCompression());
+        Assertions.assertEquals(Duration.parse("PT46H54M10S"), model.cacheDuration());
     }
 }

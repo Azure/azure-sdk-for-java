@@ -129,7 +129,7 @@ class AzureEventHubsAutoConfigurationTests extends AbstractAzureServiceConfigura
     @Test
     void configureEventHubsDomainNameOverrideGlobalDefault() {
         AzureGlobalProperties azureProperties = new AzureGlobalProperties();
-        azureProperties.getProfile().setCloudType(AzureProfileOptionsProvider.CloudType.AZURE_GERMANY);
+        azureProperties.getProfile().setCloudType(AzureProfileOptionsProvider.CloudType.AZURE_US_GOVERNMENT);
 
         this.contextRunner
                 .withBean(AzureGlobalProperties.class, () -> azureProperties)
@@ -140,8 +140,8 @@ class AzureEventHubsAutoConfigurationTests extends AbstractAzureServiceConfigura
                 .run(context -> {
                     assertThat(context).hasSingleBean(AzureEventHubsProperties.class);
                     final AzureEventHubsProperties properties = context.getBean(AzureEventHubsProperties.class);
-                    assertThat(properties.getProfile().getCloudType()).isEqualTo(AzureProfileOptionsProvider.CloudType.AZURE_GERMANY);
-                    assertThat(properties.getProfile().getEnvironment().getServiceBusDomainName()).isEqualTo(AzureEnvironmentProperties.AZURE_GERMANY.getServiceBusDomainName());
+                    assertThat(properties.getProfile().getCloudType()).isEqualTo(AzureProfileOptionsProvider.CloudType.AZURE_US_GOVERNMENT);
+                    assertThat(properties.getProfile().getEnvironment().getServiceBusDomainName()).isEqualTo(AzureEnvironmentProperties.AZURE_US_GOVERNMENT.getServiceBusDomainName());
                     assertThat(properties.getDomainName()).isEqualTo(AzureEnvironmentProperties.AZURE_CHINA.getServiceBusDomainName());
                 });
     }

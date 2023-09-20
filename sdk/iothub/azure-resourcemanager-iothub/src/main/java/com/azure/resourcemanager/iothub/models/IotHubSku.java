@@ -32,6 +32,15 @@ public final class IotHubSku extends ExpandableStringEnum<IotHubSku> {
     public static final IotHubSku B3 = fromString("B3");
 
     /**
+     * Creates a new instance of IotHubSku value.
+     *
+     * @deprecated Use the {@link #fromString(String)} factory method.
+     */
+    @Deprecated
+    public IotHubSku() {
+    }
+
+    /**
      * Creates or finds a IotHubSku from its string representation.
      *
      * @param name a name to look for.

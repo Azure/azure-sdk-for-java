@@ -36,8 +36,8 @@ import java.util.List;
 import java.util.Objects;
 
 /**
- * This class provides a fluent builder API to help instantiation of {@link DocumentAnalysisClient DocumentAnalysisClients}
- * and {@link DocumentAnalysisAsyncClient DocumentAnalysisAsyncClients}, call {@link #buildClient()} buildClient} and
+ * This class provides a fluent builder API to help instantiation of {@link DocumentAnalysisClient DocumentAnalysisClient}
+ * and {@link DocumentAnalysisAsyncClient DocumentAnalysisAsyncClient}, call {@link #buildClient()} buildClient} and
  * {@link #buildAsyncClient() buildAsyncClient} respectively to construct an instance of the desired client.
  *
  * <p>
@@ -102,6 +102,12 @@ public final class DocumentAnalysisClientBuilder implements
     HttpTrait<DocumentAnalysisClientBuilder>,
     TokenCredentialTrait<DocumentAnalysisClientBuilder> {
     private final ClientLogger logger = new ClientLogger(DocumentAnalysisClientBuilder.class);
+
+    /**
+     * Create a DocumentAnalysisClientBuilder instance.
+     */
+    public DocumentAnalysisClientBuilder() {
+    }
 
     private final List<HttpPipelinePolicy> perCallPolicies = new ArrayList<>();
     private final List<HttpPipelinePolicy> perRetryPolicies = new ArrayList<>();
@@ -332,7 +338,7 @@ public final class DocumentAnalysisClientBuilder implements
      *
      * @param clientOptions A configured instance of {@link HttpClientOptions}.
      * @return The updated DocumentAnalysisClientBuilder object.
-     * @see HttpClientOptions
+     * {@link HttpClientOptions}
      */
     @Override
     public DocumentAnalysisClientBuilder clientOptions(ClientOptions clientOptions) {

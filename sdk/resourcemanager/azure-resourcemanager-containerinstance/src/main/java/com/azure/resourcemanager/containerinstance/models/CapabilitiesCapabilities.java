@@ -28,6 +28,10 @@ public final class CapabilitiesCapabilities {
     @JsonProperty(value = "maxGpuCount", access = JsonProperty.Access.WRITE_ONLY)
     private Float maxGpuCount;
 
+    /** Creates an instance of CapabilitiesCapabilities class. */
+    public CapabilitiesCapabilities() {
+    }
+
     /**
      * Get the maxMemoryInGB property: The maximum allowed memory request in GB.
      *

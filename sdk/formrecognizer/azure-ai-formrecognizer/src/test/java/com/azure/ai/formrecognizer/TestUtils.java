@@ -7,6 +7,8 @@ import com.azure.ai.formrecognizer.models.FormRecognizerAudience;
 import com.azure.core.exception.HttpResponseException;
 import com.azure.core.http.HttpClient;
 import com.azure.core.test.InterceptorManager;
+import com.azure.core.test.models.TestProxySanitizer;
+import com.azure.core.test.models.TestProxySanitizerType;
 import com.azure.core.util.Configuration;
 import com.azure.core.util.CoreUtils;
 import com.azure.core.util.FluxUtil;
@@ -36,18 +38,17 @@ import static org.junit.jupiter.api.Assertions.assertEquals;
  * Contains helper methods for generating inputs for test methods
  */
 final class TestUtils {
+    private static final String REDACTED_VALUE = "REDACTED";
     // Duration
     static final Duration ONE_NANO_DURATION = Duration.ofMillis(1);
     // Local test files
     static final String BLANK_PDF = "blank.pdf";
     static final String CONTENT_FORM_JPG = "Form_1.jpg";
-    static final String TEST_DATA_PNG = "testData.png";
     static final String SELECTION_MARK_PDF = "selectionMarkForm.pdf";
     static final String CONTENT_GERMAN_PDF = "content_german.pdf";
     // Other resources
     static final String DISPLAY_NAME_WITH_ARGUMENTS = "{displayName} with [{arguments}]";
     static final String FAKE_ENCODED_EMPTY_SPACE_URL = "https://fakeuri.com/blank%20space";
-    static final String INVALID_IMAGE_URL_ERROR_CODE = "InvalidImageURL";
     static final String INVALID_KEY = "invalid key";
     static final String INVALID_MODEL_ID = "a0a3998a-4c4affe66b7";
     static final String INVALID_MODEL_ID_ERROR = "Invalid UUID string: " + INVALID_MODEL_ID;
@@ -175,6 +176,16 @@ final class TestUtils {
         return interceptorManager.isPlaybackMode()
             ? syncPoller.setPollInterval(Duration.ofMillis(1))
             : syncPoller;
+    }
+
+    public static List<TestProxySanitizer> getTestProxySanitizers() {
+        return Arrays.asList(
+            new TestProxySanitizer("$..targetModelLocation", null, REDACTED_VALUE, TestProxySanitizerType.BODY_KEY),
+            new TestProxySanitizer("$..targetResourceId", null, REDACTED_VALUE, TestProxySanitizerType.BODY_KEY),
+            new TestProxySanitizer("$..urlSource", null, REDACTED_VALUE, TestProxySanitizerType.BODY_KEY),
+            new TestProxySanitizer("$..azureBlobSource.containerUrl", null, REDACTED_VALUE, TestProxySanitizerType.BODY_KEY),
+            new TestProxySanitizer("$..source", null, REDACTED_VALUE, TestProxySanitizerType.BODY_KEY),
+            new TestProxySanitizer("$..resourceLocation", null, REDACTED_VALUE, TestProxySanitizerType.BODY_KEY));
     }
 }
 

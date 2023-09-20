@@ -61,8 +61,7 @@ public final class ResourceProvidersClientImpl implements ResourceProvidersClien
     public interface ResourceProvidersService {
         @Headers({"Content-Type: application/json"})
         @Post(
-            "/subscriptions/{subscriptionId}/providers/Microsoft.Workloads/locations/{location}"
-                + "/sapVirtualInstanceMetadata/default/getSizingRecommendations")
+            "/subscriptions/{subscriptionId}/providers/Microsoft.Workloads/locations/{location}/sapVirtualInstanceMetadata/default/getSizingRecommendations")
         @ExpectedResponses({200})
         @UnexpectedResponseExceptionType(ManagementException.class)
         Mono<Response<SapSizingRecommendationResultInner>> sapSizingRecommendations(
@@ -76,8 +75,7 @@ public final class ResourceProvidersClientImpl implements ResourceProvidersClien
 
         @Headers({"Content-Type: application/json"})
         @Post(
-            "/subscriptions/{subscriptionId}/providers/Microsoft.Workloads/locations/{location}"
-                + "/sapVirtualInstanceMetadata/default/getSapSupportedSku")
+            "/subscriptions/{subscriptionId}/providers/Microsoft.Workloads/locations/{location}/sapVirtualInstanceMetadata/default/getSapSupportedSku")
         @ExpectedResponses({200})
         @UnexpectedResponseExceptionType(ManagementException.class)
         Mono<Response<SapSupportedResourceSkusResultInner>> sapSupportedSku(
@@ -91,8 +89,7 @@ public final class ResourceProvidersClientImpl implements ResourceProvidersClien
 
         @Headers({"Content-Type: application/json"})
         @Post(
-            "/subscriptions/{subscriptionId}/providers/Microsoft.Workloads/locations/{location}"
-                + "/sapVirtualInstanceMetadata/default/getDiskConfigurations")
+            "/subscriptions/{subscriptionId}/providers/Microsoft.Workloads/locations/{location}/sapVirtualInstanceMetadata/default/getDiskConfigurations")
         @ExpectedResponses({200})
         @UnexpectedResponseExceptionType(ManagementException.class)
         Mono<Response<SapDiskConfigurationsResultInner>> sapDiskConfigurations(
@@ -106,8 +103,7 @@ public final class ResourceProvidersClientImpl implements ResourceProvidersClien
 
         @Headers({"Content-Type: application/json"})
         @Post(
-            "/subscriptions/{subscriptionId}/providers/Microsoft.Workloads/locations/{location}"
-                + "/sapVirtualInstanceMetadata/default/getAvailabilityZoneDetails")
+            "/subscriptions/{subscriptionId}/providers/Microsoft.Workloads/locations/{location}/sapVirtualInstanceMetadata/default/getAvailabilityZoneDetails")
         @ExpectedResponses({200})
         @UnexpectedResponseExceptionType(ManagementException.class)
         Mono<Response<SapAvailabilityZoneDetailsResultInner>> sapAvailabilityZoneDetails(

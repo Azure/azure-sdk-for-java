@@ -8,12 +8,16 @@ import com.azure.core.management.Region;
 import com.azure.core.management.SystemData;
 import com.azure.core.util.Context;
 import com.azure.resourcemanager.devcenter.fluent.models.PoolInner;
+import com.azure.resourcemanager.devcenter.models.HealthStatus;
+import com.azure.resourcemanager.devcenter.models.HealthStatusDetail;
 import com.azure.resourcemanager.devcenter.models.LicenseType;
 import com.azure.resourcemanager.devcenter.models.LocalAdminStatus;
 import com.azure.resourcemanager.devcenter.models.Pool;
 import com.azure.resourcemanager.devcenter.models.PoolUpdate;
 import com.azure.resourcemanager.devcenter.models.ProvisioningState;
+import com.azure.resourcemanager.devcenter.models.StopOnDisconnectConfiguration;
 import java.util.Collections;
+import java.util.List;
 import java.util.Map;
 
 public final class PoolImpl implements Pool, Pool.Definition, Pool.Update {
@@ -50,6 +54,19 @@ public final class PoolImpl implements Pool, Pool.Definition, Pool.Update {
         return this.innerModel().systemData();
     }
 
+    public HealthStatus healthStatus() {
+        return this.innerModel().healthStatus();
+    }
+
+    public List<HealthStatusDetail> healthStatusDetails() {
+        List<HealthStatusDetail> inner = this.innerModel().healthStatusDetails();
+        if (inner != null) {
+            return Collections.unmodifiableList(inner);
+        } else {
+            return Collections.emptyList();
+        }
+    }
+
     public ProvisioningState provisioningState() {
         return this.innerModel().provisioningState();
     }
@@ -68,6 +85,10 @@ public final class PoolImpl implements Pool, Pool.Definition, Pool.Update {
 
     public LocalAdminStatus localAdministrator() {
         return this.innerModel().localAdministrator();
+    }
+
+    public StopOnDisconnectConfiguration stopOnDisconnect() {
+        return this.innerModel().stopOnDisconnect();
     }
 
     public Region region() {
@@ -179,6 +200,14 @@ public final class PoolImpl implements Pool, Pool.Definition, Pool.Update {
         return this;
     }
 
+    public void runHealthChecks() {
+        serviceManager.pools().runHealthChecks(resourceGroupName, projectName, poolName);
+    }
+
+    public void runHealthChecks(Context context) {
+        serviceManager.pools().runHealthChecks(resourceGroupName, projectName, poolName, context);
+    }
+
     public PoolImpl withRegion(Region location) {
         this.innerModel().withLocation(location.toString());
         return this;
@@ -235,6 +264,16 @@ public final class PoolImpl implements Pool, Pool.Definition, Pool.Update {
             return this;
         } else {
             this.updateBody.withLocalAdministrator(localAdministrator);
+            return this;
+        }
+    }
+
+    public PoolImpl withStopOnDisconnect(StopOnDisconnectConfiguration stopOnDisconnect) {
+        if (isInCreateMode()) {
+            this.innerModel().withStopOnDisconnect(stopOnDisconnect);
+            return this;
+        } else {
+            this.updateBody.withStopOnDisconnect(stopOnDisconnect);
             return this;
         }
     }

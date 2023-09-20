@@ -56,6 +56,6 @@ public final class TagRulesDeleteMockTests {
                     tokenRequestContext -> Mono.just(new AccessToken("this_is_a_token", OffsetDateTime.MAX)),
                     new AzureProfile("", "", AzureEnvironment.AZURE));
 
-        manager.tagRules().delete("zl", "mbmpaxmodfvuefy", "sbpfvmwyhr", com.azure.core.util.Context.NONE);
+        manager.tagRules().delete("hykojoxafnndlpic", "koymkcd", "h", com.azure.core.util.Context.NONE);
     }
 }

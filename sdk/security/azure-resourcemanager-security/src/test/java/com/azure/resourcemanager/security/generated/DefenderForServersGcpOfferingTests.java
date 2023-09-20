@@ -7,13 +7,19 @@ package com.azure.resourcemanager.security.generated;
 import com.azure.core.util.BinaryData;
 import com.azure.resourcemanager.security.models.DefenderForServersGcpOffering;
 import com.azure.resourcemanager.security.models.DefenderForServersGcpOfferingArcAutoProvisioning;
+import com.azure.resourcemanager.security.models.DefenderForServersGcpOfferingArcAutoProvisioningConfiguration;
 import com.azure.resourcemanager.security.models.DefenderForServersGcpOfferingDefenderForServers;
 import com.azure.resourcemanager.security.models.DefenderForServersGcpOfferingMdeAutoProvisioning;
 import com.azure.resourcemanager.security.models.DefenderForServersGcpOfferingSubPlan;
 import com.azure.resourcemanager.security.models.DefenderForServersGcpOfferingVaAutoProvisioning;
 import com.azure.resourcemanager.security.models.DefenderForServersGcpOfferingVaAutoProvisioningConfiguration;
+import com.azure.resourcemanager.security.models.DefenderForServersGcpOfferingVmScanners;
+import com.azure.resourcemanager.security.models.DefenderForServersGcpOfferingVmScannersConfiguration;
+import com.azure.resourcemanager.security.models.ScanningMode;
 import com.azure.resourcemanager.security.models.SubPlan;
 import com.azure.resourcemanager.security.models.Type;
+import java.util.HashMap;
+import java.util.Map;
 import org.junit.jupiter.api.Assertions;
 
 public final class DefenderForServersGcpOfferingTests {
@@ -22,15 +28,21 @@ public final class DefenderForServersGcpOfferingTests {
         DefenderForServersGcpOffering model =
             BinaryData
                 .fromString(
-                    "{\"offeringType\":\"DefenderForServersGcp\",\"defenderForServers\":{\"workloadIdentityProviderId\":\"vaexh\",\"serviceAccountEmailAddress\":\"trceqnkbrupob\"},\"arcAutoProvisioning\":{\"enabled\":false},\"vaAutoProvisioning\":{\"enabled\":false,\"configuration\":{\"type\":\"Qualys\"}},\"mdeAutoProvisioning\":{\"enabled\":false,\"configuration\":\"datajpbi\"},\"subPlan\":{\"type\":\"P2\"},\"description\":\"hep\"}")
+                    "{\"offeringType\":\"DefenderForServersGcp\",\"defenderForServers\":{\"workloadIdentityProviderId\":\"scyrfwbivqv\",\"serviceAccountEmailAddress\":\"fuy\"},\"arcAutoProvisioning\":{\"enabled\":false,\"configuration\":{\"proxy\":\"imbyqe\",\"privateLinkScope\":\"ood\"}},\"vaAutoProvisioning\":{\"enabled\":true,\"configuration\":{\"type\":\"Qualys\"}},\"mdeAutoProvisioning\":{\"enabled\":false,\"configuration\":\"dataxxobsmfkwiy\"},\"subPlan\":{\"type\":\"P1\"},\"vmScanners\":{\"enabled\":true,\"configuration\":{\"scanningMode\":\"Default\",\"exclusionTags\":{\"abjqqaxuyvymcnud\":\"vzmlnkoywsxv\",\"wxqweuipmpvksmi\":\"doabhj\",\"krdpqgfhyrfr\":\"nsqxtltc\"}}},\"description\":\"kldgrcwfcmfc\"}")
                 .toObject(DefenderForServersGcpOffering.class);
-        Assertions.assertEquals("vaexh", model.defenderForServers().workloadIdentityProviderId());
-        Assertions.assertEquals("trceqnkbrupob", model.defenderForServers().serviceAccountEmailAddress());
+        Assertions.assertEquals("scyrfwbivqv", model.defenderForServers().workloadIdentityProviderId());
+        Assertions.assertEquals("fuy", model.defenderForServers().serviceAccountEmailAddress());
         Assertions.assertEquals(false, model.arcAutoProvisioning().enabled());
-        Assertions.assertEquals(false, model.vaAutoProvisioning().enabled());
+        Assertions.assertEquals("imbyqe", model.arcAutoProvisioning().configuration().proxy());
+        Assertions.assertEquals("ood", model.arcAutoProvisioning().configuration().privateLinkScope());
+        Assertions.assertEquals(true, model.vaAutoProvisioning().enabled());
         Assertions.assertEquals(Type.QUALYS, model.vaAutoProvisioning().configuration().type());
         Assertions.assertEquals(false, model.mdeAutoProvisioning().enabled());
-        Assertions.assertEquals(SubPlan.P2, model.subPlan().type());
+        Assertions.assertEquals(SubPlan.P1, model.subPlan().type());
+        Assertions.assertEquals(true, model.vmScanners().enabled());
+        Assertions.assertEquals(ScanningMode.DEFAULT, model.vmScanners().configuration().scanningMode());
+        Assertions
+            .assertEquals("vzmlnkoywsxv", model.vmScanners().configuration().exclusionTags().get("abjqqaxuyvymcnud"));
     }
 
     @org.junit.jupiter.api.Test
@@ -39,26 +51,63 @@ public final class DefenderForServersGcpOfferingTests {
             new DefenderForServersGcpOffering()
                 .withDefenderForServers(
                     new DefenderForServersGcpOfferingDefenderForServers()
-                        .withWorkloadIdentityProviderId("vaexh")
-                        .withServiceAccountEmailAddress("trceqnkbrupob"))
-                .withArcAutoProvisioning(new DefenderForServersGcpOfferingArcAutoProvisioning().withEnabled(false))
+                        .withWorkloadIdentityProviderId("scyrfwbivqv")
+                        .withServiceAccountEmailAddress("fuy"))
+                .withArcAutoProvisioning(
+                    new DefenderForServersGcpOfferingArcAutoProvisioning()
+                        .withEnabled(false)
+                        .withConfiguration(
+                            new DefenderForServersGcpOfferingArcAutoProvisioningConfiguration()
+                                .withProxy("imbyqe")
+                                .withPrivateLinkScope("ood")))
                 .withVaAutoProvisioning(
                     new DefenderForServersGcpOfferingVaAutoProvisioning()
-                        .withEnabled(false)
+                        .withEnabled(true)
                         .withConfiguration(
                             new DefenderForServersGcpOfferingVaAutoProvisioningConfiguration().withType(Type.QUALYS)))
                 .withMdeAutoProvisioning(
                     new DefenderForServersGcpOfferingMdeAutoProvisioning()
                         .withEnabled(false)
-                        .withConfiguration("datajpbi"))
-                .withSubPlan(new DefenderForServersGcpOfferingSubPlan().withType(SubPlan.P2));
+                        .withConfiguration("dataxxobsmfkwiy"))
+                .withSubPlan(new DefenderForServersGcpOfferingSubPlan().withType(SubPlan.P1))
+                .withVmScanners(
+                    new DefenderForServersGcpOfferingVmScanners()
+                        .withEnabled(true)
+                        .withConfiguration(
+                            new DefenderForServersGcpOfferingVmScannersConfiguration()
+                                .withScanningMode(ScanningMode.DEFAULT)
+                                .withExclusionTags(
+                                    mapOf(
+                                        "abjqqaxuyvymcnud",
+                                        "vzmlnkoywsxv",
+                                        "wxqweuipmpvksmi",
+                                        "doabhj",
+                                        "krdpqgfhyrfr",
+                                        "nsqxtltc"))));
         model = BinaryData.fromObject(model).toObject(DefenderForServersGcpOffering.class);
-        Assertions.assertEquals("vaexh", model.defenderForServers().workloadIdentityProviderId());
-        Assertions.assertEquals("trceqnkbrupob", model.defenderForServers().serviceAccountEmailAddress());
+        Assertions.assertEquals("scyrfwbivqv", model.defenderForServers().workloadIdentityProviderId());
+        Assertions.assertEquals("fuy", model.defenderForServers().serviceAccountEmailAddress());
         Assertions.assertEquals(false, model.arcAutoProvisioning().enabled());
-        Assertions.assertEquals(false, model.vaAutoProvisioning().enabled());
+        Assertions.assertEquals("imbyqe", model.arcAutoProvisioning().configuration().proxy());
+        Assertions.assertEquals("ood", model.arcAutoProvisioning().configuration().privateLinkScope());
+        Assertions.assertEquals(true, model.vaAutoProvisioning().enabled());
         Assertions.assertEquals(Type.QUALYS, model.vaAutoProvisioning().configuration().type());
         Assertions.assertEquals(false, model.mdeAutoProvisioning().enabled());
-        Assertions.assertEquals(SubPlan.P2, model.subPlan().type());
+        Assertions.assertEquals(SubPlan.P1, model.subPlan().type());
+        Assertions.assertEquals(true, model.vmScanners().enabled());
+        Assertions.assertEquals(ScanningMode.DEFAULT, model.vmScanners().configuration().scanningMode());
+        Assertions
+            .assertEquals("vzmlnkoywsxv", model.vmScanners().configuration().exclusionTags().get("abjqqaxuyvymcnud"));
+    }
+
+    @SuppressWarnings("unchecked")
+    private static <T> Map<String, T> mapOf(Object... inputs) {
+        Map<String, T> map = new HashMap<>();
+        for (int i = 0; i < inputs.length; i += 2) {
+            String key = (String) inputs[i];
+            T value = (T) inputs[i + 1];
+            map.put(key, value);
+        }
+        return map;
     }
 }

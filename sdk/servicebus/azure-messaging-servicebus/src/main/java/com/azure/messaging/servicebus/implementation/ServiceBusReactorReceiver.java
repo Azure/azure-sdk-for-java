@@ -64,8 +64,7 @@ public class ServiceBusReactorReceiver extends ReactorReceiver implements Servic
     private final Mono<OffsetDateTime> sessionLockedUntil;
 
     public ServiceBusReactorReceiver(AmqpConnection connection, String entityPath, Receiver receiver,
-        ReceiveLinkHandler handler, TokenManager tokenManager, ReactorProvider provider, Duration timeout,
-        AmqpRetryPolicy retryPolicy) {
+        ReceiveLinkHandler handler, TokenManager tokenManager, ReactorProvider provider, AmqpRetryPolicy retryPolicy) {
         super(connection, entityPath, receiver, handler, tokenManager, provider.getReactorDispatcher(),
             retryPolicy.getRetryOptions());
         this.receiver = receiver;

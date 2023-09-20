@@ -9,6 +9,7 @@ import com.azure.core.management.SubResource;
 import com.azure.resourcemanager.network.models.DelegationProperties;
 import com.azure.resourcemanager.network.models.PartnerManagedResourceProperties;
 import com.azure.resourcemanager.network.models.ProvisioningState;
+import com.azure.resourcemanager.network.models.VirtualApplianceAdditionalNicProperties;
 import com.azure.resourcemanager.network.models.VirtualApplianceNicProperties;
 import com.azure.resourcemanager.network.models.VirtualApplianceSkuProperties;
 import com.fasterxml.jackson.annotation.JsonProperty;
@@ -72,10 +73,22 @@ public final class NetworkVirtualAppliancePropertiesFormat {
     private List<VirtualApplianceNicProperties> virtualApplianceNics;
 
     /*
+     * Details required for Additional Network Interface.
+     */
+    @JsonProperty(value = "additionalNics")
+    private List<VirtualApplianceAdditionalNicProperties> additionalNics;
+
+    /*
      * List of references to VirtualApplianceSite.
      */
     @JsonProperty(value = "virtualApplianceSites", access = JsonProperty.Access.WRITE_ONLY)
     private List<SubResource> virtualApplianceSites;
+
+    /*
+     * List of references to VirtualApplianceConnections.
+     */
+    @JsonProperty(value = "virtualApplianceConnections", access = JsonProperty.Access.WRITE_ONLY)
+    private List<SubResource> virtualApplianceConnections;
 
     /*
      * List of references to InboundSecurityRules.
@@ -274,12 +287,42 @@ public final class NetworkVirtualAppliancePropertiesFormat {
     }
 
     /**
+     * Get the additionalNics property: Details required for Additional Network Interface.
+     *
+     * @return the additionalNics value.
+     */
+    public List<VirtualApplianceAdditionalNicProperties> additionalNics() {
+        return this.additionalNics;
+    }
+
+    /**
+     * Set the additionalNics property: Details required for Additional Network Interface.
+     *
+     * @param additionalNics the additionalNics value to set.
+     * @return the NetworkVirtualAppliancePropertiesFormat object itself.
+     */
+    public NetworkVirtualAppliancePropertiesFormat withAdditionalNics(
+        List<VirtualApplianceAdditionalNicProperties> additionalNics) {
+        this.additionalNics = additionalNics;
+        return this;
+    }
+
+    /**
      * Get the virtualApplianceSites property: List of references to VirtualApplianceSite.
      *
      * @return the virtualApplianceSites value.
      */
     public List<SubResource> virtualApplianceSites() {
         return this.virtualApplianceSites;
+    }
+
+    /**
+     * Get the virtualApplianceConnections property: List of references to VirtualApplianceConnections.
+     *
+     * @return the virtualApplianceConnections value.
+     */
+    public List<SubResource> virtualApplianceConnections() {
+        return this.virtualApplianceConnections;
     }
 
     /**
@@ -361,6 +404,9 @@ public final class NetworkVirtualAppliancePropertiesFormat {
         }
         if (virtualApplianceNics() != null) {
             virtualApplianceNics().forEach(e -> e.validate());
+        }
+        if (additionalNics() != null) {
+            additionalNics().forEach(e -> e.validate());
         }
         if (delegation() != null) {
             delegation().validate();

@@ -12,8 +12,9 @@ import com.azure.core.http.policy.HttpLogDetailLevel;
 import com.azure.core.http.policy.HttpLogOptions;
 import com.azure.core.http.policy.RetryOptions;
 import com.azure.core.http.policy.RetryPolicy;
-import com.azure.core.test.TestBase;
+import com.azure.core.test.TestProxyTestBase;
 import com.azure.core.test.annotation.DoNotRecord;
+import com.azure.core.test.models.CustomMatcher;
 import com.azure.core.util.Configuration;
 import com.azure.identity.DefaultAzureCredentialBuilder;
 import org.junit.jupiter.api.Disabled;
@@ -22,12 +23,14 @@ import org.junit.jupiter.params.ParameterizedTest;
 import org.junit.jupiter.params.provider.MethodSource;
 
 import java.time.Duration;
+import java.util.Arrays;
 import java.util.function.Consumer;
 
 import static com.azure.ai.metricsadvisor.MetricsAdvisorClientBuilderTest.PLAYBACK_ENDPOINT;
 import static com.azure.ai.metricsadvisor.TestUtils.AZURE_METRICS_ADVISOR_ENDPOINT;
 import static com.azure.ai.metricsadvisor.TestUtils.DISPLAY_NAME_WITH_ARGUMENTS;
 import static com.azure.ai.metricsadvisor.TestUtils.INVALID_ENDPOINT;
+import static com.azure.ai.metricsadvisor.TestUtils.getEmailSanitizers;
 import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertNotNull;
 import static org.junit.jupiter.api.Assertions.assertThrows;
@@ -35,7 +38,7 @@ import static org.junit.jupiter.api.Assertions.assertThrows;
 /**
  * Tests for Metrics Advisor Administration client builder
  */
-public class MetricsAdvisorAdminClientBuilderTest extends TestBase {
+public class MetricsAdvisorAdminClientBuilderTest extends TestProxyTestBase {
     /**
      * Test client builder with invalid API key
      */
@@ -143,6 +146,9 @@ public class MetricsAdvisorAdminClientBuilderTest extends TestBase {
             .configuration(Configuration.getGlobalConfiguration())
             .httpLogOptions(new HttpLogOptions().setLogLevel(HttpLogDetailLevel.BODY_AND_HEADERS));
 
+        if (!interceptorManager.isLiveMode()) {
+            interceptorManager.addSanitizers(getEmailSanitizers());
+        }
         if (interceptorManager.isPlaybackMode()) {
             clientBuilder.credential(new MetricsAdvisorKeyCredential("subscription_key", "api_key"));
         } else {
@@ -170,11 +176,15 @@ public class MetricsAdvisorAdminClientBuilderTest extends TestBase {
         final MetricsAdvisorAdministrationClientBuilder clientBuilder = new MetricsAdvisorAdministrationClientBuilder()
             .credential(credential)
             .endpoint(endpoint)
-            .httpClient(httpClient == null ? interceptorManager.getPlaybackClient() : httpClient)
+            .httpClient(interceptorManager.isPlaybackMode() ? interceptorManager.getPlaybackClient() : httpClient)
             .serviceVersion(serviceVersion);
-
-        if (!interceptorManager.isPlaybackMode()) {
+        if (!interceptorManager.isLiveMode()) {
+            interceptorManager.addSanitizers(getEmailSanitizers());
+        }
+        if (interceptorManager.isRecordMode()) {
             clientBuilder.addPolicy(interceptorManager.getRecordPolicy());
+        } else if (interceptorManager.isPlaybackMode()) {
+            interceptorManager.addMatchers(Arrays.asList(new CustomMatcher().setHeadersKeyOnlyMatch(Arrays.asList("x-api-key"))));
         }
 
         return clientBuilder;

@@ -9,6 +9,9 @@ import com.azure.core.annotation.Fluent;
 /** Event data for Microsoft.Devices.DeviceCreated event. */
 @Fluent
 public final class IotHubDeviceCreatedEventData extends DeviceLifeCycleEventProperties {
+    /** Creates an instance of IotHubDeviceCreatedEventData class. */
+    public IotHubDeviceCreatedEventData() {}
+
     /** {@inheritDoc} */
     @Override
     public IotHubDeviceCreatedEventData setDeviceId(String deviceId) {

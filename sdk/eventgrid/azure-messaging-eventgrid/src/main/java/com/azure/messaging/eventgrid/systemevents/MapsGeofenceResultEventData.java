@@ -10,6 +10,9 @@ import java.util.List;
 /** Schema of the Data property of an EventGridEvent for a Microsoft.Maps.GeofenceResult event. */
 @Fluent
 public final class MapsGeofenceResultEventData extends MapsGeofenceEventProperties {
+    /** Creates an instance of MapsGeofenceResultEventData class. */
+    public MapsGeofenceResultEventData() {}
+
     /** {@inheritDoc} */
     @Override
     public MapsGeofenceResultEventData setExpiredGeofenceGeometryId(List<String> expiredGeofenceGeometryId) {

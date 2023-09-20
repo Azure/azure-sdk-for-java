@@ -6,13 +6,16 @@ package com.azure.cosmos.test.implementation.faultinjection;
 import com.azure.cosmos.CosmosException;
 import com.azure.cosmos.implementation.RxDocumentServiceRequest;
 import com.azure.cosmos.implementation.apachecommons.lang.StringUtils;
-import com.azure.cosmos.implementation.directconnectivity.rntbd.RntbdRequestArgs;
+import com.azure.cosmos.implementation.faultinjection.FaultInjectionRequestArgs;
 import com.azure.cosmos.test.faultinjection.FaultInjectionConnectionType;
+import com.azure.cosmos.test.faultinjection.FaultInjectionServerErrorType;
 
 import java.net.URI;
 import java.time.Duration;
 import java.time.Instant;
 import java.util.List;
+import java.util.Map;
+import java.util.concurrent.ConcurrentHashMap;
 import java.util.concurrent.atomic.AtomicLong;
 
 import static com.azure.cosmos.implementation.guava25.base.Preconditions.checkArgument;
@@ -24,6 +27,8 @@ public class FaultInjectionServerErrorRule implements IFaultInjectionRuleInterna
     private final Instant expireTime;
     private final Integer hitLimit;
     private final AtomicLong hitCount;
+    private final Map<String, Long> hitCountDetails;
+    private final AtomicLong evaluationCount;
     private final FaultInjectionConnectionType connectionType;
     private final FaultInjectionConditionInternal condition;
     private final FaultInjectionServerErrorResultInternal result;
@@ -51,21 +56,75 @@ public class FaultInjectionServerErrorRule implements IFaultInjectionRuleInterna
         this.startTime = delay == null ? Instant.now() : Instant.now().plusMillis(delay.toMillis());
         this.expireTime = duration == null ? Instant.MAX : this.startTime.plusMillis(duration.toMillis());
         this.hitCount = new AtomicLong(0);
+        this.hitCountDetails = new ConcurrentHashMap<>();
+        this.evaluationCount = new AtomicLong(0);
         this.condition = condition;
         this.result = result;
         this.connectionType = connectionType;
     }
 
-    public boolean isApplicable(RntbdRequestArgs requestArgs) {
-        if (this.isValid()
-            && this.condition.isApplicable(requestArgs)
-            && this.result.isApplicable(this.id, requestArgs.serviceRequest())) {
+    public boolean isApplicable(FaultInjectionRequestArgs requestArgs) {
+        if (!this.isValid()) {
+            requestArgs.getServiceRequest().faultInjectionRequestContext.recordFaultInjectionRuleEvaluation(
+                requestArgs.getTransportRequestId(),
+                String.format(
+                    "%s[Disable or Duration reached. StartTime: %s, ExpireTime: %s]",
+                    this.id,
+                    this.startTime,
+                    this.expireTime)
+            );
 
-            long hitCount = this.hitCount.incrementAndGet();
-            return this.hitLimit == null || hitCount <= this.hitLimit;
+            return false;
         }
 
-        return false;
+        // the failure reason will be populated during condition evaluation
+        if (!this.condition.isApplicable(this.id, requestArgs)) {
+            return false;
+        }
+
+        if (!this.result.isApplicable(this.id, requestArgs.getServiceRequest())) {
+            requestArgs.getServiceRequest().faultInjectionRequestContext.recordFaultInjectionRuleEvaluation(
+                requestArgs.getTransportRequestId(),
+                this.id + "[Per operation apply limit reached]"
+            );
+            return false;
+        }
+
+        if (this.result.getServerErrorType() == FaultInjectionServerErrorType.STALED_ADDRESSES_SERVER_GONE
+            && requestArgs.getServiceRequest().faultInjectionRequestContext.getAddressForceRefreshed()) {
+            requestArgs.getServiceRequest().faultInjectionRequestContext.recordFaultInjectionRuleEvaluation(
+                requestArgs.getTransportRequestId(),
+                "Address force refresh happened, STALED_ADDRESSES error is cleared."
+            );
+
+            return false;
+        }
+
+        long evaluationCount = this.evaluationCount.incrementAndGet();
+        boolean withinHitLimit = this.hitLimit == null || evaluationCount <= this.hitLimit;
+        if (!withinHitLimit) {
+            requestArgs.getServiceRequest().faultInjectionRequestContext.recordFaultInjectionRuleEvaluation(
+                requestArgs.getTransportRequestId(),
+                String.format("%s [Hit Limit reached. Configured hitLimit %d, evaluationCount %d]", this.id, this.hitLimit, evaluationCount)
+            );
+            return false;
+        } else {
+            this.hitCount.incrementAndGet();
+
+            // track hit count details, key will be operationType-resourceType
+            String name =
+                requestArgs.getServiceRequest().getOperationType().toString() + "-" + requestArgs.getServiceRequest().getResourceType().toString();
+            this.hitCountDetails.compute(name, (key, count) -> {
+                if (count == null) {
+                    count = 0L;
+                }
+
+                count++;
+                return count;
+            });
+
+            return true;
+        }
     }
 
     public CosmosException getInjectedServerError(RxDocumentServiceRequest request) {
@@ -78,11 +137,12 @@ public class FaultInjectionServerErrorRule implements IFaultInjectionRuleInterna
 
     @Override
     public long getHitCount() {
-        if (this.hitLimit == null) {
-            return this.hitCount.get();
-        }
+        return this.hitCount.get();
+    }
 
-        return Math.min(this.hitLimit, this.hitCount.get());
+    @Override
+    public Map<String, Long> getHitCountDetails() {
+        return this.hitCountDetails;
     }
 
     @Override

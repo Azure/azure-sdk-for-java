@@ -35,6 +35,10 @@ public final class Operation {
     @JsonProperty(value = "origin")
     private ContainerInstanceOperationsOrigin origin;
 
+    /** Creates an instance of Operation class. */
+    public Operation() {
+    }
+
     /**
      * Get the name property: The name of the operation.
      *

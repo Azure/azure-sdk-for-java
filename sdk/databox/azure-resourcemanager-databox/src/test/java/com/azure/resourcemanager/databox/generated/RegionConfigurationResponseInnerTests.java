@@ -13,7 +13,7 @@ public final class RegionConfigurationResponseInnerTests {
         RegionConfigurationResponseInner model =
             BinaryData
                 .fromString(
-                    "{\"scheduleAvailabilityResponse\":{\"availableDates\":[\"2021-06-11T21:37:26Z\",\"2021-05-01T01:26:28Z\"]},\"transportAvailabilityResponse\":{\"transportAvailabilityDetails\":[{\"shipmentType\":\"CustomerManaged\"},{\"shipmentType\":\"CustomerManaged\"},{\"shipmentType\":\"CustomerManaged\"},{\"shipmentType\":\"CustomerManaged\"}]}}")
+                    "{\"scheduleAvailabilityResponse\":{\"availableDates\":[\"2021-08-23T15:54:41Z\"]},\"transportAvailabilityResponse\":{\"transportAvailabilityDetails\":[{\"shipmentType\":\"MicrosoftManaged\"},{\"shipmentType\":\"MicrosoftManaged\"},{\"shipmentType\":\"MicrosoftManaged\"},{\"shipmentType\":\"CustomerManaged\"}]},\"datacenterAddressResponse\":{\"datacenterAddressType\":\"DatacenterAddressResponse\",\"supportedCarriersForReturnShipment\":[\"pppcqeqxo\",\"z\"],\"dataCenterAzureLocation\":\"hzxct\"}}")
                 .toObject(RegionConfigurationResponseInner.class);
     }
 

@@ -20,6 +20,15 @@ public final class TrafficViewEnrollmentStatus extends ExpandableStringEnum<Traf
     public static final TrafficViewEnrollmentStatus DISABLED = fromString("Disabled");
 
     /**
+     * Creates a new instance of TrafficViewEnrollmentStatus value.
+     *
+     * @deprecated Use the {@link #fromString(String)} factory method.
+     */
+    @Deprecated
+    public TrafficViewEnrollmentStatus() {
+    }
+
+    /**
      * Creates or finds a TrafficViewEnrollmentStatus from its string representation.
      *
      * @param name a name to look for.

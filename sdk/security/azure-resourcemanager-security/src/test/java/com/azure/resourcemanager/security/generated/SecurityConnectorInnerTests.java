@@ -20,30 +20,29 @@ public final class SecurityConnectorInnerTests {
         SecurityConnectorInner model =
             BinaryData
                 .fromString(
-                    "{\"properties\":{\"hierarchyIdentifier\":\"m\",\"hierarchyIdentifierTrialEndDate\":\"2021-09-03T01:56:24Z\",\"environmentName\":\"Azure\",\"offerings\":[{\"offeringType\":\"CloudOffering\",\"description\":\"p\"},{\"offeringType\":\"CloudOffering\",\"description\":\"wqagnepzwa\"},{\"offeringType\":\"CloudOffering\",\"description\":\"sbs\"},{\"offeringType\":\"CloudOffering\",\"description\":\"qqagwwr\"}],\"environmentData\":{\"environmentType\":\"EnvironmentData\"}},\"location\":\"omzisglrrcz\",\"tags\":{\"wjqo\":\"hhltnjadhqo\"},\"id\":\"ueayfbpcmsplb\",\"name\":\"rrueqthwmg\",\"type\":\"mbscbbx\"}")
+                    "{\"properties\":{\"hierarchyIdentifier\":\"vbrzcdb\",\"hierarchyIdentifierTrialEndDate\":\"2021-09-14T13:57:27Z\",\"environmentName\":\"Github\",\"offerings\":[{\"offeringType\":\"CloudOffering\",\"description\":\"xmxeatkdb\"},{\"offeringType\":\"CloudOffering\",\"description\":\"nrd\"}],\"environmentData\":{\"environmentType\":\"EnvironmentData\"}},\"location\":\"ibqbnaomhjrm\",\"tags\":{\"obcancdexxqcw\":\"maxljalfihcj\",\"fgvaknokzwj\":\"a\",\"tpq\":\"zrltixldzyyf\"},\"id\":\"ixymmpujivyql\",\"name\":\"juvsmbmslzoyovw\",\"type\":\"dbpqvybefgvm\"}")
                 .toObject(SecurityConnectorInner.class);
-        Assertions.assertEquals("omzisglrrcz", model.location());
-        Assertions.assertEquals("hhltnjadhqo", model.tags().get("wjqo"));
-        Assertions.assertEquals("m", model.hierarchyIdentifier());
-        Assertions.assertEquals(CloudName.AZURE, model.environmentName());
+        Assertions.assertEquals("ibqbnaomhjrm", model.location());
+        Assertions.assertEquals("maxljalfihcj", model.tags().get("obcancdexxqcw"));
+        Assertions.assertEquals("vbrzcdb", model.hierarchyIdentifier());
+        Assertions.assertEquals(CloudName.GITHUB, model.environmentName());
     }
 
     @org.junit.jupiter.api.Test
     public void testSerialize() throws Exception {
         SecurityConnectorInner model =
             new SecurityConnectorInner()
-                .withLocation("omzisglrrcz")
-                .withTags(mapOf("wjqo", "hhltnjadhqo"))
-                .withHierarchyIdentifier("m")
-                .withEnvironmentName(CloudName.AZURE)
-                .withOfferings(
-                    Arrays.asList(new CloudOffering(), new CloudOffering(), new CloudOffering(), new CloudOffering()))
+                .withLocation("ibqbnaomhjrm")
+                .withTags(mapOf("obcancdexxqcw", "maxljalfihcj", "fgvaknokzwj", "a", "tpq", "zrltixldzyyf"))
+                .withHierarchyIdentifier("vbrzcdb")
+                .withEnvironmentName(CloudName.GITHUB)
+                .withOfferings(Arrays.asList(new CloudOffering(), new CloudOffering()))
                 .withEnvironmentData(new EnvironmentData());
         model = BinaryData.fromObject(model).toObject(SecurityConnectorInner.class);
-        Assertions.assertEquals("omzisglrrcz", model.location());
-        Assertions.assertEquals("hhltnjadhqo", model.tags().get("wjqo"));
-        Assertions.assertEquals("m", model.hierarchyIdentifier());
-        Assertions.assertEquals(CloudName.AZURE, model.environmentName());
+        Assertions.assertEquals("ibqbnaomhjrm", model.location());
+        Assertions.assertEquals("maxljalfihcj", model.tags().get("obcancdexxqcw"));
+        Assertions.assertEquals("vbrzcdb", model.hierarchyIdentifier());
+        Assertions.assertEquals(CloudName.GITHUB, model.environmentName());
     }
 
     @SuppressWarnings("unchecked")

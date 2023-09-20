@@ -89,7 +89,7 @@ public final class ServiceBusMessageBatch {
         if (serviceBusMessage == null) {
             throw LOGGER.logExceptionAsWarning(new NullPointerException("'serviceBusMessage' cannot be null"));
         }
-        tracer.reportMessageSpan(serviceBusMessage, serviceBusMessage.getContext());
+        tracer.reportMessageSpan(serviceBusMessage);
 
         final int size;
         try {

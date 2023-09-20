@@ -21,10 +21,10 @@ public final class CommunicationsGatewaysCreateOrUpdateSamples {
     /**
      * Sample code: CreateCommunicationsGatewayResource.
      *
-     * @param manager Entry point to VoiceservicesManager.
+     * @param manager Entry point to VoiceServicesManager.
      */
     public static void createCommunicationsGatewayResource(
-        com.azure.resourcemanager.voiceservices.VoiceservicesManager manager) {
+        com.azure.resourcemanager.voiceservices.VoiceServicesManager manager) {
         manager
             .communicationsGateways()
             .define("myname")

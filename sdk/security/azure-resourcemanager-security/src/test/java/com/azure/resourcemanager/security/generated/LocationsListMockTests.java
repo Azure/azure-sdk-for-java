@@ -31,7 +31,7 @@ public final class LocationsListMockTests {
         ArgumentCaptor<HttpRequest> httpRequest = ArgumentCaptor.forClass(HttpRequest.class);
 
         String responseStr =
-            "{\"value\":[{\"properties\":\"datadb\",\"id\":\"wqrgxfllmqi\",\"name\":\"nezoellnkki\",\"type\":\"w\"}]}";
+            "{\"value\":[{\"properties\":\"dataifrhjulrsul\",\"id\":\"zpfl\",\"name\":\"snawmhhgzotfri\",\"type\":\"rgkoekvzwxxyx\"}]}";
 
         Mockito.when(httpResponse.getStatusCode()).thenReturn(200);
         Mockito.when(httpResponse.getHeaders()).thenReturn(new HttpHeaders());

@@ -5,41 +5,50 @@ package com.azure.core.http.okhttp;
 
 import com.azure.core.http.HttpClient;
 import com.azure.core.http.HttpHeader;
+import com.azure.core.http.HttpHeaderName;
 import com.azure.core.http.HttpHeaders;
 import com.azure.core.http.HttpMethod;
 import com.azure.core.http.HttpRequest;
 import com.azure.core.http.HttpResponse;
-import com.github.tomakehurst.wiremock.WireMockServer;
-import com.github.tomakehurst.wiremock.core.WireMockConfiguration;
-import com.github.tomakehurst.wiremock.http.Fault;
-import okhttp3.Dispatcher;
+import com.azure.core.test.http.LocalTestServer;
+import com.azure.core.util.Context;
 import org.junit.jupiter.api.AfterAll;
 import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.BeforeAll;
 import org.junit.jupiter.api.Test;
+import org.junit.jupiter.api.parallel.Execution;
+import org.junit.jupiter.api.parallel.ExecutionMode;
 import reactor.core.publisher.Flux;
 import reactor.core.publisher.Mono;
+import reactor.core.publisher.ParallelFlux;
 import reactor.core.scheduler.Schedulers;
 import reactor.test.StepVerifier;
 import reactor.test.StepVerifierOptions;
 
+import javax.servlet.ServletException;
 import java.io.IOException;
 import java.net.MalformedURLException;
+import java.net.URI;
+import java.net.URISyntaxException;
 import java.net.URL;
 import java.nio.ByteBuffer;
 import java.nio.charset.StandardCharsets;
 import java.time.Duration;
+import java.util.ArrayList;
 import java.util.Arrays;
+import java.util.Collections;
 import java.util.List;
+import java.util.concurrent.Callable;
+import java.util.concurrent.ForkJoinPool;
+import java.util.concurrent.TimeUnit;
 
 import static com.azure.core.http.okhttp.TestUtils.createQuietDispatcher;
-import static com.github.tomakehurst.wiremock.client.WireMock.aResponse;
-import static com.github.tomakehurst.wiremock.client.WireMock.get;
-import static com.github.tomakehurst.wiremock.client.WireMock.post;
 import static org.junit.jupiter.api.Assertions.assertArrayEquals;
 import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertLinesMatch;
+import static org.junit.jupiter.api.Assertions.assertTrue;
 
+@Execution(ExecutionMode.SAME_THREAD)
 public class OkHttpAsyncHttpClientTests {
     static final String RETURN_HEADERS_AS_IS_PATH = "/returnHeadersAsIs";
 
@@ -49,31 +58,51 @@ public class OkHttpAsyncHttpClientTests {
     private static final StepVerifierOptions EMPTY_INITIAL_REQUEST_OPTIONS = StepVerifierOptions.create()
         .initialRequest(0);
 
-    private static WireMockServer server;
+    private static LocalTestServer server;
 
     @BeforeAll
-    public static void beforeClass() {
-        server = new WireMockServer(WireMockConfiguration.options()
-            .extensions(new OkHttpAsyncHttpClientResponseTransformer())
-            .dynamicPort()
-            .disableRequestJournal()
-            .gzipDisabled(true));
+    public static void startTestServer() {
+        server = new LocalTestServer((req, resp, requestBody) -> {
+            String path = req.getServletPath();
+            boolean get = "GET".equalsIgnoreCase(req.getMethod());
+            boolean post = "POST".equalsIgnoreCase(req.getMethod());
 
-        server.stubFor(get("/short").willReturn(aResponse().withBody(SHORT_BODY)));
-        server.stubFor(get("/long").willReturn(aResponse().withBody(LONG_BODY)));
-        server.stubFor(get("/error").willReturn(aResponse().withBody("error").withStatus(500)));
-        server.stubFor(post("/shortPost").willReturn(aResponse().withBody(SHORT_BODY)));
-        server.stubFor(get(RETURN_HEADERS_AS_IS_PATH).willReturn(aResponse()
-            .withTransformers(OkHttpAsyncHttpClientResponseTransformer.NAME)));
-        server.stubFor(get("/connectionClose").willReturn(aResponse().withFault(Fault.RANDOM_DATA_THEN_CLOSE)));
+            if (get && "/short".equals(path)) {
+                resp.setContentType("application/octet-stream");
+                resp.setContentLength(SHORT_BODY.length);
+                resp.getOutputStream().write(SHORT_BODY);
+            } else if (get && "/long".equals(path)) {
+                resp.setContentType("application/octet-stream");
+                resp.setContentLength(LONG_BODY.length);
+                resp.getOutputStream().write(LONG_BODY);
+            } else if (get && "/error".equals(path)) {
+                resp.setStatus(500);
+                resp.setContentLength(5);
+                resp.getOutputStream().write("error".getBytes(StandardCharsets.UTF_8));
+            } else if (post && "/shortPost".equals(path)) {
+                resp.setContentType("application/octet-stream");
+                resp.setContentLength(SHORT_BODY.length);
+                resp.getOutputStream().write(SHORT_BODY);
+            } else if (get && RETURN_HEADERS_AS_IS_PATH.equals(path)) {
+                List<String> headerNames = Collections.list(req.getHeaderNames());
+                headerNames.forEach(headerName -> {
+                    List<String> headerValues = Collections.list(req.getHeaders(headerName));
+                    headerValues.forEach(headerValue -> resp.addHeader(headerName, headerValue));
+                });
+            } else if (get && "/connectionClose".equals(path)) {
+                resp.getHttpChannel().getConnection().close();
+            } else {
+                throw new ServletException("Unexpected request: " + req.getMethod() + " " + path);
+            }
+        }, 20);
 
         server.start();
     }
 
     @AfterAll
-    public static void afterClass() {
+    public static void stopTestServer() {
         if (server != null) {
-            server.shutdown();
+            server.stop();
         }
     }
 
@@ -110,10 +139,10 @@ public class OkHttpAsyncHttpClientTests {
     @Test
     public void testFlowableWhenServerReturnsBodyAndNoErrorsWhenHttp500Returned() {
         StepVerifier.create(getResponse("/error")
-            .flatMap(response -> {
-                assertEquals(500, response.getStatusCode());
-                return response.getBodyAsString();
-            }))
+                .flatMap(response -> {
+                    assertEquals(500, response.getStatusCode());
+                    return response.getBodyAsString();
+                }))
             .expectNext("error")
             .expectComplete()
             .verify(Duration.ofSeconds(20));
@@ -139,7 +168,7 @@ public class OkHttpAsyncHttpClientTests {
             .build();
 
         HttpRequest request = new HttpRequest(HttpMethod.POST, url(server, "/shortPost"))
-            .setHeader("Content-Length", "132")
+            .setHeader(HttpHeaderName.CONTENT_LENGTH, "132")
             .setBody(Flux.error(new RuntimeException("boo")));
 
         StepVerifier.create(client.send(request))
@@ -156,7 +185,7 @@ public class OkHttpAsyncHttpClientTests {
         String contentChunk = "abcdefgh";
         int repetitions = 1000;
         HttpRequest request = new HttpRequest(HttpMethod.POST, url(server, "/shortPost"))
-            .setHeader("Content-Length", String.valueOf(contentChunk.length() * (repetitions + 1)))
+            .setHeader(HttpHeaderName.CONTENT_LENGTH, String.valueOf(contentChunk.length() * (repetitions + 1)))
             .setBody(Flux.just(contentChunk)
                 .repeat(repetitions)
                 .map(s -> ByteBuffer.wrap(s.getBytes(StandardCharsets.UTF_8)))
@@ -184,37 +213,53 @@ public class OkHttpAsyncHttpClientTests {
     @Test
     public void testConcurrentRequests() {
         int numRequests = 100; // 100 = 1GB of data read
-        int concurrency = 10;
-        Dispatcher dispatcher = new Dispatcher();
-        dispatcher.setMaxRequestsPerHost(concurrency); // this is 5 by default.
-        HttpClient client = new OkHttpAsyncHttpClientBuilder()
-            .dispatcher(dispatcher)
-            .build();
+        HttpClient client = new OkHttpAsyncClientProvider().createInstance();
 
-        Mono<Long> numBytesMono = Flux.range(1, numRequests)
-            .parallel(concurrency)
+        ParallelFlux<byte[]> responses = Flux.range(1, numRequests)
+            .parallel()
             .runOn(Schedulers.boundedElastic())
-            .flatMap(ignored -> getResponse(client, "/long")
-                .flatMapMany(HttpResponse::getBodyAsByteArray)
-                .doOnNext(bytes -> assertArrayEquals(LONG_BODY, bytes)))
-            .sequential()
-            .map(buffer -> (long) buffer.length)
-            .reduce(0L, Long::sum);
+            .flatMap(ignored -> doRequest(client, "/long")
+                .flatMap(HttpResponse::getBodyAsByteArray));
 
-        StepVerifier.create(numBytesMono)
-            .expectNext((long) numRequests * LONG_BODY.length)
+        StepVerifier.create(responses)
+            .thenConsumeWhile(response -> {
+                com.azure.core.test.utils.TestUtils.assertArraysEqual(LONG_BODY, response);
+                return true;
+            })
             .expectComplete()
             .verify(Duration.ofSeconds(60));
+    }
+
+    @Test
+    public void testConcurrentRequestsSync() throws InterruptedException {
+        int numRequests = 100; // 100 = 1GB of data read
+        HttpClient client = new OkHttpAsyncClientProvider().createInstance();
+
+        ForkJoinPool pool = new ForkJoinPool();
+        List<Callable<Void>> requests = new ArrayList<>(numRequests);
+        for (int i = 0; i < numRequests; i++) {
+            requests.add(() -> {
+                try (HttpResponse response = doRequestSync(client, "/long")) {
+                    byte[] body = response.getBodyAsBinaryData().toBytes();
+                    com.azure.core.test.utils.TestUtils.assertArraysEqual(LONG_BODY, body);
+                    return null;
+                }
+            });
+        }
+
+        pool.invokeAll(requests);
+        pool.shutdown();
+        assertTrue(pool.awaitTermination(60, TimeUnit.SECONDS));
     }
 
     @Test
     public void validateHeadersReturnAsIs() {
         HttpClient client = new OkHttpAsyncClientProvider().createInstance();
 
-        final String singleValueHeaderName = "singleValue";
+        HttpHeaderName singleValueHeaderName = HttpHeaderName.fromString("singleValue");
         final String singleValueHeaderValue = "value";
 
-        final String multiValueHeaderName = "Multi-value";
+        HttpHeaderName multiValueHeaderName = HttpHeaderName.fromString("Multi-value");
         final List<String> multiValueHeaderValue = Arrays.asList("value1", "value2");
 
         HttpHeaders headers = new HttpHeaders()
@@ -228,11 +273,11 @@ public class OkHttpAsyncHttpClientTests {
 
                 HttpHeaders responseHeaders = response.getHeaders();
                 HttpHeader singleValueHeader = responseHeaders.get(singleValueHeaderName);
-                assertEquals(singleValueHeaderName, singleValueHeader.getName());
+                assertEquals(singleValueHeaderName.getCaseSensitiveName(), singleValueHeader.getName());
                 assertEquals(singleValueHeaderValue, singleValueHeader.getValue());
 
-                HttpHeader multiValueHeader = responseHeaders.get("Multi-value");
-                assertEquals(multiValueHeaderName, multiValueHeader.getName());
+                HttpHeader multiValueHeader = responseHeaders.get(multiValueHeaderName);
+                assertEquals(multiValueHeaderName.getCaseSensitiveName(), multiValueHeader.getName());
                 assertLinesMatch(multiValueHeaderValue, multiValueHeader.getValuesList());
             })
             .expectComplete()
@@ -249,10 +294,10 @@ public class OkHttpAsyncHttpClientTests {
         return client.send(request);
     }
 
-    static URL url(WireMockServer server, String path) {
+    static URL url(LocalTestServer server, String path) {
         try {
-            return new URL("http://localhost:" + server.port() + path);
-        } catch (MalformedURLException e) {
+            return new URI(server.getHttpUri() + path).toURL();
+        } catch (URISyntaxException | MalformedURLException e) {
             throw new RuntimeException(e);
         }
     }
@@ -278,5 +323,10 @@ public class OkHttpAsyncHttpClientTests {
     private static Mono<HttpResponse> doRequest(HttpClient client, String path) {
         HttpRequest request = new HttpRequest(HttpMethod.GET, url(server, path));
         return client.send(request);
+    }
+
+    private static HttpResponse doRequestSync(HttpClient client, String path) {
+        HttpRequest request = new HttpRequest(HttpMethod.GET, url(server, path));
+        return client.sendSync(request, Context.NONE);
     }
 }

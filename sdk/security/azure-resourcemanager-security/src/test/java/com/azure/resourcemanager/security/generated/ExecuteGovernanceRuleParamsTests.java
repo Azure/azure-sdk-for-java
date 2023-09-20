@@ -12,14 +12,14 @@ public final class ExecuteGovernanceRuleParamsTests {
     @org.junit.jupiter.api.Test
     public void testDeserialize() throws Exception {
         ExecuteGovernanceRuleParams model =
-            BinaryData.fromString("{\"override\":false}").toObject(ExecuteGovernanceRuleParams.class);
-        Assertions.assertEquals(false, model.override());
+            BinaryData.fromString("{\"override\":true}").toObject(ExecuteGovernanceRuleParams.class);
+        Assertions.assertEquals(true, model.override());
     }
 
     @org.junit.jupiter.api.Test
     public void testSerialize() throws Exception {
-        ExecuteGovernanceRuleParams model = new ExecuteGovernanceRuleParams().withOverride(false);
+        ExecuteGovernanceRuleParams model = new ExecuteGovernanceRuleParams().withOverride(true);
         model = BinaryData.fromObject(model).toObject(ExecuteGovernanceRuleParams.class);
-        Assertions.assertEquals(false, model.override());
+        Assertions.assertEquals(true, model.override());
     }
 }

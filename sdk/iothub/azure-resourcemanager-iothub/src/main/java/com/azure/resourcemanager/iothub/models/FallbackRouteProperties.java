@@ -48,6 +48,10 @@ public final class FallbackRouteProperties {
     @JsonProperty(value = "isEnabled", required = true)
     private boolean isEnabled;
 
+    /** Creates an instance of FallbackRouteProperties class. */
+    public FallbackRouteProperties() {
+    }
+
     /**
      * Get the name property: The name of the route. The name can only include alphanumeric characters, periods,
      * underscores, hyphens, has a maximum length of 64 characters, and must be unique.

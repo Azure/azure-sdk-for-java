@@ -4,7 +4,6 @@
 
 package com.azure.resourcemanager.kubernetesconfiguration.generated;
 
-import com.azure.core.util.Context;
 import com.azure.resourcemanager.kubernetesconfiguration.fluent.models.SourceControlConfigurationInner;
 import com.azure.resourcemanager.kubernetesconfiguration.models.HelmOperatorProperties;
 import com.azure.resourcemanager.kubernetesconfiguration.models.OperatorScopeType;
@@ -15,7 +14,7 @@ import java.util.Map;
 /** Samples for SourceControlConfigurations CreateOrUpdate. */
 public final class SourceControlConfigurationsCreateOrUpdateSamples {
     /*
-     * x-ms-original-file: specification/kubernetesconfiguration/resource-manager/Microsoft.KubernetesConfiguration/stable/2022-03-01/examples/CreateSourceControlConfiguration.json
+     * x-ms-original-file: specification/kubernetesconfiguration/resource-manager/Microsoft.KubernetesConfiguration/stable/2022-11-01/examples/CreateSourceControlConfiguration.json
      */
     /**
      * Sample code: Create Source Control Configuration.
@@ -48,7 +47,7 @@ public final class SourceControlConfigurationsCreateOrUpdateSamples {
                             .withChartVersion("0.3.0")
                             .withChartValues(
                                 "--set git.ssh.secretName=flux-git-deploy --set tillerNamespace=kube-system")),
-                Context.NONE);
+                com.azure.core.util.Context.NONE);
     }
 
     @SuppressWarnings("unchecked")

@@ -17,6 +17,10 @@ public final class Error extends ManagementError {
     @JsonProperty(value = "innererror", access = JsonProperty.Access.WRITE_ONLY)
     private Error innerError;
 
+    /** Creates an instance of Error class. */
+    public Error() {
+    }
+
     /**
      * Get the innerError property: The inner error, contains a more specific error code.
      *

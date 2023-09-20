@@ -33,7 +33,7 @@ public final class OrganizationsListMockTests {
         ArgumentCaptor<HttpRequest> httpRequest = ArgumentCaptor.forClass(HttpRequest.class);
 
         String responseStr =
-            "{\"value\":[{\"properties\":{\"organizationId\":\"mubyynt\",\"organizationName\":\"rbqtkoie\",\"billingSource\":\"AZURE\"},\"id\":\"tgqr\",\"name\":\"ltmuwlauwzizx\",\"type\":\"mpgcjefuzmuvpbt\"}]}";
+            "{\"value\":[{\"properties\":{\"organizationId\":\"twuoegrpkhjwni\",\"organizationName\":\"sluicpdggkzz\",\"billingSource\":\"NEWRELIC\"},\"id\":\"mpaxmodfvuefywsb\",\"name\":\"fvmwy\",\"type\":\"rfouyftaakcpw\"}]}";
 
         Mockito.when(httpResponse.getStatusCode()).thenReturn(200);
         Mockito.when(httpResponse.getHeaders()).thenReturn(new HttpHeaders());
@@ -62,10 +62,10 @@ public final class OrganizationsListMockTests {
                     new AzureProfile("", "", AzureEnvironment.AZURE));
 
         PagedIterable<OrganizationResource> response =
-            manager.organizations().list("ripl", "podxunkb", com.azure.core.util.Context.NONE);
+            manager.organizations().list("obzdopcjwvnhdl", "wmgxcxrsl", com.azure.core.util.Context.NONE);
 
-        Assertions.assertEquals("mubyynt", response.iterator().next().organizationId());
-        Assertions.assertEquals("rbqtkoie", response.iterator().next().organizationName());
-        Assertions.assertEquals(BillingSource.AZURE, response.iterator().next().billingSource());
+        Assertions.assertEquals("twuoegrpkhjwni", response.iterator().next().organizationId());
+        Assertions.assertEquals("sluicpdggkzz", response.iterator().next().organizationName());
+        Assertions.assertEquals(BillingSource.NEWRELIC, response.iterator().next().billingSource());
     }
 }

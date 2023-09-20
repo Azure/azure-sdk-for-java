@@ -11,38 +11,37 @@ import java.util.Arrays;
 import java.util.HashMap;
 import java.util.Map;
 import org.junit.jupiter.api.Assertions;
-import org.junit.jupiter.api.Test;
 
 public final class DeploymentPropertiesTests {
-    @Test
-    public void testDeserialize() {
+    @org.junit.jupiter.api.Test
+    public void testDeserialize() throws Exception {
         DeploymentProperties model =
             BinaryData
                 .fromString(
-                    "{\"manifestType\":\"helm\",\"kubeManifestLocations\":[\"pcyshu\"],\"helmChartPath\":\"afbljjgpbtoqcjmk\",\"helmValues\":\"a\",\"overrides\":{\"pku\":\"idtqajzyu\",\"gqexzlocxs\":\"jkrlkhbzhfepg\",\"bcsglumma\":\"paierh\"}}")
+                    "{\"manifestType\":\"helm\",\"kubeManifestLocations\":[\"tjaodxobnb\",\"xkqpxo\",\"ajionpimexgstxg\",\"po\"],\"helmChartPath\":\"maajrmvdjwzrlo\",\"helmValues\":\"clwhijcoejctbz\",\"overrides\":{\"dkexxppofm\":\"qsycbkbfkgu\"}}")
                 .toObject(DeploymentProperties.class);
         Assertions.assertEquals(ManifestType.HELM, model.manifestType());
-        Assertions.assertEquals("pcyshu", model.kubeManifestLocations().get(0));
-        Assertions.assertEquals("afbljjgpbtoqcjmk", model.helmChartPath());
-        Assertions.assertEquals("a", model.helmValues());
-        Assertions.assertEquals("idtqajzyu", model.overrides().get("pku"));
+        Assertions.assertEquals("tjaodxobnb", model.kubeManifestLocations().get(0));
+        Assertions.assertEquals("maajrmvdjwzrlo", model.helmChartPath());
+        Assertions.assertEquals("clwhijcoejctbz", model.helmValues());
+        Assertions.assertEquals("qsycbkbfkgu", model.overrides().get("dkexxppofm"));
     }
 
-    @Test
-    public void testSerialize() {
+    @org.junit.jupiter.api.Test
+    public void testSerialize() throws Exception {
         DeploymentProperties model =
             new DeploymentProperties()
                 .withManifestType(ManifestType.HELM)
-                .withKubeManifestLocations(Arrays.asList("pcyshu"))
-                .withHelmChartPath("afbljjgpbtoqcjmk")
-                .withHelmValues("a")
-                .withOverrides(mapOf("pku", "idtqajzyu", "gqexzlocxs", "jkrlkhbzhfepg", "bcsglumma", "paierh"));
+                .withKubeManifestLocations(Arrays.asList("tjaodxobnb", "xkqpxo", "ajionpimexgstxg", "po"))
+                .withHelmChartPath("maajrmvdjwzrlo")
+                .withHelmValues("clwhijcoejctbz")
+                .withOverrides(mapOf("dkexxppofm", "qsycbkbfkgu"));
         model = BinaryData.fromObject(model).toObject(DeploymentProperties.class);
         Assertions.assertEquals(ManifestType.HELM, model.manifestType());
-        Assertions.assertEquals("pcyshu", model.kubeManifestLocations().get(0));
-        Assertions.assertEquals("afbljjgpbtoqcjmk", model.helmChartPath());
-        Assertions.assertEquals("a", model.helmValues());
-        Assertions.assertEquals("idtqajzyu", model.overrides().get("pku"));
+        Assertions.assertEquals("tjaodxobnb", model.kubeManifestLocations().get(0));
+        Assertions.assertEquals("maajrmvdjwzrlo", model.helmChartPath());
+        Assertions.assertEquals("clwhijcoejctbz", model.helmValues());
+        Assertions.assertEquals("qsycbkbfkgu", model.overrides().get("dkexxppofm"));
     }
 
     @SuppressWarnings("unchecked")

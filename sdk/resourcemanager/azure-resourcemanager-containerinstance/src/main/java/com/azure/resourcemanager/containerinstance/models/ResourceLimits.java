@@ -28,6 +28,10 @@ public final class ResourceLimits {
     @JsonProperty(value = "gpu")
     private GpuResource gpu;
 
+    /** Creates an instance of ResourceLimits class. */
+    public ResourceLimits() {
+    }
+
     /**
      * Get the memoryInGB property: The memory limit in GB of this container instance.
      *

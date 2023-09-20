@@ -28,6 +28,10 @@ public final class ManagementPolicyAction {
     @JsonProperty(value = "version")
     private ManagementPolicyVersion version;
 
+    /** Creates an instance of ManagementPolicyAction class. */
+    public ManagementPolicyAction() {
+    }
+
     /**
      * Get the baseBlob property: The management policy action for base blob.
      *

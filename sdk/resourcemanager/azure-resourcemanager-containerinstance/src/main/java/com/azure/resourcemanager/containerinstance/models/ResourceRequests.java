@@ -28,6 +28,10 @@ public final class ResourceRequests {
     @JsonProperty(value = "gpu")
     private GpuResource gpu;
 
+    /** Creates an instance of ResourceRequests class. */
+    public ResourceRequests() {
+    }
+
     /**
      * Get the memoryInGB property: The memory request in GB of this container instance.
      *

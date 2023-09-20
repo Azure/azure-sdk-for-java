@@ -8,64 +8,55 @@ import com.azure.core.util.BinaryData;
 import com.azure.resourcemanager.appcontainers.fluent.models.BillingMeterCollectionInner;
 import com.azure.resourcemanager.appcontainers.models.BillingMeter;
 import com.azure.resourcemanager.appcontainers.models.BillingMeterProperties;
-import com.azure.resourcemanager.appcontainers.models.Category;
 import java.util.Arrays;
 import org.junit.jupiter.api.Assertions;
-import org.junit.jupiter.api.Test;
 
 public final class BillingMeterCollectionInnerTests {
-    @Test
-    public void testDeserialize() {
+    @org.junit.jupiter.api.Test
+    public void testDeserialize() throws Exception {
         BillingMeterCollectionInner model =
             BinaryData
                 .fromString(
-                    "{\"value\":[{\"location\":\"o\",\"properties\":{\"category\":\"PremiumSkuComputeOptimized\",\"meterType\":\"nlu\",\"displayName\":\"krrfx\"},\"id\":\"ebtijvacvbmqzbqq\",\"name\":\"lajrnwxacevehj\",\"type\":\"uyxoaf\"},{\"location\":\"oqltfae\",\"properties\":{\"category\":\"PremiumSkuMemoryOptimized\",\"meterType\":\"fgvxirpghriypoqe\",\"displayName\":\"lqhykprlpyz\"},\"id\":\"ciqdsme\",\"name\":\"iitdfuxt\",\"type\":\"asiibmiybnnust\"},{\"location\":\"ljhnmgixhcmav\",\"properties\":{\"category\":\"PremiumSkuMemoryOptimized\",\"meterType\":\"dorhcgyyp\",\"displayName\":\"twypundmbxh\"},\"id\":\"cmjkavlgorbmftpm\",\"name\":\"tzfjltf\",\"type\":\"nzcyjtotp\"},{\"location\":\"pvpbdbzqgqqiheds\",\"properties\":{\"category\":\"PremiumSkuMemoryOptimized\",\"meterType\":\"mkyi\",\"displayName\":\"ysi\"},\"id\":\"gqcwdhohsdtmc\",\"name\":\"zsu\",\"type\":\"cohdx\"}]}")
+                    "{\"value\":[{\"location\":\"yzydagfuaxbezyi\",\"properties\":{\"category\":\"ktwh\",\"meterType\":\"xw\",\"displayName\":\"wqsmbsur\"},\"id\":\"xim\",\"name\":\"ryocfsfksymdd\",\"type\":\"stkiiuxhqyud\"},{\"location\":\"rrqnbpoczvyifqrv\",\"properties\":{\"category\":\"jsllrmv\",\"meterType\":\"f\",\"displayName\":\"t\"},\"id\":\"pnpulexxbczwtru\",\"name\":\"iqzbq\",\"type\":\"vsovmyokac\"},{\"location\":\"kwlhzdo\",\"properties\":{\"category\":\"jmflbvvnch\",\"meterType\":\"cciw\",\"displayName\":\"juqk\"},\"id\":\"rsa\",\"name\":\"iwkuofos\",\"type\":\"ghsauuimjmvxied\"}]}")
                 .toObject(BillingMeterCollectionInner.class);
-        Assertions.assertEquals("o", model.value().get(0).location());
-        Assertions.assertEquals(Category.PREMIUM_SKU_COMPUTE_OPTIMIZED, model.value().get(0).properties().category());
-        Assertions.assertEquals("nlu", model.value().get(0).properties().meterType());
-        Assertions.assertEquals("krrfx", model.value().get(0).properties().displayName());
+        Assertions.assertEquals("yzydagfuaxbezyi", model.value().get(0).location());
+        Assertions.assertEquals("ktwh", model.value().get(0).properties().category());
+        Assertions.assertEquals("xw", model.value().get(0).properties().meterType());
+        Assertions.assertEquals("wqsmbsur", model.value().get(0).properties().displayName());
     }
 
-    @Test
-    public void testSerialize() {
+    @org.junit.jupiter.api.Test
+    public void testSerialize() throws Exception {
         BillingMeterCollectionInner model =
             new BillingMeterCollectionInner()
                 .withValue(
                     Arrays
                         .asList(
                             new BillingMeter()
-                                .withLocation("o")
+                                .withLocation("yzydagfuaxbezyi")
                                 .withProperties(
                                     new BillingMeterProperties()
-                                        .withCategory(Category.PREMIUM_SKU_COMPUTE_OPTIMIZED)
-                                        .withMeterType("nlu")
-                                        .withDisplayName("krrfx")),
+                                        .withCategory("ktwh")
+                                        .withMeterType("xw")
+                                        .withDisplayName("wqsmbsur")),
                             new BillingMeter()
-                                .withLocation("oqltfae")
+                                .withLocation("rrqnbpoczvyifqrv")
                                 .withProperties(
                                     new BillingMeterProperties()
-                                        .withCategory(Category.PREMIUM_SKU_MEMORY_OPTIMIZED)
-                                        .withMeterType("fgvxirpghriypoqe")
-                                        .withDisplayName("lqhykprlpyz")),
+                                        .withCategory("jsllrmv")
+                                        .withMeterType("f")
+                                        .withDisplayName("t")),
                             new BillingMeter()
-                                .withLocation("ljhnmgixhcmav")
+                                .withLocation("kwlhzdo")
                                 .withProperties(
                                     new BillingMeterProperties()
-                                        .withCategory(Category.PREMIUM_SKU_MEMORY_OPTIMIZED)
-                                        .withMeterType("dorhcgyyp")
-                                        .withDisplayName("twypundmbxh")),
-                            new BillingMeter()
-                                .withLocation("pvpbdbzqgqqiheds")
-                                .withProperties(
-                                    new BillingMeterProperties()
-                                        .withCategory(Category.PREMIUM_SKU_MEMORY_OPTIMIZED)
-                                        .withMeterType("mkyi")
-                                        .withDisplayName("ysi"))));
+                                        .withCategory("jmflbvvnch")
+                                        .withMeterType("cciw")
+                                        .withDisplayName("juqk"))));
         model = BinaryData.fromObject(model).toObject(BillingMeterCollectionInner.class);
-        Assertions.assertEquals("o", model.value().get(0).location());
-        Assertions.assertEquals(Category.PREMIUM_SKU_COMPUTE_OPTIMIZED, model.value().get(0).properties().category());
-        Assertions.assertEquals("nlu", model.value().get(0).properties().meterType());
-        Assertions.assertEquals("krrfx", model.value().get(0).properties().displayName());
+        Assertions.assertEquals("yzydagfuaxbezyi", model.value().get(0).location());
+        Assertions.assertEquals("ktwh", model.value().get(0).properties().category());
+        Assertions.assertEquals("xw", model.value().get(0).properties().meterType());
+        Assertions.assertEquals("wqsmbsur", model.value().get(0).properties().displayName());
     }
 }

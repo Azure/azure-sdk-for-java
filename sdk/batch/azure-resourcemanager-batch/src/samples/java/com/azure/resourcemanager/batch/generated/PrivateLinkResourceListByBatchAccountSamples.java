@@ -4,12 +4,10 @@
 
 package com.azure.resourcemanager.batch.generated;
 
-import com.azure.core.util.Context;
-
 /** Samples for PrivateLinkResource ListByBatchAccount. */
 public final class PrivateLinkResourceListByBatchAccountSamples {
     /*
-     * x-ms-original-file: specification/batch/resource-manager/Microsoft.Batch/stable/2022-10-01/examples/PrivateLinkResourcesList.json
+     * x-ms-original-file: specification/batch/resource-manager/Microsoft.Batch/stable/2023-05-01/examples/PrivateLinkResourcesList.json
      */
     /**
      * Sample code: ListPrivateLinkResource.
@@ -19,6 +17,6 @@ public final class PrivateLinkResourceListByBatchAccountSamples {
     public static void listPrivateLinkResource(com.azure.resourcemanager.batch.BatchManager manager) {
         manager
             .privateLinkResources()
-            .listByBatchAccount("default-azurebatch-japaneast", "sampleacct", null, Context.NONE);
+            .listByBatchAccount("default-azurebatch-japaneast", "sampleacct", null, com.azure.core.util.Context.NONE);
     }
 }

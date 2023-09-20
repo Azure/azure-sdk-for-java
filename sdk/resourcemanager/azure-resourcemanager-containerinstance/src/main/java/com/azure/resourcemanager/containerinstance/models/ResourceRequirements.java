@@ -23,6 +23,10 @@ public final class ResourceRequirements {
     @JsonProperty(value = "limits")
     private ResourceLimits limits;
 
+    /** Creates an instance of ResourceRequirements class. */
+    public ResourceRequirements() {
+    }
+
     /**
      * Get the requests property: The resource requests of this container instance.
      *

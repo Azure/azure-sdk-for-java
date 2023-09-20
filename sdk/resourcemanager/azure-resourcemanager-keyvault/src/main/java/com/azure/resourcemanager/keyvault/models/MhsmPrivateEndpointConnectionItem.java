@@ -29,6 +29,10 @@ public final class MhsmPrivateEndpointConnectionItem {
     @JsonProperty(value = "properties")
     private MhsmPrivateEndpointConnectionProperties innerProperties;
 
+    /** Creates an instance of MhsmPrivateEndpointConnectionItem class. */
+    public MhsmPrivateEndpointConnectionItem() {
+    }
+
     /**
      * Get the id property: Id of private endpoint connection.
      *

@@ -17,8 +17,11 @@ import com.azure.core.http.policy.HttpPolicyProviders;
 import com.azure.core.http.policy.RetryPolicy;
 import com.azure.core.http.policy.RetryStrategy;
 import com.azure.core.http.policy.UserAgentPolicy;
-import com.azure.core.test.TestBase;
-import com.azure.core.test.TestMode;
+import com.azure.core.test.TestProxyTestBase;
+import com.azure.core.test.models.BodilessMatcher;
+import com.azure.core.test.models.CustomMatcher;
+import com.azure.core.test.models.TestProxyRequestMatcher;
+import com.azure.core.test.utils.MockTokenCredential;
 import com.azure.core.util.Configuration;
 import com.azure.core.util.Context;
 import com.azure.identity.ClientSecretCredentialBuilder;
@@ -27,8 +30,10 @@ import com.azure.security.keyvault.keys.cryptography.models.DecryptResult;
 import com.azure.security.keyvault.keys.cryptography.models.EncryptParameters;
 import com.azure.security.keyvault.keys.cryptography.models.EncryptResult;
 import com.azure.security.keyvault.keys.cryptography.models.EncryptionAlgorithm;
+import com.azure.security.keyvault.keys.cryptography.models.SignatureAlgorithm;
 import com.azure.security.keyvault.keys.implementation.KeyVaultCredentialPolicy;
 import com.azure.security.keyvault.keys.models.JsonWebKey;
+import com.azure.security.keyvault.keys.models.KeyCurveName;
 import com.azure.security.keyvault.keys.models.KeyOperation;
 import org.junit.jupiter.api.Test;
 
@@ -44,7 +49,10 @@ import java.security.spec.RSAPrivateCrtKeySpec;
 import java.security.spec.RSAPublicKeySpec;
 import java.time.Duration;
 import java.util.ArrayList;
+import java.util.Collections;
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 import java.util.Objects;
 import java.util.function.Consumer;
 
@@ -52,7 +60,7 @@ import static org.junit.jupiter.api.Assertions.assertArrayEquals;
 import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.fail;
 
-public abstract class CryptographyClientTestBase extends TestBase {
+public abstract class CryptographyClientTestBase extends TestProxyTestBase {
     private static final String SDK_NAME = "client_name";
     private static final String SDK_VERSION = "client_version";
     protected boolean isHsmEnabled = false;
@@ -64,10 +72,11 @@ public abstract class CryptographyClientTestBase extends TestBase {
     }
 
     void beforeTestSetup() {
+        KeyVaultCredentialPolicy.clearCache();
     }
 
     HttpPipeline getHttpPipeline(HttpClient httpClient)   {
-        TokenCredential credential = null;
+        TokenCredential credential;
 
         if (!interceptorManager.isPlaybackMode()) {
             String clientId = Configuration.getGlobalConfiguration().get("AZURE_KEYVAULT_CLIENT_ID");
@@ -84,6 +93,13 @@ public abstract class CryptographyClientTestBase extends TestBase {
                 .tenantId(tenantId)
                 .additionallyAllowedTenants("*")
                 .build();
+        } else {
+            credential = new MockTokenCredential();
+
+            List<TestProxyRequestMatcher> customMatchers = new ArrayList<>();
+            customMatchers.add(new BodilessMatcher());
+            customMatchers.add(new CustomMatcher().setExcludedHeaders(Collections.singletonList("Authorization")));
+            interceptorManager.addMatchers(customMatchers);
         }
 
         // Closest to API goes first, closest to wire goes last.
@@ -96,22 +112,21 @@ public abstract class CryptographyClientTestBase extends TestBase {
         policies.add(new RetryPolicy(strategy));
 
         if (credential != null) {
-            policies.add(new KeyVaultCredentialPolicy(credential, false));
+            // If in playback mode, disable the challenge resource verification.
+            policies.add(new KeyVaultCredentialPolicy(credential, interceptorManager.isPlaybackMode()));
         }
 
         HttpPolicyProviders.addAfterRetryPolicies(policies);
         policies.add(new HttpLoggingPolicy(new HttpLogOptions().setLogLevel(HttpLogDetailLevel.BODY_AND_HEADERS)));
 
-        if (getTestMode() == TestMode.RECORD) {
+        if (interceptorManager.isRecordMode()) {
             policies.add(interceptorManager.getRecordPolicy());
         }
 
-        HttpPipeline pipeline = new HttpPipelineBuilder()
+        return new HttpPipelineBuilder()
             .policies(policies.toArray(new HttpPipelinePolicy[0]))
-            .httpClient(httpClient == null ? interceptorManager.getPlaybackClient() : httpClient)
+            .httpClient(interceptorManager.isPlaybackMode() ? interceptorManager.getPlaybackClient() : httpClient)
             .build();
-
-        return pipeline;
     }
 
     static CryptographyClient initializeCryptographyClient(JsonWebKey key) {
@@ -152,7 +167,77 @@ public abstract class CryptographyClientTestBase extends TestBase {
     public abstract void signVerifyEc(HttpClient httpClient, CryptographyServiceVersion serviceVersion) throws NoSuchAlgorithmException, InvalidAlgorithmParameterException;
 
     @Test
-    public abstract void signVerifyEcLocal() throws NoSuchAlgorithmException, InvalidAlgorithmParameterException;
+    public abstract void signDataVerifyEc(HttpClient httpClient, CryptographyServiceVersion serviceVersion) throws NoSuchAlgorithmException, InvalidAlgorithmParameterException;
+
+    void signVerifyEcRunner(Consumer<SignVerifyEcData> testRunner) {
+        Map<KeyCurveName, SignatureAlgorithm> curveToSignature = new HashMap<>();
+
+        curveToSignature.put(KeyCurveName.P_256, SignatureAlgorithm.ES256);
+        curveToSignature.put(KeyCurveName.P_384, SignatureAlgorithm.ES384);
+        curveToSignature.put(KeyCurveName.P_521, SignatureAlgorithm.ES512);
+        curveToSignature.put(KeyCurveName.P_256K, SignatureAlgorithm.ES256K);
+
+        Map<KeyCurveName, String> curveToSpec = new HashMap<>();
+
+        curveToSpec.put(KeyCurveName.P_256, "secp256r1");
+        curveToSpec.put(KeyCurveName.P_384, "secp384r1");
+        curveToSpec.put(KeyCurveName.P_521, "secp521r1");
+        curveToSpec.put(KeyCurveName.P_256K, "secp256k1");
+
+        Map<KeyCurveName, String> messageDigestAlgorithm = new HashMap<>();
+
+        messageDigestAlgorithm.put(KeyCurveName.P_256, "SHA-256");
+        messageDigestAlgorithm.put(KeyCurveName.P_384, "SHA-384");
+        messageDigestAlgorithm.put(KeyCurveName.P_521, "SHA-512");
+        messageDigestAlgorithm.put(KeyCurveName.P_256K, "SHA-256");
+
+        List<KeyCurveName> curveList = new ArrayList<>();
+
+        curveList.add(KeyCurveName.P_256);
+        curveList.add(KeyCurveName.P_384);
+        curveList.add(KeyCurveName.P_521);
+        curveList.add(KeyCurveName.P_256K);
+
+
+        for (KeyCurveName curve : curveList) {
+            testRunner.accept(new SignVerifyEcData(curve, curveToSignature, curveToSpec, messageDigestAlgorithm));
+        }
+    }
+
+    protected static class SignVerifyEcData {
+        private final KeyCurveName curve;
+        private final Map<KeyCurveName, SignatureAlgorithm> curveToSignature;
+        private final Map<KeyCurveName, String> curveToSpec;
+        private final Map<KeyCurveName, String> messageDigestAlgorithm;
+
+        public SignVerifyEcData(KeyCurveName curve, Map<KeyCurveName, SignatureAlgorithm> curveToSignature,
+                                Map<KeyCurveName, String> curveToSpec,
+                                Map<KeyCurveName, String> messageDigestAlgorithm) {
+            this.curve = curve;
+            this.curveToSignature = curveToSignature;
+            this.curveToSpec = curveToSpec;
+            this.messageDigestAlgorithm = messageDigestAlgorithm;
+        }
+
+        public KeyCurveName getCurve() {
+            return curve;
+        }
+
+        public Map<KeyCurveName, SignatureAlgorithm> getCurveToSignature() {
+            return curveToSignature;
+        }
+
+        public Map<KeyCurveName, String> getCurveToSpec() {
+            return curveToSpec;
+        }
+
+        public Map<KeyCurveName, String> getMessageDigestAlgorithm() {
+            return messageDigestAlgorithm;
+        }
+    }
+
+    @Test
+    public abstract void signDataVerifyEcLocal() throws NoSuchAlgorithmException, InvalidAlgorithmParameterException;
 
     @Test
     public abstract void wrapUnwrapRsa(HttpClient httpClient, CryptographyServiceVersion serviceVersion) throws Exception;
@@ -162,6 +247,9 @@ public abstract class CryptographyClientTestBase extends TestBase {
 
     @Test
     public abstract void signVerifyRsa(HttpClient httpClient, CryptographyServiceVersion serviceVersion) throws Exception;
+
+    @Test
+    public abstract void signDataVerifyRsa(HttpClient httpClient, CryptographyServiceVersion serviceVersion) throws Exception;
 
     private static KeyPair getWellKnownKey() throws Exception {
         BigInteger modulus = new BigInteger("27266783713040163753473734334021230592631652450892850648620119914958066181400432364213298181846462385257448168605902438305568194683691563208578540343969522651422088760509452879461613852042845039552547834002168737350264189810815735922734447830725099163869215360401162450008673869707774119785881115044406101346450911054819448375712432746968301739007624952483347278954755460152795801894283389540036131881712321193750961817346255102052653789197325341350920441746054233522546543768770643593655942246891652634114922277138937273034902434321431672058220631825053788262810480543541597284376261438324665363067125951152574540779");
@@ -222,8 +310,8 @@ public abstract class CryptographyClientTestBase extends TestBase {
 
     public String getEndpoint() {
         final String endpoint = runManagedHsmTest
-            ? Configuration.getGlobalConfiguration().get("AZURE_MANAGEDHSM_ENDPOINT", "http://localhost:8080")
-            : Configuration.getGlobalConfiguration().get("AZURE_KEYVAULT_ENDPOINT", "http://localhost:8080");
+            ? Configuration.getGlobalConfiguration().get("AZURE_MANAGEDHSM_ENDPOINT", "https://localhost:8080")
+            : Configuration.getGlobalConfiguration().get("AZURE_KEYVAULT_ENDPOINT", "https://localhost:8080");
 
         Objects.requireNonNull(endpoint);
 

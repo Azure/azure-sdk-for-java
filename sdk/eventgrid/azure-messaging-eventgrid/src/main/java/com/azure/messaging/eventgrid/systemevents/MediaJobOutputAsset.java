@@ -22,6 +22,9 @@ public final class MediaJobOutputAsset extends MediaJobOutput {
     @JsonProperty(value = "assetName")
     private String assetName;
 
+    /** Creates an instance of MediaJobOutputAsset class. */
+    public MediaJobOutputAsset() {}
+
     /**
      * Get the assetName property: Gets the Job output asset name.
      *

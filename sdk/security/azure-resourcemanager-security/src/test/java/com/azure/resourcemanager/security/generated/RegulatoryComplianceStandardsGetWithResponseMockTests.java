@@ -32,7 +32,7 @@ public final class RegulatoryComplianceStandardsGetWithResponseMockTests {
         ArgumentCaptor<HttpRequest> httpRequest = ArgumentCaptor.forClass(HttpRequest.class);
 
         String responseStr =
-            "{\"properties\":{\"state\":\"Failed\",\"passedControls\":261947956,\"failedControls\":1410035498,\"skippedControls\":456257514,\"unsupportedControls\":1165820377},\"id\":\"ivcbkutpumltwj\",\"name\":\"lu\",\"type\":\"ynbpvzlqywauy\"}";
+            "{\"properties\":{\"state\":\"Passed\",\"passedControls\":1731687538,\"failedControls\":1363649991,\"skippedControls\":453247963,\"unsupportedControls\":1503663605},\"id\":\"lriqbyokvjgbzs\",\"name\":\"e\",\"type\":\"rsltt\"}";
 
         Mockito.when(httpResponse.getStatusCode()).thenReturn(200);
         Mockito.when(httpResponse.getHeaders()).thenReturn(new HttpHeaders());
@@ -61,8 +61,11 @@ public final class RegulatoryComplianceStandardsGetWithResponseMockTests {
                     new AzureProfile("", "", AzureEnvironment.AZURE));
 
         RegulatoryComplianceStandard response =
-            manager.regulatoryComplianceStandards().getWithResponse("r", com.azure.core.util.Context.NONE).getValue();
+            manager
+                .regulatoryComplianceStandards()
+                .getWithResponse("qwulynkgfcfdru", com.azure.core.util.Context.NONE)
+                .getValue();
 
-        Assertions.assertEquals(State.FAILED, response.state());
+        Assertions.assertEquals(State.PASSED, response.state());
     }
 }

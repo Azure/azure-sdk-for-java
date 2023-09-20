@@ -33,7 +33,9 @@ import java.util.Arrays;
 import java.util.List;
 
 public class Configuration {
-
+    public static final String SUCCESS_COUNTER_METER_NAME = "#Successful Operations";
+    public static final String FAILURE_COUNTER_METER_NAME = "#Unsuccessful Operations";
+    public static final String LATENCY_METER_NAME = "Latency";
     public final static String DEFAULT_PARTITION_KEY_PATH = "/pk";
     private final static int DEFAULT_GRAPHITE_SERVER_PORT = 2003;
     private MeterRegistry azureMonitorMeterRegistry;
@@ -115,6 +117,22 @@ public class Configuration {
 
     @Parameter(names = "-tupleSize", description = "Number of cosmos identity tuples to be queried using readMany")
     private int tupleSize = 1;
+
+    @Parameter(names = "-isProactiveConnectionManagementEnabled", description = "Mode which denotes whether connections are proactively established during warm up.")
+    private String isProactiveConnectionManagementEnabled = String.valueOf(false);
+
+    @Parameter(names = "-isUseUnWarmedUpContainer", description = "Mode which denotes whether to use a container with no warmed up connections. NOTE: " +
+            "To be used when isProactiveConnectionManagementEnabled is set to false and isUseUnWarmedUpContainer is set to true")
+    private String isUseUnWarmedUpContainer = String.valueOf(false);
+
+    @Parameter(names = "-proactiveConnectionRegionsCount", description = "Number of regions where endpoints are to be proactively connected to.")
+    private int proactiveConnectionRegionsCount = 1;
+
+    @Parameter(names = "-minConnectionPoolSizePerEndpoint", description = "Minimum number of connections to establish per endpoint for proactive connection management")
+    private int minConnectionPoolSizePerEndpoint = 0;
+
+    @Parameter(names = "-aggressiveWarmupDuration", description = "The duration for which proactive connections are aggressively established", converter = DurationConverter.class)
+    private Duration aggressiveWarmupDuration = Duration.ZERO;
 
     @Parameter(names = "-operation", description = "Type of Workload:\n"
         + "\tReadThroughput- run a READ workload that prints only throughput *\n"
@@ -213,6 +231,21 @@ public class Configuration {
 
     @Parameter(names = "-nonPointLatencyThresholdMs", description = "Latency threshold for non-point operations")
     private int nonPointLatencyThresholdMs = -1;
+
+    @Parameter(names = "-testVariationName", description = "An identifier for the test variation")
+    private String testVariationName = "";
+
+    @Parameter(names = "-branchName", description = "The branch name form where the source code being tested was built")
+    private String branchName = "";
+
+    @Parameter(names = "-commitId", description = "A commit identifier showing the version of the source code being tested")
+    private String commitId = "";
+
+    @Parameter(names = "-resultUploadDatabase", description = "The name of the database into which to upload the results")
+    private String resultUploadDatabase = "";
+
+    @Parameter(names = "-resultUploadContainer", description = "AThe name of the container inot which to upload the results")
+    private String resultUploadContainer = "";
 
     public enum Environment {
         Daily,   // This is the CTL environment where we run the workload for a fixed number of hours
@@ -468,6 +501,18 @@ public class Configuration {
         }
     }
 
+    public String getTestVariationName() {
+        return this.testVariationName;
+    }
+
+    public String getBranchName() {
+        return this.branchName;
+    }
+
+    public String getCommitId() {
+        return this.commitId;
+    }
+
     public int getNumberOfCollectionForCtl(){
         return this.numberOfCollectionForCtl;
     }
@@ -559,6 +604,34 @@ public class Configuration {
         return Duration.ofMillis(this.nonPointLatencyThresholdMs);
     }
 
+    public boolean isProactiveConnectionManagementEnabled() {
+        return Boolean.parseBoolean(isProactiveConnectionManagementEnabled);
+    }
+
+    public boolean isUseUnWarmedUpContainer() {
+        return Boolean.parseBoolean(isUseUnWarmedUpContainer);
+    }
+
+    public Integer getProactiveConnectionRegionsCount() {
+        return proactiveConnectionRegionsCount;
+    }
+
+    public Duration getAggressiveWarmupDuration() {
+        return aggressiveWarmupDuration;
+    }
+
+    public Integer getMinConnectionPoolSizePerEndpoint() {
+        return minConnectionPoolSizePerEndpoint;
+    }
+
+    public String getResultUploadDatabase() {
+        return Strings.emptyToNull(resultUploadDatabase);
+    }
+
+    public String getResultUploadContainer() {
+        return Strings.emptyToNull(resultUploadContainer);
+    }
+
     public void tryGetValuesFromSystem() {
         serviceEndpoint = StringUtils.defaultString(Strings.emptyToNull(System.getenv().get("SERVICE_END_POINT")),
                                                     serviceEndpoint);
@@ -620,6 +693,21 @@ public class Configuration {
         tupleSize = Integer.parseInt(
                 StringUtils.defaultString(Strings.emptyToNull(System.getenv().get("COSMOS_IDENTITY_TUPLE_SIZE")),
                         Integer.toString(tupleSize)));
+
+        testVariationName = StringUtils.defaultString(Strings.emptyToNull(System.getenv().get(
+            "COSMOS_TEST_VARIATION_NAME")), testVariationName);
+
+        branchName = StringUtils.defaultString(Strings.emptyToNull(System.getenv().get(
+            "COSMOS_BRANCH_NAME")), branchName);
+
+        commitId = StringUtils.defaultString(Strings.emptyToNull(System.getenv().get(
+            "COSMOS_COMMIT_ID")), commitId);
+
+        resultUploadDatabase = StringUtils.defaultString(Strings.emptyToNull(System.getenv().get(
+            "COSMOS_RESULT_UPLOAD_DATABASE")), resultUploadDatabase);
+
+        resultUploadContainer = StringUtils.defaultString(Strings.emptyToNull(System.getenv().get(
+            "COSMOS_RESULT_UPLOAD_CONTAINER")), resultUploadContainer);
     }
 
     private synchronized MeterRegistry azureMonitorMeterRegistry(String instrumentationKey) {

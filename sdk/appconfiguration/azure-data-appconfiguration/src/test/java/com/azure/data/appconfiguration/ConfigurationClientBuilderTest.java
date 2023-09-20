@@ -14,7 +14,7 @@ import com.azure.core.http.policy.HttpLogOptions;
 import com.azure.core.http.policy.RetryOptions;
 import com.azure.core.http.policy.RetryPolicy;
 import com.azure.core.http.policy.TimeoutPolicy;
-import com.azure.core.test.TestBase;
+import com.azure.core.test.TestProxyTestBase;
 import com.azure.core.test.annotation.DoNotRecord;
 import com.azure.core.test.http.MockHttpResponse;
 import com.azure.core.util.ClientOptions;
@@ -41,7 +41,7 @@ import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertThrows;
 import static org.junit.jupiter.api.Assertions.assertTrue;
 
-public class ConfigurationClientBuilderTest extends TestBase {
+public class ConfigurationClientBuilderTest extends TestProxyTestBase {
     private static final String AZURE_APPCONFIG_CONNECTION_STRING = "AZURE_APPCONFIG_CONNECTION_STRING";
     private static final String DEFAULT_DOMAIN_NAME = ".azconfig.io";
     private static final String NAMESPACE_NAME = "dummyNamespaceName";
@@ -188,11 +188,15 @@ public class ConfigurationClientBuilderTest extends TestBase {
             .connectionString(connectionString)
             .retryPolicy(new RetryPolicy())
             .httpLogOptions(new HttpLogOptions().setLogLevel(HttpLogDetailLevel.BODY_AND_HEADERS))
-            .serviceVersion(null)
-            .httpClient(httpClient == null ? interceptorManager.getPlaybackClient() : httpClient);
+            .serviceVersion(null);
 
-        if (!interceptorManager.isPlaybackMode()) {
-            clientBuilder.addPolicy(interceptorManager.getRecordPolicy());
+        if (interceptorManager.isPlaybackMode()) {
+            clientBuilder.httpClient(interceptorManager.getPlaybackClient());
+        }
+        if (interceptorManager.isRecordMode()) {
+            clientBuilder
+                .httpClient(httpClient)
+                .addPolicy(interceptorManager.getRecordPolicy());
         }
 
         ConfigurationSetting addedSetting = clientBuilder.buildClient().setConfigurationSetting(key, null, value);
@@ -214,17 +218,20 @@ public class ConfigurationClientBuilderTest extends TestBase {
             .configuration(Configuration.getGlobalConfiguration())
             .httpLogOptions(new HttpLogOptions().setLogLevel(HttpLogDetailLevel.BODY_AND_HEADERS));
 
-        if (!interceptorManager.isPlaybackMode()) {
-            clientBuilder.addPolicy(interceptorManager.getRecordPolicy());
+        if (interceptorManager.isRecordMode()) {
+            clientBuilder
+                .addPolicy(interceptorManager.getRecordPolicy())
+                .httpClient(HttpClient.createDefault());
         }
 
-        HttpClient defaultHttpClient = interceptorManager.isPlaybackMode() ? interceptorManager.getPlaybackClient()
-            : HttpClient.createDefault();
+        if (interceptorManager.isPlaybackMode()) {
+            clientBuilder.httpClient(interceptorManager.getPlaybackClient());
+        }
 
         ConfigurationSetting addedSetting = clientBuilder
-                                                .httpClient(defaultHttpClient)
-                                                .buildClient()
-                                                .setConfigurationSetting(key, null, value);
+            .buildClient()
+            .setConfigurationSetting(key, null, value);
+
         assertEquals(addedSetting.getKey(), key);
         assertEquals(addedSetting.getValue(), value);
     }
@@ -269,8 +276,8 @@ public class ConfigurationClientBuilderTest extends TestBase {
                                                                           .connectionString(FAKE_CONNECTION_STRING);
         ConfigurationClient client = configurationClientBuilder.buildClient();
         final ConfigurationAsyncClient asyncClient = configurationClientBuilder.buildAsyncClient();
-        assertEquals("http://localhost:8080", client.getEndpoint());
-        assertEquals("http://localhost:8080", asyncClient.getEndpoint());
+        assertEquals("https://localhost:8080", client.getEndpoint());
+        assertEquals("https://localhost:8080", asyncClient.getEndpoint());
     }
 
     private static URI getURI(String endpointFormat, String namespace, String domainName) {

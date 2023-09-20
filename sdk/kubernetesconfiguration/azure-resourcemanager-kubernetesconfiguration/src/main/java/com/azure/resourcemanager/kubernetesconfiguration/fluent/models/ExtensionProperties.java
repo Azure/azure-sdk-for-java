@@ -19,30 +19,28 @@ import java.util.Map;
 @Fluent
 public final class ExtensionProperties {
     /*
-     * Type of the Extension, of which this resource is an instance of.  It
-     * must be one of the Extension Types registered with
-     * Microsoft.KubernetesConfiguration by the Extension publisher.
+     * Type of the Extension, of which this resource is an instance of.  It must be one of the Extension Types
+     * registered with Microsoft.KubernetesConfiguration by the Extension publisher.
      */
     @JsonProperty(value = "extensionType")
     private String extensionType;
 
     /*
-     * Flag to note if this extension participates in auto upgrade of minor
-     * version, or not.
+     * Flag to note if this extension participates in auto upgrade of minor version, or not.
      */
     @JsonProperty(value = "autoUpgradeMinorVersion")
     private Boolean autoUpgradeMinorVersion;
 
     /*
-     * ReleaseTrain this extension participates in for auto-upgrade (e.g.
-     * Stable, Preview, etc.) - only if autoUpgradeMinorVersion is 'true'.
+     * ReleaseTrain this extension participates in for auto-upgrade (e.g. Stable, Preview, etc.) - only if
+     * autoUpgradeMinorVersion is 'true'.
      */
     @JsonProperty(value = "releaseTrain")
     private String releaseTrain;
 
     /*
-     * User-specified version of the extension for this extension to 'pin'. To
-     * use 'version', autoUpgradeMinorVersion must be 'false'.
+     * User-specified version of the extension for this extension to 'pin'. To use 'version', autoUpgradeMinorVersion
+     * must be 'false'.
      */
     @JsonProperty(value = "version")
     private String version;
@@ -54,26 +52,24 @@ public final class ExtensionProperties {
     private Scope scope;
 
     /*
-     * Configuration settings, as name-value pairs for configuring this
-     * extension.
+     * Configuration settings, as name-value pairs for configuring this extension.
      */
     @JsonProperty(value = "configurationSettings")
     @JsonInclude(value = JsonInclude.Include.NON_NULL, content = JsonInclude.Include.ALWAYS)
     private Map<String, String> configurationSettings;
 
     /*
-     * Configuration settings that are sensitive, as name-value pairs for
-     * configuring this extension.
+     * Configuration settings that are sensitive, as name-value pairs for configuring this extension.
      */
     @JsonProperty(value = "configurationProtectedSettings")
     @JsonInclude(value = JsonInclude.Include.NON_NULL, content = JsonInclude.Include.ALWAYS)
     private Map<String, String> configurationProtectedSettings;
 
     /*
-     * Installed version of the extension.
+     * Currently installed version of the extension.
      */
-    @JsonProperty(value = "installedVersion", access = JsonProperty.Access.WRITE_ONLY)
-    private String installedVersion;
+    @JsonProperty(value = "currentVersion", access = JsonProperty.Access.WRITE_ONLY)
+    private String currentVersion;
 
     /*
      * Status of installation of this extension.
@@ -111,6 +107,16 @@ public final class ExtensionProperties {
      */
     @JsonProperty(value = "aksAssignedIdentity")
     private ExtensionPropertiesAksAssignedIdentity aksAssignedIdentity;
+
+    /*
+     * Flag to note if this extension is a system extension
+     */
+    @JsonProperty(value = "isSystemExtension", access = JsonProperty.Access.WRITE_ONLY)
+    private Boolean isSystemExtension;
+
+    /** Creates an instance of ExtensionProperties class. */
+    public ExtensionProperties() {
+    }
 
     /**
      * Get the extensionType property: Type of the Extension, of which this resource is an instance of. It must be one
@@ -265,12 +271,12 @@ public final class ExtensionProperties {
     }
 
     /**
-     * Get the installedVersion property: Installed version of the extension.
+     * Get the currentVersion property: Currently installed version of the extension.
      *
-     * @return the installedVersion value.
+     * @return the currentVersion value.
      */
-    public String installedVersion() {
-        return this.installedVersion;
+    public String currentVersion() {
+        return this.currentVersion;
     }
 
     /**
@@ -347,6 +353,15 @@ public final class ExtensionProperties {
     public ExtensionProperties withAksAssignedIdentity(ExtensionPropertiesAksAssignedIdentity aksAssignedIdentity) {
         this.aksAssignedIdentity = aksAssignedIdentity;
         return this;
+    }
+
+    /**
+     * Get the isSystemExtension property: Flag to note if this extension is a system extension.
+     *
+     * @return the isSystemExtension value.
+     */
+    public Boolean isSystemExtension() {
+        return this.isSystemExtension;
     }
 
     /**

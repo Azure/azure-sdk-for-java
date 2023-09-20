@@ -34,7 +34,7 @@ public final class JitNetworkAccessPoliciesInitiateWithResponseMockTests {
         ArgumentCaptor<HttpRequest> httpRequest = ArgumentCaptor.forClass(HttpRequest.class);
 
         String responseStr =
-            "{\"virtualMachines\":[{\"id\":\"dmmazdnc\",\"ports\":[]},{\"id\":\"dbjp\",\"ports\":[]}],\"startTimeUtc\":\"2021-07-08T17:12:35Z\",\"requestor\":\"zqpxzbawkikcd\",\"justification\":\"hbssdpjeyo\"}";
+            "{\"virtualMachines\":[{\"id\":\"xyrujmt\",\"ports\":[]}],\"startTimeUtc\":\"2021-06-08T04:38:24Z\",\"requestor\":\"s\",\"justification\":\"kyohzix\"}";
 
         Mockito.when(httpResponse.getStatusCode()).thenReturn(202);
         Mockito.when(httpResponse.getHeaders()).thenReturn(new HttpHeaders());
@@ -66,29 +66,32 @@ public final class JitNetworkAccessPoliciesInitiateWithResponseMockTests {
             manager
                 .jitNetworkAccessPolicies()
                 .initiateWithResponse(
-                    "gcigzh",
-                    "gsmgb",
-                    "mt",
+                    "xfqzkvemyzd",
+                    "czaqpqifdbmpt",
+                    "wtxzuisam",
                     new JitNetworkAccessPolicyInitiateRequest()
                         .withVirtualMachines(
                             Arrays
                                 .asList(
                                     new JitNetworkAccessPolicyInitiateVirtualMachine()
-                                        .withId("rqbebjnfveglab")
+                                        .withId("at")
                                         .withPorts(Arrays.asList()),
                                     new JitNetworkAccessPolicyInitiateVirtualMachine()
-                                        .withId("kbiwznhtfgfic")
+                                        .withId("zexroqsqjgh")
                                         .withPorts(Arrays.asList()),
                                     new JitNetworkAccessPolicyInitiateVirtualMachine()
-                                        .withId("yhizpaczmu")
+                                        .withId("thsplwsttxsr")
+                                        .withPorts(Arrays.asList()),
+                                    new JitNetworkAccessPolicyInitiateVirtualMachine()
+                                        .withId("fq")
                                         .withPorts(Arrays.asList())))
-                        .withJustification("akznhokhoitwhr"),
+                        .withJustification("iceovxgzw"),
                     com.azure.core.util.Context.NONE)
                 .getValue();
 
-        Assertions.assertEquals("dmmazdnc", response.virtualMachines().get(0).id());
-        Assertions.assertEquals(OffsetDateTime.parse("2021-07-08T17:12:35Z"), response.startTimeUtc());
-        Assertions.assertEquals("zqpxzbawkikcd", response.requestor());
-        Assertions.assertEquals("hbssdpjeyo", response.justification());
+        Assertions.assertEquals("xyrujmt", response.virtualMachines().get(0).id());
+        Assertions.assertEquals(OffsetDateTime.parse("2021-06-08T04:38:24Z"), response.startTimeUtc());
+        Assertions.assertEquals("s", response.requestor());
+        Assertions.assertEquals("kyohzix", response.justification());
     }
 }

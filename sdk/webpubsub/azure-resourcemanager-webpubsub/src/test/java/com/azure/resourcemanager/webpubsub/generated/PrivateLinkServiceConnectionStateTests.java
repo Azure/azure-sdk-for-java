@@ -14,23 +14,23 @@ public final class PrivateLinkServiceConnectionStateTests {
     public void testDeserialize() throws Exception {
         PrivateLinkServiceConnectionState model =
             BinaryData
-                .fromString("{\"status\":\"Disconnected\",\"description\":\"mnyyazt\",\"actionsRequired\":\"twwrqp\"}")
+                .fromString("{\"status\":\"Rejected\",\"description\":\"eqz\",\"actionsRequired\":\"priolx\"}")
                 .toObject(PrivateLinkServiceConnectionState.class);
-        Assertions.assertEquals(PrivateLinkServiceConnectionStatus.DISCONNECTED, model.status());
-        Assertions.assertEquals("mnyyazt", model.description());
-        Assertions.assertEquals("twwrqp", model.actionsRequired());
+        Assertions.assertEquals(PrivateLinkServiceConnectionStatus.REJECTED, model.status());
+        Assertions.assertEquals("eqz", model.description());
+        Assertions.assertEquals("priolx", model.actionsRequired());
     }
 
     @org.junit.jupiter.api.Test
     public void testSerialize() throws Exception {
         PrivateLinkServiceConnectionState model =
             new PrivateLinkServiceConnectionState()
-                .withStatus(PrivateLinkServiceConnectionStatus.DISCONNECTED)
-                .withDescription("mnyyazt")
-                .withActionsRequired("twwrqp");
+                .withStatus(PrivateLinkServiceConnectionStatus.REJECTED)
+                .withDescription("eqz")
+                .withActionsRequired("priolx");
         model = BinaryData.fromObject(model).toObject(PrivateLinkServiceConnectionState.class);
-        Assertions.assertEquals(PrivateLinkServiceConnectionStatus.DISCONNECTED, model.status());
-        Assertions.assertEquals("mnyyazt", model.description());
-        Assertions.assertEquals("twwrqp", model.actionsRequired());
+        Assertions.assertEquals(PrivateLinkServiceConnectionStatus.REJECTED, model.status());
+        Assertions.assertEquals("eqz", model.description());
+        Assertions.assertEquals("priolx", model.actionsRequired());
     }
 }

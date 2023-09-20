@@ -32,7 +32,7 @@ public final class WorkspaceSettingsListMockTests {
         ArgumentCaptor<HttpRequest> httpRequest = ArgumentCaptor.forClass(HttpRequest.class);
 
         String responseStr =
-            "{\"value\":[{\"properties\":{\"workspaceId\":\"quox\",\"scope\":\"otire\"},\"id\":\"mseobfsxstcyilbv\",\"name\":\"m\",\"type\":\"xcjzlquze\"}]}";
+            "{\"value\":[{\"properties\":{\"workspaceId\":\"kahpqhazynta\",\"scope\":\"ihnco\"},\"id\":\"mip\",\"name\":\"mliqmvlb\",\"type\":\"i\"}]}";
 
         Mockito.when(httpResponse.getStatusCode()).thenReturn(200);
         Mockito.when(httpResponse.getHeaders()).thenReturn(new HttpHeaders());
@@ -62,7 +62,7 @@ public final class WorkspaceSettingsListMockTests {
 
         PagedIterable<WorkspaceSetting> response = manager.workspaceSettings().list(com.azure.core.util.Context.NONE);
 
-        Assertions.assertEquals("quox", response.iterator().next().workspaceId());
-        Assertions.assertEquals("otire", response.iterator().next().scope());
+        Assertions.assertEquals("kahpqhazynta", response.iterator().next().workspaceId());
+        Assertions.assertEquals("ihnco", response.iterator().next().scope());
     }
 }

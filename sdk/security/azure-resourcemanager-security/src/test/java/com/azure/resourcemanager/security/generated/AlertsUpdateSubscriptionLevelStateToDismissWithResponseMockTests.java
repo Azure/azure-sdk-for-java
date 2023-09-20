@@ -58,6 +58,7 @@ public final class AlertsUpdateSubscriptionLevelStateToDismissWithResponseMockTe
 
         manager
             .alerts()
-            .updateSubscriptionLevelStateToDismissWithResponse("clngy", "nhr", com.azure.core.util.Context.NONE);
+            .updateSubscriptionLevelStateToDismissWithResponse(
+                "tkwppthuzd", "rmimrljdpoqfxyem", com.azure.core.util.Context.NONE);
     }
 }

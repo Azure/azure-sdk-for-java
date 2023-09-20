@@ -34,6 +34,10 @@ public final class OperationDefinitionDisplay {
     @JsonProperty(value = "description")
     private String description;
 
+    /** Creates an instance of OperationDefinitionDisplay class. */
+    public OperationDefinitionDisplay() {
+    }
+
     /**
      * Get the provider property: The resource provider name: Microsoft App Configuration.".
      *

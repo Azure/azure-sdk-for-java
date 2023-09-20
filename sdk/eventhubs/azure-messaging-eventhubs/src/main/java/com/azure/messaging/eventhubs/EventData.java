@@ -31,26 +31,14 @@ import static com.azure.core.amqp.AmqpMessageConstant.SEQUENCE_NUMBER_ANNOTATION
 import static java.nio.charset.StandardCharsets.UTF_8;
 
 /**
- * The data structure encapsulating the event being sent-to and received-from Event Hubs. Each Event Hub partition can
- * be visualized as a stream of {@link EventData}. This class is not thread-safe.
- *
- * <p>
- * Here's how AMQP message sections map to {@link EventData}. For reference, the specification can be found here:
- * <a href="http://docs.oasis-open.org/amqp/core/v1.0/os/amqp-core-complete-v1.0-os.pdf">AMQP 1.0 specification</a>
- *
- * <ol>
- * <li>{@link #getProperties()} - AMQPMessage.ApplicationProperties section</li>
- * <li>{@link #getBody()} - if AMQPMessage.Body has Data section</li>
- * </ol>
- *
- * <p>
- * Serializing a received {@link EventData} with AMQP sections other than ApplicationProperties (with primitive Java
- * types) and Data section is not supported.
- * </p>
+ * <p>The data structure encapsulating the event being sent-to and received-from Event Hubs. Each Event Hub partition
+ * can be visualized as a stream of {@link EventData}. This class is not thread-safe.</p>
  *
  * @see EventDataBatch
  * @see EventHubProducerClient
  * @see EventHubProducerAsyncClient
+ *
+ * @see <a href="http://docs.oasis-open.org/amqp/core/v1.0/os/amqp-core-complete-v1.0-os.pdf">AMQP 1.0 specification</a>
  */
 public class EventData extends MessageContent {
     /*
@@ -353,7 +341,8 @@ public class EventData extends MessageContent {
     }
 
     /**
-     * Gets the content type.
+     * Gets the MIME type describing the data contained in the {@link #getBody()}, intended to allow consumers to make
+     * informed decisions for inspecting and processing the event.
      *
      * @return The content type.
      */
@@ -362,7 +351,8 @@ public class EventData extends MessageContent {
     }
 
     /**
-     * Sets the content type.
+     * Sets the MIME type describing the data contained in the {@link #getBody()}, intended to allow consumers to make
+     * informed decisions for inspecting and processing the event.
      *
      * @param contentType The content type.
      *
@@ -374,7 +364,9 @@ public class EventData extends MessageContent {
     }
 
     /**
-     * Gets the correlation id.
+     * Gets an application-defined value that represents the context to use for correlation across one or more
+     * operations.  The identifier is a free-form value and may reflect a unique identity or a shared data element with
+     * significance to the application.
      *
      * @return The correlation id. {@code null} if there is none set.
      */
@@ -384,7 +376,9 @@ public class EventData extends MessageContent {
     }
 
     /**
-     * Sets the correlation id.
+     * Sets an application-defined value that represents the context to use for correlation across one or more
+     * operations.  The identifier is a free-form value and may reflect a unique identity or a shared data element with
+     * significance to the application.
      *
      * @param correlationId The correlation id.
      *
@@ -398,7 +392,8 @@ public class EventData extends MessageContent {
     }
 
     /**
-     * Gets the message id.
+     * Gets an application-defined value that uniquely identifies the event. The identifier is a free-form value and
+     * can reflect a GUID or an identifier derived from the application context.
      *
      * @return The message id. {@code null} if there is none set.
      */
@@ -408,7 +403,8 @@ public class EventData extends MessageContent {
     }
 
     /**
-     * Sets the message id.
+     * Sets an application-defined value that uniquely identifies the event. The identifier is a free-form value and
+     * can reflect a GUID or an identifier derived from the application context.
      *
      * @param messageId The message id.
      *
@@ -422,7 +418,7 @@ public class EventData extends MessageContent {
     }
 
     /**
-     * {@inheritDoc}
+     * True if the object is an {@link EventData} and the binary contents of {@link #getBody()} are equal.
      */
     @Override
     public boolean equals(Object o) {
@@ -439,7 +435,7 @@ public class EventData extends MessageContent {
     }
 
     /**
-     * {@inheritDoc}
+     * Gets a hash of the binary contents in {@link #getBody()}.
      */
     @Override
     public int hashCode() {

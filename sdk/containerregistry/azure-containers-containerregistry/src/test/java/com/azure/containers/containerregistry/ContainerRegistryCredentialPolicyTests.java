@@ -105,7 +105,7 @@ public class ContainerRegistryCredentialPolicyTests {
 
     @SyncAsyncTest
     public void requestNoRetryOnOtherErrorCodes() {
-        ContainerRegistryCredentialsPolicy policy = new ContainerRegistryCredentialsPolicy(this.service);
+        ContainerRegistryCredentialsPolicy policy = new ContainerRegistryCredentialsPolicy(this.service, "foo");
         ContainerRegistryCredentialsPolicy spyPolicy = Mockito.spy(policy);
 
         when(nextPolicy.process()).thenReturn(Mono.just(successResponse));
@@ -135,7 +135,7 @@ public class ContainerRegistryCredentialPolicyTests {
 
     @Test
     public void requestAddBearerTokenToRequest() {
-        ContainerRegistryCredentialsPolicy policy = new ContainerRegistryCredentialsPolicy(this.service);
+        ContainerRegistryCredentialsPolicy policy = new ContainerRegistryCredentialsPolicy(this.service, "foo");
         ContainerRegistryCredentialsPolicy spyPolicy = Mockito.spy(policy);
 
         Boolean onChallenge = spyPolicy.authorizeRequestOnChallenge(this.callContext, this.unauthorizedHttpResponse).block();
@@ -154,12 +154,12 @@ public class ContainerRegistryCredentialPolicyTests {
 
         ContainerRegistryTokenRequestContext requestContext = argument.getValue();
         assertEquals(SERVICENAME, requestContext.getServiceName());
-        assertEquals(SCOPENAME, requestContext.getScope());
+        assertEquals(SCOPENAME, requestContext.getScopes().get(0));
     }
 
     @Test
     public void requestAddBearerTokenToRequestSync() {
-        ContainerRegistryCredentialsPolicy policy = new ContainerRegistryCredentialsPolicy(this.service);
+        ContainerRegistryCredentialsPolicy policy = new ContainerRegistryCredentialsPolicy(this.service, "foo");
         ContainerRegistryCredentialsPolicy spyPolicy = Mockito.spy(policy);
 
         Boolean onChallenge = spyPolicy.authorizeRequestOnChallengeSync(this.callContext, this.unauthorizedHttpResponse);
@@ -178,6 +178,6 @@ public class ContainerRegistryCredentialPolicyTests {
 
         ContainerRegistryTokenRequestContext requestContext = argument.getValue();
         assertEquals(SERVICENAME, requestContext.getServiceName());
-        assertEquals(SCOPENAME, requestContext.getScope());
+        assertEquals(SCOPENAME, requestContext.getScopes().get(0));
     }
 }

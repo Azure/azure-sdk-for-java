@@ -31,7 +31,8 @@ Refer to the instructions in this reference document on how to [configure loggin
 
 Reviewing the HTTP request sent or response received over the wire to/from the Azure App Configuration service can be 
 useful in troubleshooting issues. To enable logging the HTTP request and response payload, the [ConfigurationClient][configuration_client] 
-can be configured as shown below:
+can be configured as shown below. If there is no SLF4J's `Logger` on the class path, set an environment variable 
+[AZURE_LOG_LEVEL][azure_log_level] in your machine to enable logging.
 
 ```java readme-sample-enablehttplogging
 ConfigurationClient configurationClient = new ConfigurationClientBuilder()
@@ -105,7 +106,7 @@ A scenario of receiving HTTP status code 429 response can be found at
 
 Azure App Configuration supports Azure Active Directory authentication. [ConfigurationClientBuilder][configuration_client_builder]
 has method to set the `credential`. To provide a valid credential, you can use `azure-identity` dependency. For more 
-details on getting started, refer to the [README][how_to_create_appconfig_client]of Azure App Configuration library. 
+details on getting started, refer to the [README][how_to_create_appconfig_client] of Azure App Configuration library. 
 You can also refer to the [Azure Identity documentation][identity_doc] for more details on the various types of 
 credential supported in `azure-identity`.
 
@@ -124,6 +125,7 @@ If you have network issues, please take a look at [troubleshooting network issue
 Additional information on ways to reach out for support can be found in the [SUPPORT.md][support] at the root of the repo.
 
 <!-- Links -->
+[azure_log_level]: https://learn.microsoft.com/azure/developer/java/sdk/logging-overview#default-logger-for-temporary-debugging
 [best_practice_samples]: https://learn.microsoft.com/azure/azure-app-configuration/howto-best-practices
 [configuration_client]: https://learn.microsoft.com/java/api/com.azure.data.appconfiguration.configurationclient?view=azure-java-stable
 [configuration_client_builder]: https://learn.microsoft.com/java/api/com.azure.data.appconfiguration.configurationclientbuilder?view=azure-java-stable

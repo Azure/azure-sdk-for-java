@@ -9,11 +9,16 @@ import com.azure.core.annotation.ServiceMethod;
 import com.azure.core.http.rest.PagedFlux;
 import com.azure.core.http.rest.PagedIterable;
 import com.azure.core.http.rest.Response;
+import com.azure.core.management.polling.PollResult;
 import com.azure.core.util.Context;
+import com.azure.core.util.polling.PollerFlux;
+import com.azure.core.util.polling.SyncPoller;
 import com.azure.resourcemanager.resources.fluent.models.TagDetailsInner;
 import com.azure.resourcemanager.resources.fluent.models.TagValueInner;
 import com.azure.resourcemanager.resources.fluent.models.TagsResourceInner;
 import com.azure.resourcemanager.resources.models.TagsPatchResource;
+import java.nio.ByteBuffer;
+import reactor.core.publisher.Flux;
 import reactor.core.publisher.Mono;
 
 /** An instance of this class provides access to all the operations defined in TagOperationsClient. */
@@ -335,8 +340,59 @@ public interface TagOperationsClient {
      *     of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    Mono<Response<TagsResourceInner>> createOrUpdateAtScopeWithResponseAsync(
+    Mono<Response<Flux<ByteBuffer>>> createOrUpdateAtScopeWithResponseAsync(String scope, TagsResourceInner parameters);
+
+    /**
+     * Creates or updates the entire set of tags on a resource or subscription.
+     *
+     * <p>This operation allows adding or replacing the entire set of tags on the specified resource or subscription.
+     * The specified entity can have a maximum of 50 tags.
+     *
+     * @param scope The resource scope.
+     * @param parameters Wrapper resource for tags API requests and responses.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return the {@link PollerFlux} for polling of wrapper resource for tags API requests and responses.
+     */
+    @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
+    PollerFlux<PollResult<TagsResourceInner>, TagsResourceInner> beginCreateOrUpdateAtScopeAsync(
         String scope, TagsResourceInner parameters);
+
+    /**
+     * Creates or updates the entire set of tags on a resource or subscription.
+     *
+     * <p>This operation allows adding or replacing the entire set of tags on the specified resource or subscription.
+     * The specified entity can have a maximum of 50 tags.
+     *
+     * @param scope The resource scope.
+     * @param parameters Wrapper resource for tags API requests and responses.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return the {@link SyncPoller} for polling of wrapper resource for tags API requests and responses.
+     */
+    @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
+    SyncPoller<PollResult<TagsResourceInner>, TagsResourceInner> beginCreateOrUpdateAtScope(
+        String scope, TagsResourceInner parameters);
+
+    /**
+     * Creates or updates the entire set of tags on a resource or subscription.
+     *
+     * <p>This operation allows adding or replacing the entire set of tags on the specified resource or subscription.
+     * The specified entity can have a maximum of 50 tags.
+     *
+     * @param scope The resource scope.
+     * @param parameters Wrapper resource for tags API requests and responses.
+     * @param context The context to associate with this operation.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return the {@link SyncPoller} for polling of wrapper resource for tags API requests and responses.
+     */
+    @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
+    SyncPoller<PollResult<TagsResourceInner>, TagsResourceInner> beginCreateOrUpdateAtScope(
+        String scope, TagsResourceInner parameters, Context context);
 
     /**
      * Creates or updates the entire set of tags on a resource or subscription.
@@ -362,15 +418,13 @@ public interface TagOperationsClient {
      *
      * @param scope The resource scope.
      * @param parameters Wrapper resource for tags API requests and responses.
-     * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return wrapper resource for tags API requests and responses along with {@link Response}.
+     * @return wrapper resource for tags API requests and responses.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    Response<TagsResourceInner> createOrUpdateAtScopeWithResponse(
-        String scope, TagsResourceInner parameters, Context context);
+    TagsResourceInner createOrUpdateAtScope(String scope, TagsResourceInner parameters);
 
     /**
      * Creates or updates the entire set of tags on a resource or subscription.
@@ -380,13 +434,14 @@ public interface TagOperationsClient {
      *
      * @param scope The resource scope.
      * @param parameters Wrapper resource for tags API requests and responses.
+     * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return wrapper resource for tags API requests and responses.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    TagsResourceInner createOrUpdateAtScope(String scope, TagsResourceInner parameters);
+    TagsResourceInner createOrUpdateAtScope(String scope, TagsResourceInner parameters, Context context);
 
     /**
      * Selectively updates the set of tags on a resource or subscription.
@@ -406,7 +461,68 @@ public interface TagOperationsClient {
      *     of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    Mono<Response<TagsResourceInner>> updateAtScopeWithResponseAsync(String scope, TagsPatchResource parameters);
+    Mono<Response<Flux<ByteBuffer>>> updateAtScopeWithResponseAsync(String scope, TagsPatchResource parameters);
+
+    /**
+     * Selectively updates the set of tags on a resource or subscription.
+     *
+     * <p>This operation allows replacing, merging or selectively deleting tags on the specified resource or
+     * subscription. The specified entity can have a maximum of 50 tags at the end of the operation. The 'replace'
+     * option replaces the entire set of existing tags with a new set. The 'merge' option allows adding tags with new
+     * names and updating the values of tags with existing names. The 'delete' option allows selectively deleting tags
+     * based on given names or name/value pairs.
+     *
+     * @param scope The resource scope.
+     * @param parameters Wrapper resource for tags patch API request only.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return the {@link PollerFlux} for polling of wrapper resource for tags API requests and responses.
+     */
+    @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
+    PollerFlux<PollResult<TagsResourceInner>, TagsResourceInner> beginUpdateAtScopeAsync(
+        String scope, TagsPatchResource parameters);
+
+    /**
+     * Selectively updates the set of tags on a resource or subscription.
+     *
+     * <p>This operation allows replacing, merging or selectively deleting tags on the specified resource or
+     * subscription. The specified entity can have a maximum of 50 tags at the end of the operation. The 'replace'
+     * option replaces the entire set of existing tags with a new set. The 'merge' option allows adding tags with new
+     * names and updating the values of tags with existing names. The 'delete' option allows selectively deleting tags
+     * based on given names or name/value pairs.
+     *
+     * @param scope The resource scope.
+     * @param parameters Wrapper resource for tags patch API request only.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return the {@link SyncPoller} for polling of wrapper resource for tags API requests and responses.
+     */
+    @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
+    SyncPoller<PollResult<TagsResourceInner>, TagsResourceInner> beginUpdateAtScope(
+        String scope, TagsPatchResource parameters);
+
+    /**
+     * Selectively updates the set of tags on a resource or subscription.
+     *
+     * <p>This operation allows replacing, merging or selectively deleting tags on the specified resource or
+     * subscription. The specified entity can have a maximum of 50 tags at the end of the operation. The 'replace'
+     * option replaces the entire set of existing tags with a new set. The 'merge' option allows adding tags with new
+     * names and updating the values of tags with existing names. The 'delete' option allows selectively deleting tags
+     * based on given names or name/value pairs.
+     *
+     * @param scope The resource scope.
+     * @param parameters Wrapper resource for tags patch API request only.
+     * @param context The context to associate with this operation.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return the {@link SyncPoller} for polling of wrapper resource for tags API requests and responses.
+     */
+    @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
+    SyncPoller<PollResult<TagsResourceInner>, TagsResourceInner> beginUpdateAtScope(
+        String scope, TagsPatchResource parameters, Context context);
 
     /**
      * Selectively updates the set of tags on a resource or subscription.
@@ -438,14 +554,13 @@ public interface TagOperationsClient {
      *
      * @param scope The resource scope.
      * @param parameters Wrapper resource for tags patch API request only.
-     * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return wrapper resource for tags API requests and responses along with {@link Response}.
+     * @return wrapper resource for tags API requests and responses.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    Response<TagsResourceInner> updateAtScopeWithResponse(String scope, TagsPatchResource parameters, Context context);
+    TagsResourceInner updateAtScope(String scope, TagsPatchResource parameters);
 
     /**
      * Selectively updates the set of tags on a resource or subscription.
@@ -458,13 +573,14 @@ public interface TagOperationsClient {
      *
      * @param scope The resource scope.
      * @param parameters Wrapper resource for tags patch API request only.
+     * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return wrapper resource for tags API requests and responses.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    TagsResourceInner updateAtScope(String scope, TagsPatchResource parameters);
+    TagsResourceInner updateAtScope(String scope, TagsPatchResource parameters, Context context);
 
     /**
      * Gets the entire set of tags on a resource or subscription.
@@ -526,7 +642,44 @@ public interface TagOperationsClient {
      * @return the {@link Response} on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    Mono<Response<Void>> deleteAtScopeWithResponseAsync(String scope);
+    Mono<Response<Flux<ByteBuffer>>> deleteAtScopeWithResponseAsync(String scope);
+
+    /**
+     * Deletes the entire set of tags on a resource or subscription.
+     *
+     * @param scope The resource scope.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return the {@link PollerFlux} for polling of long-running operation.
+     */
+    @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
+    PollerFlux<PollResult<Void>, Void> beginDeleteAtScopeAsync(String scope);
+
+    /**
+     * Deletes the entire set of tags on a resource or subscription.
+     *
+     * @param scope The resource scope.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return the {@link SyncPoller} for polling of long-running operation.
+     */
+    @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
+    SyncPoller<PollResult<Void>, Void> beginDeleteAtScope(String scope);
+
+    /**
+     * Deletes the entire set of tags on a resource or subscription.
+     *
+     * @param scope The resource scope.
+     * @param context The context to associate with this operation.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return the {@link SyncPoller} for polling of long-running operation.
+     */
+    @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
+    SyncPoller<PollResult<Void>, Void> beginDeleteAtScope(String scope, Context context);
 
     /**
      * Deletes the entire set of tags on a resource or subscription.
@@ -544,23 +697,22 @@ public interface TagOperationsClient {
      * Deletes the entire set of tags on a resource or subscription.
      *
      * @param scope The resource scope.
-     * @param context The context to associate with this operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the {@link Response}.
-     */
-    @ServiceMethod(returns = ReturnType.SINGLE)
-    Response<Void> deleteAtScopeWithResponse(String scope, Context context);
-
-    /**
-     * Deletes the entire set of tags on a resource or subscription.
-     *
-     * @param scope The resource scope.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     void deleteAtScope(String scope);
+
+    /**
+     * Deletes the entire set of tags on a resource or subscription.
+     *
+     * @param scope The resource scope.
+     * @param context The context to associate with this operation.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    void deleteAtScope(String scope, Context context);
 }

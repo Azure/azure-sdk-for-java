@@ -16,6 +16,12 @@ public final class DefenderForDatabasesGcpOfferingArcAutoProvisioning {
     @JsonProperty(value = "enabled")
     private Boolean enabled;
 
+    /*
+     * Configuration for servers Arc auto provisioning
+     */
+    @JsonProperty(value = "configuration")
+    private DefenderForDatabasesGcpOfferingArcAutoProvisioningConfiguration configuration;
+
     /** Creates an instance of DefenderForDatabasesGcpOfferingArcAutoProvisioning class. */
     public DefenderForDatabasesGcpOfferingArcAutoProvisioning() {
     }
@@ -41,10 +47,34 @@ public final class DefenderForDatabasesGcpOfferingArcAutoProvisioning {
     }
 
     /**
+     * Get the configuration property: Configuration for servers Arc auto provisioning.
+     *
+     * @return the configuration value.
+     */
+    public DefenderForDatabasesGcpOfferingArcAutoProvisioningConfiguration configuration() {
+        return this.configuration;
+    }
+
+    /**
+     * Set the configuration property: Configuration for servers Arc auto provisioning.
+     *
+     * @param configuration the configuration value to set.
+     * @return the DefenderForDatabasesGcpOfferingArcAutoProvisioning object itself.
+     */
+    public DefenderForDatabasesGcpOfferingArcAutoProvisioning withConfiguration(
+        DefenderForDatabasesGcpOfferingArcAutoProvisioningConfiguration configuration) {
+        this.configuration = configuration;
+        return this;
+    }
+
+    /**
      * Validates the instance.
      *
      * @throws IllegalArgumentException thrown if the instance is not valid.
      */
     public void validate() {
+        if (configuration() != null) {
+            configuration().validate();
+        }
     }
 }

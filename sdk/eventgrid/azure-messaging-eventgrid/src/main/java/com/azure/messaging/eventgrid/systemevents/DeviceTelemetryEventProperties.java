@@ -18,8 +18,7 @@ public class DeviceTelemetryEventProperties {
     private Object body;
 
     /*
-     * Application properties are user-defined strings that can be added to the
-     * message. These fields are optional.
+     * Application properties are user-defined strings that can be added to the message. These fields are optional.
      */
     @JsonProperty(value = "properties")
     private Map<String, String> properties;
@@ -29,6 +28,9 @@ public class DeviceTelemetryEventProperties {
      */
     @JsonProperty(value = "systemProperties")
     private Map<String, String> systemProperties;
+
+    /** Creates an instance of DeviceTelemetryEventProperties class. */
+    public DeviceTelemetryEventProperties() {}
 
     /**
      * Get the body property: The content of the message from the device.

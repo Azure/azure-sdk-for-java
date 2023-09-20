@@ -71,6 +71,9 @@ public final class NamespaceProperties {
             namespace = "http://schemas.microsoft.com/netservices/2010/10/servicebus/connect")
     private NamespaceType namespaceType;
 
+    /** Creates an instance of NamespaceProperties class. */
+    public NamespaceProperties() {}
+
     /**
      * Get the alias property: Alias for the geo-disaster recovery Service Bus namespace.
      *

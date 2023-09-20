@@ -20,6 +20,14 @@ public final class AccessRights extends ExpandableStringEnum<AccessRights> {
     public static final AccessRights LISTEN = fromString("Listen");
 
     /**
+     * Creates a new instance of AccessRights value.
+     *
+     * @deprecated Use the {@link #fromString(String)} factory method.
+     */
+    @Deprecated
+    public AccessRights() {}
+
+    /**
      * Creates or finds a AccessRights from its string representation.
      *
      * @param name a name to look for.

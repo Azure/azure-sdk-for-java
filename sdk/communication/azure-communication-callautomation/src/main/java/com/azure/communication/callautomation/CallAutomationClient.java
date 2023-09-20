@@ -7,18 +7,19 @@ package com.azure.communication.callautomation;
 import com.azure.communication.callautomation.models.AnswerCallOptions;
 import com.azure.communication.callautomation.models.AnswerCallResult;
 import com.azure.communication.callautomation.models.CallInvite;
-import com.azure.communication.callautomation.models.CallingServerErrorException;
 import com.azure.communication.callautomation.models.CreateCallOptions;
 import com.azure.communication.callautomation.models.CreateGroupCallOptions;
 import com.azure.communication.callautomation.models.CreateCallResult;
 import com.azure.communication.callautomation.models.RedirectCallOptions;
 import com.azure.communication.callautomation.models.RejectCallOptions;
 import com.azure.communication.common.CommunicationIdentifier;
+import com.azure.communication.common.CommunicationUserIdentifier;
 import com.azure.core.annotation.ReturnType;
 import com.azure.core.annotation.ServiceClient;
 import com.azure.core.annotation.ServiceMethod;
 import com.azure.core.http.rest.Response;
 import com.azure.core.util.Context;
+import com.azure.core.exception.HttpResponseException;
 
 import java.util.List;
 
@@ -41,47 +42,41 @@ public final class CallAutomationClient {
 
     //region Pre-call Actions
     /**
-     * Create a call connection request from a source identity to a list of target identity.
-     *
-     * @param targets The list of targets.
-     * @param callbackUrl The call back url for receiving events.
-     * @throws CallingServerErrorException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return A CallConnectionDelete object.
+     * Get Source Identity that is used for create and answer call
+     * @return {@link CommunicationUserIdentifier} represent source
      */
-    @ServiceMethod(returns = ReturnType.SINGLE)
-    public CreateCallResult createCall(List<CommunicationIdentifier> targets,
-                                       String callbackUrl) {
-        return callAutomationAsyncClient.createCall(targets, callbackUrl).block();
+    public CommunicationUserIdentifier getSourceIdentity() {
+        return callAutomationAsyncClient.getSourceIdentity();
     }
 
     /**
      * Create a call connection request from a source identity to a target identity.
      *
-     * @param callInvite call invitee's information
+     * @param targetParticipant call invitee's information
      * @param callbackUrl The call back url for receiving events.
-     * @throws CallingServerErrorException thrown if the request is rejected by server.
+     * @throws HttpResponseException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return A CallConnectionDelete object.
+     * @return Result of creating the call.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public CreateCallResult createCall(CallInvite callInvite,
+    public CreateCallResult createCall(CallInvite targetParticipant,
                                        String callbackUrl) {
-        return callAutomationAsyncClient.createCall(callInvite, callbackUrl).block();
+        return callAutomationAsyncClient.createCall(targetParticipant, callbackUrl).block();
     }
 
     /**
-     * Create a group call connection request from a source identity to multiple identities.
+     * Create a call connection request from a source identity to a list of target identity.
      *
-     * @param createGroupCallOptions Options bag for creating a new group call.
-     * @param context The context to associate with this operation.
-     * @throws CallingServerErrorException thrown if the request is rejected by server.
+     * @param targetParticipants The list of targetParticipants.
+     * @param callbackUrl The call back url for receiving events.
+     * @throws HttpResponseException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return Response for a successful CreateCallConnection request.
+     * @return Result of creating the call.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Response<CreateCallResult> createCallWithResponse(CreateGroupCallOptions createGroupCallOptions, Context context) {
-        return callAutomationAsyncClient.createCallWithResponseInternal(createGroupCallOptions, context).block();
+    public CreateCallResult createGroupCall(List<CommunicationIdentifier> targetParticipants,
+                                            String callbackUrl) {
+        return callAutomationAsyncClient.createGroupCall(targetParticipants, callbackUrl).block();
     }
 
     /**
@@ -89,9 +84,9 @@ public final class CallAutomationClient {
      *
      * @param createCallOptions Options bag for creating a new call.
      * @param context The context to associate with this operation.
-     * @throws CallingServerErrorException thrown if the request is rejected by server.
+     * @throws HttpResponseException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return Response for a successful CreateCallConnection request.
+     * @return Response with result of creating the call.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Response<CreateCallResult> createCallWithResponse(CreateCallOptions createCallOptions, Context context) {
@@ -99,13 +94,27 @@ public final class CallAutomationClient {
     }
 
     /**
+     * Create a group call connection request from a source identity to multiple identities.
+     *
+     * @param createGroupCallOptions Options bag for creating a new group call.
+     * @param context The context to associate with this operation.
+     * @throws HttpResponseException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return Response with result of creating the call.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    public Response<CreateCallResult> createGroupCallWithResponse(CreateGroupCallOptions createGroupCallOptions, Context context) {
+        return callAutomationAsyncClient.createGroupCallWithResponseInternal(createGroupCallOptions, context).block();
+    }
+
+    /**
      * Answer an incoming call
      *
      * @param incomingCallContext The incoming call context.
-     * @param callbackUrl The call back uri.
-     * @throws CallingServerErrorException thrown if the request is rejected by server.
+     * @param callbackUrl The call back url.
+     * @throws HttpResponseException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return Response for a successful CreateCallConnection request.
+     * @return Result of answering the call.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public AnswerCallResult answerCall(String incomingCallContext, String callbackUrl) {
@@ -117,9 +126,9 @@ public final class CallAutomationClient {
      *
      * @param answerCallOptions The options of answering the call.
      * @param context The context to associate with this operation.
-     * @throws CallingServerErrorException thrown if the request is rejected by server.
+     * @throws HttpResponseException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return Response for a successful CreateCallConnection request.
+     * @return Response with result of answering the call.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Response<AnswerCallResult> answerCallWithResponse(AnswerCallOptions answerCallOptions, Context context) {
@@ -130,14 +139,13 @@ public final class CallAutomationClient {
      * Redirect a call
      *
      * @param incomingCallContext The incoming call context.
-     * @param targetCallInvite {@link CallInvite} represent redirect target
-     * @throws CallingServerErrorException thrown if the request is rejected by server.
+     * @param targetParticipant {@link CallInvite} represent redirect targetParticipant
+     * @throws HttpResponseException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return Response for a successful CreateCallConnection request.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Void redirectCall(String incomingCallContext, CallInvite targetCallInvite) {
-        return callAutomationAsyncClient.redirectCall(incomingCallContext, targetCallInvite).block();
+    public void redirectCall(String incomingCallContext, CallInvite targetParticipant) {
+        callAutomationAsyncClient.redirectCall(incomingCallContext, targetParticipant).block();
     }
 
     /**
@@ -145,9 +153,9 @@ public final class CallAutomationClient {
      *
      * @param redirectCallOptions options of redirecting a call
      * @param context The context to associate with this operation.
-     * @throws CallingServerErrorException thrown if the request is rejected by server.
+     * @throws HttpResponseException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return Response for a successful CreateCallConnection request.
+     * @return Response with Void.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Response<Void> redirectCallWithResponse(RedirectCallOptions redirectCallOptions, Context context) {
@@ -158,13 +166,12 @@ public final class CallAutomationClient {
      * Reject a call
      *
      * @param incomingCallContext The incoming call context.
-     * @throws CallingServerErrorException thrown if the request is rejected by server.
+     * @throws HttpResponseException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return Response for a successful CreateCallConnection request.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Void rejectCall(String incomingCallContext) {
-        return callAutomationAsyncClient.rejectCall(incomingCallContext).block();
+    public void rejectCall(String incomingCallContext) {
+        callAutomationAsyncClient.rejectCall(incomingCallContext).block();
     }
 
     /**
@@ -172,9 +179,9 @@ public final class CallAutomationClient {
      *
      * @param rejectCallOptions The options of rejecting the call.
      * @param context The context to associate with this operation.
-     * @throws CallingServerErrorException thrown if the request is rejected by server.
+     * @throws HttpResponseException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return Response for a successful CreateCallConnection request.
+     * @return Response with Void.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Response<Void> rejectCallWithResponse(RejectCallOptions rejectCallOptions, Context context) {
@@ -195,7 +202,7 @@ public final class CallAutomationClient {
     }
     //endregion
 
-    //region Recording Management actions
+    //region Content Management actions
     /***
      * Returns an object of CallRecording
      *

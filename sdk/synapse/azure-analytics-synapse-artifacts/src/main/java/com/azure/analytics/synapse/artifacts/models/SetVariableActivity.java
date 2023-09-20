@@ -18,19 +18,51 @@ import java.util.List;
 @Fluent
 public class SetVariableActivity extends ControlActivity {
     /*
+     * Activity policy.
+     */
+    @JsonProperty(value = "policy")
+    private SecureInputOutputPolicy policy;
+
+    /*
      * Name of the variable whose value needs to be set.
      */
     @JsonProperty(value = "typeProperties.variableName")
     private String variableName;
 
     /*
-     * Value to be set. Could be a static value or Expression
+     * Value to be set. Could be a static value or Expression.
      */
     @JsonProperty(value = "typeProperties.value")
     private Object value;
 
+    /*
+     * If set to true, it sets the pipeline run return value.
+     */
+    @JsonProperty(value = "typeProperties.setSystemVariable")
+    private Boolean setSystemVariable;
+
     /** Creates an instance of SetVariableActivity class. */
     public SetVariableActivity() {}
+
+    /**
+     * Get the policy property: Activity policy.
+     *
+     * @return the policy value.
+     */
+    public SecureInputOutputPolicy getPolicy() {
+        return this.policy;
+    }
+
+    /**
+     * Set the policy property: Activity policy.
+     *
+     * @param policy the policy value to set.
+     * @return the SetVariableActivity object itself.
+     */
+    public SetVariableActivity setPolicy(SecureInputOutputPolicy policy) {
+        this.policy = policy;
+        return this;
+    }
 
     /**
      * Get the variableName property: Name of the variable whose value needs to be set.
@@ -72,6 +104,26 @@ public class SetVariableActivity extends ControlActivity {
         return this;
     }
 
+    /**
+     * Get the setSystemVariable property: If set to true, it sets the pipeline run return value.
+     *
+     * @return the setSystemVariable value.
+     */
+    public Boolean isSetSystemVariable() {
+        return this.setSystemVariable;
+    }
+
+    /**
+     * Set the setSystemVariable property: If set to true, it sets the pipeline run return value.
+     *
+     * @param setSystemVariable the setSystemVariable value to set.
+     * @return the SetVariableActivity object itself.
+     */
+    public SetVariableActivity setSetSystemVariable(Boolean setSystemVariable) {
+        this.setSystemVariable = setSystemVariable;
+        return this;
+    }
+
     /** {@inheritDoc} */
     @Override
     public SetVariableActivity setName(String name) {
@@ -83,6 +135,20 @@ public class SetVariableActivity extends ControlActivity {
     @Override
     public SetVariableActivity setDescription(String description) {
         super.setDescription(description);
+        return this;
+    }
+
+    /** {@inheritDoc} */
+    @Override
+    public SetVariableActivity setState(ActivityState state) {
+        super.setState(state);
+        return this;
+    }
+
+    /** {@inheritDoc} */
+    @Override
+    public SetVariableActivity setOnInactiveMarkAs(ActivityOnInactiveMarkAs onInactiveMarkAs) {
+        super.setOnInactiveMarkAs(onInactiveMarkAs);
         return this;
     }
 

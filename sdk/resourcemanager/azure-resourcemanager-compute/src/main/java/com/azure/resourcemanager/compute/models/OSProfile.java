@@ -15,9 +15,9 @@ import java.util.List;
 @Fluent
 public final class OSProfile {
     /*
-     * Specifies the host OS name of the virtual machine. <br><br> This name cannot be updated after the VM is created.
-     * <br><br> **Max-length (Windows):** 15 characters <br><br> **Max-length (Linux):** 64 characters. <br><br> For
-     * naming conventions and restrictions see [Azure infrastructure services implementation
+     * Specifies the host OS name of the virtual machine. This name cannot be updated after the VM is created.
+     * **Max-length (Windows):** 15 characters. **Max-length (Linux):** 64 characters. For naming conventions and
+     * restrictions see [Azure infrastructure services implementation
      * guidelines](https://docs.microsoft.com/azure/azure-resource-manager/management/resource-name-rules).
      */
     @JsonProperty(value = "computerName")
@@ -52,12 +52,12 @@ public final class OSProfile {
 
     /*
      * Specifies a base-64 encoded string of custom data. The base-64 encoded string is decoded to a binary array that
-     * is saved as a file on the Virtual Machine. The maximum length of the binary array is 65535 bytes. <br><br>
-     * **Note: Do not pass any secrets or passwords in customData property** <br><br> This property cannot be updated
-     * after the VM is created. <br><br> customData is passed to the VM to be saved as a file, for more information see
-     * [Custom Data on Azure VMs](https://azure.microsoft.com/blog/custom-data-and-cloud-init-on-windows-azure/)
-     * <br><br> For using cloud-init for your Linux VM, see [Using cloud-init to customize a Linux VM during
-     * creation](https://docs.microsoft.com/azure/virtual-machines/linux/using-cloud-init)
+     * is saved as a file on the Virtual Machine. The maximum length of the binary array is 65535 bytes. **Note: Do not
+     * pass any secrets or passwords in customData property.** This property cannot be updated after the VM is created.
+     * The property 'customData' is passed to the VM to be saved as a file, for more information see [Custom Data on
+     * Azure VMs](https://azure.microsoft.com/blog/custom-data-and-cloud-init-on-windows-azure/). For using cloud-init
+     * for your Linux VM, see [Using cloud-init to customize a Linux VM during
+     * creation](https://docs.microsoft.com/azure/virtual-machines/linux/using-cloud-init).
      */
     @JsonProperty(value = "customData")
     private String customData;
@@ -69,7 +69,7 @@ public final class OSProfile {
     private WindowsConfiguration windowsConfiguration;
 
     /*
-     * Specifies the Linux operating system settings on the virtual machine. <br><br>For a list of supported Linux
+     * Specifies the Linux operating system settings on the virtual machine. For a list of supported Linux
      * distributions, see [Linux on Azure-Endorsed
      * Distributions](https://docs.microsoft.com/azure/virtual-machines/linux/endorsed-distros).
      */
@@ -87,8 +87,8 @@ public final class OSProfile {
     private List<VaultSecretGroup> secrets;
 
     /*
-     * Specifies whether extension operations should be allowed on the virtual machine. <br><br>This may only be set to
-     * False when no extensions are present on the virtual machine.
+     * Specifies whether extension operations should be allowed on the virtual machine. This may only be set to False
+     * when no extensions are present on the virtual machine.
      */
     @JsonProperty(value = "allowExtensionOperations")
     private Boolean allowExtensionOperations;
@@ -104,10 +104,9 @@ public final class OSProfile {
     }
 
     /**
-     * Get the computerName property: Specifies the host OS name of the virtual machine. &lt;br&gt;&lt;br&gt; This name
-     * cannot be updated after the VM is created. &lt;br&gt;&lt;br&gt; **Max-length (Windows):** 15 characters
-     * &lt;br&gt;&lt;br&gt; **Max-length (Linux):** 64 characters. &lt;br&gt;&lt;br&gt; For naming conventions and
-     * restrictions see [Azure infrastructure services implementation
+     * Get the computerName property: Specifies the host OS name of the virtual machine. This name cannot be updated
+     * after the VM is created. **Max-length (Windows):** 15 characters. **Max-length (Linux):** 64 characters. For
+     * naming conventions and restrictions see [Azure infrastructure services implementation
      * guidelines](https://docs.microsoft.com/azure/azure-resource-manager/management/resource-name-rules).
      *
      * @return the computerName value.
@@ -117,10 +116,9 @@ public final class OSProfile {
     }
 
     /**
-     * Set the computerName property: Specifies the host OS name of the virtual machine. &lt;br&gt;&lt;br&gt; This name
-     * cannot be updated after the VM is created. &lt;br&gt;&lt;br&gt; **Max-length (Windows):** 15 characters
-     * &lt;br&gt;&lt;br&gt; **Max-length (Linux):** 64 characters. &lt;br&gt;&lt;br&gt; For naming conventions and
-     * restrictions see [Azure infrastructure services implementation
+     * Set the computerName property: Specifies the host OS name of the virtual machine. This name cannot be updated
+     * after the VM is created. **Max-length (Windows):** 15 characters. **Max-length (Linux):** 64 characters. For
+     * naming conventions and restrictions see [Azure infrastructure services implementation
      * guidelines](https://docs.microsoft.com/azure/azure-resource-manager/management/resource-name-rules).
      *
      * @param computerName the computerName value to set.
@@ -206,11 +204,11 @@ public final class OSProfile {
     /**
      * Get the customData property: Specifies a base-64 encoded string of custom data. The base-64 encoded string is
      * decoded to a binary array that is saved as a file on the Virtual Machine. The maximum length of the binary array
-     * is 65535 bytes. &lt;br&gt;&lt;br&gt; **Note: Do not pass any secrets or passwords in customData property**
-     * &lt;br&gt;&lt;br&gt; This property cannot be updated after the VM is created. &lt;br&gt;&lt;br&gt; customData is
-     * passed to the VM to be saved as a file, for more information see [Custom Data on Azure
-     * VMs](https://azure.microsoft.com/blog/custom-data-and-cloud-init-on-windows-azure/) &lt;br&gt;&lt;br&gt; For
-     * using cloud-init for your Linux VM, see [Using cloud-init to customize a Linux VM during
+     * is 65535 bytes. **Note: Do not pass any secrets or passwords in customData property.** This property cannot be
+     * updated after the VM is created. The property 'customData' is passed to the VM to be saved as a file, for more
+     * information see [Custom Data on Azure
+     * VMs](https://azure.microsoft.com/blog/custom-data-and-cloud-init-on-windows-azure/). For using cloud-init for
+     * your Linux VM, see [Using cloud-init to customize a Linux VM during
      * creation](https://docs.microsoft.com/azure/virtual-machines/linux/using-cloud-init).
      *
      * @return the customData value.
@@ -222,11 +220,11 @@ public final class OSProfile {
     /**
      * Set the customData property: Specifies a base-64 encoded string of custom data. The base-64 encoded string is
      * decoded to a binary array that is saved as a file on the Virtual Machine. The maximum length of the binary array
-     * is 65535 bytes. &lt;br&gt;&lt;br&gt; **Note: Do not pass any secrets or passwords in customData property**
-     * &lt;br&gt;&lt;br&gt; This property cannot be updated after the VM is created. &lt;br&gt;&lt;br&gt; customData is
-     * passed to the VM to be saved as a file, for more information see [Custom Data on Azure
-     * VMs](https://azure.microsoft.com/blog/custom-data-and-cloud-init-on-windows-azure/) &lt;br&gt;&lt;br&gt; For
-     * using cloud-init for your Linux VM, see [Using cloud-init to customize a Linux VM during
+     * is 65535 bytes. **Note: Do not pass any secrets or passwords in customData property.** This property cannot be
+     * updated after the VM is created. The property 'customData' is passed to the VM to be saved as a file, for more
+     * information see [Custom Data on Azure
+     * VMs](https://azure.microsoft.com/blog/custom-data-and-cloud-init-on-windows-azure/). For using cloud-init for
+     * your Linux VM, see [Using cloud-init to customize a Linux VM during
      * creation](https://docs.microsoft.com/azure/virtual-machines/linux/using-cloud-init).
      *
      * @param customData the customData value to set.
@@ -258,8 +256,8 @@ public final class OSProfile {
     }
 
     /**
-     * Get the linuxConfiguration property: Specifies the Linux operating system settings on the virtual machine.
-     * &lt;br&gt;&lt;br&gt;For a list of supported Linux distributions, see [Linux on Azure-Endorsed
+     * Get the linuxConfiguration property: Specifies the Linux operating system settings on the virtual machine. For a
+     * list of supported Linux distributions, see [Linux on Azure-Endorsed
      * Distributions](https://docs.microsoft.com/azure/virtual-machines/linux/endorsed-distros).
      *
      * @return the linuxConfiguration value.
@@ -269,8 +267,8 @@ public final class OSProfile {
     }
 
     /**
-     * Set the linuxConfiguration property: Specifies the Linux operating system settings on the virtual machine.
-     * &lt;br&gt;&lt;br&gt;For a list of supported Linux distributions, see [Linux on Azure-Endorsed
+     * Set the linuxConfiguration property: Specifies the Linux operating system settings on the virtual machine. For a
+     * list of supported Linux distributions, see [Linux on Azure-Endorsed
      * Distributions](https://docs.microsoft.com/azure/virtual-machines/linux/endorsed-distros).
      *
      * @param linuxConfiguration the linuxConfiguration value to set.
@@ -311,8 +309,7 @@ public final class OSProfile {
 
     /**
      * Get the allowExtensionOperations property: Specifies whether extension operations should be allowed on the
-     * virtual machine. &lt;br&gt;&lt;br&gt;This may only be set to False when no extensions are present on the virtual
-     * machine.
+     * virtual machine. This may only be set to False when no extensions are present on the virtual machine.
      *
      * @return the allowExtensionOperations value.
      */
@@ -322,8 +319,7 @@ public final class OSProfile {
 
     /**
      * Set the allowExtensionOperations property: Specifies whether extension operations should be allowed on the
-     * virtual machine. &lt;br&gt;&lt;br&gt;This may only be set to False when no extensions are present on the virtual
-     * machine.
+     * virtual machine. This may only be set to False when no extensions are present on the virtual machine.
      *
      * @param allowExtensionOperations the allowExtensionOperations value to set.
      * @return the OSProfile object itself.

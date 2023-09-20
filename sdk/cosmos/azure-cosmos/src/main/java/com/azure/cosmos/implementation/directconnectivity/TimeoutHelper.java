@@ -4,6 +4,8 @@
 package com.azure.cosmos.implementation.directconnectivity;
 
 import com.azure.cosmos.implementation.GoneException;
+import com.azure.cosmos.implementation.HttpConstants;
+import com.azure.cosmos.implementation.RMResources;
 import com.azure.cosmos.implementation.RequestTimeoutException;
 
 import java.time.Duration;
@@ -36,7 +38,7 @@ public class TimeoutHelper {
 
     public void throwGoneIfElapsed() throws GoneException {
         if (this.isElapsed()) {
-            throw new GoneException();
+            throw new GoneException(RMResources.Gone, HttpConstants.SubStatusCodes.TIMEOUT_GENERATED_410);
         }
     }
 }

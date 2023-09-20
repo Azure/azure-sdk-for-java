@@ -59,6 +59,10 @@ public final class ActiveDirectoryProperties {
     @JsonProperty(value = "accountType")
     private ActiveDirectoryPropertiesAccountType accountType;
 
+    /** Creates an instance of ActiveDirectoryProperties class. */
+    public ActiveDirectoryProperties() {
+    }
+
     /**
      * Get the domainName property: Specifies the primary domain that the AD DNS server is authoritative for.
      *

@@ -22,6 +22,7 @@ import com.azure.resourcemanager.newrelicobservability.models.AppServicesGetRequ
 import com.azure.resourcemanager.newrelicobservability.models.HostsGetRequest;
 import com.azure.resourcemanager.newrelicobservability.models.MetricsRequest;
 import com.azure.resourcemanager.newrelicobservability.models.MetricsStatusRequest;
+import com.azure.resourcemanager.newrelicobservability.models.MonitorsSwitchBillingResponse;
 import com.azure.resourcemanager.newrelicobservability.models.NewRelicMonitorResourceUpdate;
 import com.azure.resourcemanager.newrelicobservability.models.SwitchBillingRequest;
 
@@ -358,10 +359,10 @@ public interface MonitorsClient {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the {@link Response}.
+     * @return a Monitor Resource by NewRelic.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    Response<Void> switchBillingWithResponse(
+    MonitorsSwitchBillingResponse switchBillingWithResponse(
         String resourceGroupName, String monitorName, SwitchBillingRequest request, Context context);
 
     /**
@@ -373,9 +374,11 @@ public interface MonitorsClient {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return a Monitor Resource by NewRelic.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    void switchBilling(String resourceGroupName, String monitorName, SwitchBillingRequest request);
+    NewRelicMonitorResourceInner switchBilling(
+        String resourceGroupName, String monitorName, SwitchBillingRequest request);
 
     /**
      * List the compute vm resources currently being monitored by the NewRelic resource.

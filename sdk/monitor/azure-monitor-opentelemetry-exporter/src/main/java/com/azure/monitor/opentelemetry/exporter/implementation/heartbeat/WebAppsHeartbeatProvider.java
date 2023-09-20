@@ -11,10 +11,8 @@ import java.util.Map;
 import java.util.Set;
 
 /**
- * <h1>WebApp Heartbeat Property Provider</h1>
- *
- * <p>This class is a concrete implementation of {@link HeartBeatPayloadProviderInterface} It
- * enables setting Web-apps Metadata to heartbeat payload.
+ * This class is a concrete implementation of {@link HeartBeatPayloadProviderInterface}. It enables
+ * setting Web-apps Metadata to heartbeat payload.
  */
 public class WebAppsHeartbeatProvider implements HeartBeatPayloadProviderInterface {
 

@@ -31,7 +31,7 @@ public final class IngestionSettingsListMockTests {
         ArgumentCaptor<HttpRequest> httpRequest = ArgumentCaptor.forClass(HttpRequest.class);
 
         String responseStr =
-            "{\"value\":[{\"properties\":\"datalizedvbia\",\"id\":\"v\",\"name\":\"srgekzyqxadyfhb\",\"type\":\"wkhojqttbspvkhg\"}]}";
+            "{\"value\":[{\"properties\":\"datahgjnaq\",\"id\":\"qipslz\",\"name\":\"vcdsvm\",\"type\":\"bit\"}]}";
 
         Mockito.when(httpResponse.getStatusCode()).thenReturn(200);
         Mockito.when(httpResponse.getHeaders()).thenReturn(new HttpHeaders());

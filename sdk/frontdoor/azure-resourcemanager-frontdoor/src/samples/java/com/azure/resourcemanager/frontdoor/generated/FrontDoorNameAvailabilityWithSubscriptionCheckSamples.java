@@ -10,7 +10,7 @@ import com.azure.resourcemanager.frontdoor.models.ResourceType;
 /** Samples for FrontDoorNameAvailabilityWithSubscription Check. */
 public final class FrontDoorNameAvailabilityWithSubscriptionCheckSamples {
     /*
-     * x-ms-original-file: specification/frontdoor/resource-manager/Microsoft.Network/stable/2020-05-01/examples/CheckFrontdoorNameAvailabilityWithSubscription.json
+     * x-ms-original-file: specification/frontdoor/resource-manager/Microsoft.Network/stable/2021-06-01/examples/CheckFrontdoorNameAvailabilityWithSubscription.json
      */
     /**
      * Sample code: CheckNameAvailabilityWithSubscription.

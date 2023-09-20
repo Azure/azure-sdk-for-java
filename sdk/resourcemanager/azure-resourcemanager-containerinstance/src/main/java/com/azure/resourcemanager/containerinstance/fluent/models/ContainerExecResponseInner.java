@@ -22,6 +22,10 @@ public final class ContainerExecResponseInner {
     @JsonProperty(value = "password")
     private String password;
 
+    /** Creates an instance of ContainerExecResponseInner class. */
+    public ContainerExecResponseInner() {
+    }
+
     /**
      * Get the webSocketUri property: The uri for the exec websocket.
      *

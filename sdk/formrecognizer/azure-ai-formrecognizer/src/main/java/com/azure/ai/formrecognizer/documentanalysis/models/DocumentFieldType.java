@@ -11,6 +11,15 @@ import java.util.Collection;
 /** Defines values for DocumentFieldType. */
 @Immutable
 public final class DocumentFieldType extends ExpandableStringEnum<DocumentFieldType> {
+
+    /**
+     * Constructs a DocumentFieldType object.
+     * @deprecated Use the {@link #fromString(String)} factory method.
+     */
+    @Deprecated
+    public DocumentFieldType() {
+    }
+
     /** Static value string for DocumentFieldType. */
     public static final DocumentFieldType STRING = fromString("string");
 
@@ -50,6 +59,9 @@ public final class DocumentFieldType extends ExpandableStringEnum<DocumentFieldT
     /** Static value address for DocumentFieldType. */
     public static final DocumentFieldType ADDRESS = fromString("address");
 
+    /** Static value boolean for DocumentFieldType. */
+    public static final DocumentFieldType BOOLEAN = fromString("boolean");
+
     /**
      * Creates or finds a DocumentFieldType from its string representation.
      *
@@ -60,7 +72,10 @@ public final class DocumentFieldType extends ExpandableStringEnum<DocumentFieldT
         return fromString(name, DocumentFieldType.class);
     }
 
-    /** @return known DocumentFieldType values. */
+    /**
+     * Returns the known DocumentFieldType values.
+     * @return known DocumentFieldType values.
+     */
     public static Collection<DocumentFieldType> values() {
         return values(DocumentFieldType.class);
     }

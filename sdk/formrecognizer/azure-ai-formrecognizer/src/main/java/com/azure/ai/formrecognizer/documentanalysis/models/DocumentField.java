@@ -14,10 +14,17 @@ import java.util.List;
 import java.util.Map;
 
 /**
- * An object representing the content and location of a field value.
+ * Model representing the content and location of a field value.
  */
 @Immutable
 public final class DocumentField extends TypedDocumentField<Object> {
+    /**
+     * Constructs a DocumentField object.
+     */
+    public DocumentField() {
+        super();
+    }
+
     // Ignore custom getters in the class to prevent serialization and deserialization issues
 
     /**
@@ -151,6 +158,16 @@ public final class DocumentField extends TypedDocumentField<Object> {
     @JsonIgnore
     public AddressValue getValueAsAddress() {
         return (AddressValue) super.getValue();
+    }
+
+    /**
+     * Get boolean value of the field.
+     *
+     * @return the value.
+     */
+    @JsonIgnore
+    public Boolean getValueAsBoolean() {
+        return (Boolean) super.getValue();
     }
 
     static {

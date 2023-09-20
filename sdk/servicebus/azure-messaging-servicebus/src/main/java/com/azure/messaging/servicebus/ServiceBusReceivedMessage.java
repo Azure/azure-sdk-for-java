@@ -12,6 +12,7 @@ import com.azure.core.amqp.models.AmqpMessageId;
 import com.azure.core.util.BinaryData;
 import com.azure.core.util.Context;
 import com.azure.core.util.logging.ClientLogger;
+import com.azure.messaging.servicebus.implementation.instrumentation.ContextAccessor;
 import com.azure.messaging.servicebus.models.ServiceBusMessageState;
 import com.azure.messaging.servicebus.models.ServiceBusReceiveMode;
 
@@ -53,6 +54,20 @@ public final class ServiceBusReceivedMessage {
     private UUID lockToken;
     private boolean isSettled = false;
     private Context context;
+
+    static {
+        ContextAccessor.setReceiveMessageContextAccessor(new ContextAccessor.ReceiveMessageContextAccessor() {
+            @Override
+            public ServiceBusReceivedMessage setContext(ServiceBusReceivedMessage message, Context context) {
+                return message.setContext(context);
+            }
+
+            @Override
+            public Context getContext(ServiceBusReceivedMessage message) {
+                return message.getContext();
+            }
+        });
+    }
 
     ServiceBusReceivedMessage(BinaryData body) {
         Objects.requireNonNull(body, "'body' cannot be null.");

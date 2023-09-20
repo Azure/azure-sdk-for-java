@@ -12,7 +12,7 @@ public final class AzureResourceIdentifierTests {
     public void testDeserialize() throws Exception {
         AzureResourceIdentifier model =
             BinaryData
-                .fromString("{\"type\":\"AzureResource\",\"azureResourceId\":\"uyrsrziuctix\"}")
+                .fromString("{\"type\":\"AzureResource\",\"azureResourceId\":\"hvuqbo\"}")
                 .toObject(AzureResourceIdentifier.class);
     }
 

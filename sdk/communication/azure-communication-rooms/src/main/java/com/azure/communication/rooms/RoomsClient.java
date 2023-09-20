@@ -3,87 +3,134 @@
 
 package com.azure.communication.rooms;
 
+import com.azure.communication.common.CommunicationIdentifier;
+import com.azure.communication.rooms.implementation.AzureCommunicationRoomServiceImpl;
+import com.azure.communication.rooms.implementation.RoomsImpl;
+import com.azure.communication.rooms.implementation.ParticipantsImpl;
+import com.azure.communication.rooms.implementation.converters.ParticipantRoleConverter;
+import com.azure.communication.rooms.implementation.converters.RoomModelConverter;
+import com.azure.communication.rooms.implementation.converters.RoomParticipantConverter;
+import com.azure.communication.rooms.implementation.models.RoomModel;
+import com.azure.communication.rooms.implementation.models.ParticipantProperties;
 import com.azure.communication.rooms.models.CommunicationRoom;
-import com.azure.communication.rooms.models.ParticipantsCollection;
-import com.azure.communication.rooms.models.RoomJoinPolicy;
+import com.azure.communication.rooms.models.CreateRoomOptions;
+import com.azure.communication.rooms.models.RemoveParticipantsResult;
 import com.azure.communication.rooms.models.RoomParticipant;
+import com.azure.communication.rooms.models.UpdateRoomOptions;
+import com.azure.communication.rooms.models.AddOrUpdateParticipantsResult;
+import com.azure.communication.rooms.implementation.models.UpdateParticipantsRequest;
+import com.azure.communication.rooms.implementation.models.UpdateRoomRequest;
+import com.azure.communication.rooms.implementation.models.CreateRoomRequest;
 import com.azure.core.annotation.ReturnType;
 import com.azure.core.annotation.ServiceClient;
 import com.azure.core.annotation.ServiceMethod;
 import com.azure.core.http.rest.Response;
+import com.azure.core.http.rest.SimpleResponse;
 import com.azure.core.util.Context;
+import com.azure.core.http.rest.PagedIterable;
+import com.azure.core.util.logging.ClientLogger;
+import com.fasterxml.jackson.core.JsonProcessingException;
+import com.fasterxml.jackson.databind.ObjectMapper;
+
 import java.time.OffsetDateTime;
-import java.util.List;
+import java.util.Map;
+import java.util.HashMap;
+import java.util.Objects;
 
 /**
- * Client for rooms operations with Azure Communication Rooms Service
+ * Client for Rooms operations of Azure Communication Room Service
+ *
+ * <p>
+ * <strong>Instantiating a Room Client</strong>
+ * </p>
+ *
+ * <!-- src_embed readme-sample-createRoomsClientUsingAzureKeyCredential
+ * -->
+ *
+ * <pre>
+ * RoomsClient roomsClient = new RoomsClientBuilder()
+ *      .endpoint&#40;endpoint&#41;
+ *      .credential&#40;azureKeyCredential&#41;
+ *      .buildClient&#40;&#41;;
+ * </pre>
+ *
+ * <!-- end readme-sample-createRoomsClientUsingAzureKeyCredential -->
+ *
+ * @see RoomsClientBuilder
+ *
  */
 @ServiceClient(builder = RoomsClientBuilder.class)
 public final class RoomsClient {
-    private final RoomsAsyncClient roomsAsyncClient;
+    private final RoomsImpl roomsClient;
+    private final ParticipantsImpl participantsClient;
+    private final ClientLogger logger = new ClientLogger(RoomsClient.class);
 
-    RoomsClient(RoomsAsyncClient roomsAsyncClient) {
-        this.roomsAsyncClient = roomsAsyncClient;
+    RoomsClient(AzureCommunicationRoomServiceImpl roomsServiceClient) {
+        roomsClient = roomsServiceClient.getRooms();
+        participantsClient = roomsServiceClient.getParticipants();
     }
 
     /**
-     * Create a new room.
+     * Create a new room. Input field is nullable.
      *
-     * @param validFrom the validFrom value to set.
-     * @param validUntil the validUntil value to set.
-     * @param roomJoinPolicy the roomJoinPolicy value to set.
-     * @param participants the participants value to set.
+     * @param createRoomOptions the create room options.
      * @return response for a successful create room request.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public CommunicationRoom createRoom(OffsetDateTime validFrom, OffsetDateTime validUntil, RoomJoinPolicy roomJoinPolicy, List<RoomParticipant> participants) {
-        return roomsAsyncClient.createRoom(validFrom, validUntil, roomJoinPolicy, participants).block();
+    public CommunicationRoom createRoom(CreateRoomOptions createRoomOptions) {
+        RoomModel roomModel = this.roomsClient
+                .create(toCreateRoomRequest(createRoomOptions.getValidFrom(),
+                        createRoomOptions.getValidUntil(), createRoomOptions.getParticipants()));
+        return getCommunicationRoomFromResponse(roomModel);
     }
 
     /**
      * Create a new Room with response.
      *
-     * @param validFrom the validFrom value to set.
-     * @param validUntil the validUntil value to set.
-     * @param roomJoinPolicy the roomJoinPolicy value to set.
-     * @param participants the participants value to set.
+     * @param createRoomOptions the create room options.
      * @param context The context of key value pairs for http request.
      * @return response for a successful create room request.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Response<CommunicationRoom> createRoomWithResponse(OffsetDateTime validFrom, OffsetDateTime validUntil, RoomJoinPolicy roomJoinPolicy, List<RoomParticipant> participants, Context context) {
-        return roomsAsyncClient.createRoomWithResponse(validFrom, validUntil, roomJoinPolicy, participants, context).block();
+    public Response<CommunicationRoom> createRoomWithResponse(CreateRoomOptions createRoomOptions, Context context) {
+        context = context == null ? Context.NONE : context;
+        Response<RoomModel> response = this.roomsClient
+                .createWithResponse(toCreateRoomRequest(createRoomOptions.getValidFrom(),
+                        createRoomOptions.getValidUntil(), createRoomOptions.getParticipants()), context);
+        return new SimpleResponse<CommunicationRoom>(response, getCommunicationRoomFromResponse(response.getValue()));
     }
 
     /**
      * Update an existing Room.
      *
-     * @param roomId The room id.
-     * @param validFrom the validFrom value to set.
-     * @param validUntil the validUntil value to set.
-     * @param roomJoinPolicy the roomJoinPolicy value to set.
-     * @param participants the participants value to set.
+     * @param roomId The room Id.
+     * @param updateRoomOptions the update room options.
      * @return response for a successful update room request.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public CommunicationRoom updateRoom(String roomId, OffsetDateTime validFrom, OffsetDateTime validUntil, RoomJoinPolicy roomJoinPolicy, List<RoomParticipant> participants) {
-        return roomsAsyncClient.updateRoom(roomId, validFrom, validUntil, roomJoinPolicy, participants).block();
+    public CommunicationRoom updateRoom(String roomId, UpdateRoomOptions updateRoomOptions) {
+        RoomModel roomModel = this.roomsClient
+            .update(roomId,
+                toUpdateRoomRequest(updateRoomOptions.getValidFrom(), updateRoomOptions.getValidUntil()));
+        return getCommunicationRoomFromResponse(roomModel);
     }
 
     /**
      * Update an existing Room with response.
      *
-     * @param roomId The room id.
-     * @param validFrom the validFrom value to set.
-     * @param validUntil the validUntil value to set.
-     * @param roomJoinPolicy the roomJoinPolicy value to set.
-     * @param participants the participants value to set.
+     * @param roomId The room Id.
+     * @param updateRoomOptions the update room options.
      * @param context The context of key value pairs for http request.
      * @return response for a successful update room request.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Response<CommunicationRoom> updateRoomWithResponse(String roomId, OffsetDateTime validFrom, OffsetDateTime validUntil, RoomJoinPolicy roomJoinPolicy, List<RoomParticipant> participants, Context context) {
-        return roomsAsyncClient.updateRoomWithResponse(roomId, validFrom, validUntil, roomJoinPolicy, participants, context).block();
+    public Response<CommunicationRoom> updateRoomWithResponse(String roomId, UpdateRoomOptions updateRoomOptions, Context context) {
+        context = context == null ? Context.NONE : context;
+        Response<RoomModel> response = this.roomsClient
+            .updateWithResponse(roomId,
+                toUpdateRoomRequest(updateRoomOptions.getValidFrom(), updateRoomOptions.getValidUntil()),
+                context);
+        return new SimpleResponse<CommunicationRoom>(response, getCommunicationRoomFromResponse(response.getValue()));
     }
 
     /**
@@ -94,7 +141,9 @@ public final class RoomsClient {
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public CommunicationRoom getRoom(String roomId) {
-        return roomsAsyncClient.getRoom(roomId).block();
+        RoomModel roomModel = this.roomsClient
+                    .get(roomId);
+        return getCommunicationRoomFromResponse(roomModel);
     }
 
     /**
@@ -106,18 +155,21 @@ public final class RoomsClient {
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Response<CommunicationRoom> getRoomWithResponse(String roomId, Context context) {
-        return roomsAsyncClient.getRoomWithResponse(roomId, context).block();
+        context = context == null ? Context.NONE : context;
+        Response<RoomModel> response = this.roomsClient
+                    .getWithResponse(roomId, context);
+        return new SimpleResponse<CommunicationRoom>(response, getCommunicationRoomFromResponse(response.getValue()));
+
     }
 
     /**
      * Delete an existing room.
      *
      * @param roomId The room Id.
-     * @return Response with status code only.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Void deleteRoom(String roomId) {
-        return roomsAsyncClient.deleteRoom(roomId).block();
+    public void deleteRoom(String roomId) {
+        this.roomsClient.delete(roomId);
     }
 
     /**
@@ -129,83 +181,144 @@ public final class RoomsClient {
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Response<Void> deleteRoomWithResponse(String roomId, Context context) {
-        return roomsAsyncClient.deleteRoomWithResponse(roomId, context).block();
+        context = context == null ? Context.NONE : context;
+        return this.roomsClient.deleteWithResponse(roomId, context);
     }
 
     /**
-     * Add participants to an existing room.
+     * Lists all rooms.
      *
-     * @param roomId The room id.
-     * @param participants The participants to add.
-     * @return The existing room.
+     * @return The existing rooms.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public ParticipantsCollection addParticipants(String roomId, List<RoomParticipant> participants) {
-        return roomsAsyncClient.addParticipants(roomId, participants).block();
+    public PagedIterable<CommunicationRoom> listRooms() {
+        return new PagedIterable<>(
+                () -> this.roomsClient.listSinglePage(),
+                nextLink -> this.roomsClient.listNextSinglePage(nextLink))
+            .mapPage(f -> RoomModelConverter.convert(f));
     }
 
     /**
-     * Add participants to an existing room with response.
+     * Lists all rooms.
      *
-     * @param roomId The room id.
-     * @param participants The participants to add.
      * @param context The context of key value pairs for http request.
-     * @return The existing room.
+     * @return The existing rooms.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Response<ParticipantsCollection> addParticipantsWithResponse(String roomId, List<RoomParticipant> participants, Context context) {
-        return roomsAsyncClient.addParticipantsWithResponse(roomId, participants, context).block();
+    public PagedIterable<CommunicationRoom> listRooms(Context context) {
+        final Context serviceContext = context == null ? Context.NONE : context;
+        return new PagedIterable<>(
+                () -> this.roomsClient.listSinglePage(serviceContext),
+                nextLink -> this.roomsClient.listNextSinglePage(nextLink, serviceContext))
+            .mapPage(f -> RoomModelConverter.convert(f));
     }
 
     /**
-     * Update participants to an existing room.
+     * addOrUpdate participants to an existing Room.
      *
      * @param roomId The room id.
-     * @param participants The participants to add.
-     * @return The existing room.
+     * @param participants The participants list.
+     * @return response for a successful addOrUpdate participants room request.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public ParticipantsCollection updateParticipants(String roomId, List<RoomParticipant> participants) {
-        return roomsAsyncClient.updateParticipants(roomId, participants).block();
+    public AddOrUpdateParticipantsResult addOrUpdateParticipants(String roomId, Iterable<RoomParticipant> participants) {
+        try {
+            Objects.requireNonNull(participants, "'participants' cannot be null.");
+            Objects.requireNonNull(roomId, "'roomId' cannot be null.");
+            Map<String, ParticipantProperties> participantMap = convertRoomParticipantsToMapForAddOrUpdate(participants);
+            ObjectMapper mapper = new ObjectMapper();
+            String updateRequest = mapper.writeValueAsString(new UpdateParticipantsRequest().setParticipants(participantMap));
+
+            this.participantsClient.update(roomId, updateRequest);
+            return new AddOrUpdateParticipantsResult();
+        } catch (JsonProcessingException ex) {
+            ex.printStackTrace();
+            throw logger.logExceptionAsError(new IllegalArgumentException("Failed to process JSON input", ex));
+        }
     }
 
     /**
-     * Update participants to an existing room with response.
+     * addOrUpdate participants to an existing Room with response
      *
      * @param roomId The room id.
-     * @param participants The participants to add.
+     * @param participants The participants list.
      * @param context The context of key value pairs for http request.
-     * @return The existing room.
+     * @return response for a successful addOrUpdate participants room request.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Response<ParticipantsCollection> updateParticipantsWithResponse(String roomId, List<RoomParticipant> participants, Context context) {
-        return roomsAsyncClient.updateParticipantsWithResponse(roomId, participants, context).block();
+    public Response<AddOrUpdateParticipantsResult> addOrUpdateParticipantsWithResponse(String roomId, Iterable<RoomParticipant> participants, Context context) {
+        try {
+            context = context == null ? Context.NONE : context;
+            Objects.requireNonNull(participants, "'participants' cannot be null.");
+            Objects.requireNonNull(roomId, "'roomId' cannot be null.");
+            Map<String, ParticipantProperties> participantMap = convertRoomParticipantsToMapForAddOrUpdate(participants);
+            ObjectMapper mapper = new ObjectMapper();
+            String updateRequest = mapper.writeValueAsString(new UpdateParticipantsRequest().setParticipants(participantMap));
+
+            Response<Object> response = this.participantsClient
+                    .updateWithResponse(roomId, updateRequest, context);
+            return new SimpleResponse<AddOrUpdateParticipantsResult>(
+                response.getRequest(), response.getStatusCode(), response.getHeaders(), null);
+        } catch (JsonProcessingException ex) {
+            ex.printStackTrace();
+            throw logger.logExceptionAsError(new IllegalArgumentException("Failed to process JSON input", ex));
+        }
     }
 
     /**
-     * Remove participants from an existing room.
+     * Remove participants to an existing Room.
      *
      * @param roomId The room id.
-     * @param participants The participants to remove.
-     * @return The existing room.
+     * @param identifiers The communication identifiers list.
+     * @return response for a successful remove participants room request.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public ParticipantsCollection removeParticipants(String roomId, List<RoomParticipant> participants) {
-        return roomsAsyncClient.removeParticipants(roomId, participants).block();
+    public RemoveParticipantsResult removeParticipants(String roomId, Iterable<CommunicationIdentifier> identifiers) {
+        try {
+            Objects.requireNonNull(identifiers, "'identifiers' cannot be null.");
+            Objects.requireNonNull(roomId, "'roomId' cannot be null.");
+            Map<String, ParticipantProperties> participantMap = convertRoomIdentifiersToMapForRemove(
+                identifiers);
+            ObjectMapper mapper = new ObjectMapper();
+            String updateRequest =  mapper.writeValueAsString(new UpdateParticipantsRequest().setParticipants(participantMap));
+
+            this.participantsClient.update(roomId, updateRequest);
+            return new RemoveParticipantsResult();
+        } catch (JsonProcessingException ex) {
+            ex.printStackTrace();
+            throw logger.logExceptionAsError(new IllegalArgumentException("Failed to process JSON input", ex));
+        }
     }
 
     /**
-     * Remove participants from an existing room with response.
+     * Remove participants to an existing Room with response
      *
      * @param roomId The room id.
-     * @param participants The participants to remove.
+     * @param identifiers The communication identifiers list.
      * @param context The context of key value pairs for http request.
-     * @return The existing room.
+     * @return response for a successful remove participants room request.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Response<ParticipantsCollection> removeParticipantsWithResponse(String roomId, List<RoomParticipant> participants, Context context) {
-        return roomsAsyncClient.removeParticipantsWithResponse(roomId, participants, context).block();
+    public Response<RemoveParticipantsResult> removeParticipantsWithResponse(String roomId, Iterable<CommunicationIdentifier> identifiers, Context context) {
+        try {
+            context = context == null ? Context.NONE : context;
+            Objects.requireNonNull(identifiers, "'identifiers' cannot be null.");
+            Objects.requireNonNull(roomId, "'roomId' cannot be null.");
+            Map<String, ParticipantProperties> participantMap = convertRoomIdentifiersToMapForRemove(
+                identifiers);
+            ObjectMapper mapper = new ObjectMapper();
+            String updateRequest = mapper.writeValueAsString(new UpdateParticipantsRequest().setParticipants(participantMap));
+            Response<Object> response = this.participantsClient
+                .updateWithResponse(roomId, updateRequest, context);
+
+            return new SimpleResponse<RemoveParticipantsResult>(
+                response.getRequest(), response.getStatusCode(), response.getHeaders(), null);
+        } catch (JsonProcessingException ex) {
+            ex.printStackTrace();
+            throw logger.logExceptionAsError(new IllegalArgumentException("Failed to process JSON input", ex));
+        }
     }
+
 
     /**
      * List Room participants.
@@ -214,20 +327,122 @@ public final class RoomsClient {
      * @return Room Participants List
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public ParticipantsCollection getParticipants(String roomId) {
-        return roomsAsyncClient.getParticipants(roomId).block();
+    public PagedIterable<RoomParticipant> listParticipants(String roomId) {
+        Objects.requireNonNull(roomId, "'roomId' cannot be null.");
+        return new PagedIterable<>(
+                () -> this.participantsClient.listSinglePage(roomId),
+                nextLink -> this.participantsClient.listNextSinglePage(nextLink))
+            .mapPage(f -> RoomParticipantConverter.convert(f));
     }
 
     /**
-     * Update participants to an existing room with response.
+     * List Room participants.
      *
      * @param roomId The room id.
      * @param context The context of key value pairs for http request.
-     * @return The Room Participants list.
+     * @return Room Participants List
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Response<ParticipantsCollection> getParticipantsWithResponse(String roomId, Context context) {
-        return roomsAsyncClient.getParticipantsWithResponse(roomId, context).block();
+    public PagedIterable<RoomParticipant> listParticipants(String roomId, Context context) {
+        final Context serviceContext = context == null ? Context.NONE : context;
+        Objects.requireNonNull(roomId, "'roomId' cannot be null.");
+
+        return new PagedIterable<>(
+                () -> this.participantsClient.listSinglePage(roomId, serviceContext),
+                nextLink -> this.participantsClient.listNextSinglePage(nextLink, serviceContext))
+            .mapPage(f -> RoomParticipantConverter.convert(f));
     }
 
+    private CommunicationRoom getCommunicationRoomFromResponse(RoomModel room) {
+        return new CommunicationRoom(
+                room.getId(),
+                room.getValidFrom(),
+                room.getValidUntil(),
+                room.getCreatedAt());
+    }
+
+    /**
+     * Translate to create room request.
+     *
+     * @return The create room request.
+     */
+    private CreateRoomRequest toCreateRoomRequest(OffsetDateTime validFrom, OffsetDateTime validUntil,
+            Iterable<RoomParticipant> participants) {
+        CreateRoomRequest createRoomRequest = new CreateRoomRequest();
+        if (validFrom != null) {
+            createRoomRequest.setValidFrom(validFrom);
+        }
+
+        if (validUntil != null) {
+            createRoomRequest.setValidUntil(validUntil);
+        }
+
+        Map<String, ParticipantProperties> roomParticipants = new HashMap<>();
+
+        if (participants != null) {
+            roomParticipants = convertRoomParticipantsToMapForAddOrUpdate(participants);
+        }
+
+        if (participants != null) {
+            createRoomRequest.setParticipants(roomParticipants);
+        }
+
+        return createRoomRequest;
+    }
+
+    /**
+     * Translate to update room request.
+     *
+     * @return The update room request.
+     */
+    private UpdateRoomRequest toUpdateRoomRequest(OffsetDateTime validFrom, OffsetDateTime validUntil) {
+        UpdateRoomRequest updateRoomRequest = new UpdateRoomRequest();
+
+        if (validFrom != null) {
+            updateRoomRequest.setValidFrom(validFrom);
+        }
+
+        if (validUntil != null) {
+            updateRoomRequest.setValidUntil(validUntil);
+        }
+
+        return updateRoomRequest;
+    }
+
+    /**
+     * Translate to map for add or update participants.
+     *
+     * @return Map of participants.
+     */
+    private Map<String, ParticipantProperties> convertRoomParticipantsToMapForAddOrUpdate(
+            Iterable<RoomParticipant> participants) {
+        Map<String, ParticipantProperties> participantMap = new HashMap<>();
+
+        if (participants != null) {
+            for (RoomParticipant participant : participants) {
+                participantMap.put(participant.getCommunicationIdentifier().getRawId(),
+                        new ParticipantProperties().setRole(ParticipantRoleConverter.convert(participant.getRole())));
+            }
+        }
+
+        return participantMap;
+    }
+
+    /**
+     * Translate to map for remove participants.
+     *
+     * @return Map of participants.
+     */
+    private Map<String, ParticipantProperties> convertRoomIdentifiersToMapForRemove(
+            Iterable<CommunicationIdentifier> identifiers) {
+        Map<String, ParticipantProperties> participantMap = new HashMap<>();
+
+        if (identifiers != null) {
+            for (CommunicationIdentifier identifier : identifiers) {
+                participantMap.put(identifier.getRawId(), null);
+            }
+        }
+
+        return participantMap;
+    }
 }

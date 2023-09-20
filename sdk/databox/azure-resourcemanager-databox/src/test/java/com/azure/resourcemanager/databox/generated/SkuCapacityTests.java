@@ -11,7 +11,7 @@ public final class SkuCapacityTests {
     @org.junit.jupiter.api.Test
     public void testDeserialize() throws Exception {
         SkuCapacity model =
-            BinaryData.fromString("{\"usable\":\"hmgkbrpyy\",\"maximum\":\"ibnuqqkpik\"}").toObject(SkuCapacity.class);
+            BinaryData.fromString("{\"usable\":\"osvmk\",\"maximum\":\"sxqu\"}").toObject(SkuCapacity.class);
     }
 
     @org.junit.jupiter.api.Test

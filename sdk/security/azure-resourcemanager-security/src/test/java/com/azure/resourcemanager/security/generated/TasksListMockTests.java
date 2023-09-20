@@ -31,7 +31,7 @@ public final class TasksListMockTests {
         ArgumentCaptor<HttpRequest> httpRequest = ArgumentCaptor.forClass(HttpRequest.class);
 
         String responseStr =
-            "{\"value\":[{\"properties\":{\"state\":\"pdxcltuubwy\",\"creationTimeUtc\":\"2021-02-05T14:16:57Z\",\"securityTaskParameters\":{\"name\":\"wcpjqduqgi\",\"\":{}},\"lastStateChangeTimeUtc\":\"2021-01-24T18:32:56Z\",\"subState\":\"fbwljavhuerkjdd\"},\"id\":\"r\",\"name\":\"liegftcvbi\",\"type\":\"ftksd\"}]}";
+            "{\"value\":[{\"properties\":{\"state\":\"ewuyqa\",\"creationTimeUtc\":\"2021-07-02T03:18:38Z\",\"securityTaskParameters\":{\"name\":\"hgejkbvhhdaurgh\",\"\":{}},\"lastStateChangeTimeUtc\":\"2021-10-08T07:27:35Z\",\"subState\":\"xb\"},\"id\":\"hxjxjoezlqxrkdkn\",\"name\":\"obektmbozo\",\"type\":\"tzamicbig\"}]}";
 
         Mockito.when(httpResponse.getStatusCode()).thenReturn(200);
         Mockito.when(httpResponse.getHeaders()).thenReturn(new HttpHeaders());
@@ -59,6 +59,6 @@ public final class TasksListMockTests {
                     tokenRequestContext -> Mono.just(new AccessToken("this_is_a_token", OffsetDateTime.MAX)),
                     new AzureProfile("", "", AzureEnvironment.AZURE));
 
-        PagedIterable<SecurityTask> response = manager.tasks().list("kqv", com.azure.core.util.Context.NONE);
+        PagedIterable<SecurityTask> response = manager.tasks().list("ycqsxr", com.azure.core.util.Context.NONE);
     }
 }

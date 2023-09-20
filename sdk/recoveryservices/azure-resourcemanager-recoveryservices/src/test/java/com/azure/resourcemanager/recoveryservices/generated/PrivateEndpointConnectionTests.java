@@ -16,22 +16,16 @@ public final class PrivateEndpointConnectionTests {
         PrivateEndpointConnection model =
             BinaryData
                 .fromString(
-                    "{\"provisioningState\":\"Succeeded\",\"privateEndpoint\":{\"id\":\"uvcc\"},\"privateLinkServiceConnectionState\":{\"status\":\"Pending\",\"description\":\"bacfionlebxetq\",\"actionsRequired\":\"zxdpnqbqqw\"},\"groupIds\":[\"AzureBackup_secondary\",\"AzureBackup\",\"AzureBackup\"]}")
+                    "{\"provisioningState\":\"Deleting\",\"privateEndpoint\":{\"id\":\"sqpjhvmdajvn\"},\"privateLinkServiceConnectionState\":{\"status\":\"Rejected\",\"description\":\"q\",\"actionsRequired\":\"a\"},\"groupIds\":[\"AzureBackup\"]}")
                 .toObject(PrivateEndpointConnection.class);
-        Assertions.assertEquals(VaultSubResourceType.AZURE_BACKUP_SECONDARY, model.groupIds().get(0));
+        Assertions.assertEquals(VaultSubResourceType.AZURE_BACKUP, model.groupIds().get(0));
     }
 
     @org.junit.jupiter.api.Test
     public void testSerialize() throws Exception {
         PrivateEndpointConnection model =
-            new PrivateEndpointConnection()
-                .withGroupIds(
-                    Arrays
-                        .asList(
-                            VaultSubResourceType.AZURE_BACKUP_SECONDARY,
-                            VaultSubResourceType.AZURE_BACKUP,
-                            VaultSubResourceType.AZURE_BACKUP));
+            new PrivateEndpointConnection().withGroupIds(Arrays.asList(VaultSubResourceType.AZURE_BACKUP));
         model = BinaryData.fromObject(model).toObject(PrivateEndpointConnection.class);
-        Assertions.assertEquals(VaultSubResourceType.AZURE_BACKUP_SECONDARY, model.groupIds().get(0));
+        Assertions.assertEquals(VaultSubResourceType.AZURE_BACKUP, model.groupIds().get(0));
     }
 }

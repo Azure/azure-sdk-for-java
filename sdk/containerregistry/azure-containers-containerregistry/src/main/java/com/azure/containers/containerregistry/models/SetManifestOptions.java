@@ -3,6 +3,7 @@
 
 package com.azure.containers.containerregistry.models;
 
+import com.azure.core.annotation.Fluent;
 import com.azure.core.util.BinaryData;
 
 import java.util.Objects;
@@ -10,6 +11,7 @@ import java.util.Objects;
 /**
  * Set manifest options.
  */
+@Fluent
 public final class SetManifestOptions {
     private final ManifestMediaType mediaType;
     private final BinaryData manifest;
@@ -22,7 +24,7 @@ public final class SetManifestOptions {
     public SetManifestOptions(OciImageManifest ociImageManifest) {
         Objects.requireNonNull(ociImageManifest, "'ociManifest' can't be null.");
         this.manifest = BinaryData.fromObject(ociImageManifest);
-        this.mediaType = ManifestMediaType.OCI_MANIFEST;
+        this.mediaType = ManifestMediaType.OCI_IMAGE_MANIFEST;
     }
 
     /**

@@ -7,11 +7,14 @@
 
     <groupId>com.azure</groupId>
     <artifactId>azure-aot-graalvm-support</artifactId>
-    <version>1.0.0-beta.3</version> <!-- {x-version-update;com.azure:azure-aot-graalvm-support;current} -->
+    <version>1.0.0-beta.4</version> <!-- {x-version-update;com.azure:azure-aot-graalvm-support;current} -->
 
     <packaging>jar</packaging>
     <name>Microsoft Azure GraalVM support</name>
-    <description>This package contains GraalVM Support configuration for Azure SDKs.</description>
+    <description>
+      This package is deprecated will have no further updates. Dependency on this library is no longer required to build native images with Azure SDK for Java.
+      For more details, please refer to https://devblogs.microsoft.com/azure-sdk/announcing-graalvm-support-in-azure-sdk-for-java-and-spring-cloud-azure-libraries
+    </description>
     <parent>
         <groupId>com.azure</groupId>
         <artifactId>azure-client-sdk-parent</artifactId>
@@ -97,7 +100,7 @@
             <plugin>
                 <groupId>org.apache.maven.plugins</groupId>
                 <artifactId>maven-javadoc-plugin</artifactId>
-                <version>3.3.1</version> <!-- {x-version-update;org.apache.maven.plugins:maven-javadoc-plugin;external_dependency} -->
+                <version>3.4.1</version> <!-- {x-version-update;org.apache.maven.plugins:maven-javadoc-plugin;external_dependency} -->
                 <executions>
                     <execution>
                         <id>attach-javadocs</id>
@@ -113,7 +116,7 @@
             <plugin>
                 <groupId>org.apache.maven.plugins</groupId>
                 <artifactId>maven-jar-plugin</artifactId>
-                <version>3.1.2</version> <!-- {x-version-update;org.apache.maven.plugins:maven-jar-plugin;external_dependency} -->
+                <version>3.2.2</version> <!-- {x-version-update;org.apache.maven.plugins:maven-jar-plugin;external_dependency} -->
                 <executions>
                     <execution>
                         <id>empty-javadoc-jar-with-readme</id>
@@ -131,7 +134,7 @@
             <plugin>
                 <groupId>org.apache.maven.plugins</groupId>
                 <artifactId>maven-antrun-plugin</artifactId>
-                <version>1.8</version> <!-- {x-version-update;org.apache.maven.plugins:maven-antrun-plugin;external_dependency} -->
+                <version>3.0.0</version> <!-- {x-version-update;org.apache.maven.plugins:maven-antrun-plugin;external_dependency} -->
                 <executions>
                     <execution>
                         <id>copy-readme-to-javadocTemp</id>

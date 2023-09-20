@@ -13,16 +13,14 @@ public final class PurgeParametersTests {
     @org.junit.jupiter.api.Test
     public void testDeserialize() throws Exception {
         PurgeParameters model =
-            BinaryData
-                .fromString("{\"contentPaths\":[\"ytguslf\",\"adcy\",\"qukyhejhzi\"]}")
-                .toObject(PurgeParameters.class);
-        Assertions.assertEquals("ytguslf", model.contentPaths().get(0));
+            BinaryData.fromString("{\"contentPaths\":[\"lmfmtdaay\"]}").toObject(PurgeParameters.class);
+        Assertions.assertEquals("lmfmtdaay", model.contentPaths().get(0));
     }
 
     @org.junit.jupiter.api.Test
     public void testSerialize() throws Exception {
-        PurgeParameters model = new PurgeParameters().withContentPaths(Arrays.asList("ytguslf", "adcy", "qukyhejhzi"));
+        PurgeParameters model = new PurgeParameters().withContentPaths(Arrays.asList("lmfmtdaay"));
         model = BinaryData.fromObject(model).toObject(PurgeParameters.class);
-        Assertions.assertEquals("ytguslf", model.contentPaths().get(0));
+        Assertions.assertEquals("lmfmtdaay", model.contentPaths().get(0));
     }
 }

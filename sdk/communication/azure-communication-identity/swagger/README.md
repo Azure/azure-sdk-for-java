@@ -44,6 +44,7 @@ disable-client-builder: true
 generate-client-as-impl: true
 service-interface-as-public: true
 context-client-method-parameter: true
+enable-sync-stack: true
 ```
 
 ### Rename CommunicationIdentityTokenScope to CommunicationTokenScope

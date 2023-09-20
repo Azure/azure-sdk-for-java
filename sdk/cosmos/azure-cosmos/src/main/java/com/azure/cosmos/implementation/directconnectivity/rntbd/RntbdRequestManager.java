@@ -23,6 +23,7 @@ import com.azure.cosmos.implementation.RequestEntityTooLargeException;
 import com.azure.cosmos.implementation.RequestRateTooLargeException;
 import com.azure.cosmos.implementation.RequestTimeoutException;
 import com.azure.cosmos.implementation.RetryWithException;
+import com.azure.cosmos.implementation.RxDocumentServiceRequest;
 import com.azure.cosmos.implementation.ServiceUnavailableException;
 import com.azure.cosmos.implementation.UnauthorizedException;
 import com.azure.cosmos.implementation.apachecommons.lang.StringUtils;
@@ -634,7 +635,9 @@ public final class RntbdRequestManager implements ChannelHandler, ChannelInbound
 
                     Consumer<Duration> writeRequestWithInjectedDelayConsumer =
                         (delay) -> this.writeRequestWithInjectedDelay(context, record, promise, delay);
-                    if (this.serverErrorInjector.injectRntbdServerResponseDelay(record, writeRequestWithInjectedDelayConsumer)) {
+                    if (this.serverErrorInjector.injectRntbdServerResponseDelayBeforeProcessing(
+                        record, writeRequestWithInjectedDelayConsumer)) {
+
                         return;
                     }
                 }
@@ -698,6 +701,48 @@ public final class RntbdRequestManager implements ChannelHandler, ChannelInbound
         );
     }
 
+    private void completeWithInjectedDelay(
+        final ChannelHandlerContext context,
+        final RntbdRequestRecord rntbdRequestRecord,
+        final StoreResponse storeResponse,
+        Duration delay) {
+
+        long actualTransitTime = Duration.between(rntbdRequestRecord.timeCreated(), Instant.now()).toNanos();
+        if (actualTransitTime + delay.toNanos() > this.tcpNetworkRequestTimeoutInNanos) {
+            return;
+        }
+
+        context.executor().schedule(
+            () -> {
+
+                rntbdRequestRecord.complete(storeResponse);
+            },
+            delay.toNanos(),
+            TimeUnit.NANOSECONDS
+        );
+    }
+
+    private void completeExceptionallyWithInjectedDelay(
+        final ChannelHandlerContext context,
+        final RntbdRequestRecord rntbdRequestRecord,
+        final CosmosException cause,
+        Duration delay) {
+
+        long actualTransitTime = Duration.between(rntbdRequestRecord.timeCreated(), Instant.now()).toNanos();
+        if (actualTransitTime + delay.toNanos() > this.tcpNetworkRequestTimeoutInNanos) {
+            return;
+        }
+
+        context.executor().schedule(
+            () -> {
+
+                rntbdRequestRecord.completeExceptionally(cause);
+            },
+            delay.toNanos(),
+            TimeUnit.NANOSECONDS
+        );
+    }
+
     public RntbdChannelStatistics getChannelStatistics(
         Channel channel,
         RntbdChannelAcquisitionTimeline channelAcquisitionTimeline) {
@@ -720,7 +765,7 @@ public final class RntbdRequestManager implements ChannelHandler, ChannelInbound
     }
 
     Optional<RntbdContext> rntbdContext() {
-        return Optional.of(this.contextFuture.getNow(null));
+        return Optional.ofNullable(this.contextFuture.getNow(null));
     }
 
     CompletableFuture<RntbdContextRequest> rntbdContextRequestFuture() {
@@ -785,6 +830,10 @@ public final class RntbdRequestManager implements ChannelHandler, ChannelInbound
             this.pendingRequests.remove(record.transportRequestId());
             if (pendingRequestTimeout.get() != null) {
                 pendingRequestTimeout.get().cancel();
+            }
+
+            if (record.isCancelled()) {
+                this.timestamps.cancellation();
             }
         });
 
@@ -883,7 +932,7 @@ public final class RntbdRequestManager implements ChannelHandler, ChannelInbound
             final Map<String, String> requestHeaders = record.args().serviceRequest().getHeaders();
             final String requestUri = record.args().physicalAddressUri().getURI().toString();
 
-            final GoneException error = new GoneException(message, cause, null, requestUri);
+            final GoneException error = new GoneException(message, cause, null, requestUri, SubStatusCodes.UNKNOWN);
             BridgeInternal.setRequestHeaders(error, requestHeaders);
 
             if (StringUtils.isNotEmpty(faultInjectionRuleId)) {
@@ -920,6 +969,8 @@ public final class RntbdRequestManager implements ChannelHandler, ChannelInbound
             return;
         }
 
+        final RxDocumentServiceRequest serviceRequest = requestRecord.args().serviceRequest();
+
         requestRecord.stage(RntbdRequestRecord.Stage.DECODE_STARTED, response.getDecodeStartTime());
 
         // When decode completed, it means sdk has received the full response from server
@@ -937,6 +988,17 @@ public final class RntbdRequestManager implements ChannelHandler, ChannelInbound
             statusCode == HttpResponseStatus.NOT_MODIFIED.code()) {
 
             final StoreResponse storeResponse = response.toStoreResponse(this.contextFuture.getNow(null));
+
+            if (this.serverErrorInjector != null) {
+                Consumer<Duration> completeWithInjectedDelayConsumer =
+                    (delay) -> this.completeWithInjectedDelay(context, requestRecord, storeResponse, delay);
+                if (this.serverErrorInjector.injectRntbdServerResponseDelayAfterProcessing(
+                    requestRecord, completeWithInjectedDelayConsumer)) {
+
+                    return;
+                }
+            }
+
             requestRecord.complete(storeResponse);
 
         } else {
@@ -988,21 +1050,30 @@ public final class RntbdRequestManager implements ChannelHandler, ChannelInbound
                     switch (subStatusCode) {
                         case SubStatusCodes.COMPLETING_SPLIT_OR_MERGE:
                             cause = new PartitionKeyRangeIsSplittingException(error, lsn, partitionKeyRangeId, responseHeaders);
+                            handleGoneException(serviceRequest, cause);
+                            this.attemptBackgroundAddressRefresh(serviceRequest, cause);
                             break;
                         case SubStatusCodes.COMPLETING_PARTITION_MIGRATION:
                             cause = new PartitionIsMigratingException(error, lsn, partitionKeyRangeId, responseHeaders);
+                            handleGoneException(serviceRequest, cause);
+                            this.attemptBackgroundAddressRefresh(serviceRequest, cause);
                             break;
                         case SubStatusCodes.NAME_CACHE_IS_STALE:
                             cause = new InvalidPartitionException(error, lsn, partitionKeyRangeId, responseHeaders);
+                            handleGoneException(serviceRequest, cause);
+                            this.attemptBackgroundAddressRefresh(serviceRequest, cause);
                             break;
                         case SubStatusCodes.PARTITION_KEY_RANGE_GONE:
                             cause = new PartitionKeyRangeGoneException(error, lsn, partitionKeyRangeId, responseHeaders);
                             break;
                         default:
                             GoneException goneExceptionFromService =
-                                new GoneException(error, lsn, partitionKeyRangeId, responseHeaders);
+                                new GoneException(error, lsn, partitionKeyRangeId, responseHeaders,
+                                    SubStatusCodes.SERVER_GENERATED_410);
                             goneExceptionFromService.setIsBasedOn410ResponseFromService();
                             cause = goneExceptionFromService;
+                            handleGoneException(serviceRequest, cause);
+                            this.attemptBackgroundAddressRefresh(serviceRequest, cause);
                             break;
                     }
                     break;
@@ -1033,7 +1104,8 @@ public final class RntbdRequestManager implements ChannelHandler, ChannelInbound
 
                 case StatusCodes.REQUEST_TIMEOUT:
                     Exception inner = new RequestTimeoutException(error, lsn, partitionKeyRangeId, responseHeaders);
-                    cause = new GoneException(resourceAddress, error, lsn, partitionKeyRangeId, responseHeaders, inner);
+                    cause = new GoneException(resourceAddress, error, lsn, partitionKeyRangeId, responseHeaders, inner,
+                        SubStatusCodes.SERVER_GENERATED_408);
                     break;
 
                 case StatusCodes.RETRY_WITH:
@@ -1041,7 +1113,8 @@ public final class RntbdRequestManager implements ChannelHandler, ChannelInbound
                     break;
 
                 case StatusCodes.SERVICE_UNAVAILABLE:
-                    cause = new ServiceUnavailableException(error, lsn, partitionKeyRangeId, responseHeaders);
+                    cause = new ServiceUnavailableException(error, lsn, partitionKeyRangeId, responseHeaders,
+                        SubStatusCodes.SERVER_GENERATED_503);
                     break;
 
                 case StatusCodes.TOO_MANY_REQUESTS:
@@ -1058,7 +1131,38 @@ public final class RntbdRequestManager implements ChannelHandler, ChannelInbound
             }
             BridgeInternal.setResourceAddress(cause, resourceAddress);
 
+            if (this.serverErrorInjector != null) {
+                Consumer<Duration> completeWithInjectedDelayConsumer =
+                    (delay) -> this.completeExceptionallyWithInjectedDelay(context, requestRecord, cause, delay);
+                if (this.serverErrorInjector.injectRntbdServerResponseDelayAfterProcessing(
+                    requestRecord, completeWithInjectedDelayConsumer)) {
+
+                    return;
+                }
+            }
+
             requestRecord.completeExceptionally(cause);
+        }
+    }
+
+    private void handleGoneException(RxDocumentServiceRequest request, Exception exception) {
+
+        if (request.requestContext == null) {
+            return;
+        }
+
+        if (exception instanceof PartitionIsMigratingException) {
+            request.forceCollectionRoutingMapRefresh = true;
+            request.requestContext.forceRefreshAddressCache = true;
+        } else if (exception instanceof InvalidPartitionException) {
+            request.forceNameCacheRefresh = true;
+            request.requestContext.resolvedPartitionKeyRange = null;
+        } else if (exception instanceof PartitionKeyRangeIsSplittingException) {
+            request.requestContext.resolvedPartitionKeyRange = null;
+            request.forcePartitionKeyRangeRefresh = true;
+            request.requestContext.forceRefreshAddressCache = true;
+        } else if (exception instanceof GoneException) {
+            request.requestContext.forceRefreshAddressCache = true;
         }
     }
 
@@ -1071,6 +1175,12 @@ public final class RntbdRequestManager implements ChannelHandler, ChannelInbound
         if (!this.pendingWrites.isEmpty()) {
             this.pendingWrites.writeAndRemoveAll(context);
             context.flush();
+        }
+    }
+
+    private void attemptBackgroundAddressRefresh(RxDocumentServiceRequest request, CosmosException cause) {
+        if (rntbdConnectionStateListener != null) {
+            rntbdConnectionStateListener.attemptBackgroundAddressRefresh(request, cause);
         }
     }
 

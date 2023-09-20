@@ -9,7 +9,7 @@ import com.fasterxml.jackson.annotation.JsonSubTypes;
 import com.fasterxml.jackson.annotation.JsonTypeInfo;
 import com.fasterxml.jackson.annotation.JsonTypeName;
 
-/** An attachment which attaches WorkerSelectors to workers. */
+/** An attachment which attaches worker selectors to a job. */
 @JsonTypeInfo(
         use = JsonTypeInfo.Id.NAME,
         include = JsonTypeInfo.As.PROPERTY,
@@ -26,6 +26,4 @@ import com.fasterxml.jackson.annotation.JsonTypeName;
             value = WeightedAllocationWorkerSelectorAttachment.class)
 })
 @Immutable
-public abstract class WorkerSelectorAttachment {
-
-}
+public abstract class WorkerSelectorAttachment {}

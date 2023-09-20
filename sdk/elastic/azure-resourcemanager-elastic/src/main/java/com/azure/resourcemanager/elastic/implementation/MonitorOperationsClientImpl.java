@@ -59,8 +59,7 @@ public final class MonitorOperationsClientImpl implements MonitorOperationsClien
     public interface MonitorOperationsService {
         @Headers({"Content-Type: application/json"})
         @Post(
-            "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Elastic/monitors"
-                + "/{monitorName}/upgrade")
+            "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Elastic/monitors/{monitorName}/upgrade")
         @ExpectedResponses({202})
         @UnexpectedResponseExceptionType(ManagementException.class)
         Mono<Response<Flux<ByteBuffer>>> upgrade(
@@ -254,7 +253,7 @@ public final class MonitorOperationsClientImpl implements MonitorOperationsClien
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     public SyncPoller<PollResult<Void>, Void> beginUpgrade(String resourceGroupName, String monitorName) {
         final ElasticMonitorUpgrade body = null;
-        return beginUpgradeAsync(resourceGroupName, monitorName, body).getSyncPoller();
+        return this.beginUpgradeAsync(resourceGroupName, monitorName, body).getSyncPoller();
     }
 
     /**
@@ -272,7 +271,7 @@ public final class MonitorOperationsClientImpl implements MonitorOperationsClien
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     public SyncPoller<PollResult<Void>, Void> beginUpgrade(
         String resourceGroupName, String monitorName, ElasticMonitorUpgrade body, Context context) {
-        return beginUpgradeAsync(resourceGroupName, monitorName, body, context).getSyncPoller();
+        return this.beginUpgradeAsync(resourceGroupName, monitorName, body, context).getSyncPoller();
     }
 
     /**

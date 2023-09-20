@@ -19,7 +19,7 @@ public final class DefenderForServersAwsOfferingVmScannersConfiguration {
     private String cloudRoleArn;
 
     /*
-     * The scanning mode for the vm scan.
+     * The scanning mode for the VM scan.
      */
     @JsonProperty(value = "scanningMode")
     private ScanningMode scanningMode;
@@ -56,7 +56,7 @@ public final class DefenderForServersAwsOfferingVmScannersConfiguration {
     }
 
     /**
-     * Get the scanningMode property: The scanning mode for the vm scan.
+     * Get the scanningMode property: The scanning mode for the VM scan.
      *
      * @return the scanningMode value.
      */
@@ -65,7 +65,7 @@ public final class DefenderForServersAwsOfferingVmScannersConfiguration {
     }
 
     /**
-     * Set the scanningMode property: The scanning mode for the vm scan.
+     * Set the scanningMode property: The scanning mode for the VM scan.
      *
      * @param scanningMode the scanningMode value to set.
      * @return the DefenderForServersAwsOfferingVmScannersConfiguration object itself.

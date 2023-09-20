@@ -10,7 +10,6 @@ import com.azure.core.http.HttpRequest;
 import com.azure.core.http.HttpResponse;
 import com.azure.core.util.UrlBuilder;
 import com.azure.core.util.logging.ClientLogger;
-import com.azure.core.util.logging.LogLevel;
 import reactor.core.publisher.Mono;
 
 import java.net.MalformedURLException;
@@ -29,7 +28,9 @@ public class PortPolicy implements HttpPipelinePolicy {
         protected void beforeSendingRequest(HttpPipelineCallContext context) {
             final UrlBuilder urlBuilder = UrlBuilder.parse(context.getHttpRequest().getUrl());
             if (overwrite || urlBuilder.getPort() == null) {
-                LOGGER.log(LogLevel.VERBOSE, () -> "Changing port to " + port);
+                LOGGER.atVerbose()
+                    .addKeyValue("port", port)
+                    .log("Changing host");
 
                 try {
                     context.getHttpRequest().setUrl(urlBuilder.setPort(port).toUrl());

@@ -4,12 +4,10 @@
 
 package com.azure.resourcemanager.containerinstance.generated;
 
-import com.azure.core.util.Context;
-
 /** Samples for Containers Attach. */
 public final class ContainersAttachSamples {
     /*
-     * x-ms-original-file: specification/containerinstance/resource-manager/Microsoft.ContainerInstance/stable/2021-10-01/examples/ContainerAttach.json
+     * x-ms-original-file: specification/containerinstance/resource-manager/Microsoft.ContainerInstance/stable/2023-05-01/examples/ContainerAttach.json
      */
     /**
      * Sample code: ContainerAttach.
@@ -22,6 +20,6 @@ public final class ContainersAttachSamples {
             .manager()
             .serviceClient()
             .getContainers()
-            .attachWithResponse("demo", "demo1", "container1", Context.NONE);
+            .attachWithResponse("demo", "demo1", "container1", com.azure.core.util.Context.NONE);
     }
 }

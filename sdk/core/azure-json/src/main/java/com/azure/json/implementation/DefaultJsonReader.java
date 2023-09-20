@@ -14,7 +14,6 @@ import com.azure.json.implementation.jackson.core.json.JsonReadFeature;
 import java.io.IOException;
 import java.io.InputStream;
 import java.io.Reader;
-import java.io.UncheckedIOException;
 
 /**
  * Default {@link JsonReader} implementation.
@@ -176,16 +175,12 @@ public final class DefaultJsonReader extends JsonReader {
             throw new IllegalStateException("'reset' isn't supported by this JsonReader.");
         }
 
-        try {
-            if (jsonBytes != null) {
-                return new DefaultJsonReader(FACTORY.createParser(jsonBytes), true, jsonBytes, null,
-                    nonNumericNumbersSupported);
-            } else {
-                return new DefaultJsonReader(FACTORY.createParser(jsonString), true, null, jsonString,
-                    nonNumericNumbersSupported);
-            }
-        } catch (IOException ex) {
-            throw new UncheckedIOException(ex);
+        if (jsonBytes != null) {
+            return new DefaultJsonReader(FACTORY.createParser(jsonBytes), true, jsonBytes, null,
+                nonNumericNumbersSupported);
+        } else {
+            return new DefaultJsonReader(FACTORY.createParser(jsonString), true, null, jsonString,
+                nonNumericNumbersSupported);
         }
     }
 

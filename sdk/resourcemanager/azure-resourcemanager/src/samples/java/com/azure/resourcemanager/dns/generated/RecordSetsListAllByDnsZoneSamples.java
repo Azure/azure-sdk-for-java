@@ -4,8 +4,6 @@
 
 package com.azure.resourcemanager.dns.generated;
 
-import com.azure.core.util.Context;
-
 /** Samples for RecordSets ListAllByDnsZone. */
 public final class RecordSetsListAllByDnsZoneSamples {
     /*
@@ -22,6 +20,6 @@ public final class RecordSetsListAllByDnsZoneSamples {
             .manager()
             .serviceClient()
             .getRecordSets()
-            .listAllByDnsZone("rg1", "zone1", null, null, Context.NONE);
+            .listAllByDnsZone("rg1", "zone1", null, null, com.azure.core.util.Context.NONE);
     }
 }

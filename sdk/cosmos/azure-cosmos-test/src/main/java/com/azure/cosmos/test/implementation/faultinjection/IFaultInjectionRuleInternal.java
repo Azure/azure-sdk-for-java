@@ -7,6 +7,7 @@ import com.azure.cosmos.test.faultinjection.FaultInjectionConnectionType;
 
 import java.net.URI;
 import java.util.List;
+import java.util.Map;
 
 public interface IFaultInjectionRuleInternal {
     void disable();
@@ -15,5 +16,6 @@ public interface IFaultInjectionRuleInternal {
     boolean isValid();
     String getId();
     long getHitCount();
+    Map<String, Long> getHitCountDetails();
     FaultInjectionConnectionType getConnectionType();
 }

@@ -3,6 +3,7 @@
 
 package com.azure.core.experimental.http;
 
+import com.azure.core.http.HttpHeaderName;
 import com.azure.core.http.HttpHeaders;
 import com.azure.core.http.HttpRequest;
 import com.azure.core.http.HttpResponse;
@@ -26,8 +27,8 @@ public final class MockHttpResponse extends HttpResponse {
         super(request);
 
         this.statusCode = statusCode;
-        this.headers = new HttpHeaders()
-            .set("Content-Type", encoding == SerializerEncoding.XML ? "application/xml" : "application/json");
+        this.headers = new HttpHeaders().set(HttpHeaderName.CONTENT_TYPE,
+            encoding == SerializerEncoding.XML ? "application/xml" : "application/json");
         this.body = body;
     }
 
@@ -38,8 +39,14 @@ public final class MockHttpResponse extends HttpResponse {
     }
 
     @Override
+    @Deprecated
     public String getHeaderValue(String name) {
         return headers.getValue(name);
+    }
+
+    @Override
+    public String getHeaderValue(HttpHeaderName headerName) {
+        return headers.getValue(headerName);
     }
 
     @Override

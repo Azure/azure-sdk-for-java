@@ -22,6 +22,10 @@ public final class KeyVaultProperties {
     @JsonProperty(value = "identityClientId")
     private String identityClientId;
 
+    /** Creates an instance of KeyVaultProperties class. */
+    public KeyVaultProperties() {
+    }
+
     /**
      * Get the keyIdentifier property: The URI of the key vault key used to encrypt data.
      *

@@ -15,7 +15,7 @@ import java.util.Map;
  * visit the ACSS how-to-guide.
  */
 @Fluent
-public class UserAssignedServiceIdentity {
+public final class UserAssignedServiceIdentity {
     /*
      * Type of manage identity
      */

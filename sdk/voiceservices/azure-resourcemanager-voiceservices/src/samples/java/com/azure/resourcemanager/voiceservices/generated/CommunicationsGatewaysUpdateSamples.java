@@ -14,10 +14,10 @@ public final class CommunicationsGatewaysUpdateSamples {
     /**
      * Sample code: UpdateCommunicationsGatewayResource.
      *
-     * @param manager Entry point to VoiceservicesManager.
+     * @param manager Entry point to VoiceServicesManager.
      */
     public static void updateCommunicationsGatewayResource(
-        com.azure.resourcemanager.voiceservices.VoiceservicesManager manager) {
+        com.azure.resourcemanager.voiceservices.VoiceServicesManager manager) {
         CommunicationsGateway resource =
             manager
                 .communicationsGateways()

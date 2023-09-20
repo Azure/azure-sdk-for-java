@@ -23,6 +23,15 @@ public final class FilterMode extends ExpandableStringEnum<FilterMode> {
     public static final FilterMode DEFAULT = fromString("Default");
 
     /**
+     * Creates a new instance of FilterMode value.
+     *
+     * @deprecated Use the {@link #fromString(String)} factory method.
+     */
+    @Deprecated
+    public FilterMode() {
+    }
+
+    /**
      * Creates or finds a FilterMode from its string representation.
      *
      * @param name a name to look for.

@@ -158,6 +158,7 @@ public abstract class ThroughputGroupControllerBase implements IThroughputContro
         return this.resolveRequestController()
             .flatMap(requestController -> {
                 if (requestController.canHandleRequest(request)) {
+                    request.setPriorityLevel(group.getPriorityLevel());
                     return requestController.processRequest(request, originalRequestMono)
                         .doOnError(throwable -> this.handleException(throwable));
                 }

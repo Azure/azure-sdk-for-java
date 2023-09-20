@@ -89,7 +89,7 @@ public final class LinkedEntity {
      * @return The linked entities matched value.
      */
     public IterableStream<LinkedEntityMatch> getMatches() {
-        return this.matches;
+        return this.matches == null ? IterableStream.of(null) : this.matches;
     }
 
     /**

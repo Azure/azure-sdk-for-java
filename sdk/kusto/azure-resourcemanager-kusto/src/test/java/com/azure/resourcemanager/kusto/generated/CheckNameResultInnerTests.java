@@ -15,12 +15,12 @@ public final class CheckNameResultInnerTests {
         CheckNameResultInner model =
             BinaryData
                 .fromString(
-                    "{\"nameAvailable\":false,\"name\":\"vfqawrlyxwjkcpr\",\"message\":\"wbxgjvt\",\"reason\":\"Invalid\"}")
+                    "{\"nameAvailable\":false,\"name\":\"rkujy\",\"message\":\"l\",\"reason\":\"AlreadyExists\"}")
                 .toObject(CheckNameResultInner.class);
         Assertions.assertEquals(false, model.nameAvailable());
-        Assertions.assertEquals("vfqawrlyxwjkcpr", model.name());
-        Assertions.assertEquals("wbxgjvt", model.message());
-        Assertions.assertEquals(Reason.INVALID, model.reason());
+        Assertions.assertEquals("rkujy", model.name());
+        Assertions.assertEquals("l", model.message());
+        Assertions.assertEquals(Reason.ALREADY_EXISTS, model.reason());
     }
 
     @org.junit.jupiter.api.Test
@@ -28,13 +28,13 @@ public final class CheckNameResultInnerTests {
         CheckNameResultInner model =
             new CheckNameResultInner()
                 .withNameAvailable(false)
-                .withName("vfqawrlyxwjkcpr")
-                .withMessage("wbxgjvt")
-                .withReason(Reason.INVALID);
+                .withName("rkujy")
+                .withMessage("l")
+                .withReason(Reason.ALREADY_EXISTS);
         model = BinaryData.fromObject(model).toObject(CheckNameResultInner.class);
         Assertions.assertEquals(false, model.nameAvailable());
-        Assertions.assertEquals("vfqawrlyxwjkcpr", model.name());
-        Assertions.assertEquals("wbxgjvt", model.message());
-        Assertions.assertEquals(Reason.INVALID, model.reason());
+        Assertions.assertEquals("rkujy", model.name());
+        Assertions.assertEquals("l", model.message());
+        Assertions.assertEquals(Reason.ALREADY_EXISTS, model.reason());
     }
 }

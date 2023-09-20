@@ -24,6 +24,10 @@ public final class EventHubConsumerGroupsListResult {
     @JsonProperty(value = "nextLink", access = JsonProperty.Access.WRITE_ONLY)
     private String nextLink;
 
+    /** Creates an instance of EventHubConsumerGroupsListResult class. */
+    public EventHubConsumerGroupsListResult() {
+    }
+
     /**
      * Get the value property: List of consumer groups objects.
      *

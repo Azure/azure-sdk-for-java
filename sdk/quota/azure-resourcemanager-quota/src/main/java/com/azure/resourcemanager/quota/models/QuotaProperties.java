@@ -5,15 +5,11 @@
 package com.azure.resourcemanager.quota.models;
 
 import com.azure.core.annotation.Fluent;
-import com.azure.core.util.logging.ClientLogger;
-import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonProperty;
 
 /** Quota properties for the specified resource. */
 @Fluent
 public final class QuotaProperties {
-    @JsonIgnore private final ClientLogger logger = new ClientLogger(QuotaProperties.class);
-
     /*
      * Resource quota limit properties.
      */
@@ -21,34 +17,30 @@ public final class QuotaProperties {
     private LimitJsonObject limit;
 
     /*
-     * The quota units, such as Count and Bytes. When requesting quota, use the
-     * **unit** value returned in the GET response in the request body of your
-     * PUT operation.
+     * The quota units, such as Count and Bytes. When requesting quota, use the **unit** value returned in the GET
+     * response in the request body of your PUT operation.
      */
     @JsonProperty(value = "unit", access = JsonProperty.Access.WRITE_ONLY)
     private String unit;
 
     /*
-     * Resource name provided by the resource provider. Use this property name
-     * when requesting quota.
+     * Resource name provided by the resource provider. Use this property name when requesting quota.
      */
     @JsonProperty(value = "name")
     private ResourceName name;
 
     /*
-     * Resource type name.
+     * The name of the resource type. Optional field.
      */
     @JsonProperty(value = "resourceType")
     private String resourceType;
 
     /*
-     * The time period over which the quota usage values are summarized. For
-     * example:
+     * The time period over which the quota usage values are summarized. For example:
      * *P1D (per one day)
      * *PT1M (per one minute)
      * *PT1S (per one second).
-     * This parameter is optional because, for some resources like compute, the
-     * period is irrelevant.
+     * This parameter is optional because, for some resources like compute, the period is irrelevant.
      */
     @JsonProperty(value = "quotaPeriod", access = JsonProperty.Access.WRITE_ONLY)
     private String quotaPeriod;
@@ -64,6 +56,10 @@ public final class QuotaProperties {
      */
     @JsonProperty(value = "properties")
     private Object properties;
+
+    /** Creates an instance of QuotaProperties class. */
+    public QuotaProperties() {
+    }
 
     /**
      * Get the limit property: Resource quota limit properties.
@@ -118,7 +114,7 @@ public final class QuotaProperties {
     }
 
     /**
-     * Get the resourceType property: Resource type name.
+     * Get the resourceType property: The name of the resource type. Optional field.
      *
      * @return the resourceType value.
      */
@@ -127,7 +123,7 @@ public final class QuotaProperties {
     }
 
     /**
-     * Set the resourceType property: Resource type name.
+     * Set the resourceType property: The name of the resource type. Optional field.
      *
      * @param resourceType the resourceType value to set.
      * @return the QuotaProperties object itself.

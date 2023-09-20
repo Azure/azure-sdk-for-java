@@ -27,11 +27,7 @@ public final class CallLocatorKindInternal extends ExpandableStringEnum<CallLoca
         return fromString(name, CallLocatorKindInternal.class);
     }
 
-    /**
-     * Gets known CallLocatorKindInternal values.
-     *
-     * @return known CallLocatorKindInternal values.
-     */
+    /** @return known CallLocatorKindInternal values. */
     public static Collection<CallLocatorKindInternal> values() {
         return values(CallLocatorKindInternal.class);
     }

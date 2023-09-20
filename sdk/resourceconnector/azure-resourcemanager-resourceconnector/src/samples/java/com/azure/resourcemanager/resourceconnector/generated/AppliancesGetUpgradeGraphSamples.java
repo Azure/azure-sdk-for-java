@@ -4,19 +4,21 @@
 
 package com.azure.resourcemanager.resourceconnector.generated;
 
-import com.azure.core.util.Context;
-
 /** Samples for Appliances GetUpgradeGraph. */
 public final class AppliancesGetUpgradeGraphSamples {
     /*
-     * x-ms-original-file: specification/resourceconnector/resource-manager/Microsoft.ResourceConnector/preview/2022-04-15-preview/examples/UpgradeGraph.json
+     * x-ms-original-file: specification/resourceconnector/resource-manager/Microsoft.ResourceConnector/stable/2022-10-27/examples/UpgradeGraph.json
      */
     /**
      * Sample code: Get Appliance Upgrade Graph.
      *
-     * @param manager Entry point to AppliancesManager.
+     * @param manager Entry point to ResourceConnectorManager.
      */
-    public static void getApplianceUpgradeGraph(com.azure.resourcemanager.resourceconnector.AppliancesManager manager) {
-        manager.appliances().getUpgradeGraphWithResponse("testresourcegroup", "appliance01", "stable", Context.NONE);
+    public static void getApplianceUpgradeGraph(
+        com.azure.resourcemanager.resourceconnector.ResourceConnectorManager manager) {
+        manager
+            .appliances()
+            .getUpgradeGraphWithResponse(
+                "testresourcegroup", "appliance01", "stable", com.azure.core.util.Context.NONE);
     }
 }

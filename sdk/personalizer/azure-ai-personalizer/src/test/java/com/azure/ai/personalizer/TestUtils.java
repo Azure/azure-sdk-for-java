@@ -10,7 +10,6 @@ import com.azure.core.util.CoreUtils;
 import com.azure.identity.AzureAuthorityHosts;
 import org.junit.jupiter.params.provider.Arguments;
 
-import java.time.Duration;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
@@ -20,8 +19,6 @@ import static com.azure.core.test.TestBase.AZURE_TEST_SERVICE_VERSIONS_VALUE_ALL
 import static com.azure.core.test.TestBase.getHttpClients;
 
 public final class TestUtils {
-
-    public static final Duration ONE_NANO_DURATION = Duration.ofMillis(1);
     public static final String DISPLAY_NAME_WITH_ARGUMENTS = "{displayName} with [{arguments}]";
     static final Configuration GLOBAL_CONFIGURATION = Configuration.getGlobalConfiguration();
 
@@ -36,6 +33,12 @@ public final class TestUtils {
 
     public static final String PERSONALIZER_API_KEY_MULTI_SLOT =
         GLOBAL_CONFIGURATION.get("PERSONALIZER_API_KEY_MULTI_SLOT");
+
+    public static final String PERSONALIZER_ENDPOINT_STATIC =
+        GLOBAL_CONFIGURATION.get("PERSONALIZER_ENDPOINT_STATIC");
+
+    public static final String PERSONALIZER_API_KEY_STATIC =
+        GLOBAL_CONFIGURATION.get("PERSONALIZER_API_KEY_STATIC");
 
     public static final String INVALID_KEY = "invalid key";
 

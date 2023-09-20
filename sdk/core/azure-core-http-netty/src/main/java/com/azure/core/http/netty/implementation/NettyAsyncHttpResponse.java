@@ -3,10 +3,9 @@
 
 package com.azure.core.http.netty.implementation;
 
+import com.azure.core.http.HttpHeaderName;
 import com.azure.core.http.HttpRequest;
 import com.azure.core.util.CoreUtils;
-import com.azure.core.util.FluxUtil;
-import reactor.core.Exceptions;
 import reactor.core.publisher.Flux;
 import reactor.core.publisher.Mono;
 import reactor.core.scheduler.Schedulers;
@@ -14,7 +13,6 @@ import reactor.netty.ByteBufFlux;
 import reactor.netty.Connection;
 import reactor.netty.http.client.HttpClientResponse;
 
-import java.io.IOException;
 import java.io.InputStream;
 import java.nio.ByteBuffer;
 import java.nio.channels.AsynchronousByteChannel;
@@ -52,7 +50,8 @@ public final class NettyAsyncHttpResponse extends NettyAsyncHttpResponseBase {
 
     @Override
     public Mono<String> getBodyAsString() {
-        return getBodyAsByteArray().map(bytes -> CoreUtils.bomAwareToString(bytes, getHeaderValue("Content-Type")));
+        return getBodyAsByteArray().map(bytes -> CoreUtils.bomAwareToString(bytes,
+            getHeaderValue(HttpHeaderName.CONTENT_TYPE)));
     }
 
     @Override
@@ -67,12 +66,10 @@ public final class NettyAsyncHttpResponse extends NettyAsyncHttpResponseBase {
 
     @Override
     public Mono<Void> writeBodyToAsync(AsynchronousByteChannel channel) {
-        return bodyIntern().retain()
-            .flatMapSequential(nettyBuffer ->
-                FluxUtil.writeToAsynchronousByteChannel(Flux.just(nettyBuffer.nioBuffer()), channel)
-                    .doFinally(ignored -> nettyBuffer.release()), 1, 1)
-            .doFinally(ignored -> close())
-            .then();
+        Long length = getContentLength();
+        return Mono.using(() -> this, response -> Mono.create(sink -> response.bodyIntern()
+                .subscribe(new ByteBufWriteSubscriber(byteBuffer -> channel.write(byteBuffer).get(), sink, length))),
+            NettyAsyncHttpResponse::close);
     }
 
     @Override
@@ -92,20 +89,11 @@ public final class NettyAsyncHttpResponse extends NettyAsyncHttpResponseBase {
         // complete. This introduces a previously seen, but in a different flavor, race condition where the write
         // operation gets scheduled on one thread and the ByteBuf release happens on another, leaving the write
         // operation racing to complete before the release happens. With all that said, leave this as subscribeOn.
-        bodyIntern().subscribeOn(Schedulers.boundedElastic())
-            .map(nettyBuffer -> {
-                try {
-                    ByteBuffer nioBuffer = nettyBuffer.nioBuffer();
-                    while (nioBuffer.hasRemaining()) {
-                        channel.write(nioBuffer);
-                    }
-                    return nettyBuffer;
-                } catch (IOException e) {
-                    throw Exceptions.propagate(e);
-                }
-            })
+        Mono.<Void>create(sink -> bodyIntern().subscribe(
+            new ByteBufWriteSubscriber(channel::write, sink, getContentLength())))
+            .subscribeOn(Schedulers.boundedElastic())
             .doFinally(ignored -> close())
-            .then().block();
+            .block();
     }
 
     @Override
@@ -120,5 +108,19 @@ public final class NettyAsyncHttpResponse extends NettyAsyncHttpResponseBase {
     // used for testing only
     public Connection internConnection() {
         return reactorNettyConnection;
+    }
+
+    private Long getContentLength() {
+        String contentLength = getHeaders().getValue(HttpHeaderName.CONTENT_LENGTH);
+        if (contentLength == null) {
+            return null;
+        }
+
+        try {
+            return Long.parseLong(contentLength);
+        } catch (NumberFormatException ex) {
+            // Don't let NumberFormatException fail reading the response as this is just a speculative check.
+            return null;
+        }
     }
 }

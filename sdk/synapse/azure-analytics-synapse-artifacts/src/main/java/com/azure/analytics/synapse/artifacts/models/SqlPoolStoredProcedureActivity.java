@@ -118,6 +118,20 @@ public class SqlPoolStoredProcedureActivity extends Activity {
 
     /** {@inheritDoc} */
     @Override
+    public SqlPoolStoredProcedureActivity setState(ActivityState state) {
+        super.setState(state);
+        return this;
+    }
+
+    /** {@inheritDoc} */
+    @Override
+    public SqlPoolStoredProcedureActivity setOnInactiveMarkAs(ActivityOnInactiveMarkAs onInactiveMarkAs) {
+        super.setOnInactiveMarkAs(onInactiveMarkAs);
+        return this;
+    }
+
+    /** {@inheritDoc} */
+    @Override
     public SqlPoolStoredProcedureActivity setDependsOn(List<ActivityDependency> dependsOn) {
         super.setDependsOn(dependsOn);
         return this;

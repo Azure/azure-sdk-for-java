@@ -27,15 +27,6 @@ public final class DomainTopicsImpl implements DomainTopics {
         this.serviceManager = serviceManager;
     }
 
-    public DomainTopic get(String resourceGroupName, String domainName, String domainTopicName) {
-        DomainTopicInner inner = this.serviceClient().get(resourceGroupName, domainName, domainTopicName);
-        if (inner != null) {
-            return new DomainTopicImpl(inner, this.manager());
-        } else {
-            return null;
-        }
-    }
-
     public Response<DomainTopic> getWithResponse(
         String resourceGroupName, String domainName, String domainTopicName, Context context) {
         Response<DomainTopicInner> inner =
@@ -46,6 +37,15 @@ public final class DomainTopicsImpl implements DomainTopics {
                 inner.getStatusCode(),
                 inner.getHeaders(),
                 new DomainTopicImpl(inner.getValue(), this.manager()));
+        } else {
+            return null;
+        }
+    }
+
+    public DomainTopic get(String resourceGroupName, String domainName, String domainTopicName) {
+        DomainTopicInner inner = this.serviceClient().get(resourceGroupName, domainName, domainTopicName);
+        if (inner != null) {
+            return new DomainTopicImpl(inner, this.manager());
         } else {
             return null;
         }

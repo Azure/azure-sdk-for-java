@@ -31,7 +31,7 @@ public final class CommunicationServicesLinkNotificationHubWithResponseMockTests
         HttpResponse httpResponse = Mockito.mock(HttpResponse.class);
         ArgumentCaptor<HttpRequest> httpRequest = ArgumentCaptor.forClass(HttpRequest.class);
 
-        String responseStr = "{\"resourceId\":\"ixzbinjeputtmryw\"}";
+        String responseStr = "{\"resourceId\":\"civfsnkymuctq\"}";
 
         Mockito.when(httpResponse.getStatusCode()).thenReturn(200);
         Mockito.when(httpResponse.getHeaders()).thenReturn(new HttpHeaders());
@@ -63,14 +63,14 @@ public final class CommunicationServicesLinkNotificationHubWithResponseMockTests
             manager
                 .communicationServices()
                 .linkNotificationHubWithResponse(
-                    "ifsjttgzfbishcb",
-                    "hajdeyeamdpha",
+                    "wrmjmwvvjektc",
+                    "senhwlrs",
                     new LinkNotificationHubParameters()
-                        .withResourceId("alpbuxwgipwhon")
-                        .withConnectionString("wkgshwa"),
+                        .withResourceId("frzpwvlqdqgb")
+                        .withConnectionString("qylihkaetckt"),
                     com.azure.core.util.Context.NONE)
                 .getValue();
 
-        Assertions.assertEquals("ixzbinjeputtmryw", response.resourceId());
+        Assertions.assertEquals("civfsnkymuctq", response.resourceId());
     }
 }

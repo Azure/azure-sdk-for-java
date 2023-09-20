@@ -12,7 +12,7 @@ public final class DelegatedSubnetUsageTests {
     public void testDeserialize() throws Exception {
         DelegatedSubnetUsage model =
             BinaryData
-                .fromString("{\"subnetName\":\"qjvsovmyokacs\",\"usage\":429791645312518645}")
+                .fromString("{\"subnetName\":\"tko\",\"usage\":3980056682158656120}")
                 .toObject(DelegatedSubnetUsage.class);
     }
 

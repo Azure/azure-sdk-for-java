@@ -11,7 +11,6 @@ import com.azure.core.http.HttpRequest;
 import com.azure.core.http.HttpResponse;
 import com.azure.core.management.AzureEnvironment;
 import com.azure.core.management.profile.AzureProfile;
-import com.azure.core.util.Context;
 import com.azure.resourcemanager.elastic.ElasticManager;
 import com.azure.resourcemanager.elastic.models.ElasticTrafficFilterResponse;
 import com.azure.resourcemanager.elastic.models.Type;
@@ -33,7 +32,7 @@ public final class ListAssociatedTrafficFiltersListWithResponseMockTests {
         ArgumentCaptor<HttpRequest> httpRequest = ArgumentCaptor.forClass(HttpRequest.class);
 
         String responseStr =
-            "{\"rulesets\":[{\"id\":\"vawjvzunlu\",\"name\":\"nnprn\",\"description\":\"peilpjzuaejxdu\",\"region\":\"skzbb\",\"type\":\"azure_private_endpoint\",\"includeByDefault\":false,\"rules\":[]},{\"id\":\"kgpwoz\",\"name\":\"kfpbs\",\"description\":\"ofd\",\"region\":\"uusdttouwa\",\"type\":\"ip\",\"includeByDefault\":false,\"rules\":[]}]}";
+            "{\"rulesets\":[{\"id\":\"hxw\",\"name\":\"tyq\",\"description\":\"lbbovplw\",\"region\":\"hvgyuguosvmk\",\"type\":\"ip\",\"includeByDefault\":false,\"rules\":[]}]}";
 
         Mockito.when(httpResponse.getStatusCode()).thenReturn(200);
         Mockito.when(httpResponse.getHeaders()).thenReturn(new HttpHeaders());
@@ -62,13 +61,16 @@ public final class ListAssociatedTrafficFiltersListWithResponseMockTests {
                     new AzureProfile("", "", AzureEnvironment.AZURE));
 
         ElasticTrafficFilterResponse response =
-            manager.listAssociatedTrafficFilters().listWithResponse("mwlxk", "ug", Context.NONE).getValue();
+            manager
+                .listAssociatedTrafficFilters()
+                .listWithResponse("ytxhp", "xbzpfzab", com.azure.core.util.Context.NONE)
+                .getValue();
 
-        Assertions.assertEquals("vawjvzunlu", response.rulesets().get(0).id());
-        Assertions.assertEquals("nnprn", response.rulesets().get(0).name());
-        Assertions.assertEquals("peilpjzuaejxdu", response.rulesets().get(0).description());
-        Assertions.assertEquals("skzbb", response.rulesets().get(0).region());
-        Assertions.assertEquals(Type.AZURE_PRIVATE_ENDPOINT, response.rulesets().get(0).type());
+        Assertions.assertEquals("hxw", response.rulesets().get(0).id());
+        Assertions.assertEquals("tyq", response.rulesets().get(0).name());
+        Assertions.assertEquals("lbbovplw", response.rulesets().get(0).description());
+        Assertions.assertEquals("hvgyuguosvmk", response.rulesets().get(0).region());
+        Assertions.assertEquals(Type.IP, response.rulesets().get(0).type());
         Assertions.assertEquals(false, response.rulesets().get(0).includeByDefault());
     }
 }

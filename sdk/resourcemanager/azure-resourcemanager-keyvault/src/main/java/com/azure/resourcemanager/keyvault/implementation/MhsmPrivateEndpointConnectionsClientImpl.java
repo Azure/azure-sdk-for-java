@@ -69,11 +69,10 @@ public final class MhsmPrivateEndpointConnectionsClientImpl implements MhsmPriva
      */
     @Host("{$host}")
     @ServiceInterface(name = "KeyVaultManagementCl")
-    private interface MhsmPrivateEndpointConnectionsService {
+    public interface MhsmPrivateEndpointConnectionsService {
         @Headers({"Content-Type: application/json"})
         @Get(
-            "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.KeyVault"
-                + "/managedHSMs/{name}/privateEndpointConnections")
+            "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.KeyVault/managedHSMs/{name}/privateEndpointConnections")
         @ExpectedResponses({200})
         @UnexpectedResponseExceptionType(ErrorException.class)
         Mono<Response<MhsmPrivateEndpointConnectionsListResult>> listByResource(
@@ -87,8 +86,7 @@ public final class MhsmPrivateEndpointConnectionsClientImpl implements MhsmPriva
 
         @Headers({"Content-Type: application/json"})
         @Get(
-            "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.KeyVault"
-                + "/managedHSMs/{name}/privateEndpointConnections/{privateEndpointConnectionName}")
+            "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.KeyVault/managedHSMs/{name}/privateEndpointConnections/{privateEndpointConnectionName}")
         @ExpectedResponses({200})
         @UnexpectedResponseExceptionType(ErrorException.class)
         Mono<Response<MhsmPrivateEndpointConnectionInner>> get(
@@ -103,8 +101,7 @@ public final class MhsmPrivateEndpointConnectionsClientImpl implements MhsmPriva
 
         @Headers({"Content-Type: application/json"})
         @Put(
-            "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.KeyVault"
-                + "/managedHSMs/{name}/privateEndpointConnections/{privateEndpointConnectionName}")
+            "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.KeyVault/managedHSMs/{name}/privateEndpointConnections/{privateEndpointConnectionName}")
         @ExpectedResponses({200})
         @UnexpectedResponseExceptionType(ManagementException.class)
         Mono<MhsmPrivateEndpointConnectionsPutResponse> put(
@@ -120,8 +117,7 @@ public final class MhsmPrivateEndpointConnectionsClientImpl implements MhsmPriva
 
         @Headers({"Content-Type: application/json"})
         @Delete(
-            "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.KeyVault"
-                + "/managedHSMs/{name}/privateEndpointConnections/{privateEndpointConnectionName}")
+            "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.KeyVault/managedHSMs/{name}/privateEndpointConnections/{privateEndpointConnectionName}")
         @ExpectedResponses({200, 202, 204})
         @UnexpectedResponseExceptionType(ManagementException.class)
         Mono<Response<Flux<ByteBuffer>>> delete(
@@ -472,24 +468,6 @@ public final class MhsmPrivateEndpointConnectionsClientImpl implements MhsmPriva
      * @param name Name of the managed HSM Pool.
      * @param privateEndpointConnectionName Name of the private endpoint connection associated with the managed hsm
      *     pool.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ErrorException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the specified private endpoint connection associated with the managed HSM Pool.
-     */
-    @ServiceMethod(returns = ReturnType.SINGLE)
-    public MhsmPrivateEndpointConnectionInner get(
-        String resourceGroupName, String name, String privateEndpointConnectionName) {
-        return getAsync(resourceGroupName, name, privateEndpointConnectionName).block();
-    }
-
-    /**
-     * Gets the specified private endpoint connection associated with the managed HSM Pool.
-     *
-     * @param resourceGroupName Name of the resource group that contains the managed HSM pool.
-     * @param name Name of the managed HSM Pool.
-     * @param privateEndpointConnectionName Name of the private endpoint connection associated with the managed hsm
-     *     pool.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ErrorException thrown if the request is rejected by server.
@@ -501,6 +479,24 @@ public final class MhsmPrivateEndpointConnectionsClientImpl implements MhsmPriva
     public Response<MhsmPrivateEndpointConnectionInner> getWithResponse(
         String resourceGroupName, String name, String privateEndpointConnectionName, Context context) {
         return getWithResponseAsync(resourceGroupName, name, privateEndpointConnectionName, context).block();
+    }
+
+    /**
+     * Gets the specified private endpoint connection associated with the managed HSM Pool.
+     *
+     * @param resourceGroupName Name of the resource group that contains the managed HSM pool.
+     * @param name Name of the managed HSM Pool.
+     * @param privateEndpointConnectionName Name of the private endpoint connection associated with the managed hsm
+     *     pool.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws ErrorException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return the specified private endpoint connection associated with the managed HSM Pool.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    public MhsmPrivateEndpointConnectionInner get(
+        String resourceGroupName, String name, String privateEndpointConnectionName) {
+        return getWithResponse(resourceGroupName, name, privateEndpointConnectionName, Context.NONE).getValue();
     }
 
     /**
@@ -667,28 +663,6 @@ public final class MhsmPrivateEndpointConnectionsClientImpl implements MhsmPriva
      * @param privateEndpointConnectionName Name of the private endpoint connection associated with the managed hsm
      *     pool.
      * @param properties The intended state of private endpoint connection.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return private endpoint connection resource.
-     */
-    @ServiceMethod(returns = ReturnType.SINGLE)
-    public MhsmPrivateEndpointConnectionInner put(
-        String resourceGroupName,
-        String name,
-        String privateEndpointConnectionName,
-        MhsmPrivateEndpointConnectionInner properties) {
-        return putAsync(resourceGroupName, name, privateEndpointConnectionName, properties).block();
-    }
-
-    /**
-     * Updates the specified private endpoint connection associated with the managed hsm pool.
-     *
-     * @param resourceGroupName Name of the resource group that contains the managed HSM pool.
-     * @param name Name of the managed HSM Pool.
-     * @param privateEndpointConnectionName Name of the private endpoint connection associated with the managed hsm
-     *     pool.
-     * @param properties The intended state of private endpoint connection.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
@@ -704,6 +678,29 @@ public final class MhsmPrivateEndpointConnectionsClientImpl implements MhsmPriva
         Context context) {
         return putWithResponseAsync(resourceGroupName, name, privateEndpointConnectionName, properties, context)
             .block();
+    }
+
+    /**
+     * Updates the specified private endpoint connection associated with the managed hsm pool.
+     *
+     * @param resourceGroupName Name of the resource group that contains the managed HSM pool.
+     * @param name Name of the managed HSM Pool.
+     * @param privateEndpointConnectionName Name of the private endpoint connection associated with the managed hsm
+     *     pool.
+     * @param properties The intended state of private endpoint connection.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws ManagementException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return private endpoint connection resource.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    public MhsmPrivateEndpointConnectionInner put(
+        String resourceGroupName,
+        String name,
+        String privateEndpointConnectionName,
+        MhsmPrivateEndpointConnectionInner properties) {
+        return putWithResponse(resourceGroupName, name, privateEndpointConnectionName, properties, Context.NONE)
+            .getValue();
     }
 
     /**
@@ -891,7 +888,7 @@ public final class MhsmPrivateEndpointConnectionsClientImpl implements MhsmPriva
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     public SyncPoller<PollResult<MhsmPrivateEndpointConnectionInner>, MhsmPrivateEndpointConnectionInner> beginDelete(
         String resourceGroupName, String name, String privateEndpointConnectionName) {
-        return beginDeleteAsync(resourceGroupName, name, privateEndpointConnectionName).getSyncPoller();
+        return this.beginDeleteAsync(resourceGroupName, name, privateEndpointConnectionName).getSyncPoller();
     }
 
     /**
@@ -910,7 +907,7 @@ public final class MhsmPrivateEndpointConnectionsClientImpl implements MhsmPriva
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     public SyncPoller<PollResult<MhsmPrivateEndpointConnectionInner>, MhsmPrivateEndpointConnectionInner> beginDelete(
         String resourceGroupName, String name, String privateEndpointConnectionName, Context context) {
-        return beginDeleteAsync(resourceGroupName, name, privateEndpointConnectionName, context).getSyncPoller();
+        return this.beginDeleteAsync(resourceGroupName, name, privateEndpointConnectionName, context).getSyncPoller();
     }
 
     /**

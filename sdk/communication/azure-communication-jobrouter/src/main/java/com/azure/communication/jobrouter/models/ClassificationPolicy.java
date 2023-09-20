@@ -4,18 +4,56 @@
 
 package com.azure.communication.jobrouter.models;
 
+import com.azure.communication.jobrouter.implementation.accesshelpers.ClassificationPolicyConstructorProxy;
+import com.azure.communication.jobrouter.implementation.converters.LabelSelectorAdapter;
+import com.azure.communication.jobrouter.implementation.converters.RouterRuleAdapter;
+import com.azure.communication.jobrouter.implementation.models.ClassificationPolicyInternal;
 import com.azure.core.annotation.Fluent;
 import com.fasterxml.jackson.annotation.JsonProperty;
+
 import java.util.List;
+import java.util.stream.Collectors;
 
 /** A container for the rules that govern how jobs are classified. */
 @Fluent
 public final class ClassificationPolicy {
+    /**
+     * Public constructor.
+     *
+     * @param id The id
+     */
+    public ClassificationPolicy(String id) {
+        this.id = id;
+    }
+
+    /**
+     * Package-private constructor of the class, used internally.
+     *
+     * @param internal The internal ClassificationPolicy
+     */
+    ClassificationPolicy(ClassificationPolicyInternal internal) {
+        id = internal.getId();
+
+        setName(internal.getName());
+        setPrioritizationRule(RouterRuleAdapter.convertRouterRuleToPublic(internal.getPrioritizationRule()));
+        setFallbackQueueId(internal.getFallbackQueueId());
+        setQueueSelectors(internal.getQueueSelectors().stream()
+            .map(LabelSelectorAdapter::convertQueueSelectorAttachmentToPublic)
+            .collect(Collectors.toList()));
+        setWorkerSelectors(internal.getWorkerSelectors().stream()
+            .map(LabelSelectorAdapter::convertWorkerSelectorAttachmentToPublic)
+            .collect(Collectors.toList()));
+    }
+
+    static {
+        ClassificationPolicyConstructorProxy.setAccessor(ClassificationPolicy::new);
+    }
+
     /*
      * Unique identifier of this policy.
      */
     @JsonProperty(value = "id", access = JsonProperty.Access.WRITE_ONLY)
-    private String id;
+    private final String id;
 
     /*
      * Friendly name of this policy.
@@ -44,6 +82,8 @@ public final class ClassificationPolicy {
      * ExpressionRule: A rule providing inline expression rules.
      * AzureFunctionRule: A rule providing a binding to an HTTP Triggered Azure
      * Function.
+     * WebhookRule: A rule providing a binding to a webserver following
+     * OAuth2.0 authentication protocol.
      */
     @JsonProperty(value = "prioritizationRule")
     private RouterRule prioritizationRule;
@@ -128,7 +168,8 @@ public final class ClassificationPolicy {
      *
      * <p>StaticRule: A rule providing static rules that always return the same result, regardless of input.
      * DirectMapRule: A rule that return the same labels as the input labels. ExpressionRule: A rule providing inline
-     * expression rules. AzureFunctionRule: A rule providing a binding to an HTTP Triggered Azure Function.
+     * expression rules. AzureFunctionRule: A rule providing a binding to an HTTP Triggered Azure Function. WebhookRule:
+     * A rule providing a binding to a webserver following OAuth2.0 authentication protocol.
      *
      * @return the prioritizationRule value.
      */
@@ -141,7 +182,8 @@ public final class ClassificationPolicy {
      *
      * <p>StaticRule: A rule providing static rules that always return the same result, regardless of input.
      * DirectMapRule: A rule that return the same labels as the input labels. ExpressionRule: A rule providing inline
-     * expression rules. AzureFunctionRule: A rule providing a binding to an HTTP Triggered Azure Function.
+     * expression rules. AzureFunctionRule: A rule providing a binding to an HTTP Triggered Azure Function. WebhookRule:
+     * A rule providing a binding to a webserver following OAuth2.0 authentication protocol.
      *
      * @param prioritizationRule the prioritizationRule value to set.
      * @return the ClassificationPolicy object itself.

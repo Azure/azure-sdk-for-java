@@ -4,6 +4,7 @@
 
 package com.azure.analytics.purview.administration;
 
+import com.azure.analytics.purview.administration.implementation.CollectionsImpl;
 import com.azure.core.annotation.Generated;
 import com.azure.core.annotation.ReturnType;
 import com.azure.core.annotation.ServiceClient;
@@ -20,16 +21,16 @@ import com.azure.core.util.BinaryData;
 /** Initializes a new instance of the synchronous PurviewAccountClient type. */
 @ServiceClient(builder = CollectionsClientBuilder.class)
 public final class CollectionsClient {
-    @Generated private final CollectionsAsyncClient client;
+    @Generated private final CollectionsImpl serviceClient;
 
     /**
      * Initializes an instance of CollectionsClient class.
      *
-     * @param client the async client.
+     * @param serviceClient the service client implementation.
      */
     @Generated
-    CollectionsClient(CollectionsAsyncClient client) {
-        this.client = client;
+    CollectionsClient(CollectionsImpl serviceClient) {
+        this.serviceClient = serviceClient;
     }
 
     /**
@@ -39,21 +40,21 @@ public final class CollectionsClient {
      *
      * <pre>{@code
      * {
-     *     collectionProvisioningState: String(Unknown/Creating/Moving/Deleting/Failed/Succeeded)
-     *     description: String
-     *     friendlyName: String
-     *     name: String
-     *     parentCollection: {
-     *         referenceName: String
-     *         type: String
+     *     collectionProvisioningState: String(Unknown/Creating/Moving/Deleting/Failed/Succeeded) (Optional)
+     *     description: String (Optional)
+     *     friendlyName: String (Optional)
+     *     name: String (Optional)
+     *     parentCollection (Optional): {
+     *         referenceName: String (Optional)
+     *         type: String (Optional)
      *     }
-     *     systemData: {
-     *         createdAt: OffsetDateTime
-     *         createdBy: String
-     *         createdByType: String(User/Application/ManagedIdentity/Key)
-     *         lastModifiedAt: OffsetDateTime
-     *         lastModifiedBy: String
-     *         lastModifiedByType: String(User/Application/ManagedIdentity/Key)
+     *     systemData (Optional): {
+     *         createdAt: OffsetDateTime (Optional)
+     *         createdBy: String (Optional)
+     *         createdByType: String(User/Application/ManagedIdentity/Key) (Optional)
+     *         lastModifiedAt: OffsetDateTime (Optional)
+     *         lastModifiedBy: String (Optional)
+     *         lastModifiedByType: String(User/Application/ManagedIdentity/Key) (Optional)
      *     }
      * }
      * }</pre>
@@ -69,7 +70,7 @@ public final class CollectionsClient {
     @Generated
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Response<BinaryData> getCollectionWithResponse(String collectionName, RequestOptions requestOptions) {
-        return this.client.getCollectionWithResponse(collectionName, requestOptions).block();
+        return this.serviceClient.getCollectionWithResponse(collectionName, requestOptions);
     }
 
     /**
@@ -79,21 +80,21 @@ public final class CollectionsClient {
      *
      * <pre>{@code
      * {
-     *     collectionProvisioningState: String(Unknown/Creating/Moving/Deleting/Failed/Succeeded)
-     *     description: String
-     *     friendlyName: String
-     *     name: String
-     *     parentCollection: {
-     *         referenceName: String
-     *         type: String
+     *     collectionProvisioningState: String(Unknown/Creating/Moving/Deleting/Failed/Succeeded) (Optional)
+     *     description: String (Optional)
+     *     friendlyName: String (Optional)
+     *     name: String (Optional)
+     *     parentCollection (Optional): {
+     *         referenceName: String (Optional)
+     *         type: String (Optional)
      *     }
-     *     systemData: {
-     *         createdAt: OffsetDateTime
-     *         createdBy: String
-     *         createdByType: String(User/Application/ManagedIdentity/Key)
-     *         lastModifiedAt: OffsetDateTime
-     *         lastModifiedBy: String
-     *         lastModifiedByType: String(User/Application/ManagedIdentity/Key)
+     *     systemData (Optional): {
+     *         createdAt: OffsetDateTime (Optional)
+     *         createdBy: String (Optional)
+     *         createdByType: String(User/Application/ManagedIdentity/Key) (Optional)
+     *         lastModifiedAt: OffsetDateTime (Optional)
+     *         lastModifiedBy: String (Optional)
+     *         lastModifiedByType: String(User/Application/ManagedIdentity/Key) (Optional)
      *     }
      * }
      * }</pre>
@@ -102,21 +103,21 @@ public final class CollectionsClient {
      *
      * <pre>{@code
      * {
-     *     collectionProvisioningState: String(Unknown/Creating/Moving/Deleting/Failed/Succeeded)
-     *     description: String
-     *     friendlyName: String
-     *     name: String
-     *     parentCollection: {
-     *         referenceName: String
-     *         type: String
+     *     collectionProvisioningState: String(Unknown/Creating/Moving/Deleting/Failed/Succeeded) (Optional)
+     *     description: String (Optional)
+     *     friendlyName: String (Optional)
+     *     name: String (Optional)
+     *     parentCollection (Optional): {
+     *         referenceName: String (Optional)
+     *         type: String (Optional)
      *     }
-     *     systemData: {
-     *         createdAt: OffsetDateTime
-     *         createdBy: String
-     *         createdByType: String(User/Application/ManagedIdentity/Key)
-     *         lastModifiedAt: OffsetDateTime
-     *         lastModifiedBy: String
-     *         lastModifiedByType: String(User/Application/ManagedIdentity/Key)
+     *     systemData (Optional): {
+     *         createdAt: OffsetDateTime (Optional)
+     *         createdBy: String (Optional)
+     *         createdByType: String(User/Application/ManagedIdentity/Key) (Optional)
+     *         lastModifiedAt: OffsetDateTime (Optional)
+     *         lastModifiedBy: String (Optional)
+     *         lastModifiedByType: String(User/Application/ManagedIdentity/Key) (Optional)
      *     }
      * }
      * }</pre>
@@ -134,7 +135,7 @@ public final class CollectionsClient {
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Response<BinaryData> createOrUpdateCollectionWithResponse(
             String collectionName, BinaryData collection, RequestOptions requestOptions) {
-        return this.client.createOrUpdateCollectionWithResponse(collectionName, collection, requestOptions).block();
+        return this.serviceClient.createOrUpdateCollectionWithResponse(collectionName, collection, requestOptions);
     }
 
     /**
@@ -151,7 +152,7 @@ public final class CollectionsClient {
     @Generated
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Response<Void> deleteCollectionWithResponse(String collectionName, RequestOptions requestOptions) {
-        return this.client.deleteCollectionWithResponse(collectionName, requestOptions).block();
+        return this.serviceClient.deleteCollectionWithResponse(collectionName, requestOptions);
     }
 
     /**
@@ -165,32 +166,28 @@ public final class CollectionsClient {
      *     <tr><td>$skipToken</td><td>String</td><td>No</td><td>The skipToken parameter</td></tr>
      * </table>
      *
+     * You can add these to a request with {@link RequestOptions#addQueryParam}
+     *
      * <p><strong>Response Body Schema</strong>
      *
      * <pre>{@code
      * {
-     *     count: Long
-     *     nextLink: String
-     *     value: [
-     *         {
-     *             collectionProvisioningState: String(Unknown/Creating/Moving/Deleting/Failed/Succeeded)
-     *             description: String
-     *             friendlyName: String
-     *             name: String
-     *             parentCollection: {
-     *                 referenceName: String
-     *                 type: String
-     *             }
-     *             systemData: {
-     *                 createdAt: OffsetDateTime
-     *                 createdBy: String
-     *                 createdByType: String(User/Application/ManagedIdentity/Key)
-     *                 lastModifiedAt: OffsetDateTime
-     *                 lastModifiedBy: String
-     *                 lastModifiedByType: String(User/Application/ManagedIdentity/Key)
-     *             }
-     *         }
-     *     ]
+     *     collectionProvisioningState: String(Unknown/Creating/Moving/Deleting/Failed/Succeeded) (Optional)
+     *     description: String (Optional)
+     *     friendlyName: String (Optional)
+     *     name: String (Optional)
+     *     parentCollection (Optional): {
+     *         referenceName: String (Optional)
+     *         type: String (Optional)
+     *     }
+     *     systemData (Optional): {
+     *         createdAt: OffsetDateTime (Optional)
+     *         createdBy: String (Optional)
+     *         createdByType: String(User/Application/ManagedIdentity/Key) (Optional)
+     *         lastModifiedAt: OffsetDateTime (Optional)
+     *         lastModifiedBy: String (Optional)
+     *         lastModifiedByType: String(User/Application/ManagedIdentity/Key) (Optional)
+     *     }
      * }
      * }</pre>
      *
@@ -204,7 +201,7 @@ public final class CollectionsClient {
     @Generated
     @ServiceMethod(returns = ReturnType.COLLECTION)
     public PagedIterable<BinaryData> listCollections(RequestOptions requestOptions) {
-        return new PagedIterable<>(this.client.listCollections(requestOptions));
+        return this.serviceClient.listCollections(requestOptions);
     }
 
     /**
@@ -218,18 +215,14 @@ public final class CollectionsClient {
      *     <tr><td>$skipToken</td><td>String</td><td>No</td><td>The skipToken parameter</td></tr>
      * </table>
      *
+     * You can add these to a request with {@link RequestOptions#addQueryParam}
+     *
      * <p><strong>Response Body Schema</strong>
      *
      * <pre>{@code
      * {
-     *     count: Long
-     *     nextLink: String
-     *     value: [
-     *         {
-     *             friendlyName: String
-     *             name: String
-     *         }
-     *     ]
+     *     friendlyName: String (Optional)
+     *     name: String (Optional)
      * }
      * }</pre>
      *
@@ -244,7 +237,7 @@ public final class CollectionsClient {
     @Generated
     @ServiceMethod(returns = ReturnType.COLLECTION)
     public PagedIterable<BinaryData> listChildCollectionNames(String collectionName, RequestOptions requestOptions) {
-        return new PagedIterable<>(this.client.listChildCollectionNames(collectionName, requestOptions));
+        return this.serviceClient.listChildCollectionNames(collectionName, requestOptions);
     }
 
     /**
@@ -254,11 +247,11 @@ public final class CollectionsClient {
      *
      * <pre>{@code
      * {
-     *     parentFriendlyNameChain: [
-     *         String
+     *     parentFriendlyNameChain (Optional): [
+     *         String (Optional)
      *     ]
-     *     parentNameChain: [
-     *         String
+     *     parentNameChain (Optional): [
+     *         String (Optional)
      *     ]
      * }
      * }</pre>
@@ -275,6 +268,6 @@ public final class CollectionsClient {
     @Generated
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Response<BinaryData> getCollectionPathWithResponse(String collectionName, RequestOptions requestOptions) {
-        return this.client.getCollectionPathWithResponse(collectionName, requestOptions).block();
+        return this.serviceClient.getCollectionPathWithResponse(collectionName, requestOptions);
     }
 }

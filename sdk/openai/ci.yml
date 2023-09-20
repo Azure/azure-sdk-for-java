@@ -1,0 +1,47 @@
+# NOTE: Please refer to https://aka.ms/azsdk/engsys/ci-yaml before editing this file.
+
+trigger:
+  branches:
+    include:
+      - main
+      - hotfix/*
+      - release/*
+  paths:
+    include:
+      - sdk/openai/ci.yml
+      - sdk/openai/azure-ai-openai/
+    exclude:
+      - sdk/openai/pom.xml
+      - sdk/openai/azure-ai-openai/pom.xml
+
+pr:
+  branches:
+    include:
+      - main
+      - feature/*
+      - hotfix/*
+      - release/*
+  paths:
+    include:
+      - sdk/openai/ci.yml
+      - sdk/openai/azure-ai-openai/
+    exclude:
+      - sdk/openai/pom.xml
+      - sdk/openai/azure-ai-openai/pom.xml
+
+parameters:
+  - name: release_azureaiopenai
+    displayName: 'azure-ai-openai'
+    type: boolean
+    default: true
+
+extends:
+  template: ../../eng/pipelines/templates/stages/archetype-sdk-client.yml
+  parameters:
+    ServiceDirectory: openai
+    EnableBatchRelease: true
+    Artifacts:
+      - name: azure-ai-openai
+        groupId: com.azure
+        safeName: azureaiopenai
+        releaseInBatch: ${{ parameters.release_azureaiopenai }}

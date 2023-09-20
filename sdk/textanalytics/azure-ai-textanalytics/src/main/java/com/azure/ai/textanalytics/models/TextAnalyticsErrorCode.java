@@ -8,6 +8,7 @@ import com.azure.core.util.ExpandableStringEnum;
 import com.fasterxml.jackson.annotation.JsonCreator;
 
 import java.io.Serializable;
+import java.util.Collection;
 
 /**
  * Defines values for TextAnalyticsErrorCode.
@@ -90,5 +91,10 @@ public final class TextAnalyticsErrorCode extends ExpandableStringEnum<TextAnaly
     @JsonCreator
     public static TextAnalyticsErrorCode fromString(String name) {
         return fromString(name, TextAnalyticsErrorCode.class);
+    }
+
+    /** @return known TextAnalyticsErrorCode values. */
+    public static Collection<TextAnalyticsErrorCode> values() {
+        return values(TextAnalyticsErrorCode.class);
     }
 }

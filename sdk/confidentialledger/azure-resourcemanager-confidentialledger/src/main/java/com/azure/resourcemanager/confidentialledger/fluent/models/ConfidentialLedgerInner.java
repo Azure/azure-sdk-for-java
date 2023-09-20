@@ -5,43 +5,37 @@
 package com.azure.resourcemanager.confidentialledger.fluent.models;
 
 import com.azure.core.annotation.Fluent;
-import com.azure.core.management.ProxyResource;
+import com.azure.core.management.Resource;
 import com.azure.core.management.SystemData;
 import com.azure.resourcemanager.confidentialledger.models.LedgerProperties;
-import com.fasterxml.jackson.annotation.JsonInclude;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import java.util.Map;
 
 /** Confidential Ledger. Contains the properties of Confidential Ledger Resource. */
 @Fluent
-public final class ConfidentialLedgerInner extends ProxyResource {
+public final class ConfidentialLedgerInner extends Resource {
     /*
-     * LedgerProperties Properties of Confidential Ledger Resource.
+     * LedgerProperties
+     *
+     * Properties of Confidential Ledger Resource.
      */
     @JsonProperty(value = "properties")
     private LedgerProperties properties;
 
     /*
-     * Metadata pertaining to creation and last modification of the resource
+     * Azure Resource Manager metadata containing createdBy and modifiedBy information.
      */
     @JsonProperty(value = "systemData", access = JsonProperty.Access.WRITE_ONLY)
     private SystemData systemData;
 
-    /*
-     * The Azure location where the Confidential Ledger is running.
-     */
-    @JsonProperty(value = "location")
-    private String location;
-
-    /*
-     * Additional tags for Confidential Ledger
-     */
-    @JsonProperty(value = "tags")
-    @JsonInclude(value = JsonInclude.Include.NON_NULL, content = JsonInclude.Include.ALWAYS)
-    private Map<String, String> tags;
+    /** Creates an instance of ConfidentialLedgerInner class. */
+    public ConfidentialLedgerInner() {
+    }
 
     /**
-     * Get the properties property: LedgerProperties Properties of Confidential Ledger Resource.
+     * Get the properties property: LedgerProperties
+     *
+     * <p>Properties of Confidential Ledger Resource.
      *
      * @return the properties value.
      */
@@ -50,7 +44,9 @@ public final class ConfidentialLedgerInner extends ProxyResource {
     }
 
     /**
-     * Set the properties property: LedgerProperties Properties of Confidential Ledger Resource.
+     * Set the properties property: LedgerProperties
+     *
+     * <p>Properties of Confidential Ledger Resource.
      *
      * @param properties the properties value to set.
      * @return the ConfidentialLedgerInner object itself.
@@ -61,7 +57,7 @@ public final class ConfidentialLedgerInner extends ProxyResource {
     }
 
     /**
-     * Get the systemData property: Metadata pertaining to creation and last modification of the resource.
+     * Get the systemData property: Azure Resource Manager metadata containing createdBy and modifiedBy information.
      *
      * @return the systemData value.
      */
@@ -69,43 +65,17 @@ public final class ConfidentialLedgerInner extends ProxyResource {
         return this.systemData;
     }
 
-    /**
-     * Get the location property: The Azure location where the Confidential Ledger is running.
-     *
-     * @return the location value.
-     */
-    public String location() {
-        return this.location;
-    }
-
-    /**
-     * Set the location property: The Azure location where the Confidential Ledger is running.
-     *
-     * @param location the location value to set.
-     * @return the ConfidentialLedgerInner object itself.
-     */
+    /** {@inheritDoc} */
+    @Override
     public ConfidentialLedgerInner withLocation(String location) {
-        this.location = location;
+        super.withLocation(location);
         return this;
     }
 
-    /**
-     * Get the tags property: Additional tags for Confidential Ledger.
-     *
-     * @return the tags value.
-     */
-    public Map<String, String> tags() {
-        return this.tags;
-    }
-
-    /**
-     * Set the tags property: Additional tags for Confidential Ledger.
-     *
-     * @param tags the tags value to set.
-     * @return the ConfidentialLedgerInner object itself.
-     */
+    /** {@inheritDoc} */
+    @Override
     public ConfidentialLedgerInner withTags(Map<String, String> tags) {
-        this.tags = tags;
+        super.withTags(tags);
         return this;
     }
 

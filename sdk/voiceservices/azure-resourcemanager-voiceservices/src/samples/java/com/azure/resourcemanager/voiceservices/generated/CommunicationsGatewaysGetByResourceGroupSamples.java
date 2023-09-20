@@ -12,10 +12,10 @@ public final class CommunicationsGatewaysGetByResourceGroupSamples {
     /**
      * Sample code: GetCommunicationsGatewayResource.
      *
-     * @param manager Entry point to VoiceservicesManager.
+     * @param manager Entry point to VoiceServicesManager.
      */
     public static void getCommunicationsGatewayResource(
-        com.azure.resourcemanager.voiceservices.VoiceservicesManager manager) {
+        com.azure.resourcemanager.voiceservices.VoiceServicesManager manager) {
         manager
             .communicationsGateways()
             .getByResourceGroupWithResponse("testrg", "myname", com.azure.core.util.Context.NONE);

@@ -4,12 +4,12 @@
 
 package com.azure.resourcemanager.appconfiguration.fluent.models;
 
-import com.azure.core.annotation.Fluent;
+import com.azure.core.annotation.Immutable;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import java.util.List;
 
 /** A resource that supports private link capabilities. */
-@Fluent
+@Immutable
 public final class PrivateLinkResourceInner {
     /*
      * The resource ID.
@@ -34,6 +34,10 @@ public final class PrivateLinkResourceInner {
      */
     @JsonProperty(value = "properties")
     private PrivateLinkResourceProperties innerProperties;
+
+    /** Creates an instance of PrivateLinkResourceInner class. */
+    public PrivateLinkResourceInner() {
+    }
 
     /**
      * Get the id property: The resource ID.

@@ -30,7 +30,7 @@ public final class DeviceSecurityGroupsGetWithResponseMockTests {
         ArgumentCaptor<HttpRequest> httpRequest = ArgumentCaptor.forClass(HttpRequest.class);
 
         String responseStr =
-            "{\"properties\":{\"thresholdRules\":[],\"timeWindowRules\":[],\"allowlistRules\":[],\"denylistRules\":[]},\"id\":\"rvpe\",\"name\":\"yc\",\"type\":\"veitit\"}";
+            "{\"properties\":{\"thresholdRules\":[],\"timeWindowRules\":[],\"allowlistRules\":[],\"denylistRules\":[]},\"id\":\"hsoymhpvtyqf\",\"name\":\"tehdpboujs\",\"type\":\"kfvvdshxcde\"}";
 
         Mockito.when(httpResponse.getStatusCode()).thenReturn(200);
         Mockito.when(httpResponse.getHeaders()).thenReturn(new HttpHeaders());
@@ -61,7 +61,7 @@ public final class DeviceSecurityGroupsGetWithResponseMockTests {
         DeviceSecurityGroup response =
             manager
                 .deviceSecurityGroups()
-                .getWithResponse("aqotwfhipxwgsabv", "ipowza", com.azure.core.util.Context.NONE)
+                .getWithResponse("aiossscyvaifp", "uacvfy", com.azure.core.util.Context.NONE)
                 .getValue();
     }
 }

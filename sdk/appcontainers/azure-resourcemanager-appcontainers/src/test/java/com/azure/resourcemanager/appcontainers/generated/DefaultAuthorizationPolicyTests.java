@@ -9,33 +9,32 @@ import com.azure.resourcemanager.appcontainers.models.AllowedPrincipals;
 import com.azure.resourcemanager.appcontainers.models.DefaultAuthorizationPolicy;
 import java.util.Arrays;
 import org.junit.jupiter.api.Assertions;
-import org.junit.jupiter.api.Test;
 
 public final class DefaultAuthorizationPolicyTests {
-    @Test
-    public void testDeserialize() {
+    @org.junit.jupiter.api.Test
+    public void testDeserialize() throws Exception {
         DefaultAuthorizationPolicy model =
             BinaryData
                 .fromString(
-                    "{\"allowedPrincipals\":{\"groups\":[\"nohjt\"],\"identities\":[\"h\",\"soifiyipjxsqw\",\"gr\"]},\"allowedApplications\":[\"norcjxvsnbyxqab\",\"mocpc\"]}")
+                    "{\"allowedPrincipals\":{\"groups\":[\"mxdcufufsrp\",\"mzidnsezcxtb\"],\"identities\":[\"fycc\",\"newmdwzjeiachbo\"]},\"allowedApplications\":[\"lnrosfqp\",\"eeh\",\"zvypyqrimzinp\",\"swjdkirso\"]}")
                 .toObject(DefaultAuthorizationPolicy.class);
-        Assertions.assertEquals("nohjt", model.allowedPrincipals().groups().get(0));
-        Assertions.assertEquals("h", model.allowedPrincipals().identities().get(0));
-        Assertions.assertEquals("norcjxvsnbyxqab", model.allowedApplications().get(0));
+        Assertions.assertEquals("mxdcufufsrp", model.allowedPrincipals().groups().get(0));
+        Assertions.assertEquals("fycc", model.allowedPrincipals().identities().get(0));
+        Assertions.assertEquals("lnrosfqp", model.allowedApplications().get(0));
     }
 
-    @Test
-    public void testSerialize() {
+    @org.junit.jupiter.api.Test
+    public void testSerialize() throws Exception {
         DefaultAuthorizationPolicy model =
             new DefaultAuthorizationPolicy()
                 .withAllowedPrincipals(
                     new AllowedPrincipals()
-                        .withGroups(Arrays.asList("nohjt"))
-                        .withIdentities(Arrays.asList("h", "soifiyipjxsqw", "gr")))
-                .withAllowedApplications(Arrays.asList("norcjxvsnbyxqab", "mocpc"));
+                        .withGroups(Arrays.asList("mxdcufufsrp", "mzidnsezcxtb"))
+                        .withIdentities(Arrays.asList("fycc", "newmdwzjeiachbo")))
+                .withAllowedApplications(Arrays.asList("lnrosfqp", "eeh", "zvypyqrimzinp", "swjdkirso"));
         model = BinaryData.fromObject(model).toObject(DefaultAuthorizationPolicy.class);
-        Assertions.assertEquals("nohjt", model.allowedPrincipals().groups().get(0));
-        Assertions.assertEquals("h", model.allowedPrincipals().identities().get(0));
-        Assertions.assertEquals("norcjxvsnbyxqab", model.allowedApplications().get(0));
+        Assertions.assertEquals("mxdcufufsrp", model.allowedPrincipals().groups().get(0));
+        Assertions.assertEquals("fycc", model.allowedPrincipals().identities().get(0));
+        Assertions.assertEquals("lnrosfqp", model.allowedApplications().get(0));
     }
 }

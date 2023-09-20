@@ -17,7 +17,7 @@ import java.util.Map;
 @Fluent
 public final class SubscriptionInner {
     /*
-     * The fully qualified ID for the subscription. For example, /subscriptions/00000000-0000-0000-0000-000000000000.
+     * The fully qualified ID for the subscription. For example, /subscriptions/8d65815f-a5b6-402f-9298-045155da7d74
      */
     @JsonProperty(value = "id", access = JsonProperty.Access.WRITE_ONLY)
     private String id;
@@ -78,7 +78,7 @@ public final class SubscriptionInner {
 
     /**
      * Get the id property: The fully qualified ID for the subscription. For example,
-     * /subscriptions/00000000-0000-0000-0000-000000000000.
+     * /subscriptions/8d65815f-a5b6-402f-9298-045155da7d74.
      *
      * @return the id value.
      */

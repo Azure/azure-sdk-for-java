@@ -7,27 +7,30 @@ package com.azure.messaging.eventgrid.systemevents;
 import com.fasterxml.jackson.annotation.JsonCreator;
 import com.fasterxml.jackson.annotation.JsonValue;
 
-/** Defines values for MediaJobState. */
+/** The previous state of the Job. */
 public enum MediaJobState {
-    /** Enum value Canceled. */
+    /** The job was canceled. This is a final state for the job. */
     CANCELED("Canceled"),
 
-    /** Enum value Canceling. */
+    /** The job is in the process of being canceled. This is a transient state for the job. */
     CANCELING("Canceling"),
 
-    /** Enum value Error. */
+    /** The job has encountered an error. This is a final state for the job. */
     ERROR("Error"),
 
-    /** Enum value Finished. */
+    /** The job is finished. This is a final state for the job. */
     FINISHED("Finished"),
 
-    /** Enum value Processing. */
+    /** The job is processing. This is a transient state for the job. */
     PROCESSING("Processing"),
 
-    /** Enum value Queued. */
+    /** The job is in a queued state, waiting for resources to become available. This is a transient state. */
     QUEUED("Queued"),
 
-    /** Enum value Scheduled. */
+    /**
+     * The job is being scheduled to run on an available resource. This is a transient state, between queued and
+     * processing states.
+     */
     SCHEDULED("Scheduled");
 
     /** The actual serialized value for a MediaJobState instance. */
@@ -45,6 +48,9 @@ public enum MediaJobState {
      */
     @JsonCreator
     public static MediaJobState fromString(String value) {
+        if (value == null) {
+            return null;
+        }
         MediaJobState[] items = MediaJobState.values();
         for (MediaJobState item : items) {
             if (item.toString().equalsIgnoreCase(value)) {
@@ -54,6 +60,7 @@ public enum MediaJobState {
         return null;
     }
 
+    /** {@inheritDoc} */
     @JsonValue
     @Override
     public String toString() {

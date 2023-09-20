@@ -15,7 +15,7 @@ import java.io.IOException;
 /** Samples for Deployments WhatIfAtSubscriptionScope. */
 public final class DeploymentsWhatIfAtSubscriptionScopeSamples {
     /*
-     * x-ms-original-file: specification/resources/resource-manager/Microsoft.Resources/stable/2021-01-01/examples/PostDeploymentWhatIfOnSubscription.json
+     * x-ms-original-file: specification/resources/resource-manager/Microsoft.Resources/stable/2022-09-01/examples/PostDeploymentWhatIfOnSubscription.json
      */
     /**
      * Sample code: Predict template changes at subscription scope.
@@ -35,7 +35,7 @@ public final class DeploymentsWhatIfAtSubscriptionScopeSamples {
                     .withLocation("westus")
                     .withProperties(
                         new DeploymentWhatIfProperties()
-                            .withTemplateLink(new TemplateLink())
+                            .withTemplateLink(new TemplateLink().withUri("https://example.com/exampleTemplate.json"))
                             .withParameters(
                                 SerializerFactory
                                     .createDefaultManagementSerializerAdapter()

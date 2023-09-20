@@ -38,6 +38,15 @@ public final class SecretPermissions extends ExpandableStringEnum<SecretPermissi
     public static final SecretPermissions PURGE = fromString("purge");
 
     /**
+     * Creates a new instance of SecretPermissions value.
+     *
+     * @deprecated Use the {@link #fromString(String)} factory method.
+     */
+    @Deprecated
+    public SecretPermissions() {
+    }
+
+    /**
      * Creates or finds a SecretPermissions from its string representation.
      *
      * @param name a name to look for.

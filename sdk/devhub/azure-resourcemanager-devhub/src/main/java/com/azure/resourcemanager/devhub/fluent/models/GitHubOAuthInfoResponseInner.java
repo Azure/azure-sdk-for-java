@@ -22,6 +22,10 @@ public final class GitHubOAuthInfoResponseInner {
     @JsonProperty(value = "token")
     private String token;
 
+    /** Creates an instance of GitHubOAuthInfoResponseInner class. */
+    public GitHubOAuthInfoResponseInner() {
+    }
+
     /**
      * Get the authUrl property: URL for authorizing the Developer Hub GitHub App.
      *

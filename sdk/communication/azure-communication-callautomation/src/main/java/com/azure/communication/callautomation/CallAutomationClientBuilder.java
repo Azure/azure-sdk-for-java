@@ -246,7 +246,7 @@ public final class CallAutomationClientBuilder implements
     }
 
     /**
-     * Sets the {@link CallingServerServiceVersion} that is used when making API requests.
+     * Sets the {@link CallAutomationServiceVersion} that is used when making API requests.
      * <p>
      * If a service version is not provided, the service version that will be used will be the latest known service
      * version based on the version of the client library being used. If no service version is specified, updating to a
@@ -254,10 +254,10 @@ public final class CallAutomationClientBuilder implements
      * <p>
      * Targeting a specific service version may also mean that the service will return an error for newer APIs.
      *
-     * @param version {@link CallingServerServiceVersion} of the service to be used when making requests.
+     * @param version {@link CallAutomationServiceVersion} of the service to be used when making requests.
      * @return Updated CallAutomationClientBuilder object
      */
-    public CallAutomationClientBuilder serviceVersion(CallingServerServiceVersion version) {
+    public CallAutomationClientBuilder serviceVersion(CallAutomationServiceVersion version) {
         return this;
     }
 
@@ -388,6 +388,7 @@ public final class CallAutomationClientBuilder implements
 
         AzureCommunicationCallAutomationServiceImplBuilder clientBuilder = new AzureCommunicationCallAutomationServiceImplBuilder();
         clientBuilder.endpoint(endpoint).pipeline(builderPipeline);
+            
         return clientBuilder.buildClient();
     }
 
@@ -398,6 +399,7 @@ public final class CallAutomationClientBuilder implements
      * @param clientOptions object to be applied.
      * @return Updated {@link CallAutomationClientBuilder} object.
      */
+    @Override
     public CallAutomationClientBuilder clientOptions(ClientOptions clientOptions) {
         this.clientOptions = clientOptions;
         return this;

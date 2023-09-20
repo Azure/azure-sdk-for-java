@@ -16,8 +16,8 @@ import java.util.List;
 @Fluent
 public final class ProximityPlacementGroupProperties {
     /*
-     * Specifies the type of the proximity placement group. <br><br> Possible values are: <br><br> **Standard** :
-     * Co-locate resources within an Azure region or Availability Zone. <br><br> **Ultra** : For future use.
+     * Specifies the type of the proximity placement group. Possible values are: **Standard** : Co-locate resources
+     * within an Azure region or Availability Zone. **Ultra** : For future use.
      */
     @JsonProperty(value = "proximityPlacementGroupType")
     private ProximityPlacementGroupType proximityPlacementGroupType;
@@ -57,9 +57,9 @@ public final class ProximityPlacementGroupProperties {
     }
 
     /**
-     * Get the proximityPlacementGroupType property: Specifies the type of the proximity placement group.
-     * &lt;br&gt;&lt;br&gt; Possible values are: &lt;br&gt;&lt;br&gt; **Standard** : Co-locate resources within an Azure
-     * region or Availability Zone. &lt;br&gt;&lt;br&gt; **Ultra** : For future use.
+     * Get the proximityPlacementGroupType property: Specifies the type of the proximity placement group. Possible
+     * values are: **Standard** : Co-locate resources within an Azure region or Availability Zone. **Ultra** : For
+     * future use.
      *
      * @return the proximityPlacementGroupType value.
      */
@@ -68,9 +68,9 @@ public final class ProximityPlacementGroupProperties {
     }
 
     /**
-     * Set the proximityPlacementGroupType property: Specifies the type of the proximity placement group.
-     * &lt;br&gt;&lt;br&gt; Possible values are: &lt;br&gt;&lt;br&gt; **Standard** : Co-locate resources within an Azure
-     * region or Availability Zone. &lt;br&gt;&lt;br&gt; **Ultra** : For future use.
+     * Set the proximityPlacementGroupType property: Specifies the type of the proximity placement group. Possible
+     * values are: **Standard** : Co-locate resources within an Azure region or Availability Zone. **Ultra** : For
+     * future use.
      *
      * @param proximityPlacementGroupType the proximityPlacementGroupType value to set.
      * @return the ProximityPlacementGroupProperties object itself.

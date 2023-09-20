@@ -10,7 +10,7 @@ import java.util.Arrays;
 /** Samples for ResourceGroups ExportTemplate. */
 public final class ResourceGroupsExportTemplateSamples {
     /*
-     * x-ms-original-file: specification/resources/resource-manager/Microsoft.Resources/stable/2021-01-01/examples/ExportResourceGroup.json
+     * x-ms-original-file: specification/resources/resource-manager/Microsoft.Resources/stable/2022-09-01/examples/ExportResourceGroup.json
      */
     /**
      * Sample code: Export a resource group.
@@ -32,7 +32,7 @@ public final class ResourceGroupsExportTemplateSamples {
     }
 
     /*
-     * x-ms-original-file: specification/resources/resource-manager/Microsoft.Resources/stable/2021-01-01/examples/ExportResourceGroupWithFiltering.json
+     * x-ms-original-file: specification/resources/resource-manager/Microsoft.Resources/stable/2022-09-01/examples/ExportResourceGroupWithFiltering.json
      */
     /**
      * Sample code: Export a resource group with filtering.

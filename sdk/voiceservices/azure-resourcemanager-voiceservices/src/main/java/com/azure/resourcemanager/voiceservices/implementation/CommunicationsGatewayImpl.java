@@ -26,7 +26,7 @@ public final class CommunicationsGatewayImpl
     implements CommunicationsGateway, CommunicationsGateway.Definition, CommunicationsGateway.Update {
     private CommunicationsGatewayInner innerObject;
 
-    private final com.azure.resourcemanager.voiceservices.VoiceservicesManager serviceManager;
+    private final com.azure.resourcemanager.voiceservices.VoiceServicesManager serviceManager;
 
     public String id() {
         return this.innerModel().id();
@@ -145,7 +145,7 @@ public final class CommunicationsGatewayImpl
         return this.innerObject;
     }
 
-    private com.azure.resourcemanager.voiceservices.VoiceservicesManager manager() {
+    private com.azure.resourcemanager.voiceservices.VoiceServicesManager manager() {
         return this.serviceManager;
     }
 
@@ -179,7 +179,7 @@ public final class CommunicationsGatewayImpl
     }
 
     CommunicationsGatewayImpl(
-        String name, com.azure.resourcemanager.voiceservices.VoiceservicesManager serviceManager) {
+        String name, com.azure.resourcemanager.voiceservices.VoiceServicesManager serviceManager) {
         this.innerObject = new CommunicationsGatewayInner();
         this.serviceManager = serviceManager;
         this.communicationsGatewayName = name;
@@ -212,7 +212,7 @@ public final class CommunicationsGatewayImpl
 
     CommunicationsGatewayImpl(
         CommunicationsGatewayInner innerObject,
-        com.azure.resourcemanager.voiceservices.VoiceservicesManager serviceManager) {
+        com.azure.resourcemanager.voiceservices.VoiceServicesManager serviceManager) {
         this.innerObject = innerObject;
         this.serviceManager = serviceManager;
         this.resourceGroupName = Utils.getValueFromIdByName(innerObject.id(), "resourceGroups");

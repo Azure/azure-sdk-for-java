@@ -58,6 +58,6 @@ public final class VolumesDeleteReplicationMockTests {
 
         manager
             .volumes()
-            .deleteReplication("dmligovibrxk", "mloazuru", "cbgoor", "te", com.azure.core.util.Context.NONE);
+            .deleteReplication("bcporxvxcjzhqizx", "pxtgqscjav", "t", "uhdqazk", com.azure.core.util.Context.NONE);
     }
 }

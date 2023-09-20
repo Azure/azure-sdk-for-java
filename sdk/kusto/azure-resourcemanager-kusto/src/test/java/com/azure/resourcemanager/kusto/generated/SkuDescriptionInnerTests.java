@@ -13,7 +13,7 @@ public final class SkuDescriptionInnerTests {
         SkuDescriptionInner model =
             BinaryData
                 .fromString(
-                    "{\"resourceType\":\"lihkaetcktvfc\",\"name\":\"fsnkymuctq\",\"tier\":\"fbebrjcxer\",\"locations\":[\"utttxfvjrbirp\",\"xepcyvahfn\",\"jky\"],\"locationInfo\":[{\"location\":\"vuujq\",\"zones\":[\"ok\",\"jljyoxgv\"],\"zoneDetails\":[]}],\"restrictions\":[\"datasncghkjeszz\",\"databijhtxfvgxbf\",\"datamxnehmp\"]}")
+                    "{\"resourceType\":\"aaxdbabphlwrq\",\"name\":\"ktsthsucocmny\",\"tier\":\"zt\",\"locations\":[\"wwrq\",\"uedck\"],\"locationInfo\":[{\"location\":\"biexzfeyu\",\"zones\":[\"ibx\",\"jwbhqwalmuz\",\"oxaepd\",\"zjancuxr\"],\"zoneDetails\":[{\"name\":[\"v\",\"bniwdj\",\"wz\",\"s\"],\"capabilities\":[{}]},{\"name\":[\"xytxhpzxbz\",\"fzab\"],\"capabilities\":[{}]},{\"name\":[\"xwtctyqiklbbovpl\"],\"capabilities\":[{},{}]}]},{\"location\":\"hvgyuguosvmk\",\"zones\":[\"xquk\"],\"zoneDetails\":[{\"name\":[\"mg\",\"xnkjzkdesl\",\"vlopwiyighx\"],\"capabilities\":[{},{}]},{\"name\":[\"baiuebbaumny\"],\"capabilities\":[{}]},{\"name\":[\"eojnabc\"],\"capabilities\":[{},{},{}]}]},{\"location\":\"mtxpsiebtfh\",\"zones\":[\"sapskr\"],\"zoneDetails\":[{\"name\":[\"jdhtldwkyzxu\",\"tkncwsc\"],\"capabilities\":[{},{},{},{}]},{\"name\":[\"otogtwrupqs\",\"vnm\",\"cykvceo\",\"eil\"],\"capabilities\":[{},{},{},{}]},{\"name\":[\"yfjfcnjbkcn\",\"dhbt\",\"kphywpnvjto\",\"nermcl\"],\"capabilities\":[{},{}]},{\"name\":[\"oxuscrpabgyepsbj\",\"azqugxywpmueefj\"],\"capabilities\":[{},{}]}]}],\"restrictions\":[\"dataq\",\"datajidsuyonobglaoc\",\"dataxtccmg\"]}")
                 .toObject(SkuDescriptionInner.class);
     }
 

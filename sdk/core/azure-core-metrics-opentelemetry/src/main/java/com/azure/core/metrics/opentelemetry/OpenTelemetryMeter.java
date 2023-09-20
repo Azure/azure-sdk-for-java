@@ -32,7 +32,7 @@ class OpenTelemetryMeter implements Meter {
         MeterProvider otelProvider = GlobalOpenTelemetry.getMeterProvider();
         if (options != null && options.isEnabled() && options instanceof OpenTelemetryMetricsOptions) {
             OpenTelemetryMetricsOptions otelOptions = (OpenTelemetryMetricsOptions) options;
-            otelProvider = otelOptions.getProvider();
+            otelProvider = otelOptions.getOpenTelemetryProvider();
         }
 
         this.isEnabled = (options == null || options.isEnabled()) && otelProvider != MeterProvider.noop();

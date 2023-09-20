@@ -21,9 +21,8 @@ public class WorkflowGet {
                         .buildClient();
         // BEGIN:com.azure.analytics.purview.workflow.generated.getworkflow.workflowget
         RequestOptions requestOptions = new RequestOptions();
-        String workflowId = "d503b2d2-84da-4a85-9e85-6e82e39d59a0";
         Response<BinaryData> response =
-                purviewWorkflowClient.getWorkflowWithResponse(workflowId, requestOptions);
+                purviewWorkflowClient.getWorkflowWithResponse("d503b2d2-84da-4a85-9e85-6e82e39d59a0", requestOptions);
         // END:com.azure.analytics.purview.workflow.generated.getworkflow.workflowget
     }
 }

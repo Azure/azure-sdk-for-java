@@ -6,11 +6,12 @@
 - [CreateOrUpdate](#appliances_createorupdate)
 - [Delete](#appliances_delete)
 - [GetByResourceGroup](#appliances_getbyresourcegroup)
+- [GetTelemetryConfig](#appliances_gettelemetryconfig)
 - [GetUpgradeGraph](#appliances_getupgradegraph)
 - [List](#appliances_list)
 - [ListByResourceGroup](#appliances_listbyresourcegroup)
-- [ListClusterCustomerUserCredential](#appliances_listclustercustomerusercredential)
 - [ListClusterUserCredential](#appliances_listclusterusercredential)
+- [ListKeys](#appliances_listkeys)
 - [ListOperations](#appliances_listoperations)
 - [Update](#appliances_update)
 ### Appliances_CreateOrUpdate
@@ -23,14 +24,15 @@ import com.azure.resourcemanager.resourceconnector.models.Provider;
 /** Samples for Appliances CreateOrUpdate. */
 public final class AppliancesCreateOrUpdateSamples {
     /*
-     * x-ms-original-file: specification/resourceconnector/resource-manager/Microsoft.ResourceConnector/preview/2022-04-15-preview/examples/AppliancesCreate_Update.json
+     * x-ms-original-file: specification/resourceconnector/resource-manager/Microsoft.ResourceConnector/stable/2022-10-27/examples/AppliancesCreate_Update.json
      */
     /**
      * Sample code: Create/Update Appliance.
      *
-     * @param manager Entry point to AppliancesManager.
+     * @param manager Entry point to ResourceConnectorManager.
      */
-    public static void createUpdateAppliance(com.azure.resourcemanager.resourceconnector.AppliancesManager manager) {
+    public static void createUpdateAppliance(
+        com.azure.resourcemanager.resourceconnector.ResourceConnectorManager manager) {
         manager
             .appliances()
             .define("appliance01")
@@ -46,20 +48,18 @@ public final class AppliancesCreateOrUpdateSamples {
 ### Appliances_Delete
 
 ```java
-import com.azure.core.util.Context;
-
 /** Samples for Appliances Delete. */
 public final class AppliancesDeleteSamples {
     /*
-     * x-ms-original-file: specification/resourceconnector/resource-manager/Microsoft.ResourceConnector/preview/2022-04-15-preview/examples/AppliancesDelete.json
+     * x-ms-original-file: specification/resourceconnector/resource-manager/Microsoft.ResourceConnector/stable/2022-10-27/examples/AppliancesDelete.json
      */
     /**
      * Sample code: Delete Appliance.
      *
-     * @param manager Entry point to AppliancesManager.
+     * @param manager Entry point to ResourceConnectorManager.
      */
-    public static void deleteAppliance(com.azure.resourcemanager.resourceconnector.AppliancesManager manager) {
-        manager.appliances().delete("testresourcegroup", "appliance01", Context.NONE);
+    public static void deleteAppliance(com.azure.resourcemanager.resourceconnector.ResourceConnectorManager manager) {
+        manager.appliances().delete("testresourcegroup", "appliance01", com.azure.core.util.Context.NONE);
     }
 }
 ```
@@ -67,20 +67,40 @@ public final class AppliancesDeleteSamples {
 ### Appliances_GetByResourceGroup
 
 ```java
-import com.azure.core.util.Context;
-
 /** Samples for Appliances GetByResourceGroup. */
 public final class AppliancesGetByResourceGroupSamples {
     /*
-     * x-ms-original-file: specification/resourceconnector/resource-manager/Microsoft.ResourceConnector/preview/2022-04-15-preview/examples/AppliancesGet.json
+     * x-ms-original-file: specification/resourceconnector/resource-manager/Microsoft.ResourceConnector/stable/2022-10-27/examples/AppliancesGet.json
      */
     /**
      * Sample code: Get Appliance.
      *
-     * @param manager Entry point to AppliancesManager.
+     * @param manager Entry point to ResourceConnectorManager.
      */
-    public static void getAppliance(com.azure.resourcemanager.resourceconnector.AppliancesManager manager) {
-        manager.appliances().getByResourceGroupWithResponse("testresourcegroup", "appliance01", Context.NONE);
+    public static void getAppliance(com.azure.resourcemanager.resourceconnector.ResourceConnectorManager manager) {
+        manager
+            .appliances()
+            .getByResourceGroupWithResponse("testresourcegroup", "appliance01", com.azure.core.util.Context.NONE);
+    }
+}
+```
+
+### Appliances_GetTelemetryConfig
+
+```java
+/** Samples for Appliances GetTelemetryConfig. */
+public final class AppliancesGetTelemetryConfigSamples {
+    /*
+     * x-ms-original-file: specification/resourceconnector/resource-manager/Microsoft.ResourceConnector/stable/2022-10-27/examples/TelemetryConfig.json
+     */
+    /**
+     * Sample code: GetTelemetryConfig Appliance.
+     *
+     * @param manager Entry point to ResourceConnectorManager.
+     */
+    public static void getTelemetryConfigAppliance(
+        com.azure.resourcemanager.resourceconnector.ResourceConnectorManager manager) {
+        manager.appliances().getTelemetryConfigWithResponse(com.azure.core.util.Context.NONE);
     }
 }
 ```
@@ -88,20 +108,22 @@ public final class AppliancesGetByResourceGroupSamples {
 ### Appliances_GetUpgradeGraph
 
 ```java
-import com.azure.core.util.Context;
-
 /** Samples for Appliances GetUpgradeGraph. */
 public final class AppliancesGetUpgradeGraphSamples {
     /*
-     * x-ms-original-file: specification/resourceconnector/resource-manager/Microsoft.ResourceConnector/preview/2022-04-15-preview/examples/UpgradeGraph.json
+     * x-ms-original-file: specification/resourceconnector/resource-manager/Microsoft.ResourceConnector/stable/2022-10-27/examples/UpgradeGraph.json
      */
     /**
      * Sample code: Get Appliance Upgrade Graph.
      *
-     * @param manager Entry point to AppliancesManager.
+     * @param manager Entry point to ResourceConnectorManager.
      */
-    public static void getApplianceUpgradeGraph(com.azure.resourcemanager.resourceconnector.AppliancesManager manager) {
-        manager.appliances().getUpgradeGraphWithResponse("testresourcegroup", "appliance01", "stable", Context.NONE);
+    public static void getApplianceUpgradeGraph(
+        com.azure.resourcemanager.resourceconnector.ResourceConnectorManager manager) {
+        manager
+            .appliances()
+            .getUpgradeGraphWithResponse(
+                "testresourcegroup", "appliance01", "stable", com.azure.core.util.Context.NONE);
     }
 }
 ```
@@ -109,21 +131,19 @@ public final class AppliancesGetUpgradeGraphSamples {
 ### Appliances_List
 
 ```java
-import com.azure.core.util.Context;
-
 /** Samples for Appliances List. */
 public final class AppliancesListSamples {
     /*
-     * x-ms-original-file: specification/resourceconnector/resource-manager/Microsoft.ResourceConnector/preview/2022-04-15-preview/examples/AppliancesListBySubscription.json
+     * x-ms-original-file: specification/resourceconnector/resource-manager/Microsoft.ResourceConnector/stable/2022-10-27/examples/AppliancesListBySubscription.json
      */
     /**
      * Sample code: List Appliances by subscription.
      *
-     * @param manager Entry point to AppliancesManager.
+     * @param manager Entry point to ResourceConnectorManager.
      */
     public static void listAppliancesBySubscription(
-        com.azure.resourcemanager.resourceconnector.AppliancesManager manager) {
-        manager.appliances().list(Context.NONE);
+        com.azure.resourcemanager.resourceconnector.ResourceConnectorManager manager) {
+        manager.appliances().list(com.azure.core.util.Context.NONE);
     }
 }
 ```
@@ -131,45 +151,19 @@ public final class AppliancesListSamples {
 ### Appliances_ListByResourceGroup
 
 ```java
-import com.azure.core.util.Context;
-
 /** Samples for Appliances ListByResourceGroup. */
 public final class AppliancesListByResourceGroupSamples {
     /*
-     * x-ms-original-file: specification/resourceconnector/resource-manager/Microsoft.ResourceConnector/preview/2022-04-15-preview/examples/AppliancesListByResourceGroup.json
+     * x-ms-original-file: specification/resourceconnector/resource-manager/Microsoft.ResourceConnector/stable/2022-10-27/examples/AppliancesListByResourceGroup.json
      */
     /**
      * Sample code: List Appliances by resource group.
      *
-     * @param manager Entry point to AppliancesManager.
+     * @param manager Entry point to ResourceConnectorManager.
      */
     public static void listAppliancesByResourceGroup(
-        com.azure.resourcemanager.resourceconnector.AppliancesManager manager) {
-        manager.appliances().listByResourceGroup("testresourcegroup", Context.NONE);
-    }
-}
-```
-
-### Appliances_ListClusterCustomerUserCredential
-
-```java
-import com.azure.core.util.Context;
-
-/** Samples for Appliances ListClusterCustomerUserCredential. */
-public final class AppliancesListClusterCustomerUserCredentialSamples {
-    /*
-     * x-ms-original-file: specification/resourceconnector/resource-manager/Microsoft.ResourceConnector/preview/2022-04-15-preview/examples/AppliancesListClusterCustomerUserCredential.json
-     */
-    /**
-     * Sample code: ListClusterCustomerUserCredentialAppliance.
-     *
-     * @param manager Entry point to AppliancesManager.
-     */
-    public static void listClusterCustomerUserCredentialAppliance(
-        com.azure.resourcemanager.resourceconnector.AppliancesManager manager) {
-        manager
-            .appliances()
-            .listClusterCustomerUserCredentialWithResponse("testresourcegroup", "appliance01", Context.NONE);
+        com.azure.resourcemanager.resourceconnector.ResourceConnectorManager manager) {
+        manager.appliances().listByResourceGroup("testresourcegroup", com.azure.core.util.Context.NONE);
     }
 }
 ```
@@ -177,21 +171,43 @@ public final class AppliancesListClusterCustomerUserCredentialSamples {
 ### Appliances_ListClusterUserCredential
 
 ```java
-import com.azure.core.util.Context;
-
 /** Samples for Appliances ListClusterUserCredential. */
 public final class AppliancesListClusterUserCredentialSamples {
     /*
-     * x-ms-original-file: specification/resourceconnector/resource-manager/Microsoft.ResourceConnector/preview/2022-04-15-preview/examples/AppliancesListClusterUserCredential.json
+     * x-ms-original-file: specification/resourceconnector/resource-manager/Microsoft.ResourceConnector/stable/2022-10-27/examples/AppliancesListClusterUserCredential.json
      */
     /**
      * Sample code: ListClusterUserCredentialAppliance.
      *
-     * @param manager Entry point to AppliancesManager.
+     * @param manager Entry point to ResourceConnectorManager.
      */
     public static void listClusterUserCredentialAppliance(
-        com.azure.resourcemanager.resourceconnector.AppliancesManager manager) {
-        manager.appliances().listClusterUserCredentialWithResponse("testresourcegroup", "appliance01", Context.NONE);
+        com.azure.resourcemanager.resourceconnector.ResourceConnectorManager manager) {
+        manager
+            .appliances()
+            .listClusterUserCredentialWithResponse(
+                "testresourcegroup", "appliance01", com.azure.core.util.Context.NONE);
+    }
+}
+```
+
+### Appliances_ListKeys
+
+```java
+/** Samples for Appliances ListKeys. */
+public final class AppliancesListKeysSamples {
+    /*
+     * x-ms-original-file: specification/resourceconnector/resource-manager/Microsoft.ResourceConnector/stable/2022-10-27/examples/AppliancesListKeys.json
+     */
+    /**
+     * Sample code: ListKeys Appliance.
+     *
+     * @param manager Entry point to ResourceConnectorManager.
+     */
+    public static void listKeysAppliance(com.azure.resourcemanager.resourceconnector.ResourceConnectorManager manager) {
+        manager
+            .appliances()
+            .listKeysWithResponse("testresourcegroup", "appliance01", null, com.azure.core.util.Context.NONE);
     }
 }
 ```
@@ -199,20 +215,19 @@ public final class AppliancesListClusterUserCredentialSamples {
 ### Appliances_ListOperations
 
 ```java
-import com.azure.core.util.Context;
-
 /** Samples for Appliances ListOperations. */
 public final class AppliancesListOperationsSamples {
     /*
-     * x-ms-original-file: specification/resourceconnector/resource-manager/Microsoft.ResourceConnector/preview/2022-04-15-preview/examples/AppliancesListOperations.json
+     * x-ms-original-file: specification/resourceconnector/resource-manager/Microsoft.ResourceConnector/stable/2022-10-27/examples/AppliancesListOperations.json
      */
     /**
      * Sample code: List Appliances operations.
      *
-     * @param manager Entry point to AppliancesManager.
+     * @param manager Entry point to ResourceConnectorManager.
      */
-    public static void listAppliancesOperations(com.azure.resourcemanager.resourceconnector.AppliancesManager manager) {
-        manager.appliances().listOperations(Context.NONE);
+    public static void listAppliancesOperations(
+        com.azure.resourcemanager.resourceconnector.ResourceConnectorManager manager) {
+        manager.appliances().listOperations(com.azure.core.util.Context.NONE);
     }
 }
 ```
@@ -220,7 +235,6 @@ public final class AppliancesListOperationsSamples {
 ### Appliances_Update
 
 ```java
-import com.azure.core.util.Context;
 import com.azure.resourcemanager.resourceconnector.models.Appliance;
 import java.util.HashMap;
 import java.util.Map;
@@ -228,22 +242,23 @@ import java.util.Map;
 /** Samples for Appliances Update. */
 public final class AppliancesUpdateSamples {
     /*
-     * x-ms-original-file: specification/resourceconnector/resource-manager/Microsoft.ResourceConnector/preview/2022-04-15-preview/examples/AppliancesPatch.json
+     * x-ms-original-file: specification/resourceconnector/resource-manager/Microsoft.ResourceConnector/stable/2022-10-27/examples/AppliancesPatch.json
      */
     /**
      * Sample code: Update Appliance.
      *
-     * @param manager Entry point to AppliancesManager.
+     * @param manager Entry point to ResourceConnectorManager.
      */
-    public static void updateAppliance(com.azure.resourcemanager.resourceconnector.AppliancesManager manager) {
+    public static void updateAppliance(com.azure.resourcemanager.resourceconnector.ResourceConnectorManager manager) {
         Appliance resource =
             manager
                 .appliances()
-                .getByResourceGroupWithResponse("testresourcegroup", "appliance01", Context.NONE)
+                .getByResourceGroupWithResponse("testresourcegroup", "appliance01", com.azure.core.util.Context.NONE)
                 .getValue();
-        resource.update().withTags(mapOf("key", "value")).apply();
+        resource.update().withTags(mapOf("key", "fakeTokenPlaceholder")).apply();
     }
 
+    // Use "Map.of" if available
     @SuppressWarnings("unchecked")
     private static <T> Map<String, T> mapOf(Object... inputs) {
         Map<String, T> map = new HashMap<>();

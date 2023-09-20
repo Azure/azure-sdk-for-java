@@ -6,11 +6,10 @@ package com.azure.resourcemanager.devhub.generated;
 
 import com.azure.core.util.BinaryData;
 import com.azure.resourcemanager.devhub.fluent.models.OperationListResultInner;
-import org.junit.jupiter.api.Test;
 
 public final class OperationListResultInnerTests {
-    @Test
-    public void testDeserialize() {
+    @org.junit.jupiter.api.Test
+    public void testDeserialize() throws Exception {
         OperationListResultInner model =
             BinaryData
                 .fromString(
@@ -18,8 +17,8 @@ public final class OperationListResultInnerTests {
                 .toObject(OperationListResultInner.class);
     }
 
-    @Test
-    public void testSerialize() {
+    @org.junit.jupiter.api.Test
+    public void testSerialize() throws Exception {
         OperationListResultInner model = new OperationListResultInner();
         model = BinaryData.fromObject(model).toObject(OperationListResultInner.class);
     }

@@ -9,11 +9,14 @@ import com.azure.core.management.Resource;
 import com.azure.core.management.SystemData;
 import com.azure.resourcemanager.eventgrid.models.DataResidencyBoundary;
 import com.azure.resourcemanager.eventgrid.models.DomainProvisioningState;
+import com.azure.resourcemanager.eventgrid.models.EventTypeInfo;
 import com.azure.resourcemanager.eventgrid.models.IdentityInfo;
 import com.azure.resourcemanager.eventgrid.models.InboundIpRule;
 import com.azure.resourcemanager.eventgrid.models.InputSchema;
 import com.azure.resourcemanager.eventgrid.models.InputSchemaMapping;
 import com.azure.resourcemanager.eventgrid.models.PublicNetworkAccess;
+import com.azure.resourcemanager.eventgrid.models.ResourceSku;
+import com.azure.resourcemanager.eventgrid.models.TlsVersion;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import java.util.List;
 import java.util.Map;
@@ -28,16 +31,26 @@ public final class DomainInner extends Resource {
     private DomainProperties innerProperties;
 
     /*
-     * The system metadata relating to the Event Grid Domain resource.
+     * The Sku pricing tier for the Event Grid Domain resource.
      */
-    @JsonProperty(value = "systemData", access = JsonProperty.Access.WRITE_ONLY)
-    private SystemData systemData;
+    @JsonProperty(value = "sku")
+    private ResourceSku sku;
 
     /*
      * Identity information for the Event Grid Domain resource.
      */
     @JsonProperty(value = "identity")
     private IdentityInfo identity;
+
+    /*
+     * The system metadata relating to the Event Grid Domain resource.
+     */
+    @JsonProperty(value = "systemData", access = JsonProperty.Access.WRITE_ONLY)
+    private SystemData systemData;
+
+    /** Creates an instance of DomainInner class. */
+    public DomainInner() {
+    }
 
     /**
      * Get the innerProperties property: Properties of the Event Grid Domain resource.
@@ -49,12 +62,23 @@ public final class DomainInner extends Resource {
     }
 
     /**
-     * Get the systemData property: The system metadata relating to the Event Grid Domain resource.
+     * Get the sku property: The Sku pricing tier for the Event Grid Domain resource.
      *
-     * @return the systemData value.
+     * @return the sku value.
      */
-    public SystemData systemData() {
-        return this.systemData;
+    public ResourceSku sku() {
+        return this.sku;
+    }
+
+    /**
+     * Set the sku property: The Sku pricing tier for the Event Grid Domain resource.
+     *
+     * @param sku the sku value to set.
+     * @return the DomainInner object itself.
+     */
+    public DomainInner withSku(ResourceSku sku) {
+        this.sku = sku;
+        return this;
     }
 
     /**
@@ -77,6 +101,15 @@ public final class DomainInner extends Resource {
         return this;
     }
 
+    /**
+     * Get the systemData property: The system metadata relating to the Event Grid Domain resource.
+     *
+     * @return the systemData value.
+     */
+    public SystemData systemData() {
+        return this.systemData;
+    }
+
     /** {@inheritDoc} */
     @Override
     public DomainInner withLocation(String location) {
@@ -92,7 +125,7 @@ public final class DomainInner extends Resource {
     }
 
     /**
-     * Get the privateEndpointConnections property: List of private endpoint connections.
+     * Get the privateEndpointConnections property: The privateEndpointConnections property.
      *
      * @return the privateEndpointConnections value.
      */
@@ -107,6 +140,31 @@ public final class DomainInner extends Resource {
      */
     public DomainProvisioningState provisioningState() {
         return this.innerProperties() == null ? null : this.innerProperties().provisioningState();
+    }
+
+    /**
+     * Get the minimumTlsVersionAllowed property: Minimum TLS version of the publisher allowed to publish to this
+     * domain.
+     *
+     * @return the minimumTlsVersionAllowed value.
+     */
+    public TlsVersion minimumTlsVersionAllowed() {
+        return this.innerProperties() == null ? null : this.innerProperties().minimumTlsVersionAllowed();
+    }
+
+    /**
+     * Set the minimumTlsVersionAllowed property: Minimum TLS version of the publisher allowed to publish to this
+     * domain.
+     *
+     * @param minimumTlsVersionAllowed the minimumTlsVersionAllowed value to set.
+     * @return the DomainInner object itself.
+     */
+    public DomainInner withMinimumTlsVersionAllowed(TlsVersion minimumTlsVersionAllowed) {
+        if (this.innerProperties() == null) {
+            this.innerProperties = new DomainProperties();
+        }
+        this.innerProperties().withMinimumTlsVersionAllowed(minimumTlsVersionAllowed);
+        return this;
     }
 
     /**
@@ -140,6 +198,31 @@ public final class DomainInner extends Resource {
             this.innerProperties = new DomainProperties();
         }
         this.innerProperties().withInputSchema(inputSchema);
+        return this;
+    }
+
+    /**
+     * Get the eventTypeInfo property: Event Type Information for the domain. This information is provided by the
+     * publisher and can be used by the subscriber to view different types of events that are published.
+     *
+     * @return the eventTypeInfo value.
+     */
+    public EventTypeInfo eventTypeInfo() {
+        return this.innerProperties() == null ? null : this.innerProperties().eventTypeInfo();
+    }
+
+    /**
+     * Set the eventTypeInfo property: Event Type Information for the domain. This information is provided by the
+     * publisher and can be used by the subscriber to view different types of events that are published.
+     *
+     * @param eventTypeInfo the eventTypeInfo value to set.
+     * @return the DomainInner object itself.
+     */
+    public DomainInner withEventTypeInfo(EventTypeInfo eventTypeInfo) {
+        if (this.innerProperties() == null) {
+            this.innerProperties = new DomainProperties();
+        }
+        this.innerProperties().withEventTypeInfo(eventTypeInfo);
         return this;
     }
 
@@ -365,6 +448,9 @@ public final class DomainInner extends Resource {
     public void validate() {
         if (innerProperties() != null) {
             innerProperties().validate();
+        }
+        if (sku() != null) {
+            sku().validate();
         }
         if (identity() != null) {
             identity().validate();

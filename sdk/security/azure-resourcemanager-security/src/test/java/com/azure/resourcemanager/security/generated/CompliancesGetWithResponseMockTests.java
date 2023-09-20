@@ -30,7 +30,7 @@ public final class CompliancesGetWithResponseMockTests {
         ArgumentCaptor<HttpRequest> httpRequest = ArgumentCaptor.forClass(HttpRequest.class);
 
         String responseStr =
-            "{\"properties\":{\"assessmentTimestampUtcDate\":\"2021-10-16T21:55:46Z\",\"resourceCount\":1151163794,\"assessmentResult\":[]},\"id\":\"zytzarogatmolj\",\"name\":\"ywmpinmzvfkneer\",\"type\":\"ztrknsj\"}";
+            "{\"properties\":{\"assessmentTimestampUtcDate\":\"2021-04-20T11:58:39Z\",\"resourceCount\":583631661,\"assessmentResult\":[]},\"id\":\"tesubzpvp\",\"name\":\"dylytcovq\",\"type\":\"eu\"}";
 
         Mockito.when(httpResponse.getStatusCode()).thenReturn(200);
         Mockito.when(httpResponse.getHeaders()).thenReturn(new HttpHeaders());
@@ -59,9 +59,6 @@ public final class CompliancesGetWithResponseMockTests {
                     new AzureProfile("", "", AzureEnvironment.AZURE));
 
         Compliance response =
-            manager
-                .compliances()
-                .getWithResponse("jtrpzuyud", "vbxnhsqeaeonqe", com.azure.core.util.Context.NONE)
-                .getValue();
+            manager.compliances().getWithResponse("iswxspv", "koj", com.azure.core.util.Context.NONE).getValue();
     }
 }

@@ -11,21 +11,11 @@ import com.azure.core.util.Context;
 /** Resource collection API of Ledgers. */
 public interface Ledgers {
     /**
-     * Retrieves the properties of a Confidential Ledger.
+     * Retrieves information about a Confidential Ledger resource.
      *
-     * @param resourceGroupName The name of the resource group.
-     * @param ledgerName Name of the Confidential Ledger.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return confidential Ledger.
-     */
-    ConfidentialLedger getByResourceGroup(String resourceGroupName, String ledgerName);
-
-    /**
-     * Retrieves the properties of a Confidential Ledger.
+     * <p>Retrieves the properties of a Confidential Ledger.
      *
-     * @param resourceGroupName The name of the resource group.
+     * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param ledgerName Name of the Confidential Ledger.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
@@ -37,9 +27,25 @@ public interface Ledgers {
         String resourceGroupName, String ledgerName, Context context);
 
     /**
-     * Deletes an existing Confidential Ledger.
+     * Retrieves information about a Confidential Ledger resource.
      *
-     * @param resourceGroupName The name of the resource group.
+     * <p>Retrieves the properties of a Confidential Ledger.
+     *
+     * @param resourceGroupName The name of the resource group. The name is case insensitive.
+     * @param ledgerName Name of the Confidential Ledger.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return confidential Ledger.
+     */
+    ConfidentialLedger getByResourceGroup(String resourceGroupName, String ledgerName);
+
+    /**
+     * Deletes a Confidential Ledger resource.
+     *
+     * <p>Deletes an existing Confidential Ledger.
+     *
+     * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param ledgerName Name of the Confidential Ledger.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
@@ -48,9 +54,11 @@ public interface Ledgers {
     void deleteByResourceGroup(String resourceGroupName, String ledgerName);
 
     /**
-     * Deletes an existing Confidential Ledger.
+     * Deletes a Confidential Ledger resource.
      *
-     * @param resourceGroupName The name of the resource group.
+     * <p>Deletes an existing Confidential Ledger.
+     *
+     * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param ledgerName Name of the Confidential Ledger.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
@@ -60,9 +68,11 @@ public interface Ledgers {
     void delete(String resourceGroupName, String ledgerName, Context context);
 
     /**
-     * Retrieves the properties of all Confidential Ledgers.
+     * Retrieves information about all Confidential Ledger resources under the given subscription and resource group
      *
-     * @param resourceGroupName The name of the resource group.
+     * <p>Retrieves the properties of all Confidential Ledgers.
+     *
+     * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
@@ -72,9 +82,11 @@ public interface Ledgers {
     PagedIterable<ConfidentialLedger> listByResourceGroup(String resourceGroupName);
 
     /**
-     * Retrieves the properties of all Confidential Ledgers.
+     * Retrieves information about all Confidential Ledger resources under the given subscription and resource group
      *
-     * @param resourceGroupName The name of the resource group.
+     * <p>Retrieves the properties of all Confidential Ledgers.
+     *
+     * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param filter The filter to apply on the list operation. eg. $filter=ledgerType eq 'Public'.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
@@ -86,7 +98,9 @@ public interface Ledgers {
     PagedIterable<ConfidentialLedger> listByResourceGroup(String resourceGroupName, String filter, Context context);
 
     /**
-     * Retrieves the properties of all Confidential Ledgers.
+     * Retrieves information about all Confidential Ledger resources under the given subscription
+     *
+     * <p>Retrieves the properties of all Confidential Ledgers.
      *
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
@@ -96,7 +110,9 @@ public interface Ledgers {
     PagedIterable<ConfidentialLedger> list();
 
     /**
-     * Retrieves the properties of all Confidential Ledgers.
+     * Retrieves information about all Confidential Ledger resources under the given subscription
+     *
+     * <p>Retrieves the properties of all Confidential Ledgers.
      *
      * @param filter The filter to apply on the list operation. eg. $filter=ledgerType eq 'Public'.
      * @param context The context to associate with this operation.
@@ -109,7 +125,9 @@ public interface Ledgers {
     PagedIterable<ConfidentialLedger> list(String filter, Context context);
 
     /**
-     * Retrieves the properties of a Confidential Ledger.
+     * Retrieves information about a Confidential Ledger resource.
+     *
+     * <p>Retrieves the properties of a Confidential Ledger.
      *
      * @param id the resource ID.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
@@ -120,7 +138,9 @@ public interface Ledgers {
     ConfidentialLedger getById(String id);
 
     /**
-     * Retrieves the properties of a Confidential Ledger.
+     * Retrieves information about a Confidential Ledger resource.
+     *
+     * <p>Retrieves the properties of a Confidential Ledger.
      *
      * @param id the resource ID.
      * @param context The context to associate with this operation.
@@ -132,7 +152,9 @@ public interface Ledgers {
     Response<ConfidentialLedger> getByIdWithResponse(String id, Context context);
 
     /**
-     * Deletes an existing Confidential Ledger.
+     * Deletes a Confidential Ledger resource.
+     *
+     * <p>Deletes an existing Confidential Ledger.
      *
      * @param id the resource ID.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
@@ -142,7 +164,9 @@ public interface Ledgers {
     void deleteById(String id);
 
     /**
-     * Deletes an existing Confidential Ledger.
+     * Deletes a Confidential Ledger resource.
+     *
+     * <p>Deletes an existing Confidential Ledger.
      *
      * @param id the resource ID.
      * @param context The context to associate with this operation.

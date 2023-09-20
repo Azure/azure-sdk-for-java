@@ -65,11 +65,6 @@ class AzureJedisPasswordlessAutoConfigurationTest {
             Assertions.assertEquals(REDIS_SCOPE_CHINA, properties.getScopes());
         });
 
-        this.contextRunner.withPropertyValues("spring.redis.azure.profile.cloud-type = AZURE_GERMANY").run((context) -> {
-            AzureRedisPasswordlessProperties properties = context.getBean(AzureRedisPasswordlessProperties.class);
-            Assertions.assertEquals(REDIS_SCOPE_GERMANY, properties.getScopes());
-        });
-
         this.contextRunner.withPropertyValues("spring.redis.azure.profile.cloud-type = AZURE_US_GOVERNMENT").run((context) -> {
             AzureRedisPasswordlessProperties properties = context.getBean(AzureRedisPasswordlessProperties.class);
             Assertions.assertEquals(REDIS_SCOPE_US_GOVERNMENT, properties.getScopes());

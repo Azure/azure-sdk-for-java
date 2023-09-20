@@ -16,26 +16,26 @@ public final class AadSolutionPropertiesTests {
         AadSolutionProperties model =
             BinaryData
                 .fromString(
-                    "{\"connectivityState\":\"Connected\",\"deviceVendor\":\"hlusrvxisi\",\"deviceType\":\"ceagbjqvlsumywz\",\"workspace\":{\"id\":\"xgo\"},\"\":{\"ebgvo\":\"datajfqipubyznclkfk\",\"tuoqujlyegqavni\":\"datae\",\"fvabmvmsxba\":\"dataflqqbtnyjpylxd\"}}")
+                    "{\"connectivityState\":\"Discovered\",\"deviceVendor\":\"yxoyfp\",\"deviceType\":\"qi\",\"workspace\":{\"id\":\"xlhdj\"},\"\":{\"jriyb\":\"datacadwvpsozjii\",\"epnxwd\":\"datarz\",\"xaurs\":\"datawnjkgvfn\",\"pnqn\":\"dataftibtyibuyvpirfq\"}}")
                 .toObject(AadSolutionProperties.class);
-        Assertions.assertEquals("hlusrvxisi", model.deviceVendor());
-        Assertions.assertEquals("ceagbjqvlsumywz", model.deviceType());
-        Assertions.assertEquals("xgo", model.workspace().id());
-        Assertions.assertEquals(AadConnectivityState.CONNECTED, model.connectivityState());
+        Assertions.assertEquals("yxoyfp", model.deviceVendor());
+        Assertions.assertEquals("qi", model.deviceType());
+        Assertions.assertEquals("xlhdj", model.workspace().id());
+        Assertions.assertEquals(AadConnectivityState.DISCOVERED, model.connectivityState());
     }
 
     @org.junit.jupiter.api.Test
     public void testSerialize() throws Exception {
         AadSolutionProperties model =
             new AadSolutionProperties()
-                .withDeviceVendor("hlusrvxisi")
-                .withDeviceType("ceagbjqvlsumywz")
-                .withWorkspace(new ConnectedWorkspace().withId("xgo"))
-                .withConnectivityState(AadConnectivityState.CONNECTED);
+                .withDeviceVendor("yxoyfp")
+                .withDeviceType("qi")
+                .withWorkspace(new ConnectedWorkspace().withId("xlhdj"))
+                .withConnectivityState(AadConnectivityState.DISCOVERED);
         model = BinaryData.fromObject(model).toObject(AadSolutionProperties.class);
-        Assertions.assertEquals("hlusrvxisi", model.deviceVendor());
-        Assertions.assertEquals("ceagbjqvlsumywz", model.deviceType());
-        Assertions.assertEquals("xgo", model.workspace().id());
-        Assertions.assertEquals(AadConnectivityState.CONNECTED, model.connectivityState());
+        Assertions.assertEquals("yxoyfp", model.deviceVendor());
+        Assertions.assertEquals("qi", model.deviceType());
+        Assertions.assertEquals("xlhdj", model.workspace().id());
+        Assertions.assertEquals(AadConnectivityState.DISCOVERED, model.connectivityState());
     }
 }

@@ -4,12 +4,10 @@
 
 package com.azure.resourcemanager.containerinstance.generated;
 
-import com.azure.core.util.Context;
-
 /** Samples for Location ListUsage. */
 public final class LocationListUsageSamples {
     /*
-     * x-ms-original-file: specification/containerinstance/resource-manager/Microsoft.ContainerInstance/stable/2021-10-01/examples/ContainerGroupUsage.json
+     * x-ms-original-file: specification/containerinstance/resource-manager/Microsoft.ContainerInstance/stable/2023-05-01/examples/ContainerGroupUsage.json
      */
     /**
      * Sample code: ContainerUsage.
@@ -17,6 +15,11 @@ public final class LocationListUsageSamples {
      * @param azure The entry point for accessing resource management APIs in Azure.
      */
     public static void containerUsage(com.azure.resourcemanager.AzureResourceManager azure) {
-        azure.containerGroups().manager().serviceClient().getLocations().listUsage("westcentralus", Context.NONE);
+        azure
+            .containerGroups()
+            .manager()
+            .serviceClient()
+            .getLocations()
+            .listUsage("westcentralus", com.azure.core.util.Context.NONE);
     }
 }

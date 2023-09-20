@@ -21,6 +21,15 @@ public final class SendingLogs extends ExpandableStringEnum<SendingLogs> {
     public static final SendingLogs FALSE = fromString("False");
 
     /**
+     * Creates a new instance of SendingLogs value.
+     *
+     * @deprecated Use the {@link #fromString(String)} factory method.
+     */
+    @Deprecated
+    public SendingLogs() {
+    }
+
+    /**
      * Creates or finds a SendingLogs from its string representation.
      *
      * @param name a name to look for.

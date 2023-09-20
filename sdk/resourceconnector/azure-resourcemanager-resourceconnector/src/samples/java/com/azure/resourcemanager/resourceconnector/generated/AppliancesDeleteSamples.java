@@ -4,19 +4,17 @@
 
 package com.azure.resourcemanager.resourceconnector.generated;
 
-import com.azure.core.util.Context;
-
 /** Samples for Appliances Delete. */
 public final class AppliancesDeleteSamples {
     /*
-     * x-ms-original-file: specification/resourceconnector/resource-manager/Microsoft.ResourceConnector/preview/2022-04-15-preview/examples/AppliancesDelete.json
+     * x-ms-original-file: specification/resourceconnector/resource-manager/Microsoft.ResourceConnector/stable/2022-10-27/examples/AppliancesDelete.json
      */
     /**
      * Sample code: Delete Appliance.
      *
-     * @param manager Entry point to AppliancesManager.
+     * @param manager Entry point to ResourceConnectorManager.
      */
-    public static void deleteAppliance(com.azure.resourcemanager.resourceconnector.AppliancesManager manager) {
-        manager.appliances().delete("testresourcegroup", "appliance01", Context.NONE);
+    public static void deleteAppliance(com.azure.resourcemanager.resourceconnector.ResourceConnectorManager manager) {
+        manager.appliances().delete("testresourcegroup", "appliance01", com.azure.core.util.Context.NONE);
     }
 }

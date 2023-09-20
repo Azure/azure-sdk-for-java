@@ -17,8 +17,8 @@ import java.security.NoSuchAlgorithmException;
 import java.security.Provider;
 
 abstract class AesCbcHmacSha2 extends SymmetricEncryptionAlgorithm {
+    private static final ClientLogger LOGGER = new ClientLogger(AesCbcHmacSha2.class);
     private static final long BYTE_TO_BITS = 8L;
-    private final ClientLogger logger = new ClientLogger(AesCbcHmacSha2.class);
 
     abstract static class AbstractAesCbcHmacSha2CryptoTransform implements IAuthenticatedCryptoTransform {
         byte[] tag;
@@ -117,7 +117,7 @@ abstract class AesCbcHmacSha2 extends SymmetricEncryptionAlgorithm {
     }
 
     static class AesCbcHmacSha2Decryptor extends AbstractAesCbcHmacSha2CryptoTransform {
-        final ClientLogger logger = new ClientLogger(AesCbcHmacSha2Decryptor.class);
+        private static final ClientLogger LOGGER = new ClientLogger(AesCbcHmacSha2Decryptor.class);
 
         AesCbcHmacSha2Decryptor(String name, byte[] key, byte[] iv, byte[] authenticationData, byte[] authenticationTag,
                                 Provider provider)
@@ -145,7 +145,7 @@ abstract class AesCbcHmacSha2 extends SymmetricEncryptionAlgorithm {
 
             // Check the tag before performing the final decrypt
             if (!ByteExtensions.sequenceEqualConstantTime(tag, tag)) {
-                throw logger.logExceptionAsWarning(new IllegalArgumentException("Data is not authentic"));
+                throw LOGGER.logExceptionAsWarning(new IllegalArgumentException("Data is not authentic"));
             }
 
             return inner.doFinal(input);
@@ -202,19 +202,19 @@ abstract class AesCbcHmacSha2 extends SymmetricEncryptionAlgorithm {
         throws InvalidKeyException, NoSuchAlgorithmException, NoSuchPaddingException,
         InvalidAlgorithmParameterException {
         if (key == null) {
-            throw logger.logExceptionAsWarning(new IllegalArgumentException("No key material"));
+            throw LOGGER.logExceptionAsWarning(new IllegalArgumentException("No key material"));
         }
 
         if (iv == null) {
-            throw logger.logExceptionAsWarning(new IllegalArgumentException("No initialization vector"));
+            throw LOGGER.logExceptionAsWarning(new IllegalArgumentException("No initialization vector"));
         }
 
         if (additionalAuthenticatedData == null) {
-            throw logger.logExceptionAsWarning(new IllegalArgumentException("No authentication data"));
+            throw LOGGER.logExceptionAsWarning(new IllegalArgumentException("No authentication data"));
         }
 
         if (authenticationTag == null) {
-            throw logger.logExceptionAsWarning(new IllegalArgumentException("No authentication tag"));
+            throw LOGGER.logExceptionAsWarning(new IllegalArgumentException("No authentication tag"));
         }
 
         // Create the Decryptor
@@ -237,15 +237,15 @@ abstract class AesCbcHmacSha2 extends SymmetricEncryptionAlgorithm {
         InvalidAlgorithmParameterException {
 
         if (key == null) {
-            throw logger.logExceptionAsError(new IllegalArgumentException("No key material"));
+            throw LOGGER.logExceptionAsError(new IllegalArgumentException("No key material"));
         }
 
         if (iv == null) {
-            throw logger.logExceptionAsError(new IllegalArgumentException("No initialization vector"));
+            throw LOGGER.logExceptionAsError(new IllegalArgumentException("No initialization vector"));
         }
 
         if (additionalAuthenticatedData == null) {
-            throw logger.logExceptionAsError(new IllegalArgumentException("No authentication data"));
+            throw LOGGER.logExceptionAsError(new IllegalArgumentException("No authentication data"));
         }
 
         // Create the Encryptor

@@ -32,6 +32,10 @@ public final class RoutingMessage {
     @JsonInclude(value = JsonInclude.Include.NON_NULL, content = JsonInclude.Include.ALWAYS)
     private Map<String, String> systemProperties;
 
+    /** Creates an instance of RoutingMessage class. */
+    public RoutingMessage() {
+    }
+
     /**
      * Get the body property: Body of routing message.
      *

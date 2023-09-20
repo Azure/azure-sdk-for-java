@@ -35,6 +35,14 @@ public final class GenerateDetailedCostReportOperationStatusesImpl
         return this.innerModel().status();
     }
 
+    public String startTime() {
+        return this.innerModel().startTime();
+    }
+
+    public String endTime() {
+        return this.innerModel().endTime();
+    }
+
     public String type() {
         return this.innerModel().type();
     }

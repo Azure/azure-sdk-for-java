@@ -30,7 +30,7 @@ public final class PricingsListWithResponseMockTests {
         ArgumentCaptor<HttpRequest> httpRequest = ArgumentCaptor.forClass(HttpRequest.class);
 
         String responseStr =
-            "{\"value\":[{\"id\":\"llbvgwzsfftedous\",\"name\":\"ktjtgra\",\"type\":\"aqo\"},{\"id\":\"kbeba\",\"name\":\"zlqbtxxwpfhn\",\"type\":\"zudrtpzk\"},{\"id\":\"eboywhczzqrhm\",\"name\":\"gqbedygi\",\"type\":\"rzwnyk\"},{\"id\":\"djchlr\",\"name\":\"pwctofl\",\"type\":\"seac\"}]}";
+            "{\"value\":[{\"id\":\"bafo\",\"name\":\"to\",\"type\":\"zhaquvwsxb\"},{\"id\":\"vkervqchoadhrsxq\",\"name\":\"z\",\"type\":\"spabdsrgfa\"}]}";
 
         Mockito.when(httpResponse.getStatusCode()).thenReturn(200);
         Mockito.when(httpResponse.getHeaders()).thenReturn(new HttpHeaders());

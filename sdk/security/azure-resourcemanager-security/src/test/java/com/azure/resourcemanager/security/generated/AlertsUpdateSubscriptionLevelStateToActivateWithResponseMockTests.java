@@ -58,7 +58,6 @@ public final class AlertsUpdateSubscriptionLevelStateToActivateWithResponseMockT
 
         manager
             .alerts()
-            .updateSubscriptionLevelStateToActivateWithResponse(
-                "qtrotpvclp", "fyrlmwkptskwxj", com.azure.core.util.Context.NONE);
+            .updateSubscriptionLevelStateToActivateWithResponse("cn", "rfijhggabq", com.azure.core.util.Context.NONE);
     }
 }

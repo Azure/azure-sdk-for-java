@@ -26,14 +26,13 @@ public final class ApplianceProperties {
     private AppliancePropertiesInfrastructureConfig infrastructureConfig;
 
     /*
-     * The current deployment or provisioning state, which only appears in the
-     * response.
+     * The current deployment or provisioning state, which only appears in the response.
      */
     @JsonProperty(value = "provisioningState", access = JsonProperty.Access.WRITE_ONLY)
     private String provisioningState;
 
     /*
-     * Certificates pair used to download MSI certificate from HIS
+     * Certificates pair used to download MSI certificate from HIS. Can only be set once.
      */
     @JsonProperty(value = "publicKey")
     private String publicKey;
@@ -49,6 +48,10 @@ public final class ApplianceProperties {
      */
     @JsonProperty(value = "version")
     private String version;
+
+    /** Creates an instance of ApplianceProperties class. */
+    public ApplianceProperties() {
+    }
 
     /**
      * Get the distro property: Represents a supported Fabric/Infra. (AKSEdge etc...).
@@ -101,7 +104,7 @@ public final class ApplianceProperties {
     }
 
     /**
-     * Get the publicKey property: Certificates pair used to download MSI certificate from HIS.
+     * Get the publicKey property: Certificates pair used to download MSI certificate from HIS. Can only be set once.
      *
      * @return the publicKey value.
      */
@@ -110,7 +113,7 @@ public final class ApplianceProperties {
     }
 
     /**
-     * Set the publicKey property: Certificates pair used to download MSI certificate from HIS.
+     * Set the publicKey property: Certificates pair used to download MSI certificate from HIS. Can only be set once.
      *
      * @param publicKey the publicKey value to set.
      * @return the ApplianceProperties object itself.

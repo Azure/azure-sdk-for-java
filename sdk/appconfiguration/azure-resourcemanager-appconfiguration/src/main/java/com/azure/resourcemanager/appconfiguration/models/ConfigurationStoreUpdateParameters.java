@@ -38,6 +38,10 @@ public final class ConfigurationStoreUpdateParameters {
     @JsonInclude(value = JsonInclude.Include.NON_NULL, content = JsonInclude.Include.ALWAYS)
     private Map<String, String> tags;
 
+    /** Creates an instance of ConfigurationStoreUpdateParameters class. */
+    public ConfigurationStoreUpdateParameters() {
+    }
+
     /**
      * Get the innerProperties property: The properties for updating a configuration store.
      *

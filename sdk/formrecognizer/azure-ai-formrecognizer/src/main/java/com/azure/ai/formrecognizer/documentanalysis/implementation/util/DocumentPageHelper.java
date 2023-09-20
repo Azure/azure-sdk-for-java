@@ -3,6 +3,8 @@
 
 package com.azure.ai.formrecognizer.documentanalysis.implementation.util;
 
+import com.azure.ai.formrecognizer.documentanalysis.models.DocumentBarcode;
+import com.azure.ai.formrecognizer.documentanalysis.models.DocumentFormula;
 import com.azure.ai.formrecognizer.documentanalysis.models.DocumentLine;
 import com.azure.ai.formrecognizer.documentanalysis.models.DocumentPage;
 import com.azure.ai.formrecognizer.documentanalysis.models.DocumentPageLengthUnit;
@@ -34,6 +36,8 @@ public final class DocumentPageHelper {
         void setWords(DocumentPage documentPage, List<DocumentWord> words);
         void setSelectionMarks(DocumentPage documentPage, List<DocumentSelectionMark> selectionMarks);
         void setLines(DocumentPage documentPage, List<DocumentLine> lines);
+        void setBarcodes(DocumentPage documentPage, List<DocumentBarcode> barcodes);
+        void setFormulas(DocumentPage documentPage, List<DocumentFormula> formulas);
     }
 
     /**
@@ -60,24 +64,25 @@ public final class DocumentPageHelper {
     static void setHeight(DocumentPage documentPage, Float height) {
         accessor.setHeight(documentPage, height);
     }
-
     static void setUnit(DocumentPage documentPage, DocumentPageLengthUnit unit) {
         accessor.setUnit(documentPage, unit);
     }
-
     static void setSpans(DocumentPage documentPage, List<DocumentSpan> spans) {
         accessor.setSpans(documentPage, spans);
     }
-
     static void setWords(DocumentPage documentPage, List<DocumentWord> words) {
         accessor.setWords(documentPage, words);
     }
-
     static void setSelectionMarks(DocumentPage documentPage, List<DocumentSelectionMark> selectionMarks) {
         accessor.setSelectionMarks(documentPage, selectionMarks);
     }
-
     static void setLines(DocumentPage documentPage, List<DocumentLine> lines) {
         accessor.setLines(documentPage, lines);
+    }
+    static void setBarcodes(DocumentPage documentPage, List<DocumentBarcode> barcodes) {
+        accessor.setBarcodes(documentPage, barcodes);
+    }
+    static void setFormulas(DocumentPage documentPage, List<DocumentFormula> formulas) {
+        accessor.setFormulas(documentPage, formulas);
     }
 }

@@ -11,7 +11,7 @@ public final class VendorReferenceTests {
     @org.junit.jupiter.api.Test
     public void testDeserialize() throws Exception {
         VendorReference model =
-            BinaryData.fromString("{\"title\":\"kiofkbt\",\"link\":\"hklbnldpvcbh\"}").toObject(VendorReference.class);
+            BinaryData.fromString("{\"title\":\"vgjcodkkg\",\"link\":\"iytssikizbc\"}").toObject(VendorReference.class);
     }
 
     @org.junit.jupiter.api.Test

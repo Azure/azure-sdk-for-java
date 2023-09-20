@@ -17,15 +17,15 @@ public final class AccessInformationCreateParameterProperties {
     private String principalId;
 
     /*
-     * Primary access key. This property will not be filled on 'GET'
-     * operations! Use '/listSecrets' POST request to get the value.
+     * Primary access key. This property will not be filled on 'GET' operations! Use '/listSecrets' POST request to get
+     * the value.
      */
     @JsonProperty(value = "primaryKey")
     private String primaryKey;
 
     /*
-     * Secondary access key. This property will not be filled on 'GET'
-     * operations! Use '/listSecrets' POST request to get the value.
+     * Secondary access key. This property will not be filled on 'GET' operations! Use '/listSecrets' POST request to
+     * get the value.
      */
     @JsonProperty(value = "secondaryKey")
     private String secondaryKey;
@@ -35,6 +35,10 @@ public final class AccessInformationCreateParameterProperties {
      */
     @JsonProperty(value = "enabled")
     private Boolean enabled;
+
+    /** Creates an instance of AccessInformationCreateParameterProperties class. */
+    public AccessInformationCreateParameterProperties() {
+    }
 
     /**
      * Get the principalId property: Principal (User) Identifier.

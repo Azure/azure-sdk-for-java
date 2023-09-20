@@ -22,6 +22,10 @@ public final class DomainSharedAccessKeysInner {
     @JsonProperty(value = "key2")
     private String key2;
 
+    /** Creates an instance of DomainSharedAccessKeysInner class. */
+    public DomainSharedAccessKeysInner() {
+    }
+
     /**
      * Get the key1 property: Shared access key1 for the domain.
      *

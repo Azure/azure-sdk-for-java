@@ -59,6 +59,6 @@ public final class AlertsUpdateResourceGroupLevelStateToResolveWithResponseMockT
         manager
             .alerts()
             .updateResourceGroupLevelStateToResolveWithResponse(
-                "ktfowzkroyrdur", "flzqjimejtgzjxx", "fejlzuqloiw", com.azure.core.util.Context.NONE);
+                "d", "ffhsdpzouhk", "qrxqwqnjx", com.azure.core.util.Context.NONE);
     }
 }

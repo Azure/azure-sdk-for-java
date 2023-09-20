@@ -13,7 +13,7 @@ import java.util.UUID;
 
 /** Managed service identity (system assigned and/or user assigned identities). */
 @Fluent
-public class ManagedServiceIdentity {
+public final class ManagedServiceIdentity {
     /*
      * The service principal ID of the system assigned identity. This property will only be provided for a system
      * assigned identity.

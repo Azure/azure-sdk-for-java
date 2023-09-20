@@ -10,9 +10,39 @@ import com.azure.core.http.rest.Response;
 import com.azure.core.util.Context;
 import com.azure.resourcemanager.postgresqlflexibleserver.fluent.models.VirtualNetworkSubnetUsageResultInner;
 import com.azure.resourcemanager.postgresqlflexibleserver.models.VirtualNetworkSubnetUsageParameter;
+import reactor.core.publisher.Mono;
 
 /** An instance of this class provides access to all the operations defined in VirtualNetworkSubnetUsagesClient. */
 public interface VirtualNetworkSubnetUsagesClient {
+    /**
+     * Get virtual network subnet usage for a given vNet resource id.
+     *
+     * @param locationName The name of the location.
+     * @param parameters The required parameters for creating or updating a server.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return virtual network subnet usage for a given vNet resource id along with {@link Response} on successful
+     *     completion of {@link Mono}.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    Mono<Response<VirtualNetworkSubnetUsageResultInner>> executeWithResponseAsync(
+        String locationName, VirtualNetworkSubnetUsageParameter parameters);
+
+    /**
+     * Get virtual network subnet usage for a given vNet resource id.
+     *
+     * @param locationName The name of the location.
+     * @param parameters The required parameters for creating or updating a server.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return virtual network subnet usage for a given vNet resource id on successful completion of {@link Mono}.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    Mono<VirtualNetworkSubnetUsageResultInner> executeAsync(
+        String locationName, VirtualNetworkSubnetUsageParameter parameters);
+
     /**
      * Get virtual network subnet usage for a given vNet resource id.
      *

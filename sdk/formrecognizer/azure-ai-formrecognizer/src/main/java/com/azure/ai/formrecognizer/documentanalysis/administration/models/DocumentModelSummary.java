@@ -10,10 +10,17 @@ import java.time.OffsetDateTime;
 import java.util.Map;
 
 /**
- * Model summary for the built and prebuilt models.
+ * Summary information for the built and prebuilt models.
  */
 @Immutable
 public final class DocumentModelSummary {
+
+    /**
+     * Creates a DocumentModelSummary object.
+     */
+    public DocumentModelSummary() {
+    }
+
     /*
      * Unique model identifier.
      */
@@ -33,6 +40,9 @@ public final class DocumentModelSummary {
      * List of key-value tag attributes associated with the model.
      */
     private Map<String, String> tags;
+    private OffsetDateTime expiresOn;
+
+    private String serviceVersion;
 
     /**
      * Get the unique model identifier.
@@ -47,7 +57,6 @@ public final class DocumentModelSummary {
      * Set the modelId property: Unique model identifier.
      *
      * @param modelId the modelId value to set.
-     * @return the ModelSummary object itself.
      */
     void setModelId(String modelId) {
         this.modelId = modelId;
@@ -66,7 +75,6 @@ public final class DocumentModelSummary {
      * Set the description property: Model description.
      *
      * @param description the description value to set.
-     * @return the ModelSummary object itself.
      */
     void setDescription(String description) {
         this.description = description;
@@ -85,7 +93,6 @@ public final class DocumentModelSummary {
      * Set the createdDateTime property: Date and time (UTC) when the model was created.
      *
      * @param createdOn the createdDateTime value to set.
-     * @return the ModelSummary object itself.
      */
     void setCreatedOn(OffsetDateTime createdOn) {
         this.createdOn = createdOn;
@@ -102,6 +109,37 @@ public final class DocumentModelSummary {
 
     void setTags(Map<String, String> tags) {
         this.tags = tags;
+    }
+
+    /**
+     * Get the Date and time (UTC) when the document model will expire.
+     *
+     * @return the expiresOn value.
+     */
+    public OffsetDateTime getExpiresOn() {
+        return expiresOn;
+    }
+
+    /**
+     * Get the Service version used to create this document classifier.
+     *
+     * @return the serviceVersion value.
+     */
+    public String getServiceVersion() {
+        return this.serviceVersion;
+    }
+
+    /**
+     * Set the API version used to create this document classifier.
+     *
+     * @param serviceVersion the service version value to set.
+     */
+    void setServiceVersion(String serviceVersion) {
+        this.serviceVersion = serviceVersion;
+    }
+
+    private void setExpiresOn(OffsetDateTime expiresOn) {
+        this.expiresOn = expiresOn;
     }
 
     static {
@@ -124,6 +162,16 @@ public final class DocumentModelSummary {
             @Override
             public void setTags(DocumentModelSummary documentModelSummary, Map<String, String> tags) {
                 documentModelSummary.setTags(tags);
+            }
+
+            @Override
+            public void setExpiresOn(DocumentModelSummary documentModelSummary, OffsetDateTime expiresOn) {
+                documentModelSummary.setExpiresOn(expiresOn);
+            }
+
+            @Override
+            public void setServiceVersion(DocumentModelSummary documentModelSummary, String serviceVersion) {
+                documentModelSummary.setServiceVersion(serviceVersion);
             }
         });
     }

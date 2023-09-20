@@ -17,6 +17,10 @@ public final class CertificateListDescriptionInner {
     @JsonProperty(value = "value")
     private List<CertificateDescriptionInner> value;
 
+    /** Creates an instance of CertificateListDescriptionInner class. */
+    public CertificateListDescriptionInner() {
+    }
+
     /**
      * Get the value property: The array of Certificate objects.
      *

@@ -9,14 +9,14 @@ import com.azure.core.annotation.Fluent;
  * The options for creating a call.
  */
 @Fluent
-public class AnswerCallOptions {
+public final class AnswerCallOptions {
     /**
      * The incoming call context.
      */
     private final String incomingCallContext;
 
     /**
-     * The call back URI.
+     * The call back URl.
      */
     private final String callbackUrl;
 
@@ -28,13 +28,18 @@ public class AnswerCallOptions {
     /*
      * The endpoint URL of the Azure Cognitive Services resource attached
      */
-    private String azureCognitiveServicesEndpointUrl;
+    private String azureCognitiveServicesUrl;
+    
+    /**
+     * The operational context
+     */
+    private String operationContext;
 
     /**
      * Constructor
      *
      * @param incomingCallContext The incoming call context.
-     * @param callbackUrl The call back URI.
+     * @param callbackUrl The call back URl.
      */
     public AnswerCallOptions(String incomingCallContext, String callbackUrl) {
         this.incomingCallContext = incomingCallContext;
@@ -51,9 +56,9 @@ public class AnswerCallOptions {
     }
 
     /**
-     * Get the call back uri.
+     * Get the call back url.
      *
-     * @return the call back uri.
+     * @return the call back url.
      */
     public String getCallbackUrl() {
         return callbackUrl;
@@ -65,8 +70,8 @@ public class AnswerCallOptions {
      *
      * @return the azureCognitiveServicesEndpointUrl value.
      */
-    public String getAzureCognitiveServicesEndpointUrl() {
-        return this.azureCognitiveServicesEndpointUrl;
+    public String getAzureCognitiveServicesUrl() {
+        return this.azureCognitiveServicesUrl;
     }
 
     /**
@@ -76,6 +81,15 @@ public class AnswerCallOptions {
      */
     public MediaStreamingOptions getMediaStreamingConfiguration() {
         return mediaStreamingOptions;
+    }
+    
+    /**
+     * Get the operationContext.
+     *
+     * @return the operationContext
+     */
+    public String getOperationContext() {
+        return operationContext;
     }
 
     /**
@@ -93,11 +107,22 @@ public class AnswerCallOptions {
      * Set the azureCognitiveServicesEndpointUrl property: The endpoint URL of the Azure Cognitive Services resource
      * attached.
      *
-     * @param azureCognitiveServicesEndpointUrl the azureCognitiveServicesEndpointUrl value to set.
-     * @return the AnswerCallRequestInternal object itself.
+     * @param azureCognitiveServicesUrl the azureCognitiveServicesEndpointUrl value to set.
+     * @return the AnswerCallOptions object itself.
      */
-    public AnswerCallOptions setAzureCognitiveServicesEndpointUrl(String azureCognitiveServicesEndpointUrl) {
-        this.azureCognitiveServicesEndpointUrl = azureCognitiveServicesEndpointUrl;
+    public AnswerCallOptions setAzureCognitiveServicesUrl(String azureCognitiveServicesUrl) {
+        this.azureCognitiveServicesUrl = azureCognitiveServicesUrl;
+        return this;
+    }
+    
+     /**
+     * Set the operationContext.
+     *
+     * @param operationContext the operationContext to set
+     * @return the AnswerCallOptions object itself.
+     */
+    public AnswerCallOptions setOperationContext(String operationContext) {
+        this.operationContext = operationContext;
         return this;
     }
 }

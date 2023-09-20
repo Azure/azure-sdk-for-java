@@ -3,13 +3,9 @@
 
 package com.azure.ai.formrecognizer.documentanalysis.implementation.util;
 
-/**
- * The helper class to set the non-public properties of an {@link DocumentKeyValuePair} instance.
- */
-
+import com.azure.ai.formrecognizer.documentanalysis.models.AnalyzedDocument;
 import com.azure.ai.formrecognizer.documentanalysis.models.DocumentKeyValueElement;
 import com.azure.ai.formrecognizer.documentanalysis.models.DocumentKeyValuePair;
-import com.azure.ai.formrecognizer.documentanalysis.models.AnalyzedDocument;
 
 /**
  * The helper class to set the non-public properties of an {@link DocumentKeyValuePair} instance.
@@ -26,7 +22,7 @@ public final class DocumentKeyValuePairHelper {
      * @param documentKeyValueElementAccessor The accessor.
      */
     public static void setAccessor(
-        final DocumentKeyValuePairHelper.DocumentKeyValuePairAccessor documentKeyValueElementAccessor) {
+        final DocumentKeyValuePairAccessor documentKeyValueElementAccessor) {
         accessor = documentKeyValueElementAccessor;
     }
 

@@ -34,6 +34,10 @@ public final class SupportedVersionCatalogVersionData {
     @JsonProperty(value = "version", access = JsonProperty.Access.WRITE_ONLY)
     private String version;
 
+    /** Creates an instance of SupportedVersionCatalogVersionData class. */
+    public SupportedVersionCatalogVersionData() {
+    }
+
     /**
      * Get the audience property: The image audience name for the version available for upgrade.
      *

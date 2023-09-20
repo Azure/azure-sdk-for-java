@@ -7,7 +7,7 @@ package com.azure.resourcemanager.maps.generated;
 /** Samples for Creators Get. */
 public final class CreatorsGetSamples {
     /*
-     * x-ms-original-file: specification/maps/resource-manager/Microsoft.Maps/stable/2021-02-01/examples/GetMapsCreator.json
+     * x-ms-original-file: specification/maps/resource-manager/Microsoft.Maps/stable/2023-06-01/examples/GetMapsCreator.json
      */
     /**
      * Sample code: Get Creator Resource.

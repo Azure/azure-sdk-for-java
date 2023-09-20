@@ -20,6 +20,15 @@ public final class NetworkRuleBypassOptions extends ExpandableStringEnum<Network
     public static final NetworkRuleBypassOptions NONE = fromString("None");
 
     /**
+     * Creates a new instance of NetworkRuleBypassOptions value.
+     *
+     * @deprecated Use the {@link #fromString(String)} factory method.
+     */
+    @Deprecated
+    public NetworkRuleBypassOptions() {
+    }
+
+    /**
      * Creates or finds a NetworkRuleBypassOptions from its string representation.
      *
      * @param name a name to look for.

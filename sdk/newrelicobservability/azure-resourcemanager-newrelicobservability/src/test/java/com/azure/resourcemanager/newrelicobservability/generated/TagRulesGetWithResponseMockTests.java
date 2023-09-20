@@ -35,7 +35,7 @@ public final class TagRulesGetWithResponseMockTests {
         ArgumentCaptor<HttpRequest> httpRequest = ArgumentCaptor.forClass(HttpRequest.class);
 
         String responseStr =
-            "{\"properties\":{\"provisioningState\":\"Creating\",\"logRules\":{\"sendAadLogs\":\"Disabled\",\"sendSubscriptionLogs\":\"Enabled\",\"sendActivityLogs\":\"Disabled\",\"filteringTags\":[]},\"metricRules\":{\"sendMetrics\":\"Disabled\",\"filteringTags\":[],\"userEmail\":\"utwu\"}},\"id\":\"grpkhjwniyqs\",\"name\":\"uicpd\",\"type\":\"gk\"}";
+            "{\"properties\":{\"provisioningState\":\"Deleting\",\"logRules\":{\"sendAadLogs\":\"Enabled\",\"sendSubscriptionLogs\":\"Enabled\",\"sendActivityLogs\":\"Enabled\",\"filteringTags\":[]},\"metricRules\":{\"sendMetrics\":\"Disabled\",\"filteringTags\":[],\"userEmail\":\"bpokulpiujwaasip\"}},\"id\":\"iobyu\",\"name\":\"erpqlpqwcciuqg\",\"type\":\"dbutauvfbtkuwhh\"}";
 
         Mockito.when(httpResponse.getStatusCode()).thenReturn(200);
         Mockito.when(httpResponse.getHeaders()).thenReturn(new HttpHeaders());
@@ -66,13 +66,13 @@ public final class TagRulesGetWithResponseMockTests {
         TagRule response =
             manager
                 .tagRules()
-                .getWithResponse("dcvd", "hvoodsotbobzd", "pcjwv", com.azure.core.util.Context.NONE)
+                .getWithResponse("yvoqa", "piexpbtgiw", "wo", com.azure.core.util.Context.NONE)
                 .getValue();
 
-        Assertions.assertEquals(SendAadLogsStatus.DISABLED, response.logRules().sendAadLogs());
+        Assertions.assertEquals(SendAadLogsStatus.ENABLED, response.logRules().sendAadLogs());
         Assertions.assertEquals(SendSubscriptionLogsStatus.ENABLED, response.logRules().sendSubscriptionLogs());
-        Assertions.assertEquals(SendActivityLogsStatus.DISABLED, response.logRules().sendActivityLogs());
+        Assertions.assertEquals(SendActivityLogsStatus.ENABLED, response.logRules().sendActivityLogs());
         Assertions.assertEquals(SendMetricsStatus.DISABLED, response.metricRules().sendMetrics());
-        Assertions.assertEquals("utwu", response.metricRules().userEmail());
+        Assertions.assertEquals("bpokulpiujwaasip", response.metricRules().userEmail());
     }
 }

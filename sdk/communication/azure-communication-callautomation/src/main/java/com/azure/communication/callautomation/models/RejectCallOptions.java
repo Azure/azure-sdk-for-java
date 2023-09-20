@@ -9,7 +9,7 @@ import com.azure.core.annotation.Fluent;
  * The options for creating a call.
  */
 @Fluent
-public class RejectCallOptions {
+public final class RejectCallOptions {
     /**
      * The incoming call context.
      */

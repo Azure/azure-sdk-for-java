@@ -13,8 +13,8 @@ import java.util.Collection;
  * for virtual machines whose operating system disk and VM sku supports Generation 2
  * (https://docs.microsoft.com/en-us/azure/virtual-machines/generation-2), please check the HyperVGenerations capability
  * returned as part of VM sku capabilities in the response of Microsoft.Compute SKUs api for the region contains V2
- * (https://docs.microsoft.com/rest/api/compute/resourceskus/list) . &lt;br&gt; For more information about Disk
- * Controller Types supported please refer to https://aka.ms/azure-diskcontrollertypes.
+ * (https://docs.microsoft.com/rest/api/compute/resourceskus/list). For more information about Disk Controller Types
+ * supported please refer to https://aka.ms/azure-diskcontrollertypes.
  */
 public final class DiskControllerTypes extends ExpandableStringEnum<DiskControllerTypes> {
     /** Static value SCSI for DiskControllerTypes. */

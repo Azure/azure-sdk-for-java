@@ -178,13 +178,13 @@ class ServiceBusSenderClientIntegrationTest extends IntegrationTestBase {
 
                 Assertions.assertNotNull(queueName, "'queueName' cannot be null.");
 
-                sender = getBuilder().sender()
+                sender = toClose(getBuilder().sender()
                     .queueName(queueName)
-                    .buildClient();
-                receiver = getBuilder().receiver()
+                    .buildClient());
+                receiver = toClose(getBuilder().receiver()
                     .queueName(queueName)
                     .receiveMode(ServiceBusReceiveMode.RECEIVE_AND_DELETE)
-                    .buildAsyncClient();
+                    .buildAsyncClient());
                 break;
             case SUBSCRIPTION:
                 final String topicName = getTopicName(entityIndex);
@@ -193,14 +193,14 @@ class ServiceBusSenderClientIntegrationTest extends IntegrationTestBase {
                 Assertions.assertNotNull(topicName, "'topicName' cannot be null.");
                 Assertions.assertNotNull(subscriptionName, "'subscriptionName' cannot be null.");
 
-                sender = getBuilder().sender()
+                sender = toClose(getBuilder().sender()
                     .topicName(topicName)
-                    .buildClient();
-                receiver = getBuilder().receiver()
+                    .buildClient());
+                receiver = toClose(getBuilder().receiver()
                     .topicName(topicName)
                     .subscriptionName(subscriptionName)
                     .receiveMode(ServiceBusReceiveMode.RECEIVE_AND_DELETE)
-                    .buildAsyncClient();
+                    .buildAsyncClient());
                 break;
             default:
                 throw logger.logExceptionAsError(new IllegalArgumentException("Unknown entity type: " + entityType));

@@ -55,11 +55,10 @@ public final class PrivateLinkResourcesOperationsClientImpl implements PrivateLi
      */
     @Host("{$host}")
     @ServiceInterface(name = "IotHubClientPrivateL")
-    private interface PrivateLinkResourcesOperationsService {
+    public interface PrivateLinkResourcesOperationsService {
         @Headers({"Content-Type: application/json"})
         @Get(
-            "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Devices/iotHubs"
-                + "/{resourceName}/privateLinkResources")
+            "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Devices/iotHubs/{resourceName}/privateLinkResources")
         @ExpectedResponses({200})
         @UnexpectedResponseExceptionType(ErrorDetailsException.class)
         Mono<Response<PrivateLinkResourcesInner>> list(
@@ -73,8 +72,7 @@ public final class PrivateLinkResourcesOperationsClientImpl implements PrivateLi
 
         @Headers({"Content-Type: application/json"})
         @Get(
-            "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Devices/iotHubs"
-                + "/{resourceName}/privateLinkResources/{groupId}")
+            "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Devices/iotHubs/{resourceName}/privateLinkResources/{groupId}")
         @ExpectedResponses({200})
         @UnexpectedResponseExceptionType(ErrorDetailsException.class)
         Mono<Response<GroupIdInformationInner>> get(
@@ -212,23 +210,6 @@ public final class PrivateLinkResourcesOperationsClientImpl implements PrivateLi
      *
      * @param resourceGroupName The name of the resource group that contains the IoT hub.
      * @param resourceName The name of the IoT hub.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ErrorDetailsException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the available private link resources for an IotHub.
-     */
-    @ServiceMethod(returns = ReturnType.SINGLE)
-    public PrivateLinkResourcesInner list(String resourceGroupName, String resourceName) {
-        return listAsync(resourceGroupName, resourceName).block();
-    }
-
-    /**
-     * List private link resources
-     *
-     * <p>List private link resources for the given IotHub.
-     *
-     * @param resourceGroupName The name of the resource group that contains the IoT hub.
-     * @param resourceName The name of the IoT hub.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ErrorDetailsException thrown if the request is rejected by server.
@@ -239,6 +220,23 @@ public final class PrivateLinkResourcesOperationsClientImpl implements PrivateLi
     public Response<PrivateLinkResourcesInner> listWithResponse(
         String resourceGroupName, String resourceName, Context context) {
         return listWithResponseAsync(resourceGroupName, resourceName, context).block();
+    }
+
+    /**
+     * List private link resources
+     *
+     * <p>List private link resources for the given IotHub.
+     *
+     * @param resourceGroupName The name of the resource group that contains the IoT hub.
+     * @param resourceName The name of the IoT hub.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws ErrorDetailsException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return the available private link resources for an IotHub.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    public PrivateLinkResourcesInner list(String resourceGroupName, String resourceName) {
+        return listWithResponse(resourceGroupName, resourceName, Context.NONE).getValue();
     }
 
     /**
@@ -378,24 +376,6 @@ public final class PrivateLinkResourcesOperationsClientImpl implements PrivateLi
      * @param resourceGroupName The name of the resource group that contains the IoT hub.
      * @param resourceName The name of the IoT hub.
      * @param groupId The name of the private link resource.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ErrorDetailsException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the specified private link resource for the given IotHub.
-     */
-    @ServiceMethod(returns = ReturnType.SINGLE)
-    public GroupIdInformationInner get(String resourceGroupName, String resourceName, String groupId) {
-        return getAsync(resourceGroupName, resourceName, groupId).block();
-    }
-
-    /**
-     * Get the specified private link resource
-     *
-     * <p>Get the specified private link resource for the given IotHub.
-     *
-     * @param resourceGroupName The name of the resource group that contains the IoT hub.
-     * @param resourceName The name of the IoT hub.
-     * @param groupId The name of the private link resource.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ErrorDetailsException thrown if the request is rejected by server.
@@ -406,5 +386,23 @@ public final class PrivateLinkResourcesOperationsClientImpl implements PrivateLi
     public Response<GroupIdInformationInner> getWithResponse(
         String resourceGroupName, String resourceName, String groupId, Context context) {
         return getWithResponseAsync(resourceGroupName, resourceName, groupId, context).block();
+    }
+
+    /**
+     * Get the specified private link resource
+     *
+     * <p>Get the specified private link resource for the given IotHub.
+     *
+     * @param resourceGroupName The name of the resource group that contains the IoT hub.
+     * @param resourceName The name of the IoT hub.
+     * @param groupId The name of the private link resource.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws ErrorDetailsException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return the specified private link resource for the given IotHub.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    public GroupIdInformationInner get(String resourceGroupName, String resourceName, String groupId) {
+        return getWithResponse(resourceGroupName, resourceName, groupId, Context.NONE).getValue();
     }
 }

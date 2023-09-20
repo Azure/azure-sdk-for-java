@@ -9,7 +9,6 @@ import com.azure.cosmos.implementation.Configs;
 import com.azure.cosmos.implementation.Constants;
 import com.azure.cosmos.implementation.CosmosError;
 import com.azure.cosmos.implementation.DatabaseAccount;
-import com.azure.cosmos.implementation.DiagnosticsClientContext;
 import com.azure.cosmos.implementation.Document;
 import com.azure.cosmos.implementation.FeedResponseDiagnostics;
 import com.azure.cosmos.implementation.GlobalEndpointManager;
@@ -33,7 +32,6 @@ import com.azure.cosmos.implementation.directconnectivity.StoreResponse;
 import com.azure.cosmos.implementation.directconnectivity.StoreResponseDiagnostics;
 import com.azure.cosmos.implementation.directconnectivity.StoreResult;
 import com.azure.cosmos.implementation.directconnectivity.StoreResultDiagnostics;
-import com.azure.cosmos.implementation.directconnectivity.Uri;
 import com.azure.cosmos.implementation.directconnectivity.rntbd.RntbdChannelAcquisitionTimeline;
 import com.azure.cosmos.implementation.directconnectivity.rntbd.RntbdEndpointStatistics;
 import com.azure.cosmos.implementation.query.QueryInfo;
@@ -51,7 +49,6 @@ import com.fasterxml.jackson.databind.node.ObjectNode;
 import io.micrometer.core.instrument.MeterRegistry;
 
 import java.net.URI;
-import java.nio.ByteBuffer;
 import java.time.Duration;
 import java.time.Instant;
 import java.util.Collection;
@@ -74,11 +71,6 @@ public final class BridgeInternal {
     private BridgeInternal() {}
 
     @Warning(value = INTERNAL_USE_ONLY_WARNING)
-    public static CosmosDiagnostics createCosmosDiagnostics(DiagnosticsClientContext diagnosticsClientContext) {
-        return new CosmosDiagnostics(diagnosticsClientContext);
-    }
-
-    @Warning(value = INTERNAL_USE_ONLY_WARNING)
     public static Set<String> getRegionsContacted(CosmosDiagnostics cosmosDiagnostics) {
         if (cosmosDiagnostics.clientSideRequestStatistics() == null) {
             return Collections.emptySet();
@@ -99,11 +91,6 @@ public final class BridgeInternal {
     @Warning(value = INTERNAL_USE_ONLY_WARNING)
     public static Document documentFromObject(Object document, ObjectMapper mapper) {
         return Document.fromObject(document, mapper);
-    }
-
-    @Warning(value = INTERNAL_USE_ONLY_WARNING)
-    public static ByteBuffer serializeJsonToByteBuffer(Object document, ObjectMapper mapper) {
-        return InternalObjectNode.serializeJsonToByteBuffer(document, mapper);
     }
 
     @Warning(value = INTERNAL_USE_ONLY_WARNING)
@@ -358,11 +345,6 @@ public final class BridgeInternal {
     }
 
     @Warning(value = INTERNAL_USE_ONLY_WARNING)
-    public static <E extends CosmosException> Uri getRequestUri(CosmosException cosmosException) {
-        return cosmosException.requestUri;
-    }
-
-    @Warning(value = INTERNAL_USE_ONLY_WARNING)
     public static <E extends CosmosException> void setRequestHeaders(CosmosException cosmosException,
                                                                      Map<String, String> requestHeaders) {
         cosmosException.requestHeaders = requestHeaders;
@@ -609,13 +591,6 @@ public final class BridgeInternal {
     }
 
     @Warning(value = INTERNAL_USE_ONLY_WARNING)
-    public static void recordAddressResolutionEnd(CosmosDiagnostics cosmosDiagnostics,
-                                                  String identifier,
-                                                  String errorMessage) {
-        cosmosDiagnostics.clientSideRequestStatistics().recordAddressResolutionEnd(identifier, errorMessage);
-    }
-
-    @Warning(value = INTERNAL_USE_ONLY_WARNING)
     public static List<URI> getContactedReplicas(CosmosDiagnostics cosmosDiagnostics) {
         return cosmosDiagnostics.clientSideRequestStatistics().getContactedReplicas();
     }
@@ -657,8 +632,9 @@ public final class BridgeInternal {
     }
 
     @Warning(value = INTERNAL_USE_ONLY_WARNING)
-    public static CosmosException createServiceUnavailableException(Exception innerException) {
-        return new ServiceUnavailableException(innerException.getMessage(), innerException, null, null);
+    public static CosmosException createServiceUnavailableException(Exception innerException, int subStatusCode) {
+        return new ServiceUnavailableException(innerException.getMessage(), innerException, null, null,
+            subStatusCode);
     }
 
     @Warning(value = INTERNAL_USE_ONLY_WARNING)
@@ -698,5 +674,7 @@ public final class BridgeInternal {
         DirectConnectionConfig.initialize();
         CosmosAsyncClient.initialize();
         CosmosDiagnosticsThresholds.initialize();
+        CosmosContainerProactiveInitConfig.initialize();
+        SessionRetryOptions.initialize();
     }
 }

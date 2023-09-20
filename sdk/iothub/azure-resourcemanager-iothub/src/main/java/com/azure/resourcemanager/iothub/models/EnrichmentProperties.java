@@ -30,6 +30,10 @@ public final class EnrichmentProperties {
     @JsonProperty(value = "endpointNames", required = true)
     private List<String> endpointNames;
 
+    /** Creates an instance of EnrichmentProperties class. */
+    public EnrichmentProperties() {
+    }
+
     /**
      * Get the key property: The key or name for the enrichment property.
      *

@@ -25,6 +25,15 @@ public abstract class PlaySource {
     }
 
     /**
+     * Get the playSourceCacheId property: Defines the identifier to be used for caching related media.
+     *
+     * @return the playSourceCacheId value.
+     */
+    public String getPlaySourceCacheId() {
+        return this.playSourceId;
+    }
+
+    /**
      * Set the playSourceId property: Defines the identifier to be used for caching related media.
      *
      * @param playSourceId the playSourceId value to set.
@@ -33,5 +42,15 @@ public abstract class PlaySource {
     public PlaySource setPlaySourceId(String playSourceId) {
         this.playSourceId = playSourceId;
         return this;
+    }
+
+    /**
+     * Set the playSourceCacheId property: Defines the identifier to be used for caching related media.
+     *
+     * @param playSourceCacheId the playSourceCacheId value to set.
+     * @return the PlaySourceInternal object itself.
+     */
+    public PlaySource setPlaySourceCacheId(String playSourceCacheId) {
+        return setPlaySourceId(playSourceCacheId);
     }
 }

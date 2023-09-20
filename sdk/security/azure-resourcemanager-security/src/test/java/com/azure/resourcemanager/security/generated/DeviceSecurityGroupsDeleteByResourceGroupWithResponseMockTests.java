@@ -58,6 +58,6 @@ public final class DeviceSecurityGroupsDeleteByResourceGroupWithResponseMockTest
 
         manager
             .deviceSecurityGroups()
-            .deleteByResourceGroupWithResponse("nsxzajlns", "hwjuyxxbxqvmvua", com.azure.core.util.Context.NONE);
+            .deleteByResourceGroupWithResponse("suenyg", "xcgjtf", com.azure.core.util.Context.NONE);
     }
 }

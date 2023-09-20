@@ -31,7 +31,7 @@ public final class CompliancesListMockTests {
         ArgumentCaptor<HttpRequest> httpRequest = ArgumentCaptor.forClass(HttpRequest.class);
 
         String responseStr =
-            "{\"value\":[{\"properties\":{\"assessmentTimestampUtcDate\":\"2021-04-01T07:50:21Z\",\"resourceCount\":1815121568,\"assessmentResult\":[]},\"id\":\"okmyr\",\"name\":\"jialz\",\"type\":\"nobrqlpb\"}]}";
+            "{\"value\":[{\"properties\":{\"assessmentTimestampUtcDate\":\"2021-01-17T17:15:03Z\",\"resourceCount\":563449519,\"assessmentResult\":[]},\"id\":\"ygysemtme\",\"name\":\"rf\",\"type\":\"vpinkzpatqt\"}]}";
 
         Mockito.when(httpResponse.getStatusCode()).thenReturn(200);
         Mockito.when(httpResponse.getHeaders()).thenReturn(new HttpHeaders());
@@ -59,6 +59,7 @@ public final class CompliancesListMockTests {
                     tokenRequestContext -> Mono.just(new AccessToken("this_is_a_token", OffsetDateTime.MAX)),
                     new AzureProfile("", "", AzureEnvironment.AZURE));
 
-        PagedIterable<Compliance> response = manager.compliances().list("gbvoffbkk", com.azure.core.util.Context.NONE);
+        PagedIterable<Compliance> response =
+            manager.compliances().list("axikhfjqebglcxk", com.azure.core.util.Context.NONE);
     }
 }

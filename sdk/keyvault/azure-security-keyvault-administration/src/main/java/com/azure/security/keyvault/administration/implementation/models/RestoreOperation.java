@@ -5,45 +5,43 @@
 package com.azure.security.keyvault.administration.implementation.models;
 
 import com.azure.core.annotation.Fluent;
-import com.fasterxml.jackson.annotation.JsonProperty;
+import com.azure.json.JsonReader;
+import com.azure.json.JsonSerializable;
+import com.azure.json.JsonToken;
+import com.azure.json.JsonWriter;
+import java.io.IOException;
 
 /** Restore operation. */
 @Fluent
-public final class RestoreOperation {
+public final class RestoreOperation implements JsonSerializable<RestoreOperation> {
     /*
      * Status of the restore operation.
      */
-    @JsonProperty(value = "status")
     private String status;
 
     /*
      * The status details of restore operation.
      */
-    @JsonProperty(value = "statusDetails")
     private String statusDetails;
 
     /*
      * Error encountered, if any, during the restore operation.
      */
-    @JsonProperty(value = "error")
     private Error error;
 
     /*
      * Identifier for the restore operation.
      */
-    @JsonProperty(value = "jobId")
     private String jobId;
 
     /*
      * The start time of the restore operation
      */
-    @JsonProperty(value = "startTime")
     private Long startTime;
 
     /*
      * The end time of the restore operation
      */
-    @JsonProperty(value = "endTime")
     private Long endTime;
 
     /** Creates an instance of RestoreOperation class. */
@@ -167,5 +165,54 @@ public final class RestoreOperation {
     public RestoreOperation setEndTime(Long endTime) {
         this.endTime = endTime;
         return this;
+    }
+
+    @Override
+    public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
+        jsonWriter.writeStartObject();
+        jsonWriter.writeStringField("status", this.status);
+        jsonWriter.writeStringField("statusDetails", this.statusDetails);
+        jsonWriter.writeJsonField("error", this.error);
+        jsonWriter.writeStringField("jobId", this.jobId);
+        jsonWriter.writeNumberField("startTime", this.startTime);
+        jsonWriter.writeNumberField("endTime", this.endTime);
+        return jsonWriter.writeEndObject();
+    }
+
+    /**
+     * Reads an instance of RestoreOperation from the JsonReader.
+     *
+     * @param jsonReader The JsonReader being read.
+     * @return An instance of RestoreOperation if the JsonReader was pointing to an instance of it, or null if it was
+     *     pointing to JSON null.
+     * @throws IOException If an error occurs while reading the RestoreOperation.
+     */
+    public static RestoreOperation fromJson(JsonReader jsonReader) throws IOException {
+        return jsonReader.readObject(
+                reader -> {
+                    RestoreOperation deserializedRestoreOperation = new RestoreOperation();
+                    while (reader.nextToken() != JsonToken.END_OBJECT) {
+                        String fieldName = reader.getFieldName();
+                        reader.nextToken();
+
+                        if ("status".equals(fieldName)) {
+                            deserializedRestoreOperation.status = reader.getString();
+                        } else if ("statusDetails".equals(fieldName)) {
+                            deserializedRestoreOperation.statusDetails = reader.getString();
+                        } else if ("error".equals(fieldName)) {
+                            deserializedRestoreOperation.error = Error.fromJson(reader);
+                        } else if ("jobId".equals(fieldName)) {
+                            deserializedRestoreOperation.jobId = reader.getString();
+                        } else if ("startTime".equals(fieldName)) {
+                            deserializedRestoreOperation.startTime = reader.getNullable(JsonReader::getLong);
+                        } else if ("endTime".equals(fieldName)) {
+                            deserializedRestoreOperation.endTime = reader.getNullable(JsonReader::getLong);
+                        } else {
+                            reader.skipChildren();
+                        }
+                    }
+
+                    return deserializedRestoreOperation;
+                });
     }
 }

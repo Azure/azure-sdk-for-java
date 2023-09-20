@@ -17,20 +17,9 @@ import com.azure.resourcemanager.eventgrid.models.SystemTopicUpdateParameters;
 /** An instance of this class provides access to all the operations defined in SystemTopicsClient. */
 public interface SystemTopicsClient {
     /**
-     * Get properties of a system topic.
+     * Get a system topic.
      *
-     * @param resourceGroupName The name of the resource group within the user's subscription.
-     * @param systemTopicName Name of the system topic.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return properties of a system topic.
-     */
-    @ServiceMethod(returns = ReturnType.SINGLE)
-    SystemTopicInner getByResourceGroup(String resourceGroupName, String systemTopicName);
-
-    /**
-     * Get properties of a system topic.
+     * <p>Get properties of a system topic.
      *
      * @param resourceGroupName The name of the resource group within the user's subscription.
      * @param systemTopicName Name of the system topic.
@@ -45,7 +34,24 @@ public interface SystemTopicsClient {
         String resourceGroupName, String systemTopicName, Context context);
 
     /**
-     * Asynchronously creates a new system topic with the specified parameters.
+     * Get a system topic.
+     *
+     * <p>Get properties of a system topic.
+     *
+     * @param resourceGroupName The name of the resource group within the user's subscription.
+     * @param systemTopicName Name of the system topic.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return properties of a system topic.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    SystemTopicInner getByResourceGroup(String resourceGroupName, String systemTopicName);
+
+    /**
+     * Create a system topic.
+     *
+     * <p>Asynchronously creates a new system topic with the specified parameters.
      *
      * @param resourceGroupName The name of the resource group within the user's subscription.
      * @param systemTopicName Name of the system topic.
@@ -60,7 +66,9 @@ public interface SystemTopicsClient {
         String resourceGroupName, String systemTopicName, SystemTopicInner systemTopicInfo);
 
     /**
-     * Asynchronously creates a new system topic with the specified parameters.
+     * Create a system topic.
+     *
+     * <p>Asynchronously creates a new system topic with the specified parameters.
      *
      * @param resourceGroupName The name of the resource group within the user's subscription.
      * @param systemTopicName Name of the system topic.
@@ -76,7 +84,9 @@ public interface SystemTopicsClient {
         String resourceGroupName, String systemTopicName, SystemTopicInner systemTopicInfo, Context context);
 
     /**
-     * Asynchronously creates a new system topic with the specified parameters.
+     * Create a system topic.
+     *
+     * <p>Asynchronously creates a new system topic with the specified parameters.
      *
      * @param resourceGroupName The name of the resource group within the user's subscription.
      * @param systemTopicName Name of the system topic.
@@ -90,7 +100,9 @@ public interface SystemTopicsClient {
     SystemTopicInner createOrUpdate(String resourceGroupName, String systemTopicName, SystemTopicInner systemTopicInfo);
 
     /**
-     * Asynchronously creates a new system topic with the specified parameters.
+     * Create a system topic.
+     *
+     * <p>Asynchronously creates a new system topic with the specified parameters.
      *
      * @param resourceGroupName The name of the resource group within the user's subscription.
      * @param systemTopicName Name of the system topic.
@@ -106,7 +118,9 @@ public interface SystemTopicsClient {
         String resourceGroupName, String systemTopicName, SystemTopicInner systemTopicInfo, Context context);
 
     /**
-     * Delete existing system topic.
+     * Delete a system topic.
+     *
+     * <p>Delete existing system topic.
      *
      * @param resourceGroupName The name of the resource group within the user's subscription.
      * @param systemTopicName Name of the system topic.
@@ -119,7 +133,9 @@ public interface SystemTopicsClient {
     SyncPoller<PollResult<Void>, Void> beginDelete(String resourceGroupName, String systemTopicName);
 
     /**
-     * Delete existing system topic.
+     * Delete a system topic.
+     *
+     * <p>Delete existing system topic.
      *
      * @param resourceGroupName The name of the resource group within the user's subscription.
      * @param systemTopicName Name of the system topic.
@@ -133,7 +149,9 @@ public interface SystemTopicsClient {
     SyncPoller<PollResult<Void>, Void> beginDelete(String resourceGroupName, String systemTopicName, Context context);
 
     /**
-     * Delete existing system topic.
+     * Delete a system topic.
+     *
+     * <p>Delete existing system topic.
      *
      * @param resourceGroupName The name of the resource group within the user's subscription.
      * @param systemTopicName Name of the system topic.
@@ -145,7 +163,9 @@ public interface SystemTopicsClient {
     void delete(String resourceGroupName, String systemTopicName);
 
     /**
-     * Delete existing system topic.
+     * Delete a system topic.
+     *
+     * <p>Delete existing system topic.
      *
      * @param resourceGroupName The name of the resource group within the user's subscription.
      * @param systemTopicName Name of the system topic.
@@ -158,7 +178,9 @@ public interface SystemTopicsClient {
     void delete(String resourceGroupName, String systemTopicName, Context context);
 
     /**
-     * Asynchronously updates a system topic with the specified parameters.
+     * Update a system topic.
+     *
+     * <p>Asynchronously updates a system topic with the specified parameters.
      *
      * @param resourceGroupName The name of the resource group within the user's subscription.
      * @param systemTopicName Name of the system topic.
@@ -173,7 +195,9 @@ public interface SystemTopicsClient {
         String resourceGroupName, String systemTopicName, SystemTopicUpdateParameters systemTopicUpdateParameters);
 
     /**
-     * Asynchronously updates a system topic with the specified parameters.
+     * Update a system topic.
+     *
+     * <p>Asynchronously updates a system topic with the specified parameters.
      *
      * @param resourceGroupName The name of the resource group within the user's subscription.
      * @param systemTopicName Name of the system topic.
@@ -192,7 +216,9 @@ public interface SystemTopicsClient {
         Context context);
 
     /**
-     * Asynchronously updates a system topic with the specified parameters.
+     * Update a system topic.
+     *
+     * <p>Asynchronously updates a system topic with the specified parameters.
      *
      * @param resourceGroupName The name of the resource group within the user's subscription.
      * @param systemTopicName Name of the system topic.
@@ -207,7 +233,9 @@ public interface SystemTopicsClient {
         String resourceGroupName, String systemTopicName, SystemTopicUpdateParameters systemTopicUpdateParameters);
 
     /**
-     * Asynchronously updates a system topic with the specified parameters.
+     * Update a system topic.
+     *
+     * <p>Asynchronously updates a system topic with the specified parameters.
      *
      * @param resourceGroupName The name of the resource group within the user's subscription.
      * @param systemTopicName Name of the system topic.
@@ -226,7 +254,9 @@ public interface SystemTopicsClient {
         Context context);
 
     /**
-     * List all the system topics under an Azure subscription.
+     * List system topics under an Azure subscription.
+     *
+     * <p>List all the system topics under an Azure subscription.
      *
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
@@ -236,7 +266,9 @@ public interface SystemTopicsClient {
     PagedIterable<SystemTopicInner> list();
 
     /**
-     * List all the system topics under an Azure subscription.
+     * List system topics under an Azure subscription.
+     *
+     * <p>List all the system topics under an Azure subscription.
      *
      * @param filter The query used to filter the search results using OData syntax. Filtering is permitted on the
      *     'name' property only and with limited number of OData operations. These operations are: the 'contains'
@@ -256,7 +288,9 @@ public interface SystemTopicsClient {
     PagedIterable<SystemTopicInner> list(String filter, Integer top, Context context);
 
     /**
-     * List all the system topics under a resource group.
+     * List system topics under a resource group.
+     *
+     * <p>List all the system topics under a resource group.
      *
      * @param resourceGroupName The name of the resource group within the user's subscription.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
@@ -268,7 +302,9 @@ public interface SystemTopicsClient {
     PagedIterable<SystemTopicInner> listByResourceGroup(String resourceGroupName);
 
     /**
-     * List all the system topics under a resource group.
+     * List system topics under a resource group.
+     *
+     * <p>List all the system topics under a resource group.
      *
      * @param resourceGroupName The name of the resource group within the user's subscription.
      * @param filter The query used to filter the search results using OData syntax. Filtering is permitted on the

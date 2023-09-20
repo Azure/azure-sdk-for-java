@@ -69,8 +69,7 @@ public final class ServersClientImpl implements ServersClient {
     public interface ServersService {
         @Headers({"Content-Type: application/json"})
         @Put(
-            "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.DBforPostgreSQL"
-                + "/flexibleServers/{serverName}")
+            "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.DBforPostgreSQL/flexibleServers/{serverName}")
         @ExpectedResponses({200, 201, 202})
         @UnexpectedResponseExceptionType(ManagementException.class)
         Mono<Response<Flux<ByteBuffer>>> create(
@@ -85,8 +84,7 @@ public final class ServersClientImpl implements ServersClient {
 
         @Headers({"Content-Type: application/json"})
         @Patch(
-            "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.DBforPostgreSQL"
-                + "/flexibleServers/{serverName}")
+            "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.DBforPostgreSQL/flexibleServers/{serverName}")
         @ExpectedResponses({200, 202})
         @UnexpectedResponseExceptionType(ManagementException.class)
         Mono<Response<Flux<ByteBuffer>>> update(
@@ -101,8 +99,7 @@ public final class ServersClientImpl implements ServersClient {
 
         @Headers({"Content-Type: application/json"})
         @Delete(
-            "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.DBforPostgreSQL"
-                + "/flexibleServers/{serverName}")
+            "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.DBforPostgreSQL/flexibleServers/{serverName}")
         @ExpectedResponses({200, 202, 204})
         @UnexpectedResponseExceptionType(ManagementException.class)
         Mono<Response<Flux<ByteBuffer>>> delete(
@@ -116,8 +113,7 @@ public final class ServersClientImpl implements ServersClient {
 
         @Headers({"Content-Type: application/json"})
         @Get(
-            "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.DBforPostgreSQL"
-                + "/flexibleServers/{serverName}")
+            "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.DBforPostgreSQL/flexibleServers/{serverName}")
         @ExpectedResponses({200})
         @UnexpectedResponseExceptionType(ManagementException.class)
         Mono<Response<ServerInner>> getByResourceGroup(
@@ -131,8 +127,7 @@ public final class ServersClientImpl implements ServersClient {
 
         @Headers({"Content-Type: application/json"})
         @Get(
-            "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.DBforPostgreSQL"
-                + "/flexibleServers")
+            "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.DBforPostgreSQL/flexibleServers")
         @ExpectedResponses({200})
         @UnexpectedResponseExceptionType(ManagementException.class)
         Mono<Response<ServerListResult>> listByResourceGroup(
@@ -156,8 +151,7 @@ public final class ServersClientImpl implements ServersClient {
 
         @Headers({"Content-Type: application/json"})
         @Post(
-            "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.DBforPostgreSQL"
-                + "/flexibleServers/{serverName}/restart")
+            "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.DBforPostgreSQL/flexibleServers/{serverName}/restart")
         @ExpectedResponses({200, 202})
         @UnexpectedResponseExceptionType(ManagementException.class)
         Mono<Response<Flux<ByteBuffer>>> restart(
@@ -172,8 +166,7 @@ public final class ServersClientImpl implements ServersClient {
 
         @Headers({"Content-Type: application/json"})
         @Post(
-            "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.DBforPostgreSQL"
-                + "/flexibleServers/{serverName}/start")
+            "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.DBforPostgreSQL/flexibleServers/{serverName}/start")
         @ExpectedResponses({200, 202})
         @UnexpectedResponseExceptionType(ManagementException.class)
         Mono<Response<Flux<ByteBuffer>>> start(
@@ -187,8 +180,7 @@ public final class ServersClientImpl implements ServersClient {
 
         @Headers({"Content-Type: application/json"})
         @Post(
-            "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.DBforPostgreSQL"
-                + "/flexibleServers/{serverName}/stop")
+            "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.DBforPostgreSQL/flexibleServers/{serverName}/stop")
         @ExpectedResponses({200, 202})
         @UnexpectedResponseExceptionType(ManagementException.class)
         Mono<Response<Flux<ByteBuffer>>> stop(
@@ -233,7 +225,7 @@ public final class ServersClientImpl implements ServersClient {
      * @return represents a server along with {@link Response} on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    private Mono<Response<Flux<ByteBuffer>>> createWithResponseAsync(
+    public Mono<Response<Flux<ByteBuffer>>> createWithResponseAsync(
         String resourceGroupName, String serverName, ServerInner parameters) {
         if (this.client.getEndpoint() == null) {
             return Mono
@@ -341,7 +333,7 @@ public final class ServersClientImpl implements ServersClient {
      * @return the {@link PollerFlux} for polling of represents a server.
      */
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
-    private PollerFlux<PollResult<ServerInner>, ServerInner> beginCreateAsync(
+    public PollerFlux<PollResult<ServerInner>, ServerInner> beginCreateAsync(
         String resourceGroupName, String serverName, ServerInner parameters) {
         Mono<Response<Flux<ByteBuffer>>> mono = createWithResponseAsync(resourceGroupName, serverName, parameters);
         return this
@@ -421,7 +413,7 @@ public final class ServersClientImpl implements ServersClient {
      * @return represents a server on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    private Mono<ServerInner> createAsync(String resourceGroupName, String serverName, ServerInner parameters) {
+    public Mono<ServerInner> createAsync(String resourceGroupName, String serverName, ServerInner parameters) {
         return beginCreateAsync(resourceGroupName, serverName, parameters)
             .last()
             .flatMap(this.client::getLroFinalResultOrError);
@@ -493,7 +485,7 @@ public final class ServersClientImpl implements ServersClient {
      * @return represents a server along with {@link Response} on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    private Mono<Response<Flux<ByteBuffer>>> updateWithResponseAsync(
+    public Mono<Response<Flux<ByteBuffer>>> updateWithResponseAsync(
         String resourceGroupName, String serverName, ServerForUpdate parameters) {
         if (this.client.getEndpoint() == null) {
             return Mono
@@ -603,7 +595,7 @@ public final class ServersClientImpl implements ServersClient {
      * @return the {@link PollerFlux} for polling of represents a server.
      */
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
-    private PollerFlux<PollResult<ServerInner>, ServerInner> beginUpdateAsync(
+    public PollerFlux<PollResult<ServerInner>, ServerInner> beginUpdateAsync(
         String resourceGroupName, String serverName, ServerForUpdate parameters) {
         Mono<Response<Flux<ByteBuffer>>> mono = updateWithResponseAsync(resourceGroupName, serverName, parameters);
         return this
@@ -687,7 +679,7 @@ public final class ServersClientImpl implements ServersClient {
      * @return represents a server on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    private Mono<ServerInner> updateAsync(String resourceGroupName, String serverName, ServerForUpdate parameters) {
+    public Mono<ServerInner> updateAsync(String resourceGroupName, String serverName, ServerForUpdate parameters) {
         return beginUpdateAsync(resourceGroupName, serverName, parameters)
             .last()
             .flatMap(this.client::getLroFinalResultOrError);
@@ -761,7 +753,7 @@ public final class ServersClientImpl implements ServersClient {
      * @return the {@link Response} on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    private Mono<Response<Flux<ByteBuffer>>> deleteWithResponseAsync(String resourceGroupName, String serverName) {
+    public Mono<Response<Flux<ByteBuffer>>> deleteWithResponseAsync(String resourceGroupName, String serverName) {
         if (this.client.getEndpoint() == null) {
             return Mono
                 .error(
@@ -854,7 +846,7 @@ public final class ServersClientImpl implements ServersClient {
      * @return the {@link PollerFlux} for polling of long-running operation.
      */
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
-    private PollerFlux<PollResult<Void>, Void> beginDeleteAsync(String resourceGroupName, String serverName) {
+    public PollerFlux<PollResult<Void>, Void> beginDeleteAsync(String resourceGroupName, String serverName) {
         Mono<Response<Flux<ByteBuffer>>> mono = deleteWithResponseAsync(resourceGroupName, serverName);
         return this
             .client
@@ -926,7 +918,7 @@ public final class ServersClientImpl implements ServersClient {
      * @return A {@link Mono} that completes when a successful response is received.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    private Mono<Void> deleteAsync(String resourceGroupName, String serverName) {
+    public Mono<Void> deleteAsync(String resourceGroupName, String serverName) {
         return beginDeleteAsync(resourceGroupName, serverName).last().flatMap(this.client::getLroFinalResultOrError);
     }
 
@@ -988,7 +980,7 @@ public final class ServersClientImpl implements ServersClient {
      * @return information about a server along with {@link Response} on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    private Mono<Response<ServerInner>> getByResourceGroupWithResponseAsync(
+    public Mono<Response<ServerInner>> getByResourceGroupWithResponseAsync(
         String resourceGroupName, String serverName) {
         if (this.client.getEndpoint() == null) {
             return Mono
@@ -1082,7 +1074,7 @@ public final class ServersClientImpl implements ServersClient {
      * @return information about a server on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    private Mono<ServerInner> getByResourceGroupAsync(String resourceGroupName, String serverName) {
+    public Mono<ServerInner> getByResourceGroupAsync(String resourceGroupName, String serverName) {
         return getByResourceGroupWithResponseAsync(resourceGroupName, serverName)
             .flatMap(res -> Mono.justOrEmpty(res.getValue()));
     }
@@ -1230,7 +1222,7 @@ public final class ServersClientImpl implements ServersClient {
      * @return a list of servers as paginated response with {@link PagedFlux}.
      */
     @ServiceMethod(returns = ReturnType.COLLECTION)
-    private PagedFlux<ServerInner> listByResourceGroupAsync(String resourceGroupName) {
+    public PagedFlux<ServerInner> listByResourceGroupAsync(String resourceGroupName) {
         return new PagedFlux<>(
             () -> listByResourceGroupSinglePageAsync(resourceGroupName),
             nextLink -> listByResourceGroupNextSinglePageAsync(nextLink));
@@ -1377,7 +1369,7 @@ public final class ServersClientImpl implements ServersClient {
      * @return a list of servers as paginated response with {@link PagedFlux}.
      */
     @ServiceMethod(returns = ReturnType.COLLECTION)
-    private PagedFlux<ServerInner> listAsync() {
+    public PagedFlux<ServerInner> listAsync() {
         return new PagedFlux<>(() -> listSinglePageAsync(), nextLink -> listNextSinglePageAsync(nextLink));
     }
 
@@ -1434,7 +1426,7 @@ public final class ServersClientImpl implements ServersClient {
      * @return the {@link Response} on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    private Mono<Response<Flux<ByteBuffer>>> restartWithResponseAsync(
+    public Mono<Response<Flux<ByteBuffer>>> restartWithResponseAsync(
         String resourceGroupName, String serverName, RestartParameter parameters) {
         if (this.client.getEndpoint() == null) {
             return Mono
@@ -1538,7 +1530,7 @@ public final class ServersClientImpl implements ServersClient {
      * @return the {@link PollerFlux} for polling of long-running operation.
      */
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
-    private PollerFlux<PollResult<Void>, Void> beginRestartAsync(
+    public PollerFlux<PollResult<Void>, Void> beginRestartAsync(
         String resourceGroupName, String serverName, RestartParameter parameters) {
         Mono<Response<Flux<ByteBuffer>>> mono = restartWithResponseAsync(resourceGroupName, serverName, parameters);
         return this
@@ -1558,7 +1550,7 @@ public final class ServersClientImpl implements ServersClient {
      * @return the {@link PollerFlux} for polling of long-running operation.
      */
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
-    private PollerFlux<PollResult<Void>, Void> beginRestartAsync(String resourceGroupName, String serverName) {
+    public PollerFlux<PollResult<Void>, Void> beginRestartAsync(String resourceGroupName, String serverName) {
         final RestartParameter parameters = null;
         Mono<Response<Flux<ByteBuffer>>> mono = restartWithResponseAsync(resourceGroupName, serverName, parameters);
         return this
@@ -1636,7 +1628,7 @@ public final class ServersClientImpl implements ServersClient {
      * @return A {@link Mono} that completes when a successful response is received.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    private Mono<Void> restartAsync(String resourceGroupName, String serverName, RestartParameter parameters) {
+    public Mono<Void> restartAsync(String resourceGroupName, String serverName, RestartParameter parameters) {
         return beginRestartAsync(resourceGroupName, serverName, parameters)
             .last()
             .flatMap(this.client::getLroFinalResultOrError);
@@ -1653,7 +1645,7 @@ public final class ServersClientImpl implements ServersClient {
      * @return A {@link Mono} that completes when a successful response is received.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    private Mono<Void> restartAsync(String resourceGroupName, String serverName) {
+    public Mono<Void> restartAsync(String resourceGroupName, String serverName) {
         final RestartParameter parameters = null;
         return beginRestartAsync(resourceGroupName, serverName, parameters)
             .last()
@@ -1722,7 +1714,7 @@ public final class ServersClientImpl implements ServersClient {
      * @return the {@link Response} on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    private Mono<Response<Flux<ByteBuffer>>> startWithResponseAsync(String resourceGroupName, String serverName) {
+    public Mono<Response<Flux<ByteBuffer>>> startWithResponseAsync(String resourceGroupName, String serverName) {
         if (this.client.getEndpoint() == null) {
             return Mono
                 .error(
@@ -1815,7 +1807,7 @@ public final class ServersClientImpl implements ServersClient {
      * @return the {@link PollerFlux} for polling of long-running operation.
      */
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
-    private PollerFlux<PollResult<Void>, Void> beginStartAsync(String resourceGroupName, String serverName) {
+    public PollerFlux<PollResult<Void>, Void> beginStartAsync(String resourceGroupName, String serverName) {
         Mono<Response<Flux<ByteBuffer>>> mono = startWithResponseAsync(resourceGroupName, serverName);
         return this
             .client
@@ -1886,7 +1878,7 @@ public final class ServersClientImpl implements ServersClient {
      * @return A {@link Mono} that completes when a successful response is received.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    private Mono<Void> startAsync(String resourceGroupName, String serverName) {
+    public Mono<Void> startAsync(String resourceGroupName, String serverName) {
         return beginStartAsync(resourceGroupName, serverName).last().flatMap(this.client::getLroFinalResultOrError);
     }
 
@@ -1948,7 +1940,7 @@ public final class ServersClientImpl implements ServersClient {
      * @return the {@link Response} on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    private Mono<Response<Flux<ByteBuffer>>> stopWithResponseAsync(String resourceGroupName, String serverName) {
+    public Mono<Response<Flux<ByteBuffer>>> stopWithResponseAsync(String resourceGroupName, String serverName) {
         if (this.client.getEndpoint() == null) {
             return Mono
                 .error(
@@ -2041,7 +2033,7 @@ public final class ServersClientImpl implements ServersClient {
      * @return the {@link PollerFlux} for polling of long-running operation.
      */
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
-    private PollerFlux<PollResult<Void>, Void> beginStopAsync(String resourceGroupName, String serverName) {
+    public PollerFlux<PollResult<Void>, Void> beginStopAsync(String resourceGroupName, String serverName) {
         Mono<Response<Flux<ByteBuffer>>> mono = stopWithResponseAsync(resourceGroupName, serverName);
         return this
             .client
@@ -2112,7 +2104,7 @@ public final class ServersClientImpl implements ServersClient {
      * @return A {@link Mono} that completes when a successful response is received.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    private Mono<Void> stopAsync(String resourceGroupName, String serverName) {
+    public Mono<Void> stopAsync(String resourceGroupName, String serverName) {
         return beginStopAsync(resourceGroupName, serverName).last().flatMap(this.client::getLroFinalResultOrError);
     }
 

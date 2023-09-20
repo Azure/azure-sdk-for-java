@@ -4,14 +4,13 @@
 
 package com.azure.resourcemanager.containerinstance.generated;
 
-import com.azure.core.util.Context;
 import com.azure.resourcemanager.containerinstance.models.ContainerExecRequest;
 import com.azure.resourcemanager.containerinstance.models.ContainerExecRequestTerminalSize;
 
 /** Samples for Containers ExecuteCommand. */
 public final class ContainersExecuteCommandSamples {
     /*
-     * x-ms-original-file: specification/containerinstance/resource-manager/Microsoft.ContainerInstance/stable/2021-10-01/examples/ContainerExec.json
+     * x-ms-original-file: specification/containerinstance/resource-manager/Microsoft.ContainerInstance/stable/2023-05-01/examples/ContainerExec.json
      */
     /**
      * Sample code: ContainerExec.
@@ -31,6 +30,6 @@ public final class ContainersExecuteCommandSamples {
                 new ContainerExecRequest()
                     .withCommand("/bin/bash")
                     .withTerminalSize(new ContainerExecRequestTerminalSize().withRows(12).withCols(12)),
-                Context.NONE);
+                com.azure.core.util.Context.NONE);
     }
 }

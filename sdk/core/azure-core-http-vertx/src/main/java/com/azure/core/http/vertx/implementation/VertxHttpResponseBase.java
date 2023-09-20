@@ -3,6 +3,7 @@
 
 package com.azure.core.http.vertx.implementation;
 
+import com.azure.core.http.HttpHeaderName;
 import com.azure.core.http.HttpHeaders;
 import com.azure.core.http.HttpRequest;
 import com.azure.core.http.HttpResponse;
@@ -24,6 +25,7 @@ abstract class VertxHttpResponseBase extends HttpResponse {
         this.headers = fromVertxHttpHeaders(vertxHttpResponse.headers());
     }
 
+    @SuppressWarnings("deprecation")
     private HttpHeaders fromVertxHttpHeaders(MultiMap headers) {
         HttpHeaders azureHeaders = new HttpHeaders();
         headers.names().forEach(name -> azureHeaders.set(name, headers.getAll(name)));
@@ -40,8 +42,14 @@ abstract class VertxHttpResponseBase extends HttpResponse {
     }
 
     @Override
+    @Deprecated
     public String getHeaderValue(String name) {
         return this.headers.getValue(name);
+    }
+
+    @Override
+    public String getHeaderValue(HttpHeaderName headerName) {
+        return headers.getValue(headerName);
     }
 
     @Override
@@ -51,7 +59,8 @@ abstract class VertxHttpResponseBase extends HttpResponse {
 
     @Override
     public final Mono<String> getBodyAsString() {
-        return getBodyAsByteArray().map(bytes -> CoreUtils.bomAwareToString(bytes, getHeaderValue("Content-Type")));
+        return getBodyAsByteArray().map(bytes -> CoreUtils.bomAwareToString(bytes,
+            getHeaderValue(HttpHeaderName.CONTENT_TYPE)));
     }
 
     @Override

@@ -22,6 +22,10 @@ public final class ContainerExecRequestTerminalSize {
     @JsonProperty(value = "cols")
     private Integer cols;
 
+    /** Creates an instance of ContainerExecRequestTerminalSize class. */
+    public ContainerExecRequestTerminalSize() {
+    }
+
     /**
      * Get the rows property: The row size of the terminal.
      *

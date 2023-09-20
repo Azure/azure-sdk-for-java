@@ -12,10 +12,10 @@ public final class CommunicationsGatewaysListSamples {
     /**
      * Sample code: ListCommunicationsGatewayResourceSub.
      *
-     * @param manager Entry point to VoiceservicesManager.
+     * @param manager Entry point to VoiceServicesManager.
      */
     public static void listCommunicationsGatewayResourceSub(
-        com.azure.resourcemanager.voiceservices.VoiceservicesManager manager) {
+        com.azure.resourcemanager.voiceservices.VoiceServicesManager manager) {
         manager.communicationsGateways().list(com.azure.core.util.Context.NONE);
     }
 }

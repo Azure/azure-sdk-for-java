@@ -14,6 +14,9 @@ import com.fasterxml.jackson.annotation.JsonTypeName;
 @JsonTypeName("best-worker")
 @Fluent
 public final class BestWorkerMode extends DistributionMode {
+    /** Creates an instance of BestWorkerMode class. */
+    public BestWorkerMode() {}
+
     /*
      * A rule of one of the following types:
      *
@@ -23,6 +26,8 @@ public final class BestWorkerMode extends DistributionMode {
      * ExpressionRule: A rule providing inline expression rules.
      * AzureFunctionRule: A rule providing a binding to an HTTP Triggered Azure
      * Function.
+     * WebhookRule: A rule providing a binding to a webserver following
+     * OAuth2.0 authentication protocol.
      */
     @JsonProperty(value = "scoringRule")
     private RouterRule scoringRule;
@@ -39,7 +44,8 @@ public final class BestWorkerMode extends DistributionMode {
      *
      * <p>StaticRule: A rule providing static rules that always return the same result, regardless of input.
      * DirectMapRule: A rule that return the same labels as the input labels. ExpressionRule: A rule providing inline
-     * expression rules. AzureFunctionRule: A rule providing a binding to an HTTP Triggered Azure Function.
+     * expression rules. AzureFunctionRule: A rule providing a binding to an HTTP Triggered Azure Function. WebhookRule:
+     * A rule providing a binding to a webserver following OAuth2.0 authentication protocol.
      *
      * @return the scoringRule value.
      */
@@ -52,7 +58,8 @@ public final class BestWorkerMode extends DistributionMode {
      *
      * <p>StaticRule: A rule providing static rules that always return the same result, regardless of input.
      * DirectMapRule: A rule that return the same labels as the input labels. ExpressionRule: A rule providing inline
-     * expression rules. AzureFunctionRule: A rule providing a binding to an HTTP Triggered Azure Function.
+     * expression rules. AzureFunctionRule: A rule providing a binding to an HTTP Triggered Azure Function. WebhookRule:
+     * A rule providing a binding to a webserver following OAuth2.0 authentication protocol.
      *
      * @param scoringRule the scoringRule value to set.
      * @return the BestWorkerMode object itself.
@@ -81,6 +88,27 @@ public final class BestWorkerMode extends DistributionMode {
      */
     public BestWorkerMode setScoringRuleOptions(ScoringRuleOptions scoringRuleOptions) {
         this.scoringRuleOptions = scoringRuleOptions;
+        return this;
+    }
+
+    /** {@inheritDoc} */
+    @Override
+    public BestWorkerMode setMinConcurrentOffers(Integer minConcurrentOffers) {
+        super.setMinConcurrentOffers(minConcurrentOffers);
+        return this;
+    }
+
+    /** {@inheritDoc} */
+    @Override
+    public BestWorkerMode setMaxConcurrentOffers(Integer maxConcurrentOffers) {
+        super.setMaxConcurrentOffers(maxConcurrentOffers);
+        return this;
+    }
+
+    /** {@inheritDoc} */
+    @Override
+    public BestWorkerMode setBypassSelectors(Boolean bypassSelectors) {
+        super.setBypassSelectors(bypassSelectors);
         return this;
     }
 }

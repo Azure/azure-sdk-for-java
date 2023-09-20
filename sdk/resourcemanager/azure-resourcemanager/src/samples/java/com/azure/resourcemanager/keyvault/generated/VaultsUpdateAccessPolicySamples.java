@@ -4,7 +4,6 @@
 
 package com.azure.resourcemanager.keyvault.generated;
 
-import com.azure.core.util.Context;
 import com.azure.resourcemanager.keyvault.fluent.models.VaultAccessPolicyParametersInner;
 import com.azure.resourcemanager.keyvault.models.AccessPolicyEntry;
 import com.azure.resourcemanager.keyvault.models.AccessPolicyUpdateKind;
@@ -19,7 +18,7 @@ import java.util.UUID;
 /** Samples for Vaults UpdateAccessPolicy. */
 public final class VaultsUpdateAccessPolicySamples {
     /*
-     * x-ms-original-file: specification/keyvault/resource-manager/Microsoft.KeyVault/stable/2021-10-01/examples/updateAccessPoliciesAdd.json
+     * x-ms-original-file: specification/keyvault/resource-manager/Microsoft.KeyVault/stable/2023-02-01/examples/updateAccessPoliciesAdd.json
      */
     /**
      * Sample code: Add an access policy, or update an access policy with new permissions.
@@ -51,6 +50,6 @@ public final class VaultsUpdateAccessPolicySamples {
                                                     .withKeys(Arrays.asList(KeyPermissions.ENCRYPT))
                                                     .withSecrets(Arrays.asList(SecretPermissions.GET))
                                                     .withCertificates(Arrays.asList(CertificatePermissions.GET)))))),
-                Context.NONE);
+                com.azure.core.util.Context.NONE);
     }
 }

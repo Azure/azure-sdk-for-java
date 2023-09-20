@@ -22,6 +22,10 @@ public final class ContainerExecRequest {
     @JsonProperty(value = "terminalSize")
     private ContainerExecRequestTerminalSize terminalSize;
 
+    /** Creates an instance of ContainerExecRequest class. */
+    public ContainerExecRequest() {
+    }
+
     /**
      * Get the command property: The command to be executed.
      *

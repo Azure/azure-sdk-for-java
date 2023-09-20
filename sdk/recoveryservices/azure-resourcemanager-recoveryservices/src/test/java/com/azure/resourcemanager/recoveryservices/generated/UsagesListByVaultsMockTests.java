@@ -33,7 +33,7 @@ public final class UsagesListByVaultsMockTests {
         ArgumentCaptor<HttpRequest> httpRequest = ArgumentCaptor.forClass(HttpRequest.class);
 
         String responseStr =
-            "{\"value\":[{\"unit\":\"BytesPerSecond\",\"quotaPeriod\":\"eqz\",\"nextResetTime\":\"2021-04-08T14:37:49Z\",\"currentValue\":6081524595721581276,\"limit\":8994416895608983174,\"name\":{\"value\":\"altol\",\"localizedValue\":\"cwsobqwcs\"}}]}";
+            "{\"value\":[{\"unit\":\"CountPerSecond\",\"quotaPeriod\":\"wj\",\"nextResetTime\":\"2021-06-03T21:25:15Z\",\"currentValue\":3850222588525127321,\"limit\":8142571261357347670,\"name\":{\"value\":\"kdlfoa\",\"localizedValue\":\"gkfpaga\"}}]}";
 
         Mockito.when(httpResponse.getStatusCode()).thenReturn(200);
         Mockito.when(httpResponse.getHeaders()).thenReturn(new HttpHeaders());
@@ -62,15 +62,15 @@ public final class UsagesListByVaultsMockTests {
                     new AzureProfile("", "", AzureEnvironment.AZURE));
 
         PagedIterable<VaultUsage> response =
-            manager.usages().listByVaults("ofncckwyfzqwhxxb", "yq", com.azure.core.util.Context.NONE);
+            manager.usages().listByVaults("bw", "ujhemmsbvdkcrodt", com.azure.core.util.Context.NONE);
 
-        Assertions.assertEquals(UsagesUnit.BYTES_PER_SECOND, response.iterator().next().unit());
-        Assertions.assertEquals("eqz", response.iterator().next().quotaPeriod());
+        Assertions.assertEquals(UsagesUnit.COUNT_PER_SECOND, response.iterator().next().unit());
+        Assertions.assertEquals("wj", response.iterator().next().quotaPeriod());
         Assertions
-            .assertEquals(OffsetDateTime.parse("2021-04-08T14:37:49Z"), response.iterator().next().nextResetTime());
-        Assertions.assertEquals(6081524595721581276L, response.iterator().next().currentValue());
-        Assertions.assertEquals(8994416895608983174L, response.iterator().next().limit());
-        Assertions.assertEquals("altol", response.iterator().next().name().value());
-        Assertions.assertEquals("cwsobqwcs", response.iterator().next().name().localizedValue());
+            .assertEquals(OffsetDateTime.parse("2021-06-03T21:25:15Z"), response.iterator().next().nextResetTime());
+        Assertions.assertEquals(3850222588525127321L, response.iterator().next().currentValue());
+        Assertions.assertEquals(8142571261357347670L, response.iterator().next().limit());
+        Assertions.assertEquals("kdlfoa", response.iterator().next().name().value());
+        Assertions.assertEquals("gkfpaga", response.iterator().next().name().localizedValue());
     }
 }

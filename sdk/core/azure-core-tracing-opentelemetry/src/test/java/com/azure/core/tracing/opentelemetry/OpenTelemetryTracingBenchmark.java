@@ -11,8 +11,9 @@ import com.azure.core.http.policy.HttpPipelinePolicy;
 import com.azure.core.http.policy.HttpPolicyProviders;
 import com.azure.core.test.http.MockHttpResponse;
 import com.azure.core.util.tracing.Tracer;
-import io.opentelemetry.api.trace.TracerProvider;
+import io.opentelemetry.api.OpenTelemetry;
 import io.opentelemetry.context.Context;
+import io.opentelemetry.sdk.OpenTelemetrySdk;
 import io.opentelemetry.sdk.trace.ReadWriteSpan;
 import io.opentelemetry.sdk.trace.ReadableSpan;
 import io.opentelemetry.sdk.trace.SdkTracerProvider;
@@ -78,13 +79,14 @@ public class OpenTelemetryTracingBenchmark {
                 new OpenTelemetryTracingOptions().setEnabled(false));
         }
 
-        TracerProvider provider = SdkTracerProvider.builder()
+        SdkTracerProvider provider = SdkTracerProvider.builder()
             .setSampler(Sampler.traceIdRatioBased(0.01))
             .addSpanProcessor(new NoopProcessor())
             .build();
 
+        OpenTelemetry openTelemetry = OpenTelemetrySdk.builder().setTracerProvider(provider).build();
         return new OpenTelemetryTracer("benchmark", null, null,
-            new OpenTelemetryTracingOptions().setProvider(provider));
+            new OpenTelemetryTracingOptions().setOpenTelemetry(openTelemetry));
     }
 
     static class NoopProcessor implements SpanProcessor {

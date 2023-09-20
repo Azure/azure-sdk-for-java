@@ -7,16 +7,13 @@ package com.azure.resourcemanager.compute.models;
 import com.azure.core.annotation.Fluent;
 import com.fasterxml.jackson.annotation.JsonProperty;
 
-/**
- * Specifies the security profile settings for the managed disk. &lt;br&gt;&lt;br&gt; NOTE: It can only be set for
- * Confidential VMs.
- */
+/** Specifies the security profile settings for the managed disk. **Note:** It can only be set for Confidential VMs. */
 @Fluent
 public final class VMDiskSecurityProfile {
     /*
-     * Specifies the EncryptionType of the managed disk. <br> It is set to DiskWithVMGuestState for encryption of the
+     * Specifies the EncryptionType of the managed disk. It is set to DiskWithVMGuestState for encryption of the
      * managed disk along with VMGuestState blob, and VMGuestStateOnly for encryption of just the VMGuestState blob.
-     * <br><br> NOTE: It can be set for only Confidential VMs.
+     * **Note:** It can be set for only Confidential VMs.
      */
     @JsonProperty(value = "securityEncryptionType")
     private SecurityEncryptionTypes securityEncryptionType;
@@ -33,9 +30,9 @@ public final class VMDiskSecurityProfile {
     }
 
     /**
-     * Get the securityEncryptionType property: Specifies the EncryptionType of the managed disk. &lt;br&gt; It is set
-     * to DiskWithVMGuestState for encryption of the managed disk along with VMGuestState blob, and VMGuestStateOnly for
-     * encryption of just the VMGuestState blob. &lt;br&gt;&lt;br&gt; NOTE: It can be set for only Confidential VMs.
+     * Get the securityEncryptionType property: Specifies the EncryptionType of the managed disk. It is set to
+     * DiskWithVMGuestState for encryption of the managed disk along with VMGuestState blob, and VMGuestStateOnly for
+     * encryption of just the VMGuestState blob. **Note:** It can be set for only Confidential VMs.
      *
      * @return the securityEncryptionType value.
      */
@@ -44,9 +41,9 @@ public final class VMDiskSecurityProfile {
     }
 
     /**
-     * Set the securityEncryptionType property: Specifies the EncryptionType of the managed disk. &lt;br&gt; It is set
-     * to DiskWithVMGuestState for encryption of the managed disk along with VMGuestState blob, and VMGuestStateOnly for
-     * encryption of just the VMGuestState blob. &lt;br&gt;&lt;br&gt; NOTE: It can be set for only Confidential VMs.
+     * Set the securityEncryptionType property: Specifies the EncryptionType of the managed disk. It is set to
+     * DiskWithVMGuestState for encryption of the managed disk along with VMGuestState blob, and VMGuestStateOnly for
+     * encryption of just the VMGuestState blob. **Note:** It can be set for only Confidential VMs.
      *
      * @param securityEncryptionType the securityEncryptionType value to set.
      * @return the VMDiskSecurityProfile object itself.

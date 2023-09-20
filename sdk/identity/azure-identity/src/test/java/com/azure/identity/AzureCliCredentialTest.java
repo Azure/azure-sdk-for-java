@@ -114,7 +114,7 @@ public class AzureCliCredentialTest {
         AzureCliCredential credential =
             new AzureCliCredentialBuilder().additionallyAllowedTenants("RANDOM").build();
         StepVerifier.create(credential.getToken(request))
-            .expectErrorMatches(e -> e instanceof CredentialUnavailableException)
+            .expectErrorMatches(e -> e instanceof ClientAuthenticationException)
             .verify();
     }
 
@@ -143,7 +143,7 @@ public class AzureCliCredentialTest {
                 .additionallyAllowedTenants(IdentityUtil.ALL_TENANTS).build();
 
         StepVerifier.create(credential.getToken(request))
-            .expectErrorMatches(e -> e  instanceof CredentialUnavailableException)
+            .expectErrorMatches(e -> e  instanceof ClientAuthenticationException)
             .verify();
     }
 }

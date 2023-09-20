@@ -5,72 +5,103 @@ package com.azure.core.http.vertx;
 
 import com.azure.core.http.HttpClient;
 import com.azure.core.http.HttpHeader;
+import com.azure.core.http.HttpHeaderName;
 import com.azure.core.http.HttpHeaders;
 import com.azure.core.http.HttpMethod;
 import com.azure.core.http.HttpRequest;
 import com.azure.core.http.HttpResponse;
+import com.azure.core.test.http.LocalTestServer;
 import com.azure.core.util.Context;
-import com.github.tomakehurst.wiremock.WireMockServer;
-import com.github.tomakehurst.wiremock.core.WireMockConfiguration;
-import com.github.tomakehurst.wiremock.http.Fault;
 import io.vertx.core.http.HttpClosedException;
 import org.junit.jupiter.api.AfterAll;
 import org.junit.jupiter.api.BeforeAll;
 import org.junit.jupiter.api.Test;
+import org.junit.jupiter.api.parallel.Execution;
+import org.junit.jupiter.api.parallel.ExecutionMode;
 import reactor.core.publisher.Flux;
 import reactor.core.publisher.Mono;
+import reactor.core.publisher.ParallelFlux;
 import reactor.core.scheduler.Schedulers;
 import reactor.test.StepVerifier;
 import reactor.test.StepVerifierOptions;
 
+import javax.servlet.ServletException;
 import java.net.MalformedURLException;
+import java.net.URI;
+import java.net.URISyntaxException;
 import java.net.URL;
 import java.nio.ByteBuffer;
 import java.nio.charset.StandardCharsets;
-import java.security.NoSuchAlgorithmException;
 import java.time.Duration;
+import java.util.ArrayList;
 import java.util.Arrays;
+import java.util.Collections;
 import java.util.List;
+import java.util.concurrent.Callable;
+import java.util.concurrent.ForkJoinPool;
+import java.util.concurrent.TimeUnit;
 
-import static com.github.tomakehurst.wiremock.client.WireMock.aResponse;
-import static com.github.tomakehurst.wiremock.client.WireMock.get;
-import static com.github.tomakehurst.wiremock.client.WireMock.post;
 import static org.junit.jupiter.api.Assertions.assertArrayEquals;
 import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertLinesMatch;
+import static org.junit.jupiter.api.Assertions.assertTrue;
 
+@Execution(ExecutionMode.SAME_THREAD)
 public class VertxAsyncHttpClientTests {
     static final String RETURN_HEADERS_AS_IS_PATH = "/returnHeadersAsIs";
     private static final byte[] SHORT_BODY = "hi there".getBytes(StandardCharsets.UTF_8);
     private static final byte[] LONG_BODY = createLongBody();
-    private static WireMockServer server;
+    private static LocalTestServer server;
 
     private static final StepVerifierOptions EMPTY_INITIAL_REQUEST_OPTIONS = StepVerifierOptions.create()
         .initialRequest(0);
 
     @BeforeAll
-    public static void beforeAll() {
-        server = new WireMockServer(WireMockConfiguration.options()
-            .extensions(new VertxAsyncHttpClientResponseTransformer())
-            .dynamicPort()
-            .disableRequestJournal()
-            .gzipDisabled(true));
+    public static void startTestServer() {
+        server = new LocalTestServer((req, resp, requestBody) -> {
+            String path = req.getServletPath();
+            boolean get = "GET".equalsIgnoreCase(req.getMethod());
+            boolean post = "POST".equalsIgnoreCase(req.getMethod());
 
-        server.stubFor(get("/short").willReturn(aResponse().withBody(SHORT_BODY)));
-        server.stubFor(get("/long").willReturn(aResponse().withBody(LONG_BODY)));
-        server.stubFor(get("/error").willReturn(aResponse().withBody("error").withStatus(500)));
-        server.stubFor(post("/shortPost").willReturn(aResponse().withBody(SHORT_BODY)));
-        server.stubFor(get(RETURN_HEADERS_AS_IS_PATH).willReturn(aResponse()
-            .withTransformers(VertxAsyncHttpClientResponseTransformer.NAME)));
-        server.stubFor(get("/empty").willReturn(aResponse().withBody(new byte[0])));
-        server.stubFor(get("/connectionClose").willReturn(aResponse().withFault(Fault.RANDOM_DATA_THEN_CLOSE)));
+            if (get && "/short".equals(path)) {
+                resp.setContentType("application/octet-stream");
+                resp.setContentLength(SHORT_BODY.length);
+                resp.getOutputStream().write(SHORT_BODY);
+            } else if (get && "/long".equals(path)) {
+                resp.setContentType("application/octet-stream");
+                resp.setContentLength(LONG_BODY.length);
+                resp.getOutputStream().write(LONG_BODY);
+            } else if (get && "/error".equals(path)) {
+                resp.setStatus(500);
+                resp.setContentLength(5);
+                resp.getOutputStream().write("error".getBytes(StandardCharsets.UTF_8));
+            } else if (post && "/shortPost".equals(path)) {
+                resp.setContentType("application/octet-stream");
+                resp.setContentLength(SHORT_BODY.length);
+                resp.getOutputStream().write(SHORT_BODY);
+            } else if (get && RETURN_HEADERS_AS_IS_PATH.equals(path)) {
+                List<String> headerNames = Collections.list(req.getHeaderNames());
+                headerNames.forEach(headerName -> {
+                    List<String> headerValues = Collections.list(req.getHeaders(headerName));
+                    headerValues.forEach(headerValue -> resp.addHeader(headerName, headerValue));
+                });
+            } else if (get && "/empty".equals(path)) {
+                resp.setContentType("application/octet-stream");
+                resp.setContentLength(0);
+            } else if (get && "/connectionClose".equals(path)) {
+                resp.getHttpChannel().getConnection().close();
+            } else {
+                throw new ServletException("Unexpected request " + req.getMethod() + " " + path);
+            }
+        });
+
         server.start();
     }
 
     @AfterAll
-    public static void afterAll() {
+    public static void stopTestServer() {
         if (server != null) {
-            server.shutdown();
+            server.stop();
         }
     }
 
@@ -87,7 +118,7 @@ public class VertxAsyncHttpClientTests {
     @Test
     public void responseBodyAsStringAsyncWithCharset() {
         HttpClient client = new VertxAsyncHttpClientBuilder().build();
-        StepVerifier.create(doRequest(client, "/short").getBodyAsByteArray())
+        StepVerifier.create(doRequest(client, "/short").flatMap(HttpResponse::getBodyAsByteArray))
             .assertNext(result -> assertArrayEquals(SHORT_BODY, result))
             .verifyComplete();
     }
@@ -121,7 +152,7 @@ public class VertxAsyncHttpClientTests {
     public void testRequestBodyIsErrorShouldPropagateToResponse() {
         HttpClient client = new VertxAsyncHttpClientProvider().createInstance();
         HttpRequest request = new HttpRequest(HttpMethod.POST, url(server, "/shortPost"))
-            .setHeader("Content-Length", "132")
+            .setHeader(HttpHeaderName.CONTENT_LENGTH, "132")
             .setBody(Flux.error(new RuntimeException("boo")));
 
         StepVerifier.create(client.send(request))
@@ -135,7 +166,7 @@ public class VertxAsyncHttpClientTests {
         String contentChunk = "abcdefgh";
         int repetitions = 1000;
         HttpRequest request = new HttpRequest(HttpMethod.POST, url(server, "/shortPost"))
-            .setHeader("Content-Length", String.valueOf(contentChunk.length() * (repetitions + 1)))
+            .setHeader(HttpHeaderName.CONTENT_LENGTH, String.valueOf(contentChunk.length() * (repetitions + 1)))
             .setBody(Flux.just(contentChunk)
                 .repeat(repetitions)
                 .map(s -> ByteBuffer.wrap(s.getBytes(StandardCharsets.UTF_8)))
@@ -161,35 +192,55 @@ public class VertxAsyncHttpClientTests {
     }
 
     @Test
-    public void testConcurrentRequests() throws NoSuchAlgorithmException {
+    public void testConcurrentRequests() {
         int numRequests = 100; // 100 = 1GB of data read
-        int concurrency = 10;
         HttpClient client = new VertxAsyncHttpClientProvider().createInstance();
 
-        Mono<Long> numBytesMono = Flux.range(1, numRequests)
-            .parallel(concurrency)
+        ParallelFlux<byte[]> responses = Flux.range(1, numRequests)
+            .parallel()
             .runOn(Schedulers.boundedElastic())
-            .flatMap(ignored -> getResponse(client, "/long", Context.NONE)
-                .flatMapMany(HttpResponse::getBodyAsByteArray)
-                .doOnNext(bytes -> assertArrayEquals(LONG_BODY, bytes)))
-            .sequential()
-            .map(buffer -> (long) buffer.length)
-            .reduce(0L, Long::sum);
+            .flatMap(ignored -> doRequest(client, "/long")
+                .flatMap(HttpResponse::getBodyAsByteArray));
 
-        StepVerifier.create(numBytesMono)
-            .expectNext((long) numRequests * LONG_BODY.length)
+        StepVerifier.create(responses)
+            .thenConsumeWhile(response -> {
+                com.azure.core.test.utils.TestUtils.assertArraysEqual(LONG_BODY, response);
+                return true;
+            })
             .expectComplete()
             .verify(Duration.ofSeconds(60));
+    }
+
+    @Test
+    public void testConcurrentRequestsSync() throws InterruptedException {
+        int numRequests = 100; // 100 = 1GB of data read
+        HttpClient client = new VertxAsyncHttpClientProvider().createInstance();
+
+        ForkJoinPool pool = new ForkJoinPool();
+        List<Callable<Void>> requests = new ArrayList<>(numRequests);
+        for (int i = 0; i < numRequests; i++) {
+            requests.add(() -> {
+                try (HttpResponse response = doRequestSync(client, "/long")) {
+                    byte[] body = response.getBodyAsBinaryData().toBytes();
+                    com.azure.core.test.utils.TestUtils.assertArraysEqual(LONG_BODY, body);
+                    return null;
+                }
+            });
+        }
+
+        pool.invokeAll(requests);
+        pool.shutdown();
+        assertTrue(pool.awaitTermination(60, TimeUnit.SECONDS));
     }
 
     @Test
     public void validateHeadersReturnAsIs() {
         HttpClient client = new VertxAsyncHttpClientProvider().createInstance();
 
-        final String singleValueHeaderName = "singleValue";
+        HttpHeaderName singleValueHeaderName = HttpHeaderName.fromString("singleValue");
         final String singleValueHeaderValue = "value";
 
-        final String multiValueHeaderName = "Multi-value";
+        HttpHeaderName multiValueHeaderName = HttpHeaderName.fromString("Multi-value");
         final List<String> multiValueHeaderValue = Arrays.asList("value1", "value2");
 
         HttpHeaders headers = new HttpHeaders()
@@ -203,11 +254,11 @@ public class VertxAsyncHttpClientTests {
 
                 HttpHeaders responseHeaders = response.getHeaders();
                 HttpHeader singleValueHeader = responseHeaders.get(singleValueHeaderName);
-                assertEquals(singleValueHeaderName, singleValueHeader.getName());
+                assertEquals(singleValueHeaderName.getCaseSensitiveName(), singleValueHeader.getName());
                 assertEquals(singleValueHeaderValue, singleValueHeader.getValue());
 
-                HttpHeader multiValueHeader = responseHeaders.get("Multi-value");
-                assertEquals(multiValueHeaderName, multiValueHeader.getName());
+                HttpHeader multiValueHeader = responseHeaders.get(multiValueHeaderName);
+                assertEquals(multiValueHeaderName.getCaseSensitiveName(), multiValueHeader.getName());
                 assertLinesMatch(multiValueHeaderValue, multiValueHeader.getValuesList());
             })
             .expectComplete()
@@ -254,10 +305,10 @@ public class VertxAsyncHttpClientTests {
         return client.send(request, context);
     }
 
-    static URL url(WireMockServer server, String path) {
+    static URL url(LocalTestServer server, String path) {
         try {
-            return new URL("http://localhost:" + server.port() + path);
-        } catch (MalformedURLException e) {
+            return new URI(server.getHttpUri() + path).toURL();
+        } catch (URISyntaxException | MalformedURLException e) {
             throw new RuntimeException(e);
         }
     }
@@ -275,13 +326,18 @@ public class VertxAsyncHttpClientTests {
 
     private static void checkBodyReceived(byte[] expectedBody, String path) {
         HttpClient client = new VertxAsyncHttpClientBuilder().build();
-        StepVerifier.create(doRequest(client, path).getBodyAsByteArray())
+        StepVerifier.create(doRequest(client, path).flatMap(HttpResponse::getBodyAsByteArray))
             .assertNext(bytes -> assertArrayEquals(expectedBody, bytes))
             .verifyComplete();
     }
 
-    private static HttpResponse doRequest(HttpClient client, String path) {
+    private static Mono<HttpResponse> doRequest(HttpClient client, String path) {
         HttpRequest request = new HttpRequest(HttpMethod.GET, url(server, path));
-        return client.send(request).block();
+        return client.send(request);
+    }
+
+    private static HttpResponse doRequestSync(HttpClient client, String path) {
+        HttpRequest request = new HttpRequest(HttpMethod.GET, url(server, path));
+        return client.sendSync(request, Context.NONE);
     }
 }

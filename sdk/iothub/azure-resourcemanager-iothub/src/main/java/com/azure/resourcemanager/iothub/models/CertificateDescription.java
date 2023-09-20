@@ -62,11 +62,13 @@ public interface CertificateDescription {
     interface Definition
         extends DefinitionStages.Blank, DefinitionStages.WithParentResource, DefinitionStages.WithCreate {
     }
+
     /** The CertificateDescription definition stages. */
     interface DefinitionStages {
         /** The first stage of the CertificateDescription definition. */
         interface Blank extends WithParentResource {
         }
+
         /** The stage of the CertificateDescription definition allowing to specify parent resource. */
         interface WithParentResource {
             /**
@@ -78,6 +80,7 @@ public interface CertificateDescription {
              */
             WithCreate withExistingIotHub(String resourceGroupName, String resourceName);
         }
+
         /**
          * The stage of the CertificateDescription definition which contains all the minimum required properties for the
          * resource to be created, but also allows for any other optional properties to be specified.
@@ -98,6 +101,7 @@ public interface CertificateDescription {
              */
             CertificateDescription create(Context context);
         }
+
         /** The stage of the CertificateDescription definition allowing to specify properties. */
         interface WithProperties {
             /**
@@ -108,6 +112,7 @@ public interface CertificateDescription {
              */
             WithCreate withProperties(CertificateProperties properties);
         }
+
         /** The stage of the CertificateDescription definition allowing to specify ifMatch. */
         interface WithIfMatch {
             /**
@@ -121,6 +126,7 @@ public interface CertificateDescription {
             WithCreate withIfMatch(String ifMatch);
         }
     }
+
     /**
      * Begins update for the CertificateDescription resource.
      *
@@ -145,6 +151,7 @@ public interface CertificateDescription {
          */
         CertificateDescription apply(Context context);
     }
+
     /** The CertificateDescription update stages. */
     interface UpdateStages {
         /** The stage of the CertificateDescription update allowing to specify properties. */
@@ -157,6 +164,7 @@ public interface CertificateDescription {
              */
             Update withProperties(CertificateProperties properties);
         }
+
         /** The stage of the CertificateDescription update allowing to specify ifMatch. */
         interface WithIfMatch {
             /**
@@ -170,6 +178,7 @@ public interface CertificateDescription {
             Update withIfMatch(String ifMatch);
         }
     }
+
     /**
      * Refreshes the resource to sync with Azure.
      *

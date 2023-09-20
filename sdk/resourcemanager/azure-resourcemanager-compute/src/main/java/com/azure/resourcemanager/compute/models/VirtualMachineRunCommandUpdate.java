@@ -203,7 +203,9 @@ public final class VirtualMachineRunCommandUpdate extends UpdateResource {
     }
 
     /**
-     * Get the outputBlobUri property: Specifies the Azure storage blob where script output stream will be uploaded.
+     * Get the outputBlobUri property: Specifies the Azure storage blob where script output stream will be uploaded. Use
+     * a SAS URI with read, append, create, write access OR use managed identity to provide the VM access to the blob.
+     * Refer outputBlobManagedIdentity parameter.
      *
      * @return the outputBlobUri value.
      */
@@ -212,7 +214,9 @@ public final class VirtualMachineRunCommandUpdate extends UpdateResource {
     }
 
     /**
-     * Set the outputBlobUri property: Specifies the Azure storage blob where script output stream will be uploaded.
+     * Set the outputBlobUri property: Specifies the Azure storage blob where script output stream will be uploaded. Use
+     * a SAS URI with read, append, create, write access OR use managed identity to provide the VM access to the blob.
+     * Refer outputBlobManagedIdentity parameter.
      *
      * @param outputBlobUri the outputBlobUri value to set.
      * @return the VirtualMachineRunCommandUpdate object itself.
@@ -226,7 +230,9 @@ public final class VirtualMachineRunCommandUpdate extends UpdateResource {
     }
 
     /**
-     * Get the errorBlobUri property: Specifies the Azure storage blob where script error stream will be uploaded.
+     * Get the errorBlobUri property: Specifies the Azure storage blob where script error stream will be uploaded. Use a
+     * SAS URI with read, append, create, write access OR use managed identity to provide the VM access to the blob.
+     * Refer errorBlobManagedIdentity parameter.
      *
      * @return the errorBlobUri value.
      */
@@ -235,7 +241,9 @@ public final class VirtualMachineRunCommandUpdate extends UpdateResource {
     }
 
     /**
-     * Set the errorBlobUri property: Specifies the Azure storage blob where script error stream will be uploaded.
+     * Set the errorBlobUri property: Specifies the Azure storage blob where script error stream will be uploaded. Use a
+     * SAS URI with read, append, create, write access OR use managed identity to provide the VM access to the blob.
+     * Refer errorBlobManagedIdentity parameter.
      *
      * @param errorBlobUri the errorBlobUri value to set.
      * @return the VirtualMachineRunCommandUpdate object itself.
@@ -249,7 +257,76 @@ public final class VirtualMachineRunCommandUpdate extends UpdateResource {
     }
 
     /**
-     * Get the provisioningState property: The provisioning state, which only appears in the response.
+     * Get the outputBlobManagedIdentity property: User-assigned managed identity that has access to outputBlobUri
+     * storage blob. Use an empty object in case of system-assigned identity. Make sure managed identity has been given
+     * access to blob's container with 'Storage Blob Data Contributor' role assignment. In case of user-assigned
+     * identity, make sure you add it under VM's identity. For more info on managed identity and Run Command, refer
+     * https://aka.ms/ManagedIdentity and https://aka.ms/RunCommandManaged.
+     *
+     * @return the outputBlobManagedIdentity value.
+     */
+    public RunCommandManagedIdentity outputBlobManagedIdentity() {
+        return this.innerProperties() == null ? null : this.innerProperties().outputBlobManagedIdentity();
+    }
+
+    /**
+     * Set the outputBlobManagedIdentity property: User-assigned managed identity that has access to outputBlobUri
+     * storage blob. Use an empty object in case of system-assigned identity. Make sure managed identity has been given
+     * access to blob's container with 'Storage Blob Data Contributor' role assignment. In case of user-assigned
+     * identity, make sure you add it under VM's identity. For more info on managed identity and Run Command, refer
+     * https://aka.ms/ManagedIdentity and https://aka.ms/RunCommandManaged.
+     *
+     * @param outputBlobManagedIdentity the outputBlobManagedIdentity value to set.
+     * @return the VirtualMachineRunCommandUpdate object itself.
+     */
+    public VirtualMachineRunCommandUpdate withOutputBlobManagedIdentity(
+        RunCommandManagedIdentity outputBlobManagedIdentity) {
+        if (this.innerProperties() == null) {
+            this.innerProperties = new VirtualMachineRunCommandProperties();
+        }
+        this.innerProperties().withOutputBlobManagedIdentity(outputBlobManagedIdentity);
+        return this;
+    }
+
+    /**
+     * Get the errorBlobManagedIdentity property: User-assigned managed identity that has access to errorBlobUri storage
+     * blob. Use an empty object in case of system-assigned identity. Make sure managed identity has been given access
+     * to blob's container with 'Storage Blob Data Contributor' role assignment. In case of user-assigned identity, make
+     * sure you add it under VM's identity. For more info on managed identity and Run Command, refer
+     * https://aka.ms/ManagedIdentity and https://aka.ms/RunCommandManaged.
+     *
+     * @return the errorBlobManagedIdentity value.
+     */
+    public RunCommandManagedIdentity errorBlobManagedIdentity() {
+        return this.innerProperties() == null ? null : this.innerProperties().errorBlobManagedIdentity();
+    }
+
+    /**
+     * Set the errorBlobManagedIdentity property: User-assigned managed identity that has access to errorBlobUri storage
+     * blob. Use an empty object in case of system-assigned identity. Make sure managed identity has been given access
+     * to blob's container with 'Storage Blob Data Contributor' role assignment. In case of user-assigned identity, make
+     * sure you add it under VM's identity. For more info on managed identity and Run Command, refer
+     * https://aka.ms/ManagedIdentity and https://aka.ms/RunCommandManaged.
+     *
+     * @param errorBlobManagedIdentity the errorBlobManagedIdentity value to set.
+     * @return the VirtualMachineRunCommandUpdate object itself.
+     */
+    public VirtualMachineRunCommandUpdate withErrorBlobManagedIdentity(
+        RunCommandManagedIdentity errorBlobManagedIdentity) {
+        if (this.innerProperties() == null) {
+            this.innerProperties = new VirtualMachineRunCommandProperties();
+        }
+        this.innerProperties().withErrorBlobManagedIdentity(errorBlobManagedIdentity);
+        return this;
+    }
+
+    /**
+     * Get the provisioningState property: The provisioning state, which only appears in the response. If
+     * treatFailureAsDeploymentFailure set to true, any failure in the script will fail the deployment and
+     * ProvisioningState will be marked as Failed. If treatFailureAsDeploymentFailure set to false, ProvisioningState
+     * would only reflect whether the run command was run or not by the extensions platform, it would not indicate
+     * whether script failed in case of script failures. See instance view of run command in case of script failures to
+     * see executionMessage, output, error: https://aka.ms/runcommandmanaged#get-execution-status-and-results.
      *
      * @return the provisioningState value.
      */
@@ -264,6 +341,37 @@ public final class VirtualMachineRunCommandUpdate extends UpdateResource {
      */
     public VirtualMachineRunCommandInstanceView instanceView() {
         return this.innerProperties() == null ? null : this.innerProperties().instanceView();
+    }
+
+    /**
+     * Get the treatFailureAsDeploymentFailure property: Optional. If set to true, any failure in the script will fail
+     * the deployment and ProvisioningState will be marked as Failed. If set to false, ProvisioningState would only
+     * reflect whether the run command was run or not by the extensions platform, it would not indicate whether script
+     * failed in case of script failures. See instance view of run command in case of script failures to see
+     * executionMessage, output, error: https://aka.ms/runcommandmanaged#get-execution-status-and-results.
+     *
+     * @return the treatFailureAsDeploymentFailure value.
+     */
+    public Boolean treatFailureAsDeploymentFailure() {
+        return this.innerProperties() == null ? null : this.innerProperties().treatFailureAsDeploymentFailure();
+    }
+
+    /**
+     * Set the treatFailureAsDeploymentFailure property: Optional. If set to true, any failure in the script will fail
+     * the deployment and ProvisioningState will be marked as Failed. If set to false, ProvisioningState would only
+     * reflect whether the run command was run or not by the extensions platform, it would not indicate whether script
+     * failed in case of script failures. See instance view of run command in case of script failures to see
+     * executionMessage, output, error: https://aka.ms/runcommandmanaged#get-execution-status-and-results.
+     *
+     * @param treatFailureAsDeploymentFailure the treatFailureAsDeploymentFailure value to set.
+     * @return the VirtualMachineRunCommandUpdate object itself.
+     */
+    public VirtualMachineRunCommandUpdate withTreatFailureAsDeploymentFailure(Boolean treatFailureAsDeploymentFailure) {
+        if (this.innerProperties() == null) {
+            this.innerProperties = new VirtualMachineRunCommandProperties();
+        }
+        this.innerProperties().withTreatFailureAsDeploymentFailure(treatFailureAsDeploymentFailure);
+        return this;
     }
 
     /**

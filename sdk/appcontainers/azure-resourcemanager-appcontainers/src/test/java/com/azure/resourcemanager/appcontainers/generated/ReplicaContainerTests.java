@@ -7,37 +7,36 @@ package com.azure.resourcemanager.appcontainers.generated;
 import com.azure.core.util.BinaryData;
 import com.azure.resourcemanager.appcontainers.models.ReplicaContainer;
 import org.junit.jupiter.api.Assertions;
-import org.junit.jupiter.api.Test;
 
 public final class ReplicaContainerTests {
-    @Test
-    public void testDeserialize() {
+    @org.junit.jupiter.api.Test
+    public void testDeserialize() throws Exception {
         ReplicaContainer model =
             BinaryData
                 .fromString(
-                    "{\"name\":\"fhsxttaugz\",\"containerId\":\"faazpxdtnkdmkqjj\",\"ready\":false,\"started\":false,\"restartCount\":1886433502,\"logStreamEndpoint\":\"pyouaibrebqaays\",\"execEndpoint\":\"ixqtn\"}")
+                    "{\"name\":\"cgpik\",\"containerId\":\"imejzanl\",\"ready\":false,\"started\":false,\"restartCount\":1297052787,\"runningState\":\"Terminated\",\"runningStateDetails\":\"onok\",\"logStreamEndpoint\":\"rjqc\",\"execEndpoint\":\"gzpfrla\"}")
                 .toObject(ReplicaContainer.class);
-        Assertions.assertEquals("fhsxttaugz", model.name());
-        Assertions.assertEquals("faazpxdtnkdmkqjj", model.containerId());
+        Assertions.assertEquals("cgpik", model.name());
+        Assertions.assertEquals("imejzanl", model.containerId());
         Assertions.assertEquals(false, model.ready());
         Assertions.assertEquals(false, model.started());
-        Assertions.assertEquals(1886433502, model.restartCount());
+        Assertions.assertEquals(1297052787, model.restartCount());
     }
 
-    @Test
-    public void testSerialize() {
+    @org.junit.jupiter.api.Test
+    public void testSerialize() throws Exception {
         ReplicaContainer model =
             new ReplicaContainer()
-                .withName("fhsxttaugz")
-                .withContainerId("faazpxdtnkdmkqjj")
+                .withName("cgpik")
+                .withContainerId("imejzanl")
                 .withReady(false)
                 .withStarted(false)
-                .withRestartCount(1886433502);
+                .withRestartCount(1297052787);
         model = BinaryData.fromObject(model).toObject(ReplicaContainer.class);
-        Assertions.assertEquals("fhsxttaugz", model.name());
-        Assertions.assertEquals("faazpxdtnkdmkqjj", model.containerId());
+        Assertions.assertEquals("cgpik", model.name());
+        Assertions.assertEquals("imejzanl", model.containerId());
         Assertions.assertEquals(false, model.ready());
         Assertions.assertEquals(false, model.started());
-        Assertions.assertEquals(1886433502, model.restartCount());
+        Assertions.assertEquals(1297052787, model.restartCount());
     }
 }

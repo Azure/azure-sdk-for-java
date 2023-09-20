@@ -13,10 +13,11 @@ import com.azure.core.http.rest.PagedIterable;
 import com.azure.core.management.AzureEnvironment;
 import com.azure.core.management.profile.AzureProfile;
 import com.azure.resourcemanager.postgresqlflexibleserver.PostgreSqlManager;
-import com.azure.resourcemanager.postgresqlflexibleserver.models.CapabilityProperties;
+import com.azure.resourcemanager.postgresqlflexibleserver.models.FlexibleServerCapability;
 import java.nio.ByteBuffer;
 import java.nio.charset.StandardCharsets;
 import java.time.OffsetDateTime;
+import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.Test;
 import org.mockito.ArgumentCaptor;
 import org.mockito.Mockito;
@@ -31,7 +32,7 @@ public final class LocationBasedCapabilitiesExecuteMockTests {
         ArgumentCaptor<HttpRequest> httpRequest = ArgumentCaptor.forClass(HttpRequest.class);
 
         String responseStr =
-            "{\"value\":[{\"zone\":\"qlfmmdnbb\",\"supportedHAMode\":[\"pswiydmcwyh\",\"dxssadbzm\",\"vdfznudaodvxzb\"],\"geoBackupSupported\":true,\"zoneRedundantHaSupported\":true,\"zoneRedundantHaAndGeoBackupSupported\":true,\"supportedFlexibleServerEditions\":[{\"name\":\"bhhxsrzdzuc\",\"supportedStorageEditions\":[],\"supportedServerVersions\":[],\"status\":\"t\"},{\"name\":\"vfiwjmygtdss\",\"supportedStorageEditions\":[],\"supportedServerVersions\":[],\"status\":\"eriofzpyqs\"},{\"name\":\"wab\",\"supportedStorageEditions\":[],\"supportedServerVersions\":[],\"status\":\"szhedplvw\"}],\"supportedHyperscaleNodeEditions\":[{\"name\":\"mwmbes\",\"supportedStorageEditions\":[],\"supportedServerVersions\":[],\"supportedNodeTypes\":[],\"status\":\"pjflcxogao\"},{\"name\":\"nzmnsikvm\",\"supportedStorageEditions\":[],\"supportedServerVersions\":[],\"supportedNodeTypes\":[],\"status\":\"l\"},{\"name\":\"zxmhhvhgu\",\"supportedStorageEditions\":[],\"supportedServerVersions\":[],\"supportedNodeTypes\":[],\"status\":\"dagxtibqd\"}],\"fastProvisioningSupported\":false,\"supportedFastProvisioningEditions\":[{\"supportedSku\":\"bogqxndlkzgxhu\",\"supportedStorageGb\":621942409607693787,\"supportedServerVersions\":\"podxunkb\"},{\"supportedSku\":\"xmubyyntwlrbq\",\"supportedStorageGb\":8060447161666090820,\"supportedServerVersions\":\"vseotgqrl\"},{\"supportedSku\":\"muwlauwzizxbm\",\"supportedStorageGb\":9118429342651119617,\"supportedServerVersions\":\"fuzmuvpbtt\"},{\"supportedSku\":\"morppxebmnzbtbh\",\"supportedStorageGb\":4679929570751619388,\"supportedServerVersions\":\"fgohdneuelfphs\"}],\"status\":\"htozfikdow\"}]}";
+            "{\"value\":[{\"name\":\"ynl\",\"supportedServerEditions\":[{\"name\":\"op\",\"defaultSkuName\":\"dlqiyntorzih\",\"supportedStorageEditions\":[],\"supportedServerSkus\":[],\"status\":\"Visible\",\"reason\":\"rmslyzrpzbchckqq\"},{\"name\":\"ioxiysuiizyn\",\"defaultSkuName\":\"dy\",\"supportedStorageEditions\":[],\"supportedServerSkus\":[],\"status\":\"Visible\",\"reason\":\"ibzyhwitsmyp\"},{\"name\":\"npcdpumnzgm\",\"defaultSkuName\":\"nmabik\",\"supportedStorageEditions\":[],\"supportedServerSkus\":[],\"status\":\"Available\",\"reason\":\"bldtlww\"},{\"name\":\"kdmtncvokotll\",\"defaultSkuName\":\"yhgsy\",\"supportedStorageEditions\":[],\"supportedServerSkus\":[],\"status\":\"Default\",\"reason\":\"tbnnha\"}],\"supportedServerVersions\":[{\"name\":\"rkvcikhnvpa\",\"supportedVersionsToUpgrade\":[\"x\",\"queziky\",\"ggxkallatmelwuip\"],\"status\":\"Disabled\",\"reason\":\"zkzivgvvcnay\"},{\"name\":\"yrnxxmueedn\",\"supportedVersionsToUpgrade\":[\"v\",\"tkwqqtchealm\"],\"status\":\"Default\",\"reason\":\"aayg\"},{\"name\":\"wvgpiohg\",\"supportedVersionsToUpgrade\":[\"tfudxepx\",\"yqagvrvm\",\"pkukghi\"],\"status\":\"Available\",\"reason\":\"xgwim\"}],\"fastProvisioningSupported\":\"Enabled\",\"supportedFastProvisioningEditions\":[{\"supportedTier\":\"xw\",\"supportedSku\":\"zk\",\"supportedStorageGb\":1767053067,\"supportedServerVersions\":\"rey\",\"serverCount\":520152641,\"status\":\"Visible\",\"reason\":\"jawneaiv\"},{\"supportedTier\":\"czelpcirel\",\"supportedSku\":\"eae\",\"supportedStorageGb\":1632471353,\"supportedServerVersions\":\"fatkld\",\"serverCount\":2043314878,\"status\":\"Default\",\"reason\":\"uaanozjosphy\"}],\"geoBackupSupported\":\"Enabled\",\"zoneRedundantHaSupported\":\"Disabled\",\"zoneRedundantHaAndGeoBackupSupported\":\"Enabled\",\"storageAutoGrowthSupported\":\"Enabled\",\"onlineResizeSupported\":\"Enabled\",\"restricted\":\"Enabled\",\"status\":\"Available\",\"reason\":\"wosytxitcskf\"}]}";
 
         Mockito.when(httpResponse.getStatusCode()).thenReturn(200);
         Mockito.when(httpResponse.getHeaders()).thenReturn(new HttpHeaders());
@@ -59,7 +60,9 @@ public final class LocationBasedCapabilitiesExecuteMockTests {
                     tokenRequestContext -> Mono.just(new AccessToken("this_is_a_token", OffsetDateTime.MAX)),
                     new AzureProfile("", "", AzureEnvironment.AZURE));
 
-        PagedIterable<CapabilityProperties> response =
-            manager.locationBasedCapabilities().execute("aolps", com.azure.core.util.Context.NONE);
+        PagedIterable<FlexibleServerCapability> response =
+            manager.locationBasedCapabilities().execute("n", com.azure.core.util.Context.NONE);
+
+        Assertions.assertEquals("ynl", response.iterator().next().name());
     }
 }

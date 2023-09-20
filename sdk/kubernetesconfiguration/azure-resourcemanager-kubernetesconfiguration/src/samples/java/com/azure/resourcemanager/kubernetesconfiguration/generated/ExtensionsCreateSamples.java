@@ -4,8 +4,8 @@
 
 package com.azure.resourcemanager.kubernetesconfiguration.generated;
 
-import com.azure.core.util.Context;
 import com.azure.resourcemanager.kubernetesconfiguration.fluent.models.ExtensionInner;
+import com.azure.resourcemanager.kubernetesconfiguration.models.Plan;
 import com.azure.resourcemanager.kubernetesconfiguration.models.Scope;
 import com.azure.resourcemanager.kubernetesconfiguration.models.ScopeCluster;
 import java.util.HashMap;
@@ -14,7 +14,7 @@ import java.util.Map;
 /** Samples for Extensions Create. */
 public final class ExtensionsCreateSamples {
     /*
-     * x-ms-original-file: specification/kubernetesconfiguration/resource-manager/Microsoft.KubernetesConfiguration/stable/2022-03-01/examples/CreateExtension.json
+     * x-ms-original-file: specification/kubernetesconfiguration/resource-manager/Microsoft.KubernetesConfiguration/stable/2022-11-01/examples/CreateExtension.json
      */
     /**
      * Sample code: Create Extension.
@@ -43,7 +43,37 @@ public final class ExtensionsCreateSamples {
                             "omsagent.secret.wsid",
                             "a38cef99-5a89-52ed-b6db-22095c23664b"))
                     .withConfigurationProtectedSettings(mapOf("omsagent.secret.key", "secretKeyValue01")),
-                Context.NONE);
+                com.azure.core.util.Context.NONE);
+    }
+
+    /*
+     * x-ms-original-file: specification/kubernetesconfiguration/resource-manager/Microsoft.KubernetesConfiguration/stable/2022-11-01/examples/CreateExtensionWithPlan.json
+     */
+    /**
+     * Sample code: Create Extension with Plan.
+     *
+     * @param manager Entry point to SourceControlConfigurationManager.
+     */
+    public static void createExtensionWithPlan(
+        com.azure.resourcemanager.kubernetesconfiguration.SourceControlConfigurationManager manager) {
+        manager
+            .extensions()
+            .create(
+                "rg1",
+                "Microsoft.Kubernetes",
+                "connectedClusters",
+                "clusterName1",
+                "azureVote",
+                new ExtensionInner()
+                    .withPlan(
+                        new Plan()
+                            .withName("azure-vote-standard")
+                            .withPublisher("Microsoft")
+                            .withProduct("azure-vote-standard-offer-id"))
+                    .withExtensionType("azure-vote")
+                    .withAutoUpgradeMinorVersion(true)
+                    .withReleaseTrain("Preview"),
+                com.azure.core.util.Context.NONE);
     }
 
     @SuppressWarnings("unchecked")

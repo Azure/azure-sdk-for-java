@@ -4,36 +4,21 @@
 
 package com.azure.resourcemanager.servicenetworking.fluent.models;
 
-import com.azure.core.annotation.Fluent;
-import com.azure.resourcemanager.servicenetworking.models.FrontendIpAddressVersion;
-import com.azure.resourcemanager.servicenetworking.models.FrontendMode;
-import com.azure.resourcemanager.servicenetworking.models.FrontendPropertiesIpAddress;
+import com.azure.core.annotation.Immutable;
 import com.azure.resourcemanager.servicenetworking.models.ProvisioningState;
 import com.fasterxml.jackson.annotation.JsonProperty;
 
 /** Frontend Properties. */
-@Fluent
+@Immutable
 public final class FrontendProperties {
     /*
-     * Frontend Mode (Optional).
+     * The Fully Qualified Domain Name of the DNS record associated to a Traffic Controller frontend.
      */
-    @JsonProperty(value = "mode")
-    private FrontendMode mode;
+    @JsonProperty(value = "fqdn", access = JsonProperty.Access.WRITE_ONLY)
+    private String fqdn;
 
     /*
-     * Frontend IP Address Version (Optional).
-     */
-    @JsonProperty(value = "ipAddressVersion")
-    private FrontendIpAddressVersion ipAddressVersion;
-
-    /*
-     * Frontend Public IP Address (Optional).
-     */
-    @JsonProperty(value = "publicIPAddress")
-    private FrontendPropertiesIpAddress publicIpAddress;
-
-    /*
-     * test doc
+     * Provisioning State of Traffic Controller Frontend Resource
      */
     @JsonProperty(value = "provisioningState", access = JsonProperty.Access.WRITE_ONLY)
     private ProvisioningState provisioningState;
@@ -43,67 +28,17 @@ public final class FrontendProperties {
     }
 
     /**
-     * Get the mode property: Frontend Mode (Optional).
+     * Get the fqdn property: The Fully Qualified Domain Name of the DNS record associated to a Traffic Controller
+     * frontend.
      *
-     * @return the mode value.
+     * @return the fqdn value.
      */
-    public FrontendMode mode() {
-        return this.mode;
+    public String fqdn() {
+        return this.fqdn;
     }
 
     /**
-     * Set the mode property: Frontend Mode (Optional).
-     *
-     * @param mode the mode value to set.
-     * @return the FrontendProperties object itself.
-     */
-    public FrontendProperties withMode(FrontendMode mode) {
-        this.mode = mode;
-        return this;
-    }
-
-    /**
-     * Get the ipAddressVersion property: Frontend IP Address Version (Optional).
-     *
-     * @return the ipAddressVersion value.
-     */
-    public FrontendIpAddressVersion ipAddressVersion() {
-        return this.ipAddressVersion;
-    }
-
-    /**
-     * Set the ipAddressVersion property: Frontend IP Address Version (Optional).
-     *
-     * @param ipAddressVersion the ipAddressVersion value to set.
-     * @return the FrontendProperties object itself.
-     */
-    public FrontendProperties withIpAddressVersion(FrontendIpAddressVersion ipAddressVersion) {
-        this.ipAddressVersion = ipAddressVersion;
-        return this;
-    }
-
-    /**
-     * Get the publicIpAddress property: Frontend Public IP Address (Optional).
-     *
-     * @return the publicIpAddress value.
-     */
-    public FrontendPropertiesIpAddress publicIpAddress() {
-        return this.publicIpAddress;
-    }
-
-    /**
-     * Set the publicIpAddress property: Frontend Public IP Address (Optional).
-     *
-     * @param publicIpAddress the publicIpAddress value to set.
-     * @return the FrontendProperties object itself.
-     */
-    public FrontendProperties withPublicIpAddress(FrontendPropertiesIpAddress publicIpAddress) {
-        this.publicIpAddress = publicIpAddress;
-        return this;
-    }
-
-    /**
-     * Get the provisioningState property: test doc.
+     * Get the provisioningState property: Provisioning State of Traffic Controller Frontend Resource.
      *
      * @return the provisioningState value.
      */
@@ -117,8 +52,5 @@ public final class FrontendProperties {
      * @throws IllegalArgumentException thrown if the instance is not valid.
      */
     public void validate() {
-        if (publicIpAddress() != null) {
-            publicIpAddress().validate();
-        }
     }
 }

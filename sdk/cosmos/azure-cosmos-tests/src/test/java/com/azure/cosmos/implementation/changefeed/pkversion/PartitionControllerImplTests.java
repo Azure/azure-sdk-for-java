@@ -3,12 +3,14 @@
 
 package com.azure.cosmos.implementation.changefeed.pkversion;
 
+import com.azure.cosmos.implementation.OperationType;
 import com.azure.cosmos.implementation.changefeed.LeaseContainer;
 import com.azure.cosmos.implementation.changefeed.LeaseManager;
 import com.azure.cosmos.implementation.changefeed.PartitionSupervisor;
 import com.azure.cosmos.implementation.changefeed.PartitionSupervisorFactory;
 import com.azure.cosmos.implementation.changefeed.exceptions.FeedRangeGoneException;
 import org.mockito.Mockito;
+import org.testng.annotations.DataProvider;
 import org.testng.annotations.Test;
 import reactor.core.publisher.Flux;
 import reactor.core.publisher.Mono;
@@ -21,13 +23,24 @@ import java.util.List;
 import java.util.UUID;
 
 import static org.mockito.Mockito.doNothing;
+import static org.mockito.Mockito.never;
 import static org.mockito.Mockito.times;
 import static org.mockito.Mockito.verify;
 import static org.mockito.Mockito.when;
 
 public class PartitionControllerImplTests {
-    @Test(groups = "unit")
-    public void handleSplit() throws InterruptedException {
+
+    @DataProvider(name = "maxScaleCountArgProvider")
+    public static Object[][] maxScaleCountArgProvider() {
+        return new Object[][]{
+            // maxScaleCount
+            { 0 },
+            { 1 }
+        };
+    }
+
+    @Test(groups = "unit", dataProvider = "maxScaleCountArgProvider")
+    public void handleSplit(int maxScaleCount) throws InterruptedException {
         LeaseContainer leaseContainer = Mockito.mock(LeaseContainer.class);
         when(leaseContainer.getOwnedLeases()).thenReturn(Flux.empty());
 
@@ -42,7 +55,8 @@ public class PartitionControllerImplTests {
                         leaseManager,
                         partitionSupervisorFactory,
                         synchronizer,
-                        scheduler);
+                        scheduler,
+                        maxScaleCount);
 
         ServiceItemLease lease = new ServiceItemLease().withLeaseToken("1");
         lease.setId("TestLease-" + UUID.randomUUID());
@@ -69,27 +83,53 @@ public class PartitionControllerImplTests {
         // add some waiting time here so that we can capture all the calls
         Thread.sleep(500);
 
-        // Verify total three leases are acquired
-        verify(leaseManager, times(1)).acquire(lease);
-        verify(leaseManager, times(1)).acquire(childLease1);
-        verify(leaseManager, times(1)).acquire(childLease2);
+        if (maxScaleCount > 0) {
+            // when maxScaleCount > 0, there will be no direct lease assignment, all lease assignments will go through load balancing stage
 
-        // Verify partitionSupervisor is created for each lease
-        verify(partitionSupervisorFactory, times(1)).create(lease);
-        verify(partitionSupervisorFactory, times(1)).create(childLease1);
-        verify(partitionSupervisorFactory, times(1)).create(childLease2);
+            // Verify only parent lease is acquired
+            verify(leaseManager, times(1)).acquire(lease);
+            verify(leaseManager, never()).acquire(childLease1);
+            verify(leaseManager, never()).acquire(childLease2);
 
-        // Verify only the lease with feedRangeGone exception will be deleted from lease container
-        verify(leaseManager, times(1)).delete(lease);
-        verify(leaseManager, Mockito.never()).delete(childLease1);
-        verify(leaseManager, Mockito.never()).delete(childLease2);
+            // Verify partitionSupervisor is created only for parent lease
+            verify(partitionSupervisorFactory, times(1)).create(lease);
+            verify(partitionSupervisorFactory, never()).create(childLease1);
+            verify(partitionSupervisorFactory, never()).create(childLease2);
 
-        // Verify at the end, all the leases will be released
-        verify(leaseManager, times(1)).release(lease);
-        verify(leaseManager, times(1)).release(childLease1);
-        verify(leaseManager, times(1)).release(childLease2);
+            // Verify only the lease with feedRangeGone exception will be deleted from lease container
+            verify(leaseManager, times(1)).delete(lease);
+            verify(leaseManager, Mockito.never()).delete(childLease1);
+            verify(leaseManager, Mockito.never()).delete(childLease2);
 
-        verify(leaseManager, Mockito.never()).updateProperties(Mockito.any());
+            // Verify at the end, all the leases will be released
+            verify(leaseManager, times(1)).release(lease);
+            verify(leaseManager, never()).release(childLease1);
+            verify(leaseManager, never()).release(childLease2);
+
+            verify(leaseManager, Mockito.never()).updateProperties(Mockito.any());
+        } else {
+            // Verify total three leases are acquired
+            verify(leaseManager, times(1)).acquire(lease);
+            verify(leaseManager, times(1)).acquire(childLease1);
+            verify(leaseManager, times(1)).acquire(childLease2);
+
+            // Verify partitionSupervisor is created for each lease
+            verify(partitionSupervisorFactory, times(1)).create(lease);
+            verify(partitionSupervisorFactory, times(1)).create(childLease1);
+            verify(partitionSupervisorFactory, times(1)).create(childLease2);
+
+            // Verify only the lease with feedRangeGone exception will be deleted from lease container
+            verify(leaseManager, times(1)).delete(lease);
+            verify(leaseManager, Mockito.never()).delete(childLease1);
+            verify(leaseManager, Mockito.never()).delete(childLease2);
+
+            // Verify at the end, all the leases will be released
+            verify(leaseManager, times(1)).release(lease);
+            verify(leaseManager, times(1)).release(childLease1);
+            verify(leaseManager, times(1)).release(childLease2);
+
+            verify(leaseManager, Mockito.never()).updateProperties(Mockito.any());
+        }
     }
 
     private void setDefaultLeaseManagerBehavior(LeaseManager leaseManager, List<ServiceItemLease> leases) {

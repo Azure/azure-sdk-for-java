@@ -23,6 +23,10 @@ public final class UpgradeGraphProperties {
     @JsonProperty(value = "supportedVersions", access = JsonProperty.Access.WRITE_ONLY)
     private List<SupportedVersion> supportedVersions;
 
+    /** Creates an instance of UpgradeGraphProperties class. */
+    public UpgradeGraphProperties() {
+    }
+
     /**
      * Get the applianceVersion property: The current appliance version.
      *

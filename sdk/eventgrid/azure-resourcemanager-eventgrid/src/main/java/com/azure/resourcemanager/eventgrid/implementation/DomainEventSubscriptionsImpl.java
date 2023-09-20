@@ -33,17 +33,6 @@ public final class DomainEventSubscriptionsImpl implements DomainEventSubscripti
         this.serviceManager = serviceManager;
     }
 
-    public DeliveryAttributeListResult getDeliveryAttributes(
-        String resourceGroupName, String domainName, String eventSubscriptionName) {
-        DeliveryAttributeListResultInner inner =
-            this.serviceClient().getDeliveryAttributes(resourceGroupName, domainName, eventSubscriptionName);
-        if (inner != null) {
-            return new DeliveryAttributeListResultImpl(inner, this.manager());
-        } else {
-            return null;
-        }
-    }
-
     public Response<DeliveryAttributeListResult> getDeliveryAttributesWithResponse(
         String resourceGroupName, String domainName, String eventSubscriptionName, Context context) {
         Response<DeliveryAttributeListResultInner> inner =
@@ -61,10 +50,12 @@ public final class DomainEventSubscriptionsImpl implements DomainEventSubscripti
         }
     }
 
-    public EventSubscription get(String resourceGroupName, String domainName, String eventSubscriptionName) {
-        EventSubscriptionInner inner = this.serviceClient().get(resourceGroupName, domainName, eventSubscriptionName);
+    public DeliveryAttributeListResult getDeliveryAttributes(
+        String resourceGroupName, String domainName, String eventSubscriptionName) {
+        DeliveryAttributeListResultInner inner =
+            this.serviceClient().getDeliveryAttributes(resourceGroupName, domainName, eventSubscriptionName);
         if (inner != null) {
-            return new EventSubscriptionImpl(inner, this.manager());
+            return new DeliveryAttributeListResultImpl(inner, this.manager());
         } else {
             return null;
         }
@@ -80,6 +71,15 @@ public final class DomainEventSubscriptionsImpl implements DomainEventSubscripti
                 inner.getStatusCode(),
                 inner.getHeaders(),
                 new EventSubscriptionImpl(inner.getValue(), this.manager()));
+        } else {
+            return null;
+        }
+    }
+
+    public EventSubscription get(String resourceGroupName, String domainName, String eventSubscriptionName) {
+        EventSubscriptionInner inner = this.serviceClient().get(resourceGroupName, domainName, eventSubscriptionName);
+        if (inner != null) {
+            return new EventSubscriptionImpl(inner, this.manager());
         } else {
             return null;
         }
@@ -160,17 +160,6 @@ public final class DomainEventSubscriptionsImpl implements DomainEventSubscripti
         }
     }
 
-    public EventSubscriptionFullUrl getFullUrl(
-        String resourceGroupName, String domainName, String eventSubscriptionName) {
-        EventSubscriptionFullUrlInner inner =
-            this.serviceClient().getFullUrl(resourceGroupName, domainName, eventSubscriptionName);
-        if (inner != null) {
-            return new EventSubscriptionFullUrlImpl(inner, this.manager());
-        } else {
-            return null;
-        }
-    }
-
     public Response<EventSubscriptionFullUrl> getFullUrlWithResponse(
         String resourceGroupName, String domainName, String eventSubscriptionName, Context context) {
         Response<EventSubscriptionFullUrlInner> inner =
@@ -181,6 +170,17 @@ public final class DomainEventSubscriptionsImpl implements DomainEventSubscripti
                 inner.getStatusCode(),
                 inner.getHeaders(),
                 new EventSubscriptionFullUrlImpl(inner.getValue(), this.manager()));
+        } else {
+            return null;
+        }
+    }
+
+    public EventSubscriptionFullUrl getFullUrl(
+        String resourceGroupName, String domainName, String eventSubscriptionName) {
+        EventSubscriptionFullUrlInner inner =
+            this.serviceClient().getFullUrl(resourceGroupName, domainName, eventSubscriptionName);
+        if (inner != null) {
+            return new EventSubscriptionFullUrlImpl(inner, this.manager());
         } else {
             return null;
         }

@@ -14,9 +14,8 @@ import com.fasterxml.jackson.annotation.JsonProperty;
 @Fluent
 public final class ContainerRegistryEventSource {
     /*
-     * The IP or hostname and the port of the registry node that generated the
-     * event. Generally, this will be resolved by os.Hostname() along with the
-     * running port.
+     * The IP or hostname and the port of the registry node that generated the event. Generally, this will be resolved
+     * by os.Hostname() along with the running port.
      */
     @JsonProperty(value = "addr")
     private String addr;
@@ -26,6 +25,9 @@ public final class ContainerRegistryEventSource {
      */
     @JsonProperty(value = "instanceID")
     private String instanceID;
+
+    /** Creates an instance of ContainerRegistryEventSource class. */
+    public ContainerRegistryEventSource() {}
 
     /**
      * Get the addr property: The IP or hostname and the port of the registry node that generated the event. Generally,

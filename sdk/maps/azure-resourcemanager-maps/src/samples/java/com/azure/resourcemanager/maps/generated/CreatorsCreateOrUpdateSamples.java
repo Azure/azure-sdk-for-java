@@ -11,7 +11,7 @@ import java.util.Map;
 /** Samples for Creators CreateOrUpdate. */
 public final class CreatorsCreateOrUpdateSamples {
     /*
-     * x-ms-original-file: specification/maps/resource-manager/Microsoft.Maps/stable/2021-02-01/examples/CreateMapsCreator.json
+     * x-ms-original-file: specification/maps/resource-manager/Microsoft.Maps/stable/2023-06-01/examples/CreateMapsCreator.json
      */
     /**
      * Sample code: Create Creator Resource.
@@ -29,6 +29,7 @@ public final class CreatorsCreateOrUpdateSamples {
             .create();
     }
 
+    // Use "Map.of" if available
     @SuppressWarnings("unchecked")
     private static <T> Map<String, T> mapOf(Object... inputs) {
         Map<String, T> map = new HashMap<>();

@@ -15,4 +15,6 @@ import com.fasterxml.jackson.dataformat.xml.annotation.JacksonXmlRootElement;
 @JacksonXmlRootElement(localName = "EmptyRuleAction")
 @Immutable
 public final class EmptyRuleActionImpl extends RuleActionImpl {
+    /** Creates an instance of EmptyRuleAction class. */
+    public EmptyRuleActionImpl() {}
 }

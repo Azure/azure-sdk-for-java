@@ -12,6 +12,7 @@ trigger:
     exclude:
       - sdk/webpubsub/pom.xml
       - sdk/webpubsub/azure-messaging-webpubsub/pom.xml
+      - sdk/webpubsub/azure-messaging-webpubsub-client/pom.xml
       - sdk/webpubsub/azure-resourcemanager-webpubsub/pom.xml
 
 pr:
@@ -27,6 +28,7 @@ pr:
     exclude:
       - sdk/webpubsub/pom.xml
       - sdk/webpubsub/azure-messaging-webpubsub/pom.xml
+      - sdk/webpubsub/azure-messaging-webpubsub-client/pom.xml
       - sdk/webpubsub/azure-resourcemanager-webpubsub/pom.xml
 
 parameters:
@@ -34,6 +36,10 @@ parameters:
   displayName: 'azure-messaging-webpubsub'
   type: boolean
   default: true
+- name: release_azuremessagingwebpubsubclient
+  displayName: 'azure-messaging-webpubsub-client'
+  type: boolean
+  default: false
 - name: release_azureresourcemanagerwebpubsub
   displayName: 'azure-resourcemanager-webpubsub'
   type: boolean
@@ -49,6 +55,10 @@ extends:
         groupId: com.azure
         safeName: azuremessagingwebpubsub
         releaseInBatch: ${{ parameters.release_azuremessagingwebpubsub }}
+      - name: azure-messaging-webpubsub-client
+        groupId: com.azure
+        safeName: azuremessagingwebpubsubclient
+        releaseInBatch: ${{ parameters.release_azuremessagingwebpubsubclient }}
       - name: azure-resourcemanager-webpubsub
         groupId: com.azure.resourcemanager
         safeName: azureresourcemanagerwebpubsub

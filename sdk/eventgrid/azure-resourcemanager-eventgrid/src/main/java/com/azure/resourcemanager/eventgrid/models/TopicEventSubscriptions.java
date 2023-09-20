@@ -11,24 +11,12 @@ import com.azure.core.util.Context;
 /** Resource collection API of TopicEventSubscriptions. */
 public interface TopicEventSubscriptions {
     /**
-     * Get all delivery attributes for an event subscription for topic.
+     * Get delivery attributes for an event subscription for topic.
+     *
+     * <p>Get all delivery attributes for an event subscription for topic.
      *
      * @param resourceGroupName The name of the resource group within the user's subscription.
-     * @param topicName Name of the domain topic.
-     * @param eventSubscriptionName Name of the event subscription.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return all delivery attributes for an event subscription for topic.
-     */
-    DeliveryAttributeListResult getDeliveryAttributes(
-        String resourceGroupName, String topicName, String eventSubscriptionName);
-
-    /**
-     * Get all delivery attributes for an event subscription for topic.
-     *
-     * @param resourceGroupName The name of the resource group within the user's subscription.
-     * @param topicName Name of the domain topic.
+     * @param topicName Name of the topic.
      * @param eventSubscriptionName Name of the event subscription.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
@@ -40,24 +28,28 @@ public interface TopicEventSubscriptions {
         String resourceGroupName, String topicName, String eventSubscriptionName, Context context);
 
     /**
-     * Get properties of an event subscription of a topic.
+     * Get delivery attributes for an event subscription for topic.
+     *
+     * <p>Get all delivery attributes for an event subscription for topic.
      *
      * @param resourceGroupName The name of the resource group within the user's subscription.
-     * @param topicName Name of the partner topic.
-     * @param eventSubscriptionName Name of the event subscription to be found. Event subscription names must be between
-     *     3 and 100 characters in length and use alphanumeric letters only.
+     * @param topicName Name of the topic.
+     * @param eventSubscriptionName Name of the event subscription.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return properties of an event subscription of a topic.
+     * @return all delivery attributes for an event subscription for topic.
      */
-    EventSubscription get(String resourceGroupName, String topicName, String eventSubscriptionName);
+    DeliveryAttributeListResult getDeliveryAttributes(
+        String resourceGroupName, String topicName, String eventSubscriptionName);
 
     /**
-     * Get properties of an event subscription of a topic.
+     * Get an event subscription of a topic.
+     *
+     * <p>Get properties of an event subscription of a topic.
      *
      * @param resourceGroupName The name of the resource group within the user's subscription.
-     * @param topicName Name of the partner topic.
+     * @param topicName Name of the topic.
      * @param eventSubscriptionName Name of the event subscription to be found. Event subscription names must be between
      *     3 and 100 characters in length and use alphanumeric letters only.
      * @param context The context to associate with this operation.
@@ -70,7 +62,25 @@ public interface TopicEventSubscriptions {
         String resourceGroupName, String topicName, String eventSubscriptionName, Context context);
 
     /**
-     * Delete an existing event subscription for a topic.
+     * Get an event subscription of a topic.
+     *
+     * <p>Get properties of an event subscription of a topic.
+     *
+     * @param resourceGroupName The name of the resource group within the user's subscription.
+     * @param topicName Name of the topic.
+     * @param eventSubscriptionName Name of the event subscription to be found. Event subscription names must be between
+     *     3 and 100 characters in length and use alphanumeric letters only.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return properties of an event subscription of a topic.
+     */
+    EventSubscription get(String resourceGroupName, String topicName, String eventSubscriptionName);
+
+    /**
+     * Delete an event subscription for a topic.
+     *
+     * <p>Delete an existing event subscription for a topic.
      *
      * @param resourceGroupName The name of the resource group within the user's subscription.
      * @param topicName Name of the topic.
@@ -83,7 +93,9 @@ public interface TopicEventSubscriptions {
     void delete(String resourceGroupName, String topicName, String eventSubscriptionName);
 
     /**
-     * Delete an existing event subscription for a topic.
+     * Delete an event subscription for a topic.
+     *
+     * <p>Delete an existing event subscription for a topic.
      *
      * @param resourceGroupName The name of the resource group within the user's subscription.
      * @param topicName Name of the topic.
@@ -97,20 +109,9 @@ public interface TopicEventSubscriptions {
     void delete(String resourceGroupName, String topicName, String eventSubscriptionName, Context context);
 
     /**
-     * Get the full endpoint URL for an event subscription for topic.
+     * Get full URL of an event subscription for topic.
      *
-     * @param resourceGroupName The name of the resource group within the user's subscription.
-     * @param topicName Name of the domain topic.
-     * @param eventSubscriptionName Name of the event subscription.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the full endpoint URL for an event subscription for topic.
-     */
-    EventSubscriptionFullUrl getFullUrl(String resourceGroupName, String topicName, String eventSubscriptionName);
-
-    /**
-     * Get the full endpoint URL for an event subscription for topic.
+     * <p>Get the full endpoint URL for an event subscription for topic.
      *
      * @param resourceGroupName The name of the resource group within the user's subscription.
      * @param topicName Name of the domain topic.
@@ -125,7 +126,24 @@ public interface TopicEventSubscriptions {
         String resourceGroupName, String topicName, String eventSubscriptionName, Context context);
 
     /**
-     * List all event subscriptions that have been created for a specific topic.
+     * Get full URL of an event subscription for topic.
+     *
+     * <p>Get the full endpoint URL for an event subscription for topic.
+     *
+     * @param resourceGroupName The name of the resource group within the user's subscription.
+     * @param topicName Name of the domain topic.
+     * @param eventSubscriptionName Name of the event subscription.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return the full endpoint URL for an event subscription for topic.
+     */
+    EventSubscriptionFullUrl getFullUrl(String resourceGroupName, String topicName, String eventSubscriptionName);
+
+    /**
+     * List all event subscriptions for a specific topic.
+     *
+     * <p>List all event subscriptions that have been created for a specific topic.
      *
      * @param resourceGroupName The name of the resource group within the user's subscription.
      * @param topicName Name of the topic.
@@ -137,7 +155,9 @@ public interface TopicEventSubscriptions {
     PagedIterable<EventSubscription> list(String resourceGroupName, String topicName);
 
     /**
-     * List all event subscriptions that have been created for a specific topic.
+     * List all event subscriptions for a specific topic.
+     *
+     * <p>List all event subscriptions that have been created for a specific topic.
      *
      * @param resourceGroupName The name of the resource group within the user's subscription.
      * @param topicName Name of the topic.
@@ -159,7 +179,9 @@ public interface TopicEventSubscriptions {
         String resourceGroupName, String topicName, String filter, Integer top, Context context);
 
     /**
-     * Get properties of an event subscription of a topic.
+     * Get an event subscription of a topic.
+     *
+     * <p>Get properties of an event subscription of a topic.
      *
      * @param id the resource ID.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
@@ -170,7 +192,9 @@ public interface TopicEventSubscriptions {
     EventSubscription getById(String id);
 
     /**
-     * Get properties of an event subscription of a topic.
+     * Get an event subscription of a topic.
+     *
+     * <p>Get properties of an event subscription of a topic.
      *
      * @param id the resource ID.
      * @param context The context to associate with this operation.
@@ -182,7 +206,9 @@ public interface TopicEventSubscriptions {
     Response<EventSubscription> getByIdWithResponse(String id, Context context);
 
     /**
-     * Delete an existing event subscription for a topic.
+     * Delete an event subscription for a topic.
+     *
+     * <p>Delete an existing event subscription for a topic.
      *
      * @param id the resource ID.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
@@ -192,7 +218,9 @@ public interface TopicEventSubscriptions {
     void deleteById(String id);
 
     /**
-     * Delete an existing event subscription for a topic.
+     * Delete an event subscription for a topic.
+     *
+     * <p>Delete an existing event subscription for a topic.
      *
      * @param id the resource ID.
      * @param context The context to associate with this operation.

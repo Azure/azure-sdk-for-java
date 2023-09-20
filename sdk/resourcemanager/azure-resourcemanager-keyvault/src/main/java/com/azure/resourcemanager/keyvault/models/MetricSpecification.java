@@ -77,6 +77,10 @@ public final class MetricSpecification {
     @JsonProperty(value = "internalMetricName")
     private String internalMetricName;
 
+    /** Creates an instance of MetricSpecification class. */
+    public MetricSpecification() {
+    }
+
     /**
      * Get the name property: Name of metric specification.
      *

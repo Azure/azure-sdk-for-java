@@ -26,15 +26,6 @@ public final class ResourceProviderCommonsImpl implements ResourceProviderCommon
         this.serviceManager = serviceManager;
     }
 
-    public UserSubscriptionQuotaListResult getSubscriptionQuota() {
-        UserSubscriptionQuotaListResultInner inner = this.serviceClient().getSubscriptionQuota();
-        if (inner != null) {
-            return new UserSubscriptionQuotaListResultImpl(inner, this.manager());
-        } else {
-            return null;
-        }
-    }
-
     public Response<UserSubscriptionQuotaListResult> getSubscriptionQuotaWithResponse(Context context) {
         Response<UserSubscriptionQuotaListResultInner> inner =
             this.serviceClient().getSubscriptionQuotaWithResponse(context);
@@ -44,6 +35,15 @@ public final class ResourceProviderCommonsImpl implements ResourceProviderCommon
                 inner.getStatusCode(),
                 inner.getHeaders(),
                 new UserSubscriptionQuotaListResultImpl(inner.getValue(), this.manager()));
+        } else {
+            return null;
+        }
+    }
+
+    public UserSubscriptionQuotaListResult getSubscriptionQuota() {
+        UserSubscriptionQuotaListResultInner inner = this.serviceClient().getSubscriptionQuota();
+        if (inner != null) {
+            return new UserSubscriptionQuotaListResultImpl(inner, this.manager());
         } else {
             return null;
         }

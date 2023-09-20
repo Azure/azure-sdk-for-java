@@ -8,6 +8,7 @@ import static org.junit.jupiter.api.Assertions.assertNotNull;
 import static org.junit.jupiter.api.Assertions.assertTrue;
 
 import java.time.OffsetDateTime;
+import java.time.ZoneOffset;
 import java.util.UUID;
 
 import org.junit.jupiter.api.Test;
@@ -51,7 +52,7 @@ class SentShareClientTest extends PurviewShareTestBase {
         UserInvitation sentShareInvitation = new UserInvitation()
                 .setTargetEmail(super.consumerEmail)
                 .setNotify(true)
-                .setExpirationDate(OffsetDateTime.now().plusDays(60));
+                .setExpirationDate(OffsetDateTime.of(2500, 1, 1, 1, 1, 1, 1, ZoneOffset.UTC));
 
         Response<BinaryData> invitationResponse = sentSharesClient.createSentShareInvitationWithResponse(
                 sentShareId.toString(), sentShareInvitationId, BinaryData.fromObject(sentShareInvitation),
@@ -80,13 +81,13 @@ class SentShareClientTest extends PurviewShareTestBase {
     }
 
     @Test
-    void getAllSentSharesTest() {
+    void listSentSharesTest() {
 
         UUID sentShareId = UUID.fromString(testResourceNamer.randomUuid());
         SentShare sentShare = super.createSentShare(sentShareId);
 
         PagedIterable<BinaryData> sentShares = super.sentSharesClient
-                .getAllSentShares(super.providerStorageAccountResourceId, new RequestOptions());
+                .listSentShares(super.providerStorageAccountResourceId, new RequestOptions());
 
         assertTrue(sentShares.stream().findAny().isPresent());
         assertTrue(sentShares.stream().map(binaryData -> binaryData.toObject(SentShare.class))
@@ -140,13 +141,13 @@ class SentShareClientTest extends PurviewShareTestBase {
     }
 
     @Test
-    void getAllSentShareServiceInvitations() {
+    void listSentShareServiceInvitations() {
         UUID sentShareId = UUID.fromString(testResourceNamer.randomUuid());
         UUID sentShareInvitationId = UUID.fromString(testResourceNamer.randomUuid());
         super.createSentShareAndServiceInvitation(sentShareId, sentShareInvitationId);
 
         PagedIterable<BinaryData> invitations = super.sentSharesClient
-                .getAllSentShareInvitations(sentShareId.toString(), new RequestOptions());
+                .listSentShareInvitations(sentShareId.toString(), new RequestOptions());
 
         assertTrue(invitations.stream().findAny().isPresent());
         assertTrue(invitations.stream().map(binaryData -> binaryData.toObject(ServiceInvitation.class))

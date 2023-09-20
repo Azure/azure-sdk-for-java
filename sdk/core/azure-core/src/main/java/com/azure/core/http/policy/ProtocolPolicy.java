@@ -9,7 +9,6 @@ import com.azure.core.http.HttpPipelineNextSyncPolicy;
 import com.azure.core.http.HttpResponse;
 import com.azure.core.util.UrlBuilder;
 import com.azure.core.util.logging.ClientLogger;
-import com.azure.core.util.logging.LogLevel;
 import reactor.core.publisher.Mono;
 
 import java.net.MalformedURLException;
@@ -27,7 +26,9 @@ public class ProtocolPolicy implements HttpPipelinePolicy {
         protected void beforeSendingRequest(HttpPipelineCallContext context) {
             final UrlBuilder urlBuilder = UrlBuilder.parse(context.getHttpRequest().getUrl());
             if (overwrite || urlBuilder.getScheme() == null) {
-                LOGGER.log(LogLevel.VERBOSE, () -> "Setting protocol to " + protocol);
+                LOGGER.atVerbose()
+                    .addKeyValue("protocol", protocol)
+                    .log("Setting protocol");
 
                 try {
                     context.getHttpRequest().setUrl(urlBuilder.setScheme(protocol).toUrl());

@@ -5,6 +5,7 @@ package com.azure.core.management.http.policy;
 
 import com.azure.core.credential.TokenCredential;
 import com.azure.core.credential.TokenRequestContext;
+import com.azure.core.http.HttpHeaderName;
 import com.azure.core.http.HttpPipelineCallContext;
 import com.azure.core.http.HttpResponse;
 import com.azure.core.http.policy.BearerTokenAuthenticationPolicy;
@@ -18,7 +19,6 @@ import java.util.Base64;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
-import java.util.NoSuchElementException;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
@@ -32,7 +32,6 @@ public class ArmChallengeAuthenticationPolicy extends BearerTokenAuthenticationP
     private static final Pattern AUTHENTICATION_CHALLENGE_PARAMS_PATTERN =
         Pattern.compile("(?:(\\w+)=\"([^\"\"]*)\")+");
     private static final String CLAIMS_PARAMETER = "claims";
-    private static final String WWW_AUTHENTICATE = "WWW-Authenticate";
     private static final String ARM_SCOPES_KEY = "ARMScopes";
 
     private final String[] scopes;
@@ -76,7 +75,7 @@ public class ArmChallengeAuthenticationPolicy extends BearerTokenAuthenticationP
     @Override
     public Mono<Boolean> authorizeRequestOnChallenge(HttpPipelineCallContext context, HttpResponse response) {
         return Mono.defer(() -> {
-            String authHeader = response.getHeaderValue(WWW_AUTHENTICATE);
+            String authHeader = response.getHeaderValue(HttpHeaderName.WWW_AUTHENTICATE);
             if (response.getStatusCode() == 401 && authHeader != null) {
                 List<AuthenticationChallenge> challenges = parseChallenges(authHeader);
                 for (AuthenticationChallenge authenticationChallenge : challenges) {
@@ -86,14 +85,9 @@ public class ArmChallengeAuthenticationPolicy extends BearerTokenAuthenticationP
                         String claims = new String(Base64.getUrlDecoder()
                             .decode(extractedChallengeParams.get(CLAIMS_PARAMETER)), StandardCharsets.UTF_8);
 
-                        String[] scopes;
                         // We should've retrieved and configured the scopes in on Before logic,
                         // re-use it here as an optimization.
-                        try {
-                            scopes = (String[]) context.getData(ARM_SCOPES_KEY).get();
-                        } catch (NoSuchElementException e) {
-                            scopes = this.scopes;
-                        }
+                        String[] scopes = (String[]) context.getData(ARM_SCOPES_KEY).orElse(this.scopes);
 
                         // If scopes wasn't configured in On Before logic or at constructor level,
                         // then this method will retrieve it again.
@@ -101,7 +95,7 @@ public class ArmChallengeAuthenticationPolicy extends BearerTokenAuthenticationP
                         return setAuthorizationHeader(context,
                             new TokenRequestContext()
                                 .addScopes(scopes).setClaims(claims))
-                            .flatMap(b -> Mono.just(true));
+                            .thenReturn(true);
                     }
                 }
             }
@@ -111,7 +105,7 @@ public class ArmChallengeAuthenticationPolicy extends BearerTokenAuthenticationP
 
     @Override
     public boolean authorizeRequestOnChallengeSync(HttpPipelineCallContext context, HttpResponse response) {
-        String authHeader = response.getHeaderValue(WWW_AUTHENTICATE);
+        String authHeader = response.getHeaderValue(HttpHeaderName.WWW_AUTHENTICATE);
         if (response.getStatusCode() == 401 && authHeader != null) {
             List<AuthenticationChallenge> challenges = parseChallenges(authHeader);
             for (AuthenticationChallenge authenticationChallenge : challenges) {
@@ -121,14 +115,9 @@ public class ArmChallengeAuthenticationPolicy extends BearerTokenAuthenticationP
                     String claims = new String(Base64.getUrlDecoder()
                         .decode(extractedChallengeParams.get(CLAIMS_PARAMETER)), StandardCharsets.UTF_8);
 
-                    String[] scopes;
                     // We should've retrieved and configured the scopes in on Before logic,
                     // re-use it here as an optimization.
-                    try {
-                        scopes = (String[]) context.getData(ARM_SCOPES_KEY).get();
-                    } catch (NoSuchElementException e) {
-                        scopes = this.scopes;
-                    }
+                    String[] scopes = (String[]) context.getData(ARM_SCOPES_KEY).orElse(this.scopes);
 
                     // If scopes wasn't configured in On Before logic or at constructor level,
                     // then this method will retrieve it again.

@@ -4,12 +4,10 @@
 
 package com.azure.resourcemanager.eventgrid.generated;
 
-import com.azure.core.util.Context;
-
 /** Samples for EventSubscriptions GetFullUrl. */
 public final class EventSubscriptionsGetFullUrlSamples {
     /*
-     * x-ms-original-file: specification/eventgrid/resource-manager/Microsoft.EventGrid/stable/2022-06-15/examples/EventSubscriptions_GetFullUrlForResource.json
+     * x-ms-original-file: specification/eventgrid/resource-manager/Microsoft.EventGrid/preview/2023-06-01-preview/examples/EventSubscriptions_GetFullUrlForResource.json
      */
     /**
      * Sample code: EventSubscriptions_GetFullUrlForResource.
@@ -21,13 +19,13 @@ public final class EventSubscriptionsGetFullUrlSamples {
         manager
             .eventSubscriptions()
             .getFullUrlWithResponse(
-                "subscriptions/5b4b650e-28b9-4790-b3ab-ddbd88d727c4/resourceGroups/examplerg/providers/Microsoft.EventHub/namespaces/examplenamespace1",
+                "subscriptions/8f6b6269-84f2-4d09-9e31-1127efcd1e40/resourceGroups/examplerg/providers/Microsoft.EventHub/namespaces/examplenamespace1",
                 "examplesubscription1",
-                Context.NONE);
+                com.azure.core.util.Context.NONE);
     }
 
     /*
-     * x-ms-original-file: specification/eventgrid/resource-manager/Microsoft.EventGrid/stable/2022-06-15/examples/EventSubscriptions_GetFullUrlForResourceGroup.json
+     * x-ms-original-file: specification/eventgrid/resource-manager/Microsoft.EventGrid/preview/2023-06-01-preview/examples/EventSubscriptions_GetFullUrlForResourceGroup.json
      */
     /**
      * Sample code: EventSubscriptions_GetFullUrlForResourceGroup.
@@ -39,13 +37,13 @@ public final class EventSubscriptionsGetFullUrlSamples {
         manager
             .eventSubscriptions()
             .getFullUrlWithResponse(
-                "subscriptions/5b4b650e-28b9-4790-b3ab-ddbd88d727c4/resourceGroups/examplerg",
+                "subscriptions/8f6b6269-84f2-4d09-9e31-1127efcd1e40/resourceGroups/examplerg",
                 "examplesubscription2",
-                Context.NONE);
+                com.azure.core.util.Context.NONE);
     }
 
     /*
-     * x-ms-original-file: specification/eventgrid/resource-manager/Microsoft.EventGrid/stable/2022-06-15/examples/EventSubscriptions_GetFullUrlForSubscription.json
+     * x-ms-original-file: specification/eventgrid/resource-manager/Microsoft.EventGrid/preview/2023-06-01-preview/examples/EventSubscriptions_GetFullUrlForSubscription.json
      */
     /**
      * Sample code: EventSubscriptions_GetFullUrlForSubscription.
@@ -57,11 +55,13 @@ public final class EventSubscriptionsGetFullUrlSamples {
         manager
             .eventSubscriptions()
             .getFullUrlWithResponse(
-                "subscriptions/5b4b650e-28b9-4790-b3ab-ddbd88d727c4", "examplesubscription3", Context.NONE);
+                "subscriptions/8f6b6269-84f2-4d09-9e31-1127efcd1e40",
+                "examplesubscription3",
+                com.azure.core.util.Context.NONE);
     }
 
     /*
-     * x-ms-original-file: specification/eventgrid/resource-manager/Microsoft.EventGrid/stable/2022-06-15/examples/EventSubscriptions_GetFullUrlForCustomTopic.json
+     * x-ms-original-file: specification/eventgrid/resource-manager/Microsoft.EventGrid/preview/2023-06-01-preview/examples/EventSubscriptions_GetFullUrlForCustomTopic.json
      */
     /**
      * Sample code: EventSubscriptions_GetFullUrlForCustomTopic.
@@ -73,8 +73,8 @@ public final class EventSubscriptionsGetFullUrlSamples {
         manager
             .eventSubscriptions()
             .getFullUrlWithResponse(
-                "subscriptions/5b4b650e-28b9-4790-b3ab-ddbd88d727c4/resourceGroups/examplerg/providers/Microsoft.EventGrid/topics/exampletopic2",
+                "subscriptions/8f6b6269-84f2-4d09-9e31-1127efcd1e40/resourceGroups/examplerg/providers/Microsoft.EventGrid/topics/exampletopic2",
                 "examplesubscription1",
-                Context.NONE);
+                com.azure.core.util.Context.NONE);
     }
 }

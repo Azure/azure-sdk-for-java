@@ -59,6 +59,6 @@ public final class AlertsUpdateResourceGroupLevelStateToActivateWithResponseMock
         manager
             .alerts()
             .updateResourceGroupLevelStateToActivateWithResponse(
-                "nsmy", "jow", "yeyzm", com.azure.core.util.Context.NONE);
+                "x", "mdbgi", "ehfgsm", com.azure.core.util.Context.NONE);
     }
 }

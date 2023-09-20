@@ -22,6 +22,10 @@ public final class RoutingTwin {
     @JsonProperty(value = "properties")
     private RoutingTwinProperties properties;
 
+    /** Creates an instance of RoutingTwin class. */
+    public RoutingTwin() {
+    }
+
     /**
      * Get the tags property: Twin Tags.
      *

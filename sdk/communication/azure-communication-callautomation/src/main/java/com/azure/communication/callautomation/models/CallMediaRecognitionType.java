@@ -13,6 +13,8 @@ public final class CallMediaRecognitionType extends ExpandableStringEnum<CallMed
     public static final CallMediaRecognitionType DTMF = fromString("dtmf");
     /** Static value choices for RecognitionTypeInternal. */
     public static final CallMediaRecognitionType CHOICES = fromString("choices");
+    /** Static value continuous speech for RecognitionType. */
+    public static final CallMediaRecognitionType SPEECH = fromString("speech");
 
     /**
      * Creates or finds a RecognitionType from its string representation.

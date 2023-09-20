@@ -5,22 +5,25 @@
 package com.azure.data.appconfiguration.models;
 
 import com.azure.core.annotation.Fluent;
-import com.fasterxml.jackson.annotation.JsonCreator;
-import com.fasterxml.jackson.annotation.JsonProperty;
+import com.azure.json.JsonReader;
+import com.azure.json.JsonSerializable;
+import com.azure.json.JsonToken;
+import com.azure.json.JsonWriter;
+import java.io.IOException;
+import java.util.ArrayList;
+import java.util.List;
 
 /** Enables filtering of key-values. */
 @Fluent
-public final class SnapshotSettingFilter {
+public final class SnapshotSettingFilter implements JsonSerializable<SnapshotSettingFilter> {
     /*
      * Filters key-values by their key field.
      */
-    @JsonProperty(value = "key", required = true)
-    private String key;
+    private final String key;
 
     /*
      * Filters key-values by their label field.
      */
-    @JsonProperty(value = "label")
     private String label;
 
     /**
@@ -28,8 +31,7 @@ public final class SnapshotSettingFilter {
      *
      * @param key the key value to set.
      */
-    @JsonCreator
-    public SnapshotSettingFilter(@JsonProperty(value = "key", required = true) String key) {
+    public SnapshotSettingFilter(String key) {
         this.key = key;
     }
 
@@ -60,5 +62,57 @@ public final class SnapshotSettingFilter {
     public SnapshotSettingFilter setLabel(String label) {
         this.label = label;
         return this;
+    }
+
+    @Override
+    public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
+        jsonWriter.writeStartObject();
+        jsonWriter.writeStringField("key", this.key);
+        jsonWriter.writeStringField("label", this.label);
+        return jsonWriter.writeEndObject();
+    }
+
+    /**
+     * Reads an instance of SnapshotSettingFilter from the JsonReader.
+     *
+     * @param jsonReader The JsonReader being read.
+     * @return An instance of SnapshotSettingFilter if the JsonReader was pointing to an instance of it, or null if it
+     *     was pointing to JSON null.
+     * @throws IllegalStateException If the deserialized JSON object was missing any required properties.
+     * @throws IOException If an error occurs while reading the SnapshotSettingFilter.
+     */
+    public static SnapshotSettingFilter fromJson(JsonReader jsonReader) throws IOException {
+        return jsonReader.readObject(
+                reader -> {
+                    boolean keyFound = false;
+                    String key = null;
+                    String label = null;
+                    while (reader.nextToken() != JsonToken.END_OBJECT) {
+                        String fieldName = reader.getFieldName();
+                        reader.nextToken();
+
+                        if ("key".equals(fieldName)) {
+                            key = reader.getString();
+                            keyFound = true;
+                        } else if ("label".equals(fieldName)) {
+                            label = reader.getString();
+                        } else {
+                            reader.skipChildren();
+                        }
+                    }
+                    if (keyFound) {
+                        SnapshotSettingFilter deserializedSnapshotSettingFilter = new SnapshotSettingFilter(key);
+                        deserializedSnapshotSettingFilter.label = label;
+
+                        return deserializedSnapshotSettingFilter;
+                    }
+                    List<String> missingProperties = new ArrayList<>();
+                    if (!keyFound) {
+                        missingProperties.add("key");
+                    }
+
+                    throw new IllegalStateException(
+                            "Missing required property/properties: " + String.join(", ", missingProperties));
+                });
     }
 }

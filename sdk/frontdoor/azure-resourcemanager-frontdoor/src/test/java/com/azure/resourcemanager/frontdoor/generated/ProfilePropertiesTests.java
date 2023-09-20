@@ -14,7 +14,7 @@ public final class ProfilePropertiesTests {
     public void testDeserialize() throws Exception {
         ProfileProperties model =
             BinaryData
-                .fromString("{\"resourceState\":\"Deleting\",\"enabledState\":\"Enabled\"}")
+                .fromString("{\"resourceState\":\"Enabled\",\"enabledState\":\"Enabled\"}")
                 .toObject(ProfileProperties.class);
         Assertions.assertEquals(State.ENABLED, model.enabledState());
     }

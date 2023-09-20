@@ -59,6 +59,6 @@ public final class AlertsUpdateResourceGroupLevelStateToInProgressWithResponseMo
         manager
             .alerts()
             .updateResourceGroupLevelStateToInProgressWithResponse(
-                "dsqcmhnxl", "buwodmachbkv", "rpbj", com.azure.core.util.Context.NONE);
+                "rjuqbpxtokl", "mtznpaxwfqtyyqi", "rcltungbsoljckm", com.azure.core.util.Context.NONE);
     }
 }

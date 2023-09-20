@@ -4,26 +4,75 @@
 
 package com.azure.resourcemanager.resourceconnector.models;
 
-import com.azure.core.annotation.Fluent;
+import com.azure.core.annotation.Immutable;
 import com.fasterxml.jackson.annotation.JsonProperty;
 
 /** Appliance SSHKey definition. */
-@Fluent
+@Immutable
 public final class SshKey {
     /*
-     * User Private Key.
+     * Certificate associated with the public key if the key is signed.
      */
-    @JsonProperty(value = "privateKey")
+    @JsonProperty(value = "certificate", access = JsonProperty.Access.WRITE_ONLY)
+    private String certificate;
+
+    /*
+     * Certificate creation timestamp (Unix).
+     */
+    @JsonProperty(value = "creationTimeStamp", access = JsonProperty.Access.WRITE_ONLY)
+    private Long creationTimestamp;
+
+    /*
+     * Certificate expiration timestamp (Unix).
+     */
+    @JsonProperty(value = "expirationTimeStamp", access = JsonProperty.Access.WRITE_ONLY)
+    private Long expirationTimestamp;
+
+    /*
+     * Private Key.
+     */
+    @JsonProperty(value = "privateKey", access = JsonProperty.Access.WRITE_ONLY)
     private String privateKey;
 
     /*
-     * User Public Key.
+     * Public Key.
      */
-    @JsonProperty(value = "publicKey")
+    @JsonProperty(value = "publicKey", access = JsonProperty.Access.WRITE_ONLY)
     private String publicKey;
 
+    /** Creates an instance of SshKey class. */
+    public SshKey() {
+    }
+
     /**
-     * Get the privateKey property: User Private Key.
+     * Get the certificate property: Certificate associated with the public key if the key is signed.
+     *
+     * @return the certificate value.
+     */
+    public String certificate() {
+        return this.certificate;
+    }
+
+    /**
+     * Get the creationTimestamp property: Certificate creation timestamp (Unix).
+     *
+     * @return the creationTimestamp value.
+     */
+    public Long creationTimestamp() {
+        return this.creationTimestamp;
+    }
+
+    /**
+     * Get the expirationTimestamp property: Certificate expiration timestamp (Unix).
+     *
+     * @return the expirationTimestamp value.
+     */
+    public Long expirationTimestamp() {
+        return this.expirationTimestamp;
+    }
+
+    /**
+     * Get the privateKey property: Private Key.
      *
      * @return the privateKey value.
      */
@@ -32,34 +81,12 @@ public final class SshKey {
     }
 
     /**
-     * Set the privateKey property: User Private Key.
-     *
-     * @param privateKey the privateKey value to set.
-     * @return the SshKey object itself.
-     */
-    public SshKey withPrivateKey(String privateKey) {
-        this.privateKey = privateKey;
-        return this;
-    }
-
-    /**
-     * Get the publicKey property: User Public Key.
+     * Get the publicKey property: Public Key.
      *
      * @return the publicKey value.
      */
     public String publicKey() {
         return this.publicKey;
-    }
-
-    /**
-     * Set the publicKey property: User Public Key.
-     *
-     * @param publicKey the publicKey value to set.
-     * @return the SshKey object itself.
-     */
-    public SshKey withPublicKey(String publicKey) {
-        this.publicKey = publicKey;
-        return this;
     }
 
     /**

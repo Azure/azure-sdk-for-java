@@ -23,11 +23,11 @@ import java.time.Duration;
 /** Initializes a new instance of the ResourceManagementClientImpl type. */
 @ServiceClient(builder = ResourceManagementClientBuilder.class)
 public final class ResourceManagementClientImpl extends AzureServiceClient implements ResourceManagementClient {
-    /** The ID of the target subscription. */
+    /** The Microsoft Azure subscription ID. */
     private final String subscriptionId;
 
     /**
-     * Gets The ID of the target subscription.
+     * Gets The Microsoft Azure subscription ID.
      *
      * @return the subscriptionId value.
      */
@@ -198,7 +198,7 @@ public final class ResourceManagementClientImpl extends AzureServiceClient imple
      * @param serializerAdapter The serializer to serialize an object into a string.
      * @param defaultPollInterval The default poll interval for long-running operation.
      * @param environment The Azure environment.
-     * @param subscriptionId The ID of the target subscription.
+     * @param subscriptionId The Microsoft Azure subscription ID.
      * @param endpoint server parameter.
      */
     ResourceManagementClientImpl(
@@ -214,7 +214,7 @@ public final class ResourceManagementClientImpl extends AzureServiceClient imple
         this.defaultPollInterval = defaultPollInterval;
         this.subscriptionId = subscriptionId;
         this.endpoint = endpoint;
-        this.apiVersion = "2021-01-01";
+        this.apiVersion = "2022-09-01";
         this.operations = new OperationsClientImpl(this);
         this.deployments = new DeploymentsClientImpl(this);
         this.providers = new ProvidersClientImpl(this);

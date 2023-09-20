@@ -5,12 +5,17 @@
 package com.azure.resourcemanager.devhub.implementation;
 
 import com.azure.core.management.Region;
+import com.azure.core.management.SystemData;
 import com.azure.core.util.Context;
 import com.azure.resourcemanager.devhub.fluent.models.WorkflowInner;
 import com.azure.resourcemanager.devhub.models.Acr;
+import com.azure.resourcemanager.devhub.models.AuthorizationStatus;
 import com.azure.resourcemanager.devhub.models.DeploymentProperties;
+import com.azure.resourcemanager.devhub.models.DockerfileGenerationMode;
+import com.azure.resourcemanager.devhub.models.GenerationLanguage;
+import com.azure.resourcemanager.devhub.models.GenerationManifestType;
 import com.azure.resourcemanager.devhub.models.GitHubWorkflowProfileOidcCredentials;
-import com.azure.resourcemanager.devhub.models.ManifestType;
+import com.azure.resourcemanager.devhub.models.ManifestGenerationMode;
 import com.azure.resourcemanager.devhub.models.PullRequestStatus;
 import com.azure.resourcemanager.devhub.models.TagsObject;
 import com.azure.resourcemanager.devhub.models.Workflow;
@@ -46,6 +51,10 @@ public final class WorkflowImpl implements Workflow, Workflow.Definition, Workfl
         } else {
             return Collections.emptyMap();
         }
+    }
+
+    public SystemData systemData() {
+        return this.innerModel().systemData();
     }
 
     public String repositoryOwner() {
@@ -104,8 +113,60 @@ public final class WorkflowImpl implements Workflow, Workflow.Definition, Workfl
         return this.innerModel().lastWorkflowRun();
     }
 
-    public ManifestType authStatus() {
+    public AuthorizationStatus authStatus() {
         return this.innerModel().authStatus();
+    }
+
+    public GenerationLanguage generationLanguage() {
+        return this.innerModel().generationLanguage();
+    }
+
+    public String languageVersion() {
+        return this.innerModel().languageVersion();
+    }
+
+    public String builderVersion() {
+        return this.innerModel().builderVersion();
+    }
+
+    public String port() {
+        return this.innerModel().port();
+    }
+
+    public String appName() {
+        return this.innerModel().appName();
+    }
+
+    public String dockerfileOutputDirectory() {
+        return this.innerModel().dockerfileOutputDirectory();
+    }
+
+    public String manifestOutputDirectory() {
+        return this.innerModel().manifestOutputDirectory();
+    }
+
+    public DockerfileGenerationMode dockerfileGenerationMode() {
+        return this.innerModel().dockerfileGenerationMode();
+    }
+
+    public ManifestGenerationMode manifestGenerationMode() {
+        return this.innerModel().manifestGenerationMode();
+    }
+
+    public GenerationManifestType manifestType() {
+        return this.innerModel().manifestType();
+    }
+
+    public String imageName() {
+        return this.innerModel().imageName();
+    }
+
+    public String namespaceArtifactGenerationPropertiesNamespace() {
+        return this.innerModel().namespaceArtifactGenerationPropertiesNamespace();
+    }
+
+    public String imageTag() {
+        return this.innerModel().imageTag();
     }
 
     public Region region() {
@@ -292,8 +353,71 @@ public final class WorkflowImpl implements Workflow, Workflow.Definition, Workfl
         return this;
     }
 
-    public WorkflowImpl withAuthStatus(ManifestType authStatus) {
-        this.innerModel().withAuthStatus(authStatus);
+    public WorkflowImpl withGenerationLanguage(GenerationLanguage generationLanguage) {
+        this.innerModel().withGenerationLanguage(generationLanguage);
+        return this;
+    }
+
+    public WorkflowImpl withLanguageVersion(String languageVersion) {
+        this.innerModel().withLanguageVersion(languageVersion);
+        return this;
+    }
+
+    public WorkflowImpl withBuilderVersion(String builderVersion) {
+        this.innerModel().withBuilderVersion(builderVersion);
+        return this;
+    }
+
+    public WorkflowImpl withPort(String port) {
+        this.innerModel().withPort(port);
+        return this;
+    }
+
+    public WorkflowImpl withAppName(String appName) {
+        this.innerModel().withAppName(appName);
+        return this;
+    }
+
+    public WorkflowImpl withDockerfileOutputDirectory(String dockerfileOutputDirectory) {
+        this.innerModel().withDockerfileOutputDirectory(dockerfileOutputDirectory);
+        return this;
+    }
+
+    public WorkflowImpl withManifestOutputDirectory(String manifestOutputDirectory) {
+        this.innerModel().withManifestOutputDirectory(manifestOutputDirectory);
+        return this;
+    }
+
+    public WorkflowImpl withDockerfileGenerationMode(DockerfileGenerationMode dockerfileGenerationMode) {
+        this.innerModel().withDockerfileGenerationMode(dockerfileGenerationMode);
+        return this;
+    }
+
+    public WorkflowImpl withManifestGenerationMode(ManifestGenerationMode manifestGenerationMode) {
+        this.innerModel().withManifestGenerationMode(manifestGenerationMode);
+        return this;
+    }
+
+    public WorkflowImpl withManifestType(GenerationManifestType manifestType) {
+        this.innerModel().withManifestType(manifestType);
+        return this;
+    }
+
+    public WorkflowImpl withImageName(String imageName) {
+        this.innerModel().withImageName(imageName);
+        return this;
+    }
+
+    public WorkflowImpl withNamespaceArtifactGenerationPropertiesNamespace(
+        String namespaceArtifactGenerationPropertiesNamespace) {
+        this
+            .innerModel()
+            .withNamespaceArtifactGenerationPropertiesNamespace(namespaceArtifactGenerationPropertiesNamespace);
+        return this;
+    }
+
+    public WorkflowImpl withImageTag(String imageTag) {
+        this.innerModel().withImageTag(imageTag);
         return this;
     }
 

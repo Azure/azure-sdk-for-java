@@ -86,7 +86,7 @@ public class PkRangesThroughputRequestControllerTests {
         requestController.init().subscribe();
 
         RxDocumentServiceRequest requestMock = Mockito.mock(RxDocumentServiceRequest.class);
-        DocumentServiceRequestContext requestContext = Mockito.mock(DocumentServiceRequestContext.class);
+        DocumentServiceRequestContext requestContext = new DocumentServiceRequestContext();
         requestMock.requestContext = requestContext;
 
         for (PartitionKeyRange pkRange : pkRanges) {
@@ -147,7 +147,7 @@ public class PkRangesThroughputRequestControllerTests {
     private RxDocumentServiceRequest createMockRequest(PartitionKeyRange resolvedPkRange) {
         RxDocumentServiceRequest requestMock = Mockito.mock(RxDocumentServiceRequest.class);
         Mockito.doReturn(OperationType.Read).when(requestMock).getOperationType();
-        DocumentServiceRequestContext requestContextMock = Mockito.mock(DocumentServiceRequestContext.class);
+        DocumentServiceRequestContext requestContextMock = new DocumentServiceRequestContext();
         requestContextMock.resolvedPartitionKeyRange = resolvedPkRange;
         requestMock.requestContext = requestContextMock;
 

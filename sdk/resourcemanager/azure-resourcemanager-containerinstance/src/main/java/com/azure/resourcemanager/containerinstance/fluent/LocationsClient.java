@@ -53,7 +53,9 @@ public interface LocationsClient {
     PagedIterable<UsageInner> listUsage(String location, Context context);
 
     /**
-     * Get the list of cached images on specific OS type for a subscription in a region.
+     * Get the list of cached images.
+     *
+     * <p>Get the list of cached images on specific OS type for a subscription in a region.
      *
      * @param location The identifier for the physical azure location.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
@@ -66,7 +68,9 @@ public interface LocationsClient {
     PagedFlux<CachedImages> listCachedImagesAsync(String location);
 
     /**
-     * Get the list of cached images on specific OS type for a subscription in a region.
+     * Get the list of cached images.
+     *
+     * <p>Get the list of cached images on specific OS type for a subscription in a region.
      *
      * @param location The identifier for the physical azure location.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
@@ -79,7 +83,9 @@ public interface LocationsClient {
     PagedIterable<CachedImages> listCachedImages(String location);
 
     /**
-     * Get the list of cached images on specific OS type for a subscription in a region.
+     * Get the list of cached images.
+     *
+     * <p>Get the list of cached images on specific OS type for a subscription in a region.
      *
      * @param location The identifier for the physical azure location.
      * @param context The context to associate with this operation.
@@ -93,7 +99,9 @@ public interface LocationsClient {
     PagedIterable<CachedImages> listCachedImages(String location, Context context);
 
     /**
-     * Get the list of CPU/memory/GPU capabilities of a region.
+     * Get the list of capabilities of the location.
+     *
+     * <p>Get the list of CPU/memory/GPU capabilities of a region.
      *
      * @param location The identifier for the physical azure location.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
@@ -105,7 +113,9 @@ public interface LocationsClient {
     PagedFlux<Capabilities> listCapabilitiesAsync(String location);
 
     /**
-     * Get the list of CPU/memory/GPU capabilities of a region.
+     * Get the list of capabilities of the location.
+     *
+     * <p>Get the list of CPU/memory/GPU capabilities of a region.
      *
      * @param location The identifier for the physical azure location.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
@@ -117,7 +127,9 @@ public interface LocationsClient {
     PagedIterable<Capabilities> listCapabilities(String location);
 
     /**
-     * Get the list of CPU/memory/GPU capabilities of a region.
+     * Get the list of capabilities of the location.
+     *
+     * <p>Get the list of CPU/memory/GPU capabilities of a region.
      *
      * @param location The identifier for the physical azure location.
      * @param context The context to associate with this operation.

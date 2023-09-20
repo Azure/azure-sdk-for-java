@@ -10,6 +10,7 @@ import com.azure.cosmos.CosmosClientBuilder;
 import com.azure.cosmos.GlobalThroughputControlConfigBuilder;
 import com.azure.cosmos.ThroughputControlGroupConfig;
 import com.azure.cosmos.ThroughputControlGroupConfigBuilder;
+import com.azure.cosmos.models.PriorityLevel;
 import com.azure.cosmos.rx.TestSuiteBase;
 import org.testng.annotations.BeforeClass;
 import org.testng.annotations.Factory;
@@ -17,6 +18,8 @@ import org.testng.annotations.Test;
 
 import java.time.Duration;
 
+import static org.assertj.core.api.Assertions.assertThat;
+import static org.assertj.core.api.Assertions.assertThatExceptionOfType;
 import static org.assertj.core.api.Assertions.assertThatThrownBy;
 
 public class ThroughputControlGroupConfigConfigurationTests extends TestSuiteBase {
@@ -67,6 +70,34 @@ public class ThroughputControlGroupConfigConfigurationTests extends TestSuiteBas
         assertThatThrownBy(() -> globalControlConfigBuilder.setControlItemRenewInterval(Duration.ofMillis(1000)))
             .isInstanceOf(IllegalArgumentException.class)
             .hasMessage("Renew interval should be no less than 5s");
+    }
+
+    @Test(groups = { "unit" })
+    public void validatePriorityThroughputControlGroup() {
+        ThroughputControlGroupConfig groupConfig =
+            new ThroughputControlGroupConfigBuilder()
+                .groupName("group-1")
+                .priorityLevel(PriorityLevel.HIGH)
+                .build();
+        assertThat(groupConfig.getTargetThroughput()).isEqualTo(Integer.MAX_VALUE);
+    }
+
+    @Test(groups = { "unit" })
+    public void validatePriorityThroughputControlGroupWithThreshold() {
+        ThroughputControlGroupConfig groupConfig =
+            new ThroughputControlGroupConfigBuilder()
+                .groupName("group-1")
+                .priorityLevel(PriorityLevel.HIGH)
+                .targetThroughputThreshold(0.5)
+                .build();
+        assertThat(groupConfig.getTargetThroughputThreshold()).isEqualTo(0.5);
+    }
+
+    @Test(groups = { "unit" })
+    public void validateThroughputControlGroupMalformed() {
+        assertThatThrownBy(() -> new ThroughputControlGroupConfigBuilder().groupName("test").build())
+            .isInstanceOf(IllegalArgumentException.class)
+            .hasMessage("All targetThroughput, targetThroughputThreshold and priorityLevel cannot be null or empty.");
     }
 
     @BeforeClass(groups = { "emulator" }, timeOut = 4 * SETUP_TIMEOUT)

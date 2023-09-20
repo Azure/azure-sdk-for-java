@@ -98,7 +98,7 @@ public class AppConfigurationPullRefresh implements AppConfigurationRefresh, Env
      *
      * @return If a refresh event is called.
      */
-    private boolean refreshStores() {
+    private Boolean refreshStores() {
         if (running.compareAndSet(false, true)) {
             BaseAppConfigurationPolicy.setWatchRequests(true);
             try {

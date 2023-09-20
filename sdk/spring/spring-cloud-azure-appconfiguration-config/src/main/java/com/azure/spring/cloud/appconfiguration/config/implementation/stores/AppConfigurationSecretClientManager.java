@@ -52,7 +52,7 @@ public final class AppConfigurationSecretClientManager {
     AppConfigurationSecretClientManager build() {
         SecretClientBuilder builder = secretClientFactory.build();
 
-        if (credentialConfigured) {
+        if (!credentialConfigured) {
             // System Assigned Identity.
             builder.credential(new ManagedIdentityCredentialBuilder().build());
         }

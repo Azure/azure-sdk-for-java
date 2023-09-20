@@ -72,13 +72,16 @@ public class AsyncCacheNonBlocking<TKey, TValue> {
         TKey key,
         Function<TValue, Mono<TValue>> singleValueInitFunc,
         Function<TValue, Boolean> forceRefresh) {
+        return Mono.fromFuture(() -> getAsyncInternal(key, singleValueInitFunc, forceRefresh).toFuture(), true);
+    }
 
+    private Mono<TValue> getAsyncInternal(TKey key, Function<TValue, Mono<TValue>> singleValueInitFunc, Function<TValue, Boolean> forceRefresh) {
         AsyncLazyWithRefresh<TValue> initialLazyValue = values.get(key);
         if (initialLazyValue != null) {
             logger.debug("cache[{}] exists", key);
 
             return initialLazyValue.getValueAsync().flatMap(value -> {
-                if(!forceRefresh.apply(value)) {
+                if (!forceRefresh.apply(value)) {
                     return Mono.just(value);
                 }
 

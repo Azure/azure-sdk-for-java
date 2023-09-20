@@ -32,7 +32,7 @@ public final class ManagedRuleSetsListMockTests {
         ArgumentCaptor<HttpRequest> httpRequest = ArgumentCaptor.forClass(HttpRequest.class);
 
         String responseStr =
-            "{\"value\":[{\"properties\":{\"provisioningState\":\"lcgqlsismj\",\"ruleSetId\":\"rddga\",\"ruleSetType\":\"uhiosrsju\",\"ruleSetVersion\":\"fcdis\",\"ruleGroups\":[]},\"location\":\"nxzhcze\",\"tags\":{\"hqvwrevkhgnlnzon\":\"zbujrt\",\"jtszcof\":\"lrpiqywnc\",\"k\":\"zehtdhgb\",\"zmlovuanash\":\"reljeamur\"},\"id\":\"xlpm\",\"name\":\"erbdk\",\"type\":\"lvidizozs\"}]}";
+            "{\"value\":[{\"properties\":{\"provisioningState\":\"hftwesgog\",\"ruleSetId\":\"honnxkrlgnyhmos\",\"ruleSetType\":\"kkgthr\",\"ruleSetVersion\":\"hxjbdhqxvc\",\"ruleGroups\":[]},\"location\":\"rpdsof\",\"tags\":{\"z\":\"rnsvbuswd\",\"rtkfawnopq\":\"ybycnunvj\"},\"id\":\"ikyzirtxdy\",\"name\":\"x\",\"type\":\"ejnt\"}]}";
 
         Mockito.when(httpResponse.getStatusCode()).thenReturn(200);
         Mockito.when(httpResponse.getHeaders()).thenReturn(new HttpHeaders());
@@ -63,7 +63,7 @@ public final class ManagedRuleSetsListMockTests {
         PagedIterable<ManagedRuleSetDefinition> response =
             manager.managedRuleSets().list(com.azure.core.util.Context.NONE);
 
-        Assertions.assertEquals("nxzhcze", response.iterator().next().location());
-        Assertions.assertEquals("zbujrt", response.iterator().next().tags().get("hqvwrevkhgnlnzon"));
+        Assertions.assertEquals("rpdsof", response.iterator().next().location());
+        Assertions.assertEquals("rnsvbuswd", response.iterator().next().tags().get("z"));
     }
 }

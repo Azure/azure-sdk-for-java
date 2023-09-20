@@ -60,9 +60,9 @@ public final class AmlFilesystemsArchiveWithResponseMockTests {
         manager
             .amlFilesystems()
             .archiveWithResponse(
-                "ho",
-                "zqzudph",
-                new AmlFilesystemArchiveInfo().withFilesystemPath("mvdk"),
+                "mzqa",
+                "krmnjijpxacqqud",
+                new AmlFilesystemArchiveInfo().withFilesystemPath("byxbaaabjy"),
                 com.azure.core.util.Context.NONE);
     }
 }

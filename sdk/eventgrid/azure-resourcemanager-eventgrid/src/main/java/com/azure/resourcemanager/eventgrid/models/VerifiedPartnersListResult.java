@@ -24,6 +24,10 @@ public final class VerifiedPartnersListResult {
     @JsonProperty(value = "nextLink")
     private String nextLink;
 
+    /** Creates an instance of VerifiedPartnersListResult class. */
+    public VerifiedPartnersListResult() {
+    }
+
     /**
      * Get the value property: A collection of verified partners.
      *

@@ -67,6 +67,10 @@ public final class RoutingEventHubProperties {
     @JsonProperty(value = "resourceGroup")
     private String resourceGroup;
 
+    /** Creates an instance of RoutingEventHubProperties class. */
+    public RoutingEventHubProperties() {
+    }
+
     /**
      * Get the id property: Id of the event hub endpoint.
      *

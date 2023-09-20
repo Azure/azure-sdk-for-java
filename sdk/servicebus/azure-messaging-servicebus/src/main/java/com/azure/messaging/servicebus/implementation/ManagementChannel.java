@@ -264,7 +264,7 @@ public class ManagementChannel implements ServiceBusManagementNode {
      */
     @Override
     public Mono<OffsetDateTime> renewMessageLock(String lockToken, String associatedLinkName) {
-        return isAuthorized(OPERATION_PEEK).then(createChannel.flatMap(channel -> {
+        return isAuthorized(ManagementConstants.OPERATION_RENEW_LOCK).then(createChannel.flatMap(channel -> {
             final Message requestMessage = createManagementMessage(ManagementConstants.OPERATION_RENEW_LOCK,
                 associatedLinkName);
             final Map<String, Object> requestBody = new HashMap<>();
@@ -428,7 +428,7 @@ public class ManagementChannel implements ServiceBusManagementNode {
         final UUID[] lockTokens = new UUID[]{UUID.fromString(lockToken)};
         return isAuthorized(OPERATION_UPDATE_DISPOSITION).then(createChannel.flatMap(channel -> {
             logger.atVerbose()
-                .addKeyValue("lockTokens", Arrays.toString(lockTokens))
+                .addKeyValue("lockTokens", () -> Arrays.toString(lockTokens))
                 .addKeyValue(DISPOSITION_STATUS_KEY, dispositionStatus)
                 .addKeyValue(SESSION_ID_KEY, sessionId)
                 .log("Update disposition of deliveries.");
@@ -592,9 +592,15 @@ public class ManagementChannel implements ServiceBusManagementNode {
 
                 sink.error(throwable);
             })
-            .switchIfEmpty(Mono.error(new AmqpException(true, "No response received from management channel.",
-                channel.getErrorContext())))
+            .switchIfEmpty(errorIfEmpty(channel))
             .onErrorMap(this::mapError);
+    }
+
+    private <T> Mono<T> errorIfEmpty(RequestResponseChannel channel) {
+        return Mono.error(() -> {
+            String error = String.format("entityPath[%s] No response received from management channel.", entityPath);
+            return logger.logExceptionAsError(new AmqpException(true, error, channel.getErrorContext()));
+        });
     }
 
     private Mono<Void> isAuthorized(String operation) {

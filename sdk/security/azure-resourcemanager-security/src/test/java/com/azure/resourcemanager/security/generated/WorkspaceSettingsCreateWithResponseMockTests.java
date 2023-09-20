@@ -31,7 +31,7 @@ public final class WorkspaceSettingsCreateWithResponseMockTests {
         ArgumentCaptor<HttpRequest> httpRequest = ArgumentCaptor.forClass(HttpRequest.class);
 
         String responseStr =
-            "{\"properties\":{\"workspaceId\":\"ydisnuepywyjl\",\"scope\":\"ldpxott\"},\"id\":\"iiaocqib\",\"name\":\"jihw\",\"type\":\"ebiphryvcjwqwoq\"}";
+            "{\"properties\":{\"workspaceId\":\"pu\",\"scope\":\"zfe\"},\"id\":\"zjljmphfk\",\"name\":\"ezolgjzm\",\"type\":\"cuydoccnxshanz\"}";
 
         Mockito.when(httpResponse.getStatusCode()).thenReturn(200);
         Mockito.when(httpResponse.getHeaders()).thenReturn(new HttpHeaders());
@@ -62,12 +62,12 @@ public final class WorkspaceSettingsCreateWithResponseMockTests {
         WorkspaceSetting response =
             manager
                 .workspaceSettings()
-                .define("nacyheqwb")
-                .withWorkspaceId("qncjubkhjozfymcw")
-                .withScope("bupyv")
+                .define("aciq")
+                .withWorkspaceId("jrlhiqlwixvtboug")
+                .withScope("xtndopgjttbasua")
                 .create();
 
-        Assertions.assertEquals("ydisnuepywyjl", response.workspaceId());
-        Assertions.assertEquals("ldpxott", response.scope());
+        Assertions.assertEquals("pu", response.workspaceId());
+        Assertions.assertEquals("zfe", response.scope());
     }
 }

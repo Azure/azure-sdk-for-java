@@ -30,7 +30,7 @@ public final class WorkloadNetworksGetWithResponseMockTests {
         HttpResponse httpResponse = Mockito.mock(HttpResponse.class);
         ArgumentCaptor<HttpRequest> httpRequest = ArgumentCaptor.forClass(HttpRequest.class);
 
-        String responseStr = "{\"id\":\"qlqhycavodg\",\"name\":\"xdbeesmieknl\",\"type\":\"ariaawi\"}";
+        String responseStr = "{\"id\":\"qxeysko\",\"name\":\"qzinkfkbg\",\"type\":\"z\"}";
 
         Mockito.when(httpResponse.getStatusCode()).thenReturn(200);
         Mockito.when(httpResponse.getHeaders()).thenReturn(new HttpHeaders());
@@ -61,7 +61,7 @@ public final class WorkloadNetworksGetWithResponseMockTests {
         WorkloadNetwork response =
             manager
                 .workloadNetworks()
-                .getWithResponse("btgn", "nzeyqxtjj", WorkloadNetworkName.DEFAULT, com.azure.core.util.Context.NONE)
+                .getWithResponse("zlmcmuapcvhdb", "v", WorkloadNetworkName.DEFAULT, com.azure.core.util.Context.NONE)
                 .getValue();
     }
 }

@@ -65,6 +65,17 @@ public final class MetricNamespacesImpl {
                 @QueryParam("startTime") String startTime,
                 @HeaderParam("Accept") String accept,
                 Context context);
+
+        @Get("/{resourceUri}/providers/microsoft.insights/metricNamespaces")
+        @ExpectedResponses({200})
+        @UnexpectedResponseExceptionType(ErrorResponseException.class)
+        Response<MetricNamespaceCollection> listSync(
+                @HostParam("$host") String host,
+                @PathParam(value = "resourceUri", encoded = true) String resourceUri,
+                @QueryParam("api-version") String apiVersion,
+                @QueryParam("startTime") String startTime,
+                @HeaderParam("Accept") String accept,
+                Context context);
     }
 
     /**
@@ -81,11 +92,10 @@ public final class MetricNamespacesImpl {
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<PagedResponse<MetricNamespace>> listSinglePageAsync(String resourceUri, String startTime) {
         if (this.client.getHost() == null) {
-            return Mono.error(
-                    new IllegalArgumentException("Parameter this.client.getHost() is required and cannot be null."));
+            throw new IllegalArgumentException("Parameter this.client.getHost() is required and cannot be null.");
         }
         if (resourceUri == null) {
-            return Mono.error(new IllegalArgumentException("Parameter resourceUri is required and cannot be null."));
+            throw new IllegalArgumentException("Parameter resourceUri is required and cannot be null.");
         }
         final String accept = "application/json";
         return FluxUtil.withContext(
@@ -124,11 +134,10 @@ public final class MetricNamespacesImpl {
     public Mono<PagedResponse<MetricNamespace>> listSinglePageAsync(
             String resourceUri, String startTime, Context context) {
         if (this.client.getHost() == null) {
-            return Mono.error(
-                    new IllegalArgumentException("Parameter this.client.getHost() is required and cannot be null."));
+            throw new IllegalArgumentException("Parameter this.client.getHost() is required and cannot be null.");
         }
         if (resourceUri == null) {
-            return Mono.error(new IllegalArgumentException("Parameter resourceUri is required and cannot be null."));
+            throw new IllegalArgumentException("Parameter resourceUri is required and cannot be null.");
         }
         final String accept = "application/json";
         return service.list(this.client.getHost(), resourceUri, this.client.getApiVersion(), startTime, accept, context)
@@ -186,7 +195,23 @@ public final class MetricNamespacesImpl {
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public PagedResponse<MetricNamespace> listSinglePage(String resourceUri, String startTime) {
-        return listSinglePageAsync(resourceUri, startTime).block();
+        if (this.client.getHost() == null) {
+            throw new IllegalArgumentException("Parameter this.client.getHost() is required and cannot be null.");
+        }
+        if (resourceUri == null) {
+            throw new IllegalArgumentException("Parameter resourceUri is required and cannot be null.");
+        }
+        final String accept = "application/json";
+        Response<MetricNamespaceCollection> res =
+                service.listSync(
+                        this.client.getHost(),
+                        resourceUri,
+                        this.client.getApiVersion(),
+                        startTime,
+                        accept,
+                        Context.NONE);
+        return new PagedResponseBase<>(
+                res.getRequest(), res.getStatusCode(), res.getHeaders(), res.getValue().getValue(), null, null);
     }
 
     /**
@@ -202,7 +227,18 @@ public final class MetricNamespacesImpl {
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public PagedResponse<MetricNamespace> listSinglePage(String resourceUri, String startTime, Context context) {
-        return listSinglePageAsync(resourceUri, startTime, context).block();
+        if (this.client.getHost() == null) {
+            throw new IllegalArgumentException("Parameter this.client.getHost() is required and cannot be null.");
+        }
+        if (resourceUri == null) {
+            throw new IllegalArgumentException("Parameter resourceUri is required and cannot be null.");
+        }
+        final String accept = "application/json";
+        Response<MetricNamespaceCollection> res =
+                service.listSync(
+                        this.client.getHost(), resourceUri, this.client.getApiVersion(), startTime, accept, context);
+        return new PagedResponseBase<>(
+                res.getRequest(), res.getStatusCode(), res.getHeaders(), res.getValue().getValue(), null, null);
     }
 
     /**
@@ -217,7 +253,7 @@ public final class MetricNamespacesImpl {
      */
     @ServiceMethod(returns = ReturnType.COLLECTION)
     public PagedIterable<MetricNamespace> list(String resourceUri, String startTime) {
-        return new PagedIterable<>(listAsync(resourceUri, startTime));
+        return new PagedIterable<>(() -> listSinglePage(resourceUri, startTime, Context.NONE));
     }
 
     /**
@@ -233,6 +269,6 @@ public final class MetricNamespacesImpl {
      */
     @ServiceMethod(returns = ReturnType.COLLECTION)
     public PagedIterable<MetricNamespace> list(String resourceUri, String startTime, Context context) {
-        return new PagedIterable<>(listAsync(resourceUri, startTime, context));
+        return new PagedIterable<>(() -> listSinglePage(resourceUri, startTime, context));
     }
 }

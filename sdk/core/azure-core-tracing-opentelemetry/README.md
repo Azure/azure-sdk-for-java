@@ -51,7 +51,7 @@ To enable Azure SDK tracing, add the latest `com.azure:azure-core-tracing-opente
 <dependency>
   <groupId>com.azure</groupId>
   <artifactId>azure-core-tracing-opentelemetry</artifactId>
-  <version>1.0.0-beta.33</version>
+  <version>1.0.0-beta.39</version>
 </dependency>
 ```
 [//]: # ({x-version-update-end})
@@ -78,9 +78,10 @@ SdkTracerProvider tracerProvider = SdkTracerProvider.builder()
     .addSpanProcessor(SimpleSpanProcessor.create(LoggingSpanExporter.create()))
     .build();
 
-// Pass OpenTelemetry tracerProvider to TracingOptions.
+OpenTelemetry openTelemetry = OpenTelemetrySdk.builder().setTracerProvider(tracerProvider).build();
+// Pass OpenTelemetry container to TracingOptions.
 TracingOptions customTracingOptions = new OpenTelemetryTracingOptions()
-    .setProvider(tracerProvider);
+    .setOpenTelemetry(openTelemetry);
 
 // configure Azure Client to use customTracingOptions - it will use tracerProvider
 // to create tracers
@@ -261,9 +262,9 @@ This project has adopted the [Microsoft Open Source Code of Conduct](https://ope
 
 <!-- Links -->
 [api_documentation]: https://aka.ms/java-docs
-[azure_data_app_configuration]: https://mvnrepository.com/artifact/com.azure/azure-data-appconfiguration/
-[azure_keyvault_secrets]: https://mvnrepository.com/artifact/com.azure/azure-security-keyvault-secrets
-[azure_messaging_eventhubs_mvn]: https://mvnrepository.com/artifact/com.azure/azure-messaging-eventhubs/
+[azure_data_app_configuration]: https://central.sonatype.com/artifact/com.azure/azure-data-appconfiguration/
+[azure_keyvault_secrets]: https://central.sonatype.com/artifact/com.azure/azure-security-keyvault-secrets
+[azure_messaging_eventhubs_mvn]: https://central.sonatype.com/artifact/com.azure/azure-messaging-eventhubs/
 [azure-messaging-eventhubs]: https://github.com/Azure/azure-sdk-for-java/blob/main/sdk/eventhubs/azure-messaging-eventhubs
 [azure-security-keyvault-secrets]: https://github.com/Azure/azure-sdk-for-java/blob/main/sdk/keyvault/azure-security-keyvault-secrets
 [context]: https://github.com/Azure/azure-sdk-for-java/blob/main/sdk/core/azure-core/src/main/java/com/azure/core/util/Context.java
