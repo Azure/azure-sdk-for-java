@@ -56,6 +56,7 @@ public class RoomsAsyncClientTests extends RoomsTestBase {
         CreateRoomOptions roomOptions = new CreateRoomOptions()
                 .setValidFrom(VALID_FROM)
                 .setValidUntil(VALID_UNTIL)
+                .setPstnDialOutEnabled(true)
                 .setParticipants(participants);
 
         Mono<Response<CommunicationRoom>> response1 = roomsAsyncClient.createRoomWithResponse(roomOptions);
@@ -227,6 +228,7 @@ public class RoomsAsyncClientTests extends RoomsTestBase {
         CreateRoomOptions roomOptions = new CreateRoomOptions()
                 .setValidFrom(VALID_FROM)
                 .setValidUntil(VALID_UNTIL.minusMonths(6))
+                .setPstnDialOutEnabled(true)
                 .setParticipants(participants);
 
         CommunicationErrorResponseException exception =
@@ -468,7 +470,8 @@ public class RoomsAsyncClientTests extends RoomsTestBase {
         // Create empty room
         CreateRoomOptions createRoomOptions = new CreateRoomOptions()
                 .setValidFrom(VALID_FROM)
-                .setValidUntil(VALID_UNTIL);
+                .setValidUntil(VALID_UNTIL)
+                .setPstnDialOutEnabled(true);
 
         Mono<CommunicationRoom> createCommunicationRoom = roomsAsyncClient.createRoom(createRoomOptions);
 
@@ -478,6 +481,7 @@ public class RoomsAsyncClientTests extends RoomsTestBase {
                     assertEquals(true, roomResult.getCreatedAt() != null);
                     assertEquals(true, roomResult.getValidFrom() != null);
                     assertEquals(true, roomResult.getValidUntil() != null);
+                    assertEquals(true, roomResult.isPstnDialOutEnabled());
                 }).verifyComplete();
 
         String roomId = createCommunicationRoom.block().getRoomId();
@@ -902,7 +906,7 @@ public class RoomsAsyncClientTests extends RoomsTestBase {
         RoomsClientBuilder builder = getRoomsClientWithConnectionString(
                 buildAsyncAssertingClient(httpClient == null ? interceptorManager.getPlaybackClient()
                 : httpClient),
-                RoomsServiceVersion.V2023_06_14);
+                RoomsServiceVersion.V2023_10_30_Preview);
         communicationClient = getCommunicationIdentityClientBuilder(httpClient).buildClient();
         return addLoggingPolicy(builder, testName).buildAsyncClient();
     }

@@ -358,7 +358,8 @@ public final class RoomsClient {
                 room.getId(),
                 room.getValidFrom(),
                 room.getValidUntil(),
-                room.getCreatedAt());
+                room.getCreatedAt(),
+                room.isPstnDialOutEnabled());
     }
 
     /**
