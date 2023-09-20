@@ -13,8 +13,8 @@ public final class CancelAddParticipantRequest {
     /*
      * Invitation ID used to add a participant.
      */
-    @JsonProperty(value = "invitiationId", required = true)
-    private String invitiationId;
+    @JsonProperty(value = "invitationId", required = true)
+    private String invitationId;
 
     /*
      * Used by customers when calling mid-call actions to correlate the request
@@ -30,22 +30,22 @@ public final class CancelAddParticipantRequest {
     private String callbackUri;
 
     /**
-     * Get the invitiationId property: Invitation ID used to add a participant.
+     * Get the invitationId property: Invitation ID used to add a participant.
      *
-     * @return the invitiationId value.
+     * @return the invitationId value.
      */
-    public String getInvitiationId() {
-        return this.invitiationId;
+    public String getInvitationId() {
+        return this.invitationId;
     }
 
     /**
-     * Set the invitiationId property: Invitation ID used to add a participant.
+     * Set the invitationId property: Invitation ID used to add a participant.
      *
-     * @param invitiationId the invitiationId value to set.
+     * @param invitationId the invitationId value to set.
      * @return the CancelAddParticipantRequest object itself.
      */
-    public CancelAddParticipantRequest setInvitiationId(String invitiationId) {
-        this.invitiationId = invitiationId;
+    public CancelAddParticipantRequest setInvitationId(String invitationId) {
+        this.invitationId = invitationId;
         return this;
     }
 

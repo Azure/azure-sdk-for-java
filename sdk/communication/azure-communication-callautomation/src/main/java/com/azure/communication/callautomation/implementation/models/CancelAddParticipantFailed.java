@@ -45,8 +45,8 @@ public final class CancelAddParticipantFailed {
     /*
      * Invitation ID used to cancel the request.
      */
-    @JsonProperty(value = "invitiationId")
-    private String invitiationId;
+    @JsonProperty(value = "invitationId")
+    private String invitationId;
 
     /**
      * Get the callConnectionId property: Call connection ID.
@@ -153,22 +153,22 @@ public final class CancelAddParticipantFailed {
     }
 
     /**
-     * Get the invitiationId property: Invitation ID used to cancel the request.
+     * Get the invitationId property: Invitation ID used to cancel the request.
      *
-     * @return the invitiationId value.
+     * @return the invitationId value.
      */
-    public String getInvitiationId() {
-        return this.invitiationId;
+    public String getInvitationId() {
+        return this.invitationId;
     }
 
     /**
-     * Set the invitiationId property: Invitation ID used to cancel the request.
+     * Set the invitationId property: Invitation ID used to cancel the request.
      *
-     * @param invitiationId the invitiationId value to set.
+     * @param invitationId the invitationId value to set.
      * @return the CancelAddParticipantFailed object itself.
      */
-    public CancelAddParticipantFailed setInvitiationId(String invitiationId) {
-        this.invitiationId = invitiationId;
+    public CancelAddParticipantFailed setInvitationId(String invitationId) {
+        this.invitationId = invitationId;
         return this;
     }
 }

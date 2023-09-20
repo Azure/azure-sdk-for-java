@@ -25,8 +25,8 @@ public final class AddParticipantResponseInternal {
     /*
      * Invitation ID used to add a participant.
      */
-    @JsonProperty(value = "invitiationId")
-    private String invitiationId;
+    @JsonProperty(value = "invitationId")
+    private String invitationId;
 
     /**
      * Get the participant property: List of current participants in the call.
@@ -69,22 +69,22 @@ public final class AddParticipantResponseInternal {
     }
 
     /**
-     * Get the invitiationId property: Invitation ID used to add a participant.
+     * Get the invitationId property: Invitation ID used to add a participant.
      *
-     * @return the invitiationId value.
+     * @return the invitationId value.
      */
-    public String getInvitiationId() {
-        return this.invitiationId;
+    public String getInvitationId() {
+        return this.invitationId;
     }
 
     /**
-     * Set the invitiationId property: Invitation ID used to add a participant.
+     * Set the invitationId property: Invitation ID used to add a participant.
      *
-     * @param invitiationId the invitiationId value to set.
+     * @param invitationId the invitationId value to set.
      * @return the AddParticipantResponseInternal object itself.
      */
-    public AddParticipantResponseInternal setInvitiationId(String invitiationId) {
-        this.invitiationId = invitiationId;
+    public AddParticipantResponseInternal setInvitationId(String invitationId) {
+        this.invitationId = invitationId;
         return this;
     }
 }

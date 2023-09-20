@@ -10,7 +10,10 @@ import com.azure.communication.callautomation.implementation.models.HoldParticip
 import com.azure.communication.callautomation.implementation.models.PlayRequest;
 import com.azure.communication.callautomation.implementation.models.RecognizeRequest;
 import com.azure.communication.callautomation.implementation.models.SendDtmfRequestInternal;
+import com.azure.communication.callautomation.implementation.models.StartTranscriptionRequest;
+import com.azure.communication.callautomation.implementation.models.StopTranscriptionRequest;
 import com.azure.communication.callautomation.implementation.models.UnholdParticipantRequestInternal;
+import com.azure.communication.callautomation.implementation.models.UpdateTranscriptionDataRequest;
 import com.azure.core.annotation.BodyParam;
 import com.azure.core.annotation.ExpectedResponses;
 import com.azure.core.annotation.HeaderParam;
@@ -63,6 +66,28 @@ public final class CallMediasImpl {
                 @PathParam("callConnectionId") String callConnectionId,
                 @QueryParam("api-version") String apiVersion,
                 @BodyParam("application/json") PlayRequest playRequest,
+                @HeaderParam("Accept") String accept,
+                Context context);
+
+        @Post("/calling/callConnections/{callConnectionId}:StartTranscription")
+        @ExpectedResponses({202})
+        @UnexpectedResponseExceptionType(CommunicationErrorResponseException.class)
+        Mono<Response<Void>> startTranscription(
+                @HostParam("endpoint") String endpoint,
+                @PathParam("callConnectionId") String callConnectionId,
+                @QueryParam("api-version") String apiVersion,
+                @BodyParam("application/json") StartTranscriptionRequest startTranscriptionRequest,
+                @HeaderParam("Accept") String accept,
+                Context context);
+
+        @Post("/calling/callConnections/{callConnectionId}:StopTranscripition")
+        @ExpectedResponses({202})
+        @UnexpectedResponseExceptionType(CommunicationErrorResponseException.class)
+        Mono<Response<Void>> stopTranscription(
+                @HostParam("endpoint") String endpoint,
+                @PathParam("callConnectionId") String callConnectionId,
+                @QueryParam("api-version") String apiVersion,
+                @BodyParam("application/json") StopTranscriptionRequest stopTranscriptionRequest,
                 @HeaderParam("Accept") String accept,
                 Context context);
 
@@ -119,6 +144,17 @@ public final class CallMediasImpl {
                 @PathParam("callConnectionId") String callConnectionId,
                 @QueryParam("api-version") String apiVersion,
                 @BodyParam("application/json") SendDtmfRequestInternal sendDtmfRequest,
+                @HeaderParam("Accept") String accept,
+                Context context);
+
+        @Post("/calling/callConnections/{callConnectionId}:updateTranscriptionData")
+        @ExpectedResponses({202})
+        @UnexpectedResponseExceptionType(CommunicationErrorResponseException.class)
+        Mono<Response<Void>> updateTranscriptionData(
+                @HostParam("endpoint") String endpoint,
+                @PathParam("callConnectionId") String callConnectionId,
+                @QueryParam("api-version") String apiVersion,
+                @BodyParam("application/json") UpdateTranscriptionDataRequest updateTranscriptionDataRequest,
                 @HeaderParam("Accept") String accept,
                 Context context);
 
@@ -248,6 +284,236 @@ public final class CallMediasImpl {
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Response<Void> playWithResponse(String callConnectionId, PlayRequest playRequest, Context context) {
         return playWithResponseAsync(callConnectionId, playRequest, context).block();
+    }
+
+    /**
+     * Starts transcription in the call.
+     *
+     * @param callConnectionId The call connection id.
+     * @param startTranscriptionRequest The startTranscriptionRequest parameter.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws CommunicationErrorResponseException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return the completion.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    public Mono<Response<Void>> startTranscriptionWithResponseAsync(
+            String callConnectionId, StartTranscriptionRequest startTranscriptionRequest) {
+        final String accept = "application/json";
+        return FluxUtil.withContext(
+                context ->
+                        service.startTranscription(
+                                this.client.getEndpoint(),
+                                callConnectionId,
+                                this.client.getApiVersion(),
+                                startTranscriptionRequest,
+                                accept,
+                                context));
+    }
+
+    /**
+     * Starts transcription in the call.
+     *
+     * @param callConnectionId The call connection id.
+     * @param startTranscriptionRequest The startTranscriptionRequest parameter.
+     * @param context The context to associate with this operation.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws CommunicationErrorResponseException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return the completion.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    public Mono<Response<Void>> startTranscriptionWithResponseAsync(
+            String callConnectionId, StartTranscriptionRequest startTranscriptionRequest, Context context) {
+        final String accept = "application/json";
+        return service.startTranscription(
+                this.client.getEndpoint(),
+                callConnectionId,
+                this.client.getApiVersion(),
+                startTranscriptionRequest,
+                accept,
+                context);
+    }
+
+    /**
+     * Starts transcription in the call.
+     *
+     * @param callConnectionId The call connection id.
+     * @param startTranscriptionRequest The startTranscriptionRequest parameter.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws CommunicationErrorResponseException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return the completion.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    public Mono<Void> startTranscriptionAsync(
+            String callConnectionId, StartTranscriptionRequest startTranscriptionRequest) {
+        return startTranscriptionWithResponseAsync(callConnectionId, startTranscriptionRequest)
+                .flatMap((Response<Void> res) -> Mono.empty());
+    }
+
+    /**
+     * Starts transcription in the call.
+     *
+     * @param callConnectionId The call connection id.
+     * @param startTranscriptionRequest The startTranscriptionRequest parameter.
+     * @param context The context to associate with this operation.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws CommunicationErrorResponseException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return the completion.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    public Mono<Void> startTranscriptionAsync(
+            String callConnectionId, StartTranscriptionRequest startTranscriptionRequest, Context context) {
+        return startTranscriptionWithResponseAsync(callConnectionId, startTranscriptionRequest, context)
+                .flatMap((Response<Void> res) -> Mono.empty());
+    }
+
+    /**
+     * Starts transcription in the call.
+     *
+     * @param callConnectionId The call connection id.
+     * @param startTranscriptionRequest The startTranscriptionRequest parameter.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws CommunicationErrorResponseException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    public void startTranscription(String callConnectionId, StartTranscriptionRequest startTranscriptionRequest) {
+        startTranscriptionAsync(callConnectionId, startTranscriptionRequest).block();
+    }
+
+    /**
+     * Starts transcription in the call.
+     *
+     * @param callConnectionId The call connection id.
+     * @param startTranscriptionRequest The startTranscriptionRequest parameter.
+     * @param context The context to associate with this operation.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws CommunicationErrorResponseException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return the response.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    public Response<Void> startTranscriptionWithResponse(
+            String callConnectionId, StartTranscriptionRequest startTranscriptionRequest, Context context) {
+        return startTranscriptionWithResponseAsync(callConnectionId, startTranscriptionRequest, context).block();
+    }
+
+    /**
+     * Stops transcription in the call.
+     *
+     * @param callConnectionId The call connection id.
+     * @param stopTranscriptionRequest stop transcription request payload.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws CommunicationErrorResponseException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return the completion.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    public Mono<Response<Void>> stopTranscriptionWithResponseAsync(
+            String callConnectionId, StopTranscriptionRequest stopTranscriptionRequest) {
+        final String accept = "application/json";
+        return FluxUtil.withContext(
+                context ->
+                        service.stopTranscription(
+                                this.client.getEndpoint(),
+                                callConnectionId,
+                                this.client.getApiVersion(),
+                                stopTranscriptionRequest,
+                                accept,
+                                context));
+    }
+
+    /**
+     * Stops transcription in the call.
+     *
+     * @param callConnectionId The call connection id.
+     * @param stopTranscriptionRequest stop transcription request payload.
+     * @param context The context to associate with this operation.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws CommunicationErrorResponseException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return the completion.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    public Mono<Response<Void>> stopTranscriptionWithResponseAsync(
+            String callConnectionId, StopTranscriptionRequest stopTranscriptionRequest, Context context) {
+        final String accept = "application/json";
+        return service.stopTranscription(
+                this.client.getEndpoint(),
+                callConnectionId,
+                this.client.getApiVersion(),
+                stopTranscriptionRequest,
+                accept,
+                context);
+    }
+
+    /**
+     * Stops transcription in the call.
+     *
+     * @param callConnectionId The call connection id.
+     * @param stopTranscriptionRequest stop transcription request payload.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws CommunicationErrorResponseException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return the completion.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    public Mono<Void> stopTranscriptionAsync(
+            String callConnectionId, StopTranscriptionRequest stopTranscriptionRequest) {
+        return stopTranscriptionWithResponseAsync(callConnectionId, stopTranscriptionRequest)
+                .flatMap((Response<Void> res) -> Mono.empty());
+    }
+
+    /**
+     * Stops transcription in the call.
+     *
+     * @param callConnectionId The call connection id.
+     * @param stopTranscriptionRequest stop transcription request payload.
+     * @param context The context to associate with this operation.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws CommunicationErrorResponseException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return the completion.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    public Mono<Void> stopTranscriptionAsync(
+            String callConnectionId, StopTranscriptionRequest stopTranscriptionRequest, Context context) {
+        return stopTranscriptionWithResponseAsync(callConnectionId, stopTranscriptionRequest, context)
+                .flatMap((Response<Void> res) -> Mono.empty());
+    }
+
+    /**
+     * Stops transcription in the call.
+     *
+     * @param callConnectionId The call connection id.
+     * @param stopTranscriptionRequest stop transcription request payload.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws CommunicationErrorResponseException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    public void stopTranscription(String callConnectionId, StopTranscriptionRequest stopTranscriptionRequest) {
+        stopTranscriptionAsync(callConnectionId, stopTranscriptionRequest).block();
+    }
+
+    /**
+     * Stops transcription in the call.
+     *
+     * @param callConnectionId The call connection id.
+     * @param stopTranscriptionRequest stop transcription request payload.
+     * @param context The context to associate with this operation.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws CommunicationErrorResponseException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return the response.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    public Response<Void> stopTranscriptionWithResponse(
+            String callConnectionId, StopTranscriptionRequest stopTranscriptionRequest, Context context) {
+        return stopTranscriptionWithResponseAsync(callConnectionId, stopTranscriptionRequest, context).block();
     }
 
     /**
@@ -824,7 +1090,124 @@ public final class CallMediasImpl {
     }
 
     /**
-     * Unmute participants from the call using identifier.
+     * API to change transcription language.
+     *
+     * @param callConnectionId The call connection id.
+     * @param updateTranscriptionDataRequest The updateTranscriptionData request.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws CommunicationErrorResponseException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return the completion.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    public Mono<Response<Void>> updateTranscriptionDataWithResponseAsync(
+            String callConnectionId, UpdateTranscriptionDataRequest updateTranscriptionDataRequest) {
+        final String accept = "application/json";
+        return FluxUtil.withContext(
+                context ->
+                        service.updateTranscriptionData(
+                                this.client.getEndpoint(),
+                                callConnectionId,
+                                this.client.getApiVersion(),
+                                updateTranscriptionDataRequest,
+                                accept,
+                                context));
+    }
+
+    /**
+     * API to change transcription language.
+     *
+     * @param callConnectionId The call connection id.
+     * @param updateTranscriptionDataRequest The updateTranscriptionData request.
+     * @param context The context to associate with this operation.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws CommunicationErrorResponseException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return the completion.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    public Mono<Response<Void>> updateTranscriptionDataWithResponseAsync(
+            String callConnectionId, UpdateTranscriptionDataRequest updateTranscriptionDataRequest, Context context) {
+        final String accept = "application/json";
+        return service.updateTranscriptionData(
+                this.client.getEndpoint(),
+                callConnectionId,
+                this.client.getApiVersion(),
+                updateTranscriptionDataRequest,
+                accept,
+                context);
+    }
+
+    /**
+     * API to change transcription language.
+     *
+     * @param callConnectionId The call connection id.
+     * @param updateTranscriptionDataRequest The updateTranscriptionData request.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws CommunicationErrorResponseException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return the completion.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    public Mono<Void> updateTranscriptionDataAsync(
+            String callConnectionId, UpdateTranscriptionDataRequest updateTranscriptionDataRequest) {
+        return updateTranscriptionDataWithResponseAsync(callConnectionId, updateTranscriptionDataRequest)
+                .flatMap((Response<Void> res) -> Mono.empty());
+    }
+
+    /**
+     * API to change transcription language.
+     *
+     * @param callConnectionId The call connection id.
+     * @param updateTranscriptionDataRequest The updateTranscriptionData request.
+     * @param context The context to associate with this operation.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws CommunicationErrorResponseException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return the completion.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    public Mono<Void> updateTranscriptionDataAsync(
+            String callConnectionId, UpdateTranscriptionDataRequest updateTranscriptionDataRequest, Context context) {
+        return updateTranscriptionDataWithResponseAsync(callConnectionId, updateTranscriptionDataRequest, context)
+                .flatMap((Response<Void> res) -> Mono.empty());
+    }
+
+    /**
+     * API to change transcription language.
+     *
+     * @param callConnectionId The call connection id.
+     * @param updateTranscriptionDataRequest The updateTranscriptionData request.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws CommunicationErrorResponseException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    public void updateTranscriptionData(
+            String callConnectionId, UpdateTranscriptionDataRequest updateTranscriptionDataRequest) {
+        updateTranscriptionDataAsync(callConnectionId, updateTranscriptionDataRequest).block();
+    }
+
+    /**
+     * API to change transcription language.
+     *
+     * @param callConnectionId The call connection id.
+     * @param updateTranscriptionDataRequest The updateTranscriptionData request.
+     * @param context The context to associate with this operation.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws CommunicationErrorResponseException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return the response.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    public Response<Void> updateTranscriptionDataWithResponse(
+            String callConnectionId, UpdateTranscriptionDataRequest updateTranscriptionDataRequest, Context context) {
+        return updateTranscriptionDataWithResponseAsync(callConnectionId, updateTranscriptionDataRequest, context)
+                .block();
+    }
+
+    /**
+     * Hold participant from the call using identifier.
      *
      * @param callConnectionId The call connection id.
      * @param holdParticipantRequest The participants to be hold from the call.
@@ -849,7 +1232,7 @@ public final class CallMediasImpl {
     }
 
     /**
-     * Unmute participants from the call using identifier.
+     * Hold participant from the call using identifier.
      *
      * @param callConnectionId The call connection id.
      * @param holdParticipantRequest The participants to be hold from the call.
@@ -873,7 +1256,7 @@ public final class CallMediasImpl {
     }
 
     /**
-     * Unmute participants from the call using identifier.
+     * Hold participant from the call using identifier.
      *
      * @param callConnectionId The call connection id.
      * @param holdParticipantRequest The participants to be hold from the call.
@@ -890,7 +1273,7 @@ public final class CallMediasImpl {
     }
 
     /**
-     * Unmute participants from the call using identifier.
+     * Hold participant from the call using identifier.
      *
      * @param callConnectionId The call connection id.
      * @param holdParticipantRequest The participants to be hold from the call.
@@ -908,7 +1291,7 @@ public final class CallMediasImpl {
     }
 
     /**
-     * Unmute participants from the call using identifier.
+     * Hold participant from the call using identifier.
      *
      * @param callConnectionId The call connection id.
      * @param holdParticipantRequest The participants to be hold from the call.
@@ -922,7 +1305,7 @@ public final class CallMediasImpl {
     }
 
     /**
-     * Unmute participants from the call using identifier.
+     * Hold participant from the call using identifier.
      *
      * @param callConnectionId The call connection id.
      * @param holdParticipantRequest The participants to be hold from the call.
@@ -939,7 +1322,7 @@ public final class CallMediasImpl {
     }
 
     /**
-     * Unmute participants from the call using identifier.
+     * Unhold participants from the call using identifier.
      *
      * @param callConnectionId The call connection id.
      * @param unholdParticipantRequest The participants to be hold from the call.
@@ -964,7 +1347,7 @@ public final class CallMediasImpl {
     }
 
     /**
-     * Unmute participants from the call using identifier.
+     * Unhold participants from the call using identifier.
      *
      * @param callConnectionId The call connection id.
      * @param unholdParticipantRequest The participants to be hold from the call.
@@ -988,7 +1371,7 @@ public final class CallMediasImpl {
     }
 
     /**
-     * Unmute participants from the call using identifier.
+     * Unhold participants from the call using identifier.
      *
      * @param callConnectionId The call connection id.
      * @param unholdParticipantRequest The participants to be hold from the call.
@@ -1005,7 +1388,7 @@ public final class CallMediasImpl {
     }
 
     /**
-     * Unmute participants from the call using identifier.
+     * Unhold participants from the call using identifier.
      *
      * @param callConnectionId The call connection id.
      * @param unholdParticipantRequest The participants to be hold from the call.
@@ -1023,7 +1406,7 @@ public final class CallMediasImpl {
     }
 
     /**
-     * Unmute participants from the call using identifier.
+     * Unhold participants from the call using identifier.
      *
      * @param callConnectionId The call connection id.
      * @param unholdParticipantRequest The participants to be hold from the call.
@@ -1037,7 +1420,7 @@ public final class CallMediasImpl {
     }
 
     /**
-     * Unmute participants from the call using identifier.
+     * Unhold participants from the call using identifier.
      *
      * @param callConnectionId The call connection id.
      * @param unholdParticipantRequest The participants to be hold from the call.
