@@ -1,0 +1,53 @@
+{
+  "networkCallRecords" : [ {
+    "Method" : "PUT",
+    "Uri" : "https://REDACTED.servicebus.windows.net/$schemaGroups/mygroup/schemas/sch55155bad7?api-version=2021-10",
+    "Headers" : {
+      "User-Agent" : "azsdk-java-azure-data-schemaregistry/1.3.0-beta.1 (11.0.5; Windows 10; 10.0)",
+      "x-ms-client-request-id" : "86a13e8e-095c-4e47-b126-3ed3e438223f",
+      "Content-Type" : "application/json; serialization=Avro"
+    },
+    "Response" : {
+      "content-length" : "0",
+      "Schema-Version" : "1",
+      "Server" : "Microsoft-HTTPAPI/2.0",
+      "Schema-Name" : "sch55155bad7",
+      "retry-after" : "0",
+      "Schema-Id-Location" : "https://conniey.servicebus.windows.net:443/$schemagroups/$schemas/dc0c992aa2a742c38487671446b3a973?api-version=2021-10",
+      "StatusCode" : "204",
+      "Date" : "Tue, 27 Sep 2022 07:33:53 GMT",
+      "Strict-Transport-Security" : "max-age=31536000",
+      "Schema-Id" : "dc0c992aa2a742c38487671446b3a973",
+      "Schema-Group-Name" : "mygroup",
+      "Location" : "https://conniey.servicebus.windows.net:443/$schemagroups/mygroup/schemas/sch55155bad7/versions/1?api-version=2021-10",
+      "Schema-Versions-Location" : "https://conniey.servicebus.windows.net:443/$schemagroups/mygroup/schemas/sch55155bad7/versions?api-version=2021-10"
+    },
+    "Exception" : null
+  }, {
+    "Method" : "GET",
+    "Uri" : "https://REDACTED.servicebus.windows.net/$schemaGroups/mygroup/schemas/sch55155bad7/versions/1?api-version=2021-10",
+    "Headers" : {
+      "User-Agent" : "azsdk-java-azure-data-schemaregistry/1.3.0-beta.1 (11.0.5; Windows 10; 10.0)",
+      "x-ms-client-request-id" : "7ef4e984-4e89-4253-9dcc-8827908af106"
+    },
+    "Response" : {
+      "Transfer-Encoding" : "chunked",
+      "Schema-Version" : "1",
+      "Server" : "Microsoft-HTTPAPI/2.0",
+      "Schema-Name" : "sch55155bad7",
+      "retry-after" : "0",
+      "Schema-Id-Location" : "https://conniey.servicebus.windows.net:443/$schemagroups/$schemas/dc0c992aa2a742c38487671446b3a973?api-version=2021-10",
+      "StatusCode" : "200",
+      "Date" : "Tue, 27 Sep 2022 07:33:53 GMT",
+      "Strict-Transport-Security" : "max-age=31536000",
+      "Schema-Id" : "dc0c992aa2a742c38487671446b3a973",
+      "Schema-Group-Name" : "mygroup",
+      "Body" : "{\"type\":\"record\",\"namespace\":\"TestSchema\",\"name\":\"Employee\",\"fields\":[{\"name\":\"Name\",\"type\":\"string\"},{\"name\":\"Age\",\"type\":\"int\"}]}",
+      "Content-Type" : "application/json;serialization=Avro",
+      "Location" : "https://conniey.servicebus.windows.net:443/$schemagroups/mygroup/schemas/sch55155bad7/versions/1?api-version=2021-10",
+      "Schema-Versions-Location" : "https://conniey.servicebus.windows.net:443/$schemagroups/mygroup/schemas/sch55155bad7/versions?api-version=2021-10"
+    },
+    "Exception" : null
+  } ],
+  "variables" : [ "sch55155bad7" ]
+}

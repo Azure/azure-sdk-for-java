@@ -69,9 +69,8 @@ public final class SchemaProperties {
     }
 
     /**
-     * The format of this schema.
-     *
-     * @return The format associated with the schema payload.
+     * The schema format of this schema.
+     * @return schema type associated with the schema payload
      */
     public SchemaFormat getFormat() {
         return format;
