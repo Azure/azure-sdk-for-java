@@ -3,8 +3,17 @@
 
 package com.azure.cosmos;
 
-import com.azure.cosmos.models.FeedResponse;
+import java.util.function.BiConsumer;
 
-public interface ChangeFeedProcessorContext<T> {
+/**
+ * Encapsulates properties which are mapped to a batch of change feed documents
+ * processed when {@link  ChangeFeedProcessorBuilder#handleAllVersionsAndDeletesChanges(BiConsumer)}
+ * lambda is invoked.
+ * */
+public interface ChangeFeedProcessorContext {
+    /**
+     * Gets the lease token corresponding to the source of
+     * a batch of change feed documents.
+     * */
     String getLeaseToken();
 }
