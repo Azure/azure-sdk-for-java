@@ -273,6 +273,7 @@ public class AzuriteTests extends BlobTestBase {
             "http://127.0.0.1:10000/devstoreaccount1");
         BlobClient blobClient = serviceClient.createBlobContainer(containerName).getBlobClient(generateBlobName());
         File file = getRandomFile(0);
+        file.deleteOnExit();
 
         assertDoesNotThrow(() -> blobClient.uploadFromFile(file.toPath().toString(), true));
 

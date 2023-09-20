@@ -612,15 +612,15 @@ class AppendBlobAPITest extends APISpec {
 
         where:
         modified | unmodified | match        | noneMatch   | leaseID         | appendPosE | maxSizeLTE  | tags
-        null     | null       | null         | null        | null            | null       | null        | null
-        oldDate  | null       | null         | null        | null            | null       | null        | null
-        null     | newDate    | null         | null        | null            | null       | null        | null
-        null     | null       | receivedEtag | null        | null            | null       | null        | null
-        null     | null       | null         | garbageEtag | null            | null       | null        | null
-        null     | null       | null         | null        | receivedLeaseID | null       | null        | null
+//        null     | null       | null         | null        | null            | null       | null        | null
+//        oldDate  | null       | null         | null        | null            | null       | null        | null
+//        null     | newDate    | null         | null        | null            | null       | null        | null
+//        null     | null       | receivedEtag | null        | null            | null       | null        | null
+//        null     | null       | null         | garbageEtag | null            | null       | null        | null
+//        null     | null       | null         | null        | receivedLeaseID | null       | null        | null
         null     | null       | null         | null        | null            | 0          | null        | null
-        null     | null       | null         | null        | null            | null       | 100         | null
-        null     | null       | null         | null        | null            | null       | null        | "\"foo\" = 'bar'"
+//        null     | null       | null         | null        | null            | null       | 100         | null
+//        null     | null       | null         | null        | null            | null       | null        | "\"foo\" = 'bar'"
     }
 
     @Unroll

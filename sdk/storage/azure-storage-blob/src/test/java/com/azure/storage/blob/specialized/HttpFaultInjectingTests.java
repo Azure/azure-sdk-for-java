@@ -20,6 +20,7 @@ import com.azure.storage.blob.BlobClientBuilder;
 import com.azure.storage.blob.BlobTestBase;
 import com.azure.storage.common.implementation.Constants;
 import com.azure.storage.common.test.shared.TestHttpClientType;
+import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.condition.DisabledIf;
 import org.junit.jupiter.api.condition.EnabledIf;
 import reactor.core.publisher.Mono;
@@ -61,7 +62,8 @@ public class HttpFaultInjectingTests extends BlobTestBase {
      * successfully downloaded is also a requirement to prevent a case where most files failed to download and passing,
      * hiding a true issue.
      */
-    public void downloadToFileWithFaultInjection() throws ClassNotFoundException, IOException {
+    @Test
+    public void downloadToFileWithFaultInjection() throws IOException {
         byte[] realFileBytes = new byte[9 * Constants.MB - 1];
         ThreadLocalRandom.current().nextBytes(realFileBytes);
 

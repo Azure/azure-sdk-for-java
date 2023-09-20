@@ -74,8 +74,8 @@ public class HelperTests extends BlobTestBase {
 
     private static Stream<Arguments> blobRangeIASupplier() {
         return Stream.of(
-            Arguments.of(-1, 5),
-            Arguments.of(0, -1)
+            Arguments.of(-1, 5L),
+            Arguments.of(0, -1L)
         );
     }
 

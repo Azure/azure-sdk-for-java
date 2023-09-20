@@ -253,7 +253,7 @@ public class BlobBaseApiTests extends BlobTestBase {
 
     @DisabledIf("com.azure.storage.blob.BlobTestBase#olderThan20191212ServiceVersion")
     @Test
-    public void queryCsvSerializationEscapeAndFieldQuote() throws IOException {
+    public void queryCsvSerializationEscapeAndFieldQuote() {
         BlobQueryDelimitedSerialization ser = new BlobQueryDelimitedSerialization()
             .setRecordSeparator('\n')
             .setColumnSeparator(',')
@@ -294,8 +294,7 @@ public class BlobBaseApiTests extends BlobTestBase {
     @DisabledIf("com.azure.storage.blob.BlobTestBase#olderThan20191212ServiceVersion")
     @ParameterizedTest
     @ValueSource(ints = {1, 10, 100, 1000})
-//    @Retry(count = 5, delay = 5, condition = { environment.testMode == TestMode.LIVE })
-    public void queryInputJson(int numCopies) throws IOException {
+    public void queryInputJson(int numCopies) {
         BlobQueryJsonSerialization ser = new BlobQueryJsonSerialization().setRecordSeparator('\n');
         uploadSmallJson(numCopies);
         String expression = "SELECT * from BlobStorage";
@@ -542,7 +541,7 @@ public class BlobBaseApiTests extends BlobTestBase {
     }
 
     @DisabledIf("com.azure.storage.blob.BlobTestBase#olderThan20191212ServiceVersion")
-//    @Retry(count = 5, delay = 5, condition = { environment.testMode == TestMode.LIVE })
+    @Test
     public void queryProgressReceiver() {
         BlobQueryDelimitedSerialization base = new BlobQueryDelimitedSerialization()
             .setRecordSeparator('\n')
@@ -573,7 +572,7 @@ public class BlobBaseApiTests extends BlobTestBase {
             }
 
             // At least the size of blob to read will be in the progress list
-            mockReceiver.progressList.contains(sizeofBlobToRead);
+            assertTrue(mockReceiver.progressList.contains(sizeofBlobToRead));
 
             /* Output Stream. */
             MockProgressConsumer mockReceiver2 = new MockProgressConsumer();
@@ -581,7 +580,7 @@ public class BlobBaseApiTests extends BlobTestBase {
                 .setProgressConsumer(mockReceiver2);
             bc.queryWithResponse(options2, null, null);
 
-            mockReceiver2.progressList.contains(sizeofBlobToRead);
+            assertTrue(mockReceiver2.progressList.contains(sizeofBlobToRead));
         });
     }
 
@@ -641,6 +640,7 @@ public class BlobBaseApiTests extends BlobTestBase {
     }
 
     @DisabledIf("com.azure.storage.blob.BlobTestBase#olderThan20191212ServiceVersion")
+    @Test
     public void querySnapshot() {
         BlobQueryDelimitedSerialization ser = new BlobQueryDelimitedSerialization()
             .setRecordSeparator('\n')
@@ -717,7 +717,7 @@ public class BlobBaseApiTests extends BlobTestBase {
                 () -> bc.openQueryInputStreamWithResponse(options).getValue()  /* Don't need to call read. */);
             BlobQueryOptions options2 = new BlobQueryOptions(expression, new ByteArrayOutputStream())
                 .setInputSerialization(inSer);
-            assertThrows(IllegalArgumentException.class, () -> bc.queryWithResponse(options, null, null));
+            assertThrows(IllegalArgumentException.class, () -> bc.queryWithResponse(options2, null, null));
         });
     }
 
@@ -732,10 +732,10 @@ public class BlobBaseApiTests extends BlobTestBase {
         liveTestScenarioWithRetry(() -> {
             assertThrows(IllegalArgumentException.class,
                 () -> bc.openQueryInputStreamWithResponse(options).getValue()  /* Don't need to call read. */);
+
             BlobQueryOptions options2 = new BlobQueryOptions(expression, new ByteArrayOutputStream())
                 .setOutputSerialization(outSer);
-            assertThrows(IllegalArgumentException.class,
-                () -> bc.queryWithResponse(options, null, null));
+            assertThrows(IllegalArgumentException.class, () -> bc.queryWithResponse(options2, null, null));
             });
     }
 

@@ -793,6 +793,7 @@ public class SasClientTests extends BlobTestBase {
         BlobClient bc = getBlobClient(ENVIRONMENT.getPrimaryAccount().getCredential(),
             primaryBlobServiceClient.getAccountUrl() + "/" + containerName + "/" + blobName + "?" + sas);
         File file = getRandomFile(256);
+        file.deleteOnExit();
         assertDoesNotThrow(() -> bc.uploadFromFile(file.toPath().toString(), true));
     }
 

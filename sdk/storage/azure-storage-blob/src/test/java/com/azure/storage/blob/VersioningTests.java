@@ -33,6 +33,7 @@ import java.nio.charset.StandardCharsets;
 import java.util.Collections;
 import java.util.Iterator;
 
+import static org.junit.jupiter.api.Assertions.assertArrayEquals;
 import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertFalse;
 import static org.junit.jupiter.api.Assertions.assertNotEquals;
@@ -101,11 +102,11 @@ public class VersioningTests extends BlobTestBase {
 
         ByteArrayOutputStream outputV1 = new ByteArrayOutputStream();
         ByteArrayOutputStream outputV2 = new ByteArrayOutputStream();
-        blobClient.getVersionClient(blobItemV1.getVersionId()).download(outputV1);
-        blobClient.getVersionClient(blobItemV2.getVersionId()).download(outputV2);
+        blobClient.getVersionClient(blobItemV1.getVersionId()).downloadStream(outputV1);
+        blobClient.getVersionClient(blobItemV2.getVersionId()).downloadStream(outputV2);
 
-        assertEquals(outputV1.toByteArray(), contentV1.getBytes(StandardCharsets.UTF_8));
-        assertEquals(outputV2.toByteArray(), contentV2.getBytes(StandardCharsets.UTF_8));
+        assertArrayEquals(outputV1.toByteArray(), contentV1.getBytes(StandardCharsets.UTF_8));
+        assertArrayEquals(outputV2.toByteArray(), contentV2.getBytes(StandardCharsets.UTF_8));
     }
 
     @Test
@@ -120,8 +121,8 @@ public class VersioningTests extends BlobTestBase {
         blobClient.getVersionClient(blobItemV1.getVersionId()).downloadStream(outputV1);
         blobClient.getVersionClient(blobItemV2.getVersionId()).downloadStream(outputV2);
 
-        assertEquals(outputV1.toByteArray(), contentV1.getBytes(StandardCharsets.UTF_8));
-        assertEquals(outputV2.toByteArray(), contentV2.getBytes(StandardCharsets.UTF_8));
+        assertArrayEquals(outputV1.toByteArray(), contentV1.getBytes(StandardCharsets.UTF_8));
+        assertArrayEquals(outputV2.toByteArray(), contentV2.getBytes(StandardCharsets.UTF_8));
     }
 
     @Test
@@ -345,7 +346,7 @@ public class VersioningTests extends BlobTestBase {
 
         assertEquals(propertiesV1.getVersionId(), blobItemV1.getVersionId());
         assertEquals(propertiesV2.getVersionId(), blobItemV2.getVersionId());
-        assertFalse(propertiesV1.isCurrentVersion());
+        assertNull(propertiesV1.isCurrentVersion());
         assertTrue(propertiesV2.isCurrentVersion());
     }
 
@@ -353,16 +354,14 @@ public class VersioningTests extends BlobTestBase {
     public void doNotLookForSnapshotOfVersion() {
         blobClient.getBlockBlobClient().upload(DATA.getDefaultInputStream(), DATA.getDefaultDataSize());
 
-        assertThrows(IllegalArgumentException.class, () ->
-                blobClient.getVersionClient("a").getSnapshotClient("b"));
+        assertThrows(IllegalArgumentException.class, () -> blobClient.getVersionClient("a").getSnapshotClient("b"));
     }
 
     @Test
     public void doNotLookForVersionOfSnapshot() {
         blobClient.getBlockBlobClient().upload(DATA.getDefaultInputStream(), DATA.getDefaultDataSize());
 
-        assertThrows(IllegalArgumentException.class, () ->
-                blobClient.getSnapshotClient("a").getVersionClient("b"));
+        assertThrows(IllegalArgumentException.class, () -> blobClient.getSnapshotClient("a").getVersionClient("b"));
     }
 
     @Test
@@ -370,8 +369,8 @@ public class VersioningTests extends BlobTestBase {
         BlockBlobItem blobItemV1 = blobClient.getBlockBlobClient().upload(DATA.getDefaultInputStream(),
             DATA.getDefaultDataSize());
 
-        String versionIdAfterSnapshot = blobClient.createSnapshotWithResponse(
-            null, null, null, Context.NONE).getHeaders().getValue(X_MS_VERSION_ID);
+        String versionIdAfterSnapshot = blobClient.createSnapshotWithResponse(null, null, null, Context.NONE)
+            .getHeaders().getValue(X_MS_VERSION_ID);
 
         assertNotNull(versionIdAfterSnapshot);
         assertNotEquals(blobItemV1.getVersionId(), versionIdAfterSnapshot);

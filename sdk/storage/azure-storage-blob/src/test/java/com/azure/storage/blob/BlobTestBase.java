@@ -187,7 +187,7 @@ public class BlobTestBase extends TestProxyTestBase {
                 "If-Unmodified-Since", "x-ms-expiry-time", "x-ms-source-if-modified-since",
                 "x-ms-source-if-unmodified-since", "x-ms-source-lease-id", "x-ms-encryption-key-sha256"))
             .setQueryOrderingIgnored(true)
-            .setIgnoredQueryParameters(Arrays.asList("sv"))));
+            .setIgnoredQueryParameters(Collections.singletonList("sv"))));
 
         primaryBlobServiceClient = getServiceClient(ENVIRONMENT.getPrimaryAccount());
         primaryBlobServiceAsyncClient = getServiceAsyncClient(ENVIRONMENT.getPrimaryAccount());

@@ -7,8 +7,15 @@ import com.azure.core.http.*;
 import com.azure.core.http.policy.HttpPipelinePolicy;
 import com.azure.core.http.rest.ResponseBase;
 import com.azure.core.util.FluxUtil;
-import com.azure.storage.blob.*;
-import com.azure.storage.blob.models.*;
+import com.azure.storage.blob.BlobContainerAsyncClient;
+import com.azure.storage.blob.BlobContainerClient;
+import com.azure.storage.blob.BlobServiceAsyncClient;
+import com.azure.storage.blob.BlobServiceClient;
+import com.azure.storage.blob.BlobTestBase;
+import com.azure.storage.blob.models.BlobDownloadAsyncResponse;
+import com.azure.storage.blob.models.BlobRange;
+import com.azure.storage.blob.models.BlobStorageException;
+import com.azure.storage.blob.models.DownloadRetryOptions;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.params.ParameterizedTest;
@@ -29,6 +36,7 @@ import java.util.stream.Stream;
 import static org.junit.jupiter.api.Assertions.assertArrayEquals;
 import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertInstanceOf;
+import static org.junit.jupiter.api.Assertions.assertNotNull;
 
 public class DownloadResponseTests extends BlobTestBase {
     private BlockBlobClient bu;
@@ -43,7 +51,6 @@ public class DownloadResponseTests extends BlobTestBase {
     This shouldn't really be different from anything else we're doing in the other tests. Just a sanity check against
     a real use case.
      */
-
     @Test
     public void networkCall() {
         ByteArrayOutputStream outputStream = new ByteArrayOutputStream();
@@ -52,19 +59,18 @@ public class DownloadResponseTests extends BlobTestBase {
     }
 
     @Test
-    public void  networkCallNoEtagReturned() {
-        HttpPipelinePolicy removeEtagPolicy = (context, next) -> next.process()
-            .flatMap( response -> {
-                HttpHeader eTagHeader = response.getHeaders().get("eTag");
-        if (eTagHeader == null) {
-            return  Mono.just(response);
-        }
-        HttpHeaders headers = response.getHeaders();
-        headers.remove("eTag");
-        return  Mono.just(getStubDownloadResponse(response, response.getStatusCode(), response.getBody(), headers));
+    public void networkCallNoETagReturned() {
+        HttpPipelinePolicy removeETagPolicy = (context, next) -> next.process().flatMap( response -> {
+            HttpHeader eTagHeader = response.getHeaders().get("eTag");
+            if (eTagHeader == null) {
+                return  Mono.just(response);
+            }
+            HttpHeaders headers = response.getHeaders();
+            headers.remove("eTag");
+            return Mono.just(getStubDownloadResponse(response, response.getStatusCode(), response.getBody(), headers));
         });
         BlobServiceClient bsc = getServiceClientBuilder(ENVIRONMENT.getPrimaryAccount().getCredential(),
-            primaryBlobServiceClient.getAccountUrl(), removeEtagPolicy).buildClient();
+            primaryBlobServiceClient.getAccountUrl(), removeETagPolicy).buildClient();
         BlobContainerClient cc = bsc.getBlobContainerClient(containerName);
         BlockBlobClient blockBlobClient = cc.getBlobClient(bu.getBlobName()).getBlockBlobClient();
 
@@ -89,7 +95,7 @@ public class DownloadResponseTests extends BlobTestBase {
 
         StepVerifier.create(blockBlobAsyncClient.downloadStreamWithResponse(range, options, null, false))
             .assertNext(response -> {
-                assertEquals(FluxUtil.collectBytesInByteBufferStream(response.getValue()).block(),
+                assertArrayEquals(FluxUtil.collectBytesInByteBufferStream(response.getValue()).block(),
                     flux.getScenarioData().array());
                 assertEquals(tryNumber, flux.getTryNumber());
             }).verifyComplete();
@@ -108,7 +114,7 @@ public class DownloadResponseTests extends BlobTestBase {
 
     @ParameterizedTest
     @MethodSource("failureSupplier")
-    public void failure(int scenario, Exception exceptionType, int tryNumber) {
+    public void failure(int scenario, Class<?> exceptionType, int tryNumber) {
         DownloadResponseMockFlux flux = new DownloadResponseMockFlux(scenario, this);
         DownloadRetryOptions options = new DownloadRetryOptions().setMaxRetryRequests(5);
 
@@ -117,21 +123,24 @@ public class DownloadResponseTests extends BlobTestBase {
         BlobContainerAsyncClient cc = bsc.getBlobContainerAsyncClient(containerName);
         BlockBlobAsyncClient blockBlobAsyncClient = cc.getBlobAsyncClient(bu.getBlobName()).getBlockBlobAsyncClient();
 
-        StepVerifier.create(blockBlobAsyncClient.downloadStreamWithResponse(null, options, null, false))
-            .verifyErrorSatisfies(e -> {
+        BlobDownloadAsyncResponse response = blockBlobAsyncClient.downloadStreamWithResponse(null, options, null, false)
+            .block();
+        assertNotNull(response);
+
+        StepVerifier.create(response.getValue())
+            .expectErrorSatisfies(e -> {
                 Throwable cause = Exceptions.unwrap(e);
-                assertInstanceOf(exceptionType.getClass(), cause);
+                assertInstanceOf(exceptionType, cause);
                 assertEquals(tryNumber, flux.getTryNumber());
             });
     }
 
     private static Stream<Arguments> failureSupplier() {
-        return Stream.of(Arguments.of(DownloadResponseMockFlux.DR_TEST_SCENARIO_MAX_RETRIES_EXCEEDED,
-                IOException.class, 6),
-            Arguments.of(DownloadResponseMockFlux.DR_TEST_SCENARIO_NON_RETRYABLE_ERROR, Exception.class,
-                1),
-            Arguments.of(DownloadResponseMockFlux.DR_TEST_SCENARIO_ERROR_GETTER_MIDDLE,
-                BlobStorageException.class, 2));
+        return Stream.of(
+            Arguments.of(DownloadResponseMockFlux.DR_TEST_SCENARIO_MAX_RETRIES_EXCEEDED, IOException.class, 6),
+            Arguments.of(DownloadResponseMockFlux.DR_TEST_SCENARIO_NON_RETRYABLE_ERROR, Exception.class, 1),
+            Arguments.of(DownloadResponseMockFlux.DR_TEST_SCENARIO_ERROR_GETTER_MIDDLE, BlobStorageException.class, 2)
+        );
     }
 
     @ParameterizedTest
@@ -147,8 +156,8 @@ public class DownloadResponseTests extends BlobTestBase {
         BlobContainerAsyncClient cc = bsc.getBlobContainerAsyncClient(containerName);
         BlockBlobAsyncClient blockBlobAsyncClient = cc.getBlobAsyncClient(bu.getBlobName()).getBlockBlobAsyncClient();
 
-        Flux<Object> bufferMono = blockBlobAsyncClient.downloadStreamWithResponse(null, options, null,
-                false).flatMapMany(ResponseBase::getValue);
+        Flux<Object> bufferMono = blockBlobAsyncClient.downloadStreamWithResponse(null, options, null, false)
+            .flatMapMany(ResponseBase::getValue);
 
         StepVerifier.create(bufferMono.timeout(Duration.ofSeconds(1)))
             .expectSubscription()

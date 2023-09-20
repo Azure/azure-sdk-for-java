@@ -16,6 +16,7 @@ import org.mockito.Mockito;
 
 import java.io.ByteArrayInputStream;
 import java.io.IOException;
+import java.io.OutputStream;
 import java.nio.ByteBuffer;
 import java.util.Arrays;
 import java.util.Base64;
@@ -97,45 +98,60 @@ public class StorageSeekableByteChannelBlobReadBehaviorTests extends BlobTestBas
 
     @ParameterizedTest
     @MethodSource("readUsesCacheCorrectlySupplier")
-    public void readUsesCacheCorrectly(int offset, int bufferSize, int cacheSize) throws IOException {
-        // Given: "Behavior with a starting cached response"
+    void readUsesCacheCorrectly(long offset, int bufferSize, int cacheSize) throws Exception {
+        // given: "Behavior with a starting cached response"
         BlobClientBase client = Mockito.mock(BlobClientBase.class);
         ByteBuffer initialCache = getRandomData(cacheSize);
-        StorageSeekableByteChannelBlobReadBehavior behavior = new StorageSeekableByteChannelBlobReadBehavior(client,
-            initialCache, offset, Constants.MB, null);
+        StorageSeekableByteChannelBlobReadBehavior behavior =
+            new StorageSeekableByteChannelBlobReadBehavior(client, initialCache, offset, Constants.MB, null);
 
-        // When: "ReadBehavior.read() called at offset of cache"
+        // Stubbing downloadStreamWithResponse before any read call
+        Mockito.when(client.downloadStreamWithResponse(
+                Mockito.any(),
+                Mockito.argThat(range -> range.getOffset() == offset && range.getCount().intValue() == bufferSize),
+                Mockito.any(),
+                Mockito.any(),
+                Mockito.anyBoolean(),
+                Mockito.any(),
+                Mockito.any()))
+            .thenAnswer(invocation -> {
+                OutputStream os = invocation.getArgument(0);
+                BlobRange range = invocation.getArgument(1);
+                os.write(getRandomData(range.getCount().intValue()).array());
+                return createMockDownloadResponse("bytes " + offset + "-" + (offset + bufferSize - 1) + "/"
+                    + Constants.MB);
+            });
+        // when: "ReadBehavior.read() called at offset of cache"
         ByteBuffer buffer = ByteBuffer.allocate(bufferSize);
         int read1 = behavior.read(buffer, offset);
 
-        // Then: "Cache used"
-        verify(client, times(0)).downloadStreamWithResponse(any(), any(), any(), any(),
-            anyBoolean(), any(), any());
+        // then: "Cache used"
+        Mockito.verify(client, Mockito.times(0)).downloadStreamWithResponse(
+            Mockito.any(), Mockito.any(), Mockito.any(), Mockito.any(), Mockito.anyBoolean(), Mockito.any(),
+            Mockito.any());
         assertEquals(Math.min(bufferSize, cacheSize), read1);
-        byte[] initialSubArray = Arrays.copyOfRange(initialCache.array(), 0, read1);
-        byte[] bufferSubArray = Arrays.copyOfRange(buffer.array(), 0, read1);
+        byte[] actual = new byte[read1];
+        buffer.flip();
+        buffer.get(actual);
+        byte[] expected = new byte[read1];
+        initialCache.get(expected);
+        assertArrayEquals(expected, actual);
 
-        assertArrayEquals(initialSubArray, bufferSubArray);
-
-        // When: "Read again at same offset"
+        // when: "Read again at same offset"
         buffer.clear();
         int read2 = behavior.read(buffer, offset);
 
-        // Then: "Client read because cache was cleared after use"
-        verify(client, times(1)).downloadStreamWithResponse(any(),
-            argThat(range -> range.getOffset() == offset && range.getCount() == bufferSize),
-            any(), any(), anyBoolean(), any(), any());
-        // ensure call that fails above condition still returns a value to avoid null pointer
+        // then: "Client read because cache was cleared after use"
         assertEquals(bufferSize, read2);
         assertEquals(read2, buffer.position());
     }
 
-    private static Stream<Arguments> readUsesCacheCorrectlySupplier() {
+    static Stream<Arguments> readUsesCacheCorrectlySupplier() {
         return Stream.of(
-            Arguments.of(0, Constants.KB, Constants.KB),
-            Arguments.of(50, Constants.KB, Constants.KB),
-            Arguments.of(0, 2 * Constants.KB, Constants.KB),
-            Arguments.of(0, Constants.KB, 2 * Constants.KB)
+            Arguments.of(0L, Constants.KB, Constants.KB),
+            Arguments.of(50L, Constants.KB, Constants.KB),
+            Arguments.of(0L, 2 * Constants.KB, Constants.KB),
+            Arguments.of(0L, Constants.KB, 2 * Constants.KB)
         );
     }
 

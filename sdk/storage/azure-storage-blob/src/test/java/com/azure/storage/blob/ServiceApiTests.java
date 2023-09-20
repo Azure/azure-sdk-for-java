@@ -528,7 +528,7 @@ public class ServiceApiTests extends BlobTestBase {
             .take(1, true)
             .concatMapIterable(ContinuablePage::getElements).collectList().block();
 
-        assertEquals(12, list.size());
+        assertEquals(12, list2.size());
     }
 
     @Test
@@ -579,26 +579,26 @@ public class ServiceApiTests extends BlobTestBase {
             && received.getLogging().getRetentionPolicy().isEnabled() == sent.getLogging().getRetentionPolicy().isEnabled()
             && received.getCors().size() == sent.getCors().size()
             && received.getCors().get(0).getAllowedMethods().equals(sent.getCors().get(0).getAllowedMethods())
-            && received.getCors().get(0).getAllowedHeaders() == sent.getCors().get(0).getAllowedHeaders()
-            && received.getCors().get(0).getAllowedOrigins() == sent.getCors().get(0).getAllowedOrigins()
-            && received.getCors().get(0).getExposedHeaders() == sent.getCors().get(0).getExposedHeaders()
+            && received.getCors().get(0).getAllowedHeaders().equals(sent.getCors().get(0).getAllowedHeaders())
+            && received.getCors().get(0).getAllowedOrigins().equals(sent.getCors().get(0).getAllowedOrigins())
+            && received.getCors().get(0).getExposedHeaders().equals(sent.getCors().get(0).getExposedHeaders())
             && received.getCors().get(0).getMaxAgeInSeconds() == sent.getCors().get(0).getMaxAgeInSeconds()
-            && received.getDefaultServiceVersion() == sent.getDefaultServiceVersion()
+            && received.getDefaultServiceVersion().equals(sent.getDefaultServiceVersion())
             && received.getHourMetrics().isEnabled() == sent.getHourMetrics().isEnabled()
             && received.getHourMetrics().isIncludeApis() == sent.getHourMetrics().isIncludeApis()
             && received.getHourMetrics().getRetentionPolicy().isEnabled() == sent.getHourMetrics().getRetentionPolicy().isEnabled()
-            && received.getHourMetrics().getRetentionPolicy().getDays() == sent.getHourMetrics().getRetentionPolicy().getDays()
-            && received.getHourMetrics().getVersion() == sent.getHourMetrics().getVersion()
+            && received.getHourMetrics().getRetentionPolicy().getDays().equals(sent.getHourMetrics().getRetentionPolicy().getDays())
+            && received.getHourMetrics().getVersion().equals(sent.getHourMetrics().getVersion())
             && received.getMinuteMetrics().isEnabled() == sent.getMinuteMetrics().isEnabled()
             && received.getMinuteMetrics().isIncludeApis() == sent.getMinuteMetrics().isIncludeApis()
             && received.getMinuteMetrics().getRetentionPolicy().isEnabled() == sent.getMinuteMetrics().getRetentionPolicy().isEnabled()
-            && received.getMinuteMetrics().getRetentionPolicy().getDays() == sent.getMinuteMetrics().getRetentionPolicy().getDays()
-            && received.getMinuteMetrics().getVersion() == sent.getMinuteMetrics().getVersion()
+            && received.getMinuteMetrics().getRetentionPolicy().getDays().equals(sent.getMinuteMetrics().getRetentionPolicy().getDays())
+            && received.getMinuteMetrics().getVersion().equals(sent.getMinuteMetrics().getVersion())
             && received.getDeleteRetentionPolicy().isEnabled() == sent.getDeleteRetentionPolicy().isEnabled()
-            && received.getDeleteRetentionPolicy().getDays() == sent.getDeleteRetentionPolicy().getDays()
+            && received.getDeleteRetentionPolicy().getDays().equals(sent.getDeleteRetentionPolicy().getDays())
             && received.getStaticWebsite().isEnabled() == sent.getStaticWebsite().isEnabled()
-            && received.getStaticWebsite().getIndexDocument() == sent.getStaticWebsite().getIndexDocument()
-            && received.getStaticWebsite().getErrorDocument404Path() == sent.getStaticWebsite().getErrorDocument404Path();
+            && received.getStaticWebsite().getIndexDocument().equals(sent.getStaticWebsite().getIndexDocument())
+            && received.getStaticWebsite().getErrorDocument404Path().equals(sent.getStaticWebsite().getErrorDocument404Path());
     }
 
     @Test
@@ -683,7 +683,8 @@ public class ServiceApiTests extends BlobTestBase {
             .setAllowedHeaders("x-ms-version");
 
         serviceProperties.setCors(Collections.singletonList(rule));
-        assertResponseStatusCode(primaryBlobServiceClient.setPropertiesWithResponse(serviceProperties, null, null), 202);
+        assertResponseStatusCode(primaryBlobServiceClient.setPropertiesWithResponse(serviceProperties, null, null),
+            202);
     }
 
     @DisabledIf("com.azure.storage.blob.BlobTestBase#olderThan20191212ServiceVersion")
@@ -821,7 +822,7 @@ public class ServiceApiTests extends BlobTestBase {
 
     @Test
     public void getStatsAnonymous() {
-        assertThrows(IllegalStateException.class, () ->anonymousClient.getStatistics());
+        assertThrows(IllegalStateException.class, () -> anonymousClient.getStatistics());
     }
 
     @Test
@@ -1032,6 +1033,7 @@ public class ServiceApiTests extends BlobTestBase {
     }
 
     @DisabledIf("com.azure.storage.blob.BlobTestBase#olderThan20191212ServiceVersion")
+    @Test
     public void restoreContainerIntoExistingContainerError() {
         BlobContainerClient cc1 = primaryBlobServiceClient.getBlobContainerClient(generateContainerName());
         cc1.create();
@@ -1067,13 +1069,13 @@ public class ServiceApiTests extends BlobTestBase {
         String mockSas =
             "?sv=2019-10-10&ss=b&srt=sco&sp=r&se=2019-06-04T12:04:58Z&st=2090-05-04T04:04:58Z&spr=http&sig=doesntmatter";
 
-        BlobServiceClient client = new BlobServiceClientBuilder()
-            .endpoint(service)
-            .sasToken(mockSas)
-            .buildClient();
-
-        IllegalArgumentException e = assertThrows(IllegalArgumentException.class, () ->
-                client.getBlobContainerClient(container).getBlobClient("blobname"));
+        IllegalArgumentException e = assertThrows(IllegalArgumentException.class, () -> {
+                BlobServiceClient client = new BlobServiceClientBuilder()
+                    .endpoint(service)
+                    .sasToken(mockSas)
+                    .buildClient();
+                client.getBlobContainerClient(container).getBlobClient("blobname");
+            });
 
         assertFalse(e.getMessage().contains(mockSas));
 

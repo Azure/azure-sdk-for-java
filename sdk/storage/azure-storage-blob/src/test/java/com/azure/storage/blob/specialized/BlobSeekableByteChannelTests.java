@@ -292,7 +292,7 @@ public class BlobSeekableByteChannelTests extends BlobTestBase {
         // when: "make channel in write mode"
         StorageSeekableByteChannel channel = (StorageSeekableByteChannel) blockClient.openSeekableByteChannelWrite(
             new BlockBlobSeekableByteChannelWriteOptions(writeMode)
-                .setBlockSizeInBytes(Long.valueOf(blockSize))
+                .setBlockSizeInBytes(blockSize != null ? Long.valueOf(blockSize) : null)
                 .setHeaders(headers)
                 .setMetadata(metadata)
                 .setTags(tags)
@@ -314,7 +314,7 @@ public class BlobSeekableByteChannelTests extends BlobTestBase {
         assertEquals(conditions, writeBehavior.getRequestConditions());
 
         // and: "channel has appropriate values"
-        assertEquals(blockSize, channel.getChunkSize());
+        assertEquals((blockSize == null ? 4 * Constants.MB : blockSize), channel.getChunkSize());
         assertEquals(0, channel.position());
     }
 

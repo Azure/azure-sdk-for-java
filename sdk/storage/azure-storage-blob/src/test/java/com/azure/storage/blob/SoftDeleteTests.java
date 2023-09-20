@@ -54,7 +54,8 @@ public class SoftDeleteTests extends BlobTestBase {
     public void listBlobsFlatOptionsDeleted() {
         blobClient.delete();
 
-        ListBlobsOptions options = new ListBlobsOptions().setDetails(new BlobListDetails().setRetrieveDeletedBlobs(true))
+        ListBlobsOptions options = new ListBlobsOptions()
+            .setDetails(new BlobListDetails().setRetrieveDeletedBlobs(true))
             .setPrefix(prefix);
         Iterator<BlobItem> blobs = containerClient.listBlobs(options, null).iterator();
 

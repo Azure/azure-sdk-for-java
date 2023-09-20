@@ -60,7 +60,8 @@ public class DownloadResponseMockFlux {
     /*
     For internal construction on NO_MULTIPLE_SUBSCRIPTION test
     */
-    public DownloadResponseMockFlux(int scenario, int tryNumber, ByteBuffer scenarioData, DownloadRetryOptions options) {
+    public DownloadResponseMockFlux(int scenario, int tryNumber, ByteBuffer scenarioData, DownloadRetryOptions options)
+    {
         this.scenario = scenario;
         this.tryNumber = tryNumber;
         this.scenarioData = scenarioData;
