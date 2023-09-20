@@ -53,7 +53,7 @@ import static com.azure.messaging.servicebus.implementation.Messages.INVALID_OPE
 /**
  * An <b>asynchronous</b> client to send messages to a Service Bus resource.
  *
- * <p><strong>Create an instance of sender</strong></p>
+ * <p><strong>Sample:  Create an instance of sender</strong></p>
  * <!-- src_embed com.azure.messaging.servicebus.servicebusasyncsenderclient.instantiation -->
  * <pre>
  * TokenCredential credential = new DefaultAzureCredentialBuilder&#40;&#41;.build&#40;&#41;;

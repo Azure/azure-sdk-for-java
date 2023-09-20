@@ -47,7 +47,7 @@ public class ServiceBusSenderClientJavaDocCodeSamples {
         ServiceBusSenderClient sender = new ServiceBusClientBuilder()
             .credential(fullyQualifiedNamespace, credential)
             .sender()
-            .queueName(queueName)
+            .queueName("<<queue-name>>")
             .buildClient();
 
         sender.sendMessage(new ServiceBusMessage("Foo bar"));
@@ -79,7 +79,7 @@ public class ServiceBusSenderClientJavaDocCodeSamples {
     /**
      * Code snippet demonstrating how to send a batch to Service Bus queue or topic.
      *
-     * @throws IllegalArgumentException if an message is too large.
+     * @throws IllegalArgumentException if a message is too large.
      */
     @Test
     public void sendBatch() {

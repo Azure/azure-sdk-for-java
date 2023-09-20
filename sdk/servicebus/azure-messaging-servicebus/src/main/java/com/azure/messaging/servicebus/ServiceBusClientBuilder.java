@@ -73,7 +73,8 @@ import static com.azure.messaging.servicebus.implementation.ServiceBusConstants.
 /**
  * The builder to create Service Bus clients:
  *
- * <p><strong>Instantiate a synchronous sender</strong></p>
+ * <p><strong>Sample: Instantiate a synchronous sender</strong></p>
+ *
  * <!-- src_embed com.azure.messaging.servicebus.servicebussenderclient.instantiation -->
  * <pre>
  * TokenCredential credential = new DefaultAzureCredentialBuilder&#40;&#41;.build&#40;&#41;;
