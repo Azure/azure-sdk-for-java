@@ -27,12 +27,10 @@ public final class SearchResultConverter {
 
         SearchResult searchResult = new SearchResult(obj.getScore());
 
-        SearchResultHelper.setRerankerScore(searchResult, obj.getRerankerScore());
         SearchResultHelper.setHighlights(searchResult, obj.getHighlights());
-        SearchResultHelper.setCaptions(searchResult, obj.getCaptions());
         SearchResultHelper.setAdditionalProperties(searchResult, new SearchDocument(obj.getAdditionalProperties()));
         SearchResultHelper.setJsonSerializer(searchResult, (JsonSerializer) serializer);
-        SearchResultHelper.setDocumentDebugInfo(searchResult, obj.getDocumentDebugInfo());
+
         return searchResult;
     }
 

@@ -6,99 +6,102 @@
 
 package com.azure.search.documents.indexes.models;
 
-/** Identifies a predefined list of language-specific stopwords. */
+import com.fasterxml.jackson.annotation.JsonCreator;
+import com.fasterxml.jackson.annotation.JsonValue;
+
+/** Defines values for StopwordsList. */
 public enum StopwordsList {
-    /** Selects the stopword list for Arabic. */
+    /** Enum value arabic. */
     ARABIC("arabic"),
 
-    /** Selects the stopword list for Armenian. */
+    /** Enum value armenian. */
     ARMENIAN("armenian"),
 
-    /** Selects the stopword list for Basque. */
+    /** Enum value basque. */
     BASQUE("basque"),
 
-    /** Selects the stopword list for Portuguese (Brazil). */
+    /** Enum value brazilian. */
     BRAZILIAN("brazilian"),
 
-    /** Selects the stopword list for Bulgarian. */
+    /** Enum value bulgarian. */
     BULGARIAN("bulgarian"),
 
-    /** Selects the stopword list for Catalan. */
+    /** Enum value catalan. */
     CATALAN("catalan"),
 
-    /** Selects the stopword list for Czech. */
+    /** Enum value czech. */
     CZECH("czech"),
 
-    /** Selects the stopword list for Danish. */
+    /** Enum value danish. */
     DANISH("danish"),
 
-    /** Selects the stopword list for Dutch. */
+    /** Enum value dutch. */
     DUTCH("dutch"),
 
-    /** Selects the stopword list for English. */
+    /** Enum value english. */
     ENGLISH("english"),
 
-    /** Selects the stopword list for Finnish. */
+    /** Enum value finnish. */
     FINNISH("finnish"),
 
-    /** Selects the stopword list for French. */
+    /** Enum value french. */
     FRENCH("french"),
 
-    /** Selects the stopword list for Galician. */
+    /** Enum value galician. */
     GALICIAN("galician"),
 
-    /** Selects the stopword list for German. */
+    /** Enum value german. */
     GERMAN("german"),
 
-    /** Selects the stopword list for Greek. */
+    /** Enum value greek. */
     GREEK("greek"),
 
-    /** Selects the stopword list for Hindi. */
+    /** Enum value hindi. */
     HINDI("hindi"),
 
-    /** Selects the stopword list for Hungarian. */
+    /** Enum value hungarian. */
     HUNGARIAN("hungarian"),
 
-    /** Selects the stopword list for Indonesian. */
+    /** Enum value indonesian. */
     INDONESIAN("indonesian"),
 
-    /** Selects the stopword list for Irish. */
+    /** Enum value irish. */
     IRISH("irish"),
 
-    /** Selects the stopword list for Italian. */
+    /** Enum value italian. */
     ITALIAN("italian"),
 
-    /** Selects the stopword list for Latvian. */
+    /** Enum value latvian. */
     LATVIAN("latvian"),
 
-    /** Selects the stopword list for Norwegian. */
+    /** Enum value norwegian. */
     NORWEGIAN("norwegian"),
 
-    /** Selects the stopword list for Persian. */
+    /** Enum value persian. */
     PERSIAN("persian"),
 
-    /** Selects the stopword list for Portuguese. */
+    /** Enum value portuguese. */
     PORTUGUESE("portuguese"),
 
-    /** Selects the stopword list for Romanian. */
+    /** Enum value romanian. */
     ROMANIAN("romanian"),
 
-    /** Selects the stopword list for Russian. */
+    /** Enum value russian. */
     RUSSIAN("russian"),
 
-    /** Selects the stopword list for Sorani. */
+    /** Enum value sorani. */
     SORANI("sorani"),
 
-    /** Selects the stopword list for Spanish. */
+    /** Enum value spanish. */
     SPANISH("spanish"),
 
-    /** Selects the stopword list for Swedish. */
+    /** Enum value swedish. */
     SWEDISH("swedish"),
 
-    /** Selects the stopword list for Thai. */
+    /** Enum value thai. */
     THAI("thai"),
 
-    /** Selects the stopword list for Turkish. */
+    /** Enum value turkish. */
     TURKISH("turkish");
 
     /** The actual serialized value for a StopwordsList instance. */
@@ -114,6 +117,7 @@ public enum StopwordsList {
      * @param value the serialized value to parse.
      * @return the parsed StopwordsList object, or null if unable to parse.
      */
+    @JsonCreator
     public static StopwordsList fromString(String value) {
         if (value == null) {
             return null;
@@ -127,7 +131,7 @@ public enum StopwordsList {
         return null;
     }
 
-    /** {@inheritDoc} */
+    @JsonValue
     @Override
     public String toString() {
         return this.value;
