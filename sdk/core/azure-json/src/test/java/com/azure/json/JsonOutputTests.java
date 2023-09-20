@@ -37,7 +37,7 @@ public class JsonOutputTests {
     @Test
     public void objectWithBooleanJSON(){
         String expected = "{\"Value1\":true}";
-        String actual = new JsonObject().addProperty("Value1", new JsonBoolean(true)).toJson();
+        String actual = new JsonObject().addProperty("Value1", JsonBoolean.getInstance(true)).toJson();
         assertEquals(expected, actual);
     }
 

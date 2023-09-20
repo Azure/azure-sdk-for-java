@@ -19,7 +19,7 @@ public final class JsonBoolean extends JsonElement {
      * TODO: may need to remove this due to design guidelines? May only want to
      * have the public JsonBoolean(boolean value) constructor.
      */
-    public JsonBoolean() { this(true); }
+
 
     /**
      * Constructor used to set the value of the JsonBoolean.
@@ -28,7 +28,7 @@ public final class JsonBoolean extends JsonElement {
      * true or false. If value is true, then booleanValue set to "true"; otherwise,
      * set to "false"
      */
-    public JsonBoolean(boolean value) { this.booleanValue = value;}//this.booleanValue = (value)? "true" : "false"; }
+    private JsonBoolean(boolean value) { this.booleanValue = value;}//this.booleanValue = (value)? "true" : "false"; }
 
     /**
      * Lazy-loading the Singleton instances of JsonBoolean of TRUE & FALSE.

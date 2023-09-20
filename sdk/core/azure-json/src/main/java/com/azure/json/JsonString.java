@@ -66,12 +66,12 @@ public class JsonString extends JsonElement{
         try {
             int a = Integer.parseInt(stringValue);
             if (a == 1){
-                return new JsonBoolean(true);
+                return JsonBoolean.getInstance(true);
             } else {
-                return new JsonBoolean(false);
+                return JsonBoolean.getInstance(false);
             }
         } catch (NumberFormatException e){
-            return new JsonBoolean(Boolean.parseBoolean(stringValue));
+            return JsonBoolean.getInstance(Boolean.parseBoolean(stringValue));
         }
     }
 

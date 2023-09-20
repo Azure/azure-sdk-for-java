@@ -139,42 +139,42 @@ public class JsonConversionTests {
     //1.3: Boolean
     @Test
     public void convertEmptyBooleanToNumber(){
-        JsonElement test = new JsonBoolean();
+        JsonElement test = JsonBoolean.getInstance(true);
         JsonNumber converted = test.asNumber();
         assertTrue(converted.isNumber());
     }
 
     @Test
     public void convertEmptyBooleanToArray(){
-        JsonElement test = new JsonBoolean();
+        JsonElement test = JsonBoolean.getInstance(true);
         JsonArray converted = test.asArray();
         assertTrue(converted.isArray());
     }
 
     @Test
     public void convertEmptyBooleanToSelf(){
-        JsonElement test = new JsonBoolean();
+        JsonElement test = JsonBoolean.getInstance(true);
         JsonBoolean converted = test.asBoolean();
         assertTrue(converted.isBoolean());
     }
 
     @Test
     public void convertEmptyBooleanToNull(){
-        JsonElement test = new JsonBoolean();
+        JsonElement test = JsonBoolean.getInstance(true);
         JsonNull converted = test.asNull();
         assertTrue(converted.isNull());
     }
 
     @Test
     public void convertEmptyBooleanToString(){
-        JsonElement test = new JsonBoolean();
+        JsonElement test = JsonBoolean.getInstance(true);
         JsonString converted = test.asString();
         assertTrue(converted.isString());
     }
 
     @Test
     public void convertEmptyBooleanToObject(){
-        JsonElement test = new JsonBoolean();
+        JsonElement test = JsonBoolean.getInstance(true);
         JsonObject converted = test.asObject();
         assertTrue(converted.isObject());
     }
@@ -514,7 +514,7 @@ public class JsonConversionTests {
 
     @Test
     public void filledObjectToBooleanValid(){
-        JsonElement test = new JsonObject().addProperty("Key 1", new JsonBoolean(true));
+        JsonElement test = new JsonObject().addProperty("Key 1", JsonBoolean.getInstance(true));
         JsonBoolean converted = test.asBoolean();
         assertEquals("true", converted.toString());
     }
@@ -556,7 +556,7 @@ public class JsonConversionTests {
 
     @Test
     public void filledObjectToStringBool(){
-        JsonElement test = new JsonObject().addProperty("Key 1", new JsonBoolean(false));
+        JsonElement test = new JsonObject().addProperty("Key 1", JsonBoolean.getInstance(false));
         JsonString converted = test.asString();
         assertEquals("false", converted.toString());
     }
@@ -692,35 +692,35 @@ public class JsonConversionTests {
     //3.3 Filled Boolean Conversion
     @Test
     public void filledBooleanToObject(){
-        JsonElement test = new JsonBoolean(true);
+        JsonElement test = JsonBoolean.getInstance(true);
         JsonObject converted = test.asObject();
         assertEquals("{\"Value\":true}", converted.toString());
     }
 
     @Test
     public void filledBooleanToNumberTrue(){
-        JsonElement test = new JsonBoolean(true);
+        JsonElement test = JsonBoolean.getInstance(true);
         JsonNumber converted = test.asNumber();
         assertEquals("1", converted.toString());
     }
 
     @Test
     public void filledBooleanToNumberFalse(){
-        JsonElement test = new JsonBoolean(false);
+        JsonElement test = JsonBoolean.getInstance(false);
         JsonNumber converted = test.asNumber();
         assertEquals("0", converted.toString());
     }
 
     @Test
     public void filledBooleanToString(){
-        JsonElement test = new JsonBoolean(true);
+        JsonElement test = JsonBoolean.getInstance(true);
         JsonString converted = test.asString();
         assertEquals("true", converted.toString());
     }
 
     @Test
     public void filledBooleanToNull(){
-        JsonElement test = new JsonBoolean(true);
+        JsonElement test = JsonBoolean.getInstance(true);
         JsonNull converted = test.asNull();
         assertEquals("null", converted.toString());
     }
@@ -728,7 +728,7 @@ public class JsonConversionTests {
     /*
     @Test
     public void filledBooleanToNullAlternative(){
-        JsonElement test = new JsonBoolean(true);
+        JsonElement test = JsonBoolean.getInstance(true);
         assertThrows(Exception.class, test::asNull);
     }
 
@@ -736,7 +736,7 @@ public class JsonConversionTests {
 
     @Test
     public void filledBooleanToArray(){
-        JsonElement test = new JsonBoolean(true);
+        JsonElement test = JsonBoolean.getInstance(true);
         JsonArray converted = test.asArray();
         assertEquals("[true]", converted.toString());
     }
@@ -915,28 +915,28 @@ public class JsonConversionTests {
     //3.5.3 Boolean Array
     @Test
     public void filledArrayBooleanToNumber(){
-        JsonElement test = new JsonArray().addElement(new JsonBoolean(true));
+        JsonElement test = new JsonArray().addElement(JsonBoolean.getInstance(true));
         JsonNumber converted = test.asNumber();
         assertEquals("1", converted.toString());
     }
 
     @Test
     public void filledArrayBooleanToString(){
-        JsonElement test = new JsonArray().addElement(new JsonBoolean(true));
+        JsonElement test = new JsonArray().addElement(JsonBoolean.getInstance(true));
         JsonString converted = test.asString();
         assertEquals("true", converted.toString());
     }
 
     @Test
     public void filledArrayBooleanToObject(){
-        JsonElement test = new JsonArray().addElement(new JsonBoolean(true));
+        JsonElement test = new JsonArray().addElement(JsonBoolean.getInstance(true));
         JsonObject converted = test.asObject();
         assertEquals("{\"Value\":true}", converted.toString());
     }
 
     @Test
     public void filledArrayBooleanToNull(){ //Value is irrelevant
-        JsonElement test = new JsonArray().addElement(new JsonBoolean(false));
+        JsonElement test = new JsonArray().addElement(JsonBoolean.getInstance(false));
         JsonNull converted = test.asNull();
         assertEquals("null", converted.toString());
     }
@@ -1052,28 +1052,28 @@ public class JsonConversionTests {
     //----------
     @Test
     public void filledArrayObjectBooleanToNumber(){
-        JsonElement test = new JsonArray().addElement(new JsonObject().addProperty("Value", new JsonBoolean(true)));
+        JsonElement test = new JsonArray().addElement(new JsonObject().addProperty("Value", JsonBoolean.getInstance(true)));
         JsonNumber converted = test.asNumber();
         assertEquals("1", converted.toString());
     }
 
     @Test
     public void filledArrayObjectBooleanToString(){
-        JsonElement test = new JsonArray().addElement(new JsonObject().addProperty("Value", new JsonBoolean(true)));
+        JsonElement test = new JsonArray().addElement(new JsonObject().addProperty("Value", JsonBoolean.getInstance(true)));
         JsonString converted = test.asString();
         assertEquals("true", converted.toString());
     }
 
     @Test
     public void filledArrayObjectBooleanToBoolean(){
-        JsonElement test = new JsonArray().addElement(new JsonObject().addProperty("Value", new JsonBoolean(true)));
+        JsonElement test = new JsonArray().addElement(new JsonObject().addProperty("Value", JsonBoolean.getInstance(true)));
         JsonBoolean converted = test.asBoolean();
         assertEquals("true", converted.toString());
     }
 
     @Test
     public void filledArrayObjectBooleanToNull(){
-        JsonElement test = new JsonArray().addElement(new JsonObject().addProperty("Value", new JsonBoolean(true)));
+        JsonElement test = new JsonArray().addElement(new JsonObject().addProperty("Value", JsonBoolean.getInstance(true)));
         JsonNull converted = test.asNull();
         assertEquals("null", converted.toString());
     }

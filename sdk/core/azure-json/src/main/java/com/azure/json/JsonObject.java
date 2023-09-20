@@ -340,7 +340,7 @@ public class JsonObject extends JsonElement {
         if (properties.size() >= 1){
             return properties.get(properties.keySet().iterator().next()).asBoolean(); //Should only get the first element.
         } else {
-            return new JsonBoolean();
+            return JsonBoolean.getInstance(true);
         }
     }
 

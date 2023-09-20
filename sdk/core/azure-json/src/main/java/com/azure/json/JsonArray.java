@@ -278,7 +278,7 @@ public class JsonArray extends JsonElement {
         if (elements.size() >= 1){
             return elements.get(0).asBoolean();
         } else {
-            return new JsonBoolean();
+            return JsonBoolean.getInstance(true);
         }
     }
 

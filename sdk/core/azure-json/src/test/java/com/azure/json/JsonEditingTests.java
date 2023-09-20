@@ -15,7 +15,7 @@ public class JsonEditingTests {
     JsonArray array = new JsonArray()
         .addElement(new JsonString("EntryVariable"))
         .addElement(new JsonObject().addProperty("InnerKey", new JsonString("Data")))
-        .addElement(new JsonArray().addElement(JsonNull.getInstance()).addElement(new JsonBoolean(false)));
+        .addElement(new JsonArray().addElement(JsonNull.getInstance()).addElement(JsonBoolean.getInstance(false)));
 
 
     //Tests for add, edit and remove methods.
@@ -78,7 +78,7 @@ public class JsonEditingTests {
 
     @Test
     public void editObjectPropertyArrayNewType() throws IOException {
-        object.setProperty("EntryArray", new JsonBoolean(false));
+        object.setProperty("EntryArray", JsonBoolean.getInstance(false));
         assertEquals("false", object.getProperty("EntryArray").toString());
     }
 
@@ -139,7 +139,7 @@ public class JsonEditingTests {
 
     @Test
     public void editArrayElementObjectNewType(){
-        array.setElement(1, new JsonBoolean(true));
+        array.setElement(1, JsonBoolean.getInstance(true));
         assertEquals("true", array.getElement(1).toString());
     }
 

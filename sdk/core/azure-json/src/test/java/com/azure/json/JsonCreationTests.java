@@ -28,7 +28,7 @@ public class JsonCreationTests {
 
     @Test
     public void createJsonBoolean(){
-        JsonBoolean test = new JsonBoolean();
+        JsonBoolean test = JsonBoolean.getInstance(true);
         assertTrue(test.isBoolean());
     }
 
@@ -114,31 +114,31 @@ public class JsonCreationTests {
     //2.3: Boolean
     @Test
     public void JsonBooleanNotJsonString(){
-        JsonBoolean test = new JsonBoolean();
+        JsonBoolean test = JsonBoolean.getInstance(true);
         assertFalse(test.isString());
     }
 
     @Test
     public void JsonBooleanNotJsonNumber(){
-        JsonBoolean test = new JsonBoolean();
+        JsonBoolean test = JsonBoolean.getInstance(true);
         assertFalse(test.isNumber());
     }
 
     @Test
     public void JsonBooleanNotJsonObject(){
-        JsonBoolean test = new JsonBoolean();
+        JsonBoolean test = JsonBoolean.getInstance(true);
         assertFalse(test.isObject());
     }
 
     @Test
     public void JsonBooleanNotJsonNull(){
-        JsonBoolean test = new JsonBoolean();
+        JsonBoolean test = JsonBoolean.getInstance(true);
         assertFalse(test.isNull());
     }
 
     @Test
     public void JsonBooleanNotJsonArray(){
-        JsonBoolean test = new JsonBoolean();
+        JsonBoolean test = JsonBoolean.getInstance(true);
         assertFalse(test.isArray());
     }
 

@@ -316,7 +316,7 @@ public abstract class JsonElement {
     /**
      * @return
      */
-    public JsonBoolean asBoolean() { return new JsonBoolean(); }
+    public JsonBoolean asBoolean() { return JsonBoolean.getInstance(true); }
 
     /**
      * @return

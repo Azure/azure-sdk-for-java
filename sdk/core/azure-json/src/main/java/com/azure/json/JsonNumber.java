@@ -94,12 +94,12 @@ public class JsonNumber extends JsonElement {
     public JsonBoolean asBoolean() {
         try {
             if (numberValue.floatValue() == 1) {
-                return new JsonBoolean(true);
+                return JsonBoolean.getInstance(true);
             } else {
-                return new JsonBoolean(false);
+                return JsonBoolean.getInstance(false);
             }
         } catch (NullPointerException e){
-            return new JsonBoolean();
+            return JsonBoolean.getInstance(true);
         }
     }
 
