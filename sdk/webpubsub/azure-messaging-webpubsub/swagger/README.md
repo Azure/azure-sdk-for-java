@@ -20,6 +20,8 @@ generate-sync-async-clients: true
 service-name: WebPubSubService
 generate-builder-per-client: false
 use-key-credential: false
+partial-update: true
+disable-client-builder: true
 service-versions:
   - '2021-10-01'
   - '2022-11-01'
