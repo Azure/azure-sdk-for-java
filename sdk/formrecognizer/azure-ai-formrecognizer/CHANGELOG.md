@@ -9,6 +9,8 @@
 ### Bugs Fixed
 
 ### Other Changes
+#### Dependency Updates
+- Added a new dependency `azure-json`, version `1.1.0`.
 
 ## 4.1.0 (2023-08-10)
 
