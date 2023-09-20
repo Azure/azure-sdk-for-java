@@ -1,0 +1,97 @@
+{
+  "networkCallRecords" : [ {
+    "Method" : "POST",
+    "Uri" : "https://REDACTED.ppe.communication.azure.net/rooms?api-version=2023-06-14",
+    "Headers" : {
+      "content-type" : "application/json",
+      "x-ms-client-request-id" : "6bb99890-1629-4d09-8619-e46fb8b3ae01",
+      "user-agent" : "azsdk-java-azure-communication-rooms/1.0.0 (11.0.19; Windows 11; 10.0)"
+    },
+    "Response" : {
+      "Transfer-Encoding" : "chunked",
+      "X-Cache" : "CONFIG_NOCACHE",
+      "api-supported-versions" : "2022-02-01, 2023-03-31-preview, 2023-06-14",
+      "Repeatability-Result" : "accepted",
+      "retry-after" : "0",
+      "StatusCode" : "201",
+      "Date" : "Wed, 07 Jun 2023 20:17:20 GMT",
+      "MS-CV" : "xOUlK/UqqEiGAMLcrHw9oA.0",
+      "api-deprecated-versions" : "2021-04-07",
+      "X-Azure-Ref" : "00OWAZAAAAAA7YITJr9VMQYexQZmYJxSLWVZSMzExMDAwMTE1MDMxAGYwOWE0YzEzLTIxZjEtNDhlYy05Y2Y3LTY2NTQ1Njg0YjY0Mg==",
+      "Body" : "{\"id\":\"99528282835805929\",\"createdAt\":\"2023-06-07T20:17:21.2991282+00:00\",\"validFrom\":\"2023-06-07T20:16:54.1831091+00:00\",\"validUntil\":\"2023-07-07T20:16:54.1831091+00:00\"}",
+      "Request-Context" : "appId=",
+      "Location" : "99528282835805929",
+      "Content-Type" : "application/json; charset=utf-8"
+    },
+    "Exception" : null
+  }, {
+    "Method" : "POST",
+    "Uri" : "https://REDACTED.ppe.communication.azure.net/rooms?api-version=2023-06-14",
+    "Headers" : {
+      "content-type" : "application/json",
+      "x-ms-client-request-id" : "6bb99890-1629-4d09-8619-e46fb8b3ae01",
+      "user-agent" : "azsdk-java-azure-communication-rooms/1.0.0 (11.0.19; Windows 11; 10.0)"
+    },
+    "Response" : {
+      "Transfer-Encoding" : "chunked",
+      "X-Cache" : "CONFIG_NOCACHE",
+      "api-supported-versions" : "2022-02-01, 2023-03-31-preview, 2023-06-14",
+      "Repeatability-Result" : "accepted",
+      "retry-after" : "0",
+      "StatusCode" : "201",
+      "Date" : "Wed, 07 Jun 2023 20:17:21 GMT",
+      "MS-CV" : "EH3bxS9HxE6NFNAvP/hb/w.0",
+      "api-deprecated-versions" : "2021-04-07",
+      "X-Azure-Ref" : "00eWAZAAAAADokI4xE0+lTpNp2ICWsNASWVZSMzExMDAwMTE1MDMxAGYwOWE0YzEzLTIxZjEtNDhlYy05Y2Y3LTY2NTQ1Njg0YjY0Mg==",
+      "Body" : "{\"id\":\"99528282835805929\",\"createdAt\":\"2023-06-07T20:17:21.2991282+00:00\",\"validFrom\":\"2023-06-07T20:16:54.1831091+00:00\",\"validUntil\":\"2023-07-07T20:16:54.1831091+00:00\"}",
+      "Request-Context" : "appId=",
+      "Location" : "99528282835805929",
+      "Content-Type" : "application/json; charset=utf-8"
+    },
+    "Exception" : null
+  }, {
+    "Method" : "GET",
+    "Uri" : "https://REDACTED.ppe.communication.azure.net/rooms?api-version=2023-06-14",
+    "Headers" : {
+      "x-ms-client-request-id" : "d9c5f2de-6744-4c6e-95f0-4a6f509db69f",
+      "user-agent" : "azsdk-java-azure-communication-rooms/1.0.0 (11.0.19; Windows 11; 10.0)"
+    },
+    "Response" : {
+      "Transfer-Encoding" : "chunked",
+      "X-Cache" : "CONFIG_NOCACHE",
+      "api-supported-versions" : "2022-02-01, 2023-03-31-preview, 2023-06-14",
+      "MS-CV" : "rxX61g+nZ0qdhovLibjC1Q.0",
+      "api-deprecated-versions" : "2021-04-07",
+      "retry-after" : "0",
+      "X-Azure-Ref" : "00eWAZAAAAADQHI6UTXvDQa8r8xBmqo83WVZSMzExMDAwMTE1MDMxAGYwOWE0YzEzLTIxZjEtNDhlYy05Y2Y3LTY2NTQ1Njg0YjY0Mg==",
+      "StatusCode" : "200",
+      "Body" : "{\"value\":[{\"id\":\"99577836317718882\",\"createdAt\":\"2023-05-11T20:30:01.5313683+00:00\",\"validFrom\":\"2023-05-11T20:30:00.8854484+00:00\",\"validUntil\":\"2023-11-07T20:30:00.8854484+00:00\"},{\"id\":\"99580998574582381\",\"createdAt\":\"2023-05-13T00:49:13.3925416+00:00\",\"validFrom\":\"2023-05-13T00:56:11+00:00\",\"validUntil\":\"2023-05-13T01:44:11+00:00\"},{\"id\":\"99571386961344324\",\"createdAt\":\"2023-05-13T00:49:20.221169+00:00\",\"validFrom\":\"2023-05-13T00:46:18+00:00\",\"validUntil\":\"2023-05-13T01:43:18+00:00\"},{\"id\":\"99577738790981340\",\"createdAt\":\"2023-05-24T20:27:24.9312845+00:00\",\"validFrom\":\"2023-05-24T20:27:24.4948642+00:00\",\"validUntil\":\"2023-11-20T20:27:24.4948642+00:00\"},{\"id\":\"9957024141060190\",\"createdAt\":\"2023-05-11T20:30:04.578355+00:00\",\"validFrom\":\"2023-05-11T20:30:04.2930213+00:00\",\"validUntil\":\"2023-11-07T20:30:04.2930213+00:00\"},{\"id\":\"995105940203554409\",\"createdAt\":\"2023-05-18T23:46:03.4563953+00:00\",\"validFrom\":\"2023-05-18T23:46:02.3683688+00:00\",\"validUntil\":\"2023-11-14T23:46:02.3683688+00:00\"},{\"id\":\"99544050186700680\",\"createdAt\":\"2023-05-11T20:30:08.3284581+00:00\",\"validFrom\":\"2023-05-11T20:30:08.0472933+00:00\",\"validUntil\":\"2023-11-07T20:30:08.0472933+00:00\"},{\"id\":\"99576733058296487\",\"createdAt\":\"2023-05-11T20:30:14.3812543+00:00\",\"validFrom\":\"2023-05-11T20:30:14.0962213+00:00\",\"validUntil\":\"2023-11-07T20:30:14.0962213+00:00\"},{\"id\":\"99538730037396640\",\"createdAt\":\"2023-05-13T00:49:16.2748079+00:00\",\"validFrom\":\"2023-05-13T00:43:13+00:00\",\"validUntil\":\"2023-05-13T01:42:13+00:00\"},{\"id\":\"99534537308216805\",\"createdAt\":\"2023-05-24T22:24:08.4990792+00:00\",\"validFrom\":\"2023-05-24T22:24:08.0882356+00:00\",\"validUntil\":\"2023-11-20T22:24:08.0882356+00:00\"},{\"id\":\"99582174576162880\",\"createdAt\":\"2023-05-23T15:19:10.9565081+00:00\",\"validFrom\":\"2023-05-23T15:19:10.5486271+00:00\",\"validUntil\":\"2023-11-19T15:19:10.5486271+00:00\"},{\"id\":\"99516468855438969\",\"createdAt\":\"2023-05-25T00:05:37.3048819+00:00\",\"validFrom\":\"2023-05-25T00:05:36.2712959+00:00\",\"validUntil\":\"2023-11-21T00:05:36.2712959+00:00\"},{\"id\":\"99553918498774489\",\"createdAt\":\"2023-05-11T20:30:21.3502161+00:00\",\"validFrom\":\"2023-05-11T20:30:21.0717713+00:00\",\"validUntil\":\"2023-11-07T20:30:21.0717713+00:00\"},{\"id\":\"99547891690018526\",\"createdAt\":\"2023-05-23T18:23:23.936176+00:00\",\"validFrom\":\"2023-05-24T18:23:23.0131665+00:00\",\"validUntil\":\"2023-11-20T00:00:00+00:00\"},{\"id\":\"99584014868007500\",\"createdAt\":\"2023-05-23T15:19:14.0816015+00:00\",\"validFrom\":\"2023-02-26T22:08:46.6009669+00:00\",\"validUntil\":\"2023-05-23T22:08:46.6009669+00:00\"},{\"id\":\"99541022046469624\",\"createdAt\":\"2023-05-23T15:18:33.6837153+00:00\",\"validFrom\":\"2023-05-23T15:18:33.2832922+00:00\",\"validUntil\":\"2023-11-19T15:18:33.2832922+00:00\"},{\"id\":\"99513049062785720\",\"createdAt\":\"2023-05-13T00:49:11.5886208+00:00\",\"validFrom\":\"2023-05-13T00:56:09+00:00\",\"validUntil\":\"2023-05-13T01:55:09+00:00\"},{\"id\":\"995788826846809442\",\"createdAt\":\"2023-05-11T20:37:49.4103026+00:00\",\"validFrom\":\"2023-05-11T20:37:48.1615288+00:00\",\"validUntil\":\"2023-11-07T20:37:48.1615288+00:00\"},{\"id\":\"99510518302618766\",\"createdAt\":\"2023-05-26T16:39:19.4286214+00:00\",\"validFrom\":\"2023-05-26T16:39:18.5999913+00:00\",\"validUntil\":\"2023-11-22T16:39:18.5999913+00:00\"},{\"id\":\"99593661560704769\",\"createdAt\":\"2023-05-25T21:18:36.592123+00:00\",\"validFrom\":\"2023-02-26T22:08:46.6009669+00:00\",\"validUntil\":\"2023-06-26T22:08:46.6009669+00:00\"},{\"id\":\"99567547460861285\",\"createdAt\":\"2023-05-24T19:40:06.1070502+00:00\",\"validFrom\":\"2023-05-24T19:40:04.7396496+00:00\",\"validUntil\":\"2023-11-20T19:40:04.7396496+00:00\"},{\"id\":\"99526599655414743\",\"createdAt\":\"2023-05-23T15:19:12.5971854+00:00\",\"validFrom\":\"2023-05-23T15:19:12.1826685+00:00\",\"validUntil\":\"2023-11-19T15:19:12.1826685+00:00\"},{\"id\":\"995875681246447208\",\"createdAt\":\"2023-05-24T22:24:06.6081512+00:00\",\"validFrom\":\"2023-05-24T22:24:05.4600198+00:00\",\"validUntil\":\"2023-11-20T22:24:05.4600198+00:00\"},{\"id\":\"99535888141717243\",\"createdAt\":\"2023-05-26T16:32:09.4162903+00:00\",\"validFrom\":\"2023-05-26T16:32:08.457804+00:00\",\"validUntil\":\"2023-11-22T16:32:08.457804+00:00\"},{\"id\":\"99555954070631844\",\"createdAt\":\"2023-05-23T15:18:31.2617513+00:00\",\"validFrom\":\"2023-05-23T15:18:29.548844+00:00\",\"validUntil\":\"2023-11-19T15:18:29.548844+00:00\"},{\"id\":\"99542319451003485\",\"createdAt\":\"2023-05-23T15:18:35.2775163+00:00\",\"validFrom\":\"2023-02-26T22:08:46.6009669+00:00\",\"validUntil\":\"2023-05-23T22:08:46.6009669+00:00\"},{\"id\":\"9951008263693190\",\"createdAt\":\"2023-05-16T20:29:06.430114+00:00\",\"validFrom\":\"2023-05-16T20:29:05.5559517+00:00\",\"validUntil\":\"2023-11-12T20:29:05.5559517+00:00\"},{\"id\":\"99583230453109925\",\"createdAt\":\"2023-05-13T00:49:18.618176+00:00\",\"validFrom\":\"2023-05-13T00:42:16+00:00\",\"validUntil\":\"2023-05-13T01:52:16+00:00\"},{\"id\":\"99583529235218420\",\"createdAt\":\"2023-05-25T21:17:58.792382+00:00\",\"validFrom\":\"2023-05-25T21:17:57.4391575+00:00\",\"validUntil\":\"2023-11-21T21:17:57.4391575+00:00\"}],\"nextLink\":\"https://rooms-europe.ppe.communication.azure.net/rooms?nextLink=W3sidG9rZW4iOiIrUklEOn5XLXR0QUpHamFPZG1sQjRBQUFBQUNBPT0jUlQ6MSNUUkM6MzAjSVNWOjIjSUVPOjY1NTY3I1FDRjo4I0ZQQzpBZ2g2QUFBQUFDQUFBSG9BQUFBQUlBQUFlZ0FBQUFBZ0FBQWVBR2FVa1FBQThoRkEvd2NIQWo4bEFBeEJDUUJEcEFTQUlmNy9FVUEvQUE9PSIsInJhbmdlIjp7Im1pbiI6IjA1QzFDRkZGRkZGRkY4IiwibWF4IjoiMDVDMURGRkZGRkZGRjgifX1d&api-version=2023-06-14\"}",
+      "Date" : "Wed, 07 Jun 2023 20:17:21 GMT",
+      "Request-Context" : "appId=",
+      "Content-Type" : "application/json; charset=utf-8"
+    },
+    "Exception" : null
+  }, {
+    "Method" : "DELETE",
+    "Uri" : "https://REDACTED.ppe.communication.azure.net/rooms/99528282835805929?api-version=2023-06-14",
+    "Headers" : {
+      "x-ms-client-request-id" : "286bace1-b4d9-43cd-84a5-6b3a37bf346b",
+      "user-agent" : "azsdk-java-azure-communication-rooms/1.0.0 (11.0.19; Windows 11; 10.0)"
+    },
+    "Response" : {
+      "X-Cache" : "CONFIG_NOCACHE",
+      "api-supported-versions" : "2022-02-01, 2023-03-31-preview, 2023-06-14",
+      "MS-CV" : "ISVCzN/xukOQE78pIrVD4A.0",
+      "api-deprecated-versions" : "2021-04-07",
+      "retry-after" : "0",
+      "X-Azure-Ref" : "00uWAZAAAAACu+x2etnMhRZEEk1jLx/U+WVZSMzExMDAwMTE1MDMxAGYwOWE0YzEzLTIxZjEtNDhlYy05Y2Y3LTY2NTQ1Njg0YjY0Mg==",
+      "Content-Length" : "0",
+      "StatusCode" : "204",
+      "Body" : "",
+      "Date" : "Wed, 07 Jun 2023 20:17:22 GMT",
+      "Request-Context" : "appId="
+    },
+    "Exception" : null
+  } ],
+  "variables" : [ ]
+}
