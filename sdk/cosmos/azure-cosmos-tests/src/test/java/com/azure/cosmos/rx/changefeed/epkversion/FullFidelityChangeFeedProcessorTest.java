@@ -45,6 +45,7 @@ import java.util.Arrays;
 import java.util.Collections;
 import java.util.List;
 import java.util.Map;
+import java.util.Set;
 import java.util.UUID;
 import java.util.concurrent.ConcurrentHashMap;
 import java.util.function.BiConsumer;
@@ -85,6 +86,7 @@ public class FullFidelityChangeFeedProcessorTest extends TestSuiteBase {
         try {
             List<InternalObjectNode> createdDocuments = new ArrayList<>();
             Map<String, ChangeFeedProcessorItem> receivedDocuments = new ConcurrentHashMap<>();
+            Set<String> receivedLeaseTokensFromContext = ConcurrentHashMap.newKeySet();
             ChangeFeedProcessorOptions changeFeedProcessorOptions = new ChangeFeedProcessorOptions();
 
             ChangeFeedProcessorBuilder changeFeedProcessorBuilder = new ChangeFeedProcessorBuilder()
@@ -95,7 +97,7 @@ public class FullFidelityChangeFeedProcessorTest extends TestSuiteBase {
 
             if (isContextRequired) {
                 changeFeedProcessorBuilder = changeFeedProcessorBuilder
-                    .handleAllVersionsAndDeletesChanges(changeFeedProcessorHandlerWithContext(receivedDocuments));
+                    .handleAllVersionsAndDeletesChanges(changeFeedProcessorHandlerWithContext(receivedDocuments, receivedLeaseTokensFromContext));
             } else {
                 changeFeedProcessorBuilder = changeFeedProcessorBuilder
                     .handleAllVersionsAndDeletesChanges(changeFeedProcessorHandler(receivedDocuments));
@@ -125,6 +127,11 @@ public class FullFidelityChangeFeedProcessorTest extends TestSuiteBase {
 
                 changeFeedProcessor.stop().subscribeOn(Schedulers.boundedElastic()).timeout(Duration.ofMillis(CHANGE_FEED_PROCESSOR_TIMEOUT)).subscribe();
 
+                if (isContextRequired) {
+                    assertThat(receivedLeaseTokensFromContext).isNotNull();
+                    assertThat(receivedLeaseTokensFromContext.size()).isEqualTo(1);
+                }
+
                 // Wait for the feed processor to shut down.
                 Thread.sleep(2 * CHANGE_FEED_PROCESSOR_TIMEOUT);
 
@@ -151,6 +158,7 @@ public class FullFidelityChangeFeedProcessorTest extends TestSuiteBase {
         try {
             List<InternalObjectNode> createdDocuments = new ArrayList<>();
             Map<String, ChangeFeedProcessorItem> receivedDocuments = new ConcurrentHashMap<>();
+            Set<String> receivedLeaseTokensFromContext = ConcurrentHashMap.newKeySet();
             ChangeFeedProcessorOptions changeFeedProcessorOptions = new ChangeFeedProcessorOptions();
 
             ChangeFeedProcessorBuilder changeFeedProcessorBuilder = new ChangeFeedProcessorBuilder()
@@ -161,7 +169,7 @@ public class FullFidelityChangeFeedProcessorTest extends TestSuiteBase {
 
             if (isContextRequired) {
                 changeFeedProcessorBuilder = changeFeedProcessorBuilder.handleAllVersionsAndDeletesChanges(
-                    changeFeedProcessorHandlerWithContext(receivedDocuments));
+                    changeFeedProcessorHandlerWithContext(receivedDocuments, receivedLeaseTokensFromContext));
             } else {
                 changeFeedProcessorBuilder = changeFeedProcessorBuilder.handleAllVersionsAndDeletesChanges(
                     changeFeedProcessorHandler(receivedDocuments));
@@ -191,6 +199,11 @@ public class FullFidelityChangeFeedProcessorTest extends TestSuiteBase {
 
                 changeFeedProcessor.stop().subscribeOn(Schedulers.boundedElastic()).timeout(Duration.ofMillis(CHANGE_FEED_PROCESSOR_TIMEOUT)).subscribe();
 
+                if (isContextRequired) {
+                    assertThat(receivedLeaseTokensFromContext).isNotNull();
+                    assertThat(receivedLeaseTokensFromContext.size()).isEqualTo(1);
+                }
+
                 // Wait for the feed processor to shut down.
                 Thread.sleep(2 * CHANGE_FEED_PROCESSOR_TIMEOUT);
 
@@ -207,7 +220,7 @@ public class FullFidelityChangeFeedProcessorTest extends TestSuiteBase {
         }
     }
 
-    @Test(groups = { "emulator" }, timeOut = 50 * CHANGE_FEED_PROCESSOR_TIMEOUT, enabled = false)
+    @Test(groups = { "emulator" }, timeOut = 50 * CHANGE_FEED_PROCESSOR_TIMEOUT)
     public void getCurrentState() throws InterruptedException {
         CosmosAsyncContainer createdFeedCollection = createFeedCollection(FEED_COLLECTION_THROUGHPUT);
         CosmosAsyncContainer createdLeaseCollection = createLeaseCollection(LEASE_COLLECTION_THROUGHPUT);
@@ -252,7 +265,7 @@ public class FullFidelityChangeFeedProcessorTest extends TestSuiteBase {
                 throw ex;
             }
 
-            Thread.sleep(4 * CHANGE_FEED_PROCESSOR_TIMEOUT);
+            Thread.sleep(10 * CHANGE_FEED_PROCESSOR_TIMEOUT);
 
             // Test for "zero" lag
             List<ChangeFeedProcessorState> cfpCurrentState = changeFeedProcessorMain.getCurrentState()
@@ -905,13 +918,14 @@ public class FullFidelityChangeFeedProcessorTest extends TestSuiteBase {
     }
 
     private BiConsumer<List<ChangeFeedProcessorItem>, ChangeFeedProcessorContext> changeFeedProcessorHandlerWithContext(
-        Map<String, ChangeFeedProcessorItem> receivedDocuments) {
+        Map<String, ChangeFeedProcessorItem> receivedDocuments, Set<String> receivedLeaseTokensFromContext) {
         return (docs, context) -> {
             logger.info("START processing from thread in test {}", Thread.currentThread().getId());
             for (ChangeFeedProcessorItem item : docs) {
                 processItem(item, receivedDocuments);
             }
             validateChangeFeedProcessorContext(context);
+            processChangeFeedProcessorContext(context, receivedLeaseTokensFromContext);
             logger.info("END processing from thread {}", Thread.currentThread().getId());
         };
     }
@@ -1034,5 +1048,20 @@ public class FullFidelityChangeFeedProcessorTest extends TestSuiteBase {
     private static synchronized void processItem(ChangeFeedProcessorItem item, Map<String, ChangeFeedProcessorItem> receivedDocuments) {
         log.info("RECEIVED {}", item);
         receivedDocuments.put(item.getCurrent().get("id").asText(), item);
+    }
+
+    private static synchronized void processChangeFeedProcessorContext(
+        ChangeFeedProcessorContext context,
+        Set<String> receivedLeaseTokens) {
+
+        if (context == null) {
+            fail("The context cannot be null.");
+        }
+
+        if (context.getLeaseToken() == null || context.getLeaseToken().isEmpty()) {
+            fail("The lease token cannot be null or empty.");
+        }
+
+        receivedLeaseTokens.add(context.getLeaseToken());
     }
 }
