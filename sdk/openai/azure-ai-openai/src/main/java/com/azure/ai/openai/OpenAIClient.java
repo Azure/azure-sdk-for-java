@@ -305,6 +305,231 @@ public final class OpenAIClient {
     /**
      * Return the embeddings for a given prompt.
      *
+     * <p><strong>Request Body Schema</strong>
+     *
+     * <pre>{@code
+     * {
+     *     user: String (Optional)
+     *     model: String (Optional)
+     *     input (Required): [
+     *         String (Required)
+     *     ]
+     * }
+     * }</pre>
+     *
+     * <p><strong>Response Body Schema</strong>
+     *
+     * <pre>{@code
+     * {
+     *     data (Required): [
+     *          (Required){
+     *             embedding (Required): [
+     *                 double (Required)
+     *             ]
+     *             index: int (Required)
+     *         }
+     *     ]
+     *     usage (Required): {
+     *         prompt_tokens: int (Required)
+     *         total_tokens: int (Required)
+     *     }
+     * }
+     * }</pre>
+     *
+     * @param deploymentOrModelName Specifies either the model deployment name (when using Azure OpenAI) or model name
+     *     (when using non-Azure OpenAI) to use for this request.
+     * @param embeddingsOptions The configuration information for an embeddings request. Embeddings measure the
+     *     relatedness of text strings and are commonly used for search, clustering, recommendations, and other similar
+     *     scenarios.
+     * @param requestOptions The options to configure the HTTP request before HTTP client sends it.
+     * @throws HttpResponseException thrown if the request is rejected by server.
+     * @throws ClientAuthenticationException thrown if the request is rejected by server on status code 401.
+     * @throws ResourceNotFoundException thrown if the request is rejected by server on status code 404.
+     * @throws ResourceModifiedException thrown if the request is rejected by server on status code 409.
+     * @return representation of the response data from an embeddings request. Embeddings measure the relatedness of
+     *     text strings and are commonly used for search, clustering, recommendations, and other similar scenarios along
+     *     with {@link Response}.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    public Response<Embeddings> getEmbeddingsWithResponse(
+        String deploymentOrModelName, EmbeddingsOptions embeddingsOptions, RequestOptions requestOptions) {
+        Response<BinaryData> response = getEmbeddingsWithResponse(deploymentOrModelName,
+            BinaryData.fromObject(embeddingsOptions), requestOptions);
+        return new SimpleResponse<>(response, response.getValue().toObject(Embeddings.class));
+    }
+
+    /**
+     * Gets completions for the provided input prompts. Completions support a wide variety of tasks and generate text
+     * that continues from or "completes" provided prompt data.
+     *
+     * <p><strong>Request Body Schema</strong>
+     *
+     * <pre>{@code
+     * {
+     *     prompt (Required): [
+     *         String (Required)
+     *     ]
+     *     max_tokens: Integer (Optional)
+     *     temperature: Double (Optional)
+     *     top_p: Double (Optional)
+     *     logit_bias (Optional): {
+     *         String: int (Optional)
+     *     }
+     *     user: String (Optional)
+     *     n: Integer (Optional)
+     *     logprobs: Integer (Optional)
+     *     echo: Boolean (Optional)
+     *     stop (Optional): [
+     *         String (Optional)
+     *     ]
+     *     presence_penalty: Double (Optional)
+     *     frequency_penalty: Double (Optional)
+     *     best_of: Integer (Optional)
+     *     stream: Boolean (Optional)
+     *     model: String (Optional)
+     * }
+     * }</pre>
+     *
+     * <p><strong>Response Body Schema</strong>
+     *
+     * <pre>{@code
+     * {
+     *     id: String (Required)
+     *     created: int (Required)
+     *     choices (Required): [
+     *          (Required){
+     *             text: String (Required)
+     *             index: int (Required)
+     *             logprobs (Required): {
+     *                 tokens (Required): [
+     *                     String (Required)
+     *                 ]
+     *                 token_logprobs (Required): [
+     *                     double (Required)
+     *                 ]
+     *                 top_logprobs (Required): [
+     *                      (Required){
+     *                         String: double (Required)
+     *                     }
+     *                 ]
+     *                 text_offset (Required): [
+     *                     int (Required)
+     *                 ]
+     *             }
+     *             finish_reason: String(stopped/tokenLimitReached/contentFiltered) (Required)
+     *         }
+     *     ]
+     *     usage (Required): {
+     *         completion_tokens: int (Required)
+     *         prompt_tokens: int (Required)
+     *         total_tokens: int (Required)
+     *     }
+     * }
+     * }</pre>
+     *
+     * @param deploymentOrModelName Specifies either the model deployment name (when using Azure OpenAI) or model name
+     *     (when using non-Azure OpenAI) to use for this request.
+     * @param completionsOptions The configuration information for a completions request. Completions support a wide
+     *     variety of tasks and generate text that continues from or "completes" provided prompt data.
+     * @param requestOptions The options to configure the HTTP request before HTTP client sends it.
+     * @throws HttpResponseException thrown if the request is rejected by server.
+     * @throws ClientAuthenticationException thrown if the request is rejected by server on status code 401.
+     * @throws ResourceNotFoundException thrown if the request is rejected by server on status code 404.
+     * @throws ResourceModifiedException thrown if the request is rejected by server on status code 409.
+     * @return completions for the provided input prompts. Completions support a wide variety of tasks and generate text
+     *     that continues from or "completes" provided prompt data along with {@link Response}.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    public Response<Completions> getCompletionsWithResponse(
+        String deploymentOrModelName, CompletionsOptions completionsOptions, RequestOptions requestOptions) {
+        Response<BinaryData> response = getCompletionsWithResponse(deploymentOrModelName,
+            BinaryData.fromObject(completionsOptions), requestOptions);
+        return new SimpleResponse<>(response, response.getValue().toObject(Completions.class));
+    }
+
+    /**
+     * Gets chat completions for the provided chat messages. Completions support a wide variety of tasks and generate
+     * text that continues from or "completes" provided prompt data.
+     *
+     * <p><strong>Request Body Schema</strong>
+     *
+     * <pre>{@code
+     * {
+     *     messages (Required): [
+     *          (Required){
+     *             role: String(system/assistant/user) (Required)
+     *             content: String (Optional)
+     *         }
+     *     ]
+     *     max_tokens: Integer (Optional)
+     *     temperature: Double (Optional)
+     *     top_p: Double (Optional)
+     *     logit_bias (Optional): {
+     *         String: int (Optional)
+     *     }
+     *     user: String (Optional)
+     *     n: Integer (Optional)
+     *     stop (Optional): [
+     *         String (Optional)
+     *     ]
+     *     presence_penalty: Double (Optional)
+     *     frequency_penalty: Double (Optional)
+     *     stream: Boolean (Optional)
+     *     model: String (Optional)
+     * }
+     * }</pre>
+     *
+     * <p><strong>Response Body Schema</strong>
+     *
+     * <pre>{@code
+     * {
+     *     id: String (Required)
+     *     created: int (Required)
+     *     choices (Required): [
+     *          (Required){
+     *             message (Optional): {
+     *                 role: String(system/assistant/user) (Required)
+     *                 content: String (Optional)
+     *             }
+     *             index: int (Required)
+     *             finish_reason: String(stopped/tokenLimitReached/contentFiltered) (Required)
+     *             delta (Optional): {
+     *                 role: String(system/assistant/user) (Optional)
+     *                 content: String (Optional)
+     *             }
+     *         }
+     *     ]
+     *     usage (Required): {
+     *         completion_tokens: int (Required)
+     *         prompt_tokens: int (Required)
+     *         total_tokens: int (Required)
+     *     }
+     * }
+     * }</pre>
+     *
+     * @param deploymentOrModelName Specifies either the model deployment name (when using Azure OpenAI) or model name
+     *     (when using non-Azure OpenAI) to use for this request.
+     * @param chatCompletionsOptions The configuration information for a chat completions request. Completions support a
+     *     wide variety of tasks and generate text that continues from or "completes" provided prompt data.
+     * @param requestOptions The options to configure the HTTP request before HTTP client sends it.
+     * @throws HttpResponseException thrown if the request is rejected by server.
+     * @throws ClientAuthenticationException thrown if the request is rejected by server on status code 401.
+     * @throws ResourceNotFoundException thrown if the request is rejected by server on status code 404.
+     * @throws ResourceModifiedException thrown if the request is rejected by server on status code 409.
+     * @return chat completions for the provided chat messages. Completions support a wide variety of tasks and generate
+     *     text that continues from or "completes" provided prompt data along with {@link Response}.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    public Response<ChatCompletions> getChatCompletionsWithResponse(
+        String deploymentOrModelName, ChatCompletionsOptions chatCompletionsOptions, RequestOptions requestOptions) {
+        Response<BinaryData> response = getChatCompletionsWithResponse(deploymentOrModelName,
+            BinaryData.fromObject(chatCompletionsOptions), requestOptions);
+        return new SimpleResponse<>(response, response.getValue().toObject(ChatCompletions.class));
+    }
+
+    /**
+     * Return the embeddings for a given prompt.
+     *
      * @param deploymentOrModelName Specifies either the model deployment name (when using Azure OpenAI) or model name
      *     (when using non-Azure OpenAI) to use for this request.
      * @param embeddingsOptions The configuration information for an embeddings request. Embeddings measure the
@@ -324,10 +549,7 @@ public final class OpenAIClient {
     public Embeddings getEmbeddings(String deploymentOrModelName, EmbeddingsOptions embeddingsOptions) {
         // Generated convenience method for getEmbeddingsWithResponse
         RequestOptions requestOptions = new RequestOptions();
-        return getEmbeddingsWithResponse(
-                        deploymentOrModelName, BinaryData.fromObject(embeddingsOptions), requestOptions)
-                .getValue()
-                .toObject(Embeddings.class);
+        return getEmbeddingsWithResponse(deploymentOrModelName, embeddingsOptions, requestOptions).getValue();
     }
 
     /**
@@ -352,10 +574,8 @@ public final class OpenAIClient {
     public Completions getCompletions(String deploymentOrModelName, CompletionsOptions completionsOptions) {
         // Generated convenience method for getCompletionsWithResponse
         RequestOptions requestOptions = new RequestOptions();
-        return getCompletionsWithResponse(
-                        deploymentOrModelName, BinaryData.fromObject(completionsOptions), requestOptions)
-                .getValue()
-                .toObject(Completions.class);
+        return getCompletionsWithResponse(deploymentOrModelName, completionsOptions, requestOptions)
+                .getValue();
     }
 
     /**
@@ -433,10 +653,8 @@ public final class OpenAIClient {
             String deploymentOrModelName, ChatCompletionsOptions chatCompletionsOptions) {
         RequestOptions requestOptions = new RequestOptions();
         if (chatCompletionsOptions.getDataSources() == null || chatCompletionsOptions.getDataSources().isEmpty()) {
-            return getChatCompletionsWithResponse(
-                            deploymentOrModelName, BinaryData.fromObject(chatCompletionsOptions), requestOptions)
-                    .getValue()
-                    .toObject(ChatCompletions.class);
+            return getChatCompletionsWithResponse(deploymentOrModelName, chatCompletionsOptions, requestOptions)
+                .getValue();
         } else {
             return getChatCompletionsWithAzureExtensionsWithResponse(
                             deploymentOrModelName, BinaryData.fromObject(chatCompletionsOptions), requestOptions)
