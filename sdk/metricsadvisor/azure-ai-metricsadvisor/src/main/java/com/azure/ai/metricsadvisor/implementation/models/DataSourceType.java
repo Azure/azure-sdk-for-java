@@ -8,7 +8,7 @@ import com.azure.core.util.ExpandableStringEnum;
 import com.fasterxml.jackson.annotation.JsonCreator;
 import java.util.Collection;
 
-/** data source type. */
+/** Defines values for DataSourceType. */
 public final class DataSourceType extends ExpandableStringEnum<DataSourceType> {
     /** Static value AzureApplicationInsights for DataSourceType. */
     public static final DataSourceType AZURE_APPLICATION_INSIGHTS = fromString("AzureApplicationInsights");
@@ -50,14 +50,6 @@ public final class DataSourceType extends ExpandableStringEnum<DataSourceType> {
     public static final DataSourceType SQL_SERVER = fromString("SqlServer");
 
     /**
-     * Creates a new instance of DataSourceType value.
-     *
-     * @deprecated Use the {@link #fromString(String)} factory method.
-     */
-    @Deprecated
-    public DataSourceType() {}
-
-    /**
      * Creates or finds a DataSourceType from its string representation.
      *
      * @param name a name to look for.
@@ -68,11 +60,7 @@ public final class DataSourceType extends ExpandableStringEnum<DataSourceType> {
         return fromString(name, DataSourceType.class);
     }
 
-    /**
-     * Gets known DataSourceType values.
-     *
-     * @return known DataSourceType values.
-     */
+    /** @return known DataSourceType values. */
     public static Collection<DataSourceType> values() {
         return values(DataSourceType.class);
     }

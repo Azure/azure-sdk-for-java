@@ -22,9 +22,6 @@ public final class MetricDimensionQueryOptions {
     @JsonProperty(value = "dimensionValueFilter")
     private String dimensionValueFilter;
 
-    /** Creates an instance of MetricDimensionQueryOptions class. */
-    public MetricDimensionQueryOptions() {}
-
     /**
      * Get the dimensionName property: dimension name.
      *

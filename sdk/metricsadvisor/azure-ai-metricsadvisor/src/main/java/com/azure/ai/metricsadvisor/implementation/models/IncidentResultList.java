@@ -23,9 +23,6 @@ public final class IncidentResultList {
     @JsonProperty(value = "value", required = true)
     private List<IncidentResult> value;
 
-    /** Creates an instance of IncidentResultList class. */
-    public IncidentResultList() {}
-
     /**
      * Get the nextLink property: The @nextLink property.
      *
