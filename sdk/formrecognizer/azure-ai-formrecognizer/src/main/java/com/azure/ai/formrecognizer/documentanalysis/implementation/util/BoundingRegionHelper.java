@@ -34,11 +34,11 @@ public final class BoundingRegionHelper {
         accessor = boundingRegionAccessor;
     }
 
-    static void setPageNumber(BoundingRegion boundingRegion, int pageNumber) {
+    public static void setPageNumber(BoundingRegion boundingRegion, int pageNumber) {
         accessor.setPageNumber(boundingRegion, pageNumber);
     }
 
-    static void setBoundingPolygon(BoundingRegion boundingRegion, List<Point> boundingRegionHelper) {
+    public static void setBoundingPolygon(BoundingRegion boundingRegion, List<Point> boundingRegionHelper) {
         accessor.setBoundingPolygon(boundingRegion, boundingRegionHelper);
     }
 }

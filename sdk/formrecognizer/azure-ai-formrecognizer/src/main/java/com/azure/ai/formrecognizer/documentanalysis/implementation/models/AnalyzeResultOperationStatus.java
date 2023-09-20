@@ -4,21 +4,18 @@
 
 package com.azure.ai.formrecognizer.documentanalysis.implementation.models;
 
-import com.fasterxml.jackson.annotation.JsonCreator;
-import com.fasterxml.jackson.annotation.JsonValue;
-
 /** Operation status. */
 public enum AnalyzeResultOperationStatus {
-    /** Enum value notStarted. */
+    /** The operation has not started yet. */
     NOT_STARTED("notStarted"),
 
-    /** Enum value running. */
+    /** The operation is in progress. */
     RUNNING("running"),
 
-    /** Enum value failed. */
+    /** The operation has failed. */
     FAILED("failed"),
 
-    /** Enum value succeeded. */
+    /** The operation has succeeded. */
     SUCCEEDED("succeeded");
 
     /** The actual serialized value for a AnalyzeResultOperationStatus instance. */
@@ -34,7 +31,6 @@ public enum AnalyzeResultOperationStatus {
      * @param value the serialized value to parse.
      * @return the parsed AnalyzeResultOperationStatus object, or null if unable to parse.
      */
-    @JsonCreator
     public static AnalyzeResultOperationStatus fromString(String value) {
         if (value == null) {
             return null;
@@ -49,7 +45,6 @@ public enum AnalyzeResultOperationStatus {
     }
 
     /** {@inheritDoc} */
-    @JsonValue
     @Override
     public String toString() {
         return this.value;

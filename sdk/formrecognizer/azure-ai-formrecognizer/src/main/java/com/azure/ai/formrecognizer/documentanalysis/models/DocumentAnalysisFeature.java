@@ -5,27 +5,26 @@
 package com.azure.ai.formrecognizer.documentanalysis.models;
 
 import com.azure.core.util.ExpandableStringEnum;
-
 import java.util.Collection;
 
 /** Defines values for DocumentAnalysisFeature. */
 public final class DocumentAnalysisFeature extends ExpandableStringEnum<DocumentAnalysisFeature> {
-    /** Static value ocrHighResolution for DocumentAnalysisFeature. */
+    /** Perform OCR at a higher resolution to handle documents with fine print. */
     public static final DocumentAnalysisFeature OCR_HIGH_RESOLUTION = fromString("ocrHighResolution");
 
-    /** Static value languages for DocumentAnalysisFeature. */
+    /** Enable the detection of the text content language. */
     public static final DocumentAnalysisFeature LANGUAGES = fromString("languages");
 
-    /** Static value barcodes for DocumentAnalysisFeature. */
+    /** Enable the detection of barcodes in the document. */
     public static final DocumentAnalysisFeature BARCODES = fromString("barcodes");
 
-    /** Static value formulas for DocumentAnalysisFeature. */
+    /** Enable the detection of mathematical expressions in the document. */
     public static final DocumentAnalysisFeature FORMULAS = fromString("formulas");
 
-    /** Static value keyValuePairs for DocumentAnalysisFeature. */
+    /** Enable the detection of general key value pairs (form fields) in the document. */
     public static final DocumentAnalysisFeature KEY_VALUE_PAIRS = fromString("keyValuePairs");
 
-    /** Static value styleFont for DocumentAnalysisFeature. */
+    /** Enable the recognition of various font styles. */
     public static final DocumentAnalysisFeature STYLE_FONT = fromString("styleFont");
 
     /**

@@ -37,6 +37,7 @@ context-client-method-parameter: true
 custom-types-subpackage: models
 custom-types: LengthUnit
 service-interface-as-public: true
+stream-style-serialization: true
 ```
 
 ### Add multiple service API support
@@ -83,6 +84,7 @@ required-fields-as-ctor-args: true
 enable-sync-stack: true
 polling: {}
 output-model-immutable: true
+stream-style-serialization: true
 ```
 
 ### Expose PathOperationId & PathResultId as String

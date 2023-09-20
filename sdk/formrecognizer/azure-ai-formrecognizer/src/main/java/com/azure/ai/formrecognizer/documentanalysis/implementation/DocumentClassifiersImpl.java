@@ -40,6 +40,7 @@ import com.azure.core.util.Context;
 import com.azure.core.util.FluxUtil;
 import com.azure.core.util.polling.DefaultPollingStrategy;
 import com.azure.core.util.polling.PollerFlux;
+import com.azure.core.util.polling.PollingStrategyOptions;
 import com.azure.core.util.polling.SyncDefaultPollingStrategy;
 import com.azure.core.util.polling.SyncPoller;
 import com.azure.core.util.serializer.TypeReference;
@@ -354,10 +355,10 @@ public final class DocumentClassifiersImpl {
                 Duration.ofSeconds(1),
                 () -> this.buildClassifierWithResponseAsync(buildRequest),
                 new DefaultPollingStrategy<>(
-                        this.client.getHttpPipeline(),
-                        "{endpoint}/formrecognizer".replace("{endpoint}", this.client.getEndpoint()),
-                        null,
-                        Context.NONE),
+                        new PollingStrategyOptions(this.client.getHttpPipeline())
+                                .setEndpoint(
+                                        "{endpoint}/formrecognizer".replace("{endpoint}", this.client.getEndpoint()))
+                                .setContext(Context.NONE)),
                 TypeReference.createInstance(BinaryData.class),
                 TypeReference.createInstance(BinaryData.class));
     }
@@ -379,10 +380,10 @@ public final class DocumentClassifiersImpl {
                 Duration.ofSeconds(1),
                 () -> this.buildClassifierWithResponseAsync(buildRequest, context),
                 new DefaultPollingStrategy<>(
-                        this.client.getHttpPipeline(),
-                        "{endpoint}/formrecognizer".replace("{endpoint}", this.client.getEndpoint()),
-                        null,
-                        context),
+                        new PollingStrategyOptions(this.client.getHttpPipeline())
+                                .setEndpoint(
+                                        "{endpoint}/formrecognizer".replace("{endpoint}", this.client.getEndpoint()))
+                                .setContext(context)),
                 TypeReference.createInstance(BinaryData.class),
                 TypeReference.createInstance(BinaryData.class));
     }
@@ -402,10 +403,10 @@ public final class DocumentClassifiersImpl {
                 Duration.ofSeconds(1),
                 () -> this.buildClassifierWithResponse(buildRequest, Context.NONE),
                 new SyncDefaultPollingStrategy<>(
-                        this.client.getHttpPipeline(),
-                        "{endpoint}/formrecognizer".replace("{endpoint}", this.client.getEndpoint()),
-                        null,
-                        Context.NONE),
+                        new PollingStrategyOptions(this.client.getHttpPipeline())
+                                .setEndpoint(
+                                        "{endpoint}/formrecognizer".replace("{endpoint}", this.client.getEndpoint()))
+                                .setContext(Context.NONE)),
                 TypeReference.createInstance(BinaryData.class),
                 TypeReference.createInstance(BinaryData.class));
     }
@@ -427,10 +428,10 @@ public final class DocumentClassifiersImpl {
                 Duration.ofSeconds(1),
                 () -> this.buildClassifierWithResponse(buildRequest, context),
                 new SyncDefaultPollingStrategy<>(
-                        this.client.getHttpPipeline(),
-                        "{endpoint}/formrecognizer".replace("{endpoint}", this.client.getEndpoint()),
-                        null,
-                        context),
+                        new PollingStrategyOptions(this.client.getHttpPipeline())
+                                .setEndpoint(
+                                        "{endpoint}/formrecognizer".replace("{endpoint}", this.client.getEndpoint()))
+                                .setContext(context)),
                 TypeReference.createInstance(BinaryData.class),
                 TypeReference.createInstance(BinaryData.class));
     }
@@ -883,10 +884,10 @@ public final class DocumentClassifiersImpl {
                 Duration.ofSeconds(1),
                 () -> this.classifyDocumentWithResponseAsync(classifierId, stringIndexType, classifyRequest),
                 new DefaultPollingStrategy<>(
-                        this.client.getHttpPipeline(),
-                        "{endpoint}/formrecognizer".replace("{endpoint}", this.client.getEndpoint()),
-                        null,
-                        Context.NONE),
+                        new PollingStrategyOptions(this.client.getHttpPipeline())
+                                .setEndpoint(
+                                        "{endpoint}/formrecognizer".replace("{endpoint}", this.client.getEndpoint()))
+                                .setContext(Context.NONE)),
                 TypeReference.createInstance(BinaryData.class),
                 TypeReference.createInstance(BinaryData.class));
     }
@@ -913,10 +914,10 @@ public final class DocumentClassifiersImpl {
                 Duration.ofSeconds(1),
                 () -> this.classifyDocumentWithResponseAsync(classifierId, stringIndexType, classifyRequest, context),
                 new DefaultPollingStrategy<>(
-                        this.client.getHttpPipeline(),
-                        "{endpoint}/formrecognizer".replace("{endpoint}", this.client.getEndpoint()),
-                        null,
-                        context),
+                        new PollingStrategyOptions(this.client.getHttpPipeline())
+                                .setEndpoint(
+                                        "{endpoint}/formrecognizer".replace("{endpoint}", this.client.getEndpoint()))
+                                .setContext(context)),
                 TypeReference.createInstance(BinaryData.class),
                 TypeReference.createInstance(BinaryData.class));
     }
@@ -939,10 +940,10 @@ public final class DocumentClassifiersImpl {
                 Duration.ofSeconds(1),
                 () -> this.classifyDocumentWithResponse(classifierId, stringIndexType, classifyRequest, Context.NONE),
                 new SyncDefaultPollingStrategy<>(
-                        this.client.getHttpPipeline(),
-                        "{endpoint}/formrecognizer".replace("{endpoint}", this.client.getEndpoint()),
-                        null,
-                        Context.NONE),
+                        new PollingStrategyOptions(this.client.getHttpPipeline())
+                                .setEndpoint(
+                                        "{endpoint}/formrecognizer".replace("{endpoint}", this.client.getEndpoint()))
+                                .setContext(Context.NONE)),
                 TypeReference.createInstance(BinaryData.class),
                 TypeReference.createInstance(BinaryData.class));
     }
@@ -969,10 +970,10 @@ public final class DocumentClassifiersImpl {
                 Duration.ofSeconds(1),
                 () -> this.classifyDocumentWithResponse(classifierId, stringIndexType, classifyRequest, context),
                 new SyncDefaultPollingStrategy<>(
-                        this.client.getHttpPipeline(),
-                        "{endpoint}/formrecognizer".replace("{endpoint}", this.client.getEndpoint()),
-                        null,
-                        context),
+                        new PollingStrategyOptions(this.client.getHttpPipeline())
+                                .setEndpoint(
+                                        "{endpoint}/formrecognizer".replace("{endpoint}", this.client.getEndpoint()))
+                                .setContext(context)),
                 TypeReference.createInstance(BinaryData.class),
                 TypeReference.createInstance(BinaryData.class));
     }
@@ -1073,10 +1074,10 @@ public final class DocumentClassifiersImpl {
                         this.classifyDocumentWithResponseAsync(
                                 classifierId, contentType, stringIndexType, classifyRequest, contentLength),
                 new DefaultPollingStrategy<>(
-                        this.client.getHttpPipeline(),
-                        "{endpoint}/formrecognizer".replace("{endpoint}", this.client.getEndpoint()),
-                        null,
-                        Context.NONE),
+                        new PollingStrategyOptions(this.client.getHttpPipeline())
+                                .setEndpoint(
+                                        "{endpoint}/formrecognizer".replace("{endpoint}", this.client.getEndpoint()))
+                                .setContext(Context.NONE)),
                 TypeReference.createInstance(BinaryData.class),
                 TypeReference.createInstance(BinaryData.class));
     }
@@ -1109,10 +1110,10 @@ public final class DocumentClassifiersImpl {
                         this.classifyDocumentWithResponseAsync(
                                 classifierId, contentType, stringIndexType, classifyRequest, contentLength, context),
                 new DefaultPollingStrategy<>(
-                        this.client.getHttpPipeline(),
-                        "{endpoint}/formrecognizer".replace("{endpoint}", this.client.getEndpoint()),
-                        null,
-                        context),
+                        new PollingStrategyOptions(this.client.getHttpPipeline())
+                                .setEndpoint(
+                                        "{endpoint}/formrecognizer".replace("{endpoint}", this.client.getEndpoint()))
+                                .setContext(context)),
                 TypeReference.createInstance(BinaryData.class),
                 TypeReference.createInstance(BinaryData.class));
     }
@@ -1248,10 +1249,10 @@ public final class DocumentClassifiersImpl {
                         this.classifyDocumentWithResponseAsync(
                                 classifierId, contentType, stringIndexType, classifyRequest, contentLength),
                 new DefaultPollingStrategy<>(
-                        this.client.getHttpPipeline(),
-                        "{endpoint}/formrecognizer".replace("{endpoint}", this.client.getEndpoint()),
-                        null,
-                        Context.NONE),
+                        new PollingStrategyOptions(this.client.getHttpPipeline())
+                                .setEndpoint(
+                                        "{endpoint}/formrecognizer".replace("{endpoint}", this.client.getEndpoint()))
+                                .setContext(Context.NONE)),
                 TypeReference.createInstance(BinaryData.class),
                 TypeReference.createInstance(BinaryData.class));
     }
@@ -1284,10 +1285,10 @@ public final class DocumentClassifiersImpl {
                         this.classifyDocumentWithResponseAsync(
                                 classifierId, contentType, stringIndexType, classifyRequest, contentLength, context),
                 new DefaultPollingStrategy<>(
-                        this.client.getHttpPipeline(),
-                        "{endpoint}/formrecognizer".replace("{endpoint}", this.client.getEndpoint()),
-                        null,
-                        context),
+                        new PollingStrategyOptions(this.client.getHttpPipeline())
+                                .setEndpoint(
+                                        "{endpoint}/formrecognizer".replace("{endpoint}", this.client.getEndpoint()))
+                                .setContext(context)),
                 TypeReference.createInstance(BinaryData.class),
                 TypeReference.createInstance(BinaryData.class));
     }
@@ -1323,10 +1324,10 @@ public final class DocumentClassifiersImpl {
                                 contentLength,
                                 Context.NONE),
                 new SyncDefaultPollingStrategy<>(
-                        this.client.getHttpPipeline(),
-                        "{endpoint}/formrecognizer".replace("{endpoint}", this.client.getEndpoint()),
-                        null,
-                        Context.NONE),
+                        new PollingStrategyOptions(this.client.getHttpPipeline())
+                                .setEndpoint(
+                                        "{endpoint}/formrecognizer".replace("{endpoint}", this.client.getEndpoint()))
+                                .setContext(Context.NONE)),
                 TypeReference.createInstance(BinaryData.class),
                 TypeReference.createInstance(BinaryData.class));
     }
@@ -1359,10 +1360,10 @@ public final class DocumentClassifiersImpl {
                         this.classifyDocumentWithResponse(
                                 classifierId, contentType, stringIndexType, classifyRequest, contentLength, context),
                 new SyncDefaultPollingStrategy<>(
-                        this.client.getHttpPipeline(),
-                        "{endpoint}/formrecognizer".replace("{endpoint}", this.client.getEndpoint()),
-                        null,
-                        context),
+                        new PollingStrategyOptions(this.client.getHttpPipeline())
+                                .setEndpoint(
+                                        "{endpoint}/formrecognizer".replace("{endpoint}", this.client.getEndpoint()))
+                                .setContext(context)),
                 TypeReference.createInstance(BinaryData.class),
                 TypeReference.createInstance(BinaryData.class));
     }
@@ -1464,10 +1465,10 @@ public final class DocumentClassifiersImpl {
                 Duration.ofSeconds(1),
                 () -> this.classifyDocumentWithResponseAsync(classifierId, stringIndexType, classifyRequest),
                 new DefaultPollingStrategy<>(
-                        this.client.getHttpPipeline(),
-                        "{endpoint}/formrecognizer".replace("{endpoint}", this.client.getEndpoint()),
-                        null,
-                        Context.NONE),
+                        new PollingStrategyOptions(this.client.getHttpPipeline())
+                                .setEndpoint(
+                                        "{endpoint}/formrecognizer".replace("{endpoint}", this.client.getEndpoint()))
+                                .setContext(Context.NONE)),
                 TypeReference.createInstance(BinaryData.class),
                 TypeReference.createInstance(BinaryData.class));
     }
@@ -1491,10 +1492,10 @@ public final class DocumentClassifiersImpl {
                 Duration.ofSeconds(1),
                 () -> this.classifyDocumentWithResponseAsync(classifierId, stringIndexType, classifyRequest, context),
                 new DefaultPollingStrategy<>(
-                        this.client.getHttpPipeline(),
-                        "{endpoint}/formrecognizer".replace("{endpoint}", this.client.getEndpoint()),
-                        null,
-                        context),
+                        new PollingStrategyOptions(this.client.getHttpPipeline())
+                                .setEndpoint(
+                                        "{endpoint}/formrecognizer".replace("{endpoint}", this.client.getEndpoint()))
+                                .setContext(context)),
                 TypeReference.createInstance(BinaryData.class),
                 TypeReference.createInstance(BinaryData.class));
     }
@@ -1517,10 +1518,10 @@ public final class DocumentClassifiersImpl {
                 Duration.ofSeconds(1),
                 () -> this.classifyDocumentWithResponse(classifierId, stringIndexType, classifyRequest, Context.NONE),
                 new SyncDefaultPollingStrategy<>(
-                        this.client.getHttpPipeline(),
-                        "{endpoint}/formrecognizer".replace("{endpoint}", this.client.getEndpoint()),
-                        null,
-                        Context.NONE),
+                        new PollingStrategyOptions(this.client.getHttpPipeline())
+                                .setEndpoint(
+                                        "{endpoint}/formrecognizer".replace("{endpoint}", this.client.getEndpoint()))
+                                .setContext(Context.NONE)),
                 TypeReference.createInstance(BinaryData.class),
                 TypeReference.createInstance(BinaryData.class));
     }
@@ -1544,10 +1545,10 @@ public final class DocumentClassifiersImpl {
                 Duration.ofSeconds(1),
                 () -> this.classifyDocumentWithResponse(classifierId, stringIndexType, classifyRequest, context),
                 new SyncDefaultPollingStrategy<>(
-                        this.client.getHttpPipeline(),
-                        "{endpoint}/formrecognizer".replace("{endpoint}", this.client.getEndpoint()),
-                        null,
-                        context),
+                        new PollingStrategyOptions(this.client.getHttpPipeline())
+                                .setEndpoint(
+                                        "{endpoint}/formrecognizer".replace("{endpoint}", this.client.getEndpoint()))
+                                .setContext(context)),
                 TypeReference.createInstance(BinaryData.class),
                 TypeReference.createInstance(BinaryData.class));
     }

@@ -5,15 +5,14 @@
 package com.azure.ai.formrecognizer.documentanalysis.models;
 
 import com.azure.core.util.ExpandableStringEnum;
-import com.fasterxml.jackson.annotation.JsonCreator;
 import java.util.Collection;
 
 /** Font style. */
 public final class FontStyle extends ExpandableStringEnum<FontStyle> {
-    /** Static value normal for FontStyle. */
+    /** Characters are represented normally. */
     public static final FontStyle NORMAL = fromString("normal");
 
-    /** Static value italic for FontStyle. */
+    /** Characters are visually slanted to the right. */
     public static final FontStyle ITALIC = fromString("italic");
 
     /**
@@ -30,7 +29,6 @@ public final class FontStyle extends ExpandableStringEnum<FontStyle> {
      * @param name a name to look for.
      * @return the corresponding FontStyle.
      */
-    @JsonCreator
     public static FontStyle fromString(String name) {
         return fromString(name, FontStyle.class);
     }

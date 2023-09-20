@@ -5,51 +5,50 @@
 package com.azure.ai.formrecognizer.documentanalysis.implementation.models;
 
 import com.azure.core.util.ExpandableStringEnum;
-import com.fasterxml.jackson.annotation.JsonCreator;
 import java.util.Collection;
 
 /** Semantic data type of the field value. */
 public final class DocumentFieldType extends ExpandableStringEnum<DocumentFieldType> {
-    /** Static value string for DocumentFieldType. */
+    /** Plain text. */
     public static final DocumentFieldType STRING = fromString("string");
 
-    /** Static value date for DocumentFieldType. */
+    /** Date, normalized to ISO 8601 (YYYY-MM-DD) format. */
     public static final DocumentFieldType DATE = fromString("date");
 
-    /** Static value time for DocumentFieldType. */
+    /** Time, normalized to ISO 8601 (hh:mm:ss) format. */
     public static final DocumentFieldType TIME = fromString("time");
 
-    /** Static value phoneNumber for DocumentFieldType. */
+    /** Phone number, normalized to E.164 (+{CountryCode}{SubscriberNumber}) format. */
     public static final DocumentFieldType PHONE_NUMBER = fromString("phoneNumber");
 
-    /** Static value number for DocumentFieldType. */
+    /** Floating point number, normalized to double precision floating point. */
     public static final DocumentFieldType NUMBER = fromString("number");
 
-    /** Static value integer for DocumentFieldType. */
+    /** Integer number, normalized to 64-bit signed integer. */
     public static final DocumentFieldType INTEGER = fromString("integer");
 
-    /** Static value selectionMark for DocumentFieldType. */
+    /** Is field selected?. */
     public static final DocumentFieldType SELECTION_MARK = fromString("selectionMark");
 
-    /** Static value countryRegion for DocumentFieldType. */
+    /** Country/region, normalized to ISO 3166-1 alpha-3 format (ex. USA). */
     public static final DocumentFieldType COUNTRY_REGION = fromString("countryRegion");
 
-    /** Static value signature for DocumentFieldType. */
+    /** Is signature present?. */
     public static final DocumentFieldType SIGNATURE = fromString("signature");
 
-    /** Static value array for DocumentFieldType. */
+    /** List of subfields of the same type. */
     public static final DocumentFieldType ARRAY = fromString("array");
 
-    /** Static value object for DocumentFieldType. */
+    /** Named list of subfields of potentially different types. */
     public static final DocumentFieldType OBJECT = fromString("object");
 
-    /** Static value currency for DocumentFieldType. */
+    /** Currency amount with optional currency symbol and unit. */
     public static final DocumentFieldType CURRENCY = fromString("currency");
 
-    /** Static value address for DocumentFieldType. */
+    /** Parsed address. */
     public static final DocumentFieldType ADDRESS = fromString("address");
 
-    /** Static value boolean for DocumentFieldType. */
+    /** Boolean value, normalized to true or false. */
     public static final DocumentFieldType BOOLEAN = fromString("boolean");
 
     /**
@@ -66,7 +65,6 @@ public final class DocumentFieldType extends ExpandableStringEnum<DocumentFieldT
      * @param name a name to look for.
      * @return the corresponding DocumentFieldType.
      */
-    @JsonCreator
     public static DocumentFieldType fromString(String name) {
         return fromString(name, DocumentFieldType.class);
     }

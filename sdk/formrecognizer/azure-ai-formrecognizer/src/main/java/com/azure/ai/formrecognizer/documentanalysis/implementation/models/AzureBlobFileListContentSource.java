@@ -5,23 +5,26 @@
 package com.azure.ai.formrecognizer.documentanalysis.implementation.models;
 
 import com.azure.core.annotation.Immutable;
-import com.fasterxml.jackson.annotation.JsonCreator;
-import com.fasterxml.jackson.annotation.JsonProperty;
+import com.azure.json.JsonReader;
+import com.azure.json.JsonSerializable;
+import com.azure.json.JsonToken;
+import com.azure.json.JsonWriter;
+import java.io.IOException;
+import java.util.ArrayList;
+import java.util.List;
 
 /** File list in Azure Blob Storage. */
 @Immutable
-public final class AzureBlobFileListContentSource {
+public final class AzureBlobFileListContentSource implements JsonSerializable<AzureBlobFileListContentSource> {
     /*
      * Azure Blob Storage container URL.
      */
-    @JsonProperty(value = "containerUrl", required = true)
-    private String containerUrl;
+    private final String containerUrl;
 
     /*
      * Path to a JSONL file within the container specifying a subset of documents.
      */
-    @JsonProperty(value = "fileList", required = true)
-    private String fileList;
+    private final String fileList;
 
     /**
      * Creates an instance of AzureBlobFileListContentSource class.
@@ -29,10 +32,7 @@ public final class AzureBlobFileListContentSource {
      * @param containerUrl the containerUrl value to set.
      * @param fileList the fileList value to set.
      */
-    @JsonCreator
-    public AzureBlobFileListContentSource(
-            @JsonProperty(value = "containerUrl", required = true) String containerUrl,
-            @JsonProperty(value = "fileList", required = true) String fileList) {
+    public AzureBlobFileListContentSource(String containerUrl, String fileList) {
         this.containerUrl = containerUrl;
         this.fileList = fileList;
     }
@@ -53,5 +53,62 @@ public final class AzureBlobFileListContentSource {
      */
     public String getFileList() {
         return this.fileList;
+    }
+
+    @Override
+    public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
+        jsonWriter.writeStartObject();
+        jsonWriter.writeStringField("containerUrl", this.containerUrl);
+        jsonWriter.writeStringField("fileList", this.fileList);
+        return jsonWriter.writeEndObject();
+    }
+
+    /**
+     * Reads an instance of AzureBlobFileListContentSource from the JsonReader.
+     *
+     * @param jsonReader The JsonReader being read.
+     * @return An instance of AzureBlobFileListContentSource if the JsonReader was pointing to an instance of it, or
+     *     null if it was pointing to JSON null.
+     * @throws IllegalStateException If the deserialized JSON object was missing any required properties.
+     * @throws IOException If an error occurs while reading the AzureBlobFileListContentSource.
+     */
+    public static AzureBlobFileListContentSource fromJson(JsonReader jsonReader) throws IOException {
+        return jsonReader.readObject(
+                reader -> {
+                    boolean containerUrlFound = false;
+                    String containerUrl = null;
+                    boolean fileListFound = false;
+                    String fileList = null;
+                    while (reader.nextToken() != JsonToken.END_OBJECT) {
+                        String fieldName = reader.getFieldName();
+                        reader.nextToken();
+
+                        if ("containerUrl".equals(fieldName)) {
+                            containerUrl = reader.getString();
+                            containerUrlFound = true;
+                        } else if ("fileList".equals(fieldName)) {
+                            fileList = reader.getString();
+                            fileListFound = true;
+                        } else {
+                            reader.skipChildren();
+                        }
+                    }
+                    if (containerUrlFound && fileListFound) {
+                        AzureBlobFileListContentSource deserializedAzureBlobFileListContentSource =
+                                new AzureBlobFileListContentSource(containerUrl, fileList);
+
+                        return deserializedAzureBlobFileListContentSource;
+                    }
+                    List<String> missingProperties = new ArrayList<>();
+                    if (!containerUrlFound) {
+                        missingProperties.add("containerUrl");
+                    }
+                    if (!fileListFound) {
+                        missingProperties.add("fileList");
+                    }
+
+                    throw new IllegalStateException(
+                            "Missing required property/properties: " + String.join(", ", missingProperties));
+                });
     }
 }

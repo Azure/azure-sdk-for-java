@@ -31,11 +31,11 @@ public final class DocumentSpanHelper {
         accessor = documentSpanAccessor;
     }
 
-    static void setOffset(DocumentSpan documentSpan, int offset) {
+    public static void setOffset(DocumentSpan documentSpan, int offset) {
         accessor.setOffset(documentSpan, offset);
     }
 
-    static void setLength(DocumentSpan documentSpan, int length) {
+    public static void setLength(DocumentSpan documentSpan, int length) {
         accessor.setLength(documentSpan, length);
     }
 }

@@ -5,28 +5,30 @@
 package com.azure.ai.formrecognizer.documentanalysis.implementation.models;
 
 import com.azure.core.annotation.Immutable;
-import com.fasterxml.jackson.annotation.JsonCreator;
-import com.fasterxml.jackson.annotation.JsonProperty;
+import com.azure.json.JsonReader;
+import com.azure.json.JsonSerializable;
+import com.azure.json.JsonToken;
+import com.azure.json.JsonWriter;
+import java.io.IOException;
+import java.util.ArrayList;
+import java.util.List;
 
 /** Currency field value. */
 @Immutable
-public final class CurrencyValue {
+public final class CurrencyValue implements JsonSerializable<CurrencyValue> {
     /*
      * Currency amount.
      */
-    @JsonProperty(value = "amount", required = true)
-    private double amount;
+    private final double amount;
 
     /*
      * Currency symbol label, if any.
      */
-    @JsonProperty(value = "currencySymbol")
     private String currencySymbol;
 
     /*
      * Resolved currency code (ISO 4217), if any.
      */
-    @JsonProperty(value = "currencyCode")
     private String currencyCode;
 
     /**
@@ -34,8 +36,7 @@ public final class CurrencyValue {
      *
      * @param amount the amount value to set.
      */
-    @JsonCreator
-    private CurrencyValue(@JsonProperty(value = "amount", required = true) double amount) {
+    private CurrencyValue(double amount) {
         this.amount = amount;
     }
 
@@ -64,5 +65,62 @@ public final class CurrencyValue {
      */
     public String getCurrencyCode() {
         return this.currencyCode;
+    }
+
+    @Override
+    public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
+        jsonWriter.writeStartObject();
+        jsonWriter.writeDoubleField("amount", this.amount);
+        jsonWriter.writeStringField("currencySymbol", this.currencySymbol);
+        jsonWriter.writeStringField("currencyCode", this.currencyCode);
+        return jsonWriter.writeEndObject();
+    }
+
+    /**
+     * Reads an instance of CurrencyValue from the JsonReader.
+     *
+     * @param jsonReader The JsonReader being read.
+     * @return An instance of CurrencyValue if the JsonReader was pointing to an instance of it, or null if it was
+     *     pointing to JSON null.
+     * @throws IllegalStateException If the deserialized JSON object was missing any required properties.
+     * @throws IOException If an error occurs while reading the CurrencyValue.
+     */
+    public static CurrencyValue fromJson(JsonReader jsonReader) throws IOException {
+        return jsonReader.readObject(
+                reader -> {
+                    boolean amountFound = false;
+                    double amount = 0.0;
+                    String currencySymbol = null;
+                    String currencyCode = null;
+                    while (reader.nextToken() != JsonToken.END_OBJECT) {
+                        String fieldName = reader.getFieldName();
+                        reader.nextToken();
+
+                        if ("amount".equals(fieldName)) {
+                            amount = reader.getDouble();
+                            amountFound = true;
+                        } else if ("currencySymbol".equals(fieldName)) {
+                            currencySymbol = reader.getString();
+                        } else if ("currencyCode".equals(fieldName)) {
+                            currencyCode = reader.getString();
+                        } else {
+                            reader.skipChildren();
+                        }
+                    }
+                    if (amountFound) {
+                        CurrencyValue deserializedCurrencyValue = new CurrencyValue(amount);
+                        deserializedCurrencyValue.currencySymbol = currencySymbol;
+                        deserializedCurrencyValue.currencyCode = currencyCode;
+
+                        return deserializedCurrencyValue;
+                    }
+                    List<String> missingProperties = new ArrayList<>();
+                    if (!amountFound) {
+                        missingProperties.add("amount");
+                    }
+
+                    throw new IllegalStateException(
+                            "Missing required property/properties: " + String.join(", ", missingProperties));
+                });
     }
 }

@@ -5,30 +5,29 @@
 package com.azure.ai.formrecognizer.documentanalysis.models;
 
 import com.azure.core.util.ExpandableStringEnum;
-import com.fasterxml.jackson.annotation.JsonCreator;
 import java.util.Collection;
 
 /** Semantic role of the paragraph. */
 public final class ParagraphRole extends ExpandableStringEnum<ParagraphRole> {
-    /** Static value pageHeader for ParagraphRole. */
+    /** Text near the top edge of the page. */
     public static final ParagraphRole PAGE_HEADER = fromString("pageHeader");
 
-    /** Static value pageFooter for ParagraphRole. */
+    /** Text near the bottom edge of the page. */
     public static final ParagraphRole PAGE_FOOTER = fromString("pageFooter");
 
-    /** Static value pageNumber for ParagraphRole. */
+    /** Page number. */
     public static final ParagraphRole PAGE_NUMBER = fromString("pageNumber");
 
-    /** Static value title for ParagraphRole. */
+    /** Top-level title describing the entire document. */
     public static final ParagraphRole TITLE = fromString("title");
 
-    /** Static value sectionHeading for ParagraphRole. */
+    /** Sub heading describing a section of the document. */
     public static final ParagraphRole SECTION_HEADING = fromString("sectionHeading");
 
-    /** Static value footnote for ParagraphRole. */
+    /** A note usually placed after the main content on a page. */
     public static final ParagraphRole FOOTNOTE = fromString("footnote");
 
-    /** Static value formulaBlock for ParagraphRole. */
+    /** A block of formulas, often with shared alignment. */
     public static final ParagraphRole FORMULA_BLOCK = fromString("formulaBlock");
 
     /**
@@ -45,7 +44,6 @@ public final class ParagraphRole extends ExpandableStringEnum<ParagraphRole> {
      * @param name a name to look for.
      * @return the corresponding ParagraphRole.
      */
-    @JsonCreator
     public static ParagraphRole fromString(String name) {
         return fromString(name, ParagraphRole.class);
     }

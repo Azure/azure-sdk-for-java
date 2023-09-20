@@ -5,81 +5,61 @@
 package com.azure.ai.formrecognizer.documentanalysis.implementation.models;
 
 import com.azure.core.annotation.Immutable;
-import com.fasterxml.jackson.annotation.JsonCreator;
-import com.fasterxml.jackson.annotation.JsonProperty;
-import com.fasterxml.jackson.annotation.JsonSubTypes;
-import com.fasterxml.jackson.annotation.JsonTypeInfo;
-import com.fasterxml.jackson.annotation.JsonTypeName;
+import com.azure.json.JsonReader;
+import com.azure.json.JsonSerializable;
+import com.azure.json.JsonToken;
+import com.azure.json.JsonWriter;
+import java.io.IOException;
 import java.time.OffsetDateTime;
 import java.util.Map;
+import java.util.Objects;
 
 /** Get Operation response object. */
-@JsonTypeInfo(
-        use = JsonTypeInfo.Id.NAME,
-        include = JsonTypeInfo.As.PROPERTY,
-        property = "kind",
-        defaultImpl = OperationDetails.class)
-@JsonTypeName("OperationDetails")
-@JsonSubTypes({
-    @JsonSubTypes.Type(name = "documentModelBuild", value = DocumentModelBuildOperationDetails.class),
-    @JsonSubTypes.Type(name = "documentModelCompose", value = DocumentModelComposeOperationDetails.class),
-    @JsonSubTypes.Type(name = "documentModelCopyTo", value = DocumentModelCopyToOperationDetails.class),
-    @JsonSubTypes.Type(name = "documentClassifierBuild", value = DocumentClassifierBuildOperationDetails.class)
-})
 @Immutable
-public class OperationDetails {
+public class OperationDetails implements JsonSerializable<OperationDetails> {
     /*
      * Operation ID
      */
-    @JsonProperty(value = "operationId", required = true)
-    private String operationId;
+    private final String operationId;
 
     /*
      * Operation status.
      */
-    @JsonProperty(value = "status", required = true)
-    private OperationStatus status;
+    private final OperationStatus status;
 
     /*
      * Operation progress (0-100).
      */
-    @JsonProperty(value = "percentCompleted")
     private Integer percentCompleted;
 
     /*
      * Date and time (UTC) when the operation was created.
      */
-    @JsonProperty(value = "createdDateTime", required = true)
-    private OffsetDateTime createdDateTime;
+    private final OffsetDateTime createdDateTime;
 
     /*
      * Date and time (UTC) when the status was last updated.
      */
-    @JsonProperty(value = "lastUpdatedDateTime", required = true)
-    private OffsetDateTime lastUpdatedDateTime;
+    private final OffsetDateTime lastUpdatedDateTime;
 
     /*
      * URL of the resource targeted by this operation.
      */
-    @JsonProperty(value = "resourceLocation", required = true)
-    private String resourceLocation;
+    private final String resourceLocation;
 
     /*
      * API version used to create this operation.
      */
-    @JsonProperty(value = "apiVersion")
     private String apiVersion;
 
     /*
      * List of key-value tag attributes associated with the document model.
      */
-    @JsonProperty(value = "tags")
     private Map<String, String> tags;
 
     /*
      * Encountered error.
      */
-    @JsonProperty(value = "error")
     private Error error;
 
     /**
@@ -91,13 +71,12 @@ public class OperationDetails {
      * @param lastUpdatedDateTime the lastUpdatedDateTime value to set.
      * @param resourceLocation the resourceLocation value to set.
      */
-    @JsonCreator
     protected OperationDetails(
-            @JsonProperty(value = "operationId", required = true) String operationId,
-            @JsonProperty(value = "status", required = true) OperationStatus status,
-            @JsonProperty(value = "createdDateTime", required = true) OffsetDateTime createdDateTime,
-            @JsonProperty(value = "lastUpdatedDateTime", required = true) OffsetDateTime lastUpdatedDateTime,
-            @JsonProperty(value = "resourceLocation", required = true) String resourceLocation) {
+            String operationId,
+            OperationStatus status,
+            OffsetDateTime createdDateTime,
+            OffsetDateTime lastUpdatedDateTime,
+            String resourceLocation) {
         this.operationId = operationId;
         this.status = status;
         this.createdDateTime = createdDateTime;
@@ -184,5 +163,69 @@ public class OperationDetails {
      */
     public Error getError() {
         return this.error;
+    }
+
+    @Override
+    public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
+        jsonWriter.writeStartObject();
+        jsonWriter.writeStringField("operationId", this.operationId);
+        jsonWriter.writeStringField("status", Objects.toString(this.status, null));
+        jsonWriter.writeStringField("createdDateTime", Objects.toString(this.createdDateTime, null));
+        jsonWriter.writeStringField("lastUpdatedDateTime", Objects.toString(this.lastUpdatedDateTime, null));
+        jsonWriter.writeStringField("resourceLocation", this.resourceLocation);
+        jsonWriter.writeNumberField("percentCompleted", this.percentCompleted);
+        jsonWriter.writeStringField("apiVersion", this.apiVersion);
+        jsonWriter.writeMapField("tags", this.tags, (writer, element) -> writer.writeString(element));
+        jsonWriter.writeJsonField("error", this.error);
+        return jsonWriter.writeEndObject();
+    }
+
+    /**
+     * Reads an instance of OperationDetails from the JsonReader.
+     *
+     * @param jsonReader The JsonReader being read.
+     * @return An instance of OperationDetails if the JsonReader was pointing to an instance of it, or null if it was
+     *     pointing to JSON null.
+     * @throws IllegalStateException If the deserialized JSON object was missing any required properties or the
+     *     polymorphic discriminator.
+     * @throws IOException If an error occurs while reading the OperationDetails.
+     */
+    public static OperationDetails fromJson(JsonReader jsonReader) throws IOException {
+        return jsonReader.readObject(
+                reader -> {
+                    String discriminatorValue = null;
+                    JsonReader readerToUse = reader.bufferObject();
+
+                    readerToUse.nextToken(); // Prepare for reading
+                    while (readerToUse.nextToken() != JsonToken.END_OBJECT) {
+                        String fieldName = readerToUse.getFieldName();
+                        readerToUse.nextToken();
+                        if ("kind".equals(fieldName)) {
+                            discriminatorValue = readerToUse.getString();
+                            break;
+                        } else {
+                            readerToUse.skipChildren();
+                        }
+                    }
+
+                    if (discriminatorValue != null) {
+                        readerToUse = readerToUse.reset();
+                    }
+                    // Use the discriminator value to determine which subtype should be deserialized.
+                    if ("documentModelBuild".equals(discriminatorValue)) {
+                        return DocumentModelBuildOperationDetails.fromJson(readerToUse);
+                    } else if ("documentModelCompose".equals(discriminatorValue)) {
+                        return DocumentModelComposeOperationDetails.fromJson(readerToUse);
+                    } else if ("documentModelCopyTo".equals(discriminatorValue)) {
+                        return DocumentModelCopyToOperationDetails.fromJson(readerToUse);
+                    } else if ("documentClassifierBuild".equals(discriminatorValue)) {
+                        return DocumentClassifierBuildOperationDetails.fromJson(readerToUse);
+                    } else {
+                        throw new IllegalStateException(
+                                "Discriminator field 'kind' didn't match one of the expected values 'documentModelBuild', 'documentModelCompose', 'documentModelCopyTo', or 'documentClassifierBuild'. It was: '"
+                                        + discriminatorValue
+                                        + "'.");
+                    }
+                });
     }
 }

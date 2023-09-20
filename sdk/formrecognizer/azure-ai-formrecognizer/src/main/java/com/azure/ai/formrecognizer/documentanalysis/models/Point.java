@@ -5,12 +5,16 @@ package com.azure.ai.formrecognizer.documentanalysis.models;
 
 import com.azure.ai.formrecognizer.documentanalysis.implementation.util.PointHelper;
 import com.azure.core.annotation.Immutable;
+import com.azure.json.JsonSerializable;
+import com.azure.json.JsonWriter;
+
+import java.io.IOException;
 
 /**
  * Represents the x and y coordinates of a vertex.
  */
 @Immutable
-public final class Point {
+public final class Point implements JsonSerializable<Point> {
 
     /**
      * Creates a Point object.
@@ -66,5 +70,13 @@ public final class Point {
                 point.setY(yCoordinate);
             }
         });
+    }
+
+    @Override
+    public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
+        jsonWriter.writeStartObject();
+        jsonWriter.writeFloatField("xCoordinate", this.xCoordinate);
+        jsonWriter.writeFloatField("yCoordinate", this.yCoordinate);
+        return jsonWriter.writeEndObject();
     }
 }

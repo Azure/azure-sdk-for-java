@@ -5,36 +5,37 @@
 package com.azure.ai.formrecognizer.documentanalysis.implementation.models;
 
 import com.azure.core.annotation.Immutable;
-import com.fasterxml.jackson.annotation.JsonCreator;
-import com.fasterxml.jackson.annotation.JsonProperty;
+import com.azure.json.JsonReader;
+import com.azure.json.JsonSerializable;
+import com.azure.json.JsonToken;
+import com.azure.json.JsonWriter;
+import java.io.IOException;
+import java.util.ArrayList;
 import java.util.List;
+import java.util.Objects;
 
 /** A selection mark object representing check boxes, radio buttons, and other elements indicating a selection. */
 @Immutable
-public final class DocumentSelectionMark {
+public final class DocumentSelectionMark implements JsonSerializable<DocumentSelectionMark> {
     /*
      * State of the selection mark.
      */
-    @JsonProperty(value = "state", required = true)
-    private SelectionMarkState state;
+    private final SelectionMarkState state;
 
     /*
      * Bounding polygon of the selection mark.
      */
-    @JsonProperty(value = "polygon")
     private List<Float> polygon;
 
     /*
      * Location of the selection mark in the reading order concatenated content.
      */
-    @JsonProperty(value = "span", required = true)
-    private DocumentSpan span;
+    private final DocumentSpan span;
 
     /*
      * Confidence of correctly extracting the selection mark.
      */
-    @JsonProperty(value = "confidence", required = true)
-    private float confidence;
+    private final float confidence;
 
     /**
      * Creates an instance of DocumentSelectionMark class.
@@ -43,11 +44,7 @@ public final class DocumentSelectionMark {
      * @param span the span value to set.
      * @param confidence the confidence value to set.
      */
-    @JsonCreator
-    private DocumentSelectionMark(
-            @JsonProperty(value = "state", required = true) SelectionMarkState state,
-            @JsonProperty(value = "span", required = true) DocumentSpan span,
-            @JsonProperty(value = "confidence", required = true) float confidence) {
+    private DocumentSelectionMark(SelectionMarkState state, DocumentSpan span, float confidence) {
         this.state = state;
         this.span = span;
         this.confidence = confidence;
@@ -87,5 +84,76 @@ public final class DocumentSelectionMark {
      */
     public float getConfidence() {
         return this.confidence;
+    }
+
+    @Override
+    public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
+        jsonWriter.writeStartObject();
+        jsonWriter.writeStringField("state", Objects.toString(this.state, null));
+        jsonWriter.writeJsonField("span", this.span);
+        jsonWriter.writeFloatField("confidence", this.confidence);
+        jsonWriter.writeArrayField("polygon", this.polygon, (writer, element) -> writer.writeFloat(element));
+        return jsonWriter.writeEndObject();
+    }
+
+    /**
+     * Reads an instance of DocumentSelectionMark from the JsonReader.
+     *
+     * @param jsonReader The JsonReader being read.
+     * @return An instance of DocumentSelectionMark if the JsonReader was pointing to an instance of it, or null if it
+     *     was pointing to JSON null.
+     * @throws IllegalStateException If the deserialized JSON object was missing any required properties.
+     * @throws IOException If an error occurs while reading the DocumentSelectionMark.
+     */
+    public static DocumentSelectionMark fromJson(JsonReader jsonReader) throws IOException {
+        return jsonReader.readObject(
+                reader -> {
+                    boolean stateFound = false;
+                    SelectionMarkState state = null;
+                    boolean spanFound = false;
+                    DocumentSpan span = null;
+                    boolean confidenceFound = false;
+                    float confidence = 0.0f;
+                    List<Float> polygon = null;
+                    while (reader.nextToken() != JsonToken.END_OBJECT) {
+                        String fieldName = reader.getFieldName();
+                        reader.nextToken();
+
+                        if ("state".equals(fieldName)) {
+                            state = SelectionMarkState.fromString(reader.getString());
+                            stateFound = true;
+                        } else if ("span".equals(fieldName)) {
+                            span = DocumentSpan.fromJson(reader);
+                            spanFound = true;
+                        } else if ("confidence".equals(fieldName)) {
+                            confidence = reader.getFloat();
+                            confidenceFound = true;
+                        } else if ("polygon".equals(fieldName)) {
+                            polygon = reader.readArray(reader1 -> reader1.getFloat());
+                        } else {
+                            reader.skipChildren();
+                        }
+                    }
+                    if (stateFound && spanFound && confidenceFound) {
+                        DocumentSelectionMark deserializedDocumentSelectionMark =
+                                new DocumentSelectionMark(state, span, confidence);
+                        deserializedDocumentSelectionMark.polygon = polygon;
+
+                        return deserializedDocumentSelectionMark;
+                    }
+                    List<String> missingProperties = new ArrayList<>();
+                    if (!stateFound) {
+                        missingProperties.add("state");
+                    }
+                    if (!spanFound) {
+                        missingProperties.add("span");
+                    }
+                    if (!confidenceFound) {
+                        missingProperties.add("confidence");
+                    }
+
+                    throw new IllegalStateException(
+                            "Missing required property/properties: " + String.join(", ", missingProperties));
+                });
     }
 }

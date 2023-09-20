@@ -5,25 +5,28 @@
 package com.azure.ai.formrecognizer.documentanalysis.implementation.models;
 
 import com.azure.core.annotation.Immutable;
-import com.fasterxml.jackson.annotation.JsonCreator;
-import com.fasterxml.jackson.annotation.JsonProperty;
+import com.azure.json.JsonReader;
+import com.azure.json.JsonSerializable;
+import com.azure.json.JsonToken;
+import com.azure.json.JsonWriter;
+import java.io.IOException;
+import java.util.ArrayList;
+import java.util.List;
 
 /** A component of a composed document model. */
 @Immutable
-public final class ComponentDocumentModelDetails {
+public final class ComponentDocumentModelDetails implements JsonSerializable<ComponentDocumentModelDetails> {
     /*
      * Unique document model name.
      */
-    @JsonProperty(value = "modelId", required = true)
-    private String modelId;
+    private final String modelId;
 
     /**
      * Creates an instance of ComponentDocumentModelDetails class.
      *
      * @param modelId the modelId value to set.
      */
-    @JsonCreator
-    public ComponentDocumentModelDetails(@JsonProperty(value = "modelId", required = true) String modelId) {
+    public ComponentDocumentModelDetails(String modelId) {
         this.modelId = modelId;
     }
 
@@ -34,5 +37,53 @@ public final class ComponentDocumentModelDetails {
      */
     public String getModelId() {
         return this.modelId;
+    }
+
+    @Override
+    public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
+        jsonWriter.writeStartObject();
+        jsonWriter.writeStringField("modelId", this.modelId);
+        return jsonWriter.writeEndObject();
+    }
+
+    /**
+     * Reads an instance of ComponentDocumentModelDetails from the JsonReader.
+     *
+     * @param jsonReader The JsonReader being read.
+     * @return An instance of ComponentDocumentModelDetails if the JsonReader was pointing to an instance of it, or null
+     *     if it was pointing to JSON null.
+     * @throws IllegalStateException If the deserialized JSON object was missing any required properties.
+     * @throws IOException If an error occurs while reading the ComponentDocumentModelDetails.
+     */
+    public static ComponentDocumentModelDetails fromJson(JsonReader jsonReader) throws IOException {
+        return jsonReader.readObject(
+                reader -> {
+                    boolean modelIdFound = false;
+                    String modelId = null;
+                    while (reader.nextToken() != JsonToken.END_OBJECT) {
+                        String fieldName = reader.getFieldName();
+                        reader.nextToken();
+
+                        if ("modelId".equals(fieldName)) {
+                            modelId = reader.getString();
+                            modelIdFound = true;
+                        } else {
+                            reader.skipChildren();
+                        }
+                    }
+                    if (modelIdFound) {
+                        ComponentDocumentModelDetails deserializedComponentDocumentModelDetails =
+                                new ComponentDocumentModelDetails(modelId);
+
+                        return deserializedComponentDocumentModelDetails;
+                    }
+                    List<String> missingProperties = new ArrayList<>();
+                    if (!modelIdFound) {
+                        missingProperties.add("modelId");
+                    }
+
+                    throw new IllegalStateException(
+                            "Missing required property/properties: " + String.join(", ", missingProperties));
+                });
     }
 }

@@ -5,15 +5,14 @@
 package com.azure.ai.formrecognizer.documentanalysis.implementation.models;
 
 import com.azure.core.util.ExpandableStringEnum;
-import com.fasterxml.jackson.annotation.JsonCreator;
 import java.util.Collection;
 
 /** State of the selection mark. */
 public final class SelectionMarkState extends ExpandableStringEnum<SelectionMarkState> {
-    /** Static value selected for SelectionMarkState. */
+    /** The selection mark is selected, often indicated by a check ✓ or cross X inside the selection mark. */
     public static final SelectionMarkState SELECTED = fromString("selected");
 
-    /** Static value unselected for SelectionMarkState. */
+    /** The selection mark is not selected. */
     public static final SelectionMarkState UNSELECTED = fromString("unselected");
 
     /**
@@ -30,7 +29,6 @@ public final class SelectionMarkState extends ExpandableStringEnum<SelectionMark
      * @param name a name to look for.
      * @return the corresponding SelectionMarkState.
      */
-    @JsonCreator
     public static SelectionMarkState fromString(String name) {
         return fromString(name, SelectionMarkState.class);
     }

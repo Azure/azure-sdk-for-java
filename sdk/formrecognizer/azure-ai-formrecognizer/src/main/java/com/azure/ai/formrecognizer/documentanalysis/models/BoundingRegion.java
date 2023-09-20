@@ -5,14 +5,17 @@ package com.azure.ai.formrecognizer.documentanalysis.models;
 
 import com.azure.ai.formrecognizer.documentanalysis.implementation.util.BoundingRegionHelper;
 import com.azure.core.annotation.Immutable;
+import com.azure.json.JsonSerializable;
+import com.azure.json.JsonWriter;
 
+import java.io.IOException;
 import java.util.List;
 
 /**
  * Model representing the bounding polygon on a specific page of the input.
  */
 @Immutable
-public final class BoundingRegion {
+public final class BoundingRegion implements JsonSerializable<BoundingRegion> {
 
     /**
      * Creates a new instance of BoundingRegion.
@@ -82,5 +85,13 @@ public final class BoundingRegion {
                 boundingRegion.setBoundingPolygon(boundingPolygon);
             }
         });
+    }
+
+    @Override
+    public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
+        jsonWriter.writeStartObject();
+        jsonWriter.writeIntField("pageNumber", this.pageNumber);
+        jsonWriter.writeArrayField("boundingPolygon", this.boundingPolygon, JsonWriter::writeJson);
+        return jsonWriter.writeEndObject();
     }
 }

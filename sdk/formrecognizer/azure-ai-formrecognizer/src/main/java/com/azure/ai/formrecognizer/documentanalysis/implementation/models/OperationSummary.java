@@ -5,66 +5,63 @@
 package com.azure.ai.formrecognizer.documentanalysis.implementation.models;
 
 import com.azure.core.annotation.Immutable;
-import com.fasterxml.jackson.annotation.JsonCreator;
-import com.fasterxml.jackson.annotation.JsonProperty;
+import com.azure.json.JsonReader;
+import com.azure.json.JsonSerializable;
+import com.azure.json.JsonToken;
+import com.azure.json.JsonWriter;
+import java.io.IOException;
 import java.time.OffsetDateTime;
+import java.util.ArrayList;
+import java.util.List;
 import java.util.Map;
+import java.util.Objects;
 
 /** Operation info. */
 @Immutable
-public final class OperationSummary {
+public final class OperationSummary implements JsonSerializable<OperationSummary> {
     /*
      * Operation ID
      */
-    @JsonProperty(value = "operationId", required = true)
-    private String operationId;
+    private final String operationId;
 
     /*
      * Operation status.
      */
-    @JsonProperty(value = "status", required = true)
-    private OperationStatus status;
+    private final OperationStatus status;
 
     /*
      * Operation progress (0-100).
      */
-    @JsonProperty(value = "percentCompleted")
     private Integer percentCompleted;
 
     /*
      * Date and time (UTC) when the operation was created.
      */
-    @JsonProperty(value = "createdDateTime", required = true)
-    private OffsetDateTime createdDateTime;
+    private final OffsetDateTime createdDateTime;
 
     /*
      * Date and time (UTC) when the status was last updated.
      */
-    @JsonProperty(value = "lastUpdatedDateTime", required = true)
-    private OffsetDateTime lastUpdatedDateTime;
+    private final OffsetDateTime lastUpdatedDateTime;
 
     /*
      * Type of operation.
      */
-    @JsonProperty(value = "kind", required = true)
-    private OperationKind kind;
+    private final OperationKind kind;
 
     /*
      * URL of the resource targeted by this operation.
      */
-    @JsonProperty(value = "resourceLocation", required = true)
-    private String resourceLocation;
+    private final String resourceLocation;
 
     /*
      * API version used to create this operation.
      */
-    @JsonProperty(value = "apiVersion")
     private String apiVersion;
 
     /*
      * List of key-value tag attributes associated with the document model.
      */
-    @JsonProperty(value = "tags")
     private Map<String, String> tags;
 
     /**
@@ -77,14 +74,13 @@ public final class OperationSummary {
      * @param kind the kind value to set.
      * @param resourceLocation the resourceLocation value to set.
      */
-    @JsonCreator
     private OperationSummary(
-            @JsonProperty(value = "operationId", required = true) String operationId,
-            @JsonProperty(value = "status", required = true) OperationStatus status,
-            @JsonProperty(value = "createdDateTime", required = true) OffsetDateTime createdDateTime,
-            @JsonProperty(value = "lastUpdatedDateTime", required = true) OffsetDateTime lastUpdatedDateTime,
-            @JsonProperty(value = "kind", required = true) OperationKind kind,
-            @JsonProperty(value = "resourceLocation", required = true) String resourceLocation) {
+            String operationId,
+            OperationStatus status,
+            OffsetDateTime createdDateTime,
+            OffsetDateTime lastUpdatedDateTime,
+            OperationKind kind,
+            String resourceLocation) {
         this.operationId = operationId;
         this.status = status;
         this.createdDateTime = createdDateTime;
@@ -172,5 +168,128 @@ public final class OperationSummary {
      */
     public Map<String, String> getTags() {
         return this.tags;
+    }
+
+    @Override
+    public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
+        jsonWriter.writeStartObject();
+        jsonWriter.writeStringField("operationId", this.operationId);
+        jsonWriter.writeStringField("status", Objects.toString(this.status, null));
+        jsonWriter.writeStringField("createdDateTime", Objects.toString(this.createdDateTime, null));
+        jsonWriter.writeStringField("lastUpdatedDateTime", Objects.toString(this.lastUpdatedDateTime, null));
+        jsonWriter.writeStringField("kind", Objects.toString(this.kind, null));
+        jsonWriter.writeStringField("resourceLocation", this.resourceLocation);
+        jsonWriter.writeNumberField("percentCompleted", this.percentCompleted);
+        jsonWriter.writeStringField("apiVersion", this.apiVersion);
+        jsonWriter.writeMapField("tags", this.tags, (writer, element) -> writer.writeString(element));
+        return jsonWriter.writeEndObject();
+    }
+
+    /**
+     * Reads an instance of OperationSummary from the JsonReader.
+     *
+     * @param jsonReader The JsonReader being read.
+     * @return An instance of OperationSummary if the JsonReader was pointing to an instance of it, or null if it was
+     *     pointing to JSON null.
+     * @throws IllegalStateException If the deserialized JSON object was missing any required properties.
+     * @throws IOException If an error occurs while reading the OperationSummary.
+     */
+    public static OperationSummary fromJson(JsonReader jsonReader) throws IOException {
+        return jsonReader.readObject(
+                reader -> {
+                    boolean operationIdFound = false;
+                    String operationId = null;
+                    boolean statusFound = false;
+                    OperationStatus status = null;
+                    boolean createdDateTimeFound = false;
+                    OffsetDateTime createdDateTime = null;
+                    boolean lastUpdatedDateTimeFound = false;
+                    OffsetDateTime lastUpdatedDateTime = null;
+                    boolean kindFound = false;
+                    OperationKind kind = null;
+                    boolean resourceLocationFound = false;
+                    String resourceLocation = null;
+                    Integer percentCompleted = null;
+                    String apiVersion = null;
+                    Map<String, String> tags = null;
+                    while (reader.nextToken() != JsonToken.END_OBJECT) {
+                        String fieldName = reader.getFieldName();
+                        reader.nextToken();
+
+                        if ("operationId".equals(fieldName)) {
+                            operationId = reader.getString();
+                            operationIdFound = true;
+                        } else if ("status".equals(fieldName)) {
+                            status = OperationStatus.fromString(reader.getString());
+                            statusFound = true;
+                        } else if ("createdDateTime".equals(fieldName)) {
+                            createdDateTime =
+                                    reader.getNullable(
+                                            nonNullReader -> OffsetDateTime.parse(nonNullReader.getString()));
+                            createdDateTimeFound = true;
+                        } else if ("lastUpdatedDateTime".equals(fieldName)) {
+                            lastUpdatedDateTime =
+                                    reader.getNullable(
+                                            nonNullReader -> OffsetDateTime.parse(nonNullReader.getString()));
+                            lastUpdatedDateTimeFound = true;
+                        } else if ("kind".equals(fieldName)) {
+                            kind = OperationKind.fromString(reader.getString());
+                            kindFound = true;
+                        } else if ("resourceLocation".equals(fieldName)) {
+                            resourceLocation = reader.getString();
+                            resourceLocationFound = true;
+                        } else if ("percentCompleted".equals(fieldName)) {
+                            percentCompleted = reader.getNullable(JsonReader::getInt);
+                        } else if ("apiVersion".equals(fieldName)) {
+                            apiVersion = reader.getString();
+                        } else if ("tags".equals(fieldName)) {
+                            tags = reader.readMap(reader1 -> reader1.getString());
+                        } else {
+                            reader.skipChildren();
+                        }
+                    }
+                    if (operationIdFound
+                            && statusFound
+                            && createdDateTimeFound
+                            && lastUpdatedDateTimeFound
+                            && kindFound
+                            && resourceLocationFound) {
+                        OperationSummary deserializedOperationSummary =
+                                new OperationSummary(
+                                        operationId,
+                                        status,
+                                        createdDateTime,
+                                        lastUpdatedDateTime,
+                                        kind,
+                                        resourceLocation);
+                        deserializedOperationSummary.percentCompleted = percentCompleted;
+                        deserializedOperationSummary.apiVersion = apiVersion;
+                        deserializedOperationSummary.tags = tags;
+
+                        return deserializedOperationSummary;
+                    }
+                    List<String> missingProperties = new ArrayList<>();
+                    if (!operationIdFound) {
+                        missingProperties.add("operationId");
+                    }
+                    if (!statusFound) {
+                        missingProperties.add("status");
+                    }
+                    if (!createdDateTimeFound) {
+                        missingProperties.add("createdDateTime");
+                    }
+                    if (!lastUpdatedDateTimeFound) {
+                        missingProperties.add("lastUpdatedDateTime");
+                    }
+                    if (!kindFound) {
+                        missingProperties.add("kind");
+                    }
+                    if (!resourceLocationFound) {
+                        missingProperties.add("resourceLocation");
+                    }
+
+                    throw new IllegalStateException(
+                            "Missing required property/properties: " + String.join(", ", missingProperties));
+                });
     }
 }
