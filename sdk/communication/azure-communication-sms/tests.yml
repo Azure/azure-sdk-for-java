@@ -5,4 +5,4 @@ stages:
     parameters:
       PackageName: azure-communication-sms
       SafeName: azurecommunicationsms
-      Clouds: 'Public'
+      Clouds: 'Public,Int'
