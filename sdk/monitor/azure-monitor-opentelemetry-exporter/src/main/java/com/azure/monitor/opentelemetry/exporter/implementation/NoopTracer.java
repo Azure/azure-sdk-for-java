@@ -8,7 +8,7 @@ import com.azure.core.util.tracing.Tracer;
 
 import java.util.Objects;
 
-public class NoopTracer implements Tracer {
+public final class NoopTracer implements Tracer {
 
     static final AutoCloseable NOOP_CLOSEABLE = () -> {
     };
