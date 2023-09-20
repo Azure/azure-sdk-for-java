@@ -276,10 +276,12 @@ public class ChangeFeedProcessorBuilder {
      *
      * <!-- src_embed com.azure.cosmos.allVersionsAndDeletesChangeFeedProcessor.handleChanges -->
      * <pre>
-     * .handleAllVersionsAndDeletesChanges&#40;docs -&gt; &#123;
+     * .handleAllVersionsAndDeletesChanges&#40;&#40;docs, context&#41; -&gt; &#123;
      *     for &#40;ChangeFeedProcessorItem item : docs&#41; &#123;
      *         &#47;&#47; Implementation for handling and processing of each ChangeFeedProcessorItem item goes here
      *     &#125;
+     *     String leaseToken = context.getLeaseToken();
+     *     &#47;&#47; Handling of the lease token corresponding to a batch of change feed processor item goes here
      * &#125;&#41;
      * </pre>
      * <!-- end com.azure.cosmos.allVersionsAndDeletesChangeFeedProcessor.handleChanges -->

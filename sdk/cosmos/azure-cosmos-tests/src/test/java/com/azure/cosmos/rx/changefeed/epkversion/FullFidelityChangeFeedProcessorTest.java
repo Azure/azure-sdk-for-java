@@ -904,7 +904,7 @@ public class FullFidelityChangeFeedProcessorTest extends TestSuiteBase {
         };
     }
 
-    private BiConsumer<List<ChangeFeedProcessorItem>, ChangeFeedProcessorContext<ChangeFeedProcessorItem>> changeFeedProcessorHandlerWithContext(
+    private BiConsumer<List<ChangeFeedProcessorItem>, ChangeFeedProcessorContext> changeFeedProcessorHandlerWithContext(
         Map<String, ChangeFeedProcessorItem> receivedDocuments) {
         return (docs, context) -> {
             logger.info("START processing from thread in test {}", Thread.currentThread().getId());
@@ -945,7 +945,7 @@ public class FullFidelityChangeFeedProcessorTest extends TestSuiteBase {
         }
     }
 
-    <T> void validateChangeFeedProcessorContext(ChangeFeedProcessorContext<T> changeFeedProcessorContext) {
+    void validateChangeFeedProcessorContext(ChangeFeedProcessorContext changeFeedProcessorContext) {
 
         String leaseToken = changeFeedProcessorContext.getLeaseToken();
 
