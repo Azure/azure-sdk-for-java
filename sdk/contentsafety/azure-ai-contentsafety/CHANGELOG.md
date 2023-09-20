@@ -1,6 +1,6 @@
 # Release History
 
-## 1.0.0-beta.1 (Unreleased)
+## 1.0.0-beta.1 (2023-09-28)
 
 - Azure AI ContentSafety client library for Java. This package contains Microsoft Azure ContentSafety client library.
 
