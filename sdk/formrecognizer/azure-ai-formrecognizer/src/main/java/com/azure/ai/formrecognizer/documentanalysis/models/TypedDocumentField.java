@@ -3,20 +3,26 @@
 
 package com.azure.ai.formrecognizer.documentanalysis.models;
 
+import com.azure.ai.formrecognizer.documentanalysis.implementation.util.BoundingRegionHelper;
 import com.azure.ai.formrecognizer.documentanalysis.implementation.util.DocumentSpanHelper;
 import com.azure.ai.formrecognizer.documentanalysis.implementation.util.TypedDocumentFieldHelper;
 import com.azure.json.JsonReader;
+import com.azure.json.JsonSerializable;
 import com.azure.json.JsonToken;
+import com.azure.json.JsonWriter;
 
 import java.io.IOException;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Objects;
+
+import static com.azure.ai.formrecognizer.documentanalysis.implementation.util.Transforms.toPolygonPoints;
 
 /**
  * Strongly typed version of {@link DocumentField}
  * @param <T> the type of value.
  */
-public class TypedDocumentField<T> {
+public class TypedDocumentField<T> implements JsonSerializable<TypedDocumentField<T>>  {
     private T value;
     private DocumentFieldType type;
     private String content;
@@ -180,7 +186,18 @@ public class TypedDocumentField<T> {
             });
     }
 
-    private static DocumentSpan documentSpanFromJson(JsonReader jsonReader) {
+    @Override
+    public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
+        jsonWriter.writeStartObject();
+        jsonWriter.writeStringField("type", Objects.toString(this.type, null));
+        jsonWriter.writeStringField("content", this.content);
+        jsonWriter.writeArrayField("spans", this.spans, JsonWriter::writeJson);
+        jsonWriter.writeArrayField("boundingRegions", this.boundingRegions, JsonWriter::writeJson);
+        jsonWriter.writeFloatField("confidence", this.confidence);
+        return jsonWriter.writeEndObject();
+    }
+
+    private static DocumentSpan documentSpanFromJson(JsonReader jsonReader) throws IOException {
         return jsonReader.readObject(
             reader -> {
                 boolean offsetFound = false;
@@ -202,10 +219,11 @@ public class TypedDocumentField<T> {
                     }
                 }
                 if (offsetFound && lengthFound) {
-                    DocumentSpan
-                        deserializedDocumentSpan = new DocumentSpanHelper.DocumentSpanAccessor()offset, length);
+                    DocumentSpan documentSpan = new DocumentSpan();
+                    DocumentSpanHelper.setLength(documentSpan, length);
+                    DocumentSpanHelper.setOffset(documentSpan, offset);
 
-                    return deserializedDocumentSpan;
+                    return documentSpan;
                 }
                 List<String> missingProperties = new ArrayList<>();
                 if (!offsetFound) {
@@ -220,7 +238,7 @@ public class TypedDocumentField<T> {
             });
     }
 
-    public static BoundingRegion boundingRegionFromJson(JsonReader jsonReader) throws IOException {
+    private static BoundingRegion boundingRegionFromJson(JsonReader jsonReader) throws IOException {
         return jsonReader.readObject(
             reader -> {
                 boolean pageNumberFound = false;
@@ -242,10 +260,10 @@ public class TypedDocumentField<T> {
                     }
                 }
                 if (pageNumberFound && polygonFound) {
-                    com.azure.ai.formrecognizer.documentanalysis.implementation.models.BoundingRegion
-                        deserializedBoundingRegion = new com.azure.ai.formrecognizer.documentanalysis.models.BoundingRegion(pageNumber, polygon);
-
-                    return deserializedBoundingRegion;
+                    BoundingRegion boundingRegion = new BoundingRegion();
+                    BoundingRegionHelper.setBoundingPolygon(boundingRegion, toPolygonPoints(polygon));
+                    BoundingRegionHelper.setPageNumber(boundingRegion, pageNumber);
+                    return boundingRegion;
                 }
                 List<String> missingProperties = new ArrayList<>();
                 if (!pageNumberFound) {

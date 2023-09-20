@@ -5,12 +5,16 @@ package com.azure.ai.formrecognizer.documentanalysis.models;
 
 import com.azure.ai.formrecognizer.documentanalysis.implementation.util.DocumentSpanHelper;
 import com.azure.core.annotation.Immutable;
+import com.azure.json.JsonSerializable;
+import com.azure.json.JsonWriter;
+
+import java.io.IOException;
 
 /**
  * Contiguous region of the concatenated content property, specified as an offset and length.
  */
 @Immutable
-public final class DocumentSpan {
+public final class DocumentSpan implements JsonSerializable<DocumentSpan> {
     /**
      * Creates a DocumentSpan object.
      */
@@ -75,5 +79,13 @@ public final class DocumentSpan {
                 documentSpan.setLength(length);
             }
         });
+    }
+
+    @Override
+    public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
+        jsonWriter.writeStartObject();
+        jsonWriter.writeIntField("offset", this.offset);
+        jsonWriter.writeIntField("length", this.length);
+        return jsonWriter.writeEndObject();
     }
 }

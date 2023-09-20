@@ -654,7 +654,7 @@ public class Transforms {
         }
     }
 
-    private static List<Point> toPolygonPoints(List<Float> polygonValues) {
+    public static List<Point> toPolygonPoints(List<Float> polygonValues) {
         if (CoreUtils.isNullOrEmpty(polygonValues) || (polygonValues.size() % 2) != 0) {
             return null;
         }

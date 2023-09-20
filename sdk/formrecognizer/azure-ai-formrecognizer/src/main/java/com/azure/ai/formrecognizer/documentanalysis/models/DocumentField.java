@@ -6,12 +6,8 @@ package com.azure.ai.formrecognizer.documentanalysis.models;
 import com.azure.ai.formrecognizer.documentanalysis.implementation.util.DocumentFieldHelper;
 import com.azure.ai.formrecognizer.documentanalysis.implementation.util.TypedDocumentFieldHelper;
 import com.azure.core.annotation.Immutable;
-import com.azure.json.JsonReader;
-import com.azure.json.JsonWriter;
 import com.fasterxml.jackson.annotation.JsonIgnore;
-import com.fasterxml.jackson.core.JsonToken;
 
-import java.io.IOException;
 import java.time.LocalDate;
 import java.time.LocalTime;
 import java.util.List;
@@ -174,36 +170,6 @@ public final class DocumentField extends TypedDocumentField<Object> {
         return (Boolean) super.getValue();
     }
 
-    @Override
-    public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
-        jsonWriter.writeStartObject();
-        if (super.getValue() != null) {
-            jsonWriter.writeUntypedField(, additionalProperty.getValue());
-        }
-        return jsonWriter.writeEndObject();
-    }
-
-    /**
-     * Reads an instance of DocumentField from the JsonReader.
-     *
-     * @param jsonReader The JsonReader being read.
-     * @return An instance of IndexAction if the JsonReader was pointing to an instance of it, or null if it was
-     *     pointing to JSON null.
-     * @throws IOException If an error occurs while reading the IndexAction.
-     */
-    public static DocumentField fromJson(JsonReader jsonReader) throws IOException {
-        return jsonReader.readObject(
-            reader -> {
-                Map<String, Object> additionalProperties = null;
-                while (reader.nextToken() != JsonToken.END_OBJECT) {
-                    // get all attrs
-                }
-                DocumentField deserializedValue = new DocumentField();
-                deserializedValue.getValueAsString() = "";
-                return deserializedValue;
-            });
-    }
-
     static {
         DocumentFieldHelper.setAccessor(new TypedDocumentFieldHelper.TypedDocumentFieldAccessor() {
 
@@ -240,4 +206,5 @@ public final class DocumentField extends TypedDocumentField<Object> {
             }
         });
     }
+
 }
