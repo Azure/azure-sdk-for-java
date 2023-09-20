@@ -320,6 +320,14 @@ public class DataLakeTestBase extends TestProxyTestBase {
         return new DataLakeLeaseClientBuilder().fileAsyncClient(pathAsyncClient).leaseId(leaseId).buildAsyncClient();
     }
 
+    protected static DataLakeLeaseAsyncClient createLeaseAsyncClient(DataLakeDirectoryAsyncClient pathClient) {
+        return createLeaseAsyncClient(pathClient, null);
+    }
+
+    protected static DataLakeLeaseAsyncClient createLeaseAsyncClient(DataLakeDirectoryAsyncClient pathClient, String leaseId) {
+        return new DataLakeLeaseClientBuilder().directoryAsyncClient(pathClient).leaseId(leaseId).buildAsyncClient();
+    }
+
     protected static DataLakeLeaseClient createLeaseClient(DataLakeDirectoryClient pathClient) {
         return createLeaseClient(pathClient, null);
     }
@@ -421,6 +429,14 @@ public class DataLakeTestBase extends TestProxyTestBase {
         return instrument(builder)
             .sasToken(sasToken)
             .buildDirectoryClient();
+    }
+
+    protected DataLakeDirectoryAsyncClient getDirectoryAsyncClient(String sasToken, String endpoint, String pathName) {
+        DataLakePathClientBuilder builder = new DataLakePathClientBuilder().endpoint(endpoint).pathName(pathName);
+
+        return instrument(builder)
+            .sasToken(sasToken)
+            .buildDirectoryAsyncClient();
     }
 
     protected DataLakeFileSystemClient getFileSystemClient(String sasToken, String endpoint) {
@@ -527,7 +543,6 @@ public class DataLakeTestBase extends TestProxyTestBase {
     protected String setupPathLeaseCondition(DataLakePathClient pc, String leaseID) {
         String responseLeaseId = null;
 
-
         if (Objects.equals(RECEIVED_LEASE_ID, leaseID) || Objects.equals(GARBAGE_LEASE_ID, leaseID)) {
             responseLeaseId = (pc instanceof DataLakeFileClient)
                 ? createLeaseClient((DataLakeFileClient) pc).acquireLease(-1)
@@ -537,12 +552,13 @@ public class DataLakeTestBase extends TestProxyTestBase {
         return Objects.equals(RECEIVED_LEASE_ID, leaseID) ? responseLeaseId : leaseID;
     }
 
-    protected String setupPathLeaseCondition(DataLakeFileAsyncClient fac, String leaseID) {
+    protected String setupPathLeaseCondition(DataLakePathAsyncClient pc, String leaseID) {
         String responseLeaseId = null;
 
         if (Objects.equals(RECEIVED_LEASE_ID, leaseID) || Objects.equals(GARBAGE_LEASE_ID, leaseID)) {
-            responseLeaseId =
-                new DataLakeLeaseClientBuilder().fileAsyncClient(fac).buildAsyncClient().acquireLease(-1).block();
+            responseLeaseId = (pc instanceof DataLakeFileAsyncClient)
+                ? createLeaseAsyncClient((DataLakeFileAsyncClient) pc).acquireLease(-1).block()
+                : createLeaseAsyncClient((DataLakeDirectoryAsyncClient) pc).acquireLease(-1).block();
         }
 
         return Objects.equals(RECEIVED_LEASE_ID, leaseID) ? responseLeaseId : leaseID;
