@@ -129,7 +129,7 @@ public class IncrementalChangeFeedProcessorImpl implements ChangeFeedProcessor, 
         String hostName,
         CosmosAsyncContainer feedContainer,
         CosmosAsyncContainer leaseContainer,
-        BiConsumer<List<JsonNode>, ChangeFeedProcessorContext<JsonNode>> biConsumer,
+        BiConsumer<List<JsonNode>, ChangeFeedProcessorContext> biConsumer,
         ChangeFeedProcessorOptions changeFeedProcessorOptions) {
 
         checkNotNull(hostName, "Argument 'hostName' can not be null");

@@ -13,14 +13,14 @@ public class TestUtils {
 
     // todo: @abhmohanty - remove when handleLatestVersionChanges with biConsumer is made public
     public static ChangeFeedProcessorBuilder injectHandleLatestVersionChangesBiConsumerToChangeFeedProcessor(
-        ChangeFeedProcessorBuilder builder, BiConsumer<List<ChangeFeedProcessorItem>, ChangeFeedProcessorContext<ChangeFeedProcessorItem>> biConsumer) {
+        ChangeFeedProcessorBuilder builder, BiConsumer<List<ChangeFeedProcessorItem>, ChangeFeedProcessorContext> biConsumer) {
         builder = builder.handleLatestVersionChanges(biConsumer);
         return builder;
     }
 
     // todo: @abhmohanty - remove when handleChanges with biConsumer is made public
     public static ChangeFeedProcessorBuilder injectHandleChangesBiConsumerWithContext(
-        ChangeFeedProcessorBuilder builder, BiConsumer<List<JsonNode>, ChangeFeedProcessorContext<JsonNode>> biConsumer) {
+        ChangeFeedProcessorBuilder builder, BiConsumer<List<JsonNode>, ChangeFeedProcessorContext> biConsumer) {
         builder = builder.handleChanges(biConsumer);
         return builder;
     }

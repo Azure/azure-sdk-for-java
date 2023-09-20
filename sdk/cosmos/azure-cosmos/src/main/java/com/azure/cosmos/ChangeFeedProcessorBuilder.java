@@ -62,11 +62,11 @@ public class ChangeFeedProcessorBuilder {
     private CosmosAsyncContainer leaseContainer;
     private ChangeFeedProcessorOptions changeFeedProcessorOptions;
     private Consumer<List<JsonNode>> incrementalModeLeaseConsumerPkRangeIdVersion;
-    private BiConsumer<List<JsonNode>, ChangeFeedProcessorContext<JsonNode>> incrementalModeLeaseConsumerWithContextPkRangeIdVersion;
+    private BiConsumer<List<JsonNode>, ChangeFeedProcessorContext> incrementalModeLeaseConsumerWithContextPkRangeIdVersion;
     private Consumer<List<ChangeFeedProcessorItem>> incrementalModeLeaseConsumerEpkVersion;
-    private BiConsumer<List<ChangeFeedProcessorItem>, ChangeFeedProcessorContext<ChangeFeedProcessorItem>> incrementalModeLeaseConsumerWithContextEpkVersion;
+    private BiConsumer<List<ChangeFeedProcessorItem>, ChangeFeedProcessorContext> incrementalModeLeaseConsumerWithContextEpkVersion;
     private Consumer<List<ChangeFeedProcessorItem>> fullFidelityModeLeaseConsumer;
-    private BiConsumer<List<ChangeFeedProcessorItem>, ChangeFeedProcessorContext<ChangeFeedProcessorItem>> fullFidelityModeLeaseWithContextConsumer;
+    private BiConsumer<List<ChangeFeedProcessorItem>, ChangeFeedProcessorContext> fullFidelityModeLeaseWithContextConsumer;
     private ChangeFeedMode changeFeedMode = ChangeFeedMode.INCREMENTAL;
     private LeaseVersion leaseVersion = LeaseVersion.PARTITION_KEY_BASED_LEASE;
 
@@ -158,7 +158,7 @@ public class ChangeFeedProcessorBuilder {
      * @param biConsumer the {@link BiConsumer} to call for handling the feeds along with a {@link ChangeFeedProcessorContext} instance.
      * @return current Builder.
      */
-    ChangeFeedProcessorBuilder handleChanges(BiConsumer<List<JsonNode>, ChangeFeedProcessorContext<JsonNode>> biConsumer) {
+    ChangeFeedProcessorBuilder handleChanges(BiConsumer<List<JsonNode>, ChangeFeedProcessorContext> biConsumer) {
 
         checkArgument(
             this.incrementalModeLeaseConsumerEpkVersion == null,
@@ -224,7 +224,7 @@ public class ChangeFeedProcessorBuilder {
      * @return current Builder.
      */
     ChangeFeedProcessorBuilder handleLatestVersionChanges(
-        BiConsumer<List<ChangeFeedProcessorItem>, ChangeFeedProcessorContext<ChangeFeedProcessorItem>> biConsumer) {
+        BiConsumer<List<ChangeFeedProcessorItem>, ChangeFeedProcessorContext> biConsumer) {
 
         checkArgument(
             this.incrementalModeLeaseConsumerPkRangeIdVersion == null,
@@ -289,7 +289,7 @@ public class ChangeFeedProcessorBuilder {
      */
     @Beta(value = Beta.SinceVersion.V4_50_0, warningText = Beta.PREVIEW_SUBJECT_TO_CHANGE_WARNING)
     public ChangeFeedProcessorBuilder handleAllVersionsAndDeletesChanges(
-        BiConsumer<List<ChangeFeedProcessorItem>, ChangeFeedProcessorContext<ChangeFeedProcessorItem>> biConsumer) {
+        BiConsumer<List<ChangeFeedProcessorItem>, ChangeFeedProcessorContext> biConsumer) {
 
         checkNotNull(biConsumer, "biConsumer cannot be null");
         checkArgument(this.fullFidelityModeLeaseConsumer == null,

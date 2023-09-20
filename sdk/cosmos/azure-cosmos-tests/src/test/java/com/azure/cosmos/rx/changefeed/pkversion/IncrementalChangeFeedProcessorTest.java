@@ -1939,7 +1939,7 @@ public class IncrementalChangeFeedProcessorTest extends TestSuiteBase {
         };
     }
 
-    private BiConsumer<List<JsonNode>, ChangeFeedProcessorContext<JsonNode>> changeFeedProcessorHandlerWithContext(
+    private BiConsumer<List<JsonNode>, ChangeFeedProcessorContext> changeFeedProcessorHandlerWithContext(
         Map<String, JsonNode> receivedDocuments, Set<String> receivedLeaseTokens) {
         return (docs, context) -> {
             logger.info("START processing from thread in test {}", Thread.currentThread().getId());
@@ -2065,7 +2065,7 @@ public class IncrementalChangeFeedProcessorTest extends TestSuiteBase {
         receivedDocuments.put(item.get("id").asText(), item);
     }
 
-    <T> void validateChangeFeedProcessorContext(ChangeFeedProcessorContext<T> changeFeedProcessorContext) {
+    void validateChangeFeedProcessorContext(ChangeFeedProcessorContext changeFeedProcessorContext) {
 
         String leaseToken = changeFeedProcessorContext.getLeaseToken();
 
@@ -2073,7 +2073,7 @@ public class IncrementalChangeFeedProcessorTest extends TestSuiteBase {
     }
 
     private static synchronized void processChangeFeedProcessorContext(
-        ChangeFeedProcessorContext<JsonNode> context,
+        ChangeFeedProcessorContext context,
         Set<String> receivedLeaseTokens) {
 
         if (context == null) {

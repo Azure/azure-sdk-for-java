@@ -31,7 +31,7 @@ public class FullFidelityChangeFeedProcessorImpl extends ChangeFeedProcessorImpl
         String hostName,
         CosmosAsyncContainer feedContainer,
         CosmosAsyncContainer leaseContainer,
-        BiConsumer<List<ChangeFeedProcessorItem>, ChangeFeedProcessorContext<ChangeFeedProcessorItem>> biConsumer,
+        BiConsumer<List<ChangeFeedProcessorItem>, ChangeFeedProcessorContext> biConsumer,
         ChangeFeedProcessorOptions changeFeedProcessorOptions) {
 
         super(hostName, feedContainer, leaseContainer, changeFeedProcessorOptions, biConsumer, ChangeFeedMode.FULL_FIDELITY);
