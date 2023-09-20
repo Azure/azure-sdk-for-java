@@ -1,6 +1,6 @@
 package com.azure.communication.callautomation;
 
-import com.azure.communication.callautomation.implementation.models.DialogInputType;
+import com.azure.communication.callautomation.models.DialogInputType;
 import com.azure.communication.callautomation.models.*;
 import com.azure.communication.callautomation.models.events.CallConnected;
 import com.azure.communication.callautomation.models.events.DialogCompleted;

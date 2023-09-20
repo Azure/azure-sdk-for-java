@@ -1,6 +1,6 @@
 package com.azure.communication.callautomation;
 
-import com.azure.communication.callautomation.implementation.models.DialogInputType;
+import com.azure.communication.callautomation.models.DialogInputType;
 import com.azure.communication.callautomation.models.DialogStateResult;
 import com.azure.communication.callautomation.models.StartDialogOptions;
 import com.azure.core.http.rest.Response;

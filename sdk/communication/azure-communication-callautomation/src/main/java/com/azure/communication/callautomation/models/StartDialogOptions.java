@@ -1,7 +1,5 @@
 package com.azure.communication.callautomation.models;
 
-import com.azure.communication.callautomation.implementation.models.DialogInputType;
-
 import java.util.Map;
 
 public class StartDialogOptions {
