@@ -14,6 +14,8 @@ public interface ChangeFeedProcessorContext {
     /**
      * Gets the lease token corresponding to the source of
      * a batch of change feed documents.
+     *
+     * @return the lease token
      * */
     String getLeaseToken();
 }
