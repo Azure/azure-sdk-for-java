@@ -110,7 +110,7 @@ public abstract class ChangeFeedProcessorImplBase<T> implements ChangeFeedProces
                                        CosmosAsyncContainer feedContainer,
                                        CosmosAsyncContainer leaseContainer,
                                        ChangeFeedProcessorOptions changeFeedProcessorOptions,
-                                       BiConsumer<List<T>, ChangeFeedProcessorContext<T>> biConsumer,
+                                       BiConsumer<List<T>, ChangeFeedProcessorContext> biConsumer,
                                        ChangeFeedMode changeFeedMode) {
         checkNotNull(hostName, "Argument 'hostName' can not be null");
         checkNotNull(feedContainer, "Argument 'feedContainer' can not be null");
