@@ -97,21 +97,25 @@ public class RoomsClientTest extends RoomsTestBase {
 
         CreateRoomOptions createRoomOptions = new CreateRoomOptions()
                 .setValidFrom(VALID_FROM)
-                .setValidUntil(VALID_UNTIL);
+                .setValidUntil(VALID_UNTIL)
+                .setPstnDialOutEnabled(true);
 
         Response<CommunicationRoom> createdRoomResponse = roomsClient.createRoomWithResponse(createRoomOptions,
                 null);
         assertHappyPath(createdRoomResponse, 201);
+        assertEquals(true, createdRoomResponse.getValue().isPstnDialOutEnabled());
 
         String roomId = createdRoomResponse.getValue().getRoomId();
 
         UpdateRoomOptions updateRoomOptions = new UpdateRoomOptions()
                 .setValidFrom(VALID_FROM)
-                .setValidUntil(VALID_FROM.plusMonths(4));
+                .setValidUntil(VALID_FROM.plusMonths(4))
+                .setPstnDialOutEnabled(false);
 
         Response<CommunicationRoom> updateRoomResponse = roomsClient.updateRoomWithResponse(roomId, updateRoomOptions,
                 null);
         assertHappyPath(updateRoomResponse, 200);
+        assertEquals(false, updateRoomResponse.getValue().isPstnDialOutEnabled());
 
         Response<CommunicationRoom> getRoomResponse = roomsClient.getRoomWithResponse(roomId, null);
         assertHappyPath(getRoomResponse, 200);
@@ -248,11 +252,13 @@ public class RoomsClientTest extends RoomsTestBase {
         CreateRoomOptions createRoomOptions = new CreateRoomOptions()
                 .setValidFrom(VALID_FROM)
                 .setValidUntil(VALID_UNTIL)
-                .setParticipants(participants);
+                .setParticipants(participants)
+                .setPstnDialOutEnabled(true);
 
         Response<CommunicationRoom> createCommunicationRoom = roomsClient.createRoomWithResponse(createRoomOptions,
                 Context.NONE);
         assertHappyPath(createCommunicationRoom, 201);
+        assertEquals(true, createCommunicationRoom.getValue().isPstnDialOutEnabled());
 
         String roomId = createCommunicationRoom.getValue().getRoomId();
 
@@ -332,16 +338,19 @@ public class RoomsClientTest extends RoomsTestBase {
         Response<CommunicationRoom> createdRoomResponse = roomsClient.createRoomWithResponse(createRoomOptions,
                 Context.NONE);
         assertHappyPath(createdRoomResponse, 201);
+        assertEquals(false, createdRoomResponse.getValue().isPstnDialOutEnabled());
 
         String roomId = createdRoomResponse.getValue().getRoomId();
 
         UpdateRoomOptions updateRoomOptions = new UpdateRoomOptions()
                 .setValidFrom(VALID_FROM)
-                .setValidUntil(VALID_UNTIL);
+                .setValidUntil(VALID_UNTIL)
+                .setPstnDialOutEnabled(true);
 
         Response<CommunicationRoom> updateRoomResponse = roomsClient.updateRoomWithResponse(roomId, updateRoomOptions,
                 Context.NONE);
         assertHappyPath(updateRoomResponse, 200);
+        assertEquals(true, updateRoomResponse.getValue().isPstnDialOutEnabled());
 
         Response<Void> deleteResponse = roomsClient.deleteRoomWithResponse(roomId, Context.NONE);
         assertEquals(deleteResponse.getStatusCode(), 204);
@@ -404,6 +413,23 @@ public class RoomsClientTest extends RoomsTestBase {
         CommunicationRoom createCommunicationRoom = roomsClient
                 .createRoom(new CreateRoomOptions().setValidFrom(VALID_FROM));
         assertHappyPath(createCommunicationRoom);
+
+        String roomId = createCommunicationRoom.getRoomId();
+
+        Response<Void> deleteResponse = roomsClient.deleteRoomWithResponse(roomId, Context.NONE);
+        assertEquals(deleteResponse.getStatusCode(), 204);
+    }
+
+    @ParameterizedTest
+    @MethodSource("com.azure.core.test.TestBase#getHttpClients")
+    public void createRoomSyncOnlyPstnEnabled(HttpClient httpClient) {
+        roomsClient = setupSyncClient(httpClient, "createRoomSyncOnlyValidFrom");
+        assertNotNull(roomsClient);
+
+        CommunicationRoom createCommunicationRoom = roomsClient
+                .createRoom(new CreateRoomOptions().setPstnDialOutEnabled(true));
+        assertHappyPath(createCommunicationRoom);
+        assertEquals(createCommunicationRoom.isPstnDialOutEnabled(), true);
 
         String roomId = createCommunicationRoom.getRoomId();
 

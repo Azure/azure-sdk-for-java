@@ -154,8 +154,8 @@ public final class RoomsAsyncClient {
         try {
             return this.roomsClient
                     .updateWithResponseAsync(roomId,
-                            toUpdateRoomRequest(updateRoomOptions.getValidFrom(), updateRoomOptions.getValidUntil()),
-                            context)
+                            toUpdateRoomRequest(updateRoomOptions.getValidFrom(), updateRoomOptions.getValidUntil(),
+                            updateRoomOptions.isPstnDialOutEnabled()), context)
                     .flatMap((Response<RoomModel> response) -> {
                         return Mono.just(getCommunicationRoomFromResponse(response.getValue()));
                     });
@@ -183,8 +183,8 @@ public final class RoomsAsyncClient {
         try {
             return this.roomsClient
                     .updateWithResponseAsync(roomId,
-                            toUpdateRoomRequest(updateRoomOptions.getValidFrom(), updateRoomOptions.getValidUntil()),
-                            context)
+                            toUpdateRoomRequest(updateRoomOptions.getValidFrom(), updateRoomOptions.getValidUntil(),
+                            updateRoomOptions.isPstnDialOutEnabled()), context)
                     .flatMap((Response<RoomModel> response) -> {
                         CommunicationRoom communicationRoom = getCommunicationRoomFromResponse(response.getValue());
                         return Mono.just(new SimpleResponse<CommunicationRoom>(response, communicationRoom));
@@ -571,7 +571,7 @@ public final class RoomsAsyncClient {
      *
      * @return The update room request.
      */
-    private UpdateRoomRequest toUpdateRoomRequest(OffsetDateTime validFrom, OffsetDateTime validUntil) {
+    private UpdateRoomRequest toUpdateRoomRequest(OffsetDateTime validFrom, OffsetDateTime validUntil, boolean isPstnDialOutEnabled) {
         UpdateRoomRequest updateRoomRequest = new UpdateRoomRequest();
 
         if (validFrom != null) {
@@ -581,6 +581,8 @@ public final class RoomsAsyncClient {
         if (validUntil != null) {
             updateRoomRequest.setValidUntil(validUntil);
         }
+
+        updateRoomRequest.setPstnDialOutEnabled(isPstnDialOutEnabled);
 
         return updateRoomRequest;
     }
