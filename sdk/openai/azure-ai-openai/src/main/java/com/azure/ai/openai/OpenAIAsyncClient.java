@@ -913,6 +913,7 @@ public final class OpenAIAsyncClient {
      *     (when using non-Azure OpenAI) to use for this request.
      * @param fileName The file name that is represented in the {@code file} field of {@link AudioTranslationOptions}
      * @param audioTranslationOptions The configuration information for an audio translation request.
+     * @param requestOptions The options to configure the HTTP request before HTTP client sends it.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws HttpResponseException thrown if the request is rejected by server.
      * @throws ClientAuthenticationException thrown if the request is rejected by server on status code 401.
@@ -987,6 +988,7 @@ public final class OpenAIAsyncClient {
      *     (when using non-Azure OpenAI) to use for this request.
      * @param fileName The file name that is represented in the {@code file} field of {@link AudioTranslationOptions}.
      * @param audioTranslationOptions The configuration information for an audio translation request.
+     * @param requestOptions The options to configure the HTTP request before HTTP client sends it.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws HttpResponseException thrown if the request is rejected by server.
      * @throws ClientAuthenticationException thrown if the request is rejected by server on status code 401.
