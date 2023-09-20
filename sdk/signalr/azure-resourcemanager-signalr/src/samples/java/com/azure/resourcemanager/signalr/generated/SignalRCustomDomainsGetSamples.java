@@ -7,7 +7,7 @@ package com.azure.resourcemanager.signalr.generated;
 /** Samples for SignalRCustomDomains Get. */
 public final class SignalRCustomDomainsGetSamples {
     /*
-     * x-ms-original-file: specification/signalr/resource-manager/Microsoft.SignalRService/stable/2023-02-01/examples/SignalRCustomDomains_Get.json
+     * x-ms-original-file: specification/signalr/resource-manager/Microsoft.SignalRService/preview/2023-06-01-preview/examples/SignalRCustomDomains_Get.json
      */
     /**
      * Sample code: SignalRCustomDomains_Get.

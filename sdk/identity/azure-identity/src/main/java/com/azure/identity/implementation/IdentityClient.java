@@ -1173,6 +1173,18 @@ public class IdentityClient extends IdentityClientBase {
                                 "ManagedIdentityCredential authentication unavailable. "
                                     + "Connection to IMDS endpoint cannot be established.", null));
                     }
+
+                    if (responseCode == 403) {
+                        if (connection.getResponseMessage()
+                            .contains("A socket operation was attempted to an unreachable network")) {
+                            throw LoggingUtil.logCredentialUnavailableException(LOGGER, options,
+                                new CredentialUnavailableException(
+                                    "Managed Identity response was not in the expected format."
+                                        + " See the inner exception for details.",
+                                    new Exception(connection.getResponseMessage())));
+                        }
+                    }
+
                     if (responseCode == 410
                             || responseCode == 429
                             || responseCode == 404

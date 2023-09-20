@@ -27,6 +27,8 @@ import static org.junit.jupiter.api.Assertions.assertNotNull;
  * EventGrid cloud native cloud event tests.
  */
 public class EventGridCloudNativeEventPublisherTests extends TestBase {
+    private static final Duration DEFAULT_TIMEOUT = Duration.ofSeconds(30);
+
     // Event Grid endpoint for a topic accepting CloudEvents schema events
     private static final String CLOUD_ENDPOINT = "AZURE_EVENTGRID_CLOUDEVENT_ENDPOINT";
     // Event Grid access key for a topic accepting CloudEvents schema events
@@ -39,9 +41,6 @@ public class EventGridCloudNativeEventPublisherTests extends TestBase {
 
     @Override
     protected void beforeTest() {
-
-        StepVerifier.setDefaultTimeout(Duration.ofSeconds(30));
-
         builder = new EventGridPublisherClientBuilder();
 
         if (interceptorManager.isPlaybackMode()) {
@@ -52,11 +51,6 @@ public class EventGridCloudNativeEventPublisherTests extends TestBase {
         }
 
         builder.endpoint(getEndpoint(CLOUD_ENDPOINT)).credential(getKey(CLOUD_KEY));
-    }
-
-    @Override
-    protected void afterTest() {
-        StepVerifier.resetDefaultTimeout();
     }
 
     @Test
@@ -79,9 +73,11 @@ public class EventGridCloudNativeEventPublisherTests extends TestBase {
 
         // Async publishing
         StepVerifier.create(EventGridCloudNativeEventPublisher.sendEventAsync(egClientAsync, cloudEvent))
-            .verifyComplete();
+            .expectComplete()
+            .verify(DEFAULT_TIMEOUT);
         StepVerifier.create(EventGridCloudNativeEventPublisher.sendEventsAsync(egClientAsync, cloudEvents))
-            .verifyComplete();
+            .expectComplete()
+            .verify(DEFAULT_TIMEOUT);
 
         // Sync publishing
         EventGridCloudNativeEventPublisher.sendEvent(egClient, cloudEvent);
@@ -119,9 +115,11 @@ public class EventGridCloudNativeEventPublisherTests extends TestBase {
 
         // Async publishing
         StepVerifier.create(EventGridCloudNativeEventPublisher.sendEventAsync(egClientAsync, cloudEvent))
-            .verifyComplete();
+            .expectComplete()
+            .verify(DEFAULT_TIMEOUT);
         StepVerifier.create(EventGridCloudNativeEventPublisher.sendEventsAsync(egClientAsync, cloudEvents))
-            .verifyComplete();
+            .expectComplete()
+            .verify(DEFAULT_TIMEOUT);
 
         // Sync publishing
         EventGridCloudNativeEventPublisher.sendEvent(egClient, cloudEvent);
@@ -147,9 +145,11 @@ public class EventGridCloudNativeEventPublisherTests extends TestBase {
 
         // Async publishing
         StepVerifier.create(EventGridCloudNativeEventPublisher.sendEventAsync(egClientAsync, cloudEvent))
-            .verifyComplete();
+            .expectComplete()
+            .verify(DEFAULT_TIMEOUT);
         StepVerifier.create(EventGridCloudNativeEventPublisher.sendEventsAsync(egClientAsync, cloudEvents))
-            .verifyComplete();
+            .expectComplete()
+            .verify(DEFAULT_TIMEOUT);
 
         // Sync publishing
         EventGridCloudNativeEventPublisher.sendEvent(egClient, cloudEvent);

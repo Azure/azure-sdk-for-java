@@ -61,7 +61,6 @@ public final class KeyClientJavaDocCodeSnippets {
         KeyClient keyClient = createClient();
         // BEGIN: com.azure.security.keyvault.keys.KeyClient.createKey#String-KeyType
         KeyVaultKey key = keyClient.createKey("keyName", KeyType.EC);
-
         System.out.printf("Created key with name: %s and id: %s%n", key.getName(), key.getId());
         // END: com.azure.security.keyvault.keys.KeyClient.createKey#String-KeyType
 

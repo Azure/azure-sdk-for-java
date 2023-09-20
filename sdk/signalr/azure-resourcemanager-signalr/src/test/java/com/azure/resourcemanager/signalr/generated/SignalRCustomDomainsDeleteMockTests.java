@@ -56,6 +56,6 @@ public final class SignalRCustomDomainsDeleteMockTests {
                     tokenRequestContext -> Mono.just(new AccessToken("this_is_a_token", OffsetDateTime.MAX)),
                     new AzureProfile("", "", AzureEnvironment.AZURE));
 
-        manager.signalRCustomDomains().delete("ughftqsx", "qxujxukndxd", "grjguufzd", com.azure.core.util.Context.NONE);
+        manager.signalRCustomDomains().delete("aimmoiroqb", "shbraga", "yyrmfsvbp", com.azure.core.util.Context.NONE);
     }
 }
