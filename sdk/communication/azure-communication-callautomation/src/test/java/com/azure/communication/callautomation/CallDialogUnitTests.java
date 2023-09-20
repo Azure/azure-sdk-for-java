@@ -7,10 +7,7 @@ import com.azure.core.http.rest.Response;
 import com.azure.core.util.Context;
 import org.junit.jupiter.api.Test;
 
-import java.util.AbstractMap;
-import java.util.ArrayList;
-import java.util.Collections;
-import java.util.Map;
+import java.util.*;
 
 import static com.azure.communication.callautomation.CallAutomationUnitTestBase.*;
 import static org.junit.jupiter.api.Assertions.assertEquals;
@@ -29,11 +26,12 @@ public class CallDialogUnitTests {
             );
         callDialog = callConnection.getCallDialog();
 
+        Map<String, Object> dialogContext = new HashMap<>();
         StartDialogOptions options = new StartDialogOptions(
             BOT_APP_ID,
             DIALOG_ID,
             DialogInputType.POWER_VIRTUAL_AGENTS,
-            Map.of());
+            dialogContext);
 
         Response<DialogStateResult> response = callDialog.startDialogWithResponse(
             options,
