@@ -31,9 +31,9 @@ public final class IotHubResourcesListJobsMockTests {
         ArgumentCaptor<HttpRequest> httpRequest = ArgumentCaptor.forClass(HttpRequest.class);
 
         String responseStr =
-            "{\"value\":[{\"jobId\":\"dsnfdsdoakgtdl\",\"startTimeUtc\":\"Sat, 23 Oct 2021 18:05:06"
-                + " GMT\",\"endTimeUtc\":\"Mon, 21 Jun 2021 09:18:55"
-                + " GMT\",\"type\":\"writeDeviceProperties\",\"status\":\"enqueued\",\"failureReason\":\"wpusdsttwvogv\",\"statusMessage\":\"ejdcngqqmoakuf\",\"parentJobId\":\"jzrwrdgrtw\"}]}";
+            "{\"value\":[{\"jobId\":\"cmrvexzt\",\"startTimeUtc\":\"Sun, 06 Jun 2021 12:33:17"
+                + " GMT\",\"endTimeUtc\":\"Fri, 01 Jan 2021 05:45:24"
+                + " GMT\",\"type\":\"unknown\",\"status\":\"completed\",\"failureReason\":\"yzkoowtlmngu\",\"statusMessage\":\"wqaldsyu\",\"parentJobId\":\"imerqfobwyznk\"}]}";
 
         Mockito.when(httpResponse.getStatusCode()).thenReturn(200);
         Mockito.when(httpResponse.getHeaders()).thenReturn(new HttpHeaders());
@@ -62,6 +62,6 @@ public final class IotHubResourcesListJobsMockTests {
                     new AzureProfile("", "", AzureEnvironment.AZURE));
 
         PagedIterable<JobResponse> response =
-            manager.iotHubResources().listJobs("znkbykutwpfhpagm", "r", com.azure.core.util.Context.NONE);
+            manager.iotHubResources().listJobs("zxkhnzbonlwnto", "gokdwbwhks", com.azure.core.util.Context.NONE);
     }
 }

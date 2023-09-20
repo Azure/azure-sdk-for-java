@@ -31,7 +31,7 @@ public final class ResourceProviderCommonsGetSubscriptionQuotaWithResponseMockTe
         ArgumentCaptor<HttpRequest> httpRequest = ArgumentCaptor.forClass(HttpRequest.class);
 
         String responseStr =
-            "{\"value\":[{\"id\":\"lvrwxkvtkk\",\"type\":\"lqwjygvjayvblm\",\"unit\":\"k\",\"currentValue\":2100624724,\"limit\":919724990}],\"nextLink\":\"yhgsopbyrqufe\"}";
+            "{\"value\":[{\"id\":\"m\",\"type\":\"elfk\",\"unit\":\"plcrpwjxeznoig\",\"currentValue\":1629929143,\"limit\":78326163,\"name\":{\"value\":\"kpnb\",\"localizedValue\":\"zejjoqk\"}},{\"id\":\"fhsxttaugz\",\"type\":\"faazpxdtnkdmkqjj\",\"unit\":\"uenvrkp\",\"currentValue\":1149694160,\"limit\":1074259109,\"name\":{\"value\":\"ebqaaysjkixqtnq\",\"localizedValue\":\"ezl\"}},{\"id\":\"ffiakp\",\"type\":\"qqmtedltmmji\",\"unit\":\"eozphv\",\"currentValue\":1760801565,\"limit\":404997188,\"name\":{\"value\":\"ygupkv\",\"localizedValue\":\"mdscwxqupev\"}}],\"nextLink\":\"f\"}";
 
         Mockito.when(httpResponse.getStatusCode()).thenReturn(200);
         Mockito.when(httpResponse.getHeaders()).thenReturn(new HttpHeaders());
@@ -65,10 +65,12 @@ public final class ResourceProviderCommonsGetSubscriptionQuotaWithResponseMockTe
                 .getSubscriptionQuotaWithResponse(com.azure.core.util.Context.NONE)
                 .getValue();
 
-        Assertions.assertEquals("lvrwxkvtkk", response.value().get(0).id());
-        Assertions.assertEquals("lqwjygvjayvblm", response.value().get(0).type());
-        Assertions.assertEquals("k", response.value().get(0).unit());
-        Assertions.assertEquals(2100624724, response.value().get(0).currentValue());
-        Assertions.assertEquals(919724990, response.value().get(0).limit());
+        Assertions.assertEquals("m", response.value().get(0).id());
+        Assertions.assertEquals("elfk", response.value().get(0).type());
+        Assertions.assertEquals("plcrpwjxeznoig", response.value().get(0).unit());
+        Assertions.assertEquals(1629929143, response.value().get(0).currentValue());
+        Assertions.assertEquals(78326163, response.value().get(0).limit());
+        Assertions.assertEquals("kpnb", response.value().get(0).name().value());
+        Assertions.assertEquals("zejjoqk", response.value().get(0).name().localizedValue());
     }
 }

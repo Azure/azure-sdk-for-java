@@ -7,25 +7,29 @@ import com.azure.core.http.HttpHeaders;
 import com.azure.core.http.HttpPipelineBuilder;
 import com.azure.core.http.policy.AddHeadersPolicy;
 import com.azure.core.http.policy.RetryPolicy;
+import com.azure.core.models.CloudEvent;
 import com.azure.core.models.CloudEventDataFormat;
 import com.azure.core.test.TestBase;
 import com.azure.core.util.BinaryData;
 import com.azure.messaging.eventgrid.implementation.EventGridPublisherClientImpl;
 import com.azure.messaging.eventgrid.implementation.EventGridPublisherClientImplBuilder;
-import com.azure.core.models.CloudEvent;
 import com.azure.messaging.eventgrid.implementation.models.EventGridEvent;
 import org.junit.jupiter.api.Test;
 import reactor.test.StepVerifier;
 
-import java.net.MalformedURLException;
 import java.time.Duration;
 import java.time.OffsetDateTime;
-import java.util.*;
+import java.util.ArrayList;
+import java.util.Collections;
+import java.util.HashMap;
+import java.util.List;
+import java.util.UUID;
 
 import static org.junit.jupiter.api.Assertions.assertNotNull;
 
 
 public class EventGridPublisherImplTests extends TestBase {
+    private static final Duration DEFAULT_TIMEOUT = Duration.ofSeconds(30);
 
     private HttpPipelineBuilder pipelineBuilder;
 
@@ -55,8 +59,6 @@ public class EventGridPublisherImplTests extends TestBase {
 
     @Override
     protected void beforeTest() {
-        StepVerifier.setDefaultTimeout(Duration.ofSeconds(30));
-
         pipelineBuilder = new HttpPipelineBuilder();
 
         clientBuilder = new EventGridPublisherClientImplBuilder();
@@ -68,13 +70,8 @@ public class EventGridPublisherImplTests extends TestBase {
         }
     }
 
-    @Override
-    protected void afterTest() {
-        StepVerifier.resetDefaultTimeout();
-    }
-
     @Test
-    public void publishEventGridEventsImpl() throws MalformedURLException {
+    public void publishEventGridEventsImpl() {
         EventGridPublisherClientImpl egClient = clientBuilder
             .pipeline(pipelineBuilder.policies(
                 new AddHeadersPolicy(new HttpHeaders().put("aeg-sas-key", getKey(EVENTGRID_KEY))))
@@ -99,11 +96,12 @@ public class EventGridPublisherImplTests extends TestBase {
 
         StepVerifier.create(egClient.publishEventGridEventsWithResponseAsync(getEndpoint(EVENTGRID_ENDPOINT), events))
             .expectNextMatches(voidResponse -> voidResponse.getStatusCode() == 200)
-            .verifyComplete();
+            .expectComplete()
+            .verify(DEFAULT_TIMEOUT);
     }
 
     @Test
-    public void publishCloudEventsImpl() throws MalformedURLException {
+    public void publishCloudEventsImpl() {
         EventGridPublisherClientImpl egClient = clientBuilder
             .pipeline(pipelineBuilder.policies(
                 new AddHeadersPolicy(new HttpHeaders().put("aeg-sas-key", getKey(CLOUD_KEY))))
@@ -126,11 +124,12 @@ public class EventGridPublisherImplTests extends TestBase {
 
         StepVerifier.create(egClient.publishCloudEventEventsWithResponseAsync(getEndpoint(CLOUD_ENDPOINT), events, null))
             .expectNextMatches(voidResponse -> voidResponse.getStatusCode() == 200)
-            .verifyComplete();
+            .expectComplete()
+            .verify(DEFAULT_TIMEOUT);
     }
 
     @Test
-    public void publishCustomEventsImpl() throws MalformedURLException {
+    public void publishCustomEventsImpl() {
         EventGridPublisherClientImpl egClient = clientBuilder
             .pipeline(pipelineBuilder.policies(
                 new AddHeadersPolicy(new HttpHeaders().put("aeg-sas-key", getKey(CUSTOM_KEY))))
@@ -152,7 +151,8 @@ public class EventGridPublisherImplTests extends TestBase {
 
         StepVerifier.create(egClient.publishCustomEventEventsWithResponseAsync(getEndpoint(CUSTOM_ENDPOINT), events))
             .expectNextMatches(voidResponse -> voidResponse.getStatusCode() == 200)
-            .verifyComplete();
+            .expectComplete()
+            .verify(DEFAULT_TIMEOUT);
     }
 
 

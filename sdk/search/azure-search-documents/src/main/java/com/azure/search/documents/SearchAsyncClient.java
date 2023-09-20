@@ -749,6 +749,14 @@ public final class SearchAsyncClient {
      * If {@code searchText} is set to null or {@code "*"} all documents will be matched, see
      * <a href="https://docs.microsoft.com/rest/api/searchservice/Simple-query-syntax-in-Azure-Search">simple query
      * syntax in Azure Cognitive Search</a> for more information about search query syntax.
+     * <p>
+     * The {@link SearchPagedFlux} will iterate through search result pages until all search results are returned.
+     * Each page is determined by the {@code $skip} and {@code $top} values and the Search service has a limit on the
+     * number of documents that can be skipped, more information about the {@code $skip} limit can be found at
+     * <a href="https://learn.microsoft.com/rest/api/searchservice/search-documents">Search Documents REST API</a> and
+     * reading the {@code $skip} description. If the total number of results exceeds the {@code $skip} limit the
+     * {@link SearchPagedFlux} won't prevent you from exceeding the {@code $skip} limit. To prevent exceeding the limit
+     * you can track the number of documents returned and stop requesting new pages when the limit is reached.
      *
      * <p><strong>Code Sample</strong></p>
      *
@@ -758,9 +766,18 @@ public final class SearchAsyncClient {
      * <pre>
      * SearchPagedFlux searchPagedFlux = SEARCH_ASYNC_CLIENT.search&#40;&quot;searchText&quot;&#41;;
      * searchPagedFlux.getTotalCount&#40;&#41;.subscribe&#40;
-     *     count -&gt; System.out.printf&#40;&quot;There are around %d results.&quot;, count&#41;
-     * &#41;;
+     *     count -&gt; System.out.printf&#40;&quot;There are around %d results.&quot;, count&#41;&#41;;
+     *
+     * AtomicLong numberOfDocumentsReturned = new AtomicLong&#40;&#41;;
      * searchPagedFlux.byPage&#40;&#41;
+     *     .takeUntil&#40;page -&gt; &#123;
+     *         if &#40;numberOfDocumentsReturned.addAndGet&#40;page.getValue&#40;&#41;.size&#40;&#41;&#41; &gt;= SEARCH_SKIP_LIMIT&#41; &#123;
+     *             &#47;&#47; Reached the $skip limit, stop requesting more documents.
+     *             return true;
+     *         &#125;
+     *
+     *         return false;
+     *     &#125;&#41;
      *     .subscribe&#40;resultResponse -&gt; &#123;
      *         for &#40;SearchResult result: resultResponse.getValue&#40;&#41;&#41; &#123;
      *             SearchDocument searchDocument = result.getDocument&#40;SearchDocument.class&#41;;
@@ -789,6 +806,14 @@ public final class SearchAsyncClient {
      * If {@code searchText} is set to null or {@code "*"} all documents will be matched, see
      * <a href="https://docs.microsoft.com/rest/api/searchservice/Simple-query-syntax-in-Azure-Search">simple query
      * syntax in Azure Cognitive Search</a> for more information about search query syntax.
+     * <p>
+     * The {@link SearchPagedFlux} will iterate through search result pages until all search results are returned.
+     * Each page is determined by the {@code $skip} and {@code $top} values and the Search service has a limit on the
+     * number of documents that can be skipped, more information about the {@code $skip} limit can be found at
+     * <a href="https://learn.microsoft.com/rest/api/searchservice/search-documents">Search Documents REST API</a> and
+     * reading the {@code $skip} description. If the total number of results exceeds the {@code $skip} limit the
+     * {@link SearchPagedFlux} won't prevent you from exceeding the {@code $skip} limit. To prevent exceeding the limit
+     * you can track the number of documents returned and stop requesting new pages when the limit is reached.
      *
      * <p><strong>Code Sample</strong></p>
      *
@@ -801,7 +826,16 @@ public final class SearchAsyncClient {
      *
      * pagedFlux.getTotalCount&#40;&#41;.subscribe&#40;count -&gt; System.out.printf&#40;&quot;There are around %d results.&quot;, count&#41;&#41;;
      *
+     * AtomicLong numberOfDocumentsReturned = new AtomicLong&#40;&#41;;
      * pagedFlux.byPage&#40;&#41;
+     *     .takeUntil&#40;page -&gt; &#123;
+     *         if &#40;numberOfDocumentsReturned.addAndGet&#40;page.getValue&#40;&#41;.size&#40;&#41;&#41; &gt;= SEARCH_SKIP_LIMIT&#41; &#123;
+     *             &#47;&#47; Reached the $skip limit, stop requesting more documents.
+     *             return true;
+     *         &#125;
+     *
+     *         return false;
+     *     &#125;&#41;
      *     .subscribe&#40;searchResultResponse -&gt; searchResultResponse.getValue&#40;&#41;.forEach&#40;searchDocument -&gt; &#123;
      *         for &#40;Map.Entry&lt;String, Object&gt; keyValuePair
      *             : searchDocument.getDocument&#40;SearchDocument.class&#41;.entrySet&#40;&#41;&#41; &#123;

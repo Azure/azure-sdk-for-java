@@ -191,6 +191,9 @@ public class ProactiveConnectionManagementTest extends TestSuiteBase {
             for (URI proactiveConnectionEndpoint : proactiveConnectionEndpoints) {
                 Mono.zip(asyncContainerMono, partitionKeyRangeMono)
                         .flatMapIterable(containerToPartitionKeyRanges -> {
+                            assertThat(containerToPartitionKeyRanges).isNotNull();
+                            assertThat(containerToPartitionKeyRanges.getT2()).isNotNull();
+                            assertThat(containerToPartitionKeyRanges.getT2().v).isNotNull();
                             List<ImmutablePair<PartitionKeyRange, CosmosAsyncContainer>> pkrToContainer = new ArrayList<>();
                             for (PartitionKeyRange pkr : containerToPartitionKeyRanges.getT2().v) {
                                 pkrToContainer.add(new ImmutablePair<>(pkr, containerToPartitionKeyRanges.getT1()));

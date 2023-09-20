@@ -12,7 +12,7 @@ public final class ArmUserIdentityTests {
     public void testDeserialize() throws Exception {
         ArmUserIdentity model =
             BinaryData
-                .fromString("{\"principalId\":\"fclhaaxdbabphlwr\",\"clientId\":\"fkts\"}")
+                .fromString("{\"principalId\":\"ghxpkdw\",\"clientId\":\"aiuebbaumnyqu\"}")
                 .toObject(ArmUserIdentity.class);
     }
 

@@ -11,7 +11,7 @@ public final class FleetCredentialResultTests {
     @org.junit.jupiter.api.Test
     public void testDeserialize() throws Exception {
         FleetCredentialResult model =
-            BinaryData.fromString("{\"name\":\"bbkpodep\"}").toObject(FleetCredentialResult.class);
+            BinaryData.fromString("{\"name\":\"nddhsgcbacph\"}").toObject(FleetCredentialResult.class);
     }
 
     @org.junit.jupiter.api.Test

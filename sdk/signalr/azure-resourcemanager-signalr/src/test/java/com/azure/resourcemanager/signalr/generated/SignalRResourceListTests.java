@@ -6,12 +6,29 @@ package com.azure.resourcemanager.signalr.generated;
 
 import com.azure.core.util.BinaryData;
 import com.azure.resourcemanager.signalr.fluent.models.SignalRResourceInner;
+import com.azure.resourcemanager.signalr.models.AclAction;
+import com.azure.resourcemanager.signalr.models.FeatureFlags;
+import com.azure.resourcemanager.signalr.models.LiveTraceCategory;
+import com.azure.resourcemanager.signalr.models.LiveTraceConfiguration;
 import com.azure.resourcemanager.signalr.models.ManagedIdentity;
 import com.azure.resourcemanager.signalr.models.ManagedIdentityType;
+import com.azure.resourcemanager.signalr.models.NetworkAcl;
+import com.azure.resourcemanager.signalr.models.PrivateEndpointAcl;
+import com.azure.resourcemanager.signalr.models.ResourceLogCategory;
+import com.azure.resourcemanager.signalr.models.ResourceLogConfiguration;
 import com.azure.resourcemanager.signalr.models.ResourceSku;
+import com.azure.resourcemanager.signalr.models.ServerlessSettings;
+import com.azure.resourcemanager.signalr.models.ServerlessUpstreamSettings;
 import com.azure.resourcemanager.signalr.models.ServiceKind;
+import com.azure.resourcemanager.signalr.models.SignalRCorsSettings;
+import com.azure.resourcemanager.signalr.models.SignalRFeature;
+import com.azure.resourcemanager.signalr.models.SignalRNetworkACLs;
+import com.azure.resourcemanager.signalr.models.SignalRRequestType;
 import com.azure.resourcemanager.signalr.models.SignalRResourceList;
 import com.azure.resourcemanager.signalr.models.SignalRSkuTier;
+import com.azure.resourcemanager.signalr.models.SignalRTlsSettings;
+import com.azure.resourcemanager.signalr.models.UpstreamTemplate;
+import com.azure.resourcemanager.signalr.models.UserAssignedIdentityProperty;
 import java.util.Arrays;
 import java.util.HashMap;
 import java.util.Map;
@@ -23,19 +40,34 @@ public final class SignalRResourceListTests {
         SignalRResourceList model =
             BinaryData
                 .fromString(
-                    "{\"value\":[{\"sku\":{\"name\":\"jaoyfhrtx\",\"tier\":\"Free\",\"size\":\"rkujy\",\"family\":\"l\",\"capacity\":867367638},\"properties\":{\"provisioningState\":\"Canceled\",\"externalIP\":\"wrlyxwjkcprb\",\"hostName\":\"b\",\"publicPort\":19976049,\"serverPort\":1017472579,\"version\":\"vpys\",\"privateEndpointConnections\":[],\"sharedPrivateLinkResources\":[],\"hostNamePrefix\":\"uj\",\"features\":[],\"publicNetworkAccess\":\"f\",\"disableLocalAuth\":true,\"disableAadAuth\":true},\"kind\":\"RawWebSockets\",\"identity\":{\"type\":\"SystemAssigned\",\"userAssignedIdentities\":{},\"principalId\":\"wu\",\"tenantId\":\"gazxuf\"},\"location\":\"uckyf\",\"tags\":{\"zuhtymwisdkfthwx\":\"fidfvzw\",\"mijcmmxdcufufs\":\"nteiwaopv\",\"fycc\":\"pymzidnsezcxtbzs\"},\"id\":\"newmdwzjeiachbo\",\"name\":\"sflnrosfqp\",\"type\":\"eeh\"},{\"sku\":{\"name\":\"vypyqrimzinpv\",\"tier\":\"Standard\",\"size\":\"kirsoodqxhc\",\"family\":\"nohjt\",\"capacity\":683362936},\"properties\":{\"provisioningState\":\"Running\",\"externalIP\":\"ifiyipjxsqwpgrj\",\"hostName\":\"norcjxvsnbyxqab\",\"publicPort\":1299140464,\"serverPort\":1412724720,\"version\":\"ysh\",\"privateEndpointConnections\":[],\"sharedPrivateLinkResources\":[],\"hostNamePrefix\":\"bl\",\"features\":[],\"publicNetworkAccess\":\"jmkljavbqidtqajz\",\"disableLocalAuth\":false,\"disableAadAuth\":true},\"kind\":\"SignalR\",\"identity\":{\"type\":\"SystemAssigned\",\"userAssignedIdentities\":{},\"principalId\":\"hbzhfepg\",\"tenantId\":\"qex\"},\"location\":\"ocxscpaierhhbcs\",\"tags\":{\"bnbdxkqpxokajion\":\"mmajtjaodx\",\"jrmvdjwzrlo\":\"imexgstxgcpodgma\",\"hijco\":\"mcl\"},\"id\":\"jctbza\",\"name\":\"s\",\"type\":\"sycbkbfk\"},{\"sku\":{\"name\":\"kdkexxp\",\"tier\":\"Free\",\"size\":\"xaxcfjpgddtocjjx\",\"family\":\"pmouexhdz\",\"capacity\":738311617},\"properties\":{\"provisioningState\":\"Creating\",\"externalIP\":\"nxqbzvddn\",\"hostName\":\"ndei\",\"publicPort\":1638817627,\"serverPort\":1604770276,\"version\":\"zao\",\"privateEndpointConnections\":[],\"sharedPrivateLinkResources\":[],\"hostNamePrefix\":\"hcffcyddglmjthjq\",\"features\":[],\"publicNetworkAccess\":\"qciwqvhkhixuigdt\",\"disableLocalAuth\":false,\"disableAadAuth\":true},\"kind\":\"SignalR\",\"identity\":{\"type\":\"UserAssigned\",\"userAssignedIdentities\":{},\"principalId\":\"u\",\"tenantId\":\"a\"},\"location\":\"rzayv\",\"tags\":{\"ln\":\"gvdfgiotkftutq\",\"qmi\":\"xlefgugnxkrx\"},\"id\":\"tthzrvqd\",\"name\":\"abhjybi\",\"type\":\"ehoqfbowskan\"},{\"sku\":{\"name\":\"tzlcuiywgqywgn\",\"tier\":\"Standard\",\"size\":\"nhzgpphrcgyn\",\"family\":\"cpecfvmmcoofs\",\"capacity\":1165207027},\"properties\":{\"provisioningState\":\"Moving\",\"externalIP\":\"m\",\"hostName\":\"qabcypm\",\"publicPort\":1275704162,\"serverPort\":699585009,\"version\":\"uvcc\",\"privateEndpointConnections\":[],\"sharedPrivateLinkResources\":[],\"hostNamePrefix\":\"bacfionlebxetq\",\"features\":[],\"publicNetworkAccess\":\"qqwx\",\"disableLocalAuth\":true,\"disableAadAuth\":false},\"kind\":\"RawWebSockets\",\"identity\":{\"type\":\"None\",\"userAssignedIdentities\":{},\"principalId\":\"isnjampmngnz\",\"tenantId\":\"xaqwoochcbonqv\"},\"location\":\"vlrxnjeaseiph\",\"tags\":{\"enjbdlwtgrhp\":\"lokeyy\"},\"id\":\"jp\",\"name\":\"umasxazjpq\",\"type\":\"e\"}],\"nextLink\":\"alhbx\"}")
+                    "{\"value\":[{\"sku\":{\"name\":\"tpngjcrcczsqpjh\",\"tier\":\"Free\",\"size\":\"jvnysounqe\",\"family\":\"noae\",\"capacity\":1901274446},\"properties\":{\"provisioningState\":\"Deleting\",\"externalIP\":\"trpmo\",\"hostName\":\"mcmatuokthfuiu\",\"publicPort\":1445775245,\"serverPort\":680550088,\"version\":\"pk\",\"privateEndpointConnections\":[{\"properties\":{},\"id\":\"uozmyzydagfua\",\"name\":\"bezy\",\"type\":\"uokktwhrdxwz\"},{\"properties\":{},\"id\":\"sm\",\"name\":\"surex\",\"type\":\"moryocfsfksym\"},{\"properties\":{},\"id\":\"stkiiuxhqyud\",\"name\":\"o\",\"type\":\"rq\"},{\"properties\":{},\"id\":\"oczvy\",\"name\":\"fqrvkdvjsllrmvvd\",\"type\":\"watkpnpulexxb\"}],\"sharedPrivateLinkResources\":[{\"properties\":{\"groupId\":\"ruwiqzbqjvsov\",\"privateLinkResourceId\":\"yokacspkw\"},\"id\":\"hzdobpxjmflbvvnc\",\"name\":\"rkcciwwzjuqk\",\"type\":\"rsa\"},{\"properties\":{\"groupId\":\"wkuofoskghsauu\",\"privateLinkResourceId\":\"mjmvxieduugidyjr\"},\"id\":\"f\",\"name\":\"y\",\"type\":\"osvexcsonpclhoc\"},{\"properties\":{\"groupId\":\"slkevle\",\"privateLinkResourceId\":\"gz\"},\"id\":\"buhfmvfaxkffeiit\",\"name\":\"lvmezyvshxmzsbbz\",\"type\":\"ggi\"},{\"properties\":{\"groupId\":\"xwburvjxxjns\",\"privateLinkResourceId\":\"ydptkoen\"},\"id\":\"ou\",\"name\":\"nvudwtiukb\",\"type\":\"dng\"}],\"tls\":{\"clientCertEnabled\":true},\"hostNamePrefix\":\"pazyxoegukg\",\"features\":[{\"flag\":\"EnableMessagingLogs\",\"value\":\"ucgygevqz\",\"properties\":{\"p\":\"pmr\"}}],\"liveTraceConfiguration\":{\"enabled\":\"drqjsdpy\",\"categories\":[{},{}]},\"resourceLogConfiguration\":{\"categories\":[{},{},{}]},\"cors\":{\"allowedOrigins\":[\"ejzicwifsjtt\",\"zfbishcbkhaj\"]},\"serverless\":{\"connectionTimeoutInSeconds\":1232407744},\"upstream\":{\"templates\":[{\"urlTemplate\":\"p\"},{\"urlTemplate\":\"agalpbuxwgipwhon\"},{\"urlTemplate\":\"wkgshwa\"},{\"urlTemplate\":\"kix\"}]},\"networkACLs\":{\"defaultAction\":\"Deny\",\"publicNetwork\":{\"allow\":[\"Trace\"],\"deny\":[\"ClientConnection\",\"ClientConnection\"]},\"privateEndpoints\":[{\"name\":\"nuzo\"},{\"name\":\"ftiyqzrnkcq\"},{\"name\":\"yx\"},{\"name\":\"whzlsicohoq\"}]},\"publicNetworkAccess\":\"wvl\",\"disableLocalAuth\":true,\"disableAadAuth\":false},\"kind\":\"SignalR\",\"identity\":{\"type\":\"None\",\"userAssignedIdentities\":{\"zf\":{\"principalId\":\"hgyxzkonoc\",\"clientId\":\"oklyaxuconuq\"},\"senhwlrs\":{\"principalId\":\"eyp\",\"clientId\":\"rmjmwvvjektc\"},\"vf\":{\"principalId\":\"rzpwvlqdqgbiq\",\"clientId\":\"ihkaetcktvfc\"},\"wutttxfvjrbi\":{\"principalId\":\"kymuctqhjfbebr\",\"clientId\":\"xerf\"}},\"principalId\":\"hxepcyvahfnlj\",\"tenantId\":\"qxj\"},\"location\":\"ujqgidok\",\"tags\":{\"gsncghkjeszz\":\"jyoxgvclt\",\"mxnehmp\":\"bijhtxfvgxbf\",\"godebfqkkrbmpu\":\"ec\"},\"id\":\"gr\",\"name\":\"wflzlfbxzpuzy\",\"type\":\"ispnqzahmgkbrp\"},{\"sku\":{\"name\":\"dhibnuq\",\"tier\":\"Basic\",\"size\":\"kadrgvt\",\"family\":\"gnbuy\",\"capacity\":850338934},\"properties\":{\"provisioningState\":\"Succeeded\",\"externalIP\":\"ebf\",\"hostName\":\"arbu\",\"publicPort\":2136509867,\"serverPort\":1477198207,\"version\":\"azzmhjrunmpxt\",\"privateEndpointConnections\":[{\"properties\":{},\"id\":\"bnlankxmyskpb\",\"name\":\"enbtkcxywny\",\"type\":\"nrs\"}],\"sharedPrivateLinkResources\":[{\"properties\":{\"groupId\":\"idybyxczf\",\"privateLinkResourceId\":\"lhaaxdbabp\"},\"id\":\"lwrq\",\"name\":\"fkts\",\"type\":\"hsucoc\"},{\"properties\":{\"groupId\":\"yyazttbt\",\"privateLinkResourceId\":\"wrqpue\"},\"id\":\"ckzywbiexzfeyue\",\"name\":\"xibxujwbhqwalm\",\"type\":\"zyoxaepdkzjan\"}],\"tls\":{\"clientCertEnabled\":true},\"hostNamePrefix\":\"d\",\"features\":[{\"flag\":\"ServiceMode\",\"value\":\"xbniwdjs\",\"properties\":{\"bpg\":\"s\",\"fzab\":\"xytxhpzxbz\"}},{\"flag\":\"EnableLiveTrace\",\"value\":\"cuh\",\"properties\":{\"bbovplwzbhvgyugu\":\"ctyqik\"}},{\"flag\":\"EnableMessagingLogs\",\"value\":\"vmkfssxqu\",\"properties\":{\"zkd\":\"plgmgsxnk\"}},{\"flag\":\"EnableConnectivityLogs\",\"value\":\"lpvlopw\",\"properties\":{\"baiuebbaumny\":\"ghxpkdw\",\"txp\":\"upedeojnabckhs\"}}],\"liveTraceConfiguration\":{\"enabled\":\"btfhvpesaps\",\"categories\":[{}]},\"resourceLogConfiguration\":{\"categories\":[{},{},{},{}]},\"cors\":{\"allowedOrigins\":[\"htldwk\",\"zxuutkncwscwsvl\",\"otogtwrupqs\"]},\"serverless\":{\"connectionTimeoutInSeconds\":1364621442},\"upstream\":{\"templates\":[{\"urlTemplate\":\"kvceoveilovnotyf\"},{\"urlTemplate\":\"fcnj\"},{\"urlTemplate\":\"k\"}]},\"networkACLs\":{\"defaultAction\":\"Allow\",\"publicNetwork\":{\"allow\":[\"Trace\",\"RESTAPI\",\"ServerConnection\",\"ClientConnection\"],\"deny\":[\"Trace\"]},\"privateEndpoints\":[{\"name\":\"jtoqne\"},{\"name\":\"mclfplphoxuscr\"},{\"name\":\"abgy\"},{\"name\":\"psbjta\"}]},\"publicNetworkAccess\":\"ugxywpmueef\",\"disableLocalAuth\":false,\"disableAadAuth\":true},\"kind\":\"SignalR\",\"identity\":{\"type\":\"SystemAssigned\",\"userAssignedIdentities\":{\"tcc\":{\"principalId\":\"yonobgl\",\"clientId\":\"cq\"},\"hl\":{\"principalId\":\"yudxytlmoy\",\"clientId\":\"vwfudwpzntxhd\"},\"ca\":{\"principalId\":\"jbhckfrlhr\",\"clientId\":\"bkyvp\"},\"kuwbcrnwb\":{\"principalId\":\"z\",\"clientId\":\"zka\"}},\"principalId\":\"hhseyv\",\"tenantId\":\"srtslhspkdeem\"},\"location\":\"fm\",\"tags\":{\"melmqkrha\":\"kv\",\"aquhcdhm\":\"vljua\",\"rcrgvx\":\"ualaexqpvfadmw\",\"fmisg\":\"vgomz\"},\"id\":\"bnbbeldawkz\",\"name\":\"ali\",\"type\":\"urqhaka\"},{\"sku\":{\"name\":\"ashsfwxos\",\"tier\":\"Free\",\"size\":\"cugicjoox\",\"family\":\"ebwpucwwfvo\",\"capacity\":1748456219},\"properties\":{\"provisioningState\":\"Canceled\",\"externalIP\":\"civyhzceuo\",\"hostName\":\"jrwjueiotwm\",\"publicPort\":1848522994,\"serverPort\":1561651714,\"version\":\"wit\",\"privateEndpointConnections\":[{\"properties\":{},\"id\":\"wgqwgxhn\",\"name\":\"skxfbk\",\"type\":\"y\"}],\"sharedPrivateLinkResources\":[{\"properties\":{\"groupId\":\"wndnhj\",\"privateLinkResourceId\":\"auwhvylwzbtdhx\"},\"id\":\"jznb\",\"name\":\"pow\",\"type\":\"wpr\"},{\"properties\":{\"groupId\":\"lve\",\"privateLinkResourceId\":\"alupjm\"},\"id\":\"hfxobbcswsrtj\",\"name\":\"iplrbpbewtghfgb\",\"type\":\"c\"},{\"properties\":{\"groupId\":\"xzvlvqhjkbegib\",\"privateLinkResourceId\":\"nmxiebwwaloayqc\"},\"id\":\"wrtz\",\"name\":\"uzgwyzmhtx\",\"type\":\"ngmtsavjcb\"},{\"properties\":{\"groupId\":\"xqpsrknftguv\",\"privateLinkResourceId\":\"iuhprwmdyvxqta\"},\"id\":\"riwwroy\",\"name\":\"bexrmcq\",\"type\":\"bycnojvkn\"}],\"tls\":{\"clientCertEnabled\":true},\"hostNamePrefix\":\"gzva\",\"features\":[{\"flag\":\"EnableConnectivityLogs\",\"value\":\"y\",\"properties\":{\"zlmwlxkvugfhz\":\"vgqzcjrvxd\",\"hnnpr\":\"vawjvzunlu\",\"ultskzbbtdz\":\"xipeilpjzuaejx\",\"ekg\":\"mv\"}},{\"flag\":\"EnableConnectivityLogs\",\"value\":\"ozuhkfp\",\"properties\":{\"luu\":\"yofd\",\"smv\":\"dttouwaboekqvkel\",\"aln\":\"xwyjsflhhc\",\"qcslyjpkiid\":\"ixisxyawjoy\"}}],\"liveTraceConfiguration\":{\"enabled\":\"xznelixhnrztf\",\"categories\":[{}]},\"resourceLogConfiguration\":{\"categories\":[{},{},{}]},\"cors\":{\"allowedOrigins\":[\"laulppg\",\"dtpnapnyiropuhp\",\"gvpgy\",\"gqgitxmedjvcsl\"]},\"serverless\":{\"connectionTimeoutInSeconds\":598877873},\"upstream\":{\"templates\":[{\"urlTemplate\":\"wzz\"},{\"urlTemplate\":\"xgk\"},{\"urlTemplate\":\"rmgucnap\"}]},\"networkACLs\":{\"defaultAction\":\"Allow\",\"publicNetwork\":{\"allow\":[\"ServerConnection\",\"ClientConnection\"],\"deny\":[\"ClientConnection\",\"ServerConnection\",\"RESTAPI\",\"RESTAPI\"]},\"privateEndpoints\":[{\"name\":\"b\"},{\"name\":\"ac\"},{\"name\":\"op\"}]},\"publicNetworkAccess\":\"qrhhu\",\"disableLocalAuth\":true,\"disableAadAuth\":false},\"kind\":\"SignalR\",\"identity\":{\"type\":\"None\",\"userAssignedIdentities\":{\"cfbu\":{\"principalId\":\"dahzxctobg\",\"clientId\":\"dmoizpostmg\"},\"swbxqz\":{\"principalId\":\"mfqjhhkxbp\",\"clientId\":\"ymjhxxjyngudivkr\"},\"ivetvtcq\":{\"principalId\":\"zjf\",\"clientId\":\"vjfdx\"},\"fxoblytkb\":{\"principalId\":\"tdo\",\"clientId\":\"cbxvwvxyslqbh\"}},\"principalId\":\"pe\",\"tenantId\":\"wfbkrvrns\"},\"location\":\"hqjohxcrsbfova\",\"tags\":{\"bcgjbirxbp\":\"uvwbhsqfs\"},\"id\":\"bsrfbj\",\"name\":\"dtws\",\"type\":\"otftpvjzbexilz\"},{\"sku\":{\"name\":\"fqqnvwpmqtaruo\",\"tier\":\"Premium\",\"size\":\"cjhwq\",\"family\":\"jrybnwjewgdrjer\",\"capacity\":604177419},\"properties\":{\"provisioningState\":\"Failed\",\"externalIP\":\"eh\",\"hostName\":\"doy\",\"publicPort\":1553722584,\"serverPort\":1126761283,\"version\":\"nzdndslgna\",\"privateEndpointConnections\":[{\"properties\":{},\"id\":\"nduhavhqlkthum\",\"name\":\"qolbgyc\",\"type\":\"uie\"},{\"properties\":{},\"id\":\"ccymvaolpsslql\",\"name\":\"mmdnbbglzps\",\"type\":\"iydmcwyhzdxs\"},{\"properties\":{},\"id\":\"bzmnvdfznud\",\"name\":\"od\",\"type\":\"xzb\"},{\"properties\":{},\"id\":\"lylpstdb\",\"name\":\"hxsrzdzucersc\",\"type\":\"ntnev\"}],\"sharedPrivateLinkResources\":[{\"properties\":{\"groupId\":\"mygtdssls\",\"privateLinkResourceId\":\"tmweriofzpyq\"},\"id\":\"emwabnet\",\"name\":\"hhszh\",\"type\":\"d\"}],\"tls\":{\"clientCertEnabled\":false},\"hostNamePrefix\":\"wubmwmbesldn\",\"features\":[{\"flag\":\"EnableConnectivityLogs\",\"value\":\"pp\",\"properties\":{\"sikvmkqzeqqkdlt\":\"cxogaokonzm\",\"eodkwobda\":\"zxmhhvhgu\"}},{\"flag\":\"EnableLiveTrace\",\"value\":\"tibqdxbxwakb\",\"properties\":{\"iplbpodxunkbebxm\":\"xndlkzgxhu\"}},{\"flag\":\"EnableMessagingLogs\",\"value\":\"yyntwl\",\"properties\":{\"l\":\"tkoievseotgq\",\"xbmp\":\"tmuwlauwzi\"}},{\"flag\":\"EnableConnectivityLogs\",\"value\":\"jefuzmuvpbttdumo\",\"properties\":{\"mnzb\":\"xe\",\"el\":\"bhjpglkfgohdne\",\"fikdowwqu\":\"phsdyhto\"}}],\"liveTraceConfiguration\":{\"enabled\":\"zx\",\"categories\":[{},{}]},\"resourceLogConfiguration\":{\"categories\":[{},{},{}]},\"cors\":{\"allowedOrigins\":[\"o\",\"osggbhc\"]},\"serverless\":{\"connectionTimeoutInSeconds\":481884715},\"upstream\":{\"templates\":[{\"urlTemplate\":\"n\"},{\"urlTemplate\":\"aljutiiswac\"},{\"urlTemplate\":\"fgdkzzew\"},{\"urlTemplate\":\"fvhqc\"}]},\"networkACLs\":{\"defaultAction\":\"Allow\",\"publicNetwork\":{\"allow\":[\"ServerConnection\"],\"deny\":[\"ServerConnection\",\"ServerConnection\",\"RESTAPI\"]},\"privateEndpoints\":[{\"name\":\"dmhdlxyjr\"},{\"name\":\"sag\"},{\"name\":\"fcnihgwq\"}]},\"publicNetworkAccess\":\"nedgfbc\",\"disableLocalAuth\":true,\"disableAadAuth\":false},\"kind\":\"RawWebSockets\",\"identity\":{\"type\":\"SystemAssigned\",\"userAssignedIdentities\":{\"ld\":{\"principalId\":\"drhvoodsotbo\",\"clientId\":\"dopcjwvnh\"},\"pkhjwni\":{\"principalId\":\"gx\",\"clientId\":\"rslpmutwuoeg\"},\"sbpfvmwyhr\":{\"principalId\":\"sluicpdggkzz\",\"clientId\":\"mbmpaxmodfvuefy\"}},\"principalId\":\"uyfta\",\"tenantId\":\"cpwi\"},\"location\":\"vqtmnub\",\"tags\":{\"mond\":\"pzk\",\"gkopkwhojvpajqgx\":\"mquxvypo\",\"qvmkcxo\":\"smocmbq\"},\"id\":\"apvhelxprgly\",\"name\":\"tddckcb\",\"type\":\"uejrjxgc\"}],\"nextLink\":\"ibrhosxsdqr\"}")
                 .toObject(SignalRResourceList.class);
-        Assertions.assertEquals("uckyf", model.value().get(0).location());
-        Assertions.assertEquals("fidfvzw", model.value().get(0).tags().get("zuhtymwisdkfthwx"));
-        Assertions.assertEquals("jaoyfhrtx", model.value().get(0).sku().name());
+        Assertions.assertEquals("ujqgidok", model.value().get(0).location());
+        Assertions.assertEquals("jyoxgvclt", model.value().get(0).tags().get("gsncghkjeszz"));
+        Assertions.assertEquals("tpngjcrcczsqpjh", model.value().get(0).sku().name());
         Assertions.assertEquals(SignalRSkuTier.FREE, model.value().get(0).sku().tier());
-        Assertions.assertEquals(867367638, model.value().get(0).sku().capacity());
-        Assertions.assertEquals(ServiceKind.RAW_WEB_SOCKETS, model.value().get(0).kind());
-        Assertions.assertEquals(ManagedIdentityType.SYSTEM_ASSIGNED, model.value().get(0).identity().type());
-        Assertions.assertEquals("f", model.value().get(0).publicNetworkAccess());
+        Assertions.assertEquals(1901274446, model.value().get(0).sku().capacity());
+        Assertions.assertEquals(ServiceKind.SIGNALR, model.value().get(0).kind());
+        Assertions.assertEquals(ManagedIdentityType.NONE, model.value().get(0).identity().type());
+        Assertions.assertEquals(true, model.value().get(0).tls().clientCertEnabled());
+        Assertions.assertEquals(FeatureFlags.ENABLE_MESSAGING_LOGS, model.value().get(0).features().get(0).flag());
+        Assertions.assertEquals("ucgygevqz", model.value().get(0).features().get(0).value());
+        Assertions.assertEquals("pmr", model.value().get(0).features().get(0).properties().get("p"));
+        Assertions.assertEquals("drqjsdpy", model.value().get(0).liveTraceConfiguration().enabled());
+        Assertions.assertEquals("ejzicwifsjtt", model.value().get(0).cors().allowedOrigins().get(0));
+        Assertions.assertEquals(1232407744, model.value().get(0).serverless().connectionTimeoutInSeconds());
+        Assertions.assertEquals("p", model.value().get(0).upstream().templates().get(0).urlTemplate());
+        Assertions.assertEquals(AclAction.DENY, model.value().get(0).networkACLs().defaultAction());
+        Assertions
+            .assertEquals(SignalRRequestType.TRACE, model.value().get(0).networkACLs().publicNetwork().allow().get(0));
+        Assertions
+            .assertEquals(
+                SignalRRequestType.CLIENT_CONNECTION, model.value().get(0).networkACLs().publicNetwork().deny().get(0));
+        Assertions.assertEquals("nuzo", model.value().get(0).networkACLs().privateEndpoints().get(0).name());
+        Assertions.assertEquals("wvl", model.value().get(0).publicNetworkAccess());
         Assertions.assertEquals(true, model.value().get(0).disableLocalAuth());
-        Assertions.assertEquals(true, model.value().get(0).disableAadAuth());
-        Assertions.assertEquals("alhbx", model.nextLink());
+        Assertions.assertEquals(false, model.value().get(0).disableAadAuth());
+        Assertions.assertEquals("ibrhosxsdqr", model.nextLink());
     }
 
     @org.junit.jupiter.api.Test
@@ -46,102 +78,411 @@ public final class SignalRResourceListTests {
                     Arrays
                         .asList(
                             new SignalRResourceInner()
-                                .withLocation("uckyf")
+                                .withLocation("ujqgidok")
                                 .withTags(
                                     mapOf(
-                                        "zuhtymwisdkfthwx",
-                                        "fidfvzw",
-                                        "mijcmmxdcufufs",
-                                        "nteiwaopv",
-                                        "fycc",
-                                        "pymzidnsezcxtbzs"))
+                                        "gsncghkjeszz", "jyoxgvclt", "mxnehmp", "bijhtxfvgxbf", "godebfqkkrbmpu", "ec"))
                                 .withSku(
                                     new ResourceSku()
-                                        .withName("jaoyfhrtx")
+                                        .withName("tpngjcrcczsqpjh")
                                         .withTier(SignalRSkuTier.FREE)
-                                        .withCapacity(867367638))
-                                .withKind(ServiceKind.RAW_WEB_SOCKETS)
-                                .withIdentity(
-                                    new ManagedIdentity()
-                                        .withType(ManagedIdentityType.SYSTEM_ASSIGNED)
-                                        .withUserAssignedIdentities(mapOf()))
-                                .withFeatures(Arrays.asList())
-                                .withPublicNetworkAccess("f")
-                                .withDisableLocalAuth(true)
-                                .withDisableAadAuth(true),
-                            new SignalRResourceInner()
-                                .withLocation("ocxscpaierhhbcs")
-                                .withTags(
-                                    mapOf(
-                                        "bnbdxkqpxokajion",
-                                        "mmajtjaodx",
-                                        "jrmvdjwzrlo",
-                                        "imexgstxgcpodgma",
-                                        "hijco",
-                                        "mcl"))
-                                .withSku(
-                                    new ResourceSku()
-                                        .withName("vypyqrimzinpv")
-                                        .withTier(SignalRSkuTier.STANDARD)
-                                        .withCapacity(683362936))
+                                        .withCapacity(1901274446))
                                 .withKind(ServiceKind.SIGNALR)
-                                .withIdentity(
-                                    new ManagedIdentity()
-                                        .withType(ManagedIdentityType.SYSTEM_ASSIGNED)
-                                        .withUserAssignedIdentities(mapOf()))
-                                .withFeatures(Arrays.asList())
-                                .withPublicNetworkAccess("jmkljavbqidtqajz")
-                                .withDisableLocalAuth(false)
-                                .withDisableAadAuth(true),
-                            new SignalRResourceInner()
-                                .withLocation("rzayv")
-                                .withTags(mapOf("ln", "gvdfgiotkftutq", "qmi", "xlefgugnxkrx"))
-                                .withSku(
-                                    new ResourceSku()
-                                        .withName("kdkexxp")
-                                        .withTier(SignalRSkuTier.FREE)
-                                        .withCapacity(738311617))
-                                .withKind(ServiceKind.SIGNALR)
-                                .withIdentity(
-                                    new ManagedIdentity()
-                                        .withType(ManagedIdentityType.USER_ASSIGNED)
-                                        .withUserAssignedIdentities(mapOf()))
-                                .withFeatures(Arrays.asList())
-                                .withPublicNetworkAccess("qciwqvhkhixuigdt")
-                                .withDisableLocalAuth(false)
-                                .withDisableAadAuth(true),
-                            new SignalRResourceInner()
-                                .withLocation("vlrxnjeaseiph")
-                                .withTags(mapOf("enjbdlwtgrhp", "lokeyy"))
-                                .withSku(
-                                    new ResourceSku()
-                                        .withName("tzlcuiywgqywgn")
-                                        .withTier(SignalRSkuTier.STANDARD)
-                                        .withCapacity(1165207027))
-                                .withKind(ServiceKind.RAW_WEB_SOCKETS)
                                 .withIdentity(
                                     new ManagedIdentity()
                                         .withType(ManagedIdentityType.NONE)
-                                        .withUserAssignedIdentities(mapOf()))
-                                .withFeatures(Arrays.asList())
-                                .withPublicNetworkAccess("qqwx")
+                                        .withUserAssignedIdentities(
+                                            mapOf(
+                                                "zf",
+                                                new UserAssignedIdentityProperty(),
+                                                "senhwlrs",
+                                                new UserAssignedIdentityProperty(),
+                                                "vf",
+                                                new UserAssignedIdentityProperty(),
+                                                "wutttxfvjrbi",
+                                                new UserAssignedIdentityProperty())))
+                                .withTls(new SignalRTlsSettings().withClientCertEnabled(true))
+                                .withFeatures(
+                                    Arrays
+                                        .asList(
+                                            new SignalRFeature()
+                                                .withFlag(FeatureFlags.ENABLE_MESSAGING_LOGS)
+                                                .withValue("ucgygevqz")
+                                                .withProperties(mapOf("p", "pmr"))))
+                                .withLiveTraceConfiguration(
+                                    new LiveTraceConfiguration()
+                                        .withEnabled("drqjsdpy")
+                                        .withCategories(
+                                            Arrays.asList(new LiveTraceCategory(), new LiveTraceCategory())))
+                                .withResourceLogConfiguration(
+                                    new ResourceLogConfiguration()
+                                        .withCategories(
+                                            Arrays
+                                                .asList(
+                                                    new ResourceLogCategory(),
+                                                    new ResourceLogCategory(),
+                                                    new ResourceLogCategory())))
+                                .withCors(
+                                    new SignalRCorsSettings()
+                                        .withAllowedOrigins(Arrays.asList("ejzicwifsjtt", "zfbishcbkhaj")))
+                                .withServerless(new ServerlessSettings().withConnectionTimeoutInSeconds(1232407744))
+                                .withUpstream(
+                                    new ServerlessUpstreamSettings()
+                                        .withTemplates(
+                                            Arrays
+                                                .asList(
+                                                    new UpstreamTemplate().withUrlTemplate("p"),
+                                                    new UpstreamTemplate().withUrlTemplate("agalpbuxwgipwhon"),
+                                                    new UpstreamTemplate().withUrlTemplate("wkgshwa"),
+                                                    new UpstreamTemplate().withUrlTemplate("kix"))))
+                                .withNetworkACLs(
+                                    new SignalRNetworkACLs()
+                                        .withDefaultAction(AclAction.DENY)
+                                        .withPublicNetwork(
+                                            new NetworkAcl()
+                                                .withAllow(Arrays.asList(SignalRRequestType.TRACE))
+                                                .withDeny(
+                                                    Arrays
+                                                        .asList(
+                                                            SignalRRequestType.CLIENT_CONNECTION,
+                                                            SignalRRequestType.CLIENT_CONNECTION)))
+                                        .withPrivateEndpoints(
+                                            Arrays
+                                                .asList(
+                                                    new PrivateEndpointAcl().withName("nuzo"),
+                                                    new PrivateEndpointAcl().withName("ftiyqzrnkcq"),
+                                                    new PrivateEndpointAcl().withName("yx"),
+                                                    new PrivateEndpointAcl().withName("whzlsicohoq"))))
+                                .withPublicNetworkAccess("wvl")
+                                .withDisableLocalAuth(true)
+                                .withDisableAadAuth(false),
+                            new SignalRResourceInner()
+                                .withLocation("fm")
+                                .withTags(
+                                    mapOf(
+                                        "melmqkrha",
+                                        "kv",
+                                        "aquhcdhm",
+                                        "vljua",
+                                        "rcrgvx",
+                                        "ualaexqpvfadmw",
+                                        "fmisg",
+                                        "vgomz"))
+                                .withSku(
+                                    new ResourceSku()
+                                        .withName("dhibnuq")
+                                        .withTier(SignalRSkuTier.BASIC)
+                                        .withCapacity(850338934))
+                                .withKind(ServiceKind.SIGNALR)
+                                .withIdentity(
+                                    new ManagedIdentity()
+                                        .withType(ManagedIdentityType.SYSTEM_ASSIGNED)
+                                        .withUserAssignedIdentities(
+                                            mapOf(
+                                                "tcc",
+                                                new UserAssignedIdentityProperty(),
+                                                "hl",
+                                                new UserAssignedIdentityProperty(),
+                                                "ca",
+                                                new UserAssignedIdentityProperty(),
+                                                "kuwbcrnwb",
+                                                new UserAssignedIdentityProperty())))
+                                .withTls(new SignalRTlsSettings().withClientCertEnabled(true))
+                                .withFeatures(
+                                    Arrays
+                                        .asList(
+                                            new SignalRFeature()
+                                                .withFlag(FeatureFlags.SERVICE_MODE)
+                                                .withValue("xbniwdjs")
+                                                .withProperties(mapOf("bpg", "s", "fzab", "xytxhpzxbz")),
+                                            new SignalRFeature()
+                                                .withFlag(FeatureFlags.ENABLE_LIVE_TRACE)
+                                                .withValue("cuh")
+                                                .withProperties(mapOf("bbovplwzbhvgyugu", "ctyqik")),
+                                            new SignalRFeature()
+                                                .withFlag(FeatureFlags.ENABLE_MESSAGING_LOGS)
+                                                .withValue("vmkfssxqu")
+                                                .withProperties(mapOf("zkd", "plgmgsxnk")),
+                                            new SignalRFeature()
+                                                .withFlag(FeatureFlags.ENABLE_CONNECTIVITY_LOGS)
+                                                .withValue("lpvlopw")
+                                                .withProperties(
+                                                    mapOf("baiuebbaumny", "ghxpkdw", "txp", "upedeojnabckhs"))))
+                                .withLiveTraceConfiguration(
+                                    new LiveTraceConfiguration()
+                                        .withEnabled("btfhvpesaps")
+                                        .withCategories(Arrays.asList(new LiveTraceCategory())))
+                                .withResourceLogConfiguration(
+                                    new ResourceLogConfiguration()
+                                        .withCategories(
+                                            Arrays
+                                                .asList(
+                                                    new ResourceLogCategory(),
+                                                    new ResourceLogCategory(),
+                                                    new ResourceLogCategory(),
+                                                    new ResourceLogCategory())))
+                                .withCors(
+                                    new SignalRCorsSettings()
+                                        .withAllowedOrigins(Arrays.asList("htldwk", "zxuutkncwscwsvl", "otogtwrupqs")))
+                                .withServerless(new ServerlessSettings().withConnectionTimeoutInSeconds(1364621442))
+                                .withUpstream(
+                                    new ServerlessUpstreamSettings()
+                                        .withTemplates(
+                                            Arrays
+                                                .asList(
+                                                    new UpstreamTemplate().withUrlTemplate("kvceoveilovnotyf"),
+                                                    new UpstreamTemplate().withUrlTemplate("fcnj"),
+                                                    new UpstreamTemplate().withUrlTemplate("k"))))
+                                .withNetworkACLs(
+                                    new SignalRNetworkACLs()
+                                        .withDefaultAction(AclAction.ALLOW)
+                                        .withPublicNetwork(
+                                            new NetworkAcl()
+                                                .withAllow(
+                                                    Arrays
+                                                        .asList(
+                                                            SignalRRequestType.TRACE,
+                                                            SignalRRequestType.RESTAPI,
+                                                            SignalRRequestType.SERVER_CONNECTION,
+                                                            SignalRRequestType.CLIENT_CONNECTION))
+                                                .withDeny(Arrays.asList(SignalRRequestType.TRACE)))
+                                        .withPrivateEndpoints(
+                                            Arrays
+                                                .asList(
+                                                    new PrivateEndpointAcl().withName("jtoqne"),
+                                                    new PrivateEndpointAcl().withName("mclfplphoxuscr"),
+                                                    new PrivateEndpointAcl().withName("abgy"),
+                                                    new PrivateEndpointAcl().withName("psbjta"))))
+                                .withPublicNetworkAccess("ugxywpmueef")
+                                .withDisableLocalAuth(false)
+                                .withDisableAadAuth(true),
+                            new SignalRResourceInner()
+                                .withLocation("hqjohxcrsbfova")
+                                .withTags(mapOf("bcgjbirxbp", "uvwbhsqfs"))
+                                .withSku(
+                                    new ResourceSku()
+                                        .withName("ashsfwxos")
+                                        .withTier(SignalRSkuTier.FREE)
+                                        .withCapacity(1748456219))
+                                .withKind(ServiceKind.SIGNALR)
+                                .withIdentity(
+                                    new ManagedIdentity()
+                                        .withType(ManagedIdentityType.NONE)
+                                        .withUserAssignedIdentities(
+                                            mapOf(
+                                                "cfbu",
+                                                new UserAssignedIdentityProperty(),
+                                                "swbxqz",
+                                                new UserAssignedIdentityProperty(),
+                                                "ivetvtcq",
+                                                new UserAssignedIdentityProperty(),
+                                                "fxoblytkb",
+                                                new UserAssignedIdentityProperty())))
+                                .withTls(new SignalRTlsSettings().withClientCertEnabled(true))
+                                .withFeatures(
+                                    Arrays
+                                        .asList(
+                                            new SignalRFeature()
+                                                .withFlag(FeatureFlags.ENABLE_CONNECTIVITY_LOGS)
+                                                .withValue("y")
+                                                .withProperties(
+                                                    mapOf(
+                                                        "zlmwlxkvugfhz",
+                                                        "vgqzcjrvxd",
+                                                        "hnnpr",
+                                                        "vawjvzunlu",
+                                                        "ultskzbbtdz",
+                                                        "xipeilpjzuaejx",
+                                                        "ekg",
+                                                        "mv")),
+                                            new SignalRFeature()
+                                                .withFlag(FeatureFlags.ENABLE_CONNECTIVITY_LOGS)
+                                                .withValue("ozuhkfp")
+                                                .withProperties(
+                                                    mapOf(
+                                                        "luu",
+                                                        "yofd",
+                                                        "smv",
+                                                        "dttouwaboekqvkel",
+                                                        "aln",
+                                                        "xwyjsflhhc",
+                                                        "qcslyjpkiid",
+                                                        "ixisxyawjoy"))))
+                                .withLiveTraceConfiguration(
+                                    new LiveTraceConfiguration()
+                                        .withEnabled("xznelixhnrztf")
+                                        .withCategories(Arrays.asList(new LiveTraceCategory())))
+                                .withResourceLogConfiguration(
+                                    new ResourceLogConfiguration()
+                                        .withCategories(
+                                            Arrays
+                                                .asList(
+                                                    new ResourceLogCategory(),
+                                                    new ResourceLogCategory(),
+                                                    new ResourceLogCategory())))
+                                .withCors(
+                                    new SignalRCorsSettings()
+                                        .withAllowedOrigins(
+                                            Arrays.asList("laulppg", "dtpnapnyiropuhp", "gvpgy", "gqgitxmedjvcsl")))
+                                .withServerless(new ServerlessSettings().withConnectionTimeoutInSeconds(598877873))
+                                .withUpstream(
+                                    new ServerlessUpstreamSettings()
+                                        .withTemplates(
+                                            Arrays
+                                                .asList(
+                                                    new UpstreamTemplate().withUrlTemplate("wzz"),
+                                                    new UpstreamTemplate().withUrlTemplate("xgk"),
+                                                    new UpstreamTemplate().withUrlTemplate("rmgucnap"))))
+                                .withNetworkACLs(
+                                    new SignalRNetworkACLs()
+                                        .withDefaultAction(AclAction.ALLOW)
+                                        .withPublicNetwork(
+                                            new NetworkAcl()
+                                                .withAllow(
+                                                    Arrays
+                                                        .asList(
+                                                            SignalRRequestType.SERVER_CONNECTION,
+                                                            SignalRRequestType.CLIENT_CONNECTION))
+                                                .withDeny(
+                                                    Arrays
+                                                        .asList(
+                                                            SignalRRequestType.CLIENT_CONNECTION,
+                                                            SignalRRequestType.SERVER_CONNECTION,
+                                                            SignalRRequestType.RESTAPI,
+                                                            SignalRRequestType.RESTAPI)))
+                                        .withPrivateEndpoints(
+                                            Arrays
+                                                .asList(
+                                                    new PrivateEndpointAcl().withName("b"),
+                                                    new PrivateEndpointAcl().withName("ac"),
+                                                    new PrivateEndpointAcl().withName("op"))))
+                                .withPublicNetworkAccess("qrhhu")
+                                .withDisableLocalAuth(true)
+                                .withDisableAadAuth(false),
+                            new SignalRResourceInner()
+                                .withLocation("vqtmnub")
+                                .withTags(mapOf("mond", "pzk", "gkopkwhojvpajqgx", "mquxvypo", "qvmkcxo", "smocmbq"))
+                                .withSku(
+                                    new ResourceSku()
+                                        .withName("fqqnvwpmqtaruo")
+                                        .withTier(SignalRSkuTier.PREMIUM)
+                                        .withCapacity(604177419))
+                                .withKind(ServiceKind.RAW_WEB_SOCKETS)
+                                .withIdentity(
+                                    new ManagedIdentity()
+                                        .withType(ManagedIdentityType.SYSTEM_ASSIGNED)
+                                        .withUserAssignedIdentities(
+                                            mapOf(
+                                                "ld",
+                                                new UserAssignedIdentityProperty(),
+                                                "pkhjwni",
+                                                new UserAssignedIdentityProperty(),
+                                                "sbpfvmwyhr",
+                                                new UserAssignedIdentityProperty())))
+                                .withTls(new SignalRTlsSettings().withClientCertEnabled(false))
+                                .withFeatures(
+                                    Arrays
+                                        .asList(
+                                            new SignalRFeature()
+                                                .withFlag(FeatureFlags.ENABLE_CONNECTIVITY_LOGS)
+                                                .withValue("pp")
+                                                .withProperties(
+                                                    mapOf("sikvmkqzeqqkdlt", "cxogaokonzm", "eodkwobda", "zxmhhvhgu")),
+                                            new SignalRFeature()
+                                                .withFlag(FeatureFlags.ENABLE_LIVE_TRACE)
+                                                .withValue("tibqdxbxwakb")
+                                                .withProperties(mapOf("iplbpodxunkbebxm", "xndlkzgxhu")),
+                                            new SignalRFeature()
+                                                .withFlag(FeatureFlags.ENABLE_MESSAGING_LOGS)
+                                                .withValue("yyntwl")
+                                                .withProperties(mapOf("l", "tkoievseotgq", "xbmp", "tmuwlauwzi")),
+                                            new SignalRFeature()
+                                                .withFlag(FeatureFlags.ENABLE_CONNECTIVITY_LOGS)
+                                                .withValue("jefuzmuvpbttdumo")
+                                                .withProperties(
+                                                    mapOf(
+                                                        "mnzb",
+                                                        "xe",
+                                                        "el",
+                                                        "bhjpglkfgohdne",
+                                                        "fikdowwqu",
+                                                        "phsdyhto"))))
+                                .withLiveTraceConfiguration(
+                                    new LiveTraceConfiguration()
+                                        .withEnabled("zx")
+                                        .withCategories(
+                                            Arrays.asList(new LiveTraceCategory(), new LiveTraceCategory())))
+                                .withResourceLogConfiguration(
+                                    new ResourceLogConfiguration()
+                                        .withCategories(
+                                            Arrays
+                                                .asList(
+                                                    new ResourceLogCategory(),
+                                                    new ResourceLogCategory(),
+                                                    new ResourceLogCategory())))
+                                .withCors(new SignalRCorsSettings().withAllowedOrigins(Arrays.asList("o", "osggbhc")))
+                                .withServerless(new ServerlessSettings().withConnectionTimeoutInSeconds(481884715))
+                                .withUpstream(
+                                    new ServerlessUpstreamSettings()
+                                        .withTemplates(
+                                            Arrays
+                                                .asList(
+                                                    new UpstreamTemplate().withUrlTemplate("n"),
+                                                    new UpstreamTemplate().withUrlTemplate("aljutiiswac"),
+                                                    new UpstreamTemplate().withUrlTemplate("fgdkzzew"),
+                                                    new UpstreamTemplate().withUrlTemplate("fvhqc"))))
+                                .withNetworkACLs(
+                                    new SignalRNetworkACLs()
+                                        .withDefaultAction(AclAction.ALLOW)
+                                        .withPublicNetwork(
+                                            new NetworkAcl()
+                                                .withAllow(Arrays.asList(SignalRRequestType.SERVER_CONNECTION))
+                                                .withDeny(
+                                                    Arrays
+                                                        .asList(
+                                                            SignalRRequestType.SERVER_CONNECTION,
+                                                            SignalRRequestType.SERVER_CONNECTION,
+                                                            SignalRRequestType.RESTAPI)))
+                                        .withPrivateEndpoints(
+                                            Arrays
+                                                .asList(
+                                                    new PrivateEndpointAcl().withName("dmhdlxyjr"),
+                                                    new PrivateEndpointAcl().withName("sag"),
+                                                    new PrivateEndpointAcl().withName("fcnihgwq"))))
+                                .withPublicNetworkAccess("nedgfbc")
                                 .withDisableLocalAuth(true)
                                 .withDisableAadAuth(false)))
-                .withNextLink("alhbx");
+                .withNextLink("ibrhosxsdqr");
         model = BinaryData.fromObject(model).toObject(SignalRResourceList.class);
-        Assertions.assertEquals("uckyf", model.value().get(0).location());
-        Assertions.assertEquals("fidfvzw", model.value().get(0).tags().get("zuhtymwisdkfthwx"));
-        Assertions.assertEquals("jaoyfhrtx", model.value().get(0).sku().name());
+        Assertions.assertEquals("ujqgidok", model.value().get(0).location());
+        Assertions.assertEquals("jyoxgvclt", model.value().get(0).tags().get("gsncghkjeszz"));
+        Assertions.assertEquals("tpngjcrcczsqpjh", model.value().get(0).sku().name());
         Assertions.assertEquals(SignalRSkuTier.FREE, model.value().get(0).sku().tier());
-        Assertions.assertEquals(867367638, model.value().get(0).sku().capacity());
-        Assertions.assertEquals(ServiceKind.RAW_WEB_SOCKETS, model.value().get(0).kind());
-        Assertions.assertEquals(ManagedIdentityType.SYSTEM_ASSIGNED, model.value().get(0).identity().type());
-        Assertions.assertEquals("f", model.value().get(0).publicNetworkAccess());
+        Assertions.assertEquals(1901274446, model.value().get(0).sku().capacity());
+        Assertions.assertEquals(ServiceKind.SIGNALR, model.value().get(0).kind());
+        Assertions.assertEquals(ManagedIdentityType.NONE, model.value().get(0).identity().type());
+        Assertions.assertEquals(true, model.value().get(0).tls().clientCertEnabled());
+        Assertions.assertEquals(FeatureFlags.ENABLE_MESSAGING_LOGS, model.value().get(0).features().get(0).flag());
+        Assertions.assertEquals("ucgygevqz", model.value().get(0).features().get(0).value());
+        Assertions.assertEquals("pmr", model.value().get(0).features().get(0).properties().get("p"));
+        Assertions.assertEquals("drqjsdpy", model.value().get(0).liveTraceConfiguration().enabled());
+        Assertions.assertEquals("ejzicwifsjtt", model.value().get(0).cors().allowedOrigins().get(0));
+        Assertions.assertEquals(1232407744, model.value().get(0).serverless().connectionTimeoutInSeconds());
+        Assertions.assertEquals("p", model.value().get(0).upstream().templates().get(0).urlTemplate());
+        Assertions.assertEquals(AclAction.DENY, model.value().get(0).networkACLs().defaultAction());
+        Assertions
+            .assertEquals(SignalRRequestType.TRACE, model.value().get(0).networkACLs().publicNetwork().allow().get(0));
+        Assertions
+            .assertEquals(
+                SignalRRequestType.CLIENT_CONNECTION, model.value().get(0).networkACLs().publicNetwork().deny().get(0));
+        Assertions.assertEquals("nuzo", model.value().get(0).networkACLs().privateEndpoints().get(0).name());
+        Assertions.assertEquals("wvl", model.value().get(0).publicNetworkAccess());
         Assertions.assertEquals(true, model.value().get(0).disableLocalAuth());
-        Assertions.assertEquals(true, model.value().get(0).disableAadAuth());
-        Assertions.assertEquals("alhbx", model.nextLink());
+        Assertions.assertEquals(false, model.value().get(0).disableAadAuth());
+        Assertions.assertEquals("ibrhosxsdqr", model.nextLink());
     }
 
+    // Use "Map.of" if available
     @SuppressWarnings("unchecked")
     private static <T> Map<String, T> mapOf(Object... inputs) {
         Map<String, T> map = new HashMap<>();

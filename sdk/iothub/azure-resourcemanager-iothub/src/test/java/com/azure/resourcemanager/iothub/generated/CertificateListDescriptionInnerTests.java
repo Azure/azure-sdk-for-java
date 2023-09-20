@@ -17,13 +17,21 @@ public final class CertificateListDescriptionInnerTests {
         CertificateListDescriptionInner model =
             BinaryData
                 .fromString(
-                    "{\"value\":[{\"properties\":{\"subject\":\"uoegrpkhjwniyqs\",\"expiry\":\"Mon, 01 Mar 2021"
-                        + " 06:19:30 GMT\",\"thumbprint\":\"pdggkzzlvm\",\"isVerified\":true,\"created\":\"Fri, 04 Jun"
-                        + " 2021 21:38:56 GMT\",\"updated\":\"Wed, 28 Apr 2021 10:55:20"
-                        + " GMT\",\"certificate\":\"fv\"},\"etag\":\"fy\",\"id\":\"sbpfvmwyhr\",\"name\":\"ouyftaakc\",\"type\":\"wiyzvqtmnubexkp\"}]}")
+                    "{\"value\":[{\"properties\":{\"subject\":\"pi\",\"expiry\":\"Tue, 19 Oct 2021 14:06:55"
+                        + " GMT\",\"thumbprint\":\"asipqiio\",\"isVerified\":true,\"created\":\"Thu, 18 Mar 2021"
+                        + " 06:13:46 GMT\",\"updated\":\"Wed, 21 Apr 2021 03:54:57"
+                        + " GMT\",\"certificate\":\"lp\"},\"etag\":\"cciuqgbdbutau\",\"id\":\"fbtkuwhhmhyk\",\"name\":\"joxafnndlpi\",\"type\":\"hkoymkcdyhbp\"},{\"properties\":{\"subject\":\"wdreqnovvqfovl\",\"expiry\":\"Sun,"
+                        + " 13 Jun 2021 02:13:45"
+                        + " GMT\",\"thumbprint\":\"suwsyrsnds\",\"isVerified\":false,\"created\":\"Wed, 20 Jan 2021"
+                        + " 22:42:12 GMT\",\"updated\":\"Sat, 23 Oct 2021 00:50:26"
+                        + " GMT\",\"certificate\":\"aeaeneqnzarrw\"},\"etag\":\"uu\",\"id\":\"jfqka\",\"name\":\"e\",\"type\":\"iipfpubj\"},{\"properties\":{\"subject\":\"wifto\",\"expiry\":\"Thu,"
+                        + " 18 Mar 2021 06:53:54"
+                        + " GMT\",\"thumbprint\":\"uvksgplsaknynfsy\",\"isVerified\":true,\"created\":\"Sun, 28 Feb"
+                        + " 2021 17:47:31 GMT\",\"updated\":\"Wed, 21 Apr 2021 04:25:24"
+                        + " GMT\",\"certificate\":\"xodlqiyntorzih\"},\"etag\":\"osjswsr\",\"id\":\"slyzrpzbchckqq\",\"name\":\"qioxi\",\"type\":\"suiizynkedyat\"}]}")
                 .toObject(CertificateListDescriptionInner.class);
         Assertions.assertEquals(true, model.value().get(0).properties().isVerified());
-        Assertions.assertEquals("fv", model.value().get(0).properties().certificate());
+        Assertions.assertEquals("lp", model.value().get(0).properties().certificate());
     }
 
     @org.junit.jupiter.api.Test
@@ -34,10 +42,17 @@ public final class CertificateListDescriptionInnerTests {
                     Arrays
                         .asList(
                             new CertificateDescriptionInner()
+                                .withProperties(new CertificateProperties().withIsVerified(true).withCertificate("lp")),
+                            new CertificateDescriptionInner()
                                 .withProperties(
-                                    new CertificateProperties().withIsVerified(true).withCertificate("fv"))));
+                                    new CertificateProperties().withIsVerified(false).withCertificate("aeaeneqnzarrw")),
+                            new CertificateDescriptionInner()
+                                .withProperties(
+                                    new CertificateProperties()
+                                        .withIsVerified(true)
+                                        .withCertificate("xodlqiyntorzih"))));
         model = BinaryData.fromObject(model).toObject(CertificateListDescriptionInner.class);
         Assertions.assertEquals(true, model.value().get(0).properties().isVerified());
-        Assertions.assertEquals("fv", model.value().get(0).properties().certificate());
+        Assertions.assertEquals("lp", model.value().get(0).properties().certificate());
     }
 }

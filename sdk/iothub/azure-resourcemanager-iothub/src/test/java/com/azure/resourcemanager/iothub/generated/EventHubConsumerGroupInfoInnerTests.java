@@ -15,17 +15,19 @@ public final class EventHubConsumerGroupInfoInnerTests {
         EventHubConsumerGroupInfoInner model =
             BinaryData
                 .fromString(
-                    "{\"properties\":{\"cjooxdjebwpucwwf\":\"dataxcug\"},\"etag\":\"vbvmeu\",\"id\":\"civyhzceuo\",\"name\":\"gjrwjueiotwmcdyt\",\"type\":\"x\"}")
+                    "{\"properties\":{\"ow\":\"databm\",\"qlveualupjmkh\":\"datawpr\",\"riplrbpbewtg\":\"dataxobbcswsrt\"},\"etag\":\"gblcgwxzvlvq\",\"id\":\"jkbegibtnmxiebww\",\"name\":\"loayqcgw\",\"type\":\"tzjuzgwyzmhtxo\"}")
                 .toObject(EventHubConsumerGroupInfoInner.class);
     }
 
     @org.junit.jupiter.api.Test
     public void testSerialize() throws Exception {
         EventHubConsumerGroupInfoInner model =
-            new EventHubConsumerGroupInfoInner().withProperties(mapOf("cjooxdjebwpucwwf", "dataxcug"));
+            new EventHubConsumerGroupInfoInner()
+                .withProperties(mapOf("ow", "databm", "qlveualupjmkh", "datawpr", "riplrbpbewtg", "dataxobbcswsrt"));
         model = BinaryData.fromObject(model).toObject(EventHubConsumerGroupInfoInner.class);
     }
 
+    // Use "Map.of" if available
     @SuppressWarnings("unchecked")
     private static <T> Map<String, T> mapOf(Object... inputs) {
         Map<String, T> map = new HashMap<>();
