@@ -51,6 +51,10 @@
 * `withCosmosDBSqlCollections(java.util.List)` was removed
 * `cosmosDBSqlCollections()` was removed
 
+#### `models.ErrorDetails` was modified
+
+* `getHttpStatusCode()` was removed
+
 ### Features Added
 
 #### `models.RoutingCosmosDBSqlApiProperties` was modified
