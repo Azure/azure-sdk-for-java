@@ -47,32 +47,12 @@ public class SecretReferenceConfigurationSettingUnitTest {
     public void throwExceptionWhenInvalidNonJsonSecretReferenceValue() {
         // Create a new feature flag configuration setting,
         SecretReferenceConfigurationSetting setting = getSecretReferenceConfigurationSetting(NEW_KEY, SECRET_ID_VALUE);
-
-        String expectedValue = getSecretReferenceConfigurationSettingValue(SECRET_ID_VALUE);
-        String originalValue = setting.getValue();
-        assertEquals(expectedValue, originalValue);
-        assertThrows(IllegalArgumentException.class, () -> setting.setValue("invalidValueForSecretReferenceConfigurationSetting"));
-        assertEquals(originalValue, setting.getValue());
-        assertThrows(IllegalArgumentException.class, () -> setting.getSecretId());
-    }
-
-    @Test
-    public void reserveUnknownPropertiesTest() {
-        SecretReferenceConfigurationSetting setting = getSecretReferenceConfigurationSetting(NEW_KEY, SECRET_ID_VALUE);
-        String newSettingValueJSON = getUnknownPropertiesSecretReferenceConfigurationSettingValue(UPDATED_SECRET_ID_VALUE);
-
-        setting.setValue(newSettingValueJSON);
-        assertEquals(newSettingValueJSON, setting.getValue());
-        assertEquals(UPDATED_SECRET_ID_VALUE, setting.getSecretId());
+        // Throws IllegalStateException when setting value to non-JSON
+        assertThrows(IllegalStateException.class, () -> setting.setValue("Hello World"));
     }
 
     String getSecretReferenceConfigurationSettingValue(String secretId) {
         return String.format("{\"uri\":\"%s\"}", secretId);
-    }
-
-    String getUnknownPropertiesSecretReferenceConfigurationSettingValue(String secretId) {
-        return String.format("{\"uri\":\"%s\",\"objectFiledName\":{\"unknown\":\"unknown\",\"unknown2\":\"unknown2\"},"
-            + "\"arrayFieldName\":[{\"name\":\"Microsoft.Percentage\",\"parameters\":{\"Value\":\"30\"}}]}", secretId);
     }
 
     private SecretReferenceConfigurationSetting getSecretReferenceConfigurationSetting(String key, String secretId) {
