@@ -54,14 +54,14 @@ public class SyncRestProxy extends RestProxyBase {
         return httpPipeline.sendSync(request, contextData);
     }
 
+    @SuppressWarnings({"try", "unused"})
     @Override
     public Object invoke(Object proxy, Method method, RequestOptions options, EnumSet<ErrorOptions> errorOptions,
         Consumer<HttpRequest> requestCallback, SwaggerMethodParser methodParser, HttpRequest request, Context context) {
         HttpResponseDecoder.HttpDecodedResponse decodedResponse = null;
 
         context = startTracingSpan(methodParser, context);
-        AutoCloseable scope = tracer.makeSpanCurrent(context);
-        try {
+        try (AutoCloseable scope = tracer.makeSpanCurrent(context)) {
             // If there is 'RequestOptions' apply its request callback operations before validating the body.
             // This is because the callbacks may mutate the request body.
             if (options != null && requestCallback != null) {
@@ -80,22 +80,17 @@ public class SyncRestProxy extends RestProxyBase {
 
             return handleRestReturnType(decodedResponse, methodParser, methodParser.getReturnType(), context, options,
                 errorOptions);
-        } catch (RuntimeException e) {
+        } catch (Exception e) {
             tracer.end(null, e, context);
-            throw LOGGER.logExceptionAsError(e);
-        } finally {
-            try {
-                scope.close();
-            } catch (Exception e) {
-                LOGGER.verbose("Failed to close scope");
-            }
+            sneakyThrows(e);
+            return null;
         }
     }
 
     /**
      * Create a publisher that (1) emits error if the provided response {@code decodedResponse} has 'disallowed status
      * code' OR (2) emits provided response if it's status code ia allowed.
-     *
+     * <p>
      * 'disallowed status code' is one of the status code defined in the provided SwaggerMethodParser or is in the int[]
      * of additional allowed status codes.
      *
@@ -117,24 +112,17 @@ public class SyncRestProxy extends RestProxyBase {
         }
 
         // Otherwise, the response wasn't successful and the error object needs to be parsed.
-        Exception e;
         BinaryData responseData = decodedResponse.getSourceResponse().getBodyAsBinaryData();
         byte[] responseBytes = responseData == null ? null : responseData.toBytes();
         if (responseBytes == null || responseBytes.length == 0) {
             //  No body, create exception empty content string no exception body object.
-            e = instantiateUnexpectedException(methodParser.getUnexpectedException(responseStatusCode),
+            throw instantiateUnexpectedException(methodParser.getUnexpectedException(responseStatusCode),
                 decodedResponse.getSourceResponse(), null, null);
         } else {
             Object decodedBody = decodedResponse.getDecodedBody(responseBytes);
             // create exception with un-decodable content string and without exception body object.
-            e = instantiateUnexpectedException(methodParser.getUnexpectedException(responseStatusCode),
+            throw instantiateUnexpectedException(methodParser.getUnexpectedException(responseStatusCode),
                 decodedResponse.getSourceResponse(), responseBytes, decodedBody);
-        }
-
-        if (e instanceof RuntimeException) {
-            throw LOGGER.logExceptionAsError((RuntimeException) e);
-        } else {
-            throw LOGGER.logExceptionAsError(new RuntimeException(e));
         }
     }
 

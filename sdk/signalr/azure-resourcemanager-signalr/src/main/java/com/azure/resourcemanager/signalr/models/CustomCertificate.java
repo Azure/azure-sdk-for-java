@@ -4,7 +4,6 @@
 
 package com.azure.resourcemanager.signalr.models;
 
-import com.azure.core.management.SystemData;
 import com.azure.core.util.Context;
 import com.azure.resourcemanager.signalr.fluent.models.CustomCertificateInner;
 
@@ -30,13 +29,6 @@ public interface CustomCertificate {
      * @return the type value.
      */
     String type();
-
-    /**
-     * Gets the systemData property: Metadata pertaining to creation and last modification of the resource.
-     *
-     * @return the systemData value.
-     */
-    SystemData systemData();
 
     /**
      * Gets the provisioningState property: Provisioning state of the resource.
@@ -88,23 +80,25 @@ public interface CustomCertificate {
             DefinitionStages.WithKeyVaultSecretName,
             DefinitionStages.WithCreate {
     }
+
     /** The CustomCertificate definition stages. */
     interface DefinitionStages {
         /** The first stage of the CustomCertificate definition. */
         interface Blank extends WithParentResource {
         }
+
         /** The stage of the CustomCertificate definition allowing to specify parent resource. */
         interface WithParentResource {
             /**
              * Specifies resourceGroupName, resourceName.
              *
-             * @param resourceGroupName The name of the resource group that contains the resource. You can obtain this
-             *     value from the Azure Resource Manager API or the portal.
+             * @param resourceGroupName The name of the resource group. The name is case insensitive.
              * @param resourceName The name of the resource.
              * @return the next definition stage.
              */
             WithKeyVaultBaseUri withExistingSignalR(String resourceGroupName, String resourceName);
         }
+
         /** The stage of the CustomCertificate definition allowing to specify keyVaultBaseUri. */
         interface WithKeyVaultBaseUri {
             /**
@@ -115,6 +109,7 @@ public interface CustomCertificate {
              */
             WithKeyVaultSecretName withKeyVaultBaseUri(String keyVaultBaseUri);
         }
+
         /** The stage of the CustomCertificate definition allowing to specify keyVaultSecretName. */
         interface WithKeyVaultSecretName {
             /**
@@ -125,6 +120,7 @@ public interface CustomCertificate {
              */
             WithCreate withKeyVaultSecretName(String keyVaultSecretName);
         }
+
         /**
          * The stage of the CustomCertificate definition which contains all the minimum required properties for the
          * resource to be created, but also allows for any other optional properties to be specified.
@@ -145,6 +141,7 @@ public interface CustomCertificate {
              */
             CustomCertificate create(Context context);
         }
+
         /** The stage of the CustomCertificate definition allowing to specify keyVaultSecretVersion. */
         interface WithKeyVaultSecretVersion {
             /**
@@ -156,6 +153,7 @@ public interface CustomCertificate {
             WithCreate withKeyVaultSecretVersion(String keyVaultSecretVersion);
         }
     }
+
     /**
      * Begins update for the CustomCertificate resource.
      *
@@ -180,9 +178,11 @@ public interface CustomCertificate {
          */
         CustomCertificate apply(Context context);
     }
+
     /** The CustomCertificate update stages. */
     interface UpdateStages {
     }
+
     /**
      * Refreshes the resource to sync with Azure.
      *

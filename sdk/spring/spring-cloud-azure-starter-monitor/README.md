@@ -4,7 +4,7 @@ This Spring Boot starter provides telemetry data to Azure Monitor for Spring Boo
 
 _For a Spring Boot application running on a JVM (not with a GraalVM native image), we recommend using the [Application Insights Java agent][application_insights_java_agent_spring_boot].
 
-[Source code][source_code] | [Package (Maven)][package_mvn] | [API reference documentation][api_reference_doc] | [Product Documentation][product_documentation]
+[Source code][source_code] | (Package yet to release) | [API reference documentation][api_reference_doc] | [Product Documentation][product_documentation]
 
 ## Getting started
 
@@ -27,7 +27,47 @@ For more information, please read [introduction to Application Insights][applica
 ```
 [//]: # ({x-version-update-end})
 
-This dependency is a Spring Boot starter that provides telemetry data for HTTP requests.
+You may have to align the OpenTelemetry versions of Spring Boot 3 and `spring-cloud-azure-starter-monitor`. If this is the case, you will notice a WARN message during the application start-up:
+```
+WARN  c.a.m.a.s.OpenTelemetryVersionCheckRunner - The OpenTelemetry version is not compatible with the spring-cloud-azure-starter-monitor dependency. The OpenTelemetry version should be
+```
+To fix this with Maven, you can set the `opentelemetry.version` property:
+
+```xml
+<properties>
+   <opentelemetry.version>{otel-version-given-in-the-warn-log}</opentelemetry.version>
+</properties>
+```
+
+Another way is to declare the `opentelemetry-bom` BOM:
+
+```xml
+<dependencyManagement>
+    <dependencies>
+        <dependency>
+            <groupId>io.opentelemetry</groupId>
+            <artifactId>opentelemetry-bom</artifactId>
+            <version>{otel-version-given-in-the-warn-log}</version>
+            <type>pom</type>
+        </dependency>
+    </dependencies>
+</dependencyManagement>
+```
+
+With Gradle, you can fix the issue in this way:
+
+```
+plugins {
+    id 'org.springframework.boot'
+    id 'io.spring.dependency-management'
+}
+
+dependencyManagement {
+    imports {
+        mavenBom 'io.opentelemetry:opentelemetry-bom:{otel-version-given-in-the-warn-log}'
+    }
+}
+```
 
 ### Authentication
 
@@ -47,15 +87,28 @@ You can then configure the connection string in two different ways:
 You can configure additional instrumentations with [OpenTelemetry instrumentations libraries](https://github.com/open-telemetry/opentelemetry-java-instrumentation/blob/main/docs/supported-libraries.md#libraries--frameworks).
 
 ### Build your Spring native application
-At this step, you can build your application as a native image and start the native image.
-
-An example:
+At this step, you can build your application as a native image and start the native image:
 
 ```
 mvn -Pnative spring-boot:build-image
 docker run -e APPLICATIONINSIGHTS_CONNECTION_STRING="{CONNECTION_STRING}" {image-name} 
 ```
-where you have to replace `{CONNECTION_STRING}` and `{image-name}` by your connection string and the image name.
+where you have to replace `{CONNECTION_STRING}` and `{image-name}` by your connection string and the native image name.
+
+## Debug your Spring native application
+
+If something does not work as expected, you can enable self-diagnostics features at DEBUG level to get some insights.
+
+You can configure the self-diagnostics level by using the APPLICATIONINSIGHTS_SELF_DIAGNOSTICS_LEVEL environment variable. You can configure the level with ERROR, WARN, INFO, DEBUG, or TRACE.
+
+_The APPLICATIONINSIGHTS_SELF_DIAGNOSTICS_LEVEL environment variable only works for Logback today._
+
+The following line shows you how to add self-diagnostics at the DEBUG level when running a docker container:
+```
+docker run -e APPLICATIONINSIGHTS_SELF_DIAGNOSTICS_LEVEL=DEBUG {image-name}
+```
+
+You have to replace `{image-name}` by your docker image name.
 
 ## Contributing
 
@@ -72,7 +125,7 @@ This project has adopted the [Microsoft Open Source Code of Conduct][coc]. For m
 
 <!-- LINKS -->
 [source_code]: https://github.com/Azure/azure-sdk-for-java/tree/main/sdk/spring/spring-cloud-azure-starter-monitor/src
-[package_mvn]: https://mvnrepository.com/artifact/com.azure/applicationinsights-spring-native
+<!-- [package_mvn]: https://central.sonatype.com/artifact/com.azure.spring/spring-cloud-azure-starter-monitor -->
 [api_reference_doc]: https://docs.microsoft.com/azure/azure-monitor/overview
 [product_documentation]: https://docs.microsoft.com/azure/azure-monitor/overview
 [azure_subscription]: https://azure.microsoft.com/free/

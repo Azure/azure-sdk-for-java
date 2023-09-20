@@ -13,7 +13,7 @@ public final class FleetCredentialResultsInnerTests {
         FleetCredentialResultsInner model =
             BinaryData
                 .fromString(
-                    "{\"kubeconfigs\":[{\"name\":\"zoxxjtf\"},{\"name\":\"uwfzitonpe\"},{\"name\":\"jkjlxofpdvhpfx\"},{\"name\":\"ininmay\"}]}")
+                    "{\"kubeconfigs\":[{\"name\":\"wyiftyhxhur\"},{\"name\":\"tyxolniwpwc\"},{\"name\":\"fkgiawxk\"},{\"name\":\"plwckbas\"}]}")
                 .toObject(FleetCredentialResultsInner.class);
     }
 

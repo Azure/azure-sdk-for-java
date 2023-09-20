@@ -36,10 +36,8 @@ import org.apache.qpid.proton.amqp.transaction.TransactionalState;
 import org.apache.qpid.proton.amqp.transport.DeliveryState;
 import org.apache.qpid.proton.engine.SslDomain;
 import org.apache.qpid.proton.message.Message;
-import org.junit.jupiter.api.AfterAll;
 import org.junit.jupiter.api.AfterEach;
 import org.junit.jupiter.api.Assertions;
-import org.junit.jupiter.api.BeforeAll;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.mockito.ArgumentCaptor;
@@ -104,6 +102,7 @@ class ServiceBusSenderAsyncClientTest {
     private static final String TXN_ID_STRING = "1";
     private static final String CLIENT_IDENTIFIER = "my-client-identifier";
     private static final ServiceBusSenderInstrumentation DEFAULT_INSTRUMENTATION = new ServiceBusSenderInstrumentation(null, null, NAMESPACE, ENTITY_NAME);
+    private static final Duration DEFAULT_TIMEOUT = Duration.ofSeconds(30);
     @Mock
     private AmqpSendLink sendLink;
     @Mock
@@ -146,16 +145,6 @@ class ServiceBusSenderAsyncClientTest {
     private ServiceBusSenderAsyncClient sender;
     private ServiceBusConnectionProcessor connectionProcessor;
     private ConnectionOptions connectionOptions;
-
-    @BeforeAll
-    static void beforeAll() {
-        StepVerifier.setDefaultTimeout(Duration.ofSeconds(30));
-    }
-
-    @AfterAll
-    static void afterAll() {
-        StepVerifier.resetDefaultTimeout();
-    }
 
     @BeforeEach
     void setup() {
@@ -210,7 +199,8 @@ class ServiceBusSenderAsyncClientTest {
     @Test
     void createBatchNull() {
         StepVerifier.create(sender.createMessageBatch(null))
-            .verifyErrorMatches(error -> error instanceof NullPointerException);
+            .expectErrorMatches(error -> error instanceof NullPointerException)
+            .verify(DEFAULT_TIMEOUT);
     }
 
     /**
@@ -229,7 +219,8 @@ class ServiceBusSenderAsyncClientTest {
                 Assertions.assertEquals(MAX_MESSAGE_LENGTH_BYTES, batch.getMaxSizeInBytes());
                 Assertions.assertEquals(0, batch.getCount());
             })
-            .verifyComplete();
+            .expectComplete()
+            .verify(DEFAULT_TIMEOUT);
     }
 
     /**
@@ -253,7 +244,7 @@ class ServiceBusSenderAsyncClientTest {
         // Act & Assert
         StepVerifier.create(sender.createMessageBatch(options))
             .expectError(ServiceBusException.class)
-            .verify();
+            .verify(DEFAULT_TIMEOUT);
     }
 
     /**
@@ -288,14 +279,16 @@ class ServiceBusSenderAsyncClientTest {
                 Assertions.assertEquals(batchSize, batch.getMaxSizeInBytes());
                 Assertions.assertTrue(batch.tryAddMessage(event));
             })
-            .verifyComplete();
+            .expectComplete()
+            .verify(DEFAULT_TIMEOUT);
 
         StepVerifier.create(sender.createMessageBatch(options))
             .assertNext(batch -> {
                 Assertions.assertEquals(batchSize, batch.getMaxSizeInBytes());
                 Assertions.assertFalse(batch.tryAddMessage(tooLargeEvent));
             })
-            .verifyComplete();
+            .expectComplete()
+            .verify(DEFAULT_TIMEOUT);
     }
 
     @Test
@@ -316,7 +309,8 @@ class ServiceBusSenderAsyncClientTest {
 
         // Act & Assert
         StepVerifier.create(sender.scheduleMessages(messages, instant))
-            .verifyError(ServiceBusException.class);
+            .expectError(ServiceBusException.class)
+            .verify(DEFAULT_TIMEOUT);
 
         verify(managementNode, never()).schedule(any(), eq(instant), anyInt(), eq(LINK_NAME), isNull());
     }
@@ -345,7 +339,8 @@ class ServiceBusSenderAsyncClientTest {
 
         // Act
         StepVerifier.create(sender.sendMessages(batch, transactionContext))
-            .verifyComplete();
+            .expectComplete()
+            .verify(DEFAULT_TIMEOUT);
 
         // Assert
         verify(sendLink).send(messagesCaptor.capture(), amqpDeliveryStateCaptor.capture());
@@ -382,7 +377,8 @@ class ServiceBusSenderAsyncClientTest {
         when(sendLink.send(anyList())).thenReturn(Mono.empty());
         // Act
         StepVerifier.create(sender.sendMessages(batch))
-            .verifyComplete();
+            .expectComplete()
+            .verify(DEFAULT_TIMEOUT);
 
         // Assert
         verify(sendLink).send(messagesCaptor.capture());
@@ -441,7 +437,8 @@ class ServiceBusSenderAsyncClientTest {
 
         // Act
         StepVerifier.create(sender.sendMessages(batch))
-            .verifyComplete();
+            .expectComplete()
+            .verify(DEFAULT_TIMEOUT);
 
         // Assert
         verify(tracer1, times(4))
@@ -549,7 +546,8 @@ class ServiceBusSenderAsyncClientTest {
         // Act
         StepVerifier.create(sender.sendMessage(new ServiceBusMessage(TEST_CONTENTS))
                 .then(sender.sendMessage(new ServiceBusMessage(TEST_CONTENTS))))
-            .verifyComplete();
+            .expectComplete()
+            .verify(DEFAULT_TIMEOUT);
 
         // Assert
         TestCounter sentMessagesCounter = meter.getCounters().get("messaging.servicebus.messages.sent");
@@ -593,7 +591,8 @@ class ServiceBusSenderAsyncClientTest {
 
         // Act
         StepVerifier.create(sender.sendMessage(new ServiceBusMessage(TEST_CONTENTS)))
-            .verifyComplete();
+            .expectComplete()
+            .verify(DEFAULT_TIMEOUT);
 
         // Assert
         TestCounter sentMessagesCounter = meter.getCounters().get("messaging.servicebus.messages.sent");
@@ -626,7 +625,8 @@ class ServiceBusSenderAsyncClientTest {
 
         // Act
         StepVerifier.create(sender.sendMessages(batch))
-            .verifyComplete();
+            .expectComplete()
+            .verify(DEFAULT_TIMEOUT);
 
         // Assert
         TestCounter sentMessagesCounter = meter.getCounters().get("messaging.servicebus.messages.sent");
@@ -653,7 +653,7 @@ class ServiceBusSenderAsyncClientTest {
         // Act
         StepVerifier.create(sender.sendMessage(new ServiceBusMessage(TEST_CONTENTS)))
             .expectError()
-            .verify();
+            .verify(DEFAULT_TIMEOUT);
 
         // Assert
         TestCounter sentMessagesCounter = meter.getCounters().get("messaging.servicebus.messages.sent");
@@ -681,7 +681,8 @@ class ServiceBusSenderAsyncClientTest {
 
         // Act
         StepVerifier.create(sender.sendMessages(messages, transactionContext))
-            .verifyComplete();
+            .expectComplete()
+            .verify(DEFAULT_TIMEOUT);
 
         // Assert
         verify(sendLink).send(messagesCaptor.capture(), amqpDeliveryStateCaptor.capture());
@@ -712,7 +713,8 @@ class ServiceBusSenderAsyncClientTest {
 
         // Act
         StepVerifier.create(sender.sendMessages(messages))
-            .verifyComplete();
+            .expectComplete()
+            .verify(DEFAULT_TIMEOUT);
 
         // Assert
         verify(sendLink).send(messagesCaptor.capture());
@@ -739,8 +741,9 @@ class ServiceBusSenderAsyncClientTest {
 
         // Act & Assert
         StepVerifier.create(sender.sendMessages(messages))
-            .verifyErrorMatches(error -> error instanceof ServiceBusException
-                && ((ServiceBusException) error).getReason() == ServiceBusFailureReason.MESSAGE_SIZE_EXCEEDED);
+            .expectErrorMatches(error -> error instanceof ServiceBusException
+                && ((ServiceBusException) error).getReason() == ServiceBusFailureReason.MESSAGE_SIZE_EXCEEDED)
+            .verify(DEFAULT_TIMEOUT);
 
         verify(sendLink, never()).send(anyList());
     }
@@ -756,8 +759,9 @@ class ServiceBusSenderAsyncClientTest {
 
         // Act & Assert
         StepVerifier.create(sender.sendMessage(message))
-                .verifyErrorMatches(error -> error instanceof ServiceBusException
-                        && ((ServiceBusException) error).getReason() == ServiceBusFailureReason.MESSAGE_SIZE_EXCEEDED);
+            .expectErrorMatches(error -> error instanceof ServiceBusException
+                && ((ServiceBusException) error).getReason() == ServiceBusFailureReason.MESSAGE_SIZE_EXCEEDED)
+            .verify(DEFAULT_TIMEOUT);
 
         verify(sendLink, never()).send(anyList());
     }
@@ -778,7 +782,8 @@ class ServiceBusSenderAsyncClientTest {
 
         // Act
         StepVerifier.create(sender.sendMessage(testData, transactionContext))
-            .verifyComplete();
+            .expectComplete()
+            .verify(DEFAULT_TIMEOUT);
 
         // Assert
         verify(sendLink, times(1)).send(any(org.apache.qpid.proton.message.Message.class), any(DeliveryState.class));
@@ -812,7 +817,8 @@ class ServiceBusSenderAsyncClientTest {
 
         // Act
         StepVerifier.create(sender.sendMessage(testData))
-            .verifyComplete();
+            .expectComplete()
+            .verify(DEFAULT_TIMEOUT);
 
         // Assert
         verify(sendLink, times(1)).send(any(org.apache.qpid.proton.message.Message.class));
@@ -837,7 +843,8 @@ class ServiceBusSenderAsyncClientTest {
         // Act & Assert
         StepVerifier.create(sender.scheduleMessage(message, instant))
             .expectNext(sequenceNumberReturned)
-            .verifyComplete();
+            .expectComplete()
+            .verify(DEFAULT_TIMEOUT);
 
         verify(managementNode).schedule(sbMessagesCaptor.capture(), eq(instant), eq(MAX_MESSAGE_LENGTH_BYTES), eq(LINK_NAME), isNull());
         List<ServiceBusMessage> actualMessages = sbMessagesCaptor.getValue();
@@ -860,7 +867,8 @@ class ServiceBusSenderAsyncClientTest {
         // Act & Assert
         StepVerifier.create(sender.scheduleMessage(message, instant, transactionContext))
             .expectNext(sequenceNumberReturned)
-            .verifyComplete();
+            .expectComplete()
+            .verify(DEFAULT_TIMEOUT);
 
         verify(managementNode).schedule(sbMessagesCaptor.capture(), eq(instant), eq(MAX_MESSAGE_LENGTH_BYTES), eq(LINK_NAME), argThat(e -> e.getTransactionId().equals(transactionContext.getTransactionId())));
         List<ServiceBusMessage> actualMessages = sbMessagesCaptor.getValue();
@@ -877,7 +885,8 @@ class ServiceBusSenderAsyncClientTest {
 
         // Act & Assert
         StepVerifier.create(sender.cancelScheduledMessage(sequenceNumberReturned))
-            .verifyComplete();
+            .expectComplete()
+            .verify(DEFAULT_TIMEOUT);
 
         verify(managementNode).cancelScheduledMessages(sequenceNumberCaptor.capture(), isNull());
         Iterable<Long> actualSequenceNumbers = sequenceNumberCaptor.getValue();
@@ -903,7 +912,8 @@ class ServiceBusSenderAsyncClientTest {
 
         // Act & Assert
         StepVerifier.create(sender.cancelScheduledMessages(sequenceNumbers))
-            .verifyComplete();
+            .expectComplete()
+            .verify(DEFAULT_TIMEOUT);
 
         verify(managementNode).cancelScheduledMessages(sequenceNumberCaptor.capture(), isNull());
         Iterable<Long> actualSequenceNumbers = sequenceNumberCaptor.getValue();
@@ -941,7 +951,8 @@ class ServiceBusSenderAsyncClientTest {
 
         // Act
         StepVerifier.create(sender.sendMessages(messages))
-            .verifyComplete();
+            .expectComplete()
+            .verify(DEFAULT_TIMEOUT);
 
         // Assert
         verify(sendLink).send(messagesCaptor.capture());

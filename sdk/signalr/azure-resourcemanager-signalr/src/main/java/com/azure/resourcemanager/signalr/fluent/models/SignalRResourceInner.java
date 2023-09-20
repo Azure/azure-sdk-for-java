@@ -39,7 +39,7 @@ public final class SignalRResourceInner extends Resource {
     private SignalRProperties innerProperties;
 
     /*
-     * The kind of the service, it can be SignalR or RawWebSockets
+     * The kind of the service
      */
     @JsonProperty(value = "kind")
     private ServiceKind kind;
@@ -51,7 +51,7 @@ public final class SignalRResourceInner extends Resource {
     private ManagedIdentity identity;
 
     /*
-     * Metadata pertaining to creation and last modification of the resource.
+     * Azure Resource Manager metadata containing createdBy and modifiedBy information.
      */
     @JsonProperty(value = "systemData", access = JsonProperty.Access.WRITE_ONLY)
     private SystemData systemData;
@@ -90,7 +90,7 @@ public final class SignalRResourceInner extends Resource {
     }
 
     /**
-     * Get the kind property: The kind of the service, it can be SignalR or RawWebSockets.
+     * Get the kind property: The kind of the service.
      *
      * @return the kind value.
      */
@@ -99,7 +99,7 @@ public final class SignalRResourceInner extends Resource {
     }
 
     /**
-     * Set the kind property: The kind of the service, it can be SignalR or RawWebSockets.
+     * Set the kind property: The kind of the service.
      *
      * @param kind the kind value to set.
      * @return the SignalRResourceInner object itself.
@@ -130,7 +130,7 @@ public final class SignalRResourceInner extends Resource {
     }
 
     /**
-     * Get the systemData property: Metadata pertaining to creation and last modification of the resource.
+     * Get the systemData property: Azure Resource Manager metadata containing createdBy and modifiedBy information.
      *
      * @return the systemData value.
      */

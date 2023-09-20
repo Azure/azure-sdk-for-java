@@ -11,7 +11,7 @@ import java.util.Arrays;
 /** Samples for Redis ForceReboot. */
 public final class RedisForceRebootSamples {
     /*
-     * x-ms-original-file: specification/redis/resource-manager/Microsoft.Cache/stable/2023-04-01/examples/RedisCacheForceReboot.json
+     * x-ms-original-file: specification/redis/resource-manager/Microsoft.Cache/stable/2023-08-01/examples/RedisCacheForceReboot.json
      */
     /**
      * Sample code: RedisCacheForceReboot.

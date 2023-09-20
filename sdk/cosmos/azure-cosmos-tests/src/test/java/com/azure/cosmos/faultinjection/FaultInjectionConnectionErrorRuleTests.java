@@ -76,6 +76,14 @@ public class FaultInjectionConnectionErrorRuleTests extends TestSuiteBase {
 
             this.databaseAccount = globalEndpointManager.getLatestDatabaseAccount();
             this.writeRegionMap = getRegionMap(this.databaseAccount, true);
+
+            // This test runs against a real account
+            // Creating collections can take some time in the remote region
+            try {
+                Thread.sleep(3000);
+            } catch (InterruptedException e) {
+                throw new RuntimeException(e);
+            }
         } finally {
             safeClose(client);
         }

@@ -1,5 +1,5 @@
 directory: specification/cognitiveservices/OpenAI.Inference
 additionalDirectories:
     - specification/cognitiveservices/OpenAI.Authoring
-commit: b646a42aa3b7a0ce488d05f1724827ea41d12cf1
+commit: dd2d1e8957ac6654272137e8d5874eacafd80a5f
 repo: Azure/azure-rest-api-specs

@@ -7,7 +7,7 @@ package com.azure.resourcemanager.communication.generated;
 /** Samples for EmailServices Delete. */
 public final class EmailServicesDeleteSamples {
     /*
-     * x-ms-original-file: specification/communication/resource-manager/Microsoft.Communication/stable/2023-03-31/examples/emailServices/delete.json
+     * x-ms-original-file: specification/communication/resource-manager/Microsoft.Communication/preview/2023-04-01-preview/examples/emailServices/delete.json
      */
     /**
      * Sample code: Delete EmailService resource.

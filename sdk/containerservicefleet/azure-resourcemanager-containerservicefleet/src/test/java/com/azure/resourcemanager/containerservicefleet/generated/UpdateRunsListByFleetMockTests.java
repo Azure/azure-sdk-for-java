@@ -13,10 +13,13 @@ import com.azure.core.http.rest.PagedIterable;
 import com.azure.core.management.AzureEnvironment;
 import com.azure.core.management.profile.AzureProfile;
 import com.azure.resourcemanager.containerservicefleet.ContainerServiceFleetManager;
+import com.azure.resourcemanager.containerservicefleet.models.ManagedClusterUpgradeType;
+import com.azure.resourcemanager.containerservicefleet.models.NodeImageSelectionType;
 import com.azure.resourcemanager.containerservicefleet.models.UpdateRun;
 import java.nio.ByteBuffer;
 import java.nio.charset.StandardCharsets;
 import java.time.OffsetDateTime;
+import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.Test;
 import org.mockito.ArgumentCaptor;
 import org.mockito.Mockito;
@@ -31,7 +34,7 @@ public final class UpdateRunsListByFleetMockTests {
         ArgumentCaptor<HttpRequest> httpRequest = ArgumentCaptor.forClass(HttpRequest.class);
 
         String responseStr =
-            "{\"value\":[{\"properties\":{\"provisioningState\":\"Canceled\",\"strategy\":{\"stages\":[]},\"managedClusterUpdate\":{},\"status\":{\"stages\":[]}},\"eTag\":\"gyxzk\",\"id\":\"ocukoklyax\",\"name\":\"conuqszfkbeype\",\"type\":\"rmjmwvvjektc\"}]}";
+            "{\"value\":[{\"properties\":{\"provisioningState\":\"Failed\",\"strategy\":{\"stages\":[{\"name\":\"tbhjpglkfgohdneu\",\"groups\":[{\"name\":\"phsdyhto\"},{\"name\":\"fikdowwqu\"},{\"name\":\"v\"},{\"name\":\"zx\"}],\"afterStageWaitInSeconds\":1297043875},{\"name\":\"ithhqzon\",\"groups\":[{\"name\":\"gbhcohfwdsj\"},{\"name\":\"ka\"},{\"name\":\"jutiiswacff\"}],\"afterStageWaitInSeconds\":264036091},{\"name\":\"zzewkfvhqcrai\",\"groups\":[{\"name\":\"n\"},{\"name\":\"pfuflrw\"}],\"afterStageWaitInSeconds\":1760230888},{\"name\":\"dlxyjrxs\",\"groups\":[{\"name\":\"fcnihgwq\"},{\"name\":\"pnedgf\"}],\"afterStageWaitInSeconds\":739247633}]},\"managedClusterUpdate\":{\"upgrade\":{\"type\":\"Full\",\"kubernetesVersion\":\"vq\"},\"nodeImageSelection\":{\"type\":\"Consistent\"}},\"status\":{\"status\":{\"startTime\":\"2021-09-19T11:38:13Z\",\"completedTime\":\"2021-10-03T13:34:01Z\",\"state\":\"Running\"},\"stages\":[{\"status\":{},\"name\":\"otbobzdopcj\",\"groups\":[{},{},{}],\"afterStageWaitStatus\":{}},{\"status\":{},\"name\":\"d\",\"groups\":[{}],\"afterStageWaitStatus\":{}},{\"status\":{},\"name\":\"rslpmutwuoeg\",\"groups\":[{},{}],\"afterStageWaitStatus\":{}}],\"nodeImageSelection\":{\"selectedNodeImageVersions\":[{},{}]}}},\"eTag\":\"yqsluic\",\"id\":\"dggkzzlvmbmpa\",\"name\":\"modfvuefywsbpfvm\",\"type\":\"yhrfouyftaakcpw\"}]}";
 
         Mockito.when(httpResponse.getStatusCode()).thenReturn(200);
         Mockito.when(httpResponse.getHeaders()).thenReturn(new HttpHeaders());
@@ -60,6 +63,20 @@ public final class UpdateRunsListByFleetMockTests {
                     new AzureProfile("", "", AzureEnvironment.AZURE));
 
         PagedIterable<UpdateRun> response =
-            manager.updateRuns().listByFleet("qnwvlrya", "w", com.azure.core.util.Context.NONE);
+            manager.updateRuns().listByFleet("lauwzizxbmpgcjef", "zmuvpbttdumorppx", com.azure.core.util.Context.NONE);
+
+        Assertions.assertEquals("tbhjpglkfgohdneu", response.iterator().next().strategy().stages().get(0).name());
+        Assertions
+            .assertEquals("phsdyhto", response.iterator().next().strategy().stages().get(0).groups().get(0).name());
+        Assertions
+            .assertEquals(1297043875, response.iterator().next().strategy().stages().get(0).afterStageWaitInSeconds());
+        Assertions
+            .assertEquals(
+                ManagedClusterUpgradeType.FULL, response.iterator().next().managedClusterUpdate().upgrade().type());
+        Assertions.assertEquals("vq", response.iterator().next().managedClusterUpdate().upgrade().kubernetesVersion());
+        Assertions
+            .assertEquals(
+                NodeImageSelectionType.CONSISTENT,
+                response.iterator().next().managedClusterUpdate().nodeImageSelection().type());
     }
 }
