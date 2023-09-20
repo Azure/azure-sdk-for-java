@@ -62,9 +62,7 @@ public class ChangeFeedProcessorBuilder {
     private CosmosAsyncContainer leaseContainer;
     private ChangeFeedProcessorOptions changeFeedProcessorOptions;
     private Consumer<List<JsonNode>> incrementalModeLeaseConsumerPkRangeIdVersion;
-    private BiConsumer<List<JsonNode>, ChangeFeedProcessorContext> incrementalModeLeaseConsumerWithContextPkRangeIdVersion;
     private Consumer<List<ChangeFeedProcessorItem>> incrementalModeLeaseConsumerEpkVersion;
-    private BiConsumer<List<ChangeFeedProcessorItem>, ChangeFeedProcessorContext> incrementalModeLeaseConsumerWithContextEpkVersion;
     private Consumer<List<ChangeFeedProcessorItem>> fullFidelityModeLeaseConsumer;
     private BiConsumer<List<ChangeFeedProcessorItem>, ChangeFeedProcessorContext> fullFidelityModeLeaseWithContextConsumer;
     private ChangeFeedMode changeFeedMode = ChangeFeedMode.INCREMENTAL;
@@ -142,44 +140,6 @@ public class ChangeFeedProcessorBuilder {
     }
 
     /**
-     * Sets a {@link BiConsumer} function which will be called to process changes for LatestVersion change feed mode.
-     * Attention! This API is not merge proof, please use {@link #handleLatestVersionChanges(BiConsumer)} instead.
-     *
-     * <!-- src_embed com.azure.cosmos.changeFeedProcessor.handleChanges -->
-     * <pre>
-     * .handleChanges&#40;&#40;docs, context&#41; -&gt; &#123;
-     *     for &#40;JsonNode item : docs&#41; &#123;
-     *         &#47;&#47; Implementation for handling and processing of each JsonNode item goes here
-     *     &#125;
-     * &#125;&#41;
-     * </pre>
-     * <!-- end com.azure.cosmos.changeFeedProcessor.handleChanges -->
-     *
-     * @param biConsumer the {@link BiConsumer} to call for handling the feeds along with a {@link ChangeFeedProcessorContext} instance.
-     * @return current Builder.
-     */
-    ChangeFeedProcessorBuilder handleChanges(BiConsumer<List<JsonNode>, ChangeFeedProcessorContext> biConsumer) {
-
-        checkArgument(
-            this.incrementalModeLeaseConsumerEpkVersion == null,
-            "handleLatestVersionChanges consumer has already been defined");
-        checkArgument(
-            this.incrementalModeLeaseConsumerWithContextEpkVersion == null,
-            "handleLatestVersionChanges biConsumer has already been defined");
-        checkArgument(
-            this.incrementalModeLeaseConsumerPkRangeIdVersion == null,
-            "handleChanges consumer has already been defined"
-        );
-
-        checkNotNull(biConsumer, "Argument 'biConsumer' can not be null");
-
-        this.incrementalModeLeaseConsumerWithContextPkRangeIdVersion = biConsumer;
-        this.changeFeedMode = ChangeFeedMode.INCREMENTAL;
-        this.leaseVersion = LeaseVersion.PARTITION_KEY_BASED_LEASE;
-        return this;
-    }
-
-    /**
      * Sets a consumer function which will be called to process changes for LatestVersion change feed mode.
      *
      * <!-- src_embed com.azure.cosmos.latestVersionChanges.handleChanges -->
@@ -202,42 +162,6 @@ public class ChangeFeedProcessorBuilder {
             "handleChanges consumer has already been defined");
 
         this.incrementalModeLeaseConsumerEpkVersion = consumer;
-        this.changeFeedMode = ChangeFeedMode.INCREMENTAL;
-        this.leaseVersion = LeaseVersion.EPK_RANGE_BASED_LEASE;
-        return this;
-    }
-
-    /**
-     * Sets a {@link BiConsumer} function which will be called to process changes for LatestVersion change feed mode.
-     *
-     * <!-- src_embed com.azure.cosmos.latestVersionChanges.handleChanges -->
-     * <pre>
-     * .handleLatestVersionChanges&#40;&#40;changeFeedProcessorItems, context&#41; -&gt; &#123;
-     *     for &#40;ChangeFeedProcessorItem item : changeFeedProcessorItems&#41; &#123;
-     *         &#47;&#47; Implementation for handling and processing of each change feed item goes here
-     *     &#125;
-     * &#125;&#41;
-     * </pre>
-     * <!-- end com.azure.cosmos.latestVersionChanges.handleChanges -->
-     *
-     * @param biConsumer the {@link BiConsumer} to call for handling the feeds along with a {@link ChangeFeedProcessorContext} instance.
-     * @return current Builder.
-     */
-    ChangeFeedProcessorBuilder handleLatestVersionChanges(
-        BiConsumer<List<ChangeFeedProcessorItem>, ChangeFeedProcessorContext> biConsumer) {
-
-        checkArgument(
-            this.incrementalModeLeaseConsumerPkRangeIdVersion == null,
-            "handleChanges consumer has already been defined");
-        checkArgument(
-            this.incrementalModeLeaseConsumerWithContextPkRangeIdVersion == null,
-            "handleChanges biConsumer has already been defined");
-        checkArgument(
-            this.incrementalModeLeaseConsumerEpkVersion == null,
-            "handleLatestVersionChanges consumer has already been defined");
-        checkNotNull(biConsumer, "Argument 'biConsumer' can not be null");
-
-        this.incrementalModeLeaseConsumerWithContextEpkVersion = biConsumer;
         this.changeFeedMode = ChangeFeedMode.INCREMENTAL;
         this.leaseVersion = LeaseVersion.EPK_RANGE_BASED_LEASE;
         return this;
@@ -356,41 +280,23 @@ public class ChangeFeedProcessorBuilder {
                     }
                     break;
                 case INCREMENTAL:
-                    if (this.incrementalModeLeaseConsumerEpkVersion != null) {
-                        changeFeedProcessor = new com.azure.cosmos.implementation.changefeed.epkversion.IncrementalChangeFeedProcessorImpl(
+                    changeFeedProcessor = new com.azure.cosmos.implementation.changefeed.epkversion.IncrementalChangeFeedProcessorImpl(
                             this.hostName,
                             this.feedContainer,
                             this.leaseContainer,
                             this.incrementalModeLeaseConsumerEpkVersion,
                             this.changeFeedProcessorOptions);
-                    } else if (this.incrementalModeLeaseConsumerWithContextEpkVersion != null) {
-                        changeFeedProcessor = new com.azure.cosmos.implementation.changefeed.epkversion.IncrementalChangeFeedProcessorImpl(
-                            this.hostName,
-                            this.feedContainer,
-                            this.leaseContainer,
-                            this.incrementalModeLeaseConsumerWithContextEpkVersion,
-                            this.changeFeedProcessorOptions);
-                    }
                     break;
                 default:
                     throw new IllegalStateException("ChangeFeed mode " + this.changeFeedMode + " is not supported");
             }
         } else {
-            if (this.incrementalModeLeaseConsumerPkRangeIdVersion != null) {
-                changeFeedProcessor = new com.azure.cosmos.implementation.changefeed.pkversion.IncrementalChangeFeedProcessorImpl(
+            changeFeedProcessor = new IncrementalChangeFeedProcessorImpl(
                     this.hostName,
                     this.feedContainer,
                     this.leaseContainer,
                     this.incrementalModeLeaseConsumerPkRangeIdVersion,
                     this.changeFeedProcessorOptions);
-            } else if (this.incrementalModeLeaseConsumerWithContextPkRangeIdVersion != null) {
-                changeFeedProcessor = new com.azure.cosmos.implementation.changefeed.pkversion.IncrementalChangeFeedProcessorImpl(
-                    this.hostName,
-                    this.feedContainer,
-                    this.leaseContainer,
-                    this.incrementalModeLeaseConsumerWithContextPkRangeIdVersion,
-                    this.changeFeedProcessorOptions);
-            }
         }
 
         return changeFeedProcessor;
@@ -413,10 +319,7 @@ public class ChangeFeedProcessorBuilder {
     }
 
     private boolean isIncrementalConsumerDefined() {
-        return this.incrementalModeLeaseConsumerEpkVersion != null
-            || this.incrementalModeLeaseConsumerPkRangeIdVersion != null
-            || this.incrementalModeLeaseConsumerWithContextEpkVersion != null
-            || this.incrementalModeLeaseConsumerWithContextPkRangeIdVersion != null;
+        return this.incrementalModeLeaseConsumerEpkVersion != null || this.incrementalModeLeaseConsumerPkRangeIdVersion != null;
     }
 
     private void validateChangeFeedProcessorOptions() {

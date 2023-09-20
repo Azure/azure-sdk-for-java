@@ -3,7 +3,6 @@
 
 package com.azure.cosmos.implementation.changefeed.epkversion;
 
-import com.azure.cosmos.ChangeFeedProcessorContext;
 import com.azure.cosmos.CosmosAsyncContainer;
 import com.azure.cosmos.implementation.changefeed.common.ChangeFeedMode;
 import com.azure.cosmos.models.ChangeFeedProcessorItem;
@@ -12,7 +11,6 @@ import com.azure.cosmos.models.CosmosChangeFeedRequestOptions;
 import com.azure.cosmos.models.FeedRange;
 
 import java.util.List;
-import java.util.function.BiConsumer;
 import java.util.function.Consumer;
 
 public class IncrementalChangeFeedProcessorImpl extends ChangeFeedProcessorImplBase<ChangeFeedProcessorItem> {
@@ -24,15 +22,6 @@ public class IncrementalChangeFeedProcessorImpl extends ChangeFeedProcessorImplB
             Consumer<List<ChangeFeedProcessorItem>> consumer,
             ChangeFeedProcessorOptions changeFeedProcessorOptions) {
         super(hostName, feedContainer, leaseContainer, changeFeedProcessorOptions, consumer, ChangeFeedMode.INCREMENTAL);
-    }
-
-    public IncrementalChangeFeedProcessorImpl(
-        String hostName,
-        CosmosAsyncContainer feedContainer,
-        CosmosAsyncContainer leaseContainer,
-        BiConsumer<List<ChangeFeedProcessorItem>, ChangeFeedProcessorContext> biConsumer,
-        ChangeFeedProcessorOptions changeFeedProcessorOptions) {
-        super(hostName, feedContainer, leaseContainer, changeFeedProcessorOptions, biConsumer, ChangeFeedMode.INCREMENTAL);
     }
 
     @Override
