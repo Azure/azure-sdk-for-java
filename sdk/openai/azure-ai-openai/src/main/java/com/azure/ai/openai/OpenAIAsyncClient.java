@@ -14,6 +14,8 @@ import com.azure.ai.openai.implementation.OpenAIServerSentEvents;
 import com.azure.ai.openai.models.AudioTranscription;
 import com.azure.ai.openai.models.AudioTranscriptionFormat;
 import com.azure.ai.openai.models.AudioTranscriptionOptions;
+import com.azure.ai.openai.models.AudioTranslation;
+import com.azure.ai.openai.models.AudioTranslationFormat;
 import com.azure.ai.openai.models.AudioTranslationOptions;
 import com.azure.ai.openai.models.ChatCompletions;
 import com.azure.ai.openai.models.ChatCompletionsOptions;
@@ -896,11 +898,11 @@ public final class OpenAIAsyncClient {
      * @throws ResourceNotFoundException thrown if the request is rejected by server on status code 404.
      * @throws ResourceModifiedException thrown if the request is rejected by server on status code 409.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return {@link AudioTranscription} english language transcribed text and associated metadata from provided spoken
+     * @return {@link AudioTranslation} english language transcribed text and associated metadata from provided spoken
      *     audio file data on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Mono<AudioTranscription> getAudioTranslation(
+    public Mono<AudioTranslation> getAudioTranslation(
             String deploymentOrModelName, String fileName, AudioTranslationOptions audioTranslationOptions) {
         return getAudioTranslationWithResponse(deploymentOrModelName, fileName, audioTranslationOptions, null)
                 .map(Response::getValue);
@@ -920,19 +922,19 @@ public final class OpenAIAsyncClient {
      * @throws ResourceNotFoundException thrown if the request is rejected by server on status code 404.
      * @throws ResourceModifiedException thrown if the request is rejected by server on status code 409.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return {@link AudioTranscription} english language transcribed text and associated metadata from provided spoken
+     * @return {@link AudioTranslation} english language transcribed text and associated metadata from provided spoken
      *     audio file data on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Mono<Response<AudioTranscription>> getAudioTranslationWithResponse(
+    public Mono<Response<AudioTranslation>> getAudioTranslationWithResponse(
             String deploymentOrModelName,
             String fileName,
             AudioTranslationOptions audioTranslationOptions,
             RequestOptions requestOptions) {
         // checking allowed formats for a JSON response
-        List<AudioTranscriptionFormat> acceptedFormats = new ArrayList<>();
-        acceptedFormats.add(AudioTranscriptionFormat.JSON);
-        acceptedFormats.add(AudioTranscriptionFormat.VERBOSE_JSON);
+        List<AudioTranslationFormat> acceptedFormats = new ArrayList<>();
+        acceptedFormats.add(AudioTranslationFormat.JSON);
+        acceptedFormats.add(AudioTranslationFormat.VERBOSE_JSON);
         if (!acceptedFormats.contains(audioTranslationOptions.getResponseFormat())) {
             return monoError(
                     LOGGER, new IllegalArgumentException("This operation does not support the requested audio format"));
@@ -961,7 +963,7 @@ public final class OpenAIAsyncClient {
         return response.map(
                 responseBinaryData ->
                         new SimpleResponse<>(
-                                responseBinaryData, responseBinaryData.getValue().toObject(AudioTranscription.class)));
+                                responseBinaryData, responseBinaryData.getValue().toObject(AudioTranslation.class)));
     }
 
     /**
@@ -1011,10 +1013,10 @@ public final class OpenAIAsyncClient {
             AudioTranslationOptions audioTranslationOptions,
             RequestOptions requestOptions) {
         // checking allowed formats for a plain text response
-        List<AudioTranscriptionFormat> acceptedFormats = new ArrayList<>();
-        acceptedFormats.add(AudioTranscriptionFormat.TEXT);
-        acceptedFormats.add(AudioTranscriptionFormat.VTT);
-        acceptedFormats.add(AudioTranscriptionFormat.SRT);
+        List<AudioTranslationFormat> acceptedFormats = new ArrayList<>();
+        acceptedFormats.add(AudioTranslationFormat.TEXT);
+        acceptedFormats.add(AudioTranslationFormat.VTT);
+        acceptedFormats.add(AudioTranslationFormat.SRT);
         if (!acceptedFormats.contains(audioTranslationOptions.getResponseFormat())) {
             return monoError(
                     LOGGER, new IllegalArgumentException("This operation does not support the requested audio format"));
@@ -1261,14 +1263,14 @@ public final class OpenAIAsyncClient {
      */
     @Generated
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Mono<AudioTranscription> getAudioTranslationAsResponseObject(
+    public Mono<AudioTranslation> getAudioTranslationAsResponseObject(
             String deploymentOrModelName, AudioTranslationOptions audioTranslationOptions) {
         // Generated convenience method for getAudioTranslationAsResponseObjectWithResponse
         RequestOptions requestOptions = new RequestOptions();
         return getAudioTranslationAsResponseObjectWithResponse(
                         deploymentOrModelName, BinaryData.fromObject(audioTranslationOptions), requestOptions)
                 .flatMap(FluxUtil::toMono)
-                .map(protocolMethodData -> protocolMethodData.toObject(AudioTranscription.class));
+                .map(protocolMethodData -> protocolMethodData.toObject(AudioTranslation.class));
     }
 
     /**

@@ -12,6 +12,8 @@ import com.azure.ai.openai.implementation.OpenAIServerSentEvents;
 import com.azure.ai.openai.models.AudioTranscription;
 import com.azure.ai.openai.models.AudioTranscriptionFormat;
 import com.azure.ai.openai.models.AudioTranscriptionOptions;
+import com.azure.ai.openai.models.AudioTranslation;
+import com.azure.ai.openai.models.AudioTranslationFormat;
 import com.azure.ai.openai.models.AudioTranslationOptions;
 import com.azure.ai.openai.models.ChatCompletions;
 import com.azure.ai.openai.models.ChatCompletionsOptions;
@@ -825,11 +827,11 @@ public final class OpenAIClient {
      * @throws ResourceNotFoundException thrown if the request is rejected by server on status code 404.
      * @throws ResourceModifiedException thrown if the request is rejected by server on status code 409.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return {@link AudioTranscription} english language transcribed text and associated metadata from provided spoken
+     * @return {@link AudioTranslation} english language transcribed text and associated metadata from provided spoken
      *     audio file data.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public AudioTranscription getAudioTranslation(
+    public AudioTranslation getAudioTranslation(
             String deploymentOrModelName, String fileName, AudioTranslationOptions audioTranslationOptions) {
         return getAudioTranslationWithResponse(deploymentOrModelName, fileName, audioTranslationOptions, null)
                 .getValue();
@@ -849,19 +851,19 @@ public final class OpenAIClient {
      * @throws ResourceNotFoundException thrown if the request is rejected by server on status code 404.
      * @throws ResourceModifiedException thrown if the request is rejected by server on status code 409.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return {@link AudioTranscription} english language transcribed text and associated metadata from provided spoken
+     * @return {@link AudioTranslation} english language transcribed text and associated metadata from provided spoken
      *     audio file data along with {@link Response}..
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Response<AudioTranscription> getAudioTranslationWithResponse(
+    public Response<AudioTranslation> getAudioTranslationWithResponse(
             String deploymentOrModelName,
             String fileName,
             AudioTranslationOptions audioTranslationOptions,
             RequestOptions requestOptions) {
         // checking allowed formats for a JSON response
-        List<AudioTranscriptionFormat> acceptedFormats = new ArrayList<>();
-        acceptedFormats.add(AudioTranscriptionFormat.JSON);
-        acceptedFormats.add(AudioTranscriptionFormat.VERBOSE_JSON);
+        List<AudioTranslationFormat> acceptedFormats = new ArrayList<>();
+        acceptedFormats.add(AudioTranslationFormat.JSON);
+        acceptedFormats.add(AudioTranslationFormat.VERBOSE_JSON);
         if (!acceptedFormats.contains(audioTranslationOptions.getResponseFormat())) {
             throw LOGGER.logExceptionAsError(
                     new IllegalArgumentException("This operation does not support the requested audio format"));
@@ -887,7 +889,7 @@ public final class OpenAIClient {
                                 deploymentOrModelName, result.getData(), requestOptions)
                         : this.serviceClient.getAudioTranslationAsPlainTextWithResponse(
                                 deploymentOrModelName, result.getData(), requestOptions);
-        return new SimpleResponse<>(response, response.getValue().toObject(AudioTranscription.class));
+        return new SimpleResponse<>(response, response.getValue().toObject(AudioTranslation.class));
     }
 
     /**
@@ -935,15 +937,17 @@ public final class OpenAIClient {
             String fileName,
             AudioTranslationOptions audioTranslationOptions,
             RequestOptions requestOptions) {
+
         // checking allowed formats for a plain text response
-        List<AudioTranscriptionFormat> acceptedFormats = new ArrayList<>();
-        acceptedFormats.add(AudioTranscriptionFormat.TEXT);
-        acceptedFormats.add(AudioTranscriptionFormat.VTT);
-        acceptedFormats.add(AudioTranscriptionFormat.SRT);
+        List<AudioTranslationFormat> acceptedFormats = new ArrayList<>();
+        acceptedFormats.add(AudioTranslationFormat.TEXT);
+        acceptedFormats.add(AudioTranslationFormat.VTT);
+        acceptedFormats.add(AudioTranslationFormat.SRT);
         if (!acceptedFormats.contains(audioTranslationOptions.getResponseFormat())) {
             throw LOGGER.logExceptionAsError(
                     new IllegalArgumentException("This operation does not support the requested audio format"));
         }
+
         // embedding the `model` in the request for non-Azure case
         if (this.openAIServiceClient != null) {
             audioTranslationOptions.setModel(deploymentOrModelName);
@@ -1242,14 +1246,14 @@ public final class OpenAIClient {
      */
     @Generated
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public AudioTranscription getAudioTranslationAsResponseObject(
+    public AudioTranslation getAudioTranslationAsResponseObject(
             String deploymentOrModelName, AudioTranslationOptions audioTranslationOptions) {
         // Generated convenience method for getAudioTranslationAsResponseObjectWithResponse
         RequestOptions requestOptions = new RequestOptions();
         return getAudioTranslationAsResponseObjectWithResponse(
                         deploymentOrModelName, BinaryData.fromObject(audioTranslationOptions), requestOptions)
                 .getValue()
-                .toObject(AudioTranscription.class);
+                .toObject(AudioTranslation.class);
     }
 
     /**

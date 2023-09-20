@@ -319,9 +319,9 @@ Path filePath = Paths.get("{your-file-path}" + fileName);
 
 byte[] file = BinaryData.fromFile(filePath).toBytes();
 AudioTranslationOptions translationOptions = new AudioTranslationOptions(file)
-    .setResponseFormat(AudioTranscriptionFormat.JSON);
+    .setResponseFormat(AudioTranslationFormat.JSON);
 
-AudioTranscription translation = client.getAudioTranslation("{deploymentOrModelId}", fileName, translationOptions);
+AudioTranslation translation = client.getAudioTranslation("{deploymentOrModelId}", fileName, translationOptions);
 
 System.out.println("Translation: " + translation.getText());
 ```
