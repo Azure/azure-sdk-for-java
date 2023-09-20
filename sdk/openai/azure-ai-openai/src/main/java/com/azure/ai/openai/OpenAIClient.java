@@ -937,7 +937,6 @@ public final class OpenAIClient {
             String fileName,
             AudioTranslationOptions audioTranslationOptions,
             RequestOptions requestOptions) {
-
         // checking allowed formats for a plain text response
         List<AudioTranslationFormat> acceptedFormats = new ArrayList<>();
         acceptedFormats.add(AudioTranslationFormat.TEXT);
@@ -947,7 +946,6 @@ public final class OpenAIClient {
             throw LOGGER.logExceptionAsError(
                     new IllegalArgumentException("This operation does not support the requested audio format"));
         }
-
         // embedding the `model` in the request for non-Azure case
         if (this.openAIServiceClient != null) {
             audioTranslationOptions.setModel(deploymentOrModelName);
