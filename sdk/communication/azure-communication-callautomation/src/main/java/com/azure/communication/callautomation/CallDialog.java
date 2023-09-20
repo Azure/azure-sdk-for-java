@@ -1,6 +1,6 @@
 package com.azure.communication.callautomation;
 
-import com.azure.communication.callautomation.models.AddParticipantResult;
+import com.azure.core.util.Context;
 import com.azure.communication.callautomation.models.DialogStateResult;
 import com.azure.communication.callautomation.models.StartDialogOptions;
 import com.azure.core.annotation.ReturnType;
@@ -29,6 +29,20 @@ public final class CallDialog {
     }
 
     /**
+     * Start Dialog
+     *
+     * @param options A {@link StartDialogOptions} object containing different options for startDialog.
+     * @param operationContext operationContext (pass null if not applicable)
+     * @param context The context to associate with this operation.
+     * @throws HttpResponseException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    public Response<DialogStateResult> startDialogWithResponse(StartDialogOptions options, String operationContext, Context context) {
+        return callDialogAsync.startDialogWithResponseInternal(options, operationContext, context).block();
+    }
+
+    /**
      * Stop Dialog
      *
      * @param dialogId A {@link StartDialogOptions} object containing different options for startDialog.
@@ -38,5 +52,18 @@ public final class CallDialog {
     @ServiceMethod(returns = ReturnType.SINGLE)
     public void stopDialog(String dialogId) {
         callDialogAsync.stopDialog(dialogId).block();
+    }
+
+    /**
+     * Stop Dialog
+     *
+     * @param dialogId A {@link StartDialogOptions} object containing different options for startDialog.
+     * @param context The context to associate with this operation.
+     * @throws HttpResponseException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    public Response<Void> stopDialogWithResponse(String dialogId, Context context) {
+        return callDialogAsync.stopDialogWithResponseInternal(dialogId, context).block();
     }
 }
