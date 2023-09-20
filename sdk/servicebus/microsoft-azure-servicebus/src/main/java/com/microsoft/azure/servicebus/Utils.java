@@ -11,6 +11,7 @@ import java.util.concurrent.ExecutionException;
 import com.microsoft.azure.servicebus.primitives.ServiceBusException;
 
 public final class Utils {
+    private Utils(){}
 
     public static <T> T completeFuture(CompletableFuture<T> future) throws InterruptedException, ServiceBusException {
         try {
@@ -37,19 +38,19 @@ public final class Utils {
             throw new IllegalArgumentException("Argument '" + argumentName + "' is null.");
         }
     }
-    
+
     static MessageBody fromSequence(List<Object> sequence) {
         List<List<Object>> sequenceData = new ArrayList<>();
         sequenceData.add(sequence);
         return MessageBody.fromSequenceData(sequenceData);
     }
-    
+
     static MessageBody fromBinay(byte[] binary) {
         List<byte[]> binaryData = new ArrayList<>();
         binaryData.add(binary);
         return MessageBody.fromBinaryData(binaryData);
     }
-    
+
     static byte[] getDataFromMessageBody(MessageBody messageBody) {
         List<byte[]> binaryData = messageBody.getBinaryData();
         if (binaryData == null || binaryData.size() == 0) {
@@ -58,7 +59,7 @@ public final class Utils {
             return binaryData.get(0);
         }
     }
-    
+
     static List<Object> getSequenceFromMessageBody(MessageBody messageBody) {
         List<List<Object>> sequenceData = messageBody.getSequenceData();
         if (sequenceData == null || sequenceData.size() == 0) {

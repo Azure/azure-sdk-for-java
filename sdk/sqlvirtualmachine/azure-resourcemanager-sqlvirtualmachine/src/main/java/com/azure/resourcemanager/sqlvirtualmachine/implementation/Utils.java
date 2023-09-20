@@ -20,6 +20,7 @@ import java.util.stream.Stream;
 import reactor.core.publisher.Flux;
 
 final class Utils {
+    private Utils(){}
     static String getValueFromIdByName(String id, String name) {
         if (id == null) {
             return null;

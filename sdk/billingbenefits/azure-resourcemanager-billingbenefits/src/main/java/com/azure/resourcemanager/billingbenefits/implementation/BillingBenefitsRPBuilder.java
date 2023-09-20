@@ -115,9 +115,7 @@ public final class BillingBenefitsRPBuilder {
             (serializerAdapter != null)
                 ? serializerAdapter
                 : SerializerFactory.createDefaultManagementSerializerAdapter();
-        BillingBenefitsRPImpl client =
-            new BillingBenefitsRPImpl(
+        return new BillingBenefitsRPImpl(
                 localPipeline, localSerializerAdapter, localDefaultPollInterval, localEnvironment, localEndpoint);
-        return client;
     }
 }
