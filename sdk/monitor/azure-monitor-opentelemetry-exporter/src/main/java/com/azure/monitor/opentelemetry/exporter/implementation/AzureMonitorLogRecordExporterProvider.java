@@ -12,7 +12,7 @@ import java.util.Collection;
 public final class AzureMonitorLogRecordExporterProvider implements ConfigurableLogRecordExporterProvider {
     @Override
     public LogRecordExporter createExporter(ConfigProperties configProperties) {
-        if (configProperties.getBoolean(AzureMonitorExporterProviderKeys.INTERNAL_USING_BUILDER, false)) {
+        if (configProperties.getBoolean(AzureMonitorExporterProviderKeys.INTERNAL_USING_AZURE_MONITOR_EXPORTER_BUILDER, false)) {
             return AzureMonitorLogRecordExporterProvider.MarkerLogRecordExporter.INSTANCE;
         }
         throw new IllegalStateException(getName() + " currently only supports usage via " + AzureMonitorExporterBuilder.class.getName());

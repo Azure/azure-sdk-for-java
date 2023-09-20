@@ -12,7 +12,7 @@ import java.util.Collection;
 public final class AzureMonitorSpanExporterProvider implements ConfigurableSpanExporterProvider {
     @Override
     public SpanExporter createExporter(ConfigProperties configProperties) {
-        if (configProperties.getBoolean(AzureMonitorExporterProviderKeys.INTERNAL_USING_BUILDER, false)) {
+        if (configProperties.getBoolean(AzureMonitorExporterProviderKeys.INTERNAL_USING_AZURE_MONITOR_EXPORTER_BUILDER, false)) {
             return MarkerSpanExporter.INSTANCE;
         }
         throw new IllegalStateException(getName() + " currently only supports usage via " + AzureMonitorExporterBuilder.class.getName());

@@ -287,7 +287,7 @@ public final class AzureMonitorExporterBuilder {
             props.put("otel.traces.exporter", AzureMonitorExporterProviderKeys.EXPORTER_NAME);
             props.put("otel.metrics.exporter", AzureMonitorExporterProviderKeys.EXPORTER_NAME);
             props.put("otel.logs.exporter", AzureMonitorExporterProviderKeys.EXPORTER_NAME);
-            props.put(AzureMonitorExporterProviderKeys.INTERNAL_USING_BUILDER, "true");
+            props.put(AzureMonitorExporterProviderKeys.INTERNAL_USING_AZURE_MONITOR_EXPORTER_BUILDER, "true");
             return props;
         });
         sdkBuilder.addSpanExporterCustomizer(
