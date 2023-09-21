@@ -1,6 +1,6 @@
 # Release History
 
-## 1.3.0-beta.2 (Unreleased)
+## 1.3.0-beta.3 (Unreleased)
 
 ### Features Added
 
@@ -9,6 +9,20 @@
 ### Bugs Fixed
 
 ### Other Changes
+
+## 1.3.0-beta.2 (2023-09-13)
+
+### Features Added
+
+- Added `MetricsQueryOptions` to `MetricsBatchQueryClient` and `MetricsBatchQueryAsyncClient` to support batch querying metrics with 
+additional options.
+
+### Other Changes
+
+#### Dependency Updates
+
+- Upgraded `azure-core` from `1.42.0` to version `1.43.0`.
+- Upgraded `azure-core-http-netty` from `1.13.6` to version `1.13.7`.
 
 ## 1.2.4 (2023-08-18)
 

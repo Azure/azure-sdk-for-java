@@ -22,6 +22,12 @@ public final class RecognizeReceiptsOptions {
     private Duration pollInterval = DEFAULT_POLL_INTERVAL;
 
     /**
+     * Create a {@code RecognizeReceiptsOptions} object.
+     */
+    public RecognizeReceiptsOptions() {
+    }
+
+    /**
      * Get the type of the form. Supported Media types including .pdf, .jpg, .png or .tiff type file stream.
      *
      * @return the {@code contentType} value.

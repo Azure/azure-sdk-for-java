@@ -80,7 +80,7 @@ public class ProxySelectorTest extends IntegrationTestBase {
                 // This is a transient error from ExceptionUtil.java: line 67.
                 System.out.println("Error: " + error);
             })
-            .verify();
+            .verify(TIMEOUT);
 
         final boolean awaited = countDownLatch.await(2, TimeUnit.SECONDS);
         Assertions.assertTrue(awaited);

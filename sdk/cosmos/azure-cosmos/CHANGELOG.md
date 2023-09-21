@@ -3,15 +3,18 @@
 ### 4.50.0-beta.1 (Unreleased)
 
 #### Features Added
+* Added throughput control support for `gateway mode`. See [PR 36687](https://github.com/Azure/azure-sdk-for-java/pull/36687)
 
 #### Breaking Changes
 
 #### Bugs Fixed
+* Fixed staleness issue of `COSMOS.MIN_CONNECTION_POOL_SIZE_PER_ENDPOINT` system property - See [PR 36599](https://github.com/Azure/azure-sdk-for-java/pull/36599).
 * Fixed to not stall building of a client for the entire aggressive warm up duration but instead until containers
 in the warmup flow have been warmed up or until aggressive warm up duration has been reached whichever is lesser.
 
 #### Other Changes
 * Handling negative end-to-end timeouts provided more gracefully by throwing a `CosmsoException` (`OperationCancelledException`) instead of `IllegalArgumentException`. - See [PR 36507](https://github.com/Azure/azure-sdk-for-java/pull/36507)
+* Reverted preserve ordering in bulk mode([PR 35892](https://github.com/Azure/azure-sdk-for-java/pull/35892)). See [PR 36638](https://github.com/Azure/azure-sdk-for-java/pull/36638)
 
 ### 4.49.0 (2023-08-21)
 

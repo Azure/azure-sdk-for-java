@@ -1,11 +1,11 @@
 # Python version 3.4 or higher is required to run this script.
 #
-# This script is used to update sdk\spring\supported-version-matrix.json before compatibility check.
+# This script is used to update sdk\spring\pipeline\supported-version-matrix.json before compatibility check.
 # Sample:
 # 1. python .\sdk\spring\scripts\compatibility_update_supported_version_matrix_json.py
 # 2. python .\sdk\spring\scripts\compatibility_update_supported_version_matrix_json.py -m 3
 #
-# The script must be run at the root of azure-sdk-for-java.import time
+# The script must be run at the root of azure-sdk-for-java.
 
 
 import time
@@ -54,8 +54,8 @@ def main():
     start_time = time.time()
     change_to_repo_root_dir()
     log.debug('Current working directory = {}.'.format(os.getcwd()))
-    suppoerted_spring_boot_version = get_supported_spring_boot_version("https://raw.githubusercontent.com/Azure/azure-sdk-for-java/main/sdk/spring/spring-cloud-azure-supported-spring.json")
-    update_supported_version_matrix_json_file("./sdk/spring/supported-version-matrix.json", suppoerted_spring_boot_version)
+    suppoerted_spring_boot_version = get_supported_spring_boot_version("https://raw.githubusercontent.com/Azure/azure-sdk-for-java/main/sdk/spring/pipeline/spring-cloud-azure-supported-spring.json")
+    update_supported_version_matrix_json_file("./sdk/spring/pipeline/supported-version-matrix.json", suppoerted_spring_boot_version)
     elapsed_time = time.time() - start_time
     log.info('elapsed_time = {}'.format(elapsed_time))
 

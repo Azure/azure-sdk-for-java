@@ -49,6 +49,7 @@
     <module>sdk/consumption</module>
     <module>sdk/containerregistry</module>
     <module>sdk/containerservicefleet</module>
+    <module>sdk/contentsafety</module>
     <module>sdk/core</module>
     <module>sdk/cosmos</module>
     <module>sdk/cosmosdbforpostgresql</module>
@@ -95,6 +96,7 @@
     <module>sdk/healthcareapis</module>
     <module>sdk/healthinsights</module>
     <module>sdk/hybridcompute</module>
+    <module>sdk/hybridconnectivity</module>
     <module>sdk/hybridcontainerservice</module>
     <module>sdk/hybridkubernetes</module>
     <module>sdk/hybridnetwork</module>
