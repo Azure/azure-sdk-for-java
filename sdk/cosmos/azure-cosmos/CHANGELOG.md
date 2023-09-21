@@ -40,8 +40,6 @@ in the warmup flow have been warmed up or until aggressive warm up duration has 
 * Handling negative end-to-end timeouts provided more gracefully by throwing a `CosmosException` (`OperationCancelledException`) instead of `IllegalArgumentException`. - See [PR 36535](https://github.com/Azure/azure-sdk-for-java/pull/36535)
 
 ### 4.48.1 (2023-08-09)
-> [!IMPORTANT]
-> We strongly recommend our customers to use version 4.48.1 and above.
 #### Bugs Fixed
 * Fixed request start time in the `CosmosDiagnostics` for individual request responses - See [PR 35705](https://github.com/Azure/azure-sdk-for-java/pull/35705)
 * Fixed an issue where `ConnectionStateListener` tracked staled `Uris` which fails to mark the current `Uris` unhealthy properly - See [PR 36067](https://github.com/Azure/azure-sdk-for-java/pull/36067)
