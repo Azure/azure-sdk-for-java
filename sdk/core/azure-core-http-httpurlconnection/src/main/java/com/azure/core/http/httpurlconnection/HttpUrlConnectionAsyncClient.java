@@ -63,7 +63,7 @@ public class HttpUrlConnectionAsyncClient implements HttpClient {
      * @param context The context of the request, for any additional changes
      * @return A Mono containing a HttpResponse object
      */
-    public Mono<HttpResponse> sendAsync(HttpRequest httpRequest, Context context) {
+    private Mono<HttpResponse> sendAsync(HttpRequest httpRequest, Context context) {
         ProgressReporter progressReporter = Contexts.with(context).getHttpRequestProgressReporter();
         HttpMethod httpMethod = httpRequest.getHttpMethod();
         if (httpMethod == HttpMethod.PATCH) {
