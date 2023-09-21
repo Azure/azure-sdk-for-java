@@ -4,7 +4,7 @@
 
 #### Features Added
 * Added throughput control support for `gateway mode`. See [PR 36687](https://github.com/Azure/azure-sdk-for-java/pull/36687)
-* Added a preview API to `ChangeFeedProcessorBuilder` to process an additional context for handling all versions and deletes changes. - See [PR 36715](https://github.com/Azure/azure-sdk-for-java/pull/36715) 
+* Added a preview API to `ChangeFeedProcessorBuilder` to process an additional `ChangeFeedProcessorContext` for handling all versions and deletes changes. - See [PR 36715](https://github.com/Azure/azure-sdk-for-java/pull/36715) 
 
 #### Breaking Changes
 * If `ChangeFeedProcessorBuilder` is configured with both overloads of `handleAllVersionsAndDeletesChanges` (with and without context handling)

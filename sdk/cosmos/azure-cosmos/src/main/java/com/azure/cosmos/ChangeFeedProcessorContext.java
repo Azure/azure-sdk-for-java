@@ -13,7 +13,7 @@ import java.util.function.BiConsumer;
  * lambda is invoked.
  * <br>
  * <br>
- * ATTENTION: This interface is not designed to be implemented by end users.
+ * NOTE: This interface is not designed to be implemented by end users.
  * */
 @Beta(value = Beta.SinceVersion.V4_50_0, warningText = Beta.PREVIEW_SUBJECT_TO_CHANGE_WARNING)
 public interface ChangeFeedProcessorContext {
