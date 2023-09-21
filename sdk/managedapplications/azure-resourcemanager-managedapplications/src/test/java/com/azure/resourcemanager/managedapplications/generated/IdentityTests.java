@@ -7,6 +7,9 @@ package com.azure.resourcemanager.managedapplications.generated;
 import com.azure.core.util.BinaryData;
 import com.azure.resourcemanager.managedapplications.models.Identity;
 import com.azure.resourcemanager.managedapplications.models.ResourceIdentityType;
+import com.azure.resourcemanager.managedapplications.models.UserAssignedResourceIdentity;
+import java.util.HashMap;
+import java.util.Map;
 import org.junit.jupiter.api.Assertions;
 
 public final class IdentityTests {
@@ -15,15 +18,30 @@ public final class IdentityTests {
         Identity model =
             BinaryData
                 .fromString(
-                    "{\"principalId\":\"xypininmayhuybbk\",\"tenantId\":\"depoog\",\"type\":\"SystemAssigned\"}")
+                    "{\"principalId\":\"ftyxolniw\",\"tenantId\":\"cukjf\",\"type\":\"UserAssigned\",\"userAssignedIdentities\":{\"ddhsgcbacphe\":{\"principalId\":\"klryplwck\",\"tenantId\":\"syyp\"}}}")
                 .toObject(Identity.class);
-        Assertions.assertEquals(ResourceIdentityType.SYSTEM_ASSIGNED, model.type());
+        Assertions.assertEquals(ResourceIdentityType.USER_ASSIGNED, model.type());
     }
 
     @org.junit.jupiter.api.Test
     public void testSerialize() throws Exception {
-        Identity model = new Identity().withType(ResourceIdentityType.SYSTEM_ASSIGNED);
+        Identity model =
+            new Identity()
+                .withType(ResourceIdentityType.USER_ASSIGNED)
+                .withUserAssignedIdentities(mapOf("ddhsgcbacphe", new UserAssignedResourceIdentity()));
         model = BinaryData.fromObject(model).toObject(Identity.class);
-        Assertions.assertEquals(ResourceIdentityType.SYSTEM_ASSIGNED, model.type());
+        Assertions.assertEquals(ResourceIdentityType.USER_ASSIGNED, model.type());
+    }
+
+    // Use "Map.of" if available
+    @SuppressWarnings("unchecked")
+    private static <T> Map<String, T> mapOf(Object... inputs) {
+        Map<String, T> map = new HashMap<>();
+        for (int i = 0; i < inputs.length; i += 2) {
+            String key = (String) inputs[i];
+            T value = (T) inputs[i + 1];
+            map.put(key, value);
+        }
+        return map;
     }
 }
