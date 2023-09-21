@@ -3,6 +3,7 @@
 
 package com.azure.cosmos.implementation;
 
+import com.azure.cosmos.BridgeInternal;
 import com.azure.cosmos.ConsistencyLevel;
 import com.azure.cosmos.CosmosAsyncClient;
 import com.azure.cosmos.CosmosDiagnosticsContext;
@@ -18,6 +19,9 @@ import static com.azure.cosmos.implementation.guava25.base.Preconditions.checkNo
 public class CosmosPagedFluxOptions {
     private static final ImplementationBridgeHelpers.CosmosAsyncClientHelper.CosmosAsyncClientAccessor clientAccessor =
         ImplementationBridgeHelpers.CosmosAsyncClientHelper.getCosmosAsyncClientAccessor();
+
+    private static final ImplementationBridgeHelpers.CosmosDiagnosticsContextHelper.CosmosDiagnosticsContextAccessor ctxAccessor =
+        ImplementationBridgeHelpers.CosmosDiagnosticsContextHelper.getCosmosDiagnosticsContextAccessor();
 
     private String requestContinuation;
     private Integer maxItemCount;
@@ -57,8 +61,6 @@ public class CosmosPagedFluxOptions {
     public CosmosAsyncClient getCosmosAsyncClient() {
         return cosmosAsyncClient;
     }
-
-    public ConsistencyLevel getEffectiveConsistencyLevel() { return this.effectiveConsistencyLevel; }
 
     /**
      * Gets the request continuation token.
@@ -115,6 +117,11 @@ public class CosmosPagedFluxOptions {
      */
     public CosmosPagedFluxOptions setMaxItemCount(Integer maxItemCount) {
         this.maxItemCount = maxItemCount;
+        CosmosDiagnosticsContext ctxSnapshot = this.getDiagnosticsContext();
+        if (ctxSnapshot != null) {
+            ctxAccessor.updateMaxItemCount(ctxSnapshot, maxItemCount);
+        }
+
         return this;
     }
 
@@ -166,10 +173,6 @@ public class CosmosPagedFluxOptions {
         return this.ctx;
     }
 
-    public void setDiagnosticsContext(CosmosDiagnosticsContext ctx) {
-        this.ctx = ctx;
-    }
-
     public void setTracerInformation(
         String tracerSpanName,
         String databaseId,
@@ -201,6 +204,24 @@ public class CosmosPagedFluxOptions {
         this.effectiveConsistencyLevel = clientAccessor
             .getEffectiveConsistencyLevel(cosmosAsyncClient, operationType, consistencyLevel);
         this.thresholds = thresholds;
+
+        final CosmosDiagnosticsContext cosmosCtx = ctxAccessor.create(
+            tracerSpanName,
+            this.serviceEndpoint,
+            BridgeInternal.getServiceEndpoint(cosmosAsyncClient),
+            databaseId,
+            containerId,
+            resourceType,
+            operationType,
+            operationId,
+            this.effectiveConsistencyLevel,
+            this.getMaxItemCount(),
+            thresholds,
+            null,
+            this.getConnectionMode(),
+            this.getUserAgent());
+        ctxAccessor.setSamplingRateSnapshot(cosmosCtx, this.getSamplingRateSnapshot());
+        this.ctx = cosmosCtx;
     }
 
     public void setTracerAndTelemetryInformation(String tracerSpanName,
@@ -234,6 +255,25 @@ public class CosmosPagedFluxOptions {
         this.effectiveConsistencyLevel = clientAccessor
             .getEffectiveConsistencyLevel(cosmosAsyncClient, operationType, consistencyLevel);
         this.thresholds = thresholds;
+
+        final CosmosDiagnosticsContext cosmosCtx = ctxAccessor.create(
+            tracerSpanName,
+            this.getAccountTag(),
+            BridgeInternal.getServiceEndpoint(cosmosAsyncClient),
+            databaseId,
+            containerId,
+            resourceType,
+            operationType,
+            operationId,
+            this.effectiveConsistencyLevel,
+            this.getMaxItemCount(),
+            thresholds,
+            null,
+            this.getConnectionMode(),
+            this.getUserAgent());
+        ctxAccessor.setSamplingRateSnapshot(cosmosCtx, this.getSamplingRateSnapshot());
+        this.ctx = cosmosCtx;
+
     }
 
     public double getSamplingRateSnapshot() {
@@ -242,5 +282,9 @@ public class CosmosPagedFluxOptions {
 
     public void setSamplingRateSnapshot(double samplingRateSnapshot) {
         this.samplingRateSnapshot = samplingRateSnapshot;
+        CosmosDiagnosticsContext ctxSnapshot = this.getDiagnosticsContext();
+        if (ctxSnapshot != null) {
+            ctxAccessor.setSamplingRateSnapshot(ctxSnapshot, samplingRateSnapshot);
+        }
     }
 }

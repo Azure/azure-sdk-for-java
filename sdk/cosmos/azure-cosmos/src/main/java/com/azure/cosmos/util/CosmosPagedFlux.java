@@ -7,9 +7,7 @@ import com.azure.core.util.Context;
 import com.azure.core.util.FluxUtil;
 import com.azure.core.util.IterableStream;
 import com.azure.core.util.paging.ContinuablePagedFlux;
-import com.azure.cosmos.BridgeInternal;
 import com.azure.cosmos.CosmosDiagnostics;
-import com.azure.cosmos.CosmosDiagnosticsContext;
 import com.azure.cosmos.implementation.CosmosPagedFluxOptions;
 import com.azure.cosmos.implementation.DiagnosticsProvider;
 import com.azure.cosmos.implementation.ImplementationBridgeHelpers;
@@ -254,23 +252,7 @@ public final class CosmosPagedFlux<T> extends ContinuablePagedFlux<String, T, Fe
 
 
         final DiagnosticsProvider tracerProvider = pagedFluxOptions.getDiagnosticsProvider();
-        final CosmosDiagnosticsContext cosmosCtx = ctxAccessor.create(
-            pagedFluxOptions.getSpanName(),
-            pagedFluxOptions.getAccountTag(),
-            BridgeInternal.getServiceEndpoint(pagedFluxOptions.getCosmosAsyncClient()),
-            pagedFluxOptions.getDatabaseId(),
-            pagedFluxOptions.getContainerId(),
-            pagedFluxOptions.getResourceType(),
-            pagedFluxOptions.getOperationType(),
-            pagedFluxOptions.getOperationId(),
-            pagedFluxOptions.getEffectiveConsistencyLevel(),
-            pagedFluxOptions.getMaxItemCount(),
-            pagedFluxOptions.getDiagnosticsThresholds(),
-            null,
-            pagedFluxOptions.getConnectionMode(),
-            pagedFluxOptions.getUserAgent());
-        ctxAccessor.setSamplingRateSnapshot(cosmosCtx, pagedFluxOptions.getSamplingRateSnapshot());
-        pagedFluxOptions.setDiagnosticsContext(cosmosCtx);
+
 
         return Flux
             .deferContextual(reactorCtx -> result
@@ -285,7 +267,7 @@ public final class CosmosPagedFlux<T> extends ContinuablePagedFlux<String, T, Fe
             .contextWrite(DiagnosticsProvider.setContextInReactor(
                 pagedFluxOptions.getDiagnosticsProvider().startSpan(
                     pagedFluxOptions.getSpanName(),
-                    cosmosCtx,
+                    pagedFluxOptions.getDiagnosticsContext(),
                     context)));
     }
 

@@ -941,24 +941,14 @@ public class RxDocumentClientImpl implements AsyncDocumentClient, IAuthorization
         CosmosQueryRequestOptions nonNullQueryOptions = options != null ? options : new CosmosQueryRequestOptions();
         RequestOptions nonNullRequestOptions = qryOptAccessor.toRequestOptions(nonNullQueryOptions);
 
-        CosmosEndToEndOperationLatencyPolicyConfig endToEndPolicyConfig =
-            nonNullRequestOptions.getCosmosEndToEndLatencyPolicyConfig();
-
-        List<String> orderedApplicableRegionsForSpeculation = getApplicableRegionsForSpeculation(
-            endToEndPolicyConfig,
-            resourceTypeEnum,
-            OperationType.Query,
-            false,
-            nonNullRequestOptions);
-
         UUID correlationActivityIdOfRequestOptions = qryOptAccessor
-            .getCorrelationActivityId(options);
+            .getCorrelationActivityId(nonNullQueryOptions);
         UUID correlationActivityId = correlationActivityIdOfRequestOptions != null ?
             correlationActivityIdOfRequestOptions : randomUuid();
 
         final AtomicBoolean isQueryCancelledOnTimeout = new AtomicBoolean(false);
 
-        IDocumentQueryClient queryClient = documentQueryClientImpl(RxDocumentClientImpl.this, getOperationContextAndListenerTuple(options));
+        IDocumentQueryClient queryClient = documentQueryClientImpl(RxDocumentClientImpl.this, getOperationContextAndListenerTuple(nonNullQueryOptions));
 
         // Trying to put this logic as low as the query pipeline
         // Since for parallelQuery, each partition will have its own request, so at this point, there will be no request associate with this retry policy.
@@ -967,32 +957,25 @@ public class RxDocumentClientImpl implements AsyncDocumentClient, IAuthorization
             this.collectionCache,
             null,
             resourceLink,
-            ModelBridgeInternal.getPropertiesFromQueryRequestOptions(options));
+            ModelBridgeInternal.getPropertiesFromQueryRequestOptions(nonNullQueryOptions));
 
-        if (orderedApplicableRegionsForSpeculation.size() < 2) {
-            // no hedging
-            return ObservableHelper.fluxInlineIfPossibleAsObs(
-                () -> createQueryInternal(
-                    this, resourceLink, sqlQuery, options, klass, resourceTypeEnum, queryClient, correlationActivityId, isQueryCancelledOnTimeout),
-                invalidPartitionExceptionRetryPolicy);
-        } else {
-            final ScopedDiagnosticsFactory diagnosticsFactory = new ScopedDiagnosticsFactory(this);
-            return
-                ObservableHelper.fluxInlineIfPossibleAsObs(
-                    () -> createQueryInternal(
-                        diagnosticsFactory, resourceLink, sqlQuery, options, klass, resourceTypeEnum, queryClient, correlationActivityId, isQueryCancelledOnTimeout),
-                    invalidPartitionExceptionRetryPolicy
-                )
-                .flatMap(result -> {
-                    diagnosticsFactory.merge(nonNullRequestOptions);
-                    return Mono.just(result);
-                })
-                .onErrorMap(throwable -> {
-                    diagnosticsFactory.merge(nonNullRequestOptions);
-                    return throwable;
-                })
-                .doOnCancel(() -> diagnosticsFactory.merge(nonNullRequestOptions));
-        }
+
+        final ScopedDiagnosticsFactory diagnosticsFactory = new ScopedDiagnosticsFactory(this);
+        return
+            ObservableHelper.fluxInlineIfPossibleAsObs(
+                                () -> createQueryInternal(
+                                    diagnosticsFactory, resourceLink, sqlQuery, nonNullQueryOptions, klass, resourceTypeEnum, queryClient, correlationActivityId, isQueryCancelledOnTimeout),
+                                invalidPartitionExceptionRetryPolicy
+                            )
+                            .flatMap(result -> {
+                                diagnosticsFactory.merge(nonNullRequestOptions);
+                                return Mono.just(result);
+                            })
+                            .onErrorMap(throwable -> {
+                                diagnosticsFactory.merge(nonNullRequestOptions);
+                                return throwable;
+                            })
+                            .doOnCancel(() -> diagnosticsFactory.merge(nonNullRequestOptions));
     }
 
     private <T> Flux<FeedResponse<T>> createQueryInternal(

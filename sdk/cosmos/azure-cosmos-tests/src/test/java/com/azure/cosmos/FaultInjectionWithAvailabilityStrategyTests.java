@@ -3,11 +3,13 @@
 package com.azure.cosmos;
 
 import com.azure.cosmos.implementation.AsyncDocumentClient;
+import com.azure.cosmos.implementation.ClientSideRequestStatistics;
 import com.azure.cosmos.implementation.DatabaseAccount;
 import com.azure.cosmos.implementation.DatabaseAccountLocation;
 import com.azure.cosmos.implementation.GlobalEndpointManager;
 import com.azure.cosmos.implementation.HttpConstants;
 import com.azure.cosmos.implementation.ImplementationBridgeHelpers;
+import com.azure.cosmos.implementation.OperationType;
 import com.azure.cosmos.implementation.RxDocumentClientImpl;
 import com.azure.cosmos.implementation.TestConfigurations;
 import com.azure.cosmos.implementation.Utils;
@@ -20,6 +22,7 @@ import com.azure.cosmos.models.CosmosItemResponse;
 import com.azure.cosmos.models.CosmosPatchItemRequestOptions;
 import com.azure.cosmos.models.CosmosPatchOperations;
 import com.azure.cosmos.models.CosmosQueryRequestOptions;
+import com.azure.cosmos.models.FeedRange;
 import com.azure.cosmos.models.FeedResponse;
 import com.azure.cosmos.models.PartitionKey;
 import com.azure.cosmos.models.PartitionKeyDefinition;
@@ -29,6 +32,7 @@ import com.azure.cosmos.test.faultinjection.CosmosFaultInjectionHelper;
 import com.azure.cosmos.test.faultinjection.FaultInjectionCondition;
 import com.azure.cosmos.test.faultinjection.FaultInjectionConditionBuilder;
 import com.azure.cosmos.test.faultinjection.FaultInjectionConnectionType;
+import com.azure.cosmos.test.faultinjection.FaultInjectionEndpointBuilder;
 import com.azure.cosmos.test.faultinjection.FaultInjectionOperationType;
 import com.azure.cosmos.test.faultinjection.FaultInjectionResultBuilders;
 import com.azure.cosmos.test.faultinjection.FaultInjectionRule;
@@ -250,14 +254,16 @@ public class FaultInjectionWithAvailabilityStrategyTests extends TestSuiteBase {
                 }
             };
 
+            FeedRange ALL_PARTITIONS = null;
+
             this.injectReadSessionNotAvailableIntoAllRegions =
-                (c, operationType) -> injectReadSessionNotAvailableError(c, this.writeableRegions, operationType);
+                (c, operationType) -> injectReadSessionNotAvailableError(c, this.writeableRegions, operationType, ALL_PARTITIONS);
 
             this.injectReadSessionNotAvailableIntoFirstRegionOnly =
-                (c, operationType) -> injectReadSessionNotAvailableError(c, this.getFirstRegion(), operationType);
+                (c, operationType) -> injectReadSessionNotAvailableError(c, this.getFirstRegion(), operationType, ALL_PARTITIONS);
 
             this.injectReadSessionNotAvailableIntoAllExceptFirstRegion =
-                (c, operationType) -> injectReadSessionNotAvailableError(c, this.getAllRegionsExceptFirst(), operationType);
+                (c, operationType) -> injectReadSessionNotAvailableError(c, this.getAllRegionsExceptFirst(), operationType, ALL_PARTITIONS);
 
             this.injectTransitTimeoutIntoFirstRegionOnly =
                 (c, operationType) -> injectTransitTimeout(c, this.getFirstRegion(), operationType);
@@ -1599,6 +1605,12 @@ public class FaultInjectionWithAvailabilityStrategyTests extends TestSuiteBase {
         final int ENOUGH_DOCS_SAME_PK_TO_EXCEED_PAGE_SIZE = 10;
         final int NO_OTHER_DOCS_WITH_SAME_PK = 0;
         final int ENOUGH_DOCS_OTHER_PK_TO_HIT_EVERY_PARTITION = PHYSICAL_PARTITION_COUNT * 10;
+        final int SINGLE_REGION = 1;
+        final int TWO_REGIONS = 2;
+        final int ONE_FOR_QUERY_PLAN = 1;
+
+        BiConsumer<CosmosAsyncContainer, FaultInjectionOperationType> injectReadSessionNotAvailableIntoFirstRegionOnlyForSinglePartition =
+            (c, operationType) -> injectReadSessionNotAvailableError(c, this.getFirstRegion(), operationType, c.getFeedRanges().block().get(0));
 
         BiFunction<String, ItemOperationInvocationParameters, CosmosResponseWrapper> queryReturnsTotalRecordCountWithDefaultPageSize = (query, params) ->
             queryReturnsTotalRecordCountCore(query, params, 100);
@@ -1658,18 +1670,8 @@ public class FaultInjectionWithAvailabilityStrategyTests extends TestSuiteBase {
         Function<ItemOperationInvocationParameters, String> crossPartitionEmptyResultQueryGenerator = (params) ->
             "SELECT * FROM c WHERE CONTAINS (c.id, 'NotExistingId')";
 
-        Consumer<CosmosDiagnosticsContext>  validateSinglePartitionQueryDiagnosticsContextForOnlyFirstRegion =
-            (ctx) -> {
-                this.validateDiagnosticsContextHasDiagnosticsForOnlyFirstRegion.accept(ctx);
-                CosmosDiagnostics singleDiagnostics = ctx.getDiagnostics().iterator().next();
-                assertThat(singleDiagnostics.getFeedResponseDiagnostics()).isNotNull();
-                assertThat(singleDiagnostics.getFeedResponseDiagnostics().getQueryPlanDiagnosticsContext()).isNotNull();
-                assertThat(singleDiagnostics.getFeedResponseDiagnostics().getClientSideRequestStatistics()).isNotNull();
-                assertThat(singleDiagnostics.getFeedResponseDiagnostics().getClientSideRequestStatistics().size()).isEqualTo(1);
-            };
-
-        BiConsumer<CosmosDiagnosticsContext, Integer> validateQueryDiagnosticsContext =
-            (ctx, expectedDiagnosticsCount) -> {
+        BiConsumer<CosmosDiagnosticsContext, Integer> validateDiagnosticsContextBasicsForQuery =
+            (ctx, expectedNumberOfRegionsContacted) -> {
                 logger.info(
                     "Diagnostics Context to evaluate: {}",
                     ctx != null ? ctx.toJson() : "NULL");
@@ -1677,23 +1679,95 @@ public class FaultInjectionWithAvailabilityStrategyTests extends TestSuiteBase {
                 assertThat(ctx).isNotNull();
                 if (ctx != null) {
                     assertThat(ctx.getDiagnostics()).isNotNull();
+                    // Query Plan + at least one query response
+
+                    assertThat(ctx.getDiagnostics().size()).isGreaterThanOrEqualTo(2);
+                    assertThat(ctx.getContactedRegionNames().size()).isEqualTo(expectedNumberOfRegionsContacted);
+                    CosmosDiagnostics[] diagnostics = ctx.getDiagnostics().toArray(new CosmosDiagnostics[0]);
+                    assertThat(diagnostics.length).isGreaterThanOrEqualTo(2);
+                    assertThat(diagnostics[0]).isNotNull();
+                    assertThat(diagnostics[0].getFeedResponseDiagnostics()).isNull();
+                    assertThat(diagnostics[0].getClientSideRequestStatistics()).isNotNull();
+                    assertThat(diagnostics[0].getClientSideRequestStatistics().size()).isEqualTo(1);
+                    ClientSideRequestStatistics[] clientStats =
+                        diagnostics[0].getClientSideRequestStatistics().toArray(new ClientSideRequestStatistics[0]);
+                    assertThat(clientStats.length).isEqualTo(1);
+                    assertThat(clientStats[0]).isNotNull();
+                    assertThat(clientStats[0].getGatewayStatisticsList()).isNotNull();
+                    ClientSideRequestStatistics.GatewayStatistics[] gwStats =
+                        clientStats[0].getGatewayStatisticsList().toArray(new ClientSideRequestStatistics.GatewayStatistics[0]);
+                    assertThat(gwStats.length).isEqualTo(1);
+                    assertThat(gwStats[0]).isNotNull();
+                    assertThat(gwStats[0].getOperationType()).isEqualTo(OperationType.QueryPlan);
+                }
+            };
+
+        Consumer<CosmosDiagnosticsContext> validateSinglePartitionQueryDiagnosticsContextCore = (ctx) -> {
+            CosmosDiagnostics[] diagnostics = ctx.getDiagnostics().toArray(new CosmosDiagnostics[0]);
+            assertThat(diagnostics.length).isEqualTo(2);
+            CosmosDiagnostics singleNonQueryPlanDiagnostics = diagnostics[1];
+            assertThat(singleNonQueryPlanDiagnostics.getFeedResponseDiagnostics()).isNotNull();
+            assertThat(singleNonQueryPlanDiagnostics.getFeedResponseDiagnostics().getQueryPlanDiagnosticsContext()).isNotNull();
+            assertThat(singleNonQueryPlanDiagnostics.getFeedResponseDiagnostics().getClientSideRequestStatistics()).isNotNull();
+            assertThat(singleNonQueryPlanDiagnostics.getFeedResponseDiagnostics().getClientSideRequestStatistics().size()).isEqualTo(1);
+        };
+
+        Consumer<CosmosDiagnosticsContext> validateSinglePartitionQueryDiagnosticsContextCoreForHedging = (ctx) -> {
+            CosmosDiagnostics[] diagnostics = ctx.getDiagnostics().toArray(new CosmosDiagnostics[0]);
+            assertThat(diagnostics.length).isEqualTo(3);
+            CosmosDiagnostics firstRegionDiagnostics = diagnostics[1];
+            assertThat(firstRegionDiagnostics.getFeedResponseDiagnostics()).isNull();
+            assertThat(firstRegionDiagnostics.getContactedRegionNames()).isNotNull();
+            assertThat(firstRegionDiagnostics.getContactedRegionNames().size()).isEqualTo(1);
+            assertThat(firstRegionDiagnostics.getContactedRegionNames().iterator().next())
+                .isEqualTo(this.writeableRegions.get(0).toLowerCase(Locale.ROOT));
+
+            CosmosDiagnostics secondRegionDiagnostics = diagnostics[2];
+            assertThat(secondRegionDiagnostics.getFeedResponseDiagnostics()).isNotNull();
+            assertThat(secondRegionDiagnostics.getContactedRegionNames()).isNotNull();
+            assertThat(secondRegionDiagnostics.getContactedRegionNames().size()).isEqualTo(1);
+            assertThat(secondRegionDiagnostics.getContactedRegionNames().iterator().next())
+                .isEqualTo(this.writeableRegions.get(1).toLowerCase(Locale.ROOT));
+            assertThat(secondRegionDiagnostics.getFeedResponseDiagnostics().getQueryPlanDiagnosticsContext()).isNotNull();
+            assertThat(secondRegionDiagnostics.getFeedResponseDiagnostics().getClientSideRequestStatistics()).isNotNull();
+            assertThat(secondRegionDiagnostics.getFeedResponseDiagnostics().getClientSideRequestStatistics().size()).isEqualTo(1);
+        };
+
+        Consumer<CosmosDiagnosticsContext>  validateSinglePartitionQueryDiagnosticsContextForOnlyFirstRegion =
+            (ctx) -> {
+                validateDiagnosticsContextBasicsForQuery.accept(ctx, SINGLE_REGION);
+                validateSinglePartitionQueryDiagnosticsContextCore.accept(ctx);
+            };
+
+        Consumer<CosmosDiagnosticsContext>  validateSinglePartitionQueryDiagnosticsContextForAllRegions =
+            (ctx) -> {
+                validateDiagnosticsContextBasicsForQuery.accept(ctx, TWO_REGIONS);
+                validateSinglePartitionQueryDiagnosticsContextCoreForHedging.accept(ctx);
+            };
+
+        TriConsumer<CosmosDiagnosticsContext, Integer, Integer> validateQueryDiagnosticsContext =
+            (ctx, expectedDiagnosticsCount, expectedRegionCount) -> {
+                logger.info(
+                    "Diagnostics Context to evaluate: {}",
+                    ctx != null ? ctx.toJson() : "NULL");
+
+                assertThat(ctx).isNotNull();
+                if (ctx != null) {
+                    validateDiagnosticsContextBasicsForQuery.accept(ctx, expectedRegionCount);
                     assertThat(ctx.getDiagnostics().size()).isEqualTo(expectedDiagnosticsCount);
-                    assertThat(ctx.getContactedRegionNames().size()).isEqualTo(1);
-                    assertThat(ctx.getContactedRegionNames().iterator().next())
-                        .isEqualTo(this.writeableRegions.get(0).toLowerCase(Locale.ROOT));
 
                     CosmosDiagnostics[] diagnostics = ctx.getDiagnostics().toArray(new CosmosDiagnostics[0]);
                     assertThat(diagnostics.length).isEqualTo(expectedDiagnosticsCount);
 
                     // Query plan should only exist for first partition
                     // All partitions should return single page - because total document count is less than maxItemCount
-                    CosmosDiagnostics firstDiagnostics = diagnostics[0];
+                    CosmosDiagnostics firstDiagnostics = diagnostics[1];
                     assertThat(firstDiagnostics.getFeedResponseDiagnostics()).isNotNull();
                     assertThat(firstDiagnostics.getFeedResponseDiagnostics().getQueryPlanDiagnosticsContext()).isNotNull();
                     assertThat(firstDiagnostics.getFeedResponseDiagnostics().getClientSideRequestStatistics()).isNotNull();
                     assertThat(firstDiagnostics.getFeedResponseDiagnostics().getClientSideRequestStatistics().size()).isGreaterThanOrEqualTo(1);
 
-                    for (int i = 1; i < expectedDiagnosticsCount; i++) {
+                    for (int i = 2; i < expectedDiagnosticsCount; i++) {
                         CosmosDiagnostics subsequentDiagnostics = diagnostics[i];
                         assertThat(subsequentDiagnostics.getFeedResponseDiagnostics()).isNotNull();
                         assertThat(subsequentDiagnostics.getFeedResponseDiagnostics().getQueryPlanDiagnosticsContext()).isNull();
@@ -1706,17 +1780,26 @@ public class FaultInjectionWithAvailabilityStrategyTests extends TestSuiteBase {
         Consumer<CosmosDiagnosticsContext> validateOnePagePerPartitionQueryDiagnosticsContextForOnlyFirstRegion =
             (ctx) -> validateQueryDiagnosticsContext.accept(
                 ctx,
-                PHYSICAL_PARTITION_COUNT);
+                ONE_FOR_QUERY_PLAN + PHYSICAL_PARTITION_COUNT,
+                SINGLE_REGION);
+
+        Consumer<CosmosDiagnosticsContext> validateOnePagePerPartitionQueryDiagnosticsContextForTwoRegions =
+            (ctx) -> validateQueryDiagnosticsContext.accept(
+                ctx,
+                ONE_FOR_QUERY_PLAN + PHYSICAL_PARTITION_COUNT,
+                TWO_REGIONS);
 
         Consumer<CosmosDiagnosticsContext> validatePageSizeOneForAllDocsSamePKQueryDiagnosticsContextForOnlyFirstRegion =
             (ctx) -> validateQueryDiagnosticsContext.accept(
                 ctx,
-                1 + ENOUGH_DOCS_SAME_PK_TO_EXCEED_PAGE_SIZE);
+                ONE_FOR_QUERY_PLAN + 1 + ENOUGH_DOCS_SAME_PK_TO_EXCEED_PAGE_SIZE,
+                SINGLE_REGION);
 
         Consumer<CosmosDiagnosticsContext> validatePageSizeOneAllDocsSameIdQueryDiagnosticsContextForOnlyFirstRegion =
             (ctx) -> validateQueryDiagnosticsContext.accept(
                 ctx,
-                1 + (int)ENOUGH_DOCS_OTHER_PK_TO_HIT_EVERY_PARTITION);
+                ONE_FOR_QUERY_PLAN + 1 + (int)ENOUGH_DOCS_OTHER_PK_TO_HIT_EVERY_PARTITION,
+                SINGLE_REGION);
 
         return new Object[][] {
             // CONFIG description
@@ -1844,6 +1927,48 @@ public class FaultInjectionWithAvailabilityStrategyTests extends TestSuiteBase {
                 ENOUGH_DOCS_OTHER_PK_TO_HIT_EVERY_PARTITION,
                 NO_OTHER_DOCS_WITH_SAME_PK
             },
+            new Object[] {
+                "DefaultPageSize_SinglePartition_404-1002_OnlyFirstRegion_LocalPreferred_EagerAvailabilityStrategy",
+                Duration.ofSeconds(10),
+                eagerThresholdAvailabilityStrategy,
+                CosmosRegionSwitchHint.LOCAL_REGION_PREFERRED,
+                singlePartitionQueryGenerator,
+                queryReturnsTotalRecordCountWithDefaultPageSize,
+                injectReadSessionNotAvailableIntoFirstRegionOnly,
+                validateStatusCodeIs200Ok,
+                validateSinglePartitionQueryDiagnosticsContextForAllRegions,
+                validateExactlyOneRecordReturned,
+                ENOUGH_DOCS_OTHER_PK_TO_HIT_EVERY_PARTITION,
+                NO_OTHER_DOCS_WITH_SAME_PK
+            },
+            new Object[] {
+                "DefaultPageSize_CrossPartition_404-1002_OnlyFirstRegion_AllPartitions_RemotePreferred_ReluctantAvailabilityStrategy",
+                Duration.ofSeconds(1),
+                reluctantThresholdAvailabilityStrategy,
+                CosmosRegionSwitchHint.REMOTE_REGION_PREFERRED,
+                crossPartitionQueryGenerator,
+                queryReturnsTotalRecordCountWithDefaultPageSize,
+                injectReadSessionNotAvailableIntoFirstRegionOnly,
+                validateStatusCodeIs200Ok,
+                validateOnePagePerPartitionQueryDiagnosticsContextForTwoRegions,
+                validateAllRecordsSameIdReturned,
+                ENOUGH_DOCS_OTHER_PK_TO_HIT_EVERY_PARTITION,
+                NO_OTHER_DOCS_WITH_SAME_PK
+            },
+            new Object[] {
+                "DefaultPageSize_CrossPartition_404-1002_OnlyFirstRegion_SinglePartition_RemotePreferred_ReluctantAvailabilityStrategy",
+                Duration.ofSeconds(1),
+                reluctantThresholdAvailabilityStrategy,
+                CosmosRegionSwitchHint.REMOTE_REGION_PREFERRED,
+                crossPartitionQueryGenerator,
+                queryReturnsTotalRecordCountWithDefaultPageSize,
+                injectReadSessionNotAvailableIntoFirstRegionOnlyForSinglePartition,
+                validateStatusCodeIs200Ok,
+                validateOnePagePerPartitionQueryDiagnosticsContextForTwoRegions,
+                validateAllRecordsSameIdReturned,
+                ENOUGH_DOCS_OTHER_PK_TO_HIT_EVERY_PARTITION,
+                NO_OTHER_DOCS_WITH_SAME_PK
+            },
         };
     }
 
@@ -1912,7 +2037,8 @@ public class FaultInjectionWithAvailabilityStrategyTests extends TestSuiteBase {
         CosmosAsyncContainer containerWithSeveralWriteableRegions,
         List<String> applicableRegions,
         FaultInjectionOperationType applicableOperationType,
-        FaultInjectionServerErrorResult toBeInjectedServerErrorResult) {
+        FaultInjectionServerErrorResult toBeInjectedServerErrorResult,
+        FeedRange applicableFeedRange) {
 
         FaultInjectionRuleBuilder ruleBuilder = new FaultInjectionRuleBuilder(ruleName);
 
@@ -1921,12 +2047,21 @@ public class FaultInjectionWithAvailabilityStrategyTests extends TestSuiteBase {
         // inject 404/1002s in all regions
         // configure in accordance with preferredRegions on the client
         for (String region : applicableRegions) {
-            FaultInjectionCondition faultInjectionConditionForReads =
-                new FaultInjectionConditionBuilder()
-                    .operationType(applicableOperationType)
-                    .connectionType(FaultInjectionConnectionType.DIRECT)
-                    .region(region)
-                    .build();
+            FaultInjectionConditionBuilder conditionBuilder = new FaultInjectionConditionBuilder()
+                .operationType(applicableOperationType)
+                .connectionType(FaultInjectionConnectionType.DIRECT)
+                .region(region);
+
+            if (applicableFeedRange != null) {
+                conditionBuilder = conditionBuilder.endpoints(
+                    new FaultInjectionEndpointBuilder(applicableFeedRange)
+                        .replicaCount(4)
+                        .includePrimary(true)
+                        .build()
+                );
+            }
+
+            FaultInjectionCondition faultInjectionConditionForReads = conditionBuilder.build();
 
             // sustained fault injection
             FaultInjectionRule readSessionUnavailableRule = ruleBuilder
@@ -1951,7 +2086,8 @@ public class FaultInjectionWithAvailabilityStrategyTests extends TestSuiteBase {
     private static void injectReadSessionNotAvailableError(
         CosmosAsyncContainer containerWithSeveralWriteableRegions,
         List<String> applicableRegions,
-        FaultInjectionOperationType operationType) {
+        FaultInjectionOperationType operationType,
+        FeedRange applicableFeedRange) {
 
         String ruleName = "serverErrorRule-read-session-unavailable-" + UUID.randomUUID();
         FaultInjectionServerErrorResult badSessionTokenServerErrorResult = FaultInjectionResultBuilders
@@ -1963,7 +2099,8 @@ public class FaultInjectionWithAvailabilityStrategyTests extends TestSuiteBase {
             containerWithSeveralWriteableRegions,
             applicableRegions,
             operationType,
-            badSessionTokenServerErrorResult
+            badSessionTokenServerErrorResult,
+            applicableFeedRange
         );
     }
 
@@ -1983,7 +2120,8 @@ public class FaultInjectionWithAvailabilityStrategyTests extends TestSuiteBase {
             containerWithSeveralWriteableRegions,
             applicableRegions,
             faultInjectionOperationType,
-            timeoutResult
+            timeoutResult,
+            null
         );
     }
 
@@ -2003,7 +2141,8 @@ public class FaultInjectionWithAvailabilityStrategyTests extends TestSuiteBase {
             containerWithSeveralWriteableRegions,
             applicableRegions,
             faultInjectionOperationType,
-            serviceUnavailableResult
+            serviceUnavailableResult,
+            null
         );
     }
 
@@ -2022,7 +2161,8 @@ public class FaultInjectionWithAvailabilityStrategyTests extends TestSuiteBase {
             containerWithSeveralWriteableRegions,
             applicableRegions,
             faultInjectionOperationType,
-            serviceUnavailableResult
+            serviceUnavailableResult,
+            null
         );
     }
 

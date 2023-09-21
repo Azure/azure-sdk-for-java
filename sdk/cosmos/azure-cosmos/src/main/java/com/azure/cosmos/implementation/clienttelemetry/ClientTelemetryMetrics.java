@@ -464,73 +464,7 @@ public final class ClientTelemetryMetrics {
                             requestStatistics.getAddressResolutionStatistics());
                     }
                 }
-
-                FeedResponseDiagnostics feedDiagnostics = diagnosticsAccessor
-                    .getFeedResponseDiagnostics(diagnostics);
-
-                if (feedDiagnostics == null) {
-                    continue;
-                }
-
-                QueryInfo.QueryPlanDiagnosticsContext queryPlanDiagnostics =
-                    feedDiagnostics.getQueryPlanDiagnosticsContext();
-
-                recordQueryPlanDiagnostics(diagnosticsContext, cosmosAsyncClient, queryPlanDiagnostics);
             }
-        }
-
-        private void recordQueryPlanDiagnostics(
-            CosmosDiagnosticsContext ctx,
-            CosmosAsyncClient cosmosAsyncClient,
-            QueryInfo.QueryPlanDiagnosticsContext queryPlanDiagnostics
-        ) {
-            if (queryPlanDiagnostics == null || !this.metricCategories.contains(MetricCategory.RequestSummary)) {
-                return;
-            }
-
-            Tags requestTags = operationTags.and(
-                createQueryPlanTags(metricTagNames)
-            );
-
-            CosmosMeterOptions requestsOptions = clientAccessor.getMeterOptions(
-                cosmosAsyncClient,
-                CosmosMetricName.REQUEST_SUMMARY_GATEWAY_REQUESTS);
-            if (requestsOptions.isEnabled() &&
-                (!requestsOptions.isDiagnosticThresholdsFilteringEnabled() || ctx.isThresholdViolated())) {
-                Counter requestCounter = Counter
-                    .builder(requestsOptions.getMeterName().toString())
-                    .baseUnit("requests")
-                    .description("Gateway requests")
-                    .tags(getEffectiveTags(requestTags, requestsOptions))
-                    .register(compositeRegistry);
-                requestCounter.increment();
-            }
-
-            Duration latency = queryPlanDiagnostics.getDuration();
-
-            if (latency != null) {
-                CosmosMeterOptions latencyOptions = clientAccessor.getMeterOptions(
-                    cosmosAsyncClient,
-                    CosmosMetricName.REQUEST_SUMMARY_GATEWAY_LATENCY);
-                if (latencyOptions.isEnabled() &&
-                    (!latencyOptions.isDiagnosticThresholdsFilteringEnabled() || ctx.isThresholdViolated())) {
-                    Timer requestLatencyMeter = Timer
-                        .builder(latencyOptions.getMeterName().toString())
-                        .description("Gateway Request latency")
-                        .maximumExpectedValue(Duration.ofSeconds(300))
-                        .publishPercentiles(latencyOptions.getPercentiles())
-                        .publishPercentileHistogram(latencyOptions.isHistogramPublishingEnabled())
-                        .tags(getEffectiveTags(requestTags, latencyOptions))
-                        .register(compositeRegistry);
-                    requestLatencyMeter.record(latency);
-                }
-            }
-
-            recordRequestTimeline(
-                ctx,
-                cosmosAsyncClient,
-                CosmosMetricName.REQUEST_DETAILS_GATEWAY_TIMELINE,
-                queryPlanDiagnostics.getRequestTimeline(), requestTags);
         }
 
         private void recordRequestPayloadSizes(

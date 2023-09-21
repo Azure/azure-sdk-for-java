@@ -48,6 +48,10 @@ import java.util.stream.Collectors;
  * This is meant to be internally used only by our sdk.
  */
 class DocumentProducer<T> {
+
+    private static final ImplementationBridgeHelpers.CosmosQueryRequestOptionsHelper.CosmosQueryRequestOptionsAccessor qryOptionsAccessor =
+        ImplementationBridgeHelpers.CosmosQueryRequestOptionsHelper.getCosmosQueryRequestOptionsAccessor();
+
     private static final Logger logger = LoggerFactory.getLogger(DocumentProducer.class);
     private int retries;
 
@@ -148,6 +152,13 @@ class DocumentProducer<T> {
                 }, finalRetryPolicy);
         };
 
+        this.correlatedActivityId = correlatedActivityId;
+
+        this.cosmosQueryRequestOptions = cosmosQueryRequestOptions != null ?
+                                             ModelBridgeInternal.createQueryRequestOptions(cosmosQueryRequestOptions)
+                                             : new CosmosQueryRequestOptions();
+        ModelBridgeInternal.setQueryRequestOptionsContinuationToken(this.cosmosQueryRequestOptions, initialContinuationToken);
+
         this.executeRequestFuncWithRetries = request -> {
             retries = -1;
             this.fetchSchedulingMetrics.start();
@@ -167,12 +178,6 @@ class DocumentProducer<T> {
                 executeFeedOperationCore);
         };
 
-        this.correlatedActivityId = correlatedActivityId;
-
-        this.cosmosQueryRequestOptions = cosmosQueryRequestOptions != null ?
-                                             ModelBridgeInternal.createQueryRequestOptions(cosmosQueryRequestOptions)
-                                             : new CosmosQueryRequestOptions();
-        ModelBridgeInternal.setQueryRequestOptionsContinuationToken(this.cosmosQueryRequestOptions, initialContinuationToken);
         this.lastResponseContinuationToken = initialContinuationToken;
         this.resourceType = resourceType;
         this.collectionLink = collectionLink;

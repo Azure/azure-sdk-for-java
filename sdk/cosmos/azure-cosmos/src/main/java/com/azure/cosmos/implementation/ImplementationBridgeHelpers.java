@@ -848,6 +848,8 @@ public class ImplementationBridgeHelpers {
             String getSpanName(CosmosDiagnosticsContext ctx);
 
             void setSamplingRateSnapshot(CosmosDiagnosticsContext ctx, double samplingRate);
+
+            void updateMaxItemCount(CosmosDiagnosticsContext ctx, Integer maxItemCount);
         }
     }
 

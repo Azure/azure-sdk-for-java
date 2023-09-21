@@ -55,7 +55,7 @@ public final class CosmosDiagnosticsContext {
     private final String operationTypeString;
     private final ConsistencyLevel consistencyLevel;
     private final ConcurrentLinkedDeque<CosmosDiagnostics> diagnostics;
-    private final Integer maxItemCount;
+    private Integer maxItemCount;
     private final CosmosDiagnosticsThresholds thresholds;
     private final String operationId;
     private final String trackingId;
@@ -273,6 +273,12 @@ public final class CosmosDiagnosticsContext {
     void addDiagnostics(CosmosDiagnostics cosmosDiagnostics) {
         checkNotNull(cosmosDiagnostics, "Argument 'cosmosDiagnostics' must not be null.");
         if (cosmosDiagnostics.getDiagnosticsContext() == this) {
+            return;
+        }
+
+        if (cosmosDiagnostics.getFeedResponseDiagnostics() != null &&
+            !diagAccessor.isDiagnosticsCapturedInPagedFlux(cosmosDiagnostics).get()) {
+
             return;
         }
 
@@ -630,6 +636,14 @@ public final class CosmosDiagnosticsContext {
         return this.connectionMode;
     }
 
+    void updateMaxItemCount(Integer maxItemCount) {
+        if (maxItemCount != null) {
+            if (this.maxItemCount == null || this.maxItemCount < maxItemCount) {
+                this.maxItemCount = maxItemCount;
+            }
+        }
+    }
+
     private static void addRequestInfoForGatewayStatistics(
         ClientSideRequestStatistics requestStats,
         List<CosmosDiagnosticsRequestInfo> requestInfo) {
@@ -979,6 +993,12 @@ public final class CosmosDiagnosticsContext {
                     public void setSamplingRateSnapshot(CosmosDiagnosticsContext ctx, double samplingRate) {
                         checkNotNull(ctx, "Argument 'ctx' must not be null.");
                         ctx.setSamplingRateSnapshot(samplingRate);
+                    }
+
+                    @Override
+                    public void updateMaxItemCount(CosmosDiagnosticsContext ctx, Integer maxItemCount) {
+                        checkNotNull(ctx, "Argument 'ctx' must not be null.");
+                        ctx.updateMaxItemCount(maxItemCount);
                     }
                 });
     }
