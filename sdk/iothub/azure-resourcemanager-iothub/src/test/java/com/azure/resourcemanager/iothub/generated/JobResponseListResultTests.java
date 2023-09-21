@@ -15,15 +15,21 @@ public final class JobResponseListResultTests {
         JobResponseListResult model =
             BinaryData
                 .fromString(
-                    "{\"value\":[{\"jobId\":\"skxfbk\",\"startTimeUtc\":\"Fri, 05 Feb 2021 18:39:24"
-                        + " GMT\",\"endTimeUtc\":\"Sun, 14 Feb 2021 18:57:00"
-                        + " GMT\",\"type\":\"writeDeviceProperties\",\"status\":\"completed\",\"failureReason\":\"hjdauwhvylwz\",\"statusMessage\":\"dhxujznbmpo\",\"parentJobId\":\"wpr\"}],\"nextLink\":\"lve\"}")
+                    "{\"value\":[{\"jobId\":\"vxqtayriwwroyqbe\",\"startTimeUtc\":\"Fri, 25 Jun 2021 11:51:15"
+                        + " GMT\",\"endTimeUtc\":\"Sun, 11 Apr 2021 16:05:14"
+                        + " GMT\",\"type\":\"readDeviceProperties\",\"status\":\"failed\",\"failureReason\":\"ojvknmefqsgzvaha\",\"statusMessage\":\"y\",\"parentJobId\":\"pvgqzcjrvxdjzlm\"},{\"jobId\":\"xkvugfhzov\",\"startTimeUtc\":\"Tue,"
+                        + " 06 Apr 2021 17:45:34 GMT\",\"endTimeUtc\":\"Mon, 30 Aug 2021 15:15:07"
+                        + " GMT\",\"type\":\"readDeviceProperties\",\"status\":\"enqueued\",\"failureReason\":\"hnnpr\",\"statusMessage\":\"i\",\"parentJobId\":\"ilpjzuaejxdult\"},{\"jobId\":\"zbbtdzumveek\",\"startTimeUtc\":\"Mon,"
+                        + " 08 Feb 2021 12:29:03 GMT\",\"endTimeUtc\":\"Fri, 03 Sep 2021 13:43:44"
+                        + " GMT\",\"type\":\"factoryResetDevice\",\"status\":\"running\",\"failureReason\":\"bsjyofdx\",\"statusMessage\":\"us\",\"parentJobId\":\"touwaboekqv\"}],\"nextLink\":\"lns\"}")
                 .toObject(JobResponseListResult.class);
     }
 
     @org.junit.jupiter.api.Test
     public void testSerialize() throws Exception {
-        JobResponseListResult model = new JobResponseListResult().withValue(Arrays.asList(new JobResponseInner()));
+        JobResponseListResult model =
+            new JobResponseListResult()
+                .withValue(Arrays.asList(new JobResponseInner(), new JobResponseInner(), new JobResponseInner()));
         model = BinaryData.fromObject(model).toObject(JobResponseListResult.class);
     }
 }

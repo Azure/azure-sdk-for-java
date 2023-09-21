@@ -7,7 +7,7 @@ package com.azure.resourcemanager.signalr.generated;
 /** Samples for SignalRCustomCertificates List. */
 public final class SignalRCustomCertificatesListSamples {
     /*
-     * x-ms-original-file: specification/signalr/resource-manager/Microsoft.SignalRService/stable/2023-02-01/examples/SignalRCustomCertificates_List.json
+     * x-ms-original-file: specification/signalr/resource-manager/Microsoft.SignalRService/preview/2023-06-01-preview/examples/SignalRCustomCertificates_List.json
      */
     /**
      * Sample code: SignalRCustomCertificates_List.

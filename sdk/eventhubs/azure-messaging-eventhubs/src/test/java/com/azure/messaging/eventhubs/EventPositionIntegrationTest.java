@@ -205,19 +205,21 @@ class EventPositionIntegrationTest extends IntegrationTestBase {
 
         // Act & Assert
         StepVerifier.create(consumer.receiveFromPartition(testData.getPartitionId(), position)
-                .map(PartitionEvent::getData)
-                .take(1))
-                .assertNext(event -> {
-                    logger.atInfo()
-                        .addKeyValue("sequenceNo", event.getSequenceNumber())
-                        .addKeyValue("offset", event.getOffset())
-                        .addKeyValue("enqueued", event.getEnqueuedTime())
-                        .log("actual");
+            .map(PartitionEvent::getData)
+            .take(1))
+            .assertNext(event -> {
+                logger.atInfo()
+                    .addKeyValue("sequenceNo", event.getSequenceNumber())
+                    .addKeyValue("offset", event.getOffset())
+                    .addKeyValue("enqueued", event.getEnqueuedTime())
+                    .log("actual");
 
-                    Assertions.assertEquals(expectedEvent.getEnqueuedTime(), event.getEnqueuedTime());
-                    Assertions.assertEquals(expectedEvent.getSequenceNumber(), event.getSequenceNumber());
-                    Assertions.assertEquals(expectedEvent.getOffset(), event.getOffset());
-                }).verifyComplete();
+                Assertions.assertEquals(expectedEvent.getEnqueuedTime(), event.getEnqueuedTime());
+                Assertions.assertEquals(expectedEvent.getSequenceNumber(), event.getSequenceNumber());
+                Assertions.assertEquals(expectedEvent.getOffset(), event.getOffset());
+            })
+            .expectComplete()
+            .verify(TIMEOUT);
     }
 
     /**
@@ -233,13 +235,15 @@ class EventPositionIntegrationTest extends IntegrationTestBase {
 
         // Act & Assert
         StepVerifier.create(consumer.receiveFromPartition(testData.getPartitionId(), position)
-                .map(PartitionEvent::getData)
-                .take(1))
-                .assertNext(event -> {
-                    Assertions.assertEquals(expectedEvent.getEnqueuedTime(), event.getEnqueuedTime());
-                    Assertions.assertEquals(expectedEvent.getSequenceNumber(), event.getSequenceNumber());
-                    Assertions.assertEquals(expectedEvent.getOffset(), event.getOffset());
-                }).verifyComplete();
+            .map(PartitionEvent::getData)
+            .take(1))
+            .assertNext(event -> {
+                Assertions.assertEquals(expectedEvent.getEnqueuedTime(), event.getEnqueuedTime());
+                Assertions.assertEquals(expectedEvent.getSequenceNumber(), event.getSequenceNumber());
+                Assertions.assertEquals(expectedEvent.getOffset(), event.getOffset());
+            })
+            .expectComplete()
+            .verify(TIMEOUT);
     }
 
     /**
@@ -255,14 +259,16 @@ class EventPositionIntegrationTest extends IntegrationTestBase {
 
         // Act & Assert
         StepVerifier.create(consumer.receiveFromPartition(testData.getPartitionId(), position)
-                .map(PartitionEvent::getData)
-                .filter(event -> isMatchingEvent(event, testData.getMessageId()))
-                .take(1))
-                .assertNext(event -> {
-                    Assertions.assertEquals(expectedEvent.getEnqueuedTime(), event.getEnqueuedTime());
-                    Assertions.assertEquals(expectedEvent.getSequenceNumber(), event.getSequenceNumber());
-                    Assertions.assertEquals(expectedEvent.getOffset(), event.getOffset());
-                }).verifyComplete();
+            .map(PartitionEvent::getData)
+            .filter(event -> isMatchingEvent(event, testData.getMessageId()))
+            .take(1))
+            .assertNext(event -> {
+                Assertions.assertEquals(expectedEvent.getEnqueuedTime(), event.getEnqueuedTime());
+                Assertions.assertEquals(expectedEvent.getSequenceNumber(), event.getSequenceNumber());
+                Assertions.assertEquals(expectedEvent.getOffset(), event.getOffset());
+            })
+            .expectComplete()
+            .verify(TIMEOUT);
     }
 
     /**
@@ -276,14 +282,16 @@ class EventPositionIntegrationTest extends IntegrationTestBase {
 
         // Act & Assert
         StepVerifier.create(consumer.receiveFromPartition(testData.getPartitionId(), position)
-                .map(PartitionEvent::getData)
-                .filter(event -> isMatchingEvent(event, testData.getMessageId()))
-                .take(1))
-                .assertNext(event -> {
-                    Assertions.assertEquals(expectedEvent.getEnqueuedTime(), event.getEnqueuedTime());
-                    Assertions.assertEquals(expectedEvent.getSequenceNumber(), event.getSequenceNumber());
-                    Assertions.assertEquals(expectedEvent.getOffset(), event.getOffset());
-                }).verifyComplete();
+            .map(PartitionEvent::getData)
+            .filter(event -> isMatchingEvent(event, testData.getMessageId()))
+            .take(1))
+            .assertNext(event -> {
+                Assertions.assertEquals(expectedEvent.getEnqueuedTime(), event.getEnqueuedTime());
+                Assertions.assertEquals(expectedEvent.getSequenceNumber(), event.getSequenceNumber());
+                Assertions.assertEquals(expectedEvent.getOffset(), event.getOffset());
+            })
+            .expectComplete()
+            .verify(TIMEOUT);
     }
 
     /**
@@ -297,13 +305,15 @@ class EventPositionIntegrationTest extends IntegrationTestBase {
 
         // Act & Assert
         StepVerifier.create(consumer.receiveFromPartition(testData.getPartitionId(), position)
-                .map(PartitionEvent::getData)
-                .filter(event -> isMatchingEvent(event, testData.getMessageId()))
-                .take(1))
-                .assertNext(event -> {
-                    Assertions.assertEquals(expectedEvent.getEnqueuedTime(), event.getEnqueuedTime());
-                    Assertions.assertEquals(expectedEvent.getSequenceNumber(), event.getSequenceNumber());
-                    Assertions.assertEquals(expectedEvent.getOffset(), event.getOffset());
-                }).verifyComplete();
+            .map(PartitionEvent::getData)
+            .filter(event -> isMatchingEvent(event, testData.getMessageId()))
+            .take(1))
+            .assertNext(event -> {
+                Assertions.assertEquals(expectedEvent.getEnqueuedTime(), event.getEnqueuedTime());
+                Assertions.assertEquals(expectedEvent.getSequenceNumber(), event.getSequenceNumber());
+                Assertions.assertEquals(expectedEvent.getOffset(), event.getOffset());
+            })
+            .expectComplete()
+            .verify(TIMEOUT);
     }
 }

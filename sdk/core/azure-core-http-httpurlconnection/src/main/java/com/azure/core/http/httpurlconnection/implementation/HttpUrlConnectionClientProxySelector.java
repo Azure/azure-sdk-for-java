@@ -11,6 +11,7 @@ import java.util.regex.Pattern;
 
 /**
  * This class handles selecting the proxy during a request.
+ * To be implemented.
  */
 public final class HttpUrlConnectionClientProxySelector extends ProxySelector {
     private final Proxy.Type proxyType;

@@ -56,8 +56,6 @@ public final class CertificatesDeleteWithResponseMockTests {
                     tokenRequestContext -> Mono.just(new AccessToken("this_is_a_token", OffsetDateTime.MAX)),
                     new AzureProfile("", "", AzureEnvironment.AZURE));
 
-        manager
-            .certificates()
-            .deleteWithResponse("azpxdtnkdmkqjjl", "uenvrkp", "ou", "ibreb", com.azure.core.util.Context.NONE);
+        manager.certificates().deleteWithResponse("zq", "zh", "tw", "sgogczhonnxk", com.azure.core.util.Context.NONE);
     }
 }
