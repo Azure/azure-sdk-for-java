@@ -296,7 +296,7 @@ public class OpenAIAsyncClientTest extends OpenAIClientTestBase {
     @ParameterizedTest(name = DISPLAY_NAME_WITH_ARGUMENTS)
     @MethodSource("com.azure.ai.openai.TestUtils#getTestParameters")
     public void testChatCompletionContentFiltering(HttpClient httpClient, OpenAIServiceVersion serviceVersion) {
-        client = getOpenAIAsyncClient(httpClient, OpenAIServiceVersion.V2023_08_01_PREVIEW);
+        client = getOpenAIAsyncClient(httpClient, serviceVersion);
         getChatCompletionsContentFilterRunner((modelId, chatMessages) -> {
             StepVerifier.create(client.getChatCompletions(modelId, new ChatCompletionsOptions(chatMessages)))
                 .assertNext(chatCompletions -> {
@@ -312,7 +312,7 @@ public class OpenAIAsyncClientTest extends OpenAIClientTestBase {
     @ParameterizedTest(name = DISPLAY_NAME_WITH_ARGUMENTS)
     @MethodSource("com.azure.ai.openai.TestUtils#getTestParameters")
     public void testChatCompletionStreamContentFiltering(HttpClient httpClient, OpenAIServiceVersion serviceVersion) {
-        client = getOpenAIAsyncClient(httpClient, OpenAIServiceVersion.V2023_08_01_PREVIEW);
+        client = getOpenAIAsyncClient(httpClient, serviceVersion);
         getChatCompletionsContentFilterRunner((modelId, chatMessages) -> {
             StepVerifier.create(client.getChatCompletionsStream(modelId, new ChatCompletionsOptions(chatMessages)))
                 .recordWith(ArrayList::new)

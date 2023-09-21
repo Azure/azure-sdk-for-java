@@ -255,7 +255,7 @@ public class OpenAISyncClientTest extends OpenAIClientTestBase {
     @ParameterizedTest(name = DISPLAY_NAME_WITH_ARGUMENTS)
     @MethodSource("com.azure.ai.openai.TestUtils#getTestParameters")
     public void testChatCompletionContentFiltering(HttpClient httpClient, OpenAIServiceVersion serviceVersion) {
-        client = getOpenAIClient(httpClient, OpenAIServiceVersion.V2023_08_01_PREVIEW);
+        client = getOpenAIClient(httpClient, serviceVersion);
         getChatCompletionsContentFilterRunner((modelId, chatMessages) -> {
             ChatCompletions chatCompletions = client.getChatCompletions(modelId, new ChatCompletionsOptions(chatMessages));
             assertSafeContentFilterResults(chatCompletions.getPromptFilterResults().get(0).getContentFilterResults());
@@ -268,7 +268,7 @@ public class OpenAISyncClientTest extends OpenAIClientTestBase {
     @ParameterizedTest(name = DISPLAY_NAME_WITH_ARGUMENTS)
     @MethodSource("com.azure.ai.openai.TestUtils#getTestParameters")
     public void testChatCompletionStreamContentFiltering(HttpClient httpClient, OpenAIServiceVersion serviceVersion) {
-        client = getOpenAIClient(httpClient, OpenAIServiceVersion.V2023_08_01_PREVIEW);
+        client = getOpenAIClient(httpClient, serviceVersion);
         getChatCompletionsContentFilterRunner((modelId, chatMessages) -> {
             IterableStream<ChatCompletions> messageList = client.getChatCompletionsStream(modelId, new ChatCompletionsOptions(chatMessages));
 
