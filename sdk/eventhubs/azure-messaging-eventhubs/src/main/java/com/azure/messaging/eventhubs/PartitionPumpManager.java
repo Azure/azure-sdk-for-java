@@ -217,9 +217,16 @@ class PartitionPumpManager {
                     /* EventHubConsumer receive() returned an error */
                     ex -> handleError(claimedOwnership, partitionPump, partitionProcessor, ex, partitionContext),
                     () -> {
-                        partitionProcessor.close(new CloseContext(partitionContext,
-                            CloseReason.EVENT_PROCESSOR_SHUTDOWN));
-                        cleanup(claimedOwnership, partitionPump);
+                        try {
+                            partitionProcessor.close(new CloseContext(partitionContext,
+                                CloseReason.EVENT_PROCESSOR_SHUTDOWN));
+                        } catch (Throwable e) {
+                            LOGGER.atError()
+                                .addKeyValue(PARTITION_ID_KEY, partitionContext.getPartitionId())
+                                .log("Error occurred calling partitionProcessor.close when closing partition pump.", e);
+                        } finally{
+                            cleanup(claimedOwnership, partitionPump);
+                        }
                     });
             //@formatter:on
         } catch (Exception ex) {
