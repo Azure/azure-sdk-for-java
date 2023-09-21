@@ -7,6 +7,7 @@ import com.azure.communication.callautomation.models.DialogInputType;
 import com.azure.core.annotation.Immutable;
 import com.fasterxml.jackson.annotation.JsonProperty;
 
+/** The DialogCompleted model. */
 @Immutable
 public class DialogCompleted extends CallAutomationEventBase {
 

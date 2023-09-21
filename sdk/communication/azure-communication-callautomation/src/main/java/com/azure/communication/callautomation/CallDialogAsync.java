@@ -17,12 +17,21 @@ import reactor.core.publisher.Mono;
 import static com.azure.core.util.FluxUtil.monoError;
 import static com.azure.core.util.FluxUtil.withContext;
 
+/**
+ * CallDialogAsync.
+ */
 public final class CallDialogAsync {
 
     private final CallDialogsImpl dialogsInternal;
     private final String callConnectionId;
     private final ClientLogger logger;
 
+    /**
+     * Constructor.
+     *
+     * @param callConnectionId callConnectionId the id of the call connection
+     * @param callDialogInternal Internal implementation of CallDialog
+     */
     public CallDialogAsync(String callConnectionId, CallDialogsImpl callDialogInternal) {
         this.callConnectionId = callConnectionId;
         this.dialogsInternal = callDialogInternal;

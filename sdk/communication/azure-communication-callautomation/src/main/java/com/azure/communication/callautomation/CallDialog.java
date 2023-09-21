@@ -8,10 +8,21 @@ import com.azure.core.annotation.ServiceMethod;
 import com.azure.core.exception.HttpResponseException;
 import com.azure.core.http.rest.Response;
 
+/**
+ * CallDialog.
+ */
 public final class CallDialog {
 
+    /**
+     * Instance of CallDialogAsync.
+     */
     private final CallDialogAsync callDialogAsync;
 
+    /**
+     * Constructor.
+     *
+     * @param callDialogAsync callDialogAsync
+     */
     public CallDialog(CallDialogAsync callDialogAsync) {
         this.callDialogAsync = callDialogAsync;
     }
@@ -22,6 +33,7 @@ public final class CallDialog {
      * @param options A {@link StartDialogOptions} object containing different options for startDialog.
      * @throws HttpResponseException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return Response for successful startDialog request.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Response<DialogStateResult> startDialog(StartDialogOptions options) {
@@ -36,6 +48,7 @@ public final class CallDialog {
      * @param context The context to associate with this operation.
      * @throws HttpResponseException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return Response for successful startDialog request.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Response<DialogStateResult> startDialogWithResponse(StartDialogOptions options, String operationContext, Context context) {
@@ -61,6 +74,7 @@ public final class CallDialog {
      * @param context The context to associate with this operation.
      * @throws HttpResponseException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return Response for successful stopDialog request.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Response<Void> stopDialogWithResponse(String dialogId, Context context) {

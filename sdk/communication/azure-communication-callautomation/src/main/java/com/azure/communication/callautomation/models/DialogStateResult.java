@@ -1,13 +1,13 @@
 package com.azure.communication.callautomation.models;
 
 import com.azure.communication.callautomation.implementation.accesshelpers.DialogStateResponseConstructorProxy;
-import com.azure.communication.callautomation.implementation.converters.CallParticipantConverter;
 import com.azure.communication.callautomation.implementation.models.DialogStateResponse;
 import com.azure.core.annotation.Immutable;
 import com.fasterxml.jackson.annotation.JsonProperty;
 
 import java.util.Objects;
 
+/** The DialogStateResult model. */
 @Immutable
 public class DialogStateResult {
 
@@ -45,6 +45,10 @@ public class DialogStateResult {
             });
     }
 
+    /**
+     * Public constructor.
+     *
+     */
     public DialogStateResult(){
         this.dialogId = null;
         this.operationContext = null;
@@ -62,10 +66,21 @@ public class DialogStateResult {
         this.operationContext = dialogStateResponse.getOperationContext();
     }
 
+
+    /**
+     * Get the dialogId property: The dialog ID.
+     *
+     * @return the dialogId value.
+     */
     public String getDialogId() {
         return dialogId;
     }
 
+    /**
+     * Get the operationContext property: The value to identify context of the operation.
+     *
+     * @return the operationContext value.
+     */
     public String getOperationContext() {
         return operationContext;
     }

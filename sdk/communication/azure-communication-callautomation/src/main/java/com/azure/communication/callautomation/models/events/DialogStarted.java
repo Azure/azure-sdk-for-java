@@ -4,6 +4,7 @@ import com.azure.communication.callautomation.models.DialogInputType;
 import com.azure.core.annotation.Immutable;
 import com.fasterxml.jackson.annotation.JsonProperty;
 
+/** The DialogStarted model. */
 @Immutable
 public class DialogStarted extends CallAutomationEventBase {
 

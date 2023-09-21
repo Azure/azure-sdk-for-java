@@ -6,6 +6,7 @@ package com.azure.communication.callautomation.models.events;
 import com.azure.communication.callautomation.models.DialogInputType;
 import com.fasterxml.jackson.annotation.JsonProperty;
 
+/** The DialogFailed model. */
 public final class DialogFailed extends CallAutomationEventBase {
     /*
      * Contains the resulting SIP code/sub-code and message from NGC services.
