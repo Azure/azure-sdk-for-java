@@ -42,6 +42,7 @@ import com.azure.cosmos.test.faultinjection.FaultInjectionServerErrorType;
 import com.azure.cosmos.util.CosmosPagedFlux;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.fasterxml.jackson.databind.node.ObjectNode;
+import org.apache.commons.lang3.ArrayUtils;
 import org.apache.logging.log4j.util.TriConsumer;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -745,7 +746,7 @@ public class FaultInjectionWithAvailabilityStrategyTests extends TestSuiteBase {
             readItemCallback,
             faultInjectionCallback,
             validateStatusCode,
-            validateDiagnosticsContext,
+            ArrayUtils.toArray(validateDiagnosticsContext),
             null,
             0,
             0);
@@ -1542,7 +1543,7 @@ public class FaultInjectionWithAvailabilityStrategyTests extends TestSuiteBase {
             actionAfterInitialCreation,
             faultInjectionCallback,
             validateStatusCode,
-            validateDiagnosticsContext,
+            ArrayUtils.toArray(validateDiagnosticsContext),
             null,
             0,
             0);
@@ -1670,7 +1671,7 @@ public class FaultInjectionWithAvailabilityStrategyTests extends TestSuiteBase {
         Function<ItemOperationInvocationParameters, String> crossPartitionEmptyResultQueryGenerator = (params) ->
             "SELECT * FROM c WHERE CONTAINS (c.id, 'NotExistingId')";
 
-        BiConsumer<CosmosDiagnosticsContext, Integer> validateDiagnosticsContextBasicsForQuery =
+        BiConsumer<CosmosDiagnosticsContext, Integer> validateCtxRegionsAndQueryPlanCore =
             (ctx, expectedNumberOfRegionsContacted) -> {
                 logger.info(
                     "Diagnostics Context to evaluate: {}",
@@ -1702,7 +1703,13 @@ public class FaultInjectionWithAvailabilityStrategyTests extends TestSuiteBase {
                 }
             };
 
-        Consumer<CosmosDiagnosticsContext> validateSinglePartitionQueryDiagnosticsContextCore = (ctx) -> {
+        Consumer<CosmosDiagnosticsContext> validateCtxSingleRegion =
+            (ctx) -> validateCtxRegionsAndQueryPlanCore.accept(ctx, SINGLE_REGION);
+
+        Consumer<CosmosDiagnosticsContext> validateCtxTwoRegions =
+            (ctx) -> validateCtxRegionsAndQueryPlanCore.accept(ctx, TWO_REGIONS);
+
+        Consumer<CosmosDiagnosticsContext> validateCtxOnlyOneFeedResponse = (ctx) -> {
             CosmosDiagnostics[] diagnostics = ctx.getDiagnostics().toArray(new CosmosDiagnostics[0]);
             assertThat(diagnostics.length).isEqualTo(2);
             CosmosDiagnostics singleNonQueryPlanDiagnostics = diagnostics[1];
@@ -1712,7 +1719,7 @@ public class FaultInjectionWithAvailabilityStrategyTests extends TestSuiteBase {
             assertThat(singleNonQueryPlanDiagnostics.getFeedResponseDiagnostics().getClientSideRequestStatistics().size()).isEqualTo(1);
         };
 
-        Consumer<CosmosDiagnosticsContext> validateSinglePartitionQueryDiagnosticsContextCoreForHedging = (ctx) -> {
+        Consumer<CosmosDiagnosticsContext> validateCtxFirstRegionFailureSecondRegionSuccessfulSingleFeedResponse = (ctx) -> {
             CosmosDiagnostics[] diagnostics = ctx.getDiagnostics().toArray(new CosmosDiagnostics[0]);
             assertThat(diagnostics.length).isEqualTo(3);
             CosmosDiagnostics firstRegionDiagnostics = diagnostics[1];
@@ -1733,27 +1740,14 @@ public class FaultInjectionWithAvailabilityStrategyTests extends TestSuiteBase {
             assertThat(secondRegionDiagnostics.getFeedResponseDiagnostics().getClientSideRequestStatistics().size()).isEqualTo(1);
         };
 
-        Consumer<CosmosDiagnosticsContext>  validateSinglePartitionQueryDiagnosticsContextForOnlyFirstRegion =
-            (ctx) -> {
-                validateDiagnosticsContextBasicsForQuery.accept(ctx, SINGLE_REGION);
-                validateSinglePartitionQueryDiagnosticsContextCore.accept(ctx);
-            };
-
-        Consumer<CosmosDiagnosticsContext>  validateSinglePartitionQueryDiagnosticsContextForAllRegions =
-            (ctx) -> {
-                validateDiagnosticsContextBasicsForQuery.accept(ctx, TWO_REGIONS);
-                validateSinglePartitionQueryDiagnosticsContextCoreForHedging.accept(ctx);
-            };
-
-        TriConsumer<CosmosDiagnosticsContext, Integer, Integer> validateQueryDiagnosticsContext =
-            (ctx, expectedDiagnosticsCount, expectedRegionCount) -> {
+        BiConsumer<CosmosDiagnosticsContext, Integer> validateCtxMultipleFeedResponsesCore =
+            (ctx, expectedDiagnosticsCount) -> {
                 logger.info(
                     "Diagnostics Context to evaluate: {}",
                     ctx != null ? ctx.toJson() : "NULL");
 
                 assertThat(ctx).isNotNull();
                 if (ctx != null) {
-                    validateDiagnosticsContextBasicsForQuery.accept(ctx, expectedRegionCount);
                     assertThat(ctx.getDiagnostics().size()).isEqualTo(expectedDiagnosticsCount);
 
                     CosmosDiagnostics[] diagnostics = ctx.getDiagnostics().toArray(new CosmosDiagnostics[0]);
@@ -1777,29 +1771,20 @@ public class FaultInjectionWithAvailabilityStrategyTests extends TestSuiteBase {
                 }
             };
 
-        Consumer<CosmosDiagnosticsContext> validateOnePagePerPartitionQueryDiagnosticsContextForOnlyFirstRegion =
-            (ctx) -> validateQueryDiagnosticsContext.accept(
+        Consumer<CosmosDiagnosticsContext> validateCtxOnePagePerPartitionQuery=
+            (ctx) -> validateCtxMultipleFeedResponsesCore.accept(
                 ctx,
-                ONE_FOR_QUERY_PLAN + PHYSICAL_PARTITION_COUNT,
-                SINGLE_REGION);
+                ONE_FOR_QUERY_PLAN + PHYSICAL_PARTITION_COUNT);
 
-        Consumer<CosmosDiagnosticsContext> validateOnePagePerPartitionQueryDiagnosticsContextForTwoRegions =
-            (ctx) -> validateQueryDiagnosticsContext.accept(
+        Consumer<CosmosDiagnosticsContext> validateCtxPageSizeOneForAllDocsSamePKQuery =
+            (ctx) -> validateCtxMultipleFeedResponsesCore.accept(
                 ctx,
-                ONE_FOR_QUERY_PLAN + PHYSICAL_PARTITION_COUNT,
-                TWO_REGIONS);
+                ONE_FOR_QUERY_PLAN + 1 + ENOUGH_DOCS_SAME_PK_TO_EXCEED_PAGE_SIZE);
 
-        Consumer<CosmosDiagnosticsContext> validatePageSizeOneForAllDocsSamePKQueryDiagnosticsContextForOnlyFirstRegion =
-            (ctx) -> validateQueryDiagnosticsContext.accept(
+        Consumer<CosmosDiagnosticsContext> validateCtxPageSizeOneAllDocsSameIdQuery =
+            (ctx) -> validateCtxMultipleFeedResponsesCore.accept(
                 ctx,
-                ONE_FOR_QUERY_PLAN + 1 + ENOUGH_DOCS_SAME_PK_TO_EXCEED_PAGE_SIZE,
-                SINGLE_REGION);
-
-        Consumer<CosmosDiagnosticsContext> validatePageSizeOneAllDocsSameIdQueryDiagnosticsContextForOnlyFirstRegion =
-            (ctx) -> validateQueryDiagnosticsContext.accept(
-                ctx,
-                ONE_FOR_QUERY_PLAN + 1 + (int)ENOUGH_DOCS_OTHER_PK_TO_HIT_EVERY_PARTITION,
-                SINGLE_REGION);
+                ONE_FOR_QUERY_PLAN + 1 + (int)ENOUGH_DOCS_OTHER_PK_TO_HIT_EVERY_PARTITION);
 
         return new Object[][] {
             // CONFIG description
@@ -1823,7 +1808,10 @@ public class FaultInjectionWithAvailabilityStrategyTests extends TestSuiteBase {
                 queryReturnsTotalRecordCountWithDefaultPageSize,
                 noFailureInjection,
                 validateStatusCodeIs200Ok,
-                validateSinglePartitionQueryDiagnosticsContextForOnlyFirstRegion,
+                ArrayUtils.toArray(
+                    validateCtxSingleRegion,
+                    validateCtxOnlyOneFeedResponse
+                ),
                 validateExactlyOneRecordReturned,
                 ENOUGH_DOCS_OTHER_PK_TO_HIT_EVERY_PARTITION,
                 NO_OTHER_DOCS_WITH_SAME_PK
@@ -1837,7 +1825,10 @@ public class FaultInjectionWithAvailabilityStrategyTests extends TestSuiteBase {
                 queryReturnsTotalRecordCountWithDefaultPageSize,
                 noFailureInjection,
                 validateStatusCodeIs200Ok,
-                validateOnePagePerPartitionQueryDiagnosticsContextForOnlyFirstRegion,
+                ArrayUtils.toArray(
+                    validateCtxSingleRegion,
+                    validateCtxOnePagePerPartitionQuery
+                ),
                 validateAllRecordsSameIdReturned,
                 ENOUGH_DOCS_OTHER_PK_TO_HIT_EVERY_PARTITION,
                 NO_OTHER_DOCS_WITH_SAME_PK
@@ -1851,7 +1842,10 @@ public class FaultInjectionWithAvailabilityStrategyTests extends TestSuiteBase {
                 queryReturnsTotalRecordCountWithPageSizeOne,
                 noFailureInjection,
                 validateStatusCodeIs200Ok,
-                validatePageSizeOneForAllDocsSamePKQueryDiagnosticsContextForOnlyFirstRegion,
+                ArrayUtils.toArray(
+                    validateCtxSingleRegion,
+                    validateCtxPageSizeOneForAllDocsSamePKQuery
+                ),
                 validateAllRecordsSamePartitionReturned,
                 ENOUGH_DOCS_OTHER_PK_TO_HIT_EVERY_PARTITION,
                 ENOUGH_DOCS_SAME_PK_TO_EXCEED_PAGE_SIZE
@@ -1865,7 +1859,10 @@ public class FaultInjectionWithAvailabilityStrategyTests extends TestSuiteBase {
                 queryReturnsTotalRecordCountWithPageSizeOne,
                 noFailureInjection,
                 validateStatusCodeIs200Ok,
-                validatePageSizeOneAllDocsSameIdQueryDiagnosticsContextForOnlyFirstRegion,
+                ArrayUtils.toArray(
+                    validateCtxSingleRegion,
+                    validateCtxPageSizeOneAllDocsSameIdQuery
+                ),
                 validateAllRecordsSameIdReturned,
                 ENOUGH_DOCS_OTHER_PK_TO_HIT_EVERY_PARTITION,
                 NO_OTHER_DOCS_WITH_SAME_PK
@@ -1879,7 +1876,10 @@ public class FaultInjectionWithAvailabilityStrategyTests extends TestSuiteBase {
                 queryReturnsTotalRecordCountWithPageSizeOne,
                 noFailureInjection,
                 validateStatusCodeIs200Ok,
-                validateSinglePartitionQueryDiagnosticsContextForOnlyFirstRegion,
+                ArrayUtils.toArray(
+                    validateCtxSingleRegion,
+                    validateCtxOnlyOneFeedResponse
+                ),
                 validateEmptyResults,
                 ENOUGH_DOCS_OTHER_PK_TO_HIT_EVERY_PARTITION,
                 NO_OTHER_DOCS_WITH_SAME_PK
@@ -1894,7 +1894,10 @@ public class FaultInjectionWithAvailabilityStrategyTests extends TestSuiteBase {
                 noFailureInjection,
                 validateStatusCodeIs200Ok,
                 // empty pages are skipped except for the last one
-                validateSinglePartitionQueryDiagnosticsContextForOnlyFirstRegion,
+                ArrayUtils.toArray(
+                    validateCtxSingleRegion,
+                    validateCtxOnlyOneFeedResponse
+                ),
                 validateEmptyResults,
                 ENOUGH_DOCS_OTHER_PK_TO_HIT_EVERY_PARTITION,
                 NO_OTHER_DOCS_WITH_SAME_PK
@@ -1908,7 +1911,10 @@ public class FaultInjectionWithAvailabilityStrategyTests extends TestSuiteBase {
                 queryReturnsTotalRecordCountWithPageSizeOne,
                 noFailureInjection,
                 validateStatusCodeIs200Ok,
-                validatePageSizeOneForAllDocsSamePKQueryDiagnosticsContextForOnlyFirstRegion,
+                ArrayUtils.toArray(
+                    validateCtxSingleRegion,
+                    validateCtxPageSizeOneForAllDocsSamePKQuery
+                ),
                 validateAllRecordsSamePartitionReturned,
                 ENOUGH_DOCS_OTHER_PK_TO_HIT_EVERY_PARTITION,
                 ENOUGH_DOCS_SAME_PK_TO_EXCEED_PAGE_SIZE
@@ -1922,7 +1928,10 @@ public class FaultInjectionWithAvailabilityStrategyTests extends TestSuiteBase {
                 queryReturnsTotalRecordCountWithPageSizeOne,
                 noFailureInjection,
                 validateStatusCodeIs200Ok,
-                validatePageSizeOneAllDocsSameIdQueryDiagnosticsContextForOnlyFirstRegion,
+                ArrayUtils.toArray(
+                    validateCtxSingleRegion,
+                    validateCtxPageSizeOneAllDocsSameIdQuery
+                ),
                 validateExactlyOneRecordReturned,
                 ENOUGH_DOCS_OTHER_PK_TO_HIT_EVERY_PARTITION,
                 NO_OTHER_DOCS_WITH_SAME_PK
@@ -1936,7 +1945,10 @@ public class FaultInjectionWithAvailabilityStrategyTests extends TestSuiteBase {
                 queryReturnsTotalRecordCountWithDefaultPageSize,
                 injectReadSessionNotAvailableIntoFirstRegionOnly,
                 validateStatusCodeIs200Ok,
-                validateSinglePartitionQueryDiagnosticsContextForAllRegions,
+                ArrayUtils.toArray(
+                    validateCtxTwoRegions,
+                    validateCtxFirstRegionFailureSecondRegionSuccessfulSingleFeedResponse
+                ),
                 validateExactlyOneRecordReturned,
                 ENOUGH_DOCS_OTHER_PK_TO_HIT_EVERY_PARTITION,
                 NO_OTHER_DOCS_WITH_SAME_PK
@@ -1950,7 +1962,10 @@ public class FaultInjectionWithAvailabilityStrategyTests extends TestSuiteBase {
                 queryReturnsTotalRecordCountWithDefaultPageSize,
                 injectReadSessionNotAvailableIntoFirstRegionOnly,
                 validateStatusCodeIs200Ok,
-                validateOnePagePerPartitionQueryDiagnosticsContextForTwoRegions,
+                ArrayUtils.toArray(
+                    validateCtxTwoRegions,
+                    validateCtxOnePagePerPartitionQuery
+                ),
                 validateAllRecordsSameIdReturned,
                 ENOUGH_DOCS_OTHER_PK_TO_HIT_EVERY_PARTITION,
                 NO_OTHER_DOCS_WITH_SAME_PK
@@ -1964,7 +1979,10 @@ public class FaultInjectionWithAvailabilityStrategyTests extends TestSuiteBase {
                 queryReturnsTotalRecordCountWithDefaultPageSize,
                 injectReadSessionNotAvailableIntoFirstRegionOnlyForSinglePartition,
                 validateStatusCodeIs200Ok,
-                validateOnePagePerPartitionQueryDiagnosticsContextForTwoRegions,
+                ArrayUtils.toArray(
+                    validateCtxTwoRegions,
+                    validateCtxOnePagePerPartitionQuery
+                ),
                 validateAllRecordsSameIdReturned,
                 ENOUGH_DOCS_OTHER_PK_TO_HIT_EVERY_PARTITION,
                 NO_OTHER_DOCS_WITH_SAME_PK
@@ -1982,7 +2000,7 @@ public class FaultInjectionWithAvailabilityStrategyTests extends TestSuiteBase {
         BiFunction<String, ItemOperationInvocationParameters, CosmosResponseWrapper> queryExecution,
         BiConsumer<CosmosAsyncContainer, FaultInjectionOperationType> faultInjectionCallback,
         BiConsumer<Integer, Integer> validateStatusCode,
-        Consumer<CosmosDiagnosticsContext> validateDiagnosticsContext,
+        Consumer<CosmosDiagnosticsContext>[] diagnosticsContextValidations,
         Consumer<CosmosResponseWrapper> responseValidator,
         int numberOfOtherDocumentsWithSameId,
         int numberOfOtherDocumentsWithSamePk) {
@@ -1997,7 +2015,7 @@ public class FaultInjectionWithAvailabilityStrategyTests extends TestSuiteBase {
             (params) -> queryExecution.apply(queryGenerator.apply(params), params),
             faultInjectionCallback,
             validateStatusCode,
-            validateDiagnosticsContext,
+            diagnosticsContextValidations,
             responseValidator,
             numberOfOtherDocumentsWithSameId,
             numberOfOtherDocumentsWithSamePk);
@@ -2176,7 +2194,7 @@ public class FaultInjectionWithAvailabilityStrategyTests extends TestSuiteBase {
         Function<ItemOperationInvocationParameters, CosmosResponseWrapper> actionAfterInitialCreation,
         BiConsumer<CosmosAsyncContainer, FaultInjectionOperationType> faultInjectionCallback,
         BiConsumer<Integer, Integer> validateStatusCode,
-        Consumer<CosmosDiagnosticsContext> validateDiagnosticsContext,
+        Consumer<CosmosDiagnosticsContext>[] diagnosticsContextValidations,
         Consumer<CosmosResponseWrapper> validateResponse,
         int numberOfOtherDocumentsWithSameId,
         int numberOfOtherDocumentsWithSamePk) {
@@ -2248,7 +2266,10 @@ public class FaultInjectionWithAvailabilityStrategyTests extends TestSuiteBase {
                         validateResponse.accept(response);
                     }
                 }
-                validateDiagnosticsContext.accept(diagnosticsContext);
+
+                for (Consumer<CosmosDiagnosticsContext> ctxValidation : diagnosticsContextValidations) {
+                    ctxValidation.accept(diagnosticsContext);
+                }
             } catch (Exception e) {
                 if (e instanceof CosmosException) {
                     CosmosException cosmosException = Utils.as(e, CosmosException.class);
@@ -2263,7 +2284,9 @@ public class FaultInjectionWithAvailabilityStrategyTests extends TestSuiteBase {
                         diagnosticsContext != null ? diagnosticsContext.toJson(): "NULL");
 
                     validateStatusCode.accept(cosmosException.getStatusCode(), cosmosException.getSubStatusCode());
-                    validateDiagnosticsContext.accept(diagnosticsContext);
+                    for (Consumer<CosmosDiagnosticsContext> ctxValidation : diagnosticsContextValidations) {
+                        ctxValidation.accept(diagnosticsContext);
+                    }
                 } else {
                     fail("A CosmosException instance should have been thrown.", e);
                 }

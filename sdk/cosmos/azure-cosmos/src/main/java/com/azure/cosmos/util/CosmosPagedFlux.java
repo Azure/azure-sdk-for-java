@@ -250,9 +250,7 @@ public final class CosmosPagedFlux<T> extends ContinuablePagedFlux<String, T, Fe
                         break;
             }});
 
-
         final DiagnosticsProvider tracerProvider = pagedFluxOptions.getDiagnosticsProvider();
-
 
         return Flux
             .deferContextual(reactorCtx -> result
