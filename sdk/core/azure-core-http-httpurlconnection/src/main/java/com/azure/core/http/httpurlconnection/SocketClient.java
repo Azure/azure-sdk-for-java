@@ -77,28 +77,31 @@ class SocketClient {
         BufferedReader in = new BufferedReader(new InputStreamReader(socket.getInputStream()));
         OutputStream out = socket.getOutputStream();
         OutputStreamWriter outputStreamWriter = new OutputStreamWriter(out);
-        outputStreamWriter.write(request);
-        outputStreamWriter.flush();
 
-        HttpUrlConnectionResponse response = buildResponse(httpRequest, in);
+        try {
+            outputStreamWriter.write(request);
+            outputStreamWriter.flush();
 
-        // If the location header is set in the response, follow the redirect
-        String redirectLocation = response.getHeaders().stream()
-            .filter(h -> h.getName().equals("Location"))
-            .map(HttpHeader::getValue)
-            .findFirst()
-            .orElse(null);
+            HttpUrlConnectionResponse response = buildResponse(httpRequest, in);
 
-        if (redirectLocation != null) {
-            httpRequest.setUrl(new URL(redirectLocation));
-            return new SocketClient(httpRequest.getUrl().getHost(),
-                httpRequest.getUrl().getPort() == -1 ? port : httpRequest.getUrl().getPort())
-                .sendPatchRequest(httpRequest);
+            // If the location header is set in the response, follow the redirect
+            String redirectLocation = response.getHeaders().stream()
+                .filter(h -> h.getName().equals("Location"))
+                .map(HttpHeader::getValue)
+                .findFirst()
+                .orElse(null);
+
+            if (redirectLocation != null) {
+                httpRequest.setUrl(new URL(redirectLocation));
+                return new SocketClient(httpRequest.getUrl().getHost(),
+                    httpRequest.getUrl().getPort() == -1 ? port : httpRequest.getUrl().getPort())
+                    .sendPatchRequest(httpRequest);
+            }
+            return response;
+        } finally {
+            out.close();
+            in.close();
         }
-
-        out.close();
-        in.close();
-        return response;
     }
 
     /**
