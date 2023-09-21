@@ -7,6 +7,8 @@
 #### Breaking Changes
 
 #### Bugs Fixed
+* Fixed to not stall building of a client for the entire aggressive warm up duration but instead until containers
+in the warmup flow have been warmed up or until aggressive warm up duration has been reached whichever is lesser.
 
 #### Other Changes
 * Handling negative end-to-end timeouts provided more gracefully by throwing a `CosmsoException` (`OperationCancelledException`) instead of `IllegalArgumentException`. - See [PR 36507](https://github.com/Azure/azure-sdk-for-java/pull/36507)
