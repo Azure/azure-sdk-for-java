@@ -20,5 +20,6 @@ public interface ChangeFeedProcessorContext {
      *
      * @return the lease token
      * */
+    @Beta(value = Beta.SinceVersion.V4_50_0, warningText = Beta.PREVIEW_SUBJECT_TO_CHANGE_WARNING)
     String getLeaseToken();
 }
