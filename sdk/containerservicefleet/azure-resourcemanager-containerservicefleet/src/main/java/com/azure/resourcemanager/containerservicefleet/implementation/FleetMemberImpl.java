@@ -132,9 +132,7 @@ public final class FleetMemberImpl implements FleetMember, FleetMember.Definitio
             serviceManager
                 .serviceClient()
                 .getFleetMembers()
-                .updateWithResponse(
-                    resourceGroupName, fleetName, fleetMemberName, updateProperties, updateIfMatch, Context.NONE)
-                .getValue();
+                .update(resourceGroupName, fleetName, fleetMemberName, updateProperties, updateIfMatch, Context.NONE);
         return this;
     }
 
@@ -143,9 +141,7 @@ public final class FleetMemberImpl implements FleetMember, FleetMember.Definitio
             serviceManager
                 .serviceClient()
                 .getFleetMembers()
-                .updateWithResponse(
-                    resourceGroupName, fleetName, fleetMemberName, updateProperties, updateIfMatch, context)
-                .getValue();
+                .update(resourceGroupName, fleetName, fleetMemberName, updateProperties, updateIfMatch, context);
         return this;
     }
 

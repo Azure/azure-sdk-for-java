@@ -1,9 +1,9 @@
 # Guide for migrating to com.azure:azure-messaging-servicebus from com.microsoft.azure:azure-servicebus
 
 This guide is intended to assist in the migration to
-[`com.azure:azure-messaging-servicebus`](https://search.maven.org/artifact/com.azure/azure-messaging-servicebus) from
+[`com.azure:azure-messaging-servicebus`](https://central.sonatype.com/artifact/com.azure/azure-messaging-servicebus) from
 version 3 of
-[`com.microsoft.azure:azure-servicebus`](https://search.maven.org/artifact/com.microsoft.azure/azure-servicebus/). It
+[`com.microsoft.azure:azure-servicebus`](https://central.sonatype.com/artifact/com.microsoft.azure/azure-servicebus). It
 will focus on side-by-side comparisons for similar operations between the two packages.
 
 Familiarity with the `com.microsoft.azure:azure-servicebus` library is assumed. For those new to the Service Bus client
@@ -124,7 +124,7 @@ instances.
 ### Instantiating clients
 
 While we continue to support connection strings when constructing a client, the main difference is when using Azure
-Active Directory. We now use the new [azure-identity](https://search.maven.org/artifact/com.azure/azure-identity)
+Active Directory. We now use the new [azure-identity](https://central.sonatype.com/artifact/com.azure/azure-identity)
 library to share a single authentication solution between clients of different Azure services.
 
 Previously, in `azure-servicebus`, you can create client as shown below.

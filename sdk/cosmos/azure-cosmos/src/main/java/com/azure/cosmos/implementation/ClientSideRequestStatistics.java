@@ -134,14 +134,24 @@ public class ClientSideRequestStatistics {
         storeResponseStatistics.requestOperationType = request.getOperationType();
         storeResponseStatistics.requestResourceType = request.getResourceType();
         storeResponseStatistics.requestSessionToken = request.getHeaders().get(HttpConstants.HttpHeaders.SESSION_TOKEN);
+        storeResponseStatistics.e2ePolicyCfg = null;
+        storeResponseStatistics.excludedRegions = null;
         activityId = request.getActivityId().toString();
 
         this.requestPayloadSizeInBytes = request.getContentLength();
 
         URI locationEndPoint = null;
         if (request.requestContext != null) {
-            if (request.requestContext.locationEndpointToRoute != null) {
-                locationEndPoint = request.requestContext.locationEndpointToRoute;
+            if (request.requestContext.getEndToEndOperationLatencyPolicyConfig() != null) {
+                storeResponseStatistics.e2ePolicyCfg =
+                    request.requestContext.getEndToEndOperationLatencyPolicyConfig().toString();
+            }
+
+            locationEndPoint = request.requestContext.locationEndpointToRoute;
+
+            List<String> excludedRegions = request.requestContext.getExcludeRegions();
+            if (excludedRegions != null && !excludedRegions.isEmpty()) {
+                storeResponseStatistics.excludedRegions = String.join(", ", excludedRegions);
             }
         }
 
@@ -571,6 +581,12 @@ public class ClientSideRequestStatistics {
         @JsonSerialize
         private String requestSessionToken;
 
+        @JsonSerialize
+        private String e2ePolicyCfg;
+
+        @JsonSerialize
+        private String excludedRegions;
+
         @JsonIgnore
         private String regionName;
 
@@ -595,7 +611,6 @@ public class ClientSideRequestStatistics {
         }
 
         public String getRegionName() { return regionName; }
-
 
         public String getRequestSessionToken() { return requestSessionToken; }
 

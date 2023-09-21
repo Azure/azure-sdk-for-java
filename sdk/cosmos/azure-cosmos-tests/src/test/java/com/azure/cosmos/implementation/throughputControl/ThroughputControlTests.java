@@ -63,7 +63,7 @@ public class ThroughputControlTests extends TestSuiteBase {
     private CosmosAsyncDatabase database;
     private CosmosAsyncContainer container;
 
-    @Factory(dataProvider = "simpleClientBuildersForDirectTcpWithoutRetryOnThrottledRequests")
+    @Factory(dataProvider = "simpleClientBuildersWithoutRetryOnThrottledRequests")
     public ThroughputControlTests(CosmosClientBuilder clientBuilder) {
         super(clientBuilder);
         this.subscriberValidationTimeout = TIMEOUT;
