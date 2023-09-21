@@ -17,32 +17,32 @@ public final class RouteCompilationErrorTests {
         RouteCompilationError model =
             BinaryData
                 .fromString(
-                    "{\"message\":\"whojvp\",\"severity\":\"error\",\"location\":{\"start\":{\"line\":1647253865,\"column\":1746293745},\"end\":{\"line\":478734436,\"column\":829612504}}}")
+                    "{\"message\":\"xvy\",\"severity\":\"error\",\"location\":{\"start\":{\"line\":11863753,\"column\":1364703724},\"end\":{\"line\":664596221,\"column\":107340083}}}")
                 .toObject(RouteCompilationError.class);
-        Assertions.assertEquals("whojvp", model.message());
+        Assertions.assertEquals("xvy", model.message());
         Assertions.assertEquals(RouteErrorSeverity.ERROR, model.severity());
-        Assertions.assertEquals(1647253865, model.location().start().line());
-        Assertions.assertEquals(1746293745, model.location().start().column());
-        Assertions.assertEquals(478734436, model.location().end().line());
-        Assertions.assertEquals(829612504, model.location().end().column());
+        Assertions.assertEquals(11863753, model.location().start().line());
+        Assertions.assertEquals(1364703724, model.location().start().column());
+        Assertions.assertEquals(664596221, model.location().end().line());
+        Assertions.assertEquals(107340083, model.location().end().column());
     }
 
     @org.junit.jupiter.api.Test
     public void testSerialize() throws Exception {
         RouteCompilationError model =
             new RouteCompilationError()
-                .withMessage("whojvp")
+                .withMessage("xvy")
                 .withSeverity(RouteErrorSeverity.ERROR)
                 .withLocation(
                     new RouteErrorRange()
-                        .withStart(new RouteErrorPosition().withLine(1647253865).withColumn(1746293745))
-                        .withEnd(new RouteErrorPosition().withLine(478734436).withColumn(829612504)));
+                        .withStart(new RouteErrorPosition().withLine(11863753).withColumn(1364703724))
+                        .withEnd(new RouteErrorPosition().withLine(664596221).withColumn(107340083)));
         model = BinaryData.fromObject(model).toObject(RouteCompilationError.class);
-        Assertions.assertEquals("whojvp", model.message());
+        Assertions.assertEquals("xvy", model.message());
         Assertions.assertEquals(RouteErrorSeverity.ERROR, model.severity());
-        Assertions.assertEquals(1647253865, model.location().start().line());
-        Assertions.assertEquals(1746293745, model.location().start().column());
-        Assertions.assertEquals(478734436, model.location().end().line());
-        Assertions.assertEquals(829612504, model.location().end().column());
+        Assertions.assertEquals(11863753, model.location().start().line());
+        Assertions.assertEquals(1364703724, model.location().start().column());
+        Assertions.assertEquals(664596221, model.location().end().line());
+        Assertions.assertEquals(107340083, model.location().end().column());
     }
 }

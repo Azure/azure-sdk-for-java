@@ -481,7 +481,7 @@ public class OrderbyDocumentQueryTest extends TestSuiteBase {
                 .requestChargeGreaterThanOrEqualTo(1.0).build())
             .build();
 
-        validateQuerySuccess(queryObservable.byPage(page.getContinuationToken()), validator);
+        validateQuerySuccess(queryObservable.byPage(page.getContinuationToken(), preferredPageSize), validator);
     }
 
     @Test(groups = { "query" }, timeOut = TIMEOUT)

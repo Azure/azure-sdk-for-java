@@ -28,7 +28,7 @@ autorest README.md --java --v4 --use=@autorest/java@4.0.20 --use=@autorest/model
 ``` yaml
 tag: package-2023-01-15-preview
 require:
-    - https://github.com/williamzhao87/azure-rest-api-specs/blob/18fef29e753a6637d5639874ab20825003ae2077/specification/communication/data-plane/CallAutomation/readme.md
+    - https://github.com/cochi2/azure-rest-api-specs/blob/165e9bcec8bcd7d2085df5fa0cd6a7e8f587caa1/specification/communication/data-plane/CallAutomation/readme.md
 java: true
 output-folder: ../
 license-header: MICROSOFT_MIT_SMALL
@@ -166,6 +166,18 @@ directive:
 - rename-model:
     from: UnmuteParticipantsResponse
     to: UnmuteParticipantsResponseInternal
+- rename-model:
+    from: HoldParticipantRequest
+    to: HoldParticipantRequestInternal
+- rename-model:
+    from: HoldParticipantResponse
+    to: HoldParticipantResponseInternal
+- rename-model:
+    from: UnholdParticipantRequest
+    to: UnholdParticipantRequestInternal
+- rename-model:
+    from: UnholdParticipantResponse
+    to: UnholdParticipantResponseInternal
 - rename-model:
     from: CollectTonesResult
     to: CollectTonesResultInternal
