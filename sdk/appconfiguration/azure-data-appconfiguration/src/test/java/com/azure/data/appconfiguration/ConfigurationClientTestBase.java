@@ -11,16 +11,16 @@ import com.azure.core.util.Configuration;
 import com.azure.core.util.CoreUtils;
 import com.azure.data.appconfiguration.implementation.ConfigurationClientCredentials;
 import com.azure.data.appconfiguration.implementation.ConfigurationSettingHelper;
-import com.azure.data.appconfiguration.models.CompositionType;
 import com.azure.data.appconfiguration.models.ConfigurationSetting;
 import com.azure.data.appconfiguration.models.ConfigurationSnapshot;
+import com.azure.data.appconfiguration.models.ConfigurationSnapshotStatus;
 import com.azure.data.appconfiguration.models.FeatureFlagConfigurationSetting;
 import com.azure.data.appconfiguration.models.FeatureFlagFilter;
 import com.azure.data.appconfiguration.models.SecretReferenceConfigurationSetting;
 import com.azure.data.appconfiguration.models.SettingFields;
 import com.azure.data.appconfiguration.models.SettingSelector;
+import com.azure.data.appconfiguration.models.SnapshotComposition;
 import com.azure.data.appconfiguration.models.SnapshotSettingFilter;
-import com.azure.data.appconfiguration.models.SnapshotStatus;
 import org.junit.jupiter.api.Disabled;
 import org.junit.jupiter.api.Test;
 
@@ -858,23 +858,24 @@ public abstract class ConfigurationClientTestBase extends TestProxyTestBase {
     }
 
     void assertConfigurationSnapshotWithResponse(int expectedStatusCode, String name,
-        SnapshotStatus snapshotStatus, List<SnapshotSettingFilter> filters, CompositionType compositionType,
+        ConfigurationSnapshotStatus snapshotStatus, List<SnapshotSettingFilter> filters,
+        SnapshotComposition snapshotComposition,
         Duration retentionPeriod, Long size, Long itemCount, Map<String, String> tags,
         Response<ConfigurationSnapshot> response) {
         assertNotNull(response);
         assertEquals(expectedStatusCode, response.getStatusCode());
 
-        assertEqualsConfigurationSnapshot(name, snapshotStatus, filters, compositionType, retentionPeriod,
+        assertEqualsConfigurationSnapshot(name, snapshotStatus, filters, snapshotComposition, retentionPeriod,
             size, itemCount, tags, response.getValue());
     }
 
-    void assertEqualsConfigurationSnapshot(String name, SnapshotStatus snapshotStatus,
-        List<SnapshotSettingFilter> filters, CompositionType compositionType, Duration retentionPeriod, Long size,
+    void assertEqualsConfigurationSnapshot(String name, ConfigurationSnapshotStatus snapshotStatus,
+        List<SnapshotSettingFilter> filters, SnapshotComposition snapshotComposition, Duration retentionPeriod, Long size,
         Long itemCount, Map<String, String> tags, ConfigurationSnapshot actualSnapshot) {
         assertEquals(name, actualSnapshot.getName());
         assertEquals(snapshotStatus, actualSnapshot.getStatus());
         assertEqualsSnapshotFilters(filters, actualSnapshot.getFilters());
-        assertEquals(compositionType, actualSnapshot.getCompositionType());
+        assertEquals(snapshotComposition, actualSnapshot.getSnapshotComposition());
         assertEquals(retentionPeriod, actualSnapshot.getRetentionPeriod());
         assertNotNull(actualSnapshot.getCreatedAt());
         assertEquals(itemCount, actualSnapshot.getItemCount());

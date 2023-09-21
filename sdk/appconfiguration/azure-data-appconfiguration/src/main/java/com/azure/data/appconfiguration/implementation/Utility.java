@@ -12,8 +12,8 @@ import com.azure.data.appconfiguration.implementation.models.SnapshotUpdateParam
 import com.azure.data.appconfiguration.implementation.models.UpdateSnapshotHeaders;
 import com.azure.data.appconfiguration.models.ConfigurationSetting;
 import com.azure.data.appconfiguration.models.ConfigurationSnapshot;
+import com.azure.data.appconfiguration.models.ConfigurationSnapshotStatus;
 import com.azure.data.appconfiguration.models.SettingFields;
-import com.azure.data.appconfiguration.models.SnapshotStatus;
 import reactor.core.publisher.Mono;
 
 import java.util.ArrayList;
@@ -160,7 +160,7 @@ public class Utility {
     }
 
     public static Response<ConfigurationSnapshot> updateSnapshotSync(String snapshotName,
-        ConfigurationSnapshot snapshot, SnapshotStatus status, boolean ifUnchanged,
+        ConfigurationSnapshot snapshot, ConfigurationSnapshotStatus status, boolean ifUnchanged,
         AzureAppConfigurationImpl serviceClient, Context context) {
 
         final ResponseBase<UpdateSnapshotHeaders, ConfigurationSnapshot> response =
@@ -171,7 +171,7 @@ public class Utility {
     }
 
     public static Mono<Response<ConfigurationSnapshot>> updateSnapshotAsync(String snapshotName,
-        ConfigurationSnapshot snapshot, SnapshotStatus status, boolean ifUnchanged,
+        ConfigurationSnapshot snapshot, ConfigurationSnapshotStatus status, boolean ifUnchanged,
         AzureAppConfigurationImpl serviceClient) {
         return serviceClient.updateSnapshotWithResponseAsync(snapshotName,
                 new SnapshotUpdateParameters().setStatus(status),

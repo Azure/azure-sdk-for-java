@@ -28,7 +28,7 @@ public final class ConfigurationSnapshot implements JsonSerializable<Configurati
     /*
      * The current status of the snapshot.
      */
-    private SnapshotStatus status;
+    private ConfigurationSnapshotStatus status;
 
     /*
      * A list of filters used to filter the key-values included in the snapshot.
@@ -40,7 +40,7 @@ public final class ConfigurationSnapshot implements JsonSerializable<Configurati
      * ensures there are no two key-values containing the same key. The 'key_label' composition type ensures there are
      * no two key-values containing the same key and label.
      */
-    private CompositionType compositionType;
+    private SnapshotComposition snapshotComposition;
 
     /*
      * The time that the snapshot was created.
@@ -102,7 +102,7 @@ public final class ConfigurationSnapshot implements JsonSerializable<Configurati
      *
      * @return the status value.
      */
-    public SnapshotStatus getStatus() {
+    public ConfigurationSnapshotStatus getStatus() {
         return this.status;
     }
 
@@ -116,26 +116,26 @@ public final class ConfigurationSnapshot implements JsonSerializable<Configurati
     }
 
     /**
-     * Get the compositionType property: The composition type describes how the key-values within the snapshot are
+     * Get the snapshotComposition property: The composition type describes how the key-values within the snapshot are
      * composed. The 'key' composition type ensures there are no two key-values containing the same key. The 'key_label'
      * composition type ensures there are no two key-values containing the same key and label.
      *
-     * @return the compositionType value.
+     * @return the snapshotComposition value.
      */
-    public CompositionType getCompositionType() {
-        return this.compositionType;
+    public SnapshotComposition getSnapshotComposition() {
+        return this.snapshotComposition;
     }
 
     /**
-     * Set the compositionType property: The composition type describes how the key-values within the snapshot are
+     * Set the snapshotComposition property: The composition type describes how the key-values within the snapshot are
      * composed. The 'key' composition type ensures there are no two key-values containing the same key. The 'key_label'
      * composition type ensures there are no two key-values containing the same key and label.
      *
-     * @param compositionType the compositionType value to set.
+     * @param snapshotComposition the snapshotComposition value to set.
      * @return the ConfigurationSnapshot object itself.
      */
-    public ConfigurationSnapshot setCompositionType(CompositionType compositionType) {
-        this.compositionType = compositionType;
+    public ConfigurationSnapshot setSnapshotComposition(SnapshotComposition snapshotComposition) {
+        this.snapshotComposition = snapshotComposition;
         return this;
     }
 
@@ -237,7 +237,7 @@ public final class ConfigurationSnapshot implements JsonSerializable<Configurati
         jsonWriter.writeArrayField("filters", this.filters, (writer, element) -> writer.writeJson(element));
         jsonWriter.writeStringField("name", this.name);
         jsonWriter.writeStringField("status", Objects.toString(this.status, null));
-        jsonWriter.writeStringField("composition_type", Objects.toString(this.compositionType, null));
+        jsonWriter.writeStringField("composition_type", Objects.toString(this.snapshotComposition, null));
         jsonWriter.writeStringField("created", Objects.toString(this.createdAt, null));
         jsonWriter.writeStringField("expires", Objects.toString(this.expiresAt, null));
         jsonWriter.writeNumberField("retention_period", this.retentionPeriod);
@@ -263,8 +263,8 @@ public final class ConfigurationSnapshot implements JsonSerializable<Configurati
                     boolean filtersFound = false;
                     List<SnapshotSettingFilter> filters = null;
                     String name = null;
-                    SnapshotStatus status = null;
-                    CompositionType compositionType = null;
+                    ConfigurationSnapshotStatus status = null;
+                    SnapshotComposition snapshotComposition = null;
                     OffsetDateTime createdAt = null;
                     OffsetDateTime expiresAt = null;
                     Long retentionPeriod = null;
@@ -282,9 +282,9 @@ public final class ConfigurationSnapshot implements JsonSerializable<Configurati
                         } else if ("name".equals(fieldName)) {
                             name = reader.getString();
                         } else if ("status".equals(fieldName)) {
-                            status = SnapshotStatus.fromString(reader.getString());
+                            status = ConfigurationSnapshotStatus.fromString(reader.getString());
                         } else if ("composition_type".equals(fieldName)) {
-                            compositionType = CompositionType.fromString(reader.getString());
+                            snapshotComposition = SnapshotComposition.fromString(reader.getString());
                         } else if ("created".equals(fieldName)) {
                             createdAt =
                                     reader.getNullable(
@@ -311,7 +311,7 @@ public final class ConfigurationSnapshot implements JsonSerializable<Configurati
                         ConfigurationSnapshot deserializedConfigurationSnapshot = new ConfigurationSnapshot(filters);
                         deserializedConfigurationSnapshot.name = name;
                         deserializedConfigurationSnapshot.status = status;
-                        deserializedConfigurationSnapshot.compositionType = compositionType;
+                        deserializedConfigurationSnapshot.snapshotComposition = snapshotComposition;
                         deserializedConfigurationSnapshot.createdAt = createdAt;
                         deserializedConfigurationSnapshot.expiresAt = expiresAt;
                         deserializedConfigurationSnapshot.retentionPeriod = retentionPeriod;

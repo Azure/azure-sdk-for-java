@@ -28,6 +28,7 @@ import com.azure.data.appconfiguration.implementation.models.KeyValue;
 import com.azure.data.appconfiguration.implementation.models.PutKeyValueHeaders;
 import com.azure.data.appconfiguration.models.ConfigurationSetting;
 import com.azure.data.appconfiguration.models.ConfigurationSnapshot;
+import com.azure.data.appconfiguration.models.ConfigurationSnapshotStatus;
 import com.azure.data.appconfiguration.models.CreateSnapshotOperationDetail;
 import com.azure.data.appconfiguration.models.FeatureFlagConfigurationSetting;
 import com.azure.data.appconfiguration.models.SecretReferenceConfigurationSetting;
@@ -35,7 +36,6 @@ import com.azure.data.appconfiguration.models.SettingFields;
 import com.azure.data.appconfiguration.models.SettingSelector;
 import com.azure.data.appconfiguration.models.SnapshotFields;
 import com.azure.data.appconfiguration.models.SnapshotSelector;
-import com.azure.data.appconfiguration.models.SnapshotStatus;
 
 import java.time.OffsetDateTime;
 import java.util.List;
@@ -1331,7 +1331,7 @@ public final class ConfigurationClient {
     }
 
     /**
-     * Update a snapshot status from {@link SnapshotStatus#READY} to {@link SnapshotStatus#ARCHIVED}.
+     * Update a snapshot status from {@link ConfigurationSnapshotStatus#READY} to {@link ConfigurationSnapshotStatus#ARCHIVED}.
      *
      * <p><strong>Code Samples</strong></p>
      *
@@ -1349,12 +1349,12 @@ public final class ConfigurationClient {
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public ConfigurationSnapshot archiveSnapshot(String name) {
-        return updateSnapshotSync(name, null, SnapshotStatus.ARCHIVED, false, serviceClient,
+        return updateSnapshotSync(name, null, ConfigurationSnapshotStatus.ARCHIVED, false, serviceClient,
             Context.NONE).getValue();
     }
 
     /**
-     * Update a snapshot status from {@link SnapshotStatus#READY} to {@link SnapshotStatus#ARCHIVED}.
+     * Update a snapshot status from {@link ConfigurationSnapshotStatus#READY} to {@link ConfigurationSnapshotStatus#ARCHIVED}.
      *
      * <p>
      * To turn on using 'if-match' header, set the second parameter 'ifUnchanged' to true.
@@ -1384,12 +1384,12 @@ public final class ConfigurationClient {
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Response<ConfigurationSnapshot> archiveSnapshotWithResponse(ConfigurationSnapshot snapshot,
                                                                               boolean ifUnchanged, Context context) {
-        return updateSnapshotSync(snapshot.getName(), snapshot, SnapshotStatus.ARCHIVED, ifUnchanged, serviceClient,
+        return updateSnapshotSync(snapshot.getName(), snapshot, ConfigurationSnapshotStatus.ARCHIVED, ifUnchanged, serviceClient,
             context);
     }
 
     /**
-     * Update a snapshot status from {@link SnapshotStatus#ARCHIVED} to {@link SnapshotStatus#READY}.
+     * Update a snapshot status from {@link ConfigurationSnapshotStatus#ARCHIVED} to {@link ConfigurationSnapshotStatus#READY}.
      *
      * <p><strong>Code Samples</strong></p>
      *
@@ -1407,12 +1407,12 @@ public final class ConfigurationClient {
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public ConfigurationSnapshot recoverSnapshot(String name) {
-        return updateSnapshotSync(name, null, SnapshotStatus.READY, false, serviceClient,
+        return updateSnapshotSync(name, null, ConfigurationSnapshotStatus.READY, false, serviceClient,
             Context.NONE).getValue();
     }
 
     /**
-     * Update a snapshot status from {@link SnapshotStatus#ARCHIVED} to {@link SnapshotStatus#READY}.
+     * Update a snapshot status from {@link ConfigurationSnapshotStatus#ARCHIVED} to {@link ConfigurationSnapshotStatus#READY}.
      *
      * <p>
      * To turn on using 'if-match' header, set the second parameter 'ifUnchanged' to true.
@@ -1440,7 +1440,7 @@ public final class ConfigurationClient {
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Response<ConfigurationSnapshot> recoverSnapshotWithResponse(ConfigurationSnapshot snapshot,
                                                                               boolean ifUnchanged, Context context) {
-        return updateSnapshotSync(snapshot.getName(), snapshot, SnapshotStatus.READY, ifUnchanged, serviceClient,
+        return updateSnapshotSync(snapshot.getName(), snapshot, ConfigurationSnapshotStatus.READY, ifUnchanged, serviceClient,
             context);
     }
 

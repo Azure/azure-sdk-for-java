@@ -17,7 +17,7 @@ import java.util.stream.Collectors;
 @Fluent
 public final class SnapshotSelector {
     private String nameFilter;
-    private List<SnapshotStatus> status;
+    private List<ConfigurationSnapshotStatus> status;
 
     private List<SnapshotFields> fields;
 
@@ -51,7 +51,7 @@ public final class SnapshotSelector {
      *
      * @return The snapshot status.
      */
-    public List<SnapshotStatus> getSnapshotStatus() {
+    public List<ConfigurationSnapshotStatus> getSnapshotStatus() {
         return status;
     }
 
@@ -61,7 +61,7 @@ public final class SnapshotSelector {
      * @param status the snapshot status.
      * @return The updated SnapshotSelector object
      */
-    public SnapshotSelector setSnapshotStatus(SnapshotStatus... status) {
+    public SnapshotSelector setSnapshotStatus(ConfigurationSnapshotStatus... status) {
         this.status = status == null ? null : Arrays.asList(status);
         return this;
     }
@@ -72,7 +72,7 @@ public final class SnapshotSelector {
      * @param status the snapshot status.
      * @return The updated SnapshotSelector object
      */
-    public SnapshotSelector setSnapshotStatus(List<SnapshotStatus> status) {
+    public SnapshotSelector setSnapshotStatus(List<ConfigurationSnapshotStatus> status) {
         this.status = status;
         return this;
     }

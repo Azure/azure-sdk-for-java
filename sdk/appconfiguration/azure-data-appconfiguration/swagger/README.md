@@ -33,7 +33,7 @@ input-file:
 - https://raw.githubusercontent.com/Azure/azure-rest-api-specs/2f7a3cbda00c6ae4199940d500e5212b6481d9ea/specification/appconfiguration/data-plane/Microsoft.AppConfiguration/preview/2022-11-01-preview/appconfiguration.json
 models-subpackage: implementation.models
 custom-types-subpackage: models
-custom-types: KeyValueFields,KeyValueFilter,SettingFields,SnapshotSettingFilter,CompositionType,SnapshotComposition,Snapshot,ConfigurationSnapshot,SnapshotStatus,ConfigurationSnapshotStatus,SnapshotFields,SnapshotFields
+custom-types: KeyValueFields,KeyValueFilter,SettingFields,SnapshotSettingFilter,CompositionType,SnapshotComposition,Snapshot,ConfigurationSnapshot,Status,ConfigurationSnapshotStatus,SnapshotFields,SnapshotFields
 customization-class: src/main/java/AppConfigCustomization.java
 ```
 
@@ -56,6 +56,15 @@ default-http-exception-type: com.azure.core.exception.HttpResponseException
 stream-style-serialization: true
 ```
 
+### Renames enums
+```yaml
+directive:
+  - from: swagger-document
+    where: $.definitions.Snapshot.properties.composition_type
+    transform: >
+      $["x-ms-enum"].name = "SnapshotComposition";
+```
+
 ### Renames properties
 ```yaml
 directive:
@@ -67,6 +76,12 @@ directive:
       $["expires"]["x-ms-client-name"] = "expiresAt";
       $["size"]["x-ms-client-name"] = "sizeInBytes";
       $["etag"]["x-ms-client-name"] = "eTag";
+      $["composition_type"]["x-ms-client-name"] = "snapshotComposition";
+      $["status"]["x-ms-enum"].name = "ConfigurationSnapshotStatus";
+  - from: swagger-document
+    where: $.definitions.SnapshotUpdateParameters.properties
+    transform: >
+      $["status"]["x-ms-enum"].name = "ConfigurationSnapshotStatus";
 ```
 
 ### Renames
@@ -76,18 +91,16 @@ directive:
       from: KeyValueFilter
       to: SnapshotSettingFilter
   - rename-model:
-      from: CompositionType
-      to: SnapshotComposition
-  - rename-model:
       from: Snapshot
       to: ConfigurationSnapshot
-  - rename-model:
-      from: SnapshotStatus
-      to: ConfigurationSnapshotStatus
   - from: swagger-document
     where: $.parameters.KeyValueFields
     transform: >
-      $.items["x-ms-enum"].name = "SettingFields"; 
+      $.items["x-ms-enum"].name = "SettingFields";
+  - from: swagger-document
+    where: $.parameters.Status
+    transform: >
+      $.items["x-ms-enum"].name = "ConfigurationSnapshotStatus";
 ```
 
 ### Modify SettingField enums

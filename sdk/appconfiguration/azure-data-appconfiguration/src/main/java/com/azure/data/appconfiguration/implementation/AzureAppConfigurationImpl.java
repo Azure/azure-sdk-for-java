@@ -73,9 +73,9 @@ import com.azure.data.appconfiguration.implementation.models.SnapshotListResult;
 import com.azure.data.appconfiguration.implementation.models.SnapshotUpdateParameters;
 import com.azure.data.appconfiguration.implementation.models.UpdateSnapshotHeaders;
 import com.azure.data.appconfiguration.models.ConfigurationSnapshot;
+import com.azure.data.appconfiguration.models.ConfigurationSnapshotStatus;
 import com.azure.data.appconfiguration.models.SettingFields;
 import com.azure.data.appconfiguration.models.SnapshotFields;
-import com.azure.data.appconfiguration.models.SnapshotStatus;
 import java.util.List;
 import java.util.Objects;
 import java.util.stream.Collectors;
@@ -2478,7 +2478,7 @@ public final class AzureAppConfigurationImpl {
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<PagedResponse<ConfigurationSnapshot>> getSnapshotsSinglePageAsync(
-            String name, String after, List<SnapshotFields> select, List<SnapshotStatus> status) {
+            String name, String after, List<SnapshotFields> select, List<ConfigurationSnapshotStatus> status) {
         final String accept = "application/vnd.microsoft.appconfig.snapshotset+json, application/problem+json";
         String selectConverted =
                 (select == null)
@@ -2527,7 +2527,11 @@ public final class AzureAppConfigurationImpl {
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<PagedResponse<ConfigurationSnapshot>> getSnapshotsSinglePageAsync(
-            String name, String after, List<SnapshotFields> select, List<SnapshotStatus> status, Context context) {
+            String name,
+            String after,
+            List<SnapshotFields> select,
+            List<ConfigurationSnapshotStatus> status,
+            Context context) {
         final String accept = "application/vnd.microsoft.appconfig.snapshotset+json, application/problem+json";
         String selectConverted =
                 (select == null)
@@ -2573,7 +2577,7 @@ public final class AzureAppConfigurationImpl {
      */
     @ServiceMethod(returns = ReturnType.COLLECTION)
     public PagedFlux<ConfigurationSnapshot> getSnapshotsAsync(
-            String name, String after, List<SnapshotFields> select, List<SnapshotStatus> status) {
+            String name, String after, List<SnapshotFields> select, List<ConfigurationSnapshotStatus> status) {
         return new PagedFlux<>(
                 () -> getSnapshotsSinglePageAsync(name, after, select, status),
                 nextLink -> getSnapshotsNextSinglePageAsync(nextLink));
@@ -2595,7 +2599,11 @@ public final class AzureAppConfigurationImpl {
      */
     @ServiceMethod(returns = ReturnType.COLLECTION)
     public PagedFlux<ConfigurationSnapshot> getSnapshotsAsync(
-            String name, String after, List<SnapshotFields> select, List<SnapshotStatus> status, Context context) {
+            String name,
+            String after,
+            List<SnapshotFields> select,
+            List<ConfigurationSnapshotStatus> status,
+            Context context) {
         return new PagedFlux<>(
                 () -> getSnapshotsSinglePageAsync(name, after, select, status, context),
                 nextLink -> getSnapshotsNextSinglePageAsync(nextLink, context));
@@ -2616,7 +2624,7 @@ public final class AzureAppConfigurationImpl {
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public PagedResponse<ConfigurationSnapshot> getSnapshotsSinglePage(
-            String name, String after, List<SnapshotFields> select, List<SnapshotStatus> status) {
+            String name, String after, List<SnapshotFields> select, List<ConfigurationSnapshotStatus> status) {
         final String accept = "application/vnd.microsoft.appconfig.snapshotset+json, application/problem+json";
         String selectConverted =
                 (select == null)
@@ -2662,7 +2670,11 @@ public final class AzureAppConfigurationImpl {
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public PagedResponse<ConfigurationSnapshot> getSnapshotsSinglePage(
-            String name, String after, List<SnapshotFields> select, List<SnapshotStatus> status, Context context) {
+            String name,
+            String after,
+            List<SnapshotFields> select,
+            List<ConfigurationSnapshotStatus> status,
+            Context context) {
         final String accept = "application/vnd.microsoft.appconfig.snapshotset+json, application/problem+json";
         String selectConverted =
                 (select == null)
@@ -2707,7 +2719,7 @@ public final class AzureAppConfigurationImpl {
      */
     @ServiceMethod(returns = ReturnType.COLLECTION)
     public PagedIterable<ConfigurationSnapshot> getSnapshots(
-            String name, String after, List<SnapshotFields> select, List<SnapshotStatus> status) {
+            String name, String after, List<SnapshotFields> select, List<ConfigurationSnapshotStatus> status) {
         return new PagedIterable<>(
                 () -> getSnapshotsSinglePage(name, after, select, status, Context.NONE),
                 nextLink -> getSnapshotsNextSinglePage(nextLink));
@@ -2729,7 +2741,11 @@ public final class AzureAppConfigurationImpl {
      */
     @ServiceMethod(returns = ReturnType.COLLECTION)
     public PagedIterable<ConfigurationSnapshot> getSnapshots(
-            String name, String after, List<SnapshotFields> select, List<SnapshotStatus> status, Context context) {
+            String name,
+            String after,
+            List<SnapshotFields> select,
+            List<ConfigurationSnapshotStatus> status,
+            Context context) {
         return new PagedIterable<>(
                 () -> getSnapshotsSinglePage(name, after, select, status, context),
                 nextLink -> getSnapshotsNextSinglePage(nextLink, context));

@@ -24,6 +24,7 @@ import com.azure.data.appconfiguration.implementation.models.GetKeyValueHeaders;
 import com.azure.data.appconfiguration.implementation.models.KeyValue;
 import com.azure.data.appconfiguration.models.ConfigurationSetting;
 import com.azure.data.appconfiguration.models.ConfigurationSnapshot;
+import com.azure.data.appconfiguration.models.ConfigurationSnapshotStatus;
 import com.azure.data.appconfiguration.models.CreateSnapshotOperationDetail;
 import com.azure.data.appconfiguration.models.FeatureFlagConfigurationSetting;
 import com.azure.data.appconfiguration.models.SecretReferenceConfigurationSetting;
@@ -31,7 +32,6 @@ import com.azure.data.appconfiguration.models.SettingFields;
 import com.azure.data.appconfiguration.models.SettingSelector;
 import com.azure.data.appconfiguration.models.SnapshotFields;
 import com.azure.data.appconfiguration.models.SnapshotSelector;
-import com.azure.data.appconfiguration.models.SnapshotStatus;
 import reactor.core.publisher.Mono;
 
 import java.time.OffsetDateTime;
@@ -1277,7 +1277,7 @@ public final class ConfigurationAsyncClient {
     }
 
     /**
-     * Update a snapshot status from {@link SnapshotStatus#READY} to {@link SnapshotStatus#ARCHIVED}.
+     * Update a snapshot status from {@link ConfigurationSnapshotStatus#READY} to {@link ConfigurationSnapshotStatus#ARCHIVED}.
      *
      * <p><strong>Code Samples</strong></p>
      *
@@ -1298,12 +1298,12 @@ public final class ConfigurationAsyncClient {
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<ConfigurationSnapshot> archiveSnapshot(String name) {
-        return updateSnapshotAsync(name, null, SnapshotStatus.ARCHIVED, false, serviceClient)
+        return updateSnapshotAsync(name, null, ConfigurationSnapshotStatus.ARCHIVED, false, serviceClient)
             .map(Response::getValue);
     }
 
     /**
-     * Update a snapshot status from {@link SnapshotStatus#READY} to {@link SnapshotStatus#ARCHIVED}.
+     * Update a snapshot status from {@link ConfigurationSnapshotStatus#READY} to {@link ConfigurationSnapshotStatus#ARCHIVED}.
      *
      * <p>
      * To turn on using 'if-match' header, set the second parameter 'ifUnchanged' to true.
@@ -1333,11 +1333,11 @@ public final class ConfigurationAsyncClient {
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<Response<ConfigurationSnapshot>> archiveSnapshotWithResponse(
         ConfigurationSnapshot snapshot, boolean ifUnchanged) {
-        return updateSnapshotAsync(snapshot.getName(), snapshot, SnapshotStatus.ARCHIVED, ifUnchanged, serviceClient);
+        return updateSnapshotAsync(snapshot.getName(), snapshot, ConfigurationSnapshotStatus.ARCHIVED, ifUnchanged, serviceClient);
     }
 
     /**
-     * Update a snapshot status from {@link SnapshotStatus#ARCHIVED} to {@link SnapshotStatus#READY}.
+     * Update a snapshot status from {@link ConfigurationSnapshotStatus#ARCHIVED} to {@link ConfigurationSnapshotStatus#READY}.
      *
      * <p><strong>Code Samples</strong></p>
      *
@@ -1358,12 +1358,12 @@ public final class ConfigurationAsyncClient {
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<ConfigurationSnapshot> recoverSnapshot(String name) {
-        return updateSnapshotAsync(name, null, SnapshotStatus.READY, false, serviceClient)
+        return updateSnapshotAsync(name, null, ConfigurationSnapshotStatus.READY, false, serviceClient)
             .map(Response::getValue);
     }
 
     /**
-     * Update a snapshot status from {@link SnapshotStatus#ARCHIVED} to {@link SnapshotStatus#READY}.
+     * Update a snapshot status from {@link ConfigurationSnapshotStatus#ARCHIVED} to {@link ConfigurationSnapshotStatus#READY}.
      *
      * <p>
      * To turn on using 'if-match' header, set the second parameter 'ifUnchanged' to true.
@@ -1393,7 +1393,7 @@ public final class ConfigurationAsyncClient {
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<Response<ConfigurationSnapshot>> recoverSnapshotWithResponse(
         ConfigurationSnapshot snapshot, boolean ifUnchanged) {
-        return updateSnapshotAsync(snapshot.getName(), snapshot, SnapshotStatus.READY, ifUnchanged, serviceClient);
+        return updateSnapshotAsync(snapshot.getName(), snapshot, ConfigurationSnapshotStatus.READY, ifUnchanged, serviceClient);
     }
 
     /**
