@@ -108,6 +108,7 @@
     <jacoco.min.branchcoverage>0.30</jacoco.min.branchcoverage>
     <jacoco.skip>false</jacoco.skip>
     <revapi.skip>false</revapi.skip>
+    <animal-sniffer.skip>true</animal-sniffer.skip>
 
     <!-- This property determines the relative path from a pom.xml to the eng/ folder. -->
     <relative.path.to.eng.folder>../../..</relative.path.to.eng.folder>
@@ -265,6 +266,7 @@
                 <version>0.5.1</version> <!-- {x-version-update;com.toasttab.android:gummy-bears-api-26;external_dependency} -->
               </signature>
               <failOnError>false</failOnError>
+              <skip>${animal-sniffer.skip}</skip>
             </configuration>
           </execution>
         </executions>
