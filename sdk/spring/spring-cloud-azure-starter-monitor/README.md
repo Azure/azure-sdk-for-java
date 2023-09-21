@@ -83,9 +83,92 @@ You can then configure the connection string in two different ways:
 * With the `APPLICATIONINSIGHTS_CONNECTION_STRING` environment variable
 * With the `applicationinsights.connection.string` system property. You can use `-Dapplicationinsights.connection.string` or add the property to your `application.properties` file.
 
-### Additional instrumentations
-You can configure additional instrumentations with [OpenTelemetry instrumentations libraries](https://github.com/open-telemetry/opentelemetry-java-instrumentation/blob/main/docs/supported-libraries.md#libraries--frameworks).
 
+### Configure the instrumentation
+
+The Spring starter will display the HTTP requests on the Application Insights resource in the Azure portal. You can configure additional instrumentation.
+
+#### Configure the database instrumentation
+
+First, add the `opentelemetry-jdbc` library:
+
+```xml
+<dependencies>
+    <dependency>
+        <groupId>io.opentelemetry.instrumentation</groupId>
+        <artifactId>opentelemetry-jdbc</artifactId>
+        <version>{version}</version>
+    </dependency>
+</dependencies>
+```
+
+After, create a `DataSource` bean from `io.opentelemetry.instrumentation.jdbc.datasource.OpenTelemetryDataSource`:
+
+```java
+import org.apache.commons.dbcp2.BasicDataSource;
+import org.springframework.context.annotation.Configuration;
+import io.opentelemetry.instrumentation.jdbc.datasource.OpenTelemetryDataSource;
+
+@Configuration
+public class DataSourceConfig {
+
+    @Bean
+    public DataSource dataSource() {
+        BasicDataSource dataSource = new BasicDataSource();
+        // Other data source configurations
+        return new OpenTelemetryDataSource(dataSource);
+    }
+
+}
+```
+
+#### Configure the Logback instrumentation
+
+First, add the following OpenTelemetry library:
+
+```xml
+<dependencies>
+    <dependency>
+        <groupId>io.opentelemetry.instrumentation</groupId>
+        <artifactId>opentelemetry-logback-appender-1.0</artifactId>
+        <version>{version}</version>
+        <scope>runtime</scope>
+    </dependency>
+</dependencies>
+```
+
+After, you have to enable the OpenTelemetry Logback appender. The following example shows you how to do this from a `logback.xml` file:
+
+```xml
+<?xml version="1.0" encoding="UTF-8"?>
+<configuration>
+
+    <appender name="console" class="ch.qos.logback.core.ConsoleAppender">
+        <encoder>
+            <pattern>
+                %d{HH:mm:ss.SSS} [%thread] %-5level %logger{36} - %msg%n
+            </pattern>
+        </encoder>
+    </appender>
+
+    <appender name="OpenTelemetry"
+              class="io.opentelemetry.instrumentation.logback.appender.v1_0.OpenTelemetryAppender">
+    </appender>
+
+    <root level="INFO">
+        <appender-ref ref="console"/>
+        <appender-ref ref="OpenTelemetry"/>
+    </root>
+
+</configuration>
+```
+    
+You can find additional settings of the OpenTelemetry Logback appender [here](https://github.com/open-telemetry/opentelemetry-java-instrumentation/blob/main/instrumentation/logback/logback-appender-1.0/library/README.md#settings-for-the-logback-appender).
+
+#### Additional instrumentations
+
+You can configure additional instrumentations with [OpenTelemetry instrumentations libraries](https://github.com/open-telemetry/opentelemetry-java-instrumentation/blob/main/docs/supported-libraries.md#libraries--frameworks).
+    
 ### Build your Spring native application
 At this step, you can build your application as a native image and start the native image:
 
@@ -133,6 +216,7 @@ This project has adopted the [Microsoft Open Source Code of Conduct][coc]. For m
 [application_insights_intro]: https://docs.microsoft.com/azure/azure-monitor/app/app-insights-overview
 [application_insights_java_agent_spring_boot]: https://learn.microsoft.com/azure/azure-monitor/app/java-spring-boot
 [azure_portal]: https://portal.azure.com
+[otel-logback-settings]: 
 [cla]: https://cla.microsoft.com
 [coc]: https://opensource.microsoft.com/codeofconduct/
 [coc_faq]: https://opensource.microsoft.com/codeofconduct/faq/
