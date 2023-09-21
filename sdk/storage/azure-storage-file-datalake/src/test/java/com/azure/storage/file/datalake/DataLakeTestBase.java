@@ -201,6 +201,10 @@ public class DataLakeTestBase extends TestProxyTestBase {
     }
 
     protected DataLakeServiceClient getOAuthServiceClient() {
+        return getOAuthServiceClientBuilder().buildClient();
+    }
+
+    protected DataLakeServiceClientBuilder getOAuthServiceClientBuilder() {
         DataLakeServiceClientBuilder builder = new DataLakeServiceClientBuilder()
             .endpoint(ENVIRONMENT.getDataLakeAccount().getDataLakeEndpoint());
 
@@ -214,19 +218,23 @@ public class DataLakeTestBase extends TestProxyTestBase {
                 && !CoreUtils.isNullOrEmpty(configuration.get(Configuration.PROPERTY_AZURE_CLIENT_ID))
                 && !CoreUtils.isNullOrEmpty(configuration.get(Configuration.PROPERTY_AZURE_CLIENT_SECRET))) {
                 // AZURE_TENANT_ID, AZURE_CLIENT_ID, AZURE_CLIENT_SECRET
-                return builder.credential(new EnvironmentCredentialBuilder().build()).buildClient();
+                return builder.credential(new EnvironmentCredentialBuilder().build());
             } else {
                 // STORAGE_TENANT_ID, STORAGE_CLIENT_ID, STORAGE_CLIENT_SECRET
                 return builder.credential(new ClientSecretCredentialBuilder()
                     .tenantId(configuration.get("STORAGE_TENANT_ID"))
                     .clientId(configuration.get("STORAGE_CLIENT_ID"))
                     .clientSecret(configuration.get("STORAGE_CLIENT_SECRET"))
-                    .build()).buildClient();
+                    .build());
             }
         } else {
             // Running in playback, use the mock credential.
-            return builder.credential(new MockTokenCredential()).buildClient();
+            return builder.credential(new MockTokenCredential());
         }
+    }
+
+    protected DataLakeServiceAsyncClient getOAuthServiceAsyncClient() {
+        return getOAuthServiceClientBuilder().buildAsyncClient();
     }
 
     protected DataLakeServiceClient getServiceClient(TestAccount account) {
@@ -436,6 +444,21 @@ public class DataLakeTestBase extends TestProxyTestBase {
 
         return instrument(builder)
             .sasToken(sasToken)
+            .buildDirectoryAsyncClient();
+    }
+
+    protected DataLakeDirectoryAsyncClient getDirectoryAsyncClient(StorageSharedKeyCredential credential,
+        String endpoint,
+        String pathName,
+        HttpPipelinePolicy... policies) {
+        DataLakePathClientBuilder builder = new DataLakePathClientBuilder().endpoint(endpoint).pathName(pathName);
+
+        for (HttpPipelinePolicy policy : policies) {
+            builder.addPolicy(policy);
+        }
+
+        return instrument(builder)
+            .credential(credential)
             .buildDirectoryAsyncClient();
     }
 
