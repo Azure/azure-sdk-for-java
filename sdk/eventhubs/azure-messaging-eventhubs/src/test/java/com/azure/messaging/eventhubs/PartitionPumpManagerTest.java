@@ -370,7 +370,7 @@ public class PartitionPumpManagerTest {
         // Arrange
         final Supplier<PartitionProcessor> supplier = () -> partitionProcessor;
         final CountDownLatch receiveCounter = new CountDownLatch(3);
-        final boolean trackLastEnqueuedEventProperties = false;
+        final boolean trackLastEnqueuedEventProperties = true;
         final int maxBatchSize = 2;
         final Duration maxWaitTime = Duration.ofSeconds(1);
         final boolean batchReceiveMode = true;
@@ -644,5 +644,90 @@ public class PartitionPumpManagerTest {
 
         // Assert
         assertEquals(defaultEventPosition, actual);
+    }
+
+    @Test
+    public void processErrorCleansUpPartition() throws InterruptedException {
+        final Supplier<PartitionProcessor> supplier = () -> partitionProcessor;
+        final CountDownLatch receiveCounter = new CountDownLatch(3);
+
+        final boolean trackLastEnqueuedEventProperties = false;
+        final int maxBatchSize = 2;
+        final Duration maxWaitTime = Duration.ofSeconds(1);
+        final boolean batchReceiveMode = true;
+        final EventProcessorClientOptions options = new EventProcessorClientOptions()
+            .setConsumerGroup("test-consumer")
+            .setTrackLastEnqueuedEventProperties(trackLastEnqueuedEventProperties)
+            .setInitialEventPositionProvider(id -> initialPartitionPositions.get(id))
+            .setMaxBatchSize(maxBatchSize)
+            .setMaxWaitTime(maxWaitTime)
+            .setBatchReceiveMode(batchReceiveMode)
+            .setLoadBalancerUpdateInterval(Duration.ofSeconds(10))
+            .setPartitionOwnershipExpirationInterval(Duration.ofMinutes(1))
+            .setLoadBalancingStrategy(LoadBalancingStrategy.BALANCED);
+
+        final PartitionPumpManager manager = new PartitionPumpManager(checkpointStore, supplier, builder,
+            DEFAULT_TRACER, options);
+
+        // Mock events to add.
+        final EventData eventData1 = new EventData("1");
+        final PartitionEvent partitionEvent1 = new PartitionEvent(PARTITION_CONTEXT, eventData1, null);
+
+        final EventData eventData2 = new EventData("2");
+        final PartitionEvent partitionEvent2 = new PartitionEvent(PARTITION_CONTEXT, eventData2, null);
+
+        final EventData eventData3 = new EventData("3");
+        final PartitionEvent partitionEvent3 = new PartitionEvent(PARTITION_CONTEXT, eventData3, null);
+
+        final AtomicInteger eventCounter = new AtomicInteger();
+        final Exception testException = new IllegalStateException("Dummy exception.");
+        final Exception processErrorException = new NumberFormatException("Test exception in process error");
+
+        doAnswer(invocation -> {
+            final EventBatchContext batch = invocation.getArgument(0);
+            assertNotNull(batch.getPartitionContext());
+
+            if (batch.getEvents().isEmpty()) {
+                receiveCounter.countDown();
+            }
+
+            eventCounter.addAndGet(batch.getEvents().size());
+            return null;
+        }).when(partitionProcessor).processEventBatch(any(EventBatchContext.class));
+
+        doAnswer(invocationOnMock -> {
+            throw processErrorException;
+        }).when(partitionProcessor).processError(any(ErrorContext.class));
+
+        try {
+            // Start receiving events from the partition.
+            manager.startPartitionPump(partitionOwnership, checkpoint);
+
+            receivePublisher.next(partitionEvent1, partitionEvent2, partitionEvent3);
+            receivePublisher.error(testException);
+
+            // We won't reach the countdown number because an exception receiving messages results in losing the
+            // partition.
+            final boolean await = receiveCounter.await(20, TimeUnit.SECONDS);
+            assertFalse(await);
+
+            // Verify
+            // We called the user processError
+            verify(partitionProcessor).processError(argThat(error -> testException.equals(error.getThrowable())));
+
+            // The window is 2 events, we publish 3 events before throwing an error, it should only have been called
+            // at most 1 time.
+            verify(partitionProcessor, atMost(1))
+                .processEventBatch(argThat(context -> !context.getEvents().isEmpty()));
+
+            assertEquals(maxBatchSize, eventCounter.get());
+
+            // Assert that we cleaned up the code.
+            assertFalse(manager.getPartitionPumps().containsKey(PARTITION_ID));
+            verify(consumerAsyncClient).close();
+
+        } finally {
+            manager.stopAllPartitionPumps();
+        }
     }
 }
