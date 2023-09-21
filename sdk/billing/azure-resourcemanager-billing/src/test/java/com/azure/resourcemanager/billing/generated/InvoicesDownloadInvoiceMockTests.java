@@ -29,7 +29,7 @@ public final class InvoicesDownloadInvoiceMockTests {
         HttpResponse httpResponse = Mockito.mock(HttpResponse.class);
         ArgumentCaptor<HttpRequest> httpRequest = ArgumentCaptor.forClass(HttpRequest.class);
 
-        String responseStr = "{\"expiryTime\":\"2021-01-09T20:20:26Z\",\"url\":\"cbbxigdhxi\"}";
+        String responseStr = "{\"expiryTime\":\"2021-09-23T02:38:45Z\",\"url\":\"iizjixlqfhefkwa\"}";
 
         Mockito.when(httpResponse.getStatusCode()).thenReturn(200);
         Mockito.when(httpResponse.getHeaders()).thenReturn(new HttpHeaders());
@@ -58,6 +58,8 @@ public final class InvoicesDownloadInvoiceMockTests {
                     new AzureProfile("", "", AzureEnvironment.AZURE));
 
         DownloadUrl response =
-            manager.invoices().downloadInvoice("wjqo", "ueayfbpcmsplb", "rrueqthwmg", com.azure.core.util.Context.NONE);
+            manager
+                .invoices()
+                .downloadInvoice("xbhxvucnulgmnhj", "vdyznf", "jsvkskmqozzkivy", com.azure.core.util.Context.NONE);
     }
 }

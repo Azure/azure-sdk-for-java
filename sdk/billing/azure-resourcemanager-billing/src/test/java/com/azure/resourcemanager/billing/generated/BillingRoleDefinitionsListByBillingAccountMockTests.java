@@ -31,7 +31,7 @@ public final class BillingRoleDefinitionsListByBillingAccountMockTests {
         ArgumentCaptor<HttpRequest> httpRequest = ArgumentCaptor.forClass(HttpRequest.class);
 
         String responseStr =
-            "{\"value\":[{\"properties\":{\"description\":\"bemeluclvd\",\"permissions\":[],\"roleName\":\"yrdnqod\"},\"id\":\"ahhxhqfaqnvzoqg\",\"name\":\"ipemchgavscz\",\"type\":\"ejdtxptl\"}]}";
+            "{\"value\":[{\"properties\":{\"description\":\"tfgcwvrr\",\"permissions\":[{\"actions\":[\"ycnawthvmaxgnuy\",\"a\",\"cmh\",\"dfjeceho\"],\"notActions\":[\"pqtwloesqrggvrb\",\"yrukoi\",\"aciduwjleip\"]}],\"roleName\":\"h\"},\"id\":\"yxpzruzythqk\",\"name\":\"whbgxvellvul\",\"type\":\"xdm\"}]}";
 
         Mockito.when(httpResponse.getStatusCode()).thenReturn(200);
         Mockito.when(httpResponse.getHeaders()).thenReturn(new HttpHeaders());
@@ -60,6 +60,6 @@ public final class BillingRoleDefinitionsListByBillingAccountMockTests {
                     new AzureProfile("", "", AzureEnvironment.AZURE));
 
         PagedIterable<BillingRoleDefinition> response =
-            manager.billingRoleDefinitions().listByBillingAccount("gookrtalvnb", com.azure.core.util.Context.NONE);
+            manager.billingRoleDefinitions().listByBillingAccount("rwq", com.azure.core.util.Context.NONE);
     }
 }

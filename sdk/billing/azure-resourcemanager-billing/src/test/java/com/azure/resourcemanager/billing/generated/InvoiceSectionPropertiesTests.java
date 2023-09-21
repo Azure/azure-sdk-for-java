@@ -16,35 +16,27 @@ public final class InvoiceSectionPropertiesTests {
         InvoiceSectionProperties model =
             BinaryData
                 .fromString(
-                    "{\"displayName\":\"srp\",\"labels\":{\"sgfyccsnew\":\"idnsezcxtb\",\"oosflnr\":\"dwzjeiach\",\"vypyqrimzinpv\":\"sfqpteehz\",\"rsoodqxhcrmnoh\":\"wjdk\"},\"state\":\"Active\",\"systemId\":\"whdsoifiyip\",\"tags\":{\"rcjxvsnbyxqabn\":\"qwpgrjbzn\",\"hurzafblj\":\"ocpcy\"},\"targetCloud\":\"USGov\"}")
+                    "{\"displayName\":\"tzlcuiywgqywgn\",\"labels\":{\"pphrcgynco\":\"ynhz\",\"vmmcoofs\":\"pec\",\"y\":\"lzevgbmqjqab\"},\"state\":\"Restricted\",\"systemId\":\"kwlzuvccfwnfn\",\"tags\":{\"bxetqgtzxdpn\":\"fionl\",\"eallnwsubisnj\":\"bqqwxrj\"},\"targetCloud\":\"USNat\"}")
                 .toObject(InvoiceSectionProperties.class);
-        Assertions.assertEquals("srp", model.displayName());
-        Assertions.assertEquals("idnsezcxtb", model.labels().get("sgfyccsnew"));
-        Assertions.assertEquals("qwpgrjbzn", model.tags().get("rcjxvsnbyxqabn"));
+        Assertions.assertEquals("tzlcuiywgqywgn", model.displayName());
+        Assertions.assertEquals("ynhz", model.labels().get("pphrcgynco"));
+        Assertions.assertEquals("fionl", model.tags().get("bxetqgtzxdpn"));
     }
 
     @org.junit.jupiter.api.Test
     public void testSerialize() throws Exception {
         InvoiceSectionProperties model =
             new InvoiceSectionProperties()
-                .withDisplayName("srp")
-                .withLabels(
-                    mapOf(
-                        "sgfyccsnew",
-                        "idnsezcxtb",
-                        "oosflnr",
-                        "dwzjeiach",
-                        "vypyqrimzinpv",
-                        "sfqpteehz",
-                        "rsoodqxhcrmnoh",
-                        "wjdk"))
-                .withTags(mapOf("rcjxvsnbyxqabn", "qwpgrjbzn", "hurzafblj", "ocpcy"));
+                .withDisplayName("tzlcuiywgqywgn")
+                .withLabels(mapOf("pphrcgynco", "ynhz", "vmmcoofs", "pec", "y", "lzevgbmqjqab"))
+                .withTags(mapOf("bxetqgtzxdpn", "fionl", "eallnwsubisnj", "bqqwxrj"));
         model = BinaryData.fromObject(model).toObject(InvoiceSectionProperties.class);
-        Assertions.assertEquals("srp", model.displayName());
-        Assertions.assertEquals("idnsezcxtb", model.labels().get("sgfyccsnew"));
-        Assertions.assertEquals("qwpgrjbzn", model.tags().get("rcjxvsnbyxqabn"));
+        Assertions.assertEquals("tzlcuiywgqywgn", model.displayName());
+        Assertions.assertEquals("ynhz", model.labels().get("pphrcgynco"));
+        Assertions.assertEquals("fionl", model.tags().get("bxetqgtzxdpn"));
     }
 
+    // Use "Map.of" if available
     @SuppressWarnings("unchecked")
     private static <T> Map<String, T> mapOf(Object... inputs) {
         Map<String, T> map = new HashMap<>();

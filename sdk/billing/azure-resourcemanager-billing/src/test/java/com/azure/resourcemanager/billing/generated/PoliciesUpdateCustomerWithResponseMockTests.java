@@ -33,7 +33,7 @@ public final class PoliciesUpdateCustomerWithResponseMockTests {
         ArgumentCaptor<HttpRequest> httpRequest = ArgumentCaptor.forClass(HttpRequest.class);
 
         String responseStr =
-            "{\"properties\":{\"viewCharges\":\"Allowed\"},\"id\":\"zyqegxyiv\",\"name\":\"inbmh\",\"type\":\"bjijkgqxnh\"}";
+            "{\"properties\":{\"viewCharges\":\"NotAllowed\"},\"id\":\"fc\",\"name\":\"rjajqmatxjtie\",\"type\":\"nzqgxxgfbbmtlpq\"}";
 
         Mockito.when(httpResponse.getStatusCode()).thenReturn(200);
         Mockito.when(httpResponse.getHeaders()).thenReturn(new HttpHeaders());
@@ -65,12 +65,12 @@ public final class PoliciesUpdateCustomerWithResponseMockTests {
             manager
                 .policies()
                 .updateCustomerWithResponse(
-                    "sziryrandoyp",
-                    "blto",
+                    "oabhjxwxqweuip",
+                    "pvksmit",
                     new CustomerPolicyInner().withViewCharges(ViewCharges.ALLOWED),
                     com.azure.core.util.Context.NONE)
                 .getValue();
 
-        Assertions.assertEquals(ViewCharges.ALLOWED, response.viewCharges());
+        Assertions.assertEquals(ViewCharges.NOT_ALLOWED, response.viewCharges());
     }
 }

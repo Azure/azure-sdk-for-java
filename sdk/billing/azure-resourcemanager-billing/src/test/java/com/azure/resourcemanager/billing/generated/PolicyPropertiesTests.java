@@ -17,23 +17,23 @@ public final class PolicyPropertiesTests {
         PolicyProperties model =
             BinaryData
                 .fromString(
-                    "{\"marketplacePurchases\":\"OnlyFreeAllowed\",\"reservationPurchases\":\"NotAllowed\",\"viewCharges\":\"NotAllowed\"}")
+                    "{\"marketplacePurchases\":\"AllAllowed\",\"reservationPurchases\":\"NotAllowed\",\"viewCharges\":\"Allowed\"}")
                 .toObject(PolicyProperties.class);
-        Assertions.assertEquals(MarketplacePurchasesPolicy.ONLY_FREE_ALLOWED, model.marketplacePurchases());
+        Assertions.assertEquals(MarketplacePurchasesPolicy.ALL_ALLOWED, model.marketplacePurchases());
         Assertions.assertEquals(ReservationPurchasesPolicy.NOT_ALLOWED, model.reservationPurchases());
-        Assertions.assertEquals(ViewChargesPolicy.NOT_ALLOWED, model.viewCharges());
+        Assertions.assertEquals(ViewChargesPolicy.ALLOWED, model.viewCharges());
     }
 
     @org.junit.jupiter.api.Test
     public void testSerialize() throws Exception {
         PolicyProperties model =
             new PolicyProperties()
-                .withMarketplacePurchases(MarketplacePurchasesPolicy.ONLY_FREE_ALLOWED)
+                .withMarketplacePurchases(MarketplacePurchasesPolicy.ALL_ALLOWED)
                 .withReservationPurchases(ReservationPurchasesPolicy.NOT_ALLOWED)
-                .withViewCharges(ViewChargesPolicy.NOT_ALLOWED);
+                .withViewCharges(ViewChargesPolicy.ALLOWED);
         model = BinaryData.fromObject(model).toObject(PolicyProperties.class);
-        Assertions.assertEquals(MarketplacePurchasesPolicy.ONLY_FREE_ALLOWED, model.marketplacePurchases());
+        Assertions.assertEquals(MarketplacePurchasesPolicy.ALL_ALLOWED, model.marketplacePurchases());
         Assertions.assertEquals(ReservationPurchasesPolicy.NOT_ALLOWED, model.reservationPurchases());
-        Assertions.assertEquals(ViewChargesPolicy.NOT_ALLOWED, model.viewCharges());
+        Assertions.assertEquals(ViewChargesPolicy.ALLOWED, model.viewCharges());
     }
 }

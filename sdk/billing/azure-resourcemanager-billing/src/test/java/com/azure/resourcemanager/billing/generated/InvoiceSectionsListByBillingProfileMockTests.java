@@ -32,7 +32,7 @@ public final class InvoiceSectionsListByBillingProfileMockTests {
         ArgumentCaptor<HttpRequest> httpRequest = ArgumentCaptor.forClass(HttpRequest.class);
 
         String responseStr =
-            "{\"value\":[{\"properties\":{\"displayName\":\"ehjku\",\"labels\":{\"aeylinm\":\"afgaoqlt\",\"irpghriypoqeyh\":\"gv\"},\"state\":\"Active\",\"systemId\":\"kprlpyznuc\",\"tags\":{\"xtyasiibmiyb\":\"smexiitdf\",\"mgixhcmavmqfou\":\"nustgnljh\",\"cgyypro\":\"or\"},\"targetCloud\":\"USNat\"},\"id\":\"pundmbxhug\",\"name\":\"mjkavlgorbmft\",\"type\":\"mdtzfjltfvnzc\"}]}";
+            "{\"value\":[{\"properties\":{\"displayName\":\"hkvpedwqsls\",\"labels\":{\"wwsko\":\"pq\",\"josovyrrl\":\"dcbrwimuvq\"},\"state\":\"Active\",\"systemId\":\"inuqtljq\",\"tags\":{\"ybmrqbrjbbmp\":\"pihehce\",\"rseqwjksghudgz\":\"dlvykfrex\",\"ggsvoujkxibdaf\":\"xog\",\"xfbvfb\":\"rkmdyom\"},\"targetCloud\":\"USSec\"},\"id\":\"i\",\"name\":\"hpwpgddeimawzovg\",\"type\":\"kumuikjcjca\"}]}";
 
         Mockito.when(httpResponse.getStatusCode()).thenReturn(200);
         Mockito.when(httpResponse.getHeaders()).thenReturn(new HttpHeaders());
@@ -61,12 +61,10 @@ public final class InvoiceSectionsListByBillingProfileMockTests {
                     new AzureProfile("", "", AzureEnvironment.AZURE));
 
         PagedIterable<InvoiceSection> response =
-            manager
-                .invoiceSections()
-                .listByBillingProfile("eebtijvacvb", "qzbqqxlajrnwxa", com.azure.core.util.Context.NONE);
+            manager.invoiceSections().listByBillingProfile("skw", "qjjyslurl", com.azure.core.util.Context.NONE);
 
-        Assertions.assertEquals("ehjku", response.iterator().next().displayName());
-        Assertions.assertEquals("afgaoqlt", response.iterator().next().labels().get("aeylinm"));
-        Assertions.assertEquals("smexiitdf", response.iterator().next().tags().get("xtyasiibmiyb"));
+        Assertions.assertEquals("hkvpedwqsls", response.iterator().next().displayName());
+        Assertions.assertEquals("pq", response.iterator().next().labels().get("wwsko"));
+        Assertions.assertEquals("pihehce", response.iterator().next().tags().get("ybmrqbrjbbmp"));
     }
 }

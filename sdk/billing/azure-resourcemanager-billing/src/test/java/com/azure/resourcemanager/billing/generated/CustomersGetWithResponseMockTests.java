@@ -31,7 +31,7 @@ public final class CustomersGetWithResponseMockTests {
         ArgumentCaptor<HttpRequest> httpRequest = ArgumentCaptor.forClass(HttpRequest.class);
 
         String responseStr =
-            "{\"properties\":{\"billingProfileId\":\"snmfpphojeevy\",\"billingProfileDisplayName\":\"hsgz\",\"displayName\":\"zbgomfgbeg\",\"enabledAzurePlans\":[],\"resellers\":[]},\"id\":\"o\",\"name\":\"i\",\"type\":\"etnluankrrfx\"}";
+            "{\"properties\":{\"billingProfileId\":\"ejchcsrlz\",\"billingProfileDisplayName\":\"mzlanru\",\"displayName\":\"wvnph\",\"enabledAzurePlans\":[{\"skuId\":\"tpjhm\",\"skuDescription\":\"hvthlaiwdcxsm\"},{\"skuId\":\"zhzdtxetlgydlhqv\",\"skuDescription\":\"npxybafiq\"}],\"resellers\":[{\"resellerId\":\"rbgjekglkl\",\"description\":\"ulidwc\"},{\"resellerId\":\"mzegjon\",\"description\":\"jirwgdnqzbrfk\"},{\"resellerId\":\"zhzmtksjci\",\"description\":\"igsxcdgljplk\"}]},\"id\":\"ua\",\"name\":\"htomflrytswfp\",\"type\":\"mdgycxn\"}";
 
         Mockito.when(httpResponse.getStatusCode()).thenReturn(200);
         Mockito.when(httpResponse.getHeaders()).thenReturn(new HttpHeaders());
@@ -62,9 +62,10 @@ public final class CustomersGetWithResponseMockTests {
         Customer response =
             manager
                 .customers()
-                .getWithResponse("tfnmdx", "tngfdgugeyzihgr", "yui", com.azure.core.util.Context.NONE)
+                .getWithResponse("fpafolpymwamxq", "rag", "gdphtvdula", com.azure.core.util.Context.NONE)
                 .getValue();
 
-        Assertions.assertEquals("zbgomfgbeg", response.displayName());
+        Assertions.assertEquals("wvnph", response.displayName());
+        Assertions.assertEquals("tpjhm", response.enabledAzurePlans().get(0).skuId());
     }
 }

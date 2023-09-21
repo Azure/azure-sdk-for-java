@@ -13,7 +13,7 @@ public final class ReservationSummaryTests {
         ReservationSummary model =
             BinaryData
                 .fromString(
-                    "{\"succeededCount\":29.918415,\"failedCount\":93.61522,\"expiringCount\":44.341938,\"expiredCount\":23.334568,\"pendingCount\":75.85746,\"cancelledCount\":61.311485}")
+                    "{\"succeededCount\":22.886932,\"failedCount\":45.74256,\"expiringCount\":4.1555347,\"expiredCount\":4.4425845,\"pendingCount\":93.39826,\"cancelledCount\":70.904854}")
                 .toObject(ReservationSummary.class);
     }
 

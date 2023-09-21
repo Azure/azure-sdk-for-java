@@ -12,7 +12,8 @@ public final class BillingPermissionsPropertiesInnerTests {
     public void testDeserialize() throws Exception {
         BillingPermissionsPropertiesInner model =
             BinaryData
-                .fromString("{\"actions\":[\"cmgyud\"],\"notActions\":[\"lmoyrx\",\"wfudwpzntxhdzhl\"]}")
+                .fromString(
+                    "{\"actions\":[\"vq\",\"pkeqdcvdrhvoo\",\"sotbob\"],\"notActions\":[\"pcjwv\",\"hdldwmgxcxrsl\",\"mutwuoe\"]}")
                 .toObject(BillingPermissionsPropertiesInner.class);
     }
 

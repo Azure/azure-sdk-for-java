@@ -34,7 +34,8 @@ public final class TransactionsListByInvoiceMockTests {
         ArgumentCaptor<HttpRequest> httpRequest = ArgumentCaptor.forClass(HttpRequest.class);
 
         String responseStr =
-            "{\"value\":[{\"properties\":{\"kind\":\"reservation\",\"date\":\"2021-10-25T06:31:18Z\",\"invoice\":\"vne\",\"invoiceId\":\"aifghtmoqqt\",\"orderId\":\"fhzbkr\",\"orderName\":\"jjavfq\",\"productFamily\":\"hnqoewdo\",\"productTypeId\":\"yetesy\",\"productType\":\"idbz\",\"productDescription\":\"hqtfbovn\",\"transactionType\":\"Purchase\",\"transactionAmount\":{\"currency\":\"etnjuhpsprkz\",\"value\":20.758957},\"quantity\":333927859,\"invoiceSectionId\":\"ccxnafbwqroohtuo\",\"invoiceSectionDisplayName\":\"aonurjtumg\",\"billingProfileId\":\"hpv\",\"billingProfileDisplayName\":\"mslclblyjxlt\",\"customerId\":\"juscvsfx\",\"customerDisplayName\":\"ctmgxuupbezqccy\",\"subscriptionId\":\"tce\",\"subscriptionName\":\"d\",\"azurePlan\":\"ky\",\"azureCreditApplied\":{\"currency\":\"tg\",\"value\":65.07157},\"billingCurrency\":\"qzgwldoychil\",\"discount\":47.130497,\"effectivePrice\":{\"currency\":\"ehuwaoa\",\"value\":0.38245916},\"exchangeRate\":37.166195,\"marketPrice\":{\"currency\":\"lizst\",\"value\":20.003922},\"pricingCurrency\":\"vhrweftkwqejpmv\",\"servicePeriodStartDate\":\"2021-09-05T09:38:44Z\",\"servicePeriodEndDate\":\"2021-06-10T02:31:17Z\",\"subTotal\":{\"currency\":\"wamcxtczhup\",\"value\":59.264435},\"tax\":{\"currency\":\"jduyyespydjfb\",\"value\":9.652024},\"unitOfMeasure\":\"hhulrtywikdm\",\"units\":94.05045,\"unitType\":\"uflgbhgauacdixm\"},\"id\":\"ufr\",\"name\":\"ryjqgdkf\",\"type\":\"ozo\"}]}";
+            "{\"value\":[{\"properties\":{\"kind\":\"reservation\",\"date\":\"2021-03-31T05:28:16Z\",\"invoice\":\"spthzodubtlmjtgb\",\"invoiceId\":\"oskkfmk\",\"orderId\":\"djxyxgbkkqvjcteo\",\"orderName\":\"l\",\"productFamily\":\"lskkzpxvj\",\"productTypeId\":\"dpvocojhpcn\",\"productType\":\"xzfsnggytexvzilm\",\"productDescription\":\"vzkwwwncknr\",\"transactionType\":\"Usage"
+                + " Charge\",\"transactionAmount\":{\"currency\":\"skzptjxulweucyr\",\"value\":39.67817},\"quantity\":1721081240,\"invoiceSectionId\":\"h\",\"invoiceSectionDisplayName\":\"gcj\",\"billingProfileId\":\"n\",\"billingProfileDisplayName\":\"hokamvfej\",\"customerId\":\"nttmbq\",\"customerDisplayName\":\"bzfivfok\",\"subscriptionId\":\"sthhzagjfwy\",\"subscriptionName\":\"lhgenuzejgvkv\",\"azurePlan\":\"aqszllrzl\",\"azureCreditApplied\":{\"currency\":\"dqgmih\",\"value\":32.735397},\"billingCurrency\":\"cqrhnx\",\"discount\":44.072353,\"effectivePrice\":{\"currency\":\"logxsvtzar\",\"value\":33.984566},\"exchangeRate\":35.240227,\"marketPrice\":{\"currency\":\"kt\",\"value\":37.85608},\"pricingCurrency\":\"wzzoslpk\",\"servicePeriodStartDate\":\"2021-12-03T08:55:55Z\",\"servicePeriodEndDate\":\"2021-04-17T17:18:02Z\",\"subTotal\":{\"currency\":\"zp\",\"value\":60.2799},\"tax\":{\"currency\":\"jcemqbmfuvqar\",\"value\":49.285866},\"unitOfMeasure\":\"qreblui\",\"units\":55.643856,\"unitType\":\"xsfgtdmbvxekr\"},\"id\":\"okqkbudbtwao\",\"name\":\"bavly\",\"type\":\"taaknwfrkebsmhp\"}]}";
 
         Mockito.when(httpResponse.getStatusCode()).thenReturn(200);
         Mockito.when(httpResponse.getHeaders()).thenReturn(new HttpHeaders());
@@ -63,9 +64,9 @@ public final class TransactionsListByInvoiceMockTests {
                     new AzureProfile("", "", AzureEnvironment.AZURE));
 
         PagedIterable<Transaction> response =
-            manager.transactions().listByInvoice("ctwwgzw", "jlmec", com.azure.core.util.Context.NONE);
+            manager.transactions().listByInvoice("crdcueljti", "hxmfqryarvsxzqb", com.azure.core.util.Context.NONE);
 
         Assertions.assertEquals(TransactionTypeKind.RESERVATION, response.iterator().next().kind());
-        Assertions.assertEquals(ReservationType.PURCHASE, response.iterator().next().transactionType());
+        Assertions.assertEquals(ReservationType.USAGE_CHARGE, response.iterator().next().transactionType());
     }
 }

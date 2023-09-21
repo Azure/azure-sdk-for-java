@@ -12,7 +12,8 @@ public final class ParticipantsTests {
     public void testDeserialize() throws Exception {
         Participants model =
             BinaryData
-                .fromString("{\"status\":\"ork\",\"statusDate\":\"2021-07-22T12:33Z\",\"email\":\"wjhhgdnhxmsivf\"}")
+                .fromString(
+                    "{\"status\":\"yuzcbmqqvxmvw\",\"statusDate\":\"2021-07-14T04:41:04Z\",\"email\":\"yxonsupe\"}")
                 .toObject(Participants.class);
     }
 

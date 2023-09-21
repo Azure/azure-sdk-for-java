@@ -12,7 +12,7 @@ public final class DownloadUrlInnerTests {
     public void testDeserialize() throws Exception {
         DownloadUrlInner model =
             BinaryData
-                .fromString("{\"expiryTime\":\"2021-09-27T05:33:50Z\",\"url\":\"grtwae\"}")
+                .fromString("{\"expiryTime\":\"2021-01-17T07:38:08Z\",\"url\":\"yohpfkyrkdbdgiog\"}")
                 .toObject(DownloadUrlInner.class);
     }
 

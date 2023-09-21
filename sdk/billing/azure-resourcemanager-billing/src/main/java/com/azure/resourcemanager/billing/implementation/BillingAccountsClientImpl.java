@@ -104,8 +104,7 @@ public final class BillingAccountsClientImpl implements BillingAccountsClient {
 
         @Headers({"Content-Type: application/json"})
         @Post(
-            "/providers/Microsoft.Billing/billingAccounts/{billingAccountName}"
-                + "/listInvoiceSectionsWithCreateSubscriptionPermission")
+            "/providers/Microsoft.Billing/billingAccounts/{billingAccountName}/listInvoiceSectionsWithCreateSubscriptionPermission")
         @ExpectedResponses({200})
         @UnexpectedResponseExceptionType(ManagementException.class)
         Mono<Response<InvoiceSectionListWithCreateSubPermissionResult>>

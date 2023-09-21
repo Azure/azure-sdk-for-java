@@ -12,7 +12,7 @@ public final class BillingPeriodPropertiesTests {
     public void testDeserialize() throws Exception {
         BillingPeriodProperties model =
             BinaryData
-                .fromString("{\"invoiceIds\":[\"cuubgq\",\"brta\",\"metttwgd\"]}")
+                .fromString("{\"invoiceIds\":[\"ng\",\"fhnykzcugs\",\"vxwlmzqwmvtxnj\"]}")
                 .toObject(BillingPeriodProperties.class);
     }
 

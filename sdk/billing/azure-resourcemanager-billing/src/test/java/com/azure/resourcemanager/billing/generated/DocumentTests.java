@@ -12,7 +12,7 @@ public final class DocumentTests {
     public void testDeserialize() throws Exception {
         Document model =
             BinaryData
-                .fromString("{\"kind\":\"VoidNote\",\"url\":\"egokdwbwhkszzcmr\",\"source\":\"ENF\"}")
+                .fromString("{\"kind\":\"VoidNote\",\"url\":\"tbajlkatn\",\"source\":\"DRS\"}")
                 .toObject(Document.class);
     }
 

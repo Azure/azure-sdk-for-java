@@ -60,8 +60,7 @@ public final class BillingRoleAssignmentsClientImpl implements BillingRoleAssign
     public interface BillingRoleAssignmentsService {
         @Headers({"Content-Type: application/json"})
         @Get(
-            "/providers/Microsoft.Billing/billingAccounts/{billingAccountName}/billingRoleAssignments"
-                + "/{billingRoleAssignmentName}")
+            "/providers/Microsoft.Billing/billingAccounts/{billingAccountName}/billingRoleAssignments/{billingRoleAssignmentName}")
         @ExpectedResponses({200})
         @UnexpectedResponseExceptionType(ManagementException.class)
         Mono<Response<BillingRoleAssignmentInner>> getByBillingAccount(
@@ -74,8 +73,7 @@ public final class BillingRoleAssignmentsClientImpl implements BillingRoleAssign
 
         @Headers({"Content-Type: application/json"})
         @Delete(
-            "/providers/Microsoft.Billing/billingAccounts/{billingAccountName}/billingRoleAssignments"
-                + "/{billingRoleAssignmentName}")
+            "/providers/Microsoft.Billing/billingAccounts/{billingAccountName}/billingRoleAssignments/{billingRoleAssignmentName}")
         @ExpectedResponses({200})
         @UnexpectedResponseExceptionType(ManagementException.class)
         Mono<Response<BillingRoleAssignmentInner>> deleteByBillingAccount(
@@ -88,8 +86,7 @@ public final class BillingRoleAssignmentsClientImpl implements BillingRoleAssign
 
         @Headers({"Content-Type: application/json"})
         @Get(
-            "/providers/Microsoft.Billing/billingAccounts/{billingAccountName}/billingProfiles/{billingProfileName}"
-                + "/invoiceSections/{invoiceSectionName}/billingRoleAssignments/{billingRoleAssignmentName}")
+            "/providers/Microsoft.Billing/billingAccounts/{billingAccountName}/billingProfiles/{billingProfileName}/invoiceSections/{invoiceSectionName}/billingRoleAssignments/{billingRoleAssignmentName}")
         @ExpectedResponses({200})
         @UnexpectedResponseExceptionType(ManagementException.class)
         Mono<Response<BillingRoleAssignmentInner>> getByInvoiceSection(
@@ -104,8 +101,7 @@ public final class BillingRoleAssignmentsClientImpl implements BillingRoleAssign
 
         @Headers({"Content-Type: application/json"})
         @Delete(
-            "/providers/Microsoft.Billing/billingAccounts/{billingAccountName}/billingProfiles/{billingProfileName}"
-                + "/invoiceSections/{invoiceSectionName}/billingRoleAssignments/{billingRoleAssignmentName}")
+            "/providers/Microsoft.Billing/billingAccounts/{billingAccountName}/billingProfiles/{billingProfileName}/invoiceSections/{invoiceSectionName}/billingRoleAssignments/{billingRoleAssignmentName}")
         @ExpectedResponses({200})
         @UnexpectedResponseExceptionType(ManagementException.class)
         Mono<Response<BillingRoleAssignmentInner>> deleteByInvoiceSection(
@@ -120,8 +116,7 @@ public final class BillingRoleAssignmentsClientImpl implements BillingRoleAssign
 
         @Headers({"Content-Type: application/json"})
         @Get(
-            "/providers/Microsoft.Billing/billingAccounts/{billingAccountName}/billingProfiles/{billingProfileName}"
-                + "/billingRoleAssignments/{billingRoleAssignmentName}")
+            "/providers/Microsoft.Billing/billingAccounts/{billingAccountName}/billingProfiles/{billingProfileName}/billingRoleAssignments/{billingRoleAssignmentName}")
         @ExpectedResponses({200})
         @UnexpectedResponseExceptionType(ManagementException.class)
         Mono<Response<BillingRoleAssignmentInner>> getByBillingProfile(
@@ -135,8 +130,7 @@ public final class BillingRoleAssignmentsClientImpl implements BillingRoleAssign
 
         @Headers({"Content-Type: application/json"})
         @Delete(
-            "/providers/Microsoft.Billing/billingAccounts/{billingAccountName}/billingProfiles/{billingProfileName}"
-                + "/billingRoleAssignments/{billingRoleAssignmentName}")
+            "/providers/Microsoft.Billing/billingAccounts/{billingAccountName}/billingProfiles/{billingProfileName}/billingRoleAssignments/{billingRoleAssignmentName}")
         @ExpectedResponses({200})
         @UnexpectedResponseExceptionType(ManagementException.class)
         Mono<Response<BillingRoleAssignmentInner>> deleteByBillingProfile(
@@ -161,8 +155,7 @@ public final class BillingRoleAssignmentsClientImpl implements BillingRoleAssign
 
         @Headers({"Content-Type: application/json"})
         @Get(
-            "/providers/Microsoft.Billing/billingAccounts/{billingAccountName}/billingProfiles/{billingProfileName}"
-                + "/invoiceSections/{invoiceSectionName}/billingRoleAssignments")
+            "/providers/Microsoft.Billing/billingAccounts/{billingAccountName}/billingProfiles/{billingProfileName}/invoiceSections/{invoiceSectionName}/billingRoleAssignments")
         @ExpectedResponses({200})
         @UnexpectedResponseExceptionType(ManagementException.class)
         Mono<Response<BillingRoleAssignmentListResult>> listByInvoiceSection(
@@ -176,8 +169,7 @@ public final class BillingRoleAssignmentsClientImpl implements BillingRoleAssign
 
         @Headers({"Content-Type: application/json"})
         @Get(
-            "/providers/Microsoft.Billing/billingAccounts/{billingAccountName}/billingProfiles/{billingProfileName}"
-                + "/billingRoleAssignments")
+            "/providers/Microsoft.Billing/billingAccounts/{billingAccountName}/billingProfiles/{billingProfileName}/billingRoleAssignments")
         @ExpectedResponses({200})
         @UnexpectedResponseExceptionType(ManagementException.class)
         Mono<Response<BillingRoleAssignmentListResult>> listByBillingProfile(

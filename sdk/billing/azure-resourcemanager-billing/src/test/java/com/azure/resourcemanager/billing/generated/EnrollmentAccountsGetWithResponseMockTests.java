@@ -30,7 +30,7 @@ public final class EnrollmentAccountsGetWithResponseMockTests {
         ArgumentCaptor<HttpRequest> httpRequest = ArgumentCaptor.forClass(HttpRequest.class);
 
         String responseStr =
-            "{\"properties\":{\"principalName\":\"cvtlubseskvc\"},\"id\":\"artr\",\"name\":\"unlpirykycndz\",\"type\":\"qi\"}";
+            "{\"properties\":{\"principalName\":\"pk\"},\"id\":\"dm\",\"name\":\"xxij\",\"type\":\"skwsdgkj\"}";
 
         Mockito.when(httpResponse.getStatusCode()).thenReturn(200);
         Mockito.when(httpResponse.getHeaders()).thenReturn(new HttpHeaders());
@@ -59,6 +59,9 @@ public final class EnrollmentAccountsGetWithResponseMockTests {
                     new AzureProfile("", "", AzureEnvironment.AZURE));
 
         EnrollmentAccountSummary response =
-            manager.enrollmentAccounts().getWithResponse("fgvmx", com.azure.core.util.Context.NONE).getValue();
+            manager
+                .enrollmentAccounts()
+                .getWithResponse("kyfwnwpiwxeiicr", com.azure.core.util.Context.NONE)
+                .getValue();
     }
 }

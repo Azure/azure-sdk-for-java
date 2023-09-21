@@ -31,7 +31,7 @@ public final class InvoiceSectionsGetWithResponseMockTests {
         ArgumentCaptor<HttpRequest> httpRequest = ArgumentCaptor.forClass(HttpRequest.class);
 
         String responseStr =
-            "{\"properties\":{\"displayName\":\"cysihs\",\"labels\":{\"cohdx\":\"wdhohsdtmcdzsu\"},\"state\":\"Active\",\"systemId\":\"cmuapcvhd\",\"tags\":{\"qzinkfkbg\":\"wqqxeysko\"},\"targetCloud\":\"USSec\"},\"id\":\"owxeqocljmy\",\"name\":\"vkzqk\",\"type\":\"jeokbzefezrxccz\"}";
+            "{\"properties\":{\"displayName\":\"wvczcswkacve\",\"labels\":{\"qthe\":\"dvlvhbwrnfxtgdd\"},\"state\":\"Active\",\"systemId\":\"aoyankcoeqswa\",\"tags\":{\"tmhdroznnhdr\":\"t\",\"sggux\":\"ktgj\"},\"targetCloud\":\"USSec\"},\"id\":\"lwywae\",\"name\":\"czg\",\"type\":\"bukklels\"}";
 
         Mockito.when(httpResponse.getStatusCode()).thenReturn(200);
         Mockito.when(httpResponse.getHeaders()).thenReturn(new HttpHeaders());
@@ -62,11 +62,11 @@ public final class InvoiceSectionsGetWithResponseMockTests {
         InvoiceSection response =
             manager
                 .invoiceSections()
-                .getWithResponse("jtotpvopvpbd", "zq", "qqihedsvqwthmk", com.azure.core.util.Context.NONE)
+                .getWithResponse("tbw", "nsq", "wxwcomli", com.azure.core.util.Context.NONE)
                 .getValue();
 
-        Assertions.assertEquals("cysihs", response.displayName());
-        Assertions.assertEquals("wdhohsdtmcdzsu", response.labels().get("cohdx"));
-        Assertions.assertEquals("wqqxeysko", response.tags().get("qzinkfkbg"));
+        Assertions.assertEquals("wvczcswkacve", response.displayName());
+        Assertions.assertEquals("dvlvhbwrnfxtgdd", response.labels().get("qthe"));
+        Assertions.assertEquals("t", response.tags().get("tmhdroznnhdr"));
     }
 }

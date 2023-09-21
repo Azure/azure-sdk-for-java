@@ -14,23 +14,23 @@ public final class IndirectRelationshipInfoTests {
         IndirectRelationshipInfo model =
             BinaryData
                 .fromString(
-                    "{\"billingAccountName\":\"bdkvwrwjf\",\"billingProfileName\":\"snhu\",\"displayName\":\"eltmrldhugjzzdat\"}")
+                    "{\"billingAccountName\":\"akeqs\",\"billingProfileName\":\"yb\",\"displayName\":\"qedqytbciqfoufl\"}")
                 .toObject(IndirectRelationshipInfo.class);
-        Assertions.assertEquals("bdkvwrwjf", model.billingAccountName());
-        Assertions.assertEquals("snhu", model.billingProfileName());
-        Assertions.assertEquals("eltmrldhugjzzdat", model.displayName());
+        Assertions.assertEquals("akeqs", model.billingAccountName());
+        Assertions.assertEquals("yb", model.billingProfileName());
+        Assertions.assertEquals("qedqytbciqfoufl", model.displayName());
     }
 
     @org.junit.jupiter.api.Test
     public void testSerialize() throws Exception {
         IndirectRelationshipInfo model =
             new IndirectRelationshipInfo()
-                .withBillingAccountName("bdkvwrwjf")
-                .withBillingProfileName("snhu")
-                .withDisplayName("eltmrldhugjzzdat");
+                .withBillingAccountName("akeqs")
+                .withBillingProfileName("yb")
+                .withDisplayName("qedqytbciqfoufl");
         model = BinaryData.fromObject(model).toObject(IndirectRelationshipInfo.class);
-        Assertions.assertEquals("bdkvwrwjf", model.billingAccountName());
-        Assertions.assertEquals("snhu", model.billingProfileName());
-        Assertions.assertEquals("eltmrldhugjzzdat", model.displayName());
+        Assertions.assertEquals("akeqs", model.billingAccountName());
+        Assertions.assertEquals("yb", model.billingProfileName());
+        Assertions.assertEquals("qedqytbciqfoufl", model.displayName());
     }
 }

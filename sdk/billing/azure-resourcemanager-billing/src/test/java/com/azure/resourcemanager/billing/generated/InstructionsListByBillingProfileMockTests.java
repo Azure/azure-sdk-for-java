@@ -32,7 +32,7 @@ public final class InstructionsListByBillingProfileMockTests {
         ArgumentCaptor<HttpRequest> httpRequest = ArgumentCaptor.forClass(HttpRequest.class);
 
         String responseStr =
-            "{\"value\":[{\"properties\":{\"amount\":55.698055,\"startDate\":\"2021-06-09T23:46:46Z\",\"endDate\":\"2021-07-18T03:27:54Z\",\"creationDate\":\"2020-12-23T14:53:02Z\"},\"id\":\"kkjqnvbroylaxxu\",\"name\":\"cdisd\",\"type\":\"sfjbjsvg\"}]}";
+            "{\"value\":[{\"properties\":{\"amount\":10.292828,\"startDate\":\"2021-09-12T06:08:07Z\",\"endDate\":\"2021-09-07T09:46:08Z\",\"creationDate\":\"2021-03-05T18:11:46Z\"},\"id\":\"fdlpukhpyr\",\"name\":\"eizjcpeogkhnmg\",\"type\":\"ro\"}]}";
 
         Mockito.when(httpResponse.getStatusCode()).thenReturn(200);
         Mockito.when(httpResponse.getHeaders()).thenReturn(new HttpHeaders());
@@ -61,14 +61,12 @@ public final class InstructionsListByBillingProfileMockTests {
                     new AzureProfile("", "", AzureEnvironment.AZURE));
 
         PagedIterable<Instruction> response =
-            manager
-                .instructions()
-                .listByBillingProfile("ckknhxkizvy", "nrzvuljraaer", com.azure.core.util.Context.NONE);
+            manager.instructions().listByBillingProfile("alhhjnhgwydyynfs", "khgb", com.azure.core.util.Context.NONE);
 
-        Assertions.assertEquals(55.698055f, response.iterator().next().amount());
-        Assertions.assertEquals(OffsetDateTime.parse("2021-06-09T23:46:46Z"), response.iterator().next().startDate());
-        Assertions.assertEquals(OffsetDateTime.parse("2021-07-18T03:27:54Z"), response.iterator().next().endDate());
+        Assertions.assertEquals(10.292828f, response.iterator().next().amount());
+        Assertions.assertEquals(OffsetDateTime.parse("2021-09-12T06:08:07Z"), response.iterator().next().startDate());
+        Assertions.assertEquals(OffsetDateTime.parse("2021-09-07T09:46:08Z"), response.iterator().next().endDate());
         Assertions
-            .assertEquals(OffsetDateTime.parse("2020-12-23T14:53:02Z"), response.iterator().next().creationDate());
+            .assertEquals(OffsetDateTime.parse("2021-03-05T18:11:46Z"), response.iterator().next().creationDate());
     }
 }

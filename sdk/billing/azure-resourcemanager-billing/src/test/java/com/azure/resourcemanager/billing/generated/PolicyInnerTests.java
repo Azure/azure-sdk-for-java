@@ -17,10 +17,10 @@ public final class PolicyInnerTests {
         PolicyInner model =
             BinaryData
                 .fromString(
-                    "{\"properties\":{\"marketplacePurchases\":\"AllAllowed\",\"reservationPurchases\":\"NotAllowed\",\"viewCharges\":\"Allowed\"},\"id\":\"joqrvqqaatj\",\"name\":\"nrvgoupmfiibfgg\",\"type\":\"ioolvrwxkvtkkgll\"}")
+                    "{\"properties\":{\"marketplacePurchases\":\"OnlyFreeAllowed\",\"reservationPurchases\":\"Allowed\",\"viewCharges\":\"Allowed\"},\"id\":\"uaulxunsm\",\"name\":\"bn\",\"type\":\"ppxynenls\"}")
                 .toObject(PolicyInner.class);
-        Assertions.assertEquals(MarketplacePurchasesPolicy.ALL_ALLOWED, model.marketplacePurchases());
-        Assertions.assertEquals(ReservationPurchasesPolicy.NOT_ALLOWED, model.reservationPurchases());
+        Assertions.assertEquals(MarketplacePurchasesPolicy.ONLY_FREE_ALLOWED, model.marketplacePurchases());
+        Assertions.assertEquals(ReservationPurchasesPolicy.ALLOWED, model.reservationPurchases());
         Assertions.assertEquals(ViewChargesPolicy.ALLOWED, model.viewCharges());
     }
 
@@ -28,12 +28,12 @@ public final class PolicyInnerTests {
     public void testSerialize() throws Exception {
         PolicyInner model =
             new PolicyInner()
-                .withMarketplacePurchases(MarketplacePurchasesPolicy.ALL_ALLOWED)
-                .withReservationPurchases(ReservationPurchasesPolicy.NOT_ALLOWED)
+                .withMarketplacePurchases(MarketplacePurchasesPolicy.ONLY_FREE_ALLOWED)
+                .withReservationPurchases(ReservationPurchasesPolicy.ALLOWED)
                 .withViewCharges(ViewChargesPolicy.ALLOWED);
         model = BinaryData.fromObject(model).toObject(PolicyInner.class);
-        Assertions.assertEquals(MarketplacePurchasesPolicy.ALL_ALLOWED, model.marketplacePurchases());
-        Assertions.assertEquals(ReservationPurchasesPolicy.NOT_ALLOWED, model.reservationPurchases());
+        Assertions.assertEquals(MarketplacePurchasesPolicy.ONLY_FREE_ALLOWED, model.marketplacePurchases());
+        Assertions.assertEquals(ReservationPurchasesPolicy.ALLOWED, model.reservationPurchases());
         Assertions.assertEquals(ViewChargesPolicy.ALLOWED, model.viewCharges());
     }
 }

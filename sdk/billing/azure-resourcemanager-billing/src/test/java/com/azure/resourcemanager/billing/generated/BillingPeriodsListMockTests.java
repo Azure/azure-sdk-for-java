@@ -31,7 +31,7 @@ public final class BillingPeriodsListMockTests {
         ArgumentCaptor<HttpRequest> httpRequest = ArgumentCaptor.forClass(HttpRequest.class);
 
         String responseStr =
-            "{\"value\":[{\"properties\":{\"invoiceIds\":[\"qlnfw\",\"y\",\"mvqdbpbhfckdvez\",\"rcssbzhddubbnq\"]},\"id\":\"b\",\"name\":\"h\",\"type\":\"alehpav\"}]}";
+            "{\"value\":[{\"properties\":{\"invoiceIds\":[\"twyx\"]},\"id\":\"i\",\"name\":\"l\",\"type\":\"dvatdavuqm\"}]}";
 
         Mockito.when(httpResponse.getStatusCode()).thenReturn(200);
         Mockito.when(httpResponse.getHeaders()).thenReturn(new HttpHeaders());
@@ -60,6 +60,6 @@ public final class BillingPeriodsListMockTests {
                     new AzureProfile("", "", AzureEnvironment.AZURE));
 
         PagedIterable<BillingPeriod> response =
-            manager.billingPeriods().list("jreuykbbmn", "aglt", 608268235, com.azure.core.util.Context.NONE);
+            manager.billingPeriods().list("yacwrasekwefc", "o", 76758545, com.azure.core.util.Context.NONE);
     }
 }

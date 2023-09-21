@@ -15,16 +15,16 @@ public final class ReservationPropertyTests {
         ReservationProperty model =
             BinaryData
                 .fromString(
-                    "{\"appliedScopes\":[\"gxobfirclnp\",\"ciayzriykhya\",\"fvjlboxqvkjlmx\"],\"appliedScopeType\":\"mdy\",\"reservedResourceType\":\"dwdigumb\",\"quantity\":79.26031,\"provisioningState\":\"uzzptjazysdz\",\"expiryDate\":\"zwwva\",\"provisioningSubState\":\"yuvvfonkp\",\"displayName\":\"qyikvy\",\"displayProvisioningState\":\"uyav\",\"userFriendlyRenewState\":\"wmn\",\"userFriendlyAppliedScopeType\":\"ttijfybvpoekrs\",\"effectiveDateTime\":\"gbdhuzqgnjdg\",\"skuDescription\":\"nscliqhzvhxnk\",\"term\":\"tkubotppn\",\"renew\":false,\"renewSource\":\"xhihfrbbcevqagtl\",\"utilization\":{\"trend\":\"lfkqojpy\",\"aggregates\":[{\"grain\":71.06859,\"grainUnit\":\"cnifm\",\"value\":42.886497,\"valueUnit\":\"ymbrnysuxmpraf\"}]}}")
+                    "{\"appliedScopes\":[\"mjjyuojq\",\"obaxkjeytu\"],\"appliedScopeType\":\"bfjkw\",\"reservedResourceType\":\"snkq\",\"quantity\":24.168545,\"provisioningState\":\"rqunjq\",\"expiryDate\":\"enx\",\"provisioningSubState\":\"l\",\"displayName\":\"akdkifmjnnawtqab\",\"displayProvisioningState\":\"uckpggqoweyir\",\"userFriendlyRenewState\":\"lisn\",\"userFriendlyAppliedScopeType\":\"fl\",\"effectiveDateTime\":\"mpizru\",\"skuDescription\":\"pqxpx\",\"term\":\"fcngjsa\",\"renew\":false,\"renewSource\":\"xtmkzjvkviir\",\"utilization\":{\"trend\":\"grwsdp\",\"aggregates\":[{\"grain\":53.379215,\"grainUnit\":\"zb\",\"value\":20.298058,\"valueUnit\":\"v\"}]}}")
                 .toObject(ReservationProperty.class);
-        Assertions.assertEquals("gxobfirclnp", model.appliedScopes().get(0));
+        Assertions.assertEquals("mjjyuojq", model.appliedScopes().get(0));
     }
 
     @org.junit.jupiter.api.Test
     public void testSerialize() throws Exception {
         ReservationProperty model =
-            new ReservationProperty().withAppliedScopes(Arrays.asList("gxobfirclnp", "ciayzriykhya", "fvjlboxqvkjlmx"));
+            new ReservationProperty().withAppliedScopes(Arrays.asList("mjjyuojq", "obaxkjeytu"));
         model = BinaryData.fromObject(model).toObject(ReservationProperty.class);
-        Assertions.assertEquals("gxobfirclnp", model.appliedScopes().get(0));
+        Assertions.assertEquals("mjjyuojq", model.appliedScopes().get(0));
     }
 }

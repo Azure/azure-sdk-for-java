@@ -34,7 +34,7 @@ public final class PoliciesGetByBillingProfileWithResponseMockTests {
         ArgumentCaptor<HttpRequest> httpRequest = ArgumentCaptor.forClass(HttpRequest.class);
 
         String responseStr =
-            "{\"properties\":{\"marketplacePurchases\":\"AllAllowed\",\"reservationPurchases\":\"NotAllowed\",\"viewCharges\":\"Allowed\"},\"id\":\"b\",\"name\":\"qkyojwyvf\",\"type\":\"mbtsuahxsg\"}";
+            "{\"properties\":{\"marketplacePurchases\":\"NotAllowed\",\"reservationPurchases\":\"NotAllowed\",\"viewCharges\":\"Allowed\"},\"id\":\"dcldpkawnsnl\",\"name\":\"imouxwksqmudmfco\",\"type\":\"bicziuswswj\"}";
 
         Mockito.when(httpResponse.getStatusCode()).thenReturn(200);
         Mockito.when(httpResponse.getHeaders()).thenReturn(new HttpHeaders());
@@ -65,10 +65,10 @@ public final class PoliciesGetByBillingProfileWithResponseMockTests {
         Policy response =
             manager
                 .policies()
-                .getByBillingProfileWithResponse("oqbvjhvefgwbmqj", "hntasfaymx", com.azure.core.util.Context.NONE)
+                .getByBillingProfileWithResponse("ujd", "gatolekscbctnan", com.azure.core.util.Context.NONE)
                 .getValue();
 
-        Assertions.assertEquals(MarketplacePurchasesPolicy.ALL_ALLOWED, response.marketplacePurchases());
+        Assertions.assertEquals(MarketplacePurchasesPolicy.NOT_ALLOWED, response.marketplacePurchases());
         Assertions.assertEquals(ReservationPurchasesPolicy.NOT_ALLOWED, response.reservationPurchases());
         Assertions.assertEquals(ViewChargesPolicy.ALLOWED, response.viewCharges());
     }

@@ -13,7 +13,7 @@ public final class AvailableBalanceInnerTests {
         AvailableBalanceInner model =
             BinaryData
                 .fromString(
-                    "{\"properties\":{\"amount\":{\"currency\":\"kouknvudwtiu\",\"value\":51.070255}},\"id\":\"dng\",\"name\":\"pocipazyxoegu\",\"type\":\"g\"}")
+                    "{\"properties\":{\"amount\":{\"currency\":\"vylwzbtdhxuj\",\"value\":8.206481}},\"id\":\"mpowuwpr\",\"name\":\"qlveualupjmkh\",\"type\":\"xobbcswsrt\"}")
                 .toObject(AvailableBalanceInner.class);
     }
 

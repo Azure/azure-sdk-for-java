@@ -15,26 +15,26 @@ public final class InstructionInnerTests {
         InstructionInner model =
             BinaryData
                 .fromString(
-                    "{\"properties\":{\"amount\":10.419273,\"startDate\":\"2021-09-25T01:29:01Z\",\"endDate\":\"2021-09-15T09:48:55Z\",\"creationDate\":\"2021-10-30T19:28:33Z\"},\"id\":\"ypewrmjmwvvjekt\",\"name\":\"xsenhwlr\",\"type\":\"ffrzpwvlqdqgbiqy\"}")
+                    "{\"properties\":{\"amount\":82.0861,\"startDate\":\"2021-08-01T14:59:29Z\",\"endDate\":\"2021-02-07T11:49:38Z\",\"creationDate\":\"2021-03-19T00:27:21Z\"},\"id\":\"xqpsrknftguv\",\"name\":\"iuhprwmdyvxqta\",\"type\":\"riwwroy\"}")
                 .toObject(InstructionInner.class);
-        Assertions.assertEquals(10.419273f, model.amount());
-        Assertions.assertEquals(OffsetDateTime.parse("2021-09-25T01:29:01Z"), model.startDate());
-        Assertions.assertEquals(OffsetDateTime.parse("2021-09-15T09:48:55Z"), model.endDate());
-        Assertions.assertEquals(OffsetDateTime.parse("2021-10-30T19:28:33Z"), model.creationDate());
+        Assertions.assertEquals(82.0861f, model.amount());
+        Assertions.assertEquals(OffsetDateTime.parse("2021-08-01T14:59:29Z"), model.startDate());
+        Assertions.assertEquals(OffsetDateTime.parse("2021-02-07T11:49:38Z"), model.endDate());
+        Assertions.assertEquals(OffsetDateTime.parse("2021-03-19T00:27:21Z"), model.creationDate());
     }
 
     @org.junit.jupiter.api.Test
     public void testSerialize() throws Exception {
         InstructionInner model =
             new InstructionInner()
-                .withAmount(10.419273f)
-                .withStartDate(OffsetDateTime.parse("2021-09-25T01:29:01Z"))
-                .withEndDate(OffsetDateTime.parse("2021-09-15T09:48:55Z"))
-                .withCreationDate(OffsetDateTime.parse("2021-10-30T19:28:33Z"));
+                .withAmount(82.0861f)
+                .withStartDate(OffsetDateTime.parse("2021-08-01T14:59:29Z"))
+                .withEndDate(OffsetDateTime.parse("2021-02-07T11:49:38Z"))
+                .withCreationDate(OffsetDateTime.parse("2021-03-19T00:27:21Z"));
         model = BinaryData.fromObject(model).toObject(InstructionInner.class);
-        Assertions.assertEquals(10.419273f, model.amount());
-        Assertions.assertEquals(OffsetDateTime.parse("2021-09-25T01:29:01Z"), model.startDate());
-        Assertions.assertEquals(OffsetDateTime.parse("2021-09-15T09:48:55Z"), model.endDate());
-        Assertions.assertEquals(OffsetDateTime.parse("2021-10-30T19:28:33Z"), model.creationDate());
+        Assertions.assertEquals(82.0861f, model.amount());
+        Assertions.assertEquals(OffsetDateTime.parse("2021-08-01T14:59:29Z"), model.startDate());
+        Assertions.assertEquals(OffsetDateTime.parse("2021-02-07T11:49:38Z"), model.endDate());
+        Assertions.assertEquals(OffsetDateTime.parse("2021-03-19T00:27:21Z"), model.creationDate());
     }
 }

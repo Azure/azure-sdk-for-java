@@ -31,7 +31,7 @@ public final class BillingRoleAssignmentsGetByBillingProfileWithResponseMockTest
         ArgumentCaptor<HttpRequest> httpRequest = ArgumentCaptor.forClass(HttpRequest.class);
 
         String responseStr =
-            "{\"properties\":{\"createdOn\":\"wsrsxkrplbja\",\"createdByPrincipalTenantId\":\"jwwviy\",\"createdByPrincipalId\":\"ps\",\"createdByUserEmailAddress\":\"brnnhjxsqw\",\"principalId\":\"qkbiwet\",\"principalTenantId\":\"zycyqiqyhg\",\"roleDefinitionId\":\"etzlexbsfledynoj\",\"scope\":\"iuwfbzkkdtnhqsy\",\"userAuthenticationType\":\"jselpkpbafvafh\",\"userEmailAddress\":\"ylcc\"},\"id\":\"evxrhyz\",\"name\":\"fwrsofpltdbmair\",\"type\":\"hvhfnracw\"}";
+            "{\"properties\":{\"createdOn\":\"bdsrgfajglzrsu\",\"createdByPrincipalTenantId\":\"lrxhjnltcetj\",\"createdByPrincipalId\":\"qyd\",\"createdByUserEmailAddress\":\"q\",\"principalId\":\"wa\",\"principalTenantId\":\"wdxvqzxoebwg\",\"roleDefinitionId\":\"bibanbau\",\"scope\":\"tzvp\",\"userAuthenticationType\":\"lozkxbzrp\",\"userEmailAddress\":\"plssanbtttk\"},\"id\":\"s\",\"name\":\"xunrswgkpjhboy\",\"type\":\"kebhuhkslgw\"}";
 
         Mockito.when(httpResponse.getStatusCode()).thenReturn(200);
         Mockito.when(httpResponse.getHeaders()).thenReturn(new HttpHeaders());
@@ -62,13 +62,14 @@ public final class BillingRoleAssignmentsGetByBillingProfileWithResponseMockTest
         BillingRoleAssignment response =
             manager
                 .billingRoleAssignments()
-                .getByBillingProfileWithResponse("mmfz", "bfw", "rzx", com.azure.core.util.Context.NONE)
+                .getByBillingProfileWithResponse(
+                    "wwnbafoctohz", "aquvwsxbgnvkervq", "hoadhrsxqvzv", com.azure.core.util.Context.NONE)
                 .getValue();
 
-        Assertions.assertEquals("qkbiwet", response.principalId());
-        Assertions.assertEquals("zycyqiqyhg", response.principalTenantId());
-        Assertions.assertEquals("etzlexbsfledynoj", response.roleDefinitionId());
-        Assertions.assertEquals("jselpkpbafvafh", response.userAuthenticationType());
-        Assertions.assertEquals("ylcc", response.userEmailAddress());
+        Assertions.assertEquals("wa", response.principalId());
+        Assertions.assertEquals("wdxvqzxoebwg", response.principalTenantId());
+        Assertions.assertEquals("bibanbau", response.roleDefinitionId());
+        Assertions.assertEquals("lozkxbzrp", response.userAuthenticationType());
+        Assertions.assertEquals("plssanbtttk", response.userEmailAddress());
     }
 }

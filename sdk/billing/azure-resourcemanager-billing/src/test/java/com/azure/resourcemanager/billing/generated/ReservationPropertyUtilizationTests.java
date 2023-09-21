@@ -15,14 +15,16 @@ public final class ReservationPropertyUtilizationTests {
         ReservationPropertyUtilization model =
             BinaryData
                 .fromString(
-                    "{\"trend\":\"ckh\",\"aggregates\":[{\"grain\":5.347806,\"grainUnit\":\"ffwafq\",\"value\":61.13735,\"valueUnit\":\"aspavehhr\"}]}")
+                    "{\"trend\":\"tctbrxkjzwrgxffm\",\"aggregates\":[{\"grain\":81.22072,\"grainUnit\":\"kgozxwop\",\"value\":12.357336,\"valueUnit\":\"p\"},{\"grain\":62.92256,\"grainUnit\":\"clnapxbiygnugjkn\",\"value\":40.375977,\"valueUnit\":\"cttuxuu\"}]}")
                 .toObject(ReservationPropertyUtilization.class);
     }
 
     @org.junit.jupiter.api.Test
     public void testSerialize() throws Exception {
         ReservationPropertyUtilization model =
-            new ReservationPropertyUtilization().withAggregates(Arrays.asList(new ReservationUtilizationAggregates()));
+            new ReservationPropertyUtilization()
+                .withAggregates(
+                    Arrays.asList(new ReservationUtilizationAggregates(), new ReservationUtilizationAggregates()));
         model = BinaryData.fromObject(model).toObject(ReservationPropertyUtilization.class);
     }
 }

@@ -12,7 +12,7 @@ public final class ResellerTests {
     public void testDeserialize() throws Exception {
         Reseller model =
             BinaryData
-                .fromString("{\"resellerId\":\"gsxnkjzkdeslpv\",\"description\":\"pwiyig\"}")
+                .fromString("{\"resellerId\":\"cwyhzdxssa\",\"description\":\"zmnvdfznudaod\"}")
                 .toObject(Reseller.class);
     }
 

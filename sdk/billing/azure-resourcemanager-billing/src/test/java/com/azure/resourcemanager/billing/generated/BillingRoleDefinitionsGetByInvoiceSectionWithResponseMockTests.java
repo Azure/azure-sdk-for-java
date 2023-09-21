@@ -30,7 +30,7 @@ public final class BillingRoleDefinitionsGetByInvoiceSectionWithResponseMockTest
         ArgumentCaptor<HttpRequest> httpRequest = ArgumentCaptor.forClass(HttpRequest.class);
 
         String responseStr =
-            "{\"properties\":{\"description\":\"s\",\"permissions\":[],\"roleName\":\"jszlb\"},\"id\":\"cmnlzijiufehg\",\"name\":\"vflnwyvqkxrerln\",\"type\":\"ylyl\"}";
+            "{\"properties\":{\"description\":\"unytjlkesm\",\"permissions\":[{\"actions\":[\"ubt\"],\"notActions\":[\"e\",\"niiwllbvgwz\"]}],\"roleName\":\"ft\"},\"id\":\"dousnk\",\"name\":\"jtgr\",\"type\":\"vaqogfkbebauzl\"}";
 
         Mockito.when(httpResponse.getStatusCode()).thenReturn(200);
         Mockito.when(httpResponse.getHeaders()).thenReturn(new HttpHeaders());
@@ -62,7 +62,7 @@ public final class BillingRoleDefinitionsGetByInvoiceSectionWithResponseMockTest
             manager
                 .billingRoleDefinitions()
                 .getByInvoiceSectionWithResponse(
-                    "qxfx", "elgcmpzqjhhhqx", "w", "vcacoyv", com.azure.core.util.Context.NONE)
+                    "krdre", "xolriy", "h", "beivdlhydwbdbfg", com.azure.core.util.Context.NONE)
                 .getValue();
     }
 }

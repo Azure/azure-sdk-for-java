@@ -15,23 +15,23 @@ public final class BillingSubscriptionInnerTests {
         BillingSubscriptionInner model =
             BinaryData
                 .fromString(
-                    "{\"properties\":{\"displayName\":\"pvgqzcjrvxdjzlm\",\"subscriptionId\":\"2b1ddf07-345e-4104-89d5-47cf0f0744f9\",\"subscriptionBillingStatus\":\"Warning\",\"lastMonthCharges\":{\"currency\":\"gfhzovawjvzunlut\",\"value\":1.0469615},\"monthToDateCharges\":{\"currency\":\"nxipeil\",\"value\":42.357708},\"billingProfileId\":\"aejxd\",\"billingProfileDisplayName\":\"tskzbbtdzumveek\",\"costCenter\":\"wozuhkf\",\"customerId\":\"sjyofdx\",\"customerDisplayName\":\"us\",\"invoiceSectionId\":\"touwaboekqv\",\"invoiceSectionDisplayName\":\"lns\",\"reseller\":{\"resellerId\":\"xwyjsflhhc\",\"description\":\"lnjixisxya\"},\"skuId\":\"oyaqcslyjpkiid\",\"skuDescription\":\"exznelixhnr\",\"suspensionReasons\":[\"o\",\"hb\",\"xknalaulppg\"]},\"id\":\"dtpnapnyiropuhp\",\"name\":\"gvpgy\",\"type\":\"gqgitxmedjvcsl\"}")
+                    "{\"properties\":{\"displayName\":\"hqkvpuvksgplsak\",\"subscriptionId\":\"12a0f59f-701b-43c0-ace9-a77d57d82c94\",\"subscriptionBillingStatus\":\"Active\",\"lastMonthCharges\":{\"currency\":\"n\",\"value\":11.582321},\"monthToDateCharges\":{\"currency\":\"op\",\"value\":73.633835},\"billingProfileId\":\"qiy\",\"billingProfileDisplayName\":\"orzihle\",\"costCenter\":\"jswsrmslyz\",\"customerId\":\"zbchckqqzqioxiy\",\"customerDisplayName\":\"iizynkedyatrwyh\",\"invoiceSectionId\":\"ibzyhwitsmyp\",\"invoiceSectionDisplayName\":\"npcdpumnzgm\",\"reseller\":{\"resellerId\":\"mabiknsorgjhxb\",\"description\":\"tlwwrlk\"},\"skuId\":\"tncvokot\",\"skuDescription\":\"xdy\",\"suspensionReasons\":[\"y\",\"cogjltdtbn\",\"hadoocrk\",\"cikhnv\"]},\"id\":\"amqgxqquezikyw\",\"name\":\"gxk\",\"type\":\"lla\"}")
                 .toObject(BillingSubscriptionInner.class);
-        Assertions.assertEquals(BillingSubscriptionStatusType.WARNING, model.subscriptionBillingStatus());
-        Assertions.assertEquals("wozuhkf", model.costCenter());
-        Assertions.assertEquals("oyaqcslyjpkiid", model.skuId());
+        Assertions.assertEquals(BillingSubscriptionStatusType.ACTIVE, model.subscriptionBillingStatus());
+        Assertions.assertEquals("jswsrmslyz", model.costCenter());
+        Assertions.assertEquals("tncvokot", model.skuId());
     }
 
     @org.junit.jupiter.api.Test
     public void testSerialize() throws Exception {
         BillingSubscriptionInner model =
             new BillingSubscriptionInner()
-                .withSubscriptionBillingStatus(BillingSubscriptionStatusType.WARNING)
-                .withCostCenter("wozuhkf")
-                .withSkuId("oyaqcslyjpkiid");
+                .withSubscriptionBillingStatus(BillingSubscriptionStatusType.ACTIVE)
+                .withCostCenter("jswsrmslyz")
+                .withSkuId("tncvokot");
         model = BinaryData.fromObject(model).toObject(BillingSubscriptionInner.class);
-        Assertions.assertEquals(BillingSubscriptionStatusType.WARNING, model.subscriptionBillingStatus());
-        Assertions.assertEquals("wozuhkf", model.costCenter());
-        Assertions.assertEquals("oyaqcslyjpkiid", model.skuId());
+        Assertions.assertEquals(BillingSubscriptionStatusType.ACTIVE, model.subscriptionBillingStatus());
+        Assertions.assertEquals("jswsrmslyz", model.costCenter());
+        Assertions.assertEquals("tncvokot", model.skuId());
     }
 }

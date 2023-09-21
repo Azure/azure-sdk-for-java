@@ -14,23 +14,23 @@ public final class BillingProfileInfoTests {
         BillingProfileInfo model =
             BinaryData
                 .fromString(
-                    "{\"billingProfileId\":\"hw\",\"billingProfileDisplayName\":\"oldweyuqdu\",\"indirectRelationshipOrganizationName\":\"mnnrwr\"}")
+                    "{\"billingProfileId\":\"ivmxyasfl\",\"billingProfileDisplayName\":\"sgzwywakoihknsm\",\"indirectRelationshipOrganizationName\":\"lmljhlnymzotq\"}")
                 .toObject(BillingProfileInfo.class);
-        Assertions.assertEquals("hw", model.billingProfileId());
-        Assertions.assertEquals("oldweyuqdu", model.billingProfileDisplayName());
-        Assertions.assertEquals("mnnrwr", model.indirectRelationshipOrganizationName());
+        Assertions.assertEquals("ivmxyasfl", model.billingProfileId());
+        Assertions.assertEquals("sgzwywakoihknsm", model.billingProfileDisplayName());
+        Assertions.assertEquals("lmljhlnymzotq", model.indirectRelationshipOrganizationName());
     }
 
     @org.junit.jupiter.api.Test
     public void testSerialize() throws Exception {
         BillingProfileInfo model =
             new BillingProfileInfo()
-                .withBillingProfileId("hw")
-                .withBillingProfileDisplayName("oldweyuqdu")
-                .withIndirectRelationshipOrganizationName("mnnrwr");
+                .withBillingProfileId("ivmxyasfl")
+                .withBillingProfileDisplayName("sgzwywakoihknsm")
+                .withIndirectRelationshipOrganizationName("lmljhlnymzotq");
         model = BinaryData.fromObject(model).toObject(BillingProfileInfo.class);
-        Assertions.assertEquals("hw", model.billingProfileId());
-        Assertions.assertEquals("oldweyuqdu", model.billingProfileDisplayName());
-        Assertions.assertEquals("mnnrwr", model.indirectRelationshipOrganizationName());
+        Assertions.assertEquals("ivmxyasfl", model.billingProfileId());
+        Assertions.assertEquals("sgzwywakoihknsm", model.billingProfileDisplayName());
+        Assertions.assertEquals("lmljhlnymzotq", model.indirectRelationshipOrganizationName());
     }
 }

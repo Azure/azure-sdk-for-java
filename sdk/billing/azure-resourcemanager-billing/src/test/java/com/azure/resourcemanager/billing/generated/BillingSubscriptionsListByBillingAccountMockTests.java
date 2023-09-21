@@ -33,7 +33,7 @@ public final class BillingSubscriptionsListByBillingAccountMockTests {
         ArgumentCaptor<HttpRequest> httpRequest = ArgumentCaptor.forClass(HttpRequest.class);
 
         String responseStr =
-            "{\"value\":[{\"properties\":{\"displayName\":\"xfe\",\"subscriptionId\":\"f4cbed26-4a2f-4ca0-a4a6-4fbfd837d0b6\",\"subscriptionBillingStatus\":\"Warning\",\"lastMonthCharges\":{\"currency\":\"xfdeqvhpsyl\",\"value\":14.799225},\"monthToDateCharges\":{\"currency\":\"bffmbmxz\",\"value\":50.71973},\"billingProfileId\":\"wwp\",\"billingProfileDisplayName\":\"xs\",\"costCenter\":\"tf\",\"customerId\":\"gicgaaoepttaq\",\"customerDisplayName\":\"dewemxswv\",\"invoiceSectionId\":\"unzzjgehk\",\"invoiceSectionDisplayName\":\"imrt\",\"reseller\":{\"resellerId\":\"kffqyinljqepqwh\",\"description\":\"monstshiyxgve\"},\"skuId\":\"clduc\",\"skuDescription\":\"irdsvuwcob\",\"suspensionReasons\":[\"stmninwjizcilng\",\"gshejjtbxqmulux\",\"xqzv\",\"ers\"]},\"id\":\"ycucrwnamikzeb\",\"name\":\"qbsms\",\"type\":\"ziqgfuh\"}]}";
+            "{\"value\":[{\"properties\":{\"displayName\":\"onrlkwzdqybxceak\",\"subscriptionId\":\"56ccb892-4e59-4d5b-ac77-70389ef8ddeb\",\"subscriptionBillingStatus\":\"Deleted\",\"lastMonthCharges\":{\"currency\":\"qfyiaseqchkr\",\"value\":53.91134},\"monthToDateCharges\":{\"currency\":\"zisgykiuemvanb\",\"value\":23.877186},\"billingProfileId\":\"mnrxxbsojkl\",\"billingProfileDisplayName\":\"hmdp\",\"costCenter\":\"sprqsgnzxojpslsv\",\"customerId\":\"pli\",\"customerDisplayName\":\"iqwoyxqvapcoh\",\"invoiceSectionId\":\"ucqpqojxcxzrz\",\"invoiceSectionDisplayName\":\"gdzbenr\",\"reseller\":{\"resellerId\":\"awetzq\",\"description\":\"tjwfljhznamtua\"},\"skuId\":\"zwcjjncqtj\",\"skuDescription\":\"izvg\",\"suspensionReasons\":[\"tzuuvb\",\"ngrebwg\"]},\"id\":\"ahttzlswvajqfut\",\"name\":\"x\",\"type\":\"oqza\"}]}";
 
         Mockito.when(httpResponse.getStatusCode()).thenReturn(200);
         Mockito.when(httpResponse.getHeaders()).thenReturn(new HttpHeaders());
@@ -62,12 +62,12 @@ public final class BillingSubscriptionsListByBillingAccountMockTests {
                     new AzureProfile("", "", AzureEnvironment.AZURE));
 
         PagedIterable<BillingSubscription> response =
-            manager.billingSubscriptions().listByBillingAccount("tcmwqkchc", com.azure.core.util.Context.NONE);
+            manager.billingSubscriptions().listByBillingAccount("hdbvqvwzkjop", com.azure.core.util.Context.NONE);
 
         Assertions
             .assertEquals(
-                BillingSubscriptionStatusType.WARNING, response.iterator().next().subscriptionBillingStatus());
-        Assertions.assertEquals("tf", response.iterator().next().costCenter());
-        Assertions.assertEquals("clduc", response.iterator().next().skuId());
+                BillingSubscriptionStatusType.DELETED, response.iterator().next().subscriptionBillingStatus());
+        Assertions.assertEquals("sprqsgnzxojpslsv", response.iterator().next().costCenter());
+        Assertions.assertEquals("zwcjjncqtj", response.iterator().next().skuId());
     }
 }

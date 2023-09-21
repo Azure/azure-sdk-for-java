@@ -30,7 +30,7 @@ public final class AvailableBalancesGetWithResponseMockTests {
         ArgumentCaptor<HttpRequest> httpRequest = ArgumentCaptor.forClass(HttpRequest.class);
 
         String responseStr =
-            "{\"properties\":{\"amount\":{\"currency\":\"x\",\"value\":73.497665}},\"id\":\"lc\",\"name\":\"xwmdboxd\",\"type\":\"gsftufqobrjlnacg\"}";
+            "{\"properties\":{\"amount\":{\"currency\":\"mtrwah\",\"value\":10.621995}},\"id\":\"ucftbyrp\",\"name\":\"rohkpigqfusu\",\"type\":\"kzmkwklsnoxaxmqe\"}";
 
         Mockito.when(httpResponse.getStatusCode()).thenReturn(200);
         Mockito.when(httpResponse.getHeaders()).thenReturn(new HttpHeaders());
@@ -59,6 +59,9 @@ public final class AvailableBalancesGetWithResponseMockTests {
                     new AzureProfile("", "", AzureEnvironment.AZURE));
 
         AvailableBalance response =
-            manager.availableBalances().getWithResponse("es", "kdlpa", com.azure.core.util.Context.NONE).getValue();
+            manager
+                .availableBalances()
+                .getWithResponse("yuel", "etndnbfqyggagf", com.azure.core.util.Context.NONE)
+                .getValue();
     }
 }

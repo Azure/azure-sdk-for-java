@@ -15,7 +15,7 @@ public final class BillingRoleDefinitionPropertiesTests {
         BillingRoleDefinitionProperties model =
             BinaryData
                 .fromString(
-                    "{\"description\":\"crpw\",\"permissions\":[{\"actions\":[\"oi\",\"brnjwmw\",\"pn\"],\"notActions\":[\"zejjoqk\"]},{\"actions\":[\"hsxttaugzxnf\",\"azpxdtnkdmkqjjl\",\"uenvrkp\"],\"notActions\":[\"aibrebqaaysjkixq\",\"nqttezl\",\"fffiak\",\"jpqqmted\"]}],\"roleName\":\"mmji\"}")
+                    "{\"description\":\"afidltugsres\",\"permissions\":[{\"actions\":[\"h\",\"iftxfkf\",\"egprhptil\",\"ucb\"],\"notActions\":[\"gdqoh\",\"cwsldri\",\"etpwbralll\",\"bphbqzmizakakank\"]},{\"actions\":[\"n\",\"zhajoylhjlmuo\"],\"notActions\":[\"rimrs\",\"pteecjme\"]},{\"actions\":[\"stvasylwxdzaumw\"],\"notActions\":[\"hguuf\",\"zboyjathwt\"]}],\"roleName\":\"lbaemwmdxmeb\"}")
                 .toObject(BillingRoleDefinitionProperties.class);
     }
 
@@ -24,7 +24,11 @@ public final class BillingRoleDefinitionPropertiesTests {
         BillingRoleDefinitionProperties model =
             new BillingRoleDefinitionProperties()
                 .withPermissions(
-                    Arrays.asList(new BillingPermissionsPropertiesInner(), new BillingPermissionsPropertiesInner()));
+                    Arrays
+                        .asList(
+                            new BillingPermissionsPropertiesInner(),
+                            new BillingPermissionsPropertiesInner(),
+                            new BillingPermissionsPropertiesInner()));
         model = BinaryData.fromObject(model).toObject(BillingRoleDefinitionProperties.class);
     }
 }

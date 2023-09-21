@@ -34,7 +34,7 @@ public final class InvoiceSectionsCreateOrUpdateMockTests {
         ArgumentCaptor<HttpRequest> httpRequest = ArgumentCaptor.forClass(HttpRequest.class);
 
         String responseStr =
-            "{\"properties\":{\"displayName\":\"fqwazlnqnmcjn\",\"labels\":{\"sf\":\"dqxtbjwgnyf\"},\"state\":\"Restricted\",\"systemId\":\"uik\",\"tags\":{\"cfhmlrqryxyn\":\"jqg\",\"ptgoeiybbabp\":\"nzrdpsovwxz\"},\"targetCloud\":\"USGov\"},\"id\":\"f\",\"name\":\"lkvn\",\"type\":\"jlrigjkskyrioovz\"}";
+            "{\"properties\":{\"displayName\":\"totiowlxteqdptjg\",\"labels\":{\"b\":\"gukra\",\"hoi\":\"wphqlkccuzgygqw\",\"z\":\"lwgniiprglvawu\",\"sbbjpmcu\":\"ufypiv\"},\"state\":\"Restricted\",\"systemId\":\"foxx\",\"tags\":{\"havpmhbrbqgvg\":\"v\",\"efjokn\":\"vpbbt\"},\"targetCloud\":\"USSec\"},\"id\":\"yzqedikdfrd\",\"name\":\"iqmrjgeihfqlggw\",\"type\":\"iwzcxmjpbyeph\"}";
 
         Mockito.when(httpResponse.getStatusCode()).thenReturn(200);
         Mockito.when(httpResponse.getHeaders()).thenReturn(new HttpHeaders());
@@ -66,38 +66,30 @@ public final class InvoiceSectionsCreateOrUpdateMockTests {
             manager
                 .invoiceSections()
                 .createOrUpdate(
-                    "rtle",
-                    "pqxbkwvzgnzvdf",
-                    "zdix",
+                    "xblycsxzuj",
+                    "srlsmd",
+                    "sqplpvmjcd",
                     new InvoiceSectionInner()
-                        .withDisplayName("pnodawopqhe")
-                        .withLabels(
-                            mapOf(
-                                "bostzel",
-                                "tmcg",
-                                "tmzlbiojlv",
-                                "dlat",
-                                "r",
-                                "hrbbpneqvcwwyy",
-                                "nmokayzejnhlbk",
-                                "ochpprpr"))
+                        .withDisplayName("bidyv")
+                        .withLabels(mapOf("paxwkufyk", "wxvgpiudeugfsxze"))
                         .withTags(
                             mapOf(
-                                "chndbnwie",
-                                "zv",
-                                "ubwefqs",
-                                "olewjwi",
-                                "qtferrqwexjkmf",
-                                "ap",
-                                "btqwpwyawbzas",
-                                "apjwogqqnobpudcd")),
+                                "lujdjltymkmv",
+                                "baobn",
+                                "pphkixkykxds",
+                                "uihywart",
+                                "emmucfxh",
+                                "j",
+                                "s",
+                                "kkflrmymyincqlhr")),
                     com.azure.core.util.Context.NONE);
 
-        Assertions.assertEquals("fqwazlnqnmcjn", response.displayName());
-        Assertions.assertEquals("dqxtbjwgnyf", response.labels().get("sf"));
-        Assertions.assertEquals("jqg", response.tags().get("cfhmlrqryxyn"));
+        Assertions.assertEquals("totiowlxteqdptjg", response.displayName());
+        Assertions.assertEquals("gukra", response.labels().get("b"));
+        Assertions.assertEquals("v", response.tags().get("havpmhbrbqgvg"));
     }
 
+    // Use "Map.of" if available
     @SuppressWarnings("unchecked")
     private static <T> Map<String, T> mapOf(Object... inputs) {
         Map<String, T> map = new HashMap<>();

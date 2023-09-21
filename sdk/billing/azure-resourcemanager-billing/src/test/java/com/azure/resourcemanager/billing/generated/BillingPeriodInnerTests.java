@@ -13,7 +13,7 @@ public final class BillingPeriodInnerTests {
         BillingPeriodInner model =
             BinaryData
                 .fromString(
-                    "{\"properties\":{\"invoiceIds\":[\"ctxmwoteyowcluq\",\"vekqvgqo\",\"wifzmp\",\"wyivqikf\"]},\"id\":\"cvhrfsp\",\"name\":\"uagrttikteusqc\",\"type\":\"kvyklxubyjaffmm\"}")
+                    "{\"properties\":{\"invoiceIds\":[\"au\",\"lwvsgm\",\"ohqfzizv\",\"xmmkjs\"]},\"id\":\"thnwpzte\",\"name\":\"ovmribiattg\",\"type\":\"lu\"}")
                 .toObject(BillingPeriodInner.class);
     }
 

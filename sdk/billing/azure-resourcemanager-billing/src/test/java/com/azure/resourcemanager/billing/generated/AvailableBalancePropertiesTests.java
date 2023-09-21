@@ -12,7 +12,7 @@ public final class AvailableBalancePropertiesTests {
     public void testDeserialize() throws Exception {
         AvailableBalanceProperties model =
             BinaryData
-                .fromString("{\"amount\":{\"currency\":\"iucgygevqzn\",\"value\":13.069307}}")
+                .fromString("{\"amount\":{\"currency\":\"plrbpbewtghf\",\"value\":64.03204}}")
                 .toObject(AvailableBalanceProperties.class);
     }
 

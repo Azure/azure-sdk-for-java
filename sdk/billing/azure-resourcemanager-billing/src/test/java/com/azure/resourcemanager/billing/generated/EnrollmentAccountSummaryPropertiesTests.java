@@ -11,9 +11,7 @@ public final class EnrollmentAccountSummaryPropertiesTests {
     @org.junit.jupiter.api.Test
     public void testDeserialize() throws Exception {
         EnrollmentAccountSummaryProperties model =
-            BinaryData
-                .fromString("{\"principalName\":\"sofieypefojyqd\"}")
-                .toObject(EnrollmentAccountSummaryProperties.class);
+            BinaryData.fromString("{\"principalName\":\"ov\"}").toObject(EnrollmentAccountSummaryProperties.class);
     }
 
     @org.junit.jupiter.api.Test

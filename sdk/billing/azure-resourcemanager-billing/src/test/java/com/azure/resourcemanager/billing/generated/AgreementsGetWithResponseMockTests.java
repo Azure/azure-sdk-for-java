@@ -30,7 +30,7 @@ public final class AgreementsGetWithResponseMockTests {
         ArgumentCaptor<HttpRequest> httpRequest = ArgumentCaptor.forClass(HttpRequest.class);
 
         String responseStr =
-            "{\"properties\":{\"agreementLink\":\"eaoqaqbzgyhf\",\"category\":\"Other\",\"acceptanceMode\":\"ClickToAccept\",\"billingProfileInfo\":{\"billingProfileId\":\"wbqamteuliy\",\"billingProfileDisplayName\":\"pkcvmwf\",\"indirectRelationshipOrganizationName\":\"xxe\"},\"effectiveDate\":\"2021-08-01T10:31:28Z\",\"expirationDate\":\"2021-11-27T08:01:10Z\",\"participants\":[],\"status\":\"c\"},\"id\":\"miciij\",\"name\":\"pkzfbojxj\",\"type\":\"cs\"}";
+            "{\"properties\":{\"agreementLink\":\"cbdsvalpnptwtrk\",\"category\":\"AffiliatePurchaseTerms\",\"acceptanceMode\":\"ClickToAccept\",\"billingProfileInfo\":{\"billingProfileId\":\"gxyqvnjobf\",\"billingProfileDisplayName\":\"hldiuhzzgqlm\",\"indirectRelationshipOrganizationName\":\"ewzgiud\"},\"effectiveDate\":\"2021-09-30T23:19:39Z\",\"expirationDate\":\"2021-11-22T05:06:01Z\",\"participants\":[{\"status\":\"qhnmhk\",\"statusDate\":\"2021-08-06T14:29:34Z\",\"email\":\"dsuxheqdgcrux\"},{\"status\":\"inymmqgwokmikp\",\"statusDate\":\"2021-06-25T13:06:49Z\",\"email\":\"mjxuvjipfdvhaxd\"},{\"status\":\"zaehpphthd\",\"statusDate\":\"2021-04-17T03:30:11Z\",\"email\":\"etatlakf\"},{\"status\":\"ixwgiksbbvtooxrp\",\"statusDate\":\"2021-10-16T01:48:32Z\",\"email\":\"hchgjtnhtukf\"}],\"status\":\"ihmbfntume\"},\"id\":\"zbxvqxbnuvw\",\"name\":\"gasgomtmjzwx\",\"type\":\"qgo\"}";
 
         Mockito.when(httpResponse.getStatusCode()).thenReturn(200);
         Mockito.when(httpResponse.getHeaders()).thenReturn(new HttpHeaders());
@@ -59,6 +59,6 @@ public final class AgreementsGetWithResponseMockTests {
                     new AzureProfile("", "", AzureEnvironment.AZURE));
 
         Agreement response =
-            manager.agreements().getWithResponse("zjd", "r", "jb", com.azure.core.util.Context.NONE).getValue();
+            manager.agreements().getWithResponse("ievw", "fcvvy", "zslp", com.azure.core.util.Context.NONE).getValue();
     }
 }

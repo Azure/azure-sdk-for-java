@@ -16,11 +16,10 @@ public final class TransactionInnerTests {
         TransactionInner model =
             BinaryData
                 .fromString(
-                    "{\"properties\":{\"kind\":\"reservation\",\"date\":\"2021-02-11T03:05:15Z\",\"invoice\":\"vfgbvfvpdboda\",\"invoiceId\":\"zsjqlh\",\"orderId\":\"r\",\"orderName\":\"deibqip\",\"productFamily\":\"ghvxndzwmkrefa\",\"productTypeId\":\"jorwkqnyhgbij\",\"productType\":\"ivfxzsjabibsyst\",\"productDescription\":\"fsdjpvkvp\",\"transactionType\":\"Usage"
-                        + " Charge\",\"transactionAmount\":{\"currency\":\"zbzkdvncjabudurg\",\"value\":26.81675},\"quantity\":133724472,\"invoiceSectionId\":\"zhjjklffhmouwq\",\"invoiceSectionDisplayName\":\"zrfze\",\"billingProfileId\":\"ebizikayuh\",\"billingProfileDisplayName\":\"bjbsybb\",\"customerId\":\"r\",\"customerDisplayName\":\"ldgmfpgvmpip\",\"subscriptionId\":\"ltha\",\"subscriptionName\":\"x\",\"azurePlan\":\"mwutwbdsre\",\"azureCreditApplied\":{\"currency\":\"rhneuyowq\",\"value\":14.874917},\"billingCurrency\":\"t\",\"discount\":8.667755,\"effectivePrice\":{\"currency\":\"rcgp\",\"value\":82.618744},\"exchangeRate\":48.570366,\"marketPrice\":{\"currency\":\"j\",\"value\":71.50711},\"pricingCurrency\":\"fzxiavrmb\",\"servicePeriodStartDate\":\"2021-09-13T10:29:44Z\",\"servicePeriodEndDate\":\"2021-09-04T02:46:50Z\",\"subTotal\":{\"currency\":\"rjqc\",\"value\":39.849525},\"tax\":{\"currency\":\"frl\",\"value\":33.48236},\"unitOfMeasure\":\"rnwoiindfp\",\"units\":71.931244,\"unitType\":\"lwbtlhf\"},\"id\":\"sj\",\"name\":\"dhszfjv\",\"type\":\"bgofeljag\"}")
+                    "{\"properties\":{\"kind\":\"reservation\",\"date\":\"2021-08-20T05:38:38Z\",\"invoice\":\"vnh\",\"invoiceId\":\"brqnkkzjcjb\",\"orderId\":\"gaehvvibrxjjst\",\"orderName\":\"beitpkx\",\"productFamily\":\"moob\",\"productTypeId\":\"ft\",\"productType\":\"gfcwqmpimaqxzhem\",\"productDescription\":\"h\",\"transactionType\":\"Purchase\",\"transactionAmount\":{\"currency\":\"wtwko\",\"value\":47.507977},\"quantity\":1034589560,\"invoiceSectionId\":\"kb\",\"invoiceSectionDisplayName\":\"pfajnjwltlwtjj\",\"billingProfileId\":\"ktalhsnvkcdmxz\",\"billingProfileDisplayName\":\"oaimlnw\",\"customerId\":\"aomylwea\",\"customerDisplayName\":\"lcsethwwnpj\",\"subscriptionId\":\"fz\",\"subscriptionName\":\"pchwa\",\"azurePlan\":\"bousn\",\"azureCreditApplied\":{\"currency\":\"gfewetwlyxgnc\",\"value\":76.8502},\"billingCurrency\":\"hdjhlimmbcx\",\"discount\":95.871994,\"effectivePrice\":{\"currency\":\"orxvxcjzhqiz\",\"value\":60.352264},\"exchangeRate\":77.38952,\"marketPrice\":{\"currency\":\"scjavftju\",\"value\":13.089532},\"pricingCurrency\":\"zkmtgguwpijrajci\",\"servicePeriodStartDate\":\"2021-11-27T22:09:56Z\",\"servicePeriodEndDate\":\"2021-05-22T22:25:38Z\",\"subTotal\":{\"currency\":\"fiwrxgkn\",\"value\":15.65277},\"tax\":{\"currency\":\"nzqodfvpg\",\"value\":85.10751},\"unitOfMeasure\":\"gsgbpfgzdjt\",\"units\":38.56489,\"unitType\":\"lbqvgaqvlgafcqu\"},\"id\":\"rdve\",\"name\":\"nwsdtutnwlduyc\",\"type\":\"uzhyrmewipmvekdx\"}")
                 .toObject(TransactionInner.class);
         Assertions.assertEquals(TransactionTypeKind.RESERVATION, model.kind());
-        Assertions.assertEquals(ReservationType.USAGE_CHARGE, model.transactionType());
+        Assertions.assertEquals(ReservationType.PURCHASE, model.transactionType());
     }
 
     @org.junit.jupiter.api.Test
@@ -28,9 +27,9 @@ public final class TransactionInnerTests {
         TransactionInner model =
             new TransactionInner()
                 .withKind(TransactionTypeKind.RESERVATION)
-                .withTransactionType(ReservationType.USAGE_CHARGE);
+                .withTransactionType(ReservationType.PURCHASE);
         model = BinaryData.fromObject(model).toObject(TransactionInner.class);
         Assertions.assertEquals(TransactionTypeKind.RESERVATION, model.kind());
-        Assertions.assertEquals(ReservationType.USAGE_CHARGE, model.transactionType());
+        Assertions.assertEquals(ReservationType.PURCHASE, model.transactionType());
     }
 }

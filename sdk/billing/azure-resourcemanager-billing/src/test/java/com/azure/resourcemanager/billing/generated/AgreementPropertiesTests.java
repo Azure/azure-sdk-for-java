@@ -15,16 +15,14 @@ public final class AgreementPropertiesTests {
         AgreementProperties model =
             BinaryData
                 .fromString(
-                    "{\"agreementLink\":\"uaadraufactkahzo\",\"category\":\"MicrosoftCustomerAgreement\",\"acceptanceMode\":\"ESignOffline\",\"billingProfileInfo\":{\"billingProfileId\":\"xxpshneeku\",\"billingProfileDisplayName\":\"gs\",\"indirectRelationshipOrganizationName\":\"ubkwdle\"},\"effectiveDate\":\"2021-04-28T05:58:57Z\",\"expirationDate\":\"2021-04-26T16:34:12Z\",\"participants\":[{\"status\":\"bazpjuohmi\",\"statusDate\":\"2021-09-21T23:44:56Z\",\"email\":\"norwmduvwpklvx\"},{\"status\":\"ygdxpgpqchis\",\"statusDate\":\"2021-05-26T11:43:30Z\",\"email\":\"nb\"},{\"status\":\"rxgibbd\",\"statusDate\":\"2021-01-14T17:21:41Z\",\"email\":\"nfo\"},{\"status\":\"uors\",\"statusDate\":\"2021-10-18T05:02:18Z\",\"email\":\"wbqpl\"}],\"status\":\"vnuuepzl\"}")
+                    "{\"agreementLink\":\"lxecwcrojphslh\",\"category\":\"AffiliatePurchaseTerms\",\"acceptanceMode\":\"ESignOffline\",\"billingProfileInfo\":{\"billingProfileId\":\"fdwfmvigorqj\",\"billingProfileDisplayName\":\"tzh\",\"indirectRelationshipOrganizationName\":\"glka\"},\"effectiveDate\":\"2021-03-31T19:58:29Z\",\"expirationDate\":\"2021-07-17T12:34:33Z\",\"participants\":[{\"status\":\"eickpz\",\"statusDate\":\"2021-03-02T22:39:06Z\",\"email\":\"pmxelnwcltyje\"},{\"status\":\"xxmlfmkqscazua\",\"statusDate\":\"2021-01-07T08:40:37Z\",\"email\":\"x\"}],\"status\":\"amwabzxrvxcushsp\"}")
                 .toObject(AgreementProperties.class);
     }
 
     @org.junit.jupiter.api.Test
     public void testSerialize() throws Exception {
         AgreementProperties model =
-            new AgreementProperties()
-                .withParticipants(
-                    Arrays.asList(new Participants(), new Participants(), new Participants(), new Participants()));
+            new AgreementProperties().withParticipants(Arrays.asList(new Participants(), new Participants()));
         model = BinaryData.fromObject(model).toObject(AgreementProperties.class);
     }
 }

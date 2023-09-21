@@ -32,7 +32,7 @@ public final class ReservationsListByBillingProfileMockTests {
         ArgumentCaptor<HttpRequest> httpRequest = ArgumentCaptor.forClass(HttpRequest.class);
 
         String responseStr =
-            "{\"value\":[{\"id\":\"dnaienhqhskndnel\",\"name\":\"aadl\",\"type\":\"wf\",\"location\":\"nniyopetxi\",\"sku\":{\"name\":\"rl\"},\"properties\":{\"appliedScopes\":[\"caephbl\"],\"appliedScopeType\":\"qp\",\"reservedResourceType\":\"vbqsdt\",\"quantity\":63.41683,\"provisioningState\":\"tvivuzqym\",\"expiryDate\":\"owog\",\"provisioningSubState\":\"it\",\"displayName\":\"hzvb\",\"displayProvisioningState\":\"cdb\",\"userFriendlyRenewState\":\"fzndscxmxeatkd\",\"userFriendlyAppliedScopeType\":\"wnrdjyibqbnaom\",\"effectiveDateTime\":\"rmkuh\",\"skuDescription\":\"xljalfihc\",\"term\":\"obcancdexxqcw\",\"renew\":false,\"renewSource\":\"gvaknokzwjjzrl\",\"utilization\":{\"trend\":\"l\",\"aggregates\":[]}}}]}";
+            "{\"value\":[{\"id\":\"tuubwyvpjb\",\"name\":\"cpj\",\"type\":\"uqgixex\",\"location\":\"dfbwljav\",\"sku\":{\"name\":\"rkjd\"},\"properties\":{\"appliedScopes\":[\"liegftcvbi\",\"ftksd\",\"gdnk\",\"fgmwd\"],\"appliedScopeType\":\"eb\",\"reservedResourceType\":\"czldbglzoutbaaqg\",\"quantity\":61.248142,\"provisioningState\":\"jclyzgsnor\",\"expiryDate\":\"gmnzjotvmrx\",\"provisioningSubState\":\"lobvv\",\"displayName\":\"hvhd\",\"displayProvisioningState\":\"ayfluiyuosnu\",\"userFriendlyRenewState\":\"t\",\"userFriendlyAppliedScopeType\":\"vhyibdrqrsw\",\"effectiveDateTime\":\"uubpyrow\",\"skuDescription\":\"oxztfwfqch\",\"term\":\"zevjnnctag\",\"renew\":false,\"renewSource\":\"tpqpemhzcgkrep\",\"utilization\":{\"trend\":\"qyhwqwem\",\"aggregates\":[{\"grain\":80.07647,\"grainUnit\":\"km\",\"value\":29.985165,\"valueUnit\":\"inhgre\"},{\"grain\":62.95766,\"grainUnit\":\"h\",\"value\":6.4491034,\"valueUnit\":\"jpceeznzan\"},{\"grain\":13.895082,\"grainUnit\":\"faxy\",\"value\":70.06363,\"valueUnit\":\"ciphmsexr\"}]}}}]}";
 
         Mockito.when(httpResponse.getStatusCode()).thenReturn(200);
         Mockito.when(httpResponse.getHeaders()).thenReturn(new HttpHeaders());
@@ -64,14 +64,8 @@ public final class ReservationsListByBillingProfileMockTests {
             manager
                 .reservations()
                 .listByBillingProfile(
-                    "toi",
-                    "hgygvfltgvd",
-                    "hoynk",
-                    "xwetwkdrcyrucpc",
-                    "nn",
-                    "zdqumoe",
-                    com.azure.core.util.Context.NONE);
+                    "anlduwzorxsb", "x", "qk", "xym", "kqv", "qepdx", com.azure.core.util.Context.NONE);
 
-        Assertions.assertEquals("caephbl", response.iterator().next().appliedScopes().get(0));
+        Assertions.assertEquals("liegftcvbi", response.iterator().next().appliedScopes().get(0));
     }
 }

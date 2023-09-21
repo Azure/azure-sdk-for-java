@@ -15,13 +15,14 @@ public final class AgreementInnerTests {
         AgreementInner model =
             BinaryData
                 .fromString(
-                    "{\"properties\":{\"agreementLink\":\"goo\",\"category\":\"Other\",\"acceptanceMode\":\"ClickToAccept\",\"billingProfileInfo\":{\"billingProfileId\":\"bvleorfmluiqtqzf\",\"billingProfileDisplayName\":\"yvnqqybaryeuay\",\"indirectRelationshipOrganizationName\":\"qabqgzslesjcb\"},\"effectiveDate\":\"2021-02-16T20:00:10Z\",\"expirationDate\":\"2021-04-10T08:53:01Z\",\"participants\":[{\"status\":\"w\",\"statusDate\":\"2021-08-27T00:56:15Z\",\"email\":\"bquwrbehw\"}],\"status\":\"o\"},\"id\":\"buffkmrqemvvhm\",\"name\":\"tdrjfutacoebj\",\"type\":\"ewzcjznmwcp\"}")
+                    "{\"properties\":{\"agreementLink\":\"svtui\",\"category\":\"AffiliatePurchaseTerms\",\"acceptanceMode\":\"ESignOffline\",\"billingProfileInfo\":{\"billingProfileId\":\"lcfhmlrqryxy\",\"billingProfileDisplayName\":\"nzrdpsovwxz\",\"indirectRelationshipOrganizationName\":\"tgoe\"},\"effectiveDate\":\"2021-08-08T22:55:04Z\",\"expirationDate\":\"2021-06-23T04:09:23Z\",\"participants\":[{\"status\":\"hv\",\"statusDate\":\"2021-07-29T12:33:42Z\",\"email\":\"vntjlrigjk\"},{\"status\":\"yrio\",\"statusDate\":\"2021-07-26T11:46:41Z\",\"email\":\"dsxwaab\"}],\"status\":\"ifrygzn\"},\"id\":\"maxriz\",\"name\":\"zob\",\"type\":\"opxlhslnelxieixy\"}")
                 .toObject(AgreementInner.class);
     }
 
     @org.junit.jupiter.api.Test
     public void testSerialize() throws Exception {
-        AgreementInner model = new AgreementInner().withParticipants(Arrays.asList(new Participants()));
+        AgreementInner model =
+            new AgreementInner().withParticipants(Arrays.asList(new Participants(), new Participants()));
         model = BinaryData.fromObject(model).toObject(AgreementInner.class);
     }
 }

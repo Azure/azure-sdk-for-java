@@ -283,7 +283,7 @@ public final class BillingManager {
                 .append("-")
                 .append("com.azure.resourcemanager.billing")
                 .append("/")
-                .append("1.0.0-beta.3");
+                .append("1.0.0-beta.4");
             if (!Configuration.getGlobalConfiguration().get("AZURE_TELEMETRY_DISABLED", false)) {
                 userAgentBuilder
                     .append(" (")
@@ -595,8 +595,10 @@ public final class BillingManager {
     }
 
     /**
-     * @return Wrapped service client BillingManagementClient providing direct access to the underlying auto-generated
-     *     API implementation, based on Azure REST API.
+     * Gets wrapped service client BillingManagementClient providing direct access to the underlying auto-generated API
+     * implementation, based on Azure REST API.
+     *
+     * @return Wrapped service client BillingManagementClient.
      */
     public BillingManagementClient serviceClient() {
         return this.clientObject;

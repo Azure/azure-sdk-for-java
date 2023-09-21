@@ -32,7 +32,7 @@ public final class ReservationsListByBillingAccountMockTests {
         ArgumentCaptor<HttpRequest> httpRequest = ArgumentCaptor.forClass(HttpRequest.class);
 
         String responseStr =
-            "{\"value\":[{\"id\":\"wpwerye\",\"name\":\"kdhmeottawjyosx\",\"type\":\"hnhjtfvpndpmi\",\"location\":\"pnwy\",\"sku\":{\"name\":\"qllzsauzpjlxeehu\"},\"properties\":{\"appliedScopes\":[\"zlrayme\",\"xls\",\"ihmxrfdsajredn\",\"yyshtuwgmevua\"],\"appliedScopeType\":\"wzyif\",\"reservedResourceType\":\"gwltxeqip\",\"quantity\":21.367962,\"provisioningState\":\"yimsfayorpr\",\"expiryDate\":\"kj\",\"provisioningSubState\":\"eslabnsmjkwynq\",\"displayName\":\"ekqsykvwjtqpkev\",\"displayProvisioningState\":\"ltjcrspxk\",\"userFriendlyRenewState\":\"r\",\"userFriendlyAppliedScopeType\":\"lfg\",\"effectiveDateTime\":\"nnnoytz\",\"skuDescription\":\"sewxigpxvkqm\",\"term\":\"pxvpifdfaif\",\"renew\":true,\"renewSource\":\"eyuubei\",\"utilization\":{\"trend\":\"l\",\"aggregates\":[]}}}]}";
+            "{\"value\":[{\"id\":\"t\",\"name\":\"wsxnsrqor\",\"type\":\"enmvcebxeetq\",\"location\":\"xcxxqndcqjkedw\",\"sku\":{\"name\":\"cgojmrv\"},\"properties\":{\"appliedScopes\":[\"ongzsehqqrsil\",\"chskxxka\",\"sbvr\"],\"appliedScopeType\":\"qgvtojrulfu\",\"reservedResourceType\":\"ejrthcfjzhxlyub\",\"quantity\":77.45072,\"provisioningState\":\"stvrjeqmt\",\"expiryDate\":\"beqrztrx\",\"provisioningSubState\":\"xrd\",\"displayName\":\"bsrwrsnrhpqat\",\"displayProvisioningState\":\"kkvyanxk\",\"userFriendlyRenewState\":\"csemsvuvd\",\"userFriendlyAppliedScopeType\":\"qxetqmmlivrjjx\",\"effectiveDateTime\":\"xdchp\",\"skuDescription\":\"xlehzlxpgfquwzp\",\"term\":\"ibelwcerwkw\",\"renew\":true,\"renewSource\":\"ljtxbus\",\"utilization\":{\"trend\":\"xxniuisdzhgbd\",\"aggregates\":[{\"grain\":86.66566,\"grainUnit\":\"ecnad\",\"value\":65.232445,\"valueUnit\":\"r\"},{\"grain\":42.559425,\"grainUnit\":\"lmqiynezoel\",\"value\":14.694607,\"valueUnit\":\"iiwv\"},{\"grain\":48.35083,\"grainUnit\":\"xpymdjfuaxro\",\"value\":39.569008,\"valueUnit\":\"ilrgun\"}]}}}]}";
 
         Mockito.when(httpResponse.getStatusCode()).thenReturn(200);
         Mockito.when(httpResponse.getHeaders()).thenReturn(new HttpHeaders());
@@ -64,13 +64,8 @@ public final class ReservationsListByBillingAccountMockTests {
             manager
                 .reservations()
                 .listByBillingAccount(
-                    "yqwixvcpwnkwywzw",
-                    "falickduoiqtamty",
-                    "sknxrwzawnvsbcf",
-                    "zagxnvhycvdi",
-                    "wrzregzgyufu",
-                    com.azure.core.util.Context.NONE);
+                    "sxpwwztjfmkkh", "gfredmlscg", "ll", "cnaovjo", "azhpabacoml", com.azure.core.util.Context.NONE);
 
-        Assertions.assertEquals("zlrayme", response.iterator().next().appliedScopes().get(0));
+        Assertions.assertEquals("ongzsehqqrsil", response.iterator().next().appliedScopes().get(0));
     }
 }

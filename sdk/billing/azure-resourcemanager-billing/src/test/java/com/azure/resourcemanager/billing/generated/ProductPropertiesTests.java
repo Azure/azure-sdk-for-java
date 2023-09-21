@@ -17,23 +17,23 @@ public final class ProductPropertiesTests {
         ProductProperties model =
             BinaryData
                 .fromString(
-                    "{\"autoRenew\":\"Off\",\"displayName\":\"mond\",\"purchaseDate\":\"2021-04-01T23:21:50Z\",\"productTypeId\":\"xvy\",\"productType\":\"mg\",\"status\":\"Expired\",\"endDate\":\"2021-02-23T14:11:02Z\",\"billingFrequency\":\"OneTime\",\"lastCharge\":{\"currency\":\"pajqgxysm\",\"value\":44.408627},\"lastChargeDate\":\"2021-03-21T23:12:31Z\",\"quantity\":40.273422,\"skuId\":\"mkcxozapvh\",\"skuDescription\":\"xprglyatddc\",\"tenantId\":\"bcuejrjxgci\",\"availabilityId\":\"brh\",\"invoiceSectionId\":\"xsdqrhzoymibmrqy\",\"invoiceSectionDisplayName\":\"ahwfluszdtmhrk\",\"billingProfileId\":\"fyyvoq\",\"billingProfileDisplayName\":\"piexpbtgiw\",\"customerId\":\"oenwashr\",\"customerDisplayName\":\"tkcnqxwb\",\"reseller\":{\"resellerId\":\"ulpiuj\",\"description\":\"asipqiio\"}}")
+                    "{\"autoRenew\":\"On\",\"displayName\":\"fwpracstwi\",\"purchaseDate\":\"2021-01-15T14:57:40Z\",\"productTypeId\":\"evxccedcp\",\"productType\":\"dyodnwzxltj\",\"status\":\"Expired\",\"endDate\":\"2021-11-02T14:17:55Z\",\"billingFrequency\":\"Monthly\",\"lastCharge\":{\"currency\":\"cxnavv\",\"value\":19.479061},\"lastChargeDate\":\"2021-01-14T10:02:06Z\",\"quantity\":75.07999,\"skuId\":\"nyowxwlmdjrkvfg\",\"skuDescription\":\"fvpdbo\",\"tenantId\":\"cizsjqlhkrribdei\",\"availabilityId\":\"ipqkghvxndzwm\",\"invoiceSectionId\":\"efajpj\",\"invoiceSectionDisplayName\":\"wkqnyhg\",\"billingProfileId\":\"j\",\"billingProfileDisplayName\":\"ivfxzsjabibsyst\",\"customerId\":\"fsdjpvkvp\",\"customerDisplayName\":\"xbkzbzkdvncj\",\"reseller\":{\"resellerId\":\"durgkakmokz\",\"description\":\"jk\"}}")
                 .toObject(ProductProperties.class);
-        Assertions.assertEquals(AutoRenew.OFF, model.autoRenew());
+        Assertions.assertEquals(AutoRenew.ON, model.autoRenew());
         Assertions.assertEquals(ProductStatusType.EXPIRED, model.status());
-        Assertions.assertEquals(BillingFrequency.ONE_TIME, model.billingFrequency());
+        Assertions.assertEquals(BillingFrequency.MONTHLY, model.billingFrequency());
     }
 
     @org.junit.jupiter.api.Test
     public void testSerialize() throws Exception {
         ProductProperties model =
             new ProductProperties()
-                .withAutoRenew(AutoRenew.OFF)
+                .withAutoRenew(AutoRenew.ON)
                 .withStatus(ProductStatusType.EXPIRED)
-                .withBillingFrequency(BillingFrequency.ONE_TIME);
+                .withBillingFrequency(BillingFrequency.MONTHLY);
         model = BinaryData.fromObject(model).toObject(ProductProperties.class);
-        Assertions.assertEquals(AutoRenew.OFF, model.autoRenew());
+        Assertions.assertEquals(AutoRenew.ON, model.autoRenew());
         Assertions.assertEquals(ProductStatusType.EXPIRED, model.status());
-        Assertions.assertEquals(BillingFrequency.ONE_TIME, model.billingFrequency());
+        Assertions.assertEquals(BillingFrequency.MONTHLY, model.billingFrequency());
     }
 }

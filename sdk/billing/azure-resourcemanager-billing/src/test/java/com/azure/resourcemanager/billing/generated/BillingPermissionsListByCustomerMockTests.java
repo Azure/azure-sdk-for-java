@@ -31,7 +31,7 @@ public final class BillingPermissionsListByCustomerMockTests {
         ArgumentCaptor<HttpRequest> httpRequest = ArgumentCaptor.forClass(HttpRequest.class);
 
         String responseStr =
-            "{\"value\":[{\"actions\":[\"zkzobgopxlhslnel\",\"ieixynllxe\"],\"notActions\":[\"rojphslhcawjutif\",\"wfmvigorqjbt\"]}]}";
+            "{\"value\":[{\"actions\":[\"qwcabvnui\",\"eeyaswl\",\"augmrmfjlr\"],\"notActions\":[\"oauk\",\"fkvcisi\",\"moaedsxj\",\"uivedwcgyeewxeiq\"]}]}";
 
         Mockito.when(httpResponse.getStatusCode()).thenReturn(200);
         Mockito.when(httpResponse.getHeaders()).thenReturn(new HttpHeaders());
@@ -60,6 +60,6 @@ public final class BillingPermissionsListByCustomerMockTests {
                     new AzureProfile("", "", AzureEnvironment.AZURE));
 
         PagedIterable<BillingPermissionsProperties> response =
-            manager.billingPermissions().listByCustomer("dsxwaab", "mifrygznmma", com.azure.core.util.Context.NONE);
+            manager.billingPermissions().listByCustomer("gt", "ljvrcmyfqipgxhnp", com.azure.core.util.Context.NONE);
     }
 }

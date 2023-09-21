@@ -34,7 +34,7 @@ public final class ProductsGetWithResponseMockTests {
         ArgumentCaptor<HttpRequest> httpRequest = ArgumentCaptor.forClass(HttpRequest.class);
 
         String responseStr =
-            "{\"properties\":{\"autoRenew\":\"On\",\"displayName\":\"oxoyyukp\",\"purchaseDate\":\"2021-02-08T12:14:50Z\",\"productTypeId\":\"oir\",\"productType\":\"boshbragapyyrmfs\",\"status\":\"PastDue\",\"endDate\":\"2020-12-22T03:30:36Z\",\"billingFrequency\":\"UsageBased\",\"lastCharge\":{\"currency\":\"ppdbwnupgahxkum\",\"value\":87.27331},\"lastChargeDate\":\"2021-05-10T22:23:02Z\",\"quantity\":87.1412,\"skuId\":\"dmmcpugmehqep\",\"skuDescription\":\"fhbzehewhoqhn\",\"tenantId\":\"qnbldxe\",\"availabilityId\":\"lgsc\",\"invoiceSectionId\":\"ri\",\"invoiceSectionDisplayName\":\"rsrrmoucsofldp\",\"billingProfileId\":\"iyfc\",\"billingProfileDisplayName\":\"beolh\",\"customerId\":\"lvbmxuqibsxtkcu\",\"customerDisplayName\":\"b\",\"reseller\":{\"resellerId\":\"rfsiowlkjxn\",\"description\":\"vwgf\"}},\"id\":\"tmhqykiz\",\"name\":\"d\",\"type\":\"saoafcluqvox\"}";
+            "{\"properties\":{\"autoRenew\":\"Off\",\"displayName\":\"xlvxnoakiz\",\"purchaseDate\":\"2021-02-16T18:23:50Z\",\"productTypeId\":\"knaqlnuwig\",\"productType\":\"xly\",\"status\":\"PastDue\",\"endDate\":\"2021-08-16T20:52:41Z\",\"billingFrequency\":\"OneTime\",\"lastCharge\":{\"currency\":\"xhmpejtlkex\",\"value\":68.176094},\"lastChargeDate\":\"2021-09-17T09:38:18Z\",\"quantity\":13.839131,\"skuId\":\"qhr\",\"skuDescription\":\"xk\",\"tenantId\":\"ccrmmk\",\"availabilityId\":\"pijubyq\",\"invoiceSectionId\":\"kakfqfr\",\"invoiceSectionDisplayName\":\"myildudxjasc\",\"billingProfileId\":\"vfdjkpdxp\",\"billingProfileDisplayName\":\"kk\",\"customerId\":\"mgzvyfi\",\"customerDisplayName\":\"kzuqnwsith\",\"reseller\":{\"resellerId\":\"ly\",\"description\":\"luqw\"}},\"id\":\"ulsutrjbhxy\",\"name\":\"fhyqezvqqugdrft\",\"type\":\"cvexreuqu\"}";
 
         Mockito.when(httpResponse.getStatusCode()).thenReturn(200);
         Mockito.when(httpResponse.getHeaders()).thenReturn(new HttpHeaders());
@@ -63,13 +63,10 @@ public final class ProductsGetWithResponseMockTests {
                     new AzureProfile("", "", AzureEnvironment.AZURE));
 
         Product response =
-            manager
-                .products()
-                .getWithResponse("ibidmhmwffp", "fmuvapckccr", com.azure.core.util.Context.NONE)
-                .getValue();
+            manager.products().getWithResponse("y", "znumtggmuwdchoz", com.azure.core.util.Context.NONE).getValue();
 
-        Assertions.assertEquals(AutoRenew.ON, response.autoRenew());
+        Assertions.assertEquals(AutoRenew.OFF, response.autoRenew());
         Assertions.assertEquals(ProductStatusType.PAST_DUE, response.status());
-        Assertions.assertEquals(BillingFrequency.USAGE_BASED, response.billingFrequency());
+        Assertions.assertEquals(BillingFrequency.ONE_TIME, response.billingFrequency());
     }
 }

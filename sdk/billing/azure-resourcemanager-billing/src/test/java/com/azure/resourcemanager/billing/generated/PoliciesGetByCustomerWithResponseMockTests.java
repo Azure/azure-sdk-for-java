@@ -32,7 +32,7 @@ public final class PoliciesGetByCustomerWithResponseMockTests {
         ArgumentCaptor<HttpRequest> httpRequest = ArgumentCaptor.forClass(HttpRequest.class);
 
         String responseStr =
-            "{\"properties\":{\"viewCharges\":\"Allowed\"},\"id\":\"skbruffgllukkut\",\"name\":\"lxhrp\",\"type\":\"hvmblcouqehbhbc\"}";
+            "{\"properties\":{\"viewCharges\":\"NotAllowed\"},\"id\":\"ywsxvjabjqqaxu\",\"name\":\"vym\",\"type\":\"nudn\"}";
 
         Mockito.when(httpResponse.getStatusCode()).thenReturn(200);
         Mockito.when(httpResponse.getHeaders()).thenReturn(new HttpHeaders());
@@ -61,11 +61,8 @@ public final class PoliciesGetByCustomerWithResponseMockTests {
                     new AzureProfile("", "", AzureEnvironment.AZURE));
 
         CustomerPolicy response =
-            manager
-                .policies()
-                .getByCustomerWithResponse("ttxpnrupza", "mrdixtreki", com.azure.core.util.Context.NONE)
-                .getValue();
+            manager.policies().getByCustomerWithResponse("awn", "zm", com.azure.core.util.Context.NONE).getValue();
 
-        Assertions.assertEquals(ViewCharges.ALLOWED, response.viewCharges());
+        Assertions.assertEquals(ViewCharges.NOT_ALLOWED, response.viewCharges());
     }
 }

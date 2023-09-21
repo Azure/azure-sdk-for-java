@@ -31,7 +31,7 @@ public final class EnrollmentAccountsListMockTests {
         ArgumentCaptor<HttpRequest> httpRequest = ArgumentCaptor.forClass(HttpRequest.class);
 
         String responseStr =
-            "{\"value\":[{\"properties\":{\"principalName\":\"fytpqsixymmpuji\"},\"id\":\"yqlkju\",\"name\":\"smbmslzoy\",\"type\":\"vwzdbpqvyb\"}]}";
+            "{\"value\":[{\"properties\":{\"principalName\":\"ndktxfv\"},\"id\":\"nfee\",\"name\":\"gpkrie\",\"type\":\"bgnixxoww\"}]}";
 
         Mockito.when(httpResponse.getStatusCode()).thenReturn(200);
         Mockito.when(httpResponse.getHeaders()).thenReturn(new HttpHeaders());

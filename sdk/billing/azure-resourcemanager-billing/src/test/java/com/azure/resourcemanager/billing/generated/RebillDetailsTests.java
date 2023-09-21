@@ -13,7 +13,7 @@ public final class RebillDetailsTests {
         RebillDetails model =
             BinaryData
                 .fromString(
-                    "{\"creditNoteDocumentId\":\"qfobwyz\",\"invoiceDocumentId\":\"bykutw\",\"rebillDetails\":{\"akgtdlmkkzevdlh\":{\"creditNoteDocumentId\":\"a\",\"invoiceDocumentId\":\"hrskdsnfd\",\"rebillDetails\":{}},\"akufgmjz\":{\"creditNoteDocumentId\":\"pusdstt\",\"invoiceDocumentId\":\"ogvbbejdcngq\",\"rebillDetails\":{}}}}")
+                    "{\"creditNoteDocumentId\":\"cbgoor\",\"invoiceDocumentId\":\"eoybfhjxakvvjgs\",\"rebillDetails\":{\"wjplma\":{\"creditNoteDocumentId\":\"il\",\"invoiceDocumentId\":\"wwtkg\",\"rebillDetails\":{\"px\":{\"creditNoteDocumentId\":\"edabgyvudtjue\",\"invoiceDocumentId\":\"cihxuuwhcjyx\",\"rebillDetails\":{\"bvpa\":{},\"akkud\":{}}}}}}}")
                 .toObject(RebillDetails.class);
     }
 

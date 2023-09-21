@@ -30,7 +30,7 @@ public final class BillingPeriodsGetWithResponseMockTests {
         ArgumentCaptor<HttpRequest> httpRequest = ArgumentCaptor.forClass(HttpRequest.class);
 
         String responseStr =
-            "{\"properties\":{\"invoiceIds\":[\"inic\",\"teajohiyg\"]},\"id\":\"pnbonhpcz\",\"name\":\"kmktpvwxqcseh\",\"type\":\"hkhufm\"}";
+            "{\"properties\":{\"invoiceIds\":[\"quvjez\",\"j\",\"mvpsimioyo\",\"glkmiqwnnr\"]},\"id\":\"clibbfqpsp\",\"name\":\"ladydgnhautwu\",\"type\":\"exzgpmnmabedd\"}";
 
         Mockito.when(httpResponse.getStatusCode()).thenReturn(200);
         Mockito.when(httpResponse.getHeaders()).thenReturn(new HttpHeaders());
@@ -59,6 +59,6 @@ public final class BillingPeriodsGetWithResponseMockTests {
                     new AzureProfile("", "", AzureEnvironment.AZURE));
 
         BillingPeriod response =
-            manager.billingPeriods().getWithResponse("wugiqjti", com.azure.core.util.Context.NONE).getValue();
+            manager.billingPeriods().getWithResponse("bym", com.azure.core.util.Context.NONE).getValue();
     }
 }

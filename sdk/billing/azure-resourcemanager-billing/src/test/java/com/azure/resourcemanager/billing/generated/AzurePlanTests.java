@@ -12,14 +12,14 @@ public final class AzurePlanTests {
     @org.junit.jupiter.api.Test
     public void testDeserialize() throws Exception {
         AzurePlan model =
-            BinaryData.fromString("{\"skuId\":\"hocdgeab\",\"skuDescription\":\"phut\"}").toObject(AzurePlan.class);
-        Assertions.assertEquals("hocdgeab", model.skuId());
+            BinaryData.fromString("{\"skuId\":\"nkzsmodmglou\",\"skuDescription\":\"b\"}").toObject(AzurePlan.class);
+        Assertions.assertEquals("nkzsmodmglou", model.skuId());
     }
 
     @org.junit.jupiter.api.Test
     public void testSerialize() throws Exception {
-        AzurePlan model = new AzurePlan().withSkuId("hocdgeab");
+        AzurePlan model = new AzurePlan().withSkuId("nkzsmodmglou");
         model = BinaryData.fromObject(model).toObject(AzurePlan.class);
-        Assertions.assertEquals("hocdgeab", model.skuId());
+        Assertions.assertEquals("nkzsmodmglou", model.skuId());
     }
 }

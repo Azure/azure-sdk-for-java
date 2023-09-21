@@ -27,10 +27,11 @@ public final class InvoiceSectionsCreateOrUpdateSamples {
                 "{invoiceSectionName}",
                 new InvoiceSectionInner()
                     .withDisplayName("invoiceSection1")
-                    .withLabels(mapOf("costCategory", "Support", "pcCode", "A123456")),
+                    .withLabels(mapOf("costCategory", "Support", "pcCode", "fakeTokenPlaceholder")),
                 com.azure.core.util.Context.NONE);
     }
 
+    // Use "Map.of" if available
     @SuppressWarnings("unchecked")
     private static <T> Map<String, T> mapOf(Object... inputs) {
         Map<String, T> map = new HashMap<>();

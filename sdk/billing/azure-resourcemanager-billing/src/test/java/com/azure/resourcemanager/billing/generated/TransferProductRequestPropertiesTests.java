@@ -13,16 +13,16 @@ public final class TransferProductRequestPropertiesTests {
     public void testDeserialize() throws Exception {
         TransferProductRequestProperties model =
             BinaryData
-                .fromString("{\"destinationInvoiceSectionId\":\"rfdwoyu\"}")
+                .fromString("{\"destinationInvoiceSectionId\":\"d\"}")
                 .toObject(TransferProductRequestProperties.class);
-        Assertions.assertEquals("rfdwoyu", model.destinationInvoiceSectionId());
+        Assertions.assertEquals("d", model.destinationInvoiceSectionId());
     }
 
     @org.junit.jupiter.api.Test
     public void testSerialize() throws Exception {
         TransferProductRequestProperties model =
-            new TransferProductRequestProperties().withDestinationInvoiceSectionId("rfdwoyu");
+            new TransferProductRequestProperties().withDestinationInvoiceSectionId("d");
         model = BinaryData.fromObject(model).toObject(TransferProductRequestProperties.class);
-        Assertions.assertEquals("rfdwoyu", model.destinationInvoiceSectionId());
+        Assertions.assertEquals("d", model.destinationInvoiceSectionId());
     }
 }

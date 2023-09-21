@@ -15,23 +15,23 @@ public final class BillingSubscriptionPropertiesTests {
         BillingSubscriptionProperties model =
             BinaryData
                 .fromString(
-                    "{\"displayName\":\"qwwncw\",\"subscriptionId\":\"0b14bc39-5e00-4eb5-b288-987d4dfc4e21\",\"subscriptionBillingStatus\":\"Deleted\",\"lastMonthCharges\":{\"currency\":\"trmgucnapkte\",\"value\":45.423527},\"monthToDateCharges\":{\"currency\":\"pt\",\"value\":32.62289},\"billingProfileId\":\"pfqbuaceopzf\",\"billingProfileDisplayName\":\"hhuao\",\"costCenter\":\"pcqeqx\",\"customerId\":\"z\",\"customerDisplayName\":\"hzxct\",\"invoiceSectionId\":\"gbkdmoizpos\",\"invoiceSectionDisplayName\":\"grcfb\",\"reseller\":{\"resellerId\":\"mfqjhhkxbp\",\"description\":\"ymjhxxjyngudivkr\"},\"skuId\":\"wbxqzvszjfau\",\"skuDescription\":\"fdxxivetvtcqaqtd\",\"suspensionReasons\":[\"cbxvwvxyslqbh\",\"fxoblytkb\",\"mpew\"]}")
+                    "{\"displayName\":\"elwuipi\",\"subscriptionId\":\"d2c5858e-b7ef-47c1-aa42-050be28d5deb\",\"subscriptionBillingStatus\":\"Abandoned\",\"lastMonthCharges\":{\"currency\":\"ivgvvcna\",\"value\":48.32037},\"monthToDateCharges\":{\"currency\":\"nxxmueedndrdv\",\"value\":71.60992},\"billingProfileId\":\"qqtch\",\"billingProfileDisplayName\":\"lmfmtdaay\",\"costCenter\":\"v\",\"customerId\":\"gpiohgwxrtfudxe\",\"customerDisplayName\":\"gyqagvrvmnpkuk\",\"invoiceSectionId\":\"i\",\"invoiceSectionDisplayName\":\"blxgwimf\",\"reseller\":{\"resellerId\":\"fjxwmsz\",\"description\":\"foqreyfkzik\"},\"skuId\":\"aw\",\"skuDescription\":\"a\",\"suspensionReasons\":[\"wczelpci\",\"elsfeaen\",\"abfatkl\"]}")
                 .toObject(BillingSubscriptionProperties.class);
-        Assertions.assertEquals(BillingSubscriptionStatusType.DELETED, model.subscriptionBillingStatus());
-        Assertions.assertEquals("pcqeqx", model.costCenter());
-        Assertions.assertEquals("wbxqzvszjfau", model.skuId());
+        Assertions.assertEquals(BillingSubscriptionStatusType.ABANDONED, model.subscriptionBillingStatus());
+        Assertions.assertEquals("v", model.costCenter());
+        Assertions.assertEquals("aw", model.skuId());
     }
 
     @org.junit.jupiter.api.Test
     public void testSerialize() throws Exception {
         BillingSubscriptionProperties model =
             new BillingSubscriptionProperties()
-                .withSubscriptionBillingStatus(BillingSubscriptionStatusType.DELETED)
-                .withCostCenter("pcqeqx")
-                .withSkuId("wbxqzvszjfau");
+                .withSubscriptionBillingStatus(BillingSubscriptionStatusType.ABANDONED)
+                .withCostCenter("v")
+                .withSkuId("aw");
         model = BinaryData.fromObject(model).toObject(BillingSubscriptionProperties.class);
-        Assertions.assertEquals(BillingSubscriptionStatusType.DELETED, model.subscriptionBillingStatus());
-        Assertions.assertEquals("pcqeqx", model.costCenter());
-        Assertions.assertEquals("wbxqzvszjfau", model.skuId());
+        Assertions.assertEquals(BillingSubscriptionStatusType.ABANDONED, model.subscriptionBillingStatus());
+        Assertions.assertEquals("v", model.costCenter());
+        Assertions.assertEquals("aw", model.skuId());
     }
 }

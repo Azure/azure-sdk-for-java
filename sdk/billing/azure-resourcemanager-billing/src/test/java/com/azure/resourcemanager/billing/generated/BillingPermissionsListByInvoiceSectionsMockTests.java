@@ -31,7 +31,7 @@ public final class BillingPermissionsListByInvoiceSectionsMockTests {
         ArgumentCaptor<HttpRequest> httpRequest = ArgumentCaptor.forClass(HttpRequest.class);
 
         String responseStr =
-            "{\"value\":[{\"actions\":[\"wywa\",\"oi\"],\"notActions\":[\"smjblmljhlnym\",\"otqyry\"]}]}";
+            "{\"value\":[{\"actions\":[\"phdrw\",\"jkhvyomacluzvxnq\",\"hrpq\",\"df\"],\"notActions\":[\"oi\"]}]}";
 
         Mockito.when(httpResponse.getStatusCode()).thenReturn(200);
         Mockito.when(httpResponse.getHeaders()).thenReturn(new HttpHeaders());
@@ -62,6 +62,6 @@ public final class BillingPermissionsListByInvoiceSectionsMockTests {
         PagedIterable<BillingPermissionsProperties> response =
             manager
                 .billingPermissions()
-                .listByInvoiceSections("mwabzxrvxc", "s", "sphaivmxyasflvg", com.azure.core.util.Context.NONE);
+                .listByInvoiceSections("bta", "ypnyghshxc", "lhkgmnsghp", com.azure.core.util.Context.NONE);
     }
 }

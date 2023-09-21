@@ -12,7 +12,8 @@ public final class ReservationUtilizationAggregatesTests {
     public void testDeserialize() throws Exception {
         ReservationUtilizationAggregates model =
             BinaryData
-                .fromString("{\"grain\":55.157936,\"grainUnit\":\"n\",\"value\":42.470722,\"valueUnit\":\"dhcxgkmoy\"}")
+                .fromString(
+                    "{\"grain\":49.52489,\"grainUnit\":\"lq\",\"value\":25.921906,\"valueUnit\":\"vrehmrnjhvsujzt\"}")
                 .toObject(ReservationUtilizationAggregates.class);
     }
 

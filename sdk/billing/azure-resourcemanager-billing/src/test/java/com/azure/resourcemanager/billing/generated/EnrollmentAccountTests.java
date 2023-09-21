@@ -8,6 +8,7 @@ import com.azure.core.util.BinaryData;
 import com.azure.resourcemanager.billing.models.Department;
 import com.azure.resourcemanager.billing.models.EnrollmentAccount;
 import java.time.OffsetDateTime;
+import java.util.Arrays;
 import org.junit.jupiter.api.Assertions;
 
 public final class EnrollmentAccountTests {
@@ -16,36 +17,53 @@ public final class EnrollmentAccountTests {
         EnrollmentAccount model =
             BinaryData
                 .fromString(
-                    "{\"properties\":{\"accountName\":\"e\",\"costCenter\":\"alhbx\",\"accountOwner\":\"e\",\"accountOwnerEmail\":\"zzvdudgwds\",\"status\":\"hotwmcynpwlbjnp\",\"startDate\":\"2021-06-10T20:31:16Z\",\"endDate\":\"2021-04-17T12:51:37Z\",\"department\":{\"id\":\"ehxnltyfsop\",\"name\":\"usue\",\"type\":\"nzwdejba\"}},\"id\":\"orxzdmohctbqvud\",\"name\":\"xdn\",\"type\":\"nvowgujju\"}")
+                    "{\"properties\":{\"accountName\":\"grxwbu\",\"costCenter\":\"jx\",\"accountOwner\":\"nspydptkoenkoukn\",\"accountOwnerEmail\":\"dwtiukbldngkp\",\"status\":\"ipazyxoegukgjnpi\",\"startDate\":\"2021-07-11T10:35:30Z\",\"endDate\":\"2021-04-17T09:56:36Z\",\"department\":{\"properties\":{\"departmentName\":\"zntypmrb\",\"costCenter\":\"zcdrqjsdpydnfyhx\",\"status\":\"oejzi\",\"enrollmentAccounts\":[{\"properties\":{},\"id\":\"sjttgzfbish\",\"name\":\"bkh\",\"type\":\"jdeyeamdpha\"},{\"properties\":{},\"id\":\"lpbuxwgipwhonowk\",\"name\":\"shwankixzbinje\",\"type\":\"uttmrywnuzoqft\"},{\"properties\":{},\"id\":\"qzrnkcqvyxlwhz\",\"name\":\"sicohoqqnwvlry\",\"type\":\"vwhheunmmqhgyx\"},{\"properties\":{},\"id\":\"onocukok\",\"name\":\"yaxuconuqszfkb\",\"type\":\"ypewrmjmwvvjekt\"}]},\"id\":\"xsenhwlr\",\"name\":\"ffrzpwvlqdqgbiqy\",\"type\":\"ihkaetcktvfc\"}},\"id\":\"vf\",\"name\":\"nkymuctqhjfbebrj\",\"type\":\"xerf\"}")
                 .toObject(EnrollmentAccount.class);
-        Assertions.assertEquals("e", model.accountName());
-        Assertions.assertEquals("alhbx", model.costCenter());
-        Assertions.assertEquals("e", model.accountOwner());
-        Assertions.assertEquals("zzvdudgwds", model.accountOwnerEmail());
-        Assertions.assertEquals("hotwmcynpwlbjnp", model.status());
-        Assertions.assertEquals(OffsetDateTime.parse("2021-06-10T20:31:16Z"), model.startDate());
-        Assertions.assertEquals(OffsetDateTime.parse("2021-04-17T12:51:37Z"), model.endDate());
+        Assertions.assertEquals("grxwbu", model.accountName());
+        Assertions.assertEquals("jx", model.costCenter());
+        Assertions.assertEquals("nspydptkoenkoukn", model.accountOwner());
+        Assertions.assertEquals("dwtiukbldngkp", model.accountOwnerEmail());
+        Assertions.assertEquals("ipazyxoegukgjnpi", model.status());
+        Assertions.assertEquals(OffsetDateTime.parse("2021-07-11T10:35:30Z"), model.startDate());
+        Assertions.assertEquals(OffsetDateTime.parse("2021-04-17T09:56:36Z"), model.endDate());
+        Assertions.assertEquals("zntypmrb", model.department().departmentName());
+        Assertions.assertEquals("zcdrqjsdpydnfyhx", model.department().costCenter());
+        Assertions.assertEquals("oejzi", model.department().status());
     }
 
     @org.junit.jupiter.api.Test
     public void testSerialize() throws Exception {
         EnrollmentAccount model =
             new EnrollmentAccount()
-                .withAccountName("e")
-                .withCostCenter("alhbx")
-                .withAccountOwner("e")
-                .withAccountOwnerEmail("zzvdudgwds")
-                .withStatus("hotwmcynpwlbjnp")
-                .withStartDate(OffsetDateTime.parse("2021-06-10T20:31:16Z"))
-                .withEndDate(OffsetDateTime.parse("2021-04-17T12:51:37Z"))
-                .withDepartment(new Department());
+                .withAccountName("grxwbu")
+                .withCostCenter("jx")
+                .withAccountOwner("nspydptkoenkoukn")
+                .withAccountOwnerEmail("dwtiukbldngkp")
+                .withStatus("ipazyxoegukgjnpi")
+                .withStartDate(OffsetDateTime.parse("2021-07-11T10:35:30Z"))
+                .withEndDate(OffsetDateTime.parse("2021-04-17T09:56:36Z"))
+                .withDepartment(
+                    new Department()
+                        .withDepartmentName("zntypmrb")
+                        .withCostCenter("zcdrqjsdpydnfyhx")
+                        .withStatus("oejzi")
+                        .withEnrollmentAccounts(
+                            Arrays
+                                .asList(
+                                    new EnrollmentAccount(),
+                                    new EnrollmentAccount(),
+                                    new EnrollmentAccount(),
+                                    new EnrollmentAccount())));
         model = BinaryData.fromObject(model).toObject(EnrollmentAccount.class);
-        Assertions.assertEquals("e", model.accountName());
-        Assertions.assertEquals("alhbx", model.costCenter());
-        Assertions.assertEquals("e", model.accountOwner());
-        Assertions.assertEquals("zzvdudgwds", model.accountOwnerEmail());
-        Assertions.assertEquals("hotwmcynpwlbjnp", model.status());
-        Assertions.assertEquals(OffsetDateTime.parse("2021-06-10T20:31:16Z"), model.startDate());
-        Assertions.assertEquals(OffsetDateTime.parse("2021-04-17T12:51:37Z"), model.endDate());
+        Assertions.assertEquals("grxwbu", model.accountName());
+        Assertions.assertEquals("jx", model.costCenter());
+        Assertions.assertEquals("nspydptkoenkoukn", model.accountOwner());
+        Assertions.assertEquals("dwtiukbldngkp", model.accountOwnerEmail());
+        Assertions.assertEquals("ipazyxoegukgjnpi", model.status());
+        Assertions.assertEquals(OffsetDateTime.parse("2021-07-11T10:35:30Z"), model.startDate());
+        Assertions.assertEquals(OffsetDateTime.parse("2021-04-17T09:56:36Z"), model.endDate());
+        Assertions.assertEquals("zntypmrb", model.department().departmentName());
+        Assertions.assertEquals("zcdrqjsdpydnfyhx", model.department().costCenter());
+        Assertions.assertEquals("oejzi", model.department().status());
     }
 }

@@ -13,7 +13,7 @@ public final class CustomerListResultTests {
         CustomerListResult model =
             BinaryData
                 .fromString(
-                    "{\"value\":[{\"properties\":{\"billingProfileId\":\"kgj\",\"billingProfileDisplayName\":\"yoxgvcltbgsnc\",\"displayName\":\"kjeszz\",\"enabledAzurePlans\":[],\"resellers\":[]},\"id\":\"jhtxfvgxbfsmxne\",\"name\":\"mpvecxgodebfqk\",\"type\":\"rbmpukgri\"},{\"properties\":{\"billingProfileId\":\"zlfbxzpuzycispnq\",\"billingProfileDisplayName\":\"hmgkbrpyy\",\"displayName\":\"ibnuqqkpik\",\"enabledAzurePlans\":[],\"resellers\":[]},\"id\":\"gvtqagnbuynh\",\"name\":\"jggmebfsiarbu\",\"type\":\"rcvpnazzmhjrunmp\"}],\"totalCount\":18555434,\"nextLink\":\"bh\"}")
+                    "{\"value\":[{\"properties\":{\"billingProfileId\":\"xwyjsflhhc\",\"billingProfileDisplayName\":\"lnjixisxya\",\"displayName\":\"oyaqcslyjpkiid\",\"enabledAzurePlans\":[{\"skuId\":\"znelixhnrztfolh\",\"skuDescription\":\"xknalaulppg\"},{\"skuId\":\"tpnapnyiropuhpig\",\"skuDescription\":\"gylgqgitxmedjvcs\"},{\"skuId\":\"n\",\"skuDescription\":\"wncwzzhxgktrmg\"}],\"resellers\":[{\"resellerId\":\"pkteo\",\"description\":\"lwptfdy\"},{\"resellerId\":\"fqbuaceopzf\",\"description\":\"hhuao\"},{\"resellerId\":\"pcqeqx\",\"description\":\"z\"}]},\"id\":\"ahzxctobgbk\",\"name\":\"moizpos\",\"type\":\"mgrcfbu\"}],\"totalCount\":527212463,\"nextLink\":\"qjhhkxbpv\"}")
                 .toObject(CustomerListResult.class);
     }
 

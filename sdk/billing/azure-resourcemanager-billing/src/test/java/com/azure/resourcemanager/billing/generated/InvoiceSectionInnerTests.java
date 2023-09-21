@@ -16,26 +16,27 @@ public final class InvoiceSectionInnerTests {
         InvoiceSectionInner model =
             BinaryData
                 .fromString(
-                    "{\"properties\":{\"displayName\":\"awrlyx\",\"labels\":{\"nwbxgjvtbvpyssz\":\"cpr\",\"guhmuouqfpr\":\"nruj\"},\"state\":\"Restricted\",\"systemId\":\"nguitnwuizgazxu\",\"tags\":{\"hr\":\"uckyf\",\"zwdzuh\":\"idf\"},\"targetCloud\":\"USGov\"},\"id\":\"wisdkft\",\"name\":\"wxmnteiwao\",\"type\":\"vkmijcmmxdcuf\"}")
+                    "{\"properties\":{\"displayName\":\"npzaoq\",\"labels\":{\"lmjthjq\":\"rhcffcydd\",\"hix\":\"wpyeicxmqciwqvh\",\"og\":\"igdtopbob\",\"w\":\"m\"},\"state\":\"Active\",\"systemId\":\"uhrzayvvt\",\"tags\":{\"ftutqxlngxlefgu\":\"dfgiot\",\"qmi\":\"nxkrx\"},\"targetCloud\":\"USGov\"},\"id\":\"hzrvqd\",\"name\":\"abhjybi\",\"type\":\"ehoqfbowskan\"}")
                 .toObject(InvoiceSectionInner.class);
-        Assertions.assertEquals("awrlyx", model.displayName());
-        Assertions.assertEquals("cpr", model.labels().get("nwbxgjvtbvpyssz"));
-        Assertions.assertEquals("uckyf", model.tags().get("hr"));
+        Assertions.assertEquals("npzaoq", model.displayName());
+        Assertions.assertEquals("rhcffcydd", model.labels().get("lmjthjq"));
+        Assertions.assertEquals("dfgiot", model.tags().get("ftutqxlngxlefgu"));
     }
 
     @org.junit.jupiter.api.Test
     public void testSerialize() throws Exception {
         InvoiceSectionInner model =
             new InvoiceSectionInner()
-                .withDisplayName("awrlyx")
-                .withLabels(mapOf("nwbxgjvtbvpyssz", "cpr", "guhmuouqfpr", "nruj"))
-                .withTags(mapOf("hr", "uckyf", "zwdzuh", "idf"));
+                .withDisplayName("npzaoq")
+                .withLabels(mapOf("lmjthjq", "rhcffcydd", "hix", "wpyeicxmqciwqvh", "og", "igdtopbob", "w", "m"))
+                .withTags(mapOf("ftutqxlngxlefgu", "dfgiot", "qmi", "nxkrx"));
         model = BinaryData.fromObject(model).toObject(InvoiceSectionInner.class);
-        Assertions.assertEquals("awrlyx", model.displayName());
-        Assertions.assertEquals("cpr", model.labels().get("nwbxgjvtbvpyssz"));
-        Assertions.assertEquals("uckyf", model.tags().get("hr"));
+        Assertions.assertEquals("npzaoq", model.displayName());
+        Assertions.assertEquals("rhcffcydd", model.labels().get("lmjthjq"));
+        Assertions.assertEquals("dfgiot", model.tags().get("ftutqxlngxlefgu"));
     }
 
+    // Use "Map.of" if available
     @SuppressWarnings("unchecked")
     private static <T> Map<String, T> mapOf(Object... inputs) {
         Map<String, T> map = new HashMap<>();

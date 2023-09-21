@@ -13,7 +13,7 @@ public final class BillingPermissionsListResultTests {
         BillingPermissionsListResult model =
             BinaryData
                 .fromString(
-                    "{\"value\":[{\"actions\":[\"kphywpnvjto\",\"nermcl\",\"plpho\",\"uscrpabgyepsb\"],\"notActions\":[\"zq\",\"gxywpmue\",\"fjz\",\"fqkquj\"]}],\"nextLink\":\"suyonobglaocq\"}")
+                    "{\"value\":[{\"actions\":[\"zizxbmpgcj\",\"fuzmuvpbtt\",\"um\",\"rp\"],\"notActions\":[\"bmnzbtbhjpgl\",\"fgohdneuelfphs\",\"yhtozfikdowwqu\",\"v\"]},{\"actions\":[\"clvit\",\"hqzonosggbhcoh\"],\"notActions\":[\"sjnkal\",\"utiiswacf\"]},{\"actions\":[\"k\",\"zewk\",\"vhqcrail\",\"pnppfuf\"],\"notActions\":[\"dmhdlxyjr\",\"sag\",\"fcnihgwq\"]}],\"nextLink\":\"nedgfbc\"}")
                 .toObject(BillingPermissionsListResult.class);
     }
 

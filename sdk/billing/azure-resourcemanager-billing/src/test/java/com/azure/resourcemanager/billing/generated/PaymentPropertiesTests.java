@@ -15,7 +15,7 @@ public final class PaymentPropertiesTests {
         PaymentProperties model =
             BinaryData
                 .fromString(
-                    "{\"paymentType\":\"tvb\",\"amount\":{\"currency\":\"sfraoyzko\",\"value\":32.20966},\"date\":\"2021-01-01T04:06:13Z\",\"paymentMethodFamily\":\"None\",\"paymentMethodType\":\"xawqaldsyuuxim\"}")
+                    "{\"paymentType\":\"opidkqqfkuv\",\"amount\":{\"currency\":\"kdmligovi\",\"value\":11.266023},\"date\":\"2021-10-14T06:13:46Z\",\"paymentMethodFamily\":\"None\",\"paymentMethodType\":\"azur\"}")
                 .toObject(PaymentProperties.class);
         Assertions.assertEquals(PaymentMethodFamily.NONE, model.paymentMethodFamily());
     }

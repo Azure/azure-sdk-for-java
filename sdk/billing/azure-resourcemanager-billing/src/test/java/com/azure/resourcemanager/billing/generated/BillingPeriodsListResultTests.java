@@ -13,7 +13,7 @@ public final class BillingPeriodsListResultTests {
         BillingPeriodsListResult model =
             BinaryData
                 .fromString(
-                    "{\"value\":[{\"properties\":{\"invoiceIds\":[]},\"id\":\"lcwkhihihlhz\",\"name\":\"sqtzbsrg\",\"type\":\"o\"}],\"nextLink\":\"jhf\"}")
+                    "{\"value\":[{\"properties\":{\"invoiceIds\":[\"haowj\"]},\"id\":\"mzvupor\",\"name\":\"zdfuydzvkfvxcnqm\",\"type\":\"qpswokmvkhlggdhb\"},{\"properties\":{\"invoiceIds\":[\"sz\",\"wiwtglxxhl\",\"fpgpicrmnzhrgm\"]},\"id\":\"gjsxv\",\"name\":\"qcbfrmbodths\",\"type\":\"qgvriibakcla\"}],\"nextLink\":\"fr\"}")
                 .toObject(BillingPeriodsListResult.class);
     }
 

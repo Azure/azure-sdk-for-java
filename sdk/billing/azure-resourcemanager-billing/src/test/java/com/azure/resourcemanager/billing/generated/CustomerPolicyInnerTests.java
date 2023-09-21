@@ -15,7 +15,7 @@ public final class CustomerPolicyInnerTests {
         CustomerPolicyInner model =
             BinaryData
                 .fromString(
-                    "{\"properties\":{\"viewCharges\":\"Allowed\"},\"id\":\"blmhvkzuhb\",\"name\":\"vvyhg\",\"type\":\"opbyrqufegxu\"}")
+                    "{\"properties\":{\"viewCharges\":\"Allowed\"},\"id\":\"nsrmffeycx\",\"name\":\"ktp\",\"type\":\"ymerteeammxq\"}")
                 .toObject(CustomerPolicyInner.class);
         Assertions.assertEquals(ViewCharges.ALLOWED, model.viewCharges());
     }

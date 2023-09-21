@@ -35,7 +35,7 @@ public final class ProductsListByInvoiceSectionMockTests {
         ArgumentCaptor<HttpRequest> httpRequest = ArgumentCaptor.forClass(HttpRequest.class);
 
         String responseStr =
-            "{\"value\":[{\"properties\":{\"autoRenew\":\"Off\",\"displayName\":\"vudb\",\"purchaseDate\":\"2021-10-09T01:41:08Z\",\"productTypeId\":\"tvq\",\"productType\":\"rqctmxxdtdd\",\"status\":\"Cancelled\",\"endDate\":\"2021-05-15T03:50:17Z\",\"billingFrequency\":\"OneTime\",\"lastCharge\":{\"currency\":\"vtzn\",\"value\":64.74098},\"lastChargeDate\":\"2021-11-27T23:17:15Z\",\"quantity\":21.243965,\"skuId\":\"vvoxczytprwnw\",\"skuDescription\":\"oevytlyokr\",\"tenantId\":\"o\",\"availabilityId\":\"xv\",\"invoiceSectionId\":\"asbcrymodizrx\",\"invoiceSectionDisplayName\":\"obdxnazpmkmlm\",\"billingProfileId\":\"vfxzopjh\",\"billingProfileDisplayName\":\"xliohrdddt\",\"customerId\":\"xqbawpc\",\"customerDisplayName\":\"nzqcy\",\"reseller\":{\"resellerId\":\"p\",\"description\":\"fyuicdh\"}},\"id\":\"bd\",\"name\":\"bwwg\",\"type\":\"d\"}]}";
+            "{\"value\":[{\"properties\":{\"autoRenew\":\"On\",\"displayName\":\"wxeoiojfizfavkj\",\"purchaseDate\":\"2021-03-16T02:36:26Z\",\"productTypeId\":\"cyayk\",\"productType\":\"fz\",\"status\":\"Expired\",\"endDate\":\"2021-04-11T17:02:20Z\",\"billingFrequency\":\"Monthly\",\"lastCharge\":{\"currency\":\"dew\",\"value\":31.971764},\"lastChargeDate\":\"2021-04-20T22:50:05Z\",\"quantity\":43.04835,\"skuId\":\"bjazejwwviy\",\"skuDescription\":\"ps\",\"tenantId\":\"brnnhjxsqw\",\"availabilityId\":\"qkbiwet\",\"invoiceSectionId\":\"zycyqiqyhg\",\"invoiceSectionDisplayName\":\"etzlexbsfledynoj\",\"billingProfileId\":\"iuwfbzkkdtnhqsy\",\"billingProfileDisplayName\":\"jselpkpbafvafh\",\"customerId\":\"ylcc\",\"customerDisplayName\":\"vxrh\",\"reseller\":{\"resellerId\":\"fwrsofpltdbmair\",\"description\":\"vhfn\"}},\"id\":\"acwn\",\"name\":\"qigtuujwouhdaws\",\"type\":\"grbjbxsjybvitvqk\"}]}";
 
         Mockito.when(httpResponse.getStatusCode()).thenReturn(200);
         Mockito.when(httpResponse.getHeaders()).thenReturn(new HttpHeaders());
@@ -66,10 +66,11 @@ public final class ProductsListByInvoiceSectionMockTests {
         PagedIterable<Product> response =
             manager
                 .products()
-                .listByInvoiceSection("lcqxypokk", "minqcym", "zng", "bdxxe", com.azure.core.util.Context.NONE);
+                .listByInvoiceSection(
+                    "bkjbz", "ensvkzykjtj", "nsxfwu", "hcdpkupnqrmgj", com.azure.core.util.Context.NONE);
 
-        Assertions.assertEquals(AutoRenew.OFF, response.iterator().next().autoRenew());
-        Assertions.assertEquals(ProductStatusType.CANCELLED, response.iterator().next().status());
-        Assertions.assertEquals(BillingFrequency.ONE_TIME, response.iterator().next().billingFrequency());
+        Assertions.assertEquals(AutoRenew.ON, response.iterator().next().autoRenew());
+        Assertions.assertEquals(ProductStatusType.EXPIRED, response.iterator().next().status());
+        Assertions.assertEquals(BillingFrequency.MONTHLY, response.iterator().next().billingFrequency());
     }
 }

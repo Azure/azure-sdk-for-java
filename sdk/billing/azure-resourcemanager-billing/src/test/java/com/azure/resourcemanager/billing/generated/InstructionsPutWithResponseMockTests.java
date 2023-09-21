@@ -32,7 +32,7 @@ public final class InstructionsPutWithResponseMockTests {
         ArgumentCaptor<HttpRequest> httpRequest = ArgumentCaptor.forClass(HttpRequest.class);
 
         String responseStr =
-            "{\"properties\":{\"amount\":93.32798,\"startDate\":\"2021-05-04T10:42:41Z\",\"endDate\":\"2021-06-18T11:18:37Z\",\"creationDate\":\"2021-01-31T17:13:55Z\"},\"id\":\"egprhptil\",\"name\":\"ucb\",\"type\":\"qtgdqohmcwsl\"}";
+            "{\"properties\":{\"amount\":7.7070594,\"startDate\":\"2021-03-18T19:42:34Z\",\"endDate\":\"2021-06-20T11:12:21Z\",\"creationDate\":\"2021-04-29T07:37:31Z\"},\"id\":\"x\",\"name\":\"wuninv\",\"type\":\"db\"}";
 
         Mockito.when(httpResponse.getStatusCode()).thenReturn(200);
         Mockito.when(httpResponse.getHeaders()).thenReturn(new HttpHeaders());
@@ -64,20 +64,20 @@ public final class InstructionsPutWithResponseMockTests {
             manager
                 .instructions()
                 .putWithResponse(
-                    "utlwxezwzhok",
-                    "bwnhhtql",
-                    "ehgpp",
+                    "q",
+                    "fuarenlvhht",
+                    "lnvnafvvkyfedev",
                     new InstructionInner()
-                        .withAmount(30.197609f)
-                        .withStartDate(OffsetDateTime.parse("2021-08-28T07:02:54Z"))
-                        .withEndDate(OffsetDateTime.parse("2021-04-06T03:44:21Z"))
-                        .withCreationDate(OffsetDateTime.parse("2021-01-02T20:54:57Z")),
+                        .withAmount(22.635883f)
+                        .withStartDate(OffsetDateTime.parse("2021-05-02T06:24:38Z"))
+                        .withEndDate(OffsetDateTime.parse("2021-06-23T11:56:40Z"))
+                        .withCreationDate(OffsetDateTime.parse("2021-05-10T01:31:42Z")),
                     com.azure.core.util.Context.NONE)
                 .getValue();
 
-        Assertions.assertEquals(93.32798f, response.amount());
-        Assertions.assertEquals(OffsetDateTime.parse("2021-05-04T10:42:41Z"), response.startDate());
-        Assertions.assertEquals(OffsetDateTime.parse("2021-06-18T11:18:37Z"), response.endDate());
-        Assertions.assertEquals(OffsetDateTime.parse("2021-01-31T17:13:55Z"), response.creationDate());
+        Assertions.assertEquals(7.7070594f, response.amount());
+        Assertions.assertEquals(OffsetDateTime.parse("2021-03-18T19:42:34Z"), response.startDate());
+        Assertions.assertEquals(OffsetDateTime.parse("2021-06-20T11:12:21Z"), response.endDate());
+        Assertions.assertEquals(OffsetDateTime.parse("2021-04-29T07:37:31Z"), response.creationDate());
     }
 }

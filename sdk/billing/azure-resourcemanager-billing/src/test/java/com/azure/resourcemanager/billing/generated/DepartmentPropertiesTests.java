@@ -6,6 +6,7 @@ package com.azure.resourcemanager.billing.generated;
 
 import com.azure.core.util.BinaryData;
 import com.azure.resourcemanager.billing.fluent.models.DepartmentProperties;
+import com.azure.resourcemanager.billing.models.Department;
 import com.azure.resourcemanager.billing.models.EnrollmentAccount;
 import java.time.OffsetDateTime;
 import java.util.Arrays;
@@ -17,76 +18,64 @@ public final class DepartmentPropertiesTests {
         DepartmentProperties model =
             BinaryData
                 .fromString(
-                    "{\"departmentName\":\"pg\",\"costCenter\":\"toc\",\"status\":\"xhvpmoue\",\"enrollmentAccounts\":[{\"properties\":{\"accountName\":\"i\",\"costCenter\":\"eojnxqbzvddn\",\"accountOwner\":\"ndei\",\"accountOwnerEmail\":\"twnpzaoqvuhrhcf\",\"status\":\"yd\",\"startDate\":\"2021-01-15T04:12:24Z\",\"endDate\":\"2021-08-14T20:27:10Z\"},\"id\":\"hjq\",\"name\":\"wpyeicxmqciwqvh\",\"type\":\"hix\"},{\"properties\":{\"accountName\":\"dtopbob\",\"costCenter\":\"ghmewuam\",\"accountOwner\":\"hrzayvvtpgvdf\",\"accountOwnerEmail\":\"otkftutqxlngx\",\"status\":\"fgugnxkrxdqmid\",\"startDate\":\"2021-09-08T21:12:41Z\",\"endDate\":\"2021-06-28T04:41:07Z\"},\"id\":\"qdrabhjybigehoqf\",\"name\":\"owskanyktz\",\"type\":\"cuiywgqyw\"},{\"properties\":{\"accountName\":\"rvynhzgpph\",\"costCenter\":\"gyncocpecfvmmc\",\"accountOwner\":\"fsxlzevgbmqjqa\",\"accountOwnerEmail\":\"y\",\"status\":\"ivkwlzuvccfwnfnb\",\"startDate\":\"2021-04-04T07:21:26Z\",\"endDate\":\"2021-04-16T12:59:12Z\"},\"id\":\"l\",\"name\":\"bxetqgtzxdpn\",\"type\":\"bqqwxrj\"},{\"properties\":{\"accountName\":\"llnwsubi\",\"costCenter\":\"jampmngnzscxaqw\",\"accountOwner\":\"chcbonqvpkvlrxnj\",\"accountOwnerEmail\":\"seiphe\",\"status\":\"lokeyy\",\"startDate\":\"2021-09-18T17:01:56Z\",\"endDate\":\"2021-10-04T06:36:31Z\"},\"id\":\"lwtgrhpdj\",\"name\":\"jumasx\",\"type\":\"zj\"}]}")
+                    "{\"departmentName\":\"zvyifqrvkdvj\",\"costCenter\":\"lrmv\",\"status\":\"f\",\"enrollmentAccounts\":[{\"properties\":{\"accountName\":\"n\",\"costCenter\":\"lexxbczwtru\",\"accountOwner\":\"qzbqjvsov\",\"accountOwnerEmail\":\"okacspk\",\"status\":\"hzdobpxjmflbvvnc\",\"startDate\":\"2021-05-23T11:48:05Z\",\"endDate\":\"2020-12-22T17:08:24Z\",\"department\":{\"properties\":{\"departmentName\":\"zjuqkhrsaj\",\"costCenter\":\"ku\",\"status\":\"oskg\",\"enrollmentAccounts\":[{\"id\":\"uuimjmvxieduug\",\"name\":\"dyjrrfbyaosv\",\"type\":\"xc\"}]},\"id\":\"onpc\",\"name\":\"hocohslkev\",\"type\":\"eggzfb\"}},\"id\":\"hfmvfaxkffe\",\"name\":\"ithlvmezyvshxm\",\"type\":\"sbbzo\"}]}")
                 .toObject(DepartmentProperties.class);
-        Assertions.assertEquals("pg", model.departmentName());
-        Assertions.assertEquals("toc", model.costCenter());
-        Assertions.assertEquals("xhvpmoue", model.status());
-        Assertions.assertEquals("i", model.enrollmentAccounts().get(0).accountName());
-        Assertions.assertEquals("eojnxqbzvddn", model.enrollmentAccounts().get(0).costCenter());
-        Assertions.assertEquals("ndei", model.enrollmentAccounts().get(0).accountOwner());
-        Assertions.assertEquals("twnpzaoqvuhrhcf", model.enrollmentAccounts().get(0).accountOwnerEmail());
-        Assertions.assertEquals("yd", model.enrollmentAccounts().get(0).status());
+        Assertions.assertEquals("zvyifqrvkdvj", model.departmentName());
+        Assertions.assertEquals("lrmv", model.costCenter());
+        Assertions.assertEquals("f", model.status());
+        Assertions.assertEquals("n", model.enrollmentAccounts().get(0).accountName());
+        Assertions.assertEquals("lexxbczwtru", model.enrollmentAccounts().get(0).costCenter());
+        Assertions.assertEquals("qzbqjvsov", model.enrollmentAccounts().get(0).accountOwner());
+        Assertions.assertEquals("okacspk", model.enrollmentAccounts().get(0).accountOwnerEmail());
+        Assertions.assertEquals("hzdobpxjmflbvvnc", model.enrollmentAccounts().get(0).status());
         Assertions
-            .assertEquals(OffsetDateTime.parse("2021-01-15T04:12:24Z"), model.enrollmentAccounts().get(0).startDate());
+            .assertEquals(OffsetDateTime.parse("2021-05-23T11:48:05Z"), model.enrollmentAccounts().get(0).startDate());
         Assertions
-            .assertEquals(OffsetDateTime.parse("2021-08-14T20:27:10Z"), model.enrollmentAccounts().get(0).endDate());
+            .assertEquals(OffsetDateTime.parse("2020-12-22T17:08:24Z"), model.enrollmentAccounts().get(0).endDate());
+        Assertions.assertEquals("zjuqkhrsaj", model.enrollmentAccounts().get(0).department().departmentName());
+        Assertions.assertEquals("ku", model.enrollmentAccounts().get(0).department().costCenter());
+        Assertions.assertEquals("oskg", model.enrollmentAccounts().get(0).department().status());
     }
 
     @org.junit.jupiter.api.Test
     public void testSerialize() throws Exception {
         DepartmentProperties model =
             new DepartmentProperties()
-                .withDepartmentName("pg")
-                .withCostCenter("toc")
-                .withStatus("xhvpmoue")
+                .withDepartmentName("zvyifqrvkdvj")
+                .withCostCenter("lrmv")
+                .withStatus("f")
                 .withEnrollmentAccounts(
                     Arrays
                         .asList(
                             new EnrollmentAccount()
-                                .withAccountName("i")
-                                .withCostCenter("eojnxqbzvddn")
-                                .withAccountOwner("ndei")
-                                .withAccountOwnerEmail("twnpzaoqvuhrhcf")
-                                .withStatus("yd")
-                                .withStartDate(OffsetDateTime.parse("2021-01-15T04:12:24Z"))
-                                .withEndDate(OffsetDateTime.parse("2021-08-14T20:27:10Z")),
-                            new EnrollmentAccount()
-                                .withAccountName("dtopbob")
-                                .withCostCenter("ghmewuam")
-                                .withAccountOwner("hrzayvvtpgvdf")
-                                .withAccountOwnerEmail("otkftutqxlngx")
-                                .withStatus("fgugnxkrxdqmid")
-                                .withStartDate(OffsetDateTime.parse("2021-09-08T21:12:41Z"))
-                                .withEndDate(OffsetDateTime.parse("2021-06-28T04:41:07Z")),
-                            new EnrollmentAccount()
-                                .withAccountName("rvynhzgpph")
-                                .withCostCenter("gyncocpecfvmmc")
-                                .withAccountOwner("fsxlzevgbmqjqa")
-                                .withAccountOwnerEmail("y")
-                                .withStatus("ivkwlzuvccfwnfnb")
-                                .withStartDate(OffsetDateTime.parse("2021-04-04T07:21:26Z"))
-                                .withEndDate(OffsetDateTime.parse("2021-04-16T12:59:12Z")),
-                            new EnrollmentAccount()
-                                .withAccountName("llnwsubi")
-                                .withCostCenter("jampmngnzscxaqw")
-                                .withAccountOwner("chcbonqvpkvlrxnj")
-                                .withAccountOwnerEmail("seiphe")
-                                .withStatus("lokeyy")
-                                .withStartDate(OffsetDateTime.parse("2021-09-18T17:01:56Z"))
-                                .withEndDate(OffsetDateTime.parse("2021-10-04T06:36:31Z"))));
+                                .withAccountName("n")
+                                .withCostCenter("lexxbczwtru")
+                                .withAccountOwner("qzbqjvsov")
+                                .withAccountOwnerEmail("okacspk")
+                                .withStatus("hzdobpxjmflbvvnc")
+                                .withStartDate(OffsetDateTime.parse("2021-05-23T11:48:05Z"))
+                                .withEndDate(OffsetDateTime.parse("2020-12-22T17:08:24Z"))
+                                .withDepartment(
+                                    new Department()
+                                        .withDepartmentName("zjuqkhrsaj")
+                                        .withCostCenter("ku")
+                                        .withStatus("oskg")
+                                        .withEnrollmentAccounts(Arrays.asList(new EnrollmentAccount())))));
         model = BinaryData.fromObject(model).toObject(DepartmentProperties.class);
-        Assertions.assertEquals("pg", model.departmentName());
-        Assertions.assertEquals("toc", model.costCenter());
-        Assertions.assertEquals("xhvpmoue", model.status());
-        Assertions.assertEquals("i", model.enrollmentAccounts().get(0).accountName());
-        Assertions.assertEquals("eojnxqbzvddn", model.enrollmentAccounts().get(0).costCenter());
-        Assertions.assertEquals("ndei", model.enrollmentAccounts().get(0).accountOwner());
-        Assertions.assertEquals("twnpzaoqvuhrhcf", model.enrollmentAccounts().get(0).accountOwnerEmail());
-        Assertions.assertEquals("yd", model.enrollmentAccounts().get(0).status());
+        Assertions.assertEquals("zvyifqrvkdvj", model.departmentName());
+        Assertions.assertEquals("lrmv", model.costCenter());
+        Assertions.assertEquals("f", model.status());
+        Assertions.assertEquals("n", model.enrollmentAccounts().get(0).accountName());
+        Assertions.assertEquals("lexxbczwtru", model.enrollmentAccounts().get(0).costCenter());
+        Assertions.assertEquals("qzbqjvsov", model.enrollmentAccounts().get(0).accountOwner());
+        Assertions.assertEquals("okacspk", model.enrollmentAccounts().get(0).accountOwnerEmail());
+        Assertions.assertEquals("hzdobpxjmflbvvnc", model.enrollmentAccounts().get(0).status());
         Assertions
-            .assertEquals(OffsetDateTime.parse("2021-01-15T04:12:24Z"), model.enrollmentAccounts().get(0).startDate());
+            .assertEquals(OffsetDateTime.parse("2021-05-23T11:48:05Z"), model.enrollmentAccounts().get(0).startDate());
         Assertions
-            .assertEquals(OffsetDateTime.parse("2021-08-14T20:27:10Z"), model.enrollmentAccounts().get(0).endDate());
+            .assertEquals(OffsetDateTime.parse("2020-12-22T17:08:24Z"), model.enrollmentAccounts().get(0).endDate());
+        Assertions.assertEquals("zjuqkhrsaj", model.enrollmentAccounts().get(0).department().departmentName());
+        Assertions.assertEquals("ku", model.enrollmentAccounts().get(0).department().costCenter());
+        Assertions.assertEquals("oskg", model.enrollmentAccounts().get(0).department().status());
     }
 }

@@ -15,7 +15,7 @@ public final class BillingRoleDefinitionInnerTests {
         BillingRoleDefinitionInner model =
             BinaryData
                 .fromString(
-                    "{\"properties\":{\"description\":\"afxtsgum\",\"permissions\":[{\"actions\":[],\"notActions\":[]},{\"actions\":[],\"notActions\":[]},{\"actions\":[],\"notActions\":[]}],\"roleName\":\"lo\"},\"id\":\"bq\",\"name\":\"vuzlm\",\"type\":\"felfktg\"}")
+                    "{\"properties\":{\"description\":\"xudb\",\"permissions\":[{\"actions\":[\"tnsi\",\"ud\"],\"notActions\":[\"mes\"]},{\"actions\":[\"lpagzrcx\",\"a\",\"lc\",\"xwmdboxd\"],\"notActions\":[\"ft\",\"fqob\",\"jln\",\"cgcckknhxkizvyt\"]},{\"actions\":[\"vuljraaeranokqg\",\"kkjqnvbroylaxxu\"],\"notActions\":[\"isdos\",\"jbjsvgjrwh\",\"yvycytdclxgcckn\",\"nwm\"]},{\"actions\":[\"vpdvjdhttzae\",\"edxihchrphkmcrj\",\"qnsdfzpbgtgky\",\"kdghrjeuutlwx\"],\"notActions\":[\"zhokvbwnhh\"]}],\"roleName\":\"lgehg\"},\"id\":\"pipifh\",\"name\":\"f\",\"type\":\"oajvgcxtxjcs\"}")
                 .toObject(BillingRoleDefinitionInner.class);
     }
 
@@ -26,6 +26,7 @@ public final class BillingRoleDefinitionInnerTests {
                 .withPermissions(
                     Arrays
                         .asList(
+                            new BillingPermissionsPropertiesInner(),
                             new BillingPermissionsPropertiesInner(),
                             new BillingPermissionsPropertiesInner(),
                             new BillingPermissionsPropertiesInner()));

@@ -31,7 +31,7 @@ public final class BillingRoleDefinitionsListByInvoiceSectionMockTests {
         ArgumentCaptor<HttpRequest> httpRequest = ArgumentCaptor.forClass(HttpRequest.class);
 
         String responseStr =
-            "{\"value\":[{\"properties\":{\"description\":\"odrrslblxyd\",\"permissions\":[],\"roleName\":\"vvbxiwkgfbqljnq\"},\"id\":\"hychocokuleh\",\"name\":\"rqlrqffawe\",\"type\":\"urkphyjdxravju\"}]}";
+            "{\"value\":[{\"properties\":{\"description\":\"jqrbrpvnm\",\"permissions\":[{\"actions\":[\"bojtjppglaohoqkp\",\"t\",\"qjilaywkdcwmqsyr\"],\"notActions\":[\"hxdqaol\",\"ylnkkbjpjvlywltm\",\"wob\"]},{\"actions\":[\"hlwyjfnqzocrd\",\"gczeuntgx\"],\"notActions\":[\"aqttiek\"]}],\"roleName\":\"fuvnyttzgixgyri\"},\"id\":\"lgmgbe\",\"name\":\"lqtxnrflkndrn\",\"type\":\"pgfjo\"}]}";
 
         Mockito.when(httpResponse.getStatusCode()).thenReturn(200);
         Mockito.when(httpResponse.getHeaders()).thenReturn(new HttpHeaders());
@@ -62,6 +62,6 @@ public final class BillingRoleDefinitionsListByInvoiceSectionMockTests {
         PagedIterable<BillingRoleDefinition> response =
             manager
                 .billingRoleDefinitions()
-                .listByInvoiceSection("h", "zhomewjjstliu", "qawmoaianc", com.azure.core.util.Context.NONE);
+                .listByInvoiceSection("itmujdtvm", "lyymffhmjpddny", "fzuvrzmz", com.azure.core.util.Context.NONE);
     }
 }

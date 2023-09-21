@@ -16,21 +16,18 @@ public final class TransactionPropertiesTests {
         TransactionProperties model =
             BinaryData
                 .fromString(
-                    "{\"kind\":\"reservation\",\"date\":\"2021-11-19T13:43:04Z\",\"invoice\":\"dvriiiojnal\",\"invoiceId\":\"fk\",\"orderId\":\"vsexsowuelu\",\"orderName\":\"hahhxvrhmzkwpj\",\"productFamily\":\"wspughftqsxhqx\",\"productTypeId\":\"xukndxdigr\",\"productType\":\"uufzdmsyqtfihw\",\"productDescription\":\"otzi\",\"transactionType\":\"Usage"
-                        + " Charge\",\"transactionAmount\":{\"currency\":\"pph\",\"value\":41.082405},\"quantity\":1174017685,\"invoiceSectionId\":\"dphqamv\",\"invoiceSectionDisplayName\":\"fwynwcvtbvkay\",\"billingProfileId\":\"tnvyqiatkzwp\",\"billingProfileDisplayName\":\"p\",\"customerId\":\"cjaesgvvs\",\"customerDisplayName\":\"yajguqfhwygzlv\",\"subscriptionId\":\"kfxu\",\"subscriptionName\":\"mdwzrmuhapfcqdps\",\"azurePlan\":\"qvpsvuoymg\",\"azureCreditApplied\":{\"currency\":\"lvez\",\"value\":37.44613},\"billingCurrency\":\"lmfeokerq\",\"discount\":19.447208,\"effectivePrice\":{\"currency\":\"ob\",\"value\":38.23564},\"exchangeRate\":82.422646,\"marketPrice\":{\"currency\":\"owepbqpcrfkb\",\"value\":99.00544},\"pricingCurrency\":\"njv\",\"servicePeriodStartDate\":\"2020-12-20T11:43:27Z\",\"servicePeriodEndDate\":\"2021-06-07T08:17:55Z\",\"subTotal\":{\"currency\":\"ekftnkhtj\",\"value\":1.9628167},\"tax\":{\"currency\":\"wfqatmtd\",\"value\":20.163143},\"unitOfMeasure\":\"vypgikdg\",\"units\":99.876915,\"unitType\":\"kbir\"}")
+                    "{\"kind\":\"all\",\"date\":\"2021-06-29T08:52:48Z\",\"invoice\":\"jjxundxgke\",\"invoiceId\":\"zhhzjhfjmhvvmu\",\"orderId\":\"pmuneqsx\",\"orderName\":\"hfbuzjyihsasbhud\",\"productFamily\":\"ohyuemslynsq\",\"productTypeId\":\"pfoobr\",\"productType\":\"tyms\",\"productDescription\":\"ygqdnfwqzdz\",\"transactionType\":\"Purchase\",\"transactionAmount\":{\"currency\":\"xhnfhqly\",\"value\":21.078909},\"quantity\":2065118929,\"invoiceSectionId\":\"iv\",\"invoiceSectionDisplayName\":\"oyzunbixxr\",\"billingProfileId\":\"kvcpwpgclr\",\"billingProfileDisplayName\":\"vtsoxf\",\"customerId\":\"enxpmyyefr\",\"customerDisplayName\":\"pdnqqskawaoqvmmb\",\"subscriptionId\":\"qfr\",\"subscriptionName\":\"lkzmegnitgvkxl\",\"azurePlan\":\"qdrfegcealzxwhc\",\"azureCreditApplied\":{\"currency\":\"ymo\",\"value\":80.95136},\"billingCurrency\":\"wigdi\",\"discount\":32.73611,\"effectivePrice\":{\"currency\":\"gomfajuwasq\",\"value\":28.72706},\"exchangeRate\":0.9221196,\"marketPrice\":{\"currency\":\"uxakjsqzhzbezk\",\"value\":86.19911},\"pricingCurrency\":\"idxas\",\"servicePeriodStartDate\":\"2021-01-18T00:26:06Z\",\"servicePeriodEndDate\":\"2021-10-01T23:09:27Z\",\"subTotal\":{\"currency\":\"jskgfmocwahp\",\"value\":47.72631},\"tax\":{\"currency\":\"eaahhvjhhn\",\"value\":25.781673},\"unitOfMeasure\":\"bbjjidjksyxk\",\"units\":38.72559,\"unitType\":\"evblbje\"}")
                 .toObject(TransactionProperties.class);
-        Assertions.assertEquals(TransactionTypeKind.RESERVATION, model.kind());
-        Assertions.assertEquals(ReservationType.USAGE_CHARGE, model.transactionType());
+        Assertions.assertEquals(TransactionTypeKind.ALL, model.kind());
+        Assertions.assertEquals(ReservationType.PURCHASE, model.transactionType());
     }
 
     @org.junit.jupiter.api.Test
     public void testSerialize() throws Exception {
         TransactionProperties model =
-            new TransactionProperties()
-                .withKind(TransactionTypeKind.RESERVATION)
-                .withTransactionType(ReservationType.USAGE_CHARGE);
+            new TransactionProperties().withKind(TransactionTypeKind.ALL).withTransactionType(ReservationType.PURCHASE);
         model = BinaryData.fromObject(model).toObject(TransactionProperties.class);
-        Assertions.assertEquals(TransactionTypeKind.RESERVATION, model.kind());
-        Assertions.assertEquals(ReservationType.USAGE_CHARGE, model.transactionType());
+        Assertions.assertEquals(TransactionTypeKind.ALL, model.kind());
+        Assertions.assertEquals(ReservationType.PURCHASE, model.transactionType());
     }
 }

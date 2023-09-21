@@ -18,9 +18,11 @@ public final class InvoiceSectionsOnExpandTests {
         InvoiceSectionsOnExpand model =
             BinaryData
                 .fromString(
-                    "{\"hasMoreResults\":false,\"value\":[{\"properties\":{\"displayName\":\"ozwyiftyhxhuro\",\"labels\":{},\"state\":\"Active\",\"systemId\":\"olniwpwcukjf\",\"tags\":{},\"targetCloud\":\"USNat\"},\"id\":\"w\",\"name\":\"klryplwck\",\"type\":\"asy\"},{\"properties\":{\"displayName\":\"ddhsgcbacphe\",\"labels\":{},\"state\":\"Active\",\"systemId\":\"nqgoulzndli\",\"tags\":{},\"targetCloud\":\"USSec\"},\"id\":\"kgfg\",\"name\":\"bmadgak\",\"type\":\"qsrxybzqqed\"},{\"properties\":{\"displayName\":\"bciqfouflm\",\"labels\":{},\"state\":\"Active\",\"systemId\":\"modmglougpb\",\"tags\":{},\"targetCloud\":\"USNat\"},\"id\":\"utduqktapspwgcu\",\"name\":\"rtumkdosvq\",\"type\":\"hbmdgbbjfdd\"},{\"properties\":{\"displayName\":\"mbe\",\"labels\":{},\"state\":\"Restricted\",\"systemId\":\"tq\",\"tags\":{},\"targetCloud\":\"USGov\"},\"id\":\"fpfpsalgbquxigj\",\"name\":\"jgzjaoyfhrtx\",\"type\":\"lnerkujysvleju\"}]}")
+                    "{\"hasMoreResults\":false,\"value\":[{\"properties\":{\"displayName\":\"uqktap\",\"labels\":{\"tumkdosvqwhbm\":\"gcue\"},\"state\":\"Restricted\",\"systemId\":\"jfddgmbmbe\",\"tags\":{\"gbquxigj\":\"bhtqqrolfpfpsa\",\"lnerkujysvleju\":\"jgzjaoyfhrtx\",\"kcprbnw\":\"fqawrlyxw\",\"ysszdnrujqguh\":\"xgjvtbv\"},\"targetCloud\":\"USNat\"},\"id\":\"uqfprwzw\",\"name\":\"nguitnwuizgazxu\",\"type\":\"izuckyfihrfidfvz\"},{\"properties\":{\"displayName\":\"uht\",\"labels\":{\"opvkmijcm\":\"isdkfthwxmnteiw\",\"uf\":\"xdcu\"},\"state\":\"Restricted\",\"systemId\":\"mzidnsezcxtb\",\"tags\":{\"newmdwzjeiachbo\":\"fycc\",\"eeh\":\"sflnrosfqp\"},\"targetCloud\":\"USSec\"},\"id\":\"ypyqrimzinp\",\"name\":\"swjdkirso\",\"type\":\"dqxhcrmnohjtckwh\"},{\"properties\":{\"displayName\":\"ifiyipjxsqwpgrj\",\"labels\":{\"qabnmoc\":\"orcjxvsnby\",\"toqcjmklja\":\"cyshurzafbljjgp\",\"yulpkudjkr\":\"bqidtqaj\",\"e\":\"khbzhfepgzg\"},\"state\":\"Active\",\"systemId\":\"c\",\"tags\":{\"bcsglumma\":\"paierh\"},\"targetCloud\":\"USGov\"},\"id\":\"aodxo\",\"name\":\"nbdxk\",\"type\":\"pxokajionp\"},{\"properties\":{\"displayName\":\"xg\",\"labels\":{\"gmaajrm\":\"gcpo\"},\"state\":\"Active\",\"systemId\":\"zrlovmclwhijcoej\",\"tags\":{\"ukdkexxppofmxa\":\"zaqsqsycbkbfk\",\"jpgd\":\"c\",\"j\":\"toc\",\"hd\":\"hvpmoue\"},\"targetCloud\":\"USSec\"},\"id\":\"bqe\",\"name\":\"jnxqbzvddntwn\",\"type\":\"eic\"}]}")
                 .toObject(InvoiceSectionsOnExpand.class);
-        Assertions.assertEquals("ozwyiftyhxhuro", model.value().get(0).displayName());
+        Assertions.assertEquals("uqktap", model.value().get(0).displayName());
+        Assertions.assertEquals("gcue", model.value().get(0).labels().get("tumkdosvqwhbm"));
+        Assertions.assertEquals("bhtqqrolfpfpsa", model.value().get(0).tags().get("gbquxigj"));
     }
 
     @org.junit.jupiter.api.Test
@@ -31,22 +33,48 @@ public final class InvoiceSectionsOnExpandTests {
                     Arrays
                         .asList(
                             new InvoiceSectionInner()
-                                .withDisplayName("ozwyiftyhxhuro")
-                                .withLabels(mapOf())
-                                .withTags(mapOf()),
+                                .withDisplayName("uqktap")
+                                .withLabels(mapOf("tumkdosvqwhbm", "gcue"))
+                                .withTags(
+                                    mapOf(
+                                        "gbquxigj",
+                                        "bhtqqrolfpfpsa",
+                                        "lnerkujysvleju",
+                                        "jgzjaoyfhrtx",
+                                        "kcprbnw",
+                                        "fqawrlyxw",
+                                        "ysszdnrujqguh",
+                                        "xgjvtbv")),
                             new InvoiceSectionInner()
-                                .withDisplayName("ddhsgcbacphe")
-                                .withLabels(mapOf())
-                                .withTags(mapOf()),
+                                .withDisplayName("uht")
+                                .withLabels(mapOf("opvkmijcm", "isdkfthwxmnteiw", "uf", "xdcu"))
+                                .withTags(mapOf("newmdwzjeiachbo", "fycc", "eeh", "sflnrosfqp")),
                             new InvoiceSectionInner()
-                                .withDisplayName("bciqfouflm")
-                                .withLabels(mapOf())
-                                .withTags(mapOf()),
-                            new InvoiceSectionInner().withDisplayName("mbe").withLabels(mapOf()).withTags(mapOf())));
+                                .withDisplayName("ifiyipjxsqwpgrj")
+                                .withLabels(
+                                    mapOf(
+                                        "qabnmoc",
+                                        "orcjxvsnby",
+                                        "toqcjmklja",
+                                        "cyshurzafbljjgp",
+                                        "yulpkudjkr",
+                                        "bqidtqaj",
+                                        "e",
+                                        "khbzhfepgzg"))
+                                .withTags(mapOf("bcsglumma", "paierh")),
+                            new InvoiceSectionInner()
+                                .withDisplayName("xg")
+                                .withLabels(mapOf("gmaajrm", "gcpo"))
+                                .withTags(
+                                    mapOf(
+                                        "ukdkexxppofmxa", "zaqsqsycbkbfk", "jpgd", "c", "j", "toc", "hd", "hvpmoue"))));
         model = BinaryData.fromObject(model).toObject(InvoiceSectionsOnExpand.class);
-        Assertions.assertEquals("ozwyiftyhxhuro", model.value().get(0).displayName());
+        Assertions.assertEquals("uqktap", model.value().get(0).displayName());
+        Assertions.assertEquals("gcue", model.value().get(0).labels().get("tumkdosvqwhbm"));
+        Assertions.assertEquals("bhtqqrolfpfpsa", model.value().get(0).tags().get("gbquxigj"));
     }
 
+    // Use "Map.of" if available
     @SuppressWarnings("unchecked")
     private static <T> Map<String, T> mapOf(Object... inputs) {
         Map<String, T> map = new HashMap<>();

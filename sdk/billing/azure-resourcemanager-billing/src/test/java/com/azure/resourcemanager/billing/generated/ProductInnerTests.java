@@ -17,10 +17,10 @@ public final class ProductInnerTests {
         ProductInner model =
             BinaryData
                 .fromString(
-                    "{\"properties\":{\"autoRenew\":\"Off\",\"displayName\":\"vithh\",\"purchaseDate\":\"2021-10-25T20:46:01Z\",\"productTypeId\":\"osggbhc\",\"productType\":\"fwdsj\",\"status\":\"Disabled\",\"endDate\":\"2021-06-21T07:46:59Z\",\"billingFrequency\":\"Monthly\",\"lastCharge\":{\"currency\":\"swacffgdkzz\",\"value\":79.305},\"lastChargeDate\":\"2021-09-11T04:06:27Z\",\"quantity\":91.20859,\"skuId\":\"railvpnppfuf\",\"skuDescription\":\"wdmhdlxyjrxs\",\"tenantId\":\"afcnih\",\"availabilityId\":\"qapnedgfbcv\",\"invoiceSectionId\":\"vq\",\"invoiceSectionDisplayName\":\"keqdcvdrhvoods\",\"billingProfileId\":\"bobzdopcjwvnhd\",\"billingProfileDisplayName\":\"wmgxcxrsl\",\"customerId\":\"utwu\",\"customerDisplayName\":\"grpkhjwniyqs\",\"reseller\":{\"resellerId\":\"cpdggkzzlvmbmp\",\"description\":\"modfvuefywsbpfvm\"}},\"id\":\"yhrfouyftaakcpw\",\"name\":\"yzvqt\",\"type\":\"nubexk\"}")
+                    "{\"properties\":{\"autoRenew\":\"Off\",\"displayName\":\"akufgmjz\",\"purchaseDate\":\"2021-09-27T05:33:50Z\",\"productTypeId\":\"grtwae\",\"productType\":\"uzkopbminrfd\",\"status\":\"Expiring\",\"endDate\":\"2021-07-17T19:38:14Z\",\"billingFrequency\":\"Monthly\",\"lastCharge\":{\"currency\":\"iefozbhdmsml\",\"value\":81.53448},\"lastChargeDate\":\"2021-03-06T06:09:51Z\",\"quantity\":94.62339,\"skuId\":\"maequiahxicslfa\",\"skuDescription\":\"z\",\"tenantId\":\"yylhalnswhccsp\",\"availabilityId\":\"aivwitqscywu\",\"invoiceSectionId\":\"woluhczbwemhair\",\"invoiceSectionDisplayName\":\"rgzdwmsweyp\",\"billingProfileId\":\"dxggicccnxqhuexm\",\"billingProfileDisplayName\":\"tlstvlzywem\",\"customerId\":\"rncsdtclu\",\"customerDisplayName\":\"ypbsfgytguslfead\",\"reseller\":{\"resellerId\":\"qukyhejhzi\",\"description\":\"gfpelolppvksrpqv\"}},\"id\":\"jzraehtwdwrf\",\"name\":\"swibyr\",\"type\":\"dl\"}")
                 .toObject(ProductInner.class);
         Assertions.assertEquals(AutoRenew.OFF, model.autoRenew());
-        Assertions.assertEquals(ProductStatusType.DISABLED, model.status());
+        Assertions.assertEquals(ProductStatusType.EXPIRING, model.status());
         Assertions.assertEquals(BillingFrequency.MONTHLY, model.billingFrequency());
     }
 
@@ -29,11 +29,11 @@ public final class ProductInnerTests {
         ProductInner model =
             new ProductInner()
                 .withAutoRenew(AutoRenew.OFF)
-                .withStatus(ProductStatusType.DISABLED)
+                .withStatus(ProductStatusType.EXPIRING)
                 .withBillingFrequency(BillingFrequency.MONTHLY);
         model = BinaryData.fromObject(model).toObject(ProductInner.class);
         Assertions.assertEquals(AutoRenew.OFF, model.autoRenew());
-        Assertions.assertEquals(ProductStatusType.DISABLED, model.status());
+        Assertions.assertEquals(ProductStatusType.EXPIRING, model.status());
         Assertions.assertEquals(BillingFrequency.MONTHLY, model.billingFrequency());
     }
 }

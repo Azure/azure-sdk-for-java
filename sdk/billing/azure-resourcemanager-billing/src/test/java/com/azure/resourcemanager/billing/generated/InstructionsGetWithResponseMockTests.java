@@ -31,7 +31,7 @@ public final class InstructionsGetWithResponseMockTests {
         ArgumentCaptor<HttpRequest> httpRequest = ArgumentCaptor.forClass(HttpRequest.class);
 
         String responseStr =
-            "{\"properties\":{\"amount\":10.233182,\"startDate\":\"2021-09-29T04:01:44Z\",\"endDate\":\"2021-02-26T01:00:55Z\",\"creationDate\":\"2021-10-29T14:07:51Z\"},\"id\":\"k\",\"name\":\"crjdqnsdfzpbgtg\",\"type\":\"ylkdghrje\"}";
+            "{\"properties\":{\"amount\":36.449356,\"startDate\":\"2021-02-24T07:12:51Z\",\"endDate\":\"2021-07-30T01:45Z\",\"creationDate\":\"2021-05-12T21:16:31Z\"},\"id\":\"hrljy\",\"name\":\"ogwxhnsduugwb\",\"type\":\"reur\"}";
 
         Mockito.when(httpResponse.getStatusCode()).thenReturn(200);
         Mockito.when(httpResponse.getHeaders()).thenReturn(new HttpHeaders());
@@ -62,12 +62,12 @@ public final class InstructionsGetWithResponseMockTests {
         Instruction response =
             manager
                 .instructions()
-                .getWithResponse("rwhryvycytd", "lxgccknfnwmbtm", "pdvjdhttzaefedx", com.azure.core.util.Context.NONE)
+                .getWithResponse("xddbhfhpfpaz", "zoyw", "xhpdulontacnpqwt", com.azure.core.util.Context.NONE)
                 .getValue();
 
-        Assertions.assertEquals(10.233182f, response.amount());
-        Assertions.assertEquals(OffsetDateTime.parse("2021-09-29T04:01:44Z"), response.startDate());
-        Assertions.assertEquals(OffsetDateTime.parse("2021-02-26T01:00:55Z"), response.endDate());
-        Assertions.assertEquals(OffsetDateTime.parse("2021-10-29T14:07:51Z"), response.creationDate());
+        Assertions.assertEquals(36.449356f, response.amount());
+        Assertions.assertEquals(OffsetDateTime.parse("2021-02-24T07:12:51Z"), response.startDate());
+        Assertions.assertEquals(OffsetDateTime.parse("2021-07-30T01:45Z"), response.endDate());
+        Assertions.assertEquals(OffsetDateTime.parse("2021-05-12T21:16:31Z"), response.creationDate());
     }
 }

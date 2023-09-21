@@ -30,7 +30,7 @@ public final class BillingRoleDefinitionsGetByBillingProfileWithResponseMockTest
         ArgumentCaptor<HttpRequest> httpRequest = ArgumentCaptor.forClass(HttpRequest.class);
 
         String responseStr =
-            "{\"properties\":{\"description\":\"bklqpxz\",\"permissions\":[],\"roleName\":\"e\"},\"id\":\"dwwnl\",\"name\":\"a\",\"type\":\"wxudgn\"}";
+            "{\"properties\":{\"description\":\"be\",\"permissions\":[{\"actions\":[\"rzwnyk\"],\"notActions\":[\"jch\",\"rmpwctofld\"]}],\"roleName\":\"acdhztxkbr\"},\"id\":\"g\",\"name\":\"rwjiyew\",\"type\":\"fj\"}";
 
         Mockito.when(httpResponse.getStatusCode()).thenReturn(200);
         Mockito.when(httpResponse.getHeaders()).thenReturn(new HttpHeaders());
@@ -62,7 +62,7 @@ public final class BillingRoleDefinitionsGetByBillingProfileWithResponseMockTest
             manager
                 .billingRoleDefinitions()
                 .getByBillingProfileWithResponse(
-                    "fwxzutg", "ztwhghmupg", "yjtcdxabbujftab", com.azure.core.util.Context.NONE)
+                    "btxxwpfhnjzud", "tpzkgmeboywhcz", "qrhm", com.azure.core.util.Context.NONE)
                 .getValue();
     }
 }

@@ -14,29 +14,29 @@ public final class BillingRoleAssignmentInnerTests {
         BillingRoleAssignmentInner model =
             BinaryData
                 .fromString(
-                    "{\"properties\":{\"createdOn\":\"ithtywu\",\"createdByPrincipalTenantId\":\"cbihwqk\",\"createdByPrincipalId\":\"dntwjchrdgo\",\"createdByUserEmailAddress\":\"xum\",\"principalId\":\"ton\",\"principalTenantId\":\"jl\",\"roleDefinitionId\":\"dfdlwggyts\",\"scope\":\"tov\",\"userAuthenticationType\":\"gseinq\",\"userEmailAddress\":\"ufxqknpirgnepttw\"},\"id\":\"msniffc\",\"name\":\"mqnrojlpijnkr\",\"type\":\"frddhcrati\"}")
+                    "{\"properties\":{\"createdOn\":\"nmdxotngfd\",\"createdByPrincipalTenantId\":\"geyzihgrkyuiz\",\"createdByPrincipalId\":\"snmfpphojeevy\",\"createdByUserEmailAddress\":\"hsgz\",\"principalId\":\"zbgomfgbeg\",\"principalTenantId\":\"gleohi\",\"roleDefinitionId\":\"tnluankrr\",\"scope\":\"eeebtijvacv\",\"userAuthenticationType\":\"qzbqqxlajrnwxa\",\"userEmailAddress\":\"veh\"},\"id\":\"kuyxoafg\",\"name\":\"oqltfae\",\"type\":\"linmfgv\"}")
                 .toObject(BillingRoleAssignmentInner.class);
-        Assertions.assertEquals("ton", model.principalId());
-        Assertions.assertEquals("jl", model.principalTenantId());
-        Assertions.assertEquals("dfdlwggyts", model.roleDefinitionId());
-        Assertions.assertEquals("gseinq", model.userAuthenticationType());
-        Assertions.assertEquals("ufxqknpirgnepttw", model.userEmailAddress());
+        Assertions.assertEquals("zbgomfgbeg", model.principalId());
+        Assertions.assertEquals("gleohi", model.principalTenantId());
+        Assertions.assertEquals("tnluankrr", model.roleDefinitionId());
+        Assertions.assertEquals("qzbqqxlajrnwxa", model.userAuthenticationType());
+        Assertions.assertEquals("veh", model.userEmailAddress());
     }
 
     @org.junit.jupiter.api.Test
     public void testSerialize() throws Exception {
         BillingRoleAssignmentInner model =
             new BillingRoleAssignmentInner()
-                .withPrincipalId("ton")
-                .withPrincipalTenantId("jl")
-                .withRoleDefinitionId("dfdlwggyts")
-                .withUserAuthenticationType("gseinq")
-                .withUserEmailAddress("ufxqknpirgnepttw");
+                .withPrincipalId("zbgomfgbeg")
+                .withPrincipalTenantId("gleohi")
+                .withRoleDefinitionId("tnluankrr")
+                .withUserAuthenticationType("qzbqqxlajrnwxa")
+                .withUserEmailAddress("veh");
         model = BinaryData.fromObject(model).toObject(BillingRoleAssignmentInner.class);
-        Assertions.assertEquals("ton", model.principalId());
-        Assertions.assertEquals("jl", model.principalTenantId());
-        Assertions.assertEquals("dfdlwggyts", model.roleDefinitionId());
-        Assertions.assertEquals("gseinq", model.userAuthenticationType());
-        Assertions.assertEquals("ufxqknpirgnepttw", model.userEmailAddress());
+        Assertions.assertEquals("zbgomfgbeg", model.principalId());
+        Assertions.assertEquals("gleohi", model.principalTenantId());
+        Assertions.assertEquals("tnluankrr", model.roleDefinitionId());
+        Assertions.assertEquals("qzbqqxlajrnwxa", model.userAuthenticationType());
+        Assertions.assertEquals("veh", model.userEmailAddress());
     }
 }

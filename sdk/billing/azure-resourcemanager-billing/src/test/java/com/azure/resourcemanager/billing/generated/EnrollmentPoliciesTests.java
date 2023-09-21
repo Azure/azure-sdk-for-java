@@ -13,7 +13,7 @@ public final class EnrollmentPoliciesTests {
         EnrollmentPolicies model =
             BinaryData
                 .fromString(
-                    "{\"accountOwnerViewCharges\":false,\"departmentAdminViewCharges\":false,\"marketplaceEnabled\":false,\"reservedInstancesEnabled\":true}")
+                    "{\"accountOwnerViewCharges\":true,\"departmentAdminViewCharges\":true,\"marketplaceEnabled\":true,\"reservedInstancesEnabled\":true}")
                 .toObject(EnrollmentPolicies.class);
     }
 

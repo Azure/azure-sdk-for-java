@@ -33,7 +33,7 @@ public final class BillingSubscriptionsMoveMockTests {
         ArgumentCaptor<HttpRequest> httpRequest = ArgumentCaptor.forClass(HttpRequest.class);
 
         String responseStr =
-            "{\"properties\":{\"displayName\":\"ycxhxzgaztta\",\"subscriptionId\":\"d3cdb36f-7903-46a6-b127-4f7fed731bfc\",\"subscriptionBillingStatus\":\"Inactive\",\"lastMonthCharges\":{\"currency\":\"fqhppubowsep\",\"value\":1.4296412},\"monthToDateCharges\":{\"currency\":\"tdherngbtcjuahok\",\"value\":60.235302},\"billingProfileId\":\"kauxof\",\"billingProfileDisplayName\":\"fphwpnu\",\"costCenter\":\"iywzejy\",\"customerId\":\"slwkojpl\",\"customerDisplayName\":\"dnpdwrpqaf\",\"invoiceSectionId\":\"ug\",\"invoiceSectionDisplayName\":\"n\",\"reseller\":{\"resellerId\":\"et\",\"description\":\"ypococtfjgtixr\"},\"skuId\":\"zuyt\",\"skuDescription\":\"mlmuowol\",\"suspensionReasons\":[\"iropionszon\"]},\"id\":\"pngajin\",\"name\":\"ixjawrtm\",\"type\":\"fjmyccxlzhco\"}";
+            "{\"properties\":{\"displayName\":\"nkyhf\",\"subscriptionId\":\"c7ae5fee-2843-4e6c-acb0-35902f7fdfff\",\"subscriptionBillingStatus\":\"Warning\",\"lastMonthCharges\":{\"currency\":\"fxjelg\",\"value\":48.554134},\"monthToDateCharges\":{\"currency\":\"jhhhqxu\",\"value\":41.859264},\"billingProfileId\":\"acoyvivbsizusjs\",\"billingProfileDisplayName\":\"bscm\",\"costCenter\":\"zijiufehgmv\",\"customerId\":\"nwyvq\",\"customerDisplayName\":\"rerlniy\",\"invoiceSectionId\":\"lyfwxzutg\",\"invoiceSectionDisplayName\":\"twhghmupgxyjtc\",\"reseller\":{\"resellerId\":\"bb\",\"description\":\"ftabenbbklqp\"},\"skuId\":\"ucafedd\",\"skuDescription\":\"nlzafwxudgnh\",\"suspensionReasons\":[\"krtalvn\",\"wgpbemeluclv\",\"jjukyrdnqodxah\"]},\"id\":\"xhqf\",\"name\":\"qnvzoqgyipemch\",\"type\":\"avsczuejdtxp\"}";
 
         Mockito.when(httpResponse.getStatusCode()).thenReturn(200);
         Mockito.when(httpResponse.getHeaders()).thenReturn(new HttpHeaders());
@@ -65,13 +65,12 @@ public final class BillingSubscriptionsMoveMockTests {
             manager
                 .billingSubscriptions()
                 .move(
-                    "ffifhx",
-                    new TransferBillingSubscriptionRequestProperties()
-                        .withDestinationInvoiceSectionId("rsnewmozqvbubqma"),
+                    "xpjb",
+                    new TransferBillingSubscriptionRequestProperties().withDestinationInvoiceSectionId("ypsjoq"),
                     com.azure.core.util.Context.NONE);
 
-        Assertions.assertEquals(BillingSubscriptionStatusType.INACTIVE, response.subscriptionBillingStatus());
-        Assertions.assertEquals("iywzejy", response.costCenter());
-        Assertions.assertEquals("zuyt", response.skuId());
+        Assertions.assertEquals(BillingSubscriptionStatusType.WARNING, response.subscriptionBillingStatus());
+        Assertions.assertEquals("zijiufehgmv", response.costCenter());
+        Assertions.assertEquals("ucafedd", response.skuId());
     }
 }

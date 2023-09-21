@@ -55,8 +55,7 @@ public final class PoliciesClientImpl implements PoliciesClient {
     public interface PoliciesService {
         @Headers({"Content-Type: application/json"})
         @Get(
-            "/providers/Microsoft.Billing/billingAccounts/{billingAccountName}/billingProfiles/{billingProfileName}"
-                + "/policies/default")
+            "/providers/Microsoft.Billing/billingAccounts/{billingAccountName}/billingProfiles/{billingProfileName}/policies/default")
         @ExpectedResponses({200})
         @UnexpectedResponseExceptionType(ManagementException.class)
         Mono<Response<PolicyInner>> getByBillingProfile(
@@ -69,8 +68,7 @@ public final class PoliciesClientImpl implements PoliciesClient {
 
         @Headers({"Content-Type: application/json"})
         @Put(
-            "/providers/Microsoft.Billing/billingAccounts/{billingAccountName}/billingProfiles/{billingProfileName}"
-                + "/policies/default")
+            "/providers/Microsoft.Billing/billingAccounts/{billingAccountName}/billingProfiles/{billingProfileName}/policies/default")
         @ExpectedResponses({200})
         @UnexpectedResponseExceptionType(ManagementException.class)
         Mono<Response<PolicyInner>> update(
@@ -84,8 +82,7 @@ public final class PoliciesClientImpl implements PoliciesClient {
 
         @Headers({"Content-Type: application/json"})
         @Get(
-            "/providers/Microsoft.Billing/billingAccounts/{billingAccountName}/customers/{customerName}/policies"
-                + "/default")
+            "/providers/Microsoft.Billing/billingAccounts/{billingAccountName}/customers/{customerName}/policies/default")
         @ExpectedResponses({200})
         @UnexpectedResponseExceptionType(ManagementException.class)
         Mono<Response<CustomerPolicyInner>> getByCustomer(
@@ -98,8 +95,7 @@ public final class PoliciesClientImpl implements PoliciesClient {
 
         @Headers({"Content-Type: application/json"})
         @Put(
-            "/providers/Microsoft.Billing/billingAccounts/{billingAccountName}/customers/{customerName}/policies"
-                + "/default")
+            "/providers/Microsoft.Billing/billingAccounts/{billingAccountName}/customers/{customerName}/policies/default")
         @ExpectedResponses({200})
         @UnexpectedResponseExceptionType(ManagementException.class)
         Mono<Response<CustomerPolicyInner>> updateCustomer(

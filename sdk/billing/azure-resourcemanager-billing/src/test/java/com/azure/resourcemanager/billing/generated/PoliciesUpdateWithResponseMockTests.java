@@ -35,7 +35,7 @@ public final class PoliciesUpdateWithResponseMockTests {
         ArgumentCaptor<HttpRequest> httpRequest = ArgumentCaptor.forClass(HttpRequest.class);
 
         String responseStr =
-            "{\"properties\":{\"marketplacePurchases\":\"NotAllowed\",\"reservationPurchases\":\"Allowed\",\"viewCharges\":\"NotAllowed\"},\"id\":\"pol\",\"name\":\"t\",\"type\":\"evboclzhzjknyuxg\"}";
+            "{\"properties\":{\"marketplacePurchases\":\"OnlyFreeAllowed\",\"reservationPurchases\":\"Allowed\",\"viewCharges\":\"NotAllowed\"},\"id\":\"iyjvz\",\"name\":\"ko\",\"type\":\"r\"}";
 
         Mockito.when(httpResponse.getStatusCode()).thenReturn(200);
         Mockito.when(httpResponse.getHeaders()).thenReturn(new HttpHeaders());
@@ -67,16 +67,16 @@ public final class PoliciesUpdateWithResponseMockTests {
             manager
                 .policies()
                 .updateWithResponse(
-                    "jcmmzrrscub",
-                    "wsdrnpxqwodif",
+                    "kbqsjhbtqqvyfscy",
+                    "fwbivqvo",
                     new PolicyInner()
-                        .withMarketplacePurchases(MarketplacePurchasesPolicy.NOT_ALLOWED)
+                        .withMarketplacePurchases(MarketplacePurchasesPolicy.ALL_ALLOWED)
                         .withReservationPurchases(ReservationPurchasesPolicy.NOT_ALLOWED)
-                        .withViewCharges(ViewChargesPolicy.NOT_ALLOWED),
+                        .withViewCharges(ViewChargesPolicy.ALLOWED),
                     com.azure.core.util.Context.NONE)
                 .getValue();
 
-        Assertions.assertEquals(MarketplacePurchasesPolicy.NOT_ALLOWED, response.marketplacePurchases());
+        Assertions.assertEquals(MarketplacePurchasesPolicy.ONLY_FREE_ALLOWED, response.marketplacePurchases());
         Assertions.assertEquals(ReservationPurchasesPolicy.ALLOWED, response.reservationPurchases());
         Assertions.assertEquals(ViewChargesPolicy.NOT_ALLOWED, response.viewCharges());
     }

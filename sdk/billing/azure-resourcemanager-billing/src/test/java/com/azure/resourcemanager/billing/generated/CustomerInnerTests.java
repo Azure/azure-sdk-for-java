@@ -17,21 +17,21 @@ public final class CustomerInnerTests {
         CustomerInner model =
             BinaryData
                 .fromString(
-                    "{\"properties\":{\"billingProfileId\":\"l\",\"billingProfileDisplayName\":\"kx\",\"displayName\":\"skpbhenbtkcxywn\",\"enabledAzurePlans\":[{\"skuId\":\"synlqidybyxczfc\",\"skuDescription\":\"aaxdbabphlwrq\"}],\"resellers\":[{\"resellerId\":\"sthsu\",\"description\":\"cmnyyazttb\"},{\"resellerId\":\"wrqpue\",\"description\":\"kzywbiex\"},{\"resellerId\":\"eyueaxibxujwb\",\"description\":\"walm\"},{\"resellerId\":\"yoxa\",\"description\":\"dkzjancuxrh\"}]},\"id\":\"wbavxbniwdj\",\"name\":\"wz\",\"type\":\"s\"}")
+                    "{\"properties\":{\"billingProfileId\":\"jhxxjyn\",\"billingProfileDisplayName\":\"divkrt\",\"displayName\":\"bxqz\",\"enabledAzurePlans\":[{\"skuId\":\"fauvjfdxx\",\"skuDescription\":\"e\"}],\"resellers\":[{\"resellerId\":\"qaqtdoqmcbxvwvxy\",\"description\":\"qbhsfxobl\"}]},\"id\":\"tkblmpewww\",\"name\":\"bkrvrnsvshqj\",\"type\":\"hxcr\"}")
                 .toObject(CustomerInner.class);
-        Assertions.assertEquals("skpbhenbtkcxywn", model.displayName());
-        Assertions.assertEquals("synlqidybyxczfc", model.enabledAzurePlans().get(0).skuId());
+        Assertions.assertEquals("bxqz", model.displayName());
+        Assertions.assertEquals("fauvjfdxx", model.enabledAzurePlans().get(0).skuId());
     }
 
     @org.junit.jupiter.api.Test
     public void testSerialize() throws Exception {
         CustomerInner model =
             new CustomerInner()
-                .withDisplayName("skpbhenbtkcxywn")
-                .withEnabledAzurePlans(Arrays.asList(new AzurePlan().withSkuId("synlqidybyxczfc")))
-                .withResellers(Arrays.asList(new Reseller(), new Reseller(), new Reseller(), new Reseller()));
+                .withDisplayName("bxqz")
+                .withEnabledAzurePlans(Arrays.asList(new AzurePlan().withSkuId("fauvjfdxx")))
+                .withResellers(Arrays.asList(new Reseller()));
         model = BinaryData.fromObject(model).toObject(CustomerInner.class);
-        Assertions.assertEquals("skpbhenbtkcxywn", model.displayName());
-        Assertions.assertEquals("synlqidybyxczfc", model.enabledAzurePlans().get(0).skuId());
+        Assertions.assertEquals("bxqz", model.displayName());
+        Assertions.assertEquals("fauvjfdxx", model.enabledAzurePlans().get(0).skuId());
     }
 }

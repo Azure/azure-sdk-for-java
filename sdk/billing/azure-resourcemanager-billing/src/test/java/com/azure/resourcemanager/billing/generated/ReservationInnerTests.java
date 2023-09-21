@@ -16,9 +16,9 @@ public final class ReservationInnerTests {
         ReservationInner model =
             BinaryData
                 .fromString(
-                    "{\"id\":\"vdwxfzwi\",\"name\":\"wzjbh\",\"type\":\"sxjrk\",\"location\":\"btrnegvm\",\"sku\":{\"name\":\"q\"},\"properties\":{\"appliedScopes\":[\"dspastjbkkdmfl\"],\"appliedScopeType\":\"stmjlxrri\",\"reservedResourceType\":\"zapeewchpx\",\"quantity\":51.30364,\"provisioningState\":\"kuziycsle\",\"expiryDate\":\"f\",\"provisioningSubState\":\"tcktyhjtqedcgzu\",\"displayName\":\"mmrqz\",\"displayProvisioningState\":\"rjvpglydzgkrvqee\",\"userFriendlyRenewState\":\"oepry\",\"userFriendlyAppliedScopeType\":\"nwy\",\"effectiveDateTime\":\"zdmovzv\",\"skuDescription\":\"aawzqadfl\",\"term\":\"ur\",\"renew\":true,\"renewSource\":\"ecxn\",\"utilization\":{\"trend\":\"cokpv\",\"aggregates\":[]}}}")
+                    "{\"id\":\"h\",\"name\":\"jtbxqmuluxlx\",\"type\":\"vnersbycucrw\",\"location\":\"mikzeb\",\"sku\":{\"name\":\"smswziqgfuh\"},\"properties\":{\"appliedScopes\":[\"uswhvhczznvfbycj\",\"xjww\"],\"appliedScopeType\":\"z\",\"reservedResourceType\":\"mwmxqhndvnoamld\",\"quantity\":90.974335,\"provisioningState\":\"ohdjhhflzok\",\"expiryDate\":\"ox\",\"provisioningSubState\":\"lnjetaglt\",\"displayName\":\"oatftgzpnpbswvef\",\"displayProvisioningState\":\"ccsrmozihmipgaw\",\"userFriendlyRenewState\":\"xp\",\"userFriendlyAppliedScopeType\":\"jcxcjxgrytfmpcyc\",\"effectiveDateTime\":\"rmcaykgg\",\"skuDescription\":\"xu\",\"term\":\"rksxwpndfc\",\"renew\":false,\"renewSource\":\"nthjtwkjaosrxuzv\",\"utilization\":{\"trend\":\"ktcqio\",\"aggregates\":[{\"grain\":17.632603,\"grainUnit\":\"hgxqdlyrt\",\"value\":32.485462,\"valueUnit\":\"prltzkatbhjmz\"},{\"grain\":53.038395,\"grainUnit\":\"oqeq\",\"value\":59.736324,\"valueUnit\":\"vlagun\"},{\"grain\":49.933304,\"grainUnit\":\"ebwlnbmhyreeudzq\",\"value\":57.947952,\"valueUnit\":\"dqmjxly\"}]}}}")
                 .toObject(ReservationInner.class);
-        Assertions.assertEquals("dspastjbkkdmfl", model.appliedScopes().get(0));
+        Assertions.assertEquals("uswhvhczznvfbycj", model.appliedScopes().get(0));
     }
 
     @org.junit.jupiter.api.Test
@@ -26,8 +26,8 @@ public final class ReservationInnerTests {
         ReservationInner model =
             new ReservationInner()
                 .withSku(new ReservationSkuProperty())
-                .withAppliedScopes(Arrays.asList("dspastjbkkdmfl"));
+                .withAppliedScopes(Arrays.asList("uswhvhczznvfbycj", "xjww"));
         model = BinaryData.fromObject(model).toObject(ReservationInner.class);
-        Assertions.assertEquals("dspastjbkkdmfl", model.appliedScopes().get(0));
+        Assertions.assertEquals("uswhvhczznvfbycj", model.appliedScopes().get(0));
     }
 }

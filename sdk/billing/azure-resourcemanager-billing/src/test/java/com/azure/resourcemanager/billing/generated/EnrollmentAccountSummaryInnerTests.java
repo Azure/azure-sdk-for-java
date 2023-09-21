@@ -13,7 +13,7 @@ public final class EnrollmentAccountSummaryInnerTests {
         EnrollmentAccountSummaryInner model =
             BinaryData
                 .fromString(
-                    "{\"properties\":{\"principalName\":\"dp\"},\"id\":\"s\",\"name\":\"wn\",\"type\":\"tgkbugrjqctojc\"}")
+                    "{\"properties\":{\"principalName\":\"oniypfpubcpzgp\"},\"id\":\"tivhjknidibgqjx\",\"name\":\"p\",\"type\":\"r\"}")
                 .toObject(EnrollmentAccountSummaryInner.class);
     }
 

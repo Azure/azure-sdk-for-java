@@ -13,7 +13,7 @@ public final class InstructionListResultTests {
         InstructionListResult model =
             BinaryData
                 .fromString(
-                    "{\"value\":[{\"properties\":{\"amount\":14.028668,\"startDate\":\"2021-02-05T11:01:53Z\",\"endDate\":\"2021-08-09T18:56:36Z\",\"creationDate\":\"2021-10-09T04:22:59Z\"},\"id\":\"yhxdeoejzicwi\",\"name\":\"sjttgzfbish\",\"type\":\"bkh\"},{\"properties\":{\"amount\":99.54184,\"startDate\":\"2021-05-05T10:08:59Z\",\"endDate\":\"2021-10-22T18:26:04Z\",\"creationDate\":\"2021-07-28T01:41:30Z\"},\"id\":\"md\",\"name\":\"hagalpbuxwgipwh\",\"type\":\"nowkgshw\"},{\"properties\":{\"amount\":13.87347,\"startDate\":\"2021-02-10T18:27Z\",\"endDate\":\"2021-05-09T01:51:01Z\",\"creationDate\":\"2021-05-05T18:01:17Z\"},\"id\":\"njeputtmrywn\",\"name\":\"zoqftiyqzrnkcqvy\",\"type\":\"lwh\"},{\"properties\":{\"amount\":81.865715,\"startDate\":\"2021-07-23T19:47:42Z\",\"endDate\":\"2021-07-17T17:56:48Z\",\"creationDate\":\"2021-12-09T22:32:32Z\"},\"id\":\"oqqnwvlryav\",\"name\":\"hheunmmqhgyx\",\"type\":\"konocu\"}],\"nextLink\":\"klyaxuconu\"}")
+                    "{\"value\":[{\"properties\":{\"amount\":92.7737,\"startDate\":\"2021-03-31T05:12:01Z\",\"endDate\":\"2021-07-04T10:03:04Z\",\"creationDate\":\"2021-03-30T00:52:16Z\"},\"id\":\"ibtnmxiebwwaloay\",\"name\":\"cgwrtzjuz\",\"type\":\"wyzmhtxon\"}],\"nextLink\":\"ts\"}")
                 .toObject(InstructionListResult.class);
     }
 

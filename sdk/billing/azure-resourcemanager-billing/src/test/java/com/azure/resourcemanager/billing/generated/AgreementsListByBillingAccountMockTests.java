@@ -31,7 +31,7 @@ public final class AgreementsListByBillingAccountMockTests {
         ArgumentCaptor<HttpRequest> httpRequest = ArgumentCaptor.forClass(HttpRequest.class);
 
         String responseStr =
-            "{\"value\":[{\"properties\":{\"agreementLink\":\"gttmvmmagoaqyl\",\"category\":\"MicrosoftCustomerAgreement\",\"acceptanceMode\":\"ClickToAccept\",\"billingProfileInfo\":{\"billingProfileId\":\"azjcgmxitpfin\",\"billingProfileDisplayName\":\"pdltkrlg\",\"indirectRelationshipOrganizationName\":\"tbdrvcqgue\"},\"effectiveDate\":\"2021-05-18T02:25:41Z\",\"expirationDate\":\"2021-08-13T12:33:46Z\",\"participants\":[],\"status\":\"qdurelyujlfyoum\"},\"id\":\"ckyeclcdigpta\",\"name\":\"brzmqxucycijoclx\",\"type\":\"utgjcyz\"}]}";
+            "{\"value\":[{\"properties\":{\"agreementLink\":\"wjzl\",\"category\":\"MicrosoftCustomerAgreement\",\"acceptanceMode\":\"ClickToAccept\",\"billingProfileInfo\":{\"billingProfileId\":\"zwjcaye\",\"billingProfileDisplayName\":\"rransyb\",\"indirectRelationshipOrganizationName\":\"polwzrghsrlei\"},\"effectiveDate\":\"2021-01-26T00:12:52Z\",\"expirationDate\":\"2021-10-07T01:58:32Z\",\"participants\":[{\"status\":\"cjwvuagfqwtltngv\",\"statusDate\":\"2021-02-28T09:32:49Z\",\"email\":\"ptrklzmija\"},{\"status\":\"olxf\",\"statusDate\":\"2021-12-08T08:51:49Z\",\"email\":\"h\"}],\"status\":\"ynwlslrcigtzjcv\"},\"id\":\"xqlaps\",\"name\":\"ssov\",\"type\":\"xpavid\"}]}";
 
         Mockito.when(httpResponse.getStatusCode()).thenReturn(200);
         Mockito.when(httpResponse.getHeaders()).thenReturn(new HttpHeaders());
@@ -60,6 +60,6 @@ public final class AgreementsListByBillingAccountMockTests {
                     new AzureProfile("", "", AzureEnvironment.AZURE));
 
         PagedIterable<Agreement> response =
-            manager.agreements().listByBillingAccount("aderzmw", "t", com.azure.core.util.Context.NONE);
+            manager.agreements().listByBillingAccount("hvrztnvg", "shqrdgrt", com.azure.core.util.Context.NONE);
     }
 }
