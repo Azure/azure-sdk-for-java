@@ -917,7 +917,7 @@ public final class OpenAIAsyncClient {
      *             }
      *         }
      *     ]
-     *     prompt_annotations (Optional): [
+     *     prompt_filter_results (Optional): [
      *          (Optional){
      *             prompt_index: int (Required)
      *             content_filter_results (Optional): (recursive schema, see content_filter_results above)
