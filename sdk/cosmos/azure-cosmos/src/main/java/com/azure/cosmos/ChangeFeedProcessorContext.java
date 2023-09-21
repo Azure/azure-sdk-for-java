@@ -11,6 +11,9 @@ import java.util.function.BiConsumer;
  * Encapsulates properties which are mapped to a batch of change feed documents
  * processed when {@link  ChangeFeedProcessorBuilder#handleAllVersionsAndDeletesChanges(BiConsumer)}
  * lambda is invoked.
+ * <br>
+ * <br>
+ * ATTENTION: This interface is not designed to be implemented by end users.
  * */
 @Beta(value = Beta.SinceVersion.V4_50_0, warningText = Beta.PREVIEW_SUBJECT_TO_CHANGE_WARNING)
 public interface ChangeFeedProcessorContext {
