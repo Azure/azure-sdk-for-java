@@ -439,7 +439,7 @@ public class DataLakeTestBase extends TestProxyTestBase {
 
     protected DataLakePathClientBuilder getPathClientBuilderWithTokenCredential(String endpoint, String pathName,
         HttpPipelinePolicy... policies) {
-        DataLakePathClientBuilder builder = new DataLakePathClientBuilder().endpoint(endpoint).pathName(pathName);
+        DataLakePathClientBuilder builder = new DataLakePathClientBuilder().pathName(pathName).endpoint(endpoint);
         setOauthCredentials(builder);
 
         for (HttpPipelinePolicy policy : policies) {

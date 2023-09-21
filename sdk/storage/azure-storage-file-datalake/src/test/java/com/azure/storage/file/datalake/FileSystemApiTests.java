@@ -2217,7 +2217,8 @@ public class FileSystemApiTests extends DataLakeTestBase {
     @Test
     public void defaultAudience() {
         DataLakeFileSystemClient aadFsClient =
-            getFileSystemClientBuilderWithTokenCredential(dataLakeFileSystemClient.getFileSystemUrl())
+            getFileSystemClientBuilderWithTokenCredential(ENVIRONMENT.getPrimaryAccount().getDataLakeEndpoint())
+                .fileSystemName(dataLakeFileSystemClient.getFileSystemName())
                 .dataLakeAudience(DataLakeAudience.getPublicAudience())
                 .buildClient();
 
@@ -2229,7 +2230,8 @@ public class FileSystemApiTests extends DataLakeTestBase {
         DataLakeAudience audience = new DataLakeAudience(String.format("https://%s.blob.core.windows.net",
             dataLakeFileSystemClient.getAccountName()));
         DataLakeFileSystemClient aadFsClient =
-            getFileSystemClientBuilderWithTokenCredential(dataLakeFileSystemClient.getFileSystemUrl())
+            getFileSystemClientBuilderWithTokenCredential(ENVIRONMENT.getPrimaryAccount().getDataLakeEndpoint())
+                .fileSystemName(dataLakeFileSystemClient.getFileSystemName())
                 .dataLakeAudience(audience)
                 .buildClient();
 
@@ -2239,7 +2241,7 @@ public class FileSystemApiTests extends DataLakeTestBase {
     @Test
     public void storageAccountAudience() {
         DataLakeFileSystemClient aadFsClient =
-            getFileSystemClientBuilderWithTokenCredential(dataLakeFileSystemClient.getFileSystemUrl())
+            getFileSystemClientBuilderWithTokenCredential(ENVIRONMENT.getPrimaryAccount().getDataLakeEndpoint())
                 .dataLakeAudience(DataLakeAudience.getDataLakeServiceAccountAudience(
                     dataLakeFileSystemClient.getAccountName()))
                 .buildClient();
@@ -2251,7 +2253,7 @@ public class FileSystemApiTests extends DataLakeTestBase {
     public void audienceError() {
         DataLakeAudience audience = new DataLakeAudience("https://badaudience.blob.core.windows.net");
         DataLakeFileSystemClient aadFsClient =
-            getFileSystemClientBuilderWithTokenCredential(dataLakeFileSystemClient.getFileSystemUrl())
+            getFileSystemClientBuilderWithTokenCredential(ENVIRONMENT.getPrimaryAccount().getDataLakeEndpoint())
                 .dataLakeAudience(audience)
                 .buildClient();
 

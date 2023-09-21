@@ -4179,7 +4179,8 @@ public class FileApiTest extends DataLakeTestBase {
     @Test
     public void defaultAudience() {
         DataLakeFileClient aadFileClient = getPathClientBuilderWithTokenCredential(
-            dataLakeFileSystemClient.getFileSystemUrl(), fc.getFileName())
+            ENVIRONMENT.getPrimaryAccount().getDataLakeEndpoint(), fc.getFilePath())
+            .fileSystemName(dataLakeFileSystemClient.getFileSystemName())
             .dataLakeAudience(DataLakeAudience.getPublicAudience())
             .buildFileClient();
 
@@ -4191,7 +4192,8 @@ public class FileApiTest extends DataLakeTestBase {
         DataLakeAudience audience = new DataLakeAudience(String.format("https://%s.blob.core.windows.net",
             dataLakeFileSystemClient.getAccountName()));
         DataLakeFileClient aadFileClient = getPathClientBuilderWithTokenCredential(
-            dataLakeFileSystemClient.getFileSystemUrl(), fc.getFileName())
+            ENVIRONMENT.getPrimaryAccount().getDataLakeEndpoint(), fc.getFilePath())
+            .fileSystemName(dataLakeFileSystemClient.getFileSystemName())
             .dataLakeAudience(audience)
             .buildFileClient();
 
@@ -4201,7 +4203,8 @@ public class FileApiTest extends DataLakeTestBase {
     @Test
     public void storageAccountAudience() {
         DataLakeFileClient aadFileClient = getPathClientBuilderWithTokenCredential(
-            dataLakeFileSystemClient.getFileSystemUrl(), fc.getFileName())
+            ENVIRONMENT.getPrimaryAccount().getDataLakeEndpoint(), fc.getFilePath())
+            .fileSystemName(dataLakeFileSystemClient.getFileSystemName())
             .dataLakeAudience(DataLakeAudience.getDataLakeServiceAccountAudience(
                 dataLakeFileSystemClient.getAccountName()))
             .buildFileClient();
@@ -4213,7 +4216,8 @@ public class FileApiTest extends DataLakeTestBase {
     public void audienceError() {
         DataLakeAudience audience = new DataLakeAudience("https://badaudience.blob.core.windows.net");
         DataLakeFileClient aadFileClient = getPathClientBuilderWithTokenCredential(
-            dataLakeFileSystemClient.getFileSystemUrl(), fc.getFileName())
+            ENVIRONMENT.getPrimaryAccount().getDataLakeEndpoint(), fc.getFilePath())
+            .fileSystemName(dataLakeFileSystemClient.getFileSystemName())
             .dataLakeAudience(audience)
             .buildFileClient();
 

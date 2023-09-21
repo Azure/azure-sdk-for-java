@@ -2656,45 +2656,65 @@ class FileApiTests extends FileShareTestBase {
 
     @Test
     public void defaultAudience() {
-        ShareFileClient aadFileClient = getFileClientBuilderWithTokenCredential(
-            primaryFileServiceClient.getFileServiceUrl())
-            .shareAudience(ShareAudience.getPublicAudience())
-            .buildFileClient();
+        String fileName = generatePathName();
+        ShareFileClient fileClient = fileBuilderHelper(shareName, fileName).buildFileClient();
+        fileClient.create(Constants.KB);
+        ShareServiceClient oAuthServiceClient =
+            getOAuthServiceClient(new ShareServiceClientBuilder()
+                .shareTokenIntent(ShareTokenIntent.BACKUP)
+                .shareAudience(ShareAudience.getPublicAudience())
+            );
 
+        ShareFileClient aadFileClient = oAuthServiceClient.getShareClient(shareName).getFileClient(fileName);
         assertTrue(aadFileClient.exists());
     }
 
     @Test
     public void customAudience() {
+        String fileName = generatePathName();
+        ShareFileClient fileClient = fileBuilderHelper(shareName, fileName).buildFileClient();
+        fileClient.create(Constants.KB);
         ShareAudience audience = new ShareAudience(String.format("https://%s.file.core.windows.net",
             shareClient.getAccountName()));
-        ShareFileClient aadFileClient = getFileClientBuilderWithTokenCredential(
-            primaryFileServiceClient.getFileServiceUrl())
-            .shareAudience(audience)
-            .buildFileClient();
+        ShareServiceClient oAuthServiceClient =
+            getOAuthServiceClient(new ShareServiceClientBuilder()
+                .shareTokenIntent(ShareTokenIntent.BACKUP)
+                .shareAudience(audience)
+            );
 
+        ShareFileClient aadFileClient = oAuthServiceClient.getShareClient(shareName).getFileClient(fileName);
         assertTrue(aadFileClient.exists());
     }
 
     @Test
     public void storageAccountAudience() {
-        ShareFileClient aadFileClient = getFileClientBuilderWithTokenCredential(
-            primaryFileServiceClient.getFileServiceUrl())
-            .shareAudience(ShareAudience.getShareServiceAccountAudience(shareClient.getAccountName()))
-            .buildFileClient();
+        String fileName = generatePathName();
+        ShareFileClient fileClient = fileBuilderHelper(shareName, fileName).buildFileClient();
+        fileClient.create(Constants.KB);
+        ShareServiceClient oAuthServiceClient =
+            getOAuthServiceClient(new ShareServiceClientBuilder()
+                .shareTokenIntent(ShareTokenIntent.BACKUP)
+                .shareAudience(ShareAudience.getShareServiceAccountAudience(shareClient.getAccountName()))
+            );
 
+        ShareFileClient aadFileClient = oAuthServiceClient.getShareClient(shareName).getFileClient(fileName);
         assertTrue(aadFileClient.exists());
     }
 
     @Test
     public void audienceError() {
+        String fileName = generatePathName();
+        ShareFileClient fileClient = fileBuilderHelper(shareName, fileName).buildFileClient();
+        fileClient.create(Constants.KB);
         ShareAudience audience = new ShareAudience("https://badaudience.file.core.windows.net");
-        ShareFileClient aadFileClient = getFileClientBuilderWithTokenCredential(
-            primaryFileServiceClient.getFileServiceUrl())
-            .shareAudience(audience)
-            .buildFileClient();
+        ShareServiceClient oAuthServiceClient =
+            getOAuthServiceClient(new ShareServiceClientBuilder()
+                .shareTokenIntent(ShareTokenIntent.BACKUP)
+                .shareAudience(audience)
+            );
 
+        ShareFileClient aadFileClient = oAuthServiceClient.getShareClient(shareName).getFileClient(fileName);
         ShareStorageException e = assertThrows(ShareStorageException.class, aadFileClient::exists);
-        assertEquals(ShareErrorCode.INVALID_AUTHENTICATION_INFO, e.getErrorCode());
+        assertEquals(ShareErrorCode.AUTHENTICATION_FAILED, e.getErrorCode());
     }
 }

@@ -88,7 +88,8 @@ public class BuildHelperTests {
     private static HttpPipeline buildPipeline(HttpLogOptions logOptions, ClientOptions clientOptions, HttpClient
         httpClient) {
         return BuilderHelper.buildPipeline(CREDENTIALS, null, null, null, ENDPOINT, REQUEST_RETRY_OPTIONS, null,
-            logOptions, clientOptions, httpClient, new ArrayList<>(), new ArrayList<>(), Configuration.NONE, LOGGER);
+            logOptions, clientOptions, httpClient, new ArrayList<>(), new ArrayList<>(), Configuration.NONE, LOGGER,
+            null);
     }
 
     /**
@@ -146,7 +147,8 @@ public class BuildHelperTests {
     }
 
     /**
-     * Tests that a user application id will be honored in the UA string when using the service client builder's default pipeline.
+     * Tests that a user application id will be honored in the UA string when using the service client builder's default
+     * pipeline.
      */
     @ParameterizedTest
     @MethodSource("customApplicationIdSupplier")
@@ -164,7 +166,8 @@ public class BuildHelperTests {
     }
 
     /**
-     * Tests that a user application id will be honored in the UA string when using the queue client builder's default pipeline.
+     * Tests that a user application id will be honored in the UA string when using the queue client builder's default
+     * pipeline.
      */
     @ParameterizedTest
     @MethodSource("customApplicationIdSupplier")
@@ -204,7 +207,8 @@ public class BuildHelperTests {
     }
 
     /**
-     * Tests that a user application id will be honored in the UA string when using the service client builder's default pipeline.
+     * Tests that a user application id will be honored in the UA string when using the service client builder's default
+     * pipeline.
      */
     @Test
     public void serviceClientCustomHeadersClientOptions() {
@@ -219,7 +223,8 @@ public class BuildHelperTests {
     }
 
     /**
-     * Tests that a user application id will be honored in the UA string when using the queue client builder's default pipeline.
+     * Tests that a user application id will be honored in the UA string when using the queue client builder's default
+     * pipeline.
      */
     @Test
     public void queueClientCustomHeadersClientOptions() {
