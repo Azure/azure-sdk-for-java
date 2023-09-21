@@ -16,7 +16,7 @@ part of JDK 1.1.
 <dependency>
     <groupId>com.azure</groupId>
     <artifactId>azure-core-http-httpurlconnection</artifactId>
-    <version>1.0-SNAPSHOT</version>
+    <version>1.0.0-beta.1</version>
 </dependency>
 ```
 [//]: # ({x-version-update-end})
