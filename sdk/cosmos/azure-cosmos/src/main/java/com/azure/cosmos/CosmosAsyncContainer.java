@@ -2702,6 +2702,25 @@ public class CosmosAsyncContainer {
 
                     return cosmosAsyncContainer.readMany(itemIdentityList, requestOptions, classType);
                 }
+
+                @Override
+                public <T> Function<CosmosPagedFluxOptions, Flux<FeedResponse<T>>> queryItemsInternalFunc(
+                    CosmosAsyncContainer cosmosAsyncContainer,
+                    SqlQuerySpec sqlQuerySpec,
+                    CosmosQueryRequestOptions cosmosQueryRequestOptions,
+                    Class<T> classType) {
+
+                    return cosmosAsyncContainer.queryItemsInternalFunc(sqlQuerySpec, cosmosQueryRequestOptions, classType);
+                }
+
+                @Override
+                public <T> Function<CosmosPagedFluxOptions, Flux<FeedResponse<T>>> queryItemsInternalFuncWithMonoSqlQuerySpec(
+                    CosmosAsyncContainer cosmosAsyncContainer,
+                    Mono<SqlQuerySpec> sqlQuerySpecMono,
+                    CosmosQueryRequestOptions cosmosQueryRequestOptions,
+                    Class<T> classType) {
+                    return cosmosAsyncContainer.queryItemsInternalFunc(sqlQuerySpecMono, cosmosQueryRequestOptions, classType);
+                }
             });
     }
 
