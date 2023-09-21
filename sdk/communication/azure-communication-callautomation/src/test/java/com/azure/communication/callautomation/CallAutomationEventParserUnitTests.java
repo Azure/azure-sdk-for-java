@@ -743,8 +743,8 @@ public class CallAutomationEventParserUnitTests {
 
     @Test
     public void parseDialogFailedEvent() {
-        String receivedEvent = "[" +
-            "{\n"
+        String receivedEvent = "["
+            + " {\n"
             + "    \"id\": \"91f8b34b-383c-431d-9fa5-79d39fad9300\",\n"
             + "    \"source\": \"calling/callConnections/441fbf00-5b21-4beb-bd4d-fd665ca4b65f\",\n"
             + "    \"type\": \"Microsoft.Communication.DialogFailed\",\n"
@@ -779,8 +779,8 @@ public class CallAutomationEventParserUnitTests {
 
     @Test
     public void parseDialogLanguageChangeEvent() {
-        String receivedEvent = "[" +
-            "{\n"
+        String receivedEvent = "["
+            + " {\n"
             + "    \"id\": \"Sanitized\",\n"
             + "    \"source\": \"calling/callConnections/441fbf00-5b21-4beb-bd4d-fd665ca4b65f\",\n"
             + "    \"type\": \"Microsoft.Communication.DialogLanguageChange\",\n"
@@ -819,7 +819,8 @@ public class CallAutomationEventParserUnitTests {
 
     @Test
     public void parseDialogSensitivityUpdateEvent() {
-        String receivedEvent = "[{\n"
+        String receivedEvent = "["
+            + " {\n"
             + "    \"id\": \"Sanitized\",\n"
             + "    \"source\": \"calling/callConnections/491f1300-0c70-4f8c-97b4-94474f2a371b\",\n"
             + "    \"type\": \"Microsoft.Communication.DialogSensitivityUpdate\",\n"
@@ -855,7 +856,8 @@ public class CallAutomationEventParserUnitTests {
 
     @Test
     public void parseDialogConsentEvent() {
-        String receivedEvent = "[{\n"
+        String receivedEvent = "["
+            + " {\n"
             + "    \"id\": \"Sanitized\",\n"
             + "    \"source\": \"calling/callConnections/491f1300-0c70-4f8c-97b4-94474f2a371b\",\n"
             + "    \"type\": \"Microsoft.Communication.DialogConsent\",\n"
@@ -891,7 +893,8 @@ public class CallAutomationEventParserUnitTests {
 
     @Test
     public void parseDialogHangupEvent() {
-        String receivedEvent = "[{\n"
+        String receivedEvent = "["
+            + " {\n"
             + "    \"id\": \"Sanitized\",\n"
             + "    \"source\": \"calling/callConnections/491f1300-0c70-4f8c-97b4-94474f2a371b\",\n"
             + "    \"type\": \"Microsoft.Communication.DialogHangup\",\n"
@@ -927,7 +930,8 @@ public class CallAutomationEventParserUnitTests {
 
     @Test
     public void parseDialogTransferEvent() {
-        String receivedEvent = "[{\n"
+        String receivedEvent = "["
+            + " {\n"
             + "    \"id\": \"Sanitized\",\n"
             + "    \"source\": \"calling/callConnections/491f1300-0c70-4f8c-97b4-94474f2a371b\",\n"
             + "    \"type\": \"Microsoft.Communication.DialogTransfer\",\n"
