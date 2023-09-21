@@ -1,3 +1,6 @@
+// Copyright (c) Microsoft Corporation. All rights reserved.
+// Licensed under the MIT License.
+
 package com.azure.communication.callautomation.models;
 
 import com.azure.communication.callautomation.implementation.accesshelpers.DialogStateResponseConstructorProxy;
@@ -49,7 +52,7 @@ public class DialogStateResult {
      * Public constructor.
      *
      */
-    public DialogStateResult(){
+    public DialogStateResult() {
         this.dialogId = null;
         this.operationContext = null;
     }
@@ -59,7 +62,7 @@ public class DialogStateResult {
      *
      * @param dialogStateResponse The response from the dialog service
      */
-     DialogStateResult(DialogStateResponse dialogStateResponse) {
+    DialogStateResult(DialogStateResponse dialogStateResponse) {
         Objects.requireNonNull(dialogStateResponse, "dialogStateResponse must not be null");
 
         this.dialogId = dialogStateResponse.getDialogId();

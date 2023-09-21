@@ -1,3 +1,6 @@
+// Copyright (c) Microsoft Corporation. All rights reserved.
+// Licensed under the MIT License.
+
 package com.azure.communication.callautomation.implementation.accesshelpers;
 
 import com.azure.communication.callautomation.implementation.models.DialogStateResponse;
@@ -6,7 +9,7 @@ import com.azure.communication.callautomation.models.DialogStateResult;
 /**
  * Helper class to access private values of {@link DialogStateResult} across package boundaries.
  */
-public class DialogStateResponseConstructorProxy {
+public final class DialogStateResponseConstructorProxy {
     private static DialogStateResponseConstructorProxy.DialogStateResponseConstructorAccessor accessor;
 
     private DialogStateResponseConstructorProxy() { }

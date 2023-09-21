@@ -1,3 +1,6 @@
+// Copyright (c) Microsoft Corporation. All rights reserved.
+// Licensed under the MIT License.
+
 package com.azure.communication.callautomation;
 
 import com.azure.communication.callautomation.models.DialogInputType;
@@ -100,10 +103,10 @@ public class CallDialogAsyncAutomatedLiveTests extends CallAutomationAutomatedLi
             CallDialogAsync callDialogAsync = answerCallResult.getCallConnectionAsync().getCallDialogAsync();
             Response<DialogStateResult> dialogStateResultResponse = callDialogAsync.startDialog(options).block();
             assertNotNull(dialogStateResultResponse);
-            assertEquals(201,dialogStateResultResponse.getStatusCode());
+            assertEquals(201, dialogStateResultResponse.getStatusCode());
             DialogStateResult dialogStateResult = dialogStateResultResponse.getValue();
             assertNotNull(dialogStateResult);
-            assertEquals(dialogId,dialogStateResult.getDialogId());
+            assertEquals(dialogId, dialogStateResult.getDialogId());
             DialogStarted dialogStarted = waitForEvent(DialogStarted.class, receiverConnectionId, Duration.ofSeconds(20));
             assertNotNull(dialogStarted);
 

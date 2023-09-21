@@ -1,3 +1,6 @@
+// Copyright (c) Microsoft Corporation. All rights reserved.
+// Licensed under the MIT License.
+
 package com.azure.communication.callautomation.models;
 
 import java.util.Map;
@@ -10,22 +13,22 @@ public class StartDialogOptions {
     /*
      * Bot identifier.
      */
-    private String botId;
+    private final String botId;
 
     /*
      * The dialog ID.
      */
-    private String dialogId;
+    private final String dialogId;
 
     /*
      * Determines the type of the dialog.
      */
-    private DialogInputType dialogInputType;
+    private final DialogInputType dialogInputType;
 
     /*
      * Dialog context.
      */
-    private Map<String, Object> dialogContext;
+    private final Map<String, Object> dialogContext;
 
     /*
      * The value to identify context of the operation.
@@ -43,6 +46,7 @@ public class StartDialogOptions {
         this.botId = botId;
         this.dialogInputType = dialogInputType;
         this.dialogContext = dialogContext;
+        this.dialogId = null;
     }
 
     /**

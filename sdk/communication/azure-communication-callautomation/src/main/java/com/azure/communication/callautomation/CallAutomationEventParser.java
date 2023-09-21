@@ -144,21 +144,21 @@ public final class CallAutomationEventParser {
                 ret = mapper.convertValue(eventData, AddParticipantCancelled.class);
             } else if (Objects.equals(eventType, "Microsoft.Communication.CancelAddParticipantFailed")) {
                 ret = mapper.convertValue(eventData, CancelAddParticipantFailed.class);
-            }else if (Objects.equals(eventType, "Microsoft.Communication.DialogStarted")) {
+            } else if (Objects.equals(eventType, "Microsoft.Communication.DialogStarted")) {
                 ret = mapper.convertValue(eventData, DialogStarted.class);
-            }else if (Objects.equals(eventType, "Microsoft.Communication.DialogCompleted")) {
+            } else if (Objects.equals(eventType, "Microsoft.Communication.DialogCompleted")) {
                 ret = mapper.convertValue(eventData, DialogCompleted.class);
-            }else if (Objects.equals(eventType, "Microsoft.Communication.DialogFailed")) {
+            } else if (Objects.equals(eventType, "Microsoft.Communication.DialogFailed")) {
                 ret = mapper.convertValue(eventData, DialogFailed.class);
-            }else if (Objects.equals(eventType, "Microsoft.Communication.DialogConsent")) {
+            } else if (Objects.equals(eventType, "Microsoft.Communication.DialogConsent")) {
                 ret = mapper.convertValue(eventData, DialogConsent.class);
-            }else if (Objects.equals(eventType, "Microsoft.Communication.DialogHangup")) {
+            } else if (Objects.equals(eventType, "Microsoft.Communication.DialogHangup")) {
                 ret = mapper.convertValue(eventData, DialogHangup.class);
-            }else if (Objects.equals(eventType, "Microsoft.Communication.DialogLanguageChange")) {
+            } else if (Objects.equals(eventType, "Microsoft.Communication.DialogLanguageChange")) {
                 ret = mapper.convertValue(eventData, DialogLanguageChange.class);
-            }else if (Objects.equals(eventType, "Microsoft.Communication.DialogTransfer")) {
+            } else if (Objects.equals(eventType, "Microsoft.Communication.DialogTransfer")) {
                 ret = mapper.convertValue(eventData, DialogTransfer.class);
-            }else if (Objects.equals(eventType, "Microsoft.Communication.DialogSensitivityUpdate")) {
+            } else if (Objects.equals(eventType, "Microsoft.Communication.DialogSensitivityUpdate")) {
                 ret = mapper.convertValue(eventData, DialogSensitivityUpdate.class);
             }
             return ret;

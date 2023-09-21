@@ -1,3 +1,6 @@
+// Copyright (c) Microsoft Corporation. All rights reserved.
+// Licensed under the MIT License.
+
 package com.azure.communication.callautomation;
 
 import com.azure.core.util.Context;
@@ -37,7 +40,7 @@ public final class CallDialog {
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Response<DialogStateResult> startDialog(StartDialogOptions options) {
-       return callDialogAsync.startDialog(options).block();
+        return callDialogAsync.startDialog(options).block();
     }
 
     /**
