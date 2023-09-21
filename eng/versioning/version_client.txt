@@ -189,6 +189,7 @@ com.azure:azure-communication-email;1.0.5;1.1.0-beta.1
 com.azure:azure-developer-loadtesting;1.0.5;1.1.0-beta.1
 com.azure:azure-identity-extensions;1.1.7;1.2.0-beta.2
 com.azure:azure-analytics-purview-sharing;1.0.0-beta.2;1.0.0-beta.3
+com.azure:azure-ai-contentsafety;1.0.0-beta.1;1.0.0-beta.1
 com.azure.spring:azure-monitor-spring-native;1.0.0-beta.1;1.0.0-beta.1
 com.azure.spring:azure-monitor-spring-native-test;1.0.0-beta.1;1.0.0-beta.1
 com.azure.spring:spring-cloud-azure-appconfiguration-config-web;4.11.0;4.12.0-beta.1
