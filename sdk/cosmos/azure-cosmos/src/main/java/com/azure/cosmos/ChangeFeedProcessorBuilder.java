@@ -204,7 +204,7 @@ public class ChangeFeedProcessorBuilder {
      *     for &#40;ChangeFeedProcessorItem item : docs&#41; &#123;
      *         &#47;&#47; Implementation for handling and processing of each ChangeFeedProcessorItem item goes here
      *     &#125;
-     *     String leaseToken = context.getLeaseToken();
+     *     String leaseToken = context.getLeaseToken&#40;&#41;;
      *     &#47;&#47; Handling of the lease token corresponding to a batch of change feed processor item goes here
      * &#125;&#41;
      * </pre>
