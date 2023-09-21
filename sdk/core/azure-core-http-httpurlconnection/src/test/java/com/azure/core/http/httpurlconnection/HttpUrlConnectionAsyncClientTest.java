@@ -37,7 +37,7 @@ import java.util.concurrent.TimeUnit;
 import static org.junit.jupiter.api.Assertions.*;
 
 @Execution(ExecutionMode.SAME_THREAD)
-public class HttpUrlConnectionClientTest {
+public class HttpUrlConnectionAsyncClientTest {
     static final String RETURN_HEADERS_AS_IS_PATH = "/returnHeadersAsIs";
     private static final byte[] SHORT_BODY = "hi there".getBytes(StandardCharsets.UTF_8);
     private static final byte[] LONG_BODY = createLongBody();
@@ -107,7 +107,7 @@ public class HttpUrlConnectionClientTest {
 
     @Test
     public void responseBodyAsStringAsyncWithCharset() {
-        HttpClient client = new HttpUrlConnectionClientProvider().createInstance();
+        HttpClient client = new HttpUrlConnectionAsyncClientProvider().createInstance();
         StepVerifier.create(doRequest(client, "/short").flatMap(HttpResponse::getBodyAsByteArray))
             .assertNext(result -> assertArrayEquals(SHORT_BODY, result))
             .verifyComplete();
@@ -134,7 +134,7 @@ public class HttpUrlConnectionClientTest {
 
     @Test
     public void testRequestBodyIsErrorShouldPropagateToResponse() {
-        HttpClient client = new HttpUrlConnectionClientProvider().createInstance();
+        HttpClient client = new HttpUrlConnectionAsyncClientProvider().createInstance();
         HttpRequest request = new HttpRequest(HttpMethod.POST, url(server, "/shortPost"))
             .setHeader(HttpHeaderName.CONTENT_LENGTH, "132")
             .setBody(Flux.error(new RuntimeException("boo")));
@@ -146,7 +146,7 @@ public class HttpUrlConnectionClientTest {
 
     @Test
     public void testRequestBodyEndsInErrorShouldPropagateToResponse() {
-        HttpClient client = new HttpUrlConnectionClientProvider().createInstance();
+        HttpClient client = new HttpUrlConnectionAsyncClientProvider().createInstance();
         String contentChunk = "abcdefgh";
         int repetitions = 1000;
         HttpRequest request = new HttpRequest(HttpMethod.POST, url(server, "/shortPost"))
@@ -179,7 +179,7 @@ public class HttpUrlConnectionClientTest {
     @Test
     public void testConcurrentRequests() {
         int numRequests = 100; // 100 = 1GB of data read
-        HttpClient client = new HttpUrlConnectionClientProvider().createInstance();
+        HttpClient client = new HttpUrlConnectionAsyncClientProvider().createInstance();
 
         ParallelFlux<byte[]> responses = Flux.range(1, numRequests)
             .parallel()
@@ -199,7 +199,7 @@ public class HttpUrlConnectionClientTest {
     @Test
     public void testConcurrentRequestsSync() throws InterruptedException {
         int numRequests = 100; // 100 = 1GB of data read
-        HttpClient client = new HttpUrlConnectionClientProvider().createInstance();
+        HttpClient client = new HttpUrlConnectionAsyncClientProvider().createInstance();
 
         ForkJoinPool pool = new ForkJoinPool();
         List<Callable<Void>> requests = new ArrayList<>(numRequests);
@@ -220,7 +220,7 @@ public class HttpUrlConnectionClientTest {
 
     @Test
     public void validateHeadersReturnAsIs() {
-        HttpClient client = new HttpUrlConnectionClientProvider().createInstance();
+        HttpClient client = new HttpUrlConnectionAsyncClientProvider().createInstance();
 
         HttpHeaderName singleValueHeaderName = HttpHeaderName.fromString("singleValue");
         final String singleValueHeaderValue = "value";
@@ -253,7 +253,7 @@ public class HttpUrlConnectionClientTest {
     @Test
     public void testBufferedResponse() {
         Context context = new Context("azure-eagerly-read-response", true);
-        HttpClient client = new HttpUrlConnectionClientProvider().createInstance();
+        HttpClient client = new HttpUrlConnectionAsyncClientProvider().createInstance();
 
         StepVerifier.create(getResponse(client, "/short", context).flatMapMany(HttpResponse::getBody))
             .assertNext(buffer -> assertArrayEquals(SHORT_BODY, buffer.array()))
@@ -271,7 +271,7 @@ public class HttpUrlConnectionClientTest {
     @Test
     public void testEmptyBufferedResponse() {
         Context context = new Context("azure-eagerly-read-response", true);
-        HttpClient client = new HttpUrlConnectionClientProvider().createInstance();
+        HttpClient client = new HttpUrlConnectionAsyncClientProvider().createInstance();
 
         StepVerifier.create(getResponse(client, "/empty", context).flatMapMany(HttpResponse::getBody),
                 EMPTY_INITIAL_REQUEST_OPTIONS)
@@ -281,7 +281,7 @@ public class HttpUrlConnectionClientTest {
     }
 
     private static Mono<HttpResponse> getResponse(String path) {
-        HttpClient client = new HttpUrlConnectionClientProvider().createInstance();
+        HttpClient client = new HttpUrlConnectionAsyncClientProvider().createInstance();
         return getResponse(client, path, Context.NONE);
     }
 
@@ -310,7 +310,7 @@ public class HttpUrlConnectionClientTest {
     }
 
     private static void checkBodyReceived(byte[] expectedBody, String path) {
-        HttpClient client = new HttpUrlConnectionClientProvider().createInstance();
+        HttpClient client = new HttpUrlConnectionAsyncClientProvider().createInstance();
         StepVerifier.create(doRequest(client, path).flatMap(HttpResponse::getBodyAsByteArray))
             .assertNext(bytes -> assertArrayEquals(expectedBody, bytes))
             .verifyComplete();

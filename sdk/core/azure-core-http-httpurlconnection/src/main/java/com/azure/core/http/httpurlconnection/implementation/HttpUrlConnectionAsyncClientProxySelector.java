@@ -13,12 +13,12 @@ import java.util.regex.Pattern;
  * This class handles selecting the proxy during a request.
  * To be implemented.
  */
-public final class HttpUrlConnectionClientProxySelector extends ProxySelector {
+public final class HttpUrlConnectionAsyncClientProxySelector extends ProxySelector {
     private final Proxy.Type proxyType;
     private final SocketAddress proxyAddress;
     private final Pattern nonProxyHostsPattern;
 
-    public HttpUrlConnectionClientProxySelector(Proxy.Type proxyType, SocketAddress proxyAddress, String nonProxyHosts) {
+    public HttpUrlConnectionAsyncClientProxySelector(Proxy.Type proxyType, SocketAddress proxyAddress, String nonProxyHosts) {
         this.proxyType = proxyType;
         this.proxyAddress = proxyAddress;
         this.nonProxyHostsPattern = (nonProxyHosts == null)

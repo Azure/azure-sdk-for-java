@@ -17,12 +17,12 @@ import java.util.concurrent.Executor;
 
 /**
  * This class provides a HttpUrlConnection implementation for the {@link HttpClient} interface.
- * Creating an instance of this class can be achieved by using the {@link HttpUrlConnectionClientBuilder} class.
+ * Creating an instance of this class can be achieved by using the {@link HttpUrlConnectionAsyncClientBuilder} class.
  *
  * @see HttpClient
- * @see HttpUrlConnectionClientBuilder
+ * @see HttpUrlConnectionAsyncClientBuilder
  */
-public class HttpUrlConnectionClient implements HttpClient {
+public class HttpUrlConnectionAsyncClient implements HttpClient {
 
     private final ConcurrentHashMap<String, SocketClient> socketClientPool = new ConcurrentHashMap<>();
 
@@ -31,7 +31,7 @@ public class HttpUrlConnectionClient implements HttpClient {
     private final Executor executor;
     private final Configuration configuration;
 
-    public HttpUrlConnectionClient(Duration connectionTimeout, ProxyOptions proxyOptions, Executor executor, Configuration configuration) {
+    public HttpUrlConnectionAsyncClient(Duration connectionTimeout, ProxyOptions proxyOptions, Executor executor, Configuration configuration) {
         this.connectionTimeout = connectionTimeout;
         this.proxyOptions = proxyOptions;
         this.executor = executor;

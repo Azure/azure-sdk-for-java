@@ -16,7 +16,7 @@ import java.util.Set;
 import java.util.TreeSet;
 import java.util.concurrent.Executor;
 
-public class HttpUrlConnectionClientBuilder {
+public class HttpUrlConnectionAsyncClientBuilder {
 
     private static final Duration DEFAULT_CONNECT_TIMEOUT = Duration.ofSeconds(60);
     private static final String JAVA_HOME = System.getProperty("java.home");
@@ -30,32 +30,32 @@ public class HttpUrlConnectionClientBuilder {
         DEFAULT_RESTRICTED_HEADERS = Collections.unmodifiableSet(treeSet);
     }
 
-    private static final ClientLogger LOGGER = new ClientLogger(HttpUrlConnectionClientBuilder.class);
+    private static final ClientLogger LOGGER = new ClientLogger(HttpUrlConnectionAsyncClientBuilder.class);
 
     private Duration connectionTimeout;
     private ProxyOptions proxyOptions;
     private Configuration configuration;
     private Executor executor;
 
-    public HttpUrlConnectionClientBuilder() {
+    public HttpUrlConnectionAsyncClientBuilder() {
     }
 
-    public HttpUrlConnectionClientBuilder executor(Executor executor) {
+    public HttpUrlConnectionAsyncClientBuilder executor(Executor executor) {
         this.executor = Objects.requireNonNull(executor, "executor can not be null");
         return this;
     }
 
-    public HttpUrlConnectionClientBuilder connectionTimeout(Duration connectionTimeout) {
+    public HttpUrlConnectionAsyncClientBuilder connectionTimeout(Duration connectionTimeout) {
         this.connectionTimeout = connectionTimeout;
         return this;
     }
 
-    public HttpUrlConnectionClientBuilder proxy(ProxyOptions proxyOptions) {
+    public HttpUrlConnectionAsyncClientBuilder proxy(ProxyOptions proxyOptions) {
         this.proxyOptions = proxyOptions;
         return this;
     }
 
-    public HttpUrlConnectionClientBuilder configuration(Configuration configuration) {
+    public HttpUrlConnectionAsyncClientBuilder configuration(Configuration configuration) {
         this.configuration = configuration;
         return this;
     }
@@ -80,7 +80,7 @@ public class HttpUrlConnectionClientBuilder {
             throw new IllegalArgumentException("Invalid proxy");
         }
 
-        return new HttpUrlConnectionClient(connectionTimeout, buildProxyOptions, executor, buildConfiguration);
+        return new HttpUrlConnectionAsyncClient(connectionTimeout, buildProxyOptions, executor, buildConfiguration);
     }
 
     Set<String> getRestrictedHeaders() {

@@ -7,7 +7,7 @@ import com.azure.core.test.http.LocalTestServer;
 import org.junit.jupiter.api.AfterAll;
 import org.junit.jupiter.api.BeforeAll;
 
-public class HttpUrlConnectionClientHttpClientTests extends HttpClientTests {
+public class HttpUrlConnectionAsyncClientHttpClientTests extends HttpClientTests {
 
     private static LocalTestServer server;
     @BeforeAll
@@ -24,7 +24,7 @@ public class HttpUrlConnectionClientHttpClientTests extends HttpClientTests {
     }
     @Override
     protected HttpClient createHttpClient() {
-        return new HttpUrlConnectionClientProvider().createInstance();
+        return new HttpUrlConnectionAsyncClientProvider().createInstance();
     }
 
     @Override

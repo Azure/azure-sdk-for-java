@@ -8,14 +8,14 @@ import com.azure.core.util.HttpClientOptions;
 /**
  * An {@link HttpClientProvider} that provides an implementation of HttpClient based on native JDK HttpURLConnection.
  */
-public class HttpUrlConnectionClientProvider implements HttpClientProvider {
+public class HttpUrlConnectionAsyncClientProvider implements HttpClientProvider {
     private static final boolean AZURE_ENABLE_HTTP_CLIENT_SHARING =
         Configuration.getGlobalConfiguration().get("AZURE_ENABLE_HTTP_CLIENT_SHARING", Boolean.FALSE);
     private final boolean enableHttpClientSharing;
 
     // Enum Singleton Pattern
     private enum GlobalHttpUrlConnectionHttpClient {
-        HTTP_CLIENT(new HttpUrlConnectionClientBuilder().build());
+        HTTP_CLIENT(new HttpUrlConnectionAsyncClientBuilder().build());
 
         private final HttpClient httpClient;
 
@@ -32,11 +32,11 @@ public class HttpUrlConnectionClientProvider implements HttpClientProvider {
      * For testing purpose only, assigning 'AZURE_ENABLE_HTTP_CLIENT_SHARING' to 'enableHttpClientSharing' for
      * 'final' modifier.
      */
-    public HttpUrlConnectionClientProvider() {
+    public HttpUrlConnectionAsyncClientProvider() {
         enableHttpClientSharing = AZURE_ENABLE_HTTP_CLIENT_SHARING;
     }
 
-    HttpUrlConnectionClientProvider(Configuration configuration) {
+    HttpUrlConnectionAsyncClientProvider(Configuration configuration) {
         enableHttpClientSharing = configuration.get("AZURE_ENABLE_HTTP_CLIENT_SHARING", Boolean.FALSE);
     }
 
@@ -45,7 +45,7 @@ public class HttpUrlConnectionClientProvider implements HttpClientProvider {
         if (enableHttpClientSharing) {
             return GlobalHttpUrlConnectionHttpClient.HTTP_CLIENT.getHttpClient();
         }
-        return new HttpUrlConnectionClientBuilder().build();
+        return new HttpUrlConnectionAsyncClientBuilder().build();
     }
 
     @Override
@@ -54,7 +54,7 @@ public class HttpUrlConnectionClientProvider implements HttpClientProvider {
             return createInstance();
         }
 
-        HttpUrlConnectionClientBuilder builder = new HttpUrlConnectionClientBuilder();
+        HttpUrlConnectionAsyncClientBuilder builder = new HttpUrlConnectionAsyncClientBuilder();
         builder = builder.proxy(clientOptions.getProxyOptions())
             .configuration(clientOptions.getConfiguration())
             .connectionTimeout(clientOptions.getConnectTimeout());

@@ -21,22 +21,22 @@ import static org.junit.jupiter.api.Assertions.assertNotEquals;
 
 
 @Execution(ExecutionMode.SAME_THREAD) // because singleton http client, it can avoid race condition.
-public class HttpUrlConnectionClientSingletonTests {
+public class HttpUrlConnectionAsyncClientSingletonTests {
     private static final ConfigurationSource EMPTY_SOURCE = new TestConfigurationSource();
 
     @Test
     public void testSingletonClientInstanceCreation() {
         Configuration configuration = getConfiguration(true);
-        HttpClient client1 = new HttpUrlConnectionClientProvider(configuration).createInstance();
-        HttpClient client2 = new HttpUrlConnectionClientProvider(configuration).createInstance();
+        HttpClient client1 = new HttpUrlConnectionAsyncClientProvider(configuration).createInstance();
+        HttpClient client2 = new HttpUrlConnectionAsyncClientProvider(configuration).createInstance();
         Assertions.assertEquals(client1, client2);
     }
 
     @Test
     public void testNonDefaultClientInstanceCreation() {
         Configuration configuration = getConfiguration(false);
-        HttpClient client1 = new HttpUrlConnectionClientProvider(configuration).createInstance();
-        HttpClient client2 = new HttpUrlConnectionClientProvider(configuration).createInstance();
+        HttpClient client1 = new HttpUrlConnectionAsyncClientProvider(configuration).createInstance();
+        HttpClient client2 = new HttpUrlConnectionAsyncClientProvider(configuration).createInstance();
         assertNotEquals(client1, client2);
     }
 
@@ -44,16 +44,16 @@ public class HttpUrlConnectionClientSingletonTests {
     public void testCustomizedClientInstanceCreationNotShared() {
         Configuration configuration = getConfiguration(false);
         HttpClientOptions clientOptions = new HttpClientOptions().setMaximumConnectionPoolSize(500);
-        HttpClient client1 = new HttpUrlConnectionClientProvider(configuration).createInstance(clientOptions);
-        HttpClient client2 = new HttpUrlConnectionClientProvider(configuration).createInstance(clientOptions);
+        HttpClient client1 = new HttpUrlConnectionAsyncClientProvider(configuration).createInstance(clientOptions);
+        HttpClient client2 = new HttpUrlConnectionAsyncClientProvider(configuration).createInstance(clientOptions);
         assertNotEquals(client1, client2);
     }
 
     @Test
     public void testNullHttpClientOptionsInstanceCreation() {
         Configuration configuration = getConfiguration(true);
-        HttpClient client1 = new HttpUrlConnectionClientProvider(configuration).createInstance(null);
-        HttpClient client2 = new HttpUrlConnectionClientProvider(configuration).createInstance(null);
+        HttpClient client1 = new HttpUrlConnectionAsyncClientProvider(configuration).createInstance(null);
+        HttpClient client2 = new HttpUrlConnectionAsyncClientProvider(configuration).createInstance(null);
         assertEquals(client1, client2);
     }
 
