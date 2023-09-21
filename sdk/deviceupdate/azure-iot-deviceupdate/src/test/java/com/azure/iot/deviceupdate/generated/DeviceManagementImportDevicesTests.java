@@ -14,7 +14,6 @@ import org.junit.jupiter.api.Test;
 
 public final class DeviceManagementImportDevicesTests extends DeviceUpdateClientTestBase {
     @Test
-    @Disabled
     public void testDeviceManagementImportDevicesTests() {
         BinaryData importType = BinaryData.fromString("\"All\"");
         RequestOptions requestOptions = new RequestOptions();

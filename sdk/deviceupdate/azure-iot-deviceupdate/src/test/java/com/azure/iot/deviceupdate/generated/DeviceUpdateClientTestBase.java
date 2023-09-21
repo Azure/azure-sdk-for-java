@@ -33,8 +33,8 @@ class DeviceUpdateClientTestBase extends TestProxyTestBase {
     protected void beforeTest() {
         DeviceUpdateClientBuilder deviceUpdateClientbuilder =
                 new DeviceUpdateClientBuilder()
-                        .endpoint(Configuration.getGlobalConfiguration().get("ENDPOINT", "endpoint"))
-                        .instanceId(Configuration.getGlobalConfiguration().get("INSTANCEID", "instanceid"))
+                        .endpoint(Configuration.getGlobalConfiguration().get("ENDPOINT", "contosoint.api.int.adu.microsoft.com"))
+                        .instanceId(Configuration.getGlobalConfiguration().get("INSTANCEID", "blue"))
                         .httpClient(buildSyncAssertingClient(HttpClient.createDefault()))
                         .httpLogOptions(new HttpLogOptions().setLogLevel(HttpLogDetailLevel.BASIC));
         if (getTestMode() == TestMode.PLAYBACK) {
@@ -46,14 +46,15 @@ class DeviceUpdateClientTestBase extends TestProxyTestBase {
                     .addPolicy(interceptorManager.getRecordPolicy())
                     .credential(new DefaultAzureCredentialBuilder().build());
         } else if (getTestMode() == TestMode.LIVE) {
-            deviceUpdateClientbuilder.credential(new DefaultAzureCredentialBuilder().build());
+            deviceUpdateClientbuilder.credential(request -> Mono.just(new AccessToken("eyJhbGciOiJSU0EtT0FFUCIsImVuYyI6IkExMjhDQkMtSFMyNTYiLCJ4NXQiOiJ2c0liZmF6Y1JQOEdhYlRXT2F2TjNBbGgwZFUiLCJ6aXAiOiJERUYifQ.a0yLOfmseNEkQfIAs94gevlBBN6fKYDOTLTuFiqr3tEGOUOwWNXYf94fJdLhh45jCeb4xdbBLcs80c-SPsn5SQp5xRGL7ybO4w7fAoy4OMZjfdGcrlLltwFeZhRvAC5Bd2oNaVHjtB94uDZHIAdytO32chc2lo9Ee7_EWG18msxRI09hdE_SUfuGvGcbfhMiaU-09EBoFpVj5qkUSFXnPUaCf1FnXcHnbLRak2ipelkL4flf45pF3RA339bZT-LX-pu5Em1wV32C0StCmCXcRiTbKKQL6gtb0U4Qu9MSZ-Ca6rEnQ91xKO0jhiJKTD7W2rIXDuNDGvgtWQAUxEVc3w.1Ut0XN-qkKeeFZfzB4odTw.YdKXdIONJCbUlasjss6vGmRgoDxO-y_HRIXhe0AV-Vxaz39E4xeh840-rgPuPeMQnRsvLLVK-gYb5A8z6vYMnz8rjMEbcqNz31Olc6yRb4L6-lSOkeWAdf2_PXKVIHUKdwhJgxW8Tvy3phH29zJ2ZjUuitb7YhVSItg4iG7WrVQtNBZLkRirWOWQpi5TMm0nMwJGvsufI7EFYMMZ1vBcS9VDacpfC88DUjL1I4O3uY0uSCWprbF7azUk821JmEhIpr_UYLDYguTM9oSkUHj5Y9inNwbfJbMfngEGymsPKGcQWHAsSLpzkWlDfSkIGwhFucPxP9-SCA-rXBfQquWvTx_BwyDoIJZWAh89qclipyOj7TrMlK8fM8EOifcz2wo0jojpI00EUlDsgaUsjW4czd5c_qn10QFhKRd2QwUMN5lkG2EOP9jyjJG62XRDDyPifM9HkIOIJsVKkI2iUmm53fF-h_N6LcNzdQzns28q8UGJxjuNA7UK9QJQ3aHTG10RxcEcKNjlAv1pv7xjXELT_dmfTLsUCaxrG93f43X1VNb1j9HV0Ej233zA58sjdLDxCoJez-W2QzZQ8G06lgqqhxxO4JKrKNE3U-LVX4hivS-nDQA-jnfnXre1xTUT_SkDVpRdXwp4Yf_Ixdq7Xm21MmhTaaQehTOMugjILed45dcmdqXYSKA-BBYY75SjbNvxxz2pjLhbLfVxpMrFrq2v3dgbiMup429OZ-neT1TtmYO40EikXUc_YgPM9IbaXbEbPFP_PiXcP9upw1k7i3ZErQm15pFpntB6uML4dPChIIVmgQU1FOTaH1Jc4AsTjDIfll8AYrhPfGTtKBZUFoE3iICCc3YntpocDSLudzfRZGuIZdkiRxHKg-pu5OF_x24pRYCfbv6X6Mg6WWpeMrU38RNmlzKaQ2v-2lr1k-Tt6b3da33LdBK9TLsBIcgYEPrr431EcBe2O17bhiF26zOacflaBklGT9HIaVQeah40nt21Qip3MPMlkVj4Ke1UI0BtXh-gVCBpmppMywE5fe0bpuCaDoJH3Ex76g597K8FBAiRijRup45fQkbVLSyHye0-60NQKaumV3qVzaHLGkp9LQ.coSjIhtrJoDCrsEPSRpSAg", OffsetDateTime.MAX)));
+
         }
         deviceUpdateClient = deviceUpdateClientbuilder.buildClient();
 
         DeviceManagementClientBuilder deviceManagementClientbuilder =
                 new DeviceManagementClientBuilder()
-                        .endpoint(Configuration.getGlobalConfiguration().get("ENDPOINT", "endpoint"))
-                        .instanceId(Configuration.getGlobalConfiguration().get("INSTANCEID", "instanceid"))
+                        .endpoint(Configuration.getGlobalConfiguration().get("ENDPOINT", "contosoint.api.int.adu.microsoft.com"))
+                        .instanceId(Configuration.getGlobalConfiguration().get("INSTANCEID", "blue"))
                         .httpClient(buildSyncAssertingClient(HttpClient.createDefault()))
                         .httpLogOptions(new HttpLogOptions().setLogLevel(HttpLogDetailLevel.BASIC));
         if (getTestMode() == TestMode.PLAYBACK) {
@@ -65,7 +66,8 @@ class DeviceUpdateClientTestBase extends TestProxyTestBase {
                     .addPolicy(interceptorManager.getRecordPolicy())
                     .credential(new DefaultAzureCredentialBuilder().build());
         } else if (getTestMode() == TestMode.LIVE) {
-            deviceManagementClientbuilder.credential(new DefaultAzureCredentialBuilder().build());
+            //deviceManagementClientbuilder.credential(new DefaultAzureCredentialBuilder().build());
+            deviceManagementClientbuilder.credential(request -> Mono.just(new AccessToken("eyJhbGciOiJSU0EtT0FFUCIsImVuYyI6IkExMjhDQkMtSFMyNTYiLCJ4NXQiOiJ2c0liZmF6Y1JQOEdhYlRXT2F2TjNBbGgwZFUiLCJ6aXAiOiJERUYifQ.a0yLOfmseNEkQfIAs94gevlBBN6fKYDOTLTuFiqr3tEGOUOwWNXYf94fJdLhh45jCeb4xdbBLcs80c-SPsn5SQp5xRGL7ybO4w7fAoy4OMZjfdGcrlLltwFeZhRvAC5Bd2oNaVHjtB94uDZHIAdytO32chc2lo9Ee7_EWG18msxRI09hdE_SUfuGvGcbfhMiaU-09EBoFpVj5qkUSFXnPUaCf1FnXcHnbLRak2ipelkL4flf45pF3RA339bZT-LX-pu5Em1wV32C0StCmCXcRiTbKKQL6gtb0U4Qu9MSZ-Ca6rEnQ91xKO0jhiJKTD7W2rIXDuNDGvgtWQAUxEVc3w.1Ut0XN-qkKeeFZfzB4odTw.YdKXdIONJCbUlasjss6vGmRgoDxO-y_HRIXhe0AV-Vxaz39E4xeh840-rgPuPeMQnRsvLLVK-gYb5A8z6vYMnz8rjMEbcqNz31Olc6yRb4L6-lSOkeWAdf2_PXKVIHUKdwhJgxW8Tvy3phH29zJ2ZjUuitb7YhVSItg4iG7WrVQtNBZLkRirWOWQpi5TMm0nMwJGvsufI7EFYMMZ1vBcS9VDacpfC88DUjL1I4O3uY0uSCWprbF7azUk821JmEhIpr_UYLDYguTM9oSkUHj5Y9inNwbfJbMfngEGymsPKGcQWHAsSLpzkWlDfSkIGwhFucPxP9-SCA-rXBfQquWvTx_BwyDoIJZWAh89qclipyOj7TrMlK8fM8EOifcz2wo0jojpI00EUlDsgaUsjW4czd5c_qn10QFhKRd2QwUMN5lkG2EOP9jyjJG62XRDDyPifM9HkIOIJsVKkI2iUmm53fF-h_N6LcNzdQzns28q8UGJxjuNA7UK9QJQ3aHTG10RxcEcKNjlAv1pv7xjXELT_dmfTLsUCaxrG93f43X1VNb1j9HV0Ej233zA58sjdLDxCoJez-W2QzZQ8G06lgqqhxxO4JKrKNE3U-LVX4hivS-nDQA-jnfnXre1xTUT_SkDVpRdXwp4Yf_Ixdq7Xm21MmhTaaQehTOMugjILed45dcmdqXYSKA-BBYY75SjbNvxxz2pjLhbLfVxpMrFrq2v3dgbiMup429OZ-neT1TtmYO40EikXUc_YgPM9IbaXbEbPFP_PiXcP9upw1k7i3ZErQm15pFpntB6uML4dPChIIVmgQU1FOTaH1Jc4AsTjDIfll8AYrhPfGTtKBZUFoE3iICCc3YntpocDSLudzfRZGuIZdkiRxHKg-pu5OF_x24pRYCfbv6X6Mg6WWpeMrU38RNmlzKaQ2v-2lr1k-Tt6b3da33LdBK9TLsBIcgYEPrr431EcBe2O17bhiF26zOacflaBklGT9HIaVQeah40nt21Qip3MPMlkVj4Ke1UI0BtXh-gVCBpmppMywE5fe0bpuCaDoJH3Ex76g597K8FBAiRijRup45fQkbVLSyHye0-60NQKaumV3qVzaHLGkp9LQ.coSjIhtrJoDCrsEPSRpSAg", OffsetDateTime.MAX)));
         }
         deviceManagementClient = deviceManagementClientbuilder.buildClient();
     }

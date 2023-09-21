@@ -13,7 +13,6 @@ import org.junit.jupiter.api.Test;
 
 public final class DeviceManagementGetGroupTests extends DeviceUpdateClientTestBase {
     @Test
-    @Disabled
     public void testDeviceManagementGetGroupTests() {
         RequestOptions requestOptions = new RequestOptions();
         Response<BinaryData> response = deviceManagementClient.getGroupWithResponse("group1", requestOptions);

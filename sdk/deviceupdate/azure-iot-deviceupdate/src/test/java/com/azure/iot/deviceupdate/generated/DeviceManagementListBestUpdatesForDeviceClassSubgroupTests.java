@@ -7,18 +7,18 @@ package com.azure.iot.deviceupdate.generated;
 import com.azure.core.http.rest.RequestOptions;
 import com.azure.core.http.rest.Response;
 import com.azure.core.util.BinaryData;
+import com.azure.iot.deviceupdate.TestData;
 import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.Disabled;
 import org.junit.jupiter.api.Test;
 
 public final class DeviceManagementListBestUpdatesForDeviceClassSubgroupTests extends DeviceUpdateClientTestBase {
     @Test
-    @Disabled
     public void testDeviceManagementListBestUpdatesForDeviceClassSubgroupTests() {
         RequestOptions requestOptions = new RequestOptions();
         Response<BinaryData> response =
                 deviceManagementClient.getBestUpdatesForDeviceClassSubgroupWithResponse(
-                        "group1", "deviceClassId", requestOptions);
+                    TestData.GROUP_ID, TestData.DEVICE_CLASS_ID, requestOptions);
         Assertions.assertEquals(200, response.getStatusCode());
         Assertions.assertEquals(
                 BinaryData.fromString(

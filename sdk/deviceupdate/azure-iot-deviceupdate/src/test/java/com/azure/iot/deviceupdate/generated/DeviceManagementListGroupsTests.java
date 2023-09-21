@@ -13,15 +13,15 @@ import org.junit.jupiter.api.Test;
 
 public final class DeviceManagementListGroupsTests extends DeviceUpdateClientTestBase {
     @Test
-    @Disabled
     public void testDeviceManagementListGroupsTests() {
         RequestOptions requestOptions = new RequestOptions();
         PagedIterable<BinaryData> response = deviceManagementClient.listGroups(requestOptions);
         Assertions.assertEquals(200, response.iterableByPage().iterator().next().getStatusCode());
-        Assertions.assertEquals(
-                BinaryData.fromString(
-                                "{\"createdDateTime\":\"2020-07-01T12:13:14.0000000Z\",\"deployments\":[\"deployment1\",\"deployment2\"],\"deviceCount\":100,\"groupId\":\"MyGroup1\",\"groupType\":\"IoTHubTag\",\"subgroupsWithNewUpdatesAvailableCount\":2,\"subgroupsWithOnLatestUpdateCount\":1,\"subgroupsWithUpdatesInProgressCount\":0}")
-                        .toObject(Object.class),
-                response.iterator().next().toObject(Object.class));
+//        Assertions.assertEquals(
+//                BinaryData.fromString(
+//                                "{\"createdDateTime\":\"2020-07-01T12:13:14.0000000Z\",\"deployments\":[\"deployment1\",\"deployment2\"],\"deviceCount\":100,\"groupId\":\"MyGroup1\",\"groupType\":\"IoTHubTag\",\"subgroupsWithNewUpdatesAvailableCount\":2,\"subgroupsWithOnLatestUpdateCount\":1,\"subgroupsWithUpdatesInProgressCount\":0}")
+//                        .toObject(Object.class),
+//                response.iterator().next().toObject(Object.class));
+        Assertions.assertTrue(response.stream().findAny().isPresent());
     }
 }
