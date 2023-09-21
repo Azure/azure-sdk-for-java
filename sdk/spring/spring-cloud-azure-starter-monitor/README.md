@@ -216,7 +216,6 @@ This project has adopted the [Microsoft Open Source Code of Conduct][coc]. For m
 [application_insights_intro]: https://docs.microsoft.com/azure/azure-monitor/app/app-insights-overview
 [application_insights_java_agent_spring_boot]: https://learn.microsoft.com/azure/azure-monitor/app/java-spring-boot
 [azure_portal]: https://portal.azure.com
-[otel-logback-settings]: 
 [cla]: https://cla.microsoft.com
 [coc]: https://opensource.microsoft.com/codeofconduct/
 [coc_faq]: https://opensource.microsoft.com/codeofconduct/faq/
