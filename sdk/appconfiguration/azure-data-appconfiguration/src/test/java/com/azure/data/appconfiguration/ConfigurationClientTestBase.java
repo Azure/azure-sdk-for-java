@@ -13,7 +13,7 @@ import com.azure.data.appconfiguration.implementation.ConfigurationClientCredent
 import com.azure.data.appconfiguration.implementation.ConfigurationSettingHelper;
 import com.azure.data.appconfiguration.models.CompositionType;
 import com.azure.data.appconfiguration.models.ConfigurationSetting;
-import com.azure.data.appconfiguration.models.ConfigurationSettingsSnapshot;
+import com.azure.data.appconfiguration.models.ConfigurationSnapshot;
 import com.azure.data.appconfiguration.models.FeatureFlagConfigurationSetting;
 import com.azure.data.appconfiguration.models.FeatureFlagFilter;
 import com.azure.data.appconfiguration.models.SecretReferenceConfigurationSetting;
@@ -857,20 +857,20 @@ public abstract class ConfigurationClientTestBase extends TestProxyTestBase {
                 .setValue(getFeatureFlagConfigurationSettingValue(key));
     }
 
-    void assertConfigurationSettingsSnapshotWithResponse(int expectedStatusCode, String name,
+    void assertConfigurationSnapshotWithResponse(int expectedStatusCode, String name,
         SnapshotStatus snapshotStatus, List<SnapshotSettingFilter> filters, CompositionType compositionType,
         Duration retentionPeriod, Long size, Long itemCount, Map<String, String> tags,
-        Response<ConfigurationSettingsSnapshot> response) {
+        Response<ConfigurationSnapshot> response) {
         assertNotNull(response);
         assertEquals(expectedStatusCode, response.getStatusCode());
 
-        assertEqualsConfigurationSettingsSnapshot(name, snapshotStatus, filters, compositionType, retentionPeriod,
+        assertEqualsConfigurationSnapshot(name, snapshotStatus, filters, compositionType, retentionPeriod,
             size, itemCount, tags, response.getValue());
     }
 
-    void assertEqualsConfigurationSettingsSnapshot(String name, SnapshotStatus snapshotStatus,
+    void assertEqualsConfigurationSnapshot(String name, SnapshotStatus snapshotStatus,
         List<SnapshotSettingFilter> filters, CompositionType compositionType, Duration retentionPeriod, Long size,
-        Long itemCount, Map<String, String> tags, ConfigurationSettingsSnapshot actualSnapshot) {
+        Long itemCount, Map<String, String> tags, ConfigurationSnapshot actualSnapshot) {
         assertEquals(name, actualSnapshot.getName());
         assertEquals(snapshotStatus, actualSnapshot.getStatus());
         assertEqualsSnapshotFilters(filters, actualSnapshot.getFilters());

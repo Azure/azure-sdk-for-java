@@ -17,9 +17,9 @@ import java.util.List;
 import java.util.Map;
 import java.util.Objects;
 
-/** The ConfigurationSettingsSnapshot model. */
+/** The ConfigurationSnapshot model. */
 @Fluent
-public final class ConfigurationSettingsSnapshot implements JsonSerializable<ConfigurationSettingsSnapshot> {
+public final class ConfigurationSnapshot implements JsonSerializable<ConfigurationSnapshot> {
     /*
      * The name of the snapshot.
      */
@@ -80,11 +80,11 @@ public final class ConfigurationSettingsSnapshot implements JsonSerializable<Con
     private String eTag;
 
     /**
-     * Creates an instance of ConfigurationSettingsSnapshot class.
+     * Creates an instance of ConfigurationSnapshot class.
      *
      * @param filters the filters value to set.
      */
-    public ConfigurationSettingsSnapshot(List<SnapshotSettingFilter> filters) {
+    public ConfigurationSnapshot(List<SnapshotSettingFilter> filters) {
         this.filters = filters;
     }
 
@@ -132,9 +132,9 @@ public final class ConfigurationSettingsSnapshot implements JsonSerializable<Con
      * composition type ensures there are no two key-values containing the same key and label.
      *
      * @param compositionType the compositionType value to set.
-     * @return the ConfigurationSettingsSnapshot object itself.
+     * @return the ConfigurationSnapshot object itself.
      */
-    public ConfigurationSettingsSnapshot setCompositionType(CompositionType compositionType) {
+    public ConfigurationSnapshot setCompositionType(CompositionType compositionType) {
         this.compositionType = compositionType;
         return this;
     }
@@ -177,9 +177,9 @@ public final class ConfigurationSettingsSnapshot implements JsonSerializable<Con
      * default lifetime of key-value revisions will be used.
      *
      * @param retentionPeriod the retentionPeriod value to set.
-     * @return the ConfigurationSettingsSnapshot object itself.
+     * @return the ConfigurationSnapshot object itself.
      */
-    public ConfigurationSettingsSnapshot setRetentionPeriod(Duration retentionPeriod) {
+    public ConfigurationSnapshot setRetentionPeriod(Duration retentionPeriod) {
         this.retentionPeriod = retentionPeriod == null ? null : retentionPeriod.getSeconds();
         return this;
     }
@@ -215,9 +215,9 @@ public final class ConfigurationSettingsSnapshot implements JsonSerializable<Con
      * Set the tags property: The tags of the snapshot.
      *
      * @param tags the tags value to set.
-     * @return the ConfigurationSettingsSnapshot object itself.
+     * @return the ConfigurationSnapshot object itself.
      */
-    public ConfigurationSettingsSnapshot setTags(Map<String, String> tags) {
+    public ConfigurationSnapshot setTags(Map<String, String> tags) {
         this.tags = tags;
         return this;
     }
@@ -249,15 +249,15 @@ public final class ConfigurationSettingsSnapshot implements JsonSerializable<Con
     }
 
     /**
-     * Reads an instance of ConfigurationSettingsSnapshot from the JsonReader.
+     * Reads an instance of ConfigurationSnapshot from the JsonReader.
      *
      * @param jsonReader The JsonReader being read.
-     * @return An instance of ConfigurationSettingsSnapshot if the JsonReader was pointing to an instance of it, or null
-     *     if it was pointing to JSON null.
+     * @return An instance of ConfigurationSnapshot if the JsonReader was pointing to an instance of it, or null if it
+     *     was pointing to JSON null.
      * @throws IllegalStateException If the deserialized JSON object was missing any required properties.
-     * @throws IOException If an error occurs while reading the ConfigurationSettingsSnapshot.
+     * @throws IOException If an error occurs while reading the ConfigurationSnapshot.
      */
-    public static ConfigurationSettingsSnapshot fromJson(JsonReader jsonReader) throws IOException {
+    public static ConfigurationSnapshot fromJson(JsonReader jsonReader) throws IOException {
         return jsonReader.readObject(
                 reader -> {
                     boolean filtersFound = false;
@@ -308,20 +308,19 @@ public final class ConfigurationSettingsSnapshot implements JsonSerializable<Con
                         }
                     }
                     if (filtersFound) {
-                        ConfigurationSettingsSnapshot deserializedConfigurationSettingsSnapshot =
-                                new ConfigurationSettingsSnapshot(filters);
-                        deserializedConfigurationSettingsSnapshot.name = name;
-                        deserializedConfigurationSettingsSnapshot.status = status;
-                        deserializedConfigurationSettingsSnapshot.compositionType = compositionType;
-                        deserializedConfigurationSettingsSnapshot.createdAt = createdAt;
-                        deserializedConfigurationSettingsSnapshot.expiresAt = expiresAt;
-                        deserializedConfigurationSettingsSnapshot.retentionPeriod = retentionPeriod;
-                        deserializedConfigurationSettingsSnapshot.sizeInBytes = sizeInBytes;
-                        deserializedConfigurationSettingsSnapshot.itemCount = itemCount;
-                        deserializedConfigurationSettingsSnapshot.tags = tags;
-                        deserializedConfigurationSettingsSnapshot.eTag = eTag;
+                        ConfigurationSnapshot deserializedConfigurationSnapshot = new ConfigurationSnapshot(filters);
+                        deserializedConfigurationSnapshot.name = name;
+                        deserializedConfigurationSnapshot.status = status;
+                        deserializedConfigurationSnapshot.compositionType = compositionType;
+                        deserializedConfigurationSnapshot.createdAt = createdAt;
+                        deserializedConfigurationSnapshot.expiresAt = expiresAt;
+                        deserializedConfigurationSnapshot.retentionPeriod = retentionPeriod;
+                        deserializedConfigurationSnapshot.sizeInBytes = sizeInBytes;
+                        deserializedConfigurationSnapshot.itemCount = itemCount;
+                        deserializedConfigurationSnapshot.tags = tags;
+                        deserializedConfigurationSnapshot.eTag = eTag;
 
-                        return deserializedConfigurationSettingsSnapshot;
+                        return deserializedConfigurationSnapshot;
                     }
                     List<String> missingProperties = new ArrayList<>();
                     if (!filtersFound) {

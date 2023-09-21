@@ -11,7 +11,7 @@
 Note: Below breaking changes only affect the version `1.5.0-beta.1`.
 
 - Changed `listConfigurationSettingsForSnapshot` method's `SettingFields[] fields` parameter type to `List<SettingFields> fields`.
-- Renamed `ConfigurationSettingSnapshot` to `ConfigurationSettingsSnapshot`.
+- Renamed `ConfigurationSettingSnapshot` to `ConfigurationSnapshot`.
 - Renamed `ConfigurationSettingSnapshot`'s property name, `size` to `sizeInBytes`.
 
 ### Bugs Fixed

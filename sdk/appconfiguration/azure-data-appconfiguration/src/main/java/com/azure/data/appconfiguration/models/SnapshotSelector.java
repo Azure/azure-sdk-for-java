@@ -78,10 +78,10 @@ public final class SnapshotSelector {
     }
 
     /**
-     * Gets the fields on {@link ConfigurationSettingsSnapshot} to return from the GET request. If none are set, the
+     * Gets the fields on {@link ConfigurationSnapshot} to return from the GET request. If none are set, the
      * service returns the snapshot with all of their fields populated.
      *
-     * @return The set of {@link ConfigurationSettingsSnapshot} fields to return for a GET request.
+     * @return The set of {@link ConfigurationSnapshot} fields to return for a GET request.
      */
     public List<SnapshotFields> getFields() {
         return fields;
@@ -89,7 +89,7 @@ public final class SnapshotSelector {
 
     /**
      * Sets fields that will be returned in the response corresponding to properties in
-     * {@link ConfigurationSettingsSnapshot}. If none are set, the service returns snapshot with all of their fields
+     * {@link ConfigurationSnapshot}. If none are set, the service returns snapshot with all of their fields
      * populated.
      *
      * @param fields The fields to select for the query response. If none are set, the service will return the
@@ -104,7 +104,7 @@ public final class SnapshotSelector {
 
     /**
      * Sets fields that will be returned in the response corresponding to properties in
-     * {@link ConfigurationSettingsSnapshot}. If none are set, the service returns snapshot with all of their fields
+     * {@link ConfigurationSnapshot}. If none are set, the service returns snapshot with all of their fields
      * populated.
      *
      * @param fields The fields to select for the query response. If none are set, the service will return the

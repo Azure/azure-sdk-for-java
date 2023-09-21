@@ -10,7 +10,7 @@ import com.azure.core.util.Configuration;
 import com.azure.core.util.Context;
 import com.azure.core.util.polling.SyncPoller;
 import com.azure.data.appconfiguration.models.ConfigurationSetting;
-import com.azure.data.appconfiguration.models.ConfigurationSettingsSnapshot;
+import com.azure.data.appconfiguration.models.ConfigurationSnapshot;
 import com.azure.data.appconfiguration.models.CreateSnapshotOperationDetail;
 import com.azure.data.appconfiguration.models.SettingFields;
 import com.azure.data.appconfiguration.models.SettingSelector;
@@ -415,7 +415,7 @@ public final class ConfigurationClientJavaDocCodeSnippets {
     }
 
     /**
-     * Code snippets for {@link ConfigurationClient#beginCreateSnapshot(String, ConfigurationSettingsSnapshot, Context)}}
+     * Code snippets for {@link ConfigurationClient#beginCreateSnapshot(String, ConfigurationSnapshot, Context)}}
      */
     public void beginCreateSnapshotMaxOverload() {
         ConfigurationClient client = createSyncConfigurationClient();
@@ -426,12 +426,12 @@ public final class ConfigurationClientJavaDocCodeSnippets {
         String snapshotName = "{snapshotName}";
         Context ctx = new Context(key2, value2);
 
-        SyncPoller<CreateSnapshotOperationDetail, ConfigurationSettingsSnapshot> poller =
+        SyncPoller<CreateSnapshotOperationDetail, ConfigurationSnapshot> poller =
             client.beginCreateSnapshot(snapshotName,
-                new ConfigurationSettingsSnapshot(filters).setRetentionPeriod(Duration.ofHours(1)), ctx);
+                new ConfigurationSnapshot(filters).setRetentionPeriod(Duration.ofHours(1)), ctx);
         poller.setPollInterval(Duration.ofSeconds(10));
         poller.waitForCompletion();
-        ConfigurationSettingsSnapshot snapshot = poller.getFinalResult();
+        ConfigurationSnapshot snapshot = poller.getFinalResult();
 
         System.out.printf("Snapshot name=%s is created at %s%n", snapshot.getName(), snapshot.getCreatedAt());
         // END: com.azure.data.appconfiguration.configurationclient.beginCreateSnapshotMaxOverload
@@ -444,7 +444,7 @@ public final class ConfigurationClientJavaDocCodeSnippets {
         ConfigurationClient client = createSyncConfigurationClient();
         // BEGIN: com.azure.data.appconfiguration.configurationclient.getSnapshotByName
         String snapshotName = "{snapshotName}";
-        ConfigurationSettingsSnapshot getSnapshot = client.getSnapshot(snapshotName);
+        ConfigurationSnapshot getSnapshot = client.getSnapshot(snapshotName);
         System.out.printf("Snapshot name=%s is created at %s, snapshot status is %s.%n",
             getSnapshot.getName(), getSnapshot.getCreatedAt(), getSnapshot.getStatus());
         // END: com.azure.data.appconfiguration.configurationclient.getSnapshotByName
@@ -458,7 +458,7 @@ public final class ConfigurationClientJavaDocCodeSnippets {
         // BEGIN: com.azure.data.appconfiguration.configurationclient.getSnapshotByNameMaxOverload
         String snapshotName = "{snapshotName}";
         Context ctx = new Context(key2, value2);
-        ConfigurationSettingsSnapshot getSnapshot = client.getSnapshotWithResponse(
+        ConfigurationSnapshot getSnapshot = client.getSnapshotWithResponse(
             snapshotName,
             Arrays.asList(SnapshotFields.NAME, SnapshotFields.CREATED_AT, SnapshotFields.STATUS, SnapshotFields.FILTERS),
             ctx)
@@ -481,26 +481,26 @@ public final class ConfigurationClientJavaDocCodeSnippets {
         ConfigurationClient client = createSyncConfigurationClient();
         // BEGIN: com.azure.data.appconfiguration.configurationclient.archiveSnapshotByName
         String snapshotName = "{snapshotName}";
-        ConfigurationSettingsSnapshot archivedSnapshot = client.archiveSnapshot(snapshotName);
+        ConfigurationSnapshot archivedSnapshot = client.archiveSnapshot(snapshotName);
         System.out.printf("Archived snapshot name=%s is created at %s, snapshot status is %s.%n",
             archivedSnapshot.getName(), archivedSnapshot.getCreatedAt(), archivedSnapshot.getStatus());
         // END: com.azure.data.appconfiguration.configurationclient.archiveSnapshotByName
     }
 
     /**
-     * Code snippets for {@link ConfigurationClient#archiveSnapshotWithResponse(ConfigurationSettingsSnapshot, boolean, Context)}
+     * Code snippets for {@link ConfigurationClient#archiveSnapshotWithResponse(ConfigurationSnapshot, boolean, Context)}
      */
     public void archiveSnapshotByNameMaxOverload() {
         ConfigurationClient client = createSyncConfigurationClient();
         List<SnapshotSettingFilter> filters = new ArrayList<>();
         // Key Name also supports RegExp but only support prefix end with "*", such as "k*" and is case-sensitive.
         filters.add(new SnapshotSettingFilter("{keyName}"));
-        ConfigurationSettingsSnapshot snapshot = new ConfigurationSettingsSnapshot(filters);
+        ConfigurationSnapshot snapshot = new ConfigurationSnapshot(filters);
 
         // BEGIN: com.azure.data.appconfiguration.configurationclient.archiveSnapshotByNameMaxOverload
         Context ctx = new Context(key2, value2);
 
-        ConfigurationSettingsSnapshot archivedSnapshot = client.archiveSnapshotWithResponse(snapshot, false,
+        ConfigurationSnapshot archivedSnapshot = client.archiveSnapshotWithResponse(snapshot, false,
             ctx).getValue();
         System.out.printf("Archived snapshot name=%s is created at %s, snapshot status is %s.%n",
             archivedSnapshot.getName(), archivedSnapshot.getCreatedAt(), archivedSnapshot.getStatus());
@@ -514,25 +514,25 @@ public final class ConfigurationClientJavaDocCodeSnippets {
         ConfigurationClient client = createSyncConfigurationClient();
         // BEGIN: com.azure.data.appconfiguration.configurationclient.recoverSnapshotByName
         String snapshotName = "{snapshotName}";
-        ConfigurationSettingsSnapshot recoveredSnapshot = client.recoverSnapshot(snapshotName);
+        ConfigurationSnapshot recoveredSnapshot = client.recoverSnapshot(snapshotName);
         System.out.printf("Recovered snapshot name=%s is created at %s, snapshot status is %s.%n",
             recoveredSnapshot.getName(), recoveredSnapshot.getCreatedAt(), recoveredSnapshot.getStatus());
         // END: com.azure.data.appconfiguration.configurationclient.recoverSnapshotByName
     }
 
     /**
-     * Code snippets for {@link ConfigurationClient#recoverSnapshotWithResponse(ConfigurationSettingsSnapshot, boolean, Context)}
+     * Code snippets for {@link ConfigurationClient#recoverSnapshotWithResponse(ConfigurationSnapshot, boolean, Context)}
      */
     public void recoverSnapshotMaxOverload() {
         ConfigurationClient client = createSyncConfigurationClient();
         List<SnapshotSettingFilter> filters = new ArrayList<>();
         // Key Name also supports RegExp but only support prefix end with "*", such as "k*" and is case-sensitive.
         filters.add(new SnapshotSettingFilter("{keyName}"));
-        ConfigurationSettingsSnapshot snapshot = new ConfigurationSettingsSnapshot(filters);
+        ConfigurationSnapshot snapshot = new ConfigurationSnapshot(filters);
         Context ctx = new Context(key2, value2);
 
         // BEGIN: com.azure.data.appconfiguration.configurationclient.recoverSnapshotMaxOverload
-        ConfigurationSettingsSnapshot recoveredSnapshot = client.recoverSnapshotWithResponse(snapshot, false,
+        ConfigurationSnapshot recoveredSnapshot = client.recoverSnapshotWithResponse(snapshot, false,
             ctx).getValue();
         System.out.printf("Recovered snapshot name=%s is created at %s, snapshot status is %s.%n",
             recoveredSnapshot.getName(), recoveredSnapshot.getCreatedAt(), recoveredSnapshot.getStatus());
