@@ -111,7 +111,7 @@ public class ListSnapshotsAsync {
         TimeUnit.MILLISECONDS.sleep(1000);
 
         // List only the snapshot with name = snapshotNameInProduct
-        client.listSnapshots(new SnapshotSelector().setName(snapshotNameProduct))
+        client.listSnapshots(new SnapshotSelector().setNameFilter(snapshotNameProduct))
             .subscribe(snapshotResult -> {
                 System.out.printf("Snapshot name=%s is created at %s, snapshot status is %s.%n",
                     snapshotResult.getName(), snapshotResult.getCreatedAt(), snapshotResult.getStatus());

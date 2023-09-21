@@ -16,7 +16,7 @@ import java.util.stream.Collectors;
  */
 @Fluent
 public final class SnapshotSelector {
-    private String name;
+    private String nameFilter;
     private List<SnapshotStatus> status;
 
     private List<SnapshotFields> fields;
@@ -27,22 +27,22 @@ public final class SnapshotSelector {
     public SnapshotSelector() {}
 
     /**
-     * Gets the snapshot name
+     * Gets the snapshot name filter
      *
-     * @return The snapshot name.
+     * @return The snapshot name filter.
      */
-    public String getName() {
-        return name;
+    public String getNameFilter() {
+        return nameFilter;
     }
 
     /**
-     * Sets the snapshot name.
+     * Sets the snapshot name filter.
      *
-     * @param name the snapshot name.
+     * @param nameFilter the snapshot name filter.
      * @return The updated SnapshotSelector object
      */
-    public SnapshotSelector setName(String name) {
-        this.name = name;
+    public SnapshotSelector setNameFilter(String nameFilter) {
+        this.nameFilter = nameFilter;
         return this;
     }
 
@@ -63,6 +63,17 @@ public final class SnapshotSelector {
      */
     public SnapshotSelector setSnapshotStatus(SnapshotStatus... status) {
         this.status = status == null ? null : Arrays.asList(status);
+        return this;
+    }
+
+    /**
+     * Sets the snapshot status. Used to filter returned snapshots by their status properties.
+     *
+     * @param status the snapshot status.
+     * @return The updated SnapshotSelector object
+     */
+    public SnapshotSelector setSnapshotStatus(List<SnapshotStatus> status) {
+        this.status = status;
         return this;
     }
 
@@ -91,6 +102,21 @@ public final class SnapshotSelector {
         return this;
     }
 
+    /**
+     * Sets fields that will be returned in the response corresponding to properties in
+     * {@link ConfigurationSettingsSnapshot}. If none are set, the service returns snapshot with all of their fields
+     * populated.
+     *
+     * @param fields The fields to select for the query response. If none are set, the service will return the
+     * snapshot with a default set of properties.
+     *
+     * @return The updated SnapshotSelector object.
+     */
+    public SnapshotSelector setFields(List<SnapshotFields> fields) {
+        this.fields = fields;
+        return this;
+    }
+
     @Override
     public String toString() {
         String fields;
@@ -114,6 +140,6 @@ public final class SnapshotSelector {
                 .map(statusEnumValue -> statusEnumValue.toString())
                 .collect(Collectors.joining(","));
         }
-        return "SnapshotSelector(name=" + name + ", status=" + status + ", fields=" + fields + ")";
+        return "SnapshotSelector(name=" + nameFilter + ", status=" + status + ", fields=" + fields + ")";
     }
 }

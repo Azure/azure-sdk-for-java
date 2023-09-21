@@ -511,7 +511,7 @@ To retrieve all snapshots, you can use the `listSnapshots` method.
 
 ```java readme-sample-getAllSnapshots
 String snapshotNameProduct = "{snapshotNameInProduct}";
-SnapshotSelector snapshotSelector = new SnapshotSelector().setName(snapshotNameProduct);
+SnapshotSelector snapshotSelector = new SnapshotSelector().setNameFilter(snapshotNameProduct);
 PagedIterable<ConfigurationSettingsSnapshot> configurationSettingsSnapshots =
     configurationClient.listSnapshots(snapshotSelector);
 for (ConfigurationSettingsSnapshot snapshot : configurationSettingsSnapshots) {

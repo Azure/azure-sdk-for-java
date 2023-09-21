@@ -80,7 +80,7 @@ public class ListSnapshots {
             productSnapshot.getName(), productSnapshot.getCreatedAt(), productSnapshot.getStatus());
 
         // List only the snapshot with name = snapshotNameInProduct
-        client.listSnapshots(new SnapshotSelector().setName(snapshotNameProduct))
+        client.listSnapshots(new SnapshotSelector().setNameFilter(snapshotNameProduct))
             .forEach(snapshotResult -> {
                 System.out.printf("Listed Snapshot name = %s is created at %s, snapshot status is %s.%n",
                     snapshotResult.getName(), snapshotResult.getCreatedAt(), snapshotResult.getStatus());

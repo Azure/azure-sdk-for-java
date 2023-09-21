@@ -546,7 +546,7 @@ public final class ConfigurationClientJavaDocCodeSnippets {
         ConfigurationClient client = createSyncConfigurationClient();
         // BEGIN: com.azure.data.appconfiguration.configurationclient.listSnapshots
         String snapshotNameFilter = "{snapshotNamePrefix}*";
-        client.listSnapshots(new SnapshotSelector().setName(snapshotNameFilter))
+        client.listSnapshots(new SnapshotSelector().setNameFilter(snapshotNameFilter))
             .forEach(snapshotResult -> {
                 System.out.printf("Listed Snapshot name = %s is created at %s, snapshot status is %s.%n",
                     snapshotResult.getName(), snapshotResult.getCreatedAt(), snapshotResult.getStatus());
@@ -563,7 +563,7 @@ public final class ConfigurationClientJavaDocCodeSnippets {
         String snapshotNameFilter = "{snapshotNamePrefix}*";
         Context ctx = new Context(key2, value2);
 
-        client.listSnapshots(new SnapshotSelector().setName(snapshotNameFilter), ctx)
+        client.listSnapshots(new SnapshotSelector().setNameFilter(snapshotNameFilter), ctx)
             .forEach(snapshotResult -> {
                 System.out.printf("Listed Snapshot name = %s is created at %s, snapshot status is %s.%n",
                     snapshotResult.getName(), snapshotResult.getCreatedAt(), snapshotResult.getStatus());

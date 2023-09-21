@@ -1404,7 +1404,7 @@ public final class ConfigurationAsyncClient {
      * <!-- src_embed com.azure.data.appconfiguration.configurationasyncclient.listSnapshots -->
      * <pre>
      * String snapshotNameFilter = &quot;&#123;snapshotNamePrefix&#125;*&quot;;
-     * client.listSnapshots&#40;new SnapshotSelector&#40;&#41;.setName&#40;snapshotNameFilter&#41;&#41;
+     * client.listSnapshots&#40;new SnapshotSelector&#40;&#41;.setNameFilter&#40;snapshotNameFilter&#41;&#41;
      *     .subscribe&#40;recoveredSnapshot -&gt; &#123;
      *         System.out.printf&#40;&quot;Recovered snapshot name=%s is created at %s, snapshot status is %s.%n&quot;,
      *             recoveredSnapshot.getName&#40;&#41;, recoveredSnapshot.getCreatedAt&#40;&#41;, recoveredSnapshot.getStatus&#40;&#41;&#41;;
@@ -1421,7 +1421,7 @@ public final class ConfigurationAsyncClient {
             return new PagedFlux<>(
                 () -> withContext(
                     context -> serviceClient.getSnapshotsSinglePageAsync(
-                        selector == null ? null : selector.getName(),
+                        selector == null ? null : selector.getNameFilter(),
                         null,
                         selector == null ? null : selector.getFields(),
                         selector == null ? null : selector.getSnapshotStatus(),

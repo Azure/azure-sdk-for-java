@@ -480,7 +480,7 @@ public class ConfigurationAsyncClientJavaDocCodeSnippets {
         ConfigurationAsyncClient client = getAsyncClient();
         // BEGIN: com.azure.data.appconfiguration.configurationasyncclient.listSnapshots
         String snapshotNameFilter = "{snapshotNamePrefix}*";
-        client.listSnapshots(new SnapshotSelector().setName(snapshotNameFilter))
+        client.listSnapshots(new SnapshotSelector().setNameFilter(snapshotNameFilter))
             .subscribe(recoveredSnapshot -> {
                 System.out.printf("Recovered snapshot name=%s is created at %s, snapshot status is %s.%n",
                     recoveredSnapshot.getName(), recoveredSnapshot.getCreatedAt(), recoveredSnapshot.getStatus());

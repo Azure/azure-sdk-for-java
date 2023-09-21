@@ -1452,7 +1452,7 @@ public final class ConfigurationClient {
      * <!-- src_embed com.azure.data.appconfiguration.configurationclient.listSnapshots -->
      * <pre>
      * String snapshotNameFilter = &quot;&#123;snapshotNamePrefix&#125;*&quot;;
-     * client.listSnapshots&#40;new SnapshotSelector&#40;&#41;.setName&#40;snapshotNameFilter&#41;&#41;
+     * client.listSnapshots&#40;new SnapshotSelector&#40;&#41;.setNameFilter&#40;snapshotNameFilter&#41;&#41;
      *     .forEach&#40;snapshotResult -&gt; &#123;
      *         System.out.printf&#40;&quot;Listed Snapshot name = %s is created at %s, snapshot status is %s.%n&quot;,
      *             snapshotResult.getName&#40;&#41;, snapshotResult.getCreatedAt&#40;&#41;, snapshotResult.getStatus&#40;&#41;&#41;;
@@ -1478,7 +1478,7 @@ public final class ConfigurationClient {
      * String snapshotNameFilter = &quot;&#123;snapshotNamePrefix&#125;*&quot;;
      * Context ctx = new Context&#40;key2, value2&#41;;
      *
-     * client.listSnapshots&#40;new SnapshotSelector&#40;&#41;.setName&#40;snapshotNameFilter&#41;, ctx&#41;
+     * client.listSnapshots&#40;new SnapshotSelector&#40;&#41;.setNameFilter&#40;snapshotNameFilter&#41;, ctx&#41;
      *     .forEach&#40;snapshotResult -&gt; &#123;
      *         System.out.printf&#40;&quot;Listed Snapshot name = %s is created at %s, snapshot status is %s.%n&quot;,
      *             snapshotResult.getName&#40;&#41;, snapshotResult.getCreatedAt&#40;&#41;, snapshotResult.getStatus&#40;&#41;&#41;;
@@ -1494,7 +1494,7 @@ public final class ConfigurationClient {
     public PagedIterable<ConfigurationSettingsSnapshot> listSnapshots(SnapshotSelector selector, Context context) {
         return new PagedIterable<>(
             () -> serviceClient.getSnapshotsSinglePage(
-                selector == null ? null : selector.getName(),
+                selector == null ? null : selector.getNameFilter(),
                 null,
                 selector == null ? null : selector.getFields(),
                 selector == null ? null : selector.getSnapshotStatus(),

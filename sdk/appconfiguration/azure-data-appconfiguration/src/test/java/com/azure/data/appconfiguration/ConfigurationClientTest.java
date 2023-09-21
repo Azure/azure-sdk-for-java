@@ -1327,7 +1327,7 @@ public class ConfigurationClientTest extends ConfigurationClientTestBase {
         // readySnapshots contains only 1 snapshot
         ConfigurationSettingsSnapshot readySnapshot = readySnapshots.get(0);
         // List only the snapshot with a specific name
-        client.listSnapshots(new SnapshotSelector().setName(readySnapshot.getName()))
+        client.listSnapshots(new SnapshotSelector().setNameFilter(readySnapshot.getName()))
             .forEach(response -> {
                 assertEquals(readySnapshot.getName(), response.getName());
                 assertEquals(readySnapshot.getStatus(), response.getStatus());
@@ -1395,7 +1395,7 @@ public class ConfigurationClientTest extends ConfigurationClientTestBase {
         // List only the snapshot with a specific name
         PagedIterable<ConfigurationSettingsSnapshot> configurationSettingsSnapshots =
             client.listSnapshots(new SnapshotSelector()
-                .setName(readySnapshot.getName())
+                .setNameFilter(readySnapshot.getName())
                 .setFields(SnapshotFields.NAME, SnapshotFields.FILTERS, SnapshotFields.STATUS));
 
         for (ConfigurationSettingsSnapshot snapshotFieldFiltered : configurationSettingsSnapshots) {

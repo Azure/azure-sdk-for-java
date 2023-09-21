@@ -444,7 +444,7 @@ public class ReadmeSamples {
     public void listSnapshot() {
         // BEGIN: readme-sample-getAllSnapshots
         String snapshotNameProduct = "{snapshotNameInProduct}";
-        SnapshotSelector snapshotSelector = new SnapshotSelector().setName(snapshotNameProduct);
+        SnapshotSelector snapshotSelector = new SnapshotSelector().setNameFilter(snapshotNameProduct);
         PagedIterable<ConfigurationSettingsSnapshot> configurationSettingsSnapshots =
             configurationClient.listSnapshots(snapshotSelector);
         for (ConfigurationSettingsSnapshot snapshot : configurationSettingsSnapshots) {

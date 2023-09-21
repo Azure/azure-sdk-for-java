@@ -1692,7 +1692,7 @@ public class ConfigurationAsyncClientTest extends ConfigurationClientTestBase {
         ConfigurationSettingsSnapshot readySnapshot = readySnapshots.get(0);
         // List only the snapshot with a specific name
         StepVerifier.create(client.listSnapshots(
-                new SnapshotSelector().setName(readySnapshot.getName())))
+                new SnapshotSelector().setNameFilter(readySnapshot.getName())))
             .assertNext(snapshotWithName -> {
                 assertEquals(readySnapshot.getName(), snapshotWithName.getName());
                 assertEquals(readySnapshot.getStatus(), snapshotWithName.getStatus());
@@ -1769,7 +1769,7 @@ public class ConfigurationAsyncClientTest extends ConfigurationClientTestBase {
         // List only the snapshot with a specific name
         StepVerifier.create(client.listSnapshots(
                 new SnapshotSelector()
-                    .setName(readySnapshot.getName())
+                    .setNameFilter(readySnapshot.getName())
                     .setFields(SnapshotFields.NAME, SnapshotFields.FILTERS, SnapshotFields.STATUS)
             ))
             .assertNext(snapshotFieldFiltered -> {
