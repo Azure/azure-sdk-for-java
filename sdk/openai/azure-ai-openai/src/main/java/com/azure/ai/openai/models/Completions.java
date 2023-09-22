@@ -92,7 +92,6 @@ public final class Completions {
      *
      * @return the promptFilterResults value.
      */
-    @Generated
     public List<PromptFilterResult> getPromptFilterResults() {
         if (this.promptFilterResults != null) {
             return this.promptFilterResults;
