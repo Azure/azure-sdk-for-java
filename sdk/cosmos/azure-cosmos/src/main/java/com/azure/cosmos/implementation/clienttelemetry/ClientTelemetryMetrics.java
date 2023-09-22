@@ -628,23 +628,6 @@ public final class ClientTelemetryMetrics {
             return Tags.of(effectiveTags);
         }
 
-        private Tags createQueryPlanTags(
-            EnumSet<TagName> metricTagNames
-        ) {
-            List<Tag> effectiveTags = new ArrayList<>();
-
-            if (metricTagNames.contains(TagName.RequestOperationType)) {
-                effectiveTags.add(Tag.of(
-                    TagName.RequestOperationType.toString(),
-                    String.format(
-                        "%s/%s",
-                        ResourceType.DocumentCollection,
-                        OperationType.QueryPlan)));
-            }
-
-            return Tags.of(effectiveTags);
-        }
-
         private Tags createAddressResolutionTags(
             EnumSet<TagName> metricTagNames,
             String serviceEndpoint,

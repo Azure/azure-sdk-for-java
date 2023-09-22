@@ -290,14 +290,6 @@ public final class CosmosDiagnosticsContext {
             return;
         }
 
-        StringBuilder callstackBuilder = new StringBuilder();
-        StackTraceElement[] elements = Thread.currentThread().getStackTrace();
-        for (int i = 1; i < elements.length; i++) {
-            StackTraceElement s = elements[i];
-            callstackBuilder.append("\tat " + s.getClassName() + "." + s.getMethodName() + "(" + s.getFileName() + ":" + s.getLineNumber() + ")");
-            callstackBuilder.append(System.getProperty("line.separator"));
-        }
-
         if (cosmosDiagnostics.getFeedResponseDiagnostics() != null &&
             !diagAccessor.isDiagnosticsCapturedInPagedFlux(cosmosDiagnostics).get()) {
 
