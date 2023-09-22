@@ -138,7 +138,7 @@ public class DataLakeFileSystemClient {
     public DataLakeDirectoryClient getDirectoryClient(String directoryName) {
         Objects.requireNonNull(directoryName, "'directoryName' can not be set to null");
 
-        return new DataLakeDirectoryClient(dataLakeFileSystemAsyncClient.getDirectoryAsyncClient(directoryName),
+         return new DataLakeDirectoryClient(dataLakeFileSystemAsyncClient.getDirectoryAsyncClient(directoryName),
             blobContainerClient.getBlobClient(directoryName).getBlockBlobClient());
     }
 

@@ -4179,7 +4179,7 @@ public class FileApiTest extends DataLakeTestBase {
     @Test
     public void defaultAudience() {
         DataLakeFileClient aadFileClient = getPathClientBuilderWithTokenCredential(
-            ENVIRONMENT.getPrimaryAccount().getDataLakeEndpoint(), fc.getFilePath())
+            dataLakeFileSystemClient.getFileSystemUrl(), fc.getFilePath())
             .fileSystemName(dataLakeFileSystemClient.getFileSystemName())
             .dataLakeAudience(DataLakeAudience.getPublicAudience())
             .buildFileClient();

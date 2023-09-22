@@ -2242,6 +2242,7 @@ public class FileSystemApiTests extends DataLakeTestBase {
     public void storageAccountAudience() {
         DataLakeFileSystemClient aadFsClient =
             getFileSystemClientBuilderWithTokenCredential(ENVIRONMENT.getPrimaryAccount().getDataLakeEndpoint())
+                .fileSystemName(dataLakeFileSystemClient.getFileSystemName())
                 .dataLakeAudience(DataLakeAudience.getDataLakeServiceAccountAudience(
                     dataLakeFileSystemClient.getAccountName()))
                 .buildClient();

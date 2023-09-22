@@ -883,7 +883,7 @@ public class QueueApiTests extends QueueTestBase {
     @Test
     public void audienceError() {
         queueClient.createIfNotExists();
-        QueueAudience audience = new QueueAudience("https://badaudience.file.core.windows.net");
+        QueueAudience audience = new QueueAudience("https://badaudience.queue.core.windows.net");
         QueueClient aadQueue = getOAuthQueueClientBuilder(primaryQueueServiceClient.getQueueServiceUrl())
             .queueName(queueClient.getQueueName())
             .queueAudience(audience)

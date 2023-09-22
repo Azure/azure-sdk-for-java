@@ -27,6 +27,7 @@ import com.azure.core.util.HttpClientOptions;
 import com.azure.core.util.logging.ClientLogger;
 import com.azure.storage.blob.BlobContainerClientBuilder;
 import com.azure.storage.blob.BlobUrlParts;
+import com.azure.storage.blob.models.BlobAudience;
 import com.azure.storage.common.StorageSharedKeyCredential;
 import com.azure.storage.common.policy.RequestRetryOptions;
 import com.azure.storage.file.datalake.implementation.util.BuilderHelper;
@@ -540,6 +541,9 @@ public class DataLakeFileSystemClientBuilder implements
      */
     public DataLakeFileSystemClientBuilder dataLakeAudience(DataLakeAudience audience) {
         this.dataLakeAudience = audience;
+        if (audience != null) {
+            blobContainerClientBuilder.blobAudience(new BlobAudience(audience.getAudience()));
+        }
         return this;
     }
 }

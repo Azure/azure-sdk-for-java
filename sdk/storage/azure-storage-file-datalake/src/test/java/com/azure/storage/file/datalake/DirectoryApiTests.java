@@ -3423,7 +3423,7 @@ public class DirectoryApiTests extends DataLakeTestBase {
     @Test
     public void defaultAudience() {
         DataLakeDirectoryClient aadDirClient = getPathClientBuilderWithTokenCredential(
-            ENVIRONMENT.getDataLakeAccount().getDataLakeEndpoint(), dc.getDirectoryPath())
+            dataLakeFileSystemClient.getFileSystemUrl(), dc.getDirectoryPath())
             .fileSystemName(dataLakeFileSystemClient.getFileSystemName())
             .dataLakeAudience(DataLakeAudience.getPublicAudience())
             .buildDirectoryClient();
