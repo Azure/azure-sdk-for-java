@@ -83,6 +83,9 @@ public final class Completions {
     @JsonProperty(value = "prompt_filter_results")
     private List<PromptFilterResult> promptFilterResults;
 
+    @JsonProperty(value = "prompt_annotations")
+    private List<PromptFilterResult> promptAnnotations;
+
     /**
      * Get the promptFilterResults property: Content filtering results for zero or more prompts in the request. In a
      * streaming request, results for different prompts may arrive at different times or in different orders.
@@ -91,7 +94,10 @@ public final class Completions {
      */
     @Generated
     public List<PromptFilterResult> getPromptFilterResults() {
-        return this.promptFilterResults;
+        if (this.promptFilterResults != null) {
+            return this.promptFilterResults;
+        }
+        return this.promptAnnotations;
     }
 
     /*
@@ -137,5 +143,14 @@ public final class Completions {
     @Generated
     public OffsetDateTime getCreatedAt() {
         return OffsetDateTime.ofInstant(Instant.ofEpochSecond(this.createdAt), ZoneOffset.UTC);
+    }
+
+    private Completions setPromptAnnotations(List<PromptFilterResult> promptAnnotations) {
+        this.promptAnnotations = promptAnnotations;
+        return this;
+    }
+
+    private List<PromptFilterResult> getPromptAnnotations() {
+        return this.promptAnnotations;
     }
 }

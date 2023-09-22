@@ -102,15 +102,20 @@ public final class ChatCompletions {
     @JsonProperty(value = "prompt_filter_results")
     private List<PromptFilterResult> promptFilterResults;
 
+    @JsonProperty(value = "prompt_annotations")
+    private List<PromptFilterResult> promptAnnotations;
+
     /**
      * Get the promptFilterResults property: Content filtering results for zero or more prompts in the request. In a
      * streaming request, results for different prompts may arrive at different times or in different orders.
      *
      * @return the promptFilterResults value.
      */
-    @Generated
     public List<PromptFilterResult> getPromptFilterResults() {
-        return this.promptFilterResults;
+        if (this.promptFilterResults != null) {
+            return this.promptFilterResults;
+        }
+        return this.promptAnnotations;
     }
 
     /**
@@ -137,5 +142,14 @@ public final class ChatCompletions {
             @JsonProperty(value = "choices") List<ChatChoice> choices,
             @JsonProperty(value = "usage") CompletionsUsage usage) {
         this(id, OffsetDateTime.ofInstant(Instant.ofEpochSecond(createdAt), ZoneOffset.UTC), choices, usage);
+    }
+
+    private ChatCompletions setPromptAnnotations(List<PromptFilterResult> promptAnnotations) {
+        this.promptAnnotations = promptAnnotations;
+        return this;
+    }
+
+    private List<PromptFilterResult> getPromptAnnotations() {
+        return this.promptAnnotations;
     }
 }
