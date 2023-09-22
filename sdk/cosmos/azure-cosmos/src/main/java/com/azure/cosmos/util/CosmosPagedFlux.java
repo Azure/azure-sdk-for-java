@@ -200,100 +200,98 @@ public final class CosmosPagedFlux<T> extends ContinuablePagedFlux<String, T, Fe
     }
 
     private Flux<FeedResponse<T>> byPage(CosmosPagedFluxOptions pagedFluxOptions, Context context) {
-        return Flux.defer(() -> {
-            AtomicReference<Instant> startTime = new AtomicReference<>();
-            AtomicLong feedResponseConsumerLatencyInNanos = new AtomicLong(0);
+        AtomicReference<Instant> startTime = new AtomicReference<>();
+        AtomicLong feedResponseConsumerLatencyInNanos = new AtomicLong(0);
 
-            Flux<FeedResponse<T>> result =
-                wrapWithTracingIfEnabled(
-                    pagedFluxOptions, this.optionsFluxFunction.apply(pagedFluxOptions))
-                    .doOnSubscribe(ignoredValue -> {
-                        startTime.set(Instant.now());
-                        feedResponseConsumerLatencyInNanos.set(0);
+        Flux<FeedResponse<T>> result =
+            wrapWithTracingIfEnabled(
+                pagedFluxOptions, this.optionsFluxFunction.apply(pagedFluxOptions))
+            .doOnSubscribe(ignoredValue -> {
+                startTime.set(Instant.now());
+                feedResponseConsumerLatencyInNanos.set(0);
+            })
+            .doOnEach(signal -> {
+
+                FeedResponse<T> response = signal.get();
+                Context traceCtx = DiagnosticsProvider.getContextFromReactorOrNull(signal.getContextView());
+                DiagnosticsProvider tracerProvider = pagedFluxOptions.getDiagnosticsProvider();
+                switch (signal.getType()) {
+                    case ON_COMPLETE:
+                        this.recordFeedResponse(pagedFluxOptions, traceCtx, tracerProvider, response, feedResponseConsumerLatencyInNanos);
+
+                        if (isTracerEnabled(tracerProvider)) {
+                            tracerProvider.recordFeedResponseConsumerLatency(
+                                signal,
+                                Duration.ofNanos(feedResponseConsumerLatencyInNanos.get()));
+
+                            tracerProvider.endSpan(traceCtx);
+                        }
+
+                        break;
+                    case ON_NEXT:
+                        this.recordFeedResponse(pagedFluxOptions, traceCtx, tracerProvider, response, feedResponseConsumerLatencyInNanos);
+
+                        break;
+
+                    case ON_ERROR:
+                        if (isTracerEnabled(tracerProvider)) {
+                            tracerProvider.recordFeedResponseConsumerLatency(
+                                signal,
+                                Duration.ofNanos(feedResponseConsumerLatencyInNanos.get()));
+
+                            // all info is extracted from CosmosException when applicable
+                            tracerProvider.endSpan(
+                                traceCtx,
+                                signal.getThrowable()
+                            );
+                        }
+
+                        break;
+
+                    default:
+                        break;
+            }});
+
+
+        final DiagnosticsProvider tracerProvider = pagedFluxOptions.getDiagnosticsProvider();
+        if (isTracerEnabled(tracerProvider)) {
+
+            final CosmosDiagnosticsContext cosmosCtx = ctxAccessor.create(
+                pagedFluxOptions.getSpanName(),
+                pagedFluxOptions.getAccountTag(),
+                BridgeInternal.getServiceEndpoint(pagedFluxOptions.getCosmosAsyncClient()),
+                pagedFluxOptions.getDatabaseId(),
+                pagedFluxOptions.getContainerId(),
+                pagedFluxOptions.getResourceType(),
+                pagedFluxOptions.getOperationType(),
+                pagedFluxOptions.getOperationId(),
+                pagedFluxOptions.getEffectiveConsistencyLevel(),
+                pagedFluxOptions.getMaxItemCount(),
+                pagedFluxOptions.getDiagnosticsThresholds(),
+                null,
+                pagedFluxOptions.getConnectionMode(),
+                pagedFluxOptions.getUserAgent());
+            ctxAccessor.setSamplingRateSnapshot(cosmosCtx, pagedFluxOptions.getSamplingRateSnapshot());
+
+            return Flux
+                .deferContextual(reactorCtx -> result
+                    .doOnCancel(() -> {
+                        Context traceCtx = DiagnosticsProvider.getContextFromReactorOrNull(reactorCtx);
+                        tracerProvider.endSpan(traceCtx);
                     })
-                    .doOnEach(signal -> {
+                    .doOnComplete(() -> {
+                        Context traceCtx = DiagnosticsProvider.getContextFromReactorOrNull(reactorCtx);
+                        tracerProvider.endSpan(traceCtx);
+                    }))
+                .contextWrite(DiagnosticsProvider.setContextInReactor(
+                    pagedFluxOptions.getDiagnosticsProvider().startSpan(
+                        pagedFluxOptions.getSpanName(),
+                        cosmosCtx,
+                        context)));
 
-                        FeedResponse<T> response = signal.get();
-                        Context traceCtx = DiagnosticsProvider.getContextFromReactorOrNull(signal.getContextView());
-                        DiagnosticsProvider tracerProvider = pagedFluxOptions.getDiagnosticsProvider();
-                        switch (signal.getType()) {
-                            case ON_COMPLETE:
-                                this.recordFeedResponse(pagedFluxOptions, traceCtx, tracerProvider, response, feedResponseConsumerLatencyInNanos);
+        }
 
-                                if (isTracerEnabled(tracerProvider)) {
-                                    tracerProvider.recordFeedResponseConsumerLatency(
-                                        signal,
-                                        Duration.ofNanos(feedResponseConsumerLatencyInNanos.get()));
-
-                                    tracerProvider.endSpan(traceCtx);
-                                }
-
-                                break;
-                            case ON_NEXT:
-                                this.recordFeedResponse(pagedFluxOptions, traceCtx, tracerProvider, response, feedResponseConsumerLatencyInNanos);
-
-                                break;
-
-                            case ON_ERROR:
-                                if (isTracerEnabled(tracerProvider)) {
-                                    tracerProvider.recordFeedResponseConsumerLatency(
-                                        signal,
-                                        Duration.ofNanos(feedResponseConsumerLatencyInNanos.get()));
-
-                                    // all info is extracted from CosmosException when applicable
-                                    tracerProvider.endSpan(
-                                        traceCtx,
-                                        signal.getThrowable()
-                                    );
-                                }
-
-                                break;
-
-                            default:
-                                break;
-                        }});
-
-
-            final DiagnosticsProvider tracerProvider = pagedFluxOptions.getDiagnosticsProvider();
-            if (isTracerEnabled(tracerProvider)) {
-
-                final CosmosDiagnosticsContext cosmosCtx = ctxAccessor.create(
-                    pagedFluxOptions.getSpanName(),
-                    pagedFluxOptions.getAccountTag(),
-                    BridgeInternal.getServiceEndpoint(pagedFluxOptions.getCosmosAsyncClient()),
-                    pagedFluxOptions.getDatabaseId(),
-                    pagedFluxOptions.getContainerId(),
-                    pagedFluxOptions.getResourceType(),
-                    pagedFluxOptions.getOperationType(),
-                    pagedFluxOptions.getOperationId(),
-                    pagedFluxOptions.getEffectiveConsistencyLevel(),
-                    pagedFluxOptions.getMaxItemCount(),
-                    pagedFluxOptions.getDiagnosticsThresholds(),
-                    null,
-                    pagedFluxOptions.getConnectionMode(),
-                    pagedFluxOptions.getUserAgent());
-                ctxAccessor.setSamplingRateSnapshot(cosmosCtx, pagedFluxOptions.getSamplingRateSnapshot());
-
-                return Flux
-                    .deferContextual(reactorCtx -> result
-                        .doOnCancel(() -> {
-                            Context traceCtx = DiagnosticsProvider.getContextFromReactorOrNull(reactorCtx);
-                            tracerProvider.endSpan(traceCtx);
-                        })
-                        .doOnComplete(() -> {
-                            Context traceCtx = DiagnosticsProvider.getContextFromReactorOrNull(reactorCtx);
-                            tracerProvider.endSpan(traceCtx);
-                        }))
-                    .contextWrite(DiagnosticsProvider.setContextInReactor(
-                        pagedFluxOptions.getDiagnosticsProvider().startSpan(
-                            pagedFluxOptions.getSpanName(),
-                            cosmosCtx,
-                            context)));
-
-            }
-
-            return result;
-        });
+        return result;
     }
 
     private boolean isTracerEnabled(DiagnosticsProvider tracerProvider) {
