@@ -49,7 +49,7 @@
 /sdk/attestation/azure-resourcemanager-attestation/  @azure-sdk-write-attestation @anilba06 @gkostal
 
 # PRLabel: %Batch
-/sdk/batch/                                          @jingjlii @ljiaqi1998 @JJJessieWang @dpwatrous @NickKouds
+/sdk/batch/                                          @skapur12 @wiboris @dpwatrous @NickKouds
 
 # PRLabel: %Communication
 /sdk/communication/
