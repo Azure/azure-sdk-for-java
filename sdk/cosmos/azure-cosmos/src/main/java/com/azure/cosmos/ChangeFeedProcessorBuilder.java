@@ -198,7 +198,7 @@ public class ChangeFeedProcessorBuilder {
     /**
      * Sets a {@link BiConsumer} function which will be called to process changes for AllVersionsAndDeletes change feed mode.
      *
-     * <!-- src_embed com.azure.cosmos.allVersionsAndDeletesChangeFeedProcessor.handleChanges -->
+     * <!-- src_embed com.azure.cosmos.allVersionsAndDeletesChangeFeedProcessorWithContext.handleChanges -->
      * <pre>
      * .handleAllVersionsAndDeletesChanges&#40;&#40;docs, context&#41; -&gt; &#123;
      *     for &#40;ChangeFeedProcessorItem item : docs&#41; &#123;
@@ -208,7 +208,7 @@ public class ChangeFeedProcessorBuilder {
      *     &#47;&#47; Handling of the lease token corresponding to a batch of change feed processor item goes here
      * &#125;&#41;
      * </pre>
-     * <!-- end com.azure.cosmos.allVersionsAndDeletesChangeFeedProcessor.handleChanges -->
+     * <!-- end com.azure.cosmos.allVersionsAndDeletesChangeFeedProcessorWithContext.handleChanges -->
      *
      * @param biConsumer the {@link BiConsumer} to call for handling the feeds and the {@link ChangeFeedProcessorContext} instance.
      * @return current Builder.
