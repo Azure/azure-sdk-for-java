@@ -86,9 +86,11 @@ public final class Completions {
     /**
      * Backing member for the prompt filtering result during the rename transition. More details <a
      * href="https://github.com/Azure/azure-rest-api-specs/pull/25880">here</a>
+     *
+     * @deprecated This field is only used for deserialization.
      */
-    @JsonProperty(value = "prompt_annotations")
     @Deprecated
+    @JsonProperty(value = "prompt_annotations")
     private List<PromptFilterResult> promptAnnotations;
 
     /**
