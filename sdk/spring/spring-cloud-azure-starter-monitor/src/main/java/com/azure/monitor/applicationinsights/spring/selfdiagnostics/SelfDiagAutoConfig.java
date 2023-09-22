@@ -17,9 +17,7 @@ import java.util.Locale;
  Main configuration entry point of the self-diagnostics
  **/
 @Configuration(proxyBeanMethods = false)
-@ConditionalOnProperty(
-    name = "applicationinsights.enabled",
-    matchIfMissing = true)
+@ConditionalOnProperty(name = "otel.sdk.disabled", havingValue = "false", matchIfMissing = true)
 @Import({DefaultLogConfig.class, LogbackSelfDiagConfig.class, JdbcSelfDiagConfig.class})
 public class SelfDiagAutoConfig {
     private static final Logger LOG = LoggerFactory.getLogger(SelfDiagAutoConfig.class);

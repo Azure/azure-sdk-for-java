@@ -25,9 +25,7 @@ import java.util.Optional;
  */
 @Configuration(proxyBeanMethods = false)
 @AutoConfigureBefore(OpenTelemetryAutoConfiguration.class)
-@ConditionalOnProperty(
-    name = "applicationinsights.enabled",
-    matchIfMissing = true)
+@ConditionalOnProperty(name = "otel.sdk.disabled", havingValue = "false", matchIfMissing = true)
 public class AzureSpringMonitorAutoConfig {
 
     private static final ClientLogger LOGGER = new ClientLogger(AzureSpringMonitorAutoConfig.class);

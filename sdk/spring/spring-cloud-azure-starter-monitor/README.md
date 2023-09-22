@@ -195,7 +195,7 @@ You have to replace `{image-name}` by your docker image name.
 
 ### Disable the monitoring
 
-You can disable the monitoring by setting the `applicationinsights.enabled` property or the `APPLICATIONINSIGHTS_ENABLED` environment variable to false.
+You can disable the monitoring by setting the `otel.sdk.disabled` property or the `OTEL_SDK_DISABLED` environment variable to true.
 
 ## Contributing
 
