@@ -25,6 +25,7 @@ import com.azure.core.util.serializer.SerializerEncoding;
 import com.azure.resourcemanager.managedapplications.fluent.ApplicationClient;
 import com.azure.resourcemanager.managedapplications.fluent.ApplicationDefinitionsClient;
 import com.azure.resourcemanager.managedapplications.fluent.ApplicationsClient;
+import com.azure.resourcemanager.managedapplications.fluent.JitRequestsClient;
 import com.azure.resourcemanager.managedapplications.fluent.ResourceProvidersClient;
 import java.io.IOException;
 import java.lang.reflect.Type;
@@ -146,6 +147,18 @@ public final class ApplicationClientImpl implements ApplicationClient {
         return this.applicationDefinitions;
     }
 
+    /** The JitRequestsClient object to access its operations. */
+    private final JitRequestsClient jitRequests;
+
+    /**
+     * Gets the JitRequestsClient object to access its operations.
+     *
+     * @return the JitRequestsClient object.
+     */
+    public JitRequestsClient getJitRequests() {
+        return this.jitRequests;
+    }
+
     /**
      * Initializes an instance of ApplicationClient client.
      *
@@ -168,10 +181,11 @@ public final class ApplicationClientImpl implements ApplicationClient {
         this.defaultPollInterval = defaultPollInterval;
         this.subscriptionId = subscriptionId;
         this.endpoint = endpoint;
-        this.apiVersion = "2018-06-01";
+        this.apiVersion = "2021-07-01";
         this.resourceProviders = new ResourceProvidersClientImpl(this);
         this.applications = new ApplicationsClientImpl(this);
         this.applicationDefinitions = new ApplicationDefinitionsClientImpl(this);
+        this.jitRequests = new JitRequestsClientImpl(this);
     }
 
     /**
