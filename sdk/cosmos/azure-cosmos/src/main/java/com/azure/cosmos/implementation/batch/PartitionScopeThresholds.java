@@ -35,10 +35,7 @@ public class PartitionScopeThresholds {
 
         this.pkRangeId = pkRangeId;
         this.options = options;
-        this.targetMicroBatchSize = new AtomicInteger(
-            ImplementationBridgeHelpers.CosmosBulkExecutionOptionsHelper
-                .getCosmosBulkExecutionOptionsAccessor()
-                .getInitialMicroBatchSize(options));
+        this.targetMicroBatchSize = new AtomicInteger(options.getInitialMicroBatchSize());
         this.totalOperationCount = new AtomicLong(0);
         this.currentThresholds = new AtomicReference<>(new CurrentIntervalThresholds());
 
