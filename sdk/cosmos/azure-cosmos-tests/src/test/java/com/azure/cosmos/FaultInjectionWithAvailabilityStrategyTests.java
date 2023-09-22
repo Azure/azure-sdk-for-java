@@ -2387,6 +2387,47 @@ public class FaultInjectionWithAvailabilityStrategyTests extends TestSuiteBase {
                 ENOUGH_DOCS_OTHER_PK_TO_HIT_EVERY_PARTITION,
                 NO_OTHER_DOCS_WITH_SAME_PK
             },
+
+            // Simple single partition query - 404/1002 injected into all partition of the first region
+            // RegionSwitchHint is local - with eager availability strategy - so, the expectation is that the
+            // hedging will provide a successful response. There should only be a single CosmosDiagnosticsContext
+            // (and page) - but it should have three CosmosDiagnostics instances - first for query plan, second for
+            // the attempt in the first region and third one for hedging returning successful response.
+            new Object[] {
+                "DefaultPageSize_SinglePartition_503_AllRegions_EagerAvailabilityStrategy",
+                Duration.ofSeconds(10),
+                eagerThresholdAvailabilityStrategy,
+                CosmosRegionSwitchHint.LOCAL_REGION_PREFERRED,
+                singlePartitionQueryGenerator,
+                queryReturnsTotalRecordCountWithDefaultPageSize,
+                injectServiceUnavailableIntoAllRegions,
+                validateStatusCodeIsServiceUnavailable,
+                1,
+                ArrayUtils.toArray(
+                    validateCtxTwoRegions,
+                    (ctx) -> {
+                        CosmosDiagnostics[] diagnostics = ctx.getDiagnostics().toArray(new CosmosDiagnostics[0]);
+                        assertThat(diagnostics.length).isEqualTo(3);
+
+                        // Ensure first FeedResponse reaches both regions since Clinet Retry
+                        // policy should kick in and retry in remote region
+                        assertThat(diagnostics[1].getContactedRegionNames().size()).isEqualTo(2);
+                        assertThat(diagnostics[1].getContactedRegionNames().contains(FIRST_REGION_NAME))
+                            .isEqualTo(true);
+                        assertThat(diagnostics[1].getContactedRegionNames().contains(SECOND_REGION_NAME))
+                            .isEqualTo(true);
+
+                        // Ensure second FeedResponse CosmoDiagnostics has only requests to second region
+                        assertThat(diagnostics[2].getContactedRegionNames().size()).isEqualTo(1);
+                        assertThat(diagnostics[2].getContactedRegionNames().contains(SECOND_REGION_NAME))
+                            .isEqualTo(true);
+                    }
+                ),
+                null,
+                null,
+                ENOUGH_DOCS_OTHER_PK_TO_HIT_EVERY_PARTITION,
+                NO_OTHER_DOCS_WITH_SAME_PK
+            }
         };
     }
 
