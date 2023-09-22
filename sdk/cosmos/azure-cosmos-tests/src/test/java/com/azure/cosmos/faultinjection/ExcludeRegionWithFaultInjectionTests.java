@@ -1452,10 +1452,10 @@ public class ExcludeRegionWithFaultInjectionTests extends TestSuiteBase {
 
         CosmosAsyncClient clientWithPreferredRegions = null;
 
-        List<String> excludeRegions = null;
+        List<String> excludedRegions = null;
 
         if (mutationTestConfig.chooseInitialExclusionRegions != null) {
-            excludeRegions = mutationTestConfig.chooseInitialExclusionRegions.apply(this.preferredRegions);
+            excludedRegions = mutationTestConfig.chooseInitialExclusionRegions.apply(this.preferredRegions);
         }
 
         try {
@@ -1467,8 +1467,20 @@ public class ExcludeRegionWithFaultInjectionTests extends TestSuiteBase {
                 .preferredRegions(this.preferredRegions)
                 .sessionRetryOptions(new SessionRetryOptionsBuilder().regionSwitchHint(CosmosRegionSwitchHint.REMOTE_REGION_PREFERRED).build())
                 .directMode()
-                .excludeRegions(excludeRegions)
+                .excludeRegions(excludedRegions)
                 .buildAsyncClient();
+
+            if (excludedRegions == null || excludedRegions.isEmpty()) {
+                assertThat(clientWithPreferredRegions.getExcludedRegions()).isNotNull();
+                assertThat(clientWithPreferredRegions.getExcludedRegions().size()).isEqualTo(0);
+            } else {
+                assertThat(clientWithPreferredRegions.getExcludedRegions()).isNotNull();
+                assertThat(clientWithPreferredRegions.getExcludedRegions().size()).isEqualTo(excludedRegions.size());
+
+                for (String excludedRegion : excludedRegions) {
+                   assertThat(clientWithPreferredRegions.getExcludedRegions().contains(excludedRegion)).isTrue();
+                }
+            }
 
             CosmosAsyncContainer containerForClientWithPreferredRegions = clientWithPreferredRegions
                 .getDatabase(this.cosmosAsyncContainer.getDatabase().getId())
@@ -1508,6 +1520,18 @@ public class ExcludeRegionWithFaultInjectionTests extends TestSuiteBase {
 
             List<String> mutatedExcludedRegions = regionExclusionMutators.apply(this.preferredRegions);
             clientWithPreferredRegions.setExcludedRegions(mutatedExcludedRegions);
+
+            if (mutatedExcludedRegions == null || mutatedExcludedRegions.isEmpty()) {
+                assertThat(clientWithPreferredRegions.getExcludedRegions()).isNotNull();
+                assertThat(clientWithPreferredRegions.getExcludedRegions().size()).isEqualTo(0);
+            } else {
+                assertThat(clientWithPreferredRegions.getExcludedRegions()).isNotNull();
+                assertThat(clientWithPreferredRegions.getExcludedRegions().size()).isEqualTo(mutatedExcludedRegions.size());
+
+                for (String excludedRegion : mutatedExcludedRegions) {
+                    assertThat(clientWithPreferredRegions.getExcludedRegions().contains(excludedRegion)).isTrue();
+                }
+            }
 
             params.itemRequestOptionsForCallbackAfterMutation = mutationTestConfig.itemRequestOptionsForCallbackAfterMutation;
             params.patchItemRequestOptionsForCallbackAfterMutation = mutationTestConfig.patchItemRequestOptionsForCallbackAfterMutation;
