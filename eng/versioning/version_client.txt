@@ -42,7 +42,7 @@ com.azure:azure-ai-formrecognizer;4.1.1;4.2.0-beta.1
 com.azure:azure-ai-formrecognizer-perf;1.0.0-beta.1;1.0.0-beta.1
 com.azure:azure-ai-metricsadvisor;1.1.17;1.1.18
 com.azure:azure-ai-metricsadvisor-perf;1.0.0-beta.1;1.0.0-beta.1
-com.azure:azure-ai-openai;1.0.0-beta.4;1.0.0-beta.5
+com.azure:azure-ai-openai;1.0.0-beta.5;1.0.0-beta.6
 com.azure:azure-ai-personalizer;1.0.0-beta.1;1.0.0-beta.2
 com.azure:azure-ai-textanalytics;5.3.2;5.3.3
 com.azure:azure-ai-textanalytics-perf;1.0.0-beta.1;1.0.0-beta.1
@@ -406,7 +406,7 @@ com.azure.resourcemanager:azure-resourcemanager-hybridcontainerservice;1.0.0-bet
 com.azure.resourcemanager:azure-resourcemanager-securitydevops;1.0.0-beta.1;1.0.0-beta.2
 com.azure.resourcemanager:azure-resourcemanager-appcomplianceautomation;1.0.0-beta.1;1.0.0-beta.2
 com.azure.resourcemanager:azure-resourcemanager-servicenetworking;1.0.0-beta.2;1.0.0-beta.3
-com.azure.resourcemanager:azure-resourcemanager-recoveryservicessiterecovery;1.0.0-beta.1;1.0.0-beta.2
+com.azure.resourcemanager:azure-resourcemanager-recoveryservicessiterecovery;1.0.0;1.1.0-beta.1
 com.azure.resourcemanager:azure-resourcemanager-billingbenefits;1.0.0-beta.1;1.0.0-beta.2
 com.azure.resourcemanager:azure-resourcemanager-providerhub;1.0.0;1.1.0-beta.1
 com.azure.resourcemanager:azure-resourcemanager-reservations;1.0.0-beta.2;1.0.0-beta.3
