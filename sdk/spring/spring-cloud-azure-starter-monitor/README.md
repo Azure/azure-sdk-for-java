@@ -86,7 +86,7 @@ You can then configure the connection string in two different ways:
 
 ### Configure the instrumentation
 
-The Spring starter will display the HTTP requests on the Application Insights resource in the Azure portal. You can configure additional instrumentation.
+The Spring starter will capture HTTP requests by default. You can also configure additional instrumentation.
 
 #### Configure the database instrumentation
 
