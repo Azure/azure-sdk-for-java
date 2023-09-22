@@ -352,7 +352,7 @@ public class RxDocumentClientImpl implements AsyncDocumentClient, IAuthorization
                 String[] segments = StringUtils.split(permission.getResourceLink(),
                         Constants.Properties.PATH_SEPARATOR.charAt(0));
 
-                if (segments.length <= 0) {
+                if (segments.length == 0) {
                     throw new IllegalArgumentException("resourceLink");
                 }
 
@@ -3413,10 +3413,8 @@ public class RxDocumentClientImpl implements AsyncDocumentClient, IAuthorization
 
         String path = Utils.joinPath(collectionLink, Paths.STORED_PROCEDURES_PATH_SEGMENT);
         Map<String, String> requestHeaders = this.getRequestHeaders(options, ResourceType.StoredProcedure, operationType);
-        RxDocumentServiceRequest request = RxDocumentServiceRequest.create(this, operationType,
+        return RxDocumentServiceRequest.create(this, operationType,
             ResourceType.StoredProcedure, path, storedProcedure, requestHeaders, options);
-
-        return request;
     }
 
     private RxDocumentServiceRequest getUserDefinedFunctionRequest(String collectionLink, UserDefinedFunction udf,
@@ -3432,10 +3430,8 @@ public class RxDocumentClientImpl implements AsyncDocumentClient, IAuthorization
 
         String path = Utils.joinPath(collectionLink, Paths.USER_DEFINED_FUNCTIONS_PATH_SEGMENT);
         Map<String, String> requestHeaders = this.getRequestHeaders(options, ResourceType.UserDefinedFunction, operationType);
-        RxDocumentServiceRequest request = RxDocumentServiceRequest.create(this,
+        return RxDocumentServiceRequest.create(this,
             operationType, ResourceType.UserDefinedFunction, path, udf, requestHeaders, options);
-
-        return request;
     }
 
     @Override
@@ -3721,10 +3717,8 @@ public class RxDocumentClientImpl implements AsyncDocumentClient, IAuthorization
 
         String path = Utils.joinPath(collectionLink, Paths.TRIGGERS_PATH_SEGMENT);
         Map<String, String> requestHeaders = getRequestHeaders(options, ResourceType.Trigger, operationType);
-        RxDocumentServiceRequest request = RxDocumentServiceRequest.create(this, operationType, ResourceType.Trigger, path,
+        return RxDocumentServiceRequest.create(this, operationType, ResourceType.Trigger, path,
                 trigger, requestHeaders, options);
-
-        return request;
     }
 
     @Override
@@ -4159,10 +4153,8 @@ public class RxDocumentClientImpl implements AsyncDocumentClient, IAuthorization
 
         String path = Utils.joinPath(databaseLink, Paths.USERS_PATH_SEGMENT);
         Map<String, String> requestHeaders = getRequestHeaders(options, ResourceType.User, operationType);
-        RxDocumentServiceRequest request = RxDocumentServiceRequest.create(this,
+        return RxDocumentServiceRequest.create(this,
             operationType, ResourceType.User, path, user, requestHeaders, options);
-
-        return request;
     }
 
     @Override
@@ -4337,10 +4329,8 @@ public class RxDocumentClientImpl implements AsyncDocumentClient, IAuthorization
 
         String path = Utils.joinPath(databaseLink, Paths.CLIENT_ENCRYPTION_KEY_PATH_SEGMENT);
         Map<String, String> requestHeaders = getRequestHeaders(options, ResourceType.ClientEncryptionKey, operationType);
-        RxDocumentServiceRequest request = RxDocumentServiceRequest.create(this,
+        return RxDocumentServiceRequest.create(this,
             operationType, ResourceType.ClientEncryptionKey, path, clientEncryptionKey, requestHeaders, options);
-
-        return request;
     }
 
     @Override
@@ -4455,10 +4445,8 @@ public class RxDocumentClientImpl implements AsyncDocumentClient, IAuthorization
 
         String path = Utils.joinPath(userLink, Paths.PERMISSIONS_PATH_SEGMENT);
         Map<String, String> requestHeaders = getRequestHeaders(options, ResourceType.Permission, operationType);
-        RxDocumentServiceRequest request = RxDocumentServiceRequest.create(this,
+        return RxDocumentServiceRequest.create(this,
             operationType, ResourceType.Permission, path, permission, requestHeaders, options);
-
-        return request;
     }
 
     @Override
@@ -4633,40 +4621,6 @@ public class RxDocumentClientImpl implements AsyncDocumentClient, IAuthorization
                 Utils.joinPath(Paths.OFFERS_PATH_SEGMENT, null));
     }
 
-//    private <T extends Resource> Flux<FeedResponse<T>> readFeedCollectionChild(FeedOptions options, ResourceType resourceType,
-//                                                                               Class<T> klass, String resourceLink) {
-//        if (options == null) {
-//            options = new FeedOptions();
-//        }
-//
-//        int maxPageSize = options.getMaxItemCount() != null ? options.getMaxItemCount() : -1;
-//
-//        final FeedOptions finalFeedOptions = options;
-//        RequestOptions requestOptions = new RequestOptions();
-//        requestOptions.setPartitionKey(options.getPartitionKey());
-//        BiFunction<String, Integer, RxDocumentServiceRequest> createRequestFunc = (continuationToken, pageSize) -> {
-//            Map<String, String> requestHeaders = new HashMap<>();
-//            if (continuationToken != null) {
-//                requestHeaders.put(HttpConstants.HttpHeaders.CONTINUATION, continuationToken);
-//            }
-//            requestHeaders.put(HttpConstants.HttpHeaders.PAGE_SIZE, Integer.toString(pageSize));
-//            RxDocumentServiceRequest request = RxDocumentServiceRequest.create(OperationType.ReadFeed,
-//                resourceType, resourceLink, requestHeaders, finalFeedOptions);
-//            return request;
-//        };
-//
-//        Function<RxDocumentServiceRequest, Mono<FeedResponse<T>>> executeFunc = request -> {
-//            return ObservableHelper.inlineIfPossibleAsObs(() -> {
-//                Mono<Utils.ValueHolder<DocumentCollection>> collectionObs = this.collectionCache.resolveCollectionAsync(request);
-//                Mono<RxDocumentServiceRequest> requestObs = this.addPartitionKeyInformation(request, null, null, requestOptions, collectionObs);
-//
-//                return requestObs.flatMap(req -> this.readFeed(req)
-//                    .map(response -> toFeedResponsePage(response, klass)));
-//            }, this.resetSessionTokenRetryPolicy.getRequestPolicy());
-//        };
-//
-//        return Paginator.getPaginatedQueryResultAsObservable(options, createRequestFunc, executeFunc, klass, maxPageSize);
-//    }
     private <T> Flux<FeedResponse<T>> readFeed(
         CosmosQueryRequestOptions options,
         ResourceType resourceType,
@@ -5116,9 +5070,9 @@ public class RxDocumentClientImpl implements AsyncDocumentClient, IAuthorization
                     // the error would otherwise be treated as transient
                     Mono<NonTransientPointOperationResult> initialMonoAcrossAllRegions =
                         callback.apply(clonedOptions, endToEndPolicyConfig, diagnosticsFactory)
-                                .map(response -> new NonTransientPointOperationResult(response))
+                                .map(NonTransientPointOperationResult::new)
                                 .onErrorResume(
-                                    t -> isCosmosException(t),
+                                    RxDocumentClientImpl::isCosmosException,
                                     t -> Mono.just(
                                         new NonTransientPointOperationResult(
                                             Utils.as(Exceptions.unwrap(t), CosmosException.class))));
@@ -5134,7 +5088,7 @@ public class RxDocumentClientImpl implements AsyncDocumentClient, IAuthorization
                 } else {
                     clonedOptions.setExcludeRegions(
                         getEffectiveExcludedRegionsForHedging(
-                            initialRequestOptions.getExcludeRegions(),
+                            nonNullRequestOptions.getExcludeRegions(),
                             orderedApplicableRegionsForSpeculation,
                             region)
                     );
@@ -5144,9 +5098,9 @@ public class RxDocumentClientImpl implements AsyncDocumentClient, IAuthorization
                     // and non-transient errors
                     Mono<NonTransientPointOperationResult> regionalCrossRegionRetryMono =
                         callback.apply(clonedOptions, endToEndPolicyConfig, diagnosticsFactory)
-                                .map(response -> new NonTransientPointOperationResult(response))
+                                .map(NonTransientPointOperationResult::new)
                                 .onErrorResume(
-                                    t -> isNonTransientCosmosException(t),
+                                    RxDocumentClientImpl::isNonTransientCosmosException,
                                     t -> Mono.just(
                                         new NonTransientPointOperationResult(
                                             Utils.as(Exceptions.unwrap(t), CosmosException.class))));
@@ -5204,7 +5158,7 @@ public class RxDocumentClientImpl implements AsyncDocumentClient, IAuthorization
                             CosmosException cosmosException = Utils.as(innerException, CosmosException.class);
                             diagnosticsFactory.merge(nonNullRequestOptions);
                             return cosmosException;
-                        } else if (exception instanceof NoSuchElementException) {
+                        } else if (innerException instanceof NoSuchElementException) {
                             logger.trace(
                                 "Operation in {} completed with empty result because it was cancelled.",
                                 orderedApplicableRegionsForSpeculation.get(index));
@@ -5432,9 +5386,7 @@ public class RxDocumentClientImpl implements AsyncDocumentClient, IAuthorization
 
         ThresholdBasedAvailabilityStrategy availabilityStrategy =
             (ThresholdBasedAvailabilityStrategy)endToEndPolicyConfig.getAvailabilityStrategy();
-        List<Mono<NonTransientFeedOperationResult>> monoList = new ArrayList<>();
-
-        final ScopedDiagnosticsFactory diagnosticsFactory = new ScopedDiagnosticsFactory(this);
+        List<Mono<NonTransientFeedOperationResult<T>>> monoList = new ArrayList<>();
 
         orderedApplicableRegionsForSpeculation
             .forEach(region -> {
@@ -5446,13 +5398,13 @@ public class RxDocumentClientImpl implements AsyncDocumentClient, IAuthorization
                     // by the ClientRetryPolicy for the initial request - so, any outcome of the
                     // initial Mono should be treated as non-transient error - even when
                     // the error would otherwise be treated as transient
-                    Mono<NonTransientFeedOperationResult> initialMonoAcrossAllRegions =
+                    Mono<NonTransientFeedOperationResult<T>> initialMonoAcrossAllRegions =
                         feedOperation.apply(retryPolicyFactory, clonedRequest)
-                                .map(response -> new NonTransientFeedOperationResult(response))
+                                .map(NonTransientFeedOperationResult::new)
                                 .onErrorResume(
-                                    t -> isCosmosException(t),
+                                    RxDocumentClientImpl::isCosmosException,
                                     t -> Mono.just(
-                                        new NonTransientFeedOperationResult(
+                                        new NonTransientFeedOperationResult<>(
                                             Utils.as(Exceptions.unwrap(t), CosmosException.class))));
 
                     if (logger.isDebugEnabled()) {
@@ -5474,13 +5426,13 @@ public class RxDocumentClientImpl implements AsyncDocumentClient, IAuthorization
                     // Non-Transient errors are mapped to a value - this ensures the firstWithValue
                     // operator below will complete the composite Mono for both successful values
                     // and non-transient errors
-                    Mono<NonTransientFeedOperationResult> regionalCrossRegionRetryMono =
+                    Mono<NonTransientFeedOperationResult<T>> regionalCrossRegionRetryMono =
                         feedOperation.apply(retryPolicyFactory, clonedRequest)
-                                .map(response -> new NonTransientFeedOperationResult(response))
+                                .map(NonTransientFeedOperationResult::new)
                                 .onErrorResume(
-                                    t -> isNonTransientCosmosException(t),
+                                    RxDocumentClientImpl::isNonTransientCosmosException,
                                     t -> Mono.just(
-                                        new NonTransientFeedOperationResult(
+                                        new NonTransientFeedOperationResult<>(
                                             Utils.as(Exceptions.unwrap(t), CosmosException.class))));
 
                     Duration delayForCrossRegionalRetry = (availabilityStrategy)
@@ -5516,7 +5468,7 @@ public class RxDocumentClientImpl implements AsyncDocumentClient, IAuthorization
                     return Mono.error(nonTransientResult.exception);
                 }
 
-                return Mono.just((FeedResponse<T>)nonTransientResult.response);
+                return Mono.just(nonTransientResult.response);
             })
             .onErrorMap(throwable -> {
                 Throwable exception = Exceptions.unwrap(throwable);
@@ -5532,9 +5484,8 @@ public class RxDocumentClientImpl implements AsyncDocumentClient, IAuthorization
 
                         // collect latest CosmosException instance bubbling up for a region
                         if (innerException instanceof CosmosException) {
-                            CosmosException cosmosException = Utils.as(innerException, CosmosException.class);
-                            return cosmosException;
-                        } else if (exception instanceof NoSuchElementException) {
+                            return Utils.as(innerException, CosmosException.class);
+                        } else if (innerException instanceof NoSuchElementException) {
                             logger.trace(
                                 "Operation in {} completed with empty result because it was cancelled.",
                                 orderedApplicableRegionsForSpeculation.get(index));
@@ -5621,7 +5572,7 @@ public class RxDocumentClientImpl implements AsyncDocumentClient, IAuthorization
 
     private static class ScopedDiagnosticsFactory implements DiagnosticsClientContext {
 
-        private AtomicBoolean isMerged = new AtomicBoolean(false);
+        private final AtomicBoolean isMerged = new AtomicBoolean(false);
         private final DiagnosticsClientContext inner;
         private final ConcurrentLinkedQueue<CosmosDiagnostics> createdDiagnostics;
 
