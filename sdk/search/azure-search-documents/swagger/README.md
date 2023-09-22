@@ -90,7 +90,7 @@ input-file:
 - https://raw.githubusercontent.com/Azure/azure-rest-api-specs/9383e81389c2b1c64da07cc70c66f8c54b9ad4f5/specification/search/data-plane/Azure.Search/preview/2023-07-01-Preview/searchindex.json
 models-subpackage: models
 custom-types-subpackage: implementation.models
-custom-types: AutocompleteRequest,IndexAction,IndexBatch,RequestOptions,SearchDocumentsResult,SearchError,SearchErrorException,SearchOptions,SearchRequest,SearchResult,SuggestDocumentsResult,SuggestRequest,SuggestResult
+custom-types: AutocompleteRequest,IndexAction,IndexBatch,RequestOptions,SearchDocumentsResult,SearchError,SearchErrorException,SearchOptions,SearchRequest,SearchResult,SuggestDocumentsResult,SuggestRequest,SuggestResult,Vector
 customization-class: src/main/java/SearchIndexCustomizations.java
 ```
 
@@ -421,17 +421,6 @@ directive:
 - from: swagger-document
   where: $.definitions.Vector.properties.k
   transform: $["x-ms-client-name"] = "KNearestNeighborsCount";
-```
-
-### Rename Vector property `Vector`
-
-Rename Vector property `Vector` to `SearchQueryVector`
-
-```yaml $(tag) == 'searchindex'
-directive:
-- from: swagger-document
-  where: $.definitions.Vector
-  transform: $["x-ms-client-name"] = "SearchQueryVector";
 ```
 
 ### Rename QueryResultDocumentSemanticFieldState

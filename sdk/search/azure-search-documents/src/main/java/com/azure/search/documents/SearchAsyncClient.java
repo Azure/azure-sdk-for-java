@@ -10,6 +10,7 @@ import com.azure.core.http.HttpPipeline;
 import com.azure.core.http.rest.Response;
 import com.azure.core.http.rest.SimpleResponse;
 import com.azure.core.util.Context;
+import com.azure.core.util.CoreUtils;
 import com.azure.core.util.ServiceVersion;
 import com.azure.core.util.logging.ClientLogger;
 import com.azure.core.util.serializer.JsonSerializer;
@@ -24,6 +25,7 @@ import com.azure.search.documents.implementation.models.SearchFirstPageResponseW
 import com.azure.search.documents.implementation.models.SearchRequest;
 import com.azure.search.documents.implementation.models.SuggestDocumentsResult;
 import com.azure.search.documents.implementation.models.SuggestRequest;
+import com.azure.search.documents.implementation.models.Vector;
 import com.azure.search.documents.implementation.util.MappingUtils;
 import com.azure.search.documents.implementation.util.Utility;
 import com.azure.search.documents.indexes.models.IndexDocumentsBatch;
@@ -38,8 +40,10 @@ import com.azure.search.documents.models.QueryCaptionType;
 import com.azure.search.documents.models.ScoringParameter;
 import com.azure.search.documents.models.SearchOptions;
 import com.azure.search.documents.models.SearchResult;
+import com.azure.search.documents.models.SemanticSearchOptions;
 import com.azure.search.documents.models.SuggestOptions;
 import com.azure.search.documents.models.SuggestResult;
+import com.azure.search.documents.models.VectorSearchOptions;
 import com.azure.search.documents.util.AutocompletePagedFlux;
 import com.azure.search.documents.util.AutocompletePagedResponse;
 import com.azure.search.documents.util.SearchPagedFlux;
@@ -1083,7 +1087,7 @@ public final class SearchAsyncClient {
             ? null
             : options.getScoringParameters().stream().map(ScoringParameter::toString).collect(Collectors.toList());
 
-        return request.setIncludeTotalResultCount(options.isTotalCountIncluded())
+        request.setIncludeTotalResultCount(options.isTotalCountIncluded())
             .setFacets(options.getFacets())
             .setFilter(options.getFilter())
             .setHighlightFields(nullSafeStringJoin(options.getHighlightFields()))
@@ -1094,26 +1098,45 @@ public final class SearchAsyncClient {
             .setQueryType(options.getQueryType())
             .setScoringParameters(scoringParameters)
             .setScoringProfile(options.getScoringProfile())
-            .setSemanticConfiguration(options.getSemanticConfigurationName())
             .setSearchFields(nullSafeStringJoin(options.getSearchFields()))
             .setQueryLanguage(options.getQueryLanguage())
             .setSpeller(options.getSpeller())
-            .setAnswers(createSearchRequestAnswers(options))
             .setSearchMode(options.getSearchMode())
             .setScoringStatistics(options.getScoringStatistics())
             .setSessionId(options.getSessionId())
             .setSelect(nullSafeStringJoin(options.getSelect()))
             .setSkip(options.getSkip())
-            .setTop(options.getTop())
-            .setCaptions(createSearchRequestCaptions(options))
-            .setSemanticFields(nullSafeStringJoin(options.getSemanticFields()))
-            .setSemanticErrorHandling(options.getSemanticErrorHandling())
-            .setSemanticMaxWaitInMilliseconds(options.getSemanticMaxWaitInMilliseconds())
-            .setDebug(options.getDebug())
-            .setVectors(options.getVectors());
+            .setTop(options.getTop());
+
+        SemanticSearchOptions semanticSearchOptions = options.getSemanticSearchOptions();
+        if (semanticSearchOptions != null) {
+            request.setSemanticConfiguration(semanticSearchOptions.getSemanticConfigurationName())
+                .setSemanticFields(nullSafeStringJoin(semanticSearchOptions.getSemanticFields()))
+                .setSemanticErrorHandling(semanticSearchOptions.getSemanticErrorHandling())
+                .setSemanticMaxWaitInMilliseconds(semanticSearchOptions.getSemanticMaxWaitInMilliseconds())
+                .setAnswers(createSearchRequestAnswers(semanticSearchOptions))
+                .setCaptions(createSearchRequestCaptions(semanticSearchOptions))
+                .setDebug(semanticSearchOptions.getDebug());
+        }
+
+        List<VectorSearchOptions> vectorSearchOptions = options.getVectorSearchOptions();
+        if (vectorSearchOptions != null) {
+            List<Vector> vectors = new ArrayList<>(vectorSearchOptions.size());
+            for (VectorSearchOptions vectorSearchOption : vectorSearchOptions) {
+                vectors.add(new Vector()
+                    .setValue(vectorSearchOption.getValue())
+                    .setKNearestNeighborsCount(vectorSearchOption.getKNearestNeighborsCount())
+                    .setFields(vectorSearchOption.getFields() == null ? null
+                        : CoreUtils.stringJoin(",", vectorSearchOption.getFields())));
+            }
+
+            request.setVectors(vectors);
+        }
+
+        return request;
     }
 
-    static String createSearchRequestAnswers(SearchOptions searchOptions) {
+    static String createSearchRequestAnswers(SemanticSearchOptions searchOptions) {
         QueryAnswerType answer = searchOptions.getQueryAnswer();
         Integer answersCount = searchOptions.getAnswersCount();
         Double answerThreshold = searchOptions.getAnswerThreshold();
@@ -1136,7 +1159,7 @@ public final class SearchAsyncClient {
         }
     }
 
-    static String createSearchRequestCaptions(SearchOptions searchOptions) {
+    static String createSearchRequestCaptions(SemanticSearchOptions searchOptions) {
         QueryCaptionType queryCaption = searchOptions.getQueryCaption();
         Boolean queryCaptionHighlight = searchOptions.getQueryCaptionHighlightEnabled();
 

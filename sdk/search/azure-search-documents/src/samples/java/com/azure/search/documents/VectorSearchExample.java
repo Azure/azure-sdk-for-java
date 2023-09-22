@@ -25,8 +25,9 @@ import com.azure.search.documents.models.QueryCaptionType;
 import com.azure.search.documents.models.QueryLanguage;
 import com.azure.search.documents.models.QueryType;
 import com.azure.search.documents.models.SearchOptions;
-import com.azure.search.documents.models.SearchQueryVector;
 import com.azure.search.documents.models.SearchResult;
+import com.azure.search.documents.models.SemanticSearchOptions;
+import com.azure.search.documents.models.VectorSearchOptions;
 import com.azure.search.documents.util.SearchPagedIterable;
 
 import java.io.IOException;
@@ -147,8 +148,7 @@ public class VectorSearchExample {
     public static void singleVectorSearch(SearchClient searchClient) {
         // Example of using vector search without using a search query or any filters.
         List<Float> vectorizedResult = VectorSearchEmbeddings.SEARCH_VECTORIZE_DESCRIPTION; // "Top hotels in town"
-        SearchQueryVector searchQueryVector = new SearchQueryVector()
-            .setValue(vectorizedResult)
+        VectorSearchOptions searchQueryVector = new VectorSearchOptions(vectorizedResult)
             .setKNearestNeighborsCount(3)
             // Set the fields to compare the vector against. This is a comma-delimited list of field names.
             .setFields("DescriptionVector");
@@ -174,8 +174,7 @@ public class VectorSearchExample {
     public static void singleVectorSearchWithFilter(SearchClient searchClient) {
         // Example of using vector search with a filter.
         List<Float> vectorizedResult = VectorSearchEmbeddings.SEARCH_VECTORIZE_DESCRIPTION; // "Top hotels in town"
-        SearchQueryVector searchQueryVector = new SearchQueryVector()
-            .setValue(vectorizedResult)
+        VectorSearchOptions searchQueryVector = new VectorSearchOptions(vectorizedResult)
             .setKNearestNeighborsCount(3)
             // Set the fields to compare the vector against. This is a comma-delimited list of field names.
             .setFields("DescriptionVector");
@@ -202,8 +201,7 @@ public class VectorSearchExample {
     public static void simpleHybridSearch(SearchClient searchClient) {
         // Example of using vector search with a query in addition to vectorization.
         List<Float> vectorizedResult = VectorSearchEmbeddings.SEARCH_VECTORIZE_DESCRIPTION; // "Top hotels in town"
-        SearchQueryVector searchQueryVector = new SearchQueryVector()
-            .setValue(vectorizedResult)
+        VectorSearchOptions searchQueryVector = new VectorSearchOptions(vectorizedResult)
             .setKNearestNeighborsCount(3)
             // Set the fields to compare the vector against. This is a comma-delimited list of field names.
             .setFields("DescriptionVector");
@@ -232,8 +230,7 @@ public class VectorSearchExample {
     public static void semanticHybridSearch(SearchClient searchClient) {
         // Example of using vector search with a semantic query in addition to vectorization.
         List<Float> vectorizedResult = VectorSearchEmbeddings.SEARCH_VECTORIZE_DESCRIPTION; // "Top hotels in town"
-        SearchQueryVector searchQueryVector = new SearchQueryVector()
-            .setValue(vectorizedResult)
+        VectorSearchOptions searchQueryVector = new VectorSearchOptions(vectorizedResult)
             .setKNearestNeighborsCount(3)
             // Set the fields to compare the vector against. This is a comma-delimited list of field names.
             .setFields("DescriptionVector");
@@ -242,9 +239,10 @@ public class VectorSearchExample {
             .setVectors(searchQueryVector)
             .setQueryType(QueryType.SEMANTIC)
             .setQueryLanguage(QueryLanguage.EN_US)
-            .setSemanticConfigurationName("my-semantic-config")
-            .setQueryCaption(QueryCaptionType.EXTRACTIVE)
-            .setQueryAnswer(QueryAnswerType.EXTRACTIVE);
+            .setSemanticSearchOptions(new SemanticSearchOptions()
+                .setSemanticConfigurationName("my-semantic-config")
+                .setQueryCaption(QueryCaptionType.EXTRACTIVE)
+                .setQueryAnswer(QueryAnswerType.EXTRACTIVE));
 
         SearchPagedIterable results = searchClient.search(
             "Is there any hotel located on the main commercial artery of the city in the heart of New York?",
@@ -280,22 +278,19 @@ public class VectorSearchExample {
     public static void multiVectorSearch(SearchClient searchClient) {
         // Example of using multiple vectors in search without using a search query or any filters.
         List<Float> vectorizedResult = VectorSearchEmbeddings.HOTEL1_VECTORIZE_DESCRIPTION;
-        SearchQueryVector searchQueryVector = new SearchQueryVector()
-            .setValue(vectorizedResult)
+        VectorSearchOptions searchQueryVector = new VectorSearchOptions(vectorizedResult)
             .setKNearestNeighborsCount(3)
             // Set the fields to compare the vector against. This is a comma-delimited list of field names.
             .setFields("DescriptionVector");
 
         List<Float> secondVectorizedResult = VectorSearchEmbeddings.HOTEL2_VECTORIZE_DESCRIPTION;
-        SearchQueryVector secondSearchQueryVector = new SearchQueryVector()
-            .setValue(secondVectorizedResult)
+        VectorSearchOptions secondSearchQueryVector = new VectorSearchOptions(secondVectorizedResult)
             .setKNearestNeighborsCount(3)
             // Set the fields to compare the vector against. This is a comma-delimited list of field names.
             .setFields("DescriptionVector");
 
         List<Float> thirdVectorizedResult = VectorSearchEmbeddings.HOTEL3_VECTORIZE_DESCRIPTION;
-        SearchQueryVector thirdQueryVector = new SearchQueryVector()
-            .setValue(thirdVectorizedResult)
+        VectorSearchOptions thirdQueryVector = new VectorSearchOptions(thirdVectorizedResult)
             .setKNearestNeighborsCount(3)
             // Set the fields to compare the vector against. This is a comma-delimited list of field names.
             .setFields("DescriptionVector");

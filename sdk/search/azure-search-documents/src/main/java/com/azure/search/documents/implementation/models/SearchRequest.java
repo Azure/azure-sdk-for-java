@@ -17,7 +17,6 @@ import com.azure.search.documents.models.QuerySpellerType;
 import com.azure.search.documents.models.QueryType;
 import com.azure.search.documents.models.ScoringStatistics;
 import com.azure.search.documents.models.SearchMode;
-import com.azure.search.documents.models.SearchQueryVector;
 import com.azure.search.documents.models.SemanticErrorHandling;
 import java.io.IOException;
 import java.util.List;
@@ -206,7 +205,7 @@ public final class SearchRequest implements JsonSerializable<SearchRequest> {
     /*
      * The query parameters for multi-vector search queries.
      */
-    private List<SearchQueryVector> vectors;
+    private List<Vector> vectors;
 
     /** Creates an instance of SearchRequest class. */
     public SearchRequest() {}
@@ -866,7 +865,7 @@ public final class SearchRequest implements JsonSerializable<SearchRequest> {
      *
      * @return the vectors value.
      */
-    public List<SearchQueryVector> getVectors() {
+    public List<Vector> getVectors() {
         return this.vectors;
     }
 
@@ -876,7 +875,7 @@ public final class SearchRequest implements JsonSerializable<SearchRequest> {
      * @param vectors the vectors value to set.
      * @return the SearchRequest object itself.
      */
-    public SearchRequest setVectors(List<SearchQueryVector> vectors) {
+    public SearchRequest setVectors(List<Vector> vectors) {
         this.vectors = vectors;
         return this;
     }
@@ -996,8 +995,7 @@ public final class SearchRequest implements JsonSerializable<SearchRequest> {
                         } else if ("semanticFields".equals(fieldName)) {
                             deserializedSearchRequest.semanticFields = reader.getString();
                         } else if ("vectors".equals(fieldName)) {
-                            List<SearchQueryVector> vectors =
-                                    reader.readArray(reader1 -> SearchQueryVector.fromJson(reader1));
+                            List<Vector> vectors = reader.readArray(reader1 -> Vector.fromJson(reader1));
                             deserializedSearchRequest.vectors = vectors;
                         } else {
                             reader.skipChildren();

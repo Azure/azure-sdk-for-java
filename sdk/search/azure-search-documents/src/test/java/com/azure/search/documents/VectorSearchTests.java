@@ -33,8 +33,9 @@ import com.azure.search.documents.models.QueryCaptionType;
 import com.azure.search.documents.models.QueryLanguage;
 import com.azure.search.documents.models.QueryType;
 import com.azure.search.documents.models.SearchOptions;
-import com.azure.search.documents.models.SearchQueryVector;
 import com.azure.search.documents.models.SearchResult;
+import com.azure.search.documents.models.SemanticSearchOptions;
+import com.azure.search.documents.models.VectorSearchOptions;
 import com.azure.search.documents.test.environment.models.HotelAddress;
 import com.azure.search.documents.test.environment.models.HotelRoom;
 import com.azure.search.documents.test.environment.models.VectorHotel;
@@ -123,8 +124,7 @@ public class VectorSearchTests extends SearchTestBase {
         SearchAsyncClient searchClient = getSearchClientBuilder(HOTEL_INDEX_NAME, false).buildAsyncClient();
 
         SearchOptions searchOptions = new SearchOptions()
-            .setVectors(new SearchQueryVector()
-                .setValue(VectorSearchEmbeddings.SEARCH_VECTORIZE_DESCRIPTION)
+            .setVectors(new VectorSearchOptions(VectorSearchEmbeddings.SEARCH_VECTORIZE_DESCRIPTION)
                 .setKNearestNeighborsCount(3)
                 .setFields("DescriptionVector"))
             .setSelect("HotelId", "HotelName");
@@ -140,8 +140,7 @@ public class VectorSearchTests extends SearchTestBase {
         SearchClient searchClient = getSearchClientBuilder(HOTEL_INDEX_NAME, true).buildClient();
 
         SearchOptions searchOptions = new SearchOptions()
-            .setVectors(new SearchQueryVector()
-                .setValue(VectorSearchEmbeddings.SEARCH_VECTORIZE_DESCRIPTION)
+            .setVectors(new VectorSearchOptions(VectorSearchEmbeddings.SEARCH_VECTORIZE_DESCRIPTION)
                 .setKNearestNeighborsCount(3)
                 .setFields("DescriptionVector"))
             .setSelect("HotelId", "HotelName");
@@ -158,8 +157,7 @@ public class VectorSearchTests extends SearchTestBase {
         SearchAsyncClient searchClient = getSearchClientBuilder(HOTEL_INDEX_NAME, false).buildAsyncClient();
 
         SearchOptions searchOptions = new SearchOptions()
-            .setVectors(new SearchQueryVector()
-                .setValue(VectorSearchEmbeddings.SEARCH_VECTORIZE_DESCRIPTION)
+            .setVectors(new VectorSearchOptions(VectorSearchEmbeddings.SEARCH_VECTORIZE_DESCRIPTION)
                 .setKNearestNeighborsCount(3)
                 .setFields("DescriptionVector"))
             .setSelect("HotelId", "HotelName", "Category")
@@ -176,8 +174,7 @@ public class VectorSearchTests extends SearchTestBase {
         SearchClient searchClient = getSearchClientBuilder(HOTEL_INDEX_NAME, true).buildClient();
 
         SearchOptions searchOptions = new SearchOptions()
-            .setVectors(new SearchQueryVector()
-                .setValue(VectorSearchEmbeddings.SEARCH_VECTORIZE_DESCRIPTION)
+            .setVectors(new VectorSearchOptions(VectorSearchEmbeddings.SEARCH_VECTORIZE_DESCRIPTION)
                 .setKNearestNeighborsCount(3)
                 .setFields("DescriptionVector"))
             .setSelect("HotelId", "HotelName", "Category")
@@ -195,8 +192,7 @@ public class VectorSearchTests extends SearchTestBase {
         SearchAsyncClient searchClient = getSearchClientBuilder(HOTEL_INDEX_NAME, false).buildAsyncClient();
 
         SearchOptions searchOptions = new SearchOptions()
-            .setVectors(new SearchQueryVector()
-                .setValue(VectorSearchEmbeddings.SEARCH_VECTORIZE_DESCRIPTION)
+            .setVectors(new VectorSearchOptions(VectorSearchEmbeddings.SEARCH_VECTORIZE_DESCRIPTION)
                 .setKNearestNeighborsCount(3)
                 .setFields("DescriptionVector"))
             .setSelect("HotelId", "HotelName");
@@ -213,8 +209,7 @@ public class VectorSearchTests extends SearchTestBase {
         SearchClient searchClient = getSearchClientBuilder(HOTEL_INDEX_NAME, true).buildClient();
 
         SearchOptions searchOptions = new SearchOptions()
-            .setVectors(new SearchQueryVector()
-                .setValue(VectorSearchEmbeddings.SEARCH_VECTORIZE_DESCRIPTION)
+            .setVectors(new VectorSearchOptions(VectorSearchEmbeddings.SEARCH_VECTORIZE_DESCRIPTION)
                 .setKNearestNeighborsCount(3)
                 .setFields("DescriptionVector"))
             .setSelect("HotelId", "HotelName");
@@ -232,16 +227,16 @@ public class VectorSearchTests extends SearchTestBase {
         SearchAsyncClient searchClient = getSearchClientBuilder(HOTEL_INDEX_NAME, false).buildAsyncClient();
 
         SearchOptions searchOptions = new SearchOptions()
-            .setVectors(new SearchQueryVector()
-                .setValue(VectorSearchEmbeddings.SEARCH_VECTORIZE_DESCRIPTION)
+            .setVectors(new VectorSearchOptions(VectorSearchEmbeddings.SEARCH_VECTORIZE_DESCRIPTION)
                 .setKNearestNeighborsCount(3)
                 .setFields("DescriptionVector"))
             .setSelect("HotelId", "HotelName", "Description", "Category")
             .setQueryType(QueryType.SEMANTIC)
             .setQueryLanguage(QueryLanguage.EN_US)
-            .setSemanticConfigurationName("my-semantic-config")
-            .setQueryCaption(QueryCaptionType.EXTRACTIVE)
-            .setQueryAnswer(QueryAnswerType.EXTRACTIVE);
+            .setSemanticSearchOptions(new SemanticSearchOptions()
+                .setSemanticConfigurationName("my-semantic-config")
+                .setQueryCaption(QueryCaptionType.EXTRACTIVE)
+                .setQueryAnswer(QueryAnswerType.EXTRACTIVE));
 
         StepVerifier.create(searchClient.search(
                 "Is there any hotel located on the main commercial artery of the city in the heart of New York?",
@@ -277,16 +272,16 @@ public class VectorSearchTests extends SearchTestBase {
         SearchClient searchClient = getSearchClientBuilder(HOTEL_INDEX_NAME, true).buildClient();
 
         SearchOptions searchOptions = new SearchOptions()
-            .setVectors(new SearchQueryVector()
-                .setValue(VectorSearchEmbeddings.SEARCH_VECTORIZE_DESCRIPTION)
+            .setVectors(new VectorSearchOptions(VectorSearchEmbeddings.SEARCH_VECTORIZE_DESCRIPTION)
                 .setKNearestNeighborsCount(3)
                 .setFields("DescriptionVector"))
             .setSelect("HotelId", "HotelName", "Description", "Category")
             .setQueryType(QueryType.SEMANTIC)
             .setQueryLanguage(QueryLanguage.EN_US)
-            .setSemanticConfigurationName("my-semantic-config")
-            .setQueryCaption(QueryCaptionType.EXTRACTIVE)
-            .setQueryAnswer(QueryAnswerType.EXTRACTIVE);
+            .setSemanticSearchOptions(new SemanticSearchOptions()
+                .setSemanticConfigurationName("my-semantic-config")
+                .setQueryCaption(QueryCaptionType.EXTRACTIVE)
+                .setQueryAnswer(QueryAnswerType.EXTRACTIVE));
 
         List<SearchPagedResponse> pages = searchClient.search(
             "Is there any hotel located on the main commercial artery of the city in the heart of New York?",
