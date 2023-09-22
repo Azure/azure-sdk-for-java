@@ -69,7 +69,9 @@ public final class JsonNull extends JsonElement {
     }
 
     @Override
-    public JsonString asString() { return new JsonString(nullValue); }
+    public JsonString asString() { 
+        return new JsonString(nullValue); 
+    }
 
     /**
      * @param jsonWriter JsonWriter that the serialized JsonNull is written to.
