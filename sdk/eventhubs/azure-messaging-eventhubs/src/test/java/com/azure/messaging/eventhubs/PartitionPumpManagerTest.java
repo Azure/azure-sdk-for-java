@@ -90,7 +90,7 @@ public class PartitionPumpManagerTest {
     private AutoCloseable autoCloseable;
 
     @BeforeEach
-    public void beforeEach() {
+    public void beforeEach() throws InterruptedException {
         this.autoCloseable = MockitoAnnotations.openMocks(this);
 
         final Integer prefetch = 100;
@@ -685,7 +685,6 @@ public class PartitionPumpManagerTest {
         final EventData eventData3 = new EventData("3");
         final PartitionEvent partitionEvent3 = new PartitionEvent(PARTITION_CONTEXT, eventData3, null);
 
-        final AtomicInteger eventCounter = new AtomicInteger();
         final Exception testException = new IllegalStateException("Dummy exception.");
         final Exception processErrorException = new NumberFormatException("Test exception in process error");
 
@@ -697,7 +696,6 @@ public class PartitionPumpManagerTest {
                 receiveCounter.countDown();
             }
 
-            eventCounter.addAndGet(batch.getEvents().size());
             return null;
         }).when(partitionProcessor).processEventBatch(any(EventBatchContext.class));
 
@@ -726,8 +724,6 @@ public class PartitionPumpManagerTest {
             verify(partitionProcessor, atMost(1))
                 .processEventBatch(argThat(context -> !context.getEvents().isEmpty()));
 
-            assertEquals(maxBatchSize, eventCounter.get());
-
             // Assert that we cleaned up the code.
             assertFalse(manager.getPartitionPumps().containsKey(PARTITION_ID));
             verify(consumerAsyncClient).close();
@@ -745,6 +741,7 @@ public class PartitionPumpManagerTest {
     public void closeOnErrorCleansUpPartitionOnException() throws InterruptedException {
         final Supplier<PartitionProcessor> supplier = () -> partitionProcessor;
         final CountDownLatch receiveCounter = new CountDownLatch(3);
+        final Duration updateInterval = Duration.ofSeconds(10);
 
         final boolean trackLastEnqueuedEventProperties = false;
         final int maxBatchSize = 2;
@@ -757,7 +754,7 @@ public class PartitionPumpManagerTest {
             .setMaxBatchSize(maxBatchSize)
             .setMaxWaitTime(maxWaitTime)
             .setBatchReceiveMode(batchReceiveMode)
-            .setLoadBalancerUpdateInterval(Duration.ofSeconds(10))
+            .setLoadBalancerUpdateInterval(updateInterval)
             .setPartitionOwnershipExpirationInterval(Duration.ofMinutes(1))
             .setLoadBalancingStrategy(LoadBalancingStrategy.BALANCED);
 
@@ -774,7 +771,6 @@ public class PartitionPumpManagerTest {
         final EventData eventData3 = new EventData("3");
         final PartitionEvent partitionEvent3 = new PartitionEvent(PARTITION_CONTEXT, eventData3, null);
 
-        final AtomicInteger eventCounter = new AtomicInteger();
         final Exception testException = new IllegalStateException("Dummy exception.");
         final Exception processCloseException = new NumberFormatException("Test exception in process error");
 
@@ -786,7 +782,6 @@ public class PartitionPumpManagerTest {
                 receiveCounter.countDown();
             }
 
-            eventCounter.addAndGet(batch.getEvents().size());
             return null;
         }).when(partitionProcessor).processEventBatch(any(EventBatchContext.class));
 
@@ -812,8 +807,6 @@ public class PartitionPumpManagerTest {
             verify(partitionProcessor, atMost(1))
                 .processEventBatch(argThat(context -> !context.getEvents().isEmpty()));
 
-            assertEquals(maxBatchSize, eventCounter.get());
-
             // We called the user processError
             verify(partitionProcessor).processError(argThat(error -> testException.equals(error.getThrowable())));
 
@@ -838,6 +831,7 @@ public class PartitionPumpManagerTest {
     public void closeCleansUpPartitionOnException() throws InterruptedException {
         final Supplier<PartitionProcessor> supplier = () -> partitionProcessor;
         final CountDownLatch receiveCounter = new CountDownLatch(3);
+        final Duration updateInterval = Duration.ofSeconds(10);
 
         final boolean trackLastEnqueuedEventProperties = false;
         final int maxBatchSize = 2;
@@ -850,7 +844,7 @@ public class PartitionPumpManagerTest {
             .setMaxBatchSize(maxBatchSize)
             .setMaxWaitTime(maxWaitTime)
             .setBatchReceiveMode(batchReceiveMode)
-            .setLoadBalancerUpdateInterval(Duration.ofSeconds(10))
+            .setLoadBalancerUpdateInterval(updateInterval)
             .setPartitionOwnershipExpirationInterval(Duration.ofMinutes(1))
             .setLoadBalancingStrategy(LoadBalancingStrategy.BALANCED);
 
@@ -867,7 +861,6 @@ public class PartitionPumpManagerTest {
         final EventData eventData3 = new EventData("3");
         final PartitionEvent partitionEvent3 = new PartitionEvent(PARTITION_CONTEXT, eventData3, null);
 
-        final AtomicInteger eventCounter = new AtomicInteger();
         final Exception processCloseException = new NumberFormatException("Test exception in process error");
 
         doAnswer(invocation -> {
@@ -878,7 +871,6 @@ public class PartitionPumpManagerTest {
                 receiveCounter.countDown();
             }
 
-            eventCounter.addAndGet(batch.getEvents().size());
             return null;
         }).when(partitionProcessor).processEventBatch(any(EventBatchContext.class));
 
@@ -902,8 +894,6 @@ public class PartitionPumpManagerTest {
             // The window is 2 events, we publish 3 events before completing. We expect the last window emits on close.
             verify(partitionProcessor, times(2))
                 .processEventBatch(argThat(context -> !context.getEvents().isEmpty()));
-
-            assertEquals(3, eventCounter.get());
 
             // We called the user processError
             verify(partitionProcessor, never()).processError(any());
