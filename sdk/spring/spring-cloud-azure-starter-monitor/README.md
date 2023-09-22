@@ -178,7 +178,7 @@ docker run -e APPLICATIONINSIGHTS_CONNECTION_STRING="{CONNECTION_STRING}" {image
 ```
 where you have to replace `{CONNECTION_STRING}` and `{image-name}` by your connection string and the native image name.
 
-## Debug your Spring native application
+### Debugging
 
 If something does not work as expected, you can enable self-diagnostics features at DEBUG level to get some insights.
 
@@ -192,6 +192,10 @@ docker run -e APPLICATIONINSIGHTS_SELF_DIAGNOSTICS_LEVEL=DEBUG {image-name}
 ```
 
 You have to replace `{image-name}` by your docker image name.
+
+### Disable the monitoring
+
+You can disable the monitoring by setting the `applicationinsights.enabled` property or the `APPLICATIONINSIGHTS_ENABLED` environment variable to false.
 
 ## Contributing
 
