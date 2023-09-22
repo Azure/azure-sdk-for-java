@@ -3,13 +3,19 @@
 
 package com.azure.core.test.models;
 
+import com.azure.json.JsonSerializable;
+import com.azure.json.JsonWriter;
+
+import java.io.IOException;
 import java.util.List;
+
+import static com.azure.core.test.utils.TestProxyUtils.getCommaSeperatedString;
 
 /**
  * This matcher exposes the default matcher in a customizable way.
  * Currently, this includes ignoring/excluding headers, comparing request bodies and ignoring query params or query params ordering.
  */
-public class CustomMatcher extends TestProxyRequestMatcher {
+public class CustomMatcher extends TestProxyRequestMatcher implements JsonSerializable<CustomMatcher> {
     private List<String> excludedHeaders;
 
     private List<String> headersKeyOnlyMatch;
@@ -131,5 +137,16 @@ public class CustomMatcher extends TestProxyRequestMatcher {
     public CustomMatcher setComparingBodies(boolean comparingBodies) {
         this.comparingBodies = comparingBodies;
         return this;
+    }
+
+    @Override
+    public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
+        jsonWriter.writeStartObject();
+        jsonWriter.writeStringField("ignoredHeaders", getCommaSeperatedString(this.headersKeyOnlyMatch));
+        jsonWriter.writeStringField("excludedHeaders", getCommaSeperatedString(this.excludedHeaders));
+        jsonWriter.writeBooleanField("compareBodies", this.comparingBodies);
+        jsonWriter.writeStringField("ignoredQueryParameters", getCommaSeperatedString(this.ignoredQueryParameters));
+        jsonWriter.writeBooleanField("ignoreQueryOrdering", this.queryOrderingIgnored);
+        return jsonWriter.writeEndObject();
     }
 }

@@ -19,6 +19,7 @@ module com.azure.core.test {
     requires org.eclipse.jetty.servlet;
     requires org.eclipse.jetty.util;
     requires org.eclipse.jetty.security;
+    requires com.azure.json;
 
     exports com.azure.core.test;
     exports com.azure.core.test.annotation;

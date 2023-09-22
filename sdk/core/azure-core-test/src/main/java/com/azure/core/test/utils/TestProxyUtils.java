@@ -15,10 +15,14 @@ import com.azure.core.test.models.TestProxySanitizer;
 import com.azure.core.test.models.TestProxySanitizerType;
 import com.azure.core.util.UrlBuilder;
 import com.azure.core.util.logging.ClientLogger;
+import com.azure.json.JsonProviders;
+import com.azure.json.JsonWriter;
 
 import java.io.File;
 import java.io.IOException;
+import java.io.StringWriter;
 import java.io.UncheckedIOException;
+import java.io.Writer;
 import java.net.MalformedURLException;
 import java.net.URL;
 import java.nio.charset.StandardCharsets;
@@ -273,7 +277,7 @@ public class TestProxyUtils {
             customMatcher.isQueryOrderingIgnored());
     }
 
-    private static String getCommaSeperatedString(List<String> stringList) {
+    public static String getCommaSeperatedString(List<String> stringList) {
         if (stringList == null) {
             return null;
         }
@@ -369,40 +373,43 @@ public class TestProxyUtils {
 
     /**
      * Creates a {@link List} of {@link HttpRequest} to be sent to the test proxy to register matchers.
+     *
      * @param matchers The {@link TestProxyRequestMatcher}s to encode into requests.
-     * @param proxyUrl The proxyUrl to use when constructing requests.
      * @return The {@link HttpRequest}s to send to the proxy.
      * @throws RuntimeException The {@link TestProxyRequestMatcher.TestProxyRequestMatcherType} is unsupported.
      */
-    public static List<HttpRequest> getMatcherRequests(List<TestProxyRequestMatcher> matchers, URL proxyUrl) {
+    public static List<HttpRequest> getMatcherRequests(List<TestProxyRequestMatcher> matchers) {
         return matchers.stream().map(testProxyMatcher -> {
-            HttpRequest request;
-            String matcherType;
             switch (testProxyMatcher.getType()) {
                 case HEADERLESS:
-                    matcherType = TestProxyRequestMatcher.TestProxyRequestMatcherType.HEADERLESS.getName();
-                    request
-                        = new HttpRequest(HttpMethod.POST, String.format("%s/Admin/setmatcher", proxyUrl.toString()));
-                    break;
+                    return createMatcherHttpRequest(null,
+                        TestProxyRequestMatcher.TestProxyRequestMatcherType.HEADERLESS.getName());
                 case BODILESS:
-                    request
-                        = new HttpRequest(HttpMethod.POST, String.format("%s/Admin/setmatcher", proxyUrl.toString()));
-                    matcherType = TestProxyRequestMatcher.TestProxyRequestMatcherType.BODILESS.getName();
-                    break;
+                    return createMatcherHttpRequest(null,
+                        TestProxyRequestMatcher.TestProxyRequestMatcherType.BODILESS.getName());
                 case CUSTOM:
+                    Writer requestBody = new StringWriter();
                     CustomMatcher customMatcher = (CustomMatcher) testProxyMatcher;
-                    String requestBody = createCustomMatcherRequestBody(customMatcher);
-                    matcherType = TestProxyRequestMatcher.TestProxyRequestMatcherType.CUSTOM.getName();
-                    request
-                        = new HttpRequest(HttpMethod.POST, String.format("%s/Admin/setmatcher", proxyUrl.toString())).setBody(requestBody);
-                    break;
+                    try (JsonWriter jsonWriter = JsonProviders.createWriter(requestBody)) {
+                        // JsonWriter automatically flushes on close.
+                        customMatcher.toJson(jsonWriter);
+                    } catch (IOException e) {
+                        throw new RuntimeException(e);
+                    }
+                    return createMatcherHttpRequest(requestBody.toString(),
+                        TestProxyRequestMatcher.TestProxyRequestMatcherType.CUSTOM.getName());
                 default:
                     throw new RuntimeException(String.format("Matcher type {%s} not supported", testProxyMatcher.getType()));
             }
-
-            request.setHeader(X_ABSTRACTION_IDENTIFIER, matcherType);
-            return request;
         }).collect(Collectors.toList());
+    }
+
+    private static HttpRequest createMatcherHttpRequest(String requestBody, String matcherType) {
+        HttpRequest request
+            = new HttpRequest(HttpMethod.POST, String.format("%s/Admin/setmatcher", proxyUrl.toString()))
+            .setBody(requestBody);
+        request.setHeader(X_ABSTRACTION_IDENTIFIER, matcherType);
+        return request;
     }
 
     /**
@@ -410,14 +417,16 @@ public class TestProxyUtils {
      * @return the HttpRequest for setting compare bodies matcher to false.
      */
     public static HttpRequest setCompareBodiesMatcher() {
-        String requestBody = createCustomMatcherRequestBody(new CustomMatcher().setComparingBodies(false));
-        HttpRequest request =
-            new HttpRequest(HttpMethod.POST, String.format("%s/Admin/setmatcher", proxyUrl.toString())).setBody(
-                requestBody);
-
-        request.setHeader(X_ABSTRACTION_IDENTIFIER,
+        Writer requestBody = new StringWriter();
+        CustomMatcher customMatcher = new CustomMatcher().setComparingBodies(false);
+        try (JsonWriter jsonWriter = JsonProviders.createWriter(requestBody)) {
+            // JsonWriter automatically flushes on close.
+            customMatcher.toJson(jsonWriter);
+        } catch (IOException e) {
+            throw new RuntimeException(e);
+        }
+        return createMatcherHttpRequest(requestBody.toString(),
             TestProxyRequestMatcher.TestProxyRequestMatcherType.CUSTOM.getName());
-        return request;
     }
 
     private static TestProxySanitizer addDefaultUrlSanitizer() {
