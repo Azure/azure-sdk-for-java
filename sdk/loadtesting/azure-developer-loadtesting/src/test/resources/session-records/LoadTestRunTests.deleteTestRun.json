@@ -1,0 +1,23 @@
+{
+  "networkCallRecords" : [ {
+    "Method" : "DELETE",
+    "Uri" : "https://REDACTED.eastus.cnt-prod.loadtesting.azure.com/test-runs/33333333-1234-1234-1234-123456789012?api-version=2022-11-01",
+    "Headers" : {
+      "User-Agent" : "azsdk-java-azure-developer-loadtesting/1.0.0 (17.0.4; Windows 11; 10.0)",
+      "x-ms-client-request-id" : "320059f4-102e-4db0-84f2-9bb133865fb2"
+    },
+    "Response" : {
+      "Strict-Transport-Security" : "max-age=15724800; includeSubDomains",
+      "api-supported-versions" : "2021-07-01-preview, 2022-06-01-preview, 2022-11-01",
+      "X-Content-Type-Options" : "nosniff",
+      "Connection" : "keep-alive",
+      "mise-correlation-id" : "010547fc-b550-4f00-b910-c94d82bdff13",
+      "retry-after" : "0",
+      "StatusCode" : "204",
+      "Date" : "Sun, 18 Dec 2022 18:59:27 GMT",
+      "x-ms-correlation-request-id" : "492af4e7-8b9a-436e-8c53-acc09d00b5b1"
+    },
+    "Exception" : null
+  } ],
+  "variables" : [ ]
+}
