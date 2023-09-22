@@ -7,38 +7,84 @@ import com.azure.communication.common.CommunicationIdentifier;
  */
 public class StartHoldMusicOptions {
 
+    /**
+     * Participant to put on hold.
+     */
     private CommunicationIdentifier targetParticipant;
+
+    /**
+     * Music to play while on hold.
+     */
     private PlaySource playSourceInfo;
+
+    /**
+     * If music will loop. Default is true.
+     */
     private boolean loop;
+
+    /**
+     * Operation context.
+     */
     private String operationContext;
 
+    /**
+     * Create a new StartHoldMusicOptions object.
+     * @param targetParticipant
+     * @param playSourceInfo
+     */
     public StartHoldMusicOptions(CommunicationIdentifier targetParticipant, PlaySource playSourceInfo) {
         this.targetParticipant = targetParticipant;
         this.playSourceInfo = playSourceInfo;
         loop = true;
     }
 
+    /**
+     * Get Participant to be put on hold.
+     * @return participant.
+     */
     public CommunicationIdentifier getTargetParticipant() {
         return targetParticipant;
     }
 
+    /**
+     * Get PlaySourceInfo
+     * @return the playSourceInfo.
+     */
     public PlaySource getPlaySourceInfo() {
         return playSourceInfo;
     }
 
+    /**
+     * Get if the music is in loop.
+     * @return true for loop, false for play once.
+     */
     public boolean isLoop() {
         return loop;
     }
 
+    /**
+     * Set the value for loop.
+     * @param loop - boolean.
+     * @return The StartHoldMusicOptions object.
+     */
     public StartHoldMusicOptions setLoop(boolean loop) {
         this.loop = loop;
         return this;
     }
 
+    /**
+     * Get the operation context.
+     * @return operation context.
+     */
     public String getOperationContext() {
         return operationContext;
     }
 
+    /**
+     * Sets the operation context.
+     * @param operationContext Operation Context
+     * @return The StartHoldMusicOptions object.
+     */
     public StartHoldMusicOptions setOperationContext(String operationContext) {
         this.operationContext = operationContext;
         return this;
