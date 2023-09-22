@@ -615,7 +615,7 @@ public final class CosmosAsyncClient implements Closeable {
     private Flux<Void> wrapSourceFluxAndSoftCompleteAfterTimeout(Flux<Void> source, Duration timeout) {
         return Flux.<Void>create(sink -> {
                     source
-                        .doOnComplete(() -> sink.complete())
+                        .doFinally(signalType -> sink.complete())
                         .subscribe(t -> sink.next(t));
                 })
                 .take(timeout);
