@@ -392,16 +392,6 @@ public final class CosmosBulkExecutionOptions {
                 }
 
                 @Override
-                public int getInitialMicroBatchSize(CosmosBulkExecutionOptions options) {
-                    return options.getInitialMicroBatchSize();
-                }
-
-                @Override
-                public CosmosBulkExecutionOptions setInitialMicroBatchSize(CosmosBulkExecutionOptions options, int initialMicroBatchSize) {
-                    return options.setInitialMicroBatchSize(initialMicroBatchSize);
-                }
-
-                @Override
                 public CosmosBulkExecutionOptions setHeader(CosmosBulkExecutionOptions cosmosBulkExecutionOptions,
                                                             String name, String value) {
                     return cosmosBulkExecutionOptions.setHeader(name, value);
