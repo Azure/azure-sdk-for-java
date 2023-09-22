@@ -5,10 +5,16 @@ import com.azure.core.http.HttpHeaders;
 import com.azure.core.http.HttpMethod;
 import com.azure.core.http.HttpRequest;
 import com.azure.core.http.policy.HttpPipelinePolicy;
+import com.azure.core.http.rest.PagedResponse;
 import com.azure.core.http.rest.Response;
 import com.azure.core.util.Context;
 import com.azure.core.util.CoreUtils;
+import com.azure.core.util.HttpClientOptions;
+import com.azure.identity.DefaultAzureCredentialBuilder;
+import com.azure.storage.blob.BlobUrlParts;
 import com.azure.storage.blob.models.BlobErrorCode;
+import com.azure.storage.common.Utility;
+import com.azure.storage.common.policy.RequestRetryOptions;
 import com.azure.storage.file.datalake.models.AccessControlChangeCounters;
 import com.azure.storage.file.datalake.models.AccessControlChangeFailure;
 import com.azure.storage.file.datalake.models.AccessControlChangeResult;
@@ -23,6 +29,7 @@ import com.azure.storage.file.datalake.models.PathAccessControl;
 import com.azure.storage.file.datalake.models.PathAccessControlEntry;
 import com.azure.storage.file.datalake.models.PathHttpHeaders;
 import com.azure.storage.file.datalake.models.PathInfo;
+import com.azure.storage.file.datalake.models.PathItem;
 import com.azure.storage.file.datalake.models.PathPermissions;
 import com.azure.storage.file.datalake.models.PathProperties;
 import com.azure.storage.file.datalake.models.PathRemoveAccessControlEntry;
@@ -41,10 +48,12 @@ import com.azure.storage.file.datalake.sas.PathSasPermission;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.condition.DisabledIf;
+import org.junit.jupiter.api.condition.EnabledIf;
 import org.junit.jupiter.params.ParameterizedTest;
 import org.junit.jupiter.params.provider.Arguments;
 import org.junit.jupiter.params.provider.CsvSource;
 import org.junit.jupiter.params.provider.MethodSource;
+import org.junit.jupiter.params.provider.ValueSource;
 import reactor.core.publisher.Mono;
 import reactor.test.StepVerifier;
 
@@ -53,6 +62,7 @@ import java.time.OffsetDateTime;
 import java.util.ArrayList;
 import java.util.Collections;
 import java.util.HashMap;
+import java.util.Iterator;
 import java.util.List;
 import java.util.Map;
 import java.util.function.Consumer;
@@ -67,6 +77,7 @@ import static org.junit.jupiter.api.Assertions.assertNotNull;
 import static org.junit.jupiter.api.Assertions.assertNull;
 import static org.junit.jupiter.api.Assertions.assertThrows;
 import static org.junit.jupiter.api.Assertions.assertTrue;
+import static org.junit.jupiter.api.Assertions.fail;
 
 public class DirectoryAsyncApiTests extends DataLakeTestBase {
 
@@ -2404,6 +2415,1214 @@ public class DirectoryAsyncApiTests extends DataLakeTestBase {
         StepVerifier.create(dc.getPropertiesWithResponse(drc))
             .verifyError(DataLakeStorageException.class);
     }
+
+    @Test
+    public void getPropertiesError() {
+        StepVerifier.create(dataLakeFileSystemAsyncClient.getDirectoryAsyncClient(generatePathName()).getProperties())
+            .verifyErrorSatisfies(r -> {
+                DataLakeStorageException ex = assertInstanceOf(DataLakeStorageException.class, r);
+                assertTrue(ex.getMessage().contains("BlobNotFound"));
+            });
+    }
+
+    @Test
+    public void setHTTPHeadersNull() {
+        StepVerifier.create(dc.setHttpHeadersWithResponse(null, null))
+            .assertNext(r -> {
+                assertEquals(200, r.getStatusCode());
+                validateBasicHeaders(r.getHeaders());
+            })
+            .verifyComplete();
+    }
+
+    @Test
+    public void setHTTPHeadersMin() {
+        PathProperties properties = dc.getProperties().block();
+        PathHttpHeaders headers = new PathHttpHeaders()
+            .setContentEncoding(properties.getContentEncoding())
+            .setContentDisposition(properties.getContentDisposition())
+            .setContentType("type")
+            .setCacheControl(properties.getCacheControl())
+            .setContentLanguage(properties.getContentLanguage());
+
+        dc.setHttpHeaders(headers).block();
+
+        assertEquals("type", dc.getProperties().block().getContentType());
+    }
+
+    @ParameterizedTest
+    @CsvSource(value = {"null,null,null,null,null,null", "control,disposition,encoding,language,null,type"},
+        nullValues = "null")
+    public void setHTTPHeadersHeaders(String cacheControl, String contentDisposition, String contentEncoding,
+                                      String contentLanguage, byte[] contentMD5, String contentType) {
+        PathHttpHeaders putHeaders = new PathHttpHeaders()
+            .setCacheControl(cacheControl)
+            .setContentDisposition(contentDisposition)
+            .setContentEncoding(contentEncoding)
+            .setContentLanguage(contentLanguage)
+            .setContentMd5(contentMD5)
+            .setContentType(contentType);
+
+        dc.setHttpHeaders(putHeaders).block();
+        StepVerifier.create(dc.getPropertiesWithResponse(null))
+            .assertNext(r -> {
+                validatePathProperties(r, cacheControl, contentDisposition,
+                    contentEncoding, contentLanguage, contentMD5, contentType);
+            })
+            .verifyComplete();
+    }
+
+    @ParameterizedTest
+    @MethodSource("modifiedMatchAndLeaseIdSupplier") //todo: replace
+    public void setHttpHeadersAC(OffsetDateTime modified, OffsetDateTime unmodified, String match, String noneMatch,
+                                 String leaseID) {
+        DataLakeRequestConditions drc = new DataLakeRequestConditions()
+            .setLeaseId(setupPathLeaseCondition(dc, leaseID))
+            .setIfMatch(setupPathMatchCondition(dc, match))
+            .setIfNoneMatch(noneMatch)
+            .setIfModifiedSince(modified)
+            .setIfUnmodifiedSince(unmodified);
+
+        StepVerifier.create(dc.setHttpHeadersWithResponse(null, drc))
+            .assertNext(r -> assertEquals(200, r.getStatusCode()))
+            .verifyComplete();
+    }
+
+    @ParameterizedTest
+    @MethodSource("invalidModifiedMatchAndLeaseIdSupplier")
+    public void setHttpHeadersACFail(OffsetDateTime modified, OffsetDateTime unmodified, String match, String noneMatch,
+                                     String leaseID) {
+        setupPathLeaseCondition(dc, leaseID);
+        DataLakeRequestConditions drc = new DataLakeRequestConditions()
+            .setLeaseId(leaseID)
+            .setIfMatch(match)
+            .setIfNoneMatch(setupPathMatchCondition(dc, noneMatch))
+            .setIfModifiedSince(modified)
+            .setIfUnmodifiedSince(unmodified);
+
+        StepVerifier.create(dc.setHttpHeadersWithResponse(null, drc))
+            .verifyError(DataLakeStorageException.class);
+    }
+
+    @Test
+    public void setHTTPHeadersError() {
+        StepVerifier.create(dataLakeFileSystemAsyncClient.getDirectoryAsyncClient(generatePathName()).setHttpHeaders(null))
+            .verifyError(DataLakeStorageException.class);
+    }
+
+    @Test
+    public void setMetadataAllNull() {
+        StepVerifier.create(dc.setMetadataWithResponse(null, null))
+            .assertNext(r -> {
+                assertEquals(200, r.getStatusCode());
+                validateBasicHeaders(r.getHeaders());
+                assertTrue(Boolean.parseBoolean(r.getHeaders().getValue(X_MS_REQUEST_SERVER_ENCRYPTED)));
+            })
+            .verifyComplete();
+
+        // Directories have an is directory metadata param by default
+        assertEquals(1, dc.getProperties().block().getMetadata().size());
+    }
+
+    @Test
+    public void setMetadataMin() {
+        Map<String, String> metadata = Collections.singletonMap("foo", "bar");
+        dc.setMetadata(metadata).block();
+
+        StepVerifier.create(dc.getProperties())
+            .assertNext(r -> {
+                for (String k : metadata.keySet()) {
+                    assertTrue(r.getMetadata().containsKey(k));
+                    assertEquals(metadata.get(k), r.getMetadata().get(k));
+                }
+            })
+            .verifyComplete();
+    }
+
+    @ParameterizedTest
+    @CsvSource(value = {"null,null,null,null,200", "foo,bar,fizz,buzz,200"}, nullValues = "null") //todo: replace
+    public void setMetadataMetadata(String key1, String value1, String key2, String value2, int statusCode) {
+        Map<String, String> metadata = new HashMap<>();
+        if (key1 != null && value1 != null) {
+            metadata.put(key1, value1);
+        }
+        if (key2 != null && value2 != null) {
+            metadata.put(key2, value2);
+        }
+
+        StepVerifier.create(dc.setMetadataWithResponse(metadata, null))
+            .assertNext(r -> assertEquals(statusCode, r.getStatusCode()))
+            .verifyComplete();
+
+        StepVerifier.create(dc.getProperties())
+            .assertNext(r -> {
+                for (String k : metadata.keySet()) {
+                    assertTrue(r.getMetadata().containsKey(k));
+                    assertEquals(metadata.get(k), r.getMetadata().get(k));
+                }
+            })
+            .verifyComplete();
+    }
+
+    @ParameterizedTest
+    @MethodSource("modifiedMatchAndLeaseIdSupplier") //todo: replace
+    public void setMetadataAC(OffsetDateTime modified, OffsetDateTime unmodified, String match, String noneMatch,
+                              String leaseID) {
+        DataLakeRequestConditions drc = new DataLakeRequestConditions()
+            .setLeaseId(setupPathLeaseCondition(dc, leaseID))
+            .setIfMatch(setupPathMatchCondition(dc, match))
+            .setIfNoneMatch(noneMatch)
+            .setIfModifiedSince(modified)
+            .setIfUnmodifiedSince(unmodified);
+
+        StepVerifier.create(dc.setMetadataWithResponse(null, drc))
+            .assertNext(r -> assertEquals(200, r.getStatusCode()))
+            .verifyComplete();
+    }
+
+    @ParameterizedTest
+    @MethodSource("invalidModifiedMatchAndLeaseIdSupplier")
+    public void setMetadataACFail(OffsetDateTime modified, OffsetDateTime unmodified, String match, String noneMatch,
+                                  String leaseID) {
+        setupPathLeaseCondition(dc, leaseID);
+        DataLakeRequestConditions drc = new DataLakeRequestConditions()
+            .setLeaseId(leaseID)
+            .setIfMatch(match)
+            .setIfNoneMatch(setupPathMatchCondition(dc, noneMatch))
+            .setIfModifiedSince(modified)
+            .setIfUnmodifiedSince(unmodified);
+
+        StepVerifier.create(dc.setMetadataWithResponse(null, drc))
+            .verifyError(DataLakeStorageException.class);
+    }
+
+    @Test
+    public void setMetadataError() {
+        StepVerifier.create(dataLakeFileSystemAsyncClient.getDirectoryAsyncClient(generatePathName()).setMetadata(null))
+            .verifyError(DataLakeStorageException.class);
+    }
+
+    @Test
+    public void createFileMin() {
+        assertDoesNotThrow(() -> dc.createFile(generatePathName()).block());
+    }
+
+    @ParameterizedTest
+    @ValueSource(booleans = {true, false})
+    public void createFileOverwrite(boolean overwrite) {
+        String pathName = generatePathName();
+        dc.createFile(pathName).block();
+
+        if (overwrite) {
+            assertDoesNotThrow(() -> dc.createFile(pathName, true).block());
+        } else {
+            StepVerifier.create(dc.createFile(pathName, false))
+                .verifyError(DataLakeStorageException.class);
+        }
+    }
+
+    @Test
+    public void createFileError() {
+        StepVerifier.create(dc.createFileWithResponse(generatePathName(), null, null,
+            null, null, new DataLakeRequestConditions().setIfMatch("garbage")))
+            .verifyError(DataLakeStorageException.class);
+    }
+
+    @ParameterizedTest
+    @MethodSource("cacheAndContentSupplier")
+    public void createFileHeaders(String cacheControl, String contentDisposition, String contentEncoding,
+                                  String contentLanguage, String contentType) {
+        // Create does not set md5
+        PathHttpHeaders headers = new PathHttpHeaders().setCacheControl(cacheControl)
+            .setContentDisposition(contentDisposition)
+            .setContentEncoding(contentEncoding)
+            .setContentLanguage(contentLanguage)
+            .setContentType(contentType);
+
+        contentType = (contentType == null) ? "application/octet-stream" : contentType;
+
+        String finalContentType = contentType;
+        StepVerifier.create(dc.createFileWithResponse(generatePathName(), null, null, headers, null,
+                null)
+            .flatMap(r -> r.getValue().getPropertiesWithResponse(null)))
+            .assertNext(p -> validatePathProperties(p, cacheControl, contentDisposition, contentEncoding, contentLanguage, null,
+                finalContentType))
+            .verifyComplete();
+    }
+
+    @ParameterizedTest
+    @MethodSource("modifiedMatchAndLeaseIdSupplier") //todo: replace
+    public void createFileAC(OffsetDateTime modified, OffsetDateTime unmodified, String match, String noneMatch,
+                             String leaseID) {
+        String pathName = generatePathName();
+        DataLakeFileAsyncClient client = dc.createFile(pathName).block();
+        DataLakeRequestConditions drc = new DataLakeRequestConditions()
+            .setLeaseId(setupPathLeaseCondition(client, leaseID))
+            .setIfMatch(setupPathMatchCondition(client, match))
+            .setIfNoneMatch(noneMatch)
+            .setIfModifiedSince(modified)
+            .setIfUnmodifiedSince(unmodified);
+
+        StepVerifier.create(dc.createFileWithResponse(pathName, null, null, null, null, drc))
+            .assertNext(r -> assertEquals(201, r.getStatusCode()))
+            .verifyComplete();
+    }
+
+    @ParameterizedTest
+    @MethodSource("invalidModifiedMatchAndLeaseIdSupplier")
+    public void createFileACFail(OffsetDateTime modified, OffsetDateTime unmodified, String match, String noneMatch,
+                                 String leaseID) {
+        String pathName = generatePathName();
+        DataLakeFileAsyncClient client = dc.createFile(pathName).block();
+        setupPathLeaseCondition(client, leaseID);
+        DataLakeRequestConditions drc = new DataLakeRequestConditions()
+            .setLeaseId(leaseID)
+            .setIfMatch(match)
+            .setIfNoneMatch(setupPathMatchCondition(client, noneMatch))
+            .setIfModifiedSince(modified)
+            .setIfUnmodifiedSince(unmodified);
+
+        StepVerifier.create(dc.createFileWithResponse(pathName, null, null, null, null, drc))
+            .verifyError(DataLakeStorageException.class);
+    }
+
+    @Test
+    public void createFilePermissionsAndUmask() { //todo: replace
+        StepVerifier.create(dc.createFileWithResponse(generatePathName(), "0777", "0057", null, null, null))
+            .assertNext(r -> assertEquals(201, r.getStatusCode()))
+            .verifyComplete();
+    }
+
+    @Test
+    public void createIfNotExistsFileMin() {
+        StepVerifier.create(dc.createFileIfNotExists(generatePathName())
+            .flatMap(r -> r.exists()))
+            .expectNext(true)
+            .verifyComplete();
+    }
+
+    @Test
+    public void createIfNotExistsFileOverwrite() { //todo: replace
+        String pathName = generatePathName();
+
+        StepVerifier.create(dc.createFileIfNotExistsWithResponse(pathName, null))
+            .assertNext(r -> assertEquals(201, r.getStatusCode()))
+            .verifyComplete();
+
+        StepVerifier.create(dc.createFileIfNotExistsWithResponse(pathName, null))
+            .assertNext(r -> assertEquals(409, r.getStatusCode()))
+            .verifyComplete();
+    }
+
+    @Test
+    public void createIfNotExistsFileDefaults() {
+        StepVerifier.create(dc.createFileIfNotExistsWithResponse(generatePathName(), null))
+            .assertNext(r -> {
+                assertEquals(201, r.getStatusCode());
+                validateBasicHeaders(r.getHeaders());
+            })
+            .verifyComplete();
+    }
+
+    @ParameterizedTest
+    @MethodSource("cacheAndContentSupplier")
+    public void createIfNotExistsFileHeaders(String cacheControl, String contentDisposition, String contentEncoding,
+                                             String contentLanguage, String contentType) {
+        // Create does not set md5
+        PathHttpHeaders headers = new PathHttpHeaders().setCacheControl(cacheControl)
+            .setContentDisposition(contentDisposition)
+            .setContentEncoding(contentEncoding)
+            .setContentLanguage(contentLanguage)
+            .setContentType(contentType);
+        DataLakePathCreateOptions options = new DataLakePathCreateOptions().setPathHttpHeaders(headers);
+
+        // If the value isn't set the service will automatically set it
+        contentType = (contentType == null) ? "application/octet-stream" : contentType;
+        String finalContentType = contentType;
+
+        StepVerifier.create(dc.createFileIfNotExistsWithResponse(generatePathName(), options)
+            .flatMap(r -> r.getValue().getPropertiesWithResponse(null)))
+            .assertNext(p -> validatePathProperties(p, cacheControl, contentDisposition, contentEncoding, contentLanguage, null,
+                finalContentType))
+            .verifyComplete();
+    }
+
+    @ParameterizedTest
+    @CsvSource(value = {"null,null,null,null", "foo,bar,fizz,buzz"}, nullValues = "null")
+    public void createIfNotExistsFileMetadata(String key1, String value1, String key2, String value2) {
+        Map<String, String> metadata = new HashMap<>();
+        if (key1 != null) {
+            metadata.put(key1, value1);
+        }
+        if (key2 != null) {
+            metadata.put(key2, value2);
+        }
+        DataLakePathCreateOptions options = new DataLakePathCreateOptions().setMetadata(metadata);
+
+        DataLakeFileAsyncClient client = dc.createFileIfNotExistsWithResponse(generatePathName(), options).block().getValue();
+
+        StepVerifier.create(client.exists())
+            .expectNext(true)
+            .verifyComplete();
+
+        StepVerifier.create(client.getProperties())
+            .assertNext(r -> assertEquals(metadata, r.getMetadata()))
+            .verifyComplete();
+    }
+
+    @Test
+    public void createIfNotExistsFilePermissionsAndUmask() { //todo: replace
+        DataLakeDirectoryAsyncClient client = dataLakeFileSystemAsyncClient.getDirectoryAsyncClient(generatePathName());
+        DataLakePathCreateOptions options = new DataLakePathCreateOptions().setPermissions("0777").setUmask("0057");
+
+        StepVerifier.create(client.createFileIfNotExistsWithResponse(generatePathName(), options))
+            .assertNext(r -> assertEquals(201, r.getStatusCode()))
+            .verifyComplete();
+    }
+
+    @Test
+    public void deleteFileMin() { //todo: replace
+        String pathName = generatePathName();
+        dc.createFile(pathName).block();
+
+        StepVerifier.create(dc.deleteFileWithResponse(pathName, null))
+            .assertNext(r -> assertEquals(200, r.getStatusCode()))
+            .verifyComplete();
+    }
+
+    @Test
+    public void deleteFileFileDoesNotExistAnymore() {
+        String pathName = generatePathName();
+        DataLakeFileAsyncClient client = dc.createFile(pathName).block();
+        dc.deleteFileWithResponse(pathName, null).block();
+
+        StepVerifier.create(client.getPropertiesWithResponse(null))
+            .verifyErrorSatisfies(r -> {
+                DataLakeStorageException e = assertInstanceOf(DataLakeStorageException.class, r);
+                assertEquals(404, e.getResponse().getStatusCode());
+                assertEquals(BlobErrorCode.BLOB_NOT_FOUND.toString(), e.getErrorCode());
+            });
+    }
+
+    @ParameterizedTest
+    @MethodSource("modifiedMatchAndLeaseIdSupplier") //todo: replace
+    public void deleteFileAC(OffsetDateTime modified, OffsetDateTime unmodified, String match, String noneMatch,
+                             String leaseID) {
+        String pathName = generatePathName();
+        DataLakeFileAsyncClient client = dc.createFile(pathName).block();
+        DataLakeRequestConditions drc = new DataLakeRequestConditions()
+            .setLeaseId(setupPathLeaseCondition(client, leaseID))
+            .setIfMatch(setupPathMatchCondition(client, match))
+            .setIfNoneMatch(noneMatch)
+            .setIfModifiedSince(modified)
+            .setIfUnmodifiedSince(unmodified);
+
+        StepVerifier.create(dc.deleteFileWithResponse(pathName, drc))
+            .assertNext(r -> assertEquals(200, r.getStatusCode()))
+            .verifyComplete();
+    }
+
+    @ParameterizedTest
+    @MethodSource("invalidModifiedMatchAndLeaseIdSupplier")
+    public void deleteFileACFail(OffsetDateTime modified, OffsetDateTime unmodified, String match, String noneMatch,
+                                 String leaseID) {
+        String pathName = generatePathName();
+        DataLakeFileAsyncClient client = dc.createFile(pathName).block();
+        setupPathLeaseCondition(client, leaseID);
+        DataLakeRequestConditions drc = new DataLakeRequestConditions()
+            .setLeaseId(leaseID)
+            .setIfMatch(match)
+            .setIfNoneMatch(setupPathMatchCondition(client, noneMatch))
+            .setIfModifiedSince(modified)
+            .setIfUnmodifiedSince(unmodified);
+
+        StepVerifier.create(dc.deleteFileWithResponse(pathName, drc))
+            .verifyError(DataLakeStorageException.class);
+    }
+
+    @Test
+    public void deleteIfExistsFile() {
+        String pathName = generatePathName();
+        dc.createFile(pathName).block();
+
+        StepVerifier.create(dc.deleteFileIfExists(pathName))
+            .expectNext(true)
+            .verifyComplete();
+    }
+
+    @Test
+    public void deleteIfExistsFileMin() { //todo: replace
+        String pathName = generatePathName();
+        dc.createFile(pathName).block();
+
+        StepVerifier.create(dc.deleteFileIfExistsWithResponse(pathName, null))
+            .assertNext(r -> assertEquals(200, r.getStatusCode()))
+            .verifyComplete();
+    }
+
+    @Test
+    public void deleteIfExistsFileFileDoesNotExistAnymore() { //todo: replace
+        String pathName = generatePathName();
+        DataLakeFileAsyncClient client = dc.createFile(pathName).block();
+
+        StepVerifier.create(dc.deleteFileIfExistsWithResponse(pathName, null))
+            .assertNext(r -> assertEquals(200, r.getStatusCode()))
+            .verifyComplete();
+
+        StepVerifier.create(client.exists())
+            .expectNext(false)
+            .verifyComplete();
+    }
+
+    @Test
+    public void deleteIfExistsFileFileThatWasAlreadyDeleted() { //todo: replace
+        String pathName = generatePathName();
+        DataLakeFileAsyncClient client = dc.createFile(pathName).block();
+
+        StepVerifier.create(dc.deleteFileIfExistsWithResponse(pathName, null))
+            .assertNext(r -> assertEquals(200, r.getStatusCode()))
+            .verifyComplete();
+
+        StepVerifier.create(client.exists())
+            .expectNext(false)
+            .verifyComplete();
+
+        StepVerifier.create(dc.deleteFileIfExistsWithResponse(pathName, null))
+            .assertNext(r -> assertEquals(404, r.getStatusCode()))
+            .verifyComplete();
+    }
+
+    @ParameterizedTest
+    @MethodSource("modifiedMatchAndLeaseIdSupplier") //todo: replace
+    public void deleteIfExistsFileAC(OffsetDateTime modified, OffsetDateTime unmodified, String match, String noneMatch,
+                                     String leaseID) {
+        String pathName = generatePathName();
+        DataLakeFileAsyncClient client = dc.createFile(pathName).block();
+        DataLakeRequestConditions drc = new DataLakeRequestConditions()
+            .setLeaseId(setupPathLeaseCondition(client, leaseID))
+            .setIfMatch(setupPathMatchCondition(client, match))
+            .setIfNoneMatch(noneMatch)
+            .setIfModifiedSince(modified)
+            .setIfUnmodifiedSince(unmodified);
+        DataLakePathDeleteOptions options = new DataLakePathDeleteOptions().setRequestConditions(drc);
+
+        StepVerifier.create(dc.deleteFileIfExistsWithResponse(pathName, options))
+            .assertNext(r -> assertEquals(200, r.getStatusCode()))
+            .verifyComplete();
+    }
+
+    @ParameterizedTest
+    @MethodSource("invalidModifiedMatchAndLeaseIdSupplier")
+    public void deleteIfExistsFileACFail(OffsetDateTime modified, OffsetDateTime unmodified, String match,
+                                         String noneMatch, String leaseID) {
+        String pathName = generatePathName();
+        DataLakeFileAsyncClient client = dc.createFile(pathName).block();
+        setupPathLeaseCondition(client, leaseID);
+        DataLakeRequestConditions drc = new DataLakeRequestConditions()
+            .setLeaseId(leaseID)
+            .setIfMatch(match)
+            .setIfNoneMatch(setupPathMatchCondition(client, noneMatch))
+            .setIfModifiedSince(modified)
+            .setIfUnmodifiedSince(unmodified);
+
+        StepVerifier.create(dc.deleteFileIfExistsWithResponse(pathName,
+            new DataLakePathDeleteOptions().setRequestConditions(drc)))
+            .verifyError(DataLakeStorageException.class);
+    }
+
+    @Test
+    public void createSubDirMin() {
+        assertDoesNotThrow(() -> dc.createSubdirectory(generatePathName()).block());
+    }
+
+    @ParameterizedTest
+    @ValueSource(booleans = {true, false})
+    public void createSubDirOverwrite(boolean overwrite) {
+        String pathName = generatePathName();
+        dc.createSubdirectory(pathName).block();
+
+        if (overwrite) {
+            assertDoesNotThrow(() -> dc.createSubdirectory(pathName, true).block());
+        } else {
+            StepVerifier.create(dc.createSubdirectory(pathName, false))
+                .verifyError(DataLakeStorageException.class);
+        }
+    }
+
+    @Test
+    public void createSubDirDefaults() {
+        StepVerifier.create(dc.createSubdirectoryWithResponse(generatePathName(), null))
+            .assertNext(r -> {
+                assertEquals(201, r.getStatusCode());
+                validateBasicHeaders(r.getHeaders());
+            })
+            .verifyComplete();
+    }
+
+    @Test
+    public void createSubDirError() {
+        StepVerifier.create(dc.createSubdirectoryWithResponse(generatePathName(), null,
+            null, null, null, new DataLakeRequestConditions().setIfMatch("garbage")))
+            .verifyError(DataLakeStorageException.class);
+    }
+
+    @ParameterizedTest
+    @MethodSource("cacheAndContentSupplier")
+    public void createSubDirHeaders(String cacheControl, String contentDisposition, String contentEncoding,
+                                    String contentLanguage, String contentType) {
+        // Create does not set md5
+        PathHttpHeaders headers = new PathHttpHeaders().setCacheControl(cacheControl)
+            .setContentDisposition(contentDisposition)
+            .setContentEncoding(contentEncoding)
+            .setContentLanguage(contentLanguage)
+            .setContentType(contentType);
+
+        // If the value isn't set the service will automatically set it
+        contentType = (contentType == null) ? "application/octet-stream" : contentType;
+
+        String finalContentType = contentType;
+        StepVerifier.create(dc.createSubdirectoryWithResponse(generatePathName(), null, null, headers,
+            null, null)
+            .flatMap(r -> r.getValue().getPropertiesWithResponse(null)))
+            .assertNext(p -> validatePathProperties(p, cacheControl, contentDisposition, contentEncoding, contentLanguage, null,
+                finalContentType))
+            .verifyComplete();
+    }
+
+    @ParameterizedTest
+    @CsvSource(value = {"null,null,null,null", "foo,bar,fizz,buzz"}, nullValues = "null")
+    public void createSubDirMetadata(String key1, String value1, String key2, String value2) {
+        Map<String, String> metadata = new HashMap<>();
+        if (key1 != null) {
+            metadata.put(key1, value1);
+        }
+        if (key2 != null) {
+            metadata.put(key2, value2);
+        }
+
+        StepVerifier.create(dc.createSubdirectoryWithResponse(generatePathName(), null, null, null, metadata,
+                null)
+            .flatMap(r -> r.getValue().getProperties()))
+            .assertNext(p -> {
+                for (String k : metadata.keySet()) {
+                    assertTrue(p.getMetadata().containsKey(k));
+                    assertEquals(metadata.get(k), p.getMetadata().get(k));
+                }
+            })
+            .verifyComplete();
+    }
+
+    @ParameterizedTest
+    @MethodSource("modifiedMatchAndLeaseIdSupplier") //todo: replace
+    public void createSubDirAC(OffsetDateTime modified, OffsetDateTime unmodified, String match, String noneMatch,
+                               String leaseID) {
+        String pathName = generatePathName();
+        DataLakeDirectoryAsyncClient client = dc.createSubdirectory(pathName).block();
+        DataLakeRequestConditions drc = new DataLakeRequestConditions()
+            .setLeaseId(setupPathLeaseCondition(client, leaseID))
+            .setIfMatch(setupPathMatchCondition(client, match))
+            .setIfNoneMatch(noneMatch)
+            .setIfModifiedSince(modified)
+            .setIfUnmodifiedSince(unmodified);
+
+        StepVerifier.create(dc.createSubdirectoryWithResponse(pathName, null, null, null, null, drc))
+            .assertNext(r -> assertEquals(201, r.getStatusCode()))
+            .verifyComplete();
+    }
+
+    @ParameterizedTest
+    @MethodSource("invalidModifiedMatchAndLeaseIdSupplier")
+    public void createSubDirACFail(OffsetDateTime modified, OffsetDateTime unmodified, String match, String noneMatch,
+                                   String leaseID) {
+        String pathName = generatePathName();
+        DataLakeDirectoryAsyncClient client = dc.createSubdirectory(pathName).block();
+        setupPathLeaseCondition(client, leaseID);
+        DataLakeRequestConditions drc = new DataLakeRequestConditions()
+            .setLeaseId(leaseID)
+            .setIfMatch(match)
+            .setIfNoneMatch(setupPathMatchCondition(client, noneMatch))
+            .setIfModifiedSince(modified)
+            .setIfUnmodifiedSince(unmodified);
+
+        StepVerifier.create(dc.createSubdirectoryWithResponse(pathName, null, null, null, null, drc))
+            .verifyError(DataLakeStorageException.class);
+    }
+
+    @Test
+    public void createSubDirPermissionsAndUmask() { //todo: replace
+        StepVerifier.create(dc.createSubdirectoryWithResponse(generatePathName(), "0777", "0057", null, null, null))
+            .assertNext(r -> assertEquals(201, r.getStatusCode()))
+            .verifyComplete();
+    }
+
+    @Test
+    public void createIfNotExistsSubDirMin() {
+        StepVerifier.create(dc.createSubdirectoryIfNotExists(generatePathName())
+            .flatMap(r -> r.exists()))
+            .expectNext(true)
+            .verifyComplete();
+    }
+
+    @Test
+    public void createIfNotExistsSubDirOverwrite() {
+        String pathName = generatePathName();
+        DataLakeDirectoryAsyncClient client = dc.createSubdirectoryIfNotExists(pathName).block();
+        DataLakeDirectoryAsyncClient secondClient = dc.createSubdirectoryIfNotExists(pathName).block();
+
+        StepVerifier.create(client.exists())
+            .expectNext(true)
+            .verifyComplete();
+
+        StepVerifier.create(secondClient.exists())
+            .expectNext(true)
+            .verifyComplete();
+
+        assertEquals(client.getDirectoryPath(), secondClient.getDirectoryPath());
+    }
+
+    @Test
+    public void createIfNotExistsSubDirThatAlreadyExists() { //todo: replace
+        String pathName = generatePathName();
+
+        StepVerifier.create(dc.createSubdirectoryIfNotExistsWithResponse(pathName, null))
+            .assertNext(r -> assertEquals(201, r.getStatusCode()))
+            .verifyComplete();
+
+        StepVerifier.create(dc.createSubdirectoryIfNotExistsWithResponse(pathName, null))
+            .assertNext(r -> assertEquals(409, r.getStatusCode()))
+            .verifyComplete();
+    }
+
+    @Test
+    public void createIfNotExistsSubDirDefaults() {
+        StepVerifier.create(dc.createSubdirectoryIfNotExistsWithResponse(generatePathName(), null))
+            .assertNext(r -> {
+                assertEquals(201, r.getStatusCode());
+                validateBasicHeaders(r.getHeaders());
+            })
+            .verifyComplete();
+    }
+
+    @ParameterizedTest
+    @MethodSource("cacheAndContentSupplier")
+    public void createIfNotExistsSubDirHeaders(String cacheControl, String contentDisposition, String contentEncoding,
+                                               String contentLanguage, String contentType) {
+        // Create does not set md5
+        PathHttpHeaders headers = new PathHttpHeaders().setCacheControl(cacheControl)
+            .setContentDisposition(contentDisposition)
+            .setContentEncoding(contentEncoding)
+            .setContentLanguage(contentLanguage)
+            .setContentType(contentType);
+
+        // If the value isn't set the service will automatically set it
+        contentType = (contentType == null) ? "application/octet-stream" : contentType;
+
+        String finalContentType = contentType;
+        StepVerifier.create(dc.createSubdirectoryIfNotExistsWithResponse(generatePathName(),
+                new DataLakePathCreateOptions().setPathHttpHeaders(headers))
+            .flatMap(r -> r.getValue().getPropertiesWithResponse(null)))
+            .assertNext(p -> validatePathProperties(p, cacheControl, contentDisposition, contentEncoding, contentLanguage, null,
+                finalContentType))
+            .verifyComplete();
+    }
+
+    @ParameterizedTest
+    @CsvSource(value = {"null,null,null,null", "foo,bar,fizz,buzz"}, nullValues = "null")
+    public void createIfNotExistsSubDirMetadata(String key1, String value1, String key2, String value2) {
+        Map<String, String> metadata = new HashMap<>();
+        if (key1 != null) {
+            metadata.put(key1, value1);
+        }
+        if (key2 != null) {
+            metadata.put(key2, value2);
+        }
+
+        StepVerifier.create(dc.createSubdirectoryIfNotExistsWithResponse(generatePathName(),
+                new DataLakePathCreateOptions().setMetadata(metadata))
+            .flatMap(r -> r.getValue().getProperties()))
+            .assertNext(p -> {
+                for (String k : metadata.keySet()) {
+                    assertTrue(p.getMetadata().containsKey(k));
+                    assertEquals(metadata.get(k), p.getMetadata().get(k));
+                }
+            })
+            .verifyComplete();
+    }
+
+    @Test
+    public void createIfNotExistsSubDirPermissionsAndUmask() { //todo: replace
+        DataLakeDirectoryAsyncClient client = dataLakeFileSystemAsyncClient.getDirectoryAsyncClient(generatePathName());
+        DataLakePathCreateOptions options = new DataLakePathCreateOptions()
+            .setPermissions("0777")
+            .setUmask("0057");
+
+        StepVerifier.create(client.createSubdirectoryIfNotExistsWithResponse(generatePathName(), options))
+            .assertNext(r -> assertEquals(201, r.getStatusCode()))
+            .verifyComplete();
+    }
+
+    @Test
+    public void deleteSubDirMin() { //todo: replace
+        String pathName = generatePathName();
+        dc.createSubdirectory(pathName).block();
+
+        StepVerifier.create(dc.deleteSubdirectoryWithResponse(pathName, false, null))
+            .assertNext(r -> assertEquals(200, r.getStatusCode()))
+            .verifyComplete();
+    }
+
+    @Test
+    public void deleteSubDirRecursive() {
+        String pathName = generatePathName();
+        dc.createSubdirectory(pathName).block();
+
+        StepVerifier.create(dc.deleteSubdirectoryWithResponse(pathName, true, null))
+            .assertNext(r -> assertEquals(200, r.getStatusCode()))
+            .verifyComplete();
+    }
+
+    @Test
+    public void deleteSubDirDirDoesNotExistAnymore() {
+        String pathName = generatePathName();
+        DataLakeDirectoryAsyncClient client = dc.createSubdirectory(pathName).block();
+        dc.deleteSubdirectoryWithResponse(pathName, false, null).block();
+
+        StepVerifier.create(client.getPropertiesWithResponse(null))
+            .verifyErrorSatisfies(r -> {
+                DataLakeStorageException e = assertInstanceOf(DataLakeStorageException.class, r);
+                assertEquals(404, e.getResponse().getStatusCode());
+                assertEquals(BlobErrorCode.BLOB_NOT_FOUND.toString(), e.getErrorCode());
+            });
+    }
+
+    @ParameterizedTest
+    @MethodSource("modifiedMatchAndLeaseIdSupplier") //todo: replace
+    public void deleteSubDirAC(OffsetDateTime modified, OffsetDateTime unmodified, String match, String noneMatch,
+                               String leaseID) {
+        String pathName = generatePathName();
+        DataLakeDirectoryAsyncClient client = dc.createSubdirectory(pathName).block();
+        DataLakeRequestConditions drc = new DataLakeRequestConditions()
+            .setLeaseId(setupPathLeaseCondition(client, leaseID))
+            .setIfMatch(setupPathMatchCondition(client, match))
+            .setIfNoneMatch(noneMatch)
+            .setIfModifiedSince(modified)
+            .setIfUnmodifiedSince(unmodified);
+
+        StepVerifier.create(dc.deleteSubdirectoryWithResponse(pathName, false, drc))
+            .assertNext(r -> assertEquals(200, r.getStatusCode()))
+            .verifyComplete();
+    }
+
+    @ParameterizedTest
+    @MethodSource("invalidModifiedMatchAndLeaseIdSupplier")
+    public void deleteSubDirACFail(OffsetDateTime modified, OffsetDateTime unmodified, String match, String noneMatch,
+                                   String leaseID) {
+        String pathName = generatePathName();
+        DataLakeDirectoryAsyncClient client = dc.createSubdirectory(pathName).block();
+        setupPathLeaseCondition(client, leaseID);
+        DataLakeRequestConditions drc = new DataLakeRequestConditions()
+            .setLeaseId(leaseID)
+            .setIfMatch(match)
+            .setIfNoneMatch(setupPathMatchCondition(client, noneMatch))
+            .setIfModifiedSince(modified)
+            .setIfUnmodifiedSince(unmodified);
+
+        StepVerifier.create(dc.deleteSubdirectoryWithResponse(pathName, false, drc))
+            .verifyError(DataLakeStorageException.class);
+    }
+
+    @Test
+    public void deleteIfExistsSubDir() {
+        String pathName = generatePathName();
+        dc.createSubdirectoryIfNotExists(pathName).block();
+
+        StepVerifier.create(dc.deleteSubdirectoryIfExists(pathName))
+            .expectNext(true)
+            .verifyComplete();
+    }
+
+    @Test
+    public void deleteIfExistsSubDirMin() { //todo: replace
+        String pathName = generatePathName();
+        dc.createSubdirectoryIfNotExists(pathName).block();
+
+        //cannot run without setting recursive options?
+        DataLakePathDeleteOptions options = new DataLakePathDeleteOptions().setIsRecursive(false);
+
+        StepVerifier.create(dc.deleteSubdirectoryIfExistsWithResponse(pathName, options))
+            .assertNext(r -> assertEquals(200, r.getStatusCode()))
+            .verifyComplete();
+    }
+
+    @Test
+    public void deleteIfExistsSubDirRecursive() { //todo: replace
+        String pathName = generatePathName();
+        dc.createSubdirectory(pathName).block();
+
+        StepVerifier.create(dc.deleteSubdirectoryIfExistsWithResponse(pathName, new DataLakePathDeleteOptions()
+            .setIsRecursive(true)))
+            .assertNext(r -> assertEquals(200, r.getStatusCode()))
+            .verifyComplete();
+    }
+
+    @Test
+    public void deleteIfExistsSubDirDirDoesNotExistAnymore() { //todo: replace
+        String pathName = generatePathName();
+        DataLakeDirectoryAsyncClient client = dc.createSubdirectory(pathName).block();
+
+        DataLakePathDeleteOptions options = new DataLakePathDeleteOptions().setIsRecursive(false);
+
+        StepVerifier.create(dc.deleteSubdirectoryIfExistsWithResponse(pathName, options))
+            .assertNext(r -> assertEquals(200, r.getStatusCode()))
+            .verifyComplete();
+
+        StepVerifier.create(client.exists())
+            .expectNext(false)
+            .verifyComplete();
+    }
+
+    @ParameterizedTest
+    @MethodSource("modifiedMatchAndLeaseIdSupplier") //todo: replace
+    public void deleteIfExistsSubDirAC(OffsetDateTime modified, OffsetDateTime unmodified, String match,
+                                       String noneMatch, String leaseID) {
+        String pathName = generatePathName();
+        DataLakeDirectoryAsyncClient client = dc.createSubdirectory(pathName).block();
+        DataLakeRequestConditions drc = new DataLakeRequestConditions()
+            .setLeaseId(setupPathLeaseCondition(client, leaseID))
+            .setIfMatch(setupPathMatchCondition(client, match))
+            .setIfNoneMatch(noneMatch)
+            .setIfModifiedSince(modified)
+            .setIfUnmodifiedSince(unmodified);
+        DataLakePathDeleteOptions options = new DataLakePathDeleteOptions().setRequestConditions(drc)
+            .setIsRecursive(false);
+
+        StepVerifier.create(dc.deleteSubdirectoryIfExistsWithResponse(pathName, options))
+            .assertNext(r -> assertEquals(200, r.getStatusCode()))
+            .verifyComplete();
+    }
+
+    @ParameterizedTest
+    @MethodSource("invalidModifiedMatchAndLeaseIdSupplier")
+    public void deleteIfExistsSubDirACFail(OffsetDateTime modified, OffsetDateTime unmodified, String match,
+                                           String noneMatch, String leaseID) {
+        String pathName = generatePathName();
+        DataLakeDirectoryAsyncClient client = dc.createSubdirectory(pathName).block();
+        setupPathLeaseCondition(client, leaseID);
+        DataLakeRequestConditions drc = new DataLakeRequestConditions()
+            .setLeaseId(leaseID)
+            .setIfMatch(match)
+            .setIfNoneMatch(setupPathMatchCondition(client, noneMatch))
+            .setIfModifiedSince(modified)
+            .setIfUnmodifiedSince(unmodified);
+        DataLakePathDeleteOptions options = new DataLakePathDeleteOptions().setRequestConditions(drc)
+            .setIsRecursive(false);
+
+        StepVerifier.create(dc.deleteSubdirectoryIfExistsWithResponse(pathName, options))
+            .verifyError(DataLakeStorageException.class);
+    }
+
+    @ParameterizedTest
+    @MethodSource("fileEncodingSupplier")
+    public void getDirectoryNameAndBuildClient(String originalDirectoryName, String finalDirectoryName) {
+        DataLakeDirectoryAsyncClient client = dataLakeFileSystemAsyncClient.getDirectoryAsyncClient(originalDirectoryName);
+
+        // Note : Here I use Path because there is a test that tests the use of a /
+        assertEquals(finalDirectoryName, client.getDirectoryPath());
+    }
+
+    @ParameterizedTest
+    @MethodSource("fileEncodingSupplier") //todo: replace
+    public void createDeleteSubDirectoryUrlEncoding(String originalDirectoryName, String finalDirectoryName) {
+        String dirName = generatePathName();
+        DataLakeDirectoryAsyncClient client = dataLakeFileSystemAsyncClient.getDirectoryAsyncClient(dirName);
+
+        StepVerifier.create(client.createSubdirectoryWithResponse(originalDirectoryName, null))
+            .assertNext(r -> {
+                assertEquals(201, r.getStatusCode());
+                assertEquals(dirName + "/" + finalDirectoryName, r.getValue().getDirectoryPath());
+            })
+            .verifyComplete();
+
+        StepVerifier.create(client.deleteSubdirectoryWithResponse(originalDirectoryName, false, null))
+            .assertNext(r -> assertEquals(200, r.getStatusCode()))
+            .verifyComplete();
+    }
+
+    @ParameterizedTest
+    @MethodSource("fileEncodingSupplier") //todo: replace
+    public void createDeleteFileUrlEncoding(String originalFileName, String finalFileName) {
+        String fileName = generatePathName();
+        DataLakeDirectoryAsyncClient client = dataLakeFileSystemAsyncClient.getDirectoryAsyncClient(fileName);
+
+        StepVerifier.create(client.createFileWithResponse(originalFileName, null))
+            .assertNext(r -> {
+                assertEquals(201, r.getStatusCode());
+                assertEquals(fileName + "/" + finalFileName, r.getValue().getFilePath());
+            })
+            .verifyComplete();
+
+        StepVerifier.create(client.deleteFileWithResponse(originalFileName, null))
+            .assertNext(r -> assertEquals(200, r.getStatusCode()))
+            .verifyComplete();
+    }
+
+    private static Stream<Arguments> fileEncodingSupplier() {
+        return Stream.of(
+            // originalName | finalName
+            Arguments.of("file", "file"),
+            Arguments.of("path/to]a file", "path/to]a file"),
+            Arguments.of("path%2Fto%5Da%20file", "path/to]a file"),
+            Arguments.of("斑點", "斑點"),
+            Arguments.of("%E6%96%91%E9%BB%9E", "斑點")
+        );
+    }
+
+    @ParameterizedTest
+    @ValueSource(strings = {"dir/file", "dir%2Ffile"})
+    public void createFileWithPathStructure(String pathName) { //todo: replace
+        DataLakeFileAsyncClient fileClient = dataLakeFileSystemAsyncClient.createFile(pathName).block();
+        // Check that service created underlying directory
+        DataLakeDirectoryAsyncClient dirClient = dataLakeFileSystemAsyncClient.getDirectoryAsyncClient("dir");
+
+        StepVerifier.create(dirClient.getPropertiesWithResponse(null))
+            .assertNext(r -> assertEquals(200, r.getStatusCode()))
+            .verifyComplete();
+
+        // Delete file
+        StepVerifier.create(fileClient.deleteWithResponse(null, null, null))
+            .assertNext(r -> assertEquals(200, r.getStatusCode()))
+            .verifyComplete();
+
+        // Directory should still exist
+        StepVerifier.create(dirClient.getPropertiesWithResponse(null))
+            .assertNext(r -> assertEquals(200, r.getStatusCode()))
+            .verifyComplete();
+    }
+
+    @Test
+    public void builderBearerTokenValidation() { //duplicate
+        // Technically no additional checks need to be added to datalake builder since the corresponding blob builder
+        // fails
+        String endpoint = BlobUrlParts.parse(dc.getDirectoryUrl()).setScheme("http").toUrl().toString();
+
+        assertThrows(IllegalArgumentException.class, () -> new DataLakePathClientBuilder()
+            .credential(new DefaultAzureCredentialBuilder().build())
+            .endpoint(endpoint)
+            .buildDirectoryClient());
+    }
+
+    @Test
+    public void getAccessControlOAuth() {
+        DataLakeDirectoryAsyncClient dirClient = getOAuthServiceAsyncClient().getFileSystemAsyncClient(dc.getFileSystemName())
+            .getDirectoryAsyncClient(dc.getDirectoryPath());
+
+        assertDoesNotThrow(dirClient::getAccessControl);
+    }
+
+    // This tests the policy is in the right place because if it were added per retry, it would be after the credentials
+    // and auth would fail because we changed a signed header.
+    @EnabledIf("environmentServiceVersion")
+    @Test
+    public void perCallPolicy() {
+        DataLakeDirectoryAsyncClient directoryClient = getPathClientBuilder(getDataLakeCredential(), getFileSystemUrl(),
+            dc.getObjectPath()).addPolicy(getPerCallVersionPolicy())
+            .buildDirectoryAsyncClient();
+
+        // blob endpoint
+        StepVerifier.create(directoryClient.getPropertiesWithResponse(null))
+            .assertNext(r -> assertEquals("2019-02-02", r.getHeaders().getValue(X_MS_VERSION)))
+            .verifyComplete();
+
+        // dfs endpoint
+        StepVerifier.create(directoryClient.getAccessControlWithResponse(false, null))
+            .assertNext(r -> assertEquals("2019-02-02", r.getHeaders().getValue(X_MS_VERSION)))
+            .verifyComplete();
+    }
+
+    private static boolean environmentServiceVersion() {
+        return ENVIRONMENT.getServiceVersion() != null;
+    }
+
+    private void setupDirectoryForListing(DataLakeDirectoryAsyncClient client) {
+        // Create 3 subdirs
+        DataLakeDirectoryAsyncClient foo = client.createSubdirectory("foo").block();
+        client.createSubdirectory("bar").block();
+        DataLakeDirectoryAsyncClient baz = client.createSubdirectory("baz").block();
+
+        // Create subdirs for foo
+        foo.createSubdirectory("foo").block();
+        foo.createSubdirectory("bar").block();
+
+        // Creat subdirs for baz
+        baz.createSubdirectory("foo").block().createSubdirectory("bar").block();
+        baz.createSubdirectory("bar/foo").block();
+    }
+
+    @Test
+    public void listPaths() {
+        String dirName = generatePathName();
+        DataLakeDirectoryAsyncClient dir = dataLakeFileSystemAsyncClient.createDirectory(dirName).block();
+        setupDirectoryForListing(dir);
+
+        StepVerifier.create(dir.listPaths())
+            .assertNext(r -> assertEquals(dirName + "/bar", r.getName()))
+            .assertNext(r -> assertEquals(dirName + "/baz", r.getName()))
+            .assertNext(r -> assertEquals(dirName + "/foo", r.getName()))
+            .verifyComplete();
+    }
+
+    @Test
+    public void listPathsRecursive() {
+        String dirName = generatePathName();
+        DataLakeDirectoryAsyncClient dir = dataLakeFileSystemAsyncClient.createDirectory(dirName).block();
+        setupDirectoryForListing(dir);
+
+        StepVerifier.create(dir.listPaths(true, false, null))
+            .assertNext(r -> assertEquals(dirName + "/bar", r.getName()))
+            .assertNext(r -> assertEquals(dirName + "/baz", r.getName()))
+            .assertNext(r -> assertEquals(dirName + "/baz/bar", r.getName()))
+            .assertNext(r -> assertEquals(dirName + "/baz/bar/foo", r.getName()))
+            .assertNext(r -> assertEquals(dirName + "/baz/foo", r.getName()))
+            .assertNext(r -> assertEquals(dirName + "/baz/foo/bar", r.getName()))
+            .assertNext(r -> assertEquals(dirName + "/foo", r.getName()))
+            .assertNext(r -> assertEquals(dirName + "/foo/bar", r.getName()))
+            .assertNext(r -> assertEquals(dirName + "/foo/foo", r.getName()))
+            .verifyComplete();
+    }
+
+    @Test
+    public void listPathsUpn() {
+        String dirName = generatePathName();
+        DataLakeDirectoryAsyncClient dir = dataLakeFileSystemAsyncClient.createDirectory(dirName).block();
+        setupDirectoryForListing(dir);
+
+        StepVerifier.create(dir.listPaths(false, true, null))
+            .assertNext(r -> {
+                assertEquals(dirName + "/bar", r.getName());
+                assertNotNull(r.getGroup());
+                assertNotNull(r.getOwner());
+            })
+            .assertNext(r -> assertEquals(dirName + "/baz", r.getName()))
+            .assertNext(r -> assertEquals(dirName + "/foo", r.getName()))
+            .verifyComplete();
+    }
+
+    @SuppressWarnings("resource")
+    @Test
+    public void listPathsMaxResults() {
+        String dirName = generatePathName();
+        DataLakeDirectoryAsyncClient dir = dataLakeFileSystemAsyncClient.createDirectory(dirName).block();
+        setupDirectoryForListing(dir);
+
+        StepVerifier.create(dir.listPaths(false, false, 2).byPage())
+            .assertNext(r -> {
+                assertEquals(2, r.getValue().size());
+                assertEquals(dirName + "/bar", r.getValue().get(0).getName());
+                assertEquals(dirName + "/baz", r.getValue().get(1).getName());
+            })
+            .expectNextCount(1)
+            .verifyComplete();
+    }
+
+    @Test
+    public void listPathsMaxResultsByPage() {
+        DataLakeDirectoryAsyncClient dir = dataLakeFileSystemAsyncClient.createDirectory(generatePathName()).block();
+        setupDirectoryForListing(dir);
+
+        StepVerifier.create(dir.listPaths(false, false, null).byPage(2))
+            .assertNext(r -> assertTrue(r.getValue().size() <= 2))
+            .expectNextCount(1)
+            .verifyComplete();
+    }
+
+    @Test
+    public void listPathsError() {
+        DataLakeDirectoryAsyncClient dir = dataLakeFileSystemAsyncClient.getDirectoryAsyncClient(generatePathName());
+
+        StepVerifier.create(dir.listPaths())
+            .verifyError(DataLakeStorageException.class);
+    }
+
+    @ParameterizedTest
+    @MethodSource("getFileAndSubdirectoryClientSupplier")
+    public void getFileAndSubdirectoryClient(String resourcePrefix, String subResourcePrefix) {
+        String dirName = generatePathName();
+        String subPath = generatePathName();
+        dc = dataLakeFileSystemAsyncClient.getDirectoryAsyncClient(resourcePrefix + dirName);
+
+        DataLakeFileAsyncClient fileClient = dc.getFileAsyncClient(subResourcePrefix + subPath);
+        assertEquals(Utility.urlDecode(resourcePrefix) + dirName + "/" + Utility.urlDecode(subResourcePrefix) + subPath,
+            fileClient.getFilePath());
+
+        DataLakeDirectoryAsyncClient subDirectoryClient = dc.getSubdirectoryAsyncClient(subResourcePrefix + subPath);
+        assertEquals(Utility.urlDecode(resourcePrefix) + dirName + "/" + Utility.urlDecode(subResourcePrefix) + subPath,
+            subDirectoryClient.getDirectoryPath());
+    }
+
+    private static Stream<Arguments> getFileAndSubdirectoryClientSupplier() {
+        return Stream.of(
+            // resourcePrefix | subResourcePrefix
+            Arguments.of("", ""),
+            Arguments.of("", Utility.urlEncode("%")), // Resource has special character
+            Arguments.of(Utility.urlEncode("%"), ""), // Sub resource has special character
+            Arguments.of(Utility.urlEncode("%"), Utility.urlEncode("%"))
+        );
+    }
+
+    @Test
+    public void fileInRootDirectoryRename() {
+        String renamedName = generatePathName();
+        dc = dataLakeFileSystemAsyncClient.getRootDirectoryAsyncClient();
+        // Create file in root directory and rename
+        DataLakeFileAsyncClient renamedFile = dc.createFile(generatePathName()).block().rename(null, renamedName).block();
+
+        assertEquals(renamedName, renamedFile.getObjectPath());
+        assertEquals(renamedFile.getProperties().block().getETag(), renamedFile.setAccessControlList(
+            PATH_ACCESS_CONTROL_ENTRIES, GROUP, OWNER).block().getETag());
+    }
+
+    @Test
+    public void directoryInRootDirectoryRename() {
+        String renamedName = generatePathName();
+        dc = dataLakeFileSystemAsyncClient.getRootDirectoryAsyncClient();
+        // Create dir in root directory and rename
+        DataLakeDirectoryAsyncClient renamedDir = dc.createSubdirectory(generatePathName()).block().rename(null, renamedName).block();
+
+        assertEquals(renamedName, renamedDir.getObjectPath());
+        assertEquals(renamedDir.getProperties().block().getETag(), renamedDir.setAccessControlList(PATH_ACCESS_CONTROL_ENTRIES,
+            GROUP, OWNER).block().getETag());
+    }
+
+    @Test
+    public void createFileSystemWithSmallTimeoutsFailForServiceClient() {
+        HttpClientOptions clientOptions = new HttpClientOptions()
+            .setApplicationId("client-options-id")
+            .setResponseTimeout(Duration.ofNanos(1))
+            .setReadTimeout(Duration.ofNanos(1))
+            .setWriteTimeout(Duration.ofNanos(1))
+            .setConnectTimeout(Duration.ofNanos(1));
+
+        DataLakeServiceAsyncClient serviceClient = new DataLakeServiceClientBuilder()
+            .endpoint(ENVIRONMENT.getPrimaryAccount().getBlobEndpoint())
+            .credential(ENVIRONMENT.getPrimaryAccount().getCredential())
+            .retryOptions(new RequestRetryOptions(null, 1, (Duration) null, null, null, null))
+            .clientOptions(clientOptions)
+            .buildAsyncClient();
+
+        // Loop five times as this is a timing test and it may pass by accident.
+        for (int i = 0; i < 5; i++) {
+            try {
+                serviceClient.createFileSystem(generateFileSystemName()).block();
+            } catch (RuntimeException ex) {
+                // test whether failure occurs due to small timeout intervals set on the service client
+                return;
+            }
+        }
+
+        fail("Expected a request to time out.");
+    }
+
+
 
     private static boolean olderThan20200210ServiceVersion() {
         return olderThan(DataLakeServiceVersion.V2020_02_10);
