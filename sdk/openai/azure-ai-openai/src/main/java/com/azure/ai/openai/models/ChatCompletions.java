@@ -106,7 +106,7 @@ public final class ChatCompletions {
      * Backing member for the prompt filtering result during the rename transition. More details <a
      * href="https://github.com/Azure/azure-rest-api-specs/pull/25880">here</a>
      */
-    @Deprecated(forRemoval = true)
+    @Deprecated
     @JsonProperty(value = "prompt_annotations")
     private List<PromptFilterResult> promptAnnotations;
 
@@ -155,7 +155,7 @@ public final class ChatCompletions {
      *
      * @return List of {@link PromptFilterResult}
      */
-    @Deprecated(forRemoval = true)
+    @Deprecated
     private List<PromptFilterResult> getPromptAnnotations() {
         return this.promptAnnotations;
     }
