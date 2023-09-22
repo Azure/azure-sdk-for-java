@@ -35,12 +35,6 @@ public final class AnswerCallRequestInternal {
     private MediaStreamingConfigurationInternal mediaStreamingConfiguration;
 
     /*
-     * Live Transcription Configuration.
-     */
-    @JsonProperty(value = "transcriptionConfiguration")
-    private TranscriptionConfiguration transcriptionConfiguration;
-
-    /*
      * The endpoint URL of the Azure Cognitive Services resource attached
      */
     @JsonProperty(value = "azureCognitiveServicesEndpointUrl")
@@ -130,27 +124,6 @@ public final class AnswerCallRequestInternal {
     public AnswerCallRequestInternal setMediaStreamingConfiguration(
             MediaStreamingConfigurationInternal mediaStreamingConfiguration) {
         this.mediaStreamingConfiguration = mediaStreamingConfiguration;
-        return this;
-    }
-
-    /**
-     * Get the transcriptionConfiguration property: Live Transcription Configuration.
-     *
-     * @return the transcriptionConfiguration value.
-     */
-    public TranscriptionConfiguration getTranscriptionConfiguration() {
-        return this.transcriptionConfiguration;
-    }
-
-    /**
-     * Set the transcriptionConfiguration property: Live Transcription Configuration.
-     *
-     * @param transcriptionConfiguration the transcriptionConfiguration value to set.
-     * @return the AnswerCallRequestInternal object itself.
-     */
-    public AnswerCallRequestInternal setTranscriptionConfiguration(
-            TranscriptionConfiguration transcriptionConfiguration) {
-        this.transcriptionConfiguration = transcriptionConfiguration;
         return this;
     }
 

@@ -148,27 +148,4 @@ public class CallMediaUnitTests {
         assertEquals(response.getStatusCode(), 202);
     }
 
-    @Test
-    public void startHoldMusicWithResponseTest() {
-        CallConnection callConnection =
-            CallAutomationUnitTestBase.getCallConnection(new ArrayList<>(
-                Collections.singletonList(new AbstractMap.SimpleEntry<>("", 200)))
-            );
-        callMedia = callConnection.getCallMedia();
-
-        Response<Void> response = callMedia.startHoldMusicWithResponse(new CommunicationUserIdentifier("id"), playTextSource, true, Context.NONE);
-        assertEquals(response.getStatusCode(), 200);
-    }
-
-    @Test
-    public void stopHoldMusicWithResponseTest() {
-        CallConnection callConnection =
-            CallAutomationUnitTestBase.getCallConnection(new ArrayList<>(
-                Collections.singletonList(new AbstractMap.SimpleEntry<>("", 200)))
-            );
-        callMedia = callConnection.getCallMedia();
-
-        Response<Void> response = callMedia.stopHoldMusicWithResponse(new CommunicationUserIdentifier("id"), Context.NONE);
-        assertEquals(response.getStatusCode(), 200);
-    }
 }
