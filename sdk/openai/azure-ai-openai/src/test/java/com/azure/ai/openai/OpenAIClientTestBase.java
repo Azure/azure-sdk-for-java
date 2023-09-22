@@ -201,7 +201,7 @@ public abstract class OpenAIClientTestBase extends TestProxyTestBase {
     }
 
     void getCompletionsContentFilterRunner(BiConsumer<String, String> testRunner) {
-        testRunner.accept("gpt-35-turbo", "What is 3 times 4?");
+        testRunner.accept("text-davinci-003", "What is 3 times 4?");
     }
 
     void getChatCompletionsContentFilterRunnerForNonAzure(BiConsumer<String, List<ChatMessage>> testRunner) {

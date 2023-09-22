@@ -376,10 +376,8 @@ public class OpenAIAsyncClientTest extends OpenAIClientTestBase {
             StepVerifier.create(client.getCompletions(modelId, completionsOptions))
                 .assertNext(completions -> {
                     assertCompletions(1, completions);
-                    // TODO: Service issue: we don't have prompt filter results value anymore.
-                    // https://github.com/Azure/azure-sdk-for-java/issues/36894
-//                    ContentFilterResults contentFilterResults = completions.getPromptFilterResults().get(0).getContentFilterResults();
-//                    assertSafeContentFilterResults(contentFilterResults);
+                    ContentFilterResults contentFilterResults = completions.getPromptFilterResults().get(0).getContentFilterResults();
+                    assertSafeContentFilterResults(contentFilterResults);
                     assertSafeContentFilterResults(completions.getChoices().get(0).getContentFilterResults());
                 }).verifyComplete();
         });
@@ -405,11 +403,8 @@ public class OpenAIAsyncClientTest extends OpenAIClientTestBase {
                         Completions completions = it.next();
                         if (i == 0) {
                             System.out.println("First stream message");
-                            // TODO: Service issue: we don't have prompt filter results value anymore.
-                            // https://github.com/Azure/azure-sdk-for-java/issues/36894
-                            // The first stream message has the prompt filter result
-//                            assertEquals(1, completions.getPromptFilterResults().size());
-//                            assertSafeContentFilterResults(completions.getPromptFilterResults().get(0).getContentFilterResults());
+                            assertEquals(1, completions.getPromptFilterResults().size());
+                            assertSafeContentFilterResults(completions.getPromptFilterResults().get(0).getContentFilterResults());
                         } else if (i == messageList.size() - 1) {
                             // The last stream message is empty with all the filters set to null
                             assertEquals(1, completions.getChoices().size());
@@ -417,12 +412,11 @@ public class OpenAIAsyncClientTest extends OpenAIClientTestBase {
                             // TODO: service issue: we could have "length" as the finish reason.
                             //       Non-Streaming happens less frequency than streaming API.
                             // https://github.com/Azure/azure-sdk-for-java/issues/36894
-//                            assertEquals(CompletionsFinishReason.fromString("stop"), choice.getFinishReason());
+                            assertEquals(CompletionsFinishReason.fromString("stop"), choice.getFinishReason());
                             assertNotNull(choice.getText());
 
-                            // TODO: Regression, no longer an null value for the content filter results.
-//                            ContentFilterResults contentFilterResults = choice.getContentFilterResults();
-//                            assertEmptyContentFilterResults(contentFilterResults);
+                            ContentFilterResults contentFilterResults = choice.getContentFilterResults();
+                            assertEmptyContentFilterResults(contentFilterResults);
                         } else {
                         // The rest of the intermediary messages have the text generation content filter set
                             assertNull(completions.getPromptFilterResults());
