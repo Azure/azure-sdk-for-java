@@ -148,14 +148,4 @@ public final class Completions {
     public OffsetDateTime getCreatedAt() {
         return OffsetDateTime.ofInstant(Instant.ofEpochSecond(this.createdAt), ZoneOffset.UTC);
     }
-
-    /**
-     * Gets the RAI filter results for all the prompts passed in the request. This field should not be used.
-     *
-     * @return List of {@link PromptFilterResult}
-     */
-    @Deprecated
-    private List<PromptFilterResult> getPromptAnnotations() {
-        return this.promptAnnotations;
-    }
 }

@@ -148,15 +148,4 @@ public final class ChatCompletions {
             @JsonProperty(value = "usage") CompletionsUsage usage) {
         this(id, OffsetDateTime.ofInstant(Instant.ofEpochSecond(createdAt), ZoneOffset.UTC), choices, usage);
     }
-
-    /**
-     * Gets the RAI filter results for all the prompts passed in the request. This field should not
-     * be used.
-     *
-     * @return List of {@link PromptFilterResult}
-     */
-    @Deprecated
-    private List<PromptFilterResult> getPromptAnnotations() {
-        return this.promptAnnotations;
-    }
 }
