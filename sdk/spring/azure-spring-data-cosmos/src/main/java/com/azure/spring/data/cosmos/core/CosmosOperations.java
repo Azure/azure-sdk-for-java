@@ -18,9 +18,6 @@ import org.springframework.data.domain.Slice;
 import org.springframework.data.domain.Sort;
 import reactor.core.publisher.Flux;
 
-import java.io.Serializable;
-import java.util.List;
-
 /**
  * Interface for cosmosDB operations
  */

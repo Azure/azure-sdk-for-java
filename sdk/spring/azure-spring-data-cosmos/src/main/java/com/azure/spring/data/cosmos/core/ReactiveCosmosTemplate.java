@@ -684,12 +684,7 @@ public class ReactiveCosmosTemplate implements ReactiveCosmosOperations, Applica
             .publishOn(Schedulers.parallel())
             .onErrorResume(throwable ->
                 CosmosExceptionUtils.exceptionHandler("Failed to delete item(s)", throwable,
-                    this.responseDiagnosticsProcessor))
-            .flatMap(response -> {
-                CosmosUtils.fillAndProcessResponseDiagnostics(this.responseDiagnosticsProcessor,
-                    response.getResponse().getCosmosDiagnostics(), null);
-                return null;
-            }).then();
+                    this.responseDiagnosticsProcessor)).then();
     }
 
     /**
