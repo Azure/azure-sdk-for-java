@@ -21,6 +21,7 @@ import java.net.Proxy;
 import java.net.ProxySelector;
 import java.net.SocketAddress;
 import java.net.URI;
+import java.time.Duration;
 import java.util.Collections;
 import java.util.List;
 import java.util.UUID;
@@ -48,6 +49,8 @@ class ProxySendTest extends IntegrationTestBase {
 
     @BeforeAll
     static void initialize() throws Exception {
+        StepVerifier.setDefaultTimeout(Duration.ofSeconds(30));
+
         proxyServer = new SimpleProxy(PROXY_PORT);
         proxyServer.start(t -> LOGGER.error("Starting proxy server failed.", t));
 
@@ -74,6 +77,7 @@ class ProxySendTest extends IntegrationTestBase {
             }
         } finally {
             ProxySelector.setDefault(defaultProxySelector);
+            StepVerifier.resetDefaultTimeout();
         }
     }
 
@@ -93,28 +97,32 @@ class ProxySendTest extends IntegrationTestBase {
         // Arrange
         final String messageId = UUID.randomUUID().toString();
         final SendOptions options = new SendOptions().setPartitionId(PARTITION_ID);
-        final EventHubProducerAsyncClient producer = toClose(builder.buildAsyncProducerClient());
+        final EventHubProducerAsyncClient producer = builder.buildAsyncProducerClient();
         final List<EventData> events = TestUtils.getEvents(NUMBER_OF_EVENTS, messageId);
         final PartitionProperties information = producer.getPartitionProperties(PARTITION_ID).block();
 
         assertNotNull(information, "Should receive partition information.");
 
         final EventPosition position = EventPosition.fromSequenceNumber(information.getLastEnqueuedSequenceNumber());
-        final EventHubConsumerAsyncClient consumer = toClose(builder
+        final EventHubConsumerAsyncClient consumer = builder
             .consumerGroup(EventHubClientBuilder.DEFAULT_CONSUMER_GROUP_NAME)
-            .buildAsyncConsumerClient());
+            .buildAsyncConsumerClient();
 
-        // Act
-        StepVerifier.create(producer.send(events, options))
-            .expectComplete()
-            .verify(TIMEOUT);
+        try {
+            // Act
+            StepVerifier.create(producer.send(events, options))
+                .expectComplete()
+                .verify(TIMEOUT);
 
-        // Assert
-        logger.info("Waiting to receive events.");
-        StepVerifier.create(consumer.receiveFromPartition(PARTITION_ID, position)
-            .filter(x -> TestUtils.isMatchingEvent(x, messageId)).take(NUMBER_OF_EVENTS))
-            .expectNextCount(NUMBER_OF_EVENTS)
-            .expectComplete()
-            .verify(TIMEOUT);
+            // Assert
+            logger.info("Waiting to receive events.");
+            StepVerifier.create(consumer.receiveFromPartition(PARTITION_ID, position)
+                .filter(x -> TestUtils.isMatchingEvent(x, messageId)).take(NUMBER_OF_EVENTS))
+                .expectNextCount(NUMBER_OF_EVENTS)
+                .expectComplete()
+                .verify(TIMEOUT);
+        } finally {
+            dispose(producer, consumer);
+        }
     }
 }
