@@ -29,7 +29,9 @@ public class JsonString extends JsonElement{
      *
      * @param value specifies the text string this JsonString object represents
      */
-    public JsonString(String value) { this.stringValue = value; }
+    public JsonString(String value) { 
+        this.stringValue = value; 
+    }
 
     /**
      * Returns the String representation of the JsonString object
@@ -38,14 +40,17 @@ public class JsonString extends JsonElement{
      * current state of this JsonString object.
      */
     @Override
-    public String toString() { return this.stringValue; }
+    public String toString() { 
+        return this.stringValue; 
+    }
 
     /**
      * @return boolean of whether this JsonElement object is of type JsonString.
      */
     @Override
-    public boolean isString() { return true; }
-
+    public boolean isString() { 
+        return true; 
+    }
 
     @Override
     public JsonArray asArray() {
@@ -65,12 +70,12 @@ public class JsonString extends JsonElement{
     public JsonBoolean asBoolean() {
         try {
             int a = Integer.parseInt(stringValue);
-            if (a == 1){
+            if (a == 1) {
                 return JsonBoolean.getInstance(true);
             } else {
                 return JsonBoolean.getInstance(false);
             }
-        } catch (NumberFormatException e){
+        } catch (NumberFormatException e) {
             return JsonBoolean.getInstance(Boolean.parseBoolean(stringValue));
         }
     }
@@ -79,23 +84,21 @@ public class JsonString extends JsonElement{
     public JsonNumber asNumber() {
         try {
             return new JsonNumber(Integer.parseInt(stringValue));
-        } catch (NullPointerException e){
+        } catch (NullPointerException e) {
             try {
                 return new JsonNumber(Float.parseFloat(stringValue));
-            }catch (NullPointerException x){
+            } catch (NullPointerException x) {
                 return new JsonNumber();
             }
-        } catch (NumberFormatException z){
+        } catch (NumberFormatException z) {
             return new JsonNumber();
         }
     }
 
     @Override
-    public JsonString asString() { return this; }
-
-
-
-
+    public JsonString asString() { 
+        return this; 
+    }
 
     /**
      * @param jsonWriter JsonWriter that the serialized JsonString is written to.

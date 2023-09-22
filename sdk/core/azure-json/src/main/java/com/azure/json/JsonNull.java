@@ -24,7 +24,9 @@ public final class JsonNull extends JsonElement {
      *
      * @return The JsonNull instance, representing the JsonNull Object.
      */
-    public static JsonNull getInstance() { return LoadSingleton.INSTANCE; }
+    public static JsonNull getInstance() { 
+        return LoadSingleton.INSTANCE; 
+    }
 
     /**
      * Stores the String representation of the current state of the JsonNull
