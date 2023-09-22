@@ -187,7 +187,7 @@ com.azure:azure-xml;1.0.0-beta.2;1.0.0-beta.3
 com.azure:perf-test-core;1.0.0-beta.1;1.0.0-beta.1
 com.azure:azure-communication-email;1.0.5;1.0.6
 com.azure:azure-developer-loadtesting;1.0.5;1.0.6
-com.azure:azure-identity-extensions;1.1.7;1.2.0-beta.2
+com.azure:azure-identity-extensions;1.1.7;1.1.9
 com.azure:azure-analytics-purview-sharing;1.0.0-beta.2;1.0.0-beta.3
 com.azure:azure-ai-contentsafety;1.0.0-beta.1;1.0.0-beta.2
 com.azure.spring:azure-monitor-spring-native;1.0.0-beta.1;1.0.0-beta.1
