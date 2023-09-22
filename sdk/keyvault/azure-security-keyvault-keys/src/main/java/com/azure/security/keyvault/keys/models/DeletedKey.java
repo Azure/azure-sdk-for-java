@@ -98,7 +98,7 @@ public final class DeletedKey extends KeyVaultKey {
     @Override
     public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
         return jsonWriter.writeStartObject()
-            .writeJsonField("key", key)
+            .writeJsonField("key", getKey())
             .writeStringField("recoveryId", recoveryId)
             .writeEndObject();
     }
