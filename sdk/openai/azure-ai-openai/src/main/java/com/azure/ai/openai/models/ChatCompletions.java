@@ -103,14 +103,26 @@ public final class ChatCompletions {
     private List<PromptFilterResult> promptFilterResults;
 
     /**
+     * Backing member for the prompt filtering result during the rename transition. More details <a
+     * href="https://github.com/Azure/azure-rest-api-specs/pull/25880">here</a>
+     *
+     * @deprecated This field is only used for deserialization.
+     */
+    @Deprecated
+    @JsonProperty(value = "prompt_annotations")
+    private List<PromptFilterResult> promptAnnotations;
+
+    /**
      * Get the promptFilterResults property: Content filtering results for zero or more prompts in the request. In a
      * streaming request, results for different prompts may arrive at different times or in different orders.
      *
      * @return the promptFilterResults value.
      */
-    @Generated
     public List<PromptFilterResult> getPromptFilterResults() {
-        return this.promptFilterResults;
+        if (this.promptFilterResults != null) {
+            return this.promptFilterResults;
+        }
+        return this.promptAnnotations;
     }
 
     /**

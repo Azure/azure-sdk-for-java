@@ -321,8 +321,7 @@ public class OpenAISyncClientTest extends OpenAIClientTestBase {
             completionsOptions.setMaxTokens(2000);
             Completions completions = client.getCompletions(modelId, completionsOptions);
             assertCompletions(1, completions);
-            // TODO: Service issue: we don't have prompt filter results value anymore.
-//            assertSafeContentFilterResults(completions.getPromptFilterResults().get(0).getContentFilterResults());
+            assertSafeContentFilterResults(completions.getPromptFilterResults().get(0).getContentFilterResults());
             assertSafeContentFilterResults(completions.getChoices().get(0).getContentFilterResults());
         });
     }
@@ -342,22 +341,20 @@ public class OpenAISyncClientTest extends OpenAIClientTestBase {
                 assertCompletionsStream(completions);
                 if (i == 0) {
                     System.out.println("First stream message");
-                    // TODO: Service issue: we don't have prompt filter results value anymore.
                     // The first stream message has the prompt filter result
-//                    assertEquals(1, completions.getPromptFilterResults().size());
-//                    assertSafeContentFilterResults(completions.getPromptFilterResults().get(0).getContentFilterResults());
+                    assertEquals(1, completions.getPromptFilterResults().size());
+                    assertSafeContentFilterResults(completions.getPromptFilterResults().get(0).getContentFilterResults());
                 } else if (i == totalCompletions - 1) {
                     // The last stream message is empty with all the filters set to null
                     assertEquals(1, completions.getChoices().size());
                     Choice choice = completions.getChoices().get(0);
                     // TODO: service issue: we could have "length" as the finish reason.
                     //       Non-Streaming happens less frequency than streaming API.
-//                    assertEquals(CompletionsFinishReason.fromString("stop"), choice.getFinishReason());
+                    assertEquals(CompletionsFinishReason.fromString("stop"), choice.getFinishReason());
                     assertNotNull(choice.getText());
 
-                    // TODO: Regression, no longer an null value for the content filter results.
-//                    ContentFilterResults contentFilterResults = choice.getContentFilterResults();
-//                    assertEmptyContentFilterResults(contentFilterResults);
+                    ContentFilterResults contentFilterResults = choice.getContentFilterResults();
+                    assertEmptyContentFilterResults(contentFilterResults);
                 } else {
                     // The rest of the intermediary messages have the text generation content filter set
                     assertNull(completions.getPromptFilterResults());
