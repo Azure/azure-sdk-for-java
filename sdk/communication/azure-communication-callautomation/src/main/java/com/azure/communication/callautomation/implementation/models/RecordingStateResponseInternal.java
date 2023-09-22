@@ -28,6 +28,9 @@ public final class RecordingStateResponseInternal {
     @JsonProperty(value = "recordingType")
     private RecordingType recordingType;
 
+    /** Creates an instance of RecordingStateResponseInternal class. */
+    public RecordingStateResponseInternal() {}
+
     /**
      * Get the recordingId property: The recordingId property.
      *

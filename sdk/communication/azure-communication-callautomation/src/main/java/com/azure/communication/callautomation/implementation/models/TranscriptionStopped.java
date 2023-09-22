@@ -23,15 +23,13 @@ public final class TranscriptionStopped {
     private String serverCallId;
 
     /*
-     * Correlation ID for event to call correlation. Also called ChainId for
-     * skype chain ID.
+     * Correlation ID for event to call correlation. Also called ChainId for skype chain ID.
      */
     @JsonProperty(value = "correlationId")
     private String correlationId;
 
     /*
-     * Used by customers when calling answerCall action to correlate the
-     * request to the response event.
+     * Used by customers when calling answerCall action to correlate the request to the response event.
      */
     @JsonProperty(value = "operationContext", access = JsonProperty.Access.WRITE_ONLY)
     private String operationContext;
@@ -43,11 +41,13 @@ public final class TranscriptionStopped {
     private ResultInformation resultInformation;
 
     /*
-     * Defines the result for TranscriptionUpdate with the current status and
-     * the details about the status
+     * Defines the result for TranscriptionUpdate with the current status and the details about the status
      */
     @JsonProperty(value = "transcriptionUpdateResult", access = JsonProperty.Access.WRITE_ONLY)
     private TranscriptionUpdate transcriptionUpdateResult;
+
+    /** Creates an instance of TranscriptionStopped class. */
+    public TranscriptionStopped() {}
 
     /**
      * Get the callConnectionId property: Call connection ID.

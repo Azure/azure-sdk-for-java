@@ -16,6 +16,9 @@ public final class UpdateTranscriptionDataRequest {
     @JsonProperty(value = "locale", required = true)
     private String locale;
 
+    /** Creates an instance of UpdateTranscriptionDataRequest class. */
+    public UpdateTranscriptionDataRequest() {}
+
     /**
      * Get the locale property: Defines new locale for transcription.
      *
