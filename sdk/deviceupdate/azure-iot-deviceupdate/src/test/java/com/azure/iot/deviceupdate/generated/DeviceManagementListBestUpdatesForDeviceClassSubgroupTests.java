@@ -18,7 +18,7 @@ public final class DeviceManagementListBestUpdatesForDeviceClassSubgroupTests ex
         RequestOptions requestOptions = new RequestOptions();
         Response<BinaryData> response =
                 deviceManagementClient.getBestUpdatesForDeviceClassSubgroupWithResponse(
-                    TestData.GROUP_ID, TestData.DEVICE_CLASS_ID, requestOptions);
+                    TestData.DEVICE_GROUP, TestData.DEVICE_CLASS_ID, requestOptions);
         Assertions.assertEquals(200, response.getStatusCode());
         Assertions.assertEquals(
                 BinaryData.fromString(
