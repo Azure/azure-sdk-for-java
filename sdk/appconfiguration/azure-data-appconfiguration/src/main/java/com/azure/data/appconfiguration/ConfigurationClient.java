@@ -1059,12 +1059,14 @@ public final class ConfigurationClient {
                     selector == null ? null : selector.getAcceptDateTime(),
                     selector == null ? null : toSettingFieldsList(selector.getFields()),
                     null,
+                    null,
+                    null,
                     enableSyncRestProxy(addTracingNamespace(context)));
                 return toConfigurationSettingWithPagedResponse(pagedResponse);
             },
             nextLink -> {
                 final PagedResponse<KeyValue> pagedResponse = serviceClient.getKeyValuesNextSinglePage(nextLink,
-                    selector.getAcceptDateTime(), enableSyncRestProxy(addTracingNamespace(context)));
+                    selector.getAcceptDateTime(), null, null, enableSyncRestProxy(addTracingNamespace(context)));
                 return toConfigurationSettingWithPagedResponse(pagedResponse);
             }
         );
@@ -1136,12 +1138,14 @@ public final class ConfigurationClient {
                     null,
                     fields,
                     snapshotName,
+                    null,
+                    null,
                     enableSyncRestProxy(addTracingNamespace(context)));
                 return toConfigurationSettingWithPagedResponse(pagedResponse);
             },
             nextLink -> {
                 final PagedResponse<KeyValue> pagedResponse = serviceClient.getKeyValuesNextSinglePage(nextLink,
-                    null, enableSyncRestProxy(addTracingNamespace(context)));
+                    null, null, null, enableSyncRestProxy(addTracingNamespace(context)));
                 return toConfigurationSettingWithPagedResponse(pagedResponse);
             }
         );
