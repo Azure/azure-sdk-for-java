@@ -32,6 +32,7 @@ import com.azure.communication.callautomation.models.FileSource;
 import com.azure.communication.callautomation.models.PlayOptions;
 import com.azure.communication.callautomation.models.PlaySource;
 import com.azure.communication.callautomation.models.RecognizeChoice;
+import com.azure.communication.callautomation.models.StartHoldMusicOptions;
 import com.azure.communication.callautomation.models.TextSource;
 import com.azure.communication.callautomation.models.SsmlSource;
 import com.azure.communication.callautomation.models.CallMediaRecognizeOptions;
@@ -624,38 +625,31 @@ public final class CallMediaAsync {
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<Void> startHoldMusicAsync(CommunicationIdentifier targetParticipant,
                                                               PlaySource playSourceInfo) {
-        return startHoldMusicWithResponseAsync(targetParticipant, playSourceInfo, true, null).then();
+        return startHoldMusicWithResponseInternal(
+            new StartHoldMusicOptions(targetParticipant, playSourceInfo),
+            Context.NONE).then();
     }
 
     /**
      * Holds participant in call.
-     * @param targetParticipant the target.
-     * @param playSourceInfo audio to play.
-     * @param loop to repeat.
-     * @param operationalContext Operational context.
+     * @param options - Different options to pass to the request.
      * @return Response for successful operation.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Mono<Response<Void>> startHoldMusicWithResponseAsync(CommunicationIdentifier targetParticipant,
-                                          PlaySource playSourceInfo,
-                                          boolean loop,
-                                          String operationalContext) {
-        return withContext(context -> startHoldMusicWithResponseInternal(targetParticipant, playSourceInfo, loop, operationalContext, context));
+    public Mono<Response<Void>> startHoldMusicWithResponseAsync(StartHoldMusicOptions options) {
+        return withContext(context -> startHoldMusicWithResponseInternal(
+            options, context));
     }
 
-    Mono<Response<Void>> startHoldMusicWithResponseInternal(CommunicationIdentifier targetParticipant,
-                                                                    PlaySource playSourceInfo,
-                                                                    boolean loop,
-                                                                    String operationalContext,
-                                                                    Context context) {
+    Mono<Response<Void>> startHoldMusicWithResponseInternal(StartHoldMusicOptions options, Context context) {
         try {
             context = context == null ? Context.NONE : context;
 
             StartHoldMusicRequestInternal request = new StartHoldMusicRequestInternal()
-                .setTargetParticipant(CommunicationIdentifierConverter.convert(targetParticipant))
-                .setPlaySourceInfo(convertPlaySourceToPlaySourceInternal(playSourceInfo))
-                .setLoop(loop)
-                .setOperationContext(operationalContext);
+                .setTargetParticipant(CommunicationIdentifierConverter.convert(options.getTargetParticipant()))
+                .setPlaySourceInfo(convertPlaySourceToPlaySourceInternal(options.getPlaySourceInfo()))
+                .setLoop(options.isLoop())
+                .setOperationContext(options.getOperationContext());
 
             return contentsInternal
                 .startHoldMusicWithResponseAsync(callConnectionId, request, context);
@@ -677,23 +671,23 @@ public final class CallMediaAsync {
     /**
      * Holds participant in call.
      * @param targetParticipant the target.
-     * @param operationalContext Operational context.
+     * @param operationContext Operational context.
      * @return Response for successful operation.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<Response<Void>> stopHoldMusicWithResponseAsync(CommunicationIdentifier targetParticipant,
-                                                               String operationalContext) {
-        return withContext(context -> stopHoldMusicWithResponseInternal(targetParticipant, operationalContext, context));
+                                                               String operationContext) {
+        return withContext(context -> stopHoldMusicWithResponseInternal(targetParticipant, operationContext, context));
     }
 
     Mono<Response<Void>> stopHoldMusicWithResponseInternal(CommunicationIdentifier targetParticipant,
-                                                            String operationalContext,
+                                                            String operationContext,
                                                             Context context) {
         try {
             context = context == null ? Context.NONE : context;
             StopHoldMusicRequestInternal request = new StopHoldMusicRequestInternal()
                 .setTargetParticipant(CommunicationIdentifierConverter.convert(targetParticipant))
-                .setOperationContext(operationalContext);
+                .setOperationContext(operationContext);
 
             return contentsInternal
                 .stopHoldMusicWithResponseAsync(callConnectionId, request, context);

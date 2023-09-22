@@ -155,9 +155,10 @@ public class CallMediaUnitTests {
                 Collections.singletonList(new AbstractMap.SimpleEntry<>("", 200)))
             );
         callMedia = callConnection.getCallMedia();
-
-        Response<Void> response = callMedia.startHoldMusicWithResponse(new CommunicationUserIdentifier("id"),
-            playTextSource, true, "operationalContext", Context.NONE);
+        StartHoldMusicOptions options = new StartHoldMusicOptions(
+            new CommunicationUserIdentifier("id"),
+            new TextSource().setText("audio to play"));
+        Response<Void> response = callMedia.startHoldMusicWithResponse(options, null);
         assertEquals(response.getStatusCode(), 200);
     }
 
