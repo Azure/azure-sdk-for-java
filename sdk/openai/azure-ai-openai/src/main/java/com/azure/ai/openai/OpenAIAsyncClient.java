@@ -16,6 +16,14 @@ import com.azure.ai.openai.implementation.NonAzureOpenAIClientImpl;
 import com.azure.ai.openai.implementation.OpenAIClientImpl;
 import com.azure.ai.openai.implementation.OpenAIServerSentEvents;
 import com.azure.ai.openai.models.*;
+import com.azure.ai.openai.models.AudioTranscription;
+import com.azure.ai.openai.models.AudioTranscriptionOptions;
+import com.azure.ai.openai.models.AudioTranslation;
+import com.azure.ai.openai.models.AudioTranslationOptions;
+import com.azure.ai.openai.models.Completions;
+import com.azure.ai.openai.models.CompletionsOptions;
+import com.azure.ai.openai.models.Embeddings;
+import com.azure.ai.openai.models.EmbeddingsOptions;
 import com.azure.core.annotation.Generated;
 import com.azure.core.annotation.ReturnType;
 import com.azure.core.annotation.ServiceClient;
@@ -1279,7 +1287,6 @@ public final class OpenAIAsyncClient {
         final MultipartDataSerializationResult result = helper.serializeRequest(audioTranslationOptions, fileName);
         final BinaryData data = result.getData();
         requestOptions = helper.getRequestOptionsForMultipartFormData(requestOptions, result, helper.getBoundary());
-
         Mono<Response<BinaryData>> response =
                 openAIServiceClient != null
                         ? this.openAIServiceClient.getAudioTranslationAsPlainTextWithResponseAsync(
@@ -1507,14 +1514,14 @@ public final class OpenAIAsyncClient {
      */
     @Generated
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Mono<AudioTranscription> getAudioTranslationAsResponseObject(
+    public Mono<AudioTranslation> getAudioTranslationAsResponseObject(
             String deploymentOrModelName, AudioTranslationOptions audioTranslationOptions) {
         // Generated convenience method for getAudioTranslationAsResponseObjectWithResponse
         RequestOptions requestOptions = new RequestOptions();
         return getAudioTranslationAsResponseObjectWithResponse(
                         deploymentOrModelName, BinaryData.fromObject(audioTranslationOptions), requestOptions)
                 .flatMap(FluxUtil::toMono)
-                .map(protocolMethodData -> protocolMethodData.toObject(AudioTranscription.class));
+                .map(protocolMethodData -> protocolMethodData.toObject(AudioTranslation.class));
     }
 
     /**
