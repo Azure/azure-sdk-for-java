@@ -1721,7 +1721,7 @@ public class FaultInjectionWithAvailabilityStrategyTests extends TestSuiteBase {
                             assertThat(currentDiagnostics.getFeedResponseDiagnostics().getQueryPlanDiagnosticsContext()).isNotNull();
                         }
                         assertThat(currentDiagnostics.getFeedResponseDiagnostics().getClientSideRequestStatistics()).isNotNull();
-                        assertThat(currentDiagnostics.getFeedResponseDiagnostics().getClientSideRequestStatistics().size()).isEqualTo(1);
+                        assertThat(currentDiagnostics.getFeedResponseDiagnostics().getClientSideRequestStatistics().size()).isGreaterThanOrEqualTo(1);
                     }
                 }
             };
@@ -1767,6 +1767,9 @@ public class FaultInjectionWithAvailabilityStrategyTests extends TestSuiteBase {
             (ctx, expectedDiagnosticsCount) -> {
                 assertThat(ctx).isNotNull();
                 if (ctx != null) {
+                    if (ctx.getDiagnostics().size() < expectedDiagnosticsCount) {
+                        logger.error(ctx.toJson());
+                    }
                     assertThat(ctx.getDiagnostics().size()).isEqualTo(expectedDiagnosticsCount);
 
                     CosmosDiagnostics[] diagnostics = ctx.getDiagnostics().toArray(new CosmosDiagnostics[0]);
@@ -1883,8 +1886,8 @@ public class FaultInjectionWithAvailabilityStrategyTests extends TestSuiteBase {
                 validateAllRecordsSamePartitionReturned,
                 ENOUGH_DOCS_OTHER_PK_TO_HIT_EVERY_PARTITION,
                 ENOUGH_DOCS_SAME_PK_TO_EXCEED_PAGE_SIZE
-            }
-            /*new Object[] {
+            },
+            new Object[] {
                 "PageSizeOne_CrossPartition_AllGood_NoAvailabilityStrategy",
                 Duration.ofSeconds(1),
                 noAvailabilityStrategy,
@@ -1893,9 +1896,15 @@ public class FaultInjectionWithAvailabilityStrategyTests extends TestSuiteBase {
                 queryReturnsTotalRecordCountWithPageSizeOne,
                 noFailureInjection,
                 validateStatusCodeIs200Ok,
+                1 + ENOUGH_DOCS_OTHER_PK_TO_HIT_EVERY_PARTITION,
                 ArrayUtils.toArray(
                     validateCtxSingleRegion,
-                    validateCtxPageSizeOneAllDocsSameIdQuery
+                    validateCtxQueryPlan,
+                    validateCtxOnlyFeedResponsesExceptQueryPlan
+                ),
+                ArrayUtils.toArray(
+                    validateCtxSingleRegion,
+                    validateCtxOnlyFeedResponsesExceptQueryPlan
                 ),
                 validateAllRecordsSameIdReturned,
                 ENOUGH_DOCS_OTHER_PK_TO_HIT_EVERY_PARTITION,
@@ -1910,10 +1919,12 @@ public class FaultInjectionWithAvailabilityStrategyTests extends TestSuiteBase {
                 queryReturnsTotalRecordCountWithPageSizeOne,
                 noFailureInjection,
                 validateStatusCodeIs200Ok,
+                1,
                 ArrayUtils.toArray(
                     validateCtxSingleRegion,
-                    validateCtxOnlyOneFeedResponse
+                    validateCtxQueryPlan
                 ),
+                null,
                 validateEmptyResults,
                 ENOUGH_DOCS_OTHER_PK_TO_HIT_EVERY_PARTITION,
                 NO_OTHER_DOCS_WITH_SAME_PK
@@ -1928,10 +1939,12 @@ public class FaultInjectionWithAvailabilityStrategyTests extends TestSuiteBase {
                 noFailureInjection,
                 validateStatusCodeIs200Ok,
                 // empty pages are skipped except for the last one
+                1,
                 ArrayUtils.toArray(
                     validateCtxSingleRegion,
-                    validateCtxOnlyOneFeedResponse
+                    validateCtxQueryPlan
                 ),
+                null,
                 validateEmptyResults,
                 ENOUGH_DOCS_OTHER_PK_TO_HIT_EVERY_PARTITION,
                 NO_OTHER_DOCS_WITH_SAME_PK
@@ -1945,9 +1958,15 @@ public class FaultInjectionWithAvailabilityStrategyTests extends TestSuiteBase {
                 queryReturnsTotalRecordCountWithPageSizeOne,
                 noFailureInjection,
                 validateStatusCodeIs200Ok,
+                1 + ENOUGH_DOCS_SAME_PK_TO_EXCEED_PAGE_SIZE,
                 ArrayUtils.toArray(
                     validateCtxSingleRegion,
-                    validateCtxPageSizeOneForAllDocsSamePKQuery
+                    validateCtxQueryPlan,
+                    validateCtxOnlyFeedResponsesExceptQueryPlan
+                ),
+                ArrayUtils.toArray(
+                    validateCtxSingleRegion,
+                    validateCtxOnlyFeedResponsesExceptQueryPlan
                 ),
                 validateAllRecordsSamePartitionReturned,
                 ENOUGH_DOCS_OTHER_PK_TO_HIT_EVERY_PARTITION,
@@ -1962,9 +1981,15 @@ public class FaultInjectionWithAvailabilityStrategyTests extends TestSuiteBase {
                 queryReturnsTotalRecordCountWithPageSizeOne,
                 noFailureInjection,
                 validateStatusCodeIs200Ok,
+                1 + ENOUGH_DOCS_OTHER_PK_TO_HIT_EVERY_PARTITION,
                 ArrayUtils.toArray(
                     validateCtxSingleRegion,
-                    validateCtxPageSizeOneAllDocsSameIdQuery
+                    validateCtxQueryPlan,
+                    validateCtxOnlyFeedResponsesExceptQueryPlan
+                ),
+                ArrayUtils.toArray(
+                    validateCtxSingleRegion,
+                    validateCtxOnlyFeedResponsesExceptQueryPlan
                 ),
                 validateExactlyOneRecordReturned,
                 ENOUGH_DOCS_OTHER_PK_TO_HIT_EVERY_PARTITION,
@@ -1979,10 +2004,12 @@ public class FaultInjectionWithAvailabilityStrategyTests extends TestSuiteBase {
                 queryReturnsTotalRecordCountWithDefaultPageSize,
                 injectReadSessionNotAvailableIntoFirstRegionOnly,
                 validateStatusCodeIs200Ok,
+                1,
                 ArrayUtils.toArray(
                     validateCtxTwoRegions,
                     validateCtxFirstRegionFailureSecondRegionSuccessfulSingleFeedResponse
                 ),
+                null,
                 validateExactlyOneRecordReturned,
                 ENOUGH_DOCS_OTHER_PK_TO_HIT_EVERY_PARTITION,
                 NO_OTHER_DOCS_WITH_SAME_PK
@@ -1996,9 +2023,15 @@ public class FaultInjectionWithAvailabilityStrategyTests extends TestSuiteBase {
                 queryReturnsTotalRecordCountWithDefaultPageSize,
                 injectReadSessionNotAvailableIntoFirstRegionOnly,
                 validateStatusCodeIs200Ok,
+                PHYSICAL_PARTITION_COUNT,
                 ArrayUtils.toArray(
                     validateCtxTwoRegions,
-                    validateCtxOnePagePerPartitionQuery
+                    validateCtxQueryPlan,
+                    validateCtxOnlyFeedResponsesExceptQueryPlan
+                ),
+                ArrayUtils.toArray(
+                    validateCtxTwoRegions,
+                    validateCtxOnlyFeedResponsesExceptQueryPlan
                 ),
                 validateAllRecordsSameIdReturned,
                 ENOUGH_DOCS_OTHER_PK_TO_HIT_EVERY_PARTITION,
@@ -2013,14 +2046,20 @@ public class FaultInjectionWithAvailabilityStrategyTests extends TestSuiteBase {
                 queryReturnsTotalRecordCountWithDefaultPageSize,
                 injectReadSessionNotAvailableIntoFirstRegionOnlyForSinglePartition,
                 validateStatusCodeIs200Ok,
+                PHYSICAL_PARTITION_COUNT,
                 ArrayUtils.toArray(
                     validateCtxTwoRegions,
-                    validateCtxOnePagePerPartitionQuery
+                    validateCtxQueryPlan,
+                    validateCtxOnlyFeedResponsesExceptQueryPlan
+                ),
+                ArrayUtils.toArray(
+                    validateCtxSingleRegion,
+                    validateCtxOnlyFeedResponsesExceptQueryPlan
                 ),
                 validateAllRecordsSameIdReturned,
                 ENOUGH_DOCS_OTHER_PK_TO_HIT_EVERY_PARTITION,
                 NO_OTHER_DOCS_WITH_SAME_PK
-            },*/
+            },
         };
     }
 
