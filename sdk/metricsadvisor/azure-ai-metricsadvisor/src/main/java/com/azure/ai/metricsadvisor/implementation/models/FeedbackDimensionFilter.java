@@ -17,9 +17,6 @@ public final class FeedbackDimensionFilter {
     @JsonProperty(value = "dimension", required = true)
     private Map<String, String> dimension;
 
-    /** Creates an instance of FeedbackDimensionFilter class. */
-    public FeedbackDimensionFilter() {}
-
     /**
      * Get the dimension property: metric dimension filter.
      *

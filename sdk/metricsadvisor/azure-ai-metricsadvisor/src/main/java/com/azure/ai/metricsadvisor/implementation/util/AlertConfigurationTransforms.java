@@ -3,18 +3,8 @@
 
 package com.azure.ai.metricsadvisor.implementation.util;
 
-import com.azure.ai.metricsadvisor.administration.models.AnomalyAlertConfiguration;
-import com.azure.ai.metricsadvisor.administration.models.AnomalySeverity;
-import com.azure.ai.metricsadvisor.administration.models.BoundaryDirection;
 import com.azure.ai.metricsadvisor.administration.models.BoundaryMeasureType;
-import com.azure.ai.metricsadvisor.administration.models.MetricAlertConfiguration;
-import com.azure.ai.metricsadvisor.administration.models.MetricAlertConfigurationsOperator;
-import com.azure.ai.metricsadvisor.administration.models.MetricAnomalyAlertConditions;
-import com.azure.ai.metricsadvisor.administration.models.MetricAnomalyAlertScope;
-import com.azure.ai.metricsadvisor.administration.models.MetricAnomalyAlertScopeType;
 import com.azure.ai.metricsadvisor.administration.models.MetricAnomalyAlertSnoozeCondition;
-import com.azure.ai.metricsadvisor.administration.models.MetricBoundaryCondition;
-import com.azure.ai.metricsadvisor.administration.models.TopNGroupScope;
 import com.azure.ai.metricsadvisor.implementation.models.AnomalyAlertingConfiguration;
 import com.azure.ai.metricsadvisor.implementation.models.AnomalyAlertingConfigurationLogicType;
 import com.azure.ai.metricsadvisor.implementation.models.AnomalyAlertingConfigurationPatch;
@@ -22,14 +12,21 @@ import com.azure.ai.metricsadvisor.implementation.models.AnomalyScope;
 import com.azure.ai.metricsadvisor.implementation.models.DimensionGroupIdentity;
 import com.azure.ai.metricsadvisor.implementation.models.Direction;
 import com.azure.ai.metricsadvisor.implementation.models.MetricAlertingConfiguration;
-import com.azure.ai.metricsadvisor.implementation.models.Severity;
 import com.azure.ai.metricsadvisor.implementation.models.SeverityCondition;
-import com.azure.ai.metricsadvisor.implementation.models.SnoozeScope;
 import com.azure.ai.metricsadvisor.implementation.models.ValueCondition;
+import com.azure.ai.metricsadvisor.administration.models.AnomalyAlertConfiguration;
+import com.azure.ai.metricsadvisor.administration.models.BoundaryDirection;
 import com.azure.ai.metricsadvisor.implementation.models.ValueType;
 import com.azure.ai.metricsadvisor.models.DimensionKey;
+import com.azure.ai.metricsadvisor.administration.models.MetricAnomalyAlertConditions;
+import com.azure.ai.metricsadvisor.administration.models.MetricAlertConfiguration;
+import com.azure.ai.metricsadvisor.administration.models.MetricAlertConfigurationsOperator;
+import com.azure.ai.metricsadvisor.administration.models.MetricAnomalyAlertScope;
+import com.azure.ai.metricsadvisor.administration.models.MetricAnomalyAlertScopeType;
+import com.azure.ai.metricsadvisor.administration.models.MetricBoundaryCondition;
 import com.azure.core.http.rest.PagedResponse;
 import com.azure.core.http.rest.PagedResponseBase;
+import com.azure.ai.metricsadvisor.administration.models.TopNGroupScope;
 import com.azure.core.util.logging.ClientLogger;
 
 import java.util.ArrayList;
@@ -37,8 +34,6 @@ import java.util.List;
 import java.util.Map;
 import java.util.UUID;
 import java.util.stream.Collectors;
-
-import static com.azure.ai.metricsadvisor.implementation.util.Utility.toStringOrNull;
 
 /**
  * Helper class to convert service level alert configuration models to SDK models.
@@ -62,8 +57,9 @@ public final class AlertConfigurationTransforms {
 
         innerAlertConfiguration.setName(alertConfiguration.getName());
         innerAlertConfiguration.setDescription(alertConfiguration.getDescription());
-        innerAlertConfiguration.setCrossMetricsOperator(AnomalyAlertingConfigurationLogicType.fromString(
-            toStringOrNull(alertConfiguration.getCrossMetricsOperator())));
+        innerAlertConfiguration.setCrossMetricsOperator(alertConfiguration.getCrossMetricsOperator() == null
+            ? null : AnomalyAlertingConfigurationLogicType.fromString(
+            alertConfiguration.getCrossMetricsOperator().toString()));
 
         List<String> rawIds = AnomalyAlertConfigurationHelper.getHookIdsToAlertRaw(alertConfiguration);
         if (rawIds != null) {
@@ -97,8 +93,9 @@ public final class AlertConfigurationTransforms {
 
         innerAlertConfiguration.setName(alertConfiguration.getName());
         innerAlertConfiguration.setDescription(alertConfiguration.getDescription());
-        innerAlertConfiguration.setCrossMetricsOperator(AnomalyAlertingConfigurationLogicType.fromString(
-            toStringOrNull(alertConfiguration.getCrossMetricsOperator())));
+        innerAlertConfiguration.setCrossMetricsOperator(alertConfiguration.getCrossMetricsOperator() == null
+            ? null : AnomalyAlertingConfigurationLogicType.fromString(
+            alertConfiguration.getCrossMetricsOperator().toString()));
 
         List<String> rawIds = AnomalyAlertConfigurationHelper.getHookIdsToAlertRaw(alertConfiguration);
         if (rawIds != null) {
@@ -161,14 +158,11 @@ public final class AlertConfigurationTransforms {
 
             // 2. Set alert conditions (boundary and boundary conditions).
             final MetricAnomalyAlertConditions alertConditions = metricAnomalyAlertConfiguration.getAlertConditions();
-
             if (alertConditions != null) {
-                com.azure.ai.metricsadvisor.administration.models.SeverityCondition severityCondition
-                    = alertConditions.getSeverityCondition();
-                if (severityCondition != null) {
+                if (alertConditions.getSeverityCondition() != null) {
                     innerMetricAlertConfiguration.setSeverityFilter(new SeverityCondition()
-                        .setMaxAlertSeverity(Severity.fromString(toStringOrNull(severityCondition.getMinAlertSeverity())))
-                        .setMaxAlertSeverity(Severity.fromString(toStringOrNull(severityCondition.getMaxAlertSeverity()))));
+                        .setMaxAlertSeverity(alertConditions.getSeverityCondition().getMinAlertSeverity())
+                        .setMaxAlertSeverity(alertConditions.getSeverityCondition().getMaxAlertSeverity()));
                 }
                 final MetricBoundaryCondition boundaryConditions = alertConditions.getMetricBoundaryCondition();
                 ValueCondition innerValueCondition = new ValueCondition();
@@ -191,23 +185,23 @@ public final class AlertConfigurationTransforms {
                             .setMetricId(UUID.fromString(boundaryConditions.getCompanionMetricId()));
                         innerValueCondition.setTriggerForMissing(boundaryConditions.shouldAlertIfDataPointMissing());
                     }
-                    innerValueCondition.setType(
-                        ValueType.fromString(toStringOrNull(boundaryConditions.getMeasureType())));
+                    if (boundaryConditions.getMeasureType() != null) {
+                        innerValueCondition.setType(
+                            ValueType.fromString(boundaryConditions.getMeasureType().toString()));
+                    }
                     innerMetricAlertConfiguration.setValueFilter(innerValueCondition);
                 }
             }
 
             // 3. Set alert snooze conditions
-            MetricAnomalyAlertSnoozeCondition alertSnoozeCondition =
-                metricAnomalyAlertConfiguration.getAlertSnoozeCondition();
-            if (alertSnoozeCondition != null) {
+            if (metricAnomalyAlertConfiguration.getAlertSnoozeCondition() != null) {
                 com.azure.ai.metricsadvisor.implementation.models.MetricAnomalyAlertSnoozeCondition innerSnoozeCondition
                     = new com.azure.ai.metricsadvisor.implementation.models.MetricAnomalyAlertSnoozeCondition();
 
                 innerSnoozeCondition
-                    .setAutoSnooze(alertSnoozeCondition.getAutoSnooze())
-                    .setSnoozeScope(SnoozeScope.fromString(toStringOrNull(alertSnoozeCondition.getSnoozeScope())))
-                    .setOnlyForSuccessive(alertSnoozeCondition.isOnlyForSuccessive());
+                    .setAutoSnooze(metricAnomalyAlertConfiguration.getAlertSnoozeCondition().getAutoSnooze())
+                    .setSnoozeScope(metricAnomalyAlertConfiguration.getAlertSnoozeCondition().getSnoozeScope())
+                    .setOnlyForSuccessive(metricAnomalyAlertConfiguration.getAlertSnoozeCondition().isOnlyForSuccessive());
 
                 innerMetricAlertConfiguration.setSnoozeFilter(innerSnoozeCondition);
             }
@@ -295,16 +289,15 @@ public final class AlertConfigurationTransforms {
                     innerMetricAlertConfiguration.getAnomalyDetectionConfigurationId().toString(),
                     alertScope, innerMetricAlertConfiguration.isNegationOperation());
                 // Set alert condition
-                SeverityCondition severityFilter = innerMetricAlertConfiguration.getSeverityFilter();
-                if (severityFilter != null
+                if (innerMetricAlertConfiguration.getSeverityFilter() != null
                     || innerMetricAlertConfiguration.getValueFilter() != null) {
                     MetricAnomalyAlertConditions alertConditions = new MetricAnomalyAlertConditions();
                     // Set severity based condition.
-                    if (severityFilter != null) {
+                    if (innerMetricAlertConfiguration.getSeverityFilter() != null) {
                         alertConditions.setSeverityRangeCondition(
                             new com.azure.ai.metricsadvisor.administration.models.SeverityCondition(
-                                AnomalySeverity.fromString(toStringOrNull(severityFilter.getMinAlertSeverity())),
-                                AnomalySeverity.fromString(toStringOrNull(severityFilter.getMaxAlertSeverity()))));
+                                innerMetricAlertConfiguration.getSeverityFilter().getMinAlertSeverity(),
+                                innerMetricAlertConfiguration.getSeverityFilter().getMaxAlertSeverity()));
                     }
                     // Set boundary based condition.
                     ValueCondition innerValueCondition = innerMetricAlertConfiguration.getValueFilter();
@@ -332,7 +325,7 @@ public final class AlertConfigurationTransforms {
                         }
                         if (innerValueCondition.getType() != null) {
                             boundaryCondition.setMeasureType(
-                                BoundaryMeasureType.fromString(toStringOrNull(innerValueCondition.getType())));
+                                BoundaryMeasureType.fromString(innerValueCondition.getType().toString()));
                         }
                         alertConditions.setMetricBoundaryCondition(boundaryCondition);
                     }
@@ -345,7 +338,7 @@ public final class AlertConfigurationTransforms {
                 if (innerSnoozeCondition != null) {
                     metricAlertConfiguration.setAlertSnoozeCondition(new MetricAnomalyAlertSnoozeCondition(
                         innerSnoozeCondition.getAutoSnooze(),
-                        com.azure.ai.metricsadvisor.administration.models.SnoozeScope.fromString(toStringOrNull(innerSnoozeCondition.getSnoozeScope())),
+                        innerSnoozeCondition.getSnoozeScope(),
                         innerSnoozeCondition.isOnlyForSuccessive()));
                 }
                 metricAlertConfigurations.add(metricAlertConfiguration);
