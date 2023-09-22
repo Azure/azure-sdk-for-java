@@ -178,7 +178,7 @@ docker run -e APPLICATIONINSIGHTS_CONNECTION_STRING="{CONNECTION_STRING}" {image
 ```
 where you have to replace `{CONNECTION_STRING}` and `{image-name}` by your connection string and the native image name.
 
-### Debugging
+### Debug
 
 If something does not work as expected, you can enable self-diagnostics features at DEBUG level to get some insights.
 
