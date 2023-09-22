@@ -55,6 +55,24 @@ import static com.azure.cosmos.implementation.guava25.base.Preconditions.checkNo
  *     .buildChangeFeedProcessor&#40;&#41;;
  * </pre>
  * <!-- end com.azure.cosmos.allVersionsAndDeletesChangeFeedProcessor.builder -->
+ *
+ * Below is an example of building ChangeFeedProcessor for AllVersionsAndDeletes mode when also wishing to process a {@link ChangeFeedProcessorContext}.
+ * <!-- src_embed com.azure.cosmos.allVersionsAndDeletesChangeFeedProcessorWithContext.builder -->
+ *  <pre>
+ * ChangeFeedProcessor changeFeedProcessor = new ChangeFeedProcessorBuilder&#40;&#41;
+ *       .hostName&#40;hostName&#41;
+ *       .feedContainer&#40;feedContainer&#41;
+ *       .leaseContainer&#40;leaseContainer&#41;
+ *       .handleAllVersionsAndDeletesChanges&#40;&#40;docs, context&#41; -&gt; &#123;
+ *           for &#40;ChangeFeedProcessorItem item : docs&#41; &#123;
+ *               &#47;&#47; Implementation for handling and processing of each ChangeFeedProcessorItem item goes here
+ *           &#125;
+ *           String leaseToken = context.getLeaseToken&#40;&#41;;
+ *           &#47;&#47; Handling of the lease token corresponding to a batch of change feed processor item goes here
+ *       &#125;&#41;
+ *       .buildChangeFeedProcessor&#40;&#41;;
+ * </pre>
+ *  <!-- end com.azure.cosmos.allVersionsAndDeletesChangeFeedProcessorWithContext.builder -->
  */
 public class ChangeFeedProcessorBuilder {
     private String hostName;
