@@ -1541,7 +1541,24 @@ public class FaultInjectionWithAvailabilityStrategyTests extends TestSuiteBase {
         ItemOperationInvocationParameters params,
         int requestedPageSize
     ) {
+        return queryReturnsTotalRecordCountCore(query, params, requestedPageSize, false);
+    }
+
+    private CosmosResponseWrapper queryReturnsTotalRecordCountCore(
+        String query,
+        ItemOperationInvocationParameters params,
+        int requestedPageSize,
+        boolean enforceEmptyPages
+    ) {
         CosmosQueryRequestOptions queryOptions = new CosmosQueryRequestOptions();
+
+        if (enforceEmptyPages) {
+            ImplementationBridgeHelpers
+                .CosmosQueryRequestOptionsHelper
+                .getCosmosQueryRequestOptionsAccessor()
+                .setAllowEmptyPages(queryOptions, true);
+        }
+
         CosmosEndToEndOperationLatencyPolicyConfig e2ePolicy = ImplementationBridgeHelpers
             .CosmosItemRequestOptionsHelper
             .getCosmosItemRequestOptionsAccessor()
@@ -1608,6 +1625,9 @@ public class FaultInjectionWithAvailabilityStrategyTests extends TestSuiteBase {
 
         BiFunction<String, ItemOperationInvocationParameters, CosmosResponseWrapper> queryReturnsTotalRecordCountWithPageSizeOne = (query, params) ->
             queryReturnsTotalRecordCountCore(query, params, 1);
+
+        BiFunction<String, ItemOperationInvocationParameters, CosmosResponseWrapper> queryReturnsTotalRecordCountWithPageSizeOneAndEmptyPagesEnabled = (query, params) ->
+            queryReturnsTotalRecordCountCore(query, params, 1, true);
 
         BiConsumer<CosmosResponseWrapper, Long>  validateExpectedRecordCount = (response, expectedRecordCount) -> {
             if (expectedRecordCount != null) {
@@ -1990,6 +2010,48 @@ public class FaultInjectionWithAvailabilityStrategyTests extends TestSuiteBase {
                     }
                 ),
                 null,
+                validateEmptyResults,
+                ENOUGH_DOCS_OTHER_PK_TO_HIT_EVERY_PARTITION,
+                NO_OTHER_DOCS_WITH_SAME_PK
+            },
+
+            // Simple cross partition query intended to not return any results. No failures injected.
+            // Empty pages should be returned - so, exactly one page per partition expected -
+            // with exactly one CosmosDiagnostics instance (plus query plan on very first one)
+            new Object[] {
+                "EmptyResults_EnableEmptyPageRetrieval_CrossPartition_AllGood_NoAvailabilityStrategy",
+                Duration.ofSeconds(1),
+                noAvailabilityStrategy,
+                noRegionSwitchHint,
+                crossPartitionEmptyResultQueryGenerator,
+                queryReturnsTotalRecordCountWithPageSizeOneAndEmptyPagesEnabled,
+                noFailureInjection,
+                validateStatusCodeIs200Ok,
+                // empty pages are bubbled up
+                PHYSICAL_PARTITION_COUNT,
+                ArrayUtils.toArray(
+                    validateCtxSingleRegion,
+                    validateCtxQueryPlan,
+                    validateCtxOnlyFeedResponsesExceptQueryPlan,
+                    (ctx) -> {
+                        CosmosDiagnostics[] diagnostics = ctx.getDiagnostics().toArray(new CosmosDiagnostics[0]);
+                        assertThat(diagnostics[1].getClientSideRequestStatistics().size())
+                            .isEqualTo(1);
+                        assertThat(diagnostics[1].getFeedResponseDiagnostics().getQueryMetricsMap().size())
+                            .isEqualTo(1);
+                    }
+                ),
+                ArrayUtils.toArray(
+                    validateCtxSingleRegion,
+                    validateCtxOnlyFeedResponsesExceptQueryPlan,
+                    (ctx) -> {
+                        CosmosDiagnostics[] diagnostics = ctx.getDiagnostics().toArray(new CosmosDiagnostics[0]);
+                        assertThat(diagnostics[0].getClientSideRequestStatistics().size())
+                            .isEqualTo(1);
+                        assertThat(diagnostics[0].getFeedResponseDiagnostics().getQueryMetricsMap().size())
+                            .isEqualTo(1);
+                    }
+                ),
                 validateEmptyResults,
                 ENOUGH_DOCS_OTHER_PK_TO_HIT_EVERY_PARTITION,
                 NO_OTHER_DOCS_WITH_SAME_PK

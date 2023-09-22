@@ -283,7 +283,10 @@ public class ConsistencyTests2 extends ConsistencyTestsBase {
             Mono<Void> task2 = ParallelAsync.forEachAsync(Range.between(0, 1000), 5, index -> {
                 try {
                     CosmosQueryRequestOptions cosmosQueryRequestOptions = new CosmosQueryRequestOptions();
-                    ModelBridgeInternal.setQueryRequestOptionsEmptyPagesAllowed(cosmosQueryRequestOptions, true);
+                    ImplementationBridgeHelpers
+                        .CosmosQueryRequestOptionsHelper
+                        .getCosmosQueryRequestOptionsAccessor()
+                        .setAllowEmptyPages(cosmosQueryRequestOptions, true);
                     FeedResponse<Document> queryResponse = client.queryDocuments(
                         createdCollection.getSelfLink(),
                         "SELECT * FROM c WHERE c.Id = 'foo'",

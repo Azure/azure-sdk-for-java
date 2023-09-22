@@ -55,6 +55,11 @@ import java.util.stream.Collectors;
 public class ParallelDocumentQueryExecutionContext<T>
         extends ParallelDocumentQueryExecutionContextBase<T> {
     private static final Logger logger = LoggerFactory.getLogger(ParallelDocumentQueryExecutionContext.class);
+
+    private static final ImplementationBridgeHelpers.CosmosQueryRequestOptionsHelper.CosmosQueryRequestOptionsAccessor qryOptAccessor =
+        ImplementationBridgeHelpers
+            .CosmosQueryRequestOptionsHelper
+            .getCosmosQueryRequestOptionsAccessor();
     private final static
     ImplementationBridgeHelpers.CosmosDiagnosticsHelper.CosmosDiagnosticsAccessor diagnosticsAccessor =
         ImplementationBridgeHelpers.CosmosDiagnosticsHelper.getCosmosDiagnosticsAccessor();
@@ -333,8 +338,7 @@ public class ParallelDocumentQueryExecutionContext<T>
             // results.
             return source.filter(documentProducerFeedResponse -> {
                 if (documentProducerFeedResponse.pageResult.getResults().isEmpty()
-                        && !ModelBridgeInternal
-                                .getEmptyPagesAllowedFromQueryRequestOptions(this.cosmosQueryRequestOptions)) {
+                        && !qryOptAccessor.getAllowEmptyPages(this.cosmosQueryRequestOptions)) {
                     // filter empty pages and accumulate charge
                     tracker.addCharge(documentProducerFeedResponse.pageResult.getRequestCharge());
                     ConcurrentMap<String, QueryMetrics> currentQueryMetrics =
@@ -349,9 +353,7 @@ public class ParallelDocumentQueryExecutionContext<T>
                         skippedClientSideRequestStatistics.addAll(skippedRequestStatsForPage);
                     }
 
-                    if (ImplementationBridgeHelpers
-                        .CosmosQueryRequestOptionsHelper
-                        .getCosmosQueryRequestOptionsAccessor()
+                    if (qryOptAccessor
                         .isEmptyPageDiagnosticsEnabled(cosmosQueryRequestOptions)) {
 
                         logEmptyPageDiagnostics(

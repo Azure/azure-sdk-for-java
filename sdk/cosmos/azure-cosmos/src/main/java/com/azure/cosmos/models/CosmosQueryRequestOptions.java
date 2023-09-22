@@ -940,6 +940,16 @@ public class CosmosQueryRequestOptions {
                 }
 
                 @Override
+                public void setAllowEmptyPages(CosmosQueryRequestOptions options, boolean emptyPagesAllowed) {
+                    options.setEmptyPagesAllowed(emptyPagesAllowed);
+                }
+
+                @Override
+                public boolean getAllowEmptyPages(CosmosQueryRequestOptions options) {
+                    return options.isEmptyPagesAllowed();
+                }
+
+                @Override
                 public List<String> getExcludeRegions(CosmosQueryRequestOptions options) {
                     return options.getExcludedRegions();
                 }

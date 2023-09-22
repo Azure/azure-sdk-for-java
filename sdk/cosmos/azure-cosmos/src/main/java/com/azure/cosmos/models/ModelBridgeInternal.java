@@ -752,16 +752,6 @@ public final class ModelBridgeInternal {
     }
 
     @Warning(value = INTERNAL_USE_ONLY_WARNING)
-    public static boolean getEmptyPagesAllowedFromQueryRequestOptions(CosmosQueryRequestOptions options) {
-        return options.isEmptyPagesAllowed();
-    }
-
-    @Warning(value = INTERNAL_USE_ONLY_WARNING)
-    public static CosmosQueryRequestOptions setQueryRequestOptionsEmptyPagesAllowed(CosmosQueryRequestOptions options, boolean emptyPageAllowed) {
-        return options.setEmptyPagesAllowed(emptyPageAllowed);
-    }
-
-    @Warning(value = INTERNAL_USE_ONLY_WARNING)
     public static IndexingPolicy createIndexingPolicy(Index[] indexes) {
         return new IndexingPolicy(indexes);
     }

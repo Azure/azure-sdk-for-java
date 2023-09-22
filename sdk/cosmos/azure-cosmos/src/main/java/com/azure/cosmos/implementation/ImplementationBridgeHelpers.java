@@ -258,7 +258,6 @@ public class ImplementationBridgeHelpers {
         }
 
         public interface CosmosQueryRequestOptionsAccessor {
-
             CosmosQueryRequestOptions clone(
                 CosmosQueryRequestOptions toBeCloned,
                 boolean cloneDiagnosticsFactoryResetCallback);
@@ -295,6 +294,10 @@ public class ImplementationBridgeHelpers {
             void setDiagnosticsFactoryResetCallback(
                 CosmosQueryRequestOptions options,
                 Runnable resetCallback);
+
+            void setAllowEmptyPages(CosmosQueryRequestOptions options, boolean emptyPagesAllowed);
+
+            boolean getAllowEmptyPages(CosmosQueryRequestOptions options);
         }
     }
 
