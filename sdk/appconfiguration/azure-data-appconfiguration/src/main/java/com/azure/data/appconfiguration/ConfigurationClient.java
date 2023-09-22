@@ -9,69 +9,23 @@ import com.azure.core.annotation.ServiceMethod;
 import com.azure.core.exception.HttpResponseException;
 import com.azure.core.exception.ResourceModifiedException;
 import com.azure.core.exception.ResourceNotFoundException;
-import com.azure.core.http.HttpResponse;
 import com.azure.core.http.rest.PagedIterable;
-import com.azure.core.http.rest.PagedResponse;
 import com.azure.core.http.rest.Response;
-import com.azure.core.http.rest.ResponseBase;
-import com.azure.core.http.rest.SimpleResponse;
 import com.azure.core.util.Context;
-import com.azure.core.util.logging.ClientLogger;
-import com.azure.core.util.polling.SyncPoller;
-import com.azure.data.appconfiguration.implementation.AzureAppConfigurationImpl;
-import com.azure.data.appconfiguration.implementation.CreateSnapshotUtilClient;
+import com.azure.data.appconfiguration.implementation.ConfigurationClientImpl;
 import com.azure.data.appconfiguration.implementation.SyncTokenPolicy;
-import com.azure.data.appconfiguration.implementation.models.DeleteKeyValueHeaders;
-import com.azure.data.appconfiguration.implementation.models.GetKeyValueHeaders;
-import com.azure.data.appconfiguration.implementation.models.GetSnapshotHeaders;
-import com.azure.data.appconfiguration.implementation.models.KeyValue;
-import com.azure.data.appconfiguration.implementation.models.PutKeyValueHeaders;
 import com.azure.data.appconfiguration.models.ConfigurationSetting;
-import com.azure.data.appconfiguration.models.ConfigurationSettingsSnapshot;
-import com.azure.data.appconfiguration.models.CreateSnapshotOperationDetail;
 import com.azure.data.appconfiguration.models.FeatureFlagConfigurationSetting;
 import com.azure.data.appconfiguration.models.SecretReferenceConfigurationSetting;
-import com.azure.data.appconfiguration.models.SettingFields;
 import com.azure.data.appconfiguration.models.SettingSelector;
-import com.azure.data.appconfiguration.models.SnapshotFields;
-import com.azure.data.appconfiguration.models.SnapshotSelector;
-import com.azure.data.appconfiguration.models.SnapshotStatus;
 
 import java.time.OffsetDateTime;
-import java.util.List;
-
-import static com.azure.data.appconfiguration.implementation.ConfigurationSettingDeserializationHelper.toConfigurationSettingWithPagedResponse;
-import static com.azure.data.appconfiguration.implementation.ConfigurationSettingDeserializationHelper.toConfigurationSettingWithResponse;
-import static com.azure.data.appconfiguration.implementation.Utility.ETAG_ANY;
-import static com.azure.data.appconfiguration.implementation.Utility.addTracingNamespace;
-import static com.azure.data.appconfiguration.implementation.Utility.enableSyncRestProxy;
-import static com.azure.data.appconfiguration.implementation.Utility.getETag;
-import static com.azure.data.appconfiguration.implementation.Utility.toKeyValue;
-import static com.azure.data.appconfiguration.implementation.Utility.toSettingFieldsList;
-import static com.azure.data.appconfiguration.implementation.Utility.updateSnapshotSync;
-import static com.azure.data.appconfiguration.implementation.Utility.validateSetting;
 
 /**
- * <p>This class provides a client that contains all the operations for {@link ConfigurationSetting ConfigurationSettings},
- * {@link FeatureFlagConfigurationSetting FeatureFlagConfigurationSetting} or
- * {@link SecretReferenceConfigurationSetting SecretReferenceConfigurationSetting} in Azure App Configuration Store.
- * Operations allowed by the client are adding, retrieving, deleting, set read-only status ConfigurationSettings, and
- * listing settings or revision of a setting based on a {@link SettingSelector filter}.</p>
- *
- * <p>Additionally, this class allows to add an external synchronization token to ensure service requests receive
- * up-to-date values. Use the {@link #updateSyncToken(String) updateSyncToken} method.</p>
- *
- * <h2>Getting Started</h2>
- *
- * <p>In order to interact with the App Configuration service you'll need to create an instance of the
- * {@link com.azure.data.appconfiguration.ConfigurationClient} class. To make this possible you'll need the connection
- * string of the configuration store. Alternatively, you can use AAD authentication via
- * <a href="https://learn.microsoft.com/java/api/overview/azure/identity-readme?view=azure-java-stable"> Azure Identity</a>
- * to connect to the service.</p>
- * <ol>
- *   <li>Connection string, see {@link com.azure.data.appconfiguration.ConfigurationClientBuilder#connectionString(java.lang.String) connectionString}.</li>
- *   <li>Azure Active Directory, see {@link com.azure.data.appconfiguration.ConfigurationClientBuilder#credential(com.azure.core.credential.TokenCredential) TokenCredential}.</li>
- * </ol>
+ * This class provides a client that contains all the operations for {@link ConfigurationSetting ConfigurationSettings}
+ * in Azure App Configuration Store. Operations allowed by the client are adding, retrieving, deleting, set read-only
+ * status ConfigurationSettings, and listing settings or revision of a setting based on a
+ * {@link SettingSelector filter}.
  *
  * <p><strong>Instantiating a synchronous Configuration Client</strong></p>
  *
@@ -85,228 +39,25 @@ import static com.azure.data.appconfiguration.implementation.Utility.validateSet
  *
  * <p>View {@link ConfigurationClientBuilder this} for additional ways to construct the client.</p>
  *
- * <p>App Configuration support multiple operations, such as create, update, retrieve, and delete a configuration setting.
- * See methods in client level class below to explore all capabilities that library provides.</p>
- *
- * <p>For more configuration setting types, see
- * {@link com.azure.data.appconfiguration.models.FeatureFlagConfigurationSetting} and
- * {@link com.azure.data.appconfiguration.models.SecretReferenceConfigurationSetting}.</p>
- *
- * <br/>
- *
- * <hr/>
- *
- * <h2>Add Configuration Setting</h2>
- *
- * <p>The {@link com.azure.data.appconfiguration.ConfigurationClient#addConfigurationSetting(ConfigurationSetting)}
- * method can be used to add a configuration setting in the Azure App Configuration.</p>
- *
- * <p>The sample below shows how to add a setting with the key "prodDBConnection", label "westUS" and value
- * "db_connection" using {@link com.azure.data.appconfiguration.ConfigurationClient}.</p>
- *
- * <!-- src_embed com.azure.data.appconfiguration.ConfigurationClient.addConfigurationSetting#ConfigurationSetting -->
- * <pre>
- * ConfigurationSetting setting = configurationClient.addConfigurationSetting&#40;new ConfigurationSetting&#40;&#41;
- *     .setKey&#40;&quot;prodDBConnection&quot;&#41;
- *     .setLabel&#40;&quot;westUS&quot;&#41;
- *     .setValue&#40;&quot;db_connection&quot;&#41;&#41;;
- * System.out.printf&#40;&quot;Key: %s, Label: %s, Value: %s&quot;, setting.getKey&#40;&#41;, setting.getLabel&#40;&#41;, setting.getValue&#40;&#41;&#41;;
- * </pre>
- * <!-- end com.azure.data.appconfiguration.ConfigurationClient.addConfigurationSetting#ConfigurationSetting -->
- *
- * <p><strong>Note:</strong> For asynchronous sample, refer to {@link com.azure.data.appconfiguration.ConfigurationAsyncClient}.</p>
- *
- * <br/>
- *
- * <hr/>
- *
- * <h2>Update Configuration Setting</h2>
- *
- * <p>The {@link com.azure.data.appconfiguration.ConfigurationClient#setConfigurationSetting(ConfigurationSetting)}
- * method can be used to update a configuration setting in the Azure App Configuration.</p>
- *
- * <p>The sample below shows how to update setting's value "db_connection" to "updated_db_connection"</p>
- *
- * <!-- src_embed com.azure.data.appconfiguration.ConfigurationClient.setConfigurationSetting#ConfigurationSetting -->
- * <pre>
- * ConfigurationSetting setting = configurationClient.setConfigurationSetting&#40;new ConfigurationSetting&#40;&#41;
- *     .setKey&#40;&quot;prodDBConnection&quot;&#41;
- *     .setLabel&#40;&quot;westUS&quot;&#41;
- *     .setValue&#40;&quot;db_connection&quot;&#41;&#41;;
- * System.out.printf&#40;&quot;Key: %s, Label: %s, Value: %s&quot;, setting.getKey&#40;&#41;, setting.getLabel&#40;&#41;, setting.getValue&#40;&#41;&#41;;
- *
- * &#47;&#47; Update the value of the setting to &quot;updated_db_connection&quot;.
- * setting = configurationClient.setConfigurationSetting&#40;new ConfigurationSetting&#40;&#41;
- *     .setKey&#40;&quot;prodDBConnection&quot;&#41;
- *     .setLabel&#40;&quot;westUS&quot;&#41;
- *     .setValue&#40;&quot;updated_db_connection&quot;&#41;&#41;;
- * System.out.printf&#40;&quot;Key: %s, Label: %s, Value: %s&quot;, setting.getKey&#40;&#41;, setting.getLabel&#40;&#41;, setting.getValue&#40;&#41;&#41;;
- * </pre>
- * <!-- end com.azure.data.appconfiguration.ConfigurationClient.setConfigurationSetting#ConfigurationSetting -->
- *
- * <p><strong>Note:</strong> For asynchronous sample, refer to {@link com.azure.data.appconfiguration.ConfigurationAsyncClient}.</p>
- *
- * <br/>
- *
- * <hr/>
- *
- * <h2>Get Configuration Setting</h2>
- *
- * <p>The {@link com.azure.data.appconfiguration.ConfigurationClient#getConfigurationSetting(ConfigurationSetting)}
- * method can be used to get a configuration setting in the Azure App Configuration.</p>
- *
- * <p>The sample below shows how to retrieve the setting with the key "prodDBConnection".</p>
- *
- * <!-- src_embed com.azure.data.applicationconfig.configurationclient.getConfigurationSetting#ConfigurationSetting -->
- * <pre>
- * ConfigurationSetting setting = configurationClient.getConfigurationSetting&#40;new ConfigurationSetting&#40;&#41;
- *     .setKey&#40;&quot;prodDBConnection&quot;&#41;
- *     .setLabel&#40;&quot;westUS&quot;&#41;&#41;;
- * System.out.printf&#40;&quot;Key: %s, Value: %s&quot;, setting.getKey&#40;&#41;, setting.getValue&#40;&#41;&#41;;
- * </pre>
- * <!-- end com.azure.data.applicationconfig.configurationclient.getConfigurationSetting#ConfigurationSetting -->
- *
- * <p><strong>Note:</strong> For asynchronous sample, refer to {@link com.azure.data.appconfiguration.ConfigurationAsyncClient}.</p>
- *
- * <br/>
- *
- * <hr/>
- *
- * <h2>Delete Configuration Setting</h2>
- *
- * <p>The {@link com.azure.data.appconfiguration.ConfigurationClient#deleteConfigurationSetting(ConfigurationSetting)}
- * method can be used to delete a configuration setting in the Azure App Configuration.</p>
- *
- * <p>The sample below shows how to delete the setting with the key "prodDBConnection".</p>
- *
- * <!-- src_embed com.azure.data.applicationconfig.configurationclient.deleteConfigurationSetting#ConfigurationSetting -->
- * <pre>
- * ConfigurationSetting setting = configurationClient.deleteConfigurationSetting&#40;new ConfigurationSetting&#40;&#41;
- *     .setKey&#40;&quot;prodDBConnection&quot;&#41;
- *     .setLabel&#40;&quot;westUS&quot;&#41;&#41;;
- * System.out.printf&#40;&quot;Key: %s, Value: %s&quot;, setting.getKey&#40;&#41;, setting.getValue&#40;&#41;&#41;;
- * </pre>
- * <!-- end com.azure.data.applicationconfig.configurationclient.deleteConfigurationSetting#ConfigurationSetting -->
- *
- * <p><strong>Note:</strong> For asynchronous sample, refer to {@link com.azure.data.appconfiguration.ConfigurationAsyncClient}.</p>
- *
- * <br/>
- *
- * <hr/>
- *
- * <h2>Set the Configuration Setting to read-only</h2>
- *
- * <p>The {@link com.azure.data.appconfiguration.ConfigurationClient#setReadOnly(ConfigurationSetting, boolean)}
- * method can be used to conditionally set a configuration setting to read-only in the Azure App Configuration.</p>
- *
- * <p>The sample below shows how to conditionally set the setting to read-only with the key "prodDBConnection".</p>
- *
- * <!-- src_embed com.azure.data.applicationconfig.configurationclient.setReadOnly#ConfigurationSetting-boolean -->
- * <pre>
- * ConfigurationSetting setting = configurationClient.setReadOnly&#40;new ConfigurationSetting&#40;&#41;
- *     .setKey&#40;&quot;prodDBConnection&quot;&#41;
- *     .setLabel&#40;&quot;westUS&quot;&#41;,
- *     true&#41;;
- * System.out.printf&#40;&quot;Key: %s, Value: %s&quot;, setting.getKey&#40;&#41;, setting.getValue&#40;&#41;&#41;;
- * </pre>
- * <!-- end com.azure.data.applicationconfig.configurationclient.setReadOnly#ConfigurationSetting-boolean -->
- *
- * <p><strong>Note:</strong> For asynchronous sample, refer to {@link com.azure.data.appconfiguration.ConfigurationAsyncClient}.</p>
- *
- * <br/>
- *
- * <hr/>
- *
- * <h2>Clear read-only of the Configuration Setting</h2>
- *
- * <p>The {@link com.azure.data.appconfiguration.ConfigurationClient#setReadOnly(ConfigurationSetting, boolean)}
- * method can be used to conditionally clear read-only of the setting in the Azure App Configuration.</p>
- *
- * <p>The sample below shows how to conditionally clear read-only of the setting with the key "prodDBConnection".</p>
- *
- * <!-- src_embed com.azure.data.applicationconfig.configurationclient.setReadOnly#ConfigurationSetting-boolean-clearReadOnly -->
- * <pre>
- * ConfigurationSetting setting = configurationClient.setReadOnly&#40;new ConfigurationSetting&#40;&#41;
- *     .setKey&#40;&quot;prodDBConnection&quot;&#41;
- *     .setLabel&#40;&quot;westUS&quot;&#41;,
- *     false&#41;;
- * System.out.printf&#40;&quot;Key: %s, Value: %s&quot;, setting.getKey&#40;&#41;, setting.getValue&#40;&#41;&#41;;
- * </pre>
- * <!-- end com.azure.data.applicationconfig.configurationclient.setReadOnly#ConfigurationSetting-boolean-clearReadOnly -->
- *
- * <p><strong>Note:</strong> For asynchronous sample, refer to {@link com.azure.data.appconfiguration.ConfigurationAsyncClient}.</p>
- *
- * <br/>
- *
- * <hr/>
- *
- * <h2>List Configuration Settings</h2>
- *
- * <p>The {@link com.azure.data.appconfiguration.ConfigurationClient#listConfigurationSettings(SettingSelector)}
- * method can be used to list configuration settings in the Azure App Configuration.</p>
- *
- * <p>The sample below shows how to list all settings that use the key "prodDBConnection".</p>
- *
- * <!-- src_embed com.azure.data.applicationconfig.configurationclient.listConfigurationSettings#settingSelector -->
- * <pre>
- * SettingSelector settingSelector = new SettingSelector&#40;&#41;.setKeyFilter&#40;&quot;prodDBConnection&quot;&#41;;
- * configurationClient.listConfigurationSettings&#40;settingSelector&#41;.forEach&#40;setting -&gt; &#123;
- *     System.out.printf&#40;&quot;Key: %s, Value: %s&quot;, setting.getKey&#40;&#41;, setting.getValue&#40;&#41;&#41;;
- * &#125;&#41;;
- * </pre>
- * <!-- end com.azure.data.applicationconfig.configurationclient.listConfigurationSettings#settingSelector -->
- *
- * <p><strong>Note:</strong> For asynchronous sample, refer to {@link com.azure.data.appconfiguration.ConfigurationAsyncClient}.</p>
- *
- * <br/>
- *
- * <hr/>
- *
- * <h2>List revisions of a Configuration Setting</h2>
- *
- * <p>The {@link com.azure.data.appconfiguration.ConfigurationClient#listRevisions(SettingSelector)}
- * method can be used to list all revisions of a configuration setting in the Azure App Configuration.</p>
- *
- * <p>The sample below shows how to list all revision of a setting that use the key "prodDBConnection".</p>
- * <!-- src_embed com.azure.data.applicationconfig.configurationclient.listRevisions#settingSelector -->
- * <pre>
- * SettingSelector settingSelector = new SettingSelector&#40;&#41;.setKeyFilter&#40;&quot;prodDBConnection&quot;&#41;;
- * configurationClient.listRevisions&#40;settingSelector&#41;.streamByPage&#40;&#41;.forEach&#40;resp -&gt; &#123;
- *     System.out.printf&#40;&quot;Response headers are %s. Url %s  and status code %d %n&quot;, resp.getHeaders&#40;&#41;,
- *         resp.getRequest&#40;&#41;.getUrl&#40;&#41;, resp.getStatusCode&#40;&#41;&#41;;
- *     resp.getItems&#40;&#41;.forEach&#40;value -&gt; &#123;
- *         System.out.printf&#40;&quot;Response value is %d %n&quot;, value&#41;;
- *     &#125;&#41;;
- * &#125;&#41;;
- * </pre>
- * <!-- end com.azure.data.applicationconfig.configurationclient.listRevisions#settingSelector -->
- *
- * <p><strong>Note:</strong> For asynchronous sample, refer to {@link com.azure.data.appconfiguration.ConfigurationAsyncClient}.</p>
- *
  * @see ConfigurationClientBuilder
- * @see ConfigurationSetting
  */
 @ServiceClient(builder = ConfigurationClientBuilder.class,
-    serviceInterfaces = AzureAppConfigurationImpl.AzureAppConfigurationService.class)
+    serviceInterfaces = ConfigurationClientImpl.ConfigurationService.class)
 public final class ConfigurationClient {
-    private static final ClientLogger LOGGER = new ClientLogger(ConfigurationClient.class);
-    private final AzureAppConfigurationImpl serviceClient;
+    private final ConfigurationClientImpl serviceClient;
     private final SyncTokenPolicy syncTokenPolicy;
-
-    final CreateSnapshotUtilClient createSnapshotUtilClient;
 
     /**
      * Creates a ConfigurationClient that sends requests to the configuration service at {@code serviceEndpoint}. Each
      * service call goes through the {@code pipeline}.
      *
-     * @param serviceClient The {@link AzureAppConfigurationImpl} that the client routes its request through.
+     * @param serviceClient The {@link ConfigurationClientImpl} that the client routes its request through.
      * @param syncTokenPolicy {@link SyncTokenPolicy} to be used to update the external synchronization token to ensure
      * service requests receive up-to-date values.
      */
-    ConfigurationClient(AzureAppConfigurationImpl serviceClient, SyncTokenPolicy syncTokenPolicy) {
+    ConfigurationClient(ConfigurationClientImpl serviceClient, SyncTokenPolicy syncTokenPolicy) {
         this.serviceClient = serviceClient;
         this.syncTokenPolicy = syncTokenPolicy;
-        this.createSnapshotUtilClient = new CreateSnapshotUtilClient(serviceClient);
     }
 
     /**
@@ -361,10 +112,8 @@ public final class ConfigurationClient {
      *
      * <!-- src_embed com.azure.data.appconfiguration.ConfigurationClient.addConfigurationSetting#ConfigurationSetting -->
      * <pre>
-     * ConfigurationSetting setting = configurationClient.addConfigurationSetting&#40;new ConfigurationSetting&#40;&#41;
-     *     .setKey&#40;&quot;prodDBConnection&quot;&#41;
-     *     .setLabel&#40;&quot;westUS&quot;&#41;
-     *     .setValue&#40;&quot;db_connection&quot;&#41;&#41;;
+     * ConfigurationSetting setting = configurationClient.addConfigurationSetting&#40;
+     *     new ConfigurationSetting&#40;&#41;.setKey&#40;&quot;prodDBConnection&quot;&#41;.setLabel&#40;&quot;westUS&quot;&#41;.setValue&#40;&quot;db_connection&quot;&#41;&#41;;
      * System.out.printf&#40;&quot;Key: %s, Label: %s, Value: %s&quot;, setting.getKey&#40;&#41;, setting.getLabel&#40;&#41;, setting.getValue&#40;&#41;&#41;;
      * </pre>
      * <!-- end com.azure.data.appconfiguration.ConfigurationClient.addConfigurationSetting#ConfigurationSetting -->
@@ -398,12 +147,11 @@ public final class ConfigurationClient {
      * <!-- src_embed com.azure.data.appconfiguration.ConfigurationClient.addConfigurationSettingWithResponse#ConfigurationSetting-Context -->
      * <pre>
      * Response&lt;ConfigurationSetting&gt; responseResultSetting = configurationClient
-     *     .addConfigurationSettingWithResponse&#40;new ConfigurationSetting&#40;&#41;
-     *             .setKey&#40;&quot;prodDBConnection&quot;&#41;
-     *             .setLabel&#40;&quot;westUS&quot;&#41;
-     *             .setValue&#40;&quot;db_connection&quot;&#41;,
+     *     .addConfigurationSettingWithResponse&#40;
+     *         new ConfigurationSetting&#40;&#41;
+     *             .setKey&#40;&quot;prodDBConnection&quot;&#41;.setLabel&#40;&quot;westUS&quot;&#41;.setValue&#40;&quot;db_connection&quot;&#41;,
      *         new Context&#40;key1, value1&#41;&#41;;
-     * ConfigurationSetting resultSetting = responseResultSetting.getValue&#40;&#41;;
+     * final ConfigurationSetting resultSetting = responseResultSetting.getValue&#40;&#41;;
      * System.out.printf&#40;&quot;Key: %s, Label: %s, Value: %s&quot;, resultSetting.getKey&#40;&#41;, resultSetting.getLabel&#40;&#41;,
      *     resultSetting.getValue&#40;&#41;&#41;;
      * </pre>
@@ -421,15 +169,8 @@ public final class ConfigurationClient {
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Response<ConfigurationSetting> addConfigurationSettingWithResponse(ConfigurationSetting setting,
-        Context context) {
-        validateSetting(setting);
-        // This service method call is similar to setConfigurationSetting except we're passing If-Not-Match = "*".
-        // If the service finds any existing configuration settings, then its e-tag will match and the service will
-        // return an error.
-        final ResponseBase<PutKeyValueHeaders, KeyValue> response =
-            serviceClient.putKeyValueWithResponse(setting.getKey(), setting.getLabel(), null, ETAG_ANY,
-                toKeyValue(setting), enableSyncRestProxy(addTracingNamespace(context)));
-        return toConfigurationSettingWithResponse(response);
+                                                                              Context context) {
+        return serviceClient.addConfigurationSettingWithResponse(setting, context);
     }
 
     /**
@@ -447,7 +188,8 @@ public final class ConfigurationClient {
      * System.out.printf&#40;&quot;Key: %s, Label: %s, Value: %s&quot;, result.getKey&#40;&#41;, result.getLabel&#40;&#41;, result.getValue&#40;&#41;&#41;;
      *
      * &#47;&#47; Update the value of the setting to &quot;updated_db_connection&quot;.
-     * result = configurationClient.setConfigurationSetting&#40;&quot;prodDBConnection&quot;, &quot;westUS&quot;, &quot;updated_db_connection&quot;&#41;;
+     * result = configurationClient.setConfigurationSetting&#40;
+     *     &quot;prodDBConnection&quot;, &quot;westUS&quot;, &quot;updated_db_connection&quot;&#41;;
      * System.out.printf&#40;&quot;Key: %s, Label: %s, Value: %s&quot;, result.getKey&#40;&#41;, result.getLabel&#40;&#41;, result.getValue&#40;&#41;&#41;;
      * </pre>
      * <!-- end com.azure.data.appconfiguration.ConfigurationClient.setConfigurationSetting#String-String-String -->
@@ -481,17 +223,13 @@ public final class ConfigurationClient {
      *
      * <!-- src_embed com.azure.data.appconfiguration.ConfigurationClient.setConfigurationSetting#ConfigurationSetting -->
      * <pre>
-     * ConfigurationSetting setting = configurationClient.setConfigurationSetting&#40;new ConfigurationSetting&#40;&#41;
-     *     .setKey&#40;&quot;prodDBConnection&quot;&#41;
-     *     .setLabel&#40;&quot;westUS&quot;&#41;
-     *     .setValue&#40;&quot;db_connection&quot;&#41;&#41;;
+     * ConfigurationSetting setting = configurationClient.setConfigurationSetting&#40;
+     *     new ConfigurationSetting&#40;&#41;.setKey&#40;&quot;prodDBConnection&quot;&#41;.setLabel&#40;&quot;westUS&quot;&#41;.setValue&#40;&quot;db_connection&quot;&#41;&#41;;
      * System.out.printf&#40;&quot;Key: %s, Label: %s, Value: %s&quot;, setting.getKey&#40;&#41;, setting.getLabel&#40;&#41;, setting.getValue&#40;&#41;&#41;;
      *
      * &#47;&#47; Update the value of the setting to &quot;updated_db_connection&quot;.
-     * setting = configurationClient.setConfigurationSetting&#40;new ConfigurationSetting&#40;&#41;
-     *     .setKey&#40;&quot;prodDBConnection&quot;&#41;
-     *     .setLabel&#40;&quot;westUS&quot;&#41;
-     *     .setValue&#40;&quot;updated_db_connection&quot;&#41;&#41;;
+     * setting = configurationClient.setConfigurationSetting&#40;
+     *     new ConfigurationSetting&#40;&#41;.setKey&#40;&quot;prodDBConnection&quot;&#41;.setLabel&#40;&quot;westUS&quot;&#41;.setValue&#40;&quot;updated_db_connection&quot;&#41;&#41;;
      * System.out.printf&#40;&quot;Key: %s, Label: %s, Value: %s&quot;, setting.getKey&#40;&#41;, setting.getLabel&#40;&#41;, setting.getValue&#40;&#41;&#41;;
      * </pre>
      * <!-- end com.azure.data.appconfiguration.ConfigurationClient.setConfigurationSetting#ConfigurationSetting -->
@@ -533,23 +271,18 @@ public final class ConfigurationClient {
      * <pre>
      * &#47;&#47; Add a setting with the key &quot;prodDBConnection&quot;, label &quot;westUS&quot;, and value &quot;db_connection&quot;
      * Response&lt;ConfigurationSetting&gt; responseSetting = configurationClient.setConfigurationSettingWithResponse&#40;
-     *     new ConfigurationSetting&#40;&#41;
-     *         .setKey&#40;&quot;prodDBConnection&quot;&#41;
-     *         .setLabel&#40;&quot;westUS&quot;&#41;
-     *         .setValue&#40;&quot;db_connection&quot;&#41;,
+     *     new ConfigurationSetting&#40;&#41;.setKey&#40;&quot;prodDBConnection&quot;&#41;.setLabel&#40;&quot;westUS&quot;&#41;.setValue&#40;&quot;db_connection&quot;&#41;,
      *     false,
      *     new Context&#40;key2, value2&#41;&#41;;
-     * ConfigurationSetting initSetting = responseSetting.getValue&#40;&#41;;
+     * final ConfigurationSetting initSetting = responseSetting.getValue&#40;&#41;;
      * System.out.printf&#40;&quot;Key: %s, Value: %s&quot;, initSetting.getKey&#40;&#41;, initSetting.getValue&#40;&#41;&#41;;
      *
      * &#47;&#47; Update the value of the setting to &quot;updated_db_connection&quot;.
-     * responseSetting = configurationClient.setConfigurationSettingWithResponse&#40;new ConfigurationSetting&#40;&#41;
-     *         .setKey&#40;&quot;prodDBConnection&quot;&#41;
-     *         .setLabel&#40;&quot;westUS&quot;&#41;
-     *         .setValue&#40;&quot;updated_db_connection&quot;&#41;,
+     * responseSetting = configurationClient.setConfigurationSettingWithResponse&#40;
+     *     new ConfigurationSetting&#40;&#41;.setKey&#40;&quot;prodDBConnection&quot;&#41;.setLabel&#40;&quot;westUS&quot;&#41;.setValue&#40;&quot;updated_db_connection&quot;&#41;,
      *     false,
      *     new Context&#40;key2, value2&#41;&#41;;
-     * ConfigurationSetting updatedSetting = responseSetting.getValue&#40;&#41;;
+     * final ConfigurationSetting updatedSetting = responseSetting.getValue&#40;&#41;;
      * System.out.printf&#40;&quot;Key: %s, Value: %s&quot;, updatedSetting.getKey&#40;&#41;, updatedSetting.getValue&#40;&#41;&#41;;
      * </pre>
      * <!-- end com.azure.data.appconfiguration.ConfigurationClient.setConfigurationSettingWithResponse#ConfigurationSetting-boolean-Context -->
@@ -570,13 +303,9 @@ public final class ConfigurationClient {
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Response<ConfigurationSetting> setConfigurationSettingWithResponse(ConfigurationSetting setting,
-        boolean ifUnchanged, Context context) {
-        validateSetting(setting);
-        final ResponseBase<PutKeyValueHeaders, KeyValue> response =
-            serviceClient.putKeyValueWithResponse(setting.getKey(), setting.getLabel(),
-                getETag(ifUnchanged, setting), null, toKeyValue(setting),
-                enableSyncRestProxy(addTracingNamespace(context)));
-        return toConfigurationSettingWithResponse(response);
+                                                                              boolean ifUnchanged,
+                                                                              Context context) {
+        return serviceClient.setConfigurationSettingWithResponse(setting, ifUnchanged, context);
     }
 
     /**
@@ -588,7 +317,8 @@ public final class ConfigurationClient {
      *
      * <!-- src_embed com.azure.data.applicationconfig.configurationclient.getConfigurationSetting#string-string -->
      * <pre>
-     * ConfigurationSetting resultNoDateTime = configurationClient.getConfigurationSetting&#40;&quot;prodDBConnection&quot;, &quot;westUS&quot;&#41;;
+     * ConfigurationSetting resultNoDateTime =
+     *     configurationClient.getConfigurationSetting&#40;&quot;prodDBConnection&quot;, null&#41;;
      * System.out.printf&#40;&quot;Key: %s, Value: %s&quot;, resultNoDateTime.getKey&#40;&#41;, resultNoDateTime.getValue&#40;&#41;&#41;;
      * </pre>
      * <!-- end com.azure.data.applicationconfig.configurationclient.getConfigurationSetting#string-string -->
@@ -617,7 +347,7 @@ public final class ConfigurationClient {
      * <!-- src_embed com.azure.data.applicationconfig.configurationclient.getConfigurationSetting#string-string-OffsetDateTime -->
      * <pre>
      * ConfigurationSetting result =
-     *     configurationClient.getConfigurationSetting&#40;&quot;prodDBConnection&quot;, &quot;westUS&quot;, null&#41;;
+     *     configurationClient.getConfigurationSetting&#40;&quot;prodDBConnection&quot;, null, null&#41;;
      * System.out.printf&#40;&quot;Key: %s, Value: %s&quot;, result.getKey&#40;&#41;, result.getValue&#40;&#41;&#41;;
      * </pre>
      * <!-- end com.azure.data.applicationconfig.configurationclient.getConfigurationSetting#string-string-OffsetDateTime -->
@@ -634,8 +364,9 @@ public final class ConfigurationClient {
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public ConfigurationSetting getConfigurationSetting(String key, String label, OffsetDateTime acceptDateTime) {
-        return getConfigurationSettingWithResponse(new ConfigurationSetting().setKey(key).setLabel(label),
-            acceptDateTime, false, Context.NONE).getValue();
+        return serviceClient.getConfigurationSettingWithResponse(
+            new ConfigurationSetting().setKey(key).setLabel(label), acceptDateTime, false, Context.NONE)
+            .getValue();
     }
 
     /**
@@ -651,9 +382,8 @@ public final class ConfigurationClient {
      *
      * <!-- src_embed com.azure.data.applicationconfig.configurationclient.getConfigurationSetting#ConfigurationSetting -->
      * <pre>
-     * ConfigurationSetting setting = configurationClient.getConfigurationSetting&#40;new ConfigurationSetting&#40;&#41;
-     *     .setKey&#40;&quot;prodDBConnection&quot;&#41;
-     *     .setLabel&#40;&quot;westUS&quot;&#41;&#41;;
+     * ConfigurationSetting setting = configurationClient.getConfigurationSetting&#40;
+     *     new ConfigurationSetting&#40;&#41;.setKey&#40;&quot;prodDBConnection&quot;&#41;&#41;;
      * System.out.printf&#40;&quot;Key: %s, Value: %s&quot;, setting.getKey&#40;&#41;, setting.getValue&#40;&#41;&#41;;
      * </pre>
      * <!-- end com.azure.data.applicationconfig.configurationclient.getConfigurationSetting#ConfigurationSetting -->
@@ -688,12 +418,8 @@ public final class ConfigurationClient {
      * <pre>
      * &#47;&#47; Retrieve the setting with the key-label &quot;prodDBConnection&quot;-&quot;westUS&quot;.
      * Response&lt;ConfigurationSetting&gt; responseResultSetting = configurationClient.getConfigurationSettingWithResponse&#40;
-     *     new ConfigurationSetting&#40;&#41;
-     *         .setKey&#40;&quot;prodDBConnection&quot;&#41;
-     *         .setLabel&#40;&quot;westUS&quot;&#41;,
-     *     null,
-     *     false,
-     *     new Context&#40;key1, value1&#41;&#41;;
+     *     new ConfigurationSetting&#40;&#41;.setKey&#40;&quot;prodDBConnection&quot;&#41;.setLabel&#40;&quot;westUS&quot;&#41;,
+     *     null, false, new Context&#40;key1, value1&#41;&#41;;
      * System.out.printf&#40;&quot;Key: %s, Value: %s&quot;, responseResultSetting.getValue&#40;&#41;.getKey&#40;&#41;,
      *     responseResultSetting.getValue&#40;&#41;.getValue&#40;&#41;&#41;;
      * </pre>
@@ -716,21 +442,7 @@ public final class ConfigurationClient {
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Response<ConfigurationSetting> getConfigurationSettingWithResponse(ConfigurationSetting setting,
         OffsetDateTime acceptDateTime, boolean ifChanged, Context context) {
-        validateSetting(setting);
-        try {
-            final ResponseBase<GetKeyValueHeaders, KeyValue> response =
-                serviceClient.getKeyValueWithResponse(setting.getKey(), setting.getLabel(),
-                    acceptDateTime == null ? null : acceptDateTime.toString(), null,
-                    getETag(ifChanged, setting), null, enableSyncRestProxy(addTracingNamespace(context)));
-            return toConfigurationSettingWithResponse(response);
-        } catch (HttpResponseException ex) {
-            final HttpResponse httpResponse = ex.getResponse();
-            if (httpResponse.getStatusCode() == 304) {
-                return new ResponseBase<Void, ConfigurationSetting>(httpResponse.getRequest(),
-                    httpResponse.getStatusCode(), httpResponse.getHeaders(), null, null);
-            }
-            throw LOGGER.logExceptionAsError(ex);
-        }
+        return serviceClient.getConfigurationSettingWithResponse(setting, acceptDateTime, ifChanged, context);
     }
 
     /**
@@ -742,7 +454,7 @@ public final class ConfigurationClient {
      *
      * <!-- src_embed com.azure.data.applicationconfig.configurationclient.deleteConfigurationSetting#string-string -->
      * <pre>
-     * ConfigurationSetting result = configurationClient.deleteConfigurationSetting&#40;&quot;prodDBConnection&quot;, &quot;westUS&quot;&#41;;
+     * ConfigurationSetting result = configurationClient.deleteConfigurationSetting&#40;&quot;prodDBConnection&quot;, null&#41;;
      * System.out.printf&#40;&quot;Key: %s, Value: %s&quot;, result.getKey&#40;&#41;, result.getValue&#40;&#41;&#41;;
      * </pre>
      * <!-- end com.azure.data.applicationconfig.configurationclient.deleteConfigurationSetting#string-string -->
@@ -774,9 +486,8 @@ public final class ConfigurationClient {
      *
      * <!-- src_embed com.azure.data.applicationconfig.configurationclient.deleteConfigurationSetting#ConfigurationSetting -->
      * <pre>
-     * ConfigurationSetting setting = configurationClient.deleteConfigurationSetting&#40;new ConfigurationSetting&#40;&#41;
-     *     .setKey&#40;&quot;prodDBConnection&quot;&#41;
-     *     .setLabel&#40;&quot;westUS&quot;&#41;&#41;;
+     * ConfigurationSetting setting = configurationClient.deleteConfigurationSetting&#40;
+     *     new ConfigurationSetting&#40;&#41;.setKey&#40;&quot;prodDBConnection&quot;&#41;&#41;;
      * System.out.printf&#40;&quot;Key: %s, Value: %s&quot;, setting.getKey&#40;&#41;, setting.getValue&#40;&#41;&#41;;
      * </pre>
      * <!-- end com.azure.data.applicationconfig.configurationclient.deleteConfigurationSetting#ConfigurationSetting -->
@@ -816,11 +527,8 @@ public final class ConfigurationClient {
      * <!-- src_embed com.azure.data.applicationconfig.configurationclient.deleteConfigurationSettingWithResponse#ConfigurationSetting-boolean-Context -->
      * <pre>
      * Response&lt;ConfigurationSetting&gt; responseSetting = configurationClient.deleteConfigurationSettingWithResponse&#40;
-     *     new ConfigurationSetting&#40;&#41;
-     *         .setKey&#40;&quot;prodDBConnection&quot;&#41;
-     *         .setLabel&#40;&quot;westUS&quot;&#41;,
-     *     false,
-     *     new Context&#40;key2, value2&#41;&#41;;
+     *     new ConfigurationSetting&#40;&#41;.setKey&#40;&quot;prodDBConnection&quot;&#41;.setLabel&#40;&quot;westUS&quot;&#41;,
+     *     false, new Context&#40;key2, value2&#41;&#41;;
      * System.out.printf&#40;
      *     &quot;Key: %s, Value: %s&quot;, responseSetting.getValue&#40;&#41;.getKey&#40;&#41;, responseSetting.getValue&#40;&#41;.getValue&#40;&#41;&#41;;
      * </pre>
@@ -844,11 +552,7 @@ public final class ConfigurationClient {
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Response<ConfigurationSetting> deleteConfigurationSettingWithResponse(ConfigurationSetting setting,
         boolean ifUnchanged, Context context) {
-        validateSetting(setting);
-        final ResponseBase<DeleteKeyValueHeaders, KeyValue> response =
-            serviceClient.deleteKeyValueWithResponse(setting.getKey(), setting.getLabel(),
-                getETag(ifUnchanged, setting), enableSyncRestProxy(addTracingNamespace(context)));
-        return toConfigurationSettingWithResponse(response);
+        return serviceClient.deleteConfigurationSettingWithResponse(setting, ifUnchanged, context);
     }
 
     /**
@@ -903,10 +607,8 @@ public final class ConfigurationClient {
      *
      * <!-- src_embed com.azure.data.applicationconfig.configurationclient.setReadOnly#ConfigurationSetting-boolean -->
      * <pre>
-     * ConfigurationSetting setting = configurationClient.setReadOnly&#40;new ConfigurationSetting&#40;&#41;
-     *     .setKey&#40;&quot;prodDBConnection&quot;&#41;
-     *     .setLabel&#40;&quot;westUS&quot;&#41;,
-     *     true&#41;;
+     * ConfigurationSetting setting = configurationClient.setReadOnly&#40;
+     *     new ConfigurationSetting&#40;&#41;.setKey&#40;&quot;prodDBConnection&quot;&#41;.setLabel&#40;&quot;westUS&quot;&#41;, true&#41;;
      * System.out.printf&#40;&quot;Key: %s, Value: %s&quot;, setting.getKey&#40;&#41;, setting.getValue&#40;&#41;&#41;;
      * </pre>
      * <!-- end com.azure.data.applicationconfig.configurationclient.setReadOnly#ConfigurationSetting-boolean -->
@@ -915,10 +617,8 @@ public final class ConfigurationClient {
      *
      * <!-- src_embed com.azure.data.applicationconfig.configurationclient.setReadOnly#ConfigurationSetting-boolean-clearReadOnly -->
      * <pre>
-     * ConfigurationSetting setting = configurationClient.setReadOnly&#40;new ConfigurationSetting&#40;&#41;
-     *     .setKey&#40;&quot;prodDBConnection&quot;&#41;
-     *     .setLabel&#40;&quot;westUS&quot;&#41;,
-     *     false&#41;;
+     * ConfigurationSetting setting = configurationClient.setReadOnly&#40;
+     *     new ConfigurationSetting&#40;&#41;.setKey&#40;&quot;prodDBConnection&quot;&#41;.setLabel&#40;&quot;westUS&quot;&#41;, false&#41;;
      * System.out.printf&#40;&quot;Key: %s, Value: %s&quot;, setting.getKey&#40;&#41;, setting.getValue&#40;&#41;&#41;;
      * </pre>
      * <!-- end com.azure.data.applicationconfig.configurationclient.setReadOnly#ConfigurationSetting-boolean-clearReadOnly -->
@@ -950,11 +650,8 @@ public final class ConfigurationClient {
      *
      * <!-- src_embed com.azure.data.applicationconfig.configurationclient.setReadOnlyWithResponse#ConfigurationSetting-Boolean-Context -->
      * <pre>
-     * ConfigurationSetting resultSetting = configurationClient.setReadOnlyWithResponse&#40;new ConfigurationSetting&#40;&#41;
-     *         .setKey&#40;&quot;prodDBConnection&quot;&#41;
-     *         .setLabel&#40;&quot;westUS&quot;&#41;,
-     *         true,
-     *         Context.NONE&#41;
+     * ConfigurationSetting resultSetting = configurationClient.setReadOnlyWithResponse&#40;
+     *     new ConfigurationSetting&#40;&#41;.setKey&#40;&quot;prodDBConnection&quot;&#41;.setLabel&#40;&quot;westUS&quot;&#41;, true, Context.NONE&#41;
      *     .getValue&#40;&#41;;
      * System.out.printf&#40;&quot;Key: %s, Value: %s&quot;, resultSetting.getKey&#40;&#41;, resultSetting.getValue&#40;&#41;&#41;;
      * </pre>
@@ -986,15 +683,8 @@ public final class ConfigurationClient {
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Response<ConfigurationSetting> setReadOnlyWithResponse(ConfigurationSetting setting, boolean isReadOnly,
-        Context context) {
-        validateSetting(setting);
-        final String key = setting.getKey();
-        final String label = setting.getLabel();
-        context = enableSyncRestProxy(addTracingNamespace(context));
-
-        return isReadOnly
-            ? toConfigurationSettingWithResponse(serviceClient.putLockWithResponse(key, label, null, null, context))
-            : toConfigurationSettingWithResponse(serviceClient.deleteLockWithResponse(key, label, null, null, context));
+                                                                  Context context) {
+        return serviceClient.setReadOnlyWithResponse(setting, isReadOnly, context);
     }
 
     /**
@@ -1050,101 +740,7 @@ public final class ConfigurationClient {
      */
     @ServiceMethod(returns = ReturnType.COLLECTION)
     public PagedIterable<ConfigurationSetting> listConfigurationSettings(SettingSelector selector, Context context) {
-        return new PagedIterable<>(
-            () -> {
-                final PagedResponse<KeyValue> pagedResponse = serviceClient.getKeyValuesSinglePage(
-                    selector == null ? null : selector.getKeyFilter(),
-                    selector == null ? null : selector.getLabelFilter(),
-                    null,
-                    selector == null ? null : selector.getAcceptDateTime(),
-                    selector == null ? null : toSettingFieldsList(selector.getFields()),
-                    null,
-                    enableSyncRestProxy(addTracingNamespace(context)));
-                return toConfigurationSettingWithPagedResponse(pagedResponse);
-            },
-            nextLink -> {
-                final PagedResponse<KeyValue> pagedResponse = serviceClient.getKeyValuesNextSinglePage(nextLink,
-                    selector.getAcceptDateTime(), enableSyncRestProxy(addTracingNamespace(context)));
-                return toConfigurationSettingWithPagedResponse(pagedResponse);
-            }
-        );
-    }
-
-    /**
-     * Fetches the configuration settings in a snapshot that matches the {@code snapshotName}. If {@code snapshotName}
-     * is {@code null}, then all the {@link ConfigurationSetting configuration settings} are fetched with their current
-     * values.
-     *
-     * <p><strong>Code Samples</strong></p>
-     *
-     * <!-- src_embed com.azure.data.applicationconfig.configurationclient.listConfigurationSettingsForSnapshot -->
-     * <pre>
-     * String snapshotName = &quot;&#123;snapshotName&#125;&quot;;
-     * configurationClient.listConfigurationSettingsForSnapshot&#40;snapshotName&#41;.forEach&#40;setting -&gt; &#123;
-     *     System.out.printf&#40;&quot;Key: %s, Value: %s&quot;, setting.getKey&#40;&#41;, setting.getValue&#40;&#41;&#41;;
-     * &#125;&#41;;
-     * </pre>
-     * <!-- end com.azure.data.applicationconfig.configurationclient.listConfigurationSettingsForSnapshot -->
-     *
-     * @param snapshotName Optional. A filter used get {@link ConfigurationSetting}s for a snapshot. The value should
-     * be the name of the snapshot.
-     * @return A {@link PagedIterable} of ConfigurationSettings that matches the {@code selector}. If no options were
-     * provided, the List contains all of the current settings in the service.
-     * @throws HttpResponseException If a client or service error occurs, such as a 404, 409, 429 or 500.
-     */
-    @ServiceMethod(returns = ReturnType.COLLECTION)
-    public PagedIterable<ConfigurationSetting> listConfigurationSettingsForSnapshot(String snapshotName) {
-        return listConfigurationSettingsForSnapshot(snapshotName, null, Context.NONE);
-    }
-
-    /**
-     * Fetches the configuration settings in a snapshot that matches the {@code snapshotName}. If {@code snapshotName}
-     * is {@code null}, then all the {@link ConfigurationSetting configuration settings} are fetched with their current
-     * values.
-     *
-     * <p><strong>Code Samples</strong></p>
-     *
-     * <!-- src_embed com.azure.data.applicationconfig.configurationclient.listConfigurationSettingsForSnapshotMaxOverload -->
-     * <pre>
-     * String snapshotName = &quot;&#123;snapshotName&#125;&quot;;
-     * List&lt;SettingFields&gt; fields = Arrays.asList&#40;SettingFields.KEY&#41;;
-     * Context ctx = new Context&#40;key2, value2&#41;;
-     * configurationClient.listConfigurationSettingsForSnapshot&#40;snapshotName, fields, ctx&#41;
-     *     .forEach&#40;setting -&gt; System.out.printf&#40;&quot;Key: %s, Value: %s&quot;, setting.getKey&#40;&#41;, setting.getValue&#40;&#41;&#41;&#41;;
-     * </pre>
-     * <!-- end com.azure.data.applicationconfig.configurationclient.listConfigurationSettingsForSnapshotMaxOverload -->
-     *
-     * @param snapshotName Optional. A filter used get {@link ConfigurationSetting}s for a snapshot. The value should
-     * be the name of the snapshot.
-     * @param fields Optional. The fields to select for the query response. If none are set, the service will return the
-     * ConfigurationSettings with a default set of properties.
-     * @param context Additional context that is passed through the Http pipeline during the service call.
-     * @return A {@link PagedIterable} of ConfigurationSettings that matches the {@code selector}. If no options were
-     * provided, the {@link PagedIterable} contains all the current settings in the service.
-     * @throws HttpResponseException If a client or service error occurs, such as a 404, 409, 429 or 500.
-     */
-    @ServiceMethod(returns = ReturnType.COLLECTION)
-    public PagedIterable<ConfigurationSetting> listConfigurationSettingsForSnapshot(String snapshotName,
-                                                                                    List<SettingFields> fields,
-                                                                                    Context context) {
-        return new PagedIterable<>(
-            () -> {
-                final PagedResponse<KeyValue> pagedResponse = serviceClient.getKeyValuesSinglePage(
-                    null,
-                    null,
-                    null,
-                    null,
-                    fields,
-                    snapshotName,
-                    enableSyncRestProxy(addTracingNamespace(context)));
-                return toConfigurationSettingWithPagedResponse(pagedResponse);
-            },
-            nextLink -> {
-                final PagedResponse<KeyValue> pagedResponse = serviceClient.getKeyValuesNextSinglePage(nextLink,
-                    null, enableSyncRestProxy(addTracingNamespace(context)));
-                return toConfigurationSettingWithPagedResponse(pagedResponse);
-            }
-        );
+        return serviceClient.listConfigurationSettings(selector, context);
     }
 
     /**
@@ -1164,7 +760,7 @@ public final class ConfigurationClient {
      * <!-- src_embed com.azure.data.applicationconfig.configurationclient.listRevisions#settingSelector -->
      * <pre>
      * SettingSelector settingSelector = new SettingSelector&#40;&#41;.setKeyFilter&#40;&quot;prodDBConnection&quot;&#41;;
-     * configurationClient.listRevisions&#40;settingSelector&#41;.streamByPage&#40;&#41;.forEach&#40;resp -&gt; &#123;
+     * client.listRevisions&#40;settingSelector&#41;.streamByPage&#40;&#41;.forEach&#40;resp -&gt; &#123;
      *     System.out.printf&#40;&quot;Response headers are %s. Url %s  and status code %d %n&quot;, resp.getHeaders&#40;&#41;,
      *         resp.getRequest&#40;&#41;.getUrl&#40;&#41;, resp.getStatusCode&#40;&#41;&#41;;
      *     resp.getItems&#40;&#41;.forEach&#40;value -&gt; &#123;
@@ -1213,294 +809,7 @@ public final class ConfigurationClient {
      */
     @ServiceMethod(returns = ReturnType.COLLECTION)
     public PagedIterable<ConfigurationSetting> listRevisions(SettingSelector selector, Context context) {
-        final String acceptDateTime = selector == null ? null : selector.getAcceptDateTime();
-        return new PagedIterable<>(
-            () -> {
-                final PagedResponse<KeyValue> pagedResponse = serviceClient.getRevisionsSinglePage(
-                    selector == null ? null : selector.getKeyFilter(),
-                    selector == null ? null : selector.getLabelFilter(),
-                    null,
-                    acceptDateTime,
-                    selector == null ? null : toSettingFieldsList(selector.getFields()),
-                    enableSyncRestProxy(addTracingNamespace(context)));
-                return toConfigurationSettingWithPagedResponse(pagedResponse);
-            },
-            nextLink -> {
-                final PagedResponse<KeyValue> pagedResponse = serviceClient.getRevisionsNextSinglePage(nextLink,
-                    acceptDateTime, enableSyncRestProxy(addTracingNamespace(context)));
-                return toConfigurationSettingWithPagedResponse(pagedResponse);
-            }
-        );
-    }
-
-    /**
-     * Create a {@link ConfigurationSettingsSnapshot} by providing a snapshot name and a
-     * {@link ConfigurationSettingsSnapshot}.
-     *
-     * <p><strong>Code Samples</strong></p>
-     *
-     * <!-- src_embed com.azure.data.appconfiguration.configurationclient.beginCreateSnapshotMaxOverload -->
-     * <pre>
-     * List&lt;SnapshotSettingFilter&gt; filters = new ArrayList&lt;&gt;&#40;&#41;;
-     * &#47;&#47; Key Name also supports RegExp but only support prefix end with &quot;*&quot;, such as &quot;k*&quot; and is case-sensitive.
-     * filters.add&#40;new SnapshotSettingFilter&#40;&quot;&#123;keyName&#125;&quot;&#41;&#41;;
-     * String snapshotName = &quot;&#123;snapshotName&#125;&quot;;
-     * Context ctx = new Context&#40;key2, value2&#41;;
-     *
-     * SyncPoller&lt;CreateSnapshotOperationDetail, ConfigurationSettingsSnapshot&gt; poller =
-     *     client.beginCreateSnapshot&#40;snapshotName,
-     *         new ConfigurationSettingsSnapshot&#40;filters&#41;.setRetentionPeriod&#40;Duration.ofHours&#40;1&#41;&#41;, ctx&#41;;
-     * poller.setPollInterval&#40;Duration.ofSeconds&#40;10&#41;&#41;;
-     * poller.waitForCompletion&#40;&#41;;
-     * ConfigurationSettingsSnapshot snapshot = poller.getFinalResult&#40;&#41;;
-     *
-     * System.out.printf&#40;&quot;Snapshot name=%s is created at %s%n&quot;, snapshot.getName&#40;&#41;, snapshot.getCreatedAt&#40;&#41;&#41;;
-     * </pre>
-     * <!-- end com.azure.data.appconfiguration.configurationclient.beginCreateSnapshotMaxOverload -->
-     *
-     * @param name The name of the {@link ConfigurationSettingsSnapshot} to create.
-     * @param snapshot The snapshot to create.
-     * @param context Additional context that is passed through the Http pipeline during the service call.
-     * @return A {@link SyncPoller} that polls the creating snapshot operation until it has completed or
-     * has failed. The completed operation returns a {@link ConfigurationSettingsSnapshot}.
-     */
-    @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
-    public SyncPoller<CreateSnapshotOperationDetail, ConfigurationSettingsSnapshot> beginCreateSnapshot(
-        String name, ConfigurationSettingsSnapshot snapshot, Context context) {
-        return createSnapshotUtilClient.beginCreateSnapshot(name, snapshot, context);
-    }
-
-    /**
-     * Get a {@link ConfigurationSettingsSnapshot} by given the snapshot name.
-     *
-     * <p><strong>Code Samples</strong></p>
-     *
-     * <!-- src_embed com.azure.data.appconfiguration.configurationclient.getSnapshotByName -->
-     * <pre>
-     * String snapshotName = &quot;&#123;snapshotName&#125;&quot;;
-     * ConfigurationSettingsSnapshot getSnapshot = client.getSnapshot&#40;snapshotName&#41;;
-     * System.out.printf&#40;&quot;Snapshot name=%s is created at %s, snapshot status is %s.%n&quot;,
-     *     getSnapshot.getName&#40;&#41;, getSnapshot.getCreatedAt&#40;&#41;, getSnapshot.getStatus&#40;&#41;&#41;;
-     * </pre>
-     * <!-- end com.azure.data.appconfiguration.configurationclient.getSnapshotByName -->
-     *
-     * @param name the snapshot name.
-     * @return A {@link ConfigurationSettingsSnapshot}.
-     */
-    @ServiceMethod(returns = ReturnType.SINGLE)
-    public ConfigurationSettingsSnapshot getSnapshot(String name) {
-        return getSnapshotWithResponse(name, null, Context.NONE).getValue();
-    }
-
-    /**
-     * Get a {@link ConfigurationSettingsSnapshot} by given the snapshot name.
-     *
-     * <p><strong>Code Samples</strong></p>
-     *
-     * <!-- src_embed com.azure.data.appconfiguration.configurationclient.getSnapshotByNameMaxOverload -->
-     * <pre>
-     * String snapshotName = &quot;&#123;snapshotName&#125;&quot;;
-     * Context ctx = new Context&#40;key2, value2&#41;;
-     * ConfigurationSettingsSnapshot getSnapshot = client.getSnapshotWithResponse&#40;
-     *     snapshotName,
-     *     Arrays.asList&#40;SnapshotFields.NAME, SnapshotFields.CREATED_AT, SnapshotFields.STATUS, SnapshotFields.FILTERS&#41;,
-     *     ctx&#41;
-     *     .getValue&#40;&#41;;
-     * &#47;&#47; Only properties `name`, `createAt`, `status` and `filters` have value, and expect null or
-     * &#47;&#47; empty value other than the `fields` specified in the request.
-     * System.out.printf&#40;&quot;Snapshot name=%s is created at %s, snapshot status is %s.%n&quot;,
-     *     getSnapshot.getName&#40;&#41;, getSnapshot.getCreatedAt&#40;&#41;, getSnapshot.getStatus&#40;&#41;&#41;;
-     * List&lt;SnapshotSettingFilter&gt; filters = getSnapshot.getFilters&#40;&#41;;
-     * for &#40;SnapshotSettingFilter filter : filters&#41; &#123;
-     *     System.out.printf&#40;&quot;Snapshot filter key=%s, label=%s.%n&quot;, filter.getKey&#40;&#41;, filter.getLabel&#40;&#41;&#41;;
-     * &#125;
-     * </pre>
-     * <!-- end com.azure.data.appconfiguration.configurationclient.getSnapshotByNameMaxOverload -->
-     *
-     * @param name The snapshot name.
-     * @param fields Used to select what fields are present in the returned resource(s).
-     * @param context Additional context that is passed through the Http pipeline during the service call.
-     * @return A {@link Response} of {@link ConfigurationSettingsSnapshot}.
-     */
-    @ServiceMethod(returns = ReturnType.SINGLE)
-    public Response<ConfigurationSettingsSnapshot> getSnapshotWithResponse(String name, List<SnapshotFields> fields,
-                                                                          Context context) {
-        final ResponseBase<GetSnapshotHeaders, ConfigurationSettingsSnapshot> response =
-            serviceClient.getSnapshotWithResponse(name, null, null, fields, context);
-        return new SimpleResponse<>(response, response.getValue());
-    }
-
-    /**
-     * Update a snapshot status from {@link SnapshotStatus#READY} to {@link SnapshotStatus#ARCHIVED}.
-     *
-     * <p><strong>Code Samples</strong></p>
-     *
-     * <!-- src_embed com.azure.data.appconfiguration.configurationclient.archiveSnapshotByName -->
-     * <pre>
-     * String snapshotName = &quot;&#123;snapshotName&#125;&quot;;
-     * ConfigurationSettingsSnapshot archivedSnapshot = client.archiveSnapshot&#40;snapshotName&#41;;
-     * System.out.printf&#40;&quot;Archived snapshot name=%s is created at %s, snapshot status is %s.%n&quot;,
-     *     archivedSnapshot.getName&#40;&#41;, archivedSnapshot.getCreatedAt&#40;&#41;, archivedSnapshot.getStatus&#40;&#41;&#41;;
-     * </pre>
-     * <!-- end com.azure.data.appconfiguration.configurationclient.archiveSnapshotByName -->
-     *
-     * @param name The snapshot name.
-     * @return A {@link ConfigurationSettingsSnapshot}.
-     */
-    @ServiceMethod(returns = ReturnType.SINGLE)
-    public ConfigurationSettingsSnapshot archiveSnapshot(String name) {
-        return updateSnapshotSync(name, null, SnapshotStatus.ARCHIVED, false, serviceClient,
-            Context.NONE).getValue();
-    }
-
-    /**
-     * Update a snapshot status from {@link SnapshotStatus#READY} to {@link SnapshotStatus#ARCHIVED}.
-     *
-     * <p>
-     * To turn on using 'if-match' header, set the second parameter 'ifUnchanged' to true.
-     * It used to perform an operation only if the targeted resource's ETag matches the value provided.
-     * Otherwise, it will throw an exception '412 Precondition Failed'.
-     * </p>
-     *
-     * <p><strong>Code Samples</strong></p>
-     *
-     * <!-- src_embed com.azure.data.appconfiguration.configurationclient.archiveSnapshotByNameMaxOverload -->
-     * <pre>
-     * Context ctx = new Context&#40;key2, value2&#41;;
-     *
-     * ConfigurationSettingsSnapshot archivedSnapshot = client.archiveSnapshotWithResponse&#40;snapshot, false,
-     *     ctx&#41;.getValue&#40;&#41;;
-     * System.out.printf&#40;&quot;Archived snapshot name=%s is created at %s, snapshot status is %s.%n&quot;,
-     *     archivedSnapshot.getName&#40;&#41;, archivedSnapshot.getCreatedAt&#40;&#41;, archivedSnapshot.getStatus&#40;&#41;&#41;;
-     * </pre>
-     * <!-- end com.azure.data.appconfiguration.configurationclient.archiveSnapshotByNameMaxOverload -->
-     *
-     * @param snapshot The snapshot to be archived.
-     * @param ifUnchanged Flag indicating if the {@code snapshot} {@link ConfigurationSettingsSnapshot#getETag ETag} is
-     * used as a IF-MATCH header.
-     * @param context Additional context that is passed through the Http pipeline during the service call.
-     * @return A {@link Response} of {@link ConfigurationSettingsSnapshot}.
-     */
-    @ServiceMethod(returns = ReturnType.SINGLE)
-    public Response<ConfigurationSettingsSnapshot> archiveSnapshotWithResponse(ConfigurationSettingsSnapshot snapshot,
-                                                                              boolean ifUnchanged, Context context) {
-        return updateSnapshotSync(snapshot.getName(), snapshot, SnapshotStatus.ARCHIVED, ifUnchanged, serviceClient,
-            context);
-    }
-
-    /**
-     * Update a snapshot status from {@link SnapshotStatus#ARCHIVED} to {@link SnapshotStatus#READY}.
-     *
-     * <p><strong>Code Samples</strong></p>
-     *
-     * <!-- src_embed com.azure.data.appconfiguration.configurationclient.recoverSnapshotByName -->
-     * <pre>
-     * String snapshotName = &quot;&#123;snapshotName&#125;&quot;;
-     * ConfigurationSettingsSnapshot recoveredSnapshot = client.recoverSnapshot&#40;snapshotName&#41;;
-     * System.out.printf&#40;&quot;Recovered snapshot name=%s is created at %s, snapshot status is %s.%n&quot;,
-     *     recoveredSnapshot.getName&#40;&#41;, recoveredSnapshot.getCreatedAt&#40;&#41;, recoveredSnapshot.getStatus&#40;&#41;&#41;;
-     * </pre>
-     * <!-- end com.azure.data.appconfiguration.configurationclient.recoverSnapshotByName -->
-     *
-     * @param name The snapshot name.
-     * @return A {@link ConfigurationSettingsSnapshot}.
-     */
-    @ServiceMethod(returns = ReturnType.SINGLE)
-    public ConfigurationSettingsSnapshot recoverSnapshot(String name) {
-        return updateSnapshotSync(name, null, SnapshotStatus.READY, false, serviceClient,
-            Context.NONE).getValue();
-    }
-
-    /**
-     * Update a snapshot status from {@link SnapshotStatus#ARCHIVED} to {@link SnapshotStatus#READY}.
-     *
-     * <p>
-     * To turn on using 'if-match' header, set the second parameter 'ifUnchanged' to true.
-     * It used to perform an operation only if the targeted resource's ETag matches the value provided.
-     * Otherwise, it will throw an exception '412 Precondition Failed'.
-     * </p>
-     *
-     * <p><strong>Code Samples</strong></p>
-     *
-     * <!-- src_embed com.azure.data.appconfiguration.configurationclient.recoverSnapshotMaxOverload -->
-     * <pre>
-     * ConfigurationSettingsSnapshot recoveredSnapshot = client.recoverSnapshotWithResponse&#40;snapshot, false,
-     *     ctx&#41;.getValue&#40;&#41;;
-     * System.out.printf&#40;&quot;Recovered snapshot name=%s is created at %s, snapshot status is %s.%n&quot;,
-     *     recoveredSnapshot.getName&#40;&#41;, recoveredSnapshot.getCreatedAt&#40;&#41;, recoveredSnapshot.getStatus&#40;&#41;&#41;;
-     * </pre>
-     * <!-- end com.azure.data.appconfiguration.configurationclient.recoverSnapshotMaxOverload -->
-     *
-     * @param snapshot The snapshot to be archived.
-     * @param ifUnchanged Flag indicating if the {@code snapshot} {@link ConfigurationSettingsSnapshot#getETag()} ETag}
-     *                    is used as an IF-MATCH header.
-     * @param context Additional context that is passed through the Http pipeline during the service call.
-     * @return A {@link Response} of {@link ConfigurationSettingsSnapshot}.
-     */
-    @ServiceMethod(returns = ReturnType.SINGLE)
-    public Response<ConfigurationSettingsSnapshot> recoverSnapshotWithResponse(ConfigurationSettingsSnapshot snapshot,
-                                                                              boolean ifUnchanged, Context context) {
-        return updateSnapshotSync(snapshot.getName(), snapshot, SnapshotStatus.READY, ifUnchanged, serviceClient,
-            context);
-    }
-
-    /**
-     * List snapshots by given {@link SnapshotSelector}.
-     *
-     * <p><strong>Code Samples</strong></p>
-     *
-     * <!-- src_embed com.azure.data.appconfiguration.configurationclient.listSnapshots -->
-     * <pre>
-     * String snapshotNameFilter = &quot;&#123;snapshotNamePrefix&#125;*&quot;;
-     * client.listSnapshots&#40;new SnapshotSelector&#40;&#41;.setName&#40;snapshotNameFilter&#41;&#41;
-     *     .forEach&#40;snapshotResult -&gt; &#123;
-     *         System.out.printf&#40;&quot;Listed Snapshot name = %s is created at %s, snapshot status is %s.%n&quot;,
-     *             snapshotResult.getName&#40;&#41;, snapshotResult.getCreatedAt&#40;&#41;, snapshotResult.getStatus&#40;&#41;&#41;;
-     *     &#125;&#41;;
-     * </pre>
-     * <!-- end com.azure.data.appconfiguration.configurationclient.listSnapshots -->
-     *
-     * @param selector Optional. Used to filter {@link ConfigurationSettingsSnapshot} from the service.
-     * @return A {@link PagedIterable} of {@link ConfigurationSettingsSnapshot}.
-     */
-    @ServiceMethod(returns = ReturnType.COLLECTION)
-    public PagedIterable<ConfigurationSettingsSnapshot> listSnapshots(SnapshotSelector selector) {
-        return listSnapshots(selector, Context.NONE);
-    }
-
-    /**
-     * List snapshots by given {@link SnapshotSelector}.
-     *
-     * <p><strong>Code Samples</strong></p>
-     *
-     * <!-- src_embed com.azure.data.appconfiguration.configurationclient.listSnapshotsMaxOverload -->
-     * <pre>
-     * String snapshotNameFilter = &quot;&#123;snapshotNamePrefix&#125;*&quot;;
-     * Context ctx = new Context&#40;key2, value2&#41;;
-     *
-     * client.listSnapshots&#40;new SnapshotSelector&#40;&#41;.setName&#40;snapshotNameFilter&#41;, ctx&#41;
-     *     .forEach&#40;snapshotResult -&gt; &#123;
-     *         System.out.printf&#40;&quot;Listed Snapshot name = %s is created at %s, snapshot status is %s.%n&quot;,
-     *             snapshotResult.getName&#40;&#41;, snapshotResult.getCreatedAt&#40;&#41;, snapshotResult.getStatus&#40;&#41;&#41;;
-     *     &#125;&#41;;
-     * </pre>
-     * <!-- end com.azure.data.appconfiguration.configurationclient.listSnapshotsMaxOverload -->
-     *
-     * @param selector Optional. Used to filter {@link ConfigurationSettingsSnapshot} from the service.
-     * @param context Additional context that is passed through the Http pipeline during the service call.
-     * @return A {@link PagedIterable} of {@link ConfigurationSettingsSnapshot}.
-     */
-    @ServiceMethod(returns = ReturnType.COLLECTION)
-    public PagedIterable<ConfigurationSettingsSnapshot> listSnapshots(SnapshotSelector selector, Context context) {
-        return new PagedIterable<>(
-            () -> serviceClient.getSnapshotsSinglePage(
-                selector == null ? null : selector.getName(),
-                null,
-                selector == null ? null : selector.getFields(),
-                selector == null ? null : selector.getSnapshotStatus(),
-                enableSyncRestProxy(addTracingNamespace(context))),
-            nextLink -> serviceClient.getSnapshotsNextSinglePage(nextLink,
-                enableSyncRestProxy(addTracingNamespace(context))));
+        return serviceClient.listRevisions(selector, context);
     }
 
     /**
