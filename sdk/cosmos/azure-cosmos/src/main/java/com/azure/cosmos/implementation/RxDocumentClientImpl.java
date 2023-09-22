@@ -3193,12 +3193,12 @@ public class RxDocumentClientImpl implements AsyncDocumentClient, IAuthorization
             }
 
             @Override
-            public <T> Mono<FeedResponse<T>> executeFeedOperationWithAvailabilityStrategy(
+            public <T> Mono<T> executeFeedOperationWithAvailabilityStrategy(
                 ResourceType resourceType,
                 OperationType operationType,
                 Supplier<DocumentClientRetryPolicy> retryPolicyFactory,
                 RxDocumentServiceRequest req,
-                BiFunction<Supplier<DocumentClientRetryPolicy>, RxDocumentServiceRequest, Mono<FeedResponse<T>>> feedOperation) {
+                BiFunction<Supplier<DocumentClientRetryPolicy>, RxDocumentServiceRequest, Mono<T>> feedOperation) {
 
                 return RxDocumentClientImpl.this.executeFeedOperationWithAvailabilityStrategy(
                     resourceType,
@@ -5355,12 +5355,12 @@ public class RxDocumentClientImpl implements AsyncDocumentClient, IAuthorization
         return orderedRegionsForSpeculation;
     }
 
-    private <T> Mono<FeedResponse<T>> executeFeedOperationWithAvailabilityStrategy(
+    private <T> Mono<T> executeFeedOperationWithAvailabilityStrategy(
         final ResourceType resourceType,
         final OperationType operationType,
         final Supplier<DocumentClientRetryPolicy> retryPolicyFactory,
         final RxDocumentServiceRequest req,
-        final BiFunction<Supplier<DocumentClientRetryPolicy>, RxDocumentServiceRequest, Mono<FeedResponse<T>>> feedOperation
+        final BiFunction<Supplier<DocumentClientRetryPolicy>, RxDocumentServiceRequest, Mono<T>> feedOperation
     ) {
         checkNotNull(retryPolicyFactory, "Argument 'retryPolicyFactory' must not be null.");
         checkNotNull(req, "Argument 'req' must not be null.");
@@ -5542,7 +5542,7 @@ public class RxDocumentClientImpl implements AsyncDocumentClient, IAuthorization
     }
 
     private static class NonTransientFeedOperationResult<T> {
-        private final FeedResponse<T> response;
+        private final T response;
         private final CosmosException exception;
 
         public NonTransientFeedOperationResult(CosmosException exception) {
@@ -5551,7 +5551,7 @@ public class RxDocumentClientImpl implements AsyncDocumentClient, IAuthorization
             this.response = null;
         }
 
-        public NonTransientFeedOperationResult(FeedResponse<T> response) {
+        public NonTransientFeedOperationResult(T response) {
             checkNotNull(response, "Argument 'response' must not be null.");
             this.exception = null;
             this.response = response;
@@ -5565,7 +5565,7 @@ public class RxDocumentClientImpl implements AsyncDocumentClient, IAuthorization
             return this.exception;
         }
 
-        public FeedResponse<T> getResponse() {
+        public T getResponse() {
             return this.response;
         }
     }

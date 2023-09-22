@@ -61,12 +61,12 @@ public interface IDocumentQueryClient {
 
     QueryCompatibilityMode getQueryCompatibilityMode();
 
-    <T> Mono<FeedResponse<T>> executeFeedOperationWithAvailabilityStrategy(
+    <T> Mono<T> executeFeedOperationWithAvailabilityStrategy(
         final ResourceType resourceType,
         final OperationType operationType,
         final Supplier<DocumentClientRetryPolicy> retryPolicyFactory,
         final RxDocumentServiceRequest req,
-        final BiFunction<Supplier<DocumentClientRetryPolicy>, RxDocumentServiceRequest, Mono<FeedResponse<T>>> feedOperation);
+        final BiFunction<Supplier<DocumentClientRetryPolicy>, RxDocumentServiceRequest, Mono<T>> feedOperation);
 
     /// <summary>
     /// A client query compatibility mode when making query request.

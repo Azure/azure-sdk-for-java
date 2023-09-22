@@ -1759,16 +1759,6 @@ public class FaultInjectionWithAvailabilityStrategyTests extends TestSuiteBase {
         Consumer<CosmosDiagnosticsContext> validateCtxTwoRegions =
             (ctx) -> validateCtxRegions.accept(ctx, TWO_REGIONS);
 
-        Consumer<CosmosDiagnosticsContext> validateCtxOnlyOneFeedResponse = (ctx) -> {
-            CosmosDiagnostics[] diagnostics = ctx.getDiagnostics().toArray(new CosmosDiagnostics[0]);
-            assertThat(diagnostics.length).isEqualTo(2);
-            CosmosDiagnostics singleNonQueryPlanDiagnostics = diagnostics[1];
-            assertThat(singleNonQueryPlanDiagnostics.getFeedResponseDiagnostics()).isNotNull();
-            assertThat(singleNonQueryPlanDiagnostics.getFeedResponseDiagnostics().getQueryPlanDiagnosticsContext()).isNotNull();
-            assertThat(singleNonQueryPlanDiagnostics.getFeedResponseDiagnostics().getClientSideRequestStatistics()).isNotNull();
-            assertThat(singleNonQueryPlanDiagnostics.getFeedResponseDiagnostics().getClientSideRequestStatistics().size()).isEqualTo(1);
-        };
-
         Consumer<CosmosDiagnosticsContext> validateCtxFirstRegionFailureSecondRegionSuccessfulSingleFeedResponse = (ctx) -> {
             CosmosDiagnostics[] diagnostics = ctx.getDiagnostics().toArray(new CosmosDiagnostics[0]);
             assertThat(diagnostics.length).isEqualTo(3);
@@ -1790,50 +1780,9 @@ public class FaultInjectionWithAvailabilityStrategyTests extends TestSuiteBase {
             assertThat(secondRegionDiagnostics.getFeedResponseDiagnostics().getClientSideRequestStatistics().size()).isEqualTo(1);
         };
 
-        BiConsumer<CosmosDiagnosticsContext, Integer> validateCtxMultipleFeedResponsesCore =
-            (ctx, expectedDiagnosticsCount) -> {
-                assertThat(ctx).isNotNull();
-                if (ctx != null) {
-                    if (ctx.getDiagnostics().size() < expectedDiagnosticsCount) {
-                        logger.error(ctx.toJson());
-                    }
-                    assertThat(ctx.getDiagnostics().size()).isEqualTo(expectedDiagnosticsCount);
-
-                    CosmosDiagnostics[] diagnostics = ctx.getDiagnostics().toArray(new CosmosDiagnostics[0]);
-                    assertThat(diagnostics.length).isEqualTo(expectedDiagnosticsCount);
-
-                    // Query plan should only exist for first partition
-                    // All partitions should return single page - because total document count is less than maxItemCount
-                    CosmosDiagnostics firstDiagnostics = diagnostics[1];
-                    assertThat(firstDiagnostics.getFeedResponseDiagnostics()).isNotNull();
-                    assertThat(firstDiagnostics.getFeedResponseDiagnostics().getQueryPlanDiagnosticsContext()).isNotNull();
-                    assertThat(firstDiagnostics.getFeedResponseDiagnostics().getClientSideRequestStatistics()).isNotNull();
-                    assertThat(firstDiagnostics.getFeedResponseDiagnostics().getClientSideRequestStatistics().size()).isGreaterThanOrEqualTo(1);
-
-                    for (int i = 2; i < expectedDiagnosticsCount; i++) {
-                        CosmosDiagnostics subsequentDiagnostics = diagnostics[i];
-                        assertThat(subsequentDiagnostics.getFeedResponseDiagnostics()).isNotNull();
-                        assertThat(subsequentDiagnostics.getFeedResponseDiagnostics().getQueryPlanDiagnosticsContext()).isNull();
-                        assertThat(subsequentDiagnostics.getFeedResponseDiagnostics().getClientSideRequestStatistics()).isNotNull();
-                        assertThat(subsequentDiagnostics.getFeedResponseDiagnostics().getClientSideRequestStatistics().size()).isGreaterThanOrEqualTo(1);
-                    }
-                }
-            };
-
-        Consumer<CosmosDiagnosticsContext> validateCtxOnePagePerPartitionQuery=
-            (ctx) -> validateCtxMultipleFeedResponsesCore.accept(
-                ctx,
-                ONE_FOR_QUERY_PLAN + PHYSICAL_PARTITION_COUNT);
-
-        Consumer<CosmosDiagnosticsContext> validateCtxPageSizeOneForAllDocsSamePKQuery =
-            (ctx) -> validateCtxMultipleFeedResponsesCore.accept(
-                ctx,
-                ONE_FOR_QUERY_PLAN + 1 + ENOUGH_DOCS_SAME_PK_TO_EXCEED_PAGE_SIZE);
-
-        Consumer<CosmosDiagnosticsContext> validateCtxPageSizeOneAllDocsSameIdQuery =
-            (ctx) -> validateCtxMultipleFeedResponsesCore.accept(
-                ctx,
-                ONE_FOR_QUERY_PLAN + 1 + (int)ENOUGH_DOCS_OTHER_PK_TO_HIT_EVERY_PARTITION);
+        BiConsumer<CosmosAsyncContainer, FaultInjectionOperationType> injectQueryPlanTransitTimeout =
+            (c, operationType) -> injectGatewayTransitTimeout(
+                c, this.getFirstRegion(), FaultInjectionOperationType.METADATA_REQUEST_QUERY_PLAN);
 
         return new Object[][] {
             // CONFIG description
@@ -2427,7 +2376,60 @@ public class FaultInjectionWithAvailabilityStrategyTests extends TestSuiteBase {
                 null,
                 ENOUGH_DOCS_OTHER_PK_TO_HIT_EVERY_PARTITION,
                 NO_OTHER_DOCS_WITH_SAME_PK
-            }
+            },
+
+            // Simple single partition query. Gateway timeout for query plan retrieval in first region injected.
+            // This test case validates that the availability strategy and hedging is also applied for the
+            // query plan request. The expectation is that the query plan request in the first region won't finish,
+            // the query plan will then be retrieved form the second region but the actual query is executed against the
+            // first region.
+            new Object[] {
+                "DefaultPageSize_SinglePartition_QueryPLanHighLatency_EagerAvailabilityStrategy",
+                Duration.ofSeconds(1),
+                eagerThresholdAvailabilityStrategy,
+                noRegionSwitchHint,
+                singlePartitionQueryGenerator,
+                queryReturnsTotalRecordCountWithDefaultPageSize,
+                injectQueryPlanTransitTimeout,
+                validateStatusCodeIs200Ok,
+                1,
+                ArrayUtils.toArray(
+                    validateCtxTwoRegions,
+                    validateCtxQueryPlan,
+                    (ctx) -> {
+                        CosmosDiagnostics[] diagnostics = ctx.getDiagnostics().toArray(new CosmosDiagnostics[0]);
+                        assertThat(diagnostics.length).isEqualTo(3);
+
+                        // Ensure that the query plan has been retrieved from the second region
+                        assertThat(diagnostics[0].getContactedRegionNames().size()).isEqualTo(1);
+                        assertThat(diagnostics[0].getContactedRegionNames().contains(SECOND_REGION_NAME)).isEqualTo(true);
+
+                        // Second Diagnostics should be for the unfinished query plan retrieval in first region
+                        // but the diagnostics have not been populated yet - so are basically empty
+                        assertThat(diagnostics[1].getFeedResponseDiagnostics()).isNull();
+                        assertThat(diagnostics[1].getClientSideRequestStatistics()).isNotNull();
+                        assertThat(diagnostics[1].getContactedRegionNames().size()).isEqualTo(0);
+                        assertThat(diagnostics[1].getClientSideRequestStatistics().size()).isEqualTo(1);
+                        ClientSideRequestStatistics incompleteRequestStats =
+                            diagnostics[1].getClientSideRequestStatistics().iterator().next();
+                        assertThat(incompleteRequestStats.getGatewayStatisticsList().size()).isEqualTo(0);
+                        assertThat(incompleteRequestStats.getResponseStatisticsList().size()).isEqualTo(0);
+
+                        // Second Diagnostics should be for the unfinished query plan retrieval in first region
+                        // but the diagnostics have not been populated yet - so are basically empty
+                        assertThat(diagnostics[2].getFeedResponseDiagnostics()).isNotNull();
+                        assertThat(diagnostics[2].getFeedResponseDiagnostics().getQueryMetricsMap()).isNotNull();
+                        assertThat(diagnostics[2].getFeedResponseDiagnostics().getClientSideRequestStatistics()).isNotNull();
+                        assertThat(diagnostics[2].getFeedResponseDiagnostics().getClientSideRequestStatistics().size()).isGreaterThanOrEqualTo(1);
+                        assertThat(diagnostics[2].getContactedRegionNames().size()).isEqualTo(1);
+                        assertThat(diagnostics[2].getContactedRegionNames().contains(FIRST_REGION_NAME)).isEqualTo(true);
+                    }
+                ),
+                null,
+                validateExactlyOneRecordReturned,
+                ENOUGH_DOCS_OTHER_PK_TO_HIT_EVERY_PARTITION,
+                NO_OTHER_DOCS_WITH_SAME_PK
+            },
         };
     }
 
@@ -2447,7 +2449,6 @@ public class FaultInjectionWithAvailabilityStrategyTests extends TestSuiteBase {
         Consumer<CosmosResponseWrapper> responseValidator,
         int numberOfOtherDocumentsWithSameId,
         int numberOfOtherDocumentsWithSamePk) {
-
 
         execute(
             testCaseId,
@@ -2504,6 +2505,26 @@ public class FaultInjectionWithAvailabilityStrategyTests extends TestSuiteBase {
         FaultInjectionServerErrorResult toBeInjectedServerErrorResult,
         FeedRange applicableFeedRange) {
 
+        inject(
+            ruleName,
+            containerWithSeveralWriteableRegions,
+            applicableRegions,
+            applicableOperationType,
+            toBeInjectedServerErrorResult,
+            applicableFeedRange,
+            FaultInjectionConnectionType.DIRECT
+        );
+    }
+
+    private static void inject(
+        String ruleName,
+        CosmosAsyncContainer containerWithSeveralWriteableRegions,
+        List<String> applicableRegions,
+        FaultInjectionOperationType applicableOperationType,
+        FaultInjectionServerErrorResult toBeInjectedServerErrorResult,
+        FeedRange applicableFeedRange,
+        FaultInjectionConnectionType connectionType) {
+
         FaultInjectionRuleBuilder ruleBuilder = new FaultInjectionRuleBuilder(ruleName);
 
         List<FaultInjectionRule> faultInjectionRules = new ArrayList<>();
@@ -2513,7 +2534,7 @@ public class FaultInjectionWithAvailabilityStrategyTests extends TestSuiteBase {
         for (String region : applicableRegions) {
             FaultInjectionConditionBuilder conditionBuilder = new FaultInjectionConditionBuilder()
                 .operationType(applicableOperationType)
-                .connectionType(FaultInjectionConnectionType.DIRECT)
+                .connectionType(connectionType)
                 .region(region);
 
             if (applicableFeedRange != null) {
@@ -2586,6 +2607,28 @@ public class FaultInjectionWithAvailabilityStrategyTests extends TestSuiteBase {
             faultInjectionOperationType,
             timeoutResult,
             null
+        );
+    }
+
+    private static void injectGatewayTransitTimeout(
+        CosmosAsyncContainer containerWithSeveralWriteableRegions,
+        List<String> applicableRegions,
+        FaultInjectionOperationType faultInjectionOperationType) {
+
+        String ruleName = "serverErrorRule-gatewayTransitTimeout-" + UUID.randomUUID();
+        FaultInjectionServerErrorResult timeoutResult = FaultInjectionResultBuilders
+            .getResultBuilder(FaultInjectionServerErrorType.RESPONSE_DELAY)
+            .delay(Duration.ofSeconds(6))
+            .build();
+
+        inject(
+            ruleName,
+            containerWithSeveralWriteableRegions,
+            applicableRegions,
+            faultInjectionOperationType,
+            timeoutResult,
+            null,
+            FaultInjectionConnectionType.GATEWAY
         );
     }
 
