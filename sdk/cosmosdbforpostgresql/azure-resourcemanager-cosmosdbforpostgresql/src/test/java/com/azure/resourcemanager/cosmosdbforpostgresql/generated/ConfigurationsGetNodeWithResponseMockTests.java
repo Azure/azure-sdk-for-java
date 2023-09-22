@@ -31,7 +31,7 @@ public final class ConfigurationsGetNodeWithResponseMockTests {
         ArgumentCaptor<HttpRequest> httpRequest = ArgumentCaptor.forClass(HttpRequest.class);
 
         String responseStr =
-            "{\"properties\":{\"value\":\"hpvgqz\",\"source\":\"rvxdjzlmw\",\"description\":\"kvugfhzovawjvzun\",\"defaultValue\":\"thnnpr\",\"dataType\":\"Boolean\",\"allowedValues\":\"eilpjzuaejxdu\",\"requiresRestart\":false,\"provisioningState\":\"InProgress\"},\"id\":\"btdzumveekg\",\"name\":\"wozuhkf\",\"type\":\"bsjyofdx\"}";
+            "{\"properties\":{\"value\":\"oygmift\",\"source\":\"zdnds\",\"description\":\"nayqi\",\"defaultValue\":\"nduhavhqlkthum\",\"dataType\":\"Enumeration\",\"allowedValues\":\"bgycduiertgccym\",\"requiresRestart\":true,\"provisioningState\":\"InProgress\"},\"id\":\"slqlfmmdn\",\"name\":\"bglzpswi\",\"type\":\"d\"}";
 
         Mockito.when(httpResponse.getStatusCode()).thenReturn(200);
         Mockito.when(httpResponse.getHeaders()).thenReturn(new HttpHeaders());
@@ -62,9 +62,10 @@ public final class ConfigurationsGetNodeWithResponseMockTests {
         ServerConfiguration response =
             manager
                 .configurations()
-                .getNodeWithResponse("ibycno", "v", "nmefqsgzvahapj", com.azure.core.util.Context.NONE)
+                .getNodeWithResponse(
+                    "taruoujmkcj", "wqytjrybnwjewgdr", "ervnaenqpehi", com.azure.core.util.Context.NONE)
                 .getValue();
 
-        Assertions.assertEquals("hpvgqz", response.value());
+        Assertions.assertEquals("oygmift", response.value());
     }
 }

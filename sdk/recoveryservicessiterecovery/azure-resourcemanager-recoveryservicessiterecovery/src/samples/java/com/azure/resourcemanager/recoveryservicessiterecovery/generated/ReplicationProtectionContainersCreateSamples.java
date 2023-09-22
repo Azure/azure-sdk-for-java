@@ -11,7 +11,7 @@ import java.util.Arrays;
 /** Samples for ReplicationProtectionContainers Create. */
 public final class ReplicationProtectionContainersCreateSamples {
     /*
-     * x-ms-original-file: specification/recoveryservicessiterecovery/resource-manager/Microsoft.RecoveryServices/stable/2022-10-01/examples/ReplicationProtectionContainers_Create.json
+     * x-ms-original-file: specification/recoveryservicessiterecovery/resource-manager/Microsoft.RecoveryServices/stable/2023-06-01/examples/ReplicationProtectionContainers_Create.json
      */
     /**
      * Sample code: Create a protection container.

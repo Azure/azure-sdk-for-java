@@ -96,11 +96,14 @@ public final class ConnectionPolicy {
                 .DirectConnectionConfigHelper
                 .getDirectConnectionConfigAccessor()
                 .isHealthCheckTimeoutDetectionEnabled(directConnectionConfig);
+
+        // NOTE: should be compared with COSMOS.MIN_CONNECTION_POOL_SIZE_PER_ENDPOINT
+        // read during client initialization before connections are created for the container
         this.minConnectionPoolSizePerEndpoint =
-                ImplementationBridgeHelpers
-                        .DirectConnectionConfigHelper
-                        .getDirectConnectionConfigAccessor()
-                        .getMinConnectionPoolSizePerEndpoint(directConnectionConfig);
+                Math.max(ImplementationBridgeHelpers
+                    .DirectConnectionConfigHelper
+                    .getDirectConnectionConfigAccessor()
+                    .getMinConnectionPoolSizePerEndpoint(directConnectionConfig), Configs.getMinConnectionPoolSizePerEndpoint());
     }
 
     private ConnectionPolicy() {
