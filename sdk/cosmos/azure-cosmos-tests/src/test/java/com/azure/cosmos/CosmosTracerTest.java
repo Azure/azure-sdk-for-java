@@ -1252,12 +1252,9 @@ public class CosmosTracerTest extends TestSuiteBase {
 
         assertThat(currentSpan).isNotNull();
         assertThat(currentSpan.getContext()).isNotNull();
-        CosmosDiagnosticsContext ctx = DiagnosticsProvider.getCosmosDiagnosticsContextFromTraceContextOrThrow(
-            currentSpan.getContext()
-        );
 
         assertThat(cosmosDiagnostics.getDiagnosticsContext()).isNotNull();
-        assertThat(cosmosDiagnostics.getDiagnosticsContext()).isSameAs(ctx);
+        CosmosDiagnosticsContext ctx = cosmosDiagnostics.getDiagnosticsContext();
 
         Map<String, Object> attributes = currentSpan.getAttributes();
         if (databaseName != null) {
@@ -1325,9 +1322,7 @@ public class CosmosTracerTest extends TestSuiteBase {
             assertThat(currentSpan).isNotNull();
             assertThat(currentSpan.getContext()).isNotNull();
 
-            CosmosDiagnosticsContext ctx = DiagnosticsProvider.getCosmosDiagnosticsContextFromTraceContextOrThrow(
-                currentSpan.getContext()
-            );
+            CosmosDiagnosticsContext ctx = cosmosDiagnostics.getDiagnosticsContext();
 
             assertThat(cosmosDiagnostics.getUserAgent()).isEqualTo(ctx.getUserAgent());
             assertThat(ctx.getSystemUsage()).isNotNull();
@@ -1359,9 +1354,7 @@ public class CosmosTracerTest extends TestSuiteBase {
         TracerUnderTest.SpanRecord currentSpan = mockTracer.getCurrentSpan();
         assertThat(currentSpan).isNotNull();
         assertThat(currentSpan.getContext()).isNotNull();
-        CosmosDiagnosticsContext ctx = DiagnosticsProvider.getCosmosDiagnosticsContextFromTraceContextOrThrow(
-            currentSpan.getContext()
-        );
+        CosmosDiagnosticsContext ctx = lastCosmosDiagnostics.getDiagnosticsContext();
 
         assertThat(lastCosmosDiagnostics).isNotNull();
         assertThat(lastCosmosDiagnostics.getDiagnosticsContext()).isNotNull();

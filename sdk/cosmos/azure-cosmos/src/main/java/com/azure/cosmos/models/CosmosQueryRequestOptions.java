@@ -23,7 +23,9 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 import java.util.UUID;
+import java.util.concurrent.atomic.AtomicReference;
 import java.util.function.Function;
+import java.util.function.Supplier;
 
 /**
  * Specifies the options associated with query methods (enumeration operations)
@@ -62,13 +64,16 @@ public class CosmosQueryRequestOptions {
     private CosmosEndToEndOperationLatencyPolicyConfig cosmosEndToEndOperationLatencyPolicyConfig;
     private List<CosmosDiagnostics> cancelledRequestDiagnosticsTracker = new ArrayList<>();
     private List<String> excludeRegions;
-    private CosmosDiagnosticsContext ctx;
+    private Supplier<CosmosDiagnosticsContext> ctxSupplier;
+
+    private final AtomicReference<Runnable> diagnosticsFactoryResetCallback;
 
     /**
      * Instantiates a new query request options.
      */
     public CosmosQueryRequestOptions() {
 
+        this.diagnosticsFactoryResetCallback = new AtomicReference<>(null);
         this.thresholds = null;
         this.queryMetricsEnabled = true;
         this.emptyPageDiagnosticsEnabled = Configs.isEmptyPageDiagnosticsEnabled();
@@ -79,7 +84,7 @@ public class CosmosQueryRequestOptions {
      *
      * @param options the options
      */
-    CosmosQueryRequestOptions(CosmosQueryRequestOptions options) {
+    CosmosQueryRequestOptions(CosmosQueryRequestOptions options, boolean cloneDiagnosticsFactoryResetCallback) {
         this.consistencyLevel = options.consistencyLevel;
         this.sessionToken = options.sessionToken;
         this.partitionKeyRangeId = options.partitionKeyRangeId;
@@ -108,7 +113,12 @@ public class CosmosQueryRequestOptions {
         this.cosmosEndToEndOperationLatencyPolicyConfig = options.cosmosEndToEndOperationLatencyPolicyConfig;
         this.excludeRegions = options.excludeRegions;
         this.cancelledRequestDiagnosticsTracker = options.cancelledRequestDiagnosticsTracker;
-        this.ctx = options.ctx;
+        this.ctxSupplier = options.ctxSupplier;
+        if (cloneDiagnosticsFactoryResetCallback) {
+            this.diagnosticsFactoryResetCallback = options.diagnosticsFactoryResetCallback;
+        } else {
+            this.diagnosticsFactoryResetCallback = new AtomicReference<>(options.diagnosticsFactoryResetCallback.get());
+        }
     }
 
     void setOperationContextAndListenerTuple(OperationContextAndListenerTuple operationContextAndListenerTuple) {
@@ -702,7 +712,8 @@ public class CosmosQueryRequestOptions {
             return this;
         }
 
-        return new CosmosQueryRequestOptions(this).setEmptyPageDiagnosticsEnabled(emptyPageDiagnosticsEnabled);
+        return new CosmosQueryRequestOptions(this, true)
+            .setEmptyPageDiagnosticsEnabled(emptyPageDiagnosticsEnabled);
     }
 
     Function<JsonNode, ?> getItemFactoryMethod() { return this.itemFactoryMethod; }
@@ -721,12 +732,21 @@ public class CosmosQueryRequestOptions {
         this.cancelledRequestDiagnosticsTracker = cancelledRequestDiagnosticsTracker;
     }
 
-    CosmosDiagnosticsContext getDiagnosticsContext() {
-        return this.ctx;
+    CosmosDiagnosticsContext getDiagnosticsContextSnapshot() {
+        Supplier<CosmosDiagnosticsContext> ctxSupplierSnapshot = this.ctxSupplier;
+        if (ctxSupplierSnapshot == null) {
+            return null;
+        }
+
+        return ctxSupplierSnapshot.get();
     }
 
-    void setDiagnosticsContext(CosmosDiagnosticsContext ctx) {
-        this.ctx = ctx;
+    Supplier<CosmosDiagnosticsContext> getDiagnosticsContextSupplier() {
+        return this.ctxSupplier;
+    }
+
+    void setDiagnosticsContextSupplier(Supplier<CosmosDiagnosticsContext> ctxSupplier) {
+        this.ctxSupplier = ctxSupplier;
     }
 
     ///////////////////////////////////////////////////////////////////////////////////////////
@@ -735,6 +755,11 @@ public class CosmosQueryRequestOptions {
     static void initialize() {
         ImplementationBridgeHelpers.CosmosQueryRequestOptionsHelper.setCosmosQueryRequestOptionsAccessor(
             new ImplementationBridgeHelpers.CosmosQueryRequestOptionsHelper.CosmosQueryRequestOptionsAccessor() {
+
+                @Override
+                public CosmosQueryRequestOptions clone(CosmosQueryRequestOptions toBeCloned, boolean cloneDiagnosticsFactoryResetCallback) {
+                    return new CosmosQueryRequestOptions(toBeCloned, cloneDiagnosticsFactoryResetCallback);
+                }
 
                 @Override
                 public void setOperationContext(CosmosQueryRequestOptions queryRequestOptions,
@@ -849,8 +874,10 @@ public class CosmosQueryRequestOptions {
                         }
                     }
 
-                    if (queryRequestOptions.getDiagnosticsContext() != null) {
-                        requestOptions.setDiagnosticsContext(queryRequestOptions.getDiagnosticsContext());
+                    Supplier<CosmosDiagnosticsContext> ctxSupplierSnapshot =
+                        queryRequestOptions.getDiagnosticsContextSupplier();
+                    if (ctxSupplierSnapshot != null) {
+                        requestOptions.setDiagnosticsContextSupplier(ctxSupplierSnapshot);
                     }
 
                     return requestOptions;
@@ -895,13 +922,21 @@ public class CosmosQueryRequestOptions {
                 }
 
                 @Override
-                public CosmosDiagnosticsContext getDiagnosticsContext(CosmosQueryRequestOptions options) {
-                    return options.getDiagnosticsContext();
+                public void setDiagnosticsContextSupplier(
+                    CosmosQueryRequestOptions options,
+                    Supplier<CosmosDiagnosticsContext> ctxSupplier) {
+
+                    options.setDiagnosticsContextSupplier(ctxSupplier);
                 }
 
                 @Override
-                public void setDiagnosticsContext(CosmosQueryRequestOptions options, CosmosDiagnosticsContext ctx) {
-                    options.setDiagnosticsContext(ctx);
+                public AtomicReference<Runnable> getDiagnosticsFactoryResetCallbackReference(CosmosQueryRequestOptions options) {
+                    return options.diagnosticsFactoryResetCallback;
+                }
+
+                @Override
+                public void setDiagnosticsFactoryResetCallback(CosmosQueryRequestOptions options, Runnable resetCallback) {
+                    options.diagnosticsFactoryResetCallback.set(resetCallback);
                 }
 
                 @Override

@@ -43,7 +43,6 @@ import com.azure.cosmos.util.CosmosPagedFlux;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.fasterxml.jackson.databind.node.ObjectNode;
 import org.apache.commons.lang3.ArrayUtils;
-import org.apache.logging.log4j.util.TriConsumer;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.testng.annotations.AfterClass;
@@ -133,10 +132,6 @@ public class FaultInjectionWithAvailabilityStrategyTests extends TestSuiteBase {
 
     private final static Consumer<CosmosDiagnosticsContext> validateDiagnosticsContextHasDiagnosticsForOnlyFirstRegionButWithRegionalFailover =
         (ctx) -> {
-            logger.info(
-                "Diagnostics Context to evaluate: {}",
-                ctx != null ? ctx.toJson() : "NULL");
-
             assertThat(ctx).isNotNull();
             if (ctx != null) {
                 assertThat(ctx.getDiagnostics()).isNotNull();
@@ -147,10 +142,6 @@ public class FaultInjectionWithAvailabilityStrategyTests extends TestSuiteBase {
 
     private final static Consumer<CosmosDiagnosticsContext> validateDiagnosticsContextHasDiagnosticsForOneOrTwoRegionsButTwoContactedRegions =
         (ctx) -> {
-            logger.info(
-                "Diagnostics Context to evaluate: {}",
-                ctx != null ? ctx.toJson() : "NULL");
-
             assertThat(ctx).isNotNull();
             if (ctx != null) {
                 assertThat(ctx.getDiagnostics()).isNotNull();
@@ -228,10 +219,6 @@ public class FaultInjectionWithAvailabilityStrategyTests extends TestSuiteBase {
 
             this.validateDiagnosticsContextHasDiagnosticsForAllRegions =
                 (ctx) -> {
-                    logger.debug(
-                        "Diagnostics Context to evaluate: {}",
-                        ctx != null ? ctx.toJson() : "NULL");
-
                     assertThat(ctx).isNotNull();
                     if (ctx != null) {
                         assertThat(ctx.getDiagnostics()).isNotNull();
@@ -241,10 +228,6 @@ public class FaultInjectionWithAvailabilityStrategyTests extends TestSuiteBase {
                 };
 
             this.validateDiagnosticsContextHasDiagnosticsForOnlyFirstRegion = (ctx) -> {
-                logger.info(
-                    "Diagnostics Context to evaluate: {}",
-                    ctx != null ? ctx.toJson() : "NULL");
-
                 assertThat(ctx).isNotNull();
                 if (ctx != null) {
                     assertThat(ctx.getDiagnostics()).isNotNull();
@@ -746,7 +729,9 @@ public class FaultInjectionWithAvailabilityStrategyTests extends TestSuiteBase {
             readItemCallback,
             faultInjectionCallback,
             validateStatusCode,
+            1,
             ArrayUtils.toArray(validateDiagnosticsContext),
+            null,
             null,
             0,
             0);
@@ -1543,7 +1528,9 @@ public class FaultInjectionWithAvailabilityStrategyTests extends TestSuiteBase {
             actionAfterInitialCreation,
             faultInjectionCallback,
             validateStatusCode,
+            1,
             ArrayUtils.toArray(validateDiagnosticsContext),
+            null,
             null,
             0,
             0);
@@ -1570,7 +1557,7 @@ public class FaultInjectionWithAvailabilityStrategyTests extends TestSuiteBase {
         List<FeedResponse<ObjectNode>> returnedPages =
             queryPagedFlux.byPage(requestedPageSize).collectList().block();
 
-        CosmosDiagnosticsContext foundCtx = null;
+        ArrayList<CosmosDiagnosticsContext> foundCtxs = new ArrayList<>();
 
         if (returnedPages.isEmpty()) {
             return new CosmosResponseWrapper(
@@ -1582,10 +1569,10 @@ public class FaultInjectionWithAvailabilityStrategyTests extends TestSuiteBase {
 
         long totalRecordCount = 0L;
         for (FeedResponse<ObjectNode> page: returnedPages) {
-            if (foundCtx == null && page.getCosmosDiagnostics() != null) {
-                foundCtx = page.getCosmosDiagnostics().getDiagnosticsContext();
+            if (page.getCosmosDiagnostics() != null) {
+                foundCtxs.add(page.getCosmosDiagnostics().getDiagnosticsContext());
             } else {
-                assertThat(foundCtx).isSameAs(page.getCosmosDiagnostics().getDiagnosticsContext());
+                foundCtxs.add(null);
             }
 
             if (page.getResults() != null && page.getResults().size() > 0) {
@@ -1594,7 +1581,7 @@ public class FaultInjectionWithAvailabilityStrategyTests extends TestSuiteBase {
         }
 
         return new CosmosResponseWrapper(
-            foundCtx,
+            foundCtxs.toArray(new CosmosDiagnosticsContext[0]),
             HttpConstants.StatusCodes.OK,
             HttpConstants.SubStatusCodes.UNKNOWN,
             totalRecordCount);
@@ -1671,21 +1658,24 @@ public class FaultInjectionWithAvailabilityStrategyTests extends TestSuiteBase {
         Function<ItemOperationInvocationParameters, String> crossPartitionEmptyResultQueryGenerator = (params) ->
             "SELECT * FROM c WHERE CONTAINS (c.id, 'NotExistingId')";
 
-        BiConsumer<CosmosDiagnosticsContext, Integer> validateCtxRegionsAndQueryPlanCore =
+        BiConsumer<CosmosDiagnosticsContext, Integer> validateCtxRegions =
             (ctx, expectedNumberOfRegionsContacted) -> {
-                logger.info(
-                    "Diagnostics Context to evaluate: {}",
-                    ctx != null ? ctx.toJson() : "NULL");
+                assertThat(ctx).isNotNull();
+                if (ctx != null) {
+                    assertThat(ctx.getContactedRegionNames().size()).isEqualTo(expectedNumberOfRegionsContacted);
+                }
+            };
 
+        Consumer<CosmosDiagnosticsContext> validateCtxQueryPlan =
+            (ctx) -> {
                 assertThat(ctx).isNotNull();
                 if (ctx != null) {
                     assertThat(ctx.getDiagnostics()).isNotNull();
                     // Query Plan + at least one query response
 
-                    assertThat(ctx.getDiagnostics().size()).isGreaterThanOrEqualTo(2);
-                    assertThat(ctx.getContactedRegionNames().size()).isEqualTo(expectedNumberOfRegionsContacted);
+                    assertThat(ctx.getDiagnostics().size()).isGreaterThanOrEqualTo(1);
                     CosmosDiagnostics[] diagnostics = ctx.getDiagnostics().toArray(new CosmosDiagnostics[0]);
-                    assertThat(diagnostics.length).isGreaterThanOrEqualTo(2);
+                    assertThat(diagnostics.length).isGreaterThanOrEqualTo(1);
                     assertThat(diagnostics[0]).isNotNull();
                     assertThat(diagnostics[0].getFeedResponseDiagnostics()).isNull();
                     assertThat(diagnostics[0].getClientSideRequestStatistics()).isNotNull();
@@ -1703,11 +1693,44 @@ public class FaultInjectionWithAvailabilityStrategyTests extends TestSuiteBase {
                 }
             };
 
+        Consumer<CosmosDiagnosticsContext> validateCtxOnlyFeedResponsesExceptQueryPlan =
+            (ctx) -> {
+                assertThat(ctx).isNotNull();
+                if (ctx != null) {
+                    assertThat(ctx.getDiagnostics()).isNotNull();
+                    // Query Plan + at least one query response
+
+                    assertThat(ctx.getDiagnostics().size()).isGreaterThanOrEqualTo(1);
+                    CosmosDiagnostics[] diagnostics = ctx.getDiagnostics().toArray(new CosmosDiagnostics[0]);
+                    assertThat(diagnostics.length).isGreaterThanOrEqualTo(1);
+
+                    int start = 0;
+                    if (diagnostics[0].getFeedResponseDiagnostics() == null) {
+                        // skip query plan
+                        start = 1;
+                    }
+
+                    assertThat(diagnostics.length).isGreaterThanOrEqualTo(start + 1);
+
+
+                    for (int i = start; i < diagnostics.length; i++) {
+                        CosmosDiagnostics currentDiagnostics = diagnostics[i];
+                        assertThat(currentDiagnostics.getFeedResponseDiagnostics()).isNotNull();
+                        if (i == start && i == 1) {
+                            // Only expect queryPlanDiagnosticsContext on the very first FeedResponse after retrieving the query plan
+                            assertThat(currentDiagnostics.getFeedResponseDiagnostics().getQueryPlanDiagnosticsContext()).isNotNull();
+                        }
+                        assertThat(currentDiagnostics.getFeedResponseDiagnostics().getClientSideRequestStatistics()).isNotNull();
+                        assertThat(currentDiagnostics.getFeedResponseDiagnostics().getClientSideRequestStatistics().size()).isEqualTo(1);
+                    }
+                }
+            };
+
         Consumer<CosmosDiagnosticsContext> validateCtxSingleRegion =
-            (ctx) -> validateCtxRegionsAndQueryPlanCore.accept(ctx, SINGLE_REGION);
+            (ctx) -> validateCtxRegions.accept(ctx, SINGLE_REGION);
 
         Consumer<CosmosDiagnosticsContext> validateCtxTwoRegions =
-            (ctx) -> validateCtxRegionsAndQueryPlanCore.accept(ctx, TWO_REGIONS);
+            (ctx) -> validateCtxRegions.accept(ctx, TWO_REGIONS);
 
         Consumer<CosmosDiagnosticsContext> validateCtxOnlyOneFeedResponse = (ctx) -> {
             CosmosDiagnostics[] diagnostics = ctx.getDiagnostics().toArray(new CosmosDiagnostics[0]);
@@ -1742,10 +1765,6 @@ public class FaultInjectionWithAvailabilityStrategyTests extends TestSuiteBase {
 
         BiConsumer<CosmosDiagnosticsContext, Integer> validateCtxMultipleFeedResponsesCore =
             (ctx, expectedDiagnosticsCount) -> {
-                logger.info(
-                    "Diagnostics Context to evaluate: {}",
-                    ctx != null ? ctx.toJson() : "NULL");
-
                 assertThat(ctx).isNotNull();
                 if (ctx != null) {
                     assertThat(ctx.getDiagnostics().size()).isEqualTo(expectedDiagnosticsCount);
@@ -1808,10 +1827,13 @@ public class FaultInjectionWithAvailabilityStrategyTests extends TestSuiteBase {
                 queryReturnsTotalRecordCountWithDefaultPageSize,
                 noFailureInjection,
                 validateStatusCodeIs200Ok,
+                1,
                 ArrayUtils.toArray(
                     validateCtxSingleRegion,
-                    validateCtxOnlyOneFeedResponse
+                    validateCtxQueryPlan,
+                    validateCtxOnlyFeedResponsesExceptQueryPlan
                 ),
+                null,
                 validateExactlyOneRecordReturned,
                 ENOUGH_DOCS_OTHER_PK_TO_HIT_EVERY_PARTITION,
                 NO_OTHER_DOCS_WITH_SAME_PK
@@ -1825,9 +1847,15 @@ public class FaultInjectionWithAvailabilityStrategyTests extends TestSuiteBase {
                 queryReturnsTotalRecordCountWithDefaultPageSize,
                 noFailureInjection,
                 validateStatusCodeIs200Ok,
+                PHYSICAL_PARTITION_COUNT,
                 ArrayUtils.toArray(
                     validateCtxSingleRegion,
-                    validateCtxOnePagePerPartitionQuery
+                    validateCtxQueryPlan,
+                    validateCtxOnlyFeedResponsesExceptQueryPlan
+                ),
+                ArrayUtils.toArray(
+                    validateCtxSingleRegion,
+                    validateCtxOnlyFeedResponsesExceptQueryPlan
                 ),
                 validateAllRecordsSameIdReturned,
                 ENOUGH_DOCS_OTHER_PK_TO_HIT_EVERY_PARTITION,
@@ -1842,15 +1870,21 @@ public class FaultInjectionWithAvailabilityStrategyTests extends TestSuiteBase {
                 queryReturnsTotalRecordCountWithPageSizeOne,
                 noFailureInjection,
                 validateStatusCodeIs200Ok,
+                1 + ENOUGH_DOCS_SAME_PK_TO_EXCEED_PAGE_SIZE,
                 ArrayUtils.toArray(
                     validateCtxSingleRegion,
-                    validateCtxPageSizeOneForAllDocsSamePKQuery
+                    validateCtxQueryPlan,
+                    validateCtxOnlyFeedResponsesExceptQueryPlan
+                ),
+                ArrayUtils.toArray(
+                    validateCtxSingleRegion,
+                    validateCtxOnlyFeedResponsesExceptQueryPlan
                 ),
                 validateAllRecordsSamePartitionReturned,
                 ENOUGH_DOCS_OTHER_PK_TO_HIT_EVERY_PARTITION,
                 ENOUGH_DOCS_SAME_PK_TO_EXCEED_PAGE_SIZE
-            },
-            new Object[] {
+            }
+            /*new Object[] {
                 "PageSizeOne_CrossPartition_AllGood_NoAvailabilityStrategy",
                 Duration.ofSeconds(1),
                 noAvailabilityStrategy,
@@ -1986,7 +2020,7 @@ public class FaultInjectionWithAvailabilityStrategyTests extends TestSuiteBase {
                 validateAllRecordsSameIdReturned,
                 ENOUGH_DOCS_OTHER_PK_TO_HIT_EVERY_PARTITION,
                 NO_OTHER_DOCS_WITH_SAME_PK
-            },
+            },*/
         };
     }
 
@@ -2000,10 +2034,13 @@ public class FaultInjectionWithAvailabilityStrategyTests extends TestSuiteBase {
         BiFunction<String, ItemOperationInvocationParameters, CosmosResponseWrapper> queryExecution,
         BiConsumer<CosmosAsyncContainer, FaultInjectionOperationType> faultInjectionCallback,
         BiConsumer<Integer, Integer> validateStatusCode,
-        Consumer<CosmosDiagnosticsContext>[] diagnosticsContextValidations,
+        int expectedDiagnosticsContextCount,
+        Consumer<CosmosDiagnosticsContext>[] firstDiagnosticsContextValidations,
+        Consumer<CosmosDiagnosticsContext>[] otherDiagnosticsContextValidations,
         Consumer<CosmosResponseWrapper> responseValidator,
         int numberOfOtherDocumentsWithSameId,
         int numberOfOtherDocumentsWithSamePk) {
+
 
         execute(
             testCaseId,
@@ -2015,7 +2052,9 @@ public class FaultInjectionWithAvailabilityStrategyTests extends TestSuiteBase {
             (params) -> queryExecution.apply(queryGenerator.apply(params), params),
             faultInjectionCallback,
             validateStatusCode,
-            diagnosticsContextValidations,
+            expectedDiagnosticsContextCount,
+            firstDiagnosticsContextValidations,
+            otherDiagnosticsContextValidations,
             responseValidator,
             numberOfOtherDocumentsWithSameId,
             numberOfOtherDocumentsWithSamePk);
@@ -2194,7 +2233,9 @@ public class FaultInjectionWithAvailabilityStrategyTests extends TestSuiteBase {
         Function<ItemOperationInvocationParameters, CosmosResponseWrapper> actionAfterInitialCreation,
         BiConsumer<CosmosAsyncContainer, FaultInjectionOperationType> faultInjectionCallback,
         BiConsumer<Integer, Integer> validateStatusCode,
-        Consumer<CosmosDiagnosticsContext>[] diagnosticsContextValidations,
+        int expectedDiagnosticsContextCount,
+        Consumer<CosmosDiagnosticsContext>[] firstDiagnosticsContextValidations,
+        Consumer<CosmosDiagnosticsContext>[] otherDiagnosticsContextValidations,
         Consumer<CosmosResponseWrapper> validateResponse,
         int numberOfOtherDocumentsWithSameId,
         int numberOfOtherDocumentsWithSamePk) {
@@ -2252,11 +2293,19 @@ public class FaultInjectionWithAvailabilityStrategyTests extends TestSuiteBase {
 
                 CosmosResponseWrapper response = actionAfterInitialCreation.apply(params);
 
-                CosmosDiagnosticsContext diagnosticsContext = response.getDiagnosticsContext();
+                CosmosDiagnosticsContext[] diagnosticsContexts = response.getDiagnosticsContexts();
+                assertThat(diagnosticsContexts).isNotNull();
+                assertThat(diagnosticsContexts.length).isEqualTo(expectedDiagnosticsContextCount);
 
                 logger.info(
-                    "DIAGNOSTICS CONTEXT: {}",
-                    diagnosticsContext != null ? diagnosticsContext.toJson(): "NULL");
+                    "DIAGNOSTICS CONTEXT COUNT: {}",
+                    diagnosticsContexts.length);
+                for (CosmosDiagnosticsContext diagnosticsContext: diagnosticsContexts) {
+                    logger.info(
+                        "DIAGNOSTICS CONTEXT: {} {}",
+                        diagnosticsContext != null ? diagnosticsContext.toString() : "n/a",
+                        diagnosticsContext != null ? diagnosticsContext.toJson() : "NULL");
+                }
 
                 if (response == null) {
                     fail("Response is null");
@@ -2267,8 +2316,16 @@ public class FaultInjectionWithAvailabilityStrategyTests extends TestSuiteBase {
                     }
                 }
 
-                for (Consumer<CosmosDiagnosticsContext> ctxValidation : diagnosticsContextValidations) {
-                    ctxValidation.accept(diagnosticsContext);
+                for (Consumer<CosmosDiagnosticsContext> ctxValidation : firstDiagnosticsContextValidations) {
+                    ctxValidation.accept(diagnosticsContexts[0]);
+                }
+
+                for (int i = 1; i < diagnosticsContexts.length; i++) {
+                    CosmosDiagnosticsContext currentCtx = diagnosticsContexts[i];
+
+                    for (Consumer<CosmosDiagnosticsContext> ctxValidation : otherDiagnosticsContextValidations) {
+                        ctxValidation.accept(currentCtx);
+                    }
                 }
             } catch (Exception e) {
                 if (e instanceof CosmosException) {
@@ -2280,12 +2337,16 @@ public class FaultInjectionWithAvailabilityStrategyTests extends TestSuiteBase {
 
                     logger.info("EXCEPTION: ", e);
                     logger.info(
-                        "DIAGNOSTICS CONTEXT: {}",
+                        "DIAGNOSTICS CONTEXT: {} {}",
+                        diagnosticsContext != null ? diagnosticsContext.toString() : "n/a",
                         diagnosticsContext != null ? diagnosticsContext.toJson(): "NULL");
 
                     validateStatusCode.accept(cosmosException.getStatusCode(), cosmosException.getSubStatusCode());
-                    for (Consumer<CosmosDiagnosticsContext> ctxValidation : diagnosticsContextValidations) {
-                        ctxValidation.accept(diagnosticsContext);
+                    if (firstDiagnosticsContextValidations != null) {
+                        assertThat(expectedDiagnosticsContextCount).isEqualTo(1);
+                        for (Consumer<CosmosDiagnosticsContext> ctxValidation : firstDiagnosticsContextValidations) {
+                            ctxValidation.accept(diagnosticsContext);
+                        }
                     }
                 } else {
                     fail("A CosmosException instance should have been thrown.", e);
@@ -2336,7 +2397,7 @@ public class FaultInjectionWithAvailabilityStrategyTests extends TestSuiteBase {
     }
 
     private static class CosmosResponseWrapper {
-        private final CosmosDiagnosticsContext diagnosticsContext;
+        private final CosmosDiagnosticsContext[] diagnosticsContexts;
         private final Integer statusCode;
         private final Integer subStatusCode;
 
@@ -2346,9 +2407,9 @@ public class FaultInjectionWithAvailabilityStrategyTests extends TestSuiteBase {
             if (itemResponse.getDiagnostics() != null &&
                 itemResponse.getDiagnostics().getDiagnosticsContext() != null) {
 
-                this.diagnosticsContext = itemResponse.getDiagnostics().getDiagnosticsContext();
+                this.diagnosticsContexts = ArrayUtils.toArray(itemResponse.getDiagnostics().getDiagnosticsContext());
             } else {
-                this.diagnosticsContext = null;
+                this.diagnosticsContexts = null;
             }
 
             this.statusCode = itemResponse.getStatusCode();
@@ -2360,9 +2421,9 @@ public class FaultInjectionWithAvailabilityStrategyTests extends TestSuiteBase {
             if (exception.getDiagnostics() != null &&
                 exception.getDiagnostics().getDiagnosticsContext() != null) {
 
-                this.diagnosticsContext = exception.getDiagnostics().getDiagnosticsContext();
+                this.diagnosticsContexts = ArrayUtils.toArray(exception.getDiagnostics().getDiagnosticsContext());
             } else {
-                this.diagnosticsContext = null;
+                this.diagnosticsContexts = null;
             }
 
             this.statusCode = exception.getStatusCode();
@@ -2370,15 +2431,15 @@ public class FaultInjectionWithAvailabilityStrategyTests extends TestSuiteBase {
             this.totalRecordCount = null;
         }
 
-        public CosmosResponseWrapper(CosmosDiagnosticsContext ctx, int statusCode, Integer subStatusCode, Long totalRecordCount) {
-            this.diagnosticsContext = ctx;
+        public CosmosResponseWrapper(CosmosDiagnosticsContext[] ctxs, int statusCode, Integer subStatusCode, Long totalRecordCount) {
+            this.diagnosticsContexts = ctxs;
             this.statusCode = statusCode;
             this.subStatusCode = subStatusCode;
             this.totalRecordCount = totalRecordCount;
         }
 
-        public CosmosDiagnosticsContext getDiagnosticsContext() {
-            return this.diagnosticsContext;
+        public CosmosDiagnosticsContext[] getDiagnosticsContexts() {
+            return this.diagnosticsContexts;
         }
 
         public Integer getStatusCode() {

@@ -55,7 +55,7 @@ public final class CosmosDiagnosticsContext {
     private final String operationTypeString;
     private final ConsistencyLevel consistencyLevel;
     private final ConcurrentLinkedDeque<CosmosDiagnostics> diagnostics;
-    private Integer maxItemCount;
+    private final Integer maxItemCount;
     private final CosmosDiagnosticsThresholds thresholds;
     private final String operationId;
     private final String trackingId;
@@ -81,6 +81,8 @@ public final class CosmosDiagnosticsContext {
 
     private ArrayList<CosmosDiagnosticsRequestInfo> requestInfo = null;
 
+    private final Integer sequenceNumber;
+
     CosmosDiagnosticsContext(
         String spanName,
         String accountName,
@@ -95,7 +97,8 @@ public final class CosmosDiagnosticsContext {
         CosmosDiagnosticsThresholds thresholds,
         String trackingId,
         String connectionMode,
-        String userAgent) {
+        String userAgent,
+        Integer sequenceNumber) {
 
         checkNotNull(spanName, "Argument 'spanName' must not be null.");
         checkNotNull(accountName, "Argument 'accountName' must not be null.");
@@ -124,6 +127,7 @@ public final class CosmosDiagnosticsContext {
         this.trackingId = trackingId;
         this.userAgent = userAgent;
         this.connectionMode = connectionMode;
+        this.sequenceNumber = sequenceNumber;
     }
 
     /**
@@ -204,6 +208,16 @@ public final class CosmosDiagnosticsContext {
     }
 
     /**
+     * For feed operations the sequence number allows identifying the order of diagnostics. For each page produced
+     * in the page flux the sequence number will be incremented by 1. For point operations the sequence number
+     * is always null.
+     * @return null for point operations or the monotonically increasing sequence number of pages/diagnostics
+     */
+    public Integer getSequenceNumber() {
+        return this.sequenceNumber;
+    }
+
+    /**
      * The effective consistency level of the operation
      * @return the effective consistency level of the operation
      */
@@ -274,6 +288,14 @@ public final class CosmosDiagnosticsContext {
         checkNotNull(cosmosDiagnostics, "Argument 'cosmosDiagnostics' must not be null.");
         if (cosmosDiagnostics.getDiagnosticsContext() == this) {
             return;
+        }
+
+        StringBuilder callstackBuilder = new StringBuilder();
+        StackTraceElement[] elements = Thread.currentThread().getStackTrace();
+        for (int i = 1; i < elements.length; i++) {
+            StackTraceElement s = elements[i];
+            callstackBuilder.append("\tat " + s.getClassName() + "." + s.getMethodName() + "(" + s.getFileName() + ":" + s.getLineNumber() + ")");
+            callstackBuilder.append(System.getProperty("line.separator"));
         }
 
         if (cosmosDiagnostics.getFeedResponseDiagnostics() != null &&
@@ -538,6 +560,9 @@ public final class CosmosDiagnosticsContext {
         if (this.trackingId != null && !this.trackingId.isEmpty()) {
             ctxNode.put("trackingId", this.trackingId);
         }
+        if (this.sequenceNumber != null) {
+            ctxNode.put("sequenceNumber", this.sequenceNumber);
+        }
         ctxNode.put("consistency", this.consistencyLevel.toString());
         ctxNode.put("status", this.statusCode);
         if (this.subStatusCode != 0) {
@@ -634,14 +659,6 @@ public final class CosmosDiagnosticsContext {
      */
     public String getConnectionMode() {
         return this.connectionMode;
-    }
-
-    void updateMaxItemCount(Integer maxItemCount) {
-        if (maxItemCount != null) {
-            if (this.maxItemCount == null || this.maxItemCount < maxItemCount) {
-                this.maxItemCount = maxItemCount;
-            }
-        }
     }
 
     private static void addRequestInfoForGatewayStatistics(
@@ -866,7 +883,8 @@ public final class CosmosDiagnosticsContext {
                                                            String operationId,
                                                            ConsistencyLevel consistencyLevel, Integer maxItemCount,
                                                            CosmosDiagnosticsThresholds thresholds, String trackingId,
-                                                           String connectionMode, String userAgent) {
+                                                           String connectionMode, String userAgent,
+                                                           Integer sequenceNumber) {
 
                         return new CosmosDiagnosticsContext(
                             spanName,
@@ -882,7 +900,8 @@ public final class CosmosDiagnosticsContext {
                             thresholds,
                             trackingId,
                             connectionMode,
-                            userAgent);
+                            userAgent,
+                            sequenceNumber);
                     }
 
                     @Override
@@ -993,12 +1012,6 @@ public final class CosmosDiagnosticsContext {
                     public void setSamplingRateSnapshot(CosmosDiagnosticsContext ctx, double samplingRate) {
                         checkNotNull(ctx, "Argument 'ctx' must not be null.");
                         ctx.setSamplingRateSnapshot(samplingRate);
-                    }
-
-                    @Override
-                    public void updateMaxItemCount(CosmosDiagnosticsContext ctx, Integer maxItemCount) {
-                        checkNotNull(ctx, "Argument 'ctx' must not be null.");
-                        ctx.updateMaxItemCount(maxItemCount);
                     }
                 });
     }

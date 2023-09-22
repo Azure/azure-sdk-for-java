@@ -19,6 +19,7 @@ import reactor.core.publisher.Flux;
 
 import java.time.Duration;
 import java.time.Instant;
+import java.util.concurrent.atomic.AtomicInteger;
 import java.util.concurrent.atomic.AtomicLong;
 import java.util.concurrent.atomic.AtomicReference;
 import java.util.function.Consumer;
@@ -156,7 +157,6 @@ public final class CosmosPagedFlux<T> extends ContinuablePagedFlux<String, T, Fe
 
     private void recordFeedResponse(
         CosmosPagedFluxOptions pagedFluxOptions,
-        Context traceCtx,
         DiagnosticsProvider tracerProvider,
         FeedResponse<T> response,
         AtomicLong feedResponseConsumerLatencyInNanos) {
@@ -178,7 +178,7 @@ public final class CosmosPagedFlux<T> extends ContinuablePagedFlux<String, T, Fe
 
             if (isTracerEnabled(tracerProvider)) {
                 tracerProvider.recordPage(
-                    traceCtx,
+                    pagedFluxOptions.getDiagnosticsContextSnapshot(),
                     response != null ? response.getCosmosDiagnostics() : null,
                     actualItemCount,
                     response != null ? response.getRequestCharge() : null);
@@ -200,6 +200,7 @@ public final class CosmosPagedFlux<T> extends ContinuablePagedFlux<String, T, Fe
     private Flux<FeedResponse<T>> byPage(CosmosPagedFluxOptions pagedFluxOptions, Context context) {
         AtomicReference<Instant> startTime = new AtomicReference<>();
         AtomicLong feedResponseConsumerLatencyInNanos = new AtomicLong(0);
+        AtomicInteger sequenceNumber = new AtomicInteger(1);
 
         Flux<FeedResponse<T>> result =
             wrapWithTracingIfEnabled(
@@ -212,22 +213,31 @@ public final class CosmosPagedFlux<T> extends ContinuablePagedFlux<String, T, Fe
 
                 FeedResponse<T> response = signal.get();
                 Context traceCtx = DiagnosticsProvider.getContextFromReactorOrNull(signal.getContextView());
+
                 DiagnosticsProvider tracerProvider = pagedFluxOptions.getDiagnosticsProvider();
                 switch (signal.getType()) {
                     case ON_COMPLETE:
-                        this.recordFeedResponse(pagedFluxOptions, traceCtx, tracerProvider, response, feedResponseConsumerLatencyInNanos);
+                        this.recordFeedResponse(pagedFluxOptions, tracerProvider, response, feedResponseConsumerLatencyInNanos);
 
                         if (isTracerEnabled(tracerProvider)) {
                             tracerProvider.recordFeedResponseConsumerLatency(
                                 signal,
+                                pagedFluxOptions.getDiagnosticsContextSnapshot(),
                                 Duration.ofNanos(feedResponseConsumerLatencyInNanos.get()));
 
-                            tracerProvider.endSpan(traceCtx);
+                            tracerProvider.endSpan(pagedFluxOptions.getDiagnosticsContextSnapshot(), traceCtx);
                         }
 
                         break;
                     case ON_NEXT:
-                        this.recordFeedResponse(pagedFluxOptions, traceCtx, tracerProvider, response, feedResponseConsumerLatencyInNanos);
+                        this.recordFeedResponse(pagedFluxOptions, tracerProvider, response, feedResponseConsumerLatencyInNanos);
+                        tracerProvider.endSpan(pagedFluxOptions.getDiagnosticsContextSnapshot(), traceCtx);
+                        pagedFluxOptions.resetDiagnosticsContext(sequenceNumber.incrementAndGet());
+
+                        DiagnosticsProvider.setContextInReactor(tracerProvider.startSpan(
+                            pagedFluxOptions.getSpanName(),
+                            pagedFluxOptions.getDiagnosticsContextSnapshot(),
+                            traceCtx));
 
                         break;
 
@@ -235,10 +245,12 @@ public final class CosmosPagedFlux<T> extends ContinuablePagedFlux<String, T, Fe
                         if (isTracerEnabled(tracerProvider)) {
                             tracerProvider.recordFeedResponseConsumerLatency(
                                 signal,
+                                pagedFluxOptions.getDiagnosticsContextSnapshot(),
                                 Duration.ofNanos(feedResponseConsumerLatencyInNanos.get()));
 
                             // all info is extracted from CosmosException when applicable
                             tracerProvider.endSpan(
+                                pagedFluxOptions.getDiagnosticsContextSnapshot(),
                                 traceCtx,
                                 signal.getThrowable()
                             );
@@ -256,16 +268,16 @@ public final class CosmosPagedFlux<T> extends ContinuablePagedFlux<String, T, Fe
             .deferContextual(reactorCtx -> result
                 .doOnCancel(() -> {
                     Context traceCtx = DiagnosticsProvider.getContextFromReactorOrNull(reactorCtx);
-                    tracerProvider.endSpan(traceCtx);
+                    tracerProvider.endSpan(pagedFluxOptions.getDiagnosticsContextSnapshot(), traceCtx);
                 })
                 .doOnComplete(() -> {
                     Context traceCtx = DiagnosticsProvider.getContextFromReactorOrNull(reactorCtx);
-                    tracerProvider.endSpan(traceCtx);
+                    tracerProvider.endSpan(pagedFluxOptions.getDiagnosticsContextSnapshot(), traceCtx);
                 }))
             .contextWrite(DiagnosticsProvider.setContextInReactor(
                 pagedFluxOptions.getDiagnosticsProvider().startSpan(
                     pagedFluxOptions.getSpanName(),
-                    pagedFluxOptions.getDiagnosticsContext(),
+                    pagedFluxOptions.getDiagnosticsContextSnapshot(),
                     context)));
     }
 

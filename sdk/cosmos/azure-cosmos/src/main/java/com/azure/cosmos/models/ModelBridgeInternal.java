@@ -719,11 +719,6 @@ public final class ModelBridgeInternal {
     }
 
     @Warning(value = INTERNAL_USE_ONLY_WARNING)
-    public static CosmosQueryRequestOptions createQueryRequestOptions(CosmosQueryRequestOptions options) {
-        return new CosmosQueryRequestOptions(options);
-    }
-
-    @Warning(value = INTERNAL_USE_ONLY_WARNING)
     public static Integer getMaxItemCountFromQueryRequestOptions(CosmosQueryRequestOptions options) {
         return options.getMaxItemCount();
     }

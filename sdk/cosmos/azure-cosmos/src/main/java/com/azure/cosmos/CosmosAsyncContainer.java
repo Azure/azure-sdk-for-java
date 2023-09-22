@@ -652,7 +652,7 @@ public class CosmosAsyncContainer {
                 queryOptionsAccessor.withEmptyPageDiagnosticsEnabled(nonNullOptions, true)
                 : nonNullOptions;
 
-            queryOptionsAccessor.applyMaxItemCount(options, pagedFluxOptions);
+            queryOptionsAccessor.applyMaxItemCount(requestOptions, pagedFluxOptions);
 
             pagedFluxOptions.setTracerAndTelemetryInformation(
                 this.readAllItemsSpanName,
@@ -663,7 +663,8 @@ public class CosmosAsyncContainer {
                 client,
                 queryOptionsAccessor.getQueryNameOrDefault(requestOptions, this.readAllItemsSpanName),
                 requestOptions.getConsistencyLevel(),
-                client.getEffectiveDiagnosticsThresholds(queryOptionsAccessor.getDiagnosticsThresholds(requestOptions)));
+                client.getEffectiveDiagnosticsThresholds(queryOptionsAccessor.getDiagnosticsThresholds(requestOptions)),
+                queryOptionsAccessor.getDiagnosticsFactoryResetCallbackReference(requestOptions));
 
             setContinuationTokenAndMaxItemCount(pagedFluxOptions, requestOptions);
 
@@ -947,13 +948,14 @@ public class CosmosAsyncContainer {
 
     <T> Function<CosmosPagedFluxOptions, Flux<FeedResponse<T>>> queryItemsInternalFunc(
         SqlQuerySpec sqlQuerySpec, CosmosQueryRequestOptions cosmosQueryRequestOptions, Class<T> classType) {
+        CosmosAsyncClient client = this.getDatabase().getClient();
+        CosmosQueryRequestOptions nonNullOptions =
+            cosmosQueryRequestOptions != null ? cosmosQueryRequestOptions : new CosmosQueryRequestOptions();
+        CosmosQueryRequestOptions options = clientAccessor.shouldEnableEmptyPageDiagnostics(client) ?
+            queryOptionsAccessor.withEmptyPageDiagnosticsEnabled(nonNullOptions, true)
+            : nonNullOptions;
+
         Function<CosmosPagedFluxOptions, Flux<FeedResponse<T>>> pagedFluxOptionsFluxFunction = (pagedFluxOptions -> {
-            CosmosAsyncClient client = this.getDatabase().getClient();
-            CosmosQueryRequestOptions nonNullOptions =
-                cosmosQueryRequestOptions != null ? cosmosQueryRequestOptions : new CosmosQueryRequestOptions();
-            CosmosQueryRequestOptions options = clientAccessor.shouldEnableEmptyPageDiagnostics(client) ?
-                queryOptionsAccessor.withEmptyPageDiagnosticsEnabled(nonNullOptions, true)
-                : nonNullOptions;
             String spanName = this.queryItemsSpanName;
 
             queryOptionsAccessor.applyMaxItemCount(options, pagedFluxOptions);
@@ -967,13 +969,14 @@ public class CosmosAsyncContainer {
                 client,
                 queryOptionsAccessor.getQueryNameOrDefault(options, spanName),
                 options.getConsistencyLevel(),
-                client.getEffectiveDiagnosticsThresholds(queryOptionsAccessor.getDiagnosticsThresholds(options)));
+                client.getEffectiveDiagnosticsThresholds(queryOptionsAccessor.getDiagnosticsThresholds(options)),
+                queryOptionsAccessor.getDiagnosticsFactoryResetCallbackReference(options));
 
             setContinuationTokenAndMaxItemCount(pagedFluxOptions, options);
 
-            if (pagedFluxOptions.getDiagnosticsContext() != null) {
-                queryOptionsAccessor.setDiagnosticsContext(options, pagedFluxOptions.getDiagnosticsContext());
-            }
+            queryOptionsAccessor.setDiagnosticsContextSupplier(
+                options,
+                () -> pagedFluxOptions.getDiagnosticsContextSnapshot());
 
             ImplementationBridgeHelpers
                 .CosmosQueryRequestOptionsHelper
@@ -1009,7 +1012,8 @@ public class CosmosAsyncContainer {
                 client,
                 queryOptionsAccessor.getQueryNameOrDefault(options, spanName),
                 options.getConsistencyLevel(),
-                client.getEffectiveDiagnosticsThresholds(queryOptionsAccessor.getDiagnosticsThresholds(options)));
+                client.getEffectiveDiagnosticsThresholds(queryOptionsAccessor.getDiagnosticsThresholds(options)),
+                queryOptionsAccessor.getDiagnosticsFactoryResetCallbackReference(options));
             setContinuationTokenAndMaxItemCount(pagedFluxOptions, options);
 
             return sqlQuerySpecMono.flux()
@@ -1100,7 +1104,8 @@ public class CosmosAsyncContainer {
                 spanName,
                 null,
                 client.getEffectiveDiagnosticsThresholds(
-                    cfOptionsAccessor.getDiagnosticsThresholds(cosmosChangeFeedRequestOptions)));
+                    cfOptionsAccessor.getDiagnosticsThresholds(cosmosChangeFeedRequestOptions)),
+                null);
 
             getEffectiveCosmosChangeFeedRequestOptions(pagedFluxOptions, cosmosChangeFeedRequestOptions);
 
@@ -1560,7 +1565,7 @@ public class CosmosAsyncContainer {
         requestOptions.setPartitionKey(partitionKey);
 
         return UtilBridgeInternal.createCosmosPagedFlux(pagedFluxOptions -> {
-            queryOptionsAccessor.applyMaxItemCount(options, pagedFluxOptions);
+            queryOptionsAccessor.applyMaxItemCount(requestOptions, pagedFluxOptions);
             pagedFluxOptions.setTracerAndTelemetryInformation(
                 this.readAllItemsOfLogicalPartitionSpanName,
                 database.getId(),
@@ -1570,7 +1575,8 @@ public class CosmosAsyncContainer {
                 this.getDatabase().getClient(),
                 queryOptionsAccessor.getQueryNameOrDefault(requestOptions, this.readAllItemsOfLogicalPartitionSpanName),
                 requestOptions.getConsistencyLevel(),
-                client.getEffectiveDiagnosticsThresholds(queryOptionsAccessor.getDiagnosticsThresholds(options)));
+                client.getEffectiveDiagnosticsThresholds(queryOptionsAccessor.getDiagnosticsThresholds(options)),
+                queryOptionsAccessor.getDiagnosticsFactoryResetCallbackReference(requestOptions));
 
             setContinuationTokenAndMaxItemCount(pagedFluxOptions, requestOptions);
             return getDatabase()

@@ -10,6 +10,8 @@ import com.azure.cosmos.CosmosDiagnosticsContext;
 import com.azure.cosmos.CosmosDiagnosticsThresholds;
 import com.azure.cosmos.util.CosmosPagedFlux;
 
+import java.util.concurrent.atomic.AtomicReference;
+
 import static com.azure.cosmos.implementation.guava25.base.Preconditions.checkNotNull;
 
 /**
@@ -36,13 +38,15 @@ public class CosmosPagedFluxOptions {
     private CosmosDiagnosticsThresholds thresholds;
     private String operationId;
 
-    private CosmosDiagnosticsContext ctx;
+    private final AtomicReference<CosmosDiagnosticsContext> ctxHolder = new AtomicReference<>();
 
     private String userAgent;
     private String connectionMode;
     public ConsistencyLevel effectiveConsistencyLevel;
 
     public double samplingRateSnapshot = 1;
+
+    private AtomicReference<Runnable> diagnosticsFactoryResetCallback;
 
     public CosmosPagedFluxOptions() {}
 
@@ -117,10 +121,6 @@ public class CosmosPagedFluxOptions {
      */
     public CosmosPagedFluxOptions setMaxItemCount(Integer maxItemCount) {
         this.maxItemCount = maxItemCount;
-        CosmosDiagnosticsContext ctxSnapshot = this.getDiagnosticsContext();
-        if (ctxSnapshot != null) {
-            ctxAccessor.updateMaxItemCount(ctxSnapshot, maxItemCount);
-        }
 
         return this;
     }
@@ -169,8 +169,8 @@ public class CosmosPagedFluxOptions {
 
     public String getConnectionMode() { return this.connectionMode; }
 
-    public CosmosDiagnosticsContext getDiagnosticsContext() {
-        return this.ctx;
+    public CosmosDiagnosticsContext getDiagnosticsContextSnapshot() {
+        return this.ctxHolder.get();
     }
 
     public void setTracerInformation(
@@ -205,23 +205,37 @@ public class CosmosPagedFluxOptions {
             .getEffectiveConsistencyLevel(cosmosAsyncClient, operationType, consistencyLevel);
         this.thresholds = thresholds;
 
+        this.resetDiagnosticsContext(1);
+    }
+
+    public void resetDiagnosticsContext(int sequenceNumber) {
         final CosmosDiagnosticsContext cosmosCtx = ctxAccessor.create(
-            tracerSpanName,
+            this.spanName,
             this.serviceEndpoint,
-            BridgeInternal.getServiceEndpoint(cosmosAsyncClient),
-            databaseId,
-            containerId,
-            resourceType,
-            operationType,
-            operationId,
+            BridgeInternal.getServiceEndpoint(this.cosmosAsyncClient),
+            this.databaseId,
+            this.containerId,
+            this.resourceType,
+            this.operationType,
+            this.operationId,
             this.effectiveConsistencyLevel,
             this.getMaxItemCount(),
-            thresholds,
+            this.thresholds,
             null,
             this.getConnectionMode(),
-            this.getUserAgent());
+            this.getUserAgent(),
+            sequenceNumber
+        );
         ctxAccessor.setSamplingRateSnapshot(cosmosCtx, this.getSamplingRateSnapshot());
-        this.ctx = cosmosCtx;
+
+        this.ctxHolder.set(cosmosCtx);
+
+        if (this.diagnosticsFactoryResetCallback != null) {
+            Runnable resetCallbackSnapshot = this.diagnosticsFactoryResetCallback.get();
+            if (resetCallbackSnapshot != null) {
+                resetCallbackSnapshot.run();
+            }
+        }
     }
 
     public void setTracerAndTelemetryInformation(String tracerSpanName,
@@ -232,7 +246,8 @@ public class CosmosPagedFluxOptions {
                                                  CosmosAsyncClient cosmosAsyncClient,
                                                  String operationId,
                                                  ConsistencyLevel consistencyLevel,
-                                                 CosmosDiagnosticsThresholds thresholds
+                                                 CosmosDiagnosticsThresholds thresholds,
+                                                 AtomicReference<Runnable> diagnosticsFactoryResetCallback
 
     ) {
         checkNotNull(tracerSpanName, "Argument 'tracerSpanName' must not be NULL.");
@@ -255,25 +270,8 @@ public class CosmosPagedFluxOptions {
         this.effectiveConsistencyLevel = clientAccessor
             .getEffectiveConsistencyLevel(cosmosAsyncClient, operationType, consistencyLevel);
         this.thresholds = thresholds;
-
-        final CosmosDiagnosticsContext cosmosCtx = ctxAccessor.create(
-            tracerSpanName,
-            this.getAccountTag(),
-            BridgeInternal.getServiceEndpoint(cosmosAsyncClient),
-            databaseId,
-            containerId,
-            resourceType,
-            operationType,
-            operationId,
-            this.effectiveConsistencyLevel,
-            this.getMaxItemCount(),
-            thresholds,
-            null,
-            this.getConnectionMode(),
-            this.getUserAgent());
-        ctxAccessor.setSamplingRateSnapshot(cosmosCtx, this.getSamplingRateSnapshot());
-        this.ctx = cosmosCtx;
-
+        this.resetDiagnosticsContext(1);
+        this.diagnosticsFactoryResetCallback = diagnosticsFactoryResetCallback;
     }
 
     public double getSamplingRateSnapshot() {
@@ -282,7 +280,7 @@ public class CosmosPagedFluxOptions {
 
     public void setSamplingRateSnapshot(double samplingRateSnapshot) {
         this.samplingRateSnapshot = samplingRateSnapshot;
-        CosmosDiagnosticsContext ctxSnapshot = this.getDiagnosticsContext();
+        CosmosDiagnosticsContext ctxSnapshot = this.getDiagnosticsContextSnapshot();
         if (ctxSnapshot != null) {
             ctxAccessor.setSamplingRateSnapshot(ctxSnapshot, samplingRateSnapshot);
         }

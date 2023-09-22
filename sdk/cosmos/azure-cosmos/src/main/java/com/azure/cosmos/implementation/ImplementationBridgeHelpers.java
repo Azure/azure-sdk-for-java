@@ -82,6 +82,7 @@ import java.util.concurrent.ConcurrentMap;
 import java.util.concurrent.atomic.AtomicBoolean;
 import java.util.concurrent.atomic.AtomicReference;
 import java.util.function.Function;
+import java.util.function.Supplier;
 
 public class ImplementationBridgeHelpers {
     private final static Logger logger = LoggerFactory.getLogger(ImplementationBridgeHelpers.class);
@@ -257,6 +258,10 @@ public class ImplementationBridgeHelpers {
         }
 
         public interface CosmosQueryRequestOptionsAccessor {
+
+            CosmosQueryRequestOptions clone(
+                CosmosQueryRequestOptions toBeCloned,
+                boolean cloneDiagnosticsFactoryResetCallback);
             void setOperationContext(CosmosQueryRequestOptions queryRequestOptions, OperationContextAndListenerTuple operationContext);
             OperationContextAndListenerTuple getOperationContext(CosmosQueryRequestOptions queryRequestOptions);
             CosmosQueryRequestOptions setHeader(CosmosQueryRequestOptions queryRequestOptions, String name, String value);
@@ -280,10 +285,16 @@ public class ImplementationBridgeHelpers {
             void setCancelledRequestDiagnosticsTracker(
                 CosmosQueryRequestOptions options,
                 List<CosmosDiagnostics> cancelledRequestDiagnosticsTracker);
-            CosmosDiagnosticsContext getDiagnosticsContext(CosmosQueryRequestOptions options);
-            void setDiagnosticsContext(
+
+            void setDiagnosticsContextSupplier(
                 CosmosQueryRequestOptions options,
-                CosmosDiagnosticsContext ctx);
+                Supplier<CosmosDiagnosticsContext> ctxSupplier);
+
+            AtomicReference<Runnable> getDiagnosticsFactoryResetCallbackReference(CosmosQueryRequestOptions options);
+
+            void setDiagnosticsFactoryResetCallback(
+                CosmosQueryRequestOptions options,
+                Runnable resetCallback);
         }
     }
 
@@ -799,7 +810,8 @@ public class ImplementationBridgeHelpers {
                 CosmosDiagnosticsThresholds thresholds,
                 String trackingId,
                 String connectionMode,
-                String userAgent);
+                String userAgent,
+                Integer sequenceNumber);
 
             CosmosDiagnosticsSystemUsageSnapshot createSystemUsageSnapshot(
                 String cpu,
@@ -848,8 +860,6 @@ public class ImplementationBridgeHelpers {
             String getSpanName(CosmosDiagnosticsContext ctx);
 
             void setSamplingRateSnapshot(CosmosDiagnosticsContext ctx, double samplingRate);
-
-            void updateMaxItemCount(CosmosDiagnosticsContext ctx, Integer maxItemCount);
         }
     }
 

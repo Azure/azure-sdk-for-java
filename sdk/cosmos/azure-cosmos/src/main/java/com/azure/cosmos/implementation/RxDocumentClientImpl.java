@@ -961,6 +961,7 @@ public class RxDocumentClientImpl implements AsyncDocumentClient, IAuthorization
 
 
         final ScopedDiagnosticsFactory diagnosticsFactory = new ScopedDiagnosticsFactory(this);
+        qryOptAccessor.setDiagnosticsFactoryResetCallback(nonNullQueryOptions, () -> diagnosticsFactory.reset());
         return
             ObservableHelper.fluxInlineIfPossibleAsObs(
                                 () -> createQueryInternal(
@@ -3261,7 +3262,7 @@ public class RxDocumentClientImpl implements AsyncDocumentClient, IAuthorization
         }
 
         final CosmosQueryRequestOptions effectiveOptions =
-            ModelBridgeInternal.createQueryRequestOptions(options);
+            qryOptAccessor.clone(options, false);
 
         RequestOptions nonNullRequestOptions = qryOptAccessor.toRequestOptions(effectiveOptions);
 
@@ -3282,6 +3283,7 @@ public class RxDocumentClientImpl implements AsyncDocumentClient, IAuthorization
             diagnosticsFactory = null;
         } else {
             diagnosticsFactory = new ScopedDiagnosticsFactory(this);
+            qryOptAccessor.setDiagnosticsFactoryResetCallback(effectiveOptions, () -> diagnosticsFactory.reset());
             effectiveClientContext = diagnosticsFactory;
         }
 
@@ -5649,10 +5651,11 @@ public class RxDocumentClientImpl implements AsyncDocumentClient, IAuthorization
         public void merge(RequestOptions requestOptions) {
             CosmosDiagnosticsContext knownCtx = null;
 
-            if (requestOptions != null &&
-                requestOptions.getDiagnosticsContext() != null) {
-
-                knownCtx = requestOptions.getDiagnosticsContext();
+            if (requestOptions != null) {
+                CosmosDiagnosticsContext ctxSnapshot = requestOptions.getDiagnosticsContextSnapshot();
+                if (ctxSnapshot != null) {
+                    knownCtx = requestOptions.getDiagnosticsContextSnapshot();
+                }
             }
 
             merge(knownCtx);
@@ -5685,6 +5688,11 @@ public class RxDocumentClientImpl implements AsyncDocumentClient, IAuthorization
                     ctxAccessor.addDiagnostics(ctx, diagnostics);
                 }
             }
+        }
+
+        public void reset() {
+            this.createdDiagnostics.clear();
+            this.isMerged.set(false);
         }
     }
 }

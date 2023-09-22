@@ -8,6 +8,7 @@ import com.azure.cosmos.implementation.Constants;
 import com.azure.cosmos.implementation.DiagnosticsClientContext;
 import com.azure.cosmos.implementation.DocumentClientRetryPolicy;
 import com.azure.cosmos.implementation.HttpConstants;
+import com.azure.cosmos.implementation.ImplementationBridgeHelpers;
 import com.azure.cosmos.implementation.InvalidPartitionExceptionRetryPolicy;
 import com.azure.cosmos.implementation.OperationType;
 import com.azure.cosmos.implementation.PartitionKeyRange;
@@ -96,7 +97,10 @@ public class DefaultDocumentQueryExecutionContext<T> extends DocumentQueryExecut
             cosmosQueryRequestOptions = new CosmosQueryRequestOptions();
         }
 
-        CosmosQueryRequestOptions newCosmosQueryRequestOptions = ModelBridgeInternal.createQueryRequestOptions(cosmosQueryRequestOptions);
+        CosmosQueryRequestOptions newCosmosQueryRequestOptions = ImplementationBridgeHelpers
+            .CosmosQueryRequestOptionsHelper
+            .getCosmosQueryRequestOptionsAccessor()
+            .clone(cosmosQueryRequestOptions, false);
 
         // We can not go to backend with the composite continuation token,
         // but we still need the gateway for the query plan.
