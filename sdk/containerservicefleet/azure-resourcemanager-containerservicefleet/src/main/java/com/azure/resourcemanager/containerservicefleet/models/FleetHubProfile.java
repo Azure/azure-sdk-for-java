@@ -17,6 +17,18 @@ public final class FleetHubProfile {
     private String dnsPrefix;
 
     /*
+     * The access profile for the Fleet hub API server.
+     */
+    @JsonProperty(value = "apiServerAccessProfile")
+    private ApiServerAccessProfile apiServerAccessProfile;
+
+    /*
+     * The agent profile for the Fleet hub.
+     */
+    @JsonProperty(value = "agentProfile")
+    private AgentProfile agentProfile;
+
+    /*
      * The FQDN of the Fleet hub.
      */
     @JsonProperty(value = "fqdn", access = JsonProperty.Access.WRITE_ONLY)
@@ -53,6 +65,46 @@ public final class FleetHubProfile {
     }
 
     /**
+     * Get the apiServerAccessProfile property: The access profile for the Fleet hub API server.
+     *
+     * @return the apiServerAccessProfile value.
+     */
+    public ApiServerAccessProfile apiServerAccessProfile() {
+        return this.apiServerAccessProfile;
+    }
+
+    /**
+     * Set the apiServerAccessProfile property: The access profile for the Fleet hub API server.
+     *
+     * @param apiServerAccessProfile the apiServerAccessProfile value to set.
+     * @return the FleetHubProfile object itself.
+     */
+    public FleetHubProfile withApiServerAccessProfile(ApiServerAccessProfile apiServerAccessProfile) {
+        this.apiServerAccessProfile = apiServerAccessProfile;
+        return this;
+    }
+
+    /**
+     * Get the agentProfile property: The agent profile for the Fleet hub.
+     *
+     * @return the agentProfile value.
+     */
+    public AgentProfile agentProfile() {
+        return this.agentProfile;
+    }
+
+    /**
+     * Set the agentProfile property: The agent profile for the Fleet hub.
+     *
+     * @param agentProfile the agentProfile value to set.
+     * @return the FleetHubProfile object itself.
+     */
+    public FleetHubProfile withAgentProfile(AgentProfile agentProfile) {
+        this.agentProfile = agentProfile;
+        return this;
+    }
+
+    /**
      * Get the fqdn property: The FQDN of the Fleet hub.
      *
      * @return the fqdn value.
@@ -76,5 +128,11 @@ public final class FleetHubProfile {
      * @throws IllegalArgumentException thrown if the instance is not valid.
      */
     public void validate() {
+        if (apiServerAccessProfile() != null) {
+            apiServerAccessProfile().validate();
+        }
+        if (agentProfile() != null) {
+            agentProfile().validate();
+        }
     }
 }

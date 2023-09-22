@@ -11,6 +11,15 @@ import java.util.Collection;
 /** Defines values for FormRecognizerAudience. */
 @Immutable
 public final class FormRecognizerAudience extends ExpandableStringEnum<FormRecognizerAudience> {
+
+    /**
+     * Creates a FormRecognizerAudience object.
+     * @deprecated Use the {@link #fromString(String)} factory method.
+     */
+    @Deprecated
+    public FormRecognizerAudience() {
+    }
+
     /** Static value AZURE_RESOURCE_MANAGER_CHINA for FormRecognizerAudience. */
     public static final FormRecognizerAudience AZURE_CHINA = fromString("https://cognitiveservices.azure.cn");
 
@@ -30,7 +39,10 @@ public final class FormRecognizerAudience extends ExpandableStringEnum<FormRecog
         return fromString(name, FormRecognizerAudience.class);
     }
 
-    /** @return known FormRecognizerAudience values. */
+    /**
+     * Returns known FormRecognizerAudience values.
+     * @return known FormRecognizerAudience values.
+     */
     public static Collection<FormRecognizerAudience> values() {
         return values(FormRecognizerAudience.class);
     }

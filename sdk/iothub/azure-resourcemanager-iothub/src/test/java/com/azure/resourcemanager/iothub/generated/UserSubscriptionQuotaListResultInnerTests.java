@@ -17,15 +17,15 @@ public final class UserSubscriptionQuotaListResultInnerTests {
         UserSubscriptionQuotaListResultInner model =
             BinaryData
                 .fromString(
-                    "{\"value\":[{\"id\":\"n\",\"type\":\"xisxyawjoyaqcsl\",\"unit\":\"pkii\",\"currentValue\":983085062,\"limit\":1211885049,\"name\":{\"value\":\"eli\",\"localizedValue\":\"nr\"}}],\"nextLink\":\"folhbnxknal\"}")
+                    "{\"value\":[{\"id\":\"ucnapkteoellwp\",\"type\":\"d\",\"unit\":\"pfqbuaceopzf\",\"currentValue\":1219903446,\"limit\":391831639,\"name\":{\"value\":\"pppcqeqxo\",\"localizedValue\":\"dahzxctobg\"}},{\"id\":\"dmoizpostmg\",\"type\":\"fbunrmfqjhhk\",\"unit\":\"pvjymjhxxjyng\",\"currentValue\":1804869047,\"limit\":216222103,\"name\":{\"value\":\"swbxqz\",\"localizedValue\":\"zjf\"}}],\"nextLink\":\"vjfdx\"}")
                 .toObject(UserSubscriptionQuotaListResultInner.class);
-        Assertions.assertEquals("n", model.value().get(0).id());
-        Assertions.assertEquals("xisxyawjoyaqcsl", model.value().get(0).type());
-        Assertions.assertEquals("pkii", model.value().get(0).unit());
-        Assertions.assertEquals(983085062, model.value().get(0).currentValue());
-        Assertions.assertEquals(1211885049, model.value().get(0).limit());
-        Assertions.assertEquals("eli", model.value().get(0).name().value());
-        Assertions.assertEquals("nr", model.value().get(0).name().localizedValue());
+        Assertions.assertEquals("ucnapkteoellwp", model.value().get(0).id());
+        Assertions.assertEquals("d", model.value().get(0).type());
+        Assertions.assertEquals("pfqbuaceopzf", model.value().get(0).unit());
+        Assertions.assertEquals(1219903446, model.value().get(0).currentValue());
+        Assertions.assertEquals(391831639, model.value().get(0).limit());
+        Assertions.assertEquals("pppcqeqxo", model.value().get(0).name().value());
+        Assertions.assertEquals("dahzxctobg", model.value().get(0).name().localizedValue());
     }
 
     @org.junit.jupiter.api.Test
@@ -36,19 +36,26 @@ public final class UserSubscriptionQuotaListResultInnerTests {
                     Arrays
                         .asList(
                             new UserSubscriptionQuota()
-                                .withId("n")
-                                .withType("xisxyawjoyaqcsl")
-                                .withUnit("pkii")
-                                .withCurrentValue(983085062)
-                                .withLimit(1211885049)
-                                .withName(new Name().withValue("eli").withLocalizedValue("nr"))));
+                                .withId("ucnapkteoellwp")
+                                .withType("d")
+                                .withUnit("pfqbuaceopzf")
+                                .withCurrentValue(1219903446)
+                                .withLimit(391831639)
+                                .withName(new Name().withValue("pppcqeqxo").withLocalizedValue("dahzxctobg")),
+                            new UserSubscriptionQuota()
+                                .withId("dmoizpostmg")
+                                .withType("fbunrmfqjhhk")
+                                .withUnit("pvjymjhxxjyng")
+                                .withCurrentValue(1804869047)
+                                .withLimit(216222103)
+                                .withName(new Name().withValue("swbxqz").withLocalizedValue("zjf"))));
         model = BinaryData.fromObject(model).toObject(UserSubscriptionQuotaListResultInner.class);
-        Assertions.assertEquals("n", model.value().get(0).id());
-        Assertions.assertEquals("xisxyawjoyaqcsl", model.value().get(0).type());
-        Assertions.assertEquals("pkii", model.value().get(0).unit());
-        Assertions.assertEquals(983085062, model.value().get(0).currentValue());
-        Assertions.assertEquals(1211885049, model.value().get(0).limit());
-        Assertions.assertEquals("eli", model.value().get(0).name().value());
-        Assertions.assertEquals("nr", model.value().get(0).name().localizedValue());
+        Assertions.assertEquals("ucnapkteoellwp", model.value().get(0).id());
+        Assertions.assertEquals("d", model.value().get(0).type());
+        Assertions.assertEquals("pfqbuaceopzf", model.value().get(0).unit());
+        Assertions.assertEquals(1219903446, model.value().get(0).currentValue());
+        Assertions.assertEquals(391831639, model.value().get(0).limit());
+        Assertions.assertEquals("pppcqeqxo", model.value().get(0).name().value());
+        Assertions.assertEquals("dahzxctobg", model.value().get(0).name().localizedValue());
     }
 }

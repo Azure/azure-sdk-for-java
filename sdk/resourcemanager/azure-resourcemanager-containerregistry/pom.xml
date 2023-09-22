@@ -43,6 +43,7 @@
     </javaModulesSurefireArgLine>
 
     <parallelizeTests>false</parallelizeTests>
+    <revapi.skip>true</revapi.skip>
   </properties>
 
   <developers>

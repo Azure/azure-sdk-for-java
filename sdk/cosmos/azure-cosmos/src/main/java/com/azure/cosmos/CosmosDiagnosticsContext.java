@@ -272,6 +272,10 @@ public final class CosmosDiagnosticsContext {
 
     void addDiagnostics(CosmosDiagnostics cosmosDiagnostics) {
         checkNotNull(cosmosDiagnostics, "Argument 'cosmosDiagnostics' must not be null.");
+        if (cosmosDiagnostics.getDiagnosticsContext() == this) {
+            return;
+        }
+
         synchronized (this.spanName) {
             if (this.samplingRateSnapshot != null) {
                 diagAccessor.setSamplingRateSnapshot(cosmosDiagnostics, this.samplingRateSnapshot);
@@ -546,7 +550,11 @@ public final class CosmosDiagnosticsContext {
         }
 
         if (this.finalError != null) {
-            ctxNode.put("exception", this.finalError.toString());
+            if (this.finalError instanceof CosmosException) {
+                ctxNode.put("exception", ((CosmosException)this.finalError).toString(false));
+            } else {
+                ctxNode.put("exception", this.finalError.getMessage());
+            }
         }
 
         if (this.diagnostics != null && this.diagnostics.size() > 0) {

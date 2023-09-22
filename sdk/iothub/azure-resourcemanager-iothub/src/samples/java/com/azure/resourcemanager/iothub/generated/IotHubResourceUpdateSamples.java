@@ -11,7 +11,7 @@ import java.util.Map;
 /** Samples for IotHubResource Update. */
 public final class IotHubResourceUpdateSamples {
     /*
-     * x-ms-original-file: specification/iothub/resource-manager/Microsoft.Devices/preview/2022-11-15-preview/examples/iothub_patch.json
+     * x-ms-original-file: specification/iothub/resource-manager/Microsoft.Devices/stable/2023-06-30/examples/iothub_patch.json
      */
     /**
      * Sample code: IotHubResource_Update.
@@ -27,6 +27,7 @@ public final class IotHubResourceUpdateSamples {
         resource.update().withTags(mapOf("foo", "bar")).apply();
     }
 
+    // Use "Map.of" if available
     @SuppressWarnings("unchecked")
     private static <T> Map<String, T> mapOf(Object... inputs) {
         Map<String, T> map = new HashMap<>();

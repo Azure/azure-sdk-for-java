@@ -15,6 +15,7 @@
 - Fixed exception when attempting to populate trace context on received `EventData`. ([#33594](https://github.com/Azure/azure-sdk-for-java/issues/33594))
 - Fixed `NullPointerException` when ending span when `AmqpException` is thrown, but its `AmqpErrorCondition` is `null`.
   ([#35299](https://github.com/Azure/azure-sdk-for-java/issues/35299))
+- Handles errors thrown from user-called code when invoking `PartitionProcessor`'s `processError` or `close` methods. [#36891](https://github.com/Azure/azure-sdk-for-java/pull/36891)
 
 ### Other Changes
 

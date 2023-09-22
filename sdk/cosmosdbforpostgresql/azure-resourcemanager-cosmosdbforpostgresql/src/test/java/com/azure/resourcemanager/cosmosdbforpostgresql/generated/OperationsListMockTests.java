@@ -32,7 +32,7 @@ public final class OperationsListMockTests {
         ArgumentCaptor<HttpRequest> httpRequest = ArgumentCaptor.forClass(HttpRequest.class);
 
         String responseStr =
-            "{\"value\":[{\"name\":\"blylpstdbh\",\"display\":{\"provider\":\"rzdzucerscdnt\",\"resource\":\"vfiwjmygtdss\",\"operation\":\"wtmwerio\",\"description\":\"pyqs\"},\"isDataAction\":false,\"origin\":\"NotSpecified\",\"properties\":{\"vwiwubmwmbesld\":\"datatshhszhedp\"}}]}";
+            "{\"value\":[{\"name\":\"hojvpajqgxysmocm\",\"display\":{\"provider\":\"qvmkcxo\",\"resource\":\"pvhelxprg\",\"operation\":\"atddc\",\"description\":\"bcuejrjxgci\"},\"isDataAction\":false,\"origin\":\"system\",\"properties\":{\"bahwfl\":\"dataxsdqrhzoymibmrqy\",\"yvoqa\":\"dataszdtmhrkwof\",\"wo\":\"datapiexpbtgiw\",\"kcnqxwbpo\":\"datanwashrtd\"}}]}";
 
         Mockito.when(httpResponse.getStatusCode()).thenReturn(200);
         Mockito.when(httpResponse.getHeaders()).thenReturn(new HttpHeaders());

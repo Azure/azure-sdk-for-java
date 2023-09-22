@@ -765,7 +765,7 @@ public final class RntbdRequestManager implements ChannelHandler, ChannelInbound
     }
 
     Optional<RntbdContext> rntbdContext() {
-        return Optional.of(this.contextFuture.getNow(null));
+        return Optional.ofNullable(this.contextFuture.getNow(null));
     }
 
     CompletableFuture<RntbdContextRequest> rntbdContextRequestFuture() {
