@@ -150,7 +150,17 @@ public class SimpleCosmosRepository<T, ID extends Serializable> implements Cosmo
     public <S extends T> Iterable<S> saveAll(Iterable<S> entities) {
         Assert.notNull(entities, "Iterable entities should not be null");
 
-        return operation.insertAll(this.information, entities);
+        if (information.getPartitionKeyFieldName() != null) {
+            return operation.insertAll(this.information, entities);
+        } else {
+            final List<S> savedEntities = new ArrayList<>();
+            entities.forEach(entity -> {
+                final S savedEntity = this.save(entity);
+                savedEntities.add(savedEntity);
+            });
+
+            return savedEntities;
+        }
     }
 
     /**
@@ -272,12 +282,16 @@ public class SimpleCosmosRepository<T, ID extends Serializable> implements Cosmo
     public void deleteAll(Iterable<? extends T> entities) {
         Assert.notNull(entities, "Iterable entities should not be null");
 
-        Flux<CosmosItemOperation> cosmosItemOperationFlux = Flux.fromIterable(entities).map(entity -> {
-            return CosmosBulkOperations.getDeleteItemOperation(information.getId(entity).toString(),
-                new PartitionKey(information.getPartitionKeyFieldValue(entity)));
-        });
+        if (information.getPartitionKeyFieldName() != null) {
+            Flux<CosmosItemOperation> cosmosItemOperationFlux = Flux.fromIterable(entities).map(entity -> {
+                return CosmosBulkOperations.getDeleteItemOperation(information.getId(entity).toString(),
+                    new PartitionKey(information.getPartitionKeyFieldValue(entity)));
+            });
 
-        this.operation.deleteEntities(this.information.getContainerName(), cosmosItemOperationFlux);
+            this.operation.deleteEntities(this.information.getContainerName(), cosmosItemOperationFlux);
+        } else {
+            StreamSupport.stream(entities.spliterator(), true).forEach(this::delete);
+        }
     }
 
     /**

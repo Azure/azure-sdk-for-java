@@ -250,7 +250,7 @@ public class CosmosTemplate implements CosmosOperations, ApplicationContextAware
 
         List<CosmosItemOperation> cosmosItemOperations = new ArrayList<>();
         entities.forEach(entity -> {
-            JsonNode originalItem = this.mappingCosmosConverter.writeJsonNode(entity);
+            JsonNode originalItem = mappingCosmosConverter.writeJsonNode(entity);
             PartitionKey partitionKey = new PartitionKey(information.getPartitionKeyFieldValue(entity));
             cosmosItemOperations.add(CosmosBulkOperations.getUpsertItemOperation(originalItem,
                 partitionKey));
@@ -261,7 +261,7 @@ public class CosmosTemplate implements CosmosOperations, ApplicationContextAware
             .getContainer(containerName)
             .executeBulkOperations(Flux.fromIterable(cosmosItemOperations))
             .flatMap(r -> {
-                return Flux.just(r.getResponse().getItem(domainType));
+                return Flux.just(toDomainObject(domainType, r.getResponse().getItem(JsonNode.class)));
             })
             .collectList().block();
     }
@@ -836,13 +836,16 @@ public class CosmosTemplate implements CosmosOperations, ApplicationContextAware
                 }
             });
 
-            return this.getCosmosAsyncClient()
+            this.getCosmosAsyncClient()
                 .getDatabase(this.getDatabaseName())
                 .getContainer(containerName)
                 .executeBulkOperations(cosmosItemOperationFlux)
-                .flatMap(r -> {
-                    return Flux.just(r.getResponse().getItem(domainType));
-                }).collectList().block();
+                .publishOn(Schedulers.parallel())
+                .collectList().block();
+
+            return results.stream()
+                .map(jsonNode -> toDomainObject(domainType, jsonNode))
+                .collect(Collectors.toList());
         } else {
             return results.stream()
                 .map(item -> deleteItem(item, finalContainerName, domainType))

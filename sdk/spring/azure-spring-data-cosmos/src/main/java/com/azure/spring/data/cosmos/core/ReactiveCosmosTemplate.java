@@ -678,14 +678,14 @@ public class ReactiveCosmosTemplate implements ReactiveCosmosOperations, Applica
                         new PartitionKey(item.get(entityInfo.getPartitionKeyFieldName()).asText()));
                 }
             });
-            return this.getCosmosAsyncClient()
+
+            this.getCosmosAsyncClient()
                 .getDatabase(this.getDatabaseName())
                 .getContainer(containerName)
                 .executeBulkOperations(cosmosItemOperationFlux)
                 .publishOn(Schedulers.parallel())
-                .flatMap(r -> {
-                    return Flux.just(r.getResponse().getItem(domainType));
-                });
+                .collectList().block();
+            return results.flatMap(jsonNode -> Mono.just(toDomainObject(domainType, jsonNode)));
         } else {
             return results.flatMap(d -> deleteItem(d, finalContainerName, domainType));
         }
