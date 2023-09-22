@@ -12,10 +12,6 @@ extends:
       groupId: com.azure
       safeName: azuresearch
       ServiceDirectory: search
-    - name: azure-security-keyvault-administration
-      groupId: com.azure
-      safeName: azuresecuritykeyvaultadministration
-      ServiceDirectory: keyvault
     - name: azure-developer-loadtesting
       groupId: com.azure
       safeName: azuredeveloperloadtesting
@@ -32,10 +28,6 @@ extends:
       groupId: com.azure
       safeName: azureiotdeviceupdate
       ServiceDirectory: deviceupdate
-    - name: azure-security-keyvault-keys
-      groupId: com.azure
-      safeName: azuresecuritykeyvaultkeys
-      ServiceDirectory: keyvault
     - name: azure-messaging-webpubsub
       groupId: com.azure
       safeName: azuremessagingwebpubsub
@@ -88,10 +80,6 @@ extends:
       groupId: com.azure
       safeName: azuredigitaltwinscore
       ServiceDirectory: digitaltwins
-    - name: azure-security-keyvault-secrets
-      groupId: com.azure
-      safeName: azuresecuritykeyvaultsecrets
-      ServiceDirectory: keyvault
     - name: azure-ai-textanalytics
       groupId: com.azure
       safeName: azureaitextanalytics
@@ -108,8 +96,11 @@ extends:
       groupId: com.azure
       safeName: azurecommunicationchatclient
       ServiceDirectory: communication
-    - name: azure-security-keyvault-certificates
+    - name: azure-communication-callautomation
       groupId: com.azure
-      safeName: azuresecuritykeyvaultcertificates
-      ServiceDirectory: keyvault
-
+      safeName: azurecommunicationcallautomation
+      ServiceDirectory: communication
+    - name: azure-identity-extensions
+      groupId: com.azure
+      safeName: azureidentityextensions
+      ServiceDirectory: identity
