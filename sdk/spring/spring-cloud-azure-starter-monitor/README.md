@@ -102,7 +102,7 @@ First, add the `opentelemetry-jdbc` library:
 </dependencies>
 ```
 
-After, create a `DataSource` bean from `io.opentelemetry.instrumentation.jdbc.datasource.OpenTelemetryDataSource`:
+Then wrap your `DataSource` bean in an `io.opentelemetry.instrumentation.jdbc.datasource.OpenTelemetryDataSource`, e.g.
 
 ```java
 import org.apache.commons.dbcp2.BasicDataSource;
