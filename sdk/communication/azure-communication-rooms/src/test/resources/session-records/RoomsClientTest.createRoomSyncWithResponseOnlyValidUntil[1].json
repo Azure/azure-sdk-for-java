@@ -1,0 +1,50 @@
+{
+  "networkCallRecords" : [ {
+    "Method" : "POST",
+    "Uri" : "https://REDACTED.ppe.communication.azure.net/rooms?api-version=2023-06-14",
+    "Headers" : {
+      "content-type" : "application/json",
+      "x-ms-client-request-id" : "dec6a430-a896-43c6-85a4-ad60e0a3a85e",
+      "user-agent" : "azsdk-java-azure-communication-rooms/1.0.0 (11.0.19; Windows 11; 10.0)"
+    },
+    "Response" : {
+      "Transfer-Encoding" : "chunked",
+      "X-Cache" : "CONFIG_NOCACHE",
+      "api-supported-versions" : "2022-02-01, 2023-03-31-preview, 2023-06-14",
+      "Repeatability-Result" : "accepted",
+      "retry-after" : "0",
+      "StatusCode" : "201",
+      "Date" : "Wed, 07 Jun 2023 20:17:44 GMT",
+      "MS-CV" : "JWv/SQlE6EKbbrQSTQDhQg.0",
+      "api-deprecated-versions" : "2021-04-07",
+      "X-Azure-Ref" : "06eWAZAAAAACPJ1P7cq2HQrx+g9OJKJRyWVZSMzExMDAwMTE1MDMxAGYwOWE0YzEzLTIxZjEtNDhlYy05Y2Y3LTY2NTQ1Njg0YjY0Mg==",
+      "Body" : "{\"id\":\"99542169173713840\",\"createdAt\":\"2023-06-07T20:17:45.7582921+00:00\",\"validFrom\":\"2023-06-07T20:17:45.5223025+00:00\",\"validUntil\":\"2023-07-07T20:16:54.1831091+00:00\"}",
+      "Request-Context" : "appId=",
+      "Location" : "99542169173713840",
+      "Content-Type" : "application/json; charset=utf-8"
+    },
+    "Exception" : null
+  }, {
+    "Method" : "DELETE",
+    "Uri" : "https://REDACTED.ppe.communication.azure.net/rooms/99542169173713840?api-version=2023-06-14",
+    "Headers" : {
+      "x-ms-client-request-id" : "d0828cab-ec7c-41e5-8671-368ce38a2699",
+      "user-agent" : "azsdk-java-azure-communication-rooms/1.0.0 (11.0.19; Windows 11; 10.0)"
+    },
+    "Response" : {
+      "X-Cache" : "CONFIG_NOCACHE",
+      "api-supported-versions" : "2022-02-01, 2023-03-31-preview, 2023-06-14",
+      "MS-CV" : "BX2U6U5vYEW3mbSBycNL5Q.0",
+      "api-deprecated-versions" : "2021-04-07",
+      "retry-after" : "0",
+      "X-Azure-Ref" : "06eWAZAAAAAD5Xvvr4/pNQanHyD0/KrGYWVZSMzExMDAwMTE1MDMxAGYwOWE0YzEzLTIxZjEtNDhlYy05Y2Y3LTY2NTQ1Njg0YjY0Mg==",
+      "Content-Length" : "0",
+      "StatusCode" : "204",
+      "Body" : "",
+      "Date" : "Wed, 07 Jun 2023 20:17:45 GMT",
+      "Request-Context" : "appId="
+    },
+    "Exception" : null
+  } ],
+  "variables" : [ ]
+}
