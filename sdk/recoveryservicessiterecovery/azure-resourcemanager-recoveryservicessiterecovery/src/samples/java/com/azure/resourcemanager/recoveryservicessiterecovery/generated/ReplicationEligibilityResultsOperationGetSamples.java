@@ -7,7 +7,7 @@ package com.azure.resourcemanager.recoveryservicessiterecovery.generated;
 /** Samples for ReplicationEligibilityResultsOperation Get. */
 public final class ReplicationEligibilityResultsOperationGetSamples {
     /*
-     * x-ms-original-file: specification/recoveryservicessiterecovery/resource-manager/Microsoft.RecoveryServices/stable/2022-10-01/examples/ReplicationEligibilityResults_Get.json
+     * x-ms-original-file: specification/recoveryservicessiterecovery/resource-manager/Microsoft.RecoveryServices/stable/2023-06-01/examples/ReplicationEligibilityResults_Get.json
      */
     /**
      * Sample code: Gets the validation errors in case the VM is unsuitable for protection.

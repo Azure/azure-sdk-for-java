@@ -406,7 +406,7 @@ com.azure.resourcemanager:azure-resourcemanager-hybridcontainerservice;1.0.0-bet
 com.azure.resourcemanager:azure-resourcemanager-securitydevops;1.0.0-beta.1;1.0.0-beta.2
 com.azure.resourcemanager:azure-resourcemanager-appcomplianceautomation;1.0.0-beta.1;1.0.0-beta.2
 com.azure.resourcemanager:azure-resourcemanager-servicenetworking;1.0.0-beta.2;1.0.0-beta.3
-com.azure.resourcemanager:azure-resourcemanager-recoveryservicessiterecovery;1.0.0-beta.1;1.0.0-beta.2
+com.azure.resourcemanager:azure-resourcemanager-recoveryservicessiterecovery;1.0.0-beta.1;1.0.0
 com.azure.resourcemanager:azure-resourcemanager-billingbenefits;1.0.0-beta.1;1.0.0-beta.2
 com.azure.resourcemanager:azure-resourcemanager-providerhub;1.0.0;1.1.0-beta.1
 com.azure.resourcemanager:azure-resourcemanager-reservations;1.0.0-beta.2;1.0.0-beta.3
