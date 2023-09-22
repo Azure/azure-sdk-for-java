@@ -24,7 +24,7 @@ import reactor.core.publisher.Mono;
 
 public class DeviceUpdateClientSyncStackTests extends TestProxyTestBase {
     protected DeviceUpdateClient deviceUpdateClient;
-    protected RequestOptions requestOptions;
+    private RequestOptions requestOptions;
 
     @Override
     protected void beforeTest() {

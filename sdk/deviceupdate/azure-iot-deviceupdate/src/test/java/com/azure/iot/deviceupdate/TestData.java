@@ -5,9 +5,9 @@ package com.azure.iot.deviceupdate;
 import com.azure.core.util.Configuration;
 
 public class TestData {
-    public static final String TENANT_ID = getTestValue("TENANT_ID", "33e01921-4d64-4f8c-a055-5bdaffd5e33d");
+    public static final String TENANT_ID = getTestValue("TENANT_ID", "tenantId");
 
-    public static final String CLIENT_ID = getTestValue("CLIENT_ID", "71318fd3-e515-4267-979a-98e06d2b139e");
+    public static final String CLIENT_ID = getTestValue("CLIENT_ID", "clientId");
 
     public static final String ACCOUNT_ENDPOINT = getTestValue("ACCOUNT_ENDPOINT",
         "contosoprodwus2.api.adu.microsoft.com");
@@ -26,7 +26,9 @@ public class TestData {
 
     public static final String DEVICE_CLASS_ID = "c61300e6b3da62926c23d92519ea3f2e73116e71";
 
-    public static final String DEVICE_ID = "sdk-tests-638303920529346758";
+    public static final String DEVICE_ID = "sdk-tests-638309378295188213";
+
+    public static final String DEPLOYMENT_ID = "sdk-tests-deployment";
 
     private static String getTestValue(String name, String defaultValue) {
         if (Configuration.getGlobalConfiguration().contains(name)) {
