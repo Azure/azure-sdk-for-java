@@ -4,19 +4,17 @@
 package com.azure.security.keyvault.keys.models;
 
 import com.azure.core.annotation.Fluent;
+import com.azure.json.JsonReader;
+import com.azure.json.JsonSerializable;
+import com.azure.json.JsonToken;
+import com.azure.json.JsonWriter;
 import com.azure.security.keyvault.keys.KeyAsyncClient;
 import com.azure.security.keyvault.keys.KeyClient;
 import com.azure.security.keyvault.keys.implementation.KeyPropertiesHelper;
-import com.fasterxml.jackson.annotation.JsonProperty;
+import com.azure.security.keyvault.keys.implementation.KeyVaultKeysUtils;
 
-import java.net.MalformedURLException;
-import java.net.URL;
-import java.time.Instant;
+import java.io.IOException;
 import java.time.OffsetDateTime;
-import java.time.ZoneOffset;
-import java.util.ArrayList;
-import java.util.Base64;
-import java.util.List;
 import java.util.Map;
 
 /**
@@ -27,7 +25,7 @@ import java.util.Map;
  * @see KeyAsyncClient
  */
 @Fluent
-public class KeyProperties {
+public class KeyProperties implements JsonSerializable<KeyProperties> {
     static {
         KeyPropertiesHelper.setAccessor(new KeyPropertiesHelper.KeyPropertiesAccessor() {
             @Override
@@ -99,12 +97,12 @@ public class KeyProperties {
     /**
      * Creation time in UTC.
      */
-    private OffsetDateTime createdOn;
+    OffsetDateTime createdOn;
 
     /**
      * Last updated time in UTC.
      */
-    private OffsetDateTime updatedOn;
+    OffsetDateTime updatedOn;
 
     /**
      * Reflects the deletion recovery level currently in effect for keys in the current vault. If it contains
@@ -112,7 +110,7 @@ public class KeyProperties {
      * key, at the end of the retention interval. Possible values include: 'Purgeable', 'Recoverable+Purgeable',
      * 'Recoverable', 'Recoverable+ProtectedSubscription'.
      */
-    private String recoveryLevel;
+    String recoveryLevel;
 
     /**
      * The key name.
@@ -122,33 +120,28 @@ public class KeyProperties {
     /**
      * Key identifier.
      */
-    @JsonProperty(value = "kid")
     String id;
 
     /**
      * Application specific metadata in the form of key-value pairs.
      */
-    @JsonProperty(value = "tags")
     private Map<String, String> tags;
 
     /**
      * True if the key's lifetime is managed by key vault. If this is a key backing a certificate, then managed will
      * be true.
      */
-    @JsonProperty(value = "managed", access = JsonProperty.Access.WRITE_ONLY)
-    private Boolean managed;
+    Boolean managed;
 
     /**
      * The number of days a key is retained before being deleted for a soft delete-enabled Key Vault.
      */
-    @JsonProperty(value = "recoverableDays", access = JsonProperty.Access.WRITE_ONLY)
-    private Integer recoverableDays;
+    Integer recoverableDays;
 
     /*
      * The policy rules under which the key can be exported.
      */
-    @JsonProperty(value = "release_policy")
-    private KeyReleasePolicy releasePolicy;
+    KeyReleasePolicy releasePolicy;
 
     /**
      * Gets the number of days a key is retained before being deleted for a soft delete-enabled Key Vault.
@@ -356,95 +349,73 @@ public class KeyProperties {
         return this.version;
     }
 
+    @Override
+    public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
+        return jsonWriter.writeStartObject()
+            .writeStringField("kid", id)
+            .writeMapField("tags", tags, JsonWriter::writeString)
+            .writeJsonField("release_policy", releasePolicy)
+            .writeEndObject();
+    }
+
     /**
-     * Unpacks the attributes JSON response and updates the variables in the Key Attributes object. Uses Lazy Update to
-     * set values for variables id, contentType, and id as these variables are part of main JSON body and not attributes
-     * JSON body when the key response comes from list keys operations.
+     * Reads a JSON stream into a {@link KeyProperties}.
      *
-     * @param attributes The key value mapping of the key attributes
+     * @param jsonReader The {@link JsonReader} being read.
+     * @return An instance of {@link KeyProperties} that the JSON stream represented, may return null.
+     * @throws IOException If a {@link KeyProperties} fails to be read from the {@code jsonReader}.
      */
-    @JsonProperty("attributes")
-    @SuppressWarnings("unchecked")
-    void unpackAttributes(Map<String, Object> attributes) {
-        this.enabled = (Boolean) attributes.get("enabled");
-        this.exportable = (Boolean) attributes.get("exportable");
-        this.notBefore = epochToOffsetDateTime(attributes.get("nbf"));
-        this.expiresOn = epochToOffsetDateTime(attributes.get("exp"));
-        this.createdOn = epochToOffsetDateTime(attributes.get("created"));
-        this.updatedOn = epochToOffsetDateTime(attributes.get("updated"));
-        this.recoveryLevel = (String) attributes.get("recoveryLevel");
-        this.recoverableDays = (Integer) attributes.get("recoverableDays");
-    }
+    public static KeyProperties fromJson(JsonReader jsonReader) throws IOException {
+        return jsonReader.readObject(reader -> {
+            KeyProperties properties = new KeyProperties();
 
-    private OffsetDateTime epochToOffsetDateTime(Object epochValue) {
-        if (epochValue != null) {
-            Instant instant = Instant.ofEpochMilli(((Number) epochValue).longValue() * 1000L);
+            while (reader.nextToken() != JsonToken.END_OBJECT) {
+                String fieldName = reader.getFieldName();
+                reader.nextToken();
 
-            return OffsetDateTime.ofInstant(instant, ZoneOffset.UTC);
-        }
+                if ("kid".equals(fieldName)) {
+                    properties.id = reader.getString();
+                    KeyVaultKeysUtils.unpackId(properties.id, name -> properties.name = name,
+                        version -> properties.version = version);
+                } else if ("tags".equals(fieldName)) {
+                    properties.tags = reader.readMap(JsonReader::getString);
+                } else if ("immutable".equals(fieldName)) {
+                    properties.managed = reader.getNullable(JsonReader::getBoolean);
+                } else if ("recoverableDays".equals(fieldName)) {
+                    properties.recoverableDays = reader.getNullable(JsonReader::getInt);
+                } else if ("release_policy".equals(fieldName)) {
+                    properties.releasePolicy = KeyReleasePolicy.fromJson(reader);
+                } else if ("attributes".equals(fieldName) && reader.currentToken() == JsonToken.START_OBJECT) {
+                    while (reader.nextToken() != JsonToken.END_OBJECT) {
+                        fieldName = reader.getFieldName();
+                        reader.nextToken();
 
-        return null;
-    }
-
-    @JsonProperty(value = "kid")
-    void unpackId(String keyId) {
-        if (keyId != null && keyId.length() > 0) {
-            this.id = keyId;
-
-            try {
-                URL url = new URL(keyId);
-                String[] tokens = url.getPath().split("/");
-                this.name = (tokens.length >= 3 ? tokens[2] : null);
-                this.version = (tokens.length >= 4 ? tokens[3] : null);
-            } catch (MalformedURLException e) {
-                e.printStackTrace();
+                        if ("enabled".equals(fieldName)) {
+                            properties.enabled = reader.getNullable(JsonReader::getBoolean);
+                        } else if ("exportable".equals(fieldName)) {
+                            properties.exportable = reader.getNullable(JsonReader::getBoolean);
+                        } else if ("nbf".equals(fieldName)) {
+                            properties.notBefore = reader.getNullable(KeyVaultKeysUtils::epochToOffsetDateTime);
+                        } else if ("exp".equals(fieldName)) {
+                            properties.expiresOn = reader.getNullable(KeyVaultKeysUtils::epochToOffsetDateTime);
+                        } else if ("created".equals(fieldName)) {
+                            properties.createdOn = reader.getNullable(KeyVaultKeysUtils::epochToOffsetDateTime);
+                        } else if ("updated".equals(fieldName)) {
+                            properties.updatedOn = reader.getNullable(KeyVaultKeysUtils::epochToOffsetDateTime);
+                        } else if ("recoveryLevel".equals(fieldName)) {
+                            properties.recoveryLevel = reader.getString();
+                        } else if ("recoverableDays".equals(fieldName)) {
+                            properties.recoverableDays = reader.getNullable(JsonReader::getInt);
+                        } else {
+                            reader.skipChildren();
+                        }
+                    }
+                } else {
+                    reader.skipChildren();
+                }
             }
-        }
-    }
 
-    List<KeyOperation> getKeyOperations(List<String> jsonWebKeyOps) {
-        List<KeyOperation> output = new ArrayList<>();
-
-        for (String keyOp : jsonWebKeyOps) {
-            output.add(KeyOperation.fromString(keyOp));
-        }
-
-        return output;
-    }
-
-    @SuppressWarnings("unchecked")
-    JsonWebKey createKeyMaterialFromJson(Map<String, Object> key) {
-        JsonWebKey outputKey = new JsonWebKey()
-            .setY(decode((String) key.get("y")))
-            .setX(decode((String) key.get("x")))
-            .setCurveName(KeyCurveName.fromString((String) key.get("crv")))
-            .setKeyOps(getKeyOperations((List<String>) key.get("key_ops")))
-            .setT(decode((String) key.get("key_hsm")))
-            .setK(decode((String) key.get("k")))
-            .setQ(decode((String) key.get("q")))
-            .setP(decode((String) key.get("p")))
-            .setQi(decode((String) key.get("qi")))
-            .setDq(decode((String) key.get("dq")))
-            .setDp(decode((String) key.get("dp")))
-            .setD(decode((String) key.get("d")))
-            .setE(decode((String) key.get("e")))
-            .setN(decode((String) key.get("n")))
-            .setKeyType(KeyType.fromString((String) key.get("kty")))
-            .setId((String) key.get("kid"));
-        unpackId((String) key.get("kid"));
-
-        return outputKey;
-    }
-
-    void setManaged(boolean managed) {
-        this.managed = managed;
-    }
-
-    private byte[] decode(String in) {
-        if (in != null) {
-            return Base64.getUrlDecoder().decode(in);
-        }
-
-        return null;
+            return properties;
+        });
     }
 }

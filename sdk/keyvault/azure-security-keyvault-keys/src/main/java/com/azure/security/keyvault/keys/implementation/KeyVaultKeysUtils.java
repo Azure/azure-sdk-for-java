@@ -20,6 +20,7 @@ import java.net.URL;
 import java.time.Instant;
 import java.time.OffsetDateTime;
 import java.time.ZoneOffset;
+import java.util.Base64;
 import java.util.function.Consumer;
 import java.util.function.Function;
 import java.util.function.Supplier;
@@ -134,5 +135,19 @@ public final class KeyVaultKeysUtils {
     public static OffsetDateTime epochToOffsetDateTime(JsonReader epochReader) throws IOException {
         Instant instant = Instant.ofEpochMilli(epochReader.getLong() * 1000L);
         return OffsetDateTime.ofInstant(instant, ZoneOffset.UTC);
+    }
+
+    public static String base64UrlJsonSerialization(byte[] value) {
+        if (value == null) {
+            return null;
+        } else if (value.length == 0) {
+            return "";
+        } else {
+            return Base64.getUrlEncoder().withoutPadding().encodeToString(value);
+        }
+    }
+
+    public static byte[] base64UrlJsonDeserialization(String value) {
+        return value == null ? null : Base64.getUrlDecoder().decode(value);
     }
 }

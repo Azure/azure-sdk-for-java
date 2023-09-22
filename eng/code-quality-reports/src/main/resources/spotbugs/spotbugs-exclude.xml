@@ -134,10 +134,6 @@
         <Method name="getDataFromMessageBody"/>
       </And>
       <And>
-        <Class name="com.azure.security.keyvault.keys.implementation.Base64UrlJsonDeserializer"/>
-        <Method name="deserialize"/>
-      </And>
-      <And>
         <Class name="com.azure.security.keyvault.keys.models.KeyProperties"/>
         <Method name="decode"/>
       </And>

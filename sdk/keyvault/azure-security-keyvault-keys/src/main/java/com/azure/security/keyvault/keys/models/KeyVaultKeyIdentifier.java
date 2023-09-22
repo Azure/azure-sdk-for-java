@@ -19,7 +19,10 @@ import java.net.URL;
 public final class KeyVaultKeyIdentifier {
     private static final ClientLogger LOGGER = new ClientLogger(KeyVaultKeyIdentifier.class);
 
-    private final String sourceId, vaultUrl, name, version;
+    private final String sourceId;
+    private final String vaultUrl;
+    private final String name;
+    private final String version;
 
     /**
      * Create a new {@link KeyVaultKeyIdentifier} from a given Key Vault identifier.

@@ -45,8 +45,6 @@ public class CryptographyClientTest extends CryptographyClientTestBase {
     private KeyClient client;
     private HttpPipeline pipeline;
 
-    private boolean curveNotSupportedByRuntime = false;
-
     @Override
     protected void beforeTest() {
         beforeTestSetup();
