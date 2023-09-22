@@ -120,7 +120,7 @@ public final class CustomHmacAuthenticationPolicy implements HttpPipelinePolicy 
         final Map<String, String> headers = new HashMap<>();
 
         final String contentHash = Base64.getEncoder().encodeToString(messageDigest.digest());
-        headers.put("X-FORWARDED-HOST", acsResource);
+        headers.put("X_FORWARDED_HOST", acsResource);
         headers.put(HOST_HEADER, acsResource);
         headers.put(CONTENT_HASH_HEADER, contentHash);
         String utcNow = OffsetDateTime.now(ZoneOffset.UTC)
