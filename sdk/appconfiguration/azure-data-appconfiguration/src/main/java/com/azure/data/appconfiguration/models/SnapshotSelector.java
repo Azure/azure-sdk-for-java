@@ -22,6 +22,11 @@ public final class SnapshotSelector {
     private List<SnapshotFields> fields;
 
     /**
+     * Construct a {@link SnapshotSelector} object.
+     */
+    public SnapshotSelector() {}
+
+    /**
      * Gets the snapshot name
      *
      * @return The snapshot name.

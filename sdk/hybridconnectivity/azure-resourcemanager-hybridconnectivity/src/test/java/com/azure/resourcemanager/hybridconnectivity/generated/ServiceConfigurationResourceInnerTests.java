@@ -15,23 +15,23 @@ public final class ServiceConfigurationResourceInnerTests {
         ServiceConfigurationResourceInner model =
             BinaryData
                 .fromString(
-                    "{\"properties\":{\"serviceName\":\"SSH\",\"resourceId\":\"np\",\"port\":1532728128413544899,\"provisioningState\":\"Canceled\"},\"id\":\"jlxofpdvhpfxxyp\",\"name\":\"ninmayhuyb\",\"type\":\"kpode\"}")
+                    "{\"properties\":{\"serviceName\":\"WAC\",\"resourceId\":\"ayhuy\",\"port\":5121116175733126512,\"provisioningState\":\"Canceled\"},\"id\":\"po\",\"name\":\"ginuvamih\",\"type\":\"ognarxzxtheotus\"}")
                 .toObject(ServiceConfigurationResourceInner.class);
-        Assertions.assertEquals(ServiceName.SSH, model.serviceName());
-        Assertions.assertEquals("np", model.resourceId());
-        Assertions.assertEquals(1532728128413544899L, model.port());
+        Assertions.assertEquals(ServiceName.WAC, model.serviceName());
+        Assertions.assertEquals("ayhuy", model.resourceId());
+        Assertions.assertEquals(5121116175733126512L, model.port());
     }
 
     @org.junit.jupiter.api.Test
     public void testSerialize() throws Exception {
         ServiceConfigurationResourceInner model =
             new ServiceConfigurationResourceInner()
-                .withServiceName(ServiceName.SSH)
-                .withResourceId("np")
-                .withPort(1532728128413544899L);
+                .withServiceName(ServiceName.WAC)
+                .withResourceId("ayhuy")
+                .withPort(5121116175733126512L);
         model = BinaryData.fromObject(model).toObject(ServiceConfigurationResourceInner.class);
-        Assertions.assertEquals(ServiceName.SSH, model.serviceName());
-        Assertions.assertEquals("np", model.resourceId());
-        Assertions.assertEquals(1532728128413544899L, model.port());
+        Assertions.assertEquals(ServiceName.WAC, model.serviceName());
+        Assertions.assertEquals("ayhuy", model.resourceId());
+        Assertions.assertEquals(5121116175733126512L, model.port());
     }
 }

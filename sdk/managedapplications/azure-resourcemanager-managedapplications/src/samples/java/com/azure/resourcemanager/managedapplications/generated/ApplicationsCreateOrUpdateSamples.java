@@ -7,7 +7,7 @@ package com.azure.resourcemanager.managedapplications.generated;
 /** Samples for Applications CreateOrUpdate. */
 public final class ApplicationsCreateOrUpdateSamples {
     /*
-     * x-ms-original-file: specification/resources/resource-manager/Microsoft.Solutions/stable/2018-06-01/examples/createOrUpdateApplication.json
+     * x-ms-original-file: specification/solutions/resource-manager/Microsoft.Solutions/stable/2021-07-01/examples/createOrUpdateApplication.json
      */
     /**
      * Sample code: Create or update managed application.
@@ -19,10 +19,12 @@ public final class ApplicationsCreateOrUpdateSamples {
         manager
             .applications()
             .define("myManagedApplication")
-            .withRegion("East US 2")
+            .withRegion((String) null)
             .withExistingResourceGroup("rg")
             .withKind("ServiceCatalog")
             .withManagedResourceGroupId("/subscriptions/subid/resourceGroups/myManagedRG")
+            .withApplicationDefinitionId(
+                "/subscriptions/subid/resourceGroups/rg/providers/Microsoft.Solutions/applicationDefinitions/myAppDef")
             .create();
     }
 }
