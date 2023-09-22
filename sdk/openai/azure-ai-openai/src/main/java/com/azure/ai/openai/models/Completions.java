@@ -80,7 +80,7 @@ public final class Completions {
      * results for different prompts may arrive at different times or in different orders.
      */
     @Generated
-    @JsonProperty(value = "prompt_annotations")
+    @JsonProperty(value = "prompt_filter_results")
     private List<PromptFilterResult> promptFilterResults;
 
     /**

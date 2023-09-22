@@ -16,6 +16,7 @@ import com.azure.ai.openai.implementation.OpenAIClientImpl;
 import com.azure.ai.openai.implementation.OpenAIServerSentEvents;
 import com.azure.ai.openai.models.AudioTranscription;
 import com.azure.ai.openai.models.AudioTranscriptionOptions;
+import com.azure.ai.openai.models.AudioTranslation;
 import com.azure.ai.openai.models.AudioTranslationOptions;
 import com.azure.ai.openai.models.ChatCompletions;
 import com.azure.ai.openai.models.ChatCompletionsOptions;
@@ -911,7 +912,7 @@ public final class OpenAIClient {
      *             }
      *         }
      *     ]
-     *     prompt_annotations (Optional): [
+     *     prompt_filter_results (Optional): [
      *          (Optional){
      *             prompt_index: int (Required)
      *             content_filter_results (Optional): (recursive schema, see content_filter_results above)
@@ -1094,7 +1095,7 @@ public final class OpenAIClient {
      *     audio file data.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public AudioTranscription getAudioTranslation(
+    public AudioTranslation getAudioTranslation(
             String deploymentOrModelName, String fileName, AudioTranslationOptions audioTranslationOptions) {
         return getAudioTranslationWithResponse(deploymentOrModelName, fileName, audioTranslationOptions, null)
                 .getValue();
@@ -1114,11 +1115,11 @@ public final class OpenAIClient {
      * @throws ResourceNotFoundException thrown if the request is rejected by server on status code 404.
      * @throws ResourceModifiedException thrown if the request is rejected by server on status code 409.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return {@link AudioTranscription} english language transcribed text and associated metadata from provided spoken
+     * @return {@link AudioTranslation} english language transcribed text and associated metadata from provided spoken
      *     audio file data along with {@link Response}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Response<AudioTranscription> getAudioTranslationWithResponse(
+    public Response<AudioTranslation> getAudioTranslationWithResponse(
             String deploymentOrModelName,
             String fileName,
             AudioTranslationOptions audioTranslationOptions,
@@ -1139,7 +1140,7 @@ public final class OpenAIClient {
                                 deploymentOrModelName, data, requestOptions)
                         : this.serviceClient.getAudioTranslationAsPlainTextWithResponse(
                                 deploymentOrModelName, data, requestOptions);
-        return new SimpleResponse<>(response, response.getValue().toObject(AudioTranscription.class));
+        return new SimpleResponse<>(response, response.getValue().toObject(AudioTranslation.class));
     }
 
     /**
@@ -1480,14 +1481,14 @@ public final class OpenAIClient {
      */
     @Generated
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public AudioTranscription getAudioTranslationAsResponseObject(
+    public AudioTranslation getAudioTranslationAsResponseObject(
             String deploymentOrModelName, AudioTranslationOptions audioTranslationOptions) {
         // Generated convenience method for getAudioTranslationAsResponseObjectWithResponse
         RequestOptions requestOptions = new RequestOptions();
         return getAudioTranslationAsResponseObjectWithResponse(
                         deploymentOrModelName, BinaryData.fromObject(audioTranslationOptions), requestOptions)
                 .getValue()
-                .toObject(AudioTranscription.class);
+                .toObject(AudioTranslation.class);
     }
 
     /**

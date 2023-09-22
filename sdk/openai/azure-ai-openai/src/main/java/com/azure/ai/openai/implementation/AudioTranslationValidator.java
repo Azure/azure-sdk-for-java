@@ -3,7 +3,7 @@
 
 package com.azure.ai.openai.implementation;
 
-import com.azure.ai.openai.models.AudioTranscriptionFormat;
+import com.azure.ai.openai.models.AudioTranslationFormat;
 import com.azure.ai.openai.models.AudioTranslationOptions;
 import com.azure.core.util.logging.ClientLogger;
 
@@ -22,10 +22,10 @@ public class AudioTranslationValidator {
      * @param audioTranslationOptions The audio translation options.
      */
     public static void validateAudioResponseFormatForTranslation(AudioTranslationOptions audioTranslationOptions) {
-        List<AudioTranscriptionFormat> acceptedFormats = new ArrayList<>();
-        acceptedFormats.add(AudioTranscriptionFormat.JSON);
-        acceptedFormats.add(AudioTranscriptionFormat.VERBOSE_JSON);
-        AudioTranscriptionFormat responseFormat = audioTranslationOptions.getResponseFormat();
+        List<AudioTranslationFormat> acceptedFormats = new ArrayList<>();
+        acceptedFormats.add(AudioTranslationFormat.JSON);
+        acceptedFormats.add(AudioTranslationFormat.VERBOSE_JSON);
+        AudioTranslationFormat responseFormat = audioTranslationOptions.getResponseFormat();
         if (!acceptedFormats.contains(responseFormat)) {
             throw LOGGER.logExceptionAsError(new IllegalArgumentException(
                 "This operation does not support the requested audio format: " + responseFormat
@@ -39,11 +39,11 @@ public class AudioTranslationValidator {
      * @param audioTranslationOptions The audio translation options.
      */
     public static void validateAudioResponseFormatForTranslationText(AudioTranslationOptions audioTranslationOptions) {
-        List<AudioTranscriptionFormat> acceptedFormats = new ArrayList<>();
-        acceptedFormats.add(AudioTranscriptionFormat.TEXT);
-        acceptedFormats.add(AudioTranscriptionFormat.VTT);
-        acceptedFormats.add(AudioTranscriptionFormat.SRT);
-        AudioTranscriptionFormat responseFormat = audioTranslationOptions.getResponseFormat();
+        List<AudioTranslationFormat> acceptedFormats = new ArrayList<>();
+        acceptedFormats.add(AudioTranslationFormat.TEXT);
+        acceptedFormats.add(AudioTranslationFormat.VTT);
+        acceptedFormats.add(AudioTranslationFormat.SRT);
+        AudioTranslationFormat responseFormat = audioTranslationOptions.getResponseFormat();
         if (!acceptedFormats.contains(responseFormat)) {
             throw LOGGER.logExceptionAsError(new IllegalArgumentException(
                 "This operation does not support the requested audio format: " + responseFormat
