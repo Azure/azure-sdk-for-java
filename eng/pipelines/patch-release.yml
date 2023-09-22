@@ -44,10 +44,6 @@ extends:
       groupId: com.azure
       safeName: azurecommunicationcommon
       ServiceDirectory: communication
-    - name: azure-messaging-eventhubs
-      groupId: com.azure
-      safeName: azuremessagingeventhubs
-      ServiceDirectory: eventhubs
     - name: azure-communication-phonenumbers
       groupId: com.azure
       safeName: azurecommunicationphonenumbers
@@ -68,10 +64,6 @@ extends:
       groupId: com.azure
       safeName: azurecommunicationemail
       ServiceDirectory: communication
-    - name: azure-messaging-eventhubs-checkpointstore-blob
-      groupId: com.azure
-      safeName: azuremessagingeventhubscheckpointstoreblob
-      ServiceDirectory: eventhubs
     - name: azure-security-confidentialledger
       groupId: com.azure
       safeName: azuresecurityconfidentialledger
