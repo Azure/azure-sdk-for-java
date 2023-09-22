@@ -102,6 +102,11 @@ public final class ChatCompletions {
     @JsonProperty(value = "prompt_filter_results")
     private List<PromptFilterResult> promptFilterResults;
 
+    /**
+     * Backing member for the prompt filtering result during the rename transition. More details here:
+     * <a href="https://github.com/Azure/azure-rest-api-specs/pull/25880"/>
+     */
+    @Deprecated(forRemoval = true)
     @JsonProperty(value = "prompt_annotations")
     private List<PromptFilterResult> promptAnnotations;
 
@@ -144,11 +149,13 @@ public final class ChatCompletions {
         this(id, OffsetDateTime.ofInstant(Instant.ofEpochSecond(createdAt), ZoneOffset.UTC), choices, usage);
     }
 
-    private ChatCompletions setPromptAnnotations(List<PromptFilterResult> promptAnnotations) {
-        this.promptAnnotations = promptAnnotations;
-        return this;
-    }
-
+    /**
+     * Gets the RAI filter results for all the prompts passed in the request. This field should not
+     * be used.
+     *
+     * @return List of {@link PromptFilterResult}
+     */
+    @Deprecated(forRemoval = true)
     private List<PromptFilterResult> getPromptAnnotations() {
         return this.promptAnnotations;
     }
