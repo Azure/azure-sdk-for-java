@@ -1,5 +1,16 @@
 # Release History
 
+## 1.0.6 (2023-09-22)
+
+### Other Changes
+
+#### Dependency Updates
+
+- Upgraded `azure-core-http-netty` from `1.13.6` to version `1.13.7`.
+- Upgraded `azure-communication-common` from `1.2.10` to version `1.2.11`.
+- Upgraded `azure-core` from `1.42.0` to version `1.43.0`.
+
+
 ## 1.0.5 (2023-08-18)
 
 ### Other Changes
