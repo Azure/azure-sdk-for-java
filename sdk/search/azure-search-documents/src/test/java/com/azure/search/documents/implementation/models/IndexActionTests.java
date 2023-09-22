@@ -5,19 +5,16 @@ package com.azure.search.documents.implementation.models;
 
 import com.azure.core.serializer.json.jackson.JacksonJsonSerializerBuilder;
 import com.azure.core.util.serializer.ObjectSerializer;
-import com.azure.json.JsonProviders;
-import com.azure.json.JsonSerializable;
-import com.azure.json.JsonWriter;
+import com.azure.core.util.serializer.SerializerEncoding;
 import com.azure.search.documents.implementation.converters.IndexActionConverter;
+import com.azure.search.documents.implementation.util.Utility;
 import com.azure.search.documents.models.IndexActionType;
 import com.fasterxml.jackson.annotation.JsonInclude;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import org.junit.jupiter.api.Test;
 
-import java.io.ByteArrayOutputStream;
 import java.io.IOException;
-import java.nio.charset.StandardCharsets;
 import java.util.Collections;
 import java.util.Map;
 
@@ -28,7 +25,7 @@ import static org.junit.jupiter.api.Assertions.assertEquals;
  */
 public class IndexActionTests {
     @Test
-    public void nullIsIncludedInMapSerialization() {
+    public void nullIsIncludedInMapSerialization() throws IOException {
         ObjectSerializer nullIncludingSerializer = new JacksonJsonSerializerBuilder()
             .serializer(new ObjectMapper().setSerializationInclusion(JsonInclude.Include.ALWAYS))
             .build();
@@ -38,13 +35,14 @@ public class IndexActionTests {
                 .setActionType(IndexActionType.MERGE)
                 .setDocument(Collections.singletonMap("null", null));
 
-        String json = convertToJson(IndexActionConverter.map(action, nullIncludingSerializer));
+        String json = Utility.getDefaultSerializerAdapter()
+            .serialize(IndexActionConverter.map(action, nullIncludingSerializer), SerializerEncoding.JSON);
 
         assertEquals("{\"@search.action\":\"merge\",\"null\":null}", json);
     }
 
     @Test
-    public void nullIsIncludedInTypedSerialization() {
+    public void nullIsIncludedInTypedSerialization() throws IOException {
         ObjectSerializer nullIncludingSerializer = new JacksonJsonSerializerBuilder()
             .serializer(new ObjectMapper().setSerializationInclusion(JsonInclude.Include.ALWAYS))
             .build();
@@ -54,52 +52,36 @@ public class IndexActionTests {
                 .setActionType(IndexActionType.MERGE)
                 .setDocument(new ClassWithNullableField());
 
-        String json = convertToJson(IndexActionConverter.map(action, nullIncludingSerializer));
+        String json = Utility.getDefaultSerializerAdapter()
+            .serialize(IndexActionConverter.map(action, nullIncludingSerializer), SerializerEncoding.JSON);
 
         assertEquals("{\"@search.action\":\"merge\",\"null\":null}", json);
     }
 
     @Test
-    public void nullIsExcludedInMapSerialization() {
-        ObjectSerializer nullExcludingSerializer = new JacksonJsonSerializerBuilder()
-            .serializer(new ObjectMapper().setSerializationInclusion(JsonInclude.Include.NON_NULL))
-            .build();
-
+    public void nullIsExcludedInMapSerialization() throws IOException {
         com.azure.search.documents.models.IndexAction<Map<String, Object>> action =
             new com.azure.search.documents.models.IndexAction<Map<String, Object>>()
                 .setActionType(IndexActionType.MERGE)
                 .setDocument(Collections.singletonMap("null", null));
 
-        String json = convertToJson(IndexActionConverter.map(action, nullExcludingSerializer));
+        String json = Utility.getDefaultSerializerAdapter()
+            .serialize(IndexActionConverter.map(action, null), SerializerEncoding.JSON);
 
         assertEquals("{\"@search.action\":\"merge\"}", json);
     }
 
     @Test
-    public void nullIsExcludedInTypedSerialization() {
-        ObjectSerializer nullExcludingSerializer = new JacksonJsonSerializerBuilder()
-            .serializer(new ObjectMapper().setSerializationInclusion(JsonInclude.Include.NON_NULL))
-            .build();
-
+    public void nullIsExcludedInTypedSerialization() throws IOException {
         com.azure.search.documents.models.IndexAction<ClassWithNullableField> action =
             new com.azure.search.documents.models.IndexAction<ClassWithNullableField>()
                 .setActionType(IndexActionType.MERGE)
                 .setDocument(new ClassWithNullableField());
 
-        String json = convertToJson(IndexActionConverter.map(action, nullExcludingSerializer));
+        String json = Utility.getDefaultSerializerAdapter()
+            .serialize(IndexActionConverter.map(action, null), SerializerEncoding.JSON);
 
         assertEquals("{\"@search.action\":\"merge\"}", json);
-    }
-
-    private static String convertToJson(JsonSerializable<?> jsonSerializable) {
-        ByteArrayOutputStream outputStream = new ByteArrayOutputStream();
-
-        try (JsonWriter writer = JsonProviders.createWriter(outputStream)) {
-            writer.writeJson(jsonSerializable).flush();
-            return outputStream.toString(StandardCharsets.UTF_8.name());
-        } catch (IOException ex) {
-            throw new RuntimeException(ex);
-        }
     }
 
     public static final class ClassWithNullableField {

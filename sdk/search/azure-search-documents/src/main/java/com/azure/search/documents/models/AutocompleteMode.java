@@ -6,28 +6,18 @@
 
 package com.azure.search.documents.models;
 
-/**
- * Specifies the mode for Autocomplete. The default is 'oneTerm'. Use 'twoTerms' to get shingles and
- * 'oneTermWithContext' to use the current context in producing autocomplete terms.
- */
+import com.fasterxml.jackson.annotation.JsonCreator;
+import com.fasterxml.jackson.annotation.JsonValue;
+
+/** Defines values for AutocompleteMode. */
 public enum AutocompleteMode {
-    /**
-     * Only one term is suggested. If the query has two terms, only the last term is completed. For example, if the
-     * input is 'washington medic', the suggested terms could include 'medicaid', 'medicare', and 'medicine'.
-     */
+    /** Enum value oneTerm. */
     ONE_TERM("oneTerm"),
 
-    /**
-     * Matching two-term phrases in the index will be suggested. For example, if the input is 'medic', the suggested
-     * terms could include 'medicare coverage' and 'medical assistant'.
-     */
+    /** Enum value twoTerms. */
     TWO_TERMS("twoTerms"),
 
-    /**
-     * Completes the last term in a query with two or more terms, where the last two terms are a phrase that exists in
-     * the index. For example, if the input is 'washington medic', the suggested terms could include 'washington
-     * medicaid' and 'washington medical'.
-     */
+    /** Enum value oneTermWithContext. */
     ONE_TERM_WITH_CONTEXT("oneTermWithContext");
 
     /** The actual serialized value for a AutocompleteMode instance. */
@@ -43,6 +33,7 @@ public enum AutocompleteMode {
      * @param value the serialized value to parse.
      * @return the parsed AutocompleteMode object, or null if unable to parse.
      */
+    @JsonCreator
     public static AutocompleteMode fromString(String value) {
         if (value == null) {
             return null;
@@ -56,7 +47,7 @@ public enum AutocompleteMode {
         return null;
     }
 
-    /** {@inheritDoc} */
+    @JsonValue
     @Override
     public String toString() {
         return this.value;

@@ -118,21 +118,7 @@ public final class SearchIndexClientBuilder implements
      * and {@link #retryPolicy(RetryPolicy)} have been set.
      */
     public SearchIndexClient buildClient() {
-        Objects.requireNonNull(endpoint, "'endpoint' cannot be null.");
-
-        SearchServiceVersion buildVersion = (serviceVersion == null)
-            ? SearchServiceVersion.getLatest()
-            : serviceVersion;
-
-        if (httpPipeline != null) {
-            return new SearchIndexClient(endpoint, buildVersion, httpPipeline, jsonSerializer);
-        }
-
-        HttpPipeline pipeline = Utility.buildHttpPipeline(clientOptions, httpLogOptions, configuration, retryPolicy,
-            retryOptions, azureKeyCredential, tokenCredential, audience, perCallPolicies, perRetryPolicies, httpClient,
-            LOGGER);
-
-        return new SearchIndexClient(endpoint, buildVersion, pipeline, jsonSerializer);
+        return new SearchIndexClient(buildAsyncClient());
     }
 
     /**
