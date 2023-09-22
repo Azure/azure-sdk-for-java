@@ -571,7 +571,7 @@ public final class RoomsAsyncClient {
      *
      * @return The update room request.
      */
-    private UpdateRoomRequest toUpdateRoomRequest(OffsetDateTime validFrom, OffsetDateTime validUntil, boolean isPstnDialOutEnabled) {
+    private UpdateRoomRequest toUpdateRoomRequest(OffsetDateTime validFrom, OffsetDateTime validUntil, Boolean isPstnDialOutEnabled) {
         UpdateRoomRequest updateRoomRequest = new UpdateRoomRequest();
 
         if (validFrom != null) {
@@ -582,7 +582,9 @@ public final class RoomsAsyncClient {
             updateRoomRequest.setValidUntil(validUntil);
         }
 
-        updateRoomRequest.setPstnDialOutEnabled(isPstnDialOutEnabled);
+        if (isPstnDialOutEnabled != null) {
+            updateRoomRequest.setPstnDialOutEnabled(isPstnDialOutEnabled);
+        }
 
         return updateRoomRequest;
     }

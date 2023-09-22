@@ -29,7 +29,7 @@ public final class UpdateRoomOptions {
      * Set this flag to true if, at the time of the call, dial out to a PSTN number is enabled in a particular room. By
      * default, this flag is set to false.
      */
-    private Boolean pstnDialOutEnabled = false;
+    private Boolean pstnDialOutEnabled;
 
     /**
      * The default constructor of CreateRoomOptions

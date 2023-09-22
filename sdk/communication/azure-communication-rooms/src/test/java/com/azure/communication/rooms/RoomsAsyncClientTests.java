@@ -64,6 +64,7 @@ public class RoomsAsyncClientTests extends RoomsTestBase {
         StepVerifier.create(response1)
                 .assertNext(roomResult -> {
                     assertHappyPath(roomResult, 201);
+                    assertEquals(true, roomResult.getValue().isPstnDialOutEnabled());
                 })
                 .verifyComplete();
 
@@ -130,8 +131,7 @@ public class RoomsAsyncClientTests extends RoomsTestBase {
 
         UpdateRoomOptions updateOptions = new UpdateRoomOptions()
                 .setValidFrom(VALID_FROM)
-                .setValidUntil(VALID_FROM.plusMonths(3))
-                .setPstnDialOutEnabled(false);
+                .setValidUntil(VALID_FROM.plusMonths(3));
 
         Mono<CommunicationRoom> response3 = roomsAsyncClient.updateRoom(roomId,
                 updateOptions);
@@ -139,7 +139,7 @@ public class RoomsAsyncClientTests extends RoomsTestBase {
         StepVerifier.create(response3)
                 .assertNext(result3 -> {
                     assertEquals(true, result3.getValidUntil().toEpochSecond() > VALID_FROM.toEpochSecond());
-                    assertEquals(false, result3.isPstnDialOutEnabled());
+                    assertEquals(true, result3.isPstnDialOutEnabled());
                 }).verifyComplete();
 
         Mono<CommunicationRoom> response4 = roomsAsyncClient.getRoom(roomId);
@@ -201,7 +201,8 @@ public class RoomsAsyncClientTests extends RoomsTestBase {
         List<RoomParticipant> participants = Arrays.asList(firstParticipant);
 
         CreateRoomOptions roomOptions = new CreateRoomOptions()
-                .setParticipants(participants);
+                .setParticipants(participants)
+                .setPstnDialOutEnabled(true);
 
         Mono<CommunicationRoom> response1 = roomsAsyncClient.createRoom(roomOptions);
 
@@ -211,7 +212,7 @@ public class RoomsAsyncClientTests extends RoomsTestBase {
                     assertEquals(true, roomResult.getCreatedAt() != null);
                     assertEquals(true, roomResult.getValidFrom() != null);
                     assertEquals(true, roomResult.getValidUntil() != null);
-                    assertEquals(false, roomResult.isPstnDialOutEnabled());
+                    assertEquals(true, roomResult.isPstnDialOutEnabled());
                 }).verifyComplete();
 
 
@@ -498,6 +499,52 @@ public class RoomsAsyncClientTests extends RoomsTestBase {
         StepVerifier.create(response2)
                 .assertNext(result2 -> {
                     assertEquals(result2.getStatusCode(), 204);
+                }).verifyComplete();
+    }
+
+    @ParameterizedTest
+    @MethodSource("com.azure.core.test.TestBase#getHttpClients")
+    public void updateRoomWithNoParameters(HttpClient httpClient) {
+        roomsAsyncClient = setupAsyncClient(httpClient,
+                "updateRoomWithNoParameters");
+        assertNotNull(roomsAsyncClient);
+
+        CreateRoomOptions createRoomOptions = new CreateRoomOptions()
+                .setValidFrom(VALID_FROM)
+                .setValidUntil(VALID_UNTIL)
+                .setPstnDialOutEnabled(true);
+
+        Mono<Response<CommunicationRoom>> response1 = roomsAsyncClient.createRoomWithResponse(createRoomOptions);
+
+        StepVerifier.create(response1)
+                .assertNext(roomResult -> {
+                    assertHappyPath(roomResult, 201);
+                })
+                .verifyComplete();
+
+        String roomId = response1.block().getValue().getRoomId();
+
+        UpdateRoomOptions updateRoomOptions = new UpdateRoomOptions();
+        Mono<Response<CommunicationRoom>> response2 = roomsAsyncClient.updateRoomWithResponse(roomId, updateRoomOptions);
+
+        StepVerifier.create(response2)
+                .assertNext(roomResult2 -> {
+                    assertHappyPath(roomResult2, 200);
+                    assertEquals(true, roomResult2.getValue().isPstnDialOutEnabled());
+                }).verifyComplete();
+
+        Mono<Response<CommunicationRoom>> response3 = roomsAsyncClient.getRoomWithResponse(roomId, null);
+
+        StepVerifier.create(response3)
+                .assertNext(result3 -> {
+                    assertHappyPath(result3, 200);
+                    assertEquals(true, result3.getValue().isPstnDialOutEnabled());
+                }).verifyComplete();
+
+        Mono<Response<Void>> response4 = roomsAsyncClient.deleteRoomWithResponse(roomId);
+        StepVerifier.create(response4)
+                .assertNext(result4 -> {
+                    assertEquals(result4.getStatusCode(), 204);
                 }).verifyComplete();
     }
 
