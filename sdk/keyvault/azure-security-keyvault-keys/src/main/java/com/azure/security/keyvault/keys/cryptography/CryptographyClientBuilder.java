@@ -173,32 +173,7 @@ public final class CryptographyClientBuilder implements
      * and {@link #retryPolicy(RetryPolicy)} have been set.
      */
     public CryptographyClient buildClient() {
-        if (jsonWebKey == null) {
-            if (Strings.isNullOrEmpty(keyId)) {
-                throw LOGGER.logExceptionAsError(new IllegalStateException(
-                    "An Azure Key Vault key identifier is required to build the cryptography client if a JSON Web Key"
-                        + " is not provided."));
-            }
-
-            CryptographyServiceVersion serviceVersion =
-                version != null ? version : CryptographyServiceVersion.getLatest();
-
-            if (pipeline != null) {
-                return new CryptographyClient(keyId, pipeline, serviceVersion);
-            }
-
-            if (credential == null) {
-                throw LOGGER.logExceptionAsError(new IllegalStateException(
-                    "Azure Key Vault credentials are required to build the cryptography client if a JSON Web Key is not"
-                        + " provided."));
-            }
-
-            HttpPipeline pipeline = setupPipeline();
-
-            return new CryptographyClient(keyId, pipeline, serviceVersion);
-        } else {
-            return new CryptographyClient(jsonWebKey);
-        }
+        return new CryptographyClient(buildAsyncClient());
     }
 
     /**
@@ -230,8 +205,7 @@ public final class CryptographyClientBuilder implements
                         + " is not provided."));
             }
 
-            CryptographyServiceVersion serviceVersion =
-                version != null ? version : CryptographyServiceVersion.getLatest();
+            CryptographyServiceVersion serviceVersion = version != null ? version : CryptographyServiceVersion.getLatest();
 
             if (pipeline != null) {
                 return new CryptographyAsyncClient(keyId, pipeline, serviceVersion);
@@ -263,15 +237,15 @@ public final class CryptographyClientBuilder implements
 
         httpLogOptions = (httpLogOptions == null) ? new HttpLogOptions() : httpLogOptions;
 
-        ClientOptions localClientOptions = clientOptions != null ? clientOptions : new ClientOptions();
-
-        policies.add(new UserAgentPolicy(CoreUtils.getApplicationId(localClientOptions, httpLogOptions), clientName,
+        policies.add(new UserAgentPolicy(CoreUtils.getApplicationId(clientOptions, httpLogOptions), clientName,
             clientVersion, buildConfiguration));
 
-        List<HttpHeader> httpHeaderList = new ArrayList<>();
-        localClientOptions.getHeaders().forEach(header ->
-            httpHeaderList.add(new HttpHeader(header.getName(), header.getValue())));
-        policies.add(new AddHeadersPolicy(new HttpHeaders(httpHeaderList)));
+        if (clientOptions != null) {
+            List<HttpHeader> httpHeaderList = new ArrayList<>();
+            clientOptions.getHeaders().forEach(header ->
+                httpHeaderList.add(new HttpHeader(header.getName(), header.getValue())));
+            policies.add(new AddHeadersPolicy(new HttpHeaders(httpHeaderList)));
+        }
 
         // Add per call additional policies.
         policies.addAll(perCallPolicies);
@@ -288,7 +262,7 @@ public final class CryptographyClientBuilder implements
         HttpPolicyProviders.addAfterRetryPolicies(policies);
         policies.add(new HttpLoggingPolicy(httpLogOptions));
 
-        TracingOptions tracingOptions = localClientOptions.getTracingOptions();
+        TracingOptions tracingOptions = clientOptions == null ? null : clientOptions.getTracingOptions();
         Tracer tracer = TracerProvider.getDefaultProvider()
             .createTracer(clientName, clientVersion, KEYVAULT_TRACING_NAMESPACE_VALUE, tracingOptions);
 
@@ -296,7 +270,6 @@ public final class CryptographyClientBuilder implements
             .policies(policies.toArray(new HttpPipelinePolicy[0]))
             .httpClient(httpClient)
             .tracer(tracer)
-            .clientOptions(localClientOptions)
             .build();
     }
 
