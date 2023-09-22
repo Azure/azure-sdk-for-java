@@ -162,11 +162,10 @@ public interface CosmosOperations {
     <T> T insert(String containerName, T objectToSave, PartitionKey partitionKey);
 
     /**
-     * Inserts item
+     * Inserts item with bulk.
      *
-     * @param containerName must not be {@literal null}
-     * @param objectToSave must not be {@literal null}
-     * @param partitionKey must not be {@literal null}
+     * @param information must not be {@literal null}
+     * @param entities must not be {@literal null}
      * @param <T> type class of domain type
      * @return the inserted item
      */
@@ -227,7 +226,7 @@ public interface CosmosOperations {
     <T> void deleteEntity(String containerName, T entity);
 
     /**
-     * Delete using a list of entities
+     * Delete using a list of entities with bulk
      *
      * @param <T> type class of domain type
      * @param containerName the container name

@@ -244,8 +244,8 @@ public class CosmosTemplate implements CosmosOperations, ApplicationContextAware
     /**
      * Insert all items with bulk.
      *
-     * @param entityInformation the CosmosEntityInformation
-     * @param entities the Iterable<S> entities to be deleted
+     * @param information the CosmosEntityInformation
+     * @param entities the Iterable<S> entities to be inserted
      * @param <T> type class of domain type
      * @return Flux of result
      */
