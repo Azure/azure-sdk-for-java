@@ -14,16 +14,17 @@ public final class ExtensionPropertiesAksAssignedIdentityTests {
     public void testDeserialize() throws Exception {
         ExtensionPropertiesAksAssignedIdentity model =
             BinaryData
-                .fromString("{\"principalId\":\"cryuan\",\"tenantId\":\"uxzdxtay\",\"type\":\"UserAssigned\"}")
+                .fromString(
+                    "{\"principalId\":\"audccsnhs\",\"tenantId\":\"nyejhkryhtnap\",\"type\":\"SystemAssigned\"}")
                 .toObject(ExtensionPropertiesAksAssignedIdentity.class);
-        Assertions.assertEquals(AksIdentityType.USER_ASSIGNED, model.type());
+        Assertions.assertEquals(AksIdentityType.SYSTEM_ASSIGNED, model.type());
     }
 
     @org.junit.jupiter.api.Test
     public void testSerialize() throws Exception {
         ExtensionPropertiesAksAssignedIdentity model =
-            new ExtensionPropertiesAksAssignedIdentity().withType(AksIdentityType.USER_ASSIGNED);
+            new ExtensionPropertiesAksAssignedIdentity().withType(AksIdentityType.SYSTEM_ASSIGNED);
         model = BinaryData.fromObject(model).toObject(ExtensionPropertiesAksAssignedIdentity.class);
-        Assertions.assertEquals(AksIdentityType.USER_ASSIGNED, model.type());
+        Assertions.assertEquals(AksIdentityType.SYSTEM_ASSIGNED, model.type());
     }
 }
