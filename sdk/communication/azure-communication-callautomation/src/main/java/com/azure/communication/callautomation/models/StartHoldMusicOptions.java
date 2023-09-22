@@ -1,3 +1,6 @@
+// Copyright (c) Microsoft Corporation. All rights reserved.
+// Licensed under the MIT License.
+
 package com.azure.communication.callautomation.models;
 
 import com.azure.communication.common.CommunicationIdentifier;
@@ -10,15 +13,15 @@ public class StartHoldMusicOptions {
     /**
      * Participant to put on hold.
      */
-    private CommunicationIdentifier targetParticipant;
+    private final CommunicationIdentifier targetParticipant;
 
     /**
-     * Music to play while on hold.
+     * Audio to play while on hold.
      */
-    private PlaySource playSourceInfo;
+    private final PlaySource playSourceInfo;
 
     /**
-     * If music will loop. Default is true.
+     * If Audio will loop. Default is true.
      */
     private boolean loop;
 
@@ -29,8 +32,8 @@ public class StartHoldMusicOptions {
 
     /**
      * Create a new StartHoldMusicOptions object.
-     * @param targetParticipant
-     * @param playSourceInfo
+     * @param targetParticipant Participant to be put on hold.
+     * @param playSourceInfo Audio to be played while on hold.
      */
     public StartHoldMusicOptions(CommunicationIdentifier targetParticipant, PlaySource playSourceInfo) {
         this.targetParticipant = targetParticipant;
