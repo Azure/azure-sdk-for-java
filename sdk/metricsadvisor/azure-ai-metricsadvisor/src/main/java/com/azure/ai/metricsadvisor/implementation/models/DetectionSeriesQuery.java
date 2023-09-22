@@ -13,26 +13,26 @@ import java.util.List;
 @Fluent
 public final class DetectionSeriesQuery {
     /*
-     * This is inclusive. The maximum number of data points (series number * time range) is 10000.
+     * This is inclusive. The maximum number of data points (series number *
+     * time range) is 10000.
      */
     @JsonProperty(value = "startTime", required = true)
     private OffsetDateTime startTime;
 
     /*
-     * This is exclusive. The maximum number of data points (series number * time range) is 10000.
+     * This is exclusive. The maximum number of data points (series number *
+     * time range) is 10000.
      */
     @JsonProperty(value = "endTime", required = true)
     private OffsetDateTime endTime;
 
     /*
-     * The series to be queried. The identity must be able to define one single time series instead of a group of time
-     * series. The maximum number of series is 100.
+     * The series to be queried. The identity must be able to define one single
+     * time series instead of a group of time series. The maximum number of
+     * series is 100.
      */
     @JsonProperty(value = "series", required = true)
     private List<SeriesIdentity> series;
-
-    /** Creates an instance of DetectionSeriesQuery class. */
-    public DetectionSeriesQuery() {}
 
     /**
      * Get the startTime property: This is inclusive. The maximum number of data points (series number * time range) is

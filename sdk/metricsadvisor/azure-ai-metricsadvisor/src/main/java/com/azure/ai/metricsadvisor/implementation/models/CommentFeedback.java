@@ -9,7 +9,6 @@ import com.fasterxml.jackson.annotation.JsonProperty;
 import com.fasterxml.jackson.annotation.JsonTypeInfo;
 import com.fasterxml.jackson.annotation.JsonTypeName;
 import java.time.OffsetDateTime;
-import java.util.UUID;
 
 /** The CommentFeedback model. */
 @JsonTypeInfo(use = JsonTypeInfo.Id.NAME, include = JsonTypeInfo.As.PROPERTY, property = "feedbackType")
@@ -23,7 +22,8 @@ public final class CommentFeedback extends MetricFeedback {
     private OffsetDateTime startTime;
 
     /*
-     * the end timestamp of feedback time range, when equals to startTime means only one timestamp
+     * the end timestamp of feedback time range, when equals to startTime means
+     * only one timestamp
      */
     @JsonProperty(value = "endTime")
     private OffsetDateTime endTime;
@@ -33,9 +33,6 @@ public final class CommentFeedback extends MetricFeedback {
      */
     @JsonProperty(value = "value", required = true)
     private CommentFeedbackValue value;
-
-    /** Creates an instance of CommentFeedback class. */
-    public CommentFeedback() {}
 
     /**
      * Get the startTime property: the start timestamp of feedback time range.
@@ -96,20 +93,6 @@ public final class CommentFeedback extends MetricFeedback {
      */
     public CommentFeedback setValue(CommentFeedbackValue value) {
         this.value = value;
-        return this;
-    }
-
-    /** {@inheritDoc} */
-    @Override
-    public CommentFeedback setMetricId(UUID metricId) {
-        super.setMetricId(metricId);
-        return this;
-    }
-
-    /** {@inheritDoc} */
-    @Override
-    public CommentFeedback setDimensionFilter(FeedbackDimensionFilter dimensionFilter) {
-        super.setDimensionFilter(dimensionFilter);
         return this;
     }
 }

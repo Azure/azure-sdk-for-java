@@ -23,9 +23,6 @@ public final class DetectionAnomalyFilterCondition {
     @JsonProperty(value = "severityFilter")
     private SeverityFilterCondition severityFilter;
 
-    /** Creates an instance of DetectionAnomalyFilterCondition class. */
-    public DetectionAnomalyFilterCondition() {}
-
     /**
      * Get the dimensionFilter property: dimension filter.
      *

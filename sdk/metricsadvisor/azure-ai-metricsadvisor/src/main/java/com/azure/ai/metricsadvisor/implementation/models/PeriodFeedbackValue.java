@@ -23,9 +23,6 @@ public final class PeriodFeedbackValue {
     @JsonProperty(value = "periodValue", required = true)
     private int periodValue;
 
-    /** Creates an instance of PeriodFeedbackValue class. */
-    public PeriodFeedbackValue() {}
-
     /**
      * Get the periodType property: the type of setting period.
      *
