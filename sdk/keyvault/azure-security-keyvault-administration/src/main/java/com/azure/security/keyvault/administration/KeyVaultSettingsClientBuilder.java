@@ -38,6 +38,7 @@ import com.azure.core.util.tracing.TracerProvider;
 import com.azure.security.keyvault.administration.implementation.KeyVaultCredentialPolicy;
 import com.azure.security.keyvault.administration.implementation.KeyVaultErrorCodeStrings;
 import com.azure.security.keyvault.administration.implementation.KeyVaultSettingsClientImpl;
+import com.azure.security.keyvault.administration.implementation.KeyVaultSettingsClientImplBuilder;
 
 import java.net.MalformedURLException;
 import java.net.URL;
@@ -72,8 +73,7 @@ public final class KeyVaultSettingsClientBuilder implements
     // Please see <a href=https://docs.microsoft.com/azure/azure-resource-manager/management/azure-services-resource-providers>here</a>
     // for more information on Azure resource provider namespaces.
     private static final String KEYVAULT_TRACING_NAMESPACE_VALUE = "Microsoft.KeyVault";
-    private static final ClientOptions DEFAULT_CLIENT_OPTIONS = new ClientOptions();
-
+    private final KeyVaultSettingsClientImplBuilder implClientBuilder;
     private final List<HttpPipelinePolicy> pipelinePolicies;
     private final Map<String, String> properties;
 
@@ -96,6 +96,7 @@ public final class KeyVaultSettingsClientBuilder implements
         this.httpLogOptions = new HttpLogOptions();
         this.pipelinePolicies = new ArrayList<>();
         this.properties = CoreUtils.getProperties(AZURE_KEY_VAULT_RBAC);
+        this.implClientBuilder = new KeyVaultSettingsClientImplBuilder();
     }
 
     /**
@@ -363,10 +364,9 @@ public final class KeyVaultSettingsClientBuilder implements
      * @return an instance of KeyVaultSettingsClientImpl.
      */
     private KeyVaultSettingsClientImpl buildImplClient() {
-        HttpPipeline buildPipeline = (pipeline != null) ? pipeline : createHttpPipeline();
-        KeyVaultAdministrationServiceVersion version = (serviceVersion != null)
-            ? serviceVersion : KeyVaultAdministrationServiceVersion.getLatest();
-        return new KeyVaultSettingsClientImpl(buildPipeline, version.getVersion());
+        return implClientBuilder
+            .pipeline((pipeline != null) ? pipeline : createHttpPipeline())
+            .buildClient();
     }
 
     private HttpPipeline createHttpPipeline() {
@@ -391,18 +391,20 @@ public final class KeyVaultSettingsClientBuilder implements
 
         httpLogOptions = (httpLogOptions == null) ? new HttpLogOptions() : httpLogOptions;
 
-        ClientOptions localClientOptions = clientOptions != null ? clientOptions : DEFAULT_CLIENT_OPTIONS;
-
-        String applicationId = CoreUtils.getApplicationId(localClientOptions, httpLogOptions);
+        String applicationId = CoreUtils.getApplicationId(clientOptions, httpLogOptions);
 
         policies.add(new UserAgentPolicy(applicationId, clientName, clientVersion, buildConfiguration));
         policies.add(new RequestIdPolicy());
         policies.add(new AddHeadersFromContextPolicy());
 
-        HttpHeaders headers = new HttpHeaders();
-        localClientOptions.getHeaders().forEach(header -> headers.set(header.getName(), header.getValue()));
-        if (headers.getSize() > 0) {
-            policies.add(new AddHeadersPolicy(headers));
+        if (clientOptions != null) {
+            HttpHeaders headers = new HttpHeaders();
+
+            clientOptions.getHeaders().forEach(header -> headers.set(header.getName(), header.getValue()));
+
+            if (headers.getSize() > 0) {
+                policies.add(new AddHeadersPolicy(headers));
+            }
         }
 
         policies.addAll(
@@ -423,14 +425,14 @@ public final class KeyVaultSettingsClientBuilder implements
         HttpPolicyProviders.addAfterRetryPolicies(policies);
         policies.add(new HttpLoggingPolicy(httpLogOptions));
 
-        TracingOptions tracingOptions = localClientOptions.getTracingOptions();
+        TracingOptions tracingOptions = clientOptions == null ? null : clientOptions.getTracingOptions();
         Tracer tracer = TracerProvider.getDefaultProvider()
             .createTracer(clientName, clientVersion, KEYVAULT_TRACING_NAMESPACE_VALUE, tracingOptions);
 
         return new HttpPipelineBuilder()
             .policies(policies.toArray(new HttpPipelinePolicy[0]))
             .httpClient(httpClient)
-            .clientOptions(localClientOptions)
+            .clientOptions(clientOptions)
             .tracer(tracer)
             .build();
     }
