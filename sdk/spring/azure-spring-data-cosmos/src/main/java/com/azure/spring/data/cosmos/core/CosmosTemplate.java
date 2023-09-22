@@ -242,7 +242,15 @@ public class CosmosTemplate implements CosmosOperations, ApplicationContextAware
         return toDomainObject(domainType, response.getItem());
     }
 
-    public <S extends T, T, ID extends Serializable> Iterable<S> insertAll(CosmosEntityInformation<T,ID> information, Iterable<S> entities) {
+    /**
+     * Insert all items with bulk.
+     *
+     * @param entityInformation the CosmosEntityInformation
+     * @param entities the Iterable<S> entities to be deleted
+     * @param <T> type class of domain type
+     * @return Flux of result
+     */
+    public <S extends T, T> Iterable<S> insertAll(CosmosEntityInformation information, Iterable<S> entities) {
         Assert.notNull(entities, "entities to be inserted should not be null");
 
         String containerName = information.getContainerName();
@@ -260,7 +268,13 @@ public class CosmosTemplate implements CosmosOperations, ApplicationContextAware
             .getDatabase(this.getDatabaseName())
             .getContainer(containerName)
             .executeBulkOperations(Flux.fromIterable(cosmosItemOperations))
+            .publishOn(Schedulers.parallel())
+            .onErrorResume(throwable ->
+                CosmosExceptionUtils.exceptionHandler("Failed to insert item(s)", throwable,
+                    this.responseDiagnosticsProcessor))
             .flatMap(r -> {
+                CosmosUtils.fillAndProcessResponseDiagnostics(this.responseDiagnosticsProcessor,
+                    r.getResponse().getCosmosDiagnostics(), null);
                 return Flux.just(toDomainObject(domainType, r.getResponse().getItem(JsonNode.class)));
             })
             .collectList().block();
@@ -723,7 +737,15 @@ public class CosmosTemplate implements CosmosOperations, ApplicationContextAware
                 .getDatabase(this.getDatabaseName())
                 .getContainer(containerName)
                 .executeBulkOperations(cosmosItemOperations)
-                .blockLast();
+                .publishOn(Schedulers.parallel())
+                .onErrorResume(throwable ->
+                    CosmosExceptionUtils.exceptionHandler("Failed to delete item(s)", throwable,
+                        this.responseDiagnosticsProcessor))
+                .flatMap(response -> {
+                    CosmosUtils.fillAndProcessResponseDiagnostics(this.responseDiagnosticsProcessor,
+                        response.getResponse().getCosmosDiagnostics(), null);
+                    return null;
+                }).blockLast();
     }
 
     private void deleteById(String containerName, Object id, PartitionKey partitionKey,
@@ -800,7 +822,7 @@ public class CosmosTemplate implements CosmosOperations, ApplicationContextAware
 
     /**
      * Delete the DocumentQuery, need to query the domains at first, then delete the item from the result. The cosmos db
-     * Sql API do _NOT_ support DELETE query, we cannot add one DeleteQueryGenerator.
+     * Sql API do _NOT_ support DELETE query, we cannot add one DeleteQueryGenerator. Uses bulk if possible.
      *
      * @param query The representation for query method.
      * @param domainType Class of domain
@@ -841,6 +863,9 @@ public class CosmosTemplate implements CosmosOperations, ApplicationContextAware
                 .getContainer(containerName)
                 .executeBulkOperations(cosmosItemOperationFlux)
                 .publishOn(Schedulers.parallel())
+                .onErrorResume(throwable ->
+                    CosmosExceptionUtils.exceptionHandler("Failed to delete item(s)",
+                        throwable, this.responseDiagnosticsProcessor))
                 .collectList().block();
 
             return results.stream()

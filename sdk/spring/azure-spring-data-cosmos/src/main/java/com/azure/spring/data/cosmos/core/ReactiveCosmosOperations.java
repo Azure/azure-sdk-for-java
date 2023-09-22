@@ -5,6 +5,7 @@ package com.azure.spring.data.cosmos.core;
 
 import com.azure.cosmos.models.CosmosContainerProperties;
 import com.azure.cosmos.models.CosmosContainerResponse;
+import com.azure.cosmos.models.CosmosItemOperation;
 import com.azure.cosmos.models.CosmosPatchItemRequestOptions;
 import com.azure.cosmos.models.CosmosPatchOperations;
 import com.azure.cosmos.models.PartitionKey;
@@ -12,6 +13,7 @@ import com.azure.cosmos.models.SqlQuerySpec;
 import com.azure.spring.data.cosmos.core.convert.MappingCosmosConverter;
 import com.azure.spring.data.cosmos.core.query.CosmosQuery;
 import com.azure.spring.data.cosmos.repository.support.CosmosEntityInformation;
+import org.reactivestreams.Publisher;
 import org.springframework.data.domain.Sort;
 import reactor.core.publisher.Flux;
 import reactor.core.publisher.Mono;
@@ -148,6 +150,16 @@ public interface ReactiveCosmosOperations {
     <T> Mono<T> insert(String containerName, T objectToSave);
 
     /**
+     * Insert all items with bulk.
+     *
+     * @param entityInformation must not be {@literal null}
+     * @param entities must not be {@literal null}
+     * @param <T> type class of domain type
+     * @return Flux of result
+     */
+    <S extends T, T> Flux<S> insertAll(CosmosEntityInformation entityInformation, Iterable<S> entities);
+
+    /**
      * patches item
      * @param id must not be {@literal null}
      * @param partitionKey must not be {@literal null}
@@ -217,6 +229,16 @@ public interface ReactiveCosmosOperations {
      * @return void Mono
      */
     Mono<Void> deleteAll(String containerName, Class<?> domainType);
+
+    /**
+     * Delete all items with bulk.
+     *
+     * @param containerName must not be {@literal null}
+     * @param cosmosItemOperations must not be {@literal null}
+     * @param <T> type class of domain type
+     * @return void Mono
+     */
+    Mono<Void> deleteEntities(String containerName, Flux<CosmosItemOperation> cosmosItemOperations);
 
     /**
      * Delete container

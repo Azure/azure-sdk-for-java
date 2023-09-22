@@ -3,8 +3,10 @@
 package com.azure.spring.data.cosmos.repository.support;
 
 import com.azure.cosmos.CosmosException;
+import com.azure.cosmos.models.CosmosBulkOperations;
 import com.azure.cosmos.models.CosmosContainerProperties;
 import com.azure.cosmos.models.CosmosContainerResponse;
+import com.azure.cosmos.models.CosmosItemOperation;
 import com.azure.cosmos.models.CosmosPatchItemRequestOptions;
 import com.azure.cosmos.models.CosmosPatchOperations;
 import com.azure.cosmos.models.PartitionKey;
@@ -21,6 +23,9 @@ import reactor.core.publisher.Flux;
 import reactor.core.publisher.Mono;
 
 import java.io.Serializable;
+import java.util.ArrayList;
+import java.util.List;
+import java.util.stream.StreamSupport;
 
 import static com.azure.spring.data.cosmos.repository.support.IndexPolicyCompareService.policyNeedsUpdate;
 
@@ -129,7 +134,11 @@ public class SimpleReactiveCosmosRepository<T, K extends Serializable> implement
 
         Assert.notNull(entities, "The given Iterable of entities must not be null!");
 
-        return Flux.fromIterable(entities).flatMap(this::save);
+        if (entityInformation.getPartitionKeyFieldName() != null) {
+            return cosmosOperations.insertAll(this.entityInformation, entities);
+        } else {
+            return Flux.fromIterable(entities).flatMap(this::save);
+        }
     }
 
     @Override
@@ -137,7 +146,11 @@ public class SimpleReactiveCosmosRepository<T, K extends Serializable> implement
 
         Assert.notNull(entityStream, "The given Publisher of entities must not be null!");
 
-        return Flux.from(entityStream).flatMap(this::save);
+        if (entityInformation.getPartitionKeyFieldName() != null) {
+            return cosmosOperations.insertAll(this.entityInformation, Flux.from(entityStream).toIterable());
+        } else {
+            return Flux.from(entityStream).flatMap(this::save);
+        }
     }
 
     @Override
@@ -244,7 +257,16 @@ public class SimpleReactiveCosmosRepository<T, K extends Serializable> implement
     public Mono<Void> deleteAll(Iterable<? extends T> entities) {
         Assert.notNull(entities, "The given Iterable of entities must not be null!");
 
-        return Flux.fromIterable(entities).flatMap(this::delete).then();
+        if (entityInformation.getPartitionKeyFieldName() != null) {
+            Flux<CosmosItemOperation> cosmosItemOperationFlux = Flux.fromIterable(entities).map(entity -> {
+                return CosmosBulkOperations.getDeleteItemOperation(entityInformation.getId(entity).toString(),
+                    new PartitionKey(entityInformation.getPartitionKeyFieldValue(entity)));
+            });
+
+            return cosmosOperations.deleteEntities(entityInformation.getContainerName(), cosmosItemOperationFlux);
+        } else {
+            return Flux.fromIterable(entities).flatMap(this::delete).then();
+        }
     }
 
     @Override
@@ -252,10 +274,19 @@ public class SimpleReactiveCosmosRepository<T, K extends Serializable> implement
 
         Assert.notNull(entityStream, "The given Publisher of entities must not be null!");
 
-        return Flux.from(entityStream)//
-                   .map(entityInformation::getRequiredId)//
-                   .flatMap(this::deleteById)//
-                   .then();
+        if (entityInformation.getPartitionKeyFieldName() != null) {
+            Flux<CosmosItemOperation> cosmosItemOperationFlux = Flux.from(entityStream).map(entity -> {
+                return CosmosBulkOperations.getDeleteItemOperation(entityInformation.getId(entity).toString(),
+                    new PartitionKey(entityInformation.getPartitionKeyFieldValue(entity)));
+            });
+
+            return cosmosOperations.deleteEntities(entityInformation.getContainerName(), cosmosItemOperationFlux);
+        } else {
+            return Flux.from(entityStream)//
+                .map(entityInformation::getRequiredId)//
+                .flatMap(this::deleteById)//
+                .then();
+        }
     }
 
     @Override

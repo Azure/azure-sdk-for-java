@@ -47,11 +47,12 @@ import org.springframework.data.domain.Sort;
 import org.springframework.lang.NonNull;
 import org.springframework.util.Assert;
 import org.springframework.util.ReflectionUtils;
-import reactor.core.CoreSubscriber;
 import reactor.core.publisher.Flux;
 import reactor.core.publisher.Mono;
 import reactor.core.scheduler.Schedulers;
 
+import java.util.ArrayList;
+import java.util.List;
 import java.util.Optional;
 import java.util.UUID;
 
@@ -469,6 +470,43 @@ public class ReactiveCosmosTemplate implements ReactiveCosmosOperations, Applica
     }
 
     /**
+     * Insert all items with bulk.
+     *
+     * @param entityInformation the CosmosEntityInformation
+     * @param entities the Iterable<S> entities to be deleted
+     * @param <T> type class of domain type
+     * @return Flux of result
+     */
+    public <S extends T, T> Flux<S> insertAll(CosmosEntityInformation entityInformation, Iterable<S> entities) {
+        Assert.notNull(entities, "entities to be inserted should not be null");
+
+        String containerName = entityInformation.getContainerName();
+        Class<T> domainType = entityInformation.getJavaType();
+
+        List<CosmosItemOperation> cosmosItemOperations = new ArrayList<>();
+        entities.forEach(entity -> {
+            JsonNode originalItem = mappingCosmosConverter.writeJsonNode(entity);
+            PartitionKey partitionKey = new PartitionKey(entityInformation.getPartitionKeyFieldValue(entity));
+            cosmosItemOperations.add(CosmosBulkOperations.getUpsertItemOperation(originalItem,
+                partitionKey));
+        });
+
+        return (Flux<S>) this.getCosmosAsyncClient()
+            .getDatabase(this.getDatabaseName())
+            .getContainer(containerName)
+            .executeBulkOperations(Flux.fromIterable(cosmosItemOperations))
+            .publishOn(Schedulers.parallel())
+            .onErrorResume(throwable ->
+                CosmosExceptionUtils.exceptionHandler("Failed to insert item(s)", throwable,
+                    this.responseDiagnosticsProcessor))
+            .flatMap(r -> {
+                CosmosUtils.fillAndProcessResponseDiagnostics(this.responseDiagnosticsProcessor,
+                    r.getResponse().getCosmosDiagnostics(), null);
+                return Flux.just(toDomainObject(domainType, r.getResponse().getItem(JsonNode.class)));
+            });
+    }
+
+    /**
      * Patches item
      *
      * applies partial update (patch) to an item
@@ -630,6 +668,31 @@ public class ReactiveCosmosTemplate implements ReactiveCosmosOperations, Applica
     }
 
     /**
+     * Delete all items with bulk.
+     *
+     * @param containerName the container name
+     * @param cosmosItemOperations the Flux of the CosmosItemOperation's to delete
+     * @return void Mono
+     */
+    public Mono<Void> deleteEntities(String containerName, Flux<CosmosItemOperation> cosmosItemOperations) {
+        Assert.notNull(cosmosItemOperations, "entities to be deleted should not be null");
+
+        return this.getCosmosAsyncClient()
+            .getDatabase(this.getDatabaseName())
+            .getContainer(containerName)
+            .executeBulkOperations(cosmosItemOperations)
+            .publishOn(Schedulers.parallel())
+            .onErrorResume(throwable ->
+                CosmosExceptionUtils.exceptionHandler("Failed to delete item(s)", throwable,
+                    this.responseDiagnosticsProcessor))
+            .flatMap(response -> {
+                CosmosUtils.fillAndProcessResponseDiagnostics(this.responseDiagnosticsProcessor,
+                    response.getResponse().getCosmosDiagnostics(), null);
+                return null;
+            }).then();
+    }
+
+    /**
      * Delete all items in a container
      *
      * @param containerName the container name
@@ -646,7 +709,7 @@ public class ReactiveCosmosTemplate implements ReactiveCosmosOperations, Applica
     }
 
     /**
-     * Delete items matching query
+     * Delete items matching query with bulk if PK exists
      *
      * @param query the document query
      * @param domainType the entity class
@@ -684,6 +747,9 @@ public class ReactiveCosmosTemplate implements ReactiveCosmosOperations, Applica
                 .getContainer(containerName)
                 .executeBulkOperations(cosmosItemOperationFlux)
                 .publishOn(Schedulers.parallel())
+                .onErrorResume(throwable ->
+                    CosmosExceptionUtils.exceptionHandler("Failed to delete item(s)", throwable,
+                        this.responseDiagnosticsProcessor))
                 .collectList().block();
             return results.flatMap(jsonNode -> Mono.just(toDomainObject(domainType, jsonNode)));
         } else {
