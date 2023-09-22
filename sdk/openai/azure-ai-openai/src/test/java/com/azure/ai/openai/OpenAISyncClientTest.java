@@ -321,8 +321,7 @@ public class OpenAISyncClientTest extends OpenAIClientTestBase {
             completionsOptions.setMaxTokens(2000);
             Completions completions = client.getCompletions(modelId, completionsOptions);
             assertCompletions(1, completions);
-            // TODO: Service issue: we don't have prompt filter results value anymore.
-//            assertSafeContentFilterResults(completions.getPromptFilterResults().get(0).getContentFilterResults());
+            assertSafeContentFilterResults(completions.getPromptFilterResults().get(0).getContentFilterResults());
             assertSafeContentFilterResults(completions.getChoices().get(0).getContentFilterResults());
         });
     }
