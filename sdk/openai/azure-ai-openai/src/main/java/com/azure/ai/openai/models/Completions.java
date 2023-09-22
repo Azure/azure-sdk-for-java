@@ -84,8 +84,8 @@ public final class Completions {
     private List<PromptFilterResult> promptFilterResults;
 
     /**
-     * Backing member for the prompt filtering result during the rename transition. More details here:
-     * <a href="https://github.com/Azure/azure-rest-api-specs/pull/25880"/>
+     * Backing member for the prompt filtering result during the rename transition. More details <a
+     * href="https://github.com/Azure/azure-rest-api-specs/pull/25880">here</a>
      */
     @Deprecated(forRemoval = true)
     @JsonProperty(value = "prompt_annotations")
@@ -150,8 +150,7 @@ public final class Completions {
     }
 
     /**
-     * Gets the RAI filter results for all the prompts passed in the request. This field should not
-     * be used.
+     * Gets the RAI filter results for all the prompts passed in the request. This field should not be used.
      *
      * @return List of {@link PromptFilterResult}
      */
