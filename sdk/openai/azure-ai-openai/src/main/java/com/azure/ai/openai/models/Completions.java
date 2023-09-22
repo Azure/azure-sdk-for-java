@@ -88,7 +88,7 @@ public final class Completions {
      * href="https://github.com/Azure/azure-rest-api-specs/pull/25880">here</a>
      */
     @JsonProperty(value = "prompt_annotations")
-    @Generated
+    @Deprecated
     private List<PromptFilterResult> promptAnnotations;
 
     /**
