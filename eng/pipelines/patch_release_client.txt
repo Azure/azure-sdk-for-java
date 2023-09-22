@@ -39,8 +39,6 @@ com.azure:azure-digitaltwins-core # Tests owner: sjiherzig
 com.azure:azure-identity-extensions # Tests owner: saragluna, backwind1233
 com.azure:azure-iot-deviceupdate # Tests owner: leolie, ryzhan
 com.azure:azure-messaging-eventgrid # Tests owner: billwert
-com.azure:azure-messaging-eventhubs # Tests owner: conniey
-com.azure:azure-messaging-eventhubs-checkpointstore-blob # Tests owner: conniey
 com.azure:azure-messaging-servicebus # Tests owner: ki1729
 com.azure:azure-messaging-webpubsub # Tests owner: weidongxu-microsoft
 com.azure:azure-mixedreality-authentication # Tests owner: craigktreasure, RamonArguelles
@@ -49,11 +47,6 @@ com.azure:azure-monitor-query # Tests owner: srnagar
 com.azure:azure-monitor-ingestion # Tests owner: srnagar
 com.azure:azure-security-attestation # Tests owner: LarryOsterman
 com.azure:azure-security-confidentialledger # Tests owner: Xamrmo
-com.azure:azure-security-keyvault-administration # Tests owner: vcolin7
-com.azure:azure-security-keyvault-certificates # Tests owner: vcolin7
-com.azure:azure-security-keyvault-jca # Tests owner: chenrujun
-com.azure:azure-security-keyvault-keys # Tests owner: vcolin7
-com.azure:azure-security-keyvault-secrets # Tests owner: vcolin7
 com.azure:azure-search-documents # Tests owner: jairmyree
 com.azure:azure-storage-blob # Tests owner: ibrahimrabab, jaschrep-msft
 com.azure:azure-storage-blob-batch # Tests owner: ibrahimrabab, jaschrep-msft
