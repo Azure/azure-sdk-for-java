@@ -8,8 +8,10 @@ import com.azure.cosmos.CosmosException;
 import com.azure.cosmos.implementation.ClientSideRequestStatistics;
 import com.azure.cosmos.implementation.Configs;
 import com.azure.cosmos.implementation.DiagnosticsClientContext;
+import com.azure.cosmos.implementation.DistinctClientSideRequestStatisticsCollection;
 import com.azure.cosmos.implementation.DocumentClientRetryPolicy;
 import com.azure.cosmos.implementation.DocumentCollection;
+import com.azure.cosmos.implementation.FeedResponseDiagnostics;
 import com.azure.cosmos.implementation.HttpConstants;
 import com.azure.cosmos.implementation.ImplementationBridgeHelpers;
 import com.azure.cosmos.implementation.PartitionKeyRange;
@@ -232,6 +234,10 @@ public class ParallelDocumentQueryExecutionContext<T>
         private final CosmosQueryRequestOptions cosmosQueryRequestOptions;
         private final UUID correlatedActivityId;
         private final ConcurrentMap<String, QueryMetrics> emptyPageQueryMetricsMap = new ConcurrentHashMap<>();
+
+        private final DistinctClientSideRequestStatisticsCollection skippedClientSideRequestStatistics =
+            new DistinctClientSideRequestStatisticsCollection();
+
         private CosmosDiagnostics cosmosDiagnostics;
         private final Supplier<String> operationContextTextProvider;
 
@@ -299,6 +305,28 @@ public class ParallelDocumentQueryExecutionContext<T>
                     String.valueOf(requestCharge));
         }
 
+        private void mergeAndResetSkippedRequestStats(CosmosDiagnostics diagnostics) {
+            if (!skippedClientSideRequestStatistics.isEmpty()) {
+                if (diagnostics != null) {
+
+                    FeedResponseDiagnostics feedResponseDiagnostics = diagnosticsAccessor
+                        .getFeedResponseDiagnostics(diagnostics);
+                    feedResponseDiagnostics.addClientSideRequestStatistics(skippedClientSideRequestStatistics);
+                }
+                skippedClientSideRequestStatistics.clear();
+            }
+        }
+
+        private <T> void mergeAndResetQueryMetrics(FeedResponse<T> page) {
+            //Combining previous empty page query metrics with current non empty page query metrics
+            if (!emptyPageQueryMetricsMap.isEmpty()) {
+                ConcurrentMap<String, QueryMetrics> currentQueryMetrics =
+                    BridgeInternal.queryMetricsFromFeedResponse(page);
+                QueryMetrics.mergeQueryMetricsMap(currentQueryMetrics, emptyPageQueryMetricsMap);
+                emptyPageQueryMetricsMap.clear();
+            }
+        }
+
         @Override
         public Flux<FeedResponse<T>> apply(Flux<DocumentProducer<T>.DocumentProducerFeedResponse> source) {
             // Emit an empty page so the downstream observables know when there are no more
@@ -313,6 +341,13 @@ public class ParallelDocumentQueryExecutionContext<T>
                         BridgeInternal.queryMetricsFromFeedResponse(documentProducerFeedResponse.pageResult);
                     QueryMetrics.mergeQueryMetricsMap(emptyPageQueryMetricsMap, currentQueryMetrics);
                     cosmosDiagnostics = documentProducerFeedResponse.pageResult.getCosmosDiagnostics();
+
+                    // keep a reference of the request statistics for the skipped FeedResponses
+                    Collection<ClientSideRequestStatistics> skippedRequestStatsForPage =
+                        diagnosticsAccessor.getClientSideRequestStatistics(cosmosDiagnostics);
+                    if (skippedRequestStatsForPage != null && !skippedRequestStatsForPage.isEmpty()) {
+                        skippedClientSideRequestStatistics.addAll(skippedRequestStatsForPage);
+                    }
 
                     if (ImplementationBridgeHelpers
                         .CosmosQueryRequestOptionsHelper
@@ -331,12 +366,7 @@ public class ParallelDocumentQueryExecutionContext<T>
                 return true;
             }).map(documentProducerFeedResponse -> {
                 //Combining previous empty page query metrics with current non empty page query metrics
-                if (!emptyPageQueryMetricsMap.isEmpty()) {
-                    ConcurrentMap<String, QueryMetrics> currentQueryMetrics =
-                        BridgeInternal.queryMetricsFromFeedResponse(documentProducerFeedResponse.pageResult);
-                    QueryMetrics.mergeQueryMetricsMap(currentQueryMetrics, emptyPageQueryMetricsMap);
-                    emptyPageQueryMetricsMap.clear();
-                }
+                mergeAndResetQueryMetrics(documentProducerFeedResponse.pageResult);
 
                 // Add the request charge
                 double charge = tracker.getAndResetCharge();
@@ -390,17 +420,28 @@ public class ParallelDocumentQueryExecutionContext<T>
 
                 return page;
             }).map(documentProducerFeedResponse -> {
+                // merge query metrics for any empty pages after a non-empty page.
+                mergeAndResetQueryMetrics(documentProducerFeedResponse.pageResult);
+
                 // Unwrap the documentProducerFeedResponse and get back the feedResponse
+                mergeAndResetSkippedRequestStats(documentProducerFeedResponse.pageResult.getCosmosDiagnostics());
+
                 return documentProducerFeedResponse.pageResult;
             }).switchIfEmpty(Flux.defer(() -> {
                 // create an empty page if there is no result
-                return Flux.just(BridgeInternal.createFeedResponseWithQueryMetrics(Utils.immutableListOf(),
-                    headerResponse(tracker.getAndResetCharge()),
-                    emptyPageQueryMetricsMap,
-                    null,
-                    false,
-                    false,
-                    cosmosDiagnostics));
+                FeedResponse<T> artificialEmptyFeedResponse =
+                    BridgeInternal.createFeedResponseWithQueryMetrics(
+                        Utils.immutableListOf(),
+                        headerResponse(tracker.getAndResetCharge()),
+                        emptyPageQueryMetricsMap,
+                        null,
+                        false,
+                        false,
+                        cosmosDiagnostics);
+
+                mergeAndResetSkippedRequestStats(artificialEmptyFeedResponse.getCosmosDiagnostics());
+
+                return Flux.just(artificialEmptyFeedResponse);
             }));
         }
     }
