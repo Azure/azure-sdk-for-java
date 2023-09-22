@@ -19,10 +19,7 @@ import java.net.URL;
 public final class KeyVaultSecretIdentifier {
     private static final ClientLogger LOGGER = new ClientLogger(KeyVaultSecretIdentifier.class);
 
-    private final String sourceId;
-    private final String vaultUrl;
-    private final String name;
-    private final String version;
+    private final String sourceId, vaultUrl, name, version;
 
     /**
      * Create a new {@link KeyVaultSecretIdentifier} from a given Key Vault identifier.
@@ -58,7 +55,7 @@ public final class KeyVaultSecretIdentifier {
             }
 
             this.sourceId = sourceId;
-            this.vaultUrl = url.getProtocol() + "://" + url.getHost();
+            this.vaultUrl = String.format("%s://%s", url.getProtocol(), url.getHost());
             this.name = pathSegments[2];
             this.version = pathSegments.length == 4 ? pathSegments[3] : null;
         } catch (MalformedURLException e) {
