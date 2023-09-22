@@ -10,7 +10,7 @@ import java.util.Arrays;
 /** Samples for ReplicationAlertSettings Create. */
 public final class ReplicationAlertSettingsCreateSamples {
     /*
-     * x-ms-original-file: specification/recoveryservicessiterecovery/resource-manager/Microsoft.RecoveryServices/stable/2022-10-01/examples/ReplicationAlertSettings_Create.json
+     * x-ms-original-file: specification/recoveryservicessiterecovery/resource-manager/Microsoft.RecoveryServices/stable/2023-06-01/examples/ReplicationAlertSettings_Create.json
      */
     /**
      * Sample code: Configures email notifications for this vault.
