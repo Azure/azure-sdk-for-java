@@ -42,13 +42,17 @@ public final class JsonNull extends JsonElement {
      * current state of this JsonNull object.
      */
     @Override
-    public String toString() { return this.nullValue; }
+    public String toString() { 
+        return this.nullValue; 
+    }
 
     /**
      * @return boolean of whether this JsonElement object is of type JsonNull.
      */
     @Override
-    public boolean isNull() { return true; }
+    public boolean isNull() { 
+        return true; 
+    }
 
     @Override
     public JsonArray asArray() {
