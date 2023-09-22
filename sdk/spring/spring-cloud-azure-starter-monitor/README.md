@@ -137,7 +137,7 @@ First, add the following OpenTelemetry library:
 </dependencies>
 ```
 
-After, you have to enable the OpenTelemetry Logback appender. The following example shows you how to do this from a `logback.xml` file:
+Then configure the OpenTelemetry Logback appender, e.g. in your `logback.xml` file:
 
 ```xml
 <?xml version="1.0" encoding="UTF-8"?>
