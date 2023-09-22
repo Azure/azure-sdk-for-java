@@ -50,7 +50,7 @@ with the Azure SDK, please include the `azure-identity` package:
 <dependency>
     <groupId>com.azure</groupId>
     <artifactId>azure-identity</artifactId>
-    <version>1.10.0</version>
+    <version>1.10.1</version>
 </dependency>
 ```
 

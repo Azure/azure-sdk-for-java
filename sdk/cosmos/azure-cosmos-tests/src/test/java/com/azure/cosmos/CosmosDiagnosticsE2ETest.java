@@ -6,7 +6,6 @@ package com.azure.cosmos;
 import com.azure.core.util.Context;
 import com.azure.cosmos.implementation.ConsoleLoggingRegistryFactory;
 import com.azure.cosmos.implementation.Exceptions;
-import com.azure.cosmos.implementation.HttpConstants;
 import com.azure.cosmos.implementation.OperationType;
 import com.azure.cosmos.implementation.ResourceType;
 import com.azure.cosmos.models.CosmosChangeFeedRequestOptions;
@@ -33,7 +32,6 @@ import org.testng.annotations.Test;
 
 import java.time.Duration;
 import java.util.ArrayList;
-import java.util.Iterator;
 import java.util.List;
 import java.util.UUID;
 

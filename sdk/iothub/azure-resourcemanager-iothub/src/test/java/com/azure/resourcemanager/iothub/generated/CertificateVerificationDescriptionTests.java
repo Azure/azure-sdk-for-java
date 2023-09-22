@@ -12,17 +12,14 @@ public final class CertificateVerificationDescriptionTests {
     @org.junit.jupiter.api.Test
     public void testDeserialize() throws Exception {
         CertificateVerificationDescription model =
-            BinaryData
-                .fromString("{\"certificate\":\"epxgyqagvr\"}")
-                .toObject(CertificateVerificationDescription.class);
-        Assertions.assertEquals("epxgyqagvr", model.certificate());
+            BinaryData.fromString("{\"certificate\":\"chea\"}").toObject(CertificateVerificationDescription.class);
+        Assertions.assertEquals("chea", model.certificate());
     }
 
     @org.junit.jupiter.api.Test
     public void testSerialize() throws Exception {
-        CertificateVerificationDescription model =
-            new CertificateVerificationDescription().withCertificate("epxgyqagvr");
+        CertificateVerificationDescription model = new CertificateVerificationDescription().withCertificate("chea");
         model = BinaryData.fromObject(model).toObject(CertificateVerificationDescription.class);
-        Assertions.assertEquals("epxgyqagvr", model.certificate());
+        Assertions.assertEquals("chea", model.certificate());
     }
 }

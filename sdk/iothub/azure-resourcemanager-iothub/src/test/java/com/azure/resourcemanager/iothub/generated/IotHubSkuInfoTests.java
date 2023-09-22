@@ -14,17 +14,17 @@ public final class IotHubSkuInfoTests {
     public void testDeserialize() throws Exception {
         IotHubSkuInfo model =
             BinaryData
-                .fromString("{\"name\":\"B1\",\"tier\":\"Free\",\"capacity\":151235075959718301}")
+                .fromString("{\"name\":\"S1\",\"tier\":\"Free\",\"capacity\":2949431657517136323}")
                 .toObject(IotHubSkuInfo.class);
-        Assertions.assertEquals(IotHubSku.B1, model.name());
-        Assertions.assertEquals(151235075959718301L, model.capacity());
+        Assertions.assertEquals(IotHubSku.S1, model.name());
+        Assertions.assertEquals(2949431657517136323L, model.capacity());
     }
 
     @org.junit.jupiter.api.Test
     public void testSerialize() throws Exception {
-        IotHubSkuInfo model = new IotHubSkuInfo().withName(IotHubSku.B1).withCapacity(151235075959718301L);
+        IotHubSkuInfo model = new IotHubSkuInfo().withName(IotHubSku.S1).withCapacity(2949431657517136323L);
         model = BinaryData.fromObject(model).toObject(IotHubSkuInfo.class);
-        Assertions.assertEquals(IotHubSku.B1, model.name());
-        Assertions.assertEquals(151235075959718301L, model.capacity());
+        Assertions.assertEquals(IotHubSku.S1, model.name());
+        Assertions.assertEquals(2949431657517136323L, model.capacity());
     }
 }

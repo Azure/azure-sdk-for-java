@@ -13,7 +13,7 @@ public final class RegistryStatisticsInnerTests {
         RegistryStatisticsInner model =
             BinaryData
                 .fromString(
-                    "{\"totalDeviceCount\":5199326091751618415,\"enabledDeviceCount\":5760355452079192141,\"disabledDeviceCount\":4951290031331541829}")
+                    "{\"totalDeviceCount\":6450730438848589350,\"enabledDeviceCount\":5798583815536033606,\"disabledDeviceCount\":7014692184557191333}")
                 .toObject(RegistryStatisticsInner.class);
     }
 

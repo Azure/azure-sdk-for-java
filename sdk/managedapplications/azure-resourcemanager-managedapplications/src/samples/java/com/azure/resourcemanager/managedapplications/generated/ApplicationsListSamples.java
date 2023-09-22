@@ -7,14 +7,14 @@ package com.azure.resourcemanager.managedapplications.generated;
 /** Samples for Applications List. */
 public final class ApplicationsListSamples {
     /*
-     * x-ms-original-file: specification/resources/resource-manager/Microsoft.Solutions/stable/2018-06-01/examples/listApplicationsBySubscription.json
+     * x-ms-original-file: specification/solutions/resource-manager/Microsoft.Solutions/stable/2021-07-01/examples/listApplicationsByResourceGroup.json
      */
     /**
-     * Sample code: Lists applications by subscription.
+     * Sample code: Lists all the applications within a subscription.
      *
      * @param manager Entry point to ApplicationManager.
      */
-    public static void listsApplicationsBySubscription(
+    public static void listsAllTheApplicationsWithinASubscription(
         com.azure.resourcemanager.managedapplications.ApplicationManager manager) {
         manager.applications().list(com.azure.core.util.Context.NONE);
     }

@@ -17,15 +17,15 @@ public final class UserSubscriptionQuotaListResultInnerTests {
         UserSubscriptionQuotaListResultInner model =
             BinaryData
                 .fromString(
-                    "{\"value\":[{\"id\":\"xqzvszjfa\",\"type\":\"j\",\"unit\":\"xxivetv\",\"currentValue\":1920566576,\"limit\":928990245,\"name\":{\"value\":\"oqmcbxvwvxyslq\",\"localizedValue\":\"sfxobl\"}},{\"id\":\"k\",\"type\":\"mpew\",\"unit\":\"fbkrvrnsvs\",\"currentValue\":2131802432,\"limit\":925506689,\"name\":{\"value\":\"rsbfovasrruvw\",\"localizedValue\":\"sqfsubcgjbirxb\"}},{\"id\":\"bsrfbj\",\"type\":\"twss\",\"unit\":\"ftpvjzbexil\",\"currentValue\":1948356330,\"limit\":2126872967,\"name\":{\"value\":\"vwpm\",\"localizedValue\":\"aruoujmkcjhwqyt\"}}],\"nextLink\":\"ybn\"}")
+                    "{\"value\":[{\"id\":\"ucnapkteoellwp\",\"type\":\"d\",\"unit\":\"pfqbuaceopzf\",\"currentValue\":1219903446,\"limit\":391831639,\"name\":{\"value\":\"pppcqeqxo\",\"localizedValue\":\"dahzxctobg\"}},{\"id\":\"dmoizpostmg\",\"type\":\"fbunrmfqjhhk\",\"unit\":\"pvjymjhxxjyng\",\"currentValue\":1804869047,\"limit\":216222103,\"name\":{\"value\":\"swbxqz\",\"localizedValue\":\"zjf\"}}],\"nextLink\":\"vjfdx\"}")
                 .toObject(UserSubscriptionQuotaListResultInner.class);
-        Assertions.assertEquals("xqzvszjfa", model.value().get(0).id());
-        Assertions.assertEquals("j", model.value().get(0).type());
-        Assertions.assertEquals("xxivetv", model.value().get(0).unit());
-        Assertions.assertEquals(1920566576, model.value().get(0).currentValue());
-        Assertions.assertEquals(928990245, model.value().get(0).limit());
-        Assertions.assertEquals("oqmcbxvwvxyslq", model.value().get(0).name().value());
-        Assertions.assertEquals("sfxobl", model.value().get(0).name().localizedValue());
+        Assertions.assertEquals("ucnapkteoellwp", model.value().get(0).id());
+        Assertions.assertEquals("d", model.value().get(0).type());
+        Assertions.assertEquals("pfqbuaceopzf", model.value().get(0).unit());
+        Assertions.assertEquals(1219903446, model.value().get(0).currentValue());
+        Assertions.assertEquals(391831639, model.value().get(0).limit());
+        Assertions.assertEquals("pppcqeqxo", model.value().get(0).name().value());
+        Assertions.assertEquals("dahzxctobg", model.value().get(0).name().localizedValue());
     }
 
     @org.junit.jupiter.api.Test
@@ -36,33 +36,26 @@ public final class UserSubscriptionQuotaListResultInnerTests {
                     Arrays
                         .asList(
                             new UserSubscriptionQuota()
-                                .withId("xqzvszjfa")
-                                .withType("j")
-                                .withUnit("xxivetv")
-                                .withCurrentValue(1920566576)
-                                .withLimit(928990245)
-                                .withName(new Name().withValue("oqmcbxvwvxyslq").withLocalizedValue("sfxobl")),
+                                .withId("ucnapkteoellwp")
+                                .withType("d")
+                                .withUnit("pfqbuaceopzf")
+                                .withCurrentValue(1219903446)
+                                .withLimit(391831639)
+                                .withName(new Name().withValue("pppcqeqxo").withLocalizedValue("dahzxctobg")),
                             new UserSubscriptionQuota()
-                                .withId("k")
-                                .withType("mpew")
-                                .withUnit("fbkrvrnsvs")
-                                .withCurrentValue(2131802432)
-                                .withLimit(925506689)
-                                .withName(new Name().withValue("rsbfovasrruvw").withLocalizedValue("sqfsubcgjbirxb")),
-                            new UserSubscriptionQuota()
-                                .withId("bsrfbj")
-                                .withType("twss")
-                                .withUnit("ftpvjzbexil")
-                                .withCurrentValue(1948356330)
-                                .withLimit(2126872967)
-                                .withName(new Name().withValue("vwpm").withLocalizedValue("aruoujmkcjhwqyt"))));
+                                .withId("dmoizpostmg")
+                                .withType("fbunrmfqjhhk")
+                                .withUnit("pvjymjhxxjyng")
+                                .withCurrentValue(1804869047)
+                                .withLimit(216222103)
+                                .withName(new Name().withValue("swbxqz").withLocalizedValue("zjf"))));
         model = BinaryData.fromObject(model).toObject(UserSubscriptionQuotaListResultInner.class);
-        Assertions.assertEquals("xqzvszjfa", model.value().get(0).id());
-        Assertions.assertEquals("j", model.value().get(0).type());
-        Assertions.assertEquals("xxivetv", model.value().get(0).unit());
-        Assertions.assertEquals(1920566576, model.value().get(0).currentValue());
-        Assertions.assertEquals(928990245, model.value().get(0).limit());
-        Assertions.assertEquals("oqmcbxvwvxyslq", model.value().get(0).name().value());
-        Assertions.assertEquals("sfxobl", model.value().get(0).name().localizedValue());
+        Assertions.assertEquals("ucnapkteoellwp", model.value().get(0).id());
+        Assertions.assertEquals("d", model.value().get(0).type());
+        Assertions.assertEquals("pfqbuaceopzf", model.value().get(0).unit());
+        Assertions.assertEquals(1219903446, model.value().get(0).currentValue());
+        Assertions.assertEquals(391831639, model.value().get(0).limit());
+        Assertions.assertEquals("pppcqeqxo", model.value().get(0).name().value());
+        Assertions.assertEquals("dahzxctobg", model.value().get(0).name().localizedValue());
     }
 }
