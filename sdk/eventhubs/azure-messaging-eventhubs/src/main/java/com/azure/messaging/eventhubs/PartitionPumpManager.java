@@ -224,7 +224,7 @@ class PartitionPumpManager {
                             LOGGER.atError()
                                 .addKeyValue(PARTITION_ID_KEY, partitionContext.getPartitionId())
                                 .log("Error occurred calling partitionProcessor.close when closing partition pump.", e);
-                        } finally{
+                        } finally {
                             cleanup(claimedOwnership, partitionPump);
                         }
                     });
