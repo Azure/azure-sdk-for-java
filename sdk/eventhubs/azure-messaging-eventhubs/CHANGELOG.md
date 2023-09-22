@@ -15,6 +15,13 @@
   ([#35299](https://github.com/Azure/azure-sdk-for-java/issues/35299))
 - Handles errors thrown from user-called code when invoking `PartitionProcessor`'s `processError` or `close` methods. [#36891](https://github.com/Azure/azure-sdk-for-java/pull/36891)
 
+### Other Changes
+
+#### Dependency Updates
+
+- Upgraded `azure-core` from `1.42.0` to version `1.43.0`.
+- Upgraded `azure-core-amqp` from `2.8.8` to version `2.8.9`.
+
 ## 5.15.8 (2023-08-18)
 
 ### Other Changes
