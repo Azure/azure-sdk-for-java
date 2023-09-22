@@ -9,12 +9,12 @@ import com.fasterxml.jackson.annotation.JsonProperty;
 
 /** The request payload for holding participant from the call. */
 @Fluent
-public final class HoldParticipantRequestInternal {
+public final class StartHoldMusicRequestInternal {
     /*
      * Participant to be held from the call.
      */
-    @JsonProperty(value = "participantToHold", required = true)
-    private CommunicationIdentifierModel participantToHold;
+    @JsonProperty(value = "targetParticipant", required = true)
+    private CommunicationIdentifierModel targetParticipant;
 
     /*
      * Prompt to play while in hold.
@@ -36,22 +36,22 @@ public final class HoldParticipantRequestInternal {
     private String operationContext;
 
     /**
-     * Get the participantToHold property: Participant to be held from the call.
+     * Get the targetParticipant property: Participant to be held from the call.
      *
-     * @return the participantToHold value.
+     * @return the targetParticipant value.
      */
-    public CommunicationIdentifierModel getParticipantToHold() {
-        return this.participantToHold;
+    public CommunicationIdentifierModel getTargetParticipant() {
+        return this.targetParticipant;
     }
 
     /**
-     * Set the participantToHold property: Participant to be held from the call.
+     * Set the targetParticipant property: Participant to be held from the call.
      *
-     * @param participantToHold the participantToHold value to set.
-     * @return the HoldParticipantRequestInternal object itself.
+     * @param targetParticipant the targetParticipant value to set.
+     * @return the StartHoldMusicRequestInternal object itself.
      */
-    public HoldParticipantRequestInternal setParticipantToHold(CommunicationIdentifierModel participantToHold) {
-        this.participantToHold = participantToHold;
+    public StartHoldMusicRequestInternal setTargetParticipant(CommunicationIdentifierModel targetParticipant) {
+        this.targetParticipant = targetParticipant;
         return this;
     }
 
@@ -68,9 +68,9 @@ public final class HoldParticipantRequestInternal {
      * Set the playSourceInfo property: Prompt to play while in hold.
      *
      * @param playSourceInfo the playSourceInfo value to set.
-     * @return the HoldParticipantRequestInternal object itself.
+     * @return the StartHoldMusicRequestInternal object itself.
      */
-    public HoldParticipantRequestInternal setPlaySourceInfo(PlaySourceInternal playSourceInfo) {
+    public StartHoldMusicRequestInternal setPlaySourceInfo(PlaySourceInternal playSourceInfo) {
         this.playSourceInfo = playSourceInfo;
         return this;
     }
@@ -88,9 +88,9 @@ public final class HoldParticipantRequestInternal {
      * Set the loop property: If the prompt will be looped or not.
      *
      * @param loop the loop value to set.
-     * @return the HoldParticipantRequestInternal object itself.
+     * @return the StartHoldMusicRequestInternal object itself.
      */
-    public HoldParticipantRequestInternal setLoop(Boolean loop) {
+    public StartHoldMusicRequestInternal setLoop(Boolean loop) {
         this.loop = loop;
         return this;
     }
@@ -110,9 +110,9 @@ public final class HoldParticipantRequestInternal {
      * the response event.
      *
      * @param operationContext the operationContext value to set.
-     * @return the HoldParticipantRequestInternal object itself.
+     * @return the StartHoldMusicRequestInternal object itself.
      */
-    public HoldParticipantRequestInternal setOperationContext(String operationContext) {
+    public StartHoldMusicRequestInternal setOperationContext(String operationContext) {
         this.operationContext = operationContext;
         return this;
     }

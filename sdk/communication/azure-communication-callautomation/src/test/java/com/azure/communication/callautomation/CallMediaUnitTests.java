@@ -156,7 +156,8 @@ public class CallMediaUnitTests {
             );
         callMedia = callConnection.getCallMedia();
 
-        Response<Void> response = callMedia.startHoldMusicWithResponse(new CommunicationUserIdentifier("id"), playTextSource, true, Context.NONE);
+        Response<Void> response = callMedia.startHoldMusicWithResponse(new CommunicationUserIdentifier("id"),
+            playTextSource, true, "operationalContext", Context.NONE);
         assertEquals(response.getStatusCode(), 200);
     }
 
@@ -168,7 +169,8 @@ public class CallMediaUnitTests {
             );
         callMedia = callConnection.getCallMedia();
 
-        Response<Void> response = callMedia.stopHoldMusicWithResponse(new CommunicationUserIdentifier("id"), Context.NONE);
+        Response<Void> response = callMedia.stopHoldMusicWithResponse(new CommunicationUserIdentifier("id"),
+            "operationalContext", Context.NONE);
         assertEquals(response.getStatusCode(), 200);
     }
 }

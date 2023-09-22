@@ -222,14 +222,12 @@ public final class CallMedia {
      * Holds participant in call.
      * @param targetParticipant the target.
      * @param playSourceInfo audio to play.
-     * @param loop to repeat.
      * @return Response for successful operation.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Void startHoldMusic(CommunicationIdentifier targetParticipant,
-                               PlaySource playSourceInfo,
-                               boolean loop) {
-        return callMediaAsync.startHoldMusicAsync(targetParticipant, playSourceInfo, loop).block();
+                               PlaySource playSourceInfo) {
+        return callMediaAsync.startHoldMusicAsync(targetParticipant, playSourceInfo).block();
     }
 
     /**
@@ -237,6 +235,7 @@ public final class CallMedia {
      * @param targetParticipant the target.
      * @param playSourceInfo audio to play.
      * @param loop to repeat.
+     * @param operationalContext Operational context.
      * @param context Context
      * @return Response for successful operation.
      */
@@ -244,8 +243,9 @@ public final class CallMedia {
     public Response<Void> startHoldMusicWithResponse(CommunicationIdentifier targetParticipant,
                                                      PlaySource playSourceInfo,
                                                      boolean loop,
+                                                     String operationalContext,
                                                      Context context) {
-        return callMediaAsync.startHoldMusicWithResponseInternal(targetParticipant, playSourceInfo, loop, context).block();
+        return callMediaAsync.startHoldMusicWithResponseInternal(targetParticipant, playSourceInfo, loop, operationalContext, context).block();
     }
 
     /**
@@ -261,12 +261,14 @@ public final class CallMedia {
     /**
      * Removes hold from participant in call.
      * @param targetParticipant the target.
+     * @param operationalContext operational context.
      * @param context Context.
      * @return Response for successful operation.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Response<Void> stopHoldMusicWithResponse(CommunicationIdentifier targetParticipant,
+                                                     String operationalContext,
                                                      Context context) {
-        return callMediaAsync.stopHoldMusicWithResponseInternal(targetParticipant, context).block();
+        return callMediaAsync.stopHoldMusicWithResponseInternal(targetParticipant, operationalContext, context).block();
     }
 }

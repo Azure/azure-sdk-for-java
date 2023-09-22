@@ -334,7 +334,8 @@ public class CallMediaAsyncUnitTests {
                 callMedia.startHoldMusicWithResponseAsync(
                     new CommunicationUserIdentifier("id"),
                     new TextSource().setText("audio to play"),
-                    true
+                    true,
+                    "operationalContext"
                 ))
             .consumeNextWith(response -> assertEquals(200, response.getStatusCode()))
             .verifyComplete();
@@ -346,7 +347,8 @@ public class CallMediaAsyncUnitTests {
         callMedia = getMockCallMedia(200);
         StepVerifier.create(
                 callMedia.stopHoldMusicWithResponseAsync(
-                    new CommunicationUserIdentifier("id")
+                    new CommunicationUserIdentifier("id"),
+                    "operationalContext"
                 ))
             .consumeNextWith(response -> assertEquals(200, response.getStatusCode()))
             .verifyComplete();

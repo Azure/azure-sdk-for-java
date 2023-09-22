@@ -9,13 +9,13 @@ import com.fasterxml.jackson.annotation.JsonProperty;
 
 /** The request payload for holding participant from the call. */
 @Fluent
-public final class UnholdParticipantRequestInternal {
+public final class StopHoldMusicRequestInternal {
     /*
      * Participants to be hold from the call.
      * Only ACS Users are supported.
      */
-    @JsonProperty(value = "participantToUnhold", required = true)
-    private CommunicationIdentifierModel participantToUnhold;
+    @JsonProperty(value = "targetParticipant", required = true)
+    private CommunicationIdentifierModel targetParticipant;
 
     /*
      * Used by customers when calling mid-call actions to correlate the request
@@ -25,22 +25,22 @@ public final class UnholdParticipantRequestInternal {
     private String operationContext;
 
     /**
-     * Get the participantToUnhold property: Participants to be hold from the call. Only ACS Users are supported.
+     * Get the targetParticipant property: Participants to be hold from the call. Only ACS Users are supported.
      *
-     * @return the participantToUnhold value.
+     * @return the targetParticipant value.
      */
-    public CommunicationIdentifierModel getParticipantToUnhold() {
-        return this.participantToUnhold;
+    public CommunicationIdentifierModel getTargetParticipant() {
+        return this.targetParticipant;
     }
 
     /**
-     * Set the participantToUnhold property: Participants to be hold from the call. Only ACS Users are supported.
+     * Set the targetParticipant property: Participants to be hold from the call. Only ACS Users are supported.
      *
-     * @param participantToUnhold the participantToUnhold value to set.
-     * @return the UnholdParticipantRequestInternal object itself.
+     * @param targetParticipant the targetParticipant value to set.
+     * @return the StopHoldMusicRequestInternal object itself.
      */
-    public UnholdParticipantRequestInternal setParticipantToUnhold(CommunicationIdentifierModel participantToUnhold) {
-        this.participantToUnhold = participantToUnhold;
+    public StopHoldMusicRequestInternal setTargetParticipant(CommunicationIdentifierModel targetParticipant) {
+        this.targetParticipant = targetParticipant;
         return this;
     }
 
@@ -59,9 +59,9 @@ public final class UnholdParticipantRequestInternal {
      * the response event.
      *
      * @param operationContext the operationContext value to set.
-     * @return the UnholdParticipantRequestInternal object itself.
+     * @return the StopHoldMusicRequestInternal object itself.
      */
-    public UnholdParticipantRequestInternal setOperationContext(String operationContext) {
+    public StopHoldMusicRequestInternal setOperationContext(String operationContext) {
         this.operationContext = operationContext;
         return this;
     }
