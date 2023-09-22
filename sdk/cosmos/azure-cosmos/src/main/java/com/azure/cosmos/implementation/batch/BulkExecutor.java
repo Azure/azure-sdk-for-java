@@ -859,8 +859,7 @@ public final class BulkExecutor<TContext> implements Disposable {
                     options.getConsistencyLevel(),
                     OperationType.Batch,
                     ResourceType.Document,
-                    clientAccessor.getEffectiveDiagnosticsThresholds(
-                        this.cosmosClient, options.getDiagnosticsThresholds()));
+                    options);
         });
     }
 

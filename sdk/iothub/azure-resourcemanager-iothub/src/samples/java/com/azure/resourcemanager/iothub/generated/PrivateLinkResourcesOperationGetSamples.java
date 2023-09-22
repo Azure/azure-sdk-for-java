@@ -7,7 +7,7 @@ package com.azure.resourcemanager.iothub.generated;
 /** Samples for PrivateLinkResourcesOperation Get. */
 public final class PrivateLinkResourcesOperationGetSamples {
     /*
-     * x-ms-original-file: specification/iothub/resource-manager/Microsoft.Devices/preview/2022-11-15-preview/examples/iothub_getprivatelinkresources.json
+     * x-ms-original-file: specification/iothub/resource-manager/Microsoft.Devices/stable/2023-06-30/examples/iothub_getprivatelinkresources.json
      */
     /**
      * Sample code: PrivateLinkResources_List.

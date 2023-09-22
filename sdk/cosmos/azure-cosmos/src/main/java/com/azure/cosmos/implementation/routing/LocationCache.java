@@ -204,10 +204,14 @@ public class LocationCache {
     }
 
     public UnmodifiableList<URI> getApplicableWriteEndpoints(RxDocumentServiceRequest request) {
+        return this.getApplicableWriteEndpoints(request.requestContext.getExcludeRegions());
+    }
+
+    public UnmodifiableList<URI> getApplicableWriteEndpoints(List<String> excludedRegions) {
         UnmodifiableList<URI> writeEndpoints = this.getWriteEndpoints();
 
-        if (request.requestContext.getExcludeRegions() == null ||
-            request.requestContext.getExcludeRegions().isEmpty()) {
+        if (excludedRegions == null ||
+            excludedRegions.isEmpty()) {
             return writeEndpoints;
         }
 
@@ -216,14 +220,18 @@ public class LocationCache {
             writeEndpoints,
             this.locationInfo.regionNameByWriteEndpoint,
             this.defaultEndpoint,
-            request.requestContext.getExcludeRegions());
+            excludedRegions);
     }
 
     public UnmodifiableList<URI> getApplicableReadEndpoints(RxDocumentServiceRequest request) {
+        return this.getApplicableReadEndpoints(request.requestContext.getExcludeRegions());
+    }
+
+    public UnmodifiableList<URI> getApplicableReadEndpoints(List<String> excludedRegions) {
         UnmodifiableList<URI> readEndpoints = this.getReadEndpoints();
 
-        if (request.requestContext.getExcludeRegions() == null ||
-            request.requestContext.getExcludeRegions().isEmpty()) {
+        if (excludedRegions == null ||
+            excludedRegions.isEmpty()) {
             return readEndpoints;
         }
 
@@ -232,7 +240,7 @@ public class LocationCache {
             readEndpoints,
             this.locationInfo.regionNameByReadEndpoint,
             this.locationInfo.writeEndpoints.get(0), // match the fallback region used in getPreferredAvailableEndpoints
-            request.requestContext.getExcludeRegions());
+            excludedRegions);
     }
 
     private UnmodifiableList<URI> getApplicableEndpoints(
@@ -607,7 +615,7 @@ public class LocationCache {
         return (UnmodifiableMap<String, URI>) UnmodifiableMap.<String, URI>unmodifiableMap(endpointsByLocation);
     }
 
-    private boolean canUseMultipleWriteLocations() {
+    public boolean canUseMultipleWriteLocations() {
         return this.useMultipleWriteLocations && this.enableMultipleWriteLocations;
     }
 

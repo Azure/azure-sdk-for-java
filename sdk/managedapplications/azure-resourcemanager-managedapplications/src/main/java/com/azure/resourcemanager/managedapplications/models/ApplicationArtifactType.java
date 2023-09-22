@@ -9,6 +9,9 @@ import com.fasterxml.jackson.annotation.JsonValue;
 
 /** The managed application artifact type. */
 public enum ApplicationArtifactType {
+    /** Enum value NotSpecified. */
+    NOT_SPECIFIED("NotSpecified"),
+
     /** Enum value Template. */
     TEMPLATE("Template"),
 

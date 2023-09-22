@@ -122,7 +122,6 @@ public class ReplicatedResourceClientPartitionSplitTest {
                                                                                gatewayServiceConfigurationReaderWrapper.gatewayServiceConfigurationReader,
                                                                                authorizationTokenProvider,
                                                                                false,
-                                                                               false,
                                                                                null);
 
         RxDocumentServiceRequest request = RxDocumentServiceRequest.createFromName(mockDiagnosticsClientContext(),

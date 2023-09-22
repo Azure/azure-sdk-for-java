@@ -79,9 +79,7 @@ public final class ReplicationProtectionContainerMappingsClientImpl
     public interface ReplicationProtectionContainerMappingsService {
         @Headers({"Content-Type: application/json"})
         @Get(
-            "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.RecoveryServices"
-                + "/vaults/{resourceName}/replicationFabrics/{fabricName}/replicationProtectionContainers"
-                + "/{protectionContainerName}/replicationProtectionContainerMappings")
+            "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.RecoveryServices/vaults/{resourceName}/replicationFabrics/{fabricName}/replicationProtectionContainers/{protectionContainerName}/replicationProtectionContainerMappings")
         @ExpectedResponses({200})
         @UnexpectedResponseExceptionType(ManagementException.class)
         Mono<Response<ProtectionContainerMappingCollection>> listByReplicationProtectionContainers(
@@ -97,9 +95,7 @@ public final class ReplicationProtectionContainerMappingsClientImpl
 
         @Headers({"Content-Type: application/json"})
         @Get(
-            "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.RecoveryServices"
-                + "/vaults/{resourceName}/replicationFabrics/{fabricName}/replicationProtectionContainers"
-                + "/{protectionContainerName}/replicationProtectionContainerMappings/{mappingName}")
+            "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.RecoveryServices/vaults/{resourceName}/replicationFabrics/{fabricName}/replicationProtectionContainers/{protectionContainerName}/replicationProtectionContainerMappings/{mappingName}")
         @ExpectedResponses({200})
         @UnexpectedResponseExceptionType(ManagementException.class)
         Mono<Response<ProtectionContainerMappingInner>> get(
@@ -116,9 +112,7 @@ public final class ReplicationProtectionContainerMappingsClientImpl
 
         @Headers({"Content-Type: application/json"})
         @Put(
-            "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.RecoveryServices"
-                + "/vaults/{resourceName}/replicationFabrics/{fabricName}/replicationProtectionContainers"
-                + "/{protectionContainerName}/replicationProtectionContainerMappings/{mappingName}")
+            "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.RecoveryServices/vaults/{resourceName}/replicationFabrics/{fabricName}/replicationProtectionContainers/{protectionContainerName}/replicationProtectionContainerMappings/{mappingName}")
         @ExpectedResponses({200, 202})
         @UnexpectedResponseExceptionType(ManagementException.class)
         Mono<Response<Flux<ByteBuffer>>> create(
@@ -136,9 +130,7 @@ public final class ReplicationProtectionContainerMappingsClientImpl
 
         @Headers({"Accept: application/json;q=0.9", "Content-Type: application/json"})
         @Delete(
-            "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.RecoveryServices"
-                + "/vaults/{resourceName}/replicationFabrics/{fabricName}/replicationProtectionContainers"
-                + "/{protectionContainerName}/replicationProtectionContainerMappings/{mappingName}")
+            "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.RecoveryServices/vaults/{resourceName}/replicationFabrics/{fabricName}/replicationProtectionContainers/{protectionContainerName}/replicationProtectionContainerMappings/{mappingName}")
         @ExpectedResponses({202, 204})
         @UnexpectedResponseExceptionType(ManagementException.class)
         Mono<Response<Flux<ByteBuffer>>> purge(
@@ -154,9 +146,7 @@ public final class ReplicationProtectionContainerMappingsClientImpl
 
         @Headers({"Content-Type: application/json"})
         @Patch(
-            "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.RecoveryServices"
-                + "/vaults/{resourceName}/replicationFabrics/{fabricName}/replicationProtectionContainers"
-                + "/{protectionContainerName}/replicationProtectionContainerMappings/{mappingName}")
+            "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.RecoveryServices/vaults/{resourceName}/replicationFabrics/{fabricName}/replicationProtectionContainers/{protectionContainerName}/replicationProtectionContainerMappings/{mappingName}")
         @ExpectedResponses({200, 202})
         @UnexpectedResponseExceptionType(ManagementException.class)
         Mono<Response<Flux<ByteBuffer>>> update(
@@ -174,9 +164,7 @@ public final class ReplicationProtectionContainerMappingsClientImpl
 
         @Headers({"Accept: application/json;q=0.9", "Content-Type: application/json"})
         @Post(
-            "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.RecoveryServices"
-                + "/vaults/{resourceName}/replicationFabrics/{fabricName}/replicationProtectionContainers"
-                + "/{protectionContainerName}/replicationProtectionContainerMappings/{mappingName}/remove")
+            "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.RecoveryServices/vaults/{resourceName}/replicationFabrics/{fabricName}/replicationProtectionContainers/{protectionContainerName}/replicationProtectionContainerMappings/{mappingName}/remove")
         @ExpectedResponses({202, 204})
         @UnexpectedResponseExceptionType(ManagementException.class)
         Mono<Response<Flux<ByteBuffer>>> delete(
@@ -193,8 +181,7 @@ public final class ReplicationProtectionContainerMappingsClientImpl
 
         @Headers({"Content-Type: application/json"})
         @Get(
-            "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.RecoveryServices"
-                + "/vaults/{resourceName}/replicationProtectionContainerMappings")
+            "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.RecoveryServices/vaults/{resourceName}/replicationProtectionContainerMappings")
         @ExpectedResponses({200})
         @UnexpectedResponseExceptionType(ManagementException.class)
         Mono<Response<ProtectionContainerMappingCollection>> list(

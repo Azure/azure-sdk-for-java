@@ -10,6 +10,20 @@
 
 ### Other Changes
 
+## 7.14.4 (2023-09-18)
+
+### Bugs Fixed
+
+- Fixed `NullPointerException` that happens when session processor or receiver encounters an error and distributed tracing is enabled.
+  ([#36800](https://github.com/Azure/azure-sdk-for-java/issues/36800))
+
+### Other Changes
+
+#### Dependency Updates
+- Upgraded `azure-core` from `1.42.0` to `1.43.0`.
+- Upgraded `azure-core-amqp` from `2.8.8` to `2.8.9`.
+- Upgraded `azure-identity` from `1.10.0` to `1.10.1`.
+
 ## 7.15.0-beta.3 (2023-08-14)
 
 ### Features Added
@@ -34,6 +48,7 @@
 - Fixed mapping of `ServiceBusManagementError` to corresponding `AzureExceptions` in `ServiceBusAdministrationClient`. ([#33609](https://github.com/Azure/azure-sdk-for-java/issues/33609))
 
 - Fixed issue causing updates to TopicProperties with AuthorizationRules to return 400 Bad request. ([#34880](https://github.com/Azure/azure-sdk-for-java/issues/34880))
+
 
 ### Other Changes
 
