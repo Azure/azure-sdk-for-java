@@ -20,7 +20,6 @@ public final class JsonBoolean extends JsonElement {
      * have the public JsonBoolean(boolean value) constructor.
      */
 
-
     /**
      * Constructor used to set the value of the JsonBoolean.
      *
@@ -28,7 +27,9 @@ public final class JsonBoolean extends JsonElement {
      * true or false. If value is true, then booleanValue set to "true"; otherwise,
      * set to "false"
      */
-    private JsonBoolean(boolean value) { this.booleanValue = value;}//this.booleanValue = (value)? "true" : "false"; }
+    private JsonBoolean(boolean value) { 
+        this.booleanValue = value; 
+    }
 
     /**
      * Lazy-loading the Singleton instances of JsonBoolean of TRUE & FALSE.
@@ -55,26 +56,33 @@ public final class JsonBoolean extends JsonElement {
      * current state of this JsonBoolean object.
      */
     @Override
-    public String toString() { return Boolean.toString(booleanValue); }
+    public String toString() { 
+        return Boolean.toString(booleanValue); 
+    }
 
     /**
      * @return boolean of whether this JsonElement object is of type JsonBoolean.
      */
     @Override
-    public boolean isBoolean() { return true; }
+    public boolean isBoolean() { 
+        return true; 
+    }
 
     /**
      * @return boolean of whether this JsonBoolean object is currently representing
      * true
      */
-    public boolean isTrue() { return booleanValue; }
+    public boolean isTrue() { 
+        return booleanValue; 
+    }
 
     /**
      * @return boolean of whether this JsonBoolean object is currently representing
      * false
      */
-    public boolean isFalse() { return !booleanValue; }
-
+    public boolean isFalse() { 
+        return !booleanValue; 
+    }
 
     @Override
     public JsonArray asArray() {
@@ -91,7 +99,9 @@ public final class JsonBoolean extends JsonElement {
     }
 
     @Override
-    public JsonBoolean asBoolean() { return this; }
+    public JsonBoolean asBoolean() { 
+        return this; 
+    }
 
     @Override
     public JsonNumber asNumber() {
@@ -101,14 +111,12 @@ public final class JsonBoolean extends JsonElement {
             return new JsonNumber(0);
         }
     }
+
     @Override
-    public JsonString asString() { return new JsonString(Boolean.toString(booleanValue)); }
-
-
-
-
-
-
+    public JsonString asString() { 
+        return new JsonString(Boolean.toString(booleanValue)); 
+    }
+    
     /**
      * @param jsonWriter JsonWriter that the serialized JsonBoolean is written to.
      * @return JsonWriter state after the serialized JsonBoolean has been
