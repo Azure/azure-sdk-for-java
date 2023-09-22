@@ -714,7 +714,7 @@ public class PartitionPumpManagerTest {
 
             // We won't reach the countdown number because an exception receiving messages results in losing the
             // partition.
-            final boolean await = receiveCounter.await(10, TimeUnit.SECONDS);
+            final boolean await = receiveCounter.await(20, TimeUnit.SECONDS);
             assertFalse(await);
 
             // Verify
@@ -803,7 +803,7 @@ public class PartitionPumpManagerTest {
 
             // We won't reach the countdown number because an exception receiving messages results in losing the
             // partition.
-            final boolean await = receiveCounter.await(10, TimeUnit.SECONDS);
+            final boolean await = receiveCounter.await(20, TimeUnit.SECONDS);
             assertFalse(await);
 
             // Verify
@@ -895,7 +895,7 @@ public class PartitionPumpManagerTest {
 
             // We won't reach the countdown number because an exception receiving messages results in losing the
             // partition.
-            final boolean await = receiveCounter.await(10, TimeUnit.SECONDS);
+            final boolean await = receiveCounter.await(20, TimeUnit.SECONDS);
             assertFalse(await);
 
             // Verify
