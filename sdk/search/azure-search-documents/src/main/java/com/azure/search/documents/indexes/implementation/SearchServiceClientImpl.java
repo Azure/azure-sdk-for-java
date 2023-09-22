@@ -24,7 +24,6 @@ import com.azure.core.http.policy.UserAgentPolicy;
 import com.azure.core.http.rest.Response;
 import com.azure.core.http.rest.RestProxy;
 import com.azure.core.util.Context;
-import com.azure.core.util.FluxUtil;
 import com.azure.core.util.serializer.JacksonAdapter;
 import com.azure.core.util.serializer.SerializerAdapter;
 import com.azure.search.documents.indexes.implementation.models.RequestOptions;
@@ -146,18 +145,6 @@ public final class SearchServiceClientImpl {
         return this.indexes;
     }
 
-    /** The AliasesImpl object to access its operations. */
-    private final AliasesImpl aliases;
-
-    /**
-     * Gets the AliasesImpl object to access its operations.
-     *
-     * @return the AliasesImpl object.
-     */
-    public AliasesImpl getAliases() {
-        return this.aliases;
-    }
-
     /**
      * Initializes an instance of SearchServiceClient client.
      *
@@ -204,7 +191,6 @@ public final class SearchServiceClientImpl {
         this.skillsets = new SkillsetsImpl(this);
         this.synonymMaps = new SynonymMapsImpl(this);
         this.indexes = new IndexesImpl(this);
-        this.aliases = new AliasesImpl(this);
         this.service =
                 RestProxy.create(SearchServiceClientService.class, this.httpPipeline, this.getSerializerAdapter());
     }
@@ -225,41 +211,6 @@ public final class SearchServiceClientImpl {
                 @QueryParam("api-version") String apiVersion,
                 @HeaderParam("Accept") String accept,
                 Context context);
-
-        @Get("/servicestats")
-        @ExpectedResponses({200})
-        @UnexpectedResponseExceptionType(SearchErrorException.class)
-        Response<SearchServiceStatistics> getServiceStatisticsSync(
-                @HostParam("endpoint") String endpoint,
-                @HeaderParam("x-ms-client-request-id") UUID xMsClientRequestId,
-                @QueryParam("api-version") String apiVersion,
-                @HeaderParam("Accept") String accept,
-                Context context);
-    }
-
-    /**
-     * Gets service level statistics for a search service.
-     *
-     * @param requestOptions Parameter group.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws SearchErrorException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return service level statistics for a search service along with {@link Response} on successful completion of
-     *     {@link Mono}.
-     */
-    @ServiceMethod(returns = ReturnType.SINGLE)
-    public Mono<Response<SearchServiceStatistics>> getServiceStatisticsWithResponseAsync(
-            RequestOptions requestOptions) {
-        final String accept = "application/json; odata.metadata=minimal";
-        UUID xMsClientRequestIdInternal = null;
-        if (requestOptions != null) {
-            xMsClientRequestIdInternal = requestOptions.getXMsClientRequestId();
-        }
-        UUID xMsClientRequestId = xMsClientRequestIdInternal;
-        return FluxUtil.withContext(
-                context ->
-                        service.getServiceStatistics(
-                                this.getEndpoint(), xMsClientRequestId, this.getApiVersion(), accept, context));
     }
 
     /**
@@ -284,72 +235,5 @@ public final class SearchServiceClientImpl {
         UUID xMsClientRequestId = xMsClientRequestIdInternal;
         return service.getServiceStatistics(
                 this.getEndpoint(), xMsClientRequestId, this.getApiVersion(), accept, context);
-    }
-
-    /**
-     * Gets service level statistics for a search service.
-     *
-     * @param requestOptions Parameter group.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws SearchErrorException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return service level statistics for a search service on successful completion of {@link Mono}.
-     */
-    @ServiceMethod(returns = ReturnType.SINGLE)
-    public Mono<SearchServiceStatistics> getServiceStatisticsAsync(RequestOptions requestOptions) {
-        return getServiceStatisticsWithResponseAsync(requestOptions).flatMap(res -> Mono.justOrEmpty(res.getValue()));
-    }
-
-    /**
-     * Gets service level statistics for a search service.
-     *
-     * @param requestOptions Parameter group.
-     * @param context The context to associate with this operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws SearchErrorException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return service level statistics for a search service on successful completion of {@link Mono}.
-     */
-    @ServiceMethod(returns = ReturnType.SINGLE)
-    public Mono<SearchServiceStatistics> getServiceStatisticsAsync(RequestOptions requestOptions, Context context) {
-        return getServiceStatisticsWithResponseAsync(requestOptions, context)
-                .flatMap(res -> Mono.justOrEmpty(res.getValue()));
-    }
-
-    /**
-     * Gets service level statistics for a search service.
-     *
-     * @param requestOptions Parameter group.
-     * @param context The context to associate with this operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws SearchErrorException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return service level statistics for a search service along with {@link Response}.
-     */
-    @ServiceMethod(returns = ReturnType.SINGLE)
-    public Response<SearchServiceStatistics> getServiceStatisticsWithResponse(
-            RequestOptions requestOptions, Context context) {
-        final String accept = "application/json; odata.metadata=minimal";
-        UUID xMsClientRequestIdInternal = null;
-        if (requestOptions != null) {
-            xMsClientRequestIdInternal = requestOptions.getXMsClientRequestId();
-        }
-        UUID xMsClientRequestId = xMsClientRequestIdInternal;
-        return service.getServiceStatisticsSync(
-                this.getEndpoint(), xMsClientRequestId, this.getApiVersion(), accept, context);
-    }
-
-    /**
-     * Gets service level statistics for a search service.
-     *
-     * @param requestOptions Parameter group.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws SearchErrorException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return service level statistics for a search service.
-     */
-    @ServiceMethod(returns = ReturnType.SINGLE)
-    public SearchServiceStatistics getServiceStatistics(RequestOptions requestOptions) {
-        return getServiceStatisticsWithResponse(requestOptions, Context.NONE).getValue();
     }
 }
