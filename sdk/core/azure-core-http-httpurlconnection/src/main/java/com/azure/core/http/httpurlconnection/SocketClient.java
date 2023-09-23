@@ -131,8 +131,9 @@ class SocketClient {
         Map<String, List<String>> headers = new HashMap<>();
         String line;
         while ((line = reader.readLine()) != null && !line.isEmpty()) {
-            String k = line.split(": ")[0];
-            String v = line.split(": ")[1];
+            String[] kv = line.split(": ", 2);
+            String k = kv[0];
+            String v = kv[1];
             headers.computeIfAbsent(k, key -> new ArrayList<>()).add(v);
         }
         // Read the newline through
