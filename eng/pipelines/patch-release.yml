@@ -92,3 +92,7 @@ extends:
       groupId: com.azure
       safeName: azurecommunicationcallautomation
       ServiceDirectory: communication
+    - name: azure-identity-extensions
+      groupId: com.azure
+      safeName: azureidentityextensions
+      ServiceDirectory: identity
