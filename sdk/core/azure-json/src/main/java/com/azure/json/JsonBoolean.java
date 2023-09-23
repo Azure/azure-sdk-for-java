@@ -105,7 +105,7 @@ public final class JsonBoolean extends JsonElement {
 
     @Override
     public JsonNumber asNumber() {
-        if(booleanValue){
+        if (booleanValue) {
             return new JsonNumber(1);
         } else {
             return new JsonNumber(0);
