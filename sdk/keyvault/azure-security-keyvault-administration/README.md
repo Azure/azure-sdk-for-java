@@ -492,7 +492,7 @@ The following sections provide several code snippets covering some of the most c
 - [Updating a setting](#update-a-specific-setting)
 
 ##### Get all settings
-List all the settings for a Key Vault account.
+List all the settings for an Azure Key Vault account.
 
 ```java readme-sample-getSettings
 KeyVaultGetSettingsResult getSettingsResult = keyVaultSettingsClient.getSettings();
