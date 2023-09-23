@@ -20,6 +20,7 @@ import com.azure.cosmos.implementation.TestConfigurations;
 import com.azure.cosmos.implementation.Utils;
 import com.azure.cosmos.implementation.throughputControl.TestItem;
 import com.azure.cosmos.models.CosmosBatch;
+import com.azure.cosmos.models.CosmosBatchRequestOptions;
 import com.azure.cosmos.models.CosmosBatchResponse;
 import com.azure.cosmos.models.CosmosBulkExecutionOptions;
 import com.azure.cosmos.models.CosmosBulkOperationResponse;
@@ -462,8 +463,8 @@ public class ExcludeRegionWithFaultInjectionTests extends TestSuiteBase {
                 TestItem alreadyCreatedItem = params.createdItem;
 
                 String query = String.format("SELECT * FROM c WHERE c.id = '%s'", alreadyCreatedItem.getId());
-                CosmosQueryRequestOptions queryRequestOptions = params.queryRequestOptions != null
-                    ? params.queryRequestOptions : new CosmosQueryRequestOptions();
+                CosmosQueryRequestOptions queryRequestOptions = params.queryRequestOptionsForCallbackAfterMutation != null
+                    ? params.queryRequestOptionsForCallbackAfterMutation : new CosmosQueryRequestOptions();
 
                 SqlQuerySpec sqlQuerySpec = new SqlQuerySpec(query);
 
@@ -1511,9 +1512,12 @@ public class ExcludeRegionWithFaultInjectionTests extends TestSuiteBase {
             batch.createItemOperation(testItem);
             batch.readItemOperation(documentId);
 
+            CosmosBatchRequestOptions batchRequestOptions = params.batchRequestOptionsForCallbackAfterMutation != null
+                ? params.batchRequestOptionsForCallbackAfterMutation : new CosmosBatchRequestOptions();
+
             try {
 
-                CosmosBatchResponse batchResponse = params.cosmosAsyncContainer.executeCosmosBatch(batch).block();
+                CosmosBatchResponse batchResponse = params.cosmosAsyncContainer.executeCosmosBatch(batch, batchRequestOptions).block();
                 return new OperationExecutionResult<>(batchResponse);
 
             } catch (Exception exception) {
@@ -1808,6 +1812,28 @@ public class ExcludeRegionWithFaultInjectionTests extends TestSuiteBase {
                             this.chooseFirstRegion.apply(this.preferredRegions)
                     ))
                 },
+                {
+                    "batchCreateAndRead_500/0_chooseFirstTwoRegions_beforeMutation_excludeFirstRegion_afterMutation_excludeLastRegion_requestOptionsOverride",
+                    new MutationTestConfig()
+                        .withChooseInitialExclusionRegions(this.chooseFirstRegion)
+                        .withChooseFaultInjectionRegions(this.chooseFirstTwoRegions)
+                        .withFaultInjectionOperationType(FaultInjectionOperationType.BATCH_ITEM)
+                        .withFaultInjectionServerErrorType(FaultInjectionServerErrorType.INTERNAL_SERVER_ERROR)
+                        .withDataPlaneOperationExecutor(batchCreateAndReadCallback)
+                        .withRegionExclusionMutator(this.chooseLastRegion)
+                        .withBatchRequestOptionsForCallbackAfterMutation(
+                            new CosmosBatchRequestOptions().setExcludedRegions(this.chooseFirstRegion.apply(this.preferredRegions)))
+                        .withExpectedResultBeforeMutation(new ExpectedResult(
+                            HttpConstants.StatusCodes.INTERNAL_SERVER_ERROR,
+                            HttpConstants.SubStatusCodes.UNKNOWN,
+                            this.chooseSecondRegion.apply(this.preferredRegions)
+                        ))
+                        .withExpectedResultAfterMutation(new ExpectedResult(
+                            HttpConstants.StatusCodes.INTERNAL_SERVER_ERROR,
+                            HttpConstants.SubStatusCodes.UNKNOWN,
+                            this.chooseSecondRegion.apply(this.preferredRegions)
+                    ))
+                }
             };
         }
 
@@ -1830,7 +1856,8 @@ public class ExcludeRegionWithFaultInjectionTests extends TestSuiteBase {
 
             });
 
-            CosmosBulkExecutionOptions bulkExecutionOptions = new CosmosBulkExecutionOptions();
+            CosmosBulkExecutionOptions bulkExecutionOptions = params.bulkExecutionOptionsForCallbackAfterMutation != null
+                ? params.bulkExecutionOptionsForCallbackAfterMutation : new CosmosBulkExecutionOptions();
 
             try {
 
@@ -2124,6 +2151,28 @@ public class ExcludeRegionWithFaultInjectionTests extends TestSuiteBase {
                             this.chooseFirstRegion.apply(this.preferredRegions)
                     ))
                 },
+                {
+                    "bulkCreate_500/0_chooseFirstTwoRegions_beforeMutation_excludeFirstRegion_afterMutation_excludeLastRegion_requestOptionsOverride",
+                    new MutationTestConfig()
+                        .withChooseInitialExclusionRegions(this.chooseFirstRegion)
+                        .withChooseFaultInjectionRegions(this.chooseFirstTwoRegions)
+                        .withFaultInjectionOperationType(FaultInjectionOperationType.BATCH_ITEM)
+                        .withFaultInjectionServerErrorType(FaultInjectionServerErrorType.INTERNAL_SERVER_ERROR)
+                        .withDataPlaneOperationExecutor(bulkCreateCallback)
+                        .withRegionExclusionMutator(this.chooseLastRegion)
+                        .withBulkExecutionOptionsForCallbackAfterMutation(
+                            new CosmosBulkExecutionOptions().setExcludedRegions(this.chooseFirstRegion.apply(this.preferredRegions)))
+                        .withExpectedResultBeforeMutation(new ExpectedResult(
+                            HttpConstants.StatusCodes.INTERNAL_SERVER_ERROR,
+                            HttpConstants.SubStatusCodes.UNKNOWN,
+                            this.chooseSecondRegion.apply(this.preferredRegions)
+                        ))
+                        .withExpectedResultAfterMutation(new ExpectedResult(
+                            HttpConstants.StatusCodes.INTERNAL_SERVER_ERROR,
+                            HttpConstants.SubStatusCodes.UNKNOWN,
+                            this.chooseSecondRegion.apply(this.preferredRegions)
+                    ))
+                }
             };
         }
 
@@ -2278,6 +2327,9 @@ public class ExcludeRegionWithFaultInjectionTests extends TestSuiteBase {
 
             params.itemRequestOptionsForCallbackAfterMutation = mutationTestConfig.itemRequestOptionsForCallbackAfterMutation;
             params.patchItemRequestOptionsForCallbackAfterMutation = mutationTestConfig.patchItemRequestOptionsForCallbackAfterMutation;
+            params.queryRequestOptionsForCallbackAfterMutation = mutationTestConfig.queryRequestOptionsForCallbackAfterMutation;
+            params.batchRequestOptionsForCallbackAfterMutation = mutationTestConfig.batchRequestOptionsForCallbackAfterMutation;
+            params.bulkExecutionOptionsForCallbackAfterMutation = mutationTestConfig.bulkExecutionOptionsForCallbackAfterMutation;
 
             OperationExecutionResult<?> operationExecutionResultAfterMutation = dataPlaneOperationExecutor.apply(params);
             validateResponse(operationExecutionResultAfterMutation, mutationTestConfig.expectedResultAfterMutation);
@@ -2618,7 +2670,9 @@ public class ExcludeRegionWithFaultInjectionTests extends TestSuiteBase {
         private boolean nonIdempotentWritesEnabled = false;
         private CosmosItemRequestOptions patchItemRequestOptionsForCallbackAfterMutation = null;
         private CosmosItemRequestOptions itemRequestOptionsForCallbackAfterMutation = null;
-        private CosmosQueryRequestOptions queryRequestOptions = null;
+        private CosmosQueryRequestOptions queryRequestOptionsForCallbackAfterMutation = null;
+        private CosmosBulkExecutionOptions bulkExecutionOptionsForCallbackAfterMutation = null;
+        private CosmosBatchRequestOptions batchRequestOptionsForCallbackAfterMutation = null;
         private int perRegionDuplicateCount = 1;
 
         public MutationTestConfig withChooseFaultInjectionRegions(
@@ -2680,8 +2734,18 @@ public class ExcludeRegionWithFaultInjectionTests extends TestSuiteBase {
             return this;
         }
 
-        public MutationTestConfig withQueryRequestOptionsForCallbackAfterMutation(CosmosQueryRequestOptions queryRequestOptions) {
-            this.queryRequestOptions = queryRequestOptions;
+        public MutationTestConfig withQueryRequestOptionsForCallbackAfterMutation(CosmosQueryRequestOptions queryRequestOptionsForCallbackAfterMutation) {
+            this.queryRequestOptionsForCallbackAfterMutation = queryRequestOptionsForCallbackAfterMutation;
+            return this;
+        }
+
+        public MutationTestConfig withBulkExecutionOptionsForCallbackAfterMutation(CosmosBulkExecutionOptions bulkExecutionOptionsForCallbackAfterMutation) {
+            this.bulkExecutionOptionsForCallbackAfterMutation = bulkExecutionOptionsForCallbackAfterMutation;
+            return this;
+        }
+
+        public MutationTestConfig withBatchRequestOptionsForCallbackAfterMutation(CosmosBatchRequestOptions batchRequestOptionsForCallbackAfterMutation) {
+            this.batchRequestOptionsForCallbackAfterMutation = batchRequestOptionsForCallbackAfterMutation;
             return this;
         }
 
@@ -2697,6 +2761,8 @@ public class ExcludeRegionWithFaultInjectionTests extends TestSuiteBase {
         public TestItem createdItem;
         public CosmosItemRequestOptions itemRequestOptionsForCallbackAfterMutation;
         public CosmosItemRequestOptions patchItemRequestOptionsForCallbackAfterMutation;
-        public CosmosQueryRequestOptions queryRequestOptions;
+        public CosmosQueryRequestOptions queryRequestOptionsForCallbackAfterMutation;
+        public CosmosBulkExecutionOptions bulkExecutionOptionsForCallbackAfterMutation;
+        public CosmosBatchRequestOptions batchRequestOptionsForCallbackAfterMutation;
     }
 }
