@@ -95,7 +95,7 @@ public class ReactorSession implements AmqpSession {
 
     private final ReactorHandlerProvider handlerProvider;
     private final Mono<ClaimsBasedSecurityNode> cbsNodeSupplier;
-    private final Disposable.Composite connectionSubscriptions;
+    private final Disposable.Composite subscriptions = Disposables.composite();
 
     private final AtomicReference<TransactionCoordinator> transactionCoordinator = new AtomicReference<>();
     private final Flux<AmqpShutdownSignal> shutdownSignals;
@@ -147,10 +147,8 @@ public class ReactorSession implements AmqpSession {
             .cache(1);
 
         shutdownSignals = amqpConnection.getShutdownSignals();
-        connectionSubscriptions = Disposables.composite(
-            this.endpointStates.subscribe(),
-
-            shutdownSignals.flatMap(signal ->  closeAsync("Shutdown signal received", null, false)).subscribe());
+        subscriptions.add(this.endpointStates.subscribe());
+        subscriptions.add(shutdownSignals.flatMap(signal ->  closeAsync("Shutdown signal received", null, false)).subscribe());
 
         session.open();
     }
@@ -746,10 +744,10 @@ public class ReactorSession implements AmqpSession {
                 });
 
                 sessionHandler.close();
-                connectionSubscriptions.dispose();
+                subscriptions.dispose();
             }));
 
-        connectionSubscriptions.add(closeLinksMono.subscribe());
+        subscriptions.add(closeLinksMono.subscribe());
     }
 
     private <T extends AmqpLink> boolean removeLink(ConcurrentMap<String, LinkSubscription<T>> openLinks, String key) {

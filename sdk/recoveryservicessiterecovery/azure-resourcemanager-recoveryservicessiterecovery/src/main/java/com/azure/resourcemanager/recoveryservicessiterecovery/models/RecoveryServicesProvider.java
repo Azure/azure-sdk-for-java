@@ -74,11 +74,13 @@ public interface RecoveryServicesProvider {
             DefinitionStages.WithProperties,
             DefinitionStages.WithCreate {
     }
+
     /** The RecoveryServicesProvider definition stages. */
     interface DefinitionStages {
         /** The first stage of the RecoveryServicesProvider definition. */
         interface Blank extends WithParentResource {
         }
+
         /** The stage of the RecoveryServicesProvider definition allowing to specify parent resource. */
         interface WithParentResource {
             /**
@@ -92,6 +94,7 @@ public interface RecoveryServicesProvider {
             WithProperties withExistingReplicationFabric(
                 String resourceName, String resourceGroupName, String fabricName);
         }
+
         /** The stage of the RecoveryServicesProvider definition allowing to specify properties. */
         interface WithProperties {
             /**
@@ -102,6 +105,7 @@ public interface RecoveryServicesProvider {
              */
             WithCreate withProperties(AddRecoveryServicesProviderInputProperties properties);
         }
+
         /**
          * The stage of the RecoveryServicesProvider definition which contains all the minimum required properties for
          * the resource to be created, but also allows for any other optional properties to be specified.
@@ -123,6 +127,7 @@ public interface RecoveryServicesProvider {
             RecoveryServicesProvider create(Context context);
         }
     }
+
     /**
      * Refreshes the resource to sync with Azure.
      *
