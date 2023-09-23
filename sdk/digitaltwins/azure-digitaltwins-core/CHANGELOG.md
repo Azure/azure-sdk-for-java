@@ -6,9 +6,9 @@
 
 #### Dependency Updates
 
+- Upgraded `azure-core` from `1.42.0` to version `1.43.0`.
 - Upgraded `azure-core-http-netty` from `1.13.6` to version `1.13.7`.
 - Upgraded `azure-core-serializer-json-jackson` from `1.4.3` to version `1.4.4`.
-- Upgraded `azure-core` from `1.42.0` to version `1.43.0`.
 
 
 ## 1.3.12 (2023-08-18)
