@@ -26,10 +26,10 @@ public class JsonNumber extends JsonElement {
     public JsonNumber(String value) {
         try {
             this.numberValue = Integer.parseInt(value);
-        } catch (Exception e){
+        } catch (Exception e) {
             try {
                 this.numberValue = Float.parseFloat(value);
-            } catch (Exception x){
+            } catch (Exception x) {
                 x.printStackTrace();
             }
         }
@@ -42,7 +42,9 @@ public class JsonNumber extends JsonElement {
      *
      * TODO: check for invalid number values or types
      */
-    public JsonNumber(Number value) { this.numberValue = value; }
+    public JsonNumber(Number value) { 
+        this.numberValue = value; 
+    }
 
     /**
      * Returns the String representation of the JsonNumber object
@@ -54,7 +56,7 @@ public class JsonNumber extends JsonElement {
     public String toString() {
         try {
             return this.numberValue.toString();
-        } catch (NullPointerException e){
+        } catch (NullPointerException e) {
             return null;
         }
     }
@@ -63,7 +65,9 @@ public class JsonNumber extends JsonElement {
      * @return boolean of whether this JsonElement object is of type JsonNumber.
      */
     @Override
-    public boolean isNumber() { return true; }
+    public boolean isNumber() { 
+        return true; 
+    }
 
     /*
 
@@ -98,7 +102,7 @@ public class JsonNumber extends JsonElement {
             } else {
                 return JsonBoolean.getInstance(false);
             }
-        } catch (NullPointerException e){
+        } catch (NullPointerException e) {
             return JsonBoolean.getInstance(true);
         }
     }
@@ -107,11 +111,12 @@ public class JsonNumber extends JsonElement {
     public JsonNumber asNumber() {
         return this;
     }
+
     @Override
     public JsonString asString() {
         try {
             return new JsonString(numberValue.toString());
-        } catch (NullPointerException e){
+        } catch (NullPointerException e) {
             return new JsonString();
         }
     }
@@ -128,7 +133,7 @@ public class JsonNumber extends JsonElement {
     public JsonWriter serialize(JsonWriter jsonWriter) throws IOException {
         int integerForm = this.numberValue.intValue();
         float floatForm = this.numberValue.floatValue();
-        if (integerForm == floatForm){
+        if (integerForm == floatForm) {
             jsonWriter.writeInt(integerForm);
         } else {
             jsonWriter.writeFloat(floatForm);
