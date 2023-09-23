@@ -23,9 +23,6 @@ import java.util.concurrent.Executor;
  * @see HttpUrlConnectionAsyncClientBuilder
  */
 public class HttpUrlConnectionAsyncClient implements HttpClient {
-
-    private final ConcurrentHashMap<String, SocketClient> socketClientPool = new ConcurrentHashMap<>();
-
     private final Duration connectionTimeout;
     private final ProxyOptions proxyOptions;
     private final Executor executor;
@@ -80,19 +77,7 @@ public class HttpUrlConnectionAsyncClient implements HttpClient {
 
     // Send a PATCH request via a SocketClient
     private Mono<HttpResponse> sendPatchViaSocket(HttpRequest httpRequest) {
-        return Mono.fromCallable(() -> {
-            URL url = httpRequest.getUrl();
-            String host = url.getHost();
-            int port = url.getPort() == -1 ? url.getDefaultPort() : url.getPort();
-
-            String key = host + ":" + port;
-
-            // Get or create a SocketClient for the current request
-            SocketClient socketClient = socketClientPool.computeIfAbsent(key, k -> new SocketClient(host, port));
-
-            // Now use socketClient to send the PATCH request
-            return socketClient.sendPatchRequest(httpRequest);
-        });
+        return Mono.fromCallable(() -> SocketClient.sendPatchRequest(httpRequest));
     }
 
     // Open a connection based on the HttpRequest URL

@@ -1,8 +1,6 @@
 package com.azure.core.http.httpurlconnection;
 
 import com.azure.core.http.HttpHeader;
-import com.azure.core.http.HttpHeaderName;
-import com.azure.core.http.HttpHeaders;
 import com.azure.core.http.HttpRequest;
 import com.azure.core.http.httpurlconnection.implementation.HttpUrlConnectionResponse;
 import reactor.core.publisher.Flux;
@@ -12,7 +10,6 @@ import javax.net.ssl.SSLSocketFactory;
 import java.io.*;
 import java.net.ProtocolException;
 import java.net.Socket;
-import java.net.URL;
 import java.nio.ByteBuffer;
 import java.util.*;
 
@@ -22,24 +19,6 @@ import java.util.*;
 
 class SocketClient {
 
-    private final String host;
-    private final int port;
-    private final String username;
-    private final String password;
-
-    public SocketClient(String host, int port, String username, String password) {
-        this.host = host;
-        this.port = port;
-        this.username = username;
-        this.password = password;
-    }
-
-    public SocketClient(String host) {this(host, 80, null, null);}
-
-    public SocketClient(String host, int port) {this(host, port, null, null);}
-
-    public SocketClient(URL url) {this(url.getHost(), url.getPort());}
-
     /**
      * Opens a socket connection, then writes the PATCH request across the
      * connection and reads the response
@@ -47,7 +26,9 @@ class SocketClient {
      * @param httpRequest {@link com.azure.core.http.HttpRequest} instance
      * @return an instance of HttpUrlConnectionResponse
      */
-    public HttpUrlConnectionResponse sendPatchRequest(HttpRequest httpRequest) throws IOException {
+    public static HttpUrlConnectionResponse sendPatchRequest(HttpRequest httpRequest) throws IOException {
+        String host = httpRequest.getUrl().getHost();
+        int port = httpRequest.getUrl().getPort();
         if (httpRequest.getUrl().getProtocol().equals("https")) {
             SSLSocketFactory sslSocketFactory = (SSLSocketFactory) SSLSocketFactory.getDefault();
             try (SSLSocket socket = (SSLSocket) sslSocketFactory.createSocket(host, port)) {
@@ -71,16 +52,13 @@ class SocketClient {
      * @param socket {@link java.net.Socket} instance
      * @return an instance of HttpUrlConnectionResponse
      */
-    private HttpUrlConnectionResponse doInputOutput(HttpRequest httpRequest, Socket socket) throws IOException {
+    private static HttpUrlConnectionResponse doInputOutput(HttpRequest httpRequest, Socket socket) throws IOException {
         String request = buildPatchRequest(httpRequest);
+        try (BufferedReader in = new BufferedReader(new InputStreamReader(socket.getInputStream()));
+             OutputStreamWriter out = new OutputStreamWriter(socket.getOutputStream())) {
 
-        BufferedReader in = new BufferedReader(new InputStreamReader(socket.getInputStream()));
-        OutputStream out = socket.getOutputStream();
-        OutputStreamWriter outputStreamWriter = new OutputStreamWriter(out);
-
-        try {
-            outputStreamWriter.write(request);
-            outputStreamWriter.flush();
+            out.write(request);
+            out.flush();
 
             HttpUrlConnectionResponse response = buildResponse(httpRequest, in);
 
@@ -92,15 +70,10 @@ class SocketClient {
                 .orElse(null);
 
             if (redirectLocation != null) {
-                httpRequest.setUrl(new URL(redirectLocation));
-                return new SocketClient(httpRequest.getUrl().getHost(),
-                    httpRequest.getUrl().getPort() == -1 ? port : httpRequest.getUrl().getPort())
-                    .sendPatchRequest(httpRequest);
+                httpRequest.setUrl(redirectLocation);
+                return sendPatchRequest(httpRequest);
             }
             return response;
-        } finally {
-            out.close();
-            in.close();
         }
     }
 
@@ -111,7 +84,7 @@ class SocketClient {
      * @param httpRequest {@link com.azure.core.http.HttpRequest} instance
      * @return the String representation of the HttpRequest
      */
-    private String buildPatchRequest(HttpRequest httpRequest) {
+    private static String buildPatchRequest(HttpRequest httpRequest) {
         final StringBuilder request = new StringBuilder();
         // Add the status line
         request.append("PATCH")
@@ -125,14 +98,6 @@ class SocketClient {
                 request.append(headerLine.getName())
                     .append(": ")
                     .append(headerLine.getValue())
-                    .append("\r\n");
-            }
-            // Add the authorization header if a username and password is given
-            if (username != null && password != null) {
-                String credentials = username + ":" + password;
-                String authHeader = "Basic " + Base64.getEncoder().encodeToString(credentials.getBytes());
-                request.append("Authorization: ")
-                    .append(authHeader)
                     .append("\r\n");
             }
         }
@@ -155,7 +120,7 @@ class SocketClient {
      * @param reader {@link java.io.BufferedReader} instance
      * @return an instance of HttpUrlConnectionResponse
      */
-    private HttpUrlConnectionResponse buildResponse(HttpRequest httpRequest, BufferedReader reader) throws IOException {
+    private static HttpUrlConnectionResponse buildResponse(HttpRequest httpRequest, BufferedReader reader) throws IOException {
         // Read the first line as the status line
         String statusLine = reader.readLine();
         // Extract the status code from the status line
