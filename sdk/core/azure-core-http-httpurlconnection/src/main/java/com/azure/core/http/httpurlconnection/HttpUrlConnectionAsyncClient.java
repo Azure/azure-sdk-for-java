@@ -150,7 +150,6 @@ public class HttpUrlConnectionAsyncClient implements HttpClient {
         switch(httpRequest.getHttpMethod()) {
             case POST:
             case PUT:
-            case PATCH:
             case DELETE:
                 if (httpRequest.getBody() != null) {
                     return Mono.fromRunnable(() -> {
@@ -182,8 +181,15 @@ public class HttpUrlConnectionAsyncClient implements HttpClient {
                 } else {
                     return Mono.empty();
                 }
-            default:
+            case GET:
+            case HEAD:
+            case OPTIONS:
+            case TRACE:
+            case CONNECT:
                 return Mono.empty();
+            default:
+                throw new IllegalStateException("Unknown HTTP Method:"
+                    + httpRequest.getHttpMethod());
         }
     }
 
