@@ -64,9 +64,8 @@ import static com.azure.security.keyvault.administration.implementation.KeyVault
  *
  * <p><strong>Sample: Construct Asynchronous Backup Client</strong></p>
  *
- * <p>The following code sample demonstrates the creation of a
- * {@link com.azure.security.keyvault.administration.KeyVaultBackupAsyncClient}, using the
- * {@link com.azure.security.keyvault.administration.KeyVaultBackupClientBuilder} to configure it.</p>
+ * <p>The following code sample demonstrates the creation of a {@link KeyVaultBackupAsyncClient}, using the
+ * {@link KeyVaultBackupClientBuilder} to configure it.</p>
  *
  * <!-- src_embed com.azure.security.keyvault.administration.KeyVaultBackupAsyncClient.instantiation -->
  * <pre>

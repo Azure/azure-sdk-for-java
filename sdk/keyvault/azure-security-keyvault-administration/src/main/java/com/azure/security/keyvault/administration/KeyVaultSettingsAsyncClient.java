@@ -47,9 +47,8 @@ import static com.azure.core.util.FluxUtil.monoError;
  *
  * <p><strong>Sample: Construct Asynchronous Backup Client</strong></p>
  *
- * <p>The following code sample demonstrates the creation of a
- * {@link com.azure.security.keyvault.administration.KeyVaultSettingsAsyncClient}, using the
- * {@link com.azure.security.keyvault.administration.KeyVaultSettingsClientBuilder} to configure it.</p>
+ * <p>The following code sample demonstrates the creation of a {@link KeyVaultSettingsAsyncClient}, using the
+ * {@link KeyVaultSettingsClientBuilder} to configure it.</p>
  *
  * <!-- src_embed com.azure.security.keyvault.administration.KeyVaultSettingsAsyncClient.instantiation -->
  * <pre>

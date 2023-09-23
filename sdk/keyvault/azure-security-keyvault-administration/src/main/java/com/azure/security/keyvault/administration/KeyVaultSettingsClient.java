@@ -44,9 +44,8 @@ import java.util.Objects;
  *
  * <p><strong>Sample: Construct Synchronous Backup Client</strong></p>
  *
- * <p>The following code sample demonstrates the creation of a
- * {@link com.azure.security.keyvault.administration.KeyVaultSettingsClient}, using the
- * {@link com.azure.security.keyvault.administration.KeyVaultSettingsClientBuilder} to configure it.</p>
+ * <p>The following code sample demonstrates the creation of a {@link KeyVaultSettingsClient}, using the
+ * {@link KeyVaultSettingsClientBuilder} to configure it.</p>
  *
  * <!-- src_embed com.azure.security.keyvault.administration.KeyVaultSettingsClient.instantiation -->
  * <pre>

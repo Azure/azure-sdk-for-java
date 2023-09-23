@@ -59,9 +59,8 @@ import static com.azure.security.keyvault.administration.KeyVaultAdministrationU
  *
  * <p><strong>Sample: Construct Asynchronous Access Control Client</strong></p>
  *
- * <p>The following code sample demonstrates the creation of a
- * {@link com.azure.security.keyvault.administration.KeyVaultAccessControlAsyncClient}, using the
- * {@link com.azure.security.keyvault.administration.KeyVaultAccessControlClientBuilder} to configure it.</p>
+ * <p>The following code sample demonstrates the creation of a {@link KeyVaultAccessControlAsyncClient}, using the
+ * {@link KeyVaultAccessControlClientBuilder} to configure it.</p>
  *
  * <!-- src_embed com.azure.security.keyvault.administration.KeyVaultAccessControlAsyncClient.instantiation -->
  * <pre>
@@ -172,11 +171,11 @@ import static com.azure.security.keyvault.administration.KeyVaultAdministrationU
  * <hr/>
  *
  * <h2>Get a Role Definition</h2>
- * The {@link KeyVaultAccessControlClient} can be used to retrieve a certificate from the key vault.
+ * The {@link KeyVaultAccessControlClient} can be used to retrieve a role assignment from the key vault.
  *
  * <p><strong>Code Sample:</strong></p>
- * <p>The following code sample demonstrates how to asynchronously retrieve a certificate from the key vault, using the
- * {@link KeyVaultAccessControlClient#getRoleDefinition(KeyVaultRoleScope, String)} API.</p>
+ * <p>The following code sample demonstrates how to asynchronously retrieve a role assignment from the key vault, using
+ * the {@link KeyVaultAccessControlClient#getRoleDefinition(KeyVaultRoleScope, String)} API.</p>
  *
  * <!-- src_embed com.azure.security.keyvault.administration.KeyVaultAccessControlClient.getRoleAssignment#KeyVaultRoleScope-String -->
  * <pre>
@@ -195,11 +194,11 @@ import static com.azure.security.keyvault.administration.KeyVaultAdministrationU
  * <hr/>
  *
  * <h2>Delete a Role Definition</h2>
- * The {@link KeyVaultAccessControlAsyncClient} can be used to delete a certificate from the key vault.
+ * The {@link KeyVaultAccessControlAsyncClient} can be used to delete a role assignment from the key vault.
  *
  * <p><strong>Code Sample:</strong></p>
- * <p>The following code sample demonstrates how to asynchronously delete a certificate from the key vault, using the
- * {@link KeyVaultAccessControlAsyncClient#deleteRoleDefinition(KeyVaultRoleScope, String)} API.</p>
+ * <p>The following code sample demonstrates how to asynchronously delete a role assignment from the key vault, using
+ * the {@link KeyVaultAccessControlAsyncClient#deleteRoleDefinition(KeyVaultRoleScope, String)} API.</p>
  *
  * <!-- src_embed com.azure.security.keyvault.administration.KeyVaultAccessControlClient.deleteRoleAssignment#KeyVaultRoleScope-String -->
  * <pre>
