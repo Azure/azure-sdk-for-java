@@ -147,7 +147,7 @@ public class HttpUrlConnectionAsyncClient implements HttpClient {
      * @return A Mono representing the completion of the request body writing process
      */
     private Mono<Void> writeRequestBody(HttpURLConnection connection, HttpRequest httpRequest, ProgressReporter progressReporter) {
-        switch(httpRequest.getHttpMethod()) {
+        switch (httpRequest.getHttpMethod()) {
             case POST:
             case PUT:
             case DELETE:
@@ -164,15 +164,18 @@ public class HttpUrlConnectionAsyncClient implements HttpClient {
                             }
 
                             requestBody
-                                .doOnNext(buffer -> {
+                                .flatMap(buffer -> {
                                     try {
                                         byte[] bytes = new byte[buffer.remaining()];
                                         buffer.get(bytes);
                                         os.write(bytes);
+                                        return Mono.just(buffer); // Emit the buffer for downstream processing if needed
                                     } catch (IOException e) {
                                         throw new RuntimeException(e);
                                     }
-                                }).blockLast();
+                                })
+                                .then()
+                                .block(); // Wait for completion of the write operations
                             os.flush();
                         } catch (IOException e) {
                             throw new RuntimeException(e);
