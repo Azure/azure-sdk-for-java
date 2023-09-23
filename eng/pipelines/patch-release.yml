@@ -88,4 +88,7 @@ extends:
       groupId: com.azure
       safeName: azurecommunicationcommon
       ServiceDirectory: communication
-
+    - name: azure-communication-callautomation
+      groupId: com.azure
+      safeName: azurecommunicationcallautomation
+      ServiceDirectory: communication
