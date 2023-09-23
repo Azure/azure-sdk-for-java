@@ -652,8 +652,6 @@ public class CosmosAsyncContainer {
                 queryOptionsAccessor.withEmptyPageDiagnosticsEnabled(nonNullOptions, true)
                 : nonNullOptions;
 
-            queryOptionsAccessor.applyMaxItemCount(options, pagedFluxOptions);
-
             pagedFluxOptions.setTracerAndTelemetryInformation(
                 this.readAllItemsSpanName,
                 database.getId(),
@@ -956,8 +954,6 @@ public class CosmosAsyncContainer {
                 : nonNullOptions;
             String spanName = this.queryItemsSpanName;
 
-            queryOptionsAccessor.applyMaxItemCount(options, pagedFluxOptions);
-
             pagedFluxOptions.setTracerAndTelemetryInformation(
                 spanName,
                 database.getId(),
@@ -994,7 +990,6 @@ public class CosmosAsyncContainer {
                 queryOptionsAccessor.withEmptyPageDiagnosticsEnabled(nonNullOptions, true)
                 : nonNullOptions;
             String spanName = this.queryItemsSpanName;
-            queryOptionsAccessor.applyMaxItemCount(options, pagedFluxOptions);
             pagedFluxOptions.setTracerAndTelemetryInformation(
                 spanName,
                 database.getId(),
@@ -1084,7 +1079,6 @@ public class CosmosAsyncContainer {
 
             CosmosAsyncClient client = this.getDatabase().getClient();
             String spanName = this.queryChangeFeedSpanName;
-            cfOptionsAccessor.applyMaxItemCount(cosmosChangeFeedRequestOptions, pagedFluxOptions);
             pagedFluxOptions.setTracerAndTelemetryInformation(
                 spanName,
                 database.getId(),
@@ -1555,7 +1549,6 @@ public class CosmosAsyncContainer {
         requestOptions.setPartitionKey(partitionKey);
 
         return UtilBridgeInternal.createCosmosPagedFlux(pagedFluxOptions -> {
-            queryOptionsAccessor.applyMaxItemCount(options, pagedFluxOptions);
             pagedFluxOptions.setTracerAndTelemetryInformation(
                 this.readAllItemsOfLogicalPartitionSpanName,
                 database.getId(),
@@ -2708,6 +2701,25 @@ public class CosmosAsyncContainer {
                     Class<T> classType) {
 
                     return cosmosAsyncContainer.readMany(itemIdentityList, requestOptions, classType);
+                }
+
+                @Override
+                public <T> Function<CosmosPagedFluxOptions, Flux<FeedResponse<T>>> queryItemsInternalFunc(
+                    CosmosAsyncContainer cosmosAsyncContainer,
+                    SqlQuerySpec sqlQuerySpec,
+                    CosmosQueryRequestOptions cosmosQueryRequestOptions,
+                    Class<T> classType) {
+
+                    return cosmosAsyncContainer.queryItemsInternalFunc(sqlQuerySpec, cosmosQueryRequestOptions, classType);
+                }
+
+                @Override
+                public <T> Function<CosmosPagedFluxOptions, Flux<FeedResponse<T>>> queryItemsInternalFuncWithMonoSqlQuerySpec(
+                    CosmosAsyncContainer cosmosAsyncContainer,
+                    Mono<SqlQuerySpec> sqlQuerySpecMono,
+                    CosmosQueryRequestOptions cosmosQueryRequestOptions,
+                    Class<T> classType) {
+                    return cosmosAsyncContainer.queryItemsInternalFunc(sqlQuerySpecMono, cosmosQueryRequestOptions, classType);
                 }
             });
     }
