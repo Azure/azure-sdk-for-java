@@ -9,7 +9,7 @@
 #### Breaking Changes
 
 #### Bugs Fixed
-* Suppressed `CosmosEndToEndOperationLatencyPolicyConfig` in `ChangeFeedProcessor`. See [PR 36775](https://github.com/Azure/azure-sdk-for-java/pull/36775)
+* Disabled `CosmosEndToEndOperationLatencyPolicyConfig` feature in `ChangeFeedProcessor`. Setting `CosmosEndToEndOperationLatencyPolicyConfig` at `CosmosClient` level will not affect `ChangeFeedProcessor` requests in any way. See [PR 36775](https://github.com/Azure/azure-sdk-for-java/pull/36775)
 * Fixed staleness issue of `COSMOS.MIN_CONNECTION_POOL_SIZE_PER_ENDPOINT` system property - See [PR 36599](https://github.com/Azure/azure-sdk-for-java/pull/36599).
 * Fixed an issue where `pageSize` from `byPage` is not always being honored. This only happens when the same `CosmosQueryRequestOptions` being used through different requests, and different pageSize being used. See [PR 36847](https://github.com/Azure/azure-sdk-for-java/pull/36847)
 
