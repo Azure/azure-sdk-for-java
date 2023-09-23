@@ -12,8 +12,6 @@ import java.net.*;
 import java.nio.ByteBuffer;
 import java.time.Duration;
 import java.util.*;
-import java.util.concurrent.ConcurrentHashMap;
-import java.util.concurrent.Executor;
 
 /**
  * This class provides a HttpUrlConnection implementation for the {@link HttpClient} interface.
@@ -33,19 +31,16 @@ public class HttpUrlConnectionAsyncClient implements HttpClient {
         this.configuration = configuration;
     }
 
-    // Asynchronous send method returning a Mono of HttpResponse
     @Override
     public Mono<HttpResponse> send(HttpRequest httpRequest) {
         return sendAsync(httpRequest, Context.NONE);
     }
 
-    // Asynchronous send method returning a Mono of HttpResponse
     @Override
     public Mono<HttpResponse> send(HttpRequest request, Context context) {
         return sendAsync(request, context);
     }
 
-    // Synchronous send method with additional context, primarily for interface compliance
     @Override
     public HttpResponse sendSync(HttpRequest httpRequest, Context context) {
         return sendAsync(httpRequest, context).block();
@@ -73,12 +68,22 @@ public class HttpUrlConnectionAsyncClient implements HttpClient {
 
     }
 
-    // Send a PATCH request via a SocketClient
+    /**
+     * Send a PATCH request via a SocketClient
+     *
+     * @param httpRequest The HTTP Request being sent
+     * @return A Mono containing a HttpResponse object
+     */
     private Mono<HttpResponse> sendPatchViaSocket(HttpRequest httpRequest) {
         return Mono.fromCallable(() -> SocketClient.sendPatchRequest(httpRequest));
     }
 
-    // Open a connection based on the HttpRequest URL
+    /**
+     * Open a connection based on the HttpRequest URL
+     *
+     * @param httpRequest The HTTP Request being sent
+     * @return A Mono containing a HttpUrlConnection object
+     */
     private Mono<HttpURLConnection> openConnection(HttpRequest httpRequest) {
         return Mono.fromCallable(() -> {
             try {
@@ -108,7 +113,13 @@ public class HttpUrlConnectionAsyncClient implements HttpClient {
         });
     }
 
-    // Set properties and headers on the HttpURLConnection
+    /**
+     * Set properties and headers on the HttpURLConnection
+     *
+     * @param connection The HttpUrlConnection to configure for the HTTP request
+     * @param httpRequest The HTTP Request being sent
+     * @return A Mono representing the completion of the configuration process
+     */
     private Mono<Void> setConnectionRequest(HttpURLConnection connection, HttpRequest httpRequest) {
         return Mono.fromRunnable(() -> {
             try {
@@ -127,7 +138,14 @@ public class HttpUrlConnectionAsyncClient implements HttpClient {
         });
     }
 
-    // Write the body of the request if necessary
+    /**
+     * Write the body of the request if necessary
+     *
+     * @param connection The HttpUrlConnection to write the request body to
+     * @param httpRequest The HTTP Request being sent
+     * @param progressReporter (Optional) for reporting progress while writing the request body
+     * @return A Mono representing the completion of the request body writing process
+     */
     private Mono<Void> writeRequestBody(HttpURLConnection connection, HttpRequest httpRequest, ProgressReporter progressReporter) {
         switch(httpRequest.getHttpMethod()) {
             case POST:
@@ -169,7 +187,13 @@ public class HttpUrlConnectionAsyncClient implements HttpClient {
         }
     }
 
-    // Read the response and construct the HttpResponse object
+    /**
+     * Read the response and construct the HttpResponse object
+     *
+     * @param connection Representing the HTTP response
+     * @param httpRequest The HTTP Request being sent
+     * @return A Mono containing a HttpUrlConnectionResponse object
+     */
     private static Mono<HttpUrlConnectionResponse> readResponse(HttpURLConnection connection, HttpRequest httpRequest) {
         return Mono.fromCallable(() -> {
             int responseCode = connection.getResponseCode();
