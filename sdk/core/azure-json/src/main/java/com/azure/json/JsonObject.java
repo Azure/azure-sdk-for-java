@@ -229,7 +229,9 @@ public class JsonObject extends JsonElement {
      * keep this method as it is and remove the getKeyByValue and getValueByKey
      * methods that I have defined.
      */
-    public JsonElement getProperty(String key) { return properties.get(key); }
+    public JsonElement getProperty(String key) { 
+        return properties.get(key); 
+    }
 
     /**
      * Gets the value for a given property by key.
@@ -239,7 +241,9 @@ public class JsonObject extends JsonElement {
      * @return JsonElement object representing the respective value pair of the
      * search key
      */
-    public JsonElement getValueByKey(String key) { return properties.get(key); }
+    public JsonElement getValueByKey(String key) { 
+        return properties.get(key); 
+    }
 
     /**
      * Returns the String representation of the JsonObject object
@@ -291,10 +295,9 @@ public class JsonObject extends JsonElement {
 //        return "{" + jsonOutput + "}";
 //    }
 
-
     @Override
     public JsonObject setProperty(String key, JsonElement element) throws IOException {
-        if (properties.containsKey(key)){
+        if (properties.containsKey(key)) {
             this.properties.replace(key, element);
             return this;
         } else {
@@ -308,7 +311,7 @@ public class JsonObject extends JsonElement {
 
     @Override
     public JsonObject removeProperty(String key) throws IOException {
-        if (properties.containsKey(key)){
+        if (properties.containsKey(key)) {
             this.properties.remove(key);
             return this;
         } else {
@@ -316,15 +319,16 @@ public class JsonObject extends JsonElement {
         }
     }
 
-
     @Override
-    public boolean isObject() { return true; }
+    public boolean isObject() { 
+        return true; 
+    }
 
     @Override
     public JsonArray asArray() {
         JsonArray output = new JsonArray();
         Set<String> keys = properties.keySet();
-        for (String key: keys){
+        for (String key: keys) {
             output.addElement(properties.get(key));
         }
         return output;
@@ -337,7 +341,7 @@ public class JsonObject extends JsonElement {
 
     @Override
     public JsonBoolean asBoolean() {
-        if (properties.size() >= 1){
+        if (properties.size() >= 1) {
             return properties.get(properties.keySet().iterator().next()).asBoolean(); //Should only get the first element.
         } else {
             return JsonBoolean.getInstance(true);
@@ -346,32 +350,30 @@ public class JsonObject extends JsonElement {
 
     @Override
     public JsonNumber asNumber() {
-        if (properties.size() >= 1){
+        if (properties.size() >= 1) {
             return properties.get(properties.keySet().iterator().next()).asNumber(); //Should only get the first element.
         } else {
             return new JsonNumber();
         }
     }
+
     @Override
     public JsonString asString() {
-        if (properties.size() >= 1){
+        if (properties.size() >= 1) {
             return properties.get(properties.keySet().iterator().next()).asString(); //Should only get the first element.
         } else {
             return new JsonString();
         }
     }
 
-
-
-
-
-
     /**
      * @return String representation of the JsonObject. This functionality is
      * defined within the toJson method.
      */
     @Override
-    public String toString() { return this.toJson(); }
+    public String toString() { 
+        return this.toJson(); 
+    }
 
     /**
      * Builds the JsonObject from an opened JsonReader.
