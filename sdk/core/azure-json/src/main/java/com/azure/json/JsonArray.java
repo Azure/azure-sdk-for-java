@@ -80,7 +80,7 @@ public class JsonArray extends JsonElement {
         if (element == null) {
             throw new IllegalArgumentException("Cannot add a null JsonElement to the JsonArray. Use a JsonNull object to represent a valid JSON null value.");
         }
-        if (index > elements.size()){
+        if (index > elements.size()) {
             this.elements.add(element);
         } else {
             this.elements.add(index, element);
@@ -213,7 +213,6 @@ public class JsonArray extends JsonElement {
         return jsonWriter;
     }
 
-
 //    public String toJson() {
 //        // String reference that will store the resulting JSON string output to
 //        // be returned by toJson
@@ -256,16 +255,21 @@ public class JsonArray extends JsonElement {
      * @return boolean of whether this JsonElement object is of type JsonArray.
      */
     @Override
-    public boolean isArray() { return true; }
+    public boolean isArray() { 
+        return true; 
+    }
 
     @Override
-    public JsonArray asArray() { return this;}
+    public JsonArray asArray() { 
+        return this;
+    }
+
     @Override
     public JsonObject asObject() {
         JsonObject output = new JsonObject();
-        for (int i = 0; i < elements.size(); i++){
+        for (int i = 0; i < elements.size(); i++) {
             String keyword = "Value";
-            if (i > 0){
+            if (i > 0) {
                 keyword += i;
             }
             output.addProperty(keyword, elements.get(i));
@@ -275,7 +279,7 @@ public class JsonArray extends JsonElement {
 
     @Override
     public JsonBoolean asBoolean() {
-        if (elements.size() >= 1){
+        if (elements.size() >= 1) {
             return elements.get(0).asBoolean();
         } else {
             return JsonBoolean.getInstance(true);
@@ -284,15 +288,16 @@ public class JsonArray extends JsonElement {
 
     @Override
     public JsonNumber asNumber() {
-        if (elements.size() >= 1){
+        if (elements.size() >= 1) {
             return elements.get(0).asNumber();
         } else {
             return new JsonNumber();
         }
     }
+
     @Override
     public JsonString asString() {
-        if (elements.size() >= 1){
+        if (elements.size() >= 1) {
             return elements.get(0).asString();
         } else {
             return new JsonString();
@@ -359,9 +364,6 @@ public class JsonArray extends JsonElement {
                     means all user input that involves an array will fail. Either this should not throw an exception at
                     all, or the cases where it should must be more clearly specified.
                      */
-
-
-
 
                 default:
                     throw new IOException("Default: Invalid JsonToken. Deserialisation aborted.");
