@@ -9,12 +9,8 @@ import com.azure.core.http.HttpPipeline;
 import com.azure.core.http.HttpPipelineBuilder;
 import com.azure.core.http.policy.BearerTokenAuthenticationPolicy;
 import com.azure.core.http.policy.HttpPipelinePolicy;
-import com.azure.core.test.TestProxyTestBase;
-import com.azure.core.test.models.BodilessMatcher;
-import com.azure.core.test.models.CustomMatcher;
-import com.azure.core.test.models.TestProxyRequestMatcher;
-import com.azure.core.test.models.TestProxySanitizer;
-import com.azure.core.test.models.TestProxySanitizerType;
+import com.azure.core.test.TestBase;
+import com.azure.core.test.TestMode;
 import com.azure.core.util.Configuration;
 import com.azure.core.util.polling.PollerFlux;
 import com.azure.core.util.polling.SyncPoller;
@@ -23,11 +19,10 @@ import com.azure.mixedreality.authentication.MixedRealityStsClientBuilder;
 
 import java.time.Duration;
 import java.util.ArrayList;
-import java.util.Collections;
 import java.util.List;
 import java.util.UUID;
 
-public class RemoteRenderingTestBase extends TestProxyTestBase {
+public class RemoteRenderingTestBase extends TestBase {
     static final String RESPONSE_CODE_400 = "400";
     static final String RESPONSE_CODE_403 = "403";
 
@@ -41,14 +36,14 @@ public class RemoteRenderingTestBase extends TestProxyTestBase {
     private final String serviceEndpoint = Configuration.getGlobalConfiguration().get("REMOTERENDERING_ARR_SERVICE_ENDPOINT");
 
     // NOT REAL ACCOUNT DETAILS
-    private final String playbackAccountId = "f5b3e69f-1e1b-46a5-a718-aea58a7a0f8e";
+    private final String playbackAccountId = "d879da79-415d-45f0-b641-1cfec1386ddf";
     private final String playbackAccountDomain = "mixedreality.azure.com";
     private final String playbackAccountKey = "Sanitized";
     private final String playbackStorageAccountName = "sdkTest";
     private final String playbackStorageAccountKey = "Sanitized";
     private final String playbackBlobContainerName = "test";
     private final String playbackBlobContainerSasToken = "Sanitized";
-    private final String playbackServiceEndpoint = "https://mixedreality.azure.com";
+    private final String playbackServiceEndpoint = "http://localhost:8080";
 
     HttpPipeline getHttpPipeline(HttpClient httpClient) {
         final List<HttpPipelinePolicy> policies = new ArrayList<>();
@@ -64,25 +59,13 @@ public class RemoteRenderingTestBase extends TestProxyTestBase {
             policies.add(new BearerTokenAuthenticationPolicy(r -> stsClient.getToken(), scope));
         }
 
-        if (interceptorManager.isRecordMode()) {
-            List<TestProxySanitizer> customSanitizers = new ArrayList<>();
-            customSanitizers.add(new TestProxySanitizer("$..storageContainerUri", null, "REDACTED", TestProxySanitizerType.BODY_KEY));
-            customSanitizers.add(new TestProxySanitizer("$..storageContainerReadListSas", null, "REDACTED", TestProxySanitizerType.BODY_KEY));
-            customSanitizers.add(new TestProxySanitizer("$..storageContainerWriteSas", null, "REDACTED", TestProxySanitizerType.BODY_KEY));
-            interceptorManager.addSanitizers(customSanitizers);
+        if (getTestMode() == TestMode.RECORD) {
             policies.add(interceptorManager.getRecordPolicy());
-        }
-
-        if (interceptorManager.isPlaybackMode()) {
-            List<TestProxyRequestMatcher> customMatchers = new ArrayList<>();
-            customMatchers.add(new BodilessMatcher());
-            customMatchers.add(new CustomMatcher().setExcludedHeaders(Collections.singletonList("Authorization")));
-            interceptorManager.addMatchers(customMatchers);
         }
 
         return new HttpPipelineBuilder()
             .policies(policies.toArray(new HttpPipelinePolicy[0]))
-            .httpClient(interceptorManager.isPlaybackMode() ? interceptorManager.getPlaybackClient() : httpClient)
+            .httpClient(httpClient == null ? interceptorManager.getPlaybackClient() : httpClient)
             .build();
     }
 
@@ -134,7 +117,7 @@ public class RemoteRenderingTestBase extends TestProxyTestBase {
     }
 
     String getRandomId(String playback) {
-        if (!interceptorManager.isPlaybackMode() && !interceptorManager.isRecordMode()) {
+        if (!interceptorManager.isPlaybackMode()) {
             return UUID.randomUUID().toString();
         } else {
             return playback;

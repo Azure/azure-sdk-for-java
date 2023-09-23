@@ -23,11 +23,6 @@ public final class RemoveParticipantOptions {
     private String operationContext;
 
     /**
-     * Callback URI override
-     */
-    private String callbackUrl;
-
-    /**
      * Constructor
      *
      * @param participant The list of participants to invite.
@@ -55,15 +50,6 @@ public final class RemoveParticipantOptions {
     }
 
     /**
-     * Get the callback URI override.
-     *
-     * @return the callbackUriOverride
-     */
-    public String getCallbackUrl() {
-        return callbackUrl;
-    }
-
-    /**
      * Set the operationContext.
      *
      * @param operationContext the operationContext to set
@@ -71,17 +57,6 @@ public final class RemoveParticipantOptions {
      */
     public RemoveParticipantOptions setOperationContext(String operationContext) {
         this.operationContext = operationContext;
-        return this;
-    }
-
-    /**
-     * Set the callbackUriOverride.
-     *
-     * @param callbackUrl the callbackUriOverride to set
-     * @return the RemoveParticipantOptions object itself.
-     */
-    public RemoveParticipantOptions setCallbackUrl(String callbackUrl) {
-        this.callbackUrl = callbackUrl;
         return this;
     }
 }

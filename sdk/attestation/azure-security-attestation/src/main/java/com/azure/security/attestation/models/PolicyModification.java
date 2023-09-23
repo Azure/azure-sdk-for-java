@@ -17,11 +17,6 @@ public final class PolicyModification extends ExpandableStringEnum<PolicyModific
     public static final PolicyModification REMOVED = fromString("Removed");
 
     /**
-     * Creates an instance of {@link PolicyModification}
-     */
-    public PolicyModification() { }
-
-    /**
      * Creates or finds a PolicyModification from its string representation.
      *
      * @param name a name to look for.
@@ -32,11 +27,7 @@ public final class PolicyModification extends ExpandableStringEnum<PolicyModific
         return fromString(name, PolicyModification.class);
     }
 
-    /**
-     * Returns the collection of {@link PolicyModification} values.
-     *
-     * @return the known PolicyModification values.
-     */
+    /** @return known PolicyModification values. */
     public static Collection<PolicyModification> values() {
         return values(PolicyModification.class);
     }

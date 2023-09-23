@@ -23,9 +23,6 @@ public final class MetricSeriesList {
     @JsonProperty(value = "value", access = JsonProperty.Access.WRITE_ONLY)
     private List<MetricSeriesItem> value;
 
-    /** Creates an instance of MetricSeriesList class. */
-    public MetricSeriesList() {}
-
     /**
      * Get the nextLink property: The @nextLink property.
      *

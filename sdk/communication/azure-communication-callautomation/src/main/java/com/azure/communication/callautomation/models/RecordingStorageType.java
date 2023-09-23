@@ -14,9 +14,6 @@ public final class RecordingStorageType extends ExpandableStringEnum<RecordingSt
     /** Static value acs for RecordingStorageTypeInternal. */
     public static final RecordingStorageType ACS = fromString("acs");
 
-    /** Static value blobStorage for RecordingStorageTypeInternal. */
-    public static final RecordingStorageType BLOB_STORAGE = fromString("blobStorage");
-
     /**
      * Creates or finds a RecordingStorageTypeInternal from its string representation.
      *

@@ -16,9 +16,6 @@ public final class AzureSQLConnectionStringParam {
     @JsonProperty(value = "connectionString")
     private String connectionString;
 
-    /** Creates an instance of AzureSQLConnectionStringParam class. */
-    public AzureSQLConnectionStringParam() {}
-
     /**
      * Get the connectionString property: The connection string to access the Azure SQL.
      *
