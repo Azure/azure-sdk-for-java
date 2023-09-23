@@ -25,7 +25,7 @@ public class HttpUrlConnectionAsyncClient implements HttpClient {
     private final ProxyOptions proxyOptions;
     private final Configuration configuration;
 
-    public HttpUrlConnectionAsyncClient(Duration connectionTimeout, ProxyOptions proxyOptions, Configuration configuration) {
+    HttpUrlConnectionAsyncClient(Duration connectionTimeout, ProxyOptions proxyOptions, Configuration configuration) {
         this.connectionTimeout = connectionTimeout;
         this.proxyOptions = proxyOptions;
         this.configuration = configuration;
