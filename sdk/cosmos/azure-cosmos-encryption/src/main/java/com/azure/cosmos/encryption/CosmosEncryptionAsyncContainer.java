@@ -1075,7 +1075,7 @@ public final class CosmosEncryptionAsyncContainer {
             cosmosAsyncContainerAccessor
                 .queryChangeFeedInternalFunc(
                     this.container,
-                    changeFeedRequestOptions,
+                    finalOptions,
                     JsonNode.class)
         );
     }
