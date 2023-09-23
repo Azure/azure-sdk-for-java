@@ -4,14 +4,14 @@
 
 package com.azure.resourcemanager.managedapplications.generated;
 
+import com.azure.resourcemanager.managedapplications.models.ApplicationAuthorization;
 import com.azure.resourcemanager.managedapplications.models.ApplicationLockLevel;
-import com.azure.resourcemanager.managedapplications.models.ApplicationProviderAuthorization;
 import java.util.Arrays;
 
 /** Samples for ApplicationDefinitions CreateOrUpdate. */
 public final class ApplicationDefinitionsCreateOrUpdateSamples {
     /*
-     * x-ms-original-file: specification/resources/resource-manager/Microsoft.Solutions/stable/2018-06-01/examples/createOrUpdateApplicationDefinition.json
+     * x-ms-original-file: specification/solutions/resource-manager/Microsoft.Solutions/stable/2021-07-01/examples/createOrUpdateApplicationDefinition.json
      */
     /**
      * Sample code: Create or update managed application definition.
@@ -23,16 +23,16 @@ public final class ApplicationDefinitionsCreateOrUpdateSamples {
         manager
             .applicationDefinitions()
             .define("myManagedApplicationDef")
-            .withRegion("East US 2")
+            .withRegion((String) null)
             .withExistingResourceGroup("rg")
             .withLockLevel(ApplicationLockLevel.NONE)
+            .withDisplayName("myManagedApplicationDef")
             .withAuthorizations(
                 Arrays
                     .asList(
-                        new ApplicationProviderAuthorization()
+                        new ApplicationAuthorization()
                             .withPrincipalId("validprincipalguid")
                             .withRoleDefinitionId("validroleguid")))
-            .withDisplayName("myManagedApplicationDef")
             .withDescription("myManagedApplicationDef description")
             .withPackageFileUri("https://path/to/packagezipfile")
             .create();

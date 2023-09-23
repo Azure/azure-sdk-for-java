@@ -58,6 +58,7 @@ public final class ServiceConfigurationsDeleteWithResponseMockTests {
 
         manager
             .serviceConfigurations()
-            .deleteWithResponse("ajionpimexgstxg", "po", "gmaajrm", com.azure.core.util.Context.NONE);
+            .deleteWithResponse(
+                "bnbdxkqpxokajion", "imexgstxgcpodgma", "jrmvdjwzrlo", com.azure.core.util.Context.NONE);
     }
 }

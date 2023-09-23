@@ -15,7 +15,7 @@ public final class IotHubQuotaMetricInfoListResultTests {
         IotHubQuotaMetricInfoListResult model =
             BinaryData
                 .fromString(
-                    "{\"value\":[{\"name\":\"lhbnxkna\",\"currentValue\":8671713501253407728,\"maxValue\":101346809014856718},{\"name\":\"dtpnapnyiropuhp\",\"currentValue\":6182920214786392878,\"maxValue\":8589982683631142861},{\"name\":\"qgitxmed\",\"currentValue\":513856937711822481,\"maxValue\":6530746203139727560}],\"nextLink\":\"wwncwzzhxgk\"}")
+                    "{\"value\":[{\"name\":\"bp\",\"currentValue\":5410192401023595008,\"maxValue\":8746825901777553134},{\"name\":\"ftguv\",\"currentValue\":4239243194073786564,\"maxValue\":3324276712333747571},{\"name\":\"dyvxqtayriww\",\"currentValue\":7269998904219193773,\"maxValue\":6962652464609703517},{\"name\":\"mcqibycnojv\",\"currentValue\":9109864718473817445,\"maxValue\":1560146384184244309}],\"nextLink\":\"zvahapjy\"}")
                 .toObject(IotHubQuotaMetricInfoListResult.class);
     }
 
@@ -26,6 +26,7 @@ public final class IotHubQuotaMetricInfoListResultTests {
                 .withValue(
                     Arrays
                         .asList(
+                            new IotHubQuotaMetricInfoInner(),
                             new IotHubQuotaMetricInfoInner(),
                             new IotHubQuotaMetricInfoInner(),
                             new IotHubQuotaMetricInfoInner()));
