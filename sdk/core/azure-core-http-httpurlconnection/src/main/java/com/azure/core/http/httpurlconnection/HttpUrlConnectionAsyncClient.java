@@ -25,13 +25,11 @@ import java.util.concurrent.Executor;
 public class HttpUrlConnectionAsyncClient implements HttpClient {
     private final Duration connectionTimeout;
     private final ProxyOptions proxyOptions;
-    private final Executor executor;
     private final Configuration configuration;
 
-    public HttpUrlConnectionAsyncClient(Duration connectionTimeout, ProxyOptions proxyOptions, Executor executor, Configuration configuration) {
+    public HttpUrlConnectionAsyncClient(Duration connectionTimeout, ProxyOptions proxyOptions, Configuration configuration) {
         this.connectionTimeout = connectionTimeout;
         this.proxyOptions = proxyOptions;
-        this.executor = executor;
         this.configuration = configuration;
     }
 

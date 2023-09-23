@@ -80,7 +80,7 @@ public class HttpUrlConnectionAsyncClientBuilder {
             throw new IllegalArgumentException("Invalid proxy");
         }
 
-        return new HttpUrlConnectionAsyncClient(connectionTimeout, buildProxyOptions, executor, buildConfiguration);
+        return new HttpUrlConnectionAsyncClient(connectionTimeout, buildProxyOptions, buildConfiguration);
     }
 
     Set<String> getRestrictedHeaders() {
