@@ -102,9 +102,9 @@ public class HttpUrlConnectionAsyncClient implements HttpClient {
                             connection.setRequestProperty("Proxy-Authorization", "Basic " + authStringEnc);
                         }
                     }
-                    if (connectionTimeout != null) {
-                        connection.setConnectTimeout((int) connectionTimeout.toMillis());
-                    }
+                }
+                if (connectionTimeout != null) {
+                    connection.setConnectTimeout((int) connectionTimeout.toMillis());
                 }
                 return connection;
             } catch (IOException e) {
