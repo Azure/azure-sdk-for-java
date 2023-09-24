@@ -153,12 +153,21 @@ public final class CosmosPagedFlux<T> extends ContinuablePagedFlux<String, T, Fe
 
         DiagnosticsProvider tracerProvider = pagedFluxOptions.getDiagnosticsProvider();
         if (tracerProvider == null ||
-            !tracerProvider.isEnabled()) {
-            return publisher;
-        }
+            !tracerProvider.isEnabled()
+            || tracerProvider.shouldSampleOutOperation(pagedFluxOptions)) {
 
-        if (tracerProvider.shouldSampleOutOperation(pagedFluxOptions)) {
-            return publisher;
+            return publisher
+                .doOnEach(signal -> {
+                    FeedResponse<T> response = signal.get();
+                    switch (signal.getType()) {
+                        case ON_COMPLETE:
+                        case ON_NEXT:
+                            this.recordFeedResponse(pagedFluxOptions, null, null, response, feedResponseConsumerLatencyInNanos);
+                            break;
+                        default:
+                            break;
+                    }
+                });
         }
 
         final CosmosDiagnosticsContext cosmosCtx = ctxAccessor.create(
