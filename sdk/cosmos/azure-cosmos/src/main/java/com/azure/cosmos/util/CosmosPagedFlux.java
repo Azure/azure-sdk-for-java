@@ -224,6 +224,12 @@ public final class CosmosPagedFlux<T> extends ContinuablePagedFlux<String, T, Fe
                                 signal,
                                 Duration.ofNanos(feedResponseConsumerLatencyInNanos.get()));
 
+                            System.out.println(
+                                String.format(
+                                    "Coming into end span because traceProvider [%s, %s], sampleRate [%s]",
+                                    tracerProvider,
+                                    tracerProvider == null ? null : tracerProvider.isEnabled(),
+                                    pagedFluxOptions.getSamplingRateSnapshot()));
                             tracerProvider.endSpan(traceCtx);
                         }
 
@@ -289,6 +295,13 @@ public final class CosmosPagedFlux<T> extends ContinuablePagedFlux<String, T, Fe
                         cosmosCtx,
                         context)));
 
+        } else {
+            System.out.println(
+                String.format(
+                    "skipping start span because traceProvider [%s, %s], sampleRate [%s]",
+                    tracerProvider,
+                    tracerProvider == null ? null : tracerProvider.isEnabled(),
+                    pagedFluxOptions.getSamplingRateSnapshot()));
         }
 
         return result;

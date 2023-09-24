@@ -153,13 +153,13 @@ public class CosmosTracerTest extends TestSuiteBase {
     @DataProvider(name = "traceTestCaseProvider")
     private Object[][] traceTestCaseProvider() {
         return new Object[][]{
-//            new Object[] { true, false, true, 1d },
-//            new Object[] { true, false, false, 1d },
-//            new Object[] { false, false, false, 1d },
-//            new Object[] { false, true, false, 1d },
-//            new Object[] { false, false, true, 1d },
-//            new Object[] { false, true, true, 1d },
-//            new Object[] { false, true, true, 0.99999999 },
+            new Object[] { true, false, true, 1d },
+            new Object[] { true, false, false, 1d },
+            new Object[] { false, false, false, 1d },
+            new Object[] { false, true, false, 1d },
+            new Object[] { false, false, true, 1d },
+            new Object[] { false, true, true, 1d },
+            new Object[] { false, true, true, 0.99999999 },
             new Object[] { false, true, true, 0d },
         };
     }
