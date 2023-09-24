@@ -14,7 +14,7 @@ import com.fasterxml.jackson.annotation.JsonProperty;
 public final class AudioTranslationOptions {
 
     /*
-     * The audio data to transcribe. This must be the binary content of a file in one of the supported media formats:
+     * The audio data to translate. This must be the binary content of a file in one of the supported media formats:
      * flac, mp3, mp4, mpeg, mpga, m4a, ogg, wav, webm.
      */
     @Generated
@@ -22,12 +22,12 @@ public final class AudioTranslationOptions {
     private byte[] file;
 
     /*
-     * The requested format of the transcription response data, which will influence the content and detail of the
+     * The requested format of the translation response data, which will influence the content and detail of the
      * result.
      */
     @Generated
     @JsonProperty(value = "response_format")
-    private AudioTranscriptionFormat responseFormat;
+    private AudioTranslationFormat responseFormat;
 
     /*
      * An optional hint to guide the model's style or continue from a prior audio segment. The written language of the
@@ -49,7 +49,7 @@ public final class AudioTranslationOptions {
     private Double temperature;
 
     /*
-     * The model to use for this transcription request.
+     * The model to use for this translation request.
      */
     @Generated
     @JsonProperty(value = "model")
@@ -67,7 +67,7 @@ public final class AudioTranslationOptions {
     }
 
     /**
-     * Get the file property: The audio data to transcribe. This must be the binary content of a file in one of the
+     * Get the file property: The audio data to translate. This must be the binary content of a file in one of the
      * supported media formats: flac, mp3, mp4, mpeg, mpga, m4a, ogg, wav, webm.
      *
      * @return the file value.
@@ -78,27 +78,14 @@ public final class AudioTranslationOptions {
     }
 
     /**
-     * Get the responseFormat property: The requested format of the transcription response data, which will influence
-     * the content and detail of the result.
+     * Get the responseFormat property: The requested format of the translation response data, which will influence the
+     * content and detail of the result.
      *
      * @return the responseFormat value.
      */
     @Generated
-    public AudioTranscriptionFormat getResponseFormat() {
+    public AudioTranslationFormat getResponseFormat() {
         return this.responseFormat;
-    }
-
-    /**
-     * Set the responseFormat property: The requested format of the transcription response data, which will influence
-     * the content and detail of the result.
-     *
-     * @param responseFormat the responseFormat value to set.
-     * @return the AudioTranslationOptions object itself.
-     */
-    @Generated
-    public AudioTranslationOptions setResponseFormat(AudioTranscriptionFormat responseFormat) {
-        this.responseFormat = responseFormat;
-        return this;
     }
 
     /**
@@ -152,7 +139,7 @@ public final class AudioTranslationOptions {
     }
 
     /**
-     * Get the model property: The model to use for this transcription request.
+     * Get the model property: The model to use for this translation request.
      *
      * @return the model value.
      */
@@ -162,7 +149,7 @@ public final class AudioTranslationOptions {
     }
 
     /**
-     * Set the model property: The model to use for this transcription request.
+     * Set the model property: The model to use for this translation request.
      *
      * @param model the model value to set.
      * @return the AudioTranslationOptions object itself.
@@ -170,6 +157,19 @@ public final class AudioTranslationOptions {
     @Generated
     public AudioTranslationOptions setModel(String model) {
         this.model = model;
+        return this;
+    }
+
+    /**
+     * Set the responseFormat property: The requested format of the translation response data, which will influence the
+     * content and detail of the result.
+     *
+     * @param responseFormat the responseFormat value to set.
+     * @return the AudioTranslationOptions object itself.
+     */
+    @Generated
+    public AudioTranslationOptions setResponseFormat(AudioTranslationFormat responseFormat) {
+        this.responseFormat = responseFormat;
         return this;
     }
 }

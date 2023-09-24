@@ -69,8 +69,7 @@ public final class ReplicationPoliciesClientImpl implements ReplicationPoliciesC
     public interface ReplicationPoliciesService {
         @Headers({"Content-Type: application/json"})
         @Get(
-            "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.RecoveryServices"
-                + "/vaults/{resourceName}/replicationPolicies")
+            "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.RecoveryServices/vaults/{resourceName}/replicationPolicies")
         @ExpectedResponses({200})
         @UnexpectedResponseExceptionType(ManagementException.class)
         Mono<Response<PolicyCollection>> list(
@@ -84,8 +83,7 @@ public final class ReplicationPoliciesClientImpl implements ReplicationPoliciesC
 
         @Headers({"Content-Type: application/json"})
         @Get(
-            "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.RecoveryServices"
-                + "/vaults/{resourceName}/replicationPolicies/{policyName}")
+            "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.RecoveryServices/vaults/{resourceName}/replicationPolicies/{policyName}")
         @ExpectedResponses({200})
         @UnexpectedResponseExceptionType(ManagementException.class)
         Mono<Response<PolicyInner>> get(
@@ -100,8 +98,7 @@ public final class ReplicationPoliciesClientImpl implements ReplicationPoliciesC
 
         @Headers({"Content-Type: application/json"})
         @Put(
-            "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.RecoveryServices"
-                + "/vaults/{resourceName}/replicationPolicies/{policyName}")
+            "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.RecoveryServices/vaults/{resourceName}/replicationPolicies/{policyName}")
         @ExpectedResponses({200, 202})
         @UnexpectedResponseExceptionType(ManagementException.class)
         Mono<Response<Flux<ByteBuffer>>> create(
@@ -117,8 +114,7 @@ public final class ReplicationPoliciesClientImpl implements ReplicationPoliciesC
 
         @Headers({"Accept: application/json;q=0.9", "Content-Type: application/json"})
         @Delete(
-            "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.RecoveryServices"
-                + "/vaults/{resourceName}/replicationPolicies/{policyName}")
+            "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.RecoveryServices/vaults/{resourceName}/replicationPolicies/{policyName}")
         @ExpectedResponses({202, 204})
         @UnexpectedResponseExceptionType(ManagementException.class)
         Mono<Response<Flux<ByteBuffer>>> delete(
@@ -132,8 +128,7 @@ public final class ReplicationPoliciesClientImpl implements ReplicationPoliciesC
 
         @Headers({"Content-Type: application/json"})
         @Patch(
-            "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.RecoveryServices"
-                + "/vaults/{resourceName}/replicationPolicies/{policyName}")
+            "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.RecoveryServices/vaults/{resourceName}/replicationPolicies/{policyName}")
         @ExpectedResponses({200, 202})
         @UnexpectedResponseExceptionType(ManagementException.class)
         Mono<Response<Flux<ByteBuffer>>> update(

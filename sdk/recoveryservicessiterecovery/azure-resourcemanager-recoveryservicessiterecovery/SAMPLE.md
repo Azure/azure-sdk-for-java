@@ -227,7 +227,7 @@
 /** Samples for MigrationRecoveryPoints Get. */
 public final class MigrationRecoveryPointsGetSamples {
     /*
-     * x-ms-original-file: specification/recoveryservicessiterecovery/resource-manager/Microsoft.RecoveryServices/stable/2022-10-01/examples/MigrationRecoveryPoints_Get.json
+     * x-ms-original-file: specification/recoveryservicessiterecovery/resource-manager/Microsoft.RecoveryServices/stable/2023-06-01/examples/MigrationRecoveryPoints_Get.json
      */
     /**
      * Sample code: Gets a recovery point for a migration item.
@@ -256,7 +256,7 @@ public final class MigrationRecoveryPointsGetSamples {
 /** Samples for MigrationRecoveryPoints ListByReplicationMigrationItems. */
 public final class MigrationRecoveryPointsListByReplicationMigrati {
     /*
-     * x-ms-original-file: specification/recoveryservicessiterecovery/resource-manager/Microsoft.RecoveryServices/stable/2022-10-01/examples/MigrationRecoveryPoints_ListByReplicationMigrationItems.json
+     * x-ms-original-file: specification/recoveryservicessiterecovery/resource-manager/Microsoft.RecoveryServices/stable/2023-06-01/examples/MigrationRecoveryPoints_ListByReplicationMigrationItems.json
      */
     /**
      * Sample code: Gets the recovery points for a migration item.
@@ -284,7 +284,7 @@ public final class MigrationRecoveryPointsListByReplicationMigrati {
 /** Samples for Operations ListByResourceGroup. */
 public final class OperationsListByResourceGroupSamples {
     /*
-     * x-ms-original-file: specification/recoveryservicessiterecovery/resource-manager/Microsoft.RecoveryServices/stable/2022-10-01/examples/Operations_List.json
+     * x-ms-original-file: specification/recoveryservicessiterecovery/resource-manager/Microsoft.RecoveryServices/stable/2023-06-01/examples/Operations_List.json
      */
     /**
      * Sample code: Returns the list of available operations.
@@ -304,7 +304,7 @@ public final class OperationsListByResourceGroupSamples {
 /** Samples for RecoveryPoints Get. */
 public final class RecoveryPointsGetSamples {
     /*
-     * x-ms-original-file: specification/recoveryservicessiterecovery/resource-manager/Microsoft.RecoveryServices/stable/2022-10-01/examples/RecoveryPoints_Get.json
+     * x-ms-original-file: specification/recoveryservicessiterecovery/resource-manager/Microsoft.RecoveryServices/stable/2023-06-01/examples/RecoveryPoints_Get.json
      */
     /**
      * Sample code: Gets a recovery point.
@@ -333,7 +333,7 @@ public final class RecoveryPointsGetSamples {
 /** Samples for RecoveryPoints ListByReplicationProtectedItems. */
 public final class RecoveryPointsListByReplicationProtectedItemsSa {
     /*
-     * x-ms-original-file: specification/recoveryservicessiterecovery/resource-manager/Microsoft.RecoveryServices/stable/2022-10-01/examples/RecoveryPoints_ListByReplicationProtectedItems.json
+     * x-ms-original-file: specification/recoveryservicessiterecovery/resource-manager/Microsoft.RecoveryServices/stable/2023-06-01/examples/RecoveryPoints_ListByReplicationProtectedItems.json
      */
     /**
      * Sample code: Gets the list of recovery points for a replication protected item.
@@ -364,7 +364,7 @@ import java.util.Arrays;
 /** Samples for ReplicationAlertSettings Create. */
 public final class ReplicationAlertSettingsCreateSamples {
     /*
-     * x-ms-original-file: specification/recoveryservicessiterecovery/resource-manager/Microsoft.RecoveryServices/stable/2022-10-01/examples/ReplicationAlertSettings_Create.json
+     * x-ms-original-file: specification/recoveryservicessiterecovery/resource-manager/Microsoft.RecoveryServices/stable/2023-06-01/examples/ReplicationAlertSettings_Create.json
      */
     /**
      * Sample code: Configures email notifications for this vault.
@@ -393,7 +393,7 @@ public final class ReplicationAlertSettingsCreateSamples {
 /** Samples for ReplicationAlertSettings Get. */
 public final class ReplicationAlertSettingsGetSamples {
     /*
-     * x-ms-original-file: specification/recoveryservicessiterecovery/resource-manager/Microsoft.RecoveryServices/stable/2022-10-01/examples/ReplicationAlertSettings_Get.json
+     * x-ms-original-file: specification/recoveryservicessiterecovery/resource-manager/Microsoft.RecoveryServices/stable/2023-06-01/examples/ReplicationAlertSettings_Get.json
      */
     /**
      * Sample code: Gets an email notification(alert) configuration.
@@ -415,7 +415,7 @@ public final class ReplicationAlertSettingsGetSamples {
 /** Samples for ReplicationAlertSettings List. */
 public final class ReplicationAlertSettingsListSamples {
     /*
-     * x-ms-original-file: specification/recoveryservicessiterecovery/resource-manager/Microsoft.RecoveryServices/stable/2022-10-01/examples/ReplicationAlertSettings_List.json
+     * x-ms-original-file: specification/recoveryservicessiterecovery/resource-manager/Microsoft.RecoveryServices/stable/2023-06-01/examples/ReplicationAlertSettings_List.json
      */
     /**
      * Sample code: Gets the list of configured email notification(alert) configurations.
@@ -435,7 +435,7 @@ public final class ReplicationAlertSettingsListSamples {
 /** Samples for ReplicationAppliances List. */
 public final class ReplicationAppliancesListSamples {
     /*
-     * x-ms-original-file: specification/recoveryservicessiterecovery/resource-manager/Microsoft.RecoveryServices/stable/2022-10-01/examples/ReplicationAppliances_List.json
+     * x-ms-original-file: specification/recoveryservicessiterecovery/resource-manager/Microsoft.RecoveryServices/stable/2023-06-01/examples/ReplicationAppliances_List.json
      */
     /**
      * Sample code: Gets the list of appliances.
@@ -455,7 +455,7 @@ public final class ReplicationAppliancesListSamples {
 /** Samples for ReplicationEligibilityResultsOperation Get. */
 public final class ReplicationEligibilityResultsOperationGetSamples {
     /*
-     * x-ms-original-file: specification/recoveryservicessiterecovery/resource-manager/Microsoft.RecoveryServices/stable/2022-10-01/examples/ReplicationEligibilityResults_Get.json
+     * x-ms-original-file: specification/recoveryservicessiterecovery/resource-manager/Microsoft.RecoveryServices/stable/2023-06-01/examples/ReplicationEligibilityResults_Get.json
      */
     /**
      * Sample code: Gets the validation errors in case the VM is unsuitable for protection.
@@ -477,7 +477,7 @@ public final class ReplicationEligibilityResultsOperationGetSamples {
 /** Samples for ReplicationEligibilityResultsOperation List. */
 public final class ReplicationEligibilityResultsOperationListSampl {
     /*
-     * x-ms-original-file: specification/recoveryservicessiterecovery/resource-manager/Microsoft.RecoveryServices/stable/2022-10-01/examples/ReplicationEligibilityResults_List.json
+     * x-ms-original-file: specification/recoveryservicessiterecovery/resource-manager/Microsoft.RecoveryServices/stable/2023-06-01/examples/ReplicationEligibilityResults_List.json
      */
     /**
      * Sample code: Gets the validation errors in case the VM is unsuitable for protection.
@@ -499,7 +499,7 @@ public final class ReplicationEligibilityResultsOperationListSampl {
 /** Samples for ReplicationEvents Get. */
 public final class ReplicationEventsGetSamples {
     /*
-     * x-ms-original-file: specification/recoveryservicessiterecovery/resource-manager/Microsoft.RecoveryServices/stable/2022-10-01/examples/ReplicationEvents_Get.json
+     * x-ms-original-file: specification/recoveryservicessiterecovery/resource-manager/Microsoft.RecoveryServices/stable/2023-06-01/examples/ReplicationEvents_Get.json
      */
     /**
      * Sample code: Get the details of an Azure Site recovery event.
@@ -522,7 +522,7 @@ public final class ReplicationEventsGetSamples {
 /** Samples for ReplicationEvents List. */
 public final class ReplicationEventsListSamples {
     /*
-     * x-ms-original-file: specification/recoveryservicessiterecovery/resource-manager/Microsoft.RecoveryServices/stable/2022-10-01/examples/ReplicationEvents_List.json
+     * x-ms-original-file: specification/recoveryservicessiterecovery/resource-manager/Microsoft.RecoveryServices/stable/2023-06-01/examples/ReplicationEvents_List.json
      */
     /**
      * Sample code: Gets the list of Azure Site Recovery events.
@@ -542,7 +542,7 @@ public final class ReplicationEventsListSamples {
 /** Samples for ReplicationFabrics CheckConsistency. */
 public final class ReplicationFabricsCheckConsistencySamples {
     /*
-     * x-ms-original-file: specification/recoveryservicessiterecovery/resource-manager/Microsoft.RecoveryServices/stable/2022-10-01/examples/ReplicationFabrics_CheckConsistency.json
+     * x-ms-original-file: specification/recoveryservicessiterecovery/resource-manager/Microsoft.RecoveryServices/stable/2023-06-01/examples/ReplicationFabrics_CheckConsistency.json
      */
     /**
      * Sample code: Checks the consistency of the ASR fabric.
@@ -567,7 +567,7 @@ import com.azure.resourcemanager.recoveryservicessiterecovery.models.FabricSpeci
 /** Samples for ReplicationFabrics Create. */
 public final class ReplicationFabricsCreateSamples {
     /*
-     * x-ms-original-file: specification/recoveryservicessiterecovery/resource-manager/Microsoft.RecoveryServices/stable/2022-10-01/examples/ReplicationFabrics_Create.json
+     * x-ms-original-file: specification/recoveryservicessiterecovery/resource-manager/Microsoft.RecoveryServices/stable/2023-06-01/examples/ReplicationFabrics_Create.json
      */
     /**
      * Sample code: Creates an Azure Site Recovery fabric.
@@ -592,7 +592,7 @@ public final class ReplicationFabricsCreateSamples {
 /** Samples for ReplicationFabrics Delete. */
 public final class ReplicationFabricsDeleteSamples {
     /*
-     * x-ms-original-file: specification/recoveryservicessiterecovery/resource-manager/Microsoft.RecoveryServices/stable/2022-10-01/examples/ReplicationFabrics_Delete.json
+     * x-ms-original-file: specification/recoveryservicessiterecovery/resource-manager/Microsoft.RecoveryServices/stable/2023-06-01/examples/ReplicationFabrics_Delete.json
      */
     /**
      * Sample code: Deletes the site.
@@ -612,7 +612,7 @@ public final class ReplicationFabricsDeleteSamples {
 /** Samples for ReplicationFabrics Get. */
 public final class ReplicationFabricsGetSamples {
     /*
-     * x-ms-original-file: specification/recoveryservicessiterecovery/resource-manager/Microsoft.RecoveryServices/stable/2022-10-01/examples/ReplicationFabrics_Get.json
+     * x-ms-original-file: specification/recoveryservicessiterecovery/resource-manager/Microsoft.RecoveryServices/stable/2023-06-01/examples/ReplicationFabrics_Get.json
      */
     /**
      * Sample code: Gets the details of an ASR fabric.
@@ -634,7 +634,7 @@ public final class ReplicationFabricsGetSamples {
 /** Samples for ReplicationFabrics List. */
 public final class ReplicationFabricsListSamples {
     /*
-     * x-ms-original-file: specification/recoveryservicessiterecovery/resource-manager/Microsoft.RecoveryServices/stable/2022-10-01/examples/ReplicationFabrics_List.json
+     * x-ms-original-file: specification/recoveryservicessiterecovery/resource-manager/Microsoft.RecoveryServices/stable/2023-06-01/examples/ReplicationFabrics_List.json
      */
     /**
      * Sample code: Gets the list of ASR fabrics.
@@ -654,7 +654,7 @@ public final class ReplicationFabricsListSamples {
 /** Samples for ReplicationFabrics MigrateToAad. */
 public final class ReplicationFabricsMigrateToAadSamples {
     /*
-     * x-ms-original-file: specification/recoveryservicessiterecovery/resource-manager/Microsoft.RecoveryServices/stable/2022-10-01/examples/ReplicationFabrics_MigrateToAad.json
+     * x-ms-original-file: specification/recoveryservicessiterecovery/resource-manager/Microsoft.RecoveryServices/stable/2023-06-01/examples/ReplicationFabrics_MigrateToAad.json
      */
     /**
      * Sample code: Migrates the site to AAD.
@@ -676,7 +676,7 @@ public final class ReplicationFabricsMigrateToAadSamples {
 /** Samples for ReplicationFabrics Purge. */
 public final class ReplicationFabricsPurgeSamples {
     /*
-     * x-ms-original-file: specification/recoveryservicessiterecovery/resource-manager/Microsoft.RecoveryServices/stable/2022-10-01/examples/ReplicationFabrics_Purge.json
+     * x-ms-original-file: specification/recoveryservicessiterecovery/resource-manager/Microsoft.RecoveryServices/stable/2023-06-01/examples/ReplicationFabrics_Purge.json
      */
     /**
      * Sample code: Purges the site.
@@ -700,7 +700,7 @@ import java.util.Arrays;
 /** Samples for ReplicationFabrics ReassociateGateway. */
 public final class ReplicationFabricsReassociateGatewaySamples {
     /*
-     * x-ms-original-file: specification/recoveryservicessiterecovery/resource-manager/Microsoft.RecoveryServices/stable/2022-10-01/examples/ReplicationFabrics_ReassociateGateway.json
+     * x-ms-original-file: specification/recoveryservicessiterecovery/resource-manager/Microsoft.RecoveryServices/stable/2023-06-01/examples/ReplicationFabrics_ReassociateGateway.json
      */
     /**
      * Sample code: Perform failover of the process server.
@@ -737,7 +737,7 @@ import com.azure.resourcemanager.recoveryservicessiterecovery.models.RenewCertif
 /** Samples for ReplicationFabrics RenewCertificate. */
 public final class ReplicationFabricsRenewCertificateSamples {
     /*
-     * x-ms-original-file: specification/recoveryservicessiterecovery/resource-manager/Microsoft.RecoveryServices/stable/2022-10-01/examples/ReplicationFabrics_RenewCertificate.json
+     * x-ms-original-file: specification/recoveryservicessiterecovery/resource-manager/Microsoft.RecoveryServices/stable/2023-06-01/examples/ReplicationFabrics_RenewCertificate.json
      */
     /**
      * Sample code: Renews certificate for the fabric.
@@ -765,7 +765,7 @@ public final class ReplicationFabricsRenewCertificateSamples {
 /** Samples for ReplicationJobs Cancel. */
 public final class ReplicationJobsCancelSamples {
     /*
-     * x-ms-original-file: specification/recoveryservicessiterecovery/resource-manager/Microsoft.RecoveryServices/stable/2022-10-01/examples/ReplicationJobs_Cancel.json
+     * x-ms-original-file: specification/recoveryservicessiterecovery/resource-manager/Microsoft.RecoveryServices/stable/2023-06-01/examples/ReplicationJobs_Cancel.json
      */
     /**
      * Sample code: Cancels the specified job.
@@ -790,7 +790,7 @@ import com.azure.resourcemanager.recoveryservicessiterecovery.models.JobQueryPar
 /** Samples for ReplicationJobs Export. */
 public final class ReplicationJobsExportSamples {
     /*
-     * x-ms-original-file: specification/recoveryservicessiterecovery/resource-manager/Microsoft.RecoveryServices/stable/2022-10-01/examples/ReplicationJobs_Export.json
+     * x-ms-original-file: specification/recoveryservicessiterecovery/resource-manager/Microsoft.RecoveryServices/stable/2023-06-01/examples/ReplicationJobs_Export.json
      */
     /**
      * Sample code: Exports the details of the Azure Site Recovery jobs of the vault.
@@ -820,7 +820,7 @@ public final class ReplicationJobsExportSamples {
 /** Samples for ReplicationJobs Get. */
 public final class ReplicationJobsGetSamples {
     /*
-     * x-ms-original-file: specification/recoveryservicessiterecovery/resource-manager/Microsoft.RecoveryServices/stable/2022-10-01/examples/ReplicationJobs_Get.json
+     * x-ms-original-file: specification/recoveryservicessiterecovery/resource-manager/Microsoft.RecoveryServices/stable/2023-06-01/examples/ReplicationJobs_Get.json
      */
     /**
      * Sample code: Gets the job details.
@@ -843,7 +843,7 @@ public final class ReplicationJobsGetSamples {
 /** Samples for ReplicationJobs List. */
 public final class ReplicationJobsListSamples {
     /*
-     * x-ms-original-file: specification/recoveryservicessiterecovery/resource-manager/Microsoft.RecoveryServices/stable/2022-10-01/examples/ReplicationJobs_List.json
+     * x-ms-original-file: specification/recoveryservicessiterecovery/resource-manager/Microsoft.RecoveryServices/stable/2023-06-01/examples/ReplicationJobs_List.json
      */
     /**
      * Sample code: Gets the list of jobs.
@@ -863,7 +863,7 @@ public final class ReplicationJobsListSamples {
 /** Samples for ReplicationJobs Restart. */
 public final class ReplicationJobsRestartSamples {
     /*
-     * x-ms-original-file: specification/recoveryservicessiterecovery/resource-manager/Microsoft.RecoveryServices/stable/2022-10-01/examples/ReplicationJobs_Restart.json
+     * x-ms-original-file: specification/recoveryservicessiterecovery/resource-manager/Microsoft.RecoveryServices/stable/2023-06-01/examples/ReplicationJobs_Restart.json
      */
     /**
      * Sample code: Restarts the specified job.
@@ -889,7 +889,7 @@ import com.azure.resourcemanager.recoveryservicessiterecovery.models.ResumeJobPa
 /** Samples for ReplicationJobs Resume. */
 public final class ReplicationJobsResumeSamples {
     /*
-     * x-ms-original-file: specification/recoveryservicessiterecovery/resource-manager/Microsoft.RecoveryServices/stable/2022-10-01/examples/ReplicationJobs_Resume.json
+     * x-ms-original-file: specification/recoveryservicessiterecovery/resource-manager/Microsoft.RecoveryServices/stable/2023-06-01/examples/ReplicationJobs_Resume.json
      */
     /**
      * Sample code: Resumes the specified job.
@@ -916,7 +916,7 @@ public final class ReplicationJobsResumeSamples {
 /** Samples for ReplicationLogicalNetworks Get. */
 public final class ReplicationLogicalNetworksGetSamples {
     /*
-     * x-ms-original-file: specification/recoveryservicessiterecovery/resource-manager/Microsoft.RecoveryServices/stable/2022-10-01/examples/ReplicationLogicalNetworks_Get.json
+     * x-ms-original-file: specification/recoveryservicessiterecovery/resource-manager/Microsoft.RecoveryServices/stable/2023-06-01/examples/ReplicationLogicalNetworks_Get.json
      */
     /**
      * Sample code: Gets a logical network with specified server id and logical network name.
@@ -943,7 +943,7 @@ public final class ReplicationLogicalNetworksGetSamples {
 /** Samples for ReplicationLogicalNetworks ListByReplicationFabrics. */
 public final class ReplicationLogicalNetworksListByReplicationFabr {
     /*
-     * x-ms-original-file: specification/recoveryservicessiterecovery/resource-manager/Microsoft.RecoveryServices/stable/2022-10-01/examples/ReplicationLogicalNetworks_ListByReplicationFabrics.json
+     * x-ms-original-file: specification/recoveryservicessiterecovery/resource-manager/Microsoft.RecoveryServices/stable/2023-06-01/examples/ReplicationLogicalNetworks_ListByReplicationFabrics.json
      */
     /**
      * Sample code: Gets the list of logical networks under a fabric.
@@ -970,7 +970,7 @@ import java.util.Arrays;
 /** Samples for ReplicationMigrationItems Create. */
 public final class ReplicationMigrationItemsCreateSamples {
     /*
-     * x-ms-original-file: specification/recoveryservicessiterecovery/resource-manager/Microsoft.RecoveryServices/stable/2022-10-01/examples/ReplicationMigrationItems_Create.json
+     * x-ms-original-file: specification/recoveryservicessiterecovery/resource-manager/Microsoft.RecoveryServices/stable/2023-06-01/examples/ReplicationMigrationItems_Create.json
      */
     /**
      * Sample code: Enables migration.
@@ -1020,7 +1020,7 @@ public final class ReplicationMigrationItemsCreateSamples {
 /** Samples for ReplicationMigrationItems Delete. */
 public final class ReplicationMigrationItemsDeleteSamples {
     /*
-     * x-ms-original-file: specification/recoveryservicessiterecovery/resource-manager/Microsoft.RecoveryServices/stable/2022-10-01/examples/ReplicationMigrationItems_Delete.json
+     * x-ms-original-file: specification/recoveryservicessiterecovery/resource-manager/Microsoft.RecoveryServices/stable/2023-06-01/examples/ReplicationMigrationItems_Delete.json
      */
     /**
      * Sample code: Delete the migration item.
@@ -1049,7 +1049,7 @@ public final class ReplicationMigrationItemsDeleteSamples {
 /** Samples for ReplicationMigrationItems Get. */
 public final class ReplicationMigrationItemsGetSamples {
     /*
-     * x-ms-original-file: specification/recoveryservicessiterecovery/resource-manager/Microsoft.RecoveryServices/stable/2022-10-01/examples/ReplicationMigrationItems_Get.json
+     * x-ms-original-file: specification/recoveryservicessiterecovery/resource-manager/Microsoft.RecoveryServices/stable/2023-06-01/examples/ReplicationMigrationItems_Get.json
      */
     /**
      * Sample code: Gets the details of a migration item.
@@ -1077,7 +1077,7 @@ public final class ReplicationMigrationItemsGetSamples {
 /** Samples for ReplicationMigrationItems List. */
 public final class ReplicationMigrationItemsListSamples {
     /*
-     * x-ms-original-file: specification/recoveryservicessiterecovery/resource-manager/Microsoft.RecoveryServices/stable/2022-10-01/examples/ReplicationMigrationItems_List.json
+     * x-ms-original-file: specification/recoveryservicessiterecovery/resource-manager/Microsoft.RecoveryServices/stable/2023-06-01/examples/ReplicationMigrationItems_List.json
      */
     /**
      * Sample code: Gets the list of migration items in the vault.
@@ -1099,7 +1099,7 @@ public final class ReplicationMigrationItemsListSamples {
 /** Samples for ReplicationMigrationItems ListByReplicationProtectionContainers. */
 public final class ReplicationMigrationItemsListByReplicationProte {
     /*
-     * x-ms-original-file: specification/recoveryservicessiterecovery/resource-manager/Microsoft.RecoveryServices/stable/2022-10-01/examples/ReplicationMigrationItems_ListByReplicationProtectionContainers.json
+     * x-ms-original-file: specification/recoveryservicessiterecovery/resource-manager/Microsoft.RecoveryServices/stable/2023-06-01/examples/ReplicationMigrationItems_ListByReplicationProtectionContainers.json
      */
     /**
      * Sample code: Gets the list of migration items in the protection container.
@@ -1133,7 +1133,7 @@ import com.azure.resourcemanager.recoveryservicessiterecovery.models.VMwareCbtMi
 /** Samples for ReplicationMigrationItems Migrate. */
 public final class ReplicationMigrationItemsMigrateSamples {
     /*
-     * x-ms-original-file: specification/recoveryservicessiterecovery/resource-manager/Microsoft.RecoveryServices/stable/2022-10-01/examples/ReplicationMigrationItems_Migrate.json
+     * x-ms-original-file: specification/recoveryservicessiterecovery/resource-manager/Microsoft.RecoveryServices/stable/2023-06-01/examples/ReplicationMigrationItems_Migrate.json
      */
     /**
      * Sample code: Migrate item.
@@ -1167,7 +1167,7 @@ import com.azure.resourcemanager.recoveryservicessiterecovery.models.PauseReplic
 /** Samples for ReplicationMigrationItems PauseReplication. */
 public final class ReplicationMigrationItemsPauseReplicationSamples {
     /*
-     * x-ms-original-file: specification/recoveryservicessiterecovery/resource-manager/Microsoft.RecoveryServices/stable/2022-10-01/examples/ReplicationMigrationItems_PauseReplication.json
+     * x-ms-original-file: specification/recoveryservicessiterecovery/resource-manager/Microsoft.RecoveryServices/stable/2023-06-01/examples/ReplicationMigrationItems_PauseReplication.json
      */
     /**
      * Sample code: Pause replication.
@@ -1201,7 +1201,7 @@ import com.azure.resourcemanager.recoveryservicessiterecovery.models.VMwareCbtRe
 /** Samples for ReplicationMigrationItems ResumeReplication. */
 public final class ReplicationMigrationItemsResumeReplicationSampl {
     /*
-     * x-ms-original-file: specification/recoveryservicessiterecovery/resource-manager/Microsoft.RecoveryServices/stable/2022-10-01/examples/ReplicationMigrationItems_ResumeReplication.json
+     * x-ms-original-file: specification/recoveryservicessiterecovery/resource-manager/Microsoft.RecoveryServices/stable/2023-06-01/examples/ReplicationMigrationItems_ResumeReplication.json
      */
     /**
      * Sample code: Resume replication.
@@ -1238,7 +1238,7 @@ import com.azure.resourcemanager.recoveryservicessiterecovery.models.VMwareCbtRe
 /** Samples for ReplicationMigrationItems Resync. */
 public final class ReplicationMigrationItemsResyncSamples {
     /*
-     * x-ms-original-file: specification/recoveryservicessiterecovery/resource-manager/Microsoft.RecoveryServices/stable/2022-10-01/examples/ReplicationMigrationItems_Resync.json
+     * x-ms-original-file: specification/recoveryservicessiterecovery/resource-manager/Microsoft.RecoveryServices/stable/2023-06-01/examples/ReplicationMigrationItems_Resync.json
      */
     /**
      * Sample code: Resynchronizes replication.
@@ -1274,7 +1274,7 @@ import com.azure.resourcemanager.recoveryservicessiterecovery.models.VMwareCbtTe
 /** Samples for ReplicationMigrationItems TestMigrate. */
 public final class ReplicationMigrationItemsTestMigrateSamples {
     /*
-     * x-ms-original-file: specification/recoveryservicessiterecovery/resource-manager/Microsoft.RecoveryServices/stable/2022-10-01/examples/ReplicationMigrationItems_TestMigrate.json
+     * x-ms-original-file: specification/recoveryservicessiterecovery/resource-manager/Microsoft.RecoveryServices/stable/2023-06-01/examples/ReplicationMigrationItems_TestMigrate.json
      */
     /**
      * Sample code: Test migrate item.
@@ -1314,7 +1314,7 @@ import com.azure.resourcemanager.recoveryservicessiterecovery.models.TestMigrate
 /** Samples for ReplicationMigrationItems TestMigrateCleanup. */
 public final class ReplicationMigrationItemsTestMigrateCleanupSamp {
     /*
-     * x-ms-original-file: specification/recoveryservicessiterecovery/resource-manager/Microsoft.RecoveryServices/stable/2022-10-01/examples/ReplicationMigrationItems_TestMigrateCleanup.json
+     * x-ms-original-file: specification/recoveryservicessiterecovery/resource-manager/Microsoft.RecoveryServices/stable/2023-06-01/examples/ReplicationMigrationItems_TestMigrateCleanup.json
      */
     /**
      * Sample code: Test migrate cleanup.
@@ -1348,7 +1348,7 @@ import com.azure.resourcemanager.recoveryservicessiterecovery.models.VMwareCbtUp
 /** Samples for ReplicationMigrationItems Update. */
 public final class ReplicationMigrationItemsUpdateSamples {
     /*
-     * x-ms-original-file: specification/recoveryservicessiterecovery/resource-manager/Microsoft.RecoveryServices/stable/2022-10-01/examples/ReplicationMigrationItems_Update.json
+     * x-ms-original-file: specification/recoveryservicessiterecovery/resource-manager/Microsoft.RecoveryServices/stable/2023-06-01/examples/ReplicationMigrationItems_Update.json
      */
     /**
      * Sample code: Updates migration item.
@@ -1387,7 +1387,7 @@ import com.azure.resourcemanager.recoveryservicessiterecovery.models.VmmToAzureC
 /** Samples for ReplicationNetworkMappings Create. */
 public final class ReplicationNetworkMappingsCreateSamples {
     /*
-     * x-ms-original-file: specification/recoveryservicessiterecovery/resource-manager/Microsoft.RecoveryServices/stable/2022-10-01/examples/ReplicationNetworkMappings_Create.json
+     * x-ms-original-file: specification/recoveryservicessiterecovery/resource-manager/Microsoft.RecoveryServices/stable/2023-06-01/examples/ReplicationNetworkMappings_Create.json
      */
     /**
      * Sample code: Creates network mapping.
@@ -1421,7 +1421,7 @@ public final class ReplicationNetworkMappingsCreateSamples {
 /** Samples for ReplicationNetworkMappings Delete. */
 public final class ReplicationNetworkMappingsDeleteSamples {
     /*
-     * x-ms-original-file: specification/recoveryservicessiterecovery/resource-manager/Microsoft.RecoveryServices/stable/2022-10-01/examples/ReplicationNetworkMappings_Delete.json
+     * x-ms-original-file: specification/recoveryservicessiterecovery/resource-manager/Microsoft.RecoveryServices/stable/2023-06-01/examples/ReplicationNetworkMappings_Delete.json
      */
     /**
      * Sample code: Delete network mapping.
@@ -1449,7 +1449,7 @@ public final class ReplicationNetworkMappingsDeleteSamples {
 /** Samples for ReplicationNetworkMappings Get. */
 public final class ReplicationNetworkMappingsGetSamples {
     /*
-     * x-ms-original-file: specification/recoveryservicessiterecovery/resource-manager/Microsoft.RecoveryServices/stable/2022-10-01/examples/ReplicationNetworkMappings_Get.json
+     * x-ms-original-file: specification/recoveryservicessiterecovery/resource-manager/Microsoft.RecoveryServices/stable/2023-06-01/examples/ReplicationNetworkMappings_Get.json
      */
     /**
      * Sample code: Gets network mapping by name.
@@ -1477,7 +1477,7 @@ public final class ReplicationNetworkMappingsGetSamples {
 /** Samples for ReplicationNetworkMappings List. */
 public final class ReplicationNetworkMappingsListSamples {
     /*
-     * x-ms-original-file: specification/recoveryservicessiterecovery/resource-manager/Microsoft.RecoveryServices/stable/2022-10-01/examples/ReplicationNetworkMappings_List.json
+     * x-ms-original-file: specification/recoveryservicessiterecovery/resource-manager/Microsoft.RecoveryServices/stable/2023-06-01/examples/ReplicationNetworkMappings_List.json
      */
     /**
      * Sample code: Gets all the network mappings under a vault.
@@ -1499,7 +1499,7 @@ public final class ReplicationNetworkMappingsListSamples {
 /** Samples for ReplicationNetworkMappings ListByReplicationNetworks. */
 public final class ReplicationNetworkMappingsListByReplicationNetw {
     /*
-     * x-ms-original-file: specification/recoveryservicessiterecovery/resource-manager/Microsoft.RecoveryServices/stable/2022-10-01/examples/ReplicationNetworkMappings_ListByReplicationNetworks.json
+     * x-ms-original-file: specification/recoveryservicessiterecovery/resource-manager/Microsoft.RecoveryServices/stable/2023-06-01/examples/ReplicationNetworkMappings_ListByReplicationNetworks.json
      */
     /**
      * Sample code: Gets all the network mappings under a network.
@@ -1530,7 +1530,7 @@ import com.azure.resourcemanager.recoveryservicessiterecovery.models.VmmToAzureU
 /** Samples for ReplicationNetworkMappings Update. */
 public final class ReplicationNetworkMappingsUpdateSamples {
     /*
-     * x-ms-original-file: specification/recoveryservicessiterecovery/resource-manager/Microsoft.RecoveryServices/stable/2022-10-01/examples/ReplicationNetworkMappings_Update.json
+     * x-ms-original-file: specification/recoveryservicessiterecovery/resource-manager/Microsoft.RecoveryServices/stable/2023-06-01/examples/ReplicationNetworkMappings_Update.json
      */
     /**
      * Sample code: Updates network mapping.
@@ -1569,7 +1569,7 @@ public final class ReplicationNetworkMappingsUpdateSamples {
 /** Samples for ReplicationNetworks Get. */
 public final class ReplicationNetworksGetSamples {
     /*
-     * x-ms-original-file: specification/recoveryservicessiterecovery/resource-manager/Microsoft.RecoveryServices/stable/2022-10-01/examples/ReplicationNetworks_Get.json
+     * x-ms-original-file: specification/recoveryservicessiterecovery/resource-manager/Microsoft.RecoveryServices/stable/2023-06-01/examples/ReplicationNetworks_Get.json
      */
     /**
      * Sample code: Gets a network with specified server id and network name.
@@ -1596,7 +1596,7 @@ public final class ReplicationNetworksGetSamples {
 /** Samples for ReplicationNetworks List. */
 public final class ReplicationNetworksListSamples {
     /*
-     * x-ms-original-file: specification/recoveryservicessiterecovery/resource-manager/Microsoft.RecoveryServices/stable/2022-10-01/examples/ReplicationNetworks_List.json
+     * x-ms-original-file: specification/recoveryservicessiterecovery/resource-manager/Microsoft.RecoveryServices/stable/2023-06-01/examples/ReplicationNetworks_List.json
      */
     /**
      * Sample code: Gets the list of networks. View-only API.
@@ -1616,7 +1616,7 @@ public final class ReplicationNetworksListSamples {
 /** Samples for ReplicationNetworks ListByReplicationFabrics. */
 public final class ReplicationNetworksListByReplicationFabricsSamp {
     /*
-     * x-ms-original-file: specification/recoveryservicessiterecovery/resource-manager/Microsoft.RecoveryServices/stable/2022-10-01/examples/ReplicationNetworks_ListByReplicationFabrics.json
+     * x-ms-original-file: specification/recoveryservicessiterecovery/resource-manager/Microsoft.RecoveryServices/stable/2023-06-01/examples/ReplicationNetworks_ListByReplicationFabrics.json
      */
     /**
      * Sample code: Gets the list of networks under a fabric.
@@ -1645,7 +1645,7 @@ import com.azure.resourcemanager.recoveryservicessiterecovery.models.HyperVRepli
 /** Samples for ReplicationPolicies Create. */
 public final class ReplicationPoliciesCreateSamples {
     /*
-     * x-ms-original-file: specification/recoveryservicessiterecovery/resource-manager/Microsoft.RecoveryServices/stable/2022-10-01/examples/ReplicationPolicies_Create.json
+     * x-ms-original-file: specification/recoveryservicessiterecovery/resource-manager/Microsoft.RecoveryServices/stable/2023-06-01/examples/ReplicationPolicies_Create.json
      */
     /**
      * Sample code: Creates the policy.
@@ -1671,7 +1671,7 @@ public final class ReplicationPoliciesCreateSamples {
 /** Samples for ReplicationPolicies Delete. */
 public final class ReplicationPoliciesDeleteSamples {
     /*
-     * x-ms-original-file: specification/recoveryservicessiterecovery/resource-manager/Microsoft.RecoveryServices/stable/2022-10-01/examples/ReplicationPolicies_Delete.json
+     * x-ms-original-file: specification/recoveryservicessiterecovery/resource-manager/Microsoft.RecoveryServices/stable/2023-06-01/examples/ReplicationPolicies_Delete.json
      */
     /**
      * Sample code: Delete the policy.
@@ -1693,7 +1693,7 @@ public final class ReplicationPoliciesDeleteSamples {
 /** Samples for ReplicationPolicies Get. */
 public final class ReplicationPoliciesGetSamples {
     /*
-     * x-ms-original-file: specification/recoveryservicessiterecovery/resource-manager/Microsoft.RecoveryServices/stable/2022-10-01/examples/ReplicationPolicies_Get.json
+     * x-ms-original-file: specification/recoveryservicessiterecovery/resource-manager/Microsoft.RecoveryServices/stable/2023-06-01/examples/ReplicationPolicies_Get.json
      */
     /**
      * Sample code: Gets the requested policy.
@@ -1715,7 +1715,7 @@ public final class ReplicationPoliciesGetSamples {
 /** Samples for ReplicationPolicies List. */
 public final class ReplicationPoliciesListSamples {
     /*
-     * x-ms-original-file: specification/recoveryservicessiterecovery/resource-manager/Microsoft.RecoveryServices/stable/2022-10-01/examples/ReplicationPolicies_List.json
+     * x-ms-original-file: specification/recoveryservicessiterecovery/resource-manager/Microsoft.RecoveryServices/stable/2023-06-01/examples/ReplicationPolicies_List.json
      */
     /**
      * Sample code: Gets the list of replication policies.
@@ -1739,7 +1739,7 @@ import com.azure.resourcemanager.recoveryservicessiterecovery.models.UpdatePolic
 /** Samples for ReplicationPolicies Update. */
 public final class ReplicationPoliciesUpdateSamples {
     /*
-     * x-ms-original-file: specification/recoveryservicessiterecovery/resource-manager/Microsoft.RecoveryServices/stable/2022-10-01/examples/ReplicationPolicies_Update.json
+     * x-ms-original-file: specification/recoveryservicessiterecovery/resource-manager/Microsoft.RecoveryServices/stable/2023-06-01/examples/ReplicationPolicies_Update.json
      */
     /**
      * Sample code: Updates the policy.
@@ -1768,7 +1768,7 @@ public final class ReplicationPoliciesUpdateSamples {
 /** Samples for ReplicationProtectableItems Get. */
 public final class ReplicationProtectableItemsGetSamples {
     /*
-     * x-ms-original-file: specification/recoveryservicessiterecovery/resource-manager/Microsoft.RecoveryServices/stable/2022-10-01/examples/ReplicationProtectableItems_Get.json
+     * x-ms-original-file: specification/recoveryservicessiterecovery/resource-manager/Microsoft.RecoveryServices/stable/2023-06-01/examples/ReplicationProtectableItems_Get.json
      */
     /**
      * Sample code: Gets the details of a protectable item.
@@ -1796,7 +1796,7 @@ public final class ReplicationProtectableItemsGetSamples {
 /** Samples for ReplicationProtectableItems ListByReplicationProtectionContainers. */
 public final class ReplicationProtectableItemsListByReplicationPro {
     /*
-     * x-ms-original-file: specification/recoveryservicessiterecovery/resource-manager/Microsoft.RecoveryServices/stable/2022-10-01/examples/ReplicationProtectableItems_ListByReplicationProtectionContainers.json
+     * x-ms-original-file: specification/recoveryservicessiterecovery/resource-manager/Microsoft.RecoveryServices/stable/2023-06-01/examples/ReplicationProtectableItems_ListByReplicationProtectionContainers.json
      */
     /**
      * Sample code: Gets the list of protectable items.
@@ -1832,7 +1832,7 @@ import java.util.Arrays;
 /** Samples for ReplicationProtectedItems AddDisks. */
 public final class ReplicationProtectedItemsAddDisksSamples {
     /*
-     * x-ms-original-file: specification/recoveryservicessiterecovery/resource-manager/Microsoft.RecoveryServices/stable/2022-10-01/examples/ReplicationProtectedItems_AddDisks.json
+     * x-ms-original-file: specification/recoveryservicessiterecovery/resource-manager/Microsoft.RecoveryServices/stable/2023-06-01/examples/ReplicationProtectedItems_AddDisks.json
      */
     /**
      * Sample code: Add disk(s) for protection.
@@ -1879,7 +1879,7 @@ import com.azure.resourcemanager.recoveryservicessiterecovery.models.HyperVRepli
 /** Samples for ReplicationProtectedItems ApplyRecoveryPoint. */
 public final class ReplicationProtectedItemsApplyRecoveryPointSamp {
     /*
-     * x-ms-original-file: specification/recoveryservicessiterecovery/resource-manager/Microsoft.RecoveryServices/stable/2022-10-01/examples/ReplicationProtectedItems_ApplyRecoveryPoint.json
+     * x-ms-original-file: specification/recoveryservicessiterecovery/resource-manager/Microsoft.RecoveryServices/stable/2023-06-01/examples/ReplicationProtectedItems_ApplyRecoveryPoint.json
      */
     /**
      * Sample code: Change or apply recovery point.
@@ -1916,7 +1916,7 @@ import com.azure.resourcemanager.recoveryservicessiterecovery.models.HyperVRepli
 /** Samples for ReplicationProtectedItems Create. */
 public final class ReplicationProtectedItemsCreateSamples {
     /*
-     * x-ms-original-file: specification/recoveryservicessiterecovery/resource-manager/Microsoft.RecoveryServices/stable/2022-10-01/examples/ReplicationProtectedItems_Create.json
+     * x-ms-original-file: specification/recoveryservicessiterecovery/resource-manager/Microsoft.RecoveryServices/stable/2023-06-01/examples/ReplicationProtectedItems_Create.json
      */
     /**
      * Sample code: Enables protection.
@@ -1952,7 +1952,7 @@ import com.azure.resourcemanager.recoveryservicessiterecovery.models.DisableProt
 /** Samples for ReplicationProtectedItems Delete. */
 public final class ReplicationProtectedItemsDeleteSamples {
     /*
-     * x-ms-original-file: specification/recoveryservicessiterecovery/resource-manager/Microsoft.RecoveryServices/stable/2022-10-01/examples/ReplicationProtectedItems_Delete.json
+     * x-ms-original-file: specification/recoveryservicessiterecovery/resource-manager/Microsoft.RecoveryServices/stable/2023-06-01/examples/ReplicationProtectedItems_Delete.json
      */
     /**
      * Sample code: Disables protection.
@@ -1984,7 +1984,7 @@ public final class ReplicationProtectedItemsDeleteSamples {
 /** Samples for ReplicationProtectedItems FailoverCancel. */
 public final class ReplicationProtectedItemsFailoverCancelSamples {
     /*
-     * x-ms-original-file: specification/recoveryservicessiterecovery/resource-manager/Microsoft.RecoveryServices/stable/2022-10-01/examples/ReplicationProtectedItems_FailoverCancel.json
+     * x-ms-original-file: specification/recoveryservicessiterecovery/resource-manager/Microsoft.RecoveryServices/stable/2023-06-01/examples/ReplicationProtectedItems_FailoverCancel.json
      */
     /**
      * Sample code: Execute cancel failover.
@@ -2012,7 +2012,7 @@ public final class ReplicationProtectedItemsFailoverCancelSamples {
 /** Samples for ReplicationProtectedItems FailoverCommit. */
 public final class ReplicationProtectedItemsFailoverCommitSamples {
     /*
-     * x-ms-original-file: specification/recoveryservicessiterecovery/resource-manager/Microsoft.RecoveryServices/stable/2022-10-01/examples/ReplicationProtectedItems_FailoverCommit.json
+     * x-ms-original-file: specification/recoveryservicessiterecovery/resource-manager/Microsoft.RecoveryServices/stable/2023-06-01/examples/ReplicationProtectedItems_FailoverCommit.json
      */
     /**
      * Sample code: Execute commit failover.
@@ -2040,7 +2040,7 @@ public final class ReplicationProtectedItemsFailoverCommitSamples {
 /** Samples for ReplicationProtectedItems Get. */
 public final class ReplicationProtectedItemsGetSamples {
     /*
-     * x-ms-original-file: specification/recoveryservicessiterecovery/resource-manager/Microsoft.RecoveryServices/stable/2022-10-01/examples/ReplicationProtectedItems_Get.json
+     * x-ms-original-file: specification/recoveryservicessiterecovery/resource-manager/Microsoft.RecoveryServices/stable/2023-06-01/examples/ReplicationProtectedItems_Get.json
      */
     /**
      * Sample code: Gets the details of a Replication protected item.
@@ -2068,7 +2068,7 @@ public final class ReplicationProtectedItemsGetSamples {
 /** Samples for ReplicationProtectedItems List. */
 public final class ReplicationProtectedItemsListSamples {
     /*
-     * x-ms-original-file: specification/recoveryservicessiterecovery/resource-manager/Microsoft.RecoveryServices/stable/2022-10-01/examples/ReplicationProtectedItems_List.json
+     * x-ms-original-file: specification/recoveryservicessiterecovery/resource-manager/Microsoft.RecoveryServices/stable/2023-06-01/examples/ReplicationProtectedItems_List.json
      */
     /**
      * Sample code: Gets the list of replication protected items.
@@ -2090,7 +2090,7 @@ public final class ReplicationProtectedItemsListSamples {
 /** Samples for ReplicationProtectedItems ListByReplicationProtectionContainers. */
 public final class ReplicationProtectedItemsListByReplicationProte {
     /*
-     * x-ms-original-file: specification/recoveryservicessiterecovery/resource-manager/Microsoft.RecoveryServices/stable/2022-10-01/examples/ReplicationProtectedItems_ListByReplicationProtectionContainers.json
+     * x-ms-original-file: specification/recoveryservicessiterecovery/resource-manager/Microsoft.RecoveryServices/stable/2023-06-01/examples/ReplicationProtectedItems_ListByReplicationProtectionContainers.json
      */
     /**
      * Sample code: Gets the list of Replication protected items.
@@ -2121,7 +2121,7 @@ import com.azure.resourcemanager.recoveryservicessiterecovery.models.PlannedFail
 /** Samples for ReplicationProtectedItems PlannedFailover. */
 public final class ReplicationProtectedItemsPlannedFailoverSamples {
     /*
-     * x-ms-original-file: specification/recoveryservicessiterecovery/resource-manager/Microsoft.RecoveryServices/stable/2022-10-01/examples/ReplicationProtectedItems_PlannedFailover.json
+     * x-ms-original-file: specification/recoveryservicessiterecovery/resource-manager/Microsoft.RecoveryServices/stable/2023-06-01/examples/ReplicationProtectedItems_PlannedFailover.json
      */
     /**
      * Sample code: Execute planned failover.
@@ -2154,7 +2154,7 @@ public final class ReplicationProtectedItemsPlannedFailoverSamples {
 /** Samples for ReplicationProtectedItems Purge. */
 public final class ReplicationProtectedItemsPurgeSamples {
     /*
-     * x-ms-original-file: specification/recoveryservicessiterecovery/resource-manager/Microsoft.RecoveryServices/stable/2022-10-01/examples/ReplicationProtectedItems_Purge.json
+     * x-ms-original-file: specification/recoveryservicessiterecovery/resource-manager/Microsoft.RecoveryServices/stable/2023-06-01/examples/ReplicationProtectedItems_Purge.json
      */
     /**
      * Sample code: Purges protection.
@@ -2187,7 +2187,7 @@ import java.util.Arrays;
 /** Samples for ReplicationProtectedItems RemoveDisks. */
 public final class ReplicationProtectedItemsRemoveDisksSamples {
     /*
-     * x-ms-original-file: specification/recoveryservicessiterecovery/resource-manager/Microsoft.RecoveryServices/stable/2022-10-01/examples/ReplicationProtectedItems_RemoveDisks.json
+     * x-ms-original-file: specification/recoveryservicessiterecovery/resource-manager/Microsoft.RecoveryServices/stable/2023-06-01/examples/ReplicationProtectedItems_RemoveDisks.json
      */
     /**
      * Sample code: Removes disk(s).
@@ -2222,7 +2222,7 @@ public final class ReplicationProtectedItemsRemoveDisksSamples {
 /** Samples for ReplicationProtectedItems RepairReplication. */
 public final class ReplicationProtectedItemsRepairReplicationSampl {
     /*
-     * x-ms-original-file: specification/recoveryservicessiterecovery/resource-manager/Microsoft.RecoveryServices/stable/2022-10-01/examples/ReplicationProtectedItems_RepairReplication.json
+     * x-ms-original-file: specification/recoveryservicessiterecovery/resource-manager/Microsoft.RecoveryServices/stable/2023-06-01/examples/ReplicationProtectedItems_RepairReplication.json
      */
     /**
      * Sample code: Resynchronize or repair replication.
@@ -2254,7 +2254,7 @@ import com.azure.resourcemanager.recoveryservicessiterecovery.models.ReverseRepl
 /** Samples for ReplicationProtectedItems Reprotect. */
 public final class ReplicationProtectedItemsReprotectSamples {
     /*
-     * x-ms-original-file: specification/recoveryservicessiterecovery/resource-manager/Microsoft.RecoveryServices/stable/2022-10-01/examples/ReplicationProtectedItems_Reprotect.json
+     * x-ms-original-file: specification/recoveryservicessiterecovery/resource-manager/Microsoft.RecoveryServices/stable/2023-06-01/examples/ReplicationProtectedItems_Reprotect.json
      */
     /**
      * Sample code: Execute Reverse Replication\Reprotect.
@@ -2292,7 +2292,7 @@ import java.util.Arrays;
 /** Samples for ReplicationProtectedItems ResolveHealthErrors. */
 public final class ReplicationProtectedItemsResolveHealthErrorsSam {
     /*
-     * x-ms-original-file: specification/recoveryservicessiterecovery/resource-manager/Microsoft.RecoveryServices/stable/2022-10-01/examples/ReplicationProtectedItems_ResolveHealthErrors.json
+     * x-ms-original-file: specification/recoveryservicessiterecovery/resource-manager/Microsoft.RecoveryServices/stable/2023-06-01/examples/ReplicationProtectedItems_ResolveHealthErrors.json
      */
     /**
      * Sample code: Resolve health errors.
@@ -2328,7 +2328,7 @@ import com.azure.resourcemanager.recoveryservicessiterecovery.models.SwitchProvi
 /** Samples for ReplicationProtectedItems SwitchProvider. */
 public final class ReplicationProtectedItemsSwitchProviderSamples {
     /*
-     * x-ms-original-file: specification/recoveryservicessiterecovery/resource-manager/Microsoft.RecoveryServices/stable/2022-10-01/examples/ReplicationProtectedItems_SwitchProvider.json
+     * x-ms-original-file: specification/recoveryservicessiterecovery/resource-manager/Microsoft.RecoveryServices/stable/2023-06-01/examples/ReplicationProtectedItems_SwitchProvider.json
      */
     /**
      * Sample code: Execute switch provider.
@@ -2371,7 +2371,7 @@ import com.azure.resourcemanager.recoveryservicessiterecovery.models.TestFailove
 /** Samples for ReplicationProtectedItems TestFailover. */
 public final class ReplicationProtectedItemsTestFailoverSamples {
     /*
-     * x-ms-original-file: specification/recoveryservicessiterecovery/resource-manager/Microsoft.RecoveryServices/stable/2022-10-01/examples/ReplicationProtectedItems_TestFailover.json
+     * x-ms-original-file: specification/recoveryservicessiterecovery/resource-manager/Microsoft.RecoveryServices/stable/2023-06-01/examples/ReplicationProtectedItems_TestFailover.json
      */
     /**
      * Sample code: Execute test failover.
@@ -2410,7 +2410,7 @@ import com.azure.resourcemanager.recoveryservicessiterecovery.models.TestFailove
 /** Samples for ReplicationProtectedItems TestFailoverCleanup. */
 public final class ReplicationProtectedItemsTestFailoverCleanupSam {
     /*
-     * x-ms-original-file: specification/recoveryservicessiterecovery/resource-manager/Microsoft.RecoveryServices/stable/2022-10-01/examples/ReplicationProtectedItems_TestFailoverCleanup.json
+     * x-ms-original-file: specification/recoveryservicessiterecovery/resource-manager/Microsoft.RecoveryServices/stable/2023-06-01/examples/ReplicationProtectedItems_TestFailoverCleanup.json
      */
     /**
      * Sample code: Execute test failover cleanup.
@@ -2444,7 +2444,7 @@ import com.azure.resourcemanager.recoveryservicessiterecovery.models.UnplannedFa
 /** Samples for ReplicationProtectedItems UnplannedFailover. */
 public final class ReplicationProtectedItemsUnplannedFailoverSampl {
     /*
-     * x-ms-original-file: specification/recoveryservicessiterecovery/resource-manager/Microsoft.RecoveryServices/stable/2022-10-01/examples/ReplicationProtectedItems_UnplannedFailover.json
+     * x-ms-original-file: specification/recoveryservicessiterecovery/resource-manager/Microsoft.RecoveryServices/stable/2023-06-01/examples/ReplicationProtectedItems_UnplannedFailover.json
      */
     /**
      * Sample code: Execute unplanned failover.
@@ -2486,7 +2486,7 @@ import java.util.Arrays;
 /** Samples for ReplicationProtectedItems Update. */
 public final class ReplicationProtectedItemsUpdateSamples {
     /*
-     * x-ms-original-file: specification/recoveryservicessiterecovery/resource-manager/Microsoft.RecoveryServices/stable/2022-10-01/examples/ReplicationProtectedItems_Update.json
+     * x-ms-original-file: specification/recoveryservicessiterecovery/resource-manager/Microsoft.RecoveryServices/stable/2023-06-01/examples/ReplicationProtectedItems_Update.json
      */
     /**
      * Sample code: Updates the replication protected Item settings.
@@ -2546,7 +2546,7 @@ import com.azure.resourcemanager.recoveryservicessiterecovery.models.UpdateAppli
 /** Samples for ReplicationProtectedItems UpdateAppliance. */
 public final class ReplicationProtectedItemsUpdateApplianceSamples {
     /*
-     * x-ms-original-file: specification/recoveryservicessiterecovery/resource-manager/Microsoft.RecoveryServices/stable/2022-10-01/examples/ReplicationProtectedItems_UpdateAppliance.json
+     * x-ms-original-file: specification/recoveryservicessiterecovery/resource-manager/Microsoft.RecoveryServices/stable/2023-06-01/examples/ReplicationProtectedItems_UpdateAppliance.json
      */
     /**
      * Sample code: Updates appliance for replication protected Item.
@@ -2583,7 +2583,7 @@ import com.azure.resourcemanager.recoveryservicessiterecovery.models.UpdateMobil
 /** Samples for ReplicationProtectedItems UpdateMobilityService. */
 public final class ReplicationProtectedItemsUpdateMobilityServiceS {
     /*
-     * x-ms-original-file: specification/recoveryservicessiterecovery/resource-manager/Microsoft.RecoveryServices/stable/2022-10-01/examples/ReplicationProtectedItems_UpdateMobilityService.json
+     * x-ms-original-file: specification/recoveryservicessiterecovery/resource-manager/Microsoft.RecoveryServices/stable/2023-06-01/examples/ReplicationProtectedItems_UpdateMobilityService.json
      */
     /**
      * Sample code: Update the mobility service on a protected item.
@@ -2616,7 +2616,7 @@ import com.azure.resourcemanager.recoveryservicessiterecovery.models.Replication
 /** Samples for ReplicationProtectionContainerMappings Create. */
 public final class ReplicationProtectionContainerMappingsCreateSam {
     /*
-     * x-ms-original-file: specification/recoveryservicessiterecovery/resource-manager/Microsoft.RecoveryServices/stable/2022-10-01/examples/ReplicationProtectionContainerMappings_Create.json
+     * x-ms-original-file: specification/recoveryservicessiterecovery/resource-manager/Microsoft.RecoveryServices/stable/2023-06-01/examples/ReplicationProtectionContainerMappings_Create.json
      */
     /**
      * Sample code: Create protection container mapping.
@@ -2651,7 +2651,7 @@ import com.azure.resourcemanager.recoveryservicessiterecovery.models.Replication
 /** Samples for ReplicationProtectionContainerMappings Delete. */
 public final class ReplicationProtectionContainerMappingsDeleteSam {
     /*
-     * x-ms-original-file: specification/recoveryservicessiterecovery/resource-manager/Microsoft.RecoveryServices/stable/2022-10-01/examples/ReplicationProtectionContainerMappings_Delete.json
+     * x-ms-original-file: specification/recoveryservicessiterecovery/resource-manager/Microsoft.RecoveryServices/stable/2023-06-01/examples/ReplicationProtectionContainerMappings_Delete.json
      */
     /**
      * Sample code: Remove protection container mapping.
@@ -2683,7 +2683,7 @@ public final class ReplicationProtectionContainerMappingsDeleteSam {
 /** Samples for ReplicationProtectionContainerMappings Get. */
 public final class ReplicationProtectionContainerMappingsGetSamples {
     /*
-     * x-ms-original-file: specification/recoveryservicessiterecovery/resource-manager/Microsoft.RecoveryServices/stable/2022-10-01/examples/ReplicationProtectionContainerMappings_Get.json
+     * x-ms-original-file: specification/recoveryservicessiterecovery/resource-manager/Microsoft.RecoveryServices/stable/2023-06-01/examples/ReplicationProtectionContainerMappings_Get.json
      */
     /**
      * Sample code: Gets a protection container mapping.
@@ -2711,7 +2711,7 @@ public final class ReplicationProtectionContainerMappingsGetSamples {
 /** Samples for ReplicationProtectionContainerMappings List. */
 public final class ReplicationProtectionContainerMappingsListSampl {
     /*
-     * x-ms-original-file: specification/recoveryservicessiterecovery/resource-manager/Microsoft.RecoveryServices/stable/2022-10-01/examples/ReplicationProtectionContainerMappings_List.json
+     * x-ms-original-file: specification/recoveryservicessiterecovery/resource-manager/Microsoft.RecoveryServices/stable/2023-06-01/examples/ReplicationProtectionContainerMappings_List.json
      */
     /**
      * Sample code: Gets the list of all protection container mappings in a vault.
@@ -2733,7 +2733,7 @@ public final class ReplicationProtectionContainerMappingsListSampl {
 /** Samples for ReplicationProtectionContainerMappings ListByReplicationProtectionContainers. */
 public final class ReplicationProtectionContainerMappingsListByRep {
     /*
-     * x-ms-original-file: specification/recoveryservicessiterecovery/resource-manager/Microsoft.RecoveryServices/stable/2022-10-01/examples/ReplicationProtectionContainerMappings_ListByReplicationProtectionContainers.json
+     * x-ms-original-file: specification/recoveryservicessiterecovery/resource-manager/Microsoft.RecoveryServices/stable/2023-06-01/examples/ReplicationProtectionContainerMappings_ListByReplicationProtectionContainers.json
      */
     /**
      * Sample code: Gets the list of protection container mappings for a protection container.
@@ -2760,7 +2760,7 @@ public final class ReplicationProtectionContainerMappingsListByRep {
 /** Samples for ReplicationProtectionContainerMappings Purge. */
 public final class ReplicationProtectionContainerMappingsPurgeSamp {
     /*
-     * x-ms-original-file: specification/recoveryservicessiterecovery/resource-manager/Microsoft.RecoveryServices/stable/2022-10-01/examples/ReplicationProtectionContainerMappings_Purge.json
+     * x-ms-original-file: specification/recoveryservicessiterecovery/resource-manager/Microsoft.RecoveryServices/stable/2023-06-01/examples/ReplicationProtectionContainerMappings_Purge.json
      */
     /**
      * Sample code: Purge protection container mapping.
@@ -2793,7 +2793,7 @@ import com.azure.resourcemanager.recoveryservicessiterecovery.models.UpdateProte
 /** Samples for ReplicationProtectionContainerMappings Update. */
 public final class ReplicationProtectionContainerMappingsUpdateSam {
     /*
-     * x-ms-original-file: specification/recoveryservicessiterecovery/resource-manager/Microsoft.RecoveryServices/stable/2022-10-01/examples/ReplicationProtectionContainerMappings_Update.json
+     * x-ms-original-file: specification/recoveryservicessiterecovery/resource-manager/Microsoft.RecoveryServices/stable/2023-06-01/examples/ReplicationProtectionContainerMappings_Update.json
      */
     /**
      * Sample code: Update protection container mapping.
@@ -2837,7 +2837,7 @@ import java.util.Arrays;
 /** Samples for ReplicationProtectionContainers Create. */
 public final class ReplicationProtectionContainersCreateSamples {
     /*
-     * x-ms-original-file: specification/recoveryservicessiterecovery/resource-manager/Microsoft.RecoveryServices/stable/2022-10-01/examples/ReplicationProtectionContainers_Create.json
+     * x-ms-original-file: specification/recoveryservicessiterecovery/resource-manager/Microsoft.RecoveryServices/stable/2023-06-01/examples/ReplicationProtectionContainers_Create.json
      */
     /**
      * Sample code: Create a protection container.
@@ -2864,7 +2864,7 @@ public final class ReplicationProtectionContainersCreateSamples {
 /** Samples for ReplicationProtectionContainers Delete. */
 public final class ReplicationProtectionContainersDeleteSamples {
     /*
-     * x-ms-original-file: specification/recoveryservicessiterecovery/resource-manager/Microsoft.RecoveryServices/stable/2022-10-01/examples/ReplicationProtectionContainers_Delete.json
+     * x-ms-original-file: specification/recoveryservicessiterecovery/resource-manager/Microsoft.RecoveryServices/stable/2023-06-01/examples/ReplicationProtectionContainers_Delete.json
      */
     /**
      * Sample code: Removes a protection container.
@@ -2894,7 +2894,7 @@ import com.azure.resourcemanager.recoveryservicessiterecovery.models.DiscoverPro
 /** Samples for ReplicationProtectionContainers DiscoverProtectableItem. */
 public final class ReplicationProtectionContainersDiscoverProtecta {
     /*
-     * x-ms-original-file: specification/recoveryservicessiterecovery/resource-manager/Microsoft.RecoveryServices/stable/2022-10-01/examples/ReplicationProtectionContainers_DiscoverProtectableItem.json
+     * x-ms-original-file: specification/recoveryservicessiterecovery/resource-manager/Microsoft.RecoveryServices/stable/2023-06-01/examples/ReplicationProtectionContainers_DiscoverProtectableItem.json
      */
     /**
      * Sample code: Adds a protectable item to the replication protection container.
@@ -2927,7 +2927,7 @@ public final class ReplicationProtectionContainersDiscoverProtecta {
 /** Samples for ReplicationProtectionContainers Get. */
 public final class ReplicationProtectionContainersGetSamples {
     /*
-     * x-ms-original-file: specification/recoveryservicessiterecovery/resource-manager/Microsoft.RecoveryServices/stable/2022-10-01/examples/ReplicationProtectionContainers_Get.json
+     * x-ms-original-file: specification/recoveryservicessiterecovery/resource-manager/Microsoft.RecoveryServices/stable/2023-06-01/examples/ReplicationProtectionContainers_Get.json
      */
     /**
      * Sample code: Gets the protection container details.
@@ -2954,7 +2954,7 @@ public final class ReplicationProtectionContainersGetSamples {
 /** Samples for ReplicationProtectionContainers List. */
 public final class ReplicationProtectionContainersListSamples {
     /*
-     * x-ms-original-file: specification/recoveryservicessiterecovery/resource-manager/Microsoft.RecoveryServices/stable/2022-10-01/examples/ReplicationProtectionContainers_List.json
+     * x-ms-original-file: specification/recoveryservicessiterecovery/resource-manager/Microsoft.RecoveryServices/stable/2023-06-01/examples/ReplicationProtectionContainers_List.json
      */
     /**
      * Sample code: Gets the list of all protection containers in a vault.
@@ -2974,7 +2974,7 @@ public final class ReplicationProtectionContainersListSamples {
 /** Samples for ReplicationProtectionContainers ListByReplicationFabrics. */
 public final class ReplicationProtectionContainersListByReplicatio {
     /*
-     * x-ms-original-file: specification/recoveryservicessiterecovery/resource-manager/Microsoft.RecoveryServices/stable/2022-10-01/examples/ReplicationProtectionContainers_ListByReplicationFabrics.json
+     * x-ms-original-file: specification/recoveryservicessiterecovery/resource-manager/Microsoft.RecoveryServices/stable/2023-06-01/examples/ReplicationProtectionContainers_ListByReplicationFabrics.json
      */
     /**
      * Sample code: Gets the list of protection container for a fabric.
@@ -3000,7 +3000,7 @@ import com.azure.resourcemanager.recoveryservicessiterecovery.models.SwitchProte
 /** Samples for ReplicationProtectionContainers SwitchProtection. */
 public final class ReplicationProtectionContainersSwitchProtection {
     /*
-     * x-ms-original-file: specification/recoveryservicessiterecovery/resource-manager/Microsoft.RecoveryServices/stable/2022-10-01/examples/ReplicationProtectionContainers_SwitchProtection.json
+     * x-ms-original-file: specification/recoveryservicessiterecovery/resource-manager/Microsoft.RecoveryServices/stable/2023-06-01/examples/ReplicationProtectionContainers_SwitchProtection.json
      */
     /**
      * Sample code: Switches protection from one container to another or one replication provider to another.
@@ -3019,6 +3019,7 @@ public final class ReplicationProtectionContainersSwitchProtection {
                 new SwitchProtectionInput()
                     .withProperties(
                         new SwitchProtectionInputProperties()
+                            .withReplicationProtectedItemName("a2aSwapOsVm")
                             .withProviderSpecificDetails(new A2ASwitchProtectionInput())),
                 com.azure.core.util.Context.NONE);
     }
@@ -3035,7 +3036,7 @@ import com.azure.resourcemanager.recoveryservicessiterecovery.models.CreateProte
 /** Samples for ReplicationProtectionIntents Create. */
 public final class ReplicationProtectionIntentsCreateSamples {
     /*
-     * x-ms-original-file: specification/recoveryservicessiterecovery/resource-manager/Microsoft.RecoveryServices/stable/2022-10-01/examples/ReplicationProtectionIntents_Create.json
+     * x-ms-original-file: specification/recoveryservicessiterecovery/resource-manager/Microsoft.RecoveryServices/stable/2023-06-01/examples/ReplicationProtectionIntents_Create.json
      */
     /**
      * Sample code: Create protection intent Resource.
@@ -3071,7 +3072,7 @@ public final class ReplicationProtectionIntentsCreateSamples {
 /** Samples for ReplicationProtectionIntents Get. */
 public final class ReplicationProtectionIntentsGetSamples {
     /*
-     * x-ms-original-file: specification/recoveryservicessiterecovery/resource-manager/Microsoft.RecoveryServices/stable/2022-10-01/examples/ReplicationProtectionIntents_Get.json
+     * x-ms-original-file: specification/recoveryservicessiterecovery/resource-manager/Microsoft.RecoveryServices/stable/2023-06-01/examples/ReplicationProtectionIntents_Get.json
      */
     /**
      * Sample code: Gets the details of a Replication protection intent item.
@@ -3093,7 +3094,7 @@ public final class ReplicationProtectionIntentsGetSamples {
 /** Samples for ReplicationProtectionIntents List. */
 public final class ReplicationProtectionIntentsListSamples {
     /*
-     * x-ms-original-file: specification/recoveryservicessiterecovery/resource-manager/Microsoft.RecoveryServices/stable/2022-10-01/examples/ReplicationProtectionIntents_List.json
+     * x-ms-original-file: specification/recoveryservicessiterecovery/resource-manager/Microsoft.RecoveryServices/stable/2023-06-01/examples/ReplicationProtectionIntents_List.json
      */
     /**
      * Sample code: Gets the list of replication protection intent objects.
@@ -3122,7 +3123,7 @@ import java.util.Arrays;
 /** Samples for ReplicationRecoveryPlans Create. */
 public final class ReplicationRecoveryPlansCreateSamples {
     /*
-     * x-ms-original-file: specification/recoveryservicessiterecovery/resource-manager/Microsoft.RecoveryServices/stable/2022-10-01/examples/ReplicationRecoveryPlans_Create.json
+     * x-ms-original-file: specification/recoveryservicessiterecovery/resource-manager/Microsoft.RecoveryServices/stable/2023-06-01/examples/ReplicationRecoveryPlans_Create.json
      */
     /**
      * Sample code: Creates a recovery plan with the given details.
@@ -3166,7 +3167,7 @@ public final class ReplicationRecoveryPlansCreateSamples {
 /** Samples for ReplicationRecoveryPlans Delete. */
 public final class ReplicationRecoveryPlansDeleteSamples {
     /*
-     * x-ms-original-file: specification/recoveryservicessiterecovery/resource-manager/Microsoft.RecoveryServices/stable/2022-10-01/examples/ReplicationRecoveryPlans_Delete.json
+     * x-ms-original-file: specification/recoveryservicessiterecovery/resource-manager/Microsoft.RecoveryServices/stable/2023-06-01/examples/ReplicationRecoveryPlans_Delete.json
      */
     /**
      * Sample code: Deletes the specified recovery plan.
@@ -3188,7 +3189,7 @@ public final class ReplicationRecoveryPlansDeleteSamples {
 /** Samples for ReplicationRecoveryPlans FailoverCancel. */
 public final class ReplicationRecoveryPlansFailoverCancelSamples {
     /*
-     * x-ms-original-file: specification/recoveryservicessiterecovery/resource-manager/Microsoft.RecoveryServices/stable/2022-10-01/examples/ReplicationRecoveryPlans_FailoverCancel.json
+     * x-ms-original-file: specification/recoveryservicessiterecovery/resource-manager/Microsoft.RecoveryServices/stable/2023-06-01/examples/ReplicationRecoveryPlans_FailoverCancel.json
      */
     /**
      * Sample code: Execute cancel failover of the recovery plan.
@@ -3210,7 +3211,7 @@ public final class ReplicationRecoveryPlansFailoverCancelSamples {
 /** Samples for ReplicationRecoveryPlans FailoverCommit. */
 public final class ReplicationRecoveryPlansFailoverCommitSamples {
     /*
-     * x-ms-original-file: specification/recoveryservicessiterecovery/resource-manager/Microsoft.RecoveryServices/stable/2022-10-01/examples/ReplicationRecoveryPlans_FailoverCommit.json
+     * x-ms-original-file: specification/recoveryservicessiterecovery/resource-manager/Microsoft.RecoveryServices/stable/2023-06-01/examples/ReplicationRecoveryPlans_FailoverCommit.json
      */
     /**
      * Sample code: Execute commit failover of the recovery plan.
@@ -3232,7 +3233,7 @@ public final class ReplicationRecoveryPlansFailoverCommitSamples {
 /** Samples for ReplicationRecoveryPlans Get. */
 public final class ReplicationRecoveryPlansGetSamples {
     /*
-     * x-ms-original-file: specification/recoveryservicessiterecovery/resource-manager/Microsoft.RecoveryServices/stable/2022-10-01/examples/ReplicationRecoveryPlans_Get.json
+     * x-ms-original-file: specification/recoveryservicessiterecovery/resource-manager/Microsoft.RecoveryServices/stable/2023-06-01/examples/ReplicationRecoveryPlans_Get.json
      */
     /**
      * Sample code: Gets the requested recovery plan.
@@ -3254,7 +3255,7 @@ public final class ReplicationRecoveryPlansGetSamples {
 /** Samples for ReplicationRecoveryPlans List. */
 public final class ReplicationRecoveryPlansListSamples {
     /*
-     * x-ms-original-file: specification/recoveryservicessiterecovery/resource-manager/Microsoft.RecoveryServices/stable/2022-10-01/examples/ReplicationRecoveryPlans_List.json
+     * x-ms-original-file: specification/recoveryservicessiterecovery/resource-manager/Microsoft.RecoveryServices/stable/2023-06-01/examples/ReplicationRecoveryPlans_List.json
      */
     /**
      * Sample code: Gets the list of recovery plans.
@@ -3280,7 +3281,7 @@ import java.util.Arrays;
 /** Samples for ReplicationRecoveryPlans PlannedFailover. */
 public final class ReplicationRecoveryPlansPlannedFailoverSamples {
     /*
-     * x-ms-original-file: specification/recoveryservicessiterecovery/resource-manager/Microsoft.RecoveryServices/stable/2022-10-01/examples/ReplicationRecoveryPlans_PlannedFailover.json
+     * x-ms-original-file: specification/recoveryservicessiterecovery/resource-manager/Microsoft.RecoveryServices/stable/2023-06-01/examples/ReplicationRecoveryPlans_PlannedFailover.json
      */
     /**
      * Sample code: Execute planned failover of the recovery plan.
@@ -3312,7 +3313,7 @@ public final class ReplicationRecoveryPlansPlannedFailoverSamples {
 /** Samples for ReplicationRecoveryPlans Reprotect. */
 public final class ReplicationRecoveryPlansReprotectSamples {
     /*
-     * x-ms-original-file: specification/recoveryservicessiterecovery/resource-manager/Microsoft.RecoveryServices/stable/2022-10-01/examples/ReplicationRecoveryPlans_Reprotect.json
+     * x-ms-original-file: specification/recoveryservicessiterecovery/resource-manager/Microsoft.RecoveryServices/stable/2023-06-01/examples/ReplicationRecoveryPlans_Reprotect.json
      */
     /**
      * Sample code: Execute reprotect of the recovery plan.
@@ -3340,7 +3341,7 @@ import java.util.Arrays;
 /** Samples for ReplicationRecoveryPlans TestFailover. */
 public final class ReplicationRecoveryPlansTestFailoverSamples {
     /*
-     * x-ms-original-file: specification/recoveryservicessiterecovery/resource-manager/Microsoft.RecoveryServices/stable/2022-10-01/examples/ReplicationRecoveryPlans_TestFailover.json
+     * x-ms-original-file: specification/recoveryservicessiterecovery/resource-manager/Microsoft.RecoveryServices/stable/2023-06-01/examples/ReplicationRecoveryPlans_TestFailover.json
      */
     /**
      * Sample code: Execute test failover of the recovery plan.
@@ -3378,7 +3379,7 @@ import com.azure.resourcemanager.recoveryservicessiterecovery.models.RecoveryPla
 /** Samples for ReplicationRecoveryPlans TestFailoverCleanup. */
 public final class ReplicationRecoveryPlansTestFailoverCleanupSamp {
     /*
-     * x-ms-original-file: specification/recoveryservicessiterecovery/resource-manager/Microsoft.RecoveryServices/stable/2022-10-01/examples/ReplicationRecoveryPlans_TestFailoverCleanup.json
+     * x-ms-original-file: specification/recoveryservicessiterecovery/resource-manager/Microsoft.RecoveryServices/stable/2023-06-01/examples/ReplicationRecoveryPlans_TestFailoverCleanup.json
      */
     /**
      * Sample code: Execute test failover cleanup of the recovery plan.
@@ -3414,7 +3415,7 @@ import java.util.Arrays;
 /** Samples for ReplicationRecoveryPlans UnplannedFailover. */
 public final class ReplicationRecoveryPlansUnplannedFailoverSamples {
     /*
-     * x-ms-original-file: specification/recoveryservicessiterecovery/resource-manager/Microsoft.RecoveryServices/stable/2022-10-01/examples/ReplicationRecoveryPlans_UnplannedFailover.json
+     * x-ms-original-file: specification/recoveryservicessiterecovery/resource-manager/Microsoft.RecoveryServices/stable/2023-06-01/examples/ReplicationRecoveryPlans_UnplannedFailover.json
      */
     /**
      * Sample code: Execute unplanned failover of the recovery plan.
@@ -3454,7 +3455,7 @@ import java.util.Arrays;
 /** Samples for ReplicationRecoveryPlans Update. */
 public final class ReplicationRecoveryPlansUpdateSamples {
     /*
-     * x-ms-original-file: specification/recoveryservicessiterecovery/resource-manager/Microsoft.RecoveryServices/stable/2022-10-01/examples/ReplicationRecoveryPlans_Update.json
+     * x-ms-original-file: specification/recoveryservicessiterecovery/resource-manager/Microsoft.RecoveryServices/stable/2023-06-01/examples/ReplicationRecoveryPlans_Update.json
      */
     /**
      * Sample code: Updates the given recovery plan.
@@ -3521,7 +3522,7 @@ import com.azure.resourcemanager.recoveryservicessiterecovery.models.IdentityPro
 /** Samples for ReplicationRecoveryServicesProviders Create. */
 public final class ReplicationRecoveryServicesProvidersCreateSampl {
     /*
-     * x-ms-original-file: specification/recoveryservicessiterecovery/resource-manager/Microsoft.RecoveryServices/stable/2022-10-01/examples/ReplicationRecoveryServicesProviders_Create.json
+     * x-ms-original-file: specification/recoveryservicessiterecovery/resource-manager/Microsoft.RecoveryServices/stable/2023-06-01/examples/ReplicationRecoveryServicesProviders_Create.json
      */
     /**
      * Sample code: Adds a recovery services provider.
@@ -3562,7 +3563,7 @@ public final class ReplicationRecoveryServicesProvidersCreateSampl {
 /** Samples for ReplicationRecoveryServicesProviders Delete. */
 public final class ReplicationRecoveryServicesProvidersDeleteSampl {
     /*
-     * x-ms-original-file: specification/recoveryservicessiterecovery/resource-manager/Microsoft.RecoveryServices/stable/2022-10-01/examples/ReplicationRecoveryServicesProviders_Delete.json
+     * x-ms-original-file: specification/recoveryservicessiterecovery/resource-manager/Microsoft.RecoveryServices/stable/2023-06-01/examples/ReplicationRecoveryServicesProviders_Delete.json
      */
     /**
      * Sample code: Deletes provider from fabric. Note: Deleting provider for any fabric other than SingleHost is
@@ -3592,7 +3593,7 @@ public final class ReplicationRecoveryServicesProvidersDeleteSampl {
 /** Samples for ReplicationRecoveryServicesProviders Get. */
 public final class ReplicationRecoveryServicesProvidersGetSamples {
     /*
-     * x-ms-original-file: specification/recoveryservicessiterecovery/resource-manager/Microsoft.RecoveryServices/stable/2022-10-01/examples/ReplicationRecoveryServicesProviders_Get.json
+     * x-ms-original-file: specification/recoveryservicessiterecovery/resource-manager/Microsoft.RecoveryServices/stable/2023-06-01/examples/ReplicationRecoveryServicesProviders_Get.json
      */
     /**
      * Sample code: Gets the details of a recovery services provider.
@@ -3619,7 +3620,7 @@ public final class ReplicationRecoveryServicesProvidersGetSamples {
 /** Samples for ReplicationRecoveryServicesProviders List. */
 public final class ReplicationRecoveryServicesProvidersListSamples {
     /*
-     * x-ms-original-file: specification/recoveryservicessiterecovery/resource-manager/Microsoft.RecoveryServices/stable/2022-10-01/examples/ReplicationRecoveryServicesProviders_List.json
+     * x-ms-original-file: specification/recoveryservicessiterecovery/resource-manager/Microsoft.RecoveryServices/stable/2023-06-01/examples/ReplicationRecoveryServicesProviders_List.json
      */
     /**
      * Sample code: Gets the list of registered recovery services providers in the vault. This is a view only api.
@@ -3641,7 +3642,7 @@ public final class ReplicationRecoveryServicesProvidersListSamples {
 /** Samples for ReplicationRecoveryServicesProviders ListByReplicationFabrics. */
 public final class ReplicationRecoveryServicesProvidersListByRepli {
     /*
-     * x-ms-original-file: specification/recoveryservicessiterecovery/resource-manager/Microsoft.RecoveryServices/stable/2022-10-01/examples/ReplicationRecoveryServicesProviders_ListByReplicationFabrics.json
+     * x-ms-original-file: specification/recoveryservicessiterecovery/resource-manager/Microsoft.RecoveryServices/stable/2023-06-01/examples/ReplicationRecoveryServicesProviders_ListByReplicationFabrics.json
      */
     /**
      * Sample code: Gets the list of registered recovery services providers for the fabric.
@@ -3663,7 +3664,7 @@ public final class ReplicationRecoveryServicesProvidersListByRepli {
 /** Samples for ReplicationRecoveryServicesProviders Purge. */
 public final class ReplicationRecoveryServicesProvidersPurgeSamples {
     /*
-     * x-ms-original-file: specification/recoveryservicessiterecovery/resource-manager/Microsoft.RecoveryServices/stable/2022-10-01/examples/ReplicationRecoveryServicesProviders_Purge.json
+     * x-ms-original-file: specification/recoveryservicessiterecovery/resource-manager/Microsoft.RecoveryServices/stable/2023-06-01/examples/ReplicationRecoveryServicesProviders_Purge.json
      */
     /**
      * Sample code: Purges recovery service provider from fabric.
@@ -3690,7 +3691,7 @@ public final class ReplicationRecoveryServicesProvidersPurgeSamples {
 /** Samples for ReplicationRecoveryServicesProviders RefreshProvider. */
 public final class ReplicationRecoveryServicesProvidersRefreshProv {
     /*
-     * x-ms-original-file: specification/recoveryservicessiterecovery/resource-manager/Microsoft.RecoveryServices/stable/2022-10-01/examples/ReplicationRecoveryServicesProviders_RefreshProvider.json
+     * x-ms-original-file: specification/recoveryservicessiterecovery/resource-manager/Microsoft.RecoveryServices/stable/2023-06-01/examples/ReplicationRecoveryServicesProviders_RefreshProvider.json
      */
     /**
      * Sample code: Refresh details from the recovery services provider.
@@ -3717,7 +3718,7 @@ public final class ReplicationRecoveryServicesProvidersRefreshProv {
 /** Samples for ReplicationVaultHealth Get. */
 public final class ReplicationVaultHealthGetSamples {
     /*
-     * x-ms-original-file: specification/recoveryservicessiterecovery/resource-manager/Microsoft.RecoveryServices/stable/2022-10-01/examples/ReplicationVaultHealth_Get.json
+     * x-ms-original-file: specification/recoveryservicessiterecovery/resource-manager/Microsoft.RecoveryServices/stable/2023-06-01/examples/ReplicationVaultHealth_Get.json
      */
     /**
      * Sample code: Gets the health summary for the vault.
@@ -3739,7 +3740,7 @@ public final class ReplicationVaultHealthGetSamples {
 /** Samples for ReplicationVaultHealth Refresh. */
 public final class ReplicationVaultHealthRefreshSamples {
     /*
-     * x-ms-original-file: specification/recoveryservicessiterecovery/resource-manager/Microsoft.RecoveryServices/stable/2022-10-01/examples/ReplicationVaultHealth_Refresh.json
+     * x-ms-original-file: specification/recoveryservicessiterecovery/resource-manager/Microsoft.RecoveryServices/stable/2023-06-01/examples/ReplicationVaultHealth_Refresh.json
      */
     /**
      * Sample code: Refreshes health summary of the vault.
@@ -3761,7 +3762,7 @@ import com.azure.resourcemanager.recoveryservicessiterecovery.models.VaultSettin
 /** Samples for ReplicationVaultSetting Create. */
 public final class ReplicationVaultSettingCreateSamples {
     /*
-     * x-ms-original-file: specification/recoveryservicessiterecovery/resource-manager/Microsoft.RecoveryServices/stable/2022-10-01/examples/ReplicationVaultSetting_Create.json
+     * x-ms-original-file: specification/recoveryservicessiterecovery/resource-manager/Microsoft.RecoveryServices/stable/2023-06-01/examples/ReplicationVaultSetting_Create.json
      */
     /**
      * Sample code: Updates vault setting. A vault setting object is a singleton per vault and it is always present by
@@ -3790,7 +3791,7 @@ public final class ReplicationVaultSettingCreateSamples {
 /** Samples for ReplicationVaultSetting Get. */
 public final class ReplicationVaultSettingGetSamples {
     /*
-     * x-ms-original-file: specification/recoveryservicessiterecovery/resource-manager/Microsoft.RecoveryServices/stable/2022-10-01/examples/ReplicationVaultSetting_Get.json
+     * x-ms-original-file: specification/recoveryservicessiterecovery/resource-manager/Microsoft.RecoveryServices/stable/2023-06-01/examples/ReplicationVaultSetting_Get.json
      */
     /**
      * Sample code: Gets the vault setting.
@@ -3812,7 +3813,7 @@ public final class ReplicationVaultSettingGetSamples {
 /** Samples for ReplicationVaultSetting List. */
 public final class ReplicationVaultSettingListSamples {
     /*
-     * x-ms-original-file: specification/recoveryservicessiterecovery/resource-manager/Microsoft.RecoveryServices/stable/2022-10-01/examples/ReplicationVaultSetting_List.json
+     * x-ms-original-file: specification/recoveryservicessiterecovery/resource-manager/Microsoft.RecoveryServices/stable/2023-06-01/examples/ReplicationVaultSetting_List.json
      */
     /**
      * Sample code: Gets the list of vault setting.
@@ -3834,7 +3835,7 @@ import com.azure.resourcemanager.recoveryservicessiterecovery.models.AddVCenterR
 /** Samples for ReplicationvCenters Create. */
 public final class ReplicationvCentersCreateSamples {
     /*
-     * x-ms-original-file: specification/recoveryservicessiterecovery/resource-manager/Microsoft.RecoveryServices/stable/2022-10-01/examples/ReplicationvCenters_Create.json
+     * x-ms-original-file: specification/recoveryservicessiterecovery/resource-manager/Microsoft.RecoveryServices/stable/2023-06-01/examples/ReplicationvCenters_Create.json
      */
     /**
      * Sample code: Add vCenter.
@@ -3864,7 +3865,7 @@ public final class ReplicationvCentersCreateSamples {
 /** Samples for ReplicationvCenters Delete. */
 public final class ReplicationvCentersDeleteSamples {
     /*
-     * x-ms-original-file: specification/recoveryservicessiterecovery/resource-manager/Microsoft.RecoveryServices/stable/2022-10-01/examples/ReplicationvCenters_Delete.json
+     * x-ms-original-file: specification/recoveryservicessiterecovery/resource-manager/Microsoft.RecoveryServices/stable/2023-06-01/examples/ReplicationvCenters_Delete.json
      */
     /**
      * Sample code: Remove vCenter operation.
@@ -3886,7 +3887,7 @@ public final class ReplicationvCentersDeleteSamples {
 /** Samples for ReplicationvCenters Get. */
 public final class ReplicationvCentersGetSamples {
     /*
-     * x-ms-original-file: specification/recoveryservicessiterecovery/resource-manager/Microsoft.RecoveryServices/stable/2022-10-01/examples/ReplicationvCenters_Get.json
+     * x-ms-original-file: specification/recoveryservicessiterecovery/resource-manager/Microsoft.RecoveryServices/stable/2023-06-01/examples/ReplicationvCenters_Get.json
      */
     /**
      * Sample code: Gets the details of a vCenter.
@@ -3908,7 +3909,7 @@ public final class ReplicationvCentersGetSamples {
 /** Samples for ReplicationvCenters List. */
 public final class ReplicationvCentersListSamples {
     /*
-     * x-ms-original-file: specification/recoveryservicessiterecovery/resource-manager/Microsoft.RecoveryServices/stable/2022-10-01/examples/ReplicationvCenters_List.json
+     * x-ms-original-file: specification/recoveryservicessiterecovery/resource-manager/Microsoft.RecoveryServices/stable/2023-06-01/examples/ReplicationvCenters_List.json
      */
     /**
      * Sample code: Gets the list of vCenter registered under the vault.
@@ -3928,7 +3929,7 @@ public final class ReplicationvCentersListSamples {
 /** Samples for ReplicationvCenters ListByReplicationFabrics. */
 public final class ReplicationvCentersListByReplicationFabricsSamp {
     /*
-     * x-ms-original-file: specification/recoveryservicessiterecovery/resource-manager/Microsoft.RecoveryServices/stable/2022-10-01/examples/ReplicationvCenters_ListByReplicationFabrics.json
+     * x-ms-original-file: specification/recoveryservicessiterecovery/resource-manager/Microsoft.RecoveryServices/stable/2023-06-01/examples/ReplicationvCenters_ListByReplicationFabrics.json
      */
     /**
      * Sample code: Gets the list of vCenter registered under a fabric.
@@ -3953,7 +3954,7 @@ import com.azure.resourcemanager.recoveryservicessiterecovery.models.VCenter;
 /** Samples for ReplicationvCenters Update. */
 public final class ReplicationvCentersUpdateSamples {
     /*
-     * x-ms-original-file: specification/recoveryservicessiterecovery/resource-manager/Microsoft.RecoveryServices/stable/2022-10-01/examples/ReplicationvCenters_Update.json
+     * x-ms-original-file: specification/recoveryservicessiterecovery/resource-manager/Microsoft.RecoveryServices/stable/2023-06-01/examples/ReplicationvCenters_Update.json
      */
     /**
      * Sample code: Update vCenter operation.
@@ -3981,7 +3982,7 @@ import com.azure.resourcemanager.recoveryservicessiterecovery.models.StorageMapp
 /** Samples for StorageClassificationMappings Create. */
 public final class StorageClassificationMappingsCreateSamples {
     /*
-     * x-ms-original-file: specification/recoveryservicessiterecovery/resource-manager/Microsoft.RecoveryServices/stable/2022-10-01/examples/ReplicationStorageClassificationMappings_Create.json
+     * x-ms-original-file: specification/recoveryservicessiterecovery/resource-manager/Microsoft.RecoveryServices/stable/2023-06-01/examples/ReplicationStorageClassificationMappings_Create.json
      */
     /**
      * Sample code: Create storage classification mapping.
@@ -4013,7 +4014,7 @@ public final class StorageClassificationMappingsCreateSamples {
 /** Samples for StorageClassificationMappings Delete. */
 public final class StorageClassificationMappingsDeleteSamples {
     /*
-     * x-ms-original-file: specification/recoveryservicessiterecovery/resource-manager/Microsoft.RecoveryServices/stable/2022-10-01/examples/ReplicationStorageClassificationMappings_Delete.json
+     * x-ms-original-file: specification/recoveryservicessiterecovery/resource-manager/Microsoft.RecoveryServices/stable/2023-06-01/examples/ReplicationStorageClassificationMappings_Delete.json
      */
     /**
      * Sample code: Delete a storage classification mapping.
@@ -4041,7 +4042,7 @@ public final class StorageClassificationMappingsDeleteSamples {
 /** Samples for StorageClassificationMappings Get. */
 public final class StorageClassificationMappingsGetSamples {
     /*
-     * x-ms-original-file: specification/recoveryservicessiterecovery/resource-manager/Microsoft.RecoveryServices/stable/2022-10-01/examples/ReplicationStorageClassificationMappings_Get.json
+     * x-ms-original-file: specification/recoveryservicessiterecovery/resource-manager/Microsoft.RecoveryServices/stable/2023-06-01/examples/ReplicationStorageClassificationMappings_Get.json
      */
     /**
      * Sample code: Gets the details of a storage classification mapping.
@@ -4069,7 +4070,7 @@ public final class StorageClassificationMappingsGetSamples {
 /** Samples for StorageClassificationMappings List. */
 public final class StorageClassificationMappingsListSamples {
     /*
-     * x-ms-original-file: specification/recoveryservicessiterecovery/resource-manager/Microsoft.RecoveryServices/stable/2022-10-01/examples/ReplicationStorageClassificationMappings_List.json
+     * x-ms-original-file: specification/recoveryservicessiterecovery/resource-manager/Microsoft.RecoveryServices/stable/2023-06-01/examples/ReplicationStorageClassificationMappings_List.json
      */
     /**
      * Sample code: Gets the list of storage classification mappings objects under a vault.
@@ -4089,7 +4090,7 @@ public final class StorageClassificationMappingsListSamples {
 /** Samples for StorageClassificationMappings ListByReplicationStorageClassifications. */
 public final class StorageClassificationMappingsListByReplicationS {
     /*
-     * x-ms-original-file: specification/recoveryservicessiterecovery/resource-manager/Microsoft.RecoveryServices/stable/2022-10-01/examples/ReplicationStorageClassificationMappings_ListByReplicationStorageClassifications.json
+     * x-ms-original-file: specification/recoveryservicessiterecovery/resource-manager/Microsoft.RecoveryServices/stable/2023-06-01/examples/ReplicationStorageClassificationMappings_ListByReplicationStorageClassifications.json
      */
     /**
      * Sample code: Gets the list of storage classification mappings objects under a storage.
@@ -4116,7 +4117,7 @@ public final class StorageClassificationMappingsListByReplicationS {
 /** Samples for StorageClassifications Get. */
 public final class StorageClassificationsGetSamples {
     /*
-     * x-ms-original-file: specification/recoveryservicessiterecovery/resource-manager/Microsoft.RecoveryServices/stable/2022-10-01/examples/ReplicationStorageClassifications_Get.json
+     * x-ms-original-file: specification/recoveryservicessiterecovery/resource-manager/Microsoft.RecoveryServices/stable/2023-06-01/examples/ReplicationStorageClassifications_Get.json
      */
     /**
      * Sample code: Gets the details of a storage classification.
@@ -4143,7 +4144,7 @@ public final class StorageClassificationsGetSamples {
 /** Samples for StorageClassifications List. */
 public final class StorageClassificationsListSamples {
     /*
-     * x-ms-original-file: specification/recoveryservicessiterecovery/resource-manager/Microsoft.RecoveryServices/stable/2022-10-01/examples/ReplicationStorageClassifications_List.json
+     * x-ms-original-file: specification/recoveryservicessiterecovery/resource-manager/Microsoft.RecoveryServices/stable/2023-06-01/examples/ReplicationStorageClassifications_List.json
      */
     /**
      * Sample code: Gets the list of storage classification objects under a vault.
@@ -4163,7 +4164,7 @@ public final class StorageClassificationsListSamples {
 /** Samples for StorageClassifications ListByReplicationFabrics. */
 public final class StorageClassificationsListByReplicationFabricsS {
     /*
-     * x-ms-original-file: specification/recoveryservicessiterecovery/resource-manager/Microsoft.RecoveryServices/stable/2022-10-01/examples/ReplicationStorageClassifications_ListByReplicationFabrics.json
+     * x-ms-original-file: specification/recoveryservicessiterecovery/resource-manager/Microsoft.RecoveryServices/stable/2023-06-01/examples/ReplicationStorageClassifications_ListByReplicationFabrics.json
      */
     /**
      * Sample code: Gets the list of storage classification objects under a fabric.
@@ -4189,7 +4190,7 @@ public final class StorageClassificationsListByReplicationFabricsS {
 /** Samples for SupportedOperatingSystemsOperation Get. */
 public final class SupportedOperatingSystemsOperationGetSamples {
     /*
-     * x-ms-original-file: specification/recoveryservicessiterecovery/resource-manager/Microsoft.RecoveryServices/stable/2022-10-01/examples/SupportedOperatingSystems_Get.json
+     * x-ms-original-file: specification/recoveryservicessiterecovery/resource-manager/Microsoft.RecoveryServices/stable/2023-06-01/examples/SupportedOperatingSystems_Get.json
      */
     /**
      * Sample code: Gets the data of supported operating systems by SRS.
@@ -4211,7 +4212,7 @@ public final class SupportedOperatingSystemsOperationGetSamples {
 /** Samples for TargetComputeSizes ListByReplicationProtectedItems. */
 public final class TargetComputeSizesListByReplicationProtectedIte {
     /*
-     * x-ms-original-file: specification/recoveryservicessiterecovery/resource-manager/Microsoft.RecoveryServices/stable/2022-10-01/examples/TargetComputeSizes_ListByReplicationProtectedItems.json
+     * x-ms-original-file: specification/recoveryservicessiterecovery/resource-manager/Microsoft.RecoveryServices/stable/2023-06-01/examples/TargetComputeSizes_ListByReplicationProtectedItems.json
      */
     /**
      * Sample code: Gets the list of target compute sizes for the replication protected item.

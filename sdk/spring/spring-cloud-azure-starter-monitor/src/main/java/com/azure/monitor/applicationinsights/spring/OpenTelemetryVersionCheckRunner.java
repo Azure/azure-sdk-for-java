@@ -7,13 +7,11 @@ import io.opentelemetry.semconv.resource.attributes.ResourceAttributes;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.boot.CommandLineRunner;
-import org.springframework.stereotype.Component;
 
 /**
  * This component alerts the user to the fact that the OpenTelemetry version used is not compatible
  * with the starter. One use case is Spring Boot 3 using OpenTelemetry.
  */
-@Component
 public class OpenTelemetryVersionCheckRunner implements CommandLineRunner {
     private static final Logger LOG = LoggerFactory.getLogger(OpenTelemetryVersionCheckRunner.class);
 

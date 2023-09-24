@@ -5,6 +5,7 @@ package com.azure.monitor.applicationinsights.spring.selfdiagnostics;
 
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
+import org.springframework.boot.autoconfigure.condition.ConditionalOnProperty;
 import org.springframework.context.ApplicationContext;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
@@ -16,6 +17,7 @@ import java.util.Locale;
  Main configuration entry point of the self-diagnostics
  **/
 @Configuration(proxyBeanMethods = false)
+@ConditionalOnProperty(name = "otel.sdk.disabled", havingValue = "false", matchIfMissing = true)
 @Import({DefaultLogConfig.class, LogbackSelfDiagConfig.class, JdbcSelfDiagConfig.class})
 public class SelfDiagAutoConfig {
     private static final Logger LOG = LoggerFactory.getLogger(SelfDiagAutoConfig.class);

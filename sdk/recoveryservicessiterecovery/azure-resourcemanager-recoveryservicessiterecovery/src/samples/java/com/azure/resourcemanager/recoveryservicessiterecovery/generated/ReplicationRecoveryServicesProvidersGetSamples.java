@@ -7,7 +7,7 @@ package com.azure.resourcemanager.recoveryservicessiterecovery.generated;
 /** Samples for ReplicationRecoveryServicesProviders Get. */
 public final class ReplicationRecoveryServicesProvidersGetSamples {
     /*
-     * x-ms-original-file: specification/recoveryservicessiterecovery/resource-manager/Microsoft.RecoveryServices/stable/2022-10-01/examples/ReplicationRecoveryServicesProviders_Get.json
+     * x-ms-original-file: specification/recoveryservicessiterecovery/resource-manager/Microsoft.RecoveryServices/stable/2023-06-01/examples/ReplicationRecoveryServicesProviders_Get.json
      */
     /**
      * Sample code: Gets the details of a recovery services provider.
