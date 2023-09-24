@@ -82,7 +82,7 @@ public class HttpUrlConnectionAsyncClient implements HttpClient {
     private Mono<HttpResponse> handleConnection(HttpRequest httpRequest, ProgressReporter progressReporter) {
         return Mono.fromCallable(() -> {
             try {
-                // // Make connection
+                // Make connection
                 URL url = httpRequest.getUrl();
                 HttpURLConnection connection = (HttpURLConnection) url.openConnection();
 
@@ -119,7 +119,7 @@ public class HttpUrlConnectionAsyncClient implements HttpClient {
                     connection.setDoOutput(true);
                 }
 
-                // // Write body
+                // Write body
                 switch (httpRequest.getHttpMethod()) {
                     case POST:
                     case PUT:
@@ -165,7 +165,7 @@ public class HttpUrlConnectionAsyncClient implements HttpClient {
                             + httpRequest.getHttpMethod());
                 }
 
-                // // Read response
+                // Read response
                 int responseCode = connection.getResponseCode();
 
                 Map<String, List<String>> responseHeadersMap = new HashMap<>();
