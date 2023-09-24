@@ -587,9 +587,9 @@ public class ExcludeRegionWithFaultInjectionTests extends TestSuiteBase {
                             this.chooseLastRegion.apply(this.preferredRegions)
                         ))
                         .withExpectedResultAfterMutation(new ExpectedResult(
-                            HttpConstants.StatusCodes.OK,
-                            HttpConstants.SubStatusCodes.UNKNOWN,
-                            this.chooseAllRegions.apply(this.preferredRegions)
+                            HttpConstants.StatusCodes.SERVICE_UNAVAILABLE,
+                            HttpConstants.SubStatusCodes.SERVER_GENERATED_503,
+                            this.chooseFirstRegion.apply(this.preferredRegions)
                     ))
                 },
                 {
