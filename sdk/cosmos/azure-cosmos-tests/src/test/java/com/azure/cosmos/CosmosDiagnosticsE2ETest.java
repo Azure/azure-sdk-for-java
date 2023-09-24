@@ -80,7 +80,6 @@ public class CosmosDiagnosticsE2ETest extends TestSuiteBase {
     @Test(groups = { "simple", "emulator" }, timeOut = TIMEOUT)
     public void onlyCustomDiagnosticsHandler() {
 
-        System.out.println("In onlyCustomDiagnosticsHandler");
         CapturingDiagnosticsHandler capturingHandler = new CapturingDiagnosticsHandler();
 
         CosmosClientBuilder builder = this
@@ -117,7 +116,6 @@ public class CosmosDiagnosticsE2ETest extends TestSuiteBase {
 
     @Test(groups = { "simple", "emulator" }, timeOut = TIMEOUT)
     public void onlyDefaultLogger() {
-        System.out.println("In onlyDefaultLogger");
         CosmosClientBuilder builder = this
             .getClientBuilder()
             .clientTelemetryConfig(
@@ -134,8 +132,6 @@ public class CosmosDiagnosticsE2ETest extends TestSuiteBase {
 
     @Test(groups = { "simple", "emulator" }, timeOut = TIMEOUT)
     public void onlyLoggerWithCustomConfig() {
-        System.out.println("In onlyLoggerWithCustomConfig");
-
         CosmosClientBuilder builder = this
             .getClientBuilder()
             .clientTelemetryConfig(
@@ -158,7 +154,6 @@ public class CosmosDiagnosticsE2ETest extends TestSuiteBase {
 
     @Test(groups = { "simple", "emulator" }, timeOut = TIMEOUT)
     public void onlyCustomLoggerWithCustomConfig() {
-        System.out.println("In onlyCustomLoggerWithCustomConfig");
 
         CapturingLogger capturingLogger = new CapturingLogger();
 
@@ -183,8 +178,6 @@ public class CosmosDiagnosticsE2ETest extends TestSuiteBase {
 
     @Test(groups = { "simple", "emulator" }, timeOut = TIMEOUT)
     public void defaultLoggerAndMetrics() {
-        System.out.println("In defaultLoggerAndMetrics");
-
         MeterRegistry meterRegistry = ConsoleLoggingRegistryFactory.create(1);
 
         CosmosClientBuilder builder = this
@@ -207,7 +200,6 @@ public class CosmosDiagnosticsE2ETest extends TestSuiteBase {
 
     @Test(groups = { "simple", "emulator" }, dataProvider = "operationTypeProvider", timeOut = TIMEOUT)
     public void delayedSampling(OperationType operationType) {
-        System.out.println("In delayedSampling");
         MeterRegistry meterRegistry = ConsoleLoggingRegistryFactory.create(1);
 
         CapturingLogger capturingLogger = new CapturingLogger();
@@ -255,8 +247,6 @@ public class CosmosDiagnosticsE2ETest extends TestSuiteBase {
 
     @Test(groups = { "simple", "emulator" }, timeOut = TIMEOUT)
     public void defaultLoggerWithLegacyOpenTelemetryTraces() {
-        System.out.println("In defaultLoggerWithLegacyOpenTelemetryTraces");
-
         System.setProperty("COSMOS.USE_LEGACY_TRACING", "true");
         CosmosClientBuilder builder = this
             .getClientBuilder()
