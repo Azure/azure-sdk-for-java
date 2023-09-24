@@ -59,13 +59,7 @@ public class HttpUrlConnectionAsyncClient implements HttpClient {
         if (httpMethod == HttpMethod.PATCH) {
             return sendPatchViaSocket(httpRequest);
         }
-        return openConnection(httpRequest)
-            .flatMap(connection -> setConnectionRequest(connection, httpRequest)
-                .then(writeRequestBody(connection, httpRequest, progressReporter))
-                .then(readResponse(connection, httpRequest))
-                .doFinally(signalType -> connection.disconnect()) // Disconnect connection after processing
-                .onErrorResume(Mono::error));
-
+        return handleConnection(httpRequest, progressReporter);
     }
 
     /**
@@ -82,11 +76,13 @@ public class HttpUrlConnectionAsyncClient implements HttpClient {
      * Open a connection based on the HttpRequest URL
      *
      * @param httpRequest The HTTP Request being sent
-     * @return A Mono containing a HttpUrlConnection object
+     * @param progressReporter (Optional) for reporting progress while writing the request body
+     * @return A Mono containing a HttpUrlConnectionResponse object
      */
-    private Mono<HttpURLConnection> openConnection(HttpRequest httpRequest) {
+    private Mono<HttpResponse> handleConnection(HttpRequest httpRequest, ProgressReporter progressReporter) {
         return Mono.fromCallable(() -> {
             try {
+                // Make connection
                 URL url = httpRequest.getUrl();
                 HttpURLConnection connection = (HttpURLConnection) url.openConnection();
 
@@ -106,130 +102,101 @@ public class HttpUrlConnectionAsyncClient implements HttpClient {
                 if (connectionTimeout != null) {
                     connection.setConnectTimeout((int) connectionTimeout.toMillis());
                 }
-                return connection;
+
+                // // SetConnectionRequest
+
+                try {
+                    connection.setRequestMethod(httpRequest.getHttpMethod().toString());
+                } catch (ProtocolException e) {
+                    throw new RuntimeException(e);
+                }
+                for (HttpHeader header : httpRequest.getHeaders()) {
+                    for (String value : header.getValues()) {
+                        connection.addRequestProperty(header.getName(), value);
+                    }
+                }
+                if (httpRequest.getHttpMethod() != HttpMethod.GET) {
+                    connection.setDoOutput(true);
+                }
+
+                // Write body
+                switch (httpRequest.getHttpMethod()) {
+                    case POST:
+                    case PUT:
+                    case DELETE:
+                        if (httpRequest.getBody() != null) {
+                            try (DataOutputStream os = new DataOutputStream(new BufferedOutputStream(connection.getOutputStream()))) {
+
+                                Flux<ByteBuffer> requestBody = httpRequest.getBody();
+                                if (progressReporter != null) {
+                                    requestBody = requestBody.map(buffer -> {
+                                        progressReporter.reportProgress(buffer.remaining());
+                                        return buffer;
+                                    });
+                                }
+
+                                requestBody
+                                    .flatMap(buffer -> {
+                                        try {
+                                            byte[] bytes = new byte[buffer.remaining()];
+                                            buffer.get(bytes);
+                                            os.write(bytes);
+                                            return Mono.just(buffer); // Emit the buffer for downstream processing if needed
+                                        } catch (IOException e) {
+                                            throw new RuntimeException(e);
+                                        }
+                                    })
+                                    .then()
+                                    .block(); // Wait for completion of the write operations
+                                os.flush();
+                            } catch (IOException e) {
+                                throw new RuntimeException(e);
+                            }
+                        }
+                        break;
+                    case GET:
+                    case HEAD:
+                    case OPTIONS:
+                    case TRACE:
+                    case CONNECT:
+                        break;
+                    default:
+                        throw new IllegalStateException("Unknown HTTP Method:"
+                            + httpRequest.getHttpMethod());
+                }
+
+                // Read response
+                int responseCode = connection.getResponseCode();
+
+                Map<String, List<String>> responseHeadersMap = new HashMap<>();
+                for (Map.Entry<String, List<String>> entry : connection.getHeaderFields().entrySet()) {
+                    if (entry.getKey() != null) {
+                        responseHeadersMap.put(entry.getKey(), entry.getValue());
+                    }
+                }
+
+                ByteArrayOutputStream outputStream = new ByteArrayOutputStream();
+                try (InputStream errorStream = connection.getErrorStream()) {
+                    InputStream inputStream = (errorStream == null) ? connection.getInputStream() : errorStream;
+                    byte[] buffer = new byte[1024];
+                    int length;
+                    while ((length = inputStream.read(buffer)) != -1) {
+                        outputStream.write(buffer, 0, length);
+                    }
+                }
+
+                connection.disconnect();
+
+                return new HttpUrlConnectionResponse(
+                    httpRequest,
+                    responseCode,
+                    responseHeadersMap,
+                    Flux.just(ByteBuffer.wrap(outputStream.toByteArray()))
+                );
+
             } catch (IOException e) {
                 throw new RuntimeException("Error opening HTTP connection", e);
             }
         });
-    }
-
-    /**
-     * Set properties and headers on the HttpURLConnection
-     *
-     * @param connection The HttpUrlConnection to configure for the HTTP request
-     * @param httpRequest The HTTP Request being sent
-     * @return A Mono representing the completion of the configuration process
-     */
-    private Mono<Void> setConnectionRequest(HttpURLConnection connection, HttpRequest httpRequest) {
-        return Mono.fromRunnable(() -> {
-            try {
-                connection.setRequestMethod(httpRequest.getHttpMethod().toString());
-            } catch (ProtocolException e) {
-                throw new RuntimeException(e);
-            }
-            for (HttpHeader header : httpRequest.getHeaders()) {
-                for (String value : header.getValues()) {
-                    connection.addRequestProperty(header.getName(), value);
-                }
-            }
-            if (httpRequest.getHttpMethod() != HttpMethod.GET) {
-                connection.setDoOutput(true);
-            }
-        });
-    }
-
-    /**
-     * Write the body of the request if necessary
-     *
-     * @param connection The HttpUrlConnection to write the request body to
-     * @param httpRequest The HTTP Request being sent
-     * @param progressReporter (Optional) for reporting progress while writing the request body
-     * @return A Mono representing the completion of the request body writing process
-     */
-    private Mono<Void> writeRequestBody(HttpURLConnection connection, HttpRequest httpRequest, ProgressReporter progressReporter) {
-        switch (httpRequest.getHttpMethod()) {
-            case POST:
-            case PUT:
-            case DELETE:
-                if (httpRequest.getBody() != null) {
-                    return Mono.fromRunnable(() -> {
-                        try (DataOutputStream os = new DataOutputStream(new BufferedOutputStream(connection.getOutputStream()))) {
-
-                            Flux<ByteBuffer> requestBody = httpRequest.getBody();
-                            if (progressReporter != null) {
-                                requestBody = requestBody.map(buffer -> {
-                                    progressReporter.reportProgress(buffer.remaining());
-                                    return buffer;
-                                });
-                            }
-
-                            requestBody
-                                .flatMap(buffer -> {
-                                    try {
-                                        byte[] bytes = new byte[buffer.remaining()];
-                                        buffer.get(bytes);
-                                        os.write(bytes);
-                                        return Mono.just(buffer); // Emit the buffer for downstream processing if needed
-                                    } catch (IOException e) {
-                                        throw new RuntimeException(e);
-                                    }
-                                })
-                                .then()
-                                .block(); // Wait for completion of the write operations
-                            os.flush();
-                        } catch (IOException e) {
-                            throw new RuntimeException(e);
-                        }
-                    });
-                } else {
-                    return Mono.empty();
-                }
-            case GET:
-            case HEAD:
-            case OPTIONS:
-            case TRACE:
-            case CONNECT:
-                return Mono.empty();
-            default:
-                throw new IllegalStateException("Unknown HTTP Method:"
-                    + httpRequest.getHttpMethod());
-        }
-    }
-
-    /**
-     * Read the response and construct the HttpResponse object
-     *
-     * @param connection Representing the HTTP response
-     * @param httpRequest The HTTP Request being sent
-     * @return A Mono containing a HttpUrlConnectionResponse object
-     */
-    private static Mono<HttpUrlConnectionResponse> readResponse(HttpURLConnection connection, HttpRequest httpRequest) {
-        return Mono.fromCallable(() -> {
-            int responseCode = connection.getResponseCode();
-
-            Map<String, List<String>> responseHeadersMap = new HashMap<>();
-            for (Map.Entry<String, List<String>> entry : connection.getHeaderFields().entrySet()) {
-                if (entry.getKey() != null) {
-                    responseHeadersMap.put(entry.getKey(), entry.getValue());
-                }
-            }
-
-            ByteArrayOutputStream outputStream = new ByteArrayOutputStream();
-            try (InputStream errorStream = connection.getErrorStream()) {
-                InputStream inputStream = (errorStream == null) ? connection.getInputStream() : errorStream;
-                byte[] buffer = new byte[1024];
-                int length;
-                while ((length = inputStream.read(buffer)) != -1) {
-                    outputStream.write(buffer, 0, length);
-                }
-            }
-
-            return new HttpUrlConnectionResponse(
-                httpRequest,
-                responseCode,
-                responseHeadersMap,
-                Flux.just(ByteBuffer.wrap(outputStream.toByteArray()))
-            );
-        }).onErrorResume(e -> Mono.error(new RuntimeException("Error reading HTTP response", e)));
     }
 }
