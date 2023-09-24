@@ -39,6 +39,10 @@
      <codesnippet.skip>false</codesnippet.skip>
      <javadocDoclet></javadocDoclet>
      <javadocDocletOptions></javadocDocletOptions>
+     <javaModulesSurefireArgLine>
+     --add-exports com.azure.core/com.azure.core.implementation.util=ALL-UNNAMED
+     --add-opens com.azure.core/com.azure.core.implementation.util=ALL-UNNAMED
+     </javaModulesSurefireArgLine>
   </properties>
 
   <dependencies>
