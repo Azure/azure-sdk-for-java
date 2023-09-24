@@ -4,17 +4,18 @@
 
 package com.azure.resourcemanager.recoveryservicessiterecovery.models;
 
-import com.azure.core.annotation.Immutable;
+import com.azure.core.annotation.Fluent;
 import com.fasterxml.jackson.annotation.JsonInclude;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import com.fasterxml.jackson.annotation.JsonTypeInfo;
 import com.fasterxml.jackson.annotation.JsonTypeName;
+import java.util.List;
 import java.util.Map;
 
 /** VMwareCbt provider specific container mapping details. */
 @JsonTypeInfo(use = JsonTypeInfo.Id.NAME, include = JsonTypeInfo.As.PROPERTY, property = "instanceType")
 @JsonTypeName("VMwareCbt")
-@Immutable
+@Fluent
 public final class VMwareCbtProtectionContainerMappingDetails
     extends ProtectionContainerMappingProviderSpecificDetails {
     /*
@@ -59,6 +60,12 @@ public final class VMwareCbtProtectionContainerMappingDetails
     @JsonProperty(value = "roleSizeToNicCountMap", access = JsonProperty.Access.WRITE_ONLY)
     @JsonInclude(value = JsonInclude.Include.NON_NULL, content = JsonInclude.Include.ALWAYS)
     private Map<String, Integer> roleSizeToNicCountMap;
+
+    /*
+     * The SKUs to be excluded.
+     */
+    @JsonProperty(value = "excludedSkus")
+    private List<String> excludedSkus;
 
     /** Creates an instance of VMwareCbtProtectionContainerMappingDetails class. */
     public VMwareCbtProtectionContainerMappingDetails() {
@@ -125,6 +132,26 @@ public final class VMwareCbtProtectionContainerMappingDetails
      */
     public Map<String, Integer> roleSizeToNicCountMap() {
         return this.roleSizeToNicCountMap;
+    }
+
+    /**
+     * Get the excludedSkus property: The SKUs to be excluded.
+     *
+     * @return the excludedSkus value.
+     */
+    public List<String> excludedSkus() {
+        return this.excludedSkus;
+    }
+
+    /**
+     * Set the excludedSkus property: The SKUs to be excluded.
+     *
+     * @param excludedSkus the excludedSkus value to set.
+     * @return the VMwareCbtProtectionContainerMappingDetails object itself.
+     */
+    public VMwareCbtProtectionContainerMappingDetails withExcludedSkus(List<String> excludedSkus) {
+        this.excludedSkus = excludedSkus;
+        return this;
     }
 
     /**
