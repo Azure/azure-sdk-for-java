@@ -105,9 +105,16 @@ public class LocationCacheTest {
     //        a) according to the hardcoding - available read regions: location1, location2; available write regions: location1, location2, location3
     @DataProvider(name = "excludedRegionsTestConfigs")
     public Object[][] excludedRegionsTestConfigs() {
+        // Parameters passed:
+        //      1. List of regions to exclude on the client / ConnectionPolicy
+        //      2. List of regions to exclude on the request
+        //      3. The request itself
+        //      4. Expected applicable read regions
+        //      5. Expected applicable write regions
         return new Object[][] {
             {
                 Arrays.asList("location1", "location2"),
+                null,
                 RxDocumentServiceRequest.create(
                     mockDiagnosticsClientContext(),
                     OperationType.Read,
@@ -117,6 +124,7 @@ public class LocationCacheTest {
             },
             {
                 Arrays.asList("location1", "location2", "location7"),
+                null,
                 RxDocumentServiceRequest.create(
                     mockDiagnosticsClientContext(),
                     OperationType.Read,
@@ -125,6 +133,7 @@ public class LocationCacheTest {
                 new HashSet<>(Arrays.asList(Location3Endpoint))
             },
             {
+                null,
                 null,
                 RxDocumentServiceRequest.create(
                     mockDiagnosticsClientContext(),
@@ -135,6 +144,7 @@ public class LocationCacheTest {
             },
             {
                 Collections.emptyList(),
+                null,
                 RxDocumentServiceRequest.create(
                     mockDiagnosticsClientContext(),
                     OperationType.Read,
@@ -144,6 +154,7 @@ public class LocationCacheTest {
             },
             {
                 Arrays.asList("location5, location10, location10"),
+                null,
                 RxDocumentServiceRequest.create(
                     mockDiagnosticsClientContext(),
                     OperationType.Read,
@@ -151,6 +162,16 @@ public class LocationCacheTest {
                 new HashSet<>(Arrays.asList(Location1Endpoint, Location2Endpoint)),
                 new HashSet<>(Arrays.asList(Location1Endpoint, Location2Endpoint, Location3Endpoint))
             },
+            {
+                Arrays.asList("location1, location2, location10"),
+                Arrays.asList("location2"),
+                RxDocumentServiceRequest.create(
+                    mockDiagnosticsClientContext(),
+                    OperationType.Read,
+                    ResourceType.Document),
+                new HashSet<>(Arrays.asList(Location1Endpoint)),
+                new HashSet<>(Arrays.asList(Location1Endpoint, Location3Endpoint))
+            }
         };
     }
 
@@ -173,7 +194,8 @@ public class LocationCacheTest {
 
     @Test(groups = "unit", dataProvider = "excludedRegionsTestConfigs")
     public void validateExcludedRegions(
-        List<String> excludedRegions,
+        List<String> excludedRegionsOnClient,
+        List<String> excludedRegionsOnRequest,
         RxDocumentServiceRequest request,
         Set<URI> expectedApplicableReadEndpoints,
         Set<URI> expectedApplicableWriteEndpoints) throws Exception {
@@ -182,7 +204,8 @@ public class LocationCacheTest {
 
         ConnectionPolicy connectionPolicy = ReflectionUtils.getConnectionPolicy(this.cache);
 
-        connectionPolicy.setExcludedRegions(excludedRegions);
+        connectionPolicy.setExcludedRegions(excludedRegionsOnClient);
+        request.requestContext.setExcludeRegions(excludedRegionsOnRequest);
 
         List<URI> applicableReadEndpoints = cache.getApplicableReadEndpoints(request);
         List<URI> applicableWriteEndpoints = cache.getApplicableWriteEndpoints(request);

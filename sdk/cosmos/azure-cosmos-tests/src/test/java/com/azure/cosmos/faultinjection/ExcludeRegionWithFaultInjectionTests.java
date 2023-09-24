@@ -98,8 +98,16 @@ public class ExcludeRegionWithFaultInjectionTests extends TestSuiteBase {
     //      this list of excluded regions.
     //      5. Validate the regions contacted when an operation is executed with CosmosItemRequestOptions / CosmosQueryRequestOptions
     //      with excluded regions set on the request option. Here, client-level excluded regions is overridden.
-    //      6. Repeat the above steps with various operation types such as a query, point reads and point writes. Choose
+    //      6. Repeat the above steps with various operation types such as a query, batch, bulk, point reads and point writes. Choose
     //      various combinations of regions to exclude and regions to inject faults into.
+    //      7. Test with the following combination excludedRegions:
+    //          a) list with excludedRegions which is a sub-list of preferredRegions
+    //          b) list with excludedRegions which is a sub-list of preferredRegions and has duplicates
+    //          c) list with excludedRegions which is not a sub-list of preferredRegions and has no duplicates
+    //          d) list with excludedRegions which is not a sub-list of preferredRegions and has duplicates
+    //          e) list which is null
+    //          f) list which is empty
+    //          g) list with excludedRegions which is the same as preferredRegions
     // MutationTestConfig is used to encapsulate all test related configs, here is a description of each property:
     //    1. chooseFaultInjectionRegions: list of regions to inject a fault into
     //    2. chooseInitialExclusionRegions: list of regions to exclude configured when building CosmosClient / CosmosAsyncClient
@@ -114,8 +122,11 @@ public class ExcludeRegionWithFaultInjectionTests extends TestSuiteBase {
     //    after mutation is done. used by patchItemCallback
     //    11. itemRequestOptionsForCallbackAfterMutation: a CosmosItemRequestOptions instance configured to be set on the data plane operation
     //    after mutation is done.
-    //    12. queryRequestOptions: a CosmosItemRequestOptions instance configured to be set on the data plane operation
+    //    12. queryRequestOptionsForCallbackAfterMutation: a CosmosItemRequestOptions instance configured to be set on the data plane operation
     //    after mutation is done. used by the queryItemCallback
+    //    13. bulkExecutionOptions: a CosmosBulkExecutionOptions instance configured to set on the data plane operation after mutation is done
+    //    14. batchRequestOptions: a CosmosBatchRequestOptions instance configured to set on the data plane operation after mutation is done
+    //    15. perRegionDuplicateCount: no. of times to duplicate a particular region in excludedRegions
     @BeforeClass(groups = {"multi-master"})
     public void beforeClass() {
         this.cosmosAsyncClient = getClientBuilder().buildAsyncClient();
@@ -571,7 +582,7 @@ public class ExcludeRegionWithFaultInjectionTests extends TestSuiteBase {
                     ))
                 },
                 {
-                    "503/21008_firstRegion_beforeMutation_excludeFirstRegion_afterMutation_excludeNoRegions_requestOptionsOverride",
+                    "503/21008_firstRegion_beforeMutation_excludeFirstRegion_afterMutation_excludeNoRegions_requestOptionsOverride_excludeLastRegion",
                     new MutationTestConfig()
                         .withChooseInitialExclusionRegions(this.chooseFirstRegion)
                         .withChooseFaultInjectionRegions(this.chooseFirstRegion)
@@ -1344,7 +1355,7 @@ public class ExcludeRegionWithFaultInjectionTests extends TestSuiteBase {
                     )),
                 },
                 {
-                    "patch_503/21008_firstRegion_beforeMutation_excludeLastRegion_afterMutation_excludeNoRegions_nonIdempotentWrite_true_requestOptionsOverride",
+                    "patch_503/21008_firstRegion_beforeMutation_excludeLastRegion_afterMutation_excludeNoRegions_nonIdempotentWrite_true_requestOptionsOverride_excludeLastRegion",
                     new MutationTestConfig()
                         .withChooseFaultInjectionRegions(this.chooseFirstRegion)
                         .withChooseInitialExclusionRegions(this.chooseLastRegion)
@@ -1662,6 +1673,28 @@ public class ExcludeRegionWithFaultInjectionTests extends TestSuiteBase {
                     ))
                 },
                 {
+                    "batchCreateAndRead_503/21008_chooseAllRegions_beforeMutation_excludeFirstRegion_afterMutation_excludeLastRegion_requestOptionsOverride_excludeFirstRegion",
+                    new MutationTestConfig()
+                        .withChooseInitialExclusionRegions(this.chooseFirstRegion)
+                        .withChooseFaultInjectionRegions(this.chooseAllRegions)
+                        .withFaultInjectionOperationType(FaultInjectionOperationType.BATCH_ITEM)
+                        .withFaultInjectionServerErrorType(FaultInjectionServerErrorType.SERVICE_UNAVAILABLE)
+                        .withDataPlaneOperationExecutor(batchCreateAndReadCallback)
+                        .withRegionExclusionMutator(this.chooseLastRegion)
+                        .withBatchRequestOptionsForCallbackAfterMutation(
+                            new CosmosBatchRequestOptions().setExcludedRegions(this.chooseFirstRegion.apply(this.preferredRegions)))
+                        .withExpectedResultBeforeMutation(new ExpectedResult(
+                            HttpConstants.StatusCodes.SERVICE_UNAVAILABLE,
+                            HttpConstants.SubStatusCodes.SERVER_GENERATED_503,
+                            this.chooseLastRegion.apply(this.preferredRegions)
+                        ))
+                        .withExpectedResultAfterMutation(new ExpectedResult(
+                            HttpConstants.StatusCodes.SERVICE_UNAVAILABLE,
+                            HttpConstants.SubStatusCodes.SERVER_GENERATED_503,
+                            this.chooseLastRegion.apply(this.preferredRegions)
+                    ))
+                },
+                {
                     "batchCreateAndRead_500/0_allRegions_beforeMutation_excludeFirstRegion_afterMutation_excludeSecondRegion",
                     new MutationTestConfig()
                         .withChooseInitialExclusionRegions(this.chooseFirstRegion)
@@ -1813,7 +1846,7 @@ public class ExcludeRegionWithFaultInjectionTests extends TestSuiteBase {
                     ))
                 },
                 {
-                    "batchCreateAndRead_500/0_chooseFirstTwoRegions_beforeMutation_excludeFirstRegion_afterMutation_excludeLastRegion_requestOptionsOverride",
+                    "batchCreateAndRead_500/0_chooseFirstTwoRegions_beforeMutation_excludeFirstRegion_afterMutation_excludeLastRegion_requestOptionsOverride_excludeFirstRegion",
                     new MutationTestConfig()
                         .withChooseInitialExclusionRegions(this.chooseFirstRegion)
                         .withChooseFaultInjectionRegions(this.chooseFirstTwoRegions)
@@ -2006,6 +2039,28 @@ public class ExcludeRegionWithFaultInjectionTests extends TestSuiteBase {
                     ))
                 },
                 {
+                    "bulkCreate_503/21008_firstRegion_beforeMutation_excludeFirstRegion_afterMutation_excludeIncorrectRegions_requestOptionsOverride_excludeFirstRegion",
+                    new MutationTestConfig()
+                        .withChooseInitialExclusionRegions(this.chooseFirstRegion)
+                        .withChooseFaultInjectionRegions(this.chooseFirstRegion)
+                        .withFaultInjectionOperationType(FaultInjectionOperationType.BATCH_ITEM)
+                        .withFaultInjectionServerErrorType(FaultInjectionServerErrorType.SERVICE_UNAVAILABLE)
+                        .withDataPlaneOperationExecutor(bulkCreateCallback)
+                        .withRegionExclusionMutator((regions) -> new ArrayList<>(Arrays.asList("Non-existent region 1", "Non-existent region 2")))
+                        .withBulkExecutionOptionsForCallbackAfterMutation(
+                            new CosmosBulkExecutionOptions().setExcludedRegions(this.chooseFirstRegion.apply(this.preferredRegions)))
+                        .withExpectedResultBeforeMutation(new ExpectedResult(
+                            HttpConstants.StatusCodes.OK,
+                            HttpConstants.SubStatusCodes.UNKNOWN,
+                            this.chooseLastRegion.apply(this.preferredRegions)
+                        ))
+                        .withExpectedResultAfterMutation(new ExpectedResult(
+                            HttpConstants.StatusCodes.OK,
+                            HttpConstants.SubStatusCodes.UNKNOWN,
+                            this.chooseLastRegion.apply(this.preferredRegions)
+                    ))
+                },
+                {
                     "bulkCreate_500/0_allRegions_beforeMutation_excludeFirstRegion_afterMutation_excludeSecondRegion",
                     new MutationTestConfig()
                         .withChooseInitialExclusionRegions(this.chooseFirstRegion)
@@ -2152,7 +2207,7 @@ public class ExcludeRegionWithFaultInjectionTests extends TestSuiteBase {
                     ))
                 },
                 {
-                    "bulkCreate_500/0_chooseFirstTwoRegions_beforeMutation_excludeFirstRegion_afterMutation_excludeLastRegion_requestOptionsOverride",
+                    "bulkCreate_500/0_chooseFirstTwoRegions_beforeMutation_excludeFirstRegion_afterMutation_excludeLastRegion_requestOptionsOverride_excludeFirstRegion",
                     new MutationTestConfig()
                         .withChooseInitialExclusionRegions(this.chooseFirstRegion)
                         .withChooseFaultInjectionRegions(this.chooseFirstTwoRegions)
