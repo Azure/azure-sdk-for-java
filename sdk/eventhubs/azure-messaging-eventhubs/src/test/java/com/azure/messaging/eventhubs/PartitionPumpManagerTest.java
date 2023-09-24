@@ -7,6 +7,7 @@ import com.azure.messaging.eventhubs.implementation.PartitionProcessor;
 import com.azure.messaging.eventhubs.implementation.PartitionProcessorException;
 import com.azure.messaging.eventhubs.implementation.instrumentation.EventHubsTracer;
 import com.azure.messaging.eventhubs.models.Checkpoint;
+import com.azure.messaging.eventhubs.models.CloseContext;
 import com.azure.messaging.eventhubs.models.ErrorContext;
 import com.azure.messaging.eventhubs.models.EventBatchContext;
 import com.azure.messaging.eventhubs.models.EventPosition;
@@ -52,6 +53,7 @@ import static org.mockito.Mockito.atMost;
 import static org.mockito.Mockito.doAnswer;
 import static org.mockito.Mockito.mock;
 import static org.mockito.Mockito.never;
+import static org.mockito.Mockito.times;
 import static org.mockito.Mockito.verify;
 import static org.mockito.Mockito.when;
 
@@ -88,7 +90,7 @@ public class PartitionPumpManagerTest {
     private AutoCloseable autoCloseable;
 
     @BeforeEach
-    public void beforeEach() {
+    public void beforeEach() throws InterruptedException {
         this.autoCloseable = MockitoAnnotations.openMocks(this);
 
         final Integer prefetch = 100;
@@ -370,7 +372,7 @@ public class PartitionPumpManagerTest {
         // Arrange
         final Supplier<PartitionProcessor> supplier = () -> partitionProcessor;
         final CountDownLatch receiveCounter = new CountDownLatch(3);
-        final boolean trackLastEnqueuedEventProperties = false;
+        final boolean trackLastEnqueuedEventProperties = true;
         final int maxBatchSize = 2;
         final Duration maxWaitTime = Duration.ofSeconds(1);
         final boolean batchReceiveMode = true;
@@ -644,5 +646,268 @@ public class PartitionPumpManagerTest {
 
         // Assert
         assertEquals(defaultEventPosition, actual);
+    }
+
+    /**
+     * Verifies that an exception thrown from user code in {@link PartitionProcessor#processError(ErrorContext)} still
+     * cleans up the partition.
+     */
+    @Test
+    public void processErrorCleansUpPartitionOnException() throws InterruptedException {
+        final Supplier<PartitionProcessor> supplier = () -> partitionProcessor;
+        final CountDownLatch receiveCounter = new CountDownLatch(3);
+
+        final boolean trackLastEnqueuedEventProperties = false;
+        final int maxBatchSize = 2;
+        final Duration maxWaitTime = Duration.ofSeconds(1);
+        final boolean batchReceiveMode = true;
+        final EventProcessorClientOptions options = new EventProcessorClientOptions()
+            .setConsumerGroup("test-consumer")
+            .setTrackLastEnqueuedEventProperties(trackLastEnqueuedEventProperties)
+            .setInitialEventPositionProvider(id -> initialPartitionPositions.get(id))
+            .setMaxBatchSize(maxBatchSize)
+            .setMaxWaitTime(maxWaitTime)
+            .setBatchReceiveMode(batchReceiveMode)
+            .setLoadBalancerUpdateInterval(Duration.ofSeconds(10))
+            .setPartitionOwnershipExpirationInterval(Duration.ofMinutes(1))
+            .setLoadBalancingStrategy(LoadBalancingStrategy.BALANCED);
+
+        final PartitionPumpManager manager = new PartitionPumpManager(checkpointStore, supplier, builder,
+            DEFAULT_TRACER, options);
+
+        // Mock events to add.
+        final EventData eventData1 = new EventData("1");
+        final PartitionEvent partitionEvent1 = new PartitionEvent(PARTITION_CONTEXT, eventData1, null);
+
+        final EventData eventData2 = new EventData("2");
+        final PartitionEvent partitionEvent2 = new PartitionEvent(PARTITION_CONTEXT, eventData2, null);
+
+        final EventData eventData3 = new EventData("3");
+        final PartitionEvent partitionEvent3 = new PartitionEvent(PARTITION_CONTEXT, eventData3, null);
+
+        final Exception testException = new IllegalStateException("Dummy exception.");
+        final Exception processErrorException = new NumberFormatException("Test exception in process error");
+
+        doAnswer(invocation -> {
+            final EventBatchContext batch = invocation.getArgument(0);
+            assertNotNull(batch.getPartitionContext());
+
+            if (batch.getEvents().isEmpty()) {
+                receiveCounter.countDown();
+            }
+
+            return null;
+        }).when(partitionProcessor).processEventBatch(any(EventBatchContext.class));
+
+        doAnswer(invocationOnMock -> {
+            throw processErrorException;
+        }).when(partitionProcessor).processError(any(ErrorContext.class));
+
+        try {
+            // Start receiving events from the partition.
+            manager.startPartitionPump(partitionOwnership, checkpoint);
+
+            receivePublisher.next(partitionEvent1, partitionEvent2, partitionEvent3);
+            receivePublisher.error(testException);
+
+            // We won't reach the countdown number because an exception receiving messages results in losing the
+            // partition.
+            final boolean await = receiveCounter.await(20, TimeUnit.SECONDS);
+            assertFalse(await);
+
+            // Verify
+            // We called the user processError
+            verify(partitionProcessor).processError(argThat(error -> testException.equals(error.getThrowable())));
+
+            // The window is 2 events, we publish 3 events before throwing an error, it should only have been called
+            // at most 1 time.
+            verify(partitionProcessor, atMost(1))
+                .processEventBatch(argThat(context -> !context.getEvents().isEmpty()));
+
+            // Assert that we cleaned up the code.
+            assertFalse(manager.getPartitionPumps().containsKey(PARTITION_ID));
+            verify(consumerAsyncClient).close();
+
+        } finally {
+            manager.stopAllPartitionPumps();
+        }
+    }
+
+    /**
+     * Verifies that an exception thrown from user code in {@link PartitionProcessor#close(CloseContext)} when handling
+     * an error, still cleans up the partition processor.
+     */
+    @Test
+    public void closeOnErrorCleansUpPartitionOnException() throws InterruptedException {
+        final Supplier<PartitionProcessor> supplier = () -> partitionProcessor;
+        final CountDownLatch receiveCounter = new CountDownLatch(3);
+        final Duration updateInterval = Duration.ofSeconds(10);
+
+        final boolean trackLastEnqueuedEventProperties = false;
+        final int maxBatchSize = 2;
+        final Duration maxWaitTime = Duration.ofSeconds(1);
+        final boolean batchReceiveMode = true;
+        final EventProcessorClientOptions options = new EventProcessorClientOptions()
+            .setConsumerGroup("test-consumer")
+            .setTrackLastEnqueuedEventProperties(trackLastEnqueuedEventProperties)
+            .setInitialEventPositionProvider(id -> initialPartitionPositions.get(id))
+            .setMaxBatchSize(maxBatchSize)
+            .setMaxWaitTime(maxWaitTime)
+            .setBatchReceiveMode(batchReceiveMode)
+            .setLoadBalancerUpdateInterval(updateInterval)
+            .setPartitionOwnershipExpirationInterval(Duration.ofMinutes(1))
+            .setLoadBalancingStrategy(LoadBalancingStrategy.BALANCED);
+
+        final PartitionPumpManager manager = new PartitionPumpManager(checkpointStore, supplier, builder,
+            DEFAULT_TRACER, options);
+
+        // Mock events to add.
+        final EventData eventData1 = new EventData("1");
+        final PartitionEvent partitionEvent1 = new PartitionEvent(PARTITION_CONTEXT, eventData1, null);
+
+        final EventData eventData2 = new EventData("2");
+        final PartitionEvent partitionEvent2 = new PartitionEvent(PARTITION_CONTEXT, eventData2, null);
+
+        final EventData eventData3 = new EventData("3");
+        final PartitionEvent partitionEvent3 = new PartitionEvent(PARTITION_CONTEXT, eventData3, null);
+
+        final Exception testException = new IllegalStateException("Dummy exception.");
+        final Exception processCloseException = new NumberFormatException("Test exception in process error");
+
+        doAnswer(invocation -> {
+            final EventBatchContext batch = invocation.getArgument(0);
+            assertNotNull(batch.getPartitionContext());
+
+            if (batch.getEvents().isEmpty()) {
+                receiveCounter.countDown();
+            }
+
+            return null;
+        }).when(partitionProcessor).processEventBatch(any(EventBatchContext.class));
+
+        doAnswer(invocationOnMock -> {
+            throw processCloseException;
+        }).when(partitionProcessor).close(any(CloseContext.class));
+
+        try {
+            // Start receiving events from the partition.
+            manager.startPartitionPump(partitionOwnership, checkpoint);
+
+            receivePublisher.next(partitionEvent1, partitionEvent2, partitionEvent3);
+            receivePublisher.error(testException);
+
+            // We won't reach the countdown number because an exception receiving messages results in losing the
+            // partition.
+            final boolean await = receiveCounter.await(20, TimeUnit.SECONDS);
+            assertFalse(await);
+
+            // Verify
+            // The window is 2 events, we publish 3 events before throwing an error, it should only have been called
+            // at most 1 time.
+            verify(partitionProcessor, atMost(1))
+                .processEventBatch(argThat(context -> !context.getEvents().isEmpty()));
+
+            // We called the user processError
+            verify(partitionProcessor).processError(argThat(error -> testException.equals(error.getThrowable())));
+
+            // We called the user close
+            verify(partitionProcessor).close(argThat(closeContext -> closeContext.getPartitionContext() != null
+                && PARTITION_ID.equals(closeContext.getPartitionContext().getPartitionId())));
+
+            // Assert that we cleaned up the code.
+            assertFalse(manager.getPartitionPumps().containsKey(PARTITION_ID));
+            verify(consumerAsyncClient).close();
+
+        } finally {
+            manager.stopAllPartitionPumps();
+        }
+    }
+
+    /**
+     * Verifies that an exception thrown from user code in {@link PartitionProcessor#close(CloseContext)} when handling
+     * a normal close operation.
+     */
+    @Test
+    public void closeCleansUpPartitionOnException() throws InterruptedException {
+        final Supplier<PartitionProcessor> supplier = () -> partitionProcessor;
+        final CountDownLatch receiveCounter = new CountDownLatch(3);
+        final Duration updateInterval = Duration.ofSeconds(10);
+
+        final boolean trackLastEnqueuedEventProperties = false;
+        final int maxBatchSize = 2;
+        final Duration maxWaitTime = Duration.ofSeconds(1);
+        final boolean batchReceiveMode = true;
+        final EventProcessorClientOptions options = new EventProcessorClientOptions()
+            .setConsumerGroup("test-consumer")
+            .setTrackLastEnqueuedEventProperties(trackLastEnqueuedEventProperties)
+            .setInitialEventPositionProvider(id -> initialPartitionPositions.get(id))
+            .setMaxBatchSize(maxBatchSize)
+            .setMaxWaitTime(maxWaitTime)
+            .setBatchReceiveMode(batchReceiveMode)
+            .setLoadBalancerUpdateInterval(updateInterval)
+            .setPartitionOwnershipExpirationInterval(Duration.ofMinutes(1))
+            .setLoadBalancingStrategy(LoadBalancingStrategy.BALANCED);
+
+        final PartitionPumpManager manager = new PartitionPumpManager(checkpointStore, supplier, builder,
+            DEFAULT_TRACER, options);
+
+        // Mock events to add.
+        final EventData eventData1 = new EventData("1");
+        final PartitionEvent partitionEvent1 = new PartitionEvent(PARTITION_CONTEXT, eventData1, null);
+
+        final EventData eventData2 = new EventData("2");
+        final PartitionEvent partitionEvent2 = new PartitionEvent(PARTITION_CONTEXT, eventData2, null);
+
+        final EventData eventData3 = new EventData("3");
+        final PartitionEvent partitionEvent3 = new PartitionEvent(PARTITION_CONTEXT, eventData3, null);
+
+        final Exception processCloseException = new NumberFormatException("Test exception in process error");
+
+        doAnswer(invocation -> {
+            final EventBatchContext batch = invocation.getArgument(0);
+            assertNotNull(batch.getPartitionContext());
+
+            if (batch.getEvents().isEmpty()) {
+                receiveCounter.countDown();
+            }
+
+            return null;
+        }).when(partitionProcessor).processEventBatch(any(EventBatchContext.class));
+
+        doAnswer(invocationOnMock -> {
+            throw processCloseException;
+        }).when(partitionProcessor).close(any(CloseContext.class));
+
+        try {
+            // Start receiving events from the partition.
+            manager.startPartitionPump(partitionOwnership, checkpoint);
+
+            receivePublisher.next(partitionEvent1, partitionEvent2, partitionEvent3);
+            receivePublisher.complete();
+
+            // We won't reach the countdown number because an exception receiving messages results in losing the
+            // partition.
+            final boolean await = receiveCounter.await(20, TimeUnit.SECONDS);
+            assertFalse(await);
+
+            // Verify
+            // The window is 2 events, we publish 3 events before completing. We expect the last window emits on close.
+            verify(partitionProcessor, times(2))
+                .processEventBatch(argThat(context -> !context.getEvents().isEmpty()));
+
+            // We called the user processError
+            verify(partitionProcessor, never()).processError(any());
+
+            // We called the user close
+            verify(partitionProcessor).close(argThat(closeContext -> closeContext.getPartitionContext() != null
+                && PARTITION_ID.equals(closeContext.getPartitionContext().getPartitionId())));
+
+            // Assert that we cleaned up the code.
+            assertFalse(manager.getPartitionPumps().containsKey(PARTITION_ID));
+            verify(consumerAsyncClient).close();
+
+        } finally {
+            manager.stopAllPartitionPumps();
+        }
     }
 }
