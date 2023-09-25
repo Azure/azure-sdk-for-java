@@ -201,6 +201,7 @@ public final class CosmosPagedFlux<T> extends ContinuablePagedFlux<String, T, Fe
         AtomicReference<Instant> startTime = new AtomicReference<>();
         AtomicLong feedResponseConsumerLatencyInNanos = new AtomicLong(0);
         AtomicInteger sequenceNumber = new AtomicInteger(1);
+        Object lockHolder = new Object();
 
         Flux<FeedResponse<T>> result =
             wrapWithTracingIfEnabled(
@@ -215,55 +216,58 @@ public final class CosmosPagedFlux<T> extends ContinuablePagedFlux<String, T, Fe
                 Context traceCtx = DiagnosticsProvider.getContextFromReactorOrNull(signal.getContextView());
 
                 DiagnosticsProvider tracerProvider = pagedFluxOptions.getDiagnosticsProvider();
-                switch (signal.getType()) {
-                    case ON_COMPLETE:
-                        this.recordFeedResponse(pagedFluxOptions, tracerProvider, response, feedResponseConsumerLatencyInNanos);
+                synchronized (lockHolder) {
+                    switch (signal.getType()) {
+                        case ON_COMPLETE:
+                            this.recordFeedResponse(pagedFluxOptions, tracerProvider, response, feedResponseConsumerLatencyInNanos);
 
-                        if (isTracerEnabled(tracerProvider)) {
-                            tracerProvider.recordFeedResponseConsumerLatency(
-                                signal,
-                                pagedFluxOptions.getDiagnosticsContextSnapshot(),
-                                Duration.ofNanos(feedResponseConsumerLatencyInNanos.get()));
+                            if (isTracerEnabled(tracerProvider)) {
+                                tracerProvider.recordFeedResponseConsumerLatency(
+                                    signal,
+                                    pagedFluxOptions.getDiagnosticsContextSnapshot(),
+                                    Duration.ofNanos(feedResponseConsumerLatencyInNanos.get()));
 
-                            tracerProvider.endSpan(pagedFluxOptions.getDiagnosticsContextSnapshot(), traceCtx);
-                        }
+                                tracerProvider.endSpan(pagedFluxOptions.getDiagnosticsContextSnapshot(), traceCtx);
+                            }
 
-                        break;
-                    case ON_NEXT:
-                        this.recordFeedResponse(pagedFluxOptions, tracerProvider, response, feedResponseConsumerLatencyInNanos);
+                            break;
+                        case ON_NEXT:
+                            this.recordFeedResponse(pagedFluxOptions, tracerProvider, response, feedResponseConsumerLatencyInNanos);
 
-                        if (isTracerEnabled(tracerProvider)) {
-                            tracerProvider.endSpan(pagedFluxOptions.getDiagnosticsContextSnapshot(), traceCtx);
-                            pagedFluxOptions.resetDiagnosticsContext(sequenceNumber.incrementAndGet());
+                            if (isTracerEnabled(tracerProvider)) {
+                                tracerProvider.endSpan(pagedFluxOptions.getDiagnosticsContextSnapshot(), traceCtx);
+                                pagedFluxOptions.resetDiagnosticsContext(sequenceNumber.incrementAndGet());
 
-                            DiagnosticsProvider.setContextInReactor(tracerProvider.startSpan(
-                                pagedFluxOptions.getSpanName(),
-                                pagedFluxOptions.getDiagnosticsContextSnapshot(),
-                                traceCtx));
-                        }
+                                DiagnosticsProvider.setContextInReactor(tracerProvider.startSpan(
+                                    pagedFluxOptions.getSpanName(),
+                                    pagedFluxOptions.getDiagnosticsContextSnapshot(),
+                                    traceCtx));
+                            }
 
-                        break;
+                            break;
 
-                    case ON_ERROR:
-                        if (isTracerEnabled(tracerProvider)) {
-                            tracerProvider.recordFeedResponseConsumerLatency(
-                                signal,
-                                pagedFluxOptions.getDiagnosticsContextSnapshot(),
-                                Duration.ofNanos(feedResponseConsumerLatencyInNanos.get()));
+                        case ON_ERROR:
+                            if (isTracerEnabled(tracerProvider)) {
+                                tracerProvider.recordFeedResponseConsumerLatency(
+                                    signal,
+                                    pagedFluxOptions.getDiagnosticsContextSnapshot(),
+                                    Duration.ofNanos(feedResponseConsumerLatencyInNanos.get()));
 
-                            // all info is extracted from CosmosException when applicable
-                            tracerProvider.endSpan(
-                                pagedFluxOptions.getDiagnosticsContextSnapshot(),
-                                traceCtx,
-                                signal.getThrowable()
-                            );
-                        }
+                                // all info is extracted from CosmosException when applicable
+                                tracerProvider.endSpan(
+                                    pagedFluxOptions.getDiagnosticsContextSnapshot(),
+                                    traceCtx,
+                                    signal.getThrowable()
+                                );
+                            }
 
-                        break;
+                            break;
 
-                    default:
-                        break;
-            }});
+                        default:
+                            break;
+                    }
+                }
+            });
 
         final DiagnosticsProvider tracerProvider = pagedFluxOptions.getDiagnosticsProvider();
         if (isTracerEnabled(tracerProvider)) {
@@ -271,17 +275,23 @@ public final class CosmosPagedFlux<T> extends ContinuablePagedFlux<String, T, Fe
                 .deferContextual(reactorCtx -> result
                     .doOnCancel(() -> {
                         Context traceCtx = DiagnosticsProvider.getContextFromReactorOrNull(reactorCtx);
-                        tracerProvider.endSpan(pagedFluxOptions.getDiagnosticsContextSnapshot(), traceCtx);
+                        synchronized (lockHolder) {
+                            tracerProvider.endSpan(pagedFluxOptions.getDiagnosticsContextSnapshot(), traceCtx);
+                        }
                     })
                     .doOnComplete(() -> {
                         Context traceCtx = DiagnosticsProvider.getContextFromReactorOrNull(reactorCtx);
-                        tracerProvider.endSpan(pagedFluxOptions.getDiagnosticsContextSnapshot(), traceCtx);
+                        synchronized(lockHolder) {
+                            tracerProvider.endSpan(pagedFluxOptions.getDiagnosticsContextSnapshot(), traceCtx);
+                        }
                     }))
                 .contextWrite(DiagnosticsProvider.setContextInReactor(
                     pagedFluxOptions.getDiagnosticsProvider().startSpan(
-                        pagedFluxOptions.getSpanName(),
-                        pagedFluxOptions.getDiagnosticsContextSnapshot(),
-                        context)));
+                    pagedFluxOptions.getSpanName(),
+                    pagedFluxOptions.getDiagnosticsContextSnapshot(),
+                    context)
+                ));
+
         }
 
         return result;
