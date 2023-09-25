@@ -58,6 +58,7 @@ public class TopQueryTests extends TestSuiteBase {
 
         int expectedTotalSize = 20;
         int expectedNumberOfPages = 3;
+        int pageSize = 9;
         int[] expectedPageLengths = new int[] { 9, 9, 2 };
 
         for (int i = 0; i < 2; i++) {
@@ -81,11 +82,24 @@ public class TopQueryTests extends TestSuiteBase {
 
             CosmosPagedFlux<InternalObjectNode> queryObservable3 = createdCollection.queryItems("SELECT TOP 20 * from c", options, InternalObjectNode.class);
 
+            // validate the pageSize in byPage() will be honored
             FeedResponseListValidator<InternalObjectNode> validator3 = new FeedResponseListValidator.Builder<InternalObjectNode>()
                     .totalSize(expectedTotalSize).numberOfPages(expectedNumberOfPages).pageLengths(expectedPageLengths)
                     .hasValidQueryMetrics(qmEnabled).build();
 
-            validateQuerySuccess(queryObservable3.byPage(), validator3, TIMEOUT);
+            validateQuerySuccess(queryObservable3.byPage(pageSize), validator3, TIMEOUT);
+
+            // validate default value will be used for byPage
+            FeedResponseListValidator<InternalObjectNode> validator4 =
+                new FeedResponseListValidator
+                    .Builder<InternalObjectNode>()
+                    .totalSize(expectedTotalSize)
+                    .numberOfPages(1)
+                    .pageLengths(new int[] { expectedTotalSize })
+                    .hasValidQueryMetrics(qmEnabled)
+                    .build();
+
+            validateQuerySuccess(queryObservable3.byPage(), validator4, TIMEOUT);
 
             if (i == 0) {
                 options.setPartitionKey(new PartitionKey(firstPk));

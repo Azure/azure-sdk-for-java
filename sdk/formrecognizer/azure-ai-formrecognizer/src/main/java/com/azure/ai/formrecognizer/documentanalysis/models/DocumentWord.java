@@ -14,6 +14,13 @@ import java.util.List;
  */
 @Immutable
 public final class DocumentWord {
+
+    /**
+     * Creates a DocumentWord object.
+     */
+    public DocumentWord() {
+    }
+
     /*
      * Text content of the word.
      */

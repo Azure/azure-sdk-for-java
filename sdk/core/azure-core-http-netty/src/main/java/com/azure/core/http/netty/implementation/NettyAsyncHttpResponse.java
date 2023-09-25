@@ -66,9 +66,10 @@ public final class NettyAsyncHttpResponse extends NettyAsyncHttpResponseBase {
 
     @Override
     public Mono<Void> writeBodyToAsync(AsynchronousByteChannel channel) {
-        return Mono.<Void>create(sink -> bodyIntern().subscribe(
-            new ByteBufWriteSubscriber(byteBuffer -> channel.write(byteBuffer).get(), sink, getContentLength())))
-            .doFinally(ignored -> close());
+        Long length = getContentLength();
+        return Mono.using(() -> this, response -> Mono.create(sink -> response.bodyIntern()
+                .subscribe(new ByteBufWriteSubscriber(byteBuffer -> channel.write(byteBuffer).get(), sink, length))),
+            NettyAsyncHttpResponse::close);
     }
 
     @Override

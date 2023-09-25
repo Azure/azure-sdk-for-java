@@ -5,7 +5,7 @@
 package com.azure.resourcemanager.redis.fluent.models;
 
 import com.azure.core.annotation.Fluent;
-import com.azure.resourcemanager.redis.models.ErrorDetail;
+import com.azure.core.management.exception.ManagementError;
 import com.azure.resourcemanager.redis.models.OperationStatusResult;
 import com.fasterxml.jackson.annotation.JsonInclude;
 import com.fasterxml.jackson.annotation.JsonProperty;
@@ -98,7 +98,7 @@ public final class OperationStatusInner extends OperationStatusResult {
 
     /** {@inheritDoc} */
     @Override
-    public OperationStatusInner withError(ErrorDetail error) {
+    public OperationStatusInner withError(ManagementError error) {
         super.withError(error);
         return this;
     }

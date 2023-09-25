@@ -1051,7 +1051,6 @@ public class CosmosClientBuilder implements
         buildConnectionPolicy();
         CosmosAsyncClient cosmosAsyncClient = new CosmosAsyncClient(this);
         if (proactiveContainerInitConfig != null) {
-
             cosmosAsyncClient.recordOpenConnectionsAndInitCachesStarted(proactiveContainerInitConfig.getCosmosContainerIdentities());
 
             Duration aggressiveWarmupDuration = proactiveContainerInitConfig
@@ -1085,6 +1084,9 @@ public class CosmosClientBuilder implements
         buildConnectionPolicy();
         CosmosClient cosmosClient = new CosmosClient(this);
         if (proactiveContainerInitConfig != null) {
+
+            cosmosClient.recordOpenConnectionsAndInitCachesStarted(proactiveContainerInitConfig.getCosmosContainerIdentities());
+
             Duration aggressiveWarmupDuration = proactiveContainerInitConfig
                     .getAggressiveWarmupDuration();
             if (aggressiveWarmupDuration != null) {
@@ -1092,6 +1094,8 @@ public class CosmosClientBuilder implements
             } else {
                 cosmosClient.openConnectionsAndInitCaches();
             }
+
+            cosmosClient.recordOpenConnectionsAndInitCachesCompleted(proactiveContainerInitConfig.getCosmosContainerIdentities());
         }
         logStartupInfo(stopwatch, cosmosClient.asyncClient());
         return cosmosClient;
@@ -1191,7 +1195,7 @@ public class CosmosClientBuilder implements
 
             DiagnosticsProvider provider = client.getDiagnosticsProvider();
             if (provider != null) {
-                tracingCfg = provider.isEnabled() + ", " + provider.isRealTracer();
+                tracingCfg = provider.getTraceConfigLog();
             }
 
             // NOTE: if changing the logging below - do not log any confidential info like master key credentials etc.

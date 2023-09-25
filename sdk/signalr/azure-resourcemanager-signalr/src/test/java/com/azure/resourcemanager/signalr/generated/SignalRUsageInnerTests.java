@@ -15,31 +15,31 @@ public final class SignalRUsageInnerTests {
         SignalRUsageInner model =
             BinaryData
                 .fromString(
-                    "{\"id\":\"qktapspwgcuert\",\"currentValue\":7020809285560485144,\"limit\":6338655194328976084,\"name\":{\"value\":\"hbmdgbbjfdd\",\"localizedValue\":\"bmbexppbhtqqro\"},\"unit\":\"p\"}")
+                    "{\"id\":\"vyvdcs\",\"currentValue\":6235593202680912824,\"limit\":7516654710743281273,\"name\":{\"value\":\"ectehf\",\"localizedValue\":\"scjeypv\"},\"unit\":\"zrkgqhcjrefovg\"}")
                 .toObject(SignalRUsageInner.class);
-        Assertions.assertEquals("qktapspwgcuert", model.id());
-        Assertions.assertEquals(7020809285560485144L, model.currentValue());
-        Assertions.assertEquals(6338655194328976084L, model.limit());
-        Assertions.assertEquals("hbmdgbbjfdd", model.name().value());
-        Assertions.assertEquals("bmbexppbhtqqro", model.name().localizedValue());
-        Assertions.assertEquals("p", model.unit());
+        Assertions.assertEquals("vyvdcs", model.id());
+        Assertions.assertEquals(6235593202680912824L, model.currentValue());
+        Assertions.assertEquals(7516654710743281273L, model.limit());
+        Assertions.assertEquals("ectehf", model.name().value());
+        Assertions.assertEquals("scjeypv", model.name().localizedValue());
+        Assertions.assertEquals("zrkgqhcjrefovg", model.unit());
     }
 
     @org.junit.jupiter.api.Test
     public void testSerialize() throws Exception {
         SignalRUsageInner model =
             new SignalRUsageInner()
-                .withId("qktapspwgcuert")
-                .withCurrentValue(7020809285560485144L)
-                .withLimit(6338655194328976084L)
-                .withName(new SignalRUsageName().withValue("hbmdgbbjfdd").withLocalizedValue("bmbexppbhtqqro"))
-                .withUnit("p");
+                .withId("vyvdcs")
+                .withCurrentValue(6235593202680912824L)
+                .withLimit(7516654710743281273L)
+                .withName(new SignalRUsageName().withValue("ectehf").withLocalizedValue("scjeypv"))
+                .withUnit("zrkgqhcjrefovg");
         model = BinaryData.fromObject(model).toObject(SignalRUsageInner.class);
-        Assertions.assertEquals("qktapspwgcuert", model.id());
-        Assertions.assertEquals(7020809285560485144L, model.currentValue());
-        Assertions.assertEquals(6338655194328976084L, model.limit());
-        Assertions.assertEquals("hbmdgbbjfdd", model.name().value());
-        Assertions.assertEquals("bmbexppbhtqqro", model.name().localizedValue());
-        Assertions.assertEquals("p", model.unit());
+        Assertions.assertEquals("vyvdcs", model.id());
+        Assertions.assertEquals(6235593202680912824L, model.currentValue());
+        Assertions.assertEquals(7516654710743281273L, model.limit());
+        Assertions.assertEquals("ectehf", model.name().value());
+        Assertions.assertEquals("scjeypv", model.name().localizedValue());
+        Assertions.assertEquals("zrkgqhcjrefovg", model.unit());
     }
 }

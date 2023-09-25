@@ -12,8 +12,8 @@ import com.azure.identity.implementation.IdentityClient;
 import com.azure.identity.util.EmptyEnvironmentConfigurationSource;
 import com.azure.identity.util.TestUtils;
 import com.microsoft.aad.msal4j.MsalServiceException;
-import org.junit.Assert;
-import org.junit.Test;
+import org.junit.jupiter.api.Assertions;
+import org.junit.jupiter.api.Test;
 import org.mockito.MockedConstruction;
 import reactor.core.publisher.Mono;
 import reactor.test.StepVerifier;
@@ -55,8 +55,8 @@ public class DefaultAzureCredentialTest {
 
             DefaultAzureCredential credential = new DefaultAzureCredentialBuilder().configuration(configuration).build();
             StepVerifier.create(credential.getToken(request1)).expectNextMatches(accessToken -> token1.equals(accessToken.getToken()) && expiresOn.getSecond() == accessToken.getExpiresAt().getSecond()).verifyComplete();
-            Assert.assertNotNull(mocked);
-            Assert.assertNotNull(ijcredential);
+            Assertions.assertNotNull(mocked);
+            Assertions.assertNotNull(ijcredential);
         }
     }
 
@@ -81,8 +81,8 @@ public class DefaultAzureCredentialTest {
             // test
             DefaultAzureCredential credential = new DefaultAzureCredentialBuilder().configuration(configuration).build();
             StepVerifier.create(credential.getToken(request)).expectNextMatches(accessToken -> token1.equals(accessToken.getToken()) && expiresAt.getSecond() == accessToken.getExpiresAt().getSecond()).verifyComplete();
-            Assert.assertNotNull(mocked);
-            Assert.assertNotNull(ijcredential);
+            Assertions.assertNotNull(mocked);
+            Assertions.assertNotNull(ijcredential);
         }
     }
 
@@ -112,8 +112,8 @@ public class DefaultAzureCredentialTest {
                 .configuration(configuration)
                 .build();
             StepVerifier.create(credential.getToken(request)).expectNextMatches(accessToken -> token1.equals(accessToken.getToken()) && expiresAt.getSecond() == accessToken.getExpiresAt().getSecond()).verifyComplete();
-            Assert.assertNotNull(mocked);
-            Assert.assertNotNull(ijcredential);
+            Assertions.assertNotNull(mocked);
+            Assertions.assertNotNull(ijcredential);
         }
     }
 
@@ -139,7 +139,7 @@ public class DefaultAzureCredentialTest {
                 .configuration(configuration)
                 .build();
             StepVerifier.create(credential.getToken(request)).expectNextMatches(accessToken -> token1.equals(accessToken.getToken()) && expiresAt.getSecond() == accessToken.getExpiresAt().getSecond()).verifyComplete();
-            Assert.assertNotNull(mocked);
+            Assertions.assertNotNull(mocked);
         }
     }
 
@@ -158,16 +158,16 @@ public class DefaultAzureCredentialTest {
             .configuration(configuration)
             .build();
         WorkloadIdentityCredential workloadIdentityCredential = credential.getWorkloadIdentityCredentialIfPresent();
-        Assert.assertNotNull(workloadIdentityCredential);
-        Assert.assertEquals(clientId, workloadIdentityCredential.getClientId());
+        Assertions.assertNotNull(workloadIdentityCredential);
+        Assertions.assertEquals(clientId, workloadIdentityCredential.getClientId());
 
         credential = new DefaultAzureCredentialBuilder()
             .managedIdentityClientId(clientId)
             .configuration(configuration)
             .build();
         workloadIdentityCredential = credential.getWorkloadIdentityCredentialIfPresent();
-        Assert.assertNotNull(workloadIdentityCredential);
-        Assert.assertEquals(clientId, workloadIdentityCredential.getClientId());
+        Assertions.assertNotNull(workloadIdentityCredential);
+        Assertions.assertEquals(clientId, workloadIdentityCredential.getClientId());
 
         configuration = TestUtils.createTestConfiguration(new TestConfigurationSource()
             .put(Configuration.PROPERTY_AZURE_AUTHORITY_HOST, AzureAuthorityHosts.AZURE_PUBLIC_CLOUD)
@@ -178,8 +178,8 @@ public class DefaultAzureCredentialTest {
             .configuration(configuration)
             .build();
         workloadIdentityCredential = credential.getWorkloadIdentityCredentialIfPresent();
-        Assert.assertNotNull(workloadIdentityCredential);
-        Assert.assertEquals(clientId, workloadIdentityCredential.getClientId());
+        Assertions.assertNotNull(workloadIdentityCredential);
+        Assertions.assertEquals(clientId, workloadIdentityCredential.getClientId());
     }
 
 
@@ -208,8 +208,8 @@ public class DefaultAzureCredentialTest {
             // test
             DefaultAzureCredential credential = new DefaultAzureCredentialBuilder().configuration(configuration).build();
             StepVerifier.create(credential.getToken(request)).expectNextMatches(accessToken -> token1.equals(accessToken.getToken()) && expiresAt.getSecond() == accessToken.getExpiresAt().getSecond()).verifyComplete();
-            Assert.assertNotNull(mocked);
-            Assert.assertNotNull(ijcredential);
+            Assertions.assertNotNull(mocked);
+            Assertions.assertNotNull(ijcredential);
         }
     }
 
@@ -238,8 +238,8 @@ public class DefaultAzureCredentialTest {
             // test
             DefaultAzureCredential credential = new DefaultAzureCredentialBuilder().configuration(configuration).build();
             StepVerifier.create(credential.getToken(request)).expectNextMatches(accessToken -> token1.equals(accessToken.getToken()) && expiresAt.getSecond() == accessToken.getExpiresAt().getSecond()).verifyComplete();
-            Assert.assertNotNull(mocked);
-            Assert.assertNotNull(ijcredential);
+            Assertions.assertNotNull(mocked);
+            Assertions.assertNotNull(ijcredential);
         }
     }
 
@@ -268,12 +268,12 @@ public class DefaultAzureCredentialTest {
             // test
             DefaultAzureCredential credential = new DefaultAzureCredentialBuilder().configuration(configuration).build();
             StepVerifier.create(credential.getToken(request)).expectErrorMatches(t -> t instanceof CredentialUnavailableException && t.getMessage().startsWith("EnvironmentCredential authentication unavailable. ")).verify();
-            Assert.assertNotNull(identityClientMock);
-            Assert.assertNotNull(sharedTokenCacheCredentialMock);
-            Assert.assertNotNull(azureCliCredentialMock);
-            Assert.assertNotNull(azureDeveloperCliCredentialMock);
-            Assert.assertNotNull(azurePowerShellCredentialMock);
-            Assert.assertNotNull(intelliJCredentialMock);
+            Assertions.assertNotNull(identityClientMock);
+            Assertions.assertNotNull(sharedTokenCacheCredentialMock);
+            Assertions.assertNotNull(azureCliCredentialMock);
+            Assertions.assertNotNull(azureDeveloperCliCredentialMock);
+            Assertions.assertNotNull(azurePowerShellCredentialMock);
+            Assertions.assertNotNull(intelliJCredentialMock);
         }
     }
 
@@ -297,11 +297,11 @@ public class DefaultAzureCredentialTest {
             // test
             DefaultAzureCredential credential = new DefaultAzureCredentialBuilder().configuration(configuration).build();
             StepVerifier.create(credential.getToken(request)).expectErrorMatches(t -> t instanceof CredentialUnavailableException && t.getMessage().startsWith("EnvironmentCredential authentication unavailable. ")).verify();
-            Assert.assertNotNull(managedIdentityCredentialMock);
-            Assert.assertNotNull(intelliJCredentialMock);
-            Assert.assertNotNull(powerShellCredentialMock);
-            Assert.assertNotNull(azureCliCredentialMock);
-            Assert.assertNotNull(azureDeveloperCliCredentialMock);
+            Assertions.assertNotNull(managedIdentityCredentialMock);
+            Assertions.assertNotNull(intelliJCredentialMock);
+            Assertions.assertNotNull(powerShellCredentialMock);
+            Assertions.assertNotNull(azureCliCredentialMock);
+            Assertions.assertNotNull(azureDeveloperCliCredentialMock);
         }
 
     }
@@ -328,24 +328,25 @@ public class DefaultAzureCredentialTest {
             try {
                 credential.getTokenSync(request);
             } catch (Exception e) {
-                Assert.assertTrue(e instanceof CredentialUnavailableException && e.getMessage().startsWith("EnvironmentCredential authentication unavailable. "));
+                Assertions.assertTrue(e instanceof CredentialUnavailableException && e.getMessage().startsWith("EnvironmentCredential authentication unavailable. "));
             }
-            Assert.assertNotNull(managedIdentityCredentialMock);
-            Assert.assertNotNull(intelliJCredentialMock);
-            Assert.assertNotNull(powerShellCredentialMock);
-            Assert.assertNotNull(azureCliCredentialMock);
-            Assert.assertNotNull(azureDeveloperCliCredentialMock);
+            Assertions.assertNotNull(managedIdentityCredentialMock);
+            Assertions.assertNotNull(intelliJCredentialMock);
+            Assertions.assertNotNull(powerShellCredentialMock);
+            Assertions.assertNotNull(azureCliCredentialMock);
+            Assertions.assertNotNull(azureDeveloperCliCredentialMock);
         }
 
     }
 
-    @Test(expected = IllegalStateException.class)
+    @Test
     public void testInvalidIdCombination() {
         // setup
         String resourceId = "/subscriptions/" + UUID.randomUUID() + "/resourcegroups/aresourcegroup/providers/Microsoft.ManagedIdentity/userAssignedIdentities/ident";
 
         // test
-        new DefaultAzureCredentialBuilder().managedIdentityClientId(CLIENT_ID).managedIdentityResourceId(resourceId).build();
+        Assertions.assertThrows(IllegalStateException.class, () -> new DefaultAzureCredentialBuilder()
+            .managedIdentityClientId(CLIENT_ID).managedIdentityResourceId(resourceId).build());
     }
 
     @Test

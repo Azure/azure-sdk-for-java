@@ -7,7 +7,7 @@ package com.azure.resourcemanager.communication.generated;
 /** Samples for SenderUsernames Delete. */
 public final class SenderUsernamesDeleteSamples {
     /*
-     * x-ms-original-file: specification/communication/resource-manager/Microsoft.Communication/stable/2023-03-31/examples/senderUsernames/delete.json
+     * x-ms-original-file: specification/communication/resource-manager/Microsoft.Communication/preview/2023-04-01-preview/examples/senderUsernames/delete.json
      */
     /**
      * Sample code: Delete SenderUsernames resource.

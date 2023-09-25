@@ -16,6 +16,7 @@ import com.azure.resourcemanager.iothub.models.CertificateListDescription;
 import java.nio.ByteBuffer;
 import java.nio.charset.StandardCharsets;
 import java.time.OffsetDateTime;
+import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.Test;
 import org.mockito.ArgumentCaptor;
 import org.mockito.Mockito;
@@ -30,7 +31,10 @@ public final class CertificatesListByIotHubWithResponseMockTests {
         ArgumentCaptor<HttpRequest> httpRequest = ArgumentCaptor.forClass(HttpRequest.class);
 
         String responseStr =
-            "{\"value\":[{\"etag\":\"l\",\"id\":\"dn\",\"name\":\"itvgbmhrixkwm\",\"type\":\"ijejvegrhbpn\"},{\"etag\":\"exccbdreaxhcexd\",\"id\":\"rvqahqkghtpwi\",\"name\":\"nhyjsv\",\"type\":\"ycxzbfvoo\"},{\"etag\":\"vmtgjqppy\",\"id\":\"s\",\"name\":\"ronzmyhgfip\",\"type\":\"sxkm\"}]}";
+            "{\"value\":[{\"properties\":{\"subject\":\"coolsttpkiwkkb\",\"expiry\":\"Mon, 31 May 2021 01:02:38"
+                + " GMT\",\"thumbprint\":\"ywvtylbfpnc\",\"isVerified\":false,\"created\":\"Sat, 16 Oct 2021 01:33:12"
+                + " GMT\",\"updated\":\"Sat, 03 Apr 2021 12:46:32"
+                + " GMT\",\"certificate\":\"thtywub\"},\"etag\":\"bihwqknfdnt\",\"id\":\"jchrdgoihxumw\",\"name\":\"ton\",\"type\":\"zj\"}]}";
 
         Mockito.when(httpResponse.getStatusCode()).thenReturn(200);
         Mockito.when(httpResponse.getHeaders()).thenReturn(new HttpHeaders());
@@ -59,6 +63,12 @@ public final class CertificatesListByIotHubWithResponseMockTests {
                     new AzureProfile("", "", AzureEnvironment.AZURE));
 
         CertificateListDescription response =
-            manager.certificates().listByIotHubWithResponse("xuvw", "fbn", com.azure.core.util.Context.NONE).getValue();
+            manager
+                .certificates()
+                .listByIotHubWithResponse("totxhojujb", "pelmcuvhixbjxyf", com.azure.core.util.Context.NONE)
+                .getValue();
+
+        Assertions.assertEquals(false, response.value().get(0).properties().isVerified());
+        Assertions.assertEquals("thtywub", response.value().get(0).properties().certificate());
     }
 }

@@ -15,12 +15,15 @@ import com.azure.core.test.utils.MockTokenCredential;
 import com.azure.core.util.Configuration;
 import com.azure.identity.DefaultAzureCredentialBuilder;
 
+import java.time.Duration;
 import java.util.Arrays;
 
 import static com.azure.ai.metricsadvisor.TestUtils.AZURE_METRICS_ADVISOR_ENDPOINT;
+import static com.azure.ai.metricsadvisor.TestUtils.DEFAULT_SUBSCRIBER_TIMEOUT_SECONDS;
 import static com.azure.ai.metricsadvisor.TestUtils.getEmailSanitizers;
 
 public abstract class MetricsAdvisorClientTestBase extends TestProxyTestBase {
+    protected static final Duration DEFAULT_TIMEOUT = Duration.ofSeconds(DEFAULT_SUBSCRIBER_TIMEOUT_SECONDS);
 
     @Override
     protected void beforeTest() {

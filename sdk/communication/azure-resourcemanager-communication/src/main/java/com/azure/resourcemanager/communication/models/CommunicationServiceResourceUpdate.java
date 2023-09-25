@@ -19,6 +19,12 @@ public final class CommunicationServiceResourceUpdate extends TaggedResource {
     @JsonProperty(value = "properties")
     private CommunicationServiceUpdateProperties innerProperties;
 
+    /*
+     * Managed service identity (system assigned and/or user assigned identities)
+     */
+    @JsonProperty(value = "identity")
+    private ManagedServiceIdentity identity;
+
     /** Creates an instance of CommunicationServiceResourceUpdate class. */
     public CommunicationServiceResourceUpdate() {
     }
@@ -30,6 +36,26 @@ public final class CommunicationServiceResourceUpdate extends TaggedResource {
      */
     private CommunicationServiceUpdateProperties innerProperties() {
         return this.innerProperties;
+    }
+
+    /**
+     * Get the identity property: Managed service identity (system assigned and/or user assigned identities).
+     *
+     * @return the identity value.
+     */
+    public ManagedServiceIdentity identity() {
+        return this.identity;
+    }
+
+    /**
+     * Set the identity property: Managed service identity (system assigned and/or user assigned identities).
+     *
+     * @param identity the identity value to set.
+     * @return the CommunicationServiceResourceUpdate object itself.
+     */
+    public CommunicationServiceResourceUpdate withIdentity(ManagedServiceIdentity identity) {
+        this.identity = identity;
+        return this;
     }
 
     /** {@inheritDoc} */
@@ -72,6 +98,9 @@ public final class CommunicationServiceResourceUpdate extends TaggedResource {
         super.validate();
         if (innerProperties() != null) {
             innerProperties().validate();
+        }
+        if (identity() != null) {
+            identity().validate();
         }
     }
 }

@@ -33,7 +33,7 @@ public final class SignalRPrivateEndpointConnectionsListMockTests {
         ArgumentCaptor<HttpRequest> httpRequest = ArgumentCaptor.forClass(HttpRequest.class);
 
         String responseStr =
-            "{\"value\":[{\"properties\":{\"provisioningState\":\"Canceled\",\"privateEndpoint\":{\"id\":\"zudphqamvdkfw\"},\"groupIds\":[\"cvtbv\",\"ayhmtnvyqiatkz\",\"pcnp\",\"zcjaesgvvsccy\"],\"privateLinkServiceConnectionState\":{\"status\":\"Pending\",\"description\":\"fhwygzlvdnkfxus\",\"actionsRequired\":\"dwzrmuh\"}},\"id\":\"pfcqdp\",\"name\":\"qxqvpsvuoymgc\",\"type\":\"elvezrypq\"}]}";
+            "{\"value\":[{\"properties\":{\"provisioningState\":\"Unknown\",\"privateEndpoint\":{\"id\":\"pugmehqe\"},\"groupIds\":[\"fhbzehewhoqhn\"],\"privateLinkServiceConnectionState\":{\"status\":\"Disconnected\",\"description\":\"ldxea\",\"actionsRequired\":\"gschorimkrsrr\"}},\"id\":\"ucsofldpuviyf\",\"name\":\"aabeolhbhlvbmxuq\",\"type\":\"bsxtkcudfbsfarfs\"}]}";
 
         Mockito.when(httpResponse.getStatusCode()).thenReturn(200);
         Mockito.when(httpResponse.getHeaders()).thenReturn(new HttpHeaders());
@@ -64,17 +64,16 @@ public final class SignalRPrivateEndpointConnectionsListMockTests {
         PagedIterable<PrivateEndpointConnection> response =
             manager
                 .signalRPrivateEndpointConnections()
-                .list("syqtfi", "whbotzingamv", com.azure.core.util.Context.NONE);
+                .list("vbopfppdbwnu", "gahxkumasjcaa", com.azure.core.util.Context.NONE);
 
-        Assertions.assertEquals("zudphqamvdkfw", response.iterator().next().privateEndpoint().id());
+        Assertions.assertEquals("pugmehqe", response.iterator().next().privateEndpoint().id());
         Assertions
             .assertEquals(
-                PrivateLinkServiceConnectionStatus.PENDING,
+                PrivateLinkServiceConnectionStatus.DISCONNECTED,
                 response.iterator().next().privateLinkServiceConnectionState().status());
+        Assertions.assertEquals("ldxea", response.iterator().next().privateLinkServiceConnectionState().description());
         Assertions
             .assertEquals(
-                "fhwygzlvdnkfxus", response.iterator().next().privateLinkServiceConnectionState().description());
-        Assertions
-            .assertEquals("dwzrmuh", response.iterator().next().privateLinkServiceConnectionState().actionsRequired());
+                "gschorimkrsrr", response.iterator().next().privateLinkServiceConnectionState().actionsRequired());
     }
 }

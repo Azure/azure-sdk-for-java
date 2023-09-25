@@ -60,6 +60,7 @@ import com.azure.cosmos.models.FeedResponse;
 import com.azure.cosmos.models.ModelBridgeInternal;
 import com.azure.cosmos.models.PartitionKey;
 import com.azure.cosmos.models.PriorityLevel;
+import com.azure.cosmos.models.SqlQuerySpec;
 import com.azure.cosmos.util.CosmosPagedFlux;
 import com.azure.cosmos.util.UtilBridgeInternal;
 import com.fasterxml.jackson.databind.JsonNode;
@@ -321,7 +322,6 @@ public class ImplementationBridgeHelpers {
             <T> Function<JsonNode, T> getItemFactoryMethod(CosmosChangeFeedRequestOptions queryRequestOptions, Class<T> classOfT);
             CosmosChangeFeedRequestOptions setItemFactoryMethod(CosmosChangeFeedRequestOptions queryRequestOptions, Function<JsonNode, ?> factoryMethod);
             CosmosDiagnosticsThresholds getDiagnosticsThresholds(CosmosChangeFeedRequestOptions options);
-            void applyMaxItemCount(CosmosChangeFeedRequestOptions requestOptions, CosmosPagedFluxOptions fluxOptions);
             List<String> getExcludeRegions(CosmosChangeFeedRequestOptions cosmosChangeFeedRequestOptions);
 
         }
@@ -372,6 +372,9 @@ public class ImplementationBridgeHelpers {
                 CosmosItemRequestOptions cosmosItemRequestOptions,
                 WriteRetryPolicy clientDefault,
                 boolean operationDefault);
+
+            CosmosEndToEndOperationLatencyPolicyConfig getEndToEndOperationLatencyPolicyConfig(
+                CosmosItemRequestOptions options);
         }
     }
 
@@ -422,10 +425,6 @@ public class ImplementationBridgeHelpers {
                 CosmosBulkExecutionOptions options,
                 double minRetryRate,
                 double maxRetryRate);
-
-            int getInitialMicroBatchSize(CosmosBulkExecutionOptions options);
-
-            CosmosBulkExecutionOptions setInitialMicroBatchSize(CosmosBulkExecutionOptions options, int initialMicroBatchSize);
 
             int getMaxMicroBatchPayloadSizeInBytes(CosmosBulkExecutionOptions options);
 
@@ -741,6 +740,8 @@ public class ImplementationBridgeHelpers {
                 String identifier,
                 String errorMessage,
                 long transportRequestId);
+
+            boolean isNotEmpty(CosmosDiagnostics cosmosDiagnostics);
         }
     }
 
@@ -898,6 +899,18 @@ public class ImplementationBridgeHelpers {
                 CosmosAsyncContainer cosmosAsyncContainer,
                 List<CosmosItemIdentity> itemIdentityList,
                 CosmosQueryRequestOptions requestOptions,
+                Class<T> classType);
+
+            <T> Function<CosmosPagedFluxOptions, Flux<FeedResponse<T>>> queryItemsInternalFunc(
+                CosmosAsyncContainer cosmosAsyncContainer,
+                SqlQuerySpec sqlQuerySpec,
+                CosmosQueryRequestOptions cosmosQueryRequestOptions,
+                Class<T> classType);
+
+            <T> Function<CosmosPagedFluxOptions, Flux<FeedResponse<T>>> queryItemsInternalFuncWithMonoSqlQuerySpec(
+                CosmosAsyncContainer cosmosAsyncContainer,
+                Mono<SqlQuerySpec> sqlQuerySpecMono,
+                CosmosQueryRequestOptions cosmosQueryRequestOptions,
                 Class<T> classType);
         }
     }
