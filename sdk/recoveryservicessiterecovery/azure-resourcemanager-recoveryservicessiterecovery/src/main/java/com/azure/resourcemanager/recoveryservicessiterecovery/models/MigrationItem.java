@@ -80,11 +80,13 @@ public interface MigrationItem {
             DefinitionStages.WithProperties,
             DefinitionStages.WithCreate {
     }
+
     /** The MigrationItem definition stages. */
     interface DefinitionStages {
         /** The first stage of the MigrationItem definition. */
         interface Blank extends WithParentResource {
         }
+
         /** The stage of the MigrationItem definition allowing to specify parent resource. */
         interface WithParentResource {
             /**
@@ -99,6 +101,7 @@ public interface MigrationItem {
             WithProperties withExistingReplicationProtectionContainer(
                 String resourceName, String resourceGroupName, String fabricName, String protectionContainerName);
         }
+
         /** The stage of the MigrationItem definition allowing to specify properties. */
         interface WithProperties {
             /**
@@ -109,6 +112,7 @@ public interface MigrationItem {
              */
             WithCreate withProperties(EnableMigrationInputProperties properties);
         }
+
         /**
          * The stage of the MigrationItem definition which contains all the minimum required properties for the resource
          * to be created, but also allows for any other optional properties to be specified.
@@ -130,6 +134,7 @@ public interface MigrationItem {
             MigrationItem create(Context context);
         }
     }
+
     /**
      * Begins update for the MigrationItem resource.
      *
@@ -154,6 +159,7 @@ public interface MigrationItem {
          */
         MigrationItem apply(Context context);
     }
+
     /** The MigrationItem update stages. */
     interface UpdateStages {
         /** The stage of the MigrationItem update allowing to specify properties. */
@@ -167,6 +173,7 @@ public interface MigrationItem {
             Update withProperties(UpdateMigrationItemInputProperties properties);
         }
     }
+
     /**
      * Refreshes the resource to sync with Azure.
      *

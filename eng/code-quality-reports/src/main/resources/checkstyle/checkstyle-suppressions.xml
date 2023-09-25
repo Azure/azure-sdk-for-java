@@ -113,7 +113,7 @@
 
   <!-- AzureSpringMonitorConfig defines Spring bean used in https://github.com/open-telemetry/opentelemetry-java-instrumentation/blob/main/instrumentation/spring/spring-boot-autoconfigure/src/main/java/io/opentelemetry/instrumentation/spring/autoconfigure/OpenTelemetryAutoConfiguration.java-->
   <suppress checks="com.azure.tools.checkstyle.checks.ExternalDependencyExposedCheck"
-            files="com.azure.monitor.applicationinsights.spring.AzureSpringMonitorConfig.java"/>
+            files="com.azure.monitor.applicationinsights.spring.AzureSpringMonitorAutoConfig.java"/>
   <!-- To be able to return a configured loggger for self-diagnostics and use it as a Spring bean-->
   <suppress checks="com.azure.tools.checkstyle.checks.ExternalDependencyExposedCheck"
             files="com.azure.monitor.applicationinsights.spring.selfdiagnostics.*Log.*Config.*.java"/>

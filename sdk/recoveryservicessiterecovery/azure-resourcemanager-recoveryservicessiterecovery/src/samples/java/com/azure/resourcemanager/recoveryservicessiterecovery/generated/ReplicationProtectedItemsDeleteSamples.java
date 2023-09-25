@@ -11,7 +11,7 @@ import com.azure.resourcemanager.recoveryservicessiterecovery.models.DisableProt
 /** Samples for ReplicationProtectedItems Delete. */
 public final class ReplicationProtectedItemsDeleteSamples {
     /*
-     * x-ms-original-file: specification/recoveryservicessiterecovery/resource-manager/Microsoft.RecoveryServices/stable/2022-10-01/examples/ReplicationProtectedItems_Delete.json
+     * x-ms-original-file: specification/recoveryservicessiterecovery/resource-manager/Microsoft.RecoveryServices/stable/2023-06-01/examples/ReplicationProtectedItems_Delete.json
      */
     /**
      * Sample code: Disables protection.

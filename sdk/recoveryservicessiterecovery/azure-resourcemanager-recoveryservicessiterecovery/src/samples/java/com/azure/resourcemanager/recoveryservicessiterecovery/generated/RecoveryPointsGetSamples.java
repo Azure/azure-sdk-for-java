@@ -7,7 +7,7 @@ package com.azure.resourcemanager.recoveryservicessiterecovery.generated;
 /** Samples for RecoveryPoints Get. */
 public final class RecoveryPointsGetSamples {
     /*
-     * x-ms-original-file: specification/recoveryservicessiterecovery/resource-manager/Microsoft.RecoveryServices/stable/2022-10-01/examples/RecoveryPoints_Get.json
+     * x-ms-original-file: specification/recoveryservicessiterecovery/resource-manager/Microsoft.RecoveryServices/stable/2023-06-01/examples/RecoveryPoints_Get.json
      */
     /**
      * Sample code: Gets a recovery point.

@@ -5,7 +5,7 @@ package com.azure.ai.openai.usage;
 
 import com.azure.ai.openai.OpenAIAsyncClient;
 import com.azure.ai.openai.OpenAIClientBuilder;
-import com.azure.ai.openai.models.AudioTranscriptionFormat;
+import com.azure.ai.openai.models.AudioTranslationFormat;
 import com.azure.ai.openai.models.AudioTranslationOptions;
 import com.azure.core.credential.AzureKeyCredential;
 import com.azure.core.util.BinaryData;
@@ -36,7 +36,7 @@ public class AudioTranslationAsyncSample {
             .buildAsyncClient();
         byte[] file = BinaryData.fromFile(filePath).toBytes();
         AudioTranslationOptions translationOptions = new AudioTranslationOptions(file)
-            .setResponseFormat(AudioTranscriptionFormat.JSON);
+            .setResponseFormat(AudioTranslationFormat.JSON);
 
         client.getAudioTranslation(deploymentOrModelId, fileName, translationOptions)
             .subscribe(translation -> {
