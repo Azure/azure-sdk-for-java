@@ -16,34 +16,36 @@ public final class PatchExtensionPropertiesTests {
         PatchExtensionProperties model =
             BinaryData
                 .fromString(
-                    "{\"autoUpgradeMinorVersion\":true,\"releaseTrain\":\"rtfw\",\"version\":\"k\",\"configurationSettings\":{\"yejhk\":\"udccsnhsjc\",\"kkvnipjox\":\"yhtnapczwlokjye\",\"podmailzydehojwy\":\"jnchgej\"},\"configurationProtectedSettings\":{\"ixjsprozvcputeg\":\"xinpmqnjaq\",\"atscmd\":\"vwmf\",\"zkrwfn\":\"pjhulsuuvmkj\"}}")
+                    "{\"autoUpgradeMinorVersion\":false,\"releaseTrain\":\"bkpodepooginuv\",\"version\":\"iheogna\",\"configurationSettings\":{\"o\":\"xth\",\"cciqihnhungbwjz\":\"usivye\",\"kufubljo\":\"nfygxgispemvtz\",\"v\":\"xqeofjaeqjhqjba\"},\"configurationProtectedSettings\":{\"gsntnbybkzgcwr\":\"jqul\",\"skcqvkocrcjd\":\"clxxwrljdo\",\"lssai\":\"wtnhxbnjbiksqr\"}}")
                 .toObject(PatchExtensionProperties.class);
-        Assertions.assertEquals(true, model.autoUpgradeMinorVersion());
-        Assertions.assertEquals("rtfw", model.releaseTrain());
-        Assertions.assertEquals("k", model.version());
-        Assertions.assertEquals("udccsnhsjc", model.configurationSettings().get("yejhk"));
-        Assertions.assertEquals("xinpmqnjaq", model.configurationProtectedSettings().get("ixjsprozvcputeg"));
+        Assertions.assertEquals(false, model.autoUpgradeMinorVersion());
+        Assertions.assertEquals("bkpodepooginuv", model.releaseTrain());
+        Assertions.assertEquals("iheogna", model.version());
+        Assertions.assertEquals("xth", model.configurationSettings().get("o"));
+        Assertions.assertEquals("jqul", model.configurationProtectedSettings().get("gsntnbybkzgcwr"));
     }
 
     @org.junit.jupiter.api.Test
     public void testSerialize() throws Exception {
         PatchExtensionProperties model =
             new PatchExtensionProperties()
-                .withAutoUpgradeMinorVersion(true)
-                .withReleaseTrain("rtfw")
-                .withVersion("k")
+                .withAutoUpgradeMinorVersion(false)
+                .withReleaseTrain("bkpodepooginuv")
+                .withVersion("iheogna")
                 .withConfigurationSettings(
-                    mapOf("yejhk", "udccsnhsjc", "kkvnipjox", "yhtnapczwlokjye", "podmailzydehojwy", "jnchgej"))
+                    mapOf(
+                        "o", "xth", "cciqihnhungbwjz", "usivye", "kufubljo", "nfygxgispemvtz", "v", "xqeofjaeqjhqjba"))
                 .withConfigurationProtectedSettings(
-                    mapOf("ixjsprozvcputeg", "xinpmqnjaq", "atscmd", "vwmf", "zkrwfn", "pjhulsuuvmkj"));
+                    mapOf("gsntnbybkzgcwr", "jqul", "skcqvkocrcjd", "clxxwrljdo", "lssai", "wtnhxbnjbiksqr"));
         model = BinaryData.fromObject(model).toObject(PatchExtensionProperties.class);
-        Assertions.assertEquals(true, model.autoUpgradeMinorVersion());
-        Assertions.assertEquals("rtfw", model.releaseTrain());
-        Assertions.assertEquals("k", model.version());
-        Assertions.assertEquals("udccsnhsjc", model.configurationSettings().get("yejhk"));
-        Assertions.assertEquals("xinpmqnjaq", model.configurationProtectedSettings().get("ixjsprozvcputeg"));
+        Assertions.assertEquals(false, model.autoUpgradeMinorVersion());
+        Assertions.assertEquals("bkpodepooginuv", model.releaseTrain());
+        Assertions.assertEquals("iheogna", model.version());
+        Assertions.assertEquals("xth", model.configurationSettings().get("o"));
+        Assertions.assertEquals("jqul", model.configurationProtectedSettings().get("gsntnbybkzgcwr"));
     }
 
+    // Use "Map.of" if available
     @SuppressWarnings("unchecked")
     private static <T> Map<String, T> mapOf(Object... inputs) {
         Map<String, T> map = new HashMap<>();
