@@ -1032,6 +1032,7 @@
         "Dcheckstyle",
         "Dcodesnippet",
         "Djacoco",
+        "Djava",
         "Dparallel",
         "Drevapi",
         "Dskip",

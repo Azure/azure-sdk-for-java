@@ -33,8 +33,9 @@ For more information, please read [introduction to Application Insights][applica
 You have to disable the JAR signature verification to be able to generate a native image ([see](https://github.com/Azure/azure-sdk-for-java/issues/30320
 )).
 
-You can do this in the following way for GraalVM Native Build Tools and Maven:
+You can do this in the following way for GraalVM Native Build Tools:
 
+* Maven
 ```xml
 <plugin>
     <groupId>org.graalvm.buildtools</groupId>
@@ -47,8 +48,7 @@ You can do this in the following way for GraalVM Native Build Tools and Maven:
 </plugin>
 ```
 
-With Gradle:
-
+* Gradle:
 ```groovy
 graalvmNative {
   binaries {
