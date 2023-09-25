@@ -8,7 +8,7 @@
     - `KeyVaultRoleDefinitionType`
     - `KeyVaultRoleScope`
     - `KeyVaultRoleType`
-- `KeyVaultSettingType`
+    - `KeyVaultSettingType`
   Functionality remains the same as the aforementioned method simply calls the implementation in the parent class.
 - Migrate test recordings to assets repo.
 
