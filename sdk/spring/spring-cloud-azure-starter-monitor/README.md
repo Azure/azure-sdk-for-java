@@ -35,6 +35,7 @@ You have to disable the JAR signature verification to be able to generate a nati
 
 You can do this in the following way for GraalVM Native Build Tools:
 * With Maven
+
 ```xml
 <plugin>
     <groupId>org.graalvm.buildtools</groupId>
@@ -47,6 +48,7 @@ You can do this in the following way for GraalVM Native Build Tools:
 </plugin>
 ```
 * With Gradle
+
 ```groovy
 graalvmNative {
   binaries {
