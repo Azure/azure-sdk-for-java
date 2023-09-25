@@ -74,19 +74,6 @@ import static com.azure.messaging.servicebus.implementation.ServiceBusConstants.
  * </pre>
  * <!-- end com.azure.messaging.servicebus.servicebusreceiverasyncclient.instantiation -->
  *
- * <p><strong>Create an instance of receiver using default credential</strong></p>
- * <!-- src_embed com.azure.messaging.servicebus.servicebusreceiverasyncclient.instantiateWithDefaultCredential -->
- * <pre>
- * &#47;&#47; The required parameters is connectionString, a way to authenticate with Service Bus using credentials.
- * ServiceBusReceiverAsyncClient receiver = new ServiceBusClientBuilder&#40;&#41;
- *     .credential&#40;&quot;&lt;&lt;fully-qualified-namespace&gt;&gt;&quot;,
- *         new DefaultAzureCredentialBuilder&#40;&#41;.build&#40;&#41;&#41;
- *     .receiver&#40;&#41;
- *     .queueName&#40;&quot;&lt;&lt; QUEUE NAME &gt;&gt;&quot;&#41;
- *     .buildAsyncClient&#40;&#41;;
- * </pre>
- * <!-- end com.azure.messaging.servicebus.servicebusreceiverasyncclient.instantiateWithDefaultCredential -->
- *
  * <p><strong>Receive all messages from Service Bus resource</strong></p>
  * <p>This returns an infinite stream of messages from Service Bus. The stream ends when the subscription is disposed
  * or other terminal scenarios. See {@link #receiveMessages()} for more information.</p>

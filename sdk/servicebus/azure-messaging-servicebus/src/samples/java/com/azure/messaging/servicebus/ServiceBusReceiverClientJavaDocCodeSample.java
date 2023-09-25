@@ -3,30 +3,39 @@
 
 package com.azure.messaging.servicebus;
 
+import com.azure.core.credential.TokenCredential;
 import com.azure.core.util.BinaryData;
+import com.azure.core.util.IterableStream;
+import com.azure.identity.DefaultAzureCredentialBuilder;
 import com.azure.messaging.servicebus.models.AbandonOptions;
 import com.azure.messaging.servicebus.models.CompleteOptions;
 import org.junit.jupiter.api.Test;
+import reactor.core.publisher.Flux;
+import reactor.core.publisher.Mono;
+
+import java.time.Duration;
 
 /**
- * Code snippets demonstrating various {@link ServiceBusReceiverClient} scenarios.
+ * Code snippets demonstrating various {@link ServiceBusReceiverClient} and {@link ServiceBusReceiverAsyncClient}.
  */
 public class ServiceBusReceiverClientJavaDocCodeSample {
-    // The required parameters is connectionString, a way to authenticate with Service Bus using credentials.
-    // The connectionString/queueName must be set by the application. The 'connectionString' format is shown below.
-    // 1. "Endpoint={fully-qualified-namespace};SharedAccessKeyName={policy-name};SharedAccessKey={key}"
-    // 2. "<<fully-qualified-namespace>>" will look similar to "{your-namespace}.servicebus.windows.net"
-    // 3. "queueName" will be the name of the Service Bus queue instance you created
-    //    inside the Service Bus namespace.
-    String connectionString = System.getenv("AZURE_SERVICEBUS_NAMESPACE_CONNECTION_STRING");
-    String queueName = System.getenv("AZURE_SERVICEBUS_SAMPLE_QUEUE_NAME");
-    String sessionQueueName = System.getenv("AZURE_SERVICEBUS_SAMPLE_SESSION_QUEUE_NAME");
-
-    ServiceBusReceiverClient receiver = new ServiceBusClientBuilder()
-        .connectionString(connectionString)
-        .receiver()
-        .queueName(queueName)
-        .buildClient();
+    /**
+     * Fully qualified namespace is the host name of the Service Bus resource.  It can be found by navigating to the
+     * Service Bus namespace and looking in the "Essentials" panel.
+     */
+    private final String fullyQualifiedNamespace = System.getenv("AZURE_SERVICEBUS_FULLY_QUALIFIED_DOMAIN_NAME");
+    /**
+     * Name of a queue inside the Service Bus namespace.
+     */
+    private final String queueName = System.getenv("AZURE_SERVICEBUS_SAMPLE_QUEUE_NAME");
+    /**
+     * Name of a topic inside the Service Bus namespace.
+     */
+    private final String topicName = System.getenv("AZURE_SERVICEBUS_SAMPLE_TOPIC_NAME");
+    /**
+     * Name of a subscription associated with the {@link #topicName}.
+     */
+    private final String subscriptionName = System.getenv("AZURE_SERVICEBUS_SAMPLE_SUBSCRIPTION_NAME");
 
     /**
      * Code snippet for creating an ServiceBusReceiverClient
@@ -34,12 +43,14 @@ public class ServiceBusReceiverClientJavaDocCodeSample {
     @Test
     public void instantiate() {
         // BEGIN: com.azure.messaging.servicebus.servicebusreceiverclient.instantiation
-        // The required parameters is connectionString, a way to authenticate with Service Bus using credentials.
-        // The connectionString/queueName must be set by the application. The 'connectionString' format is shown below.
-        // "Endpoint={fully-qualified-namespace};SharedAccessKeyName={policy-name};SharedAccessKey={key}"
+        TokenCredential credential = new DefaultAzureCredentialBuilder().build();
+
+        // 'fullyQualifiedNamespace' will look similar to "{your-namespace}.servicebus.windows.net"
+        // 'disableAutoComplete' indicates that users will explicitly settle their message.
         ServiceBusReceiverClient receiver = new ServiceBusClientBuilder()
-            .connectionString(connectionString)
+            .credential(fullyQualifiedNamespace, credential)
             .receiver()
+            .disableAutoComplete()
             .queueName(queueName)
             .buildClient();
 
@@ -49,24 +60,97 @@ public class ServiceBusReceiverClientJavaDocCodeSample {
     }
 
     /**
+     * Code snippet for creating an ServiceBusReceiverClient
+     */
+    @Test
+    public void instantiateAsync() {
+        // BEGIN: com.azure.messaging.servicebus.servicebusreceiverasyncclient.instantiation
+        TokenCredential credential = new DefaultAzureCredentialBuilder().build();
+
+        // 'fullyQualifiedNamespace' will look similar to "{your-namespace}.servicebus.windows.net"
+        // 'disableAutoComplete' indicates that users will explicitly settle their message.
+        ServiceBusReceiverAsyncClient asyncReceiver = new ServiceBusClientBuilder()
+            .credential(fullyQualifiedNamespace, credential)
+            .receiver()
+            .disableAutoComplete()
+            .queueName(queueName)
+            .buildAsyncClient();
+
+        // Use the receiver and finally close it.
+        asyncReceiver.close();
+        // END: com.azure.messaging.servicebus.servicebusreceiverasyncclient.instantiation
+    }
+
+    /**
      * Demonstrates how to create a session receiver for a single, first available session.
      */
     public void sessionReceiverSingleInstantiation() {
         // BEGIN: com.azure.messaging.servicebus.servicebusreceiverclient.instantiation#nextsession
-        // The connectionString/sessionQueueName must be set by the application. The 'connectionString' format is shown below.
-        // "Endpoint={fully-qualified-namespace};SharedAccessKeyName={policy-name};SharedAccessKey={key}"
+        TokenCredential credential = new DefaultAzureCredentialBuilder().build();
+
+        // 'fullyQualifiedNamespace' will look similar to "{your-namespace}.servicebus.windows.net"
+        // 'disableAutoComplete' indicates that users will explicitly settle their message.
         ServiceBusSessionReceiverClient sessionReceiver = new ServiceBusClientBuilder()
-            .connectionString(
-                "Endpoint={fully-qualified-namespace};SharedAccessKeyName={policy-name};SharedAccessKey={key}")
+            .credential(fullyQualifiedNamespace, credential)
             .sessionReceiver()
-            .queueName("<< QUEUE NAME >>")
+            .disableAutoComplete()
+            .queueName(queueName)
             .buildClient();
+
+        // Creates a client to receive messages from the first available session. It waits until
+        // AmqpRetryOptions.getTryTimeout() elapses. If no session is available within that operation timeout, it
+        // throws a retriable error. Otherwise, a receiver is returned when a lock on the session is acquired.
         ServiceBusReceiverClient receiver = sessionReceiver.acceptNextSession();
 
         // Use the receiver and finally close it along with the sessionReceiver.
-        receiver.close();
-        sessionReceiver.close();
+        try {
+            IterableStream<ServiceBusReceivedMessage> receivedMessages =
+                receiver.receiveMessages(10, Duration.ofSeconds(30));
+
+            for (ServiceBusReceivedMessage message : receivedMessages) {
+                System.out.println("Body: " + message);
+            }
+        } finally {
+            receiver.close();
+            sessionReceiver.close();
+        }
+
         // END: com.azure.messaging.servicebus.servicebusreceiverclient.instantiation#nextsession
+    }
+
+    /**
+     * Demonstrates how to create a session receiver for a single, first available session for
+     * {@link ServiceBusReceiverAsyncClient}.
+     */
+    public void sessionReceiverSingleInstantiationAsync() {
+        // BEGIN: com.azure.messaging.servicebus.servicebusreceiverasyncclient.instantiation#nextsession
+        TokenCredential credential = new DefaultAzureCredentialBuilder().build();
+
+        // 'fullyQualifiedNamespace' will look similar to "{your-namespace}.servicebus.windows.net"
+        // 'disableAutoComplete' indicates that users will explicitly settle their message.
+        ServiceBusSessionReceiverAsyncClient sessionReceiver = new ServiceBusClientBuilder()
+            .credential(fullyQualifiedNamespace, credential)
+            .sessionReceiver()
+            .disableAutoComplete()
+            .queueName(queueName)
+            .buildAsyncClient();
+
+        // Creates a client to receive messages from the first available session. It waits until
+        // AmqpRetryOptions.getTryTimeout() elapses. If no session is available within that operation timeout, it
+        // completes with a retriable error. Otherwise, a receiver is returned when a lock on the session is acquired.
+        Mono<ServiceBusReceiverAsyncClient> receiverMono = sessionReceiver.acceptNextSession();
+
+        // Use the receiver and finally close it along with the sessionReceiver.
+        Flux.usingWhen(receiverMono,
+                receiver -> receiver.receiveMessages(),
+                receiver -> Mono.fromRunnable(() -> {
+                    receiver.close();
+                    sessionReceiver.close();
+                }))
+            .subscribe(message -> {
+                System.out.println("Received message: " + message.getBody());
+            });
+        // END: com.azure.messaging.servicebus.servicebusreceiverasyncclient.instantiation#nextsession
     }
 
     /**
@@ -82,7 +166,7 @@ public class ServiceBusReceiverClientJavaDocCodeSample {
             .sessionReceiver()
             .queueName(sessionQueueName)
             .buildClient();
-        ServiceBusReceiverClient receiver = sessionReceiver.acceptSession("<< my-session-id >>");
+        ServiceBusReceiverClient receiver = sessionReceiver.acceptSession("<<my-session-id>>");
 
         // Use the receiver and finally close it along with the sessionReceiver.
         receiver.close();
@@ -109,5 +193,36 @@ public class ServiceBusReceiverClientJavaDocCodeSample {
         // END: com.azure.messaging.servicebus.servicebusreceiverclient.committransaction#servicebustransactioncontext
 
         receiver.close();
+    }
+
+    @Test
+    public void connectionSharingAcrossClients() {
+        // BEGIN: com.azure.messaging.servicebus.connection.sharing
+        TokenCredential credential = new DefaultAzureCredentialBuilder().build();
+
+        // Retrieve 'connectionString' and 'queueName' from your configuration.
+        // 'fullyQualifiedNamespace' will look similar to "{your-namespace}.servicebus.windows.net"
+        ServiceBusClientBuilder sharedConnectionBuilder = new ServiceBusClientBuilder()
+            .credential(fullyQualifiedNamespace, credential);
+
+        // Create receiver and sender which will share the connection.
+        ServiceBusReceiverClient receiver = sharedConnectionBuilder
+            .receiver()
+            .queueName(queueName)
+            .buildClient();
+        ServiceBusSenderClient sender = sharedConnectionBuilder
+            .sender()
+            .queueName(queueName)
+            .buildClient();
+
+        // Use the clients and finally close them.
+        try {
+            sender.sendMessage(new ServiceBusMessage("payload"));
+            receiver.receiveMessages(1);
+        } finally {
+            sender.close();
+            receiver.close();
+        }
+        // END: com.azure.messaging.servicebus.connection.sharing
     }
 }

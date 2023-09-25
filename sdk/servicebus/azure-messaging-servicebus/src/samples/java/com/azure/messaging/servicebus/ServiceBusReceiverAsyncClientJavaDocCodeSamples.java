@@ -33,42 +33,10 @@ public class ServiceBusReceiverAsyncClientJavaDocCodeSamples {
     String queueName = System.getenv("AZURE_SERVICEBUS_SAMPLE_QUEUE_NAME");
 
     ServiceBusReceiverAsyncClient receiver = new ServiceBusClientBuilder()
-
         .connectionString(connectionString)
         .receiver()
         .queueName(queueName)
         .buildAsyncClient();
-
-    @Test
-    public void initialization() {
-        // BEGIN: com.azure.messaging.servicebus.servicebusreceiverasyncclient.instantiation
-        // The required parameters is connectionString, a way to authenticate with Service Bus using credentials.
-        // The connectionString/queueName must be set by the application. The 'connectionString' format is shown below.
-        // "Endpoint={fully-qualified-namespace};SharedAccessKeyName={policy-name};SharedAccessKey={key}"
-
-        ServiceBusReceiverAsyncClient consumer = new ServiceBusClientBuilder()
-            .connectionString(connectionString)
-            .receiver()
-            .queueName(queueName)
-            .buildAsyncClient();
-        // END: com.azure.messaging.servicebus.servicebusreceiverasyncclient.instantiation
-
-        consumer.close();
-    }
-
-    public void instantiateWithDefaultCredential() {
-        // BEGIN: com.azure.messaging.servicebus.servicebusreceiverasyncclient.instantiateWithDefaultCredential
-        // The required parameters is connectionString, a way to authenticate with Service Bus using credentials.
-        ServiceBusReceiverAsyncClient receiver = new ServiceBusClientBuilder()
-            .credential("<<fully-qualified-namespace>>",
-                new DefaultAzureCredentialBuilder().build())
-            .receiver()
-            .queueName("<< QUEUE NAME >>")
-            .buildAsyncClient();
-        // END: com.azure.messaging.servicebus.servicebusreceiverasyncclient.instantiateWithDefaultCredential
-
-        receiver.close();
-    }
 
     /**
      * Receives message from a queue or topic using receive and delete mode.

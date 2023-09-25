@@ -87,7 +87,7 @@ import static com.azure.messaging.servicebus.implementation.ServiceBusConstants.
  * <!-- end com.azure.messaging.servicebus.sender.sync.client.instantiation -->
  *
  * <p><strong>Instantiate an asynchronous receiver</strong></p>
- * <!-- src_embed com.azure.messaging.servicebus.receiver.async.client.instantiation -->
+ * <!-- src_embed com.azure.messaging.servicebus.servicebusreceiverasyncclient.instantiation -->
  * <pre>
  * &#47;&#47; Retrieve 'connectionString', 'topicName' and 'subscriptionName' from your configuration.
  * ServiceBusClientBuilder builder = new ServiceBusClientBuilder&#40;&#41;
@@ -99,10 +99,10 @@ import static com.azure.messaging.servicebus.implementation.ServiceBusConstants.
  *     .subscriptionName&#40;subscriptionName&#41;
  *     .buildAsyncClient&#40;&#41;;
  * </pre>
- * <!-- end com.azure.messaging.servicebus.receiver.async.client.instantiation -->
+ * <!-- end com.azure.messaging.servicebus.servicebusreceiverasyncclient.instantiation -->
  *
  * <p><strong>Instantiate an asynchronous session receiver</strong></p>
- * <!-- src_embed com.azure.messaging.servicebus.session.receiver.async.client.instantiation -->
+ * <!-- src_embed com.azure.messaging.servicebus.servicebusreceiverasyncclient.instantiation#nextsession -->
  * <pre>
  * &#47;&#47; Retrieve 'connectionString', 'topicName' and 'subscriptionName' from your configuration.
  * ServiceBusSessionReceiverAsyncClient sessionReceiver = new ServiceBusClientBuilder&#40;&#41;
@@ -123,7 +123,7 @@ import static com.azure.messaging.servicebus.implementation.ServiceBusConstants.
  *     receiver -&gt; Mono.fromRunnable&#40;receiver::close&#41;&#41;
  *     .subscribe&#40;message -&gt; System.out.println&#40;message.getBody&#40;&#41;.toString&#40;&#41;&#41;&#41;;
  * </pre>
- * <!-- end com.azure.messaging.servicebus.session.receiver.async.client.instantiation -->
+ * <!-- end com.azure.messaging.servicebus.servicebusreceiverasyncclient.instantiation#nextsession -->
  *
  * <p><strong>Instantiate the processor</strong></p>
  * <!-- src_embed com.azure.messaging.servicebus.processor.client.instantiation -->
