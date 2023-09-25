@@ -600,7 +600,7 @@ public class BlobTestBase extends TestProxyTestBase {
      * timeout value--about 20s/MB. Won't be less than 1 minute.
      */
     protected BlobServiceAsyncClient getPrimaryServiceClientForWrites(long perRequestDataSize) {
-        int retryTimeout = Math.toIntExact((perRequestDataSize / Constants.MB) * 20);
+        int retryTimeout = Math.toIntExact((perRequestDataSize / (long) Constants.MB) * 20L);
         retryTimeout = Math.max(60, retryTimeout);
         return getServiceClientBuilder(ENVIRONMENT.getPrimaryAccount().getCredential(),
             ENVIRONMENT.getPrimaryAccount().getBlobEndpoint())

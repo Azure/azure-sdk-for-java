@@ -1769,6 +1769,10 @@ class BlockBlobAPITest extends APISpec {
                  * Verify that the reporting count is equal or greater than the size divided by block size in the case
                  * that operations need to be retried. Retry attempts will increment the reporting count.
                  */
+                println "Reporting count: ${uploadListener.getReportingCount()}"
+                println "Size: ${size}"
+                println "Block size: ${blockSize}"
+                println "result: " + (uploadListener.getReportingCount() >= (long) (size / blockSize))
                 assert uploadListener.getReportingCount() >= (long) (size / blockSize)
             }).verifyComplete()
 
