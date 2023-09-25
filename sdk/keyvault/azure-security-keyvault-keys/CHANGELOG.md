@@ -2,6 +2,9 @@
 
 ## 4.7.0 (2023-09-25)
 
+### Bugs fixed
+- Added a fallback mechanism to use service-side cryptography if not possible to perform operations locally. ([#36657](https://github.com/Azure/azure-sdk-for-java/pull/36657))
+
 ### Other Changes
 - Due to internal client changes, made `KeyEncryptionKeyClient` extend `CryptographyClient`, mirroring their async counterparts. Functionality remains intact.
 - Migrate test recordings to assets repo.
