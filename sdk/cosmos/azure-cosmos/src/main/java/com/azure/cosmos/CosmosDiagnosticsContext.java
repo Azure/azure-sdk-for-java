@@ -296,7 +296,7 @@ public final class CosmosDiagnosticsContext {
             return;
         }
 
-        synchronized (this.spanName) {
+        synchronized (this) {
             if (this.samplingRateSnapshot != null) {
                 diagAccessor.setSamplingRateSnapshot(cosmosDiagnostics, this.samplingRateSnapshot);
             }
@@ -400,15 +400,13 @@ public final class CosmosDiagnosticsContext {
      * a custom {@link CosmosDiagnosticsHandler}
      * @return the system usage
      */
-    public Map<String, Object> getSystemUsage() {
-        synchronized (this.spanName) {
+    public synchronized Map<String, Object> getSystemUsage() {
             Map<String, Object> snapshot = this.systemUsage;
             if (snapshot != null) {
                 return snapshot;
             }
 
             return this.systemUsage = ClientSideRequestStatistics.fetchSystemInformation().toMap();
-        }
     }
 
     /**
@@ -436,22 +434,16 @@ public final class CosmosDiagnosticsContext {
         return c.getRetryContext().getRetryCount();
     }
 
-    void addRequestCharge(float requestCharge) {
-        synchronized (this.spanName) {
-            this.totalRequestCharge += requestCharge;
-        }
+    synchronized void addRequestCharge(float requestCharge) {
+        this.totalRequestCharge += requestCharge;
     }
 
-    void addRequestSize(int bytes) {
-        synchronized (this.spanName) {
-            this.maxRequestSize = Math.max(this.maxRequestSize, bytes);
-        }
+    synchronized void addRequestSize(int bytes) {
+        this.maxRequestSize = Math.max(this.maxRequestSize, bytes);
     }
 
-    void addResponseSize(int bytes) {
-        synchronized (this.spanName) {
-            this.maxResponseSize = Math.max(this.maxResponseSize, bytes);
-        }
+    synchronized void addResponseSize(int bytes) {
+        this.maxResponseSize = Math.max(this.maxResponseSize, bytes);
     }
 
     /**
@@ -491,16 +483,14 @@ public final class CosmosDiagnosticsContext {
         return this.thresholds.isFailureCondition(this.statusCode, this.subStatusCode);
     }
 
-    void startOperation() {
-        synchronized (this.spanName) {
-            boolean startTimeIsNull = this.startTime == null;
-            checkState(
-                startTimeIsNull,
-                "Method 'startOperation' must not be called multiple times.");
-            this.startTime = Instant.now();
+    synchronized void startOperation() {
+        boolean startTimeIsNull = this.startTime == null;
+        checkState(
+            startTimeIsNull,
+            "Method 'startOperation' must not be called multiple times.");
+        this.startTime = Instant.now();
 
-            this.cachedRequestDiagnostics = null;
-        }
+        this.cachedRequestDiagnostics = null;
     }
 
     synchronized boolean endOperation(int statusCode,
@@ -509,15 +499,13 @@ public final class CosmosDiagnosticsContext {
                                       Double requestCharge,
                                       CosmosDiagnostics diagnostics,
                                       Throwable finalError) {
-        synchronized (this.spanName) {
-            boolean hasCompletedOperation = this.isCompleted.compareAndSet(false, true);
-            if (hasCompletedOperation) {
-                this.recordOperation(
-                    statusCode, subStatusCode, actualItemCount, requestCharge, diagnostics, finalError);
-            }
-
-            return hasCompletedOperation;
+        boolean hasCompletedOperation = this.isCompleted.compareAndSet(false, true);
+        if (hasCompletedOperation) {
+            this.recordOperation(
+                statusCode, subStatusCode, actualItemCount, requestCharge, diagnostics, finalError);
         }
+
+        return hasCompletedOperation;
     }
 
     synchronized void recordOperation(int statusCode,
@@ -527,32 +515,30 @@ public final class CosmosDiagnosticsContext {
                                       CosmosDiagnostics diagnostics,
                                       Throwable finalError) {
 
-        synchronized (this.spanName) {
-            this.statusCode = statusCode;
-            this.subStatusCode = subStatusCode;
-            this.finalError = finalError;
-            if (actualItemCount != null) {
-                if (!this.actualItemCount.compareAndSet(-1, actualItemCount)) {
-                    this.actualItemCount.addAndGet(actualItemCount);
-                }
+        this.statusCode = statusCode;
+        this.subStatusCode = subStatusCode;
+        this.finalError = finalError;
+        if (actualItemCount != null) {
+            if (!this.actualItemCount.compareAndSet(-1, actualItemCount)) {
+                this.actualItemCount.addAndGet(actualItemCount);
             }
-
-            if (this.startTime != null) {
-                this.duration = Duration.between(this.startTime, Instant.now());
-            } else {
-                this.duration = null;
-            }
-
-            if (diagnostics != null) {
-                this.addDiagnostics(diagnostics);
-            }
-
-            if (requestCharge != null) {
-                this.addRequestCharge(requestCharge.floatValue());
-            }
-
-            this.cachedRequestDiagnostics = null;
         }
+
+        if (this.startTime != null) {
+            this.duration = Duration.between(this.startTime, Instant.now());
+        } else {
+            this.duration = null;
+        }
+
+        if (diagnostics != null) {
+            this.addDiagnostics(diagnostics);
+        }
+
+        if (requestCharge != null) {
+            this.addRequestCharge(requestCharge.floatValue());
+        }
+
+        this.cachedRequestDiagnostics = null;
     }
 
     synchronized void setSamplingRateSnapshot(double samplingRate) {
@@ -647,7 +633,7 @@ public final class CosmosDiagnosticsContext {
             return snapshot;
         }
 
-        synchronized (this.spanName) {
+        synchronized (this) {
             snapshot = this.cachedRequestDiagnostics;
             if (snapshot != null) {
                 return snapshot;
@@ -851,37 +837,35 @@ public final class CosmosDiagnosticsContext {
      * @return a collection of {@link CosmosDiagnosticsRequestInfo} records providing more information about
      * individual requests issued in the transport layer to process this operation.
      */
-    public Collection<CosmosDiagnosticsRequestInfo> getRequestInfo() {
-        synchronized (this.spanName) {
-            ArrayList<CosmosDiagnosticsRequestInfo> snapshot = this.requestInfo;
-            if (snapshot != null) {
-                return snapshot;
-            }
-
-            snapshot = new ArrayList<>();
-            for (ClientSideRequestStatistics requestStats: this.getDistinctCombinedClientSideRequestStatistics()) {
-                addRequestInfoForStoreResponses(
-                    requestStats,
-                    snapshot,
-                    requestStats.getResponseStatisticsList());
-
-                addRequestInfoForStoreResponses(
-                    requestStats,
-                    snapshot,
-                    requestStats.getSupplementalResponseStatisticsList());
-
-                addRequestInfoForGatewayStatistics(requestStats, snapshot);
-
-                addRequestInfoForAddressResolution(
-                    requestStats,
-                    snapshot,
-                    requestStats.getAddressResolutionStatistics());
-            }
-
-            this.requestInfo = snapshot;
-
+    public synchronized Collection<CosmosDiagnosticsRequestInfo> getRequestInfo() {
+        ArrayList<CosmosDiagnosticsRequestInfo> snapshot = this.requestInfo;
+        if (snapshot != null) {
             return snapshot;
         }
+
+        snapshot = new ArrayList<>();
+        for (ClientSideRequestStatistics requestStats: this.getDistinctCombinedClientSideRequestStatistics()) {
+            addRequestInfoForStoreResponses(
+                requestStats,
+                snapshot,
+                requestStats.getResponseStatisticsList());
+
+            addRequestInfoForStoreResponses(
+                requestStats,
+                snapshot,
+                requestStats.getSupplementalResponseStatisticsList());
+
+            addRequestInfoForGatewayStatistics(requestStats, snapshot);
+
+            addRequestInfoForAddressResolution(
+                requestStats,
+                snapshot,
+                requestStats.getAddressResolutionStatistics());
+        }
+
+        this.requestInfo = snapshot;
+
+        return snapshot;
     }
 
     ///////////////////////////////////////////////////////////////////////////////////////////
