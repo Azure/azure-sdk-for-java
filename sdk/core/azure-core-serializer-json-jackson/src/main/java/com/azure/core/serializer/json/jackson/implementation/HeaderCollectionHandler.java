@@ -6,6 +6,7 @@ package com.azure.core.serializer.json.jackson.implementation;
 import com.azure.core.implementation.Invoker;
 import com.azure.core.implementation.ReflectionUtils;
 import com.azure.core.util.logging.ClientLogger;
+import com.azure.core.util.logging.LogLevel;
 
 import java.lang.reflect.Field;
 import java.security.PrivilegedAction;
@@ -19,7 +20,7 @@ import java.util.concurrent.ConcurrentHashMap;
  */
 final class HeaderCollectionHandler {
     private static final int CACHE_SIZE_LIMIT = 10000;
-    private static final Map<Field, Invoker> FIELD_TO_SETTER_CACHE = new ConcurrentHashMap<>();
+    private static final Map<Field, Invoker> FIELD_TO_SETTER_INVOKER_CACHE = new ConcurrentHashMap<>();
 
     // Dummy constant that indicates no setter was found for the Field.
     private static final Invoker NO_SETTER_INVOKER = ReflectionUtils.createNoOpInvoker();
@@ -91,12 +92,14 @@ final class HeaderCollectionHandler {
 
         try {
             setterInvoker.invokeWithArguments(deserializedHeaders, values);
-            logger.verbose("Set header collection {} on class {} using reflection.", fieldName, clazzSimpleName);
+            logger.log(LogLevel.VERBOSE, () ->
+                "Set header collection " + fieldName + " on class " + clazzSimpleName + " using reflection.");
 
             return true;
         } catch (Exception ex) {
-            logger.verbose("Failed to set header {} collection on class {} using reflection.", fieldName,
-                clazzSimpleName, ex);
+            logger.log(LogLevel.VERBOSE, () ->
+                "Failed to set header " + fieldName + " collection on class " + clazzSimpleName + " using reflection.",
+                ex);
             return false;
         }
     }
@@ -107,23 +110,25 @@ final class HeaderCollectionHandler {
 
     private static Invoker getFromCache(Field key, Class<?> clazz, String clazzSimpleName,
         String fieldName, ClientLogger logger) {
-        if (FIELD_TO_SETTER_CACHE.size() >= CACHE_SIZE_LIMIT) {
-            FIELD_TO_SETTER_CACHE.clear();
+        if (FIELD_TO_SETTER_INVOKER_CACHE.size() >= CACHE_SIZE_LIMIT) {
+            FIELD_TO_SETTER_INVOKER_CACHE.clear();
         }
 
-        return FIELD_TO_SETTER_CACHE.computeIfAbsent(key, field -> {
+        return FIELD_TO_SETTER_INVOKER_CACHE.computeIfAbsent(key, field -> {
             String setterName = getPotentialSetterName(fieldName);
 
             try {
                 Invoker invoker = ReflectionUtils.getMethodInvoker(clazz, clazz.getDeclaredMethod(setterName,
                     Map.class));
 
-                logger.verbose("Using invoker for setter {} on class {}.", setterName, clazzSimpleName);
+                logger.log(LogLevel.VERBOSE, () ->
+                    "Using invoker for setter " + setterName + " on class " + clazzSimpleName + ".");
 
                 return invoker;
             } catch (Exception ex) {
-                logger.verbose("Failed to retrieve invoker for setter {} on class {}. Will attempt to make field "
-                               + "accessible. Please consider adding public setter.", setterName, clazzSimpleName, ex);
+                logger.log(LogLevel.VERBOSE, () ->
+                    "Failed to retrieve invoker for setter " + setterName + " on class " + clazzSimpleName
+                    + ". Will attempt to make field accessible. Please consider adding public setter.", ex);
             }
 
             // In a previous implementation compute returned null here in an attempt to indicate that there is no setter

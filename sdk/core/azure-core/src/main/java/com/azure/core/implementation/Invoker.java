@@ -9,7 +9,7 @@ public interface Invoker {
     /**
      * Invokes an API that doesn't have a target.
      * <p>
-     * APIs with a target are constructors and static methods.
+     * APIs without a target are constructors and static methods.
      *
      * @return The result of invoking the API.
      * @param args The arguments to pass to the API.
