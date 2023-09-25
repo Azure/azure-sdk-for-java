@@ -49,6 +49,7 @@
       --add-opens com.azure.communication.common/com.azure.communication.common.implementation=ALL-UNNAMED
       --add-opens com.azure.core/com.azure.core.implementation.util=ALL-UNNAMED
     </javaModulesSurefireArgLine>
+    <codesnippet.skip>false</codesnippet.skip>
   </properties>
 
   <dependencies>
