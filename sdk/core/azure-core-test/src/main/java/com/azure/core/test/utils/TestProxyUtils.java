@@ -327,35 +327,29 @@ public class TestProxyUtils {
      */
     public static List<HttpRequest> getSanitizerRequests(List<TestProxySanitizer> sanitizers, URL proxyUrl) {
         return sanitizers.stream().map(testProxySanitizer -> {
-            String requestBody;
-            String sanitizerType;
+            Writer requestBody = new StringWriter();
+            try (JsonWriter jsonWriter = JsonProviders.createWriter(requestBody)) {
+                // JsonWriter automatically flushes on close.
+                testProxySanitizer.toJson(jsonWriter);
+            } catch (IOException e) {
+                throw new RuntimeException(e);
+            }
             switch (testProxySanitizer.getType()) {
                 case URL:
-                    sanitizerType = TestProxySanitizerType.URL.getName();
-                    requestBody =
-                        createRegexRequestBody(null, testProxySanitizer.getRegex(),
-                            testProxySanitizer.getRedactedValue(), testProxySanitizer.getGroupForReplace());
-                    return createHttpRequest(requestBody, sanitizerType, proxyUrl);
+                    return createAddSanitizerHttpRequest(requestBody.toString(), TestProxySanitizerType.URL.getName());
                 case BODY_REGEX:
-                    sanitizerType = TestProxySanitizerType.BODY_REGEX.getName();
-                    requestBody = createRegexRequestBody(null, testProxySanitizer.getRegex(),
-                        testProxySanitizer.getRedactedValue(), testProxySanitizer.getGroupForReplace());
-                    return createHttpRequest(requestBody, sanitizerType, proxyUrl);
+                    return createAddSanitizerHttpRequest(requestBody.toString(), TestProxySanitizerType.BODY_REGEX.getName());
                 case BODY_KEY:
-                    sanitizerType = TestProxySanitizerType.BODY_KEY.getName();
-                    requestBody = createBodyJsonKeyRequestBody(testProxySanitizer.getKey(), testProxySanitizer.getRegex(),
-                        testProxySanitizer.getRedactedValue());
-                    return createHttpRequest(requestBody, sanitizerType, proxyUrl);
+                    return createAddSanitizerHttpRequest(createBodyJsonKeyRequestBody(testProxySanitizer.getKey(),
+                        testProxySanitizer.getRegex(),
+                        testProxySanitizer.getRedactedValue()), TestProxySanitizerType.BODY_KEY.getName());
                 case HEADER:
-                    sanitizerType = HEADER.getName();
                     if (testProxySanitizer.getKey() == null && testProxySanitizer.getRegex() == null) {
                         throw new RuntimeException(
-                            String.format("Missing regexKey and/or headerKey for sanitizer type {%s}", sanitizerType));
+                            String.format("Missing regexKey and/or headerKey for sanitizer type {%s}",
+                                TestProxySanitizerType.HEADER.getName()));
                     }
-                    requestBody = createRegexRequestBody(testProxySanitizer.getKey(),
-                        testProxySanitizer.getRegex(),
-                        testProxySanitizer.getRedactedValue(), testProxySanitizer.getGroupForReplace());
-                    return createHttpRequest(requestBody, sanitizerType, proxyUrl);
+                    return createAddSanitizerHttpRequest(requestBody.toString(), TestProxySanitizerType.HEADER.getName());
                 default:
                     throw new RuntimeException(
                         String.format("Sanitizer type {%s} not supported", testProxySanitizer.getType()));
@@ -363,7 +357,7 @@ public class TestProxyUtils {
         }).collect(Collectors.toList());
     }
 
-    private static HttpRequest createHttpRequest(String requestBody, String sanitizerType, URL proxyUrl) {
+    private static HttpRequest createAddSanitizerHttpRequest(String requestBody, String sanitizerType) {
         HttpRequest request
             = new HttpRequest(HttpMethod.POST, String.format("%s/Admin/AddSanitizer", proxyUrl.toString()))
             .setBody(requestBody);
@@ -406,8 +400,10 @@ public class TestProxyUtils {
 
     private static HttpRequest createMatcherHttpRequest(String requestBody, String matcherType) {
         HttpRequest request
-            = new HttpRequest(HttpMethod.POST, String.format("%s/Admin/setmatcher", proxyUrl.toString()))
-            .setBody(requestBody);
+            = new HttpRequest(HttpMethod.POST, String.format("%s/Admin/setmatcher", proxyUrl.toString()));
+        if (requestBody != null) {
+            request.setBody(requestBody);
+        }
         request.setHeader(X_ABSTRACTION_IDENTIFIER, matcherType);
         return request;
     }

@@ -3,10 +3,15 @@
 
 package com.azure.core.test.models;
 
+import com.azure.json.JsonSerializable;
+import com.azure.json.JsonWriter;
+
+import java.io.IOException;
+
 /**
  * Keeps track of different sanitizers that redact the sensitive information when recording
  */
-public class TestProxySanitizer {
+public class TestProxySanitizer implements JsonSerializable<TestProxySanitizer> {
     private final TestProxySanitizerType testProxySanitizerType;
     private final String regex;
     private final String redactedValue;
@@ -91,4 +96,16 @@ public class TestProxySanitizer {
     public String getKey() {
         return key;
     }
+
+    @Override
+    public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
+        jsonWriter.writeStartObject();
+        jsonWriter.writeStringField("regex", this.regex);
+        jsonWriter.writeStringField("groupForReplace", this.groupForReplace);
+        jsonWriter.writeStringField("value", this.redactedValue);
+        jsonWriter.writeStringField("key", this.key);
+        jsonWriter.writeStringField("type", this.testProxySanitizerType.toString());
+        return jsonWriter.writeEndObject();
+    }
+
 }
