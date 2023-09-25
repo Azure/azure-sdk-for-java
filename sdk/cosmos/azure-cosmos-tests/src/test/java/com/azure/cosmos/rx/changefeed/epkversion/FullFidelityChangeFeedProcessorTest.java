@@ -193,7 +193,7 @@ public class FullFidelityChangeFeedProcessorTest extends TestSuiteBase {
         }
     }
 
-    @Test(groups = { "emulator" }, timeOut = 50 * CHANGE_FEED_PROCESSOR_TIMEOUT)
+    @Test(groups = { "simple" }, timeOut = 50 * CHANGE_FEED_PROCESSOR_TIMEOUT)
     public void fullFidelityChangeFeedProcessorStartFromNowSubpartitioned() throws InterruptedException {
         CosmosAsyncContainer createdFeedCollection = createFeedCollectionSubpartitioned(FEED_COLLECTION_THROUGHPUT);
         CosmosAsyncContainer createdLeaseCollection = createLeaseCollection(LEASE_COLLECTION_THROUGHPUT);
@@ -254,9 +254,7 @@ public class FullFidelityChangeFeedProcessorTest extends TestSuiteBase {
         }
     }
 
-
-    // Using this test to verify basic functionality
-    @Test(groups = { "emulator" }, timeOut = 50 * CHANGE_FEED_PROCESSOR_TIMEOUT)
+    @Test(groups = { "simple" }, timeOut = 50 * CHANGE_FEED_PROCESSOR_TIMEOUT)
     public void fullFidelityChangeFeedProcessorStartFromContinuationTokenSubpartitioned() throws InterruptedException {
         CosmosAsyncContainer createdFeedCollection = createFeedCollectionSubpartitioned(FEED_COLLECTION_THROUGHPUT);
         CosmosAsyncContainer createdLeaseCollection = createLeaseCollection(LEASE_COLLECTION_THROUGHPUT);
