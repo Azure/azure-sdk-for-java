@@ -20,6 +20,7 @@ import java.nio.file.Path;
 import java.nio.file.Paths;
 import java.time.Duration;
 import java.util.Map;
+import java.util.concurrent.Semaphore;
 
 /**
  * Manages running the test recording proxy server
@@ -28,6 +29,7 @@ public class TestProxyManager {
     private static final ClientLogger LOGGER = new ClientLogger(TestProxyManager.class);
     private Process proxy;
     private final Path testClassPath;
+    private static final Semaphore semaphore = new Semaphore(1);
 
     /**
      * Construct a {@link TestProxyManager} for controlling the external test proxy.
@@ -49,6 +51,7 @@ public class TestProxyManager {
      */
     public void startProxy() {
         try {
+            semaphore.acquire();
             // if we're not running in CI we will check to see if someone has started the proxy, and start one if not.
             if (runningLocally() && !checkAlive(1, Duration.ofSeconds(1), null)) {
                 String commandLine = Paths.get(TestProxyDownloader.getProxyDirectory().toString(),
@@ -98,6 +101,8 @@ public class TestProxyManager {
             throw LOGGER.logExceptionAsError(new UncheckedIOException(e));
         } catch (InterruptedException e) {
             throw new RuntimeException(e);
+        } finally {
+            semaphore.release();
         }
     }
 
