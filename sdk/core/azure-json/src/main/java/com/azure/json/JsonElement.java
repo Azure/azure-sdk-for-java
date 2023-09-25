@@ -97,166 +97,168 @@ public abstract class JsonElement {
         return null;
     }
 
-    //------------------------------------------------------------------------//
-    //------------------------ Methods for JsonArray -------------------------//
-    // TODO: could be extracted into an interface instead of type checking in //
-    // JsonElement. Could create JsonArrayable interface or some other more   //
-    // appropriately named interface to be implemented by JsonArray.          //
-    //------------------------------------------------------------------------//
+// Commented out APIs relating to JsonArray and JsonObject in JsonElement. 
+// 
+//     //------------------------------------------------------------------------//
+//     //------------------------ Methods for JsonArray -------------------------//
+//     // TODO: could be extracted into an interface instead of type checking in //
+//     // JsonElement. Could create JsonArrayable interface or some other more   //
+//     // appropriately named interface to be implemented by JsonArray.          //
+//     //------------------------------------------------------------------------//
+// 
+//     // All throw unless isArray is true.
+//    /**
+//     *
+//     * @param element
+//     * @return
+//     * @throws IllegalArgumentException
+//     */
+//    public JsonArray addElement(JsonElement element) throws IllegalArgumentException  {
+//        if (this.isArray()) {
+//            return (this.asArray()).addElement(element);
+//        } else {
+//            throw new InvalidJsonDataTypeException();
+//        }
+//    }
+//
+//    /**
+//     *
+//     * @param index
+//     * @param element
+//     * @return
+//     * @throws IllegalArgumentException
+//     * @throws IndexOutOfBoundsException
+//     */
+//    public JsonArray addElement(int index, JsonElement element) throws IllegalArgumentException, IndexOutOfBoundsException {
+//        if (this.isArray()) {
+//            return (this.asArray()).addElement(index, element);
+//        } else {
+//            throw new InvalidJsonDataTypeException();
+//        }
+//    }
+//
+//    /**
+//     *
+//     * @param index
+//     * @param element
+//     * @return
+//     * @throws IllegalArgumentException
+//     * @throws IndexOutOfBoundsException
+//     */
+//    public JsonArray setElement(int index, JsonElement element) throws IllegalArgumentException, IndexOutOfBoundsException {
+//        if (this.isArray()) {
+//            return (this.asArray()).setElement(index, element);
+//        } else {
+//            throw new InvalidJsonDataTypeException();
+//        }
+//    }
+//
+//    /**
+//     *
+//     * @param index
+//     * @return
+//     * @throws IndexOutOfBoundsException
+//     */
+//    public JsonElement getElement(int index) throws IndexOutOfBoundsException {
+//        if (this.isArray()) {
+//            return (this.asArray()).getElement(index);
+//        } else {
+//            throw new InvalidJsonDataTypeException();
+//        }
+//    }
+//
+//    /**
+//     *
+//     * @param index
+//     * @return
+//     * @throws IndexOutOfBoundsException
+//     */
+//    public JsonElement removeElement(int index) throws IndexOutOfBoundsException {
+//        if (this.isArray()) {
+//            return (this.asArray()).removeElement(index);
+//        } else {
+//            throw new InvalidJsonDataTypeException();
+//        }
+//    }
 
-    // All throw unless isArray is true.
-    /**
-     *
-     * @param element
-     * @return
-     * @throws IllegalArgumentException
-     */
-    public JsonArray addElement(JsonElement element) throws IllegalArgumentException  {
-        if (this.isArray()) {
-            return (this.asArray()).addElement(element);
-        } else {
-            throw new InvalidJsonDataTypeException();
-        }
-    }
-
-    /**
-     *
-     * @param index
-     * @param element
-     * @return
-     * @throws IllegalArgumentException
-     * @throws IndexOutOfBoundsException
-     */
-    public JsonArray addElement(int index, JsonElement element) throws IllegalArgumentException, IndexOutOfBoundsException {
-        if (this.isArray()) {
-            return (this.asArray()).addElement(index, element);
-        } else {
-            throw new InvalidJsonDataTypeException();
-        }
-    }
-
-    /**
-     *
-     * @param index
-     * @param element
-     * @return
-     * @throws IllegalArgumentException
-     * @throws IndexOutOfBoundsException
-     */
-    public JsonArray setElement(int index, JsonElement element) throws IllegalArgumentException, IndexOutOfBoundsException {
-        if (this.isArray()) {
-            return (this.asArray()).setElement(index, element);
-        } else {
-            throw new InvalidJsonDataTypeException();
-        }
-    }
-
-    /**
-     *
-     * @param index
-     * @return
-     * @throws IndexOutOfBoundsException
-     */
-    public JsonElement getElement(int index) throws IndexOutOfBoundsException {
-        if (this.isArray()) {
-            return (this.asArray()).getElement(index);
-        } else {
-            throw new InvalidJsonDataTypeException();
-        }
-    }
-
-    /**
-     *
-     * @param index
-     * @return
-     * @throws IndexOutOfBoundsException
-     */
-    public JsonElement removeElement(int index) throws IndexOutOfBoundsException {
-        if (this.isArray()) {
-            return (this.asArray()).removeElement(index);
-        } else {
-            throw new InvalidJsonDataTypeException();
-        }
-    }
-
-    //------------------------------------------------------------------------//
-    //------------------------ Methods for JsonObject ------------------------//
-    // TODO: could be extracted into an interface instead of type checking in //
-    // JsonElement. Could create JsonObjectable interface or some other more  //
-    // appropriately named interface to be implemented by JsonObject.         //
-    //------------------------------------------------------------------------//
-
-    /**
-     *
-     * @param key
-     * @param element
-     * @return
-     * @throws InvalidJsonDataTypeException
-     */
-    public JsonObject addProperty(String key, Object element) throws InvalidJsonDataTypeException {
-        if(this.isObject()) {
-            return (this.asObject()).addProperty(key, element);
-        } else {
-            throw new InvalidJsonDataTypeException();
-        }
-    }
-
-    /**
-     *
-     * @param key
-     * @param element
-     * @return
-     * @throws InvalidJsonDataTypeException
-     */
-    public JsonObject setProperty(String key, JsonElement element) throws InvalidJsonDataTypeException, IOException {
-     if(this.isObject()) {
-            return (this.asObject()).setProperty(key, element);
-        } else {
-            throw new InvalidJsonDataTypeException();
-        }
-    }
-
-    /**
-     *
-     * @param key
-     * @return
-     * @throws InvalidJsonDataTypeException
-     */
-    public JsonElement getProperty(String key) throws InvalidJsonDataTypeException {
-        if(this.isObject()) {
-            return (this.asObject()).getProperty(key);
-        } else {
-            throw new InvalidJsonDataTypeException();
-        }
-    }
-
-    /**
-     *
-     * @param key
-     * @return
-     * @throws InvalidJsonDataTypeException
-     */
-    public JsonElement removeProperty(String key) throws InvalidJsonDataTypeException, IOException {
-        if (this.isObject()) {
-            return (this.asObject()).removeProperty(key);
-        } else {
-            throw new InvalidJsonDataTypeException();
-        }
-    }
-
-    /**
-     *
-     * @param key
-     * @return
-     * @throws InvalidJsonDataTypeException
-     */
-    public JsonElement getValueByKey(String key) throws InvalidJsonDataTypeException {
-        if (this.isObject()) {
-            return (this.asObject()).getValueByKey(key);
-        } else {
-            throw new InvalidJsonDataTypeException();
-        }
-    }
+//     //------------------------------------------------------------------------//
+//     //------------------------ Methods for JsonObject ------------------------//
+//     // TODO: could be extracted into an interface instead of type checking in //
+//     // JsonElement. Could create JsonObjectable interface or some other more  //
+//     // appropriately named interface to be implemented by JsonObject.         //
+//     //------------------------------------------------------------------------//
+// 
+//    /**
+//     *
+//     * @param key
+//     * @param element
+//     * @return
+//     * @throws InvalidJsonDataTypeException
+//     */
+//    public JsonObject addProperty(String key, Object element) throws InvalidJsonDataTypeException {
+//        if(this.isObject()) {
+//            return (this.asObject()).addProperty(key, element);
+//        } else {
+//            throw new InvalidJsonDataTypeException();
+//        }
+//    }
+//
+//    /**
+//     *
+//     * @param key
+//     * @param element
+//     * @return
+//     * @throws InvalidJsonDataTypeException
+//     */
+//    public JsonObject setProperty(String key, JsonElement element) throws InvalidJsonDataTypeException, IOException {
+//    if(this.isObject()) {
+//            return (this.asObject()).setProperty(key, element);
+//        } else {
+//            throw new InvalidJsonDataTypeException();
+//        }
+//    }
+//
+//    /**
+//     *
+//     * @param key
+//     * @return
+//     * @throws InvalidJsonDataTypeException
+//     */
+//    public JsonElement getProperty(String key) throws InvalidJsonDataTypeException {
+//        if(this.isObject()) {
+//            return (this.asObject()).getProperty(key);
+//        } else {
+//            throw new InvalidJsonDataTypeException();
+//        }
+//    }
+//
+//    /**
+//     *
+//     * @param key
+//     * @return
+//     * @throws InvalidJsonDataTypeException
+//     */
+//    public JsonElement removeProperty(String key) throws InvalidJsonDataTypeException, IOException {
+//        if (this.isObject()) {
+//            return (this.asObject()).removeProperty(key);
+//        } else {
+//            throw new InvalidJsonDataTypeException();
+//        }
+//    }
+//
+//    /**
+//     *
+//     * @param key
+//     * @return
+//     * @throws InvalidJsonDataTypeException
+//     */
+//    public JsonElement getValueByKey(String key) throws InvalidJsonDataTypeException {
+//        if (this.isObject()) {
+//            return (this.asObject()).getValueByKey(key);
+//        } else {
+//            throw new InvalidJsonDataTypeException();
+//        }
+//    }
 
     //------------------------------------------------------------------------//
     //--------------- isX Methods (JSON type checking methods) ---------------//

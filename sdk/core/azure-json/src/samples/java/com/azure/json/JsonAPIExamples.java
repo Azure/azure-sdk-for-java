@@ -18,6 +18,7 @@ import java.io.IOException;
 public class JsonAPIExamples {
     public static void main(String[] args) throws InvalidJsonDataTypeException, IOException {
 
+/* 
         int[] numArray = new int[10];
         numArray[0] = 3;
         numArray[5] = 27;
@@ -39,6 +40,7 @@ public class JsonAPIExamples {
                 .addElement(new JsonObject().addProperty("Value3", true).addProperty("Value4", null))
                 .toJson();
         System.out.println(arrayTest);
+*/
 
         /*
 

@@ -5,7 +5,7 @@ import java.io.IOException;
 /**
  * Class representing the JSON string type
  */
-public class JsonString extends JsonElement{
+public class JsonString extends JsonElement {
     /**
      * Stores the String representation of the current state of the JsonString
      * object.
