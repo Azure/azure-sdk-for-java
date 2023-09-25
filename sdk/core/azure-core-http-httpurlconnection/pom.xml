@@ -17,7 +17,7 @@
   <groupId>com.azure</groupId>
   <artifactId>azure-core-http-httpurlconnection</artifactId>
   <packaging>jar</packaging>
-  <version>1.0-SNAPSHOT</version> <!-- {x-version-update;com.azure:azure-core-http-httpurlconnection;current} -->
+  <version>1.0.0-beta.1</version> <!-- {x-version-update;com.azure:azure-core-http-httpurlconnection;current} -->
 
   <name>Microsoft Azure HttpUrlConnection Client Library</name>
   <description>This package contains the Azure HttpUrlConnection client library using the JDK HttpUrlConnection API.</description>
