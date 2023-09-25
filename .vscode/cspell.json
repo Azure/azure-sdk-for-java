@@ -1032,12 +1032,17 @@
         "Dcheckstyle",
         "Dcodesnippet",
         "Djacoco",
-        "Djava",
         "Dparallel",
         "Drevapi",
         "Dskip",
         "Dspotbugs",
         "Pdev"
+      ]
+    },
+    {
+      "filename": "sdk/spring/spring-cloud-azure-starter-monitor/**.md",
+      "words": [
+        "Djava"
       ]
     },
     {
