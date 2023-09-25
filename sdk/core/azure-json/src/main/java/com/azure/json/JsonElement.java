@@ -208,8 +208,8 @@ public abstract class JsonElement {
      * @return
      * @throws InvalidJsonDataTypeException
      */
-    public JsonObject setProperty(String key, Object element) throws InvalidJsonDataTypeException {
-        if(this.isObject()) {
+    public JsonObject setProperty(String key, JsonElement element) throws InvalidJsonDataTypeException, IOException {
+     if(this.isObject()) {
             return (this.asObject()).setProperty(key, element);
         } else {
             throw new InvalidJsonDataTypeException();
@@ -236,7 +236,7 @@ public abstract class JsonElement {
      * @return
      * @throws InvalidJsonDataTypeException
      */
-    public JsonElement removeProperty(String key) throws InvalidJsonDataTypeException {
+    public JsonElement removeProperty(String key) throws InvalidJsonDataTypeException, IOException {
         if (this.isObject()) {
             return (this.asObject()).removeProperty(key);
         } else {
@@ -269,32 +269,44 @@ public abstract class JsonElement {
     /**
      * @return boolean on whether the given JsonElement is a JsonArray
      */
-    public boolean isArray() { return false; }
+    public boolean isArray() { 
+        return false; 
+    }
 
     /**
      * @return boolean on whether the given JsonElement is a JsonObject
      */
-    public boolean isObject() { return false; }
+    public boolean isObject() { 
+        return false; 
+    }
 
     /**
      * @return boolean on whether the given JsonElement is a JsonBoolean
      */
-    public boolean isBoolean() { return false; }
+    public boolean isBoolean() { 
+        return false; 
+    }
 
     /**
      * @return boolean on whether the given JsonElement is a JsonNull
      */
-    public boolean isNull() { return false; }
+    public boolean isNull() { 
+        return false; 
+    }
 
     /**
      * @return boolean on whether the given JsonElement is a JsonNumber
      */
-    public boolean isNumber() { return false; }
+    public boolean isNumber() { 
+        return false; 
+    }
 
     /**
      * @return boolean on whether the given JsonElement is a JsonString
      */
-    public boolean isString() { return false; }
+    public boolean isString() { 
+        return false; 
+    }
 
     //------------------------------------------------------------------------//
     //------------------------ Methods for Conversion ------------------------//
@@ -305,31 +317,43 @@ public abstract class JsonElement {
     /**
      * @return
      */
-    public JsonArray asArray() { return (JsonArray)this; }
+    public JsonArray asArray() { 
+        return new JsonArray();
+    }
 
     /**
      * @return
      */
-    public JsonObject asObject() { return (JsonObject)this; }
+    public JsonObject asObject() { 
+        return new JsonObject(); 
+    }
 
     /**
      * @return
      */
-    public JsonBoolean asBoolean() { return (JsonBoolean)this; }
+    public JsonBoolean asBoolean() { 
+        return JsonBoolean.getInstance(true); 
+    }
 
     /**
      * @return
      */
-    public JsonNull asNull() { return (JsonNull)this; }
+    public JsonNull asNull() { 
+        return JsonNull.getInstance(); 
+    }
 
     /**
      * @return
      */
-    public JsonNumber asNumber() { return (JsonNumber)this; }
+    public JsonNumber asNumber() { 
+        return new JsonNumber(); 
+    }
 
     /**
      * @return
      */
-    public JsonString asString() { return new JsonString(); }
+    public JsonString asString() { 
+        return new JsonString(); 
+    }
 }
 
