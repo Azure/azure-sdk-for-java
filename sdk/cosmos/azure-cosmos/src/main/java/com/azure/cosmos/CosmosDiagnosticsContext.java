@@ -492,28 +492,40 @@ public final class CosmosDiagnosticsContext {
     }
 
     void startOperation() {
-        checkState(
-            this.startTime == null,
-            "Method 'startOperation' must not be called multiple times.");
         synchronized (this.spanName) {
+            checkState(
+                this.startTime == null,
+                "Method 'startOperation' must not be called multiple times.");
             this.startTime = Instant.now();
 
             this.cachedRequestDiagnostics = null;
         }
     }
 
-    synchronized boolean endOperation(int statusCode, int subStatusCode, Integer actualItemCount, Throwable finalError) {
+    synchronized boolean endOperation(int statusCode,
+                                      int subStatusCode,
+                                      Integer actualItemCount,
+                                      Double requestCharge,
+                                      CosmosDiagnostics diagnostics,
+                                      Throwable finalError) {
         synchronized (this.spanName) {
             boolean hasCompletedOperation = this.isCompleted.compareAndSet(false, true);
             if (hasCompletedOperation) {
-                this.recordOperation(statusCode, subStatusCode, actualItemCount, finalError);
+                this.recordOperation(
+                    statusCode, subStatusCode, actualItemCount, requestCharge, diagnostics, finalError);
             }
 
             return hasCompletedOperation;
         }
     }
 
-    synchronized void recordOperation(int statusCode, int subStatusCode, Integer actualItemCount, Throwable finalError) {
+    synchronized void recordOperation(int statusCode,
+                                      int subStatusCode,
+                                      Integer actualItemCount,
+                                      Double requestCharge,
+                                      CosmosDiagnostics diagnostics,
+                                      Throwable finalError) {
+
         synchronized (this.spanName) {
             this.statusCode = statusCode;
             this.subStatusCode = subStatusCode;
@@ -529,6 +541,15 @@ public final class CosmosDiagnosticsContext {
             } else {
                 this.duration = null;
             }
+
+            if (diagnostics != null) {
+                this.addDiagnostics(diagnostics);
+            }
+
+            if (requestCharge != null) {
+                this.addRequestCharge(requestCharge.floatValue());
+            }
+
             this.cachedRequestDiagnostics = null;
         }
     }
@@ -916,23 +937,7 @@ public final class CosmosDiagnosticsContext {
                     public void recordOperation(CosmosDiagnosticsContext ctx, int statusCode, int subStatusCode,
                                                 Integer actualItemCount, Double requestCharge,
                                                 CosmosDiagnostics diagnostics, Throwable finalError) {
-                        validateAndRecordOperationResult(ctx, requestCharge, diagnostics);
-                        ctx.recordOperation(statusCode, subStatusCode, actualItemCount, finalError);
-                    }
-
-                    private void validateAndRecordOperationResult(
-                        CosmosDiagnosticsContext ctx,
-                        Double requestCharge,
-                        CosmosDiagnostics diagnostics) {
-
-                        checkNotNull(ctx, "Argument 'ctx' must not be null.");
-                        if (diagnostics != null) {
-                            ctx.addDiagnostics(diagnostics);
-                        }
-
-                        if (requestCharge != null) {
-                            ctx.addRequestCharge(requestCharge.floatValue());
-                        }
+                        ctx.recordOperation(statusCode, subStatusCode, actualItemCount, requestCharge, diagnostics, finalError);
                     }
 
                     @Override
@@ -940,8 +945,7 @@ public final class CosmosDiagnosticsContext {
                                              Integer actualItemCount, Double requestCharge,
                                              CosmosDiagnostics diagnostics, Throwable finalError) {
 
-                        validateAndRecordOperationResult(ctx, requestCharge, diagnostics);
-                        return ctx.endOperation(statusCode, subStatusCode, actualItemCount, finalError);
+                        return ctx.endOperation(statusCode, subStatusCode, actualItemCount, requestCharge, diagnostics, finalError);
                     }
 
                     @Override
