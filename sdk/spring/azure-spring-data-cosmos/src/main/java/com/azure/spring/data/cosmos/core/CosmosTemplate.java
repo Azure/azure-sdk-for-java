@@ -250,7 +250,7 @@ public class CosmosTemplate implements CosmosOperations, ApplicationContextAware
      * @param <S> type class of domain type
      * @return Flux of result
      */
-    public <S extends T, T> Iterable<S> insertAll(CosmosEntityInformation information, Iterable<S> entities) {
+    public <S extends T, T> Iterable<S> insertAll(CosmosEntityInformation<T, ?> information, Iterable<S> entities) {
         Assert.notNull(entities, "entities to be inserted should not be null");
 
         String containerName = information.getContainerName();

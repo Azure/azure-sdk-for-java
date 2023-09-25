@@ -170,7 +170,7 @@ public interface CosmosOperations {
      * @param <S> type class of domain type
      * @return the inserted item
      */
-    <S extends T, T> Iterable<S> insertAll(CosmosEntityInformation information, Iterable<S> entities);
+    <S extends T, T> Iterable<S> insertAll(CosmosEntityInformation<T, ?> information, Iterable<S> entities);
 
     /**
      * Inserts item

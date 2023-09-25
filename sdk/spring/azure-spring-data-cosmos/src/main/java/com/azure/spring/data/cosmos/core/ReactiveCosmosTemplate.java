@@ -478,7 +478,7 @@ public class ReactiveCosmosTemplate implements ReactiveCosmosOperations, Applica
      * @param <S> type class of domain type
      * @return Flux of result
      */
-    public <S extends T, T> Flux<S> insertAll(CosmosEntityInformation entityInformation, Iterable<S> entities) {
+    public <S extends T, T> Flux<S> insertAll(CosmosEntityInformation<T, ?> entityInformation, Iterable<S> entities) {
         Assert.notNull(entities, "entities to be inserted should not be null");
 
         String containerName = entityInformation.getContainerName();
