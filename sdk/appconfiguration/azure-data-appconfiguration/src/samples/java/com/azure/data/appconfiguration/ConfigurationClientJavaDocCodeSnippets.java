@@ -5,6 +5,7 @@ package com.azure.data.appconfiguration;
 
 import com.azure.core.http.HttpPipeline;
 import com.azure.core.http.HttpPipelineBuilder;
+import com.azure.core.http.MatchConditions;
 import com.azure.core.http.rest.Response;
 import com.azure.core.util.Configuration;
 import com.azure.core.util.Context;
@@ -488,20 +489,18 @@ public final class ConfigurationClientJavaDocCodeSnippets {
     }
 
     /**
-     * Code snippets for {@link ConfigurationClient#archiveSnapshotWithResponse(ConfigurationSnapshot, boolean, Context)}
+     * Code snippets for {@link ConfigurationClient#archiveSnapshotWithResponse(String, MatchConditions, Context)}
      */
     public void archiveSnapshotByNameMaxOverload() {
         ConfigurationClient client = createSyncConfigurationClient();
-        List<SnapshotSettingFilter> filters = new ArrayList<>();
-        // Key Name also supports RegExp but only support prefix end with "*", such as "k*" and is case-sensitive.
-        filters.add(new SnapshotSettingFilter("{keyName}"));
-        ConfigurationSnapshot snapshot = new ConfigurationSnapshot(filters);
 
         // BEGIN: com.azure.data.appconfiguration.configurationclient.archiveSnapshotByNameMaxOverload
+        String snapshotName = "{snapshotName}";
+        MatchConditions matchConditions = new MatchConditions().setIfMatch("{etag}");
         Context ctx = new Context(key2, value2);
 
-        ConfigurationSnapshot archivedSnapshot = client.archiveSnapshotWithResponse(snapshot, false,
-            ctx).getValue();
+        ConfigurationSnapshot archivedSnapshot = client.archiveSnapshotWithResponse(snapshotName, matchConditions, ctx)
+            .getValue();
         System.out.printf("Archived snapshot name=%s is created at %s, snapshot status is %s.%n",
             archivedSnapshot.getName(), archivedSnapshot.getCreatedAt(), archivedSnapshot.getStatus());
         // END: com.azure.data.appconfiguration.configurationclient.archiveSnapshotByNameMaxOverload
@@ -521,19 +520,19 @@ public final class ConfigurationClientJavaDocCodeSnippets {
     }
 
     /**
-     * Code snippets for {@link ConfigurationClient#recoverSnapshotWithResponse(ConfigurationSnapshot, boolean, Context)}
+     * Code snippets for {@link ConfigurationClient#recoverSnapshotWithResponse(String, MatchConditions, Context)}
      */
     public void recoverSnapshotMaxOverload() {
         ConfigurationClient client = createSyncConfigurationClient();
-        List<SnapshotSettingFilter> filters = new ArrayList<>();
-        // Key Name also supports RegExp but only support prefix end with "*", such as "k*" and is case-sensitive.
-        filters.add(new SnapshotSettingFilter("{keyName}"));
-        ConfigurationSnapshot snapshot = new ConfigurationSnapshot(filters);
-        Context ctx = new Context(key2, value2);
+
 
         // BEGIN: com.azure.data.appconfiguration.configurationclient.recoverSnapshotMaxOverload
-        ConfigurationSnapshot recoveredSnapshot = client.recoverSnapshotWithResponse(snapshot, false,
-            ctx).getValue();
+        String snapshotName = "{snapshotName}";
+        MatchConditions matchConditions = new MatchConditions().setIfMatch("{etag}");
+        Context ctx = new Context(key2, value2);
+
+        ConfigurationSnapshot recoveredSnapshot = client.recoverSnapshotWithResponse(snapshotName, matchConditions, ctx)
+            .getValue();
         System.out.printf("Recovered snapshot name=%s is created at %s, snapshot status is %s.%n",
             recoveredSnapshot.getName(), recoveredSnapshot.getCreatedAt(), recoveredSnapshot.getStatus());
         // END: com.azure.data.appconfiguration.configurationclient.recoverSnapshotMaxOverload

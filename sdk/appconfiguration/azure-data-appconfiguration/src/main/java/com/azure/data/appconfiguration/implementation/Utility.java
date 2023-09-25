@@ -3,6 +3,7 @@
 
 package com.azure.data.appconfiguration.implementation;
 
+import com.azure.core.http.MatchConditions;
 import com.azure.core.http.rest.Response;
 import com.azure.core.http.rest.ResponseBase;
 import com.azure.core.http.rest.SimpleResponse;
@@ -160,23 +161,22 @@ public class Utility {
     }
 
     public static Response<ConfigurationSnapshot> updateSnapshotSync(String snapshotName,
-        ConfigurationSnapshot snapshot, ConfigurationSnapshotStatus status, boolean ifUnchanged,
+        MatchConditions matchConditions, ConfigurationSnapshotStatus status,
         AzureAppConfigurationImpl serviceClient, Context context) {
+        final String ifMatch = matchConditions == null ? null : matchConditions.getIfMatch();
 
         final ResponseBase<UpdateSnapshotHeaders, ConfigurationSnapshot> response =
             serviceClient.updateSnapshotWithResponse(snapshotName,
-                new SnapshotUpdateParameters().setStatus(status),
-                getETagSnapshot(ifUnchanged, snapshot), null, context);
+                new SnapshotUpdateParameters().setStatus(status), ifMatch, null, context);
         return new SimpleResponse<>(response, response.getValue());
     }
 
     public static Mono<Response<ConfigurationSnapshot>> updateSnapshotAsync(String snapshotName,
-        ConfigurationSnapshot snapshot, ConfigurationSnapshotStatus status, boolean ifUnchanged,
+        MatchConditions matchConditions, ConfigurationSnapshotStatus status,
         AzureAppConfigurationImpl serviceClient) {
+        final String ifMatch = matchConditions == null ? null : matchConditions.getIfMatch();
         return serviceClient.updateSnapshotWithResponseAsync(snapshotName,
-                new SnapshotUpdateParameters().setStatus(status),
-                getETagSnapshot(ifUnchanged, snapshot),
-                null)
+                new SnapshotUpdateParameters().setStatus(status), ifMatch, null)
             .map(response -> new SimpleResponse<>(response, response.getValue()));
     }
 }

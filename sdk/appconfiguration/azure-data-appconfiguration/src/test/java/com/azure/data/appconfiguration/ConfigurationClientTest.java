@@ -1162,8 +1162,8 @@ public class ConfigurationClientTest extends ConfigurationClientTestBase {
                 MINIMUM_RETENTION_PERIOD, Long.valueOf(1000), Long.valueOf(0), null, snapshotResult);
 
             // Archived the snapshot, it will be deleted automatically when retention period expires.
-            Response<ConfigurationSnapshot> response = client.archiveSnapshotWithResponse(snapshotResult,
-                false, Context.NONE);
+            Response<ConfigurationSnapshot> response = client.archiveSnapshotWithResponse(snapshotResult.getName(),
+                null, Context.NONE);
             assertConfigurationSnapshotWithResponse(200, name,
                 ConfigurationSnapshotStatus.ARCHIVED, filters, SnapshotComposition.KEY,
                 MINIMUM_RETENTION_PERIOD, Long.valueOf(1000), Long.valueOf(0), null, response);
@@ -1226,7 +1226,7 @@ public class ConfigurationClientTest extends ConfigurationClientTestBase {
 
             // Recover the snapshot, it will be deleted automatically when retention period expires.
             Response<ConfigurationSnapshot> configurationSnapshotResponse =
-                client.recoverSnapshotWithResponse(snapshotResult, false, Context.NONE);
+                client.recoverSnapshotWithResponse(snapshotResult.getName(), null, Context.NONE);
             assertConfigurationSnapshotWithResponse(200, name,
                 ConfigurationSnapshotStatus.READY, filters, SnapshotComposition.KEY,
                 MINIMUM_RETENTION_PERIOD, Long.valueOf(1000), Long.valueOf(0), null,

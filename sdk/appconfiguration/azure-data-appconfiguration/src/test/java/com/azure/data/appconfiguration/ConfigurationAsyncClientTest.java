@@ -5,6 +5,7 @@ package com.azure.data.appconfiguration;
 import com.azure.core.exception.HttpResponseException;
 import com.azure.core.http.HttpClient;
 import com.azure.core.http.HttpHeaders;
+import com.azure.core.http.MatchConditions;
 import com.azure.core.http.policy.AddHeadersFromContextPolicy;
 import com.azure.core.http.rest.PagedFlux;
 import com.azure.core.http.rest.Response;
@@ -1504,7 +1505,8 @@ public class ConfigurationAsyncClientTest extends ConfigurationClientTestBase {
                 MINIMUM_RETENTION_PERIOD, Long.valueOf(1000), Long.valueOf(0), null, snapshotResult);
 
             // Archived the snapshot, it will be deleted automatically when retention period expires.
-            StepVerifier.create(client.archiveSnapshotWithResponse(snapshotResult, false))
+            StepVerifier.create(client.archiveSnapshotWithResponse(snapshotResult.getName(),
+                new MatchConditions().setIfMatch(snapshotResult.getETag())))
                 .assertNext(response -> assertConfigurationSnapshotWithResponse(200, name,
                     ConfigurationSnapshotStatus.ARCHIVED, filters, SnapshotComposition.KEY,
                     MINIMUM_RETENTION_PERIOD, Long.valueOf(1000), Long.valueOf(0), null, response))
@@ -1575,7 +1577,8 @@ public class ConfigurationAsyncClientTest extends ConfigurationClientTestBase {
                 .verifyComplete();
 
             // Recover the snapshot, it will be deleted automatically when retention period expires.
-            StepVerifier.create(client.recoverSnapshotWithResponse(snapshotResult, false))
+            StepVerifier.create(client.recoverSnapshotWithResponse(snapshotResult.getName(),
+                    new MatchConditions().setIfMatch(snapshotResult.getETag())))
                 .assertNext(response -> assertConfigurationSnapshotWithResponse(200, name,
                     ConfigurationSnapshotStatus.READY, filters, SnapshotComposition.KEY,
                     MINIMUM_RETENTION_PERIOD, Long.valueOf(1000), Long.valueOf(0), null, response))
