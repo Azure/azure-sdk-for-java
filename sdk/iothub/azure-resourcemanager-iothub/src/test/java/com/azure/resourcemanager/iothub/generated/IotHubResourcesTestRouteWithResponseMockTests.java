@@ -74,22 +74,13 @@ public final class IotHubResourcesTestRouteWithResponseMockTests {
             manager
                 .iotHubResources()
                 .testRouteWithResponse(
-                    "hjjklff",
-                    "mouwqlgzrfzeey",
+                    "ss",
+                    "wutwbdsre",
                     new TestRouteInput()
                         .withMessage(
                             new RoutingMessage()
-                                .withBody("zi")
-                                .withAppProperties(
-                                    mapOf(
-                                        "dgmfpgvmpipasl",
-                                        "uhqlbjbsybbqwrvt",
-                                        "x",
-                                        "haq",
-                                        "hneuyowqkd",
-                                        "smwutwbdsrezpd",
-                                        "gpikpzimejza",
-                                        "ytisibir"))
+                                .withBody("rhneuyowq")
+                                .withAppProperties(mapOf("gpikpzimejza", "ytisibir"))
                                 .withSystemProperties(
                                     mapOf("zonokixrjqci", "zxiavrm", "szrnwo", "gzpfrla", "bt", "indfpwpjyl")))
                         .withRoute(

@@ -17,11 +17,11 @@ public final class PrivateLinkResourcesInnerTests {
         PrivateLinkResourcesInner model =
             BinaryData
                 .fromString(
-                    "{\"value\":[{\"id\":\"njhf\",\"name\":\"wmszkk\",\"type\":\"qreyfkzi\",\"properties\":{\"groupId\":\"jawneaiv\",\"requiredMembers\":[\"zel\",\"c\",\"r\"],\"requiredZoneNames\":[\"feaenwab\",\"atklddxbjhwuaa\",\"oz\"]}},{\"id\":\"sphyoulpjrvxa\",\"name\":\"rvimjwosytxitcsk\",\"type\":\"k\",\"properties\":{\"groupId\":\"umiekkezzi\",\"requiredMembers\":[\"yf\"],\"requiredZoneNames\":[\"gqggebdunygae\",\"idb\",\"fatpxllrxcyjmoa\"]}}]}")
+                    "{\"value\":[{\"id\":\"ohgwxrtfudxepxg\",\"name\":\"agvrvmnpkuk\",\"type\":\"i\",\"properties\":{\"groupId\":\"blxgwimf\",\"requiredMembers\":[\"fjxwmsz\"],\"requiredZoneNames\":[\"oqreyfkzikfjawn\",\"a\",\"vxwc\"]}},{\"id\":\"lpcirelsf\",\"name\":\"enwabfatk\",\"type\":\"dxbjhwuaanozj\",\"properties\":{\"groupId\":\"ph\",\"requiredMembers\":[\"l\",\"jrvxaglrv\"],\"requiredZoneNames\":[\"wosytxitcskf\",\"k\",\"qumiek\",\"ez\"]}},{\"id\":\"khly\",\"name\":\"hdgqggeb\",\"type\":\"nyga\",\"properties\":{\"groupId\":\"idb\",\"requiredMembers\":[\"t\",\"xllrxcyjm\"],\"requiredZoneNames\":[\"su\",\"arm\",\"wdmjsjqbjhhyx\",\"rw\"]}}]}")
                 .toObject(PrivateLinkResourcesInner.class);
-        Assertions.assertEquals("jawneaiv", model.value().get(0).properties().groupId());
-        Assertions.assertEquals("zel", model.value().get(0).properties().requiredMembers().get(0));
-        Assertions.assertEquals("feaenwab", model.value().get(0).properties().requiredZoneNames().get(0));
+        Assertions.assertEquals("blxgwimf", model.value().get(0).properties().groupId());
+        Assertions.assertEquals("fjxwmsz", model.value().get(0).properties().requiredMembers().get(0));
+        Assertions.assertEquals("oqreyfkzikfjawn", model.value().get(0).properties().requiredZoneNames().get(0));
     }
 
     @org.junit.jupiter.api.Test
@@ -34,19 +34,24 @@ public final class PrivateLinkResourcesInnerTests {
                             new GroupIdInformationInner()
                                 .withProperties(
                                     new GroupIdInformationProperties()
-                                        .withGroupId("jawneaiv")
-                                        .withRequiredMembers(Arrays.asList("zel", "c", "r"))
-                                        .withRequiredZoneNames(Arrays.asList("feaenwab", "atklddxbjhwuaa", "oz"))),
+                                        .withGroupId("blxgwimf")
+                                        .withRequiredMembers(Arrays.asList("fjxwmsz"))
+                                        .withRequiredZoneNames(Arrays.asList("oqreyfkzikfjawn", "a", "vxwc"))),
                             new GroupIdInformationInner()
                                 .withProperties(
                                     new GroupIdInformationProperties()
-                                        .withGroupId("umiekkezzi")
-                                        .withRequiredMembers(Arrays.asList("yf"))
-                                        .withRequiredZoneNames(
-                                            Arrays.asList("gqggebdunygae", "idb", "fatpxllrxcyjmoa")))));
+                                        .withGroupId("ph")
+                                        .withRequiredMembers(Arrays.asList("l", "jrvxaglrv"))
+                                        .withRequiredZoneNames(Arrays.asList("wosytxitcskf", "k", "qumiek", "ez"))),
+                            new GroupIdInformationInner()
+                                .withProperties(
+                                    new GroupIdInformationProperties()
+                                        .withGroupId("idb")
+                                        .withRequiredMembers(Arrays.asList("t", "xllrxcyjm"))
+                                        .withRequiredZoneNames(Arrays.asList("su", "arm", "wdmjsjqbjhhyx", "rw")))));
         model = BinaryData.fromObject(model).toObject(PrivateLinkResourcesInner.class);
-        Assertions.assertEquals("jawneaiv", model.value().get(0).properties().groupId());
-        Assertions.assertEquals("zel", model.value().get(0).properties().requiredMembers().get(0));
-        Assertions.assertEquals("feaenwab", model.value().get(0).properties().requiredZoneNames().get(0));
+        Assertions.assertEquals("blxgwimf", model.value().get(0).properties().groupId());
+        Assertions.assertEquals("fjxwmsz", model.value().get(0).properties().requiredMembers().get(0));
+        Assertions.assertEquals("oqreyfkzikfjawn", model.value().get(0).properties().requiredZoneNames().get(0));
     }
 }

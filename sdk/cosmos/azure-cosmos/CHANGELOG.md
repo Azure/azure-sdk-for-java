@@ -4,10 +4,14 @@
 
 #### Features Added
 * Added throughput control support for `gateway mode`. See [PR 36687](https://github.com/Azure/azure-sdk-for-java/pull/36687)
+* Added public API to change the initial micro batch size in `CosmosBulkExecutionOptions`. The micro batch size is dynamically adjusted based on throttling rate. By default, it starts with a relatively large micro batch size, which can result in a short spike of throttled requests at the beginning of a bulk execution - reducing the initial micro batch size - for example to 1 - will start with smaller batch size and then dynamically increase it without causing the initial short spike of throttled requests. See [PR 36910](https://github.com/Azure/azure-sdk-for-java/pull/36910)
 
 #### Breaking Changes
 
 #### Bugs Fixed
+* Disabled `CosmosEndToEndOperationLatencyPolicyConfig` feature in `ChangeFeedProcessor`. Setting `CosmosEndToEndOperationLatencyPolicyConfig` at `CosmosClient` level will not affect `ChangeFeedProcessor` requests in any way. See [PR 36775](https://github.com/Azure/azure-sdk-for-java/pull/36775)
+* Fixed staleness issue of `COSMOS.MIN_CONNECTION_POOL_SIZE_PER_ENDPOINT` system property - See [PR 36599](https://github.com/Azure/azure-sdk-for-java/pull/36599).
+* Fixed an issue where `pageSize` from `byPage` is not always being honored. This only happens when the same `CosmosQueryRequestOptions` being used through different requests, and different pageSize being used. See [PR 36847](https://github.com/Azure/azure-sdk-for-java/pull/36847)
 
 #### Other Changes
 * Handling negative end-to-end timeouts provided more gracefully by throwing a `CosmsoException` (`OperationCancelledException`) instead of `IllegalArgumentException`. - See [PR 36507](https://github.com/Azure/azure-sdk-for-java/pull/36507)

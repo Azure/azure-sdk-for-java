@@ -112,6 +112,18 @@ public final class FluxConfigurationProperties {
     private OffsetDateTime statusUpdatedAt;
 
     /*
+     * Whether flux configuration deployment should wait for cluster to reconcile the kustomizations.
+     */
+    @JsonProperty(value = "waitForReconciliation")
+    private Boolean waitForReconciliation;
+
+    /*
+     * Maximum duration to wait for flux configuration reconciliation. E.g PT1H, PT5M, P1D
+     */
+    @JsonProperty(value = "reconciliationWaitDuration")
+    private String reconciliationWaitDuration;
+
+    /*
      * Combined status of the Flux Kubernetes resources created by the fluxConfiguration or created by the managed
      * objects.
      */
@@ -368,6 +380,50 @@ public final class FluxConfigurationProperties {
      */
     public OffsetDateTime statusUpdatedAt() {
         return this.statusUpdatedAt;
+    }
+
+    /**
+     * Get the waitForReconciliation property: Whether flux configuration deployment should wait for cluster to
+     * reconcile the kustomizations.
+     *
+     * @return the waitForReconciliation value.
+     */
+    public Boolean waitForReconciliation() {
+        return this.waitForReconciliation;
+    }
+
+    /**
+     * Set the waitForReconciliation property: Whether flux configuration deployment should wait for cluster to
+     * reconcile the kustomizations.
+     *
+     * @param waitForReconciliation the waitForReconciliation value to set.
+     * @return the FluxConfigurationProperties object itself.
+     */
+    public FluxConfigurationProperties withWaitForReconciliation(Boolean waitForReconciliation) {
+        this.waitForReconciliation = waitForReconciliation;
+        return this;
+    }
+
+    /**
+     * Get the reconciliationWaitDuration property: Maximum duration to wait for flux configuration reconciliation. E.g
+     * PT1H, PT5M, P1D.
+     *
+     * @return the reconciliationWaitDuration value.
+     */
+    public String reconciliationWaitDuration() {
+        return this.reconciliationWaitDuration;
+    }
+
+    /**
+     * Set the reconciliationWaitDuration property: Maximum duration to wait for flux configuration reconciliation. E.g
+     * PT1H, PT5M, P1D.
+     *
+     * @param reconciliationWaitDuration the reconciliationWaitDuration value to set.
+     * @return the FluxConfigurationProperties object itself.
+     */
+    public FluxConfigurationProperties withReconciliationWaitDuration(String reconciliationWaitDuration) {
+        this.reconciliationWaitDuration = reconciliationWaitDuration;
+        return this;
     }
 
     /**

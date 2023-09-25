@@ -16,10 +16,10 @@ public final class FallbackRoutePropertiesTests {
         FallbackRouteProperties model =
             BinaryData
                 .fromString(
-                    "{\"name\":\"tsthsucocm\",\"source\":\"DeviceLifecycleEvents\",\"condition\":\"azt\",\"endpointNames\":[\"twwrqp\"],\"isEnabled\":true}")
+                    "{\"name\":\"tsthsucocm\",\"source\":\"DeviceConnectionStateEvents\",\"condition\":\"azt\",\"endpointNames\":[\"twwrqp\"],\"isEnabled\":true}")
                 .toObject(FallbackRouteProperties.class);
         Assertions.assertEquals("tsthsucocm", model.name());
-        Assertions.assertEquals(RoutingSource.DEVICE_LIFECYCLE_EVENTS, model.source());
+        Assertions.assertEquals(RoutingSource.DEVICE_CONNECTION_STATE_EVENTS, model.source());
         Assertions.assertEquals("azt", model.condition());
         Assertions.assertEquals("twwrqp", model.endpointNames().get(0));
         Assertions.assertEquals(true, model.isEnabled());
@@ -30,13 +30,13 @@ public final class FallbackRoutePropertiesTests {
         FallbackRouteProperties model =
             new FallbackRouteProperties()
                 .withName("tsthsucocm")
-                .withSource(RoutingSource.DEVICE_LIFECYCLE_EVENTS)
+                .withSource(RoutingSource.DEVICE_CONNECTION_STATE_EVENTS)
                 .withCondition("azt")
                 .withEndpointNames(Arrays.asList("twwrqp"))
                 .withIsEnabled(true);
         model = BinaryData.fromObject(model).toObject(FallbackRouteProperties.class);
         Assertions.assertEquals("tsthsucocm", model.name());
-        Assertions.assertEquals(RoutingSource.DEVICE_LIFECYCLE_EVENTS, model.source());
+        Assertions.assertEquals(RoutingSource.DEVICE_CONNECTION_STATE_EVENTS, model.source());
         Assertions.assertEquals("azt", model.condition());
         Assertions.assertEquals("twwrqp", model.endpointNames().get(0));
         Assertions.assertEquals(true, model.isEnabled());
