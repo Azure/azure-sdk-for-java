@@ -76,11 +76,16 @@ import static com.azure.data.tables.implementation.TableUtils.hasTimeout;
  *
  * <p>See {@link TableServiceClientBuilder} documentation for more information on constructing and authenticating a client.</p>
  *
- * <h2>Usage Code Samples</h2>
- *
  * <p>The following samples show the various ways you can interact with the tables service using this client.</p>
  *
- * <strong>Create a Table</strong>
+ * <hr/>
+ *
+ *
+ *
+ * <h3>Create a Table</h3>
+ *
+ * <p>The {@link #createTable(String) createTable} method can be used to create a new table within an Azure Storage or Azure Cosmos account.
+ * It returns a TableClient for the newly created table.</p>
  *
  * <p>The following sample creates a table with the name "myTable".</p>
  *
@@ -92,20 +97,27 @@ import static com.azure.data.tables.implementation.TableUtils.hasTimeout;
  * </pre>
  * <!-- end com.azure.data.tables.tableServiceClient.createTable#String -->
  *
- * <strong>Delete a Table</strong>
+ * <hr/>
+ *
+ * <h3>Delete a Table</h3>
+ *
+ * <p>The {@link #deleteTable(String) deleteTable} method can be used to delete a table within an Azure Storage or Azure Cosmos account.</p>
  *
  * <p>The following sample deletes the table with the name "myTable".</p>
  *
  * <!-- src_embed com.azure.data.tables.tableServiceClient.deleteTable#String -->
  * <pre>
- *
  * tableServiceClient.deleteTable&#40;&quot;myTable&quot;&#41;;
  *
  * System.out.printf&#40;&quot;Table with name '%s' was deleted.&quot;, &quot;myTable&quot;&#41;;
  * </pre>
  * <!-- end com.azure.data.tables.tableServiceClient.deleteTable#String -->
  *
- * <strong>Get a {@link TableClient}</strong>
+ * <hr/>
+ *
+ * <h3>Get a {@link TableClient}</h3>
+ *
+ * <p>The {@link #getTableClient(String) getTableClient} method can be used to retrieve a {@link TableClient} for a table within an Azure Storage or Azure Cosmos account.</p>
  *
  * <p>The following sample gets a {@link TableClient} for the table with the name "myTable".</p>
  *
@@ -117,7 +129,11 @@ import static com.azure.data.tables.implementation.TableUtils.hasTimeout;
  * </pre>
  * <!-- end com.azure.data.tables.tableServiceClient.getTableClient#String -->
  *
- * <strong>List Tables</strong>
+ * <hr/>
+ *
+ * <h3>List Tables</h3>
+ *
+ * <p>The {@link #listTables() listTables} method can be used to list all the tables in an Azure Storage or Azure Cosmos account.</p>
  *
  * <p>The following samples lists the tables in the Tables service account.</p>
  *
@@ -146,7 +162,12 @@ import static com.azure.data.tables.implementation.TableUtils.hasTimeout;
  * </pre>
  * <!-- end com.azure.data.tables.tableServiceClient.listTables#ListTablesOptions-Duration-Context -->
  *
- * <strong>Get Table Properties</strong>
+ * <hr/>
+ *
+ * <h3>Get Table Properties</h3>
+ *
+ * <p>The {@link #getProperties() getProperties} method can be used to get the properties of the account's Table service, including properties for Analytics and CORS (Cross-Origin Resource Sharing) rules.
+ * This operation is only supported on Azure Storage endpoints.</p>
  *
  * <p>The following sample gets the properties of the Tables service account.</p>
  *
@@ -158,7 +179,12 @@ import static com.azure.data.tables.implementation.TableUtils.hasTimeout;
  * </pre>
  * <!-- end com.azure.data.tables.tableServiceClient.getProperties -->
  *
- * <strong>Set Table Properties</strong>
+ * <hr/>
+ *
+ * <h3>Set Table Properties</h3>
+ *
+ * <p>The {@link #setProperties(TableServiceProperties) setProperties} method can be used to set the properties of the account's Table service, including properties for Analytics and CORS (Cross-Origin Resource Sharing) rules.
+ * This operation is only supported on Azure Storage endpoints.</p>
  *
  * <p>The following sample sets the properties of the Tables service account.</p>
  *
@@ -181,7 +207,12 @@ import static com.azure.data.tables.implementation.TableUtils.hasTimeout;
  * </pre>
  * <!-- end com.azure.data.tables.tableServiceClient.setProperties#TableServiceProperties -->
  *
- * <strong>Get Table Statistics</strong>
+ * <hr/>
+ *
+ * <h3>Get Table Statistics</h3>
+ *
+ * <p>The {@link #getStatistics() getStatistics} method can be used to retrieve statistics related to replication for the account's Table service. It is only available on the secondary location endpoint when read-access geo-redundant replication is enabled for the account.
+ * This operation is only supported on Azure Storage endpoints.</p>
  *
  * <p>The following sample gets the statistics of the Tables service account.</p>
  *
@@ -453,7 +484,6 @@ public final class TableServiceClient {
      * <p>Deletes a table.</p>
      * <!-- src_embed com.azure.data.tables.tableServiceClient.deleteTable#String -->
      * <pre>
-     *
      * tableServiceClient.deleteTable&#40;&quot;myTable&quot;&#41;;
      *
      * System.out.printf&#40;&quot;Table with name '%s' was deleted.&quot;, &quot;myTable&quot;&#41;;

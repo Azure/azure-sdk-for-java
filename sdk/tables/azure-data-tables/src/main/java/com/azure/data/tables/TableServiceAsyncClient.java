@@ -72,11 +72,14 @@ import static com.azure.data.tables.implementation.TableUtils.swallowExceptionFo
  *
  * <p>See {@link TableServiceClientBuilder} documentation for more information on constructing and authenticating a client.</p>
  *
- * <h2>Usage Code Samples</h2>
- *
  * <p>The following code samples show the various ways you can interact with the tables service using this client.</p>
  *
- * <strong>Create a Table</strong>
+ * <hr/>
+ *
+ * <h3>Create a Table</h3>
+ *
+ * <p>The {@link #createTable(String) createTable} method can be used to create a new table within an Azure Storage or Azure Cosmos account.
+ * It returns a TableClient for the newly created table.</p>
  *
  * <p>The following sample creates a table with the name "myTable".</p>
  *
@@ -89,7 +92,11 @@ import static com.azure.data.tables.implementation.TableUtils.swallowExceptionFo
  * </pre>
  * <!-- end com.azure.data.tables.tableServiceAsyncClient.createTable#String -->
  *
- * <strong>Delete a Table</strong>
+ * <hr/>
+ *
+ * <h3>Delete a Table</h3>
+ *
+ * <p>The {@link #deleteTable(String) deleteTable} method can be used to delete a table within an Azure Storage or Azure Cosmos account.</p>
  *
  * <p>The following sample deletes the table with the name "myTable".</p>
  *
@@ -102,7 +109,11 @@ import static com.azure.data.tables.implementation.TableUtils.swallowExceptionFo
  * </pre>
  * <!-- end com.azure.data.tables.tableServiceAsyncClient.deleteTable#String -->
  *
- * <strong>Get a {@link TableServiceAsyncClient}</strong>
+ * <hr/>
+ *
+ * <h3>Get a {@link TableServiceAsyncClient}</h3>
+ *
+ * <p>The {@link #getTableClient(String) getTableClient} method can be used to retrieve a {@link TableAsyncClient} for a table within an Azure Storage or Azure Cosmos account.</p>
  *
  * <p>The following sample gets a {@link TableServiceAsyncClient} using the table name "myTable".</p>
  *
@@ -114,7 +125,11 @@ import static com.azure.data.tables.implementation.TableUtils.swallowExceptionFo
  * </pre>
  * <!-- end com.azure.data.tables.tableServiceAsyncClient.getTableClient#String -->
  *
- * <strong>List Tables</strong>
+ * <hr/>
+ *
+ * <h3>List Tables</h3>
+ *
+ * <p>The {@link #listTables() listTables} method can be used to list all the tables in an Azure Storage or Azure Cosmos account.</p>
  *
  * <p>The following samples list the tables in the Table service account.</p>
  *
@@ -136,7 +151,12 @@ import static com.azure.data.tables.implementation.TableUtils.swallowExceptionFo
  * </pre>
  * <!-- end com.azure.data.tables.tableServiceAsyncClient.listTables#ListTablesOptions -->
  *
- * <strong>Get Table Properties</strong>
+ * <hr/>
+ *
+ * <h3>Get Table Properties</h3>
+ *
+ * <p>The {@link #getProperties() getProperties} method can be used to get the properties of the account's Table service, including properties for Analytics and CORS (Cross-Origin Resource Sharing) rules.
+ * This operation is only supported on Azure Storage endpoints.</p>
  *
  * <p>The following sample gets the properties of the Table service account.</p>
  *
@@ -148,7 +168,12 @@ import static com.azure.data.tables.implementation.TableUtils.swallowExceptionFo
  * </pre>
  * <!-- end com.azure.data.tables.tableServiceAsyncClient.getProperties -->
  *
- * <strong>Set Table Properties</strong>
+ * <hr/>
+ *
+ * <h3>Set Table Properties</h3>
+ *
+ * <p>The {@link #setProperties(TableServiceProperties) setProperties} method can be used to set the properties of the account's Table service, including properties for Analytics and CORS (Cross-Origin Resource Sharing) rules.
+ * This operation is only supported on Azure Storage endpoints.</p>
  *
  * <p>The following sample sets the properties of the Table service account.</p>
  *
@@ -171,7 +196,12 @@ import static com.azure.data.tables.implementation.TableUtils.swallowExceptionFo
  * </pre>
  * <!-- end com.azure.data.tables.tableServiceAsyncClient.setProperties#TableServiceProperties -->
  *
- * <strong>Get Table Statistics</strong>
+ * <hr/>
+ *
+ * <h3>Get Table Statistics</h3>
+ *
+ * <p>The {@link #getStatistics() getStatistics} method can be used to retrieve statistics related to replication for the account's Table service. It is only available on the secondary location endpoint when read-access geo-redundant replication is enabled for the account.
+ * This operation is only supported on Azure Storage endpoints.</p>
  *
  * <p>The following sample gets the statistics of the Table service account.</p>
  *

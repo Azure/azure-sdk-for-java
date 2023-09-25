@@ -98,11 +98,13 @@ import static com.azure.data.tables.implementation.TableUtils.toTableServiceErro
  *
  * <p>For more information on building and authenticating, see the {@link TableClientBuilder} documentation.</p>
  *
- * <h2>Usage Code Samples</h2>
- *
  * <p>The following code samples provide examples of common operations preformed with this client.</p>
  *
- * <strong>Create a {@link TableEntity}</strong>
+ * <hr/>
+ *
+ * <h3>Create a {@link TableEntity}</h3>
+ *
+ * <p>The {@link #createEntity(TableEntity) createEntity} method can be used to create a table entity within a table in your Azure Storage or Azure Cosmos account.</p>
  *
  * <p>The sample below creates a {@link TableEntity} with a partition key of "partitionKey" and a row key of "rowKey".</p>
  *
@@ -119,7 +121,11 @@ import static com.azure.data.tables.implementation.TableUtils.toTableServiceErro
  * </pre>
  * <!-- end com.azure.data.tables.tableAsyncClient.createEntity#TableEntity -->
  *
- * <strong>Retrieve a {@link TableEntity}</strong>
+ * <hr/>
+ *
+ * <h3>Retrieve a {@link TableEntity}</h3>
+ *
+ * <p>The {@link #getEntity(String, String) getEntity} method can be used to retrieve a table entity within a table in your Azure Storage or Azure Cosmos account.</p>
  *
  * <p>The sample below retrieves a {@link TableEntity} with a partition key of "partitionKey" and a row key of "rowKey".</p>
  *
@@ -133,7 +139,11 @@ import static com.azure.data.tables.implementation.TableUtils.toTableServiceErro
  * </pre>
  * <!-- end com.azure.data.tables.tableAsyncClient.getEntity#String-String -->
  *
- * <strong>Update a {@link TableEntity}</strong>
+ * <hr/>
+ *
+ * <h3>Update a {@link TableEntity}</h3>
+ *
+ * <p>The {@link #updateEntity(TableEntity) updateEntity} method can be used to update a table entity within a table in your Azure Storage or Azure Cosmos account.</p>
  *
  * <p>The sample below updates a {@link TableEntity} with a partition key of "partitionKey" and a row key of "rowKey", adding a new property with a key of "Property" and a value of "Value".</p>
  *
@@ -150,7 +160,11 @@ import static com.azure.data.tables.implementation.TableUtils.toTableServiceErro
  * </pre>
  * <!-- end com.azure.data.tables.tableAsyncClient.updateEntity#TableEntity-TableEntityUpdateMode -->
  *
- * <strong>Listing {@link TableEntity TableEntities}</strong>
+ * <hr/>
+ *
+ * <h3>Listing {@link TableEntity TableEntities}</h3>
+ *
+ * <p>The {@link #listEntities() listEntities} method can be used to list the entities within a table in your Azure Storage or Azure Cosmos account.</p>
  *
  * <p>The sample below lists all {@link TableEntity TableEntities} within the table without filtering out any entities.</p>
  *
@@ -191,7 +205,11 @@ import static com.azure.data.tables.implementation.TableUtils.toTableServiceErro
  * </pre>
  * <!-- end com.azure.data.tables.tableAsyncClient.listEntities#ListEntitiesOptions -->
  *
- * <strong>Delete a {@link TableEntity}</strong>
+ * <hr/>
+ *
+ * <h3>Delete a {@link TableEntity}</h3>
+ *
+ * <p>The {@link #deleteEntity(String, String) deleteEntity} method can be used to delete a table entity within a table in your Azure Storage or Azure Cosmos account.</p>
  *
  * <p>The sample below deletes a {@link TableEntity} with a partition key of "partitionKey" and a row key of "rowKey".</p>
  *
@@ -205,7 +223,11 @@ import static com.azure.data.tables.implementation.TableUtils.toTableServiceErro
  * </pre>
  * <!-- end com.azure.data.tables.tableAsyncClient.deleteEntity#String-String -->
  *
- * <strong>Submit a transactional batch</strong>
+ * <hr/>
+ *
+ * <h3>Submit a transactional batch</h3>
+ *
+ *  <p>The {@link #submitTransaction(List) submitTransaction} method can be used to submit a transactional batch of actions to perform on the table in your Azure Storage or Azure Cosmos account.</p>
  *
  * <p>The sample below shows how to prepare and submit a transactional batch with multiple actions.</p>
  *

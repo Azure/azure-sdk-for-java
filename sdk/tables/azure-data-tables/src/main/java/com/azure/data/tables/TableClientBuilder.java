@@ -56,8 +56,6 @@ import static com.azure.data.tables.BuilderHelper.validateCredentials;
  * {@link TableClientBuilder#credential(AzureNamedKeyCredential)}, {@link TableClientBuilder#credential(TokenCredential)}, {@link TableClientBuilder#credential(AzureSasCredential)},
  *  or {@link TableClientBuilder#sasToken(String)}</p>
  *
- * <h3>Building a Client</h3>
- *
  * <p>To build an instance of {@link TableClient} or {@link TableAsyncClient} call {@link TableClientBuilder#buildClient()} or {@link TableClientBuilder#buildAsyncClient()}, respectively.</p>
  *
  * <p>The following example shows how to build a {@link TableClient} instance.</p>
@@ -82,9 +80,9 @@ import static com.azure.data.tables.BuilderHelper.validateCredentials;
  * </pre>
  * <!-- end com.azure.data.tables.tableClientBuilder.buildAsyncClient -->
  *
- * <h3>Authentication Options</h3>
+ * <hr/>
  *
- * <strong>Authenticating via <a href="https://learn.microsoft.com/java/api/overview/azure/data-tables-readme?view=azure-java-stable#connection-string">Connection String</a></strong>
+ * <h3>Authenticating via <a href="https://learn.microsoft.com/java/api/overview/azure/data-tables-readme?view=azure-java-stable#connection-string">Connection String</a></h3>
  *
  * <p>To use a connection string to authorize the client, call the builder's {@link TableClientBuilder#connectionString(String)} method with your connection string. When authenticating via a
  *  connection string, providing an endpoint is not required.</p>
@@ -98,7 +96,9 @@ import static com.azure.data.tables.BuilderHelper.validateCredentials;
  * </pre>
  * <!-- end com.azure.data.tables.tableClientBuilder.connectionString#string -->
  *
- * <strong>Authentication via <a href="https://learn.microsoft.com/java/api/com.azure.core.credential.azurenamedkeycredential?view=azure-java-stable">Shared Key</a></strong>
+ * <hr/>
+ *
+ * <h3>Authentication via <a href="https://learn.microsoft.com/java/api/com.azure.core.credential.azurenamedkeycredential?view=azure-java-stable">Shared Key</a></h3>
  *
  * <p>To use shared key authentication, create an instance of AzureNamedKeyCredential and pass it to the builder's
  *  {@link TableClientBuilder#credential(AzureNamedKeyCredential)} method. Pass the account URL to the builder's {@link TableClientBuilder#endpoint(String)} method.</p>
@@ -113,7 +113,9 @@ import static com.azure.data.tables.BuilderHelper.validateCredentials;
  * </pre>
  * <!-- end com.azure.data.tables.tableClientBuilder.credential#sharedKeyCredential -->
  *
- * <strong>Authentication via <a href="https://learn.microsoft.com/java/api/overview/azure/data-tables-readme?view=azure-java-stable#shared-access-signature-sas">Shared Access Signature (SAS)</a></strong>
+ * <hr/>
+ *
+ * <h3>Authentication via <a href="https://learn.microsoft.com/java/api/overview/azure/data-tables-readme?view=azure-java-stable#shared-access-signature-sas">Shared Access Signature (SAS)</a></h3>
  *
  * <p>when authorizing a client utilizing a Shared Access Signature (SAS), you have the option of using <a href="https://learn.microsoft.com/java/api/com.azure.core.credential.azuresascredential?view=azure-java-stable">AzureSasCredential</a> or
  *  the SAS token directly. To use an AzureSasCredential, pass it to the builder's {@link TableClientBuilder#credential(AzureSasCredential)} method. When authenticating with a SAS token, pass it to the
@@ -143,7 +145,9 @@ import static com.azure.data.tables.BuilderHelper.validateCredentials;
  * </pre>
  * <!-- end com.azure.data.tables.tableClientBuilder.sasToken#string -->
  *
- * <strong>Authentication via <a href="https://learn.microsoft.com/java/api/com.azure.core.credential.tokencredential?view=azure-java-stable">Token Credential</a></strong>
+ * <hr/>
+ *
+ * <h3>Authentication via <a href="https://learn.microsoft.com/java/api/com.azure.core.credential.tokencredential?view=azure-java-stable">Token Credential</a></h3>
  *
  * <p>To use token credential authentication, create an instance of a credential class that implements {@link com.azure.core.credential.TokenCredential TokenCredential} and pass it to the
  *  builder's {@link TableClientBuilder#credential(TokenCredential)} method. Pass the account URL to the builder's {@link TableClientBuilder#endpoint(String)} method.</p>

@@ -122,7 +122,6 @@ public class TableServiceClientJavaDocCodeSnippets {
         TableServiceClient tableServiceClient = createClient();
 
         // BEGIN: com.azure.data.tables.tableServiceClient.deleteTable#String
-
         tableServiceClient.deleteTable("myTable");
 
         System.out.printf("Table with name '%s' was deleted.", "myTable");
