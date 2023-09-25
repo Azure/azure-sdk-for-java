@@ -13,6 +13,5 @@ dependencyResolutionManagement {
     }
 }
 
-rootProject.name = "Android"
-include(":azure-android-compat")
+rootProject.name = "AndroidCompatAzure"
 include(":azure-samples")
