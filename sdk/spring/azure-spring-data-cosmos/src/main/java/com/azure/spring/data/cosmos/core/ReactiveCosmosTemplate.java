@@ -473,7 +473,7 @@ public class ReactiveCosmosTemplate implements ReactiveCosmosOperations, Applica
      * Insert all items with bulk.
      *
      * @param entityInformation the CosmosEntityInformation
-     * @param entities the Iterable<S> entities to be deleted
+     * @param entities the Iterable entities to be deleted
      * @param <T> type class of domain type
      * @param <S> type class of domain type
      * @return Flux of result
