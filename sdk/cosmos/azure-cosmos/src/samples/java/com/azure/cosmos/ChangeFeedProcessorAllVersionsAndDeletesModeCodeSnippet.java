@@ -71,11 +71,11 @@ public class ChangeFeedProcessorAllVersionsAndDeletesModeCodeSnippet {
         CosmosAsyncDatabase cosmosAsyncDatabase = cosmosAsyncClient.getDatabase("testDb");
         CosmosAsyncContainer feedContainer = cosmosAsyncDatabase.getContainer("feedContainer");
         CosmosAsyncContainer leaseContainer = cosmosAsyncDatabase.getContainer("leaseContainer");
+        // BEGIN: com.azure.cosmos.allVersionsAndDeletesChangeFeedProcessorWithContext.builder
         ChangeFeedProcessor changeFeedProcessor = new ChangeFeedProcessorBuilder()
             .hostName(hostName)
             .feedContainer(feedContainer)
             .leaseContainer(leaseContainer)
-            // BEGIN: com.azure.cosmos.allVersionsAndDeletesChangeFeedProcessorWithContext.builder
             .handleAllVersionsAndDeletesChanges((docs, context) -> {
                 for (ChangeFeedProcessorItem item : docs) {
                     // Implementation for handling and processing of each ChangeFeedProcessorItem item goes here
@@ -83,8 +83,8 @@ public class ChangeFeedProcessorAllVersionsAndDeletesModeCodeSnippet {
                 String leaseToken = context.getLeaseToken();
                 // Handling of the lease token corresponding to a batch of change feed processor item goes here
             })
-            // END: com.azure.cosmos.allVersionsAndDeletesChangeFeedProcessorWithContext.builder
             .buildChangeFeedProcessor();
+        // END: com.azure.cosmos.allVersionsAndDeletesChangeFeedProcessorWithContext.builder
     }
 
     public void handleAllVersionsAndDeletesChangesWithContextCodeSnippet() {
@@ -108,7 +108,7 @@ public class ChangeFeedProcessorAllVersionsAndDeletesModeCodeSnippet {
                     // Implementation for handling and processing of each ChangeFeedProcessorItem item goes here
                 }
                 String leaseToken = context.getLeaseToken();
-                // business logic to handle each leaseToken goes here
+                // Handling of the lease token corresponding to a batch of change feed processor item goes here
             })
             // END: com.azure.cosmos.allVersionsAndDeletesChangeFeedProcessorWithContext.handleChanges
             .buildChangeFeedProcessor();
