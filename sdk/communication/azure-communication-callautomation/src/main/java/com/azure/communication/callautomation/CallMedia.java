@@ -228,7 +228,7 @@ public final class CallMedia {
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Void startHoldMusic(CommunicationIdentifier targetParticipant,
                                PlaySource playSourceInfo) {
-        return callMediaAsync.startHoldMusicAsync(targetParticipant, playSourceInfo).block();
+        return callMediaAsync.startHoldMusic(targetParticipant, playSourceInfo).block();
     }
 
     /**

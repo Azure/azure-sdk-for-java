@@ -335,7 +335,7 @@ public class CallMediaAsyncUnitTests {
             new CommunicationUserIdentifier("id"),
             new TextSource().setText("audio to play"));
         StepVerifier.create(
-                callMedia.startHoldMusicWithResponseAsync(options))
+                callMedia.startHoldMusicWithResponse(options))
             .consumeNextWith(response -> assertEquals(200, response.getStatusCode()))
             .verifyComplete();
     }

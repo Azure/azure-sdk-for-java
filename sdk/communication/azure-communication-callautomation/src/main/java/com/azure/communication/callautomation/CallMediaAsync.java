@@ -623,8 +623,8 @@ public final class CallMediaAsync {
      * @return Response for successful operation.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Mono<Void> startHoldMusicAsync(CommunicationIdentifier targetParticipant,
-                                                              PlaySource playSourceInfo) {
+    public Mono<Void> startHoldMusic(CommunicationIdentifier targetParticipant,
+                                     PlaySource playSourceInfo) {
         return startHoldMusicWithResponseInternal(
             new StartHoldMusicOptions(targetParticipant, playSourceInfo),
             Context.NONE).then();
@@ -636,7 +636,7 @@ public final class CallMediaAsync {
      * @return Response for successful operation.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Mono<Response<Void>> startHoldMusicWithResponseAsync(StartHoldMusicOptions options) {
+    public Mono<Response<Void>> startHoldMusicWithResponse(StartHoldMusicOptions options) {
         return withContext(context -> startHoldMusicWithResponseInternal(
             options, context));
     }
