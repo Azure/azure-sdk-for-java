@@ -702,7 +702,7 @@ public final class OpenAIClientImpl {
      * {
      *     id: String (Required)
      *     created: long (Required)
-     *     prompt_annotations (Optional): [
+     *     prompt_filter_results (Optional): [
      *          (Optional){
      *             prompt_index: int (Required)
      *             content_filter_results (Optional): {
@@ -827,7 +827,7 @@ public final class OpenAIClientImpl {
      * {
      *     id: String (Required)
      *     created: long (Required)
-     *     prompt_annotations (Optional): [
+     *     prompt_filter_results (Optional): [
      *          (Optional){
      *             prompt_index: int (Required)
      *             content_filter_results (Optional): {
@@ -1015,7 +1015,7 @@ public final class OpenAIClientImpl {
      *             }
      *         }
      *     ]
-     *     prompt_annotations (Optional): [
+     *     prompt_filter_results (Optional): [
      *          (Optional){
      *             prompt_index: int (Required)
      *             content_filter_results (Optional): (recursive schema, see content_filter_results above)
@@ -1162,7 +1162,7 @@ public final class OpenAIClientImpl {
      *             }
      *         }
      *     ]
-     *     prompt_annotations (Optional): [
+     *     prompt_filter_results (Optional): [
      *          (Optional){
      *             prompt_index: int (Required)
      *             content_filter_results (Optional): (recursive schema, see content_filter_results above)
@@ -1307,7 +1307,7 @@ public final class OpenAIClientImpl {
      *             }
      *         }
      *     ]
-     *     prompt_annotations (Optional): [
+     *     prompt_filter_results (Optional): [
      *          (Optional){
      *             prompt_index: int (Required)
      *             content_filter_results (Optional): (recursive schema, see content_filter_results above)
@@ -1455,7 +1455,7 @@ public final class OpenAIClientImpl {
      *             }
      *         }
      *     ]
-     *     prompt_annotations (Optional): [
+     *     prompt_filter_results (Optional): [
      *          (Optional){
      *             prompt_index: int (Required)
      *             content_filter_results (Optional): (recursive schema, see content_filter_results above)

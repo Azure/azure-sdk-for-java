@@ -596,22 +596,6 @@ public final class CosmosChangeFeedRequestOptions {
                 }
 
                 @Override
-                public void applyMaxItemCount(
-                    CosmosChangeFeedRequestOptions requestOptions,
-                    CosmosPagedFluxOptions fluxOptions) {
-
-                    if (requestOptions == null || fluxOptions == null) {
-                        return;
-                    }
-
-                    if (fluxOptions.getMaxItemCount() != null) {
-                        return;
-                    }
-
-                    fluxOptions.setMaxItemCount(requestOptions.getMaxItemCount());
-                }
-
-                @Override
                 public List<String> getExcludeRegions(CosmosChangeFeedRequestOptions cosmosChangeFeedRequestOptions) {
                     return cosmosChangeFeedRequestOptions.excludeRegions;
                 }

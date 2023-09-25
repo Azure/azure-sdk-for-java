@@ -120,6 +120,14 @@ public final class FluxConfigurationImpl implements FluxConfiguration {
         return this.innerModel().statusUpdatedAt();
     }
 
+    public Boolean waitForReconciliation() {
+        return this.innerModel().waitForReconciliation();
+    }
+
+    public String reconciliationWaitDuration() {
+        return this.innerModel().reconciliationWaitDuration();
+    }
+
     public FluxComplianceState complianceState() {
         return this.innerModel().complianceState();
     }

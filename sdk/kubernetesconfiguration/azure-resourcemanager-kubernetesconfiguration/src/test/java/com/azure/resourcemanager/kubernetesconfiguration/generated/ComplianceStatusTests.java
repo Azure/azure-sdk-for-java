@@ -16,10 +16,10 @@ public final class ComplianceStatusTests {
         ComplianceStatus model =
             BinaryData
                 .fromString(
-                    "{\"complianceState\":\"Pending\",\"lastConfigApplied\":\"2021-03-15T08:23:31Z\",\"message\":\"gigr\",\"messageLevel\":\"Error\"}")
+                    "{\"complianceState\":\"Failed\",\"lastConfigApplied\":\"2021-03-06T10:40:17Z\",\"message\":\"kfrlhrxsbky\",\"messageLevel\":\"Error\"}")
                 .toObject(ComplianceStatus.class);
-        Assertions.assertEquals(OffsetDateTime.parse("2021-03-15T08:23:31Z"), model.lastConfigApplied());
-        Assertions.assertEquals("gigr", model.message());
+        Assertions.assertEquals(OffsetDateTime.parse("2021-03-06T10:40:17Z"), model.lastConfigApplied());
+        Assertions.assertEquals("kfrlhrxsbky", model.message());
         Assertions.assertEquals(MessageLevelType.ERROR, model.messageLevel());
     }
 
@@ -27,12 +27,12 @@ public final class ComplianceStatusTests {
     public void testSerialize() throws Exception {
         ComplianceStatus model =
             new ComplianceStatus()
-                .withLastConfigApplied(OffsetDateTime.parse("2021-03-15T08:23:31Z"))
-                .withMessage("gigr")
+                .withLastConfigApplied(OffsetDateTime.parse("2021-03-06T10:40:17Z"))
+                .withMessage("kfrlhrxsbky")
                 .withMessageLevel(MessageLevelType.ERROR);
         model = BinaryData.fromObject(model).toObject(ComplianceStatus.class);
-        Assertions.assertEquals(OffsetDateTime.parse("2021-03-15T08:23:31Z"), model.lastConfigApplied());
-        Assertions.assertEquals("gigr", model.message());
+        Assertions.assertEquals(OffsetDateTime.parse("2021-03-06T10:40:17Z"), model.lastConfigApplied());
+        Assertions.assertEquals("kfrlhrxsbky", model.message());
         Assertions.assertEquals(MessageLevelType.ERROR, model.messageLevel());
     }
 }
