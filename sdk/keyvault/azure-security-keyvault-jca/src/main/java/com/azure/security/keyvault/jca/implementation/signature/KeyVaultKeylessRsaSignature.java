@@ -33,7 +33,6 @@ abstract class KeyVaultKeylessRsaSignature extends AbstractKeyVaultKeylessSignat
     protected byte[] engineSign() {
         byte[] mHash = getDigestValue();
         String encode = Base64.getEncoder().encodeToString(mHash);
-        //For all RSA type certificate in keyVault, we can use PS256 to encrypt.
         if (keyVaultClient != null) {
             return keyVaultClient.getSignedWithPrivateKey(this.keyVaultDigestName, encode, keyId);
         }
