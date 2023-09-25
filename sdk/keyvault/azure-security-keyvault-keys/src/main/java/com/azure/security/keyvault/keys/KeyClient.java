@@ -96,9 +96,9 @@ import static com.azure.security.keyvault.keys.implementation.models.KeyVaultKey
  * </pre>
  * <!-- end com.azure.security.keyvault.keys.KeyClient.instantiation -->
  *
- * <br/>
+ * <br>
  *
- * <hr/>
+ * <hr>
  *
  * <h2>Create a Cryptographic Key</h2>
  * The {@link KeyClient} can be used to create a key in the key vault.
@@ -116,9 +116,9 @@ import static com.azure.security.keyvault.keys.implementation.models.KeyVaultKey
  *
  * <p><strong>Note:</strong> For the asynchronous sample, refer to {@link KeyAsyncClient}.</p>
  *
- * <br/>
+ * <br>
  *
- * <hr/>
+ * <hr>
  *
  * <h2>Get a Cryptographic Key</h2>
  * The {@link KeyClient} can be used to retrieve a key from the key vault.
@@ -138,9 +138,9 @@ import static com.azure.security.keyvault.keys.implementation.models.KeyVaultKey
  *
  * <p><strong>Note:</strong> For the asynchronous sample, refer to {@link KeyAsyncClient}.</p>
  *
- * <br/>
+ * <br>
  *
- * <hr/>
+ * <hr>
  *
  * <h2>Delete a Cryptographic Key</h2>
  * The {@link KeyClient} can be used to delete a key from the key vault.

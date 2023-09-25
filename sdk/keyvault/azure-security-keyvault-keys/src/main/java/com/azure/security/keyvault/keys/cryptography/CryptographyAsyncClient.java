@@ -79,9 +79,9 @@ import static com.azure.security.keyvault.keys.cryptography.implementation.Crypt
  *     .buildAsyncClient&#40;&#41;;
  * </pre>
  * <!-- end com.azure.security.keyvault.keys.cryptography.CryptographyAsyncClient.withJsonWebKey.instantiation -->
- * <br/>
+ * <br>
  *
- * <hr/>
+ * <hr>
  *
  * <h2>Encrypt Data</h2>
  * The {@link CryptographyAsyncClient} can be used to encrypt data.
@@ -105,9 +105,9 @@ import static com.azure.security.keyvault.keys.cryptography.implementation.Crypt
  *
  * <p><strong>Note:</strong> For the synchronous sample, refer to {@link CryptographyClient}.</p>
  *
- * <br/>
+ * <br>
  *
- * <hr/>
+ * <hr>
  *
  * <h2>Decrypt Data</h2>
  * The {@link CryptographyAsyncClient} can be used to decrypt data.

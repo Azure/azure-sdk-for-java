@@ -21,6 +21,7 @@ import com.azure.core.test.utils.MockTokenCredential;
 import com.azure.core.util.BinaryData;
 import com.azure.core.util.Configuration;
 import com.azure.core.util.CoreUtils;
+import com.azure.core.util.logging.ClientLogger;
 import com.azure.identity.ClientSecretCredentialBuilder;
 import com.azure.json.JsonProviders;
 import com.azure.json.JsonReader;
@@ -51,6 +52,7 @@ import java.util.Arrays;
 import java.util.Collections;
 import java.util.HashMap;
 import java.util.List;
+import java.util.Locale;
 import java.util.Map;
 import java.util.Objects;
 import java.util.function.BiConsumer;
@@ -73,6 +75,10 @@ public abstract class KeyClientTestBase extends TestProxyTestBase {
         .setBaseDelay(Duration.ofSeconds(2))
         .setMaxDelay(Duration.ofSeconds(16)));
 
+    private static final ClientLogger LOGGER = new ClientLogger(KeyAsyncClientTest.class);
+
+    public static final TestMode TEST_MODE = initializeTestMode();
+
     private static final RetryOptions PLAYBACK_RETRY_OPTIONS =
         new RetryOptions(new FixedDelayOptions(MAX_RETRIES, Duration.ofMillis(1)));
 
@@ -80,6 +86,22 @@ public abstract class KeyClientTestBase extends TestProxyTestBase {
     protected boolean runManagedHsmTest = false;
     protected boolean runReleaseKeyTest = getTestMode() == TestMode.PLAYBACK
         || Configuration.getGlobalConfiguration().get("AZURE_KEYVAULT_ATTESTATION_URL") != null;
+
+    private static TestMode initializeTestMode() {
+        final String azureTestMode = Configuration.getGlobalConfiguration().get("AZURE_TEST_MODE");
+
+        if (azureTestMode != null) {
+            try {
+                return TestMode.valueOf(azureTestMode.toUpperCase(Locale.US));
+            } catch (IllegalArgumentException e) {
+                LOGGER.error("Could not parse '{}' into TestEnum. Using 'Playback' mode.", azureTestMode);
+                return TestMode.PLAYBACK;
+            }
+        }
+
+        LOGGER.info("Environment variable '{}' has not been set yet. Using 'Playback' mode.", "AZURE_TEST_MODE");
+        return TestMode.PLAYBACK;
+    }
 
     void beforeTestSetup() {
         System.getProperties().put("IS_SKIP_ROTATION_POLICY_TEST",
