@@ -13,13 +13,13 @@ This section includes changes in `spring-cloud-azure-autoconfigure` module.
 This section includes changes in the `spring-integration-azure-eventhubs` module.
 
 #### Bugs Fixed
-- Fix NPE in the error handler of `EventHubsInboundChannelAdapter` when `instrumentationManager` or `instrumentationId` is null [#36927](https://github.com/Azure/azure-sdk-for-java/pull/36927).
+- Fix NPE in the error handler of `EventHubsInboundChannelAdapter` when `instrumentationManager` or `instrumentationId` is null [#36930](https://github.com/Azure/azure-sdk-for-java/pull/36930).
 
 ### Spring Integration Azure Service Bus
 This section includes changes in the `spring-integration-azure-servicebus` module.
 
 #### Bugs Fixed
-- Fix NPE in the error handler of `ServiceBusInboundChannelAdapter` when `instrumentationManager` or `instrumentationId` is null [#36927](https://github.com/Azure/azure-sdk-for-java/pull/36927).
+- Fix NPE in the error handler of `ServiceBusInboundChannelAdapter` when `instrumentationManager` or `instrumentationId` is null [#36930](https://github.com/Azure/azure-sdk-for-java/pull/36930).
 
 ## 5.5.0 (2023-08-28)
 - This release is compatible with Spring Boot 3.0.0-3.1.2. (Note: 3.1.x (x>2) should be supported, but they aren't tested with this release.)
