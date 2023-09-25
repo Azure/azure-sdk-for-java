@@ -523,7 +523,12 @@ public final class CosmosDiagnosticsContext {
                     this.actualItemCount.addAndGet(actualItemCount);
                 }
             }
-            this.duration = Duration.between(this.startTime, Instant.now());
+
+            if (this.startTime != null) {
+                this.duration = Duration.between(this.startTime, Instant.now());
+            } else {
+                this.duration = null;
+            }
             this.cachedRequestDiagnostics = null;
         }
     }
