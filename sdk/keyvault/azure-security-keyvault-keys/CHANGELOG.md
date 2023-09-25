@@ -1,14 +1,9 @@
 # Release History
 
-## 4.7.0-beta.1 (Unreleased)
-
-### Features Added
-
-### Breaking Changes
-
-### Bugs Fixed
+## 4.7.0 (2023-09-25)
 
 ### Other Changes
+- Due to internal client changes, made `KeyEncryptionKeyClient` extend `CryptographyClient`, mirroring their async counterparts. Functionality remains intact.
 - Migrate test recordings to assets repo.
 
 ## 4.6.5 (2023-08-21)

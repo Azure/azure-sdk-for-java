@@ -1,12 +1,12 @@
 # Release History
 
-## 4.7.0-beta.1 (Unreleased)
+## 4.7.0 (2023-09-25)
 
 ### Features Added
-
-### Breaking Changes
-
-### Bugs Fixed
+- Added new methods `fromJson` and `toJson` to models:
+  - `DeletedSecret`
+  - `KeyVaultSecret`
+  - `SecretProperties`
 
 ### Other Changes
 - Migrate test recordings to assets repo.

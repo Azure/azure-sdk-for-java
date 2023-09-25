@@ -1,14 +1,15 @@
 # Release History
 
-## 4.4.0-beta.1 (Unreleased)
-
-### Features Added
-
-### Breaking Changes
-
-### Bugs Fixed
+## 4.4.0 (2023-09-25)
 
 ### Other Changes
+- Explicitly added a `values()` method to all `ExpandableStringEnum` models:
+    - `KeyVaultDataAction`
+    - `KeyVaultRoleDefinitionType`
+    - `KeyVaultRoleScope`
+    - `KeyVaultRoleType`
+- `KeyVaultSettingType`
+  Functionality remains the same as the aforementioned method simply calls the implementation in the parent class.
 - Migrate test recordings to assets repo.
 
 ## 4.3.5 (2023-08-21)

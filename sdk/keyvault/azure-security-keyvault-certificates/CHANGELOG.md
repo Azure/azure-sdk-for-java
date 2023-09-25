@@ -1,16 +1,10 @@
 # Release History
 
-## 4.6.0-beta.1 (Unreleased)
-
-### Features Added
-
-### Breaking Changes
+## 4.5.6 (2023-09-25)
 
 ### Bugs Fixed
 - Fixed response code for certificate merging operations from `200` to the correct `201`. 
-([#36260]https://github.com/Azure/azure-sdk-for-java/issues/36260))
-
-### Other Changes
+([#36260](https://github.com/Azure/azure-sdk-for-java/issues/36260))
 
 ## 4.5.5 (2023-08-21)
 
