@@ -1660,5 +1660,31 @@
         <java.security.manager.configuration>-Djava.security.manager=allow</java.security.manager.configuration>
       </properties>
     </profile>
+
+    <!-- Based on guidance from here: https://docs.openrewrite.org/running-recipes/multi-module-maven -->
+    <profile>
+      <id>openrewrite</id>
+      <build>
+        <plugins>
+          <plugin>
+            <groupId>org.openrewrite.maven</groupId>
+            <artifactId>rewrite-maven-plugin</artifactId>
+            <version>5.6.0</version>
+            <configuration>
+              <activeRecipes>
+                <recipe>com.typespec.core.gen</recipe>
+              </activeRecipes>
+            </configuration>
+            <dependencies>
+              <dependency>
+                <groupId>com.azure</groupId>
+                <artifactId>typespec-core-gen</artifactId>
+                <version>1.0.0</version>
+              </dependency>
+            </dependencies>
+          </plugin>
+        </plugins>
+      </build>
+    </profile>
   </profiles>
 </project>

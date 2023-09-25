@@ -1,0 +1,55 @@
+type: specs.openrewrite.org/v1beta/recipe
+name: com.typespec.core.gen
+displayName: Create a typespec-core library based on the Azure SDK for Java
+recipeList:
+  - org.openrewrite.java.ChangePackage:
+      oldPackageName: com.azure
+      newPackageName: com.typespec
+      recursive: true
+
+  # TODO rename classes with Azure in them
+  # TODO rename /META-INF/native-image/ directories that have 'com.azure' and 'azure-*' subdirectories
+
+  - org.openrewrite.text.FindAndReplace:
+      find: com.azure
+      replace: com.typespec
+      caseSensitive: true
+      filePattern: '**/*.java;**/*.xml;**/*.md;**/*.properties;**/*.json'
+
+  - org.openrewrite.text.FindAndReplace:
+      find: azure-
+      replace: typespec-
+      caseSensitive: true
+      filePattern: '**/*.java;**/*.xml;**/*.md'
+
+  - org.openrewrite.text.FindAndReplace:
+      find: Azure
+      replace: TypeSpec
+      caseSensitive: false
+      filePattern: '**/*.java;**/*.xml;**/*.md'
+
+  - org.openrewrite.RenameFile:
+      fileMatcher: '**/resources/azure-core.properties'
+      fileName: 'typespec-core.properties'
+
+#  - org.openrewrite.RenameFile:
+#      fileMatcher: '**/META-INF/native-image/com.azure'
+#      fileName: 'com.typespec'
+
+#  - com.typespec.core.gen.UpdateModuleInfoRecipe:
+#      modulePattern: com.azure.**
+#      newModuleName: com.typespec.**
+#  - org.openrewrite.java.ChangeMethodName:
+#      methodPattern: com.azure..* *Azure*(..)
+#      newMethodName: typespec
+#      matchOverrides: null
+#      ignoreDefinition: null
+#  - org.openrewrite.maven.ChangePluginGroupIdAndArtifactId:
+#      oldGroupId: com.azure
+#      oldArtifactId: azure-core
+#      newGroupId: com.typescript
+#      newArtifactId: typespec-core
+#  - com.typespec.core.gen.SetMavenModulesRecipe:
+#      modules:
+#        - typespec-core
+#        - typespec-core-http-netty
