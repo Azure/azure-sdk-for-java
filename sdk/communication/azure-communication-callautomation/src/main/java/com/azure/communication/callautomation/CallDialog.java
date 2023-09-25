@@ -26,21 +26,8 @@ public final class CallDialog {
      *
      * @param callDialogAsync callDialogAsync
      */
-    public CallDialog(CallDialogAsync callDialogAsync) {
+    CallDialog(CallDialogAsync callDialogAsync) {
         this.callDialogAsync = callDialogAsync;
-    }
-
-    /**
-     * Start Dialog
-     *
-     * @param options A {@link StartDialogOptions} object containing different options for startDialog.
-     * @throws HttpResponseException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return Response for successful startDialog request.
-     */
-    @ServiceMethod(returns = ReturnType.SINGLE)
-    public Response<DialogStateResult> startDialog(StartDialogOptions options) {
-        return callDialogAsync.startDialog(options).block();
     }
 
     /**
@@ -61,19 +48,7 @@ public final class CallDialog {
     /**
      * Stop Dialog
      *
-     * @param dialogId A {@link StartDialogOptions} object containing different options for startDialog.
-     * @throws HttpResponseException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     */
-    @ServiceMethod(returns = ReturnType.SINGLE)
-    public void stopDialog(String dialogId) {
-        callDialogAsync.stopDialog(dialogId).block();
-    }
-
-    /**
-     * Stop Dialog
-     *
-     * @param dialogId A {@link StartDialogOptions} object containing different options for startDialog.
+     * @param dialogId The dialog id.
      * @param context The context to associate with this operation.
      * @throws HttpResponseException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.

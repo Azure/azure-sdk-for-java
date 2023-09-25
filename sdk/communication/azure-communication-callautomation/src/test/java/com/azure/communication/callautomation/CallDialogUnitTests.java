@@ -21,28 +21,6 @@ public class CallDialogUnitTests {
     private CallDialog callDialog;
 
     @Test
-    public void startDialogTest() {
-        // override callDialog to mock 201 response code
-        CallConnection callConnection =
-            CallAutomationUnitTestBase.getCallConnection(new ArrayList<>(
-                Collections.singletonList(new AbstractMap.SimpleEntry<>(generateDialogStateResponse(), 201)))
-            );
-        callDialog = callConnection.getCallDialog();
-
-        Map<String, Object> dialogContext = new HashMap<>();
-        StartDialogOptions options = new StartDialogOptions(
-            BOT_APP_ID,
-            DIALOG_ID,
-            DialogInputType.POWER_VIRTUAL_AGENTS,
-            dialogContext);
-
-        Response<DialogStateResult> response = callDialog.startDialog(options);
-
-        assertNotNull(response);
-        assertEquals(response.getStatusCode(), 201);
-    }
-
-    @Test
     public void startDialogWithResponseTest() {
         // override callDialog to mock 201 response code
         CallConnection callConnection =

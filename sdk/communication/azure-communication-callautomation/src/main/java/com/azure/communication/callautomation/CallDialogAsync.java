@@ -85,23 +85,22 @@ public final class CallDialogAsync {
     }
 
     /**
-     * Start Dialog
+     * Stop Dialog
      *
-     * @param dialogId startDialog options
-     * @return Response for successful startDialog request.
+     * @param dialogId The dialog id.
+     * @return Response for successful stopDialog request.
      */
     public Mono<Void> stopDialog(String dialogId) {
-        return stopDialogWithResponse(dialogId, null).then();
+        return stopDialogWithResponse(dialogId).then();
     }
 
     /**
-     * Start Dialog
+     * Sop Dialog
      *
-     * @param dialogId startDialog options
-     * @param operationContext operationContext (pass null if not applicable)
-     * @return Response for successful startDialog request.
+     * @param dialogId The dialog id.
+     * @return Response for successful stopDialog request.
      */
-    public Mono<Response<Void>> stopDialogWithResponse(String dialogId, String operationContext) {
+    public Mono<Response<Void>> stopDialogWithResponse(String dialogId) {
         return withContext(context -> stopDialogWithResponseInternal(dialogId, context));
     }
 

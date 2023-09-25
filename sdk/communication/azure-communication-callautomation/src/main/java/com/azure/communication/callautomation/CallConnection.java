@@ -304,7 +304,7 @@ public final class CallConnection {
     }
 
     /***
-     * Returns an object of CallContent
+     * Returns an object of CallDialog
      *
      * @return a CallDialogAsync.
      */

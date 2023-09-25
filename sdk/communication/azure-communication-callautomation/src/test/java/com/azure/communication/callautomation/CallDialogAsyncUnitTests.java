@@ -52,9 +52,7 @@ public class CallDialogAsyncUnitTests {
             );
         callDialogAsync = callConnectionAsync.getCallDialogAsync();
 
-        Response<Void> response = callDialogAsync.stopDialogWithResponse(
-            DIALOG_ID,
-            "operationContext").block();
+        Response<Void> response = callDialogAsync.stopDialogWithResponse(DIALOG_ID).block();
 
         assertEquals(response.getStatusCode(), 204);
     }
