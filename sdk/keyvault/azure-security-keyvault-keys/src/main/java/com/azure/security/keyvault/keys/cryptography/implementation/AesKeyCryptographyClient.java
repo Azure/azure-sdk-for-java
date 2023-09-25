@@ -20,6 +20,7 @@ import com.azure.security.keyvault.keys.cryptography.models.WrapResult;
 import com.azure.security.keyvault.keys.models.JsonWebKey;
 import reactor.core.publisher.Mono;
 
+import java.security.GeneralSecurityException;
 import java.security.NoSuchAlgorithmException;
 import java.security.SecureRandom;
 import java.util.Objects;
@@ -181,12 +182,8 @@ class AesKeyCryptographyClient extends LocalKeyCryptographyClient {
 
             return new EncryptResult(ciphertext, algorithm, jsonWebKey.getId(), iv, null,
                 additionalAuthenticatedData);
-        } catch (Exception e) {
-            if (e instanceof RuntimeException) {
-                throw LOGGER.logExceptionAsError((RuntimeException) e);
-            } else {
-                throw LOGGER.logExceptionAsError(new RuntimeException(e));
-            }
+        } catch (GeneralSecurityException e) {
+            throw LOGGER.logExceptionAsError(new RuntimeException(e));
         }
     }
 
@@ -308,12 +305,8 @@ class AesKeyCryptographyClient extends LocalKeyCryptographyClient {
                 .doFinal(ciphertext);
 
             return new DecryptResult(plaintext, algorithm, jsonWebKey.getId());
-        } catch (Exception e) {
-            if (e instanceof RuntimeException) {
-                throw LOGGER.logExceptionAsError((RuntimeException) e);
-            } else {
-                throw LOGGER.logExceptionAsError(new RuntimeException(e));
-            }
+        } catch (GeneralSecurityException e) {
+            throw LOGGER.logExceptionAsError(new RuntimeException(e));
         }
     }
 
@@ -418,12 +411,8 @@ class AesKeyCryptographyClient extends LocalKeyCryptographyClient {
 
         try {
             transform = localKeyWrapAlgorithm.createEncryptor(this.key, null, null);
-        } catch (Exception e) {
-            if (e instanceof RuntimeException) {
-                throw LOGGER.logExceptionAsError((RuntimeException) e);
-            } else {
-                throw LOGGER.logExceptionAsError(new RuntimeException(e));
-            }
+        } catch (GeneralSecurityException e) {
+            throw LOGGER.logExceptionAsError(new RuntimeException(e));
         }
 
         byte[] encrypted;
@@ -495,12 +484,8 @@ class AesKeyCryptographyClient extends LocalKeyCryptographyClient {
                 .doFinal(encryptedKey);
 
             return new UnwrapResult(decrypted, algorithm, jsonWebKey.getId());
-        } catch (Exception e) {
-            if (e instanceof RuntimeException) {
-                throw LOGGER.logExceptionAsError((RuntimeException) e);
-            } else {
-                throw LOGGER.logExceptionAsError(new RuntimeException(e));
-            }
+        } catch (GeneralSecurityException e) {
+            throw LOGGER.logExceptionAsError(new RuntimeException(e));
         }
     }
 

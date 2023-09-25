@@ -9,7 +9,6 @@ import com.azure.json.JsonWriter;
 import com.azure.security.keyvault.keys.KeyAsyncClient;
 import com.azure.security.keyvault.keys.KeyClient;
 import com.azure.security.keyvault.keys.implementation.DeletedKeyHelper;
-import com.azure.security.keyvault.keys.implementation.KeyVaultKeyHelper;
 import com.azure.security.keyvault.keys.implementation.KeyVaultKeysUtils;
 
 import java.io.IOException;
@@ -26,6 +25,11 @@ import java.time.OffsetDateTime;
 public final class DeletedKey extends KeyVaultKey {
     static {
         DeletedKeyHelper.setAccessor(new DeletedKeyHelper.DeletedKeyAccessor() {
+            @Override
+            public DeletedKey createDeletedKey(JsonWebKey jsonWebKey) {
+                return new DeletedKey(jsonWebKey);
+            }
+
             @Override
             public void setRecoveryId(DeletedKey deletedKey, String recoveryId) {
                 deletedKey.recoveryId = recoveryId;
@@ -58,6 +62,25 @@ public final class DeletedKey extends KeyVaultKey {
      * The time when the key was deleted, in UTC.
      */
     private OffsetDateTime deletedOn;
+
+    /**
+     * Creates a new instance of {@link DeletedKey}.
+     */
+    public DeletedKey() {
+    }
+
+    private DeletedKey(JsonWebKey jsonWebKey) {
+        super(jsonWebKey);
+    }
+
+    private DeletedKey(JsonWebKey jsonWebKey, KeyProperties properties, String recoveryId,
+        OffsetDateTime scheduledPurgeDate, OffsetDateTime deletedOn) {
+        super(jsonWebKey, properties);
+
+        this.recoveryId = recoveryId;
+        this.scheduledPurgeDate = scheduledPurgeDate;
+        this.deletedOn = deletedOn;
+    }
 
     /**
      * Get the recoveryId identifier.
@@ -112,59 +135,63 @@ public final class DeletedKey extends KeyVaultKey {
      */
     public static DeletedKey fromJson(JsonReader jsonReader) throws IOException {
         return jsonReader.readObject(reader -> {
-            DeletedKey key = new DeletedKey();
+            JsonWebKey webKey = null;
+            KeyProperties properties = new KeyProperties();
+            String recoveryId = null;
+            OffsetDateTime scheduledPurgeDate = null;
+            OffsetDateTime deletedOn = null;
 
             while (reader.nextToken() != JsonToken.END_OBJECT) {
                 String fieldName = reader.getFieldName();
                 reader.nextToken();
 
                 if ("key".equals(fieldName)) {
-                    KeyVaultKeyHelper.setKey(key, JsonWebKey.fromJson(reader));
-                    KeyVaultKeysUtils.unpackId(key.getKey().getId(), name -> key.properties.name = name,
-                        version -> key.properties.version = version);
+                    webKey = JsonWebKey.fromJson(reader);
+                    KeyVaultKeysUtils.unpackId(webKey.getId(), name -> properties.name = name,
+                        version -> properties.version = version);
                 } else if ("attributes".equals(fieldName) && reader.currentToken() == JsonToken.START_OBJECT) {
                     while (reader.nextToken() != JsonToken.END_OBJECT) {
                         fieldName = reader.getFieldName();
                         reader.nextToken();
 
                         if ("enabled".equals(fieldName)) {
-                            key.properties.enabled = reader.getNullable(JsonReader::getBoolean);
+                            properties.enabled = reader.getNullable(JsonReader::getBoolean);
                         } else if ("exportable".equals(fieldName)) {
-                            key.properties.exportable = reader.getNullable(JsonReader::getBoolean);
+                            properties.exportable = reader.getNullable(JsonReader::getBoolean);
                         } else if ("nbf".equals(fieldName)) {
-                            key.properties.notBefore = reader.getNullable(KeyVaultKeysUtils::epochToOffsetDateTime);
+                            properties.notBefore = reader.getNullable(KeyVaultKeysUtils::epochToOffsetDateTime);
                         } else if ("exp".equals(fieldName)) {
-                            key.properties.expiresOn = reader.getNullable(KeyVaultKeysUtils::epochToOffsetDateTime);
+                            properties.expiresOn = reader.getNullable(KeyVaultKeysUtils::epochToOffsetDateTime);
                         } else if ("created".equals(fieldName)) {
-                            key.properties.createdOn = reader.getNullable(KeyVaultKeysUtils::epochToOffsetDateTime);
+                            properties.createdOn = reader.getNullable(KeyVaultKeysUtils::epochToOffsetDateTime);
                         } else if ("updated".equals(fieldName)) {
-                            key.properties.updatedOn = reader.getNullable(KeyVaultKeysUtils::epochToOffsetDateTime);
+                            properties.updatedOn = reader.getNullable(KeyVaultKeysUtils::epochToOffsetDateTime);
                         } else if ("recoveryLevel".equals(fieldName)) {
-                            key.properties.recoveryLevel = reader.getString();
+                            properties.recoveryLevel = reader.getString();
                         } else if ("recoverableDays".equals(fieldName)) {
-                            key.properties.recoverableDays = reader.getNullable(JsonReader::getInt);
+                            properties.recoverableDays = reader.getNullable(JsonReader::getInt);
                         } else {
                             reader.skipChildren();
                         }
                     }
                 } else if ("tags".equals(fieldName)) {
-                    key.properties.setTags(reader.readMap(JsonReader::getString));
+                    properties.setTags(reader.readMap(JsonReader::getString));
                 } else if ("managed".equals(fieldName)) {
-                    key.properties.managed = reader.getNullable(JsonReader::getBoolean);
+                    properties.managed = reader.getNullable(JsonReader::getBoolean);
                 } else if ("release_policy".equals(fieldName)) {
-                    key.properties.setReleasePolicy(KeyReleasePolicy.fromJson(reader));
+                    properties.setReleasePolicy(KeyReleasePolicy.fromJson(reader));
                 } else if ("recoveryId".equals(fieldName)) {
-                    key.recoveryId = reader.getString();
+                    recoveryId = reader.getString();
                 } else if ("scheduledPurgeDate".equals(fieldName)) {
-                    key.scheduledPurgeDate = reader.getNullable(KeyVaultKeysUtils::epochToOffsetDateTime);
+                    scheduledPurgeDate = reader.getNullable(KeyVaultKeysUtils::epochToOffsetDateTime);
                 } else if ("deletedDate".equals(fieldName)) {
-                    key.deletedOn = reader.getNullable(KeyVaultKeysUtils::epochToOffsetDateTime);
+                    deletedOn = reader.getNullable(KeyVaultKeysUtils::epochToOffsetDateTime);
                 } else {
                     reader.skipChildren();
                 }
             }
 
-            return key;
+            return new DeletedKey(webKey, properties, recoveryId, scheduledPurgeDate, deletedOn);
         });
     }
 }

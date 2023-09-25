@@ -35,6 +35,7 @@ import java.util.List;
 import java.util.Map;
 import java.util.Queue;
 
+import static com.azure.core.test.utils.TestProxyUtils.checkForTestProxyErrors;
 import static com.azure.core.test.utils.TestProxyUtils.getAssetJsonFile;
 import static com.azure.core.test.utils.TestProxyUtils.getSanitizerRequests;
 import static com.azure.core.test.utils.TestProxyUtils.loadSanitizers;
@@ -85,9 +86,12 @@ public class TestProxyRecordPolicy implements HttpPipelinePolicy {
         } catch (IOException e) {
             throw new RuntimeException(e);
         }
-        HttpResponse response = client.sendSync(request, Context.NONE);
 
-        this.xRecordingId = response.getHeaderValue(X_RECORDING_ID);
+        try (HttpResponse response = client.sendSync(request, Context.NONE)) {
+            checkForTestProxyErrors(response);
+
+            this.xRecordingId = response.getHeaderValue(X_RECORDING_ID);
+        }
 
         addProxySanitization(this.sanitizers);
         setDefaultRecordingOptions();

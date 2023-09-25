@@ -26,23 +26,13 @@ import java.util.List;
 @Fluent
 public class KeyVaultKey implements JsonSerializable<KeyVaultKey> {
     static {
-        KeyVaultKeyHelper.setAccessor(new KeyVaultKeyHelper.KeyVaultKeyAccessor() {
-            @Override
-            public KeyVaultKey createKeyVaultKey() {
-                return new KeyVaultKey();
-            }
-
-            @Override
-            public void setKey(KeyVaultKey keyVaultKey, JsonWebKey jsonWebKey) {
-                keyVaultKey.key = jsonWebKey;
-            }
-        });
+        KeyVaultKeyHelper.setAccessor(KeyVaultKey::new);
     }
 
     /**
      * The Json Web Key.
      */
-    private JsonWebKey key;
+    private final JsonWebKey key;
 
     /**
      * The key properties.
@@ -50,18 +40,23 @@ public class KeyVaultKey implements JsonSerializable<KeyVaultKey> {
     final KeyProperties properties;
 
     KeyVaultKey() {
+        this.key = null;
         this.properties = new KeyProperties();
     }
 
     /**
      * Creates an instance of {@link KeyVaultKey}.
      *
-     * @param keyProperties The {@link KeyProperties}.
      * @param jsonWebKey The {@link JsonWebKey} to be used for crypto operations.
      */
-    KeyVaultKey(KeyProperties keyProperties, JsonWebKey jsonWebKey) {
-        this.properties = keyProperties;
+    KeyVaultKey(JsonWebKey jsonWebKey) {
         this.key = jsonWebKey;
+        this.properties = new KeyProperties();
+    }
+
+    KeyVaultKey(JsonWebKey jsonWebKey, KeyProperties properties) {
+        this.key = jsonWebKey;
+        this.properties = properties;
     }
 
     /**
@@ -134,53 +129,54 @@ public class KeyVaultKey implements JsonSerializable<KeyVaultKey> {
      */
     public static KeyVaultKey fromJson(JsonReader jsonReader) throws IOException {
         return jsonReader.readObject(reader -> {
-            KeyVaultKey key = new KeyVaultKey();
+            JsonWebKey webKey = null;
+            KeyProperties properties = new KeyProperties();
 
             while (reader.nextToken() != JsonToken.END_OBJECT) {
                 String fieldName = reader.getFieldName();
                 reader.nextToken();
 
                 if ("key".equals(fieldName)) {
-                    key.key = JsonWebKey.fromJson(reader);
-                    KeyVaultKeysUtils.unpackId(key.key.getId(), name -> key.properties.name = name,
-                        version -> key.properties.version = version);
+                    webKey = JsonWebKey.fromJson(reader);
+                    KeyVaultKeysUtils.unpackId(webKey.getId(), name -> properties.name = name,
+                        version -> properties.version = version);
                 } else if ("attributes".equals(fieldName) && reader.currentToken() == JsonToken.START_OBJECT) {
                     while (reader.nextToken() != JsonToken.END_OBJECT) {
                         fieldName = reader.getFieldName();
                         reader.nextToken();
 
                         if ("enabled".equals(fieldName)) {
-                            key.properties.enabled = reader.getNullable(JsonReader::getBoolean);
+                            properties.enabled = reader.getNullable(JsonReader::getBoolean);
                         } else if ("exportable".equals(fieldName)) {
-                            key.properties.exportable = reader.getNullable(JsonReader::getBoolean);
+                            properties.exportable = reader.getNullable(JsonReader::getBoolean);
                         } else if ("nbf".equals(fieldName)) {
-                            key.properties.notBefore = reader.getNullable(KeyVaultKeysUtils::epochToOffsetDateTime);
+                            properties.notBefore = reader.getNullable(KeyVaultKeysUtils::epochToOffsetDateTime);
                         } else if ("exp".equals(fieldName)) {
-                            key.properties.expiresOn = reader.getNullable(KeyVaultKeysUtils::epochToOffsetDateTime);
+                            properties.expiresOn = reader.getNullable(KeyVaultKeysUtils::epochToOffsetDateTime);
                         } else if ("created".equals(fieldName)) {
-                            key.properties.createdOn = reader.getNullable(KeyVaultKeysUtils::epochToOffsetDateTime);
+                            properties.createdOn = reader.getNullable(KeyVaultKeysUtils::epochToOffsetDateTime);
                         } else if ("updated".equals(fieldName)) {
-                            key.properties.updatedOn = reader.getNullable(KeyVaultKeysUtils::epochToOffsetDateTime);
+                            properties.updatedOn = reader.getNullable(KeyVaultKeysUtils::epochToOffsetDateTime);
                         } else if ("recoveryLevel".equals(fieldName)) {
-                            key.properties.recoveryLevel = reader.getString();
+                            properties.recoveryLevel = reader.getString();
                         } else if ("recoverableDays".equals(fieldName)) {
-                            key.properties.recoverableDays = reader.getNullable(JsonReader::getInt);
+                            properties.recoverableDays = reader.getNullable(JsonReader::getInt);
                         } else {
                             reader.skipChildren();
                         }
                     }
                 } else if ("tags".equals(fieldName)) {
-                    key.properties.setTags(reader.readMap(JsonReader::getString));
+                    properties.setTags(reader.readMap(JsonReader::getString));
                 } else if ("managed".equals(fieldName)) {
-                    key.properties.managed = reader.getNullable(JsonReader::getBoolean);
+                    properties.managed = reader.getNullable(JsonReader::getBoolean);
                 } else if ("release_policy".equals(fieldName)) {
-                    key.properties.setReleasePolicy(KeyReleasePolicy.fromJson(reader));
+                    properties.setReleasePolicy(KeyReleasePolicy.fromJson(reader));
                 } else {
                     reader.skipChildren();
                 }
             }
 
-            return key;
+            return new KeyVaultKey(webKey, properties);
         });
     }
 }

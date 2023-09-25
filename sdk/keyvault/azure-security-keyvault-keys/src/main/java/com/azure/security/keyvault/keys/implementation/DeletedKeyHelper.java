@@ -3,6 +3,7 @@
 package com.azure.security.keyvault.keys.implementation;
 
 import com.azure.security.keyvault.keys.models.DeletedKey;
+import com.azure.security.keyvault.keys.models.JsonWebKey;
 
 import java.time.OffsetDateTime;
 
@@ -10,9 +11,19 @@ public final class DeletedKeyHelper {
     private static DeletedKeyAccessor accessor;
 
     public interface DeletedKeyAccessor {
+        DeletedKey createDeletedKey(JsonWebKey jsonWebKey);
         void setRecoveryId(DeletedKey deletedKey, String recoveryId);
         void setScheduledPurgeDate(DeletedKey deletedKey, OffsetDateTime scheduledPurgeDate);
         void setDeletedOn(DeletedKey deletedKey, OffsetDateTime deletedOn);
+    }
+
+    public static DeletedKey createDeletedKey(JsonWebKey jsonWebKey) {
+        if (accessor == null) {
+            new DeletedKey();
+        }
+
+        assert accessor != null;
+        return accessor.createDeletedKey(jsonWebKey);
     }
 
     public static void setRecoveryId(DeletedKey deletedKey, String recoveryId) {

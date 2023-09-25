@@ -177,6 +177,15 @@
         <Class name="com.azure.core.serializer.json.jackson.implementation.JacksonJsonReader"/>
         <Method name="getBinary"/>
       </And>
+      <Class name="com.azure.security.keyvault.keys.implementation.models.BackupKeyResult"/>
+      <Class name="com.azure.security.keyvault.keys.implementation.models.JsonWebKey"/>
+      <Class name="com.azure.security.keyvault.keys.implementation.models.KeyOperationResult"/>
+      <Class name="com.azure.security.keyvault.keys.implementation.models.KeyOperationsParameters"/>
+      <Class name="com.azure.security.keyvault.keys.implementation.models.KeyReleasePolicy"/>
+      <Class name="com.azure.security.keyvault.keys.implementation.models.KeyRestoreParameters"/>
+      <Class name="com.azure.security.keyvault.keys.implementation.models.KeySignParameters"/>
+      <Class name="com.azure.security.keyvault.keys.implementation.models.KeyVerifyParameters"/>
+      <Class name="com.azure.security.keyvault.keys.implementation.models.RandomBytes"/>
     </Or>
     <Bug pattern="PZLA_PREFER_ZERO_LENGTH_ARRAYS"/>
   </Match>

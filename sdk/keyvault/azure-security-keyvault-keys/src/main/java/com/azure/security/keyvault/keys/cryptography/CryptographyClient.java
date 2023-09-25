@@ -1248,14 +1248,9 @@ public class CryptographyClient {
             return false;
         }
 
-        boolean keyNotAvailable = (key == null && implClient.getKeyCollection() != null);
-
-        if (keyNotAvailable) {
-            if (Objects.equals(implClient.getKeyCollection(), CryptographyUtils.SECRETS_COLLECTION)) {
-                key = getSecretKey();
-            } else {
-                key = getKey().getKey();
-            }
+        if (key == null && implClient.getKeyCollection() != null) {
+            key = CryptographyUtils.SECRETS_COLLECTION.equals(implClient.getKeyCollection())
+                ? getSecretKey() : getKey().getKey();
         }
 
         if (key == null || !key.isValid()) {
@@ -1267,7 +1262,6 @@ public class CryptographyClient {
                 localKeyCryptographyClient = initializeCryptoClient(key, implClient, LOGGER);
             } catch (RuntimeException e) {
                 localOperationNotSupported = true;
-
                 LOGGER.warning("Defaulting to service use for cryptographic operations.", e);
 
                 return false;

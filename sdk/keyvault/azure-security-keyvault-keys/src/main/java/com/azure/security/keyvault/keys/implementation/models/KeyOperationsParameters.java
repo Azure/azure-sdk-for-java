@@ -72,7 +72,7 @@ public final class KeyOperationsParameters implements JsonSerializable<KeyOperat
      */
     public byte[] getValue() {
         if (this.value == null) {
-            return new byte[0];
+            return null;
         }
         return this.value.decodedBytes();
     }
@@ -99,7 +99,7 @@ public final class KeyOperationsParameters implements JsonSerializable<KeyOperat
      */
     public byte[] getIv() {
         if (this.iv == null) {
-            return new byte[0];
+            return null;
         }
         return this.iv.decodedBytes();
     }
@@ -127,7 +127,7 @@ public final class KeyOperationsParameters implements JsonSerializable<KeyOperat
      */
     public byte[] getAad() {
         if (this.aad == null) {
-            return new byte[0];
+            return null;
         }
         return this.aad.decodedBytes();
     }
@@ -155,7 +155,7 @@ public final class KeyOperationsParameters implements JsonSerializable<KeyOperat
      */
     public byte[] getTag() {
         if (this.tag == null) {
-            return new byte[0];
+            return null;
         }
         return this.tag.decodedBytes();
     }

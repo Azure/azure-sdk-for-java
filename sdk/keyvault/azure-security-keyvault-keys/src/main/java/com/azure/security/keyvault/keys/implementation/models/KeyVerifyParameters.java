@@ -65,7 +65,7 @@ public final class KeyVerifyParameters implements JsonSerializable<KeyVerifyPara
      */
     public byte[] getDigest() {
         if (this.digest == null) {
-            return new byte[0];
+            return null;
         }
         return this.digest.decodedBytes();
     }
@@ -92,7 +92,7 @@ public final class KeyVerifyParameters implements JsonSerializable<KeyVerifyPara
      */
     public byte[] getSignature() {
         if (this.signature == null) {
-            return new byte[0];
+            return null;
         }
         return this.signature.decodedBytes();
     }

@@ -30,8 +30,7 @@ public final class KeyVaultKeysModelsUtils {
             return null;
         }
 
-        KeyVaultKey keyVaultKey = KeyVaultKeyHelper.createKeyVaultKey();
-        KeyVaultKeyHelper.setKey(keyVaultKey, mapJsonWebKeyFromImpl(keyBundle.getKey()));
+        KeyVaultKey keyVaultKey = KeyVaultKeyHelper.createKeyVaultKey(mapJsonWebKeyFromImpl(keyBundle.getKey()));
         populateKeyProperties(keyBundle, keyVaultKey.getProperties());
 
         return keyVaultKey;
@@ -79,8 +78,7 @@ public final class KeyVaultKeysModelsUtils {
             return null;
         }
 
-        DeletedKey deletedKey = new DeletedKey();
-        KeyVaultKeyHelper.setKey(deletedKey, mapJsonWebKeyFromImpl(bundle.getKey()));
+        DeletedKey deletedKey = DeletedKeyHelper.createDeletedKey(mapJsonWebKeyFromImpl(bundle.getKey()));
         populateKeyProperties(bundle, deletedKey.getProperties());
 
         DeletedKeyHelper.setRecoveryId(deletedKey, bundle.getRecoveryId());

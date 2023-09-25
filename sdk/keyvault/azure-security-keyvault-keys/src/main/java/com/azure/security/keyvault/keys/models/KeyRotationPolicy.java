@@ -70,9 +70,8 @@ public final class KeyRotationPolicy {
             List<KeyRotationLifetimeAction> mappedActions = new ArrayList<>(impl.getLifetimeActions().size());
 
             for (LifetimeActions action : impl.getLifetimeActions()) {
-                KeyRotationLifetimeAction mappedAction = new KeyRotationLifetimeAction(action.getAction().getType());
-                KeyRotationLifetimeActionHelper.setActionType(mappedAction, action.getAction());
-                KeyRotationLifetimeActionHelper.setTrigger(mappedAction, action.getTrigger());
+                KeyRotationLifetimeAction mappedAction = KeyRotationLifetimeActionHelper.createLifetimeAction(
+                    action.getTrigger(), action.getAction());
 
                 mappedActions.add(mappedAction);
             }

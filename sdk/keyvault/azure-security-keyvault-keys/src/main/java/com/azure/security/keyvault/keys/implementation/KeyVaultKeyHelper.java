@@ -9,11 +9,10 @@ public final class KeyVaultKeyHelper {
     private static KeyVaultKeyAccessor accessor;
 
     public interface KeyVaultKeyAccessor {
-        KeyVaultKey createKeyVaultKey();
-        void setKey(KeyVaultKey keyVaultKey, JsonWebKey jsonWebKey);
+        KeyVaultKey createKeyVaultKey(JsonWebKey jsonWebKey);
     }
 
-    public static KeyVaultKey createKeyVaultKey() {
+    public static KeyVaultKey createKeyVaultKey(JsonWebKey jsonWebKey) {
         // If the class hasn't been loaded yet the accessor won't be set. Attempt to load the class before using the
         // accessor.
         if (accessor == null) {
@@ -24,11 +23,7 @@ public final class KeyVaultKeyHelper {
             }
         }
 
-        return accessor.createKeyVaultKey();
-    }
-
-    public static void setKey(KeyVaultKey keyVaultKey, JsonWebKey jsonWebKey) {
-        accessor.setKey(keyVaultKey, jsonWebKey);
+        return accessor.createKeyVaultKey(jsonWebKey);
     }
 
     public static void setAccessor(KeyVaultKeyAccessor accessor) {

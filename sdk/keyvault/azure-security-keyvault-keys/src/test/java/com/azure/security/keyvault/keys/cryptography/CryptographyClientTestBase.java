@@ -5,17 +5,9 @@ package com.azure.security.keyvault.keys.cryptography;
 
 import com.azure.core.credential.TokenCredential;
 import com.azure.core.http.HttpClient;
-import com.azure.core.http.HttpPipeline;
-import com.azure.core.http.HttpPipelineBuilder;
-import com.azure.core.http.policy.ExponentialBackoff;
-import com.azure.core.http.policy.HttpLogDetailLevel;
-import com.azure.core.http.policy.HttpLogOptions;
-import com.azure.core.http.policy.HttpLoggingPolicy;
-import com.azure.core.http.policy.HttpPipelinePolicy;
-import com.azure.core.http.policy.HttpPolicyProviders;
-import com.azure.core.http.policy.RetryPolicy;
-import com.azure.core.http.policy.RetryStrategy;
-import com.azure.core.http.policy.UserAgentPolicy;
+import com.azure.core.http.policy.ExponentialBackoffOptions;
+import com.azure.core.http.policy.FixedDelayOptions;
+import com.azure.core.http.policy.RetryOptions;
 import com.azure.core.test.TestProxyTestBase;
 import com.azure.core.test.models.BodilessMatcher;
 import com.azure.core.test.models.CustomMatcher;
@@ -24,6 +16,8 @@ import com.azure.core.test.utils.MockTokenCredential;
 import com.azure.core.util.Configuration;
 import com.azure.core.util.Context;
 import com.azure.identity.ClientSecretCredentialBuilder;
+import com.azure.security.keyvault.keys.KeyClientBuilder;
+import com.azure.security.keyvault.keys.KeyServiceVersion;
 import com.azure.security.keyvault.keys.cryptography.models.DecryptParameters;
 import com.azure.security.keyvault.keys.cryptography.models.DecryptResult;
 import com.azure.security.keyvault.keys.cryptography.models.EncryptParameters;
@@ -58,16 +52,23 @@ import java.util.function.Consumer;
 import static org.junit.jupiter.api.Assertions.assertArrayEquals;
 
 public abstract class CryptographyClientTestBase extends TestProxyTestBase {
-    private static final String SDK_NAME = "client_name";
-    private static final String SDK_VERSION = "client_version";
     protected boolean isHsmEnabled = false;
     protected boolean runManagedHsmTest = false;
+
+    private static final int MAX_RETRIES = 5;
+    private static final RetryOptions LIVE_RETRY_OPTIONS = new RetryOptions(new ExponentialBackoffOptions()
+        .setMaxRetries(MAX_RETRIES)
+        .setBaseDelay(Duration.ofSeconds(2))
+        .setMaxDelay(Duration.ofSeconds(16)));
+
+    private static final RetryOptions PLAYBACK_RETRY_OPTIONS =
+        new RetryOptions(new FixedDelayOptions(MAX_RETRIES, Duration.ofMillis(1)));
 
     void beforeTestSetup() {
         KeyVaultCredentialPolicy.clearCache();
     }
 
-    HttpPipeline getHttpPipeline(HttpClient httpClient)   {
+    KeyClientBuilder getKeyClientBuilder(HttpClient httpClient, String endpoint, KeyServiceVersion serviceVersion) {
         TokenCredential credential;
 
         if (!interceptorManager.isPlaybackMode()) {
@@ -75,14 +76,10 @@ public abstract class CryptographyClientTestBase extends TestProxyTestBase {
             String clientKey = Configuration.getGlobalConfiguration().get("AZURE_KEYVAULT_CLIENT_SECRET");
             String tenantId = Configuration.getGlobalConfiguration().get("AZURE_KEYVAULT_TENANT_ID");
 
-            Objects.requireNonNull(clientId, "The client id cannot be null");
-            Objects.requireNonNull(clientKey, "The client key cannot be null");
-            Objects.requireNonNull(tenantId, "The tenant id cannot be null");
-
             credential = new ClientSecretCredentialBuilder()
-                .clientSecret(clientKey)
-                .clientId(clientId)
-                .tenantId(tenantId)
+                .clientSecret(Objects.requireNonNull(clientKey, "The client key cannot be null"))
+                .clientId(Objects.requireNonNull(clientId, "The client id cannot be null"))
+                .tenantId(Objects.requireNonNull(tenantId, "The tenant id cannot be null"))
                 .additionallyAllowedTenants("*")
                 .build();
         } else {
@@ -94,31 +91,61 @@ public abstract class CryptographyClientTestBase extends TestProxyTestBase {
             interceptorManager.addMatchers(customMatchers);
         }
 
-        // Closest to API goes first, closest to wire goes last.
-        final List<HttpPipelinePolicy> policies = new ArrayList<>();
+        KeyClientBuilder builder = new KeyClientBuilder()
+            .vaultUrl(endpoint)
+            .serviceVersion(serviceVersion)
+            .credential(credential)
+            .httpClient(httpClient);
 
-        policies.add(new UserAgentPolicy(null, SDK_NAME, SDK_VERSION, Configuration.getGlobalConfiguration().clone()));
-        HttpPolicyProviders.addBeforeRetryPolicies(policies);
+        if (interceptorManager.isPlaybackMode()) {
+            return builder.retryOptions(PLAYBACK_RETRY_OPTIONS);
+        } else {
+            builder.retryOptions(LIVE_RETRY_OPTIONS);
 
-        RetryStrategy strategy = new ExponentialBackoff(5, Duration.ofSeconds(2), Duration.ofSeconds(16));
-        policies.add(new RetryPolicy(strategy));
+            return interceptorManager.isRecordMode()
+                ? builder.addPolicy(interceptorManager.getRecordPolicy())
+                : builder;
+        }
+    }
 
-        if (credential != null) {
-            // If in playback mode, disable the challenge resource verification.
-            policies.add(new KeyVaultCredentialPolicy(credential, interceptorManager.isPlaybackMode()));
+    CryptographyClientBuilder getCryptographyClientBuilder(HttpClient httpClient,
+        CryptographyServiceVersion serviceVersion) {
+        TokenCredential credential;
+
+        if (!interceptorManager.isPlaybackMode()) {
+            String clientId = Configuration.getGlobalConfiguration().get("AZURE_KEYVAULT_CLIENT_ID");
+            String clientKey = Configuration.getGlobalConfiguration().get("AZURE_KEYVAULT_CLIENT_SECRET");
+            String tenantId = Configuration.getGlobalConfiguration().get("AZURE_KEYVAULT_TENANT_ID");
+
+            credential = new ClientSecretCredentialBuilder()
+                .clientSecret(Objects.requireNonNull(clientKey, "The client key cannot be null"))
+                .clientId(Objects.requireNonNull(clientId, "The client id cannot be null"))
+                .tenantId(Objects.requireNonNull(tenantId, "The tenant id cannot be null"))
+                .additionallyAllowedTenants("*")
+                .build();
+        } else {
+            credential = new MockTokenCredential();
+
+            List<TestProxyRequestMatcher> customMatchers = new ArrayList<>();
+            customMatchers.add(new BodilessMatcher());
+            customMatchers.add(new CustomMatcher().setExcludedHeaders(Collections.singletonList("Authorization")));
+            interceptorManager.addMatchers(customMatchers);
         }
 
-        HttpPolicyProviders.addAfterRetryPolicies(policies);
-        policies.add(new HttpLoggingPolicy(new HttpLogOptions().setLogLevel(HttpLogDetailLevel.BODY_AND_HEADERS)));
+        CryptographyClientBuilder builder = new CryptographyClientBuilder()
+            .serviceVersion(serviceVersion)
+            .credential(credential)
+            .httpClient(httpClient);
 
-        if (interceptorManager.isRecordMode()) {
-            policies.add(interceptorManager.getRecordPolicy());
+        if (interceptorManager.isPlaybackMode()) {
+            return builder.retryOptions(PLAYBACK_RETRY_OPTIONS);
+        } else {
+            builder.retryOptions(LIVE_RETRY_OPTIONS);
+
+            return interceptorManager.isRecordMode()
+                ? builder.addPolicy(interceptorManager.getRecordPolicy())
+                : builder;
         }
-
-        return new HttpPipelineBuilder()
-            .policies(policies.toArray(new HttpPipelinePolicy[0]))
-            .httpClient(interceptorManager.isPlaybackMode() ? interceptorManager.getPlaybackClient() : httpClient)
-            .build();
     }
 
     static CryptographyClient initializeCryptographyClient(JsonWebKey key) {

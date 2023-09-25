@@ -5,31 +5,33 @@ package com.azure.security.keyvault.keys.implementation;
 import com.azure.security.keyvault.keys.implementation.models.LifetimeActionsTrigger;
 import com.azure.security.keyvault.keys.implementation.models.LifetimeActionsType;
 import com.azure.security.keyvault.keys.models.KeyRotationLifetimeAction;
+import com.azure.security.keyvault.keys.models.KeyRotationPolicyAction;
 
 public final class KeyRotationLifetimeActionHelper {
     private static KeyRotationLifetimeActionAccessor accessor;
 
     public interface KeyRotationLifetimeActionAccessor {
-        void setActionType(KeyRotationLifetimeAction action, LifetimeActionsType actionsType);
-        LifetimeActionsType getActionType(KeyRotationLifetimeAction action);
-        void setTrigger(KeyRotationLifetimeAction action, LifetimeActionsTrigger trigger);
-        LifetimeActionsTrigger getTrigger(KeyRotationLifetimeAction action);
+        KeyRotationLifetimeAction createLifetimeAction(LifetimeActionsTrigger trigger, LifetimeActionsType actionsType);
+        LifetimeActionsTrigger getTrigger(KeyRotationLifetimeAction lifetimeAction);
+        LifetimeActionsType getActionType(KeyRotationLifetimeAction lifetimeAction);
     }
 
-    public static void setActionType(KeyRotationLifetimeAction action, LifetimeActionsType actionsType) {
-        accessor.setActionType(action, actionsType);
+    public static KeyRotationLifetimeAction createLifetimeAction(LifetimeActionsTrigger trigger,
+        LifetimeActionsType actionsType) {
+        return accessor.createLifetimeAction(trigger, actionsType);
     }
 
-    public static LifetimeActionsType getActionType(KeyRotationLifetimeAction action) {
-        return accessor.getActionType(action);
+    public static LifetimeActionsTrigger getTrigger(KeyRotationLifetimeAction lifetimeAction) {
+        if (accessor == null) {
+            new KeyRotationLifetimeAction(KeyRotationPolicyAction.NOTIFY);
+        }
+
+        assert accessor != null;
+        return accessor.getTrigger(lifetimeAction);
     }
 
-    public static void setTrigger(KeyRotationLifetimeAction action, LifetimeActionsTrigger trigger) {
-        accessor.setTrigger(action, trigger);
-    }
-
-    public static LifetimeActionsTrigger getTrigger(KeyRotationLifetimeAction action) {
-        return accessor.getTrigger(action);
+    public static LifetimeActionsType getActionType(KeyRotationLifetimeAction lifetimeAction) {
+        return accessor.getActionType(lifetimeAction);
     }
 
     public static void setAccessor(KeyRotationLifetimeActionAccessor accessor) {

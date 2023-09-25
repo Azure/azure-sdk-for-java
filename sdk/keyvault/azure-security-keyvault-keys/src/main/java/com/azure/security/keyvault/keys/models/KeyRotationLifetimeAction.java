@@ -22,30 +22,26 @@ public final class KeyRotationLifetimeAction implements JsonSerializable<KeyRota
     static {
         KeyRotationLifetimeActionHelper.setAccessor(new KeyRotationLifetimeActionHelper.KeyRotationLifetimeActionAccessor() {
             @Override
-            public void setActionType(KeyRotationLifetimeAction action, LifetimeActionsType actionsType) {
-                action.actionType = actionsType;
+            public KeyRotationLifetimeAction createLifetimeAction(LifetimeActionsTrigger trigger,
+                LifetimeActionsType actionsType) {
+                return new KeyRotationLifetimeAction(trigger, actionsType);
             }
 
             @Override
-            public LifetimeActionsType getActionType(KeyRotationLifetimeAction action) {
-                return action.actionType;
+            public LifetimeActionsTrigger getTrigger(KeyRotationLifetimeAction lifetimeAction) {
+                return lifetimeAction.trigger;
             }
 
             @Override
-            public void setTrigger(KeyRotationLifetimeAction action, LifetimeActionsTrigger trigger) {
-                action.trigger = trigger;
-            }
-
-            @Override
-            public LifetimeActionsTrigger getTrigger(KeyRotationLifetimeAction action) {
-                return action.trigger;
+            public LifetimeActionsType getActionType(KeyRotationLifetimeAction lifetimeAction) {
+                return lifetimeAction.actionType;
             }
         });
     }
 
-    private LifetimeActionsTrigger trigger;
+    private final LifetimeActionsTrigger trigger;
 
-    private LifetimeActionsType actionType;
+    private final LifetimeActionsType actionType;
 
     /**
      * Creates a {@link KeyRotationLifetimeAction}.
@@ -57,7 +53,9 @@ public final class KeyRotationLifetimeAction implements JsonSerializable<KeyRota
         this.trigger = new LifetimeActionsTrigger();
     }
 
-    private KeyRotationLifetimeAction() {
+    private KeyRotationLifetimeAction(LifetimeActionsTrigger trigger, LifetimeActionsType actionsType) {
+        this.trigger = trigger;
+        this.actionType = actionsType;
     }
 
     /**
@@ -138,22 +136,23 @@ public final class KeyRotationLifetimeAction implements JsonSerializable<KeyRota
      */
     public static KeyRotationLifetimeAction fromJson(JsonReader jsonReader) throws IOException {
         return jsonReader.readObject(reader -> {
-            KeyRotationLifetimeAction lifetimeAction = new KeyRotationLifetimeAction();
+            LifetimeActionsTrigger trigger = null;
+            LifetimeActionsType actionType = null;
 
             while (reader.nextToken() != JsonToken.END_OBJECT) {
                 String fieldName = reader.getFieldName();
                 reader.nextToken();
 
                 if ("trigger".equals(fieldName)) {
-                    lifetimeAction.trigger = LifetimeActionsTrigger.fromJson(reader);
+                    trigger = LifetimeActionsTrigger.fromJson(reader);
                 } else if ("action".equals(fieldName)) {
-                    lifetimeAction.actionType = LifetimeActionsType.fromJson(reader);
+                    actionType = LifetimeActionsType.fromJson(reader);
                 } else {
                     reader.skipChildren();
                 }
             }
 
-            return lifetimeAction;
+            return new KeyRotationLifetimeAction(trigger, actionType);
         });
     }
 }

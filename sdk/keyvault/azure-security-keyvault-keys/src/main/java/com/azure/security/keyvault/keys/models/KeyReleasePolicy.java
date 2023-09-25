@@ -26,7 +26,7 @@ public final class KeyReleasePolicy implements JsonSerializable<KeyReleasePolicy
      * - https://aka.ms/policygrammarkeys for Azure Key Vault release policy grammar.
      * - https://aka.ms/policygrammarmhsm for Azure Managed HSM release policy grammar.
      */
-    private BinaryData encodedPolicy;
+    private final BinaryData encodedPolicy;
 
     /*
      * Content type and version of key release policy.
@@ -39,7 +39,8 @@ public final class KeyReleasePolicy implements JsonSerializable<KeyReleasePolicy
      */
     private Boolean immutable;
 
-    KeyReleasePolicy() {
+    KeyReleasePolicy(BinaryData encodedPolicy, boolean ignored) {
+        this.encodedPolicy = null;
     }
 
     /**
@@ -155,25 +156,29 @@ public final class KeyReleasePolicy implements JsonSerializable<KeyReleasePolicy
      */
     public static KeyReleasePolicy fromJson(JsonReader jsonReader) throws IOException {
         return jsonReader.readObject(reader -> {
-            KeyReleasePolicy policy = new KeyReleasePolicy();
+            BinaryData encodedPolicy = null;
+            String contentType = null;
+            Boolean immutable = null;
 
             while (reader.nextToken() != JsonToken.END_OBJECT) {
                 String fieldName = reader.getFieldName();
                 reader.nextToken();
 
                 if ("data".equals(fieldName)) {
-                    policy.encodedPolicy = reader.getNullable(nonNullReader ->
+                    encodedPolicy = reader.getNullable(nonNullReader ->
                         BinaryData.fromString(nonNullReader.getString()));
                 } else if ("contentType".equals(fieldName)) {
-                    policy.contentType = reader.getString();
+                    contentType = reader.getString();
                 } else if ("immutable".equals(fieldName)) {
-                    policy.immutable = reader.getNullable(JsonReader::getBoolean);
+                    immutable = reader.getNullable(JsonReader::getBoolean);
                 } else {
                     reader.skipChildren();
                 }
             }
 
-            return policy;
+            return new KeyReleasePolicy(encodedPolicy, false)
+                .setContentType(contentType)
+                .setImmutable(immutable);
         });
     }
 }

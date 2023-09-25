@@ -118,8 +118,9 @@ public final class CryptographyClientImpl {
     public Mono<Response<SecretKey>> setSecretKeyAsync(SecretKey secret, Context context) {
         Objects.requireNonNull(secret, "The secret key cannot be null.");
 
-        return secretClient.setSecretWithResponseAsync(vaultUrl, keyName, keyVersion, secret.getProperties().getTags(),
-            secret.getProperties().getContentType(), new SecretRequestAttributes(secret.getProperties()), context)
+        return secretClient.setSecretWithResponseAsync(vaultUrl, secret.getName(), secret.getValue(),
+                secret.getProperties().getTags(), secret.getProperties().getContentType(),
+                new SecretRequestAttributes(secret.getProperties()), context)
             .doOnRequest(ignored -> LOGGER.verbose("Setting secret - {}", secret.getName()))
             .doOnSuccess(response -> LOGGER.verbose("Set secret - {}", response.getValue().getName()))
             .doOnError(error -> LOGGER.warning("Failed to set secret - {}", secret.getName(), error));
@@ -128,8 +129,9 @@ public final class CryptographyClientImpl {
     public Response<SecretKey> setSecretKey(SecretKey secret, Context context) {
         Objects.requireNonNull(secret, "The Secret input parameter cannot be null.");
 
-        return secretClient.setSecretWithResponse(vaultUrl, keyName, keyVersion, secret.getProperties().getTags(),
-            secret.getProperties().getContentType(), new SecretRequestAttributes(secret.getProperties()), context);
+        return secretClient.setSecretWithResponse(vaultUrl, secret.getName(), secret.getValue(),
+            secret.getProperties().getTags(), secret.getProperties().getContentType(),
+            new SecretRequestAttributes(secret.getProperties()), context);
     }
 
     public Mono<EncryptResult> encryptAsync(EncryptionAlgorithm algorithm, byte[] plaintext, Context context) {

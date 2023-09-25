@@ -32,7 +32,7 @@ public final class KeyRestoreParameters implements JsonSerializable<KeyRestorePa
      */
     public byte[] getKeyBundleBackup() {
         if (this.keyBundleBackup == null) {
-            return new byte[0];
+            return null;
         }
         return this.keyBundleBackup.decodedBytes();
     }
