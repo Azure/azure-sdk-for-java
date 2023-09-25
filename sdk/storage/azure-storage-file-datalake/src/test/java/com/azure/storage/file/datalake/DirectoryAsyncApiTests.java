@@ -246,7 +246,7 @@ public class DirectoryAsyncApiTests extends DataLakeTestBase {
     }
 
     @ParameterizedTest
-    @MethodSource("modifiedMatchAndLeaseIdSupplier") //todo: replace w assertAsyncResponseStatusCode
+    @MethodSource("modifiedMatchAndLeaseIdSupplier")
     public void createAC(OffsetDateTime modified, OffsetDateTime unmodified, String match, String noneMatch,
                          String leaseID) {
         DataLakeRequestConditions drc = new DataLakeRequestConditions()
@@ -256,12 +256,7 @@ public class DirectoryAsyncApiTests extends DataLakeTestBase {
             .setIfModifiedSince(modified)
             .setIfUnmodifiedSince(unmodified);
 
-
-        StepVerifier.create(dc.createWithResponse(null, null, null, null, drc))
-            .assertNext(r -> assertEquals(201, r.getStatusCode()))
-            .verifyComplete();
-        //replace
-        //assertEquals(201, dc.createWithResponse(null, null, null, null, drc).getStatusCode());
+        assertAsyncResponseStatusCode(dc.createWithResponse(null, null, null, null, drc), 201);
     }
 
     private static Stream<Arguments> modifiedMatchAndLeaseIdSupplier() {
@@ -304,10 +299,8 @@ public class DirectoryAsyncApiTests extends DataLakeTestBase {
     }
 
     @Test
-    public void createPermissionsAndUmask() { //todo: replace w assertAsyncResponseStatusCode
-       StepVerifier.create(dc.createWithResponse("0777", "0057", null, null, null))
-           .assertNext(r -> assertEquals(201, r.getStatusCode()))
-           .verifyComplete();
+    public void createPermissionsAndUmask() {
+        assertAsyncResponseStatusCode(dc.createWithResponse("0777", "0057", null, null, null), 201);
     }
 
     @Test
@@ -448,7 +441,7 @@ public class DirectoryAsyncApiTests extends DataLakeTestBase {
             .verifyComplete();
     }
 
-    @ParameterizedTest //todo: replace with assert
+    @ParameterizedTest
     @CsvSource(value = {"null,null,null,null,201", "foo,bar,fizz,buzz,201"}, nullValues = "null")
     public void createOptionsWithMetadata(String key1, String value1, String key2, String value2, int statusCode) {
         Map<String, String> metadata = new HashMap<>();
@@ -459,9 +452,7 @@ public class DirectoryAsyncApiTests extends DataLakeTestBase {
             metadata.put(key2, value2);
         }
 
-        StepVerifier.create(dc.createWithResponse(new DataLakePathCreateOptions().setMetadata(metadata)))
-            .assertNext(r -> assertEquals(statusCode, r.getStatusCode()))
-            .verifyComplete();
+        assertAsyncResponseStatusCode(dc.createWithResponse(new DataLakePathCreateOptions().setMetadata(metadata)), statusCode);
 
         StepVerifier.create(dc.getProperties())
             .assertNext(r ->{
@@ -527,18 +518,13 @@ public class DirectoryAsyncApiTests extends DataLakeTestBase {
     }
 
     @Test
-    public void createIfNotExistsOverwrite() { //todo: replace
+    public void createIfNotExistsOverwrite() {
         dc = dataLakeFileSystemAsyncClient.getDirectoryAsyncClient(generatePathName());
 
-        StepVerifier.create(dc.createIfNotExistsWithResponse(null))
-            .assertNext(r -> assertEquals(201, r.getStatusCode()))
-            .verifyComplete();
+        assertAsyncResponseStatusCode(dc.createIfNotExistsWithResponse(null), 201);
 
         // Try to create the resource again
-        StepVerifier.create(dc.createIfNotExistsWithResponse(null))
-            .assertNext(r -> assertEquals(409, r.getStatusCode()))
-            .verifyComplete();
-
+        assertAsyncResponseStatusCode(dc.createIfNotExistsWithResponse(null), 409);
     }
 
     @Test
@@ -599,13 +585,11 @@ public class DirectoryAsyncApiTests extends DataLakeTestBase {
     }
 
     @Test
-    public void createIfNotExistsPermissionsAndUmask() { //todo: replace
+    public void createIfNotExistsPermissionsAndUmask() {
         DataLakePathCreateOptions options = new DataLakePathCreateOptions().setPermissions("0777").setUmask("0057");
 
-        StepVerifier.create(dataLakeFileSystemAsyncClient.getDirectoryAsyncClient(generatePathName())
-            .createIfNotExistsWithResponse(options))
-                .assertNext(r -> assertEquals(201, r.getStatusCode()))
-                .verifyComplete();
+        assertAsyncResponseStatusCode(dataLakeFileSystemAsyncClient.getDirectoryAsyncClient(generatePathName())
+            .createIfNotExistsWithResponse(options), 201);
     }
 
     @Test
@@ -641,10 +625,8 @@ public class DirectoryAsyncApiTests extends DataLakeTestBase {
     }
 
     @Test
-    public void deleteRecursive() { //todo:replace
-        StepVerifier.create(dc.deleteWithResponse(true, null))
-            .assertNext(r -> assertEquals(200, r.getStatusCode()))
-            .verifyComplete();
+    public void deleteRecursive() {
+        assertAsyncResponseStatusCode(dc.deleteWithResponse(true, null), 200);
     }
 
     @Test
@@ -660,7 +642,7 @@ public class DirectoryAsyncApiTests extends DataLakeTestBase {
     }
 
     @ParameterizedTest
-    @MethodSource("modifiedMatchAndLeaseIdSupplier") //todo: replace
+    @MethodSource("modifiedMatchAndLeaseIdSupplier")
     public void deleteAC(OffsetDateTime modified, OffsetDateTime unmodified, String match, String noneMatch,
                          String leaseID) {
         DataLakeRequestConditions drc = new DataLakeRequestConditions()
@@ -670,9 +652,7 @@ public class DirectoryAsyncApiTests extends DataLakeTestBase {
             .setIfModifiedSince(modified)
             .setIfUnmodifiedSince(unmodified);
 
-        StepVerifier.create(dc.deleteWithResponse(false, drc))
-            .assertNext(r -> assertEquals(200, r.getStatusCode()))
-            .verifyComplete();
+        assertAsyncResponseStatusCode(dc.deleteWithResponse(false, drc), 200);
     }
 
     @ParameterizedTest
@@ -699,42 +679,32 @@ public class DirectoryAsyncApiTests extends DataLakeTestBase {
     }
 
     @Test
-    public void deleteIfExistsMin() { //todo: replace
-        StepVerifier.create(dc.deleteIfExistsWithResponse(null))
-            .assertNext(r -> assertEquals(200, r.getStatusCode()))
-            .verifyComplete();
+    public void deleteIfExistsMin() {
+        assertAsyncResponseStatusCode(dc.deleteIfExistsWithResponse(null), 200);
     }
 
     @Test
-    public void deleteIfExistsRecursive() {//todo:replace
-        StepVerifier.create(dc.deleteIfExistsWithResponse(new DataLakePathDeleteOptions().setIsRecursive(true)))
-            .assertNext(r -> assertEquals(200, r.getStatusCode()))
-            .verifyComplete();
+    public void deleteIfExistsRecursive() {
+        assertAsyncResponseStatusCode(dc.deleteIfExistsWithResponse(new DataLakePathDeleteOptions().setIsRecursive(true)), 200);
     }
 
     @Test
-    public void deleteIfExistsDirDoesNotExistAnymore() { //todo: replace
-        StepVerifier.create(dc.deleteIfExistsWithResponse(null))
-            .assertNext(r -> assertEquals(200, r.getStatusCode()))
-            .verifyComplete();
+    public void deleteIfExistsDirDoesNotExistAnymore() {
+        assertAsyncResponseStatusCode(dc.deleteIfExistsWithResponse(null), 200);
 
         StepVerifier.create(dc.getPropertiesWithResponse(null))
             .verifyError(DataLakeStorageException.class);
     }
 
     @Test
-    public void deleteIfExistsDirThatWasAlreadyDeleted() { //todo: replace
-        StepVerifier.create(dc.deleteIfExistsWithResponse(null))
-            .assertNext(r -> assertEquals(200, r.getStatusCode()))
-            .verifyComplete();
+    public void deleteIfExistsDirThatWasAlreadyDeleted() {
+        assertAsyncResponseStatusCode(dc.deleteIfExistsWithResponse(null), 200);
 
-        StepVerifier.create(dc.deleteIfExistsWithResponse(null))
-            .assertNext(r -> assertEquals(404, r.getStatusCode()))
-            .verifyComplete();
+        assertAsyncResponseStatusCode(dc.deleteIfExistsWithResponse(null), 404);
     }
 
     @ParameterizedTest
-    @MethodSource("modifiedMatchAndLeaseIdSupplier") //todo: replace
+    @MethodSource("modifiedMatchAndLeaseIdSupplier")
     public void deleteIfExistsAC(OffsetDateTime modified, OffsetDateTime unmodified, String match, String noneMatch,
                                  String leaseID) {
         DataLakeRequestConditions drc = new DataLakeRequestConditions()
@@ -746,9 +716,7 @@ public class DirectoryAsyncApiTests extends DataLakeTestBase {
         DataLakePathDeleteOptions options = new DataLakePathDeleteOptions().setRequestConditions(drc)
             .setIsRecursive(false);
 
-        StepVerifier.create(dc.deleteIfExistsWithResponse(options))
-            .assertNext(r -> assertEquals(200, r.getStatusCode()))
-            .verifyComplete();
+        assertAsyncResponseStatusCode(dc.deleteIfExistsWithResponse(options), 200);
     }
 
     @ParameterizedTest
@@ -780,14 +748,12 @@ public class DirectoryAsyncApiTests extends DataLakeTestBase {
     }
 
     @Test
-    public void setPermissionsWithResponse() { //todo: replace
-        StepVerifier.create(dc.setPermissionsWithResponse(PERMISSIONS, GROUP, OWNER, null))
-            .assertNext(r -> assertEquals(200, r.getStatusCode()))
-            .verifyComplete();
+    public void setPermissionsWithResponse() {
+        assertAsyncResponseStatusCode(dc.setPermissionsWithResponse(PERMISSIONS, GROUP, OWNER, null), 200);
     }
 
     @ParameterizedTest
-    @MethodSource("modifiedMatchAndLeaseIdSupplier") //todo: replace
+    @MethodSource("modifiedMatchAndLeaseIdSupplier")
     public void setPermissionsAC(OffsetDateTime modified, OffsetDateTime unmodified, String match, String noneMatch,
                                  String leaseID) {
         DataLakeRequestConditions drc = new DataLakeRequestConditions()
@@ -797,9 +763,7 @@ public class DirectoryAsyncApiTests extends DataLakeTestBase {
             .setIfModifiedSince(modified)
             .setIfUnmodifiedSince(unmodified);
 
-        StepVerifier.create(dc.setPermissionsWithResponse(PERMISSIONS, GROUP, OWNER, drc))
-            .assertNext(r -> assertEquals(200, r.getStatusCode()))
-            .verifyComplete();
+        assertAsyncResponseStatusCode(dc.setPermissionsWithResponse(PERMISSIONS, GROUP, OWNER, drc), 200);
     }
 
     @ParameterizedTest
@@ -838,14 +802,12 @@ public class DirectoryAsyncApiTests extends DataLakeTestBase {
     }
 
     @Test
-    public void setACLWithResponse() { //todo: replace
-        StepVerifier.create(dc.setAccessControlListWithResponse(PATH_ACCESS_CONTROL_ENTRIES, GROUP, OWNER, null))
-            .assertNext(r -> assertEquals(200, r.getStatusCode()))
-            .verifyComplete();
+    public void setACLWithResponse() {
+        assertAsyncResponseStatusCode(dc.setAccessControlListWithResponse(PATH_ACCESS_CONTROL_ENTRIES, GROUP, OWNER, null), 200);
     }
 
     @ParameterizedTest
-    @MethodSource("modifiedMatchAndLeaseIdSupplier") //todo: replace
+    @MethodSource("modifiedMatchAndLeaseIdSupplier")
     public void setAclAC(OffsetDateTime modified, OffsetDateTime unmodified, String match, String noneMatch,
                          String leaseID) {
         DataLakeRequestConditions drc = new DataLakeRequestConditions()
@@ -855,9 +817,7 @@ public class DirectoryAsyncApiTests extends DataLakeTestBase {
             .setIfModifiedSince(modified)
             .setIfUnmodifiedSince(unmodified);
 
-        StepVerifier.create(dc.setAccessControlListWithResponse(PATH_ACCESS_CONTROL_ENTRIES, GROUP, OWNER, drc))
-            .assertNext(r -> assertEquals(200, r.getStatusCode()))
-            .verifyComplete();
+        assertAsyncResponseStatusCode(dc.setAccessControlListWithResponse(PATH_ACCESS_CONTROL_ENTRIES, GROUP, OWNER, drc), 200);
     }
 
     @ParameterizedTest
@@ -1190,7 +1150,7 @@ public class DirectoryAsyncApiTests extends DataLakeTestBase {
 
     @DisabledIf("olderThan20200210ServiceVersion")
     @Test
-    public void setACLRecursiveContinueOnFailureBatchesResume() {//todo: fill
+    public void setACLRecursiveContinueOnFailureBatchesResume() {
         dataLakeFileSystemAsyncClient.getRootDirectoryAsyncClient()
             .setAccessControlList(EXECUTE_ONLY_ACCESS_CONTROL_ENTRIES, null, null).block();
         String topDirName = generatePathName();
@@ -1262,7 +1222,7 @@ public class DirectoryAsyncApiTests extends DataLakeTestBase {
     }
 
     @Test
-    public void setACLRecursiveError() {//todo: fill
+    public void setACLRecursiveError() {
         dataLakeFileSystemAsyncClient.getRootDirectoryAsyncClient()
             .setAccessControlList(EXECUTE_ONLY_ACCESS_CONTROL_ENTRIES, null, null).block();
 
@@ -2150,21 +2110,17 @@ public class DirectoryAsyncApiTests extends DataLakeTestBase {
     }
 
     @Test
-    public void getAccessControlWithResponse() { //todo: replace
-        StepVerifier.create(dc.getAccessControlWithResponse(false, null))
-            .assertNext(r -> assertEquals(200, r.getStatusCode()))
-            .verifyComplete();
+    public void getAccessControlWithResponse() {
+        assertAsyncResponseStatusCode(dc.getAccessControlWithResponse(false, null), 200);
     }
 
     @Test
-    public void getAccessControlReturnUpn() { //todo: replace
-        StepVerifier.create(dc.getAccessControlWithResponse(true, null))
-            .assertNext(r -> assertEquals(200, r.getStatusCode()))
-            .verifyComplete();
+    public void getAccessControlReturnUpn() {
+        assertAsyncResponseStatusCode(dc.getAccessControlWithResponse(true, null), 200);
     }
 
     @ParameterizedTest
-    @MethodSource("modifiedMatchAndLeaseIdSupplier") //todo: replace
+    @MethodSource("modifiedMatchAndLeaseIdSupplier")
     public void getAccessControlAC(OffsetDateTime modified, OffsetDateTime unmodified, String match, String noneMatch,
                                    String leaseID) {
         DataLakeRequestConditions drc = new DataLakeRequestConditions()
@@ -2174,9 +2130,7 @@ public class DirectoryAsyncApiTests extends DataLakeTestBase {
             .setIfModifiedSince(modified)
             .setIfUnmodifiedSince(unmodified);
 
-        StepVerifier.create(dc.getAccessControlWithResponse(false, drc))
-            .assertNext(r -> assertEquals(200, r.getStatusCode()))
-            .verifyComplete();
+        assertAsyncResponseStatusCode(dc.getAccessControlWithResponse(false, drc), 200);
     }
 
     @ParameterizedTest
@@ -2200,10 +2154,8 @@ public class DirectoryAsyncApiTests extends DataLakeTestBase {
     }
 
     @Test
-    public void renameMin() { //todo: replace
-        StepVerifier.create(dc.renameWithResponse(null, generatePathName(), null, null))
-            .assertNext(r -> assertEquals(201, r.getStatusCode()))
-            .verifyComplete();
+    public void renameMin() {
+        assertAsyncResponseStatusCode(dc.renameWithResponse(null, generatePathName(), null, null), 201);
     }
 
     @Test
@@ -2242,7 +2194,7 @@ public class DirectoryAsyncApiTests extends DataLakeTestBase {
     }
 
     @ParameterizedTest
-    @MethodSource("modifiedMatchAndLeaseIdSupplier") //todo: replace
+    @MethodSource("modifiedMatchAndLeaseIdSupplier")
     public void renameSourceAC(OffsetDateTime modified, OffsetDateTime unmodified, String match, String noneMatch,
                                String leaseID) {
         DataLakeRequestConditions drc = new DataLakeRequestConditions()
@@ -2252,9 +2204,7 @@ public class DirectoryAsyncApiTests extends DataLakeTestBase {
             .setIfModifiedSince(modified)
             .setIfUnmodifiedSince(unmodified);
 
-        StepVerifier.create(dc.renameWithResponse(null, generatePathName(), drc, null))
-            .assertNext(r -> assertEquals(201, r.getStatusCode()))
-            .verifyComplete();
+        assertAsyncResponseStatusCode(dc.renameWithResponse(null, generatePathName(), drc, null), 201);
     }
 
     @ParameterizedTest
@@ -2274,7 +2224,7 @@ public class DirectoryAsyncApiTests extends DataLakeTestBase {
     }
 
     @ParameterizedTest
-    @MethodSource("modifiedMatchAndLeaseIdSupplier") //todo: replace
+    @MethodSource("modifiedMatchAndLeaseIdSupplier")
     public void renameDestAC(OffsetDateTime modified, OffsetDateTime unmodified, String match, String noneMatch,
                              String leaseID) {
         String pathName = generatePathName();
@@ -2286,9 +2236,7 @@ public class DirectoryAsyncApiTests extends DataLakeTestBase {
             .setIfModifiedSince(modified)
             .setIfUnmodifiedSince(unmodified);
 
-        StepVerifier.create(dc.renameWithResponse(null, pathName, null, drc))
-            .assertNext(r -> assertEquals(201, r.getStatusCode()))
-            .verifyComplete();
+        assertAsyncResponseStatusCode(dc.renameWithResponse(null, pathName, null, drc), 201);
     }
 
     @ParameterizedTest
@@ -2367,10 +2315,8 @@ public class DirectoryAsyncApiTests extends DataLakeTestBase {
     }
 
     @Test
-    public void getPropertiesMin() { //todo: replace
-        StepVerifier.create(dc.getPropertiesWithResponse(null))
-            .assertNext(r -> assertEquals(200, r.getStatusCode()))
-            .verifyComplete();
+    public void getPropertiesMin() {
+        assertAsyncResponseStatusCode(dc.getPropertiesWithResponse(null), 200);
     }
 
     @DisabledIf("olderThan20200612ServiceVersion")
@@ -2386,7 +2332,7 @@ public class DirectoryAsyncApiTests extends DataLakeTestBase {
     }
 
     @ParameterizedTest
-    @MethodSource("modifiedMatchAndLeaseIdSupplier") //todo: replace
+    @MethodSource("modifiedMatchAndLeaseIdSupplier")
     public void getPropertiesAC(OffsetDateTime modified, OffsetDateTime unmodified, String match, String noneMatch,
                                 String leaseID) {
         DataLakeRequestConditions drc = new DataLakeRequestConditions()
@@ -2396,9 +2342,7 @@ public class DirectoryAsyncApiTests extends DataLakeTestBase {
             .setIfModifiedSince(modified)
             .setIfUnmodifiedSince(unmodified);
 
-        StepVerifier.create(dc.getPropertiesWithResponse(drc))
-            .assertNext(r -> assertEquals(200, r.getStatusCode()))
-            .verifyComplete();
+        assertAsyncResponseStatusCode(dc.getPropertiesWithResponse(drc), 200);
     }
 
     @ParameterizedTest
@@ -2473,7 +2417,7 @@ public class DirectoryAsyncApiTests extends DataLakeTestBase {
     }
 
     @ParameterizedTest
-    @MethodSource("modifiedMatchAndLeaseIdSupplier") //todo: replace
+    @MethodSource("modifiedMatchAndLeaseIdSupplier")
     public void setHttpHeadersAC(OffsetDateTime modified, OffsetDateTime unmodified, String match, String noneMatch,
                                  String leaseID) {
         DataLakeRequestConditions drc = new DataLakeRequestConditions()
@@ -2483,9 +2427,7 @@ public class DirectoryAsyncApiTests extends DataLakeTestBase {
             .setIfModifiedSince(modified)
             .setIfUnmodifiedSince(unmodified);
 
-        StepVerifier.create(dc.setHttpHeadersWithResponse(null, drc))
-            .assertNext(r -> assertEquals(200, r.getStatusCode()))
-            .verifyComplete();
+        assertAsyncResponseStatusCode(dc.setHttpHeadersWithResponse(null, drc), 200);
     }
 
     @ParameterizedTest
@@ -2540,7 +2482,7 @@ public class DirectoryAsyncApiTests extends DataLakeTestBase {
     }
 
     @ParameterizedTest
-    @CsvSource(value = {"null,null,null,null,200", "foo,bar,fizz,buzz,200"}, nullValues = "null") //todo: replace
+    @CsvSource(value = {"null,null,null,null,200", "foo,bar,fizz,buzz,200"}, nullValues = "null")
     public void setMetadataMetadata(String key1, String value1, String key2, String value2, int statusCode) {
         Map<String, String> metadata = new HashMap<>();
         if (key1 != null && value1 != null) {
@@ -2550,9 +2492,7 @@ public class DirectoryAsyncApiTests extends DataLakeTestBase {
             metadata.put(key2, value2);
         }
 
-        StepVerifier.create(dc.setMetadataWithResponse(metadata, null))
-            .assertNext(r -> assertEquals(statusCode, r.getStatusCode()))
-            .verifyComplete();
+        assertAsyncResponseStatusCode(dc.setMetadataWithResponse(metadata, null), statusCode);
 
         StepVerifier.create(dc.getProperties())
             .assertNext(r -> {
@@ -2565,7 +2505,7 @@ public class DirectoryAsyncApiTests extends DataLakeTestBase {
     }
 
     @ParameterizedTest
-    @MethodSource("modifiedMatchAndLeaseIdSupplier") //todo: replace
+    @MethodSource("modifiedMatchAndLeaseIdSupplier")
     public void setMetadataAC(OffsetDateTime modified, OffsetDateTime unmodified, String match, String noneMatch,
                               String leaseID) {
         DataLakeRequestConditions drc = new DataLakeRequestConditions()
@@ -2575,9 +2515,7 @@ public class DirectoryAsyncApiTests extends DataLakeTestBase {
             .setIfModifiedSince(modified)
             .setIfUnmodifiedSince(unmodified);
 
-        StepVerifier.create(dc.setMetadataWithResponse(null, drc))
-            .assertNext(r -> assertEquals(200, r.getStatusCode()))
-            .verifyComplete();
+        assertAsyncResponseStatusCode(dc.setMetadataWithResponse(null, drc), 200);
     }
 
     @ParameterizedTest
@@ -2651,7 +2589,7 @@ public class DirectoryAsyncApiTests extends DataLakeTestBase {
     }
 
     @ParameterizedTest
-    @MethodSource("modifiedMatchAndLeaseIdSupplier") //todo: replace
+    @MethodSource("modifiedMatchAndLeaseIdSupplier")
     public void createFileAC(OffsetDateTime modified, OffsetDateTime unmodified, String match, String noneMatch,
                              String leaseID) {
         String pathName = generatePathName();
@@ -2663,9 +2601,7 @@ public class DirectoryAsyncApiTests extends DataLakeTestBase {
             .setIfModifiedSince(modified)
             .setIfUnmodifiedSince(unmodified);
 
-        StepVerifier.create(dc.createFileWithResponse(pathName, null, null, null, null, drc))
-            .assertNext(r -> assertEquals(201, r.getStatusCode()))
-            .verifyComplete();
+        assertAsyncResponseStatusCode(dc.createFileWithResponse(pathName, null, null, null, null, drc), 201);
     }
 
     @ParameterizedTest
@@ -2687,10 +2623,8 @@ public class DirectoryAsyncApiTests extends DataLakeTestBase {
     }
 
     @Test
-    public void createFilePermissionsAndUmask() { //todo: replace
-        StepVerifier.create(dc.createFileWithResponse(generatePathName(), "0777", "0057", null, null, null))
-            .assertNext(r -> assertEquals(201, r.getStatusCode()))
-            .verifyComplete();
+    public void createFilePermissionsAndUmask() {
+        assertAsyncResponseStatusCode(dc.createFileWithResponse(generatePathName(), "0777", "0057", null, null, null), 201);
     }
 
     @Test
@@ -2702,16 +2636,12 @@ public class DirectoryAsyncApiTests extends DataLakeTestBase {
     }
 
     @Test
-    public void createIfNotExistsFileOverwrite() { //todo: replace
+    public void createIfNotExistsFileOverwrite() {
         String pathName = generatePathName();
 
-        StepVerifier.create(dc.createFileIfNotExistsWithResponse(pathName, null))
-            .assertNext(r -> assertEquals(201, r.getStatusCode()))
-            .verifyComplete();
+        assertAsyncResponseStatusCode(dc.createFileIfNotExistsWithResponse(pathName, null), 201);
 
-        StepVerifier.create(dc.createFileIfNotExistsWithResponse(pathName, null))
-            .assertNext(r -> assertEquals(409, r.getStatusCode()))
-            .verifyComplete();
+        assertAsyncResponseStatusCode(dc.createFileIfNotExistsWithResponse(pathName, null), 409);
     }
 
     @Test
@@ -2771,23 +2701,19 @@ public class DirectoryAsyncApiTests extends DataLakeTestBase {
     }
 
     @Test
-    public void createIfNotExistsFilePermissionsAndUmask() { //todo: replace
+    public void createIfNotExistsFilePermissionsAndUmask() {
         DataLakeDirectoryAsyncClient client = dataLakeFileSystemAsyncClient.getDirectoryAsyncClient(generatePathName());
         DataLakePathCreateOptions options = new DataLakePathCreateOptions().setPermissions("0777").setUmask("0057");
 
-        StepVerifier.create(client.createFileIfNotExistsWithResponse(generatePathName(), options))
-            .assertNext(r -> assertEquals(201, r.getStatusCode()))
-            .verifyComplete();
+        assertAsyncResponseStatusCode(client.createFileIfNotExistsWithResponse(generatePathName(), options), 201);
     }
 
     @Test
-    public void deleteFileMin() { //todo: replace
+    public void deleteFileMin() {
         String pathName = generatePathName();
         dc.createFile(pathName).block();
 
-        StepVerifier.create(dc.deleteFileWithResponse(pathName, null))
-            .assertNext(r -> assertEquals(200, r.getStatusCode()))
-            .verifyComplete();
+        assertAsyncResponseStatusCode(dc.deleteFileWithResponse(pathName, null), 200);
     }
 
     @Test
@@ -2805,7 +2731,7 @@ public class DirectoryAsyncApiTests extends DataLakeTestBase {
     }
 
     @ParameterizedTest
-    @MethodSource("modifiedMatchAndLeaseIdSupplier") //todo: replace
+    @MethodSource("modifiedMatchAndLeaseIdSupplier")
     public void deleteFileAC(OffsetDateTime modified, OffsetDateTime unmodified, String match, String noneMatch,
                              String leaseID) {
         String pathName = generatePathName();
@@ -2817,9 +2743,7 @@ public class DirectoryAsyncApiTests extends DataLakeTestBase {
             .setIfModifiedSince(modified)
             .setIfUnmodifiedSince(unmodified);
 
-        StepVerifier.create(dc.deleteFileWithResponse(pathName, drc))
-            .assertNext(r -> assertEquals(200, r.getStatusCode()))
-            .verifyComplete();
+        assertAsyncResponseStatusCode(dc.deleteFileWithResponse(pathName, drc), 200);
     }
 
     @ParameterizedTest
@@ -2851,23 +2775,19 @@ public class DirectoryAsyncApiTests extends DataLakeTestBase {
     }
 
     @Test
-    public void deleteIfExistsFileMin() { //todo: replace
+    public void deleteIfExistsFileMin() {
         String pathName = generatePathName();
         dc.createFile(pathName).block();
 
-        StepVerifier.create(dc.deleteFileIfExistsWithResponse(pathName, null))
-            .assertNext(r -> assertEquals(200, r.getStatusCode()))
-            .verifyComplete();
+        assertAsyncResponseStatusCode(dc.deleteFileIfExistsWithResponse(pathName, null), 200);
     }
 
     @Test
-    public void deleteIfExistsFileFileDoesNotExistAnymore() { //todo: replace
+    public void deleteIfExistsFileFileDoesNotExistAnymore() {
         String pathName = generatePathName();
         DataLakeFileAsyncClient client = dc.createFile(pathName).block();
 
-        StepVerifier.create(dc.deleteFileIfExistsWithResponse(pathName, null))
-            .assertNext(r -> assertEquals(200, r.getStatusCode()))
-            .verifyComplete();
+        assertAsyncResponseStatusCode(dc.deleteFileIfExistsWithResponse(pathName, null), 200);
 
         StepVerifier.create(client.exists())
             .expectNext(false)
@@ -2875,25 +2795,21 @@ public class DirectoryAsyncApiTests extends DataLakeTestBase {
     }
 
     @Test
-    public void deleteIfExistsFileFileThatWasAlreadyDeleted() { //todo: replace
+    public void deleteIfExistsFileFileThatWasAlreadyDeleted() {
         String pathName = generatePathName();
         DataLakeFileAsyncClient client = dc.createFile(pathName).block();
 
-        StepVerifier.create(dc.deleteFileIfExistsWithResponse(pathName, null))
-            .assertNext(r -> assertEquals(200, r.getStatusCode()))
-            .verifyComplete();
+        assertAsyncResponseStatusCode(dc.deleteFileIfExistsWithResponse(pathName, null), 200);
 
         StepVerifier.create(client.exists())
             .expectNext(false)
             .verifyComplete();
 
-        StepVerifier.create(dc.deleteFileIfExistsWithResponse(pathName, null))
-            .assertNext(r -> assertEquals(404, r.getStatusCode()))
-            .verifyComplete();
+        assertAsyncResponseStatusCode(dc.deleteFileIfExistsWithResponse(pathName, null), 404);
     }
 
     @ParameterizedTest
-    @MethodSource("modifiedMatchAndLeaseIdSupplier") //todo: replace
+    @MethodSource("modifiedMatchAndLeaseIdSupplier")
     public void deleteIfExistsFileAC(OffsetDateTime modified, OffsetDateTime unmodified, String match, String noneMatch,
                                      String leaseID) {
         String pathName = generatePathName();
@@ -2906,9 +2822,7 @@ public class DirectoryAsyncApiTests extends DataLakeTestBase {
             .setIfUnmodifiedSince(unmodified);
         DataLakePathDeleteOptions options = new DataLakePathDeleteOptions().setRequestConditions(drc);
 
-        StepVerifier.create(dc.deleteFileIfExistsWithResponse(pathName, options))
-            .assertNext(r -> assertEquals(200, r.getStatusCode()))
-            .verifyComplete();
+        assertAsyncResponseStatusCode(dc.deleteFileIfExistsWithResponse(pathName, options), 200);
     }
 
     @ParameterizedTest
@@ -3013,7 +2927,7 @@ public class DirectoryAsyncApiTests extends DataLakeTestBase {
     }
 
     @ParameterizedTest
-    @MethodSource("modifiedMatchAndLeaseIdSupplier") //todo: replace
+    @MethodSource("modifiedMatchAndLeaseIdSupplier")
     public void createSubDirAC(OffsetDateTime modified, OffsetDateTime unmodified, String match, String noneMatch,
                                String leaseID) {
         String pathName = generatePathName();
@@ -3025,9 +2939,7 @@ public class DirectoryAsyncApiTests extends DataLakeTestBase {
             .setIfModifiedSince(modified)
             .setIfUnmodifiedSince(unmodified);
 
-        StepVerifier.create(dc.createSubdirectoryWithResponse(pathName, null, null, null, null, drc))
-            .assertNext(r -> assertEquals(201, r.getStatusCode()))
-            .verifyComplete();
+        assertAsyncResponseStatusCode(dc.createSubdirectoryWithResponse(pathName, null, null, null, null, drc), 201);
     }
 
     @ParameterizedTest
@@ -3049,10 +2961,8 @@ public class DirectoryAsyncApiTests extends DataLakeTestBase {
     }
 
     @Test
-    public void createSubDirPermissionsAndUmask() { //todo: replace
-        StepVerifier.create(dc.createSubdirectoryWithResponse(generatePathName(), "0777", "0057", null, null, null))
-            .assertNext(r -> assertEquals(201, r.getStatusCode()))
-            .verifyComplete();
+    public void createSubDirPermissionsAndUmask() {
+        assertAsyncResponseStatusCode(dc.createSubdirectoryWithResponse(generatePathName(), "0777", "0057", null, null, null), 201);
     }
 
     @Test
@@ -3081,16 +2991,12 @@ public class DirectoryAsyncApiTests extends DataLakeTestBase {
     }
 
     @Test
-    public void createIfNotExistsSubDirThatAlreadyExists() { //todo: replace
+    public void createIfNotExistsSubDirThatAlreadyExists() {
         String pathName = generatePathName();
 
-        StepVerifier.create(dc.createSubdirectoryIfNotExistsWithResponse(pathName, null))
-            .assertNext(r -> assertEquals(201, r.getStatusCode()))
-            .verifyComplete();
+        assertAsyncResponseStatusCode(dc.createSubdirectoryIfNotExistsWithResponse(pathName, null), 201);
 
-        StepVerifier.create(dc.createSubdirectoryIfNotExistsWithResponse(pathName, null))
-            .assertNext(r -> assertEquals(409, r.getStatusCode()))
-            .verifyComplete();
+        assertAsyncResponseStatusCode(dc.createSubdirectoryIfNotExistsWithResponse(pathName, null), 409);
     }
 
     @Test
@@ -3150,25 +3056,21 @@ public class DirectoryAsyncApiTests extends DataLakeTestBase {
     }
 
     @Test
-    public void createIfNotExistsSubDirPermissionsAndUmask() { //todo: replace
+    public void createIfNotExistsSubDirPermissionsAndUmask() {
         DataLakeDirectoryAsyncClient client = dataLakeFileSystemAsyncClient.getDirectoryAsyncClient(generatePathName());
         DataLakePathCreateOptions options = new DataLakePathCreateOptions()
             .setPermissions("0777")
             .setUmask("0057");
 
-        StepVerifier.create(client.createSubdirectoryIfNotExistsWithResponse(generatePathName(), options))
-            .assertNext(r -> assertEquals(201, r.getStatusCode()))
-            .verifyComplete();
+        assertAsyncResponseStatusCode(client.createSubdirectoryIfNotExistsWithResponse(generatePathName(), options), 201);
     }
 
     @Test
-    public void deleteSubDirMin() { //todo: replace
+    public void deleteSubDirMin() {
         String pathName = generatePathName();
         dc.createSubdirectory(pathName).block();
 
-        StepVerifier.create(dc.deleteSubdirectoryWithResponse(pathName, false, null))
-            .assertNext(r -> assertEquals(200, r.getStatusCode()))
-            .verifyComplete();
+        assertAsyncResponseStatusCode(dc.deleteSubdirectoryWithResponse(pathName, false, null), 200);
     }
 
     @Test
@@ -3196,7 +3098,7 @@ public class DirectoryAsyncApiTests extends DataLakeTestBase {
     }
 
     @ParameterizedTest
-    @MethodSource("modifiedMatchAndLeaseIdSupplier") //todo: replace
+    @MethodSource("modifiedMatchAndLeaseIdSupplier")
     public void deleteSubDirAC(OffsetDateTime modified, OffsetDateTime unmodified, String match, String noneMatch,
                                String leaseID) {
         String pathName = generatePathName();
@@ -3208,9 +3110,7 @@ public class DirectoryAsyncApiTests extends DataLakeTestBase {
             .setIfModifiedSince(modified)
             .setIfUnmodifiedSince(unmodified);
 
-        StepVerifier.create(dc.deleteSubdirectoryWithResponse(pathName, false, drc))
-            .assertNext(r -> assertEquals(200, r.getStatusCode()))
-            .verifyComplete();
+        assertAsyncResponseStatusCode(dc.deleteSubdirectoryWithResponse(pathName, false, drc), 200);
     }
 
     @ParameterizedTest
@@ -3242,39 +3142,33 @@ public class DirectoryAsyncApiTests extends DataLakeTestBase {
     }
 
     @Test
-    public void deleteIfExistsSubDirMin() { //todo: replace
+    public void deleteIfExistsSubDirMin() {
         String pathName = generatePathName();
         dc.createSubdirectoryIfNotExists(pathName).block();
 
         //cannot run without setting recursive options?
         DataLakePathDeleteOptions options = new DataLakePathDeleteOptions().setIsRecursive(false);
 
-        StepVerifier.create(dc.deleteSubdirectoryIfExistsWithResponse(pathName, options))
-            .assertNext(r -> assertEquals(200, r.getStatusCode()))
-            .verifyComplete();
+        assertAsyncResponseStatusCode(dc.deleteSubdirectoryIfExistsWithResponse(pathName, options), 200);
     }
 
     @Test
-    public void deleteIfExistsSubDirRecursive() { //todo: replace
+    public void deleteIfExistsSubDirRecursive() {
         String pathName = generatePathName();
         dc.createSubdirectory(pathName).block();
 
-        StepVerifier.create(dc.deleteSubdirectoryIfExistsWithResponse(pathName, new DataLakePathDeleteOptions()
-            .setIsRecursive(true)))
-            .assertNext(r -> assertEquals(200, r.getStatusCode()))
-            .verifyComplete();
+        assertAsyncResponseStatusCode(dc.deleteSubdirectoryIfExistsWithResponse(pathName, new DataLakePathDeleteOptions()
+            .setIsRecursive(true)), 200);
     }
 
     @Test
-    public void deleteIfExistsSubDirDirDoesNotExistAnymore() { //todo: replace
+    public void deleteIfExistsSubDirDirDoesNotExistAnymore() {
         String pathName = generatePathName();
         DataLakeDirectoryAsyncClient client = dc.createSubdirectory(pathName).block();
 
         DataLakePathDeleteOptions options = new DataLakePathDeleteOptions().setIsRecursive(false);
 
-        StepVerifier.create(dc.deleteSubdirectoryIfExistsWithResponse(pathName, options))
-            .assertNext(r -> assertEquals(200, r.getStatusCode()))
-            .verifyComplete();
+        assertAsyncResponseStatusCode(dc.deleteSubdirectoryIfExistsWithResponse(pathName, options), 200);
 
         StepVerifier.create(client.exists())
             .expectNext(false)
@@ -3282,7 +3176,7 @@ public class DirectoryAsyncApiTests extends DataLakeTestBase {
     }
 
     @ParameterizedTest
-    @MethodSource("modifiedMatchAndLeaseIdSupplier") //todo: replace
+    @MethodSource("modifiedMatchAndLeaseIdSupplier")
     public void deleteIfExistsSubDirAC(OffsetDateTime modified, OffsetDateTime unmodified, String match,
                                        String noneMatch, String leaseID) {
         String pathName = generatePathName();
@@ -3296,9 +3190,7 @@ public class DirectoryAsyncApiTests extends DataLakeTestBase {
         DataLakePathDeleteOptions options = new DataLakePathDeleteOptions().setRequestConditions(drc)
             .setIsRecursive(false);
 
-        StepVerifier.create(dc.deleteSubdirectoryIfExistsWithResponse(pathName, options))
-            .assertNext(r -> assertEquals(200, r.getStatusCode()))
-            .verifyComplete();
+        assertAsyncResponseStatusCode(dc.deleteSubdirectoryIfExistsWithResponse(pathName, options), 200);
     }
 
     @ParameterizedTest
@@ -3331,7 +3223,7 @@ public class DirectoryAsyncApiTests extends DataLakeTestBase {
     }
 
     @ParameterizedTest
-    @MethodSource("fileEncodingSupplier") //todo: replace
+    @MethodSource("fileEncodingSupplier")
     public void createDeleteSubDirectoryUrlEncoding(String originalDirectoryName, String finalDirectoryName) {
         String dirName = generatePathName();
         DataLakeDirectoryAsyncClient client = dataLakeFileSystemAsyncClient.getDirectoryAsyncClient(dirName);
@@ -3343,13 +3235,11 @@ public class DirectoryAsyncApiTests extends DataLakeTestBase {
             })
             .verifyComplete();
 
-        StepVerifier.create(client.deleteSubdirectoryWithResponse(originalDirectoryName, false, null))
-            .assertNext(r -> assertEquals(200, r.getStatusCode()))
-            .verifyComplete();
+        assertAsyncResponseStatusCode(client.deleteSubdirectoryWithResponse(originalDirectoryName, false, null), 200);
     }
 
     @ParameterizedTest
-    @MethodSource("fileEncodingSupplier") //todo: replace
+    @MethodSource("fileEncodingSupplier")
     public void createDeleteFileUrlEncoding(String originalFileName, String finalFileName) {
         String fileName = generatePathName();
         DataLakeDirectoryAsyncClient client = dataLakeFileSystemAsyncClient.getDirectoryAsyncClient(fileName);
@@ -3361,9 +3251,7 @@ public class DirectoryAsyncApiTests extends DataLakeTestBase {
             })
             .verifyComplete();
 
-        StepVerifier.create(client.deleteFileWithResponse(originalFileName, null))
-            .assertNext(r -> assertEquals(200, r.getStatusCode()))
-            .verifyComplete();
+        assertAsyncResponseStatusCode(client.deleteFileWithResponse(originalFileName, null), 200);
     }
 
     private static Stream<Arguments> fileEncodingSupplier() {
@@ -3379,7 +3267,7 @@ public class DirectoryAsyncApiTests extends DataLakeTestBase {
 
     @ParameterizedTest
     @ValueSource(strings = {"dir/file", "dir%2Ffile"})
-    public void createFileWithPathStructure(String pathName) { //todo: replace
+    public void createFileWithPathStructure(String pathName) {
         DataLakeFileAsyncClient fileClient = dataLakeFileSystemAsyncClient.createFile(pathName).block();
         // Check that service created underlying directory
         DataLakeDirectoryAsyncClient dirClient = dataLakeFileSystemAsyncClient.getDirectoryAsyncClient("dir");
@@ -3389,14 +3277,10 @@ public class DirectoryAsyncApiTests extends DataLakeTestBase {
             .verifyComplete();
 
         // Delete file
-        StepVerifier.create(fileClient.deleteWithResponse(null, null, null))
-            .assertNext(r -> assertEquals(200, r.getStatusCode()))
-            .verifyComplete();
+        assertAsyncResponseStatusCode(fileClient.deleteWithResponse(null, null, null), 200);
 
         // Directory should still exist
-        StepVerifier.create(dirClient.getPropertiesWithResponse(null))
-            .assertNext(r -> assertEquals(200, r.getStatusCode()))
-            .verifyComplete();
+        assertAsyncResponseStatusCode(dirClient.getPropertiesWithResponse(null), 200);
     }
 
     @Test
