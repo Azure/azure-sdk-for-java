@@ -493,9 +493,8 @@ public final class CosmosDiagnosticsContext {
 
     void startOperation() {
         synchronized (this.spanName) {
-            boolean startTimeIsNull = this.startTime == null;
             checkState(
-                startTimeIsNull,
+                this.startTime == null,
                 "Method 'startOperation' must not be called multiple times.");
             this.startTime = Instant.now();
 
