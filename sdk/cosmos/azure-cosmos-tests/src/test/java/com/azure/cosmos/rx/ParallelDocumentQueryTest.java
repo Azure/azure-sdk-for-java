@@ -115,12 +115,14 @@ public class ParallelDocumentQueryTest extends TestSuiteBase {
         options.setQueryMetricsEnabled(true);
         options.setMaxDegreeOfParallelism(0);
 
+        int preferredPageSize = 5;
+
         CosmosPagedFlux<InternalObjectNode> queryObservable = createdCollection.queryItems(query, options, InternalObjectNode.class);
-        List<FeedResponse<InternalObjectNode>> resultList1 = queryObservable.byPage(5).collectList().block();
+        List<FeedResponse<InternalObjectNode>> resultList1 = queryObservable.byPage(preferredPageSize).collectList().block();
 
         options.setMaxDegreeOfParallelism(4);
         CosmosPagedFlux<InternalObjectNode> threadedQueryObs = createdCollection.queryItems(query, options, InternalObjectNode.class);
-        List<FeedResponse<InternalObjectNode>> resultList2 = threadedQueryObs.byPage().collectList().block();
+        List<FeedResponse<InternalObjectNode>> resultList2 = threadedQueryObs.byPage(preferredPageSize).collectList().block();
 
         assertThat(resultList1.size()).isEqualTo(resultList2.size());
         for(int i = 0; i < resultList1.size(); i++){
