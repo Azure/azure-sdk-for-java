@@ -3,12 +3,9 @@
 
 package com.azure.security.keyvault.jca.implementation.signature;
 
-import java.security.InvalidAlgorithmParameterException;
 import java.security.MessageDigest;
 import java.security.NoSuchAlgorithmException;
 import java.security.ProviderException;
-import java.security.spec.AlgorithmParameterSpec;
-import java.security.spec.PSSParameterSpec;
 import java.util.Base64;
 
 /**
@@ -21,7 +18,7 @@ abstract class KeyVaultKeylessRsaSignature extends AbstractKeyVaultKeylessSignat
     /**
      * Construct a new KeyVaultKeyLessRsaSignature
      */
-    public KeyVaultKeylessRsaSignature(String digestName, String keyVaultDigestName) {
+    KeyVaultKeylessRsaSignature(String digestName, String keyVaultDigestName) {
         if (digestName != null) {
             try {
                 messageDigest = MessageDigest.getInstance(digestName);
