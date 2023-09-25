@@ -3642,14 +3642,8 @@ public class FileAsyncApiTests extends DataLakeTestBase {
         uploadSmallJson(numCopies);
         String expression = "SELECT * from BlobStorage";
 
-        ByteArrayOutputStream readData = fc.read().reduce(new ByteArrayOutputStream(), (outputStream, piece) -> {
-            try {
-                outputStream.write(piece.array());
-            } catch (IOException ex) {
-                throw new UncheckedIOException(ex);
-            }
-            return outputStream;
-        }).block();
+        ByteArrayOutputStream readData = new ByteArrayOutputStream();
+        FluxUtil.writeToOutputStream(fc.read(), readData).block();
         readData.write(10);
         byte[] readArray = readData.toByteArray();
 
