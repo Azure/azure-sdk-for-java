@@ -116,11 +116,6 @@
         <groupId>org.jacoco</groupId>
         <artifactId>jacoco-maven-plugin</artifactId>
         <version>0.8.9</version> <!-- {x-version-update;org.jacoco:jacoco-maven-plugin;external_dependency} -->
-        <configuration>
-          <includes>
-            <include>com/azure/communication/sms/*.class</include>
-          </includes>
-        </configuration>
         <executions>
           <execution>
             <id>coverage-report</id>
@@ -147,5 +142,4 @@
       </plugin>
     </plugins>
   </build>
-
 </project>
