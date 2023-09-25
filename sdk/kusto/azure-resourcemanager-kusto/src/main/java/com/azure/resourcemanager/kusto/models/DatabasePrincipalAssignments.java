@@ -13,7 +13,7 @@ public interface DatabasePrincipalAssignments {
     /**
      * Checks that the database principal assignment is valid and is not already in use.
      *
-     * @param resourceGroupName The name of the resource group containing the Kusto cluster.
+     * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param clusterName The name of the Kusto cluster.
      * @param databaseName The name of the database in the Kusto cluster.
      * @param principalAssignmentName The name of the resource.
@@ -33,7 +33,7 @@ public interface DatabasePrincipalAssignments {
     /**
      * Checks that the database principal assignment is valid and is not already in use.
      *
-     * @param resourceGroupName The name of the resource group containing the Kusto cluster.
+     * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param clusterName The name of the Kusto cluster.
      * @param databaseName The name of the database in the Kusto cluster.
      * @param principalAssignmentName The name of the resource.
@@ -51,7 +51,7 @@ public interface DatabasePrincipalAssignments {
     /**
      * Gets a Kusto cluster database principalAssignment.
      *
-     * @param resourceGroupName The name of the resource group containing the Kusto cluster.
+     * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param clusterName The name of the Kusto cluster.
      * @param databaseName The name of the database in the Kusto cluster.
      * @param principalAssignmentName The name of the Kusto principalAssignment.
@@ -71,7 +71,7 @@ public interface DatabasePrincipalAssignments {
     /**
      * Gets a Kusto cluster database principalAssignment.
      *
-     * @param resourceGroupName The name of the resource group containing the Kusto cluster.
+     * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param clusterName The name of the Kusto cluster.
      * @param databaseName The name of the database in the Kusto cluster.
      * @param principalAssignmentName The name of the Kusto principalAssignment.
@@ -86,7 +86,7 @@ public interface DatabasePrincipalAssignments {
     /**
      * Deletes a Kusto principalAssignment.
      *
-     * @param resourceGroupName The name of the resource group containing the Kusto cluster.
+     * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param clusterName The name of the Kusto cluster.
      * @param databaseName The name of the database in the Kusto cluster.
      * @param principalAssignmentName The name of the Kusto principalAssignment.
@@ -99,7 +99,7 @@ public interface DatabasePrincipalAssignments {
     /**
      * Deletes a Kusto principalAssignment.
      *
-     * @param resourceGroupName The name of the resource group containing the Kusto cluster.
+     * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param clusterName The name of the Kusto cluster.
      * @param databaseName The name of the database in the Kusto cluster.
      * @param principalAssignmentName The name of the Kusto principalAssignment.
@@ -118,7 +118,7 @@ public interface DatabasePrincipalAssignments {
     /**
      * Lists all Kusto cluster database principalAssignments.
      *
-     * @param resourceGroupName The name of the resource group containing the Kusto cluster.
+     * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param clusterName The name of the Kusto cluster.
      * @param databaseName The name of the database in the Kusto cluster.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
@@ -132,7 +132,7 @@ public interface DatabasePrincipalAssignments {
     /**
      * Lists all Kusto cluster database principalAssignments.
      *
-     * @param resourceGroupName The name of the resource group containing the Kusto cluster.
+     * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param clusterName The name of the Kusto cluster.
      * @param databaseName The name of the database in the Kusto cluster.
      * @param context The context to associate with this operation.

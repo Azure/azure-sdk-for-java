@@ -9,7 +9,12 @@ package com.azure.search.documents.indexes.models;
 public enum SentimentSkillVersion {
     /**
      * Version 1 of {@link SentimentSkill}.
+     *
+     * @deprecated This version of the skill is deprecated, please use {@link #V3}. See
+     * <a href="https://learn.microsoft.com/azure/search/cognitive-search-skill-deprecated">skill deprecation</a> for
+     * more information.
      */
+    @Deprecated
     V1("#Microsoft.Skills.Text.SentimentSkill"),
 
     /**

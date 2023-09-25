@@ -537,6 +537,14 @@ public final class PiiCategory extends ExpandableStringEnum<PiiCategory> {
     public static final PiiCategory DEFAULT = fromString("Default");
 
     /**
+     * Creates a new instance of PiiCategory value.
+     *
+     * @deprecated Use the {@link #fromString(String)} factory method.
+     */
+    @Deprecated
+    public PiiCategory() {}
+
+    /**
      * Creates or finds a PiiCategory from its string representation.
      *
      * @param name a name to look for.

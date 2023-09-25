@@ -117,6 +117,30 @@ public final class StorageCacheManagementClientImpl implements StorageCacheManag
         return this.defaultPollInterval;
     }
 
+    /** The AmlFilesystemsClient object to access its operations. */
+    private final AmlFilesystemsClient amlFilesystems;
+
+    /**
+     * Gets the AmlFilesystemsClient object to access its operations.
+     *
+     * @return the AmlFilesystemsClient object.
+     */
+    public AmlFilesystemsClient getAmlFilesystems() {
+        return this.amlFilesystems;
+    }
+
+    /** The ResourceProvidersClient object to access its operations. */
+    private final ResourceProvidersClient resourceProviders;
+
+    /**
+     * Gets the ResourceProvidersClient object to access its operations.
+     *
+     * @return the ResourceProvidersClient object.
+     */
+    public ResourceProvidersClient getResourceProviders() {
+        return this.resourceProviders;
+    }
+
     /** The OperationsClient object to access its operations. */
     private final OperationsClient operations;
 
@@ -213,30 +237,6 @@ public final class StorageCacheManagementClientImpl implements StorageCacheManag
         return this.storageTargetOperations;
     }
 
-    /** The AmlFilesystemsClient object to access its operations. */
-    private final AmlFilesystemsClient amlFilesystems;
-
-    /**
-     * Gets the AmlFilesystemsClient object to access its operations.
-     *
-     * @return the AmlFilesystemsClient object.
-     */
-    public AmlFilesystemsClient getAmlFilesystems() {
-        return this.amlFilesystems;
-    }
-
-    /** The ResourceProvidersClient object to access its operations. */
-    private final ResourceProvidersClient resourceProviders;
-
-    /**
-     * Gets the ResourceProvidersClient object to access its operations.
-     *
-     * @return the ResourceProvidersClient object.
-     */
-    public ResourceProvidersClient getResourceProviders() {
-        return this.resourceProviders;
-    }
-
     /**
      * Initializes an instance of StorageCacheManagementClient client.
      *
@@ -259,7 +259,9 @@ public final class StorageCacheManagementClientImpl implements StorageCacheManag
         this.defaultPollInterval = defaultPollInterval;
         this.subscriptionId = subscriptionId;
         this.endpoint = endpoint;
-        this.apiVersion = "2023-03-01-preview";
+        this.apiVersion = "2023-05-01";
+        this.amlFilesystems = new AmlFilesystemsClientImpl(this);
+        this.resourceProviders = new ResourceProvidersClientImpl(this);
         this.operations = new OperationsClientImpl(this);
         this.skus = new SkusClientImpl(this);
         this.usageModels = new UsageModelsClientImpl(this);
@@ -268,8 +270,6 @@ public final class StorageCacheManagementClientImpl implements StorageCacheManag
         this.caches = new CachesClientImpl(this);
         this.storageTargets = new StorageTargetsClientImpl(this);
         this.storageTargetOperations = new StorageTargetOperationsClientImpl(this);
-        this.amlFilesystems = new AmlFilesystemsClientImpl(this);
-        this.resourceProviders = new ResourceProvidersClientImpl(this);
     }
 
     /**

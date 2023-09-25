@@ -3,25 +3,23 @@
 > see https://aka.ms/autorest
 
 ### Setup
+
 ```ps
-Fork and clone https://github.com/Azure/autorest.java 
-git checkout main
-git submodule update --init --recursive
-mvn package -Dlocal
-npm install
 npm install -g autorest
 ```
 
 ### Generation
+
 ```ps
 cd <swagger-folder>****
-autorest --java --use:C:\work\autorest.java
+autorest
 ```
 
 ### Code generation settings
-``` yaml
+```yaml
 input-file: https://raw.githubusercontent.com/Azure/azure-rest-api-specs/main/specification/cognitiveservices/data-plane/Personalizer/preview/v1.1-preview.3/Personalizer.json
 java: true
+use: '@autorest/java@4.1.17'
 output-folder: ..\
 generate-client-as-impl: true
 namespace: com.azure.ai.personalizer

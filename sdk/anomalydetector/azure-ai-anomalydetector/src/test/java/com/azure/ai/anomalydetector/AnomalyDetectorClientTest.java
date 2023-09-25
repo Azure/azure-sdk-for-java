@@ -3,12 +3,11 @@
 
 package com.azure.ai.anomalydetector;
 
-import static org.junit.jupiter.api.Assertions.assertEquals;
-import static org.junit.jupiter.api.Assertions.assertFalse;
-
 import com.azure.core.http.rest.RequestOptions;
 import com.azure.core.http.rest.Response;
 import com.azure.core.util.BinaryData;
+import com.azure.core.util.logging.ClientLogger;
+import com.azure.core.util.logging.LogLevel;
 import org.junit.jupiter.api.Test;
 
 import javax.json.Json;
@@ -16,10 +15,14 @@ import javax.json.JsonArray;
 import javax.json.JsonObject;
 import java.io.StringReader;
 
+import static org.junit.jupiter.api.Assertions.assertEquals;
+import static org.junit.jupiter.api.Assertions.assertFalse;
+
 /**
  * Unit tests for {@link AnomalyDetectorClient}.
  */
 public class AnomalyDetectorClientTest extends AnomalyDetectorClientTestBase {
+    private static final ClientLogger LOGGER = new ClientLogger(AnomalyDetectorClientTest.class);
 
     private AnomalyDetectorClient getClient() {
         return getClientBuilder().buildClient();
@@ -28,9 +31,9 @@ public class AnomalyDetectorClientTest extends AnomalyDetectorClientTestBase {
     @Test
     public void testDetect() {
         testDetectEntireSeriesWithResponse(request -> {
-
-            Response<BinaryData> response = getClient().detectUnivariateEntireSeriesWithResponse(request, new RequestOptions());
-            System.out.println(response.toString());
+            Response<BinaryData> response = getClient().detectUnivariateEntireSeriesWithResponse(request,
+                new RequestOptions());
+            LOGGER.log(LogLevel.INFORMATIONAL, response::toString);
 
             String responseBodyStr = response.getValue().toString();
             JsonObject responseJsonObject = Json.createReader(new StringReader(responseBodyStr)).readObject();
@@ -53,6 +56,5 @@ public class AnomalyDetectorClientTest extends AnomalyDetectorClientTestBase {
             }
 
         });
-
     }
 }

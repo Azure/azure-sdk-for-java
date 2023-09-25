@@ -262,15 +262,16 @@ class FunctionAppImpl
 
     private FunctionAppImpl autoSetAlwaysOn(PricingTier pricingTier) {
         SkuDescription description = pricingTier.toSkuDescription();
-        if (description.tier().equalsIgnoreCase(SkuName.BASIC.toString())
-            || description.tier().equalsIgnoreCase(SkuName.STANDARD.toString())
-            || description.tier().equalsIgnoreCase(SkuName.PREMIUM.toString())
-            || description.tier().equalsIgnoreCase(SkuName.PREMIUM_V2.toString())
-            || description.tier().equalsIgnoreCase(PricingTier.PREMIUM_P1V3.toSkuDescription().tier()) // PremiumV3
-        ) {
-            return withWebAppAlwaysOn(true);
-        } else {
+        if (description.tier().equalsIgnoreCase(SkuName.FREE.toString())
+            || description.tier().equalsIgnoreCase(SkuName.SHARED.toString())
+            // consumption plan
+            || description.tier().equalsIgnoreCase(SkuName.DYNAMIC.toString())
+            // premium plan
+            || description.tier().equalsIgnoreCase(SkuName.ELASTIC_PREMIUM.toString())
+            || description.tier().equalsIgnoreCase(SkuName.ELASTIC_ISOLATED.toString())) {
             return withWebAppAlwaysOn(false);
+        } else {
+            return withWebAppAlwaysOn(true);
         }
     }
 

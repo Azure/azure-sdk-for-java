@@ -10,7 +10,7 @@ import com.azure.resourcemanager.appplatform.models.NameAvailabilityParameters;
 /** Samples for Services CheckNameAvailability. */
 public final class ServicesCheckNameAvailabilitySamples {
     /*
-     * x-ms-original-file: specification/appplatform/resource-manager/Microsoft.AppPlatform/stable/2022-04-01/examples/Services_CheckNameAvailability.json
+     * x-ms-original-file: specification/appplatform/resource-manager/Microsoft.AppPlatform/stable/2022-12-01/examples/Services_CheckNameAvailability.json
      */
     /**
      * Sample code: Services_CheckNameAvailability.

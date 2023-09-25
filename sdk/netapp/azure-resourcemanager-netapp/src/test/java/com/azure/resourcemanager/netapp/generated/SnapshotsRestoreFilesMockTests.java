@@ -61,12 +61,14 @@ public final class SnapshotsRestoreFilesMockTests {
         manager
             .snapshots()
             .restoreFiles(
-                "y",
-                "vpo",
-                "krsgsgb",
-                "huzqgn",
-                "dgkynscliqhzvhxn",
-                new SnapshotRestoreFiles().withFilePaths(Arrays.asList("mtk", "bo")).withDestinationPath("pnvdxz"),
+                "zvulj",
+                "aaeranokqgukk",
+                "qnvb",
+                "oylaxxul",
+                "disdosfjbjsvgj",
+                new SnapshotRestoreFiles()
+                    .withFilePaths(Arrays.asList("hryvy", "ytdc", "xgccknfnw"))
+                    .withDestinationPath("tmvpdvjdhtt"),
                 com.azure.core.util.Context.NONE);
     }
 }

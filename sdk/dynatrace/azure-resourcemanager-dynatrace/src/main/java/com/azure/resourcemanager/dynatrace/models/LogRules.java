@@ -38,6 +38,10 @@ public final class LogRules {
     @JsonProperty(value = "filteringTags")
     private List<FilteringTag> filteringTags;
 
+    /** Creates an instance of LogRules class. */
+    public LogRules() {
+    }
+
     /**
      * Get the sendAadLogs property: Flag specifying if AAD logs should be sent for the Monitor resource.
      *

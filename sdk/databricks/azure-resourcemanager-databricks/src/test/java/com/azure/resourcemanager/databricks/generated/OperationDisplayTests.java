@@ -13,20 +13,27 @@ public final class OperationDisplayTests {
     public void testDeserialize() throws Exception {
         OperationDisplay model =
             BinaryData
-                .fromString("{\"provider\":\"wzwbnguitn\",\"resource\":\"izgazxu\",\"operation\":\"zuckyfi\"}")
+                .fromString(
+                    "{\"provider\":\"fgugnxkrxdqmid\",\"resource\":\"hzrvqd\",\"operation\":\"bhj\",\"description\":\"igeho\"}")
                 .toObject(OperationDisplay.class);
-        Assertions.assertEquals("wzwbnguitn", model.provider());
-        Assertions.assertEquals("izgazxu", model.resource());
-        Assertions.assertEquals("zuckyfi", model.operation());
+        Assertions.assertEquals("fgugnxkrxdqmid", model.provider());
+        Assertions.assertEquals("hzrvqd", model.resource());
+        Assertions.assertEquals("bhj", model.operation());
+        Assertions.assertEquals("igeho", model.description());
     }
 
     @org.junit.jupiter.api.Test
     public void testSerialize() throws Exception {
         OperationDisplay model =
-            new OperationDisplay().withProvider("wzwbnguitn").withResource("izgazxu").withOperation("zuckyfi");
+            new OperationDisplay()
+                .withProvider("fgugnxkrxdqmid")
+                .withResource("hzrvqd")
+                .withOperation("bhj")
+                .withDescription("igeho");
         model = BinaryData.fromObject(model).toObject(OperationDisplay.class);
-        Assertions.assertEquals("wzwbnguitn", model.provider());
-        Assertions.assertEquals("izgazxu", model.resource());
-        Assertions.assertEquals("zuckyfi", model.operation());
+        Assertions.assertEquals("fgugnxkrxdqmid", model.provider());
+        Assertions.assertEquals("hzrvqd", model.resource());
+        Assertions.assertEquals("bhj", model.operation());
+        Assertions.assertEquals("igeho", model.description());
     }
 }

@@ -15,7 +15,6 @@ import com.azure.resourcemanager.appcontainers.fluent.models.ContainerAppJobExec
 import com.azure.resourcemanager.appcontainers.fluent.models.JobExecutionBaseInner;
 import com.azure.resourcemanager.appcontainers.fluent.models.JobInner;
 import com.azure.resourcemanager.appcontainers.fluent.models.JobSecretsCollectionInner;
-import com.azure.resourcemanager.appcontainers.models.JobExecutionNamesCollection;
 import com.azure.resourcemanager.appcontainers.models.JobExecutionTemplate;
 import com.azure.resourcemanager.appcontainers.models.JobPatchProperties;
 
@@ -76,7 +75,7 @@ public interface JobsClient {
      * Get the properties of a Container Apps Job.
      *
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param jobName Name of the Container Apps Job.
+     * @param jobName Job Name.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.resourcemanager.appcontainers.models.DefaultErrorResponseErrorException thrown if the request
@@ -91,7 +90,7 @@ public interface JobsClient {
      * Get the properties of a Container Apps Job.
      *
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param jobName Name of the Container Apps Job.
+     * @param jobName Job Name.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.resourcemanager.appcontainers.models.DefaultErrorResponseErrorException thrown if the request
      *     is rejected by server.
@@ -105,7 +104,7 @@ public interface JobsClient {
      * Create or Update a Container Apps Job.
      *
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param jobName Name of the Container Apps Job.
+     * @param jobName Job Name.
      * @param jobEnvelope Properties used to create a container apps job.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.resourcemanager.appcontainers.models.DefaultErrorResponseErrorException thrown if the request
@@ -121,7 +120,7 @@ public interface JobsClient {
      * Create or Update a Container Apps Job.
      *
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param jobName Name of the Container Apps Job.
+     * @param jobName Job Name.
      * @param jobEnvelope Properties used to create a container apps job.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
@@ -138,7 +137,7 @@ public interface JobsClient {
      * Create or Update a Container Apps Job.
      *
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param jobName Name of the Container Apps Job.
+     * @param jobName Job Name.
      * @param jobEnvelope Properties used to create a container apps job.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.resourcemanager.appcontainers.models.DefaultErrorResponseErrorException thrown if the request
@@ -153,7 +152,7 @@ public interface JobsClient {
      * Create or Update a Container Apps Job.
      *
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param jobName Name of the Container Apps Job.
+     * @param jobName Job Name.
      * @param jobEnvelope Properties used to create a container apps job.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
@@ -169,7 +168,7 @@ public interface JobsClient {
      * Delete a Container Apps Job.
      *
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param jobName Name of the Container Apps Job.
+     * @param jobName Job Name.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.resourcemanager.appcontainers.models.DefaultErrorResponseErrorException thrown if the request
      *     is rejected by server.
@@ -183,7 +182,7 @@ public interface JobsClient {
      * Delete a Container Apps Job.
      *
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param jobName Name of the Container Apps Job.
+     * @param jobName Job Name.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.resourcemanager.appcontainers.models.DefaultErrorResponseErrorException thrown if the request
@@ -198,7 +197,7 @@ public interface JobsClient {
      * Delete a Container Apps Job.
      *
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param jobName Name of the Container Apps Job.
+     * @param jobName Job Name.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.resourcemanager.appcontainers.models.DefaultErrorResponseErrorException thrown if the request
      *     is rejected by server.
@@ -211,7 +210,7 @@ public interface JobsClient {
      * Delete a Container Apps Job.
      *
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param jobName Name of the Container Apps Job.
+     * @param jobName Job Name.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.resourcemanager.appcontainers.models.DefaultErrorResponseErrorException thrown if the request
@@ -227,7 +226,7 @@ public interface JobsClient {
      * <p>Patches a Container Apps Job using JSON Merge Patch.
      *
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param jobName Name of the Container Apps Job.
+     * @param jobName Job Name.
      * @param jobEnvelope Properties used to create a container apps job.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.resourcemanager.appcontainers.models.DefaultErrorResponseErrorException thrown if the request
@@ -245,7 +244,7 @@ public interface JobsClient {
      * <p>Patches a Container Apps Job using JSON Merge Patch.
      *
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param jobName Name of the Container Apps Job.
+     * @param jobName Job Name.
      * @param jobEnvelope Properties used to create a container apps job.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
@@ -264,7 +263,7 @@ public interface JobsClient {
      * <p>Patches a Container Apps Job using JSON Merge Patch.
      *
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param jobName Name of the Container Apps Job.
+     * @param jobName Job Name.
      * @param jobEnvelope Properties used to create a container apps job.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.resourcemanager.appcontainers.models.DefaultErrorResponseErrorException thrown if the request
@@ -281,7 +280,7 @@ public interface JobsClient {
      * <p>Patches a Container Apps Job using JSON Merge Patch.
      *
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param jobName Name of the Container Apps Job.
+     * @param jobName Job Name.
      * @param jobEnvelope Properties used to create a container apps job.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
@@ -297,8 +296,7 @@ public interface JobsClient {
      * Start a Container Apps Job.
      *
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param jobName Name of the Container Apps Job.
-     * @param template Properties used to start a job instance.
+     * @param jobName Job Name.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.resourcemanager.appcontainers.models.DefaultErrorResponseErrorException thrown if the request
      *     is rejected by server.
@@ -307,14 +305,14 @@ public interface JobsClient {
      */
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     SyncPoller<PollResult<JobExecutionBaseInner>, JobExecutionBaseInner> beginStart(
-        String resourceGroupName, String jobName, JobExecutionTemplate template);
+        String resourceGroupName, String jobName);
 
     /**
      * Start a Container Apps Job.
      *
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param jobName Name of the Container Apps Job.
-     * @param template Properties used to start a job instance.
+     * @param jobName Job Name.
+     * @param template Properties used to start a job execution.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.resourcemanager.appcontainers.models.DefaultErrorResponseErrorException thrown if the request
@@ -330,8 +328,7 @@ public interface JobsClient {
      * Start a Container Apps Job.
      *
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param jobName Name of the Container Apps Job.
-     * @param template Properties used to start a job instance.
+     * @param jobName Job Name.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.resourcemanager.appcontainers.models.DefaultErrorResponseErrorException thrown if the request
      *     is rejected by server.
@@ -339,14 +336,14 @@ public interface JobsClient {
      * @return container App's Job execution name.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    JobExecutionBaseInner start(String resourceGroupName, String jobName, JobExecutionTemplate template);
+    JobExecutionBaseInner start(String resourceGroupName, String jobName);
 
     /**
      * Start a Container Apps Job.
      *
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param jobName Name of the Container Apps Job.
-     * @param template Properties used to start a job instance.
+     * @param jobName Job Name.
+     * @param template Properties used to start a job execution.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.resourcemanager.appcontainers.models.DefaultErrorResponseErrorException thrown if the request
@@ -362,7 +359,7 @@ public interface JobsClient {
      * Terminates execution of a running container apps job.
      *
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param jobName Name of the Container Apps Job.
+     * @param jobName Job Name.
      * @param jobExecutionName Job execution name.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.resourcemanager.appcontainers.models.DefaultErrorResponseErrorException thrown if the request
@@ -378,7 +375,7 @@ public interface JobsClient {
      * Terminates execution of a running container apps job.
      *
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param jobName Name of the Container Apps Job.
+     * @param jobName Job Name.
      * @param jobExecutionName Job execution name.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
@@ -395,7 +392,7 @@ public interface JobsClient {
      * Terminates execution of a running container apps job.
      *
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param jobName Name of the Container Apps Job.
+     * @param jobName Job Name.
      * @param jobExecutionName Job execution name.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.resourcemanager.appcontainers.models.DefaultErrorResponseErrorException thrown if the request
@@ -409,7 +406,7 @@ public interface JobsClient {
      * Terminates execution of a running container apps job.
      *
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param jobName Name of the Container Apps Job.
+     * @param jobName Job Name.
      * @param jobExecutionName Job execution name.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
@@ -424,8 +421,7 @@ public interface JobsClient {
      * Terminates execution of a running container apps job.
      *
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param jobName Name of the Container Apps Job.
-     * @param jobExecutionName List of all job executions that should be stopped.
+     * @param jobName Job Name.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.resourcemanager.appcontainers.models.DefaultErrorResponseErrorException thrown if the request
      *     is rejected by server.
@@ -434,14 +430,13 @@ public interface JobsClient {
      */
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     SyncPoller<PollResult<ContainerAppJobExecutionsInner>, ContainerAppJobExecutionsInner> beginStopMultipleExecutions(
-        String resourceGroupName, String jobName, JobExecutionNamesCollection jobExecutionName);
+        String resourceGroupName, String jobName);
 
     /**
      * Terminates execution of a running container apps job.
      *
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param jobName Name of the Container Apps Job.
-     * @param jobExecutionName List of all job executions that should be stopped.
+     * @param jobName Job Name.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.resourcemanager.appcontainers.models.DefaultErrorResponseErrorException thrown if the request
@@ -451,14 +446,13 @@ public interface JobsClient {
      */
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     SyncPoller<PollResult<ContainerAppJobExecutionsInner>, ContainerAppJobExecutionsInner> beginStopMultipleExecutions(
-        String resourceGroupName, String jobName, JobExecutionNamesCollection jobExecutionName, Context context);
+        String resourceGroupName, String jobName, Context context);
 
     /**
      * Terminates execution of a running container apps job.
      *
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param jobName Name of the Container Apps Job.
-     * @param jobExecutionName List of all job executions that should be stopped.
+     * @param jobName Job Name.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.resourcemanager.appcontainers.models.DefaultErrorResponseErrorException thrown if the request
      *     is rejected by server.
@@ -466,15 +460,13 @@ public interface JobsClient {
      * @return container App executions collection ARM resource.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    ContainerAppJobExecutionsInner stopMultipleExecutions(
-        String resourceGroupName, String jobName, JobExecutionNamesCollection jobExecutionName);
+    ContainerAppJobExecutionsInner stopMultipleExecutions(String resourceGroupName, String jobName);
 
     /**
      * Terminates execution of a running container apps job.
      *
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param jobName Name of the Container Apps Job.
-     * @param jobExecutionName List of all job executions that should be stopped.
+     * @param jobName Job Name.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.resourcemanager.appcontainers.models.DefaultErrorResponseErrorException thrown if the request
@@ -483,14 +475,13 @@ public interface JobsClient {
      * @return container App executions collection ARM resource.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    ContainerAppJobExecutionsInner stopMultipleExecutions(
-        String resourceGroupName, String jobName, JobExecutionNamesCollection jobExecutionName, Context context);
+    ContainerAppJobExecutionsInner stopMultipleExecutions(String resourceGroupName, String jobName, Context context);
 
     /**
      * List secrets for a container apps job.
      *
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param jobName Name of the Container Apps Job.
+     * @param jobName Job Name.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.resourcemanager.appcontainers.models.DefaultErrorResponseErrorException thrown if the request
@@ -506,7 +497,7 @@ public interface JobsClient {
      * List secrets for a container apps job.
      *
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param jobName Name of the Container Apps Job.
+     * @param jobName Job Name.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.resourcemanager.appcontainers.models.DefaultErrorResponseErrorException thrown if the request
      *     is rejected by server.

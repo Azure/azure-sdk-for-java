@@ -11,7 +11,8 @@ import com.fasterxml.jackson.annotation.JsonProperty;
 @Fluent
 public final class SignalRTlsSettings {
     /*
-     * Request client certificate during TLS handshake if enabled
+     * Request client certificate during TLS handshake if enabled. Not supported for free tier. Any input will be
+     * ignored for free tier.
      */
     @JsonProperty(value = "clientCertEnabled")
     private Boolean clientCertEnabled;
@@ -21,7 +22,8 @@ public final class SignalRTlsSettings {
     }
 
     /**
-     * Get the clientCertEnabled property: Request client certificate during TLS handshake if enabled.
+     * Get the clientCertEnabled property: Request client certificate during TLS handshake if enabled. Not supported for
+     * free tier. Any input will be ignored for free tier.
      *
      * @return the clientCertEnabled value.
      */
@@ -30,7 +32,8 @@ public final class SignalRTlsSettings {
     }
 
     /**
-     * Set the clientCertEnabled property: Request client certificate during TLS handshake if enabled.
+     * Set the clientCertEnabled property: Request client certificate during TLS handshake if enabled. Not supported for
+     * free tier. Any input will be ignored for free tier.
      *
      * @param clientCertEnabled the clientCertEnabled value to set.
      * @return the SignalRTlsSettings object itself.

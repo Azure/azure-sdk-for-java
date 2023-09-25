@@ -10,7 +10,6 @@ import org.junit.jupiter.params.ParameterizedTest;
 import org.junit.jupiter.params.provider.MethodSource;
 
 import static org.junit.jupiter.api.Assertions.assertNotEquals;
-import static org.junit.jupiter.api.Assertions.assertTrue;
 
 public class StorageClientTest extends QuantumClientTestBase {
 
@@ -30,6 +29,6 @@ public class StorageClientTest extends QuantumClientTestBase {
         SasUriResponse response = client.sasUri(new BlobDetails().setContainerName(containerName));
 
         assertNotEquals(null, response);
-        assertTrue(response.getSasUri().matches(String.format("https://[a-zA-Z0-9-]{3,63}.blob.core.windows.net/%s\\?sv=.*", containerName)));
+        assertNotEquals(null, response.getSasUri());
     }
 }

@@ -15,7 +15,7 @@ public final class WorkflowDeleteTests extends PurviewWorkflowClientTestBase {
         RequestOptions requestOptions = new RequestOptions();
         Response<Void> response =
                 purviewWorkflowClient.deleteWorkflowWithResponse(
-                        "af1ecae-16ee-4b2d-8972-00d611dd2f99", requestOptions);
+                        "d7223c0c-cfff-4322-9031-4e126fefd212", requestOptions);
         Assertions.assertEquals(204, response.getStatusCode());
     }
 }

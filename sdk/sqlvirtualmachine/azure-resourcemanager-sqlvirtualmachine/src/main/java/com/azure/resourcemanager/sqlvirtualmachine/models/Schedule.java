@@ -41,6 +41,10 @@ public final class Schedule {
     @JsonProperty(value = "startTime")
     private String startTime;
 
+    /** Creates an instance of Schedule class. */
+    public Schedule() {
+    }
+
     /**
      * Get the enable property: Enable or disable assessment schedule on SQL virtual machine.
      *

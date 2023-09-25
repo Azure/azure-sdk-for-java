@@ -7,7 +7,7 @@ package com.azure.resourcemanager.databricks.generated;
 /** Samples for VNetPeering ListByWorkspace. */
 public final class VNetPeeringListByWorkspaceSamples {
     /*
-     * x-ms-original-file: specification/databricks/resource-manager/Microsoft.Databricks/preview/2021-04-01-preview/examples/WorkspaceVirtualNetPeeringList.json
+     * x-ms-original-file: specification/databricks/resource-manager/Microsoft.Databricks/stable/2023-02-01/examples/WorkspaceVirtualNetPeeringList.json
      */
     /**
      * Sample code: List all vNet Peerings for the workspace.

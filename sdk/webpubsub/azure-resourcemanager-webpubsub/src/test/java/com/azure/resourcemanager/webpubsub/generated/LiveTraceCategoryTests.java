@@ -12,16 +12,18 @@ public final class LiveTraceCategoryTests {
     @org.junit.jupiter.api.Test
     public void testDeserialize() throws Exception {
         LiveTraceCategory model =
-            BinaryData.fromString("{\"name\":\"mtxpsiebtfh\",\"enabled\":\"esap\"}").toObject(LiveTraceCategory.class);
-        Assertions.assertEquals("mtxpsiebtfh", model.name());
-        Assertions.assertEquals("esap", model.enabled());
+            BinaryData
+                .fromString("{\"name\":\"puqujmqlgkfbtn\",\"enabled\":\"aongbj\"}")
+                .toObject(LiveTraceCategory.class);
+        Assertions.assertEquals("puqujmqlgkfbtn", model.name());
+        Assertions.assertEquals("aongbj", model.enabled());
     }
 
     @org.junit.jupiter.api.Test
     public void testSerialize() throws Exception {
-        LiveTraceCategory model = new LiveTraceCategory().withName("mtxpsiebtfh").withEnabled("esap");
+        LiveTraceCategory model = new LiveTraceCategory().withName("puqujmqlgkfbtn").withEnabled("aongbj");
         model = BinaryData.fromObject(model).toObject(LiveTraceCategory.class);
-        Assertions.assertEquals("mtxpsiebtfh", model.name());
-        Assertions.assertEquals("esap", model.enabled());
+        Assertions.assertEquals("puqujmqlgkfbtn", model.name());
+        Assertions.assertEquals("aongbj", model.enabled());
     }
 }

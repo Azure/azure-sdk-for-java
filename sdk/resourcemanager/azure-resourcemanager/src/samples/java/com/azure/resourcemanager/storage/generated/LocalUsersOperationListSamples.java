@@ -4,12 +4,10 @@
 
 package com.azure.resourcemanager.storage.generated;
 
-import com.azure.core.util.Context;
-
 /** Samples for LocalUsersOperation List. */
 public final class LocalUsersOperationListSamples {
     /*
-     * x-ms-original-file: specification/storage/resource-manager/Microsoft.Storage/stable/2022-09-01/examples/LocalUsersList.json
+     * x-ms-original-file: specification/storage/resource-manager/Microsoft.Storage/stable/2023-01-01/examples/LocalUsersList.json
      */
     /**
      * Sample code: ListLocalUsers.
@@ -22,6 +20,6 @@ public final class LocalUsersOperationListSamples {
             .manager()
             .serviceClient()
             .getLocalUsersOperations()
-            .list("res6977", "sto2527", Context.NONE);
+            .list("res6977", "sto2527", com.azure.core.util.Context.NONE);
     }
 }

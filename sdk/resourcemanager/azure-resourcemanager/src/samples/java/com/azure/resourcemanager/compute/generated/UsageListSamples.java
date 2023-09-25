@@ -7,7 +7,7 @@ package com.azure.resourcemanager.compute.generated;
 /** Samples for Usage List. */
 public final class UsageListSamples {
     /*
-     * x-ms-original-file: specification/compute/resource-manager/Microsoft.Compute/ComputeRP/stable/2023-03-01/examples/computeRPCommonExamples/Usage_List_MinimumSet_Gen.json
+     * x-ms-original-file: specification/compute/resource-manager/Microsoft.Compute/ComputeRP/stable/2023-07-01/examples/computeRPCommonExamples/Usage_List_MinimumSet_Gen.json
      */
     /**
      * Sample code: Usage_List_MinimumSet_Gen.
@@ -19,7 +19,7 @@ public final class UsageListSamples {
     }
 
     /*
-     * x-ms-original-file: specification/compute/resource-manager/Microsoft.Compute/ComputeRP/stable/2023-03-01/examples/computeRPCommonExamples/Usage_List_MaximumSet_Gen.json
+     * x-ms-original-file: specification/compute/resource-manager/Microsoft.Compute/ComputeRP/stable/2023-07-01/examples/computeRPCommonExamples/Usage_List_MaximumSet_Gen.json
      */
     /**
      * Sample code: Usage_List_MaximumSet_Gen.

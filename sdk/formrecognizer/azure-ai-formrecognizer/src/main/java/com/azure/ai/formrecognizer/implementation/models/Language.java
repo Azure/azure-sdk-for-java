@@ -230,6 +230,14 @@ public final class Language extends ExpandableStringEnum<Language> {
     public static final Language ZU = fromString("zu");
 
     /**
+     * Creates a new instance of Language value.
+     *
+     * @deprecated Use the {@link #fromString(String)} factory method.
+     */
+    @Deprecated
+    public Language() {}
+
+    /**
      * Creates or finds a Language from its string representation.
      *
      * @param name a name to look for.
@@ -240,7 +248,11 @@ public final class Language extends ExpandableStringEnum<Language> {
         return fromString(name, Language.class);
     }
 
-    /** @return known Language values. */
+    /**
+     * Gets known Language values.
+     *
+     * @return known Language values.
+     */
     public static Collection<Language> values() {
         return values(Language.class);
     }

@@ -47,8 +47,8 @@ public final class ConnectionPolicy {
     private int ioThreadCountPerCoreFactor;
     private int ioThreadPriority;
     private boolean tcpHealthCheckTimeoutDetectionEnabled;
-    private int minConnectionsPerEndpoint;
-    private int defensiveWarmupConcurrency;
+    private int minConnectionPoolSizePerEndpoint;
+    private int openConnectionsConcurrency;
     private int aggressiveWarmupConcurrency;
 
     /**
@@ -96,6 +96,14 @@ public final class ConnectionPolicy {
                 .DirectConnectionConfigHelper
                 .getDirectConnectionConfigAccessor()
                 .isHealthCheckTimeoutDetectionEnabled(directConnectionConfig);
+
+        // NOTE: should be compared with COSMOS.MIN_CONNECTION_POOL_SIZE_PER_ENDPOINT
+        // read during client initialization before connections are created for the container
+        this.minConnectionPoolSizePerEndpoint =
+                Math.max(ImplementationBridgeHelpers
+                    .DirectConnectionConfigHelper
+                    .getDirectConnectionConfigAccessor()
+                    .getMinConnectionPoolSizePerEndpoint(directConnectionConfig), Configs.getMinConnectionPoolSizePerEndpoint());
     }
 
     private ConnectionPolicy() {
@@ -107,8 +115,8 @@ public final class ConnectionPolicy {
         this.userAgentSuffix = "";
         this.ioThreadPriority = Thread.NORM_PRIORITY;
         this.tcpHealthCheckTimeoutDetectionEnabled = true;
-        this.minConnectionsPerEndpoint = Configs.getMinConnectionPoolSizePerEndpoint();
-        this.defensiveWarmupConcurrency = Configs.getDefensiveWarmupConcurrency();
+        this.minConnectionPoolSizePerEndpoint = Configs.getMinConnectionPoolSizePerEndpoint();
+        this.openConnectionsConcurrency = Configs.getOpenConnectionsConcurrency();
         this.aggressiveWarmupConcurrency = Configs.getAggressiveWarmupConcurrency();
     }
 
@@ -580,6 +588,10 @@ public final class ConnectionPolicy {
         return this;
     }
 
+    public int getMinConnectionPoolSizePerEndpoint() {
+        return minConnectionPoolSizePerEndpoint;
+    }
+
     @Override
     public String toString() {
         return "ConnectionPolicy{" +
@@ -605,8 +617,8 @@ public final class ConnectionPolicy {
             ", ioThreadPriority=" + ioThreadPriority +
             ", ioThreadCountPerCoreFactor=" + ioThreadCountPerCoreFactor +
             ", tcpHealthCheckTimeoutDetectionEnabled=" + tcpHealthCheckTimeoutDetectionEnabled +
-            ", minConnectionsPerEndpoint=" + minConnectionsPerEndpoint +
-            ", defensiveWarmupConcurrency=" + defensiveWarmupConcurrency +
+            ", minConnectionPoolSizePerEndpoint=" + minConnectionPoolSizePerEndpoint +
+            ", openConnectionsConcurrency=" + openConnectionsConcurrency +
             ", aggressiveWarmupConcurrency=" + aggressiveWarmupConcurrency +
             '}';
     }

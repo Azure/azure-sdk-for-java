@@ -319,11 +319,13 @@ public interface Pool {
     interface Definition
         extends DefinitionStages.Blank, DefinitionStages.WithParentResource, DefinitionStages.WithCreate {
     }
+
     /** The Pool definition stages. */
     interface DefinitionStages {
         /** The first stage of the Pool definition. */
         interface Blank extends WithParentResource {
         }
+
         /** The stage of the Pool definition allowing to specify parent resource. */
         interface WithParentResource {
             /**
@@ -335,6 +337,7 @@ public interface Pool {
              */
             WithCreate withExistingBatchAccount(String resourceGroupName, String accountName);
         }
+
         /**
          * The stage of the Pool definition which contains all the minimum required properties for the resource to be
          * created, but also allows for any other optional properties to be specified.
@@ -374,6 +377,7 @@ public interface Pool {
              */
             Pool create(Context context);
         }
+
         /** The stage of the Pool definition allowing to specify identity. */
         interface WithIdentity {
             /**
@@ -384,6 +388,7 @@ public interface Pool {
              */
             WithCreate withIdentity(BatchPoolIdentity identity);
         }
+
         /** The stage of the Pool definition allowing to specify displayName. */
         interface WithDisplayName {
             /**
@@ -399,6 +404,7 @@ public interface Pool {
              */
             WithCreate withDisplayName(String displayName);
         }
+
         /** The stage of the Pool definition allowing to specify vmSize. */
         interface WithVmSize {
             /**
@@ -432,6 +438,7 @@ public interface Pool {
              */
             WithCreate withVmSize(String vmSize);
         }
+
         /** The stage of the Pool definition allowing to specify deploymentConfiguration. */
         interface WithDeploymentConfiguration {
             /**
@@ -447,6 +454,7 @@ public interface Pool {
              */
             WithCreate withDeploymentConfiguration(DeploymentConfiguration deploymentConfiguration);
         }
+
         /** The stage of the Pool definition allowing to specify scaleSettings. */
         interface WithScaleSettings {
             /**
@@ -466,6 +474,7 @@ public interface Pool {
              */
             WithCreate withScaleSettings(ScaleSettings scaleSettings);
         }
+
         /** The stage of the Pool definition allowing to specify interNodeCommunication. */
         interface WithInterNodeCommunication {
             /**
@@ -484,6 +493,7 @@ public interface Pool {
              */
             WithCreate withInterNodeCommunication(InterNodeCommunicationState interNodeCommunication);
         }
+
         /** The stage of the Pool definition allowing to specify networkConfiguration. */
         interface WithNetworkConfiguration {
             /**
@@ -494,6 +504,7 @@ public interface Pool {
              */
             WithCreate withNetworkConfiguration(NetworkConfiguration networkConfiguration);
         }
+
         /** The stage of the Pool definition allowing to specify taskSlotsPerNode. */
         interface WithTaskSlotsPerNode {
             /**
@@ -511,6 +522,7 @@ public interface Pool {
              */
             WithCreate withTaskSlotsPerNode(Integer taskSlotsPerNode);
         }
+
         /** The stage of the Pool definition allowing to specify taskSchedulingPolicy. */
         interface WithTaskSchedulingPolicy {
             /**
@@ -525,6 +537,7 @@ public interface Pool {
              */
             WithCreate withTaskSchedulingPolicy(TaskSchedulingPolicy taskSchedulingPolicy);
         }
+
         /** The stage of the Pool definition allowing to specify userAccounts. */
         interface WithUserAccounts {
             /**
@@ -535,6 +548,7 @@ public interface Pool {
              */
             WithCreate withUserAccounts(List<UserAccount> userAccounts);
         }
+
         /** The stage of the Pool definition allowing to specify metadata. */
         interface WithMetadata {
             /**
@@ -548,6 +562,7 @@ public interface Pool {
              */
             WithCreate withMetadata(List<MetadataItem> metadata);
         }
+
         /** The stage of the Pool definition allowing to specify startTask. */
         interface WithStartTask {
             /**
@@ -565,6 +580,7 @@ public interface Pool {
              */
             WithCreate withStartTask(StartTask startTask);
         }
+
         /** The stage of the Pool definition allowing to specify certificates. */
         interface WithCertificates {
             /**
@@ -594,6 +610,7 @@ public interface Pool {
              */
             WithCreate withCertificates(List<CertificateReference> certificates);
         }
+
         /** The stage of the Pool definition allowing to specify applicationPackages. */
         interface WithApplicationPackages {
             /**
@@ -613,6 +630,7 @@ public interface Pool {
              */
             WithCreate withApplicationPackages(List<ApplicationPackageReference> applicationPackages);
         }
+
         /** The stage of the Pool definition allowing to specify applicationLicenses. */
         interface WithApplicationLicenses {
             /**
@@ -630,6 +648,7 @@ public interface Pool {
              */
             WithCreate withApplicationLicenses(List<String> applicationLicenses);
         }
+
         /** The stage of the Pool definition allowing to specify mountConfiguration. */
         interface WithMountConfiguration {
             /**
@@ -643,6 +662,7 @@ public interface Pool {
              */
             WithCreate withMountConfiguration(List<MountConfiguration> mountConfiguration);
         }
+
         /** The stage of the Pool definition allowing to specify targetNodeCommunicationMode. */
         interface WithTargetNodeCommunicationMode {
             /**
@@ -657,6 +677,7 @@ public interface Pool {
              */
             WithCreate withTargetNodeCommunicationMode(NodeCommunicationMode targetNodeCommunicationMode);
         }
+
         /** The stage of the Pool definition allowing to specify ifMatch. */
         interface WithIfMatch {
             /**
@@ -670,6 +691,7 @@ public interface Pool {
              */
             WithCreate withIfMatch(String ifMatch);
         }
+
         /** The stage of the Pool definition allowing to specify ifNoneMatch. */
         interface WithIfNoneMatch {
             /**
@@ -683,6 +705,7 @@ public interface Pool {
             WithCreate withIfNoneMatch(String ifNoneMatch);
         }
     }
+
     /**
      * Begins update for the Pool resource.
      *
@@ -725,6 +748,7 @@ public interface Pool {
          */
         Pool apply(Context context);
     }
+
     /** The Pool update stages. */
     interface UpdateStages {
         /** The stage of the Pool update allowing to specify identity. */
@@ -737,6 +761,7 @@ public interface Pool {
              */
             Update withIdentity(BatchPoolIdentity identity);
         }
+
         /** The stage of the Pool update allowing to specify displayName. */
         interface WithDisplayName {
             /**
@@ -752,6 +777,7 @@ public interface Pool {
              */
             Update withDisplayName(String displayName);
         }
+
         /** The stage of the Pool update allowing to specify vmSize. */
         interface WithVmSize {
             /**
@@ -785,6 +811,7 @@ public interface Pool {
              */
             Update withVmSize(String vmSize);
         }
+
         /** The stage of the Pool update allowing to specify deploymentConfiguration. */
         interface WithDeploymentConfiguration {
             /**
@@ -800,6 +827,7 @@ public interface Pool {
              */
             Update withDeploymentConfiguration(DeploymentConfiguration deploymentConfiguration);
         }
+
         /** The stage of the Pool update allowing to specify scaleSettings. */
         interface WithScaleSettings {
             /**
@@ -819,6 +847,7 @@ public interface Pool {
              */
             Update withScaleSettings(ScaleSettings scaleSettings);
         }
+
         /** The stage of the Pool update allowing to specify interNodeCommunication. */
         interface WithInterNodeCommunication {
             /**
@@ -837,6 +866,7 @@ public interface Pool {
              */
             Update withInterNodeCommunication(InterNodeCommunicationState interNodeCommunication);
         }
+
         /** The stage of the Pool update allowing to specify networkConfiguration. */
         interface WithNetworkConfiguration {
             /**
@@ -847,6 +877,7 @@ public interface Pool {
              */
             Update withNetworkConfiguration(NetworkConfiguration networkConfiguration);
         }
+
         /** The stage of the Pool update allowing to specify taskSlotsPerNode. */
         interface WithTaskSlotsPerNode {
             /**
@@ -864,6 +895,7 @@ public interface Pool {
              */
             Update withTaskSlotsPerNode(Integer taskSlotsPerNode);
         }
+
         /** The stage of the Pool update allowing to specify taskSchedulingPolicy. */
         interface WithTaskSchedulingPolicy {
             /**
@@ -878,6 +910,7 @@ public interface Pool {
              */
             Update withTaskSchedulingPolicy(TaskSchedulingPolicy taskSchedulingPolicy);
         }
+
         /** The stage of the Pool update allowing to specify userAccounts. */
         interface WithUserAccounts {
             /**
@@ -888,6 +921,7 @@ public interface Pool {
              */
             Update withUserAccounts(List<UserAccount> userAccounts);
         }
+
         /** The stage of the Pool update allowing to specify metadata. */
         interface WithMetadata {
             /**
@@ -901,6 +935,7 @@ public interface Pool {
              */
             Update withMetadata(List<MetadataItem> metadata);
         }
+
         /** The stage of the Pool update allowing to specify startTask. */
         interface WithStartTask {
             /**
@@ -918,6 +953,7 @@ public interface Pool {
              */
             Update withStartTask(StartTask startTask);
         }
+
         /** The stage of the Pool update allowing to specify certificates. */
         interface WithCertificates {
             /**
@@ -947,6 +983,7 @@ public interface Pool {
              */
             Update withCertificates(List<CertificateReference> certificates);
         }
+
         /** The stage of the Pool update allowing to specify applicationPackages. */
         interface WithApplicationPackages {
             /**
@@ -966,6 +1003,7 @@ public interface Pool {
              */
             Update withApplicationPackages(List<ApplicationPackageReference> applicationPackages);
         }
+
         /** The stage of the Pool update allowing to specify applicationLicenses. */
         interface WithApplicationLicenses {
             /**
@@ -983,6 +1021,7 @@ public interface Pool {
              */
             Update withApplicationLicenses(List<String> applicationLicenses);
         }
+
         /** The stage of the Pool update allowing to specify mountConfiguration. */
         interface WithMountConfiguration {
             /**
@@ -996,6 +1035,7 @@ public interface Pool {
              */
             Update withMountConfiguration(List<MountConfiguration> mountConfiguration);
         }
+
         /** The stage of the Pool update allowing to specify targetNodeCommunicationMode. */
         interface WithTargetNodeCommunicationMode {
             /**
@@ -1010,6 +1050,7 @@ public interface Pool {
              */
             Update withTargetNodeCommunicationMode(NodeCommunicationMode targetNodeCommunicationMode);
         }
+
         /** The stage of the Pool update allowing to specify ifMatch. */
         interface WithIfMatch {
             /**
@@ -1023,6 +1064,7 @@ public interface Pool {
             Update withIfMatch(String ifMatch);
         }
     }
+
     /**
      * Refreshes the resource to sync with Azure.
      *

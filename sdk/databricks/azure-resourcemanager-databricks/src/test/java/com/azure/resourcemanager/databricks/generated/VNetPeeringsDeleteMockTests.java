@@ -56,6 +56,6 @@ public final class VNetPeeringsDeleteMockTests {
                     tokenRequestContext -> Mono.just(new AccessToken("this_is_a_token", OffsetDateTime.MAX)),
                     new AzureProfile("", "", AzureEnvironment.AZURE));
 
-        manager.vNetPeerings().delete("eli", "hnrztfol", "bnxknalaulppg", com.azure.core.util.Context.NONE);
+        manager.vNetPeerings().delete("reqnovvqfov", "jxywsuws", "rsndsytgadgvra", com.azure.core.util.Context.NONE);
     }
 }

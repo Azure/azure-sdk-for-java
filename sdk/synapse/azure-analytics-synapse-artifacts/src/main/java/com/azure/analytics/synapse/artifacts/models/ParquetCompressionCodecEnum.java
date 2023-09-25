@@ -23,6 +23,14 @@ public final class ParquetCompressionCodecEnum extends ExpandableStringEnum<Parq
     public static final ParquetCompressionCodecEnum LZO = fromString("lzo");
 
     /**
+     * Creates a new instance of ParquetCompressionCodecEnum value.
+     *
+     * @deprecated Use the {@link #fromString(String)} factory method.
+     */
+    @Deprecated
+    public ParquetCompressionCodecEnum() {}
+
+    /**
      * Creates or finds a ParquetCompressionCodecEnum from its string representation.
      *
      * @param name a name to look for.

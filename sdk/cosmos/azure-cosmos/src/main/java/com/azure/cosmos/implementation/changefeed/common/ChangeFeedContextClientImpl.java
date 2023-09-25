@@ -8,6 +8,7 @@ import com.azure.cosmos.CosmosAsyncDatabase;
 import com.azure.cosmos.CosmosBridgeInternal;
 import com.azure.cosmos.implementation.AsyncDocumentClient;
 import com.azure.cosmos.implementation.Document;
+import com.azure.cosmos.implementation.ImplementationBridgeHelpers;
 import com.azure.cosmos.implementation.PartitionKeyRange;
 import com.azure.cosmos.implementation.changefeed.ChangeFeedContextClient;
 import com.azure.cosmos.implementation.routing.Range;
@@ -156,7 +157,9 @@ public class ChangeFeedContextClientImpl implements ChangeFeedContextClient {
                             return BridgeInternal.toFeedResponsePage(
                                 results,
                                 response.getResponseHeaders(),
-                                false,
+                                ImplementationBridgeHelpers
+                                    .FeedResponseHelper
+                                    .getFeedResponseAccessor().getNoChanges(response),
                                 response.getCosmosDiagnostics());
                         });
                 });

@@ -56,6 +56,6 @@ public final class WorkspacesDeleteMockTests {
                     tokenRequestContext -> Mono.just(new AccessToken("this_is_a_token", OffsetDateTime.MAX)),
                     new AzureProfile("", "", AzureEnvironment.AZURE));
 
-        manager.workspaces().delete("vkd", "jsllrmv", com.azure.core.util.Context.NONE);
+        manager.workspaces().delete("glaocq", "tcc", com.azure.core.util.Context.NONE);
     }
 }

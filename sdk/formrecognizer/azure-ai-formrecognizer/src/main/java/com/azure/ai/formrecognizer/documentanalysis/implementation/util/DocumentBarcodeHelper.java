@@ -6,6 +6,9 @@ package com.azure.ai.formrecognizer.documentanalysis.implementation.util;
 import com.azure.ai.formrecognizer.documentanalysis.models.DocumentBarcode;
 import com.azure.ai.formrecognizer.documentanalysis.models.DocumentBarcodeKind;
 import com.azure.ai.formrecognizer.documentanalysis.models.DocumentSpan;
+import com.azure.ai.formrecognizer.documentanalysis.models.Point;
+
+import java.util.List;
 
 /**
  * The helper class to set the non-public properties of an {@link DocumentBarcode} instance.
@@ -26,7 +29,7 @@ public final class DocumentBarcodeHelper {
 
         void setValue(DocumentBarcode documentBarcode, String value);
 
-
+        void setBoundingPolygon(DocumentBarcode documentBarcode, List<Point> polygon);
         void setConfidence(DocumentBarcode documentBarcode, float confidence);
     }
 
@@ -51,6 +54,9 @@ public final class DocumentBarcodeHelper {
         accessor.setConfidence(documentBarcode, confidence);
     }
 
+    static void setBoundingPolygon(DocumentBarcode documentBarcode, List<Point> polygon) {
+        accessor.setBoundingPolygon(documentBarcode, polygon);
+    }
     static void setValue(DocumentBarcode documentBarcode, String value) {
         accessor.setValue(documentBarcode, value);
     }

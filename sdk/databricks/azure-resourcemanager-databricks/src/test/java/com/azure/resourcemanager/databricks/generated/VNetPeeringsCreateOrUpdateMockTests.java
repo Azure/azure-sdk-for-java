@@ -35,7 +35,7 @@ public final class VNetPeeringsCreateOrUpdateMockTests {
         ArgumentCaptor<HttpRequest> httpRequest = ArgumentCaptor.forClass(HttpRequest.class);
 
         String responseStr =
-            "{\"properties\":{\"allowVirtualNetworkAccess\":false,\"allowForwardedTraffic\":true,\"allowGatewayTransit\":false,\"useRemoteGateways\":true,\"databricksVirtualNetwork\":{\"id\":\"vjfdx\"},\"databricksAddressSpace\":{\"addressPrefixes\":[]},\"remoteVirtualNetwork\":{\"id\":\"tvtc\"},\"remoteAddressSpace\":{\"addressPrefixes\":[]},\"peeringState\":\"Disconnected\",\"provisioningState\":\"Succeeded\"},\"id\":\"mcbxvwvxysl\",\"name\":\"bhsfxob\",\"type\":\"ytkblmpew\"}";
+            "{\"properties\":{\"allowVirtualNetworkAccess\":false,\"allowForwardedTraffic\":true,\"allowGatewayTransit\":true,\"useRemoteGateways\":true,\"databricksVirtualNetwork\":{\"id\":\"tbnnha\"},\"databricksAddressSpace\":{\"addressPrefixes\":[]},\"remoteVirtualNetwork\":{\"id\":\"rkvcikhnvpa\"},\"remoteAddressSpace\":{\"addressPrefixes\":[]},\"peeringState\":\"Disconnected\",\"provisioningState\":\"Succeeded\"},\"id\":\"ezikywggxkal\",\"name\":\"atmelwui\",\"type\":\"iccjzkzivgvvcna\"}";
 
         Mockito.when(httpResponse.getStatusCode()).thenReturn(200);
         Mockito.when(httpResponse.getHeaders()).thenReturn(new HttpHeaders());
@@ -66,24 +66,25 @@ public final class VNetPeeringsCreateOrUpdateMockTests {
         VirtualNetworkPeering response =
             manager
                 .vNetPeerings()
-                .define("lzdahzxctobgbkdm")
-                .withExistingWorkspace("pfqbuaceopzf", "rhhuaopppcqeqx")
-                .withRemoteVirtualNetwork(new VirtualNetworkPeeringPropertiesFormatRemoteVirtualNetwork().withId("jy"))
+                .define("ysuiizynkedya")
+                .withExistingWorkspace("yzrpzbchckqqzq", "ox")
+                .withRemoteVirtualNetwork(
+                    new VirtualNetworkPeeringPropertiesFormatRemoteVirtualNetwork().withId("yynpcdpumnzgmwz"))
                 .withAllowVirtualNetworkAccess(true)
-                .withAllowForwardedTraffic(false)
+                .withAllowForwardedTraffic(true)
                 .withAllowGatewayTransit(true)
                 .withUseRemoteGateways(false)
                 .withDatabricksVirtualNetwork(
-                    new VirtualNetworkPeeringPropertiesFormatDatabricksVirtualNetwork().withId("fbunrmfqjhhk"))
+                    new VirtualNetworkPeeringPropertiesFormatDatabricksVirtualNetwork().withId("hwit"))
                 .withDatabricksAddressSpace(new AddressSpace().withAddressPrefixes(Arrays.asList()))
                 .withRemoteAddressSpace(new AddressSpace().withAddressPrefixes(Arrays.asList()))
                 .create();
 
         Assertions.assertEquals(false, response.allowVirtualNetworkAccess());
         Assertions.assertEquals(true, response.allowForwardedTraffic());
-        Assertions.assertEquals(false, response.allowGatewayTransit());
+        Assertions.assertEquals(true, response.allowGatewayTransit());
         Assertions.assertEquals(true, response.useRemoteGateways());
-        Assertions.assertEquals("vjfdx", response.databricksVirtualNetwork().id());
-        Assertions.assertEquals("tvtc", response.remoteVirtualNetwork().id());
+        Assertions.assertEquals("tbnnha", response.databricksVirtualNetwork().id());
+        Assertions.assertEquals("rkvcikhnvpa", response.remoteVirtualNetwork().id());
     }
 }

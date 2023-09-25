@@ -33,7 +33,7 @@ public final class AvailableWorkloadProfilesGetMockTests {
         ArgumentCaptor<HttpRequest> httpRequest = ArgumentCaptor.forClass(HttpRequest.class);
 
         String responseStr =
-            "{\"value\":[{\"location\":\"qnmcjngzqdqx\",\"properties\":{\"category\":\"wgnyfusfzsvtui\",\"applicability\":\"Custom\",\"cores\":566108141,\"memoryGiB\":1502257649,\"displayName\":\"cfhmlrqryxyn\"},\"id\":\"zrdpsovwxznptgoe\",\"name\":\"ybbabpfhvfsl\",\"type\":\"vntjlrigjk\"}]}";
+            "{\"value\":[{\"location\":\"uxtyasiibmi\",\"properties\":{\"category\":\"nustgnljh\",\"applicability\":\"LocationDefault\",\"cores\":1287166393,\"memoryGiB\":1773419326,\"displayName\":\"avmqfoudor\"},\"id\":\"cgyypro\",\"name\":\"wy\",\"type\":\"undmbx\"}]}";
 
         Mockito.when(httpResponse.getStatusCode()).thenReturn(200);
         Mockito.when(httpResponse.getHeaders()).thenReturn(new HttpHeaders());
@@ -62,13 +62,14 @@ public final class AvailableWorkloadProfilesGetMockTests {
                     new AzureProfile("", "", AzureEnvironment.AZURE));
 
         PagedIterable<AvailableWorkloadProfile> response =
-            manager.availableWorkloadProfiles().get("waz", com.azure.core.util.Context.NONE);
+            manager.availableWorkloadProfiles().get("nuciqdsmexiit", com.azure.core.util.Context.NONE);
 
-        Assertions.assertEquals("qnmcjngzqdqx", response.iterator().next().location());
-        Assertions.assertEquals("wgnyfusfzsvtui", response.iterator().next().properties().category());
-        Assertions.assertEquals(Applicability.CUSTOM, response.iterator().next().properties().applicability());
-        Assertions.assertEquals(566108141, response.iterator().next().properties().cores());
-        Assertions.assertEquals(1502257649, response.iterator().next().properties().memoryGiB());
-        Assertions.assertEquals("cfhmlrqryxyn", response.iterator().next().properties().displayName());
+        Assertions.assertEquals("uxtyasiibmi", response.iterator().next().location());
+        Assertions.assertEquals("nustgnljh", response.iterator().next().properties().category());
+        Assertions
+            .assertEquals(Applicability.LOCATION_DEFAULT, response.iterator().next().properties().applicability());
+        Assertions.assertEquals(1287166393, response.iterator().next().properties().cores());
+        Assertions.assertEquals(1773419326, response.iterator().next().properties().memoryGiB());
+        Assertions.assertEquals("avmqfoudor", response.iterator().next().properties().displayName());
     }
 }

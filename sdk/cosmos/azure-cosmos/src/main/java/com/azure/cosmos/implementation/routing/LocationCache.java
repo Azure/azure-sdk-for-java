@@ -197,9 +197,73 @@ public class LocationCache {
                 return this.defaultEndpoint;
             }
         } else {
-            UnmodifiableList<URI> endpoints = request.getOperationType().isWriteOperation()? this.getWriteEndpoints() : this.getReadEndpoints();
+            UnmodifiableList<URI> endpoints =
+                request.getOperationType().isWriteOperation()? this.getApplicableWriteEndpoints(request) : this.getApplicableReadEndpoints(request);
             return endpoints.get(locationIndex % endpoints.size());
         }
+    }
+
+    public UnmodifiableList<URI> getApplicableWriteEndpoints(RxDocumentServiceRequest request) {
+        return this.getApplicableWriteEndpoints(request.requestContext.getExcludeRegions());
+    }
+
+    public UnmodifiableList<URI> getApplicableWriteEndpoints(List<String> excludedRegions) {
+        UnmodifiableList<URI> writeEndpoints = this.getWriteEndpoints();
+
+        if (excludedRegions == null ||
+            excludedRegions.isEmpty()) {
+            return writeEndpoints;
+        }
+
+        // filter regions based on the exclude region config
+        return this.getApplicableEndpoints(
+            writeEndpoints,
+            this.locationInfo.regionNameByWriteEndpoint,
+            this.defaultEndpoint,
+            excludedRegions);
+    }
+
+    public UnmodifiableList<URI> getApplicableReadEndpoints(RxDocumentServiceRequest request) {
+        return this.getApplicableReadEndpoints(request.requestContext.getExcludeRegions());
+    }
+
+    public UnmodifiableList<URI> getApplicableReadEndpoints(List<String> excludedRegions) {
+        UnmodifiableList<URI> readEndpoints = this.getReadEndpoints();
+
+        if (excludedRegions == null ||
+            excludedRegions.isEmpty()) {
+            return readEndpoints;
+        }
+
+        // filter regions based on the exclude region config
+        return this.getApplicableEndpoints(
+            readEndpoints,
+            this.locationInfo.regionNameByReadEndpoint,
+            this.locationInfo.writeEndpoints.get(0), // match the fallback region used in getPreferredAvailableEndpoints
+            excludedRegions);
+    }
+
+    private UnmodifiableList<URI> getApplicableEndpoints(
+        UnmodifiableList<URI> endpoints,
+        UnmodifiableMap<URI, String> regionNameByEndpoint,
+        URI fallbackEndpoint,
+        List<String> excludeRegionList) {
+
+        List<URI> applicableEndpoints = new ArrayList<>();
+        for (URI endpoint : endpoints) {
+            Utils.ValueHolder<String> regionName = new Utils.ValueHolder<>();
+            if (Utils.tryGetValue(regionNameByEndpoint, endpoint, regionName)) {
+                if (!excludeRegionList.stream().anyMatch(regionName.v::equalsIgnoreCase)) {
+                    applicableEndpoints.add(endpoint);
+                }
+            }
+        }
+
+        if (applicableEndpoints.isEmpty()) {
+            applicableEndpoints.add(fallbackEndpoint);
+        }
+
+        return new UnmodifiableList<>(applicableEndpoints);
     }
 
     public URI resolveFaultInjectionEndpoint(String region, boolean writeOnly) {
@@ -551,7 +615,7 @@ public class LocationCache {
         return (UnmodifiableMap<String, URI>) UnmodifiableMap.<String, URI>unmodifiableMap(endpointsByLocation);
     }
 
-    private boolean canUseMultipleWriteLocations() {
+    public boolean canUseMultipleWriteLocations() {
         return this.useMultipleWriteLocations && this.enableMultipleWriteLocations;
     }
 

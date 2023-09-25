@@ -16,6 +16,7 @@ import com.azure.cosmos.implementation.OperationType;
 import com.azure.cosmos.implementation.RxDocumentClientImpl;
 import com.azure.cosmos.implementation.clienttelemetry.MetricCategory;
 import com.azure.cosmos.implementation.clienttelemetry.TagName;
+import com.azure.cosmos.implementation.directconnectivity.AddressSelector;
 import com.azure.cosmos.implementation.directconnectivity.ReflectionUtils;
 import com.azure.cosmos.implementation.directconnectivity.RntbdTransportClient;
 import com.azure.cosmos.implementation.directconnectivity.Uri;
@@ -50,6 +51,7 @@ import io.micrometer.core.instrument.MeterRegistry;
 import io.micrometer.core.instrument.Tag;
 import io.micrometer.core.instrument.Timer;
 import io.netty.handler.codec.http.HttpResponseStatus;
+import org.apache.commons.lang3.reflect.FieldUtils;
 import org.testng.SkipException;
 import org.testng.annotations.Factory;
 import org.testng.annotations.Test;
@@ -112,7 +114,8 @@ public class ClientMetricsTest extends BatchTestBase {
             .configureDefaultTagNames(
                 CosmosMetricTagName.DEFAULT,
                 CosmosMetricTagName.PARTITION_ID,
-                CosmosMetricTagName.REPLICA_ID);
+                CosmosMetricTagName.REPLICA_ID,
+                CosmosMetricTagName.OPERATION_SUB_STATUS_CODE);
 
         this.inputClientTelemetryConfig = new CosmosClientTelemetryConfig()
             .metricsOptions(this.inputMetricsOptions);
@@ -235,6 +238,8 @@ public class ClientMetricsTest extends BatchTestBase {
                 Tag expectedOperationTag = Tag.of(TagName.OperationStatusCode.toString(), "201");
                 // Latency meter can be disabled
                 this.assertMetrics("cosmos.client.op.latency", !disableLatencyMeter, expectedOperationTag);
+                Tag expectedSubStatusCodeOperationTag = Tag.of(TagName.OperationSubStatusCode.toString(), "0");
+                this.assertMetrics("cosmos.client.op.latency", !disableLatencyMeter, expectedSubStatusCodeOperationTag);
 
                 // Calls meter is never disabled - should always show up
                 this.assertMetrics("cosmos.client.op.calls", true, expectedOperationTag);
@@ -413,9 +418,12 @@ public class ClientMetricsTest extends BatchTestBase {
                 .setPointOperationLatencyThreshold(Duration.ofDays(1));
 
             Tag operationTag = Tag.of(TagName.OperationStatusCode.toString(), "200");
+            Tag expectedSubStatusCodeOperationTag = Tag.of(TagName.OperationSubStatusCode.toString(), "0");
             Tag requestTag = Tag.of(TagName.RequestStatusCode.toString(), "200/0");
             this.assertMetrics("cosmos.client.op.latency", true, operationTag);
+            this.assertMetrics("cosmos.client.op.latency", true, expectedSubStatusCodeOperationTag);
             this.assertMetrics("cosmos.client.op.calls", true, operationTag);
+            this.assertMetrics("cosmos.client.op.calls", true, expectedSubStatusCodeOperationTag);
             this.assertMetrics("cosmos.client.req.rntbd.latency", expectRequestMetrics, requestTag);
             this.assertMetrics("cosmos.client.req.rntbd.backendLatency", expectRequestMetrics, requestTag);
             this.assertMetrics("cosmos.client.req.rntbd.requests", expectRequestMetrics, requestTag);
@@ -985,7 +993,7 @@ public class ClientMetricsTest extends BatchTestBase {
     }
 
     @Test(groups = { "simple" }, timeOut = TIMEOUT)
-    public void endpointMetricsAreDurable() {
+    public void endpointMetricsAreDurable() throws IllegalAccessException {
         this.beforeTest(CosmosMetricCategory.ALL);
         try {
             if (client.asyncClient().getConnectionPolicy().getConnectionMode() != ConnectionMode.DIRECT) {
@@ -997,14 +1005,15 @@ public class ClientMetricsTest extends BatchTestBase {
                 (RntbdServiceEndpoint.Provider) ReflectionUtils.getRntbdEndpointProvider(transportClient);
             ProactiveOpenConnectionsProcessor proactiveOpenConnectionsProcessor =
                     ReflectionUtils.getProactiveOpenConnectionsProcessor(transportClient);
+            AddressSelector addressSelector = (AddressSelector) FieldUtils.readField(transportClient, "addressSelector", true);
 
             String address = "https://localhost:12345";
-            RntbdEndpoint firstEndpoint = endpointProvider.createIfAbsent(URI.create(address), new Uri(address), proactiveOpenConnectionsProcessor, Configs.getMinConnectionPoolSizePerEndpoint());
+            RntbdEndpoint firstEndpoint = endpointProvider.createIfAbsent(URI.create(address), new Uri(address), proactiveOpenConnectionsProcessor, Configs.getMinConnectionPoolSizePerEndpoint(), addressSelector);
             RntbdDurableEndpointMetrics firstDurableMetricsInstance = firstEndpoint.durableEndpointMetrics();
             firstEndpoint.close();
             assertThat(firstEndpoint.durableEndpointMetrics().getEndpoint()).isNull();
 
-            RntbdEndpoint secondEndpoint = endpointProvider.createIfAbsent(URI.create(address), new Uri(address), proactiveOpenConnectionsProcessor, Configs.getMinConnectionPoolSizePerEndpoint());
+            RntbdEndpoint secondEndpoint = endpointProvider.createIfAbsent(URI.create(address), new Uri(address), proactiveOpenConnectionsProcessor, Configs.getMinConnectionPoolSizePerEndpoint(), addressSelector);
 
             // ensure metrics are durable across multiple endpoint instances
             assertThat(firstEndpoint).isNotSameAs(secondEndpoint);
@@ -1264,6 +1273,14 @@ public class ClientMetricsTest extends BatchTestBase {
     private void validateMetrics(Tag expectedOperationTag, Tag expectedRequestTag, int minRu, int maxRu) {
         this.assertMetrics("cosmos.client.op.latency", true, expectedOperationTag);
         this.assertMetrics("cosmos.client.op.calls", true, expectedOperationTag);
+
+        if (expectedOperationTag.getKey() == "OperationStatusCode" &&
+            ("200".equals(expectedOperationTag.getValue()) || "201".equals(expectedOperationTag.getValue()))) {
+
+            Tag expectedSubStatusCodeOperationTag = Tag.of(TagName.OperationSubStatusCode.toString(), "0");
+            this.assertMetrics("cosmos.client.op.latency", true, expectedSubStatusCodeOperationTag);
+            this.assertMetrics("cosmos.client.op.calls", true, expectedSubStatusCodeOperationTag);
+        }
         Meter reportedOpRequestCharge = this.assertMetrics(
             "cosmos.client.op.RUs", true, expectedOperationTag);
         validateReasonableRUs(reportedOpRequestCharge, minRu, maxRu);

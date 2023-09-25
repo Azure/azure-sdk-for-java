@@ -11,9 +11,14 @@ import com.azure.core.http.HttpResponse;
 import com.azure.core.util.FluxUtil;
 import com.azure.monitor.opentelemetry.exporter.implementation.MockHttpResponse;
 import com.azure.monitor.opentelemetry.exporter.implementation.localstorage.LocalStorageTelemetryPipelineListener;
+import com.azure.monitor.opentelemetry.exporter.implementation.models.ContextTagKeys;
 import com.azure.monitor.opentelemetry.exporter.implementation.models.TelemetryItem;
 import com.azure.monitor.opentelemetry.exporter.implementation.utils.TestUtils;
+import io.opentelemetry.sdk.autoconfigure.ResourceConfiguration;
+import io.opentelemetry.sdk.autoconfigure.spi.ConfigProperties;
+import io.opentelemetry.sdk.autoconfigure.spi.internal.DefaultConfigProperties;
 import io.opentelemetry.sdk.common.CompletableResultCode;
+import io.opentelemetry.sdk.resources.Resource;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.io.TempDir;
@@ -34,6 +39,8 @@ import java.util.concurrent.atomic.AtomicInteger;
 import java.util.function.Function;
 import java.util.zip.GZIPInputStream;
 
+import static io.opentelemetry.api.common.AttributeKey.stringKey;
+import static java.util.Collections.singletonMap;
 import static org.assertj.core.api.Assertions.assertThat;
 
 public class TelemetryItemExporterTest {
@@ -52,12 +59,17 @@ public class TelemetryItemExporterTest {
     File tempFolder;
 
     private TelemetryItemExporter getExporter() {
+        return getExporter(Resource.empty());
+    }
+
+    private TelemetryItemExporter getExporter(Resource environmentResource) {
         HttpPipelineBuilder pipelineBuilder = new HttpPipelineBuilder().httpClient(recordingHttpClient);
         TelemetryPipeline telemetryPipeline = new TelemetryPipeline(pipelineBuilder.build());
 
         return new TelemetryItemExporter(
             telemetryPipeline,
-            new LocalStorageTelemetryPipelineListener(50, tempFolder, telemetryPipeline, null, false));
+            new LocalStorageTelemetryPipelineListener(50, tempFolder, telemetryPipeline, null, false),
+                environmentResource);
     }
 
     private static String getRequestBodyString(Flux<ByteBuffer> requestBody) {
@@ -225,6 +237,103 @@ public class TelemetryItemExporterTest {
         // the redirect url should be cached and should not invoke another redirect.
         assertThat(completableResultCode.isSuccess()).isEqualTo(true);
         assertThat(recordingHttpClient.getCount()).isEqualTo(5);
+    }
+
+    // test decoding of baggage-octet range of characters
+    // https://www.w3.org/TR/baggage/
+    @Test
+    public void initOtelResourceAttributesTest() {
+        ConfigProperties config = DefaultConfigProperties.createForTest(singletonMap(
+                "otel.resource.attributes",
+                "key1=value%201,key2=value2,key3=value%203"));
+        Resource resource = ResourceConfiguration.createEnvironmentResource(config);
+
+        assertThat(resource.getAttributes().size()).isEqualTo(3);
+        assertThat(resource.getAttributes().get(stringKey("key1"))).isEqualTo("value 1");
+        assertThat(resource.getAttributes().get(stringKey("key2"))).isEqualTo("value2");
+        assertThat(resource.getAttributes().get(stringKey("key3"))).isEqualTo("value 3");
+    }
+
+    @Test
+    public void otelResourceAttributeTest() {
+        ConfigProperties config = DefaultConfigProperties.createForTest(singletonMap(
+                "otel.resource.attributes",
+                "key1=value1,key2=value2,key3=value3"));
+        Resource environmentResource = ResourceConfiguration.createEnvironmentResource(config);
+
+        // given
+        List<TelemetryItem> telemetryItems = new ArrayList<>();
+        TelemetryItem telemetryItem1 =
+            TestUtils.createMetricTelemetry("metric" + 1, 1, CONNECTION_STRING);
+        telemetryItem1.getTags().put(ContextTagKeys.AI_CLOUD_ROLE.toString(), "rolename1");
+        telemetryItems.add(telemetryItem1);
+        TelemetryItem telemetryItem2 =
+            TestUtils.createMetricTelemetry("metric" + 2, 2, CONNECTION_STRING);
+        telemetryItem2.getTags().put(ContextTagKeys.AI_CLOUD_ROLE.toString(), "rolename2");
+        telemetryItems.add(telemetryItem2);
+        TelemetryItem telemetryItem3 =
+            TestUtils.createMetricTelemetry("metric" + 3, 3, REDIRECT_CONNECTION_STRING);
+        telemetryItem3.getTags().put(ContextTagKeys.AI_CLOUD_ROLE.toString(), "rolename3");
+        telemetryItems.add(telemetryItem3);
+        TelemetryItem telemetryItem4 =
+            TestUtils.createMetricTelemetry("metric" + 4, 4, REDIRECT_CONNECTION_STRING);
+        telemetryItem4.getTags().put(ContextTagKeys.AI_CLOUD_ROLE.toString(), "rolename4");
+        telemetryItems.add(telemetryItem4);
+        TelemetryItemExporter exporter = getExporter(environmentResource);
+
+        // when
+        CompletableResultCode completableResultCode = exporter.send(telemetryItems);
+
+        // then
+        assertThat(completableResultCode.isSuccess()).isEqualTo(true);
+        assertThat(recordingHttpClient.getCount()).isEqualTo(5);
+    }
+
+    @Test
+    public void groupTelemetryItemsByConnectionStringAndRoleNameTest() {
+        List<TelemetryItem> telemetryItems = new ArrayList<>();
+        TelemetryItem telemetryItem1 =
+            TestUtils.createMetricTelemetry("metric" + 1, 1, CONNECTION_STRING);
+        telemetryItem1.getTags().put(ContextTagKeys.AI_CLOUD_ROLE.toString(), "rolename1");
+        telemetryItems.add(telemetryItem1);
+        TelemetryItem telemetryItem2 =
+            TestUtils.createMetricTelemetry("metric" + 2, 2, CONNECTION_STRING);
+        telemetryItem2.getTags().put(ContextTagKeys.AI_CLOUD_ROLE.toString(), "rolename2");
+        telemetryItems.add(telemetryItem2);
+        TelemetryItem telemetryItem3 =
+            TestUtils.createMetricTelemetry("metric" + 3, 3, REDIRECT_CONNECTION_STRING);
+        telemetryItem3.getTags().put(ContextTagKeys.AI_CLOUD_ROLE.toString(), "rolename3");
+        telemetryItems.add(telemetryItem3);
+        TelemetryItem telemetryItem4 =
+            TestUtils.createMetricTelemetry("metric" + 4, 4, REDIRECT_CONNECTION_STRING);
+        telemetryItem4.getTags().put(ContextTagKeys.AI_CLOUD_ROLE.toString(), "rolename3");
+        telemetryItems.add(telemetryItem4);
+
+        TelemetryItemExporter exporter = getExporter();
+        List<List<TelemetryItem>> result =
+            exporter.groupTelemetryItemsByConnectionStringAndRoleName(telemetryItems);
+        assertThat(result.size()).isEqualTo(3);
+
+        List<TelemetryItem> group1 = result.get(0);
+        assertThat(group1.size()).isEqualTo(1);
+        assertThat(group1.get(0).getTags().get(ContextTagKeys.AI_CLOUD_ROLE.toString()))
+            .isEqualTo("rolename1");
+        assertThat(group1.get(0).getConnectionString()).isEqualTo(CONNECTION_STRING);
+
+        List<TelemetryItem> group2 = result.get(1);
+        assertThat(group2.size()).isEqualTo(1);
+        assertThat(group2.get(0).getTags().get(ContextTagKeys.AI_CLOUD_ROLE.toString()))
+            .isEqualTo("rolename2");
+        assertThat(group2.get(0).getConnectionString()).isEqualTo(CONNECTION_STRING);
+
+        List<TelemetryItem> group3 = result.get(2);
+        assertThat(group3.size()).isEqualTo(2);
+        assertThat(group3.get(0).getTags().get(ContextTagKeys.AI_CLOUD_ROLE.toString()))
+            .isEqualTo("rolename3");
+        assertThat(group3.get(0).getConnectionString()).isEqualTo(REDIRECT_CONNECTION_STRING);
+        assertThat(group3.get(1).getTags().get(ContextTagKeys.AI_CLOUD_ROLE.toString()))
+            .isEqualTo("rolename3");
+        assertThat(group3.get(1).getConnectionString()).isEqualTo(REDIRECT_CONNECTION_STRING);
     }
 
     static class RecordingHttpClient implements HttpClient {

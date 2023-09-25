@@ -153,7 +153,6 @@ public final class ReceivedSharesAsyncClient {
      * <table border="1">
      *     <caption>Query Parameters</caption>
      *     <tr><th>Name</th><th>Type</th><th>Required</th><th>Description</th></tr>
-     *     <tr><td>skipToken</td><td>String</td><td>No</td><td>The continuation token to list the next page</td></tr>
      *     <tr><td>filter</td><td>String</td><td>No</td><td>Filters the results using OData syntax</td></tr>
      *     <tr><td>orderby</td><td>String</td><td>No</td><td>Sorts the results using OData syntax</td></tr>
      * </table>
@@ -179,8 +178,8 @@ public final class ReceivedSharesAsyncClient {
      */
     @Generated
     @ServiceMethod(returns = ReturnType.COLLECTION)
-    public PagedFlux<BinaryData> getAllAttachedReceivedShares(String referenceName, RequestOptions requestOptions) {
-        return this.serviceClient.getAllAttachedReceivedSharesAsync(referenceName, requestOptions);
+    public PagedFlux<BinaryData> listAttachedReceivedShares(String referenceName, RequestOptions requestOptions) {
+        return this.serviceClient.listAttachedReceivedSharesAsync(referenceName, requestOptions);
     }
 
     /**
@@ -193,7 +192,6 @@ public final class ReceivedSharesAsyncClient {
      * <table border="1">
      *     <caption>Query Parameters</caption>
      *     <tr><th>Name</th><th>Type</th><th>Required</th><th>Description</th></tr>
-     *     <tr><td>skipToken</td><td>String</td><td>No</td><td>The continuation token to list the next page</td></tr>
      *     <tr><td>filter</td><td>String</td><td>No</td><td>Filters the results using OData syntax</td></tr>
      *     <tr><td>orderby</td><td>String</td><td>No</td><td>Sorts the results using OData syntax</td></tr>
      * </table>
@@ -218,8 +216,8 @@ public final class ReceivedSharesAsyncClient {
      */
     @Generated
     @ServiceMethod(returns = ReturnType.COLLECTION)
-    public PagedFlux<BinaryData> getAllDetachedReceivedShares(RequestOptions requestOptions) {
-        return this.serviceClient.getAllDetachedReceivedSharesAsync(requestOptions);
+    public PagedFlux<BinaryData> listDetachedReceivedShares(RequestOptions requestOptions) {
+        return this.serviceClient.listDetachedReceivedSharesAsync(requestOptions);
     }
 
     /**

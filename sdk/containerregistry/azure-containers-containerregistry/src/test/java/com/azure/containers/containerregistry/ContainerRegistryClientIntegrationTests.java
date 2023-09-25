@@ -61,11 +61,11 @@ public class ContainerRegistryClientIntegrationTests extends ContainerRegistryCl
             .build();
     }
     private ContainerRegistryAsyncClient getContainerRegistryAsyncClient(HttpClient httpClient) {
-        return getContainerRegistryBuilder(buildAsyncAssertingClient(httpClient == null ? interceptorManager.getPlaybackClient() : httpClient)).buildAsyncClient();
+        return getContainerRegistryBuilder(buildAsyncAssertingClient(interceptorManager.isPlaybackMode() ? interceptorManager.getPlaybackClient() : httpClient)).buildAsyncClient();
     }
 
     private ContainerRegistryClient getContainerRegistryClient(HttpClient httpClient) {
-        return getContainerRegistryBuilder(buildSyncAssertingClient(httpClient == null ? interceptorManager.getPlaybackClient() : httpClient)).buildClient();
+        return getContainerRegistryBuilder(buildSyncAssertingClient(interceptorManager.isPlaybackMode() ? interceptorManager.getPlaybackClient() : httpClient)).buildClient();
     }
 
     @BeforeEach

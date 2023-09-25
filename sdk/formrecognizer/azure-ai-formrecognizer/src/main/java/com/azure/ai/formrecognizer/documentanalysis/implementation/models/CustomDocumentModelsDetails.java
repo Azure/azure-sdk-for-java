@@ -30,7 +30,7 @@ public final class CustomDocumentModelsDetails {
      * @param limit the limit value to set.
      */
     @JsonCreator
-    public CustomDocumentModelsDetails(
+    private CustomDocumentModelsDetails(
             @JsonProperty(value = "count", required = true) int count,
             @JsonProperty(value = "limit", required = true) int limit) {
         this.count = count;

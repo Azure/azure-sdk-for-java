@@ -24,12 +24,12 @@ import java.util.List;
  * <li>{@link ManagedIdentityCredential} - If the application deploys to an Azure host with Managed Identity enabled,
  * the DefaultAzureCredential will authenticate with that account.</li>
  * <li>{@link IntelliJCredential} - If you've authenticated via
- * <a href="https://learn.microsoft.com/en-us/azure/developer/java/toolkit-for-intellij/">Azure Toolkit for
+ * <a href="https://learn.microsoft.com/azure/developer/java/toolkit-for-intellij/">Azure Toolkit for
  * IntelliJ</a>, the DefaultAzureCredential will authenticate with that account.</li>
  * <li>{@link AzureCliCredential} - If you've authenticated an account via the Azure CLI {@code az login} command, the
  * DefaultAzureCredential will authenticate with that account.</li>
  * <li>{@link AzurePowerShellCredential} - If you've authenticated an account via the
- * <a href="https://learn.microsoft.com/en-us/powershell/azure/?view=azps-9.4.0">Azure Power Shell</a> {@code Az Login}
+ * <a href="https://learn.microsoft.com/powershell/azure/?view=azps-9.4.0">Azure Power Shell</a> {@code Az Login}
  * command, the DefaultAzureCredential will authenticate with that account.</li>
  * <li>Fails if none of the credentials above could be created.</li>
  * </ol>
@@ -72,7 +72,7 @@ import java.util.List;
  * <p><strong>Sample: Construct DefaultAzureCredential with User Assigned Managed Identity </strong></p>
  *
  * <p>User-Assigned Managed Identity (UAMI) in Azure is a feature that allows you to create an identity in
- * <a href="https://learn.microsoft.com/en-us/azure/active-directory/fundamentals/">Azure Active Directory (Azure AD)
+ * <a href="https://learn.microsoft.com/azure/active-directory/fundamentals/">Azure Active Directory (Azure AD)
  * </a> that is associated with one or more Azure resources. This identity can then be used to authenticate and
  * authorize access to various Azure services and resources. The following code sample demonstrates the creation of
  * a DefaultAzureCredential to target a user assigned managed identity, using the

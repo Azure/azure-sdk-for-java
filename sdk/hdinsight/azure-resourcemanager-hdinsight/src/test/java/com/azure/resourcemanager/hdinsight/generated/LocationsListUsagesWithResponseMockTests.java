@@ -11,7 +11,6 @@ import com.azure.core.http.HttpRequest;
 import com.azure.core.http.HttpResponse;
 import com.azure.core.management.AzureEnvironment;
 import com.azure.core.management.profile.AzureProfile;
-import com.azure.core.util.Context;
 import com.azure.resourcemanager.hdinsight.HDInsightManager;
 import com.azure.resourcemanager.hdinsight.models.UsagesListResult;
 import java.nio.ByteBuffer;
@@ -32,7 +31,7 @@ public final class LocationsListUsagesWithResponseMockTests {
         ArgumentCaptor<HttpRequest> httpRequest = ArgumentCaptor.forClass(HttpRequest.class);
 
         String responseStr =
-            "{\"value\":[{\"unit\":\"txsu\",\"currentValue\":7425481231307193610,\"limit\":4136420798110514219},{\"unit\":\"wddji\",\"currentValue\":3042675003672880790,\"limit\":6958305132617717680}]}";
+            "{\"value\":[{\"unit\":\"fpyapucygvoavyu\",\"currentValue\":4220620654261523088,\"limit\":5180733958170755116,\"name\":{\"value\":\"egjlgvvpa\",\"localizedValue\":\"ksgbuxan\"}}]}";
 
         Mockito.when(httpResponse.getStatusCode()).thenReturn(200);
         Mockito.when(httpResponse.getHeaders()).thenReturn(new HttpHeaders());
@@ -60,10 +59,11 @@ public final class LocationsListUsagesWithResponseMockTests {
                     tokenRequestContext -> Mono.just(new AccessToken("this_is_a_token", OffsetDateTime.MAX)),
                     new AzureProfile("", "", AzureEnvironment.AZURE));
 
-        UsagesListResult response = manager.locations().listUsagesWithResponse("eesvecu", Context.NONE).getValue();
+        UsagesListResult response =
+            manager.locations().listUsagesWithResponse("sm", com.azure.core.util.Context.NONE).getValue();
 
-        Assertions.assertEquals("txsu", response.value().get(0).unit());
-        Assertions.assertEquals(7425481231307193610L, response.value().get(0).currentValue());
-        Assertions.assertEquals(4136420798110514219L, response.value().get(0).limit());
+        Assertions.assertEquals("fpyapucygvoavyu", response.value().get(0).unit());
+        Assertions.assertEquals(4220620654261523088L, response.value().get(0).currentValue());
+        Assertions.assertEquals(5180733958170755116L, response.value().get(0).limit());
     }
 }

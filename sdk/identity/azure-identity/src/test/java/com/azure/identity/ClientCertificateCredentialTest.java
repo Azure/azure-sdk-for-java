@@ -14,6 +14,7 @@ import com.microsoft.aad.msal4j.MsalServiceException;
 import org.junit.Assert;
 import org.junit.Test;
 import org.mockito.MockedConstruction;
+import org.mockito.exceptions.misusing.InvalidUseOfMatchersException;
 import reactor.core.publisher.Mono;
 import reactor.test.StepVerifier;
 
@@ -157,6 +158,61 @@ public class ClientCertificateCredentialTest {
     }
 
     @Test
+    public void testValidPemCertificatePathCAE() throws Exception {
+        // setup
+        String pemPath = "C:\\fakepath\\cert1.pem";
+        String token1 = "token1";
+
+        TokenRequestContext request1 = new TokenRequestContext().addScopes("https://management.azure.com").setCaeEnabled(true);
+        OffsetDateTime expiresAt = OffsetDateTime.now(ZoneOffset.UTC).plusHours(1);
+
+        // mock
+        try (MockedConstruction<IdentityClient> identityClientMock = mockConstruction(IdentityClient.class, (identityClient, context) -> {
+            when(identityClient.authenticateWithConfidentialClientCache(any())).thenReturn(Mono.empty());
+            when(identityClient.authenticateWithConfidentialClient(request1))
+                .thenAnswer(invocation -> {
+                    TokenRequestContext argument = (TokenRequestContext) invocation.getArguments()[0];
+                    if (argument.getScopes().size() == 1 && argument.isCaeEnabled()) {
+                        return TestUtils.getMockMsalToken(token1, expiresAt);
+                    } else {
+                        throw new InvalidUseOfMatchersException(String.format("Argument %s does not match", (Object) argument));
+                    }
+                });
+        })) {
+            // test
+            ClientCertificateCredential credential =
+                new ClientCertificateCredentialBuilder().tenantId(TENANT_ID).clientId(CLIENT_ID).pemCertificate(pemPath).build();
+            StepVerifier.create(credential.getToken(request1))
+                .expectNextMatches(accessToken -> token1.equals(accessToken.getToken())
+                    && expiresAt.getSecond() == accessToken.getExpiresAt().getSecond())
+                .verifyComplete();
+            Assert.assertNotNull(identityClientMock);
+        }
+
+        try (MockedConstruction<IdentitySyncClient> identityClientMock = mockConstruction(IdentitySyncClient.class, (identityClient, context) -> {
+            when(identityClient.authenticateWithConfidentialClientCache(any())).thenThrow(new IllegalStateException("Test"));
+            when(identityClient.authenticateWithConfidentialClient(request1))
+                .thenAnswer(invocation -> {
+                    TokenRequestContext argument = (TokenRequestContext) invocation.getArguments()[0];
+                    if (argument.getScopes().size() == 1 && argument.isCaeEnabled()) {
+                        return TestUtils.getMockMsalTokenSync(token1, expiresAt);
+                    } else {
+                        throw new InvalidUseOfMatchersException(String.format("Argument %s does not match", (Object) argument));
+                    }
+                });
+        })) {
+            // test
+            ClientCertificateCredential credential =
+                new ClientCertificateCredentialBuilder().tenantId(TENANT_ID).clientId(CLIENT_ID).pemCertificate(pemPath).build();
+
+            AccessToken accessToken = credential.getTokenSync(request1);
+            Assert.assertEquals(token1, accessToken.getToken());
+            Assert.assertTrue(expiresAt.getSecond() == accessToken.getExpiresAt().getSecond());
+            Assert.assertNotNull(identityClientMock);
+        }
+    }
+
+    @Test
     public void testValidPfxCertificatePath() throws Exception {
         // setup
         String pfxPath = "C:\\fakepath\\cert2.pfx";
@@ -173,7 +229,7 @@ public class ClientCertificateCredentialTest {
         })) {
             // test
             ClientCertificateCredential credential =
-                new ClientCertificateCredentialBuilder().tenantId(TENANT_ID).clientId(CLIENT_ID).pfxCertificate(pfxPath, pfxPassword).build();
+                new ClientCertificateCredentialBuilder().tenantId(TENANT_ID).clientId(CLIENT_ID).pfxCertificate(pfxPath).clientCertificatePassword(pfxPassword).build();
             StepVerifier.create(credential.getToken(request2))
                 .expectNextMatches(accessToken -> token2.equals(accessToken.getToken())
                     && expiresAt.getSecond() == accessToken.getExpiresAt().getSecond())
@@ -253,7 +309,8 @@ public class ClientCertificateCredentialTest {
         })) {
             // test
             ClientCertificateCredential credential =
-                new ClientCertificateCredentialBuilder().tenantId(TENANT_ID).clientId(CLIENT_ID).pfxCertificate(pfxCert, pfxPassword).build();
+                new ClientCertificateCredentialBuilder().tenantId(TENANT_ID).clientId(CLIENT_ID)
+                    .pfxCertificate(pfxCert).clientCertificatePassword(pfxPassword).build();
 
             StepVerifier.create(credential.getToken(request2))
                 .expectNextMatches(accessToken -> token2.equals(accessToken.getToken())
@@ -268,7 +325,8 @@ public class ClientCertificateCredentialTest {
         })) {
             // test
             ClientCertificateCredential credential =
-                new ClientCertificateCredentialBuilder().tenantId(TENANT_ID).clientId(CLIENT_ID).pfxCertificate(pfxCert, pfxPassword).build();
+                new ClientCertificateCredentialBuilder().tenantId(TENANT_ID).clientId(CLIENT_ID)
+                    .pfxCertificate(pfxCert).clientCertificatePassword(pfxPassword).build();
             AccessToken accessToken = credential.getTokenSync(request2);
             Assert.assertEquals(token2, accessToken.getToken());
             Assert.assertTrue(expiresAt.getSecond() == accessToken.getExpiresAt().getSecond());
@@ -314,7 +372,7 @@ public class ClientCertificateCredentialTest {
         })) {
             // test
             ClientCertificateCredential credential =
-                new ClientCertificateCredentialBuilder().tenantId(TENANT_ID).clientId(CLIENT_ID).pfxCertificate(pfxPath, pfxPassword).build();
+                new ClientCertificateCredentialBuilder().tenantId(TENANT_ID).clientId(CLIENT_ID).pfxCertificate(pfxPath).clientCertificatePassword(pfxPassword).build();
             StepVerifier.create(credential.getToken(request))
                 .expectErrorMatches(e -> e instanceof MsalServiceException && "bad pfx".equals(e.getMessage()))
                 .verify();
@@ -359,7 +417,8 @@ public class ClientCertificateCredentialTest {
         })) {
             // test
             ClientCertificateCredential credential =
-                new ClientCertificateCredentialBuilder().tenantId(TENANT_ID).clientId(CLIENT_ID).pfxCertificate(pfxCert, pfxPassword).build();
+                new ClientCertificateCredentialBuilder().tenantId(TENANT_ID).clientId(CLIENT_ID)
+                    .pfxCertificate(pfxCert).clientCertificatePassword(pfxPassword).build();
             StepVerifier.create(credential.getToken(request2))
                 .expectErrorMatches(e -> e instanceof MsalServiceException && "bad pfx".equals(e.getMessage()))
                 .verify();

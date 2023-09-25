@@ -8,6 +8,7 @@ import com.azure.core.amqp.ProxyAuthenticationType;
 import com.azure.core.amqp.ProxyOptions;
 import com.azure.core.amqp.implementation.ConnectionStringProperties;
 import com.azure.core.amqp.models.AmqpMessageBody;
+import com.azure.core.credential.TokenCredential;
 import com.azure.core.experimental.util.tracing.LoggingTracerProvider;
 import com.azure.core.test.TestBase;
 import com.azure.core.test.TestMode;
@@ -17,17 +18,14 @@ import com.azure.core.util.Configuration;
 import com.azure.core.util.CoreUtils;
 import com.azure.core.util.IterableStream;
 import com.azure.core.util.logging.ClientLogger;
-import com.azure.identity.ClientSecretCredential;
-import com.azure.identity.ClientSecretCredentialBuilder;
+import com.azure.identity.DefaultAzureCredentialBuilder;
 import com.azure.messaging.servicebus.ServiceBusClientBuilder.ServiceBusReceiverClientBuilder;
 import com.azure.messaging.servicebus.ServiceBusClientBuilder.ServiceBusSenderClientBuilder;
 import com.azure.messaging.servicebus.ServiceBusClientBuilder.ServiceBusSessionReceiverClientBuilder;
 import com.azure.messaging.servicebus.implementation.DispositionStatus;
 import com.azure.messaging.servicebus.implementation.MessagingEntityType;
 import com.azure.messaging.servicebus.models.ServiceBusReceiveMode;
-import org.junit.jupiter.api.AfterAll;
 import org.junit.jupiter.api.AfterEach;
-import org.junit.jupiter.api.BeforeAll;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.TestInfo;
 import org.junit.jupiter.params.provider.Arguments;
@@ -35,7 +33,6 @@ import reactor.core.Disposable;
 import reactor.core.publisher.Mono;
 import reactor.core.scheduler.Scheduler;
 import reactor.core.scheduler.Schedulers;
-import reactor.test.StepVerifier;
 
 import java.io.Closeable;
 import java.lang.reflect.Method;
@@ -92,20 +89,9 @@ public abstract class IntegrationTestBase extends TestBase {
 
         assumeTrue(getTestMode() == TestMode.RECORD);
 
-        StepVerifier.setDefaultTimeout(TIMEOUT);
         toClose = new ArrayList<>();
         optionsWithTracing = new ClientOptions().setTracingOptions(new LoggingTracerProvider.LoggingTracingOptions());
         beforeTest();
-    }
-
-    @BeforeAll
-    static void beforeAll() {
-        StepVerifier.setDefaultTimeout(Duration.ofSeconds(30));
-    }
-
-    @AfterAll
-    static void afterAll() {
-        StepVerifier.resetDefaultTimeout();
     }
 
     // These are overridden because we don't use the Interceptor Manager.
@@ -113,7 +99,6 @@ public abstract class IntegrationTestBase extends TestBase {
     @AfterEach
     public void teardownTest(TestInfo testInfo) {
         logger.info("========= TEARDOWN [{}] =========", testName);
-        StepVerifier.resetDefaultTimeout();
         afterTest();
 
         logger.info("Disposing of subscriptions, consumers and clients.");
@@ -243,13 +228,9 @@ public abstract class IntegrationTestBase extends TestBase {
             assumeTrue(fullyQualifiedDomainName != null && !fullyQualifiedDomainName.isEmpty(),
                 "AZURE_SERVICEBUS_FULLY_QUALIFIED_DOMAIN_NAME variable needs to be set when using credentials.");
 
-            final ClientSecretCredential clientSecretCredential = new ClientSecretCredentialBuilder()
-                .clientId(TestUtils.getPropertyValue("AZURE_CLIENT_ID"))
-                .clientSecret(TestUtils.getPropertyValue("AZURE_CLIENT_SECRET"))
-                .tenantId(TestUtils.getPropertyValue("AZURE_TENANT_ID"))
-                .build();
+            final TokenCredential tokenCredential = new DefaultAzureCredentialBuilder().build();
 
-            return builder.credential(fullyQualifiedDomainName, clientSecretCredential);
+            return builder.credential(fullyQualifiedDomainName, tokenCredential);
         } else {
             return builder.connectionString(getConnectionString());
         }

@@ -3,7 +3,6 @@
 
 package com.azure.ai.textanalytics;
 
-import com.azure.ai.textanalytics.implementation.AnalyzeTextsImpl;
 import com.azure.ai.textanalytics.implementation.MicrosoftCognitiveLanguageServiceTextAnalysisImpl;
 import com.azure.ai.textanalytics.implementation.TextAnalyticsClientImpl;
 import com.azure.ai.textanalytics.models.AbstractiveSummaryOperationDetail;
@@ -162,13 +161,13 @@ public final class TextAnalyticsAsyncClient {
         this.recognizePiiEntityUtilClient = new RecognizePiiEntityUtilClient(service, serviceVersion);
         this.recognizeLinkedEntityUtilClient = new RecognizeLinkedEntityUtilClient(service, serviceVersion);
         this.recognizeCustomEntitiesUtilClient = new RecognizeCustomEntitiesUtilClient(
-            new AnalyzeTextsImpl(service), serviceVersion);
-        this.analyzeHealthcareEntityUtilClient = new AnalyzeHealthcareEntityUtilClient(new AnalyzeTextsImpl(service),
+            service.getAnalyzeTexts(), serviceVersion);
+        this.analyzeHealthcareEntityUtilClient = new AnalyzeHealthcareEntityUtilClient(service.getAnalyzeTexts(),
             serviceVersion);
-        this.analyzeActionsUtilClient = new AnalyzeActionsUtilClient(new AnalyzeTextsImpl(service), serviceVersion);
-        this.labelClassifyUtilClient = new LabelClassifyUtilClient(new AnalyzeTextsImpl(service), serviceVersion);
-        this.abstractiveSummaryUtilClient = new AbstractiveSummaryUtilClient(new AnalyzeTextsImpl(service), serviceVersion);
-        this.extractiveSummaryUtilClient = new ExtractiveSummaryUtilClient(new AnalyzeTextsImpl(service), serviceVersion);
+        this.analyzeActionsUtilClient = new AnalyzeActionsUtilClient(service.getAnalyzeTexts(), serviceVersion);
+        this.labelClassifyUtilClient = new LabelClassifyUtilClient(service.getAnalyzeTexts(), serviceVersion);
+        this.abstractiveSummaryUtilClient = new AbstractiveSummaryUtilClient(service.getAnalyzeTexts(), serviceVersion);
+        this.extractiveSummaryUtilClient = new ExtractiveSummaryUtilClient(service.getAnalyzeTexts(), serviceVersion);
     }
 
     /**
@@ -2688,7 +2687,7 @@ public final class TextAnalyticsAsyncClient {
     /**
      * Returns a list of abstractive summary for the provided list of {@link String document}.
      *
-     * <p>This method is supported since service API version {@link TextAnalyticsServiceVersion#V2022_10_01_PREVIEW}.</p>
+     * <p>This method is supported since service API version {@link TextAnalyticsServiceVersion#V2023_04_01}.</p>
      *
      * This method will use the default language that can be set by using method
      * {@link TextAnalyticsClientBuilder#defaultLanguage(String)}. If none is specified, service will use 'en' as
@@ -2758,7 +2757,7 @@ public final class TextAnalyticsAsyncClient {
      * @throws UnsupportedOperationException if {@code beginAbstractSummary} is called with
      * service API version {@link TextAnalyticsServiceVersion#V3_0}, {@link TextAnalyticsServiceVersion#V3_1},
      * or {@link TextAnalyticsServiceVersion#V2022_05_01}. Those actions are only available for API version
-     * {@link TextAnalyticsServiceVersion#V2022_10_01_PREVIEW} and newer.
+     * {@link TextAnalyticsServiceVersion#V2023_04_01} and newer.
      * @throws TextAnalyticsException If analyze operation fails.
      */
     @ServiceMethod(returns = ReturnType.COLLECTION)
@@ -2771,7 +2770,7 @@ public final class TextAnalyticsAsyncClient {
      * Returns a list of abstractive summary for the provided list of {@link String document} with
      * provided request options.
      *
-     * <p>This method is supported since service API version {@link TextAnalyticsServiceVersion#V2022_10_01_PREVIEW}.</p>
+     * <p>This method is supported since service API version {@link TextAnalyticsServiceVersion#V2023_04_01}.</p>
      *
      * See <a href="https://aka.ms/talangs">this</a> supported languages in Language service API.
      *
@@ -2844,7 +2843,7 @@ public final class TextAnalyticsAsyncClient {
      * @throws UnsupportedOperationException if {@code beginAbstractSummary} is called with
      * service API version {@link TextAnalyticsServiceVersion#V3_0}, {@link TextAnalyticsServiceVersion#V3_1},
      * or {@link TextAnalyticsServiceVersion#V2022_05_01}. Those actions are only available for API version
-     * {@link TextAnalyticsServiceVersion#V2022_10_01_PREVIEW} and newer.
+     * {@link TextAnalyticsServiceVersion#V2023_04_01} and newer.
      * @throws TextAnalyticsException If analyze operation fails.
      */
     @ServiceMethod(returns = ReturnType.COLLECTION)
@@ -2862,7 +2861,7 @@ public final class TextAnalyticsAsyncClient {
      * Returns a list of abstractive summary for the provided list of {@link TextDocumentInput document} with
      * provided request options.
      *
-     * <p>This method is supported since service API version {@link TextAnalyticsServiceVersion#V2022_10_01_PREVIEW}.</p>
+     * <p>This method is supported since service API version {@link TextAnalyticsServiceVersion#V2023_04_01}.</p>
      *
      * <p><strong>Code Sample</strong></p>
      * <!-- src_embed AsyncClient.beginAbstractSummary#Iterable-AbstractiveSummaryOptions -->
@@ -2931,7 +2930,7 @@ public final class TextAnalyticsAsyncClient {
      * @throws UnsupportedOperationException if {@code beginAbstractSummary} is called with
      * service API version {@link TextAnalyticsServiceVersion#V3_0}, {@link TextAnalyticsServiceVersion#V3_1},
      * or {@link TextAnalyticsServiceVersion#V2022_05_01}. Those actions are only available for API version
-     * {@link TextAnalyticsServiceVersion#V2022_10_01_PREVIEW} and newer.r.
+     * {@link TextAnalyticsServiceVersion#V2023_04_01} and newer.r.
      * @throws TextAnalyticsException If analyze operation fails.
      */
     @ServiceMethod(returns = ReturnType.COLLECTION)
@@ -2945,7 +2944,7 @@ public final class TextAnalyticsAsyncClient {
     /**
      * Returns a list of extract summaries for the provided list of {@link String document}.
      *
-     * <p>This method is supported since service API version {@link TextAnalyticsServiceVersion#V2022_10_01_PREVIEW}.</p>
+     * <p>This method is supported since service API version {@link TextAnalyticsServiceVersion#V2023_04_01}.</p>
      *
      * This method will use the default language that can be set by using method
      * {@link TextAnalyticsClientBuilder#defaultLanguage(String)}. If none is specified, service will use 'en' as
@@ -3013,7 +3012,7 @@ public final class TextAnalyticsAsyncClient {
      * @throws UnsupportedOperationException if {@code beginExtractSummary} is called with
      * service API version {@link TextAnalyticsServiceVersion#V3_0}, {@link TextAnalyticsServiceVersion#V3_1},
      * or {@link TextAnalyticsServiceVersion#V2022_05_01}. Those actions are only available for API version
-     * {@link TextAnalyticsServiceVersion#V2022_10_01_PREVIEW} and newer.
+     * {@link TextAnalyticsServiceVersion#V2023_04_01} and newer.
      * @throws TextAnalyticsException If analyze operation fails.
      */
     @ServiceMethod(returns = ReturnType.COLLECTION)
@@ -3026,7 +3025,7 @@ public final class TextAnalyticsAsyncClient {
      * Returns a list of extract summaries for the provided list of {@link String document} with
      * provided request options.
      *
-     * <p>This method is supported since service API version {@link TextAnalyticsServiceVersion#V2022_10_01_PREVIEW}.</p>
+     * <p>This method is supported since service API version {@link TextAnalyticsServiceVersion#V2023_04_01}.</p>
      *
      * See <a href="https://aka.ms/talangs">this</a> supported languages in Language service API.
      *
@@ -3098,7 +3097,7 @@ public final class TextAnalyticsAsyncClient {
      * @throws UnsupportedOperationException if {@code beginExtractSummary} is called with
      * service API version {@link TextAnalyticsServiceVersion#V3_0}, {@link TextAnalyticsServiceVersion#V3_1},
      * or {@link TextAnalyticsServiceVersion#V2022_05_01}. Those actions are only available for API version
-     * {@link TextAnalyticsServiceVersion#V2022_10_01_PREVIEW} and newer.
+     * {@link TextAnalyticsServiceVersion#V2023_04_01} and newer.
      * @throws TextAnalyticsException If analyze operation fails.
      */
     @ServiceMethod(returns = ReturnType.COLLECTION)
@@ -3116,7 +3115,7 @@ public final class TextAnalyticsAsyncClient {
      * Returns a list of extract summaries for the provided list of {@link TextDocumentInput document} with
      * provided request options.
      *
-     * <p>This method is supported since service API version {@link TextAnalyticsServiceVersion#V2022_10_01_PREVIEW}.</p>
+     * <p>This method is supported since service API version {@link TextAnalyticsServiceVersion#V2023_04_01}.</p>
      *
      * <p><strong>Code Sample</strong></p>
      * <!-- src_embed AsyncClient.beginExtractSummary#Iterable-ExtractSummaryOptions -->
@@ -3184,7 +3183,7 @@ public final class TextAnalyticsAsyncClient {
      * @throws UnsupportedOperationException if {@code beginExtractSummary} is called with
      * service API version {@link TextAnalyticsServiceVersion#V3_0}, {@link TextAnalyticsServiceVersion#V3_1},
      * or {@link TextAnalyticsServiceVersion#V2022_05_01}. Those actions are only available for API version
-     * {@link TextAnalyticsServiceVersion#V2022_10_01_PREVIEW} and newer.
+     * {@link TextAnalyticsServiceVersion#V2023_04_01} and newer.
      * @throws TextAnalyticsException If analyze operation fails.
      */
     @ServiceMethod(returns = ReturnType.COLLECTION)

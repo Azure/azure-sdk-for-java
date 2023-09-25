@@ -4,14 +4,13 @@
 
 package com.azure.resourcemanager.apimanagement.generated;
 
-import com.azure.core.util.Context;
 import com.azure.resourcemanager.apimanagement.models.AccessIdName;
 import com.azure.resourcemanager.apimanagement.models.AccessInformationContract;
 
 /** Samples for TenantAccess Update. */
 public final class TenantAccessUpdateSamples {
     /*
-     * x-ms-original-file: specification/apimanagement/resource-manager/Microsoft.ApiManagement/stable/2021-08-01/examples/ApiManagementUpdateTenantAccess.json
+     * x-ms-original-file: specification/apimanagement/resource-manager/Microsoft.ApiManagement/stable/2022-08-01/examples/ApiManagementUpdateTenantAccess.json
      */
     /**
      * Sample code: ApiManagementUpdateTenantAccess.
@@ -21,7 +20,10 @@ public final class TenantAccessUpdateSamples {
     public static void apiManagementUpdateTenantAccess(
         com.azure.resourcemanager.apimanagement.ApiManagementManager manager) {
         AccessInformationContract resource =
-            manager.tenantAccess().getWithResponse("rg1", "apimService1", AccessIdName.ACCESS, Context.NONE).getValue();
+            manager
+                .tenantAccess()
+                .getWithResponse("rg1", "apimService1", AccessIdName.ACCESS, com.azure.core.util.Context.NONE)
+                .getValue();
         resource.update().withEnabled(true).withIfMatch("*").apply();
     }
 }

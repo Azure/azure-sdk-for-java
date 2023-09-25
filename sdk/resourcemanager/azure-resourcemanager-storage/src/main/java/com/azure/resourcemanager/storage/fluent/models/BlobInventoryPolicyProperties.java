@@ -25,6 +25,10 @@ public final class BlobInventoryPolicyProperties {
     @JsonProperty(value = "policy", required = true)
     private BlobInventoryPolicySchema policy;
 
+    /** Creates an instance of BlobInventoryPolicyProperties class. */
+    public BlobInventoryPolicyProperties() {
+    }
+
     /**
      * Get the lastModifiedTime property: Returns the last modified date and time of the blob inventory policy.
      *

@@ -16,28 +16,26 @@ public final class OutboundEnvironmentEndpointInnerTests {
         OutboundEnvironmentEndpointInner model =
             BinaryData
                 .fromString(
-                    "{\"category\":\"dg\",\"endpoints\":[{\"domainName\":\"r\",\"endpointDetails\":[]},{\"domainName\":\"wzrlovmclwhij\",\"endpointDetails\":[]},{\"domainName\":\"ctbzaq\",\"endpointDetails\":[]},{\"domainName\":\"cbkbfkg\",\"endpointDetails\":[]}]}")
+                    "{\"category\":\"vdcsitynn\",\"endpoints\":[{\"domainName\":\"ectehf\",\"endpointDetails\":[]},{\"domainName\":\"jeyp\",\"endpointDetails\":[]},{\"domainName\":\"rkgqhcjrefo\",\"endpointDetails\":[]},{\"domainName\":\"qsl\",\"endpointDetails\":[]}]}")
                 .toObject(OutboundEnvironmentEndpointInner.class);
-        Assertions.assertEquals("dg", model.category());
-        Assertions.assertEquals("r", model.endpoints().get(0).domainName());
+        Assertions.assertEquals("vdcsitynn", model.category());
+        Assertions.assertEquals("ectehf", model.endpoints().get(0).domainName());
     }
 
     @org.junit.jupiter.api.Test
     public void testSerialize() throws Exception {
         OutboundEnvironmentEndpointInner model =
             new OutboundEnvironmentEndpointInner()
-                .withCategory("dg")
+                .withCategory("vdcsitynn")
                 .withEndpoints(
                     Arrays
                         .asList(
-                            new EndpointDependency().withDomainName("r").withEndpointDetails(Arrays.asList()),
-                            new EndpointDependency()
-                                .withDomainName("wzrlovmclwhij")
-                                .withEndpointDetails(Arrays.asList()),
-                            new EndpointDependency().withDomainName("ctbzaq").withEndpointDetails(Arrays.asList()),
-                            new EndpointDependency().withDomainName("cbkbfkg").withEndpointDetails(Arrays.asList())));
+                            new EndpointDependency().withDomainName("ectehf").withEndpointDetails(Arrays.asList()),
+                            new EndpointDependency().withDomainName("jeyp").withEndpointDetails(Arrays.asList()),
+                            new EndpointDependency().withDomainName("rkgqhcjrefo").withEndpointDetails(Arrays.asList()),
+                            new EndpointDependency().withDomainName("qsl").withEndpointDetails(Arrays.asList())));
         model = BinaryData.fromObject(model).toObject(OutboundEnvironmentEndpointInner.class);
-        Assertions.assertEquals("dg", model.category());
-        Assertions.assertEquals("r", model.endpoints().get(0).domainName());
+        Assertions.assertEquals("vdcsitynn", model.category());
+        Assertions.assertEquals("ectehf", model.endpoints().get(0).domainName());
     }
 }

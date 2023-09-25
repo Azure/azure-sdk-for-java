@@ -5,10 +5,13 @@ package com.azure.ai.anomalydetector;
 
 import com.azure.ai.anomalydetector.models.AnomalyDetectionModel;
 import com.azure.core.http.rest.PagedIterable;
+import com.azure.core.util.logging.ClientLogger;
+import com.azure.core.util.logging.LogLevel;
 import org.junit.jupiter.api.Test;
 
 
 public class MultivariateAnomalyDetectorClientTest extends AnomalyDetectorClientTestBase {
+    private static final ClientLogger LOGGER = new ClientLogger(MultivariateAnomalyDetectorClientTest.class);
     private AnomalyDetectorClient getClient() {
         return getClientBuilder().buildClient();
     }
@@ -16,12 +19,8 @@ public class MultivariateAnomalyDetectorClientTest extends AnomalyDetectorClient
     private static void getModelList(AnomalyDetectorClient client, Integer skip, Integer top) {
         PagedIterable<AnomalyDetectionModel> response = client.listMultivariateModels(skip, top);
 
-        System.out.println("ModelList: ");
-        response.streamByPage().forEach(models -> {
-            for (AnomalyDetectionModel item : models.getValue()) {
-                System.out.println("\t" + item.getModelId());
-            }
-        });
+        LOGGER.info("ModelList: ");
+        response.forEach(model -> LOGGER.log(LogLevel.INFORMATIONAL, () -> "\t" + model.getModelId()));
     }
 
     @Test
@@ -32,7 +31,6 @@ public class MultivariateAnomalyDetectorClientTest extends AnomalyDetectorClient
             Integer skip = 0;
             Integer top = 5;
             getModelList(client, skip, top);
-
         });
 
     }

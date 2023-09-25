@@ -33,6 +33,10 @@ public final class FileServicePropertiesProperties {
     @JsonProperty(value = "protocolSettings")
     private ProtocolSettings protocolSettings;
 
+    /** Creates an instance of FileServicePropertiesProperties class. */
+    public FileServicePropertiesProperties() {
+    }
+
     /**
      * Get the cors property: Specifies CORS rules for the File service. You can include up to five CorsRule elements in
      * the request. If no CorsRule elements are included in the request body, all CORS rules will be deleted, and CORS

@@ -12,19 +12,12 @@ import com.azure.core.util.IterableStream;
  */
 @Immutable
 public final class AbstractiveSummaryResult extends TextAnalyticsResult {
-    private DetectedLanguage detectedLanguage;
     private IterableStream<AbstractiveSummary> summaries;
     private IterableStream<TextAnalyticsWarning> warnings;
 
     static {
         AbstractiveSummaryResultPropertiesHelper.setAccessor(
                 new AbstractiveSummaryResultPropertiesHelper.AbstractiveSummaryResultAccessor() {
-                    @Override
-                    public void setDetectedLanguage(AbstractiveSummaryResult documentResult,
-                                                    DetectedLanguage detectedLanguage) {
-                        documentResult.setDetectedLanguage(detectedLanguage);
-                    }
-
                     @Override
                     public void setWarnings(AbstractiveSummaryResult documentResult,
                                             IterableStream<TextAnalyticsWarning> warnings) {
@@ -51,16 +44,6 @@ public final class AbstractiveSummaryResult extends TextAnalyticsResult {
     }
 
     /**
-     * Get the detectedLanguage property: If 'language' is set to 'auto' for the document in the request this field will
-     * contain an object of the language detected for this document.
-     *
-     * @return the detectedLanguage value.
-     */
-    public DetectedLanguage getDetectedLanguage() {
-        return this.detectedLanguage;
-    }
-
-    /**
      * Gets the abstractive summaries of document.
      *
      * @return The abstractive summaries of document.
@@ -80,10 +63,6 @@ public final class AbstractiveSummaryResult extends TextAnalyticsResult {
      */
     public IterableStream<TextAnalyticsWarning> getWarnings() {
         return this.warnings;
-    }
-
-    private void setDetectedLanguage(DetectedLanguage detectedLanguage) {
-        this.detectedLanguage = detectedLanguage;
     }
 
     private void setWarnings(IterableStream<TextAnalyticsWarning> warnings) {

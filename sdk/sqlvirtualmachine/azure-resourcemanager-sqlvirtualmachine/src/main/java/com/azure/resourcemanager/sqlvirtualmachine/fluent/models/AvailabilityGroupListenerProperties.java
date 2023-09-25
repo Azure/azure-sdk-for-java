@@ -56,6 +56,10 @@ public final class AvailabilityGroupListenerProperties {
     @JsonProperty(value = "availabilityGroupConfiguration")
     private AgConfiguration availabilityGroupConfiguration;
 
+    /** Creates an instance of AvailabilityGroupListenerProperties class. */
+    public AvailabilityGroupListenerProperties() {
+    }
+
     /**
      * Get the provisioningState property: Provisioning state to track the async operation status.
      *

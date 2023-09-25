@@ -34,7 +34,7 @@ public final class L3NetworksGetByResourceGroupWithResponseMockTests {
         ArgumentCaptor<HttpRequest> httpRequest = ArgumentCaptor.forClass(HttpRequest.class);
 
         String responseStr =
-            "{\"extendedLocation\":{\"name\":\"yxey\",\"type\":\"uqi\"},\"properties\":{\"clusterId\":\"jiitnspxlzdesygr\",\"detailedStatus\":\"Provisioning\",\"detailedStatusMessage\":\"iufan\",\"hybridAksClustersAssociatedIds\":[\"bfu\",\"qfrojsydgrhyd\",\"ygywe\",\"skieca\"],\"hybridAksIpamEnabled\":\"True\",\"hybridAksPluginType\":\"SRIOV\",\"interfaceName\":\"ieqvds\",\"ipAllocationType\":\"DualStack\",\"ipv4ConnectedPrefix\":\"ixqcahyhxalybxaw\",\"ipv6ConnectedPrefix\":\"jpodtbl\",\"l3IsolationDomainId\":\"pkkwj\",\"provisioningState\":\"Accepted\",\"virtualMachinesAssociatedIds\":[\"hykinc\",\"rem\"],\"vlan\":3720042138065663251},\"location\":\"izhceumoqodkadp\",\"tags\":{\"hydt\":\"bngqladywrx\",\"emlowuowhl\":\"uvvadswzsnu\",\"mouvbl\":\"lnwy\"},\"id\":\"mo\",\"name\":\"zkltrfowtdvrfmv\",\"type\":\"ih\"}";
+            "{\"extendedLocation\":{\"name\":\"lvgecpwgoljtz\",\"type\":\"nm\"},\"properties\":{\"associatedResourceIds\":[\"obygoo\",\"xqapjxvazyjfucsa\",\"djnosdkvibf\",\"sgm\"],\"clusterId\":\"rnzpducdaak\",\"detailedStatus\":\"Available\",\"detailedStatusMessage\":\"tzboim\",\"hybridAksClustersAssociatedIds\":[\"qdowkppnwyytfv\",\"ct\",\"jikffffgkuhznw\"],\"hybridAksIpamEnabled\":\"True\",\"hybridAksPluginType\":\"OSDevice\",\"interfaceName\":\"kke\",\"ipAllocationType\":\"DualStack\",\"ipv4ConnectedPrefix\":\"igaw\",\"ipv6ConnectedPrefix\":\"zmxjqif\",\"l3IsolationDomainId\":\"ujjs\",\"provisioningState\":\"Succeeded\",\"virtualMachinesAssociatedIds\":[\"aahzbhuroolkol\",\"rhhmojusu\",\"gfjzcvaax\",\"ia\"],\"vlan\":721254946919185861},\"location\":\"xw\",\"tags\":{\"kczynuhhoqeqsh\":\"kdxkuk\",\"q\":\"vl\",\"nthbbnkgzukwd\":\"xyrqo\"},\"id\":\"nzkjthfceyjn\",\"name\":\"jmlfuyfjbp\",\"type\":\"iddhlrufzc\"}";
 
         Mockito.when(httpResponse.getStatusCode()).thenReturn(200);
         Mockito.when(httpResponse.getHeaders()).thenReturn(new HttpHeaders());
@@ -65,20 +65,20 @@ public final class L3NetworksGetByResourceGroupWithResponseMockTests {
         L3Network response =
             manager
                 .l3Networks()
-                .getByResourceGroupWithResponse("moweg", "mut", com.azure.core.util.Context.NONE)
+                .getByResourceGroupWithResponse("xo", "krvfsxxbydes", com.azure.core.util.Context.NONE)
                 .getValue();
 
-        Assertions.assertEquals("izhceumoqodkadp", response.location());
-        Assertions.assertEquals("bngqladywrx", response.tags().get("hydt"));
-        Assertions.assertEquals("yxey", response.extendedLocation().name());
-        Assertions.assertEquals("uqi", response.extendedLocation().type());
+        Assertions.assertEquals("xw", response.location());
+        Assertions.assertEquals("kdxkuk", response.tags().get("kczynuhhoqeqsh"));
+        Assertions.assertEquals("lvgecpwgoljtz", response.extendedLocation().name());
+        Assertions.assertEquals("nm", response.extendedLocation().type());
         Assertions.assertEquals(HybridAksIpamEnabled.TRUE, response.hybridAksIpamEnabled());
-        Assertions.assertEquals(HybridAksPluginType.SRIOV, response.hybridAksPluginType());
-        Assertions.assertEquals("ieqvds", response.interfaceName());
+        Assertions.assertEquals(HybridAksPluginType.OSDEVICE, response.hybridAksPluginType());
+        Assertions.assertEquals("kke", response.interfaceName());
         Assertions.assertEquals(IpAllocationType.DUAL_STACK, response.ipAllocationType());
-        Assertions.assertEquals("ixqcahyhxalybxaw", response.ipv4ConnectedPrefix());
-        Assertions.assertEquals("jpodtbl", response.ipv6ConnectedPrefix());
-        Assertions.assertEquals("pkkwj", response.l3IsolationDomainId());
-        Assertions.assertEquals(3720042138065663251L, response.vlan());
+        Assertions.assertEquals("igaw", response.ipv4ConnectedPrefix());
+        Assertions.assertEquals("zmxjqif", response.ipv6ConnectedPrefix());
+        Assertions.assertEquals("ujjs", response.l3IsolationDomainId());
+        Assertions.assertEquals(721254946919185861L, response.vlan());
     }
 }

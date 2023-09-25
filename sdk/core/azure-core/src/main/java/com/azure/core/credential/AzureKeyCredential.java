@@ -3,18 +3,10 @@
 
 package com.azure.core.credential;
 
-import com.azure.core.util.logging.ClientLogger;
-
-import java.util.Objects;
-
 /**
  * Represents a credential that uses a key to authenticate to an Azure Service.
  */
-public final class AzureKeyCredential {
-    // AzureKeyCredential is a commonly used credential type, use a static logger.
-    private static final ClientLogger LOGGER = new ClientLogger(AzureKeyCredential.class);
-    private volatile String key;
-
+public final class AzureKeyCredential extends KeyCredential {
     /**
      * Creates a credential that authorizes request with the given key.
      *
@@ -23,21 +15,7 @@ public final class AzureKeyCredential {
      * @throws IllegalArgumentException If {@code key} is an empty string.
      */
     public AzureKeyCredential(String key) {
-        Objects.requireNonNull(key, "'key' cannot be null.");
-        if (key.isEmpty()) {
-            throw LOGGER.logExceptionAsError(new IllegalArgumentException("'key' cannot be empty."));
-        }
-
-        this.key = key;
-    }
-
-    /**
-     * Retrieves the key associated to this credential.
-     *
-     * @return The key being used to authorize requests.
-     */
-    public String getKey() {
-        return key;
+        super(key);
     }
 
     /**
@@ -48,13 +26,9 @@ public final class AzureKeyCredential {
      * @throws NullPointerException If {@code key} is {@code null}.
      * @throws IllegalArgumentException If {@code key} is an empty string.
      */
+    @Override
     public AzureKeyCredential update(String key) {
-        Objects.requireNonNull(key, "'key' cannot be null.");
-        if (key.isEmpty()) {
-            throw LOGGER.logExceptionAsError(new IllegalArgumentException("'key' cannot be empty."));
-        }
-
-        this.key = key;
+        super.update(key);
         return this;
     }
 }

@@ -17,6 +17,14 @@ public final class JsonFormatFilePattern extends ExpandableStringEnum<JsonFormat
     public static final JsonFormatFilePattern ARRAY_OF_OBJECTS = fromString("arrayOfObjects");
 
     /**
+     * Creates a new instance of JsonFormatFilePattern value.
+     *
+     * @deprecated Use the {@link #fromString(String)} factory method.
+     */
+    @Deprecated
+    public JsonFormatFilePattern() {}
+
+    /**
      * Creates or finds a JsonFormatFilePattern from its string representation.
      *
      * @param name a name to look for.

@@ -8,16 +8,20 @@ import com.azure.ai.personalizer.models.PersonalizerRankMultiSlotResult;
 import com.azure.ai.personalizer.models.PersonalizerRankableAction;
 import com.azure.ai.personalizer.models.PersonalizerSlotOptions;
 import com.azure.ai.personalizer.models.PersonalizerSlotResult;
-import com.azure.ai.personalizer.models.PersonalizerSlotReward;
+import com.azure.ai.personalizer.testmodels.Device;
+import com.azure.ai.personalizer.testmodels.Environment;
+import com.azure.ai.personalizer.testmodels.FeatureMetadata;
+import com.azure.ai.personalizer.testmodels.RecentActivity;
+import com.azure.ai.personalizer.testmodels.SlotPositionFeatures;
+import com.azure.ai.personalizer.testmodels.UserProfile;
 import com.azure.core.http.HttpClient;
 import com.azure.core.util.BinaryData;
-import com.fasterxml.jackson.annotation.JsonGetter;
-import com.fasterxml.jackson.annotation.JsonProperty;
-import com.fasterxml.jackson.annotation.JsonSetter;
 import org.junit.jupiter.params.ParameterizedTest;
 import org.junit.jupiter.params.provider.MethodSource;
 
 import java.util.ArrayList;
+import java.util.Arrays;
+import java.util.Collections;
 import java.util.List;
 
 import static com.azure.ai.personalizer.TestUtils.DISPLAY_NAME_WITH_ARGUMENTS;
@@ -32,11 +36,6 @@ public class MultiSlotTests extends PersonalizerTestBase {
         multiSlotTestInner(client);
     }
 
-    private PersonalizerClient getPersonalizerClient(HttpClient httpClient, PersonalizerServiceVersion serviceVersion) {
-        return getPersonalizerClientBuilder(httpClient, serviceVersion, false)
-            .buildClient();
-    }
-
     private void multiSlotTestInner(PersonalizerClient client) {
         rankMultiSlotNullParameters(client);
         rankMultiSlotNoOptions(client);
@@ -47,7 +46,9 @@ public class MultiSlotTests extends PersonalizerTestBase {
     }
 
     private void rankMultiSlotNullParameters(PersonalizerClient client) {
-        PersonalizerRankMultiSlotOptions request = new PersonalizerRankMultiSlotOptions().setActions(getActions()).setSlots(getSlots());
+        PersonalizerRankMultiSlotOptions request = new PersonalizerRankMultiSlotOptions()
+            .setActions(getActions())
+            .setSlots(getSlots());
         // Action
         PersonalizerRankMultiSlotResult response = client.rankMultiSlot(request);
         // Assert
@@ -63,7 +64,6 @@ public class MultiSlotTests extends PersonalizerTestBase {
     }
 
     private void rankMultiSlotNoOptions(PersonalizerClient client) {
-        PersonalizerRankMultiSlotOptions request = new PersonalizerRankMultiSlotOptions().setActions(getActions()).setSlots(getSlots()).setContextFeatures(getContextFeatures());
         // Action
         PersonalizerRankMultiSlotResult response = client.rankMultiSlot(getActions(), getSlots(), getContextFeatures());
         // Assert
@@ -74,13 +74,17 @@ public class MultiSlotTests extends PersonalizerTestBase {
         assertEquals("NewsArticle", responseSlot1.getRewardActionId());
         // Assertions for second slot
         PersonalizerSlotResult responseSlot2 = response.getSlots().get(1);
-        assertEquals(responseSlot2.getId(), responseSlot2.getId());
+        assertEquals(getSlot2().getId(), responseSlot2.getId());
         assertEquals("SportsArticle", responseSlot2.getRewardActionId());
     }
 
     private void rankMultiSlot(PersonalizerClient client) {
         String eventId = "sdkTestEventId";
-        PersonalizerRankMultiSlotOptions request = new PersonalizerRankMultiSlotOptions().setActions(getActions()).setSlots(getSlots()).setContextFeatures(getContextFeatures()).setEventId(eventId);
+        PersonalizerRankMultiSlotOptions request = new PersonalizerRankMultiSlotOptions()
+            .setActions(getActions()).setSlots(getSlots())
+            .setContextFeatures(getContextFeatures())
+            .setEventId(eventId);
+
         // Action
         PersonalizerRankMultiSlotResult response = client.rankMultiSlot(request);
         // Assert
@@ -96,7 +100,6 @@ public class MultiSlotTests extends PersonalizerTestBase {
     }
 
     private void reward(PersonalizerClient client) {
-        PersonalizerSlotReward slotReward = new PersonalizerSlotReward().setSlotId("testSlot1").setValue(1);
         client.rewardMultiSlot("123456789", "testSlot1", 1);
     }
 
@@ -110,21 +113,14 @@ public class MultiSlotTests extends PersonalizerTestBase {
 
     private static List<PersonalizerRankableAction> getActions() {
         ArrayList<PersonalizerRankableAction> actions = new ArrayList<>();
-        List<BinaryData> newsFeatures = new ArrayList<BinaryData>() {
-            {
-                add(BinaryData.fromObject(new TestFeatureMetadata().setFeatureType("News")));
-            }
-        };
-        List<BinaryData> sportsFeatures = new ArrayList<BinaryData>() {
-            {
-                add(BinaryData.fromObject(new TestFeatureMetadata().setFeatureType("Sports")));
-            }
-        };
-        List<BinaryData> entertainmentFeatures = new ArrayList<BinaryData>() {
-            {
-                add(BinaryData.fromObject(new TestFeatureMetadata().setFeatureType("Entertainment")));
-            }
-        };
+        List<BinaryData> newsFeatures = Collections.singletonList(
+            BinaryData.fromObject(new FeatureMetadata().setFeatureType("News")));
+
+        List<BinaryData> sportsFeatures = Collections.singletonList(
+            BinaryData.fromObject(new FeatureMetadata().setFeatureType("Sports")));
+
+        List<BinaryData> entertainmentFeatures = Collections.singletonList(
+            BinaryData.fromObject(new FeatureMetadata().setFeatureType("Entertainment")));
 
         actions.add(new PersonalizerRankableAction().setId("NewsArticle").setFeatures(newsFeatures));
         actions.add(new PersonalizerRankableAction().setId("SportsArticle").setFeatures(sportsFeatures));
@@ -133,215 +129,38 @@ public class MultiSlotTests extends PersonalizerTestBase {
     }
 
     private static PersonalizerSlotOptions getSlot1() {
-        ArrayList<BinaryData> positionFeatures = new ArrayList<BinaryData>() {
-            {
-                add(BinaryData.fromObject(new TestSlotPositionFeatures().setSize("Large").setPosition("Top Middle")));
-            }
-        };
+        List<BinaryData> positionFeatures = Collections.singletonList(
+            BinaryData.fromObject(new SlotPositionFeatures().setSize("Large").setPosition("Top Middle")));
 
-        ArrayList<String> excludedActions = new ArrayList<String>() {
-            {
-                add("SportsArticle");
-                add("EntertainmentArticle");
-            }
-        };
-        return new PersonalizerSlotOptions().setId("Main Article").setBaselineAction("NewsArticle").setFeatures(positionFeatures).setExcludedActions(excludedActions);
+        List<String> excludedActions = Arrays.asList("SportsArticle", "EntertainmentArticle");
+
+        return new PersonalizerSlotOptions().setId("Main Article")
+            .setBaselineAction("NewsArticle")
+            .setFeatures(positionFeatures)
+            .setExcludedActions(excludedActions);
     }
 
     private static PersonalizerSlotOptions getSlot2() {
-        ArrayList<BinaryData> positionFeatures = new ArrayList<BinaryData>() {
-            {
-                add(BinaryData.fromObject(new TestSlotPositionFeatures().setSize("Small").setPosition("Bottom Right")));
-            }
-        };
+        List<BinaryData> positionFeatures = Collections.singletonList(
+            BinaryData.fromObject(new SlotPositionFeatures().setSize("Small").setPosition("Bottom Right")));
 
-        ArrayList<String> excludedActions = new ArrayList<String>() {
-            {
-                add("EntertainmentArticle");
-            }
-        };
-        return new PersonalizerSlotOptions().setId("Side Bar").setBaselineAction("SportsArticle").setFeatures(positionFeatures).setExcludedActions(excludedActions);
+        List<String> excludedActions = Collections.singletonList("EntertainmentArticle");
+
+        return new PersonalizerSlotOptions().setId("Side Bar")
+            .setBaselineAction("SportsArticle")
+            .setFeatures(positionFeatures)
+            .setExcludedActions(excludedActions);
     }
 
     private static List<PersonalizerSlotOptions> getSlots() {
-        return new ArrayList<PersonalizerSlotOptions>() {
-            {
-                add(getSlot1());
-                add(getSlot2());
-            }
-        };
+        return Arrays.asList(getSlot1(), getSlot2());
     }
 
     private static List<BinaryData> getContextFeatures() {
-        return new ArrayList<BinaryData>() {
-            {
-                add(BinaryData.fromObject(new TestUserProfile().setProfileType("AnonymousUser").setLatLong("47.6,-122.1")));
-                add(BinaryData.fromObject(new TestEnvironment().setDayOfMonth("28").setMonthOfYear("8").setWeather("Sunny")));
-                add(BinaryData.fromObject(new TestDevice().setMobile(true).setWindows(true)));
-                add(BinaryData.fromObject(new TestRecentActivity().setItemsInCart(3)));
-            }
-        };
+        return Arrays.asList(
+            BinaryData.fromObject(new UserProfile().setProfileType("AnonymousUser").setLatLong("47.6,-122.1")),
+            BinaryData.fromObject(new Environment().setDayOfMonth("28").setMonthOfYear("8").setWeather("Sunny")),
+            BinaryData.fromObject(new Device().setMobile(true).setWindows(true)),
+            BinaryData.fromObject(new RecentActivity().setItemsInCart(3)));
     }
-}
-
-class TestFeatureMetadata {
-    @JsonGetter
-    public String getFeatureType() {
-        return featureType;
-    }
-
-    @JsonSetter
-    public TestFeatureMetadata setFeatureType(String featureType) {
-        this.featureType = featureType;
-        return this;
-    }
-
-    @JsonProperty
-    String featureType;
-
-}
-
-class TestSlotPositionFeatures {
-    @JsonGetter
-    public String getSize() {
-        return size;
-    }
-
-    @JsonSetter
-    public TestSlotPositionFeatures setSize(String size) {
-        this.size = size;
-        return this;
-    }
-
-    @JsonGetter
-    public String getPosition() {
-        return position;
-    }
-
-    @JsonSetter
-    public TestSlotPositionFeatures setPosition(String position) {
-        this.position = position;
-        return this;
-    }
-
-    @JsonProperty
-    String size;
-    @JsonProperty
-    String position;
-}
-
-class TestUserProfile {
-    @JsonGetter
-    public String getProfileType() {
-        return profileType;
-    }
-
-    @JsonSetter
-    public TestUserProfile setProfileType(String profileType) {
-        this.profileType = profileType;
-        return this;
-    }
-
-    @JsonGetter
-    public String getLatLong() {
-        return latLong;
-    }
-
-    @JsonSetter
-    public TestUserProfile setLatLong(String latLong) {
-        this.latLong = latLong;
-        return this;
-    }
-
-    @JsonProperty
-    String profileType;
-    @JsonProperty
-    String latLong;
-}
-
-class TestEnvironment {
-    @JsonGetter
-    public String getDayOfMonth() {
-        return dayOfMonth;
-    }
-
-    @JsonSetter
-    public TestEnvironment setDayOfMonth(String dayOfMonth) {
-        this.dayOfMonth = dayOfMonth;
-        return this;
-    }
-
-    @JsonGetter
-    public String getMonthOfYear() {
-        return monthOfYear;
-    }
-
-    @JsonSetter
-    public TestEnvironment setMonthOfYear(String monthOfYear) {
-        this.monthOfYear = monthOfYear;
-        return this;
-    }
-
-    @JsonGetter
-    public String getWeather() {
-        return weather;
-    }
-
-    @JsonSetter
-    public TestEnvironment setWeather(String weather) {
-        this.weather = weather;
-        return this;
-    }
-
-    @JsonProperty
-    String dayOfMonth;
-    @JsonProperty
-    String monthOfYear;
-    @JsonProperty
-    String weather;
-}
-
-class TestDevice {
-    @JsonGetter
-    public boolean isMobile() {
-        return isMobile;
-    }
-
-    @JsonSetter
-    public TestDevice setMobile(boolean mobile) {
-        isMobile = mobile;
-        return this;
-    }
-
-    @JsonGetter
-    public boolean isWindows() {
-        return isWindows;
-    }
-
-    @JsonSetter
-    public TestDevice setWindows(boolean windows) {
-        isWindows = windows;
-        return this;
-    }
-
-    @JsonProperty
-    boolean isMobile;
-    @JsonProperty
-    boolean isWindows;
-}
-
-class TestRecentActivity {
-    @JsonGetter
-    public Integer getItemsInCart() {
-        return itemsInCart;
-    }
-
-    @JsonSetter
-    public TestRecentActivity setItemsInCart(Integer itemsInCart) {
-        this.itemsInCart = itemsInCart;
-        return this;
-    }
-
-    @JsonProperty
-    Integer itemsInCart;
 }

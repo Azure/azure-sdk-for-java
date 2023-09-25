@@ -38,8 +38,7 @@ public final class EmailTemplateContractProperties {
     private String description;
 
     /*
-     * Whether the template is the default template provided by API Management
-     * or has been edited.
+     * Whether the template is the default template provided by API Management or has been edited.
      */
     @JsonProperty(value = "isDefault", access = JsonProperty.Access.WRITE_ONLY)
     private Boolean isDefault;
@@ -49,6 +48,10 @@ public final class EmailTemplateContractProperties {
      */
     @JsonProperty(value = "parameters")
     private List<EmailTemplateParametersContractProperties> parameters;
+
+    /** Creates an instance of EmailTemplateContractProperties class. */
+    public EmailTemplateContractProperties() {
+    }
 
     /**
      * Get the subject property: Subject of the Template.

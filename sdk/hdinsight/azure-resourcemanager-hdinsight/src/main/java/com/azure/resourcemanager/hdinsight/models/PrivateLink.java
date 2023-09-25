@@ -17,6 +17,15 @@ public final class PrivateLink extends ExpandableStringEnum<PrivateLink> {
     public static final PrivateLink ENABLED = fromString("Enabled");
 
     /**
+     * Creates a new instance of PrivateLink value.
+     *
+     * @deprecated Use the {@link #fromString(String)} factory method.
+     */
+    @Deprecated
+    public PrivateLink() {
+    }
+
+    /**
      * Creates or finds a PrivateLink from its string representation.
      *
      * @param name a name to look for.

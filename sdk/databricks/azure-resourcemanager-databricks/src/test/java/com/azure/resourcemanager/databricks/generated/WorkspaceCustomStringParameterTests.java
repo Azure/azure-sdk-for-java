@@ -13,15 +13,15 @@ public final class WorkspaceCustomStringParameterTests {
     public void testDeserialize() throws Exception {
         WorkspaceCustomStringParameter model =
             BinaryData
-                .fromString("{\"type\":\"String\",\"value\":\"nhungbw\"}")
+                .fromString("{\"type\":\"Bool\",\"value\":\"dzevndhkrw\"}")
                 .toObject(WorkspaceCustomStringParameter.class);
-        Assertions.assertEquals("nhungbw", model.value());
+        Assertions.assertEquals("dzevndhkrw", model.value());
     }
 
     @org.junit.jupiter.api.Test
     public void testSerialize() throws Exception {
-        WorkspaceCustomStringParameter model = new WorkspaceCustomStringParameter().withValue("nhungbw");
+        WorkspaceCustomStringParameter model = new WorkspaceCustomStringParameter().withValue("dzevndhkrw");
         model = BinaryData.fromObject(model).toObject(WorkspaceCustomStringParameter.class);
-        Assertions.assertEquals("nhungbw", model.value());
+        Assertions.assertEquals("dzevndhkrw", model.value());
     }
 }

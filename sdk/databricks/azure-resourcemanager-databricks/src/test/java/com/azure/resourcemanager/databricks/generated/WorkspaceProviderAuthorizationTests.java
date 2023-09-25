@@ -15,20 +15,20 @@ public final class WorkspaceProviderAuthorizationTests {
         WorkspaceProviderAuthorization model =
             BinaryData
                 .fromString(
-                    "{\"principalId\":\"b186d038-94e7-4e6e-b4a1-59ec1446ba1e\",\"roleDefinitionId\":\"25898363-ed7f-4867-9e71-d064518bd90b\"}")
+                    "{\"principalId\":\"4fd517cd-d648-4f01-9053-54d0c89de410\",\"roleDefinitionId\":\"ffb05287-7804-4938-b591-9b5921328ff7\"}")
                 .toObject(WorkspaceProviderAuthorization.class);
-        Assertions.assertEquals(UUID.fromString("b186d038-94e7-4e6e-b4a1-59ec1446ba1e"), model.principalId());
-        Assertions.assertEquals(UUID.fromString("25898363-ed7f-4867-9e71-d064518bd90b"), model.roleDefinitionId());
+        Assertions.assertEquals(UUID.fromString("4fd517cd-d648-4f01-9053-54d0c89de410"), model.principalId());
+        Assertions.assertEquals(UUID.fromString("ffb05287-7804-4938-b591-9b5921328ff7"), model.roleDefinitionId());
     }
 
     @org.junit.jupiter.api.Test
     public void testSerialize() throws Exception {
         WorkspaceProviderAuthorization model =
             new WorkspaceProviderAuthorization()
-                .withPrincipalId(UUID.fromString("b186d038-94e7-4e6e-b4a1-59ec1446ba1e"))
-                .withRoleDefinitionId(UUID.fromString("25898363-ed7f-4867-9e71-d064518bd90b"));
+                .withPrincipalId(UUID.fromString("4fd517cd-d648-4f01-9053-54d0c89de410"))
+                .withRoleDefinitionId(UUID.fromString("ffb05287-7804-4938-b591-9b5921328ff7"));
         model = BinaryData.fromObject(model).toObject(WorkspaceProviderAuthorization.class);
-        Assertions.assertEquals(UUID.fromString("b186d038-94e7-4e6e-b4a1-59ec1446ba1e"), model.principalId());
-        Assertions.assertEquals(UUID.fromString("25898363-ed7f-4867-9e71-d064518bd90b"), model.roleDefinitionId());
+        Assertions.assertEquals(UUID.fromString("4fd517cd-d648-4f01-9053-54d0c89de410"), model.principalId());
+        Assertions.assertEquals(UUID.fromString("ffb05287-7804-4938-b591-9b5921328ff7"), model.roleDefinitionId());
     }
 }

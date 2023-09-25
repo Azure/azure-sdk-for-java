@@ -35,6 +35,10 @@ public final class StorageAccountKey {
     @JsonProperty(value = "creationTime", access = JsonProperty.Access.WRITE_ONLY)
     private OffsetDateTime creationTime;
 
+    /** Creates an instance of StorageAccountKey class. */
+    public StorageAccountKey() {
+    }
+
     /**
      * Get the keyName property: Name of the key.
      *

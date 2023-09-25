@@ -11,7 +11,7 @@ import java.util.Map;
 /** Samples for ProximityPlacementGroups Update. */
 public final class ProximityPlacementGroupsUpdateSamples {
     /*
-     * x-ms-original-file: specification/compute/resource-manager/Microsoft.Compute/ComputeRP/stable/2023-03-01/examples/proximityPlacementGroupExamples/ProximityPlacementGroup_Patch.json
+     * x-ms-original-file: specification/compute/resource-manager/Microsoft.Compute/ComputeRP/stable/2023-07-01/examples/proximityPlacementGroupExamples/ProximityPlacementGroup_Patch.json
      */
     /**
      * Sample code: Update a proximity placement group.

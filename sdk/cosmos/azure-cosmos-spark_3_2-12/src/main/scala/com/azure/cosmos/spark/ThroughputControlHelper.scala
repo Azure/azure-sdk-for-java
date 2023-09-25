@@ -4,7 +4,7 @@
 package com.azure.cosmos.spark
 
 import com.azure.cosmos.implementation.ImplementationBridgeHelpers
-import com.azure.cosmos.models.{CosmosBulkExecutionOptions, CosmosChangeFeedRequestOptions, CosmosItemRequestOptions, CosmosQueryRequestOptions}
+import com.azure.cosmos.models.{CosmosBulkExecutionOptions, CosmosChangeFeedRequestOptions, CosmosItemRequestOptions, CosmosQueryRequestOptions, PriorityLevel}
 import com.azure.cosmos.spark.diagnostics.BasicLoggingTrait
 import com.azure.cosmos.{CosmosAsyncContainer, ThroughputControlGroupConfigBuilder}
 import org.apache.spark.broadcast.Broadcast
@@ -100,6 +100,11 @@ private object ThroughputControlHelper extends BasicLoggingTrait {
         if (throughputControlConfig.targetThroughputThreshold.isDefined) {
             groupConfigBuilder.targetThroughputThreshold(throughputControlConfig.targetThroughputThreshold.get)
         }
+        if (throughputControlConfig.priorityLevel.isDefined) {
+            val priority = throughputControlConfig.priorityLevel.get
+            logDebug(s"Configure throughput control with priority $priority")
+            groupConfigBuilder.priorityLevel(parsePriorityLevel(throughputControlConfig.priorityLevel.get))
+        }
 
         val globalThroughputControlConfigBuilder = throughputControlCacheItem.cosmosClient.createGlobalThroughputControlConfigBuilder(
             throughputControlConfig.globalControlDatabase.get,
@@ -143,20 +148,23 @@ private object ThroughputControlHelper extends BasicLoggingTrait {
         // If there is no SparkExecutorCount being captured, then fall back to use 1 executor count
         // If the spark executor count is somehow 0, then fall back to 1 executor count
         val instanceCount = math.max(userConfig.getOrElse(CosmosConfigNames.SparkExecutorCount, "1").toInt, 1)
-        logInfo(s"Configure throughput control without using dedicated container, instance count $instanceCount")
+        logDebug(s"Configure throughput control without using dedicated container, instance count $instanceCount")
 
         if (throughputControlConfig.targetThroughput.isDefined) {
             val targetThroughputByExecutor =
                 (throughputControlConfig.targetThroughput.get / instanceCount).ceil.toInt
-            logInfo(s"Configure throughput control with throughput $targetThroughputByExecutor")
+            logDebug(s"Configure throughput control with throughput $targetThroughputByExecutor")
             groupConfigBuilder.targetThroughput(targetThroughputByExecutor)
         }
         if (throughputControlConfig.targetThroughputThreshold.isDefined) {
             // Try to limit to 2 decimal digits
             val targetThroughputThresholdByExecutor =
                 (throughputControlConfig.targetThroughputThreshold.get * 10000 / instanceCount).ceil / 10000
-            logInfo(s"Configure throughput control with throughput threshold $targetThroughputThresholdByExecutor")
+            logDebug(s"Configure throughput control with throughput threshold $targetThroughputThresholdByExecutor")
             groupConfigBuilder.targetThroughputThreshold(targetThroughputThresholdByExecutor)
+        }
+        if (throughputControlConfig.priorityLevel.isDefined) {
+            groupConfigBuilder.priorityLevel(parsePriorityLevel(throughputControlConfig.priorityLevel.get))
         }
 
         // Currently CosmosDB data plane SDK does not support query database/container throughput by using AAD authentication
@@ -169,6 +177,13 @@ private object ThroughputControlHelper extends BasicLoggingTrait {
                 container,
                 groupConfigBuilder.build(),
                 if (throughputQueryMonoOpt.isDefined) throughputQueryMonoOpt.get.asJava() else null)
+    }
+
+    def parsePriorityLevel(priorityLevels: PriorityLevels.PriorityLevel) = {
+        priorityLevels match {
+            case PriorityLevels.Low => PriorityLevel.LOW
+            case PriorityLevels.High => PriorityLevel.HIGH
+        }
     }
 
     def getThroughputControlClientCacheItem(userConfig: Map[String, String],

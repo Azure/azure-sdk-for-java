@@ -6,19 +6,18 @@ package com.azure.resourcemanager.elasticsan.generated;
 
 import com.azure.core.util.BinaryData;
 import com.azure.resourcemanager.elasticsan.models.SkuLocationInfo;
-import org.junit.jupiter.api.Test;
 
 public final class SkuLocationInfoTests {
-    @Test
-    public void testDeserialize() {
+    @org.junit.jupiter.api.Test
+    public void testDeserialize() throws Exception {
         SkuLocationInfo model =
             BinaryData
-                .fromString("{\"location\":\"nchgej\",\"zones\":[\"dmailzydehojw\",\"ahuxinpm\",\"njaqwixjspro\"]}")
+                .fromString("{\"location\":\"qduujitcjczdz\",\"zones\":[\"dhkrwpdappdsbdk\",\"wrwjfeu\"]}")
                 .toObject(SkuLocationInfo.class);
     }
 
-    @Test
-    public void testSerialize() {
+    @org.junit.jupiter.api.Test
+    public void testSerialize() throws Exception {
         SkuLocationInfo model = new SkuLocationInfo();
         model = BinaryData.fromObject(model).toObject(SkuLocationInfo.class);
     }

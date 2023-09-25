@@ -7,7 +7,7 @@ package com.azure.resourcemanager.apimanagement.models;
 import com.fasterxml.jackson.annotation.JsonCreator;
 import com.fasterxml.jackson.annotation.JsonValue;
 
-/** Defines values for ProvisioningState. */
+/** Provisioning state. */
 public enum ProvisioningState {
     /** Enum value created. */
     CREATED("created");
@@ -27,6 +27,9 @@ public enum ProvisioningState {
      */
     @JsonCreator
     public static ProvisioningState fromString(String value) {
+        if (value == null) {
+            return null;
+        }
         ProvisioningState[] items = ProvisioningState.values();
         for (ProvisioningState item : items) {
             if (item.toString().equalsIgnoreCase(value)) {
@@ -36,6 +39,7 @@ public enum ProvisioningState {
         return null;
     }
 
+    /** {@inheritDoc} */
     @JsonValue
     @Override
     public String toString() {

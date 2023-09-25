@@ -16,6 +16,24 @@ public final class Storage {
     @JsonProperty(value = "storageSizeGB")
     private Integer storageSizeGB;
 
+    /*
+     * Flag to enable / disable Storage Auto grow for flexible server.
+     */
+    @JsonProperty(value = "autoGrow")
+    private StorageAutoGrow autoGrow;
+
+    /*
+     * Name of storage tier for IOPS.
+     */
+    @JsonProperty(value = "tier")
+    private AzureManagedDiskPerformanceTiers tier;
+
+    /*
+     * Storage tier IOPS quantity.
+     */
+    @JsonProperty(value = "iops", access = JsonProperty.Access.WRITE_ONLY)
+    private Integer iops;
+
     /** Creates an instance of Storage class. */
     public Storage() {
     }
@@ -38,6 +56,55 @@ public final class Storage {
     public Storage withStorageSizeGB(Integer storageSizeGB) {
         this.storageSizeGB = storageSizeGB;
         return this;
+    }
+
+    /**
+     * Get the autoGrow property: Flag to enable / disable Storage Auto grow for flexible server.
+     *
+     * @return the autoGrow value.
+     */
+    public StorageAutoGrow autoGrow() {
+        return this.autoGrow;
+    }
+
+    /**
+     * Set the autoGrow property: Flag to enable / disable Storage Auto grow for flexible server.
+     *
+     * @param autoGrow the autoGrow value to set.
+     * @return the Storage object itself.
+     */
+    public Storage withAutoGrow(StorageAutoGrow autoGrow) {
+        this.autoGrow = autoGrow;
+        return this;
+    }
+
+    /**
+     * Get the tier property: Name of storage tier for IOPS.
+     *
+     * @return the tier value.
+     */
+    public AzureManagedDiskPerformanceTiers tier() {
+        return this.tier;
+    }
+
+    /**
+     * Set the tier property: Name of storage tier for IOPS.
+     *
+     * @param tier the tier value to set.
+     * @return the Storage object itself.
+     */
+    public Storage withTier(AzureManagedDiskPerformanceTiers tier) {
+        this.tier = tier;
+        return this;
+    }
+
+    /**
+     * Get the iops property: Storage tier IOPS quantity.
+     *
+     * @return the iops value.
+     */
+    public Integer iops() {
+        return this.iops;
     }
 
     /**

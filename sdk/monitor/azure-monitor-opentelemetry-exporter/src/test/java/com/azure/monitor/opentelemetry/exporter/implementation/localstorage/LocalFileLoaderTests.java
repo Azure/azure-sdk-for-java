@@ -90,7 +90,9 @@ public class LocalFileLoaderTests {
         // persist 10 files to disk
         for (int i = 0; i < 10; i++) {
             localFileWriter.writeToDisk(
-                CONNECTION_STRING, singletonList(ByteBuffer.wrap("hello world".getBytes(UTF_8))));
+                CONNECTION_STRING,
+                singletonList(ByteBuffer.wrap("hello world".getBytes(UTF_8))),
+                "original error message");
         }
 
         assertThat(localFileCache.getPersistedFilesCache().size()).isEqualTo(10);
@@ -141,7 +143,9 @@ public class LocalFileLoaderTests {
         // persist 10 files to disk
         for (int i = 0; i < 10; i++) {
             localFileWriter.writeToDisk(
-                CONNECTION_STRING, singletonList(ByteBuffer.wrap("hello world".getBytes(UTF_8))));
+                CONNECTION_STRING,
+                singletonList(ByteBuffer.wrap("hello world".getBytes(UTF_8))),
+                "original error message");
         }
 
         assertThat(localFileCache.getPersistedFilesCache().size()).isEqualTo(10);

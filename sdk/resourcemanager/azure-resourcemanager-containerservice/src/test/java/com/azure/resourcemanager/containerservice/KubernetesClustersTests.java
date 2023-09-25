@@ -65,7 +65,7 @@ public class KubernetesClustersTests extends ContainerServiceManagementTest {
             containerServiceManager
                 .kubernetesClusters()
                 .define(aksName)
-                .withRegion(Region.US_CENTRAL)
+                .withRegion(Region.US_WEST2)
                 .withExistingResourceGroup(rgName)
                 .withDefaultVersion()
                 .withRootUsername("testaks")
@@ -91,7 +91,7 @@ public class KubernetesClustersTests extends ContainerServiceManagementTest {
                 .create(context);
 
         Assertions.assertNotNull(kubernetesCluster.id());
-        Assertions.assertEquals(Region.US_CENTRAL, kubernetesCluster.region());
+        Assertions.assertEquals(Region.US_WEST2, kubernetesCluster.region());
         Assertions.assertEquals("testaks", kubernetesCluster.linuxRootUsername());
         Assertions.assertEquals(2, kubernetesCluster.agentPools().size());
 

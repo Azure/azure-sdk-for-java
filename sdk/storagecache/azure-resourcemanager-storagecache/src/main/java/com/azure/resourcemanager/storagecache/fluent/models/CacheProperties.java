@@ -22,20 +22,10 @@ import java.util.List;
 @Fluent
 public final class CacheProperties {
     /*
-     * The size of this cache, in GB, when scalingFactor is 1.0. Values depend on the cache SKU - <a
-     * href="https://learn.microsoft.com/en-us/rest/api/storagecache/skus/list?tabs=HTTP">List SKUs</a>.
+     * The size of this Cache, in GB.
      */
     @JsonProperty(value = "cacheSizeGB")
     private Integer cacheSizeGB;
-
-    /*
-     * Multiplier that sets the current storage and throughput capacity of the cache. Values depend on the cache SKU -
-     * <a href="https://learn.microsoft.com/en-us/rest/api/storagecache/skus/list?tabs=HTTP">List SKUs</a>. Values
-     * above 1.0 increase the cache size and throughput - for example, the scaling factor 1.33 gives a cache that's 33%
-     * larger than its base size.
-     */
-    @JsonProperty(value = "scalingFactor")
-    private Double scalingFactor;
 
     /*
      * Health of the cache.
@@ -121,9 +111,7 @@ public final class CacheProperties {
     }
 
     /**
-     * Get the cacheSizeGB property: The size of this cache, in GB, when scalingFactor is 1.0. Values depend on the
-     * cache SKU - &lt;a href="https://learn.microsoft.com/en-us/rest/api/storagecache/skus/list?tabs=HTTP"&gt;List
-     * SKUs&lt;/a&gt;.
+     * Get the cacheSizeGB property: The size of this Cache, in GB.
      *
      * @return the cacheSizeGB value.
      */
@@ -132,43 +120,13 @@ public final class CacheProperties {
     }
 
     /**
-     * Set the cacheSizeGB property: The size of this cache, in GB, when scalingFactor is 1.0. Values depend on the
-     * cache SKU - &lt;a href="https://learn.microsoft.com/en-us/rest/api/storagecache/skus/list?tabs=HTTP"&gt;List
-     * SKUs&lt;/a&gt;.
+     * Set the cacheSizeGB property: The size of this Cache, in GB.
      *
      * @param cacheSizeGB the cacheSizeGB value to set.
      * @return the CacheProperties object itself.
      */
     public CacheProperties withCacheSizeGB(Integer cacheSizeGB) {
         this.cacheSizeGB = cacheSizeGB;
-        return this;
-    }
-
-    /**
-     * Get the scalingFactor property: Multiplier that sets the current storage and throughput capacity of the cache.
-     * Values depend on the cache SKU - &lt;a
-     * href="https://learn.microsoft.com/en-us/rest/api/storagecache/skus/list?tabs=HTTP"&gt;List SKUs&lt;/a&gt;. Values
-     * above 1.0 increase the cache size and throughput - for example, the scaling factor 1.33 gives a cache that's 33%
-     * larger than its base size.
-     *
-     * @return the scalingFactor value.
-     */
-    public Double scalingFactor() {
-        return this.scalingFactor;
-    }
-
-    /**
-     * Set the scalingFactor property: Multiplier that sets the current storage and throughput capacity of the cache.
-     * Values depend on the cache SKU - &lt;a
-     * href="https://learn.microsoft.com/en-us/rest/api/storagecache/skus/list?tabs=HTTP"&gt;List SKUs&lt;/a&gt;. Values
-     * above 1.0 increase the cache size and throughput - for example, the scaling factor 1.33 gives a cache that's 33%
-     * larger than its base size.
-     *
-     * @param scalingFactor the scalingFactor value to set.
-     * @return the CacheProperties object itself.
-     */
-    public CacheProperties withScalingFactor(Double scalingFactor) {
-        this.scalingFactor = scalingFactor;
         return this;
     }
 

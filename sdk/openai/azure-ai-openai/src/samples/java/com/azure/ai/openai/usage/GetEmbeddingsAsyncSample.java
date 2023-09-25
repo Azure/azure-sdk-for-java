@@ -36,7 +36,7 @@ public class GetEmbeddingsAsyncSample {
         client.getEmbeddings(deploymentOrModelId, embeddingsOptions).subscribe(
             embeddings -> {
                 for (EmbeddingItem item : embeddings.getData()) {
-                    System.out.printf("Index: %d.%n", item.getIndex());
+                    System.out.printf("Index: %d.%n", item.getPromptIndex());
                     for (Double embedding : item.getEmbedding()) {
                         System.out.printf("%f;", embedding);
                     }

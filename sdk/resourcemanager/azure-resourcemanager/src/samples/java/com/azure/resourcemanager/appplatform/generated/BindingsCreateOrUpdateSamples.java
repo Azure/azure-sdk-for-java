@@ -13,7 +13,7 @@ import java.util.Map;
 /** Samples for Bindings CreateOrUpdate. */
 public final class BindingsCreateOrUpdateSamples {
     /*
-     * x-ms-original-file: specification/appplatform/resource-manager/Microsoft.AppPlatform/stable/2022-04-01/examples/Bindings_CreateOrUpdate.json
+     * x-ms-original-file: specification/appplatform/resource-manager/Microsoft.AppPlatform/stable/2022-12-01/examples/Bindings_CreateOrUpdate.json
      */
     /**
      * Sample code: Bindings_CreateOrUpdate.

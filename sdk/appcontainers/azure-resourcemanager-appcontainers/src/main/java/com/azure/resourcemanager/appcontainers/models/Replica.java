@@ -4,7 +4,6 @@
 
 package com.azure.resourcemanager.appcontainers.models;
 
-import com.azure.core.management.SystemData;
 import com.azure.resourcemanager.appcontainers.fluent.models.ReplicaInner;
 import java.time.OffsetDateTime;
 import java.util.List;
@@ -33,13 +32,6 @@ public interface Replica {
     String type();
 
     /**
-     * Gets the systemData property: Azure Resource Manager metadata containing createdBy and modifiedBy information.
-     *
-     * @return the systemData value.
-     */
-    SystemData systemData();
-
-    /**
      * Gets the createdTime property: Timestamp describing when the pod was created by controller.
      *
      * @return the createdTime value.
@@ -47,11 +39,32 @@ public interface Replica {
     OffsetDateTime createdTime();
 
     /**
+     * Gets the runningState property: Current running state of the replica.
+     *
+     * @return the runningState value.
+     */
+    ContainerAppReplicaRunningState runningState();
+
+    /**
+     * Gets the runningStateDetails property: The details of replica current running state.
+     *
+     * @return the runningStateDetails value.
+     */
+    String runningStateDetails();
+
+    /**
      * Gets the containers property: The containers collection under a replica.
      *
      * @return the containers value.
      */
     List<ReplicaContainer> containers();
+
+    /**
+     * Gets the initContainers property: The init containers collection under a replica.
+     *
+     * @return the initContainers value.
+     */
+    List<ReplicaContainer> initContainers();
 
     /**
      * Gets the inner com.azure.resourcemanager.appcontainers.fluent.models.ReplicaInner object.

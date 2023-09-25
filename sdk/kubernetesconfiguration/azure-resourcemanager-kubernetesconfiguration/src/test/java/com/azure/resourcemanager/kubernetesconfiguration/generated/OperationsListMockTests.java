@@ -32,7 +32,7 @@ public final class OperationsListMockTests {
         ArgumentCaptor<HttpRequest> httpRequest = ArgumentCaptor.forClass(HttpRequest.class);
 
         String responseStr =
-            "{\"value\":[{\"name\":\"yfxrx\",\"display\":{\"provider\":\"ptramxj\",\"resource\":\"wlwnwxuqlcv\",\"operation\":\"ypatdooaojkniod\",\"description\":\"oebwnujhemms\"},\"isDataAction\":false,\"origin\":\"c\"}]}";
+            "{\"value\":[{\"name\":\"cstwity\",\"display\":{\"provider\":\"vxccedcp\",\"resource\":\"dyodnwzxltj\",\"operation\":\"nhltiugcxn\",\"description\":\"vwxqibyqunyo\"},\"isDataAction\":false,\"origin\":\"mdjrkvfgbvfvp\"}]}";
 
         Mockito.when(httpResponse.getStatusCode()).thenReturn(200);
         Mockito.when(httpResponse.getHeaders()).thenReturn(new HttpHeaders());
@@ -62,10 +62,10 @@ public final class OperationsListMockTests {
 
         PagedIterable<ResourceProviderOperation> response = manager.operations().list(com.azure.core.util.Context.NONE);
 
-        Assertions.assertEquals("yfxrx", response.iterator().next().name());
-        Assertions.assertEquals("ptramxj", response.iterator().next().display().provider());
-        Assertions.assertEquals("wlwnwxuqlcv", response.iterator().next().display().resource());
-        Assertions.assertEquals("ypatdooaojkniod", response.iterator().next().display().operation());
-        Assertions.assertEquals("oebwnujhemms", response.iterator().next().display().description());
+        Assertions.assertEquals("cstwity", response.iterator().next().name());
+        Assertions.assertEquals("vxccedcp", response.iterator().next().display().provider());
+        Assertions.assertEquals("dyodnwzxltj", response.iterator().next().display().resource());
+        Assertions.assertEquals("nhltiugcxn", response.iterator().next().display().operation());
+        Assertions.assertEquals("vwxqibyqunyo", response.iterator().next().display().description());
     }
 }

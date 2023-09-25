@@ -14,14 +14,14 @@ import com.azure.core.management.profile.AzureProfile;
 import com.azure.resourcemanager.resources.ResourceManager;
 import com.azure.resourcemanager.resources.fluentcore.utils.HttpPipelineProvider;
 import com.azure.resourcemanager.resources.fluentcore.utils.ResourceManagerUtils;
-import com.azure.resourcemanager.test.ResourceManagerTestBase;
+import com.azure.resourcemanager.test.ResourceManagerTestProxyTestBase;
 import com.azure.resourcemanager.test.utils.TestDelayProvider;
 
 import java.time.temporal.ChronoUnit;
 import java.util.List;
 
 /** The base for KeyVault manager tests. */
-public class KeyVaultManagementTest extends ResourceManagerTestBase {
+public class KeyVaultManagementTest extends ResourceManagerTestProxyTestBase {
     protected ResourceManager resourceManager;
     protected KeyVaultManager keyVaultManager;
     protected AuthorizationManager authorizationManager;

@@ -83,12 +83,10 @@ public final class ClientTelemetryMetrics {
         CompositeMeterRegistry registry = new CompositeMeterRegistry();
         if (logger.isTraceEnabled()) {
             registry.config().onMeterAdded(
-                (meter) -> {
-                    logger.trace(
-                        "Meter '{}' added. Callstack: {}",
-                        meter.getId().getName(),
-                        convertStackTraceToString(new IllegalStateException("Dummy")));
-                }
+                (meter) -> logger.trace(
+                    "Meter '{}' added. Callstack: {}",
+                    meter.getId().getName(),
+                    convertStackTraceToString(new IllegalStateException("Dummy")))
             );
         }
 
@@ -135,6 +133,7 @@ public final class ClientTelemetryMetrics {
             client,
             diagnosticsContext,
             diagnosticsContext.getStatusCode(),
+            diagnosticsContext.getSubStatusCode(),
             diagnosticsContext.getMaxItemCount(),
             diagnosticsContext.getActualItemCount(),
             diagnosticsContext.getContainerName(),
@@ -154,6 +153,7 @@ public final class ClientTelemetryMetrics {
         CosmosAsyncClient client,
         CosmosDiagnosticsContext diagnosticsContext,
         int statusCode,
+        int subStatusCode,
         Integer maxItemCount,
         Integer actualItemCount,
         String containerId,
@@ -187,6 +187,7 @@ public final class ClientTelemetryMetrics {
         Tags operationTags = createOperationTags(
             metricTagNames,
             statusCode,
+            subStatusCode,
             containerId,
             databaseId,
             operationType,
@@ -263,6 +264,7 @@ public final class ClientTelemetryMetrics {
     private static Tags createOperationTags(
         EnumSet<TagName> metricTagNames,
         int statusCode,
+        int subStatusCode,
         String containerId,
         String databaseId,
         String operationType,
@@ -301,6 +303,10 @@ public final class ClientTelemetryMetrics {
 
         if (metricTagNames.contains(TagName.OperationStatusCode)) {
             effectiveTags.add(Tag.of(TagName.OperationStatusCode.toString(), String.valueOf(statusCode)));
+        }
+
+        if (metricTagNames.contains(TagName.OperationSubStatusCode)) {
+            effectiveTags.add(Tag.of(TagName.OperationSubStatusCode.toString(), String.valueOf(subStatusCode)));
         }
 
         if (metricTagNames.contains(TagName.ConsistencyLevel)) {
@@ -450,7 +456,8 @@ public final class ClientTelemetryMetrics {
                         recordGatewayStatistics(
                             diagnosticsContext,
                             cosmosAsyncClient,
-                            requestStatistics.getDuration(), requestStatistics.getGatewayStatistics());
+                            requestStatistics.getDuration(),
+                            requestStatistics.getGatewayStatisticsList());
                         recordAddressResolutionStatistics(
                             diagnosticsContext,
                             cosmosAsyncClient,
@@ -952,9 +959,11 @@ public final class ClientTelemetryMetrics {
             CosmosDiagnosticsContext ctx,
             CosmosAsyncClient client,
             Duration latency,
-            ClientSideRequestStatistics.GatewayStatistics gatewayStatistics) {
+            List<ClientSideRequestStatistics.GatewayStatistics> gatewayStatisticsList) {
 
-            if (gatewayStatistics == null || !this.metricCategories.contains(MetricCategory.RequestSummary)) {
+            if (gatewayStatisticsList == null
+                || gatewayStatisticsList.size() == 0
+                || !this.metricCategories.contains(MetricCategory.RequestSummary)) {
                 return;
             }
 
@@ -965,74 +974,76 @@ public final class ClientTelemetryMetrics {
             metricTagNamesForGateway.remove(TagName.PartitionId);
             metricTagNamesForGateway.remove(TagName.ReplicaId);
 
-            Tags requestTags = operationTags.and(
-                createRequestTags(
-                    metricTagNamesForGateway,
-                    gatewayStatistics.getPartitionKeyRangeId(),
-                    gatewayStatistics.getStatusCode(),
-                    gatewayStatistics.getSubStatusCode(),
-                    gatewayStatistics.getResourceType().toString(),
-                    gatewayStatistics.getOperationType().toString(),
-                    null,
-                    null,
-                    null)
-            );
+            for (ClientSideRequestStatistics.GatewayStatistics gatewayStats : gatewayStatisticsList) {
+                Tags requestTags = operationTags.and(
+                    createRequestTags(
+                        metricTagNamesForGateway,
+                        gatewayStats.getPartitionKeyRangeId(),
+                        gatewayStats.getStatusCode(),
+                        gatewayStats.getSubStatusCode(),
+                        gatewayStats.getResourceType().toString(),
+                        gatewayStats.getOperationType().toString(),
+                        null,
+                        null,
+                        null)
+                );
 
-            CosmosMeterOptions reqOptions = clientAccessor.getMeterOptions(
-                client,
-                CosmosMetricName.REQUEST_SUMMARY_GATEWAY_REQUESTS);
-            if (reqOptions.isEnabled() &&
-                (!reqOptions.isDiagnosticThresholdsFilteringEnabled() || ctx.isThresholdViolated())) {
-                Counter requestCounter = Counter
-                    .builder(reqOptions.getMeterName().toString())
-                    .baseUnit("requests")
-                    .description("Gateway requests")
-                    .tags(getEffectiveTags(requestTags, reqOptions))
-                    .register(compositeRegistry);
-                requestCounter.increment();
-            }
-
-            CosmosMeterOptions ruOptions = clientAccessor.getMeterOptions(
-                client,
-                CosmosMetricName.REQUEST_SUMMARY_GATEWAY_REQUEST_CHARGE);
-            if (ruOptions.isEnabled() &&
-                (!ruOptions.isDiagnosticThresholdsFilteringEnabled() || ctx.isThresholdViolated())) {
-                double requestCharge = gatewayStatistics.getRequestCharge();
-                DistributionSummary requestChargeMeter = DistributionSummary
-                    .builder(ruOptions.getMeterName().toString())
-                    .baseUnit("RU (request unit)")
-                    .description("Gateway Request RU charge")
-                    .maximumExpectedValue(100_000d)
-                    .publishPercentiles(ruOptions.getPercentiles())
-                    .publishPercentileHistogram(ruOptions.isHistogramPublishingEnabled())
-                    .tags(getEffectiveTags(requestTags, ruOptions))
-                    .register(compositeRegistry);
-                requestChargeMeter.record(Math.min(requestCharge, 100_000d));
-            }
-
-            if (latency != null) {
-                CosmosMeterOptions latencyOptions = clientAccessor.getMeterOptions(
+                CosmosMeterOptions reqOptions = clientAccessor.getMeterOptions(
                     client,
-                    CosmosMetricName.REQUEST_SUMMARY_GATEWAY_LATENCY);
-                if (latencyOptions.isEnabled() &&
-                    (!latencyOptions.isDiagnosticThresholdsFilteringEnabled() || ctx.isThresholdViolated())) {
-                    Timer requestLatencyMeter = Timer
-                        .builder(latencyOptions.getMeterName().toString())
-                        .description("Gateway Request latency")
-                        .maximumExpectedValue(Duration.ofSeconds(300))
-                        .publishPercentiles(latencyOptions.getPercentiles())
-                        .publishPercentileHistogram(latencyOptions.isHistogramPublishingEnabled())
-                        .tags(getEffectiveTags(requestTags, latencyOptions))
+                    CosmosMetricName.REQUEST_SUMMARY_GATEWAY_REQUESTS);
+                if (reqOptions.isEnabled() &&
+                    (!reqOptions.isDiagnosticThresholdsFilteringEnabled() || ctx.isThresholdViolated())) {
+                    Counter requestCounter = Counter
+                        .builder(reqOptions.getMeterName().toString())
+                        .baseUnit("requests")
+                        .description("Gateway requests")
+                        .tags(getEffectiveTags(requestTags, reqOptions))
                         .register(compositeRegistry);
-                    requestLatencyMeter.record(latency);
+                    requestCounter.increment();
                 }
-            }
 
-            recordRequestTimeline(
-                ctx,
-                client,
-                CosmosMetricName.REQUEST_DETAILS_GATEWAY_TIMELINE,
-                gatewayStatistics.getRequestTimeline(), requestTags);
+                CosmosMeterOptions ruOptions = clientAccessor.getMeterOptions(
+                    client,
+                    CosmosMetricName.REQUEST_SUMMARY_GATEWAY_REQUEST_CHARGE);
+                if (ruOptions.isEnabled() &&
+                    (!ruOptions.isDiagnosticThresholdsFilteringEnabled() || ctx.isThresholdViolated())) {
+                    double requestCharge = gatewayStats.getRequestCharge();
+                    DistributionSummary requestChargeMeter = DistributionSummary
+                        .builder(ruOptions.getMeterName().toString())
+                        .baseUnit("RU (request unit)")
+                        .description("Gateway Request RU charge")
+                        .maximumExpectedValue(100_000d)
+                        .publishPercentiles(ruOptions.getPercentiles())
+                        .publishPercentileHistogram(ruOptions.isHistogramPublishingEnabled())
+                        .tags(getEffectiveTags(requestTags, ruOptions))
+                        .register(compositeRegistry);
+                    requestChargeMeter.record(Math.min(requestCharge, 100_000d));
+                }
+
+                if (latency != null) {
+                    CosmosMeterOptions latencyOptions = clientAccessor.getMeterOptions(
+                        client,
+                        CosmosMetricName.REQUEST_SUMMARY_GATEWAY_LATENCY);
+                    if (latencyOptions.isEnabled() &&
+                        (!latencyOptions.isDiagnosticThresholdsFilteringEnabled() || ctx.isThresholdViolated())) {
+                        Timer requestLatencyMeter = Timer
+                            .builder(latencyOptions.getMeterName().toString())
+                            .description("Gateway Request latency")
+                            .maximumExpectedValue(Duration.ofSeconds(300))
+                            .publishPercentiles(latencyOptions.getPercentiles())
+                            .publishPercentileHistogram(latencyOptions.isHistogramPublishingEnabled())
+                            .tags(getEffectiveTags(requestTags, latencyOptions))
+                            .register(compositeRegistry);
+                        requestLatencyMeter.record(latency);
+                    }
+                }
+
+                recordRequestTimeline(
+                    ctx,
+                    client,
+                    CosmosMetricName.REQUEST_DETAILS_GATEWAY_TIMELINE,
+                    gatewayStats.getRequestTimeline(), requestTags);
+            }
         }
 
         private void recordAddressResolutionStatistics(

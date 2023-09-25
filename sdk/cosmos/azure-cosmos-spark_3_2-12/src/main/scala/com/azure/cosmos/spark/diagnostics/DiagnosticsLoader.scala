@@ -12,6 +12,7 @@ private[spark] object DiagnosticsLoader {
   private val providers = TrieMap[String, DiagnosticsProvider]()
   providers.put(classOf[SimpleDiagnosticsProvider].getName, new SimpleDiagnosticsProvider)
   providers.put(classOf[FeedDiagnosticsProvider].getName, new FeedDiagnosticsProvider)
+  providers.put(classOf[DetailedFeedDiagnosticsProvider].getName, new DetailedFeedDiagnosticsProvider)
 
   def getDiagnosticsProvider(cfg: DiagnosticsConfig): DiagnosticsProvider = {
     cfg.mode match {

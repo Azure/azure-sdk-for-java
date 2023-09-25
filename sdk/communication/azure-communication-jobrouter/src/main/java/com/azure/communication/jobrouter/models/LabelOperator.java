@@ -4,56 +4,47 @@
 
 package com.azure.communication.jobrouter.models;
 
+import com.azure.core.util.ExpandableStringEnum;
 import com.fasterxml.jackson.annotation.JsonCreator;
-import com.fasterxml.jackson.annotation.JsonValue;
+import java.util.Collection;
 
 /** Defines values for LabelOperator. */
-public enum LabelOperator {
-    /** Enum value equal. */
-    EQUAL("equal"),
+public final class LabelOperator extends ExpandableStringEnum<LabelOperator> {
+    /** Static value equal for LabelOperator. */
+    public static final LabelOperator EQUAL = fromString("equal");
 
-    /** Enum value notEqual. */
-    NOT_EQUAL("notEqual"),
+    /** Static value notEqual for LabelOperator. */
+    public static final LabelOperator NOT_EQUAL = fromString("notEqual");
 
-    /** Enum value lessThan. */
-    LESS_THAN("lessThan"),
+    /** Static value lessThan for LabelOperator. */
+    public static final LabelOperator LESS_THAN = fromString("lessThan");
 
-    /** Enum value lessThanEqual. */
-    LESS_THAN_EQUAL("lessThanEqual"),
+    /** Static value lessThanEqual for LabelOperator. */
+    public static final LabelOperator LESS_THAN_EQUAL = fromString("lessThanEqual");
 
-    /** Enum value greaterThan. */
-    GREATER_THAN("greaterThan"),
+    /** Static value greaterThan for LabelOperator. */
+    public static final LabelOperator GREATER_THAN = fromString("greaterThan");
 
-    /** Enum value greaterThanEqual. */
-    GREATER_THAN_EQUAL("greaterThanEqual");
+    /** Static value greaterThanEqual for LabelOperator. */
+    public static final LabelOperator GREATER_THAN_EQUAL = fromString("greaterThanEqual");
 
-    /** The actual serialized value for a LabelOperator instance. */
-    private final String value;
-
-    LabelOperator(String value) {
-        this.value = value;
+    /**
+     * Creates or finds a LabelOperator from its string representation.
+     *
+     * @param name a name to look for.
+     * @return the corresponding LabelOperator.
+     */
+    @JsonCreator
+    public static LabelOperator fromString(String name) {
+        return fromString(name, LabelOperator.class);
     }
 
     /**
-     * Parses a serialized value to a LabelOperator instance.
+     * Gets known LabelOperator values.
      *
-     * @param value the serialized value to parse.
-     * @return the parsed LabelOperator object, or null if unable to parse.
+     * @return known LabelOperator values.
      */
-    @JsonCreator
-    public static LabelOperator fromString(String value) {
-        LabelOperator[] items = LabelOperator.values();
-        for (LabelOperator item : items) {
-            if (item.toString().equalsIgnoreCase(value)) {
-                return item;
-            }
-        }
-        return null;
-    }
-
-    @JsonValue
-    @Override
-    public String toString() {
-        return this.value;
+    public static Collection<LabelOperator> values() {
+        return values(LabelOperator.class);
     }
 }

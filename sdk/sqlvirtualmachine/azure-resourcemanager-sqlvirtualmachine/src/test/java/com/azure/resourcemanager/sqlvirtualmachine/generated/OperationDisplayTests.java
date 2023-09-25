@@ -6,20 +6,19 @@ package com.azure.resourcemanager.sqlvirtualmachine.generated;
 
 import com.azure.core.util.BinaryData;
 import com.azure.resourcemanager.sqlvirtualmachine.models.OperationDisplay;
-import org.junit.jupiter.api.Test;
 
 public final class OperationDisplayTests {
-    @Test
-    public void testDeserialize() {
+    @org.junit.jupiter.api.Test
+    public void testDeserialize() throws Exception {
         OperationDisplay model =
             BinaryData
                 .fromString(
-                    "{\"provider\":\"l\",\"resource\":\"dlikwyqkgfgibma\",\"operation\":\"akeqs\",\"description\":\"yb\"}")
+                    "{\"provider\":\"dosvqwhbmdgbbjf\",\"resource\":\"gmbmbexppbh\",\"operation\":\"qrolfpf\",\"description\":\"algbquxigjyjg\"}")
                 .toObject(OperationDisplay.class);
     }
 
-    @Test
-    public void testSerialize() {
+    @org.junit.jupiter.api.Test
+    public void testSerialize() throws Exception {
         OperationDisplay model = new OperationDisplay();
         model = BinaryData.fromObject(model).toObject(OperationDisplay.class);
     }

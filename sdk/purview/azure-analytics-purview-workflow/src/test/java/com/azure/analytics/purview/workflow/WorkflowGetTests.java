@@ -15,7 +15,7 @@ public final class WorkflowGetTests extends PurviewWorkflowClientTestBase {
     public void testWorkflowGetTests() {
         RequestOptions requestOptions = new RequestOptions();
         Response<BinaryData> response =
-                purviewWorkflowClient.getWorkflowWithResponse("8af1ecae-16ee-4b2d-8972-00d611dd2f99", requestOptions);
+                purviewWorkflowClient.getWorkflowWithResponse("4afb5752-e47f-43a1-8ba7-c696bf8d2745", requestOptions);
         Assertions.assertEquals(200, response.getStatusCode());
     }
 }

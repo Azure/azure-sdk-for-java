@@ -31,16 +31,18 @@ public final class BuildDocumentModelRequest {
     private DocumentBuildMode buildMode;
 
     /*
-     * Azure Blob Storage location containing the training data.
+     * Azure Blob Storage location containing the training data.  Either azureBlobSource or azureBlobFileListSource
+     * must be specified.
      */
     @JsonProperty(value = "azureBlobSource")
     private AzureBlobContentSource azureBlobSource;
 
     /*
-     * Azure Blob Storage file list specifying the training data.
+     * Azure Blob Storage file list specifying the training data.  Either azureBlobSource or azureBlobFileListSource
+     * must be specified.
      */
     @JsonProperty(value = "azureBlobFileListSource")
-    private AzureBlobFileListSource azureBlobFileListSource;
+    private AzureBlobFileListContentSource azureBlobFileListSource;
 
     /*
      * List of key-value tag attributes associated with the document model.
@@ -101,7 +103,8 @@ public final class BuildDocumentModelRequest {
     }
 
     /**
-     * Get the azureBlobSource property: Azure Blob Storage location containing the training data.
+     * Get the azureBlobSource property: Azure Blob Storage location containing the training data. Either
+     * azureBlobSource or azureBlobFileListSource must be specified.
      *
      * @return the azureBlobSource value.
      */
@@ -110,7 +113,8 @@ public final class BuildDocumentModelRequest {
     }
 
     /**
-     * Set the azureBlobSource property: Azure Blob Storage location containing the training data.
+     * Set the azureBlobSource property: Azure Blob Storage location containing the training data. Either
+     * azureBlobSource or azureBlobFileListSource must be specified.
      *
      * @param azureBlobSource the azureBlobSource value to set.
      * @return the BuildDocumentModelRequest object itself.
@@ -121,21 +125,24 @@ public final class BuildDocumentModelRequest {
     }
 
     /**
-     * Get the azureBlobFileListSource property: Azure Blob Storage file list specifying the training data.
+     * Get the azureBlobFileListSource property: Azure Blob Storage file list specifying the training data. Either
+     * azureBlobSource or azureBlobFileListSource must be specified.
      *
      * @return the azureBlobFileListSource value.
      */
-    public AzureBlobFileListSource getAzureBlobFileListSource() {
+    public AzureBlobFileListContentSource getAzureBlobFileListSource() {
         return this.azureBlobFileListSource;
     }
 
     /**
-     * Set the azureBlobFileListSource property: Azure Blob Storage file list specifying the training data.
+     * Set the azureBlobFileListSource property: Azure Blob Storage file list specifying the training data. Either
+     * azureBlobSource or azureBlobFileListSource must be specified.
      *
      * @param azureBlobFileListSource the azureBlobFileListSource value to set.
      * @return the BuildDocumentModelRequest object itself.
      */
-    public BuildDocumentModelRequest setAzureBlobFileListSource(AzureBlobFileListSource azureBlobFileListSource) {
+    public BuildDocumentModelRequest setAzureBlobFileListSource(
+            AzureBlobFileListContentSource azureBlobFileListSource) {
         this.azureBlobFileListSource = azureBlobFileListSource;
         return this;
     }

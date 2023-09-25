@@ -64,8 +64,7 @@ public final class MaintenanceConfigurationsClientImpl implements MaintenanceCon
     public interface MaintenanceConfigurationsService {
         @Headers({"Content-Type: application/json"})
         @Get(
-            "/subscriptions/{subscriptionId}/resourcegroups/{resourceGroupName}/providers/Microsoft.Maintenance"
-                + "/maintenanceConfigurations/{resourceName}")
+            "/subscriptions/{subscriptionId}/resourcegroups/{resourceGroupName}/providers/Microsoft.Maintenance/maintenanceConfigurations/{resourceName}")
         @ExpectedResponses({200})
         @UnexpectedResponseExceptionType(ManagementException.class)
         Mono<Response<MaintenanceConfigurationInner>> getByResourceGroup(
@@ -79,9 +78,8 @@ public final class MaintenanceConfigurationsClientImpl implements MaintenanceCon
 
         @Headers({"Content-Type: application/json"})
         @Put(
-            "/subscriptions/{subscriptionId}/resourcegroups/{resourceGroupName}/providers/Microsoft.Maintenance"
-                + "/maintenanceConfigurations/{resourceName}")
-        @ExpectedResponses({200})
+            "/subscriptions/{subscriptionId}/resourcegroups/{resourceGroupName}/providers/Microsoft.Maintenance/maintenanceConfigurations/{resourceName}")
+        @ExpectedResponses({200, 201})
         @UnexpectedResponseExceptionType(ManagementException.class)
         Mono<Response<MaintenanceConfigurationInner>> createOrUpdate(
             @HostParam("$host") String endpoint,
@@ -95,8 +93,7 @@ public final class MaintenanceConfigurationsClientImpl implements MaintenanceCon
 
         @Headers({"Content-Type: application/json"})
         @Delete(
-            "/subscriptions/{subscriptionId}/resourcegroups/{resourceGroupName}/providers/Microsoft.Maintenance"
-                + "/maintenanceConfigurations/{resourceName}")
+            "/subscriptions/{subscriptionId}/resourcegroups/{resourceGroupName}/providers/Microsoft.Maintenance/maintenanceConfigurations/{resourceName}")
         @ExpectedResponses({200, 204})
         @UnexpectedResponseExceptionType(ManagementException.class)
         Mono<Response<MaintenanceConfigurationInner>> delete(
@@ -110,8 +107,7 @@ public final class MaintenanceConfigurationsClientImpl implements MaintenanceCon
 
         @Headers({"Content-Type: application/json"})
         @Patch(
-            "/subscriptions/{subscriptionId}/resourcegroups/{resourceGroupName}/providers/Microsoft.Maintenance"
-                + "/maintenanceConfigurations/{resourceName}")
+            "/subscriptions/{subscriptionId}/resourcegroups/{resourceGroupName}/providers/Microsoft.Maintenance/maintenanceConfigurations/{resourceName}")
         @ExpectedResponses({200})
         @UnexpectedResponseExceptionType(ManagementException.class)
         Mono<Response<MaintenanceConfigurationInner>> update(

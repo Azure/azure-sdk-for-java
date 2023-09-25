@@ -13,7 +13,7 @@ public final class ManagedIdentityConfigurationTests {
         ManagedIdentityConfiguration model =
             BinaryData
                 .fromString(
-                    "{\"principalId\":\"c63ca867-701f-4e99-a112-d99dc958ed6c\",\"tenantId\":\"fbada527-0660-433e-8875-a5035c706410\",\"type\":\"hqjbasvmsmj\"}")
+                    "{\"principalId\":\"cd54fb4b-3070-47cb-acc9-e7afb33f8dd5\",\"tenantId\":\"6fb3425d-6960-4eed-ae98-9704248d7083\",\"type\":\"ablgphuticndvk\"}")
                 .toObject(ManagedIdentityConfiguration.class);
     }
 

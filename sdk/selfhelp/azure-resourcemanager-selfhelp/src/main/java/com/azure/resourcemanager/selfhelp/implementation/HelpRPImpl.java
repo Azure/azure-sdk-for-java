@@ -153,7 +153,7 @@ public final class HelpRPImpl implements HelpRP {
         this.serializerAdapter = serializerAdapter;
         this.defaultPollInterval = defaultPollInterval;
         this.endpoint = endpoint;
-        this.apiVersion = "2023-01-01-preview";
+        this.apiVersion = "2023-06-01";
         this.operations = new OperationsClientImpl(this);
         this.diagnostics = new DiagnosticsClientImpl(this);
         this.discoverySolutions = new DiscoverySolutionsClientImpl(this);

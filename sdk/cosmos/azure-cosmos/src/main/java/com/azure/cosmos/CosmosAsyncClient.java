@@ -68,6 +68,10 @@ import static com.azure.cosmos.implementation.guava25.base.Preconditions.checkNo
 /**
  * Provides a client-side logical representation of the Azure Cosmos DB service.
  * This asynchronous client is used to configure and execute requests against the service.
+ * <p>
+ * CosmosAsyncClient is thread-safe.
+ * It's recommended to maintain a single instance of CosmosAsyncClient per lifetime of the application which enables efficient connection management and performance.
+ * CosmosAsyncClient initialization is a heavy operation - don't use initialization CosmosAsyncClient instances as credentials or network connectivity validations.
  */
 @ServiceClient(
     builder = CosmosClientBuilder.class,
@@ -94,7 +98,6 @@ public final class CosmosAsyncClient implements Closeable {
     private final DiagnosticsProvider diagnosticsProvider;
     private final Tag clientCorrelationTag;
     private final String accountTagValue;
-    private final boolean clientMetricsEnabled;
     private final boolean isSendClientTelemetryToServiceEnabled;
     private final MeterRegistry clientMetricRegistrySnapshot;
     private final CosmosContainerProactiveInitConfig proactiveContainerInitConfig;
@@ -119,6 +122,7 @@ public final class CosmosAsyncClient implements Closeable {
         this.proactiveContainerInitConfig = builder.getProactiveContainerInitConfig();
         this.nonIdempotentWriteRetryPolicy = builder.getNonIdempotentWriteRetryPolicy();
         CosmosEndToEndOperationLatencyPolicyConfig endToEndOperationLatencyPolicyConfig = builder.getEndToEndOperationConfig();
+        SessionRetryOptions sessionRetryOptions = builder.getSessionRetryOptions();
 
         CosmosClientTelemetryConfig effectiveTelemetryConfig = telemetryConfigAccessor
             .createSnapshot(
@@ -161,6 +165,8 @@ public final class CosmosAsyncClient implements Closeable {
                                        .withClientTelemetryConfig(this.clientTelemetryConfig)
                                        .withClientCorrelationId(clientCorrelationId)
                                        .withEndToEndOperationLatencyPolicyConfig(endToEndOperationLatencyPolicyConfig)
+                                       .withSessionRetryOptions(sessionRetryOptions)
+                                       .withContainerProactiveInitConfig(this.proactiveContainerInitConfig)
                                        .build();
 
         this.accountConsistencyLevel = this.asyncDocumentClient.getDefaultConsistencyLevelOfAccount();
@@ -184,7 +190,6 @@ public final class CosmosAsyncClient implements Closeable {
 
         this.clientMetricRegistrySnapshot = telemetryConfigAccessor
             .getClientMetricRegistry(effectiveTelemetryConfig);
-        this.clientMetricsEnabled = clientMetricRegistrySnapshot != null;
 
         CosmosMeterOptions cpuMeterOptions = telemetryConfigAccessor
             .getMeterOptions(effectiveTelemetryConfig, CosmosMetricName.SYSTEM_CPU);
@@ -199,7 +204,7 @@ public final class CosmosAsyncClient implements Closeable {
             ".documents.azure.com", ""
         );
 
-        if (this.clientMetricsEnabled) {
+        if (this.clientMetricRegistrySnapshot != null) {
             telemetryConfigAccessor.setClientCorrelationTag(
                 effectiveTelemetryConfig,
                 this.clientCorrelationTag );
@@ -693,7 +698,7 @@ public final class CosmosAsyncClient implements Closeable {
             null,
             OperationType.Create,
             ResourceType.Database,
-            this.getEffectiveDiagnosticsThresholds(requestOptions.getDiagnosticsThresholds()));
+            requestOptions);
     }
 
     private Mono<CosmosDatabaseResponse> createDatabaseInternal(Database database, CosmosDatabaseRequestOptions options,
@@ -714,7 +719,7 @@ public final class CosmosAsyncClient implements Closeable {
                 null,
                 OperationType.Create,
                 ResourceType.Database,
-                this.getEffectiveDiagnosticsThresholds(requestOptions.getDiagnosticsThresholds()));
+                requestOptions);
     }
 
     private ConsistencyLevel getEffectiveConsistencyLevel(
@@ -822,7 +827,7 @@ public final class CosmosAsyncClient implements Closeable {
 
                 @Override
                 public boolean shouldEnableEmptyPageDiagnostics(CosmosAsyncClient client) {
-                    return client.clientMetricsEnabled || client.isTransportLevelTracingEnabled();
+                    return client.clientMetricRegistrySnapshot != null || client.isTransportLevelTracingEnabled();
                 }
 
                 @Override

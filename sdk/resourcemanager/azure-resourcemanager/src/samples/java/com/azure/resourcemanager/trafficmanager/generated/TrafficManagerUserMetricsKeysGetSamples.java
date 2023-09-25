@@ -4,12 +4,10 @@
 
 package com.azure.resourcemanager.trafficmanager.generated;
 
-import com.azure.core.util.Context;
-
 /** Samples for TrafficManagerUserMetricsKeys Get. */
 public final class TrafficManagerUserMetricsKeysGetSamples {
     /*
-     * x-ms-original-file: specification/trafficmanager/resource-manager/Microsoft.Network/stable/2018-04-01/examples/TrafficManagerUserMetricsKeys-GET.json
+     * x-ms-original-file: specification/trafficmanager/resource-manager/Microsoft.Network/stable/2022-04-01/examples/TrafficManagerUserMetricsKeys-GET.json
      */
     /**
      * Sample code: TrafficManagerUserMetricsKeys-GET.
@@ -22,6 +20,6 @@ public final class TrafficManagerUserMetricsKeysGetSamples {
             .manager()
             .serviceClient()
             .getTrafficManagerUserMetricsKeys()
-            .getWithResponse(Context.NONE);
+            .getWithResponse(com.azure.core.util.Context.NONE);
     }
 }

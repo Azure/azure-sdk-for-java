@@ -4,6 +4,7 @@
 package com.azure.cosmos;
 
 import com.azure.cosmos.implementation.ClientSideRequestStatistics;
+import com.azure.cosmos.implementation.CosmosDiagnosticsSystemUsageSnapshot;
 import com.azure.cosmos.implementation.DistinctClientSideRequestStatisticsCollection;
 import com.azure.cosmos.implementation.FeedResponseDiagnostics;
 import com.azure.cosmos.implementation.ImplementationBridgeHelpers;
@@ -74,7 +75,7 @@ public final class CosmosDiagnosticsContext {
     private String cachedRequestDiagnostics = null;
     private final AtomicBoolean isCompleted = new AtomicBoolean(false);
 
-    private CosmosDiagnosticsSystemUsageSnapshot systemUsage;
+    private Map<String, Object> systemUsage;
 
     private Double samplingRateSnapshot;
 
@@ -271,6 +272,10 @@ public final class CosmosDiagnosticsContext {
 
     void addDiagnostics(CosmosDiagnostics cosmosDiagnostics) {
         checkNotNull(cosmosDiagnostics, "Argument 'cosmosDiagnostics' must not be null.");
+        if (cosmosDiagnostics.getDiagnosticsContext() == this) {
+            return;
+        }
+
         synchronized (this.spanName) {
             if (this.samplingRateSnapshot != null) {
                 diagAccessor.setSamplingRateSnapshot(cosmosDiagnostics, this.samplingRateSnapshot);
@@ -375,14 +380,14 @@ public final class CosmosDiagnosticsContext {
      * a custom {@link CosmosDiagnosticsHandler}
      * @return the system usage
      */
-    public CosmosDiagnosticsSystemUsageSnapshot getSystemUsage() {
+    public Map<String, Object> getSystemUsage() {
         synchronized (this.spanName) {
-            CosmosDiagnosticsSystemUsageSnapshot snapshot = this.systemUsage;
+            Map<String, Object> snapshot = this.systemUsage;
             if (snapshot != null) {
                 return snapshot;
             }
 
-            return this.systemUsage = ClientSideRequestStatistics.fetchSystemInformation();
+            return this.systemUsage = ClientSideRequestStatistics.fetchSystemInformation().toMap();
         }
     }
 
@@ -545,7 +550,11 @@ public final class CosmosDiagnosticsContext {
         }
 
         if (this.finalError != null) {
-            ctxNode.put("exception", this.finalError.toString());
+            if (this.finalError instanceof CosmosException) {
+                ctxNode.put("exception", ((CosmosException)this.finalError).toString(false));
+            } else {
+                ctxNode.put("exception", this.finalError.getMessage());
+            }
         }
 
         if (this.diagnostics != null && this.diagnostics.size() > 0) {
@@ -594,7 +603,7 @@ public final class CosmosDiagnosticsContext {
                 return snapshot;
             }
 
-            this.systemUsage = ClientSideRequestStatistics.fetchSystemInformation();
+            this.systemUsage = ClientSideRequestStatistics.fetchSystemInformation().toMap();
             return this.cachedRequestDiagnostics = getRequestDiagnostics();
         }
     }
@@ -625,28 +634,30 @@ public final class CosmosDiagnosticsContext {
         ClientSideRequestStatistics requestStats,
         List<CosmosDiagnosticsRequestInfo> requestInfo) {
 
-        ClientSideRequestStatistics.GatewayStatistics gatewayStats = requestStats.getGatewayStatistics();
+        List<ClientSideRequestStatistics.GatewayStatistics> gatewayStatsList = requestStats.getGatewayStatisticsList();
 
-        if (gatewayStats == null) {
+        if (gatewayStatsList == null || gatewayStatsList.size() == 0) {
             return;
         }
 
-        CosmosDiagnosticsRequestInfo info = new CosmosDiagnosticsRequestInfo(
-            requestStats.getActivityId(),
-            null,
-            gatewayStats.getPartitionKeyRangeId(),
-            gatewayStats.getResourceType() + ":" + gatewayStats.getOperationType(),
-            requestStats.getRequestStartTimeUTC(),
-            requestStats.getDuration(),
-            null,
-            gatewayStats.getRequestCharge(),
-            gatewayStats.getResponsePayloadSizeInBytes(),
-            gatewayStats.getStatusCode(),
-            gatewayStats.getSubStatusCode(),
-            new ArrayList<>()
-        );
+        for (ClientSideRequestStatistics.GatewayStatistics gatewayStats : gatewayStatsList) {
+            CosmosDiagnosticsRequestInfo info = new CosmosDiagnosticsRequestInfo(
+                requestStats.getActivityId(),
+                null,
+                gatewayStats.getPartitionKeyRangeId(),
+                gatewayStats.getResourceType() + ":" + gatewayStats.getOperationType(),
+                requestStats.getRequestStartTimeUTC(),
+                requestStats.getDuration(),
+                null,
+                gatewayStats.getRequestCharge(),
+                gatewayStats.getResponsePayloadSizeInBytes(),
+                gatewayStats.getStatusCode(),
+                gatewayStats.getSubStatusCode(),
+                new ArrayList<>()
+            );
 
-        requestInfo.add(info);
+            requestInfo.add(info);
+        }
     }
 
     private static void addRequestInfoForStoreResponses(

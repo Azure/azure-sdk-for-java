@@ -20,6 +20,15 @@ public final class ReadableSecondary extends ExpandableStringEnum<ReadableSecond
     public static final ReadableSecondary READ_ONLY = fromString("READ_ONLY");
 
     /**
+     * Creates a new instance of ReadableSecondary value.
+     *
+     * @deprecated Use the {@link #fromString(String)} factory method.
+     */
+    @Deprecated
+    public ReadableSecondary() {
+    }
+
+    /**
      * Creates or finds a ReadableSecondary from its string representation.
      *
      * @param name a name to look for.

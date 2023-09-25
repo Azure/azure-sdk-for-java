@@ -39,7 +39,7 @@ public final class PolicyAssignmentsImpl
 
     @Override
     public Mono<Void> deleteByIdAsync(String id) {
-        return client.deleteByIdAsync(id).then();
+        return client.deleteByIdAsync(ResourceUtils.encodeResourceId(id)).then();
     }
 
     @Override
@@ -80,7 +80,7 @@ public final class PolicyAssignmentsImpl
 
     @Override
     public Mono<PolicyAssignment> getByIdAsync(String id) {
-        return client.getByIdAsync(id)
+        return client.getByIdAsync(ResourceUtils.encodeResourceId(id))
                 .map(this::wrapModel);
     }
 

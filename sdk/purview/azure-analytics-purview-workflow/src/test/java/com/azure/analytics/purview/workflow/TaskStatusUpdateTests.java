@@ -17,7 +17,7 @@ public final class TaskStatusUpdateTests extends PurviewWorkflowClientTestBase {
         RequestOptions requestOptions = new RequestOptions();
         Response<Void> response =
                 purviewWorkflowClient.updateTaskStatusWithResponse(
-                        "a8f67c0b-36a6-48b0-9cbb-8fc4a02281d8", taskUpdateCommand, requestOptions);
+                        "2a9b4f18-4610-4961-bb3b-611e10c21cf7", taskUpdateCommand, requestOptions);
         Assertions.assertEquals(200, response.getStatusCode());
     }
 }

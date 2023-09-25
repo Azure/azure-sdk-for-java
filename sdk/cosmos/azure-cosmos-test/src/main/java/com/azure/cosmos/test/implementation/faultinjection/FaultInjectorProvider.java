@@ -8,7 +8,7 @@ import com.azure.cosmos.CosmosAsyncContainer;
 import com.azure.cosmos.implementation.Utils;
 import com.azure.cosmos.implementation.directconnectivity.rntbd.RntbdEndpoint;
 import com.azure.cosmos.implementation.faultinjection.IFaultInjectorProvider;
-import com.azure.cosmos.implementation.faultinjection.IRntbdServerErrorInjector;
+import com.azure.cosmos.implementation.faultinjection.IServerErrorInjector;
 import com.azure.cosmos.test.faultinjection.FaultInjectionRule;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -25,7 +25,7 @@ import static com.azure.cosmos.implementation.guava25.base.Preconditions.checkNo
 public class FaultInjectorProvider implements IFaultInjectorProvider {
     private final Logger logger = LoggerFactory.getLogger(FaultInjectorProvider.class);
     private final FaultInjectionRuleStore ruleStore;
-    private final RntbdServerErrorInjector serverErrorInjector;
+    private final IServerErrorInjector serverErrorInjector;
     private final String containerNameLink;
 
     private RntbdConnectionErrorInjector connectionErrorInjector;
@@ -36,7 +36,7 @@ public class FaultInjectorProvider implements IFaultInjectorProvider {
         this.containerNameLink =
             Utils.trimBeginningAndEndingSlashes(BridgeInternal.extractContainerSelfLink(cosmosAsyncContainer));
         this.ruleStore = new FaultInjectionRuleStore(cosmosAsyncContainer);
-        this.serverErrorInjector = new RntbdServerErrorInjector(this.ruleStore);
+        this.serverErrorInjector = new ServerErrorInjector(this.ruleStore);
     }
 
     public Mono<Void> configureFaultInjectionRules(List<FaultInjectionRule> rules) {
@@ -44,13 +44,15 @@ public class FaultInjectorProvider implements IFaultInjectorProvider {
             .flatMap(rule -> this.ruleStore.configureFaultInjectionRule(rule, this.containerNameLink))
             .doOnNext(effectiveRule -> {
                 // Important step: this step will start the connection error injection task
-                this.connectionErrorInjector.accept(effectiveRule);
+                if (this.connectionErrorInjector != null) {
+                    this.connectionErrorInjector.accept(effectiveRule);
+                }
             })
             .then();
     }
 
     @Override
-    public IRntbdServerErrorInjector getRntbdServerErrorInjector() {
+    public IServerErrorInjector getServerErrorInjector() {
         return this.serverErrorInjector;
     }
 

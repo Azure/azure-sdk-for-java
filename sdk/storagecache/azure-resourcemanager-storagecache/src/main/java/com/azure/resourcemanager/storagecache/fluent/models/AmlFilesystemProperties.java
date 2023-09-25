@@ -6,6 +6,7 @@ package com.azure.resourcemanager.storagecache.fluent.models;
 
 import com.azure.core.annotation.Fluent;
 import com.azure.core.util.logging.ClientLogger;
+import com.azure.resourcemanager.storagecache.models.AmlFilesystemClientInfo;
 import com.azure.resourcemanager.storagecache.models.AmlFilesystemEncryptionSettings;
 import com.azure.resourcemanager.storagecache.models.AmlFilesystemHealth;
 import com.azure.resourcemanager.storagecache.models.AmlFilesystemPropertiesHsm;
@@ -42,22 +43,10 @@ public final class AmlFilesystemProperties {
     private String filesystemSubnet;
 
     /*
-     * The IPv4 address used by clients to mount the AML file system's Lustre Management Service (MGS).
+     * Client information for the AML file system.
      */
-    @JsonProperty(value = "mgsAddress", access = JsonProperty.Access.WRITE_ONLY)
-    private String mgsAddress;
-
-    /*
-     * Recommended command to mount the AML file system
-     */
-    @JsonProperty(value = "mountCommand", access = JsonProperty.Access.WRITE_ONLY)
-    private String mountCommand;
-
-    /*
-     * The version of Lustre running in the AML file system
-     */
-    @JsonProperty(value = "lustreVersion", access = JsonProperty.Access.WRITE_ONLY)
-    private String lustreVersion;
+    @JsonProperty(value = "clientInfo", access = JsonProperty.Access.WRITE_ONLY)
+    private AmlFilesystemClientInfo clientInfo;
 
     /*
      * Throughput provisioned in MB per sec, calculated as storageCapacityTiB * per-unit storage throughput
@@ -148,31 +137,12 @@ public final class AmlFilesystemProperties {
     }
 
     /**
-     * Get the mgsAddress property: The IPv4 address used by clients to mount the AML file system's Lustre Management
-     * Service (MGS).
+     * Get the clientInfo property: Client information for the AML file system.
      *
-     * @return the mgsAddress value.
+     * @return the clientInfo value.
      */
-    public String mgsAddress() {
-        return this.mgsAddress;
-    }
-
-    /**
-     * Get the mountCommand property: Recommended command to mount the AML file system.
-     *
-     * @return the mountCommand value.
-     */
-    public String mountCommand() {
-        return this.mountCommand;
-    }
-
-    /**
-     * Get the lustreVersion property: The version of Lustre running in the AML file system.
-     *
-     * @return the lustreVersion value.
-     */
-    public String lustreVersion() {
-        return this.lustreVersion;
+    public AmlFilesystemClientInfo clientInfo() {
+        return this.clientInfo;
     }
 
     /**
@@ -259,6 +229,9 @@ public final class AmlFilesystemProperties {
                 .logExceptionAsError(
                     new IllegalArgumentException(
                         "Missing required property filesystemSubnet in model AmlFilesystemProperties"));
+        }
+        if (clientInfo() != null) {
+            clientInfo().validate();
         }
         if (encryptionSettings() != null) {
             encryptionSettings().validate();

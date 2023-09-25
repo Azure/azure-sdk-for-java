@@ -36,9 +36,9 @@ import com.azure.core.util.polling.SyncPoller;
 import com.azure.resourcemanager.mobilenetwork.fluent.PacketCoreControlPlanesClient;
 import com.azure.resourcemanager.mobilenetwork.fluent.models.AsyncOperationStatusInner;
 import com.azure.resourcemanager.mobilenetwork.fluent.models.PacketCoreControlPlaneInner;
+import com.azure.resourcemanager.mobilenetwork.models.IdentityAndTagsObject;
 import com.azure.resourcemanager.mobilenetwork.models.PacketCoreControlPlaneCollectDiagnosticsPackage;
 import com.azure.resourcemanager.mobilenetwork.models.PacketCoreControlPlaneListResult;
-import com.azure.resourcemanager.mobilenetwork.models.TagsObject;
 import java.nio.ByteBuffer;
 import reactor.core.publisher.Flux;
 import reactor.core.publisher.Mono;
@@ -72,8 +72,7 @@ public final class PacketCoreControlPlanesClientImpl implements PacketCoreContro
     public interface PacketCoreControlPlanesService {
         @Headers({"Content-Type: application/json"})
         @Delete(
-            "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.MobileNetwork"
-                + "/packetCoreControlPlanes/{packetCoreControlPlaneName}")
+            "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.MobileNetwork/packetCoreControlPlanes/{packetCoreControlPlaneName}")
         @ExpectedResponses({200, 202, 204})
         @UnexpectedResponseExceptionType(ManagementException.class)
         Mono<Response<Flux<ByteBuffer>>> delete(
@@ -87,8 +86,7 @@ public final class PacketCoreControlPlanesClientImpl implements PacketCoreContro
 
         @Headers({"Content-Type: application/json"})
         @Get(
-            "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.MobileNetwork"
-                + "/packetCoreControlPlanes/{packetCoreControlPlaneName}")
+            "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.MobileNetwork/packetCoreControlPlanes/{packetCoreControlPlaneName}")
         @ExpectedResponses({200})
         @UnexpectedResponseExceptionType(ManagementException.class)
         Mono<Response<PacketCoreControlPlaneInner>> getByResourceGroup(
@@ -102,8 +100,7 @@ public final class PacketCoreControlPlanesClientImpl implements PacketCoreContro
 
         @Headers({"Content-Type: application/json"})
         @Put(
-            "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.MobileNetwork"
-                + "/packetCoreControlPlanes/{packetCoreControlPlaneName}")
+            "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.MobileNetwork/packetCoreControlPlanes/{packetCoreControlPlaneName}")
         @ExpectedResponses({200, 201})
         @UnexpectedResponseExceptionType(ManagementException.class)
         Mono<Response<Flux<ByteBuffer>>> createOrUpdate(
@@ -118,8 +115,7 @@ public final class PacketCoreControlPlanesClientImpl implements PacketCoreContro
 
         @Headers({"Content-Type: application/json"})
         @Patch(
-            "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.MobileNetwork"
-                + "/packetCoreControlPlanes/{packetCoreControlPlaneName}")
+            "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.MobileNetwork/packetCoreControlPlanes/{packetCoreControlPlaneName}")
         @ExpectedResponses({200})
         @UnexpectedResponseExceptionType(ManagementException.class)
         Mono<Response<PacketCoreControlPlaneInner>> updateTags(
@@ -128,7 +124,7 @@ public final class PacketCoreControlPlanesClientImpl implements PacketCoreContro
             @PathParam("packetCoreControlPlaneName") String packetCoreControlPlaneName,
             @QueryParam("api-version") String apiVersion,
             @PathParam("subscriptionId") String subscriptionId,
-            @BodyParam("application/json") TagsObject parameters,
+            @BodyParam("application/json") IdentityAndTagsObject parameters,
             @HeaderParam("Accept") String accept,
             Context context);
 
@@ -145,8 +141,7 @@ public final class PacketCoreControlPlanesClientImpl implements PacketCoreContro
 
         @Headers({"Content-Type: application/json"})
         @Get(
-            "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.MobileNetwork"
-                + "/packetCoreControlPlanes")
+            "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.MobileNetwork/packetCoreControlPlanes")
         @ExpectedResponses({200})
         @UnexpectedResponseExceptionType(ManagementException.class)
         Mono<Response<PacketCoreControlPlaneListResult>> listByResourceGroup(
@@ -159,8 +154,7 @@ public final class PacketCoreControlPlanesClientImpl implements PacketCoreContro
 
         @Headers({"Content-Type: application/json"})
         @Post(
-            "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.MobileNetwork"
-                + "/packetCoreControlPlanes/{packetCoreControlPlaneName}/rollback")
+            "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.MobileNetwork/packetCoreControlPlanes/{packetCoreControlPlaneName}/rollback")
         @ExpectedResponses({200, 202})
         @UnexpectedResponseExceptionType(ManagementException.class)
         Mono<Response<Flux<ByteBuffer>>> rollback(
@@ -174,8 +168,7 @@ public final class PacketCoreControlPlanesClientImpl implements PacketCoreContro
 
         @Headers({"Content-Type: application/json"})
         @Post(
-            "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.MobileNetwork"
-                + "/packetCoreControlPlanes/{packetCoreControlPlaneName}/reinstall")
+            "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.MobileNetwork/packetCoreControlPlanes/{packetCoreControlPlaneName}/reinstall")
         @ExpectedResponses({200, 202})
         @UnexpectedResponseExceptionType(ManagementException.class)
         Mono<Response<Flux<ByteBuffer>>> reinstall(
@@ -189,8 +182,7 @@ public final class PacketCoreControlPlanesClientImpl implements PacketCoreContro
 
         @Headers({"Content-Type: application/json"})
         @Post(
-            "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.MobileNetwork"
-                + "/packetCoreControlPlanes/{packetCoreControlPlaneName}/collectDiagnosticsPackage")
+            "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.MobileNetwork/packetCoreControlPlanes/{packetCoreControlPlaneName}/collectDiagnosticsPackage")
         @ExpectedResponses({200, 202})
         @UnexpectedResponseExceptionType(ManagementException.class)
         Mono<Response<Flux<ByteBuffer>>> collectDiagnosticsPackage(
@@ -908,11 +900,11 @@ public final class PacketCoreControlPlanesClientImpl implements PacketCoreContro
     }
 
     /**
-     * Updates packet core control planes tags.
+     * Patch packet core control plane resource.
      *
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param packetCoreControlPlaneName The name of the packet core control plane.
-     * @param parameters Parameters supplied to update packet core control plane tags.
+     * @param parameters Parameters supplied to patch packet core control plane resource.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
@@ -920,7 +912,7 @@ public final class PacketCoreControlPlanesClientImpl implements PacketCoreContro
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Mono<Response<PacketCoreControlPlaneInner>> updateTagsWithResponseAsync(
-        String resourceGroupName, String packetCoreControlPlaneName, TagsObject parameters) {
+        String resourceGroupName, String packetCoreControlPlaneName, IdentityAndTagsObject parameters) {
         if (this.client.getEndpoint() == null) {
             return Mono
                 .error(
@@ -966,11 +958,11 @@ public final class PacketCoreControlPlanesClientImpl implements PacketCoreContro
     }
 
     /**
-     * Updates packet core control planes tags.
+     * Patch packet core control plane resource.
      *
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param packetCoreControlPlaneName The name of the packet core control plane.
-     * @param parameters Parameters supplied to update packet core control plane tags.
+     * @param parameters Parameters supplied to patch packet core control plane resource.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
@@ -979,7 +971,10 @@ public final class PacketCoreControlPlanesClientImpl implements PacketCoreContro
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Mono<Response<PacketCoreControlPlaneInner>> updateTagsWithResponseAsync(
-        String resourceGroupName, String packetCoreControlPlaneName, TagsObject parameters, Context context) {
+        String resourceGroupName,
+        String packetCoreControlPlaneName,
+        IdentityAndTagsObject parameters,
+        Context context) {
         if (this.client.getEndpoint() == null) {
             return Mono
                 .error(
@@ -1022,11 +1017,11 @@ public final class PacketCoreControlPlanesClientImpl implements PacketCoreContro
     }
 
     /**
-     * Updates packet core control planes tags.
+     * Patch packet core control plane resource.
      *
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param packetCoreControlPlaneName The name of the packet core control plane.
-     * @param parameters Parameters supplied to update packet core control plane tags.
+     * @param parameters Parameters supplied to patch packet core control plane resource.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
@@ -1034,17 +1029,17 @@ public final class PacketCoreControlPlanesClientImpl implements PacketCoreContro
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Mono<PacketCoreControlPlaneInner> updateTagsAsync(
-        String resourceGroupName, String packetCoreControlPlaneName, TagsObject parameters) {
+        String resourceGroupName, String packetCoreControlPlaneName, IdentityAndTagsObject parameters) {
         return updateTagsWithResponseAsync(resourceGroupName, packetCoreControlPlaneName, parameters)
             .flatMap(res -> Mono.justOrEmpty(res.getValue()));
     }
 
     /**
-     * Updates packet core control planes tags.
+     * Patch packet core control plane resource.
      *
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param packetCoreControlPlaneName The name of the packet core control plane.
-     * @param parameters Parameters supplied to update packet core control plane tags.
+     * @param parameters Parameters supplied to patch packet core control plane resource.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
@@ -1053,16 +1048,19 @@ public final class PacketCoreControlPlanesClientImpl implements PacketCoreContro
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Response<PacketCoreControlPlaneInner> updateTagsWithResponse(
-        String resourceGroupName, String packetCoreControlPlaneName, TagsObject parameters, Context context) {
+        String resourceGroupName,
+        String packetCoreControlPlaneName,
+        IdentityAndTagsObject parameters,
+        Context context) {
         return updateTagsWithResponseAsync(resourceGroupName, packetCoreControlPlaneName, parameters, context).block();
     }
 
     /**
-     * Updates packet core control planes tags.
+     * Patch packet core control plane resource.
      *
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param packetCoreControlPlaneName The name of the packet core control plane.
-     * @param parameters Parameters supplied to update packet core control plane tags.
+     * @param parameters Parameters supplied to patch packet core control plane resource.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
@@ -1070,7 +1068,7 @@ public final class PacketCoreControlPlanesClientImpl implements PacketCoreContro
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public PacketCoreControlPlaneInner updateTags(
-        String resourceGroupName, String packetCoreControlPlaneName, TagsObject parameters) {
+        String resourceGroupName, String packetCoreControlPlaneName, IdentityAndTagsObject parameters) {
         return updateTagsWithResponse(resourceGroupName, packetCoreControlPlaneName, parameters, Context.NONE)
             .getValue();
     }

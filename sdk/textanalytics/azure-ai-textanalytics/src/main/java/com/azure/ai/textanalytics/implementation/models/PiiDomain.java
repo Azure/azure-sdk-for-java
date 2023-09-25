@@ -10,11 +10,19 @@ import java.util.Collection;
 
 /** The PII domain used for PII Entity Recognition. */
 public final class PiiDomain extends ExpandableStringEnum<PiiDomain> {
-    /** Static value phi for PiiDomain. */
+    /** Indicates that entities in the Personal Health Information domain should be redacted. */
     public static final PiiDomain PHI = fromString("phi");
 
-    /** Static value none for PiiDomain. */
+    /** Indicates that no domain is specified. */
     public static final PiiDomain NONE = fromString("none");
+
+    /**
+     * Creates a new instance of PiiDomain value.
+     *
+     * @deprecated Use the {@link #fromString(String)} factory method.
+     */
+    @Deprecated
+    public PiiDomain() {}
 
     /**
      * Creates or finds a PiiDomain from its string representation.

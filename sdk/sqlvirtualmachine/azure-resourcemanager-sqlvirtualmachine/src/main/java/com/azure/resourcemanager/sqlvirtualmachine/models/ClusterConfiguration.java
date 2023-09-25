@@ -14,6 +14,15 @@ public final class ClusterConfiguration extends ExpandableStringEnum<ClusterConf
     public static final ClusterConfiguration DOMAINFUL = fromString("Domainful");
 
     /**
+     * Creates a new instance of ClusterConfiguration value.
+     *
+     * @deprecated Use the {@link #fromString(String)} factory method.
+     */
+    @Deprecated
+    public ClusterConfiguration() {
+    }
+
+    /**
      * Creates or finds a ClusterConfiguration from its string representation.
      *
      * @param name a name to look for.

@@ -12,76 +12,75 @@ import com.azure.resourcemanager.sqlvirtualmachine.models.StorageConfigurationSe
 import com.azure.resourcemanager.sqlvirtualmachine.models.StorageWorkloadType;
 import java.util.Arrays;
 import org.junit.jupiter.api.Assertions;
-import org.junit.jupiter.api.Test;
 
 public final class StorageConfigurationSettingsTests {
-    @Test
-    public void testDeserialize() {
+    @org.junit.jupiter.api.Test
+    public void testDeserialize() throws Exception {
         StorageConfigurationSettings model =
             BinaryData
                 .fromString(
-                    "{\"sqlDataSettings\":{\"luns\":[10143119,1108075171,1769769453],\"defaultFilePath\":\"gvcl\"},\"sqlLogSettings\":{\"luns\":[1745548413,142984166,750018132],\"defaultFilePath\":\"kjeszz\"},\"sqlTempDbSettings\":{\"dataFileSize\":1755265349,\"dataGrowth\":1508297714,\"logFileSize\":836032675,\"logGrowth\":502156658,\"dataFileCount\":667929438,\"persistFolder\":false,\"persistFolderPath\":\"xnehmpvec\",\"luns\":[1976417253,68854326,1592452117,1209438571],\"defaultFilePath\":\"kk\"},\"sqlSystemDbOnDataDisk\":false,\"diskConfigurationType\":\"NEW\",\"storageWorkloadType\":\"DW\"}")
+                    "{\"sqlDataSettings\":{\"luns\":[1911186108,2119975108],\"defaultFilePath\":\"mcmatuokthfuiu\"},\"sqlLogSettings\":{\"luns\":[680550088,2105680522,397485144,1099680690],\"defaultFilePath\":\"xodpuozmyzydagfu\"},\"sqlTempDbSettings\":{\"dataFileSize\":1613770943,\"dataGrowth\":45811298,\"logFileSize\":1016147904,\"logGrowth\":3069980,\"dataFileCount\":1285068717,\"persistFolder\":true,\"persistFolderPath\":\"dxwzywqsmbsurexi\",\"luns\":[998039935,1010959661,1027022233,994913433],\"defaultFilePath\":\"fksymddystki\"},\"sqlSystemDbOnDataDisk\":true,\"diskConfigurationType\":\"ADD\",\"storageWorkloadType\":\"OLTP\"}")
                 .toObject(StorageConfigurationSettings.class);
-        Assertions.assertEquals(10143119, model.sqlDataSettings().luns().get(0));
-        Assertions.assertEquals("gvcl", model.sqlDataSettings().defaultFilePath());
-        Assertions.assertEquals(1745548413, model.sqlLogSettings().luns().get(0));
-        Assertions.assertEquals("kjeszz", model.sqlLogSettings().defaultFilePath());
-        Assertions.assertEquals(1755265349, model.sqlTempDbSettings().dataFileSize());
-        Assertions.assertEquals(1508297714, model.sqlTempDbSettings().dataGrowth());
-        Assertions.assertEquals(836032675, model.sqlTempDbSettings().logFileSize());
-        Assertions.assertEquals(502156658, model.sqlTempDbSettings().logGrowth());
-        Assertions.assertEquals(667929438, model.sqlTempDbSettings().dataFileCount());
-        Assertions.assertEquals(false, model.sqlTempDbSettings().persistFolder());
-        Assertions.assertEquals("xnehmpvec", model.sqlTempDbSettings().persistFolderPath());
-        Assertions.assertEquals(1976417253, model.sqlTempDbSettings().luns().get(0));
-        Assertions.assertEquals("kk", model.sqlTempDbSettings().defaultFilePath());
-        Assertions.assertEquals(false, model.sqlSystemDbOnDataDisk());
-        Assertions.assertEquals(DiskConfigurationType.NEW, model.diskConfigurationType());
-        Assertions.assertEquals(StorageWorkloadType.DW, model.storageWorkloadType());
+        Assertions.assertEquals(1911186108, model.sqlDataSettings().luns().get(0));
+        Assertions.assertEquals("mcmatuokthfuiu", model.sqlDataSettings().defaultFilePath());
+        Assertions.assertEquals(680550088, model.sqlLogSettings().luns().get(0));
+        Assertions.assertEquals("xodpuozmyzydagfu", model.sqlLogSettings().defaultFilePath());
+        Assertions.assertEquals(1613770943, model.sqlTempDbSettings().dataFileSize());
+        Assertions.assertEquals(45811298, model.sqlTempDbSettings().dataGrowth());
+        Assertions.assertEquals(1016147904, model.sqlTempDbSettings().logFileSize());
+        Assertions.assertEquals(3069980, model.sqlTempDbSettings().logGrowth());
+        Assertions.assertEquals(1285068717, model.sqlTempDbSettings().dataFileCount());
+        Assertions.assertEquals(true, model.sqlTempDbSettings().persistFolder());
+        Assertions.assertEquals("dxwzywqsmbsurexi", model.sqlTempDbSettings().persistFolderPath());
+        Assertions.assertEquals(998039935, model.sqlTempDbSettings().luns().get(0));
+        Assertions.assertEquals("fksymddystki", model.sqlTempDbSettings().defaultFilePath());
+        Assertions.assertEquals(true, model.sqlSystemDbOnDataDisk());
+        Assertions.assertEquals(DiskConfigurationType.ADD, model.diskConfigurationType());
+        Assertions.assertEquals(StorageWorkloadType.OLTP, model.storageWorkloadType());
     }
 
-    @Test
-    public void testSerialize() {
+    @org.junit.jupiter.api.Test
+    public void testSerialize() throws Exception {
         StorageConfigurationSettings model =
             new StorageConfigurationSettings()
                 .withSqlDataSettings(
                     new SqlStorageSettings()
-                        .withLuns(Arrays.asList(10143119, 1108075171, 1769769453))
-                        .withDefaultFilePath("gvcl"))
+                        .withLuns(Arrays.asList(1911186108, 2119975108))
+                        .withDefaultFilePath("mcmatuokthfuiu"))
                 .withSqlLogSettings(
                     new SqlStorageSettings()
-                        .withLuns(Arrays.asList(1745548413, 142984166, 750018132))
-                        .withDefaultFilePath("kjeszz"))
+                        .withLuns(Arrays.asList(680550088, 2105680522, 397485144, 1099680690))
+                        .withDefaultFilePath("xodpuozmyzydagfu"))
                 .withSqlTempDbSettings(
                     new SqlTempDbSettings()
-                        .withDataFileSize(1755265349)
-                        .withDataGrowth(1508297714)
-                        .withLogFileSize(836032675)
-                        .withLogGrowth(502156658)
-                        .withDataFileCount(667929438)
-                        .withPersistFolder(false)
-                        .withPersistFolderPath("xnehmpvec")
-                        .withLuns(Arrays.asList(1976417253, 68854326, 1592452117, 1209438571))
-                        .withDefaultFilePath("kk"))
-                .withSqlSystemDbOnDataDisk(false)
-                .withDiskConfigurationType(DiskConfigurationType.NEW)
-                .withStorageWorkloadType(StorageWorkloadType.DW);
+                        .withDataFileSize(1613770943)
+                        .withDataGrowth(45811298)
+                        .withLogFileSize(1016147904)
+                        .withLogGrowth(3069980)
+                        .withDataFileCount(1285068717)
+                        .withPersistFolder(true)
+                        .withPersistFolderPath("dxwzywqsmbsurexi")
+                        .withLuns(Arrays.asList(998039935, 1010959661, 1027022233, 994913433))
+                        .withDefaultFilePath("fksymddystki"))
+                .withSqlSystemDbOnDataDisk(true)
+                .withDiskConfigurationType(DiskConfigurationType.ADD)
+                .withStorageWorkloadType(StorageWorkloadType.OLTP);
         model = BinaryData.fromObject(model).toObject(StorageConfigurationSettings.class);
-        Assertions.assertEquals(10143119, model.sqlDataSettings().luns().get(0));
-        Assertions.assertEquals("gvcl", model.sqlDataSettings().defaultFilePath());
-        Assertions.assertEquals(1745548413, model.sqlLogSettings().luns().get(0));
-        Assertions.assertEquals("kjeszz", model.sqlLogSettings().defaultFilePath());
-        Assertions.assertEquals(1755265349, model.sqlTempDbSettings().dataFileSize());
-        Assertions.assertEquals(1508297714, model.sqlTempDbSettings().dataGrowth());
-        Assertions.assertEquals(836032675, model.sqlTempDbSettings().logFileSize());
-        Assertions.assertEquals(502156658, model.sqlTempDbSettings().logGrowth());
-        Assertions.assertEquals(667929438, model.sqlTempDbSettings().dataFileCount());
-        Assertions.assertEquals(false, model.sqlTempDbSettings().persistFolder());
-        Assertions.assertEquals("xnehmpvec", model.sqlTempDbSettings().persistFolderPath());
-        Assertions.assertEquals(1976417253, model.sqlTempDbSettings().luns().get(0));
-        Assertions.assertEquals("kk", model.sqlTempDbSettings().defaultFilePath());
-        Assertions.assertEquals(false, model.sqlSystemDbOnDataDisk());
-        Assertions.assertEquals(DiskConfigurationType.NEW, model.diskConfigurationType());
-        Assertions.assertEquals(StorageWorkloadType.DW, model.storageWorkloadType());
+        Assertions.assertEquals(1911186108, model.sqlDataSettings().luns().get(0));
+        Assertions.assertEquals("mcmatuokthfuiu", model.sqlDataSettings().defaultFilePath());
+        Assertions.assertEquals(680550088, model.sqlLogSettings().luns().get(0));
+        Assertions.assertEquals("xodpuozmyzydagfu", model.sqlLogSettings().defaultFilePath());
+        Assertions.assertEquals(1613770943, model.sqlTempDbSettings().dataFileSize());
+        Assertions.assertEquals(45811298, model.sqlTempDbSettings().dataGrowth());
+        Assertions.assertEquals(1016147904, model.sqlTempDbSettings().logFileSize());
+        Assertions.assertEquals(3069980, model.sqlTempDbSettings().logGrowth());
+        Assertions.assertEquals(1285068717, model.sqlTempDbSettings().dataFileCount());
+        Assertions.assertEquals(true, model.sqlTempDbSettings().persistFolder());
+        Assertions.assertEquals("dxwzywqsmbsurexi", model.sqlTempDbSettings().persistFolderPath());
+        Assertions.assertEquals(998039935, model.sqlTempDbSettings().luns().get(0));
+        Assertions.assertEquals("fksymddystki", model.sqlTempDbSettings().defaultFilePath());
+        Assertions.assertEquals(true, model.sqlSystemDbOnDataDisk());
+        Assertions.assertEquals(DiskConfigurationType.ADD, model.diskConfigurationType());
+        Assertions.assertEquals(StorageWorkloadType.OLTP, model.storageWorkloadType());
     }
 }

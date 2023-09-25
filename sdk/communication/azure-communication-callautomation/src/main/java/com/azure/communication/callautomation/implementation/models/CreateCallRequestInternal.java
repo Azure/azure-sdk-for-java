@@ -56,6 +56,12 @@ public final class CreateCallRequestInternal {
     private MediaStreamingConfigurationInternal mediaStreamingConfiguration;
 
     /*
+     * Live Transcription Configuration.
+     */
+    @JsonProperty(value = "transcriptionConfiguration")
+    private TranscriptionConfiguration transcriptionConfiguration;
+
+    /*
      * The identifier of the Cognitive Service resource assigned to this call.
      */
     @JsonProperty(value = "azureCognitiveServicesEndpointUrl")
@@ -207,6 +213,27 @@ public final class CreateCallRequestInternal {
     public CreateCallRequestInternal setMediaStreamingConfiguration(
             MediaStreamingConfigurationInternal mediaStreamingConfiguration) {
         this.mediaStreamingConfiguration = mediaStreamingConfiguration;
+        return this;
+    }
+
+    /**
+     * Get the transcriptionConfiguration property: Live Transcription Configuration.
+     *
+     * @return the transcriptionConfiguration value.
+     */
+    public TranscriptionConfiguration getTranscriptionConfiguration() {
+        return this.transcriptionConfiguration;
+    }
+
+    /**
+     * Set the transcriptionConfiguration property: Live Transcription Configuration.
+     *
+     * @param transcriptionConfiguration the transcriptionConfiguration value to set.
+     * @return the CreateCallRequestInternal object itself.
+     */
+    public CreateCallRequestInternal setTranscriptionConfiguration(
+            TranscriptionConfiguration transcriptionConfiguration) {
+        this.transcriptionConfiguration = transcriptionConfiguration;
         return this;
     }
 

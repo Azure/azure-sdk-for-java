@@ -12,24 +12,22 @@ import java.time.OffsetDateTime;
 @Fluent
 public final class ReportRecordContractInner {
     /*
-     * Name depending on report endpoint specifies product, API, operation or
-     * developer name.
+     * Name depending on report endpoint specifies product, API, operation or developer name.
      */
     @JsonProperty(value = "name")
     private String name;
 
     /*
-     * Start of aggregation period. The date conforms to the following format:
-     * `yyyy-MM-ddTHH:mm:ssZ` as specified by the ISO 8601 standard.
+     * Start of aggregation period. The date conforms to the following format: `yyyy-MM-ddTHH:mm:ssZ` as specified by
+     * the ISO 8601 standard.
      *
      */
     @JsonProperty(value = "timestamp")
     private OffsetDateTime timestamp;
 
     /*
-     * Length of aggregation period.  Interval must be multiple of 15 minutes
-     * and may not be zero. The value should be in ISO 8601 format
-     * (http://en.wikipedia.org/wiki/ISO_8601#Durations).
+     * Length of aggregation period.  Interval must be multiple of 15 minutes and may not be zero. The value should be
+     * in ISO 8601 format (http://en.wikipedia.org/wiki/ISO_8601#Durations).
      */
     @JsonProperty(value = "interval")
     private String interval;
@@ -89,25 +87,22 @@ public final class ReportRecordContractInner {
     private String subscriptionId;
 
     /*
-     * Number of successful calls. This includes calls returning HttpStatusCode
-     * <= 301 and HttpStatusCode.NotModified and
-     * HttpStatusCode.TemporaryRedirect
+     * Number of successful calls. This includes calls returning HttpStatusCode <= 301 and HttpStatusCode.NotModified
+     * and HttpStatusCode.TemporaryRedirect
      */
     @JsonProperty(value = "callCountSuccess")
     private Integer callCountSuccess;
 
     /*
-     * Number of calls blocked due to invalid credentials. This includes calls
-     * returning HttpStatusCode.Unauthorized and HttpStatusCode.Forbidden and
-     * HttpStatusCode.TooManyRequests
+     * Number of calls blocked due to invalid credentials. This includes calls returning HttpStatusCode.Unauthorized
+     * and HttpStatusCode.Forbidden and HttpStatusCode.TooManyRequests
      */
     @JsonProperty(value = "callCountBlocked")
     private Integer callCountBlocked;
 
     /*
-     * Number of calls failed due to proxy or backend errors. This includes
-     * calls returning HttpStatusCode.BadRequest(400) and any Code between
-     * HttpStatusCode.InternalServerError (500) and 600
+     * Number of calls failed due to gateway or backend errors. This includes calls returning
+     * HttpStatusCode.BadRequest(400) and any Code between HttpStatusCode.InternalServerError (500) and 600
      */
     @JsonProperty(value = "callCountFailed")
     private Integer callCountFailed;
@@ -177,6 +172,10 @@ public final class ReportRecordContractInner {
      */
     @JsonProperty(value = "serviceTimeMax")
     private Double serviceTimeMax;
+
+    /** Creates an instance of ReportRecordContractInner class. */
+    public ReportRecordContractInner() {
+    }
 
     /**
      * Get the name property: Name depending on report endpoint specifies product, API, operation or developer name.
@@ -445,7 +444,7 @@ public final class ReportRecordContractInner {
     }
 
     /**
-     * Get the callCountFailed property: Number of calls failed due to proxy or backend errors. This includes calls
+     * Get the callCountFailed property: Number of calls failed due to gateway or backend errors. This includes calls
      * returning HttpStatusCode.BadRequest(400) and any Code between HttpStatusCode.InternalServerError (500) and 600.
      *
      * @return the callCountFailed value.
@@ -455,7 +454,7 @@ public final class ReportRecordContractInner {
     }
 
     /**
-     * Set the callCountFailed property: Number of calls failed due to proxy or backend errors. This includes calls
+     * Set the callCountFailed property: Number of calls failed due to gateway or backend errors. This includes calls
      * returning HttpStatusCode.BadRequest(400) and any Code between HttpStatusCode.InternalServerError (500) and 600.
      *
      * @param callCountFailed the callCountFailed value to set.

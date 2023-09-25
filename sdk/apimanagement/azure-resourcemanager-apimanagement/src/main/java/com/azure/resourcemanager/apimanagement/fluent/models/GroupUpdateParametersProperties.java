@@ -30,13 +30,16 @@ public final class GroupUpdateParametersProperties {
     private GroupType type;
 
     /*
-     * Identifier of the external groups, this property contains the id of the
-     * group from the external identity provider, e.g. for Azure Active
-     * Directory `aad://<tenant>.onmicrosoft.com/groups/<group object id>`;
-     * otherwise the value is null.
+     * Identifier of the external groups, this property contains the id of the group from the external identity
+     * provider, e.g. for Azure Active Directory `aad://<tenant>.onmicrosoft.com/groups/<group object id>`; otherwise
+     * the value is null.
      */
     @JsonProperty(value = "externalId")
     private String externalId;
+
+    /** Creates an instance of GroupUpdateParametersProperties class. */
+    public GroupUpdateParametersProperties() {
+    }
 
     /**
      * Get the displayName property: Group name.

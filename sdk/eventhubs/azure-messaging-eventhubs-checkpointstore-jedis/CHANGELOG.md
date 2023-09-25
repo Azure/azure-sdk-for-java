@@ -1,10 +1,6 @@
 # Release History
 
-## 1.0.0-beta.2 (Unreleased)
-
-### Features Added
-
-### Breaking Changes
+## 1.0.0-beta.2 (2023-09-22)
 
 ### Bugs Fixed
 
@@ -12,6 +8,10 @@
 - Fixes bug where error not returned when creating partition ownerships.
 
 ### Other Changes
+
+#### Dependency Updates
+
+- Upgraded `azure-messaging-eventhubs` from `5.15.2` to version `5.16.0`.
 
 ## 1.0.0-beta.1 (2023-02-13)
 

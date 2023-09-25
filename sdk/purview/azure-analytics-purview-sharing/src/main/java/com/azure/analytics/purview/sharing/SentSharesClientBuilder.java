@@ -287,6 +287,6 @@ public final class SentSharesClientBuilder
      */
     @Generated
     public SentSharesClient buildClient() {
-        return new SentSharesClient(buildInnerClient().getSentShares());
+        return new SentSharesClient(new SentSharesAsyncClient(buildInnerClient().getSentShares()));
     }
 }

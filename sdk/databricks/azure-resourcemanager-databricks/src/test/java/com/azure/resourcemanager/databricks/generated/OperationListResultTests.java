@@ -17,13 +17,14 @@ public final class OperationListResultTests {
         OperationListResult model =
             BinaryData
                 .fromString(
-                    "{\"value\":[{\"name\":\"fpfpsalgbquxigj\",\"display\":{\"provider\":\"zjaoyfhrtxil\",\"resource\":\"rkujy\",\"operation\":\"l\"}}],\"nextLink\":\"uvfqawrlyxwj\"}")
+                    "{\"value\":[{\"name\":\"kexxppof\",\"display\":{\"provider\":\"x\",\"resource\":\"jpgd\",\"operation\":\"ocjjxhvpmouexh\",\"description\":\"xibqeojnx\"}},{\"name\":\"zvddntwndeicbtwn\",\"display\":{\"provider\":\"oqvuhr\",\"resource\":\"f\",\"operation\":\"yd\",\"description\":\"lmjthjq\"}}],\"nextLink\":\"pyeicxm\"}")
                 .toObject(OperationListResult.class);
-        Assertions.assertEquals("fpfpsalgbquxigj", model.value().get(0).name());
-        Assertions.assertEquals("zjaoyfhrtxil", model.value().get(0).display().provider());
-        Assertions.assertEquals("rkujy", model.value().get(0).display().resource());
-        Assertions.assertEquals("l", model.value().get(0).display().operation());
-        Assertions.assertEquals("uvfqawrlyxwj", model.nextLink());
+        Assertions.assertEquals("kexxppof", model.value().get(0).name());
+        Assertions.assertEquals("x", model.value().get(0).display().provider());
+        Assertions.assertEquals("jpgd", model.value().get(0).display().resource());
+        Assertions.assertEquals("ocjjxhvpmouexh", model.value().get(0).display().operation());
+        Assertions.assertEquals("xibqeojnx", model.value().get(0).display().description());
+        Assertions.assertEquals("pyeicxm", model.nextLink());
     }
 
     @org.junit.jupiter.api.Test
@@ -34,18 +35,28 @@ public final class OperationListResultTests {
                     Arrays
                         .asList(
                             new OperationInner()
-                                .withName("fpfpsalgbquxigj")
+                                .withName("kexxppof")
                                 .withDisplay(
                                     new OperationDisplay()
-                                        .withProvider("zjaoyfhrtxil")
-                                        .withResource("rkujy")
-                                        .withOperation("l"))))
-                .withNextLink("uvfqawrlyxwj");
+                                        .withProvider("x")
+                                        .withResource("jpgd")
+                                        .withOperation("ocjjxhvpmouexh")
+                                        .withDescription("xibqeojnx")),
+                            new OperationInner()
+                                .withName("zvddntwndeicbtwn")
+                                .withDisplay(
+                                    new OperationDisplay()
+                                        .withProvider("oqvuhr")
+                                        .withResource("f")
+                                        .withOperation("yd")
+                                        .withDescription("lmjthjq"))))
+                .withNextLink("pyeicxm");
         model = BinaryData.fromObject(model).toObject(OperationListResult.class);
-        Assertions.assertEquals("fpfpsalgbquxigj", model.value().get(0).name());
-        Assertions.assertEquals("zjaoyfhrtxil", model.value().get(0).display().provider());
-        Assertions.assertEquals("rkujy", model.value().get(0).display().resource());
-        Assertions.assertEquals("l", model.value().get(0).display().operation());
-        Assertions.assertEquals("uvfqawrlyxwj", model.nextLink());
+        Assertions.assertEquals("kexxppof", model.value().get(0).name());
+        Assertions.assertEquals("x", model.value().get(0).display().provider());
+        Assertions.assertEquals("jpgd", model.value().get(0).display().resource());
+        Assertions.assertEquals("ocjjxhvpmouexh", model.value().get(0).display().operation());
+        Assertions.assertEquals("xibqeojnx", model.value().get(0).display().description());
+        Assertions.assertEquals("pyeicxm", model.nextLink());
     }
 }

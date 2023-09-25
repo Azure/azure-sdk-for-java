@@ -114,8 +114,8 @@ public final class ConsolePatchParameters {
     }
 
     /**
-     * Get the sshPublicKey property: SshPublicKey represents the public key used to authenticate with the virtual
-     * machine through SSH.
+     * Get the sshPublicKey property: SshPublicKey represents the public key used to authenticate with a resource
+     * through SSH.
      *
      * <p>The SSH public key that will be provisioned for user access. The user is expected to have the corresponding
      * SSH private key for logging in.
@@ -127,8 +127,8 @@ public final class ConsolePatchParameters {
     }
 
     /**
-     * Set the sshPublicKey property: SshPublicKey represents the public key used to authenticate with the virtual
-     * machine through SSH.
+     * Set the sshPublicKey property: SshPublicKey represents the public key used to authenticate with a resource
+     * through SSH.
      *
      * <p>The SSH public key that will be provisioned for user access. The user is expected to have the corresponding
      * SSH private key for logging in.

@@ -13,7 +13,7 @@ public final class CreatedByTests {
         CreatedBy model =
             BinaryData
                 .fromString(
-                    "{\"oid\":\"563deaa2-55b5-4d19-b57e-b8082fc4b090\",\"puid\":\"fxqeof\",\"applicationId\":\"be8b35f4-47d1-4d61-b569-98f75bd167ae\"}")
+                    "{\"oid\":\"d98edc34-6ad1-4d2d-9641-917b45563bda\",\"puid\":\"ldhugjzzdatqxh\",\"applicationId\":\"c0c78437-4350-418a-9905-82050a57b994\"}")
                 .toObject(CreatedBy.class);
     }
 

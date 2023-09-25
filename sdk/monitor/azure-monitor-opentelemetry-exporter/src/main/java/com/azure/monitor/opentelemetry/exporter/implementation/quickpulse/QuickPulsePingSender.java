@@ -126,6 +126,10 @@ class QuickPulsePingSender {
             }
         } finally {
             if (response != null) {
+                // need to consume the body or close the response, otherwise get netty ByteBuf leak
+                // warnings:
+                // io.netty.util.ResourceLeakDetector - LEAK: ByteBuf.release() was not called before
+                // it's garbage-collected (see https://github.com/Azure/azure-sdk-for-java/issues/10467)
                 response.close();
             }
         }

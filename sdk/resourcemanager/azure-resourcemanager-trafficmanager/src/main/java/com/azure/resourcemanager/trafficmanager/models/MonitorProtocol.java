@@ -20,6 +20,15 @@ public final class MonitorProtocol extends ExpandableStringEnum<MonitorProtocol>
     public static final MonitorProtocol TCP = fromString("TCP");
 
     /**
+     * Creates a new instance of MonitorProtocol value.
+     *
+     * @deprecated Use the {@link #fromString(String)} factory method.
+     */
+    @Deprecated
+    public MonitorProtocol() {
+    }
+
+    /**
      * Creates or finds a MonitorProtocol from its string representation.
      *
      * @param name a name to look for.

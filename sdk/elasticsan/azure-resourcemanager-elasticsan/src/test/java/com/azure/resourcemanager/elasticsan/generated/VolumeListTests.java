@@ -6,61 +6,59 @@ package com.azure.resourcemanager.elasticsan.generated;
 
 import com.azure.core.util.BinaryData;
 import com.azure.resourcemanager.elasticsan.fluent.models.VolumeInner;
+import com.azure.resourcemanager.elasticsan.models.SourceCreationData;
+import com.azure.resourcemanager.elasticsan.models.VolumeCreateOption;
 import com.azure.resourcemanager.elasticsan.models.VolumeList;
 import java.util.Arrays;
-import java.util.HashMap;
-import java.util.Map;
 import org.junit.jupiter.api.Assertions;
-import org.junit.jupiter.api.Test;
 
 public final class VolumeListTests {
-    @Test
-    public void testDeserialize() {
+    @org.junit.jupiter.api.Test
+    public void testDeserialize() throws Exception {
         VolumeList model =
             BinaryData
                 .fromString(
-                    "{\"value\":[{\"properties\":{\"volumeId\":\"wdslfhotwmcy\",\"sizeGiB\":7443640931865034302},\"tags\":{\"ehxnltyfsop\":\"acfta\",\"nzwdejba\":\"usue\",\"xdn\":\"orxzdmohctbqvud\"},\"id\":\"nvowgujju\",\"name\":\"wdkcglhsl\",\"type\":\"zj\"},{\"properties\":{\"volumeId\":\"gdtjixhbkuofqwey\",\"sizeGiB\":7762769610748668832},\"tags\":{\"cibvyvdcsitynn\":\"exfwhy\",\"f\":\"amdecte\"},\"id\":\"qsc\",\"name\":\"eypvhezrkg\",\"type\":\"hcjrefovgmk\"},{\"properties\":{\"volumeId\":\"eyyvxyqjpkcat\",\"sizeGiB\":6006698533954960409},\"tags\":{\"ounqecano\":\"zsqpjhvmdajvny\",\"pjmcmatuokthfuiu\":\"eupfhyhltrpm\",\"zydagfuaxbezyiuo\":\"odsfcpkvxodpuozm\"},\"id\":\"ktwh\",\"name\":\"dxwzywqsmbsurexi\",\"type\":\"o\"}],\"nextLink\":\"ocfs\"}")
+                    "{\"value\":[{\"properties\":{\"volumeId\":\"gxywpmue\",\"creationData\":{\"createSource\":\"None\",\"sourceUri\":\"fqkquj\"},\"sizeGiB\":3292485781669976103,\"storageTarget\":{\"targetIqn\":\"onobglaocqx\",\"targetPortalHostname\":\"cmgyud\",\"targetPortalPort\":1613065996,\"provisioningState\":\"Updating\",\"status\":\"Stopped\"}},\"id\":\"rxv\",\"name\":\"fudwpznt\",\"type\":\"hdzhlrqj\"},{\"properties\":{\"volumeId\":\"ck\",\"creationData\":{\"createSource\":\"None\",\"sourceUri\":\"xsbkyvpyca\"},\"sizeGiB\":1835147591912684740,\"storageTarget\":{\"targetIqn\":\"zka\",\"targetPortalHostname\":\"uwbc\",\"targetPortalPort\":946722582,\"provisioningState\":\"Deleting\",\"status\":\"Healthy\"}},\"id\":\"hseyvju\",\"name\":\"rts\",\"type\":\"hspkdeemao\"},{\"properties\":{\"volumeId\":\"xagkvtmelmqkrh\",\"creationData\":{\"createSource\":\"None\",\"sourceUri\":\"uahaquhcdhmd\"},\"sizeGiB\":9171481587703972041,\"storageTarget\":{\"targetIqn\":\"xqpvfadmw\",\"targetPortalHostname\":\"crgvxpvgom\",\"targetPortalPort\":1121960551,\"provisioningState\":\"Deleting\",\"status\":\"Unknown\"}},\"id\":\"wbnb\",\"name\":\"e\",\"type\":\"dawkzbali\"},{\"properties\":{\"volumeId\":\"rqhakauha\",\"creationData\":{\"createSource\":\"None\",\"sourceUri\":\"xosow\"},\"sizeGiB\":4305995232309135618,\"storageTarget\":{\"targetIqn\":\"i\",\"targetPortalHostname\":\"ooxdjebwpuc\",\"targetPortalPort\":1438023413,\"provisioningState\":\"Creating\",\"status\":\"Updating\"}},\"id\":\"vmeueci\",\"name\":\"yhz\",\"type\":\"euojgjrwju\"}],\"nextLink\":\"otwmcdyt\"}")
                 .toObject(VolumeList.class);
-        Assertions.assertEquals("acfta", model.value().get(0).tags().get("ehxnltyfsop"));
-        Assertions.assertEquals(7443640931865034302L, model.value().get(0).sizeGiB());
+        Assertions.assertEquals(VolumeCreateOption.NONE, model.value().get(0).creationData().createSource());
+        Assertions.assertEquals("fqkquj", model.value().get(0).creationData().sourceUri());
+        Assertions.assertEquals(3292485781669976103L, model.value().get(0).sizeGiB());
     }
 
-    @Test
-    public void testSerialize() {
+    @org.junit.jupiter.api.Test
+    public void testSerialize() throws Exception {
         VolumeList model =
             new VolumeList()
                 .withValue(
                     Arrays
                         .asList(
                             new VolumeInner()
-                                .withTags(mapOf("ehxnltyfsop", "acfta", "nzwdejba", "usue", "xdn", "orxzdmohctbqvud"))
-                                .withSizeGiB(7443640931865034302L),
+                                .withCreationData(
+                                    new SourceCreationData()
+                                        .withCreateSource(VolumeCreateOption.NONE)
+                                        .withSourceUri("fqkquj"))
+                                .withSizeGiB(3292485781669976103L),
                             new VolumeInner()
-                                .withTags(mapOf("cibvyvdcsitynn", "exfwhy", "f", "amdecte"))
-                                .withSizeGiB(7762769610748668832L),
+                                .withCreationData(
+                                    new SourceCreationData()
+                                        .withCreateSource(VolumeCreateOption.NONE)
+                                        .withSourceUri("xsbkyvpyca"))
+                                .withSizeGiB(1835147591912684740L),
                             new VolumeInner()
-                                .withTags(
-                                    mapOf(
-                                        "ounqecano",
-                                        "zsqpjhvmdajvny",
-                                        "pjmcmatuokthfuiu",
-                                        "eupfhyhltrpm",
-                                        "zydagfuaxbezyiuo",
-                                        "odsfcpkvxodpuozm"))
-                                .withSizeGiB(6006698533954960409L)));
+                                .withCreationData(
+                                    new SourceCreationData()
+                                        .withCreateSource(VolumeCreateOption.NONE)
+                                        .withSourceUri("uahaquhcdhmd"))
+                                .withSizeGiB(9171481587703972041L),
+                            new VolumeInner()
+                                .withCreationData(
+                                    new SourceCreationData()
+                                        .withCreateSource(VolumeCreateOption.NONE)
+                                        .withSourceUri("xosow"))
+                                .withSizeGiB(4305995232309135618L)));
         model = BinaryData.fromObject(model).toObject(VolumeList.class);
-        Assertions.assertEquals("acfta", model.value().get(0).tags().get("ehxnltyfsop"));
-        Assertions.assertEquals(7443640931865034302L, model.value().get(0).sizeGiB());
-    }
-
-    @SuppressWarnings("unchecked")
-    private static <T> Map<String, T> mapOf(Object... inputs) {
-        Map<String, T> map = new HashMap<>();
-        for (int i = 0; i < inputs.length; i += 2) {
-            String key = (String) inputs[i];
-            T value = (T) inputs[i + 1];
-            map.put(key, value);
-        }
-        return map;
+        Assertions.assertEquals(VolumeCreateOption.NONE, model.value().get(0).creationData().createSource());
+        Assertions.assertEquals("fqkquj", model.value().get(0).creationData().sourceUri());
+        Assertions.assertEquals(3292485781669976103L, model.value().get(0).sizeGiB());
     }
 }

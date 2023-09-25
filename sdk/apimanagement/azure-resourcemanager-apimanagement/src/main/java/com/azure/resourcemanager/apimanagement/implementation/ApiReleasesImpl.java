@@ -48,22 +48,13 @@ public final class ApiReleasesImpl implements ApiReleases {
         return Utils.mapPage(inner, inner1 -> new ApiReleaseContractImpl(inner1, this.manager()));
     }
 
-    public void getEntityTag(String resourceGroupName, String serviceName, String apiId, String releaseId) {
-        this.serviceClient().getEntityTag(resourceGroupName, serviceName, apiId, releaseId);
-    }
-
     public ApiReleasesGetEntityTagResponse getEntityTagWithResponse(
         String resourceGroupName, String serviceName, String apiId, String releaseId, Context context) {
         return this.serviceClient().getEntityTagWithResponse(resourceGroupName, serviceName, apiId, releaseId, context);
     }
 
-    public ApiReleaseContract get(String resourceGroupName, String serviceName, String apiId, String releaseId) {
-        ApiReleaseContractInner inner = this.serviceClient().get(resourceGroupName, serviceName, apiId, releaseId);
-        if (inner != null) {
-            return new ApiReleaseContractImpl(inner, this.manager());
-        } else {
-            return null;
-        }
+    public void getEntityTag(String resourceGroupName, String serviceName, String apiId, String releaseId) {
+        this.serviceClient().getEntityTag(resourceGroupName, serviceName, apiId, releaseId);
     }
 
     public Response<ApiReleaseContract> getWithResponse(
@@ -81,8 +72,13 @@ public final class ApiReleasesImpl implements ApiReleases {
         }
     }
 
-    public void delete(String resourceGroupName, String serviceName, String apiId, String releaseId, String ifMatch) {
-        this.serviceClient().delete(resourceGroupName, serviceName, apiId, releaseId, ifMatch);
+    public ApiReleaseContract get(String resourceGroupName, String serviceName, String apiId, String releaseId) {
+        ApiReleaseContractInner inner = this.serviceClient().get(resourceGroupName, serviceName, apiId, releaseId);
+        if (inner != null) {
+            return new ApiReleaseContractImpl(inner, this.manager());
+        } else {
+            return null;
+        }
     }
 
     public Response<Void> deleteWithResponse(
@@ -90,6 +86,10 @@ public final class ApiReleasesImpl implements ApiReleases {
         return this
             .serviceClient()
             .deleteWithResponse(resourceGroupName, serviceName, apiId, releaseId, ifMatch, context);
+    }
+
+    public void delete(String resourceGroupName, String serviceName, String apiId, String releaseId, String ifMatch) {
+        this.serviceClient().delete(resourceGroupName, serviceName, apiId, releaseId, ifMatch);
     }
 
     public ApiReleaseContract getById(String id) {

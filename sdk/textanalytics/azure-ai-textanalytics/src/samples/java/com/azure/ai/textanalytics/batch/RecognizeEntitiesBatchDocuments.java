@@ -5,13 +5,10 @@ package com.azure.ai.textanalytics.batch;
 
 import com.azure.ai.textanalytics.TextAnalyticsClient;
 import com.azure.ai.textanalytics.TextAnalyticsClientBuilder;
-import com.azure.ai.textanalytics.models.AgeResolution;
-import com.azure.ai.textanalytics.models.BaseResolution;
 import com.azure.ai.textanalytics.models.RecognizeEntitiesResult;
 import com.azure.ai.textanalytics.models.TextAnalyticsRequestOptions;
 import com.azure.ai.textanalytics.models.TextDocumentBatchStatistics;
 import com.azure.ai.textanalytics.models.TextDocumentInput;
-import com.azure.ai.textanalytics.models.WeightResolution;
 import com.azure.ai.textanalytics.util.RecognizeEntitiesResultCollection;
 import com.azure.core.credential.AzureKeyCredential;
 import com.azure.core.http.rest.Response;
@@ -43,8 +40,7 @@ public class RecognizeEntitiesBatchDocuments {
             new TextDocumentInput("B", "The cat is 1 year old and weighs 10 pounds.").setLanguage("en")
         );
 
-        TextAnalyticsRequestOptions requestOptions = new TextAnalyticsRequestOptions()
-                .setIncludeStatistics(true).setModelVersion("2022-10-01-preview");
+        TextAnalyticsRequestOptions requestOptions = new TextAnalyticsRequestOptions().setIncludeStatistics(true);
 
         // Recognizing entities for each document in a batch of documents
         Response<RecognizeEntitiesResultCollection> entitiesBatchResultResponse =
@@ -76,20 +72,6 @@ public class RecognizeEntitiesBatchDocuments {
                     System.out.printf(
                             "Recognized entity: %s, entity category: %s, entity subcategory: %s, confidence score: %f.%n",
                             entity.getText(), entity.getCategory(), entity.getSubcategory(), entity.getConfidenceScore());
-                    Iterable<? extends BaseResolution> resolutions = entity.getResolutions();
-                    if (resolutions != null) {
-                        for (BaseResolution resolution : resolutions) {
-                            if (resolution instanceof WeightResolution) {
-                                WeightResolution weightResolution = (WeightResolution) resolution;
-                                System.out.printf("\tWeightResolution: unit: %s. value: %f.%n", weightResolution.getUnit(),
-                                        weightResolution.getValue());
-                            } else if (resolution instanceof AgeResolution) {
-                                AgeResolution weightResolution = (AgeResolution) resolution;
-                                System.out.printf("\tAgeResolution: unit: %s. value: %f.%n", weightResolution.getUnit(),
-                                        weightResolution.getValue());
-                            }
-                        }
-                    }
                 });
             }
         }

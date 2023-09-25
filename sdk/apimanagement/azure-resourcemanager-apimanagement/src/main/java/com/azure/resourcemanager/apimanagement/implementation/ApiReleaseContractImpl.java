@@ -43,6 +43,10 @@ public final class ApiReleaseContractImpl
         return this.innerModel().notes();
     }
 
+    public String resourceGroupName() {
+        return resourceGroupName;
+    }
+
     public ApiReleaseContractInner innerModel() {
         return this.innerObject;
     }

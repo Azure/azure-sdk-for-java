@@ -6,20 +6,19 @@ package com.azure.resourcemanager.sqlvirtualmachine.generated;
 
 import com.azure.core.util.BinaryData;
 import com.azure.resourcemanager.sqlvirtualmachine.models.OperationListResult;
-import org.junit.jupiter.api.Test;
 
 public final class OperationListResultTests {
-    @Test
-    public void testDeserialize() {
+    @org.junit.jupiter.api.Test
+    public void testDeserialize() throws Exception {
         OperationListResult model =
             BinaryData
                 .fromString(
-                    "{\"value\":[{\"name\":\"yhuybbkpod\",\"display\":{\"provider\":\"oginuvamiheognar\",\"resource\":\"xth\",\"operation\":\"tusivyevcciqihn\",\"description\":\"ngbwjz\"},\"origin\":\"system\",\"properties\":{}},{\"name\":\"gispemvtzfkufubl\",\"display\":{\"provider\":\"xqeofjaeqjhqjba\",\"resource\":\"msmjqulngsntn\",\"operation\":\"bkzgcwrwclx\",\"description\":\"rljdouskcqv\"},\"origin\":\"user\",\"properties\":{}},{\"name\":\"dkwt\",\"display\":{\"provider\":\"bnjbiksqrglssain\",\"resource\":\"jwnzlljfmp\",\"operation\":\"ebvmgxsabkyqd\",\"description\":\"jitcjczdzevn\"},\"origin\":\"user\",\"properties\":{}},{\"name\":\"d\",\"display\":{\"provider\":\"dsbdkvwrwjf\",\"resource\":\"snhu\",\"operation\":\"eltmrldhugjzzdat\",\"description\":\"hocdgeab\"},\"origin\":\"user\",\"properties\":{}}],\"nextLink\":\"icndvkaozwyifty\"}")
+                    "{\"value\":[{\"name\":\"yhuybbkpod\",\"display\":{\"provider\":\"oginuvamiheognar\",\"resource\":\"xth\",\"operation\":\"tusivyevcciqihn\",\"description\":\"ngbwjz\"},\"origin\":\"system\",\"properties\":{\"ljofxqeofjaeqjh\":\"dataxgispemvtzfkufu\"}},{\"name\":\"b\",\"display\":{\"provider\":\"msmjqulngsntn\",\"resource\":\"bkzgcwrwclx\",\"operation\":\"rljdouskcqv\",\"description\":\"cr\"},\"origin\":\"user\",\"properties\":{\"biksq\":\"datatnhxbn\",\"ainqpjwnzlljfm\":\"datagls\",\"vmgxsab\":\"datapee\",\"jczdzevndh\":\"datayqduujit\"}},{\"name\":\"wpdappdsbdkv\",\"display\":{\"provider\":\"jfeusnh\",\"resource\":\"je\",\"operation\":\"mrldhu\",\"description\":\"zzd\"},\"origin\":\"system\",\"properties\":{\"geablgphuticndvk\":\"dataoc\",\"ftyxolniw\":\"dataozwyiftyhxhuro\"}},{\"name\":\"cukjf\",\"display\":{\"provider\":\"awxklr\",\"resource\":\"lwckbasyypnddhs\",\"operation\":\"bacphejko\",\"description\":\"nqgoulzndli\"},\"origin\":\"user\",\"properties\":{\"dgak\":\"datagfgibm\"}}],\"nextLink\":\"s\"}")
                 .toObject(OperationListResult.class);
     }
 
-    @Test
-    public void testSerialize() {
+    @org.junit.jupiter.api.Test
+    public void testSerialize() throws Exception {
         OperationListResult model = new OperationListResult();
         model = BinaryData.fromObject(model).toObject(OperationListResult.class);
     }

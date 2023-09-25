@@ -26,32 +26,32 @@ public final class WorkspaceInnerTests {
         WorkspaceInner model =
             BinaryData
                 .fromString(
-                    "{\"properties\":{\"managedResourceGroupId\":\"mmhquvgjxpyb\",\"parameters\":{},\"provisioningState\":\"Updating\",\"uiDefinitionUri\":\"ybbejhph\",\"authorizations\":[{\"principalId\":\"8e8f31f9-aaea-4f30-aaee-899fe01eea17\",\"roleDefinitionId\":\"47d3ce14-d905-4c3a-87c8-d667095d47cf\"},{\"principalId\":\"edb60e80-ce8e-4186-a42d-6d31ad649098\",\"roleDefinitionId\":\"e5acbbff-3bbe-4b17-ac78-e86016701fc4\"},{\"principalId\":\"f600a975-4cf4-417a-b11a-7ae8445bac9d\",\"roleDefinitionId\":\"784411b3-9b83-41a5-9ba2-e729a02d3cad\"}],\"createdBy\":{\"oid\":\"b770f0f8-b207-4e48-89ed-931112bf8c0b\",\"puid\":\"ao\",\"applicationId\":\"ba80455b-5cb2-4a34-a363-5cce4faacbc1\"},\"updatedBy\":{\"oid\":\"0e48b4f2-bd4e-412c-9b17-c4accdcda020\",\"puid\":\"mtqio\",\"applicationId\":\"6c201df2-8012-4925-b5a0-0f5292539adb\"},\"createdDateTime\":\"2021-02-12T12:17:55Z\",\"workspaceId\":\"tbmufpo\",\"workspaceUrl\":\"oizh\",\"storageAccountIdentity\":{\"principalId\":\"2e229cd6-3e30-4dd6-97e5-70e508774bd5\",\"tenantId\":\"905a29eb-f141-4e85-9429-5dd233bbe624\",\"type\":\"bqsoqijg\"},\"encryption\":{},\"privateEndpointConnections\":[{\"id\":\"pazlobcufpdz\",\"name\":\"rbt\",\"type\":\"qqjnqgl\"},{\"id\":\"qgn\",\"name\":\"foooj\",\"type\":\"wifsq\"},{\"id\":\"saagdf\",\"name\":\"glzlhjxrifkwmrv\",\"type\":\"tsizntocipaoua\"},{\"id\":\"psqucmpoyf\",\"name\":\"kfo\",\"type\":\"knygjofjddeq\"}],\"publicNetworkAccess\":\"Disabled\",\"requiredNsgRules\":\"NoAzureServiceRules\"},\"sku\":{\"name\":\"ewnwreitjzyfl\",\"tier\":\"arhmofcqhsmy\"},\"location\":\"kdtmlxhekuk\",\"tags\":{\"ryuanzwuxzdxtay\":\"xukcdmpar\",\"u\":\"lhmwhfpmrqobm\"},\"id\":\"knryrtihfxtij\",\"name\":\"pzvgnwzsymglzufc\",\"type\":\"zk\"}")
+                    "{\"properties\":{\"managedResourceGroupId\":\"mmhquvgjxpyb\",\"parameters\":{},\"provisioningState\":\"Updating\",\"uiDefinitionUri\":\"ybbejhph\",\"authorizations\":[{\"principalId\":\"9b3f7b40-1587-45c8-95f1-87f90fbf4888\",\"roleDefinitionId\":\"8b764ca8-eb36-4499-b8cf-6404187604b2\"},{\"principalId\":\"d8b5fede-7d64-4b99-96dd-405ebefb865f\",\"roleDefinitionId\":\"767ca662-4293-4640-9920-9ab706598d92\"},{\"principalId\":\"d315d44d-a220-4bcb-ac96-0090356610ba\",\"roleDefinitionId\":\"7101072a-cc2b-4608-a09a-6bcacff97d61\"}],\"createdBy\":{\"oid\":\"29bac2a1-cdd4-4fd8-af48-44d6338b49de\",\"puid\":\"ao\",\"applicationId\":\"47346ec5-6c4d-4263-a1d1-614e619dd5fe\"},\"updatedBy\":{\"oid\":\"da5892da-f90d-4fee-afd9-471d7aed8d58\",\"puid\":\"mtqio\",\"applicationId\":\"bb659603-7dc5-4c2f-a2f4-63029154fecc\"},\"createdDateTime\":\"2021-02-12T12:17:55Z\",\"workspaceId\":\"tbmufpo\",\"workspaceUrl\":\"oizh\",\"storageAccountIdentity\":{\"principalId\":\"a93e1e4c-3129-4671-8bb1-dc41106a5f7c\",\"tenantId\":\"bbe9a138-5300-4496-b381-807a8f6fe35f\",\"type\":\"bqsoqijg\"},\"managedDiskIdentity\":{\"principalId\":\"6948af9c-79a5-4047-be23-10a152ea7dea\",\"tenantId\":\"9d258237-c39f-4bd6-935c-373a215fe30e\",\"type\":\"azlobcufpdznrbt\"},\"diskEncryptionSetId\":\"qjnqglhqgnufoooj\",\"encryption\":{},\"privateEndpointConnections\":[{\"id\":\"sqe\",\"name\":\"aagdfmg\",\"type\":\"zlhjxrifkwmrvkt\"},{\"id\":\"izntocipao\",\"name\":\"ajpsquc\",\"type\":\"poyfdkfogkn\"},{\"id\":\"gjofjd\",\"name\":\"eqsrdeupewnwreit\",\"type\":\"zyf\"},{\"id\":\"usarhmofc\",\"name\":\"hs\",\"type\":\"yurkdtmlxhekuksj\"}],\"publicNetworkAccess\":\"Disabled\",\"requiredNsgRules\":\"AllRules\"},\"sku\":{\"name\":\"mparcryuanzw\",\"tier\":\"zdxtayrlhmwhf\"},\"location\":\"rqobmtuk\",\"tags\":{\"xtij\":\"yrtih\",\"zk\":\"pzvgnwzsymglzufc\",\"fhfcb\":\"hdbihan\",\"a\":\"y\"},\"id\":\"ithxqhabifpi\",\"name\":\"xwczbyscnp\",\"type\":\"x\"}")
                 .toObject(WorkspaceInner.class);
-        Assertions.assertEquals("kdtmlxhekuk", model.location());
-        Assertions.assertEquals("xukcdmpar", model.tags().get("ryuanzwuxzdxtay"));
-        Assertions.assertEquals("ewnwreitjzyfl", model.sku().name());
-        Assertions.assertEquals("arhmofcqhsmy", model.sku().tier());
+        Assertions.assertEquals("rqobmtuk", model.location());
+        Assertions.assertEquals("yrtih", model.tags().get("xtij"));
+        Assertions.assertEquals("mparcryuanzw", model.sku().name());
+        Assertions.assertEquals("zdxtayrlhmwhf", model.sku().tier());
         Assertions.assertEquals("mmhquvgjxpyb", model.managedResourceGroupId());
         Assertions.assertEquals("ybbejhph", model.uiDefinitionUri());
         Assertions
             .assertEquals(
-                UUID.fromString("8e8f31f9-aaea-4f30-aaee-899fe01eea17"), model.authorizations().get(0).principalId());
+                UUID.fromString("9b3f7b40-1587-45c8-95f1-87f90fbf4888"), model.authorizations().get(0).principalId());
         Assertions
             .assertEquals(
-                UUID.fromString("47d3ce14-d905-4c3a-87c8-d667095d47cf"),
+                UUID.fromString("8b764ca8-eb36-4499-b8cf-6404187604b2"),
                 model.authorizations().get(0).roleDefinitionId());
         Assertions.assertEquals(PublicNetworkAccess.DISABLED, model.publicNetworkAccess());
-        Assertions.assertEquals(RequiredNsgRules.NO_AZURE_SERVICE_RULES, model.requiredNsgRules());
+        Assertions.assertEquals(RequiredNsgRules.ALL_RULES, model.requiredNsgRules());
     }
 
     @org.junit.jupiter.api.Test
     public void testSerialize() throws Exception {
         WorkspaceInner model =
             new WorkspaceInner()
-                .withLocation("kdtmlxhekuk")
-                .withTags(mapOf("ryuanzwuxzdxtay", "xukcdmpar", "u", "lhmwhfpmrqobm"))
-                .withSku(new Sku().withName("ewnwreitjzyfl").withTier("arhmofcqhsmy"))
+                .withLocation("rqobmtuk")
+                .withTags(mapOf("xtij", "yrtih", "zk", "pzvgnwzsymglzufc", "fhfcb", "hdbihan", "a", "y"))
+                .withSku(new Sku().withName("mparcryuanzw").withTier("zdxtayrlhmwhf"))
                 .withManagedResourceGroupId("mmhquvgjxpyb")
                 .withParameters(new WorkspaceCustomParameters())
                 .withUiDefinitionUri("ybbejhph")
@@ -59,36 +59,37 @@ public final class WorkspaceInnerTests {
                     Arrays
                         .asList(
                             new WorkspaceProviderAuthorization()
-                                .withPrincipalId(UUID.fromString("8e8f31f9-aaea-4f30-aaee-899fe01eea17"))
-                                .withRoleDefinitionId(UUID.fromString("47d3ce14-d905-4c3a-87c8-d667095d47cf")),
+                                .withPrincipalId(UUID.fromString("9b3f7b40-1587-45c8-95f1-87f90fbf4888"))
+                                .withRoleDefinitionId(UUID.fromString("8b764ca8-eb36-4499-b8cf-6404187604b2")),
                             new WorkspaceProviderAuthorization()
-                                .withPrincipalId(UUID.fromString("edb60e80-ce8e-4186-a42d-6d31ad649098"))
-                                .withRoleDefinitionId(UUID.fromString("e5acbbff-3bbe-4b17-ac78-e86016701fc4")),
+                                .withPrincipalId(UUID.fromString("d8b5fede-7d64-4b99-96dd-405ebefb865f"))
+                                .withRoleDefinitionId(UUID.fromString("767ca662-4293-4640-9920-9ab706598d92")),
                             new WorkspaceProviderAuthorization()
-                                .withPrincipalId(UUID.fromString("f600a975-4cf4-417a-b11a-7ae8445bac9d"))
-                                .withRoleDefinitionId(UUID.fromString("784411b3-9b83-41a5-9ba2-e729a02d3cad"))))
+                                .withPrincipalId(UUID.fromString("d315d44d-a220-4bcb-ac96-0090356610ba"))
+                                .withRoleDefinitionId(UUID.fromString("7101072a-cc2b-4608-a09a-6bcacff97d61"))))
                 .withCreatedBy(new CreatedBy())
                 .withUpdatedBy(new CreatedBy())
                 .withStorageAccountIdentity(new ManagedIdentityConfiguration())
+                .withManagedDiskIdentity(new ManagedIdentityConfiguration())
                 .withEncryption(new WorkspacePropertiesEncryption())
                 .withPublicNetworkAccess(PublicNetworkAccess.DISABLED)
-                .withRequiredNsgRules(RequiredNsgRules.NO_AZURE_SERVICE_RULES);
+                .withRequiredNsgRules(RequiredNsgRules.ALL_RULES);
         model = BinaryData.fromObject(model).toObject(WorkspaceInner.class);
-        Assertions.assertEquals("kdtmlxhekuk", model.location());
-        Assertions.assertEquals("xukcdmpar", model.tags().get("ryuanzwuxzdxtay"));
-        Assertions.assertEquals("ewnwreitjzyfl", model.sku().name());
-        Assertions.assertEquals("arhmofcqhsmy", model.sku().tier());
+        Assertions.assertEquals("rqobmtuk", model.location());
+        Assertions.assertEquals("yrtih", model.tags().get("xtij"));
+        Assertions.assertEquals("mparcryuanzw", model.sku().name());
+        Assertions.assertEquals("zdxtayrlhmwhf", model.sku().tier());
         Assertions.assertEquals("mmhquvgjxpyb", model.managedResourceGroupId());
         Assertions.assertEquals("ybbejhph", model.uiDefinitionUri());
         Assertions
             .assertEquals(
-                UUID.fromString("8e8f31f9-aaea-4f30-aaee-899fe01eea17"), model.authorizations().get(0).principalId());
+                UUID.fromString("9b3f7b40-1587-45c8-95f1-87f90fbf4888"), model.authorizations().get(0).principalId());
         Assertions
             .assertEquals(
-                UUID.fromString("47d3ce14-d905-4c3a-87c8-d667095d47cf"),
+                UUID.fromString("8b764ca8-eb36-4499-b8cf-6404187604b2"),
                 model.authorizations().get(0).roleDefinitionId());
         Assertions.assertEquals(PublicNetworkAccess.DISABLED, model.publicNetworkAccess());
-        Assertions.assertEquals(RequiredNsgRules.NO_AZURE_SERVICE_RULES, model.requiredNsgRules());
+        Assertions.assertEquals(RequiredNsgRules.ALL_RULES, model.requiredNsgRules());
     }
 
     @SuppressWarnings("unchecked")

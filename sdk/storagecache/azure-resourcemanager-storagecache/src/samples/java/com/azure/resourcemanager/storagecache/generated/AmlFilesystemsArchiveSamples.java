@@ -9,7 +9,7 @@ import com.azure.resourcemanager.storagecache.models.AmlFilesystemArchiveInfo;
 /** Samples for AmlFilesystems Archive. */
 public final class AmlFilesystemsArchiveSamples {
     /*
-     * x-ms-original-file: specification/storagecache/resource-manager/Microsoft.StorageCache/preview/2023-03-01-preview/examples/amlFilesystems_Archive.json
+     * x-ms-original-file: specification/storagecache/resource-manager/Microsoft.StorageCache/stable/2023-05-01/examples/amlFilesystems_Archive.json
      */
     /**
      * Sample code: amlFilesystems_Archive.

@@ -4,7 +4,6 @@
 
 package com.azure.analytics.purview.sharing;
 
-import com.azure.analytics.purview.sharing.implementation.SentSharesImpl;
 import com.azure.core.annotation.Generated;
 import com.azure.core.annotation.ReturnType;
 import com.azure.core.annotation.ServiceClient;
@@ -22,16 +21,16 @@ import com.azure.core.util.polling.SyncPoller;
 /** Initializes a new instance of the synchronous PurviewShareClient type. */
 @ServiceClient(builder = SentSharesClientBuilder.class)
 public final class SentSharesClient {
-    @Generated private final SentSharesImpl serviceClient;
+    @Generated private final SentSharesAsyncClient client;
 
     /**
      * Initializes an instance of SentSharesClient class.
      *
-     * @param serviceClient the service client implementation.
+     * @param client the async client.
      */
     @Generated
-    SentSharesClient(SentSharesImpl serviceClient) {
-        this.serviceClient = serviceClient;
+    SentSharesClient(SentSharesAsyncClient client) {
+        this.client = client;
     }
 
     /**
@@ -44,7 +43,6 @@ public final class SentSharesClient {
      * <table border="1">
      *     <caption>Query Parameters</caption>
      *     <tr><th>Name</th><th>Type</th><th>Required</th><th>Description</th></tr>
-     *     <tr><td>skipToken</td><td>String</td><td>No</td><td>The continuation token to list the next page</td></tr>
      *     <tr><td>filter</td><td>String</td><td>No</td><td>Filters the results using OData syntax</td></tr>
      *     <tr><td>orderby</td><td>String</td><td>No</td><td>Sorts the results using OData syntax</td></tr>
      * </table>
@@ -70,8 +68,8 @@ public final class SentSharesClient {
      */
     @Generated
     @ServiceMethod(returns = ReturnType.COLLECTION)
-    public PagedIterable<BinaryData> getAllSentShares(String referenceName, RequestOptions requestOptions) {
-        return this.serviceClient.getAllSentShares(referenceName, requestOptions);
+    public PagedIterable<BinaryData> listSentShares(String referenceName, RequestOptions requestOptions) {
+        return new PagedIterable<>(this.client.listSentShares(referenceName, requestOptions));
     }
 
     /**
@@ -99,7 +97,7 @@ public final class SentSharesClient {
     @Generated
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Response<BinaryData> getSentShareWithResponse(String sentShareId, RequestOptions requestOptions) {
-        return this.serviceClient.getSentShareWithResponse(sentShareId, requestOptions);
+        return this.client.getSentShareWithResponse(sentShareId, requestOptions).block();
     }
 
     /**
@@ -138,7 +136,7 @@ public final class SentSharesClient {
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     public SyncPoller<BinaryData, BinaryData> beginCreateOrReplaceSentShare(
             String sentShareId, BinaryData sentShare, RequestOptions requestOptions) {
-        return this.serviceClient.beginCreateOrReplaceSentShare(sentShareId, sentShare, requestOptions);
+        return this.client.beginCreateOrReplaceSentShare(sentShareId, sentShare, requestOptions).getSyncPoller();
     }
 
     /**
@@ -176,7 +174,7 @@ public final class SentSharesClient {
     @Generated
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     public SyncPoller<BinaryData, Void> beginDeleteSentShare(String sentShareId, RequestOptions requestOptions) {
-        return this.serviceClient.beginDeleteSentShare(sentShareId, requestOptions);
+        return this.client.beginDeleteSentShare(sentShareId, requestOptions).getSyncPoller();
     }
 
     /**
@@ -189,7 +187,6 @@ public final class SentSharesClient {
      * <table border="1">
      *     <caption>Query Parameters</caption>
      *     <tr><th>Name</th><th>Type</th><th>Required</th><th>Description</th></tr>
-     *     <tr><td>skipToken</td><td>String</td><td>No</td><td>The continuation token to list the next page</td></tr>
      *     <tr><td>filter</td><td>String</td><td>No</td><td>Filters the results using OData syntax</td></tr>
      *     <tr><td>orderby</td><td>String</td><td>No</td><td>Sorts the results using OData syntax</td></tr>
      * </table>
@@ -215,8 +212,8 @@ public final class SentSharesClient {
      */
     @Generated
     @ServiceMethod(returns = ReturnType.COLLECTION)
-    public PagedIterable<BinaryData> getAllSentShareInvitations(String sentShareId, RequestOptions requestOptions) {
-        return this.serviceClient.getAllSentShareInvitations(sentShareId, requestOptions);
+    public PagedIterable<BinaryData> listSentShareInvitations(String sentShareId, RequestOptions requestOptions) {
+        return new PagedIterable<>(this.client.listSentShareInvitations(sentShareId, requestOptions));
     }
 
     /**
@@ -246,8 +243,9 @@ public final class SentSharesClient {
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Response<BinaryData> getSentShareInvitationWithResponse(
             String sentShareId, String sentShareInvitationId, RequestOptions requestOptions) {
-        return this.serviceClient.getSentShareInvitationWithResponse(
-                sentShareId, sentShareInvitationId, requestOptions);
+        return this.client
+                .getSentShareInvitationWithResponse(sentShareId, sentShareInvitationId, requestOptions)
+                .block();
     }
 
     /**
@@ -290,8 +288,10 @@ public final class SentSharesClient {
             String sentShareInvitationId,
             BinaryData sentShareInvitation,
             RequestOptions requestOptions) {
-        return this.serviceClient.createSentShareInvitationWithResponse(
-                sentShareId, sentShareInvitationId, sentShareInvitation, requestOptions);
+        return this.client
+                .createSentShareInvitationWithResponse(
+                        sentShareId, sentShareInvitationId, sentShareInvitation, requestOptions)
+                .block();
     }
 
     /**
@@ -331,7 +331,9 @@ public final class SentSharesClient {
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     public SyncPoller<BinaryData, Void> beginDeleteSentShareInvitation(
             String sentShareId, String sentShareInvitationId, RequestOptions requestOptions) {
-        return this.serviceClient.beginDeleteSentShareInvitation(sentShareId, sentShareInvitationId, requestOptions);
+        return this.client
+                .beginDeleteSentShareInvitation(sentShareId, sentShareInvitationId, requestOptions)
+                .getSyncPoller();
     }
 
     /**
@@ -361,7 +363,8 @@ public final class SentSharesClient {
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Response<BinaryData> notifyUserSentShareInvitationWithResponse(
             String sentShareId, String sentShareInvitationId, RequestOptions requestOptions) {
-        return this.serviceClient.notifyUserSentShareInvitationWithResponse(
-                sentShareId, sentShareInvitationId, requestOptions);
+        return this.client
+                .notifyUserSentShareInvitationWithResponse(sentShareId, sentShareInvitationId, requestOptions)
+                .block();
     }
 }

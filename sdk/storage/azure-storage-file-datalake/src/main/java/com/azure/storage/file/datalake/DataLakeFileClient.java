@@ -1084,6 +1084,12 @@ public class DataLakeFileClient extends DataLakePathClient {
     /**
      * Opens a file input stream to download the file. Locks on ETags.
      *
+     * <!-- src_embed com.azure.storage.file.datalake.DataLakeFileClient.openInputStream -->
+     * <pre>
+     * DataLakeFileOpenInputStreamResult inputStream = client.openInputStream&#40;&#41;;
+     * </pre>
+     * <!-- end com.azure.storage.file.datalake.DataLakeFileClient.openInputStream -->
+     *
      * @return An {@link InputStream} object that represents the stream to use for reading from the file.
      * @throws DataLakeStorageException If a storage service error occurred.
      */
@@ -1095,13 +1101,42 @@ public class DataLakeFileClient extends DataLakePathClient {
      * Opens a file input stream to download the specified range of the file. Defaults to ETag locking if the option
      * is not specified.
      *
+     * <!-- src_embed com.azure.storage.file.datalake.DataLakeFileClient.openInputStream#DataLakeFileInputStreamOptions -->
+     * <pre>
+     * DataLakeFileInputStreamOptions options = new DataLakeFileInputStreamOptions&#40;&#41;.setBlockSize&#40;1024&#41;
+     *     .setRequestConditions&#40;new DataLakeRequestConditions&#40;&#41;&#41;;
+     * DataLakeFileOpenInputStreamResult streamResult = client.openInputStream&#40;options&#41;;
+     * </pre>
+     * <!-- end com.azure.storage.file.datalake.DataLakeFileClient.openInputStream#DataLakeFileInputStreamOptions -->
+     *
      * @param options {@link DataLakeFileInputStreamOptions}
      * @return A {@link DataLakeFileOpenInputStreamResult} object that contains the stream to use for reading from the file.
      * @throws DataLakeStorageException If a storage service error occurred.
      */
     public DataLakeFileOpenInputStreamResult openInputStream(DataLakeFileInputStreamOptions options) {
+        return openInputStream(options, Context.NONE);
+    }
+
+    /**
+     * Opens a file input stream to download the specified range of the file. Defaults to ETag locking if the option
+     * is not specified.
+     *
+     * <!-- src_embed com.azure.storage.file.datalake.DataLakeFileClient.openInputStream#DataLakeFileInputStreamOptions-Context -->
+     * <pre>
+     * options = new DataLakeFileInputStreamOptions&#40;&#41;.setBlockSize&#40;1024&#41;
+     *     .setRequestConditions&#40;new DataLakeRequestConditions&#40;&#41;&#41;;
+     * DataLakeFileOpenInputStreamResult stream = client.openInputStream&#40;options, new Context&#40;key1, value1&#41;&#41;;
+     * </pre>
+     * <!-- end com.azure.storage.file.datalake.DataLakeFileClient.openInputStream#DataLakeFileInputStreamOptions-Context -->
+     *
+     * @param options {@link DataLakeFileInputStreamOptions}
+     * @param context Additional context that is passed through the Http pipeline during the service call.
+     * @return A {@link DataLakeFileOpenInputStreamResult} object that contains the stream to use for reading from the file.
+     * @throws DataLakeStorageException If a storage service error occurred.
+     */
+    public DataLakeFileOpenInputStreamResult openInputStream(DataLakeFileInputStreamOptions options, Context context) {
         BlobInputStreamOptions convertedOptions = Transforms.toBlobInputStreamOptions(options);
-        BlobInputStream inputStream = blockBlobClient.openInputStream(convertedOptions);
+        BlobInputStream inputStream = blockBlobClient.openInputStream(convertedOptions, context);
         return new InternalDataLakeFileOpenInputStreamResult(inputStream,
             Transforms.toPathProperties(inputStream.getProperties()));
     }
@@ -1130,8 +1165,24 @@ public class DataLakeFileClient extends DataLakePathClient {
      * @throws DataLakeStorageException If a storage service error occurred.
      */
     public OutputStream getOutputStream(DataLakeFileOutputStreamOptions options) {
+        return getOutputStream(options, null);
+    }
+
+    /**
+     * Creates and opens an output stream to write data to the file. If the file already exists on the service, it
+     * will be overwritten.
+     * <p>
+     * To avoid overwriting, pass "*" to {@link DataLakeRequestConditions#setIfNoneMatch(String)}.
+     * </p>
+     *
+     * @param options {@link DataLakeFileOutputStreamOptions}
+     * @param context Additional context that is passed through the Http pipeline during the service call.
+     * @return The {@link OutputStream} that can be used to write to the file.
+     * @throws DataLakeStorageException If a storage service error occurred.
+     */
+    public OutputStream getOutputStream(DataLakeFileOutputStreamOptions options, Context context) {
         BlockBlobOutputStreamOptions convertedOptions = Transforms.toBlockBlobOutputStreamOptions(options);
-        return blockBlobClient.getBlobOutputStream(convertedOptions);
+        return blockBlobClient.getBlobOutputStream(convertedOptions, context);
     }
 
     /**

@@ -18,20 +18,22 @@ public final class DeletedServiceContractProperties {
     private String serviceId;
 
     /*
-     * UTC Date and Time when the service will be automatically purged. The
-     * date conforms to the following format: yyyy-MM-ddTHH:mm:ssZ as specified
-     * by the ISO 8601 standard.
+     * UTC Date and Time when the service will be automatically purged. The date conforms to the following format:
+     * yyyy-MM-ddTHH:mm:ssZ as specified by the ISO 8601 standard.
      */
     @JsonProperty(value = "scheduledPurgeDate")
     private OffsetDateTime scheduledPurgeDate;
 
     /*
-     * UTC Timestamp when the service was soft-deleted. The date conforms to
-     * the following format: yyyy-MM-ddTHH:mm:ssZ as specified by the ISO 8601
-     * standard.
+     * UTC Timestamp when the service was soft-deleted. The date conforms to the following format: yyyy-MM-ddTHH:mm:ssZ
+     * as specified by the ISO 8601 standard.
      */
     @JsonProperty(value = "deletionDate")
     private OffsetDateTime deletionDate;
+
+    /** Creates an instance of DeletedServiceContractProperties class. */
+    public DeletedServiceContractProperties() {
+    }
 
     /**
      * Get the serviceId property: Fully-qualified API Management Service Resource ID.

@@ -43,7 +43,7 @@ public final class CifsMountConfiguration {
     /*
      * The password to use for authentication against the CIFS file system.
      */
-    @JsonProperty(value = "password", required = true)
+    @JsonProperty(value = "password")
     private String password;
 
     /** Creates an instance of CifsMountConfiguration class. */

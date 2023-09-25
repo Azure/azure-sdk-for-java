@@ -6,8 +6,9 @@ package com.azure.cosmos.test.implementation.faultinjection;
 import com.azure.cosmos.CosmosException;
 import com.azure.cosmos.implementation.RxDocumentServiceRequest;
 import com.azure.cosmos.implementation.apachecommons.lang.StringUtils;
-import com.azure.cosmos.implementation.directconnectivity.rntbd.RntbdRequestArgs;
+import com.azure.cosmos.implementation.faultinjection.FaultInjectionRequestArgs;
 import com.azure.cosmos.test.faultinjection.FaultInjectionConnectionType;
+import com.azure.cosmos.test.faultinjection.FaultInjectionServerErrorType;
 
 import java.net.URI;
 import java.time.Duration;
@@ -62,10 +63,10 @@ public class FaultInjectionServerErrorRule implements IFaultInjectionRuleInterna
         this.connectionType = connectionType;
     }
 
-    public boolean isApplicable(RntbdRequestArgs requestArgs) {
+    public boolean isApplicable(FaultInjectionRequestArgs requestArgs) {
         if (!this.isValid()) {
-            requestArgs.serviceRequest().faultInjectionRequestContext.recordFaultInjectionRuleEvaluation(
-                requestArgs.transportRequestId(),
+            requestArgs.getServiceRequest().faultInjectionRequestContext.recordFaultInjectionRuleEvaluation(
+                requestArgs.getTransportRequestId(),
                 String.format(
                     "%s[Disable or Duration reached. StartTime: %s, ExpireTime: %s]",
                     this.id,
@@ -81,20 +82,30 @@ public class FaultInjectionServerErrorRule implements IFaultInjectionRuleInterna
             return false;
         }
 
-        if (!this.result.isApplicable(this.id, requestArgs.serviceRequest())) {
-            requestArgs.serviceRequest().faultInjectionRequestContext.recordFaultInjectionRuleEvaluation(
-                requestArgs.transportRequestId(),
+        if (!this.result.isApplicable(this.id, requestArgs.getServiceRequest())) {
+            requestArgs.getServiceRequest().faultInjectionRequestContext.recordFaultInjectionRuleEvaluation(
+                requestArgs.getTransportRequestId(),
                 this.id + "[Per operation apply limit reached]"
             );
+            return false;
+        }
+
+        if (this.result.getServerErrorType() == FaultInjectionServerErrorType.STALED_ADDRESSES_SERVER_GONE
+            && requestArgs.getServiceRequest().faultInjectionRequestContext.getAddressForceRefreshed()) {
+            requestArgs.getServiceRequest().faultInjectionRequestContext.recordFaultInjectionRuleEvaluation(
+                requestArgs.getTransportRequestId(),
+                "Address force refresh happened, STALED_ADDRESSES error is cleared."
+            );
+
             return false;
         }
 
         long evaluationCount = this.evaluationCount.incrementAndGet();
         boolean withinHitLimit = this.hitLimit == null || evaluationCount <= this.hitLimit;
         if (!withinHitLimit) {
-            requestArgs.serviceRequest().faultInjectionRequestContext.recordFaultInjectionRuleEvaluation(
-                requestArgs.transportRequestId(),
-                this.id + "[Hit Limit reached]"
+            requestArgs.getServiceRequest().faultInjectionRequestContext.recordFaultInjectionRuleEvaluation(
+                requestArgs.getTransportRequestId(),
+                String.format("%s [Hit Limit reached. Configured hitLimit %d, evaluationCount %d]", this.id, this.hitLimit, evaluationCount)
             );
             return false;
         } else {
@@ -102,7 +113,7 @@ public class FaultInjectionServerErrorRule implements IFaultInjectionRuleInterna
 
             // track hit count details, key will be operationType-resourceType
             String name =
-                requestArgs.serviceRequest().getOperationType().toString() + "-" + requestArgs.serviceRequest().getResourceType().toString();
+                requestArgs.getServiceRequest().getOperationType().toString() + "-" + requestArgs.getServiceRequest().getResourceType().toString();
             this.hitCountDetails.compute(name, (key, count) -> {
                 if (count == null) {
                     count = 0L;

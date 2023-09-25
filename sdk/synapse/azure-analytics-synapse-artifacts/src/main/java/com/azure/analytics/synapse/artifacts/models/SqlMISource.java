@@ -35,6 +35,14 @@ public final class SqlMISource extends TabularSource {
     private Map<String, StoredProcedureParameter> storedProcedureParameters;
 
     /*
+     * Specifies the transaction locking behavior for the SQL source. Allowed values:
+     * ReadCommitted/ReadUncommitted/RepeatableRead/Serializable/Snapshot. The default value is ReadCommitted. Type:
+     * string (or Expression with resultType string).
+     */
+    @JsonProperty(value = "isolationLevel")
+    private Object isolationLevel;
+
+    /*
      * Which additional types to produce.
      */
     @JsonProperty(value = "produceAdditionalTypes")
@@ -119,6 +127,30 @@ public final class SqlMISource extends TabularSource {
      */
     public SqlMISource setStoredProcedureParameters(Map<String, StoredProcedureParameter> storedProcedureParameters) {
         this.storedProcedureParameters = storedProcedureParameters;
+        return this;
+    }
+
+    /**
+     * Get the isolationLevel property: Specifies the transaction locking behavior for the SQL source. Allowed values:
+     * ReadCommitted/ReadUncommitted/RepeatableRead/Serializable/Snapshot. The default value is ReadCommitted. Type:
+     * string (or Expression with resultType string).
+     *
+     * @return the isolationLevel value.
+     */
+    public Object getIsolationLevel() {
+        return this.isolationLevel;
+    }
+
+    /**
+     * Set the isolationLevel property: Specifies the transaction locking behavior for the SQL source. Allowed values:
+     * ReadCommitted/ReadUncommitted/RepeatableRead/Serializable/Snapshot. The default value is ReadCommitted. Type:
+     * string (or Expression with resultType string).
+     *
+     * @param isolationLevel the isolationLevel value to set.
+     * @return the SqlMISource object itself.
+     */
+    public SqlMISource setIsolationLevel(Object isolationLevel) {
+        this.isolationLevel = isolationLevel;
         return this;
     }
 

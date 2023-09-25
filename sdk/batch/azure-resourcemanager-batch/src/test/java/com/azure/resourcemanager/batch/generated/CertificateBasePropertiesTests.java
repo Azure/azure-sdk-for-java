@@ -8,30 +8,29 @@ import com.azure.core.util.BinaryData;
 import com.azure.resourcemanager.batch.models.CertificateBaseProperties;
 import com.azure.resourcemanager.batch.models.CertificateFormat;
 import org.junit.jupiter.api.Assertions;
-import org.junit.jupiter.api.Test;
 
 public final class CertificateBasePropertiesTests {
-    @Test
-    public void testDeserialize() {
+    @org.junit.jupiter.api.Test
+    public void testDeserialize() throws Exception {
         CertificateBaseProperties model =
             BinaryData
-                .fromString("{\"thumbprintAlgorithm\":\"tko\",\"thumbprint\":\"kouknvudwtiu\",\"format\":\"Cer\"}")
+                .fromString("{\"thumbprintAlgorithm\":\"tki\",\"thumbprint\":\"xhqyudxorrqnb\",\"format\":\"Pfx\"}")
                 .toObject(CertificateBaseProperties.class);
-        Assertions.assertEquals("tko", model.thumbprintAlgorithm());
-        Assertions.assertEquals("kouknvudwtiu", model.thumbprint());
-        Assertions.assertEquals(CertificateFormat.CER, model.format());
+        Assertions.assertEquals("tki", model.thumbprintAlgorithm());
+        Assertions.assertEquals("xhqyudxorrqnb", model.thumbprint());
+        Assertions.assertEquals(CertificateFormat.PFX, model.format());
     }
 
-    @Test
-    public void testSerialize() {
+    @org.junit.jupiter.api.Test
+    public void testSerialize() throws Exception {
         CertificateBaseProperties model =
             new CertificateBaseProperties()
-                .withThumbprintAlgorithm("tko")
-                .withThumbprint("kouknvudwtiu")
-                .withFormat(CertificateFormat.CER);
+                .withThumbprintAlgorithm("tki")
+                .withThumbprint("xhqyudxorrqnb")
+                .withFormat(CertificateFormat.PFX);
         model = BinaryData.fromObject(model).toObject(CertificateBaseProperties.class);
-        Assertions.assertEquals("tko", model.thumbprintAlgorithm());
-        Assertions.assertEquals("kouknvudwtiu", model.thumbprint());
-        Assertions.assertEquals(CertificateFormat.CER, model.format());
+        Assertions.assertEquals("tki", model.thumbprintAlgorithm());
+        Assertions.assertEquals("xhqyudxorrqnb", model.thumbprint());
+        Assertions.assertEquals(CertificateFormat.PFX, model.format());
     }
 }
