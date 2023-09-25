@@ -168,7 +168,7 @@ public class ServiceBusInboundChannelAdapter extends MessageProducerSupport {
         }
 
         private void updateInstrumentation(ServiceBusErrorContext errorContext) {
-            if (instrumentationManager == null) {
+            if (instrumentationManager == null || instrumentationId == null) {
                 return;
             }
 
