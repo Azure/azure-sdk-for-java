@@ -1,6 +1,11 @@
 package com.azure.storage.blob;
 
-import com.azure.core.http.*;
+import com.azure.core.http.HttpClient;
+import com.azure.core.http.HttpMethod;
+import com.azure.core.http.HttpPipeline;
+import com.azure.core.http.HttpPipelineBuilder;
+import com.azure.core.http.HttpRequest;
+import com.azure.core.http.HttpResponse;
 import com.azure.core.test.http.MockHttpResponse;
 import com.azure.core.util.CoreUtils;
 import com.azure.storage.blob.implementation.util.BlobUserAgentModificationPolicy;

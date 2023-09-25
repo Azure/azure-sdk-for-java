@@ -1547,7 +1547,7 @@ public class BlockBlobApiTests extends BlobTestBase {
         for (ByteBuffer buffer : buffers) {
             buffer.position(0);
             result.limit(result.position() + buffer.remaining());
-            if (buffer != result) {
+            if (!buffer.equals(result)) {
                 return false;
             }
             result.position(result.position() + buffer.remaining());
@@ -1649,10 +1649,9 @@ public class BlockBlobApiTests extends BlobTestBase {
             .setBlockSizeLong(blockSize)
             .setMaxConcurrency(bufferCount)
             .setProgressListener(uploadListener)
-            .setMaxSingleUploadSizeLong((long) (4 * Constants.MB));
+            .setMaxSingleUploadSizeLong(4L * Constants.MB);
 
-        StepVerifier.create(asyncClient.uploadWithResponse(Flux.just(getRandomData(size)),
-                parallelTransferOptions,
+        StepVerifier.create(asyncClient.uploadWithResponse(Flux.just(getRandomData(size)), parallelTransferOptions,
                 null, null, null, null))
             .assertNext(it -> {
                     assertEquals(it.getStatusCode(), 201);
@@ -1660,7 +1659,7 @@ public class BlockBlobApiTests extends BlobTestBase {
                  * Verify that the reporting count is equal or greater than the size divided by block size in the case
                  * that operations need to be retried. Retry attempts will increment the reporting count.
                  */
-                    assertTrue(uploadListener.getReportingCount() >= (size / blockSize));
+                    assertTrue(uploadListener.getReportingCount() >= ((long) size / blockSize));
                 }).verifyComplete();
     }
 
@@ -1713,12 +1712,12 @@ public class BlockBlobApiTests extends BlobTestBase {
     public void bufferedUploadHandlePathing(int[] dataSizeList, int blockCount) {
         List<ByteBuffer> dataList = new ArrayList<>();
         for (int size : dataSizeList) {
-            dataList.add(getRandomData(size * Constants.MB));
+            dataList.add(getRandomData(size));
         }
         Mono<BlockBlobItem> uploadOperation = blobAsyncClient.upload(Flux.fromIterable(dataList),
             new ParallelTransferOptions().setMaxSingleUploadSizeLong(4L * Constants.MB), true);
 
-        StepVerifier.create(uploadOperation.then(collectBytesInBuffer(blockBlobAsyncClient.download())))
+        StepVerifier.create(uploadOperation.then(collectBytesInBuffer(blockBlobAsyncClient.downloadStream())))
             .assertNext(it -> assertTrue(compareListToBuffer(dataList, it)))
             .verifyComplete();
 
@@ -1732,7 +1731,8 @@ public class BlockBlobApiTests extends BlobTestBase {
             Arguments.of(new int[]{4 * Constants.MB + 1, 10}, 2),
             Arguments.of(new int[]{4 * Constants.MB}, 0),
             Arguments.of(new int[]{10, 100, 1000, 10000}, 0),
-            Arguments.of(new int[]{4 * Constants.MB, 4 * Constants.MB}, 2));
+            Arguments.of(new int[]{4 * Constants.MB, 4 * Constants.MB}, 2)
+        );
     }
 
     @ParameterizedTest
@@ -1741,7 +1741,7 @@ public class BlockBlobApiTests extends BlobTestBase {
     public void bufferedUploadHandlePathingHotFlux(int[] dataSizeList, int blockCount) {
         List<ByteBuffer> dataList = new ArrayList<>();
         for (int size : dataSizeList) {
-            dataList.add(getRandomData(size * Constants.MB));
+            dataList.add(getRandomData(size));
         }
         Mono<BlockBlobItem> uploadOperation = blobAsyncClient.upload(
             Flux.fromIterable(dataList).publish().autoConnect(),
@@ -1768,13 +1768,13 @@ public class BlockBlobApiTests extends BlobTestBase {
 
         List<ByteBuffer> dataList = new ArrayList<>();
         for (int size : dataSizeList) {
-            dataList.add(getRandomData(size * Constants.MB));
+            dataList.add(getRandomData(size));
         }
         Mono<BlockBlobItem> uploadOperation = clientWithFailure.upload(
             Flux.fromIterable(dataList).publish().autoConnect(),
             new ParallelTransferOptions().setMaxSingleUploadSizeLong(4L * Constants.MB), true);
 
-        StepVerifier.create(uploadOperation.then(collectBytesInBuffer(blockBlobAsyncClient.download())))
+        StepVerifier.create(uploadOperation.then(collectBytesInBuffer(blockBlobAsyncClient.downloadStream())))
             .assertNext(it -> assertTrue(compareListToBuffer(dataList, it)))
             .verifyComplete();
 

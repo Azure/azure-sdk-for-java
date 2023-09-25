@@ -15,7 +15,6 @@ import java.time.OffsetDateTime;
 import java.time.ZoneOffset;
 import java.util.stream.Stream;
 
-import static org.junit.jupiter.api.Assertions.assertDoesNotThrow;
 import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertThrows;
 import static org.junit.jupiter.api.Assertions.assertTrue;
@@ -156,7 +155,7 @@ public class BlobServiceSasModelsTests extends BlobTestBase {
 
     @Test
     public void containerSASPermissionsNull() {
-        assertThrows(NullPointerException.class, () ->BlobContainerSasPermission.parse(null));
+        assertThrows(NullPointerException.class, () -> BlobContainerSasPermission.parse(null));
     }
 
     @Test
@@ -198,8 +197,8 @@ public class BlobServiceSasModelsTests extends BlobTestBase {
         OffsetDateTime expiryTime = OffsetDateTime.now().plusDays(1);
 
         BlobServiceSasSignatureValues values = blobContainerSasPermission != null
-            ? new BlobServiceSasSignatureValues(expiryTime, blobContainerSasPermission) :
-            new BlobServiceSasSignatureValues(expiryTime, blobSasPermission);
+            ? new BlobServiceSasSignatureValues(expiryTime, blobContainerSasPermission)
+            : new BlobServiceSasSignatureValues(expiryTime, blobSasPermission);
 
         BlobSasImplUtil implUtil = new BlobSasImplUtil(values, container, blob, snapshot, versionId, null);
         implUtil.ensureState();

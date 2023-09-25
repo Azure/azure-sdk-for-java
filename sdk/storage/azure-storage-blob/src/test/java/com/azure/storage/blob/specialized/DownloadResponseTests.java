@@ -3,7 +3,8 @@
 
 package com.azure.storage.blob.specialized;
 
-import com.azure.core.http.*;
+import com.azure.core.http.HttpHeader;
+import com.azure.core.http.HttpHeaders;
 import com.azure.core.http.policy.HttpPipelinePolicy;
 import com.azure.core.http.rest.ResponseBase;
 import com.azure.core.util.FluxUtil;

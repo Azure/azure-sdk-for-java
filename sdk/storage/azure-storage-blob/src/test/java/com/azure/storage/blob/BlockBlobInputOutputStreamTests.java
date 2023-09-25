@@ -1,13 +1,15 @@
 package com.azure.storage.blob;
 
-import com.azure.storage.blob.models.*;
+import com.azure.storage.blob.models.BlobProperties;
+import com.azure.storage.blob.models.BlobRange;
+import com.azure.storage.blob.models.BlobRequestConditions;
+import com.azure.storage.blob.models.BlobType;
+import com.azure.storage.blob.models.ConsistentReadControl;
 import com.azure.storage.blob.options.BlobInputStreamOptions;
 import com.azure.storage.blob.specialized.BlobInputStream;
 import com.azure.storage.blob.specialized.BlobOutputStream;
 import com.azure.storage.blob.specialized.BlockBlobClient;
 import com.azure.storage.common.implementation.Constants;
-import com.azure.storage.common.test.shared.extensions.LiveOnly;
-import com.azure.storage.common.test.shared.extensions.RequiredServiceVersion;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.condition.DisabledIf;
@@ -15,7 +17,6 @@ import org.junit.jupiter.api.condition.EnabledIf;
 import org.junit.jupiter.params.ParameterizedTest;
 import org.junit.jupiter.params.provider.Arguments;
 import org.junit.jupiter.params.provider.MethodSource;
-import spock.lang.Unroll;
 
 import java.io.ByteArrayInputStream;
 import java.io.ByteArrayOutputStream;
@@ -25,7 +26,11 @@ import java.nio.ByteBuffer;
 import java.util.Arrays;
 import java.util.stream.Stream;
 
-import static org.junit.jupiter.api.Assertions.*;
+import static org.junit.jupiter.api.Assertions.assertArrayEquals;
+import static org.junit.jupiter.api.Assertions.assertDoesNotThrow;
+import static org.junit.jupiter.api.Assertions.assertEquals;
+import static org.junit.jupiter.api.Assertions.assertThrows;
+import static org.junit.jupiter.api.Assertions.assertTrue;
 
 public class BlockBlobInputOutputStreamTests extends BlobTestBase {
     private BlockBlobClient bc;

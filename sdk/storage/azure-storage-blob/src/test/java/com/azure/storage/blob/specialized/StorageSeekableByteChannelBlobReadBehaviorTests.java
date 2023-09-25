@@ -3,7 +3,12 @@ package com.azure.storage.blob.specialized;
 import com.azure.core.http.HttpHeaders;
 import com.azure.core.util.BinaryData;
 import com.azure.storage.blob.BlobTestBase;
-import com.azure.storage.blob.models.*;
+import com.azure.storage.blob.models.BlobDownloadAsyncResponse;
+import com.azure.storage.blob.models.BlobDownloadHeaders;
+import com.azure.storage.blob.models.BlobDownloadResponse;
+import com.azure.storage.blob.models.BlobRange;
+import com.azure.storage.blob.models.BlobRequestConditions;
+import com.azure.storage.blob.models.PageRange;
 import com.azure.storage.common.implementation.Constants;
 import org.junit.jupiter.api.AfterEach;
 import org.junit.jupiter.api.BeforeEach;
@@ -24,8 +29,11 @@ import java.util.HashMap;
 import java.util.Map;
 import java.util.stream.Stream;
 
-import static org.junit.jupiter.api.Assertions.*;
-import static org.mockito.ArgumentMatchers.*;
+import static org.junit.jupiter.api.Assertions.assertArrayEquals;
+import static org.junit.jupiter.api.Assertions.assertEquals;
+import static org.mockito.ArgumentMatchers.any;
+import static org.mockito.ArgumentMatchers.anyBoolean;
+import static org.mockito.ArgumentMatchers.eq;
 import static org.mockito.Mockito.times;
 import static org.mockito.Mockito.verify;
 

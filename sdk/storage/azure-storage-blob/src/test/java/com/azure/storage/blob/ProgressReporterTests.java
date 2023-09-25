@@ -1,10 +1,8 @@
 package com.azure.storage.blob;
 
 import com.azure.storage.blob.specialized.BlockBlobAsyncClient;
-import com.azure.storage.common.test.shared.extensions.LiveOnly;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.condition.EnabledIf;
-import org.mockito.Mock;
 import org.mockito.Mockito;
 import reactor.core.Disposable;
 import reactor.core.publisher.Flux;

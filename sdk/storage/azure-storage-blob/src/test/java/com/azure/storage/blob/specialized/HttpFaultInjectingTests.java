@@ -4,7 +4,6 @@
 package com.azure.storage.blob.specialized;
 
 import com.azure.core.http.HttpClient;
-import com.azure.core.http.HttpClientProvider;
 import com.azure.core.http.HttpHeaderName;
 import com.azure.core.http.HttpRequest;
 import com.azure.core.http.HttpResponse;
@@ -19,7 +18,6 @@ import com.azure.storage.blob.BlobClient;
 import com.azure.storage.blob.BlobClientBuilder;
 import com.azure.storage.blob.BlobTestBase;
 import com.azure.storage.common.implementation.Constants;
-import com.azure.storage.common.test.shared.TestHttpClientType;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.condition.DisabledIf;
 import org.junit.jupiter.api.condition.EnabledIf;

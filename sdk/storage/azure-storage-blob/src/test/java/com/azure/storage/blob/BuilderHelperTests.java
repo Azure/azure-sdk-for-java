@@ -2,7 +2,12 @@ package com.azure.storage.blob;
 
 import com.azure.core.credential.AzureSasCredential;
 import com.azure.core.credential.TokenCredential;
-import com.azure.core.http.*;
+import com.azure.core.http.HttpClient;
+import com.azure.core.http.HttpHeaders;
+import com.azure.core.http.HttpMethod;
+import com.azure.core.http.HttpPipeline;
+import com.azure.core.http.HttpRequest;
+import com.azure.core.http.HttpResponse;
 import com.azure.core.http.policy.FixedDelayOptions;
 import com.azure.core.http.policy.HttpLogOptions;
 import com.azure.core.http.policy.RetryOptions;
@@ -28,7 +33,6 @@ import org.mockito.Mockito;
 import reactor.core.publisher.Flux;
 import reactor.core.publisher.Mono;
 import reactor.test.StepVerifier;
-import spock.lang.Unroll;
 
 import java.io.IOException;
 import java.net.MalformedURLException;
@@ -39,7 +43,10 @@ import java.util.List;
 import java.util.Objects;
 import java.util.stream.Stream;
 
-import static org.junit.jupiter.api.Assertions.*;
+import static org.junit.jupiter.api.Assertions.assertDoesNotThrow;
+import static org.junit.jupiter.api.Assertions.assertEquals;
+import static org.junit.jupiter.api.Assertions.assertNotEquals;
+import static org.junit.jupiter.api.Assertions.assertThrows;
 
 public class BuilderHelperTests {
     private static final StorageSharedKeyCredential CREDENTIALS =
