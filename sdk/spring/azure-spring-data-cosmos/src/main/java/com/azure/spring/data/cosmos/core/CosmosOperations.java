@@ -167,6 +167,7 @@ public interface CosmosOperations {
      * @param information must not be {@literal null}
      * @param entities must not be {@literal null}
      * @param <T> type class of domain type
+     * @param <S> type class of domain type
      * @return the inserted item
      */
     <S extends T, T> Iterable<S> insertAll(CosmosEntityInformation information, Iterable<S> entities);

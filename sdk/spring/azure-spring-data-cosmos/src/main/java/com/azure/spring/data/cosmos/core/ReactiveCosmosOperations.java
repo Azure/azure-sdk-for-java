@@ -13,7 +13,6 @@ import com.azure.cosmos.models.SqlQuerySpec;
 import com.azure.spring.data.cosmos.core.convert.MappingCosmosConverter;
 import com.azure.spring.data.cosmos.core.query.CosmosQuery;
 import com.azure.spring.data.cosmos.repository.support.CosmosEntityInformation;
-import org.reactivestreams.Publisher;
 import org.springframework.data.domain.Sort;
 import reactor.core.publisher.Flux;
 import reactor.core.publisher.Mono;
@@ -155,6 +154,7 @@ public interface ReactiveCosmosOperations {
      * @param entityInformation must not be {@literal null}
      * @param entities must not be {@literal null}
      * @param <T> type class of domain type
+     * @param <S> type class of domain type
      * @return Flux of result
      */
     <S extends T, T> Flux<S> insertAll(CosmosEntityInformation entityInformation, Iterable<S> entities);
@@ -235,7 +235,6 @@ public interface ReactiveCosmosOperations {
      *
      * @param containerName must not be {@literal null}
      * @param cosmosItemOperations must not be {@literal null}
-     * @param <T> type class of domain type
      * @return void Mono
      */
     Mono<Void> deleteEntities(String containerName, Flux<CosmosItemOperation> cosmosItemOperations);

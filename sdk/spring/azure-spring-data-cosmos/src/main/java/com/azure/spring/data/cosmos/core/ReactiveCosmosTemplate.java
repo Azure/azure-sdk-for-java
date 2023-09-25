@@ -475,6 +475,7 @@ public class ReactiveCosmosTemplate implements ReactiveCosmosOperations, Applica
      * @param entityInformation the CosmosEntityInformation
      * @param entities the Iterable<S> entities to be deleted
      * @param <T> type class of domain type
+     * @param <S> type class of domain type
      * @return Flux of result
      */
     public <S extends T, T> Flux<S> insertAll(CosmosEntityInformation entityInformation, Iterable<S> entities) {
