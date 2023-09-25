@@ -3,11 +3,13 @@
 
 package com.azure.security.keyvault.jca;
 
-import com.azure.security.keyvault.jca.implementation.signature.KeyVaultKeylessRsaSignature;
+import com.azure.security.keyvault.jca.implementation.signature.KeyVaultKeylessRsa256Signature;
+import com.azure.security.keyvault.jca.implementation.signature.KeyVaultKeylessRsa512Signature;
 import com.azure.security.keyvault.jca.implementation.signature.KeyVaultKeylessEcSha384Signature;
 import com.azure.security.keyvault.jca.implementation.signature.KeyVaultKeylessEcSha512Signature;
 import com.azure.security.keyvault.jca.implementation.signature.KeyVaultKeylessEcSha256Signature;
 import com.azure.security.keyvault.jca.implementation.signature.AbstractKeyVaultKeylessSignature;
+import com.azure.security.keyvault.jca.implementation.signature.KeyVaultKeylessRsaSsaPssSignature;
 
 import java.lang.reflect.InvocationTargetException;
 import java.security.PrivilegedAction;
@@ -97,7 +99,9 @@ public final class KeyVaultJcaProvider extends Provider {
                 )
             );
             Stream.of(
-                KeyVaultKeylessRsaSignature.class,
+                KeyVaultKeylessRsaSsaPssSignature.class,
+                KeyVaultKeylessRsa256Signature.class,
+                KeyVaultKeylessRsa512Signature.class,
                 KeyVaultKeylessEcSha256Signature.class,
                 KeyVaultKeylessEcSha384Signature.class,
                 KeyVaultKeylessEcSha512Signature.class)

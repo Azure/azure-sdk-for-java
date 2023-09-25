@@ -6,17 +6,17 @@ package com.azure.security.keyvault.jca.implementation.signature;
 /**
  * key vault Rsa signature to support key less
  */
-public class KeyVaultKeylessRsa512Signature extends KeyVaultKeylessRsaSignature {
+public class KeyVaultKeylessRsa256Signature extends KeyVaultKeylessRsaSignature {
 
     /**
      * Construct a new KeyVaultKeyLessRsaSignature
      */
-    public KeyVaultKeylessRsa512Signature() {
-        super("SHA-512", "RS512");
+    public KeyVaultKeylessRsa256Signature() {
+        super("SHA-256", "RS256");
     }
 
     @Override
     public String getAlgorithmName() {
-        return "SHA512withRSA";
+        return "SHA256withRSA";
     }
 }

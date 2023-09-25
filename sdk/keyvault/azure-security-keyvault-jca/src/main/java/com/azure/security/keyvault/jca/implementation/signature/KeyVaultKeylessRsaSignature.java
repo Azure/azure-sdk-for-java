@@ -3,9 +3,10 @@
 
 package com.azure.security.keyvault.jca.implementation.signature;
 
+import java.security.InvalidAlgorithmParameterException;
 import java.security.MessageDigest;
 import java.security.NoSuchAlgorithmException;
-import java.security.InvalidAlgorithmParameterException;
+import java.security.ProviderException;
 import java.security.spec.AlgorithmParameterSpec;
 import java.security.spec.PSSParameterSpec;
 import java.util.Base64;
@@ -13,14 +14,22 @@ import java.util.Base64;
 /**
  * key vault Rsa signature to support key less
  */
-public class KeyVaultKeylessRsaSignature extends AbstractKeyVaultKeylessSignature {
+abstract class KeyVaultKeylessRsaSignature extends AbstractKeyVaultKeylessSignature {
+
+    private final String keyVaultDigestName;
 
     /**
      * Construct a new KeyVaultKeyLessRsaSignature
      */
-    public KeyVaultKeylessRsaSignature() {
-        super();
-        this.messageDigest = null;
+    public KeyVaultKeylessRsaSignature(String digestName, String keyVaultDigestName) {
+        if (digestName != null) {
+            try {
+                messageDigest = MessageDigest.getInstance(digestName);
+            } catch (NoSuchAlgorithmException e) {
+                throw new ProviderException(e);
+            }
+        }
+        this.keyVaultDigestName = keyVaultDigestName;
     }
 
     @Override
@@ -29,35 +38,9 @@ public class KeyVaultKeylessRsaSignature extends AbstractKeyVaultKeylessSignatur
         String encode = Base64.getEncoder().encodeToString(mHash);
         //For all RSA type certificate in keyVault, we can use PS256 to encrypt.
         if (keyVaultClient != null) {
-            return keyVaultClient.getSignedWithPrivateKey("PS256", encode, keyId);
+            return keyVaultClient.getSignedWithPrivateKey(this.keyVaultDigestName, encode, keyId);
         }
         return new byte[0];
     }
 
-    @Override
-    protected void engineSetParameter(AlgorithmParameterSpec params)
-        throws InvalidAlgorithmParameterException {
-        if (params == null) {
-            throw new InvalidAlgorithmParameterException("Parameters cannot be null");
-        }
-        if (!(params instanceof PSSParameterSpec)) {
-            throw new InvalidAlgorithmParameterException("No parameter accepted");
-        }
-        PSSParameterSpec signatureParameters = (PSSParameterSpec) params;
-        String newHashAlg = signatureParameters.getDigestAlgorithm();
-        // re-allocate md if not yet assigned or algorithm changed
-        if ((this.messageDigest == null) || !(this.messageDigest.getAlgorithm().equalsIgnoreCase(newHashAlg))) {
-            try {
-                this.messageDigest = MessageDigest.getInstance(newHashAlg);
-            } catch (NoSuchAlgorithmException exception) {
-                // should not happen as we pick default digest algorithm
-                throw new InvalidAlgorithmParameterException("Unsupported digest algorithm " + newHashAlg, exception);
-            }
-        }
-    }
-
-    @Override
-    public String getAlgorithmName() {
-        return "RSASSA-PSS";
-    }
 }
