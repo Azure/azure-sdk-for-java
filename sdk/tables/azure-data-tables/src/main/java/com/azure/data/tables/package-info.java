@@ -73,11 +73,11 @@
  *
  * <h3>Create a {@link com.azure.data.tables.TableServiceClient TableServiceClient} using a {@link com.azure.data.tables.TableServiceClientBuilder TableServiceClientBuilder}</h3>
  *
- <p>The {@link com.azure.data.tables.TableServiceClient TableServiceClient} and {@link com.azure.data.tables.TableServiceAsyncClient TableServiceAsyncClient} provide access to the tables within an
+ <p>The {@link com.azure.data.tables.TableServiceClient TableServiceClient} and {@link com.azure.data.tables.TableServiceAsyncClient TableServiceAsyncClient} both provide access to the tables within an
  * Azure Storage or Azure Cosmos account. A table service client can create, list, and delete tables. It also provides access to a table client that can be used to perform CRUD operations on entities
  * within a table. You can instantiate a table service client using an instance of {@link com.azure.data.tables.TableServiceClientBuilder TableServiceClientBuilder}.</p>
  *
- * <p>Here's an example of creating a synchronous table service client using {@link com.azure.data.tables.TableServiceClientBuilder TableServiceClientBuilder}:</p>
+ * <p>Here's an example of creating a synchronous table service client using the {@link com.azure.data.tables.TableServiceClientBuilder#buildClient()} TableServiceClientBuilder buildClient} method:</p>
  *
  * <!-- src_embed com.azure.data.tables.TableServiceClient.instantiation.package -->
  * <pre>
@@ -181,7 +181,7 @@
  *
  * <h3>Create an Entity using {@link com.azure.data.tables.TableClient TableClient}</h3>
  *
- * <p>The {@link com.azure.data.tables.TableClient#createEntity(com.azure.data.tables.models.TableEntity)}  TableClient createEntity} method can be used to create a table entity within a table in your Azure Storage or Azure Cosmos account.</p>
+ * <p>The {@link com.azure.data.tables.TableClient#createEntity(com.azure.data.tables.models.TableEntity) TableClient createEntity} method can be used to create a table entity within a table in your Azure Storage or Azure Cosmos account.</p>
  *
  * <p>The following example creates an entity with a partition key of "partitionKey" and a row key of "rowKey".</p>
  *
@@ -212,9 +212,11 @@
  *
  * <p><strong>Note:</strong> for asynchronous sample, refer to {@link com.azure.data.tables.TableAsyncClient TableAsyncClient}</p>
  *
+ * <hr/>
+ *
  * <h3>List Entities</h3>
  *
- * <p>The {@link com.azure.data.tables.TableClient#listEntities()  TableClient listEntities}</p> method can be used to list the entities that are within a table in your Azure Storage or Azure Cosmos account.
+ * <p>The {@link com.azure.data.tables.TableClient#listEntities()  TableClient listEntities} method can be used to list the entities that are within a table in your Azure Storage or Azure Cosmos account.</p>
  *
  * <p>The following example lists all entities in a table without any filtering.</p>
  *
@@ -230,9 +232,11 @@
  *
  * <p><strong>Note:</strong> for asynchronous sample, refer to {@link com.azure.data.tables.TableAsyncClient TableAsyncClient}</p>
  *
- * <strong>Delete an Entity</strong>
+ * <hr/>
  *
- * <p>The {@link com.azure.data.tables.TableClient#deleteEntity(com.azure.data.tables.models.TableEntity)  TableClient deleteEntity} method can be used to delete an entity that is within a table in your Azure Storage or Azure Cosmos account.</p>
+ * <h3>Delete an Entity</h3>
+ *
+ * <p>The {@link com.azure.data.tables.TableClient#deleteEntity(com.azure.data.tables.models.TableEntity) TableClient deleteEntity} method can be used to delete an entity that is within a table in your Azure Storage or Azure Cosmos account.</p>
  *
  * <p>The following example deletes an entity with a partition key of "partitionKey" and a row key of "rowKey".</p>
  *
