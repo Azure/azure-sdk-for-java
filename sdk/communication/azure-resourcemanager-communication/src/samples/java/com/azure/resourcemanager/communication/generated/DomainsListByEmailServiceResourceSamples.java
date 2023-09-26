@@ -7,7 +7,7 @@ package com.azure.resourcemanager.communication.generated;
 /** Samples for Domains ListByEmailServiceResource. */
 public final class DomainsListByEmailServiceResourceSamples {
     /*
-     * x-ms-original-file: specification/communication/resource-manager/Microsoft.Communication/stable/2023-03-31/examples/domains/listByEmailService.json
+     * x-ms-original-file: specification/communication/resource-manager/Microsoft.Communication/preview/2023-04-01-preview/examples/domains/listByEmailService.json
      */
     /**
      * Sample code: List Domains resources by EmailServiceName.

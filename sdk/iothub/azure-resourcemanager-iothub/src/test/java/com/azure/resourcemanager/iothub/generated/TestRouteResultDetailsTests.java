@@ -6,6 +6,7 @@ package com.azure.resourcemanager.iothub.generated;
 
 import com.azure.core.util.BinaryData;
 import com.azure.resourcemanager.iothub.models.RouteCompilationError;
+import com.azure.resourcemanager.iothub.models.RouteErrorPosition;
 import com.azure.resourcemanager.iothub.models.RouteErrorRange;
 import com.azure.resourcemanager.iothub.models.RouteErrorSeverity;
 import com.azure.resourcemanager.iothub.models.TestRouteResultDetails;
@@ -18,10 +19,14 @@ public final class TestRouteResultDetailsTests {
         TestRouteResultDetails model =
             BinaryData
                 .fromString(
-                    "{\"compilationErrors\":[{\"message\":\"ikdowwquuvx\",\"severity\":\"error\",\"location\":{}},{\"message\":\"hhqzonosgg\",\"severity\":\"error\",\"location\":{}}]}")
+                    "{\"compilationErrors\":[{\"message\":\"mwyhr\",\"severity\":\"error\",\"location\":{\"start\":{\"line\":892669790,\"column\":1378791233},\"end\":{\"line\":1662588727,\"column\":1209208693}}},{\"message\":\"vqtmnub\",\"severity\":\"warning\",\"location\":{\"start\":{\"line\":1254452597,\"column\":1550438212},\"end\":{\"line\":848558030,\"column\":1007666972}}}]}")
                 .toObject(TestRouteResultDetails.class);
-        Assertions.assertEquals("ikdowwquuvx", model.compilationErrors().get(0).message());
+        Assertions.assertEquals("mwyhr", model.compilationErrors().get(0).message());
         Assertions.assertEquals(RouteErrorSeverity.ERROR, model.compilationErrors().get(0).severity());
+        Assertions.assertEquals(892669790, model.compilationErrors().get(0).location().start().line());
+        Assertions.assertEquals(1378791233, model.compilationErrors().get(0).location().start().column());
+        Assertions.assertEquals(1662588727, model.compilationErrors().get(0).location().end().line());
+        Assertions.assertEquals(1209208693, model.compilationErrors().get(0).location().end().column());
     }
 
     @org.junit.jupiter.api.Test
@@ -32,15 +37,26 @@ public final class TestRouteResultDetailsTests {
                     Arrays
                         .asList(
                             new RouteCompilationError()
-                                .withMessage("ikdowwquuvx")
+                                .withMessage("mwyhr")
                                 .withSeverity(RouteErrorSeverity.ERROR)
-                                .withLocation(new RouteErrorRange()),
+                                .withLocation(
+                                    new RouteErrorRange()
+                                        .withStart(new RouteErrorPosition().withLine(892669790).withColumn(1378791233))
+                                        .withEnd(new RouteErrorPosition().withLine(1662588727).withColumn(1209208693))),
                             new RouteCompilationError()
-                                .withMessage("hhqzonosgg")
-                                .withSeverity(RouteErrorSeverity.ERROR)
-                                .withLocation(new RouteErrorRange())));
+                                .withMessage("vqtmnub")
+                                .withSeverity(RouteErrorSeverity.WARNING)
+                                .withLocation(
+                                    new RouteErrorRange()
+                                        .withStart(new RouteErrorPosition().withLine(1254452597).withColumn(1550438212))
+                                        .withEnd(
+                                            new RouteErrorPosition().withLine(848558030).withColumn(1007666972)))));
         model = BinaryData.fromObject(model).toObject(TestRouteResultDetails.class);
-        Assertions.assertEquals("ikdowwquuvx", model.compilationErrors().get(0).message());
+        Assertions.assertEquals("mwyhr", model.compilationErrors().get(0).message());
         Assertions.assertEquals(RouteErrorSeverity.ERROR, model.compilationErrors().get(0).severity());
+        Assertions.assertEquals(892669790, model.compilationErrors().get(0).location().start().line());
+        Assertions.assertEquals(1378791233, model.compilationErrors().get(0).location().start().column());
+        Assertions.assertEquals(1662588727, model.compilationErrors().get(0).location().end().line());
+        Assertions.assertEquals(1209208693, model.compilationErrors().get(0).location().end().column());
     }
 }

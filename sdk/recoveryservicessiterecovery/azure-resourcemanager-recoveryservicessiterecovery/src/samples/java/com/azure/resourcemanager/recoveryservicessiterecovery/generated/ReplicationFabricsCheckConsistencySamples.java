@@ -7,7 +7,7 @@ package com.azure.resourcemanager.recoveryservicessiterecovery.generated;
 /** Samples for ReplicationFabrics CheckConsistency. */
 public final class ReplicationFabricsCheckConsistencySamples {
     /*
-     * x-ms-original-file: specification/recoveryservicessiterecovery/resource-manager/Microsoft.RecoveryServices/stable/2022-10-01/examples/ReplicationFabrics_CheckConsistency.json
+     * x-ms-original-file: specification/recoveryservicessiterecovery/resource-manager/Microsoft.RecoveryServices/stable/2023-06-01/examples/ReplicationFabrics_CheckConsistency.json
      */
     /**
      * Sample code: Checks the consistency of the ASR fabric.

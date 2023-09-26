@@ -31,7 +31,8 @@ public final class ClusterPropertiesForUpdate {
     private String citusVersion;
 
     /*
-     * If shards on coordinator is enabled or not for the cluster.
+     * If distributed tables are placed on coordinator or not. Should be set to 'true' on single node clusters.
+     * Requires shard rebalancing after value is changed.
      */
     @JsonProperty(value = "enableShardsOnCoordinator")
     private Boolean enableShardsOnCoordinator;
@@ -177,7 +178,8 @@ public final class ClusterPropertiesForUpdate {
     }
 
     /**
-     * Get the enableShardsOnCoordinator property: If shards on coordinator is enabled or not for the cluster.
+     * Get the enableShardsOnCoordinator property: If distributed tables are placed on coordinator or not. Should be set
+     * to 'true' on single node clusters. Requires shard rebalancing after value is changed.
      *
      * @return the enableShardsOnCoordinator value.
      */
@@ -186,7 +188,8 @@ public final class ClusterPropertiesForUpdate {
     }
 
     /**
-     * Set the enableShardsOnCoordinator property: If shards on coordinator is enabled or not for the cluster.
+     * Set the enableShardsOnCoordinator property: If distributed tables are placed on coordinator or not. Should be set
+     * to 'true' on single node clusters. Requires shard rebalancing after value is changed.
      *
      * @param enableShardsOnCoordinator the enableShardsOnCoordinator value to set.
      * @return the ClusterPropertiesForUpdate object itself.

@@ -30,7 +30,7 @@ public final class SignalRsListSkusWithResponseMockTests {
         ArgumentCaptor<HttpRequest> httpRequest = ArgumentCaptor.forClass(HttpRequest.class);
 
         String responseStr =
-            "{\"value\":[{\"resourceType\":\"puqujmqlgkfbtn\"},{\"resourceType\":\"n\"},{\"resourceType\":\"ntuji\"}],\"nextLink\":\"df\"}";
+            "{\"value\":[{\"resourceType\":\"mbnkb\",\"sku\":{\"name\":\"qvxkd\",\"tier\":\"Basic\",\"size\":\"heb\",\"family\":\"swbzuwfmdurage\",\"capacity\":1912120593},\"capacity\":{\"minimum\":2034109305,\"maximum\":2073266063,\"default\":1132204031,\"allowedValues\":[1329122271],\"scaleType\":\"None\"}},{\"resourceType\":\"gbqi\",\"sku\":{\"name\":\"xkbsazgakgac\",\"tier\":\"Standard\",\"size\":\"jdmspofapvuhryln\",\"family\":\"frzgbzjed\",\"capacity\":1946171356},\"capacity\":{\"minimum\":247999147,\"maximum\":162758827,\"default\":1553181859,\"allowedValues\":[444730016,917017780,663058389,2051570067],\"scaleType\":\"Automatic\"}},{\"resourceType\":\"f\",\"sku\":{\"name\":\"snvpdibmi\",\"tier\":\"Free\",\"size\":\"bzbkiw\",\"family\":\"qnyophzfyls\",\"capacity\":362710224},\"capacity\":{\"minimum\":652938143,\"maximum\":734228564,\"default\":1369473795,\"allowedValues\":[691935711,262075273,12099501],\"scaleType\":\"Manual\"}},{\"resourceType\":\"w\",\"sku\":{\"name\":\"wl\",\"tier\":\"Standard\",\"size\":\"etnpsihcl\",\"family\":\"zvaylptrsqqw\",\"capacity\":794270999},\"capacity\":{\"minimum\":544384144,\"maximum\":899185817,\"default\":96806467,\"allowedValues\":[1038627609,719164524,816573779],\"scaleType\":\"Automatic\"}}],\"nextLink\":\"jkjexf\"}";
 
         Mockito.when(httpResponse.getStatusCode()).thenReturn(200);
         Mockito.when(httpResponse.getHeaders()).thenReturn(new HttpHeaders());
@@ -59,6 +59,6 @@ public final class SignalRsListSkusWithResponseMockTests {
                     new AzureProfile("", "", AzureEnvironment.AZURE));
 
         SkuList response =
-            manager.signalRs().listSkusWithResponse("wabm", "oefki", com.azure.core.util.Context.NONE).getValue();
+            manager.signalRs().listSkusWithResponse("f", "pofvwb", com.azure.core.util.Context.NONE).getValue();
     }
 }

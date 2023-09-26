@@ -78,11 +78,13 @@ public interface ProtectionContainerMapping {
     interface Definition
         extends DefinitionStages.Blank, DefinitionStages.WithParentResource, DefinitionStages.WithCreate {
     }
+
     /** The ProtectionContainerMapping definition stages. */
     interface DefinitionStages {
         /** The first stage of the ProtectionContainerMapping definition. */
         interface Blank extends WithParentResource {
         }
+
         /** The stage of the ProtectionContainerMapping definition allowing to specify parent resource. */
         interface WithParentResource {
             /**
@@ -97,6 +99,7 @@ public interface ProtectionContainerMapping {
             WithCreate withExistingReplicationProtectionContainer(
                 String resourceName, String resourceGroupName, String fabricName, String protectionContainerName);
         }
+
         /**
          * The stage of the ProtectionContainerMapping definition which contains all the minimum required properties for
          * the resource to be created, but also allows for any other optional properties to be specified.
@@ -117,6 +120,7 @@ public interface ProtectionContainerMapping {
              */
             ProtectionContainerMapping create(Context context);
         }
+
         /** The stage of the ProtectionContainerMapping definition allowing to specify properties. */
         interface WithProperties {
             /**
@@ -128,6 +132,7 @@ public interface ProtectionContainerMapping {
             WithCreate withProperties(CreateProtectionContainerMappingInputProperties properties);
         }
     }
+
     /**
      * Begins update for the ProtectionContainerMapping resource.
      *
@@ -152,6 +157,7 @@ public interface ProtectionContainerMapping {
          */
         ProtectionContainerMapping apply(Context context);
     }
+
     /** The ProtectionContainerMapping update stages. */
     interface UpdateStages {
         /** The stage of the ProtectionContainerMapping update allowing to specify properties. */
@@ -165,6 +171,7 @@ public interface ProtectionContainerMapping {
             Update withProperties(UpdateProtectionContainerMappingInputProperties properties);
         }
     }
+
     /**
      * Refreshes the resource to sync with Azure.
      *

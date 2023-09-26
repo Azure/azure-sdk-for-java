@@ -330,6 +330,7 @@
     "Mockito",
     "Mordor",
     "mosca",
+    "mpga",
     "msal",
     "msix",
     "MSRC",
@@ -738,7 +739,8 @@
     {
       "filename": "sdk/storage/azure-storage-blob-cryptography/**",
       "words": [
-        "akek"
+        "akek",
+        "azstorage"
       ]
     },
     {
@@ -1035,6 +1037,12 @@
         "Dskip",
         "Dspotbugs",
         "Pdev"
+      ]
+    },
+    {
+      "filename": "sdk/spring/spring-cloud-azure-starter-monitor/**.md",
+      "words": [
+        "Djava"
       ]
     },
     {

@@ -48,6 +48,12 @@ public final class CallConnectionPropertiesInternal {
     private String mediaSubscriptionId;
 
     /*
+     * SubscriptionId for transcription
+     */
+    @JsonProperty(value = "dataSubscriptionId")
+    private String dataSubscriptionId;
+
+    /*
      * The source caller Id, a phone number, that's shown to the PSTN
      * participant being invited.
      * Required only when calling a PSTN callee.
@@ -198,6 +204,26 @@ public final class CallConnectionPropertiesInternal {
      */
     public CallConnectionPropertiesInternal setMediaSubscriptionId(String mediaSubscriptionId) {
         this.mediaSubscriptionId = mediaSubscriptionId;
+        return this;
+    }
+
+    /**
+     * Get the dataSubscriptionId property: SubscriptionId for transcription.
+     *
+     * @return the dataSubscriptionId value.
+     */
+    public String getDataSubscriptionId() {
+        return this.dataSubscriptionId;
+    }
+
+    /**
+     * Set the dataSubscriptionId property: SubscriptionId for transcription.
+     *
+     * @param dataSubscriptionId the dataSubscriptionId value to set.
+     * @return the CallConnectionPropertiesInternal object itself.
+     */
+    public CallConnectionPropertiesInternal setDataSubscriptionId(String dataSubscriptionId) {
+        this.dataSubscriptionId = dataSubscriptionId;
         return this;
     }
 

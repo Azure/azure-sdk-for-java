@@ -48,12 +48,12 @@
 		<dependency>
 			<groupId>com.azure</groupId>
 			<artifactId>azure-data-appconfiguration</artifactId>
-			<version>1.4.8</version> <!-- {x-version-update;com.azure:azure-data-appconfiguration;dependency} -->
+			<version>1.4.9</version> <!-- {x-version-update;com.azure:azure-data-appconfiguration;dependency} -->
 		</dependency>
 		<dependency>
 			<groupId>com.azure</groupId>
 			<artifactId>azure-identity</artifactId>
-			<version>1.10.0</version> <!-- {x-version-update;com.azure:azure-identity;dependency} -->
+			<version>1.10.1</version> <!-- {x-version-update;com.azure:azure-identity;dependency} -->
 		</dependency>
 		<dependency>
 			<groupId>com.azure</groupId>

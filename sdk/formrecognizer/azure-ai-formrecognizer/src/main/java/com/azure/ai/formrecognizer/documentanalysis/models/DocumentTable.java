@@ -13,6 +13,13 @@ import java.util.List;
  */
 @Immutable
 public final class DocumentTable {
+
+    /**
+     * Creates a DocumentTable object.
+     */
+    public DocumentTable() {
+    }
+
     /*
      * Number of rows in the table.
      */

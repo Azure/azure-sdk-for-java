@@ -9,7 +9,7 @@ import com.azure.resourcemanager.iothub.models.CertificateProperties;
 /** Samples for Certificates CreateOrUpdate. */
 public final class CertificatesCreateOrUpdateSamples {
     /*
-     * x-ms-original-file: specification/iothub/resource-manager/Microsoft.Devices/preview/2022-11-15-preview/examples/iothub_certificatescreateorupdate.json
+     * x-ms-original-file: specification/iothub/resource-manager/Microsoft.Devices/stable/2023-06-30/examples/iothub_certificatescreateorupdate.json
      */
     /**
      * Sample code: Certificates_CreateOrUpdate.
