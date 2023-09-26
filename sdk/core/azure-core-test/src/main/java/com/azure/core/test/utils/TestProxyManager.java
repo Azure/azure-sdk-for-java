@@ -8,10 +8,14 @@ import com.azure.core.http.HttpRequest;
 import com.azure.core.http.HttpResponse;
 import com.azure.core.util.Configuration;
 import com.azure.core.util.Context;
+import com.azure.core.util.CoreUtils;
 import com.azure.core.util.logging.ClientLogger;
 
+import java.io.ByteArrayOutputStream;
 import java.io.IOException;
 import java.io.UncheckedIOException;
+import java.nio.charset.StandardCharsets;
+import java.nio.file.Files;
 import java.nio.file.Path;
 import java.nio.file.Paths;
 import java.time.Duration;
@@ -50,21 +54,46 @@ public class TestProxyManager {
                 String commandLine = Paths.get(TestProxyDownloader.getProxyDirectory().toString(),
                     TestProxyUtils.getProxyProcessName()).toString();
 
-                ProcessBuilder builder = new ProcessBuilder(commandLine,
-                    "--storage-location",
-                    TestUtils.getRepoRootResolveUntil(testClassPath, "eng").toString());
+                Path repoRoot = TestUtils.getRepoRootResolveUntil(testClassPath, "eng");
+
+                // Resolve the path to the repo root 'target' folder and create the folder if it doesn't exist.
+                // This folder will be used to store the 'test-proxy.log' file to enable simpler debugging of Test Proxy
+                // locally. This is similar to what CI does, but CI uses a PowerShell process to run the Test Proxy
+                // where running locally uses a Java ProcessBuilder.
+                Path repoRootTarget = repoRoot.resolve("target");
+                if (!Files.exists(repoRootTarget)) {
+                    Files.createDirectory(repoRootTarget);
+                }
+
+                ProcessBuilder builder = new ProcessBuilder(commandLine, "--storage-location", repoRoot.toString())
+                    .redirectOutput(repoRootTarget.resolve("test-proxy.log").toFile());
                 Map<String, String> environment = builder.environment();
-                environment.put("LOGGING__LOGLEVEL", "Information");
-                environment.put("LOGGING__LOGLEVEL__MICROSOFT", "Warning");
-                environment.put("LOGGING__LOGLEVEL__DEFAULT", "Information");
+                environment.put("LOGGING__LOGLEVEL", "Debug");
+                environment.put("LOGGING__LOGLEVEL__MICROSOFT", "Debug");
+                environment.put("LOGGING__LOGLEVEL__DEFAULT", "Debug");
                 proxy = builder.start();
             }
             // in either case the proxy should now be started, so let's wait to make sure.
             if (checkAlive(10, Duration.ofSeconds(6))) {
                 return;
             }
-            throw new RuntimeException("Test proxy did not initialize.");
 
+            // If the Test Proxy process doesn't start within the timeout period read the error stream of the Process
+            // for any additional details that could help determine why the Test Proxy process didn't start.
+            // Include this additional information in the exception message.
+            ByteArrayOutputStream errorLog = new ByteArrayOutputStream();
+            byte[] buffer = new byte[4096];
+            int read;
+            while ((read = proxy.getErrorStream().read(buffer)) != -1) {
+                errorLog.write(buffer, 0, read);
+            }
+
+            String errorLogString = new String(errorLog.toByteArray(), StandardCharsets.UTF_8);
+            if (CoreUtils.isNullOrEmpty(errorLogString)) {
+                throw new RuntimeException("Test proxy did not initialize.");
+            } else {
+                throw new RuntimeException("Test proxy did not initialize. Error log: " + errorLogString);
+            }
         } catch (IOException e) {
             throw LOGGER.logExceptionAsError(new UncheckedIOException(e));
         } catch (InterruptedException e) {
@@ -77,9 +106,14 @@ public class TestProxyManager {
         HttpRequest request = new HttpRequest(HttpMethod.GET,
             String.format("%s/admin/isalive", TestProxyUtils.getProxyUrl()));
         for (int i = 0; i < loops; i++) {
-            HttpResponse response = null;
+            // If the proxy isn't alive and the exit value isn't 0, then the proxy process has exited with an error
+            // and stop waiting.
+            if (!proxy.isAlive() && proxy.exitValue() != 0) {
+                return false;
+            }
+
             try {
-                response = client.sendSync(request, Context.NONE);
+                HttpResponse response = client.sendSync(request, Context.NONE);
                 if (response != null && response.getStatusCode() == 200) {
                     return true;
                 }
