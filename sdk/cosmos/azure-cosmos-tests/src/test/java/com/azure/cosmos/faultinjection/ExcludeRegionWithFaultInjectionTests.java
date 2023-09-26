@@ -73,6 +73,7 @@ public class ExcludeRegionWithFaultInjectionTests extends TestSuiteBase {
     private CosmosAsyncClient cosmosAsyncClient;
     private CosmosAsyncContainer cosmosAsyncContainer;
     private List<String> preferredRegions;
+    private String regionResolvedForDefaultEndpoint;
     private Function<List<String>, List<String>> chooseLastTwoRegions = (regions) -> chooseLastTwoRegions(regions);
     private Function<List<String>, List<String>> chooseFirstTwoRegions = (regions) -> chooseFirstTwoRegions(regions);
     private Function<List<String>, List<String>> chooseFirstRegion = (regions) -> chooseKthRegion(regions, 1);
@@ -139,6 +140,7 @@ public class ExcludeRegionWithFaultInjectionTests extends TestSuiteBase {
         this.readRegionMap = getRegionMap(databaseAccount, false);
         this.writeRegionMap = getRegionMap(databaseAccount, true);
         this.preferredRegions = this.writeRegionMap.keySet().stream().collect(Collectors.toList());
+        this.regionResolvedForDefaultEndpoint = getRegionResolvedForDefaultEndpoint(this.cosmosAsyncContainer, this.preferredRegions);
     }
 
     @DataProvider(name = "regionExclusionReadAfterCreateTestConfigs")
@@ -1099,6 +1101,24 @@ public class ExcludeRegionWithFaultInjectionTests extends TestSuiteBase {
                             HttpConstants.SubStatusCodes.SERVER_GENERATED_503,
                             this.chooseFirstRegion.apply(this.preferredRegions)
                     )),
+                },
+                {
+                    "create_503/21008_allRegions_beforeMutation_excludeFirstRegion_afterMutation_excludeAllRegions",
+                    new MutationTestConfig()
+                        .withChooseInitialExclusionRegions(this.chooseFirstRegion)
+                        .withFaultInjectionOperationType(FaultInjectionOperationType.CREATE_ITEM)
+                        .withDataPlaneOperationExecutor(createAnotherItemCallback)
+                        .withRegionExclusionMutator((regions) -> regions)
+                        .withExpectedResultBeforeMutation(new ExpectedResult(
+                            HttpConstants.StatusCodes.CREATED,
+                            HttpConstants.SubStatusCodes.UNKNOWN,
+                            this.chooseLastRegion.apply(this.preferredRegions)
+                        ))
+                        .withExpectedResultAfterMutation(new ExpectedResult(
+                            HttpConstants.StatusCodes.CREATED,
+                            HttpConstants.SubStatusCodes.UNKNOWN,
+                            Arrays.asList(this.regionResolvedForDefaultEndpoint)
+                    ))
                 },
                 {
                     "create_503/21008_firstRegion_beforeMutation_excludeLastRegion_afterMutation_excludeNoRegions_nonIdempotentWrite_true",
@@ -2629,6 +2649,20 @@ public class ExcludeRegionWithFaultInjectionTests extends TestSuiteBase {
         }
 
         return regionMap;
+    }
+
+    private static String getRegionResolvedForDefaultEndpoint(CosmosAsyncContainer container, List<String> preferredRegions) {
+        TestItem testItem = TestItem.createNewItem();
+        CosmosItemRequestOptions itemRequestOptions = new CosmosItemRequestOptions();
+        itemRequestOptions.setExcludedRegions(preferredRegions);
+
+        CosmosItemResponse<TestItem> response = container.createItem(testItem, itemRequestOptions).block();
+
+        Set<String> contactedRegion = response.getDiagnostics().getContactedRegionNames();
+
+        assert contactedRegion.size() == 1;
+
+        return contactedRegion.stream().findFirst().get();
     }
 
     private static class OperationExecutionResult<T> {
