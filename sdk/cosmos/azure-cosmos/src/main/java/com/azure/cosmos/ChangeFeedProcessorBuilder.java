@@ -231,7 +231,7 @@ public class ChangeFeedProcessorBuilder {
      * @param biConsumer the {@link BiConsumer} to call for handling the feeds and the {@link ChangeFeedProcessorContext} instance.
      * @return current Builder.
      */
-    @Beta(value = Beta.SinceVersion.V4_50_1, warningText = Beta.PREVIEW_SUBJECT_TO_CHANGE_WARNING)
+    @Beta(value = Beta.SinceVersion.V4_51_0, warningText = Beta.PREVIEW_SUBJECT_TO_CHANGE_WARNING)
     public ChangeFeedProcessorBuilder handleAllVersionsAndDeletesChanges(
         BiConsumer<List<ChangeFeedProcessorItem>, ChangeFeedProcessorContext> biConsumer) {
 

@@ -15,7 +15,7 @@ import java.util.function.BiConsumer;
  * <br>
  * NOTE: This interface is not designed to be implemented by end users.
  * */
-@Beta(value = Beta.SinceVersion.V4_50_1, warningText = Beta.PREVIEW_SUBJECT_TO_CHANGE_WARNING)
+@Beta(value = Beta.SinceVersion.V4_51_0, warningText = Beta.PREVIEW_SUBJECT_TO_CHANGE_WARNING)
 public interface ChangeFeedProcessorContext {
     /**
      * Gets the lease token corresponding to the source of
@@ -23,6 +23,6 @@ public interface ChangeFeedProcessorContext {
      *
      * @return the lease token
      * */
-    @Beta(value = Beta.SinceVersion.V4_50_1, warningText = Beta.PREVIEW_SUBJECT_TO_CHANGE_WARNING)
+    @Beta(value = Beta.SinceVersion.V4_51_0, warningText = Beta.PREVIEW_SUBJECT_TO_CHANGE_WARNING)
     String getLeaseToken();
 }
