@@ -336,8 +336,16 @@ public class DataLakeTestBase extends TestProxyTestBase {
         return createLeaseClient(fileSystemClient, null);
     }
 
+    protected static DataLakeLeaseAsyncClient createLeaseClient(DataLakeFileSystemAsyncClient fileSystemClient) {
+        return createLeaseClient(fileSystemClient, null);
+    }
+
     protected static DataLakeLeaseClient createLeaseClient(DataLakeFileSystemClient fileSystemClient, String leaseId) {
         return new DataLakeLeaseClientBuilder().fileSystemClient(fileSystemClient).leaseId(leaseId).buildClient();
+    }
+
+    protected static DataLakeLeaseAsyncClient createLeaseClient(DataLakeFileSystemAsyncClient fileSystemClient, String leaseId) {
+        return new DataLakeLeaseClientBuilder().fileSystemAsyncClient(fileSystemClient).leaseId(leaseId).buildAsyncClient();
     }
 
     protected DataLakeFileClient getFileClient(StorageSharedKeyCredential credential,
@@ -504,6 +512,10 @@ public class DataLakeTestBase extends TestProxyTestBase {
 
     protected String setupFileSystemLeaseCondition(DataLakeFileSystemClient fsc, String leaseID) {
         return Objects.equals(RECEIVED_LEASE_ID, leaseID) ? createLeaseClient(fsc).acquireLease(-1) : leaseID;
+    }
+
+    protected String setupFileSystemLeaseCondition(DataLakeFileSystemAsyncClient fsc, String leaseID) {
+        return Objects.equals(RECEIVED_LEASE_ID, leaseID) ? createLeaseClient(fsc).acquireLease(-1).block() : leaseID;
     }
 
     /**
