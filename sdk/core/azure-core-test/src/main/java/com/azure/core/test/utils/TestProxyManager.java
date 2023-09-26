@@ -8,14 +8,10 @@ import com.azure.core.http.HttpRequest;
 import com.azure.core.http.HttpResponse;
 import com.azure.core.util.Configuration;
 import com.azure.core.util.Context;
-import com.azure.core.util.CoreUtils;
 import com.azure.core.util.logging.ClientLogger;
 
-import java.io.ByteArrayOutputStream;
 import java.io.IOException;
 import java.io.UncheckedIOException;
-import java.nio.charset.StandardCharsets;
-import java.nio.file.Files;
 import java.nio.file.Path;
 import java.nio.file.Paths;
 import java.time.Duration;
@@ -54,38 +50,20 @@ public class TestProxyManager {
                 String commandLine = Paths.get(TestProxyDownloader.getProxyDirectory().toString(),
                     TestProxyUtils.getProxyProcessName()).toString();
 
-                Path repoRoot = TestUtils.getRepoRootResolveUntil(testClassPath, "eng");
-                Path repoRootTarget = repoRoot.resolve("target");
-                if (!Files.exists(repoRootTarget)) {
-                    Files.createDirectory(repoRootTarget);
-                }
-
-                ProcessBuilder builder = new ProcessBuilder(commandLine, "--storage-location", repoRoot.toString())
-                    .redirectOutput(repoRootTarget.resolve("test-proxy.log").toFile());
+                ProcessBuilder builder = new ProcessBuilder(commandLine,
+                    "--storage-location",
+                    TestUtils.getRepoRootResolveUntil(testClassPath, "eng").toString());
                 Map<String, String> environment = builder.environment();
-                environment.put("LOGGING__LOGLEVEL", "Debug");
-                environment.put("LOGGING__LOGLEVEL__MICROSOFT", "Debug");
-                environment.put("LOGGING__LOGLEVEL__DEFAULT", "Debug");
+                environment.put("LOGGING__LOGLEVEL", "Information");
+                environment.put("LOGGING__LOGLEVEL__MICROSOFT", "Warning");
+                environment.put("LOGGING__LOGLEVEL__DEFAULT", "Information");
                 proxy = builder.start();
             }
             // in either case the proxy should now be started, so let's wait to make sure.
             if (checkAlive(10, Duration.ofSeconds(6))) {
                 return;
             }
-
-            ByteArrayOutputStream errorLog = new ByteArrayOutputStream();
-            byte[] buffer = new byte[4096];
-            int read;
-            while ((read = proxy.getErrorStream().read(buffer)) != -1) {
-                errorLog.write(buffer, 0, read);
-            }
-
-            String errorLogString = new String(errorLog.toByteArray(), StandardCharsets.UTF_8);
-            if (CoreUtils.isNullOrEmpty(errorLogString)) {
-                throw new RuntimeException("Test proxy did not initialize.");
-            } else {
-                throw new RuntimeException("Test proxy did not initialize. Error log: " + errorLogString);
-            }
+            throw new RuntimeException("Test proxy did not initialize.");
 
         } catch (IOException e) {
             throw LOGGER.logExceptionAsError(new UncheckedIOException(e));

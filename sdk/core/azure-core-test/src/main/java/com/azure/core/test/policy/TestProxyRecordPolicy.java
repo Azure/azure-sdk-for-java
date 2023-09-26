@@ -12,8 +12,8 @@ import com.azure.core.http.HttpPipelineNextSyncPolicy;
 import com.azure.core.http.HttpRequest;
 import com.azure.core.http.HttpResponse;
 import com.azure.core.http.policy.HttpPipelinePolicy;
-import com.azure.core.test.models.TestProxyRecordingOptions;
 import com.azure.core.test.models.RecordFilePayload;
+import com.azure.core.test.models.TestProxyRecordingOptions;
 import com.azure.core.test.models.TestProxySanitizer;
 import com.azure.core.test.utils.HttpURLConnectionHttpClient;
 import com.azure.core.test.utils.TestProxyUtils;
@@ -35,7 +35,6 @@ import java.util.List;
 import java.util.Map;
 import java.util.Queue;
 
-import static com.azure.core.test.utils.TestProxyUtils.checkForTestProxyErrors;
 import static com.azure.core.test.utils.TestProxyUtils.getAssetJsonFile;
 import static com.azure.core.test.utils.TestProxyUtils.getSanitizerRequests;
 import static com.azure.core.test.utils.TestProxyUtils.loadSanitizers;
@@ -86,12 +85,9 @@ public class TestProxyRecordPolicy implements HttpPipelinePolicy {
         } catch (IOException e) {
             throw new RuntimeException(e);
         }
+        HttpResponse response = client.sendSync(request, Context.NONE);
 
-        try (HttpResponse response = client.sendSync(request, Context.NONE)) {
-            checkForTestProxyErrors(response);
-
-            this.xRecordingId = response.getHeaderValue(X_RECORDING_ID);
-        }
+        this.xRecordingId = response.getHeaderValue(X_RECORDING_ID);
 
         addProxySanitization(this.sanitizers);
         setDefaultRecordingOptions();

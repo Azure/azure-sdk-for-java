@@ -86,7 +86,6 @@ public class TestProxyTests extends TestProxyTestBase {
     public static void teardownClass() {
         server.close();
     }
-
     @Test
     @Tag("Record")
     public void testBasicRecord() {
