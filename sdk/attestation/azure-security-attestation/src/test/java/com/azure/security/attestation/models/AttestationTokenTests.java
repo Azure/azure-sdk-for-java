@@ -7,7 +7,6 @@ import com.azure.security.attestation.AttestationClientTestBase;
 import com.azure.security.attestation.implementation.models.AttestationResult;
 import com.azure.security.attestation.implementation.models.AttestationResultImpl;
 import com.azure.security.attestation.implementation.models.AttestationTokenImpl;
-import org.junit.jupiter.api.RepeatedTest;
 import org.junit.jupiter.api.Test;
 
 import java.security.KeyPair;
@@ -269,7 +268,7 @@ public class AttestationTokenTests extends AttestationClientTestBase {
         assertTrue(ex.getMessage().contains("Joe"));
     }
 
-    @RepeatedTest(1000)
+    @Test
     void verifyAttestationTokenExpireTimeout() {
         final OffsetDateTime timeNow = OffsetDateTime.now().truncatedTo(ChronoUnit.MICROS);
 

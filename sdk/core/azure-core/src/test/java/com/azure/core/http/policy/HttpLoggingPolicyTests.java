@@ -445,11 +445,12 @@ public class HttpLoggingPolicyTests {
 
         String logString = convertOutputStreamToString(logCaptureStream);
         List<HttpLogMessage> messages = HttpLogMessage.fromString(logString);
-        assertEquals(3, messages.size());
 
         expectedRetry1.assertEqual(messages.get(0), logLevel, LogLevel.INFORMATIONAL);
         expectedRetry2.assertEqual(messages.get(1), logLevel, LogLevel.INFORMATIONAL);
         expectedResponse.assertEqual(messages.get(2), logLevel, LogLevel.INFORMATIONAL);
+
+        assertEquals(3, messages.size());
     }
 
     @ParameterizedTest(name = "[{index}] {displayName}")
