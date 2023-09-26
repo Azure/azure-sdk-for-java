@@ -426,8 +426,7 @@ public class HttpLoggingPolicyTests {
             .policies(new RetryPolicy(), new HttpLoggingPolicy(new HttpLogOptions().setLogLevel(logLevel)))
             .httpClient(ignored -> (requestCount.getAndIncrement() == 0)
                 ? Mono.error(new RuntimeException("Try again!"))
-                : Mono.fromCallable(
-                    () -> new com.azure.core.http.MockHttpResponse(ignored, 200, responseHeaders, responseBody)))
+                : Mono.just(new com.azure.core.http.MockHttpResponse(ignored, 200, responseHeaders, responseBody)))
             .build();
 
         HttpLogMessage expectedRetry1 = HttpLogMessage.request(HttpMethod.GET, url, null)
@@ -440,18 +439,17 @@ public class HttpLoggingPolicyTests {
             .setHeaders(responseHeaders);
 
         StepVerifier.create(pipeline.send(request, CONTEXT)
-                .flatMap(response -> FluxUtil.collectBytesInByteBufferStream(response.getBody()))
-                .doFinally(s -> {
-                    String logString = convertOutputStreamToString(logCaptureStream);
-                    List<HttpLogMessage> messages = HttpLogMessage.fromString(logString);
-                    assertEquals(3, messages.size());
-
-                    expectedRetry1.assertEqual(messages.get(0), logLevel, LogLevel.INFORMATIONAL);
-                    expectedRetry2.assertEqual(messages.get(1), logLevel, LogLevel.INFORMATIONAL);
-                    expectedResponse.assertEqual(messages.get(2), logLevel, LogLevel.INFORMATIONAL);
-                }))
+                .flatMap(response -> FluxUtil.collectBytesInByteBufferStream(response.getBody())))
             .assertNext(body -> assertArraysEqual(responseBody, body))
             .verifyComplete();
+
+        String logString = convertOutputStreamToString(logCaptureStream);
+        List<HttpLogMessage> messages = HttpLogMessage.fromString(logString);
+        assertEquals(3, messages.size());
+
+        expectedRetry1.assertEqual(messages.get(0), logLevel, LogLevel.INFORMATIONAL);
+        expectedRetry2.assertEqual(messages.get(1), logLevel, LogLevel.INFORMATIONAL);
+        expectedResponse.assertEqual(messages.get(2), logLevel, LogLevel.INFORMATIONAL);
     }
 
     @ParameterizedTest(name = "[{index}] {displayName}")
@@ -482,18 +480,17 @@ public class HttpLoggingPolicyTests {
             .setHeaders(responseHeaders);
 
         StepVerifier.create(pipeline.send(request, CONTEXT)
-                .flatMap(response -> FluxUtil.collectBytesInByteBufferStream(response.getBody()))
-                .doFinally(s -> {
-                    String logString = convertOutputStreamToString(logCaptureStream);
-
-                    List<HttpLogMessage> messages = HttpLogMessage.fromString(logString);
-                    assertEquals(2, messages.size());
-
-                    expectedRequest.assertEqual(messages.get(0), logLevel, LogLevel.VERBOSE);
-                    expectedResponse.assertEqual(messages.get(1), logLevel, LogLevel.VERBOSE);
-                }))
+                .flatMap(response -> FluxUtil.collectBytesInByteBufferStream(response.getBody())))
             .assertNext(body -> assertArraysEqual(responseBody, body))
             .verifyComplete();
+
+        String logString = convertOutputStreamToString(logCaptureStream);
+
+        List<HttpLogMessage> messages = HttpLogMessage.fromString(logString);
+        assertEquals(2, messages.size());
+
+        expectedRequest.assertEqual(messages.get(0), logLevel, LogLevel.VERBOSE);
+        expectedResponse.assertEqual(messages.get(1), logLevel, LogLevel.VERBOSE);
     }
 
     @ParameterizedTest(name = "[{index}] {displayName}")

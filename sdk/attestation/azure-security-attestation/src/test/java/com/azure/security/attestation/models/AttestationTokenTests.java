@@ -7,6 +7,7 @@ import com.azure.security.attestation.AttestationClientTestBase;
 import com.azure.security.attestation.implementation.models.AttestationResult;
 import com.azure.security.attestation.implementation.models.AttestationResultImpl;
 import com.azure.security.attestation.implementation.models.AttestationTokenImpl;
+import org.junit.jupiter.api.RepeatedTest;
 import org.junit.jupiter.api.Test;
 
 import java.security.KeyPair;
@@ -14,6 +15,7 @@ import java.security.PrivateKey;
 import java.security.cert.X509Certificate;
 import java.time.OffsetDateTime;
 import java.time.ZoneOffset;
+import java.time.temporal.ChronoUnit;
 import java.util.LinkedHashMap;
 
 import static org.junit.jupiter.api.Assertions.assertArrayEquals;
@@ -267,10 +269,9 @@ public class AttestationTokenTests extends AttestationClientTestBase {
         assertTrue(ex.getMessage().contains("Joe"));
     }
 
-    @Test
+    @RepeatedTest(1000)
     void verifyAttestationTokenExpireTimeout() {
-        OffsetDateTime timeNow = OffsetDateTime.now();
-        timeNow = timeNow.minusNanos(timeNow.getNano());
+        final OffsetDateTime timeNow = OffsetDateTime.now().truncatedTo(ChronoUnit.MICROS);
 
         TestObject testObjectExpired30SecondsAgo = new TestObject()
             .setAlg("Test Algorithm")
@@ -290,14 +291,24 @@ public class AttestationTokenTests extends AttestationClientTestBase {
             ((AttestationTokenImpl) newToken).validate(null,
                 new AttestationTokenValidationOptions()));
         // Both the current time and the expiration time should be in the exception message.
-        assertTrue(ex.getMessage().contains("expiration"));
+        String exceptionMessage = ex.getMessage();
+        assertTrue(exceptionMessage.contains("expiration"), () ->
+            "Expected exception message to contain 'expiration' but it didn't. Actual exception message: "
+            + exceptionMessage);
         // Because the TestObject round-trips times through Epoch times, they are in UTC time.
         // Adjust the target time to be in UTC rather than the current time zone, since we're checking to ensure
         // that the time is reflected in the exception message.
         OffsetDateTime expTime = timeNow.minusSeconds(30).withOffsetSameInstant(ZoneOffset.UTC);
 
-        assertTrue(ex.getMessage().contains(String.format("%tc", timeNow)));
-        assertTrue(ex.getMessage().contains(String.format("%tc", expTime)));
+        // Need a slight window for time now as it could cross a second boundary.
+        boolean foundTimeNow = exceptionMessage.contains(String.format("%tc", timeNow))
+            || exceptionMessage.contains(String.format("%tc", timeNow.minusSeconds(1)));
+        assertTrue(foundTimeNow, () -> String.format(
+            "Expected exception message to contain '%tc' or '%tc' but it didn't. Actual exception message: %s", timeNow,
+            timeNow.minusSeconds(1), exceptionMessage));
+        assertTrue(exceptionMessage.contains(String.format("%tc", expTime)), () -> String.format(
+            "Expected exception message to contain '%tc' but it didn't. Actual exception message: %s", expTime,
+            exceptionMessage));
     }
 
     @Test
