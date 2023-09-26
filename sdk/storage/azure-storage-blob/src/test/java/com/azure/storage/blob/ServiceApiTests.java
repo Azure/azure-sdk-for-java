@@ -1089,13 +1089,15 @@ public class ServiceApiTests extends BlobTestBase {
             Arguments.of("https://doesntmatter.blob.core.windows.net", "container name"));
     }
 
-    @DisabledIf("com.azure.storage.blob.BlobTestBase#isServiceVersionPresent")
     @Test
     // This tests the policy is in the right place because if it were added per retry, it would be after the credentials
     // and auth would fail because we changed a signed header.
     public void perCallPolicy() {
-        BlobServiceClient sc = getServiceClientBuilder(ENVIRONMENT.getPrimaryAccount().getCredential(),
-            primaryBlobServiceClient.getAccountUrl(), getPerCallVersionPolicy()).buildClient();
+        BlobServiceClient sc = new BlobServiceClientBuilder()
+            .endpoint(primaryBlobServiceClient.getAccountUrl())
+            .credential(ENVIRONMENT.getPrimaryAccount().getCredential())
+            .addPolicy(getPerCallVersionPolicy())
+            .buildClient();
 
         Response<BlobServiceProperties> response = sc.getPropertiesWithResponse(null, null);
         assertEquals("2017-11-09", response.getHeaders().getValue(X_MS_VERSION));

@@ -123,6 +123,7 @@ public class BlobOutputStreamTests extends BlobTestBase {
         assertArrayEquals(convertInputStreamToByteArray(blockBlobClient.openInputStream()), randomData);
     }
 
+    @EnabledIf("com.azure.storage.blob.BlobTestBase#isLiveMode")
     @ParameterizedTest
     @MethodSource("blockBlobOutputStreamErrorSupplier")
     public void blockBlobOutputStreamError(Exception exception, Class<?> expectedExceptionClass) {

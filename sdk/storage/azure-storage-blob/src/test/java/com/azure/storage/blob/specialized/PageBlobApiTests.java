@@ -1629,13 +1629,13 @@ public class PageBlobApiTests extends BlobTestBase {
         assertDoesNotThrow(() -> bc.create(512, true));
     }
 
-    @DisabledIf("com.azure.storage.blob.BlobTestBase#isServiceVersionPresent")
     @Test
     // This tests the policy is in the right place because if it were added per retry, it would be after the credentials
     // and auth would fail because we changed a signed header.
     public void perCallPolicy() {
-        PageBlobClient specialBlob = getSpecializedBuilder(ENVIRONMENT.getPrimaryAccount().getCredential(),
-            bc.getBlobUrl(), getPerCallVersionPolicy()).buildPageBlobClient();
+        PageBlobClient specialBlob = getSpecializedBuilder(bc.getBlobUrl())
+            .addPolicy(getPerCallVersionPolicy())
+            .buildPageBlobClient();
 
         Response<BlobProperties> response = specialBlob.getPropertiesWithResponse(null, null, null);
 

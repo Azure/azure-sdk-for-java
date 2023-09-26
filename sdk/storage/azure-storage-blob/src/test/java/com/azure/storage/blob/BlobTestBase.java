@@ -689,6 +689,14 @@ public class BlobTestBase extends TestProxyTestBase {
         return builder.buildClient();
     }
 
+    protected BlobClientBuilder getBlobClientBuilder(String endpoint) {
+        BlobClientBuilder builder = new BlobClientBuilder()
+            .endpoint(endpoint);
+
+        builder.connectionString(ENVIRONMENT.getPrimaryAccount().getConnectionString());
+        return instrument(builder);
+    }
+
     protected SpecializedBlobClientBuilder getSpecializedBuilder(StorageSharedKeyCredential credential, String endpoint,
         HttpPipelinePolicy... policies) {
         SpecializedBlobClientBuilder builder = new SpecializedBlobClientBuilder()
@@ -697,8 +705,17 @@ public class BlobTestBase extends TestProxyTestBase {
         for (HttpPipelinePolicy policy : policies) {
             builder.addPolicy(policy);
         }
-        instrument(builder);
-        return builder.credential(credential);
+
+        builder.credential(credential);
+        return instrument(builder);
+    }
+
+    protected SpecializedBlobClientBuilder getSpecializedBuilder(String endpoint) {
+        SpecializedBlobClientBuilder builder = new SpecializedBlobClientBuilder()
+            .endpoint(endpoint);
+
+        builder.connectionString(ENVIRONMENT.getPrimaryAccount().getConnectionString());
+        return instrument(builder);
     }
 
     /*

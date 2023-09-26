@@ -310,22 +310,22 @@ public class BlobApiTests extends BlobTestBase {
             null, null, null, null, Duration.ofNanos(5L), null));
     }
 
+    @EnabledIf("com.azure.storage.blob.BlobTestBase#isLiveMode")
     @Test
     public void uploadFailWithSmallTimeoutsForServiceClient() {
         // setting very small timeout values for the service client
-        HttpClientOptions clientOptions = new HttpClientOptions()
-            .setApplicationId("client-options-id")
-            .setResponseTimeout(Duration.ofNanos(1))
-            .setReadTimeout(Duration.ofNanos(1))
-            .setWriteTimeout(Duration.ofNanos(1))
-            .setConnectTimeout(Duration.ofNanos(1));
-
         liveTestScenarioWithRetry(() -> {
+            HttpClientOptions clientOptions = new HttpClientOptions()
+                .setApplicationId("client-options-id")
+                .setResponseTimeout(Duration.ofNanos(1))
+                .setReadTimeout(Duration.ofNanos(1))
+                .setWriteTimeout(Duration.ofNanos(1))
+                .setConnectTimeout(Duration.ofNanos(1));
+
             BlobServiceClientBuilder clientBuilder = new BlobServiceClientBuilder()
                 .endpoint(ENVIRONMENT.getPrimaryAccount().getBlobEndpoint())
                 .credential(ENVIRONMENT.getPrimaryAccount().getCredential())
-                .retryOptions(new RequestRetryOptions(null, 1, (Integer) null, null,
-                    null, null))
+                .retryOptions(new RequestRetryOptions(null, 1, (Integer) null, null, null, null))
                 .clientOptions(clientOptions);
 
             BlobServiceClient serviceClient = clientBuilder.buildClient();
@@ -337,8 +337,8 @@ public class BlobApiTests extends BlobTestBase {
             BlobContainerClient blobContainer = serviceClient.createBlobContainer(generateContainerName());
             BlobClient blobClient = blobContainer.getBlobClient(generateBlobName());
             // test whether failure occurs due to small timeout intervals set on the service client
-            assertThrows(RuntimeException.class, () -> blobClient.uploadWithResponse(input, size, null,
-                null, null, null, null, Duration.ofSeconds(10), null));
+            assertThrows(RuntimeException.class, () -> blobClient.uploadWithResponse(input, size, null, null, null,
+                null, null, Duration.ofSeconds(10), null));
         });
 
     }
@@ -1365,8 +1365,8 @@ public class BlobApiTests extends BlobTestBase {
             .getBlobClient("javablobgetpropertiesors2blobapitestgetpropertiesors57d93407b");
 
         BlobProperties sourceProperties = sourceBlob.getProperties();
-        BlobDownloadResponse sourceDownloadHeaders = sourceBlob.downloadWithResponse(new ByteArrayOutputStream(),
-            null, null, null, false, null, null);
+        BlobDownloadResponse sourceDownloadHeaders = sourceBlob.downloadWithResponse(new ByteArrayOutputStream(), null,
+            null, null, false, null, null);
         BlobProperties destProperties = destBlob.getProperties();
         BlobDownloadResponse destDownloadHeaders = destBlob.downloadWithResponse(new ByteArrayOutputStream(), null,
             null, null, false, null, null);
@@ -2944,14 +2944,11 @@ public class BlobApiTests extends BlobTestBase {
     }
 
     @Test
-    @DisabledIf("com.azure.storage.blob.BlobTestBase#isServiceVersionPresent")
     // This tests the policy is in the right place because if it were added per retry, it would be after the credentials
     // and auth would fail because we changed a signed header.
     public void perCallPolicy() {
-        bc = getBlobClient(ENVIRONMENT.getPrimaryAccount().getCredential(), bc.getBlobUrl(), getPerCallVersionPolicy());
-
+        bc = getBlobClientBuilder(bc.getBlobUrl()).addPolicy(getPerCallVersionPolicy()).buildClient();
         Response<BlobProperties> response = bc.getPropertiesWithResponse(null, null, null);
-
         assertEquals("2017-11-09", response.getHeaders().getValue(X_MS_VERSION));
 
     }

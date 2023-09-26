@@ -98,6 +98,7 @@ import static org.junit.jupiter.api.Assertions.assertDoesNotThrow;
 import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertInstanceOf;
 import static org.junit.jupiter.api.Assertions.assertNotNull;
+import static org.junit.jupiter.api.Assertions.assertNull;
 import static org.junit.jupiter.api.Assertions.assertThrows;
 import static org.junit.jupiter.api.Assertions.assertTrue;
 
@@ -192,20 +193,29 @@ public class BlockBlobApiTests extends BlobTestBase {
         assertEquals(blockBlobClient.listBlocks(BlockListType.ALL).getUncommittedBlocks().size(), 1);
     }
 
-    @Test
-    public void stageBlockMinwithBinaryData() {
-        List<BinaryData> binaryDataList = Arrays.asList(
-            BinaryData.fromBytes(DATA.getDefaultBytes()),
-            BinaryData.fromString(DATA.getDefaultText()),
-            BinaryData.fromFile(DATA.getDefaultFile()),
-            BinaryData.fromFlux(DATA.getDefaultFlux(), (long) DATA.getDefaultDataSize(), false).block(),
-            BinaryData.fromStream(DATA.getDefaultInputStream(), (long) DATA.getDefaultDataSize()));
+    @ParameterizedTest
+    @MethodSource("stageBlockMinwithBinaryDataSupplier")
+    public void stageBlockMinWithBinaryData(BinaryData binaryData) {
+        assertResponseStatusCode(blockBlobClient.stageBlockWithResponse(new BlockBlobStageBlockOptions(getBlockID(),
+            binaryData), null, null), 201);
+        assertEquals(blockBlobClient.listBlocks(BlockListType.ALL).getUncommittedBlocks().size(), 1);
+    }
 
-        for (BinaryData binaryData : binaryDataList) {
-            assertResponseStatusCode(blockBlobClient.stageBlockWithResponse(new BlockBlobStageBlockOptions(getBlockID(),
-                binaryData), null, null), 201);
-            assertEquals(blockBlobClient.listBlocks(BlockListType.ALL).getUncommittedBlocks().size(), 1);
-        }
+    private static Stream<Arguments> stageBlockMinwithBinaryDataSupplier() {
+        return Stream.of(
+            Arguments.of(BinaryData.fromBytes(DATA.getDefaultBytes())),
+            Arguments.of(BinaryData.fromString(DATA.getDefaultText())),
+            Arguments.of(BinaryData.fromFile(DATA.getDefaultFile())),
+            Arguments.of(BinaryData.fromStream(DATA.getDefaultInputStream(), DATA.getDefaultDataSizeLong()))
+        );
+    }
+
+    @Test
+    public void stageBlockMinwithBinaryDataFromFlux() {
+        BinaryData binaryData = BinaryData.fromFlux(DATA.getDefaultFlux(), DATA.getDefaultDataSizeLong(), false).block();
+        assertResponseStatusCode(blockBlobClient.stageBlockWithResponse(new BlockBlobStageBlockOptions(getBlockID(),
+            binaryData), null, null), 201);
+        assertEquals(blockBlobClient.listBlocks(BlockListType.ALL).getUncommittedBlocks().size(), 1);
     }
 
     @ParameterizedTest
@@ -243,27 +253,22 @@ public class BlockBlobApiTests extends BlobTestBase {
             Arguments.of(false, DATA.getDefaultInputStream(), DATA.getDefaultDataSize(), BlobStorageException.class),
             Arguments.of(true, null, DATA.getDefaultDataSize(), NullPointerException.class),
             Arguments.of(true, DATA.getDefaultInputStream(), DATA.getDefaultDataSize() + 1, UnexpectedLengthException.class),
-            Arguments.of(true, DATA.getDefaultInputStream(), DATA.getDefaultDataSize() + 1, UnexpectedLengthException.class),
             Arguments.of(true, DATA.getDefaultInputStream(), DATA.getDefaultDataSize() - 1, UnexpectedLengthException.class)
         );
     }
 
-    @ParameterizedTest
-    @MethodSource("stageBlockIllegalArgumentsWithBinaryDataSupplier")
-    public void stageBlockIllegalArgumentsWithBinaryData(BinaryData binaryData, Exception exceptionType) {
-        assertThrows(exceptionType.getClass(), () -> blockBlobClient.stageBlock(getBlockID(), binaryData));
-    }
+    @Test
+    public void stageBlockIllegalArgumentsWithBinaryData() {
+        assertThrows(NullPointerException.class, () -> blockBlobClient.stageBlock(getBlockID(), null));
 
-    private static Stream<Arguments> stageBlockIllegalArgumentsWithBinaryDataSupplier() {
-        return Stream.of(
-            Arguments.of(null, NullPointerException.class),
-            Arguments.of(BinaryData.fromStream(DATA.getDefaultInputStream(), null),
-                NullPointerException.class),
-            Arguments.of(BinaryData.fromStream(DATA.getDefaultInputStream(), DATA.getDefaultDataSizeLong() + 1),
-                UnexpectedLengthException.class),
-            Arguments.of(BinaryData.fromStream(DATA.getDefaultInputStream(),
-                DATA.getDefaultDataSizeLong() - 1), UnexpectedLengthException.class)
-        );
+        assertThrows(NullPointerException.class, () -> blockBlobClient.stageBlock(getBlockID(),
+            BinaryData.fromStream(DATA.getDefaultInputStream(), null)));
+
+        BinaryData binaryData = BinaryData.fromStream(DATA.getDefaultInputStream(), DATA.getDefaultDataSizeLong() + 1);
+        assertThrows(UnexpectedLengthException.class, () -> blockBlobClient.stageBlock(getBlockID(), binaryData));
+
+        BinaryData binaryData1 = BinaryData.fromStream(DATA.getDefaultInputStream(), DATA.getDefaultDataSizeLong() - 1);
+        assertThrows(UnexpectedLengthException.class, () -> blockBlobClient.stageBlock(getBlockID(), binaryData1));
     }
 
     @Test
@@ -1194,25 +1199,24 @@ public class BlockBlobApiTests extends BlobTestBase {
     }
 
     private static Stream<Arguments> uploadIllegalArgumentSupplier() {
-        return Stream.of(Arguments.of(null, DATA.getDefaultDataSize(), NullPointerException.class),
+        return Stream.of(
+            Arguments.of(null, DATA.getDefaultDataSize(), NullPointerException.class),
             Arguments.of(DATA.getDefaultInputStream(), DATA.getDefaultDataSize() + 1, UnexpectedLengthException.class),
             Arguments.of(DATA.getDefaultInputStream(), DATA.getDefaultDataSize() - 1, UnexpectedLengthException.class));
     }
 
-    // Override name to prevent BinaryData.toString() invocation by test framework.
-    @ParameterizedTest
-    @MethodSource("uploadIllegalArgumentBinaryDataSupplier")
-    public void uploadIllegalArgumentBinaryData(BinaryData binaryData, Class<? extends Throwable> exceptionType) {
-        assertThrows(exceptionType, () -> blockBlobClient.upload(binaryData));
-    }
+    @Test
+    public void uploadIllegalArgumentBinaryData() {
+        assertThrows(NullPointerException.class, () -> blockBlobClient.upload(null));
 
-    private static Stream<Arguments> uploadIllegalArgumentBinaryDataSupplier() {
-        return Stream.of(
-            Arguments.of(null, NullPointerException.class),
-            Arguments.of(BinaryData.fromStream(DATA.getDefaultInputStream(), null), UnexpectedLengthException.class),
-            Arguments.of(BinaryData.fromStream(DATA.getDefaultInputStream(), DATA.getDefaultDataSizeLong() + 1), BlobStorageException.class),
-            Arguments.of(BinaryData.fromStream(DATA.getDefaultInputStream(), DATA.getDefaultDataSizeLong() - 1), BlobStorageException.class)
-        );
+        assertThrows(NullPointerException.class, () ->
+            blockBlobClient.upload(BinaryData.fromStream(DATA.getDefaultInputStream(), null)));
+
+        BinaryData badLength1 = BinaryData.fromStream(DATA.getDefaultInputStream(), DATA.getDefaultDataSizeLong() + 1);
+        assertThrows(UnexpectedLengthException.class, () -> blockBlobClient.upload(badLength1));
+
+        BinaryData badLength2 = BinaryData.fromStream(DATA.getDefaultInputStream(), DATA.getDefaultDataSizeLong() - 1);
+        assertThrows(UnexpectedLengthException.class, () -> blockBlobClient.upload(badLength2));
     }
 
     @Test
@@ -1270,8 +1274,8 @@ public class BlockBlobApiTests extends BlobTestBase {
     public void uploadTransactionalMD5Fail() {
         BlobStorageException e = assertThrows(BlobStorageException.class, () ->
             blockBlobClient.stageBlockWithResponse(getBlockID(), DATA.getDefaultInputStream(),
-                DATA.getDefaultDataSize(), MessageDigest.getInstance("MD5").digest("garbage".getBytes()),
-                null, null, null));
+                DATA.getDefaultDataSize(), MessageDigest.getInstance("MD5").digest("garbage".getBytes()), null, null,
+                null));
         assertEquals(BlobErrorCode.MD5MISMATCH, e.getErrorCode());
     }
 
@@ -1286,8 +1290,8 @@ public class BlockBlobApiTests extends BlobTestBase {
             metadata.put(key2, value2);
         }
 
-        blockBlobClient.uploadWithResponse(DATA.getDefaultInputStream(), DATA.getDefaultDataSize(), null,
-            metadata, null, null, null, null, null);
+        blockBlobClient.uploadWithResponse(DATA.getDefaultInputStream(), DATA.getDefaultDataSize(), null, metadata,
+            null, null, null, null, null);
         Response<BlobProperties> response = blockBlobClient.getPropertiesWithResponse(null, null, null);
         assertResponseStatusCode(response, 200);
         assertEquals(metadata, response.getValue().getMetadata());
@@ -1307,7 +1311,8 @@ public class BlockBlobApiTests extends BlobTestBase {
 
         blockBlobClient.uploadWithResponse(new BlockBlobSimpleUploadOptions(DATA.getDefaultInputStream(),
             DATA.getDefaultDataSize()).setTags(tags), null, null);
-        Response<Map<String, String>> response = blockBlobClient.getTagsWithResponse(new BlobGetTagsOptions(), null, null);
+        Response<Map<String, String>> response = blockBlobClient.getTagsWithResponse(new BlobGetTagsOptions(), null,
+            null);
 
         assertResponseStatusCode(response, 200);
         assertEquals(tags, response.getValue());
@@ -1370,8 +1375,8 @@ public class BlockBlobApiTests extends BlobTestBase {
     public void uploadWithTier() {
         BlockBlobClient bc = cc.getBlobClient(generateBlobName()).getBlockBlobClient();
 
-        bc.uploadWithResponse(DATA.getDefaultInputStream(), DATA.getDefaultDataSize(), null, null,
-            AccessTier.COOL, null, null, null, null);
+        bc.uploadWithResponse(DATA.getDefaultInputStream(), DATA.getDefaultDataSize(), null, null, AccessTier.COOL,
+            null, null, null, null);
 
         assertEquals(bc.getProperties().getAccessTier(), AccessTier.COOL);
     }
@@ -1419,7 +1424,7 @@ public class BlockBlobApiTests extends BlobTestBase {
             .assertNext(it -> assertNotNull(it.getETag()))
             .verifyComplete();
 
-        StepVerifier.create(blobAsyncClient.download())
+        StepVerifier.create(blobAsyncClient.downloadStream())
             .assertNext(it -> assertEquals(0, it.remaining()))
             .verifyComplete();
     }
@@ -1432,8 +1437,8 @@ public class BlockBlobApiTests extends BlobTestBase {
         StepVerifier.create(blobAsyncClient.upload(Flux.fromIterable(Arrays.asList(buffer1, buffer2, buffer3)),
                 null, true)).assertNext(it -> assertNotNull(it.getETag())).verifyComplete();
 
-        StepVerifier.create(FluxUtil.collectBytesInByteBufferStream(blobAsyncClient.download()))
-            .assertNext(it -> assertEquals(it, expectedDownload))
+        StepVerifier.create(FluxUtil.collectBytesInByteBufferStream(blobAsyncClient.downloadStream()))
+            .assertNext(it -> assertArrayEquals(it, expectedDownload))
             .verifyComplete();
     }
 
@@ -1553,6 +1558,7 @@ public class BlockBlobApiTests extends BlobTestBase {
     /*      Reporter for testing Progress Receiver
      *        Will count the number of reports that are triggered         */
 
+    @SuppressWarnings("deprecation")
     static class Reporter implements ProgressReceiver {
         private final long blockSize;
         private long reportingCount;
@@ -1572,7 +1578,7 @@ public class BlockBlobApiTests extends BlobTestBase {
         }
     }
 
-    class Listener implements ProgressListener {
+    static class Listener implements ProgressListener {
         private final long blockSize;
         private long reportingCount;
 
@@ -1595,7 +1601,7 @@ public class BlockBlobApiTests extends BlobTestBase {
     @ParameterizedTest
     @MethodSource("bufferedUploadWithReporterSupplier")
     @EnabledIf("com.azure.storage.blob.BlobTestBase#isLiveMode")
-    public void bufferedUploadWithReporter(long blockSize, int bufferCount, int size) {
+    public void bufferedUploadWithReporter(int size, long blockSize, int bufferCount) {
         BlobAsyncClient asyncClient = getPrimaryServiceClientForWrites(blockSize)
             .getBlobContainerAsyncClient(blobAsyncClient.getContainerName())
             .getBlobAsyncClient(blobAsyncClient.getBlobName());
@@ -1606,7 +1612,7 @@ public class BlockBlobApiTests extends BlobTestBase {
             .setBlockSizeLong(blockSize)
             .setMaxConcurrency(bufferCount)
             .setProgressReceiver(uploadReporter)
-            .setMaxSingleUploadSizeLong((long) (4 * Constants.MB));
+            .setMaxSingleUploadSizeLong(4L * Constants.MB);
 
         StepVerifier.create(asyncClient.uploadWithResponse(Flux.just(getRandomData(size)), parallelTransferOptions,
                 null, null, null, null))
@@ -1617,16 +1623,16 @@ public class BlockBlobApiTests extends BlobTestBase {
                  * Verify that the reporting count is equal or greater than the size divided by block size in the case
                  * that operations need to be retried. Retry attempts will increment the reporting count.
                  */
-                assertTrue(uploadReporter.getReportingCount() >= (size / blockSize));
+                assertTrue(uploadReporter.getReportingCount() >= ((long) size / blockSize));
             }).verifyComplete();
     }
 
     private static Stream<Arguments> bufferedUploadWithReporterSupplier() {
         return Stream.of(
-            Arguments.of(10 * Constants.MB, 10 * Constants.MB, 8)
-//            Arguments.of(20 * Constants.MB, Constants.MB, 5),
-//            Arguments.of(10 * Constants.MB, 5 * Constants.MB, 2),
-//            Arguments.of(10 * Constants.MB, 512 * Constants.KB, 20)
+            Arguments.of(10 * Constants.MB, 10L * Constants.MB, 8),
+            Arguments.of(20 * Constants.MB, Constants.MB, 5),
+            Arguments.of(10 * Constants.MB, 5 * Constants.MB, 2),
+            Arguments.of(10 * Constants.MB, 512 * Constants.KB, 20)
         );
     }
 
@@ -1634,7 +1640,7 @@ public class BlockBlobApiTests extends BlobTestBase {
     @ParameterizedTest
     @MethodSource("bufferedUploadWithReporterSupplier")
     @EnabledIf("com.azure.storage.blob.BlobTestBase#isLiveMode")
-    public void bufferedUploadWithListener(long blockSize, int bufferCount, int size) {
+    public void bufferedUploadWithListener(int size, long blockSize, int bufferCount) {
         BlobAsyncClient asyncClient = getPrimaryServiceClientForWrites(blockSize)
             .getBlobContainerAsyncClient(blobAsyncClient.getContainerName())
             .getBlobAsyncClient(blobAsyncClient.getBlobName());
@@ -1655,11 +1661,7 @@ public class BlockBlobApiTests extends BlobTestBase {
                  * Verify that the reporting count is equal or greater than the size divided by block size in the case
                  * that operations need to be retried. Retry attempts will increment the reporting count.
                  */
-                System.out.println("Reporting count: ${uploadListener.getReportingCount()}");
-                System.out.println("Size: ${size}");
-                System.out.println("Block size: ${blockSize}");
-                System.out.println("result: " + (uploadListener.getReportingCount() >= (size / blockSize)));
-//                assertTrue(uploadListener.getReportingCount() >= ((long) size / blockSize));
+                assertTrue(uploadListener.getReportingCount() >= ((long) size / blockSize));
                 }).verifyComplete();
     }
 
@@ -1810,8 +1812,8 @@ public class BlockBlobApiTests extends BlobTestBase {
                 .setBlockSizeLong(2L * Constants.MB), null, null, null, null, null, null);
 
         ByteArrayOutputStream os = new ByteArrayOutputStream(dataSize);
-        blobClient.download(os);
-        assertEquals(data, os.toByteArray());
+        blobClient.downloadStream(os);
+        assertArrayEquals(data, os.toByteArray());
 
         assertEquals(blobClient.getBlockBlobClient().listBlocks(BlockListType.ALL).getCommittedBlocks().size(),
             blockCount);
@@ -1867,8 +1869,8 @@ public class BlockBlobApiTests extends BlobTestBase {
             null, null, null);
 
         StepVerifier.create(uploadOperation.then(blockBlobAsyncClient.getPropertiesWithResponse(null)))
-            .assertNext(it -> validateBlobProperties(it, cacheControl, contentDisposition, contentEncoding,
-                contentLanguage, contentMD5, contentType ==null ? "application/octet-stream" : contentType))
+            .assertNext(it -> assertTrue(validateBlobProperties(it, cacheControl, contentDisposition, contentEncoding,
+                contentLanguage, contentMD5, contentType == null ? "application/octet-stream" : contentType)))
             .verifyComplete();
         // HTTP default content type is application/octet-stream.
 
@@ -2130,7 +2132,7 @@ public class BlockBlobApiTests extends BlobTestBase {
         // Mock a policy that will always then check that the data is still the same and return a retryable error.
         ByteBuffer localData = DATA.getDefaultData();
         HttpPipelinePolicy mockPolicy = (context, next) -> collectBytesInBuffer(context.getHttpRequest().getBody())
-            .map(it -> it == localData)
+            .map(localData::equals)
             .flatMap(it -> it ? Mono.just(mockHttpResponse) : Mono.error(new IllegalArgumentException()));
 
         // Build the pipeline
@@ -2147,7 +2149,7 @@ public class BlockBlobApiTests extends BlobTestBase {
         // TODO: It could be that duplicates aren't getting made in the retry policy? Or before the retry policy?
 
         // A second subscription to a download stream will
-        StepVerifier.create(blobAsyncClient.upload(blockBlobAsyncClient.download(), parallelTransferOptions, true))
+        StepVerifier.create(blobAsyncClient.upload(blockBlobAsyncClient.downloadStream(), parallelTransferOptions, true))
             .verifyErrorSatisfies(it ->
             {
                 assertInstanceOf(BlobStorageException.class, it);
@@ -2192,7 +2194,7 @@ public class BlockBlobApiTests extends BlobTestBase {
 
     @EnabledIf("com.azure.storage.blob.BlobTestBase#isLiveMode")
     @Test
-    public void bufferedUploadWithspecifiedLength() {
+    public void bufferedUploadWithSpecifiedLength() {
         Flux<ByteBuffer> fluxData = Flux.just(getRandomData(DATA.getDefaultDataSize()));
         BinaryData binaryData = BinaryData.fromFlux(fluxData, DATA.getDefaultDataSizeLong()).block();
         BlobParallelUploadOptions parallelUploadOptions = new BlobParallelUploadOptions(binaryData);
@@ -2278,16 +2280,16 @@ public class BlockBlobApiTests extends BlobTestBase {
         assertThrows(IllegalArgumentException.class, builder::buildBlockBlobClient);
     }
 
-    @DisabledIf("com.azure.storage.blob.BlobTestBase#isServiceVersionPresent")
     // This tests the policy is in the right place because if it were added per retry, it would be after the credentials
     // and auth would fail because we changed a signed header.
     @Test
     public void perCallPolicy() {
-        BlockBlobClient specialBlob = getSpecializedBuilder(ENVIRONMENT.getPrimaryAccount().getCredential(),
-            blockBlobClient.getBlobUrl(), getPerCallVersionPolicy()).buildBlockBlobClient();
+        BlockBlobClient specialBlob = getSpecializedBuilder(blockBlobClient.getBlobUrl())
+            .addPolicy(getPerCallVersionPolicy())
+            .buildBlockBlobClient();
 
-        Response<BlobProperties> response = specialBlob.getPropertiesWithResponse(null, null, null);
-        assertEquals(response.getHeaders().getValue(X_MS_VERSION), "2017-11-09");
+        HttpHeaders headers = specialBlob.getPropertiesWithResponse(null, null, null).getHeaders();
+        assertEquals("2017-11-09", headers.getValue(X_MS_VERSION));
     }
 
     @DisabledIf("com.azure.storage.blob.BlobTestBase#olderThan20200408ServiceVersion")
@@ -2531,7 +2533,8 @@ public class BlockBlobApiTests extends BlobTestBase {
         HttpHeaders headers = new HttpHeaders();
         BlockBlobsPutBlobFromUrlHeaders hd = new BlockBlobsPutBlobFromUrlHeaders(headers);
 
-        BlockBlobItem blockBlobItem = new BlockBlobItem(hd.getETag(),
+        BlockBlobItem blockBlobItem = new BlockBlobItem(
+            hd.getETag(),
             hd.getLastModified(),
             hd.getContentMD5(),
             hd.isXMsRequestServerEncrypted(),
@@ -2539,12 +2542,12 @@ public class BlockBlobApiTests extends BlobTestBase {
             hd.getXMsEncryptionScope(),
             hd.getXMsVersionId());
 
-        assertNotNull(blockBlobItem.getETag());
-        assertNotNull(blockBlobItem.getLastModified());
-        assertNotNull(blockBlobItem.getContentMd5());
-        assertNotNull(blockBlobItem.isServerEncrypted());
-        assertNotNull(blockBlobItem.getEncryptionKeySha256());
-        assertNotNull(blockBlobItem.getEncryptionScope());
-        assertNotNull(blockBlobItem.getVersionId());
+        assertNull(blockBlobItem.getETag());
+        assertNull(blockBlobItem.getLastModified());
+        assertNull(blockBlobItem.getContentMd5());
+        assertNull(blockBlobItem.isServerEncrypted());
+        assertNull(blockBlobItem.getEncryptionKeySha256());
+        assertNull(blockBlobItem.getEncryptionScope());
+        assertNull(blockBlobItem.getVersionId());
     }
 }
