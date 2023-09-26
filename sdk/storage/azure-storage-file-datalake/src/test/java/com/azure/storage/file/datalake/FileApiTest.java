@@ -3347,7 +3347,7 @@ public class FileApiTest extends DataLakeTestBase {
         DataLakeFileClient aadFileClient = getPathClientBuilderWithTokenCredential(
             dataLakeFileSystemClient.getFileSystemUrl(), fc.getFilePath())
             .fileSystemName(dataLakeFileSystemClient.getFileSystemName())
-            .dataLakeAudience(DataLakeAudience.getPublicAudience())
+            .dataLakeAudience(DataLakeAudience.PUBLIC_AUDIENCE)
             .buildFileClient();
 
         assertTrue(aadFileClient.exists());
@@ -3355,7 +3355,7 @@ public class FileApiTest extends DataLakeTestBase {
 
     @Test
     public void customAudience() {
-        DataLakeAudience audience = new DataLakeAudience(String.format("https://%s.blob.core.windows.net",
+        DataLakeAudience audience = DataLakeAudience.fromString(String.format("https://%s.blob.core.windows.net",
             dataLakeFileSystemClient.getAccountName()));
         DataLakeFileClient aadFileClient = getPathClientBuilderWithTokenCredential(
             ENVIRONMENT.getPrimaryAccount().getDataLakeEndpoint(), fc.getFilePath())
@@ -3380,7 +3380,7 @@ public class FileApiTest extends DataLakeTestBase {
 
     @Test
     public void audienceError() {
-        DataLakeAudience audience = new DataLakeAudience("https://badaudience.blob.core.windows.net");
+        DataLakeAudience audience = DataLakeAudience.fromString("https://badaudience.blob.core.windows.net");
         DataLakeFileClient aadFileClient = getPathClientBuilderWithTokenCredential(
             ENVIRONMENT.getPrimaryAccount().getDataLakeEndpoint(), fc.getFilePath())
             .fileSystemName(dataLakeFileSystemClient.getFileSystemName())

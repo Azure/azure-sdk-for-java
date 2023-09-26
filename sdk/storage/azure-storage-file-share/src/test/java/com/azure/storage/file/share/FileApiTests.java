@@ -2662,7 +2662,7 @@ class FileApiTests extends FileShareTestBase {
         ShareServiceClient oAuthServiceClient =
             getOAuthServiceClient(new ShareServiceClientBuilder()
                 .shareTokenIntent(ShareTokenIntent.BACKUP)
-                .shareAudience(ShareAudience.getPublicAudience())
+                .shareAudience(ShareAudience.PUBLIC_AUDIENCE)
             );
 
         ShareFileClient aadFileClient = oAuthServiceClient.getShareClient(shareName).getFileClient(fileName);
@@ -2674,7 +2674,7 @@ class FileApiTests extends FileShareTestBase {
         String fileName = generatePathName();
         ShareFileClient fileClient = fileBuilderHelper(shareName, fileName).buildFileClient();
         fileClient.create(Constants.KB);
-        ShareAudience audience = new ShareAudience(String.format("https://%s.file.core.windows.net",
+        ShareAudience audience = ShareAudience.fromString(String.format("https://%s.file.core.windows.net",
             shareClient.getAccountName()));
         ShareServiceClient oAuthServiceClient =
             getOAuthServiceClient(new ShareServiceClientBuilder()
@@ -2706,7 +2706,7 @@ class FileApiTests extends FileShareTestBase {
         String fileName = generatePathName();
         ShareFileClient fileClient = fileBuilderHelper(shareName, fileName).buildFileClient();
         fileClient.create(Constants.KB);
-        ShareAudience audience = new ShareAudience("https://badaudience.file.core.windows.net");
+        ShareAudience audience = ShareAudience.fromString("https://badaudience.file.core.windows.net");
         ShareServiceClient oAuthServiceClient =
             getOAuthServiceClient(new ShareServiceClientBuilder()
                 .shareTokenIntent(ShareTokenIntent.BACKUP)

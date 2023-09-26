@@ -65,6 +65,7 @@ import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertFalse;
 import static org.junit.jupiter.api.Assertions.assertInstanceOf;
 import static org.junit.jupiter.api.Assertions.assertNotNull;
+import static org.junit.jupiter.api.Assertions.assertNull;
 import static org.junit.jupiter.api.Assertions.assertThrows;
 import static org.junit.jupiter.api.Assertions.assertTrue;
 
@@ -1141,7 +1142,7 @@ public class ShareApiTests extends FileShareTestBase {
 
         assertEquals(snapClient.getSnapshotId(), snapshotId);
         assertTrue(snapClient.getShareUrl().contains("sharesnapshot="));
-        assertEquals(primaryShareClient.getSnapshotId(), null);
+        assertNull(primaryShareClient.getSnapshotId());
     }
 
     @Test
@@ -1175,7 +1176,7 @@ public class ShareApiTests extends FileShareTestBase {
         primaryShareClient.create();
         ShareClient aadShareClient = getOAuthShareClientBuilder(new ShareClientBuilder().shareName(shareName)
             .shareTokenIntent(ShareTokenIntent.BACKUP))
-            .shareAudience(ShareAudience.getPublicAudience())
+            .shareAudience(ShareAudience.PUBLIC_AUDIENCE)
             .buildClient();
 
         String permission = "O:S-1-5-21-2127521184-1604012920-1887927527-21560751G:S-1-5-21-2127521184-"
@@ -1189,7 +1190,7 @@ public class ShareApiTests extends FileShareTestBase {
     @Test
     public void customAudience() {
         primaryShareClient.create();
-        ShareAudience audience = new ShareAudience(String.format("https://%s.file.core.windows.net",
+        ShareAudience audience = ShareAudience.fromString(String.format("https://%s.file.core.windows.net",
             primaryShareClient.getAccountName()));
         ShareClient aadShareClient = getOAuthShareClientBuilder(new ShareClientBuilder())
             .shareName(shareName)
@@ -1226,7 +1227,7 @@ public class ShareApiTests extends FileShareTestBase {
     @Test
     public void audienceError() {
         primaryShareClient.create();
-        ShareAudience audience = new ShareAudience("https://badaudience.file.core.windows.net");
+        ShareAudience audience = ShareAudience.fromString("https://badaudience.file.core.windows.net");
         ShareClient aadShareClient = getOAuthShareClientBuilder(new ShareClientBuilder())
             .shareName(shareName)
             .shareTokenIntent(ShareTokenIntent.BACKUP)

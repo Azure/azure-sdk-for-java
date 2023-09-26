@@ -1645,7 +1645,7 @@ public class DirectoryApiTests extends FileShareTestBase {
         ShareServiceClient oAuthServiceClient =
             getOAuthServiceClient(new ShareServiceClientBuilder()
                 .shareTokenIntent(ShareTokenIntent.BACKUP)
-                .shareAudience(ShareAudience.getPublicAudience())
+                .shareAudience(ShareAudience.PUBLIC_AUDIENCE)
             );
 
         ShareDirectoryClient aadDirClient = oAuthServiceClient.getShareClient(shareName).getDirectoryClient(dirName);
@@ -1657,7 +1657,7 @@ public class DirectoryApiTests extends FileShareTestBase {
         String dirName = generatePathName();
         ShareDirectoryClient dirClient = directoryBuilderHelper(shareName, dirName).buildDirectoryClient();
         dirClient.create();
-        ShareAudience audience = new ShareAudience(String.format("https://%s.file.core.windows.net",
+        ShareAudience audience = ShareAudience.fromString(String.format("https://%s.file.core.windows.net",
             primaryDirectoryClient.getAccountName()));
         ShareServiceClient oAuthServiceClient =
             getOAuthServiceClient(new ShareServiceClientBuilder()
@@ -1687,7 +1687,7 @@ public class DirectoryApiTests extends FileShareTestBase {
     @Test
     public void audienceError() {
         String dirName = generatePathName();
-        ShareAudience audience = new ShareAudience("https://badaudience.file.core.windows.net");
+        ShareAudience audience = ShareAudience.fromString("https://badaudience.file.core.windows.net");
         ShareDirectoryClient dirClient = directoryBuilderHelper(shareName, dirName).buildDirectoryClient();
         dirClient.create();
         ShareServiceClient oAuthServiceClient =

@@ -118,8 +118,9 @@ public final class BuilderHelper {
             credentialPolicy =  new StorageSharedKeyCredentialPolicy(storageSharedKeyCredential);
         } else if (tokenCredential != null) {
             // The endpoint scope for the BearerToken is the blob endpoint not dfs
-            String audience = dataLakeAudience != null ? dataLakeAudience.createDefaultScope()
-                : Constants.STORAGE_SCOPE;
+            String audience = dataLakeAudience != null
+                ? ((dataLakeAudience.toString().endsWith("/") ? dataLakeAudience + ".default"
+                : dataLakeAudience + "/.default")) : Constants.STORAGE_SCOPE;
             credentialPolicy =  new BearerTokenAuthenticationPolicy(tokenCredential, audience);
         } else if (azureSasCredential != null) {
             credentialPolicy = new AzureSasCredentialPolicy(azureSasCredential, false);

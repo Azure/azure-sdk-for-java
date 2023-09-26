@@ -197,7 +197,8 @@ public final class BuilderHelper {
             credentialPolicy =  new StorageSharedKeyCredentialPolicy(storageSharedKeyCredential);
         } else if (tokenCredential != null) {
             httpsValidation(tokenCredential, "bearer token", endpoint, logger);
-            String audience = queueAudience != null ? queueAudience.createDefaultScope() : Constants.STORAGE_SCOPE;
+            String audience = queueAudience != null ? ((queueAudience.toString().endsWith("/")
+                ? queueAudience + ".default" : queueAudience + "/.default")) : Constants.STORAGE_SCOPE;
             credentialPolicy =  new BearerTokenAuthenticationPolicy(tokenCredential, audience);
         } else if (azureSasCredential != null) {
             credentialPolicy = new AzureSasCredentialPolicy(azureSasCredential, false);

@@ -645,7 +645,7 @@ public final class DataLakePathClientBuilder implements
     public DataLakePathClientBuilder dataLakeAudience(DataLakeAudience audience) {
         this.dataLakeAudience = audience;
         if (audience != null) {
-            blobClientBuilder.blobAudience(new BlobAudience(audience.getAudience()));
+            blobClientBuilder.blobAudience(BlobAudience.fromString(audience.toString()));
         }
         return this;
     }

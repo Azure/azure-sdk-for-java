@@ -529,7 +529,7 @@ public class DataLakeServiceClientBuilder implements
     public DataLakeServiceClientBuilder dataLakeAudience(DataLakeAudience audience) {
         this.dataLakeAudience = audience;
         if (audience != null) {
-            blobServiceClientBuilder.blobAudience(new BlobAudience(audience.getAudience()));
+            blobServiceClientBuilder.blobAudience(BlobAudience.fromString(audience.toString()));
         }
         return this;
     }

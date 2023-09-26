@@ -542,7 +542,7 @@ public class DataLakeFileSystemClientBuilder implements
     public DataLakeFileSystemClientBuilder dataLakeAudience(DataLakeAudience audience) {
         this.dataLakeAudience = audience;
         if (audience != null) {
-            blobContainerClientBuilder.blobAudience(new BlobAudience(audience.getAudience()));
+            blobContainerClientBuilder.blobAudience(BlobAudience.fromString(audience.toString()));
         }
         return this;
     }

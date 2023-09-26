@@ -231,7 +231,7 @@ public class QueueServiceApiTests extends QueueTestBase {
     @Test
     public void defaultAudience() {
         QueueServiceClient aadService = getOAuthServiceClientBuilder(primaryQueueServiceClient.getQueueServiceUrl())
-            .queueAudience(QueueAudience.getPublicAudience())
+            .queueAudience(QueueAudience.PUBLIC_AUDIENCE)
             .buildClient();
 
         assertNotNull(aadService.getProperties());
@@ -239,7 +239,7 @@ public class QueueServiceApiTests extends QueueTestBase {
 
     @Test
     public void customAudience() {
-        QueueAudience audience = new QueueAudience(String.format("https://%s.queue.core.windows.net",
+        QueueAudience audience = QueueAudience.fromString(String.format("https://%s.queue.core.windows.net",
             primaryQueueServiceClient.getAccountName()));
         QueueServiceClient aadService = getOAuthServiceClientBuilder(primaryQueueServiceClient.getQueueServiceUrl())
             .queueAudience(audience)
@@ -259,7 +259,7 @@ public class QueueServiceApiTests extends QueueTestBase {
 
     @Test
     public void audienceError() {
-        QueueAudience audience = new QueueAudience("https://badaudience.file.core.windows.net");
+        QueueAudience audience = QueueAudience.fromString("https://badaudience.file.core.windows.net");
         QueueServiceClient aadService = getOAuthServiceClientBuilder(primaryQueueServiceClient.getQueueServiceUrl())
             .queueAudience(audience)
             .buildClient();

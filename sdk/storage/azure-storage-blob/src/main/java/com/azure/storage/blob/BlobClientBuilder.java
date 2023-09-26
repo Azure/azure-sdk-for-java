@@ -108,8 +108,8 @@ public final class BlobClientBuilder implements
 
     /**
      * Creates a {@link BlobClient} based on options set in the builder. BlobClients are used to perform generic blob
-     * methods such as {@link BlobClient#download(OutputStream) download} and {@link BlobClient#getProperties() get
-     * properties}, use this when the blob type is unknown.
+     * methods such as {@link BlobClient#downloadStream(OutputStream) download} and {@link BlobClient#getProperties()
+     * get properties}, use this when the blob type is unknown.
      *
      * <p><strong>Code Samples</strong></p>
      *
@@ -133,7 +133,7 @@ public final class BlobClientBuilder implements
 
     /**
      * Creates a {@link BlobAsyncClient} based on options set in the builder. BlobAsyncClients are used to perform
-     * generic blob methods such as {@link BlobAsyncClient#download() download} and {@link
+     * generic blob methods such as {@link BlobAsyncClient#downloadStream() download} and {@link
      * BlobAsyncClient#getProperties()}, use this when the blob type is unknown.
      *
      * <p><strong>Code Samples</strong></p>

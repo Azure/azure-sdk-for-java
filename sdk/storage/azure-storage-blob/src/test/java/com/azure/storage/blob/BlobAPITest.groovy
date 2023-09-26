@@ -3432,7 +3432,7 @@ class BlobAPITest extends APISpec {
     def "Default Audience"() {
         setup:
         def aadBlob = getBlobClientBuilderWithTokenCredential(bc.getBlobUrl())
-            .blobAudience(BlobAudience.getPublicAudience()).buildClient()
+            .blobAudience(BlobAudience.PUBLIC_AUDIENCE).buildClient()
 
         expect:
         aadBlob.exists()
@@ -3440,7 +3440,7 @@ class BlobAPITest extends APISpec {
 
     def "Custom audience"() {
         setup:
-        def audience = new BlobAudience(String.format("https://%s.blob.core.windows.net", cc.getAccountName()))
+        def audience = BlobAudience.fromString(String.format("https://%s.blob.core.windows.net", cc.getAccountName()))
         def aadBlob = getBlobClientBuilderWithTokenCredential(bc.getBlobUrl())
             .blobAudience(audience).buildClient()
 
@@ -3459,7 +3459,7 @@ class BlobAPITest extends APISpec {
 
     def "Audience error"() {
         setup:
-        def audience = new BlobAudience("https://badaudience.blob.core.windows.net")
+        def audience = BlobAudience.fromString("https://badaudience.blob.core.windows.net")
 
         def aadBlob = new BlobClientBuilder().endpoint(bc.getBlobUrl())
             .credential(new MockTokenCredential())

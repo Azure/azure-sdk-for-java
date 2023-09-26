@@ -701,7 +701,7 @@ public class ServiceApiTests extends DataLakeTestBase {
     @Test
     public void defaultAudience() {
         DataLakeServiceClient aadServiceClient = getOAuthServiceClientBuilder()
-            .dataLakeAudience(DataLakeAudience.getPublicAudience())
+            .dataLakeAudience(DataLakeAudience.PUBLIC_AUDIENCE)
             .buildClient();
 
         assertNotNull(aadServiceClient.getProperties());
@@ -709,7 +709,7 @@ public class ServiceApiTests extends DataLakeTestBase {
 
     @Test
     public void customAudience() {
-        DataLakeAudience audience = new DataLakeAudience(String.format("https://%s.blob.core.windows.net",
+        DataLakeAudience audience = DataLakeAudience.fromString(String.format("https://%s.blob.core.windows.net",
             primaryDataLakeServiceClient.getAccountName()));
         DataLakeServiceClient aadServiceClient = getOAuthServiceClientBuilder()
             .dataLakeAudience(audience)
@@ -730,7 +730,7 @@ public class ServiceApiTests extends DataLakeTestBase {
 
     @Test
     public void audienceError() {
-        DataLakeAudience audience = new DataLakeAudience("https://badaudience.blob.core.windows.net");
+        DataLakeAudience audience = DataLakeAudience.fromString("https://badaudience.blob.core.windows.net");
         DataLakeServiceClient aadServiceClient = getOAuthServiceClientBuilder()
             .dataLakeAudience(audience)
             .buildClient();
