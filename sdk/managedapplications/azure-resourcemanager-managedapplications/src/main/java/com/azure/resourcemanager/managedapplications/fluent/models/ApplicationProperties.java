@@ -5,9 +5,17 @@
 package com.azure.resourcemanager.managedapplications.fluent.models;
 
 import com.azure.core.annotation.Fluent;
-import com.azure.core.util.logging.ClientLogger;
+import com.azure.resourcemanager.managedapplications.models.ApplicationArtifact;
+import com.azure.resourcemanager.managedapplications.models.ApplicationAuthorization;
+import com.azure.resourcemanager.managedapplications.models.ApplicationBillingDetailsDefinition;
+import com.azure.resourcemanager.managedapplications.models.ApplicationClientDetails;
+import com.azure.resourcemanager.managedapplications.models.ApplicationJitAccessPolicy;
+import com.azure.resourcemanager.managedapplications.models.ApplicationManagementMode;
+import com.azure.resourcemanager.managedapplications.models.ApplicationPackageContact;
+import com.azure.resourcemanager.managedapplications.models.ApplicationPackageSupportUrls;
 import com.azure.resourcemanager.managedapplications.models.ProvisioningState;
 import com.fasterxml.jackson.annotation.JsonProperty;
+import java.util.List;
 
 /** The managed application properties. */
 @Fluent
@@ -15,7 +23,7 @@ public final class ApplicationProperties {
     /*
      * The managed resource group Id.
      */
-    @JsonProperty(value = "managedResourceGroupId", required = true)
+    @JsonProperty(value = "managedResourceGroupId")
     private String managedResourceGroupId;
 
     /*
@@ -42,6 +50,66 @@ public final class ApplicationProperties {
      */
     @JsonProperty(value = "provisioningState", access = JsonProperty.Access.WRITE_ONLY)
     private ProvisioningState provisioningState;
+
+    /*
+     * The managed application billing details.
+     */
+    @JsonProperty(value = "billingDetails", access = JsonProperty.Access.WRITE_ONLY)
+    private ApplicationBillingDetailsDefinition billingDetails;
+
+    /*
+     * The managed application Jit access policy.
+     */
+    @JsonProperty(value = "jitAccessPolicy")
+    private ApplicationJitAccessPolicy jitAccessPolicy;
+
+    /*
+     * The publisher tenant Id.
+     */
+    @JsonProperty(value = "publisherTenantId", access = JsonProperty.Access.WRITE_ONLY)
+    private String publisherTenantId;
+
+    /*
+     * The  read-only authorizations property that is retrieved from the application package.
+     */
+    @JsonProperty(value = "authorizations", access = JsonProperty.Access.WRITE_ONLY)
+    private List<ApplicationAuthorization> authorizations;
+
+    /*
+     * The managed application management mode.
+     */
+    @JsonProperty(value = "managementMode", access = JsonProperty.Access.WRITE_ONLY)
+    private ApplicationManagementMode managementMode;
+
+    /*
+     * The read-only customer support property that is retrieved from the application package.
+     */
+    @JsonProperty(value = "customerSupport", access = JsonProperty.Access.WRITE_ONLY)
+    private ApplicationPackageContact customerSupport;
+
+    /*
+     * The read-only support URLs property that is retrieved from the application package.
+     */
+    @JsonProperty(value = "supportUrls", access = JsonProperty.Access.WRITE_ONLY)
+    private ApplicationPackageSupportUrls supportUrls;
+
+    /*
+     * The collection of managed application artifacts.
+     */
+    @JsonProperty(value = "artifacts", access = JsonProperty.Access.WRITE_ONLY)
+    private List<ApplicationArtifact> artifacts;
+
+    /*
+     * The client entity that created the JIT request.
+     */
+    @JsonProperty(value = "createdBy", access = JsonProperty.Access.WRITE_ONLY)
+    private ApplicationClientDetails createdBy;
+
+    /*
+     * The client entity that last updated the JIT request.
+     */
+    @JsonProperty(value = "updatedBy", access = JsonProperty.Access.WRITE_ONLY)
+    private ApplicationClientDetails updatedBy;
 
     /** Creates an instance of ApplicationProperties class. */
     public ApplicationProperties() {
@@ -128,18 +196,137 @@ public final class ApplicationProperties {
     }
 
     /**
+     * Get the billingDetails property: The managed application billing details.
+     *
+     * @return the billingDetails value.
+     */
+    public ApplicationBillingDetailsDefinition billingDetails() {
+        return this.billingDetails;
+    }
+
+    /**
+     * Get the jitAccessPolicy property: The managed application Jit access policy.
+     *
+     * @return the jitAccessPolicy value.
+     */
+    public ApplicationJitAccessPolicy jitAccessPolicy() {
+        return this.jitAccessPolicy;
+    }
+
+    /**
+     * Set the jitAccessPolicy property: The managed application Jit access policy.
+     *
+     * @param jitAccessPolicy the jitAccessPolicy value to set.
+     * @return the ApplicationProperties object itself.
+     */
+    public ApplicationProperties withJitAccessPolicy(ApplicationJitAccessPolicy jitAccessPolicy) {
+        this.jitAccessPolicy = jitAccessPolicy;
+        return this;
+    }
+
+    /**
+     * Get the publisherTenantId property: The publisher tenant Id.
+     *
+     * @return the publisherTenantId value.
+     */
+    public String publisherTenantId() {
+        return this.publisherTenantId;
+    }
+
+    /**
+     * Get the authorizations property: The read-only authorizations property that is retrieved from the application
+     * package.
+     *
+     * @return the authorizations value.
+     */
+    public List<ApplicationAuthorization> authorizations() {
+        return this.authorizations;
+    }
+
+    /**
+     * Get the managementMode property: The managed application management mode.
+     *
+     * @return the managementMode value.
+     */
+    public ApplicationManagementMode managementMode() {
+        return this.managementMode;
+    }
+
+    /**
+     * Get the customerSupport property: The read-only customer support property that is retrieved from the application
+     * package.
+     *
+     * @return the customerSupport value.
+     */
+    public ApplicationPackageContact customerSupport() {
+        return this.customerSupport;
+    }
+
+    /**
+     * Get the supportUrls property: The read-only support URLs property that is retrieved from the application package.
+     *
+     * @return the supportUrls value.
+     */
+    public ApplicationPackageSupportUrls supportUrls() {
+        return this.supportUrls;
+    }
+
+    /**
+     * Get the artifacts property: The collection of managed application artifacts.
+     *
+     * @return the artifacts value.
+     */
+    public List<ApplicationArtifact> artifacts() {
+        return this.artifacts;
+    }
+
+    /**
+     * Get the createdBy property: The client entity that created the JIT request.
+     *
+     * @return the createdBy value.
+     */
+    public ApplicationClientDetails createdBy() {
+        return this.createdBy;
+    }
+
+    /**
+     * Get the updatedBy property: The client entity that last updated the JIT request.
+     *
+     * @return the updatedBy value.
+     */
+    public ApplicationClientDetails updatedBy() {
+        return this.updatedBy;
+    }
+
+    /**
      * Validates the instance.
      *
      * @throws IllegalArgumentException thrown if the instance is not valid.
      */
     public void validate() {
-        if (managedResourceGroupId() == null) {
-            throw LOGGER
-                .logExceptionAsError(
-                    new IllegalArgumentException(
-                        "Missing required property managedResourceGroupId in model ApplicationProperties"));
+        if (billingDetails() != null) {
+            billingDetails().validate();
+        }
+        if (jitAccessPolicy() != null) {
+            jitAccessPolicy().validate();
+        }
+        if (authorizations() != null) {
+            authorizations().forEach(e -> e.validate());
+        }
+        if (customerSupport() != null) {
+            customerSupport().validate();
+        }
+        if (supportUrls() != null) {
+            supportUrls().validate();
+        }
+        if (artifacts() != null) {
+            artifacts().forEach(e -> e.validate());
+        }
+        if (createdBy() != null) {
+            createdBy().validate();
+        }
+        if (updatedBy() != null) {
+            updatedBy().validate();
         }
     }
-
-    private static final ClientLogger LOGGER = new ClientLogger(ApplicationProperties.class);
 }

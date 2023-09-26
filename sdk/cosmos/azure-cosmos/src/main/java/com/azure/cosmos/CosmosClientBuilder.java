@@ -1051,7 +1051,6 @@ public class CosmosClientBuilder implements
         buildConnectionPolicy();
         CosmosAsyncClient cosmosAsyncClient = new CosmosAsyncClient(this);
         if (proactiveContainerInitConfig != null) {
-
             cosmosAsyncClient.recordOpenConnectionsAndInitCachesStarted(proactiveContainerInitConfig.getCosmosContainerIdentities());
 
             Duration aggressiveWarmupDuration = proactiveContainerInitConfig
@@ -1085,6 +1084,9 @@ public class CosmosClientBuilder implements
         buildConnectionPolicy();
         CosmosClient cosmosClient = new CosmosClient(this);
         if (proactiveContainerInitConfig != null) {
+
+            cosmosClient.recordOpenConnectionsAndInitCachesStarted(proactiveContainerInitConfig.getCosmosContainerIdentities());
+
             Duration aggressiveWarmupDuration = proactiveContainerInitConfig
                     .getAggressiveWarmupDuration();
             if (aggressiveWarmupDuration != null) {
@@ -1092,6 +1094,8 @@ public class CosmosClientBuilder implements
             } else {
                 cosmosClient.openConnectionsAndInitCaches();
             }
+
+            cosmosClient.recordOpenConnectionsAndInitCachesCompleted(proactiveContainerInitConfig.getCosmosContainerIdentities());
         }
         logStartupInfo(stopwatch, cosmosClient.asyncClient());
         return cosmosClient;

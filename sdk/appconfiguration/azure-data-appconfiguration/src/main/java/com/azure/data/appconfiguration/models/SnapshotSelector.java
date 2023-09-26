@@ -22,9 +22,9 @@ public final class SnapshotSelector {
     private List<SnapshotFields> fields;
 
     /**
-     * Construct a {@link SnapshotSelector} object.
+     * Creates an instance of {@link SnapshotSelector}.
      */
-    public SnapshotSelector() {}
+    public SnapshotSelector() { }
 
     /**
      * Gets the snapshot name filter

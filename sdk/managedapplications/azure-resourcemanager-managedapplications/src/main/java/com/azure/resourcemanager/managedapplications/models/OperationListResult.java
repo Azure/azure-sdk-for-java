@@ -4,27 +4,27 @@
 
 package com.azure.resourcemanager.managedapplications.models;
 
-import com.azure.core.annotation.Fluent;
+import com.azure.core.annotation.Immutable;
 import com.azure.resourcemanager.managedapplications.fluent.models.OperationInner;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import java.util.List;
 
 /**
- * Result of the request to list Microsoft.Solutions operations. It contains a list of operations and a URL link to get
- * the next set of results.
+ * A list of REST API operations supported by an Azure Resource Provider. It contains an URL link to get the next set of
+ * results.
  */
-@Fluent
+@Immutable
 public final class OperationListResult {
     /*
-     * List of Microsoft.Solutions operations.
+     * List of operations supported by the resource provider
      */
-    @JsonProperty(value = "value")
+    @JsonProperty(value = "value", access = JsonProperty.Access.WRITE_ONLY)
     private List<OperationInner> value;
 
     /*
-     * URL to get the next set of operation list results if there are any.
+     * URL to get the next set of operation list results (if there are any).
      */
-    @JsonProperty(value = "nextLink")
+    @JsonProperty(value = "nextLink", access = JsonProperty.Access.WRITE_ONLY)
     private String nextLink;
 
     /** Creates an instance of OperationListResult class. */
@@ -32,7 +32,7 @@ public final class OperationListResult {
     }
 
     /**
-     * Get the value property: List of Microsoft.Solutions operations.
+     * Get the value property: List of operations supported by the resource provider.
      *
      * @return the value value.
      */
@@ -41,34 +41,12 @@ public final class OperationListResult {
     }
 
     /**
-     * Set the value property: List of Microsoft.Solutions operations.
-     *
-     * @param value the value value to set.
-     * @return the OperationListResult object itself.
-     */
-    public OperationListResult withValue(List<OperationInner> value) {
-        this.value = value;
-        return this;
-    }
-
-    /**
-     * Get the nextLink property: URL to get the next set of operation list results if there are any.
+     * Get the nextLink property: URL to get the next set of operation list results (if there are any).
      *
      * @return the nextLink value.
      */
     public String nextLink() {
         return this.nextLink;
-    }
-
-    /**
-     * Set the nextLink property: URL to get the next set of operation list results if there are any.
-     *
-     * @param nextLink the nextLink value to set.
-     * @return the OperationListResult object itself.
-     */
-    public OperationListResult withNextLink(String nextLink) {
-        this.nextLink = nextLink;
-        return this;
     }
 
     /**
