@@ -8,8 +8,6 @@
 * Added a preview API to `ChangeFeedProcessorBuilder` to process an additional `ChangeFeedProcessorContext` for handling all versions and deletes changes. - See [PR 36715](https://github.com/Azure/azure-sdk-for-java/pull/36715) 
 
 #### Breaking Changes
-* If `ChangeFeedProcessorBuilder` is configured with both overloads of `handleAllVersionsAndDeletesChanges` (with and without context handling)
-an `IllegalArgumentException` is thrown. - See [PR 36715](https://github.com/Azure/azure-sdk-for-java/pull/36715)
 
 #### Bugs Fixed
 * Disabled `CosmosEndToEndOperationLatencyPolicyConfig` feature in `ChangeFeedProcessor`. Setting `CosmosEndToEndOperationLatencyPolicyConfig` at `CosmosClient` level will not affect `ChangeFeedProcessor` requests in any way. See [PR 36775](https://github.com/Azure/azure-sdk-for-java/pull/36775)

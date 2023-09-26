@@ -153,9 +153,7 @@ public class FullFidelityChangeFeedProcessorTest extends TestSuiteBase {
                     assertThat(leaseTokensCollectedFromLeaseCollection).isNotNull();
                     assertThat(receivedLeaseTokensFromContext.size()).isEqualTo(leaseTokensCollectedFromLeaseCollection.size());
 
-                    for (String leaseTokenFromLeaseCollection : leaseTokensCollectedFromLeaseCollection) {
-                        assertThat(receivedLeaseTokensFromContext.contains(leaseTokenFromLeaseCollection)).isTrue();
-                    }
+                    assertThat(receivedLeaseTokensFromContext.containsAll(leaseTokensCollectedFromLeaseCollection)).isTrue();
                 }
 
                 // Wait for the feed processor to shut down.
@@ -240,9 +238,8 @@ public class FullFidelityChangeFeedProcessorTest extends TestSuiteBase {
                     assertThat(leaseTokensCollectedFromLeaseCollection).isNotNull();
                     assertThat(receivedLeaseTokensFromContext.size()).isEqualTo(leaseTokensCollectedFromLeaseCollection.size());
 
-                    for (String leaseTokenFromLeaseCollection : leaseTokensCollectedFromLeaseCollection) {
-                        assertThat(receivedLeaseTokensFromContext.contains(leaseTokenFromLeaseCollection)).isTrue();
-                    }
+                    assertThat(receivedLeaseTokensFromContext.containsAll(leaseTokensCollectedFromLeaseCollection)).isTrue();
+
                 }
 
                 // Wait for the feed processor to shut down.
@@ -1224,9 +1221,7 @@ public class FullFidelityChangeFeedProcessorTest extends TestSuiteBase {
                 assertThat(receivedLeaseTokensFromContext.size())
                     .isEqualTo(queriedLeaseTokensFromLeaseCollection.size());
 
-                for (String queriedLeaseTokenFromLeaseCollection : queriedLeaseTokensFromLeaseCollection) {
-                    assertThat(receivedLeaseTokensFromContext.contains(queriedLeaseTokenFromLeaseCollection)).isTrue();
-                }
+                assertThat(receivedLeaseTokensFromContext.containsAll(queriedLeaseTokensFromLeaseCollection)).isTrue();
             }
 
             // Wait for the feed processor to shutdown.
