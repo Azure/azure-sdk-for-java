@@ -3,12 +3,12 @@
 
 package com.azure.data.appconfiguration;
 
+import com.azure.core.experimental.models.PollResult;
 import com.azure.core.util.Configuration;
 import com.azure.core.util.Context;
 import com.azure.core.util.polling.SyncPoller;
 import com.azure.data.appconfiguration.models.ConfigurationSetting;
 import com.azure.data.appconfiguration.models.ConfigurationSnapshot;
-import com.azure.data.appconfiguration.models.CreateSnapshotOperationDetail;
 import com.azure.data.appconfiguration.models.SnapshotSelector;
 import com.azure.data.appconfiguration.models.SnapshotSettingFilter;
 
@@ -50,7 +50,7 @@ public class ListSnapshots {
 
         // 1. Create first snapshot
         String snapshotNameTest = "{snapshotNameInTest}";
-        SyncPoller<CreateSnapshotOperationDetail, ConfigurationSnapshot> poller =
+        SyncPoller<PollResult, ConfigurationSnapshot> poller =
             client.beginCreateSnapshot(snapshotNameTest, new ConfigurationSnapshot(filters), null);
         poller.setPollInterval(Duration.ofSeconds(10));
         poller.waitForCompletion();
@@ -71,7 +71,7 @@ public class ListSnapshots {
 
         // 2. Create second snapshot
         String snapshotNameProduct = "{snapshotNameInProduct}";
-        SyncPoller<CreateSnapshotOperationDetail, ConfigurationSnapshot> pollerProduct =
+        SyncPoller<PollResult, ConfigurationSnapshot> pollerProduct =
             client.beginCreateSnapshot(snapshotNameProduct, new ConfigurationSnapshot(filters), Context.NONE);
         pollerProduct.setPollInterval(Duration.ofSeconds(10));
         pollerProduct.waitForCompletion();

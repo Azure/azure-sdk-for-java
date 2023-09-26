@@ -9,6 +9,7 @@ import com.azure.core.annotation.ServiceMethod;
 import com.azure.core.exception.HttpResponseException;
 import com.azure.core.exception.ResourceModifiedException;
 import com.azure.core.exception.ResourceNotFoundException;
+import com.azure.core.experimental.models.PollResult;
 import com.azure.core.http.HttpResponse;
 import com.azure.core.http.MatchConditions;
 import com.azure.core.http.rest.PagedFlux;
@@ -26,7 +27,6 @@ import com.azure.data.appconfiguration.implementation.models.KeyValue;
 import com.azure.data.appconfiguration.models.ConfigurationSetting;
 import com.azure.data.appconfiguration.models.ConfigurationSnapshot;
 import com.azure.data.appconfiguration.models.ConfigurationSnapshotStatus;
-import com.azure.data.appconfiguration.models.CreateSnapshotOperationDetail;
 import com.azure.data.appconfiguration.models.FeatureFlagConfigurationSetting;
 import com.azure.data.appconfiguration.models.SecretReferenceConfigurationSetting;
 import com.azure.data.appconfiguration.models.SettingFields;
@@ -1218,7 +1218,7 @@ public final class ConfigurationAsyncClient {
      * has failed. The completed operation returns a {@link ConfigurationSnapshot}.
      */
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
-    public PollerFlux<CreateSnapshotOperationDetail, ConfigurationSnapshot> beginCreateSnapshot(
+    public PollerFlux<PollResult, ConfigurationSnapshot> beginCreateSnapshot(
         String snapshotName, ConfigurationSnapshot snapshot) {
         return createSnapshotUtilClient.beginCreateSnapshot(snapshotName, snapshot);
     }
