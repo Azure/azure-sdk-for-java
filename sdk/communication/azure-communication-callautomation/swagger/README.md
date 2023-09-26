@@ -28,7 +28,7 @@ autorest README.md --java --v4 --use=@autorest/java@4.0.20 --use=@autorest/model
 ``` yaml
 tag: package-2023-01-15-preview
 require:
-    - https://github.com/cochi2/azure-rest-api-specs/blob/165e9bcec8bcd7d2085df5fa0cd6a7e8f587caa1/specification/communication/data-plane/CallAutomation/readme.md
+    - https://github.com/williamzhao87/azure-rest-api-specs/blob/7b172efc00642d65e81aefbd7685bc356dac6759/specification/communication/data-plane/CallAutomation/readme.md
 java: true
 output-folder: ../
 license-header: MICROSOFT_MIT_SMALL
@@ -222,6 +222,8 @@ directive:
 - remove-model: ContinuousDtmfRecognitionStopped
 - remove-model: SendDtmfCompleted
 - remove-model: SendDtmfFailed
+- remove-model: AddParticipantCancelled
+- remove-model: CancelAddParticipantFailed
 ```
 
 ### Rename RecordingChannelType to RecordingChannelInternal
