@@ -226,7 +226,7 @@ com.azure.spring:spring-cloud-azure-starter-redis;4.11.0;4.12.0-beta.1
 com.azure.spring:spring-cloud-azure-starter-keyvault;4.11.0;4.12.0-beta.1
 com.azure.spring:spring-cloud-azure-starter-keyvault-certificates;4.11.0;4.12.0-beta.1
 com.azure.spring:spring-cloud-azure-starter-keyvault-secrets;4.11.0;4.12.0-beta.1
-com.azure.spring:spring-cloud-azure-starter-monitor;1.0.0-beta.1;1.0.0-beta.1
+com.azure.spring:spring-cloud-azure-starter-monitor;1.0.0-beta.1;1.0.0-beta.2
 com.azure.spring:spring-cloud-azure-starter-servicebus-jms;4.11.0;4.12.0-beta.1
 com.azure.spring:spring-cloud-azure-starter-servicebus;4.11.0;4.12.0-beta.1
 com.azure.spring:spring-cloud-azure-starter-storage;4.11.0;4.12.0-beta.1
