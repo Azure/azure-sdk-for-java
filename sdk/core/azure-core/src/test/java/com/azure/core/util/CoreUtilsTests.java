@@ -542,7 +542,7 @@ public class CoreUtilsTests {
         });
 
         try {
-            future.get(100, TimeUnit.MILLISECONDS);
+            CoreUtils.getFutureWithCancellation(future, 100, TimeUnit.MILLISECONDS);
         } catch (InterruptedException | ExecutionException | TimeoutException e) {
             // Ignore
         }

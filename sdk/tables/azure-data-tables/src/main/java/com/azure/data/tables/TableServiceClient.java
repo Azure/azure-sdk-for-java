@@ -41,12 +41,13 @@ import com.azure.data.tables.sas.TableAccountSasSignatureValues;
 import java.net.URI;
 import java.time.Duration;
 import java.util.List;
-import java.util.OptionalLong;
 import java.util.concurrent.Callable;
 import java.util.concurrent.ExecutorService;
 import java.util.concurrent.TimeUnit;
 import java.util.stream.Collectors;
 
+import static com.azure.core.util.CoreUtils.getFutureWithCancellation;
+import static com.azure.data.tables.implementation.TableUtils.hasTimeout;
 
 /**
  * Provides a synchronous service client for accessing the Azure Tables service.
@@ -234,11 +235,10 @@ public final class TableServiceClient {
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Response<TableClient> createTableWithResponse(String tableName, Duration timeout, Context context) {
-        OptionalLong timeoutInMillis = TableUtils.setTimeout(timeout);
         Callable<Response<TableClient>> callable = () -> createTableWithResponse(tableName, context);
         try {
-            return timeoutInMillis.isPresent()
-                ? THREAD_POOL.submit(callable).get(timeoutInMillis.getAsLong(), TimeUnit.MILLISECONDS)
+            return hasTimeout(timeout)
+                ? getFutureWithCancellation(THREAD_POOL.submit(callable), timeout.toMillis(), TimeUnit.MILLISECONDS)
                 : callable.call();
         } catch (Exception ex) {
             throw logger.logExceptionAsError((RuntimeException) TableUtils.mapThrowableToTableServiceException(ex));
@@ -307,11 +307,10 @@ public final class TableServiceClient {
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Response<TableClient> createTableIfNotExistsWithResponse(String tableName, Duration timeout,
                                                                     Context context) {
-        OptionalLong timeoutInMillis = TableUtils.setTimeout(timeout);
         Callable<Response<TableClient>> callable = () -> createTableIfNotExistsWithResponse(tableName, context);
         try {
-            return timeoutInMillis.isPresent()
-                ? THREAD_POOL.submit(callable).get(timeoutInMillis.getAsLong(), TimeUnit.MILLISECONDS)
+            return hasTimeout(timeout)
+                ? getFutureWithCancellation(THREAD_POOL.submit(callable), timeout.toMillis(), TimeUnit.MILLISECONDS)
                 : callable.call();
         } catch (Exception e) {
             throw logger.logExceptionAsError((RuntimeException) TableUtils.mapThrowableToTableServiceException(e));
@@ -388,11 +387,10 @@ public final class TableServiceClient {
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Response<Void> deleteTableWithResponse(String tableName, Duration timeout, Context context) {
-        OptionalLong timeoutInMillis = TableUtils.setTimeout(timeout);
         Callable<Response<Void>> callable = () -> deleteTableWithResponse(tableName, context);
         try {
-            return timeoutInMillis.isPresent()
-                ? THREAD_POOL.submit(callable).get(timeoutInMillis.getAsLong(), TimeUnit.MILLISECONDS)
+            return hasTimeout(timeout)
+                ? getFutureWithCancellation(THREAD_POOL.submit(callable), timeout.toMillis(), TimeUnit.MILLISECONDS)
                 : callable.call();
         } catch (Exception e) {
             Exception exception = (Exception) TableUtils.mapThrowableToTableServiceException(e);
@@ -466,11 +464,10 @@ public final class TableServiceClient {
      */
     @ServiceMethod(returns = ReturnType.COLLECTION)
     public PagedIterable<TableItem> listTables(ListTablesOptions options, Duration timeout, Context context) {
-        OptionalLong timeoutInMillis = TableUtils.setTimeout(timeout);
         Callable<PagedIterable<TableItem>> callable = () -> listTables(options, context);
         try {
-            return timeoutInMillis.isPresent()
-                ? THREAD_POOL.submit(callable).get(timeoutInMillis.getAsLong(), TimeUnit.MILLISECONDS)
+            return hasTimeout(timeout)
+                ? getFutureWithCancellation(THREAD_POOL.submit(callable), timeout.toMillis(), TimeUnit.MILLISECONDS)
                 : callable.call();
         } catch (Exception e) {
             throw logger.logExceptionAsError((RuntimeException) TableUtils.mapThrowableToTableServiceException(e));
@@ -574,11 +571,10 @@ public final class TableServiceClient {
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Response<TableServiceProperties> getPropertiesWithResponse(Duration timeout, Context context) {
-        OptionalLong timeoutInMillis = TableUtils.setTimeout(timeout);
         Callable<Response<TableServiceProperties>> callable = () -> getPropertiesWithResponse(context);
         try {
-            return timeoutInMillis.isPresent()
-                ? THREAD_POOL.submit(callable).get(timeoutInMillis.getAsLong(), TimeUnit.MILLISECONDS)
+            return hasTimeout(timeout)
+                ? getFutureWithCancellation(THREAD_POOL.submit(callable), timeout.toMillis(), TimeUnit.MILLISECONDS)
                 : callable.call();
         } catch (Exception ex) {
             throw logger.logExceptionAsError((RuntimeException) TableUtils.mapThrowableToTableServiceException(ex));
@@ -678,11 +674,10 @@ public final class TableServiceClient {
     public Response<Void> setPropertiesWithResponse(TableServiceProperties tableServiceProperties, Duration timeout,
                                                     Context context) {
 
-        OptionalLong timeoutInMillis = TableUtils.setTimeout(timeout);
         Callable<Response<Void>> callable = () -> setPropertiesWithResponse(tableServiceProperties, context);
         try {
-            return timeoutInMillis.isPresent()
-                ? THREAD_POOL.submit(callable).get(timeoutInMillis.getAsLong(), TimeUnit.MILLISECONDS)
+            return hasTimeout(timeout)
+                ? getFutureWithCancellation(THREAD_POOL.submit(callable), timeout.toMillis(), TimeUnit.MILLISECONDS)
                 : callable.call();
         } catch (Exception e) {
             throw logger.logExceptionAsError((RuntimeException) TableUtils.mapThrowableToTableServiceException(e));
@@ -751,11 +746,10 @@ public final class TableServiceClient {
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Response<TableServiceStatistics> getStatisticsWithResponse(Duration timeout, Context context) {
-        OptionalLong timeoutInMillis = TableUtils.setTimeout(timeout);
         Callable<Response<TableServiceStatistics>> callable = () -> getStatisticsWithResponse(context);
         try {
-            return timeoutInMillis.isPresent()
-                ? THREAD_POOL.submit(callable).get(timeoutInMillis.getAsLong(), TimeUnit.MILLISECONDS)
+            return hasTimeout(timeout)
+                ? getFutureWithCancellation(THREAD_POOL.submit(callable), timeout.toMillis(), TimeUnit.MILLISECONDS)
                 : callable.call();
         } catch (Exception e) {
             throw logger.logExceptionAsError((RuntimeException) TableUtils.mapThrowableToTableServiceException(e));

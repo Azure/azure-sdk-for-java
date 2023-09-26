@@ -64,13 +64,14 @@ import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
 import java.util.Map;
-import java.util.OptionalLong;
 import java.util.concurrent.Callable;
 import java.util.concurrent.ExecutorService;
 import java.util.concurrent.TimeUnit;
 import java.util.function.BiConsumer;
 import java.util.stream.Collectors;
 
+import static com.azure.core.util.CoreUtils.getFutureWithCancellation;
+import static com.azure.data.tables.implementation.TableUtils.hasTimeout;
 import static com.azure.data.tables.implementation.TableUtils.mapThrowableToTableServiceException;
 import static com.azure.data.tables.implementation.TableUtils.toTableServiceError;
 
@@ -280,7 +281,6 @@ public final class TableClient {
     public Response<TableItem> createTableWithResponse(Duration timeout, Context context) {
         Context contextValue = TableUtils.setContext(context, true);
         final TableProperties properties = new TableProperties().setTableName(tableName);
-        OptionalLong timeoutInMillis = TableUtils.setTimeout(timeout);
         Callable<Response<TableItem>> callable = () ->
             new SimpleResponse<>(tablesImplementation.getTables().createWithResponse(properties,
             null,
@@ -288,10 +288,9 @@ public final class TableClient {
                 TableItemAccessHelper.createItem(new TableResponseProperties().setTableName(tableName)));
 
         try {
-            Response<TableItem> response = timeoutInMillis.isPresent()
-                ? THREAD_POOL.submit(callable).get(timeoutInMillis.getAsLong(), TimeUnit.MILLISECONDS)
+            return hasTimeout(timeout)
+                ? getFutureWithCancellation(THREAD_POOL.submit(callable), timeout.toMillis(), TimeUnit.MILLISECONDS)
                 : callable.call();
-            return response;
         } catch (Exception ex) {
             throw logger.logExceptionAsError((RuntimeException) TableUtils.mapThrowableToTableServiceException(ex));
         }
@@ -342,7 +341,6 @@ public final class TableClient {
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Response<Void> deleteTableWithResponse(Duration timeout, Context context) {
         Context contextValue = TableUtils.setContext(context, true);
-        OptionalLong timeoutInMillis = TableUtils.setTimeout(timeout);
 
         Callable<Response<Void>> callable = () ->
             new SimpleResponse<>(tablesImplementation.getTables().deleteWithResponse(
@@ -350,8 +348,8 @@ public final class TableClient {
             null);
 
         try {
-            return timeoutInMillis.isPresent()
-                ? THREAD_POOL.submit(callable).get(timeoutInMillis.getAsLong(), TimeUnit.MILLISECONDS)
+            return hasTimeout(timeout)
+                ? getFutureWithCancellation(THREAD_POOL.submit(callable), timeout.toMillis(), TimeUnit.MILLISECONDS)
                 : callable.call();
         } catch (Exception ex) {
             Throwable except = mapThrowableToTableServiceException(ex);
@@ -440,7 +438,6 @@ public final class TableClient {
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Response<Void> createEntityWithResponse(TableEntity entity, Duration timeout, Context context) {
         Context contextValue = TableUtils.setContext(context, true);
-        OptionalLong timeoutInMillis = TableUtils.setTimeout(timeout);
 
         if (entity == null) {
             throw logger.logExceptionAsError(new IllegalArgumentException("'entity' cannot be null."));
@@ -455,8 +452,8 @@ public final class TableClient {
         };
 
         try {
-            return timeoutInMillis.isPresent()
-                ? THREAD_POOL.submit(callable).get(timeoutInMillis.getAsLong(), TimeUnit.MILLISECONDS)
+            return hasTimeout(timeout)
+                ? getFutureWithCancellation(THREAD_POOL.submit(callable), timeout.toMillis(), TimeUnit.MILLISECONDS)
                 : callable.call();
         } catch (Exception ex) {
             throw logger.logExceptionAsError((RuntimeException) (TableUtils.mapThrowableToTableServiceException(ex)));
@@ -541,7 +538,6 @@ public final class TableClient {
     public Response<Void> upsertEntityWithResponse(TableEntity entity, TableEntityUpdateMode updateMode,
                                                    Duration timeout, Context context) {
         Context contextValue = TableUtils.setContext(context, true);
-        OptionalLong timeoutInMillis = TableUtils.setTimeout(timeout);
 
         if (entity == null) {
             throw logger.logExceptionAsError(new IllegalArgumentException("'entity' cannot be null."));
@@ -565,8 +561,8 @@ public final class TableClient {
         };
 
         try {
-            return timeoutInMillis.isPresent()
-                ? THREAD_POOL.submit(callable).get(timeoutInMillis.getAsLong(), TimeUnit.MILLISECONDS)
+            return hasTimeout(timeout)
+                ? getFutureWithCancellation(THREAD_POOL.submit(callable), timeout.toMillis(), TimeUnit.MILLISECONDS)
                 : callable.call();
         } catch (Exception ex) {
             throw logger.logExceptionAsError((RuntimeException) (TableUtils.mapThrowableToTableServiceException(ex)));
@@ -697,7 +693,6 @@ public final class TableClient {
     public Response<Void> updateEntityWithResponse(TableEntity entity, TableEntityUpdateMode updateMode,
                                                    boolean ifUnchanged, Duration timeout, Context context) {
         Context contextValue = TableUtils.setContext(context, true);
-        OptionalLong timeoutInMillis = TableUtils.setTimeout(timeout);
 
         if (entity == null) {
             throw logger.logExceptionAsError(new IllegalArgumentException("'entity' cannot be null."));
@@ -722,8 +717,8 @@ public final class TableClient {
         };
 
         try {
-            return timeoutInMillis.isPresent()
-                ? THREAD_POOL.submit(callable).get(timeoutInMillis.getAsLong(), TimeUnit.MILLISECONDS)
+            return hasTimeout(timeout)
+                ? getFutureWithCancellation(THREAD_POOL.submit(callable), timeout.toMillis(), TimeUnit.MILLISECONDS)
                 : callable.call();
         } catch (Exception ex) {
             throw logger.logExceptionAsError((RuntimeException) (TableUtils.mapThrowableToTableServiceException(ex)));
@@ -834,7 +829,6 @@ public final class TableClient {
     private Response<Void> deleteEntityWithResponse(String partitionKey, String rowKey, String eTag, boolean ifUnchanged,
                                             Duration timeout, Context context) {
         Context contextValue = TableUtils.setContext(context, true);
-        OptionalLong timeoutInMillis = TableUtils.setTimeout(timeout);
 
         String finalETag = ifUnchanged ? eTag : "*";
 
@@ -847,8 +841,8 @@ public final class TableClient {
             null, null, contextValue);
 
         try {
-            return timeoutInMillis.isPresent()
-                ? THREAD_POOL.submit(callable).get(timeoutInMillis.getAsLong(), TimeUnit.MILLISECONDS)
+            return hasTimeout(timeout)
+                ? getFutureWithCancellation(THREAD_POOL.submit(callable), timeout.toMillis(), TimeUnit.MILLISECONDS)
                 : callable.call();
         } catch (Exception ex) {
             Throwable except = mapThrowableToTableServiceException(ex);
@@ -930,15 +924,14 @@ public final class TableClient {
      */
     @ServiceMethod(returns = ReturnType.COLLECTION)
     public PagedIterable<TableEntity> listEntities(ListEntitiesOptions options, Duration timeout, Context context) {
-        OptionalLong timeoutInMillis = TableUtils.setTimeout(timeout);
 
         Callable<PagedIterable<TableEntity>> callable = () -> new PagedIterable<>(
             () -> listEntitiesFirstPage(context, options, TableEntity.class),
             token -> listEntitiesNextPage(token, context, options, TableEntity.class));
 
         try {
-            return timeoutInMillis.isPresent()
-                ? THREAD_POOL.submit(callable).get(timeoutInMillis.getAsLong(), TimeUnit.MILLISECONDS)
+            return hasTimeout(timeout)
+                ? getFutureWithCancellation(THREAD_POOL.submit(callable), timeout.toMillis(), TimeUnit.MILLISECONDS)
                 : callable.call();
         } catch (Exception ex) {
             throw logger.logExceptionAsError((RuntimeException) (TableUtils.mapThrowableToTableServiceException(ex)));
@@ -1088,7 +1081,6 @@ public final class TableClient {
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Response<TableEntity> getEntityWithResponse(String partitionKey, String rowKey, List<String> select,
                                                        Duration timeout, Context context) {
-        OptionalLong timeoutInMillis = TableUtils.setTimeout(timeout);
         Context contextValue = TableUtils.setContext(context, true);
 
         QueryOptions queryOptions = new QueryOptions()
@@ -1124,8 +1116,8 @@ public final class TableClient {
 
 
         try {
-            return timeoutInMillis.isPresent()
-                ? THREAD_POOL.submit(callable).get(timeoutInMillis.getAsLong(), TimeUnit.MILLISECONDS)
+            return hasTimeout(timeout)
+                ? getFutureWithCancellation(THREAD_POOL.submit(callable), timeout.toMillis(), TimeUnit.MILLISECONDS)
                 : callable.call();
         } catch (Exception ex) {
             throw logger.logExceptionAsError((RuntimeException) (TableUtils.mapThrowableToTableServiceException(ex)));
@@ -1197,7 +1189,6 @@ public final class TableClient {
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Response<TableAccessPolicies> getAccessPoliciesWithResponse(Duration timeout, Context context) {
-        OptionalLong timeoutInMillis = TableUtils.setTimeout(timeout);
         Context contextValue = TableUtils.setContext(context, true);
 
         Callable<Response<TableAccessPolicies>> callable = () -> {
@@ -1212,8 +1203,8 @@ public final class TableClient {
         };
 
         try {
-            return timeoutInMillis.isPresent()
-                ? THREAD_POOL.submit(callable).get(timeoutInMillis.getAsLong(), TimeUnit.MILLISECONDS)
+            return hasTimeout(timeout)
+                ? getFutureWithCancellation(THREAD_POOL.submit(callable), timeout.toMillis(), TimeUnit.MILLISECONDS)
                 : callable.call();
         } catch (Exception ex) {
             throw logger.logExceptionAsError((RuntimeException) (TableUtils.mapThrowableToTableServiceException(ex)));
@@ -1302,7 +1293,6 @@ public final class TableClient {
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Response<Void> setAccessPoliciesWithResponse(List<TableSignedIdentifier> tableSignedIdentifiers,
                                                         Duration timeout, Context context) {
-        OptionalLong timeoutInMillis = TableUtils.setTimeout(timeout);
         Context contextValue = TableUtils.setContext(context, true);
         List<SignedIdentifier> signedIdentifiers = null;
 
@@ -1343,8 +1333,8 @@ public final class TableClient {
         };
 
         try {
-            return timeoutInMillis.isPresent()
-                ? THREAD_POOL.submit(callable).get(timeoutInMillis.getAsLong(), TimeUnit.MILLISECONDS)
+            return hasTimeout(timeout)
+                ? getFutureWithCancellation(THREAD_POOL.submit(callable), timeout.toMillis(), TimeUnit.MILLISECONDS)
                 : callable.call();
         } catch (Exception ex) {
             throw logger.logExceptionAsError((RuntimeException) (TableUtils.mapThrowableToTableServiceException(ex)));
@@ -1534,7 +1524,6 @@ public final class TableClient {
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Response<TableTransactionResult> submitTransactionWithResponse(List<TableTransactionAction> transactionActions, Duration timeout, Context context) {
-        OptionalLong timeoutInMillis = TableUtils.setTimeout(timeout);
         Context contextValue = TableUtils.setContext(context, true);
 
         if (transactionActions.isEmpty()) {
@@ -1601,8 +1590,8 @@ public final class TableClient {
         };
 
         try {
-            return timeoutInMillis.isPresent()
-                ? THREAD_POOL.submit(callable).get(timeoutInMillis.getAsLong(), TimeUnit.MILLISECONDS)
+            return hasTimeout(timeout)
+                ? getFutureWithCancellation(THREAD_POOL.submit(callable), timeout.toMillis(), TimeUnit.MILLISECONDS)
                 : callable.call();
         } catch (Exception ex) {
 

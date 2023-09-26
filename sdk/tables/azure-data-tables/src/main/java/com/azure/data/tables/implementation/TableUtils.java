@@ -213,8 +213,8 @@ public final class TableUtils {
         return context.addData(HTTP_REST_PROXY_SYNC_PROXY_ENABLE, true);
     }
 
-    public static OptionalLong setTimeout(Duration timeout) {
-        return timeout != null ? OptionalLong.of(timeout.toMillis()) : OptionalLong.empty();
+    public static boolean hasTimeout(Duration timeout) {
+        return timeout != null && !timeout.isZero() && !timeout.isNegative();
     }
 
     /**
