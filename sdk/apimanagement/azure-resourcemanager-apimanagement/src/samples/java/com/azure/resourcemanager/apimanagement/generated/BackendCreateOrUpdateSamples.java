@@ -19,7 +19,7 @@ import java.util.Map;
 /** Samples for Backend CreateOrUpdate. */
 public final class BackendCreateOrUpdateSamples {
     /*
-     * x-ms-original-file: specification/apimanagement/resource-manager/Microsoft.ApiManagement/stable/2021-08-01/examples/ApiManagementCreateBackendServiceFabric.json
+     * x-ms-original-file: specification/apimanagement/resource-manager/Microsoft.ApiManagement/stable/2022-08-01/examples/ApiManagementCreateBackendServiceFabric.json
      */
     /**
      * Sample code: ApiManagementCreateBackendServiceFabric.
@@ -53,7 +53,7 @@ public final class BackendCreateOrUpdateSamples {
     }
 
     /*
-     * x-ms-original-file: specification/apimanagement/resource-manager/Microsoft.ApiManagement/stable/2021-08-01/examples/ApiManagementCreateBackendProxyBackend.json
+     * x-ms-original-file: specification/apimanagement/resource-manager/Microsoft.ApiManagement/stable/2022-08-01/examples/ApiManagementCreateBackendProxyBackend.json
      */
     /**
      * Sample code: ApiManagementCreateBackendProxyBackend.
@@ -79,11 +79,12 @@ public final class BackendCreateOrUpdateSamples {
                 new BackendProxyContract()
                     .withUrl("http://192.168.1.1:8080")
                     .withUsername("Contoso\\admin")
-                    .withPassword("<password>"))
+                    .withPassword("fakeTokenPlaceholder"))
             .withTls(new BackendTlsProperties().withValidateCertificateChain(true).withValidateCertificateName(true))
             .create();
     }
 
+    // Use "Map.of" if available
     @SuppressWarnings("unchecked")
     private static <T> Map<String, T> mapOf(Object... inputs) {
         Map<String, T> map = new HashMap<>();

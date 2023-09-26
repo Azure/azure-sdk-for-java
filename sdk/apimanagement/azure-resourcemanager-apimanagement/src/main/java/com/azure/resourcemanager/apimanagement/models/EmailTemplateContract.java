@@ -75,6 +75,13 @@ public interface EmailTemplateContract {
     List<EmailTemplateParametersContractProperties> parameters();
 
     /**
+     * Gets the name of the resource group.
+     *
+     * @return the name of the resource group.
+     */
+    String resourceGroupName();
+
+    /**
      * Gets the inner com.azure.resourcemanager.apimanagement.fluent.models.EmailTemplateContractInner object.
      *
      * @return the inner object.
@@ -85,22 +92,25 @@ public interface EmailTemplateContract {
     interface Definition
         extends DefinitionStages.Blank, DefinitionStages.WithParentResource, DefinitionStages.WithCreate {
     }
+
     /** The EmailTemplateContract definition stages. */
     interface DefinitionStages {
         /** The first stage of the EmailTemplateContract definition. */
         interface Blank extends WithParentResource {
         }
+
         /** The stage of the EmailTemplateContract definition allowing to specify parent resource. */
         interface WithParentResource {
             /**
              * Specifies resourceGroupName, serviceName.
              *
-             * @param resourceGroupName The name of the resource group.
+             * @param resourceGroupName The name of the resource group. The name is case insensitive.
              * @param serviceName The name of the API Management service.
              * @return the next definition stage.
              */
             WithCreate withExistingService(String resourceGroupName, String serviceName);
         }
+
         /**
          * The stage of the EmailTemplateContract definition which contains all the minimum required properties for the
          * resource to be created, but also allows for any other optional properties to be specified.
@@ -127,6 +137,7 @@ public interface EmailTemplateContract {
              */
             EmailTemplateContract create(Context context);
         }
+
         /** The stage of the EmailTemplateContract definition allowing to specify subject. */
         interface WithSubject {
             /**
@@ -137,6 +148,7 @@ public interface EmailTemplateContract {
              */
             WithCreate withSubject(String subject);
         }
+
         /** The stage of the EmailTemplateContract definition allowing to specify title. */
         interface WithTitle {
             /**
@@ -147,6 +159,7 @@ public interface EmailTemplateContract {
              */
             WithCreate withTitle(String title);
         }
+
         /** The stage of the EmailTemplateContract definition allowing to specify description. */
         interface WithDescription {
             /**
@@ -157,6 +170,7 @@ public interface EmailTemplateContract {
              */
             WithCreate withDescription(String description);
         }
+
         /** The stage of the EmailTemplateContract definition allowing to specify body. */
         interface WithBody {
             /**
@@ -167,6 +181,7 @@ public interface EmailTemplateContract {
              */
             WithCreate withBody(String body);
         }
+
         /** The stage of the EmailTemplateContract definition allowing to specify parameters. */
         interface WithParameters {
             /**
@@ -177,6 +192,7 @@ public interface EmailTemplateContract {
              */
             WithCreate withParameters(List<EmailTemplateParametersContractProperties> parameters);
         }
+
         /** The stage of the EmailTemplateContract definition allowing to specify ifMatch. */
         interface WithIfMatch {
             /**
@@ -190,6 +206,7 @@ public interface EmailTemplateContract {
             WithCreate withIfMatch(String ifMatch);
         }
     }
+
     /**
      * Begins update for the EmailTemplateContract resource.
      *
@@ -220,6 +237,7 @@ public interface EmailTemplateContract {
          */
         EmailTemplateContract apply(Context context);
     }
+
     /** The EmailTemplateContract update stages. */
     interface UpdateStages {
         /** The stage of the EmailTemplateContract update allowing to specify subject. */
@@ -232,6 +250,7 @@ public interface EmailTemplateContract {
              */
             Update withSubject(String subject);
         }
+
         /** The stage of the EmailTemplateContract update allowing to specify title. */
         interface WithTitle {
             /**
@@ -242,6 +261,7 @@ public interface EmailTemplateContract {
              */
             Update withTitle(String title);
         }
+
         /** The stage of the EmailTemplateContract update allowing to specify description. */
         interface WithDescription {
             /**
@@ -252,6 +272,7 @@ public interface EmailTemplateContract {
              */
             Update withDescription(String description);
         }
+
         /** The stage of the EmailTemplateContract update allowing to specify body. */
         interface WithBody {
             /**
@@ -262,6 +283,7 @@ public interface EmailTemplateContract {
              */
             Update withBody(String body);
         }
+
         /** The stage of the EmailTemplateContract update allowing to specify parameters. */
         interface WithParameters {
             /**
@@ -272,6 +294,7 @@ public interface EmailTemplateContract {
              */
             Update withParameters(List<EmailTemplateParametersContractProperties> parameters);
         }
+
         /** The stage of the EmailTemplateContract update allowing to specify ifMatch. */
         interface WithIfMatch {
             /**
@@ -285,6 +308,7 @@ public interface EmailTemplateContract {
             Update withIfMatch(String ifMatch);
         }
     }
+
     /**
      * Refreshes the resource to sync with Azure.
      *

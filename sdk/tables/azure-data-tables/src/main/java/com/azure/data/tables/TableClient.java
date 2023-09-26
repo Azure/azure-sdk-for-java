@@ -71,7 +71,6 @@ import java.util.concurrent.TimeUnit;
 import java.util.function.BiConsumer;
 import java.util.stream.Collectors;
 
-import static com.azure.core.util.CoreUtils.isNullOrEmpty;
 import static com.azure.data.tables.implementation.TableUtils.mapThrowableToTableServiceException;
 import static com.azure.data.tables.implementation.TableUtils.toTableServiceError;
 
@@ -754,6 +753,7 @@ public final class TableClient {
      * @throws IllegalArgumentException If the provided {@code partitionKey} or {@code rowKey} are {@code null} or
      * empty.
      * @throws TableServiceException If the request is rejected by the service.
+     * @throws IllegalArgumentException If 'partitionKey' or 'rowKey' is null.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public void deleteEntity(String partitionKey, String rowKey) {
@@ -822,6 +822,7 @@ public final class TableClient {
      * @return The {@link Response HTTP response}.
      *
      * @throws TableServiceException If the request is rejected by the service.
+     * @throws IllegalArgumentException If the entity has null 'partitionKey' or 'rowKey'.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Response<Void> deleteEntityWithResponse(TableEntity entity, boolean ifUnchanged, Duration timeout,
@@ -837,7 +838,7 @@ public final class TableClient {
 
         String finalETag = ifUnchanged ? eTag : "*";
 
-        if (isNullOrEmpty(partitionKey) || isNullOrEmpty(rowKey)) {
+        if (partitionKey == null || rowKey == null) {
             throw logger.logExceptionAsError(new IllegalArgumentException("'partitionKey' and 'rowKey' cannot be null"));
         }
 
@@ -1079,8 +1080,8 @@ public final class TableClient {
      *
      * @return The {@link Response HTTP response} containing the {@link TableEntity entity}.
      *
-     * @throws IllegalArgumentException If the provided {@code partitionKey} or {@code rowKey} are {@code null} or
-     * empty, or if the {@code select} OData query option is malformed.
+     * @throws IllegalArgumentException If the provided {@code partitionKey} or {@code rowKey} are {@code null}
+     * or if the {@code select} OData query option is malformed.
      * @throws TableServiceException If no {@link TableEntity entity} with the provided {@code partitionKey} and
      * {@code rowKey} exists within the table.
      */
@@ -1097,7 +1098,7 @@ public final class TableClient {
             queryOptions.setSelect(String.join(",", select));
         }
 
-        if (isNullOrEmpty(partitionKey) || isNullOrEmpty(rowKey)) {
+        if (partitionKey == null || rowKey == null) {
             throw logger.logExceptionAsError(
                 new IllegalArgumentException("'partitionKey' and 'rowKey' cannot be null."));
         }

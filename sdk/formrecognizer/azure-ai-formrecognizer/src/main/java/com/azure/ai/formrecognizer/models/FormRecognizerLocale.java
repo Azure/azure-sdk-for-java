@@ -10,6 +10,15 @@ import com.azure.core.util.ExpandableStringEnum;
  * Defines values for FormRecognizerLocale.
  */
 public final class FormRecognizerLocale extends ExpandableStringEnum<FormRecognizerLocale> {
+
+    /**
+     * Creates a FormRecognizerLocale object.
+     * @deprecated Use the {@link #fromString(String)} factory method.
+     */
+    @Deprecated
+    public FormRecognizerLocale() {
+    }
+
     /** Static value en-AU for FormRecognizerLocale. */
     public static final FormRecognizerLocale EN_AU = fromString("en-AU");
 

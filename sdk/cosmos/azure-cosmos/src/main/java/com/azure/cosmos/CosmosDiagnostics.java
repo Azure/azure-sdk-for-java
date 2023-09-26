@@ -435,6 +435,26 @@ public final class CosmosDiagnostics {
                             request.faultInjectionRequestContext.getFaultInjectionRuleId(transportRequestId),
                             request.faultInjectionRequestContext.getFaultInjectionRuleEvaluationResults(transportRequestId));
                 }
+
+                @Override
+                public boolean isNotEmpty(CosmosDiagnostics cosmosDiagnostics) {
+                    if (cosmosDiagnostics == null) {
+                        return false;
+                    }
+
+                    if (cosmosDiagnostics.feedResponseDiagnostics != null) {
+                        return true;
+                    }
+
+                    if (!cosmosDiagnostics.clientSideRequestStatistics.getResponseStatisticsList().isEmpty() ||
+                        !cosmosDiagnostics.clientSideRequestStatistics.getAddressResolutionStatistics().isEmpty() ||
+                        !cosmosDiagnostics.clientSideRequestStatistics.getGatewayStatisticsList().isEmpty()) {
+
+                        return true;
+                    }
+
+                    return false;
+                }
             });
     }
 

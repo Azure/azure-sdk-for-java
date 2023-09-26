@@ -66,7 +66,7 @@
         <dependency>
             <groupId>com.azure</groupId>
             <artifactId>azure-identity</artifactId>
-            <version>1.10.0</version> <!-- {x-version-update;com.azure:azure-identity;dependency} -->
+            <version>1.10.1</version> <!-- {x-version-update;com.azure:azure-identity;dependency} -->
         </dependency>
         <dependency>
             <groupId>com.azure</groupId>
@@ -76,7 +76,7 @@
         <dependency>
             <groupId>com.azure</groupId>
             <artifactId>azure-storage-blob</artifactId>
-            <version>12.23.1</version> <!-- {x-version-update;com.azure:azure-storage-blob;dependency} -->
+            <version>12.24.0</version> <!-- {x-version-update;com.azure:azure-storage-blob;dependency} -->
         </dependency>
 
         <dependency>
@@ -103,7 +103,7 @@
         <dependency>
             <groupId>com.azure</groupId>
             <artifactId>azure-ai-formrecognizer</artifactId>
-            <version>4.1.0</version> <!-- {x-version-update;com.azure:azure-ai-formrecognizer;dependency} -->
+            <version>4.1.1</version> <!-- {x-version-update;com.azure:azure-ai-formrecognizer;dependency} -->
         </dependency>
         <dependency>
             <groupId>com.azure</groupId>
@@ -160,7 +160,7 @@
             <plugin>
                 <groupId>org.apache.maven.plugins</groupId>
                 <artifactId>maven-assembly-plugin</artifactId>
-                <version>3.5.0</version>  <!-- {x-version-update;org.apache.maven.plugins:maven-assembly-plugin;external_dependency} -->
+                <version>3.3.0</version>  <!-- {x-version-update;org.apache.maven.plugins:maven-assembly-plugin;external_dependency} -->
                 <configuration>
                     <descriptorRefs>
                         <descriptorRef>jar-with-dependencies</descriptorRef>
@@ -193,7 +193,7 @@
                     <plugin>
                         <groupId>org.graalvm.buildtools</groupId>
                         <artifactId>native-maven-plugin</artifactId>
-                        <version>0.9.24</version> <!-- {x-version-update;org.graalvm.buildtools:native-maven-plugin;external_dependency} -->
+                        <version>0.9.19</version> <!-- {x-version-update;org.graalvm.buildtools:native-maven-plugin;external_dependency} -->
                         <configuration>
                             <mainClass>com.azure.aot.graalvm.samples.AzureGraalVmSamples</mainClass>
                             <imageName>azure-aot-graalvm-sample</imageName>

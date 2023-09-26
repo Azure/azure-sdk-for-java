@@ -11,7 +11,7 @@ import com.azure.data.appconfiguration.implementation.models.KeyValue;
 import com.azure.data.appconfiguration.implementation.models.SnapshotUpdateParameters;
 import com.azure.data.appconfiguration.implementation.models.UpdateSnapshotHeaders;
 import com.azure.data.appconfiguration.models.ConfigurationSetting;
-import com.azure.data.appconfiguration.models.ConfigurationSettingSnapshot;
+import com.azure.data.appconfiguration.models.ConfigurationSettingsSnapshot;
 import com.azure.data.appconfiguration.models.SettingFields;
 import com.azure.data.appconfiguration.models.SnapshotStatus;
 import reactor.core.publisher.Mono;
@@ -29,15 +29,15 @@ public class Utility {
     private static final String HTTP_REST_PROXY_SYNC_PROXY_ENABLE = "com.azure.core.http.restproxy.syncproxy.enable";
     public static final String APP_CONFIG_TRACING_NAMESPACE_VALUE = "Microsoft.AppConfiguration";
 
-    static final String ID = "id";
-    static final String DESCRIPTION = "description";
-    static final String DISPLAY_NAME = "display_name";
-    static final String ENABLED = "enabled";
-    static final String CONDITIONS = "conditions";
-    static final String CLIENT_FILTERS = "client_filters";
-    static final String NAME = "name";
-    static final String PARAMETERS = "parameters";
-    static final String URI = "uri";
+    public static final String ID = "id";
+    public static final String DESCRIPTION = "description";
+    public static final String DISPLAY_NAME = "display_name";
+    public static final String ENABLED = "enabled";
+    public static final String CONDITIONS = "conditions";
+    public static final String CLIENT_FILTERS = "client_filters";
+    public static final String NAME = "name";
+    public static final String PARAMETERS = "parameters";
+    public static final String URI = "uri";
 
     /**
      * Represents any value in Etag.
@@ -109,7 +109,7 @@ public class Utility {
         return isETagRequired ? getETagValue(setting.getETag()) : null;
     }
 
-    public static String getETagSnapshot(boolean isETagRequired, ConfigurationSettingSnapshot snapshot) {
+    public static String getETagSnapshot(boolean isETagRequired, ConfigurationSettingsSnapshot snapshot) {
         if (!isETagRequired) {
             return null;
         }
@@ -159,19 +159,19 @@ public class Utility {
         return context.addData(AZ_TRACING_NAMESPACE_KEY, APP_CONFIG_TRACING_NAMESPACE_VALUE);
     }
 
-    public static Response<ConfigurationSettingSnapshot> updateSnapshotSync(String snapshotName,
-        ConfigurationSettingSnapshot snapshot, SnapshotStatus status, boolean ifUnchanged,
+    public static Response<ConfigurationSettingsSnapshot> updateSnapshotSync(String snapshotName,
+        ConfigurationSettingsSnapshot snapshot, SnapshotStatus status, boolean ifUnchanged,
         AzureAppConfigurationImpl serviceClient, Context context) {
 
-        final ResponseBase<UpdateSnapshotHeaders, ConfigurationSettingSnapshot> response =
+        final ResponseBase<UpdateSnapshotHeaders, ConfigurationSettingsSnapshot> response =
             serviceClient.updateSnapshotWithResponse(snapshotName,
                 new SnapshotUpdateParameters().setStatus(status),
                 getETagSnapshot(ifUnchanged, snapshot), null, context);
         return new SimpleResponse<>(response, response.getValue());
     }
 
-    public static Mono<Response<ConfigurationSettingSnapshot>> updateSnapshotAsync(String snapshotName,
-        ConfigurationSettingSnapshot snapshot, SnapshotStatus status, boolean ifUnchanged,
+    public static Mono<Response<ConfigurationSettingsSnapshot>> updateSnapshotAsync(String snapshotName,
+        ConfigurationSettingsSnapshot snapshot, SnapshotStatus status, boolean ifUnchanged,
         AzureAppConfigurationImpl serviceClient) {
         return serviceClient.updateSnapshotWithResponseAsync(snapshotName,
                 new SnapshotUpdateParameters().setStatus(status),

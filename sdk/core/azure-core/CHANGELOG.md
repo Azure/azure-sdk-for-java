@@ -1,6 +1,6 @@
 # Release History
 
-## 1.43.0-beta.1 (Unreleased)
+## 1.44.0-beta.1 (Unreleased)
 
 ### Features Added
 
@@ -9,6 +9,22 @@
 ### Bugs Fixed
 
 ### Other Changes
+
+## 1.43.0 (2023-09-07)
+
+### Features Added
+
+- Added `KeyCredentialTrait` interface. Client builders that implement this interface will support key-based authentication.
+
+### Bugs Fixed
+
+- Fixed a blocking call reported by `BlockHound`. ([#36384](https://github.com/Azure/azure-sdk-for-java/pull/36384))
+
+### Other Changes
+
+#### Dependency Updates
+
+- Upgraded Reactor Core from `3.4.30` to `3.4.31`.
 
 ## 1.42.0 (2023-08-04)
 

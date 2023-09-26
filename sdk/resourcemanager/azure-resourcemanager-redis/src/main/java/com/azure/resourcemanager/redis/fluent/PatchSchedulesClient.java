@@ -19,7 +19,7 @@ public interface PatchSchedulesClient {
     /**
      * Gets all patch schedules in the specified redis cache (there is only one).
      *
-     * @param resourceGroupName The name of the resource group.
+     * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param cacheName The name of the Redis cache.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
@@ -33,7 +33,7 @@ public interface PatchSchedulesClient {
     /**
      * Gets all patch schedules in the specified redis cache (there is only one).
      *
-     * @param resourceGroupName The name of the resource group.
+     * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param cacheName The name of the Redis cache.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
@@ -47,7 +47,7 @@ public interface PatchSchedulesClient {
     /**
      * Gets all patch schedules in the specified redis cache (there is only one).
      *
-     * @param resourceGroupName The name of the resource group.
+     * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param cacheName The name of the Redis cache.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
@@ -63,7 +63,7 @@ public interface PatchSchedulesClient {
     /**
      * Create or replace the patching schedule for Redis cache.
      *
-     * @param resourceGroupName The name of the resource group.
+     * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param name The name of the Redis cache.
      * @param defaultParameter Default string modeled as parameter for auto generation to work correctly.
      * @param parameters Parameters to set the patching schedule for Redis cache.
@@ -80,7 +80,7 @@ public interface PatchSchedulesClient {
     /**
      * Create or replace the patching schedule for Redis cache.
      *
-     * @param resourceGroupName The name of the resource group.
+     * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param name The name of the Redis cache.
      * @param defaultParameter Default string modeled as parameter for auto generation to work correctly.
      * @param parameters Parameters to set the patching schedule for Redis cache.
@@ -96,7 +96,7 @@ public interface PatchSchedulesClient {
     /**
      * Create or replace the patching schedule for Redis cache.
      *
-     * @param resourceGroupName The name of the resource group.
+     * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param name The name of the Redis cache.
      * @param defaultParameter Default string modeled as parameter for auto generation to work correctly.
      * @param parameters Parameters to set the patching schedule for Redis cache.
@@ -117,7 +117,7 @@ public interface PatchSchedulesClient {
     /**
      * Create or replace the patching schedule for Redis cache.
      *
-     * @param resourceGroupName The name of the resource group.
+     * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param name The name of the Redis cache.
      * @param defaultParameter Default string modeled as parameter for auto generation to work correctly.
      * @param parameters Parameters to set the patching schedule for Redis cache.
@@ -133,7 +133,7 @@ public interface PatchSchedulesClient {
     /**
      * Deletes the patching schedule of a redis cache.
      *
-     * @param resourceGroupName The name of the resource group.
+     * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param name The name of the redis cache.
      * @param defaultParameter Default string modeled as parameter for auto generation to work correctly.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
@@ -147,7 +147,7 @@ public interface PatchSchedulesClient {
     /**
      * Deletes the patching schedule of a redis cache.
      *
-     * @param resourceGroupName The name of the resource group.
+     * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param name The name of the redis cache.
      * @param defaultParameter Default string modeled as parameter for auto generation to work correctly.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
@@ -161,7 +161,7 @@ public interface PatchSchedulesClient {
     /**
      * Deletes the patching schedule of a redis cache.
      *
-     * @param resourceGroupName The name of the resource group.
+     * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param name The name of the redis cache.
      * @param defaultParameter Default string modeled as parameter for auto generation to work correctly.
      * @param context The context to associate with this operation.
@@ -177,7 +177,7 @@ public interface PatchSchedulesClient {
     /**
      * Deletes the patching schedule of a redis cache.
      *
-     * @param resourceGroupName The name of the resource group.
+     * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param name The name of the redis cache.
      * @param defaultParameter Default string modeled as parameter for auto generation to work correctly.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
@@ -190,7 +190,7 @@ public interface PatchSchedulesClient {
     /**
      * Gets the patching schedule of a redis cache.
      *
-     * @param resourceGroupName The name of the resource group.
+     * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param name The name of the redis cache.
      * @param defaultParameter Default string modeled as parameter for auto generation to work correctly.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
@@ -206,7 +206,7 @@ public interface PatchSchedulesClient {
     /**
      * Gets the patching schedule of a redis cache.
      *
-     * @param resourceGroupName The name of the resource group.
+     * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param name The name of the redis cache.
      * @param defaultParameter Default string modeled as parameter for auto generation to work correctly.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
@@ -220,7 +220,7 @@ public interface PatchSchedulesClient {
     /**
      * Gets the patching schedule of a redis cache.
      *
-     * @param resourceGroupName The name of the resource group.
+     * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param name The name of the redis cache.
      * @param defaultParameter Default string modeled as parameter for auto generation to work correctly.
      * @param context The context to associate with this operation.
@@ -236,7 +236,7 @@ public interface PatchSchedulesClient {
     /**
      * Gets the patching schedule of a redis cache.
      *
-     * @param resourceGroupName The name of the resource group.
+     * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param name The name of the redis cache.
      * @param defaultParameter Default string modeled as parameter for auto generation to work correctly.
      * @throws IllegalArgumentException thrown if parameters fail the validation.

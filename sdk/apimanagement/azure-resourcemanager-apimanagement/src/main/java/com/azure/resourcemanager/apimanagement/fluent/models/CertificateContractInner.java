@@ -19,6 +19,10 @@ public final class CertificateContractInner extends ProxyResource {
     @JsonProperty(value = "properties")
     private CertificateContractProperties innerProperties;
 
+    /** Creates an instance of CertificateContractInner class. */
+    public CertificateContractInner() {
+    }
+
     /**
      * Get the innerProperties property: Certificate properties details.
      *

@@ -22,6 +22,10 @@ public final class TagDescriptionContractProperties extends TagDescriptionBasePr
     @JsonProperty(value = "displayName")
     private String displayName;
 
+    /** Creates an instance of TagDescriptionContractProperties class. */
+    public TagDescriptionContractProperties() {
+    }
+
     /**
      * Get the tagId property: Identifier of the tag in the form of /tags/{tagId}.
      *

@@ -589,17 +589,10 @@ public class Utils {
         if (pagedFluxOptions.getMaxItemCount() != null) {
             ModelBridgeInternal.setQueryRequestOptionsMaxItemCount(cosmosQueryRequestOptions, pagedFluxOptions.getMaxItemCount());
         } else {
-            ImplementationBridgeHelpers
-                .CosmosQueryRequestOptionsHelper
-                .getCosmosQueryRequestOptionsAccessor()
-                .applyMaxItemCount(cosmosQueryRequestOptions, pagedFluxOptions);
-
             // if query request options also don't have maxItemCount set, apply defaults
-            if (pagedFluxOptions.getMaxItemCount() == null) {
-                ModelBridgeInternal.setQueryRequestOptionsMaxItemCount(
-                    cosmosQueryRequestOptions, Constants.Properties.DEFAULT_MAX_PAGE_SIZE);
-                pagedFluxOptions.setMaxItemCount(Constants.Properties.DEFAULT_MAX_PAGE_SIZE);
-            }
+            ModelBridgeInternal.setQueryRequestOptionsMaxItemCount(
+                cosmosQueryRequestOptions, Constants.Properties.DEFAULT_MAX_PAGE_SIZE);
+            pagedFluxOptions.setMaxItemCount(Constants.Properties.DEFAULT_MAX_PAGE_SIZE);
         }
     }
 

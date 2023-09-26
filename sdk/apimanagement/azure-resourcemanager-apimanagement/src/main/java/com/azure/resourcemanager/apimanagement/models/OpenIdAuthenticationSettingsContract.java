@@ -23,6 +23,10 @@ public final class OpenIdAuthenticationSettingsContract {
     @JsonProperty(value = "bearerTokenSendingMethods")
     private List<BearerTokenSendingMethods> bearerTokenSendingMethods;
 
+    /** Creates an instance of OpenIdAuthenticationSettingsContract class. */
+    public OpenIdAuthenticationSettingsContract() {
+    }
+
     /**
      * Get the openidProviderId property: OAuth authorization server identifier.
      *
