@@ -177,7 +177,7 @@ directive:
         },
         {
           "value": "composition_type",
-          "name": "composition_type",
+          "name": "snapshot_composition",
           "description": "Populates the snapshot 'composition_type' from the service."
         },
         {
