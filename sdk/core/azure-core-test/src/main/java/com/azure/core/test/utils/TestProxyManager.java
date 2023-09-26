@@ -50,7 +50,7 @@ public class TestProxyManager {
     public void startProxy() {
         try {
             // if we're not running in CI we will check to see if someone has started the proxy, and start one if not.
-            if (runningLocally() && !checkAlive(1, Duration.ofSeconds(1))) {
+            if (runningLocally() && !checkAlive(1, Duration.ofSeconds(1), null)) {
                 String commandLine = Paths.get(TestProxyDownloader.getProxyDirectory().toString(),
                     TestProxyUtils.getProxyProcessName()).toString();
 
@@ -74,7 +74,7 @@ public class TestProxyManager {
                 proxy = builder.start();
             }
             // in either case the proxy should now be started, so let's wait to make sure.
-            if (checkAlive(10, Duration.ofSeconds(6))) {
+            if (checkAlive(10, Duration.ofSeconds(6), proxy)) {
                 return;
             }
 
@@ -101,14 +101,14 @@ public class TestProxyManager {
         }
     }
 
-    private boolean checkAlive(int loops, Duration waitTime) throws InterruptedException {
+    private static boolean checkAlive(int loops, Duration waitTime, Process proxy) throws InterruptedException {
         HttpURLConnectionHttpClient client = new HttpURLConnectionHttpClient();
         HttpRequest request = new HttpRequest(HttpMethod.GET,
             String.format("%s/admin/isalive", TestProxyUtils.getProxyUrl()));
         for (int i = 0; i < loops; i++) {
             // If the proxy isn't alive and the exit value isn't 0, then the proxy process has exited with an error
             // and stop waiting.
-            if (!proxy.isAlive() && proxy.exitValue() != 0) {
+            if (proxy != null && !proxy.isAlive() && proxy.exitValue() != 0) {
                 return false;
             }
 
