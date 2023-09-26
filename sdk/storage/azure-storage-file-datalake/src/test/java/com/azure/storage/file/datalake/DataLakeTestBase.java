@@ -25,6 +25,7 @@ import com.azure.core.test.models.TestProxySanitizer;
 import com.azure.core.test.models.TestProxySanitizerType;
 import com.azure.core.util.CoreUtils;
 import com.azure.identity.EnvironmentCredentialBuilder;
+import com.azure.storage.blob.models.BlobErrorCode;
 import com.azure.storage.common.StorageSharedKeyCredential;
 import com.azure.storage.common.implementation.Constants;
 import com.azure.storage.common.policy.RequestRetryOptions;
@@ -32,6 +33,7 @@ import com.azure.storage.common.test.shared.ServiceVersionValidationPolicy;
 import com.azure.storage.common.test.shared.TestAccount;
 import com.azure.storage.common.test.shared.TestDataFactory;
 import com.azure.storage.common.test.shared.TestEnvironment;
+import com.azure.storage.file.datalake.models.DataLakeStorageException;
 import com.azure.storage.file.datalake.models.FileSystemItem;
 import com.azure.storage.file.datalake.models.LeaseStateType;
 import com.azure.storage.file.datalake.models.ListFileSystemsOptions;
@@ -42,6 +44,7 @@ import com.azure.storage.file.datalake.specialized.DataLakeLeaseClient;
 import com.azure.storage.file.datalake.specialized.DataLakeLeaseClientBuilder;
 import okhttp3.ConnectionPool;
 import reactor.core.publisher.Mono;
+import reactor.test.StepVerifier;
 
 import java.io.ByteArrayOutputStream;
 import java.io.File;
@@ -69,6 +72,7 @@ import java.util.zip.CRC32;
 import static com.azure.core.test.utils.TestUtils.assertArraysEqual;
 import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertFalse;
+import static org.junit.jupiter.api.Assertions.assertInstanceOf;
 import static org.junit.jupiter.api.Assertions.assertNotNull;
 import static org.junit.jupiter.api.Assertions.fail;
 
@@ -354,6 +358,12 @@ public class DataLakeTestBase extends TestProxyTestBase {
 
         return instrument(builder)
             .credential(credential)
+            .buildFileAsyncClient();
+    }
+
+    protected DataLakeFileAsyncClient getFileAsyncClient(String sasToken, String endpoint, String pathName) {
+        return instrument(new DataLakePathClientBuilder().endpoint(endpoint).pathName(pathName))
+            .sasToken(sasToken)
             .buildFileAsyncClient();
     }
 
@@ -783,6 +793,19 @@ public class DataLakeTestBase extends TestProxyTestBase {
 
     protected String getFileSystemUrl() {
         return dataLakeFileSystemClient.getFileSystemUrl();
+    }
+
+    protected static void assertExceptionStatusCodeAndMessage(Throwable throwable, int expectedStatusCode,
+                                                           BlobErrorCode errMessage) {
+        DataLakeStorageException exception = assertInstanceOf(DataLakeStorageException.class, throwable);
+        assertEquals(expectedStatusCode, exception.getStatusCode());
+        assertEquals(errMessage.toString(), exception.getErrorCode());
+    }
+
+    protected static <T> void assertAsyncResponseStatusCode(Mono<Response<T>> response, int expectedStatusCode) {
+        StepVerifier.create(response)
+            .assertNext(r -> assertEquals(expectedStatusCode, r.getStatusCode()))
+            .verifyComplete();
     }
 
     public static byte[] convertInputStreamToByteArray(InputStream inputStream, int expectedSize) throws IOException {
