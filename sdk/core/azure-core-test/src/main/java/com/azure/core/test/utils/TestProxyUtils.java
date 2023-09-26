@@ -357,8 +357,8 @@ public class TestProxyUtils {
                 case HEADER:
                     sanitizerType = HEADER.getName();
                     if (testProxySanitizer.getKey() == null && testProxySanitizer.getRegex() == null) {
-                        throw new RuntimeException("Missing regexKey and/or headerKey for sanitizer type {"
-                                                   + sanitizerType +"}");
+                        throw new RuntimeException(
+                            "Missing regexKey and/or headerKey for sanitizer type {" + sanitizerType + "}");
                     }
                     requestBody = createRegexRequestBody(testProxySanitizer.getKey(),
                         testProxySanitizer.getRegex(),
@@ -426,7 +426,7 @@ public class TestProxyUtils {
         }
 
         String requestBody = "[" + CoreUtils.stringJoin(",", sanitizersJsonPayloads) + "]";
-        return new HttpRequest(HttpMethod.POST, proxyUrl +"/Admin/AddSanitizers").setBody(requestBody);
+        return new HttpRequest(HttpMethod.POST, proxyUrl + "/Admin/AddSanitizers").setBody(requestBody);
     }
 
     private static HttpRequest createHttpRequest(String requestBody, String sanitizerType, URL proxyUrl) {
