@@ -222,6 +222,8 @@ directive:
 - remove-model: ContinuousDtmfRecognitionStopped
 - remove-model: SendDtmfCompleted
 - remove-model: SendDtmfFailed
+- remove-model: AddParticipantCancelled
+- remove-model: CancelAddParticipantFailed
 ```
 
 ### Rename RecordingChannelType to RecordingChannelInternal
