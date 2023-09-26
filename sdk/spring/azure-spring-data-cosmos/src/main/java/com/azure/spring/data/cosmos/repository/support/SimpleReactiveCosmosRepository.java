@@ -255,10 +255,11 @@ public class SimpleReactiveCosmosRepository<T, K extends Serializable> implement
         Assert.notNull(entities, "The given Iterable of entities must not be null!");
 
         if (entityInformation.getPartitionKeyFieldName() != null) {
-            Flux<CosmosItemOperation> cosmosItemOperationFlux = Flux.fromIterable(entities).map(entity ->
-                CosmosBulkOperations.getDeleteItemOperation(
-                    (entityInformation.getId(entity) != null ? entityInformation.getId(entity) : "").toString(),
-                    new PartitionKey(entityInformation.getPartitionKeyFieldValue(entity))));
+            Flux<CosmosItemOperation> cosmosItemOperationFlux = Flux.fromIterable(entities).map(entity -> {
+                K id = entityInformation.getId(entity);
+                return CosmosBulkOperations.getDeleteItemOperation(id != null ? id.toString() : "",
+                    new PartitionKey(entityInformation.getPartitionKeyFieldValue(entity)));
+            });
 
             return cosmosOperations.deleteEntities(entityInformation.getContainerName(), cosmosItemOperationFlux);
         } else {
@@ -272,10 +273,11 @@ public class SimpleReactiveCosmosRepository<T, K extends Serializable> implement
         Assert.notNull(entityStream, "The given Publisher of entities must not be null!");
 
         if (entityInformation.getPartitionKeyFieldName() != null) {
-            Flux<CosmosItemOperation> cosmosItemOperationFlux = Flux.from(entityStream).map(entity ->
-                CosmosBulkOperations.getDeleteItemOperation(
-                    (entityInformation.getId(entity) != null ? entityInformation.getId(entity) : "").toString(),
-                    new PartitionKey(entityInformation.getPartitionKeyFieldValue(entity))));
+            Flux<CosmosItemOperation> cosmosItemOperationFlux = Flux.from(entityStream).map(entity -> {
+                K id = entityInformation.getId(entity);
+                return CosmosBulkOperations.getDeleteItemOperation(id != null ? id.toString() : "",
+                    new PartitionKey(entityInformation.getPartitionKeyFieldValue(entity)));
+            });
 
             return cosmosOperations.deleteEntities(entityInformation.getContainerName(), cosmosItemOperationFlux);
         } else {
