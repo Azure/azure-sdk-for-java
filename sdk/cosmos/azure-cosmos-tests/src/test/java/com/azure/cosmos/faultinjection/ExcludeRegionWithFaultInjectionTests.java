@@ -1103,7 +1103,7 @@ public class ExcludeRegionWithFaultInjectionTests extends TestSuiteBase {
                     )),
                 },
                 {
-                    "create_503/21008_allRegions_beforeMutation_excludeFirstRegion_afterMutation_excludeAllRegions",
+                    "create_503/21008_noRegion_beforeMutation_excludeFirstRegion_afterMutation_excludeAllRegions",
                     new MutationTestConfig()
                         .withChooseInitialExclusionRegions(this.chooseFirstRegion)
                         .withFaultInjectionOperationType(FaultInjectionOperationType.CREATE_ITEM)
