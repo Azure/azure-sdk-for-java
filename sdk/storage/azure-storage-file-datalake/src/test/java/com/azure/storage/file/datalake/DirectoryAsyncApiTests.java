@@ -1,3 +1,5 @@
+// Copyright (c) Microsoft Corporation. All rights reserved.
+// Licensed under the MIT License.
 package com.azure.storage.file.datalake;
 
 import com.azure.core.http.HttpHeaderName;
@@ -111,7 +113,7 @@ public class DirectoryAsyncApiTests extends DataLakeTestBase {
     public void createDefaults() {
         StepVerifier.create(dataLakeFileSystemAsyncClient.getDirectoryAsyncClient(generatePathName())
             .createWithResponse(null, null, null, null, null))
-            .assertNext(r ->{
+            .assertNext(r -> {
                 assertEquals(201, r.getStatusCode());
                 validateBasicHeaders(r.getHeaders());
             })
@@ -128,7 +130,7 @@ public class DirectoryAsyncApiTests extends DataLakeTestBase {
         dc = dataLakeFileSystemAsyncClient.getDirectoryAsyncClient(generatePathName());
 
         StepVerifier.create(dc.createWithResponse(options))
-            .assertNext(r ->{
+            .assertNext(r -> {
                 assertEquals(201, r.getStatusCode());
                 validateBasicHeaders(r.getHeaders());
             })
@@ -230,7 +232,7 @@ public class DirectoryAsyncApiTests extends DataLakeTestBase {
         dc.createWithResponse(null, null, null, metadata, null).block();
 
         StepVerifier.create(dc.getProperties())
-            .assertNext(r ->{
+            .assertNext(r -> {
                 for (String k : metadata.keySet()) {
                     assertTrue(r.getMetadata().containsKey(k));
                     assertEquals(metadata.get(k), r.getMetadata().get(k));
@@ -393,7 +395,7 @@ public class DirectoryAsyncApiTests extends DataLakeTestBase {
         dc.createWithResponse(new DataLakePathCreateOptions().setOwner(ownerName).setGroup(groupName)).block();
 
         StepVerifier.create(dc.getAccessControl())
-            .assertNext(r ->{
+            .assertNext(r -> {
                 assertEquals(ownerName, r.getOwner());
                 assertEquals(groupName, r.getGroup());
             })
@@ -406,7 +408,7 @@ public class DirectoryAsyncApiTests extends DataLakeTestBase {
         dc.createWithResponse(null).block();
 
         StepVerifier.create(dc.getAccessControl())
-            .assertNext(r ->{
+            .assertNext(r -> {
                 assertEquals("$superuser", r.getOwner());
                 assertEquals("$superuser", r.getGroup());
             })
@@ -449,7 +451,7 @@ public class DirectoryAsyncApiTests extends DataLakeTestBase {
         assertAsyncResponseStatusCode(dc.createWithResponse(new DataLakePathCreateOptions().setMetadata(metadata)), statusCode);
 
         StepVerifier.create(dc.getProperties())
-            .assertNext(r ->{
+            .assertNext(r -> {
                 for (String k : metadata.keySet()) {
                     assertTrue(r.getMetadata().containsKey(k));
                     assertEquals(metadata.get(k), r.getMetadata().get(k));
@@ -880,7 +882,7 @@ public class DirectoryAsyncApiTests extends DataLakeTestBase {
         AccessControlChangeResult r = dc.setAccessControlRecursiveWithResponse(options).block().getValue();
         options.setMaxBatches(null).setContinuationToken(r.getContinuationToken());
 
-        StepVerifier.create( dc.setAccessControlRecursiveWithResponse(options))
+        StepVerifier.create(dc.setAccessControlRecursiveWithResponse(options))
             .assertNext(r2 -> {
                 assertEquals(3L, r.getCounters().getChangedDirectoriesCount() + r2.getValue().getCounters().getChangedDirectoriesCount()); // Including the top level
                 assertEquals(4L, r.getCounters().getChangedFilesCount() + r2.getValue().getCounters().getChangedFilesCount());
@@ -906,7 +908,7 @@ public class DirectoryAsyncApiTests extends DataLakeTestBase {
                 assertEquals(0L, r.getValue().getCounters().getFailedChangesCount());
                 assertNull(r.getValue().getContinuationToken());
                 assertNull(r.getValue().getBatchFailures());
-                })
+            })
             .verifyComplete();
 
         assertEquals(4, progress.batchCounters.size());
@@ -1247,7 +1249,7 @@ public class DirectoryAsyncApiTests extends DataLakeTestBase {
         dc = getDirectoryAsyncClient(getDataLakeCredential(), dc.getDirectoryUrl(), dc.getObjectPath(), mockPolicy);
 
         StepVerifier.create(dc.setAccessControlRecursiveWithResponse(options))
-            .verifyErrorSatisfies(r ->{
+            .verifyErrorSatisfies(r -> {
                 DataLakeAclChangeFailedException e = assertInstanceOf(DataLakeAclChangeFailedException.class, r);
                 assertEquals(error.getClass(), e.getCause().getClass());
             });
@@ -1264,7 +1266,7 @@ public class DirectoryAsyncApiTests extends DataLakeTestBase {
     public void updateACLRecursive() {
         setupStandardRecursiveAclTest();
         StepVerifier.create(dc.updateAccessControlRecursive(PATH_ACCESS_CONTROL_ENTRIES))
-            .assertNext(r ->{
+            .assertNext(r -> {
                 assertEquals(3L, r.getCounters().getChangedDirectoriesCount()); // Including the top level
                 assertEquals(4L, r.getCounters().getChangedFilesCount());
                 assertEquals(0L, r.getCounters().getFailedChangesCount());
@@ -1282,7 +1284,7 @@ public class DirectoryAsyncApiTests extends DataLakeTestBase {
 
 
         StepVerifier.create(dc.updateAccessControlRecursiveWithResponse(options))
-            .assertNext(r ->{
+            .assertNext(r -> {
                 assertEquals(3L, r.getValue().getCounters().getChangedDirectoriesCount()); // Including the top level
                 assertEquals(4L, r.getValue().getCounters().getChangedFilesCount());
                 assertEquals(0L, r.getValue().getCounters().getFailedChangesCount());
@@ -1303,7 +1305,7 @@ public class DirectoryAsyncApiTests extends DataLakeTestBase {
 
         options.setMaxBatches(null).setContinuationToken(r.getContinuationToken());
         StepVerifier.create(dc.updateAccessControlRecursiveWithResponse(options))
-            .assertNext(r2 ->{
+            .assertNext(r2 -> {
                 assertEquals(3L, r.getCounters().getChangedDirectoriesCount() + r2.getValue().getCounters().getChangedDirectoriesCount()); // Including the top level
                 assertEquals(4L, r.getCounters().getChangedFilesCount() + r2.getValue().getCounters().getChangedFilesCount());
                 assertEquals(0L, r.getCounters().getFailedChangesCount() + r2.getValue().getCounters().getFailedChangesCount());
@@ -1322,7 +1324,7 @@ public class DirectoryAsyncApiTests extends DataLakeTestBase {
             .setBatchSize(2).setProgressHandler(progress);
 
         StepVerifier.create(dc.updateAccessControlRecursiveWithResponse(options))
-            .assertNext(r ->{
+            .assertNext(r -> {
                 assertEquals(3L, r.getValue().getCounters().getChangedDirectoriesCount()); // Including the top level
                 assertEquals(4L, r.getValue().getCounters().getChangedFilesCount());
                 assertEquals(0L, r.getValue().getCounters().getFailedChangesCount());
@@ -1653,7 +1655,7 @@ public class DirectoryAsyncApiTests extends DataLakeTestBase {
         dc = getDirectoryAsyncClient(getDataLakeCredential(), dc.getDirectoryUrl(), dc.getObjectPath(), mockPolicy);
 
         StepVerifier.create(dc.updateAccessControlRecursiveWithResponse(options))
-            .verifyErrorSatisfies(r ->{
+            .verifyErrorSatisfies(r -> {
                 DataLakeAclChangeFailedException e = assertInstanceOf(DataLakeAclChangeFailedException.class, r);
                 assertEquals(error.getClass(), e.getCause().getClass());
             });
@@ -1720,7 +1722,7 @@ public class DirectoryAsyncApiTests extends DataLakeTestBase {
             .setBatchSize(2).setProgressHandler(progress);
 
         StepVerifier.create(dc.removeAccessControlRecursiveWithResponse(options))
-            .assertNext(r ->{
+            .assertNext(r -> {
                 assertEquals(3L, r.getValue().getCounters().getChangedDirectoriesCount()); // Including the top level
                 assertEquals(4L, r.getValue().getCounters().getChangedFilesCount());
                 assertEquals(0L, r.getValue().getCounters().getFailedChangesCount());
@@ -2055,7 +2057,7 @@ public class DirectoryAsyncApiTests extends DataLakeTestBase {
         dc = getDirectoryAsyncClient(getDataLakeCredential(), dc.getDirectoryUrl(), dc.getObjectPath(), mockPolicy);
 
         StepVerifier.create(dc.removeAccessControlRecursiveWithResponse(options))
-            .verifyErrorSatisfies(r ->{
+            .verifyErrorSatisfies(r -> {
                 DataLakeAclChangeFailedException e = assertInstanceOf(DataLakeAclChangeFailedException.class, r);
                 assertEquals(error.getClass(), e.getCause().getClass());
             });
@@ -2094,7 +2096,7 @@ public class DirectoryAsyncApiTests extends DataLakeTestBase {
     @Test
     public void getAccessControlMin() {
         StepVerifier.create(dc.getAccessControl())
-            .assertNext(r ->{
+            .assertNext(r -> {
                 assertNotNull(r.getAccessControlList());
                 assertNotNull(r.getPermissions());
                 assertNotNull(r.getOwner());
