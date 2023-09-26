@@ -662,7 +662,8 @@ public class CosmosAsyncContainer {
                 queryOptionsAccessor.getQueryNameOrDefault(requestOptions, this.readAllItemsSpanName),
                 requestOptions.getConsistencyLevel(),
                 client.getEffectiveDiagnosticsThresholds(queryOptionsAccessor.getDiagnosticsThresholds(requestOptions)),
-                queryOptionsAccessor.getDiagnosticsFactoryResetCallbackReference(requestOptions));
+                queryOptionsAccessor.getDiagnosticsFactoryResetCallbackReference(requestOptions),
+                queryOptionsAccessor.getDiagnosticsFactoryMergeCallbackReference(requestOptions));
 
             setContinuationTokenAndMaxItemCount(pagedFluxOptions, requestOptions);
 
@@ -966,7 +967,8 @@ public class CosmosAsyncContainer {
                 queryOptionsAccessor.getQueryNameOrDefault(options, spanName),
                 options.getConsistencyLevel(),
                 client.getEffectiveDiagnosticsThresholds(queryOptionsAccessor.getDiagnosticsThresholds(options)),
-                queryOptionsAccessor.getDiagnosticsFactoryResetCallbackReference(options));
+                queryOptionsAccessor.getDiagnosticsFactoryResetCallbackReference(options),
+                queryOptionsAccessor.getDiagnosticsFactoryMergeCallbackReference(options));
 
             setContinuationTokenAndMaxItemCount(pagedFluxOptions, options);
 
@@ -1008,7 +1010,8 @@ public class CosmosAsyncContainer {
                 queryOptionsAccessor.getQueryNameOrDefault(options, spanName),
                 options.getConsistencyLevel(),
                 client.getEffectiveDiagnosticsThresholds(queryOptionsAccessor.getDiagnosticsThresholds(options)),
-                queryOptionsAccessor.getDiagnosticsFactoryResetCallbackReference(options));
+                queryOptionsAccessor.getDiagnosticsFactoryResetCallbackReference(options),
+                queryOptionsAccessor.getDiagnosticsFactoryMergeCallbackReference(options));
             setContinuationTokenAndMaxItemCount(pagedFluxOptions, options);
 
             return sqlQuerySpecMono.flux()
@@ -1099,6 +1102,7 @@ public class CosmosAsyncContainer {
                 null,
                 client.getEffectiveDiagnosticsThresholds(
                     cfOptionsAccessor.getDiagnosticsThresholds(cosmosChangeFeedRequestOptions)),
+                null,
                 null);
 
             getEffectiveCosmosChangeFeedRequestOptions(pagedFluxOptions, cosmosChangeFeedRequestOptions);
@@ -1569,7 +1573,8 @@ public class CosmosAsyncContainer {
                 queryOptionsAccessor.getQueryNameOrDefault(requestOptions, this.readAllItemsOfLogicalPartitionSpanName),
                 requestOptions.getConsistencyLevel(),
                 client.getEffectiveDiagnosticsThresholds(queryOptionsAccessor.getDiagnosticsThresholds(options)),
-                queryOptionsAccessor.getDiagnosticsFactoryResetCallbackReference(requestOptions));
+                queryOptionsAccessor.getDiagnosticsFactoryResetCallbackReference(requestOptions),
+                queryOptionsAccessor.getDiagnosticsFactoryMergeCallbackReference(requestOptions));
 
             setContinuationTokenAndMaxItemCount(pagedFluxOptions, requestOptions);
             return getDatabase()

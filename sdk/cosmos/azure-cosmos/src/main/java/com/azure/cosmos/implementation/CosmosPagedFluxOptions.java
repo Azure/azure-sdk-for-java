@@ -11,6 +11,7 @@ import com.azure.cosmos.CosmosDiagnosticsThresholds;
 import com.azure.cosmos.util.CosmosPagedFlux;
 
 import java.util.concurrent.atomic.AtomicReference;
+import java.util.function.Consumer;
 
 import static com.azure.cosmos.implementation.guava25.base.Preconditions.checkNotNull;
 
@@ -47,6 +48,7 @@ public class CosmosPagedFluxOptions {
     public double samplingRateSnapshot = 1;
 
     private AtomicReference<Runnable> diagnosticsFactoryResetCallback;
+    private AtomicReference<Consumer<CosmosDiagnosticsContext>> diagnosticsFactoryMergeCallback;
 
     public CosmosPagedFluxOptions() {}
 
@@ -238,6 +240,18 @@ public class CosmosPagedFluxOptions {
         }
     }
 
+    public void mergeDiagnosticsContext() {
+        final CosmosDiagnosticsContext cosmosCtx = this.ctxHolder.get();
+
+        if (this.diagnosticsFactoryMergeCallback != null) {
+            Consumer<CosmosDiagnosticsContext> mergeCallbackSnapshot = this.diagnosticsFactoryMergeCallback.get();
+            if (mergeCallbackSnapshot != null) {
+                mergeCallbackSnapshot.accept(cosmosCtx);
+            }
+        }
+    }
+
+
     public void setTracerAndTelemetryInformation(String tracerSpanName,
                                                  String databaseId,
                                                  String containerId,
@@ -247,7 +261,8 @@ public class CosmosPagedFluxOptions {
                                                  String operationId,
                                                  ConsistencyLevel consistencyLevel,
                                                  CosmosDiagnosticsThresholds thresholds,
-                                                 AtomicReference<Runnable> diagnosticsFactoryResetCallback
+                                                 AtomicReference<Runnable> diagnosticsFactoryResetCallback,
+                                                 AtomicReference<Consumer<CosmosDiagnosticsContext>> diagnosticsFactoryMergeCallback
 
     ) {
         checkNotNull(tracerSpanName, "Argument 'tracerSpanName' must not be NULL.");
@@ -272,6 +287,7 @@ public class CosmosPagedFluxOptions {
         this.thresholds = thresholds;
         this.resetDiagnosticsContext(1);
         this.diagnosticsFactoryResetCallback = diagnosticsFactoryResetCallback;
+        this.diagnosticsFactoryMergeCallback = diagnosticsFactoryMergeCallback;
     }
 
     public double getSamplingRateSnapshot() {

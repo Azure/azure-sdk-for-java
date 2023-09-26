@@ -24,6 +24,7 @@ import java.util.List;
 import java.util.Map;
 import java.util.UUID;
 import java.util.concurrent.atomic.AtomicReference;
+import java.util.function.Consumer;
 import java.util.function.Function;
 import java.util.function.Supplier;
 
@@ -68,12 +69,15 @@ public class CosmosQueryRequestOptions {
 
     private final AtomicReference<Runnable> diagnosticsFactoryResetCallback;
 
+    private final AtomicReference<Consumer<CosmosDiagnosticsContext>> diagnosticsFactoryMergeCallback;
+
     /**
      * Instantiates a new query request options.
      */
     public CosmosQueryRequestOptions() {
 
         this.diagnosticsFactoryResetCallback = new AtomicReference<>(null);
+        this.diagnosticsFactoryMergeCallback = new AtomicReference<>(null);
         this.thresholds = null;
         this.queryMetricsEnabled = true;
         this.emptyPageDiagnosticsEnabled = Configs.isEmptyPageDiagnosticsEnabled();
@@ -116,8 +120,10 @@ public class CosmosQueryRequestOptions {
         this.ctxSupplier = options.ctxSupplier;
         if (cloneDiagnosticsFactoryResetCallback) {
             this.diagnosticsFactoryResetCallback = options.diagnosticsFactoryResetCallback;
+            this.diagnosticsFactoryMergeCallback = options.diagnosticsFactoryMergeCallback;
         } else {
             this.diagnosticsFactoryResetCallback = new AtomicReference<>(options.diagnosticsFactoryResetCallback.get());
+            this.diagnosticsFactoryMergeCallback = new AtomicReference<>(options.diagnosticsFactoryMergeCallback.get());
         }
     }
 
@@ -732,15 +738,6 @@ public class CosmosQueryRequestOptions {
         this.cancelledRequestDiagnosticsTracker = cancelledRequestDiagnosticsTracker;
     }
 
-    CosmosDiagnosticsContext getDiagnosticsContextSnapshot() {
-        Supplier<CosmosDiagnosticsContext> ctxSupplierSnapshot = this.ctxSupplier;
-        if (ctxSupplierSnapshot == null) {
-            return null;
-        }
-
-        return ctxSupplierSnapshot.get();
-    }
-
     Supplier<CosmosDiagnosticsContext> getDiagnosticsContextSupplier() {
         return this.ctxSupplier;
     }
@@ -935,8 +932,18 @@ public class CosmosQueryRequestOptions {
                 }
 
                 @Override
+                public AtomicReference<Consumer<CosmosDiagnosticsContext>> getDiagnosticsFactoryMergeCallbackReference(CosmosQueryRequestOptions options) {
+                    return options.diagnosticsFactoryMergeCallback;
+                }
+
+                @Override
                 public void setDiagnosticsFactoryResetCallback(CosmosQueryRequestOptions options, Runnable resetCallback) {
                     options.diagnosticsFactoryResetCallback.set(resetCallback);
+                }
+
+                @Override
+                public void setDiagnosticsFactoryMergeCallback(CosmosQueryRequestOptions options, Consumer<CosmosDiagnosticsContext> mergeCallback) {
+                    options.diagnosticsFactoryMergeCallback.set(mergeCallback);
                 }
 
                 @Override

@@ -2381,7 +2381,7 @@ public class FaultInjectionWithAvailabilityStrategyTests extends TestSuiteBase {
             // Simple single partition query. Gateway timeout for query plan retrieval in first region injected.
             // This test case validates that the availability strategy and hedging is also applied for the
             // query plan request. The expectation is that the query plan request in the first region won't finish,
-            // the query plan will then be retrieved form the second region but the actual query is executed against the
+            // the query plan will then be retrieved from the second region but the actual query is executed against the
             // first region.
             new Object[] {
                 "DefaultPageSize_SinglePartition_QueryPLanHighLatency_EagerAvailabilityStrategy",
@@ -2398,31 +2398,30 @@ public class FaultInjectionWithAvailabilityStrategyTests extends TestSuiteBase {
                     validateCtxQueryPlan,
                     (ctx) -> {
                         CosmosDiagnostics[] diagnostics = ctx.getDiagnostics().toArray(new CosmosDiagnostics[0]);
-                        assertThat(diagnostics.length).isEqualTo(3);
+                        assertThat(diagnostics.length).isGreaterThanOrEqualTo(2);
 
                         // Ensure that the query plan has been retrieved from the second region
                         assertThat(diagnostics[0].getContactedRegionNames().size()).isEqualTo(1);
                         assertThat(diagnostics[0].getContactedRegionNames().contains(SECOND_REGION_NAME)).isEqualTo(true);
 
-                        // Second Diagnostics should be for the unfinished query plan retrieval in first region
-                        // but the diagnostics have not been populated yet - so are basically empty
-                        assertThat(diagnostics[1].getFeedResponseDiagnostics()).isNull();
-                        assertThat(diagnostics[1].getClientSideRequestStatistics()).isNotNull();
-                        assertThat(diagnostics[1].getContactedRegionNames().size()).isEqualTo(0);
-                        assertThat(diagnostics[1].getClientSideRequestStatistics().size()).isEqualTo(1);
-                        ClientSideRequestStatistics incompleteRequestStats =
-                            diagnostics[1].getClientSideRequestStatistics().iterator().next();
-                        assertThat(incompleteRequestStats.getGatewayStatisticsList().size()).isEqualTo(0);
-                        assertThat(incompleteRequestStats.getResponseStatisticsList().size()).isEqualTo(0);
 
-                        // Second Diagnostics should be for the unfinished query plan retrieval in first region
-                        // but the diagnostics have not been populated yet - so are basically empty
-                        assertThat(diagnostics[2].getFeedResponseDiagnostics()).isNotNull();
-                        assertThat(diagnostics[2].getFeedResponseDiagnostics().getQueryMetricsMap()).isNotNull();
-                        assertThat(diagnostics[2].getFeedResponseDiagnostics().getClientSideRequestStatistics()).isNotNull();
-                        assertThat(diagnostics[2].getFeedResponseDiagnostics().getClientSideRequestStatistics().size()).isGreaterThanOrEqualTo(1);
-                        assertThat(diagnostics[2].getContactedRegionNames().size()).isEqualTo(1);
-                        assertThat(diagnostics[2].getContactedRegionNames().contains(FIRST_REGION_NAME)).isEqualTo(true);
+                        // There possibly is an incomplete diagnostics for the failed query plan retrieval in the first region
+                        // Last Diagnostics should be for processed request against the first region with the
+                        // query plan retrieved from the second region
+                        boolean found = false;
+                        for (int i = 1; i < diagnostics.length; i++) {
+                            if (diagnostics[i].getFeedResponseDiagnostics() != null &&
+                                diagnostics[i].getFeedResponseDiagnostics().getQueryMetricsMap() != null) {
+
+                                found = true;
+                                assertThat(diagnostics[i].getFeedResponseDiagnostics().getClientSideRequestStatistics()).isNotNull();
+                                assertThat(diagnostics[i].getFeedResponseDiagnostics().getClientSideRequestStatistics().size()).isGreaterThanOrEqualTo(1);
+                                assertThat(diagnostics[i].getContactedRegionNames().size()).isEqualTo(1);
+                                assertThat(diagnostics[i].getContactedRegionNames().contains(FIRST_REGION_NAME)).isEqualTo(true);
+                            }
+                        }
+
+                        assertThat(found).isEqualTo(true);
                     }
                 ),
                 null,

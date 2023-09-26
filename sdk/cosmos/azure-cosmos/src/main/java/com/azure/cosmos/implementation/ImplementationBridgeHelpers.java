@@ -82,6 +82,7 @@ import java.util.concurrent.Callable;
 import java.util.concurrent.ConcurrentMap;
 import java.util.concurrent.atomic.AtomicBoolean;
 import java.util.concurrent.atomic.AtomicReference;
+import java.util.function.Consumer;
 import java.util.function.Function;
 import java.util.function.Supplier;
 
@@ -292,9 +293,15 @@ public class ImplementationBridgeHelpers {
 
             AtomicReference<Runnable> getDiagnosticsFactoryResetCallbackReference(CosmosQueryRequestOptions options);
 
+            AtomicReference<Consumer<CosmosDiagnosticsContext>> getDiagnosticsFactoryMergeCallbackReference(CosmosQueryRequestOptions options);
+
             void setDiagnosticsFactoryResetCallback(
                 CosmosQueryRequestOptions options,
                 Runnable resetCallback);
+
+            void setDiagnosticsFactoryMergeCallback(
+                CosmosQueryRequestOptions options,
+                Consumer<CosmosDiagnosticsContext> mergeCallback);
 
             void setAllowEmptyPages(CosmosQueryRequestOptions options, boolean emptyPagesAllowed);
 

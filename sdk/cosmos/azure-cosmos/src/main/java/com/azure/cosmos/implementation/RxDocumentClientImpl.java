@@ -962,21 +962,14 @@ public class RxDocumentClientImpl implements AsyncDocumentClient, IAuthorization
 
         final ScopedDiagnosticsFactory diagnosticsFactory = new ScopedDiagnosticsFactory(this);
         qryOptAccessor.setDiagnosticsFactoryResetCallback(nonNullQueryOptions, () -> diagnosticsFactory.reset());
+        qryOptAccessor.setDiagnosticsFactoryMergeCallback(nonNullQueryOptions, (ctx) -> diagnosticsFactory.merge(ctx));
+
         return
             ObservableHelper.fluxInlineIfPossibleAsObs(
                                 () -> createQueryInternal(
                                     diagnosticsFactory, resourceLink, sqlQuery, nonNullQueryOptions, klass, resourceTypeEnum, queryClient, correlationActivityId, isQueryCancelledOnTimeout),
                                 invalidPartitionExceptionRetryPolicy
-                            )
-                            .flatMap(result -> {
-                                diagnosticsFactory.merge(nonNullRequestOptions);
-                                return Mono.just(result);
-                            })
-                            .onErrorMap(throwable -> {
-                                diagnosticsFactory.merge(nonNullRequestOptions);
-                                return throwable;
-                            })
-                            .doOnCancel(() -> diagnosticsFactory.merge(nonNullRequestOptions));
+                            );
     }
 
     private <T> Flux<FeedResponse<T>> createQueryInternal(
@@ -3284,6 +3277,7 @@ public class RxDocumentClientImpl implements AsyncDocumentClient, IAuthorization
         } else {
             diagnosticsFactory = new ScopedDiagnosticsFactory(this);
             qryOptAccessor.setDiagnosticsFactoryResetCallback(effectiveOptions, () -> diagnosticsFactory.reset());
+            qryOptAccessor.setDiagnosticsFactoryMergeCallback(effectiveOptions, (ctx) -> diagnosticsFactory.merge(ctx));
             effectiveClientContext = diagnosticsFactory;
         }
 

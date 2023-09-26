@@ -217,7 +217,8 @@ public class ClientSideRequestStatistics {
             gatewayStatistics.faultInjectionRuleId = storeResponseDiagnostics.getFaultInjectionRuleId();
             gatewayStatistics.faultInjectionEvaluationResults = storeResponseDiagnostics.getFaultInjectionEvaluationResults();
 
-            this.activityId = storeResponseDiagnostics.getActivityId();
+            this.activityId = storeResponseDiagnostics.getActivityId() != null ? storeResponseDiagnostics.getActivityId() :
+                rxDocumentServiceRequest.getActivityId().toString();
 
             this.gatewayStatisticsList.add(gatewayStatistics);
         }
@@ -295,6 +296,7 @@ public class ClientSideRequestStatistics {
         this.setContactedReplicas(new ArrayList<>(totalContactedReplicas));
     }
 
+    // Called under lock
     private void mergeSupplementalResponses(List<StoreResponseStatistics> other) {
         if (other == null) {
             return;
@@ -305,9 +307,12 @@ public class ClientSideRequestStatistics {
             return;
         }
 
-        this.supplementalResponseStatisticsList.addAll(other);
+        ArrayList<StoreResponseStatistics> temp = new ArrayList<>(this.supplementalResponseStatisticsList);
+        temp.addAll(other);
+        this.supplementalResponseStatisticsList = temp;
     }
 
+    // Called under lock
     private void mergeResponseStatistics(List<StoreResponseStatistics> other) {
         if (other == null) {
             return;
@@ -318,8 +323,9 @@ public class ClientSideRequestStatistics {
             return;
         }
 
-        this.responseStatisticsList.addAll(other);
-        this.responseStatisticsList.sort(
+        ArrayList<StoreResponseStatistics> temp = new ArrayList<>(this.responseStatisticsList);
+        temp.addAll(other);
+        temp.sort(
             (StoreResponseStatistics left, StoreResponseStatistics right) -> {
                 if (left == null || left.requestStartTimeUTC == null) {
                     return -1;
@@ -331,6 +337,7 @@ public class ClientSideRequestStatistics {
                 return left.requestStartTimeUTC.compareTo(right.requestStartTimeUTC);
             }
         );
+        this.responseStatisticsList = temp;
     }
 
     private void mergeAddressResolutionStatistics(
@@ -431,6 +438,7 @@ public class ClientSideRequestStatistics {
         this.mergeClientSideRequestStatistics(other);
     }
 
+    // Called under lock
     public void mergeClientSideRequestStatistics(ClientSideRequestStatistics other) {
         if (other == null) {
             return;

@@ -1551,7 +1551,8 @@ public class CosmosAsyncDatabase {
         Context nestedContext = context.addData(
             DiagnosticsProvider.COSMOS_CALL_DEPTH,
             DiagnosticsProvider.COSMOS_CALL_DEPTH_VAL);
-        Mono<ThroughputResponse> responseMono = readThroughputInternal(this.readInternal(new CosmosDatabaseRequestOptions(), nestedContext));
+        CosmosQueryRequestOptions qryOptions = new CosmosQueryRequestOptions();
+        Mono<ThroughputResponse> responseMono = readThroughputInternal(this.readInternal(new CosmosDatabaseRequestOptions(), nestedContext), qryOptions);
         return this.client.getDiagnosticsProvider().traceEnabledCosmosResponsePublisher(
             responseMono,
             context,
@@ -1562,14 +1563,18 @@ public class CosmosAsyncDatabase {
             null,
             OperationType.Read,
             ResourceType.Offer,
-            null);
+            ImplementationBridgeHelpers
+                .CosmosQueryRequestOptionsHelper
+                .getCosmosQueryRequestOptionsAccessor()
+                .toRequestOptions(qryOptions));
     }
 
-    private Mono<ThroughputResponse> readThroughputInternal(Mono<CosmosDatabaseResponse> responseMono) {
+    private Mono<ThroughputResponse> readThroughputInternal(Mono<CosmosDatabaseResponse> responseMono, CosmosQueryRequestOptions qryOptions) {
+
         return responseMono
             .flatMap(response -> getDocClientWrapper()
                 .queryOffers(getOfferQuerySpecFromResourceId(response.getProperties().getResourceId()),
-                    new CosmosQueryRequestOptions())
+                    qryOptions)
                 .single()
                 .flatMap(offerFeedResponse -> {
                     if (offerFeedResponse.getResults().isEmpty()) {

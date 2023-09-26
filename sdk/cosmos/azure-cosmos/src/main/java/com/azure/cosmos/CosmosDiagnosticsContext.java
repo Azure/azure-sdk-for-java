@@ -268,11 +268,13 @@ public final class CosmosDiagnosticsContext {
         }
 
         if (this.operationType.isPointOperation()) {
-            if (this.thresholds.getPointOperationLatencyThreshold().compareTo(this.duration) < 0) {
+            if (Duration.ZERO.equals(this.thresholds.getPointOperationLatencyThreshold())
+                || this.thresholds.getPointOperationLatencyThreshold().compareTo(this.duration) < 0) {
                 return true;
             }
         } else {
-            if (this.thresholds.getNonPointOperationLatencyThreshold().compareTo(this.duration) < 0) {
+            if (Duration.ZERO.equals(this.thresholds.getNonPointOperationLatencyThreshold())
+            || this.thresholds.getNonPointOperationLatencyThreshold().compareTo(this.duration) < 0) {
                 return true;
             }
         }
