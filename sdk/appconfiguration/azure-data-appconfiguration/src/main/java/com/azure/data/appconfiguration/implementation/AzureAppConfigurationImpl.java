@@ -270,6 +270,8 @@ public final class AzureAppConfigurationImpl {
                 @HeaderParam("Accept-Datetime") String acceptDatetime,
                 @QueryParam("$Select") String select,
                 @QueryParam("snapshot") String snapshot,
+                @HeaderParam("If-Match") String ifMatch,
+                @HeaderParam("If-None-Match") String ifNoneMatch,
                 @HeaderParam("Accept") String accept,
                 Context context);
 
@@ -286,6 +288,8 @@ public final class AzureAppConfigurationImpl {
                 @HeaderParam("Accept-Datetime") String acceptDatetime,
                 @QueryParam("$Select") String select,
                 @QueryParam("snapshot") String snapshot,
+                @HeaderParam("If-Match") String ifMatch,
+                @HeaderParam("If-None-Match") String ifNoneMatch,
                 @HeaderParam("Accept") String accept,
                 Context context);
 
@@ -302,6 +306,8 @@ public final class AzureAppConfigurationImpl {
                 @HeaderParam("Accept-Datetime") String acceptDatetime,
                 @QueryParam("$Select") String select,
                 @QueryParam("snapshot") String snapshot,
+                @HeaderParam("If-Match") String ifMatch,
+                @HeaderParam("If-None-Match") String ifNoneMatch,
                 Context context);
 
         @Head("/kv")
@@ -317,6 +323,8 @@ public final class AzureAppConfigurationImpl {
                 @HeaderParam("Accept-Datetime") String acceptDatetime,
                 @QueryParam("$Select") String select,
                 @QueryParam("snapshot") String snapshot,
+                @HeaderParam("If-Match") String ifMatch,
+                @HeaderParam("If-None-Match") String ifNoneMatch,
                 Context context);
 
         @Get("/kv/{key}")
@@ -447,7 +455,7 @@ public final class AzureAppConfigurationImpl {
                 @QueryParam("api-version") String apiVersion,
                 @QueryParam("After") String after,
                 @QueryParam("$Select") String select,
-                @QueryParam("Status") String status,
+                @QueryParam("status") String status,
                 @HeaderParam("Accept") String accept,
                 Context context);
 
@@ -461,7 +469,7 @@ public final class AzureAppConfigurationImpl {
                 @QueryParam("api-version") String apiVersion,
                 @QueryParam("After") String after,
                 @QueryParam("$Select") String select,
-                @QueryParam("Status") String status,
+                @QueryParam("status") String status,
                 @HeaderParam("Accept") String accept,
                 Context context);
 
@@ -807,6 +815,8 @@ public final class AzureAppConfigurationImpl {
                 @HostParam("endpoint") String endpoint,
                 @HeaderParam("Sync-Token") String syncToken,
                 @HeaderParam("Accept-Datetime") String acceptDatetime,
+                @HeaderParam("If-Match") String ifMatch,
+                @HeaderParam("If-None-Match") String ifNoneMatch,
                 @HeaderParam("Accept") String accept,
                 Context context);
 
@@ -818,6 +828,8 @@ public final class AzureAppConfigurationImpl {
                 @HostParam("endpoint") String endpoint,
                 @HeaderParam("Sync-Token") String syncToken,
                 @HeaderParam("Accept-Datetime") String acceptDatetime,
+                @HeaderParam("If-Match") String ifMatch,
+                @HeaderParam("If-None-Match") String ifNoneMatch,
                 @HeaderParam("Accept") String accept,
                 Context context);
 
@@ -1236,6 +1248,9 @@ public final class AzureAppConfigurationImpl {
      * @param select Used to select what fields are present in the returned resource(s).
      * @param snapshot A filter used get key-values for a snapshot. The value should be the name of the snapshot. Not
      *     valid when used with 'key' and 'label' filters.
+     * @param ifMatch Used to perform an operation only if the targeted resource's etag matches the value provided.
+     * @param ifNoneMatch Used to perform an operation only if the targeted resource's etag does not match the value
+     *     provided.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws HttpResponseException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
@@ -1248,7 +1263,9 @@ public final class AzureAppConfigurationImpl {
             String after,
             String acceptDatetime,
             List<SettingFields> select,
-            String snapshot) {
+            String snapshot,
+            String ifMatch,
+            String ifNoneMatch) {
         final String accept = "application/vnd.microsoft.appconfig.kvset+json, application/problem+json";
         String selectConverted =
                 (select == null)
@@ -1266,6 +1283,8 @@ public final class AzureAppConfigurationImpl {
                                         acceptDatetime,
                                         selectConverted,
                                         snapshot,
+                                        ifMatch,
+                                        ifNoneMatch,
                                         accept,
                                         context))
                 .map(
@@ -1290,6 +1309,9 @@ public final class AzureAppConfigurationImpl {
      * @param select Used to select what fields are present in the returned resource(s).
      * @param snapshot A filter used get key-values for a snapshot. The value should be the name of the snapshot. Not
      *     valid when used with 'key' and 'label' filters.
+     * @param ifMatch Used to perform an operation only if the targeted resource's etag matches the value provided.
+     * @param ifNoneMatch Used to perform an operation only if the targeted resource's etag does not match the value
+     *     provided.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws HttpResponseException thrown if the request is rejected by server.
@@ -1304,6 +1326,8 @@ public final class AzureAppConfigurationImpl {
             String acceptDatetime,
             List<SettingFields> select,
             String snapshot,
+            String ifMatch,
+            String ifNoneMatch,
             Context context) {
         final String accept = "application/vnd.microsoft.appconfig.kvset+json, application/problem+json";
         String selectConverted =
@@ -1320,6 +1344,8 @@ public final class AzureAppConfigurationImpl {
                         acceptDatetime,
                         selectConverted,
                         snapshot,
+                        ifMatch,
+                        ifNoneMatch,
                         accept,
                         context)
                 .map(
@@ -1344,6 +1370,9 @@ public final class AzureAppConfigurationImpl {
      * @param select Used to select what fields are present in the returned resource(s).
      * @param snapshot A filter used get key-values for a snapshot. The value should be the name of the snapshot. Not
      *     valid when used with 'key' and 'label' filters.
+     * @param ifMatch Used to perform an operation only if the targeted resource's etag matches the value provided.
+     * @param ifNoneMatch Used to perform an operation only if the targeted resource's etag does not match the value
+     *     provided.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws HttpResponseException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
@@ -1356,10 +1385,14 @@ public final class AzureAppConfigurationImpl {
             String after,
             String acceptDatetime,
             List<SettingFields> select,
-            String snapshot) {
+            String snapshot,
+            String ifMatch,
+            String ifNoneMatch) {
         return new PagedFlux<>(
-                () -> getKeyValuesSinglePageAsync(key, label, after, acceptDatetime, select, snapshot),
-                nextLink -> getKeyValuesNextSinglePageAsync(nextLink, acceptDatetime));
+                () ->
+                        getKeyValuesSinglePageAsync(
+                                key, label, after, acceptDatetime, select, snapshot, ifMatch, ifNoneMatch),
+                nextLink -> getKeyValuesNextSinglePageAsync(nextLink, acceptDatetime, ifMatch, ifNoneMatch));
     }
 
     /**
@@ -1373,6 +1406,9 @@ public final class AzureAppConfigurationImpl {
      * @param select Used to select what fields are present in the returned resource(s).
      * @param snapshot A filter used get key-values for a snapshot. The value should be the name of the snapshot. Not
      *     valid when used with 'key' and 'label' filters.
+     * @param ifMatch Used to perform an operation only if the targeted resource's etag matches the value provided.
+     * @param ifNoneMatch Used to perform an operation only if the targeted resource's etag does not match the value
+     *     provided.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws HttpResponseException thrown if the request is rejected by server.
@@ -1387,10 +1423,14 @@ public final class AzureAppConfigurationImpl {
             String acceptDatetime,
             List<SettingFields> select,
             String snapshot,
+            String ifMatch,
+            String ifNoneMatch,
             Context context) {
         return new PagedFlux<>(
-                () -> getKeyValuesSinglePageAsync(key, label, after, acceptDatetime, select, snapshot, context),
-                nextLink -> getKeyValuesNextSinglePageAsync(nextLink, acceptDatetime, context));
+                () ->
+                        getKeyValuesSinglePageAsync(
+                                key, label, after, acceptDatetime, select, snapshot, ifMatch, ifNoneMatch, context),
+                nextLink -> getKeyValuesNextSinglePageAsync(nextLink, acceptDatetime, ifMatch, ifNoneMatch, context));
     }
 
     /**
@@ -1404,6 +1444,9 @@ public final class AzureAppConfigurationImpl {
      * @param select Used to select what fields are present in the returned resource(s).
      * @param snapshot A filter used get key-values for a snapshot. The value should be the name of the snapshot. Not
      *     valid when used with 'key' and 'label' filters.
+     * @param ifMatch Used to perform an operation only if the targeted resource's etag matches the value provided.
+     * @param ifNoneMatch Used to perform an operation only if the targeted resource's etag does not match the value
+     *     provided.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws HttpResponseException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
@@ -1416,7 +1459,9 @@ public final class AzureAppConfigurationImpl {
             String after,
             String acceptDatetime,
             List<SettingFields> select,
-            String snapshot) {
+            String snapshot,
+            String ifMatch,
+            String ifNoneMatch) {
         final String accept = "application/vnd.microsoft.appconfig.kvset+json, application/problem+json";
         String selectConverted =
                 (select == null)
@@ -1433,6 +1478,8 @@ public final class AzureAppConfigurationImpl {
                         acceptDatetime,
                         selectConverted,
                         snapshot,
+                        ifMatch,
+                        ifNoneMatch,
                         accept,
                         Context.NONE);
         return new PagedResponseBase<>(
@@ -1455,6 +1502,9 @@ public final class AzureAppConfigurationImpl {
      * @param select Used to select what fields are present in the returned resource(s).
      * @param snapshot A filter used get key-values for a snapshot. The value should be the name of the snapshot. Not
      *     valid when used with 'key' and 'label' filters.
+     * @param ifMatch Used to perform an operation only if the targeted resource's etag matches the value provided.
+     * @param ifNoneMatch Used to perform an operation only if the targeted resource's etag does not match the value
+     *     provided.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws HttpResponseException thrown if the request is rejected by server.
@@ -1469,6 +1519,8 @@ public final class AzureAppConfigurationImpl {
             String acceptDatetime,
             List<SettingFields> select,
             String snapshot,
+            String ifMatch,
+            String ifNoneMatch,
             Context context) {
         final String accept = "application/vnd.microsoft.appconfig.kvset+json, application/problem+json";
         String selectConverted =
@@ -1486,6 +1538,8 @@ public final class AzureAppConfigurationImpl {
                         acceptDatetime,
                         selectConverted,
                         snapshot,
+                        ifMatch,
+                        ifNoneMatch,
                         accept,
                         context);
         return new PagedResponseBase<>(
@@ -1508,6 +1562,9 @@ public final class AzureAppConfigurationImpl {
      * @param select Used to select what fields are present in the returned resource(s).
      * @param snapshot A filter used get key-values for a snapshot. The value should be the name of the snapshot. Not
      *     valid when used with 'key' and 'label' filters.
+     * @param ifMatch Used to perform an operation only if the targeted resource's etag matches the value provided.
+     * @param ifNoneMatch Used to perform an operation only if the targeted resource's etag does not match the value
+     *     provided.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws HttpResponseException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
@@ -1520,10 +1577,22 @@ public final class AzureAppConfigurationImpl {
             String after,
             String acceptDatetime,
             List<SettingFields> select,
-            String snapshot) {
+            String snapshot,
+            String ifMatch,
+            String ifNoneMatch) {
         return new PagedIterable<>(
-                () -> getKeyValuesSinglePage(key, label, after, acceptDatetime, select, snapshot, Context.NONE),
-                nextLink -> getKeyValuesNextSinglePage(nextLink, acceptDatetime));
+                () ->
+                        getKeyValuesSinglePage(
+                                key,
+                                label,
+                                after,
+                                acceptDatetime,
+                                select,
+                                snapshot,
+                                ifMatch,
+                                ifNoneMatch,
+                                Context.NONE),
+                nextLink -> getKeyValuesNextSinglePage(nextLink, acceptDatetime, ifMatch, ifNoneMatch));
     }
 
     /**
@@ -1537,6 +1606,9 @@ public final class AzureAppConfigurationImpl {
      * @param select Used to select what fields are present in the returned resource(s).
      * @param snapshot A filter used get key-values for a snapshot. The value should be the name of the snapshot. Not
      *     valid when used with 'key' and 'label' filters.
+     * @param ifMatch Used to perform an operation only if the targeted resource's etag matches the value provided.
+     * @param ifNoneMatch Used to perform an operation only if the targeted resource's etag does not match the value
+     *     provided.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws HttpResponseException thrown if the request is rejected by server.
@@ -1551,10 +1623,14 @@ public final class AzureAppConfigurationImpl {
             String acceptDatetime,
             List<SettingFields> select,
             String snapshot,
+            String ifMatch,
+            String ifNoneMatch,
             Context context) {
         return new PagedIterable<>(
-                () -> getKeyValuesSinglePage(key, label, after, acceptDatetime, select, snapshot, context),
-                nextLink -> getKeyValuesNextSinglePage(nextLink, acceptDatetime, context));
+                () ->
+                        getKeyValuesSinglePage(
+                                key, label, after, acceptDatetime, select, snapshot, ifMatch, ifNoneMatch, context),
+                nextLink -> getKeyValuesNextSinglePage(nextLink, acceptDatetime, ifMatch, ifNoneMatch, context));
     }
 
     /**
@@ -1567,6 +1643,9 @@ public final class AzureAppConfigurationImpl {
      * @param acceptDatetime Requests the server to respond with the state of the resource at the specified time.
      * @param select Used to select what fields are present in the returned resource(s).
      * @param snapshot A filter used get key-values for a snapshot. Not valid when used with 'key' and 'label' filters.
+     * @param ifMatch Used to perform an operation only if the targeted resource's etag matches the value provided.
+     * @param ifNoneMatch Used to perform an operation only if the targeted resource's etag does not match the value
+     *     provided.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws HttpResponseException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
@@ -1579,7 +1658,9 @@ public final class AzureAppConfigurationImpl {
             String after,
             String acceptDatetime,
             List<SettingFields> select,
-            String snapshot) {
+            String snapshot,
+            String ifMatch,
+            String ifNoneMatch) {
         String selectConverted =
                 (select == null)
                         ? null
@@ -1596,6 +1677,8 @@ public final class AzureAppConfigurationImpl {
                                 acceptDatetime,
                                 selectConverted,
                                 snapshot,
+                                ifMatch,
+                                ifNoneMatch,
                                 context));
     }
 
@@ -1609,6 +1692,9 @@ public final class AzureAppConfigurationImpl {
      * @param acceptDatetime Requests the server to respond with the state of the resource at the specified time.
      * @param select Used to select what fields are present in the returned resource(s).
      * @param snapshot A filter used get key-values for a snapshot. Not valid when used with 'key' and 'label' filters.
+     * @param ifMatch Used to perform an operation only if the targeted resource's etag matches the value provided.
+     * @param ifNoneMatch Used to perform an operation only if the targeted resource's etag does not match the value
+     *     provided.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws HttpResponseException thrown if the request is rejected by server.
@@ -1623,6 +1709,8 @@ public final class AzureAppConfigurationImpl {
             String acceptDatetime,
             List<SettingFields> select,
             String snapshot,
+            String ifMatch,
+            String ifNoneMatch,
             Context context) {
         String selectConverted =
                 (select == null)
@@ -1638,6 +1726,8 @@ public final class AzureAppConfigurationImpl {
                 acceptDatetime,
                 selectConverted,
                 snapshot,
+                ifMatch,
+                ifNoneMatch,
                 context);
     }
 
@@ -1651,6 +1741,9 @@ public final class AzureAppConfigurationImpl {
      * @param acceptDatetime Requests the server to respond with the state of the resource at the specified time.
      * @param select Used to select what fields are present in the returned resource(s).
      * @param snapshot A filter used get key-values for a snapshot. Not valid when used with 'key' and 'label' filters.
+     * @param ifMatch Used to perform an operation only if the targeted resource's etag matches the value provided.
+     * @param ifNoneMatch Used to perform an operation only if the targeted resource's etag does not match the value
+     *     provided.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws HttpResponseException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
@@ -1663,8 +1756,11 @@ public final class AzureAppConfigurationImpl {
             String after,
             String acceptDatetime,
             List<SettingFields> select,
-            String snapshot) {
-        return checkKeyValuesWithResponseAsync(key, label, after, acceptDatetime, select, snapshot)
+            String snapshot,
+            String ifMatch,
+            String ifNoneMatch) {
+        return checkKeyValuesWithResponseAsync(
+                        key, label, after, acceptDatetime, select, snapshot, ifMatch, ifNoneMatch)
                 .flatMap(ignored -> Mono.empty());
     }
 
@@ -1678,6 +1774,9 @@ public final class AzureAppConfigurationImpl {
      * @param acceptDatetime Requests the server to respond with the state of the resource at the specified time.
      * @param select Used to select what fields are present in the returned resource(s).
      * @param snapshot A filter used get key-values for a snapshot. Not valid when used with 'key' and 'label' filters.
+     * @param ifMatch Used to perform an operation only if the targeted resource's etag matches the value provided.
+     * @param ifNoneMatch Used to perform an operation only if the targeted resource's etag does not match the value
+     *     provided.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws HttpResponseException thrown if the request is rejected by server.
@@ -1692,8 +1791,11 @@ public final class AzureAppConfigurationImpl {
             String acceptDatetime,
             List<SettingFields> select,
             String snapshot,
+            String ifMatch,
+            String ifNoneMatch,
             Context context) {
-        return checkKeyValuesWithResponseAsync(key, label, after, acceptDatetime, select, snapshot, context)
+        return checkKeyValuesWithResponseAsync(
+                        key, label, after, acceptDatetime, select, snapshot, ifMatch, ifNoneMatch, context)
                 .flatMap(ignored -> Mono.empty());
     }
 
@@ -1707,6 +1809,9 @@ public final class AzureAppConfigurationImpl {
      * @param acceptDatetime Requests the server to respond with the state of the resource at the specified time.
      * @param select Used to select what fields are present in the returned resource(s).
      * @param snapshot A filter used get key-values for a snapshot. Not valid when used with 'key' and 'label' filters.
+     * @param ifMatch Used to perform an operation only if the targeted resource's etag matches the value provided.
+     * @param ifNoneMatch Used to perform an operation only if the targeted resource's etag does not match the value
+     *     provided.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws HttpResponseException thrown if the request is rejected by server.
@@ -1721,6 +1826,8 @@ public final class AzureAppConfigurationImpl {
             String acceptDatetime,
             List<SettingFields> select,
             String snapshot,
+            String ifMatch,
+            String ifNoneMatch,
             Context context) {
         String selectConverted =
                 (select == null)
@@ -1736,6 +1843,8 @@ public final class AzureAppConfigurationImpl {
                 acceptDatetime,
                 selectConverted,
                 snapshot,
+                ifMatch,
+                ifNoneMatch,
                 context);
     }
 
@@ -1749,6 +1858,9 @@ public final class AzureAppConfigurationImpl {
      * @param acceptDatetime Requests the server to respond with the state of the resource at the specified time.
      * @param select Used to select what fields are present in the returned resource(s).
      * @param snapshot A filter used get key-values for a snapshot. Not valid when used with 'key' and 'label' filters.
+     * @param ifMatch Used to perform an operation only if the targeted resource's etag matches the value provided.
+     * @param ifNoneMatch Used to perform an operation only if the targeted resource's etag does not match the value
+     *     provided.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws HttpResponseException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
@@ -1760,8 +1872,11 @@ public final class AzureAppConfigurationImpl {
             String after,
             String acceptDatetime,
             List<SettingFields> select,
-            String snapshot) {
-        checkKeyValuesWithResponse(key, label, after, acceptDatetime, select, snapshot, Context.NONE);
+            String snapshot,
+            String ifMatch,
+            String ifNoneMatch) {
+        checkKeyValuesWithResponse(
+                key, label, after, acceptDatetime, select, snapshot, ifMatch, ifNoneMatch, Context.NONE);
     }
 
     /**
@@ -4763,13 +4878,17 @@ public final class AzureAppConfigurationImpl {
      * @param nextLink The URL to get the next list of items
      *     <p>The nextLink parameter.
      * @param acceptDatetime Requests the server to respond with the state of the resource at the specified time.
+     * @param ifMatch Used to perform an operation only if the targeted resource's etag matches the value provided.
+     * @param ifNoneMatch Used to perform an operation only if the targeted resource's etag does not match the value
+     *     provided.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws HttpResponseException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return the result of a list request along with {@link PagedResponse} on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Mono<PagedResponse<KeyValue>> getKeyValuesNextSinglePageAsync(String nextLink, String acceptDatetime) {
+    public Mono<PagedResponse<KeyValue>> getKeyValuesNextSinglePageAsync(
+            String nextLink, String acceptDatetime, String ifMatch, String ifNoneMatch) {
         final String accept = "application/vnd.microsoft.appconfig.kvset+json, application/problem+json";
         return FluxUtil.withContext(
                         context ->
@@ -4778,6 +4897,8 @@ public final class AzureAppConfigurationImpl {
                                         this.getEndpoint(),
                                         this.getSyncToken(),
                                         acceptDatetime,
+                                        ifMatch,
+                                        ifNoneMatch,
                                         accept,
                                         context))
                 .map(
@@ -4797,6 +4918,9 @@ public final class AzureAppConfigurationImpl {
      * @param nextLink The URL to get the next list of items
      *     <p>The nextLink parameter.
      * @param acceptDatetime Requests the server to respond with the state of the resource at the specified time.
+     * @param ifMatch Used to perform an operation only if the targeted resource's etag matches the value provided.
+     * @param ifNoneMatch Used to perform an operation only if the targeted resource's etag does not match the value
+     *     provided.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws HttpResponseException thrown if the request is rejected by server.
@@ -4805,10 +4929,17 @@ public final class AzureAppConfigurationImpl {
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<PagedResponse<KeyValue>> getKeyValuesNextSinglePageAsync(
-            String nextLink, String acceptDatetime, Context context) {
+            String nextLink, String acceptDatetime, String ifMatch, String ifNoneMatch, Context context) {
         final String accept = "application/vnd.microsoft.appconfig.kvset+json, application/problem+json";
         return service.getKeyValuesNext(
-                        nextLink, this.getEndpoint(), this.getSyncToken(), acceptDatetime, accept, context)
+                        nextLink,
+                        this.getEndpoint(),
+                        this.getSyncToken(),
+                        acceptDatetime,
+                        ifMatch,
+                        ifNoneMatch,
+                        accept,
+                        context)
                 .map(
                         res ->
                                 new PagedResponseBase<>(
@@ -4826,17 +4957,28 @@ public final class AzureAppConfigurationImpl {
      * @param nextLink The URL to get the next list of items
      *     <p>The nextLink parameter.
      * @param acceptDatetime Requests the server to respond with the state of the resource at the specified time.
+     * @param ifMatch Used to perform an operation only if the targeted resource's etag matches the value provided.
+     * @param ifNoneMatch Used to perform an operation only if the targeted resource's etag does not match the value
+     *     provided.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws HttpResponseException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return the result of a list request along with {@link PagedResponse}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public PagedResponse<KeyValue> getKeyValuesNextSinglePage(String nextLink, String acceptDatetime) {
+    public PagedResponse<KeyValue> getKeyValuesNextSinglePage(
+            String nextLink, String acceptDatetime, String ifMatch, String ifNoneMatch) {
         final String accept = "application/vnd.microsoft.appconfig.kvset+json, application/problem+json";
         ResponseBase<GetKeyValuesNextHeaders, KeyValueListResult> res =
                 service.getKeyValuesNextSync(
-                        nextLink, this.getEndpoint(), this.getSyncToken(), acceptDatetime, accept, Context.NONE);
+                        nextLink,
+                        this.getEndpoint(),
+                        this.getSyncToken(),
+                        acceptDatetime,
+                        ifMatch,
+                        ifNoneMatch,
+                        accept,
+                        Context.NONE);
         return new PagedResponseBase<>(
                 res.getRequest(),
                 res.getStatusCode(),
@@ -4852,6 +4994,9 @@ public final class AzureAppConfigurationImpl {
      * @param nextLink The URL to get the next list of items
      *     <p>The nextLink parameter.
      * @param acceptDatetime Requests the server to respond with the state of the resource at the specified time.
+     * @param ifMatch Used to perform an operation only if the targeted resource's etag matches the value provided.
+     * @param ifNoneMatch Used to perform an operation only if the targeted resource's etag does not match the value
+     *     provided.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws HttpResponseException thrown if the request is rejected by server.
@@ -4859,11 +5004,19 @@ public final class AzureAppConfigurationImpl {
      * @return the result of a list request along with {@link PagedResponse}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public PagedResponse<KeyValue> getKeyValuesNextSinglePage(String nextLink, String acceptDatetime, Context context) {
+    public PagedResponse<KeyValue> getKeyValuesNextSinglePage(
+            String nextLink, String acceptDatetime, String ifMatch, String ifNoneMatch, Context context) {
         final String accept = "application/vnd.microsoft.appconfig.kvset+json, application/problem+json";
         ResponseBase<GetKeyValuesNextHeaders, KeyValueListResult> res =
                 service.getKeyValuesNextSync(
-                        nextLink, this.getEndpoint(), this.getSyncToken(), acceptDatetime, accept, context);
+                        nextLink,
+                        this.getEndpoint(),
+                        this.getSyncToken(),
+                        acceptDatetime,
+                        ifMatch,
+                        ifNoneMatch,
+                        accept,
+                        context);
         return new PagedResponseBase<>(
                 res.getRequest(),
                 res.getStatusCode(),
