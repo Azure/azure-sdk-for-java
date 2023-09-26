@@ -28,7 +28,7 @@ import reactor.core.publisher.Mono;
 
 public class SmsBuilderTests {
     static final String MOCK_URL = "https://REDACTED.communication.azure.com";
-    static final String APP_ID = "appId";
+    static final String MOCK_APP_ID = "appId";
     static final String MOCK_ACCESS_KEY = "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9eyJzdWIiOiIxMjM0NTY3ODkwIiwibmFtZSI6IkpvaGfQSflKxwRJSMeKKF2QT4fwpMeJf36POk6yJVadQssw5c";
     static final String MOCK_CONNECTION_STRING = "endpoint=https://REDACTED.communication.azure.com/;accesskey=eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9eyJzdWIiOiIxMjM0NTY3ODkwIiwibmFtZSI6IkpvaGfQSflKxwRJSMeKKF2QT4fwpMeJf36POk6yJVadQssw5c";
 
@@ -116,7 +116,7 @@ public class SmsBuilderTests {
         SmsAsyncClient smsClient = builder
             .connectionString(MOCK_CONNECTION_STRING)
             .httpClient(new NoOpHttpClient())
-            .clientOptions(new ClientOptions().setApplicationId(APP_ID))
+            .clientOptions(new ClientOptions().setApplicationId(MOCK_APP_ID))
             .buildAsyncClient();
         assertNotNull(smsClient);
     }
@@ -126,7 +126,7 @@ public class SmsBuilderTests {
         SmsAsyncClient smsClient = builder
             .connectionString(MOCK_CONNECTION_STRING)
             .httpClient(new NoOpHttpClient())
-            .httpLogOptions(new HttpLogOptions().setApplicationId(APP_ID))
+            .httpLogOptions(new HttpLogOptions().setApplicationId(MOCK_APP_ID))
             .buildAsyncClient();
         assertNotNull(smsClient);
     }
