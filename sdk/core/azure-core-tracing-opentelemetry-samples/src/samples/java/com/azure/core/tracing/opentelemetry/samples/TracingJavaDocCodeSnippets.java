@@ -15,6 +15,7 @@ import io.opentelemetry.api.trace.Tracer;
 import io.opentelemetry.context.Scope;
 import io.opentelemetry.exporter.logging.LoggingSpanExporter;
 import io.opentelemetry.sdk.OpenTelemetrySdk;
+import io.opentelemetry.sdk.autoconfigure.AutoConfiguredOpenTelemetrySdk;
 import io.opentelemetry.sdk.trace.SdkTracerProvider;
 import io.opentelemetry.sdk.trace.export.BatchSpanProcessor;
 
@@ -30,9 +31,8 @@ public class TracingJavaDocCodeSnippets {
         // BEGIN: com.azure.core.util.tracing.TracingOptions#default
 
         // no need to configure OpenTelemetry if you're using the OpenTelemetry Java agent (or another vendor-specific Java agent based on it).
-
         // if you're using OpenTelemetry SDK, you can configure it with io.opentelemetry:opentelemetry-sdk-extension-autoconfigure package:
-        // AutoConfiguredOpenTelemetrySdk.initialize();
+        AutoConfiguredOpenTelemetrySdk.initialize();
 
         // configure Azure Client, no metric configuration needed
         AzureClient sampleClient = new AzureClientBuilder()
