@@ -64,6 +64,7 @@ import java.util.ArrayList;
 import java.util.Collections;
 import java.util.Iterator;
 import java.util.List;
+import java.util.Locale;
 import java.util.Optional;
 import java.util.UUID;
 import java.util.stream.Collectors;
@@ -846,7 +847,7 @@ public class CosmosTemplate implements CosmosOperations, ApplicationContextAware
 
         if (entityInfo.getPartitionKeyFieldName() != null) {
             Flux<CosmosItemOperation> cosmosItemOperationFlux = Flux.fromIterable(results).map(item -> {
-                String type = entityInfo.getPartitionKeyFieldType().toString().toLowerCase();
+                String type = entityInfo.getPartitionKeyFieldType().toString().toLowerCase(Locale.US);
                 if (type.contains("integer")) {
                     return CosmosBulkOperations.getDeleteItemOperation(item.get(entityInfo.getIdFieldName()).asText(),
                         new PartitionKey(item.get(entityInfo.getPartitionKeyFieldName()).asInt()));

@@ -256,7 +256,8 @@ public class SimpleReactiveCosmosRepository<T, K extends Serializable> implement
 
         if (entityInformation.getPartitionKeyFieldName() != null) {
             Flux<CosmosItemOperation> cosmosItemOperationFlux = Flux.fromIterable(entities).map(entity ->
-                CosmosBulkOperations.getDeleteItemOperation(entityInformation.getId(entity).toString(),
+                CosmosBulkOperations.getDeleteItemOperation(
+                    (entityInformation.getId(entity) != null ? entityInformation.getId(entity) : "").toString(),
                     new PartitionKey(entityInformation.getPartitionKeyFieldValue(entity))));
 
             return cosmosOperations.deleteEntities(entityInformation.getContainerName(), cosmosItemOperationFlux);
@@ -272,7 +273,8 @@ public class SimpleReactiveCosmosRepository<T, K extends Serializable> implement
 
         if (entityInformation.getPartitionKeyFieldName() != null) {
             Flux<CosmosItemOperation> cosmosItemOperationFlux = Flux.from(entityStream).map(entity ->
-                CosmosBulkOperations.getDeleteItemOperation(entityInformation.getId(entity).toString(),
+                CosmosBulkOperations.getDeleteItemOperation(
+                    (entityInformation.getId(entity) != null ? entityInformation.getId(entity) : "").toString(),
                     new PartitionKey(entityInformation.getPartitionKeyFieldValue(entity))));
 
             return cosmosOperations.deleteEntities(entityInformation.getContainerName(), cosmosItemOperationFlux);

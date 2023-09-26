@@ -53,6 +53,7 @@ import reactor.core.scheduler.Schedulers;
 
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Locale;
 import java.util.Optional;
 import java.util.UUID;
 
@@ -725,7 +726,7 @@ public class ReactiveCosmosTemplate implements ReactiveCosmosOperations, Applica
 
         if (entityInfo.getPartitionKeyFieldName() != null) {
             Flux<CosmosItemOperation> cosmosItemOperationFlux = results.map(item -> {
-                String type = entityInfo.getPartitionKeyFieldType().toString().toLowerCase();
+                String type = entityInfo.getPartitionKeyFieldType().toString().toLowerCase(Locale.US);
                 if (type.contains("integer")) {
                     return CosmosBulkOperations.getDeleteItemOperation(item.get(entityInfo.getIdFieldName()).asText(),
                         new PartitionKey(item.get(entityInfo.getPartitionKeyFieldName()).asInt()));
