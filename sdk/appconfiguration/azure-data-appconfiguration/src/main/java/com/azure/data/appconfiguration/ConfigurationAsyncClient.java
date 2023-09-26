@@ -1436,7 +1436,7 @@ public final class ConfigurationAsyncClient {
                         selector == null ? null : selector.getNameFilter(),
                         null,
                         selector == null ? null : selector.getFields(),
-                        selector == null ? null : selector.getSnapshotStatus(),
+                        selector == null ? null : selector.getStatus(),
                         addTracingNamespace(context))),
                 nextLink -> withContext(
                     context -> serviceClient.getSnapshotsNextSinglePageAsync(nextLink, addTracingNamespace(context)))

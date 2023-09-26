@@ -1276,7 +1276,7 @@ public class ConfigurationClientTest extends ConfigurationClientTestBase {
         client = getConfigurationClient(httpClient, serviceVersion);
 
         List<ConfigurationSnapshot> allExistingSnapshots = new ArrayList<>();
-        client.listSnapshots(new SnapshotSelector().setSnapshotStatus(ConfigurationSnapshotStatus.READY))
+        client.listSnapshots(new SnapshotSelector().setStatus(ConfigurationSnapshotStatus.READY))
             .stream()
             .map(snapshot -> allExistingSnapshots.add(snapshot));
 
@@ -1342,7 +1342,7 @@ public class ConfigurationClientTest extends ConfigurationClientTestBase {
         client = getConfigurationClient(httpClient, serviceVersion);
 
         List<ConfigurationSnapshot> allExistingSnapshots = new ArrayList<>();
-        client.listSnapshots(new SnapshotSelector().setSnapshotStatus(ConfigurationSnapshotStatus.READY))
+        client.listSnapshots(new SnapshotSelector().setStatus(ConfigurationSnapshotStatus.READY))
             .stream()
             .map(snapshot -> allExistingSnapshots.add(snapshot));
 

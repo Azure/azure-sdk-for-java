@@ -51,7 +51,7 @@ public final class SnapshotSelector {
      *
      * @return The snapshot status.
      */
-    public List<ConfigurationSnapshotStatus> getSnapshotStatus() {
+    public List<ConfigurationSnapshotStatus> getStatus() {
         return status;
     }
 
@@ -61,7 +61,7 @@ public final class SnapshotSelector {
      * @param status the snapshot status.
      * @return The updated SnapshotSelector object
      */
-    public SnapshotSelector setSnapshotStatus(ConfigurationSnapshotStatus... status) {
+    public SnapshotSelector setStatus(ConfigurationSnapshotStatus... status) {
         this.status = status == null ? null : Arrays.asList(status);
         return this;
     }
@@ -72,7 +72,7 @@ public final class SnapshotSelector {
      * @param status the snapshot status.
      * @return The updated SnapshotSelector object
      */
-    public SnapshotSelector setSnapshotStatus(List<ConfigurationSnapshotStatus> status) {
+    public SnapshotSelector setStatus(List<ConfigurationSnapshotStatus> status) {
         this.status = status;
         return this;
     }

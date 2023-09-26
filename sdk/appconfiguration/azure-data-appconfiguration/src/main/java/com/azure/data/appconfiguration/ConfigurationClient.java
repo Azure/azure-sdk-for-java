@@ -1506,7 +1506,7 @@ public final class ConfigurationClient {
                 selector == null ? null : selector.getNameFilter(),
                 null,
                 selector == null ? null : selector.getFields(),
-                selector == null ? null : selector.getSnapshotStatus(),
+                selector == null ? null : selector.getStatus(),
                 enableSyncRestProxy(addTracingNamespace(context))),
             nextLink -> serviceClient.getSnapshotsNextSinglePage(nextLink,
                 enableSyncRestProxy(addTracingNamespace(context))));
