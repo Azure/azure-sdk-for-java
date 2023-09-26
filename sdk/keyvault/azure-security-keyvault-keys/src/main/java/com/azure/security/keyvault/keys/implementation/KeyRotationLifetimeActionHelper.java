@@ -18,15 +18,15 @@ public final class KeyRotationLifetimeActionHelper {
 
     public static KeyRotationLifetimeAction createLifetimeAction(LifetimeActionsTrigger trigger,
         LifetimeActionsType actionsType) {
-        return accessor.createLifetimeAction(trigger, actionsType);
-    }
-
-    public static LifetimeActionsTrigger getTrigger(KeyRotationLifetimeAction lifetimeAction) {
         if (accessor == null) {
             new KeyRotationLifetimeAction(KeyRotationPolicyAction.NOTIFY);
         }
 
         assert accessor != null;
+        return accessor.createLifetimeAction(trigger, actionsType);
+    }
+
+    public static LifetimeActionsTrigger getTrigger(KeyRotationLifetimeAction lifetimeAction) {
         return accessor.getTrigger(lifetimeAction);
     }
 

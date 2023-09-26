@@ -139,8 +139,8 @@ public abstract class KeyEncryptionKeyClientTestBase extends TestProxyTestBase {
 
     public String getEndpoint() {
         final String endpoint = runManagedHsmTest
-            ? Configuration.getGlobalConfiguration().get("AZURE_MANAGEDHSM_ENDPOINT", "https://localhost:8080")
-            : Configuration.getGlobalConfiguration().get("AZURE_KEYVAULT_ENDPOINT", "https://localhost:8080");
+            ? Configuration.getGlobalConfiguration().get("AZURE_MANAGEDHSM_ENDPOINT", "https://hsmname.managedhsm.azure.net")
+            : Configuration.getGlobalConfiguration().get("AZURE_KEYVAULT_ENDPOINT", "https://vaultname.vault.azure.net");
         Objects.requireNonNull(endpoint);
         return endpoint;
     }

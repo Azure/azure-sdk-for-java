@@ -35,7 +35,8 @@ public class KeyEncryptionKeyClientTest extends KeyEncryptionKeyClientTestBase {
         HttpClient actualHttpClient = buildSyncAssertingClient(interceptorManager.isPlaybackMode()
             ? interceptorManager.getPlaybackClient() : httpClient);
 
-        String keyId = getEndpoint() + "secrets/" + secretName;
+        String keyId = getEndpoint();
+        keyId = keyId.endsWith("/") ? keyId + "secrets/" + secretName : keyId + "/secrets/" + secretName;
         CryptographyClientImpl implClient = getCryptographyClientImpl(actualHttpClient, keyId, serviceVersion);
         SecretKey secretKey = implClient
             .setSecretKey(new SecretKey(secretName, Base64.getEncoder().encodeToString(kek)), Context.NONE)
