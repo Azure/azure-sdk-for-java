@@ -8,7 +8,7 @@ import com.azure.core.annotation.Immutable;
 import com.azure.core.util.IterableStream;
 
 /**
- * The {@link AnalyzeActionsResult} model.
+ * The {@code AnalyzeActionsResult} model.
  */
 @Immutable
 public final class AnalyzeActionsResult {
@@ -98,7 +98,7 @@ public final class AnalyzeActionsResult {
     }
 
     /**
-     * Constructs a {@link AnalyzeActionsResult} model.
+     * Constructs a {@code AnalyzeActionsResult} model.
      */
     public AnalyzeActionsResult() {
     }

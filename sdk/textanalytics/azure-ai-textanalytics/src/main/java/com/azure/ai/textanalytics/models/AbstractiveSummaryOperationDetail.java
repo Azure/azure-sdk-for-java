@@ -9,7 +9,7 @@ import com.azure.core.annotation.Immutable;
 import java.time.OffsetDateTime;
 
 /**
- * The {@link AbstractiveSummaryOperationDetail} model.
+ * The {@code AbstractiveSummaryOperationDetail} model.
  */
 @Immutable
 public final class AbstractiveSummaryOperationDetail {
@@ -56,24 +56,24 @@ public final class AbstractiveSummaryOperationDetail {
 
 
     /**
-     * Constructs a {@link AbstractiveSummaryOperationDetail} model.
+     * Constructs a {@code AbstractiveSummaryOperationDetail} model.
      */
     public AbstractiveSummaryOperationDetail() {
     }
 
     /**
-     * Gets the operationId property of the {@link AbstractiveSummaryOperationDetail}.
+     * Gets the operationId property of the {@code AbstractiveSummaryOperationDetail}.
      *
-     * @return The operationId property of the {@link AbstractiveSummaryOperationDetail}.
+     * @return The operationId property of the {@code AbstractiveSummaryOperationDetail}.
      */
     public String getOperationId() {
         return operationId;
     }
 
     /**
-     * Gets the displayName property of the {@link AbstractiveSummaryOperationDetail}.
+     * Gets the displayName property of the {@code AbstractiveSummaryOperationDetail}.
      *
-     * @return The displayName property of the {@link AbstractiveSummaryOperationDetail}.
+     * @return The displayName property of the {@code AbstractiveSummaryOperationDetail}.
      */
     public String getDisplayName() {
         return displayName;

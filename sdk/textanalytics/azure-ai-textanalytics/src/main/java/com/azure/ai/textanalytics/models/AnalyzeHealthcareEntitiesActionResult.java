@@ -8,7 +8,7 @@ import com.azure.ai.textanalytics.util.AnalyzeHealthcareEntitiesResultCollection
 import com.azure.core.annotation.Immutable;
 
 /**
- * The {@link AnalyzeHealthcareEntitiesActionResult} model.
+ * The {@code AnalyzeHealthcareEntitiesActionResult} model.
  */
 @Immutable
 public final class AnalyzeHealthcareEntitiesActionResult extends TextAnalyticsActionResult {
@@ -20,7 +20,7 @@ public final class AnalyzeHealthcareEntitiesActionResult extends TextAnalyticsAc
     }
 
     /**
-     * Constructs a {@link AnalyzeHealthcareEntitiesActionResult} model.
+     * Constructs a {@code AnalyzeHealthcareEntitiesActionResult} model.
      */
     public AnalyzeHealthcareEntitiesActionResult() {
     }

@@ -10,7 +10,7 @@ import com.fasterxml.jackson.annotation.JsonCreator;
 import java.util.Collection;
 
 /**
- * The {@link EntityCertainty} model.
+ * The {@code EntityCertainty} model.
  */
 @Immutable
 public final class EntityCertainty extends ExpandableStringEnum<EntityCertainty> {
@@ -30,7 +30,7 @@ public final class EntityCertainty extends ExpandableStringEnum<EntityCertainty>
     public static final EntityCertainty NEGATIVE = fromString("Negative");
 
     /**
-     * Creates a new instance of {@link EntityCertainty} value.
+     * Creates a new instance of {@code EntityCertainty} value.
      *
      * @deprecated Use the {@link #fromString(String)} factory method.
      */
@@ -39,10 +39,10 @@ public final class EntityCertainty extends ExpandableStringEnum<EntityCertainty>
     }
 
     /**
-     * Creates or finds a {@link EntityCertainty} from its string representation.
+     * Creates or finds a {@code EntityCertainty} from its string representation.
      *
      * @param name The string name to look for.
-     * @return The corresponding {@link EntityCertainty}.
+     * @return The corresponding {@code EntityCertainty}.
      */
     @JsonCreator
     public static EntityCertainty fromString(String name) {

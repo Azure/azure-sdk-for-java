@@ -16,7 +16,7 @@ public final class RecognizeLinkedEntitiesAction {
     private boolean disableServiceLogs;
 
     /**
-     * Constructs a {@link RecognizeLinkedEntitiesAction} model.
+     * Constructs a {@code RecognizeLinkedEntitiesAction} model.
      */
     public RecognizeLinkedEntitiesAction() {
     }
@@ -35,7 +35,7 @@ public final class RecognizeLinkedEntitiesAction {
      *
      * @param actionName the custom name for the action.
      *
-     * @return The {@link RecognizeLinkedEntitiesAction} object itself.
+     * @return The {@code RecognizeLinkedEntitiesAction} object itself.
      */
     public RecognizeLinkedEntitiesAction setActionName(String actionName) {
         this.actionName = actionName;
@@ -57,7 +57,7 @@ public final class RecognizeLinkedEntitiesAction {
      *
      * @param modelVersion The model version.
      *
-     * @return The {@link RecognizeLinkedEntitiesAction} object itself.
+     * @return The {@code RecognizeLinkedEntitiesAction} object itself.
      */
     public RecognizeLinkedEntitiesAction setModelVersion(String modelVersion) {
         this.modelVersion = modelVersion;
@@ -82,7 +82,7 @@ public final class RecognizeLinkedEntitiesAction {
      * your input text for 48 hours, solely to allow for troubleshooting issues. Setting this property to true,
      * disables input logging and may limit our ability to investigate issues that occur.
      *
-     * @return The {@link RecognizeLinkedEntitiesAction} object itself.
+     * @return The {@code RecognizeLinkedEntitiesAction} object itself.
      */
     public RecognizeLinkedEntitiesAction setServiceLogsDisabled(boolean disableServiceLogs) {
         this.disableServiceLogs = disableServiceLogs;

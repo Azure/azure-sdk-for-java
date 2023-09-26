@@ -17,7 +17,7 @@ public final class AnalyzeSentimentAction {
     private boolean includeOpinionMining;
 
     /**
-     * Constructs a {@link AnalyzeSentimentAction} model.
+     * Constructs a {@code AnalyzeSentimentAction} model.
      */
     public AnalyzeSentimentAction() {
     }
@@ -36,7 +36,7 @@ public final class AnalyzeSentimentAction {
      *
      * @param actionName the custom name for the action.
      *
-     * @return The {@link AnalyzeSentimentAction} object itself.
+     * @return The {@code AnalyzeSentimentAction} object itself.
      */
     public AnalyzeSentimentAction setActionName(String actionName) {
         this.actionName = actionName;
@@ -58,7 +58,7 @@ public final class AnalyzeSentimentAction {
      *
      * @param modelVersion The model version.
      *
-     * @return The {@link AnalyzeSentimentAction} object itself.
+     * @return The {@code AnalyzeSentimentAction} object itself.
      */
     public AnalyzeSentimentAction setModelVersion(String modelVersion) {
         this.modelVersion = modelVersion;
@@ -83,7 +83,7 @@ public final class AnalyzeSentimentAction {
      * your input text for 48 hours, solely to allow for troubleshooting issues. Setting this property to true,
      * disables input logging and may limit our ability to investigate issues that occur.
      *
-     * @return The {@link AnalyzeSentimentAction} object itself.
+     * @return The {@code AnalyzeSentimentAction} object itself.
      */
     public AnalyzeSentimentAction setServiceLogsDisabled(boolean disableServiceLogs) {
         this.disableServiceLogs = disableServiceLogs;
@@ -108,7 +108,7 @@ public final class AnalyzeSentimentAction {
      *
      * @param includeOpinionMining The boolean indicator to include opinion mining data in the returned result.
      *
-     * @return The {@link AnalyzeSentimentAction} object itself.
+     * @return The {@code AnalyzeSentimentAction} object itself.
      */
     public AnalyzeSentimentAction setIncludeOpinionMining(boolean includeOpinionMining) {
         this.includeOpinionMining = includeOpinionMining;

@@ -7,7 +7,7 @@ import com.azure.ai.textanalytics.implementation.HealthcareEntityAssertionProper
 import com.azure.core.annotation.Immutable;
 
 /**
- * The {@link HealthcareEntityAssertion} model.
+ * The {@code HealthcareEntityAssertion} model.
  */
 @Immutable
 public final class HealthcareEntityAssertion {
@@ -49,7 +49,7 @@ public final class HealthcareEntityAssertion {
     }
 
     /**
-     * Constructs a {@link HealthcareEntityAssertion} model.
+     * Constructs a {@code HealthcareEntityAssertion} model.
      */
     public HealthcareEntityAssertion() {
     }

@@ -7,14 +7,14 @@ import com.azure.core.annotation.Immutable;
 import com.azure.core.util.IterableStream;
 
 /**
- * The {@link RecognizePiiEntitiesResult} model.
+ * The {@code RecognizePiiEntitiesResult} model.
  */
 @Immutable
 public final class RecognizePiiEntitiesResult extends TextAnalyticsResult {
     private final PiiEntityCollection entities;
 
     /**
-     * Creates a {@link RecognizePiiEntitiesResult} model that describes recognized PII entities result.
+     * Creates a {@code RecognizePiiEntitiesResult} model that describes recognized PII entities result.
      *
      * @param id Unique, non-empty document identifier.
      * @param textDocumentStatistics The text document statistics.

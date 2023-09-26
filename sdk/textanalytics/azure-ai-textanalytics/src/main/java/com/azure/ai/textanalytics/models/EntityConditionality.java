@@ -10,7 +10,7 @@ import com.fasterxml.jackson.annotation.JsonCreator;
 import java.util.Collection;
 
 /**
- * The {@link EntityConditionality} model.
+ * The {@code EntityConditionality} model.
  */
 @Immutable
 public final class EntityConditionality extends ExpandableStringEnum<EntityConditionality> {
@@ -21,7 +21,7 @@ public final class EntityConditionality extends ExpandableStringEnum<EntityCondi
     public static final EntityConditionality CONDITIONAL = fromString("Conditional");
 
     /**
-     * Creates a new instance of {@link EntityConditionality} value.
+     * Creates a new instance of {@code EntityConditionality} value.
      *
      * @deprecated Use the {@link #fromString(String)} factory method.
      */
@@ -30,10 +30,10 @@ public final class EntityConditionality extends ExpandableStringEnum<EntityCondi
     }
 
     /**
-     * Creates or finds a {@link EntityConditionality} from its string representation.
+     * Creates or finds a {@code EntityConditionality} from its string representation.
      *
      * @param name The string name to look for.
-     * @return The corresponding {@link EntityConditionality}.
+     * @return The corresponding {@code EntityConditionality}.
      */
     @JsonCreator
     public static EntityConditionality fromString(String name) {

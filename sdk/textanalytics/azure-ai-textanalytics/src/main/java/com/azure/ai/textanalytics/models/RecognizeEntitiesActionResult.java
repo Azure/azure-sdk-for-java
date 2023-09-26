@@ -8,7 +8,7 @@ import com.azure.ai.textanalytics.util.RecognizeEntitiesResultCollection;
 import com.azure.core.annotation.Immutable;
 
 /**
- * The {@link RecognizeEntitiesActionResult} model.
+ * The {@code RecognizeEntitiesActionResult} model.
  */
 @Immutable
 public final class RecognizeEntitiesActionResult extends TextAnalyticsActionResult {
@@ -20,7 +20,7 @@ public final class RecognizeEntitiesActionResult extends TextAnalyticsActionResu
     }
 
     /**
-     * Constructs a {@link RecognizeEntitiesActionResult} model.
+     * Constructs a {@code RecognizeEntitiesActionResult} model.
      */
     public RecognizeEntitiesActionResult() {
     }

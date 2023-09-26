@@ -37,7 +37,7 @@ public final class AbstractiveSummary {
     }
 
     /**
-     * Constructs a {@link AbstractiveSummary} model.
+     * Constructs a {@code AbstractiveSummary} model.
      */
     public AbstractiveSummary() {
     }

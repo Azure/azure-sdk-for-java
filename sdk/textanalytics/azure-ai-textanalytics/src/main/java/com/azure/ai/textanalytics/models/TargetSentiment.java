@@ -7,7 +7,7 @@ import com.azure.ai.textanalytics.implementation.TargetSentimentPropertiesHelper
 import com.azure.core.annotation.Immutable;
 
 /**
- * The {@link TargetSentiment} model.
+ * The {@code TargetSentiment} model.
  */
 @Immutable
 public final class TargetSentiment {
@@ -47,7 +47,7 @@ public final class TargetSentiment {
     }
 
     /**
-     * Constructs a {@link TargetSentiment} model.
+     * Constructs a {@code TargetSentiment} model.
      */
     public TargetSentiment() {
     }

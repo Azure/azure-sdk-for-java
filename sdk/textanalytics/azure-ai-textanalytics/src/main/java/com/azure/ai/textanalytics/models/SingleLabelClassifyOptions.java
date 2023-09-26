@@ -6,7 +6,7 @@ package com.azure.ai.textanalytics.models;
 import com.azure.core.annotation.Fluent;
 
 /**
- * The {@link SingleLabelClassifyOptions} model.
+ * The {@code SingleLabelClassifyOptions} model.
  */
 @Fluent
 public final class SingleLabelClassifyOptions {
@@ -15,7 +15,7 @@ public final class SingleLabelClassifyOptions {
     private boolean includeStatistics;
 
     /**
-     * Constructs a {@link SingleLabelClassifyOptions} model.
+     * Constructs a {@code SingleLabelClassifyOptions} model.
      */
     public SingleLabelClassifyOptions() {
     }
@@ -34,7 +34,7 @@ public final class SingleLabelClassifyOptions {
      *
      * @param displayName Display name of the operation.
      *
-     * @return The {@link SingleLabelClassifyOptions} object itself.
+     * @return The {@code SingleLabelClassifyOptions} object itself.
      */
     public SingleLabelClassifyOptions setDisplayName(String displayName) {
         this.displayName = displayName;

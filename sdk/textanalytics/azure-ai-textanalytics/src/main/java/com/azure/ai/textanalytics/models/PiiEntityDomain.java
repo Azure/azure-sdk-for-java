@@ -9,7 +9,7 @@ import com.azure.core.util.ExpandableStringEnum;
 import java.util.Collection;
 
 /**
- * Defines values for {@link PiiEntityDomain}.
+ * Defines values for {@code PiiEntityDomain}.
  */
 @Immutable
 public final class PiiEntityDomain extends ExpandableStringEnum<PiiEntityDomain> {
@@ -24,7 +24,7 @@ public final class PiiEntityDomain extends ExpandableStringEnum<PiiEntityDomain>
     public static final PiiEntityDomain NONE = fromString("none");
 
     /**
-     * Creates a new instance of {@link PiiEntityDomain} value.
+     * Creates a new instance of {@code PiiEntityDomain} value.
      *
      * @deprecated Use the {@link #fromString(String)} factory method.
      */
@@ -33,10 +33,10 @@ public final class PiiEntityDomain extends ExpandableStringEnum<PiiEntityDomain>
     }
 
     /**
-     * Creates or finds a {@link PiiEntityDomain} from its string representation.
+     * Creates or finds a {@code PiiEntityDomain} from its string representation.
      *
      * @param name The string name to look for.
-     * @return The corresponding {@link PiiEntityDomain}.
+     * @return The corresponding {@code PiiEntityDomain}.
      */
     public static PiiEntityDomain fromString(String name) {
         return fromString(name, PiiEntityDomain.class);

@@ -17,7 +17,7 @@ public final class AbstractiveSummaryAction {
     private Integer sentenceCount;
 
     /**
-     * Constructs a {@link AbstractiveSummaryAction} model.
+     * Constructs a {@code AbstractiveSummaryAction} model.
      */
     public AbstractiveSummaryAction() {
     }
@@ -36,7 +36,7 @@ public final class AbstractiveSummaryAction {
      *
      * @param actionName the custom name for the action.
      *
-     * @return The {@link AbstractiveSummaryAction} object itself.
+     * @return The {@code AbstractiveSummaryAction} object itself.
      */
     public AbstractiveSummaryAction setActionName(String actionName) {
         this.actionName = actionName;
@@ -58,7 +58,7 @@ public final class AbstractiveSummaryAction {
      *
      * @param modelVersion The model version.
      *
-     * @return The {@link AbstractiveSummaryAction} object itself.
+     * @return The {@code AbstractiveSummaryAction} object itself.
      */
     public AbstractiveSummaryAction setModelVersion(String modelVersion) {
         this.modelVersion = modelVersion;
@@ -83,7 +83,7 @@ public final class AbstractiveSummaryAction {
      * log your input text. Setting this property to 'false', enables logging your input text for 48 hours,
      * solely to allow for troubleshooting issues.
      *
-     * @return The {@link AbstractiveSummaryAction} object itself.
+     * @return The {@code AbstractiveSummaryAction} object itself.
      */
     public AbstractiveSummaryAction setServiceLogsDisabled(boolean disableServiceLogs) {
         this.disableServiceLogs = disableServiceLogs;
@@ -103,7 +103,7 @@ public final class AbstractiveSummaryAction {
      * Set the sentenceCount property: It controls the approximate number of sentences in the output summaries.
      *
      * @param sentenceCount the sentenceCount value to set.
-     * @return the AbstractiveSummaryAction object itself.
+     * @return the {@code AbstractiveSummaryAction}  object itself.
      */
     public AbstractiveSummaryAction setSentenceCount(Integer sentenceCount) {
         this.sentenceCount = sentenceCount;

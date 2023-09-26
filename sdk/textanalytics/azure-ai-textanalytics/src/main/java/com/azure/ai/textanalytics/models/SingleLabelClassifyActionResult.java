@@ -8,7 +8,7 @@ import com.azure.ai.textanalytics.util.ClassifyDocumentResultCollection;
 import com.azure.core.annotation.Immutable;
 
 /**
- * The {@link SingleLabelClassifyActionResult} model.
+ * The {@code SingleLabelClassifyActionResult} model.
  */
 @Immutable
 public final class SingleLabelClassifyActionResult extends TextAnalyticsActionResult {
@@ -20,7 +20,7 @@ public final class SingleLabelClassifyActionResult extends TextAnalyticsActionRe
     }
 
     /**
-     * Constructs a {@link SingleLabelClassifyActionResult} model.
+     * Constructs a {@code SingleLabelClassifyActionResult} model.
      */
     public SingleLabelClassifyActionResult() {
     }

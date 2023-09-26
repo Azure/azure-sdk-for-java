@@ -7,7 +7,7 @@ import com.azure.ai.textanalytics.implementation.ExtractiveSummarySentenceProper
 import com.azure.core.annotation.Immutable;
 
 /**
- * The {@link ExtractiveSummarySentence} model.
+ * The {@code ExtractiveSummarySentence} model.
  */
 @Immutable
 public final class ExtractiveSummarySentence {
@@ -43,7 +43,7 @@ public final class ExtractiveSummarySentence {
     }
 
     /**
-     * Constructs a {@link ExtractiveSummarySentence} model.
+     * Constructs a {@code ExtractiveSummarySentence} model.
      */
     public ExtractiveSummarySentence() {
     }

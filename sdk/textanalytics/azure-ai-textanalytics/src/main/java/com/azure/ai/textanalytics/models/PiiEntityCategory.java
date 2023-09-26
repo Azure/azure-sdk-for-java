@@ -553,7 +553,7 @@ public final class PiiEntityCategory extends ExpandableStringEnum<PiiEntityCateg
     public static final PiiEntityCategory DEFAULT = fromString("Default");
 
     /**
-     * Creates a new instance of {@link PiiEntityCategory} value.
+     * Creates a new instance of {@code PiiEntityCategory} value.
      *
      * @deprecated Use the {@link #fromString(String)} factory method.
      */

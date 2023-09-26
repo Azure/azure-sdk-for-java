@@ -8,7 +8,7 @@ import com.azure.ai.textanalytics.implementation.EntityDataSourcePropertiesHelpe
 import com.azure.core.annotation.Immutable;
 
 /**
- * The {@link EntityDataSource} model.
+ * The {@code EntityDataSource} model.
  */
 @Immutable
 public final class EntityDataSource {
@@ -38,7 +38,7 @@ public final class EntityDataSource {
     }
 
     /**
-     * Constructs a {@link EntityDataSource} model.
+     * Constructs a {@code EntityDataSource} model.
      */
     public EntityDataSource() {
     }

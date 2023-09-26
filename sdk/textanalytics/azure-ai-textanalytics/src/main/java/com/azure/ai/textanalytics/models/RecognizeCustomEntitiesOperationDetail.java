@@ -9,7 +9,7 @@ import com.azure.core.annotation.Immutable;
 import java.time.OffsetDateTime;
 
 /**
- * The {@link RecognizeCustomEntitiesOperationDetail} model.
+ * The {@code RecognizeCustomEntitiesOperationDetail} model.
  */
 @Immutable
 public final class RecognizeCustomEntitiesOperationDetail {
@@ -56,24 +56,24 @@ public final class RecognizeCustomEntitiesOperationDetail {
     }
 
     /**
-     * Constructs a {@link RecognizeCustomEntitiesOperationDetail} model.
+     * Constructs a {@code RecognizeCustomEntitiesOperationDetail} model.
      */
     public RecognizeCustomEntitiesOperationDetail() {
     }
 
     /**
-     * Gets the operationId property of the {@link RecognizeCustomEntitiesOperationDetail}.
+     * Gets the operationId property of the {@code RecognizeCustomEntitiesOperationDetail}.
      *
-     * @return The operationId property of the {@link RecognizeCustomEntitiesOperationDetail}.
+     * @return The operationId property of the {@code RecognizeCustomEntitiesOperationDetail}.
      */
     public String getOperationId() {
         return operationId;
     }
 
     /**
-     * Gets the displayName property of the {@link RecognizeCustomEntitiesOperationDetail}.
+     * Gets the displayName property of the {@code RecognizeCustomEntitiesOperationDetail}.
      *
-     * @return The displayName property of the {@link RecognizeCustomEntitiesOperationDetail}.
+     * @return The displayName property of the {@code RecognizeCustomEntitiesOperationDetail}.
      */
     public String getDisplayName() {
         return displayName;

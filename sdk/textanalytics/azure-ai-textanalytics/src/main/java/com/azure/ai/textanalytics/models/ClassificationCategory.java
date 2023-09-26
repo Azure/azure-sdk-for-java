@@ -30,7 +30,7 @@ public final class ClassificationCategory {
     }
 
     /**
-     * Constructs a {@link ClassificationCategory} model.
+     * Constructs a {@code ClassificationCategory} model.
      */
     public ClassificationCategory() {
     }

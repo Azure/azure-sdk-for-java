@@ -83,7 +83,7 @@ public final class TextAnalyticsErrorCode extends ExpandableStringEnum<TextAnaly
     public static final TextAnalyticsErrorCode INVALID_COUNTRY_HINT = fromString("InvalidCountryHint");
 
     /**
-     * Creates a new instance of {@link TextAnalyticsErrorCode} value.
+     * Creates a new instance of {@code TextAnalyticsErrorCode} value.
      *
      * @deprecated Use the {@link #fromString(String)} factory method.
      */

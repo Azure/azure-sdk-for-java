@@ -9,7 +9,7 @@ import com.azure.core.util.ExpandableStringEnum;
 import java.util.Collection;
 
 /**
- * The {@link EntityAssociation} model.
+ * The {@code EntityAssociation} model.
  */
 @Immutable
 public final class EntityAssociation extends ExpandableStringEnum<EntityAssociation> {
@@ -24,7 +24,7 @@ public final class EntityAssociation extends ExpandableStringEnum<EntityAssociat
     public static final EntityAssociation OTHER = fromString("Other");
 
     /**
-     * Creates a new instance of {@link EntityAssociation} value.
+     * Creates a new instance of {@code EntityAssociation} value.
      *
      * @deprecated Use the {@link #fromString(String)} factory method.
      */
@@ -33,10 +33,10 @@ public final class EntityAssociation extends ExpandableStringEnum<EntityAssociat
     }
 
     /**
-     * Creates or finds a {@link EntityAssociation} from its string representation.
+     * Creates or finds a {@code EntityAssociation} from its string representation.
      *
      * @param name The string name to look for.
-     * @return The corresponding {@link EntityAssociation}.
+     * @return The corresponding {@code EntityAssociation}.
      */
     public static EntityAssociation fromString(String name) {
         return fromString(name, EntityAssociation.class);
