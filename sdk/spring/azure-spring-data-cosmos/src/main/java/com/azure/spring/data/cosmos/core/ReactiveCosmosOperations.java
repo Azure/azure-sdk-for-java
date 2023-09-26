@@ -222,15 +222,6 @@ public interface ReactiveCosmosOperations {
     <T> Mono<Void> deleteEntity(String containerName, T entity);
 
     /**
-     * Delete all items in a container
-     *
-     * @param containerName the container name
-     * @param domainType the domainType
-     * @return void Mono
-     */
-    Mono<Void> deleteAll(String containerName, Class<?> domainType);
-
-    /**
      * Delete all items with bulk.
      *
      * @param containerName must not be {@literal null}
@@ -238,6 +229,15 @@ public interface ReactiveCosmosOperations {
      * @return void Mono
      */
     Mono<Void> deleteEntities(String containerName, Flux<CosmosItemOperation> cosmosItemOperations);
+
+    /**
+     * Delete all items in a container
+     *
+     * @param containerName the container name
+     * @param domainType the domainType
+     * @return void Mono
+     */
+    Mono<Void> deleteAll(String containerName, Class<?> domainType);
 
     /**
      * Delete container
