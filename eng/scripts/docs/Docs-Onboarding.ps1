@@ -1,12 +1,5 @@
 #$SetDocsPackageOnboarding = "Set-${Language}-DocsPackageOnboarding"
 function Set-java-DocsPackageOnboarding($moniker, $metadata, $docRepoLocation, $packageSourceOverride) { 
-    
-    # Do not write onboarding information for legacy moniker
-    # TODO: remove this once legacy moniker is properly configured
-    if ($moniker -eq 'legacy') { 
-        return 
-    }
-
     $packageJsonPath = Join-Path $docRepoLocation "package.json"
     $onboardingInfo = Get-Content $packageJsonPath | ConvertFrom-Json
 
@@ -63,4 +56,10 @@ function Get-java-DocsPackagesAlreadyOnboarded($docRepoLocation, $moniker) {
 # $GetPackageIdentity = "Get-${Language}-PackageIdentity"
 function Get-java-PackageIdentity($package) { 
     return "$($package['Group']):$($package['Name'])"
+}
+
+# Declared in common.ps1 as 
+# $GetPackageIdentityFromCsvMetadata = "Get-${Language}-PackageIdentityFromCsvMetadata"
+function Get-java-PackageIdentityFromCsvMetadata($package) { 
+    return "$($package.GroupId):$($Package.Package)"
 }

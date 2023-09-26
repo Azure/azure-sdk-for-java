@@ -330,6 +330,7 @@
     "Mockito",
     "Mordor",
     "mosca",
+    "mpga",
     "msal",
     "msix",
     "MSRC",
@@ -1036,6 +1037,12 @@
         "Dskip",
         "Dspotbugs",
         "Pdev"
+      ]
+    },
+    {
+      "filename": "sdk/spring/spring-cloud-azure-starter-monitor/**.md",
+      "words": [
+        "Djava"
       ]
     },
     {

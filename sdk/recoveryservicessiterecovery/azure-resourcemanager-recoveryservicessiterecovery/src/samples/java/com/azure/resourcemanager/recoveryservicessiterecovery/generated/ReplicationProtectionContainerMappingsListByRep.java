@@ -7,7 +7,7 @@ package com.azure.resourcemanager.recoveryservicessiterecovery.generated;
 /** Samples for ReplicationProtectionContainerMappings ListByReplicationProtectionContainers. */
 public final class ReplicationProtectionContainerMappingsListByRep {
     /*
-     * x-ms-original-file: specification/recoveryservicessiterecovery/resource-manager/Microsoft.RecoveryServices/stable/2022-10-01/examples/ReplicationProtectionContainerMappings_ListByReplicationProtectionContainers.json
+     * x-ms-original-file: specification/recoveryservicessiterecovery/resource-manager/Microsoft.RecoveryServices/stable/2023-06-01/examples/ReplicationProtectionContainerMappings_ListByReplicationProtectionContainers.json
      */
     /**
      * Sample code: Gets the list of protection container mappings for a protection container.

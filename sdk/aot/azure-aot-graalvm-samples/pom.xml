@@ -61,7 +61,7 @@
         <dependency>
             <groupId>com.azure</groupId>
             <artifactId>azure-data-appconfiguration</artifactId>
-            <version>1.4.8</version> <!-- {x-version-update;com.azure:azure-data-appconfiguration;dependency} -->
+            <version>1.4.9</version> <!-- {x-version-update;com.azure:azure-data-appconfiguration;dependency} -->
         </dependency>
         <dependency>
             <groupId>com.azure</groupId>
@@ -93,22 +93,22 @@
         <dependency>
             <groupId>com.azure</groupId>
             <artifactId>azure-messaging-eventhubs</artifactId>
-            <version>5.15.8</version> <!-- {x-version-update;com.azure:azure-messaging-eventhubs;dependency} -->
+            <version>5.16.0</version> <!-- {x-version-update;com.azure:azure-messaging-eventhubs;dependency} -->
         </dependency>
         <dependency>
             <groupId>com.azure</groupId>
             <artifactId>azure-cosmos</artifactId>
-            <version>4.49.0</version> <!-- {x-version-update;com.azure:azure-cosmos;dependency} -->
+            <version>4.50.0</version> <!-- {x-version-update;com.azure:azure-cosmos;dependency} -->
         </dependency>
         <dependency>
             <groupId>com.azure</groupId>
             <artifactId>azure-ai-formrecognizer</artifactId>
-            <version>4.1.0</version> <!-- {x-version-update;com.azure:azure-ai-formrecognizer;dependency} -->
+            <version>4.1.1</version> <!-- {x-version-update;com.azure:azure-ai-formrecognizer;dependency} -->
         </dependency>
         <dependency>
             <groupId>com.azure</groupId>
             <artifactId>azure-ai-textanalytics</artifactId>
-            <version>5.3.2</version> <!-- {x-version-update;com.azure:azure-ai-textanalytics;dependency} -->
+            <version>5.3.3</version> <!-- {x-version-update;com.azure:azure-ai-textanalytics;dependency} -->
         </dependency>
 
 

@@ -1162,6 +1162,11 @@ public class DataLakeFileAsyncClient extends DataLakePathAsyncClient {
 
     Mono<Response<Void>> appendWithResponse(Flux<ByteBuffer> data, long fileOffset, long length,
         DataLakeFileAppendOptions appendOptions, Context context) {
+
+        if (data == null) {
+            return Mono.error(new NullPointerException("'data' cannot be null."));
+        }
+
         appendOptions = appendOptions == null ? new DataLakeFileAppendOptions() : appendOptions;
         LeaseAccessConditions leaseAccessConditions = new LeaseAccessConditions().setLeaseId(appendOptions.getLeaseId());
         PathHttpHeaders headers = new PathHttpHeaders().setTransactionalContentHash(appendOptions.getContentMd5());

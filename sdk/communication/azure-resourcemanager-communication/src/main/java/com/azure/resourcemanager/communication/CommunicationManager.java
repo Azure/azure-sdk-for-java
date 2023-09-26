@@ -219,7 +219,7 @@ public final class CommunicationManager {
                 .append("-")
                 .append("com.azure.resourcemanager.communication")
                 .append("/")
-                .append("2.0.0");
+                .append("2.1.0-beta.1");
             if (!Configuration.getGlobalConfiguration().get("AZURE_TELEMETRY_DISABLED", false)) {
                 userAgentBuilder
                     .append(" (")
@@ -337,8 +337,10 @@ public final class CommunicationManager {
     }
 
     /**
-     * @return Wrapped service client CommunicationServiceManagementClient providing direct access to the underlying
-     *     auto-generated API implementation, based on Azure REST API.
+     * Gets wrapped service client CommunicationServiceManagementClient providing direct access to the underlying
+     * auto-generated API implementation, based on Azure REST API.
+     *
+     * @return Wrapped service client CommunicationServiceManagementClient.
      */
     public CommunicationServiceManagementClient serviceClient() {
         return this.clientObject;

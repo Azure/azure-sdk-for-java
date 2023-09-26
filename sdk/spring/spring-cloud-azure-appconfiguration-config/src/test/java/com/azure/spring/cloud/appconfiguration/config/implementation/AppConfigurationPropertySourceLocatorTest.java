@@ -351,7 +351,7 @@ public class AppConfigurationPropertySourceLocatorTest {
 
         List<ConfigurationSetting> featureList = new ArrayList<>();
         FeatureFlagConfigurationSetting featureFlag = new FeatureFlagConfigurationSetting("Alpha", false);
-        featureFlag.setValue("{}");
+        featureFlag.setValue("");
         featureList.add(featureFlag);
 
         when(configStoreMock.getFeatureFlags()).thenReturn(featureFlagStore);
@@ -416,7 +416,7 @@ public class AppConfigurationPropertySourceLocatorTest {
             Feature alpha = (Feature) propertySources[0];
             assertEquals("All", alpha.getRequirementType());
             assertArrayEquals((Object[]) expectedSourceNames, sources.stream().map(PropertySource::getName).toArray());
-            
+
         }
     }
 
@@ -430,7 +430,7 @@ public class AppConfigurationPropertySourceLocatorTest {
 
         List<ConfigurationSetting> featureList = new ArrayList<>();
         FeatureFlagConfigurationSetting featureFlag = new FeatureFlagConfigurationSetting("Alpha", false);
-        featureFlag.setValue("{}");
+        featureFlag.setValue("");
         featureList.add(featureFlag);
 
         when(configStoreMock.getFeatureFlags()).thenReturn(featureFlagStore);
