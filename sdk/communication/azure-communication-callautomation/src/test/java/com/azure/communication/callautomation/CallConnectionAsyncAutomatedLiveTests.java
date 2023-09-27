@@ -157,6 +157,13 @@ public class CallConnectionAsyncAutomatedLiveTests extends CallAutomationAutomat
         }
     }
 
+    @DoNotRecord(skipInPlayback = true)
+    @ParameterizedTest
+    @MethodSource("com.azure.core.test.TestBase#getHttpClients")
+    @DisabledIfEnvironmentVariable(
+        named = "SKIP_LIVE_TEST",
+        matches = "(?i)(true)",
+        disabledReason = "Requires environment to be set up")
     public void createVOIPCallAndAnswerThenAddParticipantFinallyCancelAddParticipant(HttpClient httpClient) {
         /* Test case: ACS to ACS call
          * 1. create a CallAutomationClient.
@@ -178,7 +185,6 @@ public class CallConnectionAsyncAutomatedLiveTests extends CallAutomationAutomat
             CommunicationUserIdentifier anotherReceiver = identityAsyncClient.createUser().block();
 
             String uniqueId = serviceBusWithNewCall(caller, receiver);
-            String anotherUniqueId = serviceBusWithNewCall(caller, anotherReceiver);
 
             // Create call automation client for caller.
             CallAutomationAsyncClient callerAsyncClient = getCallAutomationClientUsingConnectionString(httpClient)
