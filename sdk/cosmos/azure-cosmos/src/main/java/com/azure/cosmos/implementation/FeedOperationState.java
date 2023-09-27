@@ -91,7 +91,7 @@ public abstract class FeedOperationState {
             checkNotNull(operationType, "Argument 'operationType' must not be null." ),
             operationId,
             checkNotNull(effectiveConsistencyLevel, "Argument 'effectiveConsistencyLevel' must not be null." ),
-            initialMaxItemCount,
+            initialMaxItemCount != null ? initialMaxItemCount : Constants.Properties.DEFAULT_MAX_PAGE_SIZE,
             this.thresholds,
             null,
             clientAccessor.getConnectionMode(cosmosAsyncClient),

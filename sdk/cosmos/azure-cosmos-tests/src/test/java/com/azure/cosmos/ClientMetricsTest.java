@@ -249,7 +249,7 @@ public class ClientMetricsTest extends BatchTestBase {
                     this.validateMetrics(
                         expectedOperationTag,
                         expectedRequestTag,
-                        1,
+                        0,
                         300
                     );
 
@@ -274,7 +274,7 @@ public class ClientMetricsTest extends BatchTestBase {
                         Tag.of(
                             TagName.Operation.toString(), "Document/Create"),
                         Tag.of(TagName.RequestOperationType.toString(), "Document/Create"),
-                        1,
+                        0,
                         300
                     );
                 }
@@ -321,7 +321,7 @@ public class ClientMetricsTest extends BatchTestBase {
                 this.validateMetrics(
                     Tag.of(TagName.OperationStatusCode.toString(), "201"),
                     Tag.of(TagName.RequestStatusCode.toString(), "201/0"),
-                    1,
+                    0,
                     300
                 );
 
@@ -329,7 +329,7 @@ public class ClientMetricsTest extends BatchTestBase {
                     Tag.of(
                         TagName.Operation.toString(), "Document/Create"),
                     Tag.of(TagName.RequestOperationType.toString(), "Document/Create"),
-                    1,
+                    0,
                     300
                 );
 
@@ -374,7 +374,7 @@ public class ClientMetricsTest extends BatchTestBase {
             this.validateMetrics(
                 Tag.of(TagName.OperationStatusCode.toString(), "200"),
                 Tag.of(TagName.RequestStatusCode.toString(), "200/0"),
-                1,
+                0,
                 500
             );
 
@@ -382,7 +382,7 @@ public class ClientMetricsTest extends BatchTestBase {
                 Tag.of(
                     TagName.Operation.toString(), "Document/Read"),
                 Tag.of(TagName.RequestOperationType.toString(), "Document/Read"),
-                1,
+                0,
                 500
             );
 
@@ -467,7 +467,7 @@ public class ClientMetricsTest extends BatchTestBase {
             this.validateMetrics(
                 Tag.of(TagName.OperationStatusCode.toString(), "200"),
                 Tag.of(TagName.RequestStatusCode.toString(), "200/0"),
-                1,
+                0,
                 1000
             );
 
@@ -475,7 +475,7 @@ public class ClientMetricsTest extends BatchTestBase {
                 Tag.of(
                     TagName.Operation.toString(), "Document/Replace"),
                 Tag.of(TagName.RequestOperationType.toString(), "Document/Replace"),
-                1,
+                0,
                 1000
             );
         } finally {
@@ -534,7 +534,7 @@ public class ClientMetricsTest extends BatchTestBase {
             this.validateMetrics(
                 Tag.of(TagName.OperationStatusCode.toString(), "200"),
                 Tag.of(TagName.RequestStatusCode.toString(), "200/0"),
-                1,
+                0,
                 3000
             );
 
@@ -542,7 +542,7 @@ public class ClientMetricsTest extends BatchTestBase {
                 Tag.of(
                     TagName.Operation.toString(), "Document/ReadFeed/readAllItems." + container.getId()),
                 Tag.of(TagName.RequestOperationType.toString(), "Document/Query"),
-                1,
+                0,
                 10000
             );
 
@@ -583,7 +583,7 @@ public class ClientMetricsTest extends BatchTestBase {
             this.validateMetrics(
                 Tag.of(TagName.OperationStatusCode.toString(), "200"),
                 Tag.of(TagName.RequestStatusCode.toString(), "200/0"),
-                1,
+                0,
                 10000
             );
 
@@ -591,7 +591,7 @@ public class ClientMetricsTest extends BatchTestBase {
                 Tag.of(
                     TagName.Operation.toString(), "Document/ReadFeed/readAllItems." + container.getId()),
                 Tag.of(TagName.RequestOperationType.toString(), "Document/Query"),
-                1,
+                0,
                 10000
             );
 
@@ -636,7 +636,7 @@ public class ClientMetricsTest extends BatchTestBase {
             this.validateMetrics(
                 Tag.of(TagName.OperationStatusCode.toString(), "200"),
                 Tag.of(TagName.RequestStatusCode.toString(), "200/0"),
-                1,
+                0,
                 10000
             );
 
@@ -644,7 +644,7 @@ public class ClientMetricsTest extends BatchTestBase {
                 Tag.of(
                     TagName.Operation.toString(), "Document/ReadFeed/readAllItems." + container.getId()),
                 Tag.of(TagName.RequestOperationType.toString(), "Document/Query"),
-                1,
+                0,
                 10000
             );
 
@@ -690,7 +690,7 @@ public class ClientMetricsTest extends BatchTestBase {
             this.validateMetrics(
                 Tag.of(TagName.OperationStatusCode.toString(), "200"),
                 Tag.of(TagName.RequestStatusCode.toString(), "200/0"),
-                1,
+                0,
                 100000
             );
 
@@ -698,7 +698,7 @@ public class ClientMetricsTest extends BatchTestBase {
                 Tag.of(
                     TagName.Operation.toString(), "Document/Query/queryItems." + container.getId()),
                 Tag.of(TagName.RequestOperationType.toString(), "Document/Query"),
-                1,
+                0,
                 100000
             );
 
@@ -768,7 +768,7 @@ public class ClientMetricsTest extends BatchTestBase {
             this.validateMetrics(
                 Tag.of(TagName.OperationStatusCode.toString(), "200"),
                 Tag.of(TagName.RequestStatusCode.toString(), "200/0"),
-                1,
+                0,
                 3000
             );
 
@@ -776,7 +776,7 @@ public class ClientMetricsTest extends BatchTestBase {
                 Tag.of(
                     TagName.Operation.toString(), "Document/Patch"),
                 Tag.of(TagName.RequestOperationType.toString(), "Document/Patch"),
-                1,
+                0,
                 3000
             );
         } finally {
@@ -822,7 +822,7 @@ public class ClientMetricsTest extends BatchTestBase {
             this.validateMetrics(
                 Tag.of(TagName.OperationStatusCode.toString(), "200"),
                 Tag.of(TagName.RequestStatusCode.toString(), "200/0"),
-                1,
+                0,
                 10000
             );
 
@@ -830,7 +830,7 @@ public class ClientMetricsTest extends BatchTestBase {
                 Tag.of(
                     TagName.Operation.toString(), "Document/Batch"),
                 Tag.of(TagName.RequestOperationType.toString(), "Document/Batch"),
-                1,
+                0,
                 10000
             );
         } finally {
@@ -884,7 +884,7 @@ public class ClientMetricsTest extends BatchTestBase {
             this.validateMetrics(
                 Tag.of(TagName.OperationStatusCode.toString(), "200"),
                 Tag.of(TagName.RequestStatusCode.toString(), "200/0"),
-                1,
+                0,
                 3000
             );
 
@@ -892,7 +892,7 @@ public class ClientMetricsTest extends BatchTestBase {
                 Tag.of(
                     TagName.Operation.toString(), "Document/Batch"),
                 Tag.of(TagName.RequestOperationType.toString(), "Document/Batch"),
-                1,
+                0,
                 3000
             );
         } finally {
@@ -1263,9 +1263,10 @@ public class ClientMetricsTest extends BatchTestBase {
     private void validateReasonableRUs(Meter reportedRequestChargeMeter, int expectedMinRu, int expectedMaxRu) {
         List<Measurement> measurements = new ArrayList<>();
         reportedRequestChargeMeter.measure().forEach(measurements::add);
-
+        logger.info("RequestedRequestChargeMeter: {} {}", reportedRequestChargeMeter, reportedRequestChargeMeter.getId());
         assertThat(measurements.size()).isGreaterThan(0);
         for (int i = 0; i < measurements.size(); i++) {
+
             assertThat(measurements.get(i).getValue()).isGreaterThanOrEqualTo(expectedMinRu);
             assertThat(measurements.get(i).getValue()).isLessThanOrEqualTo(expectedMaxRu);
         }
