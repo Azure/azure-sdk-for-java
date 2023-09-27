@@ -2852,7 +2852,7 @@ public class FaultInjectionWithAvailabilityStrategyTests extends TestSuiteBase {
 
         private final Long totalRecordCount;
 
-        public CosmosResponseWrapper(CosmosItemResponse itemResponse) {
+        public CosmosResponseWrapper(CosmosItemResponse<?> itemResponse) {
             if (itemResponse.getDiagnostics() != null &&
                 itemResponse.getDiagnostics().getDiagnosticsContext() != null) {
 

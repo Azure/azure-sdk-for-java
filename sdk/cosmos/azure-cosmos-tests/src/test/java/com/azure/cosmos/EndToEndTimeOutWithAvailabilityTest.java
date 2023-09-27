@@ -54,8 +54,6 @@ import static org.assertj.core.api.Assertions.assertThat;
 public class EndToEndTimeOutWithAvailabilityTest extends TestSuiteBase {
     private static final int DEFAULT_NUM_DOCUMENTS = 100;
     private final Random random;
-    private final List<EndToEndTimeOutValidationTests.TestObject> createdDocuments = new ArrayList<>();
-    private final CosmosEndToEndOperationLatencyPolicyConfig endToEndOperationLatencyPolicyConfig;
     private static final int TIMEOUT = 60000;
     private CosmosAsyncClient clientWithPreferredRegions;
     private CosmosAsyncContainer cosmosAsyncContainer;
@@ -69,8 +67,6 @@ public class EndToEndTimeOutWithAvailabilityTest extends TestSuiteBase {
     public EndToEndTimeOutWithAvailabilityTest(CosmosClientBuilder clientBuilder) {
         super(clientBuilder);
         random = new Random();
-        endToEndOperationLatencyPolicyConfig = new CosmosEndToEndOperationLatencyPolicyConfigBuilder(Duration.ofSeconds(2))
-            .build();
     }
 
     @BeforeClass(groups = {"multi-master"}, timeOut = SETUP_TIMEOUT * 100)
@@ -119,7 +115,7 @@ public class EndToEndTimeOutWithAvailabilityTest extends TestSuiteBase {
         CosmosDiagnosticsContext diagnosticsContext = cosmosDiagnostics.getDiagnosticsContext();
         assertThat(diagnosticsContext).isNotNull();
         assertThat(diagnosticsContext.getContactedRegionNames().size()).isGreaterThan(1);
-        ObjectNode diagnosticsNode = null;
+        ObjectNode diagnosticsNode;
         try {
             if (operationType == OperationType.Query) {
                 assertThat(cosmosDiagnostics.getClientSideRequestStatistics().iterator().next().getResponseStatisticsList().get(0).getRegionName())

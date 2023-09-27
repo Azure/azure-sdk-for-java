@@ -175,9 +175,9 @@ public final class CosmosPagedFlux<T> extends ContinuablePagedFlux<String, T, Fe
             if (isTracerEnabled(tracerProvider)) {
                 tracerProvider.recordPage(
                     pagedFluxOptions.getFeedOperationState().getDiagnosticsContextSnapshot(),
-                    response != null ? response.getCosmosDiagnostics() : null,
+                    diagnostics,
                     actualItemCount,
-                    response != null ? response.getRequestCharge() : null);
+                    response.getRequestCharge());
             }
 
             //  If the user has passed feedResponseConsumer, then call it with each feedResponse

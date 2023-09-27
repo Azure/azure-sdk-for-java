@@ -41,7 +41,6 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 import java.util.UUID;
-import java.util.concurrent.Callable;
 import java.util.concurrent.ConcurrentHashMap;
 import java.util.concurrent.ConcurrentMap;
 import java.util.concurrent.atomic.AtomicBoolean;
@@ -210,28 +209,6 @@ public class ParallelDocumentQueryExecutionContext<T>
         }
     }
 
-  /*  private List<PartitionKeyRange> getPartitionKeyRangesForContinuation(
-        CompositeContinuationToken compositeContinuationToken,
-        List<PartitionKeyRange> partitionKeyRanges) {
-        Map<FeedRangeEpkImpl, String> partitionRangeIdToTokenMap = new HashMap<>();
-        ValueHolder<Map<FeedRangeEpkImpl, String>> outPartitionRangeIdToTokenMap = new ValueHolder<>(partitionRangeIdToTokenMap);
-        // Find the partition key range we left off on and fill the range to continuation token map
-        int startIndex = this.findTargetRangeAndExtractContinuationTokens(this.feedRanges,
-                                                                          compositeContinuationToken.getRange(),
-                                                                          outPartitionRangeIdToTokenMap,
-                                                                          compositeContinuationToken.getToken());
-        List<PartitionKeyRange> rightHandSideRanges = new ArrayList<PartitionKeyRange>();
-        for (int i = startIndex; i < partitionKeyRanges.size(); i++) {
-            PartitionKeyRange range = partitionKeyRanges.get(i);
-            if (partitionRangeIdToTokenMap.containsKey(range.getId())) {
-                this.partitionKeyRangeToContinuationTokenMap.put(range, compositeContinuationToken.getToken());
-            }
-            rightHandSideRanges.add(partitionKeyRanges.get(i));
-        }
-
-        return rightHandSideRanges;
-    }
-*/
     private static class EmptyPagesFilterTransformer<T>
         implements Function<Flux<DocumentProducer<T>.DocumentProducerFeedResponse>, Flux<FeedResponse<T>>> {
         private final RequestChargeTracker tracker;
@@ -322,7 +299,7 @@ public class ParallelDocumentQueryExecutionContext<T>
             }
         }
 
-        private <T> void mergeAndResetQueryMetrics(FeedResponse<T> page) {
+        private <TItem> void mergeAndResetQueryMetrics(FeedResponse<TItem> page) {
             //Combining previous empty page query metrics with current non empty page query metrics
             if (!emptyPageQueryMetricsMap.isEmpty()) {
                 ConcurrentMap<String, QueryMetrics> currentQueryMetrics =

@@ -5,8 +5,6 @@ package com.azure.cosmos.implementation;
 import com.azure.cosmos.BridgeInternal;
 import com.azure.cosmos.ConnectionMode;
 import com.azure.cosmos.ConsistencyLevel;
-import com.azure.cosmos.CosmosAsyncClient;
-import com.azure.cosmos.CosmosClientBuilder;
 import com.azure.cosmos.implementation.batch.ItemBatchOperation;
 import com.azure.cosmos.implementation.batch.SinglePartitionKeyServerBatchRequest;
 import com.azure.cosmos.implementation.directconnectivity.ReflectionUtils;
@@ -44,7 +42,7 @@ public class SessionTest extends TestSuiteBase {
 
     private Database createdDatabase;
     private DocumentCollection createdCollection;
-    private String collectionId = "+ -_,:.|~" + UUID.randomUUID().toString() + " +-_,:.|~";
+    private String collectionId = "+ -_,:.|~" + UUID.randomUUID() + " +-_,:.|~";
     private SpyClientUnderTestFactory.SpyBaseClass<HttpRequest> spyClient;
     private AsyncDocumentClient houseKeepingClient;
     private ConnectionMode connectionMode;

@@ -3,15 +3,7 @@
 
 package com.azure.cosmos.implementation;
 
-import com.azure.cosmos.BridgeInternal;
-import com.azure.cosmos.ConsistencyLevel;
-import com.azure.cosmos.CosmosAsyncClient;
-import com.azure.cosmos.CosmosDiagnosticsContext;
-import com.azure.cosmos.CosmosDiagnosticsThresholds;
 import com.azure.cosmos.util.CosmosPagedFlux;
-
-import java.util.concurrent.atomic.AtomicReference;
-import java.util.function.Consumer;
 
 import static com.azure.cosmos.implementation.guava25.base.Preconditions.checkNotNull;
 
@@ -28,12 +20,7 @@ public class CosmosPagedFluxOptions {
     public CosmosPagedFluxOptions() {}
 
     public FeedOperationState getFeedOperationState() {
-        FeedOperationState stateSnapshot = this.operationState;
-        if (stateSnapshot == null) {
-            return null;
-        }
-
-        return stateSnapshot;
+        return this.operationState;
     }
 
     /**

@@ -79,10 +79,6 @@ public class ChangeFeedOperationState extends FeedOperationState {
         }
     }
 
-    public void disableSplitHandling() {
-        ModelBridgeInternal.disableSplitHandling(this.options);
-    }
-
     private static Integer getEffectiveMaxItemCount(
         CosmosPagedFluxOptions pagedFluxOptions,
         CosmosChangeFeedRequestOptions changeFeedOptions) {

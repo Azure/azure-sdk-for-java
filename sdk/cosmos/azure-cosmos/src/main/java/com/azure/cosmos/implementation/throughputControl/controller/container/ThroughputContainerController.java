@@ -150,13 +150,13 @@ public class ThroughputContainerController implements IThroughputContainerContro
     private Mono<ThroughputResponse> resolveDatabaseThroughput() {
         return Mono.justOrEmpty(this.targetDatabaseRid)
             .switchIfEmpty(this.resolveDatabaseResourceId())
-            .flatMap(databaseRid -> this.resolveThroughputByResourceId(databaseRid));
+            .flatMap(this::resolveThroughputByResourceId);
     }
 
     private Mono<ThroughputResponse> resolveContainerThroughput() {
         if (StringUtils.isEmpty(this.targetContainerRid)) {
             return this.resolveContainerResourceId()
-                .flatMap(containerRid -> this.resolveThroughputByResourceId(containerRid))
+                .flatMap(this::resolveThroughputByResourceId)
                 .onErrorResume(throwable -> {
                     if (this.isOwnerResourceNotExistsException(throwable)) {
                         // During initialization time, the collection cache may contain staled info,
@@ -170,10 +170,10 @@ public class ThroughputContainerController implements IThroughputContainerContro
 
                     return Mono.error(throwable);
                 })
-                .retryWhen(RetrySpec.max(1).filter(throwable -> this.isOwnerResourceNotExistsException(throwable)));
+                .retryWhen(RetrySpec.max(1).filter(this::isOwnerResourceNotExistsException));
         } else {
             return Mono.just(this.targetContainerRid)
-                .flatMap(containerRid -> this.resolveThroughputByResourceId(containerRid));
+                .flatMap(this::resolveThroughputByResourceId);
         }
     }
 
@@ -213,7 +213,7 @@ public class ThroughputContainerController implements IThroughputContainerContro
                 // which is constant value, hence no need to resolve throughput
                 return Mono.empty();
             })
-            .map(throughputResponse -> this.getMaxContainerThroughput(throughputResponse))
+            .map(this::getMaxContainerThroughput)
             .onErrorResume(throwable -> {
                 if (this.isOwnerResourceNotExistsException(throwable)) {
                     this.cancellationTokenSource.close();
@@ -224,7 +224,7 @@ public class ThroughputContainerController implements IThroughputContainerContro
             .retryWhen(
                 // Throughput can be configured on database level or container level
                 // Retry at most 1 time so we can try on database and container both
-                RetrySpec.max(1).filter(throwable -> this.isOfferNotConfiguredException(throwable))
+                RetrySpec.max(1).filter(this::isOfferNotConfiguredException)
             );
     }
 
@@ -335,7 +335,7 @@ public class ThroughputContainerController implements IThroughputContainerContro
 
     private Mono<ThroughputContainerController> createAndInitializeGroupControllers() {
         return Flux.fromIterable(this.groups)
-            .flatMap(group -> this.resolveThroughputGroupController(group))
+            .flatMap(this::resolveThroughputGroupController)
             .then(Mono.just(this));
     }
 
@@ -388,7 +388,7 @@ public class ThroughputContainerController implements IThroughputContainerContro
                 }
             })
             .flatMapIterable(controller -> this.groups)
-            .flatMap(group -> this.resolveThroughputGroupController(group))
+            .flatMap(this::resolveThroughputGroupController)
             .doOnNext(groupController -> groupController.onContainerMaxThroughputRefresh(this.maxContainerThroughput.get()))
             .onErrorResume(throwable -> {
                 logger.warn("Refresh throughput failed with reason {}", throwable.getMessage());

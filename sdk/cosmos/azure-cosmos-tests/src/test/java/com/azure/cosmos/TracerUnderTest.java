@@ -149,7 +149,7 @@ public class TracerUnderTest implements Tracer {
     }
 
     public synchronized void reset() {
-        LOGGER.warn("RESET {}", this.currentSpan);
+        LOGGER.info("RESET {}", this.currentSpan);
         this.spanStack.clear();
         this.currentSpan = null;
         this.collectedSiblingSpans.clear();

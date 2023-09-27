@@ -41,11 +41,11 @@ public abstract class FeedOperationState {
 
     private final AtomicReference<Consumer<CosmosDiagnosticsContext>> diagnosticsFactoryMergeCallback;
 
-    private AtomicReference<String> requestContinuation;
-    private AtomicReference<Integer> maxItemCount;
+    private final AtomicReference<String> requestContinuation;
+    private final AtomicReference<Integer> maxItemCount;
 
-    private AtomicInteger sequenceNumberGenerator;
-    private AtomicReference<Double> samplingRate;
+    private final AtomicInteger sequenceNumberGenerator;
+    private final AtomicReference<Double> samplingRate;
 
     private final CosmosPagedFluxOptions fluxOptions;
 
@@ -149,14 +149,6 @@ public abstract class FeedOperationState {
 
     public CosmosDiagnosticsContext getDiagnosticsContextSnapshot() {
         return this.ctxHolder.get();
-    }
-
-    public void setDiagnosticsFactoryResetCallback(Runnable callback){
-        this.diagnosticsFactoryResetCallback.set(callback);
-    }
-
-    public void setDiagnosticsFactoryMergeCallback(Consumer<CosmosDiagnosticsContext> callback) {
-        this.diagnosticsFactoryMergeCallback.set(callback);
     }
 
     public void resetDiagnosticsContext() {

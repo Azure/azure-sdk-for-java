@@ -71,7 +71,7 @@ public final class PipelinedQueryExecutionContext<T> extends PipelinedQueryExecu
         );
     }
 
-    protected static <T> Flux<PipelinedQueryExecutionContextBase<T>> createAsyncCore(
+    static <T> Flux<PipelinedQueryExecutionContextBase<T>> createAsyncCore(
         DiagnosticsClientContext diagnosticsClientContext,
         IDocumentQueryClient client,
         PipelinedDocumentQueryParams<T> initParams,

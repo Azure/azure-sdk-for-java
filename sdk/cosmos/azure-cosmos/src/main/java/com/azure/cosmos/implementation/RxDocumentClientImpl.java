@@ -960,8 +960,9 @@ public class RxDocumentClientImpl implements AsyncDocumentClient, IAuthorization
 
 
         final ScopedDiagnosticsFactory diagnosticsFactory = new ScopedDiagnosticsFactory(this);
-        state.setDiagnosticsFactoryResetCallback(() -> diagnosticsFactory.reset());
-        state.setDiagnosticsFactoryMergeCallback((ctx) -> diagnosticsFactory.merge(ctx));
+        state.registerDiagnosticsFactory(
+            diagnosticsFactory::reset,
+            diagnosticsFactory::merge);
 
         return
             ObservableHelper.fluxInlineIfPossibleAsObs(
@@ -1087,8 +1088,6 @@ public class RxDocumentClientImpl implements AsyncDocumentClient, IAuthorization
 
         Duration endToEndTimeout = endToEndPolicyConfig.getEndToEndOperationTimeout();
 
-
-        Flux<FeedResponse<T>> flux;
         if (endToEndTimeout.isNegative()) {
             return feedResponseFlux
                 .timeout(endToEndTimeout)
@@ -3288,8 +3287,9 @@ public class RxDocumentClientImpl implements AsyncDocumentClient, IAuthorization
             diagnosticsFactory = null;
         } else {
             diagnosticsFactory = new ScopedDiagnosticsFactory(this);
-            state.setDiagnosticsFactoryResetCallback(() -> diagnosticsFactory.reset());
-            state.setDiagnosticsFactoryMergeCallback((ctx) -> diagnosticsFactory.merge(ctx));
+            state.registerDiagnosticsFactory(
+                () -> diagnosticsFactory.reset(),
+                (ctx) -> diagnosticsFactory.merge(ctx));
             effectiveClientContext = diagnosticsFactory;
         }
 
