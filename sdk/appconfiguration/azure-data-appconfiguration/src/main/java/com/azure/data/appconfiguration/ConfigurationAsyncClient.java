@@ -1044,12 +1044,16 @@ public final class ConfigurationAsyncClient {
                     acceptDateTime,
                     settingFields,
                     null,
+                    null,
+                    null,
                     addTracingNamespace(context))
                                .map(pagedResponse -> toConfigurationSettingWithPagedResponse(pagedResponse))),
             nextLink -> withContext(
                 context -> serviceClient.getKeyValuesNextSinglePageAsync(
                     nextLink,
                     acceptDateTime,
+                    null,
+                    null,
                     addTracingNamespace(context))
                                .map(pagedResponse -> toConfigurationSettingWithPagedResponse(pagedResponse)))
         );
@@ -1119,11 +1123,15 @@ public final class ConfigurationAsyncClient {
                         null,
                         fields,
                         snapshotName,
+                        null,
+                        null,
                         addTracingNamespace(context))
                     .map(pagedResponse -> toConfigurationSettingWithPagedResponse(pagedResponse))),
             nextLink -> withContext(
                 context -> serviceClient.getKeyValuesNextSinglePageAsync(
                         nextLink,
+                        null,
+                        null,
                         null,
                         addTracingNamespace(context))
                     .map(pagedResponse -> toConfigurationSettingWithPagedResponse(pagedResponse)))

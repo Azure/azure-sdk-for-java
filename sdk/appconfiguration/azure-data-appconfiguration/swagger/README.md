@@ -30,7 +30,7 @@ autorest
 ```yaml
 namespace: com.azure.data.appconfiguration
 input-file: 
-- https://raw.githubusercontent.com/Azure/azure-rest-api-specs/2f7a3cbda00c6ae4199940d500e5212b6481d9ea/specification/appconfiguration/data-plane/Microsoft.AppConfiguration/preview/2022-11-01-preview/appconfiguration.json
+- https://raw.githubusercontent.com/Azure/azure-rest-api-specs/main/specification/appconfiguration/data-plane/Microsoft.AppConfiguration/stable/2023-10-01/appconfiguration.json
 models-subpackage: implementation.models
 custom-types-subpackage: models
 custom-types: KeyValueFields,KeyValueFilter,SettingFields,SnapshotSettingFilter,CompositionType,Snapshot,ConfigurationSettingsSnapshot,SnapshotStatus,SnapshotFields,SnapshotFields
