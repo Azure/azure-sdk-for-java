@@ -13,7 +13,7 @@ import com.fasterxml.jackson.annotation.JsonProperty;
 @Fluent
 public final class AppFiguresLinkedServiceTypeProperties {
     /*
-     * The username of the Appfigures source.
+     * The username of the Appfigures source. Type: string (or Expression with resultType string).
      */
     @JsonProperty(value = "userName", required = true)
     private Object username;
@@ -35,7 +35,8 @@ public final class AppFiguresLinkedServiceTypeProperties {
     }
 
     /**
-     * Get the username property: The username of the Appfigures source.
+     * Get the username property: The username of the Appfigures source. Type: string (or Expression with resultType
+     * string).
      *
      * @return the username value.
      */
@@ -44,7 +45,8 @@ public final class AppFiguresLinkedServiceTypeProperties {
     }
 
     /**
-     * Set the username property: The username of the Appfigures source.
+     * Set the username property: The username of the Appfigures source. Type: string (or Expression with resultType
+     * string).
      *
      * @param username the username value to set.
      * @return the AppFiguresLinkedServiceTypeProperties object itself.
