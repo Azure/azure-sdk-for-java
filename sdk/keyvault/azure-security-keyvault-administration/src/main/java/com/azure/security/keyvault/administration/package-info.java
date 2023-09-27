@@ -114,7 +114,7 @@
  *
  * <p><strong>Code Sample:</strong></p>
  * <p>The following code sample demonstrates how to asynchronously create a role definition in the key vault, using the
- * {@link com.azure.security.keyvault.administration.KeyVaultAccessControlClient#setRoleDefinition(KeyVaultRoleScope)}
+ * {@link com.azure.security.keyvault.administration.KeyVaultAccessControlClient#setRoleDefinition(com.azure.security.keyvault.administration.models.KeyVaultRoleScope, java.lang.String) KeyVaultAccessControlClient.setRoleDefinition(KeyVaultRoleScope, String)}
  * API.</p>
  *
  * <!-- src_embed com.azure.security.keyvault.administration.KeyVaultAccessControlClient.setRoleDefinition#KeyVaultRoleScope -->
@@ -140,8 +140,8 @@
  * <p><strong>Code Sample:</strong></p>
  * <p>The following code sample demonstrates how to asynchronously retrieve a role definition from the key vault, using
  * the
- * {@link com.azure.security.keyvault.administration.KeyVaultAccessControlClient#getRoleDefinition(KeyVaultRoleScope,
- * String)} API.</p>
+ * {@link com.azure.security.keyvault.administration.KeyVaultAccessControlClient#getRoleDefinition(com.azure.security.keyvault.administration.models.KeyVaultRoleScope, java.lang.String) KeyVaultAccessControlClient.getRoleDefinition(KeyVaultRoleScope, String)}
+ * API.</p>
  *
  * <!-- src_embed com.azure.security.keyvault.administration.KeyVaultAccessControlClient.getRoleDefinition#KeyVaultRoleScope-String -->
  * <pre>
@@ -168,7 +168,7 @@
  * <p><strong>Code Sample:</strong></p>
  * <p>The following code sample demonstrates how to asynchronously delete a role definition from the key vault, using
  * the
- * {@link com.azure.security.keyvault.administration.KeyVaultAccessControlClient#deleteRoleDefinition(KeyVaultRoleScope, String)}
+ * {@link com.azure.security.keyvault.administration.KeyVaultAccessControlClient#deleteRoleDefinition(com.azure.security.keyvault.administration.models.KeyVaultRoleScope, java.lang.String) KeyVaultAccessControlClient.deleteRoleDefinition(KeyVaultRoleScope, String)}
  * API.</p>
  *
  * <!-- src_embed com.azure.security.keyvault.administration.KeyVaultAccessControlClient.deleteRoleDefinition#KeyVaultRoleScope-String -->
@@ -194,7 +194,7 @@
  *
  * <p><strong>Code Sample:</strong></p>
  * <p>The following code sample demonstrates how to asynchronously create a role assignment in the key vault, using the
- * {@link com.azure.security.keyvault.administration.KeyVaultAccessControlClient#createRoleAssignment(KeyVaultRoleScope, String, String)}
+ * {@link com.azure.security.keyvault.administration.KeyVaultAccessControlClient#createRoleAssignment(com.azure.security.keyvault.administration.models.KeyVaultRoleScope, java.lang.String, java.lang.String) KeyVaultAccessControlClient.createRoleAssignment(KeyVaultRoleScope, String, String)}
  * API.</p>
  *
  * <!-- src_embed com.azure.security.keyvault.administration.KeyVaultAccessControlClient.createRoleAssignment#KeyVaultRoleScope-String-String -->
@@ -224,7 +224,7 @@
  * <p><strong>Code Sample:</strong></p>
  * <p>The following code sample demonstrates how to asynchronously retrieve a role definition from the key vault, using
  * the
- * {@link com.azure.security.keyvault.administration.KeyVaultAccessControlClient#getRoleDefinition(KeyVaultRoleScope, String)}
+ * {@link com.azure.security.keyvault.administration.KeyVaultAccessControlClient#getRoleDefinition(com.azure.security.keyvault.administration.models.KeyVaultRoleScope, java.lang.String) KeyVaultAccessControlClient.getRoleDefinition(KeyVaultRoleScope, String)}
  * API.</p>
  *
  * <!-- src_embed com.azure.security.keyvault.administration.KeyVaultAccessControlClient.getRoleAssignment#KeyVaultRoleScope-String -->
@@ -251,7 +251,7 @@
  * <p><strong>Code Sample:</strong></p>
  * <p>The following code sample demonstrates how to asynchronously delete a role definition from the key vault, using
  * the
- * {@link com.azure.security.keyvault.administration.KeyVaultAccessControlClient#deleteRoleDefinition(KeyVaultRoleScope, String)}
+ * {@link com.azure.security.keyvault.administration.KeyVaultAccessControlClient#deleteRoleDefinition(com.azure.security.keyvault.administration.models.KeyVaultRoleScope, java.lang.String) KeyVaultAccessControlClient.deleteRoleDefinition(KeyVaultRoleScope, String)}
  * API.</p>
  *
  * <!-- src_embed com.azure.security.keyvault.administration.KeyVaultAccessControlClient.deleteRoleAssignment#KeyVaultRoleScope-String -->
@@ -451,7 +451,8 @@
  *
  * <p><strong>Code Sample:</strong></p>
  * <p>The following code sample demonstrates how to synchronously restore a specific key from a backup, using
- * the {@link com.azure.security.keyvault.administration.KeyVaultSettingsClient#updateSetting(KeyVaultSetting)} API.</p>
+ * the
+ * {@link com.azure.security.keyvault.administration.KeyVaultSettingsClient#updateSetting(com.azure.security.keyvault.administration.models.KeyVaultSetting) KeyVaultSettingsClient.updateSetting(KeyVaultSetting)}
  *
  * <!-- src_embed com.azure.security.keyvault.administration.KeyVaultSettingsClient.updateSetting#KeyVaultSetting -->
  * <pre>
@@ -480,6 +481,3 @@
  * @see com.azure.security.keyvault.administration.KeyVaultSettingsClientBuilder
  */
 package com.azure.security.keyvault.administration;
-
-import com.azure.security.keyvault.administration.models.KeyVaultRoleScope;
-import com.azure.security.keyvault.administration.models.KeyVaultSetting;
