@@ -135,6 +135,17 @@ public class HttpLoggingPolicy implements HttpPipelinePolicy {
             .doOnError(throwable -> logger.warning("<-- HTTP FAILED: ", throwable));
     }
 
+    Mono<HttpResponse> processInternal(HttpPipelineCallContext context, HttpPipelineNextPolicy next,
+        ClientLogger logger) {
+        final long startNs = System.nanoTime();
+
+        return requestLogger.logRequest(logger, getRequestLoggingOptions(context))
+            .then(next.process())
+            .flatMap(response -> responseLogger.logResponse(logger,
+                getResponseLoggingOptions(response, startNs, context)))
+            .doOnError(throwable -> logger.warning("<-- HTTP FAILED: ", throwable));
+    }
+
     @Override
     public HttpResponse processSync(HttpPipelineCallContext context, HttpPipelineNextSyncPolicy next) {
         // No logging will be performed, trigger a no-op.
