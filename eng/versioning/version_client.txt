@@ -305,7 +305,7 @@ com.azure.resourcemanager:azure-resourcemanager-frontdoor;1.0.0-beta.3;1.0.0-bet
 com.azure.resourcemanager:azure-resourcemanager-mixedreality;1.0.0-beta.2;1.0.0-beta.3
 com.azure.resourcemanager:azure-resourcemanager-automation;1.0.0-beta.2;1.0.0-beta.3
 com.azure.resourcemanager:azure-resourcemanager-resourcemover;1.0.0;1.1.0-beta.1
-com.azure.resourcemanager:azure-resourcemanager-datafactory;1.0.0-beta.22;1.0.0-beta.23
+com.azure.resourcemanager:azure-resourcemanager-datafactory;1.0.0-beta.23;1.0.0-beta.24
 com.azure.resourcemanager:azure-resourcemanager-advisor;1.0.0-beta.2;1.0.0-beta.3
 com.azure.resourcemanager:azure-resourcemanager-appconfiguration;1.0.0-beta.7;1.0.0-beta.8
 com.azure.resourcemanager:azure-resourcemanager-attestation;1.0.0-beta.2;1.0.0-beta.3
@@ -430,6 +430,7 @@ com.azure.resourcemanager:azure-resourcemanager-defendereasm;1.0.0-beta.1;1.0.0-
 com.azure.resourcemanager:azure-resourcemanager-hdinsight-containers;1.0.0-beta.1;1.0.0-beta.2
 com.azure.resourcemanager:azure-resourcemanager-apicenter;1.0.0-beta.1;1.0.0-beta.2
 com.azure.resourcemanager:azure-resourcemanager-hybridconnectivity;1.0.0;1.1.0-beta.1
+com.azure.resourcemanager:azure-resourcemanager-playwrighttesting;1.0.0-beta.1;1.0.0-beta.2
 com.azure.tools:azure-sdk-archetype;1.0.0;1.2.0-beta.1
 com.azure.tools:azure-sdk-build-tool;1.0.0;1.1.0-beta.1
 

@@ -22,6 +22,18 @@ public final class PipelineExternalComputeScaleProperties {
     private Integer timeToLive;
 
     /*
+     * Number of the pipeline nodes, which should be greater than 0 and less than 11.
+     */
+    @JsonProperty(value = "numberOfPipelineNodes")
+    private Integer numberOfPipelineNodes;
+
+    /*
+     * Number of the the external nodes, which should be greater than 0 and less than 11.
+     */
+    @JsonProperty(value = "numberOfExternalNodes")
+    private Integer numberOfExternalNodes;
+
+    /*
      * PipelineExternalComputeScale properties for managed integration runtime.
      */
     @JsonIgnore private Map<String, Object> additionalProperties;
@@ -49,6 +61,50 @@ public final class PipelineExternalComputeScaleProperties {
      */
     public PipelineExternalComputeScaleProperties withTimeToLive(Integer timeToLive) {
         this.timeToLive = timeToLive;
+        return this;
+    }
+
+    /**
+     * Get the numberOfPipelineNodes property: Number of the pipeline nodes, which should be greater than 0 and less
+     * than 11.
+     *
+     * @return the numberOfPipelineNodes value.
+     */
+    public Integer numberOfPipelineNodes() {
+        return this.numberOfPipelineNodes;
+    }
+
+    /**
+     * Set the numberOfPipelineNodes property: Number of the pipeline nodes, which should be greater than 0 and less
+     * than 11.
+     *
+     * @param numberOfPipelineNodes the numberOfPipelineNodes value to set.
+     * @return the PipelineExternalComputeScaleProperties object itself.
+     */
+    public PipelineExternalComputeScaleProperties withNumberOfPipelineNodes(Integer numberOfPipelineNodes) {
+        this.numberOfPipelineNodes = numberOfPipelineNodes;
+        return this;
+    }
+
+    /**
+     * Get the numberOfExternalNodes property: Number of the the external nodes, which should be greater than 0 and less
+     * than 11.
+     *
+     * @return the numberOfExternalNodes value.
+     */
+    public Integer numberOfExternalNodes() {
+        return this.numberOfExternalNodes;
+    }
+
+    /**
+     * Set the numberOfExternalNodes property: Number of the the external nodes, which should be greater than 0 and less
+     * than 11.
+     *
+     * @param numberOfExternalNodes the numberOfExternalNodes value to set.
+     * @return the PipelineExternalComputeScaleProperties object itself.
+     */
+    public PipelineExternalComputeScaleProperties withNumberOfExternalNodes(Integer numberOfExternalNodes) {
+        this.numberOfExternalNodes = numberOfExternalNodes;
         return this;
     }
 

@@ -116,6 +116,31 @@ public final class MongoDbAtlasLinkedService extends LinkedService {
     }
 
     /**
+     * Get the driverVersion property: The driver version that you want to choose. Allowed value are v1 and v2. Type:
+     * string (or Expression with resultType string).
+     *
+     * @return the driverVersion value.
+     */
+    public Object driverVersion() {
+        return this.innerTypeProperties() == null ? null : this.innerTypeProperties().driverVersion();
+    }
+
+    /**
+     * Set the driverVersion property: The driver version that you want to choose. Allowed value are v1 and v2. Type:
+     * string (or Expression with resultType string).
+     *
+     * @param driverVersion the driverVersion value to set.
+     * @return the MongoDbAtlasLinkedService object itself.
+     */
+    public MongoDbAtlasLinkedService withDriverVersion(Object driverVersion) {
+        if (this.innerTypeProperties() == null) {
+            this.innerTypeProperties = new MongoDbAtlasLinkedServiceTypeProperties();
+        }
+        this.innerTypeProperties().withDriverVersion(driverVersion);
+        return this;
+    }
+
+    /**
      * Validates the instance.
      *
      * @throws IllegalArgumentException thrown if the instance is not valid.

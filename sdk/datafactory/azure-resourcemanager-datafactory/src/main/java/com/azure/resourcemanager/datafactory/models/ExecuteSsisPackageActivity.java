@@ -68,6 +68,20 @@ public final class ExecuteSsisPackageActivity extends ExecutionActivity {
 
     /** {@inheritDoc} */
     @Override
+    public ExecuteSsisPackageActivity withState(ActivityState state) {
+        super.withState(state);
+        return this;
+    }
+
+    /** {@inheritDoc} */
+    @Override
+    public ExecuteSsisPackageActivity withOnInactiveMarkAs(ActivityOnInactiveMarkAs onInactiveMarkAs) {
+        super.withOnInactiveMarkAs(onInactiveMarkAs);
+        return this;
+    }
+
+    /** {@inheritDoc} */
+    @Override
     public ExecuteSsisPackageActivity withDependsOn(List<ActivityDependency> dependsOn) {
         super.withDependsOn(dependsOn);
         return this;
