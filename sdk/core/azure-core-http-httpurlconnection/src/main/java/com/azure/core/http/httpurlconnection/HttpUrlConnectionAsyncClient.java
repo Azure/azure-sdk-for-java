@@ -84,7 +84,7 @@ public class HttpUrlConnectionAsyncClient implements HttpClient {
             try {
                 // Make connection
                 URL url = httpRequest.getUrl();
-                HttpURLConnection connection = (HttpURLConnection) url.openConnection();
+                HttpURLConnection connection = null;
 
                 if (proxyOptions != null) {
                     InetSocketAddress address = proxyOptions.getAddress();
@@ -98,7 +98,10 @@ public class HttpUrlConnectionAsyncClient implements HttpClient {
                             connection.setRequestProperty("Proxy-Authorization", "Basic " + authStringEnc);
                         }
                     }
+                } else {
+                    connection = (HttpURLConnection) url.openConnection();
                 }
+
                 if (connectionTimeout != null) {
                     connection.setConnectTimeout((int) connectionTimeout.toMillis());
                 }
