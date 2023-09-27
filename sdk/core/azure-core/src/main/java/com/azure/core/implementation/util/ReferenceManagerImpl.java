@@ -3,7 +3,7 @@
 
 package com.azure.core.implementation.util;
 
-import com.azure.core.implementation.Invoker;
+import com.azure.core.implementation.ReflectiveInvoker;
 import com.azure.core.implementation.ReflectionUtils;
 import com.azure.core.util.ReferenceManager;
 import com.azure.core.util.logging.ClientLogger;
@@ -27,11 +27,11 @@ public final class ReferenceManagerImpl implements ReferenceManager {
     private static final String BASE_THREAD_NAME = "azure-sdk-referencemanager";
 
     private static final Object CLEANER;
-    private static final Invoker CLEANER_REGISTER;
+    private static final ReflectiveInvoker CLEANER_REGISTER;
 
     static {
         Object cleaner = null;
-        Invoker cleanerRegister = null;
+        ReflectiveInvoker cleanerRegister = null;
         try {
             Class<?> cleanerClass = Class.forName("java.lang.ref.Cleaner");
             cleaner = cleanerClass.getDeclaredMethod("create", ThreadFactory.class)

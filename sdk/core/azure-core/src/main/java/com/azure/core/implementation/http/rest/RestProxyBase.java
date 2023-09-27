@@ -22,7 +22,7 @@ import com.azure.core.http.rest.PagedResponseBase;
 import com.azure.core.http.rest.RequestOptions;
 import com.azure.core.http.rest.Response;
 import com.azure.core.http.rest.ResponseBase;
-import com.azure.core.implementation.Invoker;
+import com.azure.core.implementation.ReflectiveInvoker;
 import com.azure.core.implementation.ReflectionSerializable;
 import com.azure.core.implementation.TypeUtil;
 import com.azure.core.implementation.http.UnexpectedExceptionInformation;
@@ -165,8 +165,8 @@ public abstract class RestProxyBase {
         // Ideally, in the future the SDKs won't need to dabble in reflection here as the Response subtypes should be
         // given a way to register their constructor as a callback method that consumes HttpDecodedResponse and the
         // body as an Object.
-        Invoker constructorInvoker = RESPONSE_CONSTRUCTORS_CACHE.get(cls);
-        return RESPONSE_CONSTRUCTORS_CACHE.invoke(constructorInvoker, response, bodyAsObject);
+        ReflectiveInvoker constructorReflectiveInvoker = RESPONSE_CONSTRUCTORS_CACHE.get(cls);
+        return RESPONSE_CONSTRUCTORS_CACHE.invoke(constructorReflectiveInvoker, response, bodyAsObject);
     }
 
     /**
@@ -351,9 +351,9 @@ public abstract class RestProxyBase {
             // Finally, if the HttpResponseException subclass doesn't exist in azure-core, use reflection to create a
             // new instance of it.
             try {
-                Invoker invoker = RESPONSE_EXCEPTION_CONSTRUCTOR_CACHE.get(exceptionType,
+                ReflectiveInvoker reflectiveInvoker = RESPONSE_EXCEPTION_CONSTRUCTOR_CACHE.get(exceptionType,
                     exception.getExceptionBodyType());
-                return ResponseExceptionConstructorCache.invoke(invoker, exceptionMessage.toString(), httpResponse,
+                return ResponseExceptionConstructorCache.invoke(reflectiveInvoker, exceptionMessage.toString(), httpResponse,
                     responseDecodedContent);
             } catch (RuntimeException e) {
                 // And if reflection fails, return an HttpResponseException.

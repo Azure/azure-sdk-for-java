@@ -3,7 +3,7 @@
 
 package com.azure.core.serializer.json.jackson.implementation;
 
-import com.azure.core.implementation.Invoker;
+import com.azure.core.implementation.ReflectiveInvoker;
 import com.azure.core.implementation.ReflectionUtils;
 import com.azure.core.util.logging.ClientLogger;
 import com.azure.json.JsonReader;
@@ -18,7 +18,7 @@ public class JsonSerializableDeserializer extends JsonDeserializer<JsonSerializa
     private static final ClientLogger LOGGER = new ClientLogger(JsonSerializableDeserializer.class);
 
     private final Class<? extends JsonSerializable<?>> jsonSerializableType;
-    private final Invoker readJson;
+    private final ReflectiveInvoker readJson;
 
     /**
      * Creates an instance of {@link JsonSerializableDeserializer}.

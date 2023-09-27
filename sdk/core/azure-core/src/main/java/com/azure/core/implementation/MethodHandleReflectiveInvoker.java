@@ -5,14 +5,14 @@ package com.azure.core.implementation;
 import java.lang.invoke.MethodHandle;
 
 /**
- * {@link MethodHandle}-based implementation of {@link Invoker}.
+ * {@link MethodHandle}-based implementation of {@link ReflectiveInvoker}.
  */
-final class MethodHandleInvoker implements Invoker {
+final class MethodHandleReflectiveInvoker implements ReflectiveInvoker {
     private static final Object[] NO_ARGS = new Object[0];
 
     private final MethodHandle methodHandle;
 
-    MethodHandleInvoker(MethodHandle methodHandle) {
+    MethodHandleReflectiveInvoker(MethodHandle methodHandle) {
         this.methodHandle = methodHandle;
     }
 

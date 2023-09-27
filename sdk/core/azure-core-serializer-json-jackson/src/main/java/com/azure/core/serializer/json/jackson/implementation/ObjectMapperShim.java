@@ -6,7 +6,7 @@ package com.azure.core.serializer.json.jackson.implementation;
 import com.azure.core.annotation.HeaderCollection;
 import com.azure.core.http.HttpHeader;
 import com.azure.core.http.HttpHeaders;
-import com.azure.core.implementation.Invoker;
+import com.azure.core.implementation.ReflectiveInvoker;
 import com.azure.core.implementation.ReflectionUtils;
 import com.azure.core.implementation.TypeUtil;
 import com.azure.core.util.logging.ClientLogger;
@@ -42,11 +42,11 @@ public final class ObjectMapperShim {
     private static final int CACHE_SIZE_LIMIT = 10000;
 
     private static final Map<Type, JavaType> TYPE_TO_JAVA_TYPE_CACHE = new ConcurrentHashMap<>();
-    private static final Map<Type, Invoker> TYPE_TO_STRONGLY_TYPED_HEADERS_CONSTRUCTOR_CACHE
+    private static final Map<Type, ReflectiveInvoker> TYPE_TO_STRONGLY_TYPED_HEADERS_CONSTRUCTOR_CACHE
         = new ConcurrentHashMap<>();
 
     // Dummy constant that indicates an HttpHeaders-based constructor wasn't found for the Type.
-    private static final Invoker NO_CONSTRUCTOR_INVOKER = ReflectionUtils.createNoOpInvoker();
+    private static final ReflectiveInvoker NO_CONSTRUCTOR_REFLECTIVE_INVOKER = ReflectionUtils.createNoOpInvoker();
 
     /**
      * Creates the JSON {@code ObjectMapper} capable of serializing azure.core types, with flattening and additional
@@ -283,9 +283,9 @@ public final class ObjectMapperShim {
         }
 
         try {
-            Invoker constructor = getFromHeadersConstructorCache(deserializedHeadersType);
+            ReflectiveInvoker constructor = getFromHeadersConstructorCache(deserializedHeadersType);
 
-            if (constructor != NO_CONSTRUCTOR_INVOKER) {
+            if (constructor != NO_CONSTRUCTOR_REFLECTIVE_INVOKER) {
                 return (T) constructor.invokeWithArguments(headers);
             }
         } catch (Exception exception) {
@@ -409,7 +409,7 @@ public final class ObjectMapperShim {
         return TYPE_TO_JAVA_TYPE_CACHE.computeIfAbsent(key, compute);
     }
 
-    private static Invoker getFromHeadersConstructorCache(Type key) {
+    private static ReflectiveInvoker getFromHeadersConstructorCache(Type key) {
         if (TYPE_TO_STRONGLY_TYPED_HEADERS_CONSTRUCTOR_CACHE.size() >= CACHE_SIZE_LIMIT) {
             TYPE_TO_STRONGLY_TYPED_HEADERS_CONSTRUCTOR_CACHE.clear();
         }
@@ -434,7 +434,7 @@ public final class ObjectMapperShim {
                 // new type is seen or the cache is cleared due to reaching capacity.
                 //
                 // With this change, benchmarking deserialize(HttpHeaders, Type) saw a 20% performance improvement.
-                return NO_CONSTRUCTOR_INVOKER;
+                return NO_CONSTRUCTOR_REFLECTIVE_INVOKER;
             }
         });
     }

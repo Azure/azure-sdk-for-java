@@ -3,7 +3,7 @@
 
 package com.azure.core.implementation.jackson;
 
-import com.azure.core.implementation.Invoker;
+import com.azure.core.implementation.ReflectiveInvoker;
 import com.azure.core.implementation.ReflectionUtils;
 import com.azure.core.util.logging.ClientLogger;
 import com.azure.json.JsonReader;
@@ -35,7 +35,7 @@ final class JsonSerializableDeserializer extends JsonDeserializer<JsonSerializab
         });
 
     private final Class<? extends JsonSerializable<?>> jsonSerializableType;
-    private final Invoker readJson;
+    private final ReflectiveInvoker readJson;
 
     /**
      * Gets a module wrapping this deserializer as an adapter for the Jackson ObjectMapper.

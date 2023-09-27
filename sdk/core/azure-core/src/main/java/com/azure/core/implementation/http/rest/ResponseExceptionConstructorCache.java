@@ -5,7 +5,7 @@ package com.azure.core.implementation.http.rest;
 
 import com.azure.core.exception.HttpResponseException;
 import com.azure.core.http.HttpResponse;
-import com.azure.core.implementation.Invoker;
+import com.azure.core.implementation.ReflectiveInvoker;
 import com.azure.core.implementation.ReflectionUtils;
 import com.azure.core.util.logging.ClientLogger;
 
@@ -13,24 +13,24 @@ import java.util.Map;
 import java.util.concurrent.ConcurrentHashMap;
 
 /**
- * A concurrent cache of {@link HttpResponseException} {@link Invoker} constructors.
+ * A concurrent cache of {@link HttpResponseException} {@link ReflectiveInvoker} constructors.
  */
 public final class ResponseExceptionConstructorCache {
-    private static final Map<Class<? extends HttpResponseException>, Invoker> CACHE = new ConcurrentHashMap<>();
+    private static final Map<Class<? extends HttpResponseException>, ReflectiveInvoker> CACHE = new ConcurrentHashMap<>();
     private static final ClientLogger LOGGER = new ClientLogger(ResponseExceptionConstructorCache.class);
 
     /**
-     * Identifies the suitable {@link Invoker} to construct the given exception class.
+     * Identifies the suitable {@link ReflectiveInvoker} to construct the given exception class.
      *
      * @param exceptionClass The exception class.
-     * @return The {@link Invoker} that is capable of constructing an instance of the class, or null if no handle
+     * @return The {@link ReflectiveInvoker} that is capable of constructing an instance of the class, or null if no handle
      * is found.
      */
-    public Invoker get(Class<? extends HttpResponseException> exceptionClass, Class<?> exceptionBodyType) {
+    public ReflectiveInvoker get(Class<? extends HttpResponseException> exceptionClass, Class<?> exceptionBodyType) {
         return CACHE.computeIfAbsent(exceptionClass, key -> locateExceptionConstructor(key, exceptionBodyType));
     }
 
-    private static Invoker locateExceptionConstructor(Class<? extends HttpResponseException> exceptionClass,
+    private static ReflectiveInvoker locateExceptionConstructor(Class<? extends HttpResponseException> exceptionClass,
         Class<?> exceptionBodyType) {
         try {
             return ReflectionUtils.getConstructorInvoker(exceptionClass,
@@ -45,10 +45,10 @@ public final class ResponseExceptionConstructorCache {
     }
 
     @SuppressWarnings("unchecked")
-    static <T extends HttpResponseException> T invoke(Invoker invoker, String exceptionMessage,
+    static <T extends HttpResponseException> T invoke(ReflectiveInvoker reflectiveInvoker, String exceptionMessage,
         HttpResponse httpResponse, Object exceptionBody) {
         try {
-            return (T) invoker.invokeWithArguments(exceptionMessage, httpResponse, exceptionBody);
+            return (T) reflectiveInvoker.invokeWithArguments(exceptionMessage, httpResponse, exceptionBody);
         } catch (Exception exception) {
             if (exception instanceof RuntimeException) {
                 throw LOGGER.logExceptionAsError((RuntimeException) exception);

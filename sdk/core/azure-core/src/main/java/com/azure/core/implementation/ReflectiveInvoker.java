@@ -5,7 +5,7 @@ package com.azure.core.implementation;
 /**
  * Interface that defines an implementation-agnostic way to invoke APIs reflectively.
  */
-public interface Invoker {
+public interface ReflectiveInvoker {
     /**
      * Invokes an API that doesn't have a target.
      * <p>

@@ -5,12 +5,12 @@ package com.azure.core.implementation;
 import java.lang.reflect.Method;
 
 /**
- * {@link Method}-based implementation of {@link Invoker}.
+ * {@link Method}-based implementation of {@link ReflectiveInvoker}.
  */
-final class MethodInvoker implements Invoker {
+final class MethodReflectiveInvoker implements ReflectiveInvoker {
     private final Method method;
 
-    MethodInvoker(Method method) {
+    MethodReflectiveInvoker(Method method) {
         this.method = method;
     }
 

@@ -33,22 +33,22 @@ public abstract class ReflectionUtils {
 
 
     /**
-     * Creates an {@link Invoker} instance that will invoke a {@link Method}.
+     * Creates an {@link ReflectiveInvoker} instance that will invoke a {@link Method}.
      * <p>
      * Calls {@link #getMethodInvoker(Class, Method, boolean)} with {@code scopeToAzureCore} set to true.
      *
      * @param targetClass The class that contains the method.
      * @param method The method to invoke.
-     * @return An {@link Invoker} instance that will invoke the method.
+     * @return An {@link ReflectiveInvoker} instance that will invoke the method.
      * @throws NullPointerException If {@code method} is null.
-     * @throws Exception If the {@link Invoker} cannot be created.
+     * @throws Exception If the {@link ReflectiveInvoker} cannot be created.
      */
-    public static Invoker getMethodInvoker(Class<?> targetClass, Method method) throws Exception {
+    public static ReflectiveInvoker getMethodInvoker(Class<?> targetClass, Method method) throws Exception {
         return getMethodInvoker(targetClass, method, true);
     }
 
     /**
-     * Creates an {@link Invoker} instance that will invoke a {@link Method}.
+     * Creates an {@link ReflectiveInvoker} instance that will invoke a {@link Method}.
      * <p>
      * {@code targetClass} may be null but when using an environment that supports MethodHandles for handling reflection
      * this may result in exceptions being thrown due to the inability to scope the MethodHandle to a module. To attempt
@@ -67,11 +67,11 @@ public abstract class ReflectionUtils {
      * @param method The method to invoke.
      * @param scopeToAzureCore If Java 9+ modules is being used this will scope MethodHandle-based reflection to using
      * {@code azure-core} as the scoped module, otherwise this is ignored.
-     * @return An {@link Invoker} instance that will invoke the method.
+     * @return An {@link ReflectiveInvoker} instance that will invoke the method.
      * @throws NullPointerException If {@code method} is null.
-     * @throws Exception If the {@link Invoker} cannot be created.
+     * @throws Exception If the {@link ReflectiveInvoker} cannot be created.
      */
-    public static Invoker getMethodInvoker(Class<?> targetClass, Method method, boolean scopeToAzureCore)
+    public static ReflectiveInvoker getMethodInvoker(Class<?> targetClass, Method method, boolean scopeToAzureCore)
         throws Exception {
         if (method == null) {
             throw LOGGER.logExceptionAsError(new NullPointerException("'method' cannot be null."));
@@ -82,23 +82,23 @@ public abstract class ReflectionUtils {
     }
 
     /**
-     * Creates an {@link Invoker} instance that will invoke a {@link Constructor}.
+     * Creates an {@link ReflectiveInvoker} instance that will invoke a {@link Constructor}.
      * <p>
      * Calls {@link #getConstructorInvoker(Class, Constructor, boolean)} with {@code scopeToAzureCore} set to true.
      *
      * @param targetClass The class that contains the constructor.
      * @param constructor The constructor to invoke.
-     * @return An {@link Invoker} instance that will invoke the constructor.
+     * @return An {@link ReflectiveInvoker} instance that will invoke the constructor.
      * @throws NullPointerException If {@code constructor} is null.
-     * @throws Exception If the {@link Invoker} cannot be created.
+     * @throws Exception If the {@link ReflectiveInvoker} cannot be created.
      */
-    public static Invoker getConstructorInvoker(Class<?> targetClass, Constructor<?> constructor)
+    public static ReflectiveInvoker getConstructorInvoker(Class<?> targetClass, Constructor<?> constructor)
         throws Exception {
         return getConstructorInvoker(targetClass, constructor, true);
     }
 
     /**
-     * Creates an {@link Invoker} instance that will invoke a {@link Constructor}.
+     * Creates an {@link ReflectiveInvoker} instance that will invoke a {@link Constructor}.
      * <p>
      * {@code targetClass} may be null but when using an environment that supports MethodHandles for handling reflection
      * this may result in exceptions being thrown due to the inability to scope the MethodHandle to a module. To attempt
@@ -117,11 +117,11 @@ public abstract class ReflectionUtils {
      * @param constructor The constructor to invoke.
      * @param scopeToAzureCore If Java 9+ modules is being used this will scope MethodHandle-based reflection to using
      * {@code azure-core} as the scoped module, otherwise this is ignored.
-     * @return An {@link Invoker} instance that will invoke the constructor.
+     * @return An {@link ReflectiveInvoker} instance that will invoke the constructor.
      * @throws NullPointerException If {@code constructor} is null.
-     * @throws Exception If the {@link Invoker} cannot be created.
+     * @throws Exception If the {@link ReflectiveInvoker} cannot be created.
      */
-    public static Invoker getConstructorInvoker(Class<?> targetClass, Constructor<?> constructor,
+    public static ReflectiveInvoker getConstructorInvoker(Class<?> targetClass, Constructor<?> constructor,
         boolean scopeToAzureCore) throws Exception {
         if (constructor == null) {
             throw LOGGER.logExceptionAsError(new NullPointerException("'constructor' cannot be null."));
@@ -141,16 +141,16 @@ public abstract class ReflectionUtils {
     }
 
     /**
-     * Creates a dummy {@link Invoker} that will always return null. Used for scenarios where an {@link Invoker} is
+     * Creates a dummy {@link ReflectiveInvoker} that will always return null. Used for scenarios where an {@link ReflectiveInvoker} is
      * needed as an identifier but will never be used.
      *
-     * @return A dummy {@link Invoker} that will always return null.
+     * @return A dummy {@link ReflectiveInvoker} that will always return null.
      */
-    public static Invoker createNoOpInvoker() {
-        return new NoOpInvoker();
+    public static ReflectiveInvoker createNoOpInvoker() {
+        return new NoOpReflectiveInvoker();
     }
 
-    private static final class NoOpInvoker implements Invoker {
+    private static final class NoOpReflectiveInvoker implements ReflectiveInvoker {
         @Override
         public Object invokeStatic(Object... args) {
             return null;

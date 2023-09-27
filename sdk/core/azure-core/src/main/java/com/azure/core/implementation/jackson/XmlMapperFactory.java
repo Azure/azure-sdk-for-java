@@ -3,7 +3,7 @@
 
 package com.azure.core.implementation.jackson;
 
-import com.azure.core.implementation.Invoker;
+import com.azure.core.implementation.ReflectiveInvoker;
 import com.azure.core.implementation.ReflectionUtils;
 import com.azure.core.util.logging.ClientLogger;
 import com.azure.core.util.logging.LogLevel;
@@ -20,11 +20,11 @@ public final class XmlMapperFactory {
     private static final String XML_MAPPER_BUILDER = "com.fasterxml.jackson.dataformat.xml.XmlMapper$Builder";
     private static final String FROM_XML_PARSER = "com.fasterxml.jackson.dataformat.xml.deser.FromXmlParser$Feature";
     private static final String TO_XML_GENERATOR = "com.fasterxml.jackson.dataformat.xml.ser.ToXmlGenerator$Feature";
-    private final Invoker createXmlMapperBuilder;
-    private final Invoker defaultUseWrapper;
-    private final Invoker enableWriteXmlDeclaration;
+    private final ReflectiveInvoker createXmlMapperBuilder;
+    private final ReflectiveInvoker defaultUseWrapper;
+    private final ReflectiveInvoker enableWriteXmlDeclaration;
     private final Object writeXmlDeclaration;
-    private final Invoker enableEmptyElementAsNull;
+    private final ReflectiveInvoker enableEmptyElementAsNull;
     private final Object emptyElementAsNull;
 
     final boolean useJackson212;
@@ -35,11 +35,11 @@ public final class XmlMapperFactory {
     private XmlMapperFactory() {
         ClassLoader thisClassLoader = XmlMapperFactory.class.getClassLoader();
 
-        Invoker createXmlMapperBuilder;
-        Invoker defaultUseWrapper;
-        Invoker enableWriteXmlDeclaration;
+        ReflectiveInvoker createXmlMapperBuilder;
+        ReflectiveInvoker defaultUseWrapper;
+        ReflectiveInvoker enableWriteXmlDeclaration;
         Object writeXmlDeclaration;
-        Invoker enableEmptyElementAsNull;
+        ReflectiveInvoker enableEmptyElementAsNull;
         Object emptyElementAsNull;
         try {
             Class<?> xmlMapper = Class.forName(XML_MAPPER, true, thisClassLoader);

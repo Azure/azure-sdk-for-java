@@ -3,7 +3,7 @@
 
 package com.azure.core.serializer.json.gson.implementation;
 
-import com.azure.core.implementation.Invoker;
+import com.azure.core.implementation.ReflectiveInvoker;
 import com.azure.core.implementation.ReflectionUtils;
 import com.azure.core.util.logging.ClientLogger;
 import com.azure.json.JsonSerializable;
@@ -20,7 +20,7 @@ public class JsonSerializableTypeAdapter extends TypeAdapter<JsonSerializable<?>
     private static final ClientLogger LOGGER = new ClientLogger(JsonSerializableTypeAdapter.class);
 
     private final Class<? extends JsonSerializable<?>> jsonSerializableType;
-    private final Invoker readJson;
+    private final ReflectiveInvoker readJson;
 
     /**
      * Creates an instance of {@link JsonSerializableTypeAdapter}.

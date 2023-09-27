@@ -3,7 +3,7 @@
 
 package com.azure.core.serializer.json.jackson.implementation;
 
-import com.azure.core.implementation.Invoker;
+import com.azure.core.implementation.ReflectiveInvoker;
 import com.azure.core.implementation.ReflectionUtils;
 import com.azure.core.util.logging.ClientLogger;
 import com.azure.core.util.logging.LogLevel;
@@ -20,10 +20,10 @@ import java.util.concurrent.ConcurrentHashMap;
  */
 final class HeaderCollectionHandler {
     private static final int CACHE_SIZE_LIMIT = 10000;
-    private static final Map<Field, Invoker> FIELD_TO_SETTER_INVOKER_CACHE = new ConcurrentHashMap<>();
+    private static final Map<Field, ReflectiveInvoker> FIELD_TO_SETTER_INVOKER_CACHE = new ConcurrentHashMap<>();
 
     // Dummy constant that indicates no setter was found for the Field.
-    private static final Invoker NO_SETTER_INVOKER = ReflectionUtils.createNoOpInvoker();
+    private static final ReflectiveInvoker NO_SETTER_REFLECTIVE_INVOKER = ReflectionUtils.createNoOpInvoker();
 
     private final String prefix;
     private final int prefixLength;
@@ -84,14 +84,15 @@ final class HeaderCollectionHandler {
         final String clazzSimpleName = clazz.getSimpleName();
         final String fieldName = declaringField.getName();
 
-        Invoker setterInvoker = getFromCache(declaringField, clazz, clazzSimpleName, fieldName, logger);
+        ReflectiveInvoker
+            setterReflectiveInvoker = getFromCache(declaringField, clazz, clazzSimpleName, fieldName, logger);
 
-        if (setterInvoker == NO_SETTER_INVOKER) {
+        if (setterReflectiveInvoker == NO_SETTER_REFLECTIVE_INVOKER) {
             return false;
         }
 
         try {
-            setterInvoker.invokeWithArguments(deserializedHeaders, values);
+            setterReflectiveInvoker.invokeWithArguments(deserializedHeaders, values);
             logger.log(LogLevel.VERBOSE, () ->
                 "Set header collection " + fieldName + " on class " + clazzSimpleName + " using reflection.");
 
@@ -108,7 +109,7 @@ final class HeaderCollectionHandler {
         return "set" + fieldName.substring(0, 1).toUpperCase(Locale.ROOT) + fieldName.substring(1);
     }
 
-    private static Invoker getFromCache(Field key, Class<?> clazz, String clazzSimpleName,
+    private static ReflectiveInvoker getFromCache(Field key, Class<?> clazz, String clazzSimpleName,
         String fieldName, ClientLogger logger) {
         if (FIELD_TO_SETTER_INVOKER_CACHE.size() >= CACHE_SIZE_LIMIT) {
             FIELD_TO_SETTER_INVOKER_CACHE.clear();
@@ -118,13 +119,13 @@ final class HeaderCollectionHandler {
             String setterName = getPotentialSetterName(fieldName);
 
             try {
-                Invoker invoker = ReflectionUtils.getMethodInvoker(clazz, clazz.getDeclaredMethod(setterName,
+                ReflectiveInvoker reflectiveInvoker = ReflectionUtils.getMethodInvoker(clazz, clazz.getDeclaredMethod(setterName,
                     Map.class));
 
                 logger.log(LogLevel.VERBOSE, () ->
                     "Using invoker for setter " + setterName + " on class " + clazzSimpleName + ".");
 
-                return invoker;
+                return reflectiveInvoker;
             } catch (Exception ex) {
                 logger.log(LogLevel.VERBOSE, () ->
                     "Failed to retrieve invoker for setter " + setterName + " on class " + clazzSimpleName
@@ -139,7 +140,7 @@ final class HeaderCollectionHandler {
             // Now the implementation returns a dummy constant when there is no setter for the field. This now results
             // in this case properly inserting into the cache and only running when a new type is seen or the cache is
             // cleared due to reaching capacity.
-            return NO_SETTER_INVOKER;
+            return NO_SETTER_REFLECTIVE_INVOKER;
         });
     }
 }

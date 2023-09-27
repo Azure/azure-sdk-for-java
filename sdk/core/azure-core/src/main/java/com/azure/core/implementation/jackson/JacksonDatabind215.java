@@ -3,7 +3,7 @@
 
 package com.azure.core.implementation.jackson;
 
-import com.azure.core.implementation.Invoker;
+import com.azure.core.implementation.ReflectiveInvoker;
 import com.azure.core.implementation.ReflectionUtils;
 import com.azure.core.util.logging.ClientLogger;
 import com.fasterxml.jackson.core.JsonFactory;
@@ -17,20 +17,20 @@ final class JacksonDatabind215 {
     private static final String STREAM_READ_CONSTRAINTS = "com.fasterxml.jackson.core.StreamReadConstraints";
     private static final String STREAM_READ_CONSTRAINTS_BUILDER = STREAM_READ_CONSTRAINTS + "$Builder";
 
-    private static final Invoker CREATE_STREAM_READ_CONSTRAINTS_BUILDER;
-    private static final Invoker SET_MAX_STRING_LENGTH;
-    private static final Invoker BUILD_STREAM_READ_CONSTRAINTS;
-    private static final Invoker SET_STREAM_READ_CONSTRAINTS;
+    private static final ReflectiveInvoker CREATE_STREAM_READ_CONSTRAINTS_BUILDER;
+    private static final ReflectiveInvoker SET_MAX_STRING_LENGTH;
+    private static final ReflectiveInvoker BUILD_STREAM_READ_CONSTRAINTS;
+    private static final ReflectiveInvoker SET_STREAM_READ_CONSTRAINTS;
 
     private static final boolean USE_JACKSON_215;
 
     static {
         ClassLoader thisClassLoader = JacksonDatabind215.class.getClassLoader();
 
-        Invoker createStreamReadConstraintsBuilder = null;
-        Invoker setMaxStringLength = null;
-        Invoker buildStreamReadConstraints = null;
-        Invoker setStreamReadConstraints = null;
+        ReflectiveInvoker createStreamReadConstraintsBuilder = null;
+        ReflectiveInvoker setMaxStringLength = null;
+        ReflectiveInvoker buildStreamReadConstraints = null;
+        ReflectiveInvoker setStreamReadConstraints = null;
         boolean useJackson215 = false;
         try {
             Class<?> streamReadConstraints = Class.forName(STREAM_READ_CONSTRAINTS, true, thisClassLoader);

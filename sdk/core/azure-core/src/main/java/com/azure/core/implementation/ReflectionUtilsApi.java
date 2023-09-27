@@ -7,12 +7,12 @@ import java.lang.reflect.Field;
 import java.lang.reflect.Method;
 
 /**
- * Interface that defines implementation-agnostic methods for creating {@link Invoker Invokers} that will invoke
+ * Interface that defines implementation-agnostic methods for creating {@link ReflectiveInvoker Invokers} that will invoke
  * {@link Method Methods}, {@link Constructor Constructors}, and {@link Field Fields}.
  */
 interface ReflectionUtilsApi {
     /**
-     * Creates an {@link Invoker} instance that will invoke a {@link Method}.
+     * Creates an {@link ReflectiveInvoker} instance that will invoke a {@link Method}.
      * <p>
      * {@code targetClass} may be null but when using an environment that supports MethodHandles for handling reflection
      * this may result in exceptions being thrown due to the inability to scope the MethodHandle to a module. To attempt
@@ -31,14 +31,14 @@ interface ReflectionUtilsApi {
      * @param method The method to invoke.
      * @param scopeToAzureCore If Java 9+ modules is being used this will scope MethodHandle-based reflection to using
      * {@code azure-core} as the scoped module, otherwise this is ignored.
-     * @return An {@link Invoker} instance that will invoke the method.
+     * @return An {@link ReflectiveInvoker} instance that will invoke the method.
      * @throws NullPointerException If {@code method} is null.
-     * @throws Exception If the {@link Invoker} cannot be created.
+     * @throws Exception If the {@link ReflectiveInvoker} cannot be created.
      */
-    Invoker getMethodInvoker(Class<?> targetClass, Method method, boolean scopeToAzureCore) throws Exception;
+    ReflectiveInvoker getMethodInvoker(Class<?> targetClass, Method method, boolean scopeToAzureCore) throws Exception;
 
     /**
-     * Creates an {@link Invoker} instance that will invoke a {@link Constructor}.
+     * Creates an {@link ReflectiveInvoker} instance that will invoke a {@link Constructor}.
      * <p>
      * {@code targetClass} may be null but when using an environment that supports MethodHandles for handling reflection
      * this may result in exceptions being thrown due to the inability to scope the MethodHandle to a module. To attempt
@@ -57,11 +57,11 @@ interface ReflectionUtilsApi {
      * @param constructor The constructor to invoke.
      * @param scopeToAzureCore If Java 9+ modules is being used this will scope MethodHandle-based reflection to using
      * {@code azure-core} as the scoped module, otherwise this is ignored.
-     * @return An {@link Invoker} instance that will invoke the constructor.
+     * @return An {@link ReflectiveInvoker} instance that will invoke the constructor.
      * @throws NullPointerException If {@code constructor} is null.
-     * @throws Exception If the {@link Invoker} cannot be created.
+     * @throws Exception If the {@link ReflectiveInvoker} cannot be created.
      */
-    Invoker getConstructorInvoker(Class<?> targetClass, Constructor<?> constructor, boolean scopeToAzureCore)
+    ReflectiveInvoker getConstructorInvoker(Class<?> targetClass, Constructor<?> constructor, boolean scopeToAzureCore)
         throws Exception;
 
     /**

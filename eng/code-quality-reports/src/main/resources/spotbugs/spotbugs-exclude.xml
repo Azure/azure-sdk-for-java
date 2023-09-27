@@ -462,7 +462,7 @@
   <!-- The casting problems do not exist in Azure use cases -->
   <Match>
     <Or>
-      <Class name="com.azure.core.implementation.MethodHandleInvoker"/>
+      <Class name="com.azure.core.implementation.MethodHandleReflectiveInvoker"/>
       <Class name="com.azure.core.implementation.ReflectionUtilsMethodHandle"/>
       <Class name="com.azure.core.implementation.TypeUtil"/>
     </Or>

@@ -29,29 +29,29 @@ import java.util.function.Function;
  */
 public final class ReflectionSerializable {
     private static final ClientLogger LOGGER = new ClientLogger(ReflectionSerializable.class);
-    private static final Map<Class<?>, Invoker> FROM_JSON_CACHE;
+    private static final Map<Class<?>, ReflectiveInvoker> FROM_JSON_CACHE;
 
     private static final Class<?> XML_SERIALIZABLE;
     private static final Class<?> XML_READER;
 
-    private static final Invoker XML_READER_CREATOR;
-    private static final Invoker XML_WRITER_CREATOR;
-    private static final Invoker XML_WRITER_WRITE_XML_START_DOCUMENT;
-    private static final Invoker XML_WRITER_WRITE_XML_SERIALIZABLE;
-    private static final Invoker XML_WRITER_FLUSH;
+    private static final ReflectiveInvoker XML_READER_CREATOR;
+    private static final ReflectiveInvoker XML_WRITER_CREATOR;
+    private static final ReflectiveInvoker XML_WRITER_WRITE_XML_START_DOCUMENT;
+    private static final ReflectiveInvoker XML_WRITER_WRITE_XML_SERIALIZABLE;
+    private static final ReflectiveInvoker XML_WRITER_FLUSH;
     static final boolean XML_SERIALIZABLE_SUPPORTED;
-    private static final Map<Class<?>, Invoker> FROM_XML_CACHE;
+    private static final Map<Class<?>, ReflectiveInvoker> FROM_XML_CACHE;
 
     static {
         FROM_JSON_CACHE = new ConcurrentHashMap<>();
 
         Class<?> xmlSerializable = null;
         Class<?> xmlReader = null;
-        Invoker xmlReaderCreator = null;
-        Invoker xmlWriterCreator = null;
-        Invoker xmlWriterWriteStartDocument = null;
-        Invoker xmlWriterWriteXmlSerializable = null;
-        Invoker xmlWriterFlush = null;
+        ReflectiveInvoker xmlReaderCreator = null;
+        ReflectiveInvoker xmlWriterCreator = null;
+        ReflectiveInvoker xmlWriterWriteStartDocument = null;
+        ReflectiveInvoker xmlWriterWriteXmlSerializable = null;
+        ReflectiveInvoker xmlWriterFlush = null;
         boolean xmlSerializableSupported = false;
         try {
             xmlSerializable = Class.forName("com.azure.xml.XmlSerializable");
@@ -179,7 +179,7 @@ public final class ReflectionSerializable {
             FROM_JSON_CACHE.clear();
         }
 
-        Invoker readJson = FROM_JSON_CACHE.computeIfAbsent(jsonSerializable, clazz -> {
+        ReflectiveInvoker readJson = FROM_JSON_CACHE.computeIfAbsent(jsonSerializable, clazz -> {
             try {
                 return ReflectionUtils.getMethodInvoker(clazz,
                     jsonSerializable.getDeclaredMethod("fromJson", JsonReader.class));
@@ -301,7 +301,7 @@ public final class ReflectionSerializable {
             FROM_XML_CACHE.clear();
         }
 
-        Invoker readXml = FROM_XML_CACHE.computeIfAbsent(xmlSerializable, clazz -> {
+        ReflectiveInvoker readXml = FROM_XML_CACHE.computeIfAbsent(xmlSerializable, clazz -> {
             try {
                 return ReflectionUtils.getMethodInvoker(xmlSerializable,
                     xmlSerializable.getDeclaredMethod("fromXml", XML_READER));

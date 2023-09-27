@@ -739,7 +739,7 @@ org.apache.maven.plugins:maven-enforcer-plugin;3.0.0
 org.apache.maven.plugins:maven-failsafe-plugin;2.22.2
 org.apache.maven.plugins:maven-help-plugin;3.2.0
 org.apache.maven.plugins:maven-install-plugin;2.5.2
-org.apache.maven.plugins:maven-invoker-plugin;3.2.2
+org.apache.maven.plugins:maven-reflectiveInvoker-plugin;3.2.2
 org.apache.maven.plugins:maven-jar-plugin;3.2.2
 org.apache.maven.plugins:maven-javadoc-plugin;3.4.1
 org.apache.maven.plugins:maven-release-plugin;2.5.3

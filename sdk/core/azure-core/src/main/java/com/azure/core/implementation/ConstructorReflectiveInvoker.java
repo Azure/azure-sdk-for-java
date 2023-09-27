@@ -5,12 +5,12 @@ package com.azure.core.implementation;
 import java.lang.reflect.Constructor;
 
 /**
- * {@link Constructor}-based implementation of {@link Invoker}.
+ * {@link Constructor}-based implementation of {@link ReflectiveInvoker}.
  */
-final class ConstructorInvoker implements Invoker {
+final class ConstructorReflectiveInvoker implements ReflectiveInvoker {
     private final Constructor<?> constructor;
 
-    ConstructorInvoker(Constructor<?> constructor) {
+    ConstructorReflectiveInvoker(Constructor<?> constructor) {
         this.constructor = constructor;
     }
 

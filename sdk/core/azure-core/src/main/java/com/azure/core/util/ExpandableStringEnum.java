@@ -3,7 +3,7 @@
 
 package com.azure.core.util;
 
-import com.azure.core.implementation.Invoker;
+import com.azure.core.implementation.ReflectiveInvoker;
 import com.azure.core.implementation.ReflectionUtils;
 import com.azure.core.util.logging.ClientLogger;
 import com.fasterxml.jackson.annotation.JsonValue;
@@ -20,7 +20,7 @@ import java.util.concurrent.ConcurrentHashMap;
  * @param <T> a specific expandable enum type
  */
 public abstract class ExpandableStringEnum<T extends ExpandableStringEnum<T>> {
-    private static final Map<Class<?>, Invoker> CONSTRUCTORS = new ConcurrentHashMap<>();
+    private static final Map<Class<?>, ReflectiveInvoker> CONSTRUCTORS = new ConcurrentHashMap<>();
     private static final Map<Class<?>, ConcurrentHashMap<String, ? extends ExpandableStringEnum<?>>> VALUES
         = new ConcurrentHashMap<>();
 
@@ -62,7 +62,7 @@ public abstract class ExpandableStringEnum<T extends ExpandableStringEnum<T>> {
         if (value != null) {
             return value;
         } else {
-            Invoker ctor = CONSTRUCTORS.computeIfAbsent(clazz, ExpandableStringEnum::getDefaultConstructor);
+            ReflectiveInvoker ctor = CONSTRUCTORS.computeIfAbsent(clazz, ExpandableStringEnum::getDefaultConstructor);
 
             if (ctor == null) {
                 // logged in ExpandableStringEnum::getDefaultConstructor
@@ -80,7 +80,7 @@ public abstract class ExpandableStringEnum<T extends ExpandableStringEnum<T>> {
         }
     }
 
-    private static <T> Invoker getDefaultConstructor(Class<T> clazz) {
+    private static <T> ReflectiveInvoker getDefaultConstructor(Class<T> clazz) {
         try {
             return ReflectionUtils.getConstructorInvoker(clazz, clazz.getDeclaredConstructor());
         } catch (NoSuchMethodException | IllegalAccessException e) {
