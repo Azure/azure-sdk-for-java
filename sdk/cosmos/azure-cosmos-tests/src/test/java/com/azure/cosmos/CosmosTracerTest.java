@@ -322,8 +322,7 @@ public class CosmosTracerTest extends TestSuiteBase {
             cosmosError = error;
         }
 
-        // TODO @fabianm REVERT BEFORE MERGE!!!
-        /*verifyTracerAttributes(
+        verifyTracerAttributes(
             mockTracer,
             "readThroughput." + cosmosAsyncDatabase.getId(),
             cosmosAsyncDatabase.getId(),
@@ -333,7 +332,7 @@ public class CosmosTracerTest extends TestSuiteBase {
             useLegacyTracing,
             enableRequestLevelTracing,
             forceThresholdViolations,
-            samplingRate);*/
+            samplingRate);
         mockTracer.reset();
     }
 

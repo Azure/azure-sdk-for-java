@@ -140,7 +140,8 @@ public final class CosmosPagedFlux<T> extends ContinuablePagedFlux<String, T, Fe
     }
 
     private <TOutput> Flux<TOutput> wrapWithTracingIfEnabled(CosmosPagedFluxOptions pagedFluxOptions, Flux<TOutput> publisher) {
-        DiagnosticsProvider tracerProvider = pagedFluxOptions.getFeedOperationState().getDiagnosticsProvider();
+        FeedOperationState stateSnapshot = pagedFluxOptions.getFeedOperationState();
+        DiagnosticsProvider tracerProvider = stateSnapshot != null ? stateSnapshot.getDiagnosticsProvider() : null;
         if (tracerProvider == null ||
             !tracerProvider.isEnabled()) {
 
@@ -210,7 +211,7 @@ public final class CosmosPagedFlux<T> extends ContinuablePagedFlux<String, T, Fe
                 Context traceCtx = DiagnosticsProvider.getContextFromReactorOrNull(signal.getContextView());
 
                 FeedOperationState state = pagedFluxOptions.getFeedOperationState();
-                DiagnosticsProvider tracerProvider = state.getDiagnosticsProvider();
+                DiagnosticsProvider tracerProvider = state != null ? state.getDiagnosticsProvider() : null;
 
                 synchronized (lockHolder) {
                     switch (signal.getType()) {
@@ -269,7 +270,7 @@ public final class CosmosPagedFlux<T> extends ContinuablePagedFlux<String, T, Fe
             });
 
         final FeedOperationState state = pagedFluxOptions.getFeedOperationState();
-        final DiagnosticsProvider tracerProvider = state.getDiagnosticsProvider();
+        final DiagnosticsProvider tracerProvider = state != null ? state.getDiagnosticsProvider() : null;
         if (isTracerEnabled(tracerProvider)) {
             return Flux
                 .deferContextual(reactorCtx -> result
