@@ -96,11 +96,6 @@ public class CosmosAsyncContainer {
         ImplementationBridgeHelpers.CosmosQueryRequestOptionsHelper.getCosmosQueryRequestOptionsAccessor();
     private static final ImplementationBridgeHelpers.CosmosItemRequestOptionsHelper.CosmosItemRequestOptionsAccessor itemOptionsAccessor =
         ImplementationBridgeHelpers.CosmosItemRequestOptionsHelper.getCosmosItemRequestOptionsAccessor();
-    protected static final ImplementationBridgeHelpers
-        .CosmosDiagnosticsContextHelper
-        .CosmosDiagnosticsContextAccessor ctxAccessor = ImplementationBridgeHelpers
-        .CosmosDiagnosticsContextHelper
-        .getCosmosDiagnosticsContextAccessor();
 
     private static final ImplementationBridgeHelpers.FeedResponseHelper.FeedResponseAccessor feedResponseAccessor =
         ImplementationBridgeHelpers.FeedResponseHelper.getFeedResponseAccessor();
