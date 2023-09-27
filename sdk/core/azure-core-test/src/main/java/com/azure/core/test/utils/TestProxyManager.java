@@ -20,38 +20,34 @@ import java.nio.file.Path;
 import java.nio.file.Paths;
 import java.time.Duration;
 import java.util.Map;
-import java.util.concurrent.Semaphore;
+
+import static com.azure.core.test.utils.TestUtils.toURI;
 
 /**
  * Manages running the test recording proxy server
  */
-public class TestProxyManager {
+public final class TestProxyManager {
     private static final ClientLogger LOGGER = new ClientLogger(TestProxyManager.class);
-    private Process proxy;
-    private final Path testClassPath;
-    private static final Semaphore semaphore = new Semaphore(1);
+    private static Process proxy;
+    private static final Path TEST_CLASS_PATH = Paths.get(toURI(TestProxyManager.class.getResource(TestProxyManager.class.getSimpleName() + ".class")));
 
-    /**
-     * Construct a {@link TestProxyManager} for controlling the external test proxy.
-     * @param testClassPath the test class path
-     */
-    public TestProxyManager(Path testClassPath) {
-        this.testClassPath = testClassPath;
-        // This is necessary to stop the proxy when the debugger is stopped.
-        Runtime.getRuntime().addShutdownHook(new Thread(this::stopProxy));
+    static {
+        Runtime.getRuntime().addShutdownHook(new Thread(TestProxyManager::stopProxy));
         if (runningLocally()) {
-            TestProxyDownloader.installTestProxy(testClassPath);
+            TestProxyDownloader.installTestProxy(TEST_CLASS_PATH);
         }
     }
+
+    @Deprecated
+    private TestProxyManager() { }
 
     /**
      * Start an instance of the test proxy.
      * @throws UncheckedIOException There was an issue communicating with the proxy.
      * @throws RuntimeException There was an issue starting the proxy process.
      */
-    public void startProxy() {
+    public static synchronized void startProxy() {
         try {
-            semaphore.acquire();
             // if we're not running in CI we will check to see if someone has started the proxy, and start one if not.
             if (runningLocally() && !checkAlive(1, Duration.ofSeconds(1), null)) {
                 String commandLine = Paths.get(TestProxyDownloader.getProxyDirectory().toString(),
@@ -101,8 +97,6 @@ public class TestProxyManager {
             throw LOGGER.logExceptionAsError(new UncheckedIOException(e));
         } catch (InterruptedException e) {
             throw new RuntimeException(e);
-        } finally {
-            semaphore.release();
         }
     }
 
@@ -133,7 +127,7 @@ public class TestProxyManager {
     /**
      * Stop the running instance of the test proxy.
      */
-    public void stopProxy() {
+    private static void stopProxy() {
         if (proxy != null && proxy.isAlive()) {
             proxy.destroy();
         }
@@ -143,7 +137,7 @@ public class TestProxyManager {
      * Checks the environment variables commonly set in CI to determine if the run is local.
      * @return True if the run is local.
      */
-    private boolean runningLocally() {
+    private static boolean runningLocally() {
         return Configuration.getGlobalConfiguration().get("TF_BUILD") == null
             && Configuration.getGlobalConfiguration().get("CI") == null;
     }
