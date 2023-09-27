@@ -447,7 +447,12 @@ public class HttpLoggingPolicyTests {
             .verifyComplete();
 
         String logString = convertOutputStreamToString(logCaptureStream);
-        List<HttpLogMessage> messages = HttpLogMessage.fromString(logString);
+
+
+        // if HttpLoggingPolicy logger was created when verbose was enabled,
+        // there is no way to change it.
+        List<HttpLogMessage> messages = HttpLogMessage.fromString(logString).stream()
+            .filter(m -> !m.getMessage().equals("Error resume.")).collect(Collectors.toList());
 
         expectedRetry1.assertEqual(messages.get(0), logLevel, LogLevel.INFORMATIONAL);
         expectedRetry2.assertEqual(messages.get(1), logLevel, LogLevel.INFORMATIONAL);
