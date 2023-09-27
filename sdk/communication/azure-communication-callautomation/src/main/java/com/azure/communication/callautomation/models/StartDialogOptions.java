@@ -4,6 +4,7 @@
 package com.azure.communication.callautomation.models;
 
 import java.util.Map;
+import java.util.UUID;
 
 /**
  * The options for starting a dialog.
@@ -13,7 +14,7 @@ public class StartDialogOptions {
     /*
      * Bot identifier.
      */
-    private final String botId;
+    private String botId;
 
     /*
      * The dialog ID.
@@ -36,29 +37,54 @@ public class StartDialogOptions {
     private String operationContext;
 
     /**
-     * Constructor
+     * Creates a new instance of the DialogOptions.
      *
      * @param botId bot identifier
      * @param dialogInputType type of dialog
      * @param dialogContext context of the dialog
      */
-    public StartDialogOptions(String botId, DialogInputType dialogInputType, Map<String, Object> dialogContext) {
-        this.botId = botId;
+    public StartDialogOptions(DialogInputType dialogInputType, String botId, Map<String, Object> dialogContext) {
         this.dialogInputType = dialogInputType;
+        this.botId = botId;
         this.dialogContext = dialogContext;
-        this.dialogId = null;
+        this.dialogId = UUID.randomUUID().toString();
     }
 
     /**
-     * Constructor that includes dialogId
+     * Creates a new instance of the DialogOptions.
+     *
+     * @param dialogInputType type of dialog
+     * @param dialogContext context of the dialog
+     */
+    public StartDialogOptions(DialogInputType dialogInputType, Map<String, Object> dialogContext) {
+        this.dialogInputType = dialogInputType;
+        this.dialogContext = dialogContext;
+        this.dialogId = UUID.randomUUID().toString();
+    }
+
+    /**
+     * Creates a new instance of the DialogOptions.
      *
      * @param botId bot identifier
      * @param dialogId id of the dialog
      * @param dialogInputType type of dialog
      * @param dialogContext context of the dialog
      */
-    public StartDialogOptions(String botId, String dialogId, DialogInputType dialogInputType, Map<String, Object> dialogContext) {
+    public StartDialogOptions(String dialogId, DialogInputType dialogInputType, String botId, Map<String, Object> dialogContext) {
         this.botId = botId;
+        this.dialogId = dialogId;
+        this.dialogInputType = dialogInputType;
+        this.dialogContext = dialogContext;
+    }
+
+    /**
+     * Creates a new instance of the DialogOptions.
+     *
+     * @param dialogId id of the dialog
+     * @param dialogInputType type of dialog
+     * @param dialogContext context of the dialog
+     */
+    public StartDialogOptions(String dialogId, DialogInputType dialogInputType, Map<String, Object> dialogContext) {
         this.dialogId = dialogId;
         this.dialogInputType = dialogInputType;
         this.dialogContext = dialogContext;

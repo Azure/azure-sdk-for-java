@@ -31,7 +31,6 @@ public class CallDialogAsyncUnitTests {
         Map<String, Object> dialogContext = new HashMap<>();
         StartDialogOptions options = new StartDialogOptions(
             BOT_APP_ID,
-            DIALOG_ID,
             DialogInputType.POWER_VIRTUAL_AGENTS,
             dialogContext);
 

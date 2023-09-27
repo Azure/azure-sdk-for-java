@@ -98,7 +98,7 @@ public class CallDialogAsyncAutomatedLiveTests extends CallAutomationAutomatedLi
             // start dialog
             String dialogId = "92e08834-b6ee-4ede-8956-9fefa27a691c";
             Map<String, Object> dialogContext = new HashMap<>();
-            StartDialogOptions options = new StartDialogOptions(BOT_APP_ID, dialogId, DialogInputType.POWER_VIRTUAL_AGENTS, dialogContext);
+            StartDialogOptions options = new StartDialogOptions(dialogId, DialogInputType.POWER_VIRTUAL_AGENTS, BOT_APP_ID, dialogContext);
 
             CallDialogAsync callDialogAsync = answerCallResult.getCallConnectionAsync().getCallDialogAsync();
             Response<DialogStateResult> dialogStateResultResponse = callDialogAsync.startDialog(options).block();

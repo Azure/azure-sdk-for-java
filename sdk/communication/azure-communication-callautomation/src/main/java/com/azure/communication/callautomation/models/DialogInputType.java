@@ -14,6 +14,9 @@ public final class DialogInputType extends ExpandableStringEnum<DialogInputType>
     /** Static value powerVirtualAgents for DialogInputType. */
     public static final DialogInputType POWER_VIRTUAL_AGENTS = fromString("powerVirtualAgents");
 
+    /** Static value azureOpenAI for DialogInputType. */
+    public static final DialogInputType AZURE_OPEN_AI = fromString("azureOpenAI");
+
     /**
      * Creates a new instance of DialogInputType value.
      *

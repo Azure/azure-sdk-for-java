@@ -32,8 +32,7 @@ public class CallDialogUnitTests {
         Map<String, Object> dialogContext = new HashMap<>();
         StartDialogOptions options = new StartDialogOptions(
             BOT_APP_ID,
-            DIALOG_ID,
-            DialogInputType.POWER_VIRTUAL_AGENTS,
+            DialogInputType.AZURE_OPEN_AI,
             dialogContext);
 
         Response<DialogStateResult> response = callDialog.startDialogWithResponse(
