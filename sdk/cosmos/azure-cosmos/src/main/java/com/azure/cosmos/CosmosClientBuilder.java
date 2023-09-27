@@ -1183,8 +1183,8 @@ public class CosmosClientBuilder implements
             excludedRegions.forEach(
                 excludeRegion -> {
                     Preconditions.checkArgument(StringUtils.trimToNull(excludeRegion) != null, "excludedRegion can't be empty");
-                    String trimmedPreferredRegion = excludeRegion.toLowerCase(Locale.ROOT).replace(" ", "");
-                    LocationHelper.getLocationEndpoint(uri, trimmedPreferredRegion);
+                    String trimmedExcludedRegion = excludeRegion.toLowerCase(Locale.ROOT).replace(" ", "");
+                    LocationHelper.getLocationEndpoint(uri, trimmedExcludedRegion);
                 }
             );
         }
