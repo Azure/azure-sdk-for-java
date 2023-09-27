@@ -3,9 +3,10 @@
 
 package com.azure.core.util;
 
-import com.azure.core.implementation.ReflectiveInvoker;
 import com.azure.core.implementation.ReflectionUtils;
+import com.azure.core.implementation.ReflectiveInvoker;
 import com.azure.core.util.logging.ClientLogger;
+import com.azure.core.util.logging.LogLevel;
 import com.fasterxml.jackson.annotation.JsonValue;
 
 import java.util.ArrayList;
@@ -62,6 +63,10 @@ public abstract class ExpandableStringEnum<T extends ExpandableStringEnum<T>> {
         if (value != null) {
             return value;
         } else {
+            if (CONSTRUCTORS.size() > 10000) {
+                CONSTRUCTORS.clear();
+            }
+
             ReflectiveInvoker ctor = CONSTRUCTORS.computeIfAbsent(clazz, ExpandableStringEnum::getDefaultConstructor);
 
             if (ctor == null) {
@@ -72,7 +77,8 @@ public abstract class ExpandableStringEnum<T extends ExpandableStringEnum<T>> {
             try {
                 value = (T) ctor.invokeWithArguments(null);
             } catch (Exception e) {
-                LOGGER.warning("Failed to create {}, default constructor threw exception", clazz.getName(), e);
+                LOGGER.log(LogLevel.WARNING,
+                    () -> "Failed to create " + clazz.getName() + ", default constructor threw exception", e);
                 return null;
             }
 
@@ -84,10 +90,10 @@ public abstract class ExpandableStringEnum<T extends ExpandableStringEnum<T>> {
         try {
             return ReflectionUtils.getConstructorInvoker(clazz, clazz.getDeclaredConstructor());
         } catch (NoSuchMethodException | IllegalAccessException e) {
-            LOGGER.verbose("Can't find or access default constructor for {}, make sure corresponding package is open "
-                           + "to azure-core", clazz.getName(), e);
+            LOGGER.log(LogLevel.VERBOSE, () -> "Can't find or access default constructor for " + clazz.getName()
+                + ", make sure corresponding package is open to azure-core", e);
         } catch (Exception e) {
-            LOGGER.verbose("Failed to get lookup for {}", clazz.getName(), e);
+            LOGGER.log(LogLevel.VERBOSE, () -> "Failed to get default constructor for " + clazz.getName(), e);
         }
 
         return null;
