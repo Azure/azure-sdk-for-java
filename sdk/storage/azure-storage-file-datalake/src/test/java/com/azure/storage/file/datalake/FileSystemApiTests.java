@@ -53,6 +53,7 @@ import java.util.HashMap;
 import java.util.Iterator;
 import java.util.List;
 import java.util.Map;
+import java.util.Objects;
 import java.util.stream.Stream;
 
 import static org.junit.jupiter.api.Assertions.assertDoesNotThrow;
@@ -1990,19 +1991,6 @@ public class FileSystemApiTests extends DataLakeTestBase {
         assertFalse(filePath.isDirectory());
 
         assertFalse(response.hasNext());
-    }
-
-    @Test
-    public void asyncListPathsMaxResultsByPage() {
-        dataLakeFileSystemAsyncClient.getDirectoryAsyncClient(generatePathName()).create().block();
-        dataLakeFileSystemAsyncClient.getFileAsyncClient(generatePathName()).create().block();
-
-        StepVerifier.create(dataLakeFileSystemAsyncClient.listPaths(new ListPathsOptions()).byPage(1))
-            .thenConsumeWhile(page -> {
-                assertEquals(1, page.getValue().size());
-                return true;
-            })
-            .verifyComplete();
     }
 
     @ParameterizedTest
