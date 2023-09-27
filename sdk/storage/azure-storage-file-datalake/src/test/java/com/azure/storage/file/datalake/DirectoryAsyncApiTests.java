@@ -15,6 +15,10 @@ import com.azure.storage.blob.BlobUrlParts;
 import com.azure.storage.blob.models.BlobErrorCode;
 import com.azure.storage.common.Utility;
 import com.azure.storage.common.policy.RequestRetryOptions;
+import com.azure.storage.common.sas.AccountSasPermission;
+import com.azure.storage.common.sas.AccountSasResourceType;
+import com.azure.storage.common.sas.AccountSasService;
+import com.azure.storage.common.sas.AccountSasSignatureValues;
 import com.azure.storage.file.datalake.models.AccessControlChangeCounters;
 import com.azure.storage.file.datalake.models.AccessControlChangeFailure;
 import com.azure.storage.file.datalake.models.AccessControlChangeResult;
@@ -334,6 +338,34 @@ public class DirectoryAsyncApiTests extends DataLakeTestBase {
 
         String sas = dataLakeFileSystemAsyncClient.generateSas(new DataLakeServiceSasSignatureValues(
             testResourceNamer.now().plusDays(1), permissions).setEncryptionScope(ENCRYPTION_SCOPE_STRING));
+
+        DataLakeDirectoryAsyncClient client = getDirectoryAsyncClient(sas, dataLakeFileSystemAsyncClient.getFileSystemUrl(),
+            generatePathName());
+        client.create().block();
+
+        StepVerifier.create(client.getProperties())
+            .assertNext(r -> assertEquals(ENCRYPTION_SCOPE_STRING, r.getEncryptionScope()))
+            .verifyComplete();
+    }
+
+    @DisabledIf("olderThan20201206ServiceVersion")
+    @Test
+    public void createEncryptionScopeAccountSas() {
+        AccountSasService service = new AccountSasService().setBlobAccess(true);
+        AccountSasResourceType resourceType = new AccountSasResourceType()
+            .setContainer(true)
+            .setService(true)
+            .setObject(true);
+        AccountSasPermission permissions = new AccountSasPermission()
+            .setReadPermission(true)
+            .setWritePermission(true);
+
+        String sas = getServiceClientBuilder(getDataLakeCredential(), ENVIRONMENT.getDataLakeAccount()
+            .getDataLakeEndpoint())
+            .encryptionScope(ENCRYPTION_SCOPE_STRING)
+            .buildClient()
+            .generateAccountSas(new AccountSasSignatureValues(testResourceNamer.now().plusDays(1), permissions, service,
+                resourceType));
 
         DataLakeDirectoryAsyncClient client = getDirectoryAsyncClient(sas, dataLakeFileSystemAsyncClient.getFileSystemUrl(),
             generatePathName());
@@ -2134,25 +2166,6 @@ public class DirectoryAsyncApiTests extends DataLakeTestBase {
         dc.createFile(generatePathName()).block();
     }
 
-    static class InMemoryAccessControlRecursiveChangeProgress implements Consumer<Response<AccessControlChanges>> {
-        List<AccessControlChangeFailure> failures = new ArrayList<>();
-        List<AccessControlChangeCounters> batchCounters = new ArrayList<>();
-        List<AccessControlChangeCounters> cumulativeCounters = new ArrayList<>();
-        List<AccessControlChangeFailure> firstFailures = new ArrayList<>();
-        boolean firstFailure = false;
-
-        @Override
-        public void accept(Response<AccessControlChanges> response) {
-            if (!firstFailure && response.getValue().getBatchFailures().size() > 0) {
-                firstFailures.addAll(response.getValue().getBatchFailures());
-                firstFailure = true;
-            }
-            failures.addAll(response.getValue().getBatchFailures());
-            batchCounters.add(response.getValue().getBatchCounters());
-            cumulativeCounters.add(response.getValue().getAggregateCounters());
-        }
-    }
-
     // set recursive acl error, with response
     // Test null or empty lists
     @Test
@@ -2659,6 +2672,23 @@ public class DirectoryAsyncApiTests extends DataLakeTestBase {
     }
 
     @ParameterizedTest
+    @CsvSource(value = {"null,null,null,null", "foo,bar,fizz,buzz"}, nullValues = "null")
+    public void createFileMetadata(String key1, String value1, String key2, String value2) {
+        Map<String, String> metadata = new HashMap<>();
+        if (key1 != null) {
+            metadata.put(key1, value1);
+        }
+        if (key2 != null) {
+            metadata.put(key2, value2);
+        }
+
+        StepVerifier.create(dc.createFileWithResponse(generatePathName(), null, null, null, metadata, null)
+            .flatMap(r -> r.getValue().getProperties()))
+            .assertNext(p -> assertEquals(metadata, p.getMetadata()))
+            .verifyComplete();
+    }
+
+    @ParameterizedTest
     @MethodSource("modifiedMatchAndLeaseIdSupplier")
     public void createFileAC(OffsetDateTime modified, OffsetDateTime unmodified, String match, String noneMatch,
                              String leaseID) {
@@ -3072,7 +3102,6 @@ public class DirectoryAsyncApiTests extends DataLakeTestBase {
 
         assertAsyncResponseStatusCode(dc.createSubdirectoryIfNotExistsWithResponse(pathName, null),
             201);
-
         assertAsyncResponseStatusCode(dc.createSubdirectoryIfNotExistsWithResponse(pathName, null),
             409);
     }
