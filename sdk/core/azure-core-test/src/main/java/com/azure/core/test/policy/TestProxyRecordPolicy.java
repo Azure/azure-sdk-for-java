@@ -32,6 +32,7 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.Queue;
 
+import static com.azure.core.test.utils.TestProxyUtils.checkForTestProxyErrors;
 import static com.azure.core.test.utils.TestProxyUtils.createAddSanitizersRequest;
 import static com.azure.core.test.utils.TestProxyUtils.getAssetJsonFile;
 import static com.azure.core.test.utils.TestProxyUtils.loadSanitizers;
@@ -81,6 +82,8 @@ public class TestProxyRecordPolicy implements HttpPipelinePolicy {
                 .setHeader(HttpHeaderName.CONTENT_TYPE, "application/json");
 
             try (HttpResponse response = client.sendSync(request, Context.NONE)) {
+                checkForTestProxyErrors(response);
+
                 this.xRecordingId = response.getHeaderValue(X_RECORDING_ID);
             }
 
