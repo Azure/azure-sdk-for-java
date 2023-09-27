@@ -14,6 +14,7 @@ import java.security.PrivateKey;
 import java.security.cert.X509Certificate;
 import java.time.OffsetDateTime;
 import java.time.ZoneOffset;
+import java.time.format.DateTimeFormatter;
 import java.time.temporal.ChronoUnit;
 import java.util.LinkedHashMap;
 
@@ -25,6 +26,7 @@ import static org.junit.jupiter.api.Assertions.assertNotNull;
 import static org.junit.jupiter.api.Assertions.assertNull;
 import static org.junit.jupiter.api.Assertions.assertThrows;
 import static org.junit.jupiter.api.Assertions.assertTrue;
+import static org.junit.jupiter.api.Assertions.fail;
 
 /**
  * Test for Attestation Signing Certificates APIs.
@@ -299,12 +301,24 @@ public class AttestationTokenTests extends AttestationClientTestBase {
         // that the time is reflected in the exception message.
         OffsetDateTime expTime = timeNow.minusSeconds(30).withOffsetSameInstant(ZoneOffset.UTC);
 
-        // Need a slight window for time now as it could cross a second boundary.
-        boolean foundTimeNow = exceptionMessage.contains(String.format("%tc", timeNow))
-            || exceptionMessage.contains(String.format("%tc", timeNow.minusSeconds(1)));
-        assertTrue(foundTimeNow, () -> String.format(
-            "Expected exception message to contain '%tc' or '%tc' but it didn't. Actual exception message: %s", timeNow,
-            timeNow.minusSeconds(1), exceptionMessage));
+        // Format of the exception message is "Current time: <current time> Expiration time: <expiration time>"
+        // Since the test could take a while and the current time is based on the time when the exception is thrown
+        // this can cause it to be different than 'timeNow' when the test started.
+        // To make sure this test isn't flaky capture the datetime string in the exception message, turn it into an
+        // OffsetDateTime and compare it to 'timeNow' allowing for some skew.
+        // Date format is 'Wed Sep 27 12:48:15 -04:00 2023'
+        DateTimeFormatter formatter = DateTimeFormatter.ofPattern("EEE MMM dd HH:mm:ss XXX yyyy");
+
+        int currentTimeIndex = exceptionMessage.indexOf("Current time: ");
+        int expirationTimeIndex = exceptionMessage.indexOf("Expiration time: ");
+        String currentTimeInExceptionString = exceptionMessage.substring(currentTimeIndex + 14, expirationTimeIndex - 1);
+        OffsetDateTime currentTimeInException = OffsetDateTime.parse(currentTimeInExceptionString, formatter);
+        long skew = timeNow.until(currentTimeInException, ChronoUnit.SECONDS);
+        if (skew > 5 || skew < 0) {
+            fail(String.format("Expected exception message to contain 'Current Time' within 5 seconds, but not before, "
+                               + "of %tc but it was greater. Actual exception message: %s", timeNow, exceptionMessage));
+        }
+
         assertTrue(exceptionMessage.contains(String.format("%tc", expTime)), () -> String.format(
             "Expected exception message to contain '%tc' but it didn't. Actual exception message: %s", expTime,
             exceptionMessage));
