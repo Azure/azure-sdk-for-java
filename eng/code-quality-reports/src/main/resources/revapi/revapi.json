@@ -98,7 +98,7 @@
         {
           "regex": true,
           "code": "java\\.method\\.addedToInterface",
-          "new": "method <S extends T, T> (java\\.lang\\.Iterable<)?S>? com\\.azure\\.spring\\.data\\.cosmos\\.core\\.CosmosOperations::insertAll\\(com\\.azure\\.spring\\.data\\.cosmos\\.repository\\.support\\.CosmosEntityInformation<T, ?>, java\\.lang\\.Iterable<S>\\)",
+          "new": "method <S extends T, T> java.lang.Iterable<S> com.azure.spring.data.cosmos.core.CosmosOperations::insertAll(com.azure.spring.data.cosmos.repository.support.CosmosEntityInformation<T, ?>, java.lang.Iterable<S>)",
           "justification": "Spring interfaces are allowed to add methods."
         },
         {
@@ -110,7 +110,7 @@
         {
           "regex": true,
           "code": "java\\.method\\.addedToInterface",
-          "new": "method <S extends T, T> (reactor\\.core\\.publisher\\.Flux<)?S>? com\\.azure\\.spring\\.data\\.cosmos\\.core\\.ReactiveCosmosOperations::insertAll\\(com\\.azure\\.spring\\.data\\.cosmos\\.repository\\.support\\.CosmosEntityInformation<T, ?>, java\\.lang\\.Iterable<S>\\)",
+          "new": "method <S extends T, T> reactor.core.publisher.Flux<S> com.azure.spring.data.cosmos.core.ReactiveCosmosOperations::insertAll(com.azure.spring.data.cosmos.repository.support.CosmosEntityInformation<T, ?>, java.lang.Iterable<S>)",
           "justification": "Spring interfaces are allowed to add methods."
         },
         {
