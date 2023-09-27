@@ -124,7 +124,11 @@ public class TestSuiteBase extends DocumentClientTest {
 
         @Override
         public Flux<FeedResponse<Database>> queryDatabases(SqlQuerySpec query) {
-            return client.queryDatabases(query, null);
+            QueryFeedOperationState state = TestUtils.createDummyQueryFeedOperationState(
+                ResourceType.Document,
+                OperationType.Query,
+                new CosmosQueryRequestOptions());
+            return client.queryDatabases(query, state);
         }
 
         @Override
