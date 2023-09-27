@@ -32,7 +32,6 @@ import reactor.util.annotation.Nullable;
 import java.net.MalformedURLException;
 import java.net.URL;
 import java.util.List;
-import java.util.Queue;
 import java.util.concurrent.CountDownLatch;
 import java.util.stream.Collectors;
 
@@ -136,8 +135,7 @@ public class SpringMonitorTest {
     List<TelemetryItem> telemetryItems = customValidationPolicy.actualTelemetryItems.stream()
         .filter(item -> {
           MonitorDomain baseData = item.getData().getBaseData();
-          return !(baseData instanceof MetricsData)
-              || ((MetricsData) baseData).getMetrics().stream().noneMatch(metricDataPoint -> metricDataPoint.getName().equals("_OTELRESOURCE_"));
+          return !(baseData instanceof MetricsData) || isSpecialOtelResourceMetric((MetricsData) baseData);
         })
         .collect(Collectors.toList());
     List<String> telemetryTypes = telemetryItems.stream()
@@ -196,7 +194,11 @@ public class SpringMonitorTest {
     }
   }
 
-  @Test
+    private static boolean isSpecialOtelResourceMetric(MetricsData baseData) {
+        return baseData.getMetrics().stream().noneMatch(metricDataPoint -> metricDataPoint.getName().equals("_OTELRESOURCE_"));
+    }
+
+    @Test
   public void verifyOpenTelemetryVersion() {
     String currentOTelVersion = otelResource.getAttribute(ResourceAttributes.TELEMETRY_SDK_VERSION);
     assertThat(OpenTelemetryVersionCheckRunner.STARTER_OTEL_VERSION)
