@@ -292,7 +292,9 @@ public final class DiagnosticsProvider {
                             effectiveRequestCharge = exception.getRequestCharge();
                         }
                         effectiveDiagnostics = exception.getDiagnostics();
-                        diagnosticsAccessor.isDiagnosticsCapturedInPagedFlux(effectiveDiagnostics).set(true);
+                        if (effectiveDiagnostics != null) {
+                            diagnosticsAccessor.isDiagnosticsCapturedInPagedFlux(effectiveDiagnostics).set(true);
+                        }
                     }
                 }
                 end(cosmosCtx, statusCode, subStatusCode, actualItemCount, effectiveRequestCharge, effectiveDiagnostics, throwable, context);
