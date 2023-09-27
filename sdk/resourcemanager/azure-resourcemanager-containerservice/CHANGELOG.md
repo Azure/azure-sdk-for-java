@@ -2,6 +2,10 @@
 
 ## 2.31.0-beta.1 (Unreleased)
 
+### Features Added
+
+- Supported specifying the resource group for agent pool nodes when creating `KubernetesCluster`.
+
 ### Other Changes
 
 #### Dependency Updates
