@@ -1,6 +1,6 @@
 # Release History
 
-## 1.0.0-beta.23 (Unreleased)
+## 1.0.0-beta.24 (Unreleased)
 
 ### Features Added
 
@@ -9,6 +9,1436 @@
 ### Bugs Fixed
 
 ### Other Changes
+
+## 1.0.0-beta.23 (2023-09-27)
+
+- Azure Resource Manager DataFactory client library for Java. This package contains Microsoft Azure SDK for DataFactory Management SDK. The Azure Data Factory V2 management API provides a RESTful set of web services that interact with Azure Data Factory V2 services. Package tag package-2018-06. For documentation on how to use this package, please see [Azure Management Libraries for Java](https://aka.ms/azsdk/java/mgmt).
+
+### Breaking Changes
+
+* `models.CosmosDbServicePrincipalCredentialType` was removed
+
+* `models.SalesforceSourceReadBehavior` was removed
+
+#### `models.SapEccLinkedService` was modified
+
+* `withUsername(java.lang.String)` was removed
+* `java.lang.String url()` -> `java.lang.Object url()`
+* `java.lang.String username()` -> `java.lang.Object username()`
+* `withUrl(java.lang.String)` was removed
+
+#### `models.SmartsheetLinkedService` was modified
+
+* `withEncryptedCredential(java.lang.Object)` was removed
+* `java.lang.Object encryptedCredential()` -> `java.lang.String encryptedCredential()`
+
+#### `models.HBaseLinkedService` was modified
+
+* `withEncryptedCredential(java.lang.Object)` was removed
+* `java.lang.Object encryptedCredential()` -> `java.lang.String encryptedCredential()`
+
+#### `models.DrillLinkedService` was modified
+
+* `java.lang.Object encryptedCredential()` -> `java.lang.String encryptedCredential()`
+* `withEncryptedCredential(java.lang.Object)` was removed
+
+#### `models.SnowflakeLinkedService` was modified
+
+* `withEncryptedCredential(java.lang.Object)` was removed
+* `java.lang.Object encryptedCredential()` -> `java.lang.String encryptedCredential()`
+
+#### `models.SapOdpLinkedService` was modified
+
+* `withEncryptedCredential(java.lang.Object)` was removed
+* `java.lang.Object encryptedCredential()` -> `java.lang.String encryptedCredential()`
+
+#### `models.SapOpenHubLinkedService` was modified
+
+* `java.lang.Object encryptedCredential()` -> `java.lang.String encryptedCredential()`
+* `withEncryptedCredential(java.lang.Object)` was removed
+
+#### `models.SalesforceSource` was modified
+
+* `withReadBehavior(models.SalesforceSourceReadBehavior)` was removed
+* `models.SalesforceSourceReadBehavior readBehavior()` -> `java.lang.Object readBehavior()`
+
+#### `models.SalesforceServiceCloudSource` was modified
+
+* `withReadBehavior(models.SalesforceSourceReadBehavior)` was removed
+* `models.SalesforceSourceReadBehavior readBehavior()` -> `java.lang.Object readBehavior()`
+
+#### `models.VerticaLinkedService` was modified
+
+* `withEncryptedCredential(java.lang.Object)` was removed
+* `java.lang.Object encryptedCredential()` -> `java.lang.String encryptedCredential()`
+
+#### `models.HDInsightOnDemandLinkedService` was modified
+
+* `withEncryptedCredential(java.lang.Object)` was removed
+* `java.lang.Object encryptedCredential()` -> `java.lang.String encryptedCredential()`
+
+#### `models.FileServerLinkedService` was modified
+
+* `withEncryptedCredential(java.lang.Object)` was removed
+* `java.lang.Object encryptedCredential()` -> `java.lang.String encryptedCredential()`
+
+#### `models.AzureDataLakeStoreReadSettings` was modified
+
+* `java.lang.Boolean enablePartitionDiscovery()` -> `java.lang.Object enablePartitionDiscovery()`
+* `withEnablePartitionDiscovery(java.lang.Boolean)` was removed
+
+#### `models.AmazonS3LinkedService` was modified
+
+* `withEncryptedCredential(java.lang.Object)` was removed
+* `java.lang.Object encryptedCredential()` -> `java.lang.String encryptedCredential()`
+
+#### `models.NetezzaLinkedService` was modified
+
+* `withEncryptedCredential(java.lang.Object)` was removed
+* `java.lang.Object encryptedCredential()` -> `java.lang.String encryptedCredential()`
+
+#### `models.MagentoLinkedService` was modified
+
+* `withEncryptedCredential(java.lang.Object)` was removed
+* `java.lang.Object encryptedCredential()` -> `java.lang.String encryptedCredential()`
+
+#### `models.InformixLinkedService` was modified
+
+* `withEncryptedCredential(java.lang.Object)` was removed
+* `java.lang.Object encryptedCredential()` -> `java.lang.String encryptedCredential()`
+
+#### `models.HttpReadSettings` was modified
+
+* `enablePartitionDiscovery()` was removed
+* `withPartitionRootPath(java.lang.Object)` was removed
+* `partitionRootPath()` was removed
+* `withEnablePartitionDiscovery(java.lang.Boolean)` was removed
+
+#### `models.HttpLinkedService` was modified
+
+* `java.lang.Object encryptedCredential()` -> `java.lang.String encryptedCredential()`
+* `withEncryptedCredential(java.lang.Object)` was removed
+
+#### `models.GreenplumLinkedService` was modified
+
+* `java.lang.Object encryptedCredential()` -> `java.lang.String encryptedCredential()`
+* `withEncryptedCredential(java.lang.Object)` was removed
+
+#### `models.PostgreSqlLinkedService` was modified
+
+* `java.lang.Object encryptedCredential()` -> `java.lang.String encryptedCredential()`
+* `withEncryptedCredential(java.lang.Object)` was removed
+
+#### `models.CommonDataServiceForAppsLinkedService` was modified
+
+* `withEncryptedCredential(java.lang.Object)` was removed
+* `java.lang.Object encryptedCredential()` -> `java.lang.String encryptedCredential()`
+
+#### `models.SquareLinkedService` was modified
+
+* `withEncryptedCredential(java.lang.Object)` was removed
+* `java.lang.Object encryptedCredential()` -> `java.lang.String encryptedCredential()`
+
+#### `models.AzureBlobFSReadSettings` was modified
+
+* `java.lang.Boolean enablePartitionDiscovery()` -> `java.lang.Object enablePartitionDiscovery()`
+* `withEnablePartitionDiscovery(java.lang.Boolean)` was removed
+
+#### `models.AzureBatchLinkedService` was modified
+
+* `withEncryptedCredential(java.lang.Object)` was removed
+* `java.lang.Object encryptedCredential()` -> `java.lang.String encryptedCredential()`
+
+#### `models.MongoDbLinkedService` was modified
+
+* `withEncryptedCredential(java.lang.Object)` was removed
+* `java.lang.Object encryptedCredential()` -> `java.lang.String encryptedCredential()`
+
+#### `models.SapHanaLinkedService` was modified
+
+* `withEncryptedCredential(java.lang.Object)` was removed
+* `java.lang.Object encryptedCredential()` -> `java.lang.String encryptedCredential()`
+
+#### `models.OracleCloudStorageLinkedService` was modified
+
+* `java.lang.Object encryptedCredential()` -> `java.lang.String encryptedCredential()`
+* `withEncryptedCredential(java.lang.Object)` was removed
+
+#### `models.TeamDeskLinkedService` was modified
+
+* `java.lang.Object encryptedCredential()` -> `java.lang.String encryptedCredential()`
+* `withEncryptedCredential(java.lang.Object)` was removed
+
+#### `models.AsanaLinkedService` was modified
+
+* `java.lang.Object encryptedCredential()` -> `java.lang.String encryptedCredential()`
+* `withEncryptedCredential(java.lang.Object)` was removed
+
+#### `models.ConcurLinkedService` was modified
+
+* `java.lang.Object encryptedCredential()` -> `java.lang.String encryptedCredential()`
+* `withEncryptedCredential(java.lang.Object)` was removed
+
+#### `models.SynapseNotebookActivity` was modified
+
+* `java.lang.Integer numExecutors()` -> `java.lang.Object numExecutors()`
+* `withNumExecutors(java.lang.Integer)` was removed
+
+#### `models.MariaDBLinkedService` was modified
+
+* `java.lang.Object encryptedCredential()` -> `java.lang.String encryptedCredential()`
+* `withEncryptedCredential(java.lang.Object)` was removed
+
+#### `models.XeroLinkedService` was modified
+
+* `java.lang.Object encryptedCredential()` -> `java.lang.String encryptedCredential()`
+* `withEncryptedCredential(java.lang.Object)` was removed
+
+#### `models.AzureFileStorageReadSettings` was modified
+
+* `java.lang.Boolean enablePartitionDiscovery()` -> `java.lang.Object enablePartitionDiscovery()`
+* `withEnablePartitionDiscovery(java.lang.Boolean)` was removed
+
+#### `models.AzureMLServiceLinkedService` was modified
+
+* `withEncryptedCredential(java.lang.Object)` was removed
+* `java.lang.Object encryptedCredential()` -> `java.lang.String encryptedCredential()`
+
+#### `models.FtpReadSettings` was modified
+
+* `java.lang.Boolean enablePartitionDiscovery()` -> `java.lang.Object enablePartitionDiscovery()`
+* `java.lang.Boolean useBinaryTransfer()` -> `java.lang.Object useBinaryTransfer()`
+* `withEnablePartitionDiscovery(java.lang.Boolean)` was removed
+* `withUseBinaryTransfer(java.lang.Boolean)` was removed
+
+#### `models.DynamicsAXLinkedService` was modified
+
+* `java.lang.Object encryptedCredential()` -> `java.lang.String encryptedCredential()`
+* `withEncryptedCredential(java.lang.Object)` was removed
+
+#### `models.FileServerReadSettings` was modified
+
+* `java.lang.Boolean enablePartitionDiscovery()` -> `java.lang.Object enablePartitionDiscovery()`
+* `withEnablePartitionDiscovery(java.lang.Boolean)` was removed
+
+#### `models.PrestoLinkedService` was modified
+
+* `withEncryptedCredential(java.lang.Object)` was removed
+* `java.lang.Object encryptedCredential()` -> `java.lang.String encryptedCredential()`
+
+#### `models.AmazonRdsForOracleLinkedService` was modified
+
+* `java.lang.Object encryptedCredential()` -> `java.lang.String encryptedCredential()`
+* `withEncryptedCredential(java.lang.Object)` was removed
+
+#### `models.SalesforceLinkedService` was modified
+
+* `java.lang.Object encryptedCredential()` -> `java.lang.String encryptedCredential()`
+* `withEncryptedCredential(java.lang.Object)` was removed
+
+#### `models.RestResourceDataset` was modified
+
+* `java.lang.Object paginationRules()` -> `java.util.Map paginationRules()`
+* `java.lang.Object additionalHeaders()` -> `java.util.Map additionalHeaders()`
+* `withAdditionalHeaders(java.lang.Object)` was removed
+* `withPaginationRules(java.lang.Object)` was removed
+
+#### `models.SapBWLinkedService` was modified
+
+* `java.lang.Object encryptedCredential()` -> `java.lang.String encryptedCredential()`
+* `withEncryptedCredential(java.lang.Object)` was removed
+
+#### `models.ZohoLinkedService` was modified
+
+* `withEncryptedCredential(java.lang.Object)` was removed
+* `java.lang.Object encryptedCredential()` -> `java.lang.String encryptedCredential()`
+
+#### `models.SapTableLinkedService` was modified
+
+* `withEncryptedCredential(java.lang.Object)` was removed
+* `java.lang.Object encryptedCredential()` -> `java.lang.String encryptedCredential()`
+
+#### `models.JiraLinkedService` was modified
+
+* `java.lang.Object encryptedCredential()` -> `java.lang.String encryptedCredential()`
+* `withEncryptedCredential(java.lang.Object)` was removed
+
+#### `models.AzureFileStorageLinkedService` was modified
+
+* `withEncryptedCredential(java.lang.Object)` was removed
+* `java.lang.Object encryptedCredential()` -> `java.lang.String encryptedCredential()`
+
+#### `models.AzureSqlDatabaseLinkedService` was modified
+
+* `withEncryptedCredential(java.lang.Object)` was removed
+* `java.lang.Object encryptedCredential()` -> `java.lang.String encryptedCredential()`
+
+#### `models.AzureSqlDWLinkedService` was modified
+
+* `withEncryptedCredential(java.lang.Object)` was removed
+* `java.lang.Object encryptedCredential()` -> `java.lang.String encryptedCredential()`
+
+#### `models.ShopifyLinkedService` was modified
+
+* `java.lang.Object encryptedCredential()` -> `java.lang.String encryptedCredential()`
+* `withEncryptedCredential(java.lang.Object)` was removed
+
+#### `models.TeradataLinkedService` was modified
+
+* `java.lang.Object encryptedCredential()` -> `java.lang.String encryptedCredential()`
+* `withEncryptedCredential(java.lang.Object)` was removed
+
+#### `models.SparkLinkedService` was modified
+
+* `withEncryptedCredential(java.lang.Object)` was removed
+* `java.lang.Object encryptedCredential()` -> `java.lang.String encryptedCredential()`
+
+#### `models.OracleServiceCloudLinkedService` was modified
+
+* `withEncryptedCredential(java.lang.Object)` was removed
+* `java.lang.Object encryptedCredential()` -> `java.lang.String encryptedCredential()`
+
+#### `models.AzureBlobStorageLinkedService` was modified
+
+* `withAccountKind(java.lang.String)` was removed
+* `java.lang.String accountKind()` -> `java.lang.Object accountKind()`
+* `withServiceEndpoint(java.lang.String)` was removed
+* `java.lang.String serviceEndpoint()` -> `java.lang.Object serviceEndpoint()`
+
+#### `models.AzureDataLakeStoreLinkedService` was modified
+
+* `withEncryptedCredential(java.lang.Object)` was removed
+* `java.lang.Object encryptedCredential()` -> `java.lang.String encryptedCredential()`
+
+#### `models.ServiceNowLinkedService` was modified
+
+* `withEncryptedCredential(java.lang.Object)` was removed
+* `java.lang.Object encryptedCredential()` -> `java.lang.String encryptedCredential()`
+
+#### `models.AzureSearchLinkedService` was modified
+
+* `java.lang.Object encryptedCredential()` -> `java.lang.String encryptedCredential()`
+* `withEncryptedCredential(java.lang.Object)` was removed
+
+#### `models.AzureMySqlLinkedService` was modified
+
+* `withEncryptedCredential(java.lang.Object)` was removed
+* `java.lang.Object encryptedCredential()` -> `java.lang.String encryptedCredential()`
+
+#### `models.HubspotLinkedService` was modified
+
+* `withEncryptedCredential(java.lang.Object)` was removed
+* `java.lang.Object encryptedCredential()` -> `java.lang.String encryptedCredential()`
+
+#### `models.AmazonS3CompatibleReadSettings` was modified
+
+* `java.lang.Boolean enablePartitionDiscovery()` -> `java.lang.Object enablePartitionDiscovery()`
+* `withEnablePartitionDiscovery(java.lang.Boolean)` was removed
+
+#### `models.DynamicsLinkedService` was modified
+
+* `withEncryptedCredential(java.lang.Object)` was removed
+* `java.lang.Object encryptedCredential()` -> `java.lang.String encryptedCredential()`
+
+#### `models.CassandraLinkedService` was modified
+
+* `withEncryptedCredential(java.lang.Object)` was removed
+* `java.lang.Object encryptedCredential()` -> `java.lang.String encryptedCredential()`
+
+#### `models.SftpReadSettings` was modified
+
+* `withEnablePartitionDiscovery(java.lang.Boolean)` was removed
+* `java.lang.Boolean enablePartitionDiscovery()` -> `java.lang.Object enablePartitionDiscovery()`
+
+#### `models.ODataLinkedService` was modified
+
+* `java.lang.Object encryptedCredential()` -> `java.lang.String encryptedCredential()`
+* `withEncryptedCredential(java.lang.Object)` was removed
+
+#### `models.GoogleAdWordsLinkedService` was modified
+
+* `java.lang.Object encryptedCredential()` -> `java.lang.String encryptedCredential()`
+* `withEncryptedCredential(java.lang.Object)` was removed
+
+#### `models.HDInsightLinkedService` was modified
+
+* `java.lang.Object encryptedCredential()` -> `java.lang.String encryptedCredential()`
+* `withEncryptedCredential(java.lang.Object)` was removed
+
+#### `models.AzureBlobStorageReadSettings` was modified
+
+* `withEnablePartitionDiscovery(java.lang.Boolean)` was removed
+* `java.lang.Boolean enablePartitionDiscovery()` -> `java.lang.Object enablePartitionDiscovery()`
+
+#### `models.RestServiceLinkedService` was modified
+
+* `java.lang.Object encryptedCredential()` -> `java.lang.String encryptedCredential()`
+* `withEncryptedCredential(java.lang.Object)` was removed
+
+#### `models.CosmosDbLinkedService` was modified
+
+* `withServicePrincipalCredentialType(models.CosmosDbServicePrincipalCredentialType)` was removed
+* `withEncryptedCredential(java.lang.Object)` was removed
+* `models.CosmosDbServicePrincipalCredentialType servicePrincipalCredentialType()` -> `java.lang.Object servicePrincipalCredentialType()`
+* `java.lang.Object encryptedCredential()` -> `java.lang.String encryptedCredential()`
+
+#### `models.AzureBlobFSLinkedService` was modified
+
+* `java.lang.Object encryptedCredential()` -> `java.lang.String encryptedCredential()`
+* `withEncryptedCredential(java.lang.Object)` was removed
+
+#### `models.AmazonS3ReadSettings` was modified
+
+* `withEnablePartitionDiscovery(java.lang.Boolean)` was removed
+* `java.lang.Boolean enablePartitionDiscovery()` -> `java.lang.Object enablePartitionDiscovery()`
+
+#### `models.AzureDataLakeAnalyticsLinkedService` was modified
+
+* `withEncryptedCredential(java.lang.Object)` was removed
+* `java.lang.Object encryptedCredential()` -> `java.lang.String encryptedCredential()`
+
+#### `models.HiveLinkedService` was modified
+
+* `withEncryptedCredential(java.lang.Object)` was removed
+* `java.lang.Object encryptedCredential()` -> `java.lang.String encryptedCredential()`
+
+#### `models.AzureDatabricksDeltaLakeLinkedService` was modified
+
+* `java.lang.Object encryptedCredential()` -> `java.lang.String encryptedCredential()`
+* `withEncryptedCredential(java.lang.Object)` was removed
+
+#### `models.GoogleSheetsLinkedService` was modified
+
+* `withEncryptedCredential(java.lang.Object)` was removed
+* `java.lang.Object encryptedCredential()` -> `java.lang.String encryptedCredential()`
+
+#### `models.EloquaLinkedService` was modified
+
+* `java.lang.Object encryptedCredential()` -> `java.lang.String encryptedCredential()`
+* `withEncryptedCredential(java.lang.Object)` was removed
+
+#### `models.HDInsightHiveActivity` was modified
+
+* `java.util.List variables()` -> `java.util.Map variables()`
+* `withVariables(java.util.List)` was removed
+
+#### `models.SapCloudForCustomerLinkedService` was modified
+
+* `java.lang.Object encryptedCredential()` -> `java.lang.String encryptedCredential()`
+* `withEncryptedCredential(java.lang.Object)` was removed
+
+#### `models.GoogleCloudStorageLinkedService` was modified
+
+* `withEncryptedCredential(java.lang.Object)` was removed
+* `java.lang.Object encryptedCredential()` -> `java.lang.String encryptedCredential()`
+
+#### `models.OdbcLinkedService` was modified
+
+* `java.lang.Object encryptedCredential()` -> `java.lang.String encryptedCredential()`
+* `withEncryptedCredential(java.lang.Object)` was removed
+
+#### `models.HdfsLinkedService` was modified
+
+* `java.lang.Object encryptedCredential()` -> `java.lang.String encryptedCredential()`
+* `withEncryptedCredential(java.lang.Object)` was removed
+
+#### `models.AzurePostgreSqlLinkedService` was modified
+
+* `withEncryptedCredential(java.lang.Object)` was removed
+* `java.lang.Object encryptedCredential()` -> `java.lang.String encryptedCredential()`
+
+#### `models.AzureMLLinkedService` was modified
+
+* `java.lang.Object encryptedCredential()` -> `java.lang.String encryptedCredential()`
+* `withEncryptedCredential(java.lang.Object)` was removed
+
+#### `models.OracleLinkedService` was modified
+
+* `java.lang.Object encryptedCredential()` -> `java.lang.String encryptedCredential()`
+* `withEncryptedCredential(java.lang.Object)` was removed
+
+#### `models.AzureFunctionLinkedService` was modified
+
+* `java.lang.Object encryptedCredential()` -> `java.lang.String encryptedCredential()`
+* `withEncryptedCredential(java.lang.Object)` was removed
+
+#### `models.HdfsReadSettings` was modified
+
+* `java.lang.Boolean enablePartitionDiscovery()` -> `java.lang.Object enablePartitionDiscovery()`
+* `withEnablePartitionDiscovery(java.lang.Boolean)` was removed
+
+#### `models.AmazonS3CompatibleLinkedService` was modified
+
+* `java.lang.Object encryptedCredential()` -> `java.lang.String encryptedCredential()`
+* `withEncryptedCredential(java.lang.Object)` was removed
+
+#### `models.PaypalLinkedService` was modified
+
+* `withEncryptedCredential(java.lang.Object)` was removed
+* `java.lang.Object encryptedCredential()` -> `java.lang.String encryptedCredential()`
+
+#### `models.SalesforceMarketingCloudLinkedService` was modified
+
+* `withEncryptedCredential(java.lang.Object)` was removed
+* `java.lang.Object encryptedCredential()` -> `java.lang.String encryptedCredential()`
+
+#### `models.AzureDatabricksLinkedService` was modified
+
+* `withEncryptedCredential(java.lang.Object)` was removed
+* `java.lang.Object encryptedCredential()` -> `java.lang.String encryptedCredential()`
+
+#### `models.QuickbaseLinkedService` was modified
+
+* `withEncryptedCredential(java.lang.Object)` was removed
+* `java.lang.Object encryptedCredential()` -> `java.lang.String encryptedCredential()`
+
+#### `models.MicrosoftAccessLinkedService` was modified
+
+* `withEncryptedCredential(java.lang.Object)` was removed
+* `java.lang.Object encryptedCredential()` -> `java.lang.String encryptedCredential()`
+
+#### `models.AzureMariaDBLinkedService` was modified
+
+* `withEncryptedCredential(java.lang.Object)` was removed
+* `java.lang.Object encryptedCredential()` -> `java.lang.String encryptedCredential()`
+
+#### `models.SqlServerLinkedService` was modified
+
+* `withEncryptedCredential(java.lang.Object)` was removed
+* `java.lang.Object encryptedCredential()` -> `java.lang.String encryptedCredential()`
+
+#### `models.AmazonRedshiftLinkedService` was modified
+
+* `withEncryptedCredential(java.lang.Object)` was removed
+* `java.lang.Object encryptedCredential()` -> `java.lang.String encryptedCredential()`
+
+#### `models.ResponsysLinkedService` was modified
+
+* `java.lang.Object encryptedCredential()` -> `java.lang.String encryptedCredential()`
+* `withEncryptedCredential(java.lang.Object)` was removed
+
+#### `models.ImpalaLinkedService` was modified
+
+* `java.lang.Object encryptedCredential()` -> `java.lang.String encryptedCredential()`
+* `withEncryptedCredential(java.lang.Object)` was removed
+
+#### `models.SftpServerLinkedService` was modified
+
+* `withEncryptedCredential(java.lang.Object)` was removed
+* `java.lang.Object encryptedCredential()` -> `java.lang.String encryptedCredential()`
+
+#### `models.MySqlLinkedService` was modified
+
+* `java.lang.Object encryptedCredential()` -> `java.lang.String encryptedCredential()`
+* `withEncryptedCredential(java.lang.Object)` was removed
+
+#### `models.PhoenixLinkedService` was modified
+
+* `java.lang.Object encryptedCredential()` -> `java.lang.String encryptedCredential()`
+* `withEncryptedCredential(java.lang.Object)` was removed
+
+#### `models.Db2LinkedService` was modified
+
+* `java.lang.Object encryptedCredential()` -> `java.lang.String encryptedCredential()`
+* `withEncryptedCredential(java.lang.Object)` was removed
+
+#### `models.DynamicsCrmLinkedService` was modified
+
+* `withEncryptedCredential(java.lang.Object)` was removed
+* `java.lang.Object encryptedCredential()` -> `java.lang.String encryptedCredential()`
+
+#### `models.FtpServerLinkedService` was modified
+
+* `java.lang.Object encryptedCredential()` -> `java.lang.String encryptedCredential()`
+* `withEncryptedCredential(java.lang.Object)` was removed
+
+#### `models.QuickBooksLinkedService` was modified
+
+* `withEncryptedCredential(java.lang.Object)` was removed
+* `java.lang.Object encryptedCredential()` -> `java.lang.String encryptedCredential()`
+
+#### `models.SalesforceServiceCloudLinkedService` was modified
+
+* `withEncryptedCredential(java.lang.Object)` was removed
+* `java.lang.Object encryptedCredential()` -> `java.lang.String encryptedCredential()`
+
+#### `models.GoogleCloudStorageReadSettings` was modified
+
+* `java.lang.Boolean enablePartitionDiscovery()` -> `java.lang.Object enablePartitionDiscovery()`
+* `withEnablePartitionDiscovery(java.lang.Boolean)` was removed
+
+#### `models.CouchbaseLinkedService` was modified
+
+* `java.lang.Object encryptedCredential()` -> `java.lang.String encryptedCredential()`
+* `withEncryptedCredential(java.lang.Object)` was removed
+
+#### `models.SharePointOnlineListLinkedService` was modified
+
+* `java.lang.Object encryptedCredential()` -> `java.lang.String encryptedCredential()`
+* `withEncryptedCredential(java.lang.Object)` was removed
+
+#### `models.SybaseLinkedService` was modified
+
+* `withEncryptedCredential(java.lang.Object)` was removed
+* `java.lang.Object encryptedCredential()` -> `java.lang.String encryptedCredential()`
+
+#### `models.AmazonMwsLinkedService` was modified
+
+* `withEncryptedCredential(java.lang.Object)` was removed
+* `java.lang.Object encryptedCredential()` -> `java.lang.String encryptedCredential()`
+
+#### `models.GoogleBigQueryLinkedService` was modified
+
+* `withEncryptedCredential(java.lang.Object)` was removed
+* `java.lang.Object encryptedCredential()` -> `java.lang.String encryptedCredential()`
+
+#### `models.DataworldLinkedService` was modified
+
+* `java.lang.Object encryptedCredential()` -> `java.lang.String encryptedCredential()`
+* `withEncryptedCredential(java.lang.Object)` was removed
+
+#### `models.OracleCloudStorageReadSettings` was modified
+
+* `java.lang.Boolean enablePartitionDiscovery()` -> `java.lang.Object enablePartitionDiscovery()`
+* `withEnablePartitionDiscovery(java.lang.Boolean)` was removed
+
+#### `models.AzureSqlMILinkedService` was modified
+
+* `withEncryptedCredential(java.lang.Object)` was removed
+* `java.lang.Object encryptedCredential()` -> `java.lang.String encryptedCredential()`
+
+#### `models.Office365LinkedService` was modified
+
+* `java.lang.Object encryptedCredential()` -> `java.lang.String encryptedCredential()`
+* `withEncryptedCredential(java.lang.Object)` was removed
+
+#### `models.AmazonRdsForSqlServerLinkedService` was modified
+
+* `withEncryptedCredential(java.lang.Object)` was removed
+* `java.lang.Object encryptedCredential()` -> `java.lang.String encryptedCredential()`
+
+#### `models.ZendeskLinkedService` was modified
+
+* `withEncryptedCredential(java.lang.Object)` was removed
+* `java.lang.Object encryptedCredential()` -> `java.lang.String encryptedCredential()`
+
+#### `models.MarketoLinkedService` was modified
+
+* `java.lang.Object encryptedCredential()` -> `java.lang.String encryptedCredential()`
+* `withEncryptedCredential(java.lang.Object)` was removed
+
+### Features Added
+
+* `models.MapperPolicy` was added
+
+* `models.ChangeDataCaptureResource$Update` was added
+
+* `models.SecureInputOutputPolicy` was added
+
+* `models.ChangeDataCaptureFolder` was added
+
+* `models.ActivityOnInactiveMarkAs` was added
+
+* `models.ChangeDataCaptureListResponse` was added
+
+* `models.ConnectionType` was added
+
+* `models.MappingType` was added
+
+* `models.MapperSourceConnectionsInfo` was added
+
+* `models.ChangeDataCaptureResource$DefinitionStages` was added
+
+* `models.ChangeDataCaptures` was added
+
+* `models.FrequencyType` was added
+
+* `models.ActivityState` was added
+
+* `models.MapperDslConnectorProperties` was added
+
+* `models.MapperConnectionReference` was added
+
+* `models.IntegrationRuntimeDataFlowPropertiesCustomPropertiesItem` was added
+
+* `models.ChangeDataCaptureResource$Definition` was added
+
+* `models.ChangeDataCaptureResource$UpdateStages` was added
+
+* `models.MapperAttributeMapping` was added
+
+* `models.ChangeDataCaptureResource` was added
+
+* `models.MapperTargetConnectionsInfo` was added
+
+* `models.MapperAttributeMappings` was added
+
+* `models.MapperAttributeReference` was added
+
+* `models.MapperConnection` was added
+
+* `models.MapperTable` was added
+
+* `models.DataMapperMapping` was added
+
+* `models.MapperTableSchema` was added
+
+* `models.MapperPolicyRecurrence` was added
+
+#### `models.SapEccLinkedService` was modified
+
+* `withUsername(java.lang.Object)` was added
+* `withUrl(java.lang.Object)` was added
+
+#### `models.SmartsheetLinkedService` was modified
+
+* `withEncryptedCredential(java.lang.String)` was added
+
+#### `models.Activity` was modified
+
+* `withOnInactiveMarkAs(models.ActivityOnInactiveMarkAs)` was added
+* `onInactiveMarkAs()` was added
+* `state()` was added
+* `withState(models.ActivityState)` was added
+
+#### `models.HBaseLinkedService` was modified
+
+* `withEncryptedCredential(java.lang.String)` was added
+
+#### `models.DrillLinkedService` was modified
+
+* `withEncryptedCredential(java.lang.String)` was added
+
+#### `models.SnowflakeLinkedService` was modified
+
+* `withEncryptedCredential(java.lang.String)` was added
+
+#### `models.SapOdpLinkedService` was modified
+
+* `withEncryptedCredential(java.lang.String)` was added
+
+#### `models.MongoDbAtlasLinkedService` was modified
+
+* `withDriverVersion(java.lang.Object)` was added
+* `driverVersion()` was added
+
+#### `models.SapOpenHubLinkedService` was modified
+
+* `withEncryptedCredential(java.lang.String)` was added
+
+#### `models.SalesforceSource` was modified
+
+* `withReadBehavior(java.lang.Object)` was added
+
+#### `models.SalesforceServiceCloudSource` was modified
+
+* `withReadBehavior(java.lang.Object)` was added
+
+#### `models.VerticaLinkedService` was modified
+
+* `withEncryptedCredential(java.lang.String)` was added
+
+#### `models.HDInsightOnDemandLinkedService` was modified
+
+* `withEncryptedCredential(java.lang.String)` was added
+
+#### `models.FileServerLinkedService` was modified
+
+* `withEncryptedCredential(java.lang.String)` was added
+
+#### `models.SqlMISource` was modified
+
+* `withIsolationLevel(java.lang.Object)` was added
+* `isolationLevel()` was added
+
+#### `models.AzureDataLakeStoreReadSettings` was modified
+
+* `withEnablePartitionDiscovery(java.lang.Object)` was added
+
+#### `models.ScriptActivity` was modified
+
+* `withOnInactiveMarkAs(models.ActivityOnInactiveMarkAs)` was added
+* `withState(models.ActivityState)` was added
+
+#### `models.HDInsightSparkActivity` was modified
+
+* `withState(models.ActivityState)` was added
+* `withOnInactiveMarkAs(models.ActivityOnInactiveMarkAs)` was added
+
+#### `models.AmazonS3LinkedService` was modified
+
+* `withEncryptedCredential(java.lang.String)` was added
+
+#### `models.NetezzaLinkedService` was modified
+
+* `withEncryptedCredential(java.lang.String)` was added
+
+#### `models.MagentoLinkedService` was modified
+
+* `withEncryptedCredential(java.lang.String)` was added
+
+#### `models.InformixLinkedService` was modified
+
+* `withEncryptedCredential(java.lang.String)` was added
+
+#### `models.WebActivity` was modified
+
+* `withOnInactiveMarkAs(models.ActivityOnInactiveMarkAs)` was added
+* `withState(models.ActivityState)` was added
+
+#### `models.HttpReadSettings` was modified
+
+* `withAdditionalColumns(java.lang.Object)` was added
+* `additionalColumns()` was added
+
+#### `models.GetMetadataActivity` was modified
+
+* `withState(models.ActivityState)` was added
+* `withOnInactiveMarkAs(models.ActivityOnInactiveMarkAs)` was added
+
+#### `DataFactoryManager` was modified
+
+* `changeDataCaptures()` was added
+
+#### `models.FilterActivity` was modified
+
+* `withState(models.ActivityState)` was added
+* `withOnInactiveMarkAs(models.ActivityOnInactiveMarkAs)` was added
+
+#### `models.HttpLinkedService` was modified
+
+* `withEncryptedCredential(java.lang.String)` was added
+
+#### `models.GreenplumLinkedService` was modified
+
+* `withEncryptedCredential(java.lang.String)` was added
+
+#### `models.PostgreSqlLinkedService` was modified
+
+* `withEncryptedCredential(java.lang.String)` was added
+
+#### `models.ForEachActivity` was modified
+
+* `withOnInactiveMarkAs(models.ActivityOnInactiveMarkAs)` was added
+* `withState(models.ActivityState)` was added
+
+#### `models.CommonDataServiceForAppsLinkedService` was modified
+
+* `withEncryptedCredential(java.lang.String)` was added
+
+#### `models.ExecuteWranglingDataflowActivity` was modified
+
+* `withState(models.ActivityState)` was added
+* `withOnInactiveMarkAs(models.ActivityOnInactiveMarkAs)` was added
+
+#### `models.SquareLinkedService` was modified
+
+* `withEncryptedCredential(java.lang.String)` was added
+
+#### `models.AzureBlobFSReadSettings` was modified
+
+* `withEnablePartitionDiscovery(java.lang.Object)` was added
+
+#### `models.AzureBatchLinkedService` was modified
+
+* `withEncryptedCredential(java.lang.String)` was added
+
+#### `models.MongoDbLinkedService` was modified
+
+* `withEncryptedCredential(java.lang.String)` was added
+
+#### `models.DatabricksNotebookActivity` was modified
+
+* `withState(models.ActivityState)` was added
+* `withOnInactiveMarkAs(models.ActivityOnInactiveMarkAs)` was added
+
+#### `models.SapHanaLinkedService` was modified
+
+* `withEncryptedCredential(java.lang.String)` was added
+
+#### `models.WaitActivity` was modified
+
+* `withOnInactiveMarkAs(models.ActivityOnInactiveMarkAs)` was added
+* `withState(models.ActivityState)` was added
+
+#### `models.OracleCloudStorageLinkedService` was modified
+
+* `withEncryptedCredential(java.lang.String)` was added
+
+#### `models.CopyActivity` was modified
+
+* `withState(models.ActivityState)` was added
+* `withOnInactiveMarkAs(models.ActivityOnInactiveMarkAs)` was added
+
+#### `models.IfConditionActivity` was modified
+
+* `withOnInactiveMarkAs(models.ActivityOnInactiveMarkAs)` was added
+* `withState(models.ActivityState)` was added
+
+#### `models.TeamDeskLinkedService` was modified
+
+* `withEncryptedCredential(java.lang.String)` was added
+
+#### `models.AsanaLinkedService` was modified
+
+* `withEncryptedCredential(java.lang.String)` was added
+
+#### `models.ExecutionActivity` was modified
+
+* `withOnInactiveMarkAs(models.ActivityOnInactiveMarkAs)` was added
+* `withState(models.ActivityState)` was added
+
+#### `models.WebhookActivity` was modified
+
+* `withState(models.ActivityState)` was added
+* `withOnInactiveMarkAs(models.ActivityOnInactiveMarkAs)` was added
+
+#### `models.ValidationActivity` was modified
+
+* `withState(models.ActivityState)` was added
+* `withOnInactiveMarkAs(models.ActivityOnInactiveMarkAs)` was added
+
+#### `models.ConcurLinkedService` was modified
+
+* `withEncryptedCredential(java.lang.String)` was added
+
+#### `models.CustomActivity` was modified
+
+* `withState(models.ActivityState)` was added
+* `withOnInactiveMarkAs(models.ActivityOnInactiveMarkAs)` was added
+
+#### `models.SynapseNotebookActivity` was modified
+
+* `targetSparkConfiguration()` was added
+* `withOnInactiveMarkAs(models.ActivityOnInactiveMarkAs)` was added
+* `withNumExecutors(java.lang.Object)` was added
+* `withState(models.ActivityState)` was added
+* `withConfigurationType(models.ConfigurationType)` was added
+* `configurationType()` was added
+* `withSparkConfig(java.util.Map)` was added
+* `sparkConfig()` was added
+* `withTargetSparkConfiguration(models.SparkConfigurationParametrizationReference)` was added
+
+#### `models.MariaDBLinkedService` was modified
+
+* `withEncryptedCredential(java.lang.String)` was added
+
+#### `models.XeroLinkedService` was modified
+
+* `withEncryptedCredential(java.lang.String)` was added
+
+#### `models.AzureFileStorageReadSettings` was modified
+
+* `withEnablePartitionDiscovery(java.lang.Object)` was added
+
+#### `models.AzureMLServiceLinkedService` was modified
+
+* `withAuthentication(java.lang.Object)` was added
+* `authentication()` was added
+* `withEncryptedCredential(java.lang.String)` was added
+
+#### `models.FtpReadSettings` was modified
+
+* `withEnablePartitionDiscovery(java.lang.Object)` was added
+* `withUseBinaryTransfer(java.lang.Object)` was added
+
+#### `models.IntegrationRuntimeDataFlowProperties` was modified
+
+* `withCustomProperties(java.util.List)` was added
+* `customProperties()` was added
+
+#### `models.DynamicsAXLinkedService` was modified
+
+* `withEncryptedCredential(java.lang.String)` was added
+
+#### `models.FileServerReadSettings` was modified
+
+* `withEnablePartitionDiscovery(java.lang.Object)` was added
+
+#### `models.PrestoLinkedService` was modified
+
+* `withEncryptedCredential(java.lang.String)` was added
+
+#### `models.AzureMLBatchExecutionActivity` was modified
+
+* `withOnInactiveMarkAs(models.ActivityOnInactiveMarkAs)` was added
+* `withState(models.ActivityState)` was added
+
+#### `models.AmazonRdsForOracleLinkedService` was modified
+
+* `withEncryptedCredential(java.lang.String)` was added
+
+#### `models.SetVariableActivity` was modified
+
+* `withOnInactiveMarkAs(models.ActivityOnInactiveMarkAs)` was added
+* `withSetSystemVariable(java.lang.Boolean)` was added
+* `withState(models.ActivityState)` was added
+* `policy()` was added
+* `setSystemVariable()` was added
+* `withPolicy(models.SecureInputOutputPolicy)` was added
+
+#### `models.SalesforceLinkedService` was modified
+
+* `withEncryptedCredential(java.lang.String)` was added
+
+#### `models.RestResourceDataset` was modified
+
+* `withPaginationRules(java.util.Map)` was added
+* `withAdditionalHeaders(java.util.Map)` was added
+
+#### `models.SapBWLinkedService` was modified
+
+* `withEncryptedCredential(java.lang.String)` was added
+
+#### `models.ZohoLinkedService` was modified
+
+* `withEncryptedCredential(java.lang.String)` was added
+
+#### `models.SapTableLinkedService` was modified
+
+* `withEncryptedCredential(java.lang.String)` was added
+
+#### `models.JiraLinkedService` was modified
+
+* `withEncryptedCredential(java.lang.String)` was added
+
+#### `models.AzureFileStorageLinkedService` was modified
+
+* `withEncryptedCredential(java.lang.String)` was added
+
+#### `models.DataLakeAnalyticsUsqlActivity` was modified
+
+* `withState(models.ActivityState)` was added
+* `withOnInactiveMarkAs(models.ActivityOnInactiveMarkAs)` was added
+
+#### `models.AmazonRdsForSqlServerSource` was modified
+
+* `withIsolationLevel(java.lang.Object)` was added
+* `isolationLevel()` was added
+
+#### `models.AzureSqlDatabaseLinkedService` was modified
+
+* `withEncryptedCredential(java.lang.String)` was added
+
+#### `models.AzureSqlDWLinkedService` was modified
+
+* `withEncryptedCredential(java.lang.String)` was added
+
+#### `models.AzureMLExecutePipelineActivity` was modified
+
+* `withState(models.ActivityState)` was added
+* `withOnInactiveMarkAs(models.ActivityOnInactiveMarkAs)` was added
+
+#### `models.DatabricksSparkJarActivity` was modified
+
+* `withOnInactiveMarkAs(models.ActivityOnInactiveMarkAs)` was added
+* `withState(models.ActivityState)` was added
+
+#### `models.ShopifyLinkedService` was modified
+
+* `withEncryptedCredential(java.lang.String)` was added
+
+#### `models.TeradataLinkedService` was modified
+
+* `withEncryptedCredential(java.lang.String)` was added
+
+#### `models.SparkLinkedService` was modified
+
+* `withEncryptedCredential(java.lang.String)` was added
+
+#### `models.OracleServiceCloudLinkedService` was modified
+
+* `withEncryptedCredential(java.lang.String)` was added
+
+#### `models.AzureBlobStorageLinkedService` was modified
+
+* `withAccountKind(java.lang.Object)` was added
+* `withServiceEndpoint(java.lang.Object)` was added
+
+#### `models.AzureDataLakeStoreLinkedService` was modified
+
+* `withEncryptedCredential(java.lang.String)` was added
+
+#### `models.ServiceNowLinkedService` was modified
+
+* `withEncryptedCredential(java.lang.String)` was added
+
+#### `models.AzureSearchLinkedService` was modified
+
+* `withEncryptedCredential(java.lang.String)` was added
+
+#### `models.ExecuteSsisPackageActivity` was modified
+
+* `withOnInactiveMarkAs(models.ActivityOnInactiveMarkAs)` was added
+* `withState(models.ActivityState)` was added
+
+#### `models.UntilActivity` was modified
+
+* `withOnInactiveMarkAs(models.ActivityOnInactiveMarkAs)` was added
+* `withState(models.ActivityState)` was added
+
+#### `models.DeleteActivity` was modified
+
+* `withOnInactiveMarkAs(models.ActivityOnInactiveMarkAs)` was added
+* `withState(models.ActivityState)` was added
+
+#### `models.AzureMySqlLinkedService` was modified
+
+* `withEncryptedCredential(java.lang.String)` was added
+
+#### `models.SynapseSparkJobDefinitionActivity` was modified
+
+* `withOnInactiveMarkAs(models.ActivityOnInactiveMarkAs)` was added
+* `withState(models.ActivityState)` was added
+
+#### `models.HubspotLinkedService` was modified
+
+* `withEncryptedCredential(java.lang.String)` was added
+
+#### `models.ControlActivity` was modified
+
+* `withState(models.ActivityState)` was added
+* `withOnInactiveMarkAs(models.ActivityOnInactiveMarkAs)` was added
+
+#### `models.AmazonS3CompatibleReadSettings` was modified
+
+* `withEnablePartitionDiscovery(java.lang.Object)` was added
+
+#### `models.HDInsightPigActivity` was modified
+
+* `withState(models.ActivityState)` was added
+* `withOnInactiveMarkAs(models.ActivityOnInactiveMarkAs)` was added
+
+#### `models.DynamicsLinkedService` was modified
+
+* `withEncryptedCredential(java.lang.String)` was added
+
+#### `models.CassandraLinkedService` was modified
+
+* `withEncryptedCredential(java.lang.String)` was added
+
+#### `models.SftpReadSettings` was modified
+
+* `withEnablePartitionDiscovery(java.lang.Object)` was added
+
+#### `models.ODataLinkedService` was modified
+
+* `withEncryptedCredential(java.lang.String)` was added
+
+#### `models.GoogleAdWordsLinkedService` was modified
+
+* `withEncryptedCredential(java.lang.String)` was added
+
+#### `models.HDInsightLinkedService` was modified
+
+* `withEncryptedCredential(java.lang.String)` was added
+
+#### `models.AzureBlobStorageReadSettings` was modified
+
+* `withEnablePartitionDiscovery(java.lang.Object)` was added
+
+#### `models.RestServiceLinkedService` was modified
+
+* `withEncryptedCredential(java.lang.String)` was added
+
+#### `models.CosmosDbLinkedService` was modified
+
+* `withEncryptedCredential(java.lang.String)` was added
+* `withServicePrincipalCredentialType(java.lang.Object)` was added
+
+#### `models.AzureBlobFSLinkedService` was modified
+
+* `withEncryptedCredential(java.lang.String)` was added
+
+#### `models.SelfHostedIntegrationRuntime` was modified
+
+* `selfContainedInteractiveAuthoringEnabled()` was added
+* `withSelfContainedInteractiveAuthoringEnabled(java.lang.Boolean)` was added
+
+#### `models.AmazonS3ReadSettings` was modified
+
+* `withEnablePartitionDiscovery(java.lang.Object)` was added
+
+#### `models.SqlServerSource` was modified
+
+* `withIsolationLevel(java.lang.Object)` was added
+* `isolationLevel()` was added
+
+#### `models.SwitchActivity` was modified
+
+* `withOnInactiveMarkAs(models.ActivityOnInactiveMarkAs)` was added
+* `withState(models.ActivityState)` was added
+
+#### `models.AzureDataLakeAnalyticsLinkedService` was modified
+
+* `withEncryptedCredential(java.lang.String)` was added
+
+#### `models.HiveLinkedService` was modified
+
+* `withEncryptedCredential(java.lang.String)` was added
+
+#### `models.AzureDatabricksDeltaLakeLinkedService` was modified
+
+* `withEncryptedCredential(java.lang.String)` was added
+
+#### `models.GoogleSheetsLinkedService` was modified
+
+* `withEncryptedCredential(java.lang.String)` was added
+
+#### `models.EloquaLinkedService` was modified
+
+* `withEncryptedCredential(java.lang.String)` was added
+
+#### `models.AzureMLUpdateResourceActivity` was modified
+
+* `withOnInactiveMarkAs(models.ActivityOnInactiveMarkAs)` was added
+* `withState(models.ActivityState)` was added
+
+#### `models.SqlDWSource` was modified
+
+* `withIsolationLevel(java.lang.Object)` was added
+* `isolationLevel()` was added
+
+#### `models.AzureFunctionActivity` was modified
+
+* `withState(models.ActivityState)` was added
+* `withOnInactiveMarkAs(models.ActivityOnInactiveMarkAs)` was added
+
+#### `models.ExecutePipelineActivity` was modified
+
+* `withOnInactiveMarkAs(models.ActivityOnInactiveMarkAs)` was added
+* `withState(models.ActivityState)` was added
+
+#### `models.HDInsightHiveActivity` was modified
+
+* `withState(models.ActivityState)` was added
+* `withOnInactiveMarkAs(models.ActivityOnInactiveMarkAs)` was added
+* `withVariables(java.util.Map)` was added
+
+#### `models.SapCloudForCustomerLinkedService` was modified
+
+* `withEncryptedCredential(java.lang.String)` was added
+
+#### `models.GoogleCloudStorageLinkedService` was modified
+
+* `withEncryptedCredential(java.lang.String)` was added
+
+#### `models.FailActivity` was modified
+
+* `withState(models.ActivityState)` was added
+* `withOnInactiveMarkAs(models.ActivityOnInactiveMarkAs)` was added
+
+#### `models.OdbcLinkedService` was modified
+
+* `withEncryptedCredential(java.lang.String)` was added
+
+#### `models.HdfsLinkedService` was modified
+
+* `withEncryptedCredential(java.lang.String)` was added
+
+#### `models.AzurePostgreSqlLinkedService` was modified
+
+* `withEncryptedCredential(java.lang.String)` was added
+
+#### `models.AzureMLLinkedService` was modified
+
+* `withEncryptedCredential(java.lang.String)` was added
+
+#### `models.OracleLinkedService` was modified
+
+* `withEncryptedCredential(java.lang.String)` was added
+
+#### `models.AzureFunctionLinkedService` was modified
+
+* `withEncryptedCredential(java.lang.String)` was added
+
+#### `models.HdfsReadSettings` was modified
+
+* `withEnablePartitionDiscovery(java.lang.Object)` was added
+
+#### `models.AmazonS3CompatibleLinkedService` was modified
+
+* `withEncryptedCredential(java.lang.String)` was added
+
+#### `models.PaypalLinkedService` was modified
+
+* `withEncryptedCredential(java.lang.String)` was added
+
+#### `models.SalesforceMarketingCloudLinkedService` was modified
+
+* `withEncryptedCredential(java.lang.String)` was added
+
+#### `models.AzureDatabricksLinkedService` was modified
+
+* `withEncryptedCredential(java.lang.String)` was added
+
+#### `models.SelfHostedIntegrationRuntimeStatus` was modified
+
+* `selfContainedInteractiveAuthoringEnabled()` was added
+
+#### `models.QuickbaseLinkedService` was modified
+
+* `withEncryptedCredential(java.lang.String)` was added
+
+#### `models.MicrosoftAccessLinkedService` was modified
+
+* `withEncryptedCredential(java.lang.String)` was added
+
+#### `models.DatabricksSparkPythonActivity` was modified
+
+* `withOnInactiveMarkAs(models.ActivityOnInactiveMarkAs)` was added
+* `withState(models.ActivityState)` was added
+
+#### `models.AzureMariaDBLinkedService` was modified
+
+* `withEncryptedCredential(java.lang.String)` was added
+
+#### `models.ExecuteDataFlowActivity` was modified
+
+* `withOnInactiveMarkAs(models.ActivityOnInactiveMarkAs)` was added
+* `withState(models.ActivityState)` was added
+
+#### `models.SqlServerLinkedService` was modified
+
+* `withEncryptedCredential(java.lang.String)` was added
+
+#### `models.AmazonRedshiftLinkedService` was modified
+
+* `withEncryptedCredential(java.lang.String)` was added
+
+#### `models.ResponsysLinkedService` was modified
+
+* `withEncryptedCredential(java.lang.String)` was added
+
+#### `models.ImpalaLinkedService` was modified
+
+* `withEncryptedCredential(java.lang.String)` was added
+
+#### `models.SftpServerLinkedService` was modified
+
+* `withEncryptedCredential(java.lang.String)` was added
+
+#### `models.MySqlLinkedService` was modified
+
+* `withEncryptedCredential(java.lang.String)` was added
+
+#### `models.HDInsightStreamingActivity` was modified
+
+* `withState(models.ActivityState)` was added
+* `withOnInactiveMarkAs(models.ActivityOnInactiveMarkAs)` was added
+
+#### `models.PhoenixLinkedService` was modified
+
+* `withEncryptedCredential(java.lang.String)` was added
+
+#### `models.Db2LinkedService` was modified
+
+* `withEncryptedCredential(java.lang.String)` was added
+
+#### `models.DynamicsCrmLinkedService` was modified
+
+* `withEncryptedCredential(java.lang.String)` was added
+
+#### `models.LookupActivity` was modified
+
+* `withState(models.ActivityState)` was added
+* `withOnInactiveMarkAs(models.ActivityOnInactiveMarkAs)` was added
+
+#### `models.FtpServerLinkedService` was modified
+
+* `withEncryptedCredential(java.lang.String)` was added
+
+#### `models.QuickBooksLinkedService` was modified
+
+* `withEncryptedCredential(java.lang.String)` was added
+
+#### `models.SalesforceServiceCloudLinkedService` was modified
+
+* `withEncryptedCredential(java.lang.String)` was added
+
+#### `models.GoogleCloudStorageReadSettings` was modified
+
+* `withEnablePartitionDiscovery(java.lang.Object)` was added
+
+#### `models.CouchbaseLinkedService` was modified
+
+* `withEncryptedCredential(java.lang.String)` was added
+
+#### `models.SharePointOnlineListLinkedService` was modified
+
+* `withEncryptedCredential(java.lang.String)` was added
+
+#### `models.AppendVariableActivity` was modified
+
+* `withState(models.ActivityState)` was added
+* `withOnInactiveMarkAs(models.ActivityOnInactiveMarkAs)` was added
+
+#### `models.SybaseLinkedService` was modified
+
+* `withEncryptedCredential(java.lang.String)` was added
+
+#### `models.HDInsightMapReduceActivity` was modified
+
+* `withOnInactiveMarkAs(models.ActivityOnInactiveMarkAs)` was added
+* `withState(models.ActivityState)` was added
+
+#### `models.AmazonMwsLinkedService` was modified
+
+* `withEncryptedCredential(java.lang.String)` was added
+
+#### `models.GoogleBigQueryLinkedService` was modified
+
+* `withEncryptedCredential(java.lang.String)` was added
+
+#### `models.SqlServerStoredProcedureActivity` was modified
+
+* `withOnInactiveMarkAs(models.ActivityOnInactiveMarkAs)` was added
+* `withState(models.ActivityState)` was added
+
+#### `models.AzureSqlSource` was modified
+
+* `isolationLevel()` was added
+* `withIsolationLevel(java.lang.Object)` was added
+
+#### `models.DataworldLinkedService` was modified
+
+* `withEncryptedCredential(java.lang.String)` was added
+
+#### `models.OracleCloudStorageReadSettings` was modified
+
+* `withEnablePartitionDiscovery(java.lang.Object)` was added
+
+#### `models.AzureDataExplorerCommandActivity` was modified
+
+* `withOnInactiveMarkAs(models.ActivityOnInactiveMarkAs)` was added
+* `withState(models.ActivityState)` was added
+
+#### `models.AzureSqlMILinkedService` was modified
+
+* `withEncryptedCredential(java.lang.String)` was added
+
+#### `models.PipelineExternalComputeScaleProperties` was modified
+
+* `withNumberOfExternalNodes(java.lang.Integer)` was added
+* `withNumberOfPipelineNodes(java.lang.Integer)` was added
+* `numberOfPipelineNodes()` was added
+* `numberOfExternalNodes()` was added
+
+#### `models.Office365LinkedService` was modified
+
+* `withEncryptedCredential(java.lang.String)` was added
+
+#### `models.AmazonRdsForSqlServerLinkedService` was modified
+
+* `withEncryptedCredential(java.lang.String)` was added
+
+#### `models.ZendeskLinkedService` was modified
+
+* `withEncryptedCredential(java.lang.String)` was added
+
+#### `models.MarketoLinkedService` was modified
+
+* `withEncryptedCredential(java.lang.String)` was added
 
 ## 1.0.0-beta.22 (2023-03-13)
 

@@ -24,6 +24,11 @@ public final class CreateSnapshotOperationDetail {
     }
 
     /**
+     * Creates an instance of {@link CreateSnapshotOperationDetail}.
+     */
+    public CreateSnapshotOperationDetail() { }
+
+    /**
      * Gets the operationId property of the {@link CreateSnapshotOperationDetail}.
      *
      * @return The operationId property of the {@link CreateSnapshotOperationDetail}.

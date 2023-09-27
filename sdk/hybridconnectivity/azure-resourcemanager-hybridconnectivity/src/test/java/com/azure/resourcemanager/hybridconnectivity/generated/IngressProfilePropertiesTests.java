@@ -14,20 +14,20 @@ public final class IngressProfilePropertiesTests {
         IngressProfileProperties model =
             BinaryData
                 .fromString(
-                    "{\"hostname\":\"qpjwnzlljfm\",\"aadProfile\":{\"serverId\":\"pee\",\"tenantId\":\"vmgxsab\"}}")
+                    "{\"hostname\":\"fmppe\",\"aadProfile\":{\"serverId\":\"bvmgxsabkyqduuji\",\"tenantId\":\"c\"}}")
                 .toObject(IngressProfileProperties.class);
-        Assertions.assertEquals("qpjwnzlljfm", model.hostname());
-        Assertions.assertEquals("pee", model.serverId());
-        Assertions.assertEquals("vmgxsab", model.tenantId());
+        Assertions.assertEquals("fmppe", model.hostname());
+        Assertions.assertEquals("bvmgxsabkyqduuji", model.serverId());
+        Assertions.assertEquals("c", model.tenantId());
     }
 
     @org.junit.jupiter.api.Test
     public void testSerialize() throws Exception {
         IngressProfileProperties model =
-            new IngressProfileProperties().withHostname("qpjwnzlljfm").withServerId("pee").withTenantId("vmgxsab");
+            new IngressProfileProperties().withHostname("fmppe").withServerId("bvmgxsabkyqduuji").withTenantId("c");
         model = BinaryData.fromObject(model).toObject(IngressProfileProperties.class);
-        Assertions.assertEquals("qpjwnzlljfm", model.hostname());
-        Assertions.assertEquals("pee", model.serverId());
-        Assertions.assertEquals("vmgxsab", model.tenantId());
+        Assertions.assertEquals("fmppe", model.hostname());
+        Assertions.assertEquals("bvmgxsabkyqduuji", model.serverId());
+        Assertions.assertEquals("c", model.tenantId());
     }
 }

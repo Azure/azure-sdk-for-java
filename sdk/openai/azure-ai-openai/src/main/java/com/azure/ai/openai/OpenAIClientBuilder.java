@@ -9,12 +9,11 @@ import com.azure.ai.openai.implementation.NonAzureOpenAIClientImpl;
 import com.azure.ai.openai.implementation.OpenAIClientImpl;
 import com.azure.core.annotation.Generated;
 import com.azure.core.annotation.ServiceClientBuilder;
-import com.azure.core.client.traits.AzureKeyCredentialTrait;
 import com.azure.core.client.traits.ConfigurationTrait;
 import com.azure.core.client.traits.EndpointTrait;
 import com.azure.core.client.traits.HttpTrait;
+import com.azure.core.client.traits.KeyCredentialTrait;
 import com.azure.core.client.traits.TokenCredentialTrait;
-import com.azure.core.credential.AzureKeyCredential;
 import com.azure.core.credential.KeyCredential;
 import com.azure.core.credential.TokenCredential;
 import com.azure.core.http.HttpClient;
@@ -53,7 +52,7 @@ public final class OpenAIClientBuilder
         implements HttpTrait<OpenAIClientBuilder>,
                 ConfigurationTrait<OpenAIClientBuilder>,
                 TokenCredentialTrait<OpenAIClientBuilder>,
-                AzureKeyCredentialTrait<OpenAIClientBuilder>,
+                KeyCredentialTrait<OpenAIClientBuilder>,
                 EndpointTrait<OpenAIClientBuilder> {
 
     @Generated private static final String SDK_NAME = "name";
@@ -177,26 +176,12 @@ public final class OpenAIClientBuilder
         return this;
     }
 
-    /*
-     * The AzureKeyCredential used for authentication.
-     */
-    @Generated private AzureKeyCredential azureKeyCredential;
-
-    /** {@inheritDoc}. */
-    @Override
-    public OpenAIClientBuilder credential(AzureKeyCredential azureKeyCredential) {
-        return this.credential((KeyCredential) azureKeyCredential);
-    }
-
     /** The KeyCredential used for OpenAi authentication. It could be either of Azure or Non-Azure OpenAI API key. */
     private KeyCredential keyCredential;
 
-    /**
-     * The KeyCredential used for OpenAi authentication. It could be either of Azure or Non-Azure OpenAI API key.
-     *
-     * @param keyCredential The credential for OpenAI authentication.
-     * @return the object itself.
-     */
+    /** {@inheritDoc}. */
+    @Generated
+    @Override
     public OpenAIClientBuilder credential(KeyCredential keyCredential) {
         this.keyCredential = keyCredential;
         return this;

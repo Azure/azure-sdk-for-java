@@ -6,6 +6,7 @@ package com.azure.resourcemanager.managedapplications.models;
 
 import com.azure.core.annotation.Fluent;
 import com.azure.core.management.Resource;
+import com.azure.core.management.SystemData;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import java.util.Map;
 
@@ -25,10 +26,10 @@ public class GenericResource extends Resource {
     private Sku sku;
 
     /*
-     * The identity of the resource.
+     * Metadata pertaining to creation and last modification of the resource.
      */
-    @JsonProperty(value = "identity")
-    private Identity identity;
+    @JsonProperty(value = "systemData", access = JsonProperty.Access.WRITE_ONLY)
+    private SystemData systemData;
 
     /** Creates an instance of GenericResource class. */
     public GenericResource() {
@@ -75,23 +76,12 @@ public class GenericResource extends Resource {
     }
 
     /**
-     * Get the identity property: The identity of the resource.
+     * Get the systemData property: Metadata pertaining to creation and last modification of the resource.
      *
-     * @return the identity value.
+     * @return the systemData value.
      */
-    public Identity identity() {
-        return this.identity;
-    }
-
-    /**
-     * Set the identity property: The identity of the resource.
-     *
-     * @param identity the identity value to set.
-     * @return the GenericResource object itself.
-     */
-    public GenericResource withIdentity(Identity identity) {
-        this.identity = identity;
-        return this;
+    public SystemData systemData() {
+        return this.systemData;
     }
 
     /** {@inheritDoc} */
@@ -116,9 +106,6 @@ public class GenericResource extends Resource {
     public void validate() {
         if (sku() != null) {
             sku().validate();
-        }
-        if (identity() != null) {
-            identity().validate();
         }
     }
 }

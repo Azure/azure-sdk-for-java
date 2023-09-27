@@ -185,6 +185,25 @@ public abstract class ConfigurationClientTestBase extends TestProxyTestBase {
     }
 
     @Test
+    public abstract void featureFlagConfigurationSettingUnknownAttributesArePreserved(HttpClient httpClient,
+        ConfigurationServiceVersion serviceVersion);
+
+    void featureFlagConfigurationSettingUnknownAttributesArePreservedRunner(
+        Consumer<FeatureFlagConfigurationSetting> testRunner) {
+        String key = getKey();
+        FeatureFlagConfigurationSetting featureFlagX = getFeatureFlagConfigurationSetting(key, "Feature Flag X");
+        String valueWithAdditionalFieldAtFirstLayer =
+            String.format(
+                "{\"id\":\"%s\",\"k1\":\"v1\",\"description\":\"%s\",\"display_name\":\"%s\",\"enabled\":%s,"
+                + "\"conditions\":{\"requirement_type\":\"All\",\"client_filters\":"
+                + "[{\"name\":\"Microsoft.Percentage\",\"parameters\":{\"Value\":\"30\"}}]"
+                + "},\"additional_field\":\"additional_value\"}", featureFlagX.getFeatureId(),
+                featureFlagX.getDescription(), featureFlagX.getDisplayName(), featureFlagX.isEnabled());
+        featureFlagX.setValue(valueWithAdditionalFieldAtFirstLayer);
+        testRunner.accept(featureFlagX);
+    }
+
+    @Test
     public abstract void setSecretReferenceConfigurationSettingConvenience(HttpClient httpClient,
         ConfigurationServiceVersion serviceVersion);
 
@@ -193,6 +212,20 @@ public abstract class ConfigurationClientTestBase extends TestProxyTestBase {
         String key = getKey();
         testRunner.accept(new SecretReferenceConfigurationSetting(key, "https://localhost"),
             new SecretReferenceConfigurationSetting(key, "https://localhost/100"));
+    }
+
+    @Test
+    public abstract void secretReferenceConfigurationSettingUnknownAttributesArePreserved(HttpClient httpClient,
+        ConfigurationServiceVersion serviceVersion);
+
+    void secretReferenceConfigurationSettingUnknownAttributesArePreservedRunner(
+        Consumer<SecretReferenceConfigurationSetting> testRunner) {
+        String key = getKey();
+        String valueWithAdditionalFields =
+            "{\"uri\":\"uriValue\",\"objectFiledName\":{\"unknown\":\"unknown\",\"unknown2\":\"unknown2\"},"
+                + "\"arrayFieldName\":[{\"name\":\"Microsoft.Percentage\",\"parameters\":{\"Value\":\"30\"}}]}";
+
+        testRunner.accept(new SecretReferenceConfigurationSetting(key, valueWithAdditionalFields));
     }
 
     @Test

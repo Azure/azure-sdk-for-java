@@ -7,7 +7,7 @@ package com.azure.resourcemanager.recoveryservicessiterecovery.generated;
 /** Samples for ReplicationRecoveryServicesProviders Delete. */
 public final class ReplicationRecoveryServicesProvidersDeleteSampl {
     /*
-     * x-ms-original-file: specification/recoveryservicessiterecovery/resource-manager/Microsoft.RecoveryServices/stable/2022-10-01/examples/ReplicationRecoveryServicesProviders_Delete.json
+     * x-ms-original-file: specification/recoveryservicessiterecovery/resource-manager/Microsoft.RecoveryServices/stable/2023-06-01/examples/ReplicationRecoveryServicesProviders_Delete.json
      */
     /**
      * Sample code: Deletes provider from fabric. Note: Deleting provider for any fabric other than SingleHost is

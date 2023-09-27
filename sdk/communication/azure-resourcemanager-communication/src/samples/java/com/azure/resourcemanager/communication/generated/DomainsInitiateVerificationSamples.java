@@ -10,7 +10,7 @@ import com.azure.resourcemanager.communication.models.VerificationType;
 /** Samples for Domains InitiateVerification. */
 public final class DomainsInitiateVerificationSamples {
     /*
-     * x-ms-original-file: specification/communication/resource-manager/Microsoft.Communication/stable/2023-03-31/examples/domains/initiateVerification.json
+     * x-ms-original-file: specification/communication/resource-manager/Microsoft.Communication/preview/2023-04-01-preview/examples/domains/initiateVerification.json
      */
     /**
      * Sample code: Initiate verification.

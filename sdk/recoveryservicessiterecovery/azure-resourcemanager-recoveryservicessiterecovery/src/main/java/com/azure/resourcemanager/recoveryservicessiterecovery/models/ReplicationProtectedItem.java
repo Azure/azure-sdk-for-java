@@ -78,11 +78,13 @@ public interface ReplicationProtectedItem {
     interface Definition
         extends DefinitionStages.Blank, DefinitionStages.WithParentResource, DefinitionStages.WithCreate {
     }
+
     /** The ReplicationProtectedItem definition stages. */
     interface DefinitionStages {
         /** The first stage of the ReplicationProtectedItem definition. */
         interface Blank extends WithParentResource {
         }
+
         /** The stage of the ReplicationProtectedItem definition allowing to specify parent resource. */
         interface WithParentResource {
             /**
@@ -97,6 +99,7 @@ public interface ReplicationProtectedItem {
             WithCreate withExistingReplicationProtectionContainer(
                 String resourceName, String resourceGroupName, String fabricName, String protectionContainerName);
         }
+
         /**
          * The stage of the ReplicationProtectedItem definition which contains all the minimum required properties for
          * the resource to be created, but also allows for any other optional properties to be specified.
@@ -117,6 +120,7 @@ public interface ReplicationProtectedItem {
              */
             ReplicationProtectedItem create(Context context);
         }
+
         /** The stage of the ReplicationProtectedItem definition allowing to specify properties. */
         interface WithProperties {
             /**
@@ -128,6 +132,7 @@ public interface ReplicationProtectedItem {
             WithCreate withProperties(EnableProtectionInputProperties properties);
         }
     }
+
     /**
      * Begins update for the ReplicationProtectedItem resource.
      *
@@ -152,6 +157,7 @@ public interface ReplicationProtectedItem {
          */
         ReplicationProtectedItem apply(Context context);
     }
+
     /** The ReplicationProtectedItem update stages. */
     interface UpdateStages {
         /** The stage of the ReplicationProtectedItem update allowing to specify properties. */
@@ -165,6 +171,7 @@ public interface ReplicationProtectedItem {
             Update withProperties(UpdateReplicationProtectedItemInputProperties properties);
         }
     }
+
     /**
      * Refreshes the resource to sync with Azure.
      *
