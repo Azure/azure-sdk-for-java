@@ -56,7 +56,8 @@ public final class HDInsightHiveActivityTypeProperties {
      * User specified arguments under hivevar namespace.
      */
     @JsonProperty(value = "variables")
-    private List<Object> variables;
+    @JsonInclude(value = JsonInclude.Include.NON_NULL, content = JsonInclude.Include.ALWAYS)
+    private Map<String, Object> variables;
 
     /*
      * Query timeout value (in minutes).  Effective when the HDInsight cluster is with ESP (Enterprise Security
@@ -195,7 +196,7 @@ public final class HDInsightHiveActivityTypeProperties {
      *
      * @return the variables value.
      */
-    public List<Object> variables() {
+    public Map<String, Object> variables() {
         return this.variables;
     }
 
@@ -205,7 +206,7 @@ public final class HDInsightHiveActivityTypeProperties {
      * @param variables the variables value to set.
      * @return the HDInsightHiveActivityTypeProperties object itself.
      */
-    public HDInsightHiveActivityTypeProperties withVariables(List<Object> variables) {
+    public HDInsightHiveActivityTypeProperties withVariables(Map<String, Object> variables) {
         this.variables = variables;
         return this;
     }
