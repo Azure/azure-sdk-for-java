@@ -6,6 +6,7 @@ package com.azure.core.http.rest;
 import com.azure.core.http.HttpHeaders;
 import com.azure.core.http.HttpMethod;
 import com.azure.core.http.HttpRequest;
+import com.azure.core.implementation.ReflectiveInvoker;
 import com.azure.core.implementation.TypeUtil;
 import com.azure.core.implementation.http.rest.ResponseConstructorsCache;
 import org.openjdk.jmh.annotations.Benchmark;
@@ -19,7 +20,6 @@ import org.openjdk.jmh.annotations.State;
 import org.openjdk.jmh.annotations.Warmup;
 import org.openjdk.jmh.infra.Blackhole;
 
-import java.lang.invoke.MethodHandle;
 import java.util.concurrent.TimeUnit;
 
 /**
@@ -57,11 +57,11 @@ public class RestProxyResponseConstructionBenchmark {
 
     /**
      * Benchmarks creating a {@link Response} type using the {@link ResponseConstructorsCache} and the
-     * {@link MethodHandle} it caches that points to the Response type's constructor.
+     * {@link ReflectiveInvoker} it caches that points to the Response type's constructor.
      */
     @Benchmark
     public void reflectionConstruction(Blackhole blackhole) throws Throwable {
-        MethodHandle constructor = CONSTRUCTORS_CACHE.get(RESPONSE_TYPE);
+        ReflectiveInvoker constructor = CONSTRUCTORS_CACHE.get(RESPONSE_TYPE);
         blackhole.consume(constructor.invokeWithArguments(REQUEST, 200, HEADERS, "value", DESERIALIZED_HEADERS));
     }
 }
