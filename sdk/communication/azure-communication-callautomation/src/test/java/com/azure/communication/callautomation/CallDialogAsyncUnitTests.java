@@ -30,13 +30,13 @@ public class CallDialogAsyncUnitTests {
 
         Map<String, Object> dialogContext = new HashMap<>();
         StartDialogOptions options = new StartDialogOptions(
-            BOT_APP_ID,
             DialogInputType.POWER_VIRTUAL_AGENTS,
             dialogContext);
 
-        Response<DialogStateResult> response = callDialogAsync.startDialogWithResponse(
-            options,
-            "operationContext").block();
+        options.setOperationContext("operationContext");
+        options.setBotId(BOT_APP_ID);
+
+        Response<DialogStateResult> response = callDialogAsync.startDialogWithResponse(options).block();
 
         assertNotNull(response);
         assertEquals(response.getStatusCode(), 201);

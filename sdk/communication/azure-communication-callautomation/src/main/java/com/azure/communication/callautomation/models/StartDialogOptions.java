@@ -39,20 +39,6 @@ public class StartDialogOptions {
     /**
      * Creates a new instance of the DialogOptions.
      *
-     * @param botId bot identifier
-     * @param dialogInputType type of dialog
-     * @param dialogContext context of the dialog
-     */
-    public StartDialogOptions(DialogInputType dialogInputType, String botId, Map<String, Object> dialogContext) {
-        this.dialogInputType = dialogInputType;
-        this.botId = botId;
-        this.dialogContext = dialogContext;
-        this.dialogId = UUID.randomUUID().toString();
-    }
-
-    /**
-     * Creates a new instance of the DialogOptions.
-     *
      * @param dialogInputType type of dialog
      * @param dialogContext context of the dialog
      */
@@ -60,21 +46,6 @@ public class StartDialogOptions {
         this.dialogInputType = dialogInputType;
         this.dialogContext = dialogContext;
         this.dialogId = UUID.randomUUID().toString();
-    }
-
-    /**
-     * Creates a new instance of the DialogOptions.
-     *
-     * @param botId bot identifier
-     * @param dialogId id of the dialog
-     * @param dialogInputType type of dialog
-     * @param dialogContext context of the dialog
-     */
-    public StartDialogOptions(String dialogId, DialogInputType dialogInputType, String botId, Map<String, Object> dialogContext) {
-        this.botId = botId;
-        this.dialogId = dialogId;
-        this.dialogInputType = dialogInputType;
-        this.dialogContext = dialogContext;
     }
 
     /**
@@ -97,6 +68,15 @@ public class StartDialogOptions {
      */
     public String getBotId() {
         return botId;
+    }
+
+    /**
+     * Set the botAppId property: Bot identifier.
+     *
+     * @param botId context of the operation
+     */
+    public void setBotId(String botId) {
+        this.botId = botId;
     }
 
     /**

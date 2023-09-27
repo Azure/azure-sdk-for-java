@@ -34,15 +34,39 @@ public final class CallDialog {
      * Start Dialog
      *
      * @param options A {@link StartDialogOptions} object containing different options for startDialog.
-     * @param operationContext operationContext (pass null if not applicable)
+     * @throws HttpResponseException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return Response for successful startDialog request.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    public DialogStateResult startDialog(StartDialogOptions options) {
+        return callDialogAsync.startDialog(options).block();
+    }
+
+    /**
+     * Start Dialog
+     *
+     * @param options A {@link StartDialogOptions} object containing different options for startDialog.
      * @param context The context to associate with this operation.
      * @throws HttpResponseException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return Response for successful startDialog request.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Response<DialogStateResult> startDialogWithResponse(StartDialogOptions options, String operationContext, Context context) {
-        return callDialogAsync.startDialogWithResponseInternal(options, operationContext, context).block();
+    public Response<DialogStateResult> startDialogWithResponse(StartDialogOptions options, Context context) {
+        return callDialogAsync.startDialogWithResponseInternal(options, context).block();
+    }
+
+    /**
+     * Stop Dialog
+     *
+     * @param dialogId The dialog id.
+     * @throws HttpResponseException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    public void stopDialog(String dialogId) {
+        callDialogAsync.stopDialog(dialogId).block();
     }
 
     /**

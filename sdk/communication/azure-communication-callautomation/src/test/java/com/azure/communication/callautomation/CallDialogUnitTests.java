@@ -21,6 +21,27 @@ public class CallDialogUnitTests {
     private CallDialog callDialog;
 
     @Test
+    public void startDialogTest() {
+        // override callDialog to mock 201 response code
+        CallConnection callConnection =
+            CallAutomationUnitTestBase.getCallConnection(new ArrayList<>(
+                Collections.singletonList(new AbstractMap.SimpleEntry<>(generateDialogStateResponse(), 201)))
+            );
+        callDialog = callConnection.getCallDialog();
+
+        Map<String, Object> dialogContext = new HashMap<>();
+        StartDialogOptions options = new StartDialogOptions(
+            DIALOG_ID,
+            DialogInputType.POWER_VIRTUAL_AGENTS,
+            dialogContext);
+
+        DialogStateResult response = callDialog.startDialog(options);
+
+        assertNotNull(response);
+        assertEquals(response.getDialogId(), DIALOG_ID);
+    }
+
+    @Test
     public void startDialogWithResponseTest() {
         // override callDialog to mock 201 response code
         CallConnection callConnection =
@@ -31,13 +52,14 @@ public class CallDialogUnitTests {
 
         Map<String, Object> dialogContext = new HashMap<>();
         StartDialogOptions options = new StartDialogOptions(
-            BOT_APP_ID,
             DialogInputType.AZURE_OPEN_AI,
             dialogContext);
 
+        options.setOperationContext("operationContext");
+        options.setBotId(BOT_APP_ID);
+
         Response<DialogStateResult> response = callDialog.startDialogWithResponse(
             options,
-            "operationContext",
             Context.NONE);
 
         assertNotNull(response);

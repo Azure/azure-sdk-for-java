@@ -48,24 +48,24 @@ public final class CallDialogAsync {
      * @return Response for successful startDialog request.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Mono<Response<DialogStateResult>> startDialog(StartDialogOptions startDialogOptions) {
-        return startDialogWithResponse(startDialogOptions, null);
+    public Mono<DialogStateResult> startDialog(StartDialogOptions startDialogOptions) {
+        return startDialogWithResponse(startDialogOptions)
+            .flatMap(response -> Mono.just(response.getValue()));
     }
 
     /**
      * Start Dialog
      *
      * @param startDialogOptions startDialog options
-     * @param operationContext operationContext (pass null if not applicable)
      * @return Response for successful startDialog request.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Mono<Response<DialogStateResult>> startDialogWithResponse(StartDialogOptions startDialogOptions, String operationContext) {
-        return withContext(context -> startDialogWithResponseInternal(startDialogOptions, operationContext, context));
+    public Mono<Response<DialogStateResult>> startDialogWithResponse(StartDialogOptions startDialogOptions) {
+        return withContext(context -> startDialogWithResponseInternal(startDialogOptions, context));
     }
 
     @ServiceMethod(returns = ReturnType.SINGLE)
-    Mono<Response<DialogStateResult>> startDialogWithResponseInternal(StartDialogOptions startDialogOptions, String operationContext, Context context) {
+    Mono<Response<DialogStateResult>> startDialogWithResponseInternal(StartDialogOptions startDialogOptions, Context context) {
         try {
             context = context == null ? Context.NONE : context;
 
@@ -75,7 +75,7 @@ public final class CallDialogAsync {
 
             StartDialogRequestInternal requestInternal = new StartDialogRequestInternal()
                 .setDialogOptions(dialogOptions)
-                .setOperationContext(operationContext);
+                .setOperationContext(startDialogOptions.getOperationContext());
 
             return dialogsInternal.startDialogWithResponseAsync(callConnectionId, startDialogOptions.getDialogId(), requestInternal, context).
                 map(response -> new SimpleResponse<>(response, DialogStateResponseConstructorProxy.create(response.getValue())));
