@@ -542,8 +542,14 @@ public class TestSuiteBase extends DocumentClientTest {
     }
 
     public static void deleteCollectionIfExists(AsyncDocumentClient client, String databaseId, String collectionId) {
+        QueryFeedOperationState state = TestUtils.createDummyQueryFeedOperationState(
+            ResourceType.DocumentCollection,
+            OperationType.Query,
+            new CosmosQueryRequestOptions(),
+            client
+        );
         List<DocumentCollection> res = client.queryCollections("dbs/" + databaseId,
-                                                               String.format("SELECT * FROM root r where r.id = '%s'", collectionId), null).single().block()
+                                                               String.format("SELECT * FROM root r where r.id = '%s'", collectionId), state).single().block()
                 .getResults();
         if (!res.isEmpty()) {
             deleteCollection(client, TestUtils.getCollectionNameLink(databaseId, collectionId));
@@ -558,20 +564,11 @@ public class TestSuiteBase extends DocumentClientTest {
         CosmosQueryRequestOptions options = new CosmosQueryRequestOptions();
         PartitionKey pk = new PartitionKey(docId);
         options.setPartitionKey(pk);
-        CosmosAsyncClient cosmosClient = new CosmosClientBuilder()
-            .key(TestConfigurations.MASTER_KEY)
-            .endpoint(TestConfigurations.HOST)
-            .buildAsyncClient();
-        QueryFeedOperationState state = new QueryFeedOperationState(
-            cosmosClient,
-            "deleteDocumentIfExists",
-            databaseId,
-            collectionId,
+        QueryFeedOperationState state = TestUtils.createDummyQueryFeedOperationState(
             ResourceType.Document,
-            OperationType.Delete,
-            null,
-            options,
-            new CosmosPagedFluxOptions()
+            OperationType.Query,
+            new CosmosQueryRequestOptions(),
+            client
         );
         List<Document> res = client
                 .queryDocuments(
@@ -605,8 +602,14 @@ public class TestSuiteBase extends DocumentClientTest {
     }
 
     public static void deleteUserIfExists(AsyncDocumentClient client, String databaseId, String userId) {
+        QueryFeedOperationState state = TestUtils.createDummyQueryFeedOperationState(
+            ResourceType.User,
+            OperationType.Query,
+            new CosmosQueryRequestOptions(),
+            client
+        );
         List<User> res = client
-                .queryUsers("dbs/" + databaseId, String.format("SELECT * FROM root r where r.id = '%s'", userId), null)
+                .queryUsers("dbs/" + databaseId, String.format("SELECT * FROM root r where r.id = '%s'", userId), state)
                 .single().block().getResults();
         if (!res.isEmpty()) {
             deleteUser(client, TestUtils.getUserNameLink(databaseId, userId));
@@ -638,7 +641,13 @@ public class TestSuiteBase extends DocumentClientTest {
     }
 
     static protected Database createDatabaseIfNotExists(AsyncDocumentClient client, String databaseId) {
-        return client.queryDatabases(String.format("SELECT * FROM r where r.id = '%s'", databaseId), null).flatMap(p -> Flux.fromIterable(p.getResults())).switchIfEmpty(
+        QueryFeedOperationState state = TestUtils.createDummyQueryFeedOperationState(
+            ResourceType.Database,
+            OperationType.Query,
+            new CosmosQueryRequestOptions(),
+            client
+        );
+        return client.queryDatabases(String.format("SELECT * FROM r where r.id = '%s'", databaseId), state).flatMap(p -> Flux.fromIterable(p.getResults())).switchIfEmpty(
                 Flux.defer(() -> {
 
                     Database databaseDefinition = new Database();
@@ -666,7 +675,13 @@ public class TestSuiteBase extends DocumentClientTest {
 
     static protected void safeDeleteAllCollections(AsyncDocumentClient client, Database database) {
         if (database != null) {
-            List<DocumentCollection> collections = client.readCollections(database.getSelfLink(), null)
+            QueryFeedOperationState state = TestUtils.createDummyQueryFeedOperationState(
+                ResourceType.DocumentCollection,
+                OperationType.ReadFeed,
+                new CosmosQueryRequestOptions(),
+                client
+            );
+            List<DocumentCollection> collections = client.readCollections(database.getSelfLink(), state)
                     .flatMap(p -> Flux.fromIterable(p.getResults()))
                     .collectList()
                     .single()

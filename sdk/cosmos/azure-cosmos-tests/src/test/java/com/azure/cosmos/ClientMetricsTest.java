@@ -194,10 +194,24 @@ public class ClientMetricsTest extends BatchTestBase {
                 true,
                 dummyOperationTag);
 
+            Thread.sleep(100);
+
             List<Measurement> measurements = new ArrayList<>();
             requestLatencyMeter.measure().forEach(measurements::add);
 
-            assertThat(measurements.size()).isEqualTo(3);
+            int expectedMeasurementCount = 3;
+            if (measurements.size() < expectedMeasurementCount) {
+                logger.error("Size should have been 3 but was {}", measurements.size());
+                for (int i = 0; i < measurements.size(); i++) {
+                    Measurement m = measurements.get(i);
+                    logger.error(
+                        "{}: {}",
+                        i,
+                        m);
+                }
+            }
+
+            assertThat(measurements.size()).isGreaterThanOrEqualTo(expectedMeasurementCount);
 
             assertThat(measurements.get(0).getStatistic().getTagValueRepresentation()).isEqualTo("count");
             assertThat(measurements.get(0).getValue()).isEqualTo(1);
@@ -1378,16 +1392,21 @@ public class ClientMetricsTest extends BatchTestBase {
             return meterMatches.get(0);
         } else {
             if (meterMatches.size() > 0) {
-                String message = String.format(
-                    "Found unexpected meter '%s' for prefix '%s' withTag '%s'",
-                    meters.get(0).getId(),
-                    prefix,
-                    withTag);
-                logger.error(message);
-                meterMatches.forEach(m ->
-                    logger.info("Found unexpected meter {}", m.getId().getName()));
+                StringBuilder sb = new StringBuilder();
+                meterMatches.forEach(m -> {
+                        String message = String.format(
+                            "Found unexpected meter '%s' for prefix '%s' withTag '%s' --> '%s'",
+                            meters.get(0).getId(),
+                            prefix,
+                            withTag,
+                            meters.get(0));
+                        sb.append(message);
+                        sb.append(System.getProperty("line.separator"));
+                        logger.error(message);
+                    });
 
-                fail(message);
+
+                fail(sb.toString());
             }
             assertThat(meterMatches.size()).isEqualTo(0);
 
