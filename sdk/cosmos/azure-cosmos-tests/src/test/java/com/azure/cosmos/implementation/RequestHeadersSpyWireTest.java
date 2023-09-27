@@ -133,7 +133,7 @@ public class RequestHeadersSpyWireTest extends TestSuiteBase {
         client.queryDocuments(
             collectionLink,
             query,
-            TestUtils.createDummyQueryFeedOperationState(ResourceType.Document, OperationType.Query, options),
+            TestUtils.createDummyQueryFeedOperationState(ResourceType.Document, OperationType.Query, options, client),
             Document.class).blockLast();
 
         List<HttpRequest> requests = client.getCapturedRequests();
@@ -157,7 +157,8 @@ public class RequestHeadersSpyWireTest extends TestSuiteBase {
         QueryFeedOperationState state = TestUtils.createDummyQueryFeedOperationState(
             ResourceType.Document,
             OperationType.Query,
-            cosmosQueryRequestOptions
+            cosmosQueryRequestOptions,
+            client
         );
 
         assertThatThrownBy(() -> client
@@ -180,7 +181,8 @@ public class RequestHeadersSpyWireTest extends TestSuiteBase {
         QueryFeedOperationState state = TestUtils.createDummyQueryFeedOperationState(
             ResourceType.Document,
             OperationType.Query,
-            cosmosQueryRequestOptions
+            cosmosQueryRequestOptions,
+            client
         );
 
         client.clearCapturedRequests();

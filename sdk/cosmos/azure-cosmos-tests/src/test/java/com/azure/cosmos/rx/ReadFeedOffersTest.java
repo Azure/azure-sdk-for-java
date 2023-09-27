@@ -9,6 +9,7 @@ import com.azure.cosmos.implementation.OperationType;
 import com.azure.cosmos.implementation.QueryFeedOperationState;
 import com.azure.cosmos.implementation.ResourceType;
 import com.azure.cosmos.implementation.TestConfigurations;
+import com.azure.cosmos.implementation.TestUtils;
 import com.azure.cosmos.models.CosmosQueryRequestOptions;
 import com.azure.cosmos.models.FeedResponse;
 import com.azure.cosmos.models.ModelBridgeInternal;
@@ -98,7 +99,14 @@ public class ReadFeedOffersTest extends TestSuiteBase {
             createCollections(client);
         }
 
-        allOffers = client.readOffers(null)
+        allOffers = client.readOffers(
+                              TestUtils.createDummyQueryFeedOperationState(
+                                  ResourceType.Offer,
+                                  OperationType.ReadFeed,
+                                  new CosmosQueryRequestOptions(),
+                                  client
+                              )
+                          )
                           .map(FeedResponse::getResults)
                           .collectList()
                           .map(list -> list.stream().flatMap(Collection::stream).collect(Collectors.toList()))

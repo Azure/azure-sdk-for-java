@@ -44,10 +44,11 @@ public class TestUtils {
     public static QueryFeedOperationState createDummyQueryFeedOperationState(
         ResourceType resourceType,
         OperationType operationType,
-        CosmosQueryRequestOptions options) {
+        CosmosQueryRequestOptions options,
+        AsyncDocumentClient client) {
         CosmosAsyncClient cosmosClient = new CosmosClientBuilder()
-            .key(TestConfigurations.MASTER_KEY)
-            .endpoint(TestConfigurations.HOST)
+            .key(client.getMasterKeyOrResourceToken())
+            .endpoint(client.getServiceEndpoint().toString())
             .buildAsyncClient();
         return new QueryFeedOperationState(
             cosmosClient,

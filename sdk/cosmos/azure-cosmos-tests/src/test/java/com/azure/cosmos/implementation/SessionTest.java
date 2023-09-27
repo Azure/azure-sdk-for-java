@@ -192,7 +192,8 @@ public class SessionTest extends TestSuiteBase {
         QueryFeedOperationState dummyState = TestUtils.createDummyQueryFeedOperationState(
             ResourceType.Document,
             OperationType.Query,
-            queryRequestOptions
+            queryRequestOptions,
+            spyClient
         );
 
         spyClient.queryDocuments(getCollectionLink(isNameBased), query, dummyState, Document.class).blockFirst();
@@ -206,7 +207,8 @@ public class SessionTest extends TestSuiteBase {
         dummyState = TestUtils.createDummyQueryFeedOperationState(
             ResourceType.Document,
             OperationType.Query,
-            queryRequestOptions
+            queryRequestOptions,
+            spyClient
         );
         spyClient.queryDocuments(getCollectionLink(isNameBased), query, dummyState, Document.class).blockFirst();
         assertThat(getSessionTokensInRequests().size()).isGreaterThanOrEqualTo(1);
@@ -221,7 +223,8 @@ public class SessionTest extends TestSuiteBase {
         dummyState = TestUtils.createDummyQueryFeedOperationState(
             ResourceType.Document,
             OperationType.Query,
-            queryRequestOptions
+            queryRequestOptions,
+            spyClient
         );
         spyClient.queryDocuments(getCollectionLink(isNameBased), query, dummyState, Document.class).blockFirst();
         assertThat(getSessionTokensInRequests().size()).isGreaterThanOrEqualTo(1);
@@ -234,7 +237,8 @@ public class SessionTest extends TestSuiteBase {
         dummyState = TestUtils.createDummyQueryFeedOperationState(
             ResourceType.Document,
             OperationType.ReadFeed,
-            queryRequestOptions
+            queryRequestOptions,
+            spyClient
         );
         spyClient.readAllDocuments(
             getCollectionLink(isNameBased),
@@ -252,7 +256,8 @@ public class SessionTest extends TestSuiteBase {
         dummyState = TestUtils.createDummyQueryFeedOperationState(
             ResourceType.Document,
             OperationType.ReadFeed,
-            queryRequestOptions
+            queryRequestOptions,
+            spyClient
         );
 
         spyClient.readDocuments(getCollectionLink(isNameBased), dummyState, Document.class).blockFirst();

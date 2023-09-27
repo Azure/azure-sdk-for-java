@@ -233,7 +233,7 @@ public class DCDocumentCrudTest extends TestSuiteBase {
         Flux<FeedResponse<Document>> results = client.queryDocuments(
             getCollectionLink(),
             "SELECT * FROM r",
-            TestUtils.createDummyQueryFeedOperationState(ResourceType.Document, OperationType.Query, options),
+            TestUtils.createDummyQueryFeedOperationState(ResourceType.Document, OperationType.Query, options, client),
             Document.class);
 
         FeedResponseListValidator<Document> validator = new FeedResponseListValidator.Builder<Document>()

@@ -127,7 +127,8 @@ public class TestSuiteBase extends DocumentClientTest {
             QueryFeedOperationState state = TestUtils.createDummyQueryFeedOperationState(
                 ResourceType.Document,
                 OperationType.Query,
-                new CosmosQueryRequestOptions());
+                new CosmosQueryRequestOptions(),
+                client);
             return client.queryDatabases(query, state);
         }
 

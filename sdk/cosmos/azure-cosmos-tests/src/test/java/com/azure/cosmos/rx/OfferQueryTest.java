@@ -62,9 +62,13 @@ public class OfferQueryTest extends TestSuiteBase {
 
         CosmosQueryRequestOptions options = new CosmosQueryRequestOptions();
         ModelBridgeInternal.setQueryRequestOptionsMaxItemCount(options, 2);
-        Flux<FeedResponse<Offer>> queryObservable = client.queryOffers(query, null);
+        Flux<FeedResponse<Offer>> queryObservable = client.queryOffers(
+            query,
+            TestUtils.createDummyQueryFeedOperationState(ResourceType.Offer, OperationType.Query, options, client));
 
-        List<Offer> allOffers = client.readOffers(null).flatMap(f -> Flux.fromIterable(f.getResults())).collectList().single().block();
+        List<Offer> allOffers = client
+            .readOffers(TestUtils.createDummyQueryFeedOperationState(ResourceType.Offer, OperationType.ReadFeed, options, client))
+            .flatMap(f -> Flux.fromIterable(f.getResults())).collectList().single().block();
         List<Offer> expectedOffers = allOffers.stream().filter(o -> collectionResourceId.equals(o.getString("offerResourceId"))).collect(Collectors.toList());
 
         assertThat(expectedOffers).isNotEmpty();
@@ -92,24 +96,14 @@ public class OfferQueryTest extends TestSuiteBase {
 
         CosmosQueryRequestOptions options = new CosmosQueryRequestOptions();
         ModelBridgeInternal.setQueryRequestOptionsMaxItemCount(options, 1);
-        CosmosAsyncClient cosmosClient = new CosmosClientBuilder()
-            .key(TestConfigurations.MASTER_KEY)
-            .endpoint(TestConfigurations.HOST)
-            .buildAsyncClient();
-        QueryFeedOperationState dummyState = new QueryFeedOperationState(
-            cosmosClient,
-            "SomeSpanName",
-            "SomeDBName",
-            "SomeContainerName",
-            ResourceType.Document,
-            OperationType.Query,
-            null,
-            options,
-            new CosmosPagedFluxOptions()
-        );
-        Flux<FeedResponse<Offer>> queryObservable = client.queryOffers(query, dummyState);
 
-        List<Offer> expectedOffers = client.readOffers(null).flatMap(f -> Flux.fromIterable(f.getResults()))
+        Flux<FeedResponse<Offer>> queryObservable = client.queryOffers(
+            query,
+            TestUtils.createDummyQueryFeedOperationState(ResourceType.Offer, OperationType.Query, options, client));
+
+        List<Offer> expectedOffers = client
+                .readOffers(TestUtils.createDummyQueryFeedOperationState(ResourceType.Offer, OperationType.ReadFeed, new CosmosQueryRequestOptions(), client))
+                .flatMap(f -> Flux.fromIterable(f.getResults()))
                 .collectList()
                 .single().block()
                 .stream().filter(o -> collectionResourceIds.contains(o.getOfferResourceId()))

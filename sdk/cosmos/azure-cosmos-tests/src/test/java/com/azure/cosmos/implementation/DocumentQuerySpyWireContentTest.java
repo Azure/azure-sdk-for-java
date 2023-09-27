@@ -99,7 +99,7 @@ public class DocumentQuerySpyWireContentTest extends TestSuiteBase {
                 .queryDocuments(
                     collectionLink,
                     query,
-                    TestUtils.createDummyQueryFeedOperationState(ResourceType.Document, OperationType.Query, options),
+                    TestUtils.createDummyQueryFeedOperationState(ResourceType.Document, OperationType.Query, options, client),
                     Document.class);
 
         List<Document> results = queryObservable.flatMap(p -> Flux.fromIterable(p.getResults()))
@@ -168,7 +168,8 @@ public class DocumentQuerySpyWireContentTest extends TestSuiteBase {
         QueryFeedOperationState state = TestUtils.createDummyQueryFeedOperationState(
             ResourceType.Document,
             OperationType.Query,
-            options
+            options,
+            client
         );
 
         // do the query once to ensure the collection is cached.

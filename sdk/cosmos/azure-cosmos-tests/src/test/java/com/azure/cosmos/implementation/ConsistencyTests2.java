@@ -228,7 +228,8 @@ public class ConsistencyTests2 extends ConsistencyTestsBase {
             QueryFeedOperationState dummyState = TestUtils.createDummyQueryFeedOperationState(
                 ResourceType.Document,
                 OperationType.ReadFeed,
-                cosmosQueryRequestOptions
+                cosmosQueryRequestOptions,
+                readSecondaryClient
             );
 
             FailureValidator validator = new FailureValidator.Builder().statusCode(HttpConstants.StatusCodes.NOTFOUND).subStatusCode(HttpConstants.SubStatusCodes.READ_SESSION_NOT_AVAILABLE).build();
@@ -297,7 +298,7 @@ public class ConsistencyTests2 extends ConsistencyTestsBase {
                     FeedResponse<Document> queryResponse = client.queryDocuments(
                         createdCollection.getSelfLink(),
                         "SELECT * FROM c WHERE c.Id = 'foo'",
-                        TestUtils.createDummyQueryFeedOperationState(ResourceType.Document, OperationType.Query, cosmosQueryRequestOptions),
+                        TestUtils.createDummyQueryFeedOperationState(ResourceType.Document, OperationType.Query, cosmosQueryRequestOptions, client),
                         Document.class)
                             .blockFirst();
                     String lsnHeaderValue = queryResponse.getResponseHeaders().get(WFConstants.BackendHeaders.LSN);

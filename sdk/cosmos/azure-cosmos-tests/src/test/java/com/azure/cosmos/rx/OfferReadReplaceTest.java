@@ -47,7 +47,8 @@ public class OfferReadReplaceTest extends TestSuiteBase {
                 TestUtils.createDummyQueryFeedOperationState(
                     ResourceType.Offer,
                     OperationType.ReadFeed,
-                    new CosmosQueryRequestOptions()))
+                    new CosmosQueryRequestOptions(),
+                    client))
             .map(FeedResponse::getResults)
             .flatMap(list -> Flux.fromIterable(list)).collectList().block();
 

@@ -39,7 +39,6 @@ import java.util.Collections;
 import java.util.List;
 
 import static com.azure.core.util.FluxUtil.withContext;
-import static com.azure.cosmos.implementation.Utils.setContinuationTokenAndMaxItemCount;
 
 /**
  * Perform read and delete databases, update database throughput, and perform operations on child resources
