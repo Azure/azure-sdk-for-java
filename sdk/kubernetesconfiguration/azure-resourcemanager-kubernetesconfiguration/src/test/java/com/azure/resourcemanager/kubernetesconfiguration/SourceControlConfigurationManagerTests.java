@@ -15,13 +15,30 @@ import com.azure.core.util.Configuration;
 import com.azure.core.util.CoreUtils;
 import com.azure.identity.DefaultAzureCredentialBuilder;
 import com.azure.resourcemanager.containerservice.ContainerServiceManager;
-import com.azure.resourcemanager.containerservice.models.*;
+import com.azure.resourcemanager.containerservice.models.AgentPoolMode;
+import com.azure.resourcemanager.containerservice.models.AgentPoolType;
+import com.azure.resourcemanager.containerservice.models.ContainerServiceVMSizeTypes;
+import com.azure.resourcemanager.containerservice.models.KubeletDiskType;
+import com.azure.resourcemanager.containerservice.models.KubernetesCluster;
+import com.azure.resourcemanager.containerservice.models.ManagedClusterAddonProfile;
+import com.azure.resourcemanager.containerservice.models.OSDiskType;
+import com.azure.resourcemanager.containerservice.models.OSType;
 import com.azure.resourcemanager.kubernetesconfiguration.fluent.models.ExtensionInner;
-import com.azure.resourcemanager.kubernetesconfiguration.models.*;
+import com.azure.resourcemanager.kubernetesconfiguration.models.Extension;
+import com.azure.resourcemanager.kubernetesconfiguration.models.Plan;
+import com.azure.resourcemanager.kubernetesconfiguration.models.Scope;
+import com.azure.resourcemanager.kubernetesconfiguration.models.ScopeCluster;
+import com.azure.resourcemanager.loganalytics.LogAnalyticsManager;
+import com.azure.resourcemanager.loganalytics.models.Workspace;
+import com.azure.resourcemanager.loganalytics.models.WorkspaceSku;
+import com.azure.resourcemanager.loganalytics.models.WorkspaceSkuNameEnum;
 import com.azure.resourcemanager.resources.ResourceManager;
 import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.Test;
 
+import java.util.Collections;
+import java.util.HashMap;
+import java.util.Map;
 import java.util.Random;
 
 public class SourceControlConfigurationManagerTests extends TestBase {
@@ -30,6 +47,7 @@ public class SourceControlConfigurationManagerTests extends TestBase {
     private String resourceGroupName = "rg" + randomPadding();
     private SourceControlConfigurationManager sourceControlConfigurationManager;
     private ContainerServiceManager containerServiceManager;
+    private LogAnalyticsManager logAnalyticsManager;
     private ResourceManager resourceManager;
     private boolean testEnv;
 
@@ -44,6 +62,11 @@ public class SourceControlConfigurationManagerTests extends TestBase {
             .authenticate(credential, profile);
 
         containerServiceManager = ContainerServiceManager
+            .configure()
+            .withLogOptions(new HttpLogOptions().setLogLevel(HttpLogDetailLevel.BASIC))
+            .authenticate(credential, profile);
+
+        logAnalyticsManager = LogAnalyticsManager
             .configure()
             .withLogOptions(new HttpLogOptions().setLogLevel(HttpLogDetailLevel.BASIC))
             .authenticate(credential, profile);
@@ -77,13 +100,25 @@ public class SourceControlConfigurationManagerTests extends TestBase {
     @Test
     @DoNotRecord(skipInPlayback = true)
     public void testCreateKubernetesExtension() {
+        Workspace logWorkspace = null;
+        KubernetesCluster kubernetesCluster = null;
         Extension extension = null;
         String randomPadding = randomPadding();
+        String workspaceName = "workspace" + randomPadding;
         String aksName = "aks" + randomPadding;
         String extensionName = "extension" + randomPadding;
         try {
             // @embedStart
-            containerServiceManager
+            logWorkspace =  logAnalyticsManager.workspaces().define(workspaceName)
+                .withRegion(REGION).withExistingResourceGroup(resourceGroupName)
+                .withSku(new WorkspaceSku().withName(WorkspaceSkuNameEnum.PER_GB2018))
+                .create();
+            Map<String, ManagedClusterAddonProfile> addOnProfilesMap = new HashMap<>();
+            addOnProfilesMap.put("azureKeyvaultSecretsProvider", new ManagedClusterAddonProfile().withEnabled(false));
+            addOnProfilesMap.put("azurepolicy", new ManagedClusterAddonProfile().withEnabled(true));
+            addOnProfilesMap.put("omsAgent", new ManagedClusterAddonProfile().withEnabled(true)
+                .withConfig(Collections.singletonMap("logAnalyticsWorkspaceResourceID", logWorkspace.id())));
+            kubernetesCluster = containerServiceManager
                 .kubernetesClusters()
                 .define(aksName)
                 .withRegion(REGION)
@@ -93,29 +128,32 @@ public class SourceControlConfigurationManagerTests extends TestBase {
                 .defineAgentPool("agentpool")
                 .withVirtualMachineSize(ContainerServiceVMSizeTypes.STANDARD_D8S_V3)
                 .withAgentPoolVirtualMachineCount(2)
-                .withOSType(OSType.LINUX)
-                .withAgentPoolMode(AgentPoolMode.SYSTEM)
-                .withAvailabilityZones(1, 2, 3)
-                .withMaxPodsCount(110)
-                .withOSDiskType(OSDiskType.EPHEMERAL)
                 .withOSDiskSizeInGB(128)
-                .withAgentPoolType(AgentPoolType.VIRTUAL_MACHINE_SCALE_SETS)
+                .withOSDiskType(OSDiskType.EPHEMERAL)
                 .withKubeletDiskType(KubeletDiskType.OS)
+                .withMaxPodsCount(110)
+                .withAgentPoolType(AgentPoolType.VIRTUAL_MACHINE_SCALE_SETS)
+                .withAvailabilityZones(1, 2,  3)
+                .withAgentPoolMode(AgentPoolMode.SYSTEM)
+                .withOSType(OSType.LINUX)
                 .attach()
                 .defineAgentPool("userpool")
                 .withVirtualMachineSize(ContainerServiceVMSizeTypes.STANDARD_D8S_V3)
                 .withAgentPoolVirtualMachineCount(2)
-                .withOSType(OSType.LINUX)
-                .withAgentPoolMode(AgentPoolMode.SYSTEM)
-                .withAvailabilityZones(1, 2, 3)
-                .withMaxPodsCount(110)
-                .withOSDiskType(OSDiskType.EPHEMERAL)
                 .withOSDiskSizeInGB(128)
-                .withAgentPoolType(AgentPoolType.VIRTUAL_MACHINE_SCALE_SETS)
+                .withOSDiskType(OSDiskType.EPHEMERAL)
                 .withKubeletDiskType(KubeletDiskType.OS)
+                .withMaxPodsCount(110)
+                .withAgentPoolType(AgentPoolType.VIRTUAL_MACHINE_SCALE_SETS)
+                .withAvailabilityZones(1, 2,  3)
+                .withAgentPoolMode(AgentPoolMode.SYSTEM)
+                .withOSType(OSType.LINUX)
                 .attach()
                 .withDnsPrefix(aksName + "-dns")
-                .create();
+                .withAddOnProfiles(addOnProfilesMap)
+                .enableAzureRbac()
+                .create()
+                .refresh();
 
             extension = sourceControlConfigurationManager
                 .extensions()
@@ -146,6 +184,15 @@ public class SourceControlConfigurationManagerTests extends TestBase {
                     aksName,
                     extensionName
                 );
+            }
+            if (kubernetesCluster != null) {
+                containerServiceManager.kubernetesClusters().deleteById(kubernetesCluster.id());
+                if (resourceManager.resourceGroups().contain("MC_" + resourceGroupName + "_" + aksName + "_" + REGION.name())) {
+                    resourceManager.resourceGroups().beginDeleteByName("MC_" + resourceGroupName + "_" + aksName + "_" + REGION.name());
+                }
+            }
+            if (logWorkspace != null) {
+                logAnalyticsManager.workspaces().deleteById(logWorkspace.id());
             }
         }
     }
