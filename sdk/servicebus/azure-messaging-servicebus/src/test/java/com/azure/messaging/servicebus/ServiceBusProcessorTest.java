@@ -128,7 +128,7 @@ public class ServiceBusProcessorTest {
                 }
             });
 
-        ServiceBusClientBuilder.ServiceBusSessionReceiverClientBuilder receiverBuilder = getSessionBuilder(messageFlux);
+        ServiceBusClientBuilder.ServiceBusSessionReceiverClientBuilder receiverBuilder = getSessionBuilder(messageFlux, null);
 
         AtomicInteger messageId = new AtomicInteger();
         CountDownLatch countDownLatch = new CountDownLatch(numberOfMessages);
@@ -485,11 +485,7 @@ public class ServiceBusProcessorTest {
         verify(tracer, atLeast(numberOfTimes - 1)).end(isNull(), isNull(), any());
     }
 
-    @ParameterizedTest
-    @CsvSource({
-        "true",
-        "false"
-    })
+    @Test
     @SuppressWarnings("unchecked")
     public void testProcessorWithTracingEnabledAndNullMessage() throws InterruptedException {
         final Tracer tracer = mock(Tracer.class);
@@ -501,7 +497,7 @@ public class ServiceBusProcessorTest {
         when(tracer.start(eq("ServiceBus.process"), any(StartSpanOptions.class), any())).thenReturn(new Context(PARENT_TRACE_CONTEXT_KEY, "span"));
 
         Flux<ServiceBusMessageContext> messageFlux = Flux.just(new ServiceBusMessageContext("sessionId", new RuntimeException("foo")));
-        ServiceBusClientBuilder.ServiceBusReceiverClientBuilder receiverBuilder = getBuilder(messageFlux, false, tracer);
+        ServiceBusClientBuilder.ServiceBusSessionReceiverClientBuilder receiverBuilder = getSessionBuilder(messageFlux, tracer);
 
         CountDownLatch countDownLatch = new CountDownLatch(numberOfTimes);
         ServiceBusProcessorClient serviceBusProcessorClient = new ServiceBusProcessorClient(receiverBuilder, ENTITY_NAME,
@@ -520,7 +516,11 @@ public class ServiceBusProcessorTest {
         verify(tracer, never()).start(eq("ServiceBus.process"), any(StartSpanOptions.class), any(Context.class));
     }
 
-    @Test
+    @ParameterizedTest
+    @CsvSource({
+        "true",
+        "false"
+    })
     @SuppressWarnings("unchecked")
     public void testProcessorWithTracingDisabled(boolean isV2) throws InterruptedException {
         final Tracer tracer = mock(Tracer.class);
@@ -640,7 +640,7 @@ public class ServiceBusProcessorTest {
     }
 
     private ServiceBusClientBuilder.ServiceBusSessionReceiverClientBuilder getSessionBuilder(
-        Flux<ServiceBusMessageContext> messageFlux) {
+        Flux<ServiceBusMessageContext> messageFlux, Tracer tracer) {
 
         ServiceBusClientBuilder.ServiceBusSessionReceiverClientBuilder receiverBuilder =
             mock(ServiceBusClientBuilder.ServiceBusSessionReceiverClientBuilder.class);
@@ -649,7 +649,14 @@ public class ServiceBusProcessorTest {
         when(asyncClient.getFullyQualifiedNamespace()).thenReturn(NAMESPACE);
         when(asyncClient.getEntityPath()).thenReturn(ENTITY_NAME);
         when(receiverBuilder.buildAsyncClientForProcessor()).thenReturn(asyncClient);
-        when(asyncClient.receiveMessagesWithContext()).thenReturn(messageFlux);
+        if (tracer != null) {
+            ServiceBusReceiverInstrumentation instrumentation = new ServiceBusReceiverInstrumentation(tracer, null, NAMESPACE, ENTITY_NAME, null, ReceiverKind.PROCESSOR);
+            when(asyncClient.receiveMessagesWithContext()).thenReturn(
+                new FluxTrace(messageFlux, instrumentation).publishOn(Schedulers.boundedElastic()));
+            when(asyncClient.getInstrumentation()).thenReturn(instrumentation);
+        } else {
+            when(asyncClient.receiveMessagesWithContext()).thenReturn(messageFlux);
+        }
         when(asyncClient.isConnectionClosed()).thenReturn(false);
         when(asyncClient.getInstrumentation()).thenReturn(DEFAULT_INSTRUMENTATION);
         doNothing().when(asyncClient).close();
