@@ -77,8 +77,7 @@ public final class IntegrationRuntimesClientImpl implements IntegrationRuntimesC
     public interface IntegrationRuntimesService {
         @Headers({"Content-Type: application/json"})
         @Get(
-            "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.DataFactory"
-                + "/factories/{factoryName}/integrationRuntimes")
+            "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.DataFactory/factories/{factoryName}/integrationRuntimes")
         @ExpectedResponses({200})
         @UnexpectedResponseExceptionType(ManagementException.class)
         Mono<Response<IntegrationRuntimeListResponse>> listByFactory(
@@ -92,8 +91,7 @@ public final class IntegrationRuntimesClientImpl implements IntegrationRuntimesC
 
         @Headers({"Content-Type: application/json"})
         @Put(
-            "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.DataFactory"
-                + "/factories/{factoryName}/integrationRuntimes/{integrationRuntimeName}")
+            "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.DataFactory/factories/{factoryName}/integrationRuntimes/{integrationRuntimeName}")
         @ExpectedResponses({200})
         @UnexpectedResponseExceptionType(ManagementException.class)
         Mono<Response<IntegrationRuntimeResourceInner>> createOrUpdate(
@@ -110,8 +108,7 @@ public final class IntegrationRuntimesClientImpl implements IntegrationRuntimesC
 
         @Headers({"Content-Type: application/json"})
         @Get(
-            "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.DataFactory"
-                + "/factories/{factoryName}/integrationRuntimes/{integrationRuntimeName}")
+            "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.DataFactory/factories/{factoryName}/integrationRuntimes/{integrationRuntimeName}")
         @ExpectedResponses({200, 304})
         @UnexpectedResponseExceptionType(ManagementException.class)
         Mono<Response<IntegrationRuntimeResourceInner>> get(
@@ -127,8 +124,7 @@ public final class IntegrationRuntimesClientImpl implements IntegrationRuntimesC
 
         @Headers({"Content-Type: application/json"})
         @Patch(
-            "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.DataFactory"
-                + "/factories/{factoryName}/integrationRuntimes/{integrationRuntimeName}")
+            "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.DataFactory/factories/{factoryName}/integrationRuntimes/{integrationRuntimeName}")
         @ExpectedResponses({200})
         @UnexpectedResponseExceptionType(ManagementException.class)
         Mono<Response<IntegrationRuntimeResourceInner>> update(
@@ -144,8 +140,7 @@ public final class IntegrationRuntimesClientImpl implements IntegrationRuntimesC
 
         @Headers({"Content-Type: application/json"})
         @Delete(
-            "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.DataFactory"
-                + "/factories/{factoryName}/integrationRuntimes/{integrationRuntimeName}")
+            "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.DataFactory/factories/{factoryName}/integrationRuntimes/{integrationRuntimeName}")
         @ExpectedResponses({200, 204})
         @UnexpectedResponseExceptionType(ManagementException.class)
         Mono<Response<Void>> delete(
@@ -160,8 +155,7 @@ public final class IntegrationRuntimesClientImpl implements IntegrationRuntimesC
 
         @Headers({"Content-Type: application/json"})
         @Post(
-            "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.DataFactory"
-                + "/factories/{factoryName}/integrationRuntimes/{integrationRuntimeName}/getStatus")
+            "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.DataFactory/factories/{factoryName}/integrationRuntimes/{integrationRuntimeName}/getStatus")
         @ExpectedResponses({200})
         @UnexpectedResponseExceptionType(ManagementException.class)
         Mono<Response<IntegrationRuntimeStatusResponseInner>> getStatus(
@@ -176,9 +170,7 @@ public final class IntegrationRuntimesClientImpl implements IntegrationRuntimesC
 
         @Headers({"Content-Type: application/json"})
         @Get(
-            "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.DataFactory"
-                + "/factories/{factoryName}/integrationRuntimes/{integrationRuntimeName}"
-                + "/outboundNetworkDependenciesEndpoints")
+            "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.DataFactory/factories/{factoryName}/integrationRuntimes/{integrationRuntimeName}/outboundNetworkDependenciesEndpoints")
         @ExpectedResponses({200})
         @UnexpectedResponseExceptionType(ManagementException.class)
         Mono<Response<IntegrationRuntimeOutboundNetworkDependenciesEndpointsResponseInner>>
@@ -194,8 +186,7 @@ public final class IntegrationRuntimesClientImpl implements IntegrationRuntimesC
 
         @Headers({"Content-Type: application/json"})
         @Post(
-            "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.DataFactory"
-                + "/factories/{factoryName}/integrationRuntimes/{integrationRuntimeName}/getConnectionInfo")
+            "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.DataFactory/factories/{factoryName}/integrationRuntimes/{integrationRuntimeName}/getConnectionInfo")
         @ExpectedResponses({200})
         @UnexpectedResponseExceptionType(ManagementException.class)
         Mono<Response<IntegrationRuntimeConnectionInfoInner>> getConnectionInfo(
@@ -210,8 +201,7 @@ public final class IntegrationRuntimesClientImpl implements IntegrationRuntimesC
 
         @Headers({"Content-Type: application/json"})
         @Post(
-            "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.DataFactory"
-                + "/factories/{factoryName}/integrationRuntimes/{integrationRuntimeName}/regenerateAuthKey")
+            "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.DataFactory/factories/{factoryName}/integrationRuntimes/{integrationRuntimeName}/regenerateAuthKey")
         @ExpectedResponses({200})
         @UnexpectedResponseExceptionType(ManagementException.class)
         Mono<Response<IntegrationRuntimeAuthKeysInner>> regenerateAuthKey(
@@ -227,8 +217,7 @@ public final class IntegrationRuntimesClientImpl implements IntegrationRuntimesC
 
         @Headers({"Content-Type: application/json"})
         @Post(
-            "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.DataFactory"
-                + "/factories/{factoryName}/integrationRuntimes/{integrationRuntimeName}/listAuthKeys")
+            "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.DataFactory/factories/{factoryName}/integrationRuntimes/{integrationRuntimeName}/listAuthKeys")
         @ExpectedResponses({200})
         @UnexpectedResponseExceptionType(ManagementException.class)
         Mono<Response<IntegrationRuntimeAuthKeysInner>> listAuthKeys(
@@ -243,8 +232,7 @@ public final class IntegrationRuntimesClientImpl implements IntegrationRuntimesC
 
         @Headers({"Content-Type: application/json"})
         @Post(
-            "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.DataFactory"
-                + "/factories/{factoryName}/integrationRuntimes/{integrationRuntimeName}/start")
+            "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.DataFactory/factories/{factoryName}/integrationRuntimes/{integrationRuntimeName}/start")
         @ExpectedResponses({200, 202})
         @UnexpectedResponseExceptionType(ManagementException.class)
         Mono<Response<Flux<ByteBuffer>>> start(
@@ -259,8 +247,7 @@ public final class IntegrationRuntimesClientImpl implements IntegrationRuntimesC
 
         @Headers({"Content-Type: application/json"})
         @Post(
-            "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.DataFactory"
-                + "/factories/{factoryName}/integrationRuntimes/{integrationRuntimeName}/stop")
+            "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.DataFactory/factories/{factoryName}/integrationRuntimes/{integrationRuntimeName}/stop")
         @ExpectedResponses({200, 202})
         @UnexpectedResponseExceptionType(ManagementException.class)
         Mono<Response<Flux<ByteBuffer>>> stop(
@@ -275,8 +262,7 @@ public final class IntegrationRuntimesClientImpl implements IntegrationRuntimesC
 
         @Headers({"Content-Type: application/json"})
         @Post(
-            "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.DataFactory"
-                + "/factories/{factoryName}/integrationRuntimes/{integrationRuntimeName}/syncCredentials")
+            "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.DataFactory/factories/{factoryName}/integrationRuntimes/{integrationRuntimeName}/syncCredentials")
         @ExpectedResponses({200})
         @UnexpectedResponseExceptionType(ManagementException.class)
         Mono<Response<Void>> syncCredentials(
@@ -291,8 +277,7 @@ public final class IntegrationRuntimesClientImpl implements IntegrationRuntimesC
 
         @Headers({"Content-Type: application/json"})
         @Post(
-            "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.DataFactory"
-                + "/factories/{factoryName}/integrationRuntimes/{integrationRuntimeName}/monitoringData")
+            "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.DataFactory/factories/{factoryName}/integrationRuntimes/{integrationRuntimeName}/monitoringData")
         @ExpectedResponses({200})
         @UnexpectedResponseExceptionType(ManagementException.class)
         Mono<Response<IntegrationRuntimeMonitoringDataInner>> getMonitoringData(
@@ -307,8 +292,7 @@ public final class IntegrationRuntimesClientImpl implements IntegrationRuntimesC
 
         @Headers({"Content-Type: application/json"})
         @Post(
-            "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.DataFactory"
-                + "/factories/{factoryName}/integrationRuntimes/{integrationRuntimeName}/upgrade")
+            "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.DataFactory/factories/{factoryName}/integrationRuntimes/{integrationRuntimeName}/upgrade")
         @ExpectedResponses({200})
         @UnexpectedResponseExceptionType(ManagementException.class)
         Mono<Response<Void>> upgrade(
@@ -323,8 +307,7 @@ public final class IntegrationRuntimesClientImpl implements IntegrationRuntimesC
 
         @Headers({"Content-Type: application/json"})
         @Post(
-            "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.DataFactory"
-                + "/factories/{factoryName}/integrationRuntimes/{integrationRuntimeName}/removeLinks")
+            "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.DataFactory/factories/{factoryName}/integrationRuntimes/{integrationRuntimeName}/removeLinks")
         @ExpectedResponses({200})
         @UnexpectedResponseExceptionType(ManagementException.class)
         Mono<Response<Void>> removeLinks(
@@ -340,8 +323,7 @@ public final class IntegrationRuntimesClientImpl implements IntegrationRuntimesC
 
         @Headers({"Content-Type: application/json"})
         @Post(
-            "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.DataFactory"
-                + "/factories/{factoryName}/integrationRuntimes/{integrationRuntimeName}/linkedIntegrationRuntime")
+            "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.DataFactory/factories/{factoryName}/integrationRuntimes/{integrationRuntimeName}/linkedIntegrationRuntime")
         @ExpectedResponses({200})
         @UnexpectedResponseExceptionType(ManagementException.class)
         Mono<Response<IntegrationRuntimeStatusResponseInner>> createLinkedIntegrationRuntime(
