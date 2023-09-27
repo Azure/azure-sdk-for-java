@@ -20,92 +20,91 @@ public final class ObjectStatusDefinitionTests {
         ObjectStatusDefinition model =
             BinaryData
                 .fromString(
-                    "{\"name\":\"byxqabn\",\"namespace\":\"cpc\",\"kind\":\"hurzafblj\",\"complianceState\":\"Pending\",\"appliedBy\":{\"name\":\"oq\",\"namespace\":\"mkljavb\"},\"statusConditions\":[{\"lastTransitionTime\":\"2021-05-13T19:23:23Z\",\"message\":\"jzyulpk\",\"reason\":\"jkrlkhbzhfepg\",\"status\":\"qex\",\"type\":\"ocxscpaierhhbcs\"},{\"lastTransitionTime\":\"2021-06-03T06:29:13Z\",\"message\":\"majtjaod\",\"reason\":\"bnbdxkqpxokajion\",\"status\":\"mexgstxgcp\",\"type\":\"gmaajrm\"},{\"lastTransitionTime\":\"2021-03-11T04:53:43Z\",\"message\":\"zrlovmclwhijcoej\",\"reason\":\"bzaqsqsycbkbfk\",\"status\":\"kdkexxp\",\"type\":\"fmxa\"},{\"lastTransitionTime\":\"2021-06-05T20:06:24Z\",\"message\":\"pg\",\"reason\":\"toc\",\"status\":\"xhvpmoue\",\"type\":\"dzxibqeojnxqbzvd\"}],\"helmReleaseProperties\":{\"lastRevisionApplied\":2783260712694826920,\"helmChartRef\":{\"name\":\"icbtwnpzao\",\"namespace\":\"uhrhcffcyddgl\"},\"failureCount\":52347448504645703,\"installFailureCount\":4471545183112008716,\"upgradeFailureCount\":6943639735240918018}}")
+                    "{\"name\":\"wtgrhpdjpj\",\"namespace\":\"asxazjpqyegualhb\",\"kind\":\"hejjz\",\"complianceState\":\"Non-Compliant\",\"appliedBy\":{\"name\":\"gwdslfhotwm\",\"namespace\":\"npwlbjnpg\"},\"statusConditions\":[{\"lastTransitionTime\":\"2021-10-08T18:53:29Z\",\"message\":\"ehxnltyfsop\",\"reason\":\"suesnzw\",\"status\":\"jbavorxzdm\",\"type\":\"ctbqvudwx\"},{\"lastTransitionTime\":\"2021-03-23T22:55:01Z\",\"message\":\"vo\",\"reason\":\"ujjugwdkcglh\",\"status\":\"azjdyggd\",\"type\":\"ixhbkuofqweykhm\"},{\"lastTransitionTime\":\"2021-08-01T10:52:51Z\",\"message\":\"fyexfwhy\",\"reason\":\"i\",\"status\":\"yvdcsitynnaa\",\"type\":\"ectehf\"},{\"lastTransitionTime\":\"2021-03-19T08:13:40Z\",\"message\":\"jeyp\",\"reason\":\"ezrkgqhcjrefo\",\"status\":\"mkqsleyyv\",\"type\":\"qjpkcattpngjcrc\"}],\"helmReleaseProperties\":{\"lastRevisionApplied\":8852498521438996261,\"helmChartRef\":{\"name\":\"vmdajvnysou\",\"namespace\":\"e\"},\"failureCount\":3884440405716336055,\"installFailureCount\":4529960801894599237,\"upgradeFailureCount\":8165911566744254843}}")
                 .toObject(ObjectStatusDefinition.class);
-        Assertions.assertEquals("byxqabn", model.name());
-        Assertions.assertEquals("cpc", model.namespace());
-        Assertions.assertEquals("hurzafblj", model.kind());
-        Assertions.assertEquals(FluxComplianceState.PENDING, model.complianceState());
-        Assertions.assertEquals("oq", model.appliedBy().name());
-        Assertions.assertEquals("mkljavb", model.appliedBy().namespace());
+        Assertions.assertEquals("wtgrhpdjpj", model.name());
+        Assertions.assertEquals("asxazjpqyegualhb", model.namespace());
+        Assertions.assertEquals("hejjz", model.kind());
+        Assertions.assertEquals(FluxComplianceState.NON_COMPLIANT, model.complianceState());
+        Assertions.assertEquals("gwdslfhotwm", model.appliedBy().name());
+        Assertions.assertEquals("npwlbjnpg", model.appliedBy().namespace());
         Assertions
             .assertEquals(
-                OffsetDateTime.parse("2021-05-13T19:23:23Z"), model.statusConditions().get(0).lastTransitionTime());
-        Assertions.assertEquals("jzyulpk", model.statusConditions().get(0).message());
-        Assertions.assertEquals("jkrlkhbzhfepg", model.statusConditions().get(0).reason());
-        Assertions.assertEquals("qex", model.statusConditions().get(0).status());
-        Assertions.assertEquals("ocxscpaierhhbcs", model.statusConditions().get(0).type());
-        Assertions.assertEquals(2783260712694826920L, model.helmReleaseProperties().lastRevisionApplied());
-        Assertions.assertEquals("icbtwnpzao", model.helmReleaseProperties().helmChartRef().name());
-        Assertions.assertEquals("uhrhcffcyddgl", model.helmReleaseProperties().helmChartRef().namespace());
-        Assertions.assertEquals(52347448504645703L, model.helmReleaseProperties().failureCount());
-        Assertions.assertEquals(4471545183112008716L, model.helmReleaseProperties().installFailureCount());
-        Assertions.assertEquals(6943639735240918018L, model.helmReleaseProperties().upgradeFailureCount());
+                OffsetDateTime.parse("2021-10-08T18:53:29Z"), model.statusConditions().get(0).lastTransitionTime());
+        Assertions.assertEquals("ehxnltyfsop", model.statusConditions().get(0).message());
+        Assertions.assertEquals("suesnzw", model.statusConditions().get(0).reason());
+        Assertions.assertEquals("jbavorxzdm", model.statusConditions().get(0).status());
+        Assertions.assertEquals("ctbqvudwx", model.statusConditions().get(0).type());
+        Assertions.assertEquals(8852498521438996261L, model.helmReleaseProperties().lastRevisionApplied());
+        Assertions.assertEquals("vmdajvnysou", model.helmReleaseProperties().helmChartRef().name());
+        Assertions.assertEquals("e", model.helmReleaseProperties().helmChartRef().namespace());
+        Assertions.assertEquals(3884440405716336055L, model.helmReleaseProperties().failureCount());
+        Assertions.assertEquals(4529960801894599237L, model.helmReleaseProperties().installFailureCount());
+        Assertions.assertEquals(8165911566744254843L, model.helmReleaseProperties().upgradeFailureCount());
     }
 
     @org.junit.jupiter.api.Test
     public void testSerialize() throws Exception {
         ObjectStatusDefinition model =
             new ObjectStatusDefinition()
-                .withName("byxqabn")
-                .withNamespace("cpc")
-                .withKind("hurzafblj")
-                .withComplianceState(FluxComplianceState.PENDING)
-                .withAppliedBy(new ObjectReferenceDefinition().withName("oq").withNamespace("mkljavb"))
+                .withName("wtgrhpdjpj")
+                .withNamespace("asxazjpqyegualhb")
+                .withKind("hejjz")
+                .withComplianceState(FluxComplianceState.NON_COMPLIANT)
+                .withAppliedBy(new ObjectReferenceDefinition().withName("gwdslfhotwm").withNamespace("npwlbjnpg"))
                 .withStatusConditions(
                     Arrays
                         .asList(
                             new ObjectStatusConditionDefinition()
-                                .withLastTransitionTime(OffsetDateTime.parse("2021-05-13T19:23:23Z"))
-                                .withMessage("jzyulpk")
-                                .withReason("jkrlkhbzhfepg")
-                                .withStatus("qex")
-                                .withType("ocxscpaierhhbcs"),
+                                .withLastTransitionTime(OffsetDateTime.parse("2021-10-08T18:53:29Z"))
+                                .withMessage("ehxnltyfsop")
+                                .withReason("suesnzw")
+                                .withStatus("jbavorxzdm")
+                                .withType("ctbqvudwx"),
                             new ObjectStatusConditionDefinition()
-                                .withLastTransitionTime(OffsetDateTime.parse("2021-06-03T06:29:13Z"))
-                                .withMessage("majtjaod")
-                                .withReason("bnbdxkqpxokajion")
-                                .withStatus("mexgstxgcp")
-                                .withType("gmaajrm"),
+                                .withLastTransitionTime(OffsetDateTime.parse("2021-03-23T22:55:01Z"))
+                                .withMessage("vo")
+                                .withReason("ujjugwdkcglh")
+                                .withStatus("azjdyggd")
+                                .withType("ixhbkuofqweykhm"),
                             new ObjectStatusConditionDefinition()
-                                .withLastTransitionTime(OffsetDateTime.parse("2021-03-11T04:53:43Z"))
-                                .withMessage("zrlovmclwhijcoej")
-                                .withReason("bzaqsqsycbkbfk")
-                                .withStatus("kdkexxp")
-                                .withType("fmxa"),
+                                .withLastTransitionTime(OffsetDateTime.parse("2021-08-01T10:52:51Z"))
+                                .withMessage("fyexfwhy")
+                                .withReason("i")
+                                .withStatus("yvdcsitynnaa")
+                                .withType("ectehf"),
                             new ObjectStatusConditionDefinition()
-                                .withLastTransitionTime(OffsetDateTime.parse("2021-06-05T20:06:24Z"))
-                                .withMessage("pg")
-                                .withReason("toc")
-                                .withStatus("xhvpmoue")
-                                .withType("dzxibqeojnxqbzvd")))
+                                .withLastTransitionTime(OffsetDateTime.parse("2021-03-19T08:13:40Z"))
+                                .withMessage("jeyp")
+                                .withReason("ezrkgqhcjrefo")
+                                .withStatus("mkqsleyyv")
+                                .withType("qjpkcattpngjcrc")))
                 .withHelmReleaseProperties(
                     new HelmReleasePropertiesDefinition()
-                        .withLastRevisionApplied(2783260712694826920L)
-                        .withHelmChartRef(
-                            new ObjectReferenceDefinition().withName("icbtwnpzao").withNamespace("uhrhcffcyddgl"))
-                        .withFailureCount(52347448504645703L)
-                        .withInstallFailureCount(4471545183112008716L)
-                        .withUpgradeFailureCount(6943639735240918018L));
+                        .withLastRevisionApplied(8852498521438996261L)
+                        .withHelmChartRef(new ObjectReferenceDefinition().withName("vmdajvnysou").withNamespace("e"))
+                        .withFailureCount(3884440405716336055L)
+                        .withInstallFailureCount(4529960801894599237L)
+                        .withUpgradeFailureCount(8165911566744254843L));
         model = BinaryData.fromObject(model).toObject(ObjectStatusDefinition.class);
-        Assertions.assertEquals("byxqabn", model.name());
-        Assertions.assertEquals("cpc", model.namespace());
-        Assertions.assertEquals("hurzafblj", model.kind());
-        Assertions.assertEquals(FluxComplianceState.PENDING, model.complianceState());
-        Assertions.assertEquals("oq", model.appliedBy().name());
-        Assertions.assertEquals("mkljavb", model.appliedBy().namespace());
+        Assertions.assertEquals("wtgrhpdjpj", model.name());
+        Assertions.assertEquals("asxazjpqyegualhb", model.namespace());
+        Assertions.assertEquals("hejjz", model.kind());
+        Assertions.assertEquals(FluxComplianceState.NON_COMPLIANT, model.complianceState());
+        Assertions.assertEquals("gwdslfhotwm", model.appliedBy().name());
+        Assertions.assertEquals("npwlbjnpg", model.appliedBy().namespace());
         Assertions
             .assertEquals(
-                OffsetDateTime.parse("2021-05-13T19:23:23Z"), model.statusConditions().get(0).lastTransitionTime());
-        Assertions.assertEquals("jzyulpk", model.statusConditions().get(0).message());
-        Assertions.assertEquals("jkrlkhbzhfepg", model.statusConditions().get(0).reason());
-        Assertions.assertEquals("qex", model.statusConditions().get(0).status());
-        Assertions.assertEquals("ocxscpaierhhbcs", model.statusConditions().get(0).type());
-        Assertions.assertEquals(2783260712694826920L, model.helmReleaseProperties().lastRevisionApplied());
-        Assertions.assertEquals("icbtwnpzao", model.helmReleaseProperties().helmChartRef().name());
-        Assertions.assertEquals("uhrhcffcyddgl", model.helmReleaseProperties().helmChartRef().namespace());
-        Assertions.assertEquals(52347448504645703L, model.helmReleaseProperties().failureCount());
-        Assertions.assertEquals(4471545183112008716L, model.helmReleaseProperties().installFailureCount());
-        Assertions.assertEquals(6943639735240918018L, model.helmReleaseProperties().upgradeFailureCount());
+                OffsetDateTime.parse("2021-10-08T18:53:29Z"), model.statusConditions().get(0).lastTransitionTime());
+        Assertions.assertEquals("ehxnltyfsop", model.statusConditions().get(0).message());
+        Assertions.assertEquals("suesnzw", model.statusConditions().get(0).reason());
+        Assertions.assertEquals("jbavorxzdm", model.statusConditions().get(0).status());
+        Assertions.assertEquals("ctbqvudwx", model.statusConditions().get(0).type());
+        Assertions.assertEquals(8852498521438996261L, model.helmReleaseProperties().lastRevisionApplied());
+        Assertions.assertEquals("vmdajvnysou", model.helmReleaseProperties().helmChartRef().name());
+        Assertions.assertEquals("e", model.helmReleaseProperties().helmChartRef().namespace());
+        Assertions.assertEquals(3884440405716336055L, model.helmReleaseProperties().failureCount());
+        Assertions.assertEquals(4529960801894599237L, model.helmReleaseProperties().installFailureCount());
+        Assertions.assertEquals(8165911566744254843L, model.helmReleaseProperties().upgradeFailureCount());
     }
 }

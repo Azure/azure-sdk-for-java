@@ -42,7 +42,7 @@ If you want to see the full code for these snippets check out our [samples folde
 <dependency>
     <groupId>com.azure</groupId>
     <artifactId>azure-ai-openai</artifactId>
-    <version>1.0.0-beta.4</version>
+    <version>1.0.0-beta.5</version>
 </dependency>
 ```
 [//]: # ({x-version-update-end})
@@ -102,7 +102,7 @@ Authentication with AAD requires some initial setup:
 <dependency>
     <groupId>com.azure</groupId>
     <artifactId>azure-identity</artifactId>
-    <version>1.10.0</version>
+    <version>1.10.1</version>
 </dependency>
 ```
 [//]: # ({x-version-update-end})
@@ -319,9 +319,9 @@ Path filePath = Paths.get("{your-file-path}" + fileName);
 
 byte[] file = BinaryData.fromFile(filePath).toBytes();
 AudioTranslationOptions translationOptions = new AudioTranslationOptions(file)
-    .setResponseFormat(AudioTranscriptionFormat.JSON);
+    .setResponseFormat(AudioTranslationFormat.JSON);
 
-AudioTranscription translation = client.getAudioTranslation("{deploymentOrModelId}", fileName, translationOptions);
+AudioTranslation translation = client.getAudioTranslation("{deploymentOrModelId}", fileName, translationOptions);
 
 System.out.println("Translation: " + translation.getText());
 ```
