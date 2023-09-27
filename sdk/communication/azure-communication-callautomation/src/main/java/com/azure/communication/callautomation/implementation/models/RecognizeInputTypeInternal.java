@@ -8,7 +8,7 @@ import com.azure.core.util.ExpandableStringEnum;
 import com.fasterxml.jackson.annotation.JsonCreator;
 import java.util.Collection;
 
-/** Determines the type of the recognition. */
+/** Defines values for RecognizeInputTypeInternal. */
 public final class RecognizeInputTypeInternal extends ExpandableStringEnum<RecognizeInputTypeInternal> {
     /** Static value dtmf for RecognizeInputTypeInternal. */
     public static final RecognizeInputTypeInternal DTMF = fromString("dtmf");
@@ -23,14 +23,6 @@ public final class RecognizeInputTypeInternal extends ExpandableStringEnum<Recog
     public static final RecognizeInputTypeInternal CHOICES = fromString("choices");
 
     /**
-     * Creates a new instance of RecognizeInputTypeInternal value.
-     *
-     * @deprecated Use the {@link #fromString(String)} factory method.
-     */
-    @Deprecated
-    public RecognizeInputTypeInternal() {}
-
-    /**
      * Creates or finds a RecognizeInputTypeInternal from its string representation.
      *
      * @param name a name to look for.
@@ -41,11 +33,7 @@ public final class RecognizeInputTypeInternal extends ExpandableStringEnum<Recog
         return fromString(name, RecognizeInputTypeInternal.class);
     }
 
-    /**
-     * Gets known RecognizeInputTypeInternal values.
-     *
-     * @return known RecognizeInputTypeInternal values.
-     */
+    /** @return known RecognizeInputTypeInternal values. */
     public static Collection<RecognizeInputTypeInternal> values() {
         return values(RecognizeInputTypeInternal.class);
     }

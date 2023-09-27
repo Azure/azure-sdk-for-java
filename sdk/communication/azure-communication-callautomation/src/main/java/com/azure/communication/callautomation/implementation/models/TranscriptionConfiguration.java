@@ -29,13 +29,11 @@ public final class TranscriptionConfiguration {
     private String locale;
 
     /*
-     * Determines if the transcription should be started immediately after call is answered or not.
+     * Determines if the transcription should be started immediately after call
+     * is answered or not.
      */
     @JsonProperty(value = "startTranscription", required = true)
     private boolean startTranscription;
-
-    /** Creates an instance of TranscriptionConfiguration class. */
-    public TranscriptionConfiguration() {}
 
     /**
      * Get the transportUrl property: Transport URL for live transcription.

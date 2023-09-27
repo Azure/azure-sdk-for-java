@@ -22,9 +22,6 @@ public final class StartTranscriptionRequest {
     @JsonProperty(value = "operationContext")
     private String operationContext;
 
-    /** Creates an instance of StartTranscriptionRequest class. */
-    public StartTranscriptionRequest() {}
-
     /**
      * Get the locale property: Defines Locale for the transcription e,g en-US.
      *

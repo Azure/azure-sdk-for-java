@@ -22,9 +22,6 @@ public final class RejectCallRequestInternal {
     @JsonProperty(value = "callRejectReason")
     private CallRejectReasonInternal callRejectReason;
 
-    /** Creates an instance of RejectCallRequestInternal class. */
-    public RejectCallRequestInternal() {}
-
     /**
      * Get the incomingCallContext property: The context associated with the call.
      *

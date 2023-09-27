@@ -16,9 +16,6 @@ public final class BlobStorageInternal {
     @JsonProperty(value = "containerUri", required = true)
     private String containerUri;
 
-    /** Creates an instance of BlobStorageInternal class. */
-    public BlobStorageInternal() {}
-
     /**
      * Get the containerUri property: Url of a container or a location within a container.
      *

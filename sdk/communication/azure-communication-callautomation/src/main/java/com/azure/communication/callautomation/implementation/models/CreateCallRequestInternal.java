@@ -18,7 +18,8 @@ public final class CreateCallRequestInternal {
     private List<CommunicationIdentifierModel> targets;
 
     /*
-     * The source caller Id, a phone number, that's shown to the PSTN participant being invited.
+     * The source caller Id, a phone number, that's shown to the PSTN
+     * participant being invited.
      * Required only when calling a PSTN callee.
      */
     @JsonProperty(value = "sourceCallerIdNumber")
@@ -71,9 +72,6 @@ public final class CreateCallRequestInternal {
      */
     @JsonProperty(value = "customContext")
     private CustomContext customContext;
-
-    /** Creates an instance of CreateCallRequestInternal class. */
-    public CreateCallRequestInternal() {}
 
     /**
      * Get the targets property: The targets of the call.

@@ -11,15 +11,18 @@ import com.fasterxml.jackson.annotation.JsonProperty;
 @Fluent
 public final class AddParticipantRequestInternal {
     /*
-     * The source caller Id, a phone number, that's shown to the PSTN participant being invited.
+     * The source caller Id, a phone number, that's shown to the PSTN
+     * participant being invited.
      * Required only when inviting a PSTN participant.
      */
     @JsonProperty(value = "sourceCallerIdNumber")
     private PhoneNumberIdentifierModel sourceCallerIdNumber;
 
     /*
-     * (Optional) The display name of the source that is associated with this invite operation when
-     * adding a PSTN participant or teams user.  Note: Will not update the display name in the roster.
+     * (Optional) The display name of the source that is associated with this
+     * invite operation when
+     * adding a PSTN participant or teams user.  Note: Will not update the
+     * display name in the roster.
      */
     @JsonProperty(value = "sourceDisplayName")
     private String sourceDisplayName;
@@ -38,7 +41,8 @@ public final class AddParticipantRequestInternal {
     private Integer invitationTimeoutInSeconds;
 
     /*
-     * Used by customers when calling mid-call actions to correlate the request to the response event.
+     * Used by customers when calling mid-call actions to correlate the request
+     * to the response event.
      */
     @JsonProperty(value = "operationContext")
     private String operationContext;
@@ -54,9 +58,6 @@ public final class AddParticipantRequestInternal {
      */
     @JsonProperty(value = "callbackUri")
     private String callbackUri;
-
-    /** Creates an instance of AddParticipantRequestInternal class. */
-    public AddParticipantRequestInternal() {}
 
     /**
      * Get the sourceCallerIdNumber property: The source caller Id, a phone number, that's shown to the PSTN participant

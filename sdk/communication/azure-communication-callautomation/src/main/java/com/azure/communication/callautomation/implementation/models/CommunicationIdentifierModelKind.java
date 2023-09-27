@@ -8,7 +8,7 @@ import com.azure.core.util.ExpandableStringEnum;
 import com.fasterxml.jackson.annotation.JsonCreator;
 import java.util.Collection;
 
-/** The identifier kind, for example 'communicationUser' or 'phoneNumber'. */
+/** Defines values for CommunicationIdentifierModelKind. */
 public final class CommunicationIdentifierModelKind extends ExpandableStringEnum<CommunicationIdentifierModelKind> {
     /** Static value unknown for CommunicationIdentifierModelKind. */
     public static final CommunicationIdentifierModelKind UNKNOWN = fromString("unknown");
@@ -23,14 +23,6 @@ public final class CommunicationIdentifierModelKind extends ExpandableStringEnum
     public static final CommunicationIdentifierModelKind MICROSOFT_TEAMS_USER = fromString("microsoftTeamsUser");
 
     /**
-     * Creates a new instance of CommunicationIdentifierModelKind value.
-     *
-     * @deprecated Use the {@link #fromString(String)} factory method.
-     */
-    @Deprecated
-    public CommunicationIdentifierModelKind() {}
-
-    /**
      * Creates or finds a CommunicationIdentifierModelKind from its string representation.
      *
      * @param name a name to look for.
@@ -41,11 +33,7 @@ public final class CommunicationIdentifierModelKind extends ExpandableStringEnum
         return fromString(name, CommunicationIdentifierModelKind.class);
     }
 
-    /**
-     * Gets known CommunicationIdentifierModelKind values.
-     *
-     * @return known CommunicationIdentifierModelKind values.
-     */
+    /** @return known CommunicationIdentifierModelKind values. */
     public static Collection<CommunicationIdentifierModelKind> values() {
         return values(CommunicationIdentifierModelKind.class);
     }

@@ -16,9 +16,6 @@ public final class StopTranscriptionRequest {
     @JsonProperty(value = "operationContext")
     private String operationContext;
 
-    /** Creates an instance of StopTranscriptionRequest class. */
-    public StopTranscriptionRequest() {}
-
     /**
      * Get the operationContext property: The value to identify context of the operation.
      *

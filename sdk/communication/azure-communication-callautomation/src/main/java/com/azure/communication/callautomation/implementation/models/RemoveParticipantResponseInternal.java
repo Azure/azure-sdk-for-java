@@ -16,9 +16,6 @@ public final class RemoveParticipantResponseInternal {
     @JsonProperty(value = "operationContext")
     private String operationContext;
 
-    /** Creates an instance of RemoveParticipantResponseInternal class. */
-    public RemoveParticipantResponseInternal() {}
-
     /**
      * Get the operationContext property: The operation context provided by client.
      *

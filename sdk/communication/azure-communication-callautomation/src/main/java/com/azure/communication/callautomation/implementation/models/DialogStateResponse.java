@@ -34,9 +34,6 @@ public final class DialogStateResponse {
     @JsonProperty(value = "operationContext")
     private String operationContext;
 
-    /** Creates an instance of DialogStateResponse class. */
-    public DialogStateResponse() {}
-
     /**
      * Get the dialogId property: The dialog ID.
      *

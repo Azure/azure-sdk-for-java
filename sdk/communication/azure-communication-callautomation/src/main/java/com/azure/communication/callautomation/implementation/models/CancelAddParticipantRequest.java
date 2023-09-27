@@ -17,7 +17,8 @@ public final class CancelAddParticipantRequest {
     private String invitationId;
 
     /*
-     * Used by customers when calling mid-call actions to correlate the request to the response event.
+     * Used by customers when calling mid-call actions to correlate the request
+     * to the response event.
      */
     @JsonProperty(value = "operationContext")
     private String operationContext;
@@ -27,9 +28,6 @@ public final class CancelAddParticipantRequest {
      */
     @JsonProperty(value = "callbackUri")
     private String callbackUri;
-
-    /** Creates an instance of CancelAddParticipantRequest class. */
-    public CancelAddParticipantRequest() {}
 
     /**
      * Get the invitationId property: Invitation ID used to add a participant.

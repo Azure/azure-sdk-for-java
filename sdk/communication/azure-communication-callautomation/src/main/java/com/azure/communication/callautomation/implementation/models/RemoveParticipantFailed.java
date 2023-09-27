@@ -23,13 +23,15 @@ public final class RemoveParticipantFailed {
     private String serverCallId;
 
     /*
-     * Correlation ID for event to call correlation. Also called ChainId for skype chain ID.
+     * Correlation ID for event to call correlation. Also called ChainId for
+     * skype chain ID.
      */
     @JsonProperty(value = "correlationId")
     private String correlationId;
 
     /*
-     * Used by customers when calling mid-call actions to correlate the request to the response event.
+     * Used by customers when calling mid-call actions to correlate the request
+     * to the response event.
      */
     @JsonProperty(value = "operationContext")
     private String operationContext;
@@ -45,9 +47,6 @@ public final class RemoveParticipantFailed {
      */
     @JsonProperty(value = "participant")
     private CommunicationIdentifierModel participant;
-
-    /** Creates an instance of RemoveParticipantFailed class. */
-    public RemoveParticipantFailed() {}
 
     /**
      * Get the callConnectionId property: Call connection ID.

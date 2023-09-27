@@ -17,14 +17,6 @@ public final class RecordingType extends ExpandableStringEnum<RecordingType> {
     public static final RecordingType TEAMS = fromString("teams");
 
     /**
-     * Creates a new instance of RecordingType value.
-     *
-     * @deprecated Use the {@link #fromString(String)} factory method.
-     */
-    @Deprecated
-    public RecordingType() {}
-
-    /**
      * Creates or finds a RecordingType from its string representation.
      *
      * @param name a name to look for.
@@ -35,11 +27,7 @@ public final class RecordingType extends ExpandableStringEnum<RecordingType> {
         return fromString(name, RecordingType.class);
     }
 
-    /**
-     * Gets known RecordingType values.
-     *
-     * @return known RecordingType values.
-     */
+    /** @return known RecordingType values. */
     public static Collection<RecordingType> values() {
         return values(RecordingType.class);
     }

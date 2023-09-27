@@ -54,7 +54,8 @@ public final class CallConnectionPropertiesInternal {
     private String dataSubscriptionId;
 
     /*
-     * The source caller Id, a phone number, that's shown to the PSTN participant being invited.
+     * The source caller Id, a phone number, that's shown to the PSTN
+     * participant being invited.
      * Required only when calling a PSTN callee.
      */
     @JsonProperty(value = "sourceCallerIdNumber")
@@ -79,13 +80,11 @@ public final class CallConnectionPropertiesInternal {
     private String correlationId;
 
     /*
-     * Identity of the answering entity. Only populated when identity is provided in the request.
+     * Identity of the answering entity. Only populated when identity is
+     * provided in the request.
      */
     @JsonProperty(value = "answeredByIdentifier")
     private CommunicationUserIdentifierModel answeredByIdentifier;
-
-    /** Creates an instance of CallConnectionPropertiesInternal class. */
-    public CallConnectionPropertiesInternal() {}
 
     /**
      * Get the callConnectionId property: The call connection id.

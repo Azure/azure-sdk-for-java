@@ -28,9 +28,6 @@ public final class ContinuousDtmfRecognitionRequestInternal {
     @JsonProperty(value = "callbackUri")
     private String callbackUri;
 
-    /** Creates an instance of ContinuousDtmfRecognitionRequestInternal class. */
-    public ContinuousDtmfRecognitionRequestInternal() {}
-
     /**
      * Get the targetParticipant property: Defines options for recognition.
      *

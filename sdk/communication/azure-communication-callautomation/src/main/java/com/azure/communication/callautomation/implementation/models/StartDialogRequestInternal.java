@@ -28,9 +28,6 @@ public final class StartDialogRequestInternal {
     @JsonProperty(value = "operationContext")
     private String operationContext;
 
-    /** Creates an instance of StartDialogRequestInternal class. */
-    public StartDialogRequestInternal() {}
-
     /**
      * Get the dialogOptions property: Defines options for dialog.
      *
