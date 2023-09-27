@@ -28,7 +28,7 @@ autorest README.md --java --v4 --use=@autorest/java@4.0.20 --use=@autorest/model
 ``` yaml
 tag: package-2023-01-15-preview
 require:
-    - https://github.com/cochi2/azure-rest-api-specs/blob/165e9bcec8bcd7d2085df5fa0cd6a7e8f587caa1/specification/communication/data-plane/CallAutomation/readme.md
+    - https://github.com/williamzhao87/azure-rest-api-specs/blob/8f5bd72f81f7fa9020f6834f06f3db54a475ee68/specification/communication/data-plane/CallAutomation/readme.md
 java: true
 output-folder: ../
 license-header: MICROSOFT_MIT_SMALL
@@ -167,17 +167,11 @@ directive:
     from: UnmuteParticipantsResponse
     to: UnmuteParticipantsResponseInternal
 - rename-model:
-    from: HoldParticipantRequest
-    to: HoldParticipantRequestInternal
+    from: StartHoldMusicRequest
+    to: StartHoldMusicRequestInternal
 - rename-model:
-    from: HoldParticipantResponse
-    to: HoldParticipantResponseInternal
-- rename-model:
-    from: UnholdParticipantRequest
-    to: UnholdParticipantRequestInternal
-- rename-model:
-    from: UnholdParticipantResponse
-    to: UnholdParticipantResponseInternal
+    from: StopHoldMusicRequest
+    to: StopHoldMusicRequestInternal
 - rename-model:
     from: CollectTonesResult
     to: CollectTonesResultInternal
@@ -222,6 +216,8 @@ directive:
 - remove-model: ContinuousDtmfRecognitionStopped
 - remove-model: SendDtmfCompleted
 - remove-model: SendDtmfFailed
+- remove-model: AddParticipantCancelled
+- remove-model: CancelAddParticipantFailed
 ```
 
 ### Rename RecordingChannelType to RecordingChannelInternal

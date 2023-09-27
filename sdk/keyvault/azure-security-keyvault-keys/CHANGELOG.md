@@ -1,6 +1,6 @@
 # Release History
 
-## 4.7.0-beta.1 (Unreleased)
+## 4.8.0-beta.1 (Unreleased)
 
 ### Features Added
 
@@ -9,7 +9,20 @@
 ### Bugs Fixed
 
 ### Other Changes
+
+## 4.7.0 (2023-09-25)
+
+### Bugs fixed
+- Added a fallback mechanism to use service-side cryptography if not possible to perform operations locally. ([#36657](https://github.com/Azure/azure-sdk-for-java/pull/36657))
+
+### Other Changes
+- Due to internal client changes, made `KeyEncryptionKeyClient` extend `CryptographyClient`, mirroring their async counterparts. Functionality remains intact.
 - Migrate test recordings to assets repo.
+
+#### Dependency Updates
+
+- Upgraded `azure-core` from `1.42.0` to version `1.43.0`.
+- Upgraded `azure-core-http-netty` from `1.13.6` to version `1.13.7`.
 
 ## 4.6.5 (2023-08-21)
 

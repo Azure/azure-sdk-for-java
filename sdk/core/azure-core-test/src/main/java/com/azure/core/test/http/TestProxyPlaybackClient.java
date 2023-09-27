@@ -36,9 +36,9 @@ import java.util.Queue;
 import static com.azure.core.test.implementation.TestingHelpers.X_RECORDING_FILE_LOCATION;
 import static com.azure.core.test.implementation.TestingHelpers.X_RECORDING_ID;
 import static com.azure.core.test.utils.TestProxyUtils.checkForTestProxyErrors;
+import static com.azure.core.test.utils.TestProxyUtils.createAddSanitizersRequest;
 import static com.azure.core.test.utils.TestProxyUtils.getAssetJsonFile;
 import static com.azure.core.test.utils.TestProxyUtils.getMatcherRequests;
-import static com.azure.core.test.utils.TestProxyUtils.getSanitizerRequests;
 import static com.azure.core.test.utils.TestProxyUtils.loadSanitizers;
 
 /**
@@ -81,10 +81,10 @@ public class TestProxyPlaybackClient implements HttpClient {
      * @throws RuntimeException Failed to serialize body payload.
      */
     public Queue<String> startPlayback(File recordFile, Path testClassPath) {
-        HttpRequest request = null;
+        HttpRequest request;
         String assetJsonPath = getAssetJsonFile(recordFile, testClassPath);
         try {
-            request = new HttpRequest(HttpMethod.POST, String.format("%s/playback/start", proxyUrl))
+            request = new HttpRequest(HttpMethod.POST, proxyUrl + "/playback/start")
                 .setBody(SERIALIZER.serialize(new RecordFilePayload(recordFile.toString(), assetJsonPath),
                     SerializerEncoding.JSON))
                 .setHeader(HttpHeaderName.ACCEPT, "application/json")
@@ -92,12 +92,12 @@ public class TestProxyPlaybackClient implements HttpClient {
         } catch (IOException e) {
             throw new RuntimeException(e);
         }
+
         try (HttpResponse response = client.sendSync(request, Context.NONE)) {
             checkForTestProxyErrors(response);
             xRecordingId = response.getHeaderValue(X_RECORDING_ID);
-            xRecordingFileLocation
-                = new String(Base64.getUrlDecoder().decode(
-                    response.getHeaders().get(X_RECORDING_FILE_LOCATION).getValue()), StandardCharsets.UTF_8);
+            xRecordingFileLocation = new String(Base64.getUrlDecoder().decode(
+                response.getHeaders().getValue(X_RECORDING_FILE_LOCATION)), StandardCharsets.UTF_8);
             addProxySanitization(this.sanitizers);
             addMatcherRequests(this.matchers);
             String body = response.getBodyAsString().block();
@@ -131,9 +131,9 @@ public class TestProxyPlaybackClient implements HttpClient {
      * Stops playback of a test recording.
      */
     public void stopPlayback() {
-        HttpRequest request = new HttpRequest(HttpMethod.POST, String.format("%s/playback/stop", proxyUrl.toString()))
+        HttpRequest request = new HttpRequest(HttpMethod.POST, proxyUrl + "/playback/stop")
             .setHeader(X_RECORDING_ID, xRecordingId);
-        client.sendSync(request, Context.NONE);
+        client.sendSync(request, Context.NONE).close();
     }
 
     /**
@@ -189,11 +189,10 @@ public class TestProxyPlaybackClient implements HttpClient {
      */
     public void addProxySanitization(List<TestProxySanitizer> sanitizers) {
         if (isPlayingBack()) {
-            getSanitizerRequests(sanitizers, proxyUrl)
-                .forEach(request -> {
-                    request.setHeader(X_RECORDING_ID, xRecordingId);
-                    client.sendSync(request, Context.NONE);
-                });
+            HttpRequest request = createAddSanitizersRequest(sanitizers, proxyUrl)
+                .setHeader(X_RECORDING_ID, xRecordingId);
+
+            client.sendSync(request, Context.NONE).close();
         } else {
             this.sanitizers.addAll(sanitizers);
         }
@@ -211,7 +210,7 @@ public class TestProxyPlaybackClient implements HttpClient {
             }
             matcherRequests.forEach(request -> {
                 request.setHeader(X_RECORDING_ID, xRecordingId);
-                client.sendSync(request, Context.NONE);
+                client.sendSync(request, Context.NONE).close();
             });
         } else {
             this.matchers.addAll(matchers);
