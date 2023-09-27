@@ -3,6 +3,7 @@ package com.azure.core.http.httpurlconnection;
 import com.azure.core.http.*;
 import com.azure.core.http.httpurlconnection.implementation.HttpUrlConnectionResponse;
 import com.azure.core.util.*;
+import com.azure.core.util.logging.ClientLogger;
 import reactor.core.publisher.Flux;
 import reactor.core.publisher.Mono;
 import com.azure.core.http.HttpHeader;
@@ -21,6 +22,7 @@ import java.util.*;
  * @see HttpUrlConnectionAsyncClientBuilder
  */
 public class HttpUrlConnectionAsyncClient implements HttpClient {
+    private static final ClientLogger LOGGER = new ClientLogger(HttpUrlConnectionAsyncClient.class);
     private final Duration connectionTimeout;
     private final ProxyOptions proxyOptions;
     private final Configuration configuration;
@@ -80,7 +82,7 @@ public class HttpUrlConnectionAsyncClient implements HttpClient {
      * @return A Mono containing a HttpUrlConnectionResponse object
      */
     private Mono<HttpResponse> handleConnection(HttpRequest httpRequest, ProgressReporter progressReporter) {
-        return Mono.fromCallable(() -> {
+        return Mono.defer(() -> {
             try {
                 // Make connection
                 URL url = httpRequest.getUrl();
@@ -103,12 +105,11 @@ public class HttpUrlConnectionAsyncClient implements HttpClient {
                     connection.setConnectTimeout((int) connectionTimeout.toMillis());
                 }
 
-                // // SetConnectionRequest
-
+                // SetConnectionRequest
                 try {
                     connection.setRequestMethod(httpRequest.getHttpMethod().toString());
                 } catch (ProtocolException e) {
-                    throw new RuntimeException(e);
+                    return FluxUtil.monoError(LOGGER, new RuntimeException(e));
                 }
                 for (HttpHeader header : httpRequest.getHeaders()) {
                     for (String value : header.getValues()) {
@@ -143,14 +144,14 @@ public class HttpUrlConnectionAsyncClient implements HttpClient {
                                             os.write(bytes);
                                             return Mono.just(buffer); // Emit the buffer for downstream processing if needed
                                         } catch (IOException e) {
-                                            throw new RuntimeException(e);
+                                            return FluxUtil.monoError(LOGGER, new RuntimeException(e));
                                         }
                                     })
                                     .then()
                                     .block(); // Wait for completion of the write operations
                                 os.flush();
                             } catch (IOException e) {
-                                throw new RuntimeException(e);
+                                return FluxUtil.monoError(LOGGER, new RuntimeException(e));
                             }
                         }
                         break;
@@ -161,8 +162,8 @@ public class HttpUrlConnectionAsyncClient implements HttpClient {
                     case CONNECT:
                         break;
                     default:
-                        throw new IllegalStateException("Unknown HTTP Method:"
-                            + httpRequest.getHttpMethod());
+                        return FluxUtil.monoError(LOGGER, new IllegalStateException("Unknown HTTP Method:"
+                            + httpRequest.getHttpMethod()));
                 }
 
                 // Read response
@@ -187,15 +188,15 @@ public class HttpUrlConnectionAsyncClient implements HttpClient {
 
                 connection.disconnect();
 
-                return new HttpUrlConnectionResponse(
+                return Mono.just(new HttpUrlConnectionResponse(
                     httpRequest,
                     responseCode,
                     responseHeadersMap,
                     Flux.just(ByteBuffer.wrap(outputStream.toByteArray()))
-                );
+                ));
 
             } catch (IOException e) {
-                throw new RuntimeException("Error opening HTTP connection", e);
+                return FluxUtil.monoError(LOGGER, new RuntimeException("Error opening HTTP connection", e));
             }
         });
     }
