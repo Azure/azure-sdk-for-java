@@ -1616,4 +1616,6 @@ public interface AsyncDocumentClient {
      * @param cosmosContainerIdentities the {@link CosmosContainerIdentity} list.
      */
     void recordOpenConnectionsAndInitCachesStarted(List<CosmosContainerIdentity> cosmosContainerIdentities);
+
+    public String getMasterKeyOrResourceToken();
 }

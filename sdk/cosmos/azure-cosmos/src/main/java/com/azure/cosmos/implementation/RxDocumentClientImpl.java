@@ -4942,6 +4942,11 @@ public class RxDocumentClientImpl implements AsyncDocumentClient, IAuthorization
         this.storeModel.recordOpenConnectionsAndInitCachesStarted(cosmosContainerIdentities);
     }
 
+    @Override
+    public String getMasterKeyOrResourceToken() {
+        return this.masterKeyOrResourceToken;
+    }
+
     private static SqlQuerySpec createLogicalPartitionScanQuerySpec(
         PartitionKey partitionKey,
         String partitionKeySelector) {
