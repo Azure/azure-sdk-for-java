@@ -44,6 +44,12 @@ public class AzureKeyVaultPropertySourceProperties extends AbstractAzureHttpConf
     private Duration refreshInterval = DEFAULT_REFRESH_INTERVAL;
 
     /**
+     * Whether to enable the Azure Key Vault challenge resource verification, default: true.
+     * Calls the disableChallengeResourceVerification method of the Azure Key Vault Client Builder when set to false.
+     */
+    private boolean challengeResourceVerificationEnabled = true;
+
+    /**
      *
      * @return The name of this property source.
      */
@@ -137,5 +143,22 @@ public class AzureKeyVaultPropertySourceProperties extends AbstractAzureHttpConf
      */
     public void setRefreshInterval(Duration refreshInterval) {
         this.refreshInterval = refreshInterval;
+    }
+
+    /**
+     *
+     * @return Whether we should keep Azure Key Vault challenge resource verification enabled
+     */
+    public boolean isChallengeResourceVerificationEnabled() {
+        return challengeResourceVerificationEnabled;
+    }
+
+    /**
+     *
+     * @param challengeResourceVerificationEnabled Whether we should keep Azure Key Vault challenge resource verification enabled
+     */
+    public void setChallengeResourceVerificationEnabled(
+        boolean challengeResourceVerificationEnabled) {
+        this.challengeResourceVerificationEnabled = challengeResourceVerificationEnabled;
     }
 }

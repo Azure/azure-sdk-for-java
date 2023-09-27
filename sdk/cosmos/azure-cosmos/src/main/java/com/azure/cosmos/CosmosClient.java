@@ -5,7 +5,7 @@ package com.azure.cosmos;
 
 import com.azure.core.annotation.ServiceClient;
 import com.azure.cosmos.implementation.ImplementationBridgeHelpers;
-import com.azure.cosmos.implementation.OpenConnectionResponse;
+import com.azure.cosmos.models.CosmosContainerIdentity;
 import com.azure.cosmos.models.CosmosDatabaseProperties;
 import com.azure.cosmos.models.CosmosDatabaseRequestOptions;
 import com.azure.cosmos.models.CosmosDatabaseResponse;
@@ -203,6 +203,14 @@ public final class CosmosClient implements Closeable {
 
     void openConnectionsAndInitCaches(Duration aggressiveWarmupDuration) {
         asyncClientWrapper.openConnectionsAndInitCaches(aggressiveWarmupDuration);
+    }
+
+    void recordOpenConnectionsAndInitCachesCompleted(List<CosmosContainerIdentity> cosmosContainerIdentities) {
+        this.asyncClientWrapper.recordOpenConnectionsAndInitCachesCompleted(cosmosContainerIdentities);
+    }
+
+    void recordOpenConnectionsAndInitCachesStarted(List<CosmosContainerIdentity> cosmosContainerIdentities) {
+        this.asyncClientWrapper.recordOpenConnectionsAndInitCachesStarted(cosmosContainerIdentities);
     }
 
     CosmosDatabaseResponse blockDatabaseResponse(Mono<CosmosDatabaseResponse> databaseMono) {

@@ -58,10 +58,12 @@ import java.util.Arrays;
 import java.util.Collections;
 import java.util.List;
 import java.util.Map;
+import java.util.concurrent.atomic.AtomicLong;
 
 @SuppressWarnings("unused")
 public class SearchJavaDocCodeSnippets {
     private static final SearchClient SEARCH_CLIENT = new SearchClientBuilder().buildClient();
+    private static final long SEARCH_SKIP_LIMIT = 100_000; // May change over time
 
     /**
      * Code snippet for creating a {@link SearchClient}.
@@ -312,8 +314,10 @@ public class SearchJavaDocCodeSnippets {
         SearchPagedIterable searchPagedIterable = SEARCH_CLIENT.search("searchText");
         System.out.printf("There are around %d results.", searchPagedIterable.getTotalCount());
 
+        long numberOfDocumentsReturned = 0;
         for (SearchPagedResponse resultResponse: searchPagedIterable.iterableByPage()) {
             System.out.println("The status code of the response is " + resultResponse.getStatusCode());
+            numberOfDocumentsReturned += resultResponse.getValue().size();
             resultResponse.getValue().forEach(searchResult -> {
                 for (Map.Entry<String, Object> keyValuePair: searchResult
                     .getDocument(SearchDocument.class).entrySet()) {
@@ -321,6 +325,11 @@ public class SearchJavaDocCodeSnippets {
                         keyValuePair.getValue());
                 }
             });
+
+            if (numberOfDocumentsReturned >= SEARCH_SKIP_LIMIT) {
+                // Reached the $skip limit, stop requesting more documents.
+                break;
+            }
         }
         // END: com.azure.search.documents.SearchClient.search#String
     }
@@ -333,8 +342,11 @@ public class SearchJavaDocCodeSnippets {
         SearchPagedIterable searchPagedIterable = SEARCH_CLIENT.search("searchText",
             new SearchOptions().setOrderBy("hotelId desc"), new Context(KEY_1, VALUE_1));
         System.out.printf("There are around %d results.", searchPagedIterable.getTotalCount());
+
+        long numberOfDocumentsReturned = 0;
         for (SearchPagedResponse resultResponse: searchPagedIterable.iterableByPage()) {
             System.out.println("The status code of the response is " + resultResponse.getStatusCode());
+            numberOfDocumentsReturned += resultResponse.getValue().size();
             resultResponse.getValue().forEach(searchResult -> {
                 for (Map.Entry<String, Object> keyValuePair: searchResult
                     .getDocument(SearchDocument.class).entrySet()) {
@@ -342,6 +354,11 @@ public class SearchJavaDocCodeSnippets {
                         keyValuePair.getValue());
                 }
             });
+
+            if (numberOfDocumentsReturned >= SEARCH_SKIP_LIMIT) {
+                // Reached the $skip limit, stop requesting more documents.
+                break;
+            }
         }
         // END: com.azure.search.documents.SearchClient.search#String-SearchOptions-Context
     }
@@ -662,9 +679,18 @@ public class SearchJavaDocCodeSnippets {
         // BEGIN: com.azure.search.documents.SearchAsyncClient.search#String
         SearchPagedFlux searchPagedFlux = SEARCH_ASYNC_CLIENT.search("searchText");
         searchPagedFlux.getTotalCount().subscribe(
-            count -> System.out.printf("There are around %d results.", count)
-        );
+            count -> System.out.printf("There are around %d results.", count));
+
+        AtomicLong numberOfDocumentsReturned = new AtomicLong();
         searchPagedFlux.byPage()
+            .takeUntil(page -> {
+                if (numberOfDocumentsReturned.addAndGet(page.getValue().size()) >= SEARCH_SKIP_LIMIT) {
+                    // Reached the $skip limit, stop requesting more documents.
+                    return true;
+                }
+
+                return false;
+            })
             .subscribe(resultResponse -> {
                 for (SearchResult result: resultResponse.getValue()) {
                     SearchDocument searchDocument = result.getDocument(SearchDocument.class);
@@ -686,7 +712,16 @@ public class SearchJavaDocCodeSnippets {
 
         pagedFlux.getTotalCount().subscribe(count -> System.out.printf("There are around %d results.", count));
 
+        AtomicLong numberOfDocumentsReturned = new AtomicLong();
         pagedFlux.byPage()
+            .takeUntil(page -> {
+                if (numberOfDocumentsReturned.addAndGet(page.getValue().size()) >= SEARCH_SKIP_LIMIT) {
+                    // Reached the $skip limit, stop requesting more documents.
+                    return true;
+                }
+
+                return false;
+            })
             .subscribe(searchResultResponse -> searchResultResponse.getValue().forEach(searchDocument -> {
                 for (Map.Entry<String, Object> keyValuePair
                     : searchDocument.getDocument(SearchDocument.class).entrySet()) {

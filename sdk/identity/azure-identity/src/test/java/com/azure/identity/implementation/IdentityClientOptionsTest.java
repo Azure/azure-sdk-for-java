@@ -7,15 +7,15 @@ import com.azure.core.test.utils.TestConfigurationSource;
 import com.azure.core.util.Configuration;
 import com.azure.identity.AzureAuthorityHosts;
 import com.azure.identity.util.TestUtils;
-import org.junit.Assert;
-import org.junit.Test;
+import org.junit.jupiter.api.Assertions;
+import org.junit.jupiter.api.Test;
 
 public class IdentityClientOptionsTest {
 
     @Test
     public void testDefaultAuthorityHost() {
         IdentityClientOptions identityClientOptions = new IdentityClientOptions();
-        Assert.assertEquals(AzureAuthorityHosts.AZURE_PUBLIC_CLOUD, identityClientOptions.getAuthorityHost());
+        Assertions.assertEquals(AzureAuthorityHosts.AZURE_PUBLIC_CLOUD, identityClientOptions.getAuthorityHost());
     }
 
     @Test
@@ -25,7 +25,7 @@ public class IdentityClientOptionsTest {
             .put("AZURE_AUTHORITY_HOST", envAuthorityHost));
 
         IdentityClientOptions identityClientOptions = new IdentityClientOptions().setConfiguration(configuration);
-        Assert.assertEquals(envAuthorityHost, identityClientOptions.getAuthorityHost());
+        Assertions.assertEquals(envAuthorityHost, identityClientOptions.getAuthorityHost());
     }
 
     @Test
@@ -33,13 +33,13 @@ public class IdentityClientOptionsTest {
         String authorityHost = "https://custom.com/";
         IdentityClientOptions identityClientOptions = new IdentityClientOptions();
         identityClientOptions.setAuthorityHost(authorityHost);
-        Assert.assertEquals(authorityHost, identityClientOptions.getAuthorityHost());
+        Assertions.assertEquals(authorityHost, identityClientOptions.getAuthorityHost());
     }
 
     @Test
     public void testDisableAuthorityValidationAndInstanceDiscovery() {
         IdentityClientOptions identityClientOptions = new IdentityClientOptions();
         identityClientOptions.disableInstanceDiscovery();
-        Assert.assertFalse(identityClientOptions.isInstanceDiscoveryEnabled());
+        Assertions.assertFalse(identityClientOptions.isInstanceDiscoveryEnabled());
     }
 }

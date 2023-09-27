@@ -9,7 +9,7 @@ import com.azure.resourcemanager.containerregistry.models.AgentPoolUpdateParamet
 /** Samples for AgentPools Update. */
 public final class AgentPoolsUpdateSamples {
     /*
-     * x-ms-original-file: specification/containerregistry/resource-manager/Microsoft.ContainerRegistry/preview/2019-06-01-preview/examples/AgentPoolsUpdate.json
+     * x-ms-original-file: mgmt_containerregistry_add_readonly/specification/containerregistry/resource-manager/Microsoft.ContainerRegistry/preview/2019-06-01-preview/examples/AgentPoolsUpdate.json
      */
     /**
      * Sample code: AgentPools_Update.

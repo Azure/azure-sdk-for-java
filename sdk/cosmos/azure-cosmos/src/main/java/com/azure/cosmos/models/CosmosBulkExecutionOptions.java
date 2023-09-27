@@ -35,7 +35,6 @@ public final class CosmosBulkExecutionOptions {
     private OperationContextAndListenerTuple operationContextAndListenerTuple;
     private Map<String, String> customOptions;
     private String throughputControlGroupName;
-    private boolean orderingPreserved;
     private List<String> excludeRegions;
 
     /**
@@ -71,11 +70,33 @@ public final class CosmosBulkExecutionOptions {
         this(null, null, null);
     }
 
-    int getInitialMicroBatchSize() {
+    /**
+     * Gets the initial size of micro batches that will be sent to the backend. The size of micro batches will
+     * be dynamically adjusted based on the throttling rate. The default value is 100 - so, it starts with relatively
+     * large micro batches and when the throttling rate is too high, it will reduce the batch size. When the
+     * short spikes of throttling before dynamically reducing the initial batch size results in side effects for other
+     * workloads the initial micro batch size can be reduced - for example set to 1 - at which point it would
+     * start with small micro batches and then increase the batch size over time.
+     * @return the initial micro batch size
+     */
+    public int getInitialMicroBatchSize() {
         return initialMicroBatchSize;
     }
 
-    CosmosBulkExecutionOptions setInitialMicroBatchSize(int initialMicroBatchSize) {
+    /**
+     * Sets the initial size of micro batches that will be sent to the backend. The size of micro batches will
+     * be dynamically adjusted based on the throttling rate. The default value is 100 - so, it starts with relatively
+     * large micro batches and when the throttling rate is too high, it will reduce the batch size. When the
+     * short spikes of throttling before dynamically reducing the initial batch size results in side effects for other
+     * workloads the initial micro batch size can be reduced - for example set to 1 - at which point it would
+     * start with small micro batches and then increase the batch size over time.
+     * @param initialMicroBatchSize the initial micro batch size to be used. Must be a positive integer.
+     * @return the bulk execution options.
+     */
+    public CosmosBulkExecutionOptions setInitialMicroBatchSize(int initialMicroBatchSize) {
+        checkArgument(
+            initialMicroBatchSize > 0,
+            "The argument 'initialMicroBatchSize' must be a positive integer.");
         this.initialMicroBatchSize = initialMicroBatchSize;
         return this;
     }
@@ -129,24 +150,16 @@ public final class CosmosBulkExecutionOptions {
      * Attention! Please adjust this value with caution.
      * By increasing this value, more concurrent requests will be allowed to be sent to the server,
      * in which case may cause 429 or request timed out due to saturate local resources, which could degrade the performance.
-     * When ordering is required, the maxMicroBatchConcurrency is limited to 1.
      *
      * @param maxMicroBatchConcurrency the micro batch concurrency.
      *
      * @return the bulk processing options.
      */
     public CosmosBulkExecutionOptions setMaxMicroBatchConcurrency(int maxMicroBatchConcurrency) {
-        if (orderingPreserved) {
-            checkArgument(
-                maxMicroBatchConcurrency == 1,
-                "maxMicroBatchConcurrency has to be 1 when preserve ordering is enabled.");
-            this.maxMicroBatchConcurrency = 1;
-        } else {
-            checkArgument(
-                maxMicroBatchConcurrency >= 1 && maxMicroBatchConcurrency <= 5,
-                "maxMicroBatchConcurrency should be between [1, 5]");
-            this.maxMicroBatchConcurrency = maxMicroBatchConcurrency;
-        }
+        checkArgument(
+            maxMicroBatchConcurrency >= 1 && maxMicroBatchConcurrency <= 5,
+            "maxMicroBatchConcurrency should be between [1, 5]");
+        this.maxMicroBatchConcurrency = maxMicroBatchConcurrency;
         return this;
     }
 
@@ -277,22 +290,6 @@ public final class CosmosBulkExecutionOptions {
     }
 
     /**
-     * Sets the preserve ordering flag.
-     * @param orderingPreserved the preserve ordering flag.
-     */
-    void setOrderingPreserved(boolean orderingPreserved) {
-        this.orderingPreserved = orderingPreserved;
-    }
-
-    /**
-     * Gets the preserve ordering flag.
-     * @return the preserve ordering flag.
-     */
-    boolean isOrderingPreserved() {
-        return this.orderingPreserved;
-    }
-
-    /**
      * List of regions to exclude for the request/retries. Example "East US" or "East US, West US"
      * These regions will be excluded from the preferred regions list
      *
@@ -328,17 +325,6 @@ public final class CosmosBulkExecutionOptions {
                 public void setOperationContext(CosmosBulkExecutionOptions options,
                                                 OperationContextAndListenerTuple operationContextAndListenerTuple) {
                     options.setOperationContextAndListenerTuple(operationContextAndListenerTuple);
-                }
-
-                @Override
-                public void setOrderingPreserved(CosmosBulkExecutionOptions options,
-                                                boolean orderingPreserved) {
-                    options.setOrderingPreserved(orderingPreserved);
-                }
-
-                @Override
-                public boolean isOrderingPreserved(CosmosBulkExecutionOptions options) {
-                    return options.isOrderingPreserved();
                 }
 
                 @Override
@@ -403,16 +389,6 @@ public final class CosmosBulkExecutionOptions {
                     double maxRetryRate) {
 
                     return options.setTargetedMicroBatchRetryRate(minRetryRate, maxRetryRate);
-                }
-
-                @Override
-                public int getInitialMicroBatchSize(CosmosBulkExecutionOptions options) {
-                    return options.getInitialMicroBatchSize();
-                }
-
-                @Override
-                public CosmosBulkExecutionOptions setInitialMicroBatchSize(CosmosBulkExecutionOptions options, int initialMicroBatchSize) {
-                    return options.setInitialMicroBatchSize(initialMicroBatchSize);
                 }
 
                 @Override

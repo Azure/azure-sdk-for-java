@@ -13,15 +13,15 @@ public class CredentialsTests {
         final MetricsAdvisorKeyCredential credential
             = new MetricsAdvisorKeyCredential("sub-id-1", "key-1");
 
-        Assertions.assertTrue(credential.getKeys().getSubscriptionKey().equals("sub-id-1"));
-        Assertions.assertTrue(credential.getKeys().getApiKey().equals("key-1"));
+        Assertions.assertEquals("sub-id-1", credential.getKeys().getSubscriptionKey());
+        Assertions.assertEquals("key-1", credential.getKeys().getApiKey());
 
         credential.updateKey(null, null);
         Assertions.assertNull(credential.getKeys().getSubscriptionKey());
         Assertions.assertNull(credential.getKeys().getApiKey());
 
         credential.updateKey("sub-id-2", "key-2");
-        Assertions.assertTrue(credential.getKeys().getSubscriptionKey().equals("sub-id-2"));
-        Assertions.assertTrue(credential.getKeys().getApiKey().equals("key-2"));
+        Assertions.assertEquals("sub-id-2", credential.getKeys().getSubscriptionKey());
+        Assertions.assertEquals("key-2", credential.getKeys().getApiKey());
     }
 }

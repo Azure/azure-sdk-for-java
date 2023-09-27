@@ -32,7 +32,7 @@ public final class ServiceConfigurationsGetWithResponseMockTests {
         ArgumentCaptor<HttpRequest> httpRequest = ArgumentCaptor.forClass(HttpRequest.class);
 
         String responseStr =
-            "{\"properties\":{\"serviceName\":\"SSH\",\"resourceId\":\"xzlocxscp\",\"port\":3489877086564139272,\"provisioningState\":\"Updating\"},\"id\":\"bcsglumma\",\"name\":\"tjaodxobnb\",\"type\":\"xkqpxo\"}";
+            "{\"properties\":{\"serviceName\":\"SSH\",\"resourceId\":\"c\",\"port\":643106143486636349,\"provisioningState\":\"Creating\"},\"id\":\"rhhbcs\",\"name\":\"l\",\"type\":\"mmajtjaodx\"}";
 
         Mockito.when(httpResponse.getStatusCode()).thenReturn(200);
         Mockito.when(httpResponse.getHeaders()).thenReturn(new HttpHeaders());
@@ -63,11 +63,11 @@ public final class ServiceConfigurationsGetWithResponseMockTests {
         ServiceConfigurationResource response =
             manager
                 .serviceConfigurations()
-                .getWithResponse("jmkljavbqidtqajz", "ulpkudjkrl", "hbzhfepg", com.azure.core.util.Context.NONE)
+                .getWithResponse("qajzyulpkudjkr", "khbzhfepgzg", "e", com.azure.core.util.Context.NONE)
                 .getValue();
 
         Assertions.assertEquals(ServiceName.SSH, response.serviceName());
-        Assertions.assertEquals("xzlocxscp", response.resourceId());
-        Assertions.assertEquals(3489877086564139272L, response.port());
+        Assertions.assertEquals("c", response.resourceId());
+        Assertions.assertEquals(643106143486636349L, response.port());
     }
 }

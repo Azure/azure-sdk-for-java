@@ -156,7 +156,7 @@ additional questions or comments.
 [doc_product]: TODO://link-to-published-doc
 [doc_pipeline]: TODO://link-to-published-doc
 [iot_device_connection_string]: TODO://link-to-published-doc
-[iot-device-sdk]: https://search.maven.org/search?q=a:iot-service-client
+[iot-device-sdk]: https://central.sonatype.com/artifact/com.microsoft.azure.sdk.iot/iot-service-client
 [iot-hub-sdk]: https://github.com/Azure/azure-iot-sdk-java
 [github-page-issues]: https://github.com/Azure/azure-sdk-for-java/issues
 [sdk_readme_key_concepts]: TODO://link-to-published-readme

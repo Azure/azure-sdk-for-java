@@ -33,7 +33,7 @@ public final class IotHubResourcesGetValidSkusMockTests {
         ArgumentCaptor<HttpRequest> httpRequest = ArgumentCaptor.forClass(HttpRequest.class);
 
         String responseStr =
-            "{\"value\":[{\"resourceType\":\"bqwcsdbnwdcf\",\"sku\":{\"name\":\"S2\",\"tier\":\"Standard\",\"capacity\":3846405596035643939},\"capacity\":{\"minimum\":1028769978978951070,\"maximum\":4684256943455156597,\"default\":6093345050470116807,\"scaleType\":\"Manual\"}}]}";
+            "{\"value\":[{\"resourceType\":\"rjaltolmncw\",\"sku\":{\"name\":\"B3\",\"tier\":\"Free\",\"capacity\":4217034770382613848},\"capacity\":{\"minimum\":8022967239645365882,\"maximum\":1537965460429529227,\"default\":1827389196157237043,\"scaleType\":\"Manual\"}}]}";
 
         Mockito.when(httpResponse.getStatusCode()).thenReturn(200);
         Mockito.when(httpResponse.getHeaders()).thenReturn(new HttpHeaders());
@@ -62,9 +62,9 @@ public final class IotHubResourcesGetValidSkusMockTests {
                     new AzureProfile("", "", AzureEnvironment.AZURE));
 
         PagedIterable<IotHubSkuDescription> response =
-            manager.iotHubResources().getValidSkus("riolxorjalt", "lmncw", com.azure.core.util.Context.NONE);
+            manager.iotHubResources().getValidSkus("qwhxxbuyqaxzfeqz", "ppriol", com.azure.core.util.Context.NONE);
 
-        Assertions.assertEquals(IotHubSku.S2, response.iterator().next().sku().name());
-        Assertions.assertEquals(3846405596035643939L, response.iterator().next().sku().capacity());
+        Assertions.assertEquals(IotHubSku.B3, response.iterator().next().sku().name());
+        Assertions.assertEquals(4217034770382613848L, response.iterator().next().sku().capacity());
     }
 }

@@ -19,7 +19,7 @@ public final class SquareLinkedServiceTypeProperties {
     private Object connectionProperties;
 
     /*
-     * The URL of the Square instance. (i.e. mystore.mysquare.com)
+     * The URL of the Square instance. (i.e. mystore.mysquare.com)
      */
     @JsonProperty(value = "host")
     private Object host;
@@ -63,10 +63,10 @@ public final class SquareLinkedServiceTypeProperties {
 
     /*
      * The encrypted credential used for authentication. Credentials are encrypted using the integration runtime
-     * credential manager. Type: string (or Expression with resultType string).
+     * credential manager. Type: string.
      */
     @JsonProperty(value = "encryptedCredential")
-    private Object encryptedCredential;
+    private String encryptedCredential;
 
     /** Creates an instance of SquareLinkedServiceTypeProperties class. */
     public SquareLinkedServiceTypeProperties() {
@@ -95,7 +95,7 @@ public final class SquareLinkedServiceTypeProperties {
     }
 
     /**
-     * Get the host property: The URL of the Square instance. (i.e. mystore.mysquare.com).
+     * Get the host property: The URL of the Square instance. (i.e. mystore.mysquare.com).
      *
      * @return the host value.
      */
@@ -104,7 +104,7 @@ public final class SquareLinkedServiceTypeProperties {
     }
 
     /**
-     * Set the host property: The URL of the Square instance. (i.e. mystore.mysquare.com).
+     * Set the host property: The URL of the Square instance. (i.e. mystore.mysquare.com).
      *
      * @param host the host value to set.
      * @return the SquareLinkedServiceTypeProperties object itself.
@@ -244,22 +244,22 @@ public final class SquareLinkedServiceTypeProperties {
 
     /**
      * Get the encryptedCredential property: The encrypted credential used for authentication. Credentials are encrypted
-     * using the integration runtime credential manager. Type: string (or Expression with resultType string).
+     * using the integration runtime credential manager. Type: string.
      *
      * @return the encryptedCredential value.
      */
-    public Object encryptedCredential() {
+    public String encryptedCredential() {
         return this.encryptedCredential;
     }
 
     /**
      * Set the encryptedCredential property: The encrypted credential used for authentication. Credentials are encrypted
-     * using the integration runtime credential manager. Type: string (or Expression with resultType string).
+     * using the integration runtime credential manager. Type: string.
      *
      * @param encryptedCredential the encryptedCredential value to set.
      * @return the SquareLinkedServiceTypeProperties object itself.
      */
-    public SquareLinkedServiceTypeProperties withEncryptedCredential(Object encryptedCredential) {
+    public SquareLinkedServiceTypeProperties withEncryptedCredential(String encryptedCredential) {
         this.encryptedCredential = encryptedCredential;
         return this;
     }
