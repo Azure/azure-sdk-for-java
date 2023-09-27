@@ -4,7 +4,7 @@ This Spring Boot starter provides telemetry data to Azure Monitor for Spring Boo
 
 For a Spring Boot application running on a JVM (not with a GraalVM native image), we recommend using the [Application Insights Java agent][application_insights_java_agent_spring_boot].
 
-[Source code][source_code] | [Package (Maven)][package_mvn] | [API reference documentation][api_reference_doc] | [Product Documentation][product_documentation] | [Samples][sample_readme]
+[Source code][source_code] | [Package (Maven)][package_mvn] | [API reference documentation][api_reference_doc] | [Product Documentation][product_documentation]
 
 ## Getting started
 
