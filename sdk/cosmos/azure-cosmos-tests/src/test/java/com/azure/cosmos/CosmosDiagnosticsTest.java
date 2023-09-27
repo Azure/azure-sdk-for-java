@@ -79,6 +79,7 @@ import java.time.Instant;
 import java.time.format.DateTimeFormatter;
 import java.util.ArrayList;
 import java.util.Arrays;
+import java.util.Collection;
 import java.util.HashSet;
 import java.util.Iterator;
 import java.util.List;
@@ -1385,13 +1386,17 @@ public class CosmosDiagnosticsTest extends TestSuiteBase {
                 fail("Request should succeeded, but failed with " + exception);
             }
 
-            List<ClientSideRequestStatistics> clientSideRequestStatistics = (List<ClientSideRequestStatistics>) cosmosDiagnostics.getClientSideRequestStatistics();
-            List<ClientSideRequestStatistics.StoreResponseStatistics> responseStatistic = clientSideRequestStatistics.get(0).getResponseStatisticsList();
+            Collection<ClientSideRequestStatistics> clientSideRequestStatistics = cosmosDiagnostics.getClientSideRequestStatistics();
+            ClientSideRequestStatistics.StoreResponseStatistics[] responseStatistic =
+                clientSideRequestStatistics.iterator()
+                                           .next()
+                                           .getResponseStatisticsList()
+                                           .toArray(new ClientSideRequestStatistics.StoreResponseStatistics[0]);
 
-            assert responseStatistic.size() == 2;
+            assert responseStatistic.length == 2;
 
-            Instant firstRequestStartTime = responseStatistic.get(0).getRequestStartTimeUTC();
-            Instant secondRequestStartTime = responseStatistic.get(1).getRequestStartTimeUTC();
+            Instant firstRequestStartTime = responseStatistic[0].getRequestStartTimeUTC();
+            Instant secondRequestStartTime = responseStatistic[1].getRequestStartTimeUTC();
 
             assert firstRequestStartTime != null && secondRequestStartTime != null;
             assert firstRequestStartTime != secondRequestStartTime;

@@ -118,7 +118,7 @@ public class EndToEndTimeOutWithAvailabilityTest extends TestSuiteBase {
         ObjectNode diagnosticsNode;
         try {
             if (operationType == OperationType.Query) {
-                assertThat(cosmosDiagnostics.getClientSideRequestStatistics().iterator().next().getResponseStatisticsList().get(0).getRegionName())
+                assertThat(cosmosDiagnostics.getClientSideRequestStatistics().iterator().next().getResponseStatisticsList().iterator().next().getRegionName())
                     .isEqualTo(regions.get(1).toLowerCase(Locale.ROOT));
             } else {
                 diagnosticsNode = (ObjectNode) OBJECT_MAPPER.readTree(cosmosDiagnostics.toString());

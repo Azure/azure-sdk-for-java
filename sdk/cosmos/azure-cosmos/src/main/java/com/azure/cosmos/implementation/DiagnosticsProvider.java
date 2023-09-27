@@ -999,10 +999,10 @@ public final class DiagnosticsProvider {
                 OffsetDateTime.ofInstant(clientSideRequestStatistics.getRequestStartTimeUTC(), ZoneOffset.UTC), context);
 
             if (clientSideRequestStatistics.getResponseStatisticsList() != null && clientSideRequestStatistics.getResponseStatisticsList().size() > 0
-                && clientSideRequestStatistics.getResponseStatisticsList().get(0).getStoreResult() != null) {
+                && clientSideRequestStatistics.getResponseStatisticsList().iterator().next() != null) {
                 String eventName =
                     "Diagnostics for PKRange "
-                        + clientSideRequestStatistics.getResponseStatisticsList().get(0).getStoreResult().getStoreResponseDiagnostics().getPartitionKeyRangeId();
+                        + clientSideRequestStatistics.getResponseStatisticsList().iterator().next().getStoreResult().getStoreResponseDiagnostics().getPartitionKeyRangeId();
                 this.addEvent(eventName, attributes,
                     OffsetDateTime.ofInstant(clientSideRequestStatistics.getRequestStartTimeUTC(), ZoneOffset.UTC), context);
             } else if (clientSideRequestStatistics.getGatewayStatisticsList() != null && clientSideRequestStatistics.getGatewayStatisticsList().size() > 0) {
@@ -1231,7 +1231,7 @@ public final class DiagnosticsProvider {
         }
 
         private void recordStoreResponseStatistics(
-            List<ClientSideRequestStatistics.StoreResponseStatistics> storeResponseStatistics,
+            Collection<ClientSideRequestStatistics.StoreResponseStatistics> storeResponseStatistics,
             Context context) {
 
             for (ClientSideRequestStatistics.StoreResponseStatistics responseStatistics: storeResponseStatistics) {

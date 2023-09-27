@@ -716,7 +716,7 @@ public final class CosmosDiagnosticsContext {
     private static void addRequestInfoForStoreResponses(
         ClientSideRequestStatistics requestStats,
         List<CosmosDiagnosticsRequestInfo> requestInfo,
-        List<ClientSideRequestStatistics.StoreResponseStatistics> storeResponses) {
+        Collection<ClientSideRequestStatistics.StoreResponseStatistics> storeResponses) {
 
         for (ClientSideRequestStatistics.StoreResponseStatistics responseStats: storeResponses) {
 

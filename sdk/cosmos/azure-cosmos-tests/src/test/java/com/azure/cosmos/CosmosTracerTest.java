@@ -1399,7 +1399,7 @@ public class CosmosTracerTest extends TestSuiteBase {
     private void assertStoreResponseStatistics(
         CosmosDiagnosticsContext ctx,
         TracerUnderTest mockTracer,
-        List<ClientSideRequestStatistics.StoreResponseStatistics> storeResponseStatistics) {
+        Collection<ClientSideRequestStatistics.StoreResponseStatistics> storeResponseStatistics) {
 
         for (ClientSideRequestStatistics.StoreResponseStatistics responseStatistics: storeResponseStatistics) {
             StoreResultDiagnostics storeResultDiagnostics = responseStatistics.getStoreResult();
@@ -1746,11 +1746,11 @@ public class CosmosTracerTest extends TestSuiteBase {
             for (ClientSideRequestStatistics clientSideStatistics :
                 feedResponseDiagnostics.getClientSideRequestStatistics()) {
                 if (clientSideStatistics.getResponseStatisticsList() != null && clientSideStatistics.getResponseStatisticsList().size() > 0
-                    && clientSideStatistics.getResponseStatisticsList().get(0).getStoreResult() != null) {
+                    && clientSideStatistics.getResponseStatisticsList().iterator().next().getStoreResult() != null) {
 
                     String pkRangeId = clientSideStatistics
                         .getResponseStatisticsList()
-                        .get(0)
+                        .iterator().next()
                         .getStoreResult()
                         .getStoreResponseDiagnostics()
                         .getPartitionKeyRangeId();
