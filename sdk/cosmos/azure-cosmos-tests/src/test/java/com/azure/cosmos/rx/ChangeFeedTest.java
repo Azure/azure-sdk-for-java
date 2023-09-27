@@ -22,6 +22,7 @@ import com.azure.cosmos.implementation.guava25.collect.Multimap;
 import com.azure.cosmos.implementation.routing.Range;
 import com.azure.cosmos.models.ChangeFeedPolicy;
 import com.azure.cosmos.models.CosmosChangeFeedRequestOptions;
+import com.azure.cosmos.models.CosmosQueryRequestOptions;
 import com.azure.cosmos.models.FeedRange;
 import com.azure.cosmos.models.FeedResponse;
 import com.azure.cosmos.models.ModelBridgeInternal;
@@ -123,7 +124,7 @@ public class ChangeFeedTest extends TestSuiteBase {
 
     @Test(groups = { "query" }, timeOut = 5 * TIMEOUT)
     public void changesFromPartitionKeyRangeId_FromBeginning() {
-        List<String> partitionKeyRangeIds = client.readPartitionKeyRanges(getCollectionLink(), null)
+        List<String> partitionKeyRangeIds = client.readPartitionKeyRanges(getCollectionLink(), (CosmosQueryRequestOptions) null)
                 .flatMap(p -> Flux.fromIterable(p.getResults()), 1)
                 .map(Resource::getId)
                 .collectList()

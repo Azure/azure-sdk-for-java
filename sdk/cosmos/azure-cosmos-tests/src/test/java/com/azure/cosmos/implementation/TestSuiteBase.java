@@ -3,6 +3,8 @@
 package com.azure.cosmos.implementation;
 
 import com.azure.cosmos.ConsistencyLevel;
+import com.azure.cosmos.CosmosAsyncClient;
+import com.azure.cosmos.CosmosClientBuilder;
 import com.azure.cosmos.CosmosException;
 import com.azure.cosmos.DirectConnectionConfig;
 import com.azure.cosmos.DocumentClientTest;
@@ -171,14 +173,29 @@ public class TestSuiteBase extends DocumentClientTest {
         try {
             List<String> paths = collection.getPartitionKey().getPaths();
 
+            CosmosAsyncClient cosmosClient = new CosmosClientBuilder()
+                .key(TestConfigurations.MASTER_KEY)
+                .endpoint(TestConfigurations.HOST)
+                .buildAsyncClient();
             CosmosQueryRequestOptions options = new CosmosQueryRequestOptions();
             options.setMaxDegreeOfParallelism(-1);
+            QueryFeedOperationState state = new QueryFeedOperationState(
+                cosmosClient,
+                "truncateCollection",
+                collection.getSelfLink(),
+                collection.getId(),
+                ResourceType.Document,
+                OperationType.Query,
+                null,
+                options,
+                new CosmosPagedFluxOptions()
+            );
 
             ModelBridgeInternal.setQueryRequestOptionsMaxItemCount(options, 100);
 
             logger.info("Truncating DocumentCollection {} documents ...", collection.getId());
 
-            houseKeepingClient.queryDocuments(collection.getSelfLink(), "SELECT * FROM root", options, Document.class)
+            houseKeepingClient.queryDocuments(collection.getSelfLink(), "SELECT * FROM root", state, Document.class)
                               .publishOn(Schedulers.parallel())
                     .flatMap(page -> Flux.fromIterable(page.getResults()))
                     .flatMap(doc -> {
@@ -199,7 +216,18 @@ public class TestSuiteBase extends DocumentClientTest {
 
             logger.info("Truncating DocumentCollection {} triggers ...", collection.getId());
 
-            houseKeepingClient.queryTriggers(collection.getSelfLink(), "SELECT * FROM root", options)
+            state = new QueryFeedOperationState(
+                cosmosClient,
+                "truncateTriggers",
+                collection.getSelfLink(),
+                collection.getId(),
+                ResourceType.Document,
+                OperationType.Query,
+                null,
+                options,
+                new CosmosPagedFluxOptions()
+            );
+            houseKeepingClient.queryTriggers(collection.getSelfLink(), "SELECT * FROM root", state)
                               .publishOn(Schedulers.parallel())
                     .flatMap(page -> Flux.fromIterable(page.getResults()))
                     .flatMap(trigger -> {
@@ -215,7 +243,18 @@ public class TestSuiteBase extends DocumentClientTest {
 
             logger.info("Truncating DocumentCollection {} storedProcedures ...", collection.getId());
 
-            houseKeepingClient.queryStoredProcedures(collection.getSelfLink(), "SELECT * FROM root", options)
+            state = new QueryFeedOperationState(
+                cosmosClient,
+                "truncateStoredProcs",
+                collection.getSelfLink(),
+                collection.getId(),
+                ResourceType.Document,
+                OperationType.Query,
+                null,
+                options,
+                new CosmosPagedFluxOptions()
+            );
+            houseKeepingClient.queryStoredProcedures(collection.getSelfLink(), "SELECT * FROM root", state)
                               .publishOn(Schedulers.parallel())
                     .flatMap(page -> Flux.fromIterable(page.getResults()))
                     .flatMap(storedProcedure -> {
@@ -231,7 +270,18 @@ public class TestSuiteBase extends DocumentClientTest {
 
             logger.info("Truncating DocumentCollection {} udfs ...", collection.getId());
 
-            houseKeepingClient.queryUserDefinedFunctions(collection.getSelfLink(), "SELECT * FROM root", options)
+            state = new QueryFeedOperationState(
+                cosmosClient,
+                "truncateUserDefinedFunctions",
+                collection.getSelfLink(),
+                collection.getId(),
+                ResourceType.Document,
+                OperationType.Query,
+                null,
+                options,
+                new CosmosPagedFluxOptions()
+            );
+            houseKeepingClient.queryUserDefinedFunctions(collection.getSelfLink(), "SELECT * FROM root", state)
                               .publishOn(Schedulers.parallel())
                     .flatMap(page -> Flux.fromIterable(page.getResults()))
                     .flatMap(udf -> {
@@ -503,11 +553,26 @@ public class TestSuiteBase extends DocumentClientTest {
         CosmosQueryRequestOptions options = new CosmosQueryRequestOptions();
         PartitionKey pk = new PartitionKey(docId);
         options.setPartitionKey(pk);
+        CosmosAsyncClient cosmosClient = new CosmosClientBuilder()
+            .key(TestConfigurations.MASTER_KEY)
+            .endpoint(TestConfigurations.HOST)
+            .buildAsyncClient();
+        QueryFeedOperationState state = new QueryFeedOperationState(
+            cosmosClient,
+            "deleteDocumentIfExists",
+            databaseId,
+            collectionId,
+            ResourceType.Document,
+            OperationType.Delete,
+            null,
+            options,
+            new CosmosPagedFluxOptions()
+        );
         List<Document> res = client
                 .queryDocuments(
                     TestUtils.getCollectionNameLink(databaseId, collectionId),
                     String.format("SELECT * FROM root r where r.id = '%s'", docId),
-                    options,
+                    state,
                     Document.class)
                 .single().block().getResults();
         if (!res.isEmpty()) {

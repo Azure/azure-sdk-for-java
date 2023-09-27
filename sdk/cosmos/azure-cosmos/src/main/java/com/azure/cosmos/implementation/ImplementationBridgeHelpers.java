@@ -82,9 +82,7 @@ import java.util.concurrent.Callable;
 import java.util.concurrent.ConcurrentMap;
 import java.util.concurrent.atomic.AtomicBoolean;
 import java.util.concurrent.atomic.AtomicReference;
-import java.util.function.Consumer;
 import java.util.function.Function;
-import java.util.function.Supplier;
 
 public class ImplementationBridgeHelpers {
     private final static Logger logger = LoggerFactory.getLogger(ImplementationBridgeHelpers.class);
@@ -261,8 +259,7 @@ public class ImplementationBridgeHelpers {
 
         public interface CosmosQueryRequestOptionsAccessor {
             CosmosQueryRequestOptions clone(
-                CosmosQueryRequestOptions toBeCloned,
-                boolean cloneDiagnosticsFactoryResetCallback);
+                CosmosQueryRequestOptions toBeCloned);
             void setOperationContext(CosmosQueryRequestOptions queryRequestOptions, OperationContextAndListenerTuple operationContext);
             OperationContextAndListenerTuple getOperationContext(CosmosQueryRequestOptions queryRequestOptions);
             CosmosQueryRequestOptions setHeader(CosmosQueryRequestOptions queryRequestOptions, String name, String value);
@@ -272,40 +269,25 @@ public class ImplementationBridgeHelpers {
             UUID getCorrelationActivityId(CosmosQueryRequestOptions queryRequestOptions);
             CosmosQueryRequestOptions setCorrelationActivityId(CosmosQueryRequestOptions queryRequestOptions, UUID correlationActivityId);
             boolean isEmptyPageDiagnosticsEnabled(CosmosQueryRequestOptions queryRequestOptions);
-            CosmosQueryRequestOptions setEmptyPageDiagnosticsEnabled(CosmosQueryRequestOptions queryRequestOptions, boolean emptyPageDiagnosticsEnabled);
             CosmosQueryRequestOptions withEmptyPageDiagnosticsEnabled(CosmosQueryRequestOptions queryRequestOptions, boolean emptyPageDiagnosticsEnabled);
             <T> Function<JsonNode, T> getItemFactoryMethod(CosmosQueryRequestOptions queryRequestOptions, Class<T> classOfT);
             CosmosQueryRequestOptions setItemFactoryMethod(CosmosQueryRequestOptions queryRequestOptions, Function<JsonNode, ?> factoryMethod);
             String getQueryNameOrDefault(CosmosQueryRequestOptions queryRequestOptions, String defaultQueryName);
             RequestOptions toRequestOptions(CosmosQueryRequestOptions queryRequestOptions);
             CosmosDiagnosticsThresholds getDiagnosticsThresholds(CosmosQueryRequestOptions options);
-            void applyMaxItemCount(CosmosQueryRequestOptions requestOptions, CosmosPagedFluxOptions fluxOptions);
             CosmosEndToEndOperationLatencyPolicyConfig getEndToEndOperationLatencyPolicyConfig(CosmosQueryRequestOptions options);
             List<String> getExcludeRegions(CosmosQueryRequestOptions options);
             List<CosmosDiagnostics> getCancelledRequestDiagnosticsTracker(CosmosQueryRequestOptions options);
             void setCancelledRequestDiagnosticsTracker(
                 CosmosQueryRequestOptions options,
                 List<CosmosDiagnostics> cancelledRequestDiagnosticsTracker);
-
-            void setDiagnosticsContextSupplier(
-                CosmosQueryRequestOptions options,
-                Supplier<CosmosDiagnosticsContext> ctxSupplier);
-
-            AtomicReference<Runnable> getDiagnosticsFactoryResetCallbackReference(CosmosQueryRequestOptions options);
-
-            AtomicReference<Consumer<CosmosDiagnosticsContext>> getDiagnosticsFactoryMergeCallbackReference(CosmosQueryRequestOptions options);
-
-            void setDiagnosticsFactoryResetCallback(
-                CosmosQueryRequestOptions options,
-                Runnable resetCallback);
-
-            void setDiagnosticsFactoryMergeCallback(
-                CosmosQueryRequestOptions options,
-                Consumer<CosmosDiagnosticsContext> mergeCallback);
-
             void setAllowEmptyPages(CosmosQueryRequestOptions options, boolean emptyPagesAllowed);
 
             boolean getAllowEmptyPages(CosmosQueryRequestOptions options);
+
+            Integer getMaxItemCount(CosmosQueryRequestOptions options);
+
+            String getRequestContinuation(CosmosQueryRequestOptions options);
         }
     }
 
@@ -348,7 +330,6 @@ public class ImplementationBridgeHelpers {
             CosmosChangeFeedRequestOptions setItemFactoryMethod(CosmosChangeFeedRequestOptions queryRequestOptions, Function<JsonNode, ?> factoryMethod);
             CosmosDiagnosticsThresholds getDiagnosticsThresholds(CosmosChangeFeedRequestOptions options);
             List<String> getExcludeRegions(CosmosChangeFeedRequestOptions cosmosChangeFeedRequestOptions);
-
         }
     }
 

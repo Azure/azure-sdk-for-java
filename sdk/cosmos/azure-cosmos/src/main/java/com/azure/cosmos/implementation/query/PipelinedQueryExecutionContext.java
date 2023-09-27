@@ -45,7 +45,7 @@ public final class PipelinedQueryExecutionContext<T> extends PipelinedQueryExecu
         CosmosQueryRequestOptions requestOptions = initParams.getCosmosQueryRequestOptions();
 
         return (continuationToken, documentQueryParams) -> {
-            CosmosQueryRequestOptions parallelCosmosQueryRequestOptions = qryOptAccessor.clone(requestOptions, false);
+            CosmosQueryRequestOptions parallelCosmosQueryRequestOptions = qryOptAccessor.clone(requestOptions);
             ModelBridgeInternal.setQueryRequestOptionsContinuationToken(parallelCosmosQueryRequestOptions, continuationToken);
 
             initParams.setCosmosQueryRequestOptions(parallelCosmosQueryRequestOptions);

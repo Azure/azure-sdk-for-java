@@ -100,7 +100,7 @@ public class DefaultDocumentQueryExecutionContext<T> extends DocumentQueryExecut
         CosmosQueryRequestOptions newCosmosQueryRequestOptions = ImplementationBridgeHelpers
             .CosmosQueryRequestOptionsHelper
             .getCosmosQueryRequestOptionsAccessor()
-            .clone(cosmosQueryRequestOptions, false);
+            .clone(cosmosQueryRequestOptions);
 
         // We can not go to backend with the composite continuation token,
         // but we still need the gateway for the query plan.

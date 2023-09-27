@@ -51,7 +51,7 @@ public class PipelinedDocumentQueryExecutionContext<T>
         if (queryInfo.hasOrderBy()) {
             createBaseComponentFunction = (continuationToken, documentQueryParams) -> {
                 CosmosQueryRequestOptions orderByCosmosQueryRequestOptions =
-                    qryOptAccessor.clone(requestOptions, false);
+                    qryOptAccessor.clone(requestOptions);
                 ModelBridgeInternal.setQueryRequestOptionsContinuationToken(orderByCosmosQueryRequestOptions, continuationToken);
                 ImplementationBridgeHelpers
                     .CosmosQueryRequestOptionsHelper
@@ -66,7 +66,7 @@ public class PipelinedDocumentQueryExecutionContext<T>
 
             createBaseComponentFunction = (continuationToken, documentQueryParams) -> {
                 CosmosQueryRequestOptions parallelCosmosQueryRequestOptions =
-                    qryOptAccessor.clone(requestOptions, false);
+                    qryOptAccessor.clone(requestOptions);
                 qryOptAccessor.setItemFactoryMethod(parallelCosmosQueryRequestOptions, null);
                 ModelBridgeInternal.setQueryRequestOptionsContinuationToken(parallelCosmosQueryRequestOptions, continuationToken);
 

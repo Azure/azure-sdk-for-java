@@ -155,7 +155,7 @@ class DocumentProducer<T> {
         this.correlatedActivityId = correlatedActivityId;
 
         this.cosmosQueryRequestOptions = cosmosQueryRequestOptions != null
-            ? qryOptionsAccessor.clone(cosmosQueryRequestOptions, false)
+            ? qryOptionsAccessor.clone(cosmosQueryRequestOptions)
             : new CosmosQueryRequestOptions();
         ModelBridgeInternal.setQueryRequestOptionsContinuationToken(this.cosmosQueryRequestOptions, initialContinuationToken);
 

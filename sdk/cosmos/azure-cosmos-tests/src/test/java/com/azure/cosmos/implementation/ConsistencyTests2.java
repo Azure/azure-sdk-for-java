@@ -5,6 +5,8 @@ package com.azure.cosmos.implementation;
 
 import com.azure.cosmos.BridgeInternal;
 import com.azure.cosmos.ConsistencyLevel;
+import com.azure.cosmos.CosmosAsyncClient;
+import com.azure.cosmos.CosmosClientBuilder;
 import com.azure.cosmos.CosmosException;
 import com.azure.cosmos.DirectConnectionConfig;
 import com.azure.cosmos.GatewayConnectionConfig;
@@ -225,9 +227,16 @@ public class ConsistencyTests2 extends ConsistencyTestsBase {
             CosmosQueryRequestOptions cosmosQueryRequestOptions = new CosmosQueryRequestOptions();
             cosmosQueryRequestOptions.setPartitionKey(new PartitionKey(PartitionKeyInternal.Empty.toJson()));
             cosmosQueryRequestOptions.setSessionToken(token);
+
+            QueryFeedOperationState dummyState = TestUtils.createDummyQueryFeedOperationState(
+                ResourceType.Document,
+                OperationType.ReadFeed,
+                cosmosQueryRequestOptions
+            );
+
             FailureValidator validator = new FailureValidator.Builder().statusCode(HttpConstants.StatusCodes.NOTFOUND).subStatusCode(HttpConstants.SubStatusCodes.READ_SESSION_NOT_AVAILABLE).build();
             Flux<FeedResponse<Document>> feedObservable = readSecondaryClient.readDocuments(
-                parentResource.getSelfLink(), cosmosQueryRequestOptions, Document.class);
+                parentResource.getSelfLink(), dummyState, Document.class);
             validateQueryFailure(feedObservable, validator);
         } finally {
             safeClose(writeClient);
@@ -287,10 +296,11 @@ public class ConsistencyTests2 extends ConsistencyTestsBase {
                         .CosmosQueryRequestOptionsHelper
                         .getCosmosQueryRequestOptionsAccessor()
                         .setAllowEmptyPages(cosmosQueryRequestOptions, true);
+
                     FeedResponse<Document> queryResponse = client.queryDocuments(
                         createdCollection.getSelfLink(),
                         "SELECT * FROM c WHERE c.Id = 'foo'",
-                        cosmosQueryRequestOptions,
+                        TestUtils.createDummyQueryFeedOperationState(ResourceType.Document, OperationType.Query, cosmosQueryRequestOptions),
                         Document.class)
                             .blockFirst();
                     String lsnHeaderValue = queryResponse.getResponseHeaders().get(WFConstants.BackendHeaders.LSN);

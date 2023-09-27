@@ -9,8 +9,13 @@ import com.azure.cosmos.CosmosAsyncContainer;
 import com.azure.cosmos.CosmosBridgeInternal;
 import com.azure.cosmos.CosmosException;
 import com.azure.cosmos.implementation.AsyncDocumentClient;
+import com.azure.cosmos.implementation.CosmosPagedFluxOptions;
 import com.azure.cosmos.implementation.CosmosSchedulers;
 import com.azure.cosmos.implementation.HttpConstants;
+import com.azure.cosmos.implementation.ImplementationBridgeHelpers;
+import com.azure.cosmos.implementation.OperationType;
+import com.azure.cosmos.implementation.QueryFeedOperationState;
+import com.azure.cosmos.implementation.ResourceType;
 import com.azure.cosmos.implementation.RxDocumentServiceRequest;
 import com.azure.cosmos.implementation.Utils;
 import com.azure.cosmos.implementation.apachecommons.lang.StringUtils;
@@ -229,8 +234,19 @@ public class ThroughputContainerController implements IThroughputContainerContro
         // We are not supporting serverless account for throughput control for now. But the protocol may change in future,
         // use https://github.com/Azure/azure-sdk-for-java/issues/18776 to keep track for possible future work.
         checkArgument(StringUtils.isNotEmpty(resourceId), "ResourceId can not be null or empty");
+        QueryFeedOperationState state = new QueryFeedOperationState(
+            ImplementationBridgeHelpers.CosmosAsyncDatabaseHelper.getCosmosAsyncDatabaseAccessor().getCosmosAsyncClient(this.targetContainer.getDatabase()),
+            "resolveThroughputByResourceId",
+            this.targetContainer.getDatabase().getId(),
+            this.targetContainer.getId(),
+            ResourceType.Offer,
+            OperationType.Query,
+            null,
+            new CosmosQueryRequestOptions(),
+            new CosmosPagedFluxOptions()
+        );
         return this.client.queryOffers(
-                    BridgeInternal.getOfferQuerySpecFromResourceId(this.targetContainer, resourceId), new CosmosQueryRequestOptions())
+                    BridgeInternal.getOfferQuerySpecFromResourceId(this.targetContainer, resourceId), state)
             .single()
             .flatMap(offerFeedResponse -> {
                 if (offerFeedResponse.getResults().isEmpty()) {

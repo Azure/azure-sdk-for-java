@@ -174,7 +174,7 @@ implements IDocumentQueryExecutionContext<T> {
 
     public CosmosQueryRequestOptions getFeedOptions(String continuationToken, Integer maxPageSize) {
         CosmosQueryRequestOptions options =
-            qryOptAccessor.clone(this.cosmosQueryRequestOptions, false);
+            qryOptAccessor.clone(this.cosmosQueryRequestOptions);
         ModelBridgeInternal.setQueryRequestOptionsContinuationTokenAndMaxItemCount(options, continuationToken, maxPageSize);
         return options;
     }

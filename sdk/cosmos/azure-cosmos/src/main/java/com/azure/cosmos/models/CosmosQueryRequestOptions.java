@@ -63,21 +63,14 @@ public class CosmosQueryRequestOptions {
     private Function<JsonNode, ?> itemFactoryMethod;
     private String queryName;
     private CosmosEndToEndOperationLatencyPolicyConfig cosmosEndToEndOperationLatencyPolicyConfig;
-    private List<CosmosDiagnostics> cancelledRequestDiagnosticsTracker = new ArrayList<>();
     private List<String> excludeRegions;
-    private Supplier<CosmosDiagnosticsContext> ctxSupplier;
-
-    private final AtomicReference<Runnable> diagnosticsFactoryResetCallback;
-
-    private final AtomicReference<Consumer<CosmosDiagnosticsContext>> diagnosticsFactoryMergeCallback;
+    private List<CosmosDiagnostics> cancelledRequestDiagnosticsTracker = new ArrayList<>();
 
     /**
      * Instantiates a new query request options.
      */
     public CosmosQueryRequestOptions() {
 
-        this.diagnosticsFactoryResetCallback = new AtomicReference<>(null);
-        this.diagnosticsFactoryMergeCallback = new AtomicReference<>(null);
         this.thresholds = null;
         this.queryMetricsEnabled = true;
         this.emptyPageDiagnosticsEnabled = Configs.isEmptyPageDiagnosticsEnabled();
@@ -88,7 +81,7 @@ public class CosmosQueryRequestOptions {
      *
      * @param options the options
      */
-    CosmosQueryRequestOptions(CosmosQueryRequestOptions options, boolean cloneDiagnosticsFactoryResetCallback) {
+    CosmosQueryRequestOptions(CosmosQueryRequestOptions options) {
         this.consistencyLevel = options.consistencyLevel;
         this.sessionToken = options.sessionToken;
         this.partitionKeyRangeId = options.partitionKeyRangeId;
@@ -117,14 +110,6 @@ public class CosmosQueryRequestOptions {
         this.cosmosEndToEndOperationLatencyPolicyConfig = options.cosmosEndToEndOperationLatencyPolicyConfig;
         this.excludeRegions = options.excludeRegions;
         this.cancelledRequestDiagnosticsTracker = options.cancelledRequestDiagnosticsTracker;
-        this.ctxSupplier = options.ctxSupplier;
-        if (cloneDiagnosticsFactoryResetCallback) {
-            this.diagnosticsFactoryResetCallback = options.diagnosticsFactoryResetCallback;
-            this.diagnosticsFactoryMergeCallback = options.diagnosticsFactoryMergeCallback;
-        } else {
-            this.diagnosticsFactoryResetCallback = new AtomicReference<>(options.diagnosticsFactoryResetCallback.get());
-            this.diagnosticsFactoryMergeCallback = new AtomicReference<>(options.diagnosticsFactoryMergeCallback.get());
-        }
     }
 
     void setOperationContextAndListenerTuple(OperationContextAndListenerTuple operationContextAndListenerTuple) {
@@ -718,7 +703,7 @@ public class CosmosQueryRequestOptions {
             return this;
         }
 
-        return new CosmosQueryRequestOptions(this, true)
+        return new CosmosQueryRequestOptions(this)
             .setEmptyPageDiagnosticsEnabled(emptyPageDiagnosticsEnabled);
     }
 
@@ -738,14 +723,6 @@ public class CosmosQueryRequestOptions {
         this.cancelledRequestDiagnosticsTracker = cancelledRequestDiagnosticsTracker;
     }
 
-    Supplier<CosmosDiagnosticsContext> getDiagnosticsContextSupplier() {
-        return this.ctxSupplier;
-    }
-
-    void setDiagnosticsContextSupplier(Supplier<CosmosDiagnosticsContext> ctxSupplier) {
-        this.ctxSupplier = ctxSupplier;
-    }
-
     ///////////////////////////////////////////////////////////////////////////////////////////
     // the following helper/accessor only helps to access this class outside of this package.//
     ///////////////////////////////////////////////////////////////////////////////////////////
@@ -754,8 +731,8 @@ public class CosmosQueryRequestOptions {
             new ImplementationBridgeHelpers.CosmosQueryRequestOptionsHelper.CosmosQueryRequestOptionsAccessor() {
 
                 @Override
-                public CosmosQueryRequestOptions clone(CosmosQueryRequestOptions toBeCloned, boolean cloneDiagnosticsFactoryResetCallback) {
-                    return new CosmosQueryRequestOptions(toBeCloned, cloneDiagnosticsFactoryResetCallback);
+                public CosmosQueryRequestOptions clone(CosmosQueryRequestOptions toBeCloned) {
+                    return new CosmosQueryRequestOptions(toBeCloned);
                 }
 
                 @Override
@@ -818,11 +795,6 @@ public class CosmosQueryRequestOptions {
                 }
 
                 @Override
-                public CosmosQueryRequestOptions setEmptyPageDiagnosticsEnabled(CosmosQueryRequestOptions queryRequestOptions, boolean emptyPageDiagnosticsEnabled) {
-                    return queryRequestOptions.setEmptyPageDiagnosticsEnabled(emptyPageDiagnosticsEnabled);
-                }
-
-                @Override
                 public CosmosQueryRequestOptions withEmptyPageDiagnosticsEnabled(CosmosQueryRequestOptions queryRequestOptions, boolean emptyPageDiagnosticsEnabled) {
                     return queryRequestOptions.withEmptyPageDiagnosticsEnabled(emptyPageDiagnosticsEnabled);
                 }
@@ -871,34 +843,12 @@ public class CosmosQueryRequestOptions {
                         }
                     }
 
-                    Supplier<CosmosDiagnosticsContext> ctxSupplierSnapshot =
-                        queryRequestOptions.getDiagnosticsContextSupplier();
-                    if (ctxSupplierSnapshot != null) {
-                        requestOptions.setDiagnosticsContextSupplier(ctxSupplierSnapshot);
-                    }
-
                     return requestOptions;
                 }
 
                 @Override
                 public CosmosDiagnosticsThresholds getDiagnosticsThresholds(CosmosQueryRequestOptions options) {
                     return options.thresholds;
-                }
-
-                @Override
-                public void applyMaxItemCount(
-                    CosmosQueryRequestOptions requestOptions,
-                    CosmosPagedFluxOptions fluxOptions) {
-
-                    if (requestOptions == null || requestOptions.getMaxItemCount() == null || fluxOptions == null) {
-                        return;
-                    }
-
-                    if (fluxOptions.getMaxItemCount() != null) {
-                        return;
-                    }
-
-                    fluxOptions.setMaxItemCount(requestOptions.getMaxItemCount());
                 }
 
                 @Override
@@ -919,34 +869,6 @@ public class CosmosQueryRequestOptions {
                 }
 
                 @Override
-                public void setDiagnosticsContextSupplier(
-                    CosmosQueryRequestOptions options,
-                    Supplier<CosmosDiagnosticsContext> ctxSupplier) {
-
-                    options.setDiagnosticsContextSupplier(ctxSupplier);
-                }
-
-                @Override
-                public AtomicReference<Runnable> getDiagnosticsFactoryResetCallbackReference(CosmosQueryRequestOptions options) {
-                    return options.diagnosticsFactoryResetCallback;
-                }
-
-                @Override
-                public AtomicReference<Consumer<CosmosDiagnosticsContext>> getDiagnosticsFactoryMergeCallbackReference(CosmosQueryRequestOptions options) {
-                    return options.diagnosticsFactoryMergeCallback;
-                }
-
-                @Override
-                public void setDiagnosticsFactoryResetCallback(CosmosQueryRequestOptions options, Runnable resetCallback) {
-                    options.diagnosticsFactoryResetCallback.set(resetCallback);
-                }
-
-                @Override
-                public void setDiagnosticsFactoryMergeCallback(CosmosQueryRequestOptions options, Consumer<CosmosDiagnosticsContext> mergeCallback) {
-                    options.diagnosticsFactoryMergeCallback.set(mergeCallback);
-                }
-
-                @Override
                 public void setAllowEmptyPages(CosmosQueryRequestOptions options, boolean emptyPagesAllowed) {
                     options.setEmptyPagesAllowed(emptyPagesAllowed);
                 }
@@ -954,6 +876,16 @@ public class CosmosQueryRequestOptions {
                 @Override
                 public boolean getAllowEmptyPages(CosmosQueryRequestOptions options) {
                     return options.isEmptyPagesAllowed();
+                }
+
+                @Override
+                public Integer getMaxItemCount(CosmosQueryRequestOptions options) {
+                    return options.getMaxItemCount();
+                }
+
+                @Override
+                public String getRequestContinuation(CosmosQueryRequestOptions options) {
+                    return options.getRequestContinuation();
                 }
 
                 @Override

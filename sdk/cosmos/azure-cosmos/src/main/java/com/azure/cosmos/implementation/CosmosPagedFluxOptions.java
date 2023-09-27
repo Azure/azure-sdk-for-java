@@ -20,52 +20,20 @@ import static com.azure.cosmos.implementation.guava25.base.Preconditions.checkNo
  * @see CosmosPagedFlux
  */
 public class CosmosPagedFluxOptions {
-    private static final ImplementationBridgeHelpers.CosmosAsyncClientHelper.CosmosAsyncClientAccessor clientAccessor =
-        ImplementationBridgeHelpers.CosmosAsyncClientHelper.getCosmosAsyncClientAccessor();
 
-    private static final ImplementationBridgeHelpers.CosmosDiagnosticsContextHelper.CosmosDiagnosticsContextAccessor ctxAccessor =
-        ImplementationBridgeHelpers.CosmosDiagnosticsContextHelper.getCosmosDiagnosticsContextAccessor();
-
+    private FeedOperationState operationState;
     private String requestContinuation;
     private Integer maxItemCount;
-    private DiagnosticsProvider tracerProvider;
-    private String spanName;
-    private String databaseId;
-    private String containerId;
-    private OperationType operationType;
-    private ResourceType resourceType;
-    private String serviceEndpoint;
-    private CosmosAsyncClient cosmosAsyncClient;
-    private CosmosDiagnosticsThresholds thresholds;
-    private String operationId;
-
-    private final AtomicReference<CosmosDiagnosticsContext> ctxHolder = new AtomicReference<>();
-
-    private String userAgent;
-    private String connectionMode;
-    public ConsistencyLevel effectiveConsistencyLevel;
-
-    public double samplingRateSnapshot = 1;
-
-    private AtomicReference<Runnable> diagnosticsFactoryResetCallback;
-    private AtomicReference<Consumer<CosmosDiagnosticsContext>> diagnosticsFactoryMergeCallback;
 
     public CosmosPagedFluxOptions() {}
 
-    public String getContainerId() {
-        return containerId;
-    }
+    public FeedOperationState getFeedOperationState() {
+        FeedOperationState stateSnapshot = this.operationState;
+        if (stateSnapshot == null) {
+            return null;
+        }
 
-    public OperationType getOperationType() {
-        return operationType;
-    }
-
-    public ResourceType getResourceType() {
-        return resourceType;
-    }
-
-    public CosmosAsyncClient getCosmosAsyncClient() {
-        return cosmosAsyncClient;
+        return stateSnapshot;
     }
 
     /**
@@ -123,182 +91,33 @@ public class CosmosPagedFluxOptions {
      */
     public CosmosPagedFluxOptions setMaxItemCount(Integer maxItemCount) {
         this.maxItemCount = maxItemCount;
-
+        if (this.operationState != null) {
+            this.operationState.setMaxItemCount(maxItemCount);
+        }
         return this;
     }
 
-    /**
-     * Gets the tracer provider
-     * @return tracerProvider
-     */
-    public DiagnosticsProvider getDiagnosticsProvider() {
-        return this.tracerProvider;
-    }
-
-    /**
-     * Gets the tracer span name
-     * @return tracerSpanName
-     */
-    public String getSpanName() {
-        return spanName;
-    }
-
-    /**
-     * Gets the databaseId
-     * @return databaseId
-     */
-    public String getDatabaseId() {
-        return databaseId;
-    }
-
-    /**
-     * Gets the service end point
-     * @return serviceEndpoint
-     */
-    public String getAccountTag() {
-        return serviceEndpoint;
-    }
-
-    public CosmosDiagnosticsThresholds getDiagnosticsThresholds() {
-        return  this.thresholds;
-    }
-
-    public String getOperationId() {
-        return this.operationId;
-    }
-
-    public String getUserAgent() { return this.userAgent; }
-
-    public String getConnectionMode() { return this.connectionMode; }
-
-    public CosmosDiagnosticsContext getDiagnosticsContextSnapshot() {
-        return this.ctxHolder.get();
-    }
-
-    public void setTracerInformation(
-        String tracerSpanName,
-        String databaseId,
-        String containerId,
-        String operationId,
-        OperationType operationType,
-        ResourceType resourceType,
-        CosmosAsyncClient cosmosAsyncClient,
-        ConsistencyLevel consistencyLevel,
-        CosmosDiagnosticsThresholds thresholds) {
-
-        checkNotNull(tracerSpanName, "Argument 'tracerSpanName' must not be NULL.");
-        checkNotNull(operationType, "Argument 'operationType' must not be NULL.");
-        checkNotNull(resourceType, "Argument 'resourceType' must not be NULL.");
-        checkNotNull(cosmosAsyncClient, "Argument 'cosmosAsyncClient' must not be NULL.");
-        checkNotNull(thresholds, "Argument 'thresholds' must not be NULL.");
-
-        this.databaseId = databaseId;
-        this.containerId = containerId;
-        this.spanName = tracerSpanName;
-        this.tracerProvider  =  clientAccessor.getDiagnosticsProvider(cosmosAsyncClient);
-        this.serviceEndpoint = clientAccessor.getAccountTagValue(cosmosAsyncClient);
-        this.connectionMode = clientAccessor.getConnectionMode(cosmosAsyncClient);
-        this.userAgent = clientAccessor.getUserAgent(cosmosAsyncClient);
-        this.operationId = operationId;
-        this.operationType = operationType;
-        this.resourceType = resourceType;
-        this.cosmosAsyncClient = cosmosAsyncClient;
-        this.effectiveConsistencyLevel = clientAccessor
-            .getEffectiveConsistencyLevel(cosmosAsyncClient, operationType, consistencyLevel);
-        this.thresholds = thresholds;
-
-        this.resetDiagnosticsContext(1);
-    }
-
-    public void resetDiagnosticsContext(int sequenceNumber) {
-        final CosmosDiagnosticsContext cosmosCtx = ctxAccessor.create(
-            this.spanName,
-            this.serviceEndpoint,
-            BridgeInternal.getServiceEndpoint(this.cosmosAsyncClient),
-            this.databaseId,
-            this.containerId,
-            this.resourceType,
-            this.operationType,
-            this.operationId,
-            this.effectiveConsistencyLevel,
-            this.getMaxItemCount(),
-            this.thresholds,
-            null,
-            this.getConnectionMode(),
-            this.getUserAgent(),
-            sequenceNumber
-        );
-        ctxAccessor.setSamplingRateSnapshot(cosmosCtx, this.getSamplingRateSnapshot());
-
-        this.ctxHolder.set(cosmosCtx);
-
-        if (this.diagnosticsFactoryResetCallback != null) {
-            Runnable resetCallbackSnapshot = this.diagnosticsFactoryResetCallback.get();
-            if (resetCallbackSnapshot != null) {
-                resetCallbackSnapshot.run();
-            }
-        }
-    }
-
-    public void mergeDiagnosticsContext() {
-        final CosmosDiagnosticsContext cosmosCtx = this.ctxHolder.get();
-
-        if (this.diagnosticsFactoryMergeCallback != null) {
-            Consumer<CosmosDiagnosticsContext> mergeCallbackSnapshot = this.diagnosticsFactoryMergeCallback.get();
-            if (mergeCallbackSnapshot != null) {
-                mergeCallbackSnapshot.accept(cosmosCtx);
-            }
-        }
-    }
-
-
-    public void setTracerAndTelemetryInformation(String tracerSpanName,
-                                                 String databaseId,
-                                                 String containerId,
-                                                 OperationType operationType,
-                                                 ResourceType resourceType,
-                                                 CosmosAsyncClient cosmosAsyncClient,
-                                                 String operationId,
-                                                 ConsistencyLevel consistencyLevel,
-                                                 CosmosDiagnosticsThresholds thresholds,
-                                                 AtomicReference<Runnable> diagnosticsFactoryResetCallback,
-                                                 AtomicReference<Consumer<CosmosDiagnosticsContext>> diagnosticsFactoryMergeCallback
-
-    ) {
-        checkNotNull(tracerSpanName, "Argument 'tracerSpanName' must not be NULL.");
-        checkNotNull(databaseId, "Argument 'databaseId' must not be NULL.");
-        checkNotNull(operationType, "Argument 'operationType' must not be NULL.");
-        checkNotNull(resourceType, "Argument 'resourceType' must not be NULL.");
-        checkNotNull(cosmosAsyncClient, "Argument 'cosmosAsyncClient' must not be NULL.");
-        checkNotNull(thresholds, "Argument 'thresholds' must not be NULL.");
-        this.tracerProvider  =  clientAccessor.getDiagnosticsProvider(cosmosAsyncClient);
-        this.serviceEndpoint = clientAccessor.getAccountTagValue(cosmosAsyncClient);
-        this.connectionMode = clientAccessor.getConnectionMode(cosmosAsyncClient);
-        this.userAgent = clientAccessor.getUserAgent(cosmosAsyncClient);
-        this.spanName = tracerSpanName;
-        this.databaseId = databaseId;
-        this.containerId = containerId;
-        this.operationType = operationType;
-        this.resourceType = resourceType;
-        this.cosmosAsyncClient = cosmosAsyncClient;
-        this.operationId = operationId;
-        this.effectiveConsistencyLevel = clientAccessor
-            .getEffectiveConsistencyLevel(cosmosAsyncClient, operationType, consistencyLevel);
-        this.thresholds = thresholds;
-        this.resetDiagnosticsContext(1);
-        this.diagnosticsFactoryResetCallback = diagnosticsFactoryResetCallback;
-        this.diagnosticsFactoryMergeCallback = diagnosticsFactoryMergeCallback;
+    public void setFeedOperationState(FeedOperationState state) {
+        this.operationState = checkNotNull(state, "Argument 'state' must not be NULL.");
     }
 
     public double getSamplingRateSnapshot() {
-        return this.samplingRateSnapshot;
+        FeedOperationState stateSnapshot = this.operationState;
+        if (stateSnapshot == null) {
+            return 0;
+        }
+
+        Double samplingRateSnapshot = stateSnapshot.getSamplingRateSnapshot();
+        if (samplingRateSnapshot == null) {
+            return 0;
+        }
+
+        return samplingRateSnapshot;
     }
 
     public void setSamplingRateSnapshot(double samplingRateSnapshot) {
-        this.samplingRateSnapshot = samplingRateSnapshot;
-        CosmosDiagnosticsContext ctxSnapshot = this.getDiagnosticsContextSnapshot();
-        if (ctxSnapshot != null) {
-            ctxAccessor.setSamplingRateSnapshot(ctxSnapshot, samplingRateSnapshot);
+        if (this.operationState != null) {
+            this.operationState.setSamplingRateSnapshot(samplingRateSnapshot);
         }
     }
 }
