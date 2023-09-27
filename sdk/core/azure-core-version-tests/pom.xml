@@ -54,6 +54,20 @@
     </developer>
   </developers>
 
+  <repositories>
+    <repository>
+      <snapshots>
+        <enabled>true</enabled>
+      </snapshots>
+      <releases>
+        <enabled>true</enabled>
+      </releases>
+      <id>spring-milestones</id>
+      <name>Spring Milestones</name>
+      <url>	https://repo.spring.io/milestone/</url>
+    </repository>
+  </repositories>
+
   <dependencies>
     <dependency>
       <groupId>com.azure</groupId>

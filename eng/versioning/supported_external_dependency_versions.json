@@ -101,6 +101,13 @@
     { "com.fasterxml.jackson.module:jackson-module-parameter-names": "2.15.0" },
     { "com.fasterxml.jackson.module:jackson-module-scala_2.12": "2.15.0" }
   ],
+  "reactor_2023":
+  [
+    { "io.projectreactor.netty:reactor-netty": "1.1.0" },
+    { "io.projectreactor.netty:reactor-netty-http": "1.1.0" },
+    { "io.projectreactor:reactor-core": "3.6.0-M3" },
+    { "io.projectreactor:reactor-test": "3.6.0-M3" }
+  ],
   "reactor_2022":
   [
     { "io.projectreactor.netty:reactor-netty": "1.1.0" },

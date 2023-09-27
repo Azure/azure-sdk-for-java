@@ -200,6 +200,7 @@ extends:
                 - jackson_2.15
                 - reactor_2020
                 - reactor_2022
+                - reactor_2023
               TestGoals: surefire:test
       - stage: AzureJsonReflectVersionSupport
         displayName: 'azure-json-reflect Version Support'
