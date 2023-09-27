@@ -9,7 +9,7 @@ import com.azure.core.util.ClientOptions;
 import com.azure.core.util.Context;
 import com.azure.core.util.TracingOptions;
 import com.azure.core.util.tracing.TracerProvider;
-import io.opentelemetry.api.GlobalOpenTelemetry;
+import io.opentelemetry.api.OpenTelemetry;
 import io.opentelemetry.api.trace.Span;
 import io.opentelemetry.api.trace.Tracer;
 import io.opentelemetry.context.Scope;
@@ -32,14 +32,14 @@ public class TracingJavaDocCodeSnippets {
 
         // no need to configure OpenTelemetry if you're using the OpenTelemetry Java agent (or another vendor-specific Java agent based on it).
         // if you're using OpenTelemetry SDK, you can configure it with io.opentelemetry:opentelemetry-sdk-extension-autoconfigure package:
-        AutoConfiguredOpenTelemetrySdk.initialize();
+        OpenTelemetry opentelemetry = AutoConfiguredOpenTelemetrySdk.initialize().getOpenTelemetrySdk();
 
         // configure Azure Client, no metric configuration needed
         AzureClient sampleClient = new AzureClientBuilder()
             .endpoint("https://my-client.azure.com")
             .build();
 
-        Span span = GlobalOpenTelemetry.getTracer("azure-core-samples")
+        Span span = opentelemetry.getTracer("azure-core-samples")
             .spanBuilder("doWork")
             .startSpan();
 

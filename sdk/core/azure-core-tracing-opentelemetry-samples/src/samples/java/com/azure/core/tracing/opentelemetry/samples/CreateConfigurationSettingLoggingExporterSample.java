@@ -3,6 +3,9 @@
 
 package com.azure.core.tracing.opentelemetry.samples;
 
+import com.azure.core.tracing.opentelemetry.OpenTelemetryTracingOptions;
+import com.azure.core.util.ClientOptions;
+import com.azure.core.util.TracingOptions;
 import com.azure.data.appconfiguration.ConfigurationClient;
 import com.azure.data.appconfiguration.ConfigurationClientBuilder;
 import io.opentelemetry.api.trace.Span;
@@ -29,8 +32,13 @@ public class CreateConfigurationSettingLoggingExporterSample {
     public static void main(String[] args) {
         OpenTelemetrySdk openTelemetry = configureTracing();
 
+        // In this sample we configured OpenTelemetry without registering global instance, so we need to pass it explicitly to the Azure SDK.
+        // If we used ApplicationInsights or OpenTelemetry agent, or registered global instance, we would not need to pass it explicitly.
+        TracingOptions tracingOptions = new OpenTelemetryTracingOptions().setOpenTelemetry(openTelemetry);
+
         ConfigurationClient client = new ConfigurationClientBuilder()
             .connectionString(CONNECTION_STRING)
+            .clientOptions(new ClientOptions().setTracingOptions(tracingOptions))
             .buildClient();
 
         Tracer tracer = openTelemetry.getTracer("sample");
@@ -51,6 +59,7 @@ public class CreateConfigurationSettingLoggingExporterSample {
      * Configure the OpenTelemetry to print traces with {@link LoggingSpanExporter}.
      */
     private static OpenTelemetrySdk configureTracing() {
+        // configure OpenTelemetry explicitly or with io.opentelemetry:opentelemetry-sdk-extension-autoconfigure package
         SdkTracerProvider tracerProvider =
             SdkTracerProvider.builder()
                 .addSpanProcessor(BatchSpanProcessor.builder(LoggingSpanExporter.create()).build())
@@ -58,6 +67,6 @@ public class CreateConfigurationSettingLoggingExporterSample {
 
         return OpenTelemetrySdk.builder()
             .setTracerProvider(tracerProvider)
-            .buildAndRegisterGlobal();
+            .build();
     }
 }
