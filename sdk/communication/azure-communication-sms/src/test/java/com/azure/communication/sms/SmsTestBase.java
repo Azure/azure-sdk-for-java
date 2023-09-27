@@ -21,13 +21,13 @@ import java.util.Arrays;
 
 public class SmsTestBase extends TestProxyTestBase {
     protected static final String CONNECTION_STRING = Configuration.getGlobalConfiguration()
-        .get("COMMUNICATION_SMS_LIVETEST_DYNAMIC_CONNECTION_STRING", "endpoint=https://REDACTED.communication.azure.com/;accesskey=QWNjZXNzS2V5");
+        .get("COMMUNICATION_LIVETEST_STATIC_CONNECTION_STRING", "endpoint=https://REDACTED.communication.azure.com/;accesskey=QWNjZXNzS2V5");
 
     protected static final String TO_PHONE_NUMBER = Configuration.getGlobalConfiguration()
-        .get("SMS_PHONE_NUMBER", "+15551234567");
+        .get("AZURE_PHONE_NUMBER", "+15551234567");
 
     protected static final String FROM_PHONE_NUMBER = Configuration.getGlobalConfiguration()
-        .get("SMS_PHONE_NUMBER", "+15551234567");
+        .get("AZURE_PHONE_NUMBER", "+15551234567");
 
     private static final String SKIP_INT_SMS_TEST = Configuration.getGlobalConfiguration()
         .get("COMMUNICATION_SKIP_INT_SMS_TEST", "False");
