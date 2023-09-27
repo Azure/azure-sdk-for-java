@@ -1040,6 +1040,12 @@
       ]
     },
     {
+      "filename": "sdk/spring/spring-cloud-azure-starter-monitor/**.md",
+      "words": [
+        "Djava"
+      ]
+    },
+    {
       "filename": "sdk/purview/azure-analytics-purview-sharing/**",
       "words": [
         "ADLS",

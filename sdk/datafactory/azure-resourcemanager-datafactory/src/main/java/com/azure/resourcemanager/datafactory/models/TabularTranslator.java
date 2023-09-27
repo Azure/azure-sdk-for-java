@@ -45,12 +45,9 @@ public final class TabularTranslator extends CopyTranslator {
 
     /*
      * Column mappings with logical types. Tabular->tabular example:
-     * [{"source":{"name":"CustomerName","type":"String"},"sink":{"name":"ClientName","type":"String"}}"
-         + ",{"source":{"name":"CustomerAddress","type":"String"},"sink":{"name":"ClientAddress","type":"String"}}].
+     * [{"source":{"name":"CustomerName","type":"String"},"sink":{"name":"ClientName","type":"String"}},{"source":{"name":"CustomerAddress","type":"String"},"sink":{"name":"ClientAddress","type":"String"}}].
      * Hierarchical->tabular example:
-     * [{"source":{"path":"$"
-         + ".CustomerName","type":"String"},"sink":{"name":"ClientName","type":"String"}},{"source":{"path":"$"
-         + ".CustomerAddress","type":"String"},"sink":{"name":"ClientAddress","type":"String"}}].
+     * [{"source":{"path":"$.CustomerName","type":"String"},"sink":{"name":"ClientName","type":"String"}},{"source":{"path":"$.CustomerAddress","type":"String"},"sink":{"name":"ClientAddress","type":"String"}}].
      * Type: object (or Expression with resultType object).
      */
     @JsonProperty(value = "mappings")
@@ -165,12 +162,9 @@ public final class TabularTranslator extends CopyTranslator {
 
     /**
      * Get the mappings property: Column mappings with logical types. Tabular-&gt;tabular example:
-     * [{"source":{"name":"CustomerName","type":"String"},"sink":{"name":"ClientName","type":"String"}}"
-         + ",{"source":{"name":"CustomerAddress","type":"String"},"sink":{"name":"ClientAddress","type":"String"}}].
+     * [{"source":{"name":"CustomerName","type":"String"},"sink":{"name":"ClientName","type":"String"}},{"source":{"name":"CustomerAddress","type":"String"},"sink":{"name":"ClientAddress","type":"String"}}].
      * Hierarchical-&gt;tabular example:
-     * [{"source":{"path":"$"
-         + ".CustomerName","type":"String"},"sink":{"name":"ClientName","type":"String"}},{"source":{"path":"$"
-         + ".CustomerAddress","type":"String"},"sink":{"name":"ClientAddress","type":"String"}}].
+     * [{"source":{"path":"$.CustomerName","type":"String"},"sink":{"name":"ClientName","type":"String"}},{"source":{"path":"$.CustomerAddress","type":"String"},"sink":{"name":"ClientAddress","type":"String"}}].
      * Type: object (or Expression with resultType object).
      *
      * @return the mappings value.
@@ -181,12 +175,9 @@ public final class TabularTranslator extends CopyTranslator {
 
     /**
      * Set the mappings property: Column mappings with logical types. Tabular-&gt;tabular example:
-     * [{"source":{"name":"CustomerName","type":"String"},"sink":{"name":"ClientName","type":"String"}}"
-         + ",{"source":{"name":"CustomerAddress","type":"String"},"sink":{"name":"ClientAddress","type":"String"}}].
+     * [{"source":{"name":"CustomerName","type":"String"},"sink":{"name":"ClientName","type":"String"}},{"source":{"name":"CustomerAddress","type":"String"},"sink":{"name":"ClientAddress","type":"String"}}].
      * Hierarchical-&gt;tabular example:
-     * [{"source":{"path":"$"
-         + ".CustomerName","type":"String"},"sink":{"name":"ClientName","type":"String"}},{"source":{"path":"$"
-         + ".CustomerAddress","type":"String"},"sink":{"name":"ClientAddress","type":"String"}}].
+     * [{"source":{"path":"$.CustomerName","type":"String"},"sink":{"name":"ClientName","type":"String"}},{"source":{"path":"$.CustomerAddress","type":"String"},"sink":{"name":"ClientAddress","type":"String"}}].
      * Type: object (or Expression with resultType object).
      *
      * @param mappings the mappings value to set.
