@@ -2,14 +2,9 @@
 // Licensed under the MIT License.
 package com.azure.cosmos.implementation;
 
-import com.azure.cosmos.BridgeInternal;
 import com.azure.cosmos.CosmosAsyncClient;
 import com.azure.cosmos.CosmosClientBuilder;
-import com.azure.cosmos.CosmosDiagnostics;
-import com.azure.cosmos.implementation.directconnectivity.ReflectionUtils;
-import com.azure.cosmos.implementation.directconnectivity.TimeoutHelper;
 import com.azure.cosmos.models.CosmosQueryRequestOptions;
-import jdk.dynalink.Operation;
 import org.mockito.Mockito;
 
 import java.util.UUID;
