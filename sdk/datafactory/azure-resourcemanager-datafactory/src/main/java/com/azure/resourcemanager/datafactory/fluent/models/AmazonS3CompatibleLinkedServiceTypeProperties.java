@@ -41,10 +41,10 @@ public final class AmazonS3CompatibleLinkedServiceTypeProperties {
 
     /*
      * The encrypted credential used for authentication. Credentials are encrypted using the integration runtime
-     * credential manager. Type: string (or Expression with resultType string).
+     * credential manager. Type: string.
      */
     @JsonProperty(value = "encryptedCredential")
-    private Object encryptedCredential;
+    private String encryptedCredential;
 
     /** Creates an instance of AmazonS3CompatibleLinkedServiceTypeProperties class. */
     public AmazonS3CompatibleLinkedServiceTypeProperties() {
@@ -142,22 +142,22 @@ public final class AmazonS3CompatibleLinkedServiceTypeProperties {
 
     /**
      * Get the encryptedCredential property: The encrypted credential used for authentication. Credentials are encrypted
-     * using the integration runtime credential manager. Type: string (or Expression with resultType string).
+     * using the integration runtime credential manager. Type: string.
      *
      * @return the encryptedCredential value.
      */
-    public Object encryptedCredential() {
+    public String encryptedCredential() {
         return this.encryptedCredential;
     }
 
     /**
      * Set the encryptedCredential property: The encrypted credential used for authentication. Credentials are encrypted
-     * using the integration runtime credential manager. Type: string (or Expression with resultType string).
+     * using the integration runtime credential manager. Type: string.
      *
      * @param encryptedCredential the encryptedCredential value to set.
      * @return the AmazonS3CompatibleLinkedServiceTypeProperties object itself.
      */
-    public AmazonS3CompatibleLinkedServiceTypeProperties withEncryptedCredential(Object encryptedCredential) {
+    public AmazonS3CompatibleLinkedServiceTypeProperties withEncryptedCredential(String encryptedCredential) {
         this.encryptedCredential = encryptedCredential;
         return this;
     }

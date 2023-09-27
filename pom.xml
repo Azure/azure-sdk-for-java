@@ -48,6 +48,7 @@
     <module>sdk/consumption</module>
     <module>sdk/containerregistry</module>
     <module>sdk/containerservicefleet</module>
+    <module>sdk/contentsafety</module>
     <module>sdk/core</module>
     <module>sdk/cosmos</module>
     <module>sdk/cosmosdbforpostgresql</module>
@@ -142,6 +143,7 @@
     <module>sdk/parents</module>
     <module>sdk/peering</module>
     <module>sdk/personalizer</module>
+    <module>sdk/playwrighttesting</module>
     <module>sdk/policyinsights</module>
     <module>sdk/postgresql</module>
     <module>sdk/postgresqlflexibleserver</module>

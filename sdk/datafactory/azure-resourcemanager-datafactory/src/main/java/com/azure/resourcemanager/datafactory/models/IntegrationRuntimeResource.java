@@ -66,11 +66,13 @@ public interface IntegrationRuntimeResource {
             DefinitionStages.WithProperties,
             DefinitionStages.WithCreate {
     }
+
     /** The IntegrationRuntimeResource definition stages. */
     interface DefinitionStages {
         /** The first stage of the IntegrationRuntimeResource definition. */
         interface Blank extends WithParentResource {
         }
+
         /** The stage of the IntegrationRuntimeResource definition allowing to specify parent resource. */
         interface WithParentResource {
             /**
@@ -82,6 +84,7 @@ public interface IntegrationRuntimeResource {
              */
             WithProperties withExistingFactory(String resourceGroupName, String factoryName);
         }
+
         /** The stage of the IntegrationRuntimeResource definition allowing to specify properties. */
         interface WithProperties {
             /**
@@ -92,6 +95,7 @@ public interface IntegrationRuntimeResource {
              */
             WithCreate withProperties(IntegrationRuntime properties);
         }
+
         /**
          * The stage of the IntegrationRuntimeResource definition which contains all the minimum required properties for
          * the resource to be created, but also allows for any other optional properties to be specified.
@@ -112,6 +116,7 @@ public interface IntegrationRuntimeResource {
              */
             IntegrationRuntimeResource create(Context context);
         }
+
         /** The stage of the IntegrationRuntimeResource definition allowing to specify ifMatch. */
         interface WithIfMatch {
             /**
@@ -125,6 +130,7 @@ public interface IntegrationRuntimeResource {
             WithCreate withIfMatch(String ifMatch);
         }
     }
+
     /**
      * Begins update for the IntegrationRuntimeResource resource.
      *
@@ -149,6 +155,7 @@ public interface IntegrationRuntimeResource {
          */
         IntegrationRuntimeResource apply(Context context);
     }
+
     /** The IntegrationRuntimeResource update stages. */
     interface UpdateStages {
         /** The stage of the IntegrationRuntimeResource update allowing to specify autoUpdate. */
@@ -163,6 +170,7 @@ public interface IntegrationRuntimeResource {
              */
             Update withAutoUpdate(IntegrationRuntimeAutoUpdate autoUpdate);
         }
+
         /** The stage of the IntegrationRuntimeResource update allowing to specify updateDelayOffset. */
         interface WithUpdateDelayOffset {
             /**
@@ -176,6 +184,7 @@ public interface IntegrationRuntimeResource {
             Update withUpdateDelayOffset(String updateDelayOffset);
         }
     }
+
     /**
      * Refreshes the resource to sync with Azure.
      *

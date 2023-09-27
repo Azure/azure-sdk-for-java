@@ -16,41 +16,41 @@ public final class RoutingEventHubPropertiesTests {
         RoutingEventHubProperties model =
             BinaryData
                 .fromString(
-                    "{\"id\":\"mjmvxieduugidyjr\",\"connectionString\":\"byao\",\"endpointUri\":\"e\",\"entityPath\":\"sonpclhocohs\",\"authenticationType\":\"keyBased\",\"identity\":{\"userAssignedIdentity\":\"eggzfb\"},\"name\":\"hfmvfaxkffe\",\"subscriptionId\":\"th\",\"resourceGroup\":\"m\"}")
+                    "{\"id\":\"onuq\",\"connectionString\":\"fkbey\",\"endpointUri\":\"wrmjmwvvjektc\",\"entityPath\":\"enhwlrs\",\"authenticationType\":\"identityBased\",\"identity\":{\"userAssignedIdentity\":\"wvlqdqgb\"},\"name\":\"qylihkaetckt\",\"subscriptionId\":\"civfsnkymuctq\",\"resourceGroup\":\"fbebrjcxer\"}")
                 .toObject(RoutingEventHubProperties.class);
-        Assertions.assertEquals("mjmvxieduugidyjr", model.id());
-        Assertions.assertEquals("byao", model.connectionString());
-        Assertions.assertEquals("e", model.endpointUri());
-        Assertions.assertEquals("sonpclhocohs", model.entityPath());
-        Assertions.assertEquals(AuthenticationType.KEY_BASED, model.authenticationType());
-        Assertions.assertEquals("eggzfb", model.identity().userAssignedIdentity());
-        Assertions.assertEquals("hfmvfaxkffe", model.name());
-        Assertions.assertEquals("th", model.subscriptionId());
-        Assertions.assertEquals("m", model.resourceGroup());
+        Assertions.assertEquals("onuq", model.id());
+        Assertions.assertEquals("fkbey", model.connectionString());
+        Assertions.assertEquals("wrmjmwvvjektc", model.endpointUri());
+        Assertions.assertEquals("enhwlrs", model.entityPath());
+        Assertions.assertEquals(AuthenticationType.IDENTITY_BASED, model.authenticationType());
+        Assertions.assertEquals("wvlqdqgb", model.identity().userAssignedIdentity());
+        Assertions.assertEquals("qylihkaetckt", model.name());
+        Assertions.assertEquals("civfsnkymuctq", model.subscriptionId());
+        Assertions.assertEquals("fbebrjcxer", model.resourceGroup());
     }
 
     @org.junit.jupiter.api.Test
     public void testSerialize() throws Exception {
         RoutingEventHubProperties model =
             new RoutingEventHubProperties()
-                .withId("mjmvxieduugidyjr")
-                .withConnectionString("byao")
-                .withEndpointUri("e")
-                .withEntityPath("sonpclhocohs")
-                .withAuthenticationType(AuthenticationType.KEY_BASED)
-                .withIdentity(new ManagedIdentity().withUserAssignedIdentity("eggzfb"))
-                .withName("hfmvfaxkffe")
-                .withSubscriptionId("th")
-                .withResourceGroup("m");
+                .withId("onuq")
+                .withConnectionString("fkbey")
+                .withEndpointUri("wrmjmwvvjektc")
+                .withEntityPath("enhwlrs")
+                .withAuthenticationType(AuthenticationType.IDENTITY_BASED)
+                .withIdentity(new ManagedIdentity().withUserAssignedIdentity("wvlqdqgb"))
+                .withName("qylihkaetckt")
+                .withSubscriptionId("civfsnkymuctq")
+                .withResourceGroup("fbebrjcxer");
         model = BinaryData.fromObject(model).toObject(RoutingEventHubProperties.class);
-        Assertions.assertEquals("mjmvxieduugidyjr", model.id());
-        Assertions.assertEquals("byao", model.connectionString());
-        Assertions.assertEquals("e", model.endpointUri());
-        Assertions.assertEquals("sonpclhocohs", model.entityPath());
-        Assertions.assertEquals(AuthenticationType.KEY_BASED, model.authenticationType());
-        Assertions.assertEquals("eggzfb", model.identity().userAssignedIdentity());
-        Assertions.assertEquals("hfmvfaxkffe", model.name());
-        Assertions.assertEquals("th", model.subscriptionId());
-        Assertions.assertEquals("m", model.resourceGroup());
+        Assertions.assertEquals("onuq", model.id());
+        Assertions.assertEquals("fkbey", model.connectionString());
+        Assertions.assertEquals("wrmjmwvvjektc", model.endpointUri());
+        Assertions.assertEquals("enhwlrs", model.entityPath());
+        Assertions.assertEquals(AuthenticationType.IDENTITY_BASED, model.authenticationType());
+        Assertions.assertEquals("wvlqdqgb", model.identity().userAssignedIdentity());
+        Assertions.assertEquals("qylihkaetckt", model.name());
+        Assertions.assertEquals("civfsnkymuctq", model.subscriptionId());
+        Assertions.assertEquals("fbebrjcxer", model.resourceGroup());
     }
 }

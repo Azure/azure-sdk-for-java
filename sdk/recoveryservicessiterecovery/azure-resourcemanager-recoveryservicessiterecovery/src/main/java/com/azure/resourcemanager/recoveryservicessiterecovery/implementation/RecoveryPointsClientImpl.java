@@ -58,9 +58,7 @@ public final class RecoveryPointsClientImpl implements RecoveryPointsClient {
     public interface RecoveryPointsService {
         @Headers({"Content-Type: application/json"})
         @Get(
-            "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.RecoveryServices"
-                + "/vaults/{resourceName}/replicationFabrics/{fabricName}/replicationProtectionContainers"
-                + "/{protectionContainerName}/replicationProtectedItems/{replicatedProtectedItemName}/recoveryPoints")
+            "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.RecoveryServices/vaults/{resourceName}/replicationFabrics/{fabricName}/replicationProtectionContainers/{protectionContainerName}/replicationProtectedItems/{replicatedProtectedItemName}/recoveryPoints")
         @ExpectedResponses({200})
         @UnexpectedResponseExceptionType(ManagementException.class)
         Mono<Response<RecoveryPointCollection>> listByReplicationProtectedItems(
@@ -77,10 +75,7 @@ public final class RecoveryPointsClientImpl implements RecoveryPointsClient {
 
         @Headers({"Content-Type: application/json"})
         @Get(
-            "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.RecoveryServices"
-                + "/vaults/{resourceName}/replicationFabrics/{fabricName}/replicationProtectionContainers"
-                + "/{protectionContainerName}/replicationProtectedItems/{replicatedProtectedItemName}/recoveryPoints"
-                + "/{recoveryPointName}")
+            "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.RecoveryServices/vaults/{resourceName}/replicationFabrics/{fabricName}/replicationProtectionContainers/{protectionContainerName}/replicationProtectedItems/{replicatedProtectedItemName}/recoveryPoints/{recoveryPointName}")
         @ExpectedResponses({200})
         @UnexpectedResponseExceptionType(ManagementException.class)
         Mono<Response<RecoveryPointInner>> get(

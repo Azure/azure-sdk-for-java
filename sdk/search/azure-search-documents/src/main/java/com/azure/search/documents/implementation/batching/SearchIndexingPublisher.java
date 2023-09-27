@@ -27,11 +27,14 @@ import java.net.HttpURLConnection;
 import java.time.Duration;
 import java.util.ArrayList;
 import java.util.Collection;
+import java.util.Deque;
 import java.util.HashSet;
+import java.util.Iterator;
 import java.util.LinkedList;
 import java.util.List;
 import java.util.Objects;
 import java.util.Set;
+import java.util.concurrent.ConcurrentLinkedDeque;
 import java.util.concurrent.Semaphore;
 import java.util.concurrent.ThreadLocalRandom;
 import java.util.concurrent.atomic.AtomicInteger;
@@ -69,14 +72,14 @@ public final class SearchIndexingPublisher<T> {
     private final Function<Integer, Integer> scaleDownFunction = size -> size / 2;
 
     private final Object actionsMutex = new Object();
-    private final LinkedList<TryTrackingIndexAction<T>> actions = new LinkedList<>();
+    private final Deque<TryTrackingIndexAction<T>> actions = new ConcurrentLinkedDeque<>();
 
     /*
      * This queue keeps track of documents that are currently being sent to the service for indexing. This queue is
      * resilient against cases where the request timeouts or is cancelled by an external operation, preventing the
      * documents from being lost.
      */
-    private final LinkedList<TryTrackingIndexAction<T>> inFlightActions = new LinkedList<>();
+    private final Deque<TryTrackingIndexAction<T>> inFlightActions = new ConcurrentLinkedDeque<>();
 
     private final Semaphore processingSemaphore = new Semaphore(1);
 
@@ -157,11 +160,9 @@ public final class SearchIndexingPublisher<T> {
     public Mono<Void> flush(boolean awaitLock, boolean isClose, Context context) {
         if (awaitLock) {
             processingSemaphore.acquireUninterruptibly();
-            return flushLoop(isClose, context)
-                .doFinally(ignored -> processingSemaphore.release());
+            return Mono.using(() -> processingSemaphore, ignored -> flushLoop(isClose, context), Semaphore::release);
         } else if (processingSemaphore.tryAcquire()) {
-            return flushLoop(isClose, context)
-                .doFinally(ignored -> processingSemaphore.release());
+            return Mono.using(() -> processingSemaphore, ignored -> flushLoop(isClose, context), Semaphore::release);
         } else {
             LOGGER.verbose("Batch already in-flight and not waiting for completion. Performing no-op.");
             return Mono.empty();
@@ -224,21 +225,21 @@ public final class SearchIndexingPublisher<T> {
         return batchActions;
     }
 
-    private int fillFromQueue(List<TryTrackingIndexAction<T>> batch, List<TryTrackingIndexAction<T>> queue,
+    private static <T> int fillFromQueue(List<TryTrackingIndexAction<T>> batch, Deque<TryTrackingIndexAction<T>> queue,
         int requested, Set<String> duplicateKeyTracker) {
-        int offset = 0;
         int actionsAdded = 0;
-        int queueSize = queue.size();
 
-        while (actionsAdded < requested && offset < queueSize) {
-            TryTrackingIndexAction<T> potentialDocumentToAdd = queue.get(offset++ - actionsAdded);
+        Iterator<TryTrackingIndexAction<T>> iterator = queue.iterator();
+        while (actionsAdded < requested && iterator.hasNext()) {
+            TryTrackingIndexAction<T> potentialDocumentToAdd = iterator.next();
 
             if (duplicateKeyTracker.contains(potentialDocumentToAdd.getKey())) {
                 continue;
             }
 
             duplicateKeyTracker.add(potentialDocumentToAdd.getKey());
-            batch.add(queue.remove(offset - 1 - actionsAdded));
+            batch.add(potentialDocumentToAdd);
+            iterator.remove();
             actionsAdded += 1;
         }
 
@@ -330,7 +331,7 @@ public final class SearchIndexingPublisher<T> {
             return;
         }
 
-        List<TryTrackingIndexAction<T>> actionsToRetry = new ArrayList<>();
+        Deque<TryTrackingIndexAction<T>> actionsToRetry = new LinkedList<>();
         boolean has503 = batchResponse.getStatusCode() == HttpURLConnection.HTTP_UNAVAILABLE;
         if (batchResponse.getResults() == null) {
             /*
@@ -388,6 +389,13 @@ public final class SearchIndexingPublisher<T> {
 
         if (!CoreUtils.isNullOrEmpty(actionsToRetry)) {
             reinsertFailedActions(actionsToRetry);
+        }
+    }
+
+    private void reinsertFailedActions(Deque<TryTrackingIndexAction<T>> actionsToRetry) {
+        synchronized (actionsMutex) {
+            // Push all actions that need to be retried back into the queue.
+            actionsToRetry.descendingIterator().forEachRemaining(actions::add);
         }
     }
 
