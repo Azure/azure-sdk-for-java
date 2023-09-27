@@ -895,12 +895,12 @@ public class DirectoryAsyncApiTests extends DataLakeTestBase {
 
         StepVerifier.create(dc.setAccessControlRecursiveWithResponse(options))
             .assertNext(r2 -> {
-                assertEquals(3L, r.getCounters().getChangedDirectoriesCount() +
-                    r2.getValue().getCounters().getChangedDirectoriesCount()); // Including the top level
-                assertEquals(4L, r.getCounters().getChangedFilesCount() +
-                    r2.getValue().getCounters().getChangedFilesCount());
-                assertEquals(0L, r.getCounters().getFailedChangesCount() +
-                    r2.getValue().getCounters().getFailedChangesCount());
+                assertEquals(3L, r.getCounters().getChangedDirectoriesCount()
+                    + r2.getValue().getCounters().getChangedDirectoriesCount()); // Including the top level
+                assertEquals(4L, r.getCounters().getChangedFilesCount()
+                    + r2.getValue().getCounters().getChangedFilesCount());
+                assertEquals(0L, r.getCounters().getFailedChangesCount()
+                    + r2.getValue().getCounters().getFailedChangesCount());
                 assertNull(r2.getValue().getContinuationToken());
                 assertNull(r.getBatchFailures());
             })
@@ -927,23 +927,23 @@ public class DirectoryAsyncApiTests extends DataLakeTestBase {
             .verifyComplete();
 
         assertEquals(4, progress.batchCounters.size());
-        assertEquals(2, progress.batchCounters.get(0).getChangedFilesCount() +
-            progress.batchCounters.get(0).getChangedDirectoriesCount());
-        assertEquals(2, progress.batchCounters.get(1).getChangedFilesCount() +
-            progress.batchCounters.get(1).getChangedDirectoriesCount());
-        assertEquals(2, progress.batchCounters.get(2).getChangedFilesCount() +
-            progress.batchCounters.get(2).getChangedDirectoriesCount());
-        assertEquals(1, progress.batchCounters.get(3).getChangedFilesCount() +
-            progress.batchCounters.get(3).getChangedDirectoriesCount());
+        assertEquals(2, progress.batchCounters.get(0).getChangedFilesCount()
+            + progress.batchCounters.get(0).getChangedDirectoriesCount());
+        assertEquals(2, progress.batchCounters.get(1).getChangedFilesCount()
+            + progress.batchCounters.get(1).getChangedDirectoriesCount());
+        assertEquals(2, progress.batchCounters.get(2).getChangedFilesCount()
+            + progress.batchCounters.get(2).getChangedDirectoriesCount());
+        assertEquals(1, progress.batchCounters.get(3).getChangedFilesCount()
+            + progress.batchCounters.get(3).getChangedDirectoriesCount());
         assertEquals(4, progress.cumulativeCounters.size());
-        assertEquals(2, progress.cumulativeCounters.get(0).getChangedFilesCount() +
-            progress.cumulativeCounters.get(0).getChangedDirectoriesCount());
-        assertEquals(4, progress.cumulativeCounters.get(1).getChangedFilesCount() +
-            progress.cumulativeCounters.get(1).getChangedDirectoriesCount());
-        assertEquals(6, progress.cumulativeCounters.get(2).getChangedFilesCount() +
-            progress.cumulativeCounters.get(2).getChangedDirectoriesCount());
-        assertEquals(7, progress.cumulativeCounters.get(3).getChangedFilesCount() +
-            progress.cumulativeCounters.get(3).getChangedDirectoriesCount());
+        assertEquals(2, progress.cumulativeCounters.get(0).getChangedFilesCount()
+            + progress.cumulativeCounters.get(0).getChangedDirectoriesCount());
+        assertEquals(4, progress.cumulativeCounters.get(1).getChangedFilesCount()
+            + progress.cumulativeCounters.get(1).getChangedDirectoriesCount());
+        assertEquals(6, progress.cumulativeCounters.get(2).getChangedFilesCount()
+            + progress.cumulativeCounters.get(2).getChangedDirectoriesCount());
+        assertEquals(7, progress.cumulativeCounters.get(3).getChangedFilesCount()
+            + progress.cumulativeCounters.get(3).getChangedDirectoriesCount());
     }
 
     @DisabledIf("olderThan20200210ServiceVersion")
@@ -1234,12 +1234,12 @@ public class DirectoryAsyncApiTests extends DataLakeTestBase {
         options.setMaxBatches(null).setContinuationToken(intermediateResult.getContinuationToken());
         StepVerifier.create(subOwnerDirClient.setAccessControlRecursiveWithResponse(options))
             .assertNext(r2 -> {
-                assertEquals(4, r2.getValue().getCounters().getChangedDirectoriesCount() +
-                    intermediateResult.getCounters().getChangedDirectoriesCount());
-                assertEquals(6, r2.getValue().getCounters().getChangedFilesCount() +
-                    intermediateResult.getCounters().getChangedFilesCount());
-                assertEquals(4, r2.getValue().getCounters().getFailedChangesCount() +
-                    intermediateResult.getCounters().getFailedChangesCount());
+                assertEquals(4, r2.getValue().getCounters().getChangedDirectoriesCount()
+                    + intermediateResult.getCounters().getChangedDirectoriesCount());
+                assertEquals(6, r2.getValue().getCounters().getChangedFilesCount()
+                    + intermediateResult.getCounters().getChangedFilesCount());
+                assertEquals(4, r2.getValue().getCounters().getFailedChangesCount()
+                    + intermediateResult.getCounters().getFailedChangesCount());
                 assertNull(r2.getValue().getContinuationToken());
             })
             .verifyComplete();
@@ -1334,12 +1334,12 @@ public class DirectoryAsyncApiTests extends DataLakeTestBase {
         options.setMaxBatches(null).setContinuationToken(r.getContinuationToken());
         StepVerifier.create(dc.updateAccessControlRecursiveWithResponse(options))
             .assertNext(r2 -> {
-                assertEquals(3L, r.getCounters().getChangedDirectoriesCount() +
-                    r2.getValue().getCounters().getChangedDirectoriesCount()); // Including the top level
-                assertEquals(4L, r.getCounters().getChangedFilesCount() +
-                    r2.getValue().getCounters().getChangedFilesCount());
-                assertEquals(0L, r.getCounters().getFailedChangesCount() +
-                    r2.getValue().getCounters().getFailedChangesCount());
+                assertEquals(3L, r.getCounters().getChangedDirectoriesCount()
+                    + r2.getValue().getCounters().getChangedDirectoriesCount()); // Including the top level
+                assertEquals(4L, r.getCounters().getChangedFilesCount()
+                    + r2.getValue().getCounters().getChangedFilesCount());
+                assertEquals(0L, r.getCounters().getFailedChangesCount()
+                    + r2.getValue().getCounters().getFailedChangesCount());
                 assertNull(r2.getValue().getContinuationToken());
                 assertNull(r.getBatchFailures());
             })
@@ -1365,23 +1365,23 @@ public class DirectoryAsyncApiTests extends DataLakeTestBase {
             })
             .verifyComplete();
         assertEquals(4, progress.batchCounters.size());
-        assertEquals(2, progress.batchCounters.get(0).getChangedFilesCount() +
-            progress.batchCounters.get(0).getChangedDirectoriesCount());
-        assertEquals(2, progress.batchCounters.get(1).getChangedFilesCount() +
-            progress.batchCounters.get(1).getChangedDirectoriesCount());
-        assertEquals(2, progress.batchCounters.get(2).getChangedFilesCount() +
-            progress.batchCounters.get(2).getChangedDirectoriesCount());
-        assertEquals(1, progress.batchCounters.get(3).getChangedFilesCount() +
-            progress.batchCounters.get(3).getChangedDirectoriesCount());
+        assertEquals(2, progress.batchCounters.get(0).getChangedFilesCount()
+            + progress.batchCounters.get(0).getChangedDirectoriesCount());
+        assertEquals(2, progress.batchCounters.get(1).getChangedFilesCount()
+            + progress.batchCounters.get(1).getChangedDirectoriesCount());
+        assertEquals(2, progress.batchCounters.get(2).getChangedFilesCount()
+            + progress.batchCounters.get(2).getChangedDirectoriesCount());
+        assertEquals(1, progress.batchCounters.get(3).getChangedFilesCount()
+            + progress.batchCounters.get(3).getChangedDirectoriesCount());
         assertEquals(4, progress.cumulativeCounters.size());
-        assertEquals(2, progress.cumulativeCounters.get(0).getChangedFilesCount() +
-            progress.cumulativeCounters.get(0).getChangedDirectoriesCount());
-        assertEquals(4, progress.cumulativeCounters.get(1).getChangedFilesCount() +
-            progress.cumulativeCounters.get(1).getChangedDirectoriesCount());
-        assertEquals(6, progress.cumulativeCounters.get(2).getChangedFilesCount() +
-            progress.cumulativeCounters.get(2).getChangedDirectoriesCount());
-        assertEquals(7, progress.cumulativeCounters.get(3).getChangedFilesCount() +
-            progress.cumulativeCounters.get(3).getChangedDirectoriesCount());
+        assertEquals(2, progress.cumulativeCounters.get(0).getChangedFilesCount()
+            + progress.cumulativeCounters.get(0).getChangedDirectoriesCount());
+        assertEquals(4, progress.cumulativeCounters.get(1).getChangedFilesCount()
+            + progress.cumulativeCounters.get(1).getChangedDirectoriesCount());
+        assertEquals(6, progress.cumulativeCounters.get(2).getChangedFilesCount()
+            + progress.cumulativeCounters.get(2).getChangedDirectoriesCount());
+        assertEquals(7, progress.cumulativeCounters.get(3).getChangedFilesCount()
+            + progress.cumulativeCounters.get(3).getChangedDirectoriesCount());
     }
 
     @DisabledIf("olderThan20200210ServiceVersion")
@@ -1659,12 +1659,12 @@ public class DirectoryAsyncApiTests extends DataLakeTestBase {
         options.setMaxBatches(null).setContinuationToken(intermediateResult.getContinuationToken());
         StepVerifier.create(subOwnerDirClient.updateAccessControlRecursiveWithResponse(options))
             .assertNext(r2 -> {
-                assertEquals(4, r2.getValue().getCounters().getChangedDirectoriesCount() +
-                    intermediateResult.getCounters().getChangedDirectoriesCount());
-                assertEquals(6, r2.getValue().getCounters().getChangedFilesCount() +
-                    intermediateResult.getCounters().getChangedFilesCount());
-                assertEquals(4, r2.getValue().getCounters().getFailedChangesCount() +
-                    intermediateResult.getCounters().getFailedChangesCount());
+                assertEquals(4, r2.getValue().getCounters().getChangedDirectoriesCount()
+                    + intermediateResult.getCounters().getChangedDirectoriesCount());
+                assertEquals(6, r2.getValue().getCounters().getChangedFilesCount()
+                    + intermediateResult.getCounters().getChangedFilesCount());
+                assertEquals(4, r2.getValue().getCounters().getFailedChangesCount()
+                    + intermediateResult.getCounters().getFailedChangesCount());
                 assertNull(r2.getValue().getContinuationToken());
             })
             .verifyComplete();
@@ -1749,12 +1749,12 @@ public class DirectoryAsyncApiTests extends DataLakeTestBase {
         options.setMaxBatches(null).setContinuationToken(r.getContinuationToken());
         StepVerifier.create(dc.removeAccessControlRecursiveWithResponse(options))
             .assertNext(r2 -> {
-                assertEquals(3L, r.getCounters().getChangedDirectoriesCount() +
-                    r2.getValue().getCounters().getChangedDirectoriesCount()); // Including the top level
-                assertEquals(4L, r.getCounters().getChangedFilesCount() +
-                    r2.getValue().getCounters().getChangedFilesCount());
-                assertEquals(0L, r.getCounters().getFailedChangesCount() +
-                    r2.getValue().getCounters().getFailedChangesCount());
+                assertEquals(3L, r.getCounters().getChangedDirectoriesCount()
+                    + r2.getValue().getCounters().getChangedDirectoriesCount()); // Including the top level
+                assertEquals(4L, r.getCounters().getChangedFilesCount()
+                    + r2.getValue().getCounters().getChangedFilesCount());
+                assertEquals(0L, r.getCounters().getFailedChangesCount()
+                    + r2.getValue().getCounters().getFailedChangesCount());
                 assertNull(r2.getValue().getContinuationToken());
                 assertNull(r.getBatchFailures());
             })
@@ -1780,23 +1780,23 @@ public class DirectoryAsyncApiTests extends DataLakeTestBase {
             })
             .verifyComplete();
         assertEquals(4, progress.batchCounters.size());
-        assertEquals(2, progress.batchCounters.get(0).getChangedFilesCount() +
-            progress.batchCounters.get(0).getChangedDirectoriesCount());
-        assertEquals(2, progress.batchCounters.get(1).getChangedFilesCount() +
-            progress.batchCounters.get(1).getChangedDirectoriesCount());
-        assertEquals(2, progress.batchCounters.get(2).getChangedFilesCount() +
-            progress.batchCounters.get(2).getChangedDirectoriesCount());
-        assertEquals(1, progress.batchCounters.get(3).getChangedFilesCount() +
-            progress.batchCounters.get(3).getChangedDirectoriesCount());
+        assertEquals(2, progress.batchCounters.get(0).getChangedFilesCount()
+            + progress.batchCounters.get(0).getChangedDirectoriesCount());
+        assertEquals(2, progress.batchCounters.get(1).getChangedFilesCount()
+            + progress.batchCounters.get(1).getChangedDirectoriesCount());
+        assertEquals(2, progress.batchCounters.get(2).getChangedFilesCount()
+            + progress.batchCounters.get(2).getChangedDirectoriesCount());
+        assertEquals(1, progress.batchCounters.get(3).getChangedFilesCount()
+            + progress.batchCounters.get(3).getChangedDirectoriesCount());
         assertEquals(4, progress.cumulativeCounters.size());
-        assertEquals(2, progress.cumulativeCounters.get(0).getChangedFilesCount() +
-            progress.cumulativeCounters.get(0).getChangedDirectoriesCount());
-        assertEquals(4, progress.cumulativeCounters.get(1).getChangedFilesCount() +
-            progress.cumulativeCounters.get(1).getChangedDirectoriesCount());
-        assertEquals(6, progress.cumulativeCounters.get(2).getChangedFilesCount() +
-            progress.cumulativeCounters.get(2).getChangedDirectoriesCount());
-        assertEquals(7, progress.cumulativeCounters.get(3).getChangedFilesCount() +
-            progress.cumulativeCounters.get(3).getChangedDirectoriesCount());
+        assertEquals(2, progress.cumulativeCounters.get(0).getChangedFilesCount()
+            + progress.cumulativeCounters.get(0).getChangedDirectoriesCount());
+        assertEquals(4, progress.cumulativeCounters.get(1).getChangedFilesCount()
+            + progress.cumulativeCounters.get(1).getChangedDirectoriesCount());
+        assertEquals(6, progress.cumulativeCounters.get(2).getChangedFilesCount()
+            + progress.cumulativeCounters.get(2).getChangedDirectoriesCount());
+        assertEquals(7, progress.cumulativeCounters.get(3).getChangedFilesCount()
+            + progress.cumulativeCounters.get(3).getChangedDirectoriesCount());
     }
 
     @DisabledIf("olderThan20200210ServiceVersion")
@@ -2078,12 +2078,12 @@ public class DirectoryAsyncApiTests extends DataLakeTestBase {
         options.setMaxBatches(null).setContinuationToken(intermediateResult.getContinuationToken());
         StepVerifier.create(subOwnerDirClient.removeAccessControlRecursiveWithResponse(options))
             .assertNext(r2 -> {
-                assertEquals(4, r2.getValue().getCounters().getChangedDirectoriesCount() +
-                    intermediateResult.getCounters().getChangedDirectoriesCount());
-                assertEquals(6, r2.getValue().getCounters().getChangedFilesCount() +
-                    intermediateResult.getCounters().getChangedFilesCount());
-                assertEquals(4, r2.getValue().getCounters().getFailedChangesCount() +
-                    intermediateResult.getCounters().getFailedChangesCount());
+                assertEquals(4, r2.getValue().getCounters().getChangedDirectoriesCount()
+                    + intermediateResult.getCounters().getChangedDirectoriesCount());
+                assertEquals(6, r2.getValue().getCounters().getChangedFilesCount()
+                    + intermediateResult.getCounters().getChangedFilesCount());
+                assertEquals(4, r2.getValue().getCounters().getFailedChangesCount()
+                    + intermediateResult.getCounters().getFailedChangesCount());
                 assertNull(r2.getValue().getContinuationToken());
             })
             .verifyComplete();
