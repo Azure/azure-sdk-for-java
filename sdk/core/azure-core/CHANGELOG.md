@@ -4,6 +4,8 @@
 
 ### Features Added
 
+- Added `PollResult` as details of long-running operations status.
+
 ### Breaking Changes
 
 ### Bugs Fixed
