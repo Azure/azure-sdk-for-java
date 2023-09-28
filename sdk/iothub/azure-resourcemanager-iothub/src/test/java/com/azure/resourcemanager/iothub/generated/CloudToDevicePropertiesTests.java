@@ -16,31 +16,31 @@ public final class CloudToDevicePropertiesTests {
         CloudToDeviceProperties model =
             BinaryData
                 .fromString(
-                    "{\"maxDeliveryCount\":1121109847,\"defaultTtlAsIso8601\":\"PT84H30M6S\",\"feedback\":{\"lockDurationAsIso8601\":\"PT9H8M5S\",\"ttlAsIso8601\":\"PT205H49M51S\",\"maxDeliveryCount\":1139583555}}")
+                    "{\"maxDeliveryCount\":122451420,\"defaultTtlAsIso8601\":\"PT222H46M37S\",\"feedback\":{\"lockDurationAsIso8601\":\"PT201H34M46S\",\"ttlAsIso8601\":\"PT182H51M49S\",\"maxDeliveryCount\":413176852}}")
                 .toObject(CloudToDeviceProperties.class);
-        Assertions.assertEquals(1121109847, model.maxDeliveryCount());
-        Assertions.assertEquals(Duration.parse("PT84H30M6S"), model.defaultTtlAsIso8601());
-        Assertions.assertEquals(Duration.parse("PT9H8M5S"), model.feedback().lockDurationAsIso8601());
-        Assertions.assertEquals(Duration.parse("PT205H49M51S"), model.feedback().ttlAsIso8601());
-        Assertions.assertEquals(1139583555, model.feedback().maxDeliveryCount());
+        Assertions.assertEquals(122451420, model.maxDeliveryCount());
+        Assertions.assertEquals(Duration.parse("PT222H46M37S"), model.defaultTtlAsIso8601());
+        Assertions.assertEquals(Duration.parse("PT201H34M46S"), model.feedback().lockDurationAsIso8601());
+        Assertions.assertEquals(Duration.parse("PT182H51M49S"), model.feedback().ttlAsIso8601());
+        Assertions.assertEquals(413176852, model.feedback().maxDeliveryCount());
     }
 
     @org.junit.jupiter.api.Test
     public void testSerialize() throws Exception {
         CloudToDeviceProperties model =
             new CloudToDeviceProperties()
-                .withMaxDeliveryCount(1121109847)
-                .withDefaultTtlAsIso8601(Duration.parse("PT84H30M6S"))
+                .withMaxDeliveryCount(122451420)
+                .withDefaultTtlAsIso8601(Duration.parse("PT222H46M37S"))
                 .withFeedback(
                     new FeedbackProperties()
-                        .withLockDurationAsIso8601(Duration.parse("PT9H8M5S"))
-                        .withTtlAsIso8601(Duration.parse("PT205H49M51S"))
-                        .withMaxDeliveryCount(1139583555));
+                        .withLockDurationAsIso8601(Duration.parse("PT201H34M46S"))
+                        .withTtlAsIso8601(Duration.parse("PT182H51M49S"))
+                        .withMaxDeliveryCount(413176852));
         model = BinaryData.fromObject(model).toObject(CloudToDeviceProperties.class);
-        Assertions.assertEquals(1121109847, model.maxDeliveryCount());
-        Assertions.assertEquals(Duration.parse("PT84H30M6S"), model.defaultTtlAsIso8601());
-        Assertions.assertEquals(Duration.parse("PT9H8M5S"), model.feedback().lockDurationAsIso8601());
-        Assertions.assertEquals(Duration.parse("PT205H49M51S"), model.feedback().ttlAsIso8601());
-        Assertions.assertEquals(1139583555, model.feedback().maxDeliveryCount());
+        Assertions.assertEquals(122451420, model.maxDeliveryCount());
+        Assertions.assertEquals(Duration.parse("PT222H46M37S"), model.defaultTtlAsIso8601());
+        Assertions.assertEquals(Duration.parse("PT201H34M46S"), model.feedback().lockDurationAsIso8601());
+        Assertions.assertEquals(Duration.parse("PT182H51M49S"), model.feedback().ttlAsIso8601());
+        Assertions.assertEquals(413176852, model.feedback().maxDeliveryCount());
     }
 }

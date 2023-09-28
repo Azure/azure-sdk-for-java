@@ -160,11 +160,13 @@ public interface Factory {
             DefinitionStages.WithResourceGroup,
             DefinitionStages.WithCreate {
     }
+
     /** The Factory definition stages. */
     interface DefinitionStages {
         /** The first stage of the Factory definition. */
         interface Blank extends WithLocation {
         }
+
         /** The stage of the Factory definition allowing to specify location. */
         interface WithLocation {
             /**
@@ -183,6 +185,7 @@ public interface Factory {
              */
             WithResourceGroup withRegion(String location);
         }
+
         /** The stage of the Factory definition allowing to specify parent resource. */
         interface WithResourceGroup {
             /**
@@ -193,6 +196,7 @@ public interface Factory {
              */
             WithCreate withExistingResourceGroup(String resourceGroupName);
         }
+
         /**
          * The stage of the Factory definition which contains all the minimum required properties for the resource to be
          * created, but also allows for any other optional properties to be specified.
@@ -222,6 +226,7 @@ public interface Factory {
              */
             Factory create(Context context);
         }
+
         /** The stage of the Factory definition allowing to specify tags. */
         interface WithTags {
             /**
@@ -232,6 +237,7 @@ public interface Factory {
              */
             WithCreate withTags(Map<String, String> tags);
         }
+
         /** The stage of the Factory definition allowing to specify identity. */
         interface WithIdentity {
             /**
@@ -242,6 +248,7 @@ public interface Factory {
              */
             WithCreate withIdentity(FactoryIdentity identity);
         }
+
         /** The stage of the Factory definition allowing to specify additionalProperties. */
         interface WithAdditionalProperties {
             /**
@@ -252,6 +259,7 @@ public interface Factory {
              */
             WithCreate withAdditionalProperties(Map<String, Object> additionalProperties);
         }
+
         /** The stage of the Factory definition allowing to specify purviewConfiguration. */
         interface WithPurviewConfiguration {
             /**
@@ -262,6 +270,7 @@ public interface Factory {
              */
             WithCreate withPurviewConfiguration(PurviewConfiguration purviewConfiguration);
         }
+
         /** The stage of the Factory definition allowing to specify repoConfiguration. */
         interface WithRepoConfiguration {
             /**
@@ -272,6 +281,7 @@ public interface Factory {
              */
             WithCreate withRepoConfiguration(FactoryRepoConfiguration repoConfiguration);
         }
+
         /** The stage of the Factory definition allowing to specify globalParameters. */
         interface WithGlobalParameters {
             /**
@@ -282,6 +292,7 @@ public interface Factory {
              */
             WithCreate withGlobalParameters(Map<String, GlobalParameterSpecification> globalParameters);
         }
+
         /** The stage of the Factory definition allowing to specify encryption. */
         interface WithEncryption {
             /**
@@ -292,6 +303,7 @@ public interface Factory {
              */
             WithCreate withEncryption(EncryptionConfiguration encryption);
         }
+
         /** The stage of the Factory definition allowing to specify publicNetworkAccess. */
         interface WithPublicNetworkAccess {
             /**
@@ -303,6 +315,7 @@ public interface Factory {
              */
             WithCreate withPublicNetworkAccess(PublicNetworkAccess publicNetworkAccess);
         }
+
         /** The stage of the Factory definition allowing to specify ifMatch. */
         interface WithIfMatch {
             /**
@@ -316,6 +329,7 @@ public interface Factory {
             WithCreate withIfMatch(String ifMatch);
         }
     }
+
     /**
      * Begins update for the Factory resource.
      *
@@ -340,6 +354,7 @@ public interface Factory {
          */
         Factory apply(Context context);
     }
+
     /** The Factory update stages. */
     interface UpdateStages {
         /** The stage of the Factory update allowing to specify tags. */
@@ -352,6 +367,7 @@ public interface Factory {
              */
             Update withTags(Map<String, String> tags);
         }
+
         /** The stage of the Factory update allowing to specify identity. */
         interface WithIdentity {
             /**
@@ -362,6 +378,7 @@ public interface Factory {
              */
             Update withIdentity(FactoryIdentity identity);
         }
+
         /** The stage of the Factory update allowing to specify publicNetworkAccess. */
         interface WithPublicNetworkAccess {
             /**
@@ -374,6 +391,7 @@ public interface Factory {
             Update withPublicNetworkAccess(PublicNetworkAccess publicNetworkAccess);
         }
     }
+
     /**
      * Refreshes the resource to sync with Azure.
      *

@@ -427,6 +427,24 @@ public final class InMageAzureV2ReplicationDetails extends ReplicationProviderSp
     @JsonProperty(value = "switchProviderDetails")
     private InMageAzureV2SwitchProviderDetails switchProviderDetails;
 
+    /*
+     * A value indicating the inplace OS Upgrade version.
+     */
+    @JsonProperty(value = "supportedOSVersions")
+    private List<String> supportedOSVersions;
+
+    /*
+     * A value indicating all available inplace OS Upgrade configurations.
+     */
+    @JsonProperty(value = "allAvailableOSUpgradeConfigurations")
+    private List<OSUpgradeSupportedVersions> allAvailableOSUpgradeConfigurations;
+
+    /*
+     * The name of the OS on the VM.
+     */
+    @JsonProperty(value = "osName", access = JsonProperty.Access.WRITE_ONLY)
+    private String osName;
+
     /** Creates an instance of InMageAzureV2ReplicationDetails class. */
     public InMageAzureV2ReplicationDetails() {
     }
@@ -1781,6 +1799,58 @@ public final class InMageAzureV2ReplicationDetails extends ReplicationProviderSp
     }
 
     /**
+     * Get the supportedOSVersions property: A value indicating the inplace OS Upgrade version.
+     *
+     * @return the supportedOSVersions value.
+     */
+    public List<String> supportedOSVersions() {
+        return this.supportedOSVersions;
+    }
+
+    /**
+     * Set the supportedOSVersions property: A value indicating the inplace OS Upgrade version.
+     *
+     * @param supportedOSVersions the supportedOSVersions value to set.
+     * @return the InMageAzureV2ReplicationDetails object itself.
+     */
+    public InMageAzureV2ReplicationDetails withSupportedOSVersions(List<String> supportedOSVersions) {
+        this.supportedOSVersions = supportedOSVersions;
+        return this;
+    }
+
+    /**
+     * Get the allAvailableOSUpgradeConfigurations property: A value indicating all available inplace OS Upgrade
+     * configurations.
+     *
+     * @return the allAvailableOSUpgradeConfigurations value.
+     */
+    public List<OSUpgradeSupportedVersions> allAvailableOSUpgradeConfigurations() {
+        return this.allAvailableOSUpgradeConfigurations;
+    }
+
+    /**
+     * Set the allAvailableOSUpgradeConfigurations property: A value indicating all available inplace OS Upgrade
+     * configurations.
+     *
+     * @param allAvailableOSUpgradeConfigurations the allAvailableOSUpgradeConfigurations value to set.
+     * @return the InMageAzureV2ReplicationDetails object itself.
+     */
+    public InMageAzureV2ReplicationDetails withAllAvailableOSUpgradeConfigurations(
+        List<OSUpgradeSupportedVersions> allAvailableOSUpgradeConfigurations) {
+        this.allAvailableOSUpgradeConfigurations = allAvailableOSUpgradeConfigurations;
+        return this;
+    }
+
+    /**
+     * Get the osName property: The name of the OS on the VM.
+     *
+     * @return the osName value.
+     */
+    public String osName() {
+        return this.osName;
+    }
+
+    /**
      * Validates the instance.
      *
      * @throws IllegalArgumentException thrown if the instance is not valid.
@@ -1808,6 +1878,9 @@ public final class InMageAzureV2ReplicationDetails extends ReplicationProviderSp
         }
         if (switchProviderDetails() != null) {
             switchProviderDetails().validate();
+        }
+        if (allAvailableOSUpgradeConfigurations() != null) {
+            allAvailableOSUpgradeConfigurations().forEach(e -> e.validate());
         }
     }
 }

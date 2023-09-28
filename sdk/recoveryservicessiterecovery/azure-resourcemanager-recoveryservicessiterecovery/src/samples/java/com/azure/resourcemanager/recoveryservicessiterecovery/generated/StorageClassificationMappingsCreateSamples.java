@@ -9,7 +9,7 @@ import com.azure.resourcemanager.recoveryservicessiterecovery.models.StorageMapp
 /** Samples for StorageClassificationMappings Create. */
 public final class StorageClassificationMappingsCreateSamples {
     /*
-     * x-ms-original-file: specification/recoveryservicessiterecovery/resource-manager/Microsoft.RecoveryServices/stable/2022-10-01/examples/ReplicationStorageClassificationMappings_Create.json
+     * x-ms-original-file: specification/recoveryservicessiterecovery/resource-manager/Microsoft.RecoveryServices/stable/2023-06-01/examples/ReplicationStorageClassificationMappings_Create.json
      */
     /**
      * Sample code: Create storage classification mapping.
