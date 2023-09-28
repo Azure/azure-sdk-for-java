@@ -1,0 +1,36 @@
+<!-- Copyright (c) Microsoft Corporation. All rights reserved.
+     Licensed under the MIT License. -->
+<project xmlns="http://maven.apache.org/POM/4.0.0"
+         xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+         xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd">
+  <modelVersion>4.0.0</modelVersion>
+  <groupId>com.azure</groupId>
+  <artifactId>azure-core-service</artifactId>
+  <packaging>pom</packaging>
+  <version>1.0.0</version><!-- Need not change for every release-->
+
+  <modules>
+    <module>azure-core</module>
+    <module>azure-core-amqp</module>
+    <module>azure-core-amqp-experimental</module>
+    <module>azure-core-experimental</module>
+    <module>azure-core-http-jdk-httpclient</module>
+    <module>azure-core-http-netty</module>
+    <module>azure-core-http-okhttp</module>
+    <module>azure-core-http-vertx</module>
+    <module>azure-core-management</module>
+    <module>azure-core-metrics-opentelemetry</module>
+    <module>azure-core-perf</module>
+    <module>azure-core-serializer-avro-apache</module>
+    <module>azure-core-serializer-json-gson</module>
+    <module>azure-core-serializer-json-jackson</module>
+    <module>azure-core-test</module>
+    <module>azure-core-tracing-opentelemetry</module>
+    <module>azure-core-tracing-opentelemetry-samples</module>
+    <module>azure-core-version-tests</module>
+    <module>azure-json</module>
+    <module>azure-json-gson</module>
+    <module>azure-json-reflect</module>
+    <module>azure-xml</module>
+  </modules>
+</project>

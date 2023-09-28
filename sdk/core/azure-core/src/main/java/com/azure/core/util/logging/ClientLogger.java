@@ -23,8 +23,8 @@ import static com.azure.core.implementation.logging.LoggingUtils.removeThrowable
  * This is a fluent logger helper class that wraps a pluggable {@link Logger}.
  *
  * <p>This logger logs format-able messages that use {@code {}} as the placeholder. When a {@link Throwable throwable}
- * is the last argument of the format varargs and the logger is enabled for {@link ClientLogger#verbose(String,
- * Object...) verbose}, the stack trace for the throwable is logged.</p>
+ * is the last argument of the format varargs and the logger is enabled for
+ * {@link ClientLogger#verbose(String) verbose} the stack trace for the throwable is logged.</p>
  *
  * <p>A minimum logging level threshold is determined by the
  * {@link Configuration#PROPERTY_AZURE_LOG_LEVEL AZURE_LOG_LEVEL} environment configuration. By default logging is
@@ -32,10 +32,10 @@ import static com.azure.core.implementation.logging.LoggingUtils.removeThrowable
  *
  * <p><strong>Log level hierarchy</strong></p>
  * <ol>
- * <li>{@link ClientLogger#error(String, Object...) Error}</li>
- * <li>{@link ClientLogger#warning(String, Object...) Warning}</li>
- * <li>{@link ClientLogger#info(String, Object...) Info}</li>
- * <li>{@link ClientLogger#verbose(String, Object...) Verbose}</li>
+ * <li>{@link ClientLogger#error(String) Error}</li>
+ * <li>{@link ClientLogger#warning(String) Warning}</li>
+ * <li>{@link ClientLogger#info(String) Info}</li>
+ * <li>{@link ClientLogger#verbose(String) Verbose}</li>
  * </ol>
  *
  * <p>The logger is capable of producing json-formatted messages enriched with key value pairs.

@@ -1,0 +1,16 @@
+{
+  "$schema": "https://json.schemastore.org/component-detection-manifest.json",
+  "Registrations": [
+    {
+      "Component": {
+        "Type": "Maven",
+        "Maven": {
+          "ArtifactId": "netty-handler-proxy",
+          "GroupId": "io.netty",
+          "Version": "4.1.49.Final"
+        }
+      }
+    }
+  ],
+  "Version": 1
+}
