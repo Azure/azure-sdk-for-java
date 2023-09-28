@@ -22,6 +22,7 @@ public final class CosmosExcludedRegions {
     /**
      * Instantiates {@code CosmosExcludedRegions}.
      *
+     * @param excludedRegions the set of regions to exclude.
      * @throws IllegalArgumentException if {@code excludedRegions} is set as null.
      * */
     public CosmosExcludedRegions(Set<String> excludedRegions) {
