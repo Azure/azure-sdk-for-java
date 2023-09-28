@@ -24,7 +24,7 @@ import java.util.concurrent.atomic.AtomicInteger;
 /**
  * Code snippets demonstrating various {@link ServiceBusReceiverClient} and {@link ServiceBusReceiverAsyncClient}.
  */
-public class ServiceBusReceiverClientJavaDocCodeSample {
+public class ServiceBusReceiverClientJavaDocCodeSamples {
     /**
      * Fully qualified namespace is the host name of the Service Bus resource.  It can be found by navigating to the
      * Service Bus namespace and looking in the "Essentials" panel.

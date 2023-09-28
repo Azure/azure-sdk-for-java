@@ -13,7 +13,7 @@ import org.junit.jupiter.api.Test;
 /**
  * Code snippets demonstrating various {@link ServiceBusRuleManagerClient} scenarios.
  */
-public class ServiceBusRuleManagerClientJavaDocSample {
+public class ServiceBusRuleManagerClientJavaDocSamples {
     /**
      * Fully qualified namespace is the host name of the Service Bus resource.  It can be found by navigating to the
      * Service Bus namespace and looking in the "Essentials" panel.
