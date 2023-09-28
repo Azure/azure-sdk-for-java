@@ -28,6 +28,8 @@ import static com.azure.containers.containerregistry.implementation.UtilsImpl.ma
  * or {@link RegistryArtifact} that can be used to perform operations on the repository or artifact.</p>
  *
  * <p><strong>Instantiating a synchronous Container Registry client</strong></p>
+ * <br/>
+ *
  * <!-- src_embed com.azure.containers.containerregistry.ContainerRegistryClient.instantiation -->
  * <pre>
  * ContainerRegistryClient registryAsyncClient = new ContainerRegistryClientBuilder&#40;&#41;
@@ -37,7 +39,7 @@ import static com.azure.containers.containerregistry.implementation.UtilsImpl.ma
  * </pre>
  * <!-- end com.azure.containers.containerregistry.ContainerRegistryClient.instantiation -->
  *
- * <p>View {@link ContainerRegistryClientBuilder this} for additional ways to construct the client.</p>
+ * <p>View {@link ContainerRegistryClientBuilder} for additional ways to construct the client.</p>
  *
  * @see ContainerRegistryClientBuilder
  */
@@ -69,7 +71,7 @@ public final class ContainerRegistryClient {
     /**
      * List all the repository names in this registry.
      *
-     * <p><strong>List the repository names in the registry.</strong></p>
+     * <p><strong>List the repository names in the registry</strong></p>
      *
      * <!-- src_embed com.azure.containers.containerregistry.ContainerRegistryClient.listRepositoryNames -->
      * <pre>
@@ -90,7 +92,7 @@ public final class ContainerRegistryClient {
     /**
      * List all the repository names in this registry.
      *
-     * <p><strong>List the repository names in the registry.</strong></p>
+     * <p><strong>List the repository names in the registry</strong></p>
      * <!-- src_embed com.azure.containers.containerregistry.ContainerRegistryClient.listRepositoryNames#Context -->
      * <pre>
      * client.listRepositoryNames&#40;Context.NONE&#41;.stream&#40;&#41;.forEach&#40;name -&gt; &#123;
@@ -133,7 +135,7 @@ public final class ContainerRegistryClient {
     /**
      * Delete the repository with provided {@code repositoryName}.
      *
-     * <p><strong>Delete a repository in the registry.</strong></p>
+     * <p><strong>Delete a repository in the registry</strong></p>
      * <!-- src_embed com.azure.containers.containerregistry.ContainerRegistryClient.deleteRepository#String -->
      * <pre>
      * client.deleteRepository&#40;repositoryName&#41;;
@@ -153,7 +155,7 @@ public final class ContainerRegistryClient {
     /**
      * Delete the repository with provided {@code repositoryName}.
      *
-     *  <p><strong>Delete a repository in the registry.</strong></p>
+     *  <p><strong>Delete a repository in the registry</strong></p>
      * <!-- src_embed com.azure.containers.containerregistry.ContainerRegistryClient.deleteRepositoryWithResponse#String-Context -->
      * <pre>
      * client.deleteRepositoryWithResponse&#40;repositoryName, Context.NONE&#41;;
@@ -186,7 +188,7 @@ public final class ContainerRegistryClient {
     /**
      * Creates a new instance of {@link ContainerRepository} object for the specified repository.
      *
-     *  <p><strong>Get an instance of {@link ContainerRepository}.</strong></p>
+     *  <p><strong>Get an instance of {@link ContainerRepository}</strong></p>
      * <!-- src_embed com.azure.containers.containerregistry.ContainerRegistryClient.getRepository -->
      * <pre>
      * ContainerRepository repository = client.getRepository&#40;repositoryName&#41;;
@@ -207,7 +209,7 @@ public final class ContainerRegistryClient {
     /**
      * Creates a new instance of {@link RegistryArtifact} object for the specified artifact.
      *
-     *  <p><strong>Get an instance of {@link RegistryArtifact}.</strong></p>
+     *  <p><strong>Get an instance of {@link RegistryArtifact}</strong></p>
      * <!-- src_embed com.azure.containers.containerregistry.ContainerRegistryClient.getArtifact -->
      * <pre>
      * RegistryArtifact registryArtifact = client.getArtifact&#40;repositoryName, tagOrDigest&#41;;

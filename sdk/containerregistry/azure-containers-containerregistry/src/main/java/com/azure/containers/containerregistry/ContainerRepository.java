@@ -36,7 +36,8 @@ import static com.azure.containers.containerregistry.implementation.UtilsImpl.ma
  * <p>This class provides a client that works with a specific repository in Azure Container Registry.
  * It allows to get and update repository properties and delete repository.</p>
  *
- * <p><strong>Instantiating {@link ContainerRepository}.</strong></p>
+ * <p><strong>Instantiating {@link ContainerRepository}</strong></p>
+ * <br/>
  *
  * <!-- src_embed com.azure.containers.containerregistry.ContainerRepository.instantiation -->
  * <pre>
@@ -47,7 +48,7 @@ import static com.azure.containers.containerregistry.implementation.UtilsImpl.ma
  * </pre>
  * <!-- end com.azure.containers.containerregistry.ContainerRepository.instantiation -->
  *
- * <p>View {@link ContainerRegistryClientBuilder this} for additional ways to construct the client.</p>
+ * <p>View {@link ContainerRegistryClientBuilder} for additional ways to construct the client.</p>
  *
  * @see ContainerRegistryClientBuilder
  * @see ContainerRegistryClient
@@ -114,8 +115,8 @@ public final class ContainerRepository {
     /**
      * Delete the current repository.
      *
-     * <p><strong>Delete the repository.</strong></p>
-     * <p></p>
+     * <p><strong>Delete the repository</strong></p>
+     * <br/>
      *
      * <!-- src_embed com.azure.containers.containerregistry.ContainerRepository.deleteRepositoryWithResponse -->
      * <pre>
@@ -144,8 +145,8 @@ public final class ContainerRepository {
     /**
      * Delete the current repository.
      *
-     * <p><strong>Delete the repository.</strong></p>
-     * <p></p>
+     * <p><strong>Delete the repository</strong></p>
+     * <br/>
      *
      * <!-- src_embed com.azure.containers.containerregistry.ContainerRepository.deleteRepository -->
      * <pre>
@@ -165,8 +166,8 @@ public final class ContainerRepository {
     /**
      * Gets the {@link ContainerRepositoryProperties properties} associated with the current repository.
      *
-     * <p><strong>Get the properties for the current repository.</strong></p>
-     * <p></p>
+     * <p><strong>Get the properties for the current repository</strong></p>
+     * <br/>
      *
      * <!-- src_embed com.azure.containers.containerregistry.ContainerRepository.getPropertiesWithResponse -->
      * <pre>
@@ -195,8 +196,8 @@ public final class ContainerRepository {
     /**
      * Gets the {@link ContainerRepositoryProperties properties} associated with the current repository.
      *
-     * <p><strong>Get the properties for the current repository.</strong></p>
-     * <p></p>
+     * <p><strong>Get the properties for the current repository</strong></p>
+     * <br/>
      *
      * <!-- src_embed com.azure.containers.containerregistry.ContainerRepository.getProperties -->
      * <pre>
@@ -236,8 +237,8 @@ public final class ContainerRepository {
      * No assumptions on the order can be made if no options are provided to the service.
      * </p>
      *
-     * <p><strong>Retrieve all manifest properties associated with the current repository.</strong></p>
-     * <p></p>
+     * <p><strong>Retrieve all manifest properties associated with the current repository</strong></p>
+     * <br/>
      *
      * <!-- src_embed com.azure.containers.containerregistry.ContainerRepository.listManifestProperties -->
      * <pre>
@@ -265,8 +266,8 @@ public final class ContainerRepository {
      * Currently the service supports an ascending or descending order based on the last updated time for the artifacts.
      * No assumptions on the order can be made if no options are provided to the service. </p>
      *
-     * <p><strong>List all artifacts within current repository ordered by update time.</strong></p>
-     * <p></p>
+     * <p><strong>List all artifacts within current repository ordered by update time</strong></p>
+     * <br/>
      *
      * <!-- src_embed com.azure.containers.containerregistry.ContainerRepository.listManifestPropertiesWithOptionsNoContext -->
      * <pre>
@@ -295,8 +296,8 @@ public final class ContainerRepository {
      * Currently the service supports an ascending or descending order based on the last updated time for the artifacts.
      * No assumptions on the order can be made if no options are provided to the service. </p>
      *
-     * <p><strong>List all artifacts within current repository ordered by update time.</strong></p>
-     * <p></p>
+     * <p><strong>List all artifacts within current repository ordered by update time</strong></p>
+     * <br/>
      *
      * <!-- src_embed com.azure.containers.containerregistry.ContainerRepository.listManifestPropertiesWithOptions -->
      * <pre>
@@ -358,8 +359,8 @@ public final class ContainerRepository {
      * Update the repository properties {@link ContainerRepositoryProperties} of the current repository.
      * These properties set the update, delete and retrieve options of the repository.
      *
-     * <p><strong>Update the writeable properties for the current repository.</strong></p>
-     * <p></p>
+     * <p><strong>Update the writeable properties for the current repository</strong></p>
+     * <br/>
      *
      * <!-- src_embed com.azure.containers.containerregistry.ContainerRepository.updatePropertiesWithResponse -->
      * <pre>
@@ -386,8 +387,8 @@ public final class ContainerRepository {
      * Update the repository properties {@link ContainerRepositoryProperties} of the current repository.
      * These properties set the update, delete and retrieve options of the repository.
      *
-     * <p><strong>Update the writeable properties for the current repository.</strong></p>
-     * <p></p>
+     * <p><strong>Update the writeable properties for the current repository</strong></p>
+     * <br/>
      *
      * <!-- src_embed com.azure.containers.containerregistry.ContainerRepository.updateProperties -->
      * <pre>

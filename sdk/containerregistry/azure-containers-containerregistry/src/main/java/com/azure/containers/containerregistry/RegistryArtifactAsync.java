@@ -41,7 +41,8 @@ import static com.azure.core.util.FluxUtil.withContext;
  * <p>This class provides a client that works with a specific artifact.
  * It allows to get and update manifest and tag properties, delete tags and the artifact</p>
  *
- * <p><strong>Instantiating an asynchronous {@link RegistryArtifactAsync}.</strong></p>
+ * <p><strong>Instantiating an asynchronous {@link RegistryArtifactAsync}</strong></p>
+ * <br/>
  *
  * <!-- src_embed com.azure.containers.containerregistry.RegistryArtifactAsync.instantiation -->
  * <pre>
@@ -52,7 +53,7 @@ import static com.azure.core.util.FluxUtil.withContext;
  * </pre>
  * <!-- end com.azure.containers.containerregistry.RegistryArtifactAsync.instantiation -->
  *
- * <p>View {@link ContainerRegistryClientBuilder this} for additional ways to construct the client.</p>
+ * <p>View {@link ContainerRegistryClientBuilder} for additional ways to construct the client.</p>
  *
  * @see ContainerRegistryClientBuilder
  * @see ContainerRegistryAsyncClient
@@ -100,7 +101,7 @@ public final class RegistryArtifactAsync {
      * Deletes the current registry artifact.
      *
      * <p><strong>Delete the registry artifact</strong></p>
-     * <p></p>
+     * <br/>
      *
      * <!-- src_embed com.azure.containers.containerregistry.RegistryArtifactAsync.deleteWithResponse -->
      * <pre>
@@ -127,8 +128,8 @@ public final class RegistryArtifactAsync {
     /**
      * Deletes the current registry artifact.
      *
-     * <p><strong>Delete the registry artifact.</strong></p>
-     * <p></p>
+     * <p><strong>Delete the registry artifact</strong></p>
+     * <br/>
      *
      * <!-- src_embed com.azure.containers.containerregistry.RegistryArtifactAsync.delete -->
      * <pre>
@@ -148,8 +149,8 @@ public final class RegistryArtifactAsync {
     /**
      * Deletes the tag with the matching name on the current artifact.
      *
-     * <p><strong></strong>Delete the tag.</strong></p>
-     * <p></p>
+     * <p><strong>Delete the tag</strong></p>
+     * <br/>
      *
      * <!-- src_embed com.azure.containers.containerregistry.RegistryArtifactAsync.deleteTagWithResponse -->
      * <pre>
@@ -186,8 +187,8 @@ public final class RegistryArtifactAsync {
     /**
      * Deletes the tag with the matching name on the current artifact.
      *
-     * <p><strong>Delete the tag on the current artifact.</strong></p>
-     * <p></p>
+     * <p><strong>Delete the tag on the current artifact</strong></p>
+     * <br/>
      *
      * <!-- src_embed com.azure.containers.containerregistry.RegistryArtifactAsync.deleteTag -->
      * <pre>
@@ -212,7 +213,7 @@ public final class RegistryArtifactAsync {
      * Gets the {@link ArtifactManifestProperties properties} associated with the current artifact.
      *
      * <p><strong>Get manifest properties</strong></p>
-     * <p></p>
+     * <br/>
      *
      * <!-- src_embed com.azure.containers.containerregistry.RegistryArtifactAsync.getManifestPropertiesWithResponse -->
      * <pre>
@@ -245,8 +246,8 @@ public final class RegistryArtifactAsync {
     /**
      * Gets the {@link ArtifactManifestProperties properties} associated with the current artifact.
      *
-     * <p><strong>Get manifest properties.</strong></p>
-     * <p></p>
+     * <p><strong>Get manifest properties</strong></p>
+     * <br/>
      *
      * <!-- src_embed com.azure.containers.containerregistry.RegistryArtifactAsync.getManifestProperties -->
      * <pre>
@@ -270,8 +271,8 @@ public final class RegistryArtifactAsync {
     /**
      * Gets the tag properties associated with a given tag on the current artifact.
      *
-     * <p><strong>Retrieve the properties associated with the given tag.</strong></p>
-     * <p></p>
+     * <p><strong>Retrieve the properties associated with the given tag</strong></p>
+     * <br/>
      *
      * <!-- src_embed com.azure.containers.containerregistry.RegistryArtifactAsync.getTagPropertiesWithResponse -->
      * <pre>
@@ -313,8 +314,8 @@ public final class RegistryArtifactAsync {
     /**
      * Gets the tag properties associated with a given tag on the current artifact.
      *
-     * <p><strong>Retrieve the properties associated with the given tag.</strong></p>
-     * <p></p>
+     * <p><strong>Retrieve the properties associated with the given tag</strong></p>
+     * <br/>
      *
      * <!-- src_embed com.azure.containers.containerregistry.RegistryArtifactAsync.getTagProperties -->
      * <pre>
@@ -346,8 +347,8 @@ public final class RegistryArtifactAsync {
      * No assumptions on the order can be made if no options are provided to the service.
      * </p>
      *
-     * <p><strong>Retrieve all the tags associated with the current artifact.</strong></p>
-     * <p></p>
+     * <p><strong>Retrieve all the tags associated with the current artifact</strong></p>
+     * <br/>
      *
      * <!-- src_embed com.azure.containers.containerregistry.RegistryArtifactAsync.listTagProperties -->
      * <pre>
@@ -376,8 +377,8 @@ public final class RegistryArtifactAsync {
      * No assumptions on the order can be made if no options are provided to the service.
      * </p>
      *
-     * <p><strong>List all tags associated with the current artifact ordered by update time.</strong></p>
-     * <p></p>
+     * <p><strong>List all tags associated with the current artifact ordered by update time</strong></p>
+     * <br/>
      *
      * <!-- src_embed com.azure.containers.containerregistry.RegistryArtifactAsync.listTagPropertiesWithOptions -->
      * <pre>
@@ -428,8 +429,8 @@ public final class RegistryArtifactAsync {
      * Update the properties {@link ArtifactTagProperties} of the tag with the given name {@code tag}.
      * These properties set whether the given tag can be updated, deleted and retrieved.
      *
-     * <p><strong>Update writeable tag properties.</strong></p>
-     * <p></p>
+     * <p><strong>Update writeable tag properties</strong></p>
+     * <br/>
      *
      * <!-- src_embed com.azure.containers.containerregistry.RegistryArtifactAsync.updateTagPropertiesWithResponse -->
      * <pre>
@@ -485,8 +486,8 @@ public final class RegistryArtifactAsync {
      * Update the properties {@link ArtifactTagProperties} of the tag with the given name {@code tag}.
      * These properties set whether the given tag can be updated, deleted and retrieved.
      *
-     * <p><strong>Update writable tag properties.</strong></p>
-     * <p></p>
+     * <p><strong>Update writable tag properties</strong></p>
+     * <br/>
      *
      * <!-- src_embed com.azure.containers.containerregistry.RegistryArtifactAsync.updateTagPropertiesWithResponse -->
      * <pre>
@@ -515,8 +516,8 @@ public final class RegistryArtifactAsync {
      * Update the properties {@link ArtifactManifestProperties} of the current artifact.
      * These properties set whether the given manifest can be updated, deleted and retrieved.
      *
-     * <p><strong>>Update writeable manifest properties.</strong></p>
-     * <p></p>
+     * <p><strong>>Update writeable manifest properties</strong></p>
+     * <br/>
      *
      * <!-- src_embed com.azure.containers.containerregistry.RegistryArtifactAsync.updateManifestPropertiesWithResponse -->
      * <pre>
@@ -561,8 +562,8 @@ public final class RegistryArtifactAsync {
      * Update the properties {@link ArtifactManifestProperties} of the current artifact.
      * These properties set whether the given manifest can be updated, deleted and retrieved.
      *
-     * <p><strong>Update writeable manifest properties.</strong></p>
-     * <p></p>
+     * <p><strong>Update writeable manifest properties</strong></p>
+     * <br/>
      *
      * <!-- src_embed com.azure.containers.containerregistry.RegistryArtifactAsync.updateManifestProperties -->
      * <pre>

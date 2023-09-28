@@ -110,7 +110,7 @@ registryClient
 
 To authenticate with a registry in a [National Cloud](https://docs.microsoft.com/azure/active-directory/develop/authentication-national-cloud), you will need to make the following additions to your client configuration:
 - Set the `authorityHost` in the credential builder following [Identity client library documentation](https://learn.microsoft.com/java/api/overview/azure/identity-readme) 
-- If ACR access token authentication is disabled for yourcontainer Registry resource, you need to configure the audience on the Container Registry client builder.
+- If ACR access token authentication is disabled for your container Registry resource, you need to configure the audience on the Container Registry client builder.
 
 ```java readme-sample-armTokenChina
 ContainerRegistryClient registryClient = new ContainerRegistryClientBuilder()

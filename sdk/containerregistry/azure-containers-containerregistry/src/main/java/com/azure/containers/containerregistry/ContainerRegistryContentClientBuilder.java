@@ -24,9 +24,7 @@ import com.azure.core.util.HttpClientOptions;
 import com.azure.core.util.logging.ClientLogger;
 import com.azure.core.util.tracing.Tracer;
 
-import java.net.MalformedURLException;
 import java.net.URI;
-import java.net.URL;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Objects;
@@ -37,9 +35,10 @@ import static com.azure.containers.containerregistry.implementation.UtilsImpl.cr
  * <p>Fluent builder for instantiating a {@link ContainerRegistryContentClient} and {@link ContainerRegistryContentAsyncClient}. which are used to
  * upload, download, or delete images and artifacts in Azure Container Registry.</p>
  *
- * <p>The client needs the service endpoint of the Azure Container Registry, access credential, and repository name.</p>
+ * <p>The client needs the service endpoint of the Azure Container Registry, access credential, and the repository name.</p>
  *
  * <p><strong>Instantiating an asynchronous Container Registry Content client</strong></p>
+ * <br/>
  *
  * <!-- src_embed readme-sample-createContentAsyncClient -->
  * <pre>
@@ -53,6 +52,7 @@ import static com.azure.containers.containerregistry.implementation.UtilsImpl.cr
  * <!-- end readme-sample-createContentAsyncClient -->
  *
  * <p><strong>Instantiating a synchronous Container Registry Content client</strong></p>
+ * <br/>
  *
  * <!-- src_embed readme-sample-createContentClient -->
  * <pre>
@@ -66,9 +66,10 @@ import static com.azure.containers.containerregistry.implementation.UtilsImpl.cr
  * <!-- end readme-sample-createContentClient -->
  *
  * <p>Azure Container Registry could be configured for <a href="https://learn.microsoft.com/azure/container-registry/anonymous-pull-access">anonymous access</a>
- * allowing to pull images without authentication.</p>
+ * allowing to pull artifacts without authentication.</p>
  *
- * <p><strong>Instantiating an synchronous Container Registry Content client without credential</strong></p>
+ * <p><strong>Instantiating a synchronous Container Registry Content client without credential</strong></p>
+ * <br/>
  *
  * <!-- src_embed readme-sample-createAnonymousContentClient -->
  * <pre>
@@ -81,7 +82,6 @@ import static com.azure.containers.containerregistry.implementation.UtilsImpl.cr
  *
  * @see ContainerRegistryContentAsyncClient
  * @see ContainerRegistryContentClient
- * @see com.azure.containers.containerregistry
  */
 @ServiceClientBuilder(
     serviceClients = {

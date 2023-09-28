@@ -30,6 +30,7 @@ import static com.azure.core.util.FluxUtil.withContext;
  * or {@link RegistryArtifactAsync} that can be used to perform operations on the repository or artifact.</p>
  *
  * <p><strong>Instantiating an asynchronous Container Registry client</strong></p>
+ * <br/>
  *
  * <!-- src_embed com.azure.containers.containerregistry.ContainerRegistryAsyncClient.instantiation -->
  * <pre>
@@ -40,7 +41,7 @@ import static com.azure.core.util.FluxUtil.withContext;
  * </pre>
  * <!-- end com.azure.containers.containerregistry.ContainerRegistryAsyncClient.instantiation -->
  *
- * <p>View {@link ContainerRegistryClientBuilder this} for additional ways to construct the client.</p>
+ * <p>View {@link ContainerRegistryClientBuilder} for additional ways to construct the client.</p>
  *
  * @see ContainerRegistryClientBuilder
  */
@@ -72,7 +73,7 @@ public final class ContainerRegistryAsyncClient {
     /**
      * List all the repository names in this registry.
      *
-     * <p><strong>List repository names in the registry.</strong></p>
+     * <p><strong>List repository names in the registry</strong></p>
      *
      * <!-- src_embed com.azure.containers.containerregistry.ContainerRegistryAsyncClient.listRepositoryNames -->
      * <pre>
@@ -112,14 +113,14 @@ public final class ContainerRegistryAsyncClient {
     /**
      * Delete the repository with provided {@code repositoryName}.
      *
-     * <p><strong>Delete a repository in the registry.</strong></p>
+     * <p><strong>Delete a repository in the registry</strong></p>
      *
      * <!-- src_embed com.azure.containers.containerregistry.ContainerRegistryAsyncClient.deleteRepositoryWithResponse#String -->
      * <pre>
      * client.deleteRepositoryWithResponse&#40;repositoryName&#41;.subscribe&#40;response -&gt; &#123;
-     *     System.out.printf&#40;&quot;Successfully deleted the repository.&quot;&#41;;
+     *     System.out.printf&#40;&quot;Successfully initiated delete of the repository.&quot;&#41;;
      * &#125;, error -&gt; &#123;
-     *     System.out.println&#40;&quot;Failed to delete the repository.&quot;&#41;;
+     *     System.out.println&#40;&quot;Failed to initiate a delete of the repository.&quot;&#41;;
      * &#125;&#41;;
      * </pre>
      * <!-- end com.azure.containers.containerregistry.ContainerRegistryAsyncClient.deleteRepositoryWithResponse#String -->
@@ -152,7 +153,7 @@ public final class ContainerRegistryAsyncClient {
     /**
      * Delete the repository with provided {@code repositoryName}.
      *
-     * <p><strong>Delete a repository in the registry.</strong></p>
+     * <p><strong>Delete a repository in the registry</strong></p>
      * <!-- src_embed com.azure.containers.containerregistry.ContainerRegistryAsyncClient.deleteRepository#String -->
      * <pre>
      * client.deleteRepository&#40;repositoryName&#41;.subscribe&#40;response -&gt; &#123;

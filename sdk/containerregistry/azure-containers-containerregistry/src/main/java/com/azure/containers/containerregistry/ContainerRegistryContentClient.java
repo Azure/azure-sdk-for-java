@@ -61,10 +61,23 @@ import static com.azure.containers.containerregistry.implementation.UtilsImpl.va
 import static com.azure.core.util.CoreUtils.bytesToHexString;
 
 /**
- * This class provides a client that exposes operations to push and pull images into container registry.
- * It exposes methods that upload, download and delete artifacts from the registry i.e. images and manifests.
+ * <p>This class provides a client that can upload, download, and delete artifacts in Azure Container Registry repository.</p>
  *
- * <p>View {@link ContainerRegistryContentClientBuilder this} for additional ways to construct the client.</p>
+ * <p><strong>Instantiating {@link ContainerRegistryContentClient}</strong></p>
+ * <br/>
+ *
+ * <!-- src_embed readme-sample-createContentClient -->
+ * <pre>
+ * DefaultAzureCredential credential = new DefaultAzureCredentialBuilder&#40;&#41;.build&#40;&#41;;
+ * ContainerRegistryContentClient contentClient = new ContainerRegistryContentClientBuilder&#40;&#41;
+ *     .endpoint&#40;endpoint&#41;
+ *     .credential&#40;credential&#41;
+ *     .repositoryName&#40;repository&#41;
+ *     .buildClient&#40;&#41;;
+ * </pre>
+ * <!-- end readme-sample-createContentClient -->
+ *
+ * <p>View {@link ContainerRegistryContentClientBuilder} for additional ways to construct the client.</p>
  *
  * @see ContainerRegistryContentClientBuilder
  */
@@ -88,18 +101,18 @@ public final class ContainerRegistryContentClient {
     }
 
     /**
-     * This method returns the registry's repository on which operations are being performed.
+     * Gets the current repository name.
      *
-     * @return The name of the repository
+     * @return The repository name.
      */
     public String getRepositoryName() {
         return repositoryName;
     }
 
     /**
-     * This method returns the complete registry endpoint.
+     * Gets the Azure Container Registry service endpoint.
      *
-     * @return The registry endpoint including the authority.
+     * @return The service endpoint.
      */
     public String getEndpoint() {
         return endpoint;
@@ -108,7 +121,8 @@ public final class ContainerRegistryContentClient {
     /**
      * Upload the OCI manifest to the repository.
      *
-     * <p><strong>Code Samples:</strong></p>
+     * <p><strong>Upload an OCI manifest</strong></p>
+     * <br/>
      *
      * <!-- src_embed com.azure.containers.containerregistry.setManifest -->
      * <pre>
@@ -121,7 +135,7 @@ public final class ContainerRegistryContentClient {
      * @param manifest The {@link OciImageManifest} that needs to be updated.
      * @param tag Tag to apply on uploaded manifest. If {@code null} is passed, no tags will be applied.
      * @return upload result.
-     * @throws ClientAuthenticationException thrown if the client's credentials do not have access to modify the namespace.
+     * @throws ClientAuthenticationException thrown if the client's credentials do not have access to perform this operation.
      * @throws NullPointerException thrown if the {@code manifest} is null.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
@@ -133,7 +147,8 @@ public final class ContainerRegistryContentClient {
     /**
      * Uploads a manifest to the repository.
      *
-     * <p><strong>Code Samples:</strong></p>
+     * <p><strong>Upload a manifest</strong></p>
+     * <br/>
      *
      * <!-- src_embed com.azure.containers.containerregistry.uploadCustomManifest -->
      * <pre>
@@ -147,7 +162,7 @@ public final class ContainerRegistryContentClient {
      * @param options The options for the upload manifest operation.
      * @param context Additional context that is passed through the Http pipeline during the service call.
      * @return The rest response containing the upload result.
-     * @throws ClientAuthenticationException thrown if the client's credentials do not have access to modify the namespace.
+     * @throws ClientAuthenticationException thrown if the client's credentials do not have access to perform this operation.
      * @throws NullPointerException thrown if the {@code data} is null.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
@@ -159,7 +174,8 @@ public final class ContainerRegistryContentClient {
     /**
      * Uploads a blob to the repository in chunks of 4MB.
      *
-     * <p><strong>Code Samples</strong></p>
+     * <p><strong>Upload a blob from {@link BinaryData content}</strong></p>
+     * <br/>
      *
      * <!-- src_embed com.azure.containers.containerregistry.uploadBlob -->
      * <pre>
@@ -169,6 +185,9 @@ public final class ContainerRegistryContentClient {
      * System.out.printf&#40;&quot;Uploaded blob: digest - '%s', size - %s&#92;n&quot;, uploadResult.getDigest&#40;&#41;, uploadResult.getSizeInBytes&#40;&#41;&#41;;
      * </pre>
      * <!-- end com.azure.containers.containerregistry.uploadBlob -->
+     *
+     * <p><strong>Error handling</strong></p>
+     * <br/>
      *
      * <!-- src_embed com.azure.containers.containerregistry.uploadBlobErrorHandling -->
      * <pre>
@@ -193,7 +212,7 @@ public final class ContainerRegistryContentClient {
      *
      * @param content The blob content. The content may be loaded into memory depending on how {@link BinaryData} is created.
      * @return The upload response.
-     * @throws ClientAuthenticationException thrown if the client's credentials do not have access to modify the namespace.
+     * @throws ClientAuthenticationException thrown if the client's credentials do not have access to perform this operation.
      * @throws NullPointerException thrown if the {@code data} is {@code null}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
@@ -204,7 +223,8 @@ public final class ContainerRegistryContentClient {
     /**
      * Uploads a blob to the repository in chunks of 4MB.
      *
-     * <p><strong>Code Samples</strong></p>
+     * <p><strong>Upload blob from file</strong></p>
+     * <br/>
      *
      * <!-- src_embed com.azure.containers.containerregistry.uploadFile -->
      * <pre>
@@ -218,7 +238,7 @@ public final class ContainerRegistryContentClient {
      * @param content The blob content.
      * @param context Additional context that is passed through the Http pipeline during the service call.
      * @return The upload response.
-     * @throws ClientAuthenticationException thrown if the client's credentials do not have access to modify the namespace.
+     * @throws ClientAuthenticationException thrown if the client's credentials do not have access to perform this operation.
      * @throws NullPointerException thrown if the {@code stream} is {@code null}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
@@ -240,9 +260,8 @@ public final class ContainerRegistryContentClient {
     /**
      * Download the manifest identified by the given tag or digest.
      *
-     * <p><strong>Code Samples:</strong></p>
-     *
-     * Download manifest with tag:
+     * <p><strong>Download manifest by tag</strong></p>
+     * <br/>
      *
      * <!-- src_embed com.azure.containers.containerregistry.getManifestTag -->
      * <pre>
@@ -256,7 +275,8 @@ public final class ContainerRegistryContentClient {
      * </pre>
      * <!-- end com.azure.containers.containerregistry.getManifestTag -->
      *
-     * Download manifest with digest:
+     * <p><strong>Download manifest by digest</strong></p>
+     * <br/>
      *
      * <!-- src_embed com.azure.containers.containerregistry.getManifestDigest -->
      * <pre>
@@ -267,7 +287,7 @@ public final class ContainerRegistryContentClient {
      *
      * @param tagOrDigest Manifest tag or digest.
      * @return The manifest identified by the given tag or digest.
-     * @throws ClientAuthenticationException thrown if the client's credentials do not have access to modify the namespace.
+     * @throws ClientAuthenticationException thrown if the client's credentials do not have access to perform this operation.
      * @throws NullPointerException thrown if the {@code tagOrDigest} is null.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
@@ -278,7 +298,8 @@ public final class ContainerRegistryContentClient {
     /**
      * Download the manifest of custom type identified by the given tag or digest.
      *
-     * <p><strong>Code Samples:</strong></p>
+     * <p><strong>Download manifest</strong></p>
+     * <br/>
      *
      * <!-- src_embed com.azure.containers.containerregistry.getManifestWithResponse -->
      * <pre>
@@ -292,7 +313,7 @@ public final class ContainerRegistryContentClient {
      * @param tagOrDigest Manifest reference which can be tag or digest.
      * @param context Additional context that is passed through the Http pipeline during the service call.
      * @return The response for the manifest identified by the given tag or digest.
-     * @throws ClientAuthenticationException thrown if the client's credentials do not have access to modify the namespace.
+     * @throws ClientAuthenticationException thrown if the client's credentials do not have access to perform this operation.
      * @throws NullPointerException thrown if the {@code tagOrDigest} is null.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
@@ -309,9 +330,10 @@ public final class ContainerRegistryContentClient {
     }
 
     /**
-     * Download the blob identified by  the given digest.
+     * Download the blob identified by the given digest.
      *
-     * <p><strong>Code Samples:</strong></p>
+     * <p><strong>Download blob</strong></p>
+     * <br/>
      *
      * <!-- src_embed com.azure.containers.containerregistry.downloadStream -->
      * <pre>
@@ -323,7 +345,7 @@ public final class ContainerRegistryContentClient {
      *
      * @param digest The digest for the given image layer.
      * @param channel The channel to write content to.
-     * @throws ClientAuthenticationException thrown if the client's credentials do not have access to modify the namespace.
+     * @throws ClientAuthenticationException thrown if the client's credentials do not have access to perform this operation.
      * @throws NullPointerException thrown if the {@code digest} is null.
      * @throws ServiceResponseException thrown if content hash does not match requested digest.
      */
@@ -339,7 +361,7 @@ public final class ContainerRegistryContentClient {
      * @param channel The channel to write content to.
      * @param context Additional context that is passed through the Http pipeline during the service call.
      *
-     * @throws ClientAuthenticationException thrown if the client's credentials do not have access to modify the namespace.
+     * @throws ClientAuthenticationException thrown if the client's credentials do not have access to perform this operation.
      * @throws NullPointerException thrown if the {@code digest} is null.
      * @throws ServiceResponseException thrown if content hash does not match requested digest.
      */
@@ -349,9 +371,10 @@ public final class ContainerRegistryContentClient {
     }
 
     /**
-     * Delete the image identified by the given digest
+     * Delete the blob identified by the given digest
      *
-     * <p><strong>Code Samples:</strong></p>
+     * <p><strong>Delete blob</strong></p>
+     * <br/>
      *
      * <!-- src_embed readme-sample-deleteBlob -->
      * <pre>
@@ -365,7 +388,7 @@ public final class ContainerRegistryContentClient {
      * <!-- end readme-sample-deleteBlob -->
      *
      * @param digest The digest for the given image layer.
-     * @throws ClientAuthenticationException thrown if the client's credentials do not have access to modify the namespace.
+     * @throws ClientAuthenticationException thrown if the client's credentials do not have access to perform this operation.
      * @throws NullPointerException thrown if the {@code digest} is null.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
@@ -374,12 +397,12 @@ public final class ContainerRegistryContentClient {
     }
 
     /**
-     * Delete the image identified by the given digest
+     * Delete the blob identified by the given digest
      *
-     * @param digest The digest for the given image layer.
+     * @param digest The digest for the given blob.
      * @param context Additional context that is passed through the Http pipeline during the service call.
      * @return The REST response for the completion.
-     * @throws ClientAuthenticationException thrown if the client's credentials do not have access to modify the namespace.
+     * @throws ClientAuthenticationException thrown if the client's credentials do not have access to perform this operation.
      * @throws NullPointerException thrown if the {@code digest} is null.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
@@ -404,7 +427,8 @@ public final class ContainerRegistryContentClient {
     /**
      * Delete the manifest identified by the given digest.
      *
-     * <p><strong>Code Samples:</strong></p>
+     * <p><strong>Delete manifest</strong></p>
+     * <br/>
      *
      * <!-- src_embed readme-sample-deleteManifest -->
      * <pre>
@@ -414,7 +438,7 @@ public final class ContainerRegistryContentClient {
      * <!-- end readme-sample-deleteManifest -->
      *
      * @param digest The digest of the manifest.
-     * @throws ClientAuthenticationException thrown if the client's credentials do not have access to modify the namespace.
+     * @throws ClientAuthenticationException thrown if the client's credentials do not have access to perform this operation.
      * @throws NullPointerException thrown if the {@code digest} is null.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
@@ -428,7 +452,7 @@ public final class ContainerRegistryContentClient {
      * @param digest The digest of the manifest.
      * @param context Additional context that is passed through the Http pipeline during the service call.
      * @return The REST response for completion.
-     * @throws ClientAuthenticationException thrown if the client's credentials do not have access to modify the namespace.
+     * @throws ClientAuthenticationException thrown if the client's credentials do not have access to perform this operation.
      * @throws NullPointerException thrown if the {@code digest} is null.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
