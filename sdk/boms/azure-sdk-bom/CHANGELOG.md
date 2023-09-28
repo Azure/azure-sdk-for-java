@@ -1,6 +1,6 @@
 # Release History
 
-## 1.2.17 (2023-09-26)
+## 1.2.17 (2023-09-28)
 
 ### Dependency Updates
 
