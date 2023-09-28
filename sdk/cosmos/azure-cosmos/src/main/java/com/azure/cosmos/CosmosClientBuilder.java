@@ -35,6 +35,7 @@ import java.util.Collections;
 import java.util.List;
 import java.util.Locale;
 import java.util.Objects;
+import java.util.function.Supplier;
 
 import static com.azure.cosmos.implementation.ImplementationBridgeHelpers.CosmosClientBuilderHelper;
 
@@ -141,6 +142,7 @@ public class CosmosClientBuilder implements
     private CosmosContainerProactiveInitConfig proactiveContainerInitConfig;
     private CosmosEndToEndOperationLatencyPolicyConfig cosmosEndToEndOperationLatencyPolicyConfig;
     private SessionRetryOptions sessionRetryOptions;
+    private Supplier<CosmosExcludedRegions> cosmosExcludedRegionsSupplier;
 
     /**
      * Instantiates a new Cosmos client builder.
@@ -892,6 +894,11 @@ public class CosmosClientBuilder implements
         return this;
     }
 
+    public CosmosClientBuilder excludedRegionsSupplier(Supplier<CosmosExcludedRegions> excludedRegionsSupplier) {
+        this.cosmosExcludedRegionsSupplier = excludedRegionsSupplier;
+        return this;
+    }
+
     /**
      * Gets the regions to exclude from the list of preferred regions. A request will not be
      * routed to these excluded regions for non-retry and retry scenarios
@@ -1141,6 +1148,7 @@ public class CosmosClientBuilder implements
         }
         this.connectionPolicy.setPreferredRegions(this.preferredRegions);
         this.connectionPolicy.setExcludedRegions(this.excludedRegions);
+        this.connectionPolicy.setExcludedRegionsSupplier(this.cosmosExcludedRegionsSupplier);
         this.connectionPolicy.setUserAgentSuffix(this.userAgentSuffix);
         this.connectionPolicy.setThrottlingRetryOptions(this.throttlingRetryOptions);
         this.connectionPolicy.setEndpointDiscoveryEnabled(this.endpointDiscoveryEnabled);

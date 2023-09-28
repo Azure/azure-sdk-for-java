@@ -3,6 +3,7 @@
 
 package com.azure.cosmos.implementation.routing;
 
+import com.azure.cosmos.CosmosExcludedRegions;
 import com.azure.cosmos.DirectConnectionConfig;
 import com.azure.cosmos.implementation.ConnectionPolicy;
 import com.azure.cosmos.implementation.LifeCycleUtils;
@@ -17,9 +18,11 @@ import com.azure.cosmos.implementation.ResourceType;
 import com.azure.cosmos.implementation.RxDocumentServiceRequest;
 import com.azure.cosmos.implementation.Utils;
 import com.azure.cosmos.implementation.directconnectivity.ReflectionUtils;
+import com.azure.cosmos.implementation.guava25.collect.Sets;
 import com.azure.cosmos.models.ModelBridgeUtils;
 import com.azure.cosmos.implementation.guava25.collect.ImmutableList;
 import com.azure.cosmos.implementation.guava25.collect.Iterables;
+import org.apache.commons.lang3.ArrayUtils;
 import org.testng.annotations.AfterClass;
 import org.testng.annotations.DataProvider;
 import org.testng.annotations.Test;
@@ -38,6 +41,8 @@ import java.util.Map;
 import java.util.Set;
 import java.util.concurrent.TimeUnit;
 import java.util.concurrent.atomic.AtomicInteger;
+import java.util.concurrent.locks.ReentrantReadWriteLock;
+import java.util.function.Supplier;
 import java.util.stream.Collectors;
 import java.util.stream.IntStream;
 import java.util.stream.Stream;
@@ -113,7 +118,7 @@ public class LocationCacheTest {
         //      5. Expected applicable write regions
         return new Object[][] {
             {
-                Arrays.asList("location1", "location2"),
+                Set.of("location1", "location2"),
                 null,
                 RxDocumentServiceRequest.create(
                     mockDiagnosticsClientContext(),
@@ -123,7 +128,7 @@ public class LocationCacheTest {
                 new HashSet<>(Arrays.asList(Location3Endpoint))
             },
             {
-                Arrays.asList("location1", "location2", "location7"),
+                Set.of("location1", "location2", "location7"),
                 null,
                 RxDocumentServiceRequest.create(
                     mockDiagnosticsClientContext(),
@@ -143,7 +148,7 @@ public class LocationCacheTest {
                 new HashSet<>(Arrays.asList(Location1Endpoint, Location2Endpoint, Location3Endpoint))
             },
             {
-                Collections.emptyList(),
+                Set.of(),
                 null,
                 RxDocumentServiceRequest.create(
                     mockDiagnosticsClientContext(),
@@ -153,7 +158,7 @@ public class LocationCacheTest {
                 new HashSet<>(Arrays.asList(Location1Endpoint, Location2Endpoint, Location3Endpoint))
             },
             {
-                Arrays.asList("location5, location10, location10"),
+                Set.of("location5, location10, location10"),
                 null,
                 RxDocumentServiceRequest.create(
                     mockDiagnosticsClientContext(),
@@ -163,7 +168,7 @@ public class LocationCacheTest {
                 new HashSet<>(Arrays.asList(Location1Endpoint, Location2Endpoint, Location3Endpoint))
             },
             {
-                Arrays.asList("location1, location2, location10"),
+                Set.of("location1, location2, location10"),
                 Arrays.asList("location2"),
                 RxDocumentServiceRequest.create(
                     mockDiagnosticsClientContext(),
@@ -194,17 +199,21 @@ public class LocationCacheTest {
 
     @Test(groups = "unit", dataProvider = "excludedRegionsTestConfigs")
     public void validateExcludedRegions(
-        List<String> excludedRegionsOnClient,
+        Set<String> excludedRegionsOnClient,
         List<String> excludedRegionsOnRequest,
         RxDocumentServiceRequest request,
         Set<URI> expectedApplicableReadEndpoints,
         Set<URI> expectedApplicableWriteEndpoints) throws Exception {
 
         this.initialize(true, true, false);
+        CosmosExcludedRegionsSupplier excludedRegionsSupplier = new CosmosExcludedRegionsSupplier();
 
         ConnectionPolicy connectionPolicy = ReflectionUtils.getConnectionPolicy(this.cache);
 
-        connectionPolicy.setExcludedRegions(excludedRegionsOnClient);
+        connectionPolicy.setExcludedRegionsSupplier(excludedRegionsSupplier);
+
+        excludedRegionsSupplier.setExcludedRegions(excludedRegionsOnClient);
+
         request.requestContext.setExcludeRegions(excludedRegionsOnRequest);
 
         List<URI> applicableReadEndpoints = cache.getApplicableReadEndpoints(request);
@@ -551,5 +560,35 @@ public class LocationCacheTest {
         dal.setEndpoint(endpoint);
 
         return dal;
+    }
+
+    private class CosmosExcludedRegionsSupplier implements Supplier<CosmosExcludedRegions> {
+
+        private volatile CosmosExcludedRegions cosmosExcludedRegions;
+        private final ReentrantReadWriteLock reentrantReadWriteLock;
+
+        public CosmosExcludedRegionsSupplier() {
+            this.cosmosExcludedRegions = new CosmosExcludedRegions(new HashSet<>());
+            this.reentrantReadWriteLock = new ReentrantReadWriteLock();
+        }
+
+        @Override
+        public CosmosExcludedRegions get() {
+            reentrantReadWriteLock.readLock().lock();
+            try {
+                return this.cosmosExcludedRegions;
+            } finally {
+                reentrantReadWriteLock.readLock().unlock();
+            }
+        }
+
+        public void setExcludedRegions(Set<String> excludedRegions) {
+            reentrantReadWriteLock.writeLock().lock();
+            try {
+                this.cosmosExcludedRegions = new CosmosExcludedRegions(excludedRegions);
+            } finally {
+                reentrantReadWriteLock.writeLock().unlock();
+            }
+        }
     }
 }

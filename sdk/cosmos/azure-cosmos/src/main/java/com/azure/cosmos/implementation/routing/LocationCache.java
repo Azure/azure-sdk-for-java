@@ -4,6 +4,7 @@
 package com.azure.cosmos.implementation.routing;
 
 import com.azure.cosmos.BridgeInternal;
+import com.azure.cosmos.CosmosExcludedRegions;
 import com.azure.cosmos.implementation.Configs;
 import com.azure.cosmos.implementation.ConnectionPolicy;
 import com.azure.cosmos.implementation.DatabaseAccount;
@@ -29,6 +30,7 @@ import java.util.Map;
 import java.util.Objects;
 import java.util.concurrent.ConcurrentHashMap;
 import java.util.function.BiFunction;
+import java.util.function.Supplier;
 import java.util.stream.Collectors;
 
 /**
@@ -214,9 +216,15 @@ public class LocationCache {
     }
 
     public UnmodifiableList<URI> getApplicableWriteEndpoints(List<String> excludedRegionsOnRequest) {
-        UnmodifiableList<URI> writeEndpoints = this.getWriteEndpoints();
 
-        List<String> effectiveExcludedRegions = connectionPolicy.getExcludedRegions();
+        UnmodifiableList<URI> writeEndpoints = this.getWriteEndpoints();
+        Supplier<CosmosExcludedRegions> excludedRegionsSupplier = this.connectionPolicy.getExcludedRegionsSupplier();
+
+        List<String> effectiveExcludedRegions = excludedRegionsSupplier != null ? excludedRegionsSupplier
+            .get()
+            .getExcludedRegions()
+            .stream()
+            .toList() : Collections.emptyList();
 
         if (!isExcludeRegionsConfigured(excludedRegionsOnRequest, effectiveExcludedRegions)) {
             return writeEndpoints;
@@ -240,8 +248,13 @@ public class LocationCache {
 
     public UnmodifiableList<URI> getApplicableReadEndpoints(List<String> excludedRegionsOnRequest) {
         UnmodifiableList<URI> readEndpoints = this.getReadEndpoints();
+        Supplier<CosmosExcludedRegions> excludedRegionsSupplier = this.connectionPolicy.getExcludedRegionsSupplier();
 
-        List<String> effectiveExcludedRegions = connectionPolicy.getExcludedRegions();
+        List<String> effectiveExcludedRegions = excludedRegionsSupplier != null ? excludedRegionsSupplier
+            .get()
+            .getExcludedRegions()
+            .stream()
+            .toList() : Collections.emptyList();
 
         if (!isExcludeRegionsConfigured(excludedRegionsOnRequest, effectiveExcludedRegions)) {
             return readEndpoints;

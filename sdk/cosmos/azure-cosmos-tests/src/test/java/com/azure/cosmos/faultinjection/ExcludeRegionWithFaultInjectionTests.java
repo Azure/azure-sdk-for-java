@@ -9,6 +9,7 @@ import com.azure.cosmos.CosmosAsyncContainer;
 import com.azure.cosmos.CosmosClientBuilder;
 import com.azure.cosmos.CosmosDiagnostics;
 import com.azure.cosmos.CosmosException;
+import com.azure.cosmos.CosmosExcludedRegions;
 import com.azure.cosmos.CosmosRegionSwitchHint;
 import com.azure.cosmos.SessionRetryOptionsBuilder;
 import com.azure.cosmos.implementation.AsyncDocumentClient;
@@ -62,7 +63,9 @@ import java.util.Map;
 import java.util.Set;
 import java.util.UUID;
 import java.util.concurrent.ConcurrentHashMap;
+import java.util.concurrent.locks.ReentrantReadWriteLock;
 import java.util.function.Function;
+import java.util.function.Supplier;
 import java.util.stream.Collectors;
 
 import static org.assertj.core.api.AssertionsForClassTypes.assertThat;
@@ -853,14 +856,14 @@ public class ExcludeRegionWithFaultInjectionTests extends TestSuiteBase {
                 itemRequestOptions.setNonIdempotentWriteRetryPolicy(params.nonIdempotentWriteRetriesEnabled, true);
 
                 try {
-                    
+
                     CosmosItemResponse<TestItem> response = params.cosmosAsyncContainer.upsertItem(
-                        alreadyCreatedItem, 
+                        alreadyCreatedItem,
                         new PartitionKey(alreadyCreatedItem.getId()),
                         itemRequestOptions).block();
-                    
+
                     return new OperationExecutionResult<>(response);
-                    
+
                 } catch (Exception exception) {
                     if (exception instanceof CosmosException) {
                         CosmosException cosmosException = Utils.as(exception, CosmosException.class);
@@ -870,7 +873,7 @@ public class ExcludeRegionWithFaultInjectionTests extends TestSuiteBase {
                         fail("A CosmosException instance should have been thrown.");
                     }
                 }
-                
+
                 return null;
             };
 
@@ -936,7 +939,7 @@ public class ExcludeRegionWithFaultInjectionTests extends TestSuiteBase {
                         fail("A CosmosException instance should have been thrown.");
                     }
                 }
-                
+
                 return null;
             };
 
@@ -2291,6 +2294,8 @@ public class ExcludeRegionWithFaultInjectionTests extends TestSuiteBase {
 
         List<String> excludedRegions = null;
 
+        CosmosExcludedRegionsSupplier excludedRegionsSupplier = new CosmosExcludedRegionsSupplier();
+
         if (mutationTestConfig.chooseInitialExclusionRegions != null) {
             excludedRegions = mutationTestConfig.chooseInitialExclusionRegions.apply(this.preferredRegions);
 
@@ -2304,6 +2309,8 @@ public class ExcludeRegionWithFaultInjectionTests extends TestSuiteBase {
 
                 excludedRegions.addAll(excludedRegionsCopy);
             }
+
+            excludedRegionsSupplier.setExcludedRegions(new HashSet<>(excludedRegions));
         }
 
         try {
@@ -2314,24 +2321,9 @@ public class ExcludeRegionWithFaultInjectionTests extends TestSuiteBase {
                 .consistencyLevel(BridgeInternal.getContextClient(this.cosmosAsyncClient).getConsistencyLevel())
                 .preferredRegions(this.preferredRegions)
                 .sessionRetryOptions(new SessionRetryOptionsBuilder().regionSwitchHint(CosmosRegionSwitchHint.REMOTE_REGION_PREFERRED).build())
+                .excludedRegionsSupplier(excludedRegionsSupplier)
                 .directMode()
-                .excludeRegions(excludedRegions)
                 .buildAsyncClient();
-
-            if (excludedRegions == null || excludedRegions.isEmpty()) {
-                assertThat(clientWithPreferredRegions.getExcludedRegions()).isNotNull();
-                assertThat(clientWithPreferredRegions.getExcludedRegions().size()).isEqualTo(0);
-            } else {
-
-                Set<String> excludedRegionsWithNoDuplicates = new HashSet<>(excludedRegions);
-
-                assertThat(clientWithPreferredRegions.getExcludedRegions()).isNotNull();
-                assertThat(clientWithPreferredRegions.getExcludedRegions().size()).isEqualTo(excludedRegionsWithNoDuplicates.size());
-
-                for (String excludedRegion : excludedRegions) {
-                   assertThat(clientWithPreferredRegions.getExcludedRegions().contains(excludedRegion)).isTrue();
-                }
-            }
 
             CosmosAsyncContainer containerForClientWithPreferredRegions = clientWithPreferredRegions
                 .getDatabase(this.cosmosAsyncContainer.getDatabase().getId())
@@ -2382,23 +2374,7 @@ public class ExcludeRegionWithFaultInjectionTests extends TestSuiteBase {
                 mutatedExcludedRegions.addAll(excludedRegionsCopy);
             }
 
-
-            clientWithPreferredRegions.setExcludedRegions(mutatedExcludedRegions);
-
-            if (mutatedExcludedRegions == null || mutatedExcludedRegions.isEmpty()) {
-                assertThat(clientWithPreferredRegions.getExcludedRegions()).isNotNull();
-                assertThat(clientWithPreferredRegions.getExcludedRegions().size()).isEqualTo(0);
-            } else {
-
-                Set<String> mutatedExcludedRegionsWithNoDuplicates = new HashSet<>(mutatedExcludedRegions);
-
-                assertThat(clientWithPreferredRegions.getExcludedRegions()).isNotNull();
-                assertThat(clientWithPreferredRegions.getExcludedRegions().size()).isEqualTo(mutatedExcludedRegionsWithNoDuplicates.size());
-
-                for (String excludedRegion : mutatedExcludedRegions) {
-                    assertThat(clientWithPreferredRegions.getExcludedRegions().contains(excludedRegion)).isTrue();
-                }
-            }
+            excludedRegionsSupplier.setExcludedRegions(new HashSet<>(mutatedExcludedRegions));
 
             params.itemRequestOptionsForCallbackAfterMutation = mutationTestConfig.itemRequestOptionsForCallbackAfterMutation;
             params.patchItemRequestOptionsForCallbackAfterMutation = mutationTestConfig.patchItemRequestOptionsForCallbackAfterMutation;
@@ -2853,5 +2829,35 @@ public class ExcludeRegionWithFaultInjectionTests extends TestSuiteBase {
         public CosmosQueryRequestOptions queryRequestOptionsForCallbackAfterMutation;
         public CosmosBulkExecutionOptions bulkExecutionOptionsForCallbackAfterMutation;
         public CosmosBatchRequestOptions batchRequestOptionsForCallbackAfterMutation;
+    }
+
+    private static class CosmosExcludedRegionsSupplier implements Supplier<CosmosExcludedRegions> {
+
+        private volatile CosmosExcludedRegions cosmosExcludedRegions;
+        private final ReentrantReadWriteLock reentrantReadWriteLock;
+
+        public CosmosExcludedRegionsSupplier() {
+            this.cosmosExcludedRegions = new CosmosExcludedRegions(new HashSet<>());
+            this.reentrantReadWriteLock = new ReentrantReadWriteLock();
+        }
+
+        @Override
+        public CosmosExcludedRegions get() {
+            reentrantReadWriteLock.readLock().lock();
+            try {
+                return this.cosmosExcludedRegions;
+            } finally {
+                reentrantReadWriteLock.readLock().unlock();
+            }
+        }
+
+        public void setExcludedRegions(Set<String> excludedRegions) {
+            reentrantReadWriteLock.writeLock().lock();
+            try {
+                this.cosmosExcludedRegions = new CosmosExcludedRegions(excludedRegions);
+            } finally {
+                reentrantReadWriteLock.writeLock().unlock();
+            }
+        }
     }
 }

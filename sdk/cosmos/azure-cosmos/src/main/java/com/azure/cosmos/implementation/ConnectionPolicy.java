@@ -6,16 +6,17 @@ package com.azure.cosmos.implementation;
 import com.azure.core.http.ProxyOptions;
 import com.azure.cosmos.BridgeInternal;
 import com.azure.cosmos.ConnectionMode;
+import com.azure.cosmos.CosmosExcludedRegions;
 import com.azure.cosmos.DirectConnectionConfig;
 import com.azure.cosmos.GatewayConnectionConfig;
 import com.azure.cosmos.ThrottlingRetryOptions;
 
 import java.time.Duration;
-import java.util.ArrayList;
 import java.util.Collections;
 import java.util.List;
 import java.util.Locale;
 import java.util.concurrent.locks.ReentrantReadWriteLock;
+import java.util.function.Supplier;
 import java.util.regex.Pattern;
 import java.util.stream.Collectors;
 
@@ -32,6 +33,7 @@ public final class ConnectionPolicy {
     private boolean multipleWriteRegionsEnabled;
     private List<String> preferredRegions;
     private List<String> excludedRegions;
+    private Supplier<CosmosExcludedRegions> excludedRegionsSupplier;
     private boolean readRequestsFallbackEnabled;
     private ThrottlingRetryOptions throttlingRetryOptions;
     private String userAgentSuffix;
@@ -497,6 +499,15 @@ public final class ConnectionPolicy {
         } finally {
             reentrantReadWriteLock.writeLock().unlock();
         }
+    }
+
+    public ConnectionPolicy setExcludedRegionsSupplier(Supplier<CosmosExcludedRegions> excludedRegionsSupplier) {
+        this.excludedRegionsSupplier = excludedRegionsSupplier;
+        return this;
+    }
+
+    public Supplier<CosmosExcludedRegions> getExcludedRegionsSupplier() {
+        return this.excludedRegionsSupplier;
     }
 
     public List<String> getExcludedRegions() {
