@@ -6,13 +6,13 @@ package com.azure.communication.callautomation.implementation;
 
 import com.azure.communication.callautomation.implementation.models.CommunicationErrorResponseException;
 import com.azure.communication.callautomation.implementation.models.ContinuousDtmfRecognitionRequestInternal;
-import com.azure.communication.callautomation.implementation.models.HoldParticipantRequestInternal;
 import com.azure.communication.callautomation.implementation.models.PlayRequest;
 import com.azure.communication.callautomation.implementation.models.RecognizeRequest;
 import com.azure.communication.callautomation.implementation.models.SendDtmfRequestInternal;
+import com.azure.communication.callautomation.implementation.models.StartHoldMusicRequestInternal;
 import com.azure.communication.callautomation.implementation.models.StartTranscriptionRequest;
+import com.azure.communication.callautomation.implementation.models.StopHoldMusicRequestInternal;
 import com.azure.communication.callautomation.implementation.models.StopTranscriptionRequest;
-import com.azure.communication.callautomation.implementation.models.UnholdParticipantRequestInternal;
 import com.azure.communication.callautomation.implementation.models.UpdateTranscriptionDataRequest;
 import com.azure.core.annotation.BodyParam;
 import com.azure.core.annotation.ExpectedResponses;
@@ -165,7 +165,7 @@ public final class CallMediasImpl {
                 @HostParam("endpoint") String endpoint,
                 @PathParam("callConnectionId") String callConnectionId,
                 @QueryParam("api-version") String apiVersion,
-                @BodyParam("application/json") HoldParticipantRequestInternal holdParticipantRequest,
+                @BodyParam("application/json") StartHoldMusicRequestInternal startHoldMusicRequest,
                 @HeaderParam("Accept") String accept,
                 Context context);
 
@@ -176,7 +176,7 @@ public final class CallMediasImpl {
                 @HostParam("endpoint") String endpoint,
                 @PathParam("callConnectionId") String callConnectionId,
                 @QueryParam("api-version") String apiVersion,
-                @BodyParam("application/json") UnholdParticipantRequestInternal unholdParticipantRequest,
+                @BodyParam("application/json") StopHoldMusicRequestInternal stopHoldMusicRequest,
                 @HeaderParam("Accept") String accept,
                 Context context);
     }
@@ -1210,7 +1210,7 @@ public final class CallMediasImpl {
      * Hold participant from the call using identifier.
      *
      * @param callConnectionId The call connection id.
-     * @param holdParticipantRequest The participants to be hold from the call.
+     * @param startHoldMusicRequest The participants to be hold from the call.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws CommunicationErrorResponseException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
@@ -1218,7 +1218,7 @@ public final class CallMediasImpl {
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<Response<Void>> startHoldMusicWithResponseAsync(
-            String callConnectionId, HoldParticipantRequestInternal holdParticipantRequest) {
+            String callConnectionId, StartHoldMusicRequestInternal startHoldMusicRequest) {
         final String accept = "application/json";
         return FluxUtil.withContext(
                 context ->
@@ -1226,7 +1226,7 @@ public final class CallMediasImpl {
                                 this.client.getEndpoint(),
                                 callConnectionId,
                                 this.client.getApiVersion(),
-                                holdParticipantRequest,
+                                startHoldMusicRequest,
                                 accept,
                                 context));
     }
@@ -1235,7 +1235,7 @@ public final class CallMediasImpl {
      * Hold participant from the call using identifier.
      *
      * @param callConnectionId The call connection id.
-     * @param holdParticipantRequest The participants to be hold from the call.
+     * @param startHoldMusicRequest The participants to be hold from the call.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws CommunicationErrorResponseException thrown if the request is rejected by server.
@@ -1244,13 +1244,13 @@ public final class CallMediasImpl {
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<Response<Void>> startHoldMusicWithResponseAsync(
-            String callConnectionId, HoldParticipantRequestInternal holdParticipantRequest, Context context) {
+            String callConnectionId, StartHoldMusicRequestInternal startHoldMusicRequest, Context context) {
         final String accept = "application/json";
         return service.startHoldMusic(
                 this.client.getEndpoint(),
                 callConnectionId,
                 this.client.getApiVersion(),
-                holdParticipantRequest,
+                startHoldMusicRequest,
                 accept,
                 context);
     }
@@ -1259,7 +1259,7 @@ public final class CallMediasImpl {
      * Hold participant from the call using identifier.
      *
      * @param callConnectionId The call connection id.
-     * @param holdParticipantRequest The participants to be hold from the call.
+     * @param startHoldMusicRequest The participants to be hold from the call.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws CommunicationErrorResponseException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
@@ -1267,8 +1267,8 @@ public final class CallMediasImpl {
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<Void> startHoldMusicAsync(
-            String callConnectionId, HoldParticipantRequestInternal holdParticipantRequest) {
-        return startHoldMusicWithResponseAsync(callConnectionId, holdParticipantRequest)
+            String callConnectionId, StartHoldMusicRequestInternal startHoldMusicRequest) {
+        return startHoldMusicWithResponseAsync(callConnectionId, startHoldMusicRequest)
                 .flatMap((Response<Void> res) -> Mono.empty());
     }
 
@@ -1276,7 +1276,7 @@ public final class CallMediasImpl {
      * Hold participant from the call using identifier.
      *
      * @param callConnectionId The call connection id.
-     * @param holdParticipantRequest The participants to be hold from the call.
+     * @param startHoldMusicRequest The participants to be hold from the call.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws CommunicationErrorResponseException thrown if the request is rejected by server.
@@ -1285,8 +1285,8 @@ public final class CallMediasImpl {
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<Void> startHoldMusicAsync(
-            String callConnectionId, HoldParticipantRequestInternal holdParticipantRequest, Context context) {
-        return startHoldMusicWithResponseAsync(callConnectionId, holdParticipantRequest, context)
+            String callConnectionId, StartHoldMusicRequestInternal startHoldMusicRequest, Context context) {
+        return startHoldMusicWithResponseAsync(callConnectionId, startHoldMusicRequest, context)
                 .flatMap((Response<Void> res) -> Mono.empty());
     }
 
@@ -1294,21 +1294,21 @@ public final class CallMediasImpl {
      * Hold participant from the call using identifier.
      *
      * @param callConnectionId The call connection id.
-     * @param holdParticipantRequest The participants to be hold from the call.
+     * @param startHoldMusicRequest The participants to be hold from the call.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws CommunicationErrorResponseException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public void startHoldMusic(String callConnectionId, HoldParticipantRequestInternal holdParticipantRequest) {
-        startHoldMusicAsync(callConnectionId, holdParticipantRequest).block();
+    public void startHoldMusic(String callConnectionId, StartHoldMusicRequestInternal startHoldMusicRequest) {
+        startHoldMusicAsync(callConnectionId, startHoldMusicRequest).block();
     }
 
     /**
      * Hold participant from the call using identifier.
      *
      * @param callConnectionId The call connection id.
-     * @param holdParticipantRequest The participants to be hold from the call.
+     * @param startHoldMusicRequest The participants to be hold from the call.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws CommunicationErrorResponseException thrown if the request is rejected by server.
@@ -1317,15 +1317,15 @@ public final class CallMediasImpl {
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Response<Void> startHoldMusicWithResponse(
-            String callConnectionId, HoldParticipantRequestInternal holdParticipantRequest, Context context) {
-        return startHoldMusicWithResponseAsync(callConnectionId, holdParticipantRequest, context).block();
+            String callConnectionId, StartHoldMusicRequestInternal startHoldMusicRequest, Context context) {
+        return startHoldMusicWithResponseAsync(callConnectionId, startHoldMusicRequest, context).block();
     }
 
     /**
      * Unhold participants from the call using identifier.
      *
      * @param callConnectionId The call connection id.
-     * @param unholdParticipantRequest The participants to be hold from the call.
+     * @param stopHoldMusicRequest The participants to be hold from the call.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws CommunicationErrorResponseException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
@@ -1333,7 +1333,7 @@ public final class CallMediasImpl {
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<Response<Void>> stopHoldMusicWithResponseAsync(
-            String callConnectionId, UnholdParticipantRequestInternal unholdParticipantRequest) {
+            String callConnectionId, StopHoldMusicRequestInternal stopHoldMusicRequest) {
         final String accept = "application/json";
         return FluxUtil.withContext(
                 context ->
@@ -1341,7 +1341,7 @@ public final class CallMediasImpl {
                                 this.client.getEndpoint(),
                                 callConnectionId,
                                 this.client.getApiVersion(),
-                                unholdParticipantRequest,
+                                stopHoldMusicRequest,
                                 accept,
                                 context));
     }
@@ -1350,7 +1350,7 @@ public final class CallMediasImpl {
      * Unhold participants from the call using identifier.
      *
      * @param callConnectionId The call connection id.
-     * @param unholdParticipantRequest The participants to be hold from the call.
+     * @param stopHoldMusicRequest The participants to be hold from the call.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws CommunicationErrorResponseException thrown if the request is rejected by server.
@@ -1359,13 +1359,13 @@ public final class CallMediasImpl {
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<Response<Void>> stopHoldMusicWithResponseAsync(
-            String callConnectionId, UnholdParticipantRequestInternal unholdParticipantRequest, Context context) {
+            String callConnectionId, StopHoldMusicRequestInternal stopHoldMusicRequest, Context context) {
         final String accept = "application/json";
         return service.stopHoldMusic(
                 this.client.getEndpoint(),
                 callConnectionId,
                 this.client.getApiVersion(),
-                unholdParticipantRequest,
+                stopHoldMusicRequest,
                 accept,
                 context);
     }
@@ -1374,16 +1374,15 @@ public final class CallMediasImpl {
      * Unhold participants from the call using identifier.
      *
      * @param callConnectionId The call connection id.
-     * @param unholdParticipantRequest The participants to be hold from the call.
+     * @param stopHoldMusicRequest The participants to be hold from the call.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws CommunicationErrorResponseException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return the completion.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Mono<Void> stopHoldMusicAsync(
-            String callConnectionId, UnholdParticipantRequestInternal unholdParticipantRequest) {
-        return stopHoldMusicWithResponseAsync(callConnectionId, unholdParticipantRequest)
+    public Mono<Void> stopHoldMusicAsync(String callConnectionId, StopHoldMusicRequestInternal stopHoldMusicRequest) {
+        return stopHoldMusicWithResponseAsync(callConnectionId, stopHoldMusicRequest)
                 .flatMap((Response<Void> res) -> Mono.empty());
     }
 
@@ -1391,7 +1390,7 @@ public final class CallMediasImpl {
      * Unhold participants from the call using identifier.
      *
      * @param callConnectionId The call connection id.
-     * @param unholdParticipantRequest The participants to be hold from the call.
+     * @param stopHoldMusicRequest The participants to be hold from the call.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws CommunicationErrorResponseException thrown if the request is rejected by server.
@@ -1400,8 +1399,8 @@ public final class CallMediasImpl {
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<Void> stopHoldMusicAsync(
-            String callConnectionId, UnholdParticipantRequestInternal unholdParticipantRequest, Context context) {
-        return stopHoldMusicWithResponseAsync(callConnectionId, unholdParticipantRequest, context)
+            String callConnectionId, StopHoldMusicRequestInternal stopHoldMusicRequest, Context context) {
+        return stopHoldMusicWithResponseAsync(callConnectionId, stopHoldMusicRequest, context)
                 .flatMap((Response<Void> res) -> Mono.empty());
     }
 
@@ -1409,21 +1408,21 @@ public final class CallMediasImpl {
      * Unhold participants from the call using identifier.
      *
      * @param callConnectionId The call connection id.
-     * @param unholdParticipantRequest The participants to be hold from the call.
+     * @param stopHoldMusicRequest The participants to be hold from the call.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws CommunicationErrorResponseException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public void stopHoldMusic(String callConnectionId, UnholdParticipantRequestInternal unholdParticipantRequest) {
-        stopHoldMusicAsync(callConnectionId, unholdParticipantRequest).block();
+    public void stopHoldMusic(String callConnectionId, StopHoldMusicRequestInternal stopHoldMusicRequest) {
+        stopHoldMusicAsync(callConnectionId, stopHoldMusicRequest).block();
     }
 
     /**
      * Unhold participants from the call using identifier.
      *
      * @param callConnectionId The call connection id.
-     * @param unholdParticipantRequest The participants to be hold from the call.
+     * @param stopHoldMusicRequest The participants to be hold from the call.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws CommunicationErrorResponseException thrown if the request is rejected by server.
@@ -1432,7 +1431,7 @@ public final class CallMediasImpl {
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Response<Void> stopHoldMusicWithResponse(
-            String callConnectionId, UnholdParticipantRequestInternal unholdParticipantRequest, Context context) {
-        return stopHoldMusicWithResponseAsync(callConnectionId, unholdParticipantRequest, context).block();
+            String callConnectionId, StopHoldMusicRequestInternal stopHoldMusicRequest, Context context) {
+        return stopHoldMusicWithResponseAsync(callConnectionId, stopHoldMusicRequest, context).block();
     }
 }

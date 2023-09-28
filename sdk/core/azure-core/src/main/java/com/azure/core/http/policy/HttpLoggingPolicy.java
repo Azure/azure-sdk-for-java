@@ -246,16 +246,14 @@ public class HttpLoggingPolicy implements HttpPipelinePolicy {
         } else {
             // Add non-mutating operators to the data stream.
             AccessibleByteArrayOutputStream stream = new AccessibleByteArrayOutputStream(contentLength);
-            request.setBody(
-                content.toFluxByteBuffer()
-                    .doOnNext(byteBuffer -> {
-                        try {
-                            ImplUtils.writeByteBufferToStream(byteBuffer.duplicate(), stream);
-                        } catch (IOException ex) {
-                            throw LOGGER.logExceptionAsError(new UncheckedIOException(ex));
-                        }
-                    })
-                    .doFinally(ignored -> logBody(logBuilder, logger, contentType, stream.toString(StandardCharsets.UTF_8))));
+            request.setBody(Flux.using(() -> content, con -> con.toFluxByteBuffer()
+                .doOnNext(byteBuffer -> {
+                    try {
+                        ImplUtils.writeByteBufferToStream(byteBuffer.duplicate(), stream);
+                    } catch (IOException ex) {
+                        throw LOGGER.logExceptionAsError(new UncheckedIOException(ex));
+                    }
+                }), ignored -> logBody(logBuilder, logger, contentType, stream.toString(StandardCharsets.UTF_8))));
         }
     }
 
@@ -548,15 +546,14 @@ public class HttpLoggingPolicy implements HttpPipelinePolicy {
         public Flux<ByteBuffer> getBody() {
             AccessibleByteArrayOutputStream stream = new AccessibleByteArrayOutputStream(contentLength);
 
-            return actualResponse.getBody()
+            return Flux.using(() -> actualResponse, response -> response.getBody()
                 .doOnNext(byteBuffer -> {
                     try {
                         ImplUtils.writeByteBufferToStream(byteBuffer.duplicate(), stream);
                     } catch (IOException ex) {
                         throw LOGGER.logExceptionAsError(new UncheckedIOException(ex));
                     }
-                })
-                .doFinally(ignored -> doLog(stream.toString(StandardCharsets.UTF_8)));
+                }), ignored -> doLog(stream.toString(StandardCharsets.UTF_8)));
         }
 
         @Override

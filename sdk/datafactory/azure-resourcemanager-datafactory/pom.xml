@@ -14,7 +14,7 @@
 
   <groupId>com.azure.resourcemanager</groupId>
   <artifactId>azure-resourcemanager-datafactory</artifactId>
-  <version>1.0.0-beta.23</version> <!-- {x-version-update;com.azure.resourcemanager:azure-resourcemanager-datafactory;current} -->
+  <version>1.0.0-beta.24</version> <!-- {x-version-update;com.azure.resourcemanager:azure-resourcemanager-datafactory;current} -->
   <packaging>jar</packaging>
 
   <name>Microsoft Azure SDK for DataFactory Management</name>
@@ -45,6 +45,7 @@
     <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
     <jacoco.min.linecoverage>0</jacoco.min.linecoverage>
     <jacoco.min.branchcoverage>0</jacoco.min.branchcoverage>
+    <revapi.skip>true</revapi.skip>
   </properties>
   <dependencies>
     <dependency>
@@ -96,7 +97,7 @@
     <dependency>
       <groupId>com.azure.resourcemanager</groupId>
       <artifactId>azure-resourcemanager-storage</artifactId>
-      <version>2.30.0</version> <!-- {x-version-update;com.azure.resourcemanager:azure-resourcemanager-storage;dependency} -->
+      <version>2.31.0</version> <!-- {x-version-update;com.azure.resourcemanager:azure-resourcemanager-storage;dependency} -->
       <scope>test</scope>
     </dependency>
     <dependency>

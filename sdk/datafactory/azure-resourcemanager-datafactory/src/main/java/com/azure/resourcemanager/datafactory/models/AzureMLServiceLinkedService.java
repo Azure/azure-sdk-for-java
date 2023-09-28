@@ -142,6 +142,31 @@ public final class AzureMLServiceLinkedService extends LinkedService {
     }
 
     /**
+     * Get the authentication property: Type of authentication (Required to specify MSI) used to connect to AzureML.
+     * Type: string (or Expression with resultType string).
+     *
+     * @return the authentication value.
+     */
+    public Object authentication() {
+        return this.innerTypeProperties() == null ? null : this.innerTypeProperties().authentication();
+    }
+
+    /**
+     * Set the authentication property: Type of authentication (Required to specify MSI) used to connect to AzureML.
+     * Type: string (or Expression with resultType string).
+     *
+     * @param authentication the authentication value to set.
+     * @return the AzureMLServiceLinkedService object itself.
+     */
+    public AzureMLServiceLinkedService withAuthentication(Object authentication) {
+        if (this.innerTypeProperties() == null) {
+            this.innerTypeProperties = new AzureMLServiceLinkedServiceTypeProperties();
+        }
+        this.innerTypeProperties().withAuthentication(authentication);
+        return this;
+    }
+
+    /**
      * Get the servicePrincipalId property: The ID of the service principal used to authenticate against the endpoint of
      * a published Azure ML Service pipeline. Type: string (or Expression with resultType string).
      *
@@ -218,22 +243,22 @@ public final class AzureMLServiceLinkedService extends LinkedService {
 
     /**
      * Get the encryptedCredential property: The encrypted credential used for authentication. Credentials are encrypted
-     * using the integration runtime credential manager. Type: string (or Expression with resultType string).
+     * using the integration runtime credential manager. Type: string.
      *
      * @return the encryptedCredential value.
      */
-    public Object encryptedCredential() {
+    public String encryptedCredential() {
         return this.innerTypeProperties() == null ? null : this.innerTypeProperties().encryptedCredential();
     }
 
     /**
      * Set the encryptedCredential property: The encrypted credential used for authentication. Credentials are encrypted
-     * using the integration runtime credential manager. Type: string (or Expression with resultType string).
+     * using the integration runtime credential manager. Type: string.
      *
      * @param encryptedCredential the encryptedCredential value to set.
      * @return the AzureMLServiceLinkedService object itself.
      */
-    public AzureMLServiceLinkedService withEncryptedCredential(Object encryptedCredential) {
+    public AzureMLServiceLinkedService withEncryptedCredential(String encryptedCredential) {
         if (this.innerTypeProperties() == null) {
             this.innerTypeProperties = new AzureMLServiceLinkedServiceTypeProperties();
         }

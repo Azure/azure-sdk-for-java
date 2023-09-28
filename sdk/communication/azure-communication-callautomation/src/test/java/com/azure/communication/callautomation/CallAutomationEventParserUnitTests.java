@@ -602,4 +602,71 @@ public class CallAutomationEventParserUnitTests {
         assertEquals("8:acs:3afbe310-c6d9-4b6f-a11e-c2aeb352f207_0000001a-0f2f-2234-655d-573a0d00443e", event.getTransferTarget().getRawId());
         assertEquals("8:acs:3afbe310-c6d9-4b6f-a11e-c2aeb352f207_0000001a-0f2e-e2b4-655d-573a0d004434", event.getTransferee().getRawId());
     }
+
+    @Test
+    public void parseAddParticipantCancelledEvent() {
+        String receivedEvent = "[{\n"
+                + "\"id\": \"c3220fa3-79bd-473e-96a2-3ecb5be7d71f\",\n"
+                + "\"source\": \"calling/callConnections/421f3500-f5de-4c12-bf61-9e2641433687\",\n"
+                + "\"type\": \"Microsoft.Communication.AddParticipantCancelled\",\n"
+                + "\"data\": {\n"
+                + "\"operationContext\": \"context\",\n"
+                + "\"participant\": {\n"
+                + "\"rawId\": \"rawId\",\n"
+                + "\"phoneNumber\": {\n"
+                + "\"value\": \"value\"\n"
+                + "}\n"
+                + "},\n"
+                + "\"callConnectionId\": \"callConnectionId\",\n"
+                + "\"serverCallId\": \"serverCallId\",\n"
+                + "\"invitationId\": \"b880bd5a-1916-470a-b43d-aabf3caff91c\",\n"
+                + "\"correlationId\": \"b880bd5a-1916-470a-b43d-aabf3caff91c\"\n"
+                + "},\n"
+                + "\"time\": \"2023-03-22T16:57:09.287755+00:00\",\n"
+                + "\"specversion\": \"1.0\",\n"
+                + "\"datacontenttype\": \"application/json\",\n"
+                + "\"subject\": \"calling/callConnections/421f3500-f5de-4c12-bf61-9e2641433687\"\n"
+                + "}]";
+
+        CallAutomationEventBase event = CallAutomationEventParser.parseEvents(receivedEvent).get(0);
+        assertNotNull(event);
+
+        AddParticipantCancelled addParticipantCancelled = (AddParticipantCancelled) event;
+
+        assertNotNull(addParticipantCancelled);
+        assertEquals("serverCallId", addParticipantCancelled.getServerCallId());
+        assertEquals("callConnectionId", addParticipantCancelled.getCallConnectionId());
+        assertEquals("b880bd5a-1916-470a-b43d-aabf3caff91c", addParticipantCancelled.getInvitationId());
+    }
+
+    @Test
+    public void parseCancelAddParticipantFailedEvent() {
+        String receivedEvent = "[{\n"
+                + "\"id\": \"c3220fa3-79bd-473e-96a2-3ecb5be7d71f\",\n"
+                + "\"source\": \"calling/callConnections/421f3500-f5de-4c12-bf61-9e2641433687\",\n"
+                + "\"type\": \"Microsoft.Communication.CancelAddParticipantFailed\",\n"
+                + "\"data\": {\n"
+                + "\"operationContext\": \"context\",\n"
+                + "\"callConnectionId\": \"callConnectionId\",\n"
+                + "\"serverCallId\": \"serverCallId\",\n"
+                + "\"invitationId\": \"b880bd5a-1916-470a-b43d-aabf3caff91c\",\n"
+                + "\"correlationId\": \"b880bd5a-1916-470a-b43d-aabf3caff91c\"\n"
+                + "},\n"
+                + "\"time\": \"2023-03-22T16:57:09.287755+00:00\",\n"
+                + "\"specversion\": \"1.0\",\n"
+                + "\"datacontenttype\": \"application/json\",\n"
+                + "\"subject\": \"calling/callConnections/421f3500-f5de-4c12-bf61-9e2641433687\"\n"
+                + "}]";
+
+        CallAutomationEventBase event = CallAutomationEventParser.parseEvents(receivedEvent).get(0);
+
+        assertNotNull(event);
+
+        CancelAddParticipantFailed cancelAddParticipantFailed = (CancelAddParticipantFailed) event;
+
+        assertNotNull(cancelAddParticipantFailed);
+        assertEquals("serverCallId", cancelAddParticipantFailed.getServerCallId());
+        assertEquals("callConnectionId", cancelAddParticipantFailed.getCallConnectionId());
+        assertEquals("b880bd5a-1916-470a-b43d-aabf3caff91c", cancelAddParticipantFailed.getInvitationId());
+    }
 }

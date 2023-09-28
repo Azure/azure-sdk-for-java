@@ -14,6 +14,7 @@ import java.util.Collections;
 import java.util.List;
 import java.util.concurrent.CountDownLatch;
 import java.util.concurrent.TimeUnit;
+import java.util.concurrent.atomic.AtomicInteger;
 import java.util.concurrent.atomic.AtomicReference;
 import java.util.function.BiFunction;
 import java.util.function.Function;
@@ -374,14 +375,14 @@ public class PollerTests {
         Function<PollingContext<Response>, Mono<Response>> activationOperation
             = ignored -> Mono.just(activationResponse);
 
-        final AtomicReference<Integer> cnt = new AtomicReference<>(0);
+        final AtomicInteger cnt = new AtomicInteger();
         Function<PollingContext<Response>, Mono<PollResponse<Response>>> pollOperation = (pollingContext) -> {
-            cnt.getAndSet(cnt.get() + 1);
-            if (cnt.get() <= 2) {
+            int count = cnt.incrementAndGet();
+            if (count <= 2) {
                 return Mono.just(new PollResponse<>(IN_PROGRESS, new Response("1")));
-            } else if (cnt.get() == 3) {
+            } else if (count == 3) {
                 throw new RuntimeException("Polling operation failed!");
-            } else if (cnt.get() == 4) {
+            } else if (count == 4) {
                 return Mono.just(new PollResponse<>(IN_PROGRESS, new Response("2")));
             } else {
                 return Mono.just(new PollResponse<>(SUCCESSFULLY_COMPLETED, new Response("3")));
@@ -405,14 +406,14 @@ public class PollerTests {
         Function<PollingContext<Response>, Mono<Response>> activationOperation
             = ignored -> Mono.just(activationResponse);
 
-        final AtomicReference<Integer> cnt = new AtomicReference<>(0);
+        final AtomicInteger cnt = new AtomicInteger();
         Function<PollingContext<Response>, Mono<PollResponse<Response>>> pollOperation = (pollingContext) -> {
-            cnt.getAndSet(cnt.get() + 1);
-            if (cnt.get() <= 2) {
+            int count = cnt.incrementAndGet();
+            if (count <= 2) {
                 return Mono.just(new PollResponse<>(IN_PROGRESS, new Response("1")));
-            } else if (cnt.get() == 3) {
+            } else if (count == 3) {
                 return Mono.just(new PollResponse<>(FAILED, new Response("2")));
-            } else if (cnt.get() == 4) {
+            } else if (count == 4) {
                 return Mono.just(new PollResponse<>(IN_PROGRESS, new Response("3")));
             } else {
                 return Mono.just(new PollResponse<>(SUCCESSFULLY_COMPLETED, new Response("4")));
@@ -687,14 +688,14 @@ public class PollerTests {
         Function<PollingContext<Response>, Mono<Response>> activationOperation
             = ignored -> Mono.just(activationResponse);
 
-        final AtomicReference<Integer> cnt = new AtomicReference<>(0);
+        final AtomicInteger cnt = new AtomicInteger();
         Function<PollingContext<Response>, Mono<PollResponse<Response>>> pollOperation = (pollingContext) -> {
-            cnt.getAndSet(cnt.get() + 1);
-            if (cnt.get() <= 2) {
+            int count = cnt.incrementAndGet();
+            if (count <= 2) {
                 return Mono.just(new PollResponse<>(IN_PROGRESS, new Response("1")));
-            } else if (cnt.get() == 3) {
+            } else if (count == 3) {
                 throw new RuntimeException("Polling operation failed!");
-            } else if (cnt.get() == 4) {
+            } else if (count == 4) {
                 return Mono.just(new PollResponse<>(IN_PROGRESS, new Response("2")));
             } else {
                 return Mono.just(new PollResponse<>(SUCCESSFULLY_COMPLETED, new Response("3")));
