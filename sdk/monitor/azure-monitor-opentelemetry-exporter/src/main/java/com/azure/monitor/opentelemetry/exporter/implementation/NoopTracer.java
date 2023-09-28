@@ -1,21 +1,21 @@
 // Copyright (c) Microsoft Corporation. All rights reserved.
 // Licensed under the MIT License.
 
-package com.azure.monitor.opentelemetry.exporter;
+package com.azure.monitor.opentelemetry.exporter.implementation;
 
 import com.azure.core.util.Context;
 import com.azure.core.util.tracing.Tracer;
 
 import java.util.Objects;
 
-class NoopTracer implements Tracer {
+public final class NoopTracer implements Tracer {
 
     static final AutoCloseable NOOP_CLOSEABLE = () -> {
     };
 
     static final Tracer INSTANCE = new NoopTracer();
 
-    NoopTracer() {
+    public NoopTracer() {
     }
 
     @Override
