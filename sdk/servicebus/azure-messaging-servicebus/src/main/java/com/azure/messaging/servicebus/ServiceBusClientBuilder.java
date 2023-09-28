@@ -74,7 +74,7 @@ import static com.azure.messaging.servicebus.implementation.ServiceBusConstants.
  * The builder to create Service Bus clients:
  *
  * <p><strong>Instantiate a synchronous sender</strong></p>
- * <!-- src_embed com.azure.messaging.servicebus.sender.sync.client.instantiation -->
+ * <!-- src_embed com.azure.messaging.servicebus.servicebussenderclient.instantiation -->
  * <pre>
  * &#47;&#47; Retrieve 'connectionString' and 'queueName' from your configuration.
  * ServiceBusClientBuilder builder = new ServiceBusClientBuilder&#40;&#41;
@@ -84,7 +84,7 @@ import static com.azure.messaging.servicebus.implementation.ServiceBusConstants.
  *     .queueName&#40;queueName&#41;
  *     .buildClient&#40;&#41;;
  * </pre>
- * <!-- end com.azure.messaging.servicebus.sender.sync.client.instantiation -->
+ * <!-- end com.azure.messaging.servicebus.servicebussenderclient.instantiation -->
  *
  * <p><strong>Instantiate an asynchronous receiver</strong></p>
  * <!-- src_embed com.azure.messaging.servicebus.servicebusreceiverasyncclient.instantiation -->
@@ -126,7 +126,7 @@ import static com.azure.messaging.servicebus.implementation.ServiceBusConstants.
  * <!-- end com.azure.messaging.servicebus.servicebusreceiverasyncclient.instantiation#nextsession -->
  *
  * <p><strong>Instantiate the processor</strong></p>
- * <!-- src_embed com.azure.messaging.servicebus.processor.client.instantiation -->
+ * <!-- src_embed om.azure.messaging.servicebus.servicebusprocessorclient#receive-mode-peek-lock-instantiation -->
  * <pre>
  * &#47;&#47; Retrieve 'connectionString' and 'queueName' from your configuration.
  * ServiceBusClientBuilder builder = new ServiceBusClientBuilder&#40;&#41;
@@ -138,7 +138,7 @@ import static com.azure.messaging.servicebus.implementation.ServiceBusConstants.
  *     .processError&#40;context -&gt; System.err.println&#40;context.getErrorSource&#40;&#41;&#41;&#41;
  *     .buildProcessorClient&#40;&#41;;
  * </pre>
- * <!-- end com.azure.messaging.servicebus.processor.client.instantiation -->
+ * <!-- end om.azure.messaging.servicebus.servicebusprocessorclient#receive-mode-peek-lock-instantiation -->
 
  * <p><strong>Sharing a connection between clients</strong></p>
  * The creation of physical connection to Service Bus requires resources. If your architecture allows, an application

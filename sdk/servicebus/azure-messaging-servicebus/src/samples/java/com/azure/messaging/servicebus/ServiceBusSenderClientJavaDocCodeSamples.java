@@ -3,7 +3,9 @@
 
 package com.azure.messaging.servicebus;
 
+import com.azure.core.credential.TokenCredential;
 import com.azure.core.util.BinaryData;
+import com.azure.identity.DefaultAzureCredentialBuilder;
 import com.azure.messaging.servicebus.models.CreateMessageBatchOptions;
 import org.junit.jupiter.api.Test;
 
@@ -16,20 +18,12 @@ import static java.nio.charset.StandardCharsets.UTF_8;
  * Contains code snippets when generating javadocs through doclets for {@link ServiceBusSenderClient}.
  */
 public class ServiceBusSenderClientJavaDocCodeSamples {
-
-    // The required parameters is connectionString, a way to authenticate with Service Bus using credentials.
-    // We are reading 'connectionString/queueName' from environment variable.
-    // You can configure them as it fits suitable for your application.
-    // 1. "Endpoint={fully-qualified-namespace};SharedAccessKeyName={policy-name};SharedAccessKey={key}"
-    // 2. "<<fully-qualified-namespace>>" will look similar to "{your-namespace}.servicebus.windows.net"
-    //    inside the Service Bus namespace.
-    private String connectionString = System.getenv("AZURE_SERVICEBUS_NAMESPACE_CONNECTION_STRING");
-    private String queueName = System.getenv("AZURE_SERVICEBUS_SAMPLE_QUEUE_NAME");
-    private ServiceBusSenderClient sender = new ServiceBusClientBuilder()
-        .connectionString(connectionString)
-        .sender()
-        .queueName(queueName)
-        .buildClient();
+    /**
+     * Fully qualified namespace is the host name of the Service Bus resource.  It can be found by navigating to the
+     * Service Bus namespace and looking in the "Essentials" panel.
+     */
+    private final String fullyQualifiedNamespace = System.getenv("AZURE_SERVICEBUS_FULLY_QUALIFIED_DOMAIN_NAME");
+    private final String queueName = System.getenv("AZURE_SERVICEBUS_SAMPLE_QUEUE_NAME");
 
     /**
      * Code snippet demonstrating how to create an {@link ServiceBusSenderClient}.
@@ -37,14 +31,16 @@ public class ServiceBusSenderClientJavaDocCodeSamples {
     @Test
     public void instantiate() {
         // BEGIN: com.azure.messaging.servicebus.servicebussenderclient.instantiation
-        // The required parameters is connectionString, a way to authenticate with Service Bus using credentials.
-        // The connectionString/queueName must be set by the application. The 'connectionString' format is shown below.
-        // "Endpoint={fully-qualified-namespace};SharedAccessKeyName={policy-name};SharedAccessKey={key}"
+        TokenCredential credential = new DefaultAzureCredentialBuilder().build();
+
+        // 'fullyQualifiedNamespace' will look similar to "{your-namespace}.servicebus.windows.net"
         ServiceBusSenderClient sender = new ServiceBusClientBuilder()
-            .connectionString(connectionString)
+            .credential(fullyQualifiedNamespace, credential)
             .sender()
             .queueName(queueName)
             .buildClient();
+
+        sender.sendMessage(new ServiceBusMessage("Foo bar"));
         // END: com.azure.messaging.servicebus.servicebussenderclient.instantiation
 
         sender.close();
