@@ -55,7 +55,7 @@ stages:
           - deployment: TagRepository
             displayName: "Create release tag"
             condition: ne(variables['Skip.TagRepository'], 'true')
-            environment: github
+            environment: maven
             variables:
               - template: ../variables/globals.yml
             pool:
