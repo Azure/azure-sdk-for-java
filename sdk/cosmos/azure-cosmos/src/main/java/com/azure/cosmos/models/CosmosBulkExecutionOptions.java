@@ -70,11 +70,33 @@ public final class CosmosBulkExecutionOptions {
         this(null, null, null);
     }
 
-    int getInitialMicroBatchSize() {
+    /**
+     * Gets the initial size of micro batches that will be sent to the backend. The size of micro batches will
+     * be dynamically adjusted based on the throttling rate. The default value is 100 - so, it starts with relatively
+     * large micro batches and when the throttling rate is too high, it will reduce the batch size. When the
+     * short spikes of throttling before dynamically reducing the initial batch size results in side effects for other
+     * workloads the initial micro batch size can be reduced - for example set to 1 - at which point it would
+     * start with small micro batches and then increase the batch size over time.
+     * @return the initial micro batch size
+     */
+    public int getInitialMicroBatchSize() {
         return initialMicroBatchSize;
     }
 
-    CosmosBulkExecutionOptions setInitialMicroBatchSize(int initialMicroBatchSize) {
+    /**
+     * Sets the initial size of micro batches that will be sent to the backend. The size of micro batches will
+     * be dynamically adjusted based on the throttling rate. The default value is 100 - so, it starts with relatively
+     * large micro batches and when the throttling rate is too high, it will reduce the batch size. When the
+     * short spikes of throttling before dynamically reducing the initial batch size results in side effects for other
+     * workloads the initial micro batch size can be reduced - for example set to 1 - at which point it would
+     * start with small micro batches and then increase the batch size over time.
+     * @param initialMicroBatchSize the initial micro batch size to be used. Must be a positive integer.
+     * @return the bulk execution options.
+     */
+    public CosmosBulkExecutionOptions setInitialMicroBatchSize(int initialMicroBatchSize) {
+        checkArgument(
+            initialMicroBatchSize > 0,
+            "The argument 'initialMicroBatchSize' must be a positive integer.");
         this.initialMicroBatchSize = initialMicroBatchSize;
         return this;
     }
@@ -367,16 +389,6 @@ public final class CosmosBulkExecutionOptions {
                     double maxRetryRate) {
 
                     return options.setTargetedMicroBatchRetryRate(minRetryRate, maxRetryRate);
-                }
-
-                @Override
-                public int getInitialMicroBatchSize(CosmosBulkExecutionOptions options) {
-                    return options.getInitialMicroBatchSize();
-                }
-
-                @Override
-                public CosmosBulkExecutionOptions setInitialMicroBatchSize(CosmosBulkExecutionOptions options, int initialMicroBatchSize) {
-                    return options.setInitialMicroBatchSize(initialMicroBatchSize);
                 }
 
                 @Override

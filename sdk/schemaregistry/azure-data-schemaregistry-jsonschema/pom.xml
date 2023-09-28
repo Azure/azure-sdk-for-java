@@ -16,7 +16,7 @@
 
   <groupId>com.azure</groupId>
   <artifactId>azure-data-schemaregistry-jsonschema</artifactId>
-  <version>1.0.0-beta.1</version> <!-- {x-version-update;com.azure:azure-data-schemaregistry-jsonschema;current} -->
+  <version>1.0.0-beta.2</version> <!-- {x-version-update;com.azure:azure-data-schemaregistry-jsonschema;current} -->
 
   <name>Microsoft Azure client library for Schema Registry JSON Schema Serializer</name>
   <description>JSON Schema serializer for Azure Schema Registry client library</description>
@@ -97,7 +97,7 @@
     <dependency>
       <groupId>com.azure</groupId>
       <artifactId>azure-messaging-eventhubs</artifactId>
-      <version>5.15.8</version> <!-- {x-version-update;com.azure:azure-messaging-eventhubs;dependency} -->
+      <version>5.16.0</version> <!-- {x-version-update;com.azure:azure-messaging-eventhubs;dependency} -->
       <scope>test</scope>
     </dependency>
     <dependency>

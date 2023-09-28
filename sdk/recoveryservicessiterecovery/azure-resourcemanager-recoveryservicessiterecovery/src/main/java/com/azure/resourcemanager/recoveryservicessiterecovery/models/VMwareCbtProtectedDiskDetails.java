@@ -94,6 +94,12 @@ public final class VMwareCbtProtectedDiskDetails {
     @JsonProperty(value = "targetDiskName")
     private String targetDiskName;
 
+    /*
+     * A value indicating the gateway operation details.
+     */
+    @JsonProperty(value = "gatewayOperationDetails", access = JsonProperty.Access.WRITE_ONLY)
+    private GatewayOperationDetails gatewayOperationDetails;
+
     /** Creates an instance of VMwareCbtProtectedDiskDetails class. */
     public VMwareCbtProtectedDiskDetails() {
     }
@@ -247,10 +253,22 @@ public final class VMwareCbtProtectedDiskDetails {
     }
 
     /**
+     * Get the gatewayOperationDetails property: A value indicating the gateway operation details.
+     *
+     * @return the gatewayOperationDetails value.
+     */
+    public GatewayOperationDetails gatewayOperationDetails() {
+        return this.gatewayOperationDetails;
+    }
+
+    /**
      * Validates the instance.
      *
      * @throws IllegalArgumentException thrown if the instance is not valid.
      */
     public void validate() {
+        if (gatewayOperationDetails() != null) {
+            gatewayOperationDetails().validate();
+        }
     }
 }

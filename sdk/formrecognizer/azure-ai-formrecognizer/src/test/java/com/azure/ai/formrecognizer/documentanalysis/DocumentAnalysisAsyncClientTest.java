@@ -10,13 +10,13 @@ import com.azure.ai.formrecognizer.documentanalysis.administration.models.Docume
 import com.azure.ai.formrecognizer.documentanalysis.models.AnalyzeDocumentOptions;
 import com.azure.ai.formrecognizer.documentanalysis.models.AnalyzeResult;
 import com.azure.ai.formrecognizer.documentanalysis.models.DocumentAnalysisFeature;
-import com.azure.ai.formrecognizer.documentanalysis.models.DocumentStyle;
 import com.azure.ai.formrecognizer.documentanalysis.models.DocumentBarcode;
 import com.azure.ai.formrecognizer.documentanalysis.models.DocumentBarcodeKind;
 import com.azure.ai.formrecognizer.documentanalysis.models.DocumentFormula;
 import com.azure.ai.formrecognizer.documentanalysis.models.DocumentFormulaKind;
-import com.azure.ai.formrecognizer.documentanalysis.models.OperationResult;
+import com.azure.ai.formrecognizer.documentanalysis.models.DocumentStyle;
 import com.azure.ai.formrecognizer.documentanalysis.models.FontStyle;
+import com.azure.ai.formrecognizer.documentanalysis.models.OperationResult;
 import com.azure.core.exception.HttpResponseException;
 import com.azure.core.http.HttpClient;
 import com.azure.core.models.ResponseError;
@@ -25,15 +25,11 @@ import com.azure.core.test.annotation.RecordWithoutRequestBody;
 import com.azure.core.test.http.AssertingHttpClientBuilder;
 import com.azure.core.util.BinaryData;
 import com.azure.core.util.polling.SyncPoller;
-import org.junit.jupiter.api.AfterAll;
 import org.junit.jupiter.api.Assertions;
-import org.junit.jupiter.api.BeforeAll;
 import org.junit.jupiter.api.Disabled;
 import org.junit.jupiter.params.ParameterizedTest;
 import org.junit.jupiter.params.provider.MethodSource;
-import reactor.test.StepVerifier;
 
-import java.time.Duration;
 import java.util.Arrays;
 import java.util.Collections;
 import java.util.HashMap;
@@ -41,7 +37,6 @@ import java.util.Map;
 import java.util.concurrent.atomic.AtomicReference;
 
 import static com.azure.ai.formrecognizer.documentanalysis.TestUtils.BARCODE_TIF;
-import static com.azure.ai.formrecognizer.documentanalysis.TestUtils.STYLE_PNG;
 import static com.azure.ai.formrecognizer.documentanalysis.TestUtils.BLANK_PDF;
 import static com.azure.ai.formrecognizer.documentanalysis.TestUtils.BUSINESS_CARD_JPG;
 import static com.azure.ai.formrecognizer.documentanalysis.TestUtils.BUSINESS_CARD_PNG;
@@ -65,6 +60,7 @@ import static com.azure.ai.formrecognizer.documentanalysis.TestUtils.MULTIPAGE_V
 import static com.azure.ai.formrecognizer.documentanalysis.TestUtils.RECEIPT_CONTOSO_JPG;
 import static com.azure.ai.formrecognizer.documentanalysis.TestUtils.RECEIPT_CONTOSO_PNG;
 import static com.azure.ai.formrecognizer.documentanalysis.TestUtils.SELECTION_MARK_PDF;
+import static com.azure.ai.formrecognizer.documentanalysis.TestUtils.STYLE_PNG;
 import static com.azure.ai.formrecognizer.documentanalysis.TestUtils.W2_JPG;
 import static com.azure.ai.formrecognizer.documentanalysis.TestUtils.damagedPdfDataRunner;
 import static com.azure.ai.formrecognizer.documentanalysis.TestUtils.encodedBlankSpaceSourceUrlRunner;
@@ -78,16 +74,6 @@ import static org.junit.jupiter.api.Assertions.assertThrows;
 public class DocumentAnalysisAsyncClientTest extends DocumentAnalysisClientTestBase {
 
     private DocumentAnalysisAsyncClient client;
-
-    @BeforeAll
-    static void beforeAll() {
-        StepVerifier.setDefaultTimeout(Duration.ofSeconds(30));
-    }
-
-    @AfterAll
-    static void afterAll() {
-        StepVerifier.resetDefaultTimeout();
-    }
 
     private HttpClient buildAsyncAssertingClient(HttpClient httpClient) {
         return new AssertingHttpClientBuilder(httpClient)
@@ -1205,7 +1191,9 @@ public class DocumentAnalysisAsyncClientTest extends DocumentAnalysisClientTestB
                 .setPollInterval(durationTestMode).getSyncPoller();
             AnalyzeResult analyzeResult = syncPoller.getFinalResult();
             Assertions.assertNotNull(analyzeResult);
-            Assertions.assertNotNull("de", analyzeResult.getLanguages().get(0).getLocale());
+            // TODO (alzimmer): This test to be recorded again as this wasn't actually checking the language locale
+            //  and was just checking that "de" was non-null which is always true.
+            // Assertions.assertEquals("de", analyzeResult.getLanguages().get(0).getLocale());
         }, GERMAN_PNG);
     }
     @ParameterizedTest(name = DISPLAY_NAME_WITH_ARGUMENTS)

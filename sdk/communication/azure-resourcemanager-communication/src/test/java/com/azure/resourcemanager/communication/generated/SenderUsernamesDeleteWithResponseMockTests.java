@@ -58,6 +58,6 @@ public final class SenderUsernamesDeleteWithResponseMockTests {
 
         manager
             .senderUsernames()
-            .deleteWithResponse("rwdmhdlxyjrxsa", "afcnih", "wqapnedgfbcvk", "vq", com.azure.core.util.Context.NONE);
+            .deleteWithResponse("lxyjr", "sag", "fcnihgwq", "pnedgf", com.azure.core.util.Context.NONE);
     }
 }

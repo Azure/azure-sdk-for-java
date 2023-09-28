@@ -16,25 +16,25 @@ public final class NetworkAclTests {
         NetworkAcl model =
             BinaryData
                 .fromString(
-                    "{\"allow\":[\"ClientConnection\"],\"deny\":[\"ClientConnection\",\"RESTAPI\",\"ServerConnection\"]}")
+                    "{\"allow\":[\"ServerConnection\"],\"deny\":[\"ServerConnection\",\"ClientConnection\",\"ServerConnection\"]}")
                 .toObject(NetworkAcl.class);
-        Assertions.assertEquals(SignalRRequestType.CLIENT_CONNECTION, model.allow().get(0));
-        Assertions.assertEquals(SignalRRequestType.CLIENT_CONNECTION, model.deny().get(0));
+        Assertions.assertEquals(SignalRRequestType.SERVER_CONNECTION, model.allow().get(0));
+        Assertions.assertEquals(SignalRRequestType.SERVER_CONNECTION, model.deny().get(0));
     }
 
     @org.junit.jupiter.api.Test
     public void testSerialize() throws Exception {
         NetworkAcl model =
             new NetworkAcl()
-                .withAllow(Arrays.asList(SignalRRequestType.CLIENT_CONNECTION))
+                .withAllow(Arrays.asList(SignalRRequestType.SERVER_CONNECTION))
                 .withDeny(
                     Arrays
                         .asList(
+                            SignalRRequestType.SERVER_CONNECTION,
                             SignalRRequestType.CLIENT_CONNECTION,
-                            SignalRRequestType.RESTAPI,
                             SignalRRequestType.SERVER_CONNECTION));
         model = BinaryData.fromObject(model).toObject(NetworkAcl.class);
-        Assertions.assertEquals(SignalRRequestType.CLIENT_CONNECTION, model.allow().get(0));
-        Assertions.assertEquals(SignalRRequestType.CLIENT_CONNECTION, model.deny().get(0));
+        Assertions.assertEquals(SignalRRequestType.SERVER_CONNECTION, model.allow().get(0));
+        Assertions.assertEquals(SignalRRequestType.SERVER_CONNECTION, model.deny().get(0));
     }
 }

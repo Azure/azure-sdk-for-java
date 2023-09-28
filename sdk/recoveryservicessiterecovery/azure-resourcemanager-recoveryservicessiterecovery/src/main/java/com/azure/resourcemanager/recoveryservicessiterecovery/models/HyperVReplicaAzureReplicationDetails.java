@@ -222,6 +222,12 @@ public final class HyperVReplicaAzureReplicationDetails extends ReplicationProvi
     @JsonProperty(value = "protectedManagedDisks")
     private List<HyperVReplicaAzureManagedDiskDetails> protectedManagedDisks;
 
+    /*
+     * A value indicating all available inplace OS Upgrade configurations.
+     */
+    @JsonProperty(value = "allAvailableOSUpgradeConfigurations")
+    private List<OSUpgradeSupportedVersions> allAvailableOSUpgradeConfigurations;
+
     /** Creates an instance of HyperVReplicaAzureReplicationDetails class. */
     public HyperVReplicaAzureReplicationDetails() {
     }
@@ -887,6 +893,29 @@ public final class HyperVReplicaAzureReplicationDetails extends ReplicationProvi
     }
 
     /**
+     * Get the allAvailableOSUpgradeConfigurations property: A value indicating all available inplace OS Upgrade
+     * configurations.
+     *
+     * @return the allAvailableOSUpgradeConfigurations value.
+     */
+    public List<OSUpgradeSupportedVersions> allAvailableOSUpgradeConfigurations() {
+        return this.allAvailableOSUpgradeConfigurations;
+    }
+
+    /**
+     * Set the allAvailableOSUpgradeConfigurations property: A value indicating all available inplace OS Upgrade
+     * configurations.
+     *
+     * @param allAvailableOSUpgradeConfigurations the allAvailableOSUpgradeConfigurations value to set.
+     * @return the HyperVReplicaAzureReplicationDetails object itself.
+     */
+    public HyperVReplicaAzureReplicationDetails withAllAvailableOSUpgradeConfigurations(
+        List<OSUpgradeSupportedVersions> allAvailableOSUpgradeConfigurations) {
+        this.allAvailableOSUpgradeConfigurations = allAvailableOSUpgradeConfigurations;
+        return this;
+    }
+
+    /**
      * Validates the instance.
      *
      * @throws IllegalArgumentException thrown if the instance is not valid.
@@ -908,6 +937,9 @@ public final class HyperVReplicaAzureReplicationDetails extends ReplicationProvi
         }
         if (protectedManagedDisks() != null) {
             protectedManagedDisks().forEach(e -> e.validate());
+        }
+        if (allAvailableOSUpgradeConfigurations() != null) {
+            allAvailableOSUpgradeConfigurations().forEach(e -> e.validate());
         }
     }
 }

@@ -40,10 +40,10 @@ public class OpenTelemetryTracingOptions extends TracingOptions {
      *
      * &#47;&#47; configure OpenTelemetry SDK explicitly per https:&#47;&#47;opentelemetry.io&#47;docs&#47;instrumentation&#47;java&#47;manual&#47;
      * SdkTracerProvider tracerProvider = SdkTracerProvider.builder&#40;&#41;
-     *     .addSpanProcessor&#40;SimpleSpanProcessor.create&#40;LoggingSpanExporter.create&#40;&#41;&#41;&#41;
+     *     .addSpanProcessor&#40;BatchSpanProcessor.builder&#40;LoggingSpanExporter.create&#40;&#41;&#41;.build&#40;&#41;&#41;
      *     .build&#40;&#41;;
      *
-     * OpenTelemetry openTelemetry = OpenTelemetrySdk.builder&#40;&#41;.setTracerProvider&#40;tracerProvider&#41;.build&#40;&#41;;
+     * OpenTelemetrySdk openTelemetry = OpenTelemetrySdk.builder&#40;&#41;.setTracerProvider&#40;tracerProvider&#41;.build&#40;&#41;;
      * &#47;&#47; Pass OpenTelemetry container to TracingOptions.
      * TracingOptions customTracingOptions = new OpenTelemetryTracingOptions&#40;&#41;
      *     .setOpenTelemetry&#40;openTelemetry&#41;;

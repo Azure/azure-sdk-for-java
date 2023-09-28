@@ -7,7 +7,7 @@ package com.azure.resourcemanager.recoveryservicessiterecovery.generated;
 /** Samples for ReplicationProtectedItems ListByReplicationProtectionContainers. */
 public final class ReplicationProtectedItemsListByReplicationProte {
     /*
-     * x-ms-original-file: specification/recoveryservicessiterecovery/resource-manager/Microsoft.RecoveryServices/stable/2022-10-01/examples/ReplicationProtectedItems_ListByReplicationProtectionContainers.json
+     * x-ms-original-file: specification/recoveryservicessiterecovery/resource-manager/Microsoft.RecoveryServices/stable/2023-06-01/examples/ReplicationProtectedItems_ListByReplicationProtectionContainers.json
      */
     /**
      * Sample code: Gets the list of Replication protected items.

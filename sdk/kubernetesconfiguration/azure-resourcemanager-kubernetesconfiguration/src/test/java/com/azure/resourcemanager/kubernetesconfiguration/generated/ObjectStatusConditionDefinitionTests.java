@@ -15,29 +15,29 @@ public final class ObjectStatusConditionDefinitionTests {
         ObjectStatusConditionDefinition model =
             BinaryData
                 .fromString(
-                    "{\"lastTransitionTime\":\"2021-04-08T23:48:15Z\",\"message\":\"gdtopbobjogh\",\"reason\":\"w\",\"status\":\"m\",\"type\":\"hrzayvvtpgvdf\"}")
+                    "{\"lastTransitionTime\":\"2021-06-22T02:08:06Z\",\"message\":\"odpuozmyzydag\",\"reason\":\"axbezyiuo\",\"status\":\"twhrdxwzywqsm\",\"type\":\"ureximoryocfs\"}")
                 .toObject(ObjectStatusConditionDefinition.class);
-        Assertions.assertEquals(OffsetDateTime.parse("2021-04-08T23:48:15Z"), model.lastTransitionTime());
-        Assertions.assertEquals("gdtopbobjogh", model.message());
-        Assertions.assertEquals("w", model.reason());
-        Assertions.assertEquals("m", model.status());
-        Assertions.assertEquals("hrzayvvtpgvdf", model.type());
+        Assertions.assertEquals(OffsetDateTime.parse("2021-06-22T02:08:06Z"), model.lastTransitionTime());
+        Assertions.assertEquals("odpuozmyzydag", model.message());
+        Assertions.assertEquals("axbezyiuo", model.reason());
+        Assertions.assertEquals("twhrdxwzywqsm", model.status());
+        Assertions.assertEquals("ureximoryocfs", model.type());
     }
 
     @org.junit.jupiter.api.Test
     public void testSerialize() throws Exception {
         ObjectStatusConditionDefinition model =
             new ObjectStatusConditionDefinition()
-                .withLastTransitionTime(OffsetDateTime.parse("2021-04-08T23:48:15Z"))
-                .withMessage("gdtopbobjogh")
-                .withReason("w")
-                .withStatus("m")
-                .withType("hrzayvvtpgvdf");
+                .withLastTransitionTime(OffsetDateTime.parse("2021-06-22T02:08:06Z"))
+                .withMessage("odpuozmyzydag")
+                .withReason("axbezyiuo")
+                .withStatus("twhrdxwzywqsm")
+                .withType("ureximoryocfs");
         model = BinaryData.fromObject(model).toObject(ObjectStatusConditionDefinition.class);
-        Assertions.assertEquals(OffsetDateTime.parse("2021-04-08T23:48:15Z"), model.lastTransitionTime());
-        Assertions.assertEquals("gdtopbobjogh", model.message());
-        Assertions.assertEquals("w", model.reason());
-        Assertions.assertEquals("m", model.status());
-        Assertions.assertEquals("hrzayvvtpgvdf", model.type());
+        Assertions.assertEquals(OffsetDateTime.parse("2021-06-22T02:08:06Z"), model.lastTransitionTime());
+        Assertions.assertEquals("odpuozmyzydag", model.message());
+        Assertions.assertEquals("axbezyiuo", model.reason());
+        Assertions.assertEquals("twhrdxwzywqsm", model.status());
+        Assertions.assertEquals("ureximoryocfs", model.type());
     }
 }
