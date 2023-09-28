@@ -4,12 +4,7 @@
 
 #### Features Added
 * Added a preview API to `ChangeFeedProcessorBuilder` to process an additional `ChangeFeedProcessorContext` for handling all versions and deletes changes. - See [PR 36715](https://github.com/Azure/azure-sdk-for-java/pull/36715)
-* Added the following public APIs to dynamically configure excluded regions at the `CosmosClient` / `CosmosAsyncClient` level. See [PR 36616](https://github.com/Azure/azure-sdk-for-java/pull/36616)
-    * `CosmosClientBuilder#excludeRegions`
-    * `CosmosClient#setExcludedRegions`
-    * `CosmosAsyncClient#setExcludedRegions`
-    * `CosmosClient#getExcludedRegions`
-    * `CosmosAsyncClient#getExcludedRegions`
+* Added public APIs to configure a `Supplier<CosmosExcludedRegions>` through `CosmosClientBuilder#excludedRegionSupplier` and `CosmosExcludedRegions` - a type which encapsulates a set of excluded regions. See [PR 36616](https://github.com/Azure/azure-sdk-for-java/pull/36616)
 
 #### Breaking Changes
 
