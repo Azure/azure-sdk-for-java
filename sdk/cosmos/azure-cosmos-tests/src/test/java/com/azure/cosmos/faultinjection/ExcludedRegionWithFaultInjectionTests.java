@@ -64,15 +64,13 @@ import java.util.Set;
 import java.util.UUID;
 import java.util.concurrent.ConcurrentHashMap;
 import java.util.concurrent.atomic.AtomicReference;
-import java.util.concurrent.locks.ReentrantReadWriteLock;
 import java.util.function.Function;
-import java.util.function.Supplier;
 import java.util.stream.Collectors;
 
 import static org.assertj.core.api.AssertionsForClassTypes.assertThat;
 import static org.assertj.core.api.AssertionsForClassTypes.fail;
 
-public class ExcludeRegionWithFaultInjectionTests extends TestSuiteBase {
+public class ExcludedRegionWithFaultInjectionTests extends TestSuiteBase {
 
     private CosmosAsyncClient cosmosAsyncClient;
     private CosmosAsyncContainer cosmosAsyncContainer;
@@ -89,7 +87,7 @@ public class ExcludeRegionWithFaultInjectionTests extends TestSuiteBase {
     private Map<String, String> writeRegionMap;
 
     @Factory(dataProvider = "clientBuilderSolelyDirectWithSessionConsistency")
-    public ExcludeRegionWithFaultInjectionTests(CosmosClientBuilder cosmosClientBuilder) {
+    public ExcludedRegionWithFaultInjectionTests(CosmosClientBuilder cosmosClientBuilder) {
         super(cosmosClientBuilder);
     }
 
