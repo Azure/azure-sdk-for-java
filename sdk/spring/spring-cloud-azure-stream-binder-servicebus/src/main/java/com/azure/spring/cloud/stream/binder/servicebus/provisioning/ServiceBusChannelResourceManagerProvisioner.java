@@ -5,7 +5,16 @@ package com.azure.spring.cloud.stream.binder.servicebus.provisioning;
 
 import com.azure.spring.cloud.resourcemanager.provisioning.ServiceBusProvisioner;
 import com.azure.spring.cloud.service.servicebus.properties.ServiceBusEntityType;
+import com.azure.spring.cloud.stream.binder.servicebus.core.properties.ServiceBusConsumerProperties;
+import com.azure.spring.cloud.stream.binder.servicebus.core.properties.ServiceBusProducerProperties;
 import com.azure.spring.cloud.stream.binder.servicebus.core.provisioning.ServiceBusChannelProvisioner;
+import com.azure.spring.cloud.stream.binder.servicebus.core.provisioning.ServiceBusConsumerDestination;
+import com.azure.spring.cloud.stream.binder.servicebus.core.provisioning.ServiceBusProducerDestination;
+import org.springframework.cloud.stream.binder.ExtendedConsumerProperties;
+import org.springframework.cloud.stream.binder.ExtendedProducerProperties;
+import org.springframework.cloud.stream.provisioning.ConsumerDestination;
+import org.springframework.cloud.stream.provisioning.ProducerDestination;
+import org.springframework.cloud.stream.provisioning.ProvisioningException;
 import org.springframework.lang.NonNull;
 import org.springframework.util.Assert;
 
@@ -33,11 +42,11 @@ public class ServiceBusChannelResourceManagerProvisioner extends ServiceBusChann
     }
 
     @Override
-    protected void validateOrCreateForConsumer(String name, String group, ServiceBusEntityType type) {
+    protected void validateOrCreateForConsumer(String name, String subscription, ServiceBusEntityType type) {
         if (QUEUE == type) {
             this.serviceBusProvisioner.provisionQueue(namespace, name);
         } else {
-            this.serviceBusProvisioner.provisionSubscription(namespace, name, group);
+            this.serviceBusProvisioner.provisionSubscription(namespace, name, subscription);
         }
     }
 
@@ -49,4 +58,34 @@ public class ServiceBusChannelResourceManagerProvisioner extends ServiceBusChann
             this.serviceBusProvisioner.provisionTopic(namespace, name);
         }
     }
+
+    @Override
+    public ProducerDestination provisionProducerDestination(String name,
+                                                            ExtendedProducerProperties<ServiceBusProducerProperties> extendedProducerProperties) throws ProvisioningException {
+        ServiceBusProducerProperties producerProperties = extendedProducerProperties.getExtension();
+        if (QUEUE == producerProperties.getEntityType()) {
+            this.serviceBusProvisioner.provisionQueue(namespace, name, producerProperties);
+        } else {
+            this.serviceBusProvisioner.provisionTopic(namespace, name, producerProperties);
+        }
+        return new ServiceBusProducerDestination(name);
+    }
+
+    @Override
+    public ConsumerDestination provisionConsumerDestination(String name, String group,
+                                                            ExtendedConsumerProperties<ServiceBusConsumerProperties> extendedConsumerProperties) throws ProvisioningException {
+        ServiceBusConsumerProperties consumerProperties = extendedConsumerProperties.getExtension();
+        if (QUEUE == consumerProperties.getEntityType()) {
+            ServiceBusProducerProperties producerProperties = new ServiceBusProducerProperties();
+            producerProperties.setEntityType(consumerProperties.getEntityType());
+            producerProperties.setEntityName(consumerProperties.getEntityName());
+            producerProperties.setDefaultMessageTimeToLive(consumerProperties.getDefaultMessageTimeToLive());
+            producerProperties.setMaxSizeInMegabytes(consumerProperties.getMaxSizeInMegabytes());
+            this.serviceBusProvisioner.provisionQueue(namespace, name, producerProperties);
+        } else {
+            this.serviceBusProvisioner.provisionSubscription(namespace, name, group, consumerProperties);
+        }
+        return new ServiceBusConsumerDestination(name);
+    }
+
 }

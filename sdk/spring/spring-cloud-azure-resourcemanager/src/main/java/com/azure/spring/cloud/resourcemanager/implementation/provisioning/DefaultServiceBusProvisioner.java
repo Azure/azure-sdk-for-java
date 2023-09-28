@@ -9,6 +9,8 @@ import com.azure.spring.cloud.resourcemanager.implementation.crud.ServiceBusQueu
 import com.azure.spring.cloud.resourcemanager.implementation.crud.ServiceBusTopicCrud;
 import com.azure.spring.cloud.resourcemanager.implementation.crud.ServiceBusTopicSubscriptionCrud;
 import com.azure.spring.cloud.resourcemanager.provisioning.ServiceBusProvisioner;
+import com.azure.spring.cloud.stream.binder.servicebus.core.properties.ServiceBusConsumerProperties;
+import com.azure.spring.cloud.stream.binder.servicebus.core.properties.ServiceBusProducerProperties;
 import reactor.util.function.Tuples;
 
 /**
@@ -33,17 +35,36 @@ public class DefaultServiceBusProvisioner implements ServiceBusProvisioner {
     }
 
     @Override
+    @Deprecated
     public void provisionQueue(String namespace, String queue) {
-        this.queueCrud.getOrCreate(Tuples.of(namespace, queue));
+        this.queueCrud.getOrCreate(Tuples.of(namespace, queue, new ServiceBusProducerProperties()));
     }
 
     @Override
+    public void provisionQueue(String namespace, String queue, ServiceBusProducerProperties producerProperties) {
+        this.queueCrud.getOrCreate(Tuples.of(namespace, queue, producerProperties));
+    }
+
+    @Override
+    @Deprecated
     public void provisionTopic(String namespace, String topic) {
-        this.topicCrud.getOrCreate(Tuples.of(namespace, topic));
+        this.topicCrud.getOrCreate(Tuples.of(namespace, topic, new ServiceBusProducerProperties()));
     }
 
     @Override
+    public void provisionTopic(String namespace, String topic, ServiceBusProducerProperties producerProperties) {
+        this.topicCrud.getOrCreate(Tuples.of(namespace, topic, producerProperties));
+    }
+
+    @Override
+    @Deprecated
     public void provisionSubscription(String namespace, String topic, String subscription) {
-        this.subscriptionCrud.getOrCreate(Tuples.of(namespace, topic, subscription));
+        this.subscriptionCrud.getOrCreate(Tuples.of(namespace, topic, subscription, new ServiceBusConsumerProperties()));
+    }
+
+    @Override
+    public void provisionSubscription(String namespace, String topic, String subscription,
+                                      ServiceBusConsumerProperties consumerProperties) {
+        this.subscriptionCrud.getOrCreate(Tuples.of(namespace, topic, subscription, consumerProperties));
     }
 }

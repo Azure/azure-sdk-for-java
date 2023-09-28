@@ -5,12 +5,16 @@ package com.azure.spring.cloud.stream.binder.servicebus.core.properties;
 
 import com.azure.spring.messaging.servicebus.core.properties.ProcessorProperties;
 
+import java.time.Duration;
+
 /**
  * Service Bus consumer properties.
  */
 public class ServiceBusConsumerProperties extends ProcessorProperties {
 
     private boolean requeueRejected;
+    private Long maxSizeInMegabytes;
+    private Duration defaultMessageTimeToLive;
 
     /**
      * Controls if the failed messages are routed to the DLQ
@@ -30,4 +34,29 @@ public class ServiceBusConsumerProperties extends ProcessorProperties {
         this.requeueRejected = requeueRejected;
     }
 
+    public Long getMaxSizeInMegabytes() {
+        return maxSizeInMegabytes;
+    }
+
+    /**
+     * Set the maxSizeInMegabytes property: The maximum size of the queue in megabytes, which is the size of memory allocated for the queue.
+     * @param maxSizeInMegabytes the maxSizeInMegabytes value to set.
+     */
+    public void setMaxSizeInMegabytes(Long maxSizeInMegabytes) {
+        this.maxSizeInMegabytes = maxSizeInMegabytes;
+    }
+
+    public Duration getDefaultMessageTimeToLive() {
+        return defaultMessageTimeToLive;
+    }
+
+    /**
+     * Set the defaultMessageTimeToLive property: ISO 8601 default message timespan to live value.
+     * This is the duration after which the message expires, starting from when the message is sent to Service Bus.
+     * This is the default value used when TimeToLive is not set on a message itself.
+     * @param defaultMessageTimeToLive the defaultMessageTimeToLive value to set.
+     */
+    public void setDefaultMessageTimeToLive(Duration defaultMessageTimeToLive) {
+        this.defaultMessageTimeToLive = defaultMessageTimeToLive;
+    }
 }

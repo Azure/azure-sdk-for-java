@@ -14,6 +14,9 @@ public class ServiceBusProducerProperties extends ProducerProperties {
     private boolean sync = false;
     private Duration sendTimeout = Duration.ofMillis(10000);
 
+    private Long maxSizeInMegabytes;
+    private Duration defaultMessageTimeToLive;
+
     /**
      * Check whether is sync.
      *
@@ -50,4 +53,30 @@ public class ServiceBusProducerProperties extends ProducerProperties {
         this.sendTimeout = sendTimeout;
     }
 
+
+    public Long getMaxSizeInMegabytes() {
+        return maxSizeInMegabytes;
+    }
+
+    /**
+     * Set the maxSizeInMegabytes property: The maximum size of the queue in megabytes, which is the size of memory allocated for the queue.
+     * @param maxSizeInMegabytes the maxSizeInMegabytes value to set.
+     */
+    public void setMaxSizeInMegabytes(Long maxSizeInMegabytes) {
+        this.maxSizeInMegabytes = maxSizeInMegabytes;
+    }
+
+    public Duration getDefaultMessageTimeToLive() {
+        return defaultMessageTimeToLive;
+    }
+
+    /**
+     * Set the defaultMessageTimeToLive property: ISO 8601 default message timespan to live value.
+     * This is the duration after which the message expires, starting from when the message is sent to Service Bus.
+     * This is the default value used when TimeToLive is not set on a message itself.
+     * @param defaultMessageTimeToLive the defaultMessageTimeToLive value to set.
+     */
+    public void setDefaultMessageTimeToLive(Duration defaultMessageTimeToLive) {
+        this.defaultMessageTimeToLive = defaultMessageTimeToLive;
+    }
 }

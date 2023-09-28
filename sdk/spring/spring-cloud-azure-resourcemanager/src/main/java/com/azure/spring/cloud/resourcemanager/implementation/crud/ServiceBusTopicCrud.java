@@ -8,20 +8,21 @@ import com.azure.resourcemanager.AzureResourceManager;
 import com.azure.resourcemanager.servicebus.models.ServiceBusNamespace;
 import com.azure.resourcemanager.servicebus.models.Topic;
 import com.azure.spring.cloud.core.properties.resource.AzureResourceMetadata;
+import com.azure.spring.cloud.stream.binder.servicebus.core.properties.ServiceBusProducerProperties;
 import org.springframework.util.Assert;
-import reactor.util.function.Tuple2;
+import reactor.util.function.Tuple3;
 
 /**
  * Resource manager for Service Bus topic.
  */
-public class ServiceBusTopicCrud extends AbstractResourceCrud<Topic, Tuple2<String, String>> {
+public class ServiceBusTopicCrud extends AbstractResourceCrud<Topic, Tuple3<String, String, ServiceBusProducerProperties>> {
 
     public ServiceBusTopicCrud(AzureResourceManager azureResourceManager, AzureResourceMetadata azureResourceMetadata) {
         super(azureResourceManager, azureResourceMetadata);
     }
 
     @Override
-    String getResourceName(Tuple2<String, String> key) {
+    String getResourceName(Tuple3<String, String, ServiceBusProducerProperties> key) {
         return key.getT2();
     }
 
@@ -31,15 +32,15 @@ public class ServiceBusTopicCrud extends AbstractResourceCrud<Topic, Tuple2<Stri
     }
 
     @Override
-    public Topic internalGet(Tuple2<String, String> namespaceAndName) {
+    public Topic internalGet(Tuple3<String, String, ServiceBusProducerProperties> creationTuple) {
         try {
             ServiceBusNamespace serviceBusNamespace = new ServiceBusNamespaceCrud(this.resourceManager,
                 this.resourceMetadata)
-                .get(namespaceAndName.getT1());
+                .get(creationTuple.getT1());
             Assert.notNull(serviceBusNamespace, "The Service Bus namespace should exist first.");
             return serviceBusNamespace
                 .topics()
-                .getByName(namespaceAndName.getT2());
+                .getByName(creationTuple.getT2());
         } catch (ManagementException e) {
             if (e.getResponse().getStatusCode() == RESOURCE_NOT_FOUND) {
                 return null;
@@ -50,11 +51,18 @@ public class ServiceBusTopicCrud extends AbstractResourceCrud<Topic, Tuple2<Stri
     }
 
     @Override
-    public Topic internalCreate(Tuple2<String, String> namespaceAndName) {
-        return new ServiceBusNamespaceCrud(this.resourceManager, this.resourceMetadata)
-            .getOrCreate(namespaceAndName.getT1())
+    public Topic internalCreate(Tuple3<String, String, ServiceBusProducerProperties> creationTuple) {
+        ServiceBusProducerProperties producerProperties = creationTuple.getT3();
+        Topic.Definition definition = (Topic.Definition) new ServiceBusNamespaceCrud(this.resourceManager, this.resourceMetadata)
+            .getOrCreate(creationTuple.getT1())
             .topics()
-            .define(namespaceAndName.getT2())
-            .create();
+            .define(creationTuple.getT2());
+        if (producerProperties.getMaxSizeInMegabytes() != null) {
+            definition.withSizeInMB(producerProperties.getMaxSizeInMegabytes());
+        }
+        if (producerProperties.getDefaultMessageTimeToLive() != null) {
+            definition.withDefaultMessageTTL(producerProperties.getDefaultMessageTimeToLive());
+        }
+        return definition.create();
     }
 }
