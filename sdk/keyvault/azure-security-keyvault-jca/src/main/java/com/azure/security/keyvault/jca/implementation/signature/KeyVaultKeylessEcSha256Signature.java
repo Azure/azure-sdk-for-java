@@ -5,7 +5,7 @@ package com.azure.security.keyvault.jca.implementation.signature;
 /**
  * key vault SHA256
  */
-public final class KeyVaultKeyLessEcSha256Signature extends KeyVaultKeyLessECSignature {
+public final class KeyVaultKeylessEcSha256Signature extends KeyVaultKeylessEcSignature {
 
     @Override
     public String getAlgorithmName() {
@@ -15,7 +15,7 @@ public final class KeyVaultKeyLessEcSha256Signature extends KeyVaultKeyLessECSig
     /**
      * support SHA-256
      */
-    public KeyVaultKeyLessEcSha256Signature() {
+    public KeyVaultKeylessEcSha256Signature() {
         super("SHA-256", "ES256");
     }
 

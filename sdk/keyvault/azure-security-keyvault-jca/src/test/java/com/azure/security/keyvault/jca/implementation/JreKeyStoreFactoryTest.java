@@ -9,10 +9,10 @@ import java.security.KeyStore;
 
 import static org.junit.jupiter.api.Assertions.assertFalse;
 
-public class JREKeyStoreFactoryTest {
+public class JreKeyStoreFactoryTest {
     @Test
     public void test() {
-        KeyStore jreKeyStore = JREKeyStoreFactory.getDefaultKeyStore();
+        KeyStore jreKeyStore = JreKeyStoreFactory.getDefaultKeyStore();
         assertFalse(jreKeyStore.getType().equals(KeyVaultKeyStore.KEY_STORE_TYPE));
     }
 }

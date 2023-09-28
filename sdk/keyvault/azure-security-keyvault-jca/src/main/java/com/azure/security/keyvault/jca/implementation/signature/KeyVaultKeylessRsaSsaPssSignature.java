@@ -8,30 +8,18 @@ import java.security.NoSuchAlgorithmException;
 import java.security.InvalidAlgorithmParameterException;
 import java.security.spec.AlgorithmParameterSpec;
 import java.security.spec.PSSParameterSpec;
-import java.util.Base64;
 
 /**
  * key vault Rsa signature to support key less
  */
-public class KeyVaultKeyLessRsaSignature extends AbstractKeyVaultKeyLessSignature {
+public class KeyVaultKeylessRsaSsaPssSignature extends KeyVaultKeylessRsaSignature {
 
     /**
      * Construct a new KeyVaultKeyLessRsaSignature
      */
-    public KeyVaultKeyLessRsaSignature() {
-        super();
-        this.messageDigest = null;
-    }
-
-    @Override
-    protected byte[] engineSign() {
-        byte[] mHash = getDigestValue();
-        String encode = Base64.getEncoder().encodeToString(mHash);
+    public KeyVaultKeylessRsaSsaPssSignature() {
         //For all RSA type certificate in keyVault, we can use PS256 to encrypt.
-        if (keyVaultClient != null) {
-            return keyVaultClient.getSignedWithPrivateKey("PS256", encode, keyId);
-        }
-        return new byte[0];
+        super(null, "PS256");
     }
 
     @Override
