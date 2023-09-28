@@ -432,6 +432,10 @@ public class CosmosException extends AzureException {
 
     @Override
     public String toString() {
+        return toString(true);
+    }
+
+    String toString(boolean includeDiagnostics) {
         try {
             ObjectNode exceptionMessageNode = mapper.createObjectNode();
             exceptionMessageNode.put("ClassName", getClass().getSimpleName());
@@ -457,7 +461,7 @@ public class CosmosException extends AzureException {
                 exceptionMessageNode.put("faultInjectionRuleId", this.faultInjectionRuleId);
             }
 
-            if(this.cosmosDiagnostics != null) {
+            if(includeDiagnostics && this.cosmosDiagnostics != null) {
                 cosmosDiagnostics.fillCosmosDiagnostics(exceptionMessageNode, null);
             }
 
@@ -613,14 +617,6 @@ public class CosmosException extends AzureException {
                     @Override
                     public CosmosException createCosmosException(int statusCode, Exception innerException) {
                         return new CosmosException(statusCode, innerException);
-                    }
-
-                    @Override
-                    public CosmosException createCosmosException(int statusCode,
-                                                                        String message,
-                                                                        Map<String, String> responseHeaders,
-                                                                        Exception exception) {
-                        return new CosmosException(statusCode, message, responseHeaders, exception);
                     }
 
                     @Override

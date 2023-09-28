@@ -11,8 +11,8 @@ import com.azure.identity.implementation.IdentityClientOptions;
 import com.azure.identity.implementation.IdentitySyncClient;
 import com.azure.identity.util.TestUtils;
 import com.microsoft.aad.msal4j.MsalServiceException;
-import org.junit.Assert;
-import org.junit.Test;
+import org.junit.jupiter.api.Assertions;
+import org.junit.jupiter.api.Test;
 import org.mockito.MockedConstruction;
 import org.mockito.exceptions.misusing.InvalidUseOfMatchersException;
 import reactor.core.publisher.Mono;
@@ -25,7 +25,7 @@ import java.time.OffsetDateTime;
 import java.time.ZoneOffset;
 import java.util.UUID;
 
-import static org.junit.Assert.fail;
+import static org.junit.jupiter.api.Assertions.fail;
 import static org.mockito.ArgumentMatchers.any;
 import static org.mockito.Mockito.mockConstruction;
 import static org.mockito.Mockito.when;
@@ -139,7 +139,7 @@ public class ClientCertificateCredentialTest {
                 .expectNextMatches(accessToken -> token1.equals(accessToken.getToken())
                     && expiresAt.getSecond() == accessToken.getExpiresAt().getSecond())
                 .verifyComplete();
-            Assert.assertNotNull(identityClientMock);
+            Assertions.assertNotNull(identityClientMock);
         }
 
         try (MockedConstruction<IdentitySyncClient> identityClientMock = mockConstruction(IdentitySyncClient.class, (identityClient, context) -> {
@@ -151,9 +151,9 @@ public class ClientCertificateCredentialTest {
                 new ClientCertificateCredentialBuilder().tenantId(TENANT_ID).clientId(CLIENT_ID).pemCertificate(pemPath).build();
 
             AccessToken accessToken = credential.getTokenSync(request1);
-            Assert.assertEquals(token1, accessToken.getToken());
-            Assert.assertTrue(expiresAt.getSecond() == accessToken.getExpiresAt().getSecond());
-            Assert.assertNotNull(identityClientMock);
+            Assertions.assertEquals(token1, accessToken.getToken());
+            Assertions.assertTrue(expiresAt.getSecond() == accessToken.getExpiresAt().getSecond());
+            Assertions.assertNotNull(identityClientMock);
         }
     }
 
@@ -186,7 +186,7 @@ public class ClientCertificateCredentialTest {
                 .expectNextMatches(accessToken -> token1.equals(accessToken.getToken())
                     && expiresAt.getSecond() == accessToken.getExpiresAt().getSecond())
                 .verifyComplete();
-            Assert.assertNotNull(identityClientMock);
+            Assertions.assertNotNull(identityClientMock);
         }
 
         try (MockedConstruction<IdentitySyncClient> identityClientMock = mockConstruction(IdentitySyncClient.class, (identityClient, context) -> {
@@ -206,9 +206,9 @@ public class ClientCertificateCredentialTest {
                 new ClientCertificateCredentialBuilder().tenantId(TENANT_ID).clientId(CLIENT_ID).pemCertificate(pemPath).build();
 
             AccessToken accessToken = credential.getTokenSync(request1);
-            Assert.assertEquals(token1, accessToken.getToken());
-            Assert.assertTrue(expiresAt.getSecond() == accessToken.getExpiresAt().getSecond());
-            Assert.assertNotNull(identityClientMock);
+            Assertions.assertEquals(token1, accessToken.getToken());
+            Assertions.assertTrue(expiresAt.getSecond() == accessToken.getExpiresAt().getSecond());
+            Assertions.assertNotNull(identityClientMock);
         }
     }
 
@@ -229,12 +229,12 @@ public class ClientCertificateCredentialTest {
         })) {
             // test
             ClientCertificateCredential credential =
-                new ClientCertificateCredentialBuilder().tenantId(TENANT_ID).clientId(CLIENT_ID).pfxCertificate(pfxPath, pfxPassword).build();
+                new ClientCertificateCredentialBuilder().tenantId(TENANT_ID).clientId(CLIENT_ID).pfxCertificate(pfxPath).clientCertificatePassword(pfxPassword).build();
             StepVerifier.create(credential.getToken(request2))
                 .expectNextMatches(accessToken -> token2.equals(accessToken.getToken())
                     && expiresAt.getSecond() == accessToken.getExpiresAt().getSecond())
                 .verifyComplete();
-            Assert.assertNotNull(identityClientMock);
+            Assertions.assertNotNull(identityClientMock);
         }
 
         try (MockedConstruction<IdentitySyncClient> identityClientMock = mockConstruction(IdentitySyncClient.class, (identitySyncClient, context) -> {
@@ -247,9 +247,9 @@ public class ClientCertificateCredentialTest {
                 new ClientCertificateCredentialBuilder().tenantId(TENANT_ID).clientId(CLIENT_ID).pfxCertificate(pfxPath, pfxPassword).build();
 
             AccessToken accessToken = credential.getTokenSync(request2);
-            Assert.assertEquals(token2, accessToken.getToken());
-            Assert.assertTrue(expiresAt.getSecond() == accessToken.getExpiresAt().getSecond());
-            Assert.assertNotNull(identityClientMock);
+            Assertions.assertEquals(token2, accessToken.getToken());
+            Assertions.assertTrue(expiresAt.getSecond() == accessToken.getExpiresAt().getSecond());
+            Assertions.assertNotNull(identityClientMock);
         }
     }
 
@@ -273,7 +273,7 @@ public class ClientCertificateCredentialTest {
                 .expectNextMatches(accessToken -> token1.equals(accessToken.getToken())
                     && expiresAt.getSecond() == accessToken.getExpiresAt().getSecond())
                 .verifyComplete();
-            Assert.assertNotNull(identityClientMock);
+            Assertions.assertNotNull(identityClientMock);
         }
 
         // mock
@@ -286,9 +286,9 @@ public class ClientCertificateCredentialTest {
                 new ClientCertificateCredentialBuilder().tenantId(TENANT_ID).clientId(CLIENT_ID).pemCertificate(pemCert).build();
 
             AccessToken accessToken = credential.getTokenSync(request1);
-            Assert.assertEquals(token1, accessToken.getToken());
-            Assert.assertTrue(expiresAt.getSecond() == accessToken.getExpiresAt().getSecond());
-            Assert.assertNotNull(identityClientMock);
+            Assertions.assertEquals(token1, accessToken.getToken());
+            Assertions.assertTrue(expiresAt.getSecond() == accessToken.getExpiresAt().getSecond());
+            Assertions.assertNotNull(identityClientMock);
         }
 
     }
@@ -309,13 +309,14 @@ public class ClientCertificateCredentialTest {
         })) {
             // test
             ClientCertificateCredential credential =
-                new ClientCertificateCredentialBuilder().tenantId(TENANT_ID).clientId(CLIENT_ID).pfxCertificate(pfxCert, pfxPassword).build();
+                new ClientCertificateCredentialBuilder().tenantId(TENANT_ID).clientId(CLIENT_ID)
+                    .pfxCertificate(pfxCert).clientCertificatePassword(pfxPassword).build();
 
             StepVerifier.create(credential.getToken(request2))
                 .expectNextMatches(accessToken -> token2.equals(accessToken.getToken())
                     && expiresAt.getSecond() == accessToken.getExpiresAt().getSecond())
                 .verifyComplete();
-            Assert.assertNotNull(identityClientMock);
+            Assertions.assertNotNull(identityClientMock);
         }
 
         try (MockedConstruction<IdentitySyncClient> identityClientMock = mockConstruction(IdentitySyncClient.class, (identitySyncClient, context) -> {
@@ -324,11 +325,12 @@ public class ClientCertificateCredentialTest {
         })) {
             // test
             ClientCertificateCredential credential =
-                new ClientCertificateCredentialBuilder().tenantId(TENANT_ID).clientId(CLIENT_ID).pfxCertificate(pfxCert, pfxPassword).build();
+                new ClientCertificateCredentialBuilder().tenantId(TENANT_ID).clientId(CLIENT_ID)
+                    .pfxCertificate(pfxCert).clientCertificatePassword(pfxPassword).build();
             AccessToken accessToken = credential.getTokenSync(request2);
-            Assert.assertEquals(token2, accessToken.getToken());
-            Assert.assertTrue(expiresAt.getSecond() == accessToken.getExpiresAt().getSecond());
-            Assert.assertNotNull(identityClientMock);
+            Assertions.assertEquals(token2, accessToken.getToken());
+            Assertions.assertTrue(expiresAt.getSecond() == accessToken.getExpiresAt().getSecond());
+            Assertions.assertNotNull(identityClientMock);
         }
 
     }
@@ -351,7 +353,7 @@ public class ClientCertificateCredentialTest {
             StepVerifier.create(credential.getToken(request1))
                 .expectErrorMatches(e -> e instanceof MsalServiceException && "bad pem".equals(e.getMessage()))
                 .verify();
-            Assert.assertNotNull(identityClientMock);
+            Assertions.assertNotNull(identityClientMock);
         }
     }
 
@@ -370,11 +372,11 @@ public class ClientCertificateCredentialTest {
         })) {
             // test
             ClientCertificateCredential credential =
-                new ClientCertificateCredentialBuilder().tenantId(TENANT_ID).clientId(CLIENT_ID).pfxCertificate(pfxPath, pfxPassword).build();
+                new ClientCertificateCredentialBuilder().tenantId(TENANT_ID).clientId(CLIENT_ID).pfxCertificate(pfxPath).clientCertificatePassword(pfxPassword).build();
             StepVerifier.create(credential.getToken(request))
                 .expectErrorMatches(e -> e instanceof MsalServiceException && "bad pfx".equals(e.getMessage()))
                 .verify();
-            Assert.assertNotNull(identityClientMock);
+            Assertions.assertNotNull(identityClientMock);
         }
     }
 
@@ -396,7 +398,7 @@ public class ClientCertificateCredentialTest {
             StepVerifier.create(credential.getToken(request1))
                 .expectErrorMatches(e -> e instanceof MsalServiceException && "bad pem".equals(e.getMessage()))
                 .verify();
-            Assert.assertNotNull(identityClientMock);
+            Assertions.assertNotNull(identityClientMock);
         }
     }
 
@@ -415,11 +417,12 @@ public class ClientCertificateCredentialTest {
         })) {
             // test
             ClientCertificateCredential credential =
-                new ClientCertificateCredentialBuilder().tenantId(TENANT_ID).clientId(CLIENT_ID).pfxCertificate(pfxCert, pfxPassword).build();
+                new ClientCertificateCredentialBuilder().tenantId(TENANT_ID).clientId(CLIENT_ID)
+                    .pfxCertificate(pfxCert).clientCertificatePassword(pfxPassword).build();
             StepVerifier.create(credential.getToken(request2))
                 .expectErrorMatches(e -> e instanceof MsalServiceException && "bad pfx".equals(e.getMessage()))
                 .verify();
-            Assert.assertNotNull(identityClientMock);
+            Assertions.assertNotNull(identityClientMock);
         }
     }
 
@@ -441,21 +444,21 @@ public class ClientCertificateCredentialTest {
                 new ClientCertificateCredentialBuilder().clientId(CLIENT_ID).pemCertificate(pemPath).build();
                 fail();
             } catch (IllegalArgumentException e) {
-                Assert.assertTrue(e.getMessage().contains("tenantId"));
+                Assertions.assertTrue(e.getMessage().contains("tenantId"));
             }
             try {
                 new ClientCertificateCredentialBuilder().tenantId(TENANT_ID).pemCertificate(pemPath).build();
                 fail();
             } catch (IllegalArgumentException e) {
-                Assert.assertTrue(e.getMessage().contains("clientId"));
+                Assertions.assertTrue(e.getMessage().contains("clientId"));
             }
             try {
                 new ClientCertificateCredentialBuilder().tenantId(TENANT_ID).clientId(CLIENT_ID).build();
                 fail();
             } catch (IllegalArgumentException e) {
-                Assert.assertTrue(e.getMessage().contains("clientCertificate"));
+                Assertions.assertTrue(e.getMessage().contains("clientCertificate"));
             }
-            Assert.assertNotNull(identityClientMock);
+            Assertions.assertNotNull(identityClientMock);
         }
     }
 

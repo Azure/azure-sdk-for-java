@@ -32,7 +32,7 @@ public final class EmailServicesListByResourceGroupMockTests {
         ArgumentCaptor<HttpRequest> httpRequest = ArgumentCaptor.forClass(HttpRequest.class);
 
         String responseStr =
-            "{\"value\":[{\"properties\":{\"provisioningState\":\"Failed\",\"dataLocation\":\"blmpewww\"},\"location\":\"krvrns\",\"tags\":{\"ohxcrsbfova\":\"q\",\"sub\":\"rruvwbhsq\",\"rxbpyb\":\"gjb\",\"twss\":\"rfbjf\"},\"id\":\"t\",\"name\":\"tpvjzbexilzznfqq\",\"type\":\"vwpm\"}]}";
+            "{\"value\":[{\"properties\":{\"provisioningState\":\"Updating\",\"dataLocation\":\"jzbexilzznfq\"},\"location\":\"vwpm\",\"tags\":{\"jhwqytjrybnw\":\"ruoujmk\",\"enq\":\"ewgdrjervn\",\"ndoygmifthnzdnd\":\"eh\",\"nayqi\":\"l\"},\"id\":\"ynduha\",\"name\":\"hqlkthumaqo\",\"type\":\"bgycduiertgccym\"}]}";
 
         Mockito.when(httpResponse.getStatusCode()).thenReturn(200);
         Mockito.when(httpResponse.getHeaders()).thenReturn(new HttpHeaders());
@@ -61,10 +61,10 @@ public final class EmailServicesListByResourceGroupMockTests {
                     new AzureProfile("", "", AzureEnvironment.AZURE));
 
         PagedIterable<EmailServiceResource> response =
-            manager.emailServices().listByResourceGroup("bhsfxob", com.azure.core.util.Context.NONE);
+            manager.emailServices().listByResourceGroup("t", com.azure.core.util.Context.NONE);
 
-        Assertions.assertEquals("krvrns", response.iterator().next().location());
-        Assertions.assertEquals("q", response.iterator().next().tags().get("ohxcrsbfova"));
-        Assertions.assertEquals("blmpewww", response.iterator().next().dataLocation());
+        Assertions.assertEquals("vwpm", response.iterator().next().location());
+        Assertions.assertEquals("ruoujmk", response.iterator().next().tags().get("jhwqytjrybnw"));
+        Assertions.assertEquals("jzbexilzznfq", response.iterator().next().dataLocation());
     }
 }

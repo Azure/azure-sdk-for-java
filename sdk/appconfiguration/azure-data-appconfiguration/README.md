@@ -461,11 +461,11 @@ String snapshotName = "{snapshotName}";
 List<SnapshotSettingFilter> filters = new ArrayList<>();
 // Key Name also supports RegExp but only support prefix end with "*", such as "k*" and is case-sensitive.
 filters.add(new SnapshotSettingFilter("Test*"));
-SyncPoller<CreateSnapshotOperationDetail, ConfigurationSettingSnapshot> poller =
-    configurationClient.beginCreateSnapshot(snapshotName, new ConfigurationSettingSnapshot(filters), Context.NONE);
+SyncPoller<CreateSnapshotOperationDetail, ConfigurationSettingsSnapshot> poller =
+    configurationClient.beginCreateSnapshot(snapshotName, new ConfigurationSettingsSnapshot(filters), Context.NONE);
 poller.setPollInterval(Duration.ofSeconds(10));
 poller.waitForCompletion();
-ConfigurationSettingSnapshot snapshot = poller.getFinalResult();
+ConfigurationSettingsSnapshot snapshot = poller.getFinalResult();
 System.out.printf("Snapshot name=%s is created at %s, snapshot status is %s.%n",
     snapshot.getName(), snapshot.getCreatedAt(), snapshot.getStatus());
 ```
@@ -476,7 +476,7 @@ Once a configuration setting snapshot is created, you can retrieve it using the 
 
 ```java readme-sample-getSnapshot
 String snapshotName = "{snapshotName}";
-ConfigurationSettingSnapshot getSnapshot = configurationClient.getSnapshot(snapshotName);
+ConfigurationSettingsSnapshot getSnapshot = configurationClient.getSnapshot(snapshotName);
 System.out.printf("Snapshot name=%s is created at %s, snapshot status is %s.%n",
     getSnapshot.getName(), getSnapshot.getCreatedAt(), getSnapshot.getStatus());
 ```
@@ -488,7 +488,7 @@ to `archived`.
 
 ```java readme-sample-archiveSnapshot
 String snapshotName = "{snapshotName}";
-ConfigurationSettingSnapshot archivedSnapshot = configurationClient.archiveSnapshot(snapshotName);
+ConfigurationSettingsSnapshot archivedSnapshot = configurationClient.archiveSnapshot(snapshotName);
 System.out.printf("Archived snapshot name=%s is created at %s, snapshot status is %s.%n",
     archivedSnapshot.getName(), archivedSnapshot.getCreatedAt(), archivedSnapshot.getStatus());
 ```
@@ -500,7 +500,7 @@ snapshot to `ready`.
 
 ```java readme-sample-recoverSnapshot
 String snapshotName = "{snapshotName}";
-ConfigurationSettingSnapshot recoveredSnapshot = configurationClient.recoverSnapshot(snapshotName);
+ConfigurationSettingsSnapshot recoveredSnapshot = configurationClient.recoverSnapshot(snapshotName);
 System.out.printf("Recovered snapshot name=%s is created at %s, snapshot status is %s.%n",
     recoveredSnapshot.getName(), recoveredSnapshot.getCreatedAt(), recoveredSnapshot.getStatus());
 ```
@@ -512,9 +512,9 @@ To retrieve all snapshots, you can use the `listSnapshots` method.
 ```java readme-sample-getAllSnapshots
 String snapshotNameProduct = "{snapshotNameInProduct}";
 SnapshotSelector snapshotSelector = new SnapshotSelector().setName(snapshotNameProduct);
-PagedIterable<ConfigurationSettingSnapshot> configurationSettingSnapshots =
+PagedIterable<ConfigurationSettingsSnapshot> configurationSettingsSnapshots =
     configurationClient.listSnapshots(snapshotSelector);
-for (ConfigurationSettingSnapshot snapshot : configurationSettingSnapshots) {
+for (ConfigurationSettingsSnapshot snapshot : configurationSettingsSnapshots) {
     System.out.printf("Listed Snapshot name = %s is created at %s, snapshot status is %s.%n",
         snapshot.getName(), snapshot.getCreatedAt(), snapshot.getStatus());
 }
@@ -596,7 +596,7 @@ This project has adopted the [Microsoft Open Source Code of Conduct][coc]. For m
 [default_cred_ref]: https://azuresdkdocs.blob.core.windows.net/$web/java/azure-identity/1.0.1/com/azure/identity/DefaultAzureCredential.html
 [jdk_link]: https://docs.microsoft.com/java/azure/jdk/?view=azure-java-stable
 [maven]: https://maven.apache.org/
-[package]: https://search.maven.org/artifact/com.azure/azure-data-appconfiguration
+[package]: https://central.sonatype.com/artifact/com.azure/azure-data-appconfiguration
 [performance_tuning]: https://github.com/Azure/azure-sdk-for-java/wiki/Performance-Tuning
 [rest_api]: https://github.com/Azure/AppConfiguration#rest-api-reference
 [samples]: https://github.com/Azure/azure-sdk-for-java/blob/main/sdk/appconfiguration/azure-data-appconfiguration/src/samples/java/com/azure/data/appconfiguration

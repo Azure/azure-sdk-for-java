@@ -13,7 +13,7 @@ public final class WaitStatusTests {
         WaitStatus model =
             BinaryData
                 .fromString(
-                    "{\"status\":{\"startTime\":\"2021-04-20T10:26:18Z\",\"completedTime\":\"2021-10-12T01:56:34Z\",\"state\":\"Stopped\"},\"waitDurationInSeconds\":1046063438}")
+                    "{\"status\":{\"startTime\":\"2021-04-22T17:58:43Z\",\"completedTime\":\"2021-09-11T06:43:14Z\",\"state\":\"NotStarted\"},\"waitDurationInSeconds\":1045887723}")
                 .toObject(WaitStatus.class);
     }
 

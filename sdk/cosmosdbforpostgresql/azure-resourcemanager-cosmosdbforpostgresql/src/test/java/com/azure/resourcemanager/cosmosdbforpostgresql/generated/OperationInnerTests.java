@@ -14,7 +14,7 @@ public final class OperationInnerTests {
         OperationInner model =
             BinaryData
                 .fromString(
-                    "{\"name\":\"ixhbkuofqweykhm\",\"display\":{\"provider\":\"vfyexfw\",\"resource\":\"bcibvyvdcsitynn\",\"operation\":\"mdectehfiqscjey\",\"description\":\"hezrkgq\"},\"isDataAction\":true,\"origin\":\"user\",\"properties\":{\"cattpngjcrcczsq\":\"datavgmkqsleyyvxyqjp\"}}")
+                    "{\"name\":\"llr\",\"display\":{\"provider\":\"d\",\"resource\":\"atkpnp\",\"operation\":\"exxbczwtr\",\"description\":\"iqzbq\"},\"isDataAction\":true,\"origin\":\"user\",\"properties\":{\"lhzdobp\":\"dataokacspk\",\"kcciwwzjuqkhr\":\"datajmflbvvnch\",\"oskg\":\"dataajiwkuo\"}}")
                 .toObject(OperationInner.class);
         Assertions.assertEquals(true, model.isDataAction());
     }

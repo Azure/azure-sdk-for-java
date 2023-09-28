@@ -22,6 +22,12 @@ public final class AddParticipantResponseInternal {
     @JsonProperty(value = "operationContext")
     private String operationContext;
 
+    /*
+     * Invitation ID used to add a participant.
+     */
+    @JsonProperty(value = "invitationId")
+    private String invitationId;
+
     /**
      * Get the participant property: List of current participants in the call.
      *
@@ -59,6 +65,26 @@ public final class AddParticipantResponseInternal {
      */
     public AddParticipantResponseInternal setOperationContext(String operationContext) {
         this.operationContext = operationContext;
+        return this;
+    }
+
+    /**
+     * Get the invitationId property: Invitation ID used to add a participant.
+     *
+     * @return the invitationId value.
+     */
+    public String getInvitationId() {
+        return this.invitationId;
+    }
+
+    /**
+     * Set the invitationId property: Invitation ID used to add a participant.
+     *
+     * @param invitationId the invitationId value to set.
+     * @return the AddParticipantResponseInternal object itself.
+     */
+    public AddParticipantResponseInternal setInvitationId(String invitationId) {
+        this.invitationId = invitationId;
         return this;
     }
 }

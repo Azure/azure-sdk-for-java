@@ -33,7 +33,15 @@ jobs:
           ContainerRegistryClientId: $(azuresdkimages-cr-clientid)
           ContainerRegistryClientSecret: $(azuresdkimages-cr-clientsecret)
           ImageId: "$(DocValidationImageId)"
-      # Call update docs ci script to onboard packages
+
+      - task: Powershell@2
+        inputs:
+          pwsh: true
+          filePath: eng/common/scripts/Update-DocsMsPackageMonikers.ps1
+          arguments: -DocRepoLocation $(DocRepoLocation)
+        displayName: Move deprecated packages to legacy moniker
+        condition: and(succeeded(), or(eq(variables['Build.Reason'], 'Schedule'), eq(variables['Force.MainUpdate'], 'true')))
+
       - task: Powershell@2
         inputs:
           pwsh: true
@@ -116,6 +124,15 @@ jobs:
           Copy-Item "./eng/repo-docs/docms/daily.update.setting.xml" -Destination "~/.m2/settings.xml"
         displayName: 'Configure mvn'
         workingDirectory: $(Build.SourcesDirectory)
+
+      - task: Powershell@2
+        inputs:
+          pwsh: true
+          filePath: eng/common/scripts/Update-DocsMsPackageMonikers.ps1
+          arguments: -DocRepoLocation $(DocRepoLocation)
+        displayName: Move deprecated packages to legacy moniker
+        condition: and(succeeded(), or(eq(variables['Build.Reason'], 'Schedule'), eq(variables['Force.MainUpdate'], 'true')))
+
       - task: Powershell@2
         inputs:
           pwsh: true

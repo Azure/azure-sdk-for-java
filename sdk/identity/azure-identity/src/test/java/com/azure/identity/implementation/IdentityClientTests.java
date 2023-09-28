@@ -23,8 +23,9 @@ import com.microsoft.aad.msal4j.MsalServiceException;
 import com.microsoft.aad.msal4j.PublicClientApplication;
 import com.microsoft.aad.msal4j.SilentParameters;
 import com.microsoft.aad.msal4j.UserNamePasswordParameters;
-import org.junit.Assert;
-import org.junit.Test;
+
+import org.junit.jupiter.api.Assertions;
+import org.junit.jupiter.api.Test;
 import org.mockito.AdditionalMatchers;
 import org.mockito.ArgumentMatchers;
 import org.mockito.MockedConstruction;
@@ -49,9 +50,7 @@ import java.time.format.DateTimeFormatter;
 import java.util.UUID;
 import java.util.concurrent.CompletableFuture;
 
-import static org.junit.Assert.assertFalse;
-import static org.junit.Assert.assertTrue;
-import static org.junit.Assert.fail;
+import static org.junit.jupiter.api.Assertions.*;
 import static org.mockito.ArgumentMatchers.any;
 import static org.mockito.ArgumentMatchers.anyString;
 import static org.mockito.Mockito.anyBoolean;
@@ -85,8 +84,8 @@ public class IdentityClientTests {
                 .tenantId(TENANT_ID).clientId(CLIENT_ID).clientSecret(secret).build();
             StepVerifier.create(client.authenticateWithConfidentialClient(request))
                 .assertNext(token -> {
-                    Assert.assertEquals(accessToken, token.getToken());
-                    Assert.assertEquals(expiresOn.getSecond(), token.getExpiresAt().getSecond());
+                    Assertions.assertEquals(accessToken, token.getToken());
+                    Assertions.assertEquals(expiresOn.getSecond(), token.getExpiresAt().getSecond());
                 })
                 .verifyComplete();
         });
@@ -111,7 +110,7 @@ public class IdentityClientTests {
                 client.authenticateWithConfidentialClient(request).block();
                 fail();
             } catch (MsalServiceException e) {
-                Assert.assertEquals("Invalid clientSecret", e.getMessage());
+                Assertions.assertEquals("Invalid clientSecret", e.getMessage());
             }
         });
 
@@ -132,8 +131,8 @@ public class IdentityClientTests {
                 .certificatePath(pfxPath).certificatePassword("StrongPass!123").build();
             StepVerifier.create(client.authenticateWithConfidentialClient(request))
                 .assertNext(token -> {
-                    Assert.assertEquals(accessToken, token.getToken());
-                    Assert.assertEquals(expiresOn.getSecond(), token.getExpiresAt().getSecond());
+                    Assertions.assertEquals(accessToken, token.getToken());
+                    Assertions.assertEquals(expiresOn.getSecond(), token.getExpiresAt().getSecond());
                 })
                 .verifyComplete();
         });
@@ -160,8 +159,8 @@ public class IdentityClientTests {
                 .tenantId(TENANT_ID).clientId(CLIENT_ID).certificatePath(pemPath).build();
             StepVerifier.create(client.authenticateWithConfidentialClient(request))
                 .assertNext(token -> {
-                    Assert.assertEquals(accessToken, token.getToken());
-                    Assert.assertEquals(expiresOn.getSecond(), token.getExpiresAt().getSecond());
+                    Assertions.assertEquals(accessToken, token.getToken());
+                    Assertions.assertEquals(expiresOn.getSecond(), token.getExpiresAt().getSecond());
                 })
                 .verifyComplete();
         });
@@ -182,7 +181,7 @@ public class IdentityClientTests {
             IdentityClient client = new IdentityClientBuilder().tenantId(TENANT_ID).clientId(CLIENT_ID)
                 .certificatePath(pfxPath).certificatePassword("BadPassword").build();
             StepVerifier.create(client.authenticateWithConfidentialClient(request))
-                .verifyErrorSatisfies(e -> Assert.assertTrue(e.getMessage().contains("password was incorrect")));
+                .verifyErrorSatisfies(e -> assertTrue(e.getMessage().contains("password was incorrect")));
         });
     }
 
@@ -202,8 +201,8 @@ public class IdentityClientTests {
 
             StepVerifier.create(client.authenticateWithDeviceCode(request, deviceCodeChallenge -> { /* do nothing */ }))
                 .assertNext(token -> {
-                    Assert.assertEquals(accessToken, token.getToken());
-                    Assert.assertEquals(expiresOn.getSecond(), token.getExpiresAt().getSecond());
+                    Assertions.assertEquals(accessToken, token.getToken());
+                    Assertions.assertEquals(expiresOn.getSecond(), token.getExpiresAt().getSecond());
                 })
                 .verifyComplete();
         });
@@ -237,8 +236,8 @@ public class IdentityClientTests {
             // test
             StepVerifier.create(client.getTokenFromTargetManagedIdentity(request))
                 .assertNext(token -> {
-                    Assert.assertEquals("token1", token.getToken());
-                    Assert.assertEquals(expiresOn.getSecond(), token.getExpiresAt().getSecond());
+                    Assertions.assertEquals("token1", token.getToken());
+                    Assertions.assertEquals(expiresOn.getSecond(), token.getExpiresAt().getSecond());
                 })
                 .verifyComplete();
         });
@@ -269,14 +268,14 @@ public class IdentityClientTests {
             // test
             StepVerifier.create(client.getTokenFromTargetManagedIdentity(request))
                 .assertNext(token -> {
-                    Assert.assertEquals("token1", token.getToken());
-                    Assert.assertEquals(expiresOn.getSecond(), token.getExpiresAt().getSecond());
+                    Assertions.assertEquals("token1", token.getToken());
+                    Assertions.assertEquals(expiresOn.getSecond(), token.getExpiresAt().getSecond());
                 })
                 .verifyComplete();
         });
     }
 
-    @Test(expected = ClientAuthenticationException.class)
+    @Test
     public void testInValidIdentityEndpointSecretArcCodeFlow() throws Exception {
         // setup
         String endpoint = "http://localhost";
@@ -290,12 +289,14 @@ public class IdentityClientTests {
                 .setIdentityEndpoint(endpoint))
             .setConfiguration(configuration);
         IdentityClient client = new IdentityClientBuilder().identityClientOptions(options).build();
-        mockForArcCodeFlow(401, () -> {
-            client.getTokenFromTargetManagedIdentity(request).block();
-        });
+
+        Assertions.assertThrows(ClientAuthenticationException.class,
+            () -> mockForArcCodeFlow(401, () -> {
+                client.getTokenFromTargetManagedIdentity(request).block();
+            }));
     }
 
-    @Test(expected = ClientAuthenticationException.class)
+    @Test
     public void testInValidIdentityEndpointResponseCodeArcCodeFlow() throws Exception {
         // setup
         String endpoint = "http://localhost";
@@ -309,7 +310,9 @@ public class IdentityClientTests {
             .setConfiguration(configuration);
         IdentityClient client = new IdentityClientBuilder().identityClientOptions(options).build();
         // mock
-        mockForArcCodeFlow(200, () -> client.getTokenFromTargetManagedIdentity(request).block());
+
+        Assertions.assertThrows(ClientAuthenticationException.class,
+            () -> mockForArcCodeFlow(200, () -> client.getTokenFromTargetManagedIdentity(request).block()));
     }
 
     @Test
@@ -335,8 +338,8 @@ public class IdentityClientTests {
             // test
             StepVerifier.create(client.getTokenFromTargetManagedIdentity(request))
                 .assertNext(token -> {
-                    Assert.assertEquals("token1", token.getToken());
-                    Assert.assertEquals(expiresOn.getSecond(), token.getExpiresAt().getSecond());
+                    Assertions.assertEquals("token1", token.getToken());
+                    Assertions.assertEquals(expiresOn.getSecond(), token.getExpiresAt().getSecond());
                 })
                 .verifyComplete();
         });
@@ -363,8 +366,8 @@ public class IdentityClientTests {
             // test
             StepVerifier.create(client.getTokenFromTargetManagedIdentity(request))
                 .assertNext(token -> {
-                    Assert.assertEquals("token1", token.getToken());
-                    Assert.assertEquals(expiresOn.getSecond(), token.getExpiresAt().getSecond());
+                    Assertions.assertEquals("token1", token.getToken());
+                    Assertions.assertEquals(expiresOn.getSecond(), token.getExpiresAt().getSecond());
                 })
                 .verifyComplete();
         });
@@ -487,8 +490,8 @@ public class IdentityClientTests {
                     .setManagedIdentityType(ManagedIdentityType.VM))
                 .build();
             AccessToken token = client.authenticateWithManagedIdentityConfidentialClient(request).block();
-            Assert.assertEquals(accessToken, token.getToken());
-            Assert.assertEquals(expiresOn.getSecond(), token.getExpiresAt().getSecond());
+            Assertions.assertEquals(accessToken, token.getToken());
+            Assertions.assertEquals(expiresOn.getSecond(), token.getExpiresAt().getSecond());
         });
     }
 
@@ -522,7 +525,7 @@ public class IdentityClientTests {
             staticConfidentialClientApplicationMock.when(() -> ConfidentialClientApplication.builder(AdditionalMatchers.not(eq(clientId)), any(IClientSecret.class))).thenThrow(new MsalServiceException("Invalid CLIENT_ID", "InvalidClientId"));
 
             test.run();
-            Assert.assertNotNull(confidentialClientApplicationBuilderMock);
+            Assertions.assertNotNull(confidentialClientApplicationBuilderMock);
         }
     }
 
@@ -553,7 +556,7 @@ public class IdentityClientTests {
             staticConfidentialClientApplicationMock.when(() -> ConfidentialClientApplication.builder(AdditionalMatchers.not(eq(CLIENT_ID)), any(IClientSecret.class))).thenThrow(new MsalServiceException("Invalid CLIENT_ID", "InvalidClientId"));
 
             test.run();
-            Assert.assertNotNull(confidentialClientApplicationBuilderMock);
+            Assertions.assertNotNull(confidentialClientApplicationBuilderMock);
         }
     }
 
@@ -581,7 +584,7 @@ public class IdentityClientTests {
             staticConfidentialClientApplicationMock.when(() -> ConfidentialClientApplication.builder(anyString(), argThat(cred -> ((IClientCertificate) cred) == null))).thenThrow(new MsalServiceException("Invalid clientCertificate", "InvalidClientCertificate"));
             staticConfidentialClientApplicationMock.when(() -> ConfidentialClientApplication.builder(AdditionalMatchers.not(eq(CLIENT_ID)), any(IClientCertificate.class))).thenThrow(new MsalServiceException("Invalid CLIENT_ID", "InvalidClientId"));
             test.run();
-            Assert.assertNotNull(confidentialClientApplicationBuilderMock);
+            Assertions.assertNotNull(confidentialClientApplicationBuilderMock);
         }
     }
 
@@ -625,7 +628,7 @@ public class IdentityClientTests {
             when(builder.instanceDiscovery(anyBoolean())).thenReturn(builder);
         })) {
             test.run();
-            Assert.assertNotNull(publicClientApplicationMock);
+            Assertions.assertNotNull(publicClientApplicationMock);
         }
     }
 
@@ -660,7 +663,7 @@ public class IdentityClientTests {
             certificateUtilMock.when(() -> CertificateUtil.privateKeyFromPem(any())).thenReturn(privateKey);
             clientCredentialFactoryMock.when(() -> ClientCredentialFactory.createFromCertificate(any(PrivateKey.class), any(X509Certificate.class))).thenReturn(clientCertificate);
             test.run();
-            Assert.assertNotNull(builderMock);
+            Assertions.assertNotNull(builderMock);
         }
     }
 
@@ -744,7 +747,7 @@ public class IdentityClientTests {
             when(builder.logPii(anyBoolean())).thenReturn(builder);
         })) {
             test.run();
-            Assert.assertNotNull(publicClientApplicationMock);
+            Assertions.assertNotNull(publicClientApplicationMock);
         }
     }
 
@@ -777,7 +780,7 @@ public class IdentityClientTests {
             when(builder.logPii(anyBoolean())).thenReturn(builder);
         })) {
             test.run();
-            Assert.assertNotNull(publicClientApplicationMock);
+            Assertions.assertNotNull(publicClientApplicationMock);
         }
     }
 
@@ -799,7 +802,7 @@ public class IdentityClientTests {
             when(builder.logPii(anyBoolean())).thenReturn(builder);
         })) {
             test.run();
-            Assert.assertNotNull(publicClientApplicationMock);
+            Assertions.assertNotNull(publicClientApplicationMock);
         }
     }
 
@@ -821,7 +824,7 @@ public class IdentityClientTests {
             when(builder.logPii(anyBoolean())).thenReturn(builder);
         })) {
             test.run();
-            Assert.assertNotNull(publicClientApplicationMock);
+            Assertions.assertNotNull(publicClientApplicationMock);
         }
     }
 }
