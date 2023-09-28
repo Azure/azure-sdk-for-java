@@ -11,13 +11,18 @@ import java.util.stream.Collectors;
 
 import static com.azure.cosmos.implementation.guava25.base.Preconditions.checkArgument;
 
+/**
+ * A class which encapsulates a set of excluded regions.
+ * */
 public final class CosmosExcludedRegions {
     private final Set<String> excludedRegions;
     private final String excludedRegionsAsString;
     private static final Pattern SPACE_PATTERN = Pattern.compile(" ");
 
     /**
+     * Instantiates {@code CosmosExcludedRegions}.
      *
+     * @throws IllegalArgumentException if {@code excludedRegions} is set as null.
      * */
     public CosmosExcludedRegions(Set<String> excludedRegions) {
 

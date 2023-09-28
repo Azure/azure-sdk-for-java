@@ -595,34 +595,6 @@ public final class CosmosAsyncClient implements Closeable {
         return new GlobalThroughputControlConfigBuilder(this, databaseId, containerId);
     }
 
-    /**
-     * Sets the regions to exclude from the list of preferred regions. This means the request will not be
-     * routed to these excluded regions for non-retry and retry scenarios
-     * for the workload executed through this instance of {@link CosmosAsyncClient}.
-     *
-     * @param excludedRegions the list of regions to exclude.
-     * */
-    public void setExcludedRegions(List<String> excludedRegions) {
-        this.connectionPolicy.setExcludedRegions(excludedRegions);
-    }
-
-    /**
-     * Gets the regions to exclude from the list of preferred regions. This means the request will not be
-     * routed to these excluded regions for non-retry and retry scenarios
-     * for the workload executed through this instance of {@link CosmosAsyncClient}.
-     *
-     * @return the list of regions to exclude.
-     * */
-    public List<String> getExcludedRegions() {
-        List<String> excludedRegions = this.connectionPolicy.getExcludedRegions();
-
-        if (excludedRegions == null) {
-            return new ArrayList<>();
-        }
-
-        return new ArrayList<>(excludedRegions);
-    }
-
     WriteRetryPolicy getNonIdempotentWriteRetryPolicy() {
         return this.nonIdempotentWriteRetryPolicy;
     }

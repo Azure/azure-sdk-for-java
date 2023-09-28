@@ -58,9 +58,6 @@ public final class ConnectionPolicy {
     private int minConnectionPoolSizePerEndpoint;
     private int openConnectionsConcurrency;
     private int aggressiveWarmupConcurrency;
-    private final ReentrantReadWriteLock reentrantReadWriteLock;
-    private String excludedRegionsAsString;
-    private static final Pattern SPACE_PATTERN = Pattern.compile(" ");
 
     /**
      * Constructor.
@@ -129,8 +126,6 @@ public final class ConnectionPolicy {
         this.minConnectionPoolSizePerEndpoint = Configs.getMinConnectionPoolSizePerEndpoint();
         this.openConnectionsConcurrency = Configs.getOpenConnectionsConcurrency();
         this.aggressiveWarmupConcurrency = Configs.getAggressiveWarmupConcurrency();
-        this.reentrantReadWriteLock = new ReentrantReadWriteLock();
-        this.excludedRegionsAsString = "";
     }
 
     /**
@@ -488,19 +483,6 @@ public final class ConnectionPolicy {
         return this;
     }
 
-    public ConnectionPolicy setExcludedRegions(List<String> excludedRegions) {
-        reentrantReadWriteLock.writeLock().lock();
-        try {
-            if (excludedRegions != null) {
-                this.excludedRegions = excludedRegions.stream().distinct().collect(Collectors.toList());
-            }
-            this.excludedRegionsAsString = constructExcludedRegionsAsString(this.excludedRegions);
-            return this;
-        } finally {
-            reentrantReadWriteLock.writeLock().unlock();
-        }
-    }
-
     public ConnectionPolicy setExcludedRegionsSupplier(Supplier<CosmosExcludedRegions> excludedRegionsSupplier) {
         this.excludedRegionsSupplier = excludedRegionsSupplier;
         return this;
@@ -508,15 +490,6 @@ public final class ConnectionPolicy {
 
     public Supplier<CosmosExcludedRegions> getExcludedRegionsSupplier() {
         return this.excludedRegionsSupplier;
-    }
-
-    public List<String> getExcludedRegions() {
-        reentrantReadWriteLock.readLock().lock();
-        try {
-            return this.excludedRegions;
-        } finally {
-            reentrantReadWriteLock.readLock().unlock();
-        }
     }
 
     /**
@@ -637,7 +610,11 @@ public final class ConnectionPolicy {
     }
 
     public String getExcludedRegionsAsString() {
-        return this.excludedRegionsAsString;
+        if (this.excludedRegionsSupplier.get() != null) {
+            CosmosExcludedRegions excludedRegions = this.excludedRegionsSupplier.get();
+            return excludedRegions.toString();
+        }
+        return "";
     }
 
     @Override
@@ -668,23 +645,6 @@ public final class ConnectionPolicy {
             ", minConnectionPoolSizePerEndpoint=" + minConnectionPoolSizePerEndpoint +
             ", openConnectionsConcurrency=" + openConnectionsConcurrency +
             ", aggressiveWarmupConcurrency=" + aggressiveWarmupConcurrency +
-            ", excludedRegions=" + excludedRegionsAsString +
             '}';
-    }
-
-    private static String constructExcludedRegionsAsString(List<String> excludeRegions) {
-
-        String substring;
-
-        if (excludeRegions == null || excludeRegions.isEmpty()) {
-            substring =  "";
-        } else {
-            substring = excludeRegions
-                .stream()
-                .map(r -> SPACE_PATTERN.matcher(r.toLowerCase(Locale.ROOT)).replaceAll(""))
-                .collect(Collectors.joining(","));
-        }
-
-        return "[" + substring + "]";
     }
 }

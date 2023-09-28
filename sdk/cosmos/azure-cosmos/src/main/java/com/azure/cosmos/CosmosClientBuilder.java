@@ -30,11 +30,7 @@ import org.slf4j.LoggerFactory;
 import java.net.URI;
 import java.net.URISyntaxException;
 import java.time.Duration;
-import java.util.ArrayList;
-import java.util.Collections;
-import java.util.List;
-import java.util.Locale;
-import java.util.Objects;
+import java.util.*;
 import java.util.function.Supplier;
 
 import static com.azure.cosmos.implementation.ImplementationBridgeHelpers.CosmosClientBuilderHelper;
@@ -130,7 +126,6 @@ public class CosmosClientBuilder implements
     private String userAgentSuffix;
     private ThrottlingRetryOptions throttlingRetryOptions;
     private List<String> preferredRegions;
-    private List<String> excludedRegions;
     private boolean endpointDiscoveryEnabled = true;
     private boolean multipleWriteRegionsEnabled = true;
     private boolean readRequestsFallbackEnabled = true;
@@ -882,18 +877,14 @@ public class CosmosClientBuilder implements
     }
 
     /**
-     * Sets the regions to exclude from the list of preferred regions. This means the request will not be
-     * routed to these excluded regions for non-retry and retry scenarios
-     * for the workload executed through this instance of {@link CosmosClient} / {@link CosmosAsyncClient}.
+     * Sets a {@link Supplier<CosmosExcludedRegions>} which returns a {@link CosmosExcludedRegions} instance when {@link Supplier#get()} is invoked.
+     * The request will not be routed to regions present in {@link CosmosExcludedRegions#getExcludedRegions()}
+     * for hedging scenarios and retry scenarios for the workload executed through this instance
+     * of {@link CosmosClient} / {@link CosmosAsyncClient}.
      *
-     * @param excludedRegions The list of regions to exclude.
+     * @param excludedRegionsSupplier the supplier which returns a {@code CosmosExcludedRegions} instance.
      * @return current CosmosClientBuilder.
      * */
-    public CosmosClientBuilder excludeRegions(List<String> excludedRegions) {
-        this.excludedRegions = excludedRegions;
-        return this;
-    }
-
     public CosmosClientBuilder excludedRegionsSupplier(Supplier<CosmosExcludedRegions> excludedRegionsSupplier) {
         this.cosmosExcludedRegionsSupplier = excludedRegionsSupplier;
         return this;
@@ -906,8 +897,11 @@ public class CosmosClientBuilder implements
      *
      * @return the list of regions to exclude.
      * */
-    List<String> getExcludedRegions() {
-        return this.excludedRegions == null ? Collections.emptyList() : UnmodifiableList.unmodifiableList(this.excludedRegions);
+    Set<String> getExcludedRegions() {
+        if (this.cosmosExcludedRegionsSupplier != null) {
+            return this.cosmosExcludedRegionsSupplier.get().getExcludedRegions();
+        }
+        return new HashSet<>();
     }
 
     SessionRetryOptions getSessionRetryOptions() {
@@ -1147,7 +1141,6 @@ public class CosmosClientBuilder implements
             this.connectionPolicy = new ConnectionPolicy(gatewayConnectionConfig);
         }
         this.connectionPolicy.setPreferredRegions(this.preferredRegions);
-        this.connectionPolicy.setExcludedRegions(this.excludedRegions);
         this.connectionPolicy.setExcludedRegionsSupplier(this.cosmosExcludedRegionsSupplier);
         this.connectionPolicy.setUserAgentSuffix(this.userAgentSuffix);
         this.connectionPolicy.setThrottlingRetryOptions(this.throttlingRetryOptions);
@@ -1184,17 +1177,6 @@ public class CosmosClientBuilder implements
                 Preconditions.checkArgument(this.isEndpointDiscoveryEnabled(), "endpoint discovery should be enabled when no. " +
                         "of proactive regions is greater than 1");
             }
-        }
-
-        if (excludedRegions != null) {
-            // validate excludedRegions
-            excludedRegions.forEach(
-                excludeRegion -> {
-                    Preconditions.checkArgument(StringUtils.trimToNull(excludeRegion) != null, "excludedRegion can't be empty");
-                    String trimmedExcludedRegion = excludeRegion.toLowerCase(Locale.ROOT).replace(" ", "");
-                    LocationHelper.getLocationEndpoint(uri, trimmedExcludedRegion);
-                }
-            );
         }
 
         ifThrowIllegalArgException(this.serviceEndpoint == null,
