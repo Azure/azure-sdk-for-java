@@ -17,10 +17,16 @@ public final class SetVariableActivityTypeProperties {
     private String variableName;
 
     /*
-     * Value to be set. Could be a static value or Expression
+     * Value to be set. Could be a static value or Expression.
      */
     @JsonProperty(value = "value")
     private Object value;
+
+    /*
+     * If set to true, it sets the pipeline run return value.
+     */
+    @JsonProperty(value = "setSystemVariable")
+    private Boolean setSystemVariable;
 
     /** Creates an instance of SetVariableActivityTypeProperties class. */
     public SetVariableActivityTypeProperties() {
@@ -63,6 +69,26 @@ public final class SetVariableActivityTypeProperties {
      */
     public SetVariableActivityTypeProperties withValue(Object value) {
         this.value = value;
+        return this;
+    }
+
+    /**
+     * Get the setSystemVariable property: If set to true, it sets the pipeline run return value.
+     *
+     * @return the setSystemVariable value.
+     */
+    public Boolean setSystemVariable() {
+        return this.setSystemVariable;
+    }
+
+    /**
+     * Set the setSystemVariable property: If set to true, it sets the pipeline run return value.
+     *
+     * @param setSystemVariable the setSystemVariable value to set.
+     * @return the SetVariableActivityTypeProperties object itself.
+     */
+    public SetVariableActivityTypeProperties withSetSystemVariable(Boolean setSystemVariable) {
+        this.setSystemVariable = setSystemVariable;
         return this;
     }
 

@@ -13,7 +13,7 @@ import com.fasterxml.jackson.annotation.JsonProperty;
 @Fluent
 public final class TwilioLinkedServiceTypeProperties {
     /*
-     * The Account SID of Twilio service.
+     * The Account SID of Twilio service. Type: string (or Expression with resultType string).
      */
     @JsonProperty(value = "userName", required = true)
     private Object username;
@@ -29,7 +29,8 @@ public final class TwilioLinkedServiceTypeProperties {
     }
 
     /**
-     * Get the username property: The Account SID of Twilio service.
+     * Get the username property: The Account SID of Twilio service. Type: string (or Expression with resultType
+     * string).
      *
      * @return the username value.
      */
@@ -38,7 +39,8 @@ public final class TwilioLinkedServiceTypeProperties {
     }
 
     /**
-     * Set the username property: The Account SID of Twilio service.
+     * Set the username property: The Account SID of Twilio service. Type: string (or Expression with resultType
+     * string).
      *
      * @param username the username value to set.
      * @return the TwilioLinkedServiceTypeProperties object itself.
