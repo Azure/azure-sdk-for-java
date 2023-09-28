@@ -16,29 +16,29 @@ import java.util.Objects;
 @Fluent
 public final class LifetimeActionsType implements JsonSerializable<LifetimeActionsType> {
     /*
-     * The type of the action.
+     * The type of the action. The value should be compared case-insensitively.
      */
-    private KeyRotationPolicyAction type;
+    private ActionType type;
 
     /** Creates an instance of LifetimeActionsType class. */
     public LifetimeActionsType() {}
 
     /**
-     * Get the type property: The type of the action.
+     * Get the type property: The type of the action. The value should be compared case-insensitively.
      *
      * @return the type value.
      */
-    public KeyRotationPolicyAction getType() {
+    public ActionType getType() {
         return this.type;
     }
 
     /**
-     * Set the type property: The type of the action.
+     * Set the type property: The type of the action. The value should be compared case-insensitively.
      *
      * @param type the type value to set.
      * @return the LifetimeActionsType object itself.
      */
-    public LifetimeActionsType setType(KeyRotationPolicyAction type) {
+    public LifetimeActionsType setType(ActionType type) {
         this.type = type;
         return this;
     }
@@ -67,8 +67,7 @@ public final class LifetimeActionsType implements JsonSerializable<LifetimeActio
                         reader.nextToken();
 
                         if ("type".equals(fieldName)) {
-                            deserializedLifetimeActionsType.type =
-                                    KeyRotationPolicyAction.fromString(reader.getString());
+                            deserializedLifetimeActionsType.type = ActionType.fromString(reader.getString());
                         } else {
                             reader.skipChildren();
                         }

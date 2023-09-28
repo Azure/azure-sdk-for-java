@@ -34,6 +34,11 @@ public final class KeyAttributes extends Attributes {
      */
     private Boolean exportable;
 
+    /*
+     * The underlying HSM Platform.
+     */
+    private String hsmPlatform;
+
     /** Creates an instance of KeyAttributes class. */
     public KeyAttributes() {}
 
@@ -78,6 +83,15 @@ public final class KeyAttributes extends Attributes {
     public KeyAttributes setExportable(Boolean exportable) {
         this.exportable = exportable;
         return this;
+    }
+
+    /**
+     * Get the hsmPlatform property: The underlying HSM Platform.
+     *
+     * @return the hsmPlatform value.
+     */
+    public String getHsmPlatform() {
+        return this.hsmPlatform;
     }
 
     /** {@inheritDoc} */
@@ -156,6 +170,8 @@ public final class KeyAttributes extends Attributes {
                                     DeletionRecoveryLevel.fromString(reader.getString());
                         } else if ("exportable".equals(fieldName)) {
                             deserializedKeyAttributes.exportable = reader.getNullable(JsonReader::getBoolean);
+                        } else if ("hsmPlatform".equals(fieldName)) {
+                            deserializedKeyAttributes.hsmPlatform = reader.getString();
                         } else {
                             reader.skipChildren();
                         }
