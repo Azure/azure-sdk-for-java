@@ -65,7 +65,6 @@ import java.util.Map;
 import java.util.UUID;
 import java.util.concurrent.Callable;
 import java.util.concurrent.ConcurrentHashMap;
-import java.util.concurrent.ThreadLocalRandom;
 import java.util.function.Consumer;
 
 import static com.azure.cosmos.BridgeInternal.extractContainerSelfLink;
