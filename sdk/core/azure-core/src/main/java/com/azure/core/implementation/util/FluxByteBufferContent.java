@@ -15,7 +15,6 @@ import java.io.InputStream;
 import java.nio.ByteBuffer;
 import java.nio.charset.StandardCharsets;
 import java.util.LinkedList;
-import java.util.List;
 import java.util.Objects;
 import java.util.concurrent.atomic.AtomicReference;
 import java.util.concurrent.atomic.AtomicReferenceFieldUpdater;
@@ -125,12 +124,13 @@ public final class FluxByteBufferContent extends BinaryDataContent {
             return replayableContent;
         }
 
-        List<ByteBuffer> bufferedFlux = bufferContent().block();
+        return bufferContent().map(bufferedData -> {
+            FluxByteBufferContent bufferedContent = new FluxByteBufferContent(Flux.fromIterable(bufferedData)
+                .map(ByteBuffer::duplicate), length, true);
+            cachedReplayableContent.set(bufferedContent);
 
-        replayableContent = new FluxByteBufferContent(Flux.fromIterable(bufferedFlux).map(ByteBuffer::duplicate),
-            length, true);
-        cachedReplayableContent.set(replayableContent);
-        return replayableContent;
+            return bufferedContent;
+        }).block();
     }
 
     @Override
@@ -144,8 +144,8 @@ public final class FluxByteBufferContent extends BinaryDataContent {
             return Mono.just(replayableContent);
         }
 
-        return bufferContent().map(bufferedData -> {
-            Flux<ByteBuffer> bufferedFluxData = Flux.fromIterable(bufferedData).map(ByteBuffer::duplicate);
+        return bufferContent().cache().map(bufferedData -> {
+            Flux<ByteBuffer> bufferedFluxData = Flux.fromIterable(bufferedData).map(ByteBuffer::asReadOnlyBuffer);
             FluxByteBufferContent bufferedBinaryDataContent = new FluxByteBufferContent(bufferedFluxData, length, true);
             cachedReplayableContent.set(bufferedBinaryDataContent);
 

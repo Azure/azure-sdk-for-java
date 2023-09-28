@@ -57,6 +57,7 @@ import java.util.Collections;
 import java.util.List;
 import java.util.Objects;
 import java.util.UUID;
+import java.util.concurrent.ThreadLocalRandom;
 import java.util.concurrent.atomic.AtomicBoolean;
 import java.util.concurrent.atomic.AtomicInteger;
 import java.util.concurrent.atomic.AtomicLong;
@@ -1063,6 +1064,52 @@ public class BinaryDataTest {
         StepVerifier.create(BinaryData.fromFlux(Flux.empty())
             .flatMap(BinaryData::toReplayableBinaryDataAsync))
             .assertNext(replayable -> assertEquals("", replayable.toString()))
+            .verifyComplete();
+    }
+
+    /**
+     * Tests that {@link FluxByteBufferContent#toReplayableContent()} eagerly makes the {@link FluxByteBufferContent}
+     * replayable. Before, this method wouldn't make the content replayable until the return
+     * {@link FluxByteBufferContent} was consumed, which defeated the purpose of the method as the underlying data could
+     * be reclaimed or consumed before it was made replayable.
+     */
+    @Test
+    public void fluxByteBufferToReplayableEagerlyConvertsToReplayable() {
+        byte[] data = new byte[1024];
+        ThreadLocalRandom.current().nextBytes(data);
+        byte[] expectedData = CoreUtils.clone(data);
+
+        BinaryDataContent binaryDataContent = new FluxByteBufferContent(Flux.just(ByteBuffer.wrap(data)))
+            .toReplayableContent();
+
+        Arrays.fill(data, (byte) 0);
+
+        assertArraysEqual(expectedData, binaryDataContent.toBytes());
+    }
+
+    /**
+     * Tests that {@link FluxByteBufferContent} returned by {@link FluxByteBufferContent#toReplayableContentAsync()}
+     * won't attempt to access the original {@link Flux Flux&lt;ByteBuffer&gt;} as the initial duplicated is cached as a
+     * stream of {@link ByteBuffer ByteBuffers} that are shared to all subscribers, and duplicated in each subscription
+     * so that the underlying content cannot be modified.
+     */
+    @Test
+    public void multipleSubscriptionsToReplayableAsyncFluxByteBufferAreConsistent() {
+        byte[] data = new byte[1024];
+        ThreadLocalRandom.current().nextBytes(data);
+        byte[] expectedData = CoreUtils.clone(data);
+
+        Mono<BinaryDataContent> binaryDataContentMono = new FluxByteBufferContent(Flux.just(ByteBuffer.wrap(data)))
+            .toReplayableContentAsync();
+
+        StepVerifier.create(binaryDataContentMono)
+            .assertNext(binaryDataContent -> assertArraysEqual(expectedData, binaryDataContent.toBytes()))
+            .verifyComplete();
+
+        Arrays.fill(data, (byte) 0);
+
+        StepVerifier.create(binaryDataContentMono)
+            .assertNext(binaryDataContent -> assertArraysEqual(expectedData, binaryDataContent.toBytes()))
             .verifyComplete();
     }
 
