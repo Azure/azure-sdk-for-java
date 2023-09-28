@@ -4,10 +4,17 @@
 
 #### Features Added
 * Added a preview API to `ChangeFeedProcessorBuilder` to process an additional `ChangeFeedProcessorContext` for handling all versions and deletes changes. - See [PR 36715](https://github.com/Azure/azure-sdk-for-java/pull/36715)
+* Added the following public APIs to dynamically configure excluded regions at the `CosmosClient` / `CosmosAsyncClient` level. See [PR 36616](https://github.com/Azure/azure-sdk-for-java/pull/36616)
+    * `CosmosClientBuilder#excludeRegions`
+    * `CosmosClient#setExcludedRegions`
+    * `CosmosAsyncClient#setExcludedRegions`
+    * `CosmosClient#getExcludedRegions`
+    * `CosmosAsyncClient#getExcludedRegions`
 
 #### Breaking Changes
 
 #### Bugs Fixed
+* Fixed the issue of `excludeRegions` not being honored for `CosmosBulkExecutionOptions`. - See[PR 36616](https://github.com/Azure/azure-sdk-for-java/pull/36616)
 
 #### Other Changes
 
@@ -15,12 +22,6 @@
 
 #### Features Added
 * Added throughput control support for `gateway mode`. See [PR 36687](https://github.com/Azure/azure-sdk-for-java/pull/36687)
-* Added the following public APIs to dynamically configure excluded regions at the `CosmosClient` / `CosmosAsyncClient` level. See [PR 36616](https://github.com/Azure/azure-sdk-for-java/pull/36616)
-  * `CosmosClientBuilder#excludeRegions`
-  * `CosmosClient#setExcludedRegions`
-  * `CosmosAsyncClient#setExcludedRegions`
-  * `CosmosClient#getExcludedRegions`
-  * `CosmosAsyncClient#getExcludedRegions`
 * Added public API to change the initial micro batch size in `CosmosBulkExecutionOptions`. The micro batch size is dynamically adjusted based on throttling rate. By default, it starts with a relatively large micro batch size, which can result in a short spike of throttled requests at the beginning of a bulk execution - reducing the initial micro batch size - for example to 1 - will start with smaller batch size and then dynamically increase it without causing the initial short spike of throttled requests. See [PR 36910](https://github.com/Azure/azure-sdk-for-java/pull/36910)
 
 #### Bugs Fixed
