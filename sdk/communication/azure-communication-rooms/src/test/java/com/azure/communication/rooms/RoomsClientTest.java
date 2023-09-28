@@ -965,7 +965,7 @@ public class RoomsClientTest extends RoomsTestBase {
         RoomsClientBuilder builder = getRoomsClientWithConnectionString(
                 buildSyncAssertingClient(httpClient == null ? interceptorManager.getPlaybackClient()
                 : httpClient),
-                RoomsServiceVersion.V2023_10_30_Preview);
+                RoomsServiceVersion.V2023_10_30_PREVIEW);
 
         communicationClient = getCommunicationIdentityClientBuilder(httpClient).buildClient();
 

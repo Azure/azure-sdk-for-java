@@ -17,7 +17,7 @@ public enum RoomsServiceVersion implements ServiceVersion {
     /**
      * Service version {@code 2023-10-30-preview}
      */
-    V2023_10_30_Preview("2023-10-30-preview");
+    V2023_10_30_PREVIEW("2023-10-30-preview");
 
     private final String version;
 
