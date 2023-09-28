@@ -119,7 +119,7 @@ import static com.azure.messaging.servicebus.implementation.ServiceBusConstants.
  *     .credential&#40;fullyQualifiedNamespace, credential&#41;
  *     .sessionReceiver&#40;&#41;
  *     .disableAutoComplete&#40;&#41;
- *     .queueName&#40;queueName&#41;
+ *     .queueName&#40;sessionEnabledQueueName&#41;
  *     .buildAsyncClient&#40;&#41;;
  *
  * &#47;&#47; Creates a client to receive messages from the first available session. It waits until
@@ -127,7 +127,7 @@ import static com.azure.messaging.servicebus.implementation.ServiceBusConstants.
  * &#47;&#47; completes with a retriable error. Otherwise, a receiver is returned when a lock on the session is acquired.
  * Mono&lt;ServiceBusReceiverAsyncClient&gt; receiverMono = sessionReceiver.acceptNextSession&#40;&#41;;
  *
- * Flux.usingWhen&#40;receiverMono,
+ * Disposable disposable = Flux.usingWhen&#40;receiverMono,
  *         receiver -&gt; receiver.receiveMessages&#40;&#41;,
  *         receiver -&gt; Mono.fromRunnable&#40;&#40;&#41; -&gt; &#123;
  *             &#47;&#47; Dispose of the receiver and sessionReceiver when done receiving messages.

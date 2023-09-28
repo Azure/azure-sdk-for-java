@@ -51,7 +51,7 @@ import java.util.Objects;
  *     .credential&#40;fullyQualifiedNamespace, credential&#41;
  *     .sessionReceiver&#40;&#41;
  *     .disableAutoComplete&#40;&#41;
- *     .queueName&#40;queueName&#41;
+ *     .queueName&#40;sessionEnabledQueueName&#41;
  *     .buildClient&#40;&#41;;
  *
  * &#47;&#47; Creates a client to receive messages from the first available session. It waits until

@@ -9,7 +9,6 @@ import com.azure.identity.DefaultAzureCredentialBuilder;
 import com.azure.messaging.servicebus.models.CreateMessageBatchOptions;
 import org.junit.jupiter.api.Test;
 import reactor.core.Disposable;
-import reactor.core.Exceptions;
 import reactor.core.publisher.Flux;
 import reactor.core.publisher.Mono;
 import reactor.core.publisher.SynchronousSink;
@@ -17,7 +16,6 @@ import reactor.core.publisher.SynchronousSink;
 import java.util.Arrays;
 import java.util.List;
 import java.util.concurrent.atomic.AtomicReference;
-import java.util.function.Supplier;
 
 import static java.nio.charset.StandardCharsets.UTF_8;
 
@@ -147,9 +145,11 @@ public class ServiceBusSenderClientJavaDocCodeSamples {
             batch.tryAddMessage(new ServiceBusMessage("test-2"));
             return asyncSender.sendMessages(batch);
         }).subscribe(unused -> {
-            },
-            error -> System.err.println("Error occurred while sending batch:" + error),
-            () -> System.out.println("Send complete."));
+        }, error -> {
+            System.err.println("Error occurred while sending batch:" + error);
+        }, () -> {
+            System.out.println("Send complete.");
+        });
         // END: com.azure.messaging.servicebus.servicebusasyncsenderclient.createMessageBatch
 
         asyncSender.close();
@@ -257,7 +257,7 @@ public class ServiceBusSenderClientJavaDocCodeSamples {
                             } else {
                                 sink.next(newBatch);
                             }
-                    }));
+                        }));
             } else {
                 return Mono.just(batch);
             }

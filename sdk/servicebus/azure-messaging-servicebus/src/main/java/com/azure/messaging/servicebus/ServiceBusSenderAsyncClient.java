@@ -80,9 +80,11 @@ import static com.azure.messaging.servicebus.implementation.Messages.INVALID_OPE
  *     batch.tryAddMessage&#40;new ServiceBusMessage&#40;&quot;test-2&quot;&#41;&#41;;
  *     return asyncSender.sendMessages&#40;batch&#41;;
  * &#125;&#41;.subscribe&#40;unused -&gt; &#123;
- *     &#125;,
- *     error -&gt; System.err.println&#40;&quot;Error occurred while sending batch:&quot; + error&#41;,
- *     &#40;&#41; -&gt; System.out.println&#40;&quot;Send complete.&quot;&#41;&#41;;
+ * &#125;, error -&gt; &#123;
+ *     System.err.println&#40;&quot;Error occurred while sending batch:&quot; + error&#41;;
+ * &#125;, &#40;&#41; -&gt; &#123;
+ *     System.out.println&#40;&quot;Send complete.&quot;&#41;;
+ * &#125;&#41;;
  * </pre>
  * <!-- end com.azure.messaging.servicebus.servicebusasyncsenderclient.createMessageBatch -->
  *
@@ -118,7 +120,7 @@ import static com.azure.messaging.servicebus.implementation.Messages.INVALID_OPE
  *                     &#125; else &#123;
  *                         sink.next&#40;newBatch&#41;;
  *                     &#125;
- *             &#125;&#41;&#41;;
+ *                 &#125;&#41;&#41;;
  *     &#125; else &#123;
  *         return Mono.just&#40;batch&#41;;
  *     &#125;
