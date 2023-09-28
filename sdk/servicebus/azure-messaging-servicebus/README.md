@@ -109,14 +109,20 @@ refer to [the associated documentation][aad_authorization].
 
 Use the returned token credential to authenticate the client:
 
-```java readme-sample-createAsynchronousServiceBusReceiverWithAzureIdentity
-TokenCredential credential = new DefaultAzureCredentialBuilder()
-    .build();
-ServiceBusReceiverAsyncClient receiver = new ServiceBusClientBuilder()
-    .credential("<<fully-qualified-namespace>>", credential)
+```java com.azure.messaging.servicebus.servicebusreceiverasyncclient.instantiation
+TokenCredential credential = new DefaultAzureCredentialBuilder().build();
+
+// 'fullyQualifiedNamespace' will look similar to "{your-namespace}.servicebus.windows.net"
+// 'disableAutoComplete' indicates that users will explicitly settle their message.
+ServiceBusReceiverAsyncClient asyncReceiver = new ServiceBusClientBuilder()
+    .credential(fullyQualifiedNamespace, credential)
     .receiver()
-    .queueName("<<queue-name>>")
+    .disableAutoComplete()
+    .queueName(queueName)
     .buildAsyncClient();
+
+// Use the receiver and finally close it.
+asyncReceiver.close();
 ```
 
 ## Key concepts

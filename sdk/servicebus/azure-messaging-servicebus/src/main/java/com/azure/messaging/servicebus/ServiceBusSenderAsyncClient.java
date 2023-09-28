@@ -56,30 +56,19 @@ import static com.azure.messaging.servicebus.implementation.Messages.INVALID_OPE
  * <p><strong>Create an instance of sender</strong></p>
  * <!-- src_embed com.azure.messaging.servicebus.servicebusasyncsenderclient.instantiation -->
  * <pre>
- * &#47;&#47; The required parameters is connectionString, a way to authenticate with Service Bus using credentials.
- * &#47;&#47; The connectionString&#47;queueName must be set by the application. The 'connectionString' format is shown below.
- * &#47;&#47; &quot;Endpoint=&#123;fully-qualified-namespace&#125;;SharedAccessKeyName=&#123;policy-name&#125;;SharedAccessKey=&#123;key&#125;&quot;
- * ServiceBusSenderAsyncClient sender = new ServiceBusClientBuilder&#40;&#41;
- *     .connectionString&#40;connectionString&#41;
+ * TokenCredential credential = new DefaultAzureCredentialBuilder&#40;&#41;.build&#40;&#41;;
+ *
+ * &#47;&#47; 'fullyQualifiedNamespace' will look similar to &quot;&#123;your-namespace&#125;.servicebus.windows.net&quot;
+ * ServiceBusSenderAsyncClient asyncSender = new ServiceBusClientBuilder&#40;&#41;
+ *     .credential&#40;fullyQualifiedNamespace, credential&#41;
  *     .sender&#40;&#41;
  *     .queueName&#40;queueName&#41;
  *     .buildAsyncClient&#40;&#41;;
+ *
+ * &#47;&#47; Use the sender and finally close it.
+ * asyncSender.close&#40;&#41;;
  * </pre>
  * <!-- end com.azure.messaging.servicebus.servicebusasyncsenderclient.instantiation -->
- *
- * <p><strong>Create an instance of sender using default credential</strong></p>
- * <!-- src_embed com.azure.messaging.servicebus.servicebusasyncsenderclient.instantiateWithDefaultCredential -->
- * <pre>
- * &#47;&#47; The required parameter is a way to authenticate with Service Bus using credentials.
- * &#47;&#47; The connectionString provides a way to authenticate with Service Bus.
- * ServiceBusSenderAsyncClient sender = new ServiceBusClientBuilder&#40;&#41;
- *     .credential&#40;&quot;&lt;&lt;fully-qualified-namespace&gt;&gt;&quot;,
- *         new DefaultAzureCredentialBuilder&#40;&#41;.build&#40;&#41;&#41;
- *     .sender&#40;&#41;
- *     .queueName&#40;&quot;&lt;&lt; QUEUE NAME &gt;&gt;&quot;&#41;
- *     .buildAsyncClient&#40;&#41;;
- * </pre>
- * <!-- end com.azure.messaging.servicebus.servicebusasyncsenderclient.instantiateWithDefaultCredential -->
  *
  * <p><strong>Send messages to a Service Bus resource</strong></p>
  * <!-- src_embed com.azure.messaging.servicebus.servicebusasyncsenderclient.createMessageBatch -->

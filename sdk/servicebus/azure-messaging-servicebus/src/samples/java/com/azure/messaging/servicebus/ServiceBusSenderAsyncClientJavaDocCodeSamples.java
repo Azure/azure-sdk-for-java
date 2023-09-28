@@ -35,43 +35,6 @@ public class ServiceBusSenderAsyncClientJavaDocCodeSamples {
         .buildAsyncClient();
 
     /**
-     * Code snippet demonstrating how to create an {@link ServiceBusSenderAsyncClient}.
-     */
-    @Test
-    public void instantiate() {
-        // BEGIN: com.azure.messaging.servicebus.servicebusasyncsenderclient.instantiation
-        // The required parameters is connectionString, a way to authenticate with Service Bus using credentials.
-        // The connectionString/queueName must be set by the application. The 'connectionString' format is shown below.
-        // "Endpoint={fully-qualified-namespace};SharedAccessKeyName={policy-name};SharedAccessKey={key}"
-        ServiceBusSenderAsyncClient sender = new ServiceBusClientBuilder()
-            .connectionString(connectionString)
-            .sender()
-            .queueName(queueName)
-            .buildAsyncClient();
-        // END: com.azure.messaging.servicebus.servicebusasyncsenderclient.instantiation
-
-        sender.close();
-    }
-
-    /**
-     * Code snippet demonstrating how to create an {@link ServiceBusSenderAsyncClient}.
-     */
-    public void instantiateWithDefaultCredential() {
-        // BEGIN: com.azure.messaging.servicebus.servicebusasyncsenderclient.instantiateWithDefaultCredential
-        // The required parameter is a way to authenticate with Service Bus using credentials.
-        // The connectionString provides a way to authenticate with Service Bus.
-        ServiceBusSenderAsyncClient sender = new ServiceBusClientBuilder()
-            .credential("<<fully-qualified-namespace>>",
-                new DefaultAzureCredentialBuilder().build())
-            .sender()
-            .queueName("<< QUEUE NAME >>")
-            .buildAsyncClient();
-        // END: com.azure.messaging.servicebus.servicebusasyncsenderclient.instantiateWithDefaultCredential
-
-        sender.close();
-    }
-
-    /**
      * Code snippet demonstrating how to send a batch to Service Bus queue or topic.
      */
     @Test

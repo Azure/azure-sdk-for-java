@@ -15,7 +15,8 @@ import java.util.List;
 import static java.nio.charset.StandardCharsets.UTF_8;
 
 /**
- * Contains code snippets when generating javadocs through doclets for {@link ServiceBusSenderClient}.
+ * Contains code snippets when generating javadocs through doclets for {@link ServiceBusSenderClient} and
+ * {@link ServiceBusSenderAsyncClient}.
  */
 public class ServiceBusSenderClientJavaDocCodeSamples {
     /**
@@ -47,31 +48,72 @@ public class ServiceBusSenderClientJavaDocCodeSamples {
     }
 
     /**
+     * Code snippet demonstrating how to create an {@link ServiceBusSenderAsyncClient}.
+     */
+    @Test
+    public void instantiateAsync() {
+        // BEGIN: com.azure.messaging.servicebus.servicebusasyncsenderclient.instantiation
+        TokenCredential credential = new DefaultAzureCredentialBuilder().build();
+
+        // 'fullyQualifiedNamespace' will look similar to "{your-namespace}.servicebus.windows.net"
+        ServiceBusSenderAsyncClient asyncSender = new ServiceBusClientBuilder()
+            .credential(fullyQualifiedNamespace, credential)
+            .sender()
+            .queueName(queueName)
+            .buildAsyncClient();
+
+        // Use the sender and finally close it.
+        asyncSender.close();
+        // END: com.azure.messaging.servicebus.servicebusasyncsenderclient.instantiation
+    }
+
+    /**
      * Code snippet demonstrating how to send a batch to Service Bus queue or topic.
      *
      * @throws IllegalArgumentException if an message is too large.
      */
     @Test
     public void sendBatch() {
+        // 'fullyQualifiedNamespace' will look similar to "{your-namespace}.servicebus.windows.net"
+        ServiceBusSenderClient sender = new ServiceBusClientBuilder()
+            .credential(fullyQualifiedNamespace, new DefaultAzureCredentialBuilder().build())
+            .sender()
+            .queueName(queueName)
+            .buildClient();
 
         // BEGIN: com.azure.messaging.servicebus.servicebussenderclient.createMessageBatch
-        List<ServiceBusMessage> messages = Arrays.asList(new ServiceBusMessage(BinaryData.fromBytes("test-1".getBytes(UTF_8))),
-            new ServiceBusMessage(BinaryData.fromBytes("test-2".getBytes(UTF_8))));
-
-        CreateMessageBatchOptions options = new CreateMessageBatchOptions().setMaximumSizeInBytes(10 * 1024);
+        List<ServiceBusMessage> messages = Arrays.asList(
+            new ServiceBusMessage("test-1"),
+            new ServiceBusMessage("test-2"));
 
         // Creating a batch without options set.
-        ServiceBusMessageBatch batch = sender.createMessageBatch(options);
+        ServiceBusMessageBatch batch = sender.createMessageBatch();
         for (ServiceBusMessage message : messages) {
             if (batch.tryAddMessage(message)) {
                 continue;
             }
 
+            // The batch is full. Send the current batch and create a new one.
+            sender.sendMessages(batch);
+
+            batch = sender.createMessageBatch();
+
+            batch.tryAddMessage(message);
+
+            // Add the message we couldn't before.
+            if (!batch.tryAddMessage(message)) {
+                throw new IllegalArgumentException("Message is too large for an empty batch.");
+            }
+        }
+
+        // Send the final batch if there are any messages in it.
+        if (batch.getCount() > 0) {
             sender.sendMessages(batch);
         }
-        // END: com.azure.messaging.servicebus.servicebussenderclient.createMessageBatch
 
+        // Finally dispose of the sender.
         sender.close();
+        // END: com.azure.messaging.servicebus.servicebussenderclient.createMessageBatch
     }
 
     /**
@@ -81,15 +123,21 @@ public class ServiceBusSenderClientJavaDocCodeSamples {
      */
     @Test
     public void batchSizeLimited() {
+        // 'fullyQualifiedNamespace' will look similar to "{your-namespace}.servicebus.windows.net"
+        ServiceBusSenderClient sender = new ServiceBusClientBuilder()
+            .credential(fullyQualifiedNamespace, new DefaultAzureCredentialBuilder().build())
+            .sender()
+            .queueName(queueName)
+            .buildClient();
 
-        ServiceBusMessage firstMessage = new ServiceBusMessage(BinaryData.fromBytes("message-1".getBytes(UTF_8)));
+        ServiceBusMessage firstMessage = new ServiceBusMessage("message-1");
         firstMessage.getApplicationProperties().put("telemetry", "latency");
-        ServiceBusMessage secondMessage = new ServiceBusMessage(BinaryData.fromBytes("message-2".getBytes(UTF_8)));
+        ServiceBusMessage secondMessage = new ServiceBusMessage("message-2");
         secondMessage.getApplicationProperties().put("telemetry", "cpu-temperature");
-        ServiceBusMessage thirdMessage = new ServiceBusMessage(BinaryData.fromBytes("message-3".getBytes(UTF_8)));
+        ServiceBusMessage thirdMessage = new ServiceBusMessage("message-3");
         thirdMessage.getApplicationProperties().put("telemetry", "fps");
 
-        // BEGIN: com.azure.messaging.servicebus.servicebussenderclient.createMessageBatch#CreateMessageBatchOptions-int
+        // BEGIN: com.azure.messaging.servicebus.servicebussenderclient.createMessageBatch#CreateMessageBatchOptions
         List<ServiceBusMessage> telemetryMessages = Arrays.asList(firstMessage, secondMessage, thirdMessage);
 
         // Setting `setMaximumSizeInBytes` when creating a batch, limits the size of that batch.
@@ -112,6 +160,14 @@ public class ServiceBusSenderClientJavaDocCodeSamples {
                 }
             }
         }
-        // END: com.azure.messaging.servicebus.servicebussenderclient.createMessageBatch#CreateMessageBatchOptions-int
+
+        // Send the final batch if there are any messages in it.
+        if (currentBatch.getCount() > 0) {
+            sender.sendMessages(currentBatch);
+        }
+
+        // Dispose of the sender
+        sender.close();
+        // END: com.azure.messaging.servicebus.servicebussenderclient.createMessageBatch#CreateMessageBatchOptions
     }
 }

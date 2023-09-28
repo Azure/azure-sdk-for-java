@@ -22,64 +22,6 @@ import java.util.function.Consumer;
  */
 public class ReadmeSamples {
     /**
-     * Code sample for creating an asynchronous Service Bus sender.
-     */
-    public void createAsynchronousServiceBusSender() {
-        // BEGIN: readme-sample-createAsynchronousServiceBusSender
-        ServiceBusSenderClient sender = new ServiceBusClientBuilder()
-            .connectionString("<< CONNECTION STRING FOR THE SERVICE BUS NAMESPACE >>")
-            .sender()
-            .queueName("<< QUEUE NAME >>")
-            .buildClient();
-        // END: readme-sample-createAsynchronousServiceBusSender
-    }
-
-    /**
-     * Code sample for creating an asynchronous Service Bus receiver.
-     */
-    public void createAsynchronousServiceBusReceiver() {
-        // BEGIN: readme-sample-createAsynchronousServiceBusReceiver
-        ServiceBusReceiverAsyncClient receiver = new ServiceBusClientBuilder()
-            .connectionString("<< CONNECTION STRING FOR THE SERVICE BUS NAMESPACE >>")
-            .receiver()
-            .topicName("<< TOPIC NAME >>")
-            .subscriptionName("<< SUBSCRIPTION NAME >>")
-            .buildAsyncClient();
-        // END: readme-sample-createAsynchronousServiceBusReceiver
-    }
-
-    /**
-     * Code sample for creating an asynchronous Service Bus receiver using {@link DefaultAzureCredentialBuilder}.
-     */
-    public void createAsynchronousServiceBusReceiverWithAzureIdentity() {
-        // BEGIN: readme-sample-createAsynchronousServiceBusReceiverWithAzureIdentity
-        TokenCredential credential = new DefaultAzureCredentialBuilder()
-            .build();
-        ServiceBusReceiverAsyncClient receiver = new ServiceBusClientBuilder()
-            .credential("<<fully-qualified-namespace>>", credential)
-            .receiver()
-            .queueName("<<queue-name>>")
-            .buildAsyncClient();
-        // END: readme-sample-createAsynchronousServiceBusReceiverWithAzureIdentity
-    }
-
-    /**
-     * Code sample for creating an asynchronous Service Bus receiver using {@link AzureNamedKeyCredential}.
-     */
-    public void createAsynchronousServiceBusReceiverWithAzureNamedKeyCredential() {
-        // BEGIN: readme-sample-createAsynchronousServiceBusReceiverWithAzureNamedKeyCredential
-        AzureNamedKeyCredential azureNamedKeyCredential =
-            new AzureNamedKeyCredential("<<azure-service-sas-key-name>>", "<<azure-service-sas-key>>");
-        ServiceBusReceiverAsyncClient receiver = new ServiceBusClientBuilder()
-            .fullyQualifiedNamespace("<<fully-qualified-namespace>>")
-            .credential(azureNamedKeyCredential)
-            .receiver()
-            .queueName("<<queue-name>>")
-            .buildAsyncClient();
-        // END: readme-sample-createAsynchronousServiceBusReceiverWithAzureNamedKeyCredential
-    }
-
-    /**
      * Sends messages to a queue.
      */
     public void sendMessage() {

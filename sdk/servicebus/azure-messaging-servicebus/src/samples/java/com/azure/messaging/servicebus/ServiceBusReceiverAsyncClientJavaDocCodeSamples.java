@@ -117,40 +117,6 @@ public class ServiceBusReceiverAsyncClientJavaDocCodeSamples {
     }
 
     /**
-     * Demonstrates how to create a session receiver for a single, first available session.
-     */
-    @Test
-    public void sessionReceiverSingleInstantiation() {
-        // BEGIN: com.azure.messaging.servicebus.servicebusreceiverasyncclient.instantiation#nextsession
-        // The connectionString/queueName must be set by the application. The 'connectionString' format is shown below.
-        // "Endpoint={fully-qualified-namespace};SharedAccessKeyName={policy-name};SharedAccessKey={key}"
-        ServiceBusSessionReceiverAsyncClient sessionReceiver = new ServiceBusClientBuilder()
-            .connectionString(connectionString)
-            .sessionReceiver()
-            .queueName(queueName)
-            .buildAsyncClient();
-
-        // acceptNextSession() completes successfully with a receiver when it acquires the next available session.
-        // `Flux.usingWhen` is used so we dispose of the receiver resource after `receiveMessages()` completes.
-        // `Mono.usingWhen` can also be used if the resource closure only returns a single item.
-        Flux<ServiceBusReceivedMessage> sessionMessages = Flux.usingWhen(
-            sessionReceiver.acceptNextSession(),
-            receiver -> receiver.receiveMessages(),
-            receiver -> Mono.fromRunnable(() -> receiver.close()));
-
-        // When program ends, or you're done receiving all messages, the `subscription` can be disposed of. This code
-        // is non-blocking and kicks off the operation.
-        Disposable subscription = sessionMessages.subscribe(
-            message -> System.out.printf("Received Sequence #: %s. Contents: %s%n",
-                message.getSequenceNumber(), message.getBody()),
-            error -> System.err.print(error));
-        // END: com.azure.messaging.servicebus.servicebusreceiverasyncclient.instantiation#nextsession
-
-        subscription.dispose();
-        sessionReceiver.close();
-    }
-
-    /**
      * Demonstrates how to create a session receiver for a single know session id.
      */
     @Test
