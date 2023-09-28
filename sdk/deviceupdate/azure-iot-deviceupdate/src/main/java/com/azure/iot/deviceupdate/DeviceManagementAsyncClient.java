@@ -54,26 +54,31 @@ public final class DeviceManagementAsyncClient {
      *
      * <pre>{@code
      * {
-     *     deviceClassId: String (Required)
-     *     friendlyName: String (Optional)
-     *     deviceClassProperties (Required): {
-     *         contractModel (Optional): {
-     *             id: String (Required)
-     *             name: String (Required)
+     *     value (Required): [
+     *          (Required){
+     *             deviceClassId: String (Required)
+     *             friendlyName: String (Optional)
+     *             deviceClassProperties (Required): {
+     *                 contractModel (Optional): {
+     *                     id: String (Required)
+     *                     name: String (Required)
+     *                 }
+     *                 compatProperties (Required): {
+     *                     String: String (Required)
+     *                 }
+     *             }
+     *             bestCompatibleUpdate (Optional): {
+     *                 updateId (Required): {
+     *                     provider: String (Required)
+     *                     name: String (Required)
+     *                     version: String (Required)
+     *                 }
+     *                 description: String (Optional)
+     *                 friendlyName: String (Optional)
+     *             }
      *         }
-     *         compatProperties (Required): {
-     *             String: String (Required)
-     *         }
-     *     }
-     *     bestCompatibleUpdate (Optional): {
-     *         updateId (Required): {
-     *             provider: String (Required)
-     *             name: String (Required)
-     *             version: String (Required)
-     *         }
-     *         description: String (Optional)
-     *         friendlyName: String (Optional)
-     *     }
+     *     ]
+     *     nextLink: String (Optional)
      * }
      * }</pre>
      *
@@ -218,13 +223,18 @@ public final class DeviceManagementAsyncClient {
      *
      * <pre>{@code
      * {
-     *     updateId (Required): {
-     *         provider: String (Required)
-     *         name: String (Required)
-     *         version: String (Required)
-     *     }
-     *     description: String (Optional)
-     *     friendlyName: String (Optional)
+     *     value (Required): [
+     *          (Required){
+     *             updateId (Required): {
+     *                 provider: String (Required)
+     *                 name: String (Required)
+     *                 version: String (Required)
+     *             }
+     *             description: String (Optional)
+     *             friendlyName: String (Optional)
+     *         }
+     *     ]
+     *     nextLink: String (Optional)
      * }
      * }</pre>
      *
@@ -260,37 +270,42 @@ public final class DeviceManagementAsyncClient {
      *
      * <pre>{@code
      * {
-     *     deviceId: String (Required)
-     *     moduleId: String (Optional)
-     *     deviceClassId: String (Required)
-     *     groupId: String (Optional)
-     *     lastAttemptedUpdate (Optional): {
-     *         updateId (Required): {
-     *             provider: String (Required)
-     *             name: String (Required)
-     *             version: String (Required)
-     *         }
-     *         description: String (Optional)
-     *         friendlyName: String (Optional)
-     *     }
-     *     deploymentStatus: String(Succeeded/InProgress/Canceled/Failed) (Optional)
-     *     installedUpdate (Optional): (recursive schema, see installedUpdate above)
-     *     onLatestUpdate: boolean (Required)
-     *     lastDeploymentId: String (Optional)
-     *     lastInstallResult (Optional): {
-     *         resultCode: int (Required)
-     *         extendedResultCode: int (Required)
-     *         resultDetails: String (Optional)
-     *         stepResults (Optional): [
-     *              (Optional){
-     *                 update (Optional): (recursive schema, see update above)
+     *     value (Required): [
+     *          (Required){
+     *             deviceId: String (Required)
+     *             moduleId: String (Optional)
+     *             deviceClassId: String (Required)
+     *             groupId: String (Optional)
+     *             lastAttemptedUpdate (Optional): {
+     *                 updateId (Required): {
+     *                     provider: String (Required)
+     *                     name: String (Required)
+     *                     version: String (Required)
+     *                 }
      *                 description: String (Optional)
+     *                 friendlyName: String (Optional)
+     *             }
+     *             deploymentStatus: String(Succeeded/InProgress/Canceled/Failed) (Optional)
+     *             installedUpdate (Optional): (recursive schema, see installedUpdate above)
+     *             onLatestUpdate: boolean (Required)
+     *             lastDeploymentId: String (Optional)
+     *             lastInstallResult (Optional): {
      *                 resultCode: int (Required)
      *                 extendedResultCode: int (Required)
      *                 resultDetails: String (Optional)
+     *                 stepResults (Optional): [
+     *                      (Optional){
+     *                         update (Optional): (recursive schema, see update above)
+     *                         description: String (Optional)
+     *                         resultCode: int (Required)
+     *                         extendedResultCode: int (Required)
+     *                         resultDetails: String (Optional)
+     *                     }
+     *                 ]
      *             }
-     *         ]
-     *     }
+     *         }
+     *     ]
+     *     nextLink: String (Optional)
      * }
      * }</pre>
      *
@@ -492,16 +507,21 @@ public final class DeviceManagementAsyncClient {
      *
      * <pre>{@code
      * {
-     *     groupId: String (Required)
-     *     groupType: String(IoTHubTag/DefaultNoTag) (Required)
-     *     createdDateTime: String (Required)
-     *     deviceCount: Integer (Optional)
-     *     subgroupsWithNewUpdatesAvailableCount: Integer (Optional)
-     *     subgroupsWithUpdatesInProgressCount: Integer (Optional)
-     *     subgroupsWithOnLatestUpdateCount: Integer (Optional)
-     *     deployments (Optional): [
-     *         String (Optional)
+     *     value (Required): [
+     *          (Required){
+     *             groupId: String (Required)
+     *             groupType: String(IoTHubTag/DefaultNoTag) (Required)
+     *             createdDateTime: String (Required)
+     *             deviceCount: Integer (Optional)
+     *             subgroupsWithNewUpdatesAvailableCount: Integer (Optional)
+     *             subgroupsWithUpdatesInProgressCount: Integer (Optional)
+     *             subgroupsWithOnLatestUpdateCount: Integer (Optional)
+     *             deployments (Optional): [
+     *                 String (Optional)
+     *             ]
+     *         }
      *     ]
+     *     nextLink: String (Optional)
      * }
      * }</pre>
      *
@@ -612,18 +632,23 @@ public final class DeviceManagementAsyncClient {
      *
      * <pre>{@code
      * {
-     *     groupId: String (Required)
-     *     deviceClassId: String (Required)
-     *     update (Required): {
-     *         updateId (Required): {
-     *             provider: String (Required)
-     *             name: String (Required)
-     *             version: String (Required)
+     *     value (Required): [
+     *          (Required){
+     *             groupId: String (Required)
+     *             deviceClassId: String (Required)
+     *             update (Required): {
+     *                 updateId (Required): {
+     *                     provider: String (Required)
+     *                     name: String (Required)
+     *                     version: String (Required)
+     *                 }
+     *                 description: String (Optional)
+     *                 friendlyName: String (Optional)
+     *             }
+     *             deviceCount: int (Required)
      *         }
-     *         description: String (Optional)
-     *         friendlyName: String (Optional)
-     *     }
-     *     deviceCount: int (Required)
+     *     ]
+     *     nextLink: String (Optional)
      * }
      * }</pre>
      *
@@ -659,31 +684,36 @@ public final class DeviceManagementAsyncClient {
      *
      * <pre>{@code
      * {
-     *     deploymentId: String (Required)
-     *     startDateTime: OffsetDateTime (Required)
-     *     update (Required): {
-     *         updateId (Required): {
-     *             provider: String (Required)
-     *             name: String (Required)
-     *             version: String (Required)
+     *     value (Required): [
+     *          (Required){
+     *             deploymentId: String (Required)
+     *             startDateTime: OffsetDateTime (Required)
+     *             update (Required): {
+     *                 updateId (Required): {
+     *                     provider: String (Required)
+     *                     name: String (Required)
+     *                     version: String (Required)
+     *                 }
+     *                 description: String (Optional)
+     *                 friendlyName: String (Optional)
+     *             }
+     *             groupId: String (Required)
+     *             deviceClassSubgroups (Optional): [
+     *                 String (Optional)
+     *             ]
+     *             isCanceled: Boolean (Optional)
+     *             isRetried: Boolean (Optional)
+     *             rollbackPolicy (Optional): {
+     *                 update (Required): (recursive schema, see update above)
+     *                 failure (Required): {
+     *                     devicesFailedPercentage: int (Required)
+     *                     devicesFailedCount: int (Required)
+     *                 }
+     *             }
+     *             isCloudInitiatedRollback: Boolean (Optional)
      *         }
-     *         description: String (Optional)
-     *         friendlyName: String (Optional)
-     *     }
-     *     groupId: String (Required)
-     *     deviceClassSubgroups (Optional): [
-     *         String (Optional)
      *     ]
-     *     isCanceled: Boolean (Optional)
-     *     isRetried: Boolean (Optional)
-     *     rollbackPolicy (Optional): {
-     *         update (Required): (recursive schema, see update above)
-     *         failure (Required): {
-     *             devicesFailedPercentage: int (Required)
-     *             devicesFailedCount: int (Required)
-     *         }
-     *     }
-     *     isCloudInitiatedRollback: Boolean (Optional)
+     *     nextLink: String (Optional)
      * }
      * }</pre>
      *
@@ -932,11 +962,16 @@ public final class DeviceManagementAsyncClient {
      *
      * <pre>{@code
      * {
-     *     deviceClassId: String (Required)
-     *     groupId: String (Required)
-     *     createdDateTime: String (Required)
-     *     deviceCount: Integer (Optional)
-     *     deploymentId: String (Optional)
+     *     value (Required): [
+     *          (Required){
+     *             deviceClassId: String (Required)
+     *             groupId: String (Required)
+     *             createdDateTime: String (Required)
+     *             deviceCount: Integer (Optional)
+     *             deploymentId: String (Optional)
+     *         }
+     *     ]
+     *     nextLink: String (Optional)
      * }
      * }</pre>
      *
@@ -1100,31 +1135,36 @@ public final class DeviceManagementAsyncClient {
      *
      * <pre>{@code
      * {
-     *     deploymentId: String (Required)
-     *     startDateTime: OffsetDateTime (Required)
-     *     update (Required): {
-     *         updateId (Required): {
-     *             provider: String (Required)
-     *             name: String (Required)
-     *             version: String (Required)
+     *     value (Required): [
+     *          (Required){
+     *             deploymentId: String (Required)
+     *             startDateTime: OffsetDateTime (Required)
+     *             update (Required): {
+     *                 updateId (Required): {
+     *                     provider: String (Required)
+     *                     name: String (Required)
+     *                     version: String (Required)
+     *                 }
+     *                 description: String (Optional)
+     *                 friendlyName: String (Optional)
+     *             }
+     *             groupId: String (Required)
+     *             deviceClassSubgroups (Optional): [
+     *                 String (Optional)
+     *             ]
+     *             isCanceled: Boolean (Optional)
+     *             isRetried: Boolean (Optional)
+     *             rollbackPolicy (Optional): {
+     *                 update (Required): (recursive schema, see update above)
+     *                 failure (Required): {
+     *                     devicesFailedPercentage: int (Required)
+     *                     devicesFailedCount: int (Required)
+     *                 }
+     *             }
+     *             isCloudInitiatedRollback: Boolean (Optional)
      *         }
-     *         description: String (Optional)
-     *         friendlyName: String (Optional)
-     *     }
-     *     groupId: String (Required)
-     *     deviceClassSubgroups (Optional): [
-     *         String (Optional)
      *     ]
-     *     isCanceled: Boolean (Optional)
-     *     isRetried: Boolean (Optional)
-     *     rollbackPolicy (Optional): {
-     *         update (Required): (recursive schema, see update above)
-     *         failure (Required): {
-     *             devicesFailedPercentage: int (Required)
-     *             devicesFailedCount: int (Required)
-     *         }
-     *     }
-     *     isCloudInitiatedRollback: Boolean (Optional)
+     *     nextLink: String (Optional)
      * }
      * }</pre>
      *
@@ -1393,11 +1433,16 @@ public final class DeviceManagementAsyncClient {
      *
      * <pre>{@code
      * {
-     *     deviceId: String (Required)
-     *     moduleId: String (Optional)
-     *     retryCount: int (Required)
-     *     movedOnToNewDeployment: boolean (Required)
-     *     deviceState: String(Succeeded/InProgress/Canceled/Failed) (Required)
+     *     value (Required): [
+     *          (Required){
+     *             deviceId: String (Required)
+     *             moduleId: String (Optional)
+     *             retryCount: int (Required)
+     *             movedOnToNewDeployment: boolean (Required)
+     *             deviceState: String(Succeeded/InProgress/Canceled/Failed) (Required)
+     *         }
+     *     ]
+     *     nextLink: String (Optional)
      * }
      * }</pre>
      *
@@ -1493,27 +1538,32 @@ public final class DeviceManagementAsyncClient {
      *
      * <pre>{@code
      * {
-     *     operationId: String (Required)
-     *     status: String(NotStarted/Running/Succeeded/Failed) (Required)
-     *     error (Optional): {
-     *         code: String (Required)
-     *         message: String (Required)
-     *         target: String (Optional)
-     *         details (Optional): [
-     *             (recursive schema, see above)
-     *         ]
-     *         innererror (Optional): {
-     *             code: String (Required)
-     *             message: String (Optional)
-     *             errorDetail: String (Optional)
-     *             innerError (Optional): (recursive schema, see innerError above)
+     *     value (Required): [
+     *          (Required){
+     *             operationId: String (Required)
+     *             status: String(NotStarted/Running/Succeeded/Failed) (Required)
+     *             error (Optional): {
+     *                 code: String (Required)
+     *                 message: String (Required)
+     *                 target: String (Optional)
+     *                 details (Optional): [
+     *                     (recursive schema, see above)
+     *                 ]
+     *                 innererror (Optional): {
+     *                     code: String (Required)
+     *                     message: String (Optional)
+     *                     errorDetail: String (Optional)
+     *                     innerError (Optional): (recursive schema, see innerError above)
+     *                 }
+     *                 occurredDateTime: OffsetDateTime (Optional)
+     *             }
+     *             traceId: String (Optional)
+     *             lastActionDateTime: OffsetDateTime (Required)
+     *             createdDateTime: OffsetDateTime (Required)
+     *             etag: String (Optional)
      *         }
-     *         occurredDateTime: OffsetDateTime (Optional)
-     *     }
-     *     traceId: String (Optional)
-     *     lastActionDateTime: OffsetDateTime (Required)
-     *     createdDateTime: OffsetDateTime (Required)
-     *     etag: String (Optional)
+     *     ]
+     *     nextLink: String (Optional)
      * }
      * }</pre>
      *
@@ -1629,17 +1679,22 @@ public final class DeviceManagementAsyncClient {
      *
      * <pre>{@code
      * {
-     *     operationId: String (Optional)
-     *     deviceList (Required): [
+     *     value (Required): [
      *          (Required){
-     *             deviceId: String (Required)
-     *             moduleId: String (Optional)
+     *             operationId: String (Optional)
+     *             deviceList (Required): [
+     *                  (Required){
+     *                     deviceId: String (Required)
+     *                     moduleId: String (Optional)
+     *                 }
+     *             ]
+     *             description: String (Optional)
+     *             createdDateTime: String (Optional)
+     *             lastActionDateTime: String (Optional)
+     *             status: String(NotStarted/Running/Succeeded/Failed) (Optional)
      *         }
      *     ]
-     *     description: String (Optional)
-     *     createdDateTime: String (Optional)
-     *     lastActionDateTime: String (Optional)
-     *     status: String(NotStarted/Running/Succeeded/Failed) (Optional)
+     *     nextLink: String (Optional)
      * }
      * }</pre>
      *
@@ -1703,16 +1758,21 @@ public final class DeviceManagementAsyncClient {
      *
      * <pre>{@code
      * {
-     *     deviceId: String (Required)
-     *     moduleId: String (Optional)
-     *     state: String(healthy/unhealthy) (Required)
-     *     digitalTwinModelId: String (Optional)
-     *     healthChecks (Required): [
+     *     value (Required): [
      *          (Required){
-     *             name: String (Optional)
-     *             result: String(success/userError) (Optional)
+     *             deviceId: String (Required)
+     *             moduleId: String (Optional)
+     *             state: String(healthy/unhealthy) (Required)
+     *             digitalTwinModelId: String (Optional)
+     *             healthChecks (Required): [
+     *                  (Required){
+     *                     name: String (Optional)
+     *                     result: String(success/userError) (Optional)
+     *                 }
+     *             ]
      *         }
      *     ]
+     *     nextLink: String (Optional)
      * }
      * }</pre>
      *

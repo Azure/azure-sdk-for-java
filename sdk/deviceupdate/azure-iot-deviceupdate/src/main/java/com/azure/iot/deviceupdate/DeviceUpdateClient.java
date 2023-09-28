@@ -52,43 +52,48 @@ public final class DeviceUpdateClient {
      *
      * <pre>{@code
      * {
-     *     updateId (Required): {
-     *         provider: String (Required)
-     *         name: String (Required)
-     *         version: String (Required)
-     *     }
-     *     description: String (Optional)
-     *     friendlyName: String (Optional)
-     *     isDeployable: Boolean (Optional)
-     *     updateType: String (Optional)
-     *     installedCriteria: String (Optional)
-     *     compatibility (Required): [
+     *     value (Required): [
      *          (Required){
-     *             String: String (Required)
+     *             updateId (Required): {
+     *                 provider: String (Required)
+     *                 name: String (Required)
+     *                 version: String (Required)
+     *             }
+     *             description: String (Optional)
+     *             friendlyName: String (Optional)
+     *             isDeployable: Boolean (Optional)
+     *             updateType: String (Optional)
+     *             installedCriteria: String (Optional)
+     *             compatibility (Required): [
+     *                  (Required){
+     *                     String: String (Required)
+     *                 }
+     *             ]
+     *             instructions (Optional): {
+     *                 steps (Required): [
+     *                      (Required){
+     *                         type: String(Inline/Reference) (Optional)
+     *                         description: String (Optional)
+     *                         handler: String (Optional)
+     *                         handlerProperties: Object (Optional)
+     *                         files (Optional): [
+     *                             String (Optional)
+     *                         ]
+     *                         updateId (Optional): (recursive schema, see updateId above)
+     *                     }
+     *                 ]
+     *             }
+     *             referencedBy (Optional): [
+     *                 (recursive schema, see above)
+     *             ]
+     *             scanResult: String (Optional)
+     *             manifestVersion: String (Required)
+     *             importedDateTime: OffsetDateTime (Required)
+     *             createdDateTime: OffsetDateTime (Required)
+     *             etag: String (Optional)
      *         }
      *     ]
-     *     instructions (Optional): {
-     *         steps (Required): [
-     *              (Required){
-     *                 type: String(Inline/Reference) (Optional)
-     *                 description: String (Optional)
-     *                 handler: String (Optional)
-     *                 handlerProperties: Object (Optional)
-     *                 files (Optional): [
-     *                     String (Optional)
-     *                 ]
-     *                 updateId (Optional): (recursive schema, see updateId above)
-     *             }
-     *         ]
-     *     }
-     *     referencedBy (Optional): [
-     *         (recursive schema, see above)
-     *     ]
-     *     scanResult: String (Optional)
-     *     manifestVersion: String (Required)
-     *     importedDateTime: OffsetDateTime (Required)
-     *     createdDateTime: OffsetDateTime (Required)
-     *     etag: String (Optional)
+     *     nextLink: String (Optional)
      * }
      * }</pre>
      *
@@ -294,7 +299,12 @@ public final class DeviceUpdateClient {
      * <p><strong>Response Body Schema</strong>
      *
      * <pre>{@code
-     * String
+     * {
+     *     value (Required): [
+     *         String (Required)
+     *     ]
+     *     nextLink: String (Optional)
+     * }
      * }</pre>
      *
      * @param requestOptions The options to configure the HTTP request before HTTP client sends it.
@@ -317,7 +327,12 @@ public final class DeviceUpdateClient {
      * <p><strong>Response Body Schema</strong>
      *
      * <pre>{@code
-     * String
+     * {
+     *     value (Required): [
+     *         String (Required)
+     *     ]
+     *     nextLink: String (Optional)
+     * }
      * }</pre>
      *
      * @param provider Update provider.
@@ -351,7 +366,12 @@ public final class DeviceUpdateClient {
      * <p><strong>Response Body Schema</strong>
      *
      * <pre>{@code
-     * String
+     * {
+     *     value (Required): [
+     *         String (Required)
+     *     ]
+     *     nextLink: String (Optional)
+     * }
      * }</pre>
      *
      * @param provider Update provider.
@@ -376,7 +396,12 @@ public final class DeviceUpdateClient {
      * <p><strong>Response Body Schema</strong>
      *
      * <pre>{@code
-     * String
+     * {
+     *     value (Required): [
+     *         String (Required)
+     *     ]
+     *     nextLink: String (Optional)
+     * }
      * }</pre>
      *
      * @param provider Update provider.
@@ -485,37 +510,42 @@ public final class DeviceUpdateClient {
      *
      * <pre>{@code
      * {
-     *     operationId: String (Required)
-     *     status: String(NotStarted/Running/Succeeded/Failed) (Required)
-     *     update (Optional): {
-     *         updateId (Required): {
-     *             provider: String (Required)
-     *             name: String (Required)
-     *             version: String (Required)
+     *     value (Required): [
+     *          (Required){
+     *             operationId: String (Required)
+     *             status: String(NotStarted/Running/Succeeded/Failed) (Required)
+     *             update (Optional): {
+     *                 updateId (Required): {
+     *                     provider: String (Required)
+     *                     name: String (Required)
+     *                     version: String (Required)
+     *                 }
+     *                 description: String (Optional)
+     *                 friendlyName: String (Optional)
+     *             }
+     *             resourceLocation: String (Optional)
+     *             error (Optional): {
+     *                 code: String (Required)
+     *                 message: String (Required)
+     *                 target: String (Optional)
+     *                 details (Optional): [
+     *                     (recursive schema, see above)
+     *                 ]
+     *                 innererror (Optional): {
+     *                     code: String (Required)
+     *                     message: String (Optional)
+     *                     errorDetail: String (Optional)
+     *                     innerError (Optional): (recursive schema, see innerError above)
+     *                 }
+     *                 occurredDateTime: OffsetDateTime (Optional)
+     *             }
+     *             traceId: String (Optional)
+     *             lastActionDateTime: OffsetDateTime (Required)
+     *             createdDateTime: OffsetDateTime (Required)
+     *             etag: String (Optional)
      *         }
-     *         description: String (Optional)
-     *         friendlyName: String (Optional)
-     *     }
-     *     resourceLocation: String (Optional)
-     *     error (Optional): {
-     *         code: String (Required)
-     *         message: String (Required)
-     *         target: String (Optional)
-     *         details (Optional): [
-     *             (recursive schema, see above)
-     *         ]
-     *         innererror (Optional): {
-     *             code: String (Required)
-     *             message: String (Optional)
-     *             errorDetail: String (Optional)
-     *             innerError (Optional): (recursive schema, see innerError above)
-     *         }
-     *         occurredDateTime: OffsetDateTime (Optional)
-     *     }
-     *     traceId: String (Optional)
-     *     lastActionDateTime: OffsetDateTime (Required)
-     *     createdDateTime: OffsetDateTime (Required)
-     *     etag: String (Optional)
+     *     ]
+     *     nextLink: String (Optional)
      * }
      * }</pre>
      *
