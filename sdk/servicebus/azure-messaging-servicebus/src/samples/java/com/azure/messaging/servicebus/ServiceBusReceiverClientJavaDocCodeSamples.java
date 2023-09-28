@@ -125,11 +125,14 @@ public class ServiceBusReceiverClientJavaDocCodeSamples {
      */
     public void receiveMessages() {
         // BEGIN: com.azure.messaging.servicebus.servicebusreceiverclient.receiveMessages-int-duration
+        TokenCredential tokenCredential = new DefaultAzureCredentialBuilder().build();
+
+        // 'fullyQualifiedNamespace' will look similar to "{your-namespace}.servicebus.windows.net"
         ServiceBusReceiverClient receiver = new ServiceBusClientBuilder()
-            .connectionString("<< CONNECTION STRING FOR THE SERVICE BUS NAMESPACE >>")
+            .credential(fullyQualifiedNamespace, tokenCredential)
             .receiver()
-            .topicName("<< TOPIC NAME >>")
-            .subscriptionName("<< SUBSCRIPTION NAME >>")
+            .topicName(topicName)
+            .subscriptionName(subscriptionName)
             .buildClient();
 
         // Receives a batch of messages when 10 messages are received or until 30 seconds have elapsed, whichever
