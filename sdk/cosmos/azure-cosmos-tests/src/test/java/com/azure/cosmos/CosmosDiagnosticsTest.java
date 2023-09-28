@@ -1503,9 +1503,9 @@ public class CosmosDiagnosticsTest extends TestSuiteBase {
         Field storeResponseStatisticsField = ClientSideRequestStatistics.class.getDeclaredField("supplementalResponseStatisticsList");
         storeResponseStatisticsField.setAccessible(true);
         @SuppressWarnings({"unchecked"})
-        List<ClientSideRequestStatistics.StoreResponseStatistics> list
-            = (List<ClientSideRequestStatistics.StoreResponseStatistics>) storeResponseStatisticsField.get(requestStatistics);
-        return list;
+        Collection<ClientSideRequestStatistics.StoreResponseStatistics> list
+            = (Collection<ClientSideRequestStatistics.StoreResponseStatistics>) storeResponseStatisticsField.get(requestStatistics);
+        return new ArrayList<>(list);
     }
 
     private void clearStoreResponseStatistics(ClientSideRequestStatistics requestStatistics) throws Exception {

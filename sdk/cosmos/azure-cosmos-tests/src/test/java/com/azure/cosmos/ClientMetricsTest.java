@@ -67,6 +67,7 @@ import java.util.Locale;
 import java.util.Map;
 import java.util.Set;
 import java.util.UUID;
+import java.util.concurrent.atomic.AtomicReference;
 import java.util.stream.Collectors;
 
 import static org.assertj.core.api.Assertions.assertThat;
@@ -193,8 +194,6 @@ public class ClientMetricsTest extends BatchTestBase {
                 "cosmos.client.op.latency",
                 true,
                 dummyOperationTag);
-
-            Thread.sleep(100);
 
             List<Measurement> measurements = new ArrayList<>();
             requestLatencyMeter.measure().forEach(measurements::add);
@@ -1389,6 +1388,31 @@ public class ClientMetricsTest extends BatchTestBase {
                 fail(message);
             }
 
+            if (meterMatches.size() > 1) {
+                StringBuilder sb = new StringBuilder();
+                final AtomicReference<Meter> exactMatchMeter = new AtomicReference<>(null);
+                meterMatches.forEach(m -> {
+                    if (exactMatchMeter.get() == null && m.getId().getName().equals(prefix)) {
+                        exactMatchMeter.set(m);
+                    }
+
+                    String message = String.format(
+                        "Found more than one meter '%s' for prefix '%s' withTag '%s' --> '%s'",
+                        m.getId(),
+                        prefix,
+                        withTag,
+                        m);
+                    sb.append(message);
+                    sb.append(System.getProperty("line.separator"));
+                    logger.info(message);
+                });
+
+                if (exactMatchMeter.get() != null) {
+                    logger.info("Found exact match {}", exactMatchMeter);
+                    return exactMatchMeter.get();
+                }
+            }
+
             return meterMatches.get(0);
         } else {
             if (meterMatches.size() > 0) {
@@ -1396,10 +1420,10 @@ public class ClientMetricsTest extends BatchTestBase {
                 meterMatches.forEach(m -> {
                         String message = String.format(
                             "Found unexpected meter '%s' for prefix '%s' withTag '%s' --> '%s'",
-                            meters.get(0).getId(),
+                            m,
                             prefix,
                             withTag,
-                            meters.get(0));
+                            m);
                         sb.append(message);
                         sb.append(System.getProperty("line.separator"));
                         logger.error(message);
