@@ -31,7 +31,7 @@ public final class ManagedInstanceLongTermRetentionPolicyInner extends ProxyReso
     }
 
     /**
-     * Get the weeklyRetention property: The weekly retention policy for an LTR backup in an ISO 8601 format.
+     * Get the weeklyRetention property: The weekly retention policy for an LTR backup.
      *
      * @return the weeklyRetention value.
      */
@@ -40,7 +40,7 @@ public final class ManagedInstanceLongTermRetentionPolicyInner extends ProxyReso
     }
 
     /**
-     * Set the weeklyRetention property: The weekly retention policy for an LTR backup in an ISO 8601 format.
+     * Set the weeklyRetention property: The weekly retention policy for an LTR backup.
      *
      * @param weeklyRetention the weeklyRetention value to set.
      * @return the ManagedInstanceLongTermRetentionPolicyInner object itself.
@@ -54,7 +54,7 @@ public final class ManagedInstanceLongTermRetentionPolicyInner extends ProxyReso
     }
 
     /**
-     * Get the monthlyRetention property: The monthly retention policy for an LTR backup in an ISO 8601 format.
+     * Get the monthlyRetention property: The monthly retention policy for an LTR backup.
      *
      * @return the monthlyRetention value.
      */
@@ -63,7 +63,7 @@ public final class ManagedInstanceLongTermRetentionPolicyInner extends ProxyReso
     }
 
     /**
-     * Set the monthlyRetention property: The monthly retention policy for an LTR backup in an ISO 8601 format.
+     * Set the monthlyRetention property: The monthly retention policy for an LTR backup.
      *
      * @param monthlyRetention the monthlyRetention value to set.
      * @return the ManagedInstanceLongTermRetentionPolicyInner object itself.
@@ -77,7 +77,7 @@ public final class ManagedInstanceLongTermRetentionPolicyInner extends ProxyReso
     }
 
     /**
-     * Get the yearlyRetention property: The yearly retention policy for an LTR backup in an ISO 8601 format.
+     * Get the yearlyRetention property: The yearly retention policy for an LTR backup.
      *
      * @return the yearlyRetention value.
      */
@@ -86,7 +86,7 @@ public final class ManagedInstanceLongTermRetentionPolicyInner extends ProxyReso
     }
 
     /**
-     * Set the yearlyRetention property: The yearly retention policy for an LTR backup in an ISO 8601 format.
+     * Set the yearlyRetention property: The yearly retention policy for an LTR backup.
      *
      * @param yearlyRetention the yearlyRetention value to set.
      * @return the ManagedInstanceLongTermRetentionPolicyInner object itself.
@@ -100,7 +100,7 @@ public final class ManagedInstanceLongTermRetentionPolicyInner extends ProxyReso
     }
 
     /**
-     * Get the weekOfYear property: The week of year to take the yearly backup in an ISO 8601 format.
+     * Get the weekOfYear property: The week of year to take the yearly backup.
      *
      * @return the weekOfYear value.
      */
@@ -109,7 +109,7 @@ public final class ManagedInstanceLongTermRetentionPolicyInner extends ProxyReso
     }
 
     /**
-     * Set the weekOfYear property: The week of year to take the yearly backup in an ISO 8601 format.
+     * Set the weekOfYear property: The week of year to take the yearly backup.
      *
      * @param weekOfYear the weekOfYear value to set.
      * @return the ManagedInstanceLongTermRetentionPolicyInner object itself.

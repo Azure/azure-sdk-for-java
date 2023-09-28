@@ -19,6 +19,15 @@ public final class ServerTrustGroupPropertiesTrustScopesItem
     public static final ServerTrustGroupPropertiesTrustScopesItem SERVICE_BROKER = fromString("ServiceBroker");
 
     /**
+     * Creates a new instance of ServerTrustGroupPropertiesTrustScopesItem value.
+     *
+     * @deprecated Use the {@link #fromString(String)} factory method.
+     */
+    @Deprecated
+    public ServerTrustGroupPropertiesTrustScopesItem() {
+    }
+
+    /**
      * Creates or finds a ServerTrustGroupPropertiesTrustScopesItem from its string representation.
      *
      * @param name a name to look for.

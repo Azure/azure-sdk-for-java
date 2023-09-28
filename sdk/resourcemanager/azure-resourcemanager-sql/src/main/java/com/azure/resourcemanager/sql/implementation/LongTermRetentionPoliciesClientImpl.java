@@ -68,8 +68,7 @@ public final class LongTermRetentionPoliciesClientImpl implements LongTermRetent
     public interface LongTermRetentionPoliciesService {
         @Headers({"Content-Type: application/json"})
         @Get(
-            "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Sql/servers"
-                + "/{serverName}/databases/{databaseName}/backupLongTermRetentionPolicies")
+            "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Sql/servers/{serverName}/databases/{databaseName}/backupLongTermRetentionPolicies")
         @ExpectedResponses({200})
         @UnexpectedResponseExceptionType(ManagementException.class)
         Mono<Response<LongTermRetentionPolicyListResult>> listByDatabase(
@@ -84,8 +83,7 @@ public final class LongTermRetentionPoliciesClientImpl implements LongTermRetent
 
         @Headers({"Content-Type: application/json"})
         @Get(
-            "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Sql/servers"
-                + "/{serverName}/databases/{databaseName}/backupLongTermRetentionPolicies/{policyName}")
+            "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Sql/servers/{serverName}/databases/{databaseName}/backupLongTermRetentionPolicies/{policyName}")
         @ExpectedResponses({200})
         @UnexpectedResponseExceptionType(ManagementException.class)
         Mono<Response<LongTermRetentionPolicyInner>> get(
@@ -101,8 +99,7 @@ public final class LongTermRetentionPoliciesClientImpl implements LongTermRetent
 
         @Headers({"Content-Type: application/json"})
         @Put(
-            "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Sql/servers"
-                + "/{serverName}/databases/{databaseName}/backupLongTermRetentionPolicies/{policyName}")
+            "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Sql/servers/{serverName}/databases/{databaseName}/backupLongTermRetentionPolicies/{policyName}")
         @ExpectedResponses({200, 202})
         @UnexpectedResponseExceptionType(ManagementException.class)
         Mono<Response<Flux<ByteBuffer>>> createOrUpdate(
@@ -518,7 +515,7 @@ public final class LongTermRetentionPoliciesClientImpl implements LongTermRetent
     }
 
     /**
-     * Sets a database's long term retention policy.
+     * Set or update a database's long term retention policy.
      *
      * @param resourceGroupName The name of the resource group that contains the resource. You can obtain this value
      *     from the Azure Resource Manager API or the portal.
@@ -588,7 +585,7 @@ public final class LongTermRetentionPoliciesClientImpl implements LongTermRetent
     }
 
     /**
-     * Sets a database's long term retention policy.
+     * Set or update a database's long term retention policy.
      *
      * @param resourceGroupName The name of the resource group that contains the resource. You can obtain this value
      *     from the Azure Resource Manager API or the portal.
@@ -657,7 +654,7 @@ public final class LongTermRetentionPoliciesClientImpl implements LongTermRetent
     }
 
     /**
-     * Sets a database's long term retention policy.
+     * Set or update a database's long term retention policy.
      *
      * @param resourceGroupName The name of the resource group that contains the resource. You can obtain this value
      *     from the Azure Resource Manager API or the portal.
@@ -690,7 +687,7 @@ public final class LongTermRetentionPoliciesClientImpl implements LongTermRetent
     }
 
     /**
-     * Sets a database's long term retention policy.
+     * Set or update a database's long term retention policy.
      *
      * @param resourceGroupName The name of the resource group that contains the resource. You can obtain this value
      *     from the Azure Resource Manager API or the portal.
@@ -727,7 +724,7 @@ public final class LongTermRetentionPoliciesClientImpl implements LongTermRetent
     }
 
     /**
-     * Sets a database's long term retention policy.
+     * Set or update a database's long term retention policy.
      *
      * @param resourceGroupName The name of the resource group that contains the resource. You can obtain this value
      *     from the Azure Resource Manager API or the portal.
@@ -747,12 +744,13 @@ public final class LongTermRetentionPoliciesClientImpl implements LongTermRetent
         String databaseName,
         LongTermRetentionPolicyName policyName,
         LongTermRetentionPolicyInner parameters) {
-        return beginCreateOrUpdateAsync(resourceGroupName, serverName, databaseName, policyName, parameters)
+        return this
+            .beginCreateOrUpdateAsync(resourceGroupName, serverName, databaseName, policyName, parameters)
             .getSyncPoller();
     }
 
     /**
-     * Sets a database's long term retention policy.
+     * Set or update a database's long term retention policy.
      *
      * @param resourceGroupName The name of the resource group that contains the resource. You can obtain this value
      *     from the Azure Resource Manager API or the portal.
@@ -774,12 +772,13 @@ public final class LongTermRetentionPoliciesClientImpl implements LongTermRetent
         LongTermRetentionPolicyName policyName,
         LongTermRetentionPolicyInner parameters,
         Context context) {
-        return beginCreateOrUpdateAsync(resourceGroupName, serverName, databaseName, policyName, parameters, context)
+        return this
+            .beginCreateOrUpdateAsync(resourceGroupName, serverName, databaseName, policyName, parameters, context)
             .getSyncPoller();
     }
 
     /**
-     * Sets a database's long term retention policy.
+     * Set or update a database's long term retention policy.
      *
      * @param resourceGroupName The name of the resource group that contains the resource. You can obtain this value
      *     from the Azure Resource Manager API or the portal.
@@ -805,7 +804,7 @@ public final class LongTermRetentionPoliciesClientImpl implements LongTermRetent
     }
 
     /**
-     * Sets a database's long term retention policy.
+     * Set or update a database's long term retention policy.
      *
      * @param resourceGroupName The name of the resource group that contains the resource. You can obtain this value
      *     from the Azure Resource Manager API or the portal.
@@ -833,7 +832,7 @@ public final class LongTermRetentionPoliciesClientImpl implements LongTermRetent
     }
 
     /**
-     * Sets a database's long term retention policy.
+     * Set or update a database's long term retention policy.
      *
      * @param resourceGroupName The name of the resource group that contains the resource. You can obtain this value
      *     from the Azure Resource Manager API or the portal.
@@ -857,7 +856,7 @@ public final class LongTermRetentionPoliciesClientImpl implements LongTermRetent
     }
 
     /**
-     * Sets a database's long term retention policy.
+     * Set or update a database's long term retention policy.
      *
      * @param resourceGroupName The name of the resource group that contains the resource. You can obtain this value
      *     from the Azure Resource Manager API or the portal.

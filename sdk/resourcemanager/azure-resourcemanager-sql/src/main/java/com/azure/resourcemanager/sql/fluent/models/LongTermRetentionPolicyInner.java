@@ -15,7 +15,7 @@ public final class LongTermRetentionPolicyInner extends ProxyResource {
      * Resource properties.
      */
     @JsonProperty(value = "properties")
-    private BaseLongTermRetentionPolicyProperties innerProperties;
+    private LongTermRetentionPolicyProperties innerProperties;
 
     /** Creates an instance of LongTermRetentionPolicyInner class. */
     public LongTermRetentionPolicyInner() {
@@ -26,8 +26,31 @@ public final class LongTermRetentionPolicyInner extends ProxyResource {
      *
      * @return the innerProperties value.
      */
-    private BaseLongTermRetentionPolicyProperties innerProperties() {
+    private LongTermRetentionPolicyProperties innerProperties() {
         return this.innerProperties;
+    }
+
+    /**
+     * Get the makeBackupsImmutable property: The setting whether to make LTR backups immutable.
+     *
+     * @return the makeBackupsImmutable value.
+     */
+    public Boolean makeBackupsImmutable() {
+        return this.innerProperties() == null ? null : this.innerProperties().makeBackupsImmutable();
+    }
+
+    /**
+     * Set the makeBackupsImmutable property: The setting whether to make LTR backups immutable.
+     *
+     * @param makeBackupsImmutable the makeBackupsImmutable value to set.
+     * @return the LongTermRetentionPolicyInner object itself.
+     */
+    public LongTermRetentionPolicyInner withMakeBackupsImmutable(Boolean makeBackupsImmutable) {
+        if (this.innerProperties() == null) {
+            this.innerProperties = new LongTermRetentionPolicyProperties();
+        }
+        this.innerProperties().withMakeBackupsImmutable(makeBackupsImmutable);
+        return this;
     }
 
     /**
@@ -47,7 +70,7 @@ public final class LongTermRetentionPolicyInner extends ProxyResource {
      */
     public LongTermRetentionPolicyInner withWeeklyRetention(String weeklyRetention) {
         if (this.innerProperties() == null) {
-            this.innerProperties = new BaseLongTermRetentionPolicyProperties();
+            this.innerProperties = new LongTermRetentionPolicyProperties();
         }
         this.innerProperties().withWeeklyRetention(weeklyRetention);
         return this;
@@ -70,7 +93,7 @@ public final class LongTermRetentionPolicyInner extends ProxyResource {
      */
     public LongTermRetentionPolicyInner withMonthlyRetention(String monthlyRetention) {
         if (this.innerProperties() == null) {
-            this.innerProperties = new BaseLongTermRetentionPolicyProperties();
+            this.innerProperties = new LongTermRetentionPolicyProperties();
         }
         this.innerProperties().withMonthlyRetention(monthlyRetention);
         return this;
@@ -93,7 +116,7 @@ public final class LongTermRetentionPolicyInner extends ProxyResource {
      */
     public LongTermRetentionPolicyInner withYearlyRetention(String yearlyRetention) {
         if (this.innerProperties() == null) {
-            this.innerProperties = new BaseLongTermRetentionPolicyProperties();
+            this.innerProperties = new LongTermRetentionPolicyProperties();
         }
         this.innerProperties().withYearlyRetention(yearlyRetention);
         return this;
@@ -116,7 +139,7 @@ public final class LongTermRetentionPolicyInner extends ProxyResource {
      */
     public LongTermRetentionPolicyInner withWeekOfYear(Integer weekOfYear) {
         if (this.innerProperties() == null) {
-            this.innerProperties = new BaseLongTermRetentionPolicyProperties();
+            this.innerProperties = new LongTermRetentionPolicyProperties();
         }
         this.innerProperties().withWeekOfYear(weekOfYear);
         return this;

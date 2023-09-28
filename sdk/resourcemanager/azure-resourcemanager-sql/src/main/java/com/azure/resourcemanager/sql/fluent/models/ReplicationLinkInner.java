@@ -53,6 +53,15 @@ public final class ReplicationLinkInner extends ProxyResource {
     }
 
     /**
+     * Get the partnerDatabaseId property: Resource partner database Id.
+     *
+     * @return the partnerDatabaseId value.
+     */
+    public String partnerDatabaseId() {
+        return this.innerProperties() == null ? null : this.innerProperties().partnerDatabaseId();
+    }
+
+    /**
      * Get the partnerLocation property: Resource partner location.
      *
      * @return the partnerLocation value.

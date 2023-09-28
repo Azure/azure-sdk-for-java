@@ -20,6 +20,15 @@ public final class ManagedInstanceProxyOverride extends ExpandableStringEnum<Man
     public static final ManagedInstanceProxyOverride DEFAULT = fromString("Default");
 
     /**
+     * Creates a new instance of ManagedInstanceProxyOverride value.
+     *
+     * @deprecated Use the {@link #fromString(String)} factory method.
+     */
+    @Deprecated
+    public ManagedInstanceProxyOverride() {
+    }
+
+    /**
      * Creates or finds a ManagedInstanceProxyOverride from its string representation.
      *
      * @param name a name to look for.

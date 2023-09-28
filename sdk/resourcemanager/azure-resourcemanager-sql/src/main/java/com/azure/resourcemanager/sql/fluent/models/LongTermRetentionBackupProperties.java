@@ -60,6 +60,12 @@ public final class LongTermRetentionBackupProperties {
     @JsonProperty(value = "requestedBackupStorageRedundancy")
     private BackupStorageRedundancy requestedBackupStorageRedundancy;
 
+    /*
+     * The setting whether the LTR backup is immutable
+     */
+    @JsonProperty(value = "isBackupImmutable")
+    private Boolean isBackupImmutable;
+
     /** Creates an instance of LongTermRetentionBackupProperties class. */
     public LongTermRetentionBackupProperties() {
     }
@@ -145,6 +151,26 @@ public final class LongTermRetentionBackupProperties {
     public LongTermRetentionBackupProperties withRequestedBackupStorageRedundancy(
         BackupStorageRedundancy requestedBackupStorageRedundancy) {
         this.requestedBackupStorageRedundancy = requestedBackupStorageRedundancy;
+        return this;
+    }
+
+    /**
+     * Get the isBackupImmutable property: The setting whether the LTR backup is immutable.
+     *
+     * @return the isBackupImmutable value.
+     */
+    public Boolean isBackupImmutable() {
+        return this.isBackupImmutable;
+    }
+
+    /**
+     * Set the isBackupImmutable property: The setting whether the LTR backup is immutable.
+     *
+     * @param isBackupImmutable the isBackupImmutable value to set.
+     * @return the LongTermRetentionBackupProperties object itself.
+     */
+    public LongTermRetentionBackupProperties withIsBackupImmutable(Boolean isBackupImmutable) {
+        this.isBackupImmutable = isBackupImmutable;
         return this;
     }
 

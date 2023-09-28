@@ -70,8 +70,7 @@ public final class SyncMembersClientImpl implements SyncMembersClient {
     public interface SyncMembersService {
         @Headers({"Content-Type: application/json"})
         @Get(
-            "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Sql/servers"
-                + "/{serverName}/databases/{databaseName}/syncGroups/{syncGroupName}/syncMembers")
+            "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Sql/servers/{serverName}/databases/{databaseName}/syncGroups/{syncGroupName}/syncMembers")
         @ExpectedResponses({200})
         @UnexpectedResponseExceptionType(ManagementException.class)
         Mono<Response<SyncMemberListResult>> listBySyncGroup(
@@ -87,8 +86,7 @@ public final class SyncMembersClientImpl implements SyncMembersClient {
 
         @Headers({"Content-Type: application/json"})
         @Get(
-            "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Sql/servers"
-                + "/{serverName}/databases/{databaseName}/syncGroups/{syncGroupName}/syncMembers/{syncMemberName}")
+            "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Sql/servers/{serverName}/databases/{databaseName}/syncGroups/{syncGroupName}/syncMembers/{syncMemberName}")
         @ExpectedResponses({200})
         @UnexpectedResponseExceptionType(ManagementException.class)
         Mono<Response<SyncMemberInner>> get(
@@ -105,8 +103,7 @@ public final class SyncMembersClientImpl implements SyncMembersClient {
 
         @Headers({"Content-Type: application/json"})
         @Put(
-            "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Sql/servers"
-                + "/{serverName}/databases/{databaseName}/syncGroups/{syncGroupName}/syncMembers/{syncMemberName}")
+            "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Sql/servers/{serverName}/databases/{databaseName}/syncGroups/{syncGroupName}/syncMembers/{syncMemberName}")
         @ExpectedResponses({200, 201, 202})
         @UnexpectedResponseExceptionType(ManagementException.class)
         Mono<Response<Flux<ByteBuffer>>> createOrUpdate(
@@ -124,8 +121,7 @@ public final class SyncMembersClientImpl implements SyncMembersClient {
 
         @Headers({"Accept: application/json;q=0.9", "Content-Type: application/json"})
         @Delete(
-            "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Sql/servers"
-                + "/{serverName}/databases/{databaseName}/syncGroups/{syncGroupName}/syncMembers/{syncMemberName}")
+            "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Sql/servers/{serverName}/databases/{databaseName}/syncGroups/{syncGroupName}/syncMembers/{syncMemberName}")
         @ExpectedResponses({200, 202, 204})
         @UnexpectedResponseExceptionType(ManagementException.class)
         Mono<Response<Flux<ByteBuffer>>> delete(
@@ -141,8 +137,7 @@ public final class SyncMembersClientImpl implements SyncMembersClient {
 
         @Headers({"Content-Type: application/json"})
         @Patch(
-            "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Sql/servers"
-                + "/{serverName}/databases/{databaseName}/syncGroups/{syncGroupName}/syncMembers/{syncMemberName}")
+            "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Sql/servers/{serverName}/databases/{databaseName}/syncGroups/{syncGroupName}/syncMembers/{syncMemberName}")
         @ExpectedResponses({200, 202})
         @UnexpectedResponseExceptionType(ManagementException.class)
         Mono<Response<Flux<ByteBuffer>>> update(
@@ -160,9 +155,7 @@ public final class SyncMembersClientImpl implements SyncMembersClient {
 
         @Headers({"Accept: application/json;q=0.9", "Content-Type: application/json"})
         @Post(
-            "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Sql/servers"
-                + "/{serverName}/databases/{databaseName}/syncGroups/{syncGroupName}/syncMembers/{syncMemberName}"
-                + "/refreshSchema")
+            "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Sql/servers/{serverName}/databases/{databaseName}/syncGroups/{syncGroupName}/syncMembers/{syncMemberName}/refreshSchema")
         @ExpectedResponses({200, 202})
         @UnexpectedResponseExceptionType(ManagementException.class)
         Mono<Response<Flux<ByteBuffer>>> refreshMemberSchema(
@@ -178,9 +171,7 @@ public final class SyncMembersClientImpl implements SyncMembersClient {
 
         @Headers({"Content-Type: application/json"})
         @Get(
-            "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Sql/servers"
-                + "/{serverName}/databases/{databaseName}/syncGroups/{syncGroupName}/syncMembers/{syncMemberName}"
-                + "/schemas")
+            "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Sql/servers/{serverName}/databases/{databaseName}/syncGroups/{syncGroupName}/syncMembers/{syncMemberName}/schemas")
         @ExpectedResponses({200})
         @UnexpectedResponseExceptionType(ManagementException.class)
         Mono<Response<SyncFullSchemaPropertiesListResult>> listMemberSchemas(
@@ -880,7 +871,8 @@ public final class SyncMembersClientImpl implements SyncMembersClient {
         String syncGroupName,
         String syncMemberName,
         SyncMemberInner parameters) {
-        return beginCreateOrUpdateAsync(
+        return this
+            .beginCreateOrUpdateAsync(
                 resourceGroupName, serverName, databaseName, syncGroupName, syncMemberName, parameters)
             .getSyncPoller();
     }
@@ -910,7 +902,8 @@ public final class SyncMembersClientImpl implements SyncMembersClient {
         String syncMemberName,
         SyncMemberInner parameters,
         Context context) {
-        return beginCreateOrUpdateAsync(
+        return this
+            .beginCreateOrUpdateAsync(
                 resourceGroupName, serverName, databaseName, syncGroupName, syncMemberName, parameters, context)
             .getSyncPoller();
     }
@@ -1234,7 +1227,8 @@ public final class SyncMembersClientImpl implements SyncMembersClient {
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     public SyncPoller<PollResult<Void>, Void> beginDelete(
         String resourceGroupName, String serverName, String databaseName, String syncGroupName, String syncMemberName) {
-        return beginDeleteAsync(resourceGroupName, serverName, databaseName, syncGroupName, syncMemberName)
+        return this
+            .beginDeleteAsync(resourceGroupName, serverName, databaseName, syncGroupName, syncMemberName)
             .getSyncPoller();
     }
 
@@ -1261,7 +1255,8 @@ public final class SyncMembersClientImpl implements SyncMembersClient {
         String syncGroupName,
         String syncMemberName,
         Context context) {
-        return beginDeleteAsync(resourceGroupName, serverName, databaseName, syncGroupName, syncMemberName, context)
+        return this
+            .beginDeleteAsync(resourceGroupName, serverName, databaseName, syncGroupName, syncMemberName, context)
             .getSyncPoller();
     }
 
@@ -1604,7 +1599,8 @@ public final class SyncMembersClientImpl implements SyncMembersClient {
         String syncGroupName,
         String syncMemberName,
         SyncMemberInner parameters) {
-        return beginUpdateAsync(resourceGroupName, serverName, databaseName, syncGroupName, syncMemberName, parameters)
+        return this
+            .beginUpdateAsync(resourceGroupName, serverName, databaseName, syncGroupName, syncMemberName, parameters)
             .getSyncPoller();
     }
 
@@ -1633,7 +1629,8 @@ public final class SyncMembersClientImpl implements SyncMembersClient {
         String syncMemberName,
         SyncMemberInner parameters,
         Context context) {
-        return beginUpdateAsync(
+        return this
+            .beginUpdateAsync(
                 resourceGroupName, serverName, databaseName, syncGroupName, syncMemberName, parameters, context)
             .getSyncPoller();
     }
@@ -1956,7 +1953,8 @@ public final class SyncMembersClientImpl implements SyncMembersClient {
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     public SyncPoller<PollResult<Void>, Void> beginRefreshMemberSchema(
         String resourceGroupName, String serverName, String databaseName, String syncGroupName, String syncMemberName) {
-        return beginRefreshMemberSchemaAsync(resourceGroupName, serverName, databaseName, syncGroupName, syncMemberName)
+        return this
+            .beginRefreshMemberSchemaAsync(resourceGroupName, serverName, databaseName, syncGroupName, syncMemberName)
             .getSyncPoller();
     }
 
@@ -1983,7 +1981,8 @@ public final class SyncMembersClientImpl implements SyncMembersClient {
         String syncGroupName,
         String syncMemberName,
         Context context) {
-        return beginRefreshMemberSchemaAsync(
+        return this
+            .beginRefreshMemberSchemaAsync(
                 resourceGroupName, serverName, databaseName, syncGroupName, syncMemberName, context)
             .getSyncPoller();
     }

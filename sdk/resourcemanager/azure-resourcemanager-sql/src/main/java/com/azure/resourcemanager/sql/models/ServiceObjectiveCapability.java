@@ -85,6 +85,18 @@ public final class ServiceObjectiveCapability {
     private List<MaintenanceConfigurationCapability> supportedMaintenanceConfigurations;
 
     /*
+     * Whether or not zone pinning is supported.
+     */
+    @JsonProperty(value = "zonePinning", access = JsonProperty.Access.WRITE_ONLY)
+    private Boolean zonePinning;
+
+    /*
+     * List of supported free limit exhaustion behaviors
+     */
+    @JsonProperty(value = "supportedFreeLimitExhaustionBehaviors", access = JsonProperty.Access.WRITE_ONLY)
+    private List<FreeLimitExhaustionBehaviorCapability> supportedFreeLimitExhaustionBehaviors;
+
+    /*
      * The status of the capability.
      */
     @JsonProperty(value = "status", access = JsonProperty.Access.WRITE_ONLY)
@@ -209,6 +221,24 @@ public final class ServiceObjectiveCapability {
     }
 
     /**
+     * Get the zonePinning property: Whether or not zone pinning is supported.
+     *
+     * @return the zonePinning value.
+     */
+    public Boolean zonePinning() {
+        return this.zonePinning;
+    }
+
+    /**
+     * Get the supportedFreeLimitExhaustionBehaviors property: List of supported free limit exhaustion behaviors.
+     *
+     * @return the supportedFreeLimitExhaustionBehaviors value.
+     */
+    public List<FreeLimitExhaustionBehaviorCapability> supportedFreeLimitExhaustionBehaviors() {
+        return this.supportedFreeLimitExhaustionBehaviors;
+    }
+
+    /**
      * Get the status property: The status of the capability.
      *
      * @return the status value.
@@ -266,6 +296,9 @@ public final class ServiceObjectiveCapability {
         }
         if (supportedMaintenanceConfigurations() != null) {
             supportedMaintenanceConfigurations().forEach(e -> e.validate());
+        }
+        if (supportedFreeLimitExhaustionBehaviors() != null) {
+            supportedFreeLimitExhaustionBehaviors().forEach(e -> e.validate());
         }
     }
 }

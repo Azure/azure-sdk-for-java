@@ -73,8 +73,7 @@ public final class ManagedInstanceEncryptionProtectorsClientImpl implements Mana
     public interface ManagedInstanceEncryptionProtectorsService {
         @Headers({"Content-Type: application/json"})
         @Get(
-            "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Sql"
-                + "/managedInstances/{managedInstanceName}/encryptionProtector")
+            "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Sql/managedInstances/{managedInstanceName}/encryptionProtector")
         @ExpectedResponses({200})
         @UnexpectedResponseExceptionType(ManagementException.class)
         Mono<Response<ManagedInstanceEncryptionProtectorListResult>> listByInstance(
@@ -88,8 +87,7 @@ public final class ManagedInstanceEncryptionProtectorsClientImpl implements Mana
 
         @Headers({"Content-Type: application/json"})
         @Get(
-            "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Sql"
-                + "/managedInstances/{managedInstanceName}/encryptionProtector/{encryptionProtectorName}")
+            "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Sql/managedInstances/{managedInstanceName}/encryptionProtector/{encryptionProtectorName}")
         @ExpectedResponses({200})
         @UnexpectedResponseExceptionType(ManagementException.class)
         Mono<Response<ManagedInstanceEncryptionProtectorInner>> get(
@@ -104,8 +102,7 @@ public final class ManagedInstanceEncryptionProtectorsClientImpl implements Mana
 
         @Headers({"Content-Type: application/json"})
         @Put(
-            "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Sql"
-                + "/managedInstances/{managedInstanceName}/encryptionProtector/{encryptionProtectorName}")
+            "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Sql/managedInstances/{managedInstanceName}/encryptionProtector/{encryptionProtectorName}")
         @ExpectedResponses({200, 202})
         @UnexpectedResponseExceptionType(ManagementException.class)
         Mono<Response<Flux<ByteBuffer>>> createOrUpdate(
@@ -121,8 +118,7 @@ public final class ManagedInstanceEncryptionProtectorsClientImpl implements Mana
 
         @Headers({"Accept: application/json;q=0.9", "Content-Type: application/json"})
         @Post(
-            "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Sql"
-                + "/managedInstances/{managedInstanceName}/encryptionProtector/{encryptionProtectorName}/revalidate")
+            "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Sql/managedInstances/{managedInstanceName}/encryptionProtector/{encryptionProtectorName}/revalidate")
         @ExpectedResponses({200, 202})
         @UnexpectedResponseExceptionType(ManagementException.class)
         Mono<Response<Flux<ByteBuffer>>> revalidate(
@@ -738,7 +734,8 @@ public final class ManagedInstanceEncryptionProtectorsClientImpl implements Mana
             String managedInstanceName,
             EncryptionProtectorName encryptionProtectorName,
             ManagedInstanceEncryptionProtectorInner parameters) {
-        return beginCreateOrUpdateAsync(resourceGroupName, managedInstanceName, encryptionProtectorName, parameters)
+        return this
+            .beginCreateOrUpdateAsync(resourceGroupName, managedInstanceName, encryptionProtectorName, parameters)
             .getSyncPoller();
     }
 
@@ -764,7 +761,8 @@ public final class ManagedInstanceEncryptionProtectorsClientImpl implements Mana
             EncryptionProtectorName encryptionProtectorName,
             ManagedInstanceEncryptionProtectorInner parameters,
             Context context) {
-        return beginCreateOrUpdateAsync(
+        return this
+            .beginCreateOrUpdateAsync(
                 resourceGroupName, managedInstanceName, encryptionProtectorName, parameters, context)
             .getSyncPoller();
     }
@@ -1043,7 +1041,9 @@ public final class ManagedInstanceEncryptionProtectorsClientImpl implements Mana
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     public SyncPoller<PollResult<Void>, Void> beginRevalidate(
         String resourceGroupName, String managedInstanceName, EncryptionProtectorName encryptionProtectorName) {
-        return beginRevalidateAsync(resourceGroupName, managedInstanceName, encryptionProtectorName).getSyncPoller();
+        return this
+            .beginRevalidateAsync(resourceGroupName, managedInstanceName, encryptionProtectorName)
+            .getSyncPoller();
     }
 
     /**
@@ -1065,7 +1065,8 @@ public final class ManagedInstanceEncryptionProtectorsClientImpl implements Mana
         String managedInstanceName,
         EncryptionProtectorName encryptionProtectorName,
         Context context) {
-        return beginRevalidateAsync(resourceGroupName, managedInstanceName, encryptionProtectorName, context)
+        return this
+            .beginRevalidateAsync(resourceGroupName, managedInstanceName, encryptionProtectorName, context)
             .getSyncPoller();
     }
 

@@ -71,8 +71,7 @@ public final class ManagedInstanceAdministratorsClientImpl implements ManagedIns
     public interface ManagedInstanceAdministratorsService {
         @Headers({"Content-Type: application/json"})
         @Get(
-            "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Sql"
-                + "/managedInstances/{managedInstanceName}/administrators")
+            "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Sql/managedInstances/{managedInstanceName}/administrators")
         @ExpectedResponses({200})
         @UnexpectedResponseExceptionType(ManagementException.class)
         Mono<Response<ManagedInstanceAdministratorListResult>> listByInstance(
@@ -86,8 +85,7 @@ public final class ManagedInstanceAdministratorsClientImpl implements ManagedIns
 
         @Headers({"Content-Type: application/json"})
         @Get(
-            "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Sql"
-                + "/managedInstances/{managedInstanceName}/administrators/{administratorName}")
+            "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Sql/managedInstances/{managedInstanceName}/administrators/{administratorName}")
         @ExpectedResponses({200})
         @UnexpectedResponseExceptionType(ManagementException.class)
         Mono<Response<ManagedInstanceAdministratorInner>> get(
@@ -102,8 +100,7 @@ public final class ManagedInstanceAdministratorsClientImpl implements ManagedIns
 
         @Headers({"Content-Type: application/json"})
         @Put(
-            "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Sql"
-                + "/managedInstances/{managedInstanceName}/administrators/{administratorName}")
+            "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Sql/managedInstances/{managedInstanceName}/administrators/{administratorName}")
         @ExpectedResponses({200, 201, 202})
         @UnexpectedResponseExceptionType(ManagementException.class)
         Mono<Response<Flux<ByteBuffer>>> createOrUpdate(
@@ -119,8 +116,7 @@ public final class ManagedInstanceAdministratorsClientImpl implements ManagedIns
 
         @Headers({"Accept: application/json;q=0.9", "Content-Type: application/json"})
         @Delete(
-            "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Sql"
-                + "/managedInstances/{managedInstanceName}/administrators/{administratorName}")
+            "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Sql/managedInstances/{managedInstanceName}/administrators/{administratorName}")
         @ExpectedResponses({200, 202})
         @UnexpectedResponseExceptionType(ManagementException.class)
         Mono<Response<Flux<ByteBuffer>>> delete(
@@ -722,7 +718,8 @@ public final class ManagedInstanceAdministratorsClientImpl implements ManagedIns
             String managedInstanceName,
             AdministratorName administratorName,
             ManagedInstanceAdministratorInner parameters) {
-        return beginCreateOrUpdateAsync(resourceGroupName, managedInstanceName, administratorName, parameters)
+        return this
+            .beginCreateOrUpdateAsync(resourceGroupName, managedInstanceName, administratorName, parameters)
             .getSyncPoller();
     }
 
@@ -748,7 +745,8 @@ public final class ManagedInstanceAdministratorsClientImpl implements ManagedIns
             AdministratorName administratorName,
             ManagedInstanceAdministratorInner parameters,
             Context context) {
-        return beginCreateOrUpdateAsync(resourceGroupName, managedInstanceName, administratorName, parameters, context)
+        return this
+            .beginCreateOrUpdateAsync(resourceGroupName, managedInstanceName, administratorName, parameters, context)
             .getSyncPoller();
     }
 
@@ -1017,7 +1015,7 @@ public final class ManagedInstanceAdministratorsClientImpl implements ManagedIns
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     public SyncPoller<PollResult<Void>, Void> beginDelete(
         String resourceGroupName, String managedInstanceName, AdministratorName administratorName) {
-        return beginDeleteAsync(resourceGroupName, managedInstanceName, administratorName).getSyncPoller();
+        return this.beginDeleteAsync(resourceGroupName, managedInstanceName, administratorName).getSyncPoller();
     }
 
     /**
@@ -1036,7 +1034,9 @@ public final class ManagedInstanceAdministratorsClientImpl implements ManagedIns
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     public SyncPoller<PollResult<Void>, Void> beginDelete(
         String resourceGroupName, String managedInstanceName, AdministratorName administratorName, Context context) {
-        return beginDeleteAsync(resourceGroupName, managedInstanceName, administratorName, context).getSyncPoller();
+        return this
+            .beginDeleteAsync(resourceGroupName, managedInstanceName, administratorName, context)
+            .getSyncPoller();
     }
 
     /**

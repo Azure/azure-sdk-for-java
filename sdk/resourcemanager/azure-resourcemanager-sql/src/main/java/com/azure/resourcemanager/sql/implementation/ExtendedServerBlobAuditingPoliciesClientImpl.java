@@ -71,8 +71,7 @@ public final class ExtendedServerBlobAuditingPoliciesClientImpl implements Exten
     public interface ExtendedServerBlobAuditingPoliciesService {
         @Headers({"Content-Type: application/json"})
         @Get(
-            "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Sql/servers"
-                + "/{serverName}/extendedAuditingSettings")
+            "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Sql/servers/{serverName}/extendedAuditingSettings")
         @ExpectedResponses({200})
         @UnexpectedResponseExceptionType(ManagementException.class)
         Mono<Response<ExtendedServerBlobAuditingPolicyListResult>> listByServer(
@@ -86,8 +85,7 @@ public final class ExtendedServerBlobAuditingPoliciesClientImpl implements Exten
 
         @Headers({"Content-Type: application/json"})
         @Get(
-            "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Sql/servers"
-                + "/{serverName}/extendedAuditingSettings/{blobAuditingPolicyName}")
+            "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Sql/servers/{serverName}/extendedAuditingSettings/{blobAuditingPolicyName}")
         @ExpectedResponses({200})
         @UnexpectedResponseExceptionType(ManagementException.class)
         Mono<Response<ExtendedServerBlobAuditingPolicyInner>> get(
@@ -102,8 +100,7 @@ public final class ExtendedServerBlobAuditingPoliciesClientImpl implements Exten
 
         @Headers({"Content-Type: application/json"})
         @Put(
-            "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Sql/servers"
-                + "/{serverName}/extendedAuditingSettings/{blobAuditingPolicyName}")
+            "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Sql/servers/{serverName}/extendedAuditingSettings/{blobAuditingPolicyName}")
         @ExpectedResponses({200, 202})
         @UnexpectedResponseExceptionType(ManagementException.class)
         Mono<Response<Flux<ByteBuffer>>> createOrUpdate(
@@ -666,7 +663,7 @@ public final class ExtendedServerBlobAuditingPoliciesClientImpl implements Exten
     public SyncPoller<PollResult<ExtendedServerBlobAuditingPolicyInner>, ExtendedServerBlobAuditingPolicyInner>
         beginCreateOrUpdate(
             String resourceGroupName, String serverName, ExtendedServerBlobAuditingPolicyInner parameters) {
-        return beginCreateOrUpdateAsync(resourceGroupName, serverName, parameters).getSyncPoller();
+        return this.beginCreateOrUpdateAsync(resourceGroupName, serverName, parameters).getSyncPoller();
     }
 
     /**
@@ -689,7 +686,7 @@ public final class ExtendedServerBlobAuditingPoliciesClientImpl implements Exten
             String serverName,
             ExtendedServerBlobAuditingPolicyInner parameters,
             Context context) {
-        return beginCreateOrUpdateAsync(resourceGroupName, serverName, parameters, context).getSyncPoller();
+        return this.beginCreateOrUpdateAsync(resourceGroupName, serverName, parameters, context).getSyncPoller();
     }
 
     /**

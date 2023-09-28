@@ -6,6 +6,7 @@ package com.azure.resourcemanager.sql.fluent.models;
 
 import com.azure.core.annotation.Fluent;
 import com.azure.core.management.ProxyResource;
+import com.azure.resourcemanager.sql.models.ClientClassificationSource;
 import com.azure.resourcemanager.sql.models.SensitivityLabelRank;
 import com.fasterxml.jackson.annotation.JsonProperty;
 
@@ -195,6 +196,29 @@ public final class SensitivityLabelInner extends ProxyResource {
             this.innerProperties = new SensitivityLabelProperties();
         }
         this.innerProperties().withRank(rank);
+        return this;
+    }
+
+    /**
+     * Get the clientClassificationSource property: The clientClassificationSource property.
+     *
+     * @return the clientClassificationSource value.
+     */
+    public ClientClassificationSource clientClassificationSource() {
+        return this.innerProperties() == null ? null : this.innerProperties().clientClassificationSource();
+    }
+
+    /**
+     * Set the clientClassificationSource property: The clientClassificationSource property.
+     *
+     * @param clientClassificationSource the clientClassificationSource value to set.
+     * @return the SensitivityLabelInner object itself.
+     */
+    public SensitivityLabelInner withClientClassificationSource(ClientClassificationSource clientClassificationSource) {
+        if (this.innerProperties() == null) {
+            this.innerProperties = new SensitivityLabelProperties();
+        }
+        this.innerProperties().withClientClassificationSource(clientClassificationSource);
         return this;
     }
 

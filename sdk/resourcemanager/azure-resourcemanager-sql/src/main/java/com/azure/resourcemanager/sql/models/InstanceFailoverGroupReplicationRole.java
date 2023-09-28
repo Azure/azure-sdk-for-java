@@ -18,6 +18,15 @@ public final class InstanceFailoverGroupReplicationRole
     public static final InstanceFailoverGroupReplicationRole SECONDARY = fromString("Secondary");
 
     /**
+     * Creates a new instance of InstanceFailoverGroupReplicationRole value.
+     *
+     * @deprecated Use the {@link #fromString(String)} factory method.
+     */
+    @Deprecated
+    public InstanceFailoverGroupReplicationRole() {
+    }
+
+    /**
      * Creates or finds a InstanceFailoverGroupReplicationRole from its string representation.
      *
      * @param name a name to look for.

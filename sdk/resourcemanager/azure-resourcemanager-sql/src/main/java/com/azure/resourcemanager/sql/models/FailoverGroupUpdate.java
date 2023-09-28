@@ -130,6 +130,29 @@ public final class FailoverGroupUpdate {
     }
 
     /**
+     * Get the partnerServers property: List of partner server information for the failover group.
+     *
+     * @return the partnerServers value.
+     */
+    public List<PartnerInfo> partnerServers() {
+        return this.innerProperties() == null ? null : this.innerProperties().partnerServers();
+    }
+
+    /**
+     * Set the partnerServers property: List of partner server information for the failover group.
+     *
+     * @param partnerServers the partnerServers value to set.
+     * @return the FailoverGroupUpdate object itself.
+     */
+    public FailoverGroupUpdate withPartnerServers(List<PartnerInfo> partnerServers) {
+        if (this.innerProperties() == null) {
+            this.innerProperties = new FailoverGroupUpdateProperties();
+        }
+        this.innerProperties().withPartnerServers(partnerServers);
+        return this;
+    }
+
+    /**
      * Validates the instance.
      *
      * @throws IllegalArgumentException thrown if the instance is not valid.

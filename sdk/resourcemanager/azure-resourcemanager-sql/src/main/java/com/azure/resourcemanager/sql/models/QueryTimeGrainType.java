@@ -17,6 +17,15 @@ public final class QueryTimeGrainType extends ExpandableStringEnum<QueryTimeGrai
     public static final QueryTimeGrainType P1D = fromString("P1D");
 
     /**
+     * Creates a new instance of QueryTimeGrainType value.
+     *
+     * @deprecated Use the {@link #fromString(String)} factory method.
+     */
+    @Deprecated
+    public QueryTimeGrainType() {
+    }
+
+    /**
      * Creates or finds a QueryTimeGrainType from its string representation.
      *
      * @param name a name to look for.

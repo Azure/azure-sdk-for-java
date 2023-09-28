@@ -14,6 +14,7 @@ import com.azure.core.annotation.Host;
 import com.azure.core.annotation.HostParam;
 import com.azure.core.annotation.Patch;
 import com.azure.core.annotation.PathParam;
+import com.azure.core.annotation.Post;
 import com.azure.core.annotation.Put;
 import com.azure.core.annotation.QueryParam;
 import com.azure.core.annotation.ReturnType;
@@ -34,6 +35,8 @@ import com.azure.core.util.polling.PollerFlux;
 import com.azure.core.util.polling.SyncPoller;
 import com.azure.resourcemanager.sql.fluent.DistributedAvailabilityGroupsClient;
 import com.azure.resourcemanager.sql.fluent.models.DistributedAvailabilityGroupInner;
+import com.azure.resourcemanager.sql.models.DistributedAvailabilityGroupSetRole;
+import com.azure.resourcemanager.sql.models.DistributedAvailabilityGroupsCreateOrUpdateRequestBody;
 import com.azure.resourcemanager.sql.models.DistributedAvailabilityGroupsListResult;
 import java.nio.ByteBuffer;
 import reactor.core.publisher.Flux;
@@ -71,8 +74,7 @@ public final class DistributedAvailabilityGroupsClientImpl implements Distribute
     public interface DistributedAvailabilityGroupsService {
         @Headers({"Content-Type: application/json"})
         @Get(
-            "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Sql"
-                + "/managedInstances/{managedInstanceName}/distributedAvailabilityGroups")
+            "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Sql/managedInstances/{managedInstanceName}/distributedAvailabilityGroups")
         @ExpectedResponses({200})
         @UnexpectedResponseExceptionType(ManagementException.class)
         Mono<Response<DistributedAvailabilityGroupsListResult>> listByInstance(
@@ -86,9 +88,7 @@ public final class DistributedAvailabilityGroupsClientImpl implements Distribute
 
         @Headers({"Content-Type: application/json"})
         @Get(
-            "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Sql"
-                + "/managedInstances/{managedInstanceName}/distributedAvailabilityGroups"
-                + "/{distributedAvailabilityGroupName}")
+            "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Sql/managedInstances/{managedInstanceName}/distributedAvailabilityGroups/{distributedAvailabilityGroupName}")
         @ExpectedResponses({200})
         @UnexpectedResponseExceptionType(ManagementException.class)
         Mono<Response<DistributedAvailabilityGroupInner>> get(
@@ -103,9 +103,7 @@ public final class DistributedAvailabilityGroupsClientImpl implements Distribute
 
         @Headers({"Content-Type: application/json"})
         @Put(
-            "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Sql"
-                + "/managedInstances/{managedInstanceName}/distributedAvailabilityGroups"
-                + "/{distributedAvailabilityGroupName}")
+            "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Sql/managedInstances/{managedInstanceName}/distributedAvailabilityGroups/{distributedAvailabilityGroupName}")
         @ExpectedResponses({200, 201, 202})
         @UnexpectedResponseExceptionType(ManagementException.class)
         Mono<Response<Flux<ByteBuffer>>> createOrUpdate(
@@ -115,15 +113,13 @@ public final class DistributedAvailabilityGroupsClientImpl implements Distribute
             @PathParam("distributedAvailabilityGroupName") String distributedAvailabilityGroupName,
             @PathParam("subscriptionId") String subscriptionId,
             @QueryParam("api-version") String apiVersion,
-            @BodyParam("application/json") DistributedAvailabilityGroupInner parameters,
+            @BodyParam("application/json") DistributedAvailabilityGroupsCreateOrUpdateRequestBody parameters,
             @HeaderParam("Accept") String accept,
             Context context);
 
         @Headers({"Accept: application/json;q=0.9", "Content-Type: application/json"})
         @Delete(
-            "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Sql"
-                + "/managedInstances/{managedInstanceName}/distributedAvailabilityGroups"
-                + "/{distributedAvailabilityGroupName}")
+            "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Sql/managedInstances/{managedInstanceName}/distributedAvailabilityGroups/{distributedAvailabilityGroupName}")
         @ExpectedResponses({200, 202, 204})
         @UnexpectedResponseExceptionType(ManagementException.class)
         Mono<Response<Flux<ByteBuffer>>> delete(
@@ -137,9 +133,7 @@ public final class DistributedAvailabilityGroupsClientImpl implements Distribute
 
         @Headers({"Content-Type: application/json"})
         @Patch(
-            "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Sql"
-                + "/managedInstances/{managedInstanceName}/distributedAvailabilityGroups"
-                + "/{distributedAvailabilityGroupName}")
+            "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Sql/managedInstances/{managedInstanceName}/distributedAvailabilityGroups/{distributedAvailabilityGroupName}")
         @ExpectedResponses({200, 202})
         @UnexpectedResponseExceptionType(ManagementException.class)
         Mono<Response<Flux<ByteBuffer>>> update(
@@ -150,6 +144,22 @@ public final class DistributedAvailabilityGroupsClientImpl implements Distribute
             @PathParam("subscriptionId") String subscriptionId,
             @QueryParam("api-version") String apiVersion,
             @BodyParam("application/json") DistributedAvailabilityGroupInner parameters,
+            @HeaderParam("Accept") String accept,
+            Context context);
+
+        @Headers({"Content-Type: application/json"})
+        @Post(
+            "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Sql/managedInstances/{managedInstanceName}/distributedAvailabilityGroups/{distributedAvailabilityGroupName}/setRole")
+        @ExpectedResponses({200, 202})
+        @UnexpectedResponseExceptionType(ManagementException.class)
+        Mono<Response<Flux<ByteBuffer>>> setRole(
+            @HostParam("$host") String endpoint,
+            @PathParam("resourceGroupName") String resourceGroupName,
+            @PathParam("managedInstanceName") String managedInstanceName,
+            @PathParam("distributedAvailabilityGroupName") String distributedAvailabilityGroupName,
+            @PathParam("subscriptionId") String subscriptionId,
+            @QueryParam("api-version") String apiVersion,
+            @BodyParam("application/json") DistributedAvailabilityGroupSetRole parameters,
             @HeaderParam("Accept") String accept,
             Context context);
 
@@ -555,7 +565,7 @@ public final class DistributedAvailabilityGroupsClientImpl implements Distribute
         String resourceGroupName,
         String managedInstanceName,
         String distributedAvailabilityGroupName,
-        DistributedAvailabilityGroupInner parameters) {
+        DistributedAvailabilityGroupsCreateOrUpdateRequestBody parameters) {
         if (this.client.getEndpoint() == null) {
             return Mono
                 .error(
@@ -625,7 +635,7 @@ public final class DistributedAvailabilityGroupsClientImpl implements Distribute
         String resourceGroupName,
         String managedInstanceName,
         String distributedAvailabilityGroupName,
-        DistributedAvailabilityGroupInner parameters,
+        DistributedAvailabilityGroupsCreateOrUpdateRequestBody parameters,
         Context context) {
         if (this.client.getEndpoint() == null) {
             return Mono
@@ -693,7 +703,7 @@ public final class DistributedAvailabilityGroupsClientImpl implements Distribute
             String resourceGroupName,
             String managedInstanceName,
             String distributedAvailabilityGroupName,
-            DistributedAvailabilityGroupInner parameters) {
+            DistributedAvailabilityGroupsCreateOrUpdateRequestBody parameters) {
         Mono<Response<Flux<ByteBuffer>>> mono =
             createOrUpdateWithResponseAsync(
                 resourceGroupName, managedInstanceName, distributedAvailabilityGroupName, parameters);
@@ -728,7 +738,7 @@ public final class DistributedAvailabilityGroupsClientImpl implements Distribute
             String resourceGroupName,
             String managedInstanceName,
             String distributedAvailabilityGroupName,
-            DistributedAvailabilityGroupInner parameters,
+            DistributedAvailabilityGroupsCreateOrUpdateRequestBody parameters,
             Context context) {
         context = this.client.mergeContext(context);
         Mono<Response<Flux<ByteBuffer>>> mono =
@@ -764,8 +774,9 @@ public final class DistributedAvailabilityGroupsClientImpl implements Distribute
             String resourceGroupName,
             String managedInstanceName,
             String distributedAvailabilityGroupName,
-            DistributedAvailabilityGroupInner parameters) {
-        return beginCreateOrUpdateAsync(
+            DistributedAvailabilityGroupsCreateOrUpdateRequestBody parameters) {
+        return this
+            .beginCreateOrUpdateAsync(
                 resourceGroupName, managedInstanceName, distributedAvailabilityGroupName, parameters)
             .getSyncPoller();
     }
@@ -791,9 +802,10 @@ public final class DistributedAvailabilityGroupsClientImpl implements Distribute
             String resourceGroupName,
             String managedInstanceName,
             String distributedAvailabilityGroupName,
-            DistributedAvailabilityGroupInner parameters,
+            DistributedAvailabilityGroupsCreateOrUpdateRequestBody parameters,
             Context context) {
-        return beginCreateOrUpdateAsync(
+        return this
+            .beginCreateOrUpdateAsync(
                 resourceGroupName, managedInstanceName, distributedAvailabilityGroupName, parameters, context)
             .getSyncPoller();
     }
@@ -817,7 +829,7 @@ public final class DistributedAvailabilityGroupsClientImpl implements Distribute
         String resourceGroupName,
         String managedInstanceName,
         String distributedAvailabilityGroupName,
-        DistributedAvailabilityGroupInner parameters) {
+        DistributedAvailabilityGroupsCreateOrUpdateRequestBody parameters) {
         return beginCreateOrUpdateAsync(
                 resourceGroupName, managedInstanceName, distributedAvailabilityGroupName, parameters)
             .last()
@@ -844,7 +856,7 @@ public final class DistributedAvailabilityGroupsClientImpl implements Distribute
         String resourceGroupName,
         String managedInstanceName,
         String distributedAvailabilityGroupName,
-        DistributedAvailabilityGroupInner parameters,
+        DistributedAvailabilityGroupsCreateOrUpdateRequestBody parameters,
         Context context) {
         return beginCreateOrUpdateAsync(
                 resourceGroupName, managedInstanceName, distributedAvailabilityGroupName, parameters, context)
@@ -870,7 +882,7 @@ public final class DistributedAvailabilityGroupsClientImpl implements Distribute
         String resourceGroupName,
         String managedInstanceName,
         String distributedAvailabilityGroupName,
-        DistributedAvailabilityGroupInner parameters) {
+        DistributedAvailabilityGroupsCreateOrUpdateRequestBody parameters) {
         return createOrUpdateAsync(resourceGroupName, managedInstanceName, distributedAvailabilityGroupName, parameters)
             .block();
     }
@@ -894,7 +906,7 @@ public final class DistributedAvailabilityGroupsClientImpl implements Distribute
         String resourceGroupName,
         String managedInstanceName,
         String distributedAvailabilityGroupName,
-        DistributedAvailabilityGroupInner parameters,
+        DistributedAvailabilityGroupsCreateOrUpdateRequestBody parameters,
         Context context) {
         return createOrUpdateAsync(
                 resourceGroupName, managedInstanceName, distributedAvailabilityGroupName, parameters, context)
@@ -1079,7 +1091,8 @@ public final class DistributedAvailabilityGroupsClientImpl implements Distribute
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     public SyncPoller<PollResult<Void>, Void> beginDelete(
         String resourceGroupName, String managedInstanceName, String distributedAvailabilityGroupName) {
-        return beginDeleteAsync(resourceGroupName, managedInstanceName, distributedAvailabilityGroupName)
+        return this
+            .beginDeleteAsync(resourceGroupName, managedInstanceName, distributedAvailabilityGroupName)
             .getSyncPoller();
     }
 
@@ -1102,7 +1115,8 @@ public final class DistributedAvailabilityGroupsClientImpl implements Distribute
         String managedInstanceName,
         String distributedAvailabilityGroupName,
         Context context) {
-        return beginDeleteAsync(resourceGroupName, managedInstanceName, distributedAvailabilityGroupName, context)
+        return this
+            .beginDeleteAsync(resourceGroupName, managedInstanceName, distributedAvailabilityGroupName, context)
             .getSyncPoller();
     }
 
@@ -1415,7 +1429,8 @@ public final class DistributedAvailabilityGroupsClientImpl implements Distribute
         String managedInstanceName,
         String distributedAvailabilityGroupName,
         DistributedAvailabilityGroupInner parameters) {
-        return beginUpdateAsync(resourceGroupName, managedInstanceName, distributedAvailabilityGroupName, parameters)
+        return this
+            .beginUpdateAsync(resourceGroupName, managedInstanceName, distributedAvailabilityGroupName, parameters)
             .getSyncPoller();
     }
 
@@ -1441,7 +1456,8 @@ public final class DistributedAvailabilityGroupsClientImpl implements Distribute
         String distributedAvailabilityGroupName,
         DistributedAvailabilityGroupInner parameters,
         Context context) {
-        return beginUpdateAsync(
+        return this
+            .beginUpdateAsync(
                 resourceGroupName, managedInstanceName, distributedAvailabilityGroupName, parameters, context)
             .getSyncPoller();
     }
@@ -1544,6 +1560,369 @@ public final class DistributedAvailabilityGroupsClientImpl implements Distribute
         DistributedAvailabilityGroupInner parameters,
         Context context) {
         return updateAsync(
+                resourceGroupName, managedInstanceName, distributedAvailabilityGroupName, parameters, context)
+            .block();
+    }
+
+    /**
+     * Sets the role for managed instance in a distributed availability group.
+     *
+     * @param resourceGroupName The name of the resource group that contains the resource. You can obtain this value
+     *     from the Azure Resource Manager API or the portal.
+     * @param managedInstanceName The name of the managed instance.
+     * @param distributedAvailabilityGroupName The distributed availability group name.
+     * @param parameters The distributed availability group set role request parameters.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws ManagementException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return distributed availability group between box and Sql Managed Instance along with {@link Response} on
+     *     successful completion of {@link Mono}.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    public Mono<Response<Flux<ByteBuffer>>> setRoleWithResponseAsync(
+        String resourceGroupName,
+        String managedInstanceName,
+        String distributedAvailabilityGroupName,
+        DistributedAvailabilityGroupSetRole parameters) {
+        if (this.client.getEndpoint() == null) {
+            return Mono
+                .error(
+                    new IllegalArgumentException(
+                        "Parameter this.client.getEndpoint() is required and cannot be null."));
+        }
+        if (resourceGroupName == null) {
+            return Mono
+                .error(new IllegalArgumentException("Parameter resourceGroupName is required and cannot be null."));
+        }
+        if (managedInstanceName == null) {
+            return Mono
+                .error(new IllegalArgumentException("Parameter managedInstanceName is required and cannot be null."));
+        }
+        if (distributedAvailabilityGroupName == null) {
+            return Mono
+                .error(
+                    new IllegalArgumentException(
+                        "Parameter distributedAvailabilityGroupName is required and cannot be null."));
+        }
+        if (this.client.getSubscriptionId() == null) {
+            return Mono
+                .error(
+                    new IllegalArgumentException(
+                        "Parameter this.client.getSubscriptionId() is required and cannot be null."));
+        }
+        if (parameters == null) {
+            return Mono.error(new IllegalArgumentException("Parameter parameters is required and cannot be null."));
+        } else {
+            parameters.validate();
+        }
+        final String accept = "application/json";
+        return FluxUtil
+            .withContext(
+                context ->
+                    service
+                        .setRole(
+                            this.client.getEndpoint(),
+                            resourceGroupName,
+                            managedInstanceName,
+                            distributedAvailabilityGroupName,
+                            this.client.getSubscriptionId(),
+                            this.client.getApiVersion(),
+                            parameters,
+                            accept,
+                            context))
+            .contextWrite(context -> context.putAll(FluxUtil.toReactorContext(this.client.getContext()).readOnly()));
+    }
+
+    /**
+     * Sets the role for managed instance in a distributed availability group.
+     *
+     * @param resourceGroupName The name of the resource group that contains the resource. You can obtain this value
+     *     from the Azure Resource Manager API or the portal.
+     * @param managedInstanceName The name of the managed instance.
+     * @param distributedAvailabilityGroupName The distributed availability group name.
+     * @param parameters The distributed availability group set role request parameters.
+     * @param context The context to associate with this operation.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws ManagementException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return distributed availability group between box and Sql Managed Instance along with {@link Response} on
+     *     successful completion of {@link Mono}.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    private Mono<Response<Flux<ByteBuffer>>> setRoleWithResponseAsync(
+        String resourceGroupName,
+        String managedInstanceName,
+        String distributedAvailabilityGroupName,
+        DistributedAvailabilityGroupSetRole parameters,
+        Context context) {
+        if (this.client.getEndpoint() == null) {
+            return Mono
+                .error(
+                    new IllegalArgumentException(
+                        "Parameter this.client.getEndpoint() is required and cannot be null."));
+        }
+        if (resourceGroupName == null) {
+            return Mono
+                .error(new IllegalArgumentException("Parameter resourceGroupName is required and cannot be null."));
+        }
+        if (managedInstanceName == null) {
+            return Mono
+                .error(new IllegalArgumentException("Parameter managedInstanceName is required and cannot be null."));
+        }
+        if (distributedAvailabilityGroupName == null) {
+            return Mono
+                .error(
+                    new IllegalArgumentException(
+                        "Parameter distributedAvailabilityGroupName is required and cannot be null."));
+        }
+        if (this.client.getSubscriptionId() == null) {
+            return Mono
+                .error(
+                    new IllegalArgumentException(
+                        "Parameter this.client.getSubscriptionId() is required and cannot be null."));
+        }
+        if (parameters == null) {
+            return Mono.error(new IllegalArgumentException("Parameter parameters is required and cannot be null."));
+        } else {
+            parameters.validate();
+        }
+        final String accept = "application/json";
+        context = this.client.mergeContext(context);
+        return service
+            .setRole(
+                this.client.getEndpoint(),
+                resourceGroupName,
+                managedInstanceName,
+                distributedAvailabilityGroupName,
+                this.client.getSubscriptionId(),
+                this.client.getApiVersion(),
+                parameters,
+                accept,
+                context);
+    }
+
+    /**
+     * Sets the role for managed instance in a distributed availability group.
+     *
+     * @param resourceGroupName The name of the resource group that contains the resource. You can obtain this value
+     *     from the Azure Resource Manager API or the portal.
+     * @param managedInstanceName The name of the managed instance.
+     * @param distributedAvailabilityGroupName The distributed availability group name.
+     * @param parameters The distributed availability group set role request parameters.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws ManagementException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return the {@link PollerFlux} for polling of distributed availability group between box and Sql Managed
+     *     Instance.
+     */
+    @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
+    public PollerFlux<PollResult<DistributedAvailabilityGroupInner>, DistributedAvailabilityGroupInner>
+        beginSetRoleAsync(
+            String resourceGroupName,
+            String managedInstanceName,
+            String distributedAvailabilityGroupName,
+            DistributedAvailabilityGroupSetRole parameters) {
+        Mono<Response<Flux<ByteBuffer>>> mono =
+            setRoleWithResponseAsync(
+                resourceGroupName, managedInstanceName, distributedAvailabilityGroupName, parameters);
+        return this
+            .client
+            .<DistributedAvailabilityGroupInner, DistributedAvailabilityGroupInner>getLroResult(
+                mono,
+                this.client.getHttpPipeline(),
+                DistributedAvailabilityGroupInner.class,
+                DistributedAvailabilityGroupInner.class,
+                this.client.getContext());
+    }
+
+    /**
+     * Sets the role for managed instance in a distributed availability group.
+     *
+     * @param resourceGroupName The name of the resource group that contains the resource. You can obtain this value
+     *     from the Azure Resource Manager API or the portal.
+     * @param managedInstanceName The name of the managed instance.
+     * @param distributedAvailabilityGroupName The distributed availability group name.
+     * @param parameters The distributed availability group set role request parameters.
+     * @param context The context to associate with this operation.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws ManagementException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return the {@link PollerFlux} for polling of distributed availability group between box and Sql Managed
+     *     Instance.
+     */
+    @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
+    private PollerFlux<PollResult<DistributedAvailabilityGroupInner>, DistributedAvailabilityGroupInner>
+        beginSetRoleAsync(
+            String resourceGroupName,
+            String managedInstanceName,
+            String distributedAvailabilityGroupName,
+            DistributedAvailabilityGroupSetRole parameters,
+            Context context) {
+        context = this.client.mergeContext(context);
+        Mono<Response<Flux<ByteBuffer>>> mono =
+            setRoleWithResponseAsync(
+                resourceGroupName, managedInstanceName, distributedAvailabilityGroupName, parameters, context);
+        return this
+            .client
+            .<DistributedAvailabilityGroupInner, DistributedAvailabilityGroupInner>getLroResult(
+                mono,
+                this.client.getHttpPipeline(),
+                DistributedAvailabilityGroupInner.class,
+                DistributedAvailabilityGroupInner.class,
+                context);
+    }
+
+    /**
+     * Sets the role for managed instance in a distributed availability group.
+     *
+     * @param resourceGroupName The name of the resource group that contains the resource. You can obtain this value
+     *     from the Azure Resource Manager API or the portal.
+     * @param managedInstanceName The name of the managed instance.
+     * @param distributedAvailabilityGroupName The distributed availability group name.
+     * @param parameters The distributed availability group set role request parameters.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws ManagementException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return the {@link SyncPoller} for polling of distributed availability group between box and Sql Managed
+     *     Instance.
+     */
+    @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
+    public SyncPoller<PollResult<DistributedAvailabilityGroupInner>, DistributedAvailabilityGroupInner> beginSetRole(
+        String resourceGroupName,
+        String managedInstanceName,
+        String distributedAvailabilityGroupName,
+        DistributedAvailabilityGroupSetRole parameters) {
+        return this
+            .beginSetRoleAsync(resourceGroupName, managedInstanceName, distributedAvailabilityGroupName, parameters)
+            .getSyncPoller();
+    }
+
+    /**
+     * Sets the role for managed instance in a distributed availability group.
+     *
+     * @param resourceGroupName The name of the resource group that contains the resource. You can obtain this value
+     *     from the Azure Resource Manager API or the portal.
+     * @param managedInstanceName The name of the managed instance.
+     * @param distributedAvailabilityGroupName The distributed availability group name.
+     * @param parameters The distributed availability group set role request parameters.
+     * @param context The context to associate with this operation.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws ManagementException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return the {@link SyncPoller} for polling of distributed availability group between box and Sql Managed
+     *     Instance.
+     */
+    @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
+    public SyncPoller<PollResult<DistributedAvailabilityGroupInner>, DistributedAvailabilityGroupInner> beginSetRole(
+        String resourceGroupName,
+        String managedInstanceName,
+        String distributedAvailabilityGroupName,
+        DistributedAvailabilityGroupSetRole parameters,
+        Context context) {
+        return this
+            .beginSetRoleAsync(
+                resourceGroupName, managedInstanceName, distributedAvailabilityGroupName, parameters, context)
+            .getSyncPoller();
+    }
+
+    /**
+     * Sets the role for managed instance in a distributed availability group.
+     *
+     * @param resourceGroupName The name of the resource group that contains the resource. You can obtain this value
+     *     from the Azure Resource Manager API or the portal.
+     * @param managedInstanceName The name of the managed instance.
+     * @param distributedAvailabilityGroupName The distributed availability group name.
+     * @param parameters The distributed availability group set role request parameters.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws ManagementException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return distributed availability group between box and Sql Managed Instance on successful completion of {@link
+     *     Mono}.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    public Mono<DistributedAvailabilityGroupInner> setRoleAsync(
+        String resourceGroupName,
+        String managedInstanceName,
+        String distributedAvailabilityGroupName,
+        DistributedAvailabilityGroupSetRole parameters) {
+        return beginSetRoleAsync(resourceGroupName, managedInstanceName, distributedAvailabilityGroupName, parameters)
+            .last()
+            .flatMap(this.client::getLroFinalResultOrError);
+    }
+
+    /**
+     * Sets the role for managed instance in a distributed availability group.
+     *
+     * @param resourceGroupName The name of the resource group that contains the resource. You can obtain this value
+     *     from the Azure Resource Manager API or the portal.
+     * @param managedInstanceName The name of the managed instance.
+     * @param distributedAvailabilityGroupName The distributed availability group name.
+     * @param parameters The distributed availability group set role request parameters.
+     * @param context The context to associate with this operation.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws ManagementException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return distributed availability group between box and Sql Managed Instance on successful completion of {@link
+     *     Mono}.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    private Mono<DistributedAvailabilityGroupInner> setRoleAsync(
+        String resourceGroupName,
+        String managedInstanceName,
+        String distributedAvailabilityGroupName,
+        DistributedAvailabilityGroupSetRole parameters,
+        Context context) {
+        return beginSetRoleAsync(
+                resourceGroupName, managedInstanceName, distributedAvailabilityGroupName, parameters, context)
+            .last()
+            .flatMap(this.client::getLroFinalResultOrError);
+    }
+
+    /**
+     * Sets the role for managed instance in a distributed availability group.
+     *
+     * @param resourceGroupName The name of the resource group that contains the resource. You can obtain this value
+     *     from the Azure Resource Manager API or the portal.
+     * @param managedInstanceName The name of the managed instance.
+     * @param distributedAvailabilityGroupName The distributed availability group name.
+     * @param parameters The distributed availability group set role request parameters.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws ManagementException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return distributed availability group between box and Sql Managed Instance.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    public DistributedAvailabilityGroupInner setRole(
+        String resourceGroupName,
+        String managedInstanceName,
+        String distributedAvailabilityGroupName,
+        DistributedAvailabilityGroupSetRole parameters) {
+        return setRoleAsync(resourceGroupName, managedInstanceName, distributedAvailabilityGroupName, parameters)
+            .block();
+    }
+
+    /**
+     * Sets the role for managed instance in a distributed availability group.
+     *
+     * @param resourceGroupName The name of the resource group that contains the resource. You can obtain this value
+     *     from the Azure Resource Manager API or the portal.
+     * @param managedInstanceName The name of the managed instance.
+     * @param distributedAvailabilityGroupName The distributed availability group name.
+     * @param parameters The distributed availability group set role request parameters.
+     * @param context The context to associate with this operation.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws ManagementException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return distributed availability group between box and Sql Managed Instance.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    public DistributedAvailabilityGroupInner setRole(
+        String resourceGroupName,
+        String managedInstanceName,
+        String distributedAvailabilityGroupName,
+        DistributedAvailabilityGroupSetRole parameters,
+        Context context) {
+        return setRoleAsync(
                 resourceGroupName, managedInstanceName, distributedAvailabilityGroupName, parameters, context)
             .block();
     }

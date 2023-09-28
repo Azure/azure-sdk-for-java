@@ -4,14 +4,13 @@
 
 package com.azure.resourcemanager.sql.generated;
 
-import com.azure.core.util.Context;
 import com.azure.resourcemanager.sql.fluent.models.DistributedAvailabilityGroupInner;
-import com.azure.resourcemanager.sql.models.ReplicationMode;
+import com.azure.resourcemanager.sql.models.ReplicationModeType;
 
 /** Samples for DistributedAvailabilityGroups Update. */
 public final class DistributedAvailabilityGroupsUpdateSamples {
     /*
-     * x-ms-original-file: specification/sql/resource-manager/Microsoft.Sql/stable/2021-11-01/examples/DistributedAvailabilityGroupsUpdate.json
+     * x-ms-original-file: specification/sql/resource-manager/Microsoft.Sql/preview/2023-02-01-preview/examples/DistributedAvailabilityGroupsUpdate.json
      */
     /**
      * Sample code: Update the distributed availability group replication mode before deleting it.
@@ -29,7 +28,7 @@ public final class DistributedAvailabilityGroupsUpdateSamples {
                 "testrg",
                 "testcl",
                 "dag",
-                new DistributedAvailabilityGroupInner().withReplicationMode(ReplicationMode.SYNC),
-                Context.NONE);
+                new DistributedAvailabilityGroupInner().withReplicationMode(ReplicationModeType.SYNC),
+                com.azure.core.util.Context.NONE);
     }
 }

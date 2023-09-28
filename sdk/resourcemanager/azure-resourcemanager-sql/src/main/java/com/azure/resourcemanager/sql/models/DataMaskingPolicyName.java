@@ -14,6 +14,15 @@ public final class DataMaskingPolicyName extends ExpandableStringEnum<DataMaskin
     public static final DataMaskingPolicyName DEFAULT = fromString("Default");
 
     /**
+     * Creates a new instance of DataMaskingPolicyName value.
+     *
+     * @deprecated Use the {@link #fromString(String)} factory method.
+     */
+    @Deprecated
+    public DataMaskingPolicyName() {
+    }
+
+    /**
      * Creates or finds a DataMaskingPolicyName from its string representation.
      *
      * @param name a name to look for.

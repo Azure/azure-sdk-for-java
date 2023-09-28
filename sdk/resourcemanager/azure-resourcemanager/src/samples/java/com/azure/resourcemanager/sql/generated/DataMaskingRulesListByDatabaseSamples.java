@@ -4,13 +4,12 @@
 
 package com.azure.resourcemanager.sql.generated;
 
-import com.azure.core.util.Context;
 import com.azure.resourcemanager.sql.models.DataMaskingPolicyName;
 
 /** Samples for DataMaskingRules ListByDatabase. */
 public final class DataMaskingRulesListByDatabaseSamples {
     /*
-     * x-ms-original-file: specification/sql/resource-manager/Microsoft.Sql/stable/2021-11-01/examples/DataMaskingRuleListByDatabase.json
+     * x-ms-original-file: specification/sql/resource-manager/Microsoft.Sql/preview/2023-02-01-preview/examples/DataMaskingRuleListByDatabase.json
      */
     /**
      * Sample code: Gets a list of database data masking rules.
@@ -24,6 +23,10 @@ public final class DataMaskingRulesListByDatabaseSamples {
             .serviceClient()
             .getDataMaskingRules()
             .listByDatabase(
-                "sqlcrudtest-6852", "sqlcrudtest-2080", "sqlcrudtest-331", DataMaskingPolicyName.DEFAULT, Context.NONE);
+                "sqlcrudtest-6852",
+                "sqlcrudtest-2080",
+                "sqlcrudtest-331",
+                DataMaskingPolicyName.DEFAULT,
+                com.azure.core.util.Context.NONE);
     }
 }

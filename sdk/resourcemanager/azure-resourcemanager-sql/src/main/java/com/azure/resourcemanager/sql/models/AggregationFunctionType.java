@@ -26,6 +26,15 @@ public final class AggregationFunctionType extends ExpandableStringEnum<Aggregat
     public static final AggregationFunctionType SUM = fromString("sum");
 
     /**
+     * Creates a new instance of AggregationFunctionType value.
+     *
+     * @deprecated Use the {@link #fromString(String)} factory method.
+     */
+    @Deprecated
+    public AggregationFunctionType() {
+    }
+
+    /**
      * Creates or finds a AggregationFunctionType from its string representation.
      *
      * @param name a name to look for.

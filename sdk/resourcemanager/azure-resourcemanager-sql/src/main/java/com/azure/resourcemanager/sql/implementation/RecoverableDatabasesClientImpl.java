@@ -59,8 +59,7 @@ public final class RecoverableDatabasesClientImpl implements RecoverableDatabase
     public interface RecoverableDatabasesService {
         @Headers({"Content-Type: application/json"})
         @Get(
-            "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Sql/servers"
-                + "/{serverName}/recoverableDatabases")
+            "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Sql/servers/{serverName}/recoverableDatabases")
         @ExpectedResponses({200})
         @UnexpectedResponseExceptionType(ManagementException.class)
         Mono<Response<RecoverableDatabaseListResult>> listByServer(
@@ -74,8 +73,7 @@ public final class RecoverableDatabasesClientImpl implements RecoverableDatabase
 
         @Headers({"Content-Type: application/json"})
         @Get(
-            "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Sql/servers"
-                + "/{serverName}/recoverableDatabases/{databaseName}")
+            "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Sql/servers/{serverName}/recoverableDatabases/{databaseName}")
         @ExpectedResponses({200})
         @UnexpectedResponseExceptionType(ManagementException.class)
         Mono<Response<RecoverableDatabaseInner>> get(
@@ -83,6 +81,8 @@ public final class RecoverableDatabasesClientImpl implements RecoverableDatabase
             @PathParam("resourceGroupName") String resourceGroupName,
             @PathParam("serverName") String serverName,
             @PathParam("databaseName") String databaseName,
+            @QueryParam("$expand") String expand,
+            @QueryParam("$filter") String filter,
             @PathParam("subscriptionId") String subscriptionId,
             @QueryParam("api-version") String apiVersion,
             @HeaderParam("Accept") String accept,
@@ -294,6 +294,8 @@ public final class RecoverableDatabasesClientImpl implements RecoverableDatabase
      *     from the Azure Resource Manager API or the portal.
      * @param serverName The name of the server.
      * @param databaseName The name of the database.
+     * @param expand The child resources to include in the response.
+     * @param filter An OData filter expression that filters elements in the collection.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
@@ -301,7 +303,7 @@ public final class RecoverableDatabasesClientImpl implements RecoverableDatabase
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<Response<RecoverableDatabaseInner>> getWithResponseAsync(
-        String resourceGroupName, String serverName, String databaseName) {
+        String resourceGroupName, String serverName, String databaseName, String expand, String filter) {
         if (this.client.getEndpoint() == null) {
             return Mono
                 .error(
@@ -334,6 +336,8 @@ public final class RecoverableDatabasesClientImpl implements RecoverableDatabase
                             resourceGroupName,
                             serverName,
                             databaseName,
+                            expand,
+                            filter,
                             this.client.getSubscriptionId(),
                             this.client.getApiVersion(),
                             accept,
@@ -348,6 +352,8 @@ public final class RecoverableDatabasesClientImpl implements RecoverableDatabase
      *     from the Azure Resource Manager API or the portal.
      * @param serverName The name of the server.
      * @param databaseName The name of the database.
+     * @param expand The child resources to include in the response.
+     * @param filter An OData filter expression that filters elements in the collection.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
@@ -356,7 +362,12 @@ public final class RecoverableDatabasesClientImpl implements RecoverableDatabase
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Mono<Response<RecoverableDatabaseInner>> getWithResponseAsync(
-        String resourceGroupName, String serverName, String databaseName, Context context) {
+        String resourceGroupName,
+        String serverName,
+        String databaseName,
+        String expand,
+        String filter,
+        Context context) {
         if (this.client.getEndpoint() == null) {
             return Mono
                 .error(
@@ -387,6 +398,8 @@ public final class RecoverableDatabasesClientImpl implements RecoverableDatabase
                 resourceGroupName,
                 serverName,
                 databaseName,
+                expand,
+                filter,
                 this.client.getSubscriptionId(),
                 this.client.getApiVersion(),
                 accept,
@@ -407,7 +420,9 @@ public final class RecoverableDatabasesClientImpl implements RecoverableDatabase
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<RecoverableDatabaseInner> getAsync(String resourceGroupName, String serverName, String databaseName) {
-        return getWithResponseAsync(resourceGroupName, serverName, databaseName)
+        final String expand = null;
+        final String filter = null;
+        return getWithResponseAsync(resourceGroupName, serverName, databaseName, expand, filter)
             .flatMap(res -> Mono.justOrEmpty(res.getValue()));
     }
 
@@ -418,6 +433,8 @@ public final class RecoverableDatabasesClientImpl implements RecoverableDatabase
      *     from the Azure Resource Manager API or the portal.
      * @param serverName The name of the server.
      * @param databaseName The name of the database.
+     * @param expand The child resources to include in the response.
+     * @param filter An OData filter expression that filters elements in the collection.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
@@ -426,8 +443,13 @@ public final class RecoverableDatabasesClientImpl implements RecoverableDatabase
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Response<RecoverableDatabaseInner> getWithResponse(
-        String resourceGroupName, String serverName, String databaseName, Context context) {
-        return getWithResponseAsync(resourceGroupName, serverName, databaseName, context).block();
+        String resourceGroupName,
+        String serverName,
+        String databaseName,
+        String expand,
+        String filter,
+        Context context) {
+        return getWithResponseAsync(resourceGroupName, serverName, databaseName, expand, filter, context).block();
     }
 
     /**
@@ -444,7 +466,9 @@ public final class RecoverableDatabasesClientImpl implements RecoverableDatabase
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public RecoverableDatabaseInner get(String resourceGroupName, String serverName, String databaseName) {
-        return getWithResponse(resourceGroupName, serverName, databaseName, Context.NONE).getValue();
+        final String expand = null;
+        final String filter = null;
+        return getWithResponse(resourceGroupName, serverName, databaseName, expand, filter, Context.NONE).getValue();
     }
 
     /**

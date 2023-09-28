@@ -74,8 +74,7 @@ public final class ServerAdvancedThreatProtectionSettingsClientImpl
     public interface ServerAdvancedThreatProtectionSettingsService {
         @Headers({"Content-Type: application/json"})
         @Get(
-            "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Sql/servers"
-                + "/{serverName}/advancedThreatProtectionSettings")
+            "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Sql/servers/{serverName}/advancedThreatProtectionSettings")
         @ExpectedResponses({200})
         @UnexpectedResponseExceptionType(ManagementException.class)
         Mono<Response<LogicalServerAdvancedThreatProtectionListResult>> listByServer(
@@ -89,8 +88,7 @@ public final class ServerAdvancedThreatProtectionSettingsClientImpl
 
         @Headers({"Content-Type: application/json"})
         @Get(
-            "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Sql/servers"
-                + "/{serverName}/advancedThreatProtectionSettings/{advancedThreatProtectionName}")
+            "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Sql/servers/{serverName}/advancedThreatProtectionSettings/{advancedThreatProtectionName}")
         @ExpectedResponses({200})
         @UnexpectedResponseExceptionType(ManagementException.class)
         Mono<Response<ServerAdvancedThreatProtectionInner>> get(
@@ -105,8 +103,7 @@ public final class ServerAdvancedThreatProtectionSettingsClientImpl
 
         @Headers({"Content-Type: application/json"})
         @Put(
-            "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Sql/servers"
-                + "/{serverName}/advancedThreatProtectionSettings/{advancedThreatProtectionName}")
+            "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Sql/servers/{serverName}/advancedThreatProtectionSettings/{advancedThreatProtectionName}")
         @ExpectedResponses({200, 202})
         @UnexpectedResponseExceptionType(ManagementException.class)
         Mono<Response<Flux<ByteBuffer>>> createOrUpdate(
@@ -720,7 +717,8 @@ public final class ServerAdvancedThreatProtectionSettingsClientImpl
             String serverName,
             AdvancedThreatProtectionName advancedThreatProtectionName,
             ServerAdvancedThreatProtectionInner parameters) {
-        return beginCreateOrUpdateAsync(resourceGroupName, serverName, advancedThreatProtectionName, parameters)
+        return this
+            .beginCreateOrUpdateAsync(resourceGroupName, serverName, advancedThreatProtectionName, parameters)
             .getSyncPoller();
     }
 
@@ -746,8 +744,8 @@ public final class ServerAdvancedThreatProtectionSettingsClientImpl
             AdvancedThreatProtectionName advancedThreatProtectionName,
             ServerAdvancedThreatProtectionInner parameters,
             Context context) {
-        return beginCreateOrUpdateAsync(
-                resourceGroupName, serverName, advancedThreatProtectionName, parameters, context)
+        return this
+            .beginCreateOrUpdateAsync(resourceGroupName, serverName, advancedThreatProtectionName, parameters, context)
             .getSyncPoller();
     }
 

@@ -1,5 +1,13 @@
 # Release History
 
+## 2.31.0-beta.1 (2023-09-28)
+
+### Other Changes
+
+#### Dependency Updates
+
+- Preview release for `api-version` `2023-02-01-preview`.
+
 ## 2.30.0 (2023-08-25)
 
 ### Other Changes
