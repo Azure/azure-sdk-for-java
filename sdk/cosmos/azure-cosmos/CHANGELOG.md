@@ -3,6 +3,7 @@
 ### 4.51.0-beta.1 (Unreleased)
 
 #### Features Added
+* Added a preview API to `ChangeFeedProcessorBuilder` to process an additional `ChangeFeedProcessorContext` for handling all versions and deletes changes. - See [PR 36715](https://github.com/Azure/azure-sdk-for-java/pull/36715)
 
 #### Breaking Changes
 
