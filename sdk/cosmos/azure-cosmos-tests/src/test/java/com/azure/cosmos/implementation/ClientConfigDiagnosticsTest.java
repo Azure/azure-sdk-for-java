@@ -3,10 +3,7 @@
 
 package com.azure.cosmos.implementation;
 
-import com.azure.cosmos.ConnectionMode;
-import com.azure.cosmos.CosmosContainerProactiveInitConfig;
-import com.azure.cosmos.CosmosContainerProactiveInitConfigBuilder;
-import com.azure.cosmos.DirectConnectionConfig;
+import com.azure.cosmos.*;
 import com.azure.cosmos.implementation.directconnectivity.RntbdTransportClient;
 import com.azure.cosmos.implementation.guava25.collect.ImmutableList;
 import com.azure.cosmos.implementation.http.HttpClientConfig;
@@ -22,11 +19,10 @@ import org.testng.annotations.Test;
 
 import java.io.StringWriter;
 import java.time.Duration;
-import java.util.Arrays;
-import java.util.HashMap;
-import java.util.List;
-import java.util.UUID;
+import java.util.*;
 import java.util.concurrent.atomic.AtomicInteger;
+import java.util.concurrent.atomic.AtomicReference;
+import java.util.function.Supplier;
 import java.util.stream.Collectors;
 
 import static org.assertj.core.api.Assertions.assertThat;
@@ -191,6 +187,9 @@ public class ClientConfigDiagnosticsTest {
 
         DiagnosticsClientContext clientContext = Mockito.mock(DiagnosticsClientContext.class);
         System.setProperty("COSMOS.REPLICA_ADDRESS_VALIDATION_ENABLED", "false");
+        AtomicReference<CosmosExcludedRegions> cosmosExcludedRegionsAtomicReference = new AtomicReference<>(
+            new CosmosExcludedRegions(new HashSet<>(Arrays.asList("west us 2"))));
+        Supplier<CosmosExcludedRegions> excludedRegionsSupplier = () -> cosmosExcludedRegionsAtomicReference.get();
 
         DiagnosticsClientContext.DiagnosticsClientConfig diagnosticsClientConfig = new DiagnosticsClientContext.DiagnosticsClientConfig();
         String machineId = "vmId:" + UUID.randomUUID();
@@ -205,7 +204,7 @@ public class ClientConfigDiagnosticsTest {
         diagnosticsClientConfig.withGatewayHttpClientConfig(httpConfig.toDiagnosticsString());
         diagnosticsClientConfig.withPreferredRegions(ImmutableList.of("west us 1", "west us 2"));
         diagnosticsClientConfig.withConnectionPolicy(
-            new ConnectionPolicy(DirectConnectionConfig.getDefaultConfig()).setExcludedRegions(ImmutableList.of("west us 2")));
+            new ConnectionPolicy(DirectConnectionConfig.getDefaultConfig()).setExcludedRegionsSupplier(excludedRegionsSupplier));
         diagnosticsClientConfig.withConnectionSharingAcrossClientsEnabled(true);
         diagnosticsClientConfig.withEndpointDiscoveryEnabled(true);
         diagnosticsClientConfig.withClientMap(new HashMap<>());
