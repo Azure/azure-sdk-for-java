@@ -2190,7 +2190,7 @@ class ContainerAPITest extends APISpec {
     def "Default Audience"() {
         setup:
         def aadContainer = getContainerClientBuilderWithTokenCredential(cc.getBlobContainerUrl())
-            .blobAudience(null) // should default to "https://storage.azure.com/"
+            .audience(null) // should default to "https://storage.azure.com/"
             .buildClient()
 
         expect:
