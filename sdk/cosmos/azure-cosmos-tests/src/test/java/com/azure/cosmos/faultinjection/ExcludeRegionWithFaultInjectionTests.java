@@ -63,6 +63,7 @@ import java.util.Map;
 import java.util.Set;
 import java.util.UUID;
 import java.util.concurrent.ConcurrentHashMap;
+import java.util.concurrent.atomic.AtomicReference;
 import java.util.concurrent.locks.ReentrantReadWriteLock;
 import java.util.function.Function;
 import java.util.function.Supplier;
@@ -2294,7 +2295,8 @@ public class ExcludeRegionWithFaultInjectionTests extends TestSuiteBase {
 
         List<String> excludedRegions = null;
 
-        CosmosExcludedRegionsSupplier excludedRegionsSupplier = new CosmosExcludedRegionsSupplier();
+        AtomicReference<CosmosExcludedRegions> cosmosExcludedRegionsAtomicReference
+            = new AtomicReference<>(new CosmosExcludedRegions(new HashSet<>()));
 
         if (mutationTestConfig.chooseInitialExclusionRegions != null) {
             excludedRegions = mutationTestConfig.chooseInitialExclusionRegions.apply(this.preferredRegions);
@@ -2310,7 +2312,7 @@ public class ExcludeRegionWithFaultInjectionTests extends TestSuiteBase {
                 excludedRegions.addAll(excludedRegionsCopy);
             }
 
-            excludedRegionsSupplier.setExcludedRegions(new HashSet<>(excludedRegions));
+            cosmosExcludedRegionsAtomicReference.set(new CosmosExcludedRegions(new HashSet<>(excludedRegions)));
         }
 
         try {
@@ -2321,7 +2323,7 @@ public class ExcludeRegionWithFaultInjectionTests extends TestSuiteBase {
                 .consistencyLevel(BridgeInternal.getContextClient(this.cosmosAsyncClient).getConsistencyLevel())
                 .preferredRegions(this.preferredRegions)
                 .sessionRetryOptions(new SessionRetryOptionsBuilder().regionSwitchHint(CosmosRegionSwitchHint.REMOTE_REGION_PREFERRED).build())
-                .excludedRegionsSupplier(excludedRegionsSupplier)
+                .excludedRegionsSupplier(cosmosExcludedRegionsAtomicReference::get)
                 .directMode()
                 .buildAsyncClient();
 
@@ -2374,7 +2376,7 @@ public class ExcludeRegionWithFaultInjectionTests extends TestSuiteBase {
                 mutatedExcludedRegions.addAll(excludedRegionsCopy);
             }
 
-            excludedRegionsSupplier.setExcludedRegions(new HashSet<>(mutatedExcludedRegions));
+            cosmosExcludedRegionsAtomicReference.set(new CosmosExcludedRegions(new HashSet<>(mutatedExcludedRegions)));
 
             params.itemRequestOptionsForCallbackAfterMutation = mutationTestConfig.itemRequestOptionsForCallbackAfterMutation;
             params.patchItemRequestOptionsForCallbackAfterMutation = mutationTestConfig.patchItemRequestOptionsForCallbackAfterMutation;
@@ -2829,35 +2831,5 @@ public class ExcludeRegionWithFaultInjectionTests extends TestSuiteBase {
         public CosmosQueryRequestOptions queryRequestOptionsForCallbackAfterMutation;
         public CosmosBulkExecutionOptions bulkExecutionOptionsForCallbackAfterMutation;
         public CosmosBatchRequestOptions batchRequestOptionsForCallbackAfterMutation;
-    }
-
-    private static class CosmosExcludedRegionsSupplier implements Supplier<CosmosExcludedRegions> {
-
-        private volatile CosmosExcludedRegions cosmosExcludedRegions;
-        private final ReentrantReadWriteLock reentrantReadWriteLock;
-
-        public CosmosExcludedRegionsSupplier() {
-            this.cosmosExcludedRegions = new CosmosExcludedRegions(new HashSet<>());
-            this.reentrantReadWriteLock = new ReentrantReadWriteLock();
-        }
-
-        @Override
-        public CosmosExcludedRegions get() {
-            reentrantReadWriteLock.readLock().lock();
-            try {
-                return this.cosmosExcludedRegions;
-            } finally {
-                reentrantReadWriteLock.readLock().unlock();
-            }
-        }
-
-        public void setExcludedRegions(Set<String> excludedRegions) {
-            reentrantReadWriteLock.writeLock().lock();
-            try {
-                this.cosmosExcludedRegions = new CosmosExcludedRegions(excludedRegions);
-            } finally {
-                reentrantReadWriteLock.writeLock().unlock();
-            }
-        }
     }
 }

@@ -9,16 +9,29 @@ import java.util.Set;
 import java.util.regex.Pattern;
 import java.util.stream.Collectors;
 
+import static com.azure.cosmos.implementation.guava25.base.Preconditions.checkArgument;
+
 public final class CosmosExcludedRegions {
     private final Set<String> excludedRegions;
     private final String excludedRegionsAsString;
     private static final Pattern SPACE_PATTERN = Pattern.compile(" ");
 
+    /**
+     *
+     * */
     public CosmosExcludedRegions(Set<String> excludedRegions) {
-        this.excludedRegions = excludedRegions;
+
+        checkArgument(excludedRegions != null, "excludedRegions cannot be set to null");
+
+        this.excludedRegions = new HashSet<>(excludedRegions);
         this.excludedRegionsAsString = stringifyExcludedRegions(this.excludedRegions);
     }
 
+    /**
+     * Gets the set of excluded regions.
+     *
+     * @return a set of excluded regions.
+     * */
     public Set<String> getExcludedRegions() {
 
         if (this.excludedRegions == null || this.excludedRegions.isEmpty()) {
