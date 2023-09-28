@@ -25,10 +25,9 @@ import static com.azure.core.util.FluxUtil.monoError;
 import static com.azure.core.util.FluxUtil.withContext;
 
 /**
- * This class provides a client that exposes operations to managing container images and artifacts.
- * It exposes methods directly performed on the registry like listing the catalog.
- * as well as helper types like {@link #getArtifact(String, String) getArtifact} and {@link #getRepository(String) getRepository}
- * that can be used to perform operations on repository and artifacts directly.
+ * <p>This class provides a client that works with repositories in Azure Container Registry.
+ * It allows to list and delete repositories within the registry or obtain an instance of {@link ContainerRepositoryAsync}
+ * or {@link RegistryArtifactAsync} that can be used to perform operations on the repository or artifact.</p>
  *
  * <p><strong>Instantiating an asynchronous Container Registry client</strong></p>
  *
@@ -40,21 +39,6 @@ import static com.azure.core.util.FluxUtil.withContext;
  *     .buildAsyncClient&#40;&#41;;
  * </pre>
  * <!-- end com.azure.containers.containerregistry.ContainerRegistryAsyncClient.instantiation -->
- *
- * <p><strong>Instantiating an asynchronous Container Registry client using a custom pipeline</strong></p>
- * <!-- src_embed com.azure.containers.containerregistry.ContainerRegistryAsyncClient.pipeline.instantiation -->
- * <pre>
- * HttpPipeline pipeline = new HttpPipelineBuilder&#40;&#41;
- *     .policies&#40;&#47;* add policies *&#47;&#41;
- *     .build&#40;&#41;;
- *
- * ContainerRegistryAsyncClient registryAsyncClient = new ContainerRegistryClientBuilder&#40;&#41;
- *     .pipeline&#40;pipeline&#41;
- *     .endpoint&#40;endpoint&#41;
- *     .credential&#40;credential&#41;
- *     .buildAsyncClient&#40;&#41;;
- * </pre>
- * <!-- end com.azure.containers.containerregistry.ContainerRegistryAsyncClient.pipeline.instantiation -->
  *
  * <p>View {@link ContainerRegistryClientBuilder this} for additional ways to construct the client.</p>
  *
@@ -77,8 +61,9 @@ public final class ContainerRegistryAsyncClient {
     }
 
     /**
-     * This method returns the complete registry endpoint.
-     * @return The registry endpoint including the authority.
+     *  Gets the service endpoint.
+     *
+     * @return The service endpoint for the Azure Container Registry instance.
      */
     public String getEndpoint() {
         return this.endpoint;
@@ -98,7 +83,7 @@ public final class ContainerRegistryAsyncClient {
      * <!-- end com.azure.containers.containerregistry.ContainerRegistryAsyncClient.listRepositoryNames -->
      *
      * @return list of repository names.
-     * @throws ClientAuthenticationException thrown if the client's credentials do not have access to modify the namespace.
+     * @throws ClientAuthenticationException thrown if the client's credentials do not have access to perform this operation.
      */
     @ServiceMethod(returns = ReturnType.COLLECTION)
     public PagedFlux<String> listRepositoryNames() {
@@ -125,25 +110,25 @@ public final class ContainerRegistryAsyncClient {
     }
 
     /**
-     * Delete the repository identified by 'repositoryName'.
+     * Delete the repository with provided {@code repositoryName}.
      *
      * <p><strong>Delete a repository in the registry.</strong></p>
      *
      * <!-- src_embed com.azure.containers.containerregistry.ContainerRegistryAsyncClient.deleteRepositoryWithResponse#String -->
      * <pre>
      * client.deleteRepositoryWithResponse&#40;repositoryName&#41;.subscribe&#40;response -&gt; &#123;
-     *     System.out.printf&#40;&quot;Successfully initiated delete of the repository.&quot;&#41;;
+     *     System.out.printf&#40;&quot;Successfully deleted the repository.&quot;&#41;;
      * &#125;, error -&gt; &#123;
-     *     System.out.println&#40;&quot;Failed to initiate a delete of the repository.&quot;&#41;;
+     *     System.out.println&#40;&quot;Failed to delete the repository.&quot;&#41;;
      * &#125;&#41;;
      * </pre>
      * <!-- end com.azure.containers.containerregistry.ContainerRegistryAsyncClient.deleteRepositoryWithResponse#String -->
      *
-     * @param repositoryName Name of the repository (including the namespace).
+     * @param repositoryName Name of the repository.
      * @return the completion.
-     * @throws ClientAuthenticationException thrown if the client's credentials do not have access to modify the namespace.
+     * @throws ClientAuthenticationException thrown if the client's credentials do not have access to delete the repository.
      * @throws NullPointerException thrown if the {@code repositoryName} is null.
-     * @throws IllegalArgumentException thrown if the {@code repositoryName} is null.
+     * @throws IllegalArgumentException thrown if the {@code repositoryName} is empty.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<Response<Void>> deleteRepositoryWithResponse(String repositoryName) {
@@ -165,7 +150,7 @@ public final class ContainerRegistryAsyncClient {
     }
 
     /**
-     * Delete the repository identified by {@code repositoryName}.
+     * Delete the repository with provided {@code repositoryName}.
      *
      * <p><strong>Delete a repository in the registry.</strong></p>
      * <!-- src_embed com.azure.containers.containerregistry.ContainerRegistryAsyncClient.deleteRepository#String -->
@@ -178,9 +163,9 @@ public final class ContainerRegistryAsyncClient {
      * </pre>
      * <!-- end com.azure.containers.containerregistry.ContainerRegistryAsyncClient.deleteRepository#String -->
      *
-     * @param repositoryName Name of the image (including the namespace).
-     * @return the completion stream.
-     * @throws ClientAuthenticationException thrown if the client's credentials do not have access to modify the namespace.
+     * @param repositoryName Name of the repository.
+     * @return the completion.
+     * @throws ClientAuthenticationException thrown if the client's credentials do not have access to delete the repository.
      * @throws NullPointerException thrown if the {@code repositoryName} is null.
      * @throws IllegalArgumentException thrown if {@code repositoryName} is empty.
      */
@@ -196,7 +181,7 @@ public final class ContainerRegistryAsyncClient {
     /**
      * Creates a new instance of {@link ContainerRepositoryAsync} object for the specified repository.
      *
-     * <p><strong>Create an instance of ContainerRepositoryAsync helper type</strong></p>
+     * <p><strong>Get an instance of {@link ContainerRepositoryAsync}</strong></p>
      * <!-- src_embed com.azure.containers.containerregistry.containeregistryasyncclient.getRepository -->
      * <pre>
      * ContainerRepositoryAsync repositoryAsync = client.getRepository&#40;repositoryName&#41;;
@@ -207,7 +192,7 @@ public final class ContainerRegistryAsyncClient {
      * <!-- end com.azure.containers.containerregistry.containeregistryasyncclient.getRepository -->
      *
      * @param repositoryName Name of the repository to reference.
-     * @return A new {@link ContainerRepositoryAsync} for the desired repository.
+     * @return A new {@link ContainerRepositoryAsync} for the requested repository.
      * @throws NullPointerException if {@code repositoryName} is null.
      * @throws IllegalArgumentException if {@code repositoryName} is empty.
      */
@@ -218,7 +203,7 @@ public final class ContainerRegistryAsyncClient {
     /**
      * Creates a new instance of {@link RegistryArtifactAsync} object for the specified artifact.
      *
-     * <p><strong>Create an instance of RegistryArtifactAsync helper type</strong></p>
+     * <p><strong>Get an instance of {@link RegistryArtifactAsync}</strong></p>
      * <!-- src_embed com.azure.containers.containerregistry.containeregistryasyncclient.getArtifact -->
      * <pre>
      * RegistryArtifactAsync registryArtifactAsync = client.getArtifact&#40;repositoryName, tagOrDigest&#41;;
@@ -228,11 +213,11 @@ public final class ContainerRegistryAsyncClient {
      * </pre>
      * <!-- end com.azure.containers.containerregistry.containeregistryasyncclient.getArtifact -->
      *
-     * @param repositoryName Name of the repository to reference.
+     * @param repositoryName Name of the repository containing the artifact.
      * @param tagOrDigest Either a tag or digest that uniquely identifies the artifact.
-     * @return A new {@link RegistryArtifactAsync RegistryArtifactAsync} for the desired repository.
-     * @throws NullPointerException if {@code repositoryName} or {@code tagOrDigest} is null.
-     * @throws IllegalArgumentException if {@code repositoryName} or {@code tagOrDigest} is empty.
+     * @return A new {@link RegistryArtifactAsync RegistryArtifactAsync} for the requested artifact.
+     * @throws NullPointerException if {@code repositoryName} or {@code tagOrDigest} are null.
+     * @throws IllegalArgumentException if {@code repositoryName} or {@code tagOrDigest} are empty.
      */
     public RegistryArtifactAsync getArtifact(String repositoryName, String tagOrDigest) {
         return new RegistryArtifactAsync(repositoryName, tagOrDigest, httpPipeline, endpoint, apiVersion);
