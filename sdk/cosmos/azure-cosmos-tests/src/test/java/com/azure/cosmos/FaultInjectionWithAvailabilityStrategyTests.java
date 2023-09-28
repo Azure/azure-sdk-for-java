@@ -2244,7 +2244,7 @@ public class FaultInjectionWithAvailabilityStrategyTests extends TestSuiteBase {
             // a single CosmosDiagnostics instance contacting both regions.
             new Object[] {
                 "DefaultPageSize_CrossPartition_404-1002_OnlyFirstRegion_AllPartitions_RemotePreferred_ReluctantAvailabilityStrategy",
-                Duration.ofSeconds(1),
+                Duration.ofSeconds(3),
                 reluctantThresholdAvailabilityStrategy,
                 CosmosRegionSwitchHint.REMOTE_REGION_PREFERRED,
                 crossPartitionQueryGenerator,

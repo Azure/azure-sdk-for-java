@@ -179,15 +179,14 @@ public class ReadMyWritesConsistencyTest {
 
     private void scheduleScaleUp(int delayStartInSeconds, int newThroughput) {
         AsyncDocumentClient housekeepingClient = Utils.housekeepingClient();
+        QueryFeedOperationState state = DocDBUtils.createDummyQueryFeedOperationState(
+            ResourceType.Offer,
+            OperationType.Query,
+            new CosmosQueryRequestOptions(),
+            housekeepingClient
+        );
+
         Flux.just(0L).delayElements(Duration.ofSeconds(delayStartInSeconds), Schedulers.newSingle("ScaleUpThread")).flatMap(aVoid -> {
-
-            QueryFeedOperationState state = DocDBUtils.createDummyQueryFeedOperationState(
-                ResourceType.Offer,
-                OperationType.Query,
-                new CosmosQueryRequestOptions(),
-                housekeepingClient
-            );
-
             // increase throughput to max for a single partition collection to avoid throttling
             // for bulk insert and later queries.
             return housekeepingClient.queryOffers(
