@@ -41,6 +41,7 @@ import java.util.Map;
 import java.util.Set;
 import java.util.concurrent.TimeUnit;
 import java.util.concurrent.atomic.AtomicInteger;
+import java.util.concurrent.atomic.AtomicReference;
 import java.util.concurrent.locks.ReentrantReadWriteLock;
 import java.util.function.Supplier;
 import java.util.stream.Collectors;
@@ -48,8 +49,7 @@ import java.util.stream.IntStream;
 import java.util.stream.Stream;
 import java.util.stream.StreamSupport;
 import static com.azure.cosmos.implementation.TestUtils.mockDiagnosticsClientContext;
-
-import static org.assertj.core.api.Assertions.assertThat;
+import static org.assertj.core.api.Assertions.*;
 
 /**
  * Tests for {@link LocationCache}
@@ -206,21 +206,29 @@ public class LocationCacheTest {
         Set<URI> expectedApplicableWriteEndpoints) throws Exception {
 
         this.initialize(true, true, false);
-        CosmosExcludedRegionsSupplier excludedRegionsSupplier = new CosmosExcludedRegionsSupplier();
+        AtomicReference<CosmosExcludedRegions> cosmosExcludedRegionsAtomicReference = new AtomicReference<>(
+            new CosmosExcludedRegions(new HashSet<>()));
+        Supplier<CosmosExcludedRegions> excludedRegionsSupplier = () -> cosmosExcludedRegionsAtomicReference.get();
 
         ConnectionPolicy connectionPolicy = ReflectionUtils.getConnectionPolicy(this.cache);
 
         connectionPolicy.setExcludedRegionsSupplier(excludedRegionsSupplier);
 
-        excludedRegionsSupplier.setExcludedRegions(excludedRegionsOnClient);
+        if (excludedRegionsOnClient == null) {
+            assertThatThrownBy(() -> cosmosExcludedRegionsAtomicReference.set(new CosmosExcludedRegions(excludedRegionsOnClient)))
+                .isInstanceOf(IllegalArgumentException.class);
+        } else {
 
-        request.requestContext.setExcludeRegions(excludedRegionsOnRequest);
+            cosmosExcludedRegionsAtomicReference.set(new CosmosExcludedRegions(excludedRegionsOnClient));
 
-        List<URI> applicableReadEndpoints = cache.getApplicableReadEndpoints(request);
-        List<URI> applicableWriteEndpoints = cache.getApplicableWriteEndpoints(request);
+            request.requestContext.setExcludeRegions(excludedRegionsOnRequest);
 
-        assertThat(applicableReadEndpoints.size()).isEqualTo(expectedApplicableReadEndpoints.size());
-        assertThat(applicableWriteEndpoints.size()).isEqualTo(expectedApplicableWriteEndpoints.size());
+            List<URI> applicableReadEndpoints = cache.getApplicableReadEndpoints(request);
+            List<URI> applicableWriteEndpoints = cache.getApplicableWriteEndpoints(request);
+
+            assertThat(applicableReadEndpoints.size()).isEqualTo(expectedApplicableReadEndpoints.size());
+            assertThat(applicableWriteEndpoints.size()).isEqualTo(expectedApplicableWriteEndpoints.size());
+        }
     }
 
     @AfterClass()
@@ -560,35 +568,5 @@ public class LocationCacheTest {
         dal.setEndpoint(endpoint);
 
         return dal;
-    }
-
-    private class CosmosExcludedRegionsSupplier implements Supplier<CosmosExcludedRegions> {
-
-        private volatile CosmosExcludedRegions cosmosExcludedRegions;
-        private final ReentrantReadWriteLock reentrantReadWriteLock;
-
-        public CosmosExcludedRegionsSupplier() {
-            this.cosmosExcludedRegions = new CosmosExcludedRegions(new HashSet<>());
-            this.reentrantReadWriteLock = new ReentrantReadWriteLock();
-        }
-
-        @Override
-        public CosmosExcludedRegions get() {
-            reentrantReadWriteLock.readLock().lock();
-            try {
-                return this.cosmosExcludedRegions;
-            } finally {
-                reentrantReadWriteLock.readLock().unlock();
-            }
-        }
-
-        public void setExcludedRegions(Set<String> excludedRegions) {
-            reentrantReadWriteLock.writeLock().lock();
-            try {
-                this.cosmosExcludedRegions = new CosmosExcludedRegions(excludedRegions);
-            } finally {
-                reentrantReadWriteLock.writeLock().unlock();
-            }
-        }
     }
 }
