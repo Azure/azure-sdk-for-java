@@ -138,8 +138,9 @@ public class RoomsAsyncClientTests extends RoomsTestBase {
 
         StepVerifier.create(response3)
                 .assertNext(result3 -> {
-                    assertEquals(true, result3.getValidUntil().toEpochSecond() > VALID_FROM.toEpochSecond());
+                    assertEquals(true, result3.getValidUntil().toEpochSecond() > result3.getValidFrom().toEpochSecond());
                     assertEquals(true, result3.isPstnDialOutEnabled());
+
                 }).verifyComplete();
 
         Mono<CommunicationRoom> response4 = roomsAsyncClient.getRoom(roomId);

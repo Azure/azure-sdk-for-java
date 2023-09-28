@@ -15,22 +15,22 @@ public final class CertificateDescriptionInnerTests {
         CertificateDescriptionInner model =
             BinaryData
                 .fromString(
-                    "{\"properties\":{\"subject\":\"hqmibzyhwit\",\"expiry\":\"Tue, 19 Jan 2021 20:22:32"
-                        + " GMT\",\"thumbprint\":\"yynpcdpumnzgmwz\",\"isVerified\":false,\"created\":\"Tue, 29 Dec"
-                        + " 2020 02:38:39 GMT\",\"updated\":\"Sat, 13 Nov 2021 04:07:40"
-                        + " GMT\",\"certificate\":\"orgjhxbldt\"},\"etag\":\"wrlkdmtn\",\"id\":\"vokotllxdyh\",\"name\":\"syocogjltdtbnnha\",\"type\":\"oocrkvcikhnv\"}")
+                    "{\"properties\":{\"subject\":\"yzrpzbchckqqzq\",\"expiry\":\"Wed, 10 Nov 2021 00:02:28"
+                        + " GMT\",\"thumbprint\":\"ysuiizynkedya\",\"isVerified\":true,\"created\":\"Fri, 29 Oct 2021"
+                        + " 12:30:56 GMT\",\"updated\":\"Fri, 21 May 2021 15:42:34"
+                        + " GMT\",\"certificate\":\"bzyh\"},\"etag\":\"tsmypyynpcdp\",\"id\":\"mnzgmwznmabi\",\"name\":\"nsorgjhxbldt\",\"type\":\"wwrlkdmtncv\"}")
                 .toObject(CertificateDescriptionInner.class);
-        Assertions.assertEquals(false, model.properties().isVerified());
-        Assertions.assertEquals("orgjhxbldt", model.properties().certificate());
+        Assertions.assertEquals(true, model.properties().isVerified());
+        Assertions.assertEquals("bzyh", model.properties().certificate());
     }
 
     @org.junit.jupiter.api.Test
     public void testSerialize() throws Exception {
         CertificateDescriptionInner model =
             new CertificateDescriptionInner()
-                .withProperties(new CertificateProperties().withIsVerified(false).withCertificate("orgjhxbldt"));
+                .withProperties(new CertificateProperties().withIsVerified(true).withCertificate("bzyh"));
         model = BinaryData.fromObject(model).toObject(CertificateDescriptionInner.class);
-        Assertions.assertEquals(false, model.properties().isVerified());
-        Assertions.assertEquals("orgjhxbldt", model.properties().certificate());
+        Assertions.assertEquals(true, model.properties().isVerified());
+        Assertions.assertEquals("bzyh", model.properties().certificate());
     }
 }

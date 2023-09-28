@@ -3,6 +3,15 @@
 ### Features Added
 - Added Support for PSTN DialOut Capability in Azure Communication Services Rooms
 
+## 1.0.4 (2023-09-22)
+
+### Other Changes
+
+#### Dependency Updates
+
+- Upgraded `azure-core` from `1.42.0` to version `1.43.0`.
+- Upgraded `azure-communication-common` from `1.2.11` to version `1.2.12`.
+
 ## 1.0.3 (2023-08-18)
 
 ### Other Changes

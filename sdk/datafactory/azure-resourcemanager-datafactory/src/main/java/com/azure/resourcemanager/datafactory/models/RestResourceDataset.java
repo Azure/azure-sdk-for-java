@@ -161,23 +161,21 @@ public final class RestResourceDataset extends Dataset {
     }
 
     /**
-     * Get the additionalHeaders property: The additional HTTP headers in the request to the RESTful API. Type: string
-     * (or Expression with resultType string).
+     * Get the additionalHeaders property: The additional HTTP headers in the request to the RESTful API.
      *
      * @return the additionalHeaders value.
      */
-    public Object additionalHeaders() {
+    public Map<String, Object> additionalHeaders() {
         return this.innerTypeProperties() == null ? null : this.innerTypeProperties().additionalHeaders();
     }
 
     /**
-     * Set the additionalHeaders property: The additional HTTP headers in the request to the RESTful API. Type: string
-     * (or Expression with resultType string).
+     * Set the additionalHeaders property: The additional HTTP headers in the request to the RESTful API.
      *
      * @param additionalHeaders the additionalHeaders value to set.
      * @return the RestResourceDataset object itself.
      */
-    public RestResourceDataset withAdditionalHeaders(Object additionalHeaders) {
+    public RestResourceDataset withAdditionalHeaders(Map<String, Object> additionalHeaders) {
         if (this.innerTypeProperties() == null) {
             this.innerTypeProperties = new RestResourceDatasetTypeProperties();
         }
@@ -186,23 +184,21 @@ public final class RestResourceDataset extends Dataset {
     }
 
     /**
-     * Get the paginationRules property: The pagination rules to compose next page requests. Type: string (or Expression
-     * with resultType string).
+     * Get the paginationRules property: The pagination rules to compose next page requests.
      *
      * @return the paginationRules value.
      */
-    public Object paginationRules() {
+    public Map<String, Object> paginationRules() {
         return this.innerTypeProperties() == null ? null : this.innerTypeProperties().paginationRules();
     }
 
     /**
-     * Set the paginationRules property: The pagination rules to compose next page requests. Type: string (or Expression
-     * with resultType string).
+     * Set the paginationRules property: The pagination rules to compose next page requests.
      *
      * @param paginationRules the paginationRules value to set.
      * @return the RestResourceDataset object itself.
      */
-    public RestResourceDataset withPaginationRules(Object paginationRules) {
+    public RestResourceDataset withPaginationRules(Map<String, Object> paginationRules) {
         if (this.innerTypeProperties() == null) {
             this.innerTypeProperties = new RestResourceDatasetTypeProperties();
         }

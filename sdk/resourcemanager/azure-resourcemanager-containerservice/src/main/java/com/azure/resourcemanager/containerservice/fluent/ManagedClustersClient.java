@@ -18,6 +18,8 @@ import com.azure.resourcemanager.containerservice.fluent.models.KubernetesVersio
 import com.azure.resourcemanager.containerservice.fluent.models.ManagedClusterAccessProfileInner;
 import com.azure.resourcemanager.containerservice.fluent.models.ManagedClusterInner;
 import com.azure.resourcemanager.containerservice.fluent.models.ManagedClusterUpgradeProfileInner;
+import com.azure.resourcemanager.containerservice.fluent.models.MeshRevisionProfileInner;
+import com.azure.resourcemanager.containerservice.fluent.models.MeshUpgradeProfileInner;
 import com.azure.resourcemanager.containerservice.fluent.models.OSOptionProfileInner;
 import com.azure.resourcemanager.containerservice.fluent.models.OutboundEnvironmentEndpointInner;
 import com.azure.resourcemanager.containerservice.fluent.models.RunCommandResultInner;
@@ -1962,4 +1964,218 @@ public interface ManagedClustersClient
     @ServiceMethod(returns = ReturnType.COLLECTION)
     PagedIterable<OutboundEnvironmentEndpointInner> listOutboundNetworkDependenciesEndpoints(
         String resourceGroupName, String resourceName, Context context);
+
+    /**
+     * Lists mesh revision profiles for all meshes in the specified location.
+     *
+     * <p>Contains extra metadata on each revision, including supported revisions, cluster compatibility and available
+     * upgrades.
+     *
+     * @param location The name of Azure region.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return holds an array of MeshRevisionsProfiles as paginated response with {@link PagedFlux}.
+     */
+    @ServiceMethod(returns = ReturnType.COLLECTION)
+    PagedFlux<MeshRevisionProfileInner> listMeshRevisionProfilesAsync(String location);
+
+    /**
+     * Lists mesh revision profiles for all meshes in the specified location.
+     *
+     * <p>Contains extra metadata on each revision, including supported revisions, cluster compatibility and available
+     * upgrades.
+     *
+     * @param location The name of Azure region.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return holds an array of MeshRevisionsProfiles as paginated response with {@link PagedIterable}.
+     */
+    @ServiceMethod(returns = ReturnType.COLLECTION)
+    PagedIterable<MeshRevisionProfileInner> listMeshRevisionProfiles(String location);
+
+    /**
+     * Lists mesh revision profiles for all meshes in the specified location.
+     *
+     * <p>Contains extra metadata on each revision, including supported revisions, cluster compatibility and available
+     * upgrades.
+     *
+     * @param location The name of Azure region.
+     * @param context The context to associate with this operation.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return holds an array of MeshRevisionsProfiles as paginated response with {@link PagedIterable}.
+     */
+    @ServiceMethod(returns = ReturnType.COLLECTION)
+    PagedIterable<MeshRevisionProfileInner> listMeshRevisionProfiles(String location, Context context);
+
+    /**
+     * Gets a mesh revision profile for a specified mesh in the specified location.
+     *
+     * <p>Contains extra metadata on the revision, including supported revisions, cluster compatibility and available
+     * upgrades.
+     *
+     * @param location The name of Azure region.
+     * @param mode The mode of the mesh.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return mesh revision profile for a mesh along with {@link Response} on successful completion of {@link Mono}.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    Mono<Response<MeshRevisionProfileInner>> getMeshRevisionProfileWithResponseAsync(String location, String mode);
+
+    /**
+     * Gets a mesh revision profile for a specified mesh in the specified location.
+     *
+     * <p>Contains extra metadata on the revision, including supported revisions, cluster compatibility and available
+     * upgrades.
+     *
+     * @param location The name of Azure region.
+     * @param mode The mode of the mesh.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return mesh revision profile for a mesh on successful completion of {@link Mono}.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    Mono<MeshRevisionProfileInner> getMeshRevisionProfileAsync(String location, String mode);
+
+    /**
+     * Gets a mesh revision profile for a specified mesh in the specified location.
+     *
+     * <p>Contains extra metadata on the revision, including supported revisions, cluster compatibility and available
+     * upgrades.
+     *
+     * @param location The name of Azure region.
+     * @param mode The mode of the mesh.
+     * @param context The context to associate with this operation.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return mesh revision profile for a mesh along with {@link Response}.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    Response<MeshRevisionProfileInner> getMeshRevisionProfileWithResponse(
+        String location, String mode, Context context);
+
+    /**
+     * Gets a mesh revision profile for a specified mesh in the specified location.
+     *
+     * <p>Contains extra metadata on the revision, including supported revisions, cluster compatibility and available
+     * upgrades.
+     *
+     * @param location The name of Azure region.
+     * @param mode The mode of the mesh.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return mesh revision profile for a mesh.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    MeshRevisionProfileInner getMeshRevisionProfile(String location, String mode);
+
+    /**
+     * Lists available upgrades for all service meshes in a specific cluster.
+     *
+     * @param resourceGroupName The name of the resource group. The name is case insensitive.
+     * @param resourceName The name of the managed cluster resource.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return holds an array of MeshUpgradeProfiles as paginated response with {@link PagedFlux}.
+     */
+    @ServiceMethod(returns = ReturnType.COLLECTION)
+    PagedFlux<MeshUpgradeProfileInner> listMeshUpgradeProfilesAsync(String resourceGroupName, String resourceName);
+
+    /**
+     * Lists available upgrades for all service meshes in a specific cluster.
+     *
+     * @param resourceGroupName The name of the resource group. The name is case insensitive.
+     * @param resourceName The name of the managed cluster resource.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return holds an array of MeshUpgradeProfiles as paginated response with {@link PagedIterable}.
+     */
+    @ServiceMethod(returns = ReturnType.COLLECTION)
+    PagedIterable<MeshUpgradeProfileInner> listMeshUpgradeProfiles(String resourceGroupName, String resourceName);
+
+    /**
+     * Lists available upgrades for all service meshes in a specific cluster.
+     *
+     * @param resourceGroupName The name of the resource group. The name is case insensitive.
+     * @param resourceName The name of the managed cluster resource.
+     * @param context The context to associate with this operation.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return holds an array of MeshUpgradeProfiles as paginated response with {@link PagedIterable}.
+     */
+    @ServiceMethod(returns = ReturnType.COLLECTION)
+    PagedIterable<MeshUpgradeProfileInner> listMeshUpgradeProfiles(
+        String resourceGroupName, String resourceName, Context context);
+
+    /**
+     * Gets available upgrades for a service mesh in a cluster.
+     *
+     * @param resourceGroupName The name of the resource group. The name is case insensitive.
+     * @param resourceName The name of the managed cluster resource.
+     * @param mode The mode of the mesh.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return available upgrades for a service mesh in a cluster along with {@link Response} on successful completion
+     *     of {@link Mono}.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    Mono<Response<MeshUpgradeProfileInner>> getMeshUpgradeProfileWithResponseAsync(
+        String resourceGroupName, String resourceName, String mode);
+
+    /**
+     * Gets available upgrades for a service mesh in a cluster.
+     *
+     * @param resourceGroupName The name of the resource group. The name is case insensitive.
+     * @param resourceName The name of the managed cluster resource.
+     * @param mode The mode of the mesh.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return available upgrades for a service mesh in a cluster on successful completion of {@link Mono}.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    Mono<MeshUpgradeProfileInner> getMeshUpgradeProfileAsync(
+        String resourceGroupName, String resourceName, String mode);
+
+    /**
+     * Gets available upgrades for a service mesh in a cluster.
+     *
+     * @param resourceGroupName The name of the resource group. The name is case insensitive.
+     * @param resourceName The name of the managed cluster resource.
+     * @param mode The mode of the mesh.
+     * @param context The context to associate with this operation.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return available upgrades for a service mesh in a cluster along with {@link Response}.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    Response<MeshUpgradeProfileInner> getMeshUpgradeProfileWithResponse(
+        String resourceGroupName, String resourceName, String mode, Context context);
+
+    /**
+     * Gets available upgrades for a service mesh in a cluster.
+     *
+     * @param resourceGroupName The name of the resource group. The name is case insensitive.
+     * @param resourceName The name of the managed cluster resource.
+     * @param mode The mode of the mesh.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return available upgrades for a service mesh in a cluster.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    MeshUpgradeProfileInner getMeshUpgradeProfile(String resourceGroupName, String resourceName, String mode);
 }

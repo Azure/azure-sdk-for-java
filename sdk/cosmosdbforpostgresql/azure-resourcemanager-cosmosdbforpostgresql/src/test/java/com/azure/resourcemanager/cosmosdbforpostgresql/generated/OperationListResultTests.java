@@ -16,7 +16,7 @@ public final class OperationListResultTests {
         OperationListResult model =
             BinaryData
                 .fromString(
-                    "{\"value\":[{\"name\":\"nfnbacfionlebxe\",\"display\":{\"provider\":\"tzxdpnqbqqwx\",\"resource\":\"feallnwsu\",\"operation\":\"snjampmng\",\"description\":\"scxaq\"},\"isDataAction\":true,\"origin\":\"NotSpecified\",\"properties\":{\"pkvlrxn\":\"dataonq\",\"eipheoflokeyy\":\"dataea\",\"jp\":\"dataenjbdlwtgrhp\",\"e\":\"dataumasxazjpq\"}},{\"name\":\"alhbx\",\"display\":{\"provider\":\"jj\",\"resource\":\"v\",\"operation\":\"dgwdslfhot\",\"description\":\"cynpwlbjnp\"},\"isDataAction\":false,\"origin\":\"user\",\"properties\":{\"usue\":\"dataehxnltyfsop\",\"orxzdmohctbqvud\":\"datanzwdejba\",\"nvowgujju\":\"dataxdn\",\"zj\":\"datawdkcglhsl\"}}],\"nextLink\":\"ggd\"}")
+                    "{\"value\":[{\"name\":\"pheoflokeyy\",\"display\":{\"provider\":\"jbdlwtgrhpdjpju\",\"resource\":\"sxazjpq\",\"operation\":\"gual\",\"description\":\"xxhejjzzvd\"},\"isDataAction\":true,\"origin\":\"system\",\"properties\":{\"cynpwlbjnp\":\"datafhotw\"}},{\"name\":\"cftadeh\",\"display\":{\"provider\":\"tyfsoppusuesn\",\"resource\":\"dejbavo\",\"operation\":\"zdmohctbqvu\",\"description\":\"xdn\"},\"isDataAction\":false,\"origin\":\"system\",\"properties\":{\"dyggdtjixhbku\":\"datajjugwdkcglhslaz\",\"fyexfwhy\":\"datafqweykhmene\",\"amdecte\":\"datacibvyvdcsitynn\"}},{\"name\":\"iqscjeypv\",\"display\":{\"provider\":\"rkgqhcjrefo\",\"resource\":\"mkqsleyyv\",\"operation\":\"qjpkcattpngjcrc\",\"description\":\"sqpjhvmdajvn\"},\"isDataAction\":true,\"origin\":\"user\",\"properties\":{\"yhltrpmopjmcm\":\"datacanoaeupf\"}},{\"name\":\"u\",\"display\":{\"provider\":\"hfuiuaodsfc\",\"resource\":\"vxodpu\",\"operation\":\"myzydagfuaxbez\",\"description\":\"uokktwhrdxwz\"},\"isDataAction\":false,\"origin\":\"system\",\"properties\":{\"ksymd\":\"dataureximoryocfs\",\"kiiuxhqyudxor\":\"datays\"}}],\"nextLink\":\"nbpoczvyifqrvkdv\"}")
                 .toObject(OperationListResult.class);
         Assertions.assertEquals(true, model.value().get(0).isDataAction());
     }
@@ -28,7 +28,10 @@ public final class OperationListResultTests {
                 .withValue(
                     Arrays
                         .asList(
-                            new OperationInner().withIsDataAction(true), new OperationInner().withIsDataAction(false)));
+                            new OperationInner().withIsDataAction(true),
+                            new OperationInner().withIsDataAction(false),
+                            new OperationInner().withIsDataAction(true),
+                            new OperationInner().withIsDataAction(false)));
         model = BinaryData.fromObject(model).toObject(OperationListResult.class);
         Assertions.assertEquals(true, model.value().get(0).isDataAction());
     }

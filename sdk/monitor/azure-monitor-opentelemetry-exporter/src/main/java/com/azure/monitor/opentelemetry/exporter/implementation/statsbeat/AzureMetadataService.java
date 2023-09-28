@@ -11,6 +11,7 @@ import com.azure.core.http.HttpResponse;
 import com.azure.core.http.policy.CookiePolicy;
 import com.azure.core.http.policy.RetryPolicy;
 import com.azure.core.http.policy.UserAgentPolicy;
+import com.azure.monitor.opentelemetry.exporter.implementation.NoopTracer;
 import com.azure.monitor.opentelemetry.exporter.implementation.utils.ThreadPoolUtils;
 import com.fasterxml.jackson.databind.DeserializationFeature;
 import com.fasterxml.jackson.databind.ObjectMapper;
@@ -55,6 +56,7 @@ class AzureMetadataService implements Runnable {
         this.httpPipeline =
             new HttpPipelineBuilder()
                 .policies(new UserAgentPolicy(), new RetryPolicy(), new CookiePolicy())
+                .tracer(new NoopTracer())
                 .build();
         this.vmMetadataServiceCallback = vmMetadataServiceCallback;
     }
