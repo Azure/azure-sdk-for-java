@@ -32,6 +32,10 @@ public class ServiceBusSenderClientJavaDocCodeSamples {
      */
     private final String fullyQualifiedNamespace = System.getenv("AZURE_SERVICEBUS_FULLY_QUALIFIED_DOMAIN_NAME");
     private final String queueName = System.getenv("AZURE_SERVICEBUS_SAMPLE_QUEUE_NAME");
+    /**
+     * Name of a session-enabled queue in the Service Bus namespace.
+     */
+    private final String sessionEnabledQueueName = System.getenv("AZURE_SERVICEBUS_SAMPLE_SESSION_QUEUE_NAME");
 
     /**
      * Code snippet demonstrating how to create an {@link ServiceBusSenderClient}.
@@ -295,5 +299,29 @@ public class ServiceBusSenderClientJavaDocCodeSamples {
         // END: com.azure.messaging.servicebus.servicebusasyncsenderclient.createMessageBatch#CreateMessageBatchOptionsLimitedSize
         // Dispose of subscription to cancel operations.
         disposable.dispose();
+    }
+
+    /**
+     * Create a session message.
+     */
+    @Test
+    public void sendSessionMessage() {
+        // BEGIN: com.azure.messaging.servicebus.servicebussenderclient.sendMessage-session
+        // 'fullyQualifiedNamespace' will look similar to "{your-namespace}.servicebus.windows.net"
+        ServiceBusSenderClient sender = new ServiceBusClientBuilder()
+            .credential(fullyQualifiedNamespace, new DefaultAzureCredentialBuilder().build())
+            .sender()
+            .queueName(sessionEnabledQueueName)
+            .buildClient();
+
+        // Setting sessionId publishes that message to a specific session, in this case, "greeting".
+        ServiceBusMessage message = new ServiceBusMessage("Hello world")
+            .setSessionId("greetings");
+
+        sender.sendMessage(message);
+
+        // Dispose of the sender.
+        sender.close();
+        // END: com.azure.messaging.servicebus.servicebussenderclient.sendMessage-session
     }
 }

@@ -309,12 +309,22 @@ Create a [`ServiceBusSenderClient`][ServiceBusSenderClient] for a session enable
 `ServiceBusMessage.setSessionId(String)` on a `ServiceBusMessage` will publish the message to that session. If the
 session does not exist, it is created.
 
-```java readme-sample-createSessionMessage
+```java com.azure.messaging.servicebus.servicebussenderclient.sendMessage-session
+// 'fullyQualifiedNamespace' will look similar to "{your-namespace}.servicebus.windows.net"
+ServiceBusSenderClient sender = new ServiceBusClientBuilder()
+    .credential(fullyQualifiedNamespace, new DefaultAzureCredentialBuilder().build())
+    .sender()
+    .queueName(sessionEnabledQueueName)
+    .buildClient();
+
 // Setting sessionId publishes that message to a specific session, in this case, "greeting".
 ServiceBusMessage message = new ServiceBusMessage("Hello world")
     .setSessionId("greetings");
 
 sender.sendMessage(message);
+
+// Dispose of the sender.
+sender.close();
 ```
 
 #### Receive messages from a session
@@ -344,19 +354,32 @@ ServiceBusReceiverClient receiver = new ServiceBusClientBuilder()
 The creation of physical connection to Service Bus requires resources. An application should share the connection  
 between clients which can be achieved by sharing the top level builder as shown below.
 
-```java readme-sample-connectionSharingAcrossClients
-// Create shared builder.
+```java com.azure.messaging.servicebus.connection.sharing
+TokenCredential credential = new DefaultAzureCredentialBuilder().build();
+
+// Retrieve 'connectionString' and 'queueName' from your configuration.
+// 'fullyQualifiedNamespace' will look similar to "{your-namespace}.servicebus.windows.net"
 ServiceBusClientBuilder sharedConnectionBuilder = new ServiceBusClientBuilder()
-    .connectionString("<< CONNECTION STRING FOR THE SERVICE BUS NAMESPACE >>");
+    .credential(fullyQualifiedNamespace, credential);
+
 // Create receiver and sender which will share the connection.
 ServiceBusReceiverClient receiver = sharedConnectionBuilder
     .receiver()
-    .queueName("<< QUEUE NAME >>")
+    .queueName(queueName)
     .buildClient();
 ServiceBusSenderClient sender = sharedConnectionBuilder
     .sender()
-    .queueName("<< QUEUE NAME >>")
+    .queueName(queueName)
     .buildClient();
+
+// Use the clients and finally close them.
+try {
+    sender.sendMessage(new ServiceBusMessage("payload"));
+    receiver.receiveMessages(1);
+} finally {
+    sender.close();
+    receiver.close();
+}
 ```
 ### When to use 'ServiceBusProcessorClient'.
  When to use 'ServiceBusProcessorClient', 'ServiceBusReceiverClient' or ServiceBusReceiverAsyncClient? The processor 

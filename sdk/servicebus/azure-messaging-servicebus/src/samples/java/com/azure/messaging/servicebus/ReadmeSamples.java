@@ -93,25 +93,6 @@ public class ReadmeSamples {
     }
 
     /**
-     * Create a session message.
-     */
-    public void createSessionMessage() {
-        ServiceBusSenderClient sender = new ServiceBusClientBuilder()
-            .connectionString("<< CONNECTION STRING FOR THE SERVICE BUS NAMESPACE >>")
-            .sender()
-            .queueName("<< QUEUE NAME >>")
-            .buildClient();
-
-        // BEGIN: readme-sample-createSessionMessage
-        // Setting sessionId publishes that message to a specific session, in this case, "greeting".
-        ServiceBusMessage message = new ServiceBusMessage("Hello world")
-            .setSessionId("greetings");
-
-        sender.sendMessage(message);
-        // END: readme-sample-createSessionMessage
-    }
-
-    /**
      * Create session receiver for "greetings"
      */
     public void namedSessionReceiver() {
@@ -235,22 +216,4 @@ public class ReadmeSamples {
         processorClient.start();
         // END: readme-sample-createServiceBusProcessorClientInReceiveAndDeleteMode
     }
-
-    public void connectionSharingAcrossClients() {
-        // BEGIN: readme-sample-connectionSharingAcrossClients
-        // Create shared builder.
-        ServiceBusClientBuilder sharedConnectionBuilder = new ServiceBusClientBuilder()
-            .connectionString("<< CONNECTION STRING FOR THE SERVICE BUS NAMESPACE >>");
-        // Create receiver and sender which will share the connection.
-        ServiceBusReceiverClient receiver = sharedConnectionBuilder
-            .receiver()
-            .queueName("<< QUEUE NAME >>")
-            .buildClient();
-        ServiceBusSenderClient sender = sharedConnectionBuilder
-            .sender()
-            .queueName("<< QUEUE NAME >>")
-            .buildClient();
-        // END: readme-sample-connectionSharingAcrossClients
-    }
-
 }
