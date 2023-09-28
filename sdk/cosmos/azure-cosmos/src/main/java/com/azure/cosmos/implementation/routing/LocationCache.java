@@ -220,11 +220,9 @@ public class LocationCache {
         UnmodifiableList<URI> writeEndpoints = this.getWriteEndpoints();
         Supplier<CosmosExcludedRegions> excludedRegionsSupplier = this.connectionPolicy.getExcludedRegionsSupplier();
 
-        List<String> effectiveExcludedRegions = excludedRegionsSupplier != null ? excludedRegionsSupplier
+        List<String> effectiveExcludedRegions = excludedRegionsSupplier != null ? new ArrayList<>(excludedRegionsSupplier
             .get()
-            .getExcludedRegions()
-            .stream()
-            .toList() : Collections.emptyList();
+            .getExcludedRegions()) : Collections.emptyList();
 
         if (!isExcludeRegionsConfigured(excludedRegionsOnRequest, effectiveExcludedRegions)) {
             return writeEndpoints;
@@ -250,11 +248,9 @@ public class LocationCache {
         UnmodifiableList<URI> readEndpoints = this.getReadEndpoints();
         Supplier<CosmosExcludedRegions> excludedRegionsSupplier = this.connectionPolicy.getExcludedRegionsSupplier();
 
-        List<String> effectiveExcludedRegions = excludedRegionsSupplier != null ? excludedRegionsSupplier
+        List<String> effectiveExcludedRegions = excludedRegionsSupplier != null ? new ArrayList<>(excludedRegionsSupplier
             .get()
-            .getExcludedRegions()
-            .stream()
-            .toList() : Collections.emptyList();
+            .getExcludedRegions()) : Collections.emptyList();
 
         if (!isExcludeRegionsConfigured(excludedRegionsOnRequest, effectiveExcludedRegions)) {
             return readEndpoints;
