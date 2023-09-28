@@ -36,6 +36,10 @@ public class ServiceBusReceiverClientJavaDocCodeSample {
      * Name of a subscription associated with the {@link #topicName}.
      */
     private final String subscriptionName = System.getenv("AZURE_SERVICEBUS_SAMPLE_SUBSCRIPTION_NAME");
+    /**
+     * Name of a session-enabled queue in the Service Bus namespace.
+     */
+    private final String sessionEnabledQueueName = System.getenv("AZURE_SERVICEBUS_SAMPLE_SESSION_QUEUE_NAME");
 
     /**
      * Code snippet for creating an ServiceBusReceiverClient
@@ -51,8 +55,14 @@ public class ServiceBusReceiverClientJavaDocCodeSample {
             .credential(fullyQualifiedNamespace, credential)
             .receiver()
             .disableAutoComplete()
-            .queueName(queueName)
+            .topicName(topicName)
+            .subscriptionName(subscriptionName)
             .buildClient();
+
+        receiver.receiveMessages(3, Duration.ofSeconds(5))
+            .forEach(message -> {
+                System.out.println("Message: " + message.getBody());
+            });
 
         // Use the receiver and finally close it.
         receiver.close();
@@ -140,10 +150,10 @@ public class ServiceBusReceiverClientJavaDocCodeSample {
         // completes with a retriable error. Otherwise, a receiver is returned when a lock on the session is acquired.
         Mono<ServiceBusReceiverAsyncClient> receiverMono = sessionReceiver.acceptNextSession();
 
-        // Use the receiver and finally close it along with the sessionReceiver.
         Flux.usingWhen(receiverMono,
                 receiver -> receiver.receiveMessages(),
                 receiver -> Mono.fromRunnable(() -> {
+                    // Dispose of the receiver and sessionReceiver when done receiving messages.
                     receiver.close();
                     sessionReceiver.close();
                 }))
@@ -159,12 +169,15 @@ public class ServiceBusReceiverClientJavaDocCodeSample {
     @Test
     public void sessionReceiverSessionIdInstantiation() {
         // BEGIN: com.azure.messaging.servicebus.servicebusreceiverclient.instantiation#sessionId
-        // The connectionString/sessionQueueName must be set by the application. The 'connectionString' format is shown below.
-        // "Endpoint={fully-qualified-namespace};SharedAccessKeyName={policy-name};SharedAccessKey={key}"
+        TokenCredential credential = new DefaultAzureCredentialBuilder().build();
+
+        // 'fullyQualifiedNamespace' will look similar to "{your-namespace}.servicebus.windows.net"
+        // 'disableAutoComplete' indicates that users will explicitly settle their message.
         ServiceBusSessionReceiverClient sessionReceiver = new ServiceBusClientBuilder()
-            .connectionString(connectionString)
+            .credential(fullyQualifiedNamespace, credential)
             .sessionReceiver()
-            .queueName(sessionQueueName)
+            .queueName(sessionEnabledQueueName)
+            .disableAutoComplete()
             .buildClient();
         ServiceBusReceiverClient receiver = sessionReceiver.acceptSession("<<my-session-id>>");
 
@@ -178,6 +191,15 @@ public class ServiceBusReceiverClientJavaDocCodeSample {
      * Demonstrates how to use a transaction.
      */
     public void transactionsSnippet() {
+        TokenCredential credential = new DefaultAzureCredentialBuilder().build();
+
+        ServiceBusReceiverClient receiver = new ServiceBusClientBuilder()
+            .credential(fullyQualifiedNamespace, credential)
+            .receiver()
+            .disableAutoComplete()
+            .queueName(queueName)
+            .buildClient();
+
         // Some random sequenceNumber.
         long sequenceNumber = 1000L;
         ServiceBusReceivedMessage receivedMessage = new ServiceBusReceivedMessage((BinaryData) null);
