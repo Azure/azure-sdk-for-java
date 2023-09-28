@@ -7,7 +7,7 @@ import com.azure.ai.textanalytics.implementation.PiiEntityPropertiesHelper;
 import com.azure.core.annotation.Immutable;
 
 /**
- * The {@link PiiEntity} model.
+ * The {@code PiiEntity} model.
  */
 @Immutable
 public final class PiiEntity {
@@ -70,6 +70,12 @@ public final class PiiEntity {
                 entity.setLength(length);
             }
         });
+    }
+
+    /**
+     * Constructs a {@code PiiEntity} model.
+     */
+    public PiiEntity() {
     }
 
     /**
