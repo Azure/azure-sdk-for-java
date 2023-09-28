@@ -118,7 +118,7 @@ public class LocationCacheTest {
         //      5. Expected applicable write regions
         return new Object[][] {
             {
-                Set.of("location1", "location2"),
+                new HashSet<>(Arrays.asList("location1", "location2")),
                 null,
                 RxDocumentServiceRequest.create(
                     mockDiagnosticsClientContext(),
@@ -128,7 +128,7 @@ public class LocationCacheTest {
                 new HashSet<>(Arrays.asList(Location3Endpoint))
             },
             {
-                Set.of("location1", "location2", "location7"),
+                new HashSet<>(Arrays.asList("location1", "location2", "location7")),
                 null,
                 RxDocumentServiceRequest.create(
                     mockDiagnosticsClientContext(),
@@ -148,7 +148,7 @@ public class LocationCacheTest {
                 new HashSet<>(Arrays.asList(Location1Endpoint, Location2Endpoint, Location3Endpoint))
             },
             {
-                Set.of(),
+                new HashSet<>(),
                 null,
                 RxDocumentServiceRequest.create(
                     mockDiagnosticsClientContext(),
@@ -158,7 +158,7 @@ public class LocationCacheTest {
                 new HashSet<>(Arrays.asList(Location1Endpoint, Location2Endpoint, Location3Endpoint))
             },
             {
-                Set.of("location5, location10, location10"),
+                new HashSet<>(Arrays.asList("location5, location10, location10")),
                 null,
                 RxDocumentServiceRequest.create(
                     mockDiagnosticsClientContext(),
@@ -168,7 +168,7 @@ public class LocationCacheTest {
                 new HashSet<>(Arrays.asList(Location1Endpoint, Location2Endpoint, Location3Endpoint))
             },
             {
-                Set.of("location1, location2, location10"),
+                new HashSet<>(Arrays.asList("location1, location2, location10")),
                 Arrays.asList("location2"),
                 RxDocumentServiceRequest.create(
                     mockDiagnosticsClientContext(),
