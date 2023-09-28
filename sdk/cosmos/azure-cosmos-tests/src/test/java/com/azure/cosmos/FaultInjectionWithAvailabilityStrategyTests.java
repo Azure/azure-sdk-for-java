@@ -2385,8 +2385,8 @@ public class FaultInjectionWithAvailabilityStrategyTests extends TestSuiteBase {
             // first region.
             new Object[] {
                 "DefaultPageSize_SinglePartition_QueryPLanHighLatency_EagerAvailabilityStrategy",
-                Duration.ofSeconds(1),
-                eagerThresholdAvailabilityStrategy,
+                Duration.ofSeconds(3),
+                reluctantThresholdAvailabilityStrategy,
                 noRegionSwitchHint,
                 singlePartitionQueryGenerator,
                 queryReturnsTotalRecordCountWithDefaultPageSize,
@@ -2417,7 +2417,7 @@ public class FaultInjectionWithAvailabilityStrategyTests extends TestSuiteBase {
                                 assertThat(diagnostics[i].getFeedResponseDiagnostics().getClientSideRequestStatistics()).isNotNull();
                                 assertThat(diagnostics[i].getFeedResponseDiagnostics().getClientSideRequestStatistics().size()).isGreaterThanOrEqualTo(1);
                                 assertThat(diagnostics[i].getContactedRegionNames().size()).isEqualTo(1);
-                                assertThat(diagnostics[i].getContactedRegionNames().contains(FIRST_REGION_NAME)).isEqualTo(true);
+                                assertThat(diagnostics[i].getContactedRegionNames().iterator().next()).isEqualTo(FIRST_REGION_NAME);
                             }
                         }
 
