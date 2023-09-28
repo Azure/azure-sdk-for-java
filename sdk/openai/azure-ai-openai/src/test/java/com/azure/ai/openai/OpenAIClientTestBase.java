@@ -104,7 +104,7 @@ public abstract class OpenAIClientTestBase extends TestProxyTestBase {
         if (getTestMode() == TestMode.PLAYBACK) {
             // Adjusts the "match" operation to EXCLUDE the body when matching a request to a recording's entries
             List<TestProxyRequestMatcher> matchers = new ArrayList<>();
-            matchers.add(new TestProxyRequestMatcher(TestProxyRequestMatcher.TestProxyRequestMatcherType.BODILESS));
+            matchers.add(TestProxyRequestMatcher.TestProxyRequestMatcherType.BODILESS);
             interceptorManager.addMatchers(matchers);
 
             builder
