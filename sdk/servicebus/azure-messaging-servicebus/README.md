@@ -79,33 +79,6 @@ add the direct dependency to your project as follows.
 For the Service Bus client library to interact with Service Bus, it will need to understand how to connect and authorize
 with it.
 
-#### Create Service Bus clients using a connection string
-
-The easiest means for authenticating is to use a connection string, which automatically created when creating a Service Bus
-namespace. If you aren't familiar with shared access policies in Azure, you may wish to follow the step-by-step guide to
-[get a Service Bus connection string][service_bus_connection_string].
-
-Both the asynchronous and synchronous Service Bus sender and receiver clients are instantiated using
-`ServiceBusClientBuilder`. The snippets below create a synchronous Service Bus sender and an asynchronous receiver,
-respectively.
-
-```java readme-sample-createAsynchronousServiceBusSender
-ServiceBusSenderClient sender = new ServiceBusClientBuilder()
-    .connectionString("<< CONNECTION STRING FOR THE SERVICE BUS NAMESPACE >>")
-    .sender()
-    .queueName("<< QUEUE NAME >>")
-    .buildClient();
-```
-
-```java readme-sample-createAsynchronousServiceBusReceiver
-ServiceBusReceiverAsyncClient receiver = new ServiceBusClientBuilder()
-    .connectionString("<< CONNECTION STRING FOR THE SERVICE BUS NAMESPACE >>")
-    .receiver()
-    .topicName("<< TOPIC NAME >>")
-    .subscriptionName("<< SUBSCRIPTION NAME >>")
-    .buildAsyncClient();
-```
-
 #### Create a Service Bus client using Microsoft Identity platform (formerly Azure Active Directory)
 
 Azure SDK for Java supports the Azure Identity package, making it simple to get credentials from the Microsoft identity
