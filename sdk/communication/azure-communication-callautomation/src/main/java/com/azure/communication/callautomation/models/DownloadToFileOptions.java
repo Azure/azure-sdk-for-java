@@ -22,6 +22,11 @@ public final class DownloadToFileOptions {
     private boolean overwrite;
 
     /**
+     * Constructs an instance of a DownloadToFileOptions.
+     */
+    public DownloadToFileOptions() { }
+
+    /**
      * Get the ParallelDownloadOptions
      * @return ParallelDownloadOptions
      */

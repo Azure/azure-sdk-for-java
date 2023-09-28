@@ -9,4 +9,8 @@ import com.azure.core.annotation.Fluent;
 @Fluent
 public final class PlayCanceled extends CallAutomationEventBase {
 
+    /**
+     * Constructs an instance of PlayCanceled.
+     */
+    public PlayCanceled() { }
 }

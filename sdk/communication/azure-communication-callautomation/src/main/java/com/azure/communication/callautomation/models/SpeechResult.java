@@ -15,6 +15,11 @@ public final class SpeechResult extends RecognizeResult {
     private String speech;
 
     /**
+     * Constructs an instance of SpeechResult.
+     */
+    public SpeechResult() { }
+
+    /**
      * Get the speech property: The recognized speech in string.
      *
      * @return the speech value.

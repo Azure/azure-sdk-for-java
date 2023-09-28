@@ -59,6 +59,11 @@ public final class DtmfTone extends ExpandableStringEnum<DtmfTone> {
     public static final DtmfTone ASTERISK = fromString("asterisk");
 
     /**
+     * Constructs an instance of a DtmfTone.
+     */
+    public DtmfTone() { }
+
+    /**
      * Creates or finds a Tone from its string representation.
      *
      * @param name a name to look for.
@@ -69,12 +74,18 @@ public final class DtmfTone extends ExpandableStringEnum<DtmfTone> {
         return fromString(name, DtmfTone.class);
     }
 
-    /** @return known Tone values. */
+    /**
+     * Gets known Tone values.
+     *
+     * @return known Tone values. */
     public static Collection<DtmfTone> values() {
         return values(DtmfTone.class);
     }
 
-    /** @return known Tone values in char. */
+    /**
+     * Gets known Tone values in char value.
+     *
+     * @return known Tone values in char. */
     public String convertToString() {
         String toneValue = this.toString().toLowerCase(Locale.getDefault());
         String toneStringValue = "";

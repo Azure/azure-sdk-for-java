@@ -19,6 +19,11 @@ import java.nio.charset.StandardCharsets;
 public final class MediaStreamingPackageParser {
     private static final ClientLogger LOGGER = new ClientLogger(MediaStreamingPackageParser.class);
 
+    /**
+     * Constructs an instance of a MediaStreamingPackageParser.
+     */
+    public MediaStreamingPackageParser() { }
+
     /***
      * Parses a Media Streaming package from BinaryData.
      *

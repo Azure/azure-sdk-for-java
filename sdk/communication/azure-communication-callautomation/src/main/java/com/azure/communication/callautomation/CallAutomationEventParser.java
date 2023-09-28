@@ -43,6 +43,11 @@ import java.util.Objects;
 public final class CallAutomationEventParser {
     private static final ClientLogger LOGGER = new ClientLogger(CallAutomationEventParser.class);
 
+    /**
+     * Constructs an instance of a CallAutomationEventParser.
+     */
+    public CallAutomationEventParser() { }
+
     /***
      * Returns a list of events from request's body.
      *

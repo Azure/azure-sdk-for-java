@@ -15,6 +15,11 @@ public final class RecordingState extends ExpandableStringEnum<RecordingState> {
     public static final RecordingState INACTIVE = fromString("inactive");
 
     /**
+     * Constructs an instance of RecordingState.
+     */
+    public RecordingState() { }
+
+    /**
      * Creates or finds a RecordingStateInternal from its string representation.
      *
      * @param name a name to look for.
@@ -24,7 +29,10 @@ public final class RecordingState extends ExpandableStringEnum<RecordingState> {
         return fromString(name, RecordingState.class);
     }
 
-    /** @return known RecordingStateInternal values. */
+    /**
+     * Gets known RecordingStateInternal values.
+     *
+     * @return known RecordingStateInternal values. */
     public static Collection<RecordingState> values() {
         return values(RecordingState.class);
     }

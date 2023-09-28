@@ -44,6 +44,11 @@ public final class RecognizeCompleted extends CallAutomationEventBaseWithReasonC
     private ChoiceResult collectChoiceResult;
 
     /**
+     * Constructs an instance of RecognizeCompleted.
+     */
+    public RecognizeCompleted() { }
+
+    /**
      * Get the collectToneResult or choiceResult property.
      *
      * @return the recognizeResult value.

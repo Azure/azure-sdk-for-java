@@ -81,11 +81,15 @@ public final class ParallelDownloadOptions {
     }
 
     /**
-     * @param maxConcurrency The maximum number of parallel requests that will be issued at any given time as a part of
+     * Sets the maximum number of parallel requests that will be issued at any given time as a part of
      * a single parallel transfer. This value applies per api. For example, if two calls to downloadTo are made at
      * the same time, and each specifies a maxConcurrency of 5, there may be up to 10 outstanding, concurrent requests,
      * up to 5 for each of the upload operations.
+     *
      * The amount of memory consumed by methods which buffer may be up to blockSize * maxConcurrency.
+     *
+     * @param maxConcurrency the maximum number of parallel requests that will be issued at any given time as a part of
+     * a single parallel transfer.
      * @return The ParallelDownloadOptions object itself.
      */
     public ParallelDownloadOptions setMaxConcurrency(int maxConcurrency) {

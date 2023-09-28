@@ -13,6 +13,11 @@ public final class PlaySourceType extends ExpandableStringEnum<PlaySourceType> {
     public static final PlaySourceType FILE = fromString("file");
 
     /**
+     * Constructs an instance of PlaySourceType.
+     */
+    public PlaySourceType() { }
+
+    /**
      * Creates or finds a PlaySourceType from its string representation.
      *
      * @param name a name to look for.
@@ -22,7 +27,11 @@ public final class PlaySourceType extends ExpandableStringEnum<PlaySourceType> {
         return fromString(name, PlaySourceType.class);
     }
 
-    /** @return known PlaySourceType values. */
+    /**
+     * Gets known PlaySourceType values.
+     *
+     * @return known PlaySourceType values.
+     */
     public static Collection<PlaySourceType> values() {
         return values(PlaySourceType.class);
     }

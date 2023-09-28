@@ -16,6 +16,11 @@ public final class RecordingContent extends ExpandableStringEnum<RecordingConten
     public static final RecordingContent AUDIO_VIDEO = fromString("audioVideo");
 
     /**
+     * Constructs an instance of RecordingContent.
+     */
+    public RecordingContent() { }
+
+    /**
      * Creates or finds a RecordingContent from its string representation.
      *
      * @param name a name to look for.
@@ -25,7 +30,10 @@ public final class RecordingContent extends ExpandableStringEnum<RecordingConten
         return fromString(name, RecordingContent.class);
     }
 
-    /** @return known RecordingContent values. */
+    /**
+     * Gets known RecordingContent values.
+     *
+     * @return known RecordingContent values. */
     public static Collection<RecordingContent> values() {
         return values(RecordingContent.class);
     }

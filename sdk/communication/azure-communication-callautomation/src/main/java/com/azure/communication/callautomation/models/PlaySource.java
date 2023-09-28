@@ -16,6 +16,11 @@ public abstract class PlaySource {
     private String playSourceId;
 
     /**
+     * Constructs an instance of PlaySource.
+     */
+    public PlaySource() { }
+
+    /**
      * Get the playSourceId property: Defines the identifier to be used for caching related media.
      *
      * @return the playSourceId value.

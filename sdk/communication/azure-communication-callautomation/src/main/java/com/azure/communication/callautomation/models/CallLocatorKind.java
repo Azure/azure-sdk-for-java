@@ -16,6 +16,11 @@ public final class CallLocatorKind extends ExpandableStringEnum<CallLocatorKind>
     public static final CallLocatorKind SERVER_CALL_LOCATOR = fromString("serverCallLocator");
 
     /**
+     * Constructs an instance of a CallLocatorKind.
+     */
+    public CallLocatorKind() { }
+
+    /**
      * Creates or finds a CallLocatorKind from its string representation.
      *
      * @param name a name to look for.
@@ -25,7 +30,11 @@ public final class CallLocatorKind extends ExpandableStringEnum<CallLocatorKind>
         return fromString(name, CallLocatorKind.class);
     }
 
-    /** @return known CallLocatorKind values. */
+    /**
+     * Returns the well known values of {@link CallLocatorKind} as a {@link Collection}.
+     *
+     * @return known CallLocatorKind values.
+     */
     public static Collection<CallLocatorKind> values() {
         return values(CallLocatorKind.class);
     }

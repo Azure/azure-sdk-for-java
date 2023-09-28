@@ -15,6 +15,11 @@ public final class RecordingChannel extends ExpandableStringEnum<RecordingChanne
     public static final RecordingChannel UNMIXED = fromString("unmixed");
 
     /**
+     * Constructs an instance of RecordingChannel.
+     */
+    public RecordingChannel() { }
+
+    /**
      * Creates or finds a RecordingChannel from its string representation.
      *
      * @param name a name to look for.
@@ -24,7 +29,10 @@ public final class RecordingChannel extends ExpandableStringEnum<RecordingChanne
         return fromString(name, RecordingChannel.class);
     }
 
-    /** @return known RecordingChannel values. */
+    /**
+     * Gets known RecordingChannel values.
+     *
+     * @return known RecordingChannel values. */
     public static Collection<RecordingChannel> values() {
         return values(RecordingChannel.class);
     }

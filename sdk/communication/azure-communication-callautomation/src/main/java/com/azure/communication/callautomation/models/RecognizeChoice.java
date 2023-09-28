@@ -27,6 +27,11 @@ public final class RecognizeChoice {
     private DtmfTone tone;
 
     /**
+     * Constructs an instance of RecognizeChoice.
+     */
+    public RecognizeChoice() { }
+
+    /**
      * Get the label property: Identifier for a given choice.
      *
      * @return the label value.

@@ -19,6 +19,11 @@ public final class RecordingFormat extends ExpandableStringEnum<RecordingFormat>
     public static final RecordingFormat MP4 = fromString("mp4");
 
     /**
+     * Constructs an instance of RecordingFormat.
+     */
+    public RecordingFormat() { }
+
+    /**
      * Creates or finds a RecordingFormat from its string representation.
      *
      * @param name a name to look for.
@@ -28,7 +33,10 @@ public final class RecordingFormat extends ExpandableStringEnum<RecordingFormat>
         return fromString(name, RecordingFormat.class);
     }
 
-    /** @return known RecordingFormat values. */
+    /**
+     * Gets known RecordingFormat values.
+     *
+     * @return known RecordingFormat values. */
     public static Collection<RecordingFormat> values() {
         return values(RecordingFormat.class);
     }

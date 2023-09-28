@@ -14,6 +14,11 @@ public final class MediaStreamingTransport extends ExpandableStringEnum<MediaStr
     public static final MediaStreamingTransport WEBSOCKET = fromString("websocket");
 
     /**
+     * Constructs an instance of a MediaStreamingTransport.
+     */
+    public MediaStreamingTransport() { }
+
+    /**
      * Creates or finds a MediaStreamingTransportType from its string representation.
      *
      * @param name a name to look for.
@@ -24,7 +29,11 @@ public final class MediaStreamingTransport extends ExpandableStringEnum<MediaStr
         return fromString(name, MediaStreamingTransport.class);
     }
 
-    /** @return known MediaStreamingTransportType values. */
+    /**
+     * Gets known MediaStreamingTransportType values.
+     *
+     * @return known MediaStreamingTransportType values.
+     */
     public static Collection<MediaStreamingTransport> values() {
         return values(MediaStreamingTransport.class);
     }

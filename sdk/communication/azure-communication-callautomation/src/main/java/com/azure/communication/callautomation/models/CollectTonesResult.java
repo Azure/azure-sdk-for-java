@@ -19,6 +19,11 @@ public final class CollectTonesResult extends RecognizeResult {
     private List<DtmfTone> dtmfTones;
 
     /**
+     * Constructs an instance of a CollectTonesResult.
+     */
+    public CollectTonesResult() { }
+
+    /**
      * Get the tones property: The tones property.
      *
      * @return the tones value.

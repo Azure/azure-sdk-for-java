@@ -14,6 +14,11 @@ public final class MediaStreamingContent extends ExpandableStringEnum<MediaStrea
     public static final MediaStreamingContent AUDIO = fromString("audio");
 
     /**
+     * Constructs an instance of a MediaStreamingContent.
+     */
+    public MediaStreamingContent() { }
+
+    /**
      * Creates or finds a MediaStreamingContentType from its string representation.
      *
      * @param name a name to look for.
@@ -24,7 +29,11 @@ public final class MediaStreamingContent extends ExpandableStringEnum<MediaStrea
         return fromString(name, MediaStreamingContent.class);
     }
 
-    /** @return known MediaStreamingContentType values. */
+    /**
+     * Gets known MediaStreamingContentType values.
+     *
+     * @return known MediaStreamingContentType values.
+     */
     public static Collection<MediaStreamingContent> values() {
         return values(MediaStreamingContent.class);
     }

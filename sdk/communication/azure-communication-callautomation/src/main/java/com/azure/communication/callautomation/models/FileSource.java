@@ -14,6 +14,11 @@ public final class FileSource extends PlaySource {
     private String url;
 
     /**
+     * Constructs an instance of a FileSource.
+     */
+    public FileSource() { }
+
+    /**
      * Get the uri property: Uri for the audio file to be played.
      *
      * @return the uri value.

@@ -17,6 +17,11 @@ public final class CallMediaRecognitionType extends ExpandableStringEnum<CallMed
     public static final CallMediaRecognitionType SPEECH = fromString("speech");
 
     /**
+     * Constructs an instance of a CallMediaRecognitionType.
+     */
+    public CallMediaRecognitionType() { }
+
+    /**
      * Creates or finds a RecognitionType from its string representation.
      *
      * @param name a name to look for.
@@ -27,7 +32,11 @@ public final class CallMediaRecognitionType extends ExpandableStringEnum<CallMed
         return fromString(name, CallMediaRecognitionType.class);
     }
 
-    /** @return known RecognitionType values. */
+    /**
+     * Returns the well known values of {@link CallMediaRecognitionType} as a {@link Collection}.
+     *
+     * @return known CallMediaRecognitionType values.
+     */
     public static Collection<CallMediaRecognitionType> values() {
         return values(CallMediaRecognitionType.class);
     }

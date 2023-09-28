@@ -23,6 +23,11 @@ public final class ToneInfo {
     private DtmfTone tone;
 
     /**
+     * Constructs an instance of ToneInfo.
+     */
+    public ToneInfo() { }
+
+    /**
      * Get the sequenceId property: The sequence id which can be used to determine if the same tone was played multiple
      * times or if any tones were missed.
      *

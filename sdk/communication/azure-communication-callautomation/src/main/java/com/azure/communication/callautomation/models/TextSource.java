@@ -40,6 +40,11 @@ public final class TextSource extends PlaySource {
     private String customVoiceEndpointId;
 
     /**
+     * Constructs an instance of TextSource.
+     */
+    public TextSource() { }
+
+    /**
      * Get the text property: Text for the cognitive service to be played.
      *
      * @return the text value.

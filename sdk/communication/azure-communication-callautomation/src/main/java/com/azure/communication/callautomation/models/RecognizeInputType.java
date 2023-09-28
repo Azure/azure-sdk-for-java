@@ -22,6 +22,11 @@ public final class RecognizeInputType extends ExpandableStringEnum<RecognizeInpu
     public static final RecognizeInputType SPEECH_OR_DTMF = fromString("speechordtmf");
 
     /**
+     * Constructs an instance of RecognizeInputType.
+     */
+    public RecognizeInputType() { }
+
+    /**
      * Creates or finds a RecognizeInputTypeInternal from its string representation.
      *
      * @param name a name to look for.
@@ -32,7 +37,10 @@ public final class RecognizeInputType extends ExpandableStringEnum<RecognizeInpu
         return fromString(name, RecognizeInputType.class);
     }
 
-    /** @return known RecognizeInputTypeInternal values. */
+    /**
+     * Gets known RecognizeInputType values.
+     *
+     * @return known RecognizeInputType values. */
     public static Collection<RecognizeInputType> values() {
         return values(RecognizeInputType.class);
     }

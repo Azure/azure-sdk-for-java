@@ -23,6 +23,11 @@ public final class ChannelAffinity {
     private CommunicationIdentifier participant;
 
     /**
+     * Constructs an instance of a ChannelAffinity.
+     */
+    public ChannelAffinity() { }
+
+    /**
      * Get the channel property: Channel number to which bitstream from a particular participant will be written.
      *
      * @return the channel value.

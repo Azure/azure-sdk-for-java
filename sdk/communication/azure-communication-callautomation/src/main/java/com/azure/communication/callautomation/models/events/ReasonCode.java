@@ -33,6 +33,11 @@ public final class ReasonCode extends ExpandableStringEnum<ReasonCode> {
         public static final ReasonCode SPEECH_NOT_RECOGNIZED = fromReasonCode(8563);
         /** Recognize with choice cognitive service connection error. */
         public static final ReasonCode SPEECH_COGNITIVE_SERVICE_CONNECTION_ERROR = fromReasonCode(8564);
+
+        /**
+         * Constructs an instance of Recognize.
+         */
+        public Recognize() { }
     }
 
     /** Reason code names for the Play operation */
@@ -43,12 +48,22 @@ public final class ReasonCode extends ExpandableStringEnum<ReasonCode> {
         public static final ReasonCode INVALID_FILE_FORMAT = fromReasonCode(8535);
         /** Action failed, cognitive service play error. */
         public static final ReasonCode COGNITEIVE_SERVICE_PLAY_ERROR = fromReasonCode(8565);
+
+        /**
+         * Constructs an instance of Play.
+         */
+        public Play() { }
     }
 
     /** Action completed successfully. */
     public static final ReasonCode COMPLETED_SUCCESSFULLY = fromReasonCode(0);
     /** Unknown internal server error. */
     public static final ReasonCode UNSPECIFIED_ERROR = fromReasonCode(9999);
+
+    /**
+     * Constructs an instance of ReasonCode.
+     */
+    public ReasonCode() { }
 
     /**
      * Creates or finds a ReasonCode from its string representation.

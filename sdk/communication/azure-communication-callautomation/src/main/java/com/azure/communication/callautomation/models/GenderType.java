@@ -16,6 +16,11 @@ public final class GenderType extends ExpandableStringEnum<GenderType> {
     public static final GenderType FEMALE = fromString("female");
 
     /**
+     * Constructs an instance of a GenderType.
+     */
+    public GenderType() { }
+
+    /**
      * Creates or finds a GenderType from its string representation.
      *
      * @param name a name to look for.

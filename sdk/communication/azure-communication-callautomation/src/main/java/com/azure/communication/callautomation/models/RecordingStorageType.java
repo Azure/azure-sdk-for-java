@@ -18,6 +18,11 @@ public final class RecordingStorageType extends ExpandableStringEnum<RecordingSt
     public static final RecordingStorageType BLOB_STORAGE = fromString("blobStorage");
 
     /**
+     * Constructs an instance of RecordingStorageType.
+     */
+    public RecordingStorageType() { }
+
+    /**
      * Creates or finds a RecordingStorageTypeInternal from its string representation.
      *
      * @param name a name to look for.

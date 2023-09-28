@@ -5,4 +5,9 @@ package com.azure.communication.callautomation.models;
 
 /** The abstract classed used as parent of MediaStreaming[package type]. */
 public abstract class MediaStreamingPackageBase {
+
+    /**
+     * Constructs an instance of a MediaStreamingPackageBase.
+     */
+    public MediaStreamingPackageBase() { }
 }
