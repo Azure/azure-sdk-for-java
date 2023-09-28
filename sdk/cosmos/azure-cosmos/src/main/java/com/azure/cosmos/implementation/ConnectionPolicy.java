@@ -14,11 +14,7 @@ import com.azure.cosmos.ThrottlingRetryOptions;
 import java.time.Duration;
 import java.util.Collections;
 import java.util.List;
-import java.util.Locale;
-import java.util.concurrent.locks.ReentrantReadWriteLock;
 import java.util.function.Supplier;
-import java.util.regex.Pattern;
-import java.util.stream.Collectors;
 
 /**
  * Represents the Connection policy associated with a Cosmos client in the Azure Cosmos DB service.
@@ -32,7 +28,6 @@ public final class ConnectionPolicy {
     private boolean endpointDiscoveryEnabled;
     private boolean multipleWriteRegionsEnabled;
     private List<String> preferredRegions;
-    private List<String> excludedRegions;
     private Supplier<CosmosExcludedRegions> excludedRegionsSupplier;
     private boolean readRequestsFallbackEnabled;
     private ThrottlingRetryOptions throttlingRetryOptions;

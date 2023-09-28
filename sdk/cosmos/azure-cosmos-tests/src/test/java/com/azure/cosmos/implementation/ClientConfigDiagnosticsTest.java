@@ -3,7 +3,11 @@
 
 package com.azure.cosmos.implementation;
 
-import com.azure.cosmos.*;
+import com.azure.cosmos.ConnectionMode;
+import com.azure.cosmos.CosmosContainerProactiveInitConfig;
+import com.azure.cosmos.CosmosContainerProactiveInitConfigBuilder;
+import com.azure.cosmos.CosmosExcludedRegions;
+import com.azure.cosmos.DirectConnectionConfig;
 import com.azure.cosmos.implementation.directconnectivity.RntbdTransportClient;
 import com.azure.cosmos.implementation.guava25.collect.ImmutableList;
 import com.azure.cosmos.implementation.http.HttpClientConfig;
@@ -19,7 +23,11 @@ import org.testng.annotations.Test;
 
 import java.io.StringWriter;
 import java.time.Duration;
-import java.util.*;
+import java.util.Arrays;
+import java.util.HashMap;
+import java.util.HashSet;
+import java.util.List;
+import java.util.UUID;
 import java.util.concurrent.atomic.AtomicInteger;
 import java.util.concurrent.atomic.AtomicReference;
 import java.util.function.Supplier;
