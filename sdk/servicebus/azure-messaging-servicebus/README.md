@@ -204,8 +204,7 @@ To receive messages, you will need to create a `ServiceBusProcessorClient` with 
 
 When receiving message with [PeekLock][peek_lock_mode_docs] mode, it tells the broker that the application logic wants to settle (e.g. complete, abandon) received messages explicitly.
 
-```java readme-sample-createServiceBusProcessorClientInPeekLockMode
-// Sample code that processes a single message which is received in PeekLock mode.
+```java com.azure.messaging.servicebus.servicebusprocessorclient#receive-mode-peek-lock-instantiation
 Consumer<ServiceBusReceivedMessageContext> processMessage = context -> {
     final ServiceBusReceivedMessage message = context.getMessage();
     // Randomly complete or abandon each message. Ideally, in real-world scenarios, if the business logic
@@ -234,30 +233,36 @@ Consumer<ServiceBusErrorContext> processError = errorContext -> {
     System.err.println("Error occurred while receiving message: " + errorContext.getException());
 };
 
-// create the processor client via the builder and its sub-builder
-ServiceBusProcessorClient processorClient = new ServiceBusClientBuilder()
-                                .connectionString("<< CONNECTION STRING FOR THE SERVICE BUS NAMESPACE >>")
-                                .processor()
-                                .queueName("<< QUEUE NAME >>")
-                                .receiveMode(ServiceBusReceiveMode.PEEK_LOCK)
-                                .disableAutoComplete() // Make sure to explicitly opt in to manual settlement (e.g. complete, abandon).
-                                .processMessage(processMessage)
-                                .processError(processError)
-                                .disableAutoComplete()
-                                .buildProcessorClient();
+TokenCredential tokenCredential = new DefaultAzureCredentialBuilder().build();
 
-// Starts the processor in the background and returns immediately
+// Create the processor client via the builder and its sub-builder
+// 'fullyQualifiedNamespace' will look similar to "{your-namespace}.servicebus.windows.net"
+ServiceBusProcessorClient processorClient = new ServiceBusClientBuilder()
+    .credential(fullyQualifiedNamespace, tokenCredential)
+    .processor()
+    .queueName(queueName)
+    .receiveMode(ServiceBusReceiveMode.PEEK_LOCK)
+    .disableAutoComplete()  // Make sure to explicitly opt in to manual settlement (e.g. complete, abandon).
+    .processMessage(processMessage)
+    .processError(processError)
+    .disableAutoComplete()
+    .buildProcessorClient();
+
+// Starts the processor in the background. Control returns immediately.
 processorClient.start();
+
+// Stop processor and dispose when done processing messages.
+processorClient.stop();
+processorClient.close();
 ```
 
 When receiving message with [ReceiveAndDelete][receive_and_delete_mode_docs] mode, tells the broker to consider all messages it sends to the receiving client as settled when sent.
 
-```java readme-sample-createServiceBusProcessorClientInReceiveAndDeleteMode
-// Sample code that processes a single message which is received in ReceiveAndDelete mode.
+```java com.azure.messaging.servicebus.servicebusprocessorclient#receive-mode-receive-and-delete-instantiation
 Consumer<ServiceBusReceivedMessageContext> processMessage = context -> {
     final ServiceBusReceivedMessage message = context.getMessage();
-    System.out.printf("handler processing message. Session: %s, Sequence #: %s. Contents: %s%n", message.getMessageId(),
-        message.getSequenceNumber(), message.getBody());
+    System.out.printf("Processing message. Session: %s, Sequence #: %s. Contents: %s%n",
+        message.getSessionId(), message.getSequenceNumber(), message.getBody());
 };
 
 // Sample code that gets called if there's an error
@@ -265,19 +270,27 @@ Consumer<ServiceBusErrorContext> processError = errorContext -> {
     System.err.println("Error occurred while receiving message: " + errorContext.getException());
 };
 
-// create the processor client via the builder and its sub-builder
+TokenCredential tokenCredential = new DefaultAzureCredentialBuilder().build();
+
+// Create the processor client via the builder and its sub-builder
+// 'fullyQualifiedNamespace' will look similar to "{your-namespace}.servicebus.windows.net"
 ServiceBusProcessorClient processorClient = new ServiceBusClientBuilder()
-    .connectionString("<< CONNECTION STRING FOR THE SERVICE BUS NAMESPACE >>")
+    .credential(fullyQualifiedNamespace, tokenCredential)
     .processor()
-    .queueName("<< QUEUE NAME >>")
+    .queueName(queueName)
     .receiveMode(ServiceBusReceiveMode.RECEIVE_AND_DELETE)
     .processMessage(processMessage)
     .processError(processError)
     .disableAutoComplete()
     .buildProcessorClient();
 
-// Starts the processor in the background and returns immediately
+
+// Starts the processor in the background. Control returns immediately.
 processorClient.start();
+
+// Stop processor and dispose when done processing messages.
+processorClient.stop();
+processorClient.close();
 ```
 
 There are four ways of settling messages using the methods on the message context passed to your callback.
@@ -340,14 +353,21 @@ The dead-letter queue doesn't need to be explicitly created and can't be deleted
 of the main entity. For session enabled or non-session queue or topic subscriptions, the dead-letter receiver can be
 created the same way as shown below. Learn more about dead-letter queue [here][dead-letter-queue].
 
-```java readme-sample-createSynchronousServiceBusDeadLetterQueueReceiver
+```java com.azure.messaging.servicebus.servicebusreceiverclient.instantiation-deadLetterQueue
+TokenCredential credential = new DefaultAzureCredentialBuilder().build();
+
+// 'fullyQualifiedNamespace' will look similar to "{your-namespace}.servicebus.windows.net"
+// 'disableAutoComplete' indicates that users will explicitly settle their message.
 ServiceBusReceiverClient receiver = new ServiceBusClientBuilder()
-    .connectionString("<< CONNECTION STRING FOR THE SERVICE BUS NAMESPACE >>")
+    .credential(fullyQualifiedNamespace, credential)
     .receiver() // Use this for session or non-session enabled queue or topic/subscriptions
-    .topicName("<< TOPIC NAME >>")
-    .subscriptionName("<< SUBSCRIPTION NAME >>")
+    .topicName(topicName)
+    .subscriptionName(subscriptionName)
     .subQueue(SubQueue.DEAD_LETTER_QUEUE)
     .buildClient();
+
+// Use the receiver and finally close it.
+receiver.close();
 ```
 
 ### Sharing of connection between clients

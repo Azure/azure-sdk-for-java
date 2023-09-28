@@ -9,6 +9,7 @@ import com.azure.core.util.IterableStream;
 import com.azure.identity.DefaultAzureCredentialBuilder;
 import com.azure.messaging.servicebus.models.AbandonOptions;
 import com.azure.messaging.servicebus.models.CompleteOptions;
+import com.azure.messaging.servicebus.models.SubQueue;
 import org.junit.jupiter.api.Test;
 import reactor.core.publisher.Flux;
 import reactor.core.publisher.Mono;
@@ -89,6 +90,52 @@ public class ServiceBusReceiverClientJavaDocCodeSample {
         // Use the receiver and finally close it.
         asyncReceiver.close();
         // END: com.azure.messaging.servicebus.servicebusreceiverasyncclient.instantiation
+    }
+
+    /**
+     * Code sample for creating a synchronous Service Bus receiver to read message from dead-letter queue.
+     */
+    public void instantiateDeadLetterQueue() {
+        // BEGIN: com.azure.messaging.servicebus.servicebusreceiverclient.instantiation-deadLetterQueue
+        TokenCredential credential = new DefaultAzureCredentialBuilder().build();
+
+        // 'fullyQualifiedNamespace' will look similar to "{your-namespace}.servicebus.windows.net"
+        // 'disableAutoComplete' indicates that users will explicitly settle their message.
+        ServiceBusReceiverClient receiver = new ServiceBusClientBuilder()
+            .credential(fullyQualifiedNamespace, credential)
+            .receiver() // Use this for session or non-session enabled queue or topic/subscriptions
+            .topicName(topicName)
+            .subscriptionName(subscriptionName)
+            .subQueue(SubQueue.DEAD_LETTER_QUEUE)
+            .buildClient();
+
+        // Use the receiver and finally close it.
+        receiver.close();
+        // END: com.azure.messaging.servicebus.servicebusreceiverclient.instantiation-deadLetterQueue
+    }
+
+    /**
+     * Receives messages from a topic and subscription.
+     */
+    public void receiveMessages() {
+        // BEGIN: com.azure.messaging.servicebus.servicebusreceiverclient.receiveMessages-int-duration
+        ServiceBusReceiverClient receiver = new ServiceBusClientBuilder()
+            .connectionString("<< CONNECTION STRING FOR THE SERVICE BUS NAMESPACE >>")
+            .receiver()
+            .topicName("<< TOPIC NAME >>")
+            .subscriptionName("<< SUBSCRIPTION NAME >>")
+            .buildClient();
+
+        // Receives a batch of messages when 10 messages are received or until 30 seconds have elapsed, whichever
+        // happens first.
+        IterableStream<ServiceBusReceivedMessage> messages = receiver.receiveMessages(10, Duration.ofSeconds(30));
+        messages.forEach(message -> {
+            System.out.printf("Id: %s. Contents: %s%n", message.getMessageId(), message.getBody());
+        });
+
+        // When you are done using the receiver, dispose of it.
+        receiver.close();
+        // END: com.azure.messaging.servicebus.servicebusreceiverclient.receiveMessages-int-duration
     }
 
     /**
@@ -190,6 +237,7 @@ public class ServiceBusReceiverClientJavaDocCodeSample {
     /**
      * Demonstrates how to use a transaction.
      */
+    @Test
     public void transactionsSnippet() {
         TokenCredential credential = new DefaultAzureCredentialBuilder().build();
 
