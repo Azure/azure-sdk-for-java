@@ -348,8 +348,6 @@ public class OpenAISyncClientTest extends OpenAIClientTestBase {
                     // The last stream message is empty with all the filters set to null
                     assertEquals(1, completions.getChoices().size());
                     Choice choice = completions.getChoices().get(0);
-                    // TODO: service issue: we could have "length" as the finish reason.
-                    //       Non-Streaming happens less frequency than streaming API.
                     assertEquals(CompletionsFinishReason.fromString("stop"), choice.getFinishReason());
                     assertNotNull(choice.getText());
 

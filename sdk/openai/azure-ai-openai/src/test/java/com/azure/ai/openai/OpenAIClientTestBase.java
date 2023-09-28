@@ -34,6 +34,7 @@ import com.azure.core.http.policy.HttpLogOptions;
 import com.azure.core.http.rest.Response;
 import com.azure.core.test.TestMode;
 import com.azure.core.test.TestProxyTestBase;
+import com.azure.core.test.models.TestProxyRequestMatcher;
 import com.azure.core.test.models.TestProxySanitizer;
 import com.azure.core.test.models.TestProxySanitizerType;
 import com.azure.core.util.BinaryData;
@@ -71,6 +72,11 @@ public abstract class OpenAIClientTestBase extends TestProxyTestBase {
         }
 
         if (getTestMode() == TestMode.PLAYBACK) {
+            // Adjusts the "match" operation to EXCLUDE the body when matching a request to a recording's entries
+            List<TestProxyRequestMatcher> matchers = new ArrayList<>();
+            matchers.add(new TestProxyRequestMatcher(TestProxyRequestMatcher.TestProxyRequestMatcherType.BODILESS));
+            interceptorManager.addMatchers(matchers);
+
             builder
                 .endpoint("https://localhost:8080")
                 .credential(new AzureKeyCredential(FAKE_API_KEY));
@@ -96,6 +102,11 @@ public abstract class OpenAIClientTestBase extends TestProxyTestBase {
         }
 
         if (getTestMode() == TestMode.PLAYBACK) {
+            // Adjusts the "match" operation to EXCLUDE the body when matching a request to a recording's entries
+            List<TestProxyRequestMatcher> matchers = new ArrayList<>();
+            matchers.add(new TestProxyRequestMatcher(TestProxyRequestMatcher.TestProxyRequestMatcherType.BODILESS));
+            interceptorManager.addMatchers(matchers);
+
             builder
                 .credential(new KeyCredential(FAKE_API_KEY));
         } else if (getTestMode() == TestMode.RECORD) {
@@ -112,7 +123,9 @@ public abstract class OpenAIClientTestBase extends TestProxyTestBase {
     private void addTestRecordCustomSanitizers() {
         interceptorManager.addSanitizers(Arrays.asList(
             new TestProxySanitizer("$..key", null, "REDACTED", TestProxySanitizerType.BODY_KEY),
-            new TestProxySanitizer("$..endpoint", null, "https://REDACTED", TestProxySanitizerType.BODY_KEY)
+            new TestProxySanitizer("$..endpoint", null, "https://REDACTED", TestProxySanitizerType.BODY_KEY),
+            new TestProxySanitizer("Content-Type", "(^multipart\\/form-data; boundary=[0-9a-f]{8}-[0-9a-f]{4}-[0-9a-f]{2})",
+                "multipart\\/form-data; boundary=REDACTED", TestProxySanitizerType.HEADER)
         ));
     }
 
