@@ -11,8 +11,8 @@ import com.azure.identity.DefaultAzureCredentialBuilder;
 import com.azure.storage.blob.BlobUrlParts;
 import com.azure.storage.blob.models.BlobErrorCode;
 import com.azure.storage.common.Utility;
+import com.azure.storage.common.implementation.Constants;
 import com.azure.storage.file.datalake.models.DataLakeAccessPolicy;
-import com.azure.storage.file.datalake.models.DataLakeAudience;
 import com.azure.storage.file.datalake.models.DataLakeRequestConditions;
 import com.azure.storage.file.datalake.models.DataLakeSignedIdentifier;
 import com.azure.storage.file.datalake.models.DataLakeStorageException;
@@ -950,7 +950,9 @@ public class FileSystemApiTests extends DataLakeTestBase {
             .getValue();
 
         List<PathAccessControlEntry> acl = client.getAccessControl().getAccessControlList();
+        System.out.println("expected: " + pathAccessControlEntries.get(0) + " and actual: " + acl.get(0));
         assertEquals(pathAccessControlEntries.get(0), acl.get(0)); // testing if owner is set the same
+        System.out.println("expected: " + pathAccessControlEntries.get(1) + " and actual: " + acl.get(1));
         assertEquals(pathAccessControlEntries.get(1), acl.get(1)); // testing if group is set the same
     }
 
@@ -2219,20 +2221,7 @@ public class FileSystemApiTests extends DataLakeTestBase {
         DataLakeFileSystemClient aadFsClient =
             getFileSystemClientBuilderWithTokenCredential(ENVIRONMENT.getPrimaryAccount().getDataLakeEndpoint())
                 .fileSystemName(dataLakeFileSystemClient.getFileSystemName())
-                .dataLakeAudience(DataLakeAudience.PUBLIC_AUDIENCE)
-                .buildClient();
-
-        assertTrue(aadFsClient.exists());
-    }
-
-    @Test
-    public void customAudience() {
-        DataLakeAudience audience = DataLakeAudience.fromString(String.format("https://%s.blob.core.windows.net",
-            dataLakeFileSystemClient.getAccountName()));
-        DataLakeFileSystemClient aadFsClient =
-            getFileSystemClientBuilderWithTokenCredential(ENVIRONMENT.getPrimaryAccount().getDataLakeEndpoint())
-                .fileSystemName(dataLakeFileSystemClient.getFileSystemName())
-                .dataLakeAudience(audience)
+                .audience(null) // should default to "https://storage.azure.com/"
                 .buildClient();
 
         assertTrue(aadFsClient.exists());
@@ -2243,8 +2232,7 @@ public class FileSystemApiTests extends DataLakeTestBase {
         DataLakeFileSystemClient aadFsClient =
             getFileSystemClientBuilderWithTokenCredential(ENVIRONMENT.getPrimaryAccount().getDataLakeEndpoint())
                 .fileSystemName(dataLakeFileSystemClient.getFileSystemName())
-                .dataLakeAudience(DataLakeAudience.getDataLakeServiceAccountAudience(
-                    dataLakeFileSystemClient.getAccountName()))
+                .audience(dataLakeFileSystemClient.getAccountName())
                 .buildClient();
 
         assertTrue(aadFsClient.exists());
@@ -2252,10 +2240,9 @@ public class FileSystemApiTests extends DataLakeTestBase {
 
     @Test
     public void audienceError() {
-        DataLakeAudience audience = DataLakeAudience.fromString("https://badaudience.blob.core.windows.net");
         DataLakeFileSystemClient aadFsClient =
             getFileSystemClientBuilderWithTokenCredential(ENVIRONMENT.getPrimaryAccount().getDataLakeEndpoint())
-                .dataLakeAudience(audience)
+                .audience("badaudience")
                 .buildClient();
 
         DataLakeStorageException e = assertThrows(DataLakeStorageException.class, aadFsClient::exists);

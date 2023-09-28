@@ -30,7 +30,6 @@ import com.azure.core.util.HttpClientOptions;
 import com.azure.core.util.logging.ClientLogger;
 import com.azure.storage.blob.implementation.models.EncryptionScope;
 import com.azure.storage.blob.implementation.util.BuilderHelper;
-import com.azure.storage.blob.models.BlobAudience;
 import com.azure.storage.blob.models.BlobContainerEncryptionScope;
 import com.azure.storage.blob.models.CpkInfo;
 import com.azure.storage.blob.models.CustomerProvidedKey;
@@ -95,7 +94,7 @@ public final class BlobServiceClientBuilder implements
     private ClientOptions clientOptions = new ClientOptions();
     private Configuration configuration;
     private BlobServiceVersion version;
-    private BlobAudience blobAudience;
+    private String blobAudience;
 
     /**
      * Creates a builder instance that is able to configure and construct {@link BlobServiceClient BlobServiceClients}
@@ -535,13 +534,21 @@ public final class BlobServiceClientBuilder implements
     }
 
     /**
-     * Sets the Audience to use for authentication with Azure Active Directory (AAD). The audience is not considered
-     * when using a shared key.
-     * @param audience {@link BlobAudience} to be used when requesting a token from Azure Active Directory (AAD).
+     * Sets the Audience to use for authentication with Azure Active Directory (AAD) when forming authorization scopes
+     * for a given storage account. The audience is not considered when using a shared key.
+     * For the Language service, this value corresponds to a URL that identifies the Azure cloud where the resource is
+     * located. For more information see
+     * <a href="https://learn.microsoft.com/en-us/azure/storage/blobs/authorize-access-azure-active-directory">
+     *     Authorize access to Azure blobs using Azure Active Directory</a>.
+     * @param storageAccountName the storage account name to be used to append to the respective service endpoint when
+     * requesting a token from Azure Active Directory (AAD).
      * @return the updated BlobServiceClientBuilder object
      */
-    public BlobServiceClientBuilder blobAudience(BlobAudience audience) {
-        this.blobAudience = audience;
+    public BlobServiceClientBuilder audience(String storageAccountName) {
+        if (storageAccountName == null) {
+            return this;
+        }
+        this.blobAudience = String.format("https://%s.blob.core.windows.net/", storageAccountName);
         return this;
     }
 }

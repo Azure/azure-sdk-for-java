@@ -37,7 +37,6 @@ import com.azure.storage.common.sas.CommonSasQueryParameters;
 import com.azure.storage.file.share.implementation.AzureFileStorageImpl;
 import com.azure.storage.file.share.implementation.AzureFileStorageImplBuilder;
 import com.azure.storage.file.share.implementation.util.BuilderHelper;
-import com.azure.storage.file.share.models.ShareAudience;
 import com.azure.storage.file.share.models.ShareTokenIntent;
 
 import java.net.MalformedURLException;
@@ -185,7 +184,7 @@ public class ShareFileClientBuilder implements
     private ShareTokenIntent shareTokenIntent;
     private boolean allowSourceTrailingDot;
     private boolean allowTrailingDot;
-    private ShareAudience shareAudience;
+    private String shareAudience;
 
     /**
      * Creates a builder instance that is able to configure and construct {@link ShareFileClient FileClients} and {@link
@@ -732,13 +731,21 @@ public class ShareFileClientBuilder implements
     }
 
     /**
-     * Sets the Audience to use for authentication with Azure Active Directory (AAD). The audience is not considered
-     * when using a shared key.
-     * @param audience {@link ShareAudience} to be used when requesting a token from Azure Active Directory (AAD).
+     * Sets the Audience to use for authentication with Azure Active Directory (AAD) when forming authorization scopes
+     * for a given storage account. The audience is not considered when using a shared key.
+     * For the Language service, this value corresponds to a URL that identifies the Azure cloud where the resource is
+     * located. For more information see
+     * <a href="https://learn.microsoft.com/en-us/azure/storage/blobs/authorize-access-azure-active-directory">
+     *     Authorize access to Azure blobs using Azure Active Directory</a>.
+     * @param storageAccountName the storage account name to be used to append to the respective service endpoint when
+     * requesting a token from Azure Active Directory (AAD).
      * @return the updated ShareFileClientBuilder object
      */
-    public ShareFileClientBuilder shareAudience(ShareAudience audience) {
-        this.shareAudience = audience;
+    public ShareFileClientBuilder audience(String storageAccountName) {
+        if (storageAccountName == null) {
+            return this;
+        }
+        this.shareAudience = String.format("https://%s.file.core.windows.net/", storageAccountName);
         return this;
     }
 }

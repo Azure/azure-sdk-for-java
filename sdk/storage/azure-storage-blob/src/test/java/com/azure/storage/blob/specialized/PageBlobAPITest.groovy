@@ -11,7 +11,6 @@ import com.azure.storage.blob.APISpec
 import com.azure.storage.blob.BlobContainerClient
 import com.azure.storage.blob.BlobServiceClient
 import com.azure.storage.blob.BlobServiceVersion
-import com.azure.storage.blob.models.BlobAudience
 import com.azure.storage.blob.models.BlobErrorCode
 import com.azure.storage.blob.models.BlobHttpHeaders
 import com.azure.storage.blob.models.BlobRange
@@ -24,7 +23,6 @@ import com.azure.storage.blob.models.PageBlobRequestConditions
 import com.azure.storage.blob.models.PageRange
 import com.azure.storage.blob.models.PublicAccessType
 import com.azure.storage.blob.models.SequenceNumberActionType
-import com.azure.storage.blob.options.AppendBlobCreateOptions
 import com.azure.storage.blob.options.BlobGetTagsOptions
 import com.azure.storage.blob.options.ListPageRangesDiffOptions
 import com.azure.storage.blob.options.ListPageRangesOptions
@@ -1854,19 +1852,7 @@ class PageBlobAPITest extends APISpec {
     def "Default audience"() {
         setup:
         def aadBlob = getSpecializedBuilderWithTokenCredential(bc.getBlobUrl())
-            .blobAudience(BlobAudience.PUBLIC_AUDIENCE)
-            .buildPageBlobClient()
-
-        expect:
-        aadBlob.exists()
-    }
-
-    def "Custom audience"() {
-        setup:
-        def audience = BlobAudience.fromString(String.format("https://%s.blob.core.windows.net", cc.getAccountName()))
-
-        def aadBlob = getSpecializedBuilderWithTokenCredential(bc.getBlobUrl())
-            .blobAudience(audience)
+            .blobAudience(Constants.STORAGE_SCOPE)
             .buildPageBlobClient()
 
         expect:
@@ -1876,7 +1862,7 @@ class PageBlobAPITest extends APISpec {
     def "Storage account audience"() {
         setup:
         def aadBlob = getSpecializedBuilderWithTokenCredential(bc.getBlobUrl())
-            .blobAudience(BlobAudience.getBlobServiceAccountAudience(cc.getAccountName()))
+            .blobAudience(cc.getAccountName())
             .buildPageBlobClient()
 
         expect:
@@ -1885,11 +1871,9 @@ class PageBlobAPITest extends APISpec {
 
     def "Audience error"() {
         setup:
-        def audience = BlobAudience.fromString("https://badaudience.blob.core.windows.net")
-
         def aadBlob = new SpecializedBlobClientBuilder().endpoint(bc.getBlobUrl())
             .credential(new MockTokenCredential())
-            .blobAudience(audience).buildPageBlobClient()
+            .blobAudience("badaudience").buildPageBlobClient()
 
         when:
         aadBlob.exists()

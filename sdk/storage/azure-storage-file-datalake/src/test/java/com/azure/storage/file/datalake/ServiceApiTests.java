@@ -13,12 +13,12 @@ import com.azure.storage.blob.BlobContainerClient;
 import com.azure.storage.blob.BlobUrlParts;
 import com.azure.storage.blob.models.BlobErrorCode;
 import com.azure.storage.common.ParallelTransferOptions;
+import com.azure.storage.common.implementation.Constants;
 import com.azure.storage.common.sas.AccountSasPermission;
 import com.azure.storage.common.sas.AccountSasResourceType;
 import com.azure.storage.common.sas.AccountSasService;
 import com.azure.storage.common.sas.AccountSasSignatureValues;
 import com.azure.storage.file.datalake.models.DataLakeAnalyticsLogging;
-import com.azure.storage.file.datalake.models.DataLakeAudience;
 import com.azure.storage.file.datalake.models.DataLakeCorsRule;
 import com.azure.storage.file.datalake.models.DataLakeMetrics;
 import com.azure.storage.file.datalake.models.DataLakeRetentionPolicy;
@@ -701,18 +701,7 @@ public class ServiceApiTests extends DataLakeTestBase {
     @Test
     public void defaultAudience() {
         DataLakeServiceClient aadServiceClient = getOAuthServiceClientBuilder()
-            .dataLakeAudience(DataLakeAudience.PUBLIC_AUDIENCE)
-            .buildClient();
-
-        assertNotNull(aadServiceClient.getProperties());
-    }
-
-    @Test
-    public void customAudience() {
-        DataLakeAudience audience = DataLakeAudience.fromString(String.format("https://%s.blob.core.windows.net",
-            primaryDataLakeServiceClient.getAccountName()));
-        DataLakeServiceClient aadServiceClient = getOAuthServiceClientBuilder()
-            .dataLakeAudience(audience)
+            .audience(null) // should default to "https://storage.azure.com/"
             .buildClient();
 
         assertNotNull(aadServiceClient.getProperties());
@@ -721,8 +710,7 @@ public class ServiceApiTests extends DataLakeTestBase {
     @Test
     public void storageAccountAudience() {
         DataLakeServiceClient aadServiceClient = getOAuthServiceClientBuilder()
-            .dataLakeAudience(DataLakeAudience.getDataLakeServiceAccountAudience(
-                primaryDataLakeServiceClient.getAccountName()))
+            .audience(primaryDataLakeServiceClient.getAccountName())
             .buildClient();
 
         assertNotNull(aadServiceClient.getProperties());
@@ -730,9 +718,8 @@ public class ServiceApiTests extends DataLakeTestBase {
 
     @Test
     public void audienceError() {
-        DataLakeAudience audience = DataLakeAudience.fromString("https://badaudience.blob.core.windows.net");
         DataLakeServiceClient aadServiceClient = getOAuthServiceClientBuilder()
-            .dataLakeAudience(audience)
+            .audience("badaudience")
             .buildClient();
 
         DataLakeStorageException e = assertThrows(DataLakeStorageException.class, aadServiceClient::getProperties);

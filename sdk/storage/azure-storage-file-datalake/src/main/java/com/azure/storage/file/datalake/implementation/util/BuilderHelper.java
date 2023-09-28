@@ -39,7 +39,6 @@ import com.azure.storage.common.policy.RequestRetryOptions;
 import com.azure.storage.common.policy.ResponseValidationPolicyBuilder;
 import com.azure.storage.common.policy.ScrubEtagPolicy;
 import com.azure.storage.common.policy.StorageSharedKeyCredentialPolicy;
-import com.azure.storage.file.datalake.models.DataLakeAudience;
 
 import java.net.MalformedURLException;
 import java.util.ArrayList;
@@ -79,7 +78,7 @@ public final class BuilderHelper {
      * @param perRetryPolicies Additional {@link HttpPipelinePolicy policies} to set in the pipeline per retry.
      * @param configuration Configuration store contain environment settings.
      * @param logger {@link ClientLogger} used to log any exception.
-     * @param dataLakeAudience {@link DataLakeAudience} used to determine the audience of the path.
+     * @param dataLakeAudience used to determine the audience of the path.
      * @return A new {@link HttpPipeline} from the passed values.
      */
     public static HttpPipeline buildPipeline(
@@ -88,7 +87,7 @@ public final class BuilderHelper {
         RequestRetryOptions retryOptions, RetryOptions coreRetryOptions,
         HttpLogOptions logOptions, ClientOptions clientOptions, HttpClient httpClient,
         List<HttpPipelinePolicy> perCallPolicies, List<HttpPipelinePolicy> perRetryPolicies,
-        Configuration configuration, ClientLogger logger, DataLakeAudience dataLakeAudience) {
+        Configuration configuration, ClientLogger logger, String dataLakeAudience) {
 
         CredentialValidator.validateSingleCredentialIsPresent(
             storageSharedKeyCredential, tokenCredential, azureSasCredential, null, logger);
@@ -119,8 +118,8 @@ public final class BuilderHelper {
         } else if (tokenCredential != null) {
             // The endpoint scope for the BearerToken is the blob endpoint not dfs
             String audience = dataLakeAudience != null
-                ? ((dataLakeAudience.toString().endsWith("/") ? dataLakeAudience + ".default"
-                : dataLakeAudience + "/.default")) : Constants.STORAGE_SCOPE;
+                ? ((dataLakeAudience.endsWith("/") ? dataLakeAudience + ".default" : dataLakeAudience + "/.default"))
+                : Constants.STORAGE_SCOPE;
             credentialPolicy =  new BearerTokenAuthenticationPolicy(tokenCredential, audience);
         } else if (azureSasCredential != null) {
             credentialPolicy = new AzureSasCredentialPolicy(azureSasCredential, false);

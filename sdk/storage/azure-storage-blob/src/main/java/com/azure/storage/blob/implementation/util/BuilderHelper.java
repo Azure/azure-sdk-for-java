@@ -28,7 +28,6 @@ import com.azure.core.util.logging.ClientLogger;
 import com.azure.core.util.tracing.Tracer;
 import com.azure.core.util.tracing.TracerProvider;
 import com.azure.storage.blob.BlobUrlParts;
-import com.azure.storage.blob.models.BlobAudience;
 import com.azure.storage.common.StorageSharedKeyCredential;
 import com.azure.storage.common.implementation.BuilderUtils;
 import com.azure.storage.common.implementation.Constants;
@@ -78,7 +77,7 @@ public final class BuilderHelper {
      * @param perRetryPolicies Additional {@link HttpPipelinePolicy policies} to set in the pipeline per retry.
      * @param configuration Configuration store contain environment settings.
      * @param logger {@link ClientLogger} used to log any exception.
-     * @param blobAudience {@link BlobAudience} used to determine the audience of the blob.
+     * @param blobAudience used to determine the audience of the blob.
      * @return A new {@link HttpPipeline} from the passed values.
      */
     public static HttpPipeline buildPipeline(
@@ -87,7 +86,7 @@ public final class BuilderHelper {
         RequestRetryOptions retryOptions, RetryOptions coreRetryOptions,
         HttpLogOptions logOptions, ClientOptions clientOptions, HttpClient httpClient,
         List<HttpPipelinePolicy> perCallPolicies, List<HttpPipelinePolicy> perRetryPolicies,
-        Configuration configuration, ClientLogger logger, BlobAudience blobAudience) {
+        Configuration configuration, ClientLogger logger, String blobAudience) {
 
         CredentialValidator.validateSingleCredentialIsPresent(
             storageSharedKeyCredential, tokenCredential, azureSasCredential, sasToken, logger);
@@ -118,7 +117,7 @@ public final class BuilderHelper {
         } else if (tokenCredential != null) {
             httpsValidation(tokenCredential, "bearer token", endpoint, logger);
             String audience = blobAudience != null
-                ? ((blobAudience.toString().endsWith("/") ? blobAudience + ".default" : blobAudience + "/.default"))
+                ? ((blobAudience.endsWith("/") ? blobAudience + ".default" : blobAudience + "/.default"))
                 : Constants.STORAGE_SCOPE;
             credentialPolicy =  new BearerTokenAuthenticationPolicy(tokenCredential, audience);
         } else if (azureSasCredential != null) {

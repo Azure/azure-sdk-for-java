@@ -12,7 +12,6 @@ import com.azure.identity.DefaultAzureCredentialBuilder
 import com.azure.storage.blob.models.AccessTier
 import com.azure.storage.blob.models.AppendBlobItem
 import com.azure.storage.blob.models.BlobAccessPolicy
-import com.azure.storage.blob.models.BlobAudience
 import com.azure.storage.blob.models.BlobErrorCode
 import com.azure.storage.blob.models.BlobListDetails
 import com.azure.storage.blob.models.BlobProperties
@@ -36,13 +35,11 @@ import com.azure.storage.blob.options.FindBlobsOptions
 import com.azure.storage.blob.options.PageBlobCreateOptions
 import com.azure.storage.blob.specialized.AppendBlobClient
 import com.azure.storage.blob.specialized.BlobClientBase
-import com.azure.storage.blob.specialized.SpecializedBlobClientBuilder
 import com.azure.storage.common.Utility
 import com.azure.storage.common.implementation.Constants
 import com.azure.storage.common.test.shared.extensions.PlaybackOnly
 import com.azure.storage.common.test.shared.extensions.RequiredServiceVersion
 import reactor.test.StepVerifier
-import spock.lang.Requires
 import spock.lang.Unroll
 
 import java.time.Duration
@@ -2193,17 +2190,8 @@ class ContainerAPITest extends APISpec {
     def "Default Audience"() {
         setup:
         def aadContainer = getContainerClientBuilderWithTokenCredential(cc.getBlobContainerUrl())
-            .blobAudience(BlobAudience.PUBLIC_AUDIENCE).buildClient()
-
-        expect:
-        aadContainer.exists()
-    }
-
-    def "Custom audience"() {
-        setup:
-        def audience = BlobAudience.fromString(String.format("https://%s.blob.core.windows.net", cc.getAccountName()))
-        def aadContainer = getContainerClientBuilderWithTokenCredential(cc.getBlobContainerUrl())
-            .blobAudience(audience).buildClient()
+            .blobAudience(null) // should default to "https://storage.azure.com/"
+            .buildClient()
 
         expect:
         aadContainer.exists()
@@ -2212,7 +2200,8 @@ class ContainerAPITest extends APISpec {
     def "Storage account audience"() {
         setup:
         def aadContainer = getContainerClientBuilderWithTokenCredential(cc.getBlobContainerUrl())
-            .blobAudience(BlobAudience.getBlobServiceAccountAudience(cc.getAccountName())).buildClient()
+            .audience(cc.getAccountName())
+            .buildClient()
 
         expect:
         aadContainer.exists()
@@ -2220,11 +2209,10 @@ class ContainerAPITest extends APISpec {
 
     def "Audience error"() {
         setup:
-        def audience = BlobAudience.fromString("https://badaudience.blob.core.windows.net")
-
         def aadContainer = getContainerClientBuilder(cc.getBlobContainerUrl())
             .credential(new MockTokenCredential())
-            .blobAudience(audience).buildClient()
+            .audience("badaudience")
+            .buildClient()
 
         when:
         aadContainer.exists()

@@ -12,7 +12,6 @@ import com.azure.core.util.paging.ContinuablePage
 import com.azure.identity.DefaultAzureCredentialBuilder
 import com.azure.storage.blob.models.BlobAccessPolicy
 import com.azure.storage.blob.models.BlobAnalyticsLogging
-import com.azure.storage.blob.models.BlobAudience
 import com.azure.storage.blob.models.BlobContainerItem
 import com.azure.storage.blob.models.BlobContainerListDetails
 import com.azure.storage.blob.models.BlobCorsRule
@@ -1213,17 +1212,8 @@ class ServiceAPITest extends APISpec {
     def "Default Audience"() {
         setup:
         def aadService = getContainerClientBuilderWithTokenCredential(cc.getBlobContainerUrl())
-            .blobAudience(BlobAudience.PUBLIC_AUDIENCE).buildClient()
-
-        expect:
-        aadService.getProperties() != null
-    }
-
-    def "Custom audience"() {
-        setup:
-        def audience = BlobAudience.fromString(String.format("https://%s.blob.core.windows.net", cc.getAccountName()))
-        def aadService = getContainerClientBuilderWithTokenCredential(cc.getBlobContainerUrl())
-            .blobAudience(audience).buildClient()
+            .audience(null) // should default to "https://storage.azure.com/"
+            .buildClient()
 
         expect:
         aadService.getProperties() != null
@@ -1232,7 +1222,8 @@ class ServiceAPITest extends APISpec {
     def "Storage account audience"() {
         setup:
         def aadService = getContainerClientBuilderWithTokenCredential(cc.getBlobContainerUrl())
-            .blobAudience(BlobAudience.getBlobServiceAccountAudience(cc.getAccountName())).buildClient()
+            .audience(cc.getAccountName())
+            .buildClient()
 
         expect:
         aadService.getProperties() != null
@@ -1240,12 +1231,10 @@ class ServiceAPITest extends APISpec {
 
     def "Audience error"() {
         setup:
-        def audience = BlobAudience.fromString("https://badaudience.blob.core.windows.net")
-
         def aadService = new BlobServiceClientBuilder()
             .endpoint(cc.getBlobContainerUrl())
             .credential(new MockTokenCredential())
-            .blobAudience(audience)
+            .audience("badaudience")
             .buildClient()
 
         when:

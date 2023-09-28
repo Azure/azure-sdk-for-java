@@ -26,7 +26,6 @@ import com.azure.storage.blob.BlobUrlParts
 import com.azure.storage.blob.ProgressReceiver
 import com.azure.storage.blob.implementation.models.BlockBlobsPutBlobFromUrlHeaders
 import com.azure.storage.blob.models.AccessTier
-import com.azure.storage.blob.models.BlobAudience
 import com.azure.storage.blob.models.BlobCopySourceTagsMode
 import com.azure.storage.blob.models.BlobErrorCode
 import com.azure.storage.blob.models.BlobHttpHeaders
@@ -2692,19 +2691,7 @@ class BlockBlobAPITest extends APISpec {
     def "Default audience"() {
         setup:
         def aadBlob = getSpecializedBuilderWithTokenCredential(blockBlobClient.getBlobUrl())
-            .blobAudience(BlobAudience.PUBLIC_AUDIENCE)
-            .buildBlockBlobClient()
-
-        expect:
-        aadBlob.exists()
-    }
-
-    def "Custom audience"() {
-        setup:
-        def audience = BlobAudience.fromString(String.format("https://%s.blob.core.windows.net", cc.getAccountName()))
-
-        def aadBlob = getSpecializedBuilderWithTokenCredential(blockBlobClient.getBlobUrl())
-            .blobAudience(audience)
+            .blobAudience(null) // should default to "https://storage.azure.com/"
             .buildBlockBlobClient()
 
         expect:
@@ -2714,7 +2701,7 @@ class BlockBlobAPITest extends APISpec {
     def "Storage account audience"() {
         setup:
         def aadBlob = getSpecializedBuilderWithTokenCredential(blockBlobClient.getBlobUrl())
-            .blobAudience(BlobAudience.getBlobServiceAccountAudience(cc.getAccountName()))
+            .blobAudience(cc.getAccountName())
             .buildBlockBlobClient()
 
         expect:
@@ -2723,11 +2710,9 @@ class BlockBlobAPITest extends APISpec {
 
     def "Audience error"() {
         setup:
-        def audience = BlobAudience.fromString("https://badaudience.blob.core.windows.net")
-
         def aadBlob = new SpecializedBlobClientBuilder().endpoint(blockBlobClient.getBlobUrl())
             .credential(new MockTokenCredential())
-            .blobAudience(audience).buildBlockBlobClient()
+            .blobAudience("badaudience").buildBlockBlobClient()
 
         when:
         aadBlob.exists()

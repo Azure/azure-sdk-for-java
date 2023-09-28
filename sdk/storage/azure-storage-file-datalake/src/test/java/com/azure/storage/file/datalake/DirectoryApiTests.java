@@ -17,6 +17,7 @@ import com.azure.identity.DefaultAzureCredentialBuilder;
 import com.azure.storage.blob.BlobUrlParts;
 import com.azure.storage.blob.models.BlobErrorCode;
 import com.azure.storage.common.Utility;
+import com.azure.storage.common.implementation.Constants;
 import com.azure.storage.common.policy.RequestRetryOptions;
 import com.azure.storage.common.sas.AccountSasPermission;
 import com.azure.storage.common.sas.AccountSasResourceType;
@@ -29,7 +30,6 @@ import com.azure.storage.file.datalake.models.AccessControlChanges;
 import com.azure.storage.file.datalake.models.AccessControlType;
 import com.azure.storage.file.datalake.models.AccessTier;
 import com.azure.storage.file.datalake.models.DataLakeAclChangeFailedException;
-import com.azure.storage.file.datalake.models.DataLakeAudience;
 import com.azure.storage.file.datalake.models.DataLakeRequestConditions;
 import com.azure.storage.file.datalake.models.DataLakeStorageException;
 import com.azure.storage.file.datalake.models.LeaseStateType;
@@ -3425,20 +3425,7 @@ public class DirectoryApiTests extends DataLakeTestBase {
         DataLakeDirectoryClient aadDirClient = getPathClientBuilderWithTokenCredential(
             dataLakeFileSystemClient.getFileSystemUrl(), dc.getDirectoryPath())
             .fileSystemName(dataLakeFileSystemClient.getFileSystemName())
-            .dataLakeAudience(DataLakeAudience.PUBLIC_AUDIENCE)
-            .buildDirectoryClient();
-
-        assertTrue(aadDirClient.exists());
-    }
-
-    @Test
-    public void customAudience() {
-        DataLakeAudience audience = DataLakeAudience.fromString(String.format("https://%s.blob.core.windows.net",
-            dataLakeFileSystemClient.getAccountName()));
-        DataLakeDirectoryClient aadDirClient = getPathClientBuilderWithTokenCredential(
-            ENVIRONMENT.getDataLakeAccount().getDataLakeEndpoint(), dc.getDirectoryPath())
-            .fileSystemName(dataLakeFileSystemClient.getFileSystemName())
-            .dataLakeAudience(audience)
+            .audience(null) // should default to "https://storage.azure.com/"
             .buildDirectoryClient();
 
         assertTrue(aadDirClient.exists());
@@ -3449,8 +3436,7 @@ public class DirectoryApiTests extends DataLakeTestBase {
         DataLakeDirectoryClient aadDirClient = getPathClientBuilderWithTokenCredential(
             ENVIRONMENT.getDataLakeAccount().getDataLakeEndpoint(), dc.getDirectoryPath())
             .fileSystemName(dataLakeFileSystemClient.getFileSystemName())
-            .dataLakeAudience(DataLakeAudience.getDataLakeServiceAccountAudience(
-                dataLakeFileSystemClient.getAccountName()))
+            .audience(dataLakeFileSystemClient.getAccountName())
             .buildDirectoryClient();
 
         assertTrue(aadDirClient.exists());
@@ -3458,11 +3444,10 @@ public class DirectoryApiTests extends DataLakeTestBase {
 
     @Test
     public void audienceError() {
-        DataLakeAudience audience = DataLakeAudience.fromString("https://badaudience.blob.core.windows.net");
         DataLakeDirectoryClient aadDirClient = getPathClientBuilderWithTokenCredential(
             ENVIRONMENT.getDataLakeAccount().getDataLakeEndpoint(), dc.getDirectoryPath())
             .fileSystemName(dataLakeFileSystemClient.getFileSystemName())
-            .dataLakeAudience(audience)
+            .audience("badaudience")
             .buildDirectoryClient();
 
         DataLakeStorageException e = assertThrows(DataLakeStorageException.class, aadDirClient::exists);

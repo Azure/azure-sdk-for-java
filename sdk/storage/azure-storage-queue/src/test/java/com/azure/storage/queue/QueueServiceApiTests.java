@@ -8,7 +8,6 @@ import com.azure.core.http.rest.PagedResponse;
 import com.azure.core.http.rest.Response;
 import com.azure.identity.DefaultAzureCredentialBuilder;
 import com.azure.storage.queue.models.QueueAnalyticsLogging;
-import com.azure.storage.queue.models.QueueAudience;
 import com.azure.storage.queue.models.QueueErrorCode;
 import com.azure.storage.queue.models.QueueItem;
 import com.azure.storage.queue.models.QueueMetrics;
@@ -231,18 +230,7 @@ public class QueueServiceApiTests extends QueueTestBase {
     @Test
     public void defaultAudience() {
         QueueServiceClient aadService = getOAuthServiceClientBuilder(primaryQueueServiceClient.getQueueServiceUrl())
-            .queueAudience(QueueAudience.PUBLIC_AUDIENCE)
-            .buildClient();
-
-        assertNotNull(aadService.getProperties());
-    }
-
-    @Test
-    public void customAudience() {
-        QueueAudience audience = QueueAudience.fromString(String.format("https://%s.queue.core.windows.net",
-            primaryQueueServiceClient.getAccountName()));
-        QueueServiceClient aadService = getOAuthServiceClientBuilder(primaryQueueServiceClient.getQueueServiceUrl())
-            .queueAudience(audience)
+            .audience(null) // should default to "https://storage.azure.com/"
             .buildClient();
 
         assertNotNull(aadService.getProperties());
@@ -251,7 +239,7 @@ public class QueueServiceApiTests extends QueueTestBase {
     @Test
     public void storageAccountAudience() {
         QueueServiceClient aadService = getOAuthServiceClientBuilder(primaryQueueServiceClient.getQueueServiceUrl())
-            .queueAudience(QueueAudience.getShareServiceAccountAudience(primaryQueueServiceClient.getAccountName()))
+            .audience(primaryQueueServiceClient.getAccountName())
             .buildClient();
 
         assertNotNull(aadService.getProperties());
@@ -259,9 +247,8 @@ public class QueueServiceApiTests extends QueueTestBase {
 
     @Test
     public void audienceError() {
-        QueueAudience audience = QueueAudience.fromString("https://badaudience.file.core.windows.net");
         QueueServiceClient aadService = getOAuthServiceClientBuilder(primaryQueueServiceClient.getQueueServiceUrl())
-            .queueAudience(audience)
+            .audience("badaudience")
             .buildClient();
 
         QueueStorageException e = assertThrows(QueueStorageException.class, aadService::getProperties);

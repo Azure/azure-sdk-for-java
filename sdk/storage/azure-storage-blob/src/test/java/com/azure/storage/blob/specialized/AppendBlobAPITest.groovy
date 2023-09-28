@@ -4,14 +4,10 @@
 package com.azure.storage.blob.specialized
 
 import com.azure.core.exception.UnexpectedLengthException
-import com.azure.core.http.policy.HttpPipelinePolicy
-import com.azure.core.test.TestMode
 import com.azure.core.test.utils.MockTokenCredential
 import com.azure.core.util.Context
-import com.azure.identity.EnvironmentCredentialBuilder
 import com.azure.storage.blob.APISpec
 import com.azure.storage.blob.BlobServiceVersion
-import com.azure.storage.blob.models.BlobAudience
 import com.azure.storage.blob.options.AppendBlobCreateOptions
 import com.azure.storage.blob.models.AppendBlobRequestConditions
 import com.azure.storage.blob.models.BlobErrorCode
@@ -23,7 +19,6 @@ import com.azure.storage.blob.models.PublicAccessType
 import com.azure.storage.blob.options.AppendBlobSealOptions
 import com.azure.storage.blob.options.BlobGetTagsOptions
 import com.azure.storage.common.implementation.Constants
-import com.azure.storage.common.test.shared.extensions.LiveOnly
 import com.azure.storage.common.test.shared.extensions.RequiredServiceVersion
 import spock.lang.IgnoreIf
 import spock.lang.Unroll
@@ -847,19 +842,7 @@ class AppendBlobAPITest extends APISpec {
     def "Default audience"() {
         setup:
         def aadBlob = getSpecializedBuilderWithTokenCredential(bc.getBlobUrl())
-            .blobAudience(BlobAudience.PUBLIC_AUDIENCE)
-            .buildAppendBlobClient()
-
-        expect:
-        aadBlob.exists()
-    }
-
-    def "Custom audience"() {
-        setup:
-        def audience = BlobAudience.fromString(String.format("https://%s.blob.core.windows.net", cc.getAccountName()))
-
-        def aadBlob = getSpecializedBuilderWithTokenCredential(bc.getBlobUrl())
-            .blobAudience(audience)
+            .blobAudience(null) // should default to "https://storage.azure.com/"
             .buildAppendBlobClient()
 
         expect:
@@ -869,7 +852,7 @@ class AppendBlobAPITest extends APISpec {
     def "Storage account audience"() {
         setup:
         def aadBlob = getSpecializedBuilderWithTokenCredential(bc.getBlobUrl())
-            .blobAudience(BlobAudience.getBlobServiceAccountAudience(cc.getAccountName()))
+            .blobAudience(cc.getAccountName())
             .buildAppendBlobClient()
 
         expect:
@@ -878,11 +861,10 @@ class AppendBlobAPITest extends APISpec {
 
     def "Audience error"() {
         setup:
-        def audience = BlobAudience.fromString("https://badaudience.blob.core.windows.net")
-
-        def aadBlob = new SpecializedBlobClientBuilder().endpoint(bc.getBlobUrl())
+        def aadBlob = new SpecializedBlobClientBuilder()
+            .endpoint(bc.getBlobUrl())
             .credential(new MockTokenCredential())
-            .blobAudience(audience).buildAppendBlobClient()
+            .blobAudience("badaudience").buildAppendBlobClient()
 
         when:
         aadBlob.exists()

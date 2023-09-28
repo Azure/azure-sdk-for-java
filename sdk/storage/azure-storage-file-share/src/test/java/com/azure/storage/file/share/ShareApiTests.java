@@ -12,7 +12,6 @@ import com.azure.storage.file.share.implementation.util.ModelHelper;
 import com.azure.storage.file.share.models.NtfsFileAttributes;
 import com.azure.storage.file.share.models.ShareAccessPolicy;
 import com.azure.storage.file.share.models.ShareAccessTier;
-import com.azure.storage.file.share.models.ShareAudience;
 import com.azure.storage.file.share.models.ShareDirectoryInfo;
 import com.azure.storage.file.share.models.ShareErrorCode;
 import com.azure.storage.file.share.models.ShareFileHttpHeaders;
@@ -1176,7 +1175,7 @@ public class ShareApiTests extends FileShareTestBase {
         primaryShareClient.create();
         ShareClient aadShareClient = getOAuthShareClientBuilder(new ShareClientBuilder().shareName(shareName)
             .shareTokenIntent(ShareTokenIntent.BACKUP))
-            .shareAudience(ShareAudience.PUBLIC_AUDIENCE)
+            .audience(null) // should default to "https://storage.azure.com/"
             .buildClient();
 
         String permission = "O:S-1-5-21-2127521184-1604012920-1887927527-21560751G:S-1-5-21-2127521184-"
@@ -1185,26 +1184,6 @@ public class ShareApiTests extends FileShareTestBase {
 
         String infoPermission = aadShareClient.createPermission(permission);
         assertNotNull(infoPermission);
-    }
-
-    @Test
-    public void customAudience() {
-        primaryShareClient.create();
-        ShareAudience audience = ShareAudience.fromString(String.format("https://%s.file.core.windows.net",
-            primaryShareClient.getAccountName()));
-        ShareClient aadShareClient = getOAuthShareClientBuilder(new ShareClientBuilder())
-            .shareName(shareName)
-            .shareTokenIntent(ShareTokenIntent.BACKUP)
-            .shareAudience(audience)
-            .buildClient();
-
-        String permission = "O:S-1-5-21-2127521184-1604012920-1887927527-21560751G:S-1-5-21-2127521184-"
-            + "1604012920-1887927527-513D:AI(A;;FA;;;SY)(A;;FA;;;BA)(A;;0x1200a9;;;S-1-5-21-397955417-626881126-"
-            + "188441444-3053964)S:NO_ACCESS_CONTROL";
-
-        String infoPermission = aadShareClient.createPermission(permission);
-        assertNotNull(infoPermission);
-
     }
 
     @Test
@@ -1213,7 +1192,7 @@ public class ShareApiTests extends FileShareTestBase {
         ShareClient aadShareClient = getOAuthShareClientBuilder(new ShareClientBuilder())
             .shareName(shareName)
             .shareTokenIntent(ShareTokenIntent.BACKUP)
-            .shareAudience(ShareAudience.getShareServiceAccountAudience(primaryShareClient.getAccountName()))
+            .audience(primaryShareClient.getAccountName())
             .buildClient();
 
         String permission = "O:S-1-5-21-2127521184-1604012920-1887927527-21560751G:S-1-5-21-2127521184-"
@@ -1227,11 +1206,10 @@ public class ShareApiTests extends FileShareTestBase {
     @Test
     public void audienceError() {
         primaryShareClient.create();
-        ShareAudience audience = ShareAudience.fromString("https://badaudience.file.core.windows.net");
         ShareClient aadShareClient = getOAuthShareClientBuilder(new ShareClientBuilder())
             .shareName(shareName)
             .shareTokenIntent(ShareTokenIntent.BACKUP)
-            .shareAudience(audience)
+            .audience("badaudience")
             .buildClient();
 
         String permission = "O:S-1-5-21-2127521184-1604012920-1887927527-21560751G:S-1-5-21-2127521184-"

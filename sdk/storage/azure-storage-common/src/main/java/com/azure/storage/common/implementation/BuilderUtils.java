@@ -31,4 +31,17 @@ public final class BuilderUtils {
         }
         return new RequestRetryPolicy(retryOptions);
     }
+
+    /**
+     * Returns the appropriate audience for a given scope.
+     * @param audience the provided audience.
+     * @return the appropriate audience with the correct scope.
+     */
+    public static String getAudience(String audience) {
+        if (audience == null || audience.equals(Constants.STORAGE_SCOPE)) {
+            return Constants.STORAGE_SCOPE;
+        }
+
+        return audience.endsWith("/") ? audience + ".default" : audience + "/.default";
+    }
 }

@@ -38,7 +38,6 @@ import com.azure.storage.common.policy.ResponseValidationPolicyBuilder;
 import com.azure.storage.common.policy.ScrubEtagPolicy;
 import com.azure.storage.common.policy.StorageSharedKeyCredentialPolicy;
 import com.azure.storage.common.sas.CommonSasQueryParameters;
-import com.azure.storage.queue.models.QueueAudience;
 
 import java.net.MalformedURLException;
 import java.net.URL;
@@ -158,7 +157,7 @@ public final class BuilderHelper {
      * @param perRetryPolicies Additional {@link HttpPipelinePolicy policies} to set in the pipeline per retry.
      * @param configuration Configuration store contain environment settings.
      * @param logger {@link ClientLogger} used to log any exception.
-     * @param queueAudience {@link QueueAudience} The audience for the queue.
+     * @param queueAudience The audience for the queue.
      * @return A new {@link HttpPipeline} from the passed values.
      */
     public static HttpPipeline buildPipeline(
@@ -167,7 +166,7 @@ public final class BuilderHelper {
         RequestRetryOptions retryOptions, RetryOptions coreRetryOptions,
         HttpLogOptions logOptions, ClientOptions clientOptions, HttpClient httpClient,
         List<HttpPipelinePolicy> perCallPolicies, List<HttpPipelinePolicy> perRetryPolicies,
-        Configuration configuration, ClientLogger logger, QueueAudience queueAudience) {
+        Configuration configuration, ClientLogger logger, String queueAudience) {
 
         CredentialValidator.validateSingleCredentialIsPresent(
             storageSharedKeyCredential, tokenCredential, azureSasCredential, sasToken, logger);
@@ -197,7 +196,7 @@ public final class BuilderHelper {
             credentialPolicy =  new StorageSharedKeyCredentialPolicy(storageSharedKeyCredential);
         } else if (tokenCredential != null) {
             httpsValidation(tokenCredential, "bearer token", endpoint, logger);
-            String audience = queueAudience != null ? ((queueAudience.toString().endsWith("/")
+            String audience = queueAudience != null ? ((queueAudience.endsWith("/")
                 ? queueAudience + ".default" : queueAudience + "/.default")) : Constants.STORAGE_SCOPE;
             credentialPolicy =  new BearerTokenAuthenticationPolicy(tokenCredential, audience);
         } else if (azureSasCredential != null) {

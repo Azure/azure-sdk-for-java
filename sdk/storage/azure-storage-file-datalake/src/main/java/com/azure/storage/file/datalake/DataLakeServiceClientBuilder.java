@@ -27,7 +27,6 @@ import com.azure.core.util.HttpClientOptions;
 import com.azure.core.util.logging.ClientLogger;
 import com.azure.storage.blob.BlobServiceClientBuilder;
 import com.azure.storage.blob.BlobUrlParts;
-import com.azure.storage.blob.models.BlobAudience;
 import com.azure.storage.common.StorageSharedKeyCredential;
 import com.azure.storage.common.implementation.connectionstring.StorageAuthenticationSettings;
 import com.azure.storage.common.implementation.connectionstring.StorageConnectionString;
@@ -37,7 +36,6 @@ import com.azure.storage.file.datalake.implementation.util.BuilderHelper;
 import com.azure.storage.file.datalake.implementation.util.DataLakeImplUtils;
 import com.azure.storage.file.datalake.implementation.util.TransformUtils;
 import com.azure.storage.file.datalake.models.CustomerProvidedKey;
-import com.azure.storage.file.datalake.models.DataLakeAudience;
 import com.azure.storage.file.datalake.options.FileSystemEncryptionScopeOptions;
 
 import java.net.MalformedURLException;
@@ -91,7 +89,7 @@ public class DataLakeServiceClientBuilder implements
     private Configuration configuration;
     private DataLakeServiceVersion version;
     private FileSystemEncryptionScopeOptions fileSystemEncryptionScopeOptions;
-    private DataLakeAudience dataLakeAudience;
+    private String dataLakeAudience;
 
     /**
      * Creates a builder instance that is able to configure and construct {@link DataLakeServiceClient
@@ -521,16 +519,22 @@ public class DataLakeServiceClientBuilder implements
     }
 
     /**
-     * Sets the Audience to use for authentication with Azure Active Directory (AAD). The audience is not considered
-     * when using a shared key.
-     * @param audience {@link DataLakeAudience} to be used when requesting a token from Azure Active Directory (AAD).
+     * Sets the Audience to use for authentication with Azure Active Directory (AAD) when forming authorization scopes
+     * for a given storage account. The audience is not considered when using a shared key.
+     * For the Language service, this value corresponds to a URL that identifies the Azure cloud where the resource is
+     * located. For more information see
+     * <a href="https://learn.microsoft.com/en-us/azure/storage/blobs/authorize-access-azure-active-directory">
+     *     Authorize access to Azure blobs using Azure Active Directory</a>.
+     * @param storageAccountName the storage account name to be used to append to the respective service endpoint when
+     * requesting a token from Azure Active Directory (AAD).
      * @return the updated DataLakeServiceClientBuilder object
      */
-    public DataLakeServiceClientBuilder dataLakeAudience(DataLakeAudience audience) {
-        this.dataLakeAudience = audience;
-        if (audience != null) {
-            blobServiceClientBuilder.blobAudience(BlobAudience.fromString(audience.toString()));
+    public DataLakeServiceClientBuilder audience(String storageAccountName) {
+        if (storageAccountName == null) {
+            return this;
         }
+        this.dataLakeAudience = String.format("https://%s.blob.core.windows.net/", storageAccountName);
+        blobServiceClientBuilder.audience(storageAccountName);
         return this;
     }
 }

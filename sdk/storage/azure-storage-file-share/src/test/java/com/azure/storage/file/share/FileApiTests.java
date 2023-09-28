@@ -26,7 +26,6 @@ import com.azure.storage.file.share.models.FileRange;
 import com.azure.storage.file.share.models.HandleItem;
 import com.azure.storage.file.share.models.NtfsFileAttributes;
 import com.azure.storage.file.share.models.PermissionCopyModeType;
-import com.azure.storage.file.share.models.ShareAudience;
 import com.azure.storage.file.share.models.ShareErrorCode;
 import com.azure.storage.file.share.models.ShareFileCopyInfo;
 import com.azure.storage.file.share.models.ShareFileDownloadHeaders;
@@ -2662,25 +2661,7 @@ class FileApiTests extends FileShareTestBase {
         ShareServiceClient oAuthServiceClient =
             getOAuthServiceClient(new ShareServiceClientBuilder()
                 .shareTokenIntent(ShareTokenIntent.BACKUP)
-                .shareAudience(ShareAudience.PUBLIC_AUDIENCE)
-            );
-
-        ShareFileClient aadFileClient = oAuthServiceClient.getShareClient(shareName).getFileClient(fileName);
-        assertTrue(aadFileClient.exists());
-    }
-
-    @Test
-    public void customAudience() {
-        String fileName = generatePathName();
-        ShareFileClient fileClient = fileBuilderHelper(shareName, fileName).buildFileClient();
-        fileClient.create(Constants.KB);
-        ShareAudience audience = ShareAudience.fromString(String.format("https://%s.file.core.windows.net",
-            shareClient.getAccountName()));
-        ShareServiceClient oAuthServiceClient =
-            getOAuthServiceClient(new ShareServiceClientBuilder()
-                .shareTokenIntent(ShareTokenIntent.BACKUP)
-                .shareAudience(audience)
-            );
+                .audience(null) /* should default to "https://storage.azure.com/" */);
 
         ShareFileClient aadFileClient = oAuthServiceClient.getShareClient(shareName).getFileClient(fileName);
         assertTrue(aadFileClient.exists());
@@ -2694,8 +2675,7 @@ class FileApiTests extends FileShareTestBase {
         ShareServiceClient oAuthServiceClient =
             getOAuthServiceClient(new ShareServiceClientBuilder()
                 .shareTokenIntent(ShareTokenIntent.BACKUP)
-                .shareAudience(ShareAudience.getShareServiceAccountAudience(shareClient.getAccountName()))
-            );
+                .audience(shareClient.getAccountName()));
 
         ShareFileClient aadFileClient = oAuthServiceClient.getShareClient(shareName).getFileClient(fileName);
         assertTrue(aadFileClient.exists());
@@ -2706,12 +2686,10 @@ class FileApiTests extends FileShareTestBase {
         String fileName = generatePathName();
         ShareFileClient fileClient = fileBuilderHelper(shareName, fileName).buildFileClient();
         fileClient.create(Constants.KB);
-        ShareAudience audience = ShareAudience.fromString("https://badaudience.file.core.windows.net");
         ShareServiceClient oAuthServiceClient =
             getOAuthServiceClient(new ShareServiceClientBuilder()
                 .shareTokenIntent(ShareTokenIntent.BACKUP)
-                .shareAudience(audience)
-            );
+                .audience("badaudience"));
 
         ShareFileClient aadFileClient = oAuthServiceClient.getShareClient(shareName).getFileClient(fileName);
         ShareStorageException e = assertThrows(ShareStorageException.class, aadFileClient::exists);
