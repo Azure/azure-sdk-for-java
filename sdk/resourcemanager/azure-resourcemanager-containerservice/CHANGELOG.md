@@ -4,11 +4,13 @@
 
 ### Features Added
 
-### Breaking Changes
-
-### Bugs Fixed
+- Supported specifying the resource group for agent pool nodes when creating `KubernetesCluster`.
 
 ### Other Changes
+
+#### Dependency Updates
+
+- Updated `api-version` to `2023-08-01`.
 
 ## 2.30.0 (2023-08-25)
 
