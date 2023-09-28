@@ -22,27 +22,6 @@ import java.util.function.Consumer;
  */
 public class ReadmeSamples {
     /**
-     * Sends messages to a queue.
-     */
-    public void sendMessage() {
-        // BEGIN: readme-sample-sendMessage
-        ServiceBusSenderClient sender = new ServiceBusClientBuilder()
-            .connectionString("<< CONNECTION STRING FOR THE SERVICE BUS NAMESPACE >>")
-            .sender()
-            .queueName("<< QUEUE NAME >>")
-            .buildClient();
-        List<ServiceBusMessage> messages = Arrays.asList(
-            new ServiceBusMessage("Hello world").setMessageId("1"),
-            new ServiceBusMessage("Bonjour").setMessageId("2"));
-
-        sender.sendMessages(messages);
-
-        // When you are done using the sender, dispose of it.
-        sender.close();
-        // END: readme-sample-sendMessage
-    }
-
-    /**
      * Receives messages from a topic and subscription.
      */
     public void receiveMessages() {

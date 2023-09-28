@@ -164,19 +164,37 @@ a topic.
 The snippet below creates a synchronous [`ServiceBusSenderClient`][ServiceBusSenderClient] to publish a message to a
 queue.
 
-```java readme-sample-sendMessage
-ServiceBusSenderClient sender = new ServiceBusClientBuilder()
-    .connectionString("<< CONNECTION STRING FOR THE SERVICE BUS NAMESPACE >>")
-    .sender()
-    .queueName("<< QUEUE NAME >>")
-    .buildClient();
+```java com.azure.messaging.servicebus.servicebussenderclient.createMessageBatch
 List<ServiceBusMessage> messages = Arrays.asList(
-    new ServiceBusMessage("Hello world").setMessageId("1"),
-    new ServiceBusMessage("Bonjour").setMessageId("2"));
+    new ServiceBusMessage("test-1"),
+    new ServiceBusMessage("test-2"));
 
-sender.sendMessages(messages);
+// Creating a batch without options set.
+ServiceBusMessageBatch batch = sender.createMessageBatch();
+for (ServiceBusMessage message : messages) {
+    if (batch.tryAddMessage(message)) {
+        continue;
+    }
 
-// When you are done using the sender, dispose of it.
+    // The batch is full. Send the current batch and create a new one.
+    sender.sendMessages(batch);
+
+    batch = sender.createMessageBatch();
+
+    batch.tryAddMessage(message);
+
+    // Add the message we couldn't before.
+    if (!batch.tryAddMessage(message)) {
+        throw new IllegalArgumentException("Message is too large for an empty batch.");
+    }
+}
+
+// Send the final batch if there are any messages in it.
+if (batch.getCount() > 0) {
+    sender.sendMessages(batch);
+}
+
+// Finally dispose of the sender.
 sender.close();
 ```
 
