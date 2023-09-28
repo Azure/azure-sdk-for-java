@@ -52,6 +52,20 @@ public final class WaitActivity extends ControlActivity {
 
     /** {@inheritDoc} */
     @Override
+    public WaitActivity withState(ActivityState state) {
+        super.withState(state);
+        return this;
+    }
+
+    /** {@inheritDoc} */
+    @Override
+    public WaitActivity withOnInactiveMarkAs(ActivityOnInactiveMarkAs onInactiveMarkAs) {
+        super.withOnInactiveMarkAs(onInactiveMarkAs);
+        return this;
+    }
+
+    /** {@inheritDoc} */
+    @Override
     public WaitActivity withDependsOn(List<ActivityDependency> dependsOn) {
         super.withDependsOn(dependsOn);
         return this;
@@ -65,7 +79,7 @@ public final class WaitActivity extends ControlActivity {
     }
 
     /**
-     * Get the waitTimeInSeconds property: Duration in seconds.
+     * Get the waitTimeInSeconds property: Duration in seconds. Type: integer (or Expression with resultType integer).
      *
      * @return the waitTimeInSeconds value.
      */
@@ -74,7 +88,7 @@ public final class WaitActivity extends ControlActivity {
     }
 
     /**
-     * Set the waitTimeInSeconds property: Duration in seconds.
+     * Set the waitTimeInSeconds property: Duration in seconds. Type: integer (or Expression with resultType integer).
      *
      * @param waitTimeInSeconds the waitTimeInSeconds value to set.
      * @return the WaitActivity object itself.

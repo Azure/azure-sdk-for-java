@@ -16,7 +16,6 @@
   <artifactId>azure-communication-sms</artifactId>
   <packaging>jar</packaging>
   <version>1.2.0-beta.1</version> <!-- {x-version-update;com.azure:azure-communication-sms;current} -->
-
   <name>Microsoft Azure library for sending SMS messages</name>
   <description>
     This package contains clients and data structures used to send SMS messages with Azure Communication SMS Service.
@@ -46,8 +45,10 @@
     <jacoco.skip>false</jacoco.skip>
     <!-- Configures the Java 9+ run to perform the required module exports, opens, and reads that are necessary for testing but shouldn't be part of the module-info. -->
     <javaModulesSurefireArgLine>
-      --add-exports com.azure.core/com.azure.core.implementation.util=ALL-UNNAMED
+      --add-opens com.azure.communication.common/com.azure.communication.common.implementation=ALL-UNNAMED
+      --add-opens com.azure.core/com.azure.core.implementation.util=ALL-UNNAMED
     </javaModulesSurefireArgLine>
+    <codesnippet.skip>false</codesnippet.skip>
   </properties>
 
   <dependencies>
@@ -59,7 +60,7 @@
     <dependency>
       <groupId>com.azure</groupId>
       <artifactId>azure-communication-common</artifactId>
-      <version>1.2.11</version> <!-- {x-version-update;com.azure:azure-communication-common;dependency} -->
+      <version>1.2.12</version> <!-- {x-version-update;com.azure:azure-communication-common;dependency} -->
     </dependency>
     <dependency>
       <groupId>com.azure</groupId>
@@ -116,11 +117,6 @@
         <groupId>org.jacoco</groupId>
         <artifactId>jacoco-maven-plugin</artifactId>
         <version>0.8.9</version> <!-- {x-version-update;org.jacoco:jacoco-maven-plugin;external_dependency} -->
-        <configuration>
-          <includes>
-            <include>com/azure/communication/sms/*.class</include>
-          </includes>
-        </configuration>
         <executions>
           <execution>
             <id>coverage-report</id>
@@ -147,5 +143,4 @@
       </plugin>
     </plugins>
   </build>
-
 </project>

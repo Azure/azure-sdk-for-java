@@ -18,6 +18,7 @@ import org.junit.jupiter.api.Test;
 import java.util.HashMap;
 import java.util.Map;
 
+import static java.util.Collections.emptyMap;
 import static java.util.Collections.singletonMap;
 import static org.assertj.core.api.Assertions.assertThat;
 
@@ -143,11 +144,7 @@ public class AksResourceAttributesTest {
             .isEqualTo("test-pod-name");
     }
 
-    private static Configuration getConfiguration() {
-        return new ConfigurationBuilder(
-            new TestConfigurationSource(),
-            new TestConfigurationSource(),
-            new TestConfigurationSource())
-            .build();
+    private static ConfigProperties getConfiguration() {
+        return DefaultConfigProperties.createForTest(emptyMap());
     }
 }
