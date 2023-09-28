@@ -1710,7 +1710,7 @@ public class FaultInjectionWithAvailabilityStrategyTests extends TestSuiteBase {
                     assertThat(clientStats[0].getGatewayStatisticsList()).isNotNull();
                     ClientSideRequestStatistics.GatewayStatistics[] gwStats =
                         clientStats[0].getGatewayStatisticsList().toArray(new ClientSideRequestStatistics.GatewayStatistics[0]);
-                    assertThat(gwStats.length).isEqualTo(1);
+                    assertThat(gwStats.length).isGreaterThanOrEqualTo(1);
                     assertThat(gwStats[0]).isNotNull();
                     assertThat(gwStats[0].getOperationType()).isEqualTo(OperationType.QueryPlan);
                 }
@@ -2398,18 +2398,36 @@ public class FaultInjectionWithAvailabilityStrategyTests extends TestSuiteBase {
                     validateCtxQueryPlan,
                     (ctx) -> {
                         CosmosDiagnostics[] diagnostics = ctx.getDiagnostics().toArray(new CosmosDiagnostics[0]);
-                        assertThat(diagnostics.length).isGreaterThanOrEqualTo(2);
+                        assertThat(diagnostics.length).isGreaterThanOrEqualTo(3);
 
                         // Ensure that the query plan has been retrieved from the second region
                         assertThat(diagnostics[0].getContactedRegionNames().size()).isEqualTo(1);
-                        assertThat(diagnostics[0].getContactedRegionNames().contains(SECOND_REGION_NAME)).isEqualTo(true);
+                        assertThat(diagnostics[0].getContactedRegionNames().iterator().next()).isEqualTo(FIRST_REGION_NAME);
+                        assertThat(diagnostics[0].getClientSideRequestStatistics()).isNotNull();
+                        assertThat(diagnostics[0].getClientSideRequestStatistics().size()).isGreaterThanOrEqualTo(1);
+                        ClientSideRequestStatistics requestStats = diagnostics[0].getClientSideRequestStatistics().iterator().next();
+                        assertThat(requestStats.getGatewayStatisticsList()).isNotNull();
+                        assertThat(requestStats.getGatewayStatisticsList().size()).isGreaterThanOrEqualTo(1);
+                        assertThat(requestStats.getGatewayStatisticsList().iterator().next().getOperationType()).isEqualTo(OperationType.QueryPlan);
+                        assertThat(requestStats.getGatewayStatisticsList().iterator().next().getStatusCode()).isEqualTo(408);
+
+                        // Ensure that the query plan has been retrieved from the second region
+                        assertThat(diagnostics[1].getContactedRegionNames().size()).isEqualTo(1);
+                        assertThat(diagnostics[1].getContactedRegionNames().iterator().next()).isEqualTo(SECOND_REGION_NAME);
+                        assertThat(diagnostics[1].getClientSideRequestStatistics()).isNotNull();
+                        assertThat(diagnostics[1].getClientSideRequestStatistics().size()).isGreaterThanOrEqualTo(1);
+                        requestStats = diagnostics[1].getClientSideRequestStatistics().iterator().next();
+                        assertThat(requestStats.getGatewayStatisticsList()).isNotNull();
+                        assertThat(requestStats.getGatewayStatisticsList().size()).isGreaterThanOrEqualTo(1);
+                        assertThat(requestStats.getGatewayStatisticsList().iterator().next().getOperationType()).isEqualTo(OperationType.QueryPlan);
+                        assertThat(requestStats.getGatewayStatisticsList().iterator().next().getStatusCode()).isEqualTo(200);
 
 
                         // There possibly is an incomplete diagnostics for the failed query plan retrieval in the first region
                         // Last Diagnostics should be for processed request against the first region with the
                         // query plan retrieved from the second region
                         boolean found = false;
-                        for (int i = 1; i < diagnostics.length; i++) {
+                        for (int i = 2; i < diagnostics.length; i++) {
                             if (diagnostics[i].getFeedResponseDiagnostics() != null &&
                                 diagnostics[i].getFeedResponseDiagnostics().getQueryMetricsMap() != null) {
 
