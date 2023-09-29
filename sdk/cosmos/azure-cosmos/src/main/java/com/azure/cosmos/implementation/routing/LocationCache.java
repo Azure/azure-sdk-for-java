@@ -220,9 +220,8 @@ public class LocationCache {
         UnmodifiableList<URI> writeEndpoints = this.getWriteEndpoints();
         Supplier<CosmosExcludedRegions> excludedRegionsSupplier = this.connectionPolicy.getExcludedRegionsSupplier();
 
-        List<String> effectiveExcludedRegions = excludedRegionsSupplier != null ? new ArrayList<>(excludedRegionsSupplier
-            .get()
-            .getExcludedRegions()) : Collections.emptyList();
+        List<String> effectiveExcludedRegions = isExcludedRegionsSupplierConfigured(excludedRegionsSupplier) ?
+            new ArrayList<>(excludedRegionsSupplier.get().getExcludedRegions()) : Collections.emptyList();
 
         if (!isExcludeRegionsConfigured(excludedRegionsOnRequest, effectiveExcludedRegions)) {
             return writeEndpoints;
@@ -248,9 +247,8 @@ public class LocationCache {
         UnmodifiableList<URI> readEndpoints = this.getReadEndpoints();
         Supplier<CosmosExcludedRegions> excludedRegionsSupplier = this.connectionPolicy.getExcludedRegionsSupplier();
 
-        List<String> effectiveExcludedRegions = excludedRegionsSupplier != null ? new ArrayList<>(excludedRegionsSupplier
-            .get()
-            .getExcludedRegions()) : Collections.emptyList();
+        List<String> effectiveExcludedRegions = isExcludedRegionsSupplierConfigured(excludedRegionsSupplier) ?
+            new ArrayList<>(excludedRegionsSupplier.get().getExcludedRegions()) : Collections.emptyList();
 
         if (!isExcludeRegionsConfigured(excludedRegionsOnRequest, effectiveExcludedRegions)) {
             return readEndpoints;
@@ -713,6 +711,10 @@ public class LocationCache {
 
     private boolean unavailableLocationsExpirationTimePassed() {
         return durationPassed(Instant.now(), this.lastCacheUpdateTimestamp, this.unavailableLocationsExpirationTime);
+    }
+
+    private static boolean isExcludedRegionsSupplierConfigured(Supplier<CosmosExcludedRegions> excludedRegionsSupplier) {
+        return excludedRegionsSupplier != null && excludedRegionsSupplier.get() != null;
     }
 
     static class DatabaseAccountLocationsInfo {

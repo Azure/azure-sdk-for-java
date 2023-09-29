@@ -903,7 +903,7 @@ public class CosmosClientBuilder implements
      * @return the list of regions to exclude.
      * */
     Set<String> getExcludedRegions() {
-        if (this.cosmosExcludedRegionsSupplier != null) {
+        if (this.cosmosExcludedRegionsSupplier != null && this.cosmosExcludedRegionsSupplier.get() != null) {
             return this.cosmosExcludedRegionsSupplier.get().getExcludedRegions();
         }
         return new HashSet<>();

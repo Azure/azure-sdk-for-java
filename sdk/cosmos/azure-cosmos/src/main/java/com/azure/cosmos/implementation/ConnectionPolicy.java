@@ -605,11 +605,11 @@ public final class ConnectionPolicy {
     }
 
     public String getExcludedRegionsAsString() {
-        if (this.excludedRegionsSupplier.get() != null) {
+        if (this.excludedRegionsSupplier != null && this.excludedRegionsSupplier.get() != null) {
             CosmosExcludedRegions excludedRegions = this.excludedRegionsSupplier.get();
             return excludedRegions.toString();
         }
-        return "";
+        return "[]";
     }
 
     @Override
