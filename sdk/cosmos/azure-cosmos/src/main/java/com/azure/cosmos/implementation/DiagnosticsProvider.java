@@ -45,7 +45,6 @@ import java.util.ArrayList;
 import java.util.Collection;
 import java.util.HashMap;
 import java.util.Iterator;
-import java.util.List;
 import java.util.Locale;
 import java.util.Map;
 import java.util.Objects;
@@ -139,7 +138,6 @@ public final class DiagnosticsProvider {
 
         this.propagatingMono = new PropagatingMono();
         this.propagatingFlux = new PropagatingFlux();
-        this.shouldSystemExitOnError = Configs.shouldDiagnosticsProviderSystemExitOnError();
     }
 
     public boolean isEnabled() {
@@ -148,6 +146,27 @@ public final class DiagnosticsProvider {
 
     public boolean isRealTracer() {
         return this.tracer.isEnabled() && this.tracer != EnabledNoOpTracer.INSTANCE;
+    }
+
+    public String getTraceConfigLog() {
+        StringBuilder sb = new StringBuilder();
+        sb.append(this.isEnabled());
+        sb.append(", ");
+        sb.append(this.isRealTracer());
+        sb.append(", ");
+        sb.append(this.tracer.getClass().getCanonicalName());
+        if (!this.diagnosticHandlers.isEmpty()) {
+            sb.append(", [");
+            for (int i = 0; i < this.diagnosticHandlers.size(); i++) {
+                if (i > 0) {
+                    sb.append(", ");
+                }
+                sb.append(this.diagnosticHandlers.get(i).getClass().getCanonicalName());
+            }
+            sb.append("]");
+        }
+
+        return sb.toString();
     }
 
     public CosmosClientTelemetryConfig getClientTelemetryConfig() {
@@ -168,26 +187,6 @@ public final class DiagnosticsProvider {
         }
 
         return null;
-    }
-
-    private static CosmosDiagnosticsContext getCosmosDiagnosticsContextFromTraceContextOrNull(Context traceContext) {
-        Object cosmosCtx = traceContext.getData(COSMOS_DIAGNOSTICS_CONTEXT_KEY).orElse(null);
-
-        if (cosmosCtx instanceof CosmosDiagnosticsContext) {
-            return (CosmosDiagnosticsContext) cosmosCtx;
-        }
-
-        return null;
-    }
-
-    public static CosmosDiagnosticsContext getCosmosDiagnosticsContextFromTraceContextOrThrow(Context traceContext) {
-        Object cosmosCtx = traceContext.getData(COSMOS_DIAGNOSTICS_CONTEXT_KEY).orElse(null);
-
-        if (cosmosCtx instanceof CosmosDiagnosticsContext) {
-            return (CosmosDiagnosticsContext) cosmosCtx;
-        }
-
-        throw new IllegalStateException("CosmosDiagnosticsContext not present.");
     }
 
     /**
@@ -239,6 +238,7 @@ public final class DiagnosticsProvider {
 
     public <T> void endSpan(
         Signal<T> signal,
+        CosmosDiagnosticsContext cosmosCtx,
         int statusCode,
         Integer actualItemCount,
         Double requestCharge,
@@ -246,14 +246,16 @@ public final class DiagnosticsProvider {
     ) {
         // called in PagedFlux - needs to be exception less - otherwise will result in hanging Flux.
         try {
-            this.endSpanCore(signal, statusCode, actualItemCount, requestCharge, diagnostics);
+            this.endSpanCore(signal, cosmosCtx, statusCode, actualItemCount, requestCharge, diagnostics);
         } catch (Throwable error) {
-            this.handleErrors(error, 9901);
+            LOGGER.error("Unexpected exception in DiagnosticsProvider.endSpan. ", error);
+            System.exit(9901);
         }
     }
 
     private <T> void endSpanCore(
         Signal<T> signal,
+        CosmosDiagnosticsContext cosmosCtx,
         int statusCode,
         Integer actualItemCount,
         Double requestCharge,
@@ -268,8 +270,10 @@ public final class DiagnosticsProvider {
 
         switch (signal.getType()) {
             case ON_COMPLETE:
+                end(cosmosCtx, statusCode, 0, actualItemCount, requestCharge, diagnostics,null, context, true);
+                break;
             case ON_NEXT:
-                end(statusCode, 0, actualItemCount, requestCharge, diagnostics,null, context);
+                end(cosmosCtx, statusCode, 0, actualItemCount, requestCharge, diagnostics,null, context, false);
                 break;
             case ON_ERROR:
                 Throwable throwable = null;
@@ -582,15 +586,8 @@ public final class DiagnosticsProvider {
     public <T> Flux<T> runUnderSpanInContext(Flux<T> publisher, CosmosPagedFluxOptions options) {
 
         final double samplingRateSnapshot = clientTelemetryConfigAccessor.getSamplingRate(this.telemetryConfig);
-
         options.setSamplingRateSnapshot(samplingRateSnapshot);
-
-        if (shouldSampleOutOperation(samplingRateSnapshot)) {
-            return publisher;
-        }
-
-        return propagatingFlux
-            .flatMap(ignored -> publisher);
+        return shouldSampleOutOperation(samplingRateSnapshot);
     }
 
     private boolean shouldSampleOutOperation(double samplingRate) {
@@ -720,7 +717,8 @@ public final class DiagnosticsProvider {
         Double requestCharge,
         CosmosDiagnostics diagnostics,
         Throwable throwable,
-        Context context) {
+        Context context,
+        boolean isFluxCompleted) {
 
         CosmosDiagnosticsContext cosmosCtx = getCosmosDiagnosticsContextFromTraceContextOrThrow(context);
 
@@ -734,10 +732,12 @@ public final class DiagnosticsProvider {
             diagnostics,
             throwable)) {
 
-            this.handleDiagnostics(context, cosmosCtx);
+            if (!isFluxCompleted || !cosmosCtx.getDiagnostics().isEmpty()) {
+                this.handleDiagnostics(context, cosmosCtx);
 
-            if (this.cosmosTracer != null) {
-                this.cosmosTracer.endSpan(cosmosCtx, context);
+                if (this.cosmosTracer != null) {
+                    this.cosmosTracer.endSpan(cosmosCtx, context);
+                }
             }
         }
     }
