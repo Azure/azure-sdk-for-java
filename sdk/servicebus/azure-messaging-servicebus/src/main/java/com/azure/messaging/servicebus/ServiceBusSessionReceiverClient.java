@@ -20,14 +20,17 @@ import java.util.Objects;
  * <p>Use {@link #acceptSession(String)} to acquire the lock of a session if you know the session id.</p>
  * <!-- src_embed com.azure.messaging.servicebus.servicebusreceiverclient.instantiation#sessionId -->
  * <pre>
- * &#47;&#47; The connectionString&#47;sessionQueueName must be set by the application. The 'connectionString' format is shown below.
- * &#47;&#47; &quot;Endpoint=&#123;fully-qualified-namespace&#125;;SharedAccessKeyName=&#123;policy-name&#125;;SharedAccessKey=&#123;key&#125;&quot;
+ * TokenCredential credential = new DefaultAzureCredentialBuilder&#40;&#41;.build&#40;&#41;;
+ *
+ * &#47;&#47; 'fullyQualifiedNamespace' will look similar to &quot;&#123;your-namespace&#125;.servicebus.windows.net&quot;
+ * &#47;&#47; 'disableAutoComplete' indicates that users will explicitly settle their message.
  * ServiceBusSessionReceiverClient sessionReceiver = new ServiceBusClientBuilder&#40;&#41;
- *     .connectionString&#40;connectionString&#41;
+ *     .credential&#40;fullyQualifiedNamespace, credential&#41;
  *     .sessionReceiver&#40;&#41;
- *     .queueName&#40;sessionQueueName&#41;
+ *     .queueName&#40;sessionEnabledQueueName&#41;
+ *     .disableAutoComplete&#40;&#41;
  *     .buildClient&#40;&#41;;
- * ServiceBusReceiverClient receiver = sessionReceiver.acceptSession&#40;&quot;&lt;&lt; my-session-id &gt;&gt;&quot;&#41;;
+ * ServiceBusReceiverClient receiver = sessionReceiver.acceptSession&#40;&quot;&lt;&lt;my-session-id&gt;&gt;&quot;&#41;;
  *
  * &#47;&#47; Use the receiver and finally close it along with the sessionReceiver.
  * receiver.close&#40;&#41;;
@@ -40,19 +43,35 @@ import java.util.Objects;
  * id.</p>
  * <!-- src_embed com.azure.messaging.servicebus.servicebusreceiverclient.instantiation#nextsession -->
  * <pre>
- * &#47;&#47; The connectionString&#47;sessionQueueName must be set by the application. The 'connectionString' format is shown below.
- * &#47;&#47; &quot;Endpoint=&#123;fully-qualified-namespace&#125;;SharedAccessKeyName=&#123;policy-name&#125;;SharedAccessKey=&#123;key&#125;&quot;
+ * TokenCredential credential = new DefaultAzureCredentialBuilder&#40;&#41;.build&#40;&#41;;
+ *
+ * &#47;&#47; 'fullyQualifiedNamespace' will look similar to &quot;&#123;your-namespace&#125;.servicebus.windows.net&quot;
+ * &#47;&#47; 'disableAutoComplete' indicates that users will explicitly settle their message.
  * ServiceBusSessionReceiverClient sessionReceiver = new ServiceBusClientBuilder&#40;&#41;
- *     .connectionString&#40;
- *         &quot;Endpoint=&#123;fully-qualified-namespace&#125;;SharedAccessKeyName=&#123;policy-name&#125;;SharedAccessKey=&#123;key&#125;&quot;&#41;
+ *     .credential&#40;fullyQualifiedNamespace, credential&#41;
  *     .sessionReceiver&#40;&#41;
- *     .queueName&#40;&quot;&lt;&lt; QUEUE NAME &gt;&gt;&quot;&#41;
+ *     .disableAutoComplete&#40;&#41;
+ *     .queueName&#40;sessionEnabledQueueName&#41;
  *     .buildClient&#40;&#41;;
+ *
+ * &#47;&#47; Creates a client to receive messages from the first available session. It waits until
+ * &#47;&#47; AmqpRetryOptions.getTryTimeout&#40;&#41; elapses. If no session is available within that operation timeout, it
+ * &#47;&#47; throws a retriable error. Otherwise, a receiver is returned when a lock on the session is acquired.
  * ServiceBusReceiverClient receiver = sessionReceiver.acceptNextSession&#40;&#41;;
  *
  * &#47;&#47; Use the receiver and finally close it along with the sessionReceiver.
- * receiver.close&#40;&#41;;
- * sessionReceiver.close&#40;&#41;;
+ * try &#123;
+ *     IterableStream&lt;ServiceBusReceivedMessage&gt; receivedMessages =
+ *         receiver.receiveMessages&#40;10, Duration.ofSeconds&#40;30&#41;&#41;;
+ *
+ *     for &#40;ServiceBusReceivedMessage message : receivedMessages&#41; &#123;
+ *         System.out.println&#40;&quot;Body: &quot; + message&#41;;
+ *     &#125;
+ * &#125; finally &#123;
+ *     receiver.close&#40;&#41;;
+ *     sessionReceiver.close&#40;&#41;;
+ * &#125;
+ *
  * </pre>
  * <!-- end com.azure.messaging.servicebus.servicebusreceiverclient.instantiation#nextsession -->
  */
