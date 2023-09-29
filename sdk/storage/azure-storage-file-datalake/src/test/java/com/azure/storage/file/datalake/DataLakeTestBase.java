@@ -344,6 +344,14 @@ public class DataLakeTestBase extends TestProxyTestBase {
         return new DataLakeLeaseClientBuilder().fileSystemClient(fileSystemClient).leaseId(leaseId).buildClient();
     }
 
+    protected static DataLakeLeaseAsyncClient createLeaseAsyncClient(DataLakeFileSystemAsyncClient fileSystemAsyncClient) {
+        return createLeaseAsyncClient(fileSystemAsyncClient, null);
+    }
+
+    protected static DataLakeLeaseAsyncClient createLeaseAsyncClient(DataLakeFileSystemAsyncClient fileSystemAsyncClient, String leaseId) {
+        return new DataLakeLeaseClientBuilder().fileSystemAsyncClient(fileSystemAsyncClient).leaseId(leaseId).buildAsyncClient();
+    }
+
     protected DataLakeFileClient getFileClient(StorageSharedKeyCredential credential,
         String endpoint,
         HttpPipelinePolicy... policies) {
