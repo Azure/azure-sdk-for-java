@@ -15,3 +15,8 @@ stages:
         AZURE_CLIENT_ID: $(aad-azure-sdk-test-client-id)
         AZURE_CLIENT_SECRET: $(aad-azure-sdk-test-client-secret)
         AZURE_TENANT_ID: $(aad-azure-sdk-test-tenant-id)
+      MatrixConfigs:
+        - Name: App_Configuration_live_test
+          Path: sdk/appconfiguration/platform-matrix.json
+          Selection: sparse
+          GenerateVMJobs: true
