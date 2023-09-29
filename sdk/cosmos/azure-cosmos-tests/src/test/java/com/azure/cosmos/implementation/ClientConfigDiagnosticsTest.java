@@ -6,6 +6,8 @@ package com.azure.cosmos.implementation;
 import com.azure.cosmos.ConnectionMode;
 import com.azure.cosmos.CosmosContainerProactiveInitConfig;
 import com.azure.cosmos.CosmosContainerProactiveInitConfigBuilder;
+import com.azure.cosmos.CosmosExcludedRegions;
+import com.azure.cosmos.DirectConnectionConfig;
 import com.azure.cosmos.implementation.directconnectivity.RntbdTransportClient;
 import com.azure.cosmos.implementation.guava25.collect.ImmutableList;
 import com.azure.cosmos.implementation.http.HttpClientConfig;
@@ -23,9 +25,12 @@ import java.io.StringWriter;
 import java.time.Duration;
 import java.util.Arrays;
 import java.util.HashMap;
+import java.util.HashSet;
 import java.util.List;
 import java.util.UUID;
 import java.util.concurrent.atomic.AtomicInteger;
+import java.util.concurrent.atomic.AtomicReference;
+import java.util.function.Supplier;
 import java.util.stream.Collectors;
 
 import static org.assertj.core.api.Assertions.assertThat;
@@ -190,6 +195,9 @@ public class ClientConfigDiagnosticsTest {
 
         DiagnosticsClientContext clientContext = Mockito.mock(DiagnosticsClientContext.class);
         System.setProperty("COSMOS.REPLICA_ADDRESS_VALIDATION_ENABLED", "false");
+        AtomicReference<CosmosExcludedRegions> cosmosExcludedRegionsAtomicReference = new AtomicReference<>(
+            new CosmosExcludedRegions(new HashSet<>(Arrays.asList("west us 2"))));
+        Supplier<CosmosExcludedRegions> excludedRegionsSupplier = () -> cosmosExcludedRegionsAtomicReference.get();
 
         DiagnosticsClientContext.DiagnosticsClientConfig diagnosticsClientConfig = new DiagnosticsClientContext.DiagnosticsClientConfig();
         String machineId = "vmId:" + UUID.randomUUID();
@@ -203,6 +211,8 @@ public class ClientConfigDiagnosticsTest {
         httpConfig.withNetworkRequestTimeout(Duration.ofSeconds(18));
         diagnosticsClientConfig.withGatewayHttpClientConfig(httpConfig.toDiagnosticsString());
         diagnosticsClientConfig.withPreferredRegions(ImmutableList.of("west us 1", "west us 2"));
+        diagnosticsClientConfig.withConnectionPolicy(
+            new ConnectionPolicy(DirectConnectionConfig.getDefaultConfig()).setExcludedRegionsSupplier(excludedRegionsSupplier));
         diagnosticsClientConfig.withConnectionSharingAcrossClientsEnabled(true);
         diagnosticsClientConfig.withEndpointDiscoveryEnabled(true);
         diagnosticsClientConfig.withClientMap(new HashMap<>());
@@ -224,6 +234,7 @@ public class ClientConfigDiagnosticsTest {
         assertThat(objectNode.get("connCfg").get("rntbd").asText()).isEqualTo("null");
         assertThat(objectNode.get("connCfg").get("gw").asText()).isEqualTo("(cps:500, nrto:PT18S, icto:PT17S, p:false)");
         assertThat(objectNode.get("connCfg").get("other").asText()).isEqualTo("(ed: true, cs: true, rv: false)");
+        assertThat(objectNode.get("excrgns").asText()).isEqualTo("[westus2]");
 
         String expectedProactiveInitConfigString = reconstructProactiveInitConfigString(cosmosContainerIdentities, aggressiveWarmupDuration, proactiveConnectionRegionCount);
 
