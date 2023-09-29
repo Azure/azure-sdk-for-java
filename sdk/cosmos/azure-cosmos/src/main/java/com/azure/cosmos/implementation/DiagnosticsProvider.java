@@ -270,6 +270,7 @@ public final class DiagnosticsProvider {
         switch (signal.getType()) {
             case ON_COMPLETE:
                 end(cosmosCtx, statusCode, 0, actualItemCount, requestCharge, diagnostics,null, context, true);
+                break;
             case ON_NEXT:
                 end(cosmosCtx, statusCode, 0, actualItemCount, requestCharge, diagnostics,null, context, false);
                 break;
