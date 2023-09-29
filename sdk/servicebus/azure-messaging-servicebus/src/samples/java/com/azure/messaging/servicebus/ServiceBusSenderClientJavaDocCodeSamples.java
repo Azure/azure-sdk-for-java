@@ -107,8 +107,6 @@ public class ServiceBusSenderClientJavaDocCodeSamples {
 
             batch = sender.createMessageBatch();
 
-            batch.tryAddMessage(message);
-
             // Add the message we couldn't before.
             if (!batch.tryAddMessage(message)) {
                 throw new IllegalArgumentException("Message is too large for an empty batch.");

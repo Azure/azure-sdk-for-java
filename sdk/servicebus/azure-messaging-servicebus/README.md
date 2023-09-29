@@ -79,10 +79,10 @@ add the direct dependency to your project as follows.
 For the Service Bus client library to interact with Service Bus, it will need to understand how to connect and authorize
 with it.
 
-#### Create a Service Bus client using Microsoft Identity platform (formerly Azure Active Directory)
+#### Create a Service Bus client using Azure Active Directory (Azure AD)
 
-Azure SDK for Java supports the Azure Identity package, making it simple to get credentials from the Microsoft identity
-platform. First, add the package:
+Azure SDK for Java supports the Azure Identity client library, making it simple to get credentials from Azure AD. 
+First, add the package:
 
 [//]: # ({x-version-update-start;com.azure:azure-identity;dependency})
 ```xml
@@ -180,8 +180,6 @@ for (ServiceBusMessage message : messages) {
     sender.sendMessages(batch);
 
     batch = sender.createMessageBatch();
-
-    batch.tryAddMessage(message);
 
     // Add the message we couldn't before.
     if (!batch.tryAddMessage(message)) {

@@ -50,8 +50,6 @@ import java.util.Objects;
  *
  *     batch = sender.createMessageBatch&#40;&#41;;
  *
- *     batch.tryAddMessage&#40;message&#41;;
- *
  *     &#47;&#47; Add the message we couldn't before.
  *     if &#40;!batch.tryAddMessage&#40;message&#41;&#41; &#123;
  *         throw new IllegalArgumentException&#40;&quot;Message is too large for an empty batch.&quot;&#41;;
