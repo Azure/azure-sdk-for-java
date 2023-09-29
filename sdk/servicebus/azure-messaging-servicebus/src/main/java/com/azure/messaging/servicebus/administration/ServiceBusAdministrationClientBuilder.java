@@ -63,13 +63,15 @@ import static com.azure.messaging.servicebus.implementation.ServiceBusConstants.
  * <p><strong>Create the sync client using a connection string</strong></p>
  * <!-- src_embed com.azure.messaging.servicebus.administration.servicebusadministrationclient.instantiation -->
  * <pre>
- * &#47;&#47; Retrieve 'connectionString' from your configuration.
- *
  * HttpLogOptions logOptions = new HttpLogOptions&#40;&#41;
  *     .setLogLevel&#40;HttpLogDetailLevel.HEADERS&#41;;
  *
+ * &#47;&#47; DefaultAzureCredential creates a credential based on the environment it is executed in.
+ * TokenCredential tokenCredential = new DefaultAzureCredentialBuilder&#40;&#41;.build&#40;&#41;;
+ *
+ * &#47;&#47; 'fullyQualifiedNamespace' will look similar to &quot;&#123;your-namespace&#125;.servicebus.windows.net&quot;
  * ServiceBusAdministrationClient client = new ServiceBusAdministrationClientBuilder&#40;&#41;
- *     .connectionString&#40;connectionString&#41;
+ *     .credential&#40;fullyQualifiedNamespace, tokenCredential&#41;
  *     .httpLogOptions&#40;logOptions&#41;
  *     .buildClient&#40;&#41;;
  * </pre>
@@ -81,9 +83,9 @@ import static com.azure.messaging.servicebus.implementation.ServiceBusConstants.
  * &#47;&#47; DefaultAzureCredential creates a credential based on the environment it is executed in.
  * TokenCredential credential = new DefaultAzureCredentialBuilder&#40;&#41;.build&#40;&#41;;
  *
+ * &#47;&#47; 'fullyQualifiedNamespace' will look similar to &quot;&#123;your-namespace&#125;.servicebus.windows.net&quot;
  * ServiceBusAdministrationAsyncClient client = new ServiceBusAdministrationClientBuilder&#40;&#41;
- *     .connectionString&#40;&quot;&lt;&lt; Service Bus NAMESPACE connection string&gt;&gt;&quot;&#41;
- *     .credential&#40;&quot;&lt;&lt; my-sb-namespace.servicebus.windows.net &gt;&gt;&quot;, credential&#41;
+ *     .credential&#40;fullyQualifiedNamespace, new DefaultAzureCredentialBuilder&#40;&#41;.build&#40;&#41;&#41;
  *     .buildAsyncClient&#40;&#41;;
  * </pre>
  * <!-- end com.azure.messaging.servicebus.administration.servicebusadministrationasyncclient.instantiation -->
