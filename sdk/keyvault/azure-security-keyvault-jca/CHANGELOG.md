@@ -10,6 +10,10 @@
 
 ### Other Changes
 
+#### Dependency Updates
+
+- Upgraded `jackson-databind` from `2.13.5` to version `2.15.2`.
+
 ## 2.7.1 (2023-03-01)
 
 ### Other Changes

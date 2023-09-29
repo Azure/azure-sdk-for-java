@@ -10,6 +10,11 @@
 
 ### Other Changes
 
+#### Dependency Updates
+
+- Upgraded `jackson-core` from `2.13.5` to version `2.15.2`.
+- Upgraded `jackson-databind` from `2.13.5` to version `2.15.2`.
+
 ## 1.1.10 (2023-09-19)
 
 ### Other Changes

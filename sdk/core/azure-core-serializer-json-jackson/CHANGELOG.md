@@ -10,6 +10,10 @@
 
 ### Other Changes
 
+#### Dependency Updates
+
+- Upgraded Jackson to `2.15.2`.
+
 ## 1.4.4 (2023-09-07)
 
 ### Other Changes

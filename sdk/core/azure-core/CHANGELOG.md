@@ -10,6 +10,12 @@
 
 ### Other Changes
 
+- Adapt `ReflectionUtilsMethodHandle` to use `privateLookupIn`-Method when possible even when there is no Java Module support (which is the case for Android).
+
+#### Dependency Updates
+
+- Upgraded Jackson to `2.15.2`.
+
 ## 1.43.0 (2023-09-07)
 
 ### Features Added
