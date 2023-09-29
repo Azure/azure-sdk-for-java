@@ -130,7 +130,11 @@ public class RequestHeadersSpyWireTest extends TestSuiteBase {
 
         client.clearCapturedRequests();
 
-        client.queryDocuments(collectionLink, query, options, Document.class).blockLast();
+        client.queryDocuments(
+            collectionLink,
+            query,
+            TestUtils.createDummyQueryFeedOperationState(ResourceType.Document, OperationType.Query, options, client),
+            Document.class).blockLast();
 
         List<HttpRequest> requests = client.getCapturedRequests();
         for (HttpRequest httpRequest : requests) {
@@ -150,8 +154,15 @@ public class RequestHeadersSpyWireTest extends TestSuiteBase {
 
         client.clearCapturedRequests();
 
+        QueryFeedOperationState state = TestUtils.createDummyQueryFeedOperationState(
+            ResourceType.Document,
+            OperationType.Query,
+            cosmosQueryRequestOptions,
+            client
+        );
+
         assertThatThrownBy(() -> client
-            .queryDocuments(collectionLink, query, cosmosQueryRequestOptions, Document.class)
+            .queryDocuments(collectionLink, query, state, Document.class)
             .blockLast())
             .isInstanceOf(IllegalArgumentException.class)
             .hasMessage("MaxIntegratedCacheStaleness granularity is milliseconds");
@@ -167,10 +178,17 @@ public class RequestHeadersSpyWireTest extends TestSuiteBase {
 
         String collectionLink = getDocumentCollectionLink();
 
+        QueryFeedOperationState state = TestUtils.createDummyQueryFeedOperationState(
+            ResourceType.Document,
+            OperationType.Query,
+            cosmosQueryRequestOptions,
+            client
+        );
+
         client.clearCapturedRequests();
 
         assertThatThrownBy(() -> client
-            .queryDocuments(collectionLink, query, cosmosQueryRequestOptions, Document.class)
+            .queryDocuments(collectionLink, query, state, Document.class)
             .blockLast())
             .isInstanceOf(IllegalArgumentException.class)
             .hasMessage("MaxIntegratedCacheStaleness duration cannot be negative");
