@@ -2870,7 +2870,6 @@ public class RxDocumentClientImpl implements AsyncDocumentClient, IAuthorization
                                            Collection<ClientSideRequestStatistics> aggregateRequestStatistics = new DistinctClientSideRequestStatisticsCollection();
                                            double requestCharge = 0;
                                            for (FeedResponse<Document> page : feedList) {
-                                               CosmosDiagnostics pageDiagnostics = page.getCosmosDiagnostics();
                                                ConcurrentMap<String, QueryMetrics> pageQueryMetrics =
                                                    ModelBridgeInternal.queryMetrics(page);
                                                if (pageQueryMetrics != null) {

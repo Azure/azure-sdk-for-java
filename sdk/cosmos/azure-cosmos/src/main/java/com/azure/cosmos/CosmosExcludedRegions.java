@@ -3,6 +3,9 @@
 
 package com.azure.cosmos;
 
+import com.azure.cosmos.implementation.guava25.collect.ImmutableSet;
+
+import java.util.Collection;
 import java.util.HashSet;
 import java.util.Locale;
 import java.util.Set;
@@ -29,22 +32,18 @@ public final class CosmosExcludedRegions {
 
         checkArgument(excludedRegions != null, "excludedRegions cannot be set to null");
 
-        this.excludedRegions = new HashSet<>(excludedRegions);
+        this.excludedRegions = ImmutableSet.copyOf(excludedRegions);
         this.excludedRegionsAsString = stringifyExcludedRegions(this.excludedRegions);
     }
 
     /**
-     * Gets the set of excluded regions.
+     * Gets the immutable set of excluded regions.
      *
-     * @return a set of excluded regions.
+     * @return an immutable set of excluded regions.
      * */
     public Set<String> getExcludedRegions() {
 
-        if (this.excludedRegions == null || this.excludedRegions.isEmpty()) {
-            return new HashSet<>();
-        }
-
-        return new HashSet<>(this.excludedRegions);
+        return this.excludedRegions;
     }
 
     @Override
