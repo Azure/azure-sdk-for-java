@@ -240,11 +240,16 @@ public class RxDocumentClientImplTest {
         CosmosQueryRequestOptions options = new CosmosQueryRequestOptions();
         Class<InternalObjectNode> klass = InternalObjectNode.class;
 
+        QueryFeedOperationState stateMock = Mockito.mock(QueryFeedOperationState.class);
+        httpClientMock
+            .when(() -> stateMock.getQueryOptions())
+            .thenReturn(new CosmosQueryRequestOptions());
+
         StepVerifier.create(
                 rxDocumentClient.readMany(
                     cosmosItemIdentities,
                     collectionLink,
-                    TestUtils.createDummyQueryFeedOperationState(ResourceType.Document, OperationType.Query, options, rxDocumentClient),
+                    stateMock,
                     klass
                 )
             )
