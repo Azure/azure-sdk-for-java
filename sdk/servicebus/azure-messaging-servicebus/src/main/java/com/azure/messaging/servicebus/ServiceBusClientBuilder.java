@@ -74,71 +74,126 @@ import static com.azure.messaging.servicebus.implementation.ServiceBusConstants.
  * The builder to create Service Bus clients:
  *
  * <p><strong>Instantiate a synchronous sender</strong></p>
- * <!-- src_embed com.azure.messaging.servicebus.sender.sync.client.instantiation -->
+ * <!-- src_embed com.azure.messaging.servicebus.servicebussenderclient.instantiation -->
  * <pre>
- * &#47;&#47; Retrieve 'connectionString' and 'queueName' from your configuration.
- * ServiceBusClientBuilder builder = new ServiceBusClientBuilder&#40;&#41;
- *     .connectionString&#40;connectionString&#41;;
- * ServiceBusSenderClient sender = builder
+ * TokenCredential credential = new DefaultAzureCredentialBuilder&#40;&#41;.build&#40;&#41;;
+ *
+ * &#47;&#47; 'fullyQualifiedNamespace' will look similar to &quot;&#123;your-namespace&#125;.servicebus.windows.net&quot;
+ * ServiceBusSenderClient sender = new ServiceBusClientBuilder&#40;&#41;
+ *     .credential&#40;fullyQualifiedNamespace, credential&#41;
  *     .sender&#40;&#41;
  *     .queueName&#40;queueName&#41;
  *     .buildClient&#40;&#41;;
+ *
+ * sender.sendMessage&#40;new ServiceBusMessage&#40;&quot;Foo bar&quot;&#41;&#41;;
  * </pre>
- * <!-- end com.azure.messaging.servicebus.sender.sync.client.instantiation -->
+ * <!-- end com.azure.messaging.servicebus.servicebussenderclient.instantiation -->
  *
  * <p><strong>Instantiate an asynchronous receiver</strong></p>
- * <!-- src_embed com.azure.messaging.servicebus.receiver.async.client.instantiation -->
+ * <!-- src_embed com.azure.messaging.servicebus.servicebusreceiverasyncclient.instantiation -->
  * <pre>
- * &#47;&#47; Retrieve 'connectionString', 'topicName' and 'subscriptionName' from your configuration.
- * ServiceBusClientBuilder builder = new ServiceBusClientBuilder&#40;&#41;
- *     .connectionString&#40;connectionString&#41;;
- * ServiceBusReceiverAsyncClient receiver = builder
+ * TokenCredential credential = new DefaultAzureCredentialBuilder&#40;&#41;.build&#40;&#41;;
+ *
+ * &#47;&#47; 'fullyQualifiedNamespace' will look similar to &quot;&#123;your-namespace&#125;.servicebus.windows.net&quot;
+ * &#47;&#47; 'disableAutoComplete' indicates that users will explicitly settle their message.
+ * ServiceBusReceiverAsyncClient asyncReceiver = new ServiceBusClientBuilder&#40;&#41;
+ *     .credential&#40;fullyQualifiedNamespace, credential&#41;
  *     .receiver&#40;&#41;
- *     .disableAutoComplete&#40;&#41; &#47;&#47; Allows user to take control of settling a message.
- *     .topicName&#40;topicName&#41;
- *     .subscriptionName&#40;subscriptionName&#41;
+ *     .disableAutoComplete&#40;&#41;
+ *     .queueName&#40;queueName&#41;
  *     .buildAsyncClient&#40;&#41;;
+ *
+ * &#47;&#47; Use the receiver and finally close it.
+ * asyncReceiver.close&#40;&#41;;
  * </pre>
- * <!-- end com.azure.messaging.servicebus.receiver.async.client.instantiation -->
+ * <!-- end com.azure.messaging.servicebus.servicebusreceiverasyncclient.instantiation -->
  *
  * <p><strong>Instantiate an asynchronous session receiver</strong></p>
- * <!-- src_embed com.azure.messaging.servicebus.session.receiver.async.client.instantiation -->
+ * <!-- src_embed com.azure.messaging.servicebus.servicebusreceiverasyncclient.instantiation#nextsession -->
  * <pre>
- * &#47;&#47; Retrieve 'connectionString', 'topicName' and 'subscriptionName' from your configuration.
+ * TokenCredential credential = new DefaultAzureCredentialBuilder&#40;&#41;.build&#40;&#41;;
+ *
+ * &#47;&#47; 'fullyQualifiedNamespace' will look similar to &quot;&#123;your-namespace&#125;.servicebus.windows.net&quot;
+ * &#47;&#47; 'disableAutoComplete' indicates that users will explicitly settle their message.
  * ServiceBusSessionReceiverAsyncClient sessionReceiver = new ServiceBusClientBuilder&#40;&#41;
- *     .connectionString&#40;connectionString&#41;
+ *     .credential&#40;fullyQualifiedNamespace, credential&#41;
  *     .sessionReceiver&#40;&#41;
- *     .receiveMode&#40;ServiceBusReceiveMode.PEEK_LOCK&#41;
- *     .topicName&#40;topicName&#41;
- *     .subscriptionName&#40;subscriptionName&#41;
+ *     .disableAutoComplete&#40;&#41;
+ *     .queueName&#40;sessionEnabledQueueName&#41;
  *     .buildAsyncClient&#40;&#41;;
  *
- * &#47;&#47; Receiving messages from the first available sessions. It waits up to the AmqpRetryOptions.getTryTimeout&#40;&#41;.
- * &#47;&#47; If no session is available within that operation timeout, it completes with an error. Otherwise, a receiver
- * &#47;&#47; is returned when a lock on the session is acquired.
+ * &#47;&#47; Creates a client to receive messages from the first available session. It waits until
+ * &#47;&#47; AmqpRetryOptions.getTryTimeout&#40;&#41; elapses. If no session is available within that operation timeout, it
+ * &#47;&#47; completes with a retriable error. Otherwise, a receiver is returned when a lock on the session is acquired.
  * Mono&lt;ServiceBusReceiverAsyncClient&gt; receiverMono = sessionReceiver.acceptNextSession&#40;&#41;;
  *
- * Flux.usingWhen&#40;receiverMono,
- *     receiver -&gt; receiver.receiveMessages&#40;&#41;,
- *     receiver -&gt; Mono.fromRunnable&#40;receiver::close&#41;&#41;
- *     .subscribe&#40;message -&gt; System.out.println&#40;message.getBody&#40;&#41;.toString&#40;&#41;&#41;&#41;;
+ * Disposable disposable = Flux.usingWhen&#40;receiverMono,
+ *         receiver -&gt; receiver.receiveMessages&#40;&#41;,
+ *         receiver -&gt; Mono.fromRunnable&#40;&#40;&#41; -&gt; &#123;
+ *             &#47;&#47; Dispose of the receiver and sessionReceiver when done receiving messages.
+ *             receiver.close&#40;&#41;;
+ *             sessionReceiver.close&#40;&#41;;
+ *         &#125;&#41;&#41;
+ *     .subscribe&#40;message -&gt; &#123;
+ *         System.out.println&#40;&quot;Received message: &quot; + message.getBody&#40;&#41;&#41;;
+ *     &#125;&#41;;
  * </pre>
- * <!-- end com.azure.messaging.servicebus.session.receiver.async.client.instantiation -->
+ * <!-- end com.azure.messaging.servicebus.servicebusreceiverasyncclient.instantiation#nextsession -->
  *
  * <p><strong>Instantiate the processor</strong></p>
- * <!-- src_embed com.azure.messaging.servicebus.processor.client.instantiation -->
+ * <!-- src_embed com.azure.messaging.servicebus.servicebusprocessorclient#receive-mode-peek-lock-instantiation -->
  * <pre>
- * &#47;&#47; Retrieve 'connectionString' and 'queueName' from your configuration.
- * ServiceBusClientBuilder builder = new ServiceBusClientBuilder&#40;&#41;
- *     .connectionString&#40;connectionString&#41;;
- * ServiceBusProcessorClient processor = builder
+ * Consumer&lt;ServiceBusReceivedMessageContext&gt; processMessage = context -&gt; &#123;
+ *     final ServiceBusReceivedMessage message = context.getMessage&#40;&#41;;
+ *     &#47;&#47; Randomly complete or abandon each message. Ideally, in real-world scenarios, if the business logic
+ *     &#47;&#47; handling message reaches desired state such that it doesn't require Service Bus to redeliver
+ *     &#47;&#47; the same message, then context.complete&#40;&#41; should be called otherwise context.abandon&#40;&#41;.
+ *     final boolean success = Math.random&#40;&#41; &lt; 0.5;
+ *     if &#40;success&#41; &#123;
+ *         try &#123;
+ *             context.complete&#40;&#41;;
+ *         &#125; catch &#40;Exception completionError&#41; &#123;
+ *             System.out.printf&#40;&quot;Completion of the message %s failed&#92;n&quot;, message.getMessageId&#40;&#41;&#41;;
+ *             completionError.printStackTrace&#40;&#41;;
+ *         &#125;
+ *     &#125; else &#123;
+ *         try &#123;
+ *             context.abandon&#40;&#41;;
+ *         &#125; catch &#40;Exception abandonError&#41; &#123;
+ *             System.out.printf&#40;&quot;Abandoning of the message %s failed&#92;n&quot;, message.getMessageId&#40;&#41;&#41;;
+ *             abandonError.printStackTrace&#40;&#41;;
+ *         &#125;
+ *     &#125;
+ * &#125;;
+ *
+ * &#47;&#47; Sample code that gets called if there's an error
+ * Consumer&lt;ServiceBusErrorContext&gt; processError = errorContext -&gt; &#123;
+ *     System.err.println&#40;&quot;Error occurred while receiving message: &quot; + errorContext.getException&#40;&#41;&#41;;
+ * &#125;;
+ *
+ * TokenCredential tokenCredential = new DefaultAzureCredentialBuilder&#40;&#41;.build&#40;&#41;;
+ *
+ * &#47;&#47; Create the processor client via the builder and its sub-builder
+ * &#47;&#47; 'fullyQualifiedNamespace' will look similar to &quot;&#123;your-namespace&#125;.servicebus.windows.net&quot;
+ * ServiceBusProcessorClient processorClient = new ServiceBusClientBuilder&#40;&#41;
+ *     .credential&#40;fullyQualifiedNamespace, tokenCredential&#41;
  *     .processor&#40;&#41;
  *     .queueName&#40;queueName&#41;
- *     .processMessage&#40;System.out::println&#41;
- *     .processError&#40;context -&gt; System.err.println&#40;context.getErrorSource&#40;&#41;&#41;&#41;
+ *     .receiveMode&#40;ServiceBusReceiveMode.PEEK_LOCK&#41;
+ *     .disableAutoComplete&#40;&#41;  &#47;&#47; Make sure to explicitly opt in to manual settlement &#40;e.g. complete, abandon&#41;.
+ *     .processMessage&#40;processMessage&#41;
+ *     .processError&#40;processError&#41;
+ *     .disableAutoComplete&#40;&#41;
  *     .buildProcessorClient&#40;&#41;;
+ *
+ * &#47;&#47; Starts the processor in the background. Control returns immediately.
+ * processorClient.start&#40;&#41;;
+ *
+ * &#47;&#47; Stop processor and dispose when done processing messages.
+ * processorClient.stop&#40;&#41;;
+ * processorClient.close&#40;&#41;;
  * </pre>
- * <!-- end com.azure.messaging.servicebus.processor.client.instantiation -->
+ * <!-- end com.azure.messaging.servicebus.servicebusprocessorclient#receive-mode-peek-lock-instantiation -->
 
  * <p><strong>Sharing a connection between clients</strong></p>
  * The creation of physical connection to Service Bus requires resources. If your architecture allows, an application
@@ -146,10 +201,13 @@ import static com.azure.messaging.servicebus.implementation.ServiceBusConstants.
  *
  * <!-- src_embed com.azure.messaging.servicebus.connection.sharing -->
  * <pre>
+ * TokenCredential credential = new DefaultAzureCredentialBuilder&#40;&#41;.build&#40;&#41;;
+ *
  * &#47;&#47; Retrieve 'connectionString' and 'queueName' from your configuration.
- * &#47;&#47; Create shared builder.
+ * &#47;&#47; 'fullyQualifiedNamespace' will look similar to &quot;&#123;your-namespace&#125;.servicebus.windows.net&quot;
  * ServiceBusClientBuilder sharedConnectionBuilder = new ServiceBusClientBuilder&#40;&#41;
- *     .connectionString&#40;connectionString&#41;;
+ *     .credential&#40;fullyQualifiedNamespace, credential&#41;;
+ *
  * &#47;&#47; Create receiver and sender which will share the connection.
  * ServiceBusReceiverClient receiver = sharedConnectionBuilder
  *     .receiver&#40;&#41;
@@ -159,6 +217,15 @@ import static com.azure.messaging.servicebus.implementation.ServiceBusConstants.
  *     .sender&#40;&#41;
  *     .queueName&#40;queueName&#41;
  *     .buildClient&#40;&#41;;
+ *
+ * &#47;&#47; Use the clients and finally close them.
+ * try &#123;
+ *     sender.sendMessage&#40;new ServiceBusMessage&#40;&quot;payload&quot;&#41;&#41;;
+ *     receiver.receiveMessages&#40;1&#41;;
+ * &#125; finally &#123;
+ *     sender.close&#40;&#41;;
+ *     receiver.close&#40;&#41;;
+ * &#125;
  * </pre>
  * <!-- end com.azure.messaging.servicebus.connection.sharing -->
  *
@@ -995,19 +1062,26 @@ public final class ServiceBusClientBuilder implements
      *     &#125;
      * &#125;;
      *
-     * &#47;&#47; Retrieve 'connectionString&#47;queueName' from your configuration.
      *
+     * TokenCredential tokenCredential = new DefaultAzureCredentialBuilder&#40;&#41;.build&#40;&#41;;
+     *
+     * &#47;&#47; Create the processor client via the builder and its sub-builder
+     * &#47;&#47; 'fullyQualifiedNamespace' will look similar to &quot;&#123;your-namespace&#125;.servicebus.windows.net&quot;
      * ServiceBusProcessorClient sessionProcessor = new ServiceBusClientBuilder&#40;&#41;
-     *     .connectionString&#40;connectionString&#41;
+     *     .credential&#40;fullyQualifiedNamespace, tokenCredential&#41;
      *     .sessionProcessor&#40;&#41;
-     *     .queueName&#40;queueName&#41;
+     *     .queueName&#40;sessionEnabledQueueName&#41;
      *     .maxConcurrentSessions&#40;2&#41;
      *     .processMessage&#40;onMessage&#41;
      *     .processError&#40;onError&#41;
      *     .buildProcessorClient&#40;&#41;;
      *
-     * &#47;&#47; Start the processor in the background
+     * &#47;&#47; Starts the processor in the background. Control returns immediately.
      * sessionProcessor.start&#40;&#41;;
+     *
+     * &#47;&#47; Stop processor and dispose when done processing messages.
+     * sessionProcessor.stop&#40;&#41;;
+     * sessionProcessor.close&#40;&#41;;
      * </pre>
      * <!-- end com.azure.messaging.servicebus.servicebusprocessorclient#session-instantiation -->
      *
@@ -1577,11 +1651,14 @@ public final class ServiceBusClientBuilder implements
      *     System.err.println&#40;&quot;Error occurred while receiving message: &quot; + errorContext.getException&#40;&#41;&#41;;
      * &#125;;
      *
-     * &#47;&#47; create the processor client via the builder and its sub-builder
+     * TokenCredential tokenCredential = new DefaultAzureCredentialBuilder&#40;&#41;.build&#40;&#41;;
+     *
+     * &#47;&#47; Create the processor client via the builder and its sub-builder
+     * &#47;&#47; 'fullyQualifiedNamespace' will look similar to &quot;&#123;your-namespace&#125;.servicebus.windows.net&quot;
      * ServiceBusProcessorClient processorClient = new ServiceBusClientBuilder&#40;&#41;
-     *     .connectionString&#40;&quot;&lt;&lt; CONNECTION STRING FOR THE SERVICE BUS NAMESPACE &gt;&gt;&quot;&#41;
+     *     .credential&#40;fullyQualifiedNamespace, tokenCredential&#41;
      *     .processor&#40;&#41;
-     *     .queueName&#40;&quot;&lt;&lt; QUEUE NAME &gt;&gt;&quot;&#41;
+     *     .queueName&#40;queueName&#41;
      *     .receiveMode&#40;ServiceBusReceiveMode.PEEK_LOCK&#41;
      *     .disableAutoComplete&#40;&#41;  &#47;&#47; Make sure to explicitly opt in to manual settlement &#40;e.g. complete, abandon&#41;.
      *     .processMessage&#40;processMessage&#41;
@@ -1589,8 +1666,12 @@ public final class ServiceBusClientBuilder implements
      *     .disableAutoComplete&#40;&#41;
      *     .buildProcessorClient&#40;&#41;;
      *
-     * &#47;&#47; Starts the processor in the background and returns immediately
+     * &#47;&#47; Starts the processor in the background. Control returns immediately.
      * processorClient.start&#40;&#41;;
+     *
+     * &#47;&#47; Stop processor and dispose when done processing messages.
+     * processorClient.stop&#40;&#41;;
+     * processorClient.close&#40;&#41;;
      * </pre>
      * <!-- end com.azure.messaging.servicebus.servicebusprocessorclient#receive-mode-peek-lock-instantiation -->
      * <p><strong>Sample code to instantiate a processor client and receive in ReceiveAndDelete mode</strong></p>
@@ -1607,19 +1688,27 @@ public final class ServiceBusClientBuilder implements
      *     System.err.println&#40;&quot;Error occurred while receiving message: &quot; + errorContext.getException&#40;&#41;&#41;;
      * &#125;;
      *
-     * &#47;&#47; create the processor client via the builder and its sub-builder
+     * TokenCredential tokenCredential = new DefaultAzureCredentialBuilder&#40;&#41;.build&#40;&#41;;
+     *
+     * &#47;&#47; Create the processor client via the builder and its sub-builder
+     * &#47;&#47; 'fullyQualifiedNamespace' will look similar to &quot;&#123;your-namespace&#125;.servicebus.windows.net&quot;
      * ServiceBusProcessorClient processorClient = new ServiceBusClientBuilder&#40;&#41;
-     *     .connectionString&#40;&quot;&lt;&lt; CONNECTION STRING FOR THE SERVICE BUS NAMESPACE &gt;&gt;&quot;&#41;
+     *     .credential&#40;fullyQualifiedNamespace, tokenCredential&#41;
      *     .processor&#40;&#41;
-     *     .queueName&#40;&quot;&lt;&lt; QUEUE NAME &gt;&gt;&quot;&#41;
+     *     .queueName&#40;queueName&#41;
      *     .receiveMode&#40;ServiceBusReceiveMode.RECEIVE_AND_DELETE&#41;
      *     .processMessage&#40;processMessage&#41;
      *     .processError&#40;processError&#41;
      *     .disableAutoComplete&#40;&#41;
      *     .buildProcessorClient&#40;&#41;;
      *
-     * &#47;&#47; Starts the processor in the background and returns immediately
+     *
+     * &#47;&#47; Starts the processor in the background. Control returns immediately.
      * processorClient.start&#40;&#41;;
+     *
+     * &#47;&#47; Stop processor and dispose when done processing messages.
+     * processorClient.stop&#40;&#41;;
+     * processorClient.close&#40;&#41;;
      * </pre>
      * <!-- end com.azure.messaging.servicebus.servicebusprocessorclient#receive-mode-receive-and-delete-instantiation -->
      *

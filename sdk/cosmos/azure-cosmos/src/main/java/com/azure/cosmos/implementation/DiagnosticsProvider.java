@@ -45,7 +45,6 @@ import java.util.ArrayList;
 import java.util.Collection;
 import java.util.HashMap;
 import java.util.Iterator;
-import java.util.List;
 import java.util.Locale;
 import java.util.Map;
 import java.util.Objects;
@@ -270,8 +269,9 @@ public final class DiagnosticsProvider {
 
         switch (signal.getType()) {
             case ON_COMPLETE:
+                end(cosmosCtx, statusCode, 0, actualItemCount, requestCharge, diagnostics,null, context, true);
             case ON_NEXT:
-                end(cosmosCtx, statusCode, 0, actualItemCount, requestCharge, diagnostics,null, context);
+                end(cosmosCtx, statusCode, 0, actualItemCount, requestCharge, diagnostics,null, context, false);
                 break;
             case ON_ERROR:
                 Throwable throwable = null;
@@ -297,7 +297,7 @@ public final class DiagnosticsProvider {
                         }
                     }
                 }
-                end(cosmosCtx, statusCode, subStatusCode, actualItemCount, effectiveRequestCharge, effectiveDiagnostics, throwable, context);
+                end(cosmosCtx, statusCode, subStatusCode, actualItemCount, effectiveRequestCharge, effectiveDiagnostics, throwable, context, true);
                 break;
             default:
                 // ON_SUBSCRIBE isn't the right state to end span
@@ -320,7 +320,7 @@ public final class DiagnosticsProvider {
                 effectiveRequestCharge = exception.getRequestCharge();
                 effectiveDiagnostics = exception.getDiagnostics();
             }
-            end(cosmosCtx, statusCode, subStatusCode, null, effectiveRequestCharge, effectiveDiagnostics, throwable, context);
+            end(cosmosCtx, statusCode, subStatusCode, null, effectiveRequestCharge, effectiveDiagnostics, throwable, context, true);
         } catch (Throwable error) {
             LOGGER.error("Unexpected exception in DiagnosticsProvider.endSpan. ", error);
             System.exit(9905);
@@ -330,7 +330,7 @@ public final class DiagnosticsProvider {
     public void endSpan(CosmosDiagnosticsContext cosmosCtx, Context context) {
         // called in PagedFlux - needs to be exception less - otherwise will result in hanging Flux.
         try {
-            end(cosmosCtx, 200, 0, null, null, null,null, context);
+            end(cosmosCtx, 200, 0, null, null, null,null, context, true);
         } catch (Throwable error) {
             LOGGER.error("Unexpected exception in DiagnosticsProvider.endSpan. ", error);
             System.exit(9904);
@@ -581,18 +581,14 @@ public final class DiagnosticsProvider {
      * @param publisher publisher to run.
      * @return wrapped publisher.
      */
-    public <T> Flux<T> runUnderSpanInContext(Flux<T> publisher, CosmosPagedFluxOptions options) {
+    public <T> Flux<T> runUnderSpanInContext(Flux<T> publisher) {
+        return propagatingFlux.flatMap(ignored -> publisher);
+    }
 
+    public boolean shouldSampleOutOperation(CosmosPagedFluxOptions options) {
         final double samplingRateSnapshot = clientTelemetryConfigAccessor.getSamplingRate(this.telemetryConfig);
-
         options.setSamplingRateSnapshot(samplingRateSnapshot);
-
-        if (shouldSampleOutOperation(samplingRateSnapshot)) {
-            return publisher;
-        }
-
-        return propagatingFlux
-            .flatMap(ignored -> publisher);
+        return shouldSampleOutOperation(samplingRateSnapshot);
     }
 
     private boolean shouldSampleOutOperation(double samplingRate) {
@@ -734,7 +730,8 @@ public final class DiagnosticsProvider {
         Double requestCharge,
         CosmosDiagnostics diagnostics,
         Throwable throwable,
-        Context context) {
+        Context context,
+        boolean isFluxCompleted) {
 
         checkNotNull(cosmosCtx, "Argument 'cosmosCtx' must not be null.");
 
@@ -748,10 +745,12 @@ public final class DiagnosticsProvider {
             diagnostics,
             throwable)) {
 
-            this.handleDiagnostics(context, cosmosCtx);
+            if (!isFluxCompleted || !cosmosCtx.getDiagnostics().isEmpty() ) {
+                this.handleDiagnostics(context, cosmosCtx);
 
-            if (this.cosmosTracer != null) {
-                this.cosmosTracer.endSpan(cosmosCtx, context);
+                if (this.cosmosTracer != null) {
+                    this.cosmosTracer.endSpan(cosmosCtx, context);
+                }
             }
         }
     }
