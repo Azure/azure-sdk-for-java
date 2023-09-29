@@ -4,6 +4,7 @@
 package com.azure.core.amqp.implementation;
 
 import com.azure.core.amqp.AmqpRetryOptions;
+import com.azure.core.amqp.AmqpRetryPolicy;
 import com.azure.core.amqp.FixedAmqpRetryPolicy;
 import com.azure.core.amqp.exception.AmqpException;
 import com.azure.core.amqp.implementation.ReactorConnectionCacheTest.ConnectionState;
@@ -21,6 +22,7 @@ import org.mockito.MockitoAnnotations;
 import reactor.core.publisher.Mono;
 import reactor.test.StepVerifier;
 import reactor.test.scheduler.VirtualTimeScheduler;
+import reactor.util.retry.Retry;
 
 import java.time.Duration;
 import java.util.ArrayDeque;
@@ -30,6 +32,7 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.concurrent.RejectedExecutionException;
 import java.util.concurrent.ThreadLocalRandom;
+import java.util.concurrent.TimeoutException;
 import java.util.function.Supplier;
 import java.util.stream.Collectors;
 import java.util.stream.IntStream;
@@ -310,6 +313,144 @@ public class ReactorConnectionCacheIsolatedTest {
             connectionSupplier.dispose();
             connectionCache.dispose();
         }
+    }
+
+    @Test
+    @Execution(ExecutionMode.SAME_THREAD)
+    public void specShouldRetryOnRetriableErrors() {
+        final Deque<Throwable> retriableErrors = new ArrayDeque<>(4);
+        retriableErrors.add(new TimeoutException("retriable0"));
+        retriableErrors.add(new AmqpException(true, "retriable1", null));
+        retriableErrors.add(new RejectedExecutionException("retriable2"));
+        retriableErrors.add(new IllegalStateException("retriable3"));
+
+        final Mono<Void> source = Mono.create(sink -> {
+            final Throwable error = retriableErrors.poll();
+            if (error != null) {
+                sink.error(error);
+            } else {
+                sink.success();
+            }
+        });
+        final Retry retrySpec = retryWhenSpec(retryPolicy);
+        final Mono<Void> sourceWithRetry = source.retryWhen(retrySpec);
+        try (VirtualTimeStepVerifier verifier = new VirtualTimeStepVerifier()) {
+            verifier.create(() -> sourceWithRetry)
+                .thenRequest(1)
+                .thenAwait(VIRTUAL_TIME_SHIFT)
+                .verifyComplete();
+        }
+        Assertions.assertTrue(retriableErrors.isEmpty());
+    }
+
+    @Test
+    @Execution(ExecutionMode.SAME_THREAD)
+    public void specShouldPropagateNonRetriableErrors() {
+        final Deque<Throwable> errors = new ArrayDeque<>(4);
+        errors.add(new TimeoutException("retriable0"));
+        errors.add(new AmqpException(true, "retriable1", null));
+        final Throwable errorExpectedToPropagate = new Throwable("non-retriable");
+        errors.add(errorExpectedToPropagate);
+        errors.add(new RejectedExecutionException("retriable2"));
+
+        final Mono<Void> source = Mono.create(sink -> {
+            final Throwable error = errors.poll();
+            if (error != null) {
+                sink.error(error);
+            } else {
+                sink.error(new RuntimeException("unexpected retry."));
+            }
+        });
+        final Retry retrySpec = retryWhenSpec(retryPolicy);
+        final Mono<Void> sourceWithRetry = source.retryWhen(retrySpec);
+        try (VirtualTimeStepVerifier verifier = new VirtualTimeStepVerifier()) {
+            verifier.create(() -> sourceWithRetry)
+                .thenRequest(1)
+                .thenAwait(VIRTUAL_TIME_SHIFT)
+                .verifyErrorMatches(e -> e == errorExpectedToPropagate);
+        }
+        Assertions.assertEquals(1, errors.size());
+        Assertions.assertTrue(errors.poll() instanceof RejectedExecutionException);
+    }
+
+    @Test
+    @Execution(ExecutionMode.SAME_THREAD)
+    public void specShouldNeverExhaustRetryProvidedErrorsAreRetriable() {
+        final int retriableErrorCount = 8;
+        final int maxRetryCount = 4;
+        // There are 7 retriable error, though max-retry is 4, given these are retriable errors, all those errors will be retried.
+        final Deque<Throwable> retriableErrors = new ArrayDeque<>(retriableErrorCount);
+        retriableErrors.add(new AmqpException(true, "retriable0", null));
+        retriableErrors.add(new AmqpException(true, "retriable1", null));
+        retriableErrors.add(new AmqpException(true, "retriable2", null));
+        retriableErrors.add(new AmqpException(true, "retriable3", null));
+        retriableErrors.add(new AmqpException(true, "retriable4", null));
+        retriableErrors.add(new AmqpException(true, "retriable5", null));
+        retriableErrors.add(new AmqpException(true, "retriable6", null));
+
+        final Mono<Void> source = Mono.create(sink -> {
+            final Throwable error = retriableErrors.poll();
+            if (error != null) {
+                sink.error(error);
+            } else {
+                sink.success();
+            }
+        });
+        final AmqpRetryOptions retryOptions = new AmqpRetryOptions()
+            .setTryTimeout(OPERATION_TIMEOUT)
+            .setMaxRetries(maxRetryCount);
+        final FixedAmqpRetryPolicy retryPolicy = new FixedAmqpRetryPolicy(retryOptions);
+        final Retry retrySpec = retryWhenSpec(retryPolicy);
+        final Mono<Void> sourceWithRetry = source.retryWhen(retrySpec);
+        try (VirtualTimeStepVerifier verifier = new VirtualTimeStepVerifier()) {
+            verifier.create(() -> sourceWithRetry)
+                .thenRequest(1)
+                .thenAwait(VIRTUAL_TIME_SHIFT)
+                .verifyComplete();
+        }
+        // assert that all 7 errors were consumed though the max-retry was 4.
+        Assertions.assertTrue(retriableErrors.isEmpty());
+    }
+
+    @Test
+    @Execution(ExecutionMode.SAME_THREAD)
+    public void specShouldNotRetryAfterCacheDisposal() {
+        final Deque<Throwable> retriableErrors = new ArrayDeque<>(1);
+        retriableErrors.add(new AmqpException(true, "retriable0", null));
+
+        final Mono<Void> source = Mono.create(sink -> {
+            final Throwable error = retriableErrors.poll();
+            if (error != null) {
+                sink.error(error);
+            } else {
+                sink.error(new RuntimeException("unexpected retry."));
+            }
+        });
+        final Supplier<ReactorConnection> nopConnectionSupplier = () -> null;
+        final ReactorConnectionCache<ReactorConnection> connectionCache = new ReactorConnectionCache<>(
+            nopConnectionSupplier, FQDN, ENTITY_PATH, retryPolicy, new HashMap<>());
+        final Retry retrySpec = connectionCache.retryWhenSpec(retryPolicy);
+        final Mono<Void> sourceWithRetry = source.retryWhen(retrySpec);
+        try (VirtualTimeStepVerifier verifier = new VirtualTimeStepVerifier()) {
+            connectionCache.dispose();
+            verifier.create(() -> sourceWithRetry)
+                .thenRequest(1)
+                .thenAwait(VIRTUAL_TIME_SHIFT)
+                .verifyErrorSatisfies(e -> {
+                    Assertions.assertTrue(e instanceof AmqpException);
+                    final AmqpException amqpException = (AmqpException) e;
+                    Assertions.assertFalse(amqpException.isTransient());
+                    Assertions.assertNotNull(amqpException.getMessage());
+                    Assertions.assertTrue(amqpException.getMessage().startsWith("Connection recovery support is terminated."));
+                });
+        }
+    }
+
+    private Retry retryWhenSpec(AmqpRetryPolicy retryPolicy) {
+        final Supplier<ReactorConnection> nopConnectionSupplier = () -> null;
+        final ReactorConnectionCache<ReactorConnection> connectionCache = new ReactorConnectionCache<>(
+            nopConnectionSupplier, FQDN, ENTITY_PATH, retryPolicy, new HashMap<>());
+        return connectionCache.retryWhenSpec(retryPolicy);
     }
 
     private static final class VirtualTimeStepVerifier implements AutoCloseable {
