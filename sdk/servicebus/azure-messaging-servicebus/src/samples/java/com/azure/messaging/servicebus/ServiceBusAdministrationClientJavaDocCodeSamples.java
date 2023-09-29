@@ -107,7 +107,6 @@ public class ServiceBusAdministrationClientJavaDocCodeSamples {
      */
     @Test
     public void createQueue() {
-        // Retrieve 'connectionString' from your configuration.
         ServiceBusAdministrationClient client = new ServiceBusAdministrationClientBuilder()
             .credential(fullyQualifiedNamespace, new DefaultAzureCredentialBuilder().build())
             .buildClient();
@@ -124,6 +123,10 @@ public class ServiceBusAdministrationClientJavaDocCodeSamples {
      */
     @Test
     public void createQueueOptions() {
+        ServiceBusAdministrationClient client = new ServiceBusAdministrationClientBuilder()
+            .credential(fullyQualifiedNamespace, new DefaultAzureCredentialBuilder().build())
+            .buildClient();
+
         // BEGIN: com.azure.messaging.servicebus.administration.servicebusadministrationclient.createqueue#string-createqueuepoptions
         CreateQueueOptions queueOptions = new CreateQueueOptions()
             .setLockDuration(Duration.ofMinutes(2))
@@ -140,6 +143,10 @@ public class ServiceBusAdministrationClientJavaDocCodeSamples {
      */
     @Test
     public void createTopicAndSubscription() {
+        ServiceBusAdministrationClient client = new ServiceBusAdministrationClientBuilder()
+            .credential(fullyQualifiedNamespace, new DefaultAzureCredentialBuilder().build())
+            .buildClient();
+
         // BEGIN: com.azure.messaging.servicebus.administration.servicebusadministrationclient.createsubscription#string-string-string
         String topicName = "my-new-topic";
         TopicProperties topic = client.createTopic(topicName);
@@ -191,6 +198,10 @@ public class ServiceBusAdministrationClientJavaDocCodeSamples {
      */
     @Test
     public void createTrueRuleFilter() {
+        ServiceBusAdministrationClient client = new ServiceBusAdministrationClientBuilder()
+            .credential(fullyQualifiedNamespace, new DefaultAzureCredentialBuilder().build())
+            .buildClient();
+
         // BEGIN: com.azure.messaging.servicebus.administration.servicebusadministrationclient.createRule
         String topicName = "my-existing-topic";
         String subscriptionName = "all-messages-subscription";
@@ -214,6 +225,10 @@ public class ServiceBusAdministrationClientJavaDocCodeSamples {
      */
     @Test
     public void createSqlRuleFilterAndAction() {
+        ServiceBusAdministrationClient client = new ServiceBusAdministrationClientBuilder()
+            .credential(fullyQualifiedNamespace, new DefaultAzureCredentialBuilder().build())
+            .buildClient();
+
         // BEGIN: com.azure.messaging.servicebus.administration.servicebusadministrationclient.createRule#string-string-string-createRuleOptions
         String topicName = "emails";
         String subscriptionName = "important-emails";
@@ -238,6 +253,10 @@ public class ServiceBusAdministrationClientJavaDocCodeSamples {
      */
     @Test
     public void deleteQueue() {
+        ServiceBusAdministrationClient client = new ServiceBusAdministrationClientBuilder()
+            .credential(fullyQualifiedNamespace, new DefaultAzureCredentialBuilder().build())
+            .buildClient();
+
         // BEGIN: com.azure.messaging.servicebus.administration.servicebusadministrationclient.deletequeue
         try {
             client.deleteQueue("my-existing-queue");
@@ -252,6 +271,10 @@ public class ServiceBusAdministrationClientJavaDocCodeSamples {
      */
     @Test
     public void deleteQueueAsync() {
+        ServiceBusAdministrationAsyncClient asyncClient = new ServiceBusAdministrationClientBuilder()
+            .credential(fullyQualifiedNamespace, new DefaultAzureCredentialBuilder().build())
+            .buildAsyncClient();
+
         // BEGIN: com.azure.messaging.servicebus.administration.servicebusadministrationasyncclient.deletequeue
         // `.subscribe()` is a non-blocking call. It'll move onto the next
         // instruction after setting up the `consumer`, `errorConsumer`, `completeConsumer` callbacks.
@@ -269,6 +292,10 @@ public class ServiceBusAdministrationClientJavaDocCodeSamples {
      */
     @Test
     public void updateQueueOptions() {
+        ServiceBusAdministrationClient client = new ServiceBusAdministrationClientBuilder()
+            .credential(fullyQualifiedNamespace, new DefaultAzureCredentialBuilder().build())
+            .buildClient();
+
         // BEGIN: com.azure.messaging.servicebus.administration.servicebusadministrationclient.updatequeue
         QueueProperties queue = client.getQueue("queue-that-exists");
 

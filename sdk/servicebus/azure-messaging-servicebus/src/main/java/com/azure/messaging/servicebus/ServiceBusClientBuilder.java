@@ -83,7 +83,7 @@ import static com.azure.messaging.servicebus.implementation.ServiceBusConstants.
  * ServiceBusSenderClient sender = new ServiceBusClientBuilder&#40;&#41;
  *     .credential&#40;fullyQualifiedNamespace, credential&#41;
  *     .sender&#40;&#41;
- *     .queueName&#40;queueName&#41;
+ *     .queueName&#40;&quot;&lt;&lt;queue-name&gt;&gt;&quot;&#41;
  *     .buildClient&#40;&#41;;
  *
  * sender.sendMessage&#40;new ServiceBusMessage&#40;&quot;Foo bar&quot;&#41;&#41;;

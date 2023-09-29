@@ -65,6 +65,37 @@
  * {@link com.azure.messaging.servicebus.ServiceBusMessageBatch} to publish multiple messages at once.</p>
  *
  * <!-- src_embed com.azure.messaging.servicebus.servicebussenderclient.createMessageBatch -->
+ * <pre>
+ * List&lt;ServiceBusMessage&gt; messages = Arrays.asList&#40;
+ *     new ServiceBusMessage&#40;&quot;test-1&quot;&#41;,
+ *     new ServiceBusMessage&#40;&quot;test-2&quot;&#41;&#41;;
+ *
+ * &#47;&#47; Creating a batch without options set.
+ * ServiceBusMessageBatch batch = sender.createMessageBatch&#40;&#41;;
+ * for &#40;ServiceBusMessage message : messages&#41; &#123;
+ *     if &#40;batch.tryAddMessage&#40;message&#41;&#41; &#123;
+ *         continue;
+ *     &#125;
+ *
+ *     &#47;&#47; The batch is full. Send the current batch and create a new one.
+ *     sender.sendMessages&#40;batch&#41;;
+ *
+ *     batch = sender.createMessageBatch&#40;&#41;;
+ *
+ *     &#47;&#47; Add the message we couldn't before.
+ *     if &#40;!batch.tryAddMessage&#40;message&#41;&#41; &#123;
+ *         throw new IllegalArgumentException&#40;&quot;Message is too large for an empty batch.&quot;&#41;;
+ *     &#125;
+ * &#125;
+ *
+ * &#47;&#47; Send the final batch if there are any messages in it.
+ * if &#40;batch.getCount&#40;&#41; &gt; 0&#41; &#123;
+ *     sender.sendMessages&#40;batch&#41;;
+ * &#125;
+ *
+ * &#47;&#47; Finally dispose of the sender.
+ * sender.close&#40;&#41;;
+ * </pre>
  * <!-- end com.azure.messaging.servicebus.servicebussenderclient.createMessageBatch -->
  */
 package com.azure.messaging.servicebus;

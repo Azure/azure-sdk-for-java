@@ -73,16 +73,21 @@ import static com.azure.messaging.servicebus.administration.implementation.Entit
  * <a href="https://learn.microsoft.com/java/api/overview/azure/identity-readme">Azure Identity documentation"</a>.
  * </p>
  *
- * <!-- src_embed com.azure.messaging.servicebus.administration.servicebusadministrationclient.construct -->
+ * <!-- src_embed com.azure.messaging.servicebus.administration.servicebusadministrationclient.instantiation -->
  * <pre>
+ * HttpLogOptions logOptions = new HttpLogOptions&#40;&#41;
+ *     .setLogLevel&#40;HttpLogDetailLevel.HEADERS&#41;;
+ *
+ * &#47;&#47; DefaultAzureCredential creates a credential based on the environment it is executed in.
  * TokenCredential tokenCredential = new DefaultAzureCredentialBuilder&#40;&#41;.build&#40;&#41;;
  *
- * &#47;&#47; &quot;&lt;&lt;fully-qualified-namespace&gt;&gt;&quot; will look similar to &quot;&#123;your-namespace&#125;.servicebus.windows.net&quot;
+ * &#47;&#47; 'fullyQualifiedNamespace' will look similar to &quot;&#123;your-namespace&#125;.servicebus.windows.net&quot;
  * ServiceBusAdministrationClient client = new ServiceBusAdministrationClientBuilder&#40;&#41;
- *     .credential&#40;&quot;&lt;&lt;fully-qualified-namespace&gt;&gt;&quot;, tokenCredential&#41;
+ *     .credential&#40;fullyQualifiedNamespace, tokenCredential&#41;
+ *     .httpLogOptions&#40;logOptions&#41;
  *     .buildClient&#40;&#41;;
  * </pre>
- * <!-- end com.azure.messaging.servicebus.administration.servicebusadministrationclient.construct -->
+ * <!-- end com.azure.messaging.servicebus.administration.servicebusadministrationclient.instantiation -->
  *
  * <p><strong>Sample: Create a queue</strong></p>
  *
