@@ -150,6 +150,7 @@ public final class CosmosPagedFlux<T> extends ContinuablePagedFlux<String, T, Fe
                                                              Context context) {
         FeedOperationState state = pagedFluxOptions.getFeedOperationState();
         DiagnosticsProvider tracerProvider = state != null ? state.getDiagnosticsProvider() : null;
+        Object lockHolder = new Object();
         if (tracerProvider == null ||
             !tracerProvider.isEnabled()
             || tracerProvider.shouldSampleOutOperation(pagedFluxOptions)) {
@@ -157,18 +158,18 @@ public final class CosmosPagedFlux<T> extends ContinuablePagedFlux<String, T, Fe
             return publisher
                 .doOnEach(signal -> {
                     FeedResponse<T> response = signal.get();
-                    switch (signal.getType()) {
-                        case ON_COMPLETE:
-                        case ON_NEXT:
-                            this.recordFeedResponse(pagedFluxOptions, tracerProvider, response, feedResponseConsumerLatencyInNanos);
-                            break;
-                        default:
-                            break;
+                    synchronized (lockHolder) {
+                        switch (signal.getType()) {
+                            case ON_COMPLETE:
+                            case ON_NEXT:
+                                this.recordFeedResponse(pagedFluxOptions, tracerProvider, response, feedResponseConsumerLatencyInNanos);
+                                break;
+                            default:
+                                break;
+                        }
                     }
                 });
         }
-
-        Object lockHolder = new Object();
 
         Flux<FeedResponse<T>> result = tracerProvider
             .runUnderSpanInContext(publisher)
