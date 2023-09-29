@@ -255,6 +255,10 @@ public class DataLakeTestBase extends TestProxyTestBase {
         return getServiceClientBuilder(account.getCredential(), account.getDataLakeEndpoint()).buildAsyncClient();
     }
 
+    protected DataLakeServiceAsyncClient getServiceAsyncClient(StorageSharedKeyCredential credential, String endpoint) {
+        return getServiceClientBuilder(credential, endpoint).buildAsyncClient();
+    }
+
     /**
      * Some tests require extra configuration for retries when writing.
      * <p>
