@@ -151,7 +151,6 @@ public final class CosmosClientTelemetryConfig {
         checkNotNull(clientMetricsOptions, "expected non-null clientMetricsOptions");
 
         if (! (clientMetricsOptions instanceof CosmosMicrometerMetricsOptions)) {
-            // TODO @fabianm -  extend this to OpenTelemetry etc. eventually
             throw new IllegalArgumentException(
                 "Currently only MetricsOptions of type CosmosMicrometerMetricsOptions are supported");
         }
@@ -286,7 +285,7 @@ public final class CosmosClientTelemetryConfig {
 
                           String validTagNames = String.join(
                               ", ",
-                              (String[]) Arrays.stream(TagName.values()).map(tag -> tag.toString()).toArray());
+                              (String[]) Arrays.stream(TagName.values()).map(TagName::toString).toArray());
 
                           throw new IllegalArgumentException(
                               String.format(
@@ -300,7 +299,7 @@ public final class CosmosClientTelemetryConfig {
                   });
 
         EnumSet<TagName> newTagNames = EnumSet.noneOf(TagName.class);
-        tagNameStream.forEach(tagName -> newTagNames.add(tagName));
+        tagNameStream.forEach(newTagNames::add);
 
         this.metricTagNamesOverride = newTagNames;
 
