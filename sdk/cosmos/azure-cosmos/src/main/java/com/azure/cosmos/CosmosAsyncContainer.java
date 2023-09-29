@@ -117,7 +117,6 @@ public class CosmosAsyncContainer {
     private final String patchItemSpanName;
     private final String createItemSpanName;
     private final String readAllItemsSpanName;
-
     private final String readManyItemsSpanName;
     private final String readAllItemsOfLogicalPartitionSpanName;
     private final String queryItemsSpanName;
