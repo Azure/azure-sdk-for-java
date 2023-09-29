@@ -1,56 +1,48 @@
+// Copyright (c) Microsoft Corporation. All rights reserved.
+// Licensed under the MIT License.
+
 package com.azure.json;
 
 import java.io.IOException;
 
 /**
- * Class representing the JSON boolean type
+ * Represents JSON boolean values.
+ * 
+ * @see JsonElement
  */
 public final class JsonBoolean extends JsonElement {
-    /**
-     * Stores the String representation of the JsonBoolean object.
-     * Can only be either "true" or "false".
-     */
-    private boolean booleanValue;
 
-    /**
-     * Default constructor
-     * Default sets booleanValue to "true" through the other constructor.
-     *
-     * TODO: may need to remove this due to design guidelines? May only want to
-     * have the public JsonBoolean(boolean value) constructor.
-     */
+    private final boolean booleanValue;
+    private static final JsonBoolean TRUE = new JsonBoolean(true);
+    private static final JsonBoolean FALSE = new JsonBoolean(false);
 
-    /**
-     * Constructor used to set the value of the JsonBoolean.
-     *
-     * @param value the boolean value to set the JsonBoolean object to. Either
-     * true or false. If value is true, then booleanValue set to "true"; otherwise,
-     * set to "false"
-     */
     private JsonBoolean(boolean value) { 
         this.booleanValue = value; 
     }
 
     /**
-     * Lazy-loading the Singleton instances of JsonBoolean of TRUE & FALSE.
-     */
-    private static class LoadSingleton {
-        static final JsonBoolean TRUE = new JsonBoolean(true);
-        static final JsonBoolean FALSE = new JsonBoolean(false);
-    }
-
-    /**
-     * Returns the Singleton instance of JsonBoolean for the specified boolean value.
+     * Returns the instance of JsonBoolean for the specified boolean value.
+     * <p>
+     * TODO Javadoc comment
      *
      * @param value The boolean value for which to obtain the JsonBoolean instance.
-     * @return The Singleton instance of JsonBoolean representing the specified boolean value.
+     * @return The instance of JsonBoolean representing the specified boolean value.
      */
     public static JsonBoolean getInstance(boolean value) {
-        return (value) ? LoadSingleton.TRUE : LoadSingleton.FALSE;
+        return (value) ? TRUE : FALSE;
     }
 
     /**
-     * Returns the String representation of the JsonBoolean object
+     * Returns boolean value from a JsonBoolean object.
+     * 
+     * @return The boolean value.
+     */
+    public boolean getBooleanValue() {
+        return booleanValue;
+    }
+
+    /**
+     * Returns the String representation of a JsonBoolean object.
      *
      * @return the booleanValue field which is a String representation of the
      * current state of this JsonBoolean object.
@@ -61,29 +53,22 @@ public final class JsonBoolean extends JsonElement {
     }
 
     /**
+     * Identifies if an object is of type JsonBoolean. 
+     * 
      * @return boolean of whether this JsonElement object is of type JsonBoolean.
      */
     @Override
     public boolean isBoolean() { 
         return true; 
     }
-
+    
     /**
-     * @return boolean of whether this JsonBoolean object is currently representing
-     * true
+     * JsonBoolean as an element in a JsonArray.
+     * <p>
+     * TODO Javadoc comment
+     * 
+     * @return A JsonArray with a JsonBoolean instance as its first element.
      */
-    public boolean isTrue() { 
-        return booleanValue; 
-    }
-
-    /**
-     * @return boolean of whether this JsonBoolean object is currently representing
-     * false
-     */
-    public boolean isFalse() { 
-        return !booleanValue; 
-    }
-
     @Override
     public JsonArray asArray() {
         JsonArray output = new JsonArray();
@@ -91,6 +76,13 @@ public final class JsonBoolean extends JsonElement {
         return output;
     }
 
+    /**
+     * JsonBoolean as a property in a JsonObject.
+     * <p>
+     * TODO Javadoc comment
+     * 
+     * @return The JsonObject with the JsonBoolean value as a property.
+     */
     @Override
     public JsonObject asObject() {
         JsonObject output = new JsonObject();
@@ -98,11 +90,26 @@ public final class JsonBoolean extends JsonElement {
         return output;
     }
 
+    /**
+     * The current JsonBoolean object instance.
+     * <p>
+     * TODO Javadoc comment
+     * 
+     * @return The current instance of JsonBoolean object.
+     */
     @Override
     public JsonBoolean asBoolean() { 
         return this; 
     }
 
+    /**
+     * Represents JsonBoolean as a JsonNumber.
+     * <p>
+     * Truth values true and false respectively, 1 or 0.
+     * TODO Javadoc comment
+     * 
+     * @return The JsonNumber representation of a JsonBoolean, 0 or 1.
+     */
     @Override
     public JsonNumber asNumber() {
         if (booleanValue) {
@@ -112,17 +119,22 @@ public final class JsonBoolean extends JsonElement {
         }
     }
 
+    /**
+     * Converts JsonBoolean value to type JsonString.
+     * 
+     * @return The JsonString representation of a JsonBoolean object.
+     */
     @Override
     public JsonString asString() { 
         return new JsonString(Boolean.toString(booleanValue)); 
     }
     
     /**
+     * Writes the JsonSerializable object JsonBoolean. 
+     * 
      * @param jsonWriter JsonWriter that the serialized JsonBoolean is written to.
-     * @return JsonWriter state after the serialized JsonBoolean has been
-     * written to it.
-     * @throws IOException Thrown when JsonWriter.writeBoolean call throws an
-     * IOException.
+     * @return JsonWriter state after the serialized JsonBoolean has been written to it.
+     * @throws IOException Thrown when JsonWriter.writeBoolean call throws an IOException.
      */
     @Override
     public JsonWriter serialize(JsonWriter jsonWriter) throws IOException {
