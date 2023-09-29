@@ -332,14 +332,6 @@ public class DataLakeTestBase extends TestProxyTestBase {
         return new DataLakeLeaseClientBuilder().fileAsyncClient(pathAsyncClient).leaseId(leaseId).buildAsyncClient();
     }
 
-    protected static DataLakeLeaseAsyncClient createLeaseAsyncClient(DataLakeDirectoryAsyncClient pathClient) {
-        return createLeaseAsyncClient(pathClient, null);
-    }
-
-    protected static DataLakeLeaseAsyncClient createLeaseAsyncClient(DataLakeDirectoryAsyncClient pathClient, String leaseId) {
-        return new DataLakeLeaseClientBuilder().directoryAsyncClient(pathClient).leaseId(leaseId).buildAsyncClient();
-    }
-
     protected static DataLakeLeaseClient createLeaseClient(DataLakeDirectoryClient pathClient) {
         return createLeaseClient(pathClient, null);
     }
@@ -348,12 +340,28 @@ public class DataLakeTestBase extends TestProxyTestBase {
         return new DataLakeLeaseClientBuilder().directoryClient(pathClient).leaseId(leaseId).buildClient();
     }
 
+    protected static DataLakeLeaseAsyncClient createLeaseAsyncClient(DataLakeDirectoryAsyncClient pathAsyncClient) {
+        return createLeaseAsyncClient(pathAsyncClient, null);
+    }
+
+    protected static DataLakeLeaseAsyncClient createLeaseAsyncClient(DataLakeDirectoryAsyncClient pathAsyncClient, String leaseId) {
+        return new DataLakeLeaseClientBuilder().directoryAsyncClient(pathAsyncClient).leaseId(leaseId).buildAsyncClient();
+    }
+
     protected static DataLakeLeaseClient createLeaseClient(DataLakeFileSystemClient fileSystemClient) {
         return createLeaseClient(fileSystemClient, null);
     }
 
     protected static DataLakeLeaseClient createLeaseClient(DataLakeFileSystemClient fileSystemClient, String leaseId) {
         return new DataLakeLeaseClientBuilder().fileSystemClient(fileSystemClient).leaseId(leaseId).buildClient();
+    }
+
+    protected static DataLakeLeaseAsyncClient createLeaseAsyncClient(DataLakeFileSystemAsyncClient fileSystemAsyncClient) {
+        return createLeaseAsyncClient(fileSystemAsyncClient, null);
+    }
+
+    protected static DataLakeLeaseAsyncClient createLeaseAsyncClient(DataLakeFileSystemAsyncClient fileSystemAsyncClient, String leaseId) {
+        return new DataLakeLeaseClientBuilder().fileSystemAsyncClient(fileSystemAsyncClient).leaseId(leaseId).buildAsyncClient();
     }
 
     protected DataLakeFileClient getFileClient(StorageSharedKeyCredential credential,
