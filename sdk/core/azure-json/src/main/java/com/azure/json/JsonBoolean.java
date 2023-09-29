@@ -126,7 +126,7 @@ public final class JsonBoolean extends JsonElement {
      */
     @Override
     public JsonWriter serialize(JsonWriter jsonWriter) throws IOException {
-        jsonWriter.writeBoolean(Boolean.parseBoolean(Boolean.toString(booleanValue)));
+        jsonWriter.writeBoolean(booleanValue);
         return jsonWriter;
     }
 }
