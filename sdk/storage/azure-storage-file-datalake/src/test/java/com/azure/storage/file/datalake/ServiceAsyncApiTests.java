@@ -54,7 +54,6 @@ import static org.junit.jupiter.api.Assertions.assertThrows;
 import static org.junit.jupiter.api.Assertions.assertTrue;
 
 public class ServiceAsyncApiTests extends DataLakeTestBase {
-
     private static void validatePropsSet(DataLakeServiceProperties sent, DataLakeServiceProperties received) {
         assertEquals(sent.getLogging().isRead(), received.getLogging().isRead());
         assertEquals(sent.getLogging().isWrite(), received.getLogging().isWrite());

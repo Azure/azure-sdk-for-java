@@ -37,7 +37,7 @@ public class LeaseAsyncApiTests  extends DataLakeTestBase {
     }
 
     @ParameterizedTest
-    @MethodSource("acquireLeaseSupplier") //todo: after pr
+    @MethodSource("acquireLeaseSupplier")
     public void acquireFileLease(String proposedId, int leaseTime, LeaseStateType leaseStateType,
                                  LeaseDurationType leaseDurationType) {
             DataLakeFileAsyncClient fc = createPathClient();
@@ -471,6 +471,274 @@ public class LeaseAsyncApiTests  extends DataLakeTestBase {
         DataLakeFileSystemAsyncClient fsc = primaryDataLakeServiceAsyncClient.getFileSystemAsyncClient(generateFileSystemName());
 
         StepVerifier.create(createLeaseAsyncClient(fsc).acquireLease(50))
+            .verifyError(DataLakeStorageException.class);
+    }
+
+    @Test
+    public void renewFileSystemLease() {
+        String leaseID = setupFileSystemLeaseAsyncCondition(dataLakeFileSystemAsyncClient, RECEIVED_LEASE_ID);
+        DataLakeLeaseAsyncClient leaseClient = createLeaseAsyncClient(dataLakeFileSystemAsyncClient, leaseID);
+
+        StepVerifier.create(leaseClient.renewLeaseWithResponse(null))
+            .assertNext(r -> {
+                validateBasicHeaders(r.getHeaders());
+                assertEquals(leaseClient.getLeaseId(), r.getValue());
+            })
+            .verifyComplete();
+
+        StepVerifier.create(dataLakeFileSystemAsyncClient.getProperties())
+            .assertNext(p -> assertEquals(LeaseStateType.LEASED, p.getLeaseState()))
+            .verifyComplete();
+    }
+
+    @Test
+    public void renewFileSystemLeaseMin() {
+        String leaseID = setupFileSystemLeaseAsyncCondition(dataLakeFileSystemAsyncClient, RECEIVED_LEASE_ID);
+
+        assertAsyncResponseStatusCode(createLeaseAsyncClient(dataLakeFileSystemAsyncClient, leaseID)
+            .renewLeaseWithResponse(null), 200);
+    }
+
+    @ParameterizedTest
+    @MethodSource("validModifiedConditions")
+    public void renewFileSystemLeaseAC(OffsetDateTime modified, OffsetDateTime unmodified) {
+        String leaseID = setupFileSystemLeaseAsyncCondition(dataLakeFileSystemAsyncClient, RECEIVED_LEASE_ID);
+        RequestConditions mac = new RequestConditions().setIfModifiedSince(modified).setIfUnmodifiedSince(unmodified);
+
+        assertAsyncResponseStatusCode(createLeaseAsyncClient(dataLakeFileSystemAsyncClient, leaseID)
+            .renewLeaseWithResponse(mac), 200);
+    }
+
+    private static Stream<Arguments> validModifiedConditions() {
+        return Stream.of(
+            // modified | unmodified
+            Arguments.of(null, null),
+            Arguments.of(OLD_DATE, null),
+            Arguments.of(null, NEW_DATE)
+        );
+    }
+
+    @ParameterizedTest
+    @MethodSource("invalidModifiedConditions")
+    public void renewFileSystemLeaseACFail(OffsetDateTime modified, OffsetDateTime unmodified) {
+        String leaseID = setupFileSystemLeaseAsyncCondition(dataLakeFileSystemAsyncClient, RECEIVED_LEASE_ID);
+        RequestConditions mac = new RequestConditions().setIfModifiedSince(modified).setIfUnmodifiedSince(unmodified);
+
+        StepVerifier.create(createLeaseAsyncClient(dataLakeFileSystemAsyncClient, leaseID).renewLeaseWithResponse(mac))
+            .verifyError(DataLakeStorageException.class);
+    }
+
+    @ParameterizedTest
+    @MethodSource("invalidMatchConditions")
+    public void renewFileSystemLeaseACIllegal(String match, String noneMatch) {
+        RequestConditions mac = new RequestConditions().setIfMatch(match).setIfNoneMatch(noneMatch);
+
+        StepVerifier.create(createLeaseAsyncClient(dataLakeFileSystemAsyncClient, RECEIVED_ETAG).renewLeaseWithResponse(mac))
+            .verifyError(DataLakeStorageException.class);
+    }
+
+    private static Stream<Arguments> invalidMatchConditions() {
+        return Stream.of(
+            // match | noneMatch
+            Arguments.of(RECEIVED_ETAG, null),
+            Arguments.of(null, GARBAGE_ETAG)
+        );
+    }
+
+    @Test
+    public void renewFileSystemLeaseError() {
+        DataLakeFileSystemAsyncClient fsc = primaryDataLakeServiceAsyncClient.getFileSystemAsyncClient(generateFileSystemName());
+
+        StepVerifier.create(createLeaseAsyncClient(fsc, "id").renewLease())
+            .verifyError(DataLakeStorageException.class);
+    }
+
+    @Test
+    public void releaseFileSystemLease() {
+        String leaseID = setupFileSystemLeaseAsyncCondition(dataLakeFileSystemAsyncClient, RECEIVED_LEASE_ID);
+
+        StepVerifier.create(createLeaseAsyncClient(dataLakeFileSystemAsyncClient, leaseID).releaseLeaseWithResponse(null))
+            .assertNext(r -> validateBasicHeaders(r.getHeaders()))
+            .verifyComplete();
+
+        StepVerifier.create(dataLakeFileSystemAsyncClient.getProperties())
+            .assertNext(p -> assertEquals(LeaseStateType.AVAILABLE, p.getLeaseState()))
+            .verifyComplete();
+    }
+
+    @Test
+    public void releaseFileSystemLeaseMin() {
+        String leaseID = setupFileSystemLeaseAsyncCondition(dataLakeFileSystemAsyncClient, RECEIVED_LEASE_ID);
+
+        assertAsyncResponseStatusCode(createLeaseAsyncClient(dataLakeFileSystemAsyncClient, leaseID)
+            .releaseLeaseWithResponse(null), 200);
+    }
+
+    @ParameterizedTest
+    @MethodSource("validModifiedConditions")
+    public void releaseFileSystemLeaseAC(OffsetDateTime modified, OffsetDateTime unmodified) {
+        String leaseID = setupFileSystemLeaseAsyncCondition(dataLakeFileSystemAsyncClient, RECEIVED_LEASE_ID);
+        RequestConditions mac = new RequestConditions().setIfModifiedSince(modified).setIfUnmodifiedSince(unmodified);
+
+        assertAsyncResponseStatusCode(createLeaseAsyncClient(dataLakeFileSystemAsyncClient, leaseID)
+            .releaseLeaseWithResponse(mac), 200);
+    }
+
+    @ParameterizedTest
+    @MethodSource("invalidModifiedConditions")
+    public void releaseFileSystemLeaseACFail(OffsetDateTime modified, OffsetDateTime unmodified) {
+        String leaseID = setupFileSystemLeaseAsyncCondition(dataLakeFileSystemAsyncClient, RECEIVED_LEASE_ID);
+        RequestConditions mac = new RequestConditions().setIfModifiedSince(modified).setIfUnmodifiedSince(unmodified);
+
+        StepVerifier.create(createLeaseAsyncClient(dataLakeFileSystemAsyncClient, leaseID).releaseLeaseWithResponse(mac))
+            .verifyError(DataLakeStorageException.class);
+    }
+
+    @ParameterizedTest
+    @MethodSource("invalidMatchConditions")
+    public void releaseFileSystemLeaseACIllegal(String match, String noneMatch) {
+        RequestConditions mac = new RequestConditions().setIfMatch(match).setIfNoneMatch(noneMatch);
+
+        StepVerifier.create(createLeaseAsyncClient(dataLakeFileSystemAsyncClient, RECEIVED_ETAG)
+            .releaseLeaseWithResponse(mac))
+            .verifyError(DataLakeStorageException.class);
+    }
+
+    @Test
+    public void releaseFileSystemLeaseError() {
+        DataLakeFileSystemAsyncClient fsc = primaryDataLakeServiceAsyncClient.getFileSystemAsyncClient(generateFileSystemName());
+
+        StepVerifier.create(createLeaseAsyncClient(fsc, "id").releaseLease())
+            .verifyError(DataLakeStorageException.class);
+    }
+
+    @ParameterizedTest
+    @CsvSource(value = {"-1,null,0", "-1,20,25", "20,15,16"}, nullValues = "null")
+    public void breakFileSystemLease(int leaseTime, Integer breakPeriod, int remainingTime) {
+        DataLakeLeaseAsyncClient leaseClient = createLeaseAsyncClient(dataLakeFileSystemAsyncClient, testResourceNamer.randomUuid());
+        leaseClient.acquireLease(leaseTime).block();
+
+        StepVerifier.create(leaseClient.breakLeaseWithResponse(breakPeriod, null))
+            .assertNext(r -> {
+                assertTrue(r.getValue() <= remainingTime);
+                validateBasicHeaders(r.getHeaders());
+            })
+            .verifyComplete();
+
+        StepVerifier.create(dataLakeFileSystemAsyncClient.getProperties())
+            .assertNext(p -> assertTrue(p.getLeaseState() == LeaseStateType.BROKEN || p.getLeaseState() == LeaseStateType.BREAKING))
+            .verifyComplete();
+
+        // Break the lease for cleanup.
+        leaseClient.breakLeaseWithResponse(0, null).block();
+    }
+
+    @Test
+    public void breakFileSystemLeaseMin() {
+        setupFileSystemLeaseAsyncCondition(dataLakeFileSystemAsyncClient, RECEIVED_LEASE_ID);
+
+        assertAsyncResponseStatusCode(createLeaseAsyncClient(dataLakeFileSystemAsyncClient)
+            .breakLeaseWithResponse(null, null), 202);
+    }
+
+    @ParameterizedTest
+    @MethodSource("validModifiedConditions")
+    public void breakFileSystemLeaseAC(OffsetDateTime modified, OffsetDateTime unmodified) {
+        setupFileSystemLeaseAsyncCondition(dataLakeFileSystemAsyncClient, RECEIVED_LEASE_ID);
+        RequestConditions mac = new RequestConditions().setIfModifiedSince(modified).setIfUnmodifiedSince(unmodified);
+
+        assertAsyncResponseStatusCode(createLeaseAsyncClient(dataLakeFileSystemAsyncClient)
+            .breakLeaseWithResponse(null, mac), 202);
+    }
+
+    @ParameterizedTest
+    @MethodSource("invalidModifiedConditions")
+    public void breakFileSystemLeaseACFail(OffsetDateTime modified, OffsetDateTime unmodified) {
+        setupFileSystemLeaseAsyncCondition(dataLakeFileSystemAsyncClient, RECEIVED_LEASE_ID);
+        RequestConditions mac = new RequestConditions().setIfModifiedSince(modified).setIfUnmodifiedSince(unmodified);
+
+        StepVerifier.create(createLeaseAsyncClient(dataLakeFileSystemAsyncClient).breakLeaseWithResponse(null, mac))
+            .verifyError(DataLakeStorageException.class);
+    }
+
+    @ParameterizedTest
+    @MethodSource("invalidMatchConditions")
+    public void breakFileSystemLeaseACIllegal(String match, String noneMatch) {
+        RequestConditions mac = new RequestConditions().setIfMatch(match).setIfNoneMatch(noneMatch);
+
+        StepVerifier.create(createLeaseAsyncClient(dataLakeFileSystemAsyncClient).breakLeaseWithResponse(null, mac))
+            .verifyError(DataLakeStorageException.class);
+    }
+
+    @Test
+    public void breakFileSystemLeaseError() {
+        DataLakeFileSystemAsyncClient fsc = primaryDataLakeServiceAsyncClient.getFileSystemAsyncClient(generateFileSystemName());
+
+        StepVerifier.create(createLeaseAsyncClient(fsc).breakLease())
+            .verifyError(DataLakeStorageException.class);
+    }
+
+    @Test
+    public void changeFileSystemLease() {
+        String leaseID = setupFileSystemLeaseAsyncCondition(dataLakeFileSystemAsyncClient, RECEIVED_LEASE_ID);
+        DataLakeLeaseAsyncClient leaseClient = createLeaseAsyncClient(dataLakeFileSystemAsyncClient, leaseID);
+
+        StepVerifier.create(leaseClient.changeLeaseWithResponse(testResourceNamer.randomUuid(), null)
+            .flatMap(r -> {
+                validateBasicHeaders(r.getHeaders());
+                assertEquals(leaseClient.getLeaseId(), r.getValue());
+                return createLeaseAsyncClient(dataLakeFileSystemAsyncClient, r.getValue()).releaseLeaseWithResponse(null);
+            }))
+            .assertNext(r -> {
+                assertEquals(200, r.getStatusCode());
+            })
+            .verifyComplete();
+    }
+
+    @Test
+    public void changeFileSystemLeaseMin() {
+        String leaseID = setupFileSystemLeaseAsyncCondition(dataLakeFileSystemAsyncClient, RECEIVED_LEASE_ID);
+
+        assertAsyncResponseStatusCode(createLeaseAsyncClient(dataLakeFileSystemAsyncClient, leaseID)
+            .changeLeaseWithResponse(testResourceNamer.randomUuid(), null), 200);
+    }
+
+    @ParameterizedTest
+    @MethodSource("validModifiedConditions")
+    public void changeFileSystemLeaseAC(OffsetDateTime modified, OffsetDateTime unmodified) {
+        String leaseID = setupFileSystemLeaseAsyncCondition(dataLakeFileSystemAsyncClient, RECEIVED_LEASE_ID);
+        RequestConditions mac = new RequestConditions().setIfModifiedSince(modified).setIfUnmodifiedSince(unmodified);
+
+        assertAsyncResponseStatusCode(createLeaseAsyncClient(dataLakeFileSystemAsyncClient, leaseID)
+            .changeLeaseWithResponse(testResourceNamer.randomUuid(), mac), 200);
+    }
+
+    @ParameterizedTest
+    @MethodSource("invalidModifiedConditions")
+    public void changeFileSystemLeaseACFail(OffsetDateTime modified, OffsetDateTime unmodified) {
+        String leaseID = setupFileSystemLeaseAsyncCondition(dataLakeFileSystemAsyncClient, RECEIVED_LEASE_ID);
+        RequestConditions mac = new RequestConditions().setIfModifiedSince(modified).setIfUnmodifiedSince(unmodified);
+
+        StepVerifier.create(createLeaseAsyncClient(dataLakeFileSystemAsyncClient, leaseID)
+            .changeLeaseWithResponse(testResourceNamer.randomUuid(), mac))
+            .verifyError(DataLakeStorageException.class);
+    }
+
+    @ParameterizedTest
+    @MethodSource("invalidMatchConditions")
+    public void changeFileSystemLeaseACIllegal(String match, String noneMatch) {
+        RequestConditions mac = new RequestConditions().setIfMatch(match).setIfNoneMatch(noneMatch);
+
+        StepVerifier.create(createLeaseAsyncClient(dataLakeFileSystemAsyncClient, RECEIVED_LEASE_ID)
+            .changeLeaseWithResponse(GARBAGE_LEASE_ID, mac))
+            .verifyError(DataLakeStorageException.class);
+    }
+
+    @Test
+    public void changeFileSystemLeaseError() {
+        DataLakeFileSystemAsyncClient fsc = primaryDataLakeServiceAsyncClient.getFileSystemAsyncClient(generateFileSystemName());
+
+        StepVerifier.create(createLeaseAsyncClient(fsc, "id").changeLease("id"))
             .verifyError(DataLakeStorageException.class);
     }
 
