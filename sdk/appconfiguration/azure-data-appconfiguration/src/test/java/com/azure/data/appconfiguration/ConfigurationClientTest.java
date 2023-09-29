@@ -804,6 +804,7 @@ public class ConfigurationClientTest extends ConfigurationClientTestBase {
      */
     @ParameterizedTest(name = DISPLAY_NAME_WITH_ARGUMENTS)
     @MethodSource("com.azure.data.appconfiguration.TestHelper#getTestParameters")
+    @Disabled("https://github.com/Azure/azure-sdk-for-java/issues/37013")
     public void listRevisions(HttpClient httpClient, ConfigurationServiceVersion serviceVersion) {
         client = getConfigurationClient(httpClient, serviceVersion);
         final String keyName = getKey();

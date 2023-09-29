@@ -9,7 +9,7 @@
     {
       "Agent": { "windows-2022": { "OSVmImage": "windows-2022", "Pool": "azsdk-pool-mms-win-2022-general" } },
       "JavaTestVersion": "1.17",
-      "AZURE_TEST_HTTP_CLIENTS": "jdk",
+      "AZURE_TEST_HTTP_CLIENTS": "JdkHttpClientProvider",
       "TestFromSource": false
     }
   ]
