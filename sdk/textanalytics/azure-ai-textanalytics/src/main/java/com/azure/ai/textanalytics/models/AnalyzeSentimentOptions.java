@@ -6,7 +6,7 @@ package com.azure.ai.textanalytics.models;
 import com.azure.core.annotation.Fluent;
 
 /**
- * The {@link AnalyzeSentimentOptions} model.
+ * The {@code AnalyzeSentimentOptions} model.
  */
 @Fluent
 public final class AnalyzeSentimentOptions extends TextAnalyticsRequestOptions {
@@ -19,12 +19,18 @@ public final class AnalyzeSentimentOptions extends TextAnalyticsRequestOptions {
     private boolean includeOpinionMining;
 
     /**
+     * Constructs a {@code AnalyzeSentimentOptions} model.
+     */
+    public AnalyzeSentimentOptions() {
+    }
+
+    /**
      * Sets the model version. This value indicates which model will be used for scoring, e.g. "latest", "2019-10-01".
      * If a model-version is not specified, the API will default to the latest, non-preview version.
      *
      * @param modelVersion The model version.
      *
-     * @return The {@link AnalyzeSentimentOptions} object itself.
+     * @return The {@code AnalyzeSentimentOptions} object itself.
      */
     @Override
     public AnalyzeSentimentOptions setModelVersion(String modelVersion) {
@@ -40,7 +46,7 @@ public final class AnalyzeSentimentOptions extends TextAnalyticsRequestOptions {
      * @param includeStatistics If a boolean value was specified in the request this field will contain
      * information about the document payload.
      *
-     * @return The {@link AnalyzeSentimentOptions} object itself.
+     * @return The {@code AnalyzeSentimentOptions} object itself.
      */
     @Override
     public AnalyzeSentimentOptions setIncludeStatistics(boolean includeStatistics) {
@@ -56,7 +62,7 @@ public final class AnalyzeSentimentOptions extends TextAnalyticsRequestOptions {
      * your input text for 48 hours, solely to allow for troubleshooting issues. Setting this property to true,
      * disables input logging and may limit our ability to investigate issues that occur.
      *
-     * @return The {@link AnalyzeSentimentOptions} object itself.
+     * @return The {@code AnalyzeSentimentOptions} object itself.
      */
     @Override
     public AnalyzeSentimentOptions setServiceLogsDisabled(boolean disableServiceLogs) {
@@ -82,7 +88,7 @@ public final class AnalyzeSentimentOptions extends TextAnalyticsRequestOptions {
      *
      * @param includeOpinionMining The boolean indicator to include opinion mining data in the returned result.
      *
-     * @return The AnalyzeSentimentOptions object itself.
+     * @return The {@code AnalyzeSentimentOptions} object itself.
      */
     public AnalyzeSentimentOptions setIncludeOpinionMining(boolean includeOpinionMining) {
         this.includeOpinionMining = includeOpinionMining;

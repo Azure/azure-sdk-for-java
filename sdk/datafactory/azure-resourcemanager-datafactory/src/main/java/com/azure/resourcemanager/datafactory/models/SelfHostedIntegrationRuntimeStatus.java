@@ -218,6 +218,18 @@ public final class SelfHostedIntegrationRuntimeStatus extends IntegrationRuntime
     }
 
     /**
+     * Get the selfContainedInteractiveAuthoringEnabled property: An alternative option to ensure interactive authoring
+     * function when your self-hosted integration runtime is unable to establish a connection with Azure Relay.
+     *
+     * @return the selfContainedInteractiveAuthoringEnabled value.
+     */
+    public Boolean selfContainedInteractiveAuthoringEnabled() {
+        return this.innerTypeProperties() == null
+            ? null
+            : this.innerTypeProperties().selfContainedInteractiveAuthoringEnabled();
+    }
+
+    /**
      * Validates the instance.
      *
      * @throws IllegalArgumentException thrown if the instance is not valid.
