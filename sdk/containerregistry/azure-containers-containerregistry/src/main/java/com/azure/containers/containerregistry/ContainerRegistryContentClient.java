@@ -64,7 +64,6 @@ import static com.azure.core.util.CoreUtils.bytesToHexString;
  * <p>This class provides a client that can upload, download, and delete artifacts in Azure Container Registry repository.</p>
  *
  * <p><strong>Instantiating {@link ContainerRegistryContentClient}</strong></p>
- * <br/>
  *
  * <!-- src_embed readme-sample-createContentClient -->
  * <pre>
@@ -122,7 +121,6 @@ public final class ContainerRegistryContentClient {
      * Upload the OCI manifest to the repository.
      *
      * <p><strong>Upload an OCI manifest</strong></p>
-     * <br/>
      *
      * <!-- src_embed com.azure.containers.containerregistry.setManifest -->
      * <pre>
@@ -148,7 +146,6 @@ public final class ContainerRegistryContentClient {
      * Uploads a manifest to the repository.
      *
      * <p><strong>Upload a manifest</strong></p>
-     * <br/>
      *
      * <!-- src_embed com.azure.containers.containerregistry.uploadCustomManifest -->
      * <pre>
@@ -175,7 +172,6 @@ public final class ContainerRegistryContentClient {
      * Uploads a blob to the repository in chunks of 4MB.
      *
      * <p><strong>Upload a blob from {@link BinaryData content}</strong></p>
-     * <br/>
      *
      * <!-- src_embed com.azure.containers.containerregistry.uploadBlob -->
      * <pre>
@@ -187,7 +183,6 @@ public final class ContainerRegistryContentClient {
      * <!-- end com.azure.containers.containerregistry.uploadBlob -->
      *
      * <p><strong>Error handling</strong></p>
-     * <br/>
      *
      * <!-- src_embed com.azure.containers.containerregistry.uploadBlobErrorHandling -->
      * <pre>
@@ -224,7 +219,6 @@ public final class ContainerRegistryContentClient {
      * Uploads a blob to the repository in chunks of 4MB.
      *
      * <p><strong>Upload blob from file</strong></p>
-     * <br/>
      *
      * <!-- src_embed com.azure.containers.containerregistry.uploadFile -->
      * <pre>
@@ -261,7 +255,6 @@ public final class ContainerRegistryContentClient {
      * Download the manifest identified by the given tag or digest.
      *
      * <p><strong>Download manifest by tag</strong></p>
-     * <br/>
      *
      * <!-- src_embed com.azure.containers.containerregistry.getManifestTag -->
      * <pre>
@@ -276,7 +269,6 @@ public final class ContainerRegistryContentClient {
      * <!-- end com.azure.containers.containerregistry.getManifestTag -->
      *
      * <p><strong>Download manifest by digest</strong></p>
-     * <br/>
      *
      * <!-- src_embed com.azure.containers.containerregistry.getManifestDigest -->
      * <pre>
@@ -299,7 +291,6 @@ public final class ContainerRegistryContentClient {
      * Download the manifest of custom type identified by the given tag or digest.
      *
      * <p><strong>Download manifest</strong></p>
-     * <br/>
      *
      * <!-- src_embed com.azure.containers.containerregistry.getManifestWithResponse -->
      * <pre>
@@ -333,7 +324,6 @@ public final class ContainerRegistryContentClient {
      * Download the blob identified by the given digest.
      *
      * <p><strong>Download blob</strong></p>
-     * <br/>
      *
      * <!-- src_embed com.azure.containers.containerregistry.downloadStream -->
      * <pre>
@@ -374,7 +364,6 @@ public final class ContainerRegistryContentClient {
      * Delete the blob identified by the given digest
      *
      * <p><strong>Delete blob</strong></p>
-     * <br/>
      *
      * <!-- src_embed readme-sample-deleteBlob -->
      * <pre>
@@ -428,7 +417,6 @@ public final class ContainerRegistryContentClient {
      * Delete the manifest identified by the given digest.
      *
      * <p><strong>Delete manifest</strong></p>
-     * <br/>
      *
      * <!-- src_embed readme-sample-deleteManifest -->
      * <pre>

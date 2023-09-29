@@ -117,7 +117,6 @@ public final class ContainerRepositoryAsync {
      * Delete the current repository.
      *
      * <p><strong>Delete the repository</strong></p>
-     * <br/>
      *
      * <!-- src_embed com.azure.containers.containerregistry.ContainerRepositoryAsync.deleteRepositoryWithResponse -->
      * <pre>
@@ -149,7 +148,6 @@ public final class ContainerRepositoryAsync {
      * Delete the current repository.
      *
      * <p><strong>Delete the repository</strong></p>
-     * <br/>
      *
      * <!-- src_embed com.azure.containers.containerregistry.ContainerRepositoryAsync.deleteRepository -->
      * <pre>
@@ -191,7 +189,6 @@ public final class ContainerRepositoryAsync {
      * </p>
      *
      * <p><strong>Retrieve all manifest properties associated with the current repository</strong></p>
-     * <br/>
      *
      * <!-- src_embed com.azure.containers.containerregistry.ContainerRepositoryAsync.listManifestProperties -->
      * <pre>
@@ -220,7 +217,6 @@ public final class ContainerRepositoryAsync {
      * No assumptions on the order can be made if no options are provided to the service. </p>
      *
      * <p><strong>List all artifacts within current repository ordered by update time</strong></p>
-     * <br/>
      *
      * <!-- src_embed com.azure.containers.containerregistry.ContainerRepositoryAsync.listManifestPropertiesWithOptions -->
      * <pre>
@@ -269,7 +265,6 @@ public final class ContainerRepositoryAsync {
      * Gets the {@link ContainerRepositoryProperties properties} associated with the current repository.
      *
      * <p><strong>Get the properties for the current repository</strong></p>
-     * <br/>
      *
      * <!-- src_embed com.azure.containers.containerregistry.ContainerRepositoryAsync.getPropertiesWithResponse -->
      * <pre>
@@ -299,7 +294,6 @@ public final class ContainerRepositoryAsync {
      * Gets the {@link ContainerRepositoryProperties properties} associated with the current repository.
      *
      * <p><strong>Get the properties for the current repository</strong></p>
-     * <br/>
      *
      * <!-- src_embed com.azure.containers.containerregistry.ContainerRepositoryAsync.getProperties -->
      * <pre>
@@ -324,7 +318,6 @@ public final class ContainerRepositoryAsync {
      * These properties set the update, delete and retrieve options of the repository.
      *
      * <p><strong>Update the writeable properties for the current repository</strong></p>
-     * <br/>
      *
      * <!-- src_embed com.azure.containers.containerregistry.ContainerRepositoryAsync.updatePropertiesWithResponse -->
      * <pre>
@@ -366,7 +359,6 @@ public final class ContainerRepositoryAsync {
      * These properties set the update, delete and retrieve options of the repository.
      *
      * <p><strong>Update the writeable properties for the current repository</strong></p>
-     * <br/>
      *
      * <!-- src_embed com.azure.containers.containerregistry.ContainerRepositoryAsync.updateProperties -->
      * <pre>

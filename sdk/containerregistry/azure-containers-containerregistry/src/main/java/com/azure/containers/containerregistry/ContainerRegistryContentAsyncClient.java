@@ -66,7 +66,6 @@ import static com.azure.core.util.FluxUtil.withContext;
  * </p>
  *
  * <p><strong>Instantiating {@link ContainerRegistryContentAsyncClient}</strong></p>
- * <br/>
  *
  * <!-- src_embed readme-sample-createContentAsyncClient -->
  * <pre>
@@ -123,7 +122,6 @@ public final class ContainerRegistryContentAsyncClient {
      * Upload the OCI manifest to the repository.
      *
      * <p><strong>Upload an OCI manifest</strong></p>
-     * <br/>
      *
      * <!-- src_embed com.azure.containers.containerregistry.setManifestAsync -->
      * <pre>
@@ -156,7 +154,6 @@ public final class ContainerRegistryContentAsyncClient {
      * Uploads a manifest to the repository.
      *
      * <p><strong>Upload a manifest</strong></p>
-     * <br/>
      *
      * <!-- src_embed com.azure.containers.containerregistry.uploadCustomManifestAsync -->
      * <pre>
@@ -188,7 +185,6 @@ public final class ContainerRegistryContentAsyncClient {
      * Uploads a blob to the repository.
      *
      * <p><strong>Upload a blob from {@link BinaryData content}</strong></p>
-     * <br/>
      *
      * <!-- src_embed com.azure.containers.containerregistry.uploadBlobAsync -->
      * <pre>
@@ -202,7 +198,6 @@ public final class ContainerRegistryContentAsyncClient {
      * <!-- end com.azure.containers.containerregistry.uploadBlobAsync -->
      *
      * <p><strong>Upload a blob from file</strong></p>
-     * <br/>
      *
      * <!-- src_embed com.azure.containers.containerregistry.uploadFileAsync -->
      * <pre>
@@ -214,7 +209,6 @@ public final class ContainerRegistryContentAsyncClient {
      * <!-- end com.azure.containers.containerregistry.uploadFileAsync -->
      *
      * <p><strong>Error handling</strong></p>
-     * <br/>
      *
      * <!-- src_embed com.azure.containers.containerregistry.uploadBlobAsyncErrorHandling -->
      * <pre>
@@ -257,7 +251,6 @@ public final class ContainerRegistryContentAsyncClient {
      * Download the manifest identified by the given tag or digest.
      *
      * <p><strong>Download manifest</strong></p>
-     * <br/>
      *
      * <!-- src_embed com.azure.containers.containerregistry.getManifestAsync -->
      * <pre>
@@ -291,7 +284,6 @@ public final class ContainerRegistryContentAsyncClient {
      * Download the manifest identified by the given tag or digest.
      *
      * <p><strong>Download manifest</strong></p>
-     * <br/>
      *
      * <!-- src_embed com.azure.containers.containerregistry.getManifestWithResponseAsync -->
      * <pre>
@@ -325,7 +317,6 @@ public final class ContainerRegistryContentAsyncClient {
      * Content is downloaded in chunks of 4MB size each.
      *
      * <p><strong>Download blob to file</strong></p>
-     * <br/>
      *
      * Write content to synchronous channel, for example {@link java.nio.channels.FileChannel}:
      *
@@ -343,7 +334,6 @@ public final class ContainerRegistryContentAsyncClient {
      * <!-- end com.azure.containers.containerregistry.downloadStreamAsyncFile -->
      *
      * <p><strong>Download blob as a stream</strong></p>
-     * <br/>
      *
      * Write content to asynchronous byte channel, for example {@link java.nio.channels.AsynchronousSocketChannel}:
      *
@@ -375,7 +365,6 @@ public final class ContainerRegistryContentAsyncClient {
      * Delete blob identified by the given digest
      *
      * <p><strong>Delete artifact</strong></p>
-     * <br/>
      *
      * <!-- src_embed readme-sample-deleteBlobAsync -->
      * <pre>
@@ -412,7 +401,6 @@ public final class ContainerRegistryContentAsyncClient {
      * Delete the manifest identified by the given digest.
      *
      * <p><strong>Delete manifest</strong></p>
-     * <br/>
      *
      * <!-- src_embed readme-sample-deleteManifestAsync -->
      * <pre>

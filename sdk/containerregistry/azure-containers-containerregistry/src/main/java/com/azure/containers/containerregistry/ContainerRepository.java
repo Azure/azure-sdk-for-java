@@ -116,7 +116,6 @@ public final class ContainerRepository {
      * Delete the current repository.
      *
      * <p><strong>Delete the repository</strong></p>
-     * <br/>
      *
      * <!-- src_embed com.azure.containers.containerregistry.ContainerRepository.deleteRepositoryWithResponse -->
      * <pre>
@@ -146,7 +145,6 @@ public final class ContainerRepository {
      * Delete the current repository.
      *
      * <p><strong>Delete the repository</strong></p>
-     * <br/>
      *
      * <!-- src_embed com.azure.containers.containerregistry.ContainerRepository.deleteRepository -->
      * <pre>
@@ -167,7 +165,6 @@ public final class ContainerRepository {
      * Gets the {@link ContainerRepositoryProperties properties} associated with the current repository.
      *
      * <p><strong>Get the properties for the current repository</strong></p>
-     * <br/>
      *
      * <!-- src_embed com.azure.containers.containerregistry.ContainerRepository.getPropertiesWithResponse -->
      * <pre>
@@ -197,7 +194,6 @@ public final class ContainerRepository {
      * Gets the {@link ContainerRepositoryProperties properties} associated with the current repository.
      *
      * <p><strong>Get the properties for the current repository</strong></p>
-     * <br/>
      *
      * <!-- src_embed com.azure.containers.containerregistry.ContainerRepository.getProperties -->
      * <pre>
@@ -238,7 +234,6 @@ public final class ContainerRepository {
      * </p>
      *
      * <p><strong>Retrieve all manifest properties associated with the current repository</strong></p>
-     * <br/>
      *
      * <!-- src_embed com.azure.containers.containerregistry.ContainerRepository.listManifestProperties -->
      * <pre>
@@ -267,7 +262,6 @@ public final class ContainerRepository {
      * No assumptions on the order can be made if no options are provided to the service. </p>
      *
      * <p><strong>List all artifacts within current repository ordered by update time</strong></p>
-     * <br/>
      *
      * <!-- src_embed com.azure.containers.containerregistry.ContainerRepository.listManifestPropertiesWithOptionsNoContext -->
      * <pre>
@@ -297,7 +291,6 @@ public final class ContainerRepository {
      * No assumptions on the order can be made if no options are provided to the service. </p>
      *
      * <p><strong>List all artifacts within current repository ordered by update time</strong></p>
-     * <br/>
      *
      * <!-- src_embed com.azure.containers.containerregistry.ContainerRepository.listManifestPropertiesWithOptions -->
      * <pre>
@@ -360,7 +353,6 @@ public final class ContainerRepository {
      * These properties set the update, delete and retrieve options of the repository.
      *
      * <p><strong>Update the writeable properties for the current repository</strong></p>
-     * <br/>
      *
      * <!-- src_embed com.azure.containers.containerregistry.ContainerRepository.updatePropertiesWithResponse -->
      * <pre>
@@ -388,7 +380,6 @@ public final class ContainerRepository {
      * These properties set the update, delete and retrieve options of the repository.
      *
      * <p><strong>Update the writeable properties for the current repository</strong></p>
-     * <br/>
      *
      * <!-- src_embed com.azure.containers.containerregistry.ContainerRepository.updateProperties -->
      * <pre>
