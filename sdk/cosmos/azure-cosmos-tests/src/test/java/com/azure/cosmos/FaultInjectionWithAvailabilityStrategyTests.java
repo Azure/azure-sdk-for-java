@@ -55,7 +55,6 @@ import org.testng.annotations.Test;
 import java.time.Duration;
 import java.util.ArrayList;
 import java.util.Arrays;
-import java.util.Collection;
 import java.util.Collections;
 import java.util.Iterator;
 import java.util.List;
@@ -67,6 +66,7 @@ import java.util.function.BiConsumer;
 import java.util.function.BiFunction;
 import java.util.function.Consumer;
 import java.util.function.Function;
+import java.util.stream.Collectors;
 
 import static org.assertj.core.api.AssertionsForClassTypes.assertThat;
 import static org.assertj.core.api.AssertionsForClassTypes.fail;
@@ -2515,7 +2515,7 @@ public class FaultInjectionWithAvailabilityStrategyTests extends TestSuiteBase {
             .stream()
             .map(idAndPkPair ->
                 new CosmosItemIdentity(new PartitionKey(idAndPkPair.getRight()), idAndPkPair.getLeft()))
-            .toList();
+            .collect(Collectors.toList());
 
         FeedResponse<ObjectNode> response = params.container.readMany(
             itemIdentities,
@@ -2610,7 +2610,8 @@ public class FaultInjectionWithAvailabilityStrategyTests extends TestSuiteBase {
                             ClientSideRequestStatistics reqStats =
                                 currentDiagnostics.getClientSideRequestStatistics().iterator().next();
                             assertThat(reqStats.getResponseStatisticsList()).isNotNull();
-                            List<ClientSideRequestStatistics.StoreResponseStatistics> responseStatistics = reqStats.getResponseStatisticsList().stream().toList();
+                            List<ClientSideRequestStatistics.StoreResponseStatistics> responseStatistics =
+                                reqStats.getResponseStatisticsList().stream().collect(Collectors.toList());
                             assertThat(responseStatistics.size()).isGreaterThanOrEqualTo(1);
                             for (ClientSideRequestStatistics.StoreResponseStatistics responseStats : responseStatistics) {
                                 assertThat(responseStats.getRequestResourceType())
@@ -3483,7 +3484,7 @@ public class FaultInjectionWithAvailabilityStrategyTests extends TestSuiteBase {
                             .stream()
                             .filter(d -> d.getContactedRegionNames().size() == 1 &&
                                 d.getContactedRegionNames().contains(SECOND_REGION_NAME))
-                            .toList();
+                            .collect(Collectors.toList());
                         assertThat(
                             secondRegionDiagnostics
                                 .get(0)
