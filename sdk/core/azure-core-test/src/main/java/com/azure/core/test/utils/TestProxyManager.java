@@ -21,20 +21,18 @@ import java.nio.file.Paths;
 import java.time.Duration;
 import java.util.Map;
 
-import static com.azure.core.test.utils.TestUtils.toURI;
-
 /**
  * Manages running the test recording proxy server
  */
 public final class TestProxyManager {
     private static final ClientLogger LOGGER = new ClientLogger(TestProxyManager.class);
     private static Process proxy;
-    private static final Path TEST_CLASS_PATH = Paths.get(toURI(TestProxyManager.class.getResource(TestProxyManager.class.getSimpleName() + ".class")));
+    private static final Path WORKING_DIRECTORY = Paths.get(System.getProperty("user.dir"));
 
     static {
         Runtime.getRuntime().addShutdownHook(new Thread(TestProxyManager::stopProxy));
         if (runningLocally()) {
-            TestProxyDownloader.installTestProxy(TEST_CLASS_PATH);
+            TestProxyDownloader.installTestProxy(WORKING_DIRECTORY);
         }
     }
 
@@ -53,7 +51,7 @@ public final class TestProxyManager {
                 String commandLine = Paths.get(TestProxyDownloader.getProxyDirectory().toString(),
                     TestProxyUtils.getProxyProcessName()).toString();
 
-                Path repoRoot = TestUtils.getRepoRootResolveUntil(testClassPath, "eng");
+                Path repoRoot = TestUtils.getRepoRootResolveUntil(WORKING_DIRECTORY, "eng");
 
                 // Resolve the path to the repo root 'target' folder and create the folder if it doesn't exist.
                 // This folder will be used to store the 'test-proxy.log' file to enable simpler debugging of Test Proxy
