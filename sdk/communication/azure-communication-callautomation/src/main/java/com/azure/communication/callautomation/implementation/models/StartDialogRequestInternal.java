@@ -7,9 +7,9 @@ package com.azure.communication.callautomation.implementation.models;
 import com.azure.core.annotation.Fluent;
 import com.fasterxml.jackson.annotation.JsonProperty;
 
-/** The StartDialogRequest model. */
+/** The StartDialogRequestInternal model. */
 @Fluent
-public final class StartDialogRequest {
+public final class StartDialogRequestInternal {
     /*
      * Defines options for dialog.
      */
@@ -28,9 +28,6 @@ public final class StartDialogRequest {
     @JsonProperty(value = "operationContext")
     private String operationContext;
 
-    /** Creates an instance of StartDialogRequest class. */
-    public StartDialogRequest() {}
-
     /**
      * Get the dialogOptions property: Defines options for dialog.
      *
@@ -44,9 +41,9 @@ public final class StartDialogRequest {
      * Set the dialogOptions property: Defines options for dialog.
      *
      * @param dialogOptions the dialogOptions value to set.
-     * @return the StartDialogRequest object itself.
+     * @return the StartDialogRequestInternal object itself.
      */
-    public StartDialogRequest setDialogOptions(DialogOptions dialogOptions) {
+    public StartDialogRequestInternal setDialogOptions(DialogOptions dialogOptions) {
         this.dialogOptions = dialogOptions;
         return this;
     }
@@ -64,9 +61,9 @@ public final class StartDialogRequest {
      * Set the dialogInputType property: Determines the type of the dialog.
      *
      * @param dialogInputType the dialogInputType value to set.
-     * @return the StartDialogRequest object itself.
+     * @return the StartDialogRequestInternal object itself.
      */
-    public StartDialogRequest setDialogInputType(DialogInputType dialogInputType) {
+    public StartDialogRequestInternal setDialogInputType(DialogInputType dialogInputType) {
         this.dialogInputType = dialogInputType;
         return this;
     }
@@ -84,9 +81,9 @@ public final class StartDialogRequest {
      * Set the operationContext property: The value to identify context of the operation.
      *
      * @param operationContext the operationContext value to set.
-     * @return the StartDialogRequest object itself.
+     * @return the StartDialogRequestInternal object itself.
      */
-    public StartDialogRequest setOperationContext(String operationContext) {
+    public StartDialogRequestInternal setOperationContext(String operationContext) {
         this.operationContext = operationContext;
         return this;
     }
