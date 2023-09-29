@@ -9,6 +9,7 @@
 
 #### Bugs Fixed
 * Fixed an issue with the threshold based availability strategy, which could result in missing diagnostics and unnecessarily high tail latency - See [PR 36508](https://github.com/Azure/azure-sdk-for-java/pull/36508) and [PR 36786](https://github.com/Azure/azure-sdk-for-java/pull/36786).
+* Fixed an issue where `sampleDiagnostics` is not being honored for `query. See [PR 36840](https://github.com/Azure/azure-sdk-for-java/pull/36840)
 
 #### Other Changes
 
@@ -24,7 +25,6 @@
 * Fixed an issue where `pageSize` from `byPage` is not always being honored. This only happens when the same `CosmosQueryRequestOptions` being used through different requests, and different pageSize being used. See [PR 36847](https://github.com/Azure/azure-sdk-for-java/pull/36847)
 * Fixed an issue where build of `CosmosClient` and `CosmosAsyncClient` was getting blocked for the entire aggressive warmup duration even when all the connections have been opened already. - See [PR 36889](https://github.com/Azure/azure-sdk-for-java/pull/36889)
 * Fixed `CosmosClient` connection warm up bug to open connections aggressively. - See [PR 36889](https://github.com/Azure/azure-sdk-for-java/pull/36889)
-* Fixed an issue where `sampleDiagnostics` is not being honored for `query. See [PR 36840](https://github.com/Azure/azure-sdk-for-java/pull/36840)
 
 #### Other Changes
 * Handling negative end-to-end timeouts provided more gracefully by throwing a `CosmsoException` (`OperationCancelledException`) instead of `IllegalArgumentException`. - See [PR 36507](https://github.com/Azure/azure-sdk-for-java/pull/36507)
