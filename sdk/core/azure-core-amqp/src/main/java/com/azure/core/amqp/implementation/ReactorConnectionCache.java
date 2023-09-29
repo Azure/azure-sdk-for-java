@@ -195,7 +195,13 @@ public final class ReactorConnectionCache<T extends ReactorConnection> implement
         return terminated;
     }
 
-    private Retry retryWhenSpec(AmqpRetryPolicy retryPolicy) {
+    /**
+     * Provides the retry spec describing the retry strategy for obtaining new connection when refreshing the cache.
+     *
+     * @param retryPolicy the retry policy.
+     * @return the retry spec.
+     */
+    Retry retryWhenSpec(AmqpRetryPolicy retryPolicy) {
         return Retry.from(retrySignals -> retrySignals
             .concatMap(retrySignal -> {
                 final Retry.RetrySignal signal = retrySignal.copy();
