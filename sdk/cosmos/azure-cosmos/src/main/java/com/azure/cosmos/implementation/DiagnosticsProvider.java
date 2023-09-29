@@ -746,7 +746,7 @@ public final class DiagnosticsProvider {
             diagnostics,
             throwable)) {
 
-            if (!isFluxCompleted || !cosmosCtx.getDiagnostics().isEmpty() ) {
+            if (!isFluxCompleted || !cosmosCtx.getDiagnostics().isEmpty()) {
                 this.handleDiagnostics(context, cosmosCtx);
 
                 if (this.cosmosTracer != null) {
