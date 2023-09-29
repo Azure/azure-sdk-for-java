@@ -13,6 +13,8 @@ import com.azure.cosmos.implementation.DiagnosticsProvider;
 import com.azure.cosmos.implementation.FeedOperationState;
 import com.azure.cosmos.implementation.ImplementationBridgeHelpers;
 import com.azure.cosmos.models.FeedResponse;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import reactor.core.CoreSubscriber;
 import reactor.core.publisher.Flux;
 
@@ -38,9 +40,10 @@ import java.util.function.Function;
  * @see FeedResponse
  */
 public final class CosmosPagedFlux<T> extends ContinuablePagedFlux<String, T, FeedResponse<T>> {
-
     private final static ImplementationBridgeHelpers.CosmosDiagnosticsHelper.CosmosDiagnosticsAccessor cosmosDiagnosticsAccessor =
         ImplementationBridgeHelpers.CosmosDiagnosticsHelper.getCosmosDiagnosticsAccessor();
+    private static final ImplementationBridgeHelpers.CosmosDiagnosticsContextHelper.CosmosDiagnosticsContextAccessor ctxAccessor =
+        ImplementationBridgeHelpers.CosmosDiagnosticsContextHelper.getCosmosDiagnosticsContextAccessor();
 
     private final Function<CosmosPagedFluxOptions, Flux<FeedResponse<T>>> optionsFluxFunction;
     private final Consumer<FeedResponse<T>> feedResponseConsumer;
@@ -139,16 +142,109 @@ public final class CosmosPagedFlux<T> extends ContinuablePagedFlux<String, T, Fe
         return cosmosPagedFluxOptions;
     }
 
-    private <TOutput> Flux<TOutput> wrapWithTracingIfEnabled(CosmosPagedFluxOptions pagedFluxOptions, Flux<TOutput> publisher) {
-        FeedOperationState stateSnapshot = pagedFluxOptions.getFeedOperationState();
-        DiagnosticsProvider tracerProvider = stateSnapshot != null ? stateSnapshot.getDiagnosticsProvider() : null;
+    private Flux<FeedResponse<T>>  wrapWithTracingIfEnabled(CosmosPagedFluxOptions pagedFluxOptions,
+                                                             Flux<FeedResponse<T>> publisher,
+                                                             AtomicLong feedResponseConsumerLatencyInNanos,
+                                                             Context context) {
+        FeedOperationState state = pagedFluxOptions.getFeedOperationState();
+        DiagnosticsProvider tracerProvider = state != null ? state.getDiagnosticsProvider() : null;
+        Object lockHolder = new Object();
         if (tracerProvider == null ||
-            !tracerProvider.isEnabled()) {
+            !tracerProvider.isEnabled()
+            || tracerProvider.shouldSampleOutOperation(pagedFluxOptions)) {
 
-            return publisher;
+            return publisher
+                .doOnEach(signal -> {
+                    FeedResponse<T> response = signal.get();
+                    synchronized (lockHolder) {
+                        switch (signal.getType()) {
+                            case ON_COMPLETE:
+                            case ON_NEXT:
+                                this.recordFeedResponse(pagedFluxOptions, tracerProvider, response, feedResponseConsumerLatencyInNanos);
+                                break;
+                            default:
+                                break;
+                        }
+                    }
+                });
         }
 
-        return tracerProvider.runUnderSpanInContext(publisher, pagedFluxOptions);
+        Flux<FeedResponse<T>> result = tracerProvider
+            .runUnderSpanInContext(publisher)
+            .doOnEach(signal -> {
+                FeedResponse<T> response = signal.get();
+                Context traceCtx = DiagnosticsProvider.getContextFromReactorOrNull(signal.getContextView());
+
+                synchronized (lockHolder) {
+                    switch (signal.getType()) {
+                        case ON_COMPLETE:
+                            this.recordFeedResponse(pagedFluxOptions, tracerProvider, response, feedResponseConsumerLatencyInNanos);
+                            state.mergeDiagnosticsContext();
+                            tracerProvider.recordFeedResponseConsumerLatency(
+                                signal,
+                                state.getDiagnosticsContextSnapshot(),
+                                Duration.ofNanos(feedResponseConsumerLatencyInNanos.get()));
+
+                            tracerProvider.endSpan(state.getDiagnosticsContextSnapshot(), traceCtx);
+
+                            break;
+                        case ON_NEXT:
+                            this.recordFeedResponse(pagedFluxOptions, tracerProvider, response, feedResponseConsumerLatencyInNanos);
+                            state.mergeDiagnosticsContext();
+                            tracerProvider.endSpan(state.getDiagnosticsContextSnapshot(), traceCtx);
+                            state.resetDiagnosticsContext();
+
+                            DiagnosticsProvider.setContextInReactor(tracerProvider.startSpan(
+                                state.getSpanName(),
+                                state.getDiagnosticsContextSnapshot(),
+                                traceCtx));
+
+                            break;
+
+                        case ON_ERROR:
+                            state.mergeDiagnosticsContext();
+                            tracerProvider.recordFeedResponseConsumerLatency(
+                                signal,
+                                state.getDiagnosticsContextSnapshot(),
+                                Duration.ofNanos(feedResponseConsumerLatencyInNanos.get()));
+
+                            // all info is extracted from CosmosException when applicable
+                            tracerProvider.endSpan(
+                                state.getDiagnosticsContextSnapshot(),
+                                traceCtx,
+                                signal.getThrowable()
+                            );
+
+                            break;
+
+                        default:
+                            break;
+                    }
+                }
+            });
+
+        return Flux
+            .deferContextual(reactorCtx -> result
+                .doOnCancel(() -> {
+                    Context traceCtx = DiagnosticsProvider.getContextFromReactorOrNull(reactorCtx);
+                    synchronized (lockHolder) {
+                        state.mergeDiagnosticsContext();
+                        tracerProvider.endSpan(state.getDiagnosticsContextSnapshot(), traceCtx);
+                    }
+                })
+                .doOnComplete(() -> {
+                    Context traceCtx = DiagnosticsProvider.getContextFromReactorOrNull(reactorCtx);
+                    synchronized(lockHolder) {
+                        state.mergeDiagnosticsContext();
+                        tracerProvider.endSpan(state.getDiagnosticsContextSnapshot(), traceCtx);
+                    }
+                }))
+            .contextWrite(DiagnosticsProvider.setContextInReactor(
+                tracerProvider.startSpan(
+                    state.getSpanName(),
+                    state.getDiagnosticsContextSnapshot(),
+                    context)
+            ));
     }
 
     private void recordFeedResponse(
@@ -196,106 +292,17 @@ public final class CosmosPagedFlux<T> extends ContinuablePagedFlux<String, T, Fe
     private Flux<FeedResponse<T>> byPage(CosmosPagedFluxOptions pagedFluxOptions, Context context) {
         AtomicReference<Instant> startTime = new AtomicReference<>();
         AtomicLong feedResponseConsumerLatencyInNanos = new AtomicLong(0);
-        Object lockHolder = new Object();
 
         Flux<FeedResponse<T>> result =
             wrapWithTracingIfEnabled(
-                pagedFluxOptions, this.optionsFluxFunction.apply(pagedFluxOptions))
-            .doOnSubscribe(ignoredValue -> {
-                startTime.set(Instant.now());
-                feedResponseConsumerLatencyInNanos.set(0);
-            })
-            .doOnEach(signal -> {
-
-                FeedResponse<T> response = signal.get();
-                Context traceCtx = DiagnosticsProvider.getContextFromReactorOrNull(signal.getContextView());
-
-                FeedOperationState state = pagedFluxOptions.getFeedOperationState();
-                DiagnosticsProvider tracerProvider = state != null ? state.getDiagnosticsProvider() : null;
-
-                synchronized (lockHolder) {
-                    switch (signal.getType()) {
-                        case ON_COMPLETE:
-                            this.recordFeedResponse(pagedFluxOptions, tracerProvider, response, feedResponseConsumerLatencyInNanos);
-
-                            if (isTracerEnabled(tracerProvider)) {
-                                state.mergeDiagnosticsContext();
-                                tracerProvider.recordFeedResponseConsumerLatency(
-                                    signal,
-                                    state.getDiagnosticsContextSnapshot(),
-                                    Duration.ofNanos(feedResponseConsumerLatencyInNanos.get()));
-
-                                tracerProvider.endSpan(state.getDiagnosticsContextSnapshot(), traceCtx);
-                            }
-
-                            break;
-                        case ON_NEXT:
-                            this.recordFeedResponse(pagedFluxOptions, tracerProvider, response, feedResponseConsumerLatencyInNanos);
-
-                            if (isTracerEnabled(tracerProvider)) {
-                                state.mergeDiagnosticsContext();
-                                tracerProvider.endSpan(state.getDiagnosticsContextSnapshot(), traceCtx);
-                                state.resetDiagnosticsContext();
-
-                                DiagnosticsProvider.setContextInReactor(tracerProvider.startSpan(
-                                    state.getSpanName(),
-                                    state.getDiagnosticsContextSnapshot(),
-                                    traceCtx));
-                            }
-
-                            break;
-
-                        case ON_ERROR:
-                            if (isTracerEnabled(tracerProvider)) {
-                                state.mergeDiagnosticsContext();
-                                tracerProvider.recordFeedResponseConsumerLatency(
-                                    signal,
-                                    state.getDiagnosticsContextSnapshot(),
-                                    Duration.ofNanos(feedResponseConsumerLatencyInNanos.get()));
-
-                                // all info is extracted from CosmosException when applicable
-                                tracerProvider.endSpan(
-                                    state.getDiagnosticsContextSnapshot(),
-                                    traceCtx,
-                                    signal.getThrowable()
-                                );
-                            }
-
-                            break;
-
-                        default:
-                            break;
-                    }
-                }
-            });
-
-        final FeedOperationState state = pagedFluxOptions.getFeedOperationState();
-        final DiagnosticsProvider tracerProvider = state != null ? state.getDiagnosticsProvider() : null;
-        if (isTracerEnabled(tracerProvider)) {
-            return Flux
-                .deferContextual(reactorCtx -> result
-                    .doOnCancel(() -> {
-                        Context traceCtx = DiagnosticsProvider.getContextFromReactorOrNull(reactorCtx);
-                        synchronized (lockHolder) {
-                            state.mergeDiagnosticsContext();
-                            tracerProvider.endSpan(state.getDiagnosticsContextSnapshot(), traceCtx);
-                        }
-                    })
-                    .doOnComplete(() -> {
-                        Context traceCtx = DiagnosticsProvider.getContextFromReactorOrNull(reactorCtx);
-                        synchronized(lockHolder) {
-                            state.mergeDiagnosticsContext();
-                            tracerProvider.endSpan(state.getDiagnosticsContextSnapshot(), traceCtx);
-                        }
-                    }))
-                .contextWrite(DiagnosticsProvider.setContextInReactor(
-                    tracerProvider.startSpan(
-                    state.getSpanName(),
-                    state.getDiagnosticsContextSnapshot(),
-                    context)
-                ));
-
-        }
+                pagedFluxOptions,
+                this.optionsFluxFunction.apply(pagedFluxOptions),
+                feedResponseConsumerLatencyInNanos,
+                context)
+                .doOnSubscribe(ignoredValue -> {
+                    startTime.set(Instant.now());
+                    feedResponseConsumerLatencyInNanos.set(0);
+                });
 
         return result;
     }

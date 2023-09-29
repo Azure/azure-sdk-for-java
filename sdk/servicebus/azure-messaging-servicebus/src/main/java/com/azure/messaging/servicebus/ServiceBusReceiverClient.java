@@ -35,14 +35,22 @@ import static com.azure.messaging.servicebus.implementation.ServiceBusConstants.
  * <p><strong>Create an instance of receiver</strong></p>
  * <!-- src_embed com.azure.messaging.servicebus.servicebusreceiverclient.instantiation -->
  * <pre>
- * &#47;&#47; The required parameters is connectionString, a way to authenticate with Service Bus using credentials.
- * &#47;&#47; The connectionString&#47;queueName must be set by the application. The 'connectionString' format is shown below.
- * &#47;&#47; &quot;Endpoint=&#123;fully-qualified-namespace&#125;;SharedAccessKeyName=&#123;policy-name&#125;;SharedAccessKey=&#123;key&#125;&quot;
+ * TokenCredential credential = new DefaultAzureCredentialBuilder&#40;&#41;.build&#40;&#41;;
+ *
+ * &#47;&#47; 'fullyQualifiedNamespace' will look similar to &quot;&#123;your-namespace&#125;.servicebus.windows.net&quot;
+ * &#47;&#47; 'disableAutoComplete' indicates that users will explicitly settle their message.
  * ServiceBusReceiverClient receiver = new ServiceBusClientBuilder&#40;&#41;
- *     .connectionString&#40;connectionString&#41;
+ *     .credential&#40;fullyQualifiedNamespace, credential&#41;
  *     .receiver&#40;&#41;
- *     .queueName&#40;queueName&#41;
+ *     .disableAutoComplete&#40;&#41;
+ *     .topicName&#40;topicName&#41;
+ *     .subscriptionName&#40;subscriptionName&#41;
  *     .buildClient&#40;&#41;;
+ *
+ * receiver.receiveMessages&#40;3, Duration.ofSeconds&#40;5&#41;&#41;
+ *     .forEach&#40;message -&gt; &#123;
+ *         System.out.println&#40;&quot;Message: &quot; + message.getBody&#40;&#41;&#41;;
+ *     &#125;&#41;;
  *
  * &#47;&#47; Use the receiver and finally close it.
  * receiver.close&#40;&#41;;

@@ -8,6 +8,7 @@
 
 #### Bugs Fixed
 * Fixed an issue with the threshold based availability strategy, which could result in missing diagnostics and unnecessarily high tail latency - See [PR 36508](https://github.com/Azure/azure-sdk-for-java/pull/36508) and [PR 36786](https://github.com/Azure/azure-sdk-for-java/pull/36786).
+* Fixed an issue where `sampleDiagnostics` is not being honored for `query. See [PR 37015](https://github.com/Azure/azure-sdk-for-java/pull/37015)
 * Fixed the issue of `excludeRegions` not being honored for `CosmosBulkExecutionOptions`. - See[PR 36616](https://github.com/Azure/azure-sdk-for-java/pull/36616)
 
 ### 4.50.0 (2023-09-25)
