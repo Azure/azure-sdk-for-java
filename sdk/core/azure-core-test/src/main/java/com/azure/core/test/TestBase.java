@@ -261,11 +261,28 @@ public abstract class TestBase implements BeforeEachCallback {
         for (HttpClientProvider httpClientProvider : ServiceLoader.load(HttpClientProvider.class)) {
             if (includeHttpClientOrHttpClientProvider(httpClientProvider.getClass().getSimpleName()
                 .toLowerCase(Locale.ROOT))) {
+                // JDK HttpClient was introduced since java 11
+                if ("JdkHttpClientProvider".equalsIgnoreCase(httpClientProvider.getClass().getSimpleName())
+                    && !isJavaVersionMinimumRequired(11)) {
+                    continue;
+                }
                 httpClientsToTest.add(httpClientProvider.createInstance());
             }
         }
 
         return httpClientsToTest.stream();
+    }
+
+    private static boolean isJavaVersionMinimumRequired(int minimumVersion) {
+        String version = System.getProperty("java.version");
+        if (version.startsWith("1.")) {
+            version = version.substring(2, 3);
+        } else {
+            int dot = version.indexOf(".");
+            if (dot != -1) { version = version.substring(0, dot); }
+        }
+        int javaVersion = Integer.parseInt(version);
+        return javaVersion >= minimumVersion;
     }
 
     /**
