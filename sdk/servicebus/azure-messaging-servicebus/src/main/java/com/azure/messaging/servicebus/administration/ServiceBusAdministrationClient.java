@@ -70,7 +70,7 @@ import static com.azure.messaging.servicebus.administration.implementation.Entit
  * <a href="https://learn.microsoft.com/azure/active-directory/managed-identities-azure-resources/">managed identity</a>
  * for authentication in production environments.  You can find more information on different ways of authenticating and
  * their corresponding credential types in the
- * <a href="https://learn.microsoft.com/java/api/overview/azure/identity-readme">Azure Identity documentation"</a>.
+ * <a href="https://learn.microsoft.com/java/api/overview/azure/identity-readme">Azure Identity documentation</a>.
  * </p>
  *
  * <!-- src_embed com.azure.messaging.servicebus.administration.servicebusadministrationclient.instantiation -->
