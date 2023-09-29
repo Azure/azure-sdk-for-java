@@ -748,6 +748,8 @@ public class ImplementationBridgeHelpers {
                 long transportRequestId);
 
             boolean isNotEmpty(CosmosDiagnostics cosmosDiagnostics);
+
+            void setDiagnosticsContext(CosmosDiagnostics cosmosDiagnostics, CosmosDiagnosticsContext ctx);
         }
     }
 

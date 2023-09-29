@@ -213,7 +213,7 @@ public final class CosmosDiagnosticsContext {
      * is always null.
      * @return null for point operations or the monotonically increasing sequence number of pages/diagnostics
      */
-    public Integer getSequenceNumber() {
+    Integer getSequenceNumber() {
         return this.sequenceNumber;
     }
 

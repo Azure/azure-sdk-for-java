@@ -244,7 +244,7 @@ public class RxDocumentClientImplTest {
                 rxDocumentClient.readMany(
                     cosmosItemIdentities,
                     collectionLink,
-                    options,
+                    TestUtils.createDummyQueryFeedOperationState(ResourceType.Document, OperationType.Query, options, rxDocumentClient),
                     klass
                 )
             )
