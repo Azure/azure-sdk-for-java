@@ -31,22 +31,13 @@ public abstract class FeedOperationState {
 
     private final CosmosAsyncClient cosmosAsyncClient;
     private final CosmosDiagnosticsThresholds thresholds;
-
-
     private final AtomicReference<CosmosDiagnosticsContext> ctxHolder;
-
-
-
     private final AtomicReference<Runnable> diagnosticsFactoryResetCallback;
-
     private final AtomicReference<Consumer<CosmosDiagnosticsContext>> diagnosticsFactoryMergeCallback;
-
     private final AtomicReference<String> requestContinuation;
     private final AtomicReference<Integer> maxItemCount;
-
     private final AtomicInteger sequenceNumberGenerator;
     private final AtomicReference<Double> samplingRate;
-
     private final CosmosPagedFluxOptions fluxOptions;
 
     public FeedOperationState(

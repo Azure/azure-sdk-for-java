@@ -5713,8 +5713,6 @@ public class RxDocumentClientImpl implements AsyncDocumentClient, IAuthorization
         public CosmosDiagnostics createDiagnostics() {
             CosmosDiagnostics diagnostics = inner.createDiagnostics();
             createdDiagnostics.add(diagnostics);
-            logger.info("Diagnostics {} added to ScopedDiagnosticsFactory {}. {}",
-                diagnostics.hashCode(), this.hashCode(), diagnostics);
             return diagnostics;
         }
 
@@ -5775,7 +5773,6 @@ public class RxDocumentClientImpl implements AsyncDocumentClient, IAuthorization
         }
 
         public void reset() {
-            logger.info("RESET DiagnosticsFactory: {}", this);
             this.createdDiagnostics.clear();
             this.isMerged.set(false);
         }

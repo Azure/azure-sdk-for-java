@@ -66,6 +66,7 @@ import java.util.function.BiConsumer;
 import java.util.function.BiFunction;
 import java.util.function.Consumer;
 import java.util.function.Function;
+import java.util.stream.Stream;
 
 import static org.assertj.core.api.AssertionsForClassTypes.assertThat;
 import static org.assertj.core.api.AssertionsForClassTypes.fail;
@@ -737,7 +738,8 @@ public class FaultInjectionWithAvailabilityStrategyTests extends TestSuiteBase {
             null,
             null,
             0,
-            0);
+            0,
+            false);
     }
 
     @DataProvider(name = "testConfigs_writeAfterCreation")
@@ -1536,7 +1538,8 @@ public class FaultInjectionWithAvailabilityStrategyTests extends TestSuiteBase {
             null,
             null,
             0,
-            0);
+            0,
+            false);
     }
 
     private CosmosResponseWrapper queryReturnsTotalRecordCountCore(
@@ -2485,7 +2488,8 @@ public class FaultInjectionWithAvailabilityStrategyTests extends TestSuiteBase {
             otherDiagnosticsContextValidations,
             responseValidator,
             numberOfOtherDocumentsWithSameId,
-            numberOfOtherDocumentsWithSamePk);
+            numberOfOtherDocumentsWithSamePk,
+            false);
     }
 
     private CosmosResponseWrapper readManyCore(
@@ -2566,17 +2570,7 @@ public class FaultInjectionWithAvailabilityStrategyTests extends TestSuiteBase {
         final String FIRST_REGION_NAME = writeableRegions.get(0).toLowerCase(Locale.ROOT);
         final String SECOND_REGION_NAME = writeableRegions.get(1).toLowerCase(Locale.ROOT);
 
-        BiConsumer<CosmosAsyncContainer, FaultInjectionOperationType> injectReadSessionNotAvailableIntoFirstRegionOnlyForSinglePartition =
-            (c, operationType) -> injectReadSessionNotAvailableError(c, this.getFirstRegion(), operationType, c.getFeedRanges().block().get(0));
 
-        BiFunction<String, ItemOperationInvocationParameters, CosmosResponseWrapper> queryReturnsTotalRecordCountWithDefaultPageSize = (query, params) ->
-            queryReturnsTotalRecordCountCore(query, params, 100);
-
-        BiFunction<String, ItemOperationInvocationParameters, CosmosResponseWrapper> queryReturnsTotalRecordCountWithPageSizeOne = (query, params) ->
-            queryReturnsTotalRecordCountCore(query, params, 1);
-
-        BiFunction<String, ItemOperationInvocationParameters, CosmosResponseWrapper> queryReturnsTotalRecordCountWithPageSizeOneAndEmptyPagesEnabled = (query, params) ->
-            queryReturnsTotalRecordCountCore(query, params, 1, true);
 
         BiConsumer<CosmosResponseWrapper, Long>  validateExpectedRecordCount = (response, expectedRecordCount) -> {
             if (expectedRecordCount != null) {
@@ -2655,27 +2649,6 @@ public class FaultInjectionWithAvailabilityStrategyTests extends TestSuiteBase {
         Consumer<CosmosDiagnosticsContext> validateCtxTwoRegions =
             (ctx) -> validateCtxRegions.accept(ctx, TWO_REGIONS);
 
-        Consumer<CosmosDiagnosticsContext> validateCtxFirstRegionFailureSecondRegionSuccessfulSingleFeedResponse = (ctx) -> {
-            CosmosDiagnostics[] diagnostics = ctx.getDiagnostics().toArray(new CosmosDiagnostics[0]);
-            assertThat(diagnostics.length).isEqualTo(3);
-            CosmosDiagnostics firstRegionDiagnostics = diagnostics[1];
-            assertThat(firstRegionDiagnostics.getFeedResponseDiagnostics()).isNull();
-            assertThat(firstRegionDiagnostics.getContactedRegionNames()).isNotNull();
-            assertThat(firstRegionDiagnostics.getContactedRegionNames().size()).isEqualTo(1);
-            assertThat(firstRegionDiagnostics.getContactedRegionNames().iterator().next())
-                .isEqualTo(this.writeableRegions.get(0).toLowerCase(Locale.ROOT));
-
-            CosmosDiagnostics secondRegionDiagnostics = diagnostics[2];
-            assertThat(secondRegionDiagnostics.getFeedResponseDiagnostics()).isNotNull();
-            assertThat(secondRegionDiagnostics.getContactedRegionNames()).isNotNull();
-            assertThat(secondRegionDiagnostics.getContactedRegionNames().size()).isEqualTo(1);
-            assertThat(secondRegionDiagnostics.getContactedRegionNames().iterator().next())
-                .isEqualTo(this.writeableRegions.get(1).toLowerCase(Locale.ROOT));
-            assertThat(secondRegionDiagnostics.getFeedResponseDiagnostics().getQueryPlanDiagnosticsContext()).isNotNull();
-            assertThat(secondRegionDiagnostics.getFeedResponseDiagnostics().getClientSideRequestStatistics()).isNotNull();
-            assertThat(secondRegionDiagnostics.getFeedResponseDiagnostics().getClientSideRequestStatistics().size()).isEqualTo(1);
-        };
-
         Function<ItemOperationInvocationParameters, List<Pair<String, String>>> readManyTupleForSingleDocument = (inputParams) -> {
             ArrayList<Pair<String, String>> tuples = new ArrayList<>();
             tuples.add(inputParams.idAndPkValuePair);
@@ -2704,11 +2677,25 @@ public class FaultInjectionWithAvailabilityStrategyTests extends TestSuiteBase {
             return tuples;
         };
 
-        BiFunction<ItemOperationInvocationParameters, List<Pair<String, String>>, CosmosResponseWrapper>
-            readMany = (inputParams, tuples) -> {
-
-            return readManyCore(tuples, inputParams, 100, false);
+        Function<ItemOperationInvocationParameters, List<Pair<String, String>>> readManyTupleForSingleDocumentEmptyResult = (inputParams) -> {
+            ArrayList<Pair<String, String>> tuples = new ArrayList<>();
+            tuples.add(Pair.of("Invalid" + inputParams.idAndPkValuePair.getLeft(), inputParams.idAndPkValuePair.getRight()));
+            return tuples;
         };
+
+        Function<ItemOperationInvocationParameters, List<Pair<String, String>>> readManyTuplesForSinglePartitionEmptyResult = (inputParams) -> {
+            ArrayList<Pair<String, String>> tuples = new ArrayList<>();
+            tuples.add(Pair.of("Invalid" + inputParams.idAndPkValuePair.getLeft(), inputParams.idAndPkValuePair.getRight()));
+            for (Pair<String, String> idAndPkValuePair: inputParams.otherDocumentIdAndPkValuePairs) {
+                if (idAndPkValuePair.getRight().equals(inputParams.idAndPkValuePair.getRight())) {
+                    tuples.add(Pair.of("Invalid" + idAndPkValuePair.getLeft(), idAndPkValuePair.getRight()));
+                }
+            }
+            return tuples;
+        };
+
+        BiFunction<ItemOperationInvocationParameters, List<Pair<String, String>>, CosmosResponseWrapper>
+            readMany = (inputParams, tuples) -> readManyCore(tuples, inputParams, 100, false);
 
         return new Object[][] {
             // CONFIG description
@@ -2811,6 +2798,59 @@ public class FaultInjectionWithAvailabilityStrategyTests extends TestSuiteBase {
                 ENOUGH_DOCS_OTHER_PK_TO_HIT_EVERY_PARTITION,
                 ENOUGH_DOCS_SAME_PK_TO_EXCEED_PAGE_SIZE
             },
+
+            // ReadMany with a single id+pk tuple - resulting in point read - no results returned (404 mapped to
+            // empty FeedResponse). No failure injection and all records will fit into a single page
+            new Object[] {
+                "SingleTuple_EmptyResult_AllGood_NoAvailabilityStrategy",
+                Duration.ofSeconds(1),
+                noAvailabilityStrategy,
+                noRegionSwitchHint,
+                readManyTupleForSingleDocumentEmptyResult,
+                readMany,
+                noFailureInjection,
+                validateStatusCodeIs200Ok,
+                1,
+                ArrayUtils.toArray(
+                    validateCtxSingleRegion,
+                    validateCtxOnlyFeedResponsesOrPointReads,
+                    (ctx) -> {
+                        assertThat(ctx.getDiagnostics()).isNotNull();
+                        assertThat(ctx.getDiagnostics().size()).isEqualTo(1);
+                    }
+                ),
+                null,
+                validateEmptyResults,
+                NO_OTHER_DOCS_WITH_SAME_ID,
+                NO_OTHER_DOCS_WITH_SAME_PK
+            },
+
+            // ReadMany with a multiple id+pk tuple for a single partition - resulting in a query.
+            // No failure injection and all records will fit into a single page
+            new Object[] {
+                "ManyTuplesSinglePartition_EmptyResult_AllGood_NoAvailabilityStrategy",
+                Duration.ofSeconds(1),
+                noAvailabilityStrategy,
+                noRegionSwitchHint,
+                readManyTuplesForSinglePartitionEmptyResult,
+                readMany,
+                noFailureInjection,
+                validateStatusCodeIs200Ok,
+                1,
+                ArrayUtils.toArray(
+                    validateCtxSingleRegion,
+                    validateCtxOnlyFeedResponsesOrPointReads,
+                    (ctx) -> {
+                        assertThat(ctx.getDiagnostics()).isNotNull();
+                        assertThat(ctx.getDiagnostics().size()).isEqualTo(1);
+                    }
+                ),
+                null,
+                validateEmptyResults,
+                NO_OTHER_DOCS_WITH_SAME_ID,
+                ENOUGH_DOCS_SAME_PK_TO_EXCEED_PAGE_SIZE
+            },
+
         };
     }
 
@@ -2846,10 +2886,594 @@ public class FaultInjectionWithAvailabilityStrategyTests extends TestSuiteBase {
             otherDiagnosticsContextValidations,
             responseValidator,
             numberOfOtherDocumentsWithSameId,
-            numberOfOtherDocumentsWithSamePk);
+            numberOfOtherDocumentsWithSamePk,
+            false);
     }
 
-    /*@Test(groups = {"multi-master"}, dataProvider = "testConfigs_readAllAfterCreation")
+    private CosmosResponseWrapper readAllReturnsTotalRecordCountCore(
+        String partitionKeyValue,
+        ItemOperationInvocationParameters params,
+        int requestedPageSize,
+        boolean enforceEmptyPages
+    ) {
+        CosmosQueryRequestOptions queryOptions = new CosmosQueryRequestOptions();
+
+        if (enforceEmptyPages) {
+            ImplementationBridgeHelpers
+                .CosmosQueryRequestOptionsHelper
+                .getCosmosQueryRequestOptionsAccessor()
+                .setAllowEmptyPages(queryOptions, true);
+        }
+
+        CosmosEndToEndOperationLatencyPolicyConfig e2ePolicy = ImplementationBridgeHelpers
+            .CosmosItemRequestOptionsHelper
+            .getCosmosItemRequestOptionsAccessor()
+            .getEndToEndOperationLatencyPolicyConfig(params.options);
+        queryOptions.setCosmosEndToEndOperationLatencyPolicyConfig(e2ePolicy);
+
+        CosmosPagedFlux<ObjectNode> readAllPagedFlux;
+
+        if (partitionKeyValue != null){
+            readAllPagedFlux = params.container.readAllItems(
+                new PartitionKey(partitionKeyValue),
+                queryOptions,
+                ObjectNode.class
+            );
+        } else {
+            readAllPagedFlux = params.container.readAllItems(
+                queryOptions,
+                ObjectNode.class
+            );
+        }
+
+        List<FeedResponse<ObjectNode>> returnedPages =
+            readAllPagedFlux.byPage(requestedPageSize).collectList().block();
+
+        ArrayList<CosmosDiagnosticsContext> foundCtxs = new ArrayList<>();
+
+        if (returnedPages.isEmpty()) {
+            return new CosmosResponseWrapper(
+                null,
+                HttpConstants.StatusCodes.NOTFOUND,
+                NO_QUERY_PAGE_SUB_STATUS_CODE,
+                null);
+        }
+
+        long totalRecordCount = 0L;
+        for (FeedResponse<ObjectNode> page: returnedPages) {
+            if (page.getCosmosDiagnostics() != null) {
+                foundCtxs.add(page.getCosmosDiagnostics().getDiagnosticsContext());
+            } else {
+                foundCtxs.add(null);
+            }
+
+            if (page.getResults() != null && page.getResults().size() > 0) {
+                totalRecordCount += page.getResults().size();
+            }
+        }
+
+        return new CosmosResponseWrapper(
+            foundCtxs.toArray(new CosmosDiagnosticsContext[0]),
+            HttpConstants.StatusCodes.OK,
+            HttpConstants.SubStatusCodes.UNKNOWN,
+            totalRecordCount);
+    }
+
+    @DataProvider(name = "testConfigs_readAllAfterCreation")
+    public Object[][] testConfigs_readAllAfterCreation() {
+
+        final int ENOUGH_DOCS_SAME_PK_TO_EXCEED_PAGE_SIZE = 10;
+        final int NO_OTHER_DOCS_WITH_SAME_PK = 0;
+        final int NO_OTHER_DOCS_WITH_SAME_ID = 0;
+        final int ENOUGH_DOCS_OTHER_PK_TO_HIT_EVERY_PARTITION = PHYSICAL_PARTITION_COUNT * 10;
+        final int SINGLE_REGION = 1;
+        final int TWO_REGIONS = 2;
+        final int ONE_FOR_QUERY_PLAN = 1;
+        final String FIRST_REGION_NAME = writeableRegions.get(0).toLowerCase(Locale.ROOT);
+        final String SECOND_REGION_NAME = writeableRegions.get(1).toLowerCase(Locale.ROOT);
+
+        BiConsumer<CosmosResponseWrapper, Long> validateExpectedRecordCount = (response, expectedRecordCount) -> {
+            if (expectedRecordCount != null) {
+                assertThat(response).isNotNull();
+                assertThat(response.getTotalRecordCount()).isNotNull();
+                assertThat(response.getTotalRecordCount()).isEqualTo(expectedRecordCount);
+            }
+        };
+
+        Consumer<CosmosResponseWrapper> validateEmptyResults =
+            (response) -> validateExpectedRecordCount.accept(response, 0L);
+
+        Consumer<CosmosResponseWrapper> validateExactlyOneRecordReturned =
+            (response) -> validateExpectedRecordCount.accept(response, 1L);
+
+        Consumer<CosmosResponseWrapper> validateAllRecordsSameIdReturned =
+            (response) -> validateExpectedRecordCount.accept(
+                response,
+                1L + ENOUGH_DOCS_OTHER_PK_TO_HIT_EVERY_PARTITION);
+
+        Consumer<CosmosResponseWrapper> validateAllRecordsSamePartitionReturned =
+            (response) -> validateExpectedRecordCount.accept(
+                response,
+                1L + ENOUGH_DOCS_SAME_PK_TO_EXCEED_PAGE_SIZE);
+
+        BiConsumer<CosmosDiagnosticsContext, Integer> validateCtxRegions =
+            (ctx, expectedNumberOfRegionsContacted) -> {
+                assertThat(ctx).isNotNull();
+                if (ctx != null) {
+                    assertThat(ctx.getContactedRegionNames().size()).isEqualTo(expectedNumberOfRegionsContacted);
+                }
+            };
+
+        Consumer<CosmosDiagnosticsContext> validateCtxOnlyFeedResponsesOrPointReads =
+            (ctx) -> {
+                assertThat(ctx).isNotNull();
+                if (ctx != null) {
+                    assertThat(ctx.getDiagnostics()).isNotNull();
+                    // Query Plan + at least one query response
+
+                    assertThat(ctx.getDiagnostics().size()).isGreaterThanOrEqualTo(1);
+                    CosmosDiagnostics[] diagnostics = ctx.getDiagnostics().toArray(new CosmosDiagnostics[0]);
+                    assertThat(diagnostics.length).isGreaterThanOrEqualTo(1);
+
+                    for (int i = 0; i < diagnostics.length; i++) {
+                        CosmosDiagnostics currentDiagnostics = diagnostics[i];
+
+                        assertThat(currentDiagnostics).isNotNull();
+                        assertThat(currentDiagnostics.getFeedResponseDiagnostics()).isNotNull();
+                        assertThat(currentDiagnostics.getFeedResponseDiagnostics().getQueryPlanDiagnosticsContext()).isNull();
+                        assertThat(currentDiagnostics.getFeedResponseDiagnostics().getQueryMetricsMap()).isNotNull();
+                        assertThat(currentDiagnostics.getFeedResponseDiagnostics().getClientSideRequestStatistics()).isNotNull();
+                        assertThat(currentDiagnostics.getFeedResponseDiagnostics().getClientSideRequestStatistics().size()).isGreaterThanOrEqualTo(1);
+                    }
+                }
+            };
+
+        Consumer<CosmosDiagnosticsContext> validateCtxSingleRegion =
+            (ctx) -> validateCtxRegions.accept(ctx, SINGLE_REGION);
+
+        Consumer<CosmosDiagnosticsContext> validateCtxTwoRegions =
+            (ctx) -> validateCtxRegions.accept(ctx, TWO_REGIONS);
+
+        Consumer<CosmosDiagnosticsContext> validateCtxQueryPlan =
+            (ctx) -> {
+                assertThat(ctx).isNotNull();
+                if (ctx != null) {
+                    assertThat(ctx.getDiagnostics()).isNotNull();
+                    // Query Plan + at least one query response
+
+                    assertThat(ctx.getDiagnostics().size()).isGreaterThanOrEqualTo(1);
+                    CosmosDiagnostics[] diagnostics = ctx.getDiagnostics().toArray(new CosmosDiagnostics[0]);
+                    assertThat(diagnostics.length).isGreaterThanOrEqualTo(1);
+                    assertThat(diagnostics[0]).isNotNull();
+                    assertThat(diagnostics[0].getFeedResponseDiagnostics()).isNull();
+                    assertThat(diagnostics[0].getClientSideRequestStatistics()).isNotNull();
+                    assertThat(diagnostics[0].getClientSideRequestStatistics().size()).isEqualTo(1);
+                    ClientSideRequestStatistics[] clientStats =
+                        diagnostics[0].getClientSideRequestStatistics().toArray(new ClientSideRequestStatistics[0]);
+                    assertThat(clientStats.length).isEqualTo(1);
+                    assertThat(clientStats[0]).isNotNull();
+                    assertThat(clientStats[0].getGatewayStatisticsList()).isNotNull();
+                    ClientSideRequestStatistics.GatewayStatistics[] gwStats =
+                        clientStats[0].getGatewayStatisticsList().toArray(new ClientSideRequestStatistics.GatewayStatistics[0]);
+                    assertThat(gwStats.length).isGreaterThanOrEqualTo(1);
+                    assertThat(gwStats[0]).isNotNull();
+                    assertThat(gwStats[0].getOperationType()).isEqualTo(OperationType.QueryPlan);
+                }
+            };
+
+        Consumer<CosmosDiagnosticsContext> validateCtxOnlyFeedResponsesExceptQueryPlan =
+            (ctx) -> {
+                assertThat(ctx).isNotNull();
+                if (ctx != null) {
+                    assertThat(ctx.getDiagnostics()).isNotNull();
+                    // Query Plan + at least one query response
+
+                    assertThat(ctx.getDiagnostics().size()).isGreaterThanOrEqualTo(1);
+                    CosmosDiagnostics[] diagnostics = ctx.getDiagnostics().toArray(new CosmosDiagnostics[0]);
+                    assertThat(diagnostics.length).isGreaterThanOrEqualTo(1);
+
+                    // Validate that at most one FeedResponse has query plan diagnostics
+                    CosmosDiagnostics[] feedResponseDiagnosticsWithQueryPlan = Arrays.stream(diagnostics)
+                                                                                     .filter(d -> d.getFeedResponseDiagnostics() != null
+                                                                                         && d.getFeedResponseDiagnostics().getQueryPlanDiagnosticsContext() != null)
+                                                                                     .toArray(count -> new CosmosDiagnostics[count]);
+
+                    assertThat(feedResponseDiagnosticsWithQueryPlan.length).isLessThanOrEqualTo(1);
+
+                    int start = 0;
+                    if (diagnostics[0].getFeedResponseDiagnostics() == null) {
+                        // skip query plan
+                        start = 1;
+                    }
+
+                    assertThat(diagnostics.length).isGreaterThanOrEqualTo(start + 1);
+
+                    for (int i = start; i < diagnostics.length; i++) {
+                        CosmosDiagnostics currentDiagnostics = diagnostics[i];
+                        assertThat(currentDiagnostics.getFeedResponseDiagnostics()).isNotNull();
+                        assertThat(currentDiagnostics.getFeedResponseDiagnostics().getQueryMetricsMap()).isNotNull();
+                        assertThat(currentDiagnostics.getFeedResponseDiagnostics().getClientSideRequestStatistics()).isNotNull();
+                        assertThat(currentDiagnostics.getFeedResponseDiagnostics().getClientSideRequestStatistics().size()).isGreaterThanOrEqualTo(1);
+                    }
+                }
+            };
+
+        Function<ItemOperationInvocationParameters, CosmosResponseWrapper> readAllDefaultPageSizeEntireContainer =
+            (inputParams) -> readAllReturnsTotalRecordCountCore(null, inputParams, 100, false);
+
+        Function<ItemOperationInvocationParameters, CosmosResponseWrapper> readAllDefaultPageSizeEntireContainerEnforceEmptyPages =
+            (inputParams) -> readAllReturnsTotalRecordCountCore(null, inputParams, 100, true);
+
+        Function<ItemOperationInvocationParameters, CosmosResponseWrapper> readAllDefaultPageSizeSinglePartition =
+            (inputParams) -> readAllReturnsTotalRecordCountCore(inputParams.idAndPkValuePair.getRight(), inputParams, 100, false);
+
+        Function<ItemOperationInvocationParameters, CosmosResponseWrapper> readAllPageSizeOneEntireContainer =
+            (inputParams) -> readAllReturnsTotalRecordCountCore(null, inputParams, 1, false);
+
+        Function<ItemOperationInvocationParameters, CosmosResponseWrapper> readAllPageSizeOneSinglePartition =
+            (inputParams) -> readAllReturnsTotalRecordCountCore(inputParams.idAndPkValuePair.getRight(), inputParams, 1, false);
+
+        BiFunction<ItemOperationInvocationParameters, List<Pair<String, String>>, CosmosResponseWrapper>
+            readMany = (inputParams, tuples) -> readManyCore(tuples, inputParams, 100, false);
+
+        Consumer<CosmosDiagnosticsContext> validateCtxFirstRegionFailureSecondRegionSuccessfulSingleFeedResponse = (ctx) -> {
+            CosmosDiagnostics[] diagnostics = ctx.getDiagnostics().toArray(new CosmosDiagnostics[0]);
+
+
+            assertThat(diagnostics.length).isGreaterThanOrEqualTo(1);
+            int start = 0;
+            if (diagnostics[0].getFeedResponseDiagnostics() == null) {
+                // First entry is for query plan
+                start = 1;
+            }
+
+            assertThat(diagnostics.length).isGreaterThanOrEqualTo(start + 1);
+
+            // skip first diagnostics - which is query plan
+            for (int i = start; i < diagnostics.length; i++) {
+                CosmosDiagnostics currentDiagnostics = diagnostics[i];
+                assertThat(currentDiagnostics.getContactedRegionNames()).isNotNull();
+                assertThat(currentDiagnostics.getContactedRegionNames().size()).isGreaterThanOrEqualTo(1);
+                String regionName = currentDiagnostics.getContactedRegionNames().iterator().next();
+                if (regionName.equals(FIRST_REGION_NAME)) {
+                    // First region requests should have failed
+                    assertThat(currentDiagnostics.getFeedResponseDiagnostics()).isNull();
+                } else {
+                    assertThat(regionName).isEqualTo(SECOND_REGION_NAME);
+                    // Second region requests should have succeeded
+                    assertThat(currentDiagnostics.getFeedResponseDiagnostics()).isNotNull();
+                    if (start == 1) {
+                        assertThat(currentDiagnostics.getFeedResponseDiagnostics().getQueryPlanDiagnosticsContext()).isNotNull();
+                    }
+                    assertThat(currentDiagnostics.getFeedResponseDiagnostics().getClientSideRequestStatistics()).isNotNull();
+                    assertThat(currentDiagnostics.getFeedResponseDiagnostics().getClientSideRequestStatistics().size()).isEqualTo(1);
+                }
+            }
+        };
+
+        return new Object[][] {
+            // CONFIG description
+            // new Object[] {
+            //    TestId - name identifying the test case
+            //    End-to-end timeout
+            //    Availability Strategy used
+            //    Region switch hint (404/1002 prefer local or remote retries)
+            //    Function<ItemOperationInvocationParameters, CosmosResponseWrapper> readAllOperation,
+            //    Failure injection callback
+            //    Status code/sub status code validation callback
+            //    Expected number of DiagnosticsContext instances - there will be one per page returned form the PagedFlux
+            //    Diagnostics context validation callback applied to the first DiagnosticsContext instance
+            //    Diagnostics context validation callback applied to the all other DiagnosticsContext instances
+            //    Consumer<CosmosResponseWrapper> - callback to validate the response (status codes, total records returned etc.)
+            //    numberOfOtherDocumentsWithSameId - number of other documents to be created with the same id-value
+            //        (but different pk-value). Mostly used to ensure cross-partition queries have to
+            //        touch more than one partition.
+            //    numberOfOtherDocumentsWithSamePk - number of documents to be created with the same pk-value
+            //        (but different id-value). Mostly used to force a certain number of documents being
+            //        returned for single partition queries.
+            // },
+
+            // ReadAll (entire container) with single doc inserted into single partition only.
+            // No failure injection and all records will fit into a single page
+            new Object[] {
+                "DefaultPageSize_Container_SingleDocument_AllGood_NoAvailabilityStrategy",
+                Duration.ofSeconds(1),
+                noAvailabilityStrategy,
+                noRegionSwitchHint,
+                readAllDefaultPageSizeEntireContainer,
+                noFailureInjection,
+                validateStatusCodeIs200Ok,
+                1,
+                ArrayUtils.toArray(
+                    validateCtxSingleRegion,
+                    validateCtxQueryPlan,
+                    validateCtxOnlyFeedResponsesExceptQueryPlan,
+                    (ctx) -> {
+                        assertThat(ctx.getDiagnostics()).isNotNull();
+                        assertThat(ctx.getDiagnostics().size()).isEqualTo(2);
+                    }
+                ),
+                null,
+                validateExactlyOneRecordReturned,
+                NO_OTHER_DOCS_WITH_SAME_ID,
+                NO_OTHER_DOCS_WITH_SAME_PK
+            },
+
+            // ReadAll (entire container) with documents inserted into single partition only.
+            // No failure injection and all records will fit into a single page
+            new Object[] {
+                "DefaultPageSize_Container_SinglePartition_AllGood_NoAvailabilityStrategy",
+                Duration.ofSeconds(1),
+                noAvailabilityStrategy,
+                noRegionSwitchHint,
+                readAllDefaultPageSizeEntireContainer,
+                noFailureInjection,
+                validateStatusCodeIs200Ok,
+                1,
+                ArrayUtils.toArray(
+                    validateCtxSingleRegion,
+                    validateCtxQueryPlan,
+                    validateCtxOnlyFeedResponsesExceptQueryPlan,
+                    (ctx) -> {
+                        assertThat(ctx.getDiagnostics()).isNotNull();
+                        assertThat(ctx.getDiagnostics().size()).isEqualTo(2);
+                    }
+                ),
+                null,
+                validateAllRecordsSamePartitionReturned,
+                NO_OTHER_DOCS_WITH_SAME_ID,
+                ENOUGH_DOCS_SAME_PK_TO_EXCEED_PAGE_SIZE
+            },
+
+            // ReadAll (entire container) with single doc inserted - empty pages enabled. So, expected to see as many
+            // CosmosDiagnosticsContext instances as physical partitions
+            // No failure injection and all records will fit into a single page
+            new Object[] {
+                "DefaultPageSize_Container_SingleDocumentWithEmptyPages_AllGood_NoAvailabilityStrategy",
+                Duration.ofSeconds(1),
+                noAvailabilityStrategy,
+                noRegionSwitchHint,
+                readAllDefaultPageSizeEntireContainerEnforceEmptyPages,
+                noFailureInjection,
+                validateStatusCodeIs200Ok,
+                PHYSICAL_PARTITION_COUNT,
+                ArrayUtils.toArray(
+                    validateCtxSingleRegion,
+                    validateCtxQueryPlan,
+                    validateCtxOnlyFeedResponsesExceptQueryPlan,
+                    (ctx) -> {
+                        assertThat(ctx.getDiagnostics()).isNotNull();
+                        assertThat(ctx.getDiagnostics().size()).isEqualTo(2);
+                    }
+                ),
+                ArrayUtils.toArray(
+                    validateCtxSingleRegion,
+                    validateCtxOnlyFeedResponsesExceptQueryPlan,
+                    (ctx) -> {
+                        assertThat(ctx.getDiagnostics()).isNotNull();
+                        assertThat(ctx.getDiagnostics().size()).isEqualTo(1);
+                    }
+                ),
+                validateExactlyOneRecordReturned,
+                NO_OTHER_DOCS_WITH_SAME_ID,
+                NO_OTHER_DOCS_WITH_SAME_PK
+            },
+
+            // ReadAll (entire container) with documents inserted into single partition only. Page size is one - so,
+            // multiple pages returned. No failure injection and all records will fit into a single page
+            new Object[] {
+                "PageSizeOne_Container_SinglePartition_AllGood_NoAvailabilityStrategy",
+                Duration.ofSeconds(1),
+                noAvailabilityStrategy,
+                noRegionSwitchHint,
+                readAllPageSizeOneEntireContainer,
+                noFailureInjection,
+                validateStatusCodeIs200Ok,
+                1 + ENOUGH_DOCS_SAME_PK_TO_EXCEED_PAGE_SIZE,
+                ArrayUtils.toArray(
+                    validateCtxSingleRegion,
+                    validateCtxQueryPlan,
+                    validateCtxOnlyFeedResponsesExceptQueryPlan,
+                    (ctx) -> {
+                        assertThat(ctx.getDiagnostics()).isNotNull();
+                        assertThat(ctx.getDiagnostics().size()).isEqualTo(2);
+                    }
+                ),
+                ArrayUtils.toArray(
+                    validateCtxSingleRegion,
+                    validateCtxOnlyFeedResponsesExceptQueryPlan,
+                    (ctx) -> {
+                        assertThat(ctx.getDiagnostics()).isNotNull();
+                        assertThat(ctx.getDiagnostics().size()).isEqualTo(1);
+                    }
+                ),
+                validateAllRecordsSamePartitionReturned,
+                NO_OTHER_DOCS_WITH_SAME_ID,
+                ENOUGH_DOCS_SAME_PK_TO_EXCEED_PAGE_SIZE
+            },
+
+            // ReadAll (entire container) with documents inserted into single partition only.
+            // No failure injection and all records will fit into a single page
+            // ReadAll with PartitionKey never will retrieve a query plan
+            new Object[] {
+                "DefaultPageSize_Partition_AllGood_NoAvailabilityStrategy",
+                Duration.ofSeconds(1),
+                noAvailabilityStrategy,
+                noRegionSwitchHint,
+                readAllDefaultPageSizeSinglePartition,
+                noFailureInjection,
+                validateStatusCodeIs200Ok,
+                1,
+                ArrayUtils.toArray(
+                    validateCtxSingleRegion,
+                    validateCtxOnlyFeedResponsesExceptQueryPlan,
+                    (ctx) -> {
+                        assertThat(ctx.getDiagnostics()).isNotNull();
+                        assertThat(ctx.getDiagnostics().size()).isEqualTo(1);
+                    }
+                ),
+                null,
+                validateAllRecordsSamePartitionReturned,
+                ENOUGH_DOCS_OTHER_PK_TO_HIT_EVERY_PARTITION,
+                ENOUGH_DOCS_SAME_PK_TO_EXCEED_PAGE_SIZE
+            },
+
+            // ReadAll (entire container) with single doc inserted into single partition only.
+            // No failure injection and all records will fit into a single page
+            new Object[] {
+                "DefaultPageSize_Container_DocsAcrossAllPartitions_AllGood_NoAvailabilityStrategy",
+                Duration.ofSeconds(1),
+                noAvailabilityStrategy,
+                noRegionSwitchHint,
+                readAllDefaultPageSizeEntireContainer,
+                noFailureInjection,
+                validateStatusCodeIs200Ok,
+                PHYSICAL_PARTITION_COUNT,
+                ArrayUtils.toArray(
+                    validateCtxSingleRegion,
+                    validateCtxQueryPlan,
+                    validateCtxOnlyFeedResponsesExceptQueryPlan,
+                    (ctx) -> {
+                        assertThat(ctx.getDiagnostics()).isNotNull();
+                        assertThat(ctx.getDiagnostics().size()).isEqualTo(2);
+                    }
+                ),
+                ArrayUtils.toArray(
+                    validateCtxSingleRegion,
+                    validateCtxOnlyFeedResponsesExceptQueryPlan,
+                    (ctx) -> {
+                        assertThat(ctx.getDiagnostics()).isNotNull();
+                        assertThat(ctx.getDiagnostics().size()).isEqualTo(1);
+                    }
+                ),
+                validateAllRecordsSameIdReturned,
+                ENOUGH_DOCS_OTHER_PK_TO_HIT_EVERY_PARTITION,
+                NO_OTHER_DOCS_WITH_SAME_PK
+            },
+
+            // ReadAll (entire container) with multiple docs for single partition. Injected 503 on first region only.
+            // All records per partition will fit into a single page
+            new Object[] {
+                "DefaultPageSize_Container_DocsAcrossAllPartitions_408_OnlyFirstRegion_EagerAvailabilityStrategy",
+                Duration.ofSeconds(1),
+                eagerThresholdAvailabilityStrategy,
+                noRegionSwitchHint,
+                readAllDefaultPageSizeEntireContainer,
+                injectTransitTimeoutIntoFirstRegionOnly,
+                validateStatusCodeIs200Ok,
+                PHYSICAL_PARTITION_COUNT,
+                ArrayUtils.toArray(
+                    validateCtxTwoRegions,
+                    validateCtxQueryPlan,
+                    validateCtxFirstRegionFailureSecondRegionSuccessfulSingleFeedResponse,
+                    (ctx) -> {
+                        assertThat(ctx.getDiagnostics()).isNotNull();
+                        assertThat(ctx.getDiagnostics().size()).isGreaterThanOrEqualTo(3);
+                    }
+                ),
+                ArrayUtils.toArray(
+                    validateCtxOnlyFeedResponsesExceptQueryPlan,
+                    (ctx) -> {
+                        assertThat(ctx.getDiagnostics()).isNotNull();
+                        assertThat(
+                            ctx
+                                .getDiagnostics()
+                                .stream()
+                                .filter(d -> d.getContactedRegionNames().contains(SECOND_REGION_NAME))
+                                .count())
+                            .isEqualTo(1);
+                    }
+                ),
+                validateAllRecordsSameIdReturned,
+                ENOUGH_DOCS_OTHER_PK_TO_HIT_EVERY_PARTITION,
+                NO_OTHER_DOCS_WITH_SAME_PK
+            },
+
+            // ReadAll (entire container) with multiple docs for single partition. Injected 503 on first region only.
+            // All records per partition will fit into a single page
+            new Object[] {
+                "DefaultPageSize_Partition_DocsAcrossAllPartitions_408_OnlyFirstRegion_EagerAvailabilityStrategy",
+                Duration.ofSeconds(3),
+                eagerThresholdAvailabilityStrategy,
+                noRegionSwitchHint,
+                readAllPageSizeOneSinglePartition,
+                injectTransitTimeoutIntoFirstRegionOnly,
+                validateStatusCodeIs200Ok,
+                1,
+                ArrayUtils.toArray(
+                    validateCtxFirstRegionFailureSecondRegionSuccessfulSingleFeedResponse,
+                    (ctx) -> {
+                        assertThat(ctx.getDiagnostics()).isNotNull();
+                        assertThat(ctx.getContactedRegionNames()).isNotNull();
+                        assertThat(ctx.getContactedRegionNames().contains(SECOND_REGION_NAME)).isTrue();
+                        assertThat(ctx.getDiagnostics().size()).isGreaterThanOrEqualTo(1);
+                        List<CosmosDiagnostics> secondRegionDiagnostics = ctx
+                            .getDiagnostics()
+                            .stream()
+                            .filter(d -> d.getContactedRegionNames().size() == 1 &&
+                                d.getContactedRegionNames().contains(SECOND_REGION_NAME))
+                            .toList();
+                        assertThat(
+                            secondRegionDiagnostics
+                                .get(0)
+                                .getClientSideRequestStatistics()
+                        ).isNotNull();
+                        ClientSideRequestStatistics[] clientStats =
+                            secondRegionDiagnostics.get(0).getClientSideRequestStatistics().toArray(
+                                new ClientSideRequestStatistics[0]
+                            );
+                        assertThat(clientStats.length).isGreaterThanOrEqualTo(1);
+                        assertThat(clientStats[0].getResponseStatisticsList()).isNotNull();
+                        assertThat(clientStats[0].getResponseStatisticsList().iterator().next().getExcludedRegions()).isEqualTo(FIRST_REGION_NAME);
+                    }
+                ),
+                null,
+                validateExactlyOneRecordReturned,
+                NO_OTHER_DOCS_WITH_SAME_ID,
+                NO_OTHER_DOCS_WITH_SAME_PK
+            },
+
+            // ReadAll (entire container) with multiple docs for single partition. Injected 410-1002 on first region only.
+            // All records per partition will fit into a single page
+            new Object[] {
+                "DefaultPageSize_Container_DocsAcrossAllPartitions_410-1002_Local_OnlyFirstRegion_EagerAvailabilityStrategy",
+                Duration.ofSeconds(1),
+                eagerThresholdAvailabilityStrategy,
+                noRegionSwitchHint,
+                readAllDefaultPageSizeEntireContainer,
+                injectReadSessionNotAvailableIntoFirstRegionOnly,
+                validateStatusCodeIs200Ok,
+                PHYSICAL_PARTITION_COUNT,
+                ArrayUtils.toArray(
+                    validateCtxTwoRegions,
+                    validateCtxQueryPlan,
+                    validateCtxFirstRegionFailureSecondRegionSuccessfulSingleFeedResponse,
+                    (ctx) -> {
+                        assertThat(ctx.getDiagnostics()).isNotNull();
+                        assertThat(ctx.getDiagnostics().size()).isGreaterThanOrEqualTo(3);
+                    }
+                ),
+                ArrayUtils.toArray(
+                    validateCtxOnlyFeedResponsesExceptQueryPlan,
+                    (ctx) -> {
+                        assertThat(ctx.getDiagnostics()).isNotNull();
+                        assertThat(
+                            ctx
+                                .getDiagnostics()
+                                .stream()
+                                .filter(d -> d.getContactedRegionNames().contains(SECOND_REGION_NAME))
+                                .count())
+                            .isEqualTo(1);
+                    }
+                ),
+                validateAllRecordsSameIdReturned,
+                ENOUGH_DOCS_OTHER_PK_TO_HIT_EVERY_PARTITION,
+                NO_OTHER_DOCS_WITH_SAME_PK
+            },
+        };
+    }
+
+    @Test(groups = {"multi-master"}, dataProvider = "testConfigs_readAllAfterCreation")
     public void readAllAfterCreation(
         String testCaseId,
         Duration endToEndTimeout,
@@ -2880,8 +3504,9 @@ public class FaultInjectionWithAvailabilityStrategyTests extends TestSuiteBase {
             otherDiagnosticsContextValidations,
             responseValidator,
             numberOfOtherDocumentsWithSameId,
-            numberOfOtherDocumentsWithSamePk);
-    }*/
+            numberOfOtherDocumentsWithSamePk,
+            true);
+    }
 
     private static ObjectNode createTestItemAsJson(String id, String pkValue) {
         CosmosDiagnosticsTest.TestItem nextItemToBeCreated =
@@ -2892,6 +3517,10 @@ public class FaultInjectionWithAvailabilityStrategyTests extends TestSuiteBase {
 
     private CosmosAsyncContainer createTestContainer(CosmosAsyncClient clientWithPreferredRegions) {
         String dbId = UUID.randomUUID().toString();
+        return createTestContainer(clientWithPreferredRegions, dbId);
+    }
+
+    private CosmosAsyncContainer createTestContainer(CosmosAsyncClient clientWithPreferredRegions, String dbId) {
         String containerId = UUID.randomUUID().toString();
 
         clientWithPreferredRegions.createDatabaseIfNotExists(dbId).block();
@@ -3103,12 +3732,29 @@ public class FaultInjectionWithAvailabilityStrategyTests extends TestSuiteBase {
         Consumer<CosmosDiagnosticsContext>[] otherDiagnosticsContextValidations,
         Consumer<CosmosResponseWrapper> validateResponse,
         int numberOfOtherDocumentsWithSameId,
-        int numberOfOtherDocumentsWithSamePk) {
+        int numberOfOtherDocumentsWithSamePk,
+        boolean clearContainerBeforeExecution) {
 
         logger.info("START {}", testCaseId);
 
         CosmosAsyncClient clientWithPreferredRegions = buildCosmosClient(this.writeableRegions, regionSwitchHint, nonIdempotentWriteRetriesEnabled);
         try {
+
+            if (clearContainerBeforeExecution) {
+                CosmosAsyncContainer newTestContainer =
+                    this.createTestContainer(clientWithPreferredRegions, this.testDatabaseId);
+                this.testContainerId = newTestContainer.getId();
+                // Creating a container is an async task - especially with multiple regions it can
+                // take some time until the container is available in the remote regions as well
+                // When the container does not exist yet, you would see 401 for example for point reads etc.
+                // So, adding this delay after container creation to minimize risk of hitting these errors
+                try {
+                    Thread.sleep(3000);
+                } catch (InterruptedException e) {
+                    throw new RuntimeException(e);
+                }
+            }
+
             String documentId = UUID.randomUUID().toString();
             Pair<String, String> idAndPkValPair = new ImmutablePair<>(documentId, documentId);
 
@@ -3164,7 +3810,6 @@ public class FaultInjectionWithAvailabilityStrategyTests extends TestSuiteBase {
 
                 CosmosDiagnosticsContext[] diagnosticsContexts = response.getDiagnosticsContexts();
                 assertThat(diagnosticsContexts).isNotNull();
-                assertThat(diagnosticsContexts.length).isEqualTo(expectedDiagnosticsContextCount);
 
                 logger.info(
                     "DIAGNOSTICS CONTEXT COUNT: {}",
@@ -3175,6 +3820,8 @@ public class FaultInjectionWithAvailabilityStrategyTests extends TestSuiteBase {
                         diagnosticsContext != null ? diagnosticsContext.toString() : "n/a",
                         diagnosticsContext != null ? diagnosticsContext.toJson() : "NULL");
                 }
+
+                assertThat(diagnosticsContexts.length).isEqualTo(expectedDiagnosticsContextCount);
 
                 if (response == null) {
                     fail("Response is null");

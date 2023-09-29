@@ -1566,8 +1566,6 @@ public class CosmosAsyncContainer {
                 : options;
         requestOptions.setPartitionKey(partitionKey);
 
-
-
         return UtilBridgeInternal.createCosmosPagedFlux(pagedFluxOptions -> {
 
             QueryFeedOperationState state = new QueryFeedOperationState(
