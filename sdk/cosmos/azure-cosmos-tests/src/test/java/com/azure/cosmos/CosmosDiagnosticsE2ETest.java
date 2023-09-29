@@ -58,8 +58,10 @@ public class CosmosDiagnosticsE2ETest extends TestSuiteBase {
 
     @AfterClass(groups = {"simple", "emulator"}, timeOut = SHUTDOWN_TIMEOUT, alwaysRun = true)
     public void afterClass() {
-        assertThat(this.client).isNotNull();
-        this.client.close();
+        CosmosClient clientSnapshot = this.client;
+        if (clientSnapshot != null) {
+            clientSnapshot.close();
+        }
     }
 
     @DataProvider
