@@ -1018,6 +1018,23 @@ public final class CosmosDiagnosticsContext {
                         checkNotNull(ctx, "Argument 'ctx' must not be null.");
                         ctx.setSamplingRateSnapshot(samplingRate);
                     }
+
+                    @Override
+                    public Integer getSequenceNumber(CosmosDiagnosticsContext ctx) {
+                        checkNotNull(ctx, "Argument 'ctx' must not be null.");
+                        return ctx.getSequenceNumber();
+                    }
+
+                    @Override
+                    public boolean isEmptyCompletion(CosmosDiagnosticsContext ctx) {
+                        checkNotNull(ctx, "Argument 'ctx' must not be null.");
+                        Integer sequenceNumber = ctx.getSequenceNumber();
+                        if (sequenceNumber == null || sequenceNumber == 1) {
+                            return false;
+                        }
+
+                        return true;
+                    }
                 });
     }
 }

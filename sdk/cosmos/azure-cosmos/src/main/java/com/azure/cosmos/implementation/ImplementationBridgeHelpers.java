@@ -849,6 +849,10 @@ public class ImplementationBridgeHelpers {
             String getSpanName(CosmosDiagnosticsContext ctx);
 
             void setSamplingRateSnapshot(CosmosDiagnosticsContext ctx, double samplingRate);
+
+            Integer getSequenceNumber(CosmosDiagnosticsContext ctx);
+
+            boolean isEmptyCompletion(CosmosDiagnosticsContext ctx);
         }
     }
 

@@ -269,10 +269,28 @@ public final class DiagnosticsProvider {
 
         switch (signal.getType()) {
             case ON_COMPLETE:
-                end(cosmosCtx, statusCode, 0, actualItemCount, requestCharge, diagnostics,null, context, true);
+                end(
+                    cosmosCtx,
+                    statusCode,
+                    0,
+                    actualItemCount,
+                    requestCharge,
+                    diagnostics,
+                    null,
+                    context,
+                    ctxAccessor.isEmptyCompletion(cosmosCtx));
                 break;
             case ON_NEXT:
-                end(cosmosCtx, statusCode, 0, actualItemCount, requestCharge, diagnostics,null, context, false);
+                end(
+                    cosmosCtx,
+                    statusCode,
+                    0,
+                    actualItemCount,
+                    requestCharge,
+                    diagnostics,
+                    null,
+                    context,
+                    false);
                 break;
             case ON_ERROR:
                 Throwable throwable = null;
@@ -298,7 +316,16 @@ public final class DiagnosticsProvider {
                         }
                     }
                 }
-                end(cosmosCtx, statusCode, subStatusCode, actualItemCount, effectiveRequestCharge, effectiveDiagnostics, throwable, context, true);
+                end(
+                    cosmosCtx,
+                    statusCode,
+                    subStatusCode,
+                    actualItemCount,
+                    effectiveRequestCharge,
+                    effectiveDiagnostics,
+                    throwable,
+                    context,
+                    false);
                 break;
             default:
                 // ON_SUBSCRIBE isn't the right state to end span
@@ -321,17 +348,37 @@ public final class DiagnosticsProvider {
                 effectiveRequestCharge = exception.getRequestCharge();
                 effectiveDiagnostics = exception.getDiagnostics();
             }
-            end(cosmosCtx, statusCode, subStatusCode, null, effectiveRequestCharge, effectiveDiagnostics, throwable, context, true);
+            end(
+                cosmosCtx,
+                statusCode,
+                subStatusCode,
+                null,
+
+                effectiveRequestCharge,
+
+                effectiveDiagnostics,
+                throwable,
+                context,
+                false);
         } catch (Throwable error) {
             LOGGER.error("Unexpected exception in DiagnosticsProvider.endSpan. ", error);
             System.exit(9905);
         }
     }
 
-    public void endSpan(CosmosDiagnosticsContext cosmosCtx, Context context) {
+    public void endSpan(CosmosDiagnosticsContext cosmosCtx, Context context, boolean isForcedEmptyCompletion) {
         // called in PagedFlux - needs to be exception less - otherwise will result in hanging Flux.
         try {
-            end(cosmosCtx, 200, 0, null, null, null,null, context, true);
+            end(
+                cosmosCtx,
+                200,
+                0,
+                null,
+                null,
+                null,
+                null,
+                context,
+                isForcedEmptyCompletion);
         } catch (Throwable error) {
             LOGGER.error("Unexpected exception in DiagnosticsProvider.endSpan. ", error);
             System.exit(9904);
@@ -732,7 +779,7 @@ public final class DiagnosticsProvider {
         CosmosDiagnostics diagnostics,
         Throwable throwable,
         Context context,
-        boolean isFluxCompleted) {
+        boolean isForcedEmptyCompletion) {
 
         checkNotNull(cosmosCtx, "Argument 'cosmosCtx' must not be null.");
 
@@ -746,12 +793,12 @@ public final class DiagnosticsProvider {
             diagnostics,
             throwable)) {
 
-            if (!isFluxCompleted || !cosmosCtx.getDiagnostics().isEmpty()) {
+            if (!isForcedEmptyCompletion) {
                 this.handleDiagnostics(context, cosmosCtx);
+            }
 
-                if (this.cosmosTracer != null) {
-                    this.cosmosTracer.endSpan(cosmosCtx, context);
-                }
+            if (this.cosmosTracer != null) {
+                this.cosmosTracer.endSpan(cosmosCtx, context, isForcedEmptyCompletion);
             }
         }
     }
@@ -808,7 +855,7 @@ public final class DiagnosticsProvider {
 
     private interface CosmosTracer {
         Context startSpan(String spanName, CosmosDiagnosticsContext cosmosCtx, Context context);
-        void endSpan(CosmosDiagnosticsContext cosmosCtx, Context context);
+        void endSpan(CosmosDiagnosticsContext cosmosCtx, Context context, boolean isEmptyCompletion);
     }
 
     private static final class LegacyCosmosTracer implements CosmosTracer {
@@ -849,7 +896,7 @@ public final class DiagnosticsProvider {
         }
 
         @Override
-        public void endSpan(CosmosDiagnosticsContext cosmosCtx, Context context) {
+        public void endSpan(CosmosDiagnosticsContext cosmosCtx, Context context, boolean isEmptyCompletion) {
             try {
                 if (cosmosCtx != null && cosmosCtx.isThresholdViolated()) {
                     Collection<CosmosDiagnostics> diagnostics = cosmosCtx.getDiagnostics();
@@ -1143,7 +1190,7 @@ public final class DiagnosticsProvider {
         }
 
         @Override
-        public void endSpan(CosmosDiagnosticsContext cosmosCtx, Context context) {
+        public void endSpan(CosmosDiagnosticsContext cosmosCtx, Context context, boolean isEmptyCompletion) {
 
             if (cosmosCtx == null) {
                 return;
@@ -1167,6 +1214,16 @@ public final class DiagnosticsProvider {
             }
 
             if (tracer instanceof EnabledNoOpTracer) {
+                tracer.end(errorMessage, finalError, context);
+                return;
+            }
+
+            if (isEmptyCompletion) {
+                tracer.setAttribute(
+                    "db.cosmosdb.is_empty_completion",
+                    Boolean.toString(true),
+                    context);
+
                 tracer.end(errorMessage, finalError, context);
                 return;
             }

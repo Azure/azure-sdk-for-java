@@ -369,7 +369,7 @@ public class CosmosDiagnosticsE2ETest extends TestSuiteBase {
 
         @Override
         public void handleDiagnostics(CosmosDiagnosticsContext ctx, Context traceContext) {
-            logger.info("--> log - ctx: {}", ctx);
+            logger.info("--> log - ctx: {} - json: {}", ctx, ctx != null ? ctx.toJson() : "n/a");
             String msg = String.format(
                 "Account: %s -> DB: %s, Col:%s, StatusCode: %d:%d Diagnostics: %s",
                 ctx.getAccountName(),
