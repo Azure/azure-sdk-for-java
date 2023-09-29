@@ -90,9 +90,8 @@
           "justification": "Spring interfaces are allowed to add methods."
         },
         {
-          "regex": true,
-          "code": "java\\.method\\.addedToInterface",
-          "new": "method <T> void com\\.azure\\.spring\\.data\\.cosmos\\.core\\.CosmosOperations::deleteEntities\\(java\\.lang\\.String, reactor\\.core\\.publisher\\.Flux<com\\.azure\\.cosmos\\.models\\.CosmosItemOperation>\\)",
+          "code": "java.method.addedToInterface",
+          "new": "method <T> void com.azure.spring.data.cosmos.core.CosmosOperations::deleteEntities(java.lang.String, reactor.core.publisher.Flux<com.azure.cosmos.models.CosmosItemOperation>)",
           "justification": "Spring interfaces are allowed to add methods."
         },
         {
@@ -101,9 +100,8 @@
           "justification": "Spring interfaces are allowed to add methods."
         },
         {
-          "regex": true,
-          "code": "java\\.method\\.addedToInterface",
-          "new": "method reactor\\.core\\.publisher\\.Mono<java\\.lang\\.Void> com\\.azure\\.spring\\.data\\.cosmos\\.core\\.ReactiveCosmosOperations::deleteEntities\\(java\\.lang\\.String, reactor\\.core\\.publisher\\.Flux<com\\.azure\\.cosmos\\.models\\.CosmosItemOperation>\\)",
+          "code": "java.method.addedToInterface",
+          "new": "method reactor.core.publisher.Mono<java.lang.Void> com.azure.spring.data.cosmos.core.ReactiveCosmosOperations::deleteEntities(java.lang.String, reactor.core.publisher.Flux<com.azure.cosmos.models.CosmosItemOperation>)",
           "justification": "Spring interfaces are allowed to add methods."
         },
         {
