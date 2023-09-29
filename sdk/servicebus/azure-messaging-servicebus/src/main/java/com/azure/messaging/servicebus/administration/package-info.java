@@ -2,20 +2,20 @@
 // Licensed under the MIT License.
 
 /**
+ * <p>The Azure Service Bus Administration client library allows for management of entities in their Service Bus
+ * namespace.  It can be used to create, delete, update, or list queues, topics, rules, and subscriptions.</p>
+
  * <p><a href="https://docs.microsoft.com/azure/service-bus-messaging">Microsoft Azure Service Bus</a> is a fully
  * managed enterprise integration message broker. Service Bus can decouple applications and services. Service Bus
  * offers a reliable and secure platform for asynchronous transfer of data and state. Data is transferred between
  * different applications and services using messages.</p>
- *
- * <p>The Azure Service Bus Administration client library allows for management of entities in their Service Bus
- * namespace.  It can be used to create, delete, update, or list queues, topics, rules, and subscriptions.
  *
  * <h2>Key Concepts</h2>
  *
  * <ul>
  *     <li><strong>
  *     <a href="https://docs.microsoft.com/azure/service-bus-messaging/service-bus-messaging-overview#queues">Queue</a>
- *     :</strong>  Allows for the sending and receiving of messages, ordered first-in-first-out(FIFO).  It is often
+ *     :</strong>  Allows for the sending and receiving of messages, ordered first-in-first-out (FIFO).  It is often
  *     used for point to point communication.</li>
  *
  *     <li><strong>
@@ -52,7 +52,7 @@
  * <a href="https://learn.microsoft.com/azure/active-directory/managed-identities-azure-resources/">managed identity</a>
  * for authentication in production environments. You can find more information on different ways of authenticating and
  * their corresponding credential types in the
- * <a href="https://learn.microsoft.com/java/api/overview/azure/identity-readme">Azure Identity documentation"</a>.
+ * <a href="https://learn.microsoft.com/java/api/overview/azure/identity-readme">Azure Identity documentation</a>.
  * </p>
  *
  * <h3>Creating clients</h3>
