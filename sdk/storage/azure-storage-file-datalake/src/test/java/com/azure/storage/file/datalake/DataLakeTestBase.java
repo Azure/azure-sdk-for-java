@@ -333,10 +333,10 @@ public class DataLakeTestBase extends TestProxyTestBase {
     }
 
     protected static DataLakeLeaseAsyncClient createLeaseAsyncClient(DataLakeDirectoryAsyncClient pathAsyncClient) {
-        return createLeaseClient(pathAsyncClient, null);
+        return createLeaseAsyncClient(pathAsyncClient, null);
     }
 
-    protected static DataLakeLeaseAsyncClient createLeaseClient(DataLakeDirectoryAsyncClient pathAsyncClient, String leaseId) {
+    protected static DataLakeLeaseAsyncClient createLeaseAsyncClient(DataLakeDirectoryAsyncClient pathAsyncClient, String leaseId) {
         return new DataLakeLeaseClientBuilder().directoryAsyncClient(pathAsyncClient).leaseId(leaseId).buildAsyncClient();
     }
 
@@ -344,15 +344,15 @@ public class DataLakeTestBase extends TestProxyTestBase {
         return createLeaseClient(fileSystemClient, null);
     }
 
-    protected static DataLakeLeaseAsyncClient createLeaseClient(DataLakeFileSystemAsyncClient fileSystemClient) {
-        return createLeaseClient(fileSystemClient, null);
-    }
-
     protected static DataLakeLeaseClient createLeaseClient(DataLakeFileSystemClient fileSystemClient, String leaseId) {
         return new DataLakeLeaseClientBuilder().fileSystemClient(fileSystemClient).leaseId(leaseId).buildClient();
     }
 
-    protected static DataLakeLeaseAsyncClient createLeaseClient(DataLakeFileSystemAsyncClient fileSystemClient, String leaseId) {
+    protected static DataLakeLeaseAsyncClient createLeaseAsyncClient(DataLakeFileSystemAsyncClient fileSystemClient) {
+        return createLeaseAsyncClient(fileSystemClient, null);
+    }
+
+    protected static DataLakeLeaseAsyncClient createLeaseAsyncClient(DataLakeFileSystemAsyncClient fileSystemClient, String leaseId) {
         return new DataLakeLeaseClientBuilder().fileSystemAsyncClient(fileSystemClient).leaseId(leaseId).buildAsyncClient();
     }
 
@@ -523,7 +523,7 @@ public class DataLakeTestBase extends TestProxyTestBase {
     }
 
     protected String setupFileSystemLeaseCondition(DataLakeFileSystemAsyncClient fsc, String leaseID) {
-        return Objects.equals(RECEIVED_LEASE_ID, leaseID) ? createLeaseClient(fsc).acquireLease(-1).block() : leaseID;
+        return Objects.equals(RECEIVED_LEASE_ID, leaseID) ? createLeaseAsyncClient(fsc).acquireLease(-1).block() : leaseID;
     }
 
     /**
