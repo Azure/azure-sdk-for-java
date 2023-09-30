@@ -3,17 +3,26 @@
 package com.azure.cosmos.implementation.json;
 
 /**
- * Struct to hold the property name and property value for an object property.
+ * Class to hold the property name and property value for an object property.
  */
 class ObjectProperty {
 
     /**
-     * Initializes a new instance of the ObjectProperty struct.
+     * Initializes a new instance of the ObjectProperty class.
      *
      * @param nameNode The IJsonNavigatorNode to the node that holds the object property name.
      * @param valueNode The IJsonNavigatorNode to the node that holds the object property value.
      */
     public ObjectProperty(IJsonNavigatorNode nameNode, IJsonNavigatorNode valueNode) {
+
+        if (nameNode == null) {
+            throw new IllegalArgumentException("nameNode");
+        }
+
+        if (valueNode == null) {
+            throw new IllegalArgumentException("valueNode");
+        }
+
         this.nameNode = nameNode;
         this.valueNode = valueNode;
     }
