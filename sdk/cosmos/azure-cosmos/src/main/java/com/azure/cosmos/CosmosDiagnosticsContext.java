@@ -213,7 +213,7 @@ public final class CosmosDiagnosticsContext {
      * is always null.
      * @return null for point operations or the monotonically increasing sequence number of pages/diagnostics
      */
-    public Integer getSequenceNumber() {
+    Integer getSequenceNumber() {
         return this.sequenceNumber;
     }
 
@@ -1017,6 +1017,23 @@ public final class CosmosDiagnosticsContext {
                     public void setSamplingRateSnapshot(CosmosDiagnosticsContext ctx, double samplingRate) {
                         checkNotNull(ctx, "Argument 'ctx' must not be null.");
                         ctx.setSamplingRateSnapshot(samplingRate);
+                    }
+
+                    @Override
+                    public Integer getSequenceNumber(CosmosDiagnosticsContext ctx) {
+                        checkNotNull(ctx, "Argument 'ctx' must not be null.");
+                        return ctx.getSequenceNumber();
+                    }
+
+                    @Override
+                    public boolean isEmptyCompletion(CosmosDiagnosticsContext ctx) {
+                        checkNotNull(ctx, "Argument 'ctx' must not be null.");
+                        Integer sequenceNumber = ctx.getSequenceNumber();
+                        if (sequenceNumber == null || sequenceNumber == 1) {
+                            return false;
+                        }
+
+                        return true;
                     }
                 });
     }

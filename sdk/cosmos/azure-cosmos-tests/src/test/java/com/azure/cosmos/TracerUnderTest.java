@@ -112,9 +112,6 @@ public class TracerUnderTest implements Tracer {
         this.currentSpan.setStatusMessage(statusMessage);
 
         String spanName = this.currentSpan.name;
-
-
-
         String currentSpanHash = this.currentSpan.toString();
         SpanRecord parent = this.spanStack.poll();
         if (parent == null) {

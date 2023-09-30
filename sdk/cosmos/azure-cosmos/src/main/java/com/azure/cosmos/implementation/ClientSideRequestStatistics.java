@@ -599,6 +599,8 @@ public class ClientSideRequestStatistics {
         @JsonIgnore
         private String regionName;
 
+        public String getExcludedRegions() { return this.excludedRegions; }
+
         public StoreResultDiagnostics getStoreResult() {
             return storeResult;
         }

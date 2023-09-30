@@ -117,6 +117,7 @@ public class CosmosAsyncContainer {
     private final String patchItemSpanName;
     private final String createItemSpanName;
     private final String readAllItemsSpanName;
+    private final String readManyItemsSpanName;
     private final String readAllItemsOfLogicalPartitionSpanName;
     private final String queryItemsSpanName;
     private final String queryChangeFeedSpanName;
@@ -144,6 +145,7 @@ public class CosmosAsyncContainer {
         this.patchItemSpanName = "patchItem." + this.id;
         this.createItemSpanName = "createItem." + this.id;
         this.readAllItemsSpanName = "readAllItems." + this.id;
+        this.readManyItemsSpanName = "readManyItems." + this.id;
         this.readAllItemsOfLogicalPartitionSpanName = "readAllItemsOfLogicalPartition." + this.id;
         this.queryItemsSpanName = "queryItems." + this.id;
         this.queryChangeFeedSpanName = "queryChangeFeed." + this.id;
@@ -1466,9 +1468,24 @@ public class CosmosAsyncContainer {
 
         requestOptions.setMaxDegreeOfParallelism(-1);
 
+        CosmosAsyncClient client = this.getDatabase().getClient();
+        CosmosPagedFluxOptions fluxOptions = new CosmosPagedFluxOptions();
+        fluxOptions.setMaxItemCount(itemIdentityList != null ? itemIdentityList.size() : 0);
+        QueryFeedOperationState state = new QueryFeedOperationState(
+            client,
+            this.readAllItemsSpanName,
+            database.getId(),
+            this.getId(),
+            ResourceType.Document,
+            OperationType.Query,
+            queryOptionsAccessor.getQueryNameOrDefault(requestOptions, this.readManyItemsSpanName),
+            requestOptions,
+            fluxOptions
+        );
+
         return CosmosBridgeInternal
             .getAsyncDocumentClient(this.getDatabase())
-            .readMany(itemIdentityList, BridgeInternal.getLink(this), requestOptions, classType);
+            .readMany(itemIdentityList, BridgeInternal.getLink(this), state, classType);
     }
 
     /**
@@ -1547,8 +1564,6 @@ public class CosmosAsyncContainer {
                 ? queryOptionsAccessor.withEmptyPageDiagnosticsEnabled(options, true)
                 : options;
         requestOptions.setPartitionKey(partitionKey);
-
-
 
         return UtilBridgeInternal.createCosmosPagedFlux(pagedFluxOptions -> {
 

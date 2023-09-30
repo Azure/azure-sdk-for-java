@@ -1268,39 +1268,42 @@ public class CosmosTracerTest extends TestSuiteBase {
         assertThat(attributes.get("db.system")).isEqualTo("cosmosdb");
         assertThat(attributes.get("db.operation")).isEqualTo(methodName);
         assertThat(attributes.get("net.peer.name")).isNotNull();
-        assertThat(attributes.get("db.cosmosdb.request_content_length")).isNotNull();
+        if (attributes.get("db.cosmosdb.is_empty_completion") == null) {
 
-        assertThat(attributes.get("db.cosmosdb.operation_type")).isEqualTo(ctx.getOperationType());
-        if (customOperationId != null) {
-            assertThat(attributes.get("db.cosmosdb.operation_id")).isEqualTo(customOperationId);
-            assertThat(attributes.get("db.cosmosdb.operation_id")).isEqualTo(ctx.getOperationId());
-        } else {
-            assertThat(attributes.get("db.cosmosdb.operation_id")).isNull();
-        }
+            assertThat(attributes.get("db.cosmosdb.request_content_length")).isNotNull();
 
-        assertThat(attributes.get("db.cosmosdb.resource_type")).isEqualTo(ctx.getResourceType());
-        assertThat(attributes.get("db.cosmosdb.connection_mode"))
-            .isEqualTo(client.getConnectionPolicy().getConnectionMode().toString().toLowerCase(Locale.ROOT));
-        assertThat(attributes.get("user_agent.original")).isEqualTo(client.getUserAgent());
-        assertThat(attributes.get("db.cosmosdb.client_id")).isEqualTo(client.getClientCorrelationTag().getValue());
+            assertThat(attributes.get("db.cosmosdb.operation_type")).isEqualTo(ctx.getOperationType());
+            if (customOperationId != null) {
+                assertThat(attributes.get("db.cosmosdb.operation_id")).isEqualTo(customOperationId);
+                assertThat(attributes.get("db.cosmosdb.operation_id")).isEqualTo(ctx.getOperationId());
+            } else {
+                assertThat(attributes.get("db.cosmosdb.operation_id")).isNull();
+            }
 
-        verifyOTelTracerDiagnostics(cosmosDiagnostics, mockTracer);
+            assertThat(attributes.get("db.cosmosdb.resource_type")).isEqualTo(ctx.getResourceType());
+            assertThat(attributes.get("db.cosmosdb.connection_mode"))
+                .isEqualTo(client.getConnectionPolicy().getConnectionMode().toString().toLowerCase(Locale.ROOT));
+            assertThat(attributes.get("user_agent.original")).isEqualTo(client.getUserAgent());
+            assertThat(attributes.get("db.cosmosdb.client_id")).isEqualTo(client.getClientCorrelationTag().getValue());
 
-        verifyOTelTracerTransport(
-            cosmosDiagnostics, error,  mockTracer, enableRequestLevelTracing);
+            verifyOTelTracerDiagnostics(cosmosDiagnostics, mockTracer);
 
-        if (error != null) {
-            assertThat(attributes.get("exception.type")).isEqualTo("com.azure.cosmos.CosmosException");
-            assertThat(attributes.get("exception.message")).isEqualTo(error.getShortMessage());
+            verifyOTelTracerTransport(
+                cosmosDiagnostics, error, mockTracer, enableRequestLevelTracing);
 
-            StringWriter stackWriter = new StringWriter();
-            PrintWriter printWriter = new PrintWriter(stackWriter);
-            error.printStackTrace(printWriter);
-            printWriter.flush();
-            stackWriter.flush();
-            assertThat(stackWriter.toString().contains((String)attributes.get("exception.stacktrace")))
-                .isEqualTo(true);
-            printWriter.close();
+            if (error != null) {
+                assertThat(attributes.get("exception.type")).isEqualTo("com.azure.cosmos.CosmosException");
+                assertThat(attributes.get("exception.message")).isEqualTo(error.getShortMessage());
+
+                StringWriter stackWriter = new StringWriter();
+                PrintWriter printWriter = new PrintWriter(stackWriter);
+                error.printStackTrace(printWriter);
+                printWriter.flush();
+                stackWriter.flush();
+                assertThat(stackWriter.toString().contains((String) attributes.get("exception.stacktrace")))
+                    .isEqualTo(true);
+                printWriter.close();
+            }
         }
     }
 

@@ -937,6 +937,17 @@ public class RxDocumentClientImpl implements AsyncDocumentClient, IAuthorization
         Class<T> klass,
         ResourceType resourceTypeEnum) {
 
+        return createQuery(parentResourceLink, sqlQuery, state, klass, resourceTypeEnum, this);
+    }
+
+    private <T> Flux<FeedResponse<T>> createQuery(
+        String parentResourceLink,
+        SqlQuerySpec sqlQuery,
+        QueryFeedOperationState state,
+        Class<T> klass,
+        ResourceType resourceTypeEnum,
+        DiagnosticsClientContext innerDiagnosticsFactory) {
+
         String resourceLink = parentResourceLinkToQueryLink(parentResourceLink, resourceTypeEnum);
 
         CosmosQueryRequestOptions nonNullQueryOptions = state.getQueryOptions();
@@ -960,7 +971,7 @@ public class RxDocumentClientImpl implements AsyncDocumentClient, IAuthorization
             ModelBridgeInternal.getPropertiesFromQueryRequestOptions(nonNullQueryOptions));
 
 
-        final ScopedDiagnosticsFactory diagnosticsFactory = new ScopedDiagnosticsFactory(this);
+        final ScopedDiagnosticsFactory diagnosticsFactory = new ScopedDiagnosticsFactory(innerDiagnosticsFactory, false);
         state.registerDiagnosticsFactory(
             diagnosticsFactory::reset,
             diagnosticsFactory::merge);
@@ -2675,12 +2686,21 @@ public class RxDocumentClientImpl implements AsyncDocumentClient, IAuthorization
 
     @Override
     public Mono<ResourceResponse<Document>> readDocument(String documentLink, RequestOptions options) {
+        return readDocument(documentLink, options, this);
+    }
+
+    private Mono<ResourceResponse<Document>> readDocument(
+        String documentLink,
+        RequestOptions options,
+        DiagnosticsClientContext innerDiagnosticsFactory) {
+
         return wrapPointOperationWithAvailabilityStrategy(
             ResourceType.Document,
             OperationType.Read,
             (opt, e2ecfg, clientCtxOverride) -> readDocumentCore(documentLink, opt, e2ecfg, clientCtxOverride),
             options,
-            false
+            false,
+            innerDiagnosticsFactory
         );
     }
 
@@ -2741,11 +2761,17 @@ public class RxDocumentClientImpl implements AsyncDocumentClient, IAuthorization
     public <T> Mono<FeedResponse<T>> readMany(
         List<CosmosItemIdentity> itemIdentityList,
         String collectionLink,
-        CosmosQueryRequestOptions options,
+        QueryFeedOperationState state,
         Class<T> klass) {
 
+        final ScopedDiagnosticsFactory diagnosticsFactory = new ScopedDiagnosticsFactory(this, true);
+        state.registerDiagnosticsFactory(
+            () -> {}, // we never want to reset in readMany
+            (ctx) -> diagnosticsFactory.merge(ctx)
+        );
+
         String resourceLink = parentResourceLinkToQueryLink(collectionLink, ResourceType.Document);
-        RxDocumentServiceRequest request = RxDocumentServiceRequest.create(this,
+        RxDocumentServiceRequest request = RxDocumentServiceRequest.create(diagnosticsFactory,
             OperationType.Query,
             ResourceType.Document,
             collectionLink, null
@@ -2770,111 +2796,144 @@ public class RxDocumentClientImpl implements AsyncDocumentClient, IAuthorization
                             null,
                             null);
 
-                    return valueHolderMono.flatMap(collectionRoutingMapValueHolder -> {
-                        Map<PartitionKeyRange, List<CosmosItemIdentity>> partitionRangeItemKeyMap = new HashMap<>();
-                        CollectionRoutingMap routingMap = collectionRoutingMapValueHolder.v;
-                        if (routingMap == null) {
-                            return Mono.error(new IllegalStateException("Failed to get routing map."));
-                        }
-                        itemIdentityList
-                            .forEach(itemIdentity -> {
-                                //Check no partial partition keys are being used
-                                if (pkDefinition.getKind().equals(PartitionKind.MULTI_HASH) &&
-                                    ModelBridgeInternal.getPartitionKeyInternal(itemIdentity.getPartitionKey())
-                                    .getComponents().size() != pkDefinition.getPaths().size()) {
-                                    throw new IllegalArgumentException(RMResources.PartitionKeyMismatch);
-                                }
-                                String effectivePartitionKeyString =  PartitionKeyInternalHelper
-                                    .getEffectivePartitionKeyString(
-                                        BridgeInternal.getPartitionKeyInternal(
-                                            itemIdentity.getPartitionKey()),
-                                        pkDefinition);
+                    return valueHolderMono
+                        .flatMap(collectionRoutingMapValueHolder -> {
+                            Map<PartitionKeyRange, List<CosmosItemIdentity>> partitionRangeItemKeyMap = new HashMap<>();
+                            CollectionRoutingMap routingMap = collectionRoutingMapValueHolder.v;
+                            if (routingMap == null) {
+                                return Mono.error(new IllegalStateException("Failed to get routing map."));
+                            }
+                            itemIdentityList
+                                .forEach(itemIdentity -> {
+                                    //Check no partial partition keys are being used
+                                    if (pkDefinition.getKind().equals(PartitionKind.MULTI_HASH) &&
+                                        ModelBridgeInternal.getPartitionKeyInternal(itemIdentity.getPartitionKey())
+                                                           .getComponents().size() != pkDefinition.getPaths().size()) {
+                                        throw new IllegalArgumentException(RMResources.PartitionKeyMismatch);
+                                    }
+                                    String effectivePartitionKeyString = PartitionKeyInternalHelper
+                                        .getEffectivePartitionKeyString(
+                                            BridgeInternal.getPartitionKeyInternal(
+                                                itemIdentity.getPartitionKey()),
+                                            pkDefinition);
 
-                                //use routing map to find the partitionKeyRangeId of each
-                                // effectivePartitionKey
-                                PartitionKeyRange range =
-                                    routingMap.getRangeByEffectivePartitionKey(effectivePartitionKeyString);
+                                    //use routing map to find the partitionKeyRangeId of each
+                                    // effectivePartitionKey
+                                    PartitionKeyRange range =
+                                        routingMap.getRangeByEffectivePartitionKey(effectivePartitionKeyString);
 
-                                //group the itemKeyList based on partitionKeyRangeId
-                                if (partitionRangeItemKeyMap.get(range) == null) {
-                                    List<CosmosItemIdentity> list = new ArrayList<>();
-                                    list.add(itemIdentity);
-                                    partitionRangeItemKeyMap.put(range, list);
-                                } else {
-                                    List<CosmosItemIdentity> pairs =
-                                        partitionRangeItemKeyMap.get(range);
-                                    pairs.add(itemIdentity);
-                                    partitionRangeItemKeyMap.put(range, pairs);
-                                }
-
-                            });
-
-                        //Create the range query map that contains the query to be run for that
-                        // partitionkeyrange
-                        Map<PartitionKeyRange, SqlQuerySpec> rangeQueryMap = getRangeQueryMap(partitionRangeItemKeyMap, collection.getPartitionKey());
-
-                        // create point reads
-                        Flux<FeedResponse<Document>> pointReads = pointReadsForReadMany(
-                            partitionRangeItemKeyMap,
-                            resourceLink,
-                            options,
-                            klass);
-
-                        // create the executable query
-                        Flux<FeedResponse<Document>> queries = queryForReadMany(
-                            resourceLink,
-                            new SqlQuerySpec(DUMMY_SQL_QUERY),
-                            options,
-                            Document.class,
-                            ResourceType.Document,
-                            collection,
-                            Collections.unmodifiableMap(rangeQueryMap));
-
-                        // merge results from point reads and queries
-                        return Flux.merge(pointReads, queries)
-                            .collectList()
-                            // aggregating the result to construct a FeedResponse and aggregate RUs.
-                            .map(feedList -> {
-                                List<T> finalList = new ArrayList<>();
-                                HashMap<String, String> headers = new HashMap<>();
-                                ConcurrentMap<String, QueryMetrics> aggregatedQueryMetrics = new ConcurrentHashMap<>();
-                                Collection<ClientSideRequestStatistics> aggregateRequestStatistics = new DistinctClientSideRequestStatisticsCollection();
-                                double requestCharge = 0;
-                                for (FeedResponse<Document> page : feedList) {
-                                    ConcurrentMap<String, QueryMetrics> pageQueryMetrics =
-                                        ModelBridgeInternal.queryMetrics(page);
-                                    if (pageQueryMetrics != null) {
-                                        pageQueryMetrics.forEach(
-                                            aggregatedQueryMetrics::putIfAbsent);
+                                    //group the itemKeyList based on partitionKeyRangeId
+                                    if (partitionRangeItemKeyMap.get(range) == null) {
+                                        List<CosmosItemIdentity> list = new ArrayList<>();
+                                        list.add(itemIdentity);
+                                        partitionRangeItemKeyMap.put(range, list);
+                                    } else {
+                                        List<CosmosItemIdentity> pairs =
+                                            partitionRangeItemKeyMap.get(range);
+                                        pairs.add(itemIdentity);
+                                        partitionRangeItemKeyMap.put(range, pairs);
                                     }
 
-                                    requestCharge += page.getRequestCharge();
-                                    // TODO: this does double serialization: FIXME
-                                    finalList.addAll(page.getResults().stream().map(document ->
-                                        ModelBridgeInternal.toObjectFromJsonSerializable(document, klass)).collect(Collectors.toList()));
-                                    aggregateRequestStatistics.addAll(diagnosticsAccessor.getClientSideRequestStatistics(page.getCosmosDiagnostics()));
-                                }
-                                CosmosDiagnostics aggregatedDiagnostics = BridgeInternal.createCosmosDiagnostics(aggregatedQueryMetrics);
-                                diagnosticsAccessor.addClientSideDiagnosticsToFeed(
-                                    aggregatedDiagnostics, aggregateRequestStatistics);
+                                });
 
-                                headers.put(HttpConstants.HttpHeaders.REQUEST_CHARGE, Double
-                                    .toString(requestCharge));
-                                FeedResponse<T> frp = BridgeInternal
-                                    .createFeedResponseWithQueryMetrics(
-                                        finalList,
-                                        headers,
-                                        aggregatedQueryMetrics,
-                                        null,
-                                        false,
-                                        false,
-                                        aggregatedDiagnostics);
-                                return frp;
-                            });
-                    });
+                            //Create the range query map that contains the query to be run for that
+                            // partitionkeyrange
+                            Map<PartitionKeyRange, SqlQuerySpec> rangeQueryMap = getRangeQueryMap(partitionRangeItemKeyMap, collection.getPartitionKey());
+
+                            // create point reads
+                            Flux<FeedResponse<Document>> pointReads = pointReadsForReadMany(
+                                diagnosticsFactory,
+                                partitionRangeItemKeyMap,
+                                resourceLink,
+                                state.getQueryOptions(),
+                                klass);
+
+                            // create the executable query
+                            Flux<FeedResponse<Document>> queries = queryForReadMany(
+                                diagnosticsFactory,
+                                resourceLink,
+                                new SqlQuerySpec(DUMMY_SQL_QUERY),
+                                state.getQueryOptions(),
+                                Document.class,
+                                ResourceType.Document,
+                                collection,
+                                Collections.unmodifiableMap(rangeQueryMap));
+
+                            // merge results from point reads and queries
+                            return Flux.merge(pointReads, queries)
+                                       .collectList()
+                                       // aggregating the result to construct a FeedResponse and aggregate RUs.
+                                       .map(feedList -> {
+                                           List<T> finalList = new ArrayList<>();
+                                           HashMap<String, String> headers = new HashMap<>();
+                                           ConcurrentMap<String, QueryMetrics> aggregatedQueryMetrics = new ConcurrentHashMap<>();
+                                           Collection<ClientSideRequestStatistics> aggregateRequestStatistics = new DistinctClientSideRequestStatisticsCollection();
+                                           double requestCharge = 0;
+                                           for (FeedResponse<Document> page : feedList) {
+                                               ConcurrentMap<String, QueryMetrics> pageQueryMetrics =
+                                                   ModelBridgeInternal.queryMetrics(page);
+                                               if (pageQueryMetrics != null) {
+                                                   pageQueryMetrics.forEach(
+                                                       aggregatedQueryMetrics::putIfAbsent);
+                                               }
+
+                                               requestCharge += page.getRequestCharge();
+                                               // TODO: this does double serialization: FIXME
+                                               finalList.addAll(page.getResults().stream().map(document ->
+                                                   ModelBridgeInternal.toObjectFromJsonSerializable(document, klass)).collect(Collectors.toList()));
+                                               aggregateRequestStatistics.addAll(diagnosticsAccessor.getClientSideRequestStatistics(page.getCosmosDiagnostics()));
+                                           }
+
+                                           // NOTE: This CosmosDiagnostics instance intentionally isn't captured in the
+                                           // ScopedDiagnosticsFactory - and a ssuch won't be included in the diagnostics of the
+                                           // CosmosDiagnosticsContext - which is fine, because the CosmosDiagnosticsContext
+                                           // contains the "real" CosmosDiagnostics instances (which will also be used
+                                           // for diagnostics purposes - like metrics, logging etc.
+                                           // this artificial CosmosDiagnostics with the aggregated RU/s etc. si simply
+                                           // to maintain the API contract that a FeedResponse returns one CosmosDiagnostics
+                                           CosmosDiagnostics aggregatedDiagnostics = BridgeInternal.createCosmosDiagnostics(aggregatedQueryMetrics);
+                                           diagnosticsAccessor.addClientSideDiagnosticsToFeed(
+                                               aggregatedDiagnostics, aggregateRequestStatistics);
+
+                                           state.mergeDiagnosticsContext();
+                                           diagnosticsAccessor
+                                               .setDiagnosticsContext(
+                                                   aggregatedDiagnostics,
+                                                   state.getDiagnosticsContextSnapshot());
+
+                                           headers.put(HttpConstants.HttpHeaders.REQUEST_CHARGE, Double
+                                               .toString(requestCharge));
+                                           FeedResponse<T> frp = BridgeInternal
+                                               .createFeedResponseWithQueryMetrics(
+                                                   finalList,
+                                                   headers,
+                                                   aggregatedQueryMetrics,
+                                                   null,
+                                                   false,
+                                                   false,
+                                                   aggregatedDiagnostics);
+                                           return frp;
+                                       });
+                        })
+                        .onErrorMap(throwable -> {
+                            if (throwable instanceof CosmosException) {
+                                CosmosException cosmosException = (CosmosException)throwable;
+                                CosmosDiagnostics diagnostics = cosmosException.getDiagnostics();
+                                if (diagnostics != null) {
+                                    state.mergeDiagnosticsContext();
+                                    diagnosticsAccessor
+                                        .setDiagnosticsContext(
+                                            diagnostics,
+                                            state.getDiagnosticsContextSnapshot());
+                                }
+
+                                return cosmosException;
+                            }
+
+                            return throwable;
+                        });
                 }
             );
-
     }
 
     private Map<PartitionKeyRange, SqlQuerySpec> getRangeQueryMap(
@@ -3031,6 +3090,7 @@ public class RxDocumentClientImpl implements AsyncDocumentClient, IAuthorization
     }
 
     private <T extends Resource> Flux<FeedResponse<T>> queryForReadMany(
+        ScopedDiagnosticsFactory diagnosticsFactory,
         String parentResourceLink,
         SqlQuerySpec sqlQuery,
         CosmosQueryRequestOptions options,
@@ -3049,20 +3109,24 @@ public class RxDocumentClientImpl implements AsyncDocumentClient, IAuthorization
 
         IDocumentQueryClient queryClient = documentQueryClientImpl(RxDocumentClientImpl.this, getOperationContextAndListenerTuple(options));
         Flux<? extends IDocumentQueryExecutionContext<T>> executionContext =
-            DocumentQueryExecutionContextFactory.createReadManyQueryAsync(this, queryClient, collection.getResourceId(),
-                                                                          sqlQuery,
-                                                                          rangeQueryMap,
-                                                                          options,
-                                                                          collection.getResourceId(),
-                                                                          parentResourceLink,
-                                                                          activityId,
-                                                                          klass,
-                                                                          resourceTypeEnum,
-                                                                          isQueryCancelledOnTimeout);
+            DocumentQueryExecutionContextFactory.createReadManyQueryAsync(
+                diagnosticsFactory,
+                queryClient,
+                collection.getResourceId(),
+                sqlQuery,
+                rangeQueryMap,
+                options,
+                collection.getResourceId(),
+                parentResourceLink,
+                activityId,
+                klass,
+                resourceTypeEnum,
+                isQueryCancelledOnTimeout);
         return executionContext.flatMap(IDocumentQueryExecutionContext<T>::executeAsync);
     }
 
     private <T> Flux<FeedResponse<Document>> pointReadsForReadMany(
+        ScopedDiagnosticsFactory diagnosticsFactory,
         Map<PartitionKeyRange, List<CosmosItemIdentity>> singleItemPartitionRequestMap,
         String resourceLink,
         CosmosQueryRequestOptions queryRequestOptions,
@@ -3077,7 +3141,7 @@ public class RxDocumentClientImpl implements AsyncDocumentClient, IAuthorization
                         .getCosmosQueryRequestOptionsAccessor()
                         .toRequestOptions(queryRequestOptions);
                     requestOptions.setPartitionKey(firstIdentity.getPartitionKey());
-                    return this.readDocument((resourceLink + firstIdentity.getId()), requestOptions)
+                    return this.readDocument((resourceLink + firstIdentity.getId()), requestOptions, diagnosticsFactory)
                         .flatMap(resourceResponse -> Mono.just(
                             new ImmutablePair<ResourceResponse<Document>, CosmosException>(resourceResponse, null)
                         ))
@@ -3287,7 +3351,7 @@ public class RxDocumentClientImpl implements AsyncDocumentClient, IAuthorization
             effectiveClientContext = this;
             diagnosticsFactory = null;
         } else {
-            diagnosticsFactory = new ScopedDiagnosticsFactory(this);
+            diagnosticsFactory = new ScopedDiagnosticsFactory(this, false);
             state.registerDiagnosticsFactory(
                 () -> diagnosticsFactory.reset(),
                 (ctx) -> diagnosticsFactory.merge(ctx));
@@ -5064,6 +5128,24 @@ public class RxDocumentClientImpl implements AsyncDocumentClient, IAuthorization
         RequestOptions initialRequestOptions,
         boolean idempotentWriteRetriesEnabled) {
 
+        return wrapPointOperationWithAvailabilityStrategy(
+            resourceType,
+            operationType,
+            callback,
+            initialRequestOptions,
+            idempotentWriteRetriesEnabled,
+            this
+        );
+    }
+
+    private Mono<ResourceResponse<Document>> wrapPointOperationWithAvailabilityStrategy(
+        ResourceType resourceType,
+        OperationType operationType,
+        DocumentPointOperation callback,
+        RequestOptions initialRequestOptions,
+        boolean idempotentWriteRetriesEnabled,
+        DiagnosticsClientContext innerDiagnosticsFactory) {
+
         checkNotNull(resourceType, "Argument 'resourceType' must not be null.");
         checkNotNull(operationType, "Argument 'operationType' must not be null.");
         checkNotNull(callback, "Argument 'callback' must not be null.");
@@ -5087,14 +5169,14 @@ public class RxDocumentClientImpl implements AsyncDocumentClient, IAuthorization
 
         if (orderedApplicableRegionsForSpeculation.size() < 2) {
             // There is at most one applicable region - no hedging possible
-            return callback.apply(nonNullRequestOptions, endToEndPolicyConfig, null);
+            return callback.apply(nonNullRequestOptions, endToEndPolicyConfig, innerDiagnosticsFactory);
         }
 
         ThresholdBasedAvailabilityStrategy availabilityStrategy =
             (ThresholdBasedAvailabilityStrategy)endToEndPolicyConfig.getAvailabilityStrategy();
         List<Mono<NonTransientPointOperationResult>> monoList = new ArrayList<>();
 
-        final ScopedDiagnosticsFactory diagnosticsFactory = new ScopedDiagnosticsFactory(this);
+        final ScopedDiagnosticsFactory diagnosticsFactory = new ScopedDiagnosticsFactory(innerDiagnosticsFactory, false);
 
         orderedApplicableRegionsForSpeculation
             .forEach(region -> {
@@ -5613,11 +5695,13 @@ public class RxDocumentClientImpl implements AsyncDocumentClient, IAuthorization
         private final AtomicBoolean isMerged = new AtomicBoolean(false);
         private final DiagnosticsClientContext inner;
         private final ConcurrentLinkedQueue<CosmosDiagnostics> createdDiagnostics;
+        private final boolean shouldCaptureAllFeedDiagnostics;
 
-        public ScopedDiagnosticsFactory(DiagnosticsClientContext inner) {
+        public ScopedDiagnosticsFactory(DiagnosticsClientContext inner, boolean shouldCaptureAllFeedDiagnostics) {
             checkNotNull(inner, "Argument 'inner' must not be null.");
             this.inner = inner;
             this.createdDiagnostics = new ConcurrentLinkedQueue<>();
+            this.shouldCaptureAllFeedDiagnostics = shouldCaptureAllFeedDiagnostics;
         }
 
         @Override
@@ -5674,6 +5758,15 @@ public class RxDocumentClientImpl implements AsyncDocumentClient, IAuthorization
 
             for (CosmosDiagnostics diagnostics : this.createdDiagnostics) {
                 if (diagnostics.getDiagnosticsContext() == null && diagnosticsAccessor.isNotEmpty(diagnostics)) {
+                    if (this.shouldCaptureAllFeedDiagnostics &&
+                        diagnosticsAccessor.getFeedResponseDiagnostics(diagnostics) != null) {
+
+                        AtomicBoolean isCaptured = diagnosticsAccessor.isDiagnosticsCapturedInPagedFlux(diagnostics);
+                        if (isCaptured != null) {
+                            // Diagnostics captured in the ScopedDiagnosticsFactory should always be kept
+                            isCaptured.set(true);
+                        }
+                    }
                     ctxAccessor.addDiagnostics(ctx, diagnostics);
                 }
             }

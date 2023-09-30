@@ -8,6 +8,7 @@ import com.azure.core.util.FluxUtil;
 import com.azure.core.util.IterableStream;
 import com.azure.core.util.paging.ContinuablePagedFlux;
 import com.azure.cosmos.CosmosDiagnostics;
+import com.azure.cosmos.CosmosDiagnosticsContext;
 import com.azure.cosmos.implementation.CosmosPagedFluxOptions;
 import com.azure.cosmos.implementation.DiagnosticsProvider;
 import com.azure.cosmos.implementation.FeedOperationState;
@@ -178,20 +179,24 @@ public final class CosmosPagedFlux<T> extends ContinuablePagedFlux<String, T, Fe
                 synchronized (lockHolder) {
                     switch (signal.getType()) {
                         case ON_COMPLETE:
-                            this.recordFeedResponse(pagedFluxOptions, tracerProvider, response, feedResponseConsumerLatencyInNanos);
+                            if (response != null) {
+                                this.recordFeedResponse(pagedFluxOptions, tracerProvider, response, feedResponseConsumerLatencyInNanos);
+                            }
                             state.mergeDiagnosticsContext();
+
+                            CosmosDiagnosticsContext ctxSnapshot = state.getDiagnosticsContextSnapshot();
                             tracerProvider.recordFeedResponseConsumerLatency(
                                 signal,
-                                state.getDiagnosticsContextSnapshot(),
+                                ctxSnapshot,
                                 Duration.ofNanos(feedResponseConsumerLatencyInNanos.get()));
 
-                            tracerProvider.endSpan(state.getDiagnosticsContextSnapshot(), traceCtx);
+                            tracerProvider.endSpan(ctxSnapshot, traceCtx, ctxAccessor.isEmptyCompletion(ctxSnapshot));
 
                             break;
                         case ON_NEXT:
                             this.recordFeedResponse(pagedFluxOptions, tracerProvider, response, feedResponseConsumerLatencyInNanos);
                             state.mergeDiagnosticsContext();
-                            tracerProvider.endSpan(state.getDiagnosticsContextSnapshot(), traceCtx);
+                            tracerProvider.endSpan(state.getDiagnosticsContextSnapshot(), traceCtx, false);
                             state.resetDiagnosticsContext();
 
                             DiagnosticsProvider.setContextInReactor(tracerProvider.startSpan(
@@ -229,14 +234,17 @@ public final class CosmosPagedFlux<T> extends ContinuablePagedFlux<String, T, Fe
                     Context traceCtx = DiagnosticsProvider.getContextFromReactorOrNull(reactorCtx);
                     synchronized (lockHolder) {
                         state.mergeDiagnosticsContext();
-                        tracerProvider.endSpan(state.getDiagnosticsContextSnapshot(), traceCtx);
+
+                        tracerProvider.endSpan(state.getDiagnosticsContextSnapshot(), traceCtx, false);
                     }
                 })
                 .doOnComplete(() -> {
                     Context traceCtx = DiagnosticsProvider.getContextFromReactorOrNull(reactorCtx);
                     synchronized(lockHolder) {
                         state.mergeDiagnosticsContext();
-                        tracerProvider.endSpan(state.getDiagnosticsContextSnapshot(), traceCtx);
+
+                        CosmosDiagnosticsContext ctxSnapshot = state.getDiagnosticsContextSnapshot();
+                        tracerProvider.endSpan(ctxSnapshot, traceCtx, ctxAccessor.isEmptyCompletion(ctxSnapshot));
                     }
                 }))
             .contextWrite(DiagnosticsProvider.setContextInReactor(

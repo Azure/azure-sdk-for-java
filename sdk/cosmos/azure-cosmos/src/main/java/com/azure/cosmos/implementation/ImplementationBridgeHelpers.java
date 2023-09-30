@@ -748,6 +748,8 @@ public class ImplementationBridgeHelpers {
                 long transportRequestId);
 
             boolean isNotEmpty(CosmosDiagnostics cosmosDiagnostics);
+
+            void setDiagnosticsContext(CosmosDiagnostics cosmosDiagnostics, CosmosDiagnosticsContext ctx);
         }
     }
 
@@ -847,6 +849,10 @@ public class ImplementationBridgeHelpers {
             String getSpanName(CosmosDiagnosticsContext ctx);
 
             void setSamplingRateSnapshot(CosmosDiagnosticsContext ctx, double samplingRate);
+
+            Integer getSequenceNumber(CosmosDiagnosticsContext ctx);
+
+            boolean isEmptyCompletion(CosmosDiagnosticsContext ctx);
         }
     }
 

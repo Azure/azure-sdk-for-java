@@ -61,8 +61,6 @@ private[cosmos] object SparkBridgeInternal {
   ): List[PartitionKeyRange] = {
     val pkRanges = new ArrayBuffer[PartitionKeyRange]()
 
-
-
     container
       .getDatabase
       .getDocClientWrapper

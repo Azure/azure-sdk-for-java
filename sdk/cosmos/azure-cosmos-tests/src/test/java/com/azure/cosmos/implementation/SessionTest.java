@@ -271,7 +271,11 @@ public class SessionTest extends TestSuiteBase {
         CosmosItemIdentity cosmosItemIdentity = new CosmosItemIdentity(new PartitionKey(documentCreated.getId()), documentCreated.getId());
         List<CosmosItemIdentity> cosmosItemIdentities = new ArrayList<>();
         cosmosItemIdentities.add(cosmosItemIdentity);
-        spyClient.readMany(cosmosItemIdentities, getCollectionLink(isNameBased), queryRequestOptions, InternalObjectNode.class).block();
+        spyClient.readMany(
+            cosmosItemIdentities,
+            getCollectionLink(isNameBased),
+            TestUtils.createDummyQueryFeedOperationState(ResourceType.Document, OperationType.Query, queryRequestOptions, spyClient),
+            InternalObjectNode.class).block();
         assertThat(getSessionTokensInRequests().size()).isEqualTo(1);
         assertThat(getSessionTokensInRequests().get(0)).isNotEmpty();
         assertThat(getSessionTokensInRequests().get(0)).doesNotContain(","); // making sure we have only one scope session token

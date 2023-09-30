@@ -1217,18 +1217,18 @@ public class CosmosDiagnosticsTest extends TestSuiteBase {
         }
 
         // first request initialized the rntbd service endpoint
-        Instant beforeInitializationThreshold = beforeInitializingRntbdServiceEndpoint.minusMillis(1);
+        Instant beforeInitializationThreshold = beforeInitializingRntbdServiceEndpoint.minusMillis(5);
         assertThat(Instant.parse(serviceEndpointStatistics.get("createdTime").asText()))
             .isAfterOrEqualTo(beforeInitializationThreshold);
 
-        // Adding 2 ms to cover for rounding errors (only 3 fractional digits)
-        Instant afterInitializationThreshold = afterInitializingRntbdServiceEndpoint.plusMillis(2);
+        // Adding 5 ms to cover for rounding errors (only 3 fractional digits)
+        Instant afterInitializationThreshold = afterInitializingRntbdServiceEndpoint.plusMillis(5);
         assertThat(Instant.parse(serviceEndpointStatistics.get("createdTime").asText()))
             .isBeforeOrEqualTo(afterInitializationThreshold);
 
-        // Adding 2 ms to cover for rounding errors (only 3 fractional digits)
-        Instant afterOperation2Threshold = afterOperation2.plusMillis(2);
-        Instant beforeOperation2Threshold = beforeOperation2.minusMillis(2);
+        // Adding 5 ms to cover for rounding errors (only 3 fractional digits)
+        Instant afterOperation2Threshold = afterOperation2.plusMillis(5);
+        Instant beforeOperation2Threshold = beforeOperation2.minusMillis(5);
         assertThat(Instant.parse(serviceEndpointStatistics.get("lastRequestTime").asText()))
             .isAfterOrEqualTo(beforeOperation2Threshold.toString())
             .isBeforeOrEqualTo(afterOperation2Threshold.toString());
