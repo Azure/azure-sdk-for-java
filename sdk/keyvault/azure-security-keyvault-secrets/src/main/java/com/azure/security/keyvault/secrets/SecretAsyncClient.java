@@ -289,7 +289,7 @@ public final class SecretAsyncClient {
             SecretProperties secretProperties = secret.getProperties();
             if (secretProperties == null) {
                 return implClient.setSecretWithResponseAsync(vaultUrl, secret.getName(), secret.getValue(),
-                        null, ContentType.APPLICATION_JSON, null)
+                        null, null, null)
                     .onErrorMap(KeyVaultErrorException.class, SecretAsyncClient::mapSetSecretException)
                     .map(response -> new SimpleResponse<>(response, createKeyVaultSecret(response.getValue())));
             } else {
