@@ -265,7 +265,7 @@ public final class SecretClient {
                 return new SimpleResponse<>(response, createKeyVaultSecret(response.getValue()));
             } else {
                 Response<SecretBundle> response = implClient.setSecretWithResponse(vaultUrl, secret.getName(),
-                    secret.getValue(), secretProperties.getTags(), ContentType.APPLICATION_JSON,
+                    secret.getValue(), secretProperties.getTags(), secretProperties.getContentType(),
                     createSecretAttributes(secretProperties), context);
                 return new SimpleResponse<>(response, createKeyVaultSecret(response.getValue()));
             }

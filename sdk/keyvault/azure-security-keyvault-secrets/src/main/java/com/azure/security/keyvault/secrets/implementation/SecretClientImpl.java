@@ -452,7 +452,7 @@ public final class SecretClientImpl {
      *     the service. The value provided should not include personally identifiable or sensitive information.
      * @param value The value of the secret.
      * @param tags Application specific metadata in the form of key-value pairs.
-     * @param contentType Type of the secret value such as a password.
+     * @param secretContentType Type of the secret value such as a password.
      * @param secretAttributes The secret management attributes.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws KeyVaultErrorException thrown if the request is rejected by server.
@@ -466,13 +466,14 @@ public final class SecretClientImpl {
             String secretName,
             String value,
             Map<String, String> tags,
-            String contentType,
+            String secretContentType,
             SecretAttributes secretAttributes) {
         final String accept = "application/json";
+        final String contentType = "application/json";
         SecretSetParameters parameters = new SecretSetParameters();
         parameters.setValue(value);
         parameters.setTags(tags);
-        parameters.setContentType(contentType);
+        parameters.setContentType(secretContentType);
         parameters.setSecretAttributes(secretAttributes);
         return FluxUtil.withContext(
                 context ->
@@ -598,7 +599,7 @@ public final class SecretClientImpl {
      *     the service. The value provided should not include personally identifiable or sensitive information.
      * @param value The value of the secret.
      * @param tags Application specific metadata in the form of key-value pairs.
-     * @param contentType Type of the secret value such as a password.
+     * @param secretContentType Type of the secret value such as a password.
      * @param secretAttributes The secret management attributes.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
@@ -612,15 +613,17 @@ public final class SecretClientImpl {
             String secretName,
             String value,
             Map<String, String> tags,
-            String contentType,
+            String secretContentType,
             SecretAttributes secretAttributes,
             Context context) {
         final String accept = "application/json";
+        final String contentType = "application/json";
         SecretSetParameters parameters = new SecretSetParameters();
         parameters.setValue(value);
         parameters.setTags(tags);
-        parameters.setContentType(contentType);
+        parameters.setContentType(secretContentType);
         parameters.setSecretAttributes(secretAttributes);
+
         return service.setSecretSync(
                 vaultBaseUrl, secretName, this.getApiVersion(), parameters, accept, contentType, context);
     }
