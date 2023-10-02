@@ -70,7 +70,6 @@ extends:
         groupId: com.azure
         safeName: azuresdktemplate
         releaseInBatch: ${{ parameters.release_azuresdktemplate }}
-        skipPublishDocMs: true
       - name: azure-sdk-template-two
         groupId: com.azure
         safeName: azuresdktemplatetwo

@@ -61,7 +61,7 @@ steps:
       - pwsh: |
           $ErrorActionPreference = "Continue"
           $RemoteName = "origin"
-          $BranchName = "$(TargetBranchName)"
+          $BranchName = "djurek/author-metadata"
           # Fetch and checkout remote branch if it already exists otherwise create a new branch.
           git ls-remote --exit-code --heads $RemoteName $BranchName
           if ($LASTEXITCODE -eq 0) {
@@ -108,7 +108,7 @@ steps:
 
     - template: /eng/common/pipelines/templates/steps/git-push-changes.yml
       parameters:
-        BaseRepoBranch: $(TargetBranchName)
+        BaseRepoBranch: djurek/author-metadata
         BaseRepoOwner: ${{ parameters.TargetDocRepoOwner }}
         CommitMsg: "Update docs metadata"
         TargetRepoName: ${{ parameters.TargetDocRepoName }}
