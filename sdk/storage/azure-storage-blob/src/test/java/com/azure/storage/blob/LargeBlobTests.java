@@ -34,6 +34,7 @@ import static org.junit.jupiter.api.Assertions.assertNotNull;
 import static org.junit.jupiter.api.Assertions.assertNull;
 
 @ResourceLock("LargeBlobTests")
+@EnabledIf("com.azure.storage.blob.BlobTestBase#isLiveMode")
 public class LargeBlobTests extends BlobTestBase {
 
     private static BlobServiceClient blobServiceClient;
@@ -64,7 +65,6 @@ public class LargeBlobTests extends BlobTestBase {
         blobAsyncClient = blobContainerAsyncClient.getBlobAsyncClient(blobName);
     }
 
-    @EnabledIf("com.azure.storage.blob.BlobTestBase#isLiveMode")
     @DisabledIf("com.azure.storage.blob.BlobTestBase#olderThan20191212ServiceVersion")
     @Test
     public void stageRealLargeBlob() {
@@ -80,7 +80,6 @@ public class LargeBlobTests extends BlobTestBase {
         assertEquals(LARGE_BLOCK_SIZE, blockList.getCommittedBlocks().get(0).getSizeLong());
     }
 
-    @EnabledIf("com.azure.storage.blob.BlobTestBase#isLiveMode")
     @DisabledIf("com.azure.storage.blob.BlobTestBase#olderThan20191212ServiceVersion")
     @Test
     public void uploadRealLargeBlobInSingleUpload() {
@@ -96,7 +95,6 @@ public class LargeBlobTests extends BlobTestBase {
         assertNull(properties.getCommittedBlockCount());
     }
 
-    @EnabledIf("com.azure.storage.blob.BlobTestBase#isLiveMode")
     @DisabledIf("com.azure.storage.blob.BlobTestBase#olderThan20191212ServiceVersion")
     @Test
     public void uploadRealLargeBlobInSingleUploadAsync() {
@@ -111,7 +109,6 @@ public class LargeBlobTests extends BlobTestBase {
         assertNull(properties.getCommittedBlockCount());
     }
 
-    @EnabledIf("com.azure.storage.blob.BlobTestBase#isLiveMode")
     @DisabledIf("com.azure.storage.blob.BlobTestBase#olderThan20191212ServiceVersion")
     @Test
     public void uploadLargeInput() {
@@ -129,7 +126,6 @@ public class LargeBlobTests extends BlobTestBase {
         assertEquals(tailSize, blockList.getCommittedBlocks().get(1).getSizeLong());
     }
 
-    @EnabledIf("com.azure.storage.blob.BlobTestBase#isLiveMode")
     @DisabledIf("com.azure.storage.blob.BlobTestBase#olderThan20191212ServiceVersion")
     @Test
     public void uploadLargeInputSync() {
@@ -148,7 +144,6 @@ public class LargeBlobTests extends BlobTestBase {
         assertEquals(tailSize, blockList.getCommittedBlocks().get(1).getSizeLong());
     }
 
-    @EnabledIf("com.azure.storage.blob.BlobTestBase#isLiveMode")
     @DisabledIf("com.azure.storage.blob.BlobTestBase#olderThan20191212ServiceVersion")
     @Test
     public void uploadLargeInputSyncNoLengthGiven() {
@@ -167,7 +162,6 @@ public class LargeBlobTests extends BlobTestBase {
         assertEquals(tailSize, blockList.getCommittedBlocks().get(1).getSizeLong());
     }
 
-    @EnabledIf("com.azure.storage.blob.BlobTestBase#isLiveMode")
     @DisabledIf("com.azure.storage.blob.BlobTestBase#olderThan20191212ServiceVersion")
     @Test
     public void uploadLargeFile() throws IOException {

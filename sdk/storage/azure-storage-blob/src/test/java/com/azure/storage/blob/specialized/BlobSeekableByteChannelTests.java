@@ -22,8 +22,10 @@ import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.condition.EnabledIf;
 import org.junit.jupiter.params.ParameterizedTest;
 import org.junit.jupiter.params.provider.Arguments;
+import org.junit.jupiter.params.provider.CsvSource;
 import org.junit.jupiter.params.provider.MethodSource;
 import org.mockito.Mockito;
+import org.mockito.invocation.InvocationOnMock;
 
 import java.io.ByteArrayInputStream;
 import java.io.ByteArrayOutputStream;
@@ -43,9 +45,12 @@ import static org.junit.jupiter.api.Assertions.assertNotEquals;
 import static org.junit.jupiter.api.Assertions.assertNotNull;
 import static org.junit.jupiter.api.Assertions.assertNull;
 import static org.mockito.ArgumentMatchers.any;
+import static org.mockito.ArgumentMatchers.anyBoolean;
 import static org.mockito.ArgumentMatchers.argThat;
 import static org.mockito.Mockito.doAnswer;
 import static org.mockito.Mockito.doThrow;
+import static org.mockito.Mockito.mock;
+import static org.mockito.Mockito.when;
 
 public class BlobSeekableByteChannelTests extends BlobTestBase {
 
@@ -161,65 +166,56 @@ public class BlobSeekableByteChannelTests extends BlobTestBase {
     }
 
     @ParameterizedTest
-    @MethodSource("blobSizeDataSupplier")
-    public void supportsGreaterThanMaxIntBlobSize(int toRead, long offset) throws IOException {
-        // given: "data"
+    @CsvSource({
+        "1024, " + Integer.MAX_VALUE,
+        "1024, " + (Integer.MAX_VALUE + 1000L),
+        "1024, " + (Long.MAX_VALUE / 2)
+    })
+    public void supportsGreaterThanMaxIntBlobSize(int toRead, long offset) throws Exception {
+        // Given: "data"
         long blobSize = Long.MAX_VALUE;
         ByteBuffer data = getRandomData(toRead);
 
-        // and: "read behavior to blob where length > maxint"
-        BlobClientBase client = Mockito.mock(BlobClientBase.class);
-        StorageSeekableByteChannelBlobReadBehavior behavior = new StorageSeekableByteChannelBlobReadBehavior(client,
-            ByteBuffer.allocate(0), -1, blobSize, null);
+        // And: "read behavior to blob where length > maxint"
+        BlobClientBase client = mock(BlobClientBase.class);
+        StorageSeekableByteChannelBlobReadBehavior behavior =
+            new StorageSeekableByteChannelBlobReadBehavior(client, ByteBuffer.allocate(0), -1, blobSize, null);
 
-        // and: "StorageSeekableByteChannel"
-        try (StorageSeekableByteChannel channel = new StorageSeekableByteChannel(toRead, behavior, 0)) {
+        // And: "StorageSeekableByteChannel"
+        StorageSeekableByteChannel channel = new StorageSeekableByteChannel(toRead, behavior, 0);
 
-            // when: "seek"
-            channel.position(offset);
+        // When: "seek"
+        channel.position(offset);
 
-            // then: "position set"
-            assertEquals(offset, channel.position());
+        // Then: "position set"
+        assertEquals(offset, channel.position());
 
-            // when: "read"
-            ByteBuffer readBuffer = ByteBuffer.allocate(toRead);
-            int read = channel.read(readBuffer);
-
-            // then: "appropriate data read"
-            assertEquals(toRead, read);
-            assertArrayEquals(data.array(), readBuffer.array());
-
-            doAnswer(invocation -> {
+        when(client.downloadStreamWithResponse(any(),
+            argThat(r -> r != null && r.getOffset() == offset && r.getCount() == toRead),
+            any(), any(), anyBoolean(), any(), any()))
+            .thenAnswer((InvocationOnMock invocation) -> {
                 OutputStream os = invocation.getArgument(0);
-                BlobRange range = invocation.getArgument(1);
-                assertNotNull(range);
-                assertEquals(range.getOffset(), offset);
-                assertEquals(range.getCount(), toRead);
-
                 os.write(data.array());
                 String contentRange = "bytes " + offset + "-" + (offset + toRead - 1) + "/" + blobSize;
-                HttpHeaders headers = new HttpHeaders().set("Content-Range", contentRange);
-
+                HttpHeaders headers = new HttpHeaders();
+                headers.put("Content-Range", contentRange);
                 return new BlobDownloadResponse(new BlobDownloadAsyncResponse(null, 206, headers, null,
                     new BlobDownloadHeaders().setContentRange(contentRange)));
-            }).when(client).downloadStreamWithResponse(any(),
-                argThat(range -> range != null && range.getOffset() == offset && range.getCount() == toRead), any(),
-                any(), any(), any(), any());
+            });
 
-            doThrow(new RuntimeException("Incorrect parameters")).when(client).downloadStreamWithResponse(any(), any(),
-                any(), any(), any(), any(), any());
+        // When: "read"
+        ByteBuffer readBuffer = ByteBuffer.allocate(toRead);
+        int read = channel.read(readBuffer);
 
-            // and: "channel position updated"
-            assertEquals(offset + toRead, channel.position());
-        }
-    }
+        // Then: "appropriate data read"
+        assertEquals(toRead, read);
+        assertArrayEquals(data.array(), readBuffer.array());
 
-    static Stream<Arguments> blobSizeDataSupplier() {
-        return Stream.of(
-            Arguments.of(1024, (long) Integer.MAX_VALUE),
-            Arguments.of(1024, ((long) Integer.MAX_VALUE) + 1000),
-            Arguments.of(1024, Long.MAX_VALUE / 2)
-        );
+        doThrow(new RuntimeException("Incorrect parameters")).when(client)
+            .downloadStreamWithResponse(any(), any(), any(), any(), anyBoolean(), any(), any());
+
+        // And: "channel position updated"
+        assertEquals(offset + toRead, channel.position());
     }
 
     @ParameterizedTest

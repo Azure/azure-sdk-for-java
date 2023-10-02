@@ -614,6 +614,7 @@ public class BlobTestBase extends TestProxyTestBase {
 
     protected BlobContainerClientBuilder getContainerClientBuilder(String endpoint) {
         BlobContainerClientBuilder builder = new BlobContainerClientBuilder().endpoint(endpoint);
+        //builder.clientOptions(new HttpClientOptions().setProxyOptions(new ProxyOptions(ProxyOptions.Type.HTTP, new InetSocketAddress("localhost", 8888))));
         instrument(builder);
         return builder;
     }

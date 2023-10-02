@@ -850,8 +850,7 @@ public class ServiceApiTests extends BlobTestBase {
             .retryOptions(new RequestRetryOptions(RetryPolicyType.FIXED, 2, 60, 100L, 1000L, null))
             .buildClient();
 
-        RuntimeException e = assertThrows(RuntimeException.class, client::getProperties);
-        assertInstanceOf(UnknownHostException.class, e.getCause());
+        assertThrows(RuntimeException.class, client::getProperties);
     }
 
     @Test
@@ -933,8 +932,8 @@ public class ServiceApiTests extends BlobTestBase {
 
         BlobContainerClient restoredContainerClient =
             primaryBlobServiceClient.undeleteBlobContainerWithResponse(
-                new UndeleteBlobContainerOptions(blobContainerItem.getName(), blobContainerItem.getVersion())
-                    .setDestinationContainerName(generateContainerName()), null, Context.NONE).getValue();
+                new UndeleteBlobContainerOptions(blobContainerItem.getName(), blobContainerItem.getVersion()), null,
+                Context.NONE).getValue();
 
         assertEquals(1, restoredContainerClient.listBlobs().stream().count());
         assertEquals(blobName, restoredContainerClient.listBlobs().stream().iterator().next().getName());

@@ -228,7 +228,7 @@ public class CPKTests extends BlobTestBase {
         Response<BlobProperties> response = cpkExistingBlob.getPropertiesWithResponse(null, null, null);
 
         assertResponseStatusCode(response, 200);
-        assertTrue(Boolean.parseBoolean(response.getHeaders().getValue(X_MS_REQUEST_SERVER_ENCRYPTED)));
+        assertTrue(Boolean.parseBoolean(response.getHeaders().getValue(X_MS_SERVER_ENCRYPTED)));
         assertEquals(key.getKeySha256(), response.getHeaders().getValue(X_MS_ENCRYPTION_KEY_SHA256));
     }
 

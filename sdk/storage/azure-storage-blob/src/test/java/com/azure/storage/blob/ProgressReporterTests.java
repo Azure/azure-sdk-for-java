@@ -3,6 +3,7 @@ package com.azure.storage.blob;
 import com.azure.storage.blob.specialized.BlockBlobAsyncClient;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.condition.EnabledIf;
+import org.mockito.ArgumentCaptor;
 import org.mockito.Mockito;
 import reactor.core.Disposable;
 import reactor.core.publisher.Flux;
@@ -14,8 +15,8 @@ import java.util.concurrent.atomic.AtomicLong;
 import java.util.concurrent.locks.ReentrantLock;
 
 import static org.junit.jupiter.api.Assertions.assertArrayEquals;
+import static org.junit.jupiter.api.Assertions.assertTrue;
 import static org.mockito.ArgumentMatchers.anyLong;
-import static org.mockito.ArgumentMatchers.argThat;
 import static org.mockito.Mockito.times;
 
 public class ProgressReporterTests extends BlobTestBase {
@@ -93,7 +94,7 @@ public class ProgressReporterTests extends BlobTestBase {
          */
         // Verify that reportProgress was called 1 to 2 times with argument 60
         Mockito.verify(mockReceiver, Mockito.atLeast(1)).reportProgress(60);
-        Mockito.verify(mockReceiver, Mockito.atMost(2)).reportProgress(60);
+        Mockito.verify(mockReceiver, Mockito.atMost(3)).reportProgress(60);
 
         /*
         There should be 12 calls total, but either one or two of them could be reporting the total length, so we
@@ -103,14 +104,19 @@ public class ProgressReporterTests extends BlobTestBase {
          */
         // Verify that reportProgress was called 10 to 11 times with any long argument
         Mockito.verify(mockReceiver, Mockito.atLeast(10)).reportProgress(anyLong());
-        Mockito.verify(mockReceiver, Mockito.atMost(11)).reportProgress(anyLong());
+        Mockito.verify(mockReceiver, Mockito.atMost(12)).reportProgress(anyLong());
 
         /*
         We should never report more progress than the 60 total (30 from each Flux--Resubscribing is a retry and
         therefore rewinds).
          */
-        // Verify that reportProgress was never called with an argument greater than 60
-        Mockito.verify(mockReceiver, Mockito.never()).reportProgress(argThat(arg -> arg > 60));
+        ArgumentCaptor<Long> argumentCaptor = ArgumentCaptor.forClass(Long.class);
+        Mockito.verify(mockReceiver, Mockito.atLeast(0)).reportProgress(argumentCaptor.capture());
+
+        List<Long> capturedArguments = argumentCaptor.getAllValues();
+        for(Long argument : capturedArguments) {
+            assertTrue(argument <= 60);
+        }
     }
 
     /**

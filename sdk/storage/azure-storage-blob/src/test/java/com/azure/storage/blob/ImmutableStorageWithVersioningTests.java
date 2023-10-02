@@ -53,7 +53,9 @@ import com.azure.storage.common.sas.AccountSasService;
 import com.azure.storage.common.sas.AccountSasSignatureValues;
 import com.fasterxml.jackson.core.JsonProcessingException;
 import com.fasterxml.jackson.databind.ObjectMapper;
+import org.junit.jupiter.api.AfterAll;
 import org.junit.jupiter.api.AfterEach;
+import org.junit.jupiter.api.BeforeAll;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.condition.DisabledIf;
@@ -76,6 +78,7 @@ import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.Iterator;
 import java.util.List;
+import java.util.Objects;
 import java.util.UUID;
 import java.util.stream.Stream;
 
@@ -98,7 +101,8 @@ public class ImmutableStorageWithVersioningTests extends BlobTestBase {
     private BlobContainerClient vlwContainer;
     private BlobClient vlwBlob;
 
-    public void setupSpec() throws MalformedURLException, JsonProcessingException {
+    @BeforeAll
+    public static void setupSpec() throws JsonProcessingException, MalformedURLException {
         if (ENVIRONMENT.getTestMode() != TestMode.PLAYBACK) {
             vlwContainerName = UUID.randomUUID().toString();
 
@@ -107,7 +111,6 @@ public class ImmutableStorageWithVersioningTests extends BlobTestBase {
                 SUBSCRIPTION_ID, RESOURCE_GROUP_NAME, ACCOUNT_NAME, vlwContainerName, API_VERSION);
             HttpPipeline httpPipeline = new HttpPipelineBuilder()
                 .policies(CREDENTIAL_POLICY)
-                .httpClient(getHttpClient())
                 .build();
 
             ImmutableStorageWithVersioning immutableStorageWithVersioning = new ImmutableStorageWithVersioning();
@@ -124,7 +127,6 @@ public class ImmutableStorageWithVersioningTests extends BlobTestBase {
 
             String serializedBody = new ObjectMapper().writeValueAsString(body);
 
-
             HttpResponse response = httpPipeline.send(new HttpRequest(HttpMethod.PUT, new URL(url), new HttpHeaders(),
                     Flux.just(ByteBuffer.wrap(serializedBody.getBytes(StandardCharsets.UTF_8)))))
                 .block();
@@ -132,43 +134,38 @@ public class ImmutableStorageWithVersioningTests extends BlobTestBase {
             if (response.getStatusCode() != 201) {
                 System.out.println(response.getBodyAsString().block());
             }
-            assertEquals(201, response.getStatusCode());
+            assert response.getStatusCode() == 201;
         }
     }
 
     @BeforeEach
-    public void setup() throws MalformedURLException, JsonProcessingException {
-        setupSpec();
-
+    public void setup() {
         vlwContainer = versionedBlobServiceClient.getBlobContainerClient(
             testResourceNamer.recordValueFromConfig(vlwContainerName));
         vlwBlob = vlwContainer.getBlobClient(generateBlobName());
         vlwBlob.upload(new ByteArrayInputStream(new byte[0]), 0);
     }
 
-    // Try making this public
-    public final class Body {
+    public static final class Body {
         public String id;
         public String name;
         public String type;
         public Properties properties;
     }
-    public final class Properties {
+    public static final class Properties {
         public ImmutableStorageWithVersioning immutableStorageWithVersioning;
     }
-    public final class ImmutableStorageWithVersioning {
+    public static final class ImmutableStorageWithVersioning {
         public boolean enabled;
     }
 
-    @AfterEach
-    public void cleanup() throws MalformedURLException {
+    @AfterAll
+    public static void cleanupSpec() throws MalformedURLException {
         if (ENVIRONMENT.getTestMode() != TestMode.PLAYBACK) {
             HttpPipeline httpPipeline = new HttpPipelineBuilder()
                 .policies(CREDENTIAL_POLICY)
-                .httpClient(getHttpClient())
                 .build();
             BlobServiceClient cleanupClient = new BlobServiceClientBuilder()
-                .httpClient(getHttpClient())
                 .credential(ENVIRONMENT.getVersionedAccount().getCredential())
                 .endpoint(ENVIRONMENT.getVersionedAccount().getBlobEndpoint())
                 .buildClient();
@@ -186,7 +183,7 @@ public class ImmutableStorageWithVersioningTests extends BlobTestBase {
                 for (BlobItem blob: containerClient.listBlobs(options, null)) {
                     BlobClient blobClient = containerClient.getBlobClient(blob.getName());
                     BlobItemProperties blobProperties = blob.getProperties();
-                    if (blobProperties.hasLegalHold()) {
+                    if (Objects.equals(true, blobProperties.hasLegalHold())) {
                         blobClient.setLegalHold(false);
                     }
                     if (blobProperties.getImmutabilityPolicy().getPolicyMode() != null) {

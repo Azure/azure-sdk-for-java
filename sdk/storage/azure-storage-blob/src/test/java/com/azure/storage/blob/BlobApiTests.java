@@ -1356,7 +1356,7 @@ public class BlobApiTests extends BlobTestBase {
     relationship programmatically, so we have recorded a successful interaction and only test recordings.
      */
 
-    @EnabledIf("com.azure.storage.blob.BlobTestBase#isPlaybackMode")
+    //@EnabledIf("com.azure.storage.blob.BlobTestBase#isPlaybackMode")
     @Test
     public void getPropertiesORS() throws MalformedURLException {
         BlobClient sourceBlob = primaryBlobServiceClient.getBlobContainerClient("test1")
