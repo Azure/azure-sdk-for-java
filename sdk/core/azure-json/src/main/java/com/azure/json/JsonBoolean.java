@@ -11,10 +11,9 @@ import java.io.IOException;
  * @see JsonElement
  */
 public final class JsonBoolean extends JsonElement {
-
-    private final boolean booleanValue;
     private static final JsonBoolean TRUE = new JsonBoolean(true);
     private static final JsonBoolean FALSE = new JsonBoolean(false);
+    private final boolean booleanValue;
 
     private JsonBoolean(boolean value) { 
         this.booleanValue = value; 

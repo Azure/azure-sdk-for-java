@@ -11,7 +11,7 @@ import java.io.IOException;
  * @see TODO
  */
 public final class JsonNull extends JsonElement {
-    static final JsonNull INSTANCE = new JsonNull();
+    private static final JsonNull INSTANCE = new JsonNull();
     private final String nullValue = "null";
 
     private JsonNull() {
