@@ -154,7 +154,8 @@ jobs:
         inputs:
           pwsh: true
           filePath: eng/common/scripts/Verify-RequiredDocsJsonMembers.ps1
-          arguments: -DocRepoLocation $(DocRepoLocation)
+          arguments: >-
+            -DocRepoLocation $(DocRepoLocation)
         displayName: Verify Required Docs Json Members
 
       - template: /eng/common/pipelines/templates/steps/git-push-changes.yml
