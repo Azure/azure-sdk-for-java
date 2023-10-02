@@ -10,95 +10,95 @@ enum JsonTokenType {
     /**
      * Reserved for no other value.
      */
-    NOTSTARTED,
+    NotStarted,
 
     /**
      * Corresponds to the beginning of a JSON array ('[').
      */
-    BEGINARRAY,
+    BeginArray,
 
     /**
      * Corresponds to the end of a JSON array (']').
      */
-    ENDARRAY,
+    EndArray,
 
     /**
      * Corresponds to the beginning of a JSON object ('{').
      */
-    BEGINOBJECT,
+    BeginObject,
 
     /**
      * Corresponds to the end of a JSON object ('}').
      */
-    ENDOBJECT,
+    EndObject,
 
     /**
      * Corresponds to a JSON string.
      */
-    STRING,
+    String,
 
     /**
      * Corresponds to a JSON number.
      */
-    NUMBER,
+    Number,
 
     /**
      * Corresponds to the JSON 'true' value.
      */
-    TRUE,
+    True,
 
     /**
      * Corresponds to the JSON 'false' value.
      */
-    FALSE,
+    False,
 
     /**
      * Corresponds to the JSON 'null' value.
      */
-    NULL,
+    Null,
 
     /**
      * Corresponds to the JSON field name in a JSON object.
      */
-    FIELDNAME,
+    FieldName,
 
     /**
      * Corresponds to a signed 1 byte integer.
      */
-    INT8,
+    Int8,
 
     /**
      * Corresponds to a signed 2 byte integer.
      */
-    INT16,
+    Int16,
 
     /**
      * Corresponds to a signed 4 byte integer.
      */
-    INT32,
+    Int32,
 
     /**
      * Corresponds to a signed 8 byte integer.
      */
-    INT64,
+    Int64,
 
     /**
      * Corresponds to a single precision floating point.
      */
-    FLOAT32,
+    Float32,
 
     /**
      * Corresponds to a double precision floating point.
      */
-    FLOAT64,
+    Float64,
 
     /**
      * Corresponds to a UUID.
      */
-    UUID,
+    Uuid,
 
     /**
      * Corresponds to an arbitrary sequence of bytes in an object.
      */
-    BINARY,
+    Binary,
 }

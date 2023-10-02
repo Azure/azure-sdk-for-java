@@ -10,17 +10,17 @@ enum JsonSerializationFormat {
     /**
      * Plain text.
      */
-    TEXT((byte) 0),
+    Text((byte) 0),
 
     /**
      * Binary Encoding.
      */
-    BINARY((byte) 128),
+    Binary((byte) 128),
 
     /**
      * HybridRow Binary Encoding.
      */
-    HYBRIDROW((byte) 129);
+    HybridRow((byte) 129);
 
     // All other format values need to be > 127,
     // otherwise a valid JSON starting character (0-9, f[alse], t[rue], n[ull],{,[,") might be interpreted as a serialization format.

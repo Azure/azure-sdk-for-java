@@ -2,6 +2,8 @@
 // Licensed under the MIT License.
 package com.azure.cosmos.implementation.json;
 
+import static com.azure.cosmos.implementation.guava25.base.Preconditions.checkNotNull;
+
 /**
  * Class to hold the property name and property value for an object property.
  */
@@ -15,13 +17,8 @@ class ObjectProperty {
      */
     public ObjectProperty(IJsonNavigatorNode nameNode, IJsonNavigatorNode valueNode) {
 
-        if (nameNode == null) {
-            throw new IllegalArgumentException("nameNode");
-        }
-
-        if (valueNode == null) {
-            throw new IllegalArgumentException("valueNode");
-        }
+        checkNotNull(nameNode, "Argument 'nameNode' must not be null.");
+        checkNotNull(valueNode, "Argument 'valueNode' must not be null.");
 
         this.nameNode = nameNode;
         this.valueNode = valueNode;

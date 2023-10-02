@@ -2,8 +2,8 @@
 // Licensed under the MIT License.
 package com.azure.cosmos.implementation.json;
 
-import java.nio.ByteBuffer;
 import java.util.UUID;
+import java.util.concurrent.atomic.AtomicReference;
 
 /**
  * Interface for JsonReaders.
@@ -51,7 +51,7 @@ interface IJsonReader {
      * @param value The buffered UTF-8 string value if found.
      * @return {@code true} if the buffered UTF-8 string value was retrieved; {@code false} otherwise.
      */
-    boolean tryGetBufferedStringValue(ByteBuffer value);
+    boolean tryGetBufferedStringValue(AtomicReference<Byte[]> value);
 
     /**
      * Gets the next JSON token from the JsonReader as a 1 byte signed integer.
@@ -107,7 +107,7 @@ interface IJsonReader {
      *
      * @return The next JSON token from the JsonReader as a binary list.
      */
-    ByteBuffer getBinaryValue();
+    AtomicReference<Byte[]> getBinaryValue();
 
     /**
      * Writes the current token on the reader to the writer.

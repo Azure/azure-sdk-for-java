@@ -2,8 +2,8 @@
 // Licensed under the MIT License.
 package com.azure.cosmos.implementation.json;
 
-import java.nio.ByteBuffer;
 import java.util.UUID;
+import java.util.concurrent.atomic.AtomicReference;
 
 /**
  * Interface for JsonNavigators.
@@ -39,7 +39,7 @@ interface IJsonNavigator {
      * @param value      The buffered string value if possible.
      * @return {@code true} if the JsonNavigator successfully got the buffered string value; {@code false} if the JsonNavigator failed to get the buffered string value.
      */
-    boolean tryGetBufferedStringValue(IJsonNavigatorNode stringNode, ByteBuffer value);
+    boolean tryGetBufferedStringValue(IJsonNavigatorNode stringNode, AtomicReference<Byte[]> value);
 
     /**
      * Gets a string value from a node.
@@ -103,7 +103,7 @@ interface IJsonNavigator {
      * @param binaryNode The node to get the binary value from.
      * @return The binary value from the node.
      */
-    ByteBuffer getBinaryValue(IJsonNavigatorNode binaryNode);
+    AtomicReference<Byte[]> getBinaryValue(IJsonNavigatorNode binaryNode);
 
     /**
      * Tries to get the buffered binary value from a node.
@@ -112,7 +112,7 @@ interface IJsonNavigator {
      * @param bufferedBinaryValue The buffered binary value if possible.
      * @return {@code true} if the JsonNavigator successfully got the buffered binary value; {@code false} if the JsonNavigator failed to get the buffered binary value.
      */
-    boolean tryGetBufferedBinaryValue(IJsonNavigatorNode binaryNode, ByteBuffer bufferedBinaryValue);
+    boolean tryGetBufferedBinaryValue(IJsonNavigatorNode binaryNode, AtomicReference<Byte[]> bufferedBinaryValue);
 
     /**
      * Gets the number of elements in an array node.

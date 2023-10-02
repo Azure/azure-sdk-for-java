@@ -2,8 +2,8 @@
 // Licensed under the MIT License.
 package com.azure.cosmos.implementation.json;
 
-import java.nio.ByteBuffer;
 import java.util.UUID;
+import java.util.concurrent.atomic.AtomicReference;
 
 /**
  * Interface for JsonWriters.
@@ -124,12 +124,12 @@ interface IJsonWriter {
      *
      * @param value The value of the bytes to write.
      */
-    void writeBinaryValue(ByteBuffer value);
+    void writeBinaryValue(AtomicReference<Byte[]> value);
 
     /**
      * Gets the result of the JsonWriter.
      *
      * @return The result of the JsonWriter as an array of bytes.
      */
-    ByteBuffer getResult();
+    AtomicReference<Byte[]> getResult();
 }
