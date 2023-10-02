@@ -130,7 +130,7 @@
     </dependency>
     <dependency>
       <groupId>com.azure</groupId>
-      <artifactId>azure-identity-brokeredauthentication</artifactId>
+      <artifactId>azure-identity-brokeredauthentication</artifactId>  <!-- {x-version-update;com.azure:azure-identity-brokeredauthentication;current} -->
       <version>1.0.0-beta.1</version>
       <scope>test</scope>
     </dependency>
