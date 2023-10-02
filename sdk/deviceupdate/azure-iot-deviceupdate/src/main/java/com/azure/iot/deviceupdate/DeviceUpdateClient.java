@@ -288,7 +288,7 @@ public final class DeviceUpdateClient {
      */
     @Generated
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
-    public SyncPoller<BinaryData, Void> beginDeleteUpdate(
+    public SyncPoller<BinaryData, BinaryData> beginDeleteUpdate(
             String provider, String name, String version, RequestOptions requestOptions) {
         return this.serviceClient.beginDeleteUpdate(provider, name, version, requestOptions);
     }

@@ -1734,7 +1734,7 @@ public final class DeviceUpdatesImpl {
      * @return the {@link PollerFlux} for polling of long-running operation.
      */
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
-    public PollerFlux<BinaryData, Void> beginDeleteUpdateAsync(
+    public PollerFlux<BinaryData, BinaryData> beginDeleteUpdateAsync(
             String provider, String name, String version, RequestOptions requestOptions) {
         return PollerFlux.create(
                 Duration.ofSeconds(1),
@@ -1748,7 +1748,7 @@ public final class DeviceUpdatesImpl {
                                 ? requestOptions.getContext()
                                 : Context.NONE),
                 TypeReference.createInstance(BinaryData.class),
-                TypeReference.createInstance(Void.class));
+                TypeReference.createInstance(BinaryData.class));
     }
 
     /**
@@ -1766,7 +1766,7 @@ public final class DeviceUpdatesImpl {
      * @return the {@link SyncPoller} for polling of long-running operation.
      */
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
-    public SyncPoller<BinaryData, Void> beginDeleteUpdate(
+    public SyncPoller<BinaryData, BinaryData> beginDeleteUpdate(
             String provider, String name, String version, RequestOptions requestOptions) {
         return SyncPoller.createPoller(
                 Duration.ofSeconds(1),
@@ -1779,7 +1779,7 @@ public final class DeviceUpdatesImpl {
                                                 ? requestOptions.getContext()
                                                 : Context.NONE)),
                 TypeReference.createInstance(BinaryData.class),
-                TypeReference.createInstance(Void.class));
+                TypeReference.createInstance(BinaryData.class));
     }
 
     /**

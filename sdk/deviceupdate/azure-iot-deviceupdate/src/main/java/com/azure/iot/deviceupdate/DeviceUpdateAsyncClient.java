@@ -289,7 +289,7 @@ public final class DeviceUpdateAsyncClient {
      */
     @Generated
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
-    public PollerFlux<BinaryData, Void> beginDeleteUpdate(
+    public PollerFlux<BinaryData, BinaryData> beginDeleteUpdate(
             String provider, String name, String version, RequestOptions requestOptions) {
         return this.serviceClient.beginDeleteUpdateAsync(provider, name, version, requestOptions);
     }
