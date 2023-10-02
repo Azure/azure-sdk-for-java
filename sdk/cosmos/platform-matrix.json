@@ -43,17 +43,7 @@
       "DESIRED_CONSISTENCIES": "[\"Session\"]",
       "ACCOUNT_CONSISTENCY": "Session",
       "PROTOCOLS": "[\"Tcp\"]",
-      "ProfileFlag": [ "-Pfast", "-Pdirect", "-Pquery" ],
-      "ArmTemplateParameters": "@{ enableMultipleWriteLocations = $false; defaultConsistencyLevel = 'Session' }",
-      "Agent": {
-        "ubuntu": { "OSVmImage": "MMSUbuntu20.04", "Pool": "azsdk-pool-mms-ubuntu-2004-general" }
-      }
-    },
-    {
-      "DESIRED_CONSISTENCIES": "[\"Session\"]",
-      "ACCOUNT_CONSISTENCY": "Session",
-      "PROTOCOLS": "[\"Tcp\"]",
-      "ProfileFlag": [ "-Psplit" ],
+      "ProfileFlag": [ "-Pfast", "-Pdirect", "-Psplit", "-Pquery" ],
       "ArmTemplateParameters": "@{ enableMultipleWriteLocations = $false; defaultConsistencyLevel = 'Session' }",
       "Agent": {
         "ubuntu": { "OSVmImage": "MMSUbuntu20.04", "Pool": "azsdk-pool-mms-ubuntu-2004-general" }
@@ -64,17 +54,7 @@
       "ACCOUNT_CONSISTENCY": "Strong",
       "ArmTemplateParameters": "@{ enableMultipleWriteLocations = $false; defaultConsistencyLevel = 'Strong' }",
       "PROTOCOLS": "[\"Tcp\"]",
-      "ProfileFlag": [ "-Pfast", "-Pquery" ],
-      "Agent": {
-        "ubuntu": { "OSVmImage": "MMSUbuntu20.04", "Pool": "azsdk-pool-mms-ubuntu-2004-general" }
-      }
-    },
-    {
-      "DESIRED_CONSISTENCIES": [ "[\"Strong\", \"Session\"]", "[\"BoundedStaleness\"]", "[\"ConsistentPrefix\"]" ],
-      "ACCOUNT_CONSISTENCY": "Strong",
-      "ArmTemplateParameters": "@{ enableMultipleWriteLocations = $false; defaultConsistencyLevel = 'Strong' }",
-      "PROTOCOLS": "[\"Tcp\"]",
-      "ProfileFlag": [ "-Psplit" ],
+      "ProfileFlag": [ "-Pfast", "-Psplit", "-Pquery" ],
       "Agent": {
         "ubuntu": { "OSVmImage": "MMSUbuntu20.04", "Pool": "azsdk-pool-mms-ubuntu-2004-general" }
       }
