@@ -1,3 +1,6 @@
+// Copyright (c) Microsoft Corporation. All rights reserved.
+// Licensed under the MIT License.
+
 package com.azure.storage.blob;
 
 import com.azure.core.http.HttpClient;
@@ -33,13 +36,14 @@ public class BlobUserAgentPropertiesTests {
 
     @ParameterizedTest
     @MethodSource("userAgentModificationPolicyTestSupplier")
-    public void userAgentModificationPolicyTest(String UAbefore, String name, String version, String UAafter) {
+    public void userAgentModificationPolicyTest(String userAgentBefore, String name, String version,
+        String userAgentAfter) {
         BlobUserAgentModificationPolicy uaPolicy = new BlobUserAgentModificationPolicy(name, version);
-        UAStringTestClient client = new UAStringTestClient(UAafter);
+        UAStringTestClient client = new UAStringTestClient(userAgentAfter);
         HttpPipeline pipeline = new HttpPipelineBuilder().httpClient(client).policies(uaPolicy).build();
 
         StepVerifier.create(pipeline.send(new HttpRequest(HttpMethod.GET, "https://account.blob.core.windows.net/")
-                .setHeader("User-Agent", UAbefore))).assertNext(it -> assertEquals(it.getStatusCode(), 200))
+                .setHeader("User-Agent", userAgentBefore))).assertNext(it -> assertEquals(it.getStatusCode(), 200))
             .verifyComplete();
     }
 

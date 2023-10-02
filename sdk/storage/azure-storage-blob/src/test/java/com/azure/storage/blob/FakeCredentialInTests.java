@@ -10,5 +10,5 @@ public class FakeCredentialInTests {
     /**
      * Fake Storage SAS signature value used in test
      */
-    public static final String fakeSignaturePlaceholder = "sD3fPKLnFKZUjnSV4qA%2FXoJOqsmDfNfxWcZ7kPtLc0I%3D";
+    public static final String FAKE_SIGNATURE_PLACEHOLDER = "sD3fPKLnFKZUjnSV4qA%2FXoJOqsmDfNfxWcZ7kPtLc0I%3D";
 }

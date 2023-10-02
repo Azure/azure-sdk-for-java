@@ -91,7 +91,7 @@ public class BlobBaseApiTests extends BlobTestBase {
     private void uploadSmallJson(int numCopies) {
         StringBuilder b = new StringBuilder();
         b.append("{\n");
-        for(int i = 0; i < numCopies; i++) {
+        for (int i = 0; i < numCopies; i++) {
             String toAppend = "\t\"name%d\": \"owner%d\",\n";
             b.append(String.format(toAppend, i, i));
         }
@@ -736,7 +736,7 @@ public class BlobBaseApiTests extends BlobTestBase {
             BlobQueryOptions options2 = new BlobQueryOptions(expression, new ByteArrayOutputStream())
                 .setOutputSerialization(outSer);
             assertThrows(IllegalArgumentException.class, () -> bc.queryWithResponse(options2, null, null));
-            });
+        });
     }
 
     @DisabledIf("com.azure.storage.blob.BlobTestBase#olderThan20191212ServiceVersion")

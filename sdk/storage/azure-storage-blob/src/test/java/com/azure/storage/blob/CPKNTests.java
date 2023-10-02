@@ -1,3 +1,6 @@
+// Copyright (c) Microsoft Corporation. All rights reserved.
+// Licensed under the MIT License.
+
 package com.azure.storage.blob;
 
 import com.azure.core.http.HttpHeaders;
@@ -146,18 +149,9 @@ public class CPKNTests extends BlobTestBase {
         BlockBlobClient sourceBlob = cc.getBlobClient(blobName).getBlockBlobClient();
         sourceBlob.upload(DATA.getDefaultInputStream(), DATA.getDefaultDataSize());
 
-        String sas2 = new BlobServiceSasSignatureValues()
-            .setExpiryTime(OffsetDateTime.now().plusHours(1))
-            .setPermissions(new BlobSasPermission().setReadPermission(true))
-            .setContainerName(cc.getBlobContainerName())
-            .setBlobName(blobName)
-            .generateSasQueryParameters(ENVIRONMENT.getPrimaryAccount().getCredential())
-            .encode();
-
         String sas = cc.generateSas(new BlobServiceSasSignatureValues(
             OffsetDateTime.now().plusHours(1),
-            new BlobSasPermission().setReadPermission(true)))
-            ;
+            new BlobSasPermission().setReadPermission(true)));
         Response<AppendBlobItem> response = cpknAppendBlob.appendBlockFromUrlWithResponse(
             sourceBlob.getBlobUrl() + "?" + sas, null, null, null, null, null, null);
 

@@ -90,7 +90,7 @@ public class HelperTests extends BlobTestBase {
     public void URLParser(String originalBlobName, String finalBlobName) throws MalformedURLException {
         BlobUrlParts parts = BlobUrlParts.parse(new URL("http://host/container/" + originalBlobName
             + "?snapshot=snapshot&sv=" + Constants.SAS_SERVICE_VERSION + "&sr=c&sp=r&sig="
-            + FakeCredentialInTests.fakeSignaturePlaceholder));
+            + FakeCredentialInTests.FAKE_SIGNATURE_PLACEHOLDER));
 
         assertEquals("http", parts.getScheme());
         assertEquals("host", parts.getHost());
@@ -201,21 +201,21 @@ public class HelperTests extends BlobTestBase {
 
     @Test
     public void pageListCustomDeserializer() throws IOException {
-        String responseXml = "<?xml version=\"1.0\" encoding=\"utf-8\"?>  \n" +
-            "<PageList>  \n" +
-            "   <PageRange>  \n" +
-            "      <Start>0</Start>  \n" +
-            "      <End>511</End>  \n" +
-            "   </PageRange>  \n" +
-            "   <ClearRange>  \n" +
-            "      <Start>512</Start>  \n" +
-            "      <End>1023</End>  \n" +
-            "   </ClearRange>  \n" +
-            "   <PageRange>  \n" +
-            "      <Start>1024</Start>  \n" +
-            "      <End>2047</End>  \n" +
-            "   </PageRange>  \n" +
-            "</PageList>";
+        String responseXml = "<?xml version=\"1.0\" encoding=\"utf-8\"?>  \n"
+            + "<PageList>  \n"
+            + "   <PageRange>  \n"
+            + "      <Start>0</Start>  \n"
+            + "      <End>511</End>  \n"
+            + "   </PageRange>  \n"
+            + "   <ClearRange>  \n"
+            + "      <Start>512</Start>  \n"
+            + "      <End>1023</End>  \n"
+            + "   </ClearRange>  \n"
+            + "   <PageRange>  \n"
+            + "      <Start>1024</Start>  \n"
+            + "      <End>2047</End>  \n"
+            + "   </PageRange>  \n"
+            + "</PageList>";
 
         PageList pageList = (PageList) new JacksonAdapter().deserialize(responseXml, PageList.class,
             SerializerEncoding.XML);

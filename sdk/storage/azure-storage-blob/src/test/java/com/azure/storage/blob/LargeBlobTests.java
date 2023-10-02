@@ -1,3 +1,6 @@
+// Copyright (c) Microsoft Corporation. All rights reserved.
+// Licensed under the MIT License.
+
 package com.azure.storage.blob;
 
 import com.azure.core.util.Context;
@@ -40,7 +43,7 @@ public class LargeBlobTests extends BlobTestBase {
     private static BlobServiceClient blobServiceClient;
     private static BlobServiceAsyncClient blobServiceAsyncClient;
 
-    private final long LARGE_BLOCK_SIZE = 2500L * Constants.MB; // exceed integer limit
+    private static final long LARGE_BLOCK_SIZE = 2500L * Constants.MB; // exceed integer limit
 
     private BlobClient blobClient;
     private BlobAsyncClient blobAsyncClient;

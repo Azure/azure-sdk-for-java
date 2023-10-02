@@ -338,7 +338,7 @@ public class AppendBlobApiTests extends BlobTestBase {
     }
 
     @Test
-    public void AppendBlockDefaults() {
+    public void appendBlockDefaults() {
         Response<AppendBlobItem> appendResponse = bc.appendBlockWithResponse(DATA.getDefaultInputStream(),
             DATA.getDefaultDataSize(), null, null, null, null);
 

@@ -1,3 +1,6 @@
+// Copyright (c) Microsoft Corporation. All rights reserved.
+// Licensed under the MIT License.
+
 package com.azure.storage.blob;
 
 import com.azure.core.http.rest.Response;
@@ -232,7 +235,6 @@ public class CPKTests extends BlobTestBase {
         assertEquals(key.getKeySha256(), response.getHeaders().getValue(X_MS_ENCRYPTION_KEY_SHA256));
     }
 
-//    TODO unignore when swagger is resolved with service team
     @Test
     public void setBlobTierWithCPK() {
         Response<Void> response = cpkExistingBlob.setAccessTierWithResponse(AccessTier.COOL, null, null, null, null);
@@ -249,8 +251,6 @@ public class CPKTests extends BlobTestBase {
         Response<BlobClientBase> response = cpkExistingBlob.createSnapshotWithResponse(metadata, null, null, null);
         assertResponseStatusCode(response, 201);
     }
-
-    //TODO add tests for copy blob CPK tests once generated code supports it
 
     @Test
     public void getCustomerProvidedKeyClient() {

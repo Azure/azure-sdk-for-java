@@ -1,3 +1,6 @@
+// Copyright (c) Microsoft Corporation. All rights reserved.
+// Licensed under the MIT License.
+
 package com.azure.storage.blob.specialized;
 
 import com.azure.core.exception.UnexpectedLengthException;
@@ -173,8 +176,9 @@ public class BlockBlobApiTests extends BlobTestBase {
             BinaryData.fromStream(DATA.getDefaultInputStream(), (long) DATA.getDefaultDataSize()));
 
         for (BinaryData binaryData : binaryDataList) {
-            StepVerifier.create(blockBlobAsyncClient.stageBlockWithResponse(
-                new BlockBlobStageBlockOptions(getBlockID(), binaryData))).assertNext(it -> {
+            StepVerifier.create(blockBlobAsyncClient.stageBlockWithResponse(new BlockBlobStageBlockOptions(getBlockID(),
+                binaryData))).assertNext(it ->
+            {
                 HttpHeaders headers = it.getHeaders();
                 assertResponseStatusCode(it, 201);
                 assertNotNull(headers.getValue(X_MS_CONTENT_CRC64));
@@ -188,8 +192,8 @@ public class BlockBlobApiTests extends BlobTestBase {
 
     @Test
     public void stageBlockMin() {
-        assertResponseStatusCode(blockBlobClient.stageBlockWithResponse(
-            getBlockID(), DATA.getDefaultInputStream(), DATA.getDefaultDataSize(), null, null, null, null), 201);
+        assertResponseStatusCode(blockBlobClient.stageBlockWithResponse(getBlockID(), DATA.getDefaultInputStream(),
+            DATA.getDefaultDataSize(), null, null, null, null), 201);
         assertEquals(blockBlobClient.listBlocks(BlockListType.ALL).getUncommittedBlocks().size(), 1);
     }
 
@@ -405,9 +409,9 @@ public class BlockBlobApiTests extends BlobTestBase {
 
         bu2.commitBlockList(Collections.singletonList(blockID));
         ByteArrayOutputStream outputStream = new ByteArrayOutputStream();
-        bu2.download(outputStream);
+        bu2.downloadStream(outputStream);
 
-       assertEquals(ByteBuffer.wrap(outputStream.toByteArray()), DATA.getDefaultData());
+        assertEquals(ByteBuffer.wrap(outputStream.toByteArray()), DATA.getDefaultData());
     }
 
     @Test
@@ -416,8 +420,8 @@ public class BlockBlobApiTests extends BlobTestBase {
         BlockBlobClient bu2 = cc.getBlobClient(generateBlobName()).getBlockBlobClient();
         String blockID = getBlockID();
 
-        assertResponseStatusCode(bu2.stageBlockFromUrlWithResponse(blockID, blockBlobClient.getBlobUrl(), null,
-            null, null, null, null, null), 201);
+        assertResponseStatusCode(bu2.stageBlockFromUrlWithResponse(blockID, blockBlobClient.getBlobUrl(), null, null,
+            null, null, null, null), 201);
     }
 
     @ParameterizedTest
@@ -720,8 +724,8 @@ public class BlockBlobApiTests extends BlobTestBase {
 
         BlobStorageException e = assertThrows(BlobStorageException.class,
             () -> blockBlobClient.commitBlockListWithResponse(null, null, null, null, bac, null, null));
-        assertTrue(e.getErrorCode() == BlobErrorCode.CONDITION_NOT_MET ||
-            e.getErrorCode() == BlobErrorCode.LEASE_ID_MISMATCH_WITH_BLOB_OPERATION);
+        assertTrue(e.getErrorCode() == BlobErrorCode.CONDITION_NOT_MET
+            || e.getErrorCode() == BlobErrorCode.LEASE_ID_MISMATCH_WITH_BLOB_OPERATION);
     }
 
     @Test
@@ -1247,8 +1251,8 @@ public class BlockBlobApiTests extends BlobTestBase {
         Response<BlobProperties> response = blockBlobClient.getPropertiesWithResponse(null, null, null);
 
         // If the value isn't set the service will automatically set it
-        contentMD5 = (contentMD5 == null) ?
-            MessageDigest.getInstance("MD5").digest(DATA.getDefaultBytes()) : contentMD5;
+        contentMD5 =
+            (contentMD5 == null) ? MessageDigest.getInstance("MD5").digest(DATA.getDefaultBytes()) : contentMD5;
         contentType = (contentType == null) ? "application/octet-stream" : contentType;
         validateBlobProperties(response, cacheControl, contentDisposition, contentEncoding, contentLanguage, contentMD5,
             contentType);
@@ -1478,7 +1482,7 @@ public class BlockBlobApiTests extends BlobTestBase {
 
         // Due to memory issues, this check only runs on small to medium sized data sets.
         if (dataSize < 100 * 1024 * 1024) {
-            StepVerifier.create(collectBytesInBuffer(blockBlobAsyncClient.download()))
+            StepVerifier.create(collectBytesInBuffer(blockBlobAsyncClient.downloadStream()))
                 .assertNext(it -> assertEquals(it, data))
                 .verifyComplete();
         }
@@ -1497,15 +1501,14 @@ public class BlockBlobApiTests extends BlobTestBase {
             Arguments.of(10 * Constants.MB, Constants.MB, 10, 10), // Exactly enough buffer space to hold all the data.
             Arguments.of(50 * Constants.MB, 10 * Constants.MB, 2, 5), // Larger data.
             Arguments.of(10 * Constants.MB, 2 * Constants.MB, 4, 5),
-            Arguments.of(10 * Constants.MB, 3 * Constants.MB, 3, 4));// Data does not squarely fit in buffers.
+            Arguments.of(10 * Constants.MB, 3 * Constants.MB, 3, 4)); // Data does not squarely fit in buffers.
     }
 
     @Test
     public void asyncUploadBinaryData() {
         blobAsyncClient.upload(DATA.getDefaultBinaryData(), true).block();
         StepVerifier.create(blockBlobAsyncClient.downloadContent())
-            .assertNext(it -> assertArrayEquals(it.toBytes(), DATA.getDefaultBinaryData().toBytes()))
-                .verifyComplete();
+            .assertNext(it -> assertArrayEquals(it.toBytes(), DATA.getDefaultBinaryData().toBytes())).verifyComplete();
     }
 
     @ParameterizedTest
@@ -1615,16 +1618,15 @@ public class BlockBlobApiTests extends BlobTestBase {
             .setMaxSingleUploadSizeLong(4L * Constants.MB);
 
         StepVerifier.create(asyncClient.uploadWithResponse(Flux.just(getRandomData(size)), parallelTransferOptions,
-                null, null, null, null))
-            .assertNext(it ->
-            {
-                assertEquals(it.getStatusCode(), 201);
-                /*
-                 * Verify that the reporting count is equal or greater than the size divided by block size in the case
-                 * that operations need to be retried. Retry attempts will increment the reporting count.
-                 */
-                assertTrue(uploadReporter.getReportingCount() >= ((long) size / blockSize));
-            }).verifyComplete();
+            null, null, null, null)).assertNext(it ->
+        {
+            assertEquals(it.getStatusCode(), 201);
+            /*
+             * Verify that the reporting count is equal or greater than the size divided by block size in the case
+             * that operations need to be retried. Retry attempts will increment the reporting count.
+             */
+            assertTrue(uploadReporter.getReportingCount() >= ((long) size / blockSize));
+        }).verifyComplete();
     }
 
     private static Stream<Arguments> bufferedUploadWithReporterSupplier() {
@@ -1654,15 +1656,15 @@ public class BlockBlobApiTests extends BlobTestBase {
             .setMaxSingleUploadSizeLong(4L * Constants.MB);
 
         StepVerifier.create(asyncClient.uploadWithResponse(Flux.just(getRandomData(size)), parallelTransferOptions,
-                null, null, null, null))
-            .assertNext(it -> {
-                assertResponseStatusCode(it, 201);
-                /*
-                 * Verify that the reporting count is equal or greater than the size divided by block size in the case
-                 * that operations need to be retried. Retry attempts will increment the reporting count.
-                 */
-                assertTrue(uploadListener.getReportingCount() >= ((long) size / blockSize));
-                }).verifyComplete();
+            null, null, null, null)).assertNext(it ->
+        {
+            assertResponseStatusCode(it, 201);
+            /*
+             * Verify that the reporting count is equal or greater than the size divided by block size in the case
+             * that operations need to be retried. Retry attempts will increment the reporting count.
+             */
+            assertTrue(uploadListener.getReportingCount() >= ((long) size / blockSize));
+        }).verifyComplete();
     }
 
     // Only run these tests in live mode as they use variables that can't be captured.
@@ -1684,10 +1686,10 @@ public class BlockBlobApiTests extends BlobTestBase {
         for (int size : dataSizeList) {
             dataList.add(getRandomData(size * Constants.MB));
         }
-        Mono<BlockBlobItem> uploadOperation = asyncClient.upload(Flux.fromIterable(dataList),
-            parallelTransferOptions, true);
+        Mono<BlockBlobItem> uploadOperation = asyncClient.upload(Flux.fromIterable(dataList), parallelTransferOptions,
+            true);
 
-        StepVerifier.create(uploadOperation.then(collectBytesInBuffer(blockBlobAsyncClient.download())))
+        StepVerifier.create(uploadOperation.then(collectBytesInBuffer(blockBlobAsyncClient.downloadStream())))
             .assertNext(it -> assertTrue(compareListToBuffer(dataList, it)))
             .verifyComplete();
 
@@ -2149,9 +2151,8 @@ public class BlockBlobApiTests extends BlobTestBase {
         // TODO: It could be that duplicates aren't getting made in the retry policy? Or before the retry policy?
 
         // A second subscription to a download stream will
-        StepVerifier.create(blobAsyncClient.upload(blockBlobAsyncClient.downloadStream(), parallelTransferOptions, true))
-            .verifyErrorSatisfies(it ->
-            {
+        StepVerifier.create(blobAsyncClient.upload(blockBlobAsyncClient.downloadStream(), parallelTransferOptions,
+            true)).verifyErrorSatisfies(it -> {
                 assertInstanceOf(BlobStorageException.class, it);
                 assertEquals(500, ((BlobStorageException) it).getStatusCode());
             });

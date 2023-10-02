@@ -63,7 +63,7 @@ public class DownloadResponseTests extends BlobTestBase {
 
     @Test
     public void networkCallNoETagReturned() {
-        HttpPipelinePolicy removeETagPolicy = (context, next) -> next.process().flatMap( response -> {
+        HttpPipelinePolicy removeETagPolicy = (context, next) -> next.process().flatMap(response -> {
             HttpHeader eTagHeader = response.getHeaders().get("eTag");
             if (eTagHeader == null) {
                 return  Mono.just(response);

@@ -1,3 +1,6 @@
+// Copyright (c) Microsoft Corporation. All rights reserved.
+// Licensed under the MIT License.
+
 package com.azure.storage.blob;
 
 import com.azure.core.credential.AzureSasCredential;
@@ -428,7 +431,7 @@ public class BuilderHelperTests {
     }
 
     @Test
-    public void doesNotThrowOnAmbiguousCredentialsWithoutAzureSasCredential(){
+    public void doesNotThrowOnAmbiguousCredentialsWithoutAzureSasCredential() {
         assertDoesNotThrow(() -> new BlobClientBuilder()
             .endpoint(ENDPOINT)
             .blobName("foo")
@@ -664,8 +667,7 @@ public class BuilderHelperTests {
                         throw new RuntimeException("Custom header " + header.getName() + " did not match expectation.");
                     }
                 }
-
-                });
+            });
             return Mono.just(new MockHttpResponse(request, 200));
         }
     }

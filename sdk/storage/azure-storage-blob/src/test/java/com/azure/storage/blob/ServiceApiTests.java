@@ -1,3 +1,6 @@
+// Copyright (c) Microsoft Corporation. All rights reserved.
+// Licensed under the MIT License.
+
 package com.azure.storage.blob;
 
 import com.azure.core.http.HttpHeaderName;
@@ -58,7 +61,6 @@ import reactor.test.StepVerifier;
 import java.io.ByteArrayInputStream;
 import java.net.MalformedURLException;
 import java.net.URL;
-import java.net.UnknownHostException;
 import java.time.Duration;
 import java.time.OffsetDateTime;
 import java.util.ArrayList;
@@ -73,7 +75,6 @@ import java.util.stream.Stream;
 import static org.junit.jupiter.api.Assertions.assertDoesNotThrow;
 import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertFalse;
-import static org.junit.jupiter.api.Assertions.assertInstanceOf;
 import static org.junit.jupiter.api.Assertions.assertNotNull;
 import static org.junit.jupiter.api.Assertions.assertNull;
 import static org.junit.jupiter.api.Assertions.assertThrows;
@@ -148,16 +149,6 @@ public class ServiceApiTests extends BlobTestBase {
             .getBlobClient(blobName)
             .downloadContent());
 
-// TODO AzureSasCredential doesn't currently sanitize inputs
-//
-//        when: "Endpoint with SAS separate through Credential"
-//        new BlobContainerClientBuilder().endpoint(cc.getBlobContainerUrl()).credential(new AzureSasCredential(sas))
-//        .buildClient().getBlobClient(blobName).downloadContent()
-//
-//        then: "Works as expected"
-//        assertDoesNotThrow(() -> Exception)
-
-        // when: "Connection string with SAS, works as expected"
         String connectionString = "AccountName=" + BlobUrlParts.parse(cc.getAccountUrl()).getAccountName()
             + ";SharedAccessSignature=" + sas;
         assertDoesNotThrow(() -> instrument(new BlobContainerClientBuilder()
@@ -727,9 +718,8 @@ public class ServiceApiTests extends BlobTestBase {
 
     @Test
     public void getPropsError() {
-        assertThrows(BlobStorageException.class, () ->
-            getServiceClient(ENVIRONMENT.getPrimaryAccount().getCredential(), "https://error.blob.core.windows.net")
-                .getProperties());
+        assertThrows(BlobStorageException.class, () -> getServiceClient(ENVIRONMENT.getPrimaryAccount().getCredential(),
+            "https://error.blob.core.windows.net").getProperties());
 
     }
 
@@ -1016,19 +1006,20 @@ public class ServiceApiTests extends BlobTestBase {
             primaryBlobServiceAsyncClient.undeleteBlobContainerWithResponse(
                 new UndeleteBlobContainerOptions(blobContainerItem.getName(), blobContainerItem.getVersion())));
 
-        StepVerifier.create(responseMono).assertNext(it -> {
+        StepVerifier.create(responseMono).assertNext(it ->
+        {
             assertNotNull(it);
             assertEquals(201, it.getStatusCode());
             assertNotNull(it.getValue());
             assertEquals(cc1.getBlobContainerName(), it.getValue().getBlobContainerName());
-            }).verifyComplete();
+        }).verifyComplete();
     }
 
     @DisabledIf("com.azure.storage.blob.BlobTestBase#olderThan20191212ServiceVersion")
     @Test
     public void restoreContainerError() {
-        assertThrows(BlobStorageException.class, () ->
-            primaryBlobServiceClient.undeleteBlobContainer(generateContainerName(), "01D60F8BB59A4652"));
+        assertThrows(BlobStorageException.class,
+            () -> primaryBlobServiceClient.undeleteBlobContainer(generateContainerName(), "01D60F8BB59A4652"));
     }
 
     @DisabledIf("com.azure.storage.blob.BlobTestBase#olderThan20191212ServiceVersion")
@@ -1068,13 +1059,11 @@ public class ServiceApiTests extends BlobTestBase {
         String mockSas =
             "?sv=2019-10-10&ss=b&srt=sco&sp=r&se=2019-06-04T12:04:58Z&st=2090-05-04T04:04:58Z&spr=http&sig=doesntmatter";
 
-        IllegalArgumentException e = assertThrows(IllegalArgumentException.class, () -> {
-                BlobServiceClient client = new BlobServiceClientBuilder()
-                    .endpoint(service)
-                    .sasToken(mockSas)
-                    .buildClient();
-                client.getBlobContainerClient(container).getBlobClient("blobname");
-            });
+        IllegalArgumentException e = assertThrows(IllegalArgumentException.class, () ->
+        {
+            BlobServiceClient client = new BlobServiceClientBuilder().endpoint(service).sasToken(mockSas).buildClient();
+            client.getBlobContainerClient(container).getBlobClient("blobname");
+        });
 
         assertFalse(e.getMessage().contains(mockSas));
 

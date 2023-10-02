@@ -1,3 +1,6 @@
+// Copyright (c) Microsoft Corporation. All rights reserved.
+// Licensed under the MIT License.
+
 package com.azure.storage.blob;
 
 import com.azure.core.http.HttpClient;
@@ -166,7 +169,7 @@ public class BlobOutputStreamTests extends BlobTestBase {
         BlockBlobClient blockBlobClient = cc.getBlobClient(generateBlobName()).getBlockBlobClient();
 
         BlobOutputStream outputStream = blockBlobClient.getBlobOutputStream();
-        for (int i=0; i<10; i++) {
+        for (int i = 0; i < 10; i++) {
             inputStream.read(buffer);
             outputStream.write(buffer);
         }

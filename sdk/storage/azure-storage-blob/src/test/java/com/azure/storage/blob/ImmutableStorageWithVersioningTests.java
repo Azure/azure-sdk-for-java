@@ -54,7 +54,6 @@ import com.azure.storage.common.sas.AccountSasSignatureValues;
 import com.fasterxml.jackson.core.JsonProcessingException;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import org.junit.jupiter.api.AfterAll;
-import org.junit.jupiter.api.AfterEach;
 import org.junit.jupiter.api.BeforeAll;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
@@ -114,16 +113,16 @@ public class ImmutableStorageWithVersioningTests extends BlobTestBase {
                 .build();
 
             ImmutableStorageWithVersioning immutableStorageWithVersioning = new ImmutableStorageWithVersioning();
-            immutableStorageWithVersioning.enabled = true;
+            immutableStorageWithVersioning.setEnabled(true);
             Properties properties = new Properties();
-            properties.immutableStorageWithVersioning = immutableStorageWithVersioning;
+            properties.setImmutableStorageWithVersioning(immutableStorageWithVersioning);
             Body body = new Body();
-            body.id = String.format("/subscriptions/%s/resourceGroups/%s/providers/Microsoft.Storage/storageAccounts/"
-                + "%s/blobServices/default/containers/%s", SUBSCRIPTION_ID, RESOURCE_GROUP_NAME, ACCOUNT_NAME,
-                vlwContainerName);
-            body.name = vlwContainerName;
-            body.type = "Microsoft.Storage/storageAccounts/blobServices/containers";
-            body.properties = properties;
+            body.setId(String.format("/subscriptions/%s/resourceGroups/%s/providers/Microsoft.Storage/storageAccounts/"
+                    + "%s/blobServices/default/containers/%s", SUBSCRIPTION_ID, RESOURCE_GROUP_NAME, ACCOUNT_NAME,
+                vlwContainerName));
+            body.setName(vlwContainerName);
+            body.setType("Microsoft.Storage/storageAccounts/blobServices/containers");
+            body.setProperties(properties);
 
             String serializedBody = new ObjectMapper().writeValueAsString(body);
 
@@ -147,16 +146,64 @@ public class ImmutableStorageWithVersioningTests extends BlobTestBase {
     }
 
     public static final class Body {
-        public String id;
-        public String name;
-        public String type;
-        public Properties properties;
+        private String id;
+        private String name;
+        private String type;
+        private Properties properties;
+
+        public String getId() {
+            return id;
+        }
+
+        public void setId(String id) {
+            this.id = id;
+        }
+
+        public String getName() {
+            return name;
+        }
+
+        public void setName(String name) {
+            this.name = name;
+        }
+
+        public String getType() {
+            return type;
+        }
+
+        public void setType(String type) {
+            this.type = type;
+        }
+
+        public Properties getProperties() {
+            return properties;
+        }
+
+        public void setProperties(Properties properties) {
+            this.properties = properties;
+        }
     }
     public static final class Properties {
-        public ImmutableStorageWithVersioning immutableStorageWithVersioning;
+        private ImmutableStorageWithVersioning immutableStorageWithVersioning;
+
+        public ImmutableStorageWithVersioning getImmutableStorageWithVersioning() {
+            return immutableStorageWithVersioning;
+        }
+
+        public void setImmutableStorageWithVersioning(ImmutableStorageWithVersioning immutableStorageWithVersioning) {
+            this.immutableStorageWithVersioning = immutableStorageWithVersioning;
+        }
     }
     public static final class ImmutableStorageWithVersioning {
-        public boolean enabled;
+        private boolean enabled;
+
+        public boolean isEnabled() {
+            return enabled;
+        }
+
+        public void setEnabled(boolean enabled) {
+            this.enabled = enabled;
+        }
     }
 
     @AfterAll
@@ -322,8 +369,8 @@ public class ImmutableStorageWithVersioningTests extends BlobTestBase {
             Arguments.of(null, null, "ifMatch", null, null, "IfMatch"),
             Arguments.of(null, null, null, "ifNoneMatch", null, "IfNoneMatch"),
             Arguments.of(null, null, null, null, OLD_DATE, "IfModifiedSince"),
-            Arguments.of("leaseId", "tagsConditions", "ifMatch", "ifNoneMatch", OLD_DATE, "LeaseId, TagsConditions, " +
-                "IfModifiedSince, IfMatch, IfNoneMatch")
+            Arguments.of("leaseId", "tagsConditions", "ifMatch", "ifNoneMatch", OLD_DATE, "LeaseId, TagsConditions, "
+                + "IfModifiedSince, IfMatch, IfNoneMatch")
             );
     }
 

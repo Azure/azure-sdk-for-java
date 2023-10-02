@@ -1,3 +1,6 @@
+// Copyright (c) Microsoft Corporation. All rights reserved.
+// Licensed under the MIT License.
+
 package com.azure.storage.blob.specialized;
 
 import com.azure.core.http.HttpHeaders;
@@ -67,7 +70,7 @@ public class StorageSeekableByteChannelBlobReadBehaviorTests extends BlobTestBas
     public void readCallsToClientCorrectly(long offset, int bufferSize, BlobRequestConditions conditions)
         throws IOException {
         BlobClientBase client = Mockito.mock(BlobClientBase.class);
-        ArgumentCaptor<BlobRange> blobRangeCaptor = ArgumentCaptor.forClass(BlobRange.class);;
+        ArgumentCaptor<BlobRange> blobRangeCaptor = ArgumentCaptor.forClass(BlobRange.class);
         Mockito.when(client.downloadStreamWithResponse(any(), any(), any(), any(), anyBoolean(), any(), any()))
             .thenReturn(createMockDownloadResponse("bytes " + offset + "-" + (offset + bufferSize - 1)
                 + "/" + Constants.MB));
@@ -178,7 +181,7 @@ public class StorageSeekableByteChannelBlobReadBehaviorTests extends BlobTestBas
                 break;
             case "page":
                 pageBlobClient.create(fileSize);
-                pageBlobClient.uploadPages(new PageRange().setStart(0).setEnd(fileSize-1),
+                pageBlobClient.uploadPages(new PageRange().setStart(0).setEnd(fileSize - 1),
                     new ByteArrayInputStream(data));
                 client = pageBlobClient;
                 break;

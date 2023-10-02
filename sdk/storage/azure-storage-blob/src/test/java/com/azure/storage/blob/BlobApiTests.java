@@ -1,3 +1,6 @@
+// Copyright (c) Microsoft Corporation. All rights reserved.
+// Licensed under the MIT License.
+
 package com.azure.storage.blob;
 
 import com.azure.core.http.HttpHeaderName;
@@ -600,7 +603,7 @@ public class BlobApiTests extends BlobTestBase {
     @DisabledIf("com.azure.storage.blob.BlobTestBase#olderThan20191212ServiceVersion")
     @ParameterizedTest
     @MethodSource("com.azure.storage.blob.BlobTestBase#allConditionsSupplier")
-    public void downloadACBinaryData(OffsetDateTime modified, OffsetDateTime unmodified, String match,String noneMatch,
+    public void downloadACBinaryData(OffsetDateTime modified, OffsetDateTime unmodified, String match, String noneMatch,
         String leaseID, String tags) {
         Map<String, String> t = new HashMap<>();
         t.put("foo", "bar");
@@ -1076,16 +1079,17 @@ public class BlobApiTests extends BlobTestBase {
             .buildAsyncClient()
             .getBlockBlobAsyncClient();
         TestDataFactory dataLocal = DATA;
-        HttpPipelinePolicy policy = (context, next) -> next.process().flatMap(r -> {
+        HttpPipelinePolicy policy = (context, next) -> next.process().flatMap(r ->
+        {
             if (counter.incrementAndGet() == 1) {
             /*
              * When the download begins trigger an upload to overwrite the downloading blob
              * so that the download is able to get an ETag before it is changed.
              */
-            return bacUploading.upload(dataLocal.getDefaultFlux(), dataLocal.getDefaultDataSize(), true)
-                .thenReturn(r);
-        }
-        return Mono.just(r);
+                return bacUploading.upload(dataLocal.getDefaultFlux(), dataLocal.getDefaultDataSize(), true)
+                    .thenReturn(r);
+            }
+            return Mono.just(r);
         });
         BlockBlobAsyncClient bacDownloading = instrument(new BlobClientBuilder()
             .addPolicy(policy)
@@ -1109,19 +1113,20 @@ public class BlobApiTests extends BlobTestBase {
          */
         Hooks.onErrorDropped(ignored -> /* do nothing with it */ {});
 
-        StepVerifier.create(bacDownloading.downloadToFileWithResponse(outFile.toPath().toString(), null, options,
-            null, null, false)).verifyErrorSatisfies(it ->
+        StepVerifier.create(bacDownloading.downloadToFileWithResponse(outFile.toPath().toString(), null, options, null,
+            null, false)).verifyErrorSatisfies(it ->
         {
-                /*
-                 * If an operation is running on multiple threads and multiple return an exception Reactor will combine
-                 * them into a CompositeException which needs to be unwrapped. If there is only a single exception
-                 * 'Exceptions.unwrapMultiple' will return a singleton list of the exception it was passed.
-                 *
-                 * These exceptions may be wrapped exceptions where the exception we are expecting is contained within
-                 * ReactiveException that needs to be unwrapped. If the passed exception isn't a 'ReactiveException' it
-                 * will be returned unmodified by 'Exceptions.unwrap'.
-                 */
-            assertTrue(Exceptions.unwrapMultiple(it).stream().anyMatch(it2 -> {
+            /*
+             * If an operation is running on multiple threads and multiple return an exception Reactor will combine
+             * them into a CompositeException which needs to be unwrapped. If there is only a single exception
+             * 'Exceptions.unwrapMultiple' will return a singleton list of the exception it was passed.
+             *
+             * These exceptions may be wrapped exceptions where the exception we are expecting is contained within
+             * ReactiveException that needs to be unwrapped. If the passed exception isn't a 'ReactiveException' it
+             * will be returned unmodified by 'Exceptions.unwrap'.
+             */
+            assertTrue(Exceptions.unwrapMultiple(it).stream().anyMatch(it2 ->
+            {
                 Throwable exception = Exceptions.unwrap(it2);
                 if (exception instanceof BlobStorageException) {
                     assertEquals(412, ((BlobStorageException) exception).getStatusCode());
@@ -1320,7 +1325,7 @@ public class BlobApiTests extends BlobTestBase {
     @DisabledIf("com.azure.storage.blob.BlobTestBase#olderThan20191212ServiceVersion")
     @ParameterizedTest
     @MethodSource("com.azure.storage.blob.BlobTestBase#allConditionsSupplier")
-    public void getPropertiesAC(OffsetDateTime modified, OffsetDateTime unmodified, String match,String noneMatch,
+    public void getPropertiesAC(OffsetDateTime modified, OffsetDateTime unmodified, String match, String noneMatch,
         String leaseID, String tags) {
         Map<String, String> t = new HashMap<>();
         t.put("foo", "bar");
@@ -1338,7 +1343,7 @@ public class BlobApiTests extends BlobTestBase {
 
     @ParameterizedTest
     @MethodSource("com.azure.storage.blob.BlobTestBase#allConditionsFailSupplier")
-    public void getPropertiesACFail(OffsetDateTime modified, OffsetDateTime unmodified, String match,String noneMatch,
+    public void getPropertiesACFail(OffsetDateTime modified, OffsetDateTime unmodified, String match, String noneMatch,
         String leaseID, String tags) {
         BlobRequestConditions bac = new BlobRequestConditions()
             .setLeaseId(setupBlobLeaseCondition(bc, leaseID))
@@ -1509,7 +1514,7 @@ public class BlobApiTests extends BlobTestBase {
 
     @Test
     public void setMetadataMin() {
-        Map<String, String> metadata = new HashMap<>();;
+        Map<String, String> metadata = new HashMap<>();
         metadata.put("foo", "bar");
         bc.setMetadata(metadata);
         assertEquals(metadata, bc.getProperties().getMetadata());

@@ -1,3 +1,6 @@
+// Copyright (c) Microsoft Corporation. All rights reserved.
+// Licensed under the MIT License.
+
 package com.azure.storage.blob;
 
 import com.azure.core.http.rest.PagedIterable;
@@ -94,7 +97,7 @@ public class VersioningTests extends BlobTestBase {
     }
 
     @Test
-    public void DownloadBlobByVersion() {
+    public void downloadBlobByVersion() {
         ByteArrayInputStream inputV1 = new ByteArrayInputStream(contentV1.getBytes(StandardCharsets.UTF_8));
         ByteArrayInputStream inputV2 = new ByteArrayInputStream(contentV2.getBytes(StandardCharsets.UTF_8));
         BlockBlobItem blobItemV1 = blobClient.getBlockBlobClient().upload(inputV1, inputV1.available());

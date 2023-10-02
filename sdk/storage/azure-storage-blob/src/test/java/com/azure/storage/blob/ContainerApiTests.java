@@ -1,3 +1,6 @@
+// Copyright (c) Microsoft Corporation. All rights reserved.
+// Licensed under the MIT License.
+
 package com.azure.storage.blob;
 
 import com.azure.core.http.HttpHeaderName;
@@ -56,7 +59,6 @@ import java.net.URL;
 import java.time.Duration;
 import java.time.OffsetDateTime;
 import java.time.ZoneId;
-import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.Base64;
 import java.util.Collections;
@@ -1677,7 +1679,7 @@ public class ContainerApiTests extends BlobTestBase {
         blobClient = cc.getBlobClient(generateBlobName());
         blobClient.upload(DATA.getDefaultInputStream(), DATA.getDefaultDataSize());
 
-        sleepIfRunningAgainstService(10 * 1000);// To allow tags to index
+        sleepIfRunningAgainstService(10 * 1000); // To allow tags to index
 
         String query = "\"bar\"='foo'";
         PagedIterable<TaggedBlobItem> results = cc.findBlobsByTags(String.format(query, cc.getBlobContainerName()));
@@ -1694,21 +1696,21 @@ public class ContainerApiTests extends BlobTestBase {
     public void findBlobsMarker() {
         Map<String, String> tags = Collections.singletonMap(tagKey, tagValue);
         for (int i = 0; i < 10; i++) {
-            cc.getBlobClient(generateBlobName()).uploadWithResponse(new BlobParallelUploadOptions(
-                DATA.getDefaultInputStream(), DATA.getDefaultDataSize()).setTags(tags), null, null);
+            cc.getBlobClient(generateBlobName()).uploadWithResponse(
+                new BlobParallelUploadOptions(DATA.getDefaultInputStream()).setTags(tags), null, null);
         }
 
     sleepIfRunningAgainstService(10 * 1000); // To allow tags to index
 
         PagedResponse<TaggedBlobItem> firstPage = cc.findBlobsByTags(
             new FindBlobsOptions(String.format("\"%s\"='%s'", tagKey, tagValue)).setMaxResultsPerPage(5), null,
-                Context.NONE).iterableByPage().iterator().next();
+            Context.NONE).iterableByPage().iterator().next();
         String marker = firstPage.getContinuationToken();
         String firstBlobName = firstPage.getValue().iterator().next().getName();
 
         PagedResponse<TaggedBlobItem> secondPage = cc.findBlobsByTags(
             new FindBlobsOptions(String.format("\"%s\"='%s'", tagKey, tagValue)).setMaxResultsPerPage(5), null,
-                Context.NONE).iterableByPage(marker).iterator().next();
+            Context.NONE).iterableByPage(marker).iterator().next();
 
         // Assert that the second segment is indeed after the first alphabetically
         assertTrue(firstBlobName.compareTo(secondPage.getValue().iterator().next().getName()) < 0);
@@ -1722,8 +1724,8 @@ public class ContainerApiTests extends BlobTestBase {
         Map<String, String> tags = Collections.singletonMap(tagKey, tagValue);
 
         for (int i = 0; i < numBlobs; i++) {
-            cc.getBlobClient(generateBlobName()).uploadWithResponse(new BlobParallelUploadOptions(
-                DATA.getDefaultInputStream(), DATA.getDefaultDataSize()).setTags(tags), null, null);
+            cc.getBlobClient(generateBlobName()).uploadWithResponse(
+                new BlobParallelUploadOptions(DATA.getDefaultInputStream()).setTags(tags), null, null);
         }
 
         for (PagedResponse<TaggedBlobItem> page : cc.findBlobsByTags(
@@ -1742,8 +1744,7 @@ public class ContainerApiTests extends BlobTestBase {
 
         for (int i = 0; i < numBlobs; i++) {
             cc.getBlobClient(generateBlobName()).uploadWithResponse(
-                new BlobParallelUploadOptions(DATA.getDefaultInputStream(), DATA.getDefaultDataSize()).setTags(tags),
-                null, null);
+                new BlobParallelUploadOptions(DATA.getDefaultInputStream()).setTags(tags), null, null);
         }
 
         for (PagedResponse<TaggedBlobItem> page : cc.findBlobsByTags(new FindBlobsOptions(String.format("\"%s\"='%s'",
@@ -1921,12 +1922,12 @@ public class ContainerApiTests extends BlobTestBase {
         // createroot container if not exist.
         try {
             cc.create();
-        }
-        catch (BlobStorageException se) {
+        } catch (BlobStorageException se) {
             if (se.getErrorCode() != BlobErrorCode.CONTAINER_ALREADY_EXISTS) {
                 throw se;
             }
         }
+
         BlobContainerClient webContainer = primaryBlobServiceClient.getBlobContainerClient(
             BlobContainerClient.STATIC_WEBSITE_CONTAINER_NAME);
 

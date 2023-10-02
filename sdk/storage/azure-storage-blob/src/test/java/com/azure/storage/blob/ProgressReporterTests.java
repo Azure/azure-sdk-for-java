@@ -1,3 +1,6 @@
+// Copyright (c) Microsoft Corporation. All rights reserved.
+// Licensed under the MIT License.
+
 package com.azure.storage.blob;
 
 import com.azure.storage.blob.specialized.BlockBlobAsyncClient;
@@ -72,7 +75,7 @@ public class ProgressReporterTests extends BlobTestBase {
         ReentrantLock lock = new ReentrantLock();
         AtomicLong totalProgress = new AtomicLong(0);
 
-        ProgressReceiver mockReceiver = Mockito.mock(ProgressReceiver.class);;
+        ProgressReceiver mockReceiver = Mockito.mock(ProgressReceiver.class);
         Flux<ByteBuffer> data = Flux.just(buf1, buf2, buf3);
         Flux<ByteBuffer> data2 = Flux.just(buf3, buf2, buf1);
         data = ProgressReporter.addParallelProgressReporting(data, mockReceiver, lock, totalProgress);
@@ -114,7 +117,7 @@ public class ProgressReporterTests extends BlobTestBase {
         Mockito.verify(mockReceiver, Mockito.atLeast(0)).reportProgress(argumentCaptor.capture());
 
         List<Long> capturedArguments = argumentCaptor.getAllValues();
-        for(Long argument : capturedArguments) {
+        for (Long argument : capturedArguments) {
             assertTrue(argument <= 60);
         }
     }
