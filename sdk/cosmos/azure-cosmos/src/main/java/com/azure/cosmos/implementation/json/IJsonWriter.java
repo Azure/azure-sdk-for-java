@@ -2,8 +2,8 @@
 // Licensed under the MIT License.
 package com.azure.cosmos.implementation.json;
 
-import java.util.UUID;
 import java.util.concurrent.atomic.AtomicReference;
+import java.util.UUID;
 
 /**
  * Interface for JsonWriters.
