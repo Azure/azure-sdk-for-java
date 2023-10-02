@@ -14,6 +14,7 @@ import com.azure.storage.blob.BlobServiceAsyncClient;
 import com.azure.storage.blob.BlobServiceClient;
 import com.azure.storage.blob.BlobTestBase;
 import com.azure.storage.blob.models.BlobDownloadAsyncResponse;
+import com.azure.storage.blob.models.BlobDownloadHeaders;
 import com.azure.storage.blob.models.BlobRange;
 import com.azure.storage.blob.models.BlobStorageException;
 import com.azure.storage.blob.models.DownloadRetryOptions;
@@ -30,6 +31,7 @@ import reactor.test.StepVerifier;
 
 import java.io.ByteArrayOutputStream;
 import java.io.IOException;
+import java.nio.ByteBuffer;
 import java.time.Duration;
 import java.util.concurrent.TimeoutException;
 import java.util.stream.Stream;
@@ -157,8 +159,8 @@ public class DownloadResponseTests extends BlobTestBase {
         BlobContainerAsyncClient cc = bsc.getBlobContainerAsyncClient(containerName);
         BlockBlobAsyncClient blockBlobAsyncClient = cc.getBlobAsyncClient(bu.getBlobName()).getBlockBlobAsyncClient();
 
-        Flux<Object> bufferMono = blockBlobAsyncClient.downloadStreamWithResponse(null, options, null, false)
-            .flatMapMany(ResponseBase::getValue);
+        Flux<ByteBuffer> bufferMono = blockBlobAsyncClient.downloadStreamWithResponse(null, options, null, false)
+            .flatMapMany(ResponseBase<BlobDownloadHeaders, Flux<ByteBuffer>>::getValue);
 
         StepVerifier.create(bufferMono.timeout(Duration.ofSeconds(1)))
             .expectSubscription()
