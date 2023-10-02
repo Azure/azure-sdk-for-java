@@ -1,22 +1,20 @@
+// Copyright (c) Microsoft Corporation. All rights reserved.
+// Licensed under the MIT License.
+
 package com.azure.json;
 
 import java.io.IOException;
 
 /**
- * Class representing the JSON null type
+ * Represents a JSON null value. 
+ * 
+ * @see TODO
  */
 public final class JsonNull extends JsonElement {
+    static final JsonNull INSTANCE = new JsonNull();
+    private final String nullValue = "null";
 
-    // Private constructor enforcing Singleton pattern.
-    private JsonNull() { }
-
-    /**
-     * Helper class to hold Singleton instance.
-     * - Thread-safe lazy-initialization of the JsonNull object without explicit
-     * synchronization.
-     */
-    private static class LoadSingleton {
-        static final JsonNull INSTANCE = new JsonNull();
+    private JsonNull() {
     }
 
     /**
@@ -25,21 +23,13 @@ public final class JsonNull extends JsonElement {
      * @return The JsonNull instance, representing the JsonNull Object.
      */
     public static JsonNull getInstance() { 
-        return LoadSingleton.INSTANCE; 
+        return INSTANCE;
     }
 
     /**
-     * Stores the String representation of the current state of the JsonNull
-     * object.
-     * Always set to "null". Cannot be changed.
-     */
-    private final String nullValue = "null";
-
-    /**
-     * Returns the String representation of the JsonNull object
+     * Returns the String representation of the JsonNull object.
      *
-     * @return the nullValue field which is a String representation of the
-     * current state of this JsonNull object.
+     * @return The String representation of the JsonNull object.
      */
     @Override
     public String toString() { 
@@ -47,13 +37,22 @@ public final class JsonNull extends JsonElement {
     }
 
     /**
-     * @return boolean of whether this JsonElement object is of type JsonNull.
+     * Identifies if a JsonElement is of type JsonNull.
+     * 
+     * @return A boolean value of whether a JsonElement is null.
      */
     @Override
     public boolean isNull() { 
         return true; 
     }
 
+    /**
+     * JsonNull as an element in a JsonArray.
+     * <p>
+     * TODO Javadoc comment
+     * 
+     * @return A JsonArray with a JsonNull instance as its first element.
+     */
     @Override
     public JsonArray asArray() {
         JsonArray output = new JsonArray();
@@ -61,6 +60,13 @@ public final class JsonNull extends JsonElement {
         return output;
     }
 
+    /**
+     * JsonNull as a property in a JsonObject.
+     * <p>
+     * TODO Javadoc comment
+     * 
+     * @return The JsonObject with the JsonNull value as a property.
+     */
     @Override
     public JsonObject asObject() {
         JsonObject output = new JsonObject();
@@ -68,17 +74,22 @@ public final class JsonNull extends JsonElement {
         return output;
     }
 
+    /**
+     * Converts JsonNull value to type JsonString.
+     * 
+     * @return The JsonString representation of a JsonNull object.
+     */
     @Override
     public JsonString asString() { 
         return new JsonString(nullValue); 
     }
 
     /**
+     * Writes the JsonSerializable object JsonNull. 
+     * 
      * @param jsonWriter JsonWriter that the serialized JsonNull is written to.
-     * @return JsonWriter state after the serialized JsonNull has been written
-     * to it.
-     * @throws IOException Thrown when JsonWriter.writeNull call throws an
-     * IOException.
+     * @return JsonWriter state after the serialized JsonNull has been written to it.
+     * @throws IOException Thrown when JsonWriter.writeNull call throws an IOException.
      */
     @Override
     public JsonWriter serialize(JsonWriter jsonWriter) throws IOException {
