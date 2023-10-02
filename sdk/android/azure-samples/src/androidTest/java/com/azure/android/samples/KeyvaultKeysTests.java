@@ -1,4 +1,4 @@
-package com.azure.android.sampletesting;
+package com.azure.android.samples;
 
 import static org.junit.Assert.fail;
 
@@ -15,7 +15,7 @@ import org.junit.Test;
 import org.junit.runner.RunWith;
 
 @RunWith(AndroidJUnit4.class)
-public class KeyvaultKeysTesting {
+public class KeyvaultKeysTests {
     final String keyvaultEndpoint = "https://android-key-vault.vault.azure.net/";
 
     ClientSecretCredential clientSecretCredential;
