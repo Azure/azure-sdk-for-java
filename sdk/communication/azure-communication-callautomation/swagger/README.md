@@ -193,6 +193,9 @@ directive:
 - rename-model:
     from: SendDtmfRequest
     to: SendDtmfRequestInternal
+- rename-model:
+    from: StartDialogRequest
+    to: StartDialogRequestInternal
 
 # Remove models
 - remove-model: AddParticipantFailed
@@ -218,6 +221,15 @@ directive:
 - remove-model: SendDtmfFailed
 - remove-model: AddParticipantCancelled
 - remove-model: CancelAddParticipantFailed
+- remove-model: DialogCompleted
+- remove-model: DialogConsent
+- remove-model: DialogFailed
+- remove-model: DialogHangup
+- remove-model: DialogLanguageChange
+- remove-model: DialogSensitivityUpdate
+- remove-model: DialogStarted
+- remove-model: DialogTransfer
+- remove-model: DialogFailed
 ```
 
 ### Rename RecordingChannelType to RecordingChannelInternal

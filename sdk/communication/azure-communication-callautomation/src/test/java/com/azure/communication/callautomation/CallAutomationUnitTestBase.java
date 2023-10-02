@@ -15,6 +15,8 @@ import com.azure.communication.callautomation.implementation.models.CallConnecti
 import com.azure.communication.callautomation.implementation.models.CallConnectionStateModelInternal;
 import com.azure.communication.callautomation.implementation.models.CallParticipantInternal;
 import com.azure.communication.callautomation.implementation.models.GetParticipantsResponseInternal;
+import com.azure.communication.callautomation.implementation.models.DialogStateResponse;
+import com.azure.communication.callautomation.implementation.models.DialogInputType;
 import com.azure.communication.callautomation.models.MediaStreamingAudioChannel;
 import com.azure.communication.callautomation.models.MediaStreamingOptions;
 import com.azure.communication.callautomation.models.MediaStreamingContent;
@@ -46,6 +48,8 @@ public class CallAutomationUnitTestBase {
     static final String CALL_INCOMING_CALL_CONTEXT = "eyJhbGciOiJub25lIiwidHlwIjoiSldUIn0.REDACTED";
     static final String CALL_OPERATION_CONTEXT = "operationContext";
     static final String MEDIA_SUBSCRIPTION_ID = "mediaSubscriptionId";
+    static final String DIALOG_ID = "dialogId";
+    static final String BOT_APP_ID = "botAppId";
 
     static final MediaStreamingOptions MEDIA_STREAMING_CONFIGURATION = new MediaStreamingOptions(
         "https://websocket.url.com",
@@ -95,6 +99,14 @@ public class CallAutomationUnitTestBase {
             .setParticipant(ModelGenerator.generateAcsCallParticipantInternal(CALL_TARGET_ID, false));
 
         return serializeObject(addParticipantsResponseInternal);
+    }
+
+    public static String generateDialogStateResponse() {
+        DialogStateResponse dialogStateResponse = new DialogStateResponse()
+            .setDialogId(DIALOG_ID)
+            .setDialogInputType(DialogInputType.POWER_VIRTUAL_AGENTS);
+
+        return serializeObject(dialogStateResponse);
     }
 
     public static CallAutomationAsyncClient getCallAutomationAsyncClient(ArrayList<SimpleEntry<String, Integer>> responses) {
