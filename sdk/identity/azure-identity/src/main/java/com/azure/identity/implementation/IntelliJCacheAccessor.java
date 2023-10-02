@@ -12,6 +12,7 @@ import com.fasterxml.jackson.core.TreeNode;
 import com.fasterxml.jackson.databind.DeserializationFeature;
 import com.fasterxml.jackson.databind.JsonNode;
 import com.fasterxml.jackson.databind.ObjectMapper;
+import com.fasterxml.jackson.databind.exc.MismatchedInputException;
 import com.microsoft.aad.msal4jextensions.persistence.CacheFileAccessor;
 import com.microsoft.aad.msal4jextensions.persistence.mac.KeyChainAccessor;
 import com.sun.jna.Platform;
@@ -308,7 +309,12 @@ public class IntelliJCacheAccessor {
             return null;
         }
 
-        IntelliJAuthMethodDetails authMethodDetails = parseAuthMethodDetails(authFile);
+        IntelliJAuthMethodDetails authMethodDetails;
+        try {
+            authMethodDetails = parseAuthMethodDetails(authFile);
+        } catch (IOException exception) {
+            throw new CredentialUnavailableException("Error Parsing Authentication Method details.", exception);
+        }
 
         String authType = authMethodDetails.getAuthMethod();
         if (CoreUtils.isNullOrEmpty(authType)) {
