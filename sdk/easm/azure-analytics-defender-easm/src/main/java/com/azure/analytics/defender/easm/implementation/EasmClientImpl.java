@@ -5,6 +5,7 @@
 package com.azure.analytics.defender.easm.implementation;
 
 import com.azure.analytics.defender.easm.EasmServiceVersion;
+import com.azure.analytics.defender.easm.models.*;
 import com.azure.core.annotation.BodyParam;
 import com.azure.core.annotation.Delete;
 import com.azure.core.annotation.ExpectedResponses;
@@ -38,7 +39,6 @@ import com.azure.core.http.rest.RestProxy;
 import com.azure.core.util.BinaryData;
 import com.azure.core.util.Context;
 import com.azure.core.util.FluxUtil;
-import com.azure.core.util.UrlBuilder;
 import com.azure.core.util.serializer.JacksonAdapter;
 import com.azure.core.util.serializer.SerializerAdapter;
 import java.util.List;
@@ -146,19 +146,19 @@ public final class EasmClientImpl {
      * @param serviceVersion Service version.
      */
     public EasmClientImpl(
-            String endpoint,
-            String subscriptionId,
-            String resourceGroupName,
-            String workspaceName,
-            EasmServiceVersion serviceVersion) {
+        String endpoint,
+        String subscriptionId,
+        String resourceGroupName,
+        String workspaceName,
+        EasmServiceVersion serviceVersion) {
         this(
-                new HttpPipelineBuilder().policies(new UserAgentPolicy(), new RetryPolicy()).build(),
-                JacksonAdapter.createDefaultSerializerAdapter(),
-                endpoint,
-                subscriptionId,
-                resourceGroupName,
-                workspaceName,
-                serviceVersion);
+            new HttpPipelineBuilder().policies(new UserAgentPolicy(), new RetryPolicy()).build(),
+            JacksonAdapter.createDefaultSerializerAdapter(),
+            endpoint,
+            subscriptionId,
+            resourceGroupName,
+            workspaceName,
+            serviceVersion);
     }
 
     /**
@@ -173,20 +173,20 @@ public final class EasmClientImpl {
      * @param serviceVersion Service version.
      */
     public EasmClientImpl(
-            HttpPipeline httpPipeline,
-            String endpoint,
-            String subscriptionId,
-            String resourceGroupName,
-            String workspaceName,
-            EasmServiceVersion serviceVersion) {
+        HttpPipeline httpPipeline,
+        String endpoint,
+        String subscriptionId,
+        String resourceGroupName,
+        String workspaceName,
+        EasmServiceVersion serviceVersion) {
         this(
-                httpPipeline,
-                JacksonAdapter.createDefaultSerializerAdapter(),
-                endpoint,
-                subscriptionId,
-                resourceGroupName,
-                workspaceName,
-                serviceVersion);
+            httpPipeline,
+            JacksonAdapter.createDefaultSerializerAdapter(),
+            endpoint,
+            subscriptionId,
+            resourceGroupName,
+            workspaceName,
+            serviceVersion);
     }
 
     /**
@@ -202,13 +202,13 @@ public final class EasmClientImpl {
      * @param serviceVersion Service version.
      */
     public EasmClientImpl(
-            HttpPipeline httpPipeline,
-            SerializerAdapter serializerAdapter,
-            String endpoint,
-            String subscriptionId,
-            String resourceGroupName,
-            String workspaceName,
-            EasmServiceVersion serviceVersion) {
+        HttpPipeline httpPipeline,
+        SerializerAdapter serializerAdapter,
+        String endpoint,
+        String subscriptionId,
+        String resourceGroupName,
+        String workspaceName,
+        EasmServiceVersion serviceVersion) {
         this.httpPipeline = httpPipeline;
         this.serializerAdapter = serializerAdapter;
         this.endpoint = endpoint;
@@ -226,1456 +226,1478 @@ public final class EasmClientImpl {
         @Get("/assets")
         @ExpectedResponses({200})
         @UnexpectedResponseExceptionType(
-                value = ClientAuthenticationException.class,
-                code = {401})
+            value = ClientAuthenticationException.class,
+            code = {401})
         @UnexpectedResponseExceptionType(
-                value = ResourceNotFoundException.class,
-                code = {404})
+            value = ResourceNotFoundException.class,
+            code = {404})
         @UnexpectedResponseExceptionType(
-                value = ResourceModifiedException.class,
-                code = {409})
+            value = ResourceModifiedException.class,
+            code = {409})
         @UnexpectedResponseExceptionType(HttpResponseException.class)
         Mono<Response<BinaryData>> listAssetResource(
-                @HostParam("endpoint") String endpoint,
-                @HostParam("subscriptionId") String subscriptionId,
-                @HostParam("resourceGroupName") String resourceGroupName,
-                @HostParam("workspaceName") String workspaceName,
-                @QueryParam("api-version") String apiVersion,
-                @HeaderParam("accept") String accept,
-                RequestOptions requestOptions,
-                Context context);
+            @HostParam("endpoint") String endpoint,
+            @HostParam("subscriptionId") String subscriptionId,
+            @HostParam("resourceGroupName") String resourceGroupName,
+            @HostParam("workspaceName") String workspaceName,
+            @QueryParam("api-version") String apiVersion,
+            @HeaderParam("accept") String accept,
+            RequestOptions requestOptions,
+            Context context);
 
         @Get("/assets")
         @ExpectedResponses({200})
         @UnexpectedResponseExceptionType(
-                value = ClientAuthenticationException.class,
-                code = {401})
+            value = ClientAuthenticationException.class,
+            code = {401})
         @UnexpectedResponseExceptionType(
-                value = ResourceNotFoundException.class,
-                code = {404})
+            value = ResourceNotFoundException.class,
+            code = {404})
         @UnexpectedResponseExceptionType(
-                value = ResourceModifiedException.class,
-                code = {409})
+            value = ResourceModifiedException.class,
+            code = {409})
         @UnexpectedResponseExceptionType(HttpResponseException.class)
         Response<BinaryData> listAssetResourceSync(
-                @HostParam("endpoint") String endpoint,
-                @HostParam("subscriptionId") String subscriptionId,
-                @HostParam("resourceGroupName") String resourceGroupName,
-                @HostParam("workspaceName") String workspaceName,
-                @QueryParam("api-version") String apiVersion,
-                @HeaderParam("accept") String accept,
-                RequestOptions requestOptions,
-                Context context);
+            @HostParam("endpoint") String endpoint,
+            @HostParam("subscriptionId") String subscriptionId,
+            @HostParam("resourceGroupName") String resourceGroupName,
+            @HostParam("workspaceName") String workspaceName,
+            @QueryParam("api-version") String apiVersion,
+            @HeaderParam("accept") String accept,
+            RequestOptions requestOptions,
+            Context context);
 
         @Post("/assets")
         @ExpectedResponses({200})
         @UnexpectedResponseExceptionType(
-                value = ClientAuthenticationException.class,
-                code = {401})
+            value = ClientAuthenticationException.class,
+            code = {401})
         @UnexpectedResponseExceptionType(
-                value = ResourceNotFoundException.class,
-                code = {404})
+            value = ResourceNotFoundException.class,
+            code = {404})
         @UnexpectedResponseExceptionType(
-                value = ResourceModifiedException.class,
-                code = {409})
+            value = ResourceModifiedException.class,
+            code = {409})
         @UnexpectedResponseExceptionType(HttpResponseException.class)
         Mono<Response<BinaryData>> updateAssets(
-                @HostParam("endpoint") String endpoint,
-                @HostParam("subscriptionId") String subscriptionId,
-                @HostParam("resourceGroupName") String resourceGroupName,
-                @HostParam("workspaceName") String workspaceName,
-                @QueryParam("api-version") String apiVersion,
-                @QueryParam("filter") String filter,
-                @HeaderParam("accept") String accept,
-                @BodyParam("application/json") BinaryData assetUpdateData,
-                RequestOptions requestOptions,
-                Context context);
+            @HostParam("endpoint") String endpoint,
+            @HostParam("subscriptionId") String subscriptionId,
+            @HostParam("resourceGroupName") String resourceGroupName,
+            @HostParam("workspaceName") String workspaceName,
+            @QueryParam("api-version") String apiVersion,
+            @QueryParam("filter") String filter,
+            @HeaderParam("accept") String accept,
+            @BodyParam("application/json") BinaryData assetUpdateData,
+            RequestOptions requestOptions,
+            Context context);
 
         @Post("/assets")
         @ExpectedResponses({200})
         @UnexpectedResponseExceptionType(
-                value = ClientAuthenticationException.class,
-                code = {401})
+            value = ClientAuthenticationException.class,
+            code = {401})
         @UnexpectedResponseExceptionType(
-                value = ResourceNotFoundException.class,
-                code = {404})
+            value = ResourceNotFoundException.class,
+            code = {404})
         @UnexpectedResponseExceptionType(
-                value = ResourceModifiedException.class,
-                code = {409})
+            value = ResourceModifiedException.class,
+            code = {409})
         @UnexpectedResponseExceptionType(HttpResponseException.class)
         Response<BinaryData> updateAssetsSync(
-                @HostParam("endpoint") String endpoint,
-                @HostParam("subscriptionId") String subscriptionId,
-                @HostParam("resourceGroupName") String resourceGroupName,
-                @HostParam("workspaceName") String workspaceName,
-                @QueryParam("api-version") String apiVersion,
-                @QueryParam("filter") String filter,
-                @HeaderParam("accept") String accept,
-                @BodyParam("application/json") BinaryData assetUpdateData,
-                RequestOptions requestOptions,
-                Context context);
+            @HostParam("endpoint") String endpoint,
+            @HostParam("subscriptionId") String subscriptionId,
+            @HostParam("resourceGroupName") String resourceGroupName,
+            @HostParam("workspaceName") String workspaceName,
+            @QueryParam("api-version") String apiVersion,
+            @QueryParam("filter") String filter,
+            @HeaderParam("accept") String accept,
+            @BodyParam("application/json") BinaryData assetUpdateData,
+            RequestOptions requestOptions,
+            Context context);
 
         @Get("/assets/{assetId}")
         @ExpectedResponses({200})
         @UnexpectedResponseExceptionType(
-                value = ClientAuthenticationException.class,
-                code = {401})
+            value = ClientAuthenticationException.class,
+            code = {401})
         @UnexpectedResponseExceptionType(
-                value = ResourceNotFoundException.class,
-                code = {404})
+            value = ResourceNotFoundException.class,
+            code = {404})
         @UnexpectedResponseExceptionType(
-                value = ResourceModifiedException.class,
-                code = {409})
+            value = ResourceModifiedException.class,
+            code = {409})
         @UnexpectedResponseExceptionType(HttpResponseException.class)
         Mono<Response<BinaryData>> getAssetResource(
-                @HostParam("endpoint") String endpoint,
-                @HostParam("subscriptionId") String subscriptionId,
-                @HostParam("resourceGroupName") String resourceGroupName,
-                @HostParam("workspaceName") String workspaceName,
-                @QueryParam("api-version") String apiVersion,
-                @PathParam("assetId") String assetId,
-                @HeaderParam("accept") String accept,
-                RequestOptions requestOptions,
-                Context context);
+            @HostParam("endpoint") String endpoint,
+            @HostParam("subscriptionId") String subscriptionId,
+            @HostParam("resourceGroupName") String resourceGroupName,
+            @HostParam("workspaceName") String workspaceName,
+            @QueryParam("api-version") String apiVersion,
+            @PathParam("assetId") String assetId,
+            @HeaderParam("accept") String accept,
+            RequestOptions requestOptions,
+            Context context);
 
         @Get("/assets/{assetId}")
         @ExpectedResponses({200})
         @UnexpectedResponseExceptionType(
-                value = ClientAuthenticationException.class,
-                code = {401})
+            value = ClientAuthenticationException.class,
+            code = {401})
         @UnexpectedResponseExceptionType(
-                value = ResourceNotFoundException.class,
-                code = {404})
+            value = ResourceNotFoundException.class,
+            code = {404})
         @UnexpectedResponseExceptionType(
-                value = ResourceModifiedException.class,
-                code = {409})
+            value = ResourceModifiedException.class,
+            code = {409})
         @UnexpectedResponseExceptionType(HttpResponseException.class)
         Response<BinaryData> getAssetResourceSync(
-                @HostParam("endpoint") String endpoint,
-                @HostParam("subscriptionId") String subscriptionId,
-                @HostParam("resourceGroupName") String resourceGroupName,
-                @HostParam("workspaceName") String workspaceName,
-                @QueryParam("api-version") String apiVersion,
-                @PathParam("assetId") String assetId,
-                @HeaderParam("accept") String accept,
-                RequestOptions requestOptions,
-                Context context);
+            @HostParam("endpoint") String endpoint,
+            @HostParam("subscriptionId") String subscriptionId,
+            @HostParam("resourceGroupName") String resourceGroupName,
+            @HostParam("workspaceName") String workspaceName,
+            @QueryParam("api-version") String apiVersion,
+            @PathParam("assetId") String assetId,
+            @HeaderParam("accept") String accept,
+            RequestOptions requestOptions,
+            Context context);
 
         @Get("/dataConnections")
         @ExpectedResponses({200})
         @UnexpectedResponseExceptionType(
-                value = ClientAuthenticationException.class,
-                code = {401})
+            value = ClientAuthenticationException.class,
+            code = {401})
         @UnexpectedResponseExceptionType(
-                value = ResourceNotFoundException.class,
-                code = {404})
+            value = ResourceNotFoundException.class,
+            code = {404})
         @UnexpectedResponseExceptionType(
-                value = ResourceModifiedException.class,
-                code = {409})
+            value = ResourceModifiedException.class,
+            code = {409})
         @UnexpectedResponseExceptionType(HttpResponseException.class)
         Mono<Response<BinaryData>> listDataConnection(
-                @HostParam("endpoint") String endpoint,
-                @HostParam("subscriptionId") String subscriptionId,
-                @HostParam("resourceGroupName") String resourceGroupName,
-                @HostParam("workspaceName") String workspaceName,
-                @QueryParam("api-version") String apiVersion,
-                @HeaderParam("accept") String accept,
-                RequestOptions requestOptions,
-                Context context);
+            @HostParam("endpoint") String endpoint,
+            @HostParam("subscriptionId") String subscriptionId,
+            @HostParam("resourceGroupName") String resourceGroupName,
+            @HostParam("workspaceName") String workspaceName,
+            @QueryParam("api-version") String apiVersion,
+            @HeaderParam("accept") String accept,
+            RequestOptions requestOptions,
+            Context context);
 
         @Get("/dataConnections")
         @ExpectedResponses({200})
         @UnexpectedResponseExceptionType(
-                value = ClientAuthenticationException.class,
-                code = {401})
+            value = ClientAuthenticationException.class,
+            code = {401})
         @UnexpectedResponseExceptionType(
-                value = ResourceNotFoundException.class,
-                code = {404})
+            value = ResourceNotFoundException.class,
+            code = {404})
         @UnexpectedResponseExceptionType(
-                value = ResourceModifiedException.class,
-                code = {409})
+            value = ResourceModifiedException.class,
+            code = {409})
         @UnexpectedResponseExceptionType(HttpResponseException.class)
         Response<BinaryData> listDataConnectionSync(
-                @HostParam("endpoint") String endpoint,
-                @HostParam("subscriptionId") String subscriptionId,
-                @HostParam("resourceGroupName") String resourceGroupName,
-                @HostParam("workspaceName") String workspaceName,
-                @QueryParam("api-version") String apiVersion,
-                @HeaderParam("accept") String accept,
-                RequestOptions requestOptions,
-                Context context);
+            @HostParam("endpoint") String endpoint,
+            @HostParam("subscriptionId") String subscriptionId,
+            @HostParam("resourceGroupName") String resourceGroupName,
+            @HostParam("workspaceName") String workspaceName,
+            @QueryParam("api-version") String apiVersion,
+            @HeaderParam("accept") String accept,
+            RequestOptions requestOptions,
+            Context context);
 
         @Post("/dataConnections:validate")
         @ExpectedResponses({200})
         @UnexpectedResponseExceptionType(
-                value = ClientAuthenticationException.class,
-                code = {401})
+            value = ClientAuthenticationException.class,
+            code = {401})
         @UnexpectedResponseExceptionType(
-                value = ResourceNotFoundException.class,
-                code = {404})
+            value = ResourceNotFoundException.class,
+            code = {404})
         @UnexpectedResponseExceptionType(
-                value = ResourceModifiedException.class,
-                code = {409})
+            value = ResourceModifiedException.class,
+            code = {409})
         @UnexpectedResponseExceptionType(HttpResponseException.class)
         Mono<Response<BinaryData>> validateDataConnection(
-                @HostParam("endpoint") String endpoint,
-                @HostParam("subscriptionId") String subscriptionId,
-                @HostParam("resourceGroupName") String resourceGroupName,
-                @HostParam("workspaceName") String workspaceName,
-                @QueryParam("api-version") String apiVersion,
-                @HeaderParam("accept") String accept,
-                @BodyParam("application/json") BinaryData dataConnectionData,
-                RequestOptions requestOptions,
-                Context context);
+            @HostParam("endpoint") String endpoint,
+            @HostParam("subscriptionId") String subscriptionId,
+            @HostParam("resourceGroupName") String resourceGroupName,
+            @HostParam("workspaceName") String workspaceName,
+            @QueryParam("api-version") String apiVersion,
+            @HeaderParam("accept") String accept,
+            @BodyParam("application/json") BinaryData dataConnectionData,
+            RequestOptions requestOptions,
+            Context context);
 
         @Post("/dataConnections:validate")
         @ExpectedResponses({200})
         @UnexpectedResponseExceptionType(
-                value = ClientAuthenticationException.class,
-                code = {401})
+            value = ClientAuthenticationException.class,
+            code = {401})
         @UnexpectedResponseExceptionType(
-                value = ResourceNotFoundException.class,
-                code = {404})
+            value = ResourceNotFoundException.class,
+            code = {404})
         @UnexpectedResponseExceptionType(
-                value = ResourceModifiedException.class,
-                code = {409})
+            value = ResourceModifiedException.class,
+            code = {409})
         @UnexpectedResponseExceptionType(HttpResponseException.class)
         Response<BinaryData> validateDataConnectionSync(
-                @HostParam("endpoint") String endpoint,
-                @HostParam("subscriptionId") String subscriptionId,
-                @HostParam("resourceGroupName") String resourceGroupName,
-                @HostParam("workspaceName") String workspaceName,
-                @QueryParam("api-version") String apiVersion,
-                @HeaderParam("accept") String accept,
-                @BodyParam("application/json") BinaryData dataConnectionData,
-                RequestOptions requestOptions,
-                Context context);
+            @HostParam("endpoint") String endpoint,
+            @HostParam("subscriptionId") String subscriptionId,
+            @HostParam("resourceGroupName") String resourceGroupName,
+            @HostParam("workspaceName") String workspaceName,
+            @QueryParam("api-version") String apiVersion,
+            @HeaderParam("accept") String accept,
+            @BodyParam("application/json") BinaryData dataConnectionData,
+            RequestOptions requestOptions,
+            Context context);
 
         @Get("/dataConnections/{dataConnectionName}")
         @ExpectedResponses({200})
         @UnexpectedResponseExceptionType(
-                value = ClientAuthenticationException.class,
-                code = {401})
+            value = ClientAuthenticationException.class,
+            code = {401})
         @UnexpectedResponseExceptionType(
-                value = ResourceNotFoundException.class,
-                code = {404})
+            value = ResourceNotFoundException.class,
+            code = {404})
         @UnexpectedResponseExceptionType(
-                value = ResourceModifiedException.class,
-                code = {409})
+            value = ResourceModifiedException.class,
+            code = {409})
         @UnexpectedResponseExceptionType(HttpResponseException.class)
         Mono<Response<BinaryData>> getDataConnection(
-                @HostParam("endpoint") String endpoint,
-                @HostParam("subscriptionId") String subscriptionId,
-                @HostParam("resourceGroupName") String resourceGroupName,
-                @HostParam("workspaceName") String workspaceName,
-                @QueryParam("api-version") String apiVersion,
-                @PathParam("dataConnectionName") String dataConnectionName,
-                @HeaderParam("accept") String accept,
-                RequestOptions requestOptions,
-                Context context);
+            @HostParam("endpoint") String endpoint,
+            @HostParam("subscriptionId") String subscriptionId,
+            @HostParam("resourceGroupName") String resourceGroupName,
+            @HostParam("workspaceName") String workspaceName,
+            @QueryParam("api-version") String apiVersion,
+            @PathParam("dataConnectionName") String dataConnectionName,
+            @HeaderParam("accept") String accept,
+            RequestOptions requestOptions,
+            Context context);
 
         @Get("/dataConnections/{dataConnectionName}")
         @ExpectedResponses({200})
         @UnexpectedResponseExceptionType(
-                value = ClientAuthenticationException.class,
-                code = {401})
+            value = ClientAuthenticationException.class,
+            code = {401})
         @UnexpectedResponseExceptionType(
-                value = ResourceNotFoundException.class,
-                code = {404})
+            value = ResourceNotFoundException.class,
+            code = {404})
         @UnexpectedResponseExceptionType(
-                value = ResourceModifiedException.class,
-                code = {409})
+            value = ResourceModifiedException.class,
+            code = {409})
         @UnexpectedResponseExceptionType(HttpResponseException.class)
         Response<BinaryData> getDataConnectionSync(
-                @HostParam("endpoint") String endpoint,
-                @HostParam("subscriptionId") String subscriptionId,
-                @HostParam("resourceGroupName") String resourceGroupName,
-                @HostParam("workspaceName") String workspaceName,
-                @QueryParam("api-version") String apiVersion,
-                @PathParam("dataConnectionName") String dataConnectionName,
-                @HeaderParam("accept") String accept,
-                RequestOptions requestOptions,
-                Context context);
+            @HostParam("endpoint") String endpoint,
+            @HostParam("subscriptionId") String subscriptionId,
+            @HostParam("resourceGroupName") String resourceGroupName,
+            @HostParam("workspaceName") String workspaceName,
+            @QueryParam("api-version") String apiVersion,
+            @PathParam("dataConnectionName") String dataConnectionName,
+            @HeaderParam("accept") String accept,
+            RequestOptions requestOptions,
+            Context context);
 
         @Put("/dataConnections/{dataConnectionName}")
         @ExpectedResponses({200})
         @UnexpectedResponseExceptionType(
-                value = ClientAuthenticationException.class,
-                code = {401})
+            value = ClientAuthenticationException.class,
+            code = {401})
         @UnexpectedResponseExceptionType(
-                value = ResourceNotFoundException.class,
-                code = {404})
+            value = ResourceNotFoundException.class,
+            code = {404})
         @UnexpectedResponseExceptionType(
-                value = ResourceModifiedException.class,
-                code = {409})
+            value = ResourceModifiedException.class,
+            code = {409})
         @UnexpectedResponseExceptionType(HttpResponseException.class)
         Mono<Response<BinaryData>> createOrReplaceDataConnection(
-                @HostParam("endpoint") String endpoint,
-                @HostParam("subscriptionId") String subscriptionId,
-                @HostParam("resourceGroupName") String resourceGroupName,
-                @HostParam("workspaceName") String workspaceName,
-                @QueryParam("api-version") String apiVersion,
-                @PathParam("dataConnectionName") String dataConnectionName,
-                @HeaderParam("accept") String accept,
-                @BodyParam("application/json") BinaryData dataConnectionData,
-                RequestOptions requestOptions,
-                Context context);
+            @HostParam("endpoint") String endpoint,
+            @HostParam("subscriptionId") String subscriptionId,
+            @HostParam("resourceGroupName") String resourceGroupName,
+            @HostParam("workspaceName") String workspaceName,
+            @QueryParam("api-version") String apiVersion,
+            @PathParam("dataConnectionName") String dataConnectionName,
+            @HeaderParam("accept") String accept,
+            @BodyParam("application/json") BinaryData dataConnectionData,
+            RequestOptions requestOptions,
+            Context context);
 
         @Put("/dataConnections/{dataConnectionName}")
         @ExpectedResponses({200})
         @UnexpectedResponseExceptionType(
-                value = ClientAuthenticationException.class,
-                code = {401})
+            value = ClientAuthenticationException.class,
+            code = {401})
         @UnexpectedResponseExceptionType(
-                value = ResourceNotFoundException.class,
-                code = {404})
+            value = ResourceNotFoundException.class,
+            code = {404})
         @UnexpectedResponseExceptionType(
-                value = ResourceModifiedException.class,
-                code = {409})
+            value = ResourceModifiedException.class,
+            code = {409})
         @UnexpectedResponseExceptionType(HttpResponseException.class)
         Response<BinaryData> createOrReplaceDataConnectionSync(
-                @HostParam("endpoint") String endpoint,
-                @HostParam("subscriptionId") String subscriptionId,
-                @HostParam("resourceGroupName") String resourceGroupName,
-                @HostParam("workspaceName") String workspaceName,
-                @QueryParam("api-version") String apiVersion,
-                @PathParam("dataConnectionName") String dataConnectionName,
-                @HeaderParam("accept") String accept,
-                @BodyParam("application/json") BinaryData dataConnectionData,
-                RequestOptions requestOptions,
-                Context context);
+            @HostParam("endpoint") String endpoint,
+            @HostParam("subscriptionId") String subscriptionId,
+            @HostParam("resourceGroupName") String resourceGroupName,
+            @HostParam("workspaceName") String workspaceName,
+            @QueryParam("api-version") String apiVersion,
+            @PathParam("dataConnectionName") String dataConnectionName,
+            @HeaderParam("accept") String accept,
+            @BodyParam("application/json") BinaryData dataConnectionData,
+            RequestOptions requestOptions,
+            Context context);
 
         @Delete("/dataConnections/{dataConnectionName}")
         @ExpectedResponses({204})
         @UnexpectedResponseExceptionType(
-                value = ClientAuthenticationException.class,
-                code = {401})
+            value = ClientAuthenticationException.class,
+            code = {401})
         @UnexpectedResponseExceptionType(
-                value = ResourceNotFoundException.class,
-                code = {404})
+            value = ResourceNotFoundException.class,
+            code = {404})
         @UnexpectedResponseExceptionType(
-                value = ResourceModifiedException.class,
-                code = {409})
+            value = ResourceModifiedException.class,
+            code = {409})
         @UnexpectedResponseExceptionType(HttpResponseException.class)
         Mono<Response<Void>> deleteDataConnection(
-                @HostParam("endpoint") String endpoint,
-                @HostParam("subscriptionId") String subscriptionId,
-                @HostParam("resourceGroupName") String resourceGroupName,
-                @HostParam("workspaceName") String workspaceName,
-                @QueryParam("api-version") String apiVersion,
-                @PathParam("dataConnectionName") String dataConnectionName,
-                @HeaderParam("accept") String accept,
-                RequestOptions requestOptions,
-                Context context);
+            @HostParam("endpoint") String endpoint,
+            @HostParam("subscriptionId") String subscriptionId,
+            @HostParam("resourceGroupName") String resourceGroupName,
+            @HostParam("workspaceName") String workspaceName,
+            @QueryParam("api-version") String apiVersion,
+            @PathParam("dataConnectionName") String dataConnectionName,
+            @HeaderParam("accept") String accept,
+            RequestOptions requestOptions,
+            Context context);
 
         @Delete("/dataConnections/{dataConnectionName}")
         @ExpectedResponses({204})
         @UnexpectedResponseExceptionType(
-                value = ClientAuthenticationException.class,
-                code = {401})
+            value = ClientAuthenticationException.class,
+            code = {401})
         @UnexpectedResponseExceptionType(
-                value = ResourceNotFoundException.class,
-                code = {404})
+            value = ResourceNotFoundException.class,
+            code = {404})
         @UnexpectedResponseExceptionType(
-                value = ResourceModifiedException.class,
-                code = {409})
+            value = ResourceModifiedException.class,
+            code = {409})
         @UnexpectedResponseExceptionType(HttpResponseException.class)
         Response<Void> deleteDataConnectionSync(
-                @HostParam("endpoint") String endpoint,
-                @HostParam("subscriptionId") String subscriptionId,
-                @HostParam("resourceGroupName") String resourceGroupName,
-                @HostParam("workspaceName") String workspaceName,
-                @QueryParam("api-version") String apiVersion,
-                @PathParam("dataConnectionName") String dataConnectionName,
-                @HeaderParam("accept") String accept,
-                RequestOptions requestOptions,
-                Context context);
+            @HostParam("endpoint") String endpoint,
+            @HostParam("subscriptionId") String subscriptionId,
+            @HostParam("resourceGroupName") String resourceGroupName,
+            @HostParam("workspaceName") String workspaceName,
+            @QueryParam("api-version") String apiVersion,
+            @PathParam("dataConnectionName") String dataConnectionName,
+            @HeaderParam("accept") String accept,
+            RequestOptions requestOptions,
+            Context context);
 
         @Get("/discoGroups")
         @ExpectedResponses({200})
         @UnexpectedResponseExceptionType(
-                value = ClientAuthenticationException.class,
-                code = {401})
+            value = ClientAuthenticationException.class,
+            code = {401})
         @UnexpectedResponseExceptionType(
-                value = ResourceNotFoundException.class,
-                code = {404})
+            value = ResourceNotFoundException.class,
+            code = {404})
         @UnexpectedResponseExceptionType(
-                value = ResourceModifiedException.class,
-                code = {409})
+            value = ResourceModifiedException.class,
+            code = {409})
         @UnexpectedResponseExceptionType(HttpResponseException.class)
         Mono<Response<BinaryData>> listDiscoGroup(
-                @HostParam("endpoint") String endpoint,
-                @HostParam("subscriptionId") String subscriptionId,
-                @HostParam("resourceGroupName") String resourceGroupName,
-                @HostParam("workspaceName") String workspaceName,
-                @QueryParam("api-version") String apiVersion,
-                @HeaderParam("accept") String accept,
-                RequestOptions requestOptions,
-                Context context);
+            @HostParam("endpoint") String endpoint,
+            @HostParam("subscriptionId") String subscriptionId,
+            @HostParam("resourceGroupName") String resourceGroupName,
+            @HostParam("workspaceName") String workspaceName,
+            @QueryParam("api-version") String apiVersion,
+            @HeaderParam("accept") String accept,
+            RequestOptions requestOptions,
+            Context context);
 
         @Get("/discoGroups")
         @ExpectedResponses({200})
         @UnexpectedResponseExceptionType(
-                value = ClientAuthenticationException.class,
-                code = {401})
+            value = ClientAuthenticationException.class,
+            code = {401})
         @UnexpectedResponseExceptionType(
-                value = ResourceNotFoundException.class,
-                code = {404})
+            value = ResourceNotFoundException.class,
+            code = {404})
         @UnexpectedResponseExceptionType(
-                value = ResourceModifiedException.class,
-                code = {409})
+            value = ResourceModifiedException.class,
+            code = {409})
         @UnexpectedResponseExceptionType(HttpResponseException.class)
         Response<BinaryData> listDiscoGroupSync(
-                @HostParam("endpoint") String endpoint,
-                @HostParam("subscriptionId") String subscriptionId,
-                @HostParam("resourceGroupName") String resourceGroupName,
-                @HostParam("workspaceName") String workspaceName,
-                @QueryParam("api-version") String apiVersion,
-                @HeaderParam("accept") String accept,
-                RequestOptions requestOptions,
-                Context context);
+            @HostParam("endpoint") String endpoint,
+            @HostParam("subscriptionId") String subscriptionId,
+            @HostParam("resourceGroupName") String resourceGroupName,
+            @HostParam("workspaceName") String workspaceName,
+            @QueryParam("api-version") String apiVersion,
+            @HeaderParam("accept") String accept,
+            RequestOptions requestOptions,
+            Context context);
 
         @Post("/discoGroups:validate")
         @ExpectedResponses({200})
         @UnexpectedResponseExceptionType(
-                value = ClientAuthenticationException.class,
-                code = {401})
+            value = ClientAuthenticationException.class,
+            code = {401})
         @UnexpectedResponseExceptionType(
-                value = ResourceNotFoundException.class,
-                code = {404})
+            value = ResourceNotFoundException.class,
+            code = {404})
         @UnexpectedResponseExceptionType(
-                value = ResourceModifiedException.class,
-                code = {409})
+            value = ResourceModifiedException.class,
+            code = {409})
         @UnexpectedResponseExceptionType(HttpResponseException.class)
         Mono<Response<BinaryData>> validateDiscoGroup(
-                @HostParam("endpoint") String endpoint,
-                @HostParam("subscriptionId") String subscriptionId,
-                @HostParam("resourceGroupName") String resourceGroupName,
-                @HostParam("workspaceName") String workspaceName,
-                @QueryParam("api-version") String apiVersion,
-                @HeaderParam("accept") String accept,
-                @BodyParam("application/json") BinaryData discoGroupData,
-                RequestOptions requestOptions,
-                Context context);
+            @HostParam("endpoint") String endpoint,
+            @HostParam("subscriptionId") String subscriptionId,
+            @HostParam("resourceGroupName") String resourceGroupName,
+            @HostParam("workspaceName") String workspaceName,
+            @QueryParam("api-version") String apiVersion,
+            @HeaderParam("accept") String accept,
+            @BodyParam("application/json") BinaryData discoGroupData,
+            RequestOptions requestOptions,
+            Context context);
 
         @Post("/discoGroups:validate")
         @ExpectedResponses({200})
         @UnexpectedResponseExceptionType(
-                value = ClientAuthenticationException.class,
-                code = {401})
+            value = ClientAuthenticationException.class,
+            code = {401})
         @UnexpectedResponseExceptionType(
-                value = ResourceNotFoundException.class,
-                code = {404})
+            value = ResourceNotFoundException.class,
+            code = {404})
         @UnexpectedResponseExceptionType(
-                value = ResourceModifiedException.class,
-                code = {409})
+            value = ResourceModifiedException.class,
+            code = {409})
         @UnexpectedResponseExceptionType(HttpResponseException.class)
         Response<BinaryData> validateDiscoGroupSync(
-                @HostParam("endpoint") String endpoint,
-                @HostParam("subscriptionId") String subscriptionId,
-                @HostParam("resourceGroupName") String resourceGroupName,
-                @HostParam("workspaceName") String workspaceName,
-                @QueryParam("api-version") String apiVersion,
-                @HeaderParam("accept") String accept,
-                @BodyParam("application/json") BinaryData discoGroupData,
-                RequestOptions requestOptions,
-                Context context);
+            @HostParam("endpoint") String endpoint,
+            @HostParam("subscriptionId") String subscriptionId,
+            @HostParam("resourceGroupName") String resourceGroupName,
+            @HostParam("workspaceName") String workspaceName,
+            @QueryParam("api-version") String apiVersion,
+            @HeaderParam("accept") String accept,
+            @BodyParam("application/json") BinaryData discoGroupData,
+            RequestOptions requestOptions,
+            Context context);
 
         @Get("/discoGroups/{groupName}")
         @ExpectedResponses({200})
         @UnexpectedResponseExceptionType(
-                value = ClientAuthenticationException.class,
-                code = {401})
+            value = ClientAuthenticationException.class,
+            code = {401})
         @UnexpectedResponseExceptionType(
-                value = ResourceNotFoundException.class,
-                code = {404})
+            value = ResourceNotFoundException.class,
+            code = {404})
         @UnexpectedResponseExceptionType(
-                value = ResourceModifiedException.class,
-                code = {409})
+            value = ResourceModifiedException.class,
+            code = {409})
         @UnexpectedResponseExceptionType(HttpResponseException.class)
         Mono<Response<BinaryData>> getDiscoGroup(
-                @HostParam("endpoint") String endpoint,
-                @HostParam("subscriptionId") String subscriptionId,
-                @HostParam("resourceGroupName") String resourceGroupName,
-                @HostParam("workspaceName") String workspaceName,
-                @QueryParam("api-version") String apiVersion,
-                @PathParam("groupName") String groupName,
-                @HeaderParam("accept") String accept,
-                RequestOptions requestOptions,
-                Context context);
+            @HostParam("endpoint") String endpoint,
+            @HostParam("subscriptionId") String subscriptionId,
+            @HostParam("resourceGroupName") String resourceGroupName,
+            @HostParam("workspaceName") String workspaceName,
+            @QueryParam("api-version") String apiVersion,
+            @PathParam("groupName") String groupName,
+            @HeaderParam("accept") String accept,
+            RequestOptions requestOptions,
+            Context context);
 
         @Get("/discoGroups/{groupName}")
         @ExpectedResponses({200})
         @UnexpectedResponseExceptionType(
-                value = ClientAuthenticationException.class,
-                code = {401})
+            value = ClientAuthenticationException.class,
+            code = {401})
         @UnexpectedResponseExceptionType(
-                value = ResourceNotFoundException.class,
-                code = {404})
+            value = ResourceNotFoundException.class,
+            code = {404})
         @UnexpectedResponseExceptionType(
-                value = ResourceModifiedException.class,
-                code = {409})
+            value = ResourceModifiedException.class,
+            code = {409})
         @UnexpectedResponseExceptionType(HttpResponseException.class)
         Response<BinaryData> getDiscoGroupSync(
-                @HostParam("endpoint") String endpoint,
-                @HostParam("subscriptionId") String subscriptionId,
-                @HostParam("resourceGroupName") String resourceGroupName,
-                @HostParam("workspaceName") String workspaceName,
-                @QueryParam("api-version") String apiVersion,
-                @PathParam("groupName") String groupName,
-                @HeaderParam("accept") String accept,
-                RequestOptions requestOptions,
-                Context context);
+            @HostParam("endpoint") String endpoint,
+            @HostParam("subscriptionId") String subscriptionId,
+            @HostParam("resourceGroupName") String resourceGroupName,
+            @HostParam("workspaceName") String workspaceName,
+            @QueryParam("api-version") String apiVersion,
+            @PathParam("groupName") String groupName,
+            @HeaderParam("accept") String accept,
+            RequestOptions requestOptions,
+            Context context);
 
         @Put("/discoGroups/{groupName}")
         @ExpectedResponses({200})
         @UnexpectedResponseExceptionType(
-                value = ClientAuthenticationException.class,
-                code = {401})
+            value = ClientAuthenticationException.class,
+            code = {401})
         @UnexpectedResponseExceptionType(
-                value = ResourceNotFoundException.class,
-                code = {404})
+            value = ResourceNotFoundException.class,
+            code = {404})
         @UnexpectedResponseExceptionType(
-                value = ResourceModifiedException.class,
-                code = {409})
+            value = ResourceModifiedException.class,
+            code = {409})
         @UnexpectedResponseExceptionType(HttpResponseException.class)
         Mono<Response<BinaryData>> createOrReplaceDiscoGroup(
-                @HostParam("endpoint") String endpoint,
-                @HostParam("subscriptionId") String subscriptionId,
-                @HostParam("resourceGroupName") String resourceGroupName,
-                @HostParam("workspaceName") String workspaceName,
-                @QueryParam("api-version") String apiVersion,
-                @PathParam("groupName") String groupName,
-                @HeaderParam("accept") String accept,
-                @BodyParam("application/json") BinaryData discoGroupData,
-                RequestOptions requestOptions,
-                Context context);
+            @HostParam("endpoint") String endpoint,
+            @HostParam("subscriptionId") String subscriptionId,
+            @HostParam("resourceGroupName") String resourceGroupName,
+            @HostParam("workspaceName") String workspaceName,
+            @QueryParam("api-version") String apiVersion,
+            @PathParam("groupName") String groupName,
+            @HeaderParam("accept") String accept,
+            @BodyParam("application/json") BinaryData discoGroupData,
+            RequestOptions requestOptions,
+            Context context);
 
         @Put("/discoGroups/{groupName}")
         @ExpectedResponses({200})
         @UnexpectedResponseExceptionType(
-                value = ClientAuthenticationException.class,
-                code = {401})
+            value = ClientAuthenticationException.class,
+            code = {401})
         @UnexpectedResponseExceptionType(
-                value = ResourceNotFoundException.class,
-                code = {404})
+            value = ResourceNotFoundException.class,
+            code = {404})
         @UnexpectedResponseExceptionType(
-                value = ResourceModifiedException.class,
-                code = {409})
+            value = ResourceModifiedException.class,
+            code = {409})
         @UnexpectedResponseExceptionType(HttpResponseException.class)
         Response<BinaryData> createOrReplaceDiscoGroupSync(
-                @HostParam("endpoint") String endpoint,
-                @HostParam("subscriptionId") String subscriptionId,
-                @HostParam("resourceGroupName") String resourceGroupName,
-                @HostParam("workspaceName") String workspaceName,
-                @QueryParam("api-version") String apiVersion,
-                @PathParam("groupName") String groupName,
-                @HeaderParam("accept") String accept,
-                @BodyParam("application/json") BinaryData discoGroupData,
-                RequestOptions requestOptions,
-                Context context);
+            @HostParam("endpoint") String endpoint,
+            @HostParam("subscriptionId") String subscriptionId,
+            @HostParam("resourceGroupName") String resourceGroupName,
+            @HostParam("workspaceName") String workspaceName,
+            @QueryParam("api-version") String apiVersion,
+            @PathParam("groupName") String groupName,
+            @HeaderParam("accept") String accept,
+            @BodyParam("application/json") BinaryData discoGroupData,
+            RequestOptions requestOptions,
+            Context context);
 
         @Post("/discoGroups/{groupName}:run")
         @ExpectedResponses({204})
         @UnexpectedResponseExceptionType(
-                value = ClientAuthenticationException.class,
-                code = {401})
+            value = ClientAuthenticationException.class,
+            code = {401})
         @UnexpectedResponseExceptionType(
-                value = ResourceNotFoundException.class,
-                code = {404})
+            value = ResourceNotFoundException.class,
+            code = {404})
         @UnexpectedResponseExceptionType(
-                value = ResourceModifiedException.class,
-                code = {409})
+            value = ResourceModifiedException.class,
+            code = {409})
         @UnexpectedResponseExceptionType(HttpResponseException.class)
         Mono<Response<Void>> runDiscoGroup(
-                @HostParam("endpoint") String endpoint,
-                @HostParam("subscriptionId") String subscriptionId,
-                @HostParam("resourceGroupName") String resourceGroupName,
-                @HostParam("workspaceName") String workspaceName,
-                @QueryParam("api-version") String apiVersion,
-                @PathParam("groupName") String groupName,
-                @HeaderParam("accept") String accept,
-                RequestOptions requestOptions,
-                Context context);
+            @HostParam("endpoint") String endpoint,
+            @HostParam("subscriptionId") String subscriptionId,
+            @HostParam("resourceGroupName") String resourceGroupName,
+            @HostParam("workspaceName") String workspaceName,
+            @QueryParam("api-version") String apiVersion,
+            @PathParam("groupName") String groupName,
+            @HeaderParam("accept") String accept,
+            RequestOptions requestOptions,
+            Context context);
 
         @Post("/discoGroups/{groupName}:run")
         @ExpectedResponses({204})
         @UnexpectedResponseExceptionType(
-                value = ClientAuthenticationException.class,
-                code = {401})
+            value = ClientAuthenticationException.class,
+            code = {401})
         @UnexpectedResponseExceptionType(
-                value = ResourceNotFoundException.class,
-                code = {404})
+            value = ResourceNotFoundException.class,
+            code = {404})
         @UnexpectedResponseExceptionType(
-                value = ResourceModifiedException.class,
-                code = {409})
+            value = ResourceModifiedException.class,
+            code = {409})
         @UnexpectedResponseExceptionType(HttpResponseException.class)
         Response<Void> runDiscoGroupSync(
-                @HostParam("endpoint") String endpoint,
-                @HostParam("subscriptionId") String subscriptionId,
-                @HostParam("resourceGroupName") String resourceGroupName,
-                @HostParam("workspaceName") String workspaceName,
-                @QueryParam("api-version") String apiVersion,
-                @PathParam("groupName") String groupName,
-                @HeaderParam("accept") String accept,
-                RequestOptions requestOptions,
-                Context context);
+            @HostParam("endpoint") String endpoint,
+            @HostParam("subscriptionId") String subscriptionId,
+            @HostParam("resourceGroupName") String resourceGroupName,
+            @HostParam("workspaceName") String workspaceName,
+            @QueryParam("api-version") String apiVersion,
+            @PathParam("groupName") String groupName,
+            @HeaderParam("accept") String accept,
+            RequestOptions requestOptions,
+            Context context);
 
         @Get("/discoGroups/{groupName}/runs")
         @ExpectedResponses({200})
         @UnexpectedResponseExceptionType(
-                value = ClientAuthenticationException.class,
-                code = {401})
+            value = ClientAuthenticationException.class,
+            code = {401})
         @UnexpectedResponseExceptionType(
-                value = ResourceNotFoundException.class,
-                code = {404})
+            value = ResourceNotFoundException.class,
+            code = {404})
         @UnexpectedResponseExceptionType(
-                value = ResourceModifiedException.class,
-                code = {409})
+            value = ResourceModifiedException.class,
+            code = {409})
         @UnexpectedResponseExceptionType(HttpResponseException.class)
         Mono<Response<BinaryData>> listRuns(
-                @HostParam("endpoint") String endpoint,
-                @HostParam("subscriptionId") String subscriptionId,
-                @HostParam("resourceGroupName") String resourceGroupName,
-                @HostParam("workspaceName") String workspaceName,
-                @QueryParam("api-version") String apiVersion,
-                @PathParam("groupName") String groupName,
-                @HeaderParam("accept") String accept,
-                RequestOptions requestOptions,
-                Context context);
+            @HostParam("endpoint") String endpoint,
+            @HostParam("subscriptionId") String subscriptionId,
+            @HostParam("resourceGroupName") String resourceGroupName,
+            @HostParam("workspaceName") String workspaceName,
+            @QueryParam("api-version") String apiVersion,
+            @PathParam("groupName") String groupName,
+            @HeaderParam("accept") String accept,
+            RequestOptions requestOptions,
+            Context context);
 
         @Get("/discoGroups/{groupName}/runs")
         @ExpectedResponses({200})
         @UnexpectedResponseExceptionType(
-                value = ClientAuthenticationException.class,
-                code = {401})
+            value = ClientAuthenticationException.class,
+            code = {401})
         @UnexpectedResponseExceptionType(
-                value = ResourceNotFoundException.class,
-                code = {404})
+            value = ResourceNotFoundException.class,
+            code = {404})
         @UnexpectedResponseExceptionType(
-                value = ResourceModifiedException.class,
-                code = {409})
+            value = ResourceModifiedException.class,
+            code = {409})
         @UnexpectedResponseExceptionType(HttpResponseException.class)
         Response<BinaryData> listRunsSync(
-                @HostParam("endpoint") String endpoint,
-                @HostParam("subscriptionId") String subscriptionId,
-                @HostParam("resourceGroupName") String resourceGroupName,
-                @HostParam("workspaceName") String workspaceName,
-                @QueryParam("api-version") String apiVersion,
-                @PathParam("groupName") String groupName,
-                @HeaderParam("accept") String accept,
-                RequestOptions requestOptions,
-                Context context);
+            @HostParam("endpoint") String endpoint,
+            @HostParam("subscriptionId") String subscriptionId,
+            @HostParam("resourceGroupName") String resourceGroupName,
+            @HostParam("workspaceName") String workspaceName,
+            @QueryParam("api-version") String apiVersion,
+            @PathParam("groupName") String groupName,
+            @HeaderParam("accept") String accept,
+            RequestOptions requestOptions,
+            Context context);
 
         @Get("/discoTemplates")
         @ExpectedResponses({200})
         @UnexpectedResponseExceptionType(
-                value = ClientAuthenticationException.class,
-                code = {401})
+            value = ClientAuthenticationException.class,
+            code = {401})
         @UnexpectedResponseExceptionType(
-                value = ResourceNotFoundException.class,
-                code = {404})
+            value = ResourceNotFoundException.class,
+            code = {404})
         @UnexpectedResponseExceptionType(
-                value = ResourceModifiedException.class,
-                code = {409})
+            value = ResourceModifiedException.class,
+            code = {409})
         @UnexpectedResponseExceptionType(HttpResponseException.class)
         Mono<Response<BinaryData>> listDiscoTemplate(
-                @HostParam("endpoint") String endpoint,
-                @HostParam("subscriptionId") String subscriptionId,
-                @HostParam("resourceGroupName") String resourceGroupName,
-                @HostParam("workspaceName") String workspaceName,
-                @QueryParam("api-version") String apiVersion,
-                @HeaderParam("accept") String accept,
-                RequestOptions requestOptions,
-                Context context);
+            @HostParam("endpoint") String endpoint,
+            @HostParam("subscriptionId") String subscriptionId,
+            @HostParam("resourceGroupName") String resourceGroupName,
+            @HostParam("workspaceName") String workspaceName,
+            @QueryParam("api-version") String apiVersion,
+            @HeaderParam("accept") String accept,
+            RequestOptions requestOptions,
+            Context context);
 
         @Get("/discoTemplates")
         @ExpectedResponses({200})
         @UnexpectedResponseExceptionType(
-                value = ClientAuthenticationException.class,
-                code = {401})
+            value = ClientAuthenticationException.class,
+            code = {401})
         @UnexpectedResponseExceptionType(
-                value = ResourceNotFoundException.class,
-                code = {404})
+            value = ResourceNotFoundException.class,
+            code = {404})
         @UnexpectedResponseExceptionType(
-                value = ResourceModifiedException.class,
-                code = {409})
+            value = ResourceModifiedException.class,
+            code = {409})
         @UnexpectedResponseExceptionType(HttpResponseException.class)
         Response<BinaryData> listDiscoTemplateSync(
-                @HostParam("endpoint") String endpoint,
-                @HostParam("subscriptionId") String subscriptionId,
-                @HostParam("resourceGroupName") String resourceGroupName,
-                @HostParam("workspaceName") String workspaceName,
-                @QueryParam("api-version") String apiVersion,
-                @HeaderParam("accept") String accept,
-                RequestOptions requestOptions,
-                Context context);
+            @HostParam("endpoint") String endpoint,
+            @HostParam("subscriptionId") String subscriptionId,
+            @HostParam("resourceGroupName") String resourceGroupName,
+            @HostParam("workspaceName") String workspaceName,
+            @QueryParam("api-version") String apiVersion,
+            @HeaderParam("accept") String accept,
+            RequestOptions requestOptions,
+            Context context);
 
         @Get("/discoTemplates/{templateId}")
         @ExpectedResponses({200})
         @UnexpectedResponseExceptionType(
-                value = ClientAuthenticationException.class,
-                code = {401})
+            value = ClientAuthenticationException.class,
+            code = {401})
         @UnexpectedResponseExceptionType(
-                value = ResourceNotFoundException.class,
-                code = {404})
+            value = ResourceNotFoundException.class,
+            code = {404})
         @UnexpectedResponseExceptionType(
-                value = ResourceModifiedException.class,
-                code = {409})
+            value = ResourceModifiedException.class,
+            code = {409})
         @UnexpectedResponseExceptionType(HttpResponseException.class)
         Mono<Response<BinaryData>> getDiscoTemplate(
-                @HostParam("endpoint") String endpoint,
-                @HostParam("subscriptionId") String subscriptionId,
-                @HostParam("resourceGroupName") String resourceGroupName,
-                @HostParam("workspaceName") String workspaceName,
-                @QueryParam("api-version") String apiVersion,
-                @PathParam("templateId") String templateId,
-                @HeaderParam("accept") String accept,
-                RequestOptions requestOptions,
-                Context context);
+            @HostParam("endpoint") String endpoint,
+            @HostParam("subscriptionId") String subscriptionId,
+            @HostParam("resourceGroupName") String resourceGroupName,
+            @HostParam("workspaceName") String workspaceName,
+            @QueryParam("api-version") String apiVersion,
+            @PathParam("templateId") String templateId,
+            @HeaderParam("accept") String accept,
+            RequestOptions requestOptions,
+            Context context);
 
         @Get("/discoTemplates/{templateId}")
         @ExpectedResponses({200})
         @UnexpectedResponseExceptionType(
-                value = ClientAuthenticationException.class,
-                code = {401})
+            value = ClientAuthenticationException.class,
+            code = {401})
         @UnexpectedResponseExceptionType(
-                value = ResourceNotFoundException.class,
-                code = {404})
+            value = ResourceNotFoundException.class,
+            code = {404})
         @UnexpectedResponseExceptionType(
-                value = ResourceModifiedException.class,
-                code = {409})
+            value = ResourceModifiedException.class,
+            code = {409})
         @UnexpectedResponseExceptionType(HttpResponseException.class)
         Response<BinaryData> getDiscoTemplateSync(
-                @HostParam("endpoint") String endpoint,
-                @HostParam("subscriptionId") String subscriptionId,
-                @HostParam("resourceGroupName") String resourceGroupName,
-                @HostParam("workspaceName") String workspaceName,
-                @QueryParam("api-version") String apiVersion,
-                @PathParam("templateId") String templateId,
-                @HeaderParam("accept") String accept,
-                RequestOptions requestOptions,
-                Context context);
+            @HostParam("endpoint") String endpoint,
+            @HostParam("subscriptionId") String subscriptionId,
+            @HostParam("resourceGroupName") String resourceGroupName,
+            @HostParam("workspaceName") String workspaceName,
+            @QueryParam("api-version") String apiVersion,
+            @PathParam("templateId") String templateId,
+            @HeaderParam("accept") String accept,
+            RequestOptions requestOptions,
+            Context context);
 
         @Post("/reports/assets:getBillable")
         @ExpectedResponses({200})
         @UnexpectedResponseExceptionType(
-                value = ClientAuthenticationException.class,
-                code = {401})
+            value = ClientAuthenticationException.class,
+            code = {401})
         @UnexpectedResponseExceptionType(
-                value = ResourceNotFoundException.class,
-                code = {404})
+            value = ResourceNotFoundException.class,
+            code = {404})
         @UnexpectedResponseExceptionType(
-                value = ResourceModifiedException.class,
-                code = {409})
+            value = ResourceModifiedException.class,
+            code = {409})
         @UnexpectedResponseExceptionType(HttpResponseException.class)
         Mono<Response<BinaryData>> getBillable(
-                @HostParam("endpoint") String endpoint,
-                @HostParam("subscriptionId") String subscriptionId,
-                @HostParam("resourceGroupName") String resourceGroupName,
-                @HostParam("workspaceName") String workspaceName,
-                @QueryParam("api-version") String apiVersion,
-                @HeaderParam("accept") String accept,
-                RequestOptions requestOptions,
-                Context context);
+            @HostParam("endpoint") String endpoint,
+            @HostParam("subscriptionId") String subscriptionId,
+            @HostParam("resourceGroupName") String resourceGroupName,
+            @HostParam("workspaceName") String workspaceName,
+            @QueryParam("api-version") String apiVersion,
+            @HeaderParam("accept") String accept,
+            RequestOptions requestOptions,
+            Context context);
 
         @Post("/reports/assets:getBillable")
         @ExpectedResponses({200})
         @UnexpectedResponseExceptionType(
-                value = ClientAuthenticationException.class,
-                code = {401})
+            value = ClientAuthenticationException.class,
+            code = {401})
         @UnexpectedResponseExceptionType(
-                value = ResourceNotFoundException.class,
-                code = {404})
+            value = ResourceNotFoundException.class,
+            code = {404})
         @UnexpectedResponseExceptionType(
-                value = ResourceModifiedException.class,
-                code = {409})
+            value = ResourceModifiedException.class,
+            code = {409})
         @UnexpectedResponseExceptionType(HttpResponseException.class)
         Response<BinaryData> getBillableSync(
-                @HostParam("endpoint") String endpoint,
-                @HostParam("subscriptionId") String subscriptionId,
-                @HostParam("resourceGroupName") String resourceGroupName,
-                @HostParam("workspaceName") String workspaceName,
-                @QueryParam("api-version") String apiVersion,
-                @HeaderParam("accept") String accept,
-                RequestOptions requestOptions,
-                Context context);
+            @HostParam("endpoint") String endpoint,
+            @HostParam("subscriptionId") String subscriptionId,
+            @HostParam("resourceGroupName") String resourceGroupName,
+            @HostParam("workspaceName") String workspaceName,
+            @QueryParam("api-version") String apiVersion,
+            @HeaderParam("accept") String accept,
+            RequestOptions requestOptions,
+            Context context);
 
         @Post("/reports/assets:getSnapshot")
         @ExpectedResponses({200})
         @UnexpectedResponseExceptionType(
-                value = ClientAuthenticationException.class,
-                code = {401})
+            value = ClientAuthenticationException.class,
+            code = {401})
         @UnexpectedResponseExceptionType(
-                value = ResourceNotFoundException.class,
-                code = {404})
+            value = ResourceNotFoundException.class,
+            code = {404})
         @UnexpectedResponseExceptionType(
-                value = ResourceModifiedException.class,
-                code = {409})
+            value = ResourceModifiedException.class,
+            code = {409})
         @UnexpectedResponseExceptionType(HttpResponseException.class)
         Mono<Response<BinaryData>> getSnapshot(
-                @HostParam("endpoint") String endpoint,
-                @HostParam("subscriptionId") String subscriptionId,
-                @HostParam("resourceGroupName") String resourceGroupName,
-                @HostParam("workspaceName") String workspaceName,
-                @QueryParam("api-version") String apiVersion,
-                @HeaderParam("accept") String accept,
-                @BodyParam("application/json") BinaryData reportAssetSnapshotRequest,
-                RequestOptions requestOptions,
-                Context context);
+            @HostParam("endpoint") String endpoint,
+            @HostParam("subscriptionId") String subscriptionId,
+            @HostParam("resourceGroupName") String resourceGroupName,
+            @HostParam("workspaceName") String workspaceName,
+            @QueryParam("api-version") String apiVersion,
+            @HeaderParam("accept") String accept,
+            @BodyParam("application/json") BinaryData reportAssetSnapshotRequest,
+            RequestOptions requestOptions,
+            Context context);
 
         @Post("/reports/assets:getSnapshot")
         @ExpectedResponses({200})
         @UnexpectedResponseExceptionType(
-                value = ClientAuthenticationException.class,
-                code = {401})
+            value = ClientAuthenticationException.class,
+            code = {401})
         @UnexpectedResponseExceptionType(
-                value = ResourceNotFoundException.class,
-                code = {404})
+            value = ResourceNotFoundException.class,
+            code = {404})
         @UnexpectedResponseExceptionType(
-                value = ResourceModifiedException.class,
-                code = {409})
+            value = ResourceModifiedException.class,
+            code = {409})
         @UnexpectedResponseExceptionType(HttpResponseException.class)
         Response<BinaryData> getSnapshotSync(
-                @HostParam("endpoint") String endpoint,
-                @HostParam("subscriptionId") String subscriptionId,
-                @HostParam("resourceGroupName") String resourceGroupName,
-                @HostParam("workspaceName") String workspaceName,
-                @QueryParam("api-version") String apiVersion,
-                @HeaderParam("accept") String accept,
-                @BodyParam("application/json") BinaryData reportAssetSnapshotRequest,
-                RequestOptions requestOptions,
-                Context context);
+            @HostParam("endpoint") String endpoint,
+            @HostParam("subscriptionId") String subscriptionId,
+            @HostParam("resourceGroupName") String resourceGroupName,
+            @HostParam("workspaceName") String workspaceName,
+            @QueryParam("api-version") String apiVersion,
+            @HeaderParam("accept") String accept,
+            @BodyParam("application/json") BinaryData reportAssetSnapshotRequest,
+            RequestOptions requestOptions,
+            Context context);
 
         @Post("/reports/assets:getSummary")
         @ExpectedResponses({200})
         @UnexpectedResponseExceptionType(
-                value = ClientAuthenticationException.class,
-                code = {401})
+            value = ClientAuthenticationException.class,
+            code = {401})
         @UnexpectedResponseExceptionType(
-                value = ResourceNotFoundException.class,
-                code = {404})
+            value = ResourceNotFoundException.class,
+            code = {404})
         @UnexpectedResponseExceptionType(
-                value = ResourceModifiedException.class,
-                code = {409})
+            value = ResourceModifiedException.class,
+            code = {409})
         @UnexpectedResponseExceptionType(HttpResponseException.class)
         Mono<Response<BinaryData>> getSummary(
-                @HostParam("endpoint") String endpoint,
-                @HostParam("subscriptionId") String subscriptionId,
-                @HostParam("resourceGroupName") String resourceGroupName,
-                @HostParam("workspaceName") String workspaceName,
-                @QueryParam("api-version") String apiVersion,
-                @HeaderParam("accept") String accept,
-                @BodyParam("application/json") BinaryData reportAssetSummaryRequest,
-                RequestOptions requestOptions,
-                Context context);
+            @HostParam("endpoint") String endpoint,
+            @HostParam("subscriptionId") String subscriptionId,
+            @HostParam("resourceGroupName") String resourceGroupName,
+            @HostParam("workspaceName") String workspaceName,
+            @QueryParam("api-version") String apiVersion,
+            @HeaderParam("accept") String accept,
+            @BodyParam("application/json") BinaryData reportAssetSummaryRequest,
+            RequestOptions requestOptions,
+            Context context);
 
         @Post("/reports/assets:getSummary")
         @ExpectedResponses({200})
         @UnexpectedResponseExceptionType(
-                value = ClientAuthenticationException.class,
-                code = {401})
+            value = ClientAuthenticationException.class,
+            code = {401})
         @UnexpectedResponseExceptionType(
-                value = ResourceNotFoundException.class,
-                code = {404})
+            value = ResourceNotFoundException.class,
+            code = {404})
         @UnexpectedResponseExceptionType(
-                value = ResourceModifiedException.class,
-                code = {409})
+            value = ResourceModifiedException.class,
+            code = {409})
         @UnexpectedResponseExceptionType(HttpResponseException.class)
         Response<BinaryData> getSummarySync(
-                @HostParam("endpoint") String endpoint,
-                @HostParam("subscriptionId") String subscriptionId,
-                @HostParam("resourceGroupName") String resourceGroupName,
-                @HostParam("workspaceName") String workspaceName,
-                @QueryParam("api-version") String apiVersion,
-                @HeaderParam("accept") String accept,
-                @BodyParam("application/json") BinaryData reportAssetSummaryRequest,
-                RequestOptions requestOptions,
-                Context context);
+            @HostParam("endpoint") String endpoint,
+            @HostParam("subscriptionId") String subscriptionId,
+            @HostParam("resourceGroupName") String resourceGroupName,
+            @HostParam("workspaceName") String workspaceName,
+            @QueryParam("api-version") String apiVersion,
+            @HeaderParam("accept") String accept,
+            @BodyParam("application/json") BinaryData reportAssetSummaryRequest,
+            RequestOptions requestOptions,
+            Context context);
 
         @Get("/savedFilters")
         @ExpectedResponses({200})
         @UnexpectedResponseExceptionType(
-                value = ClientAuthenticationException.class,
-                code = {401})
+            value = ClientAuthenticationException.class,
+            code = {401})
         @UnexpectedResponseExceptionType(
-                value = ResourceNotFoundException.class,
-                code = {404})
+            value = ResourceNotFoundException.class,
+            code = {404})
         @UnexpectedResponseExceptionType(
-                value = ResourceModifiedException.class,
-                code = {409})
+            value = ResourceModifiedException.class,
+            code = {409})
         @UnexpectedResponseExceptionType(HttpResponseException.class)
         Mono<Response<BinaryData>> listSavedFilter(
-                @HostParam("endpoint") String endpoint,
-                @HostParam("subscriptionId") String subscriptionId,
-                @HostParam("resourceGroupName") String resourceGroupName,
-                @HostParam("workspaceName") String workspaceName,
-                @QueryParam("api-version") String apiVersion,
-                @HeaderParam("accept") String accept,
-                RequestOptions requestOptions,
-                Context context);
+            @HostParam("endpoint") String endpoint,
+            @HostParam("subscriptionId") String subscriptionId,
+            @HostParam("resourceGroupName") String resourceGroupName,
+            @HostParam("workspaceName") String workspaceName,
+            @QueryParam("api-version") String apiVersion,
+            @HeaderParam("accept") String accept,
+            RequestOptions requestOptions,
+            Context context);
 
         @Get("/savedFilters")
         @ExpectedResponses({200})
         @UnexpectedResponseExceptionType(
-                value = ClientAuthenticationException.class,
-                code = {401})
+            value = ClientAuthenticationException.class,
+            code = {401})
         @UnexpectedResponseExceptionType(
-                value = ResourceNotFoundException.class,
-                code = {404})
+            value = ResourceNotFoundException.class,
+            code = {404})
         @UnexpectedResponseExceptionType(
-                value = ResourceModifiedException.class,
-                code = {409})
+            value = ResourceModifiedException.class,
+            code = {409})
         @UnexpectedResponseExceptionType(HttpResponseException.class)
         Response<BinaryData> listSavedFilterSync(
-                @HostParam("endpoint") String endpoint,
-                @HostParam("subscriptionId") String subscriptionId,
-                @HostParam("resourceGroupName") String resourceGroupName,
-                @HostParam("workspaceName") String workspaceName,
-                @QueryParam("api-version") String apiVersion,
-                @HeaderParam("accept") String accept,
-                RequestOptions requestOptions,
-                Context context);
+            @HostParam("endpoint") String endpoint,
+            @HostParam("subscriptionId") String subscriptionId,
+            @HostParam("resourceGroupName") String resourceGroupName,
+            @HostParam("workspaceName") String workspaceName,
+            @QueryParam("api-version") String apiVersion,
+            @HeaderParam("accept") String accept,
+            RequestOptions requestOptions,
+            Context context);
 
         @Get("/savedFilters/{filterName}")
         @ExpectedResponses({200})
         @UnexpectedResponseExceptionType(
-                value = ClientAuthenticationException.class,
-                code = {401})
+            value = ClientAuthenticationException.class,
+            code = {401})
         @UnexpectedResponseExceptionType(
-                value = ResourceNotFoundException.class,
-                code = {404})
+            value = ResourceNotFoundException.class,
+            code = {404})
         @UnexpectedResponseExceptionType(
-                value = ResourceModifiedException.class,
-                code = {409})
+            value = ResourceModifiedException.class,
+            code = {409})
         @UnexpectedResponseExceptionType(HttpResponseException.class)
         Mono<Response<BinaryData>> getSavedFilter(
-                @HostParam("endpoint") String endpoint,
-                @HostParam("subscriptionId") String subscriptionId,
-                @HostParam("resourceGroupName") String resourceGroupName,
-                @HostParam("workspaceName") String workspaceName,
-                @QueryParam("api-version") String apiVersion,
-                @PathParam("filterName") String filterName,
-                @HeaderParam("accept") String accept,
-                RequestOptions requestOptions,
-                Context context);
+            @HostParam("endpoint") String endpoint,
+            @HostParam("subscriptionId") String subscriptionId,
+            @HostParam("resourceGroupName") String resourceGroupName,
+            @HostParam("workspaceName") String workspaceName,
+            @QueryParam("api-version") String apiVersion,
+            @PathParam("filterName") String filterName,
+            @HeaderParam("accept") String accept,
+            RequestOptions requestOptions,
+            Context context);
 
         @Get("/savedFilters/{filterName}")
         @ExpectedResponses({200})
         @UnexpectedResponseExceptionType(
-                value = ClientAuthenticationException.class,
-                code = {401})
+            value = ClientAuthenticationException.class,
+            code = {401})
         @UnexpectedResponseExceptionType(
-                value = ResourceNotFoundException.class,
-                code = {404})
+            value = ResourceNotFoundException.class,
+            code = {404})
         @UnexpectedResponseExceptionType(
-                value = ResourceModifiedException.class,
-                code = {409})
+            value = ResourceModifiedException.class,
+            code = {409})
         @UnexpectedResponseExceptionType(HttpResponseException.class)
         Response<BinaryData> getSavedFilterSync(
-                @HostParam("endpoint") String endpoint,
-                @HostParam("subscriptionId") String subscriptionId,
-                @HostParam("resourceGroupName") String resourceGroupName,
-                @HostParam("workspaceName") String workspaceName,
-                @QueryParam("api-version") String apiVersion,
-                @PathParam("filterName") String filterName,
-                @HeaderParam("accept") String accept,
-                RequestOptions requestOptions,
-                Context context);
+            @HostParam("endpoint") String endpoint,
+            @HostParam("subscriptionId") String subscriptionId,
+            @HostParam("resourceGroupName") String resourceGroupName,
+            @HostParam("workspaceName") String workspaceName,
+            @QueryParam("api-version") String apiVersion,
+            @PathParam("filterName") String filterName,
+            @HeaderParam("accept") String accept,
+            RequestOptions requestOptions,
+            Context context);
 
         @Put("/savedFilters/{filterName}")
         @ExpectedResponses({200})
         @UnexpectedResponseExceptionType(
-                value = ClientAuthenticationException.class,
-                code = {401})
+            value = ClientAuthenticationException.class,
+            code = {401})
         @UnexpectedResponseExceptionType(
-                value = ResourceNotFoundException.class,
-                code = {404})
+            value = ResourceNotFoundException.class,
+            code = {404})
         @UnexpectedResponseExceptionType(
-                value = ResourceModifiedException.class,
-                code = {409})
+            value = ResourceModifiedException.class,
+            code = {409})
         @UnexpectedResponseExceptionType(HttpResponseException.class)
         Mono<Response<BinaryData>> createOrReplaceSavedFilter(
-                @HostParam("endpoint") String endpoint,
-                @HostParam("subscriptionId") String subscriptionId,
-                @HostParam("resourceGroupName") String resourceGroupName,
-                @HostParam("workspaceName") String workspaceName,
-                @QueryParam("api-version") String apiVersion,
-                @PathParam("filterName") String filterName,
-                @HeaderParam("accept") String accept,
-                @BodyParam("application/json") BinaryData savedFilterData,
-                RequestOptions requestOptions,
-                Context context);
+            @HostParam("endpoint") String endpoint,
+            @HostParam("subscriptionId") String subscriptionId,
+            @HostParam("resourceGroupName") String resourceGroupName,
+            @HostParam("workspaceName") String workspaceName,
+            @QueryParam("api-version") String apiVersion,
+            @PathParam("filterName") String filterName,
+            @HeaderParam("accept") String accept,
+            @BodyParam("application/json") BinaryData savedFilterData,
+            RequestOptions requestOptions,
+            Context context);
 
         @Put("/savedFilters/{filterName}")
         @ExpectedResponses({200})
         @UnexpectedResponseExceptionType(
-                value = ClientAuthenticationException.class,
-                code = {401})
+            value = ClientAuthenticationException.class,
+            code = {401})
         @UnexpectedResponseExceptionType(
-                value = ResourceNotFoundException.class,
-                code = {404})
+            value = ResourceNotFoundException.class,
+            code = {404})
         @UnexpectedResponseExceptionType(
-                value = ResourceModifiedException.class,
-                code = {409})
+            value = ResourceModifiedException.class,
+            code = {409})
         @UnexpectedResponseExceptionType(HttpResponseException.class)
         Response<BinaryData> createOrReplaceSavedFilterSync(
-                @HostParam("endpoint") String endpoint,
-                @HostParam("subscriptionId") String subscriptionId,
-                @HostParam("resourceGroupName") String resourceGroupName,
-                @HostParam("workspaceName") String workspaceName,
-                @QueryParam("api-version") String apiVersion,
-                @PathParam("filterName") String filterName,
-                @HeaderParam("accept") String accept,
-                @BodyParam("application/json") BinaryData savedFilterData,
-                RequestOptions requestOptions,
-                Context context);
+            @HostParam("endpoint") String endpoint,
+            @HostParam("subscriptionId") String subscriptionId,
+            @HostParam("resourceGroupName") String resourceGroupName,
+            @HostParam("workspaceName") String workspaceName,
+            @QueryParam("api-version") String apiVersion,
+            @PathParam("filterName") String filterName,
+            @HeaderParam("accept") String accept,
+            @BodyParam("application/json") BinaryData savedFilterData,
+            RequestOptions requestOptions,
+            Context context);
 
         @Delete("/savedFilters/{filterName}")
         @ExpectedResponses({204})
         @UnexpectedResponseExceptionType(
-                value = ClientAuthenticationException.class,
-                code = {401})
+            value = ClientAuthenticationException.class,
+            code = {401})
         @UnexpectedResponseExceptionType(
-                value = ResourceNotFoundException.class,
-                code = {404})
+            value = ResourceNotFoundException.class,
+            code = {404})
         @UnexpectedResponseExceptionType(
-                value = ResourceModifiedException.class,
-                code = {409})
+            value = ResourceModifiedException.class,
+            code = {409})
         @UnexpectedResponseExceptionType(HttpResponseException.class)
         Mono<Response<Void>> deleteSavedFilter(
-                @HostParam("endpoint") String endpoint,
-                @HostParam("subscriptionId") String subscriptionId,
-                @HostParam("resourceGroupName") String resourceGroupName,
-                @HostParam("workspaceName") String workspaceName,
-                @QueryParam("api-version") String apiVersion,
-                @PathParam("filterName") String filterName,
-                @HeaderParam("accept") String accept,
-                RequestOptions requestOptions,
-                Context context);
+            @HostParam("endpoint") String endpoint,
+            @HostParam("subscriptionId") String subscriptionId,
+            @HostParam("resourceGroupName") String resourceGroupName,
+            @HostParam("workspaceName") String workspaceName,
+            @QueryParam("api-version") String apiVersion,
+            @PathParam("filterName") String filterName,
+            @HeaderParam("accept") String accept,
+            RequestOptions requestOptions,
+            Context context);
 
         @Delete("/savedFilters/{filterName}")
         @ExpectedResponses({204})
         @UnexpectedResponseExceptionType(
-                value = ClientAuthenticationException.class,
-                code = {401})
+            value = ClientAuthenticationException.class,
+            code = {401})
         @UnexpectedResponseExceptionType(
-                value = ResourceNotFoundException.class,
-                code = {404})
+            value = ResourceNotFoundException.class,
+            code = {404})
         @UnexpectedResponseExceptionType(
-                value = ResourceModifiedException.class,
-                code = {409})
+            value = ResourceModifiedException.class,
+            code = {409})
         @UnexpectedResponseExceptionType(HttpResponseException.class)
         Response<Void> deleteSavedFilterSync(
-                @HostParam("endpoint") String endpoint,
-                @HostParam("subscriptionId") String subscriptionId,
-                @HostParam("resourceGroupName") String resourceGroupName,
-                @HostParam("workspaceName") String workspaceName,
-                @QueryParam("api-version") String apiVersion,
-                @PathParam("filterName") String filterName,
-                @HeaderParam("accept") String accept,
-                RequestOptions requestOptions,
-                Context context);
+            @HostParam("endpoint") String endpoint,
+            @HostParam("subscriptionId") String subscriptionId,
+            @HostParam("resourceGroupName") String resourceGroupName,
+            @HostParam("workspaceName") String workspaceName,
+            @QueryParam("api-version") String apiVersion,
+            @PathParam("filterName") String filterName,
+            @HeaderParam("accept") String accept,
+            RequestOptions requestOptions,
+            Context context);
 
         @Get("/tasks")
         @ExpectedResponses({200})
         @UnexpectedResponseExceptionType(
-                value = ClientAuthenticationException.class,
-                code = {401})
+            value = ClientAuthenticationException.class,
+            code = {401})
         @UnexpectedResponseExceptionType(
-                value = ResourceNotFoundException.class,
-                code = {404})
+            value = ResourceNotFoundException.class,
+            code = {404})
         @UnexpectedResponseExceptionType(
-                value = ResourceModifiedException.class,
-                code = {409})
+            value = ResourceModifiedException.class,
+            code = {409})
         @UnexpectedResponseExceptionType(HttpResponseException.class)
         Mono<Response<BinaryData>> listTask(
-                @HostParam("endpoint") String endpoint,
-                @HostParam("subscriptionId") String subscriptionId,
-                @HostParam("resourceGroupName") String resourceGroupName,
-                @HostParam("workspaceName") String workspaceName,
-                @QueryParam("api-version") String apiVersion,
-                @HeaderParam("accept") String accept,
-                RequestOptions requestOptions,
-                Context context);
+            @HostParam("endpoint") String endpoint,
+            @HostParam("subscriptionId") String subscriptionId,
+            @HostParam("resourceGroupName") String resourceGroupName,
+            @HostParam("workspaceName") String workspaceName,
+            @QueryParam("api-version") String apiVersion,
+            @HeaderParam("accept") String accept,
+            RequestOptions requestOptions,
+            Context context);
 
         @Get("/tasks")
         @ExpectedResponses({200})
         @UnexpectedResponseExceptionType(
-                value = ClientAuthenticationException.class,
-                code = {401})
+            value = ClientAuthenticationException.class,
+            code = {401})
         @UnexpectedResponseExceptionType(
-                value = ResourceNotFoundException.class,
-                code = {404})
+            value = ResourceNotFoundException.class,
+            code = {404})
         @UnexpectedResponseExceptionType(
-                value = ResourceModifiedException.class,
-                code = {409})
+            value = ResourceModifiedException.class,
+            code = {409})
         @UnexpectedResponseExceptionType(HttpResponseException.class)
         Response<BinaryData> listTaskSync(
-                @HostParam("endpoint") String endpoint,
-                @HostParam("subscriptionId") String subscriptionId,
-                @HostParam("resourceGroupName") String resourceGroupName,
-                @HostParam("workspaceName") String workspaceName,
-                @QueryParam("api-version") String apiVersion,
-                @HeaderParam("accept") String accept,
-                RequestOptions requestOptions,
-                Context context);
+            @HostParam("endpoint") String endpoint,
+            @HostParam("subscriptionId") String subscriptionId,
+            @HostParam("resourceGroupName") String resourceGroupName,
+            @HostParam("workspaceName") String workspaceName,
+            @QueryParam("api-version") String apiVersion,
+            @HeaderParam("accept") String accept,
+            RequestOptions requestOptions,
+            Context context);
 
         @Get("/tasks/{taskId}")
         @ExpectedResponses({200})
         @UnexpectedResponseExceptionType(
-                value = ClientAuthenticationException.class,
-                code = {401})
+            value = ClientAuthenticationException.class,
+            code = {401})
         @UnexpectedResponseExceptionType(
-                value = ResourceNotFoundException.class,
-                code = {404})
+            value = ResourceNotFoundException.class,
+            code = {404})
         @UnexpectedResponseExceptionType(
-                value = ResourceModifiedException.class,
-                code = {409})
+            value = ResourceModifiedException.class,
+            code = {409})
         @UnexpectedResponseExceptionType(HttpResponseException.class)
         Mono<Response<BinaryData>> getTask(
-                @HostParam("endpoint") String endpoint,
-                @HostParam("subscriptionId") String subscriptionId,
-                @HostParam("resourceGroupName") String resourceGroupName,
-                @HostParam("workspaceName") String workspaceName,
-                @QueryParam("api-version") String apiVersion,
-                @PathParam("taskId") String taskId,
-                @HeaderParam("accept") String accept,
-                RequestOptions requestOptions,
-                Context context);
+            @HostParam("endpoint") String endpoint,
+            @HostParam("subscriptionId") String subscriptionId,
+            @HostParam("resourceGroupName") String resourceGroupName,
+            @HostParam("workspaceName") String workspaceName,
+            @QueryParam("api-version") String apiVersion,
+            @PathParam("taskId") String taskId,
+            @HeaderParam("accept") String accept,
+            RequestOptions requestOptions,
+            Context context);
 
         @Get("/tasks/{taskId}")
         @ExpectedResponses({200})
         @UnexpectedResponseExceptionType(
-                value = ClientAuthenticationException.class,
-                code = {401})
+            value = ClientAuthenticationException.class,
+            code = {401})
         @UnexpectedResponseExceptionType(
-                value = ResourceNotFoundException.class,
-                code = {404})
+            value = ResourceNotFoundException.class,
+            code = {404})
         @UnexpectedResponseExceptionType(
-                value = ResourceModifiedException.class,
-                code = {409})
+            value = ResourceModifiedException.class,
+            code = {409})
         @UnexpectedResponseExceptionType(HttpResponseException.class)
         Response<BinaryData> getTaskSync(
-                @HostParam("endpoint") String endpoint,
-                @HostParam("subscriptionId") String subscriptionId,
-                @HostParam("resourceGroupName") String resourceGroupName,
-                @HostParam("workspaceName") String workspaceName,
-                @QueryParam("api-version") String apiVersion,
-                @PathParam("taskId") String taskId,
-                @HeaderParam("accept") String accept,
-                RequestOptions requestOptions,
-                Context context);
+            @HostParam("endpoint") String endpoint,
+            @HostParam("subscriptionId") String subscriptionId,
+            @HostParam("resourceGroupName") String resourceGroupName,
+            @HostParam("workspaceName") String workspaceName,
+            @QueryParam("api-version") String apiVersion,
+            @PathParam("taskId") String taskId,
+            @HeaderParam("accept") String accept,
+            RequestOptions requestOptions,
+            Context context);
 
         @Post("/tasks/{taskId}:cancel")
         @ExpectedResponses({200})
         @UnexpectedResponseExceptionType(
-                value = ClientAuthenticationException.class,
-                code = {401})
+            value = ClientAuthenticationException.class,
+            code = {401})
         @UnexpectedResponseExceptionType(
-                value = ResourceNotFoundException.class,
-                code = {404})
+            value = ResourceNotFoundException.class,
+            code = {404})
         @UnexpectedResponseExceptionType(
-                value = ResourceModifiedException.class,
-                code = {409})
+            value = ResourceModifiedException.class,
+            code = {409})
         @UnexpectedResponseExceptionType(HttpResponseException.class)
         Mono<Response<BinaryData>> cancelTask(
-                @HostParam("endpoint") String endpoint,
-                @HostParam("subscriptionId") String subscriptionId,
-                @HostParam("resourceGroupName") String resourceGroupName,
-                @HostParam("workspaceName") String workspaceName,
-                @QueryParam("api-version") String apiVersion,
-                @PathParam("taskId") String taskId,
-                @HeaderParam("accept") String accept,
-                RequestOptions requestOptions,
-                Context context);
+            @HostParam("endpoint") String endpoint,
+            @HostParam("subscriptionId") String subscriptionId,
+            @HostParam("resourceGroupName") String resourceGroupName,
+            @HostParam("workspaceName") String workspaceName,
+            @QueryParam("api-version") String apiVersion,
+            @PathParam("taskId") String taskId,
+            @HeaderParam("accept") String accept,
+            RequestOptions requestOptions,
+            Context context);
 
         @Post("/tasks/{taskId}:cancel")
         @ExpectedResponses({200})
         @UnexpectedResponseExceptionType(
-                value = ClientAuthenticationException.class,
-                code = {401})
+            value = ClientAuthenticationException.class,
+            code = {401})
         @UnexpectedResponseExceptionType(
-                value = ResourceNotFoundException.class,
-                code = {404})
+            value = ResourceNotFoundException.class,
+            code = {404})
         @UnexpectedResponseExceptionType(
-                value = ResourceModifiedException.class,
-                code = {409})
+            value = ResourceModifiedException.class,
+            code = {409})
         @UnexpectedResponseExceptionType(HttpResponseException.class)
         Response<BinaryData> cancelTaskSync(
-                @HostParam("endpoint") String endpoint,
-                @HostParam("subscriptionId") String subscriptionId,
-                @HostParam("resourceGroupName") String resourceGroupName,
-                @HostParam("workspaceName") String workspaceName,
-                @QueryParam("api-version") String apiVersion,
-                @PathParam("taskId") String taskId,
-                @HeaderParam("accept") String accept,
-                RequestOptions requestOptions,
-                Context context);
+            @HostParam("endpoint") String endpoint,
+            @HostParam("subscriptionId") String subscriptionId,
+            @HostParam("resourceGroupName") String resourceGroupName,
+            @HostParam("workspaceName") String workspaceName,
+            @QueryParam("api-version") String apiVersion,
+            @PathParam("taskId") String taskId,
+            @HeaderParam("accept") String accept,
+            RequestOptions requestOptions,
+            Context context);
 
         @Get("{nextLink}")
         @ExpectedResponses({200})
         @UnexpectedResponseExceptionType(
-                value = ClientAuthenticationException.class,
-                code = {401})
+            value = ClientAuthenticationException.class,
+            code = {401})
         @UnexpectedResponseExceptionType(
-                value = ResourceNotFoundException.class,
-                code = {404})
+            value = ResourceNotFoundException.class,
+            code = {404})
         @UnexpectedResponseExceptionType(
-                value = ResourceModifiedException.class,
-                code = {409})
+            value = ResourceModifiedException.class,
+            code = {409})
         @UnexpectedResponseExceptionType(HttpResponseException.class)
         Mono<Response<BinaryData>> listAssetResourceNext(
-                @PathParam(value = "nextLink", encoded = true) String nextLink,
-                @HostParam("endpoint") String endpoint,
-                @HostParam("subscriptionId") String subscriptionId,
-                @HostParam("resourceGroupName") String resourceGroupName,
-                @HostParam("workspaceName") String workspaceName,
-                @HeaderParam("accept") String accept,
-                RequestOptions requestOptions,
-                Context context);
+            @PathParam(value = "nextLink", encoded = true) String nextLink,
+            @HostParam("endpoint") String endpoint,
+            @HostParam("subscriptionId") String subscriptionId,
+            @HostParam("resourceGroupName") String resourceGroupName,
+            @HostParam("workspaceName") String workspaceName,
+            @HeaderParam("accept") String accept,
+            RequestOptions requestOptions,
+            Context context);
 
         @Get("{nextLink}")
         @ExpectedResponses({200})
         @UnexpectedResponseExceptionType(
-                value = ClientAuthenticationException.class,
-                code = {401})
+            value = ClientAuthenticationException.class,
+            code = {401})
         @UnexpectedResponseExceptionType(
-                value = ResourceNotFoundException.class,
-                code = {404})
+            value = ResourceNotFoundException.class,
+            code = {404})
         @UnexpectedResponseExceptionType(
-                value = ResourceModifiedException.class,
-                code = {409})
+            value = ResourceModifiedException.class,
+            code = {409})
         @UnexpectedResponseExceptionType(HttpResponseException.class)
         Response<BinaryData> listAssetResourceNextSync(
-                @PathParam(value = "nextLink", encoded = true) String nextLink,
-                @HostParam("endpoint") String endpoint,
-                @HostParam("subscriptionId") String subscriptionId,
-                @HostParam("resourceGroupName") String resourceGroupName,
-                @HostParam("workspaceName") String workspaceName,
-                @HeaderParam("accept") String accept,
-                RequestOptions requestOptions,
-                Context context);
+            @PathParam(value = "nextLink", encoded = true) String nextLink,
+            @HostParam("endpoint") String endpoint,
+            @HostParam("subscriptionId") String subscriptionId,
+            @HostParam("resourceGroupName") String resourceGroupName,
+            @HostParam("workspaceName") String workspaceName,
+            @HeaderParam("accept") String accept,
+            RequestOptions requestOptions,
+            Context context);
 
         @Get("{nextLink}")
         @ExpectedResponses({200})
         @UnexpectedResponseExceptionType(
-                value = ClientAuthenticationException.class,
-                code = {401})
+            value = ClientAuthenticationException.class,
+            code = {401})
         @UnexpectedResponseExceptionType(
-                value = ResourceNotFoundException.class,
-                code = {404})
+            value = ResourceNotFoundException.class,
+            code = {404})
         @UnexpectedResponseExceptionType(
-                value = ResourceModifiedException.class,
-                code = {409})
+            value = ResourceModifiedException.class,
+            code = {409})
         @UnexpectedResponseExceptionType(HttpResponseException.class)
         Mono<Response<BinaryData>> listDataConnectionNext(
-                @PathParam(value = "nextLink", encoded = true) String nextLink,
-                @HostParam("endpoint") String endpoint,
-                @HostParam("subscriptionId") String subscriptionId,
-                @HostParam("resourceGroupName") String resourceGroupName,
-                @HostParam("workspaceName") String workspaceName,
-                @HeaderParam("accept") String accept,
-                RequestOptions requestOptions,
-                Context context);
+            @PathParam(value = "nextLink", encoded = true) String nextLink,
+            @HostParam("endpoint") String endpoint,
+            @HostParam("subscriptionId") String subscriptionId,
+            @HostParam("resourceGroupName") String resourceGroupName,
+            @HostParam("workspaceName") String workspaceName,
+            @HeaderParam("accept") String accept,
+            RequestOptions requestOptions,
+            Context context);
 
         @Get("{nextLink}")
         @ExpectedResponses({200})
         @UnexpectedResponseExceptionType(
-                value = ClientAuthenticationException.class,
-                code = {401})
+            value = ClientAuthenticationException.class,
+            code = {401})
         @UnexpectedResponseExceptionType(
-                value = ResourceNotFoundException.class,
-                code = {404})
+            value = ResourceNotFoundException.class,
+            code = {404})
         @UnexpectedResponseExceptionType(
-                value = ResourceModifiedException.class,
-                code = {409})
+            value = ResourceModifiedException.class,
+            code = {409})
         @UnexpectedResponseExceptionType(HttpResponseException.class)
         Response<BinaryData> listDataConnectionNextSync(
-                @PathParam(value = "nextLink", encoded = true) String nextLink,
-                @HostParam("endpoint") String endpoint,
-                @HostParam("subscriptionId") String subscriptionId,
-                @HostParam("resourceGroupName") String resourceGroupName,
-                @HostParam("workspaceName") String workspaceName,
-                @HeaderParam("accept") String accept,
-                RequestOptions requestOptions,
-                Context context);
+            @PathParam(value = "nextLink", encoded = true) String nextLink,
+            @HostParam("endpoint") String endpoint,
+            @HostParam("subscriptionId") String subscriptionId,
+            @HostParam("resourceGroupName") String resourceGroupName,
+            @HostParam("workspaceName") String workspaceName,
+            @HeaderParam("accept") String accept,
+            RequestOptions requestOptions,
+            Context context);
 
         @Get("{nextLink}")
         @ExpectedResponses({200})
         @UnexpectedResponseExceptionType(
-                value = ClientAuthenticationException.class,
-                code = {401})
+            value = ClientAuthenticationException.class,
+            code = {401})
         @UnexpectedResponseExceptionType(
-                value = ResourceNotFoundException.class,
-                code = {404})
+            value = ResourceNotFoundException.class,
+            code = {404})
         @UnexpectedResponseExceptionType(
-                value = ResourceModifiedException.class,
-                code = {409})
+            value = ResourceModifiedException.class,
+            code = {409})
         @UnexpectedResponseExceptionType(HttpResponseException.class)
         Mono<Response<BinaryData>> listDiscoGroupNext(
-                @PathParam(value = "nextLink", encoded = true) String nextLink,
-                @HostParam("endpoint") String endpoint,
-                @HostParam("subscriptionId") String subscriptionId,
-                @HostParam("resourceGroupName") String resourceGroupName,
-                @HostParam("workspaceName") String workspaceName,
-                @HeaderParam("accept") String accept,
-                RequestOptions requestOptions,
-                Context context);
+            @PathParam(value = "nextLink", encoded = true) String nextLink,
+            @HostParam("endpoint") String endpoint,
+            @HostParam("subscriptionId") String subscriptionId,
+            @HostParam("resourceGroupName") String resourceGroupName,
+            @HostParam("workspaceName") String workspaceName,
+            @HeaderParam("accept") String accept,
+            RequestOptions requestOptions,
+            Context context);
 
         @Get("{nextLink}")
         @ExpectedResponses({200})
         @UnexpectedResponseExceptionType(
-                value = ClientAuthenticationException.class,
-                code = {401})
+            value = ClientAuthenticationException.class,
+            code = {401})
         @UnexpectedResponseExceptionType(
-                value = ResourceNotFoundException.class,
-                code = {404})
+            value = ResourceNotFoundException.class,
+            code = {404})
         @UnexpectedResponseExceptionType(
-                value = ResourceModifiedException.class,
-                code = {409})
+            value = ResourceModifiedException.class,
+            code = {409})
         @UnexpectedResponseExceptionType(HttpResponseException.class)
         Response<BinaryData> listDiscoGroupNextSync(
-                @PathParam(value = "nextLink", encoded = true) String nextLink,
-                @HostParam("endpoint") String endpoint,
-                @HostParam("subscriptionId") String subscriptionId,
-                @HostParam("resourceGroupName") String resourceGroupName,
-                @HostParam("workspaceName") String workspaceName,
-                @HeaderParam("accept") String accept,
-                RequestOptions requestOptions,
-                Context context);
+            @PathParam(value = "nextLink", encoded = true) String nextLink,
+            @HostParam("endpoint") String endpoint,
+            @HostParam("subscriptionId") String subscriptionId,
+            @HostParam("resourceGroupName") String resourceGroupName,
+            @HostParam("workspaceName") String workspaceName,
+            @HeaderParam("accept") String accept,
+            RequestOptions requestOptions,
+            Context context);
 
         @Get("{nextLink}")
         @ExpectedResponses({200})
         @UnexpectedResponseExceptionType(
-                value = ClientAuthenticationException.class,
-                code = {401})
+            value = ClientAuthenticationException.class,
+            code = {401})
         @UnexpectedResponseExceptionType(
-                value = ResourceNotFoundException.class,
-                code = {404})
+            value = ResourceNotFoundException.class,
+            code = {404})
         @UnexpectedResponseExceptionType(
-                value = ResourceModifiedException.class,
-                code = {409})
+            value = ResourceModifiedException.class,
+            code = {409})
+        @UnexpectedResponseExceptionType(HttpResponseException.class)
+        Response<BinaryData> listRunsNextSync(
+            @PathParam(value = "nextLink", encoded = true) String nextLink,
+            @HostParam("endpoint") String endpoint,
+            @HostParam("subscriptionId") String subscriptionId,
+            @HostParam("resourceGroupName") String resourceGroupName,
+            @HostParam("workspaceName") String workspaceName,
+            @HeaderParam("accept") String accept,
+            RequestOptions requestOptions,
+            Context context);
+
+        @Get("{nextLink}")
+        @ExpectedResponses({200})
+        @UnexpectedResponseExceptionType(
+            value = ClientAuthenticationException.class,
+            code = {401})
+        @UnexpectedResponseExceptionType(
+            value = ResourceNotFoundException.class,
+            code = {404})
+        @UnexpectedResponseExceptionType(
+            value = ResourceModifiedException.class,
+            code = {409})
         @UnexpectedResponseExceptionType(HttpResponseException.class)
         Mono<Response<BinaryData>> listDiscoTemplateNext(
-                @PathParam(value = "nextLink", encoded = true) String nextLink,
-                @HostParam("endpoint") String endpoint,
-                @HostParam("subscriptionId") String subscriptionId,
-                @HostParam("resourceGroupName") String resourceGroupName,
-                @HostParam("workspaceName") String workspaceName,
-                @HeaderParam("accept") String accept,
-                RequestOptions requestOptions,
-                Context context);
+            @PathParam(value = "nextLink", encoded = true) String nextLink,
+            @HostParam("endpoint") String endpoint,
+            @HostParam("subscriptionId") String subscriptionId,
+            @HostParam("resourceGroupName") String resourceGroupName,
+            @HostParam("workspaceName") String workspaceName,
+            @HeaderParam("accept") String accept,
+            RequestOptions requestOptions,
+            Context context);
 
         @Get("{nextLink}")
         @ExpectedResponses({200})
         @UnexpectedResponseExceptionType(
-                value = ClientAuthenticationException.class,
-                code = {401})
+            value = ClientAuthenticationException.class,
+            code = {401})
         @UnexpectedResponseExceptionType(
-                value = ResourceNotFoundException.class,
-                code = {404})
+            value = ResourceNotFoundException.class,
+            code = {404})
         @UnexpectedResponseExceptionType(
-                value = ResourceModifiedException.class,
-                code = {409})
+            value = ResourceModifiedException.class,
+            code = {409})
         @UnexpectedResponseExceptionType(HttpResponseException.class)
         Response<BinaryData> listDiscoTemplateNextSync(
-                @PathParam(value = "nextLink", encoded = true) String nextLink,
-                @HostParam("endpoint") String endpoint,
-                @HostParam("subscriptionId") String subscriptionId,
-                @HostParam("resourceGroupName") String resourceGroupName,
-                @HostParam("workspaceName") String workspaceName,
-                @HeaderParam("accept") String accept,
-                RequestOptions requestOptions,
-                Context context);
+            @PathParam(value = "nextLink", encoded = true) String nextLink,
+            @HostParam("endpoint") String endpoint,
+            @HostParam("subscriptionId") String subscriptionId,
+            @HostParam("resourceGroupName") String resourceGroupName,
+            @HostParam("workspaceName") String workspaceName,
+            @HeaderParam("accept") String accept,
+            RequestOptions requestOptions,
+            Context context);
 
         @Get("{nextLink}")
         @ExpectedResponses({200})
         @UnexpectedResponseExceptionType(
-                value = ClientAuthenticationException.class,
-                code = {401})
+            value = ClientAuthenticationException.class,
+            code = {401})
         @UnexpectedResponseExceptionType(
-                value = ResourceNotFoundException.class,
-                code = {404})
+            value = ResourceNotFoundException.class,
+            code = {404})
         @UnexpectedResponseExceptionType(
-                value = ResourceModifiedException.class,
-                code = {409})
+            value = ResourceModifiedException.class,
+            code = {409})
         @UnexpectedResponseExceptionType(HttpResponseException.class)
         Mono<Response<BinaryData>> listSavedFilterNext(
-                @PathParam(value = "nextLink", encoded = true) String nextLink,
-                @HostParam("endpoint") String endpoint,
-                @HostParam("subscriptionId") String subscriptionId,
-                @HostParam("resourceGroupName") String resourceGroupName,
-                @HostParam("workspaceName") String workspaceName,
-                @HeaderParam("accept") String accept,
-                RequestOptions requestOptions,
-                Context context);
+            @PathParam(value = "nextLink", encoded = true) String nextLink,
+            @HostParam("endpoint") String endpoint,
+            @HostParam("subscriptionId") String subscriptionId,
+            @HostParam("resourceGroupName") String resourceGroupName,
+            @HostParam("workspaceName") String workspaceName,
+            @HeaderParam("accept") String accept,
+            RequestOptions requestOptions,
+            Context context);
 
         @Get("{nextLink}")
         @ExpectedResponses({200})
         @UnexpectedResponseExceptionType(
-                value = ClientAuthenticationException.class,
-                code = {401})
+            value = ClientAuthenticationException.class,
+            code = {401})
         @UnexpectedResponseExceptionType(
-                value = ResourceNotFoundException.class,
-                code = {404})
+            value = ResourceNotFoundException.class,
+            code = {404})
         @UnexpectedResponseExceptionType(
-                value = ResourceModifiedException.class,
-                code = {409})
+            value = ResourceModifiedException.class,
+            code = {409})
         @UnexpectedResponseExceptionType(HttpResponseException.class)
         Response<BinaryData> listSavedFilterNextSync(
-                @PathParam(value = "nextLink", encoded = true) String nextLink,
-                @HostParam("endpoint") String endpoint,
-                @HostParam("subscriptionId") String subscriptionId,
-                @HostParam("resourceGroupName") String resourceGroupName,
-                @HostParam("workspaceName") String workspaceName,
-                @HeaderParam("accept") String accept,
-                RequestOptions requestOptions,
-                Context context);
+            @PathParam(value = "nextLink", encoded = true) String nextLink,
+            @HostParam("endpoint") String endpoint,
+            @HostParam("subscriptionId") String subscriptionId,
+            @HostParam("resourceGroupName") String resourceGroupName,
+            @HostParam("workspaceName") String workspaceName,
+            @HeaderParam("accept") String accept,
+            RequestOptions requestOptions,
+            Context context);
 
         @Get("{nextLink}")
         @ExpectedResponses({200})
         @UnexpectedResponseExceptionType(
-                value = ClientAuthenticationException.class,
-                code = {401})
+            value = ClientAuthenticationException.class,
+            code = {401})
         @UnexpectedResponseExceptionType(
-                value = ResourceNotFoundException.class,
-                code = {404})
+            value = ResourceNotFoundException.class,
+            code = {404})
         @UnexpectedResponseExceptionType(
-                value = ResourceModifiedException.class,
-                code = {409})
+            value = ResourceModifiedException.class,
+            code = {409})
         @UnexpectedResponseExceptionType(HttpResponseException.class)
         Mono<Response<BinaryData>> listTaskNext(
-                @PathParam(value = "nextLink", encoded = true) String nextLink,
-                @HostParam("endpoint") String endpoint,
-                @HostParam("subscriptionId") String subscriptionId,
-                @HostParam("resourceGroupName") String resourceGroupName,
-                @HostParam("workspaceName") String workspaceName,
-                @HeaderParam("accept") String accept,
-                RequestOptions requestOptions,
-                Context context);
+            @PathParam(value = "nextLink", encoded = true) String nextLink,
+            @HostParam("endpoint") String endpoint,
+            @HostParam("subscriptionId") String subscriptionId,
+            @HostParam("resourceGroupName") String resourceGroupName,
+            @HostParam("workspaceName") String workspaceName,
+            @HeaderParam("accept") String accept,
+            RequestOptions requestOptions,
+            Context context);
 
         @Get("{nextLink}")
         @ExpectedResponses({200})
         @UnexpectedResponseExceptionType(
-                value = ClientAuthenticationException.class,
-                code = {401})
+            value = ClientAuthenticationException.class,
+            code = {401})
         @UnexpectedResponseExceptionType(
-                value = ResourceNotFoundException.class,
-                code = {404})
+            value = ResourceNotFoundException.class,
+            code = {404})
         @UnexpectedResponseExceptionType(
-                value = ResourceModifiedException.class,
-                code = {409})
+            value = ResourceModifiedException.class,
+            code = {409})
         @UnexpectedResponseExceptionType(HttpResponseException.class)
         Response<BinaryData> listTaskNextSync(
-                @PathParam(value = "nextLink", encoded = true) String nextLink,
-                @HostParam("endpoint") String endpoint,
-                @HostParam("subscriptionId") String subscriptionId,
-                @HostParam("resourceGroupName") String resourceGroupName,
-                @HostParam("workspaceName") String workspaceName,
-                @HeaderParam("accept") String accept,
-                RequestOptions requestOptions,
-                Context context);
+            @PathParam(value = "nextLink", encoded = true) String nextLink,
+            @HostParam("endpoint") String endpoint,
+            @HostParam("subscriptionId") String subscriptionId,
+            @HostParam("resourceGroupName") String resourceGroupName,
+            @HostParam("workspaceName") String workspaceName,
+            @HeaderParam("accept") String accept,
+            RequestOptions requestOptions,
+            Context context);
     }
 
     /**
@@ -1737,25 +1759,25 @@ public final class EasmClientImpl {
     private Mono<PagedResponse<BinaryData>> listAssetResourceSinglePageAsync(RequestOptions requestOptions) {
         final String accept = "application/json";
         return FluxUtil.withContext(
-                        context ->
-                                service.listAssetResource(
-                                        this.getEndpoint(),
-                                        this.getSubscriptionId(),
-                                        this.getResourceGroupName(),
-                                        this.getWorkspaceName(),
-                                        this.getServiceVersion().getVersion(),
-                                        accept,
-                                        requestOptions,
-                                        context))
-                .map(
-                        res ->
-                                new PagedResponseBase<>(
-                                        res.getRequest(),
-                                        res.getStatusCode(),
-                                        res.getHeaders(),
-                                        getValues(res.getValue(), "value"),
-                                        getNextLink(res.getValue(), "nextLink"),
-                                        null));
+                context ->
+                    service.listAssetResource(
+                        this.getEndpoint(),
+                        this.getSubscriptionId(),
+                        this.getResourceGroupName(),
+                        this.getWorkspaceName(),
+                        this.getServiceVersion().getVersion(),
+                        accept,
+                        requestOptions,
+                        context))
+            .map(
+                res ->
+                    new PagedResponseBase<>(
+                        res.getRequest(),
+                        res.getStatusCode(),
+                        res.getHeaders(),
+                        getValues(res.getValue(), "value"),
+                        getNextLink(res.getValue(), "nextLink"),
+                        null));
     }
 
     /**
@@ -1816,35 +1838,12 @@ public final class EasmClientImpl {
     public PagedFlux<BinaryData> listAssetResourceAsync(RequestOptions requestOptions) {
         RequestOptions requestOptionsForNextPage = new RequestOptions();
         requestOptionsForNextPage.setContext(
-                requestOptions != null && requestOptions.getContext() != null
-                        ? requestOptions.getContext()
-                        : Context.NONE);
+            requestOptions != null && requestOptions.getContext() != null
+                ? requestOptions.getContext()
+                : Context.NONE);
         return new PagedFlux<>(
-                (pageSize) -> {
-                    RequestOptions requestOptionsLocal = requestOptions == null ? new RequestOptions() : requestOptions;
-                    if (pageSize != null) {
-                        requestOptionsLocal.addRequestCallback(
-                                requestLocal -> {
-                                    UrlBuilder urlBuilder = UrlBuilder.parse(requestLocal.getUrl());
-                                    urlBuilder.setQueryParameter("maxpagesize", String.valueOf(pageSize));
-                                    requestLocal.setUrl(urlBuilder.toString());
-                                });
-                    }
-                    return listAssetResourceSinglePageAsync(requestOptionsLocal);
-                },
-                (nextLink, pageSize) -> {
-                    RequestOptions requestOptionsLocal = new RequestOptions();
-                    requestOptionsLocal.setContext(requestOptionsForNextPage.getContext());
-                    if (pageSize != null) {
-                        requestOptionsLocal.addRequestCallback(
-                                requestLocal -> {
-                                    UrlBuilder urlBuilder = UrlBuilder.parse(requestLocal.getUrl());
-                                    urlBuilder.setQueryParameter("maxpagesize", String.valueOf(pageSize));
-                                    requestLocal.setUrl(urlBuilder.toString());
-                                });
-                    }
-                    return listAssetResourceNextSinglePageAsync(nextLink, requestOptionsLocal);
-                });
+            () -> listAssetResourceSinglePageAsync(requestOptions),
+            nextLink -> listAssetResourceNextSinglePageAsync(nextLink, requestOptionsForNextPage));
     }
 
     /**
@@ -1902,25 +1901,76 @@ public final class EasmClientImpl {
      * @return paged collection of AssetResource items along with {@link PagedResponse}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    private PagedResponse<BinaryData> listAssetResourceSinglePage(RequestOptions requestOptions) {
+    private CountPagedResponse<AssetResource> listAssetResourceSinglePage(RequestOptions requestOptions) {
         final String accept = "application/json";
         Response<BinaryData> res =
-                service.listAssetResourceSync(
-                        this.getEndpoint(),
-                        this.getSubscriptionId(),
-                        this.getResourceGroupName(),
-                        this.getWorkspaceName(),
-                        this.getServiceVersion().getVersion(),
-                        accept,
-                        requestOptions,
-                        Context.NONE);
-        return new PagedResponseBase<>(
-                res.getRequest(),
-                res.getStatusCode(),
-                res.getHeaders(),
-                getValues(res.getValue(), "value"),
-                getNextLink(res.getValue(), "nextLink"),
-                null);
+            service.listAssetResourceSync(
+                this.getEndpoint(),
+                this.getSubscriptionId(),
+                this.getResourceGroupName(),
+                this.getWorkspaceName(),
+                this.getServiceVersion().getVersion(),
+                accept,
+                requestOptions,
+                Context.NONE);
+        return new CountPagedResponse<>(
+            res.getRequest(),
+            res.getStatusCode(),
+            res.getHeaders(),
+            getValues(res.getValue(), "value").stream().map(x -> cleanUp(x).toObject(AssetResource.class)).collect(Collectors.toList()),
+            getNextLink(res.getValue(), "nextLink"),
+            null, cleanUp(res.getValue()).toObject(AssetPageResult.class).getTotalElements());
+    }
+
+    /**
+     * Retrieve a collection of discovery run results for a discovery group with a given groupName.
+     *
+     * @param requestOptions
+     * @return
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    private CountPagedResponse<DiscoRunResult> listRunsSinglePage(String groupName, RequestOptions requestOptions) {
+        final String accept = "application/json";
+        Response<BinaryData> res =
+            service.listRunsSync(
+                this.getEndpoint(),
+                this.getSubscriptionId(),
+                this.getResourceGroupName(),
+                this.getWorkspaceName(),
+                this.getServiceVersion().getVersion(),
+                groupName,
+                accept,
+                requestOptions,
+                Context.NONE);
+        return new CountPagedResponse<>(
+            res.getRequest(),
+            res.getStatusCode(),
+            res.getHeaders(),
+            getValues(res.getValue(), "value").stream().map(x -> cleanUp(x).toObject(DiscoRunResult.class)).collect(Collectors.toList()),
+            getNextLink(res.getValue(), "nextLink"),
+            null, cleanUp(res.getValue()).toObject(DiscoRunPageResult.class).getTotalElements());
+    }
+
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    private CountPagedResponse<DiscoRunResult> listRunsNextSinglePage(String nextLink, RequestOptions requestOptions) {
+        final String accept = "application/json";
+        Response<BinaryData> res =
+            service.listRunsNextSync(
+                nextLink,
+                this.getEndpoint(),
+                this.getSubscriptionId(),
+                this.getResourceGroupName(),
+                this.getWorkspaceName(),
+                accept,
+                requestOptions,
+                Context.NONE);
+        return new CountPagedResponse<>(
+            res.getRequest(),
+            res.getStatusCode(),
+            res.getHeaders(),
+            getValues(res.getValue(), "value").stream().map(x -> cleanUp(x).toObject(DiscoRunResult.class)).collect(Collectors.toList()),
+            getNextLink(res.getValue(), "nextLink"),
+            null, cleanUp(res.getValue()).toObject(DiscoRunPageResult.class).getTotalElements());
     }
 
     /**
@@ -1978,38 +2028,15 @@ public final class EasmClientImpl {
      * @return paged collection of AssetResource items as paginated response with {@link PagedIterable}.
      */
     @ServiceMethod(returns = ReturnType.COLLECTION)
-    public PagedIterable<BinaryData> listAssetResource(RequestOptions requestOptions) {
+    public CountPagedIterable<AssetResource> listAssetResource(RequestOptions requestOptions) {
         RequestOptions requestOptionsForNextPage = new RequestOptions();
         requestOptionsForNextPage.setContext(
-                requestOptions != null && requestOptions.getContext() != null
-                        ? requestOptions.getContext()
-                        : Context.NONE);
-        return new PagedIterable<>(
-                (pageSize) -> {
-                    RequestOptions requestOptionsLocal = requestOptions == null ? new RequestOptions() : requestOptions;
-                    if (pageSize != null) {
-                        requestOptionsLocal.addRequestCallback(
-                                requestLocal -> {
-                                    UrlBuilder urlBuilder = UrlBuilder.parse(requestLocal.getUrl());
-                                    urlBuilder.setQueryParameter("maxpagesize", String.valueOf(pageSize));
-                                    requestLocal.setUrl(urlBuilder.toString());
-                                });
-                    }
-                    return listAssetResourceSinglePage(requestOptionsLocal);
-                },
-                (nextLink, pageSize) -> {
-                    RequestOptions requestOptionsLocal = new RequestOptions();
-                    requestOptionsLocal.setContext(requestOptionsForNextPage.getContext());
-                    if (pageSize != null) {
-                        requestOptionsLocal.addRequestCallback(
-                                requestLocal -> {
-                                    UrlBuilder urlBuilder = UrlBuilder.parse(requestLocal.getUrl());
-                                    urlBuilder.setQueryParameter("maxpagesize", String.valueOf(pageSize));
-                                    requestLocal.setUrl(urlBuilder.toString());
-                                });
-                    }
-                    return listAssetResourceNextSinglePage(nextLink, requestOptionsLocal);
-                });
+            requestOptions != null && requestOptions.getContext() != null
+                ? requestOptions.getContext()
+                : Context.NONE);
+        return new CountPagedIterable<>(
+            () -> listAssetResourceSinglePage(requestOptions),
+            nextLink -> listAssetResourceNextSinglePage(nextLink, requestOptionsForNextPage));
     }
 
     /**
@@ -2056,21 +2083,21 @@ public final class EasmClientImpl {
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<Response<BinaryData>> updateAssetsWithResponseAsync(
-            String filter, BinaryData assetUpdateData, RequestOptions requestOptions) {
+        String filter, BinaryData assetUpdateData, RequestOptions requestOptions) {
         final String accept = "application/json";
         return FluxUtil.withContext(
-                context ->
-                        service.updateAssets(
-                                this.getEndpoint(),
-                                this.getSubscriptionId(),
-                                this.getResourceGroupName(),
-                                this.getWorkspaceName(),
-                                this.getServiceVersion().getVersion(),
-                                filter,
-                                accept,
-                                assetUpdateData,
-                                requestOptions,
-                                context));
+            context ->
+                service.updateAssets(
+                    this.getEndpoint(),
+                    this.getSubscriptionId(),
+                    this.getResourceGroupName(),
+                    this.getWorkspaceName(),
+                    this.getServiceVersion().getVersion(),
+                    filter,
+                    accept,
+                    assetUpdateData,
+                    requestOptions,
+                    context));
     }
 
     /**
@@ -2117,19 +2144,19 @@ public final class EasmClientImpl {
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Response<BinaryData> updateAssetsWithResponse(
-            String filter, BinaryData assetUpdateData, RequestOptions requestOptions) {
+        String filter, BinaryData assetUpdateData, RequestOptions requestOptions) {
         final String accept = "application/json";
         return service.updateAssetsSync(
-                this.getEndpoint(),
-                this.getSubscriptionId(),
-                this.getResourceGroupName(),
-                this.getWorkspaceName(),
-                this.getServiceVersion().getVersion(),
-                filter,
-                accept,
-                assetUpdateData,
-                requestOptions,
-                Context.NONE);
+            this.getEndpoint(),
+            this.getSubscriptionId(),
+            this.getResourceGroupName(),
+            this.getWorkspaceName(),
+            this.getServiceVersion().getVersion(),
+            filter,
+            accept,
+            assetUpdateData,
+            requestOptions,
+            Context.NONE);
     }
 
     /**
@@ -2178,17 +2205,17 @@ public final class EasmClientImpl {
     public Mono<Response<BinaryData>> getAssetResourceWithResponseAsync(String assetId, RequestOptions requestOptions) {
         final String accept = "application/json";
         return FluxUtil.withContext(
-                context ->
-                        service.getAssetResource(
-                                this.getEndpoint(),
-                                this.getSubscriptionId(),
-                                this.getResourceGroupName(),
-                                this.getWorkspaceName(),
-                                this.getServiceVersion().getVersion(),
-                                assetId,
-                                accept,
-                                requestOptions,
-                                context));
+            context ->
+                service.getAssetResource(
+                    this.getEndpoint(),
+                    this.getSubscriptionId(),
+                    this.getResourceGroupName(),
+                    this.getWorkspaceName(),
+                    this.getServiceVersion().getVersion(),
+                    assetId,
+                    accept,
+                    requestOptions,
+                    context));
     }
 
     /**
@@ -2236,15 +2263,15 @@ public final class EasmClientImpl {
     public Response<BinaryData> getAssetResourceWithResponse(String assetId, RequestOptions requestOptions) {
         final String accept = "application/json";
         return service.getAssetResourceSync(
-                this.getEndpoint(),
-                this.getSubscriptionId(),
-                this.getResourceGroupName(),
-                this.getWorkspaceName(),
-                this.getServiceVersion().getVersion(),
-                assetId,
-                accept,
-                requestOptions,
-                Context.NONE);
+            this.getEndpoint(),
+            this.getSubscriptionId(),
+            this.getResourceGroupName(),
+            this.getWorkspaceName(),
+            this.getServiceVersion().getVersion(),
+            assetId,
+            accept,
+            requestOptions,
+            Context.NONE);
     }
 
     /**
@@ -2291,25 +2318,25 @@ public final class EasmClientImpl {
     private Mono<PagedResponse<BinaryData>> listDataConnectionSinglePageAsync(RequestOptions requestOptions) {
         final String accept = "application/json";
         return FluxUtil.withContext(
-                        context ->
-                                service.listDataConnection(
-                                        this.getEndpoint(),
-                                        this.getSubscriptionId(),
-                                        this.getResourceGroupName(),
-                                        this.getWorkspaceName(),
-                                        this.getServiceVersion().getVersion(),
-                                        accept,
-                                        requestOptions,
-                                        context))
-                .map(
-                        res ->
-                                new PagedResponseBase<>(
-                                        res.getRequest(),
-                                        res.getStatusCode(),
-                                        res.getHeaders(),
-                                        getValues(res.getValue(), "value"),
-                                        getNextLink(res.getValue(), "nextLink"),
-                                        null));
+                context ->
+                    service.listDataConnection(
+                        this.getEndpoint(),
+                        this.getSubscriptionId(),
+                        this.getResourceGroupName(),
+                        this.getWorkspaceName(),
+                        this.getServiceVersion().getVersion(),
+                        accept,
+                        requestOptions,
+                        context))
+            .map(
+                res ->
+                    new PagedResponseBase<>(
+                        res.getRequest(),
+                        res.getStatusCode(),
+                        res.getHeaders(),
+                        getValues(res.getValue(), "value"),
+                        getNextLink(res.getValue(), "nextLink"),
+                        null));
     }
 
     /**
@@ -2355,35 +2382,12 @@ public final class EasmClientImpl {
     public PagedFlux<BinaryData> listDataConnectionAsync(RequestOptions requestOptions) {
         RequestOptions requestOptionsForNextPage = new RequestOptions();
         requestOptionsForNextPage.setContext(
-                requestOptions != null && requestOptions.getContext() != null
-                        ? requestOptions.getContext()
-                        : Context.NONE);
+            requestOptions != null && requestOptions.getContext() != null
+                ? requestOptions.getContext()
+                : Context.NONE);
         return new PagedFlux<>(
-                (pageSize) -> {
-                    RequestOptions requestOptionsLocal = requestOptions == null ? new RequestOptions() : requestOptions;
-                    if (pageSize != null) {
-                        requestOptionsLocal.addRequestCallback(
-                                requestLocal -> {
-                                    UrlBuilder urlBuilder = UrlBuilder.parse(requestLocal.getUrl());
-                                    urlBuilder.setQueryParameter("maxpagesize", String.valueOf(pageSize));
-                                    requestLocal.setUrl(urlBuilder.toString());
-                                });
-                    }
-                    return listDataConnectionSinglePageAsync(requestOptionsLocal);
-                },
-                (nextLink, pageSize) -> {
-                    RequestOptions requestOptionsLocal = new RequestOptions();
-                    requestOptionsLocal.setContext(requestOptionsForNextPage.getContext());
-                    if (pageSize != null) {
-                        requestOptionsLocal.addRequestCallback(
-                                requestLocal -> {
-                                    UrlBuilder urlBuilder = UrlBuilder.parse(requestLocal.getUrl());
-                                    urlBuilder.setQueryParameter("maxpagesize", String.valueOf(pageSize));
-                                    requestLocal.setUrl(urlBuilder.toString());
-                                });
-                    }
-                    return listDataConnectionNextSinglePageAsync(nextLink, requestOptionsLocal);
-                });
+            () -> listDataConnectionSinglePageAsync(requestOptions),
+            nextLink -> listDataConnectionNextSinglePageAsync(nextLink, requestOptionsForNextPage));
     }
 
     /**
@@ -2426,25 +2430,25 @@ public final class EasmClientImpl {
      * @return paged collection of DataConnection items along with {@link PagedResponse}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    private PagedResponse<BinaryData> listDataConnectionSinglePage(RequestOptions requestOptions) {
+    private CountPagedResponse<DataConnection> listDataConnectionSinglePage(RequestOptions requestOptions) {
         final String accept = "application/json";
         Response<BinaryData> res =
-                service.listDataConnectionSync(
-                        this.getEndpoint(),
-                        this.getSubscriptionId(),
-                        this.getResourceGroupName(),
-                        this.getWorkspaceName(),
-                        this.getServiceVersion().getVersion(),
-                        accept,
-                        requestOptions,
-                        Context.NONE);
-        return new PagedResponseBase<>(
-                res.getRequest(),
-                res.getStatusCode(),
-                res.getHeaders(),
-                getValues(res.getValue(), "value"),
-                getNextLink(res.getValue(), "nextLink"),
-                null);
+            service.listDataConnectionSync(
+                this.getEndpoint(),
+                this.getSubscriptionId(),
+                this.getResourceGroupName(),
+                this.getWorkspaceName(),
+                this.getServiceVersion().getVersion(),
+                accept,
+                requestOptions,
+                Context.NONE);
+        return new CountPagedResponse<>(
+            res.getRequest(),
+            res.getStatusCode(),
+            res.getHeaders(),
+            getValues(res.getValue(), "value").stream().map(x -> cleanUp(x).toObject(DataConnection.class)).collect(Collectors.toList()),
+            getNextLink(res.getValue(), "nextLink"),
+            null, cleanUp(res.getValue()).toObject(DataConnectionPageResult.class).getTotalElements());
     }
 
     /**
@@ -2487,38 +2491,15 @@ public final class EasmClientImpl {
      * @return paged collection of DataConnection items as paginated response with {@link PagedIterable}.
      */
     @ServiceMethod(returns = ReturnType.COLLECTION)
-    public PagedIterable<BinaryData> listDataConnection(RequestOptions requestOptions) {
+    public CountPagedIterable<DataConnection> listDataConnection(RequestOptions requestOptions) {
         RequestOptions requestOptionsForNextPage = new RequestOptions();
         requestOptionsForNextPage.setContext(
-                requestOptions != null && requestOptions.getContext() != null
-                        ? requestOptions.getContext()
-                        : Context.NONE);
-        return new PagedIterable<>(
-                (pageSize) -> {
-                    RequestOptions requestOptionsLocal = requestOptions == null ? new RequestOptions() : requestOptions;
-                    if (pageSize != null) {
-                        requestOptionsLocal.addRequestCallback(
-                                requestLocal -> {
-                                    UrlBuilder urlBuilder = UrlBuilder.parse(requestLocal.getUrl());
-                                    urlBuilder.setQueryParameter("maxpagesize", String.valueOf(pageSize));
-                                    requestLocal.setUrl(urlBuilder.toString());
-                                });
-                    }
-                    return listDataConnectionSinglePage(requestOptionsLocal);
-                },
-                (nextLink, pageSize) -> {
-                    RequestOptions requestOptionsLocal = new RequestOptions();
-                    requestOptionsLocal.setContext(requestOptionsForNextPage.getContext());
-                    if (pageSize != null) {
-                        requestOptionsLocal.addRequestCallback(
-                                requestLocal -> {
-                                    UrlBuilder urlBuilder = UrlBuilder.parse(requestLocal.getUrl());
-                                    urlBuilder.setQueryParameter("maxpagesize", String.valueOf(pageSize));
-                                    requestLocal.setUrl(urlBuilder.toString());
-                                });
-                    }
-                    return listDataConnectionNextSinglePage(nextLink, requestOptionsLocal);
-                });
+            requestOptions != null && requestOptions.getContext() != null
+                ? requestOptions.getContext()
+                : Context.NONE);
+        return new CountPagedIterable<>(
+            () -> listDataConnectionSinglePage(requestOptions),
+            nextLink -> listDataConnectionNextSinglePage(nextLink, requestOptionsForNextPage));
     }
 
     /**
@@ -2564,20 +2545,20 @@ public final class EasmClientImpl {
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<Response<BinaryData>> validateDataConnectionWithResponseAsync(
-            BinaryData dataConnectionData, RequestOptions requestOptions) {
+        BinaryData dataConnectionData, RequestOptions requestOptions) {
         final String accept = "application/json";
         return FluxUtil.withContext(
-                context ->
-                        service.validateDataConnection(
-                                this.getEndpoint(),
-                                this.getSubscriptionId(),
-                                this.getResourceGroupName(),
-                                this.getWorkspaceName(),
-                                this.getServiceVersion().getVersion(),
-                                accept,
-                                dataConnectionData,
-                                requestOptions,
-                                context));
+            context ->
+                service.validateDataConnection(
+                    this.getEndpoint(),
+                    this.getSubscriptionId(),
+                    this.getResourceGroupName(),
+                    this.getWorkspaceName(),
+                    this.getServiceVersion().getVersion(),
+                    accept,
+                    dataConnectionData,
+                    requestOptions,
+                    context));
     }
 
     /**
@@ -2623,18 +2604,18 @@ public final class EasmClientImpl {
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Response<BinaryData> validateDataConnectionWithResponse(
-            BinaryData dataConnectionData, RequestOptions requestOptions) {
+        BinaryData dataConnectionData, RequestOptions requestOptions) {
         final String accept = "application/json";
         return service.validateDataConnectionSync(
-                this.getEndpoint(),
-                this.getSubscriptionId(),
-                this.getResourceGroupName(),
-                this.getWorkspaceName(),
-                this.getServiceVersion().getVersion(),
-                accept,
-                dataConnectionData,
-                requestOptions,
-                Context.NONE);
+            this.getEndpoint(),
+            this.getSubscriptionId(),
+            this.getResourceGroupName(),
+            this.getWorkspaceName(),
+            this.getServiceVersion().getVersion(),
+            accept,
+            dataConnectionData,
+            requestOptions,
+            Context.NONE);
     }
 
     /**
@@ -2668,20 +2649,20 @@ public final class EasmClientImpl {
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<Response<BinaryData>> getDataConnectionWithResponseAsync(
-            String dataConnectionName, RequestOptions requestOptions) {
+        String dataConnectionName, RequestOptions requestOptions) {
         final String accept = "application/json";
         return FluxUtil.withContext(
-                context ->
-                        service.getDataConnection(
-                                this.getEndpoint(),
-                                this.getSubscriptionId(),
-                                this.getResourceGroupName(),
-                                this.getWorkspaceName(),
-                                this.getServiceVersion().getVersion(),
-                                dataConnectionName,
-                                accept,
-                                requestOptions,
-                                context));
+            context ->
+                service.getDataConnection(
+                    this.getEndpoint(),
+                    this.getSubscriptionId(),
+                    this.getResourceGroupName(),
+                    this.getWorkspaceName(),
+                    this.getServiceVersion().getVersion(),
+                    dataConnectionName,
+                    accept,
+                    requestOptions,
+                    context));
     }
 
     /**
@@ -2715,22 +2696,22 @@ public final class EasmClientImpl {
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Response<BinaryData> getDataConnectionWithResponse(
-            String dataConnectionName, RequestOptions requestOptions) {
+        String dataConnectionName, RequestOptions requestOptions) {
         final String accept = "application/json";
         return service.getDataConnectionSync(
-                this.getEndpoint(),
-                this.getSubscriptionId(),
-                this.getResourceGroupName(),
-                this.getWorkspaceName(),
-                this.getServiceVersion().getVersion(),
-                dataConnectionName,
-                accept,
-                requestOptions,
-                Context.NONE);
+            this.getEndpoint(),
+            this.getSubscriptionId(),
+            this.getResourceGroupName(),
+            this.getWorkspaceName(),
+            this.getServiceVersion().getVersion(),
+            dataConnectionName,
+            accept,
+            requestOptions,
+            Context.NONE);
     }
 
     /**
-     * Create or replace a data connection with a given dataConnectionName.
+     * Create or update a data connection with a given dataConnectionName.
      *
      * <p><strong>Request Body Schema</strong>
      *
@@ -2772,25 +2753,25 @@ public final class EasmClientImpl {
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<Response<BinaryData>> createOrReplaceDataConnectionWithResponseAsync(
-            String dataConnectionName, BinaryData dataConnectionData, RequestOptions requestOptions) {
+        String dataConnectionName, BinaryData dataConnectionData, RequestOptions requestOptions) {
         final String accept = "application/json";
         return FluxUtil.withContext(
-                context ->
-                        service.createOrReplaceDataConnection(
-                                this.getEndpoint(),
-                                this.getSubscriptionId(),
-                                this.getResourceGroupName(),
-                                this.getWorkspaceName(),
-                                this.getServiceVersion().getVersion(),
-                                dataConnectionName,
-                                accept,
-                                dataConnectionData,
-                                requestOptions,
-                                context));
+            context ->
+                service.createOrReplaceDataConnection(
+                    this.getEndpoint(),
+                    this.getSubscriptionId(),
+                    this.getResourceGroupName(),
+                    this.getWorkspaceName(),
+                    this.getServiceVersion().getVersion(),
+                    dataConnectionName,
+                    accept,
+                    dataConnectionData,
+                    requestOptions,
+                    context));
     }
 
     /**
-     * Create or replace a data connection with a given dataConnectionName.
+     * Create or update a data connection with a given dataConnectionName.
      *
      * <p><strong>Request Body Schema</strong>
      *
@@ -2832,19 +2813,19 @@ public final class EasmClientImpl {
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Response<BinaryData> createOrReplaceDataConnectionWithResponse(
-            String dataConnectionName, BinaryData dataConnectionData, RequestOptions requestOptions) {
+        String dataConnectionName, BinaryData dataConnectionData, RequestOptions requestOptions) {
         final String accept = "application/json";
         return service.createOrReplaceDataConnectionSync(
-                this.getEndpoint(),
-                this.getSubscriptionId(),
-                this.getResourceGroupName(),
-                this.getWorkspaceName(),
-                this.getServiceVersion().getVersion(),
-                dataConnectionName,
-                accept,
-                dataConnectionData,
-                requestOptions,
-                Context.NONE);
+            this.getEndpoint(),
+            this.getSubscriptionId(),
+            this.getResourceGroupName(),
+            this.getWorkspaceName(),
+            this.getServiceVersion().getVersion(),
+            dataConnectionName,
+            accept,
+            dataConnectionData,
+            requestOptions,
+            Context.NONE);
     }
 
     /**
@@ -2860,20 +2841,20 @@ public final class EasmClientImpl {
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<Response<Void>> deleteDataConnectionWithResponseAsync(
-            String dataConnectionName, RequestOptions requestOptions) {
+        String dataConnectionName, RequestOptions requestOptions) {
         final String accept = "application/json";
         return FluxUtil.withContext(
-                context ->
-                        service.deleteDataConnection(
-                                this.getEndpoint(),
-                                this.getSubscriptionId(),
-                                this.getResourceGroupName(),
-                                this.getWorkspaceName(),
-                                this.getServiceVersion().getVersion(),
-                                dataConnectionName,
-                                accept,
-                                requestOptions,
-                                context));
+            context ->
+                service.deleteDataConnection(
+                    this.getEndpoint(),
+                    this.getSubscriptionId(),
+                    this.getResourceGroupName(),
+                    this.getWorkspaceName(),
+                    this.getServiceVersion().getVersion(),
+                    dataConnectionName,
+                    accept,
+                    requestOptions,
+                    context));
     }
 
     /**
@@ -2891,15 +2872,15 @@ public final class EasmClientImpl {
     public Response<Void> deleteDataConnectionWithResponse(String dataConnectionName, RequestOptions requestOptions) {
         final String accept = "application/json";
         return service.deleteDataConnectionSync(
-                this.getEndpoint(),
-                this.getSubscriptionId(),
-                this.getResourceGroupName(),
-                this.getWorkspaceName(),
-                this.getServiceVersion().getVersion(),
-                dataConnectionName,
-                accept,
-                requestOptions,
-                Context.NONE);
+            this.getEndpoint(),
+            this.getSubscriptionId(),
+            this.getResourceGroupName(),
+            this.getWorkspaceName(),
+            this.getServiceVersion().getVersion(),
+            dataConnectionName,
+            accept,
+            requestOptions,
+            Context.NONE);
     }
 
     /**
@@ -2973,25 +2954,25 @@ public final class EasmClientImpl {
     private Mono<PagedResponse<BinaryData>> listDiscoGroupSinglePageAsync(RequestOptions requestOptions) {
         final String accept = "application/json";
         return FluxUtil.withContext(
-                        context ->
-                                service.listDiscoGroup(
-                                        this.getEndpoint(),
-                                        this.getSubscriptionId(),
-                                        this.getResourceGroupName(),
-                                        this.getWorkspaceName(),
-                                        this.getServiceVersion().getVersion(),
-                                        accept,
-                                        requestOptions,
-                                        context))
-                .map(
-                        res ->
-                                new PagedResponseBase<>(
-                                        res.getRequest(),
-                                        res.getStatusCode(),
-                                        res.getHeaders(),
-                                        getValues(res.getValue(), "value"),
-                                        getNextLink(res.getValue(), "nextLink"),
-                                        null));
+                context ->
+                    service.listDiscoGroup(
+                        this.getEndpoint(),
+                        this.getSubscriptionId(),
+                        this.getResourceGroupName(),
+                        this.getWorkspaceName(),
+                        this.getServiceVersion().getVersion(),
+                        accept,
+                        requestOptions,
+                        context))
+            .map(
+                res ->
+                    new PagedResponseBase<>(
+                        res.getRequest(),
+                        res.getStatusCode(),
+                        res.getHeaders(),
+                        getValues(res.getValue(), "value"),
+                        getNextLink(res.getValue(), "nextLink"),
+                        null));
     }
 
     /**
@@ -3064,35 +3045,12 @@ public final class EasmClientImpl {
     public PagedFlux<BinaryData> listDiscoGroupAsync(RequestOptions requestOptions) {
         RequestOptions requestOptionsForNextPage = new RequestOptions();
         requestOptionsForNextPage.setContext(
-                requestOptions != null && requestOptions.getContext() != null
-                        ? requestOptions.getContext()
-                        : Context.NONE);
+            requestOptions != null && requestOptions.getContext() != null
+                ? requestOptions.getContext()
+                : Context.NONE);
         return new PagedFlux<>(
-                (pageSize) -> {
-                    RequestOptions requestOptionsLocal = requestOptions == null ? new RequestOptions() : requestOptions;
-                    if (pageSize != null) {
-                        requestOptionsLocal.addRequestCallback(
-                                requestLocal -> {
-                                    UrlBuilder urlBuilder = UrlBuilder.parse(requestLocal.getUrl());
-                                    urlBuilder.setQueryParameter("maxpagesize", String.valueOf(pageSize));
-                                    requestLocal.setUrl(urlBuilder.toString());
-                                });
-                    }
-                    return listDiscoGroupSinglePageAsync(requestOptionsLocal);
-                },
-                (nextLink, pageSize) -> {
-                    RequestOptions requestOptionsLocal = new RequestOptions();
-                    requestOptionsLocal.setContext(requestOptionsForNextPage.getContext());
-                    if (pageSize != null) {
-                        requestOptionsLocal.addRequestCallback(
-                                requestLocal -> {
-                                    UrlBuilder urlBuilder = UrlBuilder.parse(requestLocal.getUrl());
-                                    urlBuilder.setQueryParameter("maxpagesize", String.valueOf(pageSize));
-                                    requestLocal.setUrl(urlBuilder.toString());
-                                });
-                    }
-                    return listDiscoGroupNextSinglePageAsync(nextLink, requestOptionsLocal);
-                });
+            () -> listDiscoGroupSinglePageAsync(requestOptions),
+            nextLink -> listDiscoGroupNextSinglePageAsync(nextLink, requestOptionsForNextPage));
     }
 
     /**
@@ -3162,25 +3120,34 @@ public final class EasmClientImpl {
      * @return paged collection of DiscoGroup items along with {@link PagedResponse}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    private PagedResponse<BinaryData> listDiscoGroupSinglePage(RequestOptions requestOptions) {
+    private CountPagedResponse<DiscoGroup> listDiscoGroupSinglePage(RequestOptions requestOptions) {
         final String accept = "application/json";
         Response<BinaryData> res =
-                service.listDiscoGroupSync(
-                        this.getEndpoint(),
-                        this.getSubscriptionId(),
-                        this.getResourceGroupName(),
-                        this.getWorkspaceName(),
-                        this.getServiceVersion().getVersion(),
-                        accept,
-                        requestOptions,
-                        Context.NONE);
-        return new PagedResponseBase<>(
-                res.getRequest(),
-                res.getStatusCode(),
-                res.getHeaders(),
-                getValues(res.getValue(), "value"),
-                getNextLink(res.getValue(), "nextLink"),
-                null);
+            service.listDiscoGroupSync(
+                this.getEndpoint(),
+                this.getSubscriptionId(),
+                this.getResourceGroupName(),
+                this.getWorkspaceName(),
+                this.getServiceVersion().getVersion(),
+                accept,
+                requestOptions,
+                Context.NONE);
+
+//        return new PagedResponseBase<Void, DiscoGroup>(
+//                res.getRequest(),
+//                res.getStatusCode(),
+//                res.getHeaders(),
+//                getValues(res.getValue(), "value").stream().map(x -> x.toObject(DiscoGroup.class)).collect(Collectors.toList()),
+//                getNextLink(res.getValue(), "nextLink"),
+//                null);
+
+        return new CountPagedResponse<>(
+            res.getRequest(),
+            res.getStatusCode(),
+            res.getHeaders(),
+            getValues(res.getValue(), "value").stream().map(x -> cleanUp(x).toObject(DiscoGroup.class)).collect(Collectors.toList()),
+            getNextLink(res.getValue(), "nextLink"),
+            null, cleanUp(res.getValue()).toObject(DiscoGroupPageResult.class).getTotalElements());
     }
 
     /**
@@ -3250,38 +3217,19 @@ public final class EasmClientImpl {
      * @return paged collection of DiscoGroup items as paginated response with {@link PagedIterable}.
      */
     @ServiceMethod(returns = ReturnType.COLLECTION)
-    public PagedIterable<BinaryData> listDiscoGroup(RequestOptions requestOptions) {
+    public CountPagedIterable<DiscoGroup> listDiscoGroup(RequestOptions requestOptions) {
         RequestOptions requestOptionsForNextPage = new RequestOptions();
         requestOptionsForNextPage.setContext(
-                requestOptions != null && requestOptions.getContext() != null
-                        ? requestOptions.getContext()
-                        : Context.NONE);
-        return new PagedIterable<>(
-                (pageSize) -> {
-                    RequestOptions requestOptionsLocal = requestOptions == null ? new RequestOptions() : requestOptions;
-                    if (pageSize != null) {
-                        requestOptionsLocal.addRequestCallback(
-                                requestLocal -> {
-                                    UrlBuilder urlBuilder = UrlBuilder.parse(requestLocal.getUrl());
-                                    urlBuilder.setQueryParameter("maxpagesize", String.valueOf(pageSize));
-                                    requestLocal.setUrl(urlBuilder.toString());
-                                });
-                    }
-                    return listDiscoGroupSinglePage(requestOptionsLocal);
-                },
-                (nextLink, pageSize) -> {
-                    RequestOptions requestOptionsLocal = new RequestOptions();
-                    requestOptionsLocal.setContext(requestOptionsForNextPage.getContext());
-                    if (pageSize != null) {
-                        requestOptionsLocal.addRequestCallback(
-                                requestLocal -> {
-                                    UrlBuilder urlBuilder = UrlBuilder.parse(requestLocal.getUrl());
-                                    urlBuilder.setQueryParameter("maxpagesize", String.valueOf(pageSize));
-                                    requestLocal.setUrl(urlBuilder.toString());
-                                });
-                    }
-                    return listDiscoGroupNextSinglePage(nextLink, requestOptionsLocal);
-                });
+            requestOptions != null && requestOptions.getContext() != null
+                ? requestOptions.getContext()
+                : Context.NONE);
+        return new CountPagedIterable<DiscoGroup>(
+            () -> listDiscoGroupSinglePage(requestOptions),
+            nextLink -> listDiscoGroupNextSinglePage(nextLink, requestOptionsForNextPage));
+//        return new DiscoGroupPageIterable(
+//            () -> listDiscoGroup(new RequestOptions()),
+//            nextLink -> listDiscoGroup(new RequestOptions().)
+//            )
     }
 
     /**
@@ -3340,20 +3288,20 @@ public final class EasmClientImpl {
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<Response<BinaryData>> validateDiscoGroupWithResponseAsync(
-            BinaryData discoGroupData, RequestOptions requestOptions) {
+        BinaryData discoGroupData, RequestOptions requestOptions) {
         final String accept = "application/json";
         return FluxUtil.withContext(
-                context ->
-                        service.validateDiscoGroup(
-                                this.getEndpoint(),
-                                this.getSubscriptionId(),
-                                this.getResourceGroupName(),
-                                this.getWorkspaceName(),
-                                this.getServiceVersion().getVersion(),
-                                accept,
-                                discoGroupData,
-                                requestOptions,
-                                context));
+            context ->
+                service.validateDiscoGroup(
+                    this.getEndpoint(),
+                    this.getSubscriptionId(),
+                    this.getResourceGroupName(),
+                    this.getWorkspaceName(),
+                    this.getServiceVersion().getVersion(),
+                    accept,
+                    discoGroupData,
+                    requestOptions,
+                    context));
     }
 
     /**
@@ -3412,18 +3360,18 @@ public final class EasmClientImpl {
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Response<BinaryData> validateDiscoGroupWithResponse(
-            BinaryData discoGroupData, RequestOptions requestOptions) {
+        BinaryData discoGroupData, RequestOptions requestOptions) {
         final String accept = "application/json";
         return service.validateDiscoGroupSync(
-                this.getEndpoint(),
-                this.getSubscriptionId(),
-                this.getResourceGroupName(),
-                this.getWorkspaceName(),
-                this.getServiceVersion().getVersion(),
-                accept,
-                discoGroupData,
-                requestOptions,
-                Context.NONE);
+            this.getEndpoint(),
+            this.getSubscriptionId(),
+            this.getResourceGroupName(),
+            this.getWorkspaceName(),
+            this.getServiceVersion().getVersion(),
+            accept,
+            discoGroupData,
+            requestOptions,
+            Context.NONE);
     }
 
     /**
@@ -3485,17 +3433,17 @@ public final class EasmClientImpl {
     public Mono<Response<BinaryData>> getDiscoGroupWithResponseAsync(String groupName, RequestOptions requestOptions) {
         final String accept = "application/json";
         return FluxUtil.withContext(
-                context ->
-                        service.getDiscoGroup(
-                                this.getEndpoint(),
-                                this.getSubscriptionId(),
-                                this.getResourceGroupName(),
-                                this.getWorkspaceName(),
-                                this.getServiceVersion().getVersion(),
-                                groupName,
-                                accept,
-                                requestOptions,
-                                context));
+            context ->
+                service.getDiscoGroup(
+                    this.getEndpoint(),
+                    this.getSubscriptionId(),
+                    this.getResourceGroupName(),
+                    this.getWorkspaceName(),
+                    this.getServiceVersion().getVersion(),
+                    groupName,
+                    accept,
+                    requestOptions,
+                    context));
     }
 
     /**
@@ -3557,15 +3505,15 @@ public final class EasmClientImpl {
     public Response<BinaryData> getDiscoGroupWithResponse(String groupName, RequestOptions requestOptions) {
         final String accept = "application/json";
         return service.getDiscoGroupSync(
-                this.getEndpoint(),
-                this.getSubscriptionId(),
-                this.getResourceGroupName(),
-                this.getWorkspaceName(),
-                this.getServiceVersion().getVersion(),
-                groupName,
-                accept,
-                requestOptions,
-                Context.NONE);
+            this.getEndpoint(),
+            this.getSubscriptionId(),
+            this.getResourceGroupName(),
+            this.getWorkspaceName(),
+            this.getServiceVersion().getVersion(),
+            groupName,
+            accept,
+            requestOptions,
+            Context.NONE);
     }
 
     /**
@@ -3650,21 +3598,21 @@ public final class EasmClientImpl {
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<Response<BinaryData>> createOrReplaceDiscoGroupWithResponseAsync(
-            String groupName, BinaryData discoGroupData, RequestOptions requestOptions) {
+        String groupName, BinaryData discoGroupData, RequestOptions requestOptions) {
         final String accept = "application/json";
         return FluxUtil.withContext(
-                context ->
-                        service.createOrReplaceDiscoGroup(
-                                this.getEndpoint(),
-                                this.getSubscriptionId(),
-                                this.getResourceGroupName(),
-                                this.getWorkspaceName(),
-                                this.getServiceVersion().getVersion(),
-                                groupName,
-                                accept,
-                                discoGroupData,
-                                requestOptions,
-                                context));
+            context ->
+                service.createOrReplaceDiscoGroup(
+                    this.getEndpoint(),
+                    this.getSubscriptionId(),
+                    this.getResourceGroupName(),
+                    this.getWorkspaceName(),
+                    this.getServiceVersion().getVersion(),
+                    groupName,
+                    accept,
+                    discoGroupData,
+                    requestOptions,
+                    context));
     }
 
     /**
@@ -3749,19 +3697,19 @@ public final class EasmClientImpl {
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Response<BinaryData> createOrReplaceDiscoGroupWithResponse(
-            String groupName, BinaryData discoGroupData, RequestOptions requestOptions) {
+        String groupName, BinaryData discoGroupData, RequestOptions requestOptions) {
         final String accept = "application/json";
         return service.createOrReplaceDiscoGroupSync(
-                this.getEndpoint(),
-                this.getSubscriptionId(),
-                this.getResourceGroupName(),
-                this.getWorkspaceName(),
-                this.getServiceVersion().getVersion(),
-                groupName,
-                accept,
-                discoGroupData,
-                requestOptions,
-                Context.NONE);
+            this.getEndpoint(),
+            this.getSubscriptionId(),
+            this.getResourceGroupName(),
+            this.getWorkspaceName(),
+            this.getServiceVersion().getVersion(),
+            groupName,
+            accept,
+            discoGroupData,
+            requestOptions,
+            Context.NONE);
     }
 
     /**
@@ -3779,17 +3727,17 @@ public final class EasmClientImpl {
     public Mono<Response<Void>> runDiscoGroupWithResponseAsync(String groupName, RequestOptions requestOptions) {
         final String accept = "application/json";
         return FluxUtil.withContext(
-                context ->
-                        service.runDiscoGroup(
-                                this.getEndpoint(),
-                                this.getSubscriptionId(),
-                                this.getResourceGroupName(),
-                                this.getWorkspaceName(),
-                                this.getServiceVersion().getVersion(),
-                                groupName,
-                                accept,
-                                requestOptions,
-                                context));
+            context ->
+                service.runDiscoGroup(
+                    this.getEndpoint(),
+                    this.getSubscriptionId(),
+                    this.getResourceGroupName(),
+                    this.getWorkspaceName(),
+                    this.getServiceVersion().getVersion(),
+                    groupName,
+                    accept,
+                    requestOptions,
+                    context));
     }
 
     /**
@@ -3807,15 +3755,15 @@ public final class EasmClientImpl {
     public Response<Void> runDiscoGroupWithResponse(String groupName, RequestOptions requestOptions) {
         final String accept = "application/json";
         return service.runDiscoGroupSync(
-                this.getEndpoint(),
-                this.getSubscriptionId(),
-                this.getResourceGroupName(),
-                this.getWorkspaceName(),
-                this.getServiceVersion().getVersion(),
-                groupName,
-                accept,
-                requestOptions,
-                Context.NONE);
+            this.getEndpoint(),
+            this.getSubscriptionId(),
+            this.getResourceGroupName(),
+            this.getWorkspaceName(),
+            this.getServiceVersion().getVersion(),
+            groupName,
+            accept,
+            requestOptions,
+            Context.NONE);
     }
 
     /**
@@ -3876,17 +3824,17 @@ public final class EasmClientImpl {
     public Mono<Response<BinaryData>> listRunsWithResponseAsync(String groupName, RequestOptions requestOptions) {
         final String accept = "application/json";
         return FluxUtil.withContext(
-                context ->
-                        service.listRuns(
-                                this.getEndpoint(),
-                                this.getSubscriptionId(),
-                                this.getResourceGroupName(),
-                                this.getWorkspaceName(),
-                                this.getServiceVersion().getVersion(),
-                                groupName,
-                                accept,
-                                requestOptions,
-                                context));
+            context ->
+                service.listRuns(
+                    this.getEndpoint(),
+                    this.getSubscriptionId(),
+                    this.getResourceGroupName(),
+                    this.getWorkspaceName(),
+                    this.getServiceVersion().getVersion(),
+                    groupName,
+                    accept,
+                    requestOptions,
+                    context));
     }
 
     /**
@@ -3944,18 +3892,27 @@ public final class EasmClientImpl {
      * @return the response body along with {@link Response}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Response<BinaryData> listRunsWithResponse(String groupName, RequestOptions requestOptions) {
-        final String accept = "application/json";
-        return service.listRunsSync(
-                this.getEndpoint(),
-                this.getSubscriptionId(),
-                this.getResourceGroupName(),
-                this.getWorkspaceName(),
-                this.getServiceVersion().getVersion(),
-                groupName,
-                accept,
-                requestOptions,
-                Context.NONE);
+    public CountPagedIterable<DiscoRunResult> listRunsWithResponse(String groupName, RequestOptions requestOptions) {
+//        final String accept = "application/json";
+//        return service.listRunsSync(
+//                this.getEndpoint(),
+//                this.getSubscriptionId(),
+//                this.getResourceGroupName(),
+//                this.getWorkspaceName(),
+//                this.getServiceVersion().getVersion(),
+//                groupName,
+//                accept,
+//                requestOptions,
+//                Context.NONE);
+
+        RequestOptions requestOptionsForNextPage = new RequestOptions();
+        requestOptionsForNextPage.setContext(
+            requestOptions != null && requestOptions.getContext() != null
+                ? requestOptions.getContext()
+                : Context.NONE);
+        return new CountPagedIterable<>(
+            () -> listRunsSinglePage(groupName, requestOptions),
+            nextLink -> listRunsNextSinglePage(nextLink, requestOptionsForNextPage));
     }
 
     /**
@@ -4009,25 +3966,25 @@ public final class EasmClientImpl {
     private Mono<PagedResponse<BinaryData>> listDiscoTemplateSinglePageAsync(RequestOptions requestOptions) {
         final String accept = "application/json";
         return FluxUtil.withContext(
-                        context ->
-                                service.listDiscoTemplate(
-                                        this.getEndpoint(),
-                                        this.getSubscriptionId(),
-                                        this.getResourceGroupName(),
-                                        this.getWorkspaceName(),
-                                        this.getServiceVersion().getVersion(),
-                                        accept,
-                                        requestOptions,
-                                        context))
-                .map(
-                        res ->
-                                new PagedResponseBase<>(
-                                        res.getRequest(),
-                                        res.getStatusCode(),
-                                        res.getHeaders(),
-                                        getValues(res.getValue(), "value"),
-                                        getNextLink(res.getValue(), "nextLink"),
-                                        null));
+                context ->
+                    service.listDiscoTemplate(
+                        this.getEndpoint(),
+                        this.getSubscriptionId(),
+                        this.getResourceGroupName(),
+                        this.getWorkspaceName(),
+                        this.getServiceVersion().getVersion(),
+                        accept,
+                        requestOptions,
+                        context))
+            .map(
+                res ->
+                    new PagedResponseBase<>(
+                        res.getRequest(),
+                        res.getStatusCode(),
+                        res.getHeaders(),
+                        getValues(res.getValue(), "value"),
+                        getNextLink(res.getValue(), "nextLink"),
+                        null));
     }
 
     /**
@@ -4080,35 +4037,12 @@ public final class EasmClientImpl {
     public PagedFlux<BinaryData> listDiscoTemplateAsync(RequestOptions requestOptions) {
         RequestOptions requestOptionsForNextPage = new RequestOptions();
         requestOptionsForNextPage.setContext(
-                requestOptions != null && requestOptions.getContext() != null
-                        ? requestOptions.getContext()
-                        : Context.NONE);
+            requestOptions != null && requestOptions.getContext() != null
+                ? requestOptions.getContext()
+                : Context.NONE);
         return new PagedFlux<>(
-                (pageSize) -> {
-                    RequestOptions requestOptionsLocal = requestOptions == null ? new RequestOptions() : requestOptions;
-                    if (pageSize != null) {
-                        requestOptionsLocal.addRequestCallback(
-                                requestLocal -> {
-                                    UrlBuilder urlBuilder = UrlBuilder.parse(requestLocal.getUrl());
-                                    urlBuilder.setQueryParameter("maxpagesize", String.valueOf(pageSize));
-                                    requestLocal.setUrl(urlBuilder.toString());
-                                });
-                    }
-                    return listDiscoTemplateSinglePageAsync(requestOptionsLocal);
-                },
-                (nextLink, pageSize) -> {
-                    RequestOptions requestOptionsLocal = new RequestOptions();
-                    requestOptionsLocal.setContext(requestOptionsForNextPage.getContext());
-                    if (pageSize != null) {
-                        requestOptionsLocal.addRequestCallback(
-                                requestLocal -> {
-                                    UrlBuilder urlBuilder = UrlBuilder.parse(requestLocal.getUrl());
-                                    urlBuilder.setQueryParameter("maxpagesize", String.valueOf(pageSize));
-                                    requestLocal.setUrl(urlBuilder.toString());
-                                });
-                    }
-                    return listDiscoTemplateNextSinglePageAsync(nextLink, requestOptionsLocal);
-                });
+            () -> listDiscoTemplateSinglePageAsync(requestOptions),
+            nextLink -> listDiscoTemplateNextSinglePageAsync(nextLink, requestOptionsForNextPage));
     }
 
     /**
@@ -4158,25 +4092,25 @@ public final class EasmClientImpl {
      * @return paged collection of DiscoTemplate items along with {@link PagedResponse}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    private PagedResponse<BinaryData> listDiscoTemplateSinglePage(RequestOptions requestOptions) {
+    private CountPagedResponse<DiscoTemplate> listDiscoTemplateSinglePage(RequestOptions requestOptions) {
         final String accept = "application/json";
         Response<BinaryData> res =
-                service.listDiscoTemplateSync(
-                        this.getEndpoint(),
-                        this.getSubscriptionId(),
-                        this.getResourceGroupName(),
-                        this.getWorkspaceName(),
-                        this.getServiceVersion().getVersion(),
-                        accept,
-                        requestOptions,
-                        Context.NONE);
-        return new PagedResponseBase<>(
-                res.getRequest(),
-                res.getStatusCode(),
-                res.getHeaders(),
-                getValues(res.getValue(), "value"),
-                getNextLink(res.getValue(), "nextLink"),
-                null);
+            service.listDiscoTemplateSync(
+                this.getEndpoint(),
+                this.getSubscriptionId(),
+                this.getResourceGroupName(),
+                this.getWorkspaceName(),
+                this.getServiceVersion().getVersion(),
+                accept,
+                requestOptions,
+                Context.NONE);
+        return new CountPagedResponse<>(
+            res.getRequest(),
+            res.getStatusCode(),
+            res.getHeaders(),
+            getValues(res.getValue(), "value").stream().map(x -> cleanUp(x).toObject(DiscoTemplate.class)).collect(Collectors.toList()),
+            getNextLink(res.getValue(), "nextLink"),
+            null, cleanUp(res.getValue()).toObject(DiscoTemplatePageResult.class).getTotalElements());
     }
 
     /**
@@ -4226,38 +4160,15 @@ public final class EasmClientImpl {
      * @return paged collection of DiscoTemplate items as paginated response with {@link PagedIterable}.
      */
     @ServiceMethod(returns = ReturnType.COLLECTION)
-    public PagedIterable<BinaryData> listDiscoTemplate(RequestOptions requestOptions) {
+    public CountPagedIterable<DiscoTemplate> listDiscoTemplate(RequestOptions requestOptions) {
         RequestOptions requestOptionsForNextPage = new RequestOptions();
         requestOptionsForNextPage.setContext(
-                requestOptions != null && requestOptions.getContext() != null
-                        ? requestOptions.getContext()
-                        : Context.NONE);
-        return new PagedIterable<>(
-                (pageSize) -> {
-                    RequestOptions requestOptionsLocal = requestOptions == null ? new RequestOptions() : requestOptions;
-                    if (pageSize != null) {
-                        requestOptionsLocal.addRequestCallback(
-                                requestLocal -> {
-                                    UrlBuilder urlBuilder = UrlBuilder.parse(requestLocal.getUrl());
-                                    urlBuilder.setQueryParameter("maxpagesize", String.valueOf(pageSize));
-                                    requestLocal.setUrl(urlBuilder.toString());
-                                });
-                    }
-                    return listDiscoTemplateSinglePage(requestOptionsLocal);
-                },
-                (nextLink, pageSize) -> {
-                    RequestOptions requestOptionsLocal = new RequestOptions();
-                    requestOptionsLocal.setContext(requestOptionsForNextPage.getContext());
-                    if (pageSize != null) {
-                        requestOptionsLocal.addRequestCallback(
-                                requestLocal -> {
-                                    UrlBuilder urlBuilder = UrlBuilder.parse(requestLocal.getUrl());
-                                    urlBuilder.setQueryParameter("maxpagesize", String.valueOf(pageSize));
-                                    requestLocal.setUrl(urlBuilder.toString());
-                                });
-                    }
-                    return listDiscoTemplateNextSinglePage(nextLink, requestOptionsLocal);
-                });
+            requestOptions != null && requestOptions.getContext() != null
+                ? requestOptions.getContext()
+                : Context.NONE);
+        return new CountPagedIterable<>(
+            () -> listDiscoTemplateSinglePage(requestOptions),
+            nextLink -> listDiscoTemplateNextSinglePage(nextLink, requestOptionsForNextPage));
     }
 
     /**
@@ -4298,20 +4209,20 @@ public final class EasmClientImpl {
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<Response<BinaryData>> getDiscoTemplateWithResponseAsync(
-            String templateId, RequestOptions requestOptions) {
+        String templateId, RequestOptions requestOptions) {
         final String accept = "application/json";
         return FluxUtil.withContext(
-                context ->
-                        service.getDiscoTemplate(
-                                this.getEndpoint(),
-                                this.getSubscriptionId(),
-                                this.getResourceGroupName(),
-                                this.getWorkspaceName(),
-                                this.getServiceVersion().getVersion(),
-                                templateId,
-                                accept,
-                                requestOptions,
-                                context));
+            context ->
+                service.getDiscoTemplate(
+                    this.getEndpoint(),
+                    this.getSubscriptionId(),
+                    this.getResourceGroupName(),
+                    this.getWorkspaceName(),
+                    this.getServiceVersion().getVersion(),
+                    templateId,
+                    accept,
+                    requestOptions,
+                    context));
     }
 
     /**
@@ -4353,15 +4264,15 @@ public final class EasmClientImpl {
     public Response<BinaryData> getDiscoTemplateWithResponse(String templateId, RequestOptions requestOptions) {
         final String accept = "application/json";
         return service.getDiscoTemplateSync(
-                this.getEndpoint(),
-                this.getSubscriptionId(),
-                this.getResourceGroupName(),
-                this.getWorkspaceName(),
-                this.getServiceVersion().getVersion(),
-                templateId,
-                accept,
-                requestOptions,
-                Context.NONE);
+            this.getEndpoint(),
+            this.getSubscriptionId(),
+            this.getResourceGroupName(),
+            this.getWorkspaceName(),
+            this.getServiceVersion().getVersion(),
+            templateId,
+            accept,
+            requestOptions,
+            Context.NONE);
     }
 
     /**
@@ -4398,16 +4309,16 @@ public final class EasmClientImpl {
     public Mono<Response<BinaryData>> getBillableWithResponseAsync(RequestOptions requestOptions) {
         final String accept = "application/json";
         return FluxUtil.withContext(
-                context ->
-                        service.getBillable(
-                                this.getEndpoint(),
-                                this.getSubscriptionId(),
-                                this.getResourceGroupName(),
-                                this.getWorkspaceName(),
-                                this.getServiceVersion().getVersion(),
-                                accept,
-                                requestOptions,
-                                context));
+            context ->
+                service.getBillable(
+                    this.getEndpoint(),
+                    this.getSubscriptionId(),
+                    this.getResourceGroupName(),
+                    this.getWorkspaceName(),
+                    this.getServiceVersion().getVersion(),
+                    accept,
+                    requestOptions,
+                    context));
     }
 
     /**
@@ -4443,14 +4354,14 @@ public final class EasmClientImpl {
     public Response<BinaryData> getBillableWithResponse(RequestOptions requestOptions) {
         final String accept = "application/json";
         return service.getBillableSync(
-                this.getEndpoint(),
-                this.getSubscriptionId(),
-                this.getResourceGroupName(),
-                this.getWorkspaceName(),
-                this.getServiceVersion().getVersion(),
-                accept,
-                requestOptions,
-                Context.NONE);
+            this.getEndpoint(),
+            this.getSubscriptionId(),
+            this.getResourceGroupName(),
+            this.getWorkspaceName(),
+            this.getServiceVersion().getVersion(),
+            accept,
+            requestOptions,
+            Context.NONE);
     }
 
     /**
@@ -4522,20 +4433,20 @@ public final class EasmClientImpl {
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<Response<BinaryData>> getSnapshotWithResponseAsync(
-            BinaryData reportAssetSnapshotRequest, RequestOptions requestOptions) {
+        BinaryData reportAssetSnapshotRequest, RequestOptions requestOptions) {
         final String accept = "application/json";
         return FluxUtil.withContext(
-                context ->
-                        service.getSnapshot(
-                                this.getEndpoint(),
-                                this.getSubscriptionId(),
-                                this.getResourceGroupName(),
-                                this.getWorkspaceName(),
-                                this.getServiceVersion().getVersion(),
-                                accept,
-                                reportAssetSnapshotRequest,
-                                requestOptions,
-                                context));
+            context ->
+                service.getSnapshot(
+                    this.getEndpoint(),
+                    this.getSubscriptionId(),
+                    this.getResourceGroupName(),
+                    this.getWorkspaceName(),
+                    this.getServiceVersion().getVersion(),
+                    accept,
+                    reportAssetSnapshotRequest,
+                    requestOptions,
+                    context));
     }
 
     /**
@@ -4606,18 +4517,18 @@ public final class EasmClientImpl {
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Response<BinaryData> getSnapshotWithResponse(
-            BinaryData reportAssetSnapshotRequest, RequestOptions requestOptions) {
+        BinaryData reportAssetSnapshotRequest, RequestOptions requestOptions) {
         final String accept = "application/json";
         return service.getSnapshotSync(
-                this.getEndpoint(),
-                this.getSubscriptionId(),
-                this.getResourceGroupName(),
-                this.getWorkspaceName(),
-                this.getServiceVersion().getVersion(),
-                accept,
-                reportAssetSnapshotRequest,
-                requestOptions,
-                Context.NONE);
+            this.getEndpoint(),
+            this.getSubscriptionId(),
+            this.getResourceGroupName(),
+            this.getWorkspaceName(),
+            this.getServiceVersion().getVersion(),
+            accept,
+            reportAssetSnapshotRequest,
+            requestOptions,
+            Context.NONE);
     }
 
     /**
@@ -4677,20 +4588,20 @@ public final class EasmClientImpl {
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<Response<BinaryData>> getSummaryWithResponseAsync(
-            BinaryData reportAssetSummaryRequest, RequestOptions requestOptions) {
+        BinaryData reportAssetSummaryRequest, RequestOptions requestOptions) {
         final String accept = "application/json";
         return FluxUtil.withContext(
-                context ->
-                        service.getSummary(
-                                this.getEndpoint(),
-                                this.getSubscriptionId(),
-                                this.getResourceGroupName(),
-                                this.getWorkspaceName(),
-                                this.getServiceVersion().getVersion(),
-                                accept,
-                                reportAssetSummaryRequest,
-                                requestOptions,
-                                context));
+            context ->
+                service.getSummary(
+                    this.getEndpoint(),
+                    this.getSubscriptionId(),
+                    this.getResourceGroupName(),
+                    this.getWorkspaceName(),
+                    this.getServiceVersion().getVersion(),
+                    accept,
+                    reportAssetSummaryRequest,
+                    requestOptions,
+                    context));
     }
 
     /**
@@ -4749,18 +4660,18 @@ public final class EasmClientImpl {
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Response<BinaryData> getSummaryWithResponse(
-            BinaryData reportAssetSummaryRequest, RequestOptions requestOptions) {
+        BinaryData reportAssetSummaryRequest, RequestOptions requestOptions) {
         final String accept = "application/json";
         return service.getSummarySync(
-                this.getEndpoint(),
-                this.getSubscriptionId(),
-                this.getResourceGroupName(),
-                this.getWorkspaceName(),
-                this.getServiceVersion().getVersion(),
-                accept,
-                reportAssetSummaryRequest,
-                requestOptions,
-                Context.NONE);
+            this.getEndpoint(),
+            this.getSubscriptionId(),
+            this.getResourceGroupName(),
+            this.getWorkspaceName(),
+            this.getServiceVersion().getVersion(),
+            accept,
+            reportAssetSummaryRequest,
+            requestOptions,
+            Context.NONE);
     }
 
     /**
@@ -4802,25 +4713,25 @@ public final class EasmClientImpl {
     private Mono<PagedResponse<BinaryData>> listSavedFilterSinglePageAsync(RequestOptions requestOptions) {
         final String accept = "application/json";
         return FluxUtil.withContext(
-                        context ->
-                                service.listSavedFilter(
-                                        this.getEndpoint(),
-                                        this.getSubscriptionId(),
-                                        this.getResourceGroupName(),
-                                        this.getWorkspaceName(),
-                                        this.getServiceVersion().getVersion(),
-                                        accept,
-                                        requestOptions,
-                                        context))
-                .map(
-                        res ->
-                                new PagedResponseBase<>(
-                                        res.getRequest(),
-                                        res.getStatusCode(),
-                                        res.getHeaders(),
-                                        getValues(res.getValue(), "value"),
-                                        getNextLink(res.getValue(), "nextLink"),
-                                        null));
+                context ->
+                    service.listSavedFilter(
+                        this.getEndpoint(),
+                        this.getSubscriptionId(),
+                        this.getResourceGroupName(),
+                        this.getWorkspaceName(),
+                        this.getServiceVersion().getVersion(),
+                        accept,
+                        requestOptions,
+                        context))
+            .map(
+                res ->
+                    new PagedResponseBase<>(
+                        res.getRequest(),
+                        res.getStatusCode(),
+                        res.getHeaders(),
+                        getValues(res.getValue(), "value"),
+                        getNextLink(res.getValue(), "nextLink"),
+                        null));
     }
 
     /**
@@ -4861,35 +4772,12 @@ public final class EasmClientImpl {
     public PagedFlux<BinaryData> listSavedFilterAsync(RequestOptions requestOptions) {
         RequestOptions requestOptionsForNextPage = new RequestOptions();
         requestOptionsForNextPage.setContext(
-                requestOptions != null && requestOptions.getContext() != null
-                        ? requestOptions.getContext()
-                        : Context.NONE);
+            requestOptions != null && requestOptions.getContext() != null
+                ? requestOptions.getContext()
+                : Context.NONE);
         return new PagedFlux<>(
-                (pageSize) -> {
-                    RequestOptions requestOptionsLocal = requestOptions == null ? new RequestOptions() : requestOptions;
-                    if (pageSize != null) {
-                        requestOptionsLocal.addRequestCallback(
-                                requestLocal -> {
-                                    UrlBuilder urlBuilder = UrlBuilder.parse(requestLocal.getUrl());
-                                    urlBuilder.setQueryParameter("maxpagesize", String.valueOf(pageSize));
-                                    requestLocal.setUrl(urlBuilder.toString());
-                                });
-                    }
-                    return listSavedFilterSinglePageAsync(requestOptionsLocal);
-                },
-                (nextLink, pageSize) -> {
-                    RequestOptions requestOptionsLocal = new RequestOptions();
-                    requestOptionsLocal.setContext(requestOptionsForNextPage.getContext());
-                    if (pageSize != null) {
-                        requestOptionsLocal.addRequestCallback(
-                                requestLocal -> {
-                                    UrlBuilder urlBuilder = UrlBuilder.parse(requestLocal.getUrl());
-                                    urlBuilder.setQueryParameter("maxpagesize", String.valueOf(pageSize));
-                                    requestLocal.setUrl(urlBuilder.toString());
-                                });
-                    }
-                    return listSavedFilterNextSinglePageAsync(nextLink, requestOptionsLocal);
-                });
+            () -> listSavedFilterSinglePageAsync(requestOptions),
+            nextLink -> listSavedFilterNextSinglePageAsync(nextLink, requestOptionsForNextPage));
     }
 
     /**
@@ -4927,25 +4815,25 @@ public final class EasmClientImpl {
      * @return paged collection of SavedFilter items along with {@link PagedResponse}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    private PagedResponse<BinaryData> listSavedFilterSinglePage(RequestOptions requestOptions) {
+    private CountPagedResponse<SavedFilter> listSavedFilterSinglePage(RequestOptions requestOptions) {
         final String accept = "application/json";
         Response<BinaryData> res =
-                service.listSavedFilterSync(
-                        this.getEndpoint(),
-                        this.getSubscriptionId(),
-                        this.getResourceGroupName(),
-                        this.getWorkspaceName(),
-                        this.getServiceVersion().getVersion(),
-                        accept,
-                        requestOptions,
-                        Context.NONE);
-        return new PagedResponseBase<>(
-                res.getRequest(),
-                res.getStatusCode(),
-                res.getHeaders(),
-                getValues(res.getValue(), "value"),
-                getNextLink(res.getValue(), "nextLink"),
-                null);
+            service.listSavedFilterSync(
+                this.getEndpoint(),
+                this.getSubscriptionId(),
+                this.getResourceGroupName(),
+                this.getWorkspaceName(),
+                this.getServiceVersion().getVersion(),
+                accept,
+                requestOptions,
+                Context.NONE);
+        return new CountPagedResponse<>(
+            res.getRequest(),
+            res.getStatusCode(),
+            res.getHeaders(),
+            getValues(res.getValue(), "value").stream().map(x -> cleanUp(x).toObject(SavedFilter.class)).collect(Collectors.toList()),
+            getNextLink(res.getValue(), "nextLink"),
+            null, cleanUp(res.getValue()).toObject(DiscoGroupPageResult.class).getTotalElements());
     }
 
     /**
@@ -4983,38 +4871,15 @@ public final class EasmClientImpl {
      * @return paged collection of SavedFilter items as paginated response with {@link PagedIterable}.
      */
     @ServiceMethod(returns = ReturnType.COLLECTION)
-    public PagedIterable<BinaryData> listSavedFilter(RequestOptions requestOptions) {
+    public CountPagedIterable<SavedFilter> listSavedFilter(RequestOptions requestOptions) {
         RequestOptions requestOptionsForNextPage = new RequestOptions();
         requestOptionsForNextPage.setContext(
-                requestOptions != null && requestOptions.getContext() != null
-                        ? requestOptions.getContext()
-                        : Context.NONE);
-        return new PagedIterable<>(
-                (pageSize) -> {
-                    RequestOptions requestOptionsLocal = requestOptions == null ? new RequestOptions() : requestOptions;
-                    if (pageSize != null) {
-                        requestOptionsLocal.addRequestCallback(
-                                requestLocal -> {
-                                    UrlBuilder urlBuilder = UrlBuilder.parse(requestLocal.getUrl());
-                                    urlBuilder.setQueryParameter("maxpagesize", String.valueOf(pageSize));
-                                    requestLocal.setUrl(urlBuilder.toString());
-                                });
-                    }
-                    return listSavedFilterSinglePage(requestOptionsLocal);
-                },
-                (nextLink, pageSize) -> {
-                    RequestOptions requestOptionsLocal = new RequestOptions();
-                    requestOptionsLocal.setContext(requestOptionsForNextPage.getContext());
-                    if (pageSize != null) {
-                        requestOptionsLocal.addRequestCallback(
-                                requestLocal -> {
-                                    UrlBuilder urlBuilder = UrlBuilder.parse(requestLocal.getUrl());
-                                    urlBuilder.setQueryParameter("maxpagesize", String.valueOf(pageSize));
-                                    requestLocal.setUrl(urlBuilder.toString());
-                                });
-                    }
-                    return listSavedFilterNextSinglePage(nextLink, requestOptionsLocal);
-                });
+            requestOptions != null && requestOptions.getContext() != null
+                ? requestOptions.getContext()
+                : Context.NONE);
+        return new CountPagedIterable<>(
+            () -> listSavedFilterSinglePage(requestOptions),
+            nextLink -> listSavedFilterNextSinglePage(nextLink, requestOptionsForNextPage));
     }
 
     /**
@@ -5042,20 +4907,20 @@ public final class EasmClientImpl {
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<Response<BinaryData>> getSavedFilterWithResponseAsync(
-            String filterName, RequestOptions requestOptions) {
+        String filterName, RequestOptions requestOptions) {
         final String accept = "application/json";
         return FluxUtil.withContext(
-                context ->
-                        service.getSavedFilter(
-                                this.getEndpoint(),
-                                this.getSubscriptionId(),
-                                this.getResourceGroupName(),
-                                this.getWorkspaceName(),
-                                this.getServiceVersion().getVersion(),
-                                filterName,
-                                accept,
-                                requestOptions,
-                                context));
+            context ->
+                service.getSavedFilter(
+                    this.getEndpoint(),
+                    this.getSubscriptionId(),
+                    this.getResourceGroupName(),
+                    this.getWorkspaceName(),
+                    this.getServiceVersion().getVersion(),
+                    filterName,
+                    accept,
+                    requestOptions,
+                    context));
     }
 
     /**
@@ -5085,19 +4950,19 @@ public final class EasmClientImpl {
     public Response<BinaryData> getSavedFilterWithResponse(String filterName, RequestOptions requestOptions) {
         final String accept = "application/json";
         return service.getSavedFilterSync(
-                this.getEndpoint(),
-                this.getSubscriptionId(),
-                this.getResourceGroupName(),
-                this.getWorkspaceName(),
-                this.getServiceVersion().getVersion(),
-                filterName,
-                accept,
-                requestOptions,
-                Context.NONE);
+            this.getEndpoint(),
+            this.getSubscriptionId(),
+            this.getResourceGroupName(),
+            this.getWorkspaceName(),
+            this.getServiceVersion().getVersion(),
+            filterName,
+            accept,
+            requestOptions,
+            Context.NONE);
     }
 
     /**
-     * Create or replace a saved filter with a given filterName.
+     * Create or update a saved filter with a given filterName.
      *
      * <p><strong>Request Body Schema</strong>
      *
@@ -5131,25 +4996,25 @@ public final class EasmClientImpl {
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<Response<BinaryData>> createOrReplaceSavedFilterWithResponseAsync(
-            String filterName, BinaryData savedFilterData, RequestOptions requestOptions) {
+        String filterName, BinaryData savedFilterData, RequestOptions requestOptions) {
         final String accept = "application/json";
         return FluxUtil.withContext(
-                context ->
-                        service.createOrReplaceSavedFilter(
-                                this.getEndpoint(),
-                                this.getSubscriptionId(),
-                                this.getResourceGroupName(),
-                                this.getWorkspaceName(),
-                                this.getServiceVersion().getVersion(),
-                                filterName,
-                                accept,
-                                savedFilterData,
-                                requestOptions,
-                                context));
+            context ->
+                service.createOrReplaceSavedFilter(
+                    this.getEndpoint(),
+                    this.getSubscriptionId(),
+                    this.getResourceGroupName(),
+                    this.getWorkspaceName(),
+                    this.getServiceVersion().getVersion(),
+                    filterName,
+                    accept,
+                    savedFilterData,
+                    requestOptions,
+                    context));
     }
 
     /**
-     * Create or replace a saved filter with a given filterName.
+     * Create or update a saved filter with a given filterName.
      *
      * <p><strong>Request Body Schema</strong>
      *
@@ -5183,19 +5048,19 @@ public final class EasmClientImpl {
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Response<BinaryData> createOrReplaceSavedFilterWithResponse(
-            String filterName, BinaryData savedFilterData, RequestOptions requestOptions) {
+        String filterName, BinaryData savedFilterData, RequestOptions requestOptions) {
         final String accept = "application/json";
         return service.createOrReplaceSavedFilterSync(
-                this.getEndpoint(),
-                this.getSubscriptionId(),
-                this.getResourceGroupName(),
-                this.getWorkspaceName(),
-                this.getServiceVersion().getVersion(),
-                filterName,
-                accept,
-                savedFilterData,
-                requestOptions,
-                Context.NONE);
+            this.getEndpoint(),
+            this.getSubscriptionId(),
+            this.getResourceGroupName(),
+            this.getWorkspaceName(),
+            this.getServiceVersion().getVersion(),
+            filterName,
+            accept,
+            savedFilterData,
+            requestOptions,
+            Context.NONE);
     }
 
     /**
@@ -5213,17 +5078,17 @@ public final class EasmClientImpl {
     public Mono<Response<Void>> deleteSavedFilterWithResponseAsync(String filterName, RequestOptions requestOptions) {
         final String accept = "application/json";
         return FluxUtil.withContext(
-                context ->
-                        service.deleteSavedFilter(
-                                this.getEndpoint(),
-                                this.getSubscriptionId(),
-                                this.getResourceGroupName(),
-                                this.getWorkspaceName(),
-                                this.getServiceVersion().getVersion(),
-                                filterName,
-                                accept,
-                                requestOptions,
-                                context));
+            context ->
+                service.deleteSavedFilter(
+                    this.getEndpoint(),
+                    this.getSubscriptionId(),
+                    this.getResourceGroupName(),
+                    this.getWorkspaceName(),
+                    this.getServiceVersion().getVersion(),
+                    filterName,
+                    accept,
+                    requestOptions,
+                    context));
     }
 
     /**
@@ -5241,15 +5106,15 @@ public final class EasmClientImpl {
     public Response<Void> deleteSavedFilterWithResponse(String filterName, RequestOptions requestOptions) {
         final String accept = "application/json";
         return service.deleteSavedFilterSync(
-                this.getEndpoint(),
-                this.getSubscriptionId(),
-                this.getResourceGroupName(),
-                this.getWorkspaceName(),
-                this.getServiceVersion().getVersion(),
-                filterName,
-                accept,
-                requestOptions,
-                Context.NONE);
+            this.getEndpoint(),
+            this.getSubscriptionId(),
+            this.getResourceGroupName(),
+            this.getWorkspaceName(),
+            this.getServiceVersion().getVersion(),
+            filterName,
+            accept,
+            requestOptions,
+            Context.NONE);
     }
 
     /**
@@ -5296,25 +5161,25 @@ public final class EasmClientImpl {
     private Mono<PagedResponse<BinaryData>> listTaskSinglePageAsync(RequestOptions requestOptions) {
         final String accept = "application/json";
         return FluxUtil.withContext(
-                        context ->
-                                service.listTask(
-                                        this.getEndpoint(),
-                                        this.getSubscriptionId(),
-                                        this.getResourceGroupName(),
-                                        this.getWorkspaceName(),
-                                        this.getServiceVersion().getVersion(),
-                                        accept,
-                                        requestOptions,
-                                        context))
-                .map(
-                        res ->
-                                new PagedResponseBase<>(
-                                        res.getRequest(),
-                                        res.getStatusCode(),
-                                        res.getHeaders(),
-                                        getValues(res.getValue(), "value"),
-                                        getNextLink(res.getValue(), "nextLink"),
-                                        null));
+                context ->
+                    service.listTask(
+                        this.getEndpoint(),
+                        this.getSubscriptionId(),
+                        this.getResourceGroupName(),
+                        this.getWorkspaceName(),
+                        this.getServiceVersion().getVersion(),
+                        accept,
+                        requestOptions,
+                        context))
+            .map(
+                res ->
+                    new PagedResponseBase<>(
+                        res.getRequest(),
+                        res.getStatusCode(),
+                        res.getHeaders(),
+                        getValues(res.getValue(), "value"),
+                        getNextLink(res.getValue(), "nextLink"),
+                        null));
     }
 
     /**
@@ -5361,35 +5226,12 @@ public final class EasmClientImpl {
     public PagedFlux<BinaryData> listTaskAsync(RequestOptions requestOptions) {
         RequestOptions requestOptionsForNextPage = new RequestOptions();
         requestOptionsForNextPage.setContext(
-                requestOptions != null && requestOptions.getContext() != null
-                        ? requestOptions.getContext()
-                        : Context.NONE);
+            requestOptions != null && requestOptions.getContext() != null
+                ? requestOptions.getContext()
+                : Context.NONE);
         return new PagedFlux<>(
-                (pageSize) -> {
-                    RequestOptions requestOptionsLocal = requestOptions == null ? new RequestOptions() : requestOptions;
-                    if (pageSize != null) {
-                        requestOptionsLocal.addRequestCallback(
-                                requestLocal -> {
-                                    UrlBuilder urlBuilder = UrlBuilder.parse(requestLocal.getUrl());
-                                    urlBuilder.setQueryParameter("maxpagesize", String.valueOf(pageSize));
-                                    requestLocal.setUrl(urlBuilder.toString());
-                                });
-                    }
-                    return listTaskSinglePageAsync(requestOptionsLocal);
-                },
-                (nextLink, pageSize) -> {
-                    RequestOptions requestOptionsLocal = new RequestOptions();
-                    requestOptionsLocal.setContext(requestOptionsForNextPage.getContext());
-                    if (pageSize != null) {
-                        requestOptionsLocal.addRequestCallback(
-                                requestLocal -> {
-                                    UrlBuilder urlBuilder = UrlBuilder.parse(requestLocal.getUrl());
-                                    urlBuilder.setQueryParameter("maxpagesize", String.valueOf(pageSize));
-                                    requestLocal.setUrl(urlBuilder.toString());
-                                });
-                    }
-                    return listTaskNextSinglePageAsync(nextLink, requestOptionsLocal);
-                });
+            () -> listTaskSinglePageAsync(requestOptions),
+            nextLink -> listTaskNextSinglePageAsync(nextLink, requestOptionsForNextPage));
     }
 
     /**
@@ -5433,25 +5275,25 @@ public final class EasmClientImpl {
      * @return paged collection of Task items along with {@link PagedResponse}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    private PagedResponse<BinaryData> listTaskSinglePage(RequestOptions requestOptions) {
+    private CountPagedResponse<Task> listTaskSinglePage(RequestOptions requestOptions) {
         final String accept = "application/json";
         Response<BinaryData> res =
-                service.listTaskSync(
-                        this.getEndpoint(),
-                        this.getSubscriptionId(),
-                        this.getResourceGroupName(),
-                        this.getWorkspaceName(),
-                        this.getServiceVersion().getVersion(),
-                        accept,
-                        requestOptions,
-                        Context.NONE);
-        return new PagedResponseBase<>(
-                res.getRequest(),
-                res.getStatusCode(),
-                res.getHeaders(),
-                getValues(res.getValue(), "value"),
-                getNextLink(res.getValue(), "nextLink"),
-                null);
+            service.listTaskSync(
+                this.getEndpoint(),
+                this.getSubscriptionId(),
+                this.getResourceGroupName(),
+                this.getWorkspaceName(),
+                this.getServiceVersion().getVersion(),
+                accept,
+                requestOptions,
+                Context.NONE);
+        return new CountPagedResponse<>(
+            res.getRequest(),
+            res.getStatusCode(),
+            res.getHeaders(),
+            getValues(res.getValue(), "value").stream().map(x -> cleanUp(x).toObject(Task.class)).collect(Collectors.toList()),
+            getNextLink(res.getValue(), "nextLink"),
+            null, cleanUp(res.getValue()).toObject(TaskPageResult.class).getTotalElements());
     }
 
     /**
@@ -5495,38 +5337,15 @@ public final class EasmClientImpl {
      * @return paged collection of Task items as paginated response with {@link PagedIterable}.
      */
     @ServiceMethod(returns = ReturnType.COLLECTION)
-    public PagedIterable<BinaryData> listTask(RequestOptions requestOptions) {
+    public CountPagedIterable<Task> listTask(RequestOptions requestOptions) {
         RequestOptions requestOptionsForNextPage = new RequestOptions();
         requestOptionsForNextPage.setContext(
-                requestOptions != null && requestOptions.getContext() != null
-                        ? requestOptions.getContext()
-                        : Context.NONE);
-        return new PagedIterable<>(
-                (pageSize) -> {
-                    RequestOptions requestOptionsLocal = requestOptions == null ? new RequestOptions() : requestOptions;
-                    if (pageSize != null) {
-                        requestOptionsLocal.addRequestCallback(
-                                requestLocal -> {
-                                    UrlBuilder urlBuilder = UrlBuilder.parse(requestLocal.getUrl());
-                                    urlBuilder.setQueryParameter("maxpagesize", String.valueOf(pageSize));
-                                    requestLocal.setUrl(urlBuilder.toString());
-                                });
-                    }
-                    return listTaskSinglePage(requestOptionsLocal);
-                },
-                (nextLink, pageSize) -> {
-                    RequestOptions requestOptionsLocal = new RequestOptions();
-                    requestOptionsLocal.setContext(requestOptionsForNextPage.getContext());
-                    if (pageSize != null) {
-                        requestOptionsLocal.addRequestCallback(
-                                requestLocal -> {
-                                    UrlBuilder urlBuilder = UrlBuilder.parse(requestLocal.getUrl());
-                                    urlBuilder.setQueryParameter("maxpagesize", String.valueOf(pageSize));
-                                    requestLocal.setUrl(urlBuilder.toString());
-                                });
-                    }
-                    return listTaskNextSinglePage(nextLink, requestOptionsLocal);
-                });
+            requestOptions != null && requestOptions.getContext() != null
+                ? requestOptions.getContext()
+                : Context.NONE);
+        return new CountPagedIterable<>(
+            () -> listTaskSinglePage(requestOptions),
+            nextLink -> listTaskNextSinglePage(nextLink, requestOptionsForNextPage));
     }
 
     /**
@@ -5561,17 +5380,17 @@ public final class EasmClientImpl {
     public Mono<Response<BinaryData>> getTaskWithResponseAsync(String taskId, RequestOptions requestOptions) {
         final String accept = "application/json";
         return FluxUtil.withContext(
-                context ->
-                        service.getTask(
-                                this.getEndpoint(),
-                                this.getSubscriptionId(),
-                                this.getResourceGroupName(),
-                                this.getWorkspaceName(),
-                                this.getServiceVersion().getVersion(),
-                                taskId,
-                                accept,
-                                requestOptions,
-                                context));
+            context ->
+                service.getTask(
+                    this.getEndpoint(),
+                    this.getSubscriptionId(),
+                    this.getResourceGroupName(),
+                    this.getWorkspaceName(),
+                    this.getServiceVersion().getVersion(),
+                    taskId,
+                    accept,
+                    requestOptions,
+                    context));
     }
 
     /**
@@ -5606,15 +5425,15 @@ public final class EasmClientImpl {
     public Response<BinaryData> getTaskWithResponse(String taskId, RequestOptions requestOptions) {
         final String accept = "application/json";
         return service.getTaskSync(
-                this.getEndpoint(),
-                this.getSubscriptionId(),
-                this.getResourceGroupName(),
-                this.getWorkspaceName(),
-                this.getServiceVersion().getVersion(),
-                taskId,
-                accept,
-                requestOptions,
-                Context.NONE);
+            this.getEndpoint(),
+            this.getSubscriptionId(),
+            this.getResourceGroupName(),
+            this.getWorkspaceName(),
+            this.getServiceVersion().getVersion(),
+            taskId,
+            accept,
+            requestOptions,
+            Context.NONE);
     }
 
     /**
@@ -5649,17 +5468,17 @@ public final class EasmClientImpl {
     public Mono<Response<BinaryData>> cancelTaskWithResponseAsync(String taskId, RequestOptions requestOptions) {
         final String accept = "application/json";
         return FluxUtil.withContext(
-                context ->
-                        service.cancelTask(
-                                this.getEndpoint(),
-                                this.getSubscriptionId(),
-                                this.getResourceGroupName(),
-                                this.getWorkspaceName(),
-                                this.getServiceVersion().getVersion(),
-                                taskId,
-                                accept,
-                                requestOptions,
-                                context));
+            context ->
+                service.cancelTask(
+                    this.getEndpoint(),
+                    this.getSubscriptionId(),
+                    this.getResourceGroupName(),
+                    this.getWorkspaceName(),
+                    this.getServiceVersion().getVersion(),
+                    taskId,
+                    accept,
+                    requestOptions,
+                    context));
     }
 
     /**
@@ -5694,15 +5513,15 @@ public final class EasmClientImpl {
     public Response<BinaryData> cancelTaskWithResponse(String taskId, RequestOptions requestOptions) {
         final String accept = "application/json";
         return service.cancelTaskSync(
-                this.getEndpoint(),
-                this.getSubscriptionId(),
-                this.getResourceGroupName(),
-                this.getWorkspaceName(),
-                this.getServiceVersion().getVersion(),
-                taskId,
-                accept,
-                requestOptions,
-                Context.NONE);
+            this.getEndpoint(),
+            this.getSubscriptionId(),
+            this.getResourceGroupName(),
+            this.getWorkspaceName(),
+            this.getServiceVersion().getVersion(),
+            taskId,
+            accept,
+            requestOptions,
+            Context.NONE);
     }
 
     /**
@@ -5750,28 +5569,28 @@ public final class EasmClientImpl {
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Mono<PagedResponse<BinaryData>> listAssetResourceNextSinglePageAsync(
-            String nextLink, RequestOptions requestOptions) {
+        String nextLink, RequestOptions requestOptions) {
         final String accept = "application/json";
         return FluxUtil.withContext(
-                        context ->
-                                service.listAssetResourceNext(
-                                        nextLink,
-                                        this.getEndpoint(),
-                                        this.getSubscriptionId(),
-                                        this.getResourceGroupName(),
-                                        this.getWorkspaceName(),
-                                        accept,
-                                        requestOptions,
-                                        context))
-                .map(
-                        res ->
-                                new PagedResponseBase<>(
-                                        res.getRequest(),
-                                        res.getStatusCode(),
-                                        res.getHeaders(),
-                                        getValues(res.getValue(), "value"),
-                                        getNextLink(res.getValue(), "nextLink"),
-                                        null));
+                context ->
+                    service.listAssetResourceNext(
+                        nextLink,
+                        this.getEndpoint(),
+                        this.getSubscriptionId(),
+                        this.getResourceGroupName(),
+                        this.getWorkspaceName(),
+                        accept,
+                        requestOptions,
+                        context))
+            .map(
+                res ->
+                    new PagedResponseBase<>(
+                        res.getRequest(),
+                        res.getStatusCode(),
+                        res.getHeaders(),
+                        getValues(res.getValue(), "value"),
+                        getNextLink(res.getValue(), "nextLink"),
+                        null));
     }
 
     /**
@@ -5817,25 +5636,25 @@ public final class EasmClientImpl {
      * @return paged collection of AssetResource items along with {@link PagedResponse}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    private PagedResponse<BinaryData> listAssetResourceNextSinglePage(String nextLink, RequestOptions requestOptions) {
+    private CountPagedResponse<AssetResource> listAssetResourceNextSinglePage(String nextLink, RequestOptions requestOptions) {
         final String accept = "application/json";
         Response<BinaryData> res =
-                service.listAssetResourceNextSync(
-                        nextLink,
-                        this.getEndpoint(),
-                        this.getSubscriptionId(),
-                        this.getResourceGroupName(),
-                        this.getWorkspaceName(),
-                        accept,
-                        requestOptions,
-                        Context.NONE);
-        return new PagedResponseBase<>(
-                res.getRequest(),
-                res.getStatusCode(),
-                res.getHeaders(),
-                getValues(res.getValue(), "value"),
-                getNextLink(res.getValue(), "nextLink"),
-                null);
+            service.listAssetResourceNextSync(
+                nextLink,
+                this.getEndpoint(),
+                this.getSubscriptionId(),
+                this.getResourceGroupName(),
+                this.getWorkspaceName(),
+                accept,
+                requestOptions,
+                Context.NONE);
+        return new CountPagedResponse<>(
+            res.getRequest(),
+            res.getStatusCode(),
+            res.getHeaders(),
+            getValues(res.getValue(), "value").stream().map(x -> cleanUp(x).toObject(AssetResource.class)).collect(Collectors.toList()),
+            getNextLink(res.getValue(), "nextLink"),
+            null, cleanUp(res.getValue()).toObject(AssetPageResult.class).getTotalElements());
     }
 
     /**
@@ -5871,28 +5690,28 @@ public final class EasmClientImpl {
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Mono<PagedResponse<BinaryData>> listDataConnectionNextSinglePageAsync(
-            String nextLink, RequestOptions requestOptions) {
+        String nextLink, RequestOptions requestOptions) {
         final String accept = "application/json";
         return FluxUtil.withContext(
-                        context ->
-                                service.listDataConnectionNext(
-                                        nextLink,
-                                        this.getEndpoint(),
-                                        this.getSubscriptionId(),
-                                        this.getResourceGroupName(),
-                                        this.getWorkspaceName(),
-                                        accept,
-                                        requestOptions,
-                                        context))
-                .map(
-                        res ->
-                                new PagedResponseBase<>(
-                                        res.getRequest(),
-                                        res.getStatusCode(),
-                                        res.getHeaders(),
-                                        getValues(res.getValue(), "value"),
-                                        getNextLink(res.getValue(), "nextLink"),
-                                        null));
+                context ->
+                    service.listDataConnectionNext(
+                        nextLink,
+                        this.getEndpoint(),
+                        this.getSubscriptionId(),
+                        this.getResourceGroupName(),
+                        this.getWorkspaceName(),
+                        accept,
+                        requestOptions,
+                        context))
+            .map(
+                res ->
+                    new PagedResponseBase<>(
+                        res.getRequest(),
+                        res.getStatusCode(),
+                        res.getHeaders(),
+                        getValues(res.getValue(), "value"),
+                        getNextLink(res.getValue(), "nextLink"),
+                        null));
     }
 
     /**
@@ -5926,25 +5745,25 @@ public final class EasmClientImpl {
      * @return paged collection of DataConnection items along with {@link PagedResponse}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    private PagedResponse<BinaryData> listDataConnectionNextSinglePage(String nextLink, RequestOptions requestOptions) {
+    private CountPagedResponse<DataConnection> listDataConnectionNextSinglePage(String nextLink, RequestOptions requestOptions) {
         final String accept = "application/json";
         Response<BinaryData> res =
-                service.listDataConnectionNextSync(
-                        nextLink,
-                        this.getEndpoint(),
-                        this.getSubscriptionId(),
-                        this.getResourceGroupName(),
-                        this.getWorkspaceName(),
-                        accept,
-                        requestOptions,
-                        Context.NONE);
-        return new PagedResponseBase<>(
-                res.getRequest(),
-                res.getStatusCode(),
-                res.getHeaders(),
-                getValues(res.getValue(), "value"),
-                getNextLink(res.getValue(), "nextLink"),
-                null);
+            service.listDataConnectionNextSync(
+                nextLink,
+                this.getEndpoint(),
+                this.getSubscriptionId(),
+                this.getResourceGroupName(),
+                this.getWorkspaceName(),
+                accept,
+                requestOptions,
+                Context.NONE);
+        return new CountPagedResponse<>(
+            res.getRequest(),
+            res.getStatusCode(),
+            res.getHeaders(),
+            getValues(res.getValue(), "value").stream().map(x -> cleanUp(x).toObject(DataConnection.class)).collect(Collectors.toList()),
+            getNextLink(res.getValue(), "nextLink"),
+            null, cleanUp(res.getValue()).toObject(DataConnectionPageResult.class).getTotalElements());
     }
 
     /**
@@ -6006,28 +5825,28 @@ public final class EasmClientImpl {
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Mono<PagedResponse<BinaryData>> listDiscoGroupNextSinglePageAsync(
-            String nextLink, RequestOptions requestOptions) {
+        String nextLink, RequestOptions requestOptions) {
         final String accept = "application/json";
         return FluxUtil.withContext(
-                        context ->
-                                service.listDiscoGroupNext(
-                                        nextLink,
-                                        this.getEndpoint(),
-                                        this.getSubscriptionId(),
-                                        this.getResourceGroupName(),
-                                        this.getWorkspaceName(),
-                                        accept,
-                                        requestOptions,
-                                        context))
-                .map(
-                        res ->
-                                new PagedResponseBase<>(
-                                        res.getRequest(),
-                                        res.getStatusCode(),
-                                        res.getHeaders(),
-                                        getValues(res.getValue(), "value"),
-                                        getNextLink(res.getValue(), "nextLink"),
-                                        null));
+                context ->
+                    service.listDiscoGroupNext(
+                        nextLink,
+                        this.getEndpoint(),
+                        this.getSubscriptionId(),
+                        this.getResourceGroupName(),
+                        this.getWorkspaceName(),
+                        accept,
+                        requestOptions,
+                        context))
+            .map(
+                res ->
+                    new PagedResponseBase<>(
+                        res.getRequest(),
+                        res.getStatusCode(),
+                        res.getHeaders(),
+                        getValues(res.getValue(), "value"),
+                        getNextLink(res.getValue(), "nextLink"),
+                        null));
     }
 
     /**
@@ -6087,25 +5906,33 @@ public final class EasmClientImpl {
      * @return paged collection of DiscoGroup items along with {@link PagedResponse}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    private PagedResponse<BinaryData> listDiscoGroupNextSinglePage(String nextLink, RequestOptions requestOptions) {
+    private CountPagedResponse<DiscoGroup> listDiscoGroupNextSinglePage(String nextLink, RequestOptions requestOptions) {
         final String accept = "application/json";
         Response<BinaryData> res =
-                service.listDiscoGroupNextSync(
-                        nextLink,
-                        this.getEndpoint(),
-                        this.getSubscriptionId(),
-                        this.getResourceGroupName(),
-                        this.getWorkspaceName(),
-                        accept,
-                        requestOptions,
-                        Context.NONE);
-        return new PagedResponseBase<>(
-                res.getRequest(),
-                res.getStatusCode(),
-                res.getHeaders(),
-                getValues(res.getValue(), "value"),
-                getNextLink(res.getValue(), "nextLink"),
-                null);
+            service.listDiscoGroupNextSync(
+                nextLink,
+                this.getEndpoint(),
+                this.getSubscriptionId(),
+                this.getResourceGroupName(),
+                this.getWorkspaceName(),
+                accept,
+                requestOptions,
+                Context.NONE);
+//        return new PagedResponseBase<Void, DiscoGroup>(
+//                res.getRequest(),
+//                res.getStatusCode(),
+//                res.getHeaders(),
+//                getValues(res.getValue(), "value").stream().map(x -> x.toObject(DiscoGroup.class)).collect(Collectors.toList()),
+//                getNextLink(res.getValue(), "nextLink"),
+//                null);
+
+        return new CountPagedResponse<>(
+            res.getRequest(),
+            res.getStatusCode(),
+            res.getHeaders(),
+            getValues(res.getValue(), "value").stream().map(x -> cleanUp(x).toObject(DiscoGroup.class)).collect(Collectors.toList()),
+            getNextLink(res.getValue(), "nextLink"),
+            null, cleanUp(res.getValue()).toObject(DiscoGroupPageResult.class).getTotalElements());
     }
 
     /**
@@ -6147,28 +5974,28 @@ public final class EasmClientImpl {
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Mono<PagedResponse<BinaryData>> listDiscoTemplateNextSinglePageAsync(
-            String nextLink, RequestOptions requestOptions) {
+        String nextLink, RequestOptions requestOptions) {
         final String accept = "application/json";
         return FluxUtil.withContext(
-                        context ->
-                                service.listDiscoTemplateNext(
-                                        nextLink,
-                                        this.getEndpoint(),
-                                        this.getSubscriptionId(),
-                                        this.getResourceGroupName(),
-                                        this.getWorkspaceName(),
-                                        accept,
-                                        requestOptions,
-                                        context))
-                .map(
-                        res ->
-                                new PagedResponseBase<>(
-                                        res.getRequest(),
-                                        res.getStatusCode(),
-                                        res.getHeaders(),
-                                        getValues(res.getValue(), "value"),
-                                        getNextLink(res.getValue(), "nextLink"),
-                                        null));
+                context ->
+                    service.listDiscoTemplateNext(
+                        nextLink,
+                        this.getEndpoint(),
+                        this.getSubscriptionId(),
+                        this.getResourceGroupName(),
+                        this.getWorkspaceName(),
+                        accept,
+                        requestOptions,
+                        context))
+            .map(
+                res ->
+                    new PagedResponseBase<>(
+                        res.getRequest(),
+                        res.getStatusCode(),
+                        res.getHeaders(),
+                        getValues(res.getValue(), "value"),
+                        getNextLink(res.getValue(), "nextLink"),
+                        null));
     }
 
     /**
@@ -6208,25 +6035,25 @@ public final class EasmClientImpl {
      * @return paged collection of DiscoTemplate items along with {@link PagedResponse}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    private PagedResponse<BinaryData> listDiscoTemplateNextSinglePage(String nextLink, RequestOptions requestOptions) {
+    private CountPagedResponse<DiscoTemplate> listDiscoTemplateNextSinglePage(String nextLink, RequestOptions requestOptions) {
         final String accept = "application/json";
         Response<BinaryData> res =
-                service.listDiscoTemplateNextSync(
-                        nextLink,
-                        this.getEndpoint(),
-                        this.getSubscriptionId(),
-                        this.getResourceGroupName(),
-                        this.getWorkspaceName(),
-                        accept,
-                        requestOptions,
-                        Context.NONE);
-        return new PagedResponseBase<>(
-                res.getRequest(),
-                res.getStatusCode(),
-                res.getHeaders(),
-                getValues(res.getValue(), "value"),
-                getNextLink(res.getValue(), "nextLink"),
-                null);
+            service.listDiscoTemplateNextSync(
+                nextLink,
+                this.getEndpoint(),
+                this.getSubscriptionId(),
+                this.getResourceGroupName(),
+                this.getWorkspaceName(),
+                accept,
+                requestOptions,
+                Context.NONE);
+        return new CountPagedResponse<>(
+            res.getRequest(),
+            res.getStatusCode(),
+            res.getHeaders(),
+            getValues(res.getValue(), "value").stream().map(x -> cleanUp(x).toObject(DiscoTemplate.class)).collect(Collectors.toList()),
+            getNextLink(res.getValue(), "nextLink"),
+            null, cleanUp(res.getValue()).toObject(DiscoTemplatePageResult.class).getTotalElements());
     }
 
     /**
@@ -6256,28 +6083,28 @@ public final class EasmClientImpl {
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Mono<PagedResponse<BinaryData>> listSavedFilterNextSinglePageAsync(
-            String nextLink, RequestOptions requestOptions) {
+        String nextLink, RequestOptions requestOptions) {
         final String accept = "application/json";
         return FluxUtil.withContext(
-                        context ->
-                                service.listSavedFilterNext(
-                                        nextLink,
-                                        this.getEndpoint(),
-                                        this.getSubscriptionId(),
-                                        this.getResourceGroupName(),
-                                        this.getWorkspaceName(),
-                                        accept,
-                                        requestOptions,
-                                        context))
-                .map(
-                        res ->
-                                new PagedResponseBase<>(
-                                        res.getRequest(),
-                                        res.getStatusCode(),
-                                        res.getHeaders(),
-                                        getValues(res.getValue(), "value"),
-                                        getNextLink(res.getValue(), "nextLink"),
-                                        null));
+                context ->
+                    service.listSavedFilterNext(
+                        nextLink,
+                        this.getEndpoint(),
+                        this.getSubscriptionId(),
+                        this.getResourceGroupName(),
+                        this.getWorkspaceName(),
+                        accept,
+                        requestOptions,
+                        context))
+            .map(
+                res ->
+                    new PagedResponseBase<>(
+                        res.getRequest(),
+                        res.getStatusCode(),
+                        res.getHeaders(),
+                        getValues(res.getValue(), "value"),
+                        getNextLink(res.getValue(), "nextLink"),
+                        null));
     }
 
     /**
@@ -6305,25 +6132,25 @@ public final class EasmClientImpl {
      * @return paged collection of SavedFilter items along with {@link PagedResponse}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    private PagedResponse<BinaryData> listSavedFilterNextSinglePage(String nextLink, RequestOptions requestOptions) {
+    private CountPagedResponse<SavedFilter> listSavedFilterNextSinglePage(String nextLink, RequestOptions requestOptions) {
         final String accept = "application/json";
         Response<BinaryData> res =
-                service.listSavedFilterNextSync(
-                        nextLink,
-                        this.getEndpoint(),
-                        this.getSubscriptionId(),
-                        this.getResourceGroupName(),
-                        this.getWorkspaceName(),
-                        accept,
-                        requestOptions,
-                        Context.NONE);
-        return new PagedResponseBase<>(
-                res.getRequest(),
-                res.getStatusCode(),
-                res.getHeaders(),
-                getValues(res.getValue(), "value"),
-                getNextLink(res.getValue(), "nextLink"),
-                null);
+            service.listSavedFilterNextSync(
+                nextLink,
+                this.getEndpoint(),
+                this.getSubscriptionId(),
+                this.getResourceGroupName(),
+                this.getWorkspaceName(),
+                accept,
+                requestOptions,
+                Context.NONE);
+        return new CountPagedResponse<>(
+            res.getRequest(),
+            res.getStatusCode(),
+            res.getHeaders(),
+            getValues(res.getValue(), "value").stream().map(x -> cleanUp(x).toObject(SavedFilter.class)).collect(Collectors.toList()),
+            getNextLink(res.getValue(), "nextLink"),
+            null, cleanUp(res.getValue()).toObject(SavedFilterPageResult.class).getTotalElements());
     }
 
     /**
@@ -6357,28 +6184,28 @@ public final class EasmClientImpl {
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Mono<PagedResponse<BinaryData>> listTaskNextSinglePageAsync(
-            String nextLink, RequestOptions requestOptions) {
+        String nextLink, RequestOptions requestOptions) {
         final String accept = "application/json";
         return FluxUtil.withContext(
-                        context ->
-                                service.listTaskNext(
-                                        nextLink,
-                                        this.getEndpoint(),
-                                        this.getSubscriptionId(),
-                                        this.getResourceGroupName(),
-                                        this.getWorkspaceName(),
-                                        accept,
-                                        requestOptions,
-                                        context))
-                .map(
-                        res ->
-                                new PagedResponseBase<>(
-                                        res.getRequest(),
-                                        res.getStatusCode(),
-                                        res.getHeaders(),
-                                        getValues(res.getValue(), "value"),
-                                        getNextLink(res.getValue(), "nextLink"),
-                                        null));
+                context ->
+                    service.listTaskNext(
+                        nextLink,
+                        this.getEndpoint(),
+                        this.getSubscriptionId(),
+                        this.getResourceGroupName(),
+                        this.getWorkspaceName(),
+                        accept,
+                        requestOptions,
+                        context))
+            .map(
+                res ->
+                    new PagedResponseBase<>(
+                        res.getRequest(),
+                        res.getStatusCode(),
+                        res.getHeaders(),
+                        getValues(res.getValue(), "value"),
+                        getNextLink(res.getValue(), "nextLink"),
+                        null));
     }
 
     /**
@@ -6411,25 +6238,25 @@ public final class EasmClientImpl {
      * @return paged collection of Task items along with {@link PagedResponse}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    private PagedResponse<BinaryData> listTaskNextSinglePage(String nextLink, RequestOptions requestOptions) {
+    private CountPagedResponse<Task> listTaskNextSinglePage(String nextLink, RequestOptions requestOptions) {
         final String accept = "application/json";
         Response<BinaryData> res =
-                service.listTaskNextSync(
-                        nextLink,
-                        this.getEndpoint(),
-                        this.getSubscriptionId(),
-                        this.getResourceGroupName(),
-                        this.getWorkspaceName(),
-                        accept,
-                        requestOptions,
-                        Context.NONE);
-        return new PagedResponseBase<>(
-                res.getRequest(),
-                res.getStatusCode(),
-                res.getHeaders(),
-                getValues(res.getValue(), "value"),
-                getNextLink(res.getValue(), "nextLink"),
-                null);
+            service.listTaskNextSync(
+                nextLink,
+                this.getEndpoint(),
+                this.getSubscriptionId(),
+                this.getResourceGroupName(),
+                this.getWorkspaceName(),
+                accept,
+                requestOptions,
+                Context.NONE);
+        return new CountPagedResponse<>(
+            res.getRequest(),
+            res.getStatusCode(),
+            res.getHeaders(),
+            getValues(res.getValue(), "value").stream().map(x -> cleanUp(x).toObject(Task.class)).collect(Collectors.toList()),
+            getNextLink(res.getValue(), "nextLink"),
+            null, cleanUp(res.getValue()).toObject(TaskPageResult.class).getTotalElements());
     }
 
     private List<BinaryData> getValues(BinaryData binaryData, String path) {
@@ -6449,5 +6276,9 @@ public final class EasmClientImpl {
         } catch (RuntimeException e) {
             return null;
         }
+    }
+
+    private BinaryData cleanUp(BinaryData input){
+        return BinaryData.fromString(input.toString().replaceAll("\\+0000", "+00:00"));
     }
 }

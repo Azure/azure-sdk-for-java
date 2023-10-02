@@ -2,16 +2,14 @@ package com.azure.analytics.defender.easm;
 
 import com.azure.analytics.defender.easm.generated.EasmClientTestBase;
 import com.azure.analytics.defender.easm.models.*;
-import com.azure.core.http.rest.PagedIterable;
 import org.junit.jupiter.api.Test;
 
-import java.util.List;
+import static org.junit.jupiter.api.Assertions.assertEquals;
+import static org.junit.jupiter.api.Assertions.assertInstanceOf;
 
-import static org.junit.jupiter.api.Assertions.*;
-
-
+// Copyright (c) Microsoft Corporation. All rights reserved.
+// Licensed under the MIT License.
 public class AssetsTest extends EasmClientTestBase {
-
     private String assetName = "kumed.com";
     private String assetKind = "domain";
     private String filter = "name = " + assetName + " and type = " + assetKind;
@@ -42,11 +40,10 @@ public class AssetsTest extends EasmClientTestBase {
     @Test
     public void testAssetsListWithResponse(){
 
-        PagedIterable<AssetResource> assetPageResponse = easmClient.listAssetResource(filter, "lastSeen", 0, 25, null);
+        CountPagedIterable<AssetResource> assetPageResponse = easmClient.listAssetResource(filter, "lastSeen", 0, 25, null);
         AssetResource assetResponse = assetPageResponse.iterator().next();
         assertEquals(assetName, assetResponse.getName());
         assertInstanceOf(getAssetResourceClass(assetKind), assetResponse);
-    
     }
 
     @Test
@@ -57,12 +54,11 @@ public class AssetsTest extends EasmClientTestBase {
         assertEquals(TaskPhase.COMPLETE, taskResponse.getPhase());
         //assertTrue(taskResponse.getId().matches(UUID_REGEX));
     }
-//
+    //
     @Test
     public void testAssetsGetWithResponse(){
         AssetResource assetResponse = easmClient.getAssetResource(assetId);
         assertInstanceOf(getAssetResourceClass(assetKind), assetResponse);
         //assertTrue(assetResponse.getUuid().matches(UUID_REGEX));
     }
-
 }

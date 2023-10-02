@@ -27,15 +27,15 @@ import java.util.List;
 import reactor.core.publisher.Mono;
 
 public class EasmClientTestBase extends TestProxyTestBase {
-    private String SANITIZED_REQUEST_URI = "https://REDACTED/subscriptions/00000000-0000-0000-0000-000000000000/resourceGroups/REDACTED/workspaces/REDACTED/";
-    private String REQUEST_URI_REGEX = "https://.*/subscriptions/.*/resourceGroups/.*/workspaces/.*?/";
+    private final String SANITIZED_REQUEST_URI =  "https://REDACTED/subscriptions/00000000-0000-0000-0000-000000000000/resourceGroups/REDACTED/workspaces/REDACTED/";
+    private final String REQUEST_URI_REGEX = "https://.*/subscriptions/.*/resourceGroups/.*/workspaces/.*?/";
     protected final String UUID_REGEX = "[0-9a-f]{8}-[0-9a-f]{4}-[0-9a-f]{4}-[0-9a-f]{4}-[0-9a-f]{12}";
     protected EasmClient easmClient;
 
 
     @Override
     protected void beforeTest() {
-        List<TestProxySanitizer> customSanitizers = new ArrayList<>();
+//        List<TestProxySanitizer> customSanitizers = new ArrayList<>();
         EasmClientBuilder easmClientbuilder =
                 new EasmClientBuilder()
                         .endpoint(Configuration.getGlobalConfiguration().get("ENDPOINT", "endpoint"))
@@ -56,8 +56,8 @@ public class EasmClientTestBase extends TestProxyTestBase {
         } else if (getTestMode() == TestMode.LIVE) {
             easmClientbuilder.credential(new DefaultAzureCredentialBuilder().build());
         }
-        customSanitizers.add(new TestProxySanitizer(REQUEST_URI_REGEX, SANITIZED_REQUEST_URI, TestProxySanitizerType.URL));
-        interceptorManager.addSanitizers(customSanitizers);
+//        customSanitizers.add(new TestProxySanitizer(REQUEST_URI_REGEX, SANITIZED_REQUEST_URI, TestProxySanitizerType.URL));
+//        interceptorManager.addSanitizers(customSanitizers);
         easmClient = easmClientbuilder.buildClient();
     }
 }

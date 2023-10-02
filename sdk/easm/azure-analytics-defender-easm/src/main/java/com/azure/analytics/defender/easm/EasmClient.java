@@ -5,23 +5,7 @@
 package com.azure.analytics.defender.easm;
 
 import com.azure.analytics.defender.easm.implementation.EasmClientImpl;
-import com.azure.analytics.defender.easm.models.AssetResource;
-import com.azure.analytics.defender.easm.models.AssetUpdateData;
-import com.azure.analytics.defender.easm.models.DataConnection;
-import com.azure.analytics.defender.easm.models.DataConnectionData;
-import com.azure.analytics.defender.easm.models.DiscoGroup;
-import com.azure.analytics.defender.easm.models.DiscoGroupData;
-import com.azure.analytics.defender.easm.models.DiscoRunPageResult;
-import com.azure.analytics.defender.easm.models.DiscoTemplate;
-import com.azure.analytics.defender.easm.models.ReportAssetSnapshotRequest;
-import com.azure.analytics.defender.easm.models.ReportAssetSnapshotResult;
-import com.azure.analytics.defender.easm.models.ReportAssetSummaryRequest;
-import com.azure.analytics.defender.easm.models.ReportAssetSummaryResult;
-import com.azure.analytics.defender.easm.models.ReportBillableAssetSummaryResult;
-import com.azure.analytics.defender.easm.models.SavedFilter;
-import com.azure.analytics.defender.easm.models.SavedFilterData;
-import com.azure.analytics.defender.easm.models.Task;
-import com.azure.analytics.defender.easm.models.ValidateResult;
+import com.azure.analytics.defender.easm.models.*;
 import com.azure.core.annotation.Generated;
 import com.azure.core.annotation.ReturnType;
 import com.azure.core.annotation.ServiceClient;
@@ -34,6 +18,8 @@ import com.azure.core.http.rest.PagedIterable;
 import com.azure.core.http.rest.RequestOptions;
 import com.azure.core.http.rest.Response;
 import com.azure.core.util.BinaryData;
+
+import javax.crypto.*;
 
 /** Initializes a new instance of the synchronous EasmClient type. */
 @ServiceClient(builder = EasmClientBuilder.class)
@@ -106,7 +92,7 @@ public final class EasmClient {
      */
     @Generated
     @ServiceMethod(returns = ReturnType.COLLECTION)
-    public PagedIterable<BinaryData> listAssetResource(RequestOptions requestOptions) {
+    public CountPagedIterable<AssetResource> listAssetResource(RequestOptions requestOptions) {
         return this.serviceClient.listAssetResource(requestOptions);
     }
 
@@ -155,7 +141,7 @@ public final class EasmClient {
     @Generated
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Response<BinaryData> updateAssetsWithResponse(
-            String filter, BinaryData assetUpdateData, RequestOptions requestOptions) {
+        String filter, BinaryData assetUpdateData, RequestOptions requestOptions) {
         return this.serviceClient.updateAssetsWithResponse(filter, assetUpdateData, requestOptions);
     }
 
@@ -247,7 +233,7 @@ public final class EasmClient {
      */
     @Generated
     @ServiceMethod(returns = ReturnType.COLLECTION)
-    public PagedIterable<BinaryData> listDataConnection(RequestOptions requestOptions) {
+    public CountPagedIterable<DataConnection> listDataConnection(RequestOptions requestOptions) {
         return this.serviceClient.listDataConnection(requestOptions);
     }
 
@@ -295,7 +281,7 @@ public final class EasmClient {
     @Generated
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Response<BinaryData> validateDataConnectionWithResponse(
-            BinaryData dataConnectionData, RequestOptions requestOptions) {
+        BinaryData dataConnectionData, RequestOptions requestOptions) {
         return this.serviceClient.validateDataConnectionWithResponse(dataConnectionData, requestOptions);
     }
 
@@ -331,12 +317,12 @@ public final class EasmClient {
     @Generated
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Response<BinaryData> getDataConnectionWithResponse(
-            String dataConnectionName, RequestOptions requestOptions) {
+        String dataConnectionName, RequestOptions requestOptions) {
         return this.serviceClient.getDataConnectionWithResponse(dataConnectionName, requestOptions);
     }
 
     /**
-     * Create or replace a data connection with a given dataConnectionName.
+     * Create or update a data connection with a given dataConnectionName.
      *
      * <p><strong>Request Body Schema</strong>
      *
@@ -379,9 +365,8 @@ public final class EasmClient {
     @Generated
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Response<BinaryData> createOrReplaceDataConnectionWithResponse(
-            String dataConnectionName, BinaryData dataConnectionData, RequestOptions requestOptions) {
-        return this.serviceClient.createOrReplaceDataConnectionWithResponse(
-                dataConnectionName, dataConnectionData, requestOptions);
+        String dataConnectionName, BinaryData dataConnectionData, RequestOptions requestOptions) {
+        return this.serviceClient.createOrReplaceDataConnectionWithResponse(dataConnectionName, dataConnectionData, requestOptions);
     }
 
     /**
@@ -467,11 +452,11 @@ public final class EasmClient {
      * @throws ResourceModifiedException thrown if the request is rejected by server on status code 409.
      * @return paged collection of DiscoGroup items as paginated response with {@link PagedIterable}.
      */
-    @Generated
-    @ServiceMethod(returns = ReturnType.COLLECTION)
-    public PagedIterable<BinaryData> listDiscoGroup(RequestOptions requestOptions) {
-        return this.serviceClient.listDiscoGroup(requestOptions);
-    }
+//    @Generated
+//    @ServiceMethod(returns = ReturnType.COLLECTION)
+//    public PagedIterable<BinaryData> listDiscoGroup(RequestOptions requestOptions) {
+//        return this.serviceClient.listDiscoGroup(requestOptions);
+//    }
 
     /**
      * Validate a discovery group with a given groupName.
@@ -530,7 +515,7 @@ public final class EasmClient {
     @Generated
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Response<BinaryData> validateDiscoGroupWithResponse(
-            BinaryData discoGroupData, RequestOptions requestOptions) {
+        BinaryData discoGroupData, RequestOptions requestOptions) {
         return this.serviceClient.validateDiscoGroupWithResponse(discoGroupData, requestOptions);
     }
 
@@ -678,7 +663,7 @@ public final class EasmClient {
     @Generated
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Response<BinaryData> createOrReplaceDiscoGroupWithResponse(
-            String groupName, BinaryData discoGroupData, RequestOptions requestOptions) {
+        String groupName, BinaryData discoGroupData, RequestOptions requestOptions) {
         return this.serviceClient.createOrReplaceDiscoGroupWithResponse(groupName, discoGroupData, requestOptions);
     }
 
@@ -755,7 +740,7 @@ public final class EasmClient {
      */
     @Generated
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Response<BinaryData> listRunsWithResponse(String groupName, RequestOptions requestOptions) {
+    public CountPagedIterable<DiscoRunResult> listRunsWithResponse(String groupName, RequestOptions requestOptions) {
         return this.serviceClient.listRunsWithResponse(groupName, requestOptions);
     }
 
@@ -807,7 +792,7 @@ public final class EasmClient {
      */
     @Generated
     @ServiceMethod(returns = ReturnType.COLLECTION)
-    public PagedIterable<BinaryData> listDiscoTemplate(RequestOptions requestOptions) {
+    public CountPagedIterable<DiscoTemplate> listDiscoTemplate(RequestOptions requestOptions) {
         return this.serviceClient.listDiscoTemplate(requestOptions);
     }
 
@@ -956,7 +941,7 @@ public final class EasmClient {
     @Generated
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Response<BinaryData> getSnapshotWithResponse(
-            BinaryData reportAssetSnapshotRequest, RequestOptions requestOptions) {
+        BinaryData reportAssetSnapshotRequest, RequestOptions requestOptions) {
         return this.serviceClient.getSnapshotWithResponse(reportAssetSnapshotRequest, requestOptions);
     }
 
@@ -1017,7 +1002,7 @@ public final class EasmClient {
     @Generated
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Response<BinaryData> getSummaryWithResponse(
-            BinaryData reportAssetSummaryRequest, RequestOptions requestOptions) {
+        BinaryData reportAssetSummaryRequest, RequestOptions requestOptions) {
         return this.serviceClient.getSummaryWithResponse(reportAssetSummaryRequest, requestOptions);
     }
 
@@ -1057,7 +1042,7 @@ public final class EasmClient {
      */
     @Generated
     @ServiceMethod(returns = ReturnType.COLLECTION)
-    public PagedIterable<BinaryData> listSavedFilter(RequestOptions requestOptions) {
+    public CountPagedIterable<SavedFilter> listSavedFilter(RequestOptions requestOptions) {
         return this.serviceClient.listSavedFilter(requestOptions);
     }
 
@@ -1091,7 +1076,7 @@ public final class EasmClient {
     }
 
     /**
-     * Create or replace a saved filter with a given filterName.
+     * Create or update a saved filter with a given filterName.
      *
      * <p><strong>Request Body Schema</strong>
      *
@@ -1126,7 +1111,7 @@ public final class EasmClient {
     @Generated
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Response<BinaryData> createOrReplaceSavedFilterWithResponse(
-            String filterName, BinaryData savedFilterData, RequestOptions requestOptions) {
+        String filterName, BinaryData savedFilterData, RequestOptions requestOptions) {
         return this.serviceClient.createOrReplaceSavedFilterWithResponse(filterName, savedFilterData, requestOptions);
     }
 
@@ -1189,7 +1174,7 @@ public final class EasmClient {
      */
     @Generated
     @ServiceMethod(returns = ReturnType.COLLECTION)
-    public PagedIterable<BinaryData> listTask(RequestOptions requestOptions) {
+    public CountPagedIterable<Task> listTask(RequestOptions requestOptions) {
         return this.serviceClient.listTask(requestOptions);
     }
 
@@ -1267,6 +1252,7 @@ public final class EasmClient {
      * @param filter Filter the result list using the given expression.
      * @param orderBy A list of expressions that specify the order of the returned resources.
      * @param skip The number of result items to skip.
+     * @param maxPageSize The maximum number of result items per page.
      * @param mark Specify this value instead of 'skip' to use cursor-based searching. Initial value is '*' and
      *     subsequent values are returned in the response.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
@@ -1279,7 +1265,8 @@ public final class EasmClient {
      */
     @Generated
     @ServiceMethod(returns = ReturnType.COLLECTION)
-    public PagedIterable<AssetResource> listAssetResource(String filter, String orderBy, Integer skip, String mark) {
+    public CountPagedIterable<AssetResource> listAssetResource(
+        String filter, String orderBy, Integer skip, Integer maxPageSize, String mark) {
         // Generated convenience method for listAssetResource
         RequestOptions requestOptions = new RequestOptions();
         if (filter != null) {
@@ -1291,12 +1278,14 @@ public final class EasmClient {
         if (skip != null) {
             requestOptions.addQueryParam("skip", String.valueOf(skip), false);
         }
+        if (maxPageSize != null) {
+            requestOptions.addQueryParam("maxpagesize", String.valueOf(maxPageSize), false);
+        }
         if (mark != null) {
             requestOptions.addQueryParam("mark", mark, false);
         }
         return serviceClient
-                .listAssetResource(requestOptions)
-                .mapPage(bodyItemValue -> bodyItemValue.toObject(AssetResource.class));
+            .listAssetResource(requestOptions);
     }
 
     /**
@@ -1311,12 +1300,12 @@ public final class EasmClient {
      */
     @Generated
     @ServiceMethod(returns = ReturnType.COLLECTION)
-    public PagedIterable<AssetResource> listAssetResource() {
+    public CountPagedIterable<AssetResource> listAssetResource() {
         // Generated convenience method for listAssetResource
         RequestOptions requestOptions = new RequestOptions();
         return serviceClient
-                .listAssetResource(requestOptions)
-                .mapPage(bodyItemValue -> bodyItemValue.toObject(AssetResource.class));
+            .listAssetResource(requestOptions);
+        //.mapPage(bodyItemValue -> bodyItemValue.toObject(AssetResource.class));
     }
 
     /**
@@ -1337,9 +1326,9 @@ public final class EasmClient {
     public Task updateAssets(String filter, AssetUpdateData assetUpdateData) {
         // Generated convenience method for updateAssetsWithResponse
         RequestOptions requestOptions = new RequestOptions();
-        return updateAssetsWithResponse(filter, BinaryData.fromObject(assetUpdateData), requestOptions)
-                .getValue()
-                .toObject(Task.class);
+        return cleanUp(updateAssetsWithResponse(filter, BinaryData.fromObject(assetUpdateData), requestOptions)
+            .getValue())
+            .toObject(Task.class);
     }
 
     /**
@@ -1359,13 +1348,14 @@ public final class EasmClient {
     public AssetResource getAssetResource(String assetId) {
         // Generated convenience method for getAssetResourceWithResponse
         RequestOptions requestOptions = new RequestOptions();
-        return getAssetResourceWithResponse(assetId, requestOptions).getValue().toObject(AssetResource.class);
+        return cleanUp(getAssetResourceWithResponse(assetId, requestOptions).getValue()).toObject(AssetResource.class);
     }
 
     /**
      * Retrieve a list of data connections.
      *
      * @param skip The number of result items to skip.
+     * @param maxPageSize The maximum number of result items per page.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws HttpResponseException thrown if the request is rejected by server.
      * @throws ClientAuthenticationException thrown if the request is rejected by server on status code 401.
@@ -1376,15 +1366,18 @@ public final class EasmClient {
      */
     @Generated
     @ServiceMethod(returns = ReturnType.COLLECTION)
-    public PagedIterable<DataConnection> listDataConnection(Integer skip) {
+    public CountPagedIterable<DataConnection> listDataConnection(Integer skip, Integer maxPageSize) {
         // Generated convenience method for listDataConnection
         RequestOptions requestOptions = new RequestOptions();
         if (skip != null) {
             requestOptions.addQueryParam("skip", String.valueOf(skip), false);
         }
+        if (maxPageSize != null) {
+            requestOptions.addQueryParam("maxpagesize", String.valueOf(maxPageSize), false);
+        }
         return serviceClient
-                .listDataConnection(requestOptions)
-                .mapPage(bodyItemValue -> bodyItemValue.toObject(DataConnection.class));
+            .listDataConnection(requestOptions);
+        //.mapPage(bodyItemValue -> bodyItemValue.toObject(DataConnection.class));
     }
 
     /**
@@ -1399,12 +1392,11 @@ public final class EasmClient {
      */
     @Generated
     @ServiceMethod(returns = ReturnType.COLLECTION)
-    public PagedIterable<DataConnection> listDataConnection() {
+    public CountPagedIterable<DataConnection> listDataConnection() {
         // Generated convenience method for listDataConnection
         RequestOptions requestOptions = new RequestOptions();
         return serviceClient
-                .listDataConnection(requestOptions)
-                .mapPage(bodyItemValue -> bodyItemValue.toObject(DataConnection.class));
+            .listDataConnection(requestOptions);
     }
 
     /**
@@ -1424,9 +1416,9 @@ public final class EasmClient {
     public ValidateResult validateDataConnection(DataConnectionData dataConnectionData) {
         // Generated convenience method for validateDataConnectionWithResponse
         RequestOptions requestOptions = new RequestOptions();
-        return validateDataConnectionWithResponse(BinaryData.fromObject(dataConnectionData), requestOptions)
-                .getValue()
-                .toObject(ValidateResult.class);
+        return cleanUp(validateDataConnectionWithResponse(BinaryData.fromObject(dataConnectionData), requestOptions)
+            .getValue())
+            .toObject(ValidateResult.class);
     }
 
     /**
@@ -1446,13 +1438,13 @@ public final class EasmClient {
     public DataConnection getDataConnection(String dataConnectionName) {
         // Generated convenience method for getDataConnectionWithResponse
         RequestOptions requestOptions = new RequestOptions();
-        return getDataConnectionWithResponse(dataConnectionName, requestOptions)
-                .getValue()
-                .toObject(DataConnection.class);
+        return cleanUp(getDataConnectionWithResponse(dataConnectionName, requestOptions)
+            .getValue())
+            .toObject(DataConnection.class);
     }
 
     /**
-     * Create or replace a data connection with a given dataConnectionName.
+     * Create or update a data connection with a given dataConnectionName.
      *
      * @param dataConnectionName The caller provided unique name for the resource.
      * @param dataConnectionData The dataConnectionData parameter.
@@ -1466,14 +1458,13 @@ public final class EasmClient {
      */
     @Generated
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public DataConnection createOrReplaceDataConnection(
-            String dataConnectionName, DataConnectionData dataConnectionData) {
+    public DataConnection createOrReplaceDataConnection(String dataConnectionName, DataConnectionData dataConnectionData) {
         // Generated convenience method for createOrReplaceDataConnectionWithResponse
         RequestOptions requestOptions = new RequestOptions();
-        return createOrReplaceDataConnectionWithResponse(
-                        dataConnectionName, BinaryData.fromObject(dataConnectionData), requestOptions)
-                .getValue()
-                .toObject(DataConnection.class);
+        return cleanUp(createOrReplaceDataConnectionWithResponse(
+            dataConnectionName, BinaryData.fromObject(dataConnectionData), requestOptions)
+            .getValue())
+            .toObject(DataConnection.class);
     }
 
     /**
@@ -1500,6 +1491,7 @@ public final class EasmClient {
      *
      * @param filter Filter the result list using the given expression.
      * @param skip The number of result items to skip.
+     * @param maxPageSize The maximum number of result items per page.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws HttpResponseException thrown if the request is rejected by server.
      * @throws ClientAuthenticationException thrown if the request is rejected by server on status code 401.
@@ -1510,7 +1502,7 @@ public final class EasmClient {
      */
     @Generated
     @ServiceMethod(returns = ReturnType.COLLECTION)
-    public PagedIterable<DiscoGroup> listDiscoGroup(String filter, Integer skip) {
+    public CountPagedIterable<DiscoGroup> listDiscoGroup(String filter, Integer skip, Integer maxPageSize) {
         // Generated convenience method for listDiscoGroup
         RequestOptions requestOptions = new RequestOptions();
         if (filter != null) {
@@ -1519,29 +1511,31 @@ public final class EasmClient {
         if (skip != null) {
             requestOptions.addQueryParam("skip", String.valueOf(skip), false);
         }
+        if (maxPageSize != null) {
+            requestOptions.addQueryParam("maxpagesize", String.valueOf(maxPageSize), false);
+        }
         return serviceClient
-                .listDiscoGroup(requestOptions)
-                .mapPage(bodyItemValue -> bodyItemValue.toObject(DiscoGroup.class));
+            .listDiscoGroup(requestOptions);
+        // .mapPage(bodyItemValue -> bodyItemValue.toObject(DiscoGroup.class));
     }
 
     /**
      * Retrieve a list of discovery group for the provided search parameters.
      *
-     * @throws HttpResponseException thrown if the request is rejected by server.
-     * @throws ClientAuthenticationException thrown if the request is rejected by server on status code 401.
-     * @throws ResourceNotFoundException thrown if the request is rejected by server on status code 404.
-     * @throws ResourceModifiedException thrown if the request is rejected by server on status code 409.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return paged collection of DiscoGroup items as paginated response with {@link PagedIterable}.
+     * @throws HttpResponseException         thrown if the request is rejected by server.
+     * @throws ClientAuthenticationException thrown if the request is rejected by server on status code 401.
+     * @throws ResourceNotFoundException     thrown if the request is rejected by server on status code 404.
+     * @throws ResourceModifiedException     thrown if the request is rejected by server on status code 409.
+     * @throws RuntimeException              all other wrapped checked exceptions if the request fails to be sent.
      */
     @Generated
     @ServiceMethod(returns = ReturnType.COLLECTION)
-    public PagedIterable<DiscoGroup> listDiscoGroup() {
+    public CountPagedIterable<DiscoGroup> listDiscoGroup() {
         // Generated convenience method for listDiscoGroup
         RequestOptions requestOptions = new RequestOptions();
         return serviceClient
-                .listDiscoGroup(requestOptions)
-                .mapPage(bodyItemValue -> bodyItemValue.toObject(DiscoGroup.class));
+            .listDiscoGroup(requestOptions);
     }
 
     /**
@@ -1561,9 +1555,9 @@ public final class EasmClient {
     public ValidateResult validateDiscoGroup(DiscoGroupData discoGroupData) {
         // Generated convenience method for validateDiscoGroupWithResponse
         RequestOptions requestOptions = new RequestOptions();
-        return validateDiscoGroupWithResponse(BinaryData.fromObject(discoGroupData), requestOptions)
-                .getValue()
-                .toObject(ValidateResult.class);
+        return cleanUp(validateDiscoGroupWithResponse(BinaryData.fromObject(discoGroupData), requestOptions)
+            .getValue())
+            .toObject(ValidateResult.class);
     }
 
     /**
@@ -1583,7 +1577,7 @@ public final class EasmClient {
     public DiscoGroup getDiscoGroup(String groupName) {
         // Generated convenience method for getDiscoGroupWithResponse
         RequestOptions requestOptions = new RequestOptions();
-        return getDiscoGroupWithResponse(groupName, requestOptions).getValue().toObject(DiscoGroup.class);
+        return cleanUp(getDiscoGroupWithResponse(groupName, requestOptions).getValue()).toObject(DiscoGroup.class);
     }
 
     /**
@@ -1604,9 +1598,13 @@ public final class EasmClient {
     public DiscoGroup createOrReplaceDiscoGroup(String groupName, DiscoGroupData discoGroupData) {
         // Generated convenience method for createOrReplaceDiscoGroupWithResponse
         RequestOptions requestOptions = new RequestOptions();
-        return createOrReplaceDiscoGroupWithResponse(groupName, BinaryData.fromObject(discoGroupData), requestOptions)
-                .getValue()
-                .toObject(DiscoGroup.class);
+        return cleanUp(createOrReplaceDiscoGroupWithResponse(groupName, BinaryData.fromObject(discoGroupData), requestOptions)
+            .getValue())
+            .toObject(DiscoGroup.class);
+    }
+
+    private BinaryData cleanUp(BinaryData input){
+        return BinaryData.fromString(input.toString().replaceAll("\\+0000", "+00:00"));
     }
 
     /**
@@ -1645,7 +1643,7 @@ public final class EasmClient {
      */
     @Generated
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public DiscoRunPageResult listRuns(String groupName, String filter, Integer skip, Integer maxPageSize) {
+    public CountPagedIterable<DiscoRunResult> listRuns(String groupName, String filter, Integer skip, Integer maxPageSize) {
         // Generated convenience method for listRunsWithResponse
         RequestOptions requestOptions = new RequestOptions();
         if (filter != null) {
@@ -1657,7 +1655,8 @@ public final class EasmClient {
         if (maxPageSize != null) {
             requestOptions.addQueryParam("maxpagesize", String.valueOf(maxPageSize), false);
         }
-        return listRunsWithResponse(groupName, requestOptions).getValue().toObject(DiscoRunPageResult.class);
+        // return listRunsWithResponse(groupName, requestOptions).getValue().toObject(DiscoRunPageResult.class);
+        return listRunsWithResponse(groupName, requestOptions);
     }
 
     /**
@@ -1674,10 +1673,11 @@ public final class EasmClient {
      */
     @Generated
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public DiscoRunPageResult listRuns(String groupName) {
+    public CountPagedIterable<DiscoRunResult> listRuns(String groupName) {
         // Generated convenience method for listRunsWithResponse
         RequestOptions requestOptions = new RequestOptions();
-        return listRunsWithResponse(groupName, requestOptions).getValue().toObject(DiscoRunPageResult.class);
+        return listRunsWithResponse(groupName, requestOptions);
+        //.getValue().toObject(DiscoRunPageResult.class);
     }
 
     /**
@@ -1685,6 +1685,7 @@ public final class EasmClient {
      *
      * @param filter Filter the result list using the given expression.
      * @param skip The number of result items to skip.
+     * @param maxPageSize The maximum number of result items per page.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws HttpResponseException thrown if the request is rejected by server.
      * @throws ClientAuthenticationException thrown if the request is rejected by server on status code 401.
@@ -1695,7 +1696,7 @@ public final class EasmClient {
      */
     @Generated
     @ServiceMethod(returns = ReturnType.COLLECTION)
-    public PagedIterable<DiscoTemplate> listDiscoTemplate(String filter, Integer skip) {
+    public CountPagedIterable<DiscoTemplate> listDiscoTemplate(String filter, Integer skip, Integer maxPageSize) {
         // Generated convenience method for listDiscoTemplate
         RequestOptions requestOptions = new RequestOptions();
         if (filter != null) {
@@ -1704,9 +1705,11 @@ public final class EasmClient {
         if (skip != null) {
             requestOptions.addQueryParam("skip", String.valueOf(skip), false);
         }
+        if (maxPageSize != null) {
+            requestOptions.addQueryParam("maxpagesize", String.valueOf(maxPageSize), false);
+        }
         return serviceClient
-                .listDiscoTemplate(requestOptions)
-                .mapPage(bodyItemValue -> bodyItemValue.toObject(DiscoTemplate.class));
+            .listDiscoTemplate(requestOptions);
     }
 
     /**
@@ -1721,12 +1724,11 @@ public final class EasmClient {
      */
     @Generated
     @ServiceMethod(returns = ReturnType.COLLECTION)
-    public PagedIterable<DiscoTemplate> listDiscoTemplate() {
+    public CountPagedIterable<DiscoTemplate> listDiscoTemplate() {
         // Generated convenience method for listDiscoTemplate
         RequestOptions requestOptions = new RequestOptions();
         return serviceClient
-                .listDiscoTemplate(requestOptions)
-                .mapPage(bodyItemValue -> bodyItemValue.toObject(DiscoTemplate.class));
+            .listDiscoTemplate(requestOptions);
     }
 
     /**
@@ -1746,7 +1748,7 @@ public final class EasmClient {
     public DiscoTemplate getDiscoTemplate(String templateId) {
         // Generated convenience method for getDiscoTemplateWithResponse
         RequestOptions requestOptions = new RequestOptions();
-        return getDiscoTemplateWithResponse(templateId, requestOptions).getValue().toObject(DiscoTemplate.class);
+        return cleanUp(getDiscoTemplateWithResponse(templateId, requestOptions).getValue()).toObject(DiscoTemplate.class);
     }
 
     /**
@@ -1764,7 +1766,7 @@ public final class EasmClient {
     public ReportBillableAssetSummaryResult getBillable() {
         // Generated convenience method for getBillableWithResponse
         RequestOptions requestOptions = new RequestOptions();
-        return getBillableWithResponse(requestOptions).getValue().toObject(ReportBillableAssetSummaryResult.class);
+        return cleanUp(getBillableWithResponse(requestOptions).getValue()).toObject(ReportBillableAssetSummaryResult.class);
     }
 
     /**
@@ -1784,9 +1786,9 @@ public final class EasmClient {
     public ReportAssetSnapshotResult getSnapshot(ReportAssetSnapshotRequest reportAssetSnapshotRequest) {
         // Generated convenience method for getSnapshotWithResponse
         RequestOptions requestOptions = new RequestOptions();
-        return getSnapshotWithResponse(BinaryData.fromObject(reportAssetSnapshotRequest), requestOptions)
-                .getValue()
-                .toObject(ReportAssetSnapshotResult.class);
+        return cleanUp(getSnapshotWithResponse(BinaryData.fromObject(reportAssetSnapshotRequest), requestOptions)
+            .getValue())
+            .toObject(ReportAssetSnapshotResult.class);
     }
 
     /**
@@ -1807,9 +1809,9 @@ public final class EasmClient {
     public ReportAssetSummaryResult getSummary(ReportAssetSummaryRequest reportAssetSummaryRequest) {
         // Generated convenience method for getSummaryWithResponse
         RequestOptions requestOptions = new RequestOptions();
-        return getSummaryWithResponse(BinaryData.fromObject(reportAssetSummaryRequest), requestOptions)
-                .getValue()
-                .toObject(ReportAssetSummaryResult.class);
+        return cleanUp(getSummaryWithResponse(BinaryData.fromObject(reportAssetSummaryRequest), requestOptions)
+            .getValue())
+            .toObject(ReportAssetSummaryResult.class);
     }
 
     /**
@@ -1817,6 +1819,7 @@ public final class EasmClient {
      *
      * @param filter Filter the result list using the given expression.
      * @param skip The number of result items to skip.
+     * @param maxPageSize The maximum number of result items per page.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws HttpResponseException thrown if the request is rejected by server.
      * @throws ClientAuthenticationException thrown if the request is rejected by server on status code 401.
@@ -1827,7 +1830,7 @@ public final class EasmClient {
      */
     @Generated
     @ServiceMethod(returns = ReturnType.COLLECTION)
-    public PagedIterable<SavedFilter> listSavedFilter(String filter, Integer skip) {
+    public CountPagedIterable<SavedFilter> listSavedFilter(String filter, Integer skip, Integer maxPageSize) {
         // Generated convenience method for listSavedFilter
         RequestOptions requestOptions = new RequestOptions();
         if (filter != null) {
@@ -1836,9 +1839,11 @@ public final class EasmClient {
         if (skip != null) {
             requestOptions.addQueryParam("skip", String.valueOf(skip), false);
         }
+        if (maxPageSize != null) {
+            requestOptions.addQueryParam("maxpagesize", String.valueOf(maxPageSize), false);
+        }
         return serviceClient
-                .listSavedFilter(requestOptions)
-                .mapPage(bodyItemValue -> bodyItemValue.toObject(SavedFilter.class));
+            .listSavedFilter(requestOptions);
     }
 
     /**
@@ -1853,12 +1858,11 @@ public final class EasmClient {
      */
     @Generated
     @ServiceMethod(returns = ReturnType.COLLECTION)
-    public PagedIterable<SavedFilter> listSavedFilter() {
+    public CountPagedIterable<SavedFilter> listSavedFilter() {
         // Generated convenience method for listSavedFilter
         RequestOptions requestOptions = new RequestOptions();
         return serviceClient
-                .listSavedFilter(requestOptions)
-                .mapPage(bodyItemValue -> bodyItemValue.toObject(SavedFilter.class));
+            .listSavedFilter(requestOptions);
     }
 
     /**
@@ -1878,11 +1882,11 @@ public final class EasmClient {
     public SavedFilter getSavedFilter(String filterName) {
         // Generated convenience method for getSavedFilterWithResponse
         RequestOptions requestOptions = new RequestOptions();
-        return getSavedFilterWithResponse(filterName, requestOptions).getValue().toObject(SavedFilter.class);
+        return cleanUp(getSavedFilterWithResponse(filterName, requestOptions).getValue()).toObject(SavedFilter.class);
     }
 
     /**
-     * Create or replace a saved filter with a given filterName.
+     * Create or update a saved filter with a given filterName.
      *
      * @param filterName The caller provided unique name for the resource.
      * @param savedFilterData A request body used to create a saved filter.
@@ -1899,10 +1903,9 @@ public final class EasmClient {
     public SavedFilter createOrReplaceSavedFilter(String filterName, SavedFilterData savedFilterData) {
         // Generated convenience method for createOrReplaceSavedFilterWithResponse
         RequestOptions requestOptions = new RequestOptions();
-        return createOrReplaceSavedFilterWithResponse(
-                        filterName, BinaryData.fromObject(savedFilterData), requestOptions)
-                .getValue()
-                .toObject(SavedFilter.class);
+        return cleanUp(createOrReplaceSavedFilterWithResponse(filterName, BinaryData.fromObject(savedFilterData), requestOptions)
+            .getValue())
+            .toObject(SavedFilter.class);
     }
 
     /**
@@ -1930,6 +1933,7 @@ public final class EasmClient {
      * @param filter Filter the result list using the given expression.
      * @param orderBy A list of expressions that specify the order of the returned resources.
      * @param skip The number of result items to skip.
+     * @param maxPageSize The maximum number of result items per page.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws HttpResponseException thrown if the request is rejected by server.
      * @throws ClientAuthenticationException thrown if the request is rejected by server on status code 401.
@@ -1940,7 +1944,7 @@ public final class EasmClient {
      */
     @Generated
     @ServiceMethod(returns = ReturnType.COLLECTION)
-    public PagedIterable<Task> listTask(String filter, String orderBy, Integer skip) {
+    public CountPagedIterable<Task> listTask(String filter, String orderBy, Integer skip, Integer maxPageSize) {
         // Generated convenience method for listTask
         RequestOptions requestOptions = new RequestOptions();
         if (filter != null) {
@@ -1952,7 +1956,10 @@ public final class EasmClient {
         if (skip != null) {
             requestOptions.addQueryParam("skip", String.valueOf(skip), false);
         }
-        return serviceClient.listTask(requestOptions).mapPage(bodyItemValue -> bodyItemValue.toObject(Task.class));
+        if (maxPageSize != null) {
+            requestOptions.addQueryParam("maxpagesize", String.valueOf(maxPageSize), false);
+        }
+        return serviceClient.listTask(requestOptions);
     }
 
     /**
@@ -1967,10 +1974,10 @@ public final class EasmClient {
      */
     @Generated
     @ServiceMethod(returns = ReturnType.COLLECTION)
-    public PagedIterable<Task> listTask() {
+    public CountPagedIterable<Task> listTask() {
         // Generated convenience method for listTask
         RequestOptions requestOptions = new RequestOptions();
-        return serviceClient.listTask(requestOptions).mapPage(bodyItemValue -> bodyItemValue.toObject(Task.class));
+        return serviceClient.listTask(requestOptions);
     }
 
     /**
@@ -1990,7 +1997,7 @@ public final class EasmClient {
     public Task getTask(String taskId) {
         // Generated convenience method for getTaskWithResponse
         RequestOptions requestOptions = new RequestOptions();
-        return getTaskWithResponse(taskId, requestOptions).getValue().toObject(Task.class);
+        return cleanUp(getTaskWithResponse(taskId, requestOptions).getValue()).toObject(Task.class);
     }
 
     /**
@@ -2010,6 +2017,6 @@ public final class EasmClient {
     public Task cancelTask(String taskId) {
         // Generated convenience method for cancelTaskWithResponse
         RequestOptions requestOptions = new RequestOptions();
-        return cancelTaskWithResponse(taskId, requestOptions).getValue().toObject(Task.class);
+        return cleanUp(cancelTaskWithResponse(taskId, requestOptions).getValue()).toObject(Task.class);
     }
 }
