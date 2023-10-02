@@ -16,7 +16,7 @@ public class JsonObject extends JsonElement {
      * Stores the key and values of each property in the JsonObject. The values
      * may be any valid JSON type: object, array, string, number, boolean, and null
      */
-    private Map<String, JsonElement> properties = new LinkedHashMap<>(0);
+    private final Map<String, JsonElement> properties = new LinkedHashMap<>(0);
 
     /**
      * Default constructor.
@@ -229,8 +229,8 @@ public class JsonObject extends JsonElement {
      * keep this method as it is and remove the getKeyByValue and getValueByKey
      * methods that I have defined.
      */
-    public JsonElement getProperty(String key) { 
-        return properties.get(key); 
+    public JsonElement getProperty(String key) {
+        return properties.get(key);
     }
 
     /**
@@ -241,8 +241,8 @@ public class JsonObject extends JsonElement {
      * @return JsonElement object representing the respective value pair of the
      * search key
      */
-    public JsonElement getValueByKey(String key) { 
-        return properties.get(key); 
+    public JsonElement getValueByKey(String key) {
+        return properties.get(key);
     }
 
     /**
@@ -320,8 +320,8 @@ public class JsonObject extends JsonElement {
     }
 
     @Override
-    public boolean isObject() { 
-        return true; 
+    public boolean isObject() {
+        return true;
     }
 
     @Override
@@ -371,8 +371,8 @@ public class JsonObject extends JsonElement {
      * defined within the toJson method.
      */
     @Override
-    public String toString() { 
-        return this.toJson(); 
+    public String toString() {
+        return this.toJson();
     }
 
     /**
@@ -423,6 +423,8 @@ public class JsonObject extends JsonElement {
                 // JSON object is being deserialised, not a JSON array.
               //  case END_ARRAY:
                  //   throw new IOException("Invalid JsonToken.END_ARRAY token read from deserialised JSON object. JSON object is being deserialised not a JSON array. This is not a valid JSON object. Deserialisation aborted.");
+                default:
+                    throw new IOException("Invalid JsonToken token read from deserialised JSON object. Deserialisation aborted.");
             }
             token = reader.nextToken();
         }
@@ -454,6 +456,7 @@ public class JsonObject extends JsonElement {
      * JsonWriter to abstract the underlying writer or stream
      * @return the Writer that was passed in
      * @exception IOException if the underlying writer or stream throws an exception
+     * @throws IOException if the underlying writer or stream throws an exception
      */
     public Writer toWriter(Writer writer) throws IOException {
         try (JsonWriter jsonWriter = JsonProviders.createWriter(writer)) {
