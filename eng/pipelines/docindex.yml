@@ -27,6 +27,7 @@ jobs:
           Repositories:
             - Name: $(DocRepoOwner)/$(DocRepoName)
               WorkingDirectory: $(DocRepoLocation)
+              Commitish: djurek/author-metadata
       # Pull and build the docker image.
       - template: /eng/common/pipelines/templates/steps/docker-pull-image.yml
         parameters:
@@ -54,11 +55,7 @@ jobs:
         inputs:
           pwsh: true
           filePath: eng/common/scripts/Service-Level-Readme-Automation.ps1
-          arguments: >-
-            -DocRepoLocation $(DocRepoLocation)
-            -TenantId '$(opensource-aad-tenant-id)'
-            -ClientId '$(opensource-aad-app-id)'
-            -ClientSecret '$(opensource-aad-secret)'
+          arguments: -DocRepoLocation $(DocRepoLocation)
         displayName: Generate Service Level Readme for main branch
         condition: and(succeeded(), or(eq(variables['Build.Reason'], 'Schedule'), eq(variables['Force.MainUpdate'], 'true')))
 
@@ -87,104 +84,104 @@ jobs:
 
       - template: /eng/common/pipelines/templates/steps/git-push-changes.yml
         parameters:
-          BaseRepoBranch: $(DefaultBranch)
+          BaseRepoBranch: djurek/author-metadata
           BaseRepoOwner: $(DocRepoOwner)
           CommitMsg: "Update docs CI configuration"
           TargetRepoName: $(DocRepoName)
           TargetRepoOwner: $(DocRepoOwner)
           WorkingDirectory: $(DocRepoLocation)
 
-      # Prepare daily docs CI
-      - template: /eng/common/pipelines/templates/steps/set-daily-docs-branch-name.yml
-        parameters:
-          DailyBranchVariableName: DailyDocsBranchName
-      - template: /eng/common/pipelines/templates/steps/sparse-checkout.yml
-        parameters:
-          SkipCheckoutNone: true
-          Paths:
-            - package.json
-            - metadata/
-            - docs-ref-mapping/reference-unified.yml
-            - docs-ref-services/
-          Repositories:
-            - Name: azure-sdk/$(DocRepoName)
-              WorkingDirectory: $(DailyDocRepoLocation)
+      # # Prepare daily docs CI
+      # - template: /eng/common/pipelines/templates/steps/set-daily-docs-branch-name.yml
+      #   parameters:
+      #     DailyBranchVariableName: DailyDocsBranchName
+      # - template: /eng/common/pipelines/templates/steps/sparse-checkout.yml
+      #   parameters:
+      #     SkipCheckoutNone: true
+      #     Paths:
+      #       - package.json
+      #       - metadata/
+      #       - docs-ref-mapping/reference-unified.yml
+      #       - docs-ref-services/
+      #     Repositories:
+      #       - Name: azure-sdk/$(DocRepoName)
+      #         WorkingDirectory: $(DailyDocRepoLocation)
 
-      # Docs daily updates is supposed to download packages from public feed repository, so we have to specify additional repositories in a POM or the profile.
-      # Here is maven documentation: https://maven.apache.org/guides/mini/guide-multiple-repositories.html
-      - powershell: |
-          # Linux mvn `setting.xml` is sitting under path `~/.m2/setting.xml`
-          Get-Command mvn
-          if (!(Test-Path '~/.m2/')) {
-            mkdir ~/.m2/
-          }
-          if (Test-Path '~/.m2/setting.xml') {
-            Write-Host "'setting.xml' exists. Overwriting the file to support multiple repositories."
-          }
-          Copy-Item "./eng/repo-docs/docms/daily.update.setting.xml" -Destination "~/.m2/settings.xml"
-        displayName: 'Configure mvn'
-        workingDirectory: $(Build.SourcesDirectory)
+      # # Docs daily updates is supposed to download packages from public feed repository, so we have to specify additional repositories in a POM or the profile.
+      # # Here is maven documentation: https://maven.apache.org/guides/mini/guide-multiple-repositories.html
+      # - powershell: |
+      #     # Linux mvn `setting.xml` is sitting under path `~/.m2/setting.xml`
+      #     Get-Command mvn
+      #     if (!(Test-Path '~/.m2/')) {
+      #       mkdir ~/.m2/
+      #     }
+      #     if (Test-Path '~/.m2/setting.xml') {
+      #       Write-Host "'setting.xml' exists. Overwriting the file to support multiple repositories."
+      #     }
+      #     Copy-Item "./eng/repo-docs/docms/daily.update.setting.xml" -Destination "~/.m2/settings.xml"
+      #   displayName: 'Configure mvn'
+      #   workingDirectory: $(Build.SourcesDirectory)
 
-      - task: Powershell@2
-        inputs:
-          pwsh: true
-          filePath: eng/common/scripts/Update-DocsMsPackageMonikers.ps1
-          arguments: -DocRepoLocation $(DocRepoLocation)
-        displayName: Move deprecated packages to legacy moniker
-        condition: and(succeeded(), or(eq(variables['Build.Reason'], 'Schedule'), eq(variables['Force.MainUpdate'], 'true')))
+      # - task: Powershell@2
+      #   inputs:
+      #     pwsh: true
+      #     filePath: eng/common/scripts/Update-DocsMsPackageMonikers.ps1
+      #     arguments: -DocRepoLocation $(DocRepoLocation)
+      #   displayName: Move deprecated packages to legacy moniker
+      #   condition: and(succeeded(), or(eq(variables['Build.Reason'], 'Schedule'), eq(variables['Force.MainUpdate'], 'true')))
 
-      - task: Powershell@2
-        inputs:
-          pwsh: true
-          filePath: eng/common/scripts/Update-DocsMsPackages.ps1
-          arguments: -DocRepoLocation $(DailyDocRepoLocation)
-        displayName: Update Docs Onboarding for Daily docs
-      - task: Powershell@2
-        inputs:
-          pwsh: true
-          filePath: eng/common/scripts/Service-Level-Readme-Automation.ps1
-          arguments: >-
-            -DocRepoLocation $(DailyDocRepoLocation)
-            -TenantId '$(opensource-aad-tenant-id)'
-            -ClientId '$(opensource-aad-app-id)'
-            -ClientSecret '$(opensource-aad-secret)'
-        displayName: Generate Service Level Readme for Daily docs
-      - task: Powershell@2
-        inputs:
-          pwsh: true
-          filePath: eng/common/scripts/Update-DocsMsToc.ps1
-          arguments: >-
-            -DocRepoLocation $(DailyDocRepoLocation)
-            -OutputLocation $(DailyDocRepoLocation)/docs-ref-mapping/reference-unified.yml
-        displayName: Generate ToC for Daily docs
+      # - task: Powershell@2
+      #   inputs:
+      #     pwsh: true
+      #     filePath: eng/common/scripts/Update-DocsMsPackages.ps1
+      #     arguments: -DocRepoLocation $(DailyDocRepoLocation)
+      #   displayName: Update Docs Onboarding for Daily docs
+      # - task: Powershell@2
+      #   inputs:
+      #     pwsh: true
+      #     filePath: eng/common/scripts/Service-Level-Readme-Automation.ps1
+      #     arguments: >-
+      #       -DocRepoLocation $(DailyDocRepoLocation)
+      #       -TenantId '$(opensource-aad-tenant-id)'
+      #       -ClientId '$(opensource-aad-app-id)'
+      #       -ClientSecret '$(opensource-aad-secret)'
+      #   displayName: Generate Service Level Readme for Daily docs
+      # - task: Powershell@2
+      #   inputs:
+      #     pwsh: true
+      #     filePath: eng/common/scripts/Update-DocsMsToc.ps1
+      #     arguments: >-
+      #       -DocRepoLocation $(DailyDocRepoLocation)
+      #       -OutputLocation $(DailyDocRepoLocation)/docs-ref-mapping/reference-unified.yml
+      #   displayName: Generate ToC for Daily docs
 
-      - task: Powershell@2
-        inputs:
-          pwsh: true
-          filePath: eng/common/scripts/Verify-RequiredDocsJsonMembers.ps1
-          arguments: >-
-            -DocRepoLocation $(DocRepoLocation)
-        displayName: Verify Required Docs Json Members
+      # - task: Powershell@2
+      #   inputs:
+      #     pwsh: true
+      #     filePath: eng/common/scripts/Verify-RequiredDocsJsonMembers.ps1
+      #     arguments: >-
+      #       -DocRepoLocation $(DocRepoLocation)
+      #   displayName: Verify Required Docs Json Members
 
-      - template: /eng/common/pipelines/templates/steps/git-push-changes.yml
-        parameters:
-          BaseRepoBranch: $(DailyDocsBranchName)
-          BaseRepoOwner: $(DocRepoOwner)
-          CommitMsg: "Update targeting packages based on release metadata. (Daily docs)"
-          TargetRepoName: $(DocRepoName)
-          TargetRepoOwner: azure-sdk
-          WorkingDirectory: $(DailyDocRepoLocation)
-          ScriptDirectory: $(Build.SourcesDirectory)/eng/common/scripts
-          PushArgs: -f
+      # - template: /eng/common/pipelines/templates/steps/git-push-changes.yml
+      #   parameters:
+      #     BaseRepoBranch: $(DailyDocsBranchName)
+      #     BaseRepoOwner: $(DocRepoOwner)
+      #     CommitMsg: "Update targeting packages based on release metadata. (Daily docs)"
+      #     TargetRepoName: $(DocRepoName)
+      #     TargetRepoOwner: azure-sdk
+      #     WorkingDirectory: $(DailyDocRepoLocation)
+      #     ScriptDirectory: $(Build.SourcesDirectory)/eng/common/scripts
+      #     PushArgs: -f
 
-      - task: PowerShell@2
-        displayName: Queue Docs CI build
-        inputs:
-          pwsh: true
-          filePath: eng/common/scripts/Queue-Pipeline.ps1
-          arguments: >
-            -Organization "apidrop"
-            -Project "Content%20CI"
-            -DefinitionId 3188
-            -AuthToken "$(azuresdk-apidrop-devops-queue-build-pat)"
-            -BuildParametersJson (@{ params = (Get-Content ./eng/dailydocsconfig.json -Raw) -replace '%%DailyDocsBranchName%%', "$(DailyDocsBranchName)" } | ConvertTo-Json)
+      # - task: PowerShell@2
+      #   displayName: Queue Docs CI build
+      #   inputs:
+      #     pwsh: true
+      #     filePath: eng/common/scripts/Queue-Pipeline.ps1
+      #     arguments: >
+      #       -Organization "apidrop"
+      #       -Project "Content%20CI"
+      #       -DefinitionId 3188
+      #       -AuthToken "$(azuresdk-apidrop-devops-queue-build-pat)"
+      #       -BuildParametersJson (@{ params = (Get-Content ./eng/dailydocsconfig.json -Raw) -replace '%%DailyDocsBranchName%%', "$(DailyDocsBranchName)" } | ConvertTo-Json)
