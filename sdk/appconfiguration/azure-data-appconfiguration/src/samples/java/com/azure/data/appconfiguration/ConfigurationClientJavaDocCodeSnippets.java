@@ -12,12 +12,12 @@ import com.azure.core.util.Configuration;
 import com.azure.core.util.Context;
 import com.azure.core.util.polling.SyncPoller;
 import com.azure.data.appconfiguration.models.ConfigurationSetting;
+import com.azure.data.appconfiguration.models.ConfigurationSettingsFilter;
 import com.azure.data.appconfiguration.models.ConfigurationSnapshot;
 import com.azure.data.appconfiguration.models.SettingFields;
 import com.azure.data.appconfiguration.models.SettingSelector;
 import com.azure.data.appconfiguration.models.SnapshotFields;
 import com.azure.data.appconfiguration.models.SnapshotSelector;
-import com.azure.data.appconfiguration.models.SnapshotSettingFilter;
 
 import java.time.Duration;
 import java.time.OffsetDateTime;
@@ -421,9 +421,9 @@ public final class ConfigurationClientJavaDocCodeSnippets {
     public void beginCreateSnapshotMaxOverload() {
         ConfigurationClient client = createSyncConfigurationClient();
         // BEGIN: com.azure.data.appconfiguration.configurationclient.beginCreateSnapshotMaxOverload
-        List<SnapshotSettingFilter> filters = new ArrayList<>();
+        List<ConfigurationSettingsFilter> filters = new ArrayList<>();
         // Key Name also supports RegExp but only support prefix end with "*", such as "k*" and is case-sensitive.
-        filters.add(new SnapshotSettingFilter("{keyName}"));
+        filters.add(new ConfigurationSettingsFilter("{keyName}"));
         String snapshotName = "{snapshotName}";
         Context ctx = new Context(key2, value2);
 
@@ -468,8 +468,8 @@ public final class ConfigurationClientJavaDocCodeSnippets {
         // empty value other than the `fields` specified in the request.
         System.out.printf("Snapshot name=%s is created at %s, snapshot status is %s.%n",
             getSnapshot.getName(), getSnapshot.getCreatedAt(), getSnapshot.getStatus());
-        List<SnapshotSettingFilter> filters = getSnapshot.getFilters();
-        for (SnapshotSettingFilter filter : filters) {
+        List<ConfigurationSettingsFilter> filters = getSnapshot.getFilters();
+        for (ConfigurationSettingsFilter filter : filters) {
             System.out.printf("Snapshot filter key=%s, label=%s.%n", filter.getKey(), filter.getLabel());
         }
         // END: com.azure.data.appconfiguration.configurationclient.getSnapshotByNameMaxOverload

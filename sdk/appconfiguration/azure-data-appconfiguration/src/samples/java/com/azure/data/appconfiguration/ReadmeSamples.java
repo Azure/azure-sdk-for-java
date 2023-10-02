@@ -17,13 +17,13 @@ import com.azure.core.http.rest.Response;
 import com.azure.core.util.Context;
 import com.azure.core.util.polling.SyncPoller;
 import com.azure.data.appconfiguration.models.ConfigurationSetting;
+import com.azure.data.appconfiguration.models.ConfigurationSettingsFilter;
 import com.azure.data.appconfiguration.models.ConfigurationSnapshot;
 import com.azure.data.appconfiguration.models.FeatureFlagConfigurationSetting;
 import com.azure.data.appconfiguration.models.FeatureFlagFilter;
 import com.azure.data.appconfiguration.models.SecretReferenceConfigurationSetting;
 import com.azure.data.appconfiguration.models.SettingSelector;
 import com.azure.data.appconfiguration.models.SnapshotSelector;
-import com.azure.data.appconfiguration.models.SnapshotSettingFilter;
 import com.azure.identity.DefaultAzureCredential;
 import com.azure.identity.DefaultAzureCredentialBuilder;
 
@@ -401,9 +401,9 @@ public class ReadmeSamples {
         // BEGIN: readme-sample-createSnapshot
         String snapshotName = "{snapshotName}";
         // Prepare the snapshot filters
-        List<SnapshotSettingFilter> filters = new ArrayList<>();
+        List<ConfigurationSettingsFilter> filters = new ArrayList<>();
         // Key Name also supports RegExp but only support prefix end with "*", such as "k*" and is case-sensitive.
-        filters.add(new SnapshotSettingFilter("Test*"));
+        filters.add(new ConfigurationSettingsFilter("Test*"));
         SyncPoller<PollResult, ConfigurationSnapshot> poller =
             configurationClient.beginCreateSnapshot(snapshotName, new ConfigurationSnapshot(filters), Context.NONE);
         poller.setPollInterval(Duration.ofSeconds(10));

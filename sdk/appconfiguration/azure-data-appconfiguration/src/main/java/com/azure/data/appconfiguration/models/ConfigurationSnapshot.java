@@ -33,7 +33,7 @@ public final class ConfigurationSnapshot implements JsonSerializable<Configurati
     /*
      * A list of filters used to filter the key-values included in the snapshot.
      */
-    private final List<SnapshotSettingFilter> filters;
+    private final List<ConfigurationSettingsFilter> filters;
 
     /*
      * The composition type describes how the key-values within the snapshot are composed. The 'key' composition type
@@ -84,7 +84,7 @@ public final class ConfigurationSnapshot implements JsonSerializable<Configurati
      *
      * @param filters the filters value to set.
      */
-    public ConfigurationSnapshot(List<SnapshotSettingFilter> filters) {
+    public ConfigurationSnapshot(List<ConfigurationSettingsFilter> filters) {
         this.filters = filters;
     }
 
@@ -111,7 +111,7 @@ public final class ConfigurationSnapshot implements JsonSerializable<Configurati
      *
      * @return the filters value.
      */
-    public List<SnapshotSettingFilter> getFilters() {
+    public List<ConfigurationSettingsFilter> getFilters() {
         return this.filters;
     }
 
@@ -261,7 +261,7 @@ public final class ConfigurationSnapshot implements JsonSerializable<Configurati
         return jsonReader.readObject(
                 reader -> {
                     boolean filtersFound = false;
-                    List<SnapshotSettingFilter> filters = null;
+                    List<ConfigurationSettingsFilter> filters = null;
                     String name = null;
                     ConfigurationSnapshotStatus status = null;
                     SnapshotComposition snapshotComposition = null;
@@ -277,7 +277,7 @@ public final class ConfigurationSnapshot implements JsonSerializable<Configurati
                         reader.nextToken();
 
                         if ("filters".equals(fieldName)) {
-                            filters = reader.readArray(reader1 -> SnapshotSettingFilter.fromJson(reader1));
+                            filters = reader.readArray(reader1 -> ConfigurationSettingsFilter.fromJson(reader1));
                             filtersFound = true;
                         } else if ("name".equals(fieldName)) {
                             name = reader.getString();

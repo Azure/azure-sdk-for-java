@@ -4,9 +4,9 @@
 package com.azure.data.appconfiguration;
 
 import com.azure.data.appconfiguration.models.ConfigurationSetting;
+import com.azure.data.appconfiguration.models.ConfigurationSettingsFilter;
 import com.azure.data.appconfiguration.models.ConfigurationSnapshot;
 import com.azure.data.appconfiguration.models.SnapshotSelector;
-import com.azure.data.appconfiguration.models.SnapshotSettingFilter;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -54,9 +54,9 @@ public class ListSnapshotsAsync {
         TimeUnit.MILLISECONDS.sleep(1000);
 
         // 1. Prepare the snapshot filters
-        List<SnapshotSettingFilter> filters = new ArrayList<>();
+        List<ConfigurationSettingsFilter> filters = new ArrayList<>();
         // Key Name also supports RegExp but only support prefix end with "*", such as "k*" and is case-sensitive.
-        filters.add(new SnapshotSettingFilter("Test*"));
+        filters.add(new ConfigurationSettingsFilter("Test*"));
         String snapshotNameTest = "{snapshotNameInTest}";
 
         // 1. Create first snapshot
@@ -92,9 +92,9 @@ public class ListSnapshotsAsync {
         TimeUnit.MILLISECONDS.sleep(1000);
 
         // 2. Prepare the snapshot filters
-        List<SnapshotSettingFilter> filtersInProduct = new ArrayList<>();
+        List<ConfigurationSettingsFilter> filtersInProduct = new ArrayList<>();
         // Key Name also supports RegExp but only support prefix end with "*", such as "k*" and is case-sensitive.
-        filtersInProduct.add(new SnapshotSettingFilter("Product*"));
+        filtersInProduct.add(new ConfigurationSettingsFilter("Product*"));
         String snapshotNameProduct = "{snapshotNameInProduct}";
 
         // 2. Create first snapshot

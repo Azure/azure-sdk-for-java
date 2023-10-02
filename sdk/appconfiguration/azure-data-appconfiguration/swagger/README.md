@@ -33,7 +33,7 @@ input-file:
 - https://raw.githubusercontent.com/Azure/azure-rest-api-specs/main/specification/appconfiguration/data-plane/Microsoft.AppConfiguration/stable/2023-10-01/appconfiguration.json
 models-subpackage: implementation.models
 custom-types-subpackage: models
-custom-types: KeyValueFields,KeyValueFilter,SettingFields,SnapshotSettingFilter,CompositionType,SnapshotComposition,Snapshot,ConfigurationSnapshot,Status,ConfigurationSnapshotStatus,SnapshotFields,SnapshotFields
+custom-types: KeyValueFields,KeyValueFilter,SettingFields,ConfigurationSettingsFilter,CompositionType,SnapshotComposition,Snapshot,ConfigurationSnapshot,Status,ConfigurationSnapshotStatus,SnapshotFields,SnapshotFields
 customization-class: src/main/java/AppConfigCustomization.java
 ```
 
@@ -89,7 +89,7 @@ directive:
 directive:
   - rename-model:
       from: KeyValueFilter
-      to: SnapshotSettingFilter
+      to: ConfigurationSettingsFilter
   - rename-model:
       from: Snapshot
       to: ConfigurationSnapshot

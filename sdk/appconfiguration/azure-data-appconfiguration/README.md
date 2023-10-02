@@ -458,9 +458,9 @@ achieved by calling the `beginCreateSnapshot` method.
 ```java readme-sample-createSnapshot
 String snapshotName = "{snapshotName}";
 // Prepare the snapshot filters
-List<SnapshotSettingFilter> filters = new ArrayList<>();
+List<ConfigurationSettingsFilter> filters = new ArrayList<>();
 // Key Name also supports RegExp but only support prefix end with "*", such as "k*" and is case-sensitive.
-filters.add(new SnapshotSettingFilter("Test*"));
+filters.add(new ConfigurationSettingsFilter("Test*"));
 SyncPoller<PollResult, ConfigurationSnapshot> poller =
     configurationClient.beginCreateSnapshot(snapshotName, new ConfigurationSnapshot(filters), Context.NONE);
 poller.setPollInterval(Duration.ofSeconds(10));

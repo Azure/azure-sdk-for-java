@@ -12,6 +12,7 @@ import com.azure.core.util.CoreUtils;
 import com.azure.data.appconfiguration.implementation.ConfigurationClientCredentials;
 import com.azure.data.appconfiguration.implementation.ConfigurationSettingHelper;
 import com.azure.data.appconfiguration.models.ConfigurationSetting;
+import com.azure.data.appconfiguration.models.ConfigurationSettingsFilter;
 import com.azure.data.appconfiguration.models.ConfigurationSnapshot;
 import com.azure.data.appconfiguration.models.ConfigurationSnapshotStatus;
 import com.azure.data.appconfiguration.models.FeatureFlagConfigurationSetting;
@@ -20,7 +21,6 @@ import com.azure.data.appconfiguration.models.SecretReferenceConfigurationSettin
 import com.azure.data.appconfiguration.models.SettingFields;
 import com.azure.data.appconfiguration.models.SettingSelector;
 import com.azure.data.appconfiguration.models.SnapshotComposition;
-import com.azure.data.appconfiguration.models.SnapshotSettingFilter;
 import org.junit.jupiter.api.Disabled;
 import org.junit.jupiter.api.Test;
 
@@ -581,10 +581,10 @@ public abstract class ConfigurationClientTestBase extends TestProxyTestBase {
     @Test
     public abstract void createSnapshot(HttpClient httpClient, ConfigurationServiceVersion serviceVersion);
 
-    void createSnapshotRunner(BiConsumer<String, List<SnapshotSettingFilter>> testRunner) {
+    void createSnapshotRunner(BiConsumer<String, List<ConfigurationSettingsFilter>> testRunner) {
         String snapshotName = getKey();
-        List<SnapshotSettingFilter> filters = new ArrayList<>();
-        filters.add(new SnapshotSettingFilter(snapshotName + "-*"));
+        List<ConfigurationSettingsFilter> filters = new ArrayList<>();
+        filters.add(new ConfigurationSettingsFilter(snapshotName + "-*"));
         testRunner.accept(snapshotName, filters);
     }
 
@@ -858,7 +858,7 @@ public abstract class ConfigurationClientTestBase extends TestProxyTestBase {
     }
 
     void assertConfigurationSnapshotWithResponse(int expectedStatusCode, String name,
-        ConfigurationSnapshotStatus snapshotStatus, List<SnapshotSettingFilter> filters,
+        ConfigurationSnapshotStatus snapshotStatus, List<ConfigurationSettingsFilter> filters,
         SnapshotComposition snapshotComposition,
         Duration retentionPeriod, Long size, Long itemCount, Map<String, String> tags,
         Response<ConfigurationSnapshot> response) {
@@ -870,7 +870,7 @@ public abstract class ConfigurationClientTestBase extends TestProxyTestBase {
     }
 
     void assertEqualsConfigurationSnapshot(String name, ConfigurationSnapshotStatus snapshotStatus,
-        List<SnapshotSettingFilter> filters, SnapshotComposition snapshotComposition, Duration retentionPeriod, Long size,
+        List<ConfigurationSettingsFilter> filters, SnapshotComposition snapshotComposition, Duration retentionPeriod, Long size,
         Long itemCount, Map<String, String> tags, ConfigurationSnapshot actualSnapshot) {
         assertEquals(name, actualSnapshot.getName());
         assertEquals(snapshotStatus, actualSnapshot.getStatus());
@@ -887,14 +887,14 @@ public abstract class ConfigurationClientTestBase extends TestProxyTestBase {
         }
     }
 
-    void assertEqualsSnapshotFilters(List<SnapshotSettingFilter> o1, List<SnapshotSettingFilter> o2) {
+    void assertEqualsSnapshotFilters(List<ConfigurationSettingsFilter> o1, List<ConfigurationSettingsFilter> o2) {
         if (o1 == o2) {
             return;
         }
         assertEquals(o1.size(), o2.size());
         for (int i = 0; i < o1.size(); i++) {
-            SnapshotSettingFilter expectedFilter = o1.get(i);
-            SnapshotSettingFilter actualFilter = o2.get(i);
+            ConfigurationSettingsFilter expectedFilter = o1.get(i);
+            ConfigurationSettingsFilter actualFilter = o2.get(i);
             assertEquals(expectedFilter.getKey(), actualFilter.getKey());
             assertEquals(expectedFilter.getLabel(), actualFilter.getLabel());
         }

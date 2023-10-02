@@ -4,8 +4,8 @@
 package com.azure.data.appconfiguration;
 
 import com.azure.data.appconfiguration.models.ConfigurationSetting;
+import com.azure.data.appconfiguration.models.ConfigurationSettingsFilter;
 import com.azure.data.appconfiguration.models.ConfigurationSnapshot;
-import com.azure.data.appconfiguration.models.SnapshotSettingFilter;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -55,9 +55,9 @@ public class CreateSnapshotAsync {
         TimeUnit.MILLISECONDS.sleep(1000);
 
         // Prepare the snapshot filters
-        List<SnapshotSettingFilter> filters = new ArrayList<>();
+        List<ConfigurationSettingsFilter> filters = new ArrayList<>();
         // Key Name also supports RegExp but only support prefix end with "*", such as "k*" and is case-sensitive.
-        filters.add(new SnapshotSettingFilter("Test*"));
+        filters.add(new ConfigurationSettingsFilter("Test*"));
         String snapshotName = "{snapshotName}";
 
         client.beginCreateSnapshot(snapshotName, new ConfigurationSnapshot(filters))

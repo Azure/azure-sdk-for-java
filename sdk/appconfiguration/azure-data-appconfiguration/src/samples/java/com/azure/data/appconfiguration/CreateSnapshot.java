@@ -7,8 +7,8 @@ import com.azure.core.experimental.models.PollResult;
 import com.azure.core.util.Context;
 import com.azure.core.util.polling.SyncPoller;
 import com.azure.data.appconfiguration.models.ConfigurationSetting;
+import com.azure.data.appconfiguration.models.ConfigurationSettingsFilter;
 import com.azure.data.appconfiguration.models.ConfigurationSnapshot;
-import com.azure.data.appconfiguration.models.SnapshotSettingFilter;
 
 import java.time.Duration;
 import java.util.ArrayList;
@@ -43,9 +43,9 @@ public class CreateSnapshot {
         ConfigurationSetting setting2 = client.setConfigurationSetting("TestKey2", null, "value2");
         System.out.printf("[SetConfigurationSetting] Key: %s, Value: %s.%n", setting2.getKey(), setting2.getValue());
         // Prepare the snapshot filters
-        List<SnapshotSettingFilter> filters = new ArrayList<>();
+        List<ConfigurationSettingsFilter> filters = new ArrayList<>();
         // Key Name also supports RegExp but only support prefix end with "*", such as "k*" and is case-sensitive.
-        filters.add(new SnapshotSettingFilter("Test*"));
+        filters.add(new ConfigurationSettingsFilter("Test*"));
 
         // Create a snapshot
         String snapshotName = "{snapshotName}";

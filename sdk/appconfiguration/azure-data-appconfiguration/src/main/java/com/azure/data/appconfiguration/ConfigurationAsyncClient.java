@@ -1196,9 +1196,9 @@ public final class ConfigurationAsyncClient {
      *
      * <!-- src_embed com.azure.data.appconfiguration.configurationasyncclient.beginCreateSnapshotMaxOverload -->
      * <pre>
-     * List&lt;SnapshotSettingFilter&gt; filters = new ArrayList&lt;&gt;&#40;&#41;;
+     * List&lt;ConfigurationSettingsFilter&gt; filters = new ArrayList&lt;&gt;&#40;&#41;;
      * &#47;&#47; Key Name also supports RegExp but only support prefix end with &quot;*&quot;, such as &quot;k*&quot; and is case-sensitive.
-     * filters.add&#40;new SnapshotSettingFilter&#40;&quot;&#123;keyName&#125;&quot;&#41;&#41;;
+     * filters.add&#40;new ConfigurationSettingsFilter&#40;&quot;&#123;keyName&#125;&quot;&#41;&#41;;
      * String snapshotName = &quot;&#123;snapshotName&#125;&quot;;
      * client.beginCreateSnapshot&#40;snapshotName, new ConfigurationSnapshot&#40;filters&#41;
      *         .setRetentionPeriod&#40;Duration.ofHours&#40;1&#41;&#41;&#41;
@@ -1266,8 +1266,8 @@ public final class ConfigurationAsyncClient {
      *             &#47;&#47; empty value other than the `fields` specified in the request.
      *             System.out.printf&#40;&quot;Snapshot name=%s is created at %s, snapshot status is %s.%n&quot;,
      *                 getSnapshot.getName&#40;&#41;, getSnapshot.getCreatedAt&#40;&#41;, getSnapshot.getStatus&#40;&#41;&#41;;
-     *             List&lt;SnapshotSettingFilter&gt; filters = getSnapshot.getFilters&#40;&#41;;
-     *             for &#40;SnapshotSettingFilter filter : filters&#41; &#123;
+     *             List&lt;ConfigurationSettingsFilter&gt; filters = getSnapshot.getFilters&#40;&#41;;
+     *             for &#40;ConfigurationSettingsFilter filter : filters&#41; &#123;
      *                 System.out.printf&#40;&quot;Snapshot filter key=%s, label=%s.%n&quot;, filter.getKey&#40;&#41;, filter.getLabel&#40;&#41;&#41;;
      *             &#125;
      *         &#125;&#41;;
