@@ -3,6 +3,8 @@
 package com.azure.cosmos.implementation;
 
 import com.azure.cosmos.ConsistencyLevel;
+import com.azure.cosmos.CosmosAsyncClient;
+import com.azure.cosmos.CosmosClientBuilder;
 import com.azure.cosmos.CosmosException;
 import com.azure.cosmos.DirectConnectionConfig;
 import com.azure.cosmos.DocumentClientTest;
@@ -122,7 +124,12 @@ public class TestSuiteBase extends DocumentClientTest {
 
         @Override
         public Flux<FeedResponse<Database>> queryDatabases(SqlQuerySpec query) {
-            return client.queryDatabases(query, null);
+            QueryFeedOperationState state = TestUtils.createDummyQueryFeedOperationState(
+                ResourceType.Document,
+                OperationType.Query,
+                new CosmosQueryRequestOptions(),
+                client);
+            return client.queryDatabases(query, state);
         }
 
         @Override
@@ -171,14 +178,29 @@ public class TestSuiteBase extends DocumentClientTest {
         try {
             List<String> paths = collection.getPartitionKey().getPaths();
 
+            CosmosAsyncClient cosmosClient = new CosmosClientBuilder()
+                .key(TestConfigurations.MASTER_KEY)
+                .endpoint(TestConfigurations.HOST)
+                .buildAsyncClient();
             CosmosQueryRequestOptions options = new CosmosQueryRequestOptions();
             options.setMaxDegreeOfParallelism(-1);
+            QueryFeedOperationState state = new QueryFeedOperationState(
+                cosmosClient,
+                "truncateCollection",
+                collection.getSelfLink(),
+                collection.getId(),
+                ResourceType.Document,
+                OperationType.Query,
+                null,
+                options,
+                new CosmosPagedFluxOptions()
+            );
 
             ModelBridgeInternal.setQueryRequestOptionsMaxItemCount(options, 100);
 
             logger.info("Truncating DocumentCollection {} documents ...", collection.getId());
 
-            houseKeepingClient.queryDocuments(collection.getSelfLink(), "SELECT * FROM root", options, Document.class)
+            houseKeepingClient.queryDocuments(collection.getSelfLink(), "SELECT * FROM root", state, Document.class)
                               .publishOn(Schedulers.parallel())
                     .flatMap(page -> Flux.fromIterable(page.getResults()))
                     .flatMap(doc -> {
@@ -199,7 +221,18 @@ public class TestSuiteBase extends DocumentClientTest {
 
             logger.info("Truncating DocumentCollection {} triggers ...", collection.getId());
 
-            houseKeepingClient.queryTriggers(collection.getSelfLink(), "SELECT * FROM root", options)
+            state = new QueryFeedOperationState(
+                cosmosClient,
+                "truncateTriggers",
+                collection.getSelfLink(),
+                collection.getId(),
+                ResourceType.Document,
+                OperationType.Query,
+                null,
+                options,
+                new CosmosPagedFluxOptions()
+            );
+            houseKeepingClient.queryTriggers(collection.getSelfLink(), "SELECT * FROM root", state)
                               .publishOn(Schedulers.parallel())
                     .flatMap(page -> Flux.fromIterable(page.getResults()))
                     .flatMap(trigger -> {
@@ -215,7 +248,18 @@ public class TestSuiteBase extends DocumentClientTest {
 
             logger.info("Truncating DocumentCollection {} storedProcedures ...", collection.getId());
 
-            houseKeepingClient.queryStoredProcedures(collection.getSelfLink(), "SELECT * FROM root", options)
+            state = new QueryFeedOperationState(
+                cosmosClient,
+                "truncateStoredProcs",
+                collection.getSelfLink(),
+                collection.getId(),
+                ResourceType.Document,
+                OperationType.Query,
+                null,
+                options,
+                new CosmosPagedFluxOptions()
+            );
+            houseKeepingClient.queryStoredProcedures(collection.getSelfLink(), "SELECT * FROM root", state)
                               .publishOn(Schedulers.parallel())
                     .flatMap(page -> Flux.fromIterable(page.getResults()))
                     .flatMap(storedProcedure -> {
@@ -231,7 +275,18 @@ public class TestSuiteBase extends DocumentClientTest {
 
             logger.info("Truncating DocumentCollection {} udfs ...", collection.getId());
 
-            houseKeepingClient.queryUserDefinedFunctions(collection.getSelfLink(), "SELECT * FROM root", options)
+            state = new QueryFeedOperationState(
+                cosmosClient,
+                "truncateUserDefinedFunctions",
+                collection.getSelfLink(),
+                collection.getId(),
+                ResourceType.Document,
+                OperationType.Query,
+                null,
+                options,
+                new CosmosPagedFluxOptions()
+            );
+            houseKeepingClient.queryUserDefinedFunctions(collection.getSelfLink(), "SELECT * FROM root", state)
                               .publishOn(Schedulers.parallel())
                     .flatMap(page -> Flux.fromIterable(page.getResults()))
                     .flatMap(udf -> {
@@ -487,8 +542,14 @@ public class TestSuiteBase extends DocumentClientTest {
     }
 
     public static void deleteCollectionIfExists(AsyncDocumentClient client, String databaseId, String collectionId) {
+        QueryFeedOperationState state = TestUtils.createDummyQueryFeedOperationState(
+            ResourceType.DocumentCollection,
+            OperationType.Query,
+            new CosmosQueryRequestOptions(),
+            client
+        );
         List<DocumentCollection> res = client.queryCollections("dbs/" + databaseId,
-                                                               String.format("SELECT * FROM root r where r.id = '%s'", collectionId), null).single().block()
+                                                               String.format("SELECT * FROM root r where r.id = '%s'", collectionId), state).single().block()
                 .getResults();
         if (!res.isEmpty()) {
             deleteCollection(client, TestUtils.getCollectionNameLink(databaseId, collectionId));
@@ -503,11 +564,17 @@ public class TestSuiteBase extends DocumentClientTest {
         CosmosQueryRequestOptions options = new CosmosQueryRequestOptions();
         PartitionKey pk = new PartitionKey(docId);
         options.setPartitionKey(pk);
+        QueryFeedOperationState state = TestUtils.createDummyQueryFeedOperationState(
+            ResourceType.Document,
+            OperationType.Query,
+            new CosmosQueryRequestOptions(),
+            client
+        );
         List<Document> res = client
                 .queryDocuments(
                     TestUtils.getCollectionNameLink(databaseId, collectionId),
                     String.format("SELECT * FROM root r where r.id = '%s'", docId),
-                    options,
+                    state,
                     Document.class)
                 .single().block().getResults();
         if (!res.isEmpty()) {
@@ -535,8 +602,14 @@ public class TestSuiteBase extends DocumentClientTest {
     }
 
     public static void deleteUserIfExists(AsyncDocumentClient client, String databaseId, String userId) {
+        QueryFeedOperationState state = TestUtils.createDummyQueryFeedOperationState(
+            ResourceType.User,
+            OperationType.Query,
+            new CosmosQueryRequestOptions(),
+            client
+        );
         List<User> res = client
-                .queryUsers("dbs/" + databaseId, String.format("SELECT * FROM root r where r.id = '%s'", userId), null)
+                .queryUsers("dbs/" + databaseId, String.format("SELECT * FROM root r where r.id = '%s'", userId), state)
                 .single().block().getResults();
         if (!res.isEmpty()) {
             deleteUser(client, TestUtils.getUserNameLink(databaseId, userId));
@@ -568,7 +641,13 @@ public class TestSuiteBase extends DocumentClientTest {
     }
 
     static protected Database createDatabaseIfNotExists(AsyncDocumentClient client, String databaseId) {
-        return client.queryDatabases(String.format("SELECT * FROM r where r.id = '%s'", databaseId), null).flatMap(p -> Flux.fromIterable(p.getResults())).switchIfEmpty(
+        QueryFeedOperationState state = TestUtils.createDummyQueryFeedOperationState(
+            ResourceType.Database,
+            OperationType.Query,
+            new CosmosQueryRequestOptions(),
+            client
+        );
+        return client.queryDatabases(String.format("SELECT * FROM r where r.id = '%s'", databaseId), state).flatMap(p -> Flux.fromIterable(p.getResults())).switchIfEmpty(
                 Flux.defer(() -> {
 
                     Database databaseDefinition = new Database();
@@ -596,7 +675,13 @@ public class TestSuiteBase extends DocumentClientTest {
 
     static protected void safeDeleteAllCollections(AsyncDocumentClient client, Database database) {
         if (database != null) {
-            List<DocumentCollection> collections = client.readCollections(database.getSelfLink(), null)
+            QueryFeedOperationState state = TestUtils.createDummyQueryFeedOperationState(
+                ResourceType.DocumentCollection,
+                OperationType.ReadFeed,
+                new CosmosQueryRequestOptions(),
+                client
+            );
+            List<DocumentCollection> collections = client.readCollections(database.getSelfLink(), state)
                     .flatMap(p -> Flux.fromIterable(p.getResults()))
                     .collectList()
                     .single()

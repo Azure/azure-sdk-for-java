@@ -53,6 +53,9 @@ public class CallAutomationAutomatedLiveTestBase extends CallAutomationLiveTestB
         .get("DISPATCHER_ENDPOINT",
             "https://incomingcalldispatcher.azurewebsites.net");
     protected static final String DISPATCHER_CALLBACK = DISPATCHER_ENDPOINT + "/api/servicebuscallback/events";
+    protected static final String BOT_APP_ID = Configuration.getGlobalConfiguration()
+        .get("BOT_APP_ID",
+            "REDACTED-bedb-REDACTED-b8c6-REDACTED");
 
     @Override
     @SuppressWarnings("unchecked")

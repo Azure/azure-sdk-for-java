@@ -22,13 +22,13 @@ public final class IndexUtilizationInfo {
         new ArrayList<>(), /* utilizedCompositeIndexes */
         new ArrayList<>()); /* potentialCompositeIndexes */
 
-    @JsonProperty(value = "UtilizedSingleIndexes", access = JsonProperty.Access.WRITE_ONLY)
+    @JsonProperty(value = "UtilizedSingleIndexes", access = JsonProperty.Access.READ_WRITE)
     private List<SingleIndexUtilizationEntity> utilizedSingleIndexes;
-    @JsonProperty(value = "PotentialSingleIndexes", access = JsonProperty.Access.WRITE_ONLY)
+    @JsonProperty(value = "PotentialSingleIndexes", access = JsonProperty.Access.READ_WRITE)
     private List<SingleIndexUtilizationEntity> potentialSingleIndexes;
-    @JsonProperty(value = "UtilizedCompositeIndexes", access = JsonProperty.Access.WRITE_ONLY)
+    @JsonProperty(value = "UtilizedCompositeIndexes", access = JsonProperty.Access.READ_WRITE)
     private List<CompositeIndexUtilizationEntity> utilizedCompositeIndexes;
-    @JsonProperty(value = "PotentialCompositeIndexes", access = JsonProperty.Access.WRITE_ONLY)
+    @JsonProperty(value = "PotentialCompositeIndexes", access = JsonProperty.Access.READ_WRITE)
     private List<CompositeIndexUtilizationEntity> potentialCompositeIndexes;
 
     IndexUtilizationInfo() {}

@@ -42,7 +42,7 @@ public class SessionTest extends TestSuiteBase {
 
     private Database createdDatabase;
     private DocumentCollection createdCollection;
-    private String collectionId = "+ -_,:.|~" + UUID.randomUUID().toString() + " +-_,:.|~";
+    private String collectionId = "+ -_,:.|~" + UUID.randomUUID() + " +-_,:.|~";
     private SpyClientUnderTestFactory.SpyBaseClass<HttpRequest> spyClient;
     private AsyncDocumentClient houseKeepingClient;
     private ConnectionMode connectionMode;
@@ -188,7 +188,15 @@ public class SessionTest extends TestSuiteBase {
         String query = "select * from c";
         CosmosQueryRequestOptions queryRequestOptions = new CosmosQueryRequestOptions();
         queryRequestOptions.setPartitionKey(new PartitionKey(documentCreated.getId()));
-        spyClient.queryDocuments(getCollectionLink(isNameBased), query, queryRequestOptions, Document.class).blockFirst();
+
+        QueryFeedOperationState dummyState = TestUtils.createDummyQueryFeedOperationState(
+            ResourceType.Document,
+            OperationType.Query,
+            queryRequestOptions,
+            spyClient
+        );
+
+        spyClient.queryDocuments(getCollectionLink(isNameBased), query, dummyState, Document.class).blockFirst();
         assertThat(getSessionTokensInRequests()).hasSize(1);
         assertThat(getSessionTokensInRequests().get(0)).isNotEmpty();
         assertThat(getSessionTokensInRequests().get(0)).doesNotContain(","); // making sure we have only one scope session token
@@ -196,7 +204,13 @@ public class SessionTest extends TestSuiteBase {
         // Session token validation for cross partition query
         spyClient.clearCapturedRequests();
         queryRequestOptions = new CosmosQueryRequestOptions();
-        spyClient.queryDocuments(getCollectionLink(isNameBased), query, queryRequestOptions, Document.class).blockFirst();
+        dummyState = TestUtils.createDummyQueryFeedOperationState(
+            ResourceType.Document,
+            OperationType.Query,
+            queryRequestOptions,
+            spyClient
+        );
+        spyClient.queryDocuments(getCollectionLink(isNameBased), query, dummyState, Document.class).blockFirst();
         assertThat(getSessionTokensInRequests().size()).isGreaterThanOrEqualTo(1);
         assertThat(getSessionTokensInRequests().get(0)).isNotEmpty();
         assertThat(getSessionTokensInRequests().get(0)).doesNotContain(","); // making sure we have only one scope session token
@@ -206,7 +220,13 @@ public class SessionTest extends TestSuiteBase {
         List<FeedRange> feedRanges = spyClient.getFeedRanges(getCollectionLink(isNameBased)).block();
         queryRequestOptions = new CosmosQueryRequestOptions();
         queryRequestOptions.setFeedRange(feedRanges.get(0));
-        spyClient.queryDocuments(getCollectionLink(isNameBased), query, queryRequestOptions, Document.class).blockFirst();
+        dummyState = TestUtils.createDummyQueryFeedOperationState(
+            ResourceType.Document,
+            OperationType.Query,
+            queryRequestOptions,
+            spyClient
+        );
+        spyClient.queryDocuments(getCollectionLink(isNameBased), query, dummyState, Document.class).blockFirst();
         assertThat(getSessionTokensInRequests().size()).isGreaterThanOrEqualTo(1);
         assertThat(getSessionTokensInRequests().get(0)).isNotEmpty();
         assertThat(getSessionTokensInRequests().get(0)).doesNotContain(","); // making sure we have only one scope session token
@@ -214,10 +234,16 @@ public class SessionTest extends TestSuiteBase {
         // Session token validation for readAll with partition query
         spyClient.clearCapturedRequests();
         queryRequestOptions = new CosmosQueryRequestOptions();
+        dummyState = TestUtils.createDummyQueryFeedOperationState(
+            ResourceType.Document,
+            OperationType.ReadFeed,
+            queryRequestOptions,
+            spyClient
+        );
         spyClient.readAllDocuments(
             getCollectionLink(isNameBased),
             new PartitionKey(documentCreated.getId()),
-            queryRequestOptions,
+            dummyState,
             Document.class).blockFirst();
         assertThat(getSessionTokensInRequests().size()).isEqualTo(1);
         assertThat(getSessionTokensInRequests().get(0)).isNotEmpty();
@@ -226,7 +252,15 @@ public class SessionTest extends TestSuiteBase {
         // Session token validation for readAll with cross partition
         spyClient.clearCapturedRequests();
         queryRequestOptions = new CosmosQueryRequestOptions();
-        spyClient.readDocuments(getCollectionLink(isNameBased), queryRequestOptions, Document.class).blockFirst();
+
+        dummyState = TestUtils.createDummyQueryFeedOperationState(
+            ResourceType.Document,
+            OperationType.ReadFeed,
+            queryRequestOptions,
+            spyClient
+        );
+
+        spyClient.readDocuments(getCollectionLink(isNameBased), dummyState, Document.class).blockFirst();
         assertThat(getSessionTokensInRequests().size()).isGreaterThanOrEqualTo(1);
         assertThat(getSessionTokensInRequests().get(0)).isNotEmpty();
         assertThat(getSessionTokensInRequests().get(0)).doesNotContain(","); // making sure we have only one scope session token
@@ -237,7 +271,11 @@ public class SessionTest extends TestSuiteBase {
         CosmosItemIdentity cosmosItemIdentity = new CosmosItemIdentity(new PartitionKey(documentCreated.getId()), documentCreated.getId());
         List<CosmosItemIdentity> cosmosItemIdentities = new ArrayList<>();
         cosmosItemIdentities.add(cosmosItemIdentity);
-        spyClient.readMany(cosmosItemIdentities, getCollectionLink(isNameBased), queryRequestOptions, InternalObjectNode.class).block();
+        spyClient.readMany(
+            cosmosItemIdentities,
+            getCollectionLink(isNameBased),
+            TestUtils.createDummyQueryFeedOperationState(ResourceType.Document, OperationType.Query, queryRequestOptions, spyClient),
+            InternalObjectNode.class).block();
         assertThat(getSessionTokensInRequests().size()).isEqualTo(1);
         assertThat(getSessionTokensInRequests().get(0)).isNotEmpty();
         assertThat(getSessionTokensInRequests().get(0)).doesNotContain(","); // making sure we have only one scope session token

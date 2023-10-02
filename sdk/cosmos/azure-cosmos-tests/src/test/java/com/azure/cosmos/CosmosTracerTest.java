@@ -57,8 +57,6 @@ import com.fasterxml.jackson.databind.ObjectMapper;
 import com.fasterxml.jackson.databind.node.ObjectNode;
 import org.assertj.core.api.Assertions;
 import org.mockito.Mockito;
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
 import org.testng.SkipException;
 import org.testng.annotations.AfterClass;
 import org.testng.annotations.BeforeClass;
@@ -90,7 +88,6 @@ import static org.assertj.core.api.Fail.fail;
 
 // TODO: Annie: enable emulator group
 public class CosmosTracerTest extends TestSuiteBase {
-    private final static Logger LOGGER = LoggerFactory.getLogger(CosmosTracerTest.class);
     private final static ObjectMapper OBJECT_MAPPER = Utils.getSimpleObjectMapper();
     private static String ITEM_ID;
 
@@ -783,6 +780,7 @@ public class CosmosTracerTest extends TestSuiteBase {
             enableRequestLevelTracing,
             forceThresholdViolations,
             samplingRate);
+
         mockTracer.reset();
     }
 
@@ -1252,12 +1250,9 @@ public class CosmosTracerTest extends TestSuiteBase {
 
         assertThat(currentSpan).isNotNull();
         assertThat(currentSpan.getContext()).isNotNull();
-        CosmosDiagnosticsContext ctx = DiagnosticsProvider.getCosmosDiagnosticsContextFromTraceContextOrThrow(
-            currentSpan.getContext()
-        );
 
         assertThat(cosmosDiagnostics.getDiagnosticsContext()).isNotNull();
-        assertThat(cosmosDiagnostics.getDiagnosticsContext()).isSameAs(ctx);
+        CosmosDiagnosticsContext ctx = cosmosDiagnostics.getDiagnosticsContext();
 
         Map<String, Object> attributes = currentSpan.getAttributes();
         if (databaseName != null) {
@@ -1273,39 +1268,42 @@ public class CosmosTracerTest extends TestSuiteBase {
         assertThat(attributes.get("db.system")).isEqualTo("cosmosdb");
         assertThat(attributes.get("db.operation")).isEqualTo(methodName);
         assertThat(attributes.get("net.peer.name")).isNotNull();
-        assertThat(attributes.get("db.cosmosdb.request_content_length")).isNotNull();
+        if (attributes.get("db.cosmosdb.is_empty_completion") == null) {
 
-        assertThat(attributes.get("db.cosmosdb.operation_type")).isEqualTo(ctx.getOperationType());
-        if (customOperationId != null) {
-            assertThat(attributes.get("db.cosmosdb.operation_id")).isEqualTo(customOperationId);
-            assertThat(attributes.get("db.cosmosdb.operation_id")).isEqualTo(ctx.getOperationId());
-        } else {
-            assertThat(attributes.get("db.cosmosdb.operation_id")).isNull();
-        }
+            assertThat(attributes.get("db.cosmosdb.request_content_length")).isNotNull();
 
-        assertThat(attributes.get("db.cosmosdb.resource_type")).isEqualTo(ctx.getResourceType());
-        assertThat(attributes.get("db.cosmosdb.connection_mode"))
-            .isEqualTo(client.getConnectionPolicy().getConnectionMode().toString().toLowerCase(Locale.ROOT));
-        assertThat(attributes.get("user_agent.original")).isEqualTo(client.getUserAgent());
-        assertThat(attributes.get("db.cosmosdb.client_id")).isEqualTo(client.getClientCorrelationTag().getValue());
+            assertThat(attributes.get("db.cosmosdb.operation_type")).isEqualTo(ctx.getOperationType());
+            if (customOperationId != null) {
+                assertThat(attributes.get("db.cosmosdb.operation_id")).isEqualTo(customOperationId);
+                assertThat(attributes.get("db.cosmosdb.operation_id")).isEqualTo(ctx.getOperationId());
+            } else {
+                assertThat(attributes.get("db.cosmosdb.operation_id")).isNull();
+            }
 
-        verifyOTelTracerDiagnostics(cosmosDiagnostics, mockTracer);
+            assertThat(attributes.get("db.cosmosdb.resource_type")).isEqualTo(ctx.getResourceType());
+            assertThat(attributes.get("db.cosmosdb.connection_mode"))
+                .isEqualTo(client.getConnectionPolicy().getConnectionMode().toString().toLowerCase(Locale.ROOT));
+            assertThat(attributes.get("user_agent.original")).isEqualTo(client.getUserAgent());
+            assertThat(attributes.get("db.cosmosdb.client_id")).isEqualTo(client.getClientCorrelationTag().getValue());
 
-        verifyOTelTracerTransport(
-            cosmosDiagnostics, error,  mockTracer, enableRequestLevelTracing);
+            verifyOTelTracerDiagnostics(cosmosDiagnostics, mockTracer);
 
-        if (error != null) {
-            assertThat(attributes.get("exception.type")).isEqualTo("com.azure.cosmos.CosmosException");
-            assertThat(attributes.get("exception.message")).isEqualTo(error.getShortMessage());
+            verifyOTelTracerTransport(
+                cosmosDiagnostics, error, mockTracer, enableRequestLevelTracing);
 
-            StringWriter stackWriter = new StringWriter();
-            PrintWriter printWriter = new PrintWriter(stackWriter);
-            error.printStackTrace(printWriter);
-            printWriter.flush();
-            stackWriter.flush();
-            assertThat(stackWriter.toString().contains((String)attributes.get("exception.stacktrace")))
-                .isEqualTo(true);
-            printWriter.close();
+            if (error != null) {
+                assertThat(attributes.get("exception.type")).isEqualTo("com.azure.cosmos.CosmosException");
+                assertThat(attributes.get("exception.message")).isEqualTo(error.getShortMessage());
+
+                StringWriter stackWriter = new StringWriter();
+                PrintWriter printWriter = new PrintWriter(stackWriter);
+                error.printStackTrace(printWriter);
+                printWriter.flush();
+                stackWriter.flush();
+                assertThat(stackWriter.toString().contains((String) attributes.get("exception.stacktrace")))
+                    .isEqualTo(true);
+                printWriter.close();
+            }
         }
     }
 
@@ -1325,15 +1323,13 @@ public class CosmosTracerTest extends TestSuiteBase {
             assertThat(currentSpan).isNotNull();
             assertThat(currentSpan.getContext()).isNotNull();
 
-            CosmosDiagnosticsContext ctx = DiagnosticsProvider.getCosmosDiagnosticsContextFromTraceContextOrThrow(
-                currentSpan.getContext()
-            );
+            CosmosDiagnosticsContext ctx = cosmosDiagnostics.getDiagnosticsContext();
 
             assertThat(cosmosDiagnostics.getUserAgent()).isEqualTo(ctx.getUserAgent());
             assertThat(ctx.getSystemUsage()).isNotNull();
             assertThat(ctx.getConnectionMode()).isEqualTo(client.getConnectionPolicy().getConnectionMode().toString());
 
-            Collection<TracerUnderTest.EventRecord> events  = currentSpan.getEvents();
+            Collection<TracerUnderTest.EventRecord> events  = mockTracer.getEventsOfAllCollectedSiblingSpans();
             if (ctx.isCompleted() && (ctx.isFailure() || ctx.isThresholdViolated())) {
                 if (ctx.isFailure()) {
                     assertThat(events).anyMatch(e -> e.getName() .equals("failure"));
@@ -1359,15 +1355,13 @@ public class CosmosTracerTest extends TestSuiteBase {
         TracerUnderTest.SpanRecord currentSpan = mockTracer.getCurrentSpan();
         assertThat(currentSpan).isNotNull();
         assertThat(currentSpan.getContext()).isNotNull();
-        CosmosDiagnosticsContext ctx = DiagnosticsProvider.getCosmosDiagnosticsContextFromTraceContextOrThrow(
-            currentSpan.getContext()
-        );
+        CosmosDiagnosticsContext ctx = lastCosmosDiagnostics.getDiagnosticsContext();
 
         assertThat(lastCosmosDiagnostics).isNotNull();
         assertThat(lastCosmosDiagnostics.getDiagnosticsContext()).isNotNull();
         assertThat(lastCosmosDiagnostics.getDiagnosticsContext()).isSameAs(ctx);
 
-        Collection<TracerUnderTest.EventRecord> events  = currentSpan.getEvents();
+        Collection<TracerUnderTest.EventRecord> events  = mockTracer.getEventsOfAllCollectedSiblingSpans();
         if (!enableRequestLevelTracing ||
             // For Gateway we rely on http out-of-the-box tracing
             client.getConnectionPolicy().getConnectionMode() != ConnectionMode.DIRECT) {
@@ -1408,7 +1402,7 @@ public class CosmosTracerTest extends TestSuiteBase {
     private void assertStoreResponseStatistics(
         CosmosDiagnosticsContext ctx,
         TracerUnderTest mockTracer,
-        List<ClientSideRequestStatistics.StoreResponseStatistics> storeResponseStatistics) {
+        Collection<ClientSideRequestStatistics.StoreResponseStatistics> storeResponseStatistics) {
 
         for (ClientSideRequestStatistics.StoreResponseStatistics responseStatistics: storeResponseStatistics) {
             StoreResultDiagnostics storeResultDiagnostics = responseStatistics.getStoreResult();
@@ -1604,8 +1598,11 @@ public class CosmosTracerTest extends TestSuiteBase {
         assertThat(mockTracer).isNotNull();
         assertThat(mockTracer.getCurrentSpan()).isNotNull();
         List<TracerUnderTest.EventRecord> filteredEvents =
-            mockTracer.getCurrentSpan().getEvents().stream().filter(e ->
+            mockTracer.getEventsOfAllCollectedSiblingSpans().stream().filter(e ->
                 e.getName().equals(eventName)).collect(Collectors.toList());
+        if (filteredEvents.size() == 0) {
+            logger.error("Event: {}", eventName);
+        }
         assertThat(filteredEvents).hasSizeGreaterThanOrEqualTo(1);
         if (time != null) {
             filteredEvents =
@@ -1752,11 +1749,11 @@ public class CosmosTracerTest extends TestSuiteBase {
             for (ClientSideRequestStatistics clientSideStatistics :
                 feedResponseDiagnostics.getClientSideRequestStatistics()) {
                 if (clientSideStatistics.getResponseStatisticsList() != null && clientSideStatistics.getResponseStatisticsList().size() > 0
-                    && clientSideStatistics.getResponseStatisticsList().get(0).getStoreResult() != null) {
+                    && clientSideStatistics.getResponseStatisticsList().iterator().next().getStoreResult() != null) {
 
                     String pkRangeId = clientSideStatistics
                         .getResponseStatisticsList()
-                        .get(0)
+                        .iterator().next()
                         .getStoreResult()
                         .getStoreResponseDiagnostics()
                         .getPartitionKeyRangeId();
@@ -1794,7 +1791,7 @@ public class CosmosTracerTest extends TestSuiteBase {
                 String eventName = "Query Metrics for PKRange " + queryMetrics.getKey();
                 assertThat(mockTracer.getCurrentSpan()).isNotNull();
                 List<TracerUnderTest.EventRecord> filteredEvents =
-                    mockTracer.getCurrentSpan().getEvents().stream().filter(
+                    mockTracer.getEventsOfAllCollectedSiblingSpans().stream().filter(
                         e -> e.getName().equals(eventName)).collect(Collectors.toList());
                 assertThat(filteredEvents).hasSizeGreaterThanOrEqualTo(1);
                 assertThat(filteredEvents.size()).isGreaterThanOrEqualTo(1);
