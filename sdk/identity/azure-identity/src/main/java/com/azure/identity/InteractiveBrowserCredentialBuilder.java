@@ -208,6 +208,16 @@ public class InteractiveBrowserCredentialBuilder extends AadCredentialBuilderBas
     }
 
     /**
+     * Indicates that the interactive browser broker should be used.
+     * @param windowHandle The window handle of the current application, or 0 for a console application.
+     * @return An updated instance of this builder with the interactive browser broker configured.
+     */
+    public InteractiveBrowserCredentialBuilder useInteractiveBrowserBroker(long windowHandle) {
+        this.identityClientOptions.setBrokerWindowHandle(windowHandle);
+        return this;
+    }
+
+    /**
      * Creates a new {@link InteractiveBrowserCredential} with the current configurations.
      *
      * @return a {@link InteractiveBrowserCredential} with the current configurations.

@@ -76,6 +76,8 @@ public final class IdentityClientOptions implements Cloneable {
 
     private boolean isChained;
     private boolean enableUnsafeSupportLogging;
+    private long brokerWindowHandle;
+    private boolean brokerEnabled;
 
     /**
      * Creates an instance of IdentityClientOptions with default settings.
@@ -743,6 +745,32 @@ public final class IdentityClientOptions implements Cloneable {
         return this;
     }
 
+    /**
+     * Gets the window handle for use with the interactive broker.
+     * @return the window handle for use with the interactive broker.
+     */
+    public IdentityClientOptions setBrokerWindowHandle(long windowHandle) {
+        this.brokerEnabled = true;
+        this.brokerWindowHandle = windowHandle;
+        return this;
+    }
+
+    /**
+     * Gets the window handle for use with the interactive broker.
+     * @return the window handle for use with the interactive broker.
+     */
+    public long getBrokerWindowHandle() {
+        return this.brokerWindowHandle;
+    }
+
+    /**
+     * Gets the status whether broker is enabled or not.
+     * @return the flag indicating if broker is enabled or not.
+     */
+    public boolean isBrokerEnabled() {
+        return this.brokerEnabled;
+    }
+
     public IdentityClientOptions clone() {
         IdentityClientOptions clone =  new IdentityClientOptions()
             .setAdditionallyAllowedTenants(this.additionallyAllowedTenants)
@@ -772,7 +800,8 @@ public final class IdentityClientOptions implements Cloneable {
             .setPerCallPolicies(this.perCallPolicies)
             .setPerRetryPolicies(this.perRetryPolicies)
             .setBrowserCustomizationOptions(this.browserCustomizationOptions)
-            .setChained(this.isChained);
+            .setChained(this.isChained)
+            .setBrokerWindowHandle(this.brokerWindowHandle);
         if (!isInstanceDiscoveryEnabled()) {
             clone.disableInstanceDiscovery();
         }
