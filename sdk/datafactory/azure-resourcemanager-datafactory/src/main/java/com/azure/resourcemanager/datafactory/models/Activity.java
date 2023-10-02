@@ -44,6 +44,19 @@ public class Activity {
     private String description;
 
     /*
+     * Activity state. This is an optional property and if not provided, the state will be Active by default.
+     */
+    @JsonProperty(value = "state")
+    private ActivityState state;
+
+    /*
+     * Status result of the activity when the state is set to Inactive. This is an optional property and if not
+     * provided when the activity is inactive, the status will be Succeeded by default.
+     */
+    @JsonProperty(value = "onInactiveMarkAs")
+    private ActivityOnInactiveMarkAs onInactiveMarkAs;
+
+    /*
      * Activity depends on condition.
      */
     @JsonProperty(value = "dependsOn")
@@ -101,6 +114,50 @@ public class Activity {
      */
     public Activity withDescription(String description) {
         this.description = description;
+        return this;
+    }
+
+    /**
+     * Get the state property: Activity state. This is an optional property and if not provided, the state will be
+     * Active by default.
+     *
+     * @return the state value.
+     */
+    public ActivityState state() {
+        return this.state;
+    }
+
+    /**
+     * Set the state property: Activity state. This is an optional property and if not provided, the state will be
+     * Active by default.
+     *
+     * @param state the state value to set.
+     * @return the Activity object itself.
+     */
+    public Activity withState(ActivityState state) {
+        this.state = state;
+        return this;
+    }
+
+    /**
+     * Get the onInactiveMarkAs property: Status result of the activity when the state is set to Inactive. This is an
+     * optional property and if not provided when the activity is inactive, the status will be Succeeded by default.
+     *
+     * @return the onInactiveMarkAs value.
+     */
+    public ActivityOnInactiveMarkAs onInactiveMarkAs() {
+        return this.onInactiveMarkAs;
+    }
+
+    /**
+     * Set the onInactiveMarkAs property: Status result of the activity when the state is set to Inactive. This is an
+     * optional property and if not provided when the activity is inactive, the status will be Succeeded by default.
+     *
+     * @param onInactiveMarkAs the onInactiveMarkAs value to set.
+     * @return the Activity object itself.
+     */
+    public Activity withOnInactiveMarkAs(ActivityOnInactiveMarkAs onInactiveMarkAs) {
+        this.onInactiveMarkAs = onInactiveMarkAs;
         return this;
     }
 

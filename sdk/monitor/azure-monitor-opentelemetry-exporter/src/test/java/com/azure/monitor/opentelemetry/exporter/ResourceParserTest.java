@@ -3,9 +3,6 @@
 
 package com.azure.monitor.opentelemetry.exporter;
 
-import com.azure.core.test.utils.TestConfigurationSource;
-import com.azure.core.util.Configuration;
-import com.azure.core.util.ConfigurationBuilder;
 import com.azure.monitor.opentelemetry.exporter.implementation.ResourceAttributes;
 import com.azure.monitor.opentelemetry.exporter.implementation.builders.MetricTelemetryBuilder;
 import com.azure.monitor.opentelemetry.exporter.implementation.models.ContextTagKeys;
@@ -13,11 +10,15 @@ import com.azure.monitor.opentelemetry.exporter.implementation.utils.HostName;
 import com.azure.monitor.opentelemetry.exporter.implementation.utils.ResourceParser;
 import io.opentelemetry.api.common.Attributes;
 import io.opentelemetry.api.common.AttributesBuilder;
+import io.opentelemetry.sdk.autoconfigure.spi.ConfigProperties;
+import io.opentelemetry.sdk.autoconfigure.spi.internal.DefaultConfigProperties;
 import io.opentelemetry.sdk.resources.Resource;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import reactor.util.annotation.Nullable;
 
+import java.util.Collections;
+import java.util.HashMap;
 import java.util.Map;
 
 import static org.assertj.core.api.Assertions.assertThat;
@@ -109,16 +110,11 @@ class ResourceParserTest {
 
     @Test
     void testWebsiteSiteNameAndWebsiteInstanceId() {
-        Configuration configuration =
-            new ConfigurationBuilder(
-                new TestConfigurationSource(),
-                new TestConfigurationSource(),
-                new TestConfigurationSource()
-                    .put("WEBSITE_SITE_NAME", "test_website_site_name")
-                    .put("WEBSITE_INSTANCE_ID", "test_website_instance_id"))
-                .build();
+        Map<String, String> configuration = new HashMap<>();
+        configuration.put("WEBSITE_SITE_NAME", "test_website_site_name");
+        configuration.put("WEBSITE_INSTANCE_ID", "test_website_instance_id");
         Resource resource = createTestResource(null, null, null);
-        ResourceParser.updateRoleNameAndInstance(builder, resource, configuration);
+        ResourceParser.updateRoleNameAndInstance(builder, resource, DefaultConfigProperties.createForTest(configuration));
         Map<String, String> tags = builder.build().getTags();
         assertThat(tags.get(ContextTagKeys.AI_CLOUD_ROLE.toString()))
             .isEqualTo("test_website_site_name");
@@ -126,12 +122,8 @@ class ResourceParserTest {
             .isEqualTo("test_website_instance_id");
     }
 
-    private static Configuration getConfiguration() {
-        return new ConfigurationBuilder(
-            new TestConfigurationSource(),
-            new TestConfigurationSource(),
-            new TestConfigurationSource().put("HOSTNAME", DEFAULT_ROLE_INSTANCE))
-            .build();
+    private static ConfigProperties getConfiguration() {
+        return DefaultConfigProperties.createForTest(Collections.singletonMap("HOSTNAME", DEFAULT_ROLE_INSTANCE));
     }
 
     private static Resource createTestResource(
