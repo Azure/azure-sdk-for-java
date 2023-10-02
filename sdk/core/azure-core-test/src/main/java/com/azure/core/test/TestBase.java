@@ -283,7 +283,6 @@ public abstract class TestBase implements BeforeEachCallback {
             } catch (UnsupportedClassVersionError exception) {
                 throw LOGGER.logExceptionAsError(new RuntimeException(exception));
             }
-
         }
 
         return httpClientsToTest.stream();
