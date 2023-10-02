@@ -56,9 +56,6 @@ jobs:
           filePath: eng/common/scripts/Service-Level-Readme-Automation.ps1
           arguments: >-
             -DocRepoLocation $(DocRepoLocation)
-            -TenantId '$(opensource-aad-tenant-id)'
-            -ClientId '$(opensource-aad-app-id)'
-            -ClientSecret '$(opensource-aad-secret)'
         displayName: Generate Service Level Readme for main branch
         condition: and(succeeded(), or(eq(variables['Build.Reason'], 'Schedule'), eq(variables['Force.MainUpdate'], 'true')))
 
@@ -143,11 +140,7 @@ jobs:
         inputs:
           pwsh: true
           filePath: eng/common/scripts/Service-Level-Readme-Automation.ps1
-          arguments: >-
-            -DocRepoLocation $(DailyDocRepoLocation)
-            -TenantId '$(opensource-aad-tenant-id)'
-            -ClientId '$(opensource-aad-app-id)'
-            -ClientSecret '$(opensource-aad-secret)'
+          arguments: -DocRepoLocation $(DailyDocRepoLocation)
         displayName: Generate Service Level Readme for Daily docs
       - task: Powershell@2
         inputs:
@@ -162,8 +155,7 @@ jobs:
         inputs:
           pwsh: true
           filePath: eng/common/scripts/Verify-RequiredDocsJsonMembers.ps1
-          arguments: >-
-            -DocRepoLocation $(DocRepoLocation)
+          arguments: -DocRepoLocation $(DocRepoLocation)
         displayName: Verify Required Docs Json Members
 
       - template: /eng/common/pipelines/templates/steps/git-push-changes.yml
