@@ -45,6 +45,7 @@ import static org.junit.jupiter.api.Assertions.assertNotNull;
 import static org.junit.jupiter.api.Assertions.assertNull;
 import static org.junit.jupiter.api.Assertions.assertThrows;
 import static org.junit.jupiter.api.Assertions.assertTrue;
+import static org.junit.jupiter.api.Assertions.fail;
 
 public class CoreUtilsTests {
     private static final byte[] BYTES = "Hello world!".getBytes(StandardCharsets.UTF_8);
@@ -505,7 +506,7 @@ public class CoreUtilsTests {
         bytes[6] &= 0x0f;  /* clear version        */
         bytes[6] |= 0x40;  /* set to version 4     */
         bytes[8] &= 0x3f;  /* clear variant        */
-        bytes[8] |= 0x80;  /* set to IETF variant  */
+        bytes[8] |= (byte) 0x80;  /* set to IETF variant  */
         long msbForJava = 0;
         long lsbForJava = 0;
         for (int i = 0; i < 8; i++) {
@@ -519,37 +520,46 @@ public class CoreUtilsTests {
     }
 
     @Test
-    public void futureCompletesBeforeTimeout() throws ExecutionException, InterruptedException, TimeoutException {
-        AtomicBoolean completed = new AtomicBoolean(false);
-        Future<?> future = executorService.submit(() -> {
-            Thread.sleep(10);
-            completed.set(true);
-            return null;
-        });
+    public void futureCompletesBeforeTimeout() {
+        try {
+            AtomicBoolean completed = new AtomicBoolean(false);
+            Future<?> future = executorService.submit(() -> {
+                Thread.sleep(10);
+                completed.set(true);
+                return null;
+            });
 
-        future.get(100, TimeUnit.MILLISECONDS);
+            future.get(1000, TimeUnit.MILLISECONDS);
 
-        assertTrue(completed.get());
+            assertTrue(completed.get());
+        } catch (InterruptedException | ExecutionException | TimeoutException e) {
+            throw new RuntimeException(e);
+        }
     }
 
     @Test
-    public void futureTimesOutAndIsCancelled() throws InterruptedException {
-        AtomicBoolean completed = new AtomicBoolean(false);
-        Future<?> future = executorService.submit(() -> {
-            Thread.sleep(1000);
-            completed.set(true);
-            return null;
-        });
-
+    public void futureTimesOutAndIsCancelled() {
         try {
-            CoreUtils.getFutureWithCancellation(future, 100, TimeUnit.MILLISECONDS);
-        } catch (InterruptedException | ExecutionException | TimeoutException e) {
-            // Ignore
+            AtomicBoolean completed = new AtomicBoolean(false);
+            Future<?> future = executorService.submit(() -> {
+                Thread.sleep(1000);
+                completed.set(true);
+                return null;
+            });
+
+            try {
+                CoreUtils.getFutureWithCancellation(future, 100, TimeUnit.MILLISECONDS);
+                fail("Expected future to timout and be cancelled.");
+            } catch (TimeoutException e) {
+                // Expected.
+            }
+
+            // Give time for the future to complete if cancellation didn't work.
+            Thread.sleep(1000);
+
+            assertFalse(completed.get());
+        } catch (InterruptedException | ExecutionException e) {
+            throw new RuntimeException(e);
         }
-
-        // Give time for the future to complete if cancellation didn't work.
-        Thread.sleep(1000);
-
-        assertFalse(completed.get());
     }
 }
