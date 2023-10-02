@@ -8,9 +8,6 @@ import com.azure.core.http.HttpPipelineCallContext;
 import com.azure.core.http.HttpPipelineNextPolicy;
 import com.azure.core.http.HttpResponse;
 import com.azure.core.http.policy.HttpPipelinePolicy;
-import com.azure.core.test.utils.TestConfigurationSource;
-import com.azure.core.util.Configuration;
-import com.azure.core.util.ConfigurationBuilder;
 import com.azure.core.util.FluxUtil;
 import com.azure.monitor.opentelemetry.exporter.implementation.models.MessageData;
 import com.azure.monitor.opentelemetry.exporter.implementation.models.MetricsData;
@@ -37,7 +34,9 @@ import java.io.ByteArrayInputStream;
 import java.io.ByteArrayOutputStream;
 import java.net.URL;
 import java.nio.charset.StandardCharsets;
+import java.util.Collections;
 import java.util.List;
+import java.util.Map;
 import java.util.concurrent.CopyOnWriteArrayList;
 import java.util.concurrent.CountDownLatch;
 import java.util.zip.GZIPInputStream;
@@ -70,10 +69,15 @@ public class AzureMonitorExportersEndToEndTest extends MonitorExporterClientTest
         countDownLatch.await(10, SECONDS);
         assertThat(customValidationPolicy.url)
             .isEqualTo(new URL("https://test.in.applicationinsights.azure.com/v2.1/track"));
-        assertThat(customValidationPolicy.actualTelemetryItems.size()).isEqualTo(1);
+        assertThat(customValidationPolicy.actualTelemetryItems.size()).isEqualTo(2);
 
         // validate span
-        validateSpan(customValidationPolicy.actualTelemetryItems.get(0));
+        TelemetryItem spanTelemetryItem =
+            customValidationPolicy.actualTelemetryItems.stream()
+                .filter(item -> item.getName().equals("RemoteDependency"))
+                .findFirst()
+                .get();
+        validateSpan(spanTelemetryItem);
     }
 
     @Test
@@ -81,21 +85,33 @@ public class AzureMonitorExportersEndToEndTest extends MonitorExporterClientTest
         // create the OpenTelemetry SDK
         CountDownLatch countDownLatch = new CountDownLatch(1);
         CustomValidationPolicy customValidationPolicy = new CustomValidationPolicy(countDownLatch);
-        OpenTelemetry openTelemetry =
+        OpenTelemetrySdk openTelemetry =
             TestUtils.createOpenTelemetrySdk(
                 getHttpPipeline(customValidationPolicy), getConfiguration());
 
         // generate a metric
         generateMetric(openTelemetry);
 
+        // close to flush
+        openTelemetry.close();
+
         // wait for export
         countDownLatch.await(10, SECONDS);
         assertThat(customValidationPolicy.url)
             .isEqualTo(new URL("https://test.in.applicationinsights.azure.com/v2.1/track"));
-        assertThat(customValidationPolicy.actualTelemetryItems.size()).isEqualTo(1);
+        assertThat(customValidationPolicy.actualTelemetryItems.size()).isEqualTo(2);
 
         // validate metric
-        validateMetric(customValidationPolicy.actualTelemetryItems.get(0));
+        TelemetryItem metricTelemetryItem =
+            customValidationPolicy.actualTelemetryItems.stream()
+                .filter(item -> item.getName().equals("Metric"))
+                .filter(item -> {
+                    MetricsData metricsData = (MetricsData) item.getData().getBaseData();
+                    return metricsData.getMetrics().stream().noneMatch(metricDataPoint -> metricDataPoint.getName().equals("_OTELRESOURCE_"));
+                })
+                .findFirst()
+                .get();
+        validateMetric(metricTelemetryItem);
     }
 
     @Test
@@ -103,8 +119,8 @@ public class AzureMonitorExportersEndToEndTest extends MonitorExporterClientTest
         // create the OpenTelemetry SDK
         CountDownLatch countDownLatch = new CountDownLatch(1);
         CustomValidationPolicy customValidationPolicy = new CustomValidationPolicy(countDownLatch);
-        OpenTelemetrySdk openTelemetry =
-            TestUtils.createOpenTelemetrySdkDeprecated(
+        OpenTelemetry openTelemetry =
+            TestUtils.createOpenTelemetrySdk(
                 getHttpPipeline(customValidationPolicy), getConfiguration());
 
         // generate a log
@@ -114,10 +130,16 @@ public class AzureMonitorExportersEndToEndTest extends MonitorExporterClientTest
         countDownLatch.await(10, SECONDS);
         assertThat(customValidationPolicy.url)
             .isEqualTo(new URL("https://test.in.applicationinsights.azure.com/v2.1/track"));
-        assertThat(customValidationPolicy.actualTelemetryItems.size()).isEqualTo(1);
+        assertThat(customValidationPolicy.actualTelemetryItems.size()).isEqualTo(2);
 
         // validate log
-        validateLog(customValidationPolicy.actualTelemetryItems.get(0));
+        TelemetryItem logTelemetryItem =
+            customValidationPolicy.actualTelemetryItems.stream()
+                .filter(item -> item.getName().equals("Message"))
+                .findFirst()
+                .get();
+
+        validateLog(logTelemetryItem);
     }
 
     @Test
@@ -126,7 +148,7 @@ public class AzureMonitorExportersEndToEndTest extends MonitorExporterClientTest
         CountDownLatch countDownLatch = new CountDownLatch(3);
         CustomValidationPolicy customValidationPolicy = new CustomValidationPolicy(countDownLatch);
         OpenTelemetrySdk openTelemetry =
-            TestUtils.createOpenTelemetrySdkDeprecated(
+            TestUtils.createOpenTelemetrySdk(
                 getHttpPipeline(customValidationPolicy), getConfiguration());
 
         // generate telemetry
@@ -134,11 +156,14 @@ public class AzureMonitorExportersEndToEndTest extends MonitorExporterClientTest
         generateMetric(openTelemetry);
         generateLog(openTelemetry);
 
+        // close to flush
+        openTelemetry.close();
+
         // wait for export
         countDownLatch.await(10, SECONDS);
         assertThat(customValidationPolicy.url)
             .isEqualTo(new URL("https://test.in.applicationinsights.azure.com/v2.1/track"));
-        assertThat(customValidationPolicy.actualTelemetryItems.size()).isEqualTo(3);
+        assertThat(customValidationPolicy.actualTelemetryItems.size()).isEqualTo(6);
 
         // validate telemetry
         TelemetryItem spanTelemetryItem =
@@ -149,6 +174,10 @@ public class AzureMonitorExportersEndToEndTest extends MonitorExporterClientTest
         TelemetryItem metricTelemetryItem =
             customValidationPolicy.actualTelemetryItems.stream()
                 .filter(item -> item.getName().equals("Metric"))
+                .filter(item -> {
+                    MetricsData metricsData = (MetricsData) item.getData().getBaseData();
+                    return metricsData.getMetrics().stream().noneMatch(metricDataPoint -> metricDataPoint.getName().equals("_OTELRESOURCE_"));
+                })
                 .findFirst()
                 .get();
         TelemetryItem logTelemetryItem =
@@ -163,13 +192,8 @@ public class AzureMonitorExportersEndToEndTest extends MonitorExporterClientTest
         // TODO (trask) also export and validate logs in this test
     }
 
-    private static Configuration getConfiguration() {
-        return new ConfigurationBuilder(
-            new TestConfigurationSource(),
-            new TestConfigurationSource(),
-            new TestConfigurationSource()
-                .put("APPLICATIONINSIGHTS_CONNECTION_STRING", CONNECTION_STRING_ENV))
-            .build();
+    private static Map<String, String> getConfiguration() {
+        return Collections.singletonMap("APPLICATIONINSIGHTS_CONNECTION_STRING", CONNECTION_STRING_ENV);
     }
 
     @SuppressWarnings("try")
@@ -193,8 +217,8 @@ public class AzureMonitorExportersEndToEndTest extends MonitorExporterClientTest
                 AttributeKey.stringKey("name"), "apple", AttributeKey.stringKey("color"), "red"));
     }
 
-    private static void generateLog(OpenTelemetrySdk openTelemetry) {
-        Logger logger = openTelemetry.getSdkLoggerProvider().get("Sample");
+    private static void generateLog(OpenTelemetry openTelemetry) {
+        Logger logger = openTelemetry.getLogsBridge().get("Sample");
         logger
             .logRecordBuilder()
             .setBody("test body")
