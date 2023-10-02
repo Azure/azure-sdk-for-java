@@ -546,7 +546,7 @@
                 <include>com.azure:*</include>
                 <include>com.azure.resourcemanager:*</include>
                 <include>com.azure.spring:*</include>
-
+                <include>com.typespec:*</include>
                 <!-- Used by many libraries to bring in annotations used by Reactor -->
                 <include>com.google.code.findbugs:jsr305:[3.0.2]</include> <!-- {x-include-update;com.google.code.findbugs:jsr305;external_dependency} -->
               </includes>
@@ -1672,7 +1672,10 @@
             <version>5.6.0</version>
             <configuration>
               <activeRecipes>
-                <recipe>com.client.core.gen</recipe>
+                <recipe>com.typespec.core.gen</recipe>
+                <recipe>com.typespec.core.gen.xml</recipe>
+                <recipe>com.typespec.core.gen.maven</recipe>
+                <recipe>com.typespec.core.gen.modules.rewrite</recipe>
               </activeRecipes>
             </configuration>
             <dependencies>

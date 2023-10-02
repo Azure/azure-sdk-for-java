@@ -1,0 +1,263 @@
+<!--
+  ~ Copyright (c) Microsoft Corporation. All rights reserved.
+  ~ Licensed under the MIT License.
+  -->
+<project xmlns="http://maven.apache.org/POM/4.0.0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+         xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd">
+  <modelVersion>4.0.0</modelVersion>
+  <parent>
+    <groupId>com.azure</groupId>
+    <artifactId>azure-client-sdk-parent</artifactId>
+    <version>1.7.0</version> <!-- {x-version-update;com.azure:azure-client-sdk-parent;current} -->
+    <relativePath>../../parents/azure-client-sdk-parent</relativePath>
+  </parent>
+
+  <groupId>com.typespec</groupId>
+  <artifactId>typespec-json</artifactId>
+  <packaging>jar</packaging>
+  <version>1.0.0</version> <!-- {x-version-update;com.azure:azure-json;current} -->
+
+  <name>Java JSON Library</name>
+  <description>This package provides interfaces for reading and writing JSON.</description>
+  <url>https://github.com/Azure/azure-sdk-for-java</url>
+
+  <licenses>
+    <license>
+      <name>The MIT License (MIT)</name>
+      <url>http://opensource.org/licenses/MIT</url>
+      <distribution>repo</distribution>
+    </license>
+  </licenses>
+
+  <distributionManagement>
+    <site>
+      <id>azure-java-build-docs</id>
+      <url>${site.url}/site/${project.artifactId}</url>
+    </site>
+  </distributionManagement>
+
+  <scm>
+    <url>https://github.com/Azure/azure-sdk-for-java</url>
+    <connection>scm:git:https://github.com/Azure/azure-sdk-for-java.git</connection>
+    <developerConnection>scm:git:https://github.com/Azure/azure-sdk-for-java.git</developerConnection>
+  </scm>
+
+  <properties>
+    <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
+
+    <javaModulesSurefireArgLine>
+      --add-opens com.azure.json/com.azure.json=ALL-UNNAMED
+      --add-opens com.azure.json/com.azure.json.contract=ALL-UNNAMED
+    </javaModulesSurefireArgLine>
+
+    <!-- Ignore shaded code -->
+
+    <javadoc.excludePackageNames/>
+    <javadoc.sourcepath>${basedir}/src/main/java</javadoc.sourcepath>
+  </properties>
+
+  <developers>
+    <developer>
+      <id>microsoft</id>
+      <name>Microsoft</name>
+    </developer>
+  </developers>
+
+  <dependencies>
+    <dependency>
+      <groupId>org.junit.jupiter</groupId>
+      <artifactId>junit-jupiter-api</artifactId>
+      <version>5.9.3</version> <!-- {x-version-update;org.junit.jupiter:junit-jupiter-api;external_dependency} -->
+      <scope>test</scope>
+    </dependency>
+    <dependency>
+      <groupId>org.junit.jupiter</groupId>
+      <artifactId>junit-jupiter-engine</artifactId>
+      <version>5.9.3</version> <!-- {x-version-update;org.junit.jupiter:junit-jupiter-engine;external_dependency} -->
+      <scope>test</scope>
+    </dependency>
+    <dependency>
+      <groupId>org.junit.jupiter</groupId>
+      <artifactId>junit-jupiter-params</artifactId>
+      <version>5.9.3</version> <!-- {x-version-update;org.junit.jupiter:junit-jupiter-params;external_dependency} -->
+      <scope>test</scope>
+    </dependency>
+  </dependencies>
+
+  <build>
+    <plugins>
+      <!-- JsonWriterContractTests is inherited by tests in azure-json-* -->
+      <plugin>
+        <groupId>org.apache.maven.plugins</groupId>
+        <artifactId>maven-jar-plugin</artifactId>
+        <version>3.2.2</version> <!-- {x-version-update;org.apache.maven.plugins:maven-jar-plugin;external_dependency} -->
+        <executions>
+          <execution>
+            <id>test-jar</id>
+            <phase>test-compile</phase>
+            <goals>
+              <goal>test-jar</goal>
+            </goals>
+          </execution>
+        </executions>
+      </plugin>
+
+      <!-- This plugin scans reports spotbugs in the code -->
+      <plugin>
+        <groupId>com.github.spotbugs</groupId>
+        <artifactId>spotbugs-maven-plugin</artifactId>
+        <version>4.2.2</version> <!-- {x-version-update;com.github.spotbugs:spotbugs-maven-plugin;external_dependency} -->
+        <configuration>
+          <plugins>
+            <plugin>
+              <groupId>com.h3xstream.findsecbugs</groupId>
+              <artifactId>findsecbugs-plugin</artifactId>
+              <version>1.9.0</version> <!-- {x-version-update;com.h3xstream.findsecbugs:findsecbugs-plugin;external_dependency} -->
+            </plugin>
+          </plugins>
+        </configuration>
+      </plugin>
+
+      <plugin>
+        <groupId>org.apache.maven.plugins</groupId>
+        <artifactId>maven-compiler-plugin</artifactId>
+        <version>3.10.1</version> <!-- {x-version-update;org.apache.maven.plugins:maven-compiler-plugin;external_dependency} -->
+        <configuration>
+          <compilerArgs>
+            <arg>-Xlint:deprecation</arg>
+          </compilerArgs>
+        </configuration>
+      </plugin>
+
+      <plugin>
+        <groupId>org.jacoco</groupId>
+        <artifactId>jacoco-maven-plugin</artifactId>
+        <version>0.8.9</version> <!-- {x-version-update;org.jacoco:jacoco-maven-plugin;external_dependency} -->
+        <configuration>
+          <excludes>
+            <exclude>META-INF/**</exclude>
+            <exclude>**/com/azure/json/implementation/jackson/core/**</exclude>
+          </excludes>
+        </configuration>
+      </plugin>
+    </plugins>
+  </build>
+
+  <profiles>
+    <!-- This profile is used to generate a sources JAR with jackson-core shaded into com.azure.core.implementation.jackson.core -->
+    <!-- DO NOT run this profile with release, it is only meant to be run locally when the shaded jackson-core code needs to be updated. -->
+    <!-- -->
+    <!-- To update the shaded jackson-core code, run Maven build with '-Dshade-jackson-core' included in the command. -->
+    <!-- In the target folder, extract the sources azure-core JAR, the path com/azure/core/implementation/jackson/core will contain the jackson-core source code. -->
+    <!-- Copy this code into the com.azure.core.implementation.jackson.core package in the azure-core project and overwrite the existing files. -->
+    <!-- -->
+    <!-- After following the steps above the project should be rebuilt with the 'add-license-comment' profile enable to add a comment about the shaded code's license. -->
+    <!-- This serves as another way to attribute the shaded code to Jackson Core. -->
+    <profile>
+      <id>shade-jackson-core</id>
+      <activation>
+        <property>
+          <name>shade-jackson-core</name>
+        </property>
+      </activation>
+
+      <dependencies>
+        <dependency>
+          <groupId>com.fasterxml.jackson.core</groupId>
+          <artifactId>jackson-core</artifactId>
+          <version>2.13.5</version> <!-- {x-version-update;com.fasterxml.jackson.core:jackson-core;external_dependency} -->
+        </dependency>
+      </dependencies>
+
+      <build>
+        <plugins>
+          <plugin>
+            <groupId>org.apache.maven.plugins</groupId>
+            <artifactId>maven-shade-plugin</artifactId>
+            <version>3.3.0</version> <!-- {x-version-update;org.apache.maven.plugins:maven-shade-plugin;external_dependency} -->
+
+            <executions>
+              <execution>
+                <id>shade</id>
+                <phase>package</phase>
+                <goals>
+                  <goal>shade</goal>
+                </goals>
+              </execution>
+            </executions>
+
+            <configuration>
+              <createSourcesJar>true</createSourcesJar>
+              <shadeSourcesContent>true</shadeSourcesContent>
+
+              <artifactSet>
+                <includes>
+                  <include>com.fasterxml.jackson.core:jackson-core</include>
+                </includes>
+              </artifactSet>
+
+              <relocations>
+                <relocation>
+                  <pattern>com.fasterxml.jackson.core</pattern>
+                  <shadedPattern>com.azure.json.implementation.jackson.core</shadedPattern>
+                </relocation>
+              </relocations>
+            </configuration>
+          </plugin>
+
+          <plugin>
+            <groupId>org.apache.maven.plugins</groupId>
+            <artifactId>maven-enforcer-plugin</artifactId>
+            <version>3.0.0-M3</version> <!-- {x-version-update;org.apache.maven.plugins:maven-enforcer-plugin;external_dependency} -->
+            <configuration>
+              <rules>
+                <bannedDependencies>
+                  <includes>
+                    <include>com.fasterxml.jackson.core:jackson-core:[2.13.5]</include> <!-- {x-include-update;com.fasterxml.jackson.core:jackson-core;external_dependency} -->
+                  </includes>
+                </bannedDependencies>
+              </rules>
+            </configuration>
+          </plugin>
+        </plugins>
+      </build>
+    </profile>
+
+    <!-- This profile runs a script that adds a code comment to each shaded file attributing the shaded code back to the Jackson Core project. -->
+    <!-- This profile must be run after every time the 'shade-jackson-core' profile is ran and the steps to copy the shaded source code is followed. -->
+    <profile>
+      <id>add-license-comment</id>
+      <activation>
+        <property>
+          <name>add-license-comment</name>
+        </property>
+      </activation>
+
+      <build>
+        <plugins>
+          <plugin>
+            <groupId>org.codehaus.mojo</groupId>
+            <artifactId>exec-maven-plugin</artifactId>
+            <version>3.1.0</version> <!-- {x-version-update;org.codehaus.mojo:exec-maven-plugin;external_dependency} -->
+            <executions>
+              <execution>
+                <id>add-license-comment</id>
+                <phase>process-sources</phase>
+                <goals>
+                  <goal>exec</goal>
+                </goals>
+                <configuration>
+                  <executable>python</executable>
+                  <workingDirectory>${project.basedir}</workingDirectory>
+                  <arguments>
+                    <argument>${project.basedir}/add-shaded-code-comment.py</argument>
+                  </arguments>
+                </configuration>
+              </execution>
+            </executions>
+          </plugin>
+        </plugins>
+      </build>
+    </profile>
+  </profiles>
+</project>

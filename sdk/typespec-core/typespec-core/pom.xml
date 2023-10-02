@@ -1,0 +1,295 @@
+<!--
+  ~ Copyright (c) Microsoft Corporation. All rights reserved.
+  ~ Licensed under the MIT License.
+  -->
+<project xmlns="http://maven.apache.org/POM/4.0.0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+         xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd">
+  <modelVersion>4.0.0</modelVersion>
+  <parent>
+    <groupId>com.azure</groupId>
+    <artifactId>azure-client-sdk-parent</artifactId>
+    <version>1.7.0</version> <!-- {x-version-update;com.azure:azure-client-sdk-parent;current} -->
+    <relativePath>../../parents/azure-client-sdk-parent</relativePath>
+  </parent>
+
+  <groupId>com.typespec</groupId>
+  <artifactId>typespec-core</artifactId>
+  <packaging>jar</packaging>
+  <version>1.0.0</version> <!-- {x-version-update;com.azure:azure-core;current} -->
+
+  <name>SDK Java Core Library</name>
+  <description>This package contains core types for Java clients.</description>
+  <url>https://github.com/Azure/azure-sdk-for-java</url>
+
+  <licenses>
+    <license>
+      <name>The MIT License (MIT)</name>
+      <url>http://opensource.org/licenses/MIT</url>
+      <distribution>repo</distribution>
+    </license>
+  </licenses>
+
+  <distributionManagement>
+    <site>
+      <id>azure-java-build-docs</id>
+      <url>${site.url}/site/${project.artifactId}</url>
+    </site>
+  </distributionManagement>
+
+  <scm>
+    <url>https://github.com/Azure/azure-sdk-for-java</url>
+    <connection>scm:git:https://github.com/Azure/azure-sdk-for-java.git</connection>
+    <developerConnection>scm:git:https://github.com/Azure/azure-sdk-for-java.git</developerConnection>
+  </scm>
+
+  <properties>
+    <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
+    <javaModulesSurefireArgLine>
+      --add-exports com.azure.core/com.azure.core.implementation.http=ALL-UNNAMED
+      --add-exports com.azure.core/com.azure.core.implementation.http.rest=ALL-UNNAMED
+      --add-exports com.azure.core/com.azure.core.implementation.serializer=ALL-UNNAMED
+      --add-exports com.azure.core/com.azure.core.implementation.jackson=ALL-UNNAMED
+
+      --add-opens com.azure.core/com.azure.core=ALL-UNNAMED
+      --add-opens com.azure.core/com.azure.core.credential=ALL-UNNAMED
+      --add-opens com.azure.core/com.azure.core.http=ALL-UNNAMED
+      --add-opens com.azure.core/com.azure.core.http.policy=ALL-UNNAMED
+      --add-opens com.azure.core/com.azure.core.http.rest=ALL-UNNAMED
+      --add-opens com.azure.core/com.azure.core.implementation=ALL-UNNAMED
+      --add-opens com.azure.core/com.azure.core.implementation.http=ALL-UNNAMED
+      --add-opens com.azure.core/com.azure.core.implementation.http.rest=ALL-UNNAMED
+      --add-opens com.azure.core/com.azure.core.implementation.models.jsonflatten=com.fasterxml.jackson.databind
+      --add-opens com.azure.core/com.azure.core.implementation.models.jsonflatten=ALL-UNNAMED
+      --add-opens com.azure.core/com.azure.core.implementation.serializer=ALL-UNNAMED
+      --add-opens com.azure.core/com.azure.core.implementation.jackson=ALL-UNNAMED
+      --add-opens com.azure.core/com.azure.core.implementation.logging=ALL-UNNAMED
+      --add-opens com.azure.core/com.azure.core.models=ALL-UNNAMED
+      --add-opens com.azure.core/com.azure.core.util=ALL-UNNAMED
+      --add-opens com.azure.core/com.azure.core.util.tracing=ALL-UNNAMED
+      --add-opens com.azure.core/com.azure.core.util.logging=ALL-UNNAMED
+      --add-opens com.azure.core/com.azure.core.util.polling=ALL-UNNAMED
+      --add-opens com.azure.core/com.azure.core.util.serializer=ALL-UNNAMED
+
+      --add-reads com.azure.core=ALL-UNNAMED
+    </javaModulesSurefireArgLine>
+
+    <!-- If JMH benchmarking was ran Checkstyle may fail on jmh_benchmark generated classes, ignore them. -->
+
+    <!-- Enables fail on deprecated API usage. -->
+    <compiler.failondeprecatedstatus/>
+    <javadoc.excludePackageNames>com.azure.json</javadoc.excludePackageNames>
+
+  </properties>
+
+  <developers>
+    <developer>
+      <id>microsoft</id>
+      <name>Microsoft</name>
+    </developer>
+  </developers>
+
+  <dependencies>
+    <dependency>
+      <groupId>com.typespec</groupId>
+      <artifactId>typespec-json</artifactId>
+      <version>1.0.0</version> <!-- {x-version-update;com.azure:azure-json;dependency} -->
+    </dependency>
+    <dependency>
+      <groupId>com.fasterxml.jackson.core</groupId>
+      <artifactId>jackson-annotations</artifactId>
+      <version>2.13.5</version> <!-- {x-version-update;com.fasterxml.jackson.core:jackson-annotations;external_dependency} -->
+    </dependency>
+    <dependency>
+      <groupId>com.fasterxml.jackson.core</groupId>
+      <artifactId>jackson-core</artifactId>
+      <version>2.13.5</version> <!-- {x-version-update;com.fasterxml.jackson.core:jackson-core;external_dependency} -->
+    </dependency>
+    <dependency>
+      <groupId>com.fasterxml.jackson.core</groupId>
+      <artifactId>jackson-databind</artifactId>
+      <version>2.13.5</version> <!-- {x-version-update;com.fasterxml.jackson.core:jackson-databind;external_dependency} -->
+    </dependency>
+    <dependency>
+      <groupId>com.fasterxml.jackson.datatype</groupId>
+      <artifactId>jackson-datatype-jsr310</artifactId>
+      <version>2.13.5</version> <!-- {x-version-update;com.fasterxml.jackson.datatype:jackson-datatype-jsr310;external_dependency} -->
+    </dependency>
+    <dependency>
+      <groupId>org.slf4j</groupId>
+      <artifactId>slf4j-api</artifactId>
+      <version>1.7.36</version> <!-- {x-version-update;org.slf4j:slf4j-api;external_dependency} -->
+    </dependency>
+
+    <!-- Added this dependency to include necessary annotations used by reactor core.
+    Without this dependency, javadoc throws a warning as it cannot find enum When.MAYBE
+    which is used in @Nullable annotation in reactor core classes -->
+    <dependency>
+      <groupId>com.google.code.findbugs</groupId>
+      <artifactId>jsr305</artifactId>
+      <version>3.0.2</version> <!-- {x-version-update;com.google.code.findbugs:jsr305;external_dependency} -->
+      <scope>provided</scope>
+    </dependency>
+
+    <dependency>
+      <groupId>io.projectreactor</groupId>
+      <artifactId>reactor-core</artifactId>
+      <version>3.4.31</version> <!-- {x-version-update;io.projectreactor:reactor-core;external_dependency} -->
+    </dependency>
+
+    <dependency>
+      <groupId>com.typespec</groupId>
+      <artifactId>typespec-json</artifactId>
+      <version>1.0.0</version> <!-- {x-version-update;com.azure:azure-json;dependency} -->
+      <type>test-jar</type>
+      <scope>test</scope>
+    </dependency>
+    <dependency>
+      <groupId>com.fasterxml.jackson.dataformat</groupId>
+      <artifactId>jackson-dataformat-xml</artifactId>
+      <version>2.13.5</version> <!-- {x-version-update;com.fasterxml.jackson.dataformat:jackson-dataformat-xml;external_dependency} -->
+      <scope>test</scope>
+    </dependency>
+
+    <dependency>
+      <groupId>io.projectreactor</groupId>
+      <artifactId>reactor-test</artifactId>
+      <version>3.4.31</version> <!-- {x-version-update;io.projectreactor:reactor-test;external_dependency} -->
+      <scope>test</scope>
+    </dependency>
+    <dependency>
+      <groupId>org.junit.jupiter</groupId>
+      <artifactId>junit-jupiter-api</artifactId>
+      <version>5.9.3</version> <!-- {x-version-update;org.junit.jupiter:junit-jupiter-api;external_dependency} -->
+      <scope>test</scope>
+    </dependency>
+    <dependency>
+      <groupId>org.junit.jupiter</groupId>
+      <artifactId>junit-jupiter-engine</artifactId>
+      <version>5.9.3</version> <!-- {x-version-update;org.junit.jupiter:junit-jupiter-engine;external_dependency} -->
+      <scope>test</scope>
+    </dependency>
+    <dependency>
+      <groupId>org.junit.jupiter</groupId>
+      <artifactId>junit-jupiter-params</artifactId>
+      <version>5.9.3</version> <!-- {x-version-update;org.junit.jupiter:junit-jupiter-params;external_dependency} -->
+      <scope>test</scope>
+    </dependency>
+    <dependency>
+      <groupId>org.hamcrest</groupId>
+      <artifactId>hamcrest-library</artifactId>
+      <version>2.2</version> <!-- {x-version-update;org.hamcrest:hamcrest-library;external_dependency} -->
+      <scope>test</scope>
+    </dependency>
+    <dependency>
+      <groupId>org.openjdk.jmh</groupId>
+      <artifactId>jmh-core</artifactId>
+      <version>1.36</version> <!-- {x-version-update;org.openjdk.jmh:jmh-core;external_dependency} -->
+      <scope>test</scope>
+    </dependency>
+    <dependency>
+      <groupId>org.openjdk.jmh</groupId>
+      <artifactId>jmh-generator-annprocess</artifactId>
+      <version>1.36</version> <!-- {x-version-update;org.openjdk.jmh:jmh-generator-annprocess;external_dependency} -->
+      <scope>test</scope>
+    </dependency>
+    <dependency>
+      <groupId>javax.json</groupId>
+      <artifactId>javax.json-api</artifactId>
+      <version>1.1.4</version>  <!-- {x-version-update;javax.json:javax.json-api;external_dependency} -->
+      <scope>test</scope>
+    </dependency>
+  </dependencies>
+
+  <build>
+    <plugins>
+      <!-- RestProxyTests is inherited by tests in azure-core-http-netty -->
+      <plugin>
+        <groupId>org.apache.maven.plugins</groupId>
+        <artifactId>maven-jar-plugin</artifactId>
+        <version>3.2.2</version> <!-- {x-version-update;org.apache.maven.plugins:maven-jar-plugin;external_dependency} -->
+        <executions>
+          <execution>
+            <id>test-jar</id>
+            <phase>test-compile</phase>
+            <goals>
+              <goal>test-jar</goal>
+            </goals>
+          </execution>
+        </executions>
+      </plugin>
+
+      <plugin>
+        <groupId>org.apache.maven.plugins</groupId>
+        <artifactId>maven-enforcer-plugin</artifactId>
+        <version>3.0.0-M3</version> <!-- {x-version-update;org.apache.maven.plugins:maven-enforcer-plugin;external_dependency} -->
+        <configuration>
+          <rules>
+            <bannedDependencies>
+              <includes>
+                <include>io.projectreactor:reactor-core:[3.4.31]</include> <!-- {x-include-update;io.projectreactor:reactor-core;external_dependency} -->
+                <include>com.fasterxml.jackson.core:jackson-annotations:[2.13.5]</include> <!-- {x-include-update;com.fasterxml.jackson.core:jackson-annotations;external_dependency} -->
+                <include>com.fasterxml.jackson.core:jackson-core:[2.13.5]</include> <!-- {x-include-update;com.fasterxml.jackson.core:jackson-core;external_dependency} -->
+                <include>com.fasterxml.jackson.core:jackson-databind:[2.13.5]</include> <!-- {x-include-update;com.fasterxml.jackson.core:jackson-databind;external_dependency} -->
+                <include>com.fasterxml.jackson.dataformat:jackson-dataformat-xml:[2.13.5]</include> <!-- {x-include-update;com.fasterxml.jackson.dataformat:jackson-dataformat-xml;external_dependency} -->
+                <include>com.fasterxml.jackson.datatype:jackson-datatype-jsr310:[2.13.5]</include> <!-- {x-include-update;com.fasterxml.jackson.datatype:jackson-datatype-jsr310;external_dependency} -->
+                <include>org.slf4j:slf4j-api:[1.7.36]</include> <!-- {x-include-update;org.slf4j:slf4j-api;external_dependency} -->
+              </includes>
+            </bannedDependencies>
+          </rules>
+        </configuration>
+      </plugin>
+
+      <!-- This plugin scans reports spotbugs in the code -->
+      <plugin>
+        <groupId>com.github.spotbugs</groupId>
+        <artifactId>spotbugs-maven-plugin</artifactId>
+        <version>4.2.2</version> <!-- {x-version-update;com.github.spotbugs:spotbugs-maven-plugin;external_dependency} -->
+        <configuration>
+          <plugins>
+            <plugin>
+              <groupId>com.h3xstream.findsecbugs</groupId>
+              <artifactId>findsecbugs-plugin</artifactId>
+              <version>1.9.0</version> <!-- {x-version-update;com.h3xstream.findsecbugs:findsecbugs-plugin;external_dependency} -->
+            </plugin>
+          </plugins>
+        </configuration>
+      </plugin>
+    </plugins>
+  </build>
+
+  <profiles>
+    <profile>
+      <id>jmh-benchmark</id>
+      <activation>
+        <property>
+          <name>jmh-benchmark</name>
+        </property>
+      </activation>
+
+      <properties>
+        <!-- JMH needs annotation processing on, so disable proc == none -->
+        <compiler.proc></compiler.proc>
+      </properties>
+
+      <build>
+        <plugins>
+          <plugin>
+            <groupId>org.apache.maven.plugins</groupId>
+            <artifactId>maven-compiler-plugin</artifactId>
+            <version>3.10.1</version> <!-- {x-version-update;org.apache.maven.plugins:maven-compiler-plugin;external_dependency} -->
+            <configuration>
+              <!-- Add the JMH annotation processor to the classpath. -->
+              <annotationProcessorPaths>
+                <path>
+                  <groupId>org.openjdk.jmh</groupId>
+                  <artifactId>jmh-generator-annprocess</artifactId>
+                  <version>1.36</version> <!-- {x-version-update;org.openjdk.jmh:jmh-generator-annprocess;external_dependency} -->
+                </path>
+              </annotationProcessorPaths>
+            </configuration>
+          </plugin>
+        </plugins>
+      </build>
+    </profile>
+  </profiles>
+</project>

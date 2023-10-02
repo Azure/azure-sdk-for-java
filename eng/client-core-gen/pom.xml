@@ -79,11 +79,11 @@
 <!--    </dependency>-->
 
     <!-- rewrite-xml dependency only necessary for XML Recipe development -->
-<!--    <dependency>-->
-<!--      <groupId>org.openrewrite</groupId>-->
-<!--      <artifactId>rewrite-xml</artifactId>-->
-<!--      <scope>compile</scope>-->
-<!--    </dependency>-->
+    <dependency>
+      <groupId>org.openrewrite</groupId>
+      <artifactId>rewrite-xml</artifactId>
+      <scope>compile</scope>
+    </dependency>
 
     <!-- lombok is optional, but recommended for authoring recipes -->
 <!--    <dependency>-->

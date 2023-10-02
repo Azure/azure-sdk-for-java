@@ -1,55 +1,250 @@
+name: com.typespec.core.gen
+description: Create a typespec-core library based on the Azure Core package for Java.
 type: specs.openrewrite.org/v1beta/recipe
-name: com.client.core.gen
-displayName: Create a client-core library based on the Azure SDK for Java
 recipeList:
-  - org.openrewrite.java.ChangePackage:
-      oldPackageName: com.azure
-      newPackageName: com.client
-      recursive: true
-
-  # TODO rename classes with Azure in them
-  # TODO rename /META-INF/native-image/ directories that have 'com.azure' and 'azure-*' subdirectories
-
-  - org.openrewrite.text.FindAndReplace:
-      find: com.azure
-      replace: com.client
-      caseSensitive: true
-      filePattern: '**/*.java;**/*.xml;**/*.md;**/*.properties;**/*.json'
-
-  - org.openrewrite.text.FindAndReplace:
-      find: azure-
-      replace: client-
-      caseSensitive: true
-      filePattern: '**/*.java;**/*.xml;**/*.md'
-
-  - org.openrewrite.text.FindAndReplace:
-      find: Azure
-      replace: Client
-      caseSensitive: true
-      filePattern: '**/*.java;**/*.xml;**/*.md'
-
-  - org.openrewrite.RenameFile:
-      fileMatcher: '**/resources/azure-core.properties'
-      fileName: 'client-core.properties'
-
-#  - org.openrewrite.RenameFile:
-#      fileMatcher: '**/META-INF/native-image/com.azure'
-#      fileName: 'com.typespec'
-
-#  - com.typespec.core.gen.UpdateModuleInfoRecipe:
-#      modulePattern: com.azure.**
-#      newModuleName: com.typespec.**
-#  - org.openrewrite.java.ChangeMethodName:
-#      methodPattern: com.azure..* *Azure*(..)
-#      newMethodName: typespec
-#      matchOverrides: null
-#      ignoreDefinition: null
-#  - org.openrewrite.maven.ChangePluginGroupIdAndArtifactId:
-#      oldGroupId: com.azure
-#      oldArtifactId: azure-core
-#      newGroupId: com.typescript
-#      newArtifactId: typespec-core
-#  - com.typespec.core.gen.SetMavenModulesRecipe:
-#      modules:
-#        - typespec-core
-#        - typespec-core-http-netty
+  - org.openrewrite.java.ChangePackage: {
+    oldPackageName: com.azure,
+    newPackageName: com.typespec,
+    recursive: true
+  }
+---
+type: specs.openrewrite.org/v1beta/recipe
+name: com.typespec.core.gen.maven
+displayName: Remove unrelated properties and update maven dependencies
+recipeList:
+  - org.openrewrite.maven.RemoveProperty: {
+    propertyName: jacoco.min.linecoverage
+  }
+  - org.openrewrite.maven.RemoveProperty: {
+    propertyName: jacoco.min.branchcoverage
+  }
+  - org.openrewrite.maven.RemoveProperty: {
+    propertyName: checkstyle.excludes
+  }
+  - org.openrewrite.maven.RemoveProperty: {
+    propertyName: legal
+  }
+  - org.openrewrite.maven.ChangeDependencyGroupIdAndArtifactId: {
+    oldGroupId: com.azure,
+    oldArtifactId: azure-core,
+    newGroupId: com.typespec,
+    newArtifactId: typespec-core,
+    newVersion: 1.0.0
+  }
+  - org.openrewrite.maven.ChangeDependencyGroupIdAndArtifactId: {
+    oldGroupId: com.azure,
+    oldArtifactId: azure-core-http-netty,
+    newGroupId: com.typespec,
+    newArtifactId: typespec-core-http-netty,
+    newVersion: 1.0.0
+  }
+  - org.openrewrite.maven.ChangeDependencyGroupIdAndArtifactId: {
+    oldGroupId: com.azure,
+    oldArtifactId: azure-json,
+    newGroupId: com.typespec,
+    newArtifactId: typespec-json,
+    newVersion: 1.0.0
+  }
+  - org.openrewrite.maven.ChangeDependencyGroupIdAndArtifactId: {
+    oldGroupId: com.azure,
+    oldArtifactId: azure-core-test,
+    newGroupId: com.typespec,
+    newArtifactId: typespec-core-test,
+    newVersion: 1.0.0
+  }
+---
+type: specs.openrewrite.org/v1beta/recipe
+name: com.typespec.core.gen.xml
+displayName: Change/Remove xml entries from core xml
+recipeList:
+  - org.openrewrite.xml.ChangeTagValue : {
+    elementName: groupId,
+    newValue: com.typespec,
+    oldValue: com.azure
+  }
+  - org.openrewrite.xml.ChangeTagValue: {
+    elementName: artifactId,
+    newValue: typespec-core,
+    oldValue: azure-core
+  }
+  - org.openrewrite.xml.ChangeTagValue: {
+    elementName: version,
+    newValue: 1.0.0,
+    oldValue: 1.44.0-beta.1 #Hardcoded remove
+  }
+  - org.openrewrite.xml.ChangeTagValue: {
+    elementName: artifactId,
+    newValue: typespec-core-http-netty,
+    oldValue: azure-core-http-netty
+  }
+  - org.openrewrite.xml.ChangeTagValue: {
+    elementName: version,
+    newValue: 1.0.0,
+    oldValue: 1.14.0-beta.2 #Hardcoded remove
+  }
+  - org.openrewrite.xml.ChangeTagValue: {
+    elementName: artifactId,
+    newValue: typespec-json,
+    oldValue: azure-json
+  }
+  - org.openrewrite.xml.ChangeTagValue: {
+    elementName: version,
+    newValue: 1.0.0,
+    oldValue: 1.2.0-beta.1 #Hardcoded remove
+  }
+  - org.openrewrite.xml.ChangeTagValue: {
+    elementName: artifactId,
+    newValue: typespec-core-test,
+    oldValue: azure-core-test
+  }
+  - org.openrewrite.xml.ChangeTagValue: {
+    elementName: version,
+    newValue: 1.0.0,
+    oldValue: 1.21.0-beta.1 #Hardcoded remove
+  }
+  - org.openrewrite.xml.ChangeTagValue: {
+    elementName: name,
+    newValue: SDK Java Core Library,
+    oldValue: Microsoft Azure Java Core Library
+  }
+  - org.openrewrite.xml.ChangeTagValue: {
+    elementName: name,
+    newValue: Java JSON Library,
+    oldValue: Microsoft Azure Java JSON Library
+  }
+  - org.openrewrite.xml.ChangeTagValue: {
+    elementName: description,
+    newValue: This package contains core types for Java clients.,
+    oldValue: This package contains core types for Azure Java clients.
+  }
+  - org.openrewrite.xml.ChangeTagValue: {
+    elementName: name,
+    newValue: Java Core Test Library,
+    oldValue: Microsoft Azure Java Core Test Library
+  }
+  - org.openrewrite.xml.ChangeTagValue: {
+    elementName: description,
+    newValue: This package contains core test types for Java clients.,
+    oldValue: This package contains core test types for Azure Java clients.
+  }
+  - org.openrewrite.xml.ChangeTagValue: {
+    elementName: url,
+    newValue: https://github.com/Azure/azure-sdk-for-java, # Change this to new value
+    oldValue: https://github.com/Azure/azure-sdk-for-java
+  }
+  # Similarly change scm configuration
+---
+type: specs.openrewrite.org/v1beta/recipe
+name: com.typespec.core.gen.modules.rewrite
+displayName: Remove unrelated modules and rename modules to new names
+recipeList:
+  - org.openrewrite.xml.ChangeTagValue: {
+    elementName: project/modules/module,
+    newValue: typespec-core,
+    oldValue: azure-core
+  }
+  - org.openrewrite.xml.ChangeTagValue: {
+    elementName: project/modules/module,
+    newValue: typespec-core-http-netty,
+    oldValue: azure-core-http-netty
+  }
+  - org.openrewrite.xml.ChangeTagValue: {
+    elementName: project/modules/module,
+    newValue: typespec-json,
+    oldValue: azure-json
+  }
+  - org.openrewrite.xml.ChangeTagValue: {
+    elementName: project/modules/module,
+    newValue: typespec-core-test,
+    oldValue: azure-core-test
+  }
+  - org.openrewrite.xml.ChangeTagValue: {
+    elementName: project/modules/module,
+    newValue: sample-typespec-core,
+    oldValue: sample-core
+  }
+  - org.openrewrite.xml.ChangeTagValue: {
+    elementName: artifactId,
+    newValue: core-service,
+    oldValue: azure-core-service
+  }
+  - org.openrewrite.xml.ChangeTagValue: {
+    elementName: groupId,
+    newValue: com.typespec,
+    oldValue: com.azure
+  }
+# issues with remove tag Xpath usage of square brackets.
+#   //*[text() = 'qwerty' and not(text()[2])]
+#   The above selects every element in the document that has only one text-node child and its value is: 'qwerty'.
+#  - org.openrewrite.xml.RemoveXmlTag: {
+#    xPath: "//*[text() = 'azure-core-amqp' and not(text()[2])]",
+#    fileMatcher: '**/pom.xml'
+#  }
+#  - org.openrewrite.xml.RemoveXmlTag: {
+#    xPath: //*[text() = 'azure-core-amqp-experimental' and not(text()[2])],
+#    fileMatcher: '**/pom.xml'
+#  }
+#  - org.openrewrite.xml.RemoveXmlTag: {
+#    xPath: //*[text() = 'azure-core-experimental' and not(text()[2])],
+#    fileMatcher: '**/pom.xml'
+#  }
+#  - org.openrewrite.xml.RemoveXmlTag: {
+#    xPath: //*[text() = 'azure-core-http-jdk-httpclien' and not(text()[2])]t,
+#    fileMatcher: '**/pom.xml'
+#  }
+#  - org.openrewrite.xml.RemoveXmlTag: {
+#    xPath: //*[text() = 'azure-core-http-okhttp' and not(text()[2])],
+#    fileMatcher: '**/pom.xml'
+#  }
+#  - org.openrewrite.xml.RemoveXmlTag: {
+#    xPath: //*[text() = 'qwerty' and not(text()[2])],
+#    fileMatcher: '**/pom.xml'
+#  }
+#  - org.openrewrite.xml.RemoveXmlTag: {
+#    xPath: //*[text() = 'azure-core-management' and not(text()[2])],
+#    fileMatcher: '**/pom.xml'
+#  }
+#  - org.openrewrite.xml.RemoveXmlTag: {
+#    xPath: //*[text() = 'azure-core-metrics-opentelemetry' and not(text()[2])],
+#    fileMatcher: '**/pom.xml'
+#  }
+#  - org.openrewrite.xml.RemoveXmlTag: {
+#    xPath: //*[text() = 'azure-core-perf' and not(text()[2])],
+#    fileMatcher: '**/pom.xml'
+#  }
+#  - org.openrewrite.xml.RemoveXmlTag: {
+#    xPath: //*[text() = 'azure-core-serializer-avro-apache' and not(text()[2])],
+#    fileMatcher: '**/pom.xml'
+#  }
+#  - org.openrewrite.xml.RemoveXmlTag: {
+#    xPath: //*[text() = 'azure-core-serializer-json-gson' and not(text()[2])],
+#    fileMatcher: '**/pom.xml'
+#  }
+#  - org.openrewrite.xml.RemoveXmlTag: {
+#    xPath: //*[text() = 'azure-core-serializer-json-jackson' and not(text()[2])],
+#    fileMatcher: '**/pom.xml'
+#  }
+#  - org.openrewrite.xml.RemoveXmlTag: {
+#    xPath: //*[text() = 'azure-core-tracing-opentelemetry' and not(text()[2])],
+#    fileMatcher: '**/pom.xml'
+#  }
+#  - org.openrewrite.xml.RemoveXmlTag: {
+#    xPath: //*[text() = 'azure-core-tracing-opentelemetry-samples' and not(text()[2])],
+#    fileMatcher: '**/pom.xml'
+#  }
+#  - org.openrewrite.xml.RemoveXmlTag: {
+#    xPath: //*[text() = 'azure-core-version-tests' and not(text()[2])],
+#    fileMatcher: '**/pom.xml'
+#  }
+#  - org.openrewrite.xml.RemoveXmlTag: {
+#    xPath: //*[text() = 'azure-json-gson' and not(text()[2])],
+#    fileMatcher: '**/pom.xml'
+#  }
+#  - org.openrewrite.xml.RemoveXmlTag: {
+#    xPath: //*[text() = 'azure-json-reflect' and not(text()[2])],
+#    fileMatcher: '**/pom.xml'
+#  }
+#  - org.openrewrite.xml.RemoveXmlTag: {
+#    xPath: //*[text() = 'azure-xml' and not(text()[2])],
+#    fileMatcher: '**/pom.xml'
+#  }

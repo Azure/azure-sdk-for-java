@@ -1,0 +1,171 @@
+<!-- Copyright (c) Microsoft Corporation. All rights reserved.
+     Licensed under the MIT License. -->
+<project xmlns="http://maven.apache.org/POM/4.0.0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+         xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd">
+  <modelVersion>4.0.0</modelVersion>
+  <parent>
+    <groupId>com.azure</groupId>
+    <artifactId>azure-client-sdk-parent</artifactId>
+    <version>1.7.0</version> <!-- {x-version-update;com.azure:azure-client-sdk-parent;current} -->
+    <relativePath>../../parents/azure-client-sdk-parent</relativePath>
+  </parent>
+
+  <groupId>com.typespec</groupId>
+  <artifactId>typespec-core-test</artifactId>
+  <packaging>jar</packaging>
+  <version>1.0.0</version> <!-- {x-version-update;com.azure:azure-core-test;current} -->
+
+  <name>Java Core Test Library</name>
+  <description>This package contains core test types for Java clients.</description>
+  <url>https://github.com/Azure/azure-sdk-for-java</url>
+
+  <distributionManagement>
+    <site>
+      <id>azure-java-build-docs</id>
+      <url>${site.url}/site/${project.artifactId}</url>
+    </site>
+  </distributionManagement>
+
+  <scm>
+    <url>https://github.com/Azure/azure-sdk-for-java</url>
+    <connection>scm:git:https://github.com/Azure/azure-sdk-for-java.git</connection>
+    <developerConnection>scm:git:https://github.com/Azure/azure-sdk-for-java.git</developerConnection>
+  </scm>
+
+  <properties>
+    <javaModulesSurefireArgLine>
+      --add-exports org.junit.platform.commons/org.junit.platform.commons.util=ALL-UNNAMED
+      --add-exports org.junit.platform.commons/org.junit.platform.commons.logging=ALL-UNNAMED
+
+      --add-reads com.azure.core.test=ALL-UNNAMED
+      --add-opens com.azure.core.test/com.azure.core.test.http=org.junit.platform.commons
+      --add-opens com.azure.core.test/com.azure.core.test.models=ALL-UNNAMED
+      --add-opens com.azure.core.test/com.azure.core.test.policy=org.junit.platform.commons
+      --add-opens com.azure.core.test/com.azure.core.test.implementation=org.junit.platform.commons
+    </javaModulesSurefireArgLine>
+
+    <!-- This is not a module we want/expect external customers to consume. Skip breaking API checks. -->
+    <revapi.skip>true</revapi.skip>
+
+    <!-- Enables fail on deprecated API usage. -->
+    <compiler.failondeprecatedstatus/>
+
+     <javadoc.excludePackageNames>com.azure.json,com.azure.core.implementation*,com.azure.core.util,com.azure.core.util*,
+      com.azure.core.models,com.azure.core.http,com.azure.core.http.policy,com.azure.core.http.rest,com.azure.core.exception,com.azure.core.cryptography,
+      com.azure.core.credential,com.azure.core.client.traits,com.azure.core.annotation</javadoc.excludePackageNames>
+    <surefireXmx>4g</surefireXmx>
+
+    <!-- skipping test coverage requirements for azure-core-test as this is a utility library for testing -->
+    <jacoco.skip>true</jacoco.skip>
+
+  </properties>
+
+  <dependencies>
+    <dependency>
+      <groupId>com.typespec</groupId>
+      <artifactId>typespec-core</artifactId>
+      <version>1.0.0</version> <!-- {x-version-update;com.azure:azure-core;current} -->
+    </dependency>
+
+    <dependency>
+      <groupId>com.fasterxml.jackson.dataformat</groupId>
+      <artifactId>jackson-dataformat-xml</artifactId>
+      <version>2.13.5</version> <!-- {x-version-update;com.fasterxml.jackson.dataformat:jackson-dataformat-xml;external_dependency} -->
+    </dependency>
+
+    <dependency>
+      <groupId>io.projectreactor</groupId>
+      <artifactId>reactor-test</artifactId>
+      <version>3.4.31</version> <!-- {x-version-update;io.projectreactor:reactor-test;external_dependency} -->
+    </dependency>
+
+    <dependency>
+      <groupId>org.junit.jupiter</groupId>
+      <artifactId>junit-jupiter-api</artifactId>
+      <version>5.9.3</version> <!-- {x-version-update;org.junit.jupiter:junit-jupiter-api;external_dependency} -->
+    </dependency>
+
+    <dependency>
+      <groupId>org.junit.jupiter</groupId>
+      <artifactId>junit-jupiter-params</artifactId>
+      <version>5.9.3</version> <!-- {x-version-update;org.junit.jupiter:junit-jupiter-params;external_dependency} -->
+    </dependency>
+
+    <dependency>
+      <groupId>org.junit.jupiter</groupId>
+      <artifactId>junit-jupiter-engine</artifactId>
+      <version>5.9.3</version> <!-- {x-version-update;org.junit.jupiter:junit-jupiter-engine;external_dependency} -->
+      <scope>test</scope>
+    </dependency>
+    <dependency>
+      <groupId>org.mockito</groupId>
+      <artifactId>mockito-core</artifactId>
+      <version>4.11.0</version> <!-- {x-version-update;org.mockito:mockito-core;external_dependency} -->
+      <scope>test</scope>
+    </dependency>
+    <dependency>
+      <groupId>io.projectreactor.netty</groupId>
+      <artifactId>reactor-netty-http</artifactId>
+      <version>1.0.34</version>  <!-- {x-version-update;io.projectreactor.netty:reactor-netty-http;external_dependency} -->
+    </dependency>
+    <dependency>
+      <groupId>org.apache.commons</groupId>
+      <artifactId>commons-compress</artifactId>
+      <version>1.22</version>  <!-- {x-version-update;org.apache.commons:commons-compress;external_dependency} -->
+    </dependency>
+
+    <dependency>
+      <groupId>org.eclipse.jetty</groupId>
+      <artifactId>jetty-server</artifactId>
+      <version>9.4.51.v20230217</version> <!-- {x-version-update;org.eclipse.jetty:jetty-server;external_dependency} -->
+    </dependency>
+    <dependency>
+      <groupId>org.eclipse.jetty</groupId>
+      <artifactId>jetty-servlet</artifactId>
+      <version>9.4.51.v20230217</version> <!-- {x-version-update;org.eclipse.jetty:jetty-servlet;external_dependency} -->
+    </dependency>
+  </dependencies>
+
+  <build>
+    <plugins>
+      <!-- RestProxyTests is inherited by tests in azure-core-http-netty -->
+      <plugin>
+        <groupId>org.apache.maven.plugins</groupId>
+        <artifactId>maven-jar-plugin</artifactId>
+        <version>3.2.2</version> <!-- {x-version-update;org.apache.maven.plugins:maven-jar-plugin;external_dependency} -->
+        <executions>
+          <execution>
+            <id>test-jar</id>
+            <phase>test-compile</phase>
+            <goals>
+              <goal>test-jar</goal>
+            </goals>
+          </execution>
+        </executions>
+      </plugin>
+
+      <plugin>
+        <groupId>org.apache.maven.plugins</groupId>
+        <artifactId>maven-enforcer-plugin</artifactId>
+        <version>3.0.0-M3</version> <!-- {x-version-update;org.apache.maven.plugins:maven-enforcer-plugin;external_dependency} -->
+        <configuration>
+          <rules>
+            <bannedDependencies>
+              <includes>
+                <include>io.projectreactor:reactor-test:[3.4.31]</include> <!-- {x-include-update;io.projectreactor:reactor-test;external_dependency} -->
+                <include>com.fasterxml.jackson.dataformat:jackson-dataformat-xml:[2.13.5]</include> <!-- {x-include-update;com.fasterxml.jackson.dataformat:jackson-dataformat-xml;external_dependency} -->
+                <include>io.projectreactor.netty:reactor-netty-http:[1.0.34]</include> <!-- {x-include-update;io.projectreactor.netty:reactor-netty-http;external_dependency} -->
+                <!-- special allowance for azure-core-test as it is not a shipping library: -->
+                <include>org.junit.jupiter:junit-jupiter-api:[5.9.3]</include> <!-- {x-include-update;org.junit.jupiter:junit-jupiter-api;external_dependency} -->
+                <include>org.junit.jupiter:junit-jupiter-params:[5.9.3]</include> <!-- {x-include-update;org.junit.jupiter:junit-jupiter-params;external_dependency} -->
+                <include>org.apache.commons:commons-compress:[1.22]</include> <!-- {x-include-update;org.apache.commons:commons-compress;external_dependency} -->
+                <include>org.eclipse.jetty:jetty-server:[9.4.51.v20230217]</include> <!-- {x-include-update;org.eclipse.jetty:jetty-server;external_dependency} -->
+                <include>org.eclipse.jetty:jetty-servlet:[9.4.51.v20230217]</include> <!-- {x-include-update;org.eclipse.jetty:jetty-servlet;external_dependency} -->
+              </includes>
+            </bannedDependencies>
+          </rules>
+        </configuration>
+      </plugin>
+    </plugins>
+  </build>
+</project>
