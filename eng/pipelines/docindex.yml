@@ -54,8 +54,7 @@ jobs:
         inputs:
           pwsh: true
           filePath: eng/common/scripts/Service-Level-Readme-Automation.ps1
-          arguments: >-
-            -DocRepoLocation $(DocRepoLocation)
+          arguments: -DocRepoLocation $(DocRepoLocation)
         displayName: Generate Service Level Readme for main branch
         condition: and(succeeded(), or(eq(variables['Build.Reason'], 'Schedule'), eq(variables['Force.MainUpdate'], 'true')))
 
