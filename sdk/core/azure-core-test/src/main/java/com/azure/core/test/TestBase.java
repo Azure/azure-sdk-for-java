@@ -30,6 +30,7 @@ import java.nio.file.Path;
 import java.nio.file.Paths;
 import java.time.Duration;
 import java.util.ArrayList;
+import java.util.Iterator;
 import java.util.List;
 import java.util.Locale;
 import java.util.ServiceLoader;
@@ -41,6 +42,8 @@ import static com.azure.core.test.utils.TestUtils.toURI;
  * Base class for running live and playback tests using {@link InterceptorManager}.
  */
 public abstract class TestBase implements BeforeEachCallback {
+    private static final ClientLogger LOGGER = new ClientLogger(TestBase.class);
+
     // Environment variable name used to determine the TestMode.
     private static final String AZURE_TEST_HTTP_CLIENTS = "AZURE_TEST_HTTP_CLIENTS";
 
@@ -258,16 +261,29 @@ public abstract class TestBase implements BeforeEachCallback {
         }
 
         List<HttpClient> httpClientsToTest = new ArrayList<>();
-        for (HttpClientProvider httpClientProvider : ServiceLoader.load(HttpClientProvider.class)) {
-            if (includeHttpClientOrHttpClientProvider(httpClientProvider.getClass().getSimpleName()
-                .toLowerCase(Locale.ROOT))) {
-                // JDK HttpClient was introduced since java 11
-                if ("JdkHttpClientProvider".equalsIgnoreCase(httpClientProvider.getClass().getSimpleName())
-                    && !isJavaVersionMinimumRequired(11)) {
-                    continue;
-                }
-                httpClientsToTest.add(httpClientProvider.createInstance());
+        ServiceLoader<HttpClientProvider> httpClientLoader = ServiceLoader.load(HttpClientProvider.class);
+        Iterator<HttpClientProvider> iterator = httpClientLoader.iterator();
+        while (true) {
+
+            if (!iterator.hasNext()) {
+                break;
             }
+
+            try {
+                HttpClientProvider httpClientProvider = iterator.next();
+                if (includeHttpClientOrHttpClientProvider(httpClientProvider.getClass().getSimpleName()
+                    .toLowerCase(Locale.ROOT))) {
+                    // JDK HttpClient was introduced since java 11
+                    if ("JdkHttpClientProvider".equalsIgnoreCase(httpClientProvider.getClass().getSimpleName())
+                        && !isJavaVersionMinimumRequired(11)) {
+                        continue;
+                    }
+                    httpClientsToTest.add(httpClientProvider.createInstance());
+                }
+            } catch (UnsupportedClassVersionError exception) {
+                throw LOGGER.logExceptionAsError(new RuntimeException(exception));
+            }
+
         }
 
         return httpClientsToTest.stream();
