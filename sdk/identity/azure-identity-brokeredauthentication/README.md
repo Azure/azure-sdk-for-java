@@ -71,6 +71,28 @@ InteractiveBrowserCredential cred = new InteractiveBrowserCredentialBuilder()
     .build();
 ```
 
+#### Obtaining a window handle
+
+##### JavaFX
+
+This code will obtain the window handle for a JavaFX application for use with `InteractiveBrowserCredentialBuilder`
+
+```java
+
+import com.sun.jna.Pointer;
+import com.sun.jna.platform.win32.User32;
+import com.sun.jna.platform.win32.WinDef;
+
+public static long getWindowHandle(Stage stage) {
+    try {
+        WinDef.HWND hwnd = User32.INSTANCE.FindWindow(null, stage.getTitle());
+        return Pointer.nativeValue(hwnd.getPointer());
+    } catch (Exception e) {
+        e.printStackTrace();
+        return 0;
+    }
+}
+```
 <!-- LINKS -->
 [azure_core_library]: https://github.com/Azure/azure-sdk-for-java/tree/main/sdk/core
 [azure_sub]: https://azure.microsoft.com/free/
