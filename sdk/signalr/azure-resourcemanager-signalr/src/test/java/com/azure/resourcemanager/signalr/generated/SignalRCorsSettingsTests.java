@@ -14,17 +14,15 @@ public final class SignalRCorsSettingsTests {
     public void testDeserialize() throws Exception {
         SignalRCorsSettings model =
             BinaryData
-                .fromString("{\"allowedOrigins\":[\"gzva\",\"apj\",\"zhpvgqzcjrvxd\",\"zlmwlxkvugfhz\"]}")
+                .fromString("{\"allowedOrigins\":[\"ggjioolvr\",\"x\",\"v\"]}")
                 .toObject(SignalRCorsSettings.class);
-        Assertions.assertEquals("gzva", model.allowedOrigins().get(0));
+        Assertions.assertEquals("ggjioolvr", model.allowedOrigins().get(0));
     }
 
     @org.junit.jupiter.api.Test
     public void testSerialize() throws Exception {
-        SignalRCorsSettings model =
-            new SignalRCorsSettings()
-                .withAllowedOrigins(Arrays.asList("gzva", "apj", "zhpvgqzcjrvxd", "zlmwlxkvugfhz"));
+        SignalRCorsSettings model = new SignalRCorsSettings().withAllowedOrigins(Arrays.asList("ggjioolvr", "x", "v"));
         model = BinaryData.fromObject(model).toObject(SignalRCorsSettings.class);
-        Assertions.assertEquals("gzva", model.allowedOrigins().get(0));
+        Assertions.assertEquals("ggjioolvr", model.allowedOrigins().get(0));
     }
 }

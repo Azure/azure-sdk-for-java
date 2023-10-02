@@ -7,6 +7,7 @@ import com.azure.cosmos.ConsistencyLevel;
 import com.azure.cosmos.DirectConnectionConfig;
 import com.azure.cosmos.implementation.AsyncDocumentClient.Builder;
 import com.azure.cosmos.implementation.ImplementationBridgeHelpers;
+import com.azure.cosmos.implementation.TestUtils;
 import com.azure.cosmos.implementation.clienttelemetry.ClientTelemetry;
 import com.azure.cosmos.models.CosmosClientTelemetryConfig;
 import com.azure.cosmos.implementation.Configs;
@@ -230,7 +231,10 @@ public class DCDocumentCrudTest extends TestSuiteBase {
         ModelBridgeInternal.setQueryRequestOptionsMaxItemCount(options, 100);
 
         Flux<FeedResponse<Document>> results = client.queryDocuments(
-            getCollectionLink(), "SELECT * FROM r", options, Document.class);
+            getCollectionLink(),
+            "SELECT * FROM r",
+            TestUtils.createDummyQueryFeedOperationState(ResourceType.Document, OperationType.Query, options, client),
+            Document.class);
 
         FeedResponseListValidator<Document> validator = new FeedResponseListValidator.Builder<Document>()
                 .totalSize(documentList.size())

@@ -26,7 +26,9 @@ import com.azure.core.util.logging.ClientLogger;
 import io.netty.buffer.ByteBuf;
 import io.netty.buffer.Unpooled;
 import io.netty.channel.EventLoopGroup;
+import io.netty.handler.codec.http.HttpHeaders;
 import io.netty.handler.codec.http.HttpMethod;
+import io.netty.handler.proxy.HttpProxyHandler;
 import io.netty.handler.proxy.ProxyConnectException;
 import io.netty.handler.stream.ChunkedNioFile;
 import io.netty.handler.stream.ChunkedStream;
@@ -40,7 +42,8 @@ import reactor.netty.NettyOutbound;
 import reactor.netty.NettyPipeline;
 import reactor.netty.http.client.HttpClientRequest;
 import reactor.netty.http.client.HttpClientResponse;
-import reactor.util.retry.Retry;
+import reactor.util.function.Tuple2;
+import reactor.util.function.Tuples;
 
 import javax.net.ssl.SSLException;
 import java.io.IOException;
@@ -114,7 +117,15 @@ class NettyAsyncHttpClient implements HttpClient {
             .orElse(null);
         ProgressReporter progressReporter = Contexts.with(context).getHttpRequestProgressReporter();
 
-        Flux<HttpResponse> nettyRequest = nettyClient.request(toReactorNettyHttpMethod(request.getHttpMethod()))
+        return attemptAsync(request, eagerlyReadResponse, ignoreResponseBody, headersEagerlyConverted, responseTimeout,
+            progressReporter, false);
+    }
+
+    private Mono<HttpResponse> attemptAsync(HttpRequest request, boolean eagerlyReadResponse,
+        boolean ignoreResponseBody, boolean headersEagerlyConverted, Long responseTimeout,
+        ProgressReporter progressReporter, boolean proxyRetry) {
+        Flux<Tuple2<HttpResponse, HttpHeaders>> nettyRequest = nettyClient
+            .request(toReactorNettyHttpMethod(request.getHttpMethod()))
             .uri(request.getUrl().toString())
             .send(bodySendDelegate(request))
             .responseConnection(responseDelegate(request, disableBufferCopy, eagerlyReadResponse, ignoreResponseBody,
@@ -126,24 +137,36 @@ class NettyAsyncHttpClient implements HttpClient {
         }
 
         return nettyRequest.single()
-            .flatMap(response -> {
+            .flatMap(responseAndHeaders -> {
+                HttpResponse response = responseAndHeaders.getT1();
                 if (addProxyHandler && response.getStatusCode() == 407) {
-                    return Mono.error(new ProxyConnectException("First attempt to connect to proxy failed."));
+                    if (proxyRetry) {
+                        // Exhausted retry attempt return an error.
+                        return Mono.error(new HttpProxyHandler.HttpProxyConnectException(
+                            "Failed to connect to proxy. Status: 407", responseAndHeaders.getT2()));
+                    } else {
+                        // Retry the request.
+                        return attemptAsync(request, eagerlyReadResponse, ignoreResponseBody, headersEagerlyConverted,
+                            responseTimeout, progressReporter, true);
+                    }
                 } else {
                     return Mono.just(response);
                 }
             })
-            .onErrorMap(throwable -> {
-                // The exception was an SSLException that was caused by a failure to connect to a proxy.
-                // Extract the inner ProxyConnectException and propagate that instead.
-                if (throwable instanceof SSLException && throwable.getCause() instanceof ProxyConnectException) {
-                    return throwable.getCause();
-                }
+            .onErrorResume(throwable -> shouldRetryProxyError(proxyRetry, throwable)
+                ? attemptAsync(request, eagerlyReadResponse, ignoreResponseBody, headersEagerlyConverted,
+                        responseTimeout, progressReporter, true)
+                : Mono.error(throwable));
+    }
 
-                return throwable;
-            })
-            .retryWhen(Retry.max(1).filter(throwable -> throwable instanceof ProxyConnectException)
-                .onRetryExhaustedThrow((ignoredSpec, signal) -> signal.failure()));
+    private static boolean shouldRetryProxyError(boolean proxyRetry, Throwable throwable) {
+        // Only retry if this is the first attempt to connect to a proxy and the exception was caused by a failure to
+        // connect to the proxy.
+        // Sometimes connecting to the proxy may return an SSLException that wraps the ProxyConnectException, this
+        // generally happens if the proxy is using SSL.
+        return !proxyRetry
+               && (throwable instanceof ProxyConnectException
+                   || (throwable instanceof SSLException && throwable.getCause() instanceof ProxyConnectException));
     }
 
     @Override
@@ -274,7 +297,7 @@ class NettyAsyncHttpClient implements HttpClient {
      * HttpHeaders.
      * @return a delegate upon invocation setup Rest response object
      */
-    private static BiFunction<HttpClientResponse, Connection, Mono<HttpResponse>> responseDelegate(
+    private static BiFunction<HttpClientResponse, Connection, Mono<Tuple2<HttpResponse, HttpHeaders>>> responseDelegate(
         HttpRequest restRequest, boolean disableBufferCopy, boolean eagerlyReadResponse, boolean ignoreResponseBody,
         boolean headersEagerlyConverted) {
         return (reactorNettyResponse, reactorNettyConnection) -> {
@@ -303,11 +326,11 @@ class NettyAsyncHttpClient implements HttpClient {
                 return reactorNettyConnection.inbound().receive().aggregate().asByteArray()
                     .doFinally(ignored -> closeConnection(reactorNettyConnection))
                     .switchIfEmpty(Mono.just(EMPTY_BYTES))
-                    .map(bytes -> new NettyAsyncHttpBufferedResponse(reactorNettyResponse, restRequest, bytes,
-                        headersEagerlyConverted));
+                    .map(bytes -> Tuples.of(new NettyAsyncHttpBufferedResponse(reactorNettyResponse, restRequest, bytes,
+                        headersEagerlyConverted), reactorNettyResponse.responseHeaders()));
             } else {
-                return Mono.just(new NettyAsyncHttpResponse(reactorNettyResponse, reactorNettyConnection, restRequest,
-                    disableBufferCopy, headersEagerlyConverted));
+                return Mono.just(Tuples.of(new NettyAsyncHttpResponse(reactorNettyResponse, reactorNettyConnection,
+                    restRequest, disableBufferCopy, headersEagerlyConverted), reactorNettyResponse.responseHeaders()));
             }
         };
     }
@@ -323,8 +346,8 @@ class NettyAsyncHttpClient implements HttpClient {
             case TRACE: return HttpMethod.TRACE;
             case CONNECT: return HttpMethod.CONNECT;
             case OPTIONS: return HttpMethod.OPTIONS;
-            default: throw LOGGER.logExceptionAsError(new IllegalStateException("Unknown HttpMethod '"
-                + azureHttpMethod + "'.")); // Should never happen
+            default: throw LOGGER.logExceptionAsError(
+                new IllegalStateException("Unknown HttpMethod '" + azureHttpMethod + "'.")); // Should never happen
         }
     }
 }

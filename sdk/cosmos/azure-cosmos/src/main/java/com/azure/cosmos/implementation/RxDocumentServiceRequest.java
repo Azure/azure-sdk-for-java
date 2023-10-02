@@ -85,13 +85,7 @@ public class RxDocumentServiceRequest implements Cloneable {
     private volatile boolean nonIdempotentWriteRetriesEnabled = false;
 
     public boolean isReadOnlyRequest() {
-        return this.operationType == OperationType.Read
-                || this.operationType == OperationType.ReadFeed
-                || this.operationType == OperationType.Head
-                || this.operationType == OperationType.HeadFeed
-                || this.operationType == OperationType.Query
-                || this.operationType == OperationType.SqlQuery
-                || this.operationType == OperationType.QueryPlan;
+        return this.operationType.isReadOnlyOperation();
     }
 
     public void setResourceAddress(String newAddress) {
@@ -1062,6 +1056,7 @@ public class RxDocumentServiceRequest implements Cloneable {
         rxDocumentServiceRequest.requestContext = this.requestContext.clone();
         rxDocumentServiceRequest.feedRange = this.feedRange;
         rxDocumentServiceRequest.effectiveRange = this.effectiveRange;
+        rxDocumentServiceRequest.isFeed = this.isFeed;
         return rxDocumentServiceRequest;
     }
 

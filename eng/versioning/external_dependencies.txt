@@ -24,7 +24,7 @@ com.github.spotbugs:spotbugs-annotations;4.2.2
 com.github.spotbugs:spotbugs-maven-plugin;4.2.2
 com.google.code.gson:gson;2.10
 com.google.guava:guava;32.0.1-jre
-com.h2database:h2;2.1.214
+com.h2database:h2;2.2.220
 com.h3xstream.findsecbugs:findsecbugs-plugin;1.9.0
 com.microsoft.azure:applicationinsights-core;3.4.1
 com.microsoft.azure:azure-annotations;1.7.0
@@ -143,7 +143,7 @@ org.springframework.data:spring-data-redis;2.7.14
 org.springframework.experimental:spring-aot;0.11.4
 org.springframework.experimental:spring-aot-maven-plugin;0.11.4
 org.springframework.integration:spring-integration-core;5.5.18
-org.springframework.kafka:spring-kafka;2.8.11
+org.springframework.kafka:spring-kafka;2.9.11
 org.springframework.security:spring-security-config;5.7.10
 org.springframework.security:spring-security-core;5.7.10
 org.springframework.security:spring-security-oauth2-client;5.7.10
@@ -200,7 +200,6 @@ io.opentelemetry:opentelemetry-sdk;1.28.0
 io.opentelemetry:opentelemetry-sdk-metrics;1.28.0
 io.opentelemetry:opentelemetry-sdk-logs;1.28.0
 io.opentelemetry:opentelemetry-exporter-logging;1.28.0
-io.opentelemetry:opentelemetry-exporter-jaeger;1.28.0
 io.opentelemetry:opentelemetry-exporter-otlp;1.28.0
 io.opentelemetry:opentelemetry-api-logs;1.26.0-alpha
 io.opentelemetry:opentelemetry-sdk-testing;1.28.0

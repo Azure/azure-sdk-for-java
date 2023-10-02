@@ -58,11 +58,14 @@ import java.util.function.Consumer;
  *     System.err.println&#40;&quot;Error occurred while receiving message: &quot; + errorContext.getException&#40;&#41;&#41;;
  * &#125;;
  *
- * &#47;&#47; create the processor client via the builder and its sub-builder
+ * TokenCredential tokenCredential = new DefaultAzureCredentialBuilder&#40;&#41;.build&#40;&#41;;
+ *
+ * &#47;&#47; Create the processor client via the builder and its sub-builder
+ * &#47;&#47; 'fullyQualifiedNamespace' will look similar to &quot;&#123;your-namespace&#125;.servicebus.windows.net&quot;
  * ServiceBusProcessorClient processorClient = new ServiceBusClientBuilder&#40;&#41;
- *     .connectionString&#40;&quot;&lt;&lt; CONNECTION STRING FOR THE SERVICE BUS NAMESPACE &gt;&gt;&quot;&#41;
+ *     .credential&#40;fullyQualifiedNamespace, tokenCredential&#41;
  *     .processor&#40;&#41;
- *     .queueName&#40;&quot;&lt;&lt; QUEUE NAME &gt;&gt;&quot;&#41;
+ *     .queueName&#40;queueName&#41;
  *     .receiveMode&#40;ServiceBusReceiveMode.PEEK_LOCK&#41;
  *     .disableAutoComplete&#40;&#41;  &#47;&#47; Make sure to explicitly opt in to manual settlement &#40;e.g. complete, abandon&#41;.
  *     .processMessage&#40;processMessage&#41;
@@ -70,8 +73,12 @@ import java.util.function.Consumer;
  *     .disableAutoComplete&#40;&#41;
  *     .buildProcessorClient&#40;&#41;;
  *
- * &#47;&#47; Starts the processor in the background and returns immediately
+ * &#47;&#47; Starts the processor in the background. Control returns immediately.
  * processorClient.start&#40;&#41;;
+ *
+ * &#47;&#47; Stop processor and dispose when done processing messages.
+ * processorClient.stop&#40;&#41;;
+ * processorClient.close&#40;&#41;;
  * </pre>
  * <!-- end com.azure.messaging.servicebus.servicebusprocessorclient#receive-mode-peek-lock-instantiation -->
  * <p><strong>Sample code to instantiate a processor client and receive in ReceiveAndDelete mode</strong></p>
@@ -88,19 +95,27 @@ import java.util.function.Consumer;
  *     System.err.println&#40;&quot;Error occurred while receiving message: &quot; + errorContext.getException&#40;&#41;&#41;;
  * &#125;;
  *
- * &#47;&#47; create the processor client via the builder and its sub-builder
+ * TokenCredential tokenCredential = new DefaultAzureCredentialBuilder&#40;&#41;.build&#40;&#41;;
+ *
+ * &#47;&#47; Create the processor client via the builder and its sub-builder
+ * &#47;&#47; 'fullyQualifiedNamespace' will look similar to &quot;&#123;your-namespace&#125;.servicebus.windows.net&quot;
  * ServiceBusProcessorClient processorClient = new ServiceBusClientBuilder&#40;&#41;
- *     .connectionString&#40;&quot;&lt;&lt; CONNECTION STRING FOR THE SERVICE BUS NAMESPACE &gt;&gt;&quot;&#41;
+ *     .credential&#40;fullyQualifiedNamespace, tokenCredential&#41;
  *     .processor&#40;&#41;
- *     .queueName&#40;&quot;&lt;&lt; QUEUE NAME &gt;&gt;&quot;&#41;
+ *     .queueName&#40;queueName&#41;
  *     .receiveMode&#40;ServiceBusReceiveMode.RECEIVE_AND_DELETE&#41;
  *     .processMessage&#40;processMessage&#41;
  *     .processError&#40;processError&#41;
  *     .disableAutoComplete&#40;&#41;
  *     .buildProcessorClient&#40;&#41;;
  *
- * &#47;&#47; Starts the processor in the background and returns immediately
+ *
+ * &#47;&#47; Starts the processor in the background. Control returns immediately.
  * processorClient.start&#40;&#41;;
+ *
+ * &#47;&#47; Stop processor and dispose when done processing messages.
+ * processorClient.stop&#40;&#41;;
+ * processorClient.close&#40;&#41;;
  * </pre>
  * <!-- end com.azure.messaging.servicebus.servicebusprocessorclient#receive-mode-receive-and-delete-instantiation -->
  * <p><strong>Create and run a session-enabled processor</strong></p>
@@ -125,19 +140,26 @@ import java.util.function.Consumer;
  *     &#125;
  * &#125;;
  *
- * &#47;&#47; Retrieve 'connectionString&#47;queueName' from your configuration.
  *
+ * TokenCredential tokenCredential = new DefaultAzureCredentialBuilder&#40;&#41;.build&#40;&#41;;
+ *
+ * &#47;&#47; Create the processor client via the builder and its sub-builder
+ * &#47;&#47; 'fullyQualifiedNamespace' will look similar to &quot;&#123;your-namespace&#125;.servicebus.windows.net&quot;
  * ServiceBusProcessorClient sessionProcessor = new ServiceBusClientBuilder&#40;&#41;
- *     .connectionString&#40;connectionString&#41;
+ *     .credential&#40;fullyQualifiedNamespace, tokenCredential&#41;
  *     .sessionProcessor&#40;&#41;
- *     .queueName&#40;queueName&#41;
+ *     .queueName&#40;sessionEnabledQueueName&#41;
  *     .maxConcurrentSessions&#40;2&#41;
  *     .processMessage&#40;onMessage&#41;
  *     .processError&#40;onError&#41;
  *     .buildProcessorClient&#40;&#41;;
  *
- * &#47;&#47; Start the processor in the background
+ * &#47;&#47; Starts the processor in the background. Control returns immediately.
  * sessionProcessor.start&#40;&#41;;
+ *
+ * &#47;&#47; Stop processor and dispose when done processing messages.
+ * sessionProcessor.stop&#40;&#41;;
+ * sessionProcessor.close&#40;&#41;;
  * </pre>
  * <!-- end com.azure.messaging.servicebus.servicebusprocessorclient#session-instantiation -->
  *
@@ -374,7 +396,7 @@ public final class ServiceBusProcessorClient implements AutoCloseable {
                 @SuppressWarnings("try")
                 @Override
                 public void onNext(ServiceBusMessageContext serviceBusMessageContext) {
-                    Context span = serviceBusMessageContext.getMessage().getContext();
+                    Context span = serviceBusMessageContext.getMessage() != null ? serviceBusMessageContext.getMessage().getContext() : Context.NONE;
                     Exception exception = null;
                     AutoCloseable scope = tracer.makeSpanCurrent(span);
                     try {

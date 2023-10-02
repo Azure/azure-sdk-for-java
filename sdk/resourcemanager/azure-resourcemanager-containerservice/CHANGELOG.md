@@ -1,6 +1,6 @@
 # Release History
 
-## 2.31.0-beta.1 (Unreleased)
+## 2.32.0-beta.1 (Unreleased)
 
 ### Features Added
 
@@ -9,6 +9,18 @@
 ### Bugs Fixed
 
 ### Other Changes
+
+## 2.31.0 (2023-09-28)
+
+### Features Added
+
+- Supported specifying the resource group for agent pool nodes when creating `KubernetesCluster`.
+
+### Other Changes
+
+#### Dependency Updates
+
+- Updated `api-version` to `2023-08-01`.
 
 ## 2.30.0 (2023-08-25)
 

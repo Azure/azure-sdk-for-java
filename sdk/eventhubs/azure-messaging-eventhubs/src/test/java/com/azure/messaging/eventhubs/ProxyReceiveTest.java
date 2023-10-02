@@ -20,7 +20,6 @@ import java.net.Proxy;
 import java.net.ProxySelector;
 import java.net.SocketAddress;
 import java.net.URI;
-import java.time.Duration;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -40,8 +39,6 @@ public class ProxyReceiveTest extends IntegrationTestBase {
 
     @BeforeAll
     public static void setup() throws IOException {
-        StepVerifier.setDefaultTimeout(Duration.ofSeconds(30));
-
         proxyServer = new SimpleProxy(PROXY_PORT);
         proxyServer.start(null);
 
@@ -69,7 +66,6 @@ public class ProxyReceiveTest extends IntegrationTestBase {
             }
         } finally {
             ProxySelector.setDefault(defaultProxySelector);
-            StepVerifier.resetDefaultTimeout();
         }
     }
 

@@ -13,7 +13,7 @@ public final class UpdateStatusTests {
         UpdateStatus model =
             BinaryData
                 .fromString(
-                    "{\"startTime\":\"2020-12-26T05:08:12Z\",\"completedTime\":\"2021-01-23T02:14:07Z\",\"state\":\"Stopping\"}")
+                    "{\"startTime\":\"2021-01-03T07:04:49Z\",\"completedTime\":\"2021-04-12T11:49:32Z\",\"state\":\"Stopping\"}")
                 .toObject(UpdateStatus.class);
     }
 
