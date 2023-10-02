@@ -10,15 +10,8 @@ public class JsonString extends JsonElement{
      * Stores the String representation of the current state of the JsonString
      * object.
      */
-    private String stringValue;
+    private final String stringValue;
 
-    /**
-     * Default constructor.
-     *
-     * TODO: may need to remove this due to design guidelines? May only want to
-     * have the public JsonString(String value) constructor.
-     */
-    public JsonString() {}
 
     /**
      * Constructor used to explicitly set the string value of the JsonString object.
@@ -29,8 +22,8 @@ public class JsonString extends JsonElement{
      *
      * @param value specifies the text string this JsonString object represents
      */
-    public JsonString(String value) { 
-        this.stringValue = value; 
+    public JsonString(String value) {
+        this.stringValue = value;
     }
 
     /**
@@ -40,16 +33,16 @@ public class JsonString extends JsonElement{
      * current state of this JsonString object.
      */
     @Override
-    public String toString() { 
-        return this.stringValue; 
+    public String toString() {
+        return this.stringValue;
     }
 
     /**
      * @return boolean of whether this JsonElement object is of type JsonString.
      */
     @Override
-    public boolean isString() { 
-        return true; 
+    public boolean isString() {
+        return true;
     }
 
     @Override
@@ -96,8 +89,8 @@ public class JsonString extends JsonElement{
     }
 
     @Override
-    public JsonString asString() { 
-        return this; 
+    public JsonString asString() {
+        return this;
     }
 
     /**
