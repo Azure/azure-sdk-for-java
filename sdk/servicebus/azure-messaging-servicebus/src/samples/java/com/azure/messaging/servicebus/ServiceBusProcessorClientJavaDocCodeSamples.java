@@ -36,6 +36,7 @@ public class ServiceBusProcessorClientJavaDocCodeSamples {
     @Test
     public void createServiceBusProcessorClientInPeekLockMode() {
         // BEGIN: com.azure.messaging.servicebus.servicebusprocessorclient#receive-mode-peek-lock-instantiation
+        // Function that gets called whenever a message is received.
         Consumer<ServiceBusReceivedMessageContext> processMessage = context -> {
             final ServiceBusReceivedMessage message = context.getMessage();
             // Randomly complete or abandon each message. Ideally, in real-world scenarios, if the business logic
@@ -45,23 +46,30 @@ public class ServiceBusProcessorClientJavaDocCodeSamples {
             if (success) {
                 try {
                     context.complete();
-                } catch (Exception completionError) {
-                    System.out.printf("Completion of the message %s failed\n", message.getMessageId());
-                    completionError.printStackTrace();
+                } catch (RuntimeException error) {
+                    System.out.printf("Completion of the message %s failed.%n Error: %s%n",
+                        message.getMessageId(), error);
                 }
             } else {
                 try {
                     context.abandon();
-                } catch (Exception abandonError) {
-                    System.out.printf("Abandoning of the message %s failed\n", message.getMessageId());
-                    abandonError.printStackTrace();
+                } catch (RuntimeException error) {
+                    System.out.printf("Abandoning of the message %s failed.%nError: %s%n",
+                        message.getMessageId(), error);
                 }
             }
         };
 
         // Sample code that gets called if there's an error
         Consumer<ServiceBusErrorContext> processError = errorContext -> {
-            System.err.println("Error occurred while receiving message: " + errorContext.getException());
+            if (errorContext.getException() instanceof ServiceBusException) {
+                ServiceBusException exception = (ServiceBusException) errorContext.getException();
+
+                System.out.printf("Error source: %s, reason %s%n", errorContext.getErrorSource(),
+                    exception.getReason());
+            } else {
+                System.out.printf("Error occurred: %s%n", errorContext.getException());
+            }
         };
 
         TokenCredential tokenCredential = new DefaultAzureCredentialBuilder().build();
@@ -94,6 +102,7 @@ public class ServiceBusProcessorClientJavaDocCodeSamples {
     @Test
     public void createServiceBusProcessorClientInReceiveAndDeleteMode() {
         // BEGIN: com.azure.messaging.servicebus.servicebusprocessorclient#receive-mode-receive-and-delete-instantiation
+        // Function that gets called whenever a message is received.
         Consumer<ServiceBusReceivedMessageContext> processMessage = context -> {
             final ServiceBusReceivedMessage message = context.getMessage();
             System.out.printf("Processing message. Session: %s, Sequence #: %s. Contents: %s%n",
@@ -102,7 +111,14 @@ public class ServiceBusProcessorClientJavaDocCodeSamples {
 
         // Sample code that gets called if there's an error
         Consumer<ServiceBusErrorContext> processError = errorContext -> {
-            System.err.println("Error occurred while receiving message: " + errorContext.getException());
+            if (errorContext.getException() instanceof ServiceBusException) {
+                ServiceBusException exception = (ServiceBusException) errorContext.getException();
+
+                System.out.printf("Error source: %s, reason %s%n", errorContext.getErrorSource(),
+                    exception.getReason());
+            } else {
+                System.out.printf("Error occurred: %s%n", errorContext.getException());
+            }
         };
 
         TokenCredential tokenCredential = new DefaultAzureCredentialBuilder().build();
@@ -135,6 +151,7 @@ public class ServiceBusProcessorClientJavaDocCodeSamples {
     @Test
     public void createSessionEnabledServiceBusProcessorClient() {
         // BEGIN: com.azure.messaging.servicebus.servicebusprocessorclient#session-instantiation
+        // Function that gets called whenever a message is received.
         Consumer<ServiceBusReceivedMessageContext> onMessage = context -> {
             ServiceBusReceivedMessage message = context.getMessage();
             System.out.printf("Processing message. Session: %s, Sequence #: %s. Contents: %s%n",
@@ -147,6 +164,7 @@ public class ServiceBusProcessorClientJavaDocCodeSamples {
 
             if (context.getException() instanceof ServiceBusException) {
                 ServiceBusException exception = (ServiceBusException) context.getException();
+
                 System.out.printf("Error source: %s, reason %s%n", context.getErrorSource(),
                     exception.getReason());
             } else {

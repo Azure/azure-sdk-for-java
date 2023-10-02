@@ -83,14 +83,16 @@ public class ServiceBusSenderClientJavaDocCodeSamples {
      */
     @Test
     public void sendBatch() {
+        // BEGIN: com.azure.messaging.servicebus.servicebussenderclient.createMessageBatch
+        TokenCredential credential = new DefaultAzureCredentialBuilder().build();
+
         // 'fullyQualifiedNamespace' will look similar to "{your-namespace}.servicebus.windows.net"
         ServiceBusSenderClient sender = new ServiceBusClientBuilder()
-            .credential(fullyQualifiedNamespace, new DefaultAzureCredentialBuilder().build())
+            .credential(fullyQualifiedNamespace, credential)
             .sender()
             .queueName(queueName)
             .buildClient();
 
-        // BEGIN: com.azure.messaging.servicebus.servicebussenderclient.createMessageBatch
         List<ServiceBusMessage> messages = Arrays.asList(
             new ServiceBusMessage("test-1"),
             new ServiceBusMessage("test-2"));

@@ -18,6 +18,7 @@ import reactor.core.publisher.BaseSubscriber;
 import reactor.core.publisher.Flux;
 import reactor.core.publisher.Mono;
 
+import java.security.SecureRandom;
 import java.time.Duration;
 import java.util.concurrent.atomic.AtomicInteger;
 
@@ -25,6 +26,8 @@ import java.util.concurrent.atomic.AtomicInteger;
  * Code snippets demonstrating various {@link ServiceBusReceiverClient} and {@link ServiceBusReceiverAsyncClient}.
  */
 public class ServiceBusReceiverClientJavaDocCodeSamples {
+    private static final SecureRandom RANDOM = new SecureRandom();
+
     /**
      * Fully qualified namespace is the host name of the Service Bus resource.  It can be found by navigating to the
      * Service Bus namespace and looking in the "Essentials" panel.
@@ -124,6 +127,8 @@ public class ServiceBusReceiverClientJavaDocCodeSamples {
      * Receives messages from a topic and subscription.
      */
     public void receiveMessages() {
+        boolean isMessageProcessed = RANDOM.nextBoolean();
+
         // BEGIN: com.azure.messaging.servicebus.servicebusreceiverclient.receiveMessages-int-duration
         TokenCredential tokenCredential = new DefaultAzureCredentialBuilder().build();
 
@@ -140,6 +145,14 @@ public class ServiceBusReceiverClientJavaDocCodeSamples {
         IterableStream<ServiceBusReceivedMessage> messages = receiver.receiveMessages(10, Duration.ofSeconds(30));
         messages.forEach(message -> {
             System.out.printf("Id: %s. Contents: %s%n", message.getMessageId(), message.getBody());
+
+            // If able to process message, complete it. Otherwise, abandon it and allow it to be
+            // redelivered.
+            if (isMessageProcessed) {
+                receiver.complete(message);
+            } else {
+                receiver.abandon(message);
+            }
         });
 
         // When you are done using the receiver, dispose of it.

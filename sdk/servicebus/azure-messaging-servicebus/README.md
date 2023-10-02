@@ -165,6 +165,15 @@ The snippet below creates a synchronous [`ServiceBusSenderClient`][ServiceBusSen
 queue.
 
 ```java com.azure.messaging.servicebus.servicebussenderclient.createMessageBatch
+TokenCredential credential = new DefaultAzureCredentialBuilder().build();
+
+// 'fullyQualifiedNamespace' will look similar to "{your-namespace}.servicebus.windows.net"
+ServiceBusSenderClient sender = new ServiceBusClientBuilder()
+    .credential(fullyQualifiedNamespace, credential)
+    .sender()
+    .queueName(queueName)
+    .buildClient();
+
 List<ServiceBusMessage> messages = Arrays.asList(
     new ServiceBusMessage("test-1"),
     new ServiceBusMessage("test-2"));
@@ -203,6 +212,7 @@ To receive messages, you will need to create a `ServiceBusProcessorClient` with 
 When receiving message with [PeekLock][peek_lock_mode_docs] mode, it tells the broker that the application logic wants to settle (e.g. complete, abandon) received messages explicitly.
 
 ```java com.azure.messaging.servicebus.servicebusprocessorclient#receive-mode-peek-lock-instantiation
+// Function that gets called whenever a message is received.
 Consumer<ServiceBusReceivedMessageContext> processMessage = context -> {
     final ServiceBusReceivedMessage message = context.getMessage();
     // Randomly complete or abandon each message. Ideally, in real-world scenarios, if the business logic
@@ -212,23 +222,30 @@ Consumer<ServiceBusReceivedMessageContext> processMessage = context -> {
     if (success) {
         try {
             context.complete();
-        } catch (Exception completionError) {
-            System.out.printf("Completion of the message %s failed\n", message.getMessageId());
-            completionError.printStackTrace();
+        } catch (RuntimeException error) {
+            System.out.printf("Completion of the message %s failed.%n Error: %s%n",
+                message.getMessageId(), error);
         }
     } else {
         try {
             context.abandon();
-        } catch (Exception abandonError) {
-            System.out.printf("Abandoning of the message %s failed\n", message.getMessageId());
-            abandonError.printStackTrace();
+        } catch (RuntimeException error) {
+            System.out.printf("Abandoning of the message %s failed.%nError: %s%n",
+                message.getMessageId(), error);
         }
     }
 };
 
 // Sample code that gets called if there's an error
 Consumer<ServiceBusErrorContext> processError = errorContext -> {
-    System.err.println("Error occurred while receiving message: " + errorContext.getException());
+    if (errorContext.getException() instanceof ServiceBusException) {
+        ServiceBusException exception = (ServiceBusException) errorContext.getException();
+
+        System.out.printf("Error source: %s, reason %s%n", errorContext.getErrorSource(),
+            exception.getReason());
+    } else {
+        System.out.printf("Error occurred: %s%n", errorContext.getException());
+    }
 };
 
 TokenCredential tokenCredential = new DefaultAzureCredentialBuilder().build();
@@ -257,6 +274,7 @@ processorClient.close();
 When receiving message with [ReceiveAndDelete][receive_and_delete_mode_docs] mode, tells the broker to consider all messages it sends to the receiving client as settled when sent.
 
 ```java com.azure.messaging.servicebus.servicebusprocessorclient#receive-mode-receive-and-delete-instantiation
+// Function that gets called whenever a message is received.
 Consumer<ServiceBusReceivedMessageContext> processMessage = context -> {
     final ServiceBusReceivedMessage message = context.getMessage();
     System.out.printf("Processing message. Session: %s, Sequence #: %s. Contents: %s%n",
@@ -265,7 +283,14 @@ Consumer<ServiceBusReceivedMessageContext> processMessage = context -> {
 
 // Sample code that gets called if there's an error
 Consumer<ServiceBusErrorContext> processError = errorContext -> {
-    System.err.println("Error occurred while receiving message: " + errorContext.getException());
+    if (errorContext.getException() instanceof ServiceBusException) {
+        ServiceBusException exception = (ServiceBusException) errorContext.getException();
+
+        System.out.printf("Error source: %s, reason %s%n", errorContext.getErrorSource(),
+            exception.getReason());
+    } else {
+        System.out.printf("Error occurred: %s%n", errorContext.getException());
+    }
 };
 
 TokenCredential tokenCredential = new DefaultAzureCredentialBuilder().build();

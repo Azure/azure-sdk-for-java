@@ -34,6 +34,15 @@ import java.util.Objects;
  * <p><strong>Send messages to a Service Bus resource</strong></p>
  * <!-- src_embed com.azure.messaging.servicebus.servicebussenderclient.createMessageBatch -->
  * <pre>
+ * TokenCredential credential = new DefaultAzureCredentialBuilder&#40;&#41;.build&#40;&#41;;
+ *
+ * &#47;&#47; 'fullyQualifiedNamespace' will look similar to &quot;&#123;your-namespace&#125;.servicebus.windows.net&quot;
+ * ServiceBusSenderClient sender = new ServiceBusClientBuilder&#40;&#41;
+ *     .credential&#40;fullyQualifiedNamespace, credential&#41;
+ *     .sender&#40;&#41;
+ *     .queueName&#40;queueName&#41;
+ *     .buildClient&#40;&#41;;
+ *
  * List&lt;ServiceBusMessage&gt; messages = Arrays.asList&#40;
  *     new ServiceBusMessage&#40;&quot;test-1&quot;&#41;,
  *     new ServiceBusMessage&#40;&quot;test-2&quot;&#41;&#41;;

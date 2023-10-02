@@ -41,12 +41,12 @@ import com.azure.messaging.servicebus.implementation.MessagingEntityType;
 import com.azure.messaging.servicebus.implementation.ServiceBusAmqpConnection;
 import com.azure.messaging.servicebus.implementation.ServiceBusConnectionProcessor;
 import com.azure.messaging.servicebus.implementation.ServiceBusConstants;
+import com.azure.messaging.servicebus.implementation.ServiceBusProcessorClientOptions;
 import com.azure.messaging.servicebus.implementation.ServiceBusReactorAmqpConnection;
+import com.azure.messaging.servicebus.implementation.ServiceBusSharedKeyCredential;
 import com.azure.messaging.servicebus.implementation.instrumentation.ReceiverKind;
 import com.azure.messaging.servicebus.implementation.instrumentation.ServiceBusReceiverInstrumentation;
 import com.azure.messaging.servicebus.implementation.instrumentation.ServiceBusSenderInstrumentation;
-import com.azure.messaging.servicebus.implementation.ServiceBusSharedKeyCredential;
-import com.azure.messaging.servicebus.implementation.ServiceBusProcessorClientOptions;
 import com.azure.messaging.servicebus.models.ServiceBusReceiveMode;
 import com.azure.messaging.servicebus.models.SubQueue;
 import org.apache.qpid.proton.engine.SslDomain;
@@ -144,6 +144,7 @@ import static com.azure.messaging.servicebus.implementation.ServiceBusConstants.
  * <p><strong>Instantiate the processor</strong></p>
  * <!-- src_embed com.azure.messaging.servicebus.servicebusprocessorclient#receive-mode-peek-lock-instantiation -->
  * <pre>
+ * &#47;&#47; Function that gets called whenever a message is received.
  * Consumer&lt;ServiceBusReceivedMessageContext&gt; processMessage = context -&gt; &#123;
  *     final ServiceBusReceivedMessage message = context.getMessage&#40;&#41;;
  *     &#47;&#47; Randomly complete or abandon each message. Ideally, in real-world scenarios, if the business logic
@@ -153,23 +154,30 @@ import static com.azure.messaging.servicebus.implementation.ServiceBusConstants.
  *     if &#40;success&#41; &#123;
  *         try &#123;
  *             context.complete&#40;&#41;;
- *         &#125; catch &#40;Exception completionError&#41; &#123;
- *             System.out.printf&#40;&quot;Completion of the message %s failed&#92;n&quot;, message.getMessageId&#40;&#41;&#41;;
- *             completionError.printStackTrace&#40;&#41;;
+ *         &#125; catch &#40;RuntimeException error&#41; &#123;
+ *             System.out.printf&#40;&quot;Completion of the message %s failed.%n Error: %s%n&quot;,
+ *                 message.getMessageId&#40;&#41;, error&#41;;
  *         &#125;
  *     &#125; else &#123;
  *         try &#123;
  *             context.abandon&#40;&#41;;
- *         &#125; catch &#40;Exception abandonError&#41; &#123;
- *             System.out.printf&#40;&quot;Abandoning of the message %s failed&#92;n&quot;, message.getMessageId&#40;&#41;&#41;;
- *             abandonError.printStackTrace&#40;&#41;;
+ *         &#125; catch &#40;RuntimeException error&#41; &#123;
+ *             System.out.printf&#40;&quot;Abandoning of the message %s failed.%nError: %s%n&quot;,
+ *                 message.getMessageId&#40;&#41;, error&#41;;
  *         &#125;
  *     &#125;
  * &#125;;
  *
  * &#47;&#47; Sample code that gets called if there's an error
  * Consumer&lt;ServiceBusErrorContext&gt; processError = errorContext -&gt; &#123;
- *     System.err.println&#40;&quot;Error occurred while receiving message: &quot; + errorContext.getException&#40;&#41;&#41;;
+ *     if &#40;errorContext.getException&#40;&#41; instanceof ServiceBusException&#41; &#123;
+ *         ServiceBusException exception = &#40;ServiceBusException&#41; errorContext.getException&#40;&#41;;
+ *
+ *         System.out.printf&#40;&quot;Error source: %s, reason %s%n&quot;, errorContext.getErrorSource&#40;&#41;,
+ *             exception.getReason&#40;&#41;&#41;;
+ *     &#125; else &#123;
+ *         System.out.printf&#40;&quot;Error occurred: %s%n&quot;, errorContext.getException&#40;&#41;&#41;;
+ *     &#125;
  * &#125;;
  *
  * TokenCredential tokenCredential = new DefaultAzureCredentialBuilder&#40;&#41;.build&#40;&#41;;
@@ -1044,6 +1052,7 @@ public final class ServiceBusClientBuilder implements
      * <p><strong>Instantiate a session-enabled processor client</strong></p>
      * <!-- src_embed com.azure.messaging.servicebus.servicebusprocessorclient#session-instantiation -->
      * <pre>
+     * &#47;&#47; Function that gets called whenever a message is received.
      * Consumer&lt;ServiceBusReceivedMessageContext&gt; onMessage = context -&gt; &#123;
      *     ServiceBusReceivedMessage message = context.getMessage&#40;&#41;;
      *     System.out.printf&#40;&quot;Processing message. Session: %s, Sequence #: %s. Contents: %s%n&quot;,
@@ -1056,6 +1065,7 @@ public final class ServiceBusClientBuilder implements
      *
      *     if &#40;context.getException&#40;&#41; instanceof ServiceBusException&#41; &#123;
      *         ServiceBusException exception = &#40;ServiceBusException&#41; context.getException&#40;&#41;;
+     *
      *         System.out.printf&#40;&quot;Error source: %s, reason %s%n&quot;, context.getErrorSource&#40;&#41;,
      *             exception.getReason&#40;&#41;&#41;;
      *     &#125; else &#123;
@@ -1624,6 +1634,7 @@ public final class ServiceBusClientBuilder implements
      * <p><strong>Sample code to instantiate a processor client and receive in PeekLock mode</strong></p>
      * <!-- src_embed com.azure.messaging.servicebus.servicebusprocessorclient#receive-mode-peek-lock-instantiation -->
      * <pre>
+     * &#47;&#47; Function that gets called whenever a message is received.
      * Consumer&lt;ServiceBusReceivedMessageContext&gt; processMessage = context -&gt; &#123;
      *     final ServiceBusReceivedMessage message = context.getMessage&#40;&#41;;
      *     &#47;&#47; Randomly complete or abandon each message. Ideally, in real-world scenarios, if the business logic
@@ -1633,23 +1644,30 @@ public final class ServiceBusClientBuilder implements
      *     if &#40;success&#41; &#123;
      *         try &#123;
      *             context.complete&#40;&#41;;
-     *         &#125; catch &#40;Exception completionError&#41; &#123;
-     *             System.out.printf&#40;&quot;Completion of the message %s failed&#92;n&quot;, message.getMessageId&#40;&#41;&#41;;
-     *             completionError.printStackTrace&#40;&#41;;
+     *         &#125; catch &#40;RuntimeException error&#41; &#123;
+     *             System.out.printf&#40;&quot;Completion of the message %s failed.%n Error: %s%n&quot;,
+     *                 message.getMessageId&#40;&#41;, error&#41;;
      *         &#125;
      *     &#125; else &#123;
      *         try &#123;
      *             context.abandon&#40;&#41;;
-     *         &#125; catch &#40;Exception abandonError&#41; &#123;
-     *             System.out.printf&#40;&quot;Abandoning of the message %s failed&#92;n&quot;, message.getMessageId&#40;&#41;&#41;;
-     *             abandonError.printStackTrace&#40;&#41;;
+     *         &#125; catch &#40;RuntimeException error&#41; &#123;
+     *             System.out.printf&#40;&quot;Abandoning of the message %s failed.%nError: %s%n&quot;,
+     *                 message.getMessageId&#40;&#41;, error&#41;;
      *         &#125;
      *     &#125;
      * &#125;;
      *
      * &#47;&#47; Sample code that gets called if there's an error
      * Consumer&lt;ServiceBusErrorContext&gt; processError = errorContext -&gt; &#123;
-     *     System.err.println&#40;&quot;Error occurred while receiving message: &quot; + errorContext.getException&#40;&#41;&#41;;
+     *     if &#40;errorContext.getException&#40;&#41; instanceof ServiceBusException&#41; &#123;
+     *         ServiceBusException exception = &#40;ServiceBusException&#41; errorContext.getException&#40;&#41;;
+     *
+     *         System.out.printf&#40;&quot;Error source: %s, reason %s%n&quot;, errorContext.getErrorSource&#40;&#41;,
+     *             exception.getReason&#40;&#41;&#41;;
+     *     &#125; else &#123;
+     *         System.out.printf&#40;&quot;Error occurred: %s%n&quot;, errorContext.getException&#40;&#41;&#41;;
+     *     &#125;
      * &#125;;
      *
      * TokenCredential tokenCredential = new DefaultAzureCredentialBuilder&#40;&#41;.build&#40;&#41;;
@@ -1678,6 +1696,7 @@ public final class ServiceBusClientBuilder implements
      * <p><strong>Sample code to instantiate a processor client and receive in ReceiveAndDelete mode</strong></p>
      * <!-- src_embed com.azure.messaging.servicebus.servicebusprocessorclient#receive-mode-receive-and-delete-instantiation -->
      * <pre>
+     * &#47;&#47; Function that gets called whenever a message is received.
      * Consumer&lt;ServiceBusReceivedMessageContext&gt; processMessage = context -&gt; &#123;
      *     final ServiceBusReceivedMessage message = context.getMessage&#40;&#41;;
      *     System.out.printf&#40;&quot;Processing message. Session: %s, Sequence #: %s. Contents: %s%n&quot;,
@@ -1686,7 +1705,14 @@ public final class ServiceBusClientBuilder implements
      *
      * &#47;&#47; Sample code that gets called if there's an error
      * Consumer&lt;ServiceBusErrorContext&gt; processError = errorContext -&gt; &#123;
-     *     System.err.println&#40;&quot;Error occurred while receiving message: &quot; + errorContext.getException&#40;&#41;&#41;;
+     *     if &#40;errorContext.getException&#40;&#41; instanceof ServiceBusException&#41; &#123;
+     *         ServiceBusException exception = &#40;ServiceBusException&#41; errorContext.getException&#40;&#41;;
+     *
+     *         System.out.printf&#40;&quot;Error source: %s, reason %s%n&quot;, errorContext.getErrorSource&#40;&#41;,
+     *             exception.getReason&#40;&#41;&#41;;
+     *     &#125; else &#123;
+     *         System.out.printf&#40;&quot;Error occurred: %s%n&quot;, errorContext.getException&#40;&#41;&#41;;
+     *     &#125;
      * &#125;;
      *
      * TokenCredential tokenCredential = new DefaultAzureCredentialBuilder&#40;&#41;.build&#40;&#41;;
