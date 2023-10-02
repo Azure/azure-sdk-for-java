@@ -64,7 +64,6 @@ import org.junit.jupiter.params.provider.CsvSource;
 import org.junit.jupiter.params.provider.MethodSource;
 import org.junit.jupiter.params.provider.ValueSource;
 import reactor.core.publisher.Mono;
-import reactor.test.StepVerifier;
 
 import java.net.InetSocketAddress;
 import java.time.Duration;
@@ -608,33 +607,6 @@ public class DirectoryApiTests extends DataLakeTestBase {
         Response<Void> response = dc.deleteRecursivelyWithResponse(null, null, null);
         assertEquals(200, response.getStatusCode());
         assertFalse(dc.exists());
-    }
-
-    @Test
-    public void deleteRecursivelyAsync() {
-        DataLakeDirectoryAsyncClient directoryAsyncClient = dataLakeFileSystemAsyncClient
-            .getDirectoryAsyncClient(generatePathName());
-        directoryAsyncClient.create().block();
-        // upload 5 files to the directory
-        for (int i = 0; i < 5; i++) {
-            directoryAsyncClient.createFile(generatePathName()).block();
-        }
-        StepVerifier.create(directoryAsyncClient.deleteRecursively()).verifyComplete();
-        StepVerifier.create(directoryAsyncClient.exists()).expectNext(false).verifyComplete();
-    }
-
-    @Test
-    public void deleteRecursivelyAsyncWithResponse() {
-        DataLakeDirectoryAsyncClient directoryAsyncClient = dataLakeFileSystemAsyncClient
-            .getDirectoryAsyncClient(generatePathName());
-        directoryAsyncClient.create().block();
-        // upload 5 files to the directory
-        for (int i = 0; i < 5; i++) {
-            directoryAsyncClient.createFile(generatePathName()).block();
-        }
-        StepVerifier.create(directoryAsyncClient.deleteRecursivelyWithResponse(null))
-            .assertNext(response -> assertEquals(200, response.getStatusCode())).verifyComplete();
-        StepVerifier.create(directoryAsyncClient.exists()).expectNext(false).verifyComplete();
     }
 
     @Test
