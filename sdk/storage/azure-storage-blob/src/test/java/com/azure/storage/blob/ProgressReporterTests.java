@@ -86,8 +86,7 @@ public class ProgressReporterTests extends BlobTestBase {
         Disposable disposable3 = data.subscribe();
         Disposable disposable4 = data2.subscribe();
 
-        while (!(disposable1.isDisposed() && disposable2.isDisposed() && disposable3.isDisposed()
-            && disposable4.isDisposed())) {
+        while (!(disposable1.isDisposed() && disposable2.isDisposed() && disposable3.isDisposed() && disposable4.isDisposed())) {
             // Busy-wait loop; be cautious about potential for high CPU usage
         }
 

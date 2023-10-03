@@ -725,7 +725,7 @@ public class ServiceApiTests extends BlobTestBase {
 
     @Test
     public void getPropsAnonymous() {
-        assertThrows(IllegalStateException.class, () ->anonymousClient.getProperties());
+        assertThrows(IllegalStateException.class, () -> anonymousClient.getProperties());
     }
 
     @Test
@@ -807,7 +807,7 @@ public class ServiceApiTests extends BlobTestBase {
 
     @Test
     public void getStatsError() {
-        assertThrows(BlobStorageException.class, () ->primaryBlobServiceClient.getStatistics());
+        assertThrows(BlobStorageException.class, () -> primaryBlobServiceClient.getStatistics());
     }
 
     @Test
@@ -1006,8 +1006,7 @@ public class ServiceApiTests extends BlobTestBase {
             primaryBlobServiceAsyncClient.undeleteBlobContainerWithResponse(
                 new UndeleteBlobContainerOptions(blobContainerItem.getName(), blobContainerItem.getVersion())));
 
-        StepVerifier.create(responseMono).assertNext(it ->
-        {
+        StepVerifier.create(responseMono).assertNext(it -> {
             assertNotNull(it);
             assertEquals(201, it.getStatusCode());
             assertNotNull(it.getValue());
@@ -1059,8 +1058,7 @@ public class ServiceApiTests extends BlobTestBase {
         String mockSas =
             "?sv=2019-10-10&ss=b&srt=sco&sp=r&se=2019-06-04T12:04:58Z&st=2090-05-04T04:04:58Z&spr=http&sig=doesntmatter";
 
-        IllegalArgumentException e = assertThrows(IllegalArgumentException.class, () ->
-        {
+        IllegalArgumentException e = assertThrows(IllegalArgumentException.class, () -> {
             BlobServiceClient client = new BlobServiceClientBuilder().endpoint(service).sasToken(mockSas).buildClient();
             client.getBlobContainerClient(container).getBlobClient("blobname");
         });

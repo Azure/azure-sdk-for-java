@@ -177,16 +177,15 @@ public class BlockBlobApiTests extends BlobTestBase {
 
         for (BinaryData binaryData : binaryDataList) {
             StepVerifier.create(blockBlobAsyncClient.stageBlockWithResponse(new BlockBlobStageBlockOptions(getBlockID(),
-                binaryData))).assertNext(it ->
-            {
-                HttpHeaders headers = it.getHeaders();
-                assertResponseStatusCode(it, 201);
-                assertNotNull(headers.getValue(X_MS_CONTENT_CRC64));
-                assertNotNull(headers.getValue(X_MS_REQUEST_ID));
-                assertNotNull(headers.getValue(X_MS_VERSION));
-                assertNotNull(headers.getValue(HttpHeaderName.DATE));
-                assertTrue(Boolean.parseBoolean(headers.getValue(X_MS_REQUEST_SERVER_ENCRYPTED)));
-            }).verifyComplete();
+                binaryData))).assertNext(it -> {
+                    HttpHeaders headers = it.getHeaders();
+                    assertResponseStatusCode(it, 201);
+                    assertNotNull(headers.getValue(X_MS_CONTENT_CRC64));
+                    assertNotNull(headers.getValue(X_MS_REQUEST_ID));
+                    assertNotNull(headers.getValue(X_MS_VERSION));
+                    assertNotNull(headers.getValue(HttpHeaderName.DATE));
+                    assertTrue(Boolean.parseBoolean(headers.getValue(X_MS_REQUEST_SERVER_ENCRYPTED)));
+                }).verifyComplete();
         }
     }
 
@@ -1363,8 +1362,8 @@ public class BlockBlobApiTests extends BlobTestBase {
             blockBlobClient.uploadWithResponse(DATA.getDefaultInputStream(), DATA.getDefaultDataSize(), null, null,
                 null, null, bac, null, null));
 
-        assertTrue(e.getErrorCode() == BlobErrorCode.CONDITION_NOT_MET ||
-            e.getErrorCode() == BlobErrorCode.LEASE_ID_MISMATCH_WITH_BLOB_OPERATION);
+        assertTrue(e.getErrorCode() == BlobErrorCode.CONDITION_NOT_MET
+            || e.getErrorCode() == BlobErrorCode.LEASE_ID_MISMATCH_WITH_BLOB_OPERATION);
     }
 
     @Test
@@ -1618,15 +1617,14 @@ public class BlockBlobApiTests extends BlobTestBase {
             .setMaxSingleUploadSizeLong(4L * Constants.MB);
 
         StepVerifier.create(asyncClient.uploadWithResponse(Flux.just(getRandomData(size)), parallelTransferOptions,
-            null, null, null, null)).assertNext(it ->
-        {
-            assertEquals(it.getStatusCode(), 201);
-            /*
-             * Verify that the reporting count is equal or greater than the size divided by block size in the case
-             * that operations need to be retried. Retry attempts will increment the reporting count.
-             */
-            assertTrue(uploadReporter.getReportingCount() >= ((long) size / blockSize));
-        }).verifyComplete();
+            null, null, null, null)).assertNext(it -> {
+                assertEquals(it.getStatusCode(), 201);
+                /*
+                * Verify that the reporting count is equal or greater than the size divided by block size in the case
+                * that operations need to be retried. Retry attempts will increment the reporting count.
+                */
+                assertTrue(uploadReporter.getReportingCount() >= ((long) size / blockSize));
+            }).verifyComplete();
     }
 
     private static Stream<Arguments> bufferedUploadWithReporterSupplier() {
@@ -1656,15 +1654,14 @@ public class BlockBlobApiTests extends BlobTestBase {
             .setMaxSingleUploadSizeLong(4L * Constants.MB);
 
         StepVerifier.create(asyncClient.uploadWithResponse(Flux.just(getRandomData(size)), parallelTransferOptions,
-            null, null, null, null)).assertNext(it ->
-        {
-            assertResponseStatusCode(it, 201);
-            /*
-             * Verify that the reporting count is equal or greater than the size divided by block size in the case
-             * that operations need to be retried. Retry attempts will increment the reporting count.
-             */
-            assertTrue(uploadListener.getReportingCount() >= ((long) size / blockSize));
-        }).verifyComplete();
+            null, null, null, null)).assertNext(it -> {
+                assertResponseStatusCode(it, 201);
+                /*
+                * Verify that the reporting count is equal or greater than the size divided by block size in the case
+                * that operations need to be retried. Retry attempts will increment the reporting count.
+                */
+                assertTrue(uploadListener.getReportingCount() >= ((long) size / blockSize));
+            }).verifyComplete();
     }
 
     // Only run these tests in live mode as they use variables that can't be captured.
@@ -2058,8 +2055,8 @@ public class BlockBlobApiTests extends BlobTestBase {
             .verifyErrorSatisfies(it -> {
                 assertInstanceOf(BlobStorageException.class, it);
                 BlobStorageException storageException = (BlobStorageException) it;
-                assertTrue(storageException.getErrorCode() == BlobErrorCode.CONDITION_NOT_MET ||
-                    storageException.getErrorCode() == BlobErrorCode.LEASE_ID_MISMATCH_WITH_BLOB_OPERATION);
+                assertTrue(storageException.getErrorCode() == BlobErrorCode.CONDITION_NOT_MET
+                    || storageException.getErrorCode() == BlobErrorCode.LEASE_ID_MISMATCH_WITH_BLOB_OPERATION);
             });
     }
 
@@ -2186,11 +2183,10 @@ public class BlockBlobApiTests extends BlobTestBase {
             .doOnSubscribe(it -> blobAsyncClient.uploadFromFile(smallFile.toPath().toString()).subscribe());
         blobAsyncClient = ccAsync.getBlobAsyncClient(generateBlobName());
 
-        StepVerifier.create(blobAsyncClient.upload(data, null)).verifyErrorSatisfies(it ->
-            {
+        StepVerifier.create(blobAsyncClient.upload(data, null)).verifyErrorSatisfies(it -> {
             assertInstanceOf(BlobStorageException.class, it);
             assertEquals(BlobErrorCode.BLOB_ALREADY_EXISTS, ((BlobStorageException) it).getErrorCode());
-            });
+        });
     }
 
     @EnabledIf("com.azure.storage.blob.BlobTestBase#isLiveMode")

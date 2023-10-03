@@ -1700,7 +1700,7 @@ public class ContainerApiTests extends BlobTestBase {
                 new BlobParallelUploadOptions(DATA.getDefaultInputStream()).setTags(tags), null, null);
         }
 
-    sleepIfRunningAgainstService(10 * 1000); // To allow tags to index
+        sleepIfRunningAgainstService(10 * 1000); // To allow tags to index
 
         PagedResponse<TaggedBlobItem> firstPage = cc.findBlobsByTags(
             new FindBlobsOptions(String.format("\"%s\"='%s'", tagKey, tagValue)).setMaxResultsPerPage(5), null,

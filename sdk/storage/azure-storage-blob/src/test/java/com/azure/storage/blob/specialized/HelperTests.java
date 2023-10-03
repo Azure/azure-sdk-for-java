@@ -87,7 +87,7 @@ public class HelperTests extends BlobTestBase {
         "斑點,斑點",
         "%E6%96%91%E9%BB%9E,斑點"
     })
-    public void URLParser(String originalBlobName, String finalBlobName) throws MalformedURLException {
+    public void urlParser(String originalBlobName, String finalBlobName) throws MalformedURLException {
         BlobUrlParts parts = BlobUrlParts.parse(new URL("http://host/container/" + originalBlobName
             + "?snapshot=snapshot&sv=" + Constants.SAS_SERVICE_VERSION + "&sr=c&sp=r&sig="
             + FakeCredentialInTests.FAKE_SIGNATURE_PLACEHOLDER));
@@ -170,7 +170,7 @@ public class HelperTests extends BlobTestBase {
     public void utilityConvertStreamToBufferAvailable() {
         byte[] data = getRandomByteArray(10);
 
-        Flux<ByteBuffer> flux = Utility.convertStreamToByteBuffer(new testBAIS(data), 10, 10, true);
+        Flux<ByteBuffer> flux = Utility.convertStreamToByteBuffer(new TestBAIS(data), 10, 10, true);
 
         //then: "When the stream is the right length but available always returns > 0, do not throw"
         StepVerifier.create(flux)
@@ -182,14 +182,14 @@ public class HelperTests extends BlobTestBase {
             .verifyComplete();
 
         //when: "When the stream is actually longer than the length, throw"
-        flux = Utility.convertStreamToByteBuffer(new testBAIS(data), 9, 10, true);
+        flux = Utility.convertStreamToByteBuffer(new TestBAIS(data), 9, 10, true);
 
         StepVerifier.create(flux).verifyError(IllegalStateException.class);
     }
 
-    static class testBAIS extends ByteArrayInputStream {
+    static class TestBAIS extends ByteArrayInputStream {
 
-        testBAIS(byte[] data) {
+        TestBAIS(byte[] data) {
             super(data);
         }
 

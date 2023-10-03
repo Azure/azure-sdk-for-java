@@ -1079,8 +1079,7 @@ public class BlobApiTests extends BlobTestBase {
             .buildAsyncClient()
             .getBlockBlobAsyncClient();
         TestDataFactory dataLocal = DATA;
-        HttpPipelinePolicy policy = (context, next) -> next.process().flatMap(r ->
-        {
+        HttpPipelinePolicy policy = (context, next) -> next.process().flatMap(r -> {
             if (counter.incrementAndGet() == 1) {
             /*
              * When the download begins trigger an upload to overwrite the downloading blob
@@ -1111,11 +1110,9 @@ public class BlobApiTests extends BlobTestBase {
          * onErrorDropped is triggered once the reactive stream has emitted one element, after that exceptions are
          * dropped.
          */
-        Hooks.onErrorDropped(ignored -> /* do nothing with it */ {});
-
+        Hooks.onErrorDropped(ignored -> /* do nothing with it */ { });
         StepVerifier.create(bacDownloading.downloadToFileWithResponse(outFile.toPath().toString(), null, options, null,
-            null, false)).verifyErrorSatisfies(it ->
-        {
+            null, false)).verifyErrorSatisfies(it -> {
             /*
              * If an operation is running on multiple threads and multiple return an exception Reactor will combine
              * them into a CompositeException which needs to be unwrapped. If there is only a single exception
@@ -1125,8 +1122,7 @@ public class BlobApiTests extends BlobTestBase {
              * ReactiveException that needs to be unwrapped. If the passed exception isn't a 'ReactiveException' it
              * will be returned unmodified by 'Exceptions.unwrap'.
              */
-            assertTrue(Exceptions.unwrapMultiple(it).stream().anyMatch(it2 ->
-            {
+            assertTrue(Exceptions.unwrapMultiple(it).stream().anyMatch(it2 -> {
                 Throwable exception = Exceptions.unwrap(it2);
                 if (exception instanceof BlobStorageException) {
                     assertEquals(412, ((BlobStorageException) exception).getStatusCode());
