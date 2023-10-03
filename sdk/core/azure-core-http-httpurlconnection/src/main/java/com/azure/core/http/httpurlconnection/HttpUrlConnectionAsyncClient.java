@@ -119,15 +119,13 @@ public class HttpUrlConnectionAsyncClient implements HttpClient {
                         connection.addRequestProperty(header.getName(), value);
                     }
                 }
-                if (httpRequest.getHttpMethod() != HttpMethod.GET) {
-                    connection.setDoOutput(true);
-                }
 
                 // Write body
                 switch (httpRequest.getHttpMethod()) {
                     case POST:
                     case PUT:
                     case DELETE:
+                        connection.setDoOutput(true);
                         if (httpRequest.getBody() != null) {
                             try (DataOutputStream os = new DataOutputStream(new BufferedOutputStream(connection.getOutputStream()))) {
 
