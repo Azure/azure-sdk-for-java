@@ -60,6 +60,25 @@ abstract class CosmosCatalogITestBase extends IntegrationSpec with CosmosClient 
     throughput.getProperties.getManualThroughput shouldEqual 1000
   }
 
+    it can "create a table with customized properties and hierarchical partition keys" in {
+        val databaseName = getAutoCleanableDatabaseName
+        val containerName = RandomStringUtils.randomAlphabetic(6).toLowerCase + System.currentTimeMillis()
+
+        spark.sql(s"CREATE DATABASE testCatalog.$databaseName;")
+        spark.sql(s"CREATE TABLE testCatalog.$databaseName.$containerName (word STRING, number INT) using cosmos.oltp " +
+            s"TBLPROPERTIES(partitionKeyPath = '/tenantId', subPartitionKeyPath1 = '/userId', subPartitionKeyPath2 = '/sessionId', manualThroughput = '1100')")
+
+        val containerProperties = cosmosClient.getDatabase(databaseName).getContainer(containerName).read().block().getProperties
+        containerProperties.getPartitionKeyDefinition.getPaths.asScala.toArray should equal(Array("/tenantId", "/userId", "/sessionId"))
+        // scalastyle:off null
+        containerProperties.getDefaultTimeToLiveInSeconds shouldEqual null
+        // scalastyle:on null
+
+        // validate throughput
+        val throughput = cosmosClient.getDatabase(databaseName).getContainer(containerName).readThroughput().block().getProperties
+        throughput.getManualThroughput shouldEqual 1100
+    }
+
   it can "create a database with shared throughput and alter throughput afterwards" in {
     val databaseName = getAutoCleanableDatabaseName
 

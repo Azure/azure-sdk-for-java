@@ -4,14 +4,14 @@
 package com.azure.cosmos.spark
 
 import com.azure.cosmos.implementation.apachecommons.lang.StringUtils
-import com.azure.cosmos.{CosmosAsyncContainer, CosmosException}
-import com.azure.cosmos.models.{CosmosContainerProperties, PartitionKey, ThroughputProperties}
+import com.azure.cosmos.models.{CosmosContainerProperties, PartitionKey, PartitionKeyBuilder, ThroughputProperties}
 import com.azure.cosmos.spark.utils.CosmosPatchTestHelper
+import com.azure.cosmos.{CosmosAsyncContainer, CosmosException}
 import com.fasterxml.jackson.databind.ObjectMapper
 import com.fasterxml.jackson.databind.node.ObjectNode
 import org.apache.commons.lang3.RandomUtils
 import org.apache.spark.MockTaskContext
-import org.apache.spark.sql.types.{BooleanType, DoubleType, FloatType, IntegerType, LongType, StringType, StructField, StructType}
+import org.apache.spark.sql.types._
 
 import scala.collection.concurrent.TrieMap
 import scala.collection.mutable
@@ -23,7 +23,7 @@ import java.util.UUID
 
 //scalastyle:off multiple.string.literals
 //scalastyle:off magic.number
-class PointWriterITest extends IntegrationSpec with CosmosClient with AutoCleanableCosmosContainer  {
+class PointWriterSubpartitionITest extends IntegrationSpec with CosmosClient with AutoCleanableCosmosContainerWithSubpartitions  {
   val objectMapper = new ObjectMapper()
 
   "Point Writer" can "upsert item" in  {
@@ -41,7 +41,12 @@ class PointWriterITest extends IntegrationSpec with CosmosClient with AutoCleana
       val item = getItem(UUID.randomUUID().toString)
       val id = item.get("id").textValue()
       items += (id -> item)
-      pointWriter.scheduleWrite(new PartitionKey(item.get("id").textValue()), item)
+        val partitionKey = new PartitionKeyBuilder()
+            .add(item.get("tenantId").textValue())
+            .add(item.get("userId").textValue())
+            .add(item.get("sessionId").textValue())
+            .build()
+      pointWriter.scheduleWrite(partitionKey, item)
     }
 
     pointWriter.flushAndClose()
@@ -71,7 +76,12 @@ class PointWriterITest extends IntegrationSpec with CosmosClient with AutoCleana
       val item = getItem(UUID.randomUUID().toString)
       val id = item.get("id").textValue()
       items += (id -> item)
-      pointWriter.scheduleWrite(new PartitionKey(item.get("id").textValue()), item)
+        val partitionKey = new PartitionKeyBuilder()
+            .add(item.get("tenantId").textValue())
+            .add(item.get("userId").textValue())
+            .add(item.get("sessionId").textValue())
+            .build()
+      pointWriter.scheduleWrite(partitionKey, item)
     }
 
     pointWriter.flushAndClose()
@@ -92,7 +102,12 @@ class PointWriterITest extends IntegrationSpec with CosmosClient with AutoCleana
 
     for(i <- 0 until 5000) {
       val item = allItems(i)
-      pointDeleter.scheduleWrite(new PartitionKey(item.get("id").textValue()), item)
+        val partitionKey = new PartitionKeyBuilder()
+            .add(item.get("tenantId").textValue())
+            .add(item.get("userId").textValue())
+            .add(item.get("sessionId").textValue())
+            .build()
+      pointDeleter.scheduleWrite(partitionKey, item)
     }
 
     pointDeleter.flushAndClose()
@@ -116,7 +131,12 @@ class PointWriterITest extends IntegrationSpec with CosmosClient with AutoCleana
       val item = getItem(UUID.randomUUID().toString)
       val id = item.get("id").textValue()
       items += (id -> item)
-      pointWriter.scheduleWrite(new PartitionKey(item.get("id").textValue()), item)
+        val partitionKey = new PartitionKeyBuilder()
+            .add(item.get("tenantId").textValue())
+            .add(item.get("userId").textValue())
+            .add(item.get("sessionId").textValue())
+            .build()
+      pointWriter.scheduleWrite(partitionKey, item)
     }
 
     pointWriter.flushAndClose()
@@ -138,7 +158,12 @@ class PointWriterITest extends IntegrationSpec with CosmosClient with AutoCleana
       item.put("propString", UUID.randomUUID().toString)
       val id = item.get("id").textValue()
       items.put(id, item)
-      pointUpdater.scheduleWrite(new PartitionKey(item.get("id").textValue()), item)
+        val partitionKey = new PartitionKeyBuilder()
+            .add(item.get("tenantId").textValue())
+            .add(item.get("userId").textValue())
+            .add(item.get("sessionId").textValue())
+            .build()
+      pointUpdater.scheduleWrite(partitionKey, item)
     }
 
     pointUpdater.flushAndClose()
@@ -162,7 +187,12 @@ class PointWriterITest extends IntegrationSpec with CosmosClient with AutoCleana
 
     for(i <- 0 until 5000) {
       val item = allItems(i)
-      pointDeleter.scheduleWrite(new PartitionKey(item.get("id").textValue()), item)
+      val partitionKey = new PartitionKeyBuilder()
+            .add(item.get("tenantId").textValue())
+            .add(item.get("userId").textValue())
+            .add(item.get("sessionId").textValue())
+            .build()
+      pointDeleter.scheduleWrite(partitionKey, item)
     }
 
     pointDeleter.flushAndClose()
@@ -184,7 +214,12 @@ class PointWriterITest extends IntegrationSpec with CosmosClient with AutoCleana
       val item = getItem((i % 100).toString)
       val id = item.get("id").textValue()
       items.addBinding(id, item)
-      pointWriter.scheduleWrite(new PartitionKey(id), item)
+      val partitionKey = new PartitionKeyBuilder()
+            .add(item.get("tenantId").textValue())
+            .add(item.get("userId").textValue())
+            .add(item.get("sessionId").textValue())
+            .build()
+      pointWriter.scheduleWrite(partitionKey, item)
     }
 
     pointWriter.flushAndClose()
@@ -216,7 +251,12 @@ class PointWriterITest extends IntegrationSpec with CosmosClient with AutoCleana
       val item = getItem(UUID.randomUUID().toString)
       val id = item.get("id").textValue()
       items += (id -> item)
-      pointWriter.scheduleWrite(new PartitionKey(item.get("id").textValue()), item)
+        val partitionKey = new PartitionKeyBuilder()
+            .add(item.get("tenantId").textValue())
+            .add(item.get("userId").textValue())
+            .add(item.get("sessionId").textValue())
+            .build()
+      pointWriter.scheduleWrite(partitionKey, item)
     }
 
     pointWriter.flushAndClose()
@@ -235,7 +275,12 @@ class PointWriterITest extends IntegrationSpec with CosmosClient with AutoCleana
       val expectedItem = items(itemFromDB.get("id").textValue())
       secondObjectNodeHasAllFieldsOfFirstObjectNode(expectedItem, itemFromDB) shouldEqual true
       itemFromDB.put("secondWriteId", secondWriteId)
-      pointWriter.scheduleWrite(new PartitionKey(itemFromDB.get("id").textValue()), itemFromDB)
+        val partitionKey = new PartitionKeyBuilder()
+            .add(itemFromDB.get("tenantId").textValue())
+            .add(itemFromDB.get("userId").textValue())
+            .add(itemFromDB.get("sessionId").textValue())
+            .build()
+      pointWriter.scheduleWrite(partitionKey, itemFromDB)
     }
 
     pointWriter.flushAndClose()
@@ -259,7 +304,12 @@ class PointWriterITest extends IntegrationSpec with CosmosClient with AutoCleana
     // subsequent write operation should update none of them because all etags are stale
     for(itemFromDB <- allItems) {
       itemFromDB.put("thirdWriteId", thirdWriteId)
-      pointWriter.scheduleWrite(new PartitionKey(itemFromDB.get("id").textValue()), itemFromDB)
+        val partitionKey = new PartitionKeyBuilder()
+            .add(itemFromDB.get("tenantId").textValue())
+            .add(itemFromDB.get("userId").textValue())
+            .add(itemFromDB.get("sessionId").textValue())
+            .build()
+      pointWriter.scheduleWrite(partitionKey, itemFromDB)
     }
 
     pointWriter.flushAndClose()
@@ -301,7 +351,11 @@ class PointWriterITest extends IntegrationSpec with CosmosClient with AutoCleana
     // First create one item, as patch can only operate on existing items
     val itemWithFullSchema = CosmosPatchTestHelper.getPatchItemWithFullSchema(UUID.randomUUID().toString, strippedPartitionKeyPath)
     val id = itemWithFullSchema.get("id").textValue()
-    val partitionKey = new PartitionKey(itemWithFullSchema.get(strippedPartitionKeyPath).textValue())
+    val partitionKey = new PartitionKeyBuilder()
+          .add(itemWithFullSchema.get("tenantId").textValue())
+          .add(itemWithFullSchema.get("userId").textValue())
+          .add(itemWithFullSchema.get("sessionId").textValue())
+          .build()
 
     pointWriter.scheduleWrite(partitionKey, itemWithFullSchema)
     pointWriter.flushAndClose()
@@ -397,7 +451,11 @@ class PointWriterITest extends IntegrationSpec with CosmosClient with AutoCleana
     // First create one item, as patch can only operate on existing items
     val itemWithFullSchema = CosmosPatchTestHelper.getPatchItemWithFullSchema(UUID.randomUUID().toString, partitionKeyPath)
     val id = itemWithFullSchema.get("id").textValue()
-    val partitionKey = new PartitionKey(itemWithFullSchema.get(partitionKeyPath).textValue())
+    val partitionKey = new PartitionKeyBuilder()
+          .add(itemWithFullSchema.get("tenantId").textValue())
+          .add(itemWithFullSchema.get("userId").textValue())
+          .add(itemWithFullSchema.get("sessionId").textValue())
+          .build()
 
     pointWriter.scheduleWrite(partitionKey, itemWithFullSchema)
     pointWriter.flushAndClose()
@@ -478,7 +536,11 @@ class PointWriterITest extends IntegrationSpec with CosmosClient with AutoCleana
     parentObject.put("lastName", "Anderson")
 
     val id = itemWithNestedObject.get("id").textValue()
-    val partitionKey = new PartitionKey(id)
+    val partitionKey = new PartitionKeyBuilder()
+          .add(itemWithNestedObject.get("tenantId").textValue())
+          .add(itemWithNestedObject.get("userId").textValue())
+          .add(itemWithNestedObject.get("sessionId").textValue())
+          .build()
 
     pointWriter.scheduleWrite(partitionKey, itemWithNestedObject)
     pointWriter.flushAndClose()
@@ -525,7 +587,11 @@ class PointWriterITest extends IntegrationSpec with CosmosClient with AutoCleana
     // First create one item, as patch can only operate on existing items
     val itemWithFullSchema = CosmosPatchTestHelper.getPatchItemWithFullSchema(UUID.randomUUID().toString, strippedPartitionKeyPath)
     val id = itemWithFullSchema.get("id").textValue()
-    val partitionKey = new PartitionKey(itemWithFullSchema.get(strippedPartitionKeyPath).textValue())
+    val partitionKey = new PartitionKeyBuilder()
+          .add(itemWithFullSchema.get("tenantId").textValue())
+          .add(itemWithFullSchema.get("userId").textValue())
+          .add(itemWithFullSchema.get("sessionId").textValue())
+          .build()
 
     pointWriter.scheduleWrite(partitionKey, itemWithFullSchema)
     pointWriter.flushAndClose()
@@ -601,7 +667,11 @@ class PointWriterITest extends IntegrationSpec with CosmosClient with AutoCleana
     // First create one item, as patch can only operate on existing items
     val itemWithFullSchema = CosmosPatchTestHelper.getPatchItemWithFullSchema(UUID.randomUUID().toString, strippedPartitionKeyPath)
     val id = itemWithFullSchema.get("id").textValue()
-    val partitionKey = new PartitionKey(itemWithFullSchema.get(strippedPartitionKeyPath).textValue())
+    val partitionKey = new PartitionKeyBuilder()
+          .add(itemWithFullSchema.get("tenantId").textValue())
+          .add(itemWithFullSchema.get("userId").textValue())
+          .add(itemWithFullSchema.get("sessionId").textValue())
+          .build()
 
     pointWriter.scheduleWrite(partitionKey, itemWithFullSchema)
     pointWriter.flushAndClose()
@@ -671,7 +741,11 @@ class PointWriterITest extends IntegrationSpec with CosmosClient with AutoCleana
         // First create one item, as patch can only operate on existing items
         val itemWithFullSchema = CosmosPatchTestHelper.getPatchItemWithFullSchema(UUID.randomUUID().toString, strippedPartitionKeyPath)
         val id = itemWithFullSchema.get("id").textValue()
-        val partitionKey = new PartitionKey(itemWithFullSchema.get(strippedPartitionKeyPath).textValue())
+        val partitionKey = new PartitionKeyBuilder()
+              .add(itemWithFullSchema.get("tenantId").textValue())
+              .add(itemWithFullSchema.get("userId").textValue())
+              .add(itemWithFullSchema.get("sessionId").textValue())
+              .build()
 
         bulkWriter.scheduleWrite(partitionKey, itemWithFullSchema)
         bulkWriter.flushAndClose()
@@ -730,7 +804,11 @@ class PointWriterITest extends IntegrationSpec with CosmosClient with AutoCleana
     // First create one item, as patch can only operate on existing items
     val itemWithFullSchema = CosmosPatchTestHelper.getPatchItemWithFullSchema(UUID.randomUUID().toString, strippedPartitionKeyPath)
     val id = itemWithFullSchema.get("id").textValue()
-    val partitionKey = new PartitionKey(itemWithFullSchema.get(strippedPartitionKeyPath).textValue())
+    val partitionKey = new PartitionKeyBuilder()
+          .add(itemWithFullSchema.get("tenantId").textValue())
+          .add(itemWithFullSchema.get("userId").textValue())
+          .add(itemWithFullSchema.get("sessionId").textValue())
+          .build()
 
     pointWriter.scheduleWrite(partitionKey, itemWithFullSchema)
     pointWriter.flushAndClose()
@@ -784,7 +862,6 @@ class PointWriterITest extends IntegrationSpec with CosmosClient with AutoCleana
     val partitionKeyPath = StringUtils.join(partitionKeyDefinition.getPaths, "")
 
     val id = UUID.randomUUID().toString
-    val partitionKey = new PartitionKey(id)
 
     val partialUpdateSchema = StructType(Seq(
       StructField("_ts", IntegerType)
@@ -798,6 +875,11 @@ class PointWriterITest extends IntegrationSpec with CosmosClient with AutoCleana
 
     val pointWriterForPatch = CosmosPatchTestHelper.getPointWriterForPatch(columnConfigsMap, container, partitionKeyDefinition)
     val patchPartialUpdateItem = CosmosPatchTestHelper.getPatchItemWithSchema(id, partitionKeyPath, partialUpdateSchema)
+    val partitionKey = new PartitionKeyBuilder()
+          .add(patchPartialUpdateItem.get("tenantId").textValue())
+          .add(patchPartialUpdateItem.get("userId").textValue())
+          .add(patchPartialUpdateItem.get("sessionId").textValue())
+          .build()
 
     try {
       pointWriterForPatch.scheduleWrite(partitionKey, patchPartialUpdateItem)
@@ -836,7 +918,12 @@ class PointWriterITest extends IntegrationSpec with CosmosClient with AutoCleana
           val item = getItem(UUID.randomUUID().toString)
           val id = item.get("id").textValue()
           items += (id -> item)
-          pointWriter.scheduleWrite(new PartitionKey(item.get("id").textValue()), item)
+          val partitionKey = new PartitionKeyBuilder()
+              .add(item.get("tenantId").textValue())
+              .add(item.get("userId").textValue())
+              .add(item.get("sessionId").textValue())
+              .build()
+          pointWriter.scheduleWrite(partitionKey, item)
       }
 
       pointWriter.flushAndClose()
@@ -878,13 +965,23 @@ class PointWriterITest extends IntegrationSpec with CosmosClient with AutoCleana
       val patchItem = objectMapper.createObjectNode()
       patchItem.put("newPropertyString", UUID.randomUUID().toString)
       patchItem.put("id", id)
+      val itemPartitionKey = new PartitionKeyBuilder()
+          .add(item.get("tenantId").textValue())
+          .add(item.get("userId").textValue())
+          .add(item.get("sessionId").textValue())
+          .build()
+      val patchItemPartitionKey = new PartitionKeyBuilder()
+          .add(patchItem.get("tenantId").textValue())
+          .add(patchItem.get("userId").textValue())
+          .add(patchItem.get("sessionId").textValue())
+          .build()
 
-      pointWriter.scheduleWrite(new PartitionKey(item.get("id").textValue()), item)
-      pointWriter.scheduleWrite(new PartitionKey(item.get("id").textValue()), patchItem)
+      pointWriter.scheduleWrite(itemPartitionKey, item)
+      pointWriter.scheduleWrite(patchItemPartitionKey, patchItem)
 
       pointWriter.flushAndClose()
 
-      val itemsFromDB = container.readItem(id, new PartitionKey(id), classOf[ObjectNode]).block().getItem
+      val itemsFromDB = container.readItem(id, itemPartitionKey, classOf[ObjectNode]).block().getItem
       secondObjectNodeHasAllFieldsOfFirstObjectNode(item, itemsFromDB) shouldEqual true
       secondObjectNodeHasAllFieldsOfFirstObjectNode(patchItem, itemsFromDB) shouldEqual true
   }
@@ -915,7 +1012,11 @@ class PointWriterITest extends IntegrationSpec with CosmosClient with AutoCleana
     // First create one item
     val itemWithFullSchema = CosmosPatchTestHelper.getPatchItemWithFullSchema(UUID.randomUUID().toString, strippedPartitionKeyPath)
     val id = itemWithFullSchema.get("id").textValue()
-    val partitionKey = new PartitionKey(itemWithFullSchema.get(strippedPartitionKeyPath).textValue())
+    val partitionKey = new PartitionKeyBuilder()
+          .add(itemWithFullSchema.get("tenantId").textValue())
+          .add(itemWithFullSchema.get("userId").textValue())
+          .add(itemWithFullSchema.get("sessionId").textValue())
+          .build()
 
     pointWriter.scheduleWrite(partitionKey, itemWithFullSchema)
     pointWriter.flushAndClose()
@@ -983,7 +1084,11 @@ class PointWriterITest extends IntegrationSpec with CosmosClient with AutoCleana
       // First create one item, as patch can only operate on existing items
       val itemWithFullSchema = CosmosPatchTestHelper.getPatchItemWithFullSchema(UUID.randomUUID().toString, partitionKeyPath)
       val id = itemWithFullSchema.get("id").textValue()
-      val partitionKey = new PartitionKey(itemWithFullSchema.get(partitionKeyPath).textValue())
+      val partitionKey = new PartitionKeyBuilder()
+          .add(itemWithFullSchema.get("tenantId").textValue())
+          .add(itemWithFullSchema.get("userId").textValue())
+          .add(itemWithFullSchema.get("sessionId").textValue())
+          .build()
 
       pointWriter.scheduleWrite(partitionKey, itemWithFullSchema)
       pointWriter.flushAndClose()
@@ -1032,7 +1137,11 @@ class PointWriterITest extends IntegrationSpec with CosmosClient with AutoCleana
       parentObject.put("lastName", "Anderson")
 
       val id = itemWithNestedObject.get("id").textValue()
-      val partitionKey = new PartitionKey(id)
+      val partitionKey = new PartitionKeyBuilder()
+          .add(itemWithNestedObject.get("tenantId").textValue())
+          .add(itemWithNestedObject.get("userId").textValue())
+          .add(itemWithNestedObject.get("sessionId").textValue())
+          .build()
 
       pointWriter.scheduleWrite(partitionKey, itemWithNestedObject)
       pointWriter.flushAndClose()
@@ -1079,7 +1188,11 @@ class PointWriterITest extends IntegrationSpec with CosmosClient with AutoCleana
       // First create one item, as patch can only operate on existing items
       val itemWithFullSchema = CosmosPatchTestHelper.getPatchItemWithFullSchema(UUID.randomUUID().toString, strippedPartitionKeyPath)
       val id = itemWithFullSchema.get("id").textValue()
-      val partitionKey = new PartitionKey(itemWithFullSchema.get(strippedPartitionKeyPath).textValue())
+      val partitionKey = new PartitionKeyBuilder()
+          .add(itemWithFullSchema.get("tenantId").textValue())
+          .add(itemWithFullSchema.get("userId").textValue())
+          .add(itemWithFullSchema.get("sessionId").textValue())
+          .build()
 
       pointWriter.scheduleWrite(partitionKey, itemWithFullSchema)
       pointWriter.flushAndClose()
@@ -1149,7 +1262,11 @@ class PointWriterITest extends IntegrationSpec with CosmosClient with AutoCleana
               // First create one item
               val itemWithFullSchema = CosmosPatchTestHelper.getPatchItemWithFullSchema(UUID.randomUUID().toString, strippedPartitionKeyPath)
               val id = itemWithFullSchema.get("id").textValue()
-              val partitionKey = new PartitionKey(itemWithFullSchema.get(strippedPartitionKeyPath).textValue())
+              val partitionKey = new PartitionKeyBuilder()
+                  .add(itemWithFullSchema.get("tenantId").textValue())
+                  .add(itemWithFullSchema.get("userId").textValue())
+                  .add(itemWithFullSchema.get("sessionId").textValue())
+                  .build()
 
               bulkWriter.scheduleWrite(partitionKey, itemWithFullSchema)
               bulkWriter.flushAndClose()
@@ -1198,7 +1315,9 @@ class PointWriterITest extends IntegrationSpec with CosmosClient with AutoCleana
     objectNode.put("propString", UUID.randomUUID().toString)
     objectNode.put("propInt", RandomUtils.nextInt())
     objectNode.put("propBoolean", RandomUtils.nextBoolean())
-
+    objectNode.put("tenantId", "tenantId")
+    objectNode.put("userId", "userId1")
+    objectNode.put("sessionId", "sessionId1")
     objectNode
   }
 

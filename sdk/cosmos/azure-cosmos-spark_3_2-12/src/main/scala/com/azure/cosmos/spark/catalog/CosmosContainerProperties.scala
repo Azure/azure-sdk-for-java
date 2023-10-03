@@ -2,11 +2,15 @@
 // Licensed under the MIT License.
 package com.azure.cosmos.spark.catalog
 
+import java.util
+
 private[spark] object CosmosContainerProperties {
   val OnlySystemPropertiesIndexingPolicyName: String = "OnlySystemProperties"
   val AllPropertiesIndexingPolicyName: String = "AllProperties"
 
   private val partitionKeyPath = "partitionKeyPath"
+  private val subPartitionKeyPath1 = "subPartitionKeyPath1"
+  private val subPartitionKeyPath2 = "subPartitionKeyPath2"
   private val partitionKeyVersion = "partitionKeyVersion"
   private val indexingPolicy = "indexingPolicy"
   private val defaultTtlPropertyName = "defaultTtlInSeconds"
@@ -16,6 +20,13 @@ private[spark] object CosmosContainerProperties {
 
   def getPartitionKeyPath(properties: Map[String, String]): String = {
     properties.getOrElse(partitionKeyPath, defaultPartitionKeyPath)
+  }
+
+  def getSubPartitionKeyPath1(properties: Map[String, String]): Option[String] = {
+      properties.get(subPartitionKeyPath1)
+  }
+  def getSubPartitionKeyPath2(properties: Map[String, String]): Option[String] = {
+      properties.get(subPartitionKeyPath2)
   }
 
   def getPartitionKeyVersion(properties: Map[String, String]): Option[String] = {

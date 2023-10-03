@@ -4,7 +4,7 @@
 package com.azure.cosmos.spark.catalog
 
 import com.azure.cosmos.CosmosAsyncClient
-import com.azure.cosmos.models.{CosmosContainerProperties, ExcludedPath, FeedRange, IncludedPath, IndexingMode, IndexingPolicy, ModelBridgeInternal, PartitionKeyDefinition, PartitionKeyDefinitionVersion, SparkModelBridgeInternal, ThroughputProperties}
+import com.azure.cosmos.models.{CosmosContainerProperties, ExcludedPath, FeedRange, IncludedPath, IndexingMode, IndexingPolicy, ModelBridgeInternal, PartitionKeyDefinition, PartitionKeyDefinitionVersion, PartitionKind, SparkModelBridgeInternal, ThroughputProperties}
 import com.azure.cosmos.spark.diagnostics.BasicLoggingTrait
 import com.azure.cosmos.spark.{ContainerFeedRangesCache, CosmosConstants, Exceptions}
 import org.apache.spark.sql.connector.catalog.{NamespaceChange, TableChange}
@@ -169,12 +169,20 @@ private[spark] case class CosmosCatalogCosmosSDKClient(cosmosAsyncClient: Cosmos
 
     private def getPartitionKeyDefinition(containerProperties: Map[String, String]): PartitionKeyDefinition = {
         val partitionKeyPath = CosmosContainerProperties.getPartitionKeyPath(containerProperties)
-
+        val subPartitionKeyPath1 = CosmosContainerProperties.getSubPartitionKeyPath1(containerProperties)
+        val subPartitionKeyPath2 = CosmosContainerProperties.getSubPartitionKeyPath2(containerProperties)
         val partitionKeyDef = new PartitionKeyDefinition
         val paths = new util.ArrayList[String]
         paths.add(partitionKeyPath)
+        if (subPartitionKeyPath1.nonEmpty && subPartitionKeyPath2.nonEmpty) {
+            partitionKeyDef.setKind(PartitionKind.MULTI_HASH)
+            partitionKeyDef.setVersion(PartitionKeyDefinitionVersion.V2)
+            paths.add(subPartitionKeyPath1.get)
+            paths.add(subPartitionKeyPath2.get)
+        } else {
+            partitionKeyDef.setKind(PartitionKind.HASH)
+        }
         partitionKeyDef.setPaths(paths)
-
         CosmosContainerProperties.getPartitionKeyVersion(containerProperties) match {
             case Some(pkVersion) => partitionKeyDef.setVersion(PartitionKeyDefinitionVersion.valueOf(pkVersion))
             case None =>
