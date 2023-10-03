@@ -139,9 +139,7 @@ class SocketClient {
             String[] kv = line.split(": ", 2);
             String k = kv[0];
             String v = kv[1];
-            if (v == null) {
-                headers.add(k, v);
-            }
+            headers.add(HttpHeaderName.fromString(k), v);
         }
 
         StringBuilder bodyString = new StringBuilder();
