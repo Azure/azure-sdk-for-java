@@ -58,7 +58,7 @@ public final class TextDocumentInput {
     }
 
     /**
-     * Get the language property: (Optional) This is the 2 letter ISO 639-1
+     * Get the language property: (Optional) This is the 2-letter ISO 639-1
      * representation of a language. For example, use "en" for English; "es"
      * for Spanish etc. If not set, use "en" for English as default.
      *
@@ -69,14 +69,14 @@ public final class TextDocumentInput {
     }
 
     /**
-     * Set the language property: (Optional) This is the 2 letter ISO 639-1 representation of a language.
+     * Set the language property: (Optional) This is the 2-letter ISO 639-1 representation of a language.
      * For example, use "en" for English; "es" for Spanish etc. If not set, uses "en" for English as default.
-     * Per-document language will take precedence over whole batch language. See https://aka.ms/talangs for
-     * supported languages in Language API.
+     * Per-document language will take precedence over whole batch language. See <a href="https://aka.ms/talangs">Language</a>
+     * for supported languages in Language API.
      *
-     * @param language Optional. This is the 2 letter ISO 639-1 representation of a language.
+     * @param language Optional. This is the 2-letter ISO 639-1 representation of a language.
      *
-     * @return The object {@link TextDocumentInput} itself.
+     * @return The object {@code TextDocumentInput} itself.
      */
     public TextDocumentInput setLanguage(String language) {
         this.language = language;

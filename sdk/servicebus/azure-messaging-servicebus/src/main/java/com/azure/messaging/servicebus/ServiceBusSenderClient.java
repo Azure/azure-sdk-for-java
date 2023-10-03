@@ -18,39 +18,56 @@ import java.util.Objects;
  * <p><strong>Create an instance of sender</strong></p>
  * <!-- src_embed com.azure.messaging.servicebus.servicebussenderclient.instantiation -->
  * <pre>
- * &#47;&#47; The required parameters is connectionString, a way to authenticate with Service Bus using credentials.
- * &#47;&#47; The connectionString&#47;queueName must be set by the application. The 'connectionString' format is shown below.
- * &#47;&#47; &quot;Endpoint=&#123;fully-qualified-namespace&#125;;SharedAccessKeyName=&#123;policy-name&#125;;SharedAccessKey=&#123;key&#125;&quot;
+ * TokenCredential credential = new DefaultAzureCredentialBuilder&#40;&#41;.build&#40;&#41;;
+ *
+ * &#47;&#47; 'fullyQualifiedNamespace' will look similar to &quot;&#123;your-namespace&#125;.servicebus.windows.net&quot;
  * ServiceBusSenderClient sender = new ServiceBusClientBuilder&#40;&#41;
- *     .connectionString&#40;connectionString&#41;
+ *     .credential&#40;fullyQualifiedNamespace, credential&#41;
  *     .sender&#40;&#41;
  *     .queueName&#40;queueName&#41;
  *     .buildClient&#40;&#41;;
+ *
+ * sender.sendMessage&#40;new ServiceBusMessage&#40;&quot;Foo bar&quot;&#41;&#41;;
  * </pre>
  * <!-- end com.azure.messaging.servicebus.servicebussenderclient.instantiation -->
  *
  * <p><strong>Send messages to a Service Bus resource</strong></p>
  * <!-- src_embed com.azure.messaging.servicebus.servicebussenderclient.createMessageBatch -->
  * <pre>
- * List&lt;ServiceBusMessage&gt; messages = Arrays.asList&#40;new ServiceBusMessage&#40;BinaryData.fromBytes&#40;&quot;test-1&quot;.getBytes&#40;UTF_8&#41;&#41;&#41;,
- *     new ServiceBusMessage&#40;BinaryData.fromBytes&#40;&quot;test-2&quot;.getBytes&#40;UTF_8&#41;&#41;&#41;&#41;;
- *
- * CreateMessageBatchOptions options = new CreateMessageBatchOptions&#40;&#41;.setMaximumSizeInBytes&#40;10 * 1024&#41;;
+ * List&lt;ServiceBusMessage&gt; messages = Arrays.asList&#40;
+ *     new ServiceBusMessage&#40;&quot;test-1&quot;&#41;,
+ *     new ServiceBusMessage&#40;&quot;test-2&quot;&#41;&#41;;
  *
  * &#47;&#47; Creating a batch without options set.
- * ServiceBusMessageBatch batch = sender.createMessageBatch&#40;options&#41;;
+ * ServiceBusMessageBatch batch = sender.createMessageBatch&#40;&#41;;
  * for &#40;ServiceBusMessage message : messages&#41; &#123;
  *     if &#40;batch.tryAddMessage&#40;message&#41;&#41; &#123;
  *         continue;
  *     &#125;
  *
+ *     &#47;&#47; The batch is full. Send the current batch and create a new one.
+ *     sender.sendMessages&#40;batch&#41;;
+ *
+ *     batch = sender.createMessageBatch&#40;&#41;;
+ *
+ *     &#47;&#47; Add the message we couldn't before.
+ *     if &#40;!batch.tryAddMessage&#40;message&#41;&#41; &#123;
+ *         throw new IllegalArgumentException&#40;&quot;Message is too large for an empty batch.&quot;&#41;;
+ *     &#125;
+ * &#125;
+ *
+ * &#47;&#47; Send the final batch if there are any messages in it.
+ * if &#40;batch.getCount&#40;&#41; &gt; 0&#41; &#123;
  *     sender.sendMessages&#40;batch&#41;;
  * &#125;
+ *
+ * &#47;&#47; Finally dispose of the sender.
+ * sender.close&#40;&#41;;
  * </pre>
  * <!-- end com.azure.messaging.servicebus.servicebussenderclient.createMessageBatch -->
  *
  * <p><strong>Send messages using a size-limited {@link ServiceBusMessageBatch}</strong></p>
- * <!-- src_embed com.azure.messaging.servicebus.servicebussenderclient.createMessageBatch#CreateMessageBatchOptions-int -->
+ * <!-- src_embed com.azure.messaging.servicebus.servicebussenderclient.createMessageBatch#CreateMessageBatchOptions -->
  * <pre>
  * List&lt;ServiceBusMessage&gt; telemetryMessages = Arrays.asList&#40;firstMessage, secondMessage, thirdMessage&#41;;
  *
@@ -74,8 +91,16 @@ import java.util.Objects;
  *         &#125;
  *     &#125;
  * &#125;
+ *
+ * &#47;&#47; Send the final batch if there are any messages in it.
+ * if &#40;currentBatch.getCount&#40;&#41; &gt; 0&#41; &#123;
+ *     sender.sendMessages&#40;currentBatch&#41;;
+ * &#125;
+ *
+ * &#47;&#47; Dispose of the sender
+ * sender.close&#40;&#41;;
  * </pre>
- * <!-- end com.azure.messaging.servicebus.servicebussenderclient.createMessageBatch#CreateMessageBatchOptions-int -->
+ * <!-- end com.azure.messaging.servicebus.servicebussenderclient.createMessageBatch#CreateMessageBatchOptions -->
  *
  * @see ServiceBusClientBuilder#sender()
  * @see ServiceBusSenderAsyncClient To communicate with a Service Bus resource using an asynchronous client.

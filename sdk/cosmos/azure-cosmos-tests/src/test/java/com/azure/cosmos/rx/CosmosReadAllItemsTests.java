@@ -11,6 +11,7 @@ import com.azure.cosmos.implementation.FeedResponseListValidator;
 import com.azure.cosmos.models.CosmosQueryRequestOptions;
 import com.azure.cosmos.models.PartitionKey;
 import com.azure.cosmos.util.CosmosPagedFlux;
+import org.testng.SkipException;
 import org.testng.annotations.AfterClass;
 import org.testng.annotations.BeforeClass;
 import org.testng.annotations.Factory;
@@ -30,7 +31,6 @@ public class CosmosReadAllItemsTests extends TestSuiteBase {
 
     @Test(groups = { "query" }, timeOut = 2 * TIMEOUT)
     public void readMany_UsePageSizeInPagedFluxOption() {
-
         // first creating few items
         String pkValue = UUID.randomUUID().toString();
         int itemCount = 10;
@@ -51,9 +51,6 @@ public class CosmosReadAllItemsTests extends TestSuiteBase {
             this.container.readAllItems(new PartitionKey(pkValue), cosmosQueryRequestOptions, TestObject.class);
 
         validateQuerySuccess(queryObservable1.byPage(5), validator1, TIMEOUT);
-
-        CosmosQueryRequestOptions options = new CosmosQueryRequestOptions();
-        options.setMaxDegreeOfParallelism(2);
 
         FeedResponseListValidator<TestObject> validator2 =
             new FeedResponseListValidator

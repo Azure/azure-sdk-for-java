@@ -46,6 +46,7 @@ import java.util.Collections;
 import java.util.Iterator;
 import java.util.List;
 import java.util.Set;
+import java.util.UUID;
 import java.util.concurrent.ConcurrentHashMap;
 import java.util.stream.Collectors;
 
@@ -59,7 +60,7 @@ public class ProactiveConnectionManagementTest extends TestSuiteBase {
     private DatabaseAccount databaseAccount;
     private CosmosAsyncDatabase cosmosAsyncDatabase;
 
-    @BeforeClass(groups = {"multi-master"})
+    @BeforeClass(groups = {"multi-master", "flaky-multi-master"})
     public void beforeClass() {
         clientBuilder = new CosmosClientBuilder()
                 .endpoint(TestConfigurations.HOST)
@@ -140,6 +141,7 @@ public class ProactiveConnectionManagementTest extends TestSuiteBase {
         List<String> preferredRegions = proactiveConnectionManagementTestConfig.preferredRegions;
         int proactiveConnectionRegionCount = proactiveConnectionManagementTestConfig.proactiveConnectionRegionsCount;
 
+        CosmosAsyncContainer cosmosAsyncContainer = null;
         try {
 
             asyncClient = new CosmosClientBuilder()
@@ -154,10 +156,10 @@ public class ProactiveConnectionManagementTest extends TestSuiteBase {
 
             List<CosmosContainerIdentity> cosmosContainerIdentities = new ArrayList<>();
 
-            String containerId = "id1";
+            String containerId = "id1" + UUID.randomUUID();
             cosmosAsyncDatabase.createContainerIfNotExists(containerId, "/mypk").block();
 
-            CosmosAsyncContainer cosmosAsyncContainer = cosmosAsyncDatabase.getContainer(containerId);
+            cosmosAsyncContainer = cosmosAsyncDatabase.getContainer(containerId);
 
             cosmosContainerIdentities.add(new CosmosContainerIdentity(cosmosAsyncDatabase.getId(), containerId));
 
@@ -227,9 +229,10 @@ public class ProactiveConnectionManagementTest extends TestSuiteBase {
             assertThat(provider.count()).isEqualTo(endpoints.size());
             assertThat(collectionInfoByNameMap.size()).isEqualTo(cosmosContainerIdentities.size());
             assertThat(routingMap.size()).isEqualTo(cosmosContainerIdentities.size());
-
-            cosmosAsyncContainer.delete().block();
         } finally {
+            if (cosmosAsyncContainer != null) {
+                safeDeleteCollection(cosmosAsyncContainer);
+            }
             safeClose(asyncClient);
         }
     }
@@ -552,7 +555,7 @@ public class ProactiveConnectionManagementTest extends TestSuiteBase {
         }
     }
 
-    @Test(groups = {"multi-master"}, dataProvider = "proactiveContainerInitConfigs")
+    @Test(groups = {"flaky-multi-master"}, dataProvider = "proactiveContainerInitConfigs")
     public void openConnectionsAndInitCachesWithCosmosClient_And_PerContainerConnectionPoolSize_ThroughProactiveContainerInitConfig_WithTimeout(
         ProactiveConnectionManagementTestConfig proactiveConnectionManagementTestConfig) {
 
