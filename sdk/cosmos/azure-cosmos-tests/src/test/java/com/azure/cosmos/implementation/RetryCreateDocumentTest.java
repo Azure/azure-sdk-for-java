@@ -35,7 +35,7 @@ public class RetryCreateDocumentTest extends TestSuiteBase {
         super(clientBuilder);
     }
 
-    @Test(groups = { "simple" }, timeOut = TIMEOUT)
+    @Test(groups = { "fast" }, timeOut = TIMEOUT)
     public void retryDocumentCreate() throws Exception {
         // create a document to ensure collection is cached
         client.createDocument(collection.getSelfLink(),  getDocumentDefinition(), null, false).block();
@@ -70,7 +70,7 @@ public class RetryCreateDocumentTest extends TestSuiteBase {
         validateSuccess(createObservable, validator);
     }
 
-    @Test(groups = { "simple" }, timeOut = TIMEOUT)
+    @Test(groups = { "fast" }, timeOut = TIMEOUT)
     public void createDocument_noRetryOnNonRetriableFailure() throws Exception {
 
         AtomicInteger count = new AtomicInteger();
@@ -107,7 +107,7 @@ public class RetryCreateDocumentTest extends TestSuiteBase {
         validateFailure(createObservable, validator, TIMEOUT);
     }
 
-    @Test(groups = { "simple" }, timeOut = TIMEOUT)
+    @Test(groups = { "fast" }, timeOut = TIMEOUT)
     public void createDocument_failImmediatelyOnNonRetriable() throws Exception {
         // create a document to ensure collection is cached
         client.createDocument(collection.getSelfLink(),  getDocumentDefinition(), null, false).block();
@@ -140,12 +140,12 @@ public class RetryCreateDocumentTest extends TestSuiteBase {
         validateFailure(createObservable.timeout(Duration.ofMillis(100)), validator);
     }
 
-    @BeforeMethod(groups = { "simple" })
+    @BeforeMethod(groups = { "fast" })
     public void beforeMethod(Method method) {
         Mockito.reset(client.getSpyGatewayStoreModel());
     }
 
-    @BeforeClass(groups = { "simple" }, timeOut = SETUP_TIMEOUT)
+    @BeforeClass(groups = { "fast" }, timeOut = SETUP_TIMEOUT)
     public void before_RetryCreateDocumentTest() {
         // set up the client
         client = SpyClientUnderTestFactory.createClientWithGatewaySpy(clientBuilder());
@@ -165,7 +165,7 @@ public class RetryCreateDocumentTest extends TestSuiteBase {
         return doc;
     }
 
-    @AfterClass(groups = { "simple" }, timeOut = SHUTDOWN_TIMEOUT, alwaysRun = true)
+    @AfterClass(groups = { "fast" }, timeOut = SHUTDOWN_TIMEOUT, alwaysRun = true)
     public void afterClass() {
         safeClose(client);
     }

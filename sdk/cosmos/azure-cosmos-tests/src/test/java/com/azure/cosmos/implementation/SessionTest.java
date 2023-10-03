@@ -63,7 +63,7 @@ public class SessionTest extends TestSuiteBase {
         };
     }
 
-    @BeforeClass(groups = { "simple", "multi-master" }, timeOut = SETUP_TIMEOUT)
+    @BeforeClass(groups = { "fast", "multi-master" }, timeOut = SETUP_TIMEOUT)
     public void before_SessionTest() {
         createdDatabase = SHARED_DATABASE;
 
@@ -95,14 +95,14 @@ public class SessionTest extends TestSuiteBase {
         options.setPartitionKey(PartitionKey.NONE);
     }
 
-    @AfterClass(groups = { "simple", "multi-master" }, timeOut = SHUTDOWN_TIMEOUT, alwaysRun = true)
+    @AfterClass(groups = { "fast", "multi-master" }, timeOut = SHUTDOWN_TIMEOUT, alwaysRun = true)
     public void afterClass() {
         safeDeleteCollection(houseKeepingClient, createdCollection);
         safeClose(houseKeepingClient);
         safeClose(spyClient);
     }
 
-    @BeforeMethod(groups = { "simple" }, timeOut = SETUP_TIMEOUT)
+    @BeforeMethod(groups = { "fast" }, timeOut = SETUP_TIMEOUT)
     public void beforeTest(Method method) {
         spyClient.clearCapturedRequests();
     }
@@ -116,7 +116,7 @@ public class SessionTest extends TestSuiteBase {
             .collect(Collectors.toList());
     }
 
-    @Test(groups = { "simple" }, timeOut = TIMEOUT, dataProvider = "sessionTestArgProvider")
+    @Test(groups = { "fast" }, timeOut = TIMEOUT, dataProvider = "sessionTestArgProvider")
     public void sessionConsistency_ReadYourWrites(boolean isNameBased) {
         spyClient.readCollection(getCollectionLink(isNameBased), null).block();
         spyClient.createDocument(getCollectionLink(isNameBased), newDocument(), null, false).block();
@@ -143,7 +143,7 @@ public class SessionTest extends TestSuiteBase {
         }
     }
 
-    @Test(groups = { "simple" }, timeOut = TIMEOUT, dataProvider = "sessionTestArgProvider")
+    @Test(groups = { "fast" }, timeOut = TIMEOUT, dataProvider = "sessionTestArgProvider")
     @Ignore("TODO 32129 - reenable after fixing flakiness.")
     public void partitionedSessionToken(boolean isNameBased) throws NoSuchMethodException, InvocationTargetException, IllegalAccessException {
         spyClient.readCollection(getCollectionLink(isNameBased), null).block();
@@ -306,7 +306,7 @@ public class SessionTest extends TestSuiteBase {
         }
     }
 
-    @Test(groups = { "simple" }, timeOut = TIMEOUT, dataProvider = "sessionTestArgProvider")
+    @Test(groups = { "fast" }, timeOut = TIMEOUT, dataProvider = "sessionTestArgProvider")
     public void sessionTokenNotRequired(boolean isNameBased) {
         spyClient.readCollection(getCollectionLink(isNameBased), null).block();
         // No session token set for the master resource related request
@@ -384,7 +384,7 @@ public class SessionTest extends TestSuiteBase {
         assertThat(getSessionTokensInRequests().get(0)).doesNotContain(","); // making sure we have only one scope session token
     }
 
-    @Test(groups = { "simple" }, timeOut = TIMEOUT, dataProvider = "sessionTestArgProvider")
+    @Test(groups = { "fast" }, timeOut = TIMEOUT, dataProvider = "sessionTestArgProvider")
     public void sessionTokenInDocumentRead(boolean isNameBased) throws UnsupportedEncodingException {
         Document document = new Document();
         document.setId(UUID.randomUUID().toString());
@@ -413,7 +413,7 @@ public class SessionTest extends TestSuiteBase {
         assertThat(documentReadHttpRequests.get(0).headers().value(HttpConstants.HttpHeaders.SESSION_TOKEN)).isNotEmpty();
     }
 
-    @Test(groups = { "simple" }, timeOut = TIMEOUT, dataProvider = "sessionTestArgProvider")
+    @Test(groups = { "fast" }, timeOut = TIMEOUT, dataProvider = "sessionTestArgProvider")
     public void sessionTokenRemovedForMasterResource(boolean isNameBased) throws UnsupportedEncodingException {
         if (connectionMode == ConnectionMode.DIRECT) {
             throw new SkipException("Master resource access is only through gateway");
