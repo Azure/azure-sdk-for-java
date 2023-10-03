@@ -37,19 +37,23 @@ public class StatsbeatModule {
     private final FeatureStatsbeat instrumentationStatsbeat;
     private final NonessentialStatsbeat nonessentialStatsbeat;
     private final AzureMetadataService azureMetadataService;
+    private final boolean standalone;
 
     private final AtomicBoolean started = new AtomicBoolean();
 
     private final AtomicBoolean shutdown = new AtomicBoolean();
 
-    public StatsbeatModule(Consumer<MetadataInstanceResponse> vmMetadataServiceCallback) {
+    public StatsbeatModule(Consumer<MetadataInstanceResponse> vmMetadataServiceCallback, boolean standalone) {
         customDimensions = new CustomDimensions();
-        networkStatsbeat = new NetworkStatsbeat(customDimensions);
         attachStatsbeat = new AttachStatsbeat(customDimensions);
         featureStatsbeat = new FeatureStatsbeat(customDimensions, FeatureType.FEATURE);
         instrumentationStatsbeat = new FeatureStatsbeat(customDimensions, FeatureType.INSTRUMENTATION);
-        nonessentialStatsbeat = new NonessentialStatsbeat(customDimensions);
         azureMetadataService = new AzureMetadataService(attachStatsbeat, customDimensions, vmMetadataServiceCallback);
+        this.standalone = standalone;
+        if (!standalone) {
+            networkStatsbeat = new NetworkStatsbeat(customDimensions);
+            nonessentialStatsbeat = new NonessentialStatsbeat(customDimensions);
+        }
     }
 
     public void start(
@@ -80,11 +84,13 @@ public class StatsbeatModule {
         updateConnectionString(connectionString.get());
         updateInstrumentationKey(instrumentationKey.get());
 
-        scheduledExecutor.scheduleWithFixedDelay(
-            new StatsbeatSender(networkStatsbeat, telemetryItemExporter),
-            shortIntervalSeconds,
-            shortIntervalSeconds,
-            TimeUnit.SECONDS);
+        if (!standalone) {
+            scheduledExecutor.scheduleWithFixedDelay(
+                new StatsbeatSender(networkStatsbeat, telemetryItemExporter),
+                shortIntervalSeconds,
+                shortIntervalSeconds,
+                TimeUnit.SECONDS);
+        }
         scheduledExecutor.scheduleWithFixedDelay(
             new StatsbeatSender(attachStatsbeat, telemetryItemExporter),
             Math.min(60, longIntervalSeconds),
@@ -110,7 +116,7 @@ public class StatsbeatModule {
 
         featureStatsbeat.trackConfigurationOptions(featureSet);
 
-        if (!disabled) {
+        if (!disabled && !standalone) {
             nonessentialStatsbeat.setConnectionString(connectionString.get());
             nonessentialStatsbeat.setInstrumentationKey(instrumentationKey.get());
             scheduledExecutor.scheduleWithFixedDelay(

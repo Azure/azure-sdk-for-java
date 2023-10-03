@@ -27,6 +27,7 @@ import com.azure.monitor.opentelemetry.exporter.implementation.NoopTracer;
 import com.azure.monitor.opentelemetry.exporter.implementation.SpanDataMapper;
 import com.azure.monitor.opentelemetry.exporter.implementation.builders.AbstractTelemetryBuilder;
 import com.azure.monitor.opentelemetry.exporter.implementation.configuration.ConnectionString;
+import com.azure.monitor.opentelemetry.exporter.implementation.configuration.StatsbeatConnectionString;
 import com.azure.monitor.opentelemetry.exporter.implementation.heartbeat.HeartbeatExporter;
 import com.azure.monitor.opentelemetry.exporter.implementation.localstorage.LocalStorageStats;
 import com.azure.monitor.opentelemetry.exporter.implementation.localstorage.LocalStorageTelemetryPipelineListener;
@@ -34,6 +35,9 @@ import com.azure.monitor.opentelemetry.exporter.implementation.models.ContextTag
 import com.azure.monitor.opentelemetry.exporter.implementation.pipeline.TelemetryItemExporter;
 import com.azure.monitor.opentelemetry.exporter.implementation.pipeline.TelemetryPipeline;
 import com.azure.monitor.opentelemetry.exporter.implementation.pipeline.TelemetryPipelineListener;
+import com.azure.monitor.opentelemetry.exporter.implementation.statsbeat.Feature;
+import com.azure.monitor.opentelemetry.exporter.implementation.statsbeat.StatsbeatModule;
+import com.azure.monitor.opentelemetry.exporter.implementation.utils.PropertyHelper;
 import com.azure.monitor.opentelemetry.exporter.implementation.utils.ResourceParser;
 import com.azure.monitor.opentelemetry.exporter.implementation.utils.TempDirs;
 import com.azure.monitor.opentelemetry.exporter.implementation.utils.VersionGenerator;
@@ -49,14 +53,10 @@ import io.opentelemetry.sdk.resources.Resource;
 import io.opentelemetry.sdk.trace.export.SpanExporter;
 
 import java.io.File;
-import java.util.ArrayList;
-import java.util.Collections;
-import java.util.HashMap;
-import java.util.List;
-import java.util.Map;
-import java.util.Objects;
+import java.util.*;
 import java.util.function.BiConsumer;
 
+import static java.util.concurrent.TimeUnit.DAYS;
 import static java.util.concurrent.TimeUnit.MINUTES;
 
 /**
@@ -351,8 +351,29 @@ public final class AzureMonitorExporterBuilder {
     private MetricExporter buildMetricExporter(ConfigProperties configProperties) {
         HeartbeatExporter.start(
             MINUTES.toSeconds(15), createDefaultsPopulator(configProperties), builtTelemetryItemExporter::send);
+        if (connectionString != null) {
+            StatsbeatModule statsbeatModule = new StatsbeatModule(PropertyHelper::lazyUpdateVmRpIntegration, true);
+            statsbeatModule.start(
+                builtTelemetryItemExporter,
+                this::getStatsbeatConnectionString,
+                connectionString::getInstrumentationKey,
+                false,
+                MINUTES.toSeconds(15),
+                DAYS.toSeconds(1),
+                false,
+                initStatsbeatFeatures());
+        }
         return new AzureMonitorMetricExporter(
             new MetricDataMapper(createDefaultsPopulator(configProperties), true), builtTelemetryItemExporter);
+    }
+
+    private Set<Feature> initStatsbeatFeatures() {
+        // TODO - starting tracking native image usage based on a system property or env var to indicate it's from the native image path
+        return Collections.emptySet();
+    }
+
+    private StatsbeatConnectionString getStatsbeatConnectionString() {
+        return StatsbeatConnectionString.create(connectionString, null, null);
     }
 
     private LogRecordExporter buildLogRecordExporter(ConfigProperties configProperties) {
