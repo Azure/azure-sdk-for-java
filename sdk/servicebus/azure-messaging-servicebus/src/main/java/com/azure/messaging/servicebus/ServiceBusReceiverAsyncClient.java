@@ -56,10 +56,29 @@ import static com.azure.messaging.servicebus.implementation.ServiceBusConstants.
 import static com.azure.messaging.servicebus.implementation.ServiceBusConstants.SESSION_ID_KEY;
 
 /**
- * An <b>asynchronous</b> receiver responsible for receiving {@link ServiceBusReceivedMessage messages} from a specific
- * queue or topic subscription.  The
+ * <p>An <b>asynchronous</b> receiver responsible for receiving {@link ServiceBusReceivedMessage messages} from a
+ * queue or topic/subscription.</p>
  *
- * <p><strong>Sample: Create an instance of receiver</strong></p>
+ * <p>The examples shown in this document use a credential object named DefaultAzureCredential for authentication,
+ * which is appropriate for most scenarios, including local development and production environments. Additionally, we
+ * recommend using
+ * <a href="https://learn.microsoft.com/azure/active-directory/managed-identities-azure-resources/">managed identity</a>
+ * for authentication in production environments. You can find more information on different ways of authenticating and
+ * their corresponding credential types in the
+ * <a href="https://learn.microsoft.com/java/api/overview/azure/identity-readme">Azure Identity documentation"</a>.
+ * </p>
+ *
+ * <p><strong>Sample: Creating a {@link ServiceBusReceiverAsyncClient}</strong></p>
+ *
+ * <p>The following code sample demonstrates the creation of the asynchronous client
+ * {@link ServiceBusReceiverAsyncClient}.  The {@code fullyQualifiedNamespace} is the Service Bus namespace's host name.
+ * It is listed under the "Essentials" panel after navigating to the Event Hubs Namespace via Azure Portal.
+ * The credential used is {@code DefaultAzureCredential} because it combines commonly used credentials in deployment
+ * and development and chooses the credential to used based on its running environment.
+ * {@link ServiceBusReceiveMode#PEEK_LOCK} (the default receive mode) and
+ * {@link ServiceBusClientBuilder.ServiceBusReceiverClientBuilder#disableAutoComplete() disableAutoComplete()} are
+ * <strong>strongly</strong> recommended so users have control over message settlement.</p>
+ *
  * <!-- src_embed com.azure.messaging.servicebus.servicebusreceiverasyncclient.instantiation -->
  * <pre>
  * TokenCredential credential = new DefaultAzureCredentialBuilder&#40;&#41;.build&#40;&#41;;
@@ -78,9 +97,11 @@ import static com.azure.messaging.servicebus.implementation.ServiceBusConstants.
  * </pre>
  * <!-- end com.azure.messaging.servicebus.servicebusreceiverasyncclient.instantiation -->
  *
- * <p><strong>Receive all messages from Service Bus resource</strong></p>
+ * <p><strong>Sample: Receive all messages from Service Bus resource</strong></p>
+ *
  * <p>This returns an infinite stream of messages from Service Bus. The stream ends when the subscription is disposed
  * or other terminal scenarios. See {@link #receiveMessages()} for more information.</p>
+ *
  * <!-- src_embed com.azure.messaging.servicebus.servicebusreceiverasyncclient.receiveMessages -->
  * <pre>
  * &#47;&#47; Keep a reference to `subscription`. When the program is finished receiving messages, call
@@ -100,8 +121,17 @@ import static com.azure.messaging.servicebus.implementation.ServiceBusConstants.
  * </pre>
  * <!-- end com.azure.messaging.servicebus.servicebusreceiverasyncclient.receiveMessages -->
  *
- * <p><strong>Receive messages in {@link ServiceBusReceiveMode#RECEIVE_AND_DELETE} mode from a Service Bus
+ * <p><strong>Sample: Receive messages in {@link ServiceBusReceiveMode#RECEIVE_AND_DELETE} mode from a Service Bus
  * entity</strong></p>
+ *
+ * <p>The following code sample demonstrates the creation of the asynchronous client
+ * {@link ServiceBusReceiverAsyncClient} using {@link ServiceBusReceiveMode#RECEIVE_AND_DELETE}.  The
+ * {@code fullyQualifiedNamespace} is the Service Bus namespace's host name.  It is listed under the "Essentials" panel
+ * after navigating to the Event Hubs Namespace via Azure Portal.  The credential used is {@code DefaultAzureCredential}
+ * because it combines commonly used credentials in deployment  and development and chooses the credential to used based
+ * on its running environment.  See {@link ServiceBusReceiveMode#RECEIVE_AND_DELETE} docs for more information about
+ * receiving messages using this mode.</p>
+ *
  * <!-- src_embed com.azure.messaging.servicebus.servicebusreceiverasyncclient.receiveWithReceiveAndDeleteMode -->
  * <pre>
  * TokenCredential credential = new DefaultAzureCredentialBuilder&#40;&#41;.build&#40;&#41;;
@@ -130,11 +160,14 @@ import static com.azure.messaging.servicebus.implementation.ServiceBusConstants.
  * </pre>
  * <!-- end com.azure.messaging.servicebus.servicebusreceiverasyncclient.receiveWithReceiveAndDeleteMode -->
  *
- * <p><strong>Receive messages from a specific session</strong></p>
+ * <p><strong>Sample: Receive messages from a specific session</strong></p>
+ *
  * <p>To fetch messages from a specific session, switch to {@link ServiceBusSessionReceiverClientBuilder} and
  * build the session receiver client. Use {@link ServiceBusSessionReceiverAsyncClient#acceptSession(String)} to create
- * a session-bound {@link ServiceBusReceiverAsyncClient}.
- * </p>
+ * a session-bound {@link ServiceBusReceiverAsyncClient}.  The sample assumes that Service Bus sessions were
+ * <a href="https://learn.microsoft.com/azure/service-bus-messaging/enable-message-sessions">enabled at the time of
+ * the queue creation</a>.</p>
+ *
  * <!-- src_embed com.azure.messaging.servicebus.servicebusreceiverasyncclient.instantiation#sessionId -->
  * <pre>
  * TokenCredential credential = new DefaultAzureCredentialBuilder&#40;&#41;.build&#40;&#41;;
@@ -174,11 +207,13 @@ import static com.azure.messaging.servicebus.implementation.ServiceBusConstants.
  * </pre>
  * <!-- end com.azure.messaging.servicebus.servicebusreceiverasyncclient.instantiation#sessionId -->
  *
- * <p><strong>Receive messages from the first available session</strong></p>
+ * <p><strong>Sample:  Receive messages from the first available session</strong></p>
+ *
  * <p>To process messages from the first available session, switch to {@link ServiceBusSessionReceiverClientBuilder}
  * and build the session receiver client. Use
  * {@link ServiceBusSessionReceiverAsyncClient#acceptNextSession() acceptNextSession()} to find the first available
  * session to process messages from.</p>
+ *
  * <!-- src_embed com.azure.messaging.servicebus.servicebusreceiverasyncclient.instantiation#nextsession -->
  * <pre>
  * TokenCredential credential = new DefaultAzureCredentialBuilder&#40;&#41;.build&#40;&#41;;
@@ -213,9 +248,11 @@ import static com.azure.messaging.servicebus.implementation.ServiceBusConstants.
  * </pre>
  * <!-- end com.azure.messaging.servicebus.servicebusreceiverasyncclient.instantiation#nextsession -->
  *
- * <p><strong>Rate limiting consumption of messages from a Service Bus entity</strong></p>
+ * <p><strong>Sample:  Rate limiting consumption of messages from a Service Bus entity</strong></p>
+ *
  * <p>For message receivers that need to limit the number of messages they receive at a given time, they can use
  * {@link BaseSubscriber#request(long)}.</p>
+ *
  * <!-- src_embed com.azure.messaging.servicebus.servicebusreceiverasyncclient.receive#basesubscriber -->
  * <pre>
  * &#47;&#47; This is a non-blocking call. The program will move to the next line of code after setting up the operation.

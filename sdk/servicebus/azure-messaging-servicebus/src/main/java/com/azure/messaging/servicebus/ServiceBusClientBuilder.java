@@ -290,8 +290,10 @@ import static com.azure.messaging.servicebus.implementation.ServiceBusConstants.
  *
  * <p><strong>Sample: Receive messages from first available session</strong></p>
  *
- * <p>The following code sample demonstrates the creation of an async receiver that accepts and receives messages from
- * the next available session.</p>
+ * <p>To process messages from the first available session, switch to {@link ServiceBusSessionReceiverClientBuilder}
+ * and build the session receiver client. Use
+ * {@link ServiceBusSessionReceiverAsyncClient#acceptNextSession() acceptNextSession()} to find the first available
+ * session to process messages from.</p>
  *
  * <!-- src_embed com.azure.messaging.servicebus.servicebusreceiverasyncclient.instantiation#nextsession -->
  * <pre>
