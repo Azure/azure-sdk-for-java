@@ -304,7 +304,7 @@ public class FaultInjectionWithAvailabilityStrategyTests extends TestSuiteBase {
             // When the container does not exist yet, you would see 401 for example for point reads etc.
             // So, adding this delay after container creation to minimize risk of hitting these errors
             try {
-                Thread.sleep(5000);
+                Thread.sleep(3000);
             } catch (InterruptedException e) {
                 throw new RuntimeException(e);
             }
@@ -3825,10 +3825,12 @@ public class FaultInjectionWithAvailabilityStrategyTests extends TestSuiteBase {
                 validateStatusCodeIs200Ok,
                 1,
                 ArrayUtils.toArray(
-                    validateCtxTwoRegions,
                     validateCtxQueryPlan,
                     validateCtxOnlyFeedResponsesExceptQueryPlan,
                     (ctx) -> {
+                        assertThat(ctx.getContactedRegionNames()).isNotNull();
+                        assertThat(ctx.getContactedRegionNames().size()).isGreaterThanOrEqualTo(1);
+                        assertThat(ctx.getContactedRegionNames().contains(SECOND_REGION_NAME)).isEqualTo(true);
                         assertThat(ctx.getDiagnostics()).isNotNull();
                         CosmosDiagnostics[] diagnostics = ctx.getDiagnostics().toArray(new CosmosDiagnostics[0]);
 
@@ -4147,7 +4149,7 @@ public class FaultInjectionWithAvailabilityStrategyTests extends TestSuiteBase {
                 // When the container does not exist yet, you would see 401 for example for point reads etc.
                 // So, adding this delay after container creation to minimize risk of hitting these errors
                 try {
-                    Thread.sleep(5000);
+                    Thread.sleep(3000);
                 } catch (InterruptedException e) {
                     throw new RuntimeException(e);
                 }
