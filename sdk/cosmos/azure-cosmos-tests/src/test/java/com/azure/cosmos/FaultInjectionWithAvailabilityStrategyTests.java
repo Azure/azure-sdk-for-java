@@ -304,7 +304,7 @@ public class FaultInjectionWithAvailabilityStrategyTests extends TestSuiteBase {
             // When the container does not exist yet, you would see 401 for example for point reads etc.
             // So, adding this delay after container creation to minimize risk of hitting these errors
             try {
-                Thread.sleep(3000);
+                Thread.sleep(5000);
             } catch (InterruptedException e) {
                 throw new RuntimeException(e);
             }
@@ -4147,7 +4147,7 @@ public class FaultInjectionWithAvailabilityStrategyTests extends TestSuiteBase {
                 // When the container does not exist yet, you would see 401 for example for point reads etc.
                 // So, adding this delay after container creation to minimize risk of hitting these errors
                 try {
-                    Thread.sleep(3000);
+                    Thread.sleep(5000);
                 } catch (InterruptedException e) {
                     throw new RuntimeException(e);
                 }
