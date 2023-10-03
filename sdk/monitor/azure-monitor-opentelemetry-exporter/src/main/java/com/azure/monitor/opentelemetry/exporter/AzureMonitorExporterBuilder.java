@@ -262,7 +262,7 @@ public final class AzureMonitorExporterBuilder {
     public MetricExporter buildMetricExporter() {
         internalBuildAndFreeze();
         // TODO (trask) how to pass along configuration properties?
-        return buildMetricExporter(DefaultConfigProperties.createForTest(Collections.emptyMap()));
+        return buildMetricExporter(DefaultConfigProperties.create(Collections.emptyMap()));
     }
 
     /**
@@ -276,7 +276,7 @@ public final class AzureMonitorExporterBuilder {
     public LogRecordExporter buildLogRecordExporter() {
         internalBuildAndFreeze();
         // TODO (trask) how to pass along configuration properties?
-        return buildLogRecordExporter(DefaultConfigProperties.createForTest(Collections.emptyMap()));
+        return buildLogRecordExporter(DefaultConfigProperties.create(Collections.emptyMap()));
     }
 
     /**

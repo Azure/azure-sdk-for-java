@@ -26,7 +26,7 @@ public class AttachStatsbeatTest {
 
     @BeforeEach
     public void setup() {
-        attachStatsbeat = new AttachStatsbeat(new CustomDimensions());
+        attachStatsbeat = new AttachStatsbeat(new CustomDimensions(false));
     }
 
     @Test
@@ -39,7 +39,7 @@ public class AttachStatsbeatTest {
         BufferedSource source = Okio.buffer(Okio.source(in));
         String result = source.readUtf8();
         source.close();
-        CustomDimensions customDimensions = new CustomDimensions();
+        CustomDimensions customDimensions = new CustomDimensions(false);
         AzureMetadataService azureMetadataService =
             new AzureMetadataService(attachStatsbeat, customDimensions, (response) -> {});
         azureMetadataService.updateMetadata(result);
@@ -79,7 +79,7 @@ public class AttachStatsbeatTest {
 
     @Test
     public void testUnknownResourceProviderId() {
-        assertThat(new CustomDimensions().getResourceProvider()).isEqualTo(ResourceProvider.UNKNOWN);
+        assertThat(new CustomDimensions(false).getResourceProvider()).isEqualTo(ResourceProvider.UNKNOWN);
         assertThat(attachStatsbeat.getResourceProviderId()).isEqualTo("unknown");
     }
 }

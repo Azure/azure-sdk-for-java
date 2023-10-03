@@ -42,7 +42,7 @@ public class StatsbeatModule {
     private final AtomicBoolean shutdown = new AtomicBoolean();
 
     public StatsbeatModule(Consumer<MetadataInstanceResponse> vmMetadataServiceCallback, boolean standalone) {
-        customDimensions = new CustomDimensions();
+        customDimensions = new CustomDimensions(standalone);
         attachStatsbeat = new AttachStatsbeat(customDimensions);
         featureStatsbeat = new FeatureStatsbeat(customDimensions, FeatureType.FEATURE);
         instrumentationStatsbeat = new FeatureStatsbeat(customDimensions, FeatureType.INSTRUMENTATION);
@@ -158,7 +158,9 @@ public class StatsbeatModule {
 
     private void updateConnectionString(StatsbeatConnectionString connectionString) {
         if (connectionString != null) {
-            networkStatsbeat.setConnectionString(connectionString);
+            if (!standalone) {
+                networkStatsbeat.setConnectionString(connectionString);
+            }
             attachStatsbeat.setConnectionString(connectionString);
             featureStatsbeat.setConnectionString(connectionString);
             instrumentationStatsbeat.setConnectionString(connectionString);
@@ -167,7 +169,9 @@ public class StatsbeatModule {
 
     private void updateInstrumentationKey(String instrumentationKey) {
         if (instrumentationKey != null && !instrumentationKey.isEmpty()) {
-            networkStatsbeat.setInstrumentationKey(instrumentationKey);
+            if (!standalone) {
+                networkStatsbeat.setInstrumentationKey(instrumentationKey);
+            }
             attachStatsbeat.setInstrumentationKey(instrumentationKey);
             featureStatsbeat.setInstrumentationKey(instrumentationKey);
             instrumentationStatsbeat.setInstrumentationKey(instrumentationKey);

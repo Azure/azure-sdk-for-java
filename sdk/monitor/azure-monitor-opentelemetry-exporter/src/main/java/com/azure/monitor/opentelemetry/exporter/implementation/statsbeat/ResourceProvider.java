@@ -8,6 +8,7 @@ enum ResourceProvider {
     RP_APPSVC("appsvc"),
     RP_VM("vm"),
     RP_AKS("aks"),
+    RP_SPRING_CLOUD("springcloud"),
     UNKNOWN("unknown");
 
     private final String value;

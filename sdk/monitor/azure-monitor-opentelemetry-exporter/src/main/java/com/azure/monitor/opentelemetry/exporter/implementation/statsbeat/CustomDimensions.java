@@ -5,7 +5,9 @@ package com.azure.monitor.opentelemetry.exporter.implementation.statsbeat;
 
 import com.azure.monitor.opentelemetry.exporter.implementation.builders.StatsbeatTelemetryBuilder;
 import com.azure.monitor.opentelemetry.exporter.implementation.utils.PropertyHelper;
+import com.azure.monitor.opentelemetry.exporter.implementation.utils.Strings;
 import com.azure.monitor.opentelemetry.exporter.implementation.utils.SystemInformation;
+import com.azure.monitor.opentelemetry.exporter.implementation.utils.VersionGenerator;
 
 public class CustomDimensions {
 
@@ -18,36 +20,24 @@ public class CustomDimensions {
     private final String sdkVersion;
 
     // visible for testing
-    CustomDimensions() {
-        String qualifiedSdkVersion = PropertyHelper.getQualifiedSdkVersionString();
-
-        if (qualifiedSdkVersion.startsWith("aw")) {
-            resourceProvider = ResourceProvider.RP_APPSVC;
-            operatingSystem = OperatingSystem.OS_WINDOWS;
-        } else if (qualifiedSdkVersion.startsWith("al")) {
-            resourceProvider = ResourceProvider.RP_APPSVC;
-            operatingSystem = OperatingSystem.OS_LINUX;
-        } else if (qualifiedSdkVersion.startsWith("kw")) {
-            resourceProvider = ResourceProvider.RP_AKS;
-            operatingSystem = OperatingSystem.OS_WINDOWS;
-        } else if (qualifiedSdkVersion.startsWith("kl")) {
-            resourceProvider = ResourceProvider.RP_AKS;
-            operatingSystem = OperatingSystem.OS_LINUX;
-        } else if (qualifiedSdkVersion.startsWith("fw")) {
+    CustomDimensions(boolean standalone) {
+        if ("java".equals(System.getenv("FUNCTIONS_WORKER_RUNTIME"))) {
             resourceProvider = ResourceProvider.RP_FUNCTIONS;
-            operatingSystem = OperatingSystem.OS_WINDOWS;
-        } else if (qualifiedSdkVersion.startsWith("fl")) {
-            resourceProvider = ResourceProvider.RP_FUNCTIONS;
-            operatingSystem = OperatingSystem.OS_LINUX;
+        } else if (!Strings.isNullOrEmpty(System.getenv("WEBSITE_SITE_NAME"))) {
+            resourceProvider = ResourceProvider.RP_APPSVC;
+        } else if (!Strings.isNullOrEmpty(System.getenv("KUBERNETES_SERVICE_HOST"))) {
+            resourceProvider = ResourceProvider.RP_AKS;
+        } else if (!Strings.isNullOrEmpty(System.getenv("APPLICATIONINSIGHTS_SPRINGCLOUD_SERVICE_ID"))) {
+            resourceProvider = ResourceProvider.RP_SPRING_CLOUD;
         } else {
             resourceProvider = ResourceProvider.UNKNOWN;
-            operatingSystem = initOperatingSystem();
         }
 
-        sdkVersion = qualifiedSdkVersion.substring(qualifiedSdkVersion.lastIndexOf(':') + 1);
+        operatingSystem = initOperatingSystem();
+        sdkVersion = initSdkVersion(standalone);
         runtimeVersion = System.getProperty("java.version");
 
-        attachType = RpAttachType.getRpAttachType();
+        attachType = standalone ? RpAttachType.MANUAL.name() : RpAttachType.getRpAttachType();
         language = "java";
     }
 
@@ -85,5 +75,13 @@ public class CustomDimensions {
         } else {
             return OperatingSystem.OS_UNKNOWN;
         }
+    }
+
+    private static String initSdkVersion(boolean standalone) {
+        if (standalone) {
+            return VersionGenerator.getSdkVersion();
+        }
+        String qualifiedSdkVersionString = PropertyHelper.getQualifiedSdkVersionString();
+        return qualifiedSdkVersionString.substring(qualifiedSdkVersionString.lastIndexOf(':')+1);
     }
 }
