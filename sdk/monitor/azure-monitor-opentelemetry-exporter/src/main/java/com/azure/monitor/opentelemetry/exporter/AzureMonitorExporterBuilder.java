@@ -62,8 +62,7 @@ import java.util.Objects;
 import java.util.Set;
 import java.util.function.BiConsumer;
 
-import static java.util.concurrent.TimeUnit.DAYS;
-import static java.util.concurrent.TimeUnit.MINUTES;
+import static java.util.concurrent.TimeUnit.*;
 
 /**
  * This class provides a fluent builder API to configure the OpenTelemetry SDK with Azure Monitor Exporters.
@@ -364,8 +363,8 @@ public final class AzureMonitorExporterBuilder {
                 this::getStatsbeatConnectionString,
                 connectionString::getInstrumentationKey,
                 false,
-                MINUTES.toSeconds(15),
-                DAYS.toSeconds(1),
+                SECONDS.toSeconds(1), // MINUTES.toSeconds(1),
+                SECONDS.toSeconds(1), // DAYS.toSeconds(1),
                 false,
                 initStatsbeatFeatures());
         }
