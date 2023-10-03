@@ -170,10 +170,12 @@ public class HttpUrlConnectionAsyncClient implements HttpClient {
                 // Read response
                 int responseCode = connection.getResponseCode();
 
-                Map<String, List<String>> responseHeadersMap = new HashMap<>();
+                HttpHeaders responseHeaders = new HttpHeaders();
                 for (Map.Entry<String, List<String>> entry : connection.getHeaderFields().entrySet()) {
                     if (entry.getKey() != null) {
-                        responseHeadersMap.put(entry.getKey(), entry.getValue());
+                        for (String headerValue : entry.getValue()) {
+                            responseHeaders.add(entry.getKey(), headerValue);
+                        }
                     }
                 }
 
@@ -192,7 +194,7 @@ public class HttpUrlConnectionAsyncClient implements HttpClient {
                 return Mono.just(new HttpUrlConnectionResponse(
                     httpRequest,
                     responseCode,
-                    responseHeadersMap,
+                    responseHeaders,
                     Flux.just(ByteBuffer.wrap(outputStream.toByteArray()))
                 ));
 

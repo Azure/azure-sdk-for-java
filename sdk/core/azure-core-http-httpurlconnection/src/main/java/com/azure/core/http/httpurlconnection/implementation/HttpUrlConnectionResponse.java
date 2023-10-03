@@ -19,15 +19,10 @@ public class HttpUrlConnectionResponse extends HttpResponse {
     private final HttpHeaders headers;
     private final Flux<ByteBuffer> body;
 
-    public HttpUrlConnectionResponse(HttpRequest request, int statusCode, Map<String, List<String>> headers, Flux<ByteBuffer> body) {
+    public HttpUrlConnectionResponse(HttpRequest request, int statusCode, HttpHeaders headers, Flux<ByteBuffer> body) {
         super(request);
         this.statusCode = statusCode;
-        this.headers = new HttpHeaders();
-        for (Map.Entry<String, List<String>> header : headers.entrySet()) {
-            for (String headerValue : header.getValue()) {
-                this.headers.add(header.getKey(), headerValue);
-            }
-        }
+        this.headers = headers;
         this.body = body.cache();
     }
 
