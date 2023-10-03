@@ -540,7 +540,7 @@ public final class CoreUtils {
     /**
      * Calls {@link Future#get(long, TimeUnit)} and returns the value if the {@code future} completes before the timeout
      * is triggered. If the timeout is triggered, the {@code future} is {@link Future#cancel(boolean) cancelled}
-     * interrupting the running thread.
+     * interrupting the execution of the task that the {@link Future} represented.
      *
      * @param <T> The type of value returned by the {@code future}.
      * @param future The {@link Future} to get the value from.
