@@ -269,22 +269,24 @@ public abstract class TestBase implements BeforeEachCallback {
                 break;
             }
 
+            String simpleName = null;
+            HttpClientProvider httpClientProvider = iterator.next();
             try {
-                HttpClientProvider httpClientProvider = iterator.next();
-                String simpleName = httpClientProvider.getClass().getSimpleName();
-
+                simpleName = httpClientProvider.getClass().getSimpleName();
+            } catch (UnsupportedClassVersionError exception) {
                 // JDK HttpClient was introduced since java 11
                 if ("JdkHttpClientProvider".equalsIgnoreCase(simpleName)
                     && !isJavaVersionMinimumRequired(11)) {
                     continue;
+                } else {
+                    throw LOGGER.logExceptionAsError(new RuntimeException(exception));
                 }
-
-                if (includeHttpClientOrHttpClientProvider(simpleName.toLowerCase(Locale.ROOT))) {
-                    httpClientsToTest.add(httpClientProvider.createInstance());
-                }
-            } catch (UnsupportedClassVersionError exception) {
-                LOGGER.logExceptionAsError(new RuntimeException(exception));
             }
+
+            if (includeHttpClientOrHttpClientProvider(simpleName.toLowerCase(Locale.ROOT))) {
+                httpClientsToTest.add(httpClientProvider.createInstance());
+            }
+
         }
 
         return httpClientsToTest.stream();
