@@ -15,25 +15,24 @@ public class JsonNumber extends JsonElement {
     /**
      * Default constructor.
      * Default sets numberValue to "0" through the other constructor.
-     *
      * TODO: may need to remove this due to design guidelines? May only want to
      * have the public JsonNumber(Number value) constructor.
-     *
      * TODO: may need to double check that 0 is correctly cast to a Number type
      */
-    public JsonNumber() { }//this(0); }
+    JsonNumber() { }//this(0); }
 
-    public JsonNumber(String value) {
-        try {
-            this.numberValue = Integer.parseInt(value);
-        } catch (Exception e) {
-            try {
-                this.numberValue = Float.parseFloat(value);
-            } catch (Exception x) {
-                x.printStackTrace();
-            }
-        }
-    }
+    //TODO remove this commented code
+//    public JsonNumber(String value) {
+//        try {
+//            this.numberValue = Integer.parseInt(value);
+//        } catch (Exception e) {
+//            try {
+//                this.numberValue = Float.parseFloat(value);
+//            } catch (Exception x) {
+//                x.printStackTrace();
+//            }
+//        }
+//    }
 
     /**
      * Constructor used to explicitly set the number value of the JsonNumber object
@@ -42,8 +41,8 @@ public class JsonNumber extends JsonElement {
      *
      * TODO: check for invalid number values or types
      */
-    public JsonNumber(Number value) { 
-        this.numberValue = value; 
+    public JsonNumber(Number value) {
+        this.numberValue = value;
     }
 
     /**
@@ -65,8 +64,8 @@ public class JsonNumber extends JsonElement {
      * @return boolean of whether this JsonElement object is of type JsonNumber.
      */
     @Override
-    public boolean isNumber() { 
-        return true; 
+    public boolean isNumber() {
+        return true;
     }
 
     /*
@@ -117,9 +116,10 @@ public class JsonNumber extends JsonElement {
         try {
             return new JsonString(numberValue.toString());
         } catch (NullPointerException e) {
-            return new JsonString();
+            return new JsonString("");
         }
     }
+
 
     /**
      * @param jsonWriter JsonWriter that the serialized JsonNumber is written to.
@@ -127,17 +127,20 @@ public class JsonNumber extends JsonElement {
      * to it.
      * @throws IOException Thrown when JsonWriter.write* calls throw an IOException.
      *
-     * TODO: this needs to be extended to consider all of the number values
+     * TODO: remove commented out code when confirmed that it is not needed.
      */
-    @Override
+//    @Override
     public JsonWriter serialize(JsonWriter jsonWriter) throws IOException {
-        int integerForm = this.numberValue.intValue();
-        float floatForm = this.numberValue.floatValue();
-        if (integerForm == floatForm) {
-            jsonWriter.writeInt(integerForm);
-        } else {
-            jsonWriter.writeFloat(floatForm);
-        }
+
+        jsonWriter.writeNumber(numberValue);
+
+        //        int integerForm = this.numberValue.intValue();
+//        float floatForm = this.numberValue.floatValue();
+//        if (integerForm == floatForm) {
+//            jsonWriter.writeInt(integerForm);
+//        } else {
+//            jsonWriter.writeFloat(floatForm);
+//        }
         return jsonWriter;
     }
 }
