@@ -1156,7 +1156,7 @@ public class FullFidelityChangeFeedProcessorTest extends TestSuiteBase {
             Flux.just(1).subscribeOn(Schedulers.boundedElastic())
                 .flatMap(value -> {
                     logger.warn("Reading current throughput change.");
-                    return contextClient.readPartitionKeyRanges(partitionKeyRangesPath, null);
+                    return contextClient.readPartitionKeyRanges(partitionKeyRangesPath, (CosmosQueryRequestOptions) null);
                 })
                 .map(partitionKeyRangeFeedResponse -> {
                     int count = partitionKeyRangeFeedResponse.getResults().size();

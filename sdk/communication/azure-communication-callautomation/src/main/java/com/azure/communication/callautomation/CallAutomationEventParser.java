@@ -15,6 +15,14 @@ import com.azure.communication.callautomation.models.events.CancelAddParticipant
 import com.azure.communication.callautomation.models.events.ContinuousDtmfRecognitionStopped;
 import com.azure.communication.callautomation.models.events.ContinuousDtmfRecognitionToneFailed;
 import com.azure.communication.callautomation.models.events.ContinuousDtmfRecognitionToneReceived;
+import com.azure.communication.callautomation.models.events.DialogCompleted;
+import com.azure.communication.callautomation.models.events.DialogConsent;
+import com.azure.communication.callautomation.models.events.DialogFailed;
+import com.azure.communication.callautomation.models.events.DialogHangup;
+import com.azure.communication.callautomation.models.events.DialogLanguageChange;
+import com.azure.communication.callautomation.models.events.DialogSensitivityUpdate;
+import com.azure.communication.callautomation.models.events.DialogStarted;
+import com.azure.communication.callautomation.models.events.DialogTransfer;
 import com.azure.communication.callautomation.models.events.ParticipantsUpdated;
 import com.azure.communication.callautomation.models.events.PlayCanceled;
 import com.azure.communication.callautomation.models.events.PlayCompleted;
@@ -136,6 +144,22 @@ public final class CallAutomationEventParser {
                 ret = mapper.convertValue(eventData, AddParticipantCancelled.class);
             } else if (Objects.equals(eventType, "Microsoft.Communication.CancelAddParticipantFailed")) {
                 ret = mapper.convertValue(eventData, CancelAddParticipantFailed.class);
+            } else if (Objects.equals(eventType, "Microsoft.Communication.DialogStarted")) {
+                ret = mapper.convertValue(eventData, DialogStarted.class);
+            } else if (Objects.equals(eventType, "Microsoft.Communication.DialogCompleted")) {
+                ret = mapper.convertValue(eventData, DialogCompleted.class);
+            } else if (Objects.equals(eventType, "Microsoft.Communication.DialogFailed")) {
+                ret = mapper.convertValue(eventData, DialogFailed.class);
+            } else if (Objects.equals(eventType, "Microsoft.Communication.DialogConsent")) {
+                ret = mapper.convertValue(eventData, DialogConsent.class);
+            } else if (Objects.equals(eventType, "Microsoft.Communication.DialogHangup")) {
+                ret = mapper.convertValue(eventData, DialogHangup.class);
+            } else if (Objects.equals(eventType, "Microsoft.Communication.DialogLanguageChange")) {
+                ret = mapper.convertValue(eventData, DialogLanguageChange.class);
+            } else if (Objects.equals(eventType, "Microsoft.Communication.DialogTransfer")) {
+                ret = mapper.convertValue(eventData, DialogTransfer.class);
+            } else if (Objects.equals(eventType, "Microsoft.Communication.DialogSensitivityUpdate")) {
+                ret = mapper.convertValue(eventData, DialogSensitivityUpdate.class);
             }
             return ret;
         } catch (RuntimeException e) {

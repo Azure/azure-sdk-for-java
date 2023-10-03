@@ -56,52 +56,35 @@ import static com.azure.messaging.servicebus.implementation.Messages.INVALID_OPE
  * <p><strong>Create an instance of sender</strong></p>
  * <!-- src_embed com.azure.messaging.servicebus.servicebusasyncsenderclient.instantiation -->
  * <pre>
- * &#47;&#47; The required parameters is connectionString, a way to authenticate with Service Bus using credentials.
- * &#47;&#47; The connectionString&#47;queueName must be set by the application. The 'connectionString' format is shown below.
- * &#47;&#47; &quot;Endpoint=&#123;fully-qualified-namespace&#125;;SharedAccessKeyName=&#123;policy-name&#125;;SharedAccessKey=&#123;key&#125;&quot;
- * ServiceBusSenderAsyncClient sender = new ServiceBusClientBuilder&#40;&#41;
- *     .connectionString&#40;connectionString&#41;
+ * TokenCredential credential = new DefaultAzureCredentialBuilder&#40;&#41;.build&#40;&#41;;
+ *
+ * &#47;&#47; 'fullyQualifiedNamespace' will look similar to &quot;&#123;your-namespace&#125;.servicebus.windows.net&quot;
+ * ServiceBusSenderAsyncClient asyncSender = new ServiceBusClientBuilder&#40;&#41;
+ *     .credential&#40;fullyQualifiedNamespace, credential&#41;
  *     .sender&#40;&#41;
  *     .queueName&#40;queueName&#41;
  *     .buildAsyncClient&#40;&#41;;
+ *
+ * &#47;&#47; Use the sender and finally close it.
+ * asyncSender.close&#40;&#41;;
  * </pre>
  * <!-- end com.azure.messaging.servicebus.servicebusasyncsenderclient.instantiation -->
- *
- * <p><strong>Create an instance of sender using default credential</strong></p>
- * <!-- src_embed com.azure.messaging.servicebus.servicebusasyncsenderclient.instantiateWithDefaultCredential -->
- * <pre>
- * &#47;&#47; The required parameter is a way to authenticate with Service Bus using credentials.
- * &#47;&#47; The connectionString provides a way to authenticate with Service Bus.
- * ServiceBusSenderAsyncClient sender = new ServiceBusClientBuilder&#40;&#41;
- *     .credential&#40;&quot;&lt;&lt;fully-qualified-namespace&gt;&gt;&quot;,
- *         new DefaultAzureCredentialBuilder&#40;&#41;.build&#40;&#41;&#41;
- *     .sender&#40;&#41;
- *     .queueName&#40;&quot;&lt;&lt; QUEUE NAME &gt;&gt;&quot;&#41;
- *     .buildAsyncClient&#40;&#41;;
- * </pre>
- * <!-- end com.azure.messaging.servicebus.servicebusasyncsenderclient.instantiateWithDefaultCredential -->
  *
  * <p><strong>Send messages to a Service Bus resource</strong></p>
  * <!-- src_embed com.azure.messaging.servicebus.servicebusasyncsenderclient.createMessageBatch -->
  * <pre>
- * &#47;&#47; The required parameters is connectionString, a way to authenticate with Service Bus using credentials.
- * &#47;&#47; The connectionString&#47;queueName must be set by the application. The 'connectionString' format is shown below.
- * &#47;&#47; &quot;Endpoint=&#123;fully-qualified-namespace&#125;;SharedAccessKeyName=&#123;policy-name&#125;;SharedAccessKey=&#123;key&#125;&quot;
- * ServiceBusSenderAsyncClient sender = new ServiceBusClientBuilder&#40;&#41;
- *     .connectionString&#40;connectionString&#41;
- *     .sender&#40;&#41;
- *     .queueName&#40;queueName&#41;
- *     .buildAsyncClient&#40;&#41;;
- *
- * &#47;&#47; Creating a batch without options set, will allow for automatic routing of events to any partition.
- * sender.createMessageBatch&#40;&#41;.flatMap&#40;batch -&gt; &#123;
- *     batch.tryAddMessage&#40;new ServiceBusMessage&#40;BinaryData.fromBytes&#40;&quot;test-1&quot;.getBytes&#40;UTF_8&#41;&#41;&#41;&#41;;
- *     batch.tryAddMessage&#40;new ServiceBusMessage&#40;BinaryData.fromBytes&#40;&quot;test-2&quot;.getBytes&#40;UTF_8&#41;&#41;&#41;&#41;;
- *     return sender.sendMessages&#40;batch&#41;;
+ * &#47;&#47; `subscribe` is a non-blocking call. The program will move onto the next line of code when it starts the
+ * &#47;&#47; operation.  Users should use the callbacks on `subscribe` to understand the status of the send operation.
+ * asyncSender.createMessageBatch&#40;&#41;.flatMap&#40;batch -&gt; &#123;
+ *     batch.tryAddMessage&#40;new ServiceBusMessage&#40;&quot;test-1&quot;&#41;&#41;;
+ *     batch.tryAddMessage&#40;new ServiceBusMessage&#40;&quot;test-2&quot;&#41;&#41;;
+ *     return asyncSender.sendMessages&#40;batch&#41;;
  * &#125;&#41;.subscribe&#40;unused -&gt; &#123;
- * &#125;,
- *     error -&gt; System.err.println&#40;&quot;Error occurred while sending batch:&quot; + error&#41;,
- *     &#40;&#41; -&gt; System.out.println&#40;&quot;Send complete.&quot;&#41;&#41;;
+ * &#125;, error -&gt; &#123;
+ *     System.err.println&#40;&quot;Error occurred while sending batch:&quot; + error&#41;;
+ * &#125;, &#40;&#41; -&gt; &#123;
+ *     System.out.println&#40;&quot;Send complete.&quot;&#41;;
+ * &#125;&#41;;
  * </pre>
  * <!-- end com.azure.messaging.servicebus.servicebusasyncsenderclient.createMessageBatch -->
  *
@@ -114,36 +97,68 @@ import static com.azure.messaging.servicebus.implementation.Messages.INVALID_OPE
  * &#47;&#47; In this case, all the batches created with these options are limited to 256 bytes.
  * CreateMessageBatchOptions options = new CreateMessageBatchOptions&#40;&#41;
  *     .setMaximumSizeInBytes&#40;256&#41;;
- * AtomicReference&lt;ServiceBusMessageBatch&gt; currentBatch = new AtomicReference&lt;&gt;&#40;
- *     sender.createMessageBatch&#40;options&#41;.block&#40;&#41;&#41;;
+ * AtomicReference&lt;ServiceBusMessageBatch&gt; currentBatch = new AtomicReference&lt;&gt;&#40;&#41;;
  *
- * &#47;&#47; The sample Flux contains two messages, but it could be an infinite stream of telemetry messages.
- * telemetryMessages.flatMap&#40;message -&gt; &#123;
+ * &#47;&#47; Sends the current batch if it is not null and not empty.  If the current batch is null, sets it.
+ * &#47;&#47; Returns the batch to work with.
+ * Mono&lt;ServiceBusMessageBatch&gt; sendBatchAndGetCurrentBatchOperation = Mono.defer&#40;&#40;&#41; -&gt; &#123;
  *     ServiceBusMessageBatch batch = currentBatch.get&#40;&#41;;
- *     if &#40;batch.tryAddMessage&#40;message&#41;&#41; &#123;
- *         return Mono.empty&#40;&#41;;
+ *
+ *     if &#40;batch == null&#41; &#123;
+ *         return asyncSender.createMessageBatch&#40;options&#41;;
  *     &#125;
  *
- *     return Mono.when&#40;
- *         sender.sendMessages&#40;batch&#41;,
- *         sender.createMessageBatch&#40;options&#41;.map&#40;newBatch -&gt; &#123;
- *             currentBatch.set&#40;newBatch&#41;;
+ *     if &#40;batch.getCount&#40;&#41; &gt; 0&#41; &#123;
+ *         return asyncSender.sendMessages&#40;batch&#41;.then&#40;
+ *             asyncSender.createMessageBatch&#40;options&#41;
+ *                 .handle&#40;&#40;ServiceBusMessageBatch newBatch, SynchronousSink&lt;ServiceBusMessageBatch&gt; sink&#41; -&gt; &#123;
+ *                     &#47;&#47; Expect that the batch we just sent is the current one. If it is not, there's a race
+ *                     &#47;&#47; condition accessing currentBatch reference.
+ *                     if &#40;!currentBatch.compareAndSet&#40;batch, newBatch&#41;&#41; &#123;
+ *                         sink.error&#40;new IllegalStateException&#40;
+ *                             &quot;Expected that the object in currentBatch was batch. But it is not.&quot;&#41;&#41;;
+ *                     &#125; else &#123;
+ *                         sink.next&#40;newBatch&#41;;
+ *                     &#125;
+ *                 &#125;&#41;&#41;;
+ *     &#125; else &#123;
+ *         return Mono.just&#40;batch&#41;;
+ *     &#125;
+ * &#125;&#41;;
  *
- *             &#47;&#47; Add the message that did not fit in the previous batch.
- *             if &#40;!newBatch.tryAddMessage&#40;message&#41;&#41; &#123;
- *                 throw Exceptions.propagate&#40;new IllegalArgumentException&#40;
- *                     &quot;Message was too large to fit in an empty batch. Max size: &quot; + newBatch.getMaxSizeInBytes&#40;&#41;&#41;&#41;;
- *             &#125;
- *
- *             return newBatch;
- *         &#125;&#41;&#41;;
- * &#125;&#41;.then&#40;&#41;
- *     .doFinally&#40;signal -&gt; &#123;
- *         ServiceBusMessageBatch batch = currentBatch.getAndSet&#40;null&#41;;
- *         if &#40;batch != null &amp;&amp; batch.getCount&#40;&#41; &gt; 0&#41; &#123;
- *             sender.sendMessages&#40;batch&#41;.block&#40;&#41;;
+ * &#47;&#47; The sample Flux contains two messages, but it could be an infinite stream of telemetry messages.
+ * Flux&lt;Void&gt; sendMessagesOperation = telemetryMessages.flatMap&#40;message -&gt; &#123;
+ *     return sendBatchAndGetCurrentBatchOperation.flatMap&#40;batch -&gt; &#123;
+ *         if &#40;batch.tryAddMessage&#40;message&#41;&#41; &#123;
+ *             return Mono.empty&#40;&#41;;
+ *         &#125; else &#123;
+ *             return sendBatchAndGetCurrentBatchOperation
+ *                 .handle&#40;&#40;ServiceBusMessageBatch newBatch, SynchronousSink&lt;Void&gt; sink&#41; -&gt; &#123;
+ *                     if &#40;!newBatch.tryAddMessage&#40;message&#41;&#41; &#123;
+ *                         sink.error&#40;new IllegalArgumentException&#40;
+ *                             &quot;Message is too large to fit in an empty batch.&quot;&#41;&#41;;
+ *                     &#125; else &#123;
+ *                         sink.complete&#40;&#41;;
+ *                     &#125;
+ *                 &#125;&#41;;
  *         &#125;
  *     &#125;&#41;;
+ * &#125;&#41;;
+ *
+ * &#47;&#47; `subscribe` is a non-blocking call. The program will move onto the next line of code when it starts the
+ * &#47;&#47; operation.  Users should use the callbacks on `subscribe` to understand the status of the send operation.
+ * Disposable disposable = sendMessagesOperation.then&#40;sendBatchAndGetCurrentBatchOperation&#41;
+ *     .subscribe&#40;batch -&gt; &#123;
+ *         System.out.println&#40;&quot;Last batch should be empty: &quot; + batch.getCount&#40;&#41;&#41;;
+ *     &#125;, error -&gt; &#123;
+ *         System.err.println&#40;&quot;Error sending telemetry messages: &quot; + error&#41;;
+ *     &#125;, &#40;&#41; -&gt; &#123;
+ *         System.out.println&#40;&quot;Completed.&quot;&#41;;
+ *
+ *         &#47;&#47; Clean up sender when done using it.  Publishers should be long-lived objects.
+ *         asyncSender.close&#40;&#41;;
+ *     &#125;&#41;;
+ *
  * </pre>
  * <!-- end com.azure.messaging.servicebus.servicebusasyncsenderclient.createMessageBatch#CreateMessageBatchOptionsLimitedSize -->
  *

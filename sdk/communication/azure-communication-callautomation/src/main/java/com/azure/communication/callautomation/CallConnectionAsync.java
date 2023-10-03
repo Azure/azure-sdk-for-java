@@ -4,6 +4,7 @@
 package com.azure.communication.callautomation;
 
 import com.azure.communication.callautomation.implementation.CallConnectionsImpl;
+import com.azure.communication.callautomation.implementation.CallDialogsImpl;
 import com.azure.communication.callautomation.implementation.CallMediasImpl;
 import com.azure.communication.callautomation.implementation.accesshelpers.AddParticipantResponseConstructorProxy;
 import com.azure.communication.callautomation.implementation.accesshelpers.CallConnectionPropertiesConstructorProxy;
@@ -68,15 +69,19 @@ public final class CallConnectionAsync {
     private final String callConnectionId;
     private final CallConnectionsImpl callConnectionInternal;
     private final CallMediasImpl callMediasInternal;
+
+    private final CallDialogsImpl callDialogsInternal;
     private final ClientLogger logger;
 
     CallConnectionAsync(
         String callConnectionId,
         CallConnectionsImpl callConnectionInternal,
-        CallMediasImpl contentsInternal) {
+        CallMediasImpl contentsInternal,
+        CallDialogsImpl dialogsInternal) {
         this.callConnectionId = callConnectionId;
         this.callConnectionInternal = callConnectionInternal;
         this.callMediasInternal = contentsInternal;
+        this.callDialogsInternal = dialogsInternal;
         this.logger = new ClientLogger(CallConnectionAsync.class);
     }
 
@@ -547,6 +552,16 @@ public final class CallConnectionAsync {
     @ServiceMethod(returns = ReturnType.SINGLE)
     public CallMediaAsync getCallMediaAsync() {
         return new CallMediaAsync(callConnectionId, callMediasInternal);
+    }
+
+    /***
+     * Returns an object of CallDialogAsync
+     *
+     * @return a CallDialogAsync.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    public CallDialogAsync getCallDialogAsync() {
+        return new CallDialogAsync(callConnectionId, callDialogsInternal);
     }
     //endregion
 }

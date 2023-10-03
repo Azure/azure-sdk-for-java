@@ -58,6 +58,7 @@ public interface DiagnosticsClientContext {
                 generator.writeStringField("machineId", ClientTelemetry.getMachineId(clientConfig));
                 generator.writeStringField("connectionMode", clientConfig.getConnectionMode().toString());
                 generator.writeNumberField("numberOfClients", clientConfig.getActiveClientsCount());
+                generator.writeStringField("excrgns", clientConfig.excludedRegionsRelatedConfig());
                 generator.writeObjectFieldStart("clientEndpoints");
                 for (Map.Entry<String, Integer> entry: clientConfig.clientMap.entrySet()) {
                     try {
@@ -104,11 +105,11 @@ public interface DiagnosticsClientContext {
         private String endToEndOperationLatencyPolicyConfigAsString;
         private boolean endpointDiscoveryEnabled;
         private boolean multipleWriteRegionsEnabled;
-
         private String rntbdConfigAsString;
         private ConnectionMode connectionMode;
         private String machineId;
         private boolean replicaValidationEnabled = Configs.isReplicaAddressValidationEnabled();
+        private ConnectionPolicy connectionPolicy;
 
         public DiagnosticsClientConfig withMachineId(String machineId) {
             this.machineId = machineId;
@@ -149,6 +150,11 @@ public interface DiagnosticsClientContext {
                     .map(r -> DiagnosticsClientConfigSerializer.SPACE_PATTERN.matcher(r.toLowerCase(Locale.ROOT)).replaceAll(""))
                     .collect(Collectors.joining(","));
             }
+            return this;
+        }
+
+        public DiagnosticsClientConfig withConnectionPolicy(ConnectionPolicy connectionPolicy) {
+            this.connectionPolicy = connectionPolicy;
             return this;
         }
 
@@ -246,6 +252,14 @@ public interface DiagnosticsClientContext {
             return Strings.lenientFormat("(consistency: %s, mm: %s, prgns: [%s])", this.consistencyLevel,
                 this.multipleWriteRegionsEnabled,
                 preferredRegionsAsString);
+        }
+
+        private String excludedRegionsRelatedConfig() {
+            if (this.connectionPolicy == null) {
+                return "[]";
+            } else {
+                return this.connectionPolicy.getExcludedRegionsAsString();
+            }
         }
     }
 }

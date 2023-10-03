@@ -67,7 +67,6 @@ import java.util.concurrent.atomic.AtomicReference;
 import java.util.function.Function;
 
 import static com.azure.cosmos.implementation.Utils.getEffectiveCosmosChangeFeedRequestOptions;
-import static com.azure.cosmos.implementation.Utils.setContinuationTokenAndMaxItemCount;
 import static com.azure.cosmos.implementation.guava25.base.Preconditions.checkNotNull;
 
 /**
@@ -1052,7 +1051,6 @@ public final class CosmosEncryptionAsyncContainer {
         CosmosPagedFluxOptions pagedFluxOptions) {
 
         CosmosQueryRequestOptions finalOptions = setRequestHeaders(queryRequestOptions);
-        setContinuationTokenAndMaxItemCount(pagedFluxOptions, finalOptions);
 
         return transformer.transform(
             cosmosAsyncContainerAccessor.queryItemsInternalFunc(
@@ -1087,7 +1085,6 @@ public final class CosmosEncryptionAsyncContainer {
         CosmosPagedFluxOptions pagedFluxOptions) {
 
         CosmosQueryRequestOptions finalOptions = setRequestHeaders(options);
-        setContinuationTokenAndMaxItemCount(pagedFluxOptions, finalOptions);
 
         return transformer.transform(
             cosmosAsyncContainerAccessor.queryItemsInternalFuncWithMonoSqlQuerySpec(
