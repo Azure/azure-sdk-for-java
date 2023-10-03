@@ -71,9 +71,64 @@ import static com.azure.messaging.servicebus.ReceiverOptions.createUnnamedSessio
 import static com.azure.messaging.servicebus.implementation.ServiceBusConstants.AZ_TRACING_NAMESPACE_VALUE;
 
 /**
- * The builder to create Service Bus clients:
+ * <p>This class provides a fluent builder API to aid the instantiation of clients to send and receive messages to/from
+ * Service Bus entities.</p>
  *
- * <p><strong>Sample: Instantiate a synchronous sender</strong></p>
+ * <p>
+ * <strong>Credentials are required</strong> to perform operations against Azure Service Bus. They can be set by using
+ * one of the following methods:
+ *
+ * <ul>
+ *     <li>{@link #connectionString(String)} with a connection string to the Service Bus namespace.</li>
+ *     <li>{@link #credential(String, TokenCredential)}, {@link #credential(String, AzureSasCredential)}, and
+ *     {@link #credential(String, AzureNamedKeyCredential)} overloads can be used with the respective credentials
+ *     that has access to the fully-qualified Service Bus namespace.</li>
+ *     <li>{@link #credential(TokenCredential)}, {@link #credential(AzureSasCredential)}, and
+ *     {@link #credential(AzureNamedKeyCredential)} overloads can be used with its respective credentials.
+ *     {@link #fullyQualifiedNamespace(String)} <b>must be</b> set.</li>
+ * </ul>
+ *
+ * <p>The credential used in the following samples is {@code DefaultAzureCredential} for authentication. It is
+ * appropriate for most scenarios, including local development and production environments. Additionally, we recommend
+ * using
+ * <a href="https://learn.microsoft.com/azure/active-directory/managed-identities-azure-resources/">managed identity</a>
+ * for authentication in production environments.  You can find more information on different ways of authenticating and
+ * their corresponding credential types in the
+ * <a href="https://learn.microsoft.com/java/api/overview/azure/identity-readme">Azure Identity documentation"</a>.
+ * </p>
+ *
+ * <p>{@link ServiceBusClientBuilder} can instantiate several different clients.  The client to instantiate depends on
+ * whether users are publishing or receiving messages and if the entity is session-enabled.</p>
+ *
+ * <ul>
+ *     <li><strong>Sending messages</strong>: Use the {@link #sender() sender()} sub-builder to create
+ *     {@link ServiceBusSenderAsyncClient} and {@link ServiceBusSenderClient}.</li>
+ *
+ *     <li><strong>Receiving messages</strong>: Use the {@link #receiver() receiver()} sub-builder to create
+ *     {@link ServiceBusReceiverAsyncClient} and {@link ServiceBusReceiverAsyncClient}.</li>
+ *
+ *     <li><strong>Receiving messages from a session-enabled Service Bus entity</strong>: Use the
+ *     {@link #sessionReceiver() sessionReceiver()} sub-builder to create {@link ServiceBusSessionReceiverAsyncClient}
+ *     and {@link ServiceBusSessionReceiverClient}.</li>
+ *
+ *     <li><strong>Receiving messages using a callback-based processor</strong>: Use the
+ *     {@link #processor() processor()} sub-builder to create {@link ServiceBusProcessorClient}.</li>
+ *
+ *     <li><strong>Receiving messages from a session-enabled Service Bus entity using a callback-based processor
+ *     </strong>: Use the {@link #sessionProcessor() sessionProcessor()} sub-builder to create
+ *     {@link ServiceBusProcessorClient}.</li>
+ * </ul>
+ *
+ * <h3>Sending messages</h3>
+ *
+ * <p><strong>Sample: Instantiate a synchronous sender and send a message</strong></p>
+ *
+ * <p>The following code sample demonstrates the creation of the synchronous client {@link ServiceBusSenderClient}
+ * and sending a message.  The  {@code fullyQualifiedNamespace} is the Service Bus namespace's host name.  It is listed
+ * under the "Essentials" panel after navigating to the Service Bus namespace via Azure Portal. The credential used is
+ * {@code DefaultAzureCredential} because it combines commonly used credentials in deployment and development and
+ * chooses the credential to used based on its running environment.  When performance is important, consider using
+ * {@link com.azure.messaging.servicebus.ServiceBusMessageBatch} to publish multiple messages at once.</p>
  *
  * <!-- src_embed com.azure.messaging.servicebus.servicebussenderclient.instantiation -->
  * <pre>
@@ -83,14 +138,19 @@ import static com.azure.messaging.servicebus.implementation.ServiceBusConstants.
  * ServiceBusSenderClient sender = new ServiceBusClientBuilder&#40;&#41;
  *     .credential&#40;fullyQualifiedNamespace, credential&#41;
  *     .sender&#40;&#41;
- *     .queueName&#40;&quot;&lt;&lt;queue-name&gt;&gt;&quot;&#41;
+ *     .queueName&#40;queueName&#41;
  *     .buildClient&#40;&#41;;
  *
  * sender.sendMessage&#40;new ServiceBusMessage&#40;&quot;Foo bar&quot;&#41;&#41;;
  * </pre>
  * <!-- end com.azure.messaging.servicebus.servicebussenderclient.instantiation -->
  *
- * <p><strong>Instantiate an asynchronous receiver</strong></p>
+ * <h3>Consuming messages</h3>
+ *
+ * <p>There are multiple clients for consuming messages from a Service Bus entity. The samples below demonstrate
+ * consuming messages via the callback based processor and using the receiver clients.</p>
+ *
+ * <p><strong>Sample: Instantiate an asynchronous receiver</strong></p>
  * <!-- src_embed com.azure.messaging.servicebus.servicebusreceiverasyncclient.instantiation -->
  * <pre>
  * TokenCredential credential = new DefaultAzureCredentialBuilder&#40;&#41;.build&#40;&#41;;
@@ -203,10 +263,24 @@ import static com.azure.messaging.servicebus.implementation.ServiceBusConstants.
  * processorClient.close&#40;&#41;;
  * </pre>
  * <!-- end com.azure.messaging.servicebus.servicebusprocessorclient#receive-mode-peek-lock-instantiation -->
-
+ *
+ * <h3>Consuming messages from a session-enabled Service Bus entity</h3>
+ *
+ * <p>Service Bus supports joint and ordered handling of unbounded sequences of messages through
+ * "<a href="https://learn.microsoft.com/azure/service-bus-messaging/message-sessions">Service Bus sessions</a>".
+ * Sessions can be used as a first in, first out (FIFO) processing of messages.  Queues and topics/subscriptions
+ * support Service Bus sessions, however, it must be
+ * <a href="https://learn.microsoft.com/azure/service-bus-messaging/enable-message-sessions">enabled at the time of
+ * entity creation</a>.</p>
+ *
+ * <p><strong>Sample: Sending a message to a session-enabled queue</strong></p>
+ *
+ * <h3>Connection sharing</h3>
+ *
+ * <p>The creation of physical connection to Service Bus requires resources. If your architecture allows, an application
+ * should share connection between clients which can be achieved by sharing the top level builder as shown below.</p>
+ *
  * <p><strong>Sharing a connection between clients</strong></p>
- * The creation of physical connection to Service Bus requires resources. If your architecture allows, an application
- * should share connection between clients which can be achieved by sharing the top level builder as shown below.
  *
  * <!-- src_embed com.azure.messaging.servicebus.connection.sharing -->
  * <pre>
@@ -238,28 +312,6 @@ import static com.azure.messaging.servicebus.implementation.ServiceBusConstants.
  * </pre>
  * <!-- end com.azure.messaging.servicebus.connection.sharing -->
  *
- * <p><strong>Clients for sending messages</strong></p>
- * <ul>
- * <li>{@link ServiceBusSenderAsyncClient}</li>
- * <li>{@link ServiceBusSenderClient}</li>
- * </ul>
- *
- * <p><strong>Clients for receiving messages</strong></p>
- * <ul>
- * <li>{@link ServiceBusReceiverAsyncClient}</li>
- * <li>{@link ServiceBusReceiverClient}</li>
- * </ul>
- *
- * <p><strong>Clients for receiving messages from a session-enabled Service Bus entity</strong></p>
- * <ul>
- * <li>{@link ServiceBusSessionReceiverAsyncClient}</li>
- * <li>{@link ServiceBusSessionReceiverClient}</li>
- * </ul>
- *
- * <p><strong>Client for receiving messages using a callback-based processor</strong></p>
- * <ul>
- * <li>{@link ServiceBusProcessorClient}</li>
- * </ul>
  */
 @ServiceClientBuilder(serviceClients = {ServiceBusReceiverAsyncClient.class, ServiceBusSenderAsyncClient.class,
     ServiceBusSenderClient.class, ServiceBusReceiverClient.class, ServiceBusProcessorClient.class},

@@ -57,9 +57,9 @@ import static com.azure.messaging.servicebus.implementation.ServiceBusConstants.
 
 /**
  * An <b>asynchronous</b> receiver responsible for receiving {@link ServiceBusReceivedMessage messages} from a specific
- * queue or topic subscription.
+ * queue or topic subscription.  The
  *
- * <p><strong>Create an instance of receiver</strong></p>
+ * <p><strong>Sample: Create an instance of receiver</strong></p>
  * <!-- src_embed com.azure.messaging.servicebus.servicebusreceiverasyncclient.instantiation -->
  * <pre>
  * TokenCredential credential = new DefaultAzureCredentialBuilder&#40;&#41;.build&#40;&#41;;

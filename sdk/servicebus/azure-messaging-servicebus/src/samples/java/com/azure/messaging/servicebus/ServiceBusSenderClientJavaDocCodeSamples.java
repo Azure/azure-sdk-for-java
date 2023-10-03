@@ -47,7 +47,7 @@ public class ServiceBusSenderClientJavaDocCodeSamples {
         ServiceBusSenderClient sender = new ServiceBusClientBuilder()
             .credential(fullyQualifiedNamespace, credential)
             .sender()
-            .queueName("<<queue-name>>")
+            .queueName(queueName)
             .buildClient();
 
         sender.sendMessage(new ServiceBusMessage("Foo bar"));
