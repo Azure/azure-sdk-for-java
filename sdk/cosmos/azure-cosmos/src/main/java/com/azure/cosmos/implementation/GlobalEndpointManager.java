@@ -49,13 +49,8 @@ public class GlobalEndpointManager implements AutoCloseable {
         this.maxInitializationTime = Duration.ofSeconds(configs.getGlobalEndpointManagerMaxInitializationTimeInSeconds());
         try {
             this.locationCache = new LocationCache(
-                    new ArrayList<>(connectionPolicy.getPreferredRegions() != null ?
-                            connectionPolicy.getPreferredRegions():
-                            Collections.emptyList()
-                    ),
+                    connectionPolicy,
                     owner.getServiceEndpoint(),
-                    connectionPolicy.isEndpointDiscoveryEnabled(),
-                    connectionPolicy.isMultipleWriteRegionsEnabled(),
                     configs);
 
             this.owner = owner;

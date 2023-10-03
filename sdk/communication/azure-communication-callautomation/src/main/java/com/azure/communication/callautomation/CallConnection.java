@@ -303,5 +303,15 @@ public final class CallConnection {
         return new CallMedia(callConnectionAsync.getCallMediaAsync());
     }
 
+    /***
+     * Returns an object of CallDialog
+     *
+     * @return a CallDialogAsync.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    public CallDialog getCallDialog() {
+        return new CallDialog(callConnectionAsync.getCallDialogAsync());
+    }
+
     //endregion
 }

@@ -697,7 +697,7 @@ public class OrderbyDocumentQueryTest extends TestSuiteBase {
         }
 
         numberOfPartitions = CosmosBridgeInternal.getAsyncDocumentClient(client)
-                .readPartitionKeyRanges("dbs/" + createdDatabase.getId() + "/colls/" + createdCollection.getId(), null)
+                .readPartitionKeyRanges("dbs/" + createdDatabase.getId() + "/colls/" + createdCollection.getId(), (CosmosQueryRequestOptions) null)
                 .flatMap(p -> Flux.fromIterable(p.getResults())).collectList().single().block().size();
 
         waitIfNeededForReplicasToCatchUp(getClientBuilder());

@@ -52,7 +52,6 @@ private object PartitionMetadataCache extends BasicLoggingTrait {
 
   // purged cached items if they haven't been retrieved within 2 hours
   private[this] val cachedItemTtlInMsDefault: Long = 2 * 60 * 60 * 1000
-  // TODO @fabianm reevaluate usage of test hooks over reflection and/or making the fields vars
   // so that they can simply be changed under test
   private[this] var cacheTestOverride: Option[TrieMap[String, PartitionMetadata]] = None
   private[this] var testTimerOverride: Option[Timer] = None
