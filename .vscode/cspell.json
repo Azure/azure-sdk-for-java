@@ -686,7 +686,9 @@
         "Pdirect",
 	      "Pmulti",
         "Psplit",
-        "Pquery"
+        "Pquery",
+        "Pcfp",
+        "Pflaky"
       ]
     },
     {
