@@ -1,5 +1,7 @@
 package com.azure.json;
 
+import com.azure.json.implementation.StringBuilderWriter;
+
 import java.io.IOException;
 import java.io.OutputStream;
 import java.io.StringWriter;
@@ -153,7 +155,7 @@ public class JsonArray extends JsonElement {
      * @return String representation of the JsonArray object
      */
     public String toJson() throws IOException {
-        try (StringWriter stringOutput = new StringWriter()) {
+        try (StringBuilderWriter stringOutput = new StringBuilderWriter(new StringBuilder())) {
             toWriter(stringOutput);
             return stringOutput.toString();
         }
@@ -255,12 +257,12 @@ public class JsonArray extends JsonElement {
      * @return boolean of whether this JsonElement object is of type JsonArray.
      */
     @Override
-    public boolean isArray() { 
-        return true; 
+    public boolean isArray() {
+        return true;
     }
 
     @Override
-    public JsonArray asArray() { 
+    public JsonArray asArray() {
         return this;
     }
 
@@ -300,7 +302,8 @@ public class JsonArray extends JsonElement {
         if (elements.size() >= 1) {
             return elements.get(0).asString();
         } else {
-            return new JsonString();
+            //todo hacky fix for now
+            return new JsonString("");
         }
     }
 

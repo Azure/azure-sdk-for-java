@@ -1,5 +1,7 @@
 package com.azure.json;
 
+import com.azure.json.implementation.StringBuilderWriter;
+
 import java.io.IOException;
 import java.io.OutputStream;
 import java.io.StringWriter;
@@ -362,7 +364,8 @@ public class JsonObject extends JsonElement {
         if (properties.size() >= 1) {
             return properties.get(properties.keySet().iterator().next()).asString(); //Should only get the first element.
         } else {
-            return new JsonString();
+            //todo hacky fix for now
+            return new JsonString("");
         }
     }
 
@@ -372,7 +375,11 @@ public class JsonObject extends JsonElement {
      */
     @Override
     public String toString() {
-        return this.toJson();
+        try {
+            return this.toJson();
+        } catch (IOException e) {
+            throw new RuntimeException(e);
+        }
     }
 
     /**
@@ -435,17 +442,12 @@ public class JsonObject extends JsonElement {
      * utilises the toWriter method.
      * @return the String representation of the JsonObject
      */
-    public String toJson() {
-        String s = null;
 
-        try (StringWriter stringOutput = new StringWriter()) {
+    public String toJson() throws IOException {
+        try (StringBuilderWriter stringOutput = new StringBuilderWriter(new StringBuilder())) {
             toWriter(stringOutput);
-            s = stringOutput.toString();
-        } catch (IOException e) {
-            // TODO: 22/08/2023 add better logging than this
-            e.printStackTrace();
+            return stringOutput.toString();
         }
-        return s;
     }
 
     /**
