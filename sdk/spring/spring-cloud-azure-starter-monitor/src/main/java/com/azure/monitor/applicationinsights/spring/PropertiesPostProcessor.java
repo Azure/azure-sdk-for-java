@@ -24,8 +24,11 @@ class PropertiesPostProcessor implements EnvironmentPostProcessor, Ordered {
 
         if (starterHasToBeDisabled(environment)) {
             // To log once the logging system is initialized in the Spring Boot application
-            application.addInitializers(applicationContext -> LOG.warn("The spring-cloud-azure-starter-monitor Spring starter is disabled because the Application Insights Java agent is enabled."
-                + " You can remove this message by adding the otel.sdk.disabled=true property."));
+            application.addInitializers(applicationContext -> {
+                Logger log = LoggerFactory.getLogger(PropertiesPostProcessor.class);
+                log.warn("The spring-cloud-azure-starter-monitor Spring starter is disabled because the Application Insights Java agent is enabled."
+                    + " You can remove this message by adding the otel.sdk.disabled=true property.");
+            });
         }
 
         Map<String, Object> newProperties = buildNewProperties(environment);
