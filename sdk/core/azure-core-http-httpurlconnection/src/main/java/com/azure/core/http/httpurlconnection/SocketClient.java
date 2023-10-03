@@ -2,6 +2,7 @@ package com.azure.core.http.httpurlconnection;
 
 import com.azure.core.http.HttpHeader;
 import com.azure.core.http.HttpHeaderName;
+import com.azure.core.http.HttpHeaders;
 import com.azure.core.http.HttpRequest;
 import com.azure.core.http.httpurlconnection.implementation.HttpUrlConnectionResponse;
 import reactor.core.publisher.Flux;
@@ -91,26 +92,26 @@ class SocketClient {
         final StringBuilder request = new StringBuilder();
 
         request.append("PATCH")
-            .append(" ")
-            .append(httpRequest.getUrl().getPath())
-            .append(HTTP_VERSION)
-            .append("\r\n");
+               .append(" ")
+               .append(httpRequest.getUrl().getPath())
+               .append(HTTP_VERSION)
+               .append("\r\n");
 
         if (httpRequest.getHeaders().getSize() > 0) {
-            for (HttpHeader headerLine : httpRequest.getHeaders()) {
-                request.append(headerLine.getName())
-                    .append(": ")
-                    .append(headerLine.getValue())
-                    .append("\r\n");
+            for (HttpHeader header : httpRequest.getHeaders()) {
+                header.getValuesList().forEach(value -> request.append(header.getName())
+                                                               .append(": ")
+                                                               .append(value)
+                                                               .append("\r\n"));
             }
         }
         // Add the body if there is a body to add
         if (httpRequest.getBody() != null) {
             request.append("\r\n")
-                .append(httpRequest.getBodyAsBinaryData().toString())
-                .append("\r\n");
+                   .append(httpRequest.getBodyAsBinaryData().toString())
+                   .append("\r\n");
         }
-        request.append("\r\n");
+        System.out.println(request);
         return request.toString();
     }
 
@@ -138,7 +139,8 @@ class SocketClient {
 
         StringBuilder bodyString = new StringBuilder();
         while ((line = reader.readLine()) != null) {
-            bodyString.append(line).append("\n");
+            bodyString.append(line)
+                      .append("\n");
         }
 
         Flux<ByteBuffer> body = Flux.just(ByteBuffer.wrap(bodyString.toString().getBytes()));
