@@ -12,6 +12,7 @@ import javax.net.ssl.SSLSocketFactory;
 import java.io.*;
 import java.net.ProtocolException;
 import java.net.Socket;
+import java.net.URL;
 import java.nio.ByteBuffer;
 import java.nio.charset.StandardCharsets;
 import java.util.*;
@@ -74,9 +75,14 @@ class SocketClient {
                 .orElse(null);
 
             if (redirectLocation != null) {
-                httpRequest.setUrl(redirectLocation);
+                if (!redirectLocation.startsWith("http")) {
+                    httpRequest.setUrl(new URL(httpRequest.getUrl(), redirectLocation));
+                } else {
+                    httpRequest.setUrl(redirectLocation);
+                }
                 return sendPatchRequest(httpRequest);
             }
+
             return response;
         }
     }
@@ -111,7 +117,6 @@ class SocketClient {
                    .append(httpRequest.getBodyAsBinaryData().toString())
                    .append("\r\n");
         }
-        System.out.println(request);
         return request.toString();
     }
 
