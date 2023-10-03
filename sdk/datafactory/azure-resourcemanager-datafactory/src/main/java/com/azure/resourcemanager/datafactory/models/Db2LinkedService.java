@@ -268,23 +268,23 @@ public final class Db2LinkedService extends LinkedService {
     /**
      * Get the encryptedCredential property: The encrypted credential used for authentication. Credentials are encrypted
      * using the integration runtime credential manager. It is mutually exclusive with connectionString property. Type:
-     * string (or Expression with resultType string).
+     * string.
      *
      * @return the encryptedCredential value.
      */
-    public Object encryptedCredential() {
+    public String encryptedCredential() {
         return this.innerTypeProperties() == null ? null : this.innerTypeProperties().encryptedCredential();
     }
 
     /**
      * Set the encryptedCredential property: The encrypted credential used for authentication. Credentials are encrypted
      * using the integration runtime credential manager. It is mutually exclusive with connectionString property. Type:
-     * string (or Expression with resultType string).
+     * string.
      *
      * @param encryptedCredential the encryptedCredential value to set.
      * @return the Db2LinkedService object itself.
      */
-    public Db2LinkedService withEncryptedCredential(Object encryptedCredential) {
+    public Db2LinkedService withEncryptedCredential(String encryptedCredential) {
         if (this.innerTypeProperties() == null) {
             this.innerTypeProperties = new Db2LinkedServiceTypeProperties();
         }

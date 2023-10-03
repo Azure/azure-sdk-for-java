@@ -10,7 +10,7 @@ import com.azure.core.annotation.Immutable;
 import com.azure.core.util.IterableStream;
 
 /**
- * The {@link AnalyzeHealthcareEntitiesResultCollection} model.
+ * The {@code AnalyzeHealthcareEntitiesResultCollection} model.
  */
 @Immutable
 public final class AnalyzeHealthcareEntitiesResultCollection extends IterableStream<AnalyzeHealthcareEntitiesResult> {
@@ -38,7 +38,7 @@ public final class AnalyzeHealthcareEntitiesResultCollection extends IterableStr
     }
 
     /**
-     * Creates a {@link AnalyzeHealthcareEntitiesResultCollection} model that maintains a list of
+     * Creates a {@code AnalyzeHealthcareEntitiesResultCollection} model that maintains a list of
      * {@link AnalyzeHealthcareEntitiesResult} along with model version and batch's statistics.
      *
      * @param documentResults A list of {@link AnalyzeHealthcareEntitiesResult}.

@@ -1,18 +1,24 @@
 # Release History
 
-## 2.31.0-beta.1 (Unreleased)
+## 2.32.0-beta.1 (Unreleased)
 
 ### Features Added
-
-- Supported `listByVirtualMachineScaleSet` for `VirtualMachines`.
 
 ### Breaking Changes
 
 ### Bugs Fixed
 
-- Fixed a bug that `VirtualMachineCustomImages.getById()` returns `HyperVGenerationTypes.V1` for all instances. ([#36619](https://github.com/Azure/azure-sdk-for-java/issues/36619))
-
 ### Other Changes
+
+## 2.31.0 (2023-09-28)
+
+### Features Added
+
+- Supported `listByVirtualMachineScaleSet` for `VirtualMachines`.
+
+### Bugs Fixed
+
+- Fixed a bug that `VirtualMachineCustomImages.getById()` returns `HyperVGenerationTypes.V1` for all instances. ([#36619](https://github.com/Azure/azure-sdk-for-java/issues/36619))
 
 ## 2.30.0 (2023-08-25)
 

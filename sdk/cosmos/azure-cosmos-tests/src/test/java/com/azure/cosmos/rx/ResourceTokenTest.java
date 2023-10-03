@@ -5,7 +5,8 @@ package com.azure.cosmos.rx;
 import com.azure.cosmos.ConnectionMode;
 import com.azure.cosmos.ConsistencyLevel;
 import com.azure.cosmos.implementation.AsyncDocumentClient;
-import com.azure.cosmos.implementation.ImplementationBridgeHelpers;
+import com.azure.cosmos.implementation.OperationType;
+import com.azure.cosmos.implementation.ResourceType;
 import com.azure.cosmos.implementation.clienttelemetry.ClientTelemetry;
 import com.azure.cosmos.models.CosmosClientTelemetryConfig;
 import com.azure.cosmos.implementation.ConnectionPolicy;
@@ -476,7 +477,7 @@ public class ResourceTokenTest extends TestSuiteBase {
                 asyncClientResourceToken.queryDocuments(
                     documentCollection.getAltLink(),
                     "select * from c",
-                    queryRequestOptions,
+                    TestUtils.createDummyQueryFeedOperationState(ResourceType.Document, OperationType.Query, queryRequestOptions, asyncClientResourceToken),
                     Document.class);
 
             FeedResponseListValidator<Document> validator = new FeedResponseListValidator.Builder<Document>()

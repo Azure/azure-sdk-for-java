@@ -21,6 +21,12 @@ public final class InMageAzureV2TestFailoverInput extends TestFailoverProviderSp
     @JsonProperty(value = "recoveryPointId")
     private String recoveryPointId;
 
+    /*
+     * A value indicating the inplace OS Upgrade version.
+     */
+    @JsonProperty(value = "osUpgradeVersion")
+    private String osUpgradeVersion;
+
     /** Creates an instance of InMageAzureV2TestFailoverInput class. */
     public InMageAzureV2TestFailoverInput() {
     }
@@ -44,6 +50,26 @@ public final class InMageAzureV2TestFailoverInput extends TestFailoverProviderSp
      */
     public InMageAzureV2TestFailoverInput withRecoveryPointId(String recoveryPointId) {
         this.recoveryPointId = recoveryPointId;
+        return this;
+    }
+
+    /**
+     * Get the osUpgradeVersion property: A value indicating the inplace OS Upgrade version.
+     *
+     * @return the osUpgradeVersion value.
+     */
+    public String osUpgradeVersion() {
+        return this.osUpgradeVersion;
+    }
+
+    /**
+     * Set the osUpgradeVersion property: A value indicating the inplace OS Upgrade version.
+     *
+     * @param osUpgradeVersion the osUpgradeVersion value to set.
+     * @return the InMageAzureV2TestFailoverInput object itself.
+     */
+    public InMageAzureV2TestFailoverInput withOsUpgradeVersion(String osUpgradeVersion) {
+        this.osUpgradeVersion = osUpgradeVersion;
         return this;
     }
 

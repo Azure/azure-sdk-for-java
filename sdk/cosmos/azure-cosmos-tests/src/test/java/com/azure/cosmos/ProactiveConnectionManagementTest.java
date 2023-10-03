@@ -39,12 +39,14 @@ import reactor.core.publisher.Mono;
 
 import java.net.URI;
 import java.time.Duration;
+import java.time.Instant;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.Collections;
 import java.util.Iterator;
 import java.util.List;
 import java.util.Set;
+import java.util.UUID;
 import java.util.concurrent.ConcurrentHashMap;
 import java.util.stream.Collectors;
 
@@ -133,9 +135,13 @@ public class ProactiveConnectionManagementTest extends TestSuiteBase {
     }
 
     @Test(groups = {"multi-master"}, dataProvider = "proactiveContainerInitConfigs")
-    public void openConnectionsAndInitCachesWithContainer(List<String> preferredRegions, int numProactiveConnectionRegions, int ignoredNoOfContainers, int ignoredMinConnectionPoolSize, Duration ignoredAggressiveConnectionEstablishmentDuration) {
+    public void openConnectionsAndInitCachesWithContainer(ProactiveConnectionManagementTestConfig proactiveConnectionManagementTestConfig) {
         CosmosAsyncClient asyncClient = null;
 
+        List<String> preferredRegions = proactiveConnectionManagementTestConfig.preferredRegions;
+        int proactiveConnectionRegionCount = proactiveConnectionManagementTestConfig.proactiveConnectionRegionsCount;
+
+        CosmosAsyncContainer cosmosAsyncContainer = null;
         try {
 
             asyncClient = new CosmosClientBuilder()
@@ -150,16 +156,16 @@ public class ProactiveConnectionManagementTest extends TestSuiteBase {
 
             List<CosmosContainerIdentity> cosmosContainerIdentities = new ArrayList<>();
 
-            String containerId = "id1";
+            String containerId = "id1" + UUID.randomUUID();
             cosmosAsyncDatabase.createContainerIfNotExists(containerId, "/mypk").block();
 
-            CosmosAsyncContainer cosmosAsyncContainer = cosmosAsyncDatabase.getContainer(containerId);
+            cosmosAsyncContainer = cosmosAsyncDatabase.getContainer(containerId);
 
             cosmosContainerIdentities.add(new CosmosContainerIdentity(cosmosAsyncDatabase.getId(), containerId));
 
             CosmosContainerProactiveInitConfig proactiveContainerInitConfig = new CosmosContainerProactiveInitConfigBuilder(cosmosContainerIdentities)
-                    .setProactiveConnectionRegionsCount(numProactiveConnectionRegions)
-                    .build();
+                .setProactiveConnectionRegionsCount(proactiveConnectionRegionCount)
+                .build();
 
             RntbdTransportClient rntbdTransportClient = (RntbdTransportClient) ReflectionUtils.getTransportClient(asyncClient);
             AsyncDocumentClient asyncDocumentClient = ReflectionUtils.getAsyncDocumentClient(asyncClient);
@@ -172,7 +178,7 @@ public class ProactiveConnectionManagementTest extends TestSuiteBase {
             ConcurrentHashMap<String, ?> collectionInfoByNameMap = getCollectionInfoByNameMap(rxDocumentClient);
             Set<String> endpoints = ConcurrentHashMap.newKeySet();
 
-            cosmosAsyncContainer.openConnectionsAndInitCaches(numProactiveConnectionRegions).block();
+            cosmosAsyncContainer.openConnectionsAndInitCaches(proactiveConnectionRegionCount).block();
 
             UnmodifiableList<URI> readEndpoints =
                 globalEndpointManager.getReadEndpoints();
@@ -191,6 +197,9 @@ public class ProactiveConnectionManagementTest extends TestSuiteBase {
             for (URI proactiveConnectionEndpoint : proactiveConnectionEndpoints) {
                 Mono.zip(asyncContainerMono, partitionKeyRangeMono)
                         .flatMapIterable(containerToPartitionKeyRanges -> {
+                            assertThat(containerToPartitionKeyRanges).isNotNull();
+                            assertThat(containerToPartitionKeyRanges.getT2()).isNotNull();
+                            assertThat(containerToPartitionKeyRanges.getT2().v).isNotNull();
                             List<ImmutablePair<PartitionKeyRange, CosmosAsyncContainer>> pkrToContainer = new ArrayList<>();
                             for (PartitionKeyRange pkr : containerToPartitionKeyRanges.getT2().v) {
                                 pkrToContainer.add(new ImmutablePair<>(pkr, containerToPartitionKeyRanges.getT1()));
@@ -220,24 +229,36 @@ public class ProactiveConnectionManagementTest extends TestSuiteBase {
             assertThat(provider.count()).isEqualTo(endpoints.size());
             assertThat(collectionInfoByNameMap.size()).isEqualTo(cosmosContainerIdentities.size());
             assertThat(routingMap.size()).isEqualTo(cosmosContainerIdentities.size());
-
-            cosmosAsyncContainer.delete().block();
         } finally {
+            if (cosmosAsyncContainer != null) {
+                safeDeleteCollection(cosmosAsyncContainer);
+            }
             safeClose(asyncClient);
         }
     }
 
     @Test(groups = {"multi-master"}, dataProvider = "proactiveContainerInitConfigs")
     public void openConnectionsAndInitCachesWithCosmosClient_And_PerContainerConnectionPoolSize_ThroughSystemConfig(
-            List<String> preferredRegions, int numProactiveConnectionRegions, int numContainers, int minConnectionPoolSizePerEndpoint, Duration ignoredAggressiveConnectionEstablishmentDuration) {
+        ProactiveConnectionManagementTestConfig proactiveConnectionManagementTestConfig) throws InterruptedException {
 
-        CosmosAsyncClient clientWithOpenConnections = null;
+        CosmosAsyncClient asyncClientWithOpenConnections = null;
+        CosmosClient syncClientWithOpenConnections = null;
+
         List<CosmosAsyncContainer> asyncContainers = new ArrayList<>();
+
+        // test config parameters
+        List<String> preferredRegions = proactiveConnectionManagementTestConfig.preferredRegions;
+
+        int containerCount = proactiveConnectionManagementTestConfig.containerCount;
+        int minConnectionPoolSizePerEndpoint = proactiveConnectionManagementTestConfig.minConnectionPoolSizePerEndpoint;
+        int proactiveConnectionRegionsCount = proactiveConnectionManagementTestConfig.proactiveConnectionRegionsCount;
+
+        boolean isSystemPropertySetBeforeDirectConnectionConfig = proactiveConnectionManagementTestConfig.isSystemPropertySetBeforeDirectConnectionConfig;
 
         try {
             List<CosmosContainerIdentity> cosmosContainerIdentities = new ArrayList<>();
 
-            for (int i = 1; i <= numContainers; i++) {
+            for (int i = 1; i <= containerCount; i++) {
                 String containerId = String.format("id%d", i);
                 cosmosAsyncDatabase.createContainerIfNotExists(containerId, "/mypk").block();
                 asyncContainers.add(cosmosAsyncDatabase.getContainer(containerId));
@@ -246,22 +267,73 @@ public class ProactiveConnectionManagementTest extends TestSuiteBase {
 
             CosmosContainerProactiveInitConfig proactiveContainerInitConfig = new
                     CosmosContainerProactiveInitConfigBuilder(cosmosContainerIdentities)
-                    .setProactiveConnectionRegionsCount(numProactiveConnectionRegions)
+                    .setProactiveConnectionRegionsCount(proactiveConnectionRegionsCount)
                     .build();
 
-            System.setProperty("COSMOS.MIN_CONNECTION_POOL_SIZE_PER_ENDPOINT", String.valueOf(minConnectionPoolSizePerEndpoint));
+            // allow enough time for the container to be available for reads
+            Thread.sleep(5_000);
 
-            clientWithOpenConnections = new CosmosClientBuilder()
-                    .endpoint(TestConfigurations.HOST)
-                    .key(TestConfigurations.MASTER_KEY)
-                    .endpointDiscoveryEnabled(true)
-                    .preferredRegions(preferredRegions)
-                    .openConnectionsAndInitCaches(proactiveContainerInitConfig)
-                    .directMode()
-                    .buildAsyncClient();
+            if (isSystemPropertySetBeforeDirectConnectionConfig) {
+                System.setProperty("COSMOS.MIN_CONNECTION_POOL_SIZE_PER_ENDPOINT", String.valueOf(minConnectionPoolSizePerEndpoint));
 
-            RntbdTransportClient rntbdTransportClient = (RntbdTransportClient) ReflectionUtils.getTransportClient(clientWithOpenConnections);
-            AsyncDocumentClient asyncDocumentClient = ReflectionUtils.getAsyncDocumentClient(clientWithOpenConnections);
+                if (proactiveConnectionManagementTestConfig.isSyncClient) {
+                    syncClientWithOpenConnections = new CosmosClientBuilder()
+                        .endpoint(TestConfigurations.HOST)
+                        .key(TestConfigurations.MASTER_KEY)
+                        .endpointDiscoveryEnabled(true)
+                        .preferredRegions(preferredRegions)
+                        .openConnectionsAndInitCaches(proactiveContainerInitConfig)
+                        .directMode(DirectConnectionConfig.getDefaultConfig())
+                        .buildClient();
+                } else {
+                    asyncClientWithOpenConnections = new CosmosClientBuilder()
+                        .endpoint(TestConfigurations.HOST)
+                        .key(TestConfigurations.MASTER_KEY)
+                        .endpointDiscoveryEnabled(true)
+                        .preferredRegions(preferredRegions)
+                        .openConnectionsAndInitCaches(proactiveContainerInitConfig)
+                        .directMode(DirectConnectionConfig.getDefaultConfig())
+                        .buildAsyncClient();
+                }
+            } else {
+                DirectConnectionConfig directConnectionConfig = DirectConnectionConfig.getDefaultConfig();
+
+                System.setProperty("COSMOS.MIN_CONNECTION_POOL_SIZE_PER_ENDPOINT", String.valueOf(minConnectionPoolSizePerEndpoint));
+
+                if (proactiveConnectionManagementTestConfig.isSyncClient) {
+                    syncClientWithOpenConnections = new CosmosClientBuilder()
+                        .endpoint(TestConfigurations.HOST)
+                        .key(TestConfigurations.MASTER_KEY)
+                        .endpointDiscoveryEnabled(true)
+                        .preferredRegions(preferredRegions)
+                        .openConnectionsAndInitCaches(proactiveContainerInitConfig)
+                        .directMode(directConnectionConfig)
+                        .buildClient();
+                } else {
+                    asyncClientWithOpenConnections = new CosmosClientBuilder()
+                        .endpoint(TestConfigurations.HOST)
+                        .key(TestConfigurations.MASTER_KEY)
+                        .endpointDiscoveryEnabled(true)
+                        .preferredRegions(preferredRegions)
+                        .openConnectionsAndInitCaches(proactiveContainerInitConfig)
+                        .directMode(directConnectionConfig)
+                        .buildAsyncClient();
+                }
+            }
+
+            RntbdTransportClient rntbdTransportClient;
+            AsyncDocumentClient asyncDocumentClient;
+
+            if (proactiveConnectionManagementTestConfig.isSyncClient) {
+                rntbdTransportClient =
+                    (RntbdTransportClient) ReflectionUtils.getTransportClient(syncClientWithOpenConnections);
+                asyncDocumentClient = ReflectionUtils.getAsyncDocumentClient(syncClientWithOpenConnections.asyncClient());
+            } else {
+                rntbdTransportClient =
+                    (RntbdTransportClient) ReflectionUtils.getTransportClient(asyncClientWithOpenConnections);
+                asyncDocumentClient = ReflectionUtils.getAsyncDocumentClient(asyncClientWithOpenConnections);
+            }
+
             RxDocumentClientImpl rxDocumentClient = (RxDocumentClientImpl) asyncDocumentClient;
             GlobalAddressResolver globalAddressResolver = ReflectionUtils.getGlobalAddressResolver(rxDocumentClient);
             GlobalEndpointManager globalEndpointManager = ReflectionUtils.getGlobalEndpointManager(rxDocumentClient);
@@ -329,23 +401,33 @@ public class ProactiveConnectionManagementTest extends TestSuiteBase {
             for (CosmosAsyncContainer asyncContainer : asyncContainers) {
                 asyncContainer.delete().block();
             }
-
-            safeClose(clientWithOpenConnections);
+            System.clearProperty("COSMOS.MIN_CONNECTION_POOL_SIZE_PER_ENDPOINT");
+            safeClose(asyncClientWithOpenConnections);
+            safeCloseSyncClient(syncClientWithOpenConnections);
         }
     }
 
     @Test(groups = {"multi-master"}, dataProvider = "proactiveContainerInitConfigs")
     public void openConnectionsAndInitCachesWithCosmosClient_And_PerContainerConnectionPoolSize_ThroughProactiveContainerInitConfig(
-            List<String> preferredRegions, int numProactiveConnectionRegions, int numContainers, int minConnectionPoolSizePerEndpoint, Duration ignoredAggressiveConnectionEstablishmentDuration) {
+        ProactiveConnectionManagementTestConfig proactiveConnectionManagementTestConfig) throws InterruptedException {
 
-        CosmosAsyncClient clientWithOpenConnections = null;
+        CosmosAsyncClient asyncClientWithOpenConnections = null;
+        CosmosClient syncClientWithOpenConnections = null;
+
         List<CosmosAsyncContainer> asyncContainers = new ArrayList<>();
+
+        // test config parameters
+        List<String> preferredRegions = proactiveConnectionManagementTestConfig.preferredRegions;
+
+        int containerCount = proactiveConnectionManagementTestConfig.containerCount;
+        int minConnectionPoolSizePerEndpoint = proactiveConnectionManagementTestConfig.minConnectionPoolSizePerEndpoint;
+        int proactiveConnectionRegionsCount = proactiveConnectionManagementTestConfig.proactiveConnectionRegionsCount;
 
         try {
 
             List<CosmosContainerIdentity> cosmosContainerIdentities = new ArrayList<>();
 
-            for (int i = 1; i <= numContainers; i++) {
+            for (int i = 1; i <= containerCount; i++) {
                 String containerId = String.format("id%d", i);
                 cosmosAsyncDatabase.createContainerIfNotExists(containerId, "/mypk").block();
                 asyncContainers.add(cosmosAsyncDatabase.getContainer(containerId));
@@ -354,7 +436,7 @@ public class ProactiveConnectionManagementTest extends TestSuiteBase {
 
             CosmosContainerProactiveInitConfigBuilder proactiveContainerInitConfigBuilder = new
                     CosmosContainerProactiveInitConfigBuilder(cosmosContainerIdentities)
-                    .setProactiveConnectionRegionsCount(numProactiveConnectionRegions);
+                    .setProactiveConnectionRegionsCount(proactiveConnectionRegionsCount);
 
             for (int i = 0; i < cosmosContainerIdentities.size(); i++) {
                 proactiveContainerInitConfigBuilder = proactiveContainerInitConfigBuilder
@@ -364,7 +446,27 @@ public class ProactiveConnectionManagementTest extends TestSuiteBase {
             CosmosContainerProactiveInitConfig proactiveContainerInitConfig = proactiveContainerInitConfigBuilder
                     .build();
 
-            clientWithOpenConnections = new CosmosClientBuilder()
+            RntbdTransportClient rntbdTransportClient;
+            AsyncDocumentClient asyncDocumentClient;
+
+            // allow enough time for the container to be available for reads
+            Thread.sleep(5_000);
+
+            if (proactiveConnectionManagementTestConfig.isSyncClient) {
+                syncClientWithOpenConnections = new CosmosClientBuilder()
+                    .endpoint(TestConfigurations.HOST)
+                    .key(TestConfigurations.MASTER_KEY)
+                    .endpointDiscoveryEnabled(true)
+                    .preferredRegions(preferredRegions)
+                    .openConnectionsAndInitCaches(proactiveContainerInitConfig)
+                    .directMode()
+                    .buildClient();
+
+                rntbdTransportClient =
+                    (RntbdTransportClient) ReflectionUtils.getTransportClient(syncClientWithOpenConnections);
+                asyncDocumentClient = ReflectionUtils.getAsyncDocumentClient(syncClientWithOpenConnections.asyncClient());
+            } else {
+                asyncClientWithOpenConnections = new CosmosClientBuilder()
                     .endpoint(TestConfigurations.HOST)
                     .key(TestConfigurations.MASTER_KEY)
                     .endpointDiscoveryEnabled(true)
@@ -373,8 +475,11 @@ public class ProactiveConnectionManagementTest extends TestSuiteBase {
                     .directMode()
                     .buildAsyncClient();
 
-            RntbdTransportClient rntbdTransportClient = (RntbdTransportClient) ReflectionUtils.getTransportClient(clientWithOpenConnections);
-            AsyncDocumentClient asyncDocumentClient = ReflectionUtils.getAsyncDocumentClient(clientWithOpenConnections);
+                rntbdTransportClient =
+                    (RntbdTransportClient) ReflectionUtils.getTransportClient(asyncClientWithOpenConnections);
+                asyncDocumentClient = ReflectionUtils.getAsyncDocumentClient(asyncClientWithOpenConnections);
+            }
+
             RxDocumentClientImpl rxDocumentClient = (RxDocumentClientImpl) asyncDocumentClient;
             GlobalAddressResolver globalAddressResolver = ReflectionUtils.getGlobalAddressResolver(rxDocumentClient);
             GlobalEndpointManager globalEndpointManager = ReflectionUtils.getGlobalEndpointManager(rxDocumentClient);
@@ -385,8 +490,8 @@ public class ProactiveConnectionManagementTest extends TestSuiteBase {
             Set<String> endpoints = ConcurrentHashMap.newKeySet();
             UnmodifiableList<URI> readEndpoints = globalEndpointManager.getReadEndpoints();
             List<URI> proactiveConnectionEndpoints = readEndpoints.subList(
-                    0,
-                    Math.min(readEndpoints.size(), proactiveContainerInitConfig.getProactiveConnectionRegionsCount()));
+                0,
+                Math.min(readEndpoints.size(), proactiveContainerInitConfig.getProactiveConnectionRegionsCount()));
 
             Flux<CosmosAsyncContainer> asyncContainerFlux = Flux.fromIterable(asyncContainers);
             Flux<Utils.ValueHolder<List<PartitionKeyRange>>> partitionKeyRangeFlux =
@@ -445,22 +550,34 @@ public class ProactiveConnectionManagementTest extends TestSuiteBase {
                 asyncContainer.delete().block();
             }
 
-            safeClose(clientWithOpenConnections);
+            safeClose(asyncClientWithOpenConnections);
+            safeCloseSyncClient(syncClientWithOpenConnections);
         }
     }
 
     @Test(groups = {"multi-master"}, dataProvider = "proactiveContainerInitConfigs")
     public void openConnectionsAndInitCachesWithCosmosClient_And_PerContainerConnectionPoolSize_ThroughProactiveContainerInitConfig_WithTimeout(
-            List<String> preferredRegions, int numProactiveConnectionRegions, int numContainers, int minConnectionPoolSizePerEndpoint, Duration aggressiveWarmupDuration) {
+        ProactiveConnectionManagementTestConfig proactiveConnectionManagementTestConfig) {
 
-        CosmosAsyncClient clientWithOpenConnections = null;
+        CosmosAsyncClient asyncClientWithOpenConnections = null;
+        CosmosClient syncClientWithOpenConnections = null;
+
         List<CosmosAsyncContainer> asyncContainers = new ArrayList<>();
+
+        // test config parameters
+        List<String> preferredRegions = proactiveConnectionManagementTestConfig.preferredRegions;
+
+        int containerCount = proactiveConnectionManagementTestConfig.containerCount;
+        int minConnectionPoolSizePerEndpoint = proactiveConnectionManagementTestConfig.minConnectionPoolSizePerEndpoint;
+        int proactiveConnectionRegionsCount = proactiveConnectionManagementTestConfig.proactiveConnectionRegionsCount;
+
+        Duration aggressiveWarmupDuration = proactiveConnectionManagementTestConfig.aggressiveWarmupDuration;
 
         try {
 
             List<CosmosContainerIdentity> cosmosContainerIdentities = new ArrayList<>();
 
-            for (int i = 0; i < numContainers; i++) {
+            for (int i = 0; i < containerCount; i++) {
                 String containerId = String.format("id%d", i);
                 cosmosAsyncDatabase.createContainerIfNotExists(containerId, "/mypk").block();
                 asyncContainers.add(cosmosAsyncDatabase.getContainer(containerId));
@@ -468,10 +585,10 @@ public class ProactiveConnectionManagementTest extends TestSuiteBase {
             }
 
             CosmosContainerProactiveInitConfigBuilder proactiveContainerInitConfigBuilder = new
-                    CosmosContainerProactiveInitConfigBuilder(cosmosContainerIdentities)
-                    .setProactiveConnectionRegionsCount(numProactiveConnectionRegions);
+                CosmosContainerProactiveInitConfigBuilder(cosmosContainerIdentities)
+                .setProactiveConnectionRegionsCount(proactiveConnectionRegionsCount);
 
-            for (int i = 0; i < numContainers; i++) {
+            for (int i = 0; i < containerCount; i++) {
                 proactiveContainerInitConfigBuilder = proactiveContainerInitConfigBuilder
                         .setMinConnectionPoolSizePerEndpointForContainer(cosmosContainerIdentities.get(i), minConnectionPoolSizePerEndpoint);
             }
@@ -480,7 +597,29 @@ public class ProactiveConnectionManagementTest extends TestSuiteBase {
                     .setAggressiveWarmupDuration(aggressiveWarmupDuration)
                     .build();
 
-            clientWithOpenConnections = new CosmosClientBuilder()
+            RntbdTransportClient rntbdTransportClient;
+            AsyncDocumentClient asyncDocumentClient;
+
+            // allow enough time for the container to be available for reads
+            Thread.sleep(5_000);
+
+            Instant clientBuildStartTime = Instant.now();
+
+            if (proactiveConnectionManagementTestConfig.isSyncClient) {
+                syncClientWithOpenConnections = new CosmosClientBuilder()
+                    .endpoint(TestConfigurations.HOST)
+                    .key(TestConfigurations.MASTER_KEY)
+                    .endpointDiscoveryEnabled(true)
+                    .preferredRegions(preferredRegions)
+                    .openConnectionsAndInitCaches(proactiveContainerInitConfig)
+                    .directMode()
+                    .buildClient();
+
+                rntbdTransportClient =
+                    (RntbdTransportClient) ReflectionUtils.getTransportClient(syncClientWithOpenConnections);
+                asyncDocumentClient = ReflectionUtils.getAsyncDocumentClient(syncClientWithOpenConnections.asyncClient());
+            } else {
+                asyncClientWithOpenConnections = new CosmosClientBuilder()
                     .endpoint(TestConfigurations.HOST)
                     .key(TestConfigurations.MASTER_KEY)
                     .endpointDiscoveryEnabled(true)
@@ -489,10 +628,26 @@ public class ProactiveConnectionManagementTest extends TestSuiteBase {
                     .directMode()
                     .buildAsyncClient();
 
-            Thread.sleep(5);
+                rntbdTransportClient =
+                    (RntbdTransportClient) ReflectionUtils.getTransportClient(asyncClientWithOpenConnections);
+                asyncDocumentClient = ReflectionUtils.getAsyncDocumentClient(asyncClientWithOpenConnections);
+            }
 
-            RntbdTransportClient rntbdTransportClient = (RntbdTransportClient) ReflectionUtils.getTransportClient(clientWithOpenConnections);
-            AsyncDocumentClient asyncDocumentClient = ReflectionUtils.getAsyncDocumentClient(clientWithOpenConnections);
+            Instant clientBuildEndTime = Instant.now();
+
+            Duration approxClientBuildTime = Duration.between(clientBuildStartTime, clientBuildEndTime);
+
+            // delta b/w connection warm up and everything else part of building
+            // a client should ideally not be greater than 5s
+            Duration delta = Duration.ofSeconds(5);
+
+            boolean clientBuildTimeIsApproximatelyAggressiveWarmUpDuration = approxClientBuildTime.minus(delta).compareTo(aggressiveWarmupDuration) < 0;
+
+            // case where the aggressive warmup duration is set too a high value than is required to warmup containers
+            boolean clientBuildTimeIsLesserThanAggressiveWarmUpDuration = approxClientBuildTime.compareTo(aggressiveWarmupDuration) < 0;
+
+            assertThat(clientBuildTimeIsApproximatelyAggressiveWarmUpDuration || clientBuildTimeIsLesserThanAggressiveWarmUpDuration).isTrue();
+
             RxDocumentClientImpl rxDocumentClient = (RxDocumentClientImpl) asyncDocumentClient;
             GlobalAddressResolver globalAddressResolver = ReflectionUtils.getGlobalAddressResolver(rxDocumentClient);
             GlobalEndpointManager globalEndpointManager = ReflectionUtils.getGlobalEndpointManager(rxDocumentClient);
@@ -568,24 +723,72 @@ public class ProactiveConnectionManagementTest extends TestSuiteBase {
                 asyncContainer.delete().block();
             }
 
-           safeClose(clientWithOpenConnections);
+            safeClose(asyncClientWithOpenConnections);
+            safeCloseSyncClient(syncClientWithOpenConnections);
         }
     }
 
     @DataProvider(name = "proactiveContainerInitConfigs")
-    private Object[][] proactiveContainerInitConfigs() {
+    private Object[] proactiveContainerInitConfigs() {
         Iterator<DatabaseAccountLocation> locationIterator = this.databaseAccount.getReadableLocations().iterator();
-        List<String> preferredLocations = new ArrayList<>();
+        List<String> preferredRegions = new ArrayList<>();
 
         while (locationIterator.hasNext()) {
             DatabaseAccountLocation accountLocation = locationIterator.next();
-            preferredLocations.add(accountLocation.getName());
+            preferredRegions.add(accountLocation.getName());
         }
 
-        // configure list of preferredLocation, no of proactive connection regions, no of containers, min connection pool size per endpoint, connection warm up timeout
-        return new Object[][]{
-                new Object[]{preferredLocations, 2, 3, 4, Duration.ofMillis(250)},
-                new Object[]{preferredLocations, 2, 3, 5, Duration.ofMillis(1000)}
+        return new Object[] {
+            new ProactiveConnectionManagementTestConfig()
+                .withPreferredRegions(preferredRegions)
+                .withProactiveConnectionRegionsCount(2)
+                .withContainerCount(3)
+                .withMinConnectionPoolSizePerEndpoint(4)
+                .withAggressiveWarmupDuration(Duration.ofMillis(250))
+                .withIsSystemPropertySetBeforeDirectConnectionConfig(true)
+                .withIsSyncClient(false),
+            new ProactiveConnectionManagementTestConfig()
+                .withPreferredRegions(preferredRegions)
+                .withProactiveConnectionRegionsCount(2)
+                .withContainerCount(3)
+                .withMinConnectionPoolSizePerEndpoint(5)
+                .withAggressiveWarmupDuration(Duration.ofMillis(1000))
+                .withIsSystemPropertySetBeforeDirectConnectionConfig(false)
+                .withIsSyncClient(false),
+            // in this test config the aggressive warmup duration is set to an unreasonably high value
+            // the client build should not block until this aggressive warm up duration time
+            new ProactiveConnectionManagementTestConfig()
+                .withPreferredRegions(preferredRegions)
+                .withProactiveConnectionRegionsCount(2)
+                .withContainerCount(3)
+                .withMinConnectionPoolSizePerEndpoint(5)
+                .withAggressiveWarmupDuration(Duration.ofMinutes(1000))
+                .withIsSystemPropertySetBeforeDirectConnectionConfig(false)
+                .withIsSyncClient(false),
+            new ProactiveConnectionManagementTestConfig()
+                .withPreferredRegions(preferredRegions)
+                .withProactiveConnectionRegionsCount(2)
+                .withContainerCount(3)
+                .withMinConnectionPoolSizePerEndpoint(4)
+                .withAggressiveWarmupDuration(Duration.ofMillis(250))
+                .withIsSystemPropertySetBeforeDirectConnectionConfig(true)
+                .withIsSyncClient(true),
+            new ProactiveConnectionManagementTestConfig()
+                .withPreferredRegions(preferredRegions)
+                .withProactiveConnectionRegionsCount(2)
+                .withContainerCount(3)
+                .withMinConnectionPoolSizePerEndpoint(5)
+                .withAggressiveWarmupDuration(Duration.ofMillis(1000))
+                .withIsSystemPropertySetBeforeDirectConnectionConfig(false)
+                .withIsSyncClient(true),
+            new ProactiveConnectionManagementTestConfig()
+                .withPreferredRegions(preferredRegions)
+                .withProactiveConnectionRegionsCount(2)
+                .withContainerCount(3)
+                .withMinConnectionPoolSizePerEndpoint(5)
+                .withAggressiveWarmupDuration(Duration.ofMinutes(1000))
+                .withIsSystemPropertySetBeforeDirectConnectionConfig(false)
+                .withIsSyncClient(true)
         };
     }
 
@@ -659,5 +862,61 @@ public class ProactiveConnectionManagementTest extends TestSuiteBase {
                                 PartitionKeyInternalHelper.FullRange,
                                 false,
                                 null));
+    }
+
+    private class ProactiveConnectionManagementTestConfig {
+        private List<String> preferredRegions;
+        private int proactiveConnectionRegionsCount;
+        private int minConnectionPoolSizePerEndpoint;
+        private int containerCount;
+        private Duration aggressiveWarmupDuration;
+        private boolean isSystemPropertySetBeforeDirectConnectionConfig;
+        private boolean isSyncClient;
+
+        public ProactiveConnectionManagementTestConfig() {
+            this.preferredRegions = new ArrayList<>();
+            this.proactiveConnectionRegionsCount = 0;
+            this.minConnectionPoolSizePerEndpoint = 0;
+            this.containerCount = 0;
+            this.aggressiveWarmupDuration = Duration.ofHours(24);
+            this.isSystemPropertySetBeforeDirectConnectionConfig = false;
+            this.isSyncClient = false;
+        }
+
+        public ProactiveConnectionManagementTestConfig withPreferredRegions(List<String> preferredRegions) {
+            this.preferredRegions = preferredRegions;
+            return this;
+        }
+
+        public ProactiveConnectionManagementTestConfig withProactiveConnectionRegionsCount(int proactiveConnectionRegionsCount) {
+            this.proactiveConnectionRegionsCount = proactiveConnectionRegionsCount;
+            return this;
+        }
+
+        public ProactiveConnectionManagementTestConfig withMinConnectionPoolSizePerEndpoint(int minConnectionPoolSizePerEndpoint) {
+            this.minConnectionPoolSizePerEndpoint = minConnectionPoolSizePerEndpoint;
+            return this;
+        }
+
+        public ProactiveConnectionManagementTestConfig withContainerCount(int containerCount) {
+            this.containerCount = containerCount;
+            return this;
+        }
+
+        public ProactiveConnectionManagementTestConfig withAggressiveWarmupDuration(Duration aggressiveWarmupDuration) {
+            this.aggressiveWarmupDuration = aggressiveWarmupDuration;
+            return this;
+        }
+
+        public ProactiveConnectionManagementTestConfig withIsSystemPropertySetBeforeDirectConnectionConfig(
+            boolean isSystemPropertySetBeforeDirectConnectionConfig) {
+            this.isSystemPropertySetBeforeDirectConnectionConfig = isSystemPropertySetBeforeDirectConnectionConfig;
+            return this;
+        }
+
+        public ProactiveConnectionManagementTestConfig withIsSyncClient(boolean isSyncClient) {
+            this.isSyncClient = isSyncClient;
+            return this;
+        }
     }
 }

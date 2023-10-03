@@ -75,10 +75,10 @@ Pass OpenTelemetry TracerProvider to Azure client:
 
 // configure OpenTelemetry SDK explicitly per https://opentelemetry.io/docs/instrumentation/java/manual/
 SdkTracerProvider tracerProvider = SdkTracerProvider.builder()
-    .addSpanProcessor(SimpleSpanProcessor.create(LoggingSpanExporter.create()))
+    .addSpanProcessor(BatchSpanProcessor.builder(LoggingSpanExporter.create()).build())
     .build();
 
-OpenTelemetry openTelemetry = OpenTelemetrySdk.builder().setTracerProvider(tracerProvider).build();
+OpenTelemetrySdk openTelemetry = OpenTelemetrySdk.builder().setTracerProvider(tracerProvider).build();
 // Pass OpenTelemetry container to TracingOptions.
 TracingOptions customTracingOptions = new OpenTelemetryTracingOptions()
     .setOpenTelemetry(openTelemetry);
@@ -133,7 +133,7 @@ Pass OpenTelemetry `Context` under `PARENT_TRACE_CONTEXT_KEY` in `com.azure.core
 ```java com.azure.core.util.tracing#explicit-parent
 
 SdkTracerProvider tracerProvider = SdkTracerProvider.builder()
-    .addSpanProcessor(SimpleSpanProcessor.create(LoggingSpanExporter.create()))
+    .addSpanProcessor(BatchSpanProcessor.builder(LoggingSpanExporter.create()).build())
     .build();
 
 AzureClient sampleClient = new AzureClientBuilder()
@@ -181,7 +181,6 @@ try {
 } finally {
     span.end();
 }
-
 ```
 
 ### Using the plugin package with AMQP client libraries

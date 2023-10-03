@@ -14,23 +14,23 @@ public final class SharedPrivateLinkResourcePropertiesTests {
         SharedPrivateLinkResourceProperties model =
             BinaryData
                 .fromString(
-                    "{\"groupId\":\"fmisg\",\"privateLinkResourceId\":\"bnbbeldawkz\",\"provisioningState\":\"Running\",\"requestMessage\":\"ourqhakau\",\"status\":\"Approved\"}")
+                    "{\"groupId\":\"grjguufzd\",\"privateLinkResourceId\":\"syqtfi\",\"provisioningState\":\"Failed\",\"requestMessage\":\"otzi\",\"status\":\"Timeout\"}")
                 .toObject(SharedPrivateLinkResourceProperties.class);
-        Assertions.assertEquals("fmisg", model.groupId());
-        Assertions.assertEquals("bnbbeldawkz", model.privateLinkResourceId());
-        Assertions.assertEquals("ourqhakau", model.requestMessage());
+        Assertions.assertEquals("grjguufzd", model.groupId());
+        Assertions.assertEquals("syqtfi", model.privateLinkResourceId());
+        Assertions.assertEquals("otzi", model.requestMessage());
     }
 
     @org.junit.jupiter.api.Test
     public void testSerialize() throws Exception {
         SharedPrivateLinkResourceProperties model =
             new SharedPrivateLinkResourceProperties()
-                .withGroupId("fmisg")
-                .withPrivateLinkResourceId("bnbbeldawkz")
-                .withRequestMessage("ourqhakau");
+                .withGroupId("grjguufzd")
+                .withPrivateLinkResourceId("syqtfi")
+                .withRequestMessage("otzi");
         model = BinaryData.fromObject(model).toObject(SharedPrivateLinkResourceProperties.class);
-        Assertions.assertEquals("fmisg", model.groupId());
-        Assertions.assertEquals("bnbbeldawkz", model.privateLinkResourceId());
-        Assertions.assertEquals("ourqhakau", model.requestMessage());
+        Assertions.assertEquals("grjguufzd", model.groupId());
+        Assertions.assertEquals("syqtfi", model.privateLinkResourceId());
+        Assertions.assertEquals("otzi", model.requestMessage());
     }
 }

@@ -30,7 +30,7 @@
     <dependency>
       <groupId>com.azure.spring</groupId>
       <artifactId>spring-cloud-azure-starter-monitor</artifactId>
-      <version>1.0.0-beta.1</version> <!-- {x-version-update;com.azure.spring:spring-cloud-azure-starter-monitor;current} -->
+      <version>1.0.0-beta.2</version> <!-- {x-version-update;com.azure.spring:spring-cloud-azure-starter-monitor;current} -->
     </dependency>
 
     <!-- OTel dependencies -->
@@ -56,11 +56,6 @@
       <groupId>org.springframework.boot</groupId>
       <artifactId>spring-boot-starter-data-jdbc</artifactId>
       <version>2.7.14</version><!-- {x-version-update;org.springframework.boot:spring-boot-starter-data-jdbc;external_dependency} -->
-    </dependency>
-    <dependency>
-      <groupId>org.apache.commons</groupId>
-      <artifactId>commons-dbcp2</artifactId>
-      <version>2.9.0</version> <!-- {x-version-update;org.apache.commons:commons-dbcp2;external_dependency} -->
     </dependency>
     <dependency>
       <groupId>org.springframework.boot</groupId>

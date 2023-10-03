@@ -7,7 +7,7 @@ package com.azure.resourcemanager.containerservice.generated;
 /** Samples for ManagedClusters ListOutboundNetworkDependenciesEndpoints. */
 public final class ManagedClustersListOutboundNetworkDependenciesEndpointsSamples {
     /*
-     * x-ms-original-file: specification/containerservice/resource-manager/Microsoft.ContainerService/aks/stable/2023-07-01/examples/OutboundNetworkDependenciesEndpointsList.json
+     * x-ms-original-file: specification/containerservice/resource-manager/Microsoft.ContainerService/aks/stable/2023-08-01/examples/OutboundNetworkDependenciesEndpointsList.json
      */
     /**
      * Sample code: List OutboundNetworkDependenciesEndpoints by Managed Cluster.

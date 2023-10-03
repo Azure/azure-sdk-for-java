@@ -8,6 +8,8 @@
 
 ### Bugs Fixed
 
+- Fixes the potential NullPointerException in ReactorSession if the thread constructing ReactorSession ever happens to run the disposeWork (cleanup phase) synchronously. ([36916](https://github.com/Azure/azure-sdk-for-java/issues/36916))
+
 ### Other Changes
 
 ## 2.8.9 (2023-09-07)
