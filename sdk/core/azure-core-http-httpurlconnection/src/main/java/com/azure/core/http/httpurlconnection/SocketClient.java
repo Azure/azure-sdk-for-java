@@ -2,6 +2,7 @@ package com.azure.core.http.httpurlconnection;
 
 import com.azure.core.http.HttpHeader;
 import com.azure.core.http.HttpHeaderName;
+import com.azure.core.http.HttpHeaders;
 import com.azure.core.http.HttpRequest;
 import com.azure.core.http.httpurlconnection.implementation.HttpUrlConnectionResponse;
 import reactor.core.publisher.Flux;
@@ -127,13 +128,15 @@ class SocketClient {
         int dotIndex = statusLine.indexOf('.');
         int statusCode = Integer.parseInt(statusLine.substring(dotIndex+3, dotIndex+6));
 
-        Map<String, List<String>> headers = new HashMap<>();
+        HttpHeaders headers = new HttpHeaders();
         String line;
         while ((line = reader.readLine()) != null && !line.isEmpty()) {
             String[] kv = line.split(": ", 2);
             String k = kv[0];
             String v = kv[1];
-            headers.computeIfAbsent(k, key -> new ArrayList<>()).add(v);
+            if (v == null) {
+                headers.add(k, v);
+            }
         }
 
         StringBuilder bodyString = new StringBuilder();
