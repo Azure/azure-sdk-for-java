@@ -914,4 +914,20 @@ public class DataLakeTestBase extends TestProxyTestBase {
     private static boolean olderThan20230803ServiceVersion() {
         return olderThan(DataLakeServiceVersion.V2023_08_03);
     }
+
+    private static boolean olderThan20200804ServiceVersion() {
+        return olderThan(DataLakeServiceVersion.V2020_08_04);
+    }
+
+    private static boolean olderThan20191212ServiceVersion() {
+        return olderThan(DataLakeServiceVersion.V2019_12_12);
+    }
+
+    private static boolean olderThan20201002ServiceVersion() {
+        return olderThan(DataLakeServiceVersion.V2020_10_02);
+    }
+
+    private static boolean olderThan20210410ServiceVersion() {
+        return olderThan(DataLakeServiceVersion.V2021_04_10);
+    }
 }
