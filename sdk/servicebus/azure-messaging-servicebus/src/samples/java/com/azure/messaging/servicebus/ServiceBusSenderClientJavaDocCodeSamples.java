@@ -324,4 +324,35 @@ public class ServiceBusSenderClientJavaDocCodeSamples {
         sender.close();
         // END: com.azure.messaging.servicebus.servicebussenderclient.sendMessage-session
     }
+
+    /**
+     * Create a session message.
+     */
+    @Test
+    public void sendSessionMessageAsync() {
+        // BEGIN: com.azure.messaging.servicebus.servicebussenderasyncclient.sendMessage-session
+        // 'fullyQualifiedNamespace' will look similar to "{your-namespace}.servicebus.windows.net"
+        ServiceBusSenderAsyncClient sender = new ServiceBusClientBuilder()
+            .credential(fullyQualifiedNamespace, new DefaultAzureCredentialBuilder().build())
+            .sender()
+            .queueName(sessionEnabledQueueName)
+            .buildAsyncClient();
+
+        // Setting sessionId publishes that message to a specific session, in this case, "greeting".
+        ServiceBusMessage message = new ServiceBusMessage("Hello world")
+            .setSessionId("greetings");
+
+        // `subscribe` is a non-blocking call. The program will move onto the next line of code when it starts the
+        // operation.  Users should use the callbacks on `subscribe` to understand the status of the send operation.
+        sender.sendMessage(message).subscribe(unused -> {
+        }, error -> {
+            System.err.println("Error occurred publishing batch: " + error);
+        }, () -> {
+            System.out.println("Send complete.");
+        });
+
+        // Dispose of the sender.
+        sender.close();
+        // END: com.azure.messaging.servicebus.servicebussenderasyncclient.sendMessage-session
+    }
 }
