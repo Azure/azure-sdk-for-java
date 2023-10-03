@@ -4,9 +4,24 @@
 
 package com.azure.analytics.defender.easm;
 
+import com.azure.core.util.Configuration;
+import com.azure.identity.DefaultAzureCredentialBuilder;
+
 public final class ReadmeSamples {
     public void readmeSamples() {
         // BEGIN: com.azure.analytics.defender.easm.readme
+        String subscriptionId = Configuration.getGlobalConfiguration().get("SUBSCRIPTIONID");
+        String workspaceName = Configuration.getGlobalConfiguration().get("WORKSPACENAME");
+        String resourceGroupName = Configuration.getGlobalConfiguration().get("RESOURCEGROUPNAME");
+        String endpoint = Configuration.getGlobalConfiguration().get("ENDPOINT");
+
+        EasmClient easmClient = new EasmClientBuilder()
+            .endpoint(endpoint)
+            .subscriptionId(subscriptionId)
+            .workspaceName(workspaceName)
+            .resourceGroupName(resourceGroupName)
+            .credential(new DefaultAzureCredentialBuilder().build())
+            .buildClient();
         // END: com.azure.analytics.defender.easm.readme
     }
 }
