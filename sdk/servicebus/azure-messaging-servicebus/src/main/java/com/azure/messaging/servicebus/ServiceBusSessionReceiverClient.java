@@ -60,7 +60,7 @@ import java.util.Objects;
  *
  *     while &#40;iterator.hasNext&#40;&#41;&#41; &#123;
  *         ServiceBusReceivedMessage message = iterator.next&#40;&#41;;
- *         System.out.printf&#40;&quot;Session Id: %s. Message: %s%n.&quot;, message.getSessionId&#40;&#41;, message.getBody&#40;&#41;&#41;;
+ *         System.out.printf&#40;&quot;Session Id: %s. Contents: %s%n.&quot;, message.getSessionId&#40;&#41;, message.getBody&#40;&#41;&#41;;
  *
  *         &#47;&#47; Explicitly settle the message using complete, abandon, defer, dead-letter, etc.
  *         if &#40;isMessageProcessed&#41; &#123;
@@ -77,9 +77,11 @@ import java.util.Objects;
  * </pre>
  * <!-- end com.azure.messaging.servicebus.servicebusreceiverclient.instantiation#sessionId -->
  *
- * <p><strong>Receive messages from the first available session</strong></p>
+ * <p><strong>Sample: Receive messages from the first available session</strong></p>
  * <p>Use {@link #acceptNextSession()} to acquire the lock of the next available session without specifying the session
- * id.</p>
+ * id.  {@link ServiceBusReceiveMode#PEEK_LOCK} is <strong>strongly</strong> recommended so users have control over
+ * message settlement.</p>
+ *
  * <!-- src_embed com.azure.messaging.servicebus.servicebusreceiverclient.instantiation#nextsession -->
  * <pre>
  * TokenCredential credential = new DefaultAzureCredentialBuilder&#40;&#41;.build&#40;&#41;;
@@ -100,11 +102,26 @@ import java.util.Objects;
  *
  * &#47;&#47; Use the receiver and finally close it along with the sessionReceiver.
  * try &#123;
- *     IterableStream&lt;ServiceBusReceivedMessage&gt; receivedMessages =
- *         receiver.receiveMessages&#40;10, Duration.ofSeconds&#40;30&#41;&#41;;
+ *     &#47;&#47; Keep fetching messages from the session until there are no more messages.
+ *     &#47;&#47; The receiveMessage operation returns when either 10 messages have been receiver or, 30 seconds have elapsed.
+ *     boolean hasMoreMessages = true;
+ *     while &#40;hasMoreMessages&#41; &#123;
+ *         IterableStream&lt;ServiceBusReceivedMessage&gt; messages =
+ *             receiver.receiveMessages&#40;10, Duration.ofSeconds&#40;30&#41;&#41;;
+ *         Iterator&lt;ServiceBusReceivedMessage&gt; iterator = messages.iterator&#40;&#41;;
+ *         hasMoreMessages = iterator.hasNext&#40;&#41;;
  *
- *     for &#40;ServiceBusReceivedMessage message : receivedMessages&#41; &#123;
- *         System.out.println&#40;&quot;Body: &quot; + message&#41;;
+ *         while &#40;iterator.hasNext&#40;&#41;&#41; &#123;
+ *             ServiceBusReceivedMessage message = iterator.next&#40;&#41;;
+ *             System.out.printf&#40;&quot;Session Id: %s. Message: %s%n.&quot;, message.getSessionId&#40;&#41;, message.getBody&#40;&#41;&#41;;
+ *
+ *             &#47;&#47; Explicitly settle the message using complete, abandon, defer, dead-letter, etc.
+ *             if &#40;isMessageProcessed&#41; &#123;
+ *                 receiver.complete&#40;message&#41;;
+ *             &#125; else &#123;
+ *                 receiver.abandon&#40;message&#41;;
+ *             &#125;
+ *         &#125;
  *     &#125;
  * &#125; finally &#123;
  *     receiver.close&#40;&#41;;

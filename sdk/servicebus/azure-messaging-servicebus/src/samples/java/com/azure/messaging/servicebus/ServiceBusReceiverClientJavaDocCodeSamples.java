@@ -166,6 +166,8 @@ public class ServiceBusReceiverClientJavaDocCodeSamples {
      */
     @Test
     public void receiveMessagesAsync() {
+        boolean isMessageProcessed = RANDOM.nextBoolean();
+
         // 'fullyQualifiedNamespace' will look similar to "{your-namespace}.servicebus.windows.net"
         // 'disableAutoComplete' indicates that users will explicitly settle their message.
         ServiceBusReceiverAsyncClient asyncReceiver = new ServiceBusClientBuilder()
@@ -180,11 +182,19 @@ public class ServiceBusReceiverClientJavaDocCodeSamples {
         // subscription.dispose(). This will stop fetching messages from the Service Bus.
         // Consider using Flux.usingWhen to scope the creation, usage, and cleanup of the receiver.
         Disposable subscription = asyncReceiver.receiveMessages()
-            .subscribe(message -> {
+            .flatMap(message -> {
                 System.out.printf("Received Seq #: %s%n", message.getSequenceNumber());
                 System.out.printf("Contents of message as string: %s%n", message.getBody());
-            },
-                error -> System.out.println("Error occurred: " + error),
+
+                // Explicitly settle the message using complete, abandon, defer, dead-letter, etc.
+                if (isMessageProcessed) {
+                    return asyncReceiver.complete(message);
+                } else {
+                    return asyncReceiver.abandon(message);
+                }
+            })
+            .subscribe(unused -> {
+            }, error -> System.out.println("Error occurred: " + error),
                 () -> System.out.println("Receiving complete."));
 
         // When program ends, or you're done receiving all messages.
@@ -219,9 +229,14 @@ public class ServiceBusReceiverClientJavaDocCodeSamples {
                     return Mono.fromRunnable(() -> receiver.close());
                 })
             .subscribe(message -> {
+                    // Messages received in RECEIVE_AND_DELETE mode do not have to be settled because they are automatically
+                    // removed from the queue.
                 System.out.printf("Received Seq #: %s%n", message.getSequenceNumber());
-                System.out.printf("Contents of message as string: %s%n", message.getBody().toString());
-            }, error -> System.err.print(error));
+                System.out.printf("Contents of message as string: %s%n", message.getBody());
+            },
+                error -> System.out.println("Error occurred: " + error),
+                () -> System.out.println("Receiving complete."));
+
         // END: com.azure.messaging.servicebus.servicebusreceiverasyncclient.receiveWithReceiveAndDeleteMode
 
         subscription.dispose();
@@ -273,7 +288,9 @@ public class ServiceBusReceiverClientJavaDocCodeSamples {
     /**
      * Demonstrates how to create a session receiver for a single, first available session.
      */
-    public void sessionReceiverSingleInstantiation() {
+    public void sessionReceiverNextSession() {
+        boolean isMessageProcessed = RANDOM.nextBoolean();
+
         // BEGIN: com.azure.messaging.servicebus.servicebusreceiverclient.instantiation#nextsession
         TokenCredential credential = new DefaultAzureCredentialBuilder().build();
 
@@ -293,11 +310,26 @@ public class ServiceBusReceiverClientJavaDocCodeSamples {
 
         // Use the receiver and finally close it along with the sessionReceiver.
         try {
-            IterableStream<ServiceBusReceivedMessage> receivedMessages =
-                receiver.receiveMessages(10, Duration.ofSeconds(30));
+            // Keep fetching messages from the session until there are no more messages.
+            // The receiveMessage operation returns when either 10 messages have been receiver or, 30 seconds have elapsed.
+            boolean hasMoreMessages = true;
+            while (hasMoreMessages) {
+                IterableStream<ServiceBusReceivedMessage> messages =
+                    receiver.receiveMessages(10, Duration.ofSeconds(30));
+                Iterator<ServiceBusReceivedMessage> iterator = messages.iterator();
+                hasMoreMessages = iterator.hasNext();
 
-            for (ServiceBusReceivedMessage message : receivedMessages) {
-                System.out.println("Body: " + message);
+                while (iterator.hasNext()) {
+                    ServiceBusReceivedMessage message = iterator.next();
+                    System.out.printf("Session Id: %s. Message: %s%n.", message.getSessionId(), message.getBody());
+
+                    // Explicitly settle the message using complete, abandon, defer, dead-letter, etc.
+                    if (isMessageProcessed) {
+                        receiver.complete(message);
+                    } else {
+                        receiver.abandon(message);
+                    }
+                }
             }
         } finally {
             receiver.close();
@@ -311,7 +343,9 @@ public class ServiceBusReceiverClientJavaDocCodeSamples {
      * Demonstrates how to create a session receiver for a single, first available session for
      * {@link ServiceBusReceiverAsyncClient}.
      */
-    public void sessionReceiverSingleInstantiationAsync() {
+    public void sessionReceiverNextSessionAsync() {
+        boolean isMessageProcessed = RANDOM.nextBoolean();
+
         // BEGIN: com.azure.messaging.servicebus.servicebusreceiverasyncclient.instantiation#nextsession
         TokenCredential credential = new DefaultAzureCredentialBuilder().build();
 
@@ -329,28 +363,39 @@ public class ServiceBusReceiverClientJavaDocCodeSamples {
         // completes with a retriable error. Otherwise, a receiver is returned when a lock on the session is acquired.
         Mono<ServiceBusReceiverAsyncClient> receiverMono = sessionReceiver.acceptNextSession();
 
+        Flux<Void> receiveMessagesFlux = Flux.usingWhen(receiverMono,
+            receiver -> receiver.receiveMessages().flatMap(message -> {
+                System.out.println("Received message: " + message.getBody());
+
+                // Explicitly settle the message via complete, abandon, defer, dead-letter, etc.
+                if (isMessageProcessed) {
+                    return receiver.complete(message);
+                } else {
+                    return receiver.abandon(message);
+                }
+            }),
+            receiver -> Mono.fromRunnable(() -> {
+                // Dispose of the receiver and sessionReceiver when done receiving messages.
+                receiver.close();
+                sessionReceiver.close();
+            }));
+
         // This is a non-blocking call that moves onto the next line of code after setting up and starting the receive
         // operation. Customers can keep a reference to `subscription` and dispose of it when they want to stop
         // receiving messages.
-        Disposable subscription = Flux.usingWhen(receiverMono,
-                receiver -> receiver.receiveMessages(),
-                receiver -> Mono.fromRunnable(() -> {
-                    // Dispose of the receiver and sessionReceiver when done receiving messages.
-                    receiver.close();
-                    sessionReceiver.close();
-                }))
-            .subscribe(message -> {
-                System.out.println("Received message: " + message.getBody());
-            });
+        Disposable subscription = receiveMessagesFlux.subscribe(unused -> {
+        }, error -> System.out.println("Error occurred: " + error),
+            () -> System.out.println("Receiving complete."));
         // END: com.azure.messaging.servicebus.servicebusreceiverasyncclient.instantiation#nextsession
 
+        subscription.dispose();
     }
 
     /**
      * Demonstrates how to create a session receiver for a single know session id.
      */
     @Test
-    public void sessionReceiverSessionIdInstantiation() {
+    public void sessionReceiverSessionId() {
         boolean isMessageProcessed = RANDOM.nextBoolean();
 
         // BEGIN: com.azure.messaging.servicebus.servicebusreceiverclient.instantiation#sessionId
@@ -377,7 +422,7 @@ public class ServiceBusReceiverClientJavaDocCodeSamples {
 
             while (iterator.hasNext()) {
                 ServiceBusReceivedMessage message = iterator.next();
-                System.out.printf("Session Id: %s. Message: %s%n.", message.getSessionId(), message.getBody());
+                System.out.printf("Session Id: %s. Contents: %s%n.", message.getSessionId(), message.getBody());
 
                 // Explicitly settle the message using complete, abandon, defer, dead-letter, etc.
                 if (isMessageProcessed) {
@@ -398,7 +443,7 @@ public class ServiceBusReceiverClientJavaDocCodeSamples {
      * Demonstrates how to create a session receiver for a single know session id.
      */
     @Test
-    public void sessionReceiverSessionIdInstantiationAsync() {
+    public void sessionReceiverSessionIdAsync() {
         boolean isMessageProcessed = RANDOM.nextBoolean();
 
         // BEGIN: com.azure.messaging.servicebus.servicebusreceiverasyncclient.instantiation#sessionId
@@ -444,7 +489,7 @@ public class ServiceBusReceiverClientJavaDocCodeSamples {
         // is non-blocking and kicks off the operation.
         Disposable subscription = sessionMessages.subscribe(
             unused -> {
-            }, error -> System.err.print(error),
+            }, error -> System.err.print("Error receiving message from session: " + error),
             () -> System.out.println("Completed receiving from session."));
         // END: com.azure.messaging.servicebus.servicebusreceiverasyncclient.instantiation#sessionId
 

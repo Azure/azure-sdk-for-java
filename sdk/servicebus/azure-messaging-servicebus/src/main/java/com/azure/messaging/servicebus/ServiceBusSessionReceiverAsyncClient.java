@@ -91,7 +91,7 @@ import static com.azure.messaging.servicebus.ReceiverOptions.createNamedSessionO
  * &#47;&#47; is non-blocking and kicks off the operation.
  * Disposable subscription = sessionMessages.subscribe&#40;
  *     unused -&gt; &#123;
- *     &#125;, error -&gt; System.err.print&#40;error&#41;,
+ *     &#125;, error -&gt; System.err.print&#40;&quot;Error receiving message from session: &quot; + error&#41;,
  *     &#40;&#41; -&gt; System.out.println&#40;&quot;Completed receiving from session.&quot;&#41;&#41;;
  * </pre>
  * <!-- end com.azure.messaging.servicebus.servicebusreceiverasyncclient.instantiation#sessionId -->
@@ -119,19 +119,29 @@ import static com.azure.messaging.servicebus.ReceiverOptions.createNamedSessionO
  * &#47;&#47; completes with a retriable error. Otherwise, a receiver is returned when a lock on the session is acquired.
  * Mono&lt;ServiceBusReceiverAsyncClient&gt; receiverMono = sessionReceiver.acceptNextSession&#40;&#41;;
  *
+ * Flux&lt;Void&gt; receiveMessagesFlux = Flux.usingWhen&#40;receiverMono,
+ *     receiver -&gt; receiver.receiveMessages&#40;&#41;.flatMap&#40;message -&gt; &#123;
+ *         System.out.println&#40;&quot;Received message: &quot; + message.getBody&#40;&#41;&#41;;
+ *
+ *         &#47;&#47; Explicitly settle the message via complete, abandon, defer, dead-letter, etc.
+ *         if &#40;isMessageProcessed&#41; &#123;
+ *             return receiver.complete&#40;message&#41;;
+ *         &#125; else &#123;
+ *             return receiver.abandon&#40;message&#41;;
+ *         &#125;
+ *     &#125;&#41;,
+ *     receiver -&gt; Mono.fromRunnable&#40;&#40;&#41; -&gt; &#123;
+ *         &#47;&#47; Dispose of the receiver and sessionReceiver when done receiving messages.
+ *         receiver.close&#40;&#41;;
+ *         sessionReceiver.close&#40;&#41;;
+ *     &#125;&#41;&#41;;
+ *
  * &#47;&#47; This is a non-blocking call that moves onto the next line of code after setting up and starting the receive
  * &#47;&#47; operation. Customers can keep a reference to `subscription` and dispose of it when they want to stop
  * &#47;&#47; receiving messages.
- * Disposable subscription = Flux.usingWhen&#40;receiverMono,
- *         receiver -&gt; receiver.receiveMessages&#40;&#41;,
- *         receiver -&gt; Mono.fromRunnable&#40;&#40;&#41; -&gt; &#123;
- *             &#47;&#47; Dispose of the receiver and sessionReceiver when done receiving messages.
- *             receiver.close&#40;&#41;;
- *             sessionReceiver.close&#40;&#41;;
- *         &#125;&#41;&#41;
- *     .subscribe&#40;message -&gt; &#123;
- *         System.out.println&#40;&quot;Received message: &quot; + message.getBody&#40;&#41;&#41;;
- *     &#125;&#41;;
+ * Disposable subscription = receiveMessagesFlux.subscribe&#40;unused -&gt; &#123;
+ * &#125;, error -&gt; System.out.println&#40;&quot;Error occurred: &quot; + error&#41;,
+ *     &#40;&#41; -&gt; System.out.println&#40;&quot;Receiving complete.&quot;&#41;&#41;;
  * </pre>
  * <!-- end com.azure.messaging.servicebus.servicebusreceiverasyncclient.instantiation#nextsession -->
  *
