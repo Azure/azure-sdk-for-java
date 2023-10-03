@@ -125,6 +125,7 @@ public class ServiceBusProcessorClientJavaDocCodeSamples {
 
         // Create the processor client via the builder and its sub-builder
         // 'fullyQualifiedNamespace' will look similar to "{your-namespace}.servicebus.windows.net"
+        // 'disableAutoComplete()' will opt in to manual settlement (e.g. complete, abandon).
         ServiceBusProcessorClient processorClient = new ServiceBusClientBuilder()
             .credential(fullyQualifiedNamespace, tokenCredential)
             .processor()
@@ -134,7 +135,6 @@ public class ServiceBusProcessorClientJavaDocCodeSamples {
             .processError(processError)
             .disableAutoComplete()
             .buildProcessorClient();
-
 
         // Starts the processor in the background. Control returns immediately.
         processorClient.start();
@@ -172,7 +172,6 @@ public class ServiceBusProcessorClientJavaDocCodeSamples {
             }
         };
 
-
         TokenCredential tokenCredential = new DefaultAzureCredentialBuilder().build();
 
         // Create the processor client via the builder and its sub-builder
@@ -181,6 +180,8 @@ public class ServiceBusProcessorClientJavaDocCodeSamples {
             .credential(fullyQualifiedNamespace, tokenCredential)
             .sessionProcessor()
             .queueName(sessionEnabledQueueName)
+            .receiveMode(ServiceBusReceiveMode.PEEK_LOCK)
+            .disableAutoComplete()
             .maxConcurrentSessions(2)
             .processMessage(onMessage)
             .processError(onError)

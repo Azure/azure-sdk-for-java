@@ -328,7 +328,10 @@ public class ServiceBusReceiverClientJavaDocCodeSamples {
         // completes with a retriable error. Otherwise, a receiver is returned when a lock on the session is acquired.
         Mono<ServiceBusReceiverAsyncClient> receiverMono = sessionReceiver.acceptNextSession();
 
-        Disposable disposable = Flux.usingWhen(receiverMono,
+        // This is a non-blocking call that moves onto the next line of code after setting up and starting the receive
+        // operation. Customers can keep a reference to `subscription` and dispose of it when they want to stop
+        // receiving messages.
+        Disposable subscription = Flux.usingWhen(receiverMono,
                 receiver -> receiver.receiveMessages(),
                 receiver -> Mono.fromRunnable(() -> {
                     // Dispose of the receiver and sessionReceiver when done receiving messages.
@@ -340,8 +343,6 @@ public class ServiceBusReceiverClientJavaDocCodeSamples {
             });
         // END: com.azure.messaging.servicebus.servicebusreceiverasyncclient.instantiation#nextsession
 
-        // Users can dispose of the subscription to cancel receive operation.
-        disposable.dispose();
     }
 
     /**
@@ -501,14 +502,15 @@ public class ServiceBusReceiverClientJavaDocCodeSamples {
         // BEGIN: com.azure.messaging.servicebus.connection.sharing
         TokenCredential credential = new DefaultAzureCredentialBuilder().build();
 
-        // Retrieve 'connectionString' and 'queueName' from your configuration.
         // 'fullyQualifiedNamespace' will look similar to "{your-namespace}.servicebus.windows.net"
+        // Any clients created from this builder will share the underlying connection.
         ServiceBusClientBuilder sharedConnectionBuilder = new ServiceBusClientBuilder()
             .credential(fullyQualifiedNamespace, credential);
 
         // Create receiver and sender which will share the connection.
         ServiceBusReceiverClient receiver = sharedConnectionBuilder
             .receiver()
+            .receiveMode(ServiceBusReceiveMode.PEEK_LOCK)
             .queueName(queueName)
             .buildClient();
         ServiceBusSenderClient sender = sharedConnectionBuilder

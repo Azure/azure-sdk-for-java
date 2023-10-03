@@ -197,7 +197,10 @@ import static com.azure.messaging.servicebus.implementation.ServiceBusConstants.
  * &#47;&#47; completes with a retriable error. Otherwise, a receiver is returned when a lock on the session is acquired.
  * Mono&lt;ServiceBusReceiverAsyncClient&gt; receiverMono = sessionReceiver.acceptNextSession&#40;&#41;;
  *
- * Disposable disposable = Flux.usingWhen&#40;receiverMono,
+ * &#47;&#47; This is a non-blocking call that moves onto the next line of code after setting up and starting the receive
+ * &#47;&#47; operation. Customers can keep a reference to `subscription` and dispose of it when they want to stop
+ * &#47;&#47; receiving messages.
+ * Disposable subscription = Flux.usingWhen&#40;receiverMono,
  *         receiver -&gt; receiver.receiveMessages&#40;&#41;,
  *         receiver -&gt; Mono.fromRunnable&#40;&#40;&#41; -&gt; &#123;
  *             &#47;&#47; Dispose of the receiver and sessionReceiver when done receiving messages.

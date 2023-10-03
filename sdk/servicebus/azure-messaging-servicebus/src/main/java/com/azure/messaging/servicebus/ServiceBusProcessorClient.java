@@ -116,6 +116,7 @@ import java.util.function.Consumer;
  *
  * &#47;&#47; Create the processor client via the builder and its sub-builder
  * &#47;&#47; 'fullyQualifiedNamespace' will look similar to &quot;&#123;your-namespace&#125;.servicebus.windows.net&quot;
+ * &#47;&#47; 'disableAutoComplete&#40;&#41;' will opt in to manual settlement &#40;e.g. complete, abandon&#41;.
  * ServiceBusProcessorClient processorClient = new ServiceBusClientBuilder&#40;&#41;
  *     .credential&#40;fullyQualifiedNamespace, tokenCredential&#41;
  *     .processor&#40;&#41;
@@ -125,7 +126,6 @@ import java.util.function.Consumer;
  *     .processError&#40;processError&#41;
  *     .disableAutoComplete&#40;&#41;
  *     .buildProcessorClient&#40;&#41;;
- *
  *
  * &#47;&#47; Starts the processor in the background. Control returns immediately.
  * processorClient.start&#40;&#41;;
@@ -159,7 +159,6 @@ import java.util.function.Consumer;
  *     &#125;
  * &#125;;
  *
- *
  * TokenCredential tokenCredential = new DefaultAzureCredentialBuilder&#40;&#41;.build&#40;&#41;;
  *
  * &#47;&#47; Create the processor client via the builder and its sub-builder
@@ -168,6 +167,8 @@ import java.util.function.Consumer;
  *     .credential&#40;fullyQualifiedNamespace, tokenCredential&#41;
  *     .sessionProcessor&#40;&#41;
  *     .queueName&#40;sessionEnabledQueueName&#41;
+ *     .receiveMode&#40;ServiceBusReceiveMode.PEEK_LOCK&#41;
+ *     .disableAutoComplete&#40;&#41;
  *     .maxConcurrentSessions&#40;2&#41;
  *     .processMessage&#40;onMessage&#41;
  *     .processError&#40;onError&#41;

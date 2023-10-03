@@ -297,6 +297,7 @@ TokenCredential tokenCredential = new DefaultAzureCredentialBuilder().build();
 
 // Create the processor client via the builder and its sub-builder
 // 'fullyQualifiedNamespace' will look similar to "{your-namespace}.servicebus.windows.net"
+// 'disableAutoComplete()' will opt in to manual settlement (e.g. complete, abandon).
 ServiceBusProcessorClient processorClient = new ServiceBusClientBuilder()
     .credential(fullyQualifiedNamespace, tokenCredential)
     .processor()
@@ -306,7 +307,6 @@ ServiceBusProcessorClient processorClient = new ServiceBusClientBuilder()
     .processError(processError)
     .disableAutoComplete()
     .buildProcessorClient();
-
 
 // Starts the processor in the background. Control returns immediately.
 processorClient.start();
@@ -400,14 +400,15 @@ between clients which can be achieved by sharing the top level builder as shown 
 ```java com.azure.messaging.servicebus.connection.sharing
 TokenCredential credential = new DefaultAzureCredentialBuilder().build();
 
-// Retrieve 'connectionString' and 'queueName' from your configuration.
 // 'fullyQualifiedNamespace' will look similar to "{your-namespace}.servicebus.windows.net"
+// Any clients created from this builder will share the underlying connection.
 ServiceBusClientBuilder sharedConnectionBuilder = new ServiceBusClientBuilder()
     .credential(fullyQualifiedNamespace, credential);
 
 // Create receiver and sender which will share the connection.
 ServiceBusReceiverClient receiver = sharedConnectionBuilder
     .receiver()
+    .receiveMode(ServiceBusReceiveMode.PEEK_LOCK)
     .queueName(queueName)
     .buildClient();
 ServiceBusSenderClient sender = sharedConnectionBuilder
