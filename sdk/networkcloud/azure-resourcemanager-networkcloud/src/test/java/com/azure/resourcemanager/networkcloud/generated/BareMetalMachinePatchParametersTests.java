@@ -16,23 +16,33 @@ public final class BareMetalMachinePatchParametersTests {
         BareMetalMachinePatchParameters model =
             BinaryData
                 .fromString(
-                    "{\"properties\":{\"machineDetails\":\"muvgp\"},\"tags\":{\"mhfbuzjy\":\"eqsx\",\"ypoh\":\"hsasbhu\"}}")
+                    "{\"properties\":{\"machineDetails\":\"ieholewjwi\"},\"tags\":{\"wexjkmfxapjwogq\":\"wefqsfapaqtferr\",\"awbzasqb\":\"nobpudcdabtqwpw\",\"kyexaoguyaipi\":\"clj\",\"um\":\"sdaultxij\"}}")
                 .toObject(BareMetalMachinePatchParameters.class);
-        Assertions.assertEquals("eqsx", model.tags().get("mhfbuzjy"));
-        Assertions.assertEquals("muvgp", model.machineDetails());
+        Assertions.assertEquals("wefqsfapaqtferr", model.tags().get("wexjkmfxapjwogq"));
+        Assertions.assertEquals("ieholewjwi", model.machineDetails());
     }
 
     @org.junit.jupiter.api.Test
     public void testSerialize() throws Exception {
         BareMetalMachinePatchParameters model =
             new BareMetalMachinePatchParameters()
-                .withTags(mapOf("mhfbuzjy", "eqsx", "ypoh", "hsasbhu"))
-                .withMachineDetails("muvgp");
+                .withTags(
+                    mapOf(
+                        "wexjkmfxapjwogq",
+                        "wefqsfapaqtferr",
+                        "awbzasqb",
+                        "nobpudcdabtqwpw",
+                        "kyexaoguyaipi",
+                        "clj",
+                        "um",
+                        "sdaultxij"))
+                .withMachineDetails("ieholewjwi");
         model = BinaryData.fromObject(model).toObject(BareMetalMachinePatchParameters.class);
-        Assertions.assertEquals("eqsx", model.tags().get("mhfbuzjy"));
-        Assertions.assertEquals("muvgp", model.machineDetails());
+        Assertions.assertEquals("wefqsfapaqtferr", model.tags().get("wexjkmfxapjwogq"));
+        Assertions.assertEquals("ieholewjwi", model.machineDetails());
     }
 
+    // Use "Map.of" if available
     @SuppressWarnings("unchecked")
     private static <T> Map<String, T> mapOf(Object... inputs) {
         Map<String, T> map = new HashMap<>();

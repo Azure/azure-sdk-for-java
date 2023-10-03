@@ -6,6 +6,12 @@ package com.azure.ai.openai.impl;
 import com.azure.ai.openai.OpenAIAsyncClient;
 import com.azure.ai.openai.OpenAIClient;
 import com.azure.ai.openai.OpenAIClientBuilder;
+import com.azure.ai.openai.models.AudioTranscription;
+import com.azure.ai.openai.models.AudioTranscriptionFormat;
+import com.azure.ai.openai.models.AudioTranscriptionOptions;
+import com.azure.ai.openai.models.AudioTranslation;
+import com.azure.ai.openai.models.AudioTranslationFormat;
+import com.azure.ai.openai.models.AudioTranslationOptions;
 import com.azure.ai.openai.models.ChatChoice;
 import com.azure.ai.openai.models.ChatCompletions;
 import com.azure.ai.openai.models.ChatCompletionsOptions;
@@ -14,23 +20,25 @@ import com.azure.ai.openai.models.ChatRole;
 import com.azure.ai.openai.models.Choice;
 import com.azure.ai.openai.models.Completions;
 import com.azure.ai.openai.models.CompletionsOptions;
-import com.azure.ai.openai.models.CompletionsUsage;
 import com.azure.ai.openai.models.EmbeddingItem;
 import com.azure.ai.openai.models.Embeddings;
 import com.azure.ai.openai.models.EmbeddingsOptions;
 import com.azure.ai.openai.models.ImageGenerationOptions;
 import com.azure.ai.openai.models.ImageLocation;
 import com.azure.ai.openai.models.ImageResponse;
-import com.azure.ai.openai.models.NonAzureOpenAIKeyCredential;
 import com.azure.core.credential.AzureKeyCredential;
+import com.azure.core.credential.KeyCredential;
 import com.azure.core.credential.TokenCredential;
 import com.azure.core.http.ProxyOptions;
 import com.azure.core.models.ResponseError;
+import com.azure.core.util.BinaryData;
 import com.azure.core.util.HttpClientOptions;
 import com.azure.core.util.IterableStream;
 import com.azure.identity.DefaultAzureCredentialBuilder;
 
 import java.net.InetSocketAddress;
+import java.nio.file.Path;
+import java.nio.file.Paths;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
@@ -65,7 +73,7 @@ public final class ReadmeSamples {
     public void createNonAzureSyncClientWithApiKey() {
         // BEGIN: readme-sample-createNonAzureOpenAISyncClientApiKey
         OpenAIClient client = new OpenAIClientBuilder()
-            .credential(new NonAzureOpenAIKeyCredential("{openai-secret-key}"))
+            .credential(new KeyCredential("{openai-secret-key}"))
             .buildClient();
         // END: readme-sample-createNonAzureOpenAISyncClientApiKey
     }
@@ -73,7 +81,7 @@ public final class ReadmeSamples {
     public void createNonAzureAsyncClientWithApiKey() {
         // BEGIN: readme-sample-createNonAzureOpenAIAsyncClientApiKey
         OpenAIAsyncClient client = new OpenAIClientBuilder()
-            .credential(new NonAzureOpenAIKeyCredential("{openai-secret-key}"))
+            .credential(new KeyCredential("{openai-secret-key}"))
             .buildAsyncClient();
         // END: readme-sample-createNonAzureOpenAIAsyncClientApiKey
     }
@@ -127,12 +135,13 @@ public final class ReadmeSamples {
         IterableStream<Completions> completionsStream = client
             .getCompletionsStream("{deploymentOrModelId}", new CompletionsOptions(prompt));
 
-        completionsStream.forEach(completions -> {
-            System.out.printf("Model ID=%s is created at %s.%n", completions.getId(), completions.getCreatedAt());
-            for (Choice choice : completions.getChoices()) {
-                System.out.printf("Index: %d, Text: %s.%n", choice.getIndex(), choice.getText());
-            }
-        });
+        completionsStream
+            .stream()
+            // Remove .skip(1) when using Non-Azure OpenAI API
+            // Note: the first chat completions can be ignored when using Azure OpenAI service which is a known service bug.
+            // TODO: remove .skip(1) when service fix the issue.
+            .skip(1)
+            .forEach(completions -> System.out.print(completions.getChoices().get(0).getText()));
         // END: readme-sample-getCompletionsStream
     }
 
@@ -168,24 +177,21 @@ public final class ReadmeSamples {
         IterableStream<ChatCompletions> chatCompletionsStream = client.getChatCompletionsStream("{deploymentOrModelId}",
             new ChatCompletionsOptions(chatMessages));
 
-        chatCompletionsStream.forEach(chatCompletions -> {
-            System.out.printf("Model ID=%s is created at %s.%n", chatCompletions.getId(), chatCompletions.getCreatedAt());
-            for (ChatChoice choice : chatCompletions.getChoices()) {
-                ChatMessage message = choice.getDelta();
-                if (message != null) {
-                    System.out.printf("Index: %d, Chat Role: %s.%n", choice.getIndex(), message.getRole());
-                    System.out.println("Message:");
-                    System.out.println(message.getContent());
+        chatCompletionsStream
+            .stream()
+            // Remove .skip(1) when using Non-Azure OpenAI API
+            // Note: the first chat completions can be ignored when using Azure OpenAI service which is a known service bug.
+            // TODO: remove .skip(1) when service fix the issue.
+            .skip(1)
+            .forEach(chatCompletions -> {
+                ChatMessage delta = chatCompletions.getChoices().get(0).getDelta();
+                if (delta.getRole() != null) {
+                    System.out.println("Role = " + delta.getRole());
                 }
-            }
-
-            CompletionsUsage usage = chatCompletions.getUsage();
-            if (usage != null) {
-                System.out.printf("Usage: number of prompt token is %d, "
-                        + "number of completion token is %d, and number of total tokens in request and response is %d.%n",
-                    usage.getPromptTokens(), usage.getCompletionTokens(), usage.getTotalTokens());
-            }
-        });
+                if (delta.getContent() != null) {
+                    System.out.print(delta.getContent());
+                }
+            });
         // END: readme-sample-getChatCompletionsStream
     }
 
@@ -223,5 +229,35 @@ public final class ReadmeSamples {
             }
         }
         // END: readme-sample-imageGeneration
+    }
+
+    public void audioTranscription() {
+        // BEGIN: readme-sample-audioTranscription
+        String fileName = "{your-file-name}";
+        Path filePath = Paths.get("{your-file-path}" + fileName);
+
+        byte[] file = BinaryData.fromFile(filePath).toBytes();
+        AudioTranscriptionOptions transcriptionOptions = new AudioTranscriptionOptions(file)
+            .setResponseFormat(AudioTranscriptionFormat.JSON);
+
+        AudioTranscription transcription = client.getAudioTranscription("{deploymentOrModelId}", fileName, transcriptionOptions);
+
+        System.out.println("Transcription: " + transcription.getText());
+        // END: readme-sample-audioTranscription
+    }
+
+    public void audioTranslation() {
+        // BEGIN: readme-sample-audioTranslation
+        String fileName = "{your-file-name}";
+        Path filePath = Paths.get("{your-file-path}" + fileName);
+
+        byte[] file = BinaryData.fromFile(filePath).toBytes();
+        AudioTranslationOptions translationOptions = new AudioTranslationOptions(file)
+            .setResponseFormat(AudioTranslationFormat.JSON);
+
+        AudioTranslation translation = client.getAudioTranslation("{deploymentOrModelId}", fileName, translationOptions);
+
+        System.out.println("Translation: " + translation.getText());
+        // END: readme-sample-audioTranslation
     }
 }

@@ -1,5 +1,6 @@
-# Azure Form Recognizer client library for Java
-Azure Form Recognizer is a cloud service that uses machine learning to analyze text and structured data from your documents.
+# Azure Document Intelligence client library for Java
+Azure Document Intelligence ([previously known as Form Recognizer][service-rename]) is a cloud service that uses machine
+learning to analyze text and structured data from your documents. 
 It includes the following main features:
 
 * Layout - Extract text, table structures, and selection marks, along with their bounding region coordinates, from documents.
@@ -58,20 +59,20 @@ add the direct dependency to your project as follows.
 <dependency>
     <groupId>com.azure</groupId>
     <artifactId>azure-ai-formrecognizer</artifactId>
-    <version>4.0.9</version>
+    <version>4.1.1</version>
 </dependency>
 ```
 [//]: # ({x-version-update-end})
-> Note: This version of the client library defaults to the `"2022-08-31"` version of the service.
+> Note: This version of the client library defaults to the `"2023-07-31"` version of the service.
 
 This table shows the relationship between SDK versions and supported API versions of the service:
 
-|SDK version|Supported API version of service
-|-|-
-|3.0.x | 2.0
-|3.1.X - 3.1.12| 2.0, 2.1 (default)
-|4.0.0-beta.1 - Latest GA release| 2022-08-31 (default)
-|4.1.0-beta.1 - Latest beta release| V2023_02_28_preview
+| SDK version    |Supported API version of service
+|----------------|-
+| 3.0.x          | 2.0
+| 3.1.X - 3.1.12 | 2.0, 2.1 (default)
+| 4.0.0          | 2.0, 2.1, 2022-08-31 (default)
+| 4.1.0          | 2.0, 2.1, 2022-08-31, 2023-07-31 (default)
 
 > Note: Starting with version 4.0.X, a new set of clients were introduced to leverage the newest features
 > of the Form Recognizer service. Please see the [Migration Guide][migration_guide] for detailed instructions on how to update application
@@ -80,6 +81,7 @@ This table shows the relationship between SDK versions and supported API version
 
 |API version|Supported clients
 |-|-
+|2023-07-31 | DocumentAnalysisClient and DocumentModelAdministrationClient
 |2022-08-31 | DocumentAnalysisClient and DocumentModelAdministrationClient
 |2.1 | FormRecognizerClient and FormTrainingClient
 |2.0 | FormRecognizerClient and FormTrainingClient
@@ -165,7 +167,7 @@ Authentication with AAD requires some initial setup:
 <dependency>
     <groupId>com.azure</groupId>
     <artifactId>azure-identity</artifactId>
-    <version>1.9.1</version>
+    <version>1.10.1</version>
 </dependency>
 ```
 [//]: # ({x-version-update-end})
@@ -683,7 +685,7 @@ This project has adopted the [Microsoft Open Source Code of Conduct][coc]. For m
 [http_response_exception]: https://github.com/Azure/azure-sdk-for-java/blob/main/sdk/core/azure-core/src/main/java/com/azure/core/exception/HttpResponseException.java
 [jdk_link]: https://docs.microsoft.com/java/azure/jdk/?view=azure-java-stable
 [logging]: https://github.com/Azure/azure-sdk-for-java/wiki/Logging-with-Azure-SDK
-[package]: https://mvnrepository.com/artifact/com.azure/azure-ai-formrecognizer
+[package]: https://central.sonatype.com/artifact/com.azure/azure-ai-formrecognizer
 [product_documentation]: https://docs.microsoft.com/azure/cognitive-services/form-recognizer/overview
 [register_AAD_application]: https://docs.microsoft.com/azure/cognitive-services/authentication#assign-a-role-to-a-service-principal
 [fr-studio]: https://aka.ms/azsdk/formrecognizer/formrecognizerstudio
@@ -732,6 +734,7 @@ This project has adopted the [Microsoft Open Source Code of Conduct][coc]. For m
 [service_analyze_identity_documents_fields]: https://aka.ms/azsdk/formrecognizer/iddocumentfieldschema
 [service_analyze_receipt_fields]: https://aka.ms/azsdk/formrecognizer/receiptfieldschema
 [service_analyze_w2_documents_fields]: https://aka.ms/azsdk/formrecognizer/taxusw2fieldschema
+[service-rename]: https://techcommunity.microsoft.com/t5/azure-ai-services-blog/azure-form-recognizer-is-now-azure-ai-document-intelligence-with/ba-p/3875765
 [source_code]: https://github.com/Azure/azure-sdk-for-java/blob/main/sdk/formrecognizer/azure-ai-formrecognizer/src
 [quickstart_training]: https://learn.microsoft.com/azure/applied-ai-services/form-recognizer/quickstarts/get-started-sdks-rest-api?view=form-recog-3.0.0&pivots=programming-language-java
 [wiki_identity]: https://github.com/Azure/azure-sdk-for-java/wiki/Identity-and-Authentication

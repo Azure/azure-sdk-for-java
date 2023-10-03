@@ -35,12 +35,12 @@ public final class DocumentClassifierDetails {
     /*
      * API version used to create this document classifier.
      */
-    private String apiVersion;
+    private String serviceVersion;
 
     /*
      * List of document types to classify against.
      */
-    private Map<String, ClassifierDocumentTypeDetails> docTypes;
+    private Map<String, ClassifierDocumentTypeDetails> documentTypes;
 
     /** Creates an instance of DocumentClassifierDetails class. */
     public DocumentClassifierDetails() {}
@@ -118,39 +118,39 @@ public final class DocumentClassifierDetails {
     }
 
     /**
-     * Get the apiVersion property: API version used to create this document classifier.
+     * Get the Service version used to create this document classifier.
      *
-     * @return the apiVersion value.
+     * @return the serviceVersion value.
      */
-    public String getApiVersion() {
-        return this.apiVersion;
+    public String getServiceVersion() {
+        return this.serviceVersion;
     }
 
     /**
-     * Set the apiVersion property: API version used to create this document classifier.
+     * Set the service version used to create this document classifier.
      *
-     * @param apiVersion the apiVersion value to set.
+     * @param serviceVersion the service version value to set.
      */
-    void setApiVersion(String apiVersion) {
-        this.apiVersion = apiVersion;
+    void setServiceVersion(String serviceVersion) {
+        this.serviceVersion = serviceVersion;
     }
 
     /**
-     * Get the docTypes property: List of document types to classify against.
+     * Get list of document types to classify against along with their details.
      *
      * @return the docTypes value.
      */
-    public Map<String, ClassifierDocumentTypeDetails> getDocTypes() {
-        return this.docTypes;
+    public Map<String, ClassifierDocumentTypeDetails> getDocumentTypes() {
+        return this.documentTypes;
     }
 
     /**
      * Set the docTypes property: List of document types to classify against.
      *
-     * @param docTypes the docTypes value to set.
+     * @param documentTypes the docTypes value to set.
      */
-    void setDocTypes(Map<String, ClassifierDocumentTypeDetails> docTypes) {
-        this.docTypes = docTypes;
+    void setDocumentTypes(Map<String, ClassifierDocumentTypeDetails> documentTypes) {
+        this.documentTypes = documentTypes;
     }
 
     static {
@@ -161,8 +161,8 @@ public final class DocumentClassifierDetails {
             }
 
             @Override
-            public void setApiVersion(DocumentClassifierDetails documentClassifierDetails, String description) {
-                documentClassifierDetails.setApiVersion(description);
+            public void setServiceVersion(DocumentClassifierDetails documentClassifierDetails, String description) {
+                documentClassifierDetails.setServiceVersion(description);
             }
 
             @Override
@@ -181,7 +181,7 @@ public final class DocumentClassifierDetails {
             }
             @Override
             public void setDocTypes(DocumentClassifierDetails documentClassifierDetails, Map<String, ClassifierDocumentTypeDetails> docTypes) {
-                documentClassifierDetails.setDocTypes(docTypes);
+                documentClassifierDetails.setDocumentTypes(docTypes);
             }
         });
     }

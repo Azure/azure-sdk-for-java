@@ -34,7 +34,7 @@ import java.util.concurrent.atomic.AtomicInteger;
 import static org.assertj.core.api.Assertions.assertThat;
 
 public class CosmosBulkGatewayTest extends BatchTestBase {
-    private final static Logger logger = LoggerFactory.getLogger(CosmosBulkAsyncTest.class);
+    private final static Logger logger = LoggerFactory.getLogger(CosmosBulkGatewayTest.class);
 
     private CosmosAsyncClient bulkClient;
     private CosmosAsyncDatabase createdDatabase;
@@ -44,19 +44,19 @@ public class CosmosBulkGatewayTest extends BatchTestBase {
         super(clientBuilder);
     }
 
-    @BeforeClass(groups = {"simple"}, timeOut = SETUP_TIMEOUT)
+    @BeforeClass(groups = {"split"}, timeOut = SETUP_TIMEOUT)
     public void before_CosmosBulkAsyncTest() {
         assertThat(this.bulkClient).isNull();
         this.bulkClient = getClientBuilder().buildAsyncClient();
         createdDatabase = getSharedCosmosDatabase(this.bulkClient);
     }
 
-    @AfterClass(groups = {"simple"}, timeOut = SHUTDOWN_TIMEOUT, alwaysRun = true)
+    @AfterClass(groups = {"split"}, timeOut = SHUTDOWN_TIMEOUT, alwaysRun = true)
     public void afterClass() {
         safeClose(this.bulkClient);
     }
 
-    @Test(groups = {"simple"}, timeOut = TIMEOUT * 20)
+    @Test(groups = {"split"}, timeOut = TIMEOUT * 20)
     public void createItem_withBulk_split() throws InterruptedException {
         String containerId = "bulksplittestcontainer_" + UUID.randomUUID();
         int totalRequest = getTotalRequest();

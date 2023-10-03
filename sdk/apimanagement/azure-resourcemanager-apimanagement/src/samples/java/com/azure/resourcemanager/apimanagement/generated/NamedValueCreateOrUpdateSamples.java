@@ -10,7 +10,7 @@ import java.util.Arrays;
 /** Samples for NamedValue CreateOrUpdate. */
 public final class NamedValueCreateOrUpdateSamples {
     /*
-     * x-ms-original-file: specification/apimanagement/resource-manager/Microsoft.ApiManagement/stable/2021-08-01/examples/ApiManagementCreateNamedValue.json
+     * x-ms-original-file: specification/apimanagement/resource-manager/Microsoft.ApiManagement/stable/2022-08-01/examples/ApiManagementCreateNamedValue.json
      */
     /**
      * Sample code: ApiManagementCreateNamedValue.
@@ -31,7 +31,7 @@ public final class NamedValueCreateOrUpdateSamples {
     }
 
     /*
-     * x-ms-original-file: specification/apimanagement/resource-manager/Microsoft.ApiManagement/stable/2021-08-01/examples/ApiManagementCreateNamedValueWithKeyVault.json
+     * x-ms-original-file: specification/apimanagement/resource-manager/Microsoft.ApiManagement/stable/2022-08-01/examples/ApiManagementCreateNamedValueWithKeyVault.json
      */
     /**
      * Sample code: ApiManagementCreateNamedValueWithKeyVault.
@@ -48,7 +48,7 @@ public final class NamedValueCreateOrUpdateSamples {
             .withDisplayName("prop6namekv")
             .withKeyVault(
                 new KeyVaultContractCreateProperties()
-                    .withSecretIdentifier("https://contoso.vault.azure.net/secrets/aadSecret")
+                    .withSecretIdentifier("fakeTokenPlaceholder")
                     .withIdentityClientId("ceaa6b06-c00f-43ef-99ac-f53d1fe876a0"))
             .withSecret(true)
             .create();

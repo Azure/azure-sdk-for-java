@@ -6,6 +6,7 @@ package com.azure.resourcemanager.maps.fluent.models;
 
 import com.azure.core.annotation.Fluent;
 import com.azure.core.management.Resource;
+import com.azure.core.management.SystemData;
 import com.azure.core.util.logging.ClientLogger;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import java.util.Map;
@@ -18,6 +19,12 @@ public final class CreatorInner extends Resource {
      */
     @JsonProperty(value = "properties", required = true)
     private CreatorProperties properties;
+
+    /*
+     * The system meta data relating to this resource.
+     */
+    @JsonProperty(value = "systemData", access = JsonProperty.Access.WRITE_ONLY)
+    private SystemData systemData;
 
     /** Creates an instance of CreatorInner class. */
     public CreatorInner() {
@@ -41,6 +48,15 @@ public final class CreatorInner extends Resource {
     public CreatorInner withProperties(CreatorProperties properties) {
         this.properties = properties;
         return this;
+    }
+
+    /**
+     * Get the systemData property: The system meta data relating to this resource.
+     *
+     * @return the systemData value.
+     */
+    public SystemData systemData() {
+        return this.systemData;
     }
 
     /** {@inheritDoc} */

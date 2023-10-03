@@ -1,6 +1,6 @@
 # Release History
 
-## 11.6.0-beta.8 (Unreleased)
+## 11.6.0-beta.10 (Unreleased)
 
 ### Features Added
 
@@ -9,6 +9,59 @@
 ### Bugs Fixed
 
 ### Other Changes
+
+## 11.5.11 (2023-09-22)
+
+### Other Changes
+
+#### Dependency Updates
+
+- Upgraded `azure-core-http-netty` from `1.13.6` to version `1.13.7`.
+- Upgraded `azure-core-serializer-json-jackson` from `1.4.3` to version `1.4.4`.
+- Upgraded `azure-core` from `1.42.0` to version `1.43.0`.
+
+## 11.6.0-beta.9 (2023-09-15)
+
+### Other Changes
+
+#### Dependency Updates
+
+- Upgraded `azure-core-http-netty` from `1.13.6` to version `1.13.7`.
+- Upgraded `azure-core-serializer-json-jackson` from `1.4.3` to version `1.4.4`.
+- Upgraded `azure-core` from `1.42.0` to version `1.43.0`.
+
+## 11.5.10 (2023-08-18)
+
+### Other Changes
+
+#### Dependency Updates
+
+- Upgraded `azure-core-serializer-json-jackson` from `1.4.2` to version `1.4.3`.
+- Upgraded `azure-core-http-netty` from `1.13.5` to version `1.13.6`.
+- Upgraded `azure-core` from `1.41.0` to version `1.42.0`.
+
+## 11.6.0-beta.8 (2023-08-11)
+
+### Features Added
+
+- Added FieldBuilder support for float data types.
+- Added support for multi-vector searches.
+- Adjusted method for setting `fields` in `SearchQueryVector` from `SearchQueryVector setFields(String)` to `SearchQueryVector setFields(String...)` for convenience.
+
+### Breaking Changes
+
+- `SearchOptions` method `SearchOptions setVector(SearchQueryVector)` has been replaced with `SearchOptions setVectors(SearchQueryVector...)` and `SearchOptions setVectors(List<SearchQueryVector>)`
+- `SearchOptions` method `SearchQueryVector getVector()` has been replaced with `List<SearchQueryVector> getVectors()`
+
+### Other Changes
+
+- Added sample for multi-vector search.
+
+#### Dependency Updates
+
+- Upgraded `azure-core-http-netty` from `1.13.5` to version `1.13.6`.
+- Upgraded `azure-core-serializer-json-jackson` from `1.4.2` to version `1.4.3`.
+- Upgraded `azure-core` from `1.41.0` to version `1.42.0`.
 
 ## 11.5.9 (2023-07-25)
 

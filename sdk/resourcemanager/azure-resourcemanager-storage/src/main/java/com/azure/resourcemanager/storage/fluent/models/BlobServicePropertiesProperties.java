@@ -72,6 +72,10 @@ public final class BlobServicePropertiesProperties {
     @JsonProperty(value = "lastAccessTimeTrackingPolicy")
     private LastAccessTimeTrackingPolicy lastAccessTimeTrackingPolicy;
 
+    /** Creates an instance of BlobServicePropertiesProperties class. */
+    public BlobServicePropertiesProperties() {
+    }
+
     /**
      * Get the cors property: Specifies CORS rules for the Blob service. You can include up to five CorsRule elements in
      * the request. If no CorsRule elements are included in the request body, all CORS rules will be deleted, and CORS

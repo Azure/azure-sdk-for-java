@@ -7,7 +7,7 @@ package com.azure.resourcemanager.managedapplications.generated;
 /** Samples for Applications GetByResourceGroup. */
 public final class ApplicationsGetByResourceGroupSamples {
     /*
-     * x-ms-original-file: specification/resources/resource-manager/Microsoft.Solutions/stable/2018-06-01/examples/getApplication.json
+     * x-ms-original-file: specification/solutions/resource-manager/Microsoft.Solutions/stable/2021-07-01/examples/getApplication.json
      */
     /**
      * Sample code: Get a managed application.

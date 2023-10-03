@@ -51,7 +51,7 @@ To enable Azure SDK tracing, add the latest `com.azure:azure-core-tracing-opente
 <dependency>
   <groupId>com.azure</groupId>
   <artifactId>azure-core-tracing-opentelemetry</artifactId>
-  <version>1.0.0-beta.37</version>
+  <version>1.0.0-beta.39</version>
 </dependency>
 ```
 [//]: # ({x-version-update-end})
@@ -75,10 +75,10 @@ Pass OpenTelemetry TracerProvider to Azure client:
 
 // configure OpenTelemetry SDK explicitly per https://opentelemetry.io/docs/instrumentation/java/manual/
 SdkTracerProvider tracerProvider = SdkTracerProvider.builder()
-    .addSpanProcessor(SimpleSpanProcessor.create(LoggingSpanExporter.create()))
+    .addSpanProcessor(BatchSpanProcessor.builder(LoggingSpanExporter.create()).build())
     .build();
 
-OpenTelemetry openTelemetry = OpenTelemetrySdk.builder().setTracerProvider(tracerProvider).build();
+OpenTelemetrySdk openTelemetry = OpenTelemetrySdk.builder().setTracerProvider(tracerProvider).build();
 // Pass OpenTelemetry container to TracingOptions.
 TracingOptions customTracingOptions = new OpenTelemetryTracingOptions()
     .setOpenTelemetry(openTelemetry);
@@ -133,7 +133,7 @@ Pass OpenTelemetry `Context` under `PARENT_TRACE_CONTEXT_KEY` in `com.azure.core
 ```java com.azure.core.util.tracing#explicit-parent
 
 SdkTracerProvider tracerProvider = SdkTracerProvider.builder()
-    .addSpanProcessor(SimpleSpanProcessor.create(LoggingSpanExporter.create()))
+    .addSpanProcessor(BatchSpanProcessor.builder(LoggingSpanExporter.create()).build())
     .build();
 
 AzureClient sampleClient = new AzureClientBuilder()
@@ -181,7 +181,6 @@ try {
 } finally {
     span.end();
 }
-
 ```
 
 ### Using the plugin package with AMQP client libraries
@@ -262,9 +261,9 @@ This project has adopted the [Microsoft Open Source Code of Conduct](https://ope
 
 <!-- Links -->
 [api_documentation]: https://aka.ms/java-docs
-[azure_data_app_configuration]: https://mvnrepository.com/artifact/com.azure/azure-data-appconfiguration/
-[azure_keyvault_secrets]: https://mvnrepository.com/artifact/com.azure/azure-security-keyvault-secrets
-[azure_messaging_eventhubs_mvn]: https://mvnrepository.com/artifact/com.azure/azure-messaging-eventhubs/
+[azure_data_app_configuration]: https://central.sonatype.com/artifact/com.azure/azure-data-appconfiguration/
+[azure_keyvault_secrets]: https://central.sonatype.com/artifact/com.azure/azure-security-keyvault-secrets
+[azure_messaging_eventhubs_mvn]: https://central.sonatype.com/artifact/com.azure/azure-messaging-eventhubs/
 [azure-messaging-eventhubs]: https://github.com/Azure/azure-sdk-for-java/blob/main/sdk/eventhubs/azure-messaging-eventhubs
 [azure-security-keyvault-secrets]: https://github.com/Azure/azure-sdk-for-java/blob/main/sdk/keyvault/azure-security-keyvault-secrets
 [context]: https://github.com/Azure/azure-sdk-for-java/blob/main/sdk/core/azure-core/src/main/java/com/azure/core/util/Context.java

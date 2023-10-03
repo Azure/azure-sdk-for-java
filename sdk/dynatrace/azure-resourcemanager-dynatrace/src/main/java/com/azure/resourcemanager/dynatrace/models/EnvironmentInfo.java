@@ -34,6 +34,10 @@ public final class EnvironmentInfo {
     @JsonProperty(value = "landingURL")
     private String landingUrl;
 
+    /** Creates an instance of EnvironmentInfo class. */
+    public EnvironmentInfo() {
+    }
+
     /**
      * Get the environmentId property: Id of the environment created.
      *

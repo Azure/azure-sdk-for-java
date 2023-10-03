@@ -26,6 +26,10 @@ public final class ManagementPolicyProperties {
     @JsonProperty(value = "policy", required = true)
     private ManagementPolicySchema policy;
 
+    /** Creates an instance of ManagementPolicyProperties class. */
+    public ManagementPolicyProperties() {
+    }
+
     /**
      * Get the lastModifiedTime property: Returns the date and time the ManagementPolicies was last modified.
      *

@@ -4,7 +4,6 @@
 
 package com.azure.resourcemanager.storage.generated;
 
-import com.azure.core.util.Context;
 import com.azure.resourcemanager.storage.fluent.models.FileShareInner;
 import com.azure.resourcemanager.storage.models.AccessPolicy;
 import com.azure.resourcemanager.storage.models.SignedIdentifier;
@@ -16,7 +15,7 @@ import java.util.Map;
 /** Samples for FileShares Update. */
 public final class FileSharesUpdateSamples {
     /*
-     * x-ms-original-file: specification/storage/resource-manager/Microsoft.Storage/stable/2022-09-01/examples/FileSharesPatch.json
+     * x-ms-original-file: specification/storage/resource-manager/Microsoft.Storage/stable/2023-01-01/examples/FileSharesPatch.json
      */
     /**
      * Sample code: UpdateShares.
@@ -34,11 +33,11 @@ public final class FileSharesUpdateSamples {
                 "sto328",
                 "share6185",
                 new FileShareInner().withMetadata(mapOf("type", "image")),
-                Context.NONE);
+                com.azure.core.util.Context.NONE);
     }
 
     /*
-     * x-ms-original-file: specification/storage/resource-manager/Microsoft.Storage/stable/2022-09-01/examples/FileShareAclsPatch.json
+     * x-ms-original-file: specification/storage/resource-manager/Microsoft.Storage/stable/2023-01-01/examples/FileShareAclsPatch.json
      */
     /**
      * Sample code: UpdateShareAcls.
@@ -66,9 +65,10 @@ public final class FileSharesUpdateSamples {
                                             .withStartTime(OffsetDateTime.parse("2021-04-01T08:49:37.0000000Z"))
                                             .withExpiryTime(OffsetDateTime.parse("2021-05-01T08:49:37.0000000Z"))
                                             .withPermission("rwd")))),
-                Context.NONE);
+                com.azure.core.util.Context.NONE);
     }
 
+    // Use "Map.of" if available
     @SuppressWarnings("unchecked")
     private static <T> Map<String, T> mapOf(Object... inputs) {
         Map<String, T> map = new HashMap<>();

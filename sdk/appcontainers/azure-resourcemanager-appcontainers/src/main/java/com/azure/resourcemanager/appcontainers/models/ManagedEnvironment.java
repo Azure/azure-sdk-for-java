@@ -174,6 +174,13 @@ public interface ManagedEnvironment {
     String infrastructureResourceGroup();
 
     /**
+     * Gets the peerAuthentication property: Peer authentication settings for the Managed Environment.
+     *
+     * @return the peerAuthentication value.
+     */
+    ManagedEnvironmentPropertiesPeerAuthentication peerAuthentication();
+
+    /**
      * Gets the region of the resource.
      *
      * @return the region of the resource.
@@ -208,11 +215,13 @@ public interface ManagedEnvironment {
             DefinitionStages.WithResourceGroup,
             DefinitionStages.WithCreate {
     }
+
     /** The ManagedEnvironment definition stages. */
     interface DefinitionStages {
         /** The first stage of the ManagedEnvironment definition. */
         interface Blank extends WithLocation {
         }
+
         /** The stage of the ManagedEnvironment definition allowing to specify location. */
         interface WithLocation {
             /**
@@ -231,6 +240,7 @@ public interface ManagedEnvironment {
              */
             WithResourceGroup withRegion(String location);
         }
+
         /** The stage of the ManagedEnvironment definition allowing to specify parent resource. */
         interface WithResourceGroup {
             /**
@@ -241,6 +251,7 @@ public interface ManagedEnvironment {
              */
             WithCreate withExistingResourceGroup(String resourceGroupName);
         }
+
         /**
          * The stage of the ManagedEnvironment definition which contains all the minimum required properties for the
          * resource to be created, but also allows for any other optional properties to be specified.
@@ -257,7 +268,8 @@ public interface ManagedEnvironment {
                 DefinitionStages.WithWorkloadProfiles,
                 DefinitionStages.WithKedaConfiguration,
                 DefinitionStages.WithDaprConfiguration,
-                DefinitionStages.WithInfrastructureResourceGroup {
+                DefinitionStages.WithInfrastructureResourceGroup,
+                DefinitionStages.WithPeerAuthentication {
             /**
              * Executes the create request.
              *
@@ -273,6 +285,7 @@ public interface ManagedEnvironment {
              */
             ManagedEnvironment create(Context context);
         }
+
         /** The stage of the ManagedEnvironment definition allowing to specify tags. */
         interface WithTags {
             /**
@@ -283,6 +296,7 @@ public interface ManagedEnvironment {
              */
             WithCreate withTags(Map<String, String> tags);
         }
+
         /** The stage of the ManagedEnvironment definition allowing to specify kind. */
         interface WithKind {
             /**
@@ -293,6 +307,7 @@ public interface ManagedEnvironment {
              */
             WithCreate withKind(String kind);
         }
+
         /** The stage of the ManagedEnvironment definition allowing to specify daprAIInstrumentationKey. */
         interface WithDaprAIInstrumentationKey {
             /**
@@ -305,6 +320,7 @@ public interface ManagedEnvironment {
              */
             WithCreate withDaprAIInstrumentationKey(String daprAIInstrumentationKey);
         }
+
         /** The stage of the ManagedEnvironment definition allowing to specify daprAIConnectionString. */
         interface WithDaprAIConnectionString {
             /**
@@ -317,6 +333,7 @@ public interface ManagedEnvironment {
              */
             WithCreate withDaprAIConnectionString(String daprAIConnectionString);
         }
+
         /** The stage of the ManagedEnvironment definition allowing to specify vnetConfiguration. */
         interface WithVnetConfiguration {
             /**
@@ -327,6 +344,7 @@ public interface ManagedEnvironment {
              */
             WithCreate withVnetConfiguration(VnetConfiguration vnetConfiguration);
         }
+
         /** The stage of the ManagedEnvironment definition allowing to specify appLogsConfiguration. */
         interface WithAppLogsConfiguration {
             /**
@@ -339,6 +357,7 @@ public interface ManagedEnvironment {
              */
             WithCreate withAppLogsConfiguration(AppLogsConfiguration appLogsConfiguration);
         }
+
         /** The stage of the ManagedEnvironment definition allowing to specify zoneRedundant. */
         interface WithZoneRedundant {
             /**
@@ -349,6 +368,7 @@ public interface ManagedEnvironment {
              */
             WithCreate withZoneRedundant(Boolean zoneRedundant);
         }
+
         /** The stage of the ManagedEnvironment definition allowing to specify customDomainConfiguration. */
         interface WithCustomDomainConfiguration {
             /**
@@ -359,6 +379,7 @@ public interface ManagedEnvironment {
              */
             WithCreate withCustomDomainConfiguration(CustomDomainConfiguration customDomainConfiguration);
         }
+
         /** The stage of the ManagedEnvironment definition allowing to specify workloadProfiles. */
         interface WithWorkloadProfiles {
             /**
@@ -369,6 +390,7 @@ public interface ManagedEnvironment {
              */
             WithCreate withWorkloadProfiles(List<WorkloadProfile> workloadProfiles);
         }
+
         /** The stage of the ManagedEnvironment definition allowing to specify kedaConfiguration. */
         interface WithKedaConfiguration {
             /**
@@ -379,6 +401,7 @@ public interface ManagedEnvironment {
              */
             WithCreate withKedaConfiguration(KedaConfiguration kedaConfiguration);
         }
+
         /** The stage of the ManagedEnvironment definition allowing to specify daprConfiguration. */
         interface WithDaprConfiguration {
             /**
@@ -389,6 +412,7 @@ public interface ManagedEnvironment {
              */
             WithCreate withDaprConfiguration(DaprConfiguration daprConfiguration);
         }
+
         /** The stage of the ManagedEnvironment definition allowing to specify infrastructureResourceGroup. */
         interface WithInfrastructureResourceGroup {
             /**
@@ -403,7 +427,19 @@ public interface ManagedEnvironment {
              */
             WithCreate withInfrastructureResourceGroup(String infrastructureResourceGroup);
         }
+
+        /** The stage of the ManagedEnvironment definition allowing to specify peerAuthentication. */
+        interface WithPeerAuthentication {
+            /**
+             * Specifies the peerAuthentication property: Peer authentication settings for the Managed Environment.
+             *
+             * @param peerAuthentication Peer authentication settings for the Managed Environment.
+             * @return the next definition stage.
+             */
+            WithCreate withPeerAuthentication(ManagedEnvironmentPropertiesPeerAuthentication peerAuthentication);
+        }
     }
+
     /**
      * Begins update for the ManagedEnvironment resource.
      *
@@ -422,7 +458,8 @@ public interface ManagedEnvironment {
             UpdateStages.WithCustomDomainConfiguration,
             UpdateStages.WithWorkloadProfiles,
             UpdateStages.WithKedaConfiguration,
-            UpdateStages.WithDaprConfiguration {
+            UpdateStages.WithDaprConfiguration,
+            UpdateStages.WithPeerAuthentication {
         /**
          * Executes the update request.
          *
@@ -438,6 +475,7 @@ public interface ManagedEnvironment {
          */
         ManagedEnvironment apply(Context context);
     }
+
     /** The ManagedEnvironment update stages. */
     interface UpdateStages {
         /** The stage of the ManagedEnvironment update allowing to specify tags. */
@@ -450,6 +488,7 @@ public interface ManagedEnvironment {
              */
             Update withTags(Map<String, String> tags);
         }
+
         /** The stage of the ManagedEnvironment update allowing to specify kind. */
         interface WithKind {
             /**
@@ -460,6 +499,7 @@ public interface ManagedEnvironment {
              */
             Update withKind(String kind);
         }
+
         /** The stage of the ManagedEnvironment update allowing to specify daprAIInstrumentationKey. */
         interface WithDaprAIInstrumentationKey {
             /**
@@ -472,6 +512,7 @@ public interface ManagedEnvironment {
              */
             Update withDaprAIInstrumentationKey(String daprAIInstrumentationKey);
         }
+
         /** The stage of the ManagedEnvironment update allowing to specify daprAIConnectionString. */
         interface WithDaprAIConnectionString {
             /**
@@ -484,6 +525,7 @@ public interface ManagedEnvironment {
              */
             Update withDaprAIConnectionString(String daprAIConnectionString);
         }
+
         /** The stage of the ManagedEnvironment update allowing to specify vnetConfiguration. */
         interface WithVnetConfiguration {
             /**
@@ -494,6 +536,7 @@ public interface ManagedEnvironment {
              */
             Update withVnetConfiguration(VnetConfiguration vnetConfiguration);
         }
+
         /** The stage of the ManagedEnvironment update allowing to specify appLogsConfiguration. */
         interface WithAppLogsConfiguration {
             /**
@@ -506,6 +549,7 @@ public interface ManagedEnvironment {
              */
             Update withAppLogsConfiguration(AppLogsConfiguration appLogsConfiguration);
         }
+
         /** The stage of the ManagedEnvironment update allowing to specify customDomainConfiguration. */
         interface WithCustomDomainConfiguration {
             /**
@@ -516,6 +560,7 @@ public interface ManagedEnvironment {
              */
             Update withCustomDomainConfiguration(CustomDomainConfiguration customDomainConfiguration);
         }
+
         /** The stage of the ManagedEnvironment update allowing to specify workloadProfiles. */
         interface WithWorkloadProfiles {
             /**
@@ -526,6 +571,7 @@ public interface ManagedEnvironment {
              */
             Update withWorkloadProfiles(List<WorkloadProfile> workloadProfiles);
         }
+
         /** The stage of the ManagedEnvironment update allowing to specify kedaConfiguration. */
         interface WithKedaConfiguration {
             /**
@@ -536,6 +582,7 @@ public interface ManagedEnvironment {
              */
             Update withKedaConfiguration(KedaConfiguration kedaConfiguration);
         }
+
         /** The stage of the ManagedEnvironment update allowing to specify daprConfiguration. */
         interface WithDaprConfiguration {
             /**
@@ -546,7 +593,19 @@ public interface ManagedEnvironment {
              */
             Update withDaprConfiguration(DaprConfiguration daprConfiguration);
         }
+
+        /** The stage of the ManagedEnvironment update allowing to specify peerAuthentication. */
+        interface WithPeerAuthentication {
+            /**
+             * Specifies the peerAuthentication property: Peer authentication settings for the Managed Environment.
+             *
+             * @param peerAuthentication Peer authentication settings for the Managed Environment.
+             * @return the next definition stage.
+             */
+            Update withPeerAuthentication(ManagedEnvironmentPropertiesPeerAuthentication peerAuthentication);
+        }
     }
+
     /**
      * Refreshes the resource to sync with Azure.
      *

@@ -4,14 +4,13 @@
 
 package com.azure.resourcemanager.apimanagement.generated;
 
-import com.azure.core.util.Context;
 import com.azure.resourcemanager.apimanagement.models.EmailTemplateContract;
 import com.azure.resourcemanager.apimanagement.models.TemplateName;
 
 /** Samples for EmailTemplate Update. */
 public final class EmailTemplateUpdateSamples {
     /*
-     * x-ms-original-file: specification/apimanagement/resource-manager/Microsoft.ApiManagement/stable/2021-08-01/examples/ApiManagementUpdateTemplate.json
+     * x-ms-original-file: specification/apimanagement/resource-manager/Microsoft.ApiManagement/stable/2022-08-01/examples/ApiManagementUpdateTemplate.json
      */
     /**
      * Sample code: ApiManagementUpdateTemplate.
@@ -23,7 +22,11 @@ public final class EmailTemplateUpdateSamples {
         EmailTemplateContract resource =
             manager
                 .emailTemplates()
-                .getWithResponse("rg1", "apimService1", TemplateName.NEW_ISSUE_NOTIFICATION_MESSAGE, Context.NONE)
+                .getWithResponse(
+                    "rg1",
+                    "apimService1",
+                    TemplateName.NEW_ISSUE_NOTIFICATION_MESSAGE,
+                    com.azure.core.util.Context.NONE)
                 .getValue();
         resource
             .update()

@@ -190,25 +190,22 @@ public final class CosmosDbLinkedService extends LinkedService {
 
     /**
      * Get the servicePrincipalCredentialType property: The service principal credential type to use in Server-To-Server
-     * authentication. 'ServicePrincipalKey' for key/secret, 'ServicePrincipalCert' for certificate. Type: string (or
-     * Expression with resultType string).
+     * authentication. 'ServicePrincipalKey' for key/secret, 'ServicePrincipalCert' for certificate. Type: string.
      *
      * @return the servicePrincipalCredentialType value.
      */
-    public CosmosDbServicePrincipalCredentialType servicePrincipalCredentialType() {
+    public Object servicePrincipalCredentialType() {
         return this.innerTypeProperties() == null ? null : this.innerTypeProperties().servicePrincipalCredentialType();
     }
 
     /**
      * Set the servicePrincipalCredentialType property: The service principal credential type to use in Server-To-Server
-     * authentication. 'ServicePrincipalKey' for key/secret, 'ServicePrincipalCert' for certificate. Type: string (or
-     * Expression with resultType string).
+     * authentication. 'ServicePrincipalKey' for key/secret, 'ServicePrincipalCert' for certificate. Type: string.
      *
      * @param servicePrincipalCredentialType the servicePrincipalCredentialType value to set.
      * @return the CosmosDbLinkedService object itself.
      */
-    public CosmosDbLinkedService withServicePrincipalCredentialType(
-        CosmosDbServicePrincipalCredentialType servicePrincipalCredentialType) {
+    public CosmosDbLinkedService withServicePrincipalCredentialType(Object servicePrincipalCredentialType) {
         if (this.innerTypeProperties() == null) {
             this.innerTypeProperties = new CosmosDbLinkedServiceTypeProperties();
         }
@@ -298,8 +295,7 @@ public final class CosmosDbLinkedService extends LinkedService {
     }
 
     /**
-     * Get the connectionMode property: The connection mode used to access CosmosDB account. Type: string (or Expression
-     * with resultType string).
+     * Get the connectionMode property: The connection mode used to access CosmosDB account. Type: string.
      *
      * @return the connectionMode value.
      */
@@ -308,8 +304,7 @@ public final class CosmosDbLinkedService extends LinkedService {
     }
 
     /**
-     * Set the connectionMode property: The connection mode used to access CosmosDB account. Type: string (or Expression
-     * with resultType string).
+     * Set the connectionMode property: The connection mode used to access CosmosDB account. Type: string.
      *
      * @param connectionMode the connectionMode value to set.
      * @return the CosmosDbLinkedService object itself.
@@ -324,22 +319,22 @@ public final class CosmosDbLinkedService extends LinkedService {
 
     /**
      * Get the encryptedCredential property: The encrypted credential used for authentication. Credentials are encrypted
-     * using the integration runtime credential manager. Type: string (or Expression with resultType string).
+     * using the integration runtime credential manager. Type: string.
      *
      * @return the encryptedCredential value.
      */
-    public Object encryptedCredential() {
+    public String encryptedCredential() {
         return this.innerTypeProperties() == null ? null : this.innerTypeProperties().encryptedCredential();
     }
 
     /**
      * Set the encryptedCredential property: The encrypted credential used for authentication. Credentials are encrypted
-     * using the integration runtime credential manager. Type: string (or Expression with resultType string).
+     * using the integration runtime credential manager. Type: string.
      *
      * @param encryptedCredential the encryptedCredential value to set.
      * @return the CosmosDbLinkedService object itself.
      */
-    public CosmosDbLinkedService withEncryptedCredential(Object encryptedCredential) {
+    public CosmosDbLinkedService withEncryptedCredential(String encryptedCredential) {
         if (this.innerTypeProperties() == null) {
             this.innerTypeProperties = new CosmosDbLinkedServiceTypeProperties();
         }

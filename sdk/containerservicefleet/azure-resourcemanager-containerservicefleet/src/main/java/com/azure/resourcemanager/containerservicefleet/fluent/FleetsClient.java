@@ -172,15 +172,30 @@ public interface FleetsClient {
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param fleetName The name of the Fleet resource.
      * @param properties The resource properties to be updated.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return the {@link SyncPoller} for polling of the Fleet resource.
+     */
+    @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
+    SyncPoller<PollResult<FleetInner>, FleetInner> beginUpdate(
+        String resourceGroupName, String fleetName, FleetPatch properties);
+
+    /**
+     * Update a Fleet.
+     *
+     * @param resourceGroupName The name of the resource group. The name is case insensitive.
+     * @param fleetName The name of the Fleet resource.
+     * @param properties The resource properties to be updated.
      * @param ifMatch The request should only proceed if an entity matches this string.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the Fleet resource along with {@link Response}.
+     * @return the {@link SyncPoller} for polling of the Fleet resource.
      */
-    @ServiceMethod(returns = ReturnType.SINGLE)
-    Response<FleetInner> updateWithResponse(
+    @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
+    SyncPoller<PollResult<FleetInner>, FleetInner> beginUpdate(
         String resourceGroupName, String fleetName, FleetPatch properties, String ifMatch, Context context);
 
     /**
@@ -196,6 +211,23 @@ public interface FleetsClient {
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     FleetInner update(String resourceGroupName, String fleetName, FleetPatch properties);
+
+    /**
+     * Update a Fleet.
+     *
+     * @param resourceGroupName The name of the resource group. The name is case insensitive.
+     * @param fleetName The name of the Fleet resource.
+     * @param properties The resource properties to be updated.
+     * @param ifMatch The request should only proceed if an entity matches this string.
+     * @param context The context to associate with this operation.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return the Fleet resource.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    FleetInner update(
+        String resourceGroupName, String fleetName, FleetPatch properties, String ifMatch, Context context);
 
     /**
      * Delete a Fleet.

@@ -19,6 +19,7 @@ import java.net.URI;
 import java.time.Duration;
 import java.time.Instant;
 import java.util.ArrayList;
+import java.util.Collection;
 import java.util.Collections;
 import java.util.HashMap;
 import java.util.HashSet;
@@ -28,14 +29,16 @@ import java.util.Map;
 import java.util.Objects;
 import java.util.Set;
 import java.util.UUID;
+import java.util.concurrent.ConcurrentLinkedDeque;
+import java.util.stream.Collectors;
 
 @JsonSerialize(using = ClientSideRequestStatistics.ClientSideRequestStatisticsSerializer.class)
 public class ClientSideRequestStatistics {
     private static final int MAX_SUPPLEMENTAL_REQUESTS_FOR_TO_STRING = 10;
     private final DiagnosticsClientContext.DiagnosticsClientConfig diagnosticsClientConfig;
     private String activityId;
-    private List<StoreResponseStatistics> responseStatisticsList;
-    private List<StoreResponseStatistics> supplementalResponseStatisticsList;
+    private Collection<StoreResponseStatistics> responseStatisticsList;
+    private Collection<StoreResponseStatistics> supplementalResponseStatisticsList;
     private Map<String, AddressResolutionStatistics> addressResolutionStatistics;
 
     private List<URI> contactedReplicas;
@@ -58,8 +61,8 @@ public class ClientSideRequestStatistics {
         this.diagnosticsClientConfig = diagnosticsClientContext.getConfig();
         this.requestStartTimeUTC = Instant.now();
         this.requestEndTimeUTC = Instant.now();
-        this.responseStatisticsList = new ArrayList<>();
-        this.supplementalResponseStatisticsList = new ArrayList<>();
+        this.responseStatisticsList = new ConcurrentLinkedDeque<>();
+        this.supplementalResponseStatisticsList = new ConcurrentLinkedDeque<>();
         this.gatewayStatisticsList = new ArrayList<>();
         this.addressResolutionStatistics = new HashMap<>();
         this.contactedReplicas = Collections.synchronizedList(new ArrayList<>());
@@ -134,14 +137,24 @@ public class ClientSideRequestStatistics {
         storeResponseStatistics.requestOperationType = request.getOperationType();
         storeResponseStatistics.requestResourceType = request.getResourceType();
         storeResponseStatistics.requestSessionToken = request.getHeaders().get(HttpConstants.HttpHeaders.SESSION_TOKEN);
+        storeResponseStatistics.e2ePolicyCfg = null;
+        storeResponseStatistics.excludedRegions = null;
         activityId = request.getActivityId().toString();
 
         this.requestPayloadSizeInBytes = request.getContentLength();
 
         URI locationEndPoint = null;
         if (request.requestContext != null) {
-            if (request.requestContext.locationEndpointToRoute != null) {
-                locationEndPoint = request.requestContext.locationEndpointToRoute;
+            if (request.requestContext.getEndToEndOperationLatencyPolicyConfig() != null) {
+                storeResponseStatistics.e2ePolicyCfg =
+                    request.requestContext.getEndToEndOperationLatencyPolicyConfig().toString();
+            }
+
+            locationEndPoint = request.requestContext.locationEndpointToRoute;
+
+            List<String> excludedRegions = request.requestContext.getExcludeRegions();
+            if (excludedRegions != null && !excludedRegions.isEmpty()) {
+                storeResponseStatistics.excludedRegions = String.join(", ", excludedRegions);
             }
         }
 
@@ -207,7 +220,8 @@ public class ClientSideRequestStatistics {
             gatewayStatistics.faultInjectionRuleId = storeResponseDiagnostics.getFaultInjectionRuleId();
             gatewayStatistics.faultInjectionEvaluationResults = storeResponseDiagnostics.getFaultInjectionEvaluationResults();
 
-            this.activityId = storeResponseDiagnostics.getActivityId();
+            this.activityId = storeResponseDiagnostics.getActivityId() != null ? storeResponseDiagnostics.getActivityId() :
+                rxDocumentServiceRequest.getActivityId().toString();
 
             this.gatewayStatisticsList.add(gatewayStatistics);
         }
@@ -285,7 +299,8 @@ public class ClientSideRequestStatistics {
         this.setContactedReplicas(new ArrayList<>(totalContactedReplicas));
     }
 
-    private void mergeSupplementalResponses(List<StoreResponseStatistics> other) {
+    // Called under lock
+    private void mergeSupplementalResponses(Collection<StoreResponseStatistics> other) {
         if (other == null) {
             return;
         }
@@ -298,7 +313,8 @@ public class ClientSideRequestStatistics {
         this.supplementalResponseStatisticsList.addAll(other);
     }
 
-    private void mergeResponseStatistics(List<StoreResponseStatistics> other) {
+    // Called under lock
+    private void mergeResponseStatistics(Collection<StoreResponseStatistics> other) {
         if (other == null) {
             return;
         }
@@ -308,8 +324,9 @@ public class ClientSideRequestStatistics {
             return;
         }
 
-        this.responseStatisticsList.addAll(other);
-        this.responseStatisticsList.sort(
+        ArrayList<StoreResponseStatistics> temp = new ArrayList<>(this.responseStatisticsList);
+        temp.addAll(other);
+        temp.sort(
             (StoreResponseStatistics left, StoreResponseStatistics right) -> {
                 if (left == null || left.requestStartTimeUTC == null) {
                     return -1;
@@ -321,6 +338,7 @@ public class ClientSideRequestStatistics {
                 return left.requestStartTimeUTC.compareTo(right.requestStartTimeUTC);
             }
         );
+        this.responseStatisticsList = new ConcurrentLinkedDeque<>(temp);
     }
 
     private void mergeAddressResolutionStatistics(
@@ -421,6 +439,7 @@ public class ClientSideRequestStatistics {
         this.mergeClientSideRequestStatistics(other);
     }
 
+    // Called under lock
     public void mergeClientSideRequestStatistics(ClientSideRequestStatistics other) {
         if (other == null) {
             return;
@@ -492,7 +511,7 @@ public class ClientSideRequestStatistics {
         return retryContext;
     }
 
-    public List<StoreResponseStatistics> getResponseStatisticsList() {
+    public Collection<StoreResponseStatistics> getResponseStatisticsList() {
         return responseStatisticsList;
     }
 
@@ -535,7 +554,7 @@ public class ClientSideRequestStatistics {
         return maxResponsePayloadSizeInBytes;
     }
 
-    public List<StoreResponseStatistics> getSupplementalResponseStatisticsList() {
+    public Collection<StoreResponseStatistics> getSupplementalResponseStatisticsList() {
         return supplementalResponseStatisticsList;
     }
 
@@ -571,8 +590,16 @@ public class ClientSideRequestStatistics {
         @JsonSerialize
         private String requestSessionToken;
 
+        @JsonSerialize
+        private String e2ePolicyCfg;
+
+        @JsonSerialize
+        private String excludedRegions;
+
         @JsonIgnore
         private String regionName;
+
+        public String getExcludedRegions() { return this.excludedRegions; }
 
         public StoreResultDiagnostics getStoreResult() {
             return storeResult;
@@ -595,7 +622,6 @@ public class ClientSideRequestStatistics {
         }
 
         public String getRegionName() { return regionName; }
-
 
         public String getRequestSessionToken() { return requestSessionToken; }
 
@@ -658,15 +684,16 @@ public class ClientSideRequestStatistics {
         }
     }
 
-    public static List<StoreResponseStatistics> getCappedSupplementalResponseStatisticsList(List<StoreResponseStatistics> supplementalResponseStatisticsList) {
+    public static Collection<StoreResponseStatistics> getCappedSupplementalResponseStatisticsList(Collection<StoreResponseStatistics> supplementalResponseStatisticsList) {
         int supplementalResponseStatisticsListCount = supplementalResponseStatisticsList.size();
         int initialIndex =
             Math.max(supplementalResponseStatisticsListCount - MAX_SUPPLEMENTAL_REQUESTS_FOR_TO_STRING, 0);
         if (initialIndex != 0) {
-            List<StoreResponseStatistics> subList = supplementalResponseStatisticsList
-                .subList(initialIndex,
-                    supplementalResponseStatisticsListCount);
-            return subList;
+            return supplementalResponseStatisticsList
+                .stream()
+                .skip(initialIndex)
+                .limit(supplementalResponseStatisticsListCount)
+                .collect(Collectors.toCollection(ConcurrentLinkedDeque<StoreResponseStatistics>::new));
         }
         return supplementalResponseStatisticsList;
     }

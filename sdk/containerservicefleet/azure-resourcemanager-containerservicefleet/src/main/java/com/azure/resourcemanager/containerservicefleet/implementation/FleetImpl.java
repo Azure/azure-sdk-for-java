@@ -14,6 +14,7 @@ import com.azure.resourcemanager.containerservicefleet.models.FleetCredentialRes
 import com.azure.resourcemanager.containerservicefleet.models.FleetHubProfile;
 import com.azure.resourcemanager.containerservicefleet.models.FleetPatch;
 import com.azure.resourcemanager.containerservicefleet.models.FleetProvisioningState;
+import com.azure.resourcemanager.containerservicefleet.models.ManagedServiceIdentity;
 import java.util.Collections;
 import java.util.Map;
 
@@ -49,6 +50,10 @@ public final class FleetImpl implements Fleet, Fleet.Definition, Fleet.Update {
 
     public String etag() {
         return this.innerModel().etag();
+    }
+
+    public ManagedServiceIdentity identity() {
+        return this.innerModel().identity();
     }
 
     public SystemData systemData() {
@@ -140,8 +145,7 @@ public final class FleetImpl implements Fleet, Fleet.Definition, Fleet.Update {
             serviceManager
                 .serviceClient()
                 .getFleets()
-                .updateWithResponse(resourceGroupName, fleetName, updateProperties, updateIfMatch, Context.NONE)
-                .getValue();
+                .update(resourceGroupName, fleetName, updateProperties, updateIfMatch, Context.NONE);
         return this;
     }
 
@@ -150,8 +154,7 @@ public final class FleetImpl implements Fleet, Fleet.Definition, Fleet.Update {
             serviceManager
                 .serviceClient()
                 .getFleets()
-                .updateWithResponse(resourceGroupName, fleetName, updateProperties, updateIfMatch, context)
-                .getValue();
+                .update(resourceGroupName, fleetName, updateProperties, updateIfMatch, context);
         return this;
     }
 
@@ -208,6 +211,16 @@ public final class FleetImpl implements Fleet, Fleet.Definition, Fleet.Update {
             return this;
         } else {
             this.updateProperties.withTags(tags);
+            return this;
+        }
+    }
+
+    public FleetImpl withIdentity(ManagedServiceIdentity identity) {
+        if (isInCreateMode()) {
+            this.innerModel().withIdentity(identity);
+            return this;
+        } else {
+            this.updateProperties.withIdentity(identity);
             return this;
         }
     }

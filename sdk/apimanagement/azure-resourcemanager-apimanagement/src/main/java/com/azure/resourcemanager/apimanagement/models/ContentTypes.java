@@ -14,7 +14,7 @@ public interface ContentTypes {
      * Lists the developer portal's content types. Content types describe content items' properties, validation rules,
      * and constraints.
      *
-     * @param resourceGroupName The name of the resource group.
+     * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param serviceName The name of the API Management service.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
@@ -27,7 +27,7 @@ public interface ContentTypes {
      * Lists the developer portal's content types. Content types describe content items' properties, validation rules,
      * and constraints.
      *
-     * @param resourceGroupName The name of the resource group.
+     * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param serviceName The name of the API Management service.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
@@ -41,21 +41,7 @@ public interface ContentTypes {
      * Gets the details of the developer portal's content type. Content types describe content items' properties,
      * validation rules, and constraints.
      *
-     * @param resourceGroupName The name of the resource group.
-     * @param serviceName The name of the API Management service.
-     * @param contentTypeId Content type identifier.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the details of the developer portal's content type.
-     */
-    ContentTypeContract get(String resourceGroupName, String serviceName, String contentTypeId);
-
-    /**
-     * Gets the details of the developer portal's content type. Content types describe content items' properties,
-     * validation rules, and constraints.
-     *
-     * @param resourceGroupName The name of the resource group.
+     * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param serviceName The name of the API Management service.
      * @param contentTypeId Content type identifier.
      * @param context The context to associate with this operation.
@@ -68,60 +54,25 @@ public interface ContentTypes {
         String resourceGroupName, String serviceName, String contentTypeId, Context context);
 
     /**
-     * Creates or updates the developer portal's content type. Content types describe content items' properties,
-     * validation rules, and constraints. Custom content types' identifiers need to start with the `c-` prefix. Built-in
-     * content types can't be modified.
+     * Gets the details of the developer portal's content type. Content types describe content items' properties,
+     * validation rules, and constraints.
      *
-     * @param resourceGroupName The name of the resource group.
+     * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param serviceName The name of the API Management service.
      * @param contentTypeId Content type identifier.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return content type contract details.
+     * @return the details of the developer portal's content type.
      */
-    ContentTypeContract createOrUpdate(String resourceGroupName, String serviceName, String contentTypeId);
-
-    /**
-     * Creates or updates the developer portal's content type. Content types describe content items' properties,
-     * validation rules, and constraints. Custom content types' identifiers need to start with the `c-` prefix. Built-in
-     * content types can't be modified.
-     *
-     * @param resourceGroupName The name of the resource group.
-     * @param serviceName The name of the API Management service.
-     * @param contentTypeId Content type identifier.
-     * @param ifMatch ETag of the Entity. Not required when creating an entity, but required when updating an entity.
-     * @param context The context to associate with this operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return content type contract details.
-     */
-    Response<ContentTypeContract> createOrUpdateWithResponse(
-        String resourceGroupName, String serviceName, String contentTypeId, String ifMatch, Context context);
+    ContentTypeContract get(String resourceGroupName, String serviceName, String contentTypeId);
 
     /**
      * Removes the specified developer portal's content type. Content types describe content items' properties,
      * validation rules, and constraints. Built-in content types (with identifiers starting with the `c-` prefix) can't
      * be removed.
      *
-     * @param resourceGroupName The name of the resource group.
-     * @param serviceName The name of the API Management service.
-     * @param contentTypeId Content type identifier.
-     * @param ifMatch ETag of the Entity. ETag should match the current entity state from the header response of the GET
-     *     request or it should be * for unconditional update.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     */
-    void delete(String resourceGroupName, String serviceName, String contentTypeId, String ifMatch);
-
-    /**
-     * Removes the specified developer portal's content type. Content types describe content items' properties,
-     * validation rules, and constraints. Built-in content types (with identifiers starting with the `c-` prefix) can't
-     * be removed.
-     *
-     * @param resourceGroupName The name of the resource group.
+     * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param serviceName The name of the API Management service.
      * @param contentTypeId Content type identifier.
      * @param ifMatch ETag of the Entity. ETag should match the current entity state from the header response of the GET
@@ -134,4 +85,81 @@ public interface ContentTypes {
      */
     Response<Void> deleteWithResponse(
         String resourceGroupName, String serviceName, String contentTypeId, String ifMatch, Context context);
+
+    /**
+     * Removes the specified developer portal's content type. Content types describe content items' properties,
+     * validation rules, and constraints. Built-in content types (with identifiers starting with the `c-` prefix) can't
+     * be removed.
+     *
+     * @param resourceGroupName The name of the resource group. The name is case insensitive.
+     * @param serviceName The name of the API Management service.
+     * @param contentTypeId Content type identifier.
+     * @param ifMatch ETag of the Entity. ETag should match the current entity state from the header response of the GET
+     *     request or it should be * for unconditional update.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     */
+    void delete(String resourceGroupName, String serviceName, String contentTypeId, String ifMatch);
+
+    /**
+     * Gets the details of the developer portal's content type. Content types describe content items' properties,
+     * validation rules, and constraints.
+     *
+     * @param id the resource ID.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return the details of the developer portal's content type.
+     */
+    ContentTypeContract getById(String id);
+
+    /**
+     * Gets the details of the developer portal's content type. Content types describe content items' properties,
+     * validation rules, and constraints.
+     *
+     * @param id the resource ID.
+     * @param context The context to associate with this operation.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return the details of the developer portal's content type.
+     */
+    Response<ContentTypeContract> getByIdWithResponse(String id, Context context);
+
+    /**
+     * Removes the specified developer portal's content type. Content types describe content items' properties,
+     * validation rules, and constraints. Built-in content types (with identifiers starting with the `c-` prefix) can't
+     * be removed.
+     *
+     * @param id the resource ID.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     */
+    void deleteById(String id);
+
+    /**
+     * Removes the specified developer portal's content type. Content types describe content items' properties,
+     * validation rules, and constraints. Built-in content types (with identifiers starting with the `c-` prefix) can't
+     * be removed.
+     *
+     * @param id the resource ID.
+     * @param ifMatch ETag of the Entity. ETag should match the current entity state from the header response of the GET
+     *     request or it should be * for unconditional update.
+     * @param context The context to associate with this operation.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return the {@link Response}.
+     */
+    Response<Void> deleteByIdWithResponse(String id, String ifMatch, Context context);
+
+    /**
+     * Begins definition for a new ContentTypeContract resource.
+     *
+     * @param name resource name.
+     * @return the first stage of the new ContentTypeContract definition.
+     */
+    ContentTypeContract.DefinitionStages.Blank define(String name);
 }

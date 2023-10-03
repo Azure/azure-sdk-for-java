@@ -24,6 +24,10 @@ public final class DateAfterCreation {
     @JsonProperty(value = "daysAfterLastTierChangeGreaterThan")
     private Float daysAfterLastTierChangeGreaterThan;
 
+    /** Creates an instance of DateAfterCreation class. */
+    public DateAfterCreation() {
+    }
+
     /**
      * Get the daysAfterCreationGreaterThan property: Value indicating the age in days after creation.
      *

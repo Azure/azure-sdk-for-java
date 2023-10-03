@@ -1,6 +1,6 @@
 # Release History
 
-## 2.9.0-beta.5 (Unreleased)
+## 2.9.0-beta.6 (Unreleased)
 
 ### Features Added
 
@@ -8,7 +8,40 @@
 
 ### Bugs Fixed
 
+- Fixes the potential NullPointerException in ReactorSession if the thread constructing ReactorSession ever happens to run the disposeWork (cleanup phase) synchronously. ([36916](https://github.com/Azure/azure-sdk-for-java/issues/36916))
+
 ### Other Changes
+
+## 2.8.9 (2023-09-07)
+
+### Bugs Fixed
+
+- Fixes the NullPointerException in RequestResponseChannel when the thread constructing RequestResponseChannel happens to run the cleanup phase synchronously. ([36607](https://github.com/Azure/azure-sdk-for-java/issues/36607))
+
+### Other Changes
+
+#### Dependency Updates
+
+- Upgraded `azure-core` from `1.42.0` to `1.43.0`.
+
+## 2.9.0-beta.5 (2023-08-11)
+
+### Features Added
+
+- Update ReceiverUnsettledDeliveries::sendDisposition(,) API to return DeliveryNotOnLinkException if the link is closed (hence delivery map cleared) or the DeliveryMap has no matching delivery. This simplifies the implementation of disposition attempt on management channel.
+- Adding support to turn off retry in MessageFlux hence propagating error or completion event from the first receiver to downstream, this allows using MessageFlux in the cases that need proper credit accounting but not rolling to another receiver.
+
+### Other Changes
+
+- Upgraded `azure-core` from `1.41.0` to `1.42.0`
+
+## 2.8.8 (2023-08-04)
+
+### Other Changes
+
+#### Dependency Updates
+
+- Upgraded `azure-core` from `1.41.0` to `1.42.0`.
 
 ## 2.9.0-beta.4 (2023-07-18)
 

@@ -10,6 +10,26 @@
 
 ### Other Changes
 
+## 4.5.6 (2023-09-25)
+
+### Bugs Fixed
+- Fixed response code for certificate merging operations from `200` to the correct `201`. 
+([#36260](https://github.com/Azure/azure-sdk-for-java/issues/36260))
+
+#### Dependency Updates
+
+- Upgraded `azure-core` from `1.42.0` to version `1.43.0`.
+- Upgraded `azure-core-http-netty` from `1.13.6` to version `1.13.7`.
+
+## 4.5.5 (2023-08-21)
+
+### Other Changes
+
+#### Dependency Updates
+
+- Upgraded `azure-core` from `1.41.0` to version `1.42.0`.
+- Upgraded `azure-core-http-netty` from `1.13.5` to version `1.13.6`.
+
 ## 4.5.4 (2023-07-25)
 
 ### Other Changes

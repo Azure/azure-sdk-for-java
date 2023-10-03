@@ -18,6 +18,10 @@ public final class LocalUsers {
     @JsonProperty(value = "value")
     private List<LocalUserInner> value;
 
+    /** Creates an instance of LocalUsers class. */
+    public LocalUsers() {
+    }
+
     /**
      * Get the value property: The local users associated with the storage account.
      *

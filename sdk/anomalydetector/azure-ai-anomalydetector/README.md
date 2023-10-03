@@ -54,7 +54,7 @@ To use the [DefaultAzureCredential][DefaultAzureCredential] provider shown below
 <dependency>
     <groupId>com.azure</groupId>
     <artifactId>azure-identity</artifactId>
-    <version>1.9.1</version>
+    <version>1.10.1</version>
 </dependency>
 ```
 
@@ -195,7 +195,7 @@ This project has adopted the [Microsoft Open Source Code of Conduct][code_of_con
 [register_aad_app]: https://docs.microsoft.com/azure/cognitive-services/authentication#assign-a-role-to-a-service-principal
 [aad_grant_access]: https://docs.microsoft.com/azure/cognitive-services/authentication#assign-a-role-to-a-service-principal
 [jdk_link]: https://docs.microsoft.com/java/azure/jdk/?view=azure-java-stable
-[package]: https://mvnrepository.com/artifact/com.azure/azure-ai-anomalydetector
+[package]: https://central.sonatype.com/artifact/com.azure/azure-ai-anomalydetector
 [samples_readme]: https://github.com/Azure/azure-sdk-for-java/tree/main/sdk/anomalydetector/azure-ai-anomalydetector/src/samples/README.md
 [logging]: https://github.com/Azure/azure-sdk-for-java/wiki/Logging-with-Azure-SDK
 ![Impressions](https://azure-sdk-impressions.azurewebsites.net/api/impressions/azure-sdk-for-java%2Fsdk%2Fanomalydetector%2Fazure-ai-anomalydetector%2FREADME.png)

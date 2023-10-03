@@ -12,7 +12,7 @@ The Azure Cosmos Encryption Plugin is used for encrypting data with a user-provi
 <dependency>
   <groupId>com.azure</groupId>
   <artifactId>azure-cosmos-encryption</artifactId>
-  <version>2.3.0</version>
+  <version>2.5.0</version>
 </dependency>
 ```
 [//]: # ({x-version-update-end})
@@ -214,7 +214,7 @@ or contact [opencode@microsoft.com][coc_contact] with any additional questions o
 [cosmos_docs]: https://docs.microsoft.com/azure/cosmos-db/introduction
 [jdk]: https://docs.microsoft.com/java/azure/jdk/
 [maven]: https://maven.apache.org/
-[cosmos_encryption_maven]: https://search.maven.org/artifact/com.azure/azure-cosmos-encryption
+[cosmos_encryption_maven]: https://central.sonatype.com/artifact/com.azure/azure-cosmos-encryption
 [cla]: https://cla.microsoft.com
 [coc]: https://opensource.microsoft.com/codeofconduct/
 [coc_faq]: https://opensource.microsoft.com/codeofconduct/faq/

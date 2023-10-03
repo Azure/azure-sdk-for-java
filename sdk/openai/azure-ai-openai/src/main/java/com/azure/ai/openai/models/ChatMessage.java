@@ -126,4 +126,42 @@ public final class ChatMessage {
         this.role = role;
         this.content = content;
     }
+
+    /*
+     * Additional context data associated with a chat message when requesting chat completions using compatible Azure
+     * OpenAI chat extensions. This includes information like the intermediate data source retrievals used to service a
+     * request.
+     * This context information is only populated when using Azure OpenAI with chat extensions capabilities configured.
+     */
+    @Generated
+    @JsonProperty(value = "context")
+    private AzureChatExtensionsMessageContext context;
+
+    /**
+     * Get the context property: Additional context data associated with a chat message when requesting chat completions
+     * using compatible Azure OpenAI chat extensions. This includes information like the intermediate data source
+     * retrievals used to service a request. This context information is only populated when using Azure OpenAI with
+     * chat extensions capabilities configured.
+     *
+     * @return the context value.
+     */
+    @Generated
+    public AzureChatExtensionsMessageContext getContext() {
+        return this.context;
+    }
+
+    /**
+     * Set the context property: Additional context data associated with a chat message when requesting chat completions
+     * using compatible Azure OpenAI chat extensions. This includes information like the intermediate data source
+     * retrievals used to service a request. This context information is only populated when using Azure OpenAI with
+     * chat extensions capabilities configured.
+     *
+     * @param context the context value to set.
+     * @return the ChatMessage object itself.
+     */
+    @Generated
+    public ChatMessage setContext(AzureChatExtensionsMessageContext context) {
+        this.context = context;
+        return this;
+    }
 }

@@ -4,13 +4,12 @@
 
 package com.azure.resourcemanager.storage.generated;
 
-import com.azure.core.util.Context;
 import com.azure.resourcemanager.storage.models.BlobInventoryPolicyName;
 
 /** Samples for BlobInventoryPolicies Delete. */
 public final class BlobInventoryPoliciesDeleteSamples {
     /*
-     * x-ms-original-file: specification/storage/resource-manager/Microsoft.Storage/stable/2022-09-01/examples/StorageAccountDeleteBlobInventoryPolicy.json
+     * x-ms-original-file: specification/storage/resource-manager/Microsoft.Storage/stable/2023-01-01/examples/StorageAccountDeleteBlobInventoryPolicy.json
      */
     /**
      * Sample code: StorageAccountDeleteBlobInventoryPolicy.
@@ -23,6 +22,7 @@ public final class BlobInventoryPoliciesDeleteSamples {
             .manager()
             .serviceClient()
             .getBlobInventoryPolicies()
-            .deleteWithResponse("res6977", "sto2527", BlobInventoryPolicyName.DEFAULT, Context.NONE);
+            .deleteWithResponse(
+                "res6977", "sto2527", BlobInventoryPolicyName.DEFAULT, com.azure.core.util.Context.NONE);
     }
 }

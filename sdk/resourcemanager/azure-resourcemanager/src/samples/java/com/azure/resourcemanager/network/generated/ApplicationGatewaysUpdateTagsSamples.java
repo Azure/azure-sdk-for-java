@@ -11,7 +11,7 @@ import java.util.Map;
 /** Samples for ApplicationGateways UpdateTags. */
 public final class ApplicationGatewaysUpdateTagsSamples {
     /*
-     * x-ms-original-file: specification/network/resource-manager/Microsoft.Network/stable/2023-02-01/examples/ApplicationGatewayUpdateTags.json
+     * x-ms-original-file: specification/network/resource-manager/Microsoft.Network/stable/2023-05-01/examples/ApplicationGatewayUpdateTags.json
      */
     /**
      * Sample code: Update Application Gateway tags.

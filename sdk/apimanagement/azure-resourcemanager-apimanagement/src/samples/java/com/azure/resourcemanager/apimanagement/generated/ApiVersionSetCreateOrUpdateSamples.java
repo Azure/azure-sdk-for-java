@@ -9,7 +9,7 @@ import com.azure.resourcemanager.apimanagement.models.VersioningScheme;
 /** Samples for ApiVersionSet CreateOrUpdate. */
 public final class ApiVersionSetCreateOrUpdateSamples {
     /*
-     * x-ms-original-file: specification/apimanagement/resource-manager/Microsoft.ApiManagement/stable/2021-08-01/examples/ApiManagementCreateApiVersionSet.json
+     * x-ms-original-file: specification/apimanagement/resource-manager/Microsoft.ApiManagement/stable/2022-08-01/examples/ApiManagementCreateApiVersionSet.json
      */
     /**
      * Sample code: ApiManagementCreateApiVersionSet.

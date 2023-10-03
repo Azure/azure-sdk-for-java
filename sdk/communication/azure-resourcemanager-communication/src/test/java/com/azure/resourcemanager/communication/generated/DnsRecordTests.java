@@ -12,7 +12,7 @@ public final class DnsRecordTests {
     public void testDeserialize() throws Exception {
         DnsRecord model =
             BinaryData
-                .fromString("{\"type\":\"dxob\",\"name\":\"dxkqpx\",\"value\":\"ajionpimexgstxg\",\"ttl\":1489591694}")
+                .fromString("{\"type\":\"cbkbfkg\",\"name\":\"dkexxppofm\",\"value\":\"x\",\"ttl\":825369958}")
                 .toObject(DnsRecord.class);
     }
 

@@ -4,6 +4,7 @@
 package com.azure.messaging.servicebus.administration;
 
 import com.azure.core.credential.AccessToken;
+import com.azure.core.credential.AzureSasCredential;
 import com.azure.core.credential.TokenCredential;
 import com.azure.core.credential.TokenRequestContext;
 import com.azure.core.exception.ClientAuthenticationException;
@@ -28,6 +29,7 @@ import com.azure.messaging.servicebus.administration.models.CreateSubscriptionOp
 import com.azure.messaging.servicebus.administration.models.CreateTopicOptions;
 import com.azure.messaging.servicebus.administration.models.EmptyRuleAction;
 import com.azure.messaging.servicebus.administration.models.FalseRuleFilter;
+import com.azure.messaging.servicebus.administration.models.NamespaceProperties;
 import com.azure.messaging.servicebus.administration.models.NamespaceType;
 import com.azure.messaging.servicebus.administration.models.QueueRuntimeProperties;
 import com.azure.messaging.servicebus.administration.models.RuleProperties;
@@ -38,9 +40,8 @@ import com.azure.messaging.servicebus.administration.models.SubscriptionRuntimeP
 import com.azure.messaging.servicebus.administration.models.TopicProperties;
 import com.azure.messaging.servicebus.administration.models.TopicRuntimeProperties;
 import com.azure.messaging.servicebus.administration.models.TrueRuleFilter;
-import org.junit.jupiter.api.AfterAll;
-import org.junit.jupiter.api.BeforeAll;
 import org.junit.jupiter.api.Tag;
+import org.junit.jupiter.api.Test;
 import org.junit.jupiter.params.ParameterizedTest;
 import org.junit.jupiter.params.provider.Arguments;
 import org.junit.jupiter.params.provider.MethodSource;
@@ -54,9 +55,12 @@ import java.time.OffsetDateTime;
 import java.util.Arrays;
 import java.util.Collections;
 import java.util.List;
+import java.util.regex.Matcher;
+import java.util.regex.Pattern;
 import java.util.stream.Stream;
 
 import static com.azure.messaging.servicebus.TestUtils.assertAuthorizationRules;
+import static com.azure.messaging.servicebus.TestUtils.getConnectionString;
 import static com.azure.messaging.servicebus.TestUtils.getEntityName;
 import static com.azure.messaging.servicebus.TestUtils.getSessionSubscriptionBaseName;
 import static com.azure.messaging.servicebus.TestUtils.getSubscriptionBaseName;
@@ -65,6 +69,7 @@ import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertFalse;
 import static org.junit.jupiter.api.Assertions.assertNotNull;
 import static org.junit.jupiter.api.Assertions.assertTrue;
+import static org.junit.jupiter.api.Assumptions.assumeTrue;
 import static org.mockito.ArgumentMatchers.any;
 import static org.mockito.Mockito.mock;
 
@@ -74,6 +79,7 @@ import static org.mockito.Mockito.mock;
 @Tag("integration")
 class ServiceBusAdministrationAsyncClientIntegrationTest extends TestProxyTestBase {
     private static final Duration TIMEOUT = Duration.ofSeconds(20);
+    private static final Duration DEFAULT_TIMEOUT = Duration.ofSeconds(10);
 
     /**
      * Sanitizer to remove header values for ServiceBusDlqSupplementaryAuthorization and
@@ -85,7 +91,6 @@ class ServiceBusAdministrationAsyncClientIntegrationTest extends TestProxyTestBa
 
     static final List<TestProxyRequestMatcher> TEST_PROXY_REQUEST_MATCHERS;
 
-
     static {
         AUTHORIZATION_HEADER = new TestProxySanitizer("SupplementaryAuthorization", "SharedAccessSignature sr=https%3A%2F%2Ffoo.servicebus.windows.net&sig=dummyValue%3D&se=1687267490&skn=dummyKey", TestProxySanitizerType.HEADER);
         TEST_PROXY_SANITIZERS = Collections.singletonList(AUTHORIZATION_HEADER);
@@ -94,16 +99,6 @@ class ServiceBusAdministrationAsyncClientIntegrationTest extends TestProxyTestBa
         final CustomMatcher customMatcher = new CustomMatcher().setExcludedHeaders(skippedHeaders);
 
         TEST_PROXY_REQUEST_MATCHERS = Collections.singletonList(customMatcher);
-    }
-
-    @BeforeAll
-    static void beforeAll() {
-        StepVerifier.setDefaultTimeout(Duration.ofSeconds(10));
-    }
-
-    @AfterAll
-    static void afterAll() {
-        StepVerifier.resetDefaultTimeout();
     }
 
     static Stream<Arguments> createHttpClients() {
@@ -162,8 +157,45 @@ class ServiceBusAdministrationAsyncClientIntegrationTest extends TestProxyTestBa
 
                 assertEquals(expectedName, properties.getName());
             })
-            .verifyComplete();
+            .expectComplete()
+            .verify(DEFAULT_TIMEOUT);
     }
+
+    /**
+     * Test to connect to the service bus with an azure sas credential.
+     * ServiceBusSharedKeyCredential doesn't need a specific test method because other tests below
+     * use connection string, which is converted to a ServiceBusSharedKeyCredential internally.
+     */
+    @Test
+    void azureSasCredentialsTest() {
+        // Arrrange
+        assumeTrue(interceptorManager.isLiveMode(), "Azure Identity test is for live test only");
+        final String fullyQualifiedDomainName = TestUtils.getFullyQualifiedDomainName();
+
+        assumeTrue(fullyQualifiedDomainName != null && !fullyQualifiedDomainName.isEmpty(),
+            "AZURE_SERVICEBUS_FULLY_QUALIFIED_DOMAIN_NAME variable needs to be set when using credentials.");
+
+        String connectionString = getConnectionString(true);
+        Pattern sasPattern = Pattern.compile("SharedAccessSignature=(.*);?", Pattern.CASE_INSENSITIVE);
+        Matcher matcher = sasPattern.matcher(connectionString);
+        assertTrue(matcher.find(), "Couldn't find SAS from connection string");
+
+        ServiceBusAdministrationAsyncClient client = new ServiceBusAdministrationClientBuilder()
+            .endpoint("https://" + fullyQualifiedDomainName)
+            .credential(new AzureSasCredential(matcher.group(1)))
+            .buildAsyncClient();
+
+        // Act & Assert
+        StepVerifier.create(client.getNamespacePropertiesWithResponse())
+            .assertNext(response -> {
+                final NamespaceProperties np = response.getValue();
+                assertNotNull(np.getName());
+            })
+            .expectComplete()
+            .verify(DEFAULT_TIMEOUT);
+    }
+
+    //region Create tests
 
     @ParameterizedTest
     @MethodSource("createHttpClients")
@@ -200,7 +232,8 @@ class ServiceBusAdministrationAsyncClientIntegrationTest extends TestProxyTestBa
                 assertEquals(0, runtimeProperties.getSizeInBytes());
                 assertNotNull(runtimeProperties.getCreatedAt());
             })
-            .verifyComplete();
+            .expectComplete()
+            .verify(DEFAULT_TIMEOUT);
     }
 
     @ParameterizedTest
@@ -214,7 +247,7 @@ class ServiceBusAdministrationAsyncClientIntegrationTest extends TestProxyTestBa
         // Act & Assert
         StepVerifier.create(client.createQueue(queueName, options))
             .expectError(ResourceExistsException.class)
-            .verify();
+            .verify(DEFAULT_TIMEOUT);
     }
 
     @ParameterizedTest
@@ -242,7 +275,8 @@ class ServiceBusAdministrationAsyncClientIntegrationTest extends TestProxyTestBa
                 final QueueRuntimeProperties runtimeProperties = new QueueRuntimeProperties(actual);
                 assertNotNull(runtimeProperties.getCreatedAt());
             })
-            .verifyComplete();
+            .expectComplete()
+            .verify(DEFAULT_TIMEOUT);
     }
 
     @ParameterizedTest
@@ -291,7 +325,8 @@ class ServiceBusAdministrationAsyncClientIntegrationTest extends TestProxyTestBa
 
                 assertAuthorizationRules(expected.getAuthorizationRules(), actual.getAuthorizationRules());
             })
-            .verifyComplete();
+            .expectComplete()
+            .verify(DEFAULT_TIMEOUT);
     }
 
     @ParameterizedTest
@@ -323,7 +358,8 @@ class ServiceBusAdministrationAsyncClientIntegrationTest extends TestProxyTestBa
                 assertTrue(contents.getFilter() instanceof FalseRuleFilter);
 
             })
-            .verifyComplete();
+            .expectComplete()
+            .verify(DEFAULT_TIMEOUT);
     }
 
     @ParameterizedTest
@@ -343,7 +379,8 @@ class ServiceBusAdministrationAsyncClientIntegrationTest extends TestProxyTestBa
                 assertTrue(contents.getFilter() instanceof TrueRuleFilter);
                 assertTrue(contents.getAction() instanceof EmptyRuleAction);
             })
-            .verifyComplete();
+            .expectComplete()
+            .verify(DEFAULT_TIMEOUT);
     }
 
     @ParameterizedTest
@@ -382,7 +419,8 @@ class ServiceBusAdministrationAsyncClientIntegrationTest extends TestProxyTestBa
                 assertNotNull(contents.getAction());
                 assertTrue(contents.getAction() instanceof EmptyRuleAction);
             })
-            .verifyComplete();
+            .expectComplete()
+            .verify(DEFAULT_TIMEOUT);
     }
 
     @ParameterizedTest
@@ -410,7 +448,8 @@ class ServiceBusAdministrationAsyncClientIntegrationTest extends TestProxyTestBa
                 assertEquals(expected.isDeadLetteringOnMessageExpiration(), actual.isDeadLetteringOnMessageExpiration());
                 assertEquals(expected.isSessionRequired(), actual.isSessionRequired());
             })
-            .verifyComplete();
+            .expectComplete()
+            .verify(DEFAULT_TIMEOUT);
     }
 
     @ParameterizedTest
@@ -424,7 +463,7 @@ class ServiceBusAdministrationAsyncClientIntegrationTest extends TestProxyTestBa
         // Act & Assert
         StepVerifier.create(client.createSubscription(topicName, subscriptionName))
             .expectError(ResourceExistsException.class)
-            .verify();
+            .verify(DEFAULT_TIMEOUT);
     }
 
     @ParameterizedTest
@@ -488,8 +527,31 @@ class ServiceBusAdministrationAsyncClientIntegrationTest extends TestProxyTestBa
                 assertEquals(0, runtimeProperties.getSizeInBytes());
                 assertNotNull(runtimeProperties.getCreatedAt());
             })
-            .verifyComplete();
+            .expectComplete()
+            .verify(DEFAULT_TIMEOUT);
     }
+
+    @ParameterizedTest
+    @MethodSource("createHttpClients")
+    void createTopicExistingName(HttpClient httpClient) {
+        // Arrange
+        final ServiceBusAdministrationAsyncClient client = createClient(httpClient);
+        final String topicName = getEntityName(getTopicBaseName(), 3);
+        final CreateTopicOptions expected = new CreateTopicOptions()
+            .setMaxSizeInMegabytes(2048L)
+            .setDuplicateDetectionRequired(true)
+            .setDuplicateDetectionHistoryTimeWindow(Duration.ofMinutes(2))
+            .setUserMetadata("some-metadata-for-testing-topic");
+
+        // Act & Assert
+        StepVerifier.create(client.createTopicWithResponse(topicName, expected))
+            .expectError(ResourceExistsException.class)
+            .verify(DEFAULT_TIMEOUT);
+    }
+
+    //endregion
+
+    //region Delete tests
 
     @ParameterizedTest
     @MethodSource("createHttpClients")
@@ -504,7 +566,25 @@ class ServiceBusAdministrationAsyncClientIntegrationTest extends TestProxyTestBa
 
         // Act & Assert
         StepVerifier.create(client.deleteQueue(queueName))
-            .verifyComplete();
+            .expectComplete()
+            .verify(DEFAULT_TIMEOUT);
+    }
+
+    @ParameterizedTest
+    @MethodSource("createHttpClients")
+    void deleteQueueDoesNotExist(HttpClient httpClient) {
+        // Arrange
+        final ServiceBusAdministrationAsyncClient client = createClient(httpClient);
+        final String queueName = testResourceNamer.randomName("queue", 10);
+
+        client.createQueue(queueName)
+            .onErrorResume(ResourceExistsException.class, e -> Mono.empty())
+            .block(TIMEOUT);
+
+        // Act & Assert
+        StepVerifier.create(client.deleteQueue(queueName))
+            .expectComplete()
+            .verify(DEFAULT_TIMEOUT);
     }
 
     @ParameterizedTest
@@ -520,7 +600,23 @@ class ServiceBusAdministrationAsyncClientIntegrationTest extends TestProxyTestBa
 
         // Act & Assert
         StepVerifier.create(client.deleteRule(topicName, subscriptionName, ruleName))
-            .verifyComplete();
+            .expectComplete()
+            .verify(DEFAULT_TIMEOUT);
+    }
+
+    @ParameterizedTest
+    @MethodSource("createHttpClients")
+    void deleteRuleDoesNotExist(HttpClient httpClient) {
+        // Arrange
+        final ServiceBusAdministrationAsyncClient client = createClient(httpClient);
+        final String ruleName = testResourceNamer.randomName("rule-", 11);
+        final String topicName = getEntityName(getTopicBaseName(), 13);
+        final String subscriptionName = getSubscriptionBaseName();
+
+        // Act & Assert
+        StepVerifier.create(client.deleteRule(topicName, subscriptionName, ruleName))
+            .expectError(ResourceNotFoundException.class)
+            .verify(TIMEOUT);
     }
 
     @ParameterizedTest
@@ -536,7 +632,25 @@ class ServiceBusAdministrationAsyncClientIntegrationTest extends TestProxyTestBa
 
         // Act & Assert
         StepVerifier.create(client.deleteSubscription(topicName, subscriptionName))
-            .verifyComplete();
+            .expectComplete()
+            .verify(DEFAULT_TIMEOUT);
+    }
+
+    @ParameterizedTest
+    @MethodSource("createHttpClients")
+    void deleteSubscriptionDoesNotExist(HttpClient httpClient) {
+        // Arrange
+        final ServiceBusAdministrationAsyncClient client = createClient(httpClient);
+        final String topicName = testResourceNamer.randomName("topic", 10);
+        final String subscriptionName = testResourceNamer.randomName("sub", 7);
+
+        // The topic exists but the subscription does not.
+        client.createTopic(topicName).block(TIMEOUT);
+
+        // Act & Assert
+        StepVerifier.create(client.deleteSubscription(topicName, subscriptionName))
+            .expectError(ResourceNotFoundException.class)
+            .verify(TIMEOUT);
     }
 
     @ParameterizedTest
@@ -550,8 +664,26 @@ class ServiceBusAdministrationAsyncClientIntegrationTest extends TestProxyTestBa
 
         // Act & Assert
         StepVerifier.create(client.deleteTopic(topicName))
-            .verifyComplete();
+            .expectComplete()
+            .verify(DEFAULT_TIMEOUT);
     }
+
+    @ParameterizedTest
+    @MethodSource("createHttpClients")
+    void deleteTopicDoesNotExist(HttpClient httpClient) {
+        // Arrange
+        final ServiceBusAdministrationAsyncClient client = createClient(httpClient);
+        final String topicName = testResourceNamer.randomName("topic", 10);
+
+        // Act & Assert
+        StepVerifier.create(client.deleteTopic(topicName))
+            .expectError(ResourceNotFoundException.class)
+            .verify(TIMEOUT);
+    }
+
+    //endregion
+
+    //region Get and exists tests
 
     @ParameterizedTest
     @MethodSource("createHttpClients")
@@ -575,7 +707,8 @@ class ServiceBusAdministrationAsyncClientIntegrationTest extends TestProxyTestBa
                 assertTrue(nowUtc.isAfter(runtimeProperties.getCreatedAt()));
                 assertNotNull(runtimeProperties.getAccessedAt());
             })
-            .verifyComplete();
+            .expectComplete()
+            .verify(DEFAULT_TIMEOUT);
     }
 
     @ParameterizedTest
@@ -597,7 +730,8 @@ class ServiceBusAdministrationAsyncClientIntegrationTest extends TestProxyTestBa
                 assertEquals(NamespaceType.MESSAGING, properties.getNamespaceType());
                 assertEquals(expectedName, properties.getName());
             })
-            .verifyComplete();
+            .expectComplete()
+            .verify(DEFAULT_TIMEOUT);
     }
 
     @ParameterizedTest
@@ -610,7 +744,7 @@ class ServiceBusAdministrationAsyncClientIntegrationTest extends TestProxyTestBa
         // Act & Assert
         StepVerifier.create(client.getQueue(queueName))
             .expectError(ResourceNotFoundException.class)
-            .verify();
+            .verify(DEFAULT_TIMEOUT);
     }
 
     @ParameterizedTest
@@ -623,7 +757,8 @@ class ServiceBusAdministrationAsyncClientIntegrationTest extends TestProxyTestBa
         // Act & Assert
         StepVerifier.create(client.getQueueExists(queueName))
             .expectNext(true)
-            .verifyComplete();
+            .expectComplete()
+            .verify(DEFAULT_TIMEOUT);
     }
 
     @ParameterizedTest
@@ -636,7 +771,8 @@ class ServiceBusAdministrationAsyncClientIntegrationTest extends TestProxyTestBa
         // Act & Assert
         StepVerifier.create(client.getQueueExists(queueName))
             .expectNext(false)
-            .verifyComplete();
+            .expectComplete()
+            .verify(DEFAULT_TIMEOUT);
     }
 
     @ParameterizedTest
@@ -656,7 +792,8 @@ class ServiceBusAdministrationAsyncClientIntegrationTest extends TestProxyTestBa
                 assertTrue(nowUtc.isAfter(RuntimeProperties.getCreatedAt()));
                 assertNotNull(RuntimeProperties.getAccessedAt());
             })
-            .verifyComplete();
+            .expectComplete()
+            .verify(DEFAULT_TIMEOUT);
     }
 
     @ParameterizedTest
@@ -685,7 +822,24 @@ class ServiceBusAdministrationAsyncClientIntegrationTest extends TestProxyTestBa
                 assertNotNull(contents.getAction());
                 assertTrue(contents.getAction() instanceof EmptyRuleAction);
             })
-            .verifyComplete();
+            .expectComplete()
+            .verify(DEFAULT_TIMEOUT);
+    }
+
+    @ParameterizedTest
+    @MethodSource("createHttpClients")
+    void getRuleDoesNotExist(HttpClient httpClient) {
+        // Arrange
+        final ServiceBusAdministrationAsyncClient client = createClient(httpClient);
+
+        final String ruleName = "does-not-exist-rule";
+        final String topicName = getEntityName(getTopicBaseName(), 13);
+        final String subscriptionName = getSubscriptionBaseName();
+
+        // Act & Assert
+        StepVerifier.create(client.getRuleWithResponse(topicName, subscriptionName, ruleName))
+            .expectError(ResourceNotFoundException.class)
+            .verify(TIMEOUT);
     }
 
     @ParameterizedTest
@@ -711,7 +865,8 @@ class ServiceBusAdministrationAsyncClientIntegrationTest extends TestProxyTestBa
                 assertTrue(nowUtc.isAfter(runtimeProperties.getCreatedAt()));
                 assertNotNull(runtimeProperties.getAccessedAt());
             })
-            .verifyComplete();
+            .expectComplete()
+            .verify(DEFAULT_TIMEOUT);
     }
 
     @ParameterizedTest
@@ -725,7 +880,7 @@ class ServiceBusAdministrationAsyncClientIntegrationTest extends TestProxyTestBa
         // Act & Assert
         StepVerifier.create(client.getSubscription(topicName, subscriptionName))
             .expectError(ResourceNotFoundException.class)
-            .verify();
+            .verify(DEFAULT_TIMEOUT);
     }
 
     @ParameterizedTest
@@ -739,7 +894,8 @@ class ServiceBusAdministrationAsyncClientIntegrationTest extends TestProxyTestBa
         // Act & Assert
         StepVerifier.create(client.getSubscriptionExists(topicName, subscriptionName))
             .expectNext(true)
-            .verifyComplete();
+            .expectComplete()
+            .verify(DEFAULT_TIMEOUT);
     }
 
     @ParameterizedTest
@@ -753,7 +909,8 @@ class ServiceBusAdministrationAsyncClientIntegrationTest extends TestProxyTestBa
         // Act & Assert
         StepVerifier.create(client.getSubscriptionExists(topicName, subscriptionName))
             .expectNext(false)
-            .verifyComplete();
+            .expectComplete()
+            .verify(DEFAULT_TIMEOUT);
     }
 
     @ParameterizedTest
@@ -781,7 +938,8 @@ class ServiceBusAdministrationAsyncClientIntegrationTest extends TestProxyTestBa
                 assertTrue(nowUtc.isAfter(description.getCreatedAt()));
                 assertNotNull(description.getAccessedAt());
             })
-            .verifyComplete();
+            .expectComplete()
+            .verify(DEFAULT_TIMEOUT);
     }
 
     @ParameterizedTest
@@ -808,7 +966,8 @@ class ServiceBusAdministrationAsyncClientIntegrationTest extends TestProxyTestBa
                 assertTrue(nowUtc.isAfter(runtimeProperties.getCreatedAt()));
                 assertNotNull(runtimeProperties.getAccessedAt());
             })
-            .verifyComplete();
+            .expectComplete()
+            .verify(DEFAULT_TIMEOUT);
     }
 
     @ParameterizedTest
@@ -831,7 +990,7 @@ class ServiceBusAdministrationAsyncClientIntegrationTest extends TestProxyTestBa
                 StepVerifier.create(response.getBody())
                     .verifyComplete();
             })
-            .verify();
+            .verify(DEFAULT_TIMEOUT);
     }
 
     @ParameterizedTest
@@ -844,7 +1003,8 @@ class ServiceBusAdministrationAsyncClientIntegrationTest extends TestProxyTestBa
         // Act & Assert
         StepVerifier.create(client.getTopicExists(topicName))
             .expectNext(true)
-            .verifyComplete();
+            .expectComplete()
+            .verify(DEFAULT_TIMEOUT);
     }
 
     @ParameterizedTest
@@ -857,7 +1017,8 @@ class ServiceBusAdministrationAsyncClientIntegrationTest extends TestProxyTestBa
         // Act & Assert
         StepVerifier.create(client.getTopicExists(topicName))
             .expectNext(false)
-            .verifyComplete();
+            .expectComplete()
+            .verify(DEFAULT_TIMEOUT);
     }
 
     @ParameterizedTest
@@ -882,7 +1043,8 @@ class ServiceBusAdministrationAsyncClientIntegrationTest extends TestProxyTestBa
                 assertEquals(0, RuntimeProperties.getScheduledMessageCount());
 
             })
-            .verifyComplete();
+            .expectComplete()
+            .verify(DEFAULT_TIMEOUT);
     }
 
     @ParameterizedTest
@@ -916,8 +1078,13 @@ class ServiceBusAdministrationAsyncClientIntegrationTest extends TestProxyTestBa
 
         // Act & Assert
         StepVerifier.create(client.getSubscriptionRuntimeProperties(topicName, subscriptionName))
-            .verifyErrorMatches(throwable -> throwable instanceof ClientAuthenticationException);
+            .expectErrorMatches(throwable -> throwable instanceof ClientAuthenticationException)
+            .verify(DEFAULT_TIMEOUT);
     }
+
+    //endregion
+
+    //region List tests
 
     @ParameterizedTest
     @MethodSource("createHttpClients")
@@ -941,7 +1108,7 @@ class ServiceBusAdministrationAsyncClientIntegrationTest extends TestProxyTestBa
                 assertTrue(response.getAction() instanceof EmptyRuleAction);
             })
             .thenCancel()
-            .verify();
+            .verify(DEFAULT_TIMEOUT);
     }
 
     @ParameterizedTest
@@ -960,7 +1127,7 @@ class ServiceBusAdministrationAsyncClientIntegrationTest extends TestProxyTestBa
             })
             .expectNextCount(9)
             .thenCancel()
-            .verify();
+            .verify(DEFAULT_TIMEOUT);
     }
 
     @ParameterizedTest
@@ -978,7 +1145,7 @@ class ServiceBusAdministrationAsyncClientIntegrationTest extends TestProxyTestBa
             })
             .expectNextCount(1)
             .thenCancel()
-            .verify();
+            .verify(DEFAULT_TIMEOUT);
     }
 
     @ParameterizedTest
@@ -996,8 +1163,10 @@ class ServiceBusAdministrationAsyncClientIntegrationTest extends TestProxyTestBa
             })
             .expectNextCount(2)
             .thenCancel()
-            .verify();
+            .verify(DEFAULT_TIMEOUT);
     }
+
+    //endregion
 
     @ParameterizedTest
     @MethodSource("createHttpClients")
@@ -1030,7 +1199,8 @@ class ServiceBusAdministrationAsyncClientIntegrationTest extends TestProxyTestBa
                 assertEquals(expectedAction.getSqlExpression(),
                     ((SqlRuleAction) contents.getAction()).getSqlExpression());
             })
-            .verifyComplete();
+            .expectComplete()
+            .verify(DEFAULT_TIMEOUT);
     }
 
     private ServiceBusAdministrationAsyncClient createClient(HttpClient httpClient) {

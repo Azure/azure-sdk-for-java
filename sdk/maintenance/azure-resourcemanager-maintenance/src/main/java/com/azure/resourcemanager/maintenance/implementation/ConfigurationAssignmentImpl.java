@@ -4,21 +4,18 @@
 
 package com.azure.resourcemanager.maintenance.implementation;
 
+import com.azure.core.management.Region;
 import com.azure.core.management.SystemData;
+import com.azure.core.util.Context;
 import com.azure.resourcemanager.maintenance.fluent.models.ConfigurationAssignmentInner;
 import com.azure.resourcemanager.maintenance.models.ConfigurationAssignment;
+import com.azure.resourcemanager.maintenance.models.ConfigurationAssignmentFilterProperties;
 
-public final class ConfigurationAssignmentImpl implements ConfigurationAssignment {
+public final class ConfigurationAssignmentImpl
+    implements ConfigurationAssignment, ConfigurationAssignment.Definition, ConfigurationAssignment.Update {
     private ConfigurationAssignmentInner innerObject;
 
     private final com.azure.resourcemanager.maintenance.MaintenanceManager serviceManager;
-
-    ConfigurationAssignmentImpl(
-        ConfigurationAssignmentInner innerObject,
-        com.azure.resourcemanager.maintenance.MaintenanceManager serviceManager) {
-        this.innerObject = innerObject;
-        this.serviceManager = serviceManager;
-    }
 
     public String id() {
         return this.innerModel().id();
@@ -48,11 +45,128 @@ public final class ConfigurationAssignmentImpl implements ConfigurationAssignmen
         return this.innerModel().resourceId();
     }
 
+    public ConfigurationAssignmentFilterProperties filter() {
+        return this.innerModel().filter();
+    }
+
+    public Region region() {
+        return Region.fromName(this.regionName());
+    }
+
+    public String regionName() {
+        return this.location();
+    }
+
     public ConfigurationAssignmentInner innerModel() {
         return this.innerObject;
     }
 
     private com.azure.resourcemanager.maintenance.MaintenanceManager manager() {
         return this.serviceManager;
+    }
+
+    private String configurationAssignmentName;
+
+    public ConfigurationAssignment create() {
+        this.innerObject =
+            serviceManager
+                .serviceClient()
+                .getConfigurationAssignmentsForSubscriptions()
+                .createOrUpdateWithResponse(configurationAssignmentName, this.innerModel(), Context.NONE)
+                .getValue();
+        return this;
+    }
+
+    public ConfigurationAssignment create(Context context) {
+        this.innerObject =
+            serviceManager
+                .serviceClient()
+                .getConfigurationAssignmentsForSubscriptions()
+                .createOrUpdateWithResponse(configurationAssignmentName, this.innerModel(), context)
+                .getValue();
+        return this;
+    }
+
+    ConfigurationAssignmentImpl(String name, com.azure.resourcemanager.maintenance.MaintenanceManager serviceManager) {
+        this.innerObject = new ConfigurationAssignmentInner();
+        this.serviceManager = serviceManager;
+        this.configurationAssignmentName = name;
+    }
+
+    public ConfigurationAssignmentImpl update() {
+        return this;
+    }
+
+    public ConfigurationAssignment apply() {
+        this.innerObject =
+            serviceManager
+                .serviceClient()
+                .getConfigurationAssignmentsForSubscriptions()
+                .updateWithResponse(configurationAssignmentName, this.innerModel(), Context.NONE)
+                .getValue();
+        return this;
+    }
+
+    public ConfigurationAssignment apply(Context context) {
+        this.innerObject =
+            serviceManager
+                .serviceClient()
+                .getConfigurationAssignmentsForSubscriptions()
+                .updateWithResponse(configurationAssignmentName, this.innerModel(), context)
+                .getValue();
+        return this;
+    }
+
+    ConfigurationAssignmentImpl(
+        ConfigurationAssignmentInner innerObject,
+        com.azure.resourcemanager.maintenance.MaintenanceManager serviceManager) {
+        this.innerObject = innerObject;
+        this.serviceManager = serviceManager;
+        this.configurationAssignmentName = Utils.getValueFromIdByName(innerObject.id(), "configurationAssignments");
+    }
+
+    public ConfigurationAssignment refresh() {
+        this.innerObject =
+            serviceManager
+                .serviceClient()
+                .getConfigurationAssignmentsForSubscriptions()
+                .getWithResponse(configurationAssignmentName, Context.NONE)
+                .getValue();
+        return this;
+    }
+
+    public ConfigurationAssignment refresh(Context context) {
+        this.innerObject =
+            serviceManager
+                .serviceClient()
+                .getConfigurationAssignmentsForSubscriptions()
+                .getWithResponse(configurationAssignmentName, context)
+                .getValue();
+        return this;
+    }
+
+    public ConfigurationAssignmentImpl withRegion(Region location) {
+        this.innerModel().withLocation(location.toString());
+        return this;
+    }
+
+    public ConfigurationAssignmentImpl withRegion(String location) {
+        this.innerModel().withLocation(location);
+        return this;
+    }
+
+    public ConfigurationAssignmentImpl withMaintenanceConfigurationId(String maintenanceConfigurationId) {
+        this.innerModel().withMaintenanceConfigurationId(maintenanceConfigurationId);
+        return this;
+    }
+
+    public ConfigurationAssignmentImpl withResourceId(String resourceId) {
+        this.innerModel().withResourceId(resourceId);
+        return this;
+    }
+
+    public ConfigurationAssignmentImpl withFilter(ConfigurationAssignmentFilterProperties filter) {
+        this.innerModel().withFilter(filter);
+        return this;
     }
 }

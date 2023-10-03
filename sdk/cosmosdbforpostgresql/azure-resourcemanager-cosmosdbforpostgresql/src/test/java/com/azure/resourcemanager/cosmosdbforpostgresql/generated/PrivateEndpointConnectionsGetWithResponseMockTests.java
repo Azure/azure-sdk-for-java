@@ -32,7 +32,7 @@ public final class PrivateEndpointConnectionsGetWithResponseMockTests {
         ArgumentCaptor<HttpRequest> httpRequest = ArgumentCaptor.forClass(HttpRequest.class);
 
         String responseStr =
-            "{\"properties\":{\"groupIds\":[\"ozfikdowwq\"],\"privateEndpoint\":{\"id\":\"xzxcl\"},\"privateLinkServiceConnectionState\":{\"status\":\"Rejected\",\"description\":\"hqzonosggbhcoh\",\"actionsRequired\":\"dsjnka\"},\"provisioningState\":\"Deleting\"},\"id\":\"iiswacffgdkzze\",\"name\":\"kfvhqcrailvpn\",\"type\":\"pfuflrw\"}";
+            "{\"properties\":{\"groupIds\":[\"e\"],\"privateEndpoint\":{\"id\":\"arrwlquu\"},\"privateLinkServiceConnectionState\":{\"status\":\"Rejected\",\"description\":\"kacewiipfp\",\"actionsRequired\":\"ji\"},\"provisioningState\":\"Creating\"},\"id\":\"f\",\"name\":\"ohqkvpuvksgpls\",\"type\":\"kn\"}";
 
         Mockito.when(httpResponse.getStatusCode()).thenReturn(200);
         Mockito.when(httpResponse.getHeaders()).thenReturn(new HttpHeaders());
@@ -63,13 +63,13 @@ public final class PrivateEndpointConnectionsGetWithResponseMockTests {
         PrivateEndpointConnection response =
             manager
                 .privateEndpointConnections()
-                .getWithResponse("zmuvpbttdumorppx", "bmnzbtbhjpgl", "fgohdneuelfphs", com.azure.core.util.Context.NONE)
+                .getWithResponse("reqnovvqfov", "jxywsuws", "rsndsytgadgvra", com.azure.core.util.Context.NONE)
                 .getValue();
 
         Assertions
             .assertEquals(
                 PrivateEndpointServiceConnectionStatus.REJECTED, response.privateLinkServiceConnectionState().status());
-        Assertions.assertEquals("hqzonosggbhcoh", response.privateLinkServiceConnectionState().description());
-        Assertions.assertEquals("dsjnka", response.privateLinkServiceConnectionState().actionsRequired());
+        Assertions.assertEquals("kacewiipfp", response.privateLinkServiceConnectionState().description());
+        Assertions.assertEquals("ji", response.privateLinkServiceConnectionState().actionsRequired());
     }
 }

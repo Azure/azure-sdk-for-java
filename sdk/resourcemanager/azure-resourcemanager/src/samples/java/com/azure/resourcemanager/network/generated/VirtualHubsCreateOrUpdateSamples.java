@@ -12,7 +12,7 @@ import java.util.Map;
 /** Samples for VirtualHubs CreateOrUpdate. */
 public final class VirtualHubsCreateOrUpdateSamples {
     /*
-     * x-ms-original-file: specification/network/resource-manager/Microsoft.Network/stable/2023-02-01/examples/VirtualHubPut.json
+     * x-ms-original-file: specification/network/resource-manager/Microsoft.Network/stable/2023-05-01/examples/VirtualHubPut.json
      */
     /**
      * Sample code: VirtualHubPut.

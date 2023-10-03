@@ -12,19 +12,7 @@ public interface TenantAccessGits {
     /**
      * Regenerate primary access key for GIT.
      *
-     * @param resourceGroupName The name of the resource group.
-     * @param serviceName The name of the API Management service.
-     * @param accessName The identifier of the Access configuration.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     */
-    void regeneratePrimaryKey(String resourceGroupName, String serviceName, AccessIdName accessName);
-
-    /**
-     * Regenerate primary access key for GIT.
-     *
-     * @param resourceGroupName The name of the resource group.
+     * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param serviceName The name of the API Management service.
      * @param accessName The identifier of the Access configuration.
      * @param context The context to associate with this operation.
@@ -37,21 +25,21 @@ public interface TenantAccessGits {
         String resourceGroupName, String serviceName, AccessIdName accessName, Context context);
 
     /**
-     * Regenerate secondary access key for GIT.
+     * Regenerate primary access key for GIT.
      *
-     * @param resourceGroupName The name of the resource group.
+     * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param serviceName The name of the API Management service.
      * @param accessName The identifier of the Access configuration.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      */
-    void regenerateSecondaryKey(String resourceGroupName, String serviceName, AccessIdName accessName);
+    void regeneratePrimaryKey(String resourceGroupName, String serviceName, AccessIdName accessName);
 
     /**
      * Regenerate secondary access key for GIT.
      *
-     * @param resourceGroupName The name of the resource group.
+     * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param serviceName The name of the API Management service.
      * @param accessName The identifier of the Access configuration.
      * @param context The context to associate with this operation.
@@ -62,4 +50,16 @@ public interface TenantAccessGits {
      */
     Response<Void> regenerateSecondaryKeyWithResponse(
         String resourceGroupName, String serviceName, AccessIdName accessName, Context context);
+
+    /**
+     * Regenerate secondary access key for GIT.
+     *
+     * @param resourceGroupName The name of the resource group. The name is case insensitive.
+     * @param serviceName The name of the API Management service.
+     * @param accessName The identifier of the Access configuration.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     */
+    void regenerateSecondaryKey(String resourceGroupName, String serviceName, AccessIdName accessName);
 }

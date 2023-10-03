@@ -13,7 +13,7 @@ public final class SupportedVersionCatalogVersionTests {
         SupportedVersionCatalogVersion model =
             BinaryData
                 .fromString(
-                    "{\"data\":{\"audience\":\"uticndvkaozwyif\",\"catalog\":\"hxh\",\"offer\":\"okftyxolniwpwcuk\",\"version\":\"kgiawxklryplwck\"},\"name\":\"syyp\",\"namespace\":\"dhsgcba\"}")
+                    "{\"data\":{\"audience\":\"juvf\",\"catalog\":\"wrlyxwjkcprb\",\"offer\":\"b\",\"version\":\"jvtbvpyss\"},\"name\":\"nruj\",\"namespace\":\"uhmuouqfprwzwbn\"}")
                 .toObject(SupportedVersionCatalogVersion.class);
     }
 

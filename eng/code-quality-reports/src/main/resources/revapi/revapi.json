@@ -250,6 +250,20 @@
         },
         {
           "regex": true,
+          "code": "java.annotation.removed",
+          "old": "class com.azure.spring.cloud.autoconfigure.aad.configuration.(AadResourceServerConfiguration.DefaultAadResourceServerWebSecurityConfigurerAdapter|AadWebApplicationConfiguration.DefaultAadWebSecurityConfigurerAdapter)",
+          "new": "class com.azure.spring.cloud.autoconfigure.aad.configuration.(AadResourceServerConfiguration.DefaultAadResourceServerWebSecurityConfigurerAdapter|AadWebApplicationConfiguration.DefaultAadWebSecurityConfigurerAdapter)",
+          "justification": "Element no longer annotated with 'org.springframework.boot.autoconfigure.condition.ConditionalOnMissingBean'."
+        },
+        {
+          "regex": true,
+          "code" : "java.annotation.added",
+          "old" : "class com.azure.spring.cloud.autoconfigure.aad.configuration.(AadResourceServerConfiguration.DefaultAadResourceServerWebSecurityConfigurerAdapter|AadWebApplicationConfiguration.DefaultAadWebSecurityConfigurerAdapter)",
+          "new" : "class com.azure.spring.cloud.autoconfigure.aad.configuration.(AadResourceServerConfiguration.DefaultAadResourceServerWebSecurityConfigurerAdapter|AadWebApplicationConfiguration.DefaultAadWebSecurityConfigurerAdapter)",
+          "justification": "Element newly annotated with 'org.springframework.boot.autoconfigure.security.ConditionalOnDefaultWebSecurity"
+        },
+        {
+          "regex": true,
           "code": "java\\.annotation\\.removed",
           "old": ".*? com\\.azure\\.security\\.keyvault\\.administration\\.models.*",
           "justification": "Removing Jackson annotations from KeyVault Administration in transition to stream-style."
@@ -285,6 +299,19 @@
           "code": "java.annotation.added",
           "new": "class com.azure.cosmos.models.ChangeFeedProcessorItem",
           "justification": "Modifies the type of changeFeedMetaData from ChangeFeedMetaData to JsonNode."
+        },
+        {
+          "ignore": true,
+          "code": "java.field.addedStaticField",
+          "new": "field com.azure.data.schemaregistry.SchemaRegistryVersion.V2022_10",
+          "justification": "Another version of Schema Registry API released."
+        },
+        {
+          "regex": true,
+          "ignore": true,
+          "code": "java.field.addedStaticField",
+          "new": "field com\\.azure\\.data\\.schemaregistry\\.models\\.SchemaFormat\\.(CUSTOM|JSON)",
+          "justification": "Additional schema formats are supported by Schema Registry."
         }
       ]
     }

@@ -1,6 +1,6 @@
 # Release History
 
-## 7.15.0-beta.3 (Unreleased)
+## 7.15.0-beta.4 (Unreleased)
 
 ### Features Added
 
@@ -9,6 +9,53 @@
 ### Bugs Fixed
 
 ### Other Changes
+
+## 7.14.4 (2023-09-18)
+
+### Bugs Fixed
+
+- Fixed `NullPointerException` that happens when session processor or receiver encounters an error and distributed tracing is enabled.
+  ([#36800](https://github.com/Azure/azure-sdk-for-java/issues/36800))
+
+### Other Changes
+
+#### Dependency Updates
+- Upgraded `azure-core` from `1.42.0` to `1.43.0`.
+- Upgraded `azure-core-amqp` from `2.8.8` to `2.8.9`.
+- Upgraded `azure-identity` from `1.10.0` to `1.10.1`.
+
+## 7.15.0-beta.3 (2023-08-14)
+
+### Features Added
+
+- Redesigned session processor that addresses the out of order message delivery and to use Prefetch reliability redesign in azure-core-amqp 2.9.0-beta.5.
+
+### Other Changes
+
+#### Dependency Updates
+- Upgraded `azure-core` from `1.41.0` to `1.42.0`.
+- Upgraded `azure-core-amqp` from `2.9.0-beta.4` to `2.9.0-beta.5`.
+- Upgraded `azure-identity` from `1.9.2` to `1.10.0`.
+
+## 7.14.3 (2023-08-11)
+
+### Bugs Fixed
+- Fixed incorrect process span duration reported by `ServiceBusProcessorClient` when max concurrency is bigger than 1.
+  ([#35916](https://github.com/Azure/azure-sdk-for-java/issues/35916))
+
+- Fixed the create-batch and send API to treat RequestResponseChannelClosedException as retriable and enabled retry for potential network call that create-batch makes. ([#34646](https://github.com/Azure/azure-sdk-for-java/issues/34646))
+
+- Fixed mapping of `ServiceBusManagementError` to corresponding `AzureExceptions` in `ServiceBusAdministrationClient`. ([#33609](https://github.com/Azure/azure-sdk-for-java/issues/33609))
+
+- Fixed issue causing updates to TopicProperties with AuthorizationRules to return 400 Bad request. ([#34880](https://github.com/Azure/azure-sdk-for-java/issues/34880))
+
+
+### Other Changes
+
+#### Dependency Updates
+- Upgraded `azure-core` from `1.41.0` to `1.42.0`.
+- Upgraded `azure-core-amqp` from `2.8.7` to `2.8.8`.
+- Upgraded `azure-identity` from `1.9.2` to `1.10.0`.
 
 ## 7.15.0-beta.2 (2023-07-18)
 

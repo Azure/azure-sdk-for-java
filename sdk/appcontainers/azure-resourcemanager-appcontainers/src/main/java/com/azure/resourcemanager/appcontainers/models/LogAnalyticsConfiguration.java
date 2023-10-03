@@ -7,7 +7,7 @@ package com.azure.resourcemanager.appcontainers.models;
 import com.azure.core.annotation.Fluent;
 import com.fasterxml.jackson.annotation.JsonProperty;
 
-/** Log analytics configuration. */
+/** Log Analytics configuration, must only be provided when destination is configured as 'log-analytics'. */
 @Fluent
 public final class LogAnalyticsConfiguration {
     /*

@@ -54,10 +54,10 @@ public final class AddParticipantRequestInternal {
     private CustomContext customContext;
 
     /*
-     * The callback URI override.
+     * The callback URI to override the main callback URI.
      */
-    @JsonProperty(value = "callbackUriOverride")
-    private String callbackUriOverride;
+    @JsonProperty(value = "callbackUri")
+    private String callbackUri;
 
     /**
      * Get the sourceCallerIdNumber property: The source caller Id, a phone number, that's shown to the PSTN participant
@@ -188,22 +188,22 @@ public final class AddParticipantRequestInternal {
     }
 
     /**
-     * Get the callbackUriOverride property: The callback URI override.
+     * Get the callbackUri property: The callback URI to override the main callback URI.
      *
-     * @return the callbackUriOverride value.
+     * @return the callbackUri value.
      */
-    public String getCallbackUriOverride() {
-        return this.callbackUriOverride;
+    public String getCallbackUri() {
+        return this.callbackUri;
     }
 
     /**
-     * Set the callbackUriOverride property: The callback URI override.
+     * Set the callbackUri property: The callback URI to override the main callback URI.
      *
-     * @param callbackUriOverride the callbackUriOverride value to set.
+     * @param callbackUri the callbackUri value to set.
      * @return the AddParticipantRequestInternal object itself.
      */
-    public AddParticipantRequestInternal setCallbackUriOverride(String callbackUriOverride) {
-        this.callbackUriOverride = callbackUriOverride;
+    public AddParticipantRequestInternal setCallbackUri(String callbackUri) {
+        this.callbackUri = callbackUri;
         return this;
     }
 }

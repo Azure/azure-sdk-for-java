@@ -22,19 +22,21 @@ public final class OperationUpdateContractProperties extends OperationEntityBase
     private String displayName;
 
     /*
-     * A Valid HTTP Operation Method. Typical Http Methods like GET, PUT, POST
-     * but not limited by only them.
+     * A Valid HTTP Operation Method. Typical Http Methods like GET, PUT, POST but not limited by only them.
      */
     @JsonProperty(value = "method")
     private String method;
 
     /*
-     * Relative URL template identifying the target resource for this
-     * operation. May include parameters. Example:
+     * Relative URL template identifying the target resource for this operation. May include parameters. Example:
      * /customers/{cid}/orders/{oid}/?date={date}
      */
     @JsonProperty(value = "urlTemplate")
     private String urlTemplate;
+
+    /** Creates an instance of OperationUpdateContractProperties class. */
+    public OperationUpdateContractProperties() {
+    }
 
     /**
      * Get the displayName property: Operation Name.

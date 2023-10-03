@@ -96,11 +96,13 @@ public interface AuthConfig {
     interface Definition
         extends DefinitionStages.Blank, DefinitionStages.WithParentResource, DefinitionStages.WithCreate {
     }
+
     /** The AuthConfig definition stages. */
     interface DefinitionStages {
         /** The first stage of the AuthConfig definition. */
         interface Blank extends WithParentResource {
         }
+
         /** The stage of the AuthConfig definition allowing to specify parent resource. */
         interface WithParentResource {
             /**
@@ -112,6 +114,7 @@ public interface AuthConfig {
              */
             WithCreate withExistingContainerApp(String resourceGroupName, String containerAppName);
         }
+
         /**
          * The stage of the AuthConfig definition which contains all the minimum required properties for the resource to
          * be created, but also allows for any other optional properties to be specified.
@@ -137,6 +140,7 @@ public interface AuthConfig {
              */
             AuthConfig create(Context context);
         }
+
         /** The stage of the AuthConfig definition allowing to specify platform. */
         interface WithPlatform {
             /**
@@ -149,6 +153,7 @@ public interface AuthConfig {
              */
             WithCreate withPlatform(AuthPlatform platform);
         }
+
         /** The stage of the AuthConfig definition allowing to specify globalValidation. */
         interface WithGlobalValidation {
             /**
@@ -161,6 +166,7 @@ public interface AuthConfig {
              */
             WithCreate withGlobalValidation(GlobalValidation globalValidation);
         }
+
         /** The stage of the AuthConfig definition allowing to specify identityProviders. */
         interface WithIdentityProviders {
             /**
@@ -173,6 +179,7 @@ public interface AuthConfig {
              */
             WithCreate withIdentityProviders(IdentityProviders identityProviders);
         }
+
         /** The stage of the AuthConfig definition allowing to specify login. */
         interface WithLogin {
             /**
@@ -185,6 +192,7 @@ public interface AuthConfig {
              */
             WithCreate withLogin(Login login);
         }
+
         /** The stage of the AuthConfig definition allowing to specify httpSettings. */
         interface WithHttpSettings {
             /**
@@ -198,6 +206,7 @@ public interface AuthConfig {
             WithCreate withHttpSettings(HttpSettings httpSettings);
         }
     }
+
     /**
      * Begins update for the AuthConfig resource.
      *
@@ -227,6 +236,7 @@ public interface AuthConfig {
          */
         AuthConfig apply(Context context);
     }
+
     /** The AuthConfig update stages. */
     interface UpdateStages {
         /** The stage of the AuthConfig update allowing to specify platform. */
@@ -241,6 +251,7 @@ public interface AuthConfig {
              */
             Update withPlatform(AuthPlatform platform);
         }
+
         /** The stage of the AuthConfig update allowing to specify globalValidation. */
         interface WithGlobalValidation {
             /**
@@ -253,6 +264,7 @@ public interface AuthConfig {
              */
             Update withGlobalValidation(GlobalValidation globalValidation);
         }
+
         /** The stage of the AuthConfig update allowing to specify identityProviders. */
         interface WithIdentityProviders {
             /**
@@ -265,6 +277,7 @@ public interface AuthConfig {
              */
             Update withIdentityProviders(IdentityProviders identityProviders);
         }
+
         /** The stage of the AuthConfig update allowing to specify login. */
         interface WithLogin {
             /**
@@ -277,6 +290,7 @@ public interface AuthConfig {
              */
             Update withLogin(Login login);
         }
+
         /** The stage of the AuthConfig update allowing to specify httpSettings. */
         interface WithHttpSettings {
             /**
@@ -290,6 +304,7 @@ public interface AuthConfig {
             Update withHttpSettings(HttpSettings httpSettings);
         }
     }
+
     /**
      * Refreshes the resource to sync with Azure.
      *

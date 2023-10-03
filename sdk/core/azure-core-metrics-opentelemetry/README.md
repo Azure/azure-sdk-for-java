@@ -18,7 +18,7 @@ documentation][OpenTelemetry] | [Samples][samples]
 <dependency>
   <groupId>com.azure</groupId>
   <artifactId>azure-core-metrics-opentelemetry</artifactId>
-  <version>1.0.0-beta.10</version>
+  <version>1.0.0-beta.12</version>
 </dependency>
 ```
 [//]: # ({x-version-update-end})
@@ -81,9 +81,10 @@ SdkMeterProvider meterProvider = SdkMeterProvider.builder()
     .registerMetricReader(PeriodicMetricReader.builder(OtlpGrpcMetricExporter.builder().build()).build())
     .build();
 
+OpenTelemetrySdk openTelemetry = OpenTelemetrySdk.builder().setMeterProvider(meterProvider).build();
 // Pass OpenTelemetry instance to MetricsOptions.
 MetricsOptions customMetricsOptions = new OpenTelemetryMetricsOptions()
-    .setOpenTelemetry(OpenTelemetrySdk.builder().setMeterProvider(meterProvider).build());
+    .setOpenTelemetry(openTelemetry);
 
 // configure Azure Client to use customMetricsOptions - it will use meterProvider
 // to create meters and instruments

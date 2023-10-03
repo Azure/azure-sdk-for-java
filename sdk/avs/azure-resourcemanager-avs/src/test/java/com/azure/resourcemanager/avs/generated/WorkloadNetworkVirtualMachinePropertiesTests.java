@@ -13,16 +13,16 @@ public final class WorkloadNetworkVirtualMachinePropertiesTests {
     public void testDeserialize() throws Exception {
         WorkloadNetworkVirtualMachineProperties model =
             BinaryData
-                .fromString("{\"displayName\":\"pp\",\"vmType\":\"EDGE\"}")
+                .fromString("{\"displayName\":\"woluhczbwemhair\",\"vmType\":\"REGULAR\"}")
                 .toObject(WorkloadNetworkVirtualMachineProperties.class);
-        Assertions.assertEquals("pp", model.displayName());
+        Assertions.assertEquals("woluhczbwemhair", model.displayName());
     }
 
     @org.junit.jupiter.api.Test
     public void testSerialize() throws Exception {
         WorkloadNetworkVirtualMachineProperties model =
-            new WorkloadNetworkVirtualMachineProperties().withDisplayName("pp");
+            new WorkloadNetworkVirtualMachineProperties().withDisplayName("woluhczbwemhair");
         model = BinaryData.fromObject(model).toObject(WorkloadNetworkVirtualMachineProperties.class);
-        Assertions.assertEquals("pp", model.displayName());
+        Assertions.assertEquals("woluhczbwemhair", model.displayName());
     }
 }

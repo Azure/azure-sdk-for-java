@@ -7,14 +7,14 @@ import com.azure.core.annotation.Immutable;
 import com.azure.core.util.IterableStream;
 
 /**
- * The {@link RecognizeEntitiesResult} model.
+ * The {@code RecognizeEntitiesResult} model.
  */
 @Immutable
 public final class RecognizeEntitiesResult extends TextAnalyticsResult {
     private final CategorizedEntityCollection entities;
 
     /**
-     * Creates a {@link RecognizeEntitiesResult} model that describes recognized entities result.
+     * Creates a {@code RecognizeEntitiesResult} model that describes recognized entities result.
      *
      * @param id Unique, non-empty document identifier.
      * @param textDocumentStatistics The text document statistics.

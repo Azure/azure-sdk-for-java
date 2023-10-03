@@ -90,8 +90,8 @@ public final class SearchQueryVector implements JsonSerializable<SearchQueryVect
      * @param fields the fields value to set.
      * @return the SearchQueryVector object itself.
      */
-    public SearchQueryVector setFields(String fields) {
-        this.fields = fields;
+    public SearchQueryVector setFields(String... fields) {
+        this.fields = String.join(",", fields);
         return this;
     }
 

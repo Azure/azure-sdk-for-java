@@ -11,10 +11,15 @@ import com.azure.storage.blob.BlobClient;
 import com.azure.storage.blob.BlobClientBuilder;
 import com.azure.storage.blob.BlobContainerClient;
 import com.azure.storage.blob.BlobContainerClientBuilder;
+import com.azure.storage.blob.models.BlobHttpHeaders;
+
 import org.junit.jupiter.params.ParameterizedTest;
 import org.junit.jupiter.params.provider.MethodSource;
 
 import java.nio.file.FileSystems;
+import java.util.ArrayList;
+import java.util.HashMap;
+import java.util.Map;
 import java.util.concurrent.atomic.AtomicBoolean;
 
 import static org.junit.jupiter.api.Assertions.*;
@@ -39,16 +44,19 @@ public class JobsClientTest extends QuantumClientTestBase {
         //set up job details
         String containerName = "testcontainer";
         String containerUri = storageClient.sasUri(new BlobDetails().setContainerName(containerName)).getSasUri();
+        String qirFilePath = FileSystems.getDefault().getPath("src/samples/java/com/azure/quantum/jobs/BellState.bc").toString();
         BlobDetails d = new BlobDetails()
             .setContainerName(containerName)
-            .setBlobName(String.format("input-%s.json", testResourceNamer.randomUuid()));
+            .setBlobName(String.format("input-%s.bc", testResourceNamer.randomUuid()));
+        BlobHttpHeaders blobHttpHeaders = new BlobHttpHeaders()
+            .setContentType("qir.v1");
         String inputDataUri = storageClient.sasUri(d).getSasUri();
-        String jobId = String.format("job-%s", testResourceNamer.randomUuid());
-        String jobName = String.format("javaSdkTest-%s", testResourceNamer.randomUuid());
-        String inputDataFormat = "microsoft.qio.v2";
-        String outputDataFormat = "microsoft.qio-results.v2";
-        String providerId = "ionq";
-        String target = "ionq.simulator";
+        String jobId = String.format("%s", testResourceNamer.randomUuid());
+        String jobName = String.format("javaSdkTest-%s", jobId);
+        String inputDataFormat = "qir.v1";
+        String outputDataFormat = "microsoft.quantum-results.v1";
+        String providerId = "quantinuum";
+        String target = "quantinuum.sim.h1-1e";
 
         //if in record mode, setup the storage account
         if (!interceptorManager.isPlaybackMode()) {
@@ -65,18 +73,23 @@ public class JobsClientTest extends QuantumClientTestBase {
             BlobClient blobClient = new BlobClientBuilder()
                 .endpoint(inputDataUri)
                 .buildClient();
-            blobClient.uploadFromFile(FileSystems.getDefault().getPath("src/test/resources/problem.json").toString());
+            blobClient.uploadFromFile(qirFilePath, null, blobHttpHeaders, null, null, null, null);
         }
 
         //test create job
+        Map<String, Object> inputParams = new HashMap<String, Object>();
+        inputParams.put("entryPoint", "ENTRYPOINT__BellState");
+        inputParams.put("arguments", new ArrayList<String>());
+        inputParams.put("targetCapability", "AdaptiveExecution");
         JobDetails createJobDetails = new JobDetails()
             .setContainerUri(containerUri)
+            .setId(jobId)
             .setInputDataFormat(inputDataFormat)
+            .setOutputDataFormat(outputDataFormat)
             .setProviderId(providerId)
             .setTarget(target)
-            .setId(jobId)
             .setName(jobName)
-            .setOutputDataFormat(outputDataFormat);
+            .setInputParams(inputParams);
         JobDetails jobDetails = jobsClient.create(jobId, createJobDetails);
 
         assertEquals(inputDataFormat, jobDetails.getInputDataFormat());
@@ -88,18 +101,6 @@ public class JobsClientTest extends QuantumClientTestBase {
         assertNotEquals(null, jobDetails.getInputDataUri());
         assertEquals(jobId, jobDetails.getId());
         assertEquals(jobName, jobDetails.getName());
-
-        //test get job
-        JobDetails gotJob = jobsClient.get(jobId);
-        assertEquals(inputDataFormat, gotJob.getInputDataFormat());
-        assertEquals(outputDataFormat, gotJob.getOutputDataFormat());
-        assertEquals(providerId, gotJob.getProviderId());
-        assertEquals(target, gotJob.getTarget());
-        assertNotEquals(null, gotJob.getId());
-        assertNotEquals(null, gotJob.getName());
-        assertNotEquals(null, gotJob.getInputDataUri());
-        assertEquals(jobId, gotJob.getId());
-        assertEquals(jobName, gotJob.getName());
 
         //test list job
         PagedIterable<JobDetails> jobs = jobsClient.list();

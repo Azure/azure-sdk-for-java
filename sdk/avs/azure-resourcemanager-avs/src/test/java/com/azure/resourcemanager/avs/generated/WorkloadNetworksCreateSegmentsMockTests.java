@@ -33,7 +33,7 @@ public final class WorkloadNetworksCreateSegmentsMockTests {
         ArgumentCaptor<HttpRequest> httpRequest = ArgumentCaptor.forClass(HttpRequest.class);
 
         String responseStr =
-            "{\"properties\":{\"displayName\":\"qbnj\",\"connectedGateway\":\"cgegydcwbo\",\"subnet\":{\"dhcpRanges\":[],\"gatewayAddress\":\"vqqolih\"},\"portVif\":[],\"status\":\"SUCCESS\",\"provisioningState\":\"Succeeded\",\"revision\":4419879755380441966},\"id\":\"jtlo\",\"name\":\"xfuojrn\",\"type\":\"iflrzpasccbiu\"}";
+            "{\"properties\":{\"displayName\":\"bowsepd\",\"connectedGateway\":\"kmtdher\",\"subnet\":{\"dhcpRanges\":[\"c\",\"uahokq\",\"obkauxofsh\"],\"gatewayAddress\":\"hwpnulaiywzejywh\"},\"portVif\":[{\"portName\":\"ojpllndnpdwrpqaf\"},{\"portName\":\"ug\"},{\"portName\":\"n\"}],\"status\":\"SUCCESS\",\"provisioningState\":\"Succeeded\",\"revision\":5446103695513333706},\"id\":\"pococtfjgt\",\"name\":\"xrjvzuyturmlm\",\"type\":\"owolbaui\"}";
 
         Mockito.when(httpResponse.getStatusCode()).thenReturn(200);
         Mockito.when(httpResponse.getHeaders()).thenReturn(new HttpHeaders());
@@ -64,18 +64,21 @@ public final class WorkloadNetworksCreateSegmentsMockTests {
         WorkloadNetworkSegment response =
             manager
                 .workloadNetworks()
-                .defineSegments("mysu")
-                .withExistingPrivateCloud("rkcxkj", "bn")
-                .withDisplayName("qrntv")
-                .withConnectedGateway("ijpstte")
+                .defineSegments("xoe")
+                .withExistingPrivateCloud("pzoyhlfbcg", "gcl")
+                .withDisplayName("njipnwjfujql")
+                .withConnectedGateway("cbahhpzpofoiy")
                 .withSubnet(
-                    new WorkloadNetworkSegmentSubnet().withDhcpRanges(Arrays.asList()).withGatewayAddress("pwcyyufmhr"))
-                .withRevision(1857225293627026318L)
+                    new WorkloadNetworkSegmentSubnet()
+                        .withDhcpRanges(Arrays.asList("ilkmk", "holvdn", "viauogphua"))
+                        .withGatewayAddress("vtiukyef"))
+                .withRevision(1819806073329112411L)
                 .create();
 
-        Assertions.assertEquals("qbnj", response.displayName());
-        Assertions.assertEquals("cgegydcwbo", response.connectedGateway());
-        Assertions.assertEquals("vqqolih", response.subnet().gatewayAddress());
-        Assertions.assertEquals(4419879755380441966L, response.revision());
+        Assertions.assertEquals("bowsepd", response.displayName());
+        Assertions.assertEquals("kmtdher", response.connectedGateway());
+        Assertions.assertEquals("c", response.subnet().dhcpRanges().get(0));
+        Assertions.assertEquals("hwpnulaiywzejywh", response.subnet().gatewayAddress());
+        Assertions.assertEquals(5446103695513333706L, response.revision());
     }
 }

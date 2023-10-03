@@ -18,6 +18,10 @@ public final class ObjectReplicationPolicies {
     @JsonProperty(value = "value")
     private List<ObjectReplicationPolicyInner> value;
 
+    /** Creates an instance of ObjectReplicationPolicies class. */
+    public ObjectReplicationPolicies() {
+    }
+
     /**
      * Get the value property: The replication policy between two storage accounts.
      *

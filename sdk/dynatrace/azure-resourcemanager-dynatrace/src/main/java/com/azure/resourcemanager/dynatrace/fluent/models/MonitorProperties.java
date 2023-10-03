@@ -65,6 +65,10 @@ public final class MonitorProperties {
     @JsonProperty(value = "provisioningState", access = JsonProperty.Access.WRITE_ONLY)
     private ProvisioningState provisioningState;
 
+    /** Creates an instance of MonitorProperties class. */
+    public MonitorProperties() {
+    }
+
     /**
      * Get the monitoringStatus property: Status of the monitor.
      *

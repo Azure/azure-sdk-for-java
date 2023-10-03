@@ -18,6 +18,10 @@ public final class ListBlobInventoryPolicy {
     @JsonProperty(value = "value", access = JsonProperty.Access.WRITE_ONLY)
     private List<BlobInventoryPolicyInner> value;
 
+    /** Creates an instance of ListBlobInventoryPolicy class. */
+    public ListBlobInventoryPolicy() {
+    }
+
     /**
      * Get the value property: List of blob inventory policies.
      *

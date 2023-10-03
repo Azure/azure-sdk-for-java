@@ -34,9 +34,7 @@ public class CosmosEndToEndOperationLatencyPolicyConfigBuilder {
         if (endToEndOperationTimeout == null && isEnabled) {
             throw new IllegalArgumentException("endToEndOperationTimeout must be set if the policy is enabled");
         }
-        if (endToEndOperationTimeout != null && endToEndOperationTimeout.isNegative()) {
-            throw new IllegalArgumentException("endToEndOperationTimeout must be a positive Duration");
-        }
+
         return new CosmosEndToEndOperationLatencyPolicyConfig(isEnabled, endToEndOperationTimeout, availabilityStrategy);
     }
 

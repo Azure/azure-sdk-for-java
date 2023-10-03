@@ -127,6 +127,7 @@
     "sdk/core/azure-xml/**",
     "sdk/cosmos/azure-cosmos-dotnet-benchmark/**",
     "sdk/core/azure-core-tracing-opentelemetry/**",
+    "sdk/core/azure-core-tracing-opentelemetry-samples/**",
     "sdk/cosmos/azure-cosmos-benchmark/**",
     "sdk/core/azure-json-gson/**",
     "sdk/cosmos/azure-cosmos-spark_3-1_2-12/**",
@@ -148,13 +149,15 @@
     "sdk/eventhubs/azure-messaging-eventhubs-stress/Dockerfile",
     "sdk/eventgrid/azure-messaging-eventgrid/**",
     "sdk/cosmos/azure-cosmos/**",
+    "sdk/cosmos/azure-cosmos-test/**",
     "sdk/identity/azure-identity/**",
     "sdk/keyvault/azure-security-keyvault-administration/**",
     "sdk/keyvault/azure-security-keyvault-certificates/**",
-    "sdk/keyvault/azure-security-test-keyvault-jca/**",
     "sdk/keyvault/azure-security-keyvault-jca/**",
-    "sdk/keyvault/azure-security-keyvault-secrets/**",
     "sdk/keyvault/azure-security-keyvault-keys/**",
+    "sdk/keyvault/azure-security-keyvault-secrets/**",
+    "sdk/keyvault/azure-security-test-keyvault-jca/**",
+    "sdk/keyvault/test-resources.json",
     "sdk/formrecognizer/azure-ai-formrecognizer/**",
     "sdk/core/azure-core/**",
     "sdk/maps/azure-maps-render/**",
@@ -164,6 +167,7 @@
     "sdk/maps/azure-maps-search/**",
     "sdk/monitor/azure-monitor-query/**",
     "sdk/monitor/azure-monitor-opentelemetry-exporter/**",
+    "sdk/monitor/test-resources.json",
     "sdk/modelsrepository/azure-iot-modelsrepository/**",
     "sdk/parents/azure-client-sdk-parent/**",
     "sdk/parents/azure-sdk-parent/**",
@@ -226,6 +230,7 @@
     "azurestackhci",
     "backoff",
     "boringssl",
+    "BYOD",
     "Dgpg",
     "Dskip",
     "mvnw",
@@ -326,6 +331,7 @@
     "Mockito",
     "Mordor",
     "mosca",
+    "mpga",
     "msal",
     "msix",
     "MSRC",
@@ -334,6 +340,7 @@
     "odata",
     "ODBC",
     "okhttp",
+    "OTLP",
     "OLTP",
     "onboarded",
     "Onco",
@@ -677,7 +684,11 @@
       "words": [
         "Pfast",
         "Pdirect",
-	"Pmulti"
+	      "Pmulti",
+        "Psplit",
+        "Pquery",
+        "Pcfp",
+        "Pflaky"
       ]
     },
     {
@@ -732,7 +743,8 @@
     {
       "filename": "sdk/storage/azure-storage-blob-cryptography/**",
       "words": [
-        "akek"
+        "akek",
+        "azstorage"
       ]
     },
     {
@@ -1029,6 +1041,12 @@
         "Dskip",
         "Dspotbugs",
         "Pdev"
+      ]
+    },
+    {
+      "filename": "sdk/spring/spring-cloud-azure-starter-monitor/**.md",
+      "words": [
+        "Djava"
       ]
     },
     {

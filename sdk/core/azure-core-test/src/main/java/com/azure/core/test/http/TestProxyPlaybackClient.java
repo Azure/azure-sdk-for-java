@@ -23,19 +23,22 @@ import java.io.File;
 import java.io.IOException;
 import java.io.UncheckedIOException;
 import java.net.URL;
+import java.nio.charset.StandardCharsets;
 import java.nio.file.Path;
 import java.util.ArrayList;
+import java.util.Base64;
 import java.util.Comparator;
 import java.util.LinkedList;
 import java.util.List;
 import java.util.Map;
 import java.util.Queue;
 
+import static com.azure.core.test.implementation.TestingHelpers.X_RECORDING_FILE_LOCATION;
 import static com.azure.core.test.implementation.TestingHelpers.X_RECORDING_ID;
 import static com.azure.core.test.utils.TestProxyUtils.checkForTestProxyErrors;
+import static com.azure.core.test.utils.TestProxyUtils.createAddSanitizersRequest;
 import static com.azure.core.test.utils.TestProxyUtils.getAssetJsonFile;
 import static com.azure.core.test.utils.TestProxyUtils.getMatcherRequests;
-import static com.azure.core.test.utils.TestProxyUtils.getSanitizerRequests;
 import static com.azure.core.test.utils.TestProxyUtils.loadSanitizers;
 
 /**
@@ -46,6 +49,7 @@ public class TestProxyPlaybackClient implements HttpClient {
     private final HttpClient client;
     private final URL proxyUrl;
     private String xRecordingId;
+    private String xRecordingFileLocation;
     private static final SerializerAdapter SERIALIZER = new JacksonAdapter();
 
     private static final List<TestProxySanitizer> DEFAULT_SANITIZERS = loadSanitizers();
@@ -77,10 +81,10 @@ public class TestProxyPlaybackClient implements HttpClient {
      * @throws RuntimeException Failed to serialize body payload.
      */
     public Queue<String> startPlayback(File recordFile, Path testClassPath) {
-        HttpRequest request = null;
+        HttpRequest request;
         String assetJsonPath = getAssetJsonFile(recordFile, testClassPath);
         try {
-            request = new HttpRequest(HttpMethod.POST, String.format("%s/playback/start", proxyUrl))
+            request = new HttpRequest(HttpMethod.POST, proxyUrl + "/playback/start")
                 .setBody(SERIALIZER.serialize(new RecordFilePayload(recordFile.toString(), assetJsonPath),
                     SerializerEncoding.JSON))
                 .setHeader(HttpHeaderName.ACCEPT, "application/json")
@@ -88,9 +92,12 @@ public class TestProxyPlaybackClient implements HttpClient {
         } catch (IOException e) {
             throw new RuntimeException(e);
         }
+
         try (HttpResponse response = client.sendSync(request, Context.NONE)) {
             checkForTestProxyErrors(response);
             xRecordingId = response.getHeaderValue(X_RECORDING_ID);
+            xRecordingFileLocation = new String(Base64.getUrlDecoder().decode(
+                response.getHeaders().getValue(X_RECORDING_FILE_LOCATION)), StandardCharsets.UTF_8);
             addProxySanitization(this.sanitizers);
             addMatcherRequests(this.matchers);
             String body = response.getBodyAsString().block();
@@ -124,9 +131,9 @@ public class TestProxyPlaybackClient implements HttpClient {
      * Stops playback of a test recording.
      */
     public void stopPlayback() {
-        HttpRequest request = new HttpRequest(HttpMethod.POST, String.format("%s/playback/stop", proxyUrl.toString()))
+        HttpRequest request = new HttpRequest(HttpMethod.POST, proxyUrl + "/playback/stop")
             .setHeader(X_RECORDING_ID, xRecordingId);
-        client.sendSync(request, Context.NONE);
+        client.sendSync(request, Context.NONE).close();
     }
 
     /**
@@ -182,11 +189,10 @@ public class TestProxyPlaybackClient implements HttpClient {
      */
     public void addProxySanitization(List<TestProxySanitizer> sanitizers) {
         if (isPlayingBack()) {
-            getSanitizerRequests(sanitizers, proxyUrl)
-                .forEach(request -> {
-                    request.setHeader(X_RECORDING_ID, xRecordingId);
-                    client.sendSync(request, Context.NONE);
-                });
+            HttpRequest request = createAddSanitizersRequest(sanitizers, proxyUrl)
+                .setHeader(X_RECORDING_ID, xRecordingId);
+
+            client.sendSync(request, Context.NONE).close();
         } else {
             this.sanitizers.addAll(sanitizers);
         }
@@ -204,7 +210,7 @@ public class TestProxyPlaybackClient implements HttpClient {
             }
             matcherRequests.forEach(request -> {
                 request.setHeader(X_RECORDING_ID, xRecordingId);
-                client.sendSync(request, Context.NONE);
+                client.sendSync(request, Context.NONE).close();
             });
         } else {
             this.matchers.addAll(matchers);
@@ -213,5 +219,13 @@ public class TestProxyPlaybackClient implements HttpClient {
 
     private boolean isPlayingBack() {
         return xRecordingId != null;
+    }
+
+    /**
+     * Get the recording file location in assets repo.
+     * @return the assets repo location of the recording file.
+     */
+    public String getRecordingFileLocation() {
+        return xRecordingFileLocation;
     }
 }

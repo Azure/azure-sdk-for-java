@@ -1,6 +1,16 @@
 # Release History
 
-## 1.0.0-beta.1 (2023-07-26)
+## 1.0.0-beta.2 (Unreleased)
+
+### Features Added
+
+### Breaking Changes
+
+### Bugs Fixed
+
+### Other Changes
+
+## 1.0.0-beta.1 (2023-07-27)
 This is the beta release of Azure Communication Service JobRouter Java SDK. For more information, please see the [README][read_me].
 
 This is a public preview version, so breaking changes are possible in subsequent releases as we improve the product. To provide feedback, please submit an issue in our [Azure SDK for Java GitHub repo][issues].
@@ -28,5 +38,5 @@ This is a public preview version, so breaking changes are possible in subsequent
 ### Breaking Changes
 
 <!-- LINKS -->
-<!-- [read_me]: https://github.com/Azure/azure-sdk-for-java/blob/main/sdk/communication/azure-communication-jobrouter/README.md -->
-<!-- [issues]: https://github.com/Azure/azure-sdk-for-java/issues -->
+[read_me]: https://github.com/Azure/azure-sdk-for-java/blob/main/sdk/communication/azure-communication-jobrouter/README.md
+[issues]: https://github.com/Azure/azure-sdk-for-java/issues

@@ -765,7 +765,7 @@ public final class RntbdRequestManager implements ChannelHandler, ChannelInbound
     }
 
     Optional<RntbdContext> rntbdContext() {
-        return Optional.of(this.contextFuture.getNow(null));
+        return Optional.ofNullable(this.contextFuture.getNow(null));
     }
 
     CompletableFuture<RntbdContextRequest> rntbdContextRequestFuture() {
@@ -830,6 +830,10 @@ public final class RntbdRequestManager implements ChannelHandler, ChannelInbound
             this.pendingRequests.remove(record.transportRequestId());
             if (pendingRequestTimeout.get() != null) {
                 pendingRequestTimeout.get().cancel();
+            }
+
+            if (record.isCancelled()) {
+                this.timestamps.cancellation();
             }
         });
 

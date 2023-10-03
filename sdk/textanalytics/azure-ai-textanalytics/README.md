@@ -141,7 +141,7 @@ Authentication with AAD requires some initial setup:
 <dependency>
     <groupId>com.azure</groupId>
     <artifactId>azure-identity</artifactId>
-    <version>1.9.1</version>
+    <version>1.10.1</version>
 </dependency>
 ```
 [//]: # ({x-version-update-end})
@@ -458,7 +458,7 @@ This project has adopted the [Microsoft Open Source Code of Conduct][coc]. For m
 [named_entities_categories]: https://docs.microsoft.com/azure/cognitive-services/language-service/named-entity-recognition/concepts/named-entity-categories
 [entity_linking]: https://docs.microsoft.com/azure/cognitive-services/language-service/entity-linking/overview
 [pii_entity_recognition]: https://docs.microsoft.com/azure/cognitive-services/language-service/personally-identifiable-information/overview
-[package]: https://mvnrepository.com/artifact/com.azure/azure-ai-textanalytics
+[package]: https://central.sonatype.com/artifact/com.azure/azure-ai-textanalytics
 [performance_tuning]: https://github.com/Azure/azure-sdk-for-java/wiki/Performance-Tuning
 [product_documentation]: https://docs.microsoft.com/azure/cognitive-services/language-service/overview
 [register_AAD_application]: https://docs.microsoft.com/azure/cognitive-services/authentication#assign-a-role-to-a-service-principal

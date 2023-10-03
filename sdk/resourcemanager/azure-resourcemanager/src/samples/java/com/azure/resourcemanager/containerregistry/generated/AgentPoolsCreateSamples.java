@@ -12,7 +12,7 @@ import java.util.Map;
 /** Samples for AgentPools Create. */
 public final class AgentPoolsCreateSamples {
     /*
-     * x-ms-original-file: specification/containerregistry/resource-manager/Microsoft.ContainerRegistry/preview/2019-06-01-preview/examples/AgentPoolsCreate.json
+     * x-ms-original-file: mgmt_containerregistry_add_readonly/specification/containerregistry/resource-manager/Microsoft.ContainerRegistry/preview/2019-06-01-preview/examples/AgentPoolsCreate.json
      */
     /**
      * Sample code: AgentPools_Create.

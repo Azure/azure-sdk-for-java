@@ -100,7 +100,7 @@ public class RoomsClientTest extends RoomsTestBase {
                 .setValidUntil(VALID_UNTIL);
 
         Response<CommunicationRoom> createdRoomResponse = roomsClient.createRoomWithResponse(createRoomOptions,
-                Context.NONE);
+                null);
         assertHappyPath(createdRoomResponse, 201);
 
         String roomId = createdRoomResponse.getValue().getRoomId();
@@ -110,13 +110,13 @@ public class RoomsClientTest extends RoomsTestBase {
                 .setValidUntil(VALID_FROM.plusMonths(4));
 
         Response<CommunicationRoom> updateRoomResponse = roomsClient.updateRoomWithResponse(roomId, updateRoomOptions,
-                Context.NONE);
+                null);
         assertHappyPath(updateRoomResponse, 200);
 
-        Response<CommunicationRoom> getRoomResponse = roomsClient.getRoomWithResponse(roomId, Context.NONE);
+        Response<CommunicationRoom> getRoomResponse = roomsClient.getRoomWithResponse(roomId, null);
         assertHappyPath(getRoomResponse, 200);
 
-        Response<Void> deleteResponse = roomsClient.deleteRoomWithResponse(roomId, Context.NONE);
+        Response<Void> deleteResponse = roomsClient.deleteRoomWithResponse(roomId, null);
         assertEquals(deleteResponse.getStatusCode(), 204);
     }
 
@@ -137,7 +137,7 @@ public class RoomsClientTest extends RoomsTestBase {
 
         String roomId = createCommunicationRoom.getRoomId();
 
-        // Check created room coun
+        // Check created room count
         PagedIterable<CommunicationRoom> listRoomResponse = roomsClient.listRooms();
 
         Iterable<PagedResponse<CommunicationRoom>> rooms = listRoomResponse.iterableByPage(1);
@@ -165,7 +165,7 @@ public class RoomsClientTest extends RoomsTestBase {
         String roomId = createCommunicationRoom.getRoomId();
 
         // Check participant count, expected 0
-        PagedIterable<RoomParticipant> listParticipantsResponse1 = roomsClient.listParticipants(roomId);
+        PagedIterable<RoomParticipant> listParticipantsResponse1 = roomsClient.listParticipants(roomId, null);
         assertEquals(0, listParticipantsResponse1.stream().count());
 
         // Create 3 participants
@@ -210,7 +210,7 @@ public class RoomsClientTest extends RoomsTestBase {
                 secondParticipant.getCommunicationIdentifier());
 
         // Remove 2 participants
-        roomsClient.removeParticipants(roomId, participantsIdentifiersForParticipants);
+        roomsClient.removeParticipantsWithResponse(roomId, participantsIdentifiersForParticipants, null);
 
         // Check participant count, expected 1
         PagedIterable<RoomParticipant> listParticipantsResponse4 = roomsClient.listParticipants(roomId);
@@ -877,7 +877,7 @@ public class RoomsClientTest extends RoomsTestBase {
         String roomId = createdRoom.getRoomId();
 
         // Check participant count, expected 0
-        PagedIterable<CommunicationRoom> listRoomResponse = roomsClient.listRooms();
+        PagedIterable<CommunicationRoom> listRoomResponse = roomsClient.listRooms(null);
 
         PagedIterable<RoomParticipant> listParticipantsResponse1 = roomsClient.listParticipants(roomId);
         assertEquals(0, listParticipantsResponse1.stream().count());

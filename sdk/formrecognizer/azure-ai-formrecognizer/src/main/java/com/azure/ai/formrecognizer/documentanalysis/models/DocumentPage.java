@@ -13,6 +13,12 @@ import java.util.List;
  */
 @Immutable
 public final class DocumentPage {
+    /**
+     * Creates a DocumentPage object.
+     */
+    public DocumentPage() {
+    }
+
     /*
      * 1-based page number in the input document.
      */
@@ -84,7 +90,6 @@ public final class DocumentPage {
      * Set the pageNumber property: 1-based page number in the input document.
      *
      * @param pageNumber the pageNumber value to set.
-     * @return the DocumentPage object itself.
      */
     private void setPageNumber(int pageNumber) {
         this.pageNumber = pageNumber;
@@ -105,7 +110,6 @@ public final class DocumentPage {
      * between (-180, 180].
      *
      * @param angle the angle value to set.
-     * @return the DocumentPage object itself.
      */
     private void setAngle(Float angle) {
         this.angle = angle;
@@ -124,7 +128,6 @@ public final class DocumentPage {
      * Set the width property: The width of the image/PDF in pixels/inches, respectively.
      *
      * @param width the width value to set.
-     * @return the DocumentPage object itself.
      */
     private void setWidth(Float width) {
         this.width = width;
@@ -143,7 +146,6 @@ public final class DocumentPage {
      * Set the height property: The height of the image/PDF in pixels/inches, respectively.
      *
      * @param height the height value to set.
-     * @return the DocumentPage object itself.
      */
     private void setHeight(Float height) {
         this.height = height;
@@ -164,7 +166,6 @@ public final class DocumentPage {
      * "pixel". For PDF, the unit is "inch".
      *
      * @param unit the unit value to set.
-     * @return the DocumentPage object itself.
      */
     private void setUnit(DocumentPageLengthUnit unit) {
         this.unit = unit;
@@ -183,7 +184,6 @@ public final class DocumentPage {
      * Set the spans property: Location of the page in the reading order concatenated content.
      *
      * @param spans the spans value to set.
-     * @return the DocumentPage object itself.
      */
     private void setSpans(List<DocumentSpan> spans) {
         this.spans = spans;
@@ -202,7 +202,6 @@ public final class DocumentPage {
      * Set the words property: Extracted words from the page.
      *
      * @param words the words value to set.
-     * @return the DocumentPage object itself.
      */
     private void setWords(List<DocumentWord> words) {
         this.words = words;
@@ -221,7 +220,6 @@ public final class DocumentPage {
      * Set the selectionMarks property: Extracted selection marks from the page.
      *
      * @param selectionMarks the selectionMarks value to set.
-     * @return the DocumentPage object itself.
      */
     private void setSelectionMarks(List<DocumentSelectionMark> selectionMarks) {
         this.selectionMarks = selectionMarks;
@@ -240,7 +238,6 @@ public final class DocumentPage {
      * Set the lines property: Extracted lines from the page, potentially containing both textual and visual elements.
      *
      * @param lines the lines value to set.
-     * @return the DocumentPage object itself.
      */
     private void setLines(List<DocumentLine> lines) {
         this.lines = lines;
@@ -259,7 +256,6 @@ public final class DocumentPage {
      * Set the barcodes property: Extracted barcodes from the page.
      *
      * @param barcodes the barcodes value to set.
-     * @return the DocumentPage object itself.
      */
     void setBarcodes(List<DocumentBarcode> barcodes) {
         this.barcodes = barcodes;
@@ -278,7 +274,6 @@ public final class DocumentPage {
      * Set the formulas property: Extracted formulas from the page.
      *
      * @param formulas the formulas value to set.
-     * @return the DocumentPage object itself.
      */
     void setFormulas(List<DocumentFormula> formulas) {
         this.formulas = formulas;
