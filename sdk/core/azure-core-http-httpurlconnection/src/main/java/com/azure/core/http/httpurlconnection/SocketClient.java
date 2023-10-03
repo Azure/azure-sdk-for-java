@@ -15,7 +15,6 @@ import java.net.Socket;
 import java.net.URL;
 import java.nio.ByteBuffer;
 import java.nio.charset.StandardCharsets;
-import java.util.*;
 
 /**
  * A socket client used for making PATCH requests
@@ -23,7 +22,7 @@ import java.util.*;
 
 class SocketClient {
 
-    private static final String HTTP_VERSION = " HTTP/1.0";
+    private static final String HTTP_VERSION = " HTTP/1.1";
 
     /**
      * Opens a socket connection, then writes the PATCH request across the
@@ -59,6 +58,10 @@ class SocketClient {
      */
     private static HttpUrlConnectionResponse doInputOutput(HttpRequest httpRequest, Socket socket) throws IOException {
         httpRequest.setHeader(HttpHeaderName.HOST, httpRequest.getUrl().getHost());
+        if (!"keep-alive".equalsIgnoreCase(httpRequest.getHeaders().getValue(HttpHeaderName.CONNECTION))) {
+            httpRequest.setHeader(HttpHeaderName.CONNECTION, "close");
+        }
+
         String request = buildPatchRequest(httpRequest);
         try (BufferedReader in = new BufferedReader(new InputStreamReader(socket.getInputStream(), StandardCharsets.UTF_8));
              OutputStreamWriter out = new OutputStreamWriter(socket.getOutputStream())) {
