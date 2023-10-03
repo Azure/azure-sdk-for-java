@@ -11,13 +11,11 @@ import org.slf4j.LoggerFactory;
 import org.slf4j.MDC;
 
 import java.util.Set;
-import java.util.concurrent.Callable;
 import java.util.concurrent.Executors;
 import java.util.concurrent.ScheduledExecutorService;
 import java.util.concurrent.TimeUnit;
 import java.util.concurrent.atomic.AtomicBoolean;
 import java.util.function.Consumer;
-import java.util.function.Function;
 import java.util.function.Supplier;
 
 import static com.azure.monitor.opentelemetry.exporter.implementation.utils.AzureMonitorMsgId.FAIL_TO_SEND_STATSBEAT_ERROR;
@@ -53,6 +51,9 @@ public class StatsbeatModule {
         if (!standalone) {
             networkStatsbeat = new NetworkStatsbeat(customDimensions);
             nonessentialStatsbeat = new NonessentialStatsbeat(customDimensions);
+        } else {
+            networkStatsbeat = null;
+            nonessentialStatsbeat = null;
         }
     }
 
