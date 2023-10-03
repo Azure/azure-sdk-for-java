@@ -54,7 +54,6 @@ import org.junit.jupiter.api.BeforeAll;
 import org.junit.jupiter.params.provider.Arguments;
 import reactor.core.publisher.Flux;
 import reactor.core.publisher.Mono;
-import spock.util.environment.OperatingSystem;
 
 import java.io.File;
 import java.io.FileInputStream;
@@ -1011,10 +1010,6 @@ public class BlobTestBase extends TestProxyTestBase {
         return version.ordinal() < targetVersion.ordinal();
     }
 
-    protected static boolean isServiceVersionPresent() {
-        return ENVIRONMENT.getServiceVersion() != null;
-    }
-
     public static boolean isLiveMode() {
         return ENVIRONMENT.getTestMode() == TestMode.LIVE;
     }
@@ -1024,6 +1019,7 @@ public class BlobTestBase extends TestProxyTestBase {
     }
 
     public static boolean isOperatingSystemMac() {
-        return OperatingSystem.getCurrent().getFamily() == OperatingSystem.Family.MAC_OS;
+        String osName = System.getProperty("os.name").toLowerCase(Locale.ROOT);
+        return osName.contains("mac os") || osName.contains("darwin");
     }
 }
