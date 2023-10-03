@@ -10,7 +10,7 @@ import java.util.List;
 import static java.util.Collections.unmodifiableList;
 
 /**
- * The exception that is thrown when the {@link com.azure.compute.batch.TaskClient#createTasks(String, List, BatchClientParallelOptions)} operation is terminated.
+ * The exception that is thrown when the {@link com.azure.compute.batch.BatchClient#createTasks(String, List, BatchClientParallelOptions)} operation is terminated.
  */
 public class CreateTasksErrorException extends AzureException {
 
@@ -21,7 +21,7 @@ public class CreateTasksErrorException extends AzureException {
      * @param failureTaskList The list of {@link TaskAddResult} instances containing failure details for tasks that were not successfully created.
      * @param pendingTaskList The list of {@link BatchTask} instances containing the tasks that were not added, but for which the operation can be retried.
      */
-    public CreateTasksErrorException(final String message, List<TaskAddResult> failureTaskList, List<BatchTaskCreateParameters> pendingTaskList) {
+    public CreateTasksErrorException(final String message, List<TaskAddResult> failureTaskList, List<BatchTaskCreateOptions> pendingTaskList) {
         super(message, null);
         this.failureTaskList = unmodifiableList(failureTaskList);
         this.pendingTaskList = unmodifiableList(pendingTaskList);
@@ -29,7 +29,7 @@ public class CreateTasksErrorException extends AzureException {
 
     private List<TaskAddResult> failureTaskList;
 
-    private List<BatchTaskCreateParameters> pendingTaskList;
+    private List<BatchTaskCreateOptions> pendingTaskList;
 
     /**
      * @return The list of {@link TaskAddResult} instances containing failure details for tasks that were not successfully created.
@@ -41,7 +41,7 @@ public class CreateTasksErrorException extends AzureException {
     /**
      * @return The list of {@link BatchTask} instances containing the tasks that were not added, but for which the operation can be retried.
      */
-    public List<BatchTaskCreateParameters> pendingTaskList() {
+    public List<BatchTaskCreateOptions> pendingTaskList() {
         return pendingTaskList;
     }
 }
