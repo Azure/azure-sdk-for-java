@@ -1122,15 +1122,15 @@ public class BlobApiTests extends BlobTestBase {
              * ReactiveException that needs to be unwrapped. If the passed exception isn't a 'ReactiveException' it
              * will be returned unmodified by 'Exceptions.unwrap'.
              */
-            assertTrue(Exceptions.unwrapMultiple(it).stream().anyMatch(it2 -> {
-                Throwable exception = Exceptions.unwrap(it2);
-                if (exception instanceof BlobStorageException) {
-                    assertEquals(412, ((BlobStorageException) exception).getStatusCode());
-                    return true;
-                }
-                return false;
-            }));
-        });
+                assertTrue(Exceptions.unwrapMultiple(it).stream().anyMatch(it2 -> {
+                    Throwable exception = Exceptions.unwrap(it2);
+                    if (exception instanceof BlobStorageException) {
+                        assertEquals(412, ((BlobStorageException) exception).getStatusCode());
+                        return true;
+                    }
+                    return false;
+                }));
+            });
 
         // Give the file a chance to be deleted by the download operation before verifying its deletion
         sleepIfRunningAgainstService(500);
