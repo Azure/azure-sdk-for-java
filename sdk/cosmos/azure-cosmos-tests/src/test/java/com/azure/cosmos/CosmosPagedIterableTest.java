@@ -54,7 +54,7 @@ public class CosmosPagedIterableTest extends TestSuiteBase {
         super(clientBuilder);
     }
 
-    @BeforeClass(groups = { "simple" }, timeOut = SETUP_TIMEOUT)
+    @BeforeClass(groups = { "fast" }, timeOut = SETUP_TIMEOUT)
     public void before_CosmosPagedIterableTest() throws JsonProcessingException {
         assertThat(this.cosmosClient).isNull();
         this.cosmosClient = getClientBuilder().buildClient();
@@ -64,14 +64,14 @@ public class CosmosPagedIterableTest extends TestSuiteBase {
         createItems(NUM_OF_ITEMS);
     }
 
-    @AfterClass(groups = { "simple" }, timeOut = SHUTDOWN_TIMEOUT, alwaysRun = true)
+    @AfterClass(groups = { "fast" }, timeOut = SHUTDOWN_TIMEOUT, alwaysRun = true)
     public void afterClass() {
         if (this.cosmosClient != null) {
             this.cosmosClient.close();
         }
     }
 
-    @Test(groups = { "simple" }, timeOut = TIMEOUT)
+    @Test(groups = { "fast" }, timeOut = TIMEOUT)
     public void readAllItemsByPageWithCosmosPagedIterableHandler() throws Exception {
         CosmosQueryRequestOptions cosmosQueryRequestOptions = new CosmosQueryRequestOptions();
 
@@ -95,7 +95,7 @@ public class CosmosPagedIterableTest extends TestSuiteBase {
         assertThat(handleCount.get()).isEqualTo(feedResponseCount.get());
     }
 
-    @Test(groups = { "simple" }, timeOut = TIMEOUT)
+    @Test(groups = { "fast" }, timeOut = TIMEOUT)
     public void readAllItemsBySubscribeWithCosmosPagedIterableHandler() throws Exception {
 
         CosmosQueryRequestOptions cosmosQueryRequestOptions = new CosmosQueryRequestOptions();
@@ -117,7 +117,7 @@ public class CosmosPagedIterableTest extends TestSuiteBase {
         assertThat(handleCount.get() >= 1).isTrue();
     }
 
-    @Test(groups = { "simple" }, timeOut = TIMEOUT, enabled = false)
+    @Test(groups = { "fast" }, timeOut = TIMEOUT, enabled = false)
     public void queryItemsWithCosmosPagedIterable() throws Exception {
 
         CosmosQueryRequestOptions cosmosQueryRequestOptions = new CosmosQueryRequestOptions();
@@ -135,7 +135,7 @@ public class CosmosPagedIterableTest extends TestSuiteBase {
         Thread.sleep(5 * 1000);
     }
 
-    @Test(groups = { "simple" }, timeOut = TIMEOUT, enabled = false)
+    @Test(groups = { "fast" }, timeOut = TIMEOUT, enabled = false)
     public void queryItemsWithCosmosPagedFlux() throws Exception {
 
         CosmosQueryRequestOptions cosmosQueryRequestOptions = new CosmosQueryRequestOptions();
