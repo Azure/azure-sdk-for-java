@@ -1017,7 +1017,7 @@ public class ContainerApiTests extends BlobTestBase {
     @Test
     public void listBlobsFlatOptionsDeletedWithVersions() {
         BlobContainerClient versionedCC = versionedBlobServiceClient.getBlobContainerClient(containerName);
-        versionedCC.create();
+        versionedCC.createIfNotExists();
         String blobName = generateBlobName();
         AppendBlobClient blob = versionedCC.getBlobClient(blobName).getAppendBlobClient();
         blob.create();
@@ -1050,6 +1050,7 @@ public class ContainerApiTests extends BlobTestBase {
         assertEquals(prefix, blob.getName());
     }
 
+    @Test
     public void listBlobsFlatOptionsFail() {
         assertThrows(IllegalArgumentException.class, () -> new ListBlobsOptions().setMaxResultsPerPage(0));
     }

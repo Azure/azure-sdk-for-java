@@ -175,8 +175,7 @@ public class CPKNTests extends BlobTestBase {
 
         Response<PageBlobItem> response = cpknPageBlob.uploadPagesWithResponse(
             new PageRange().setStart(0).setEnd(PageBlobClient.PAGE_BYTES - 1),
-            new ByteArrayInputStream(getRandomByteArray(PageBlobClient.PAGE_BYTES)),
-            null, null, null, null);
+            new ByteArrayInputStream(getRandomByteArray(PageBlobClient.PAGE_BYTES)), null, null, null, null);
 
         assertResponseStatusCode(response, 201);
         Assertions.assertTrue(response.getValue().isServerEncrypted());
@@ -211,8 +210,7 @@ public class CPKNTests extends BlobTestBase {
 
         Response<PageBlobItem> response = cpknPageBlob.uploadPagesWithResponse(new PageRange().setStart(0)
                 .setEnd(PageBlobClient.PAGE_BYTES * 2 - 1),
-            new ByteArrayInputStream(getRandomByteArray(PageBlobClient.PAGE_BYTES * 2)), null,
-            null, null, null);
+            new ByteArrayInputStream(getRandomByteArray(PageBlobClient.PAGE_BYTES * 2)), null, null, null, null);
 
         assertResponseStatusCode(response, 201);
         Assertions.assertTrue(response.getValue().isServerEncrypted());

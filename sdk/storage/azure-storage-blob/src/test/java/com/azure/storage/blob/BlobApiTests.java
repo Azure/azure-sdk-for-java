@@ -68,7 +68,6 @@ import com.azure.storage.common.Utility;
 import com.azure.storage.common.implementation.Constants;
 import com.azure.storage.common.policy.RequestRetryOptions;
 import com.azure.storage.common.test.shared.TestDataFactory;
-import com.azure.storage.common.test.shared.extensions.RequiredServiceVersion;
 import com.azure.storage.common.test.shared.policy.MockFailureResponsePolicy;
 import com.azure.storage.common.test.shared.policy.MockRetryRangeResponsePolicy;
 import org.junit.jupiter.api.AfterEach;
@@ -229,7 +228,8 @@ public class BlobApiTests extends BlobTestBase {
         byte[] randomData = getRandomByteArray(size);
         ByteArrayInputStream input = new ByteArrayInputStream(randomData);
 
-        ParallelTransferOptions pto = new ParallelTransferOptions().setBlockSizeLong(maxUploadSize).setMaxSingleUploadSizeLong(maxUploadSize);
+        ParallelTransferOptions pto = new ParallelTransferOptions().setBlockSizeLong(maxUploadSize)
+            .setMaxSingleUploadSizeLong(maxUploadSize);
 
         bc.uploadWithResponse(input, size, pto, null, null, null, null, null, null);
 
@@ -1357,7 +1357,7 @@ public class BlobApiTests extends BlobTestBase {
     relationship programmatically, so we have recorded a successful interaction and only test recordings.
      */
 
-    //@EnabledIf("com.azure.storage.blob.BlobTestBase#isPlaybackMode")
+    @EnabledIf("com.azure.storage.blob.BlobTestBase#isPlaybackMode")
     @Test
     public void getPropertiesORS() throws MalformedURLException {
         BlobClient sourceBlob = primaryBlobServiceClient.getBlobContainerClient("test1")
@@ -1665,7 +1665,7 @@ public class BlobApiTests extends BlobTestBase {
         );
     }
 
-    @RequiredServiceVersion(clazz = BlobServiceVersion.class, min = "V2019_07_07")
+    @DisabledIf("com.azure.storage.blob.BlobTestBase#olderThan20190707ServiceVersion")
     @Test
     public void setTagsACFail() {
         Map<String, String> t = new HashMap<>();

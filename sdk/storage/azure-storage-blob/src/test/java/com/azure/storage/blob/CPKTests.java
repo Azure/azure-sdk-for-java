@@ -73,13 +73,13 @@ public class CPKTests extends BlobTestBase {
     @Test
     public void getBlobWithCPK() {
         cpkBlockBlob.upload(DATA.getDefaultInputStream(), DATA.getDefaultDataSize());
-        ByteArrayOutputStream datastream = new ByteArrayOutputStream();
+        ByteArrayOutputStream dataStream = new ByteArrayOutputStream();
 
-        BlobDownloadResponse response = cpkBlockBlob.downloadWithResponse(datastream, null, null, null, false, null,
+        BlobDownloadResponse response = cpkBlockBlob.downloadWithResponse(dataStream, null, null, null, false, null,
             null);
 
         assertResponseStatusCode(response, 200);
-        assertArrayEquals(datastream.toByteArray(), DATA.getDefaultBytes());
+        assertArrayEquals(dataStream.toByteArray(), DATA.getDefaultBytes());
     }
 
     @Test
@@ -96,14 +96,8 @@ public class CPKTests extends BlobTestBase {
         String blobName = generateBlobName();
         BlockBlobClient sourceBlob = cc.getBlobClient(blobName).getBlockBlobClient();
         sourceBlob.upload(DATA.getDefaultInputStream(), DATA.getDefaultDataSize());
-
-        String sas = new BlobServiceSasSignatureValues()
-            .setExpiryTime(OffsetDateTime.now().plusHours(1))
-            .setPermissions(new BlobSasPermission().setReadPermission(true))
-            .setContainerName(cc.getBlobContainerName())
-            .setBlobName(blobName)
-            .generateSasQueryParameters(ENVIRONMENT.getPrimaryAccount().getCredential())
-            .encode();
+        String sas = cc.generateSas(new BlobServiceSasSignatureValues(OffsetDateTime.now().plusHours(1),
+            new BlobSasPermission().setReadPermission(true)));
 
         Response<Void> response = cpkBlockBlob.stageBlockFromUrlWithResponse(getBlockID(),
             sourceBlob.getBlobUrl() + "?" + sas, null, null, null, null, null, null);
@@ -149,14 +143,8 @@ public class CPKTests extends BlobTestBase {
             new ByteArrayInputStream(getRandomByteArray(PageBlobClient.PAGE_BYTES)), null, null, null, null);
 
         cpkPageBlob.create(PageBlobClient.PAGE_BYTES);
-
-        String sas = new BlobServiceSasSignatureValues()
-            .setExpiryTime(OffsetDateTime.now().plusHours(1))
-            .setPermissions(new BlobSasPermission().setReadPermission(true))
-            .setContainerName(cc.getBlobContainerName())
-            .setBlobName(blobName)
-            .generateSasQueryParameters(ENVIRONMENT.getPrimaryAccount().getCredential())
-            .encode();
+        String sas = cc.generateSas(new BlobServiceSasSignatureValues(OffsetDateTime.now().plusHours(1),
+            new BlobSasPermission().setReadPermission(true)));
 
         Response<PageBlobItem> response = cpkPageBlob.uploadPagesFromUrlWithResponse(
             new PageRange().setStart(0).setEnd(PageBlobClient.PAGE_BYTES - 1),
@@ -199,13 +187,9 @@ public class CPKTests extends BlobTestBase {
         BlockBlobClient sourceBlob = cc.getBlobClient(blobName).getBlockBlobClient();
         sourceBlob.upload(DATA.getDefaultInputStream(), DATA.getDefaultDataSize());
 
-        String sas = new BlobServiceSasSignatureValues()
-            .setExpiryTime(OffsetDateTime.now().plusHours(1))
-            .setPermissions(new BlobSasPermission().setReadPermission(true))
-            .setContainerName(cc.getBlobContainerName())
-            .setBlobName(blobName)
-            .generateSasQueryParameters(ENVIRONMENT.getPrimaryAccount().getCredential())
-            .encode();
+        String sas = cc.generateSas(new BlobServiceSasSignatureValues(OffsetDateTime.now().plusHours(1),
+            new BlobSasPermission().setReadPermission(true)));
+
         Response<AppendBlobItem> response = cpkAppendBlob.appendBlockFromUrlWithResponse(
             sourceBlob.getBlobUrl() + "?" + sas, null, null, null, null, null, null);
 

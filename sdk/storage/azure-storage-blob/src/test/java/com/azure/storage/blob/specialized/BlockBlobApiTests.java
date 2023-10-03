@@ -105,6 +105,7 @@ import static org.junit.jupiter.api.Assertions.assertNull;
 import static org.junit.jupiter.api.Assertions.assertThrows;
 import static org.junit.jupiter.api.Assertions.assertTrue;
 
+@SuppressWarnings("deprecation") // Using old APIs for testing purposes
 public class BlockBlobApiTests extends BlobTestBase {
     private BlockBlobClient blockBlobClient;
     private BlockBlobAsyncClient blockBlobAsyncClient;
@@ -348,6 +349,7 @@ public class BlockBlobApiTests extends BlobTestBase {
             () -> blockBlobClient.stageBlock("id", DATA.getDefaultInputStream(), DATA.getDefaultDataSize()));
     }
 
+    @SuppressWarnings("deprecation")
     @Test
     public void stageBlockRetryOnTransientFailure() {
         BlockBlobClient clientWithFailure = getBlobClient(
@@ -365,6 +367,7 @@ public class BlockBlobApiTests extends BlobTestBase {
         assertArrayEquals(os.toByteArray(), data);
     }
 
+    @SuppressWarnings("deprecation")
     @Test
     public void stageBlockRetryOnTransientFailureWithRetriableBinaryData() {
         List<BinaryData> binaryDataList = Arrays.asList(
@@ -750,6 +753,7 @@ public class BlockBlobApiTests extends BlobTestBase {
         assertEquals(properties.getAccessTier(), AccessTier.COLD);
     }
 
+    @SuppressWarnings("deprecation")
     @Test
     public void getBlockList() {
         List<String> committedBlocks = Arrays.asList(getBlockID(), getBlockID());
@@ -965,6 +969,7 @@ public class BlockBlobApiTests extends BlobTestBase {
             .verifyComplete();
     }
 
+    @SuppressWarnings("deprecation")
     private static Stream<Arguments> uploadFromFileSupplier() {
         return Stream.of(
             Arguments.of(0, null, 0), // Size is too small to trigger stage block uploading
@@ -1073,6 +1078,7 @@ public class BlockBlobApiTests extends BlobTestBase {
         }
     }
 
+    @SuppressWarnings("deprecation")
     @ParameterizedTest
     @MethodSource("uploadFromFileReporterSupplier")
     @EnabledIf("com.azure.storage.blob.BlobTestBase#isLiveMode")
@@ -1142,6 +1148,7 @@ public class BlockBlobApiTests extends BlobTestBase {
             expectedBlockCount);
     }
 
+    @SuppressWarnings("deprecation")
     private static Stream<Arguments> uploadFromFileOptionsSupplier() {
         return Stream.of(
             // Test that the default for singleUploadSize is the maximum
@@ -1966,8 +1973,8 @@ public class BlockBlobApiTests extends BlobTestBase {
             .listBlocks(BlockListType.COMMITTED).block()).getCommittedBlocks().size(), expectedBlockCount);
     }
 
+    @SuppressWarnings("deprecation")
     private static Stream<Arguments> bufferedUploadOptionsSupplier() {
-
         return Stream.of(
             // Test that the default for singleUploadSize is the maximum
             Arguments.of(BlockBlobAsyncClient.MAX_UPLOAD_BLOB_BYTES - 1, null, null, 0),
@@ -2348,6 +2355,7 @@ public class BlockBlobApiTests extends BlobTestBase {
         assertEquals(BlobErrorCode.BLOB_ALREADY_EXISTS, e2.getErrorCode());
     }
 
+    @SuppressWarnings("deprecation")
     @DisabledIf("com.azure.storage.blob.BlobTestBase#olderThan20200408ServiceVersion")
     @Test
     public void uploadFromUrlMax() throws NoSuchAlgorithmException {

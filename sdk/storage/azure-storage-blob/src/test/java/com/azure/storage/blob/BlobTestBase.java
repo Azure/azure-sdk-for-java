@@ -171,7 +171,9 @@ public class BlobTestBase extends TestProxyTestBase {
         if (getTestMode() != TestMode.LIVE) {
             interceptorManager.addSanitizers(Arrays.asList(
                 new TestProxySanitizer("sig=(.*)", "REDACTED", TestProxySanitizerType.URL),
-                new TestProxySanitizer("x-ms-encryption-key", ".*", "REDACTED", TestProxySanitizerType.HEADER),
+                new TestProxySanitizer("x-ms-encryption-key", ".+", "REDACTED", TestProxySanitizerType.HEADER),
+                new TestProxySanitizer("x-ms-copy-source", ".+", "REDACTED", TestProxySanitizerType.HEADER),
+                new TestProxySanitizer("x-ms-copy-source-authorization", ".+", "REDACTED", TestProxySanitizerType.HEADER),
                 new TestProxySanitizer("x-ms-rename-source", "sig=(.*)", "REDACTED", TestProxySanitizerType.HEADER)));
         }
 
@@ -959,6 +961,10 @@ public class BlobTestBase extends TestProxyTestBase {
             Arguments.of(null, null, null, RECEIVED_ETAG, null),
             Arguments.of(null, null, null, null, GARBAGE_LEASE_ID)
         );
+    }
+
+    protected static boolean olderThan20190707ServiceVersion() {
+        return olderThan(BlobServiceVersion.V2019_07_07);
     }
 
     protected static boolean olderThan20191212ServiceVersion() {
