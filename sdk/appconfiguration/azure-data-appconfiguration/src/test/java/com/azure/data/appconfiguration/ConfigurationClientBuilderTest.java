@@ -22,7 +22,6 @@ import com.azure.core.util.Configuration;
 import com.azure.core.util.Header;
 import com.azure.data.appconfiguration.implementation.ClientConstants;
 import com.azure.data.appconfiguration.models.ConfigurationSetting;
-import org.junit.jupiter.api.Disabled;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.params.ParameterizedTest;
 import org.junit.jupiter.params.provider.MethodSource;
@@ -156,7 +155,6 @@ public class ConfigurationClientBuilderTest extends TestProxyTestBase {
 
     @Test
     @DoNotRecord
-    @Disabled("Testing. don't not disabled it")
     public void timeoutPolicy() {
         final ConfigurationClient client = new ConfigurationClientBuilder()
             .connectionString(FAKE_CONNECTION_STRING)
@@ -273,7 +271,6 @@ public class ConfigurationClientBuilderTest extends TestProxyTestBase {
 
     @Test
     @DoNotRecord
-    @Disabled("Testing. don't not disabled it")
     public void getEndpointAtClientInstance() {
         ConfigurationClientBuilder configurationClientBuilder = new ConfigurationClientBuilder()
                                                                           .connectionString(FAKE_CONNECTION_STRING);
