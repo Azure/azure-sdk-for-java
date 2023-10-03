@@ -55,7 +55,8 @@
  * <p>This library provides two sender clients to publish messages to Azure Service Bus.  The async client,
  * {@link com.azure.messaging.servicebus.ServiceBusSenderAsyncClient} and its sync version,
  * {@link com.azure.messaging.servicebus.ServiceBusSenderClient}.  The samples below demonstrate basic scenarios,
- * additional snippets can be found in the class documentation.</p>
+ * additional snippets can be found in the class documentation for
+ * {@link com.azure.messaging.servicebus.ServiceBusClientBuilder} and any of the clients.</p>
  *
  * <p><strong>Sample: Construct a synchronous sender and send messages</strong></p>
  *

@@ -396,7 +396,7 @@ import static com.azure.messaging.servicebus.implementation.ServiceBusConstants.
  * </pre>
  * <!-- end com.azure.messaging.servicebus.servicebusprocessorclient#session-instantiation -->
  *
- * <h3>Connection sharing</h3>
+ * <h2>Connection sharing</h2>
  *
  * <p>The creation of a connection to Service Bus requires resources. If your architecture allows, an application
  * should share connection between clients which can be achieved by sharing the top level builder as shown below.</p>
