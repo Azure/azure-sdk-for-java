@@ -170,13 +170,6 @@ public class HttpUrlConnectionAsyncClient implements HttpClient {
                 // Read response
                 int responseCode = connection.getResponseCode();
 
-                /*Map<String, List<String>> responseHeadersMap = new HashMap<>();
-                for (Map.Entry<String, List<String>> entry : connection.getHeaderFields().entrySet()) {
-                    if (entry.getKey() != null) {
-                        responseHeadersMap.put(entry.getKey(), entry.getValue());
-                    }
-                }*/
-
                 HttpHeaders responseHeaders = new HttpHeaders();
                 for (Map.Entry<String, List<String>> entry : connection.getHeaderFields().entrySet()) {
                     if (entry.getKey() != null) {
