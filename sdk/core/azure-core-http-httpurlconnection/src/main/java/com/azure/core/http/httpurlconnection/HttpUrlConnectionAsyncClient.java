@@ -7,6 +7,7 @@ import com.azure.core.util.logging.ClientLogger;
 import reactor.core.publisher.Flux;
 import reactor.core.publisher.Mono;
 import com.azure.core.http.HttpHeader;
+import reactor.core.scheduler.Schedulers;
 
 import java.io.*;
 import java.net.*;
@@ -190,12 +191,12 @@ public class HttpUrlConnectionAsyncClient implements HttpClient {
 
             connection.disconnect();
 
-            return Mono.just(new HttpUrlConnectionResponse(
+            return Mono.just((HttpResponse) new HttpUrlConnectionResponse(
                 httpRequest,
                 responseCode,
                 responseHeadersMap,
                 Flux.just(ByteBuffer.wrap(outputStream.toByteArray()))
-            ));
+            )).publishOn(Schedulers.boundedElastic());
         } catch (IOException e) {
             return FluxUtil.monoError(LOGGER, new RuntimeException("Error reading HTTP Response", e));
         }
