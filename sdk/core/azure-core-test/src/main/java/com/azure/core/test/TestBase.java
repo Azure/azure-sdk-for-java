@@ -271,17 +271,19 @@ public abstract class TestBase implements BeforeEachCallback {
 
             try {
                 HttpClientProvider httpClientProvider = iterator.next();
-                if (includeHttpClientOrHttpClientProvider(httpClientProvider.getClass().getSimpleName()
-                    .toLowerCase(Locale.ROOT))) {
-                    // JDK HttpClient was introduced since java 11
-                    if ("JdkHttpClientProvider".equalsIgnoreCase(httpClientProvider.getClass().getSimpleName())
-                        && !isJavaVersionMinimumRequired(11)) {
-                        continue;
-                    }
+                String simpleName = httpClientProvider.getClass().getSimpleName();
+
+                // JDK HttpClient was introduced since java 11
+                if ("JdkHttpClientProvider".equalsIgnoreCase(simpleName)
+                    && !isJavaVersionMinimumRequired(11)) {
+                    continue;
+                }
+
+                if (includeHttpClientOrHttpClientProvider(simpleName.toLowerCase(Locale.ROOT))) {
                     httpClientsToTest.add(httpClientProvider.createInstance());
                 }
             } catch (UnsupportedClassVersionError exception) {
-                throw LOGGER.logExceptionAsError(new RuntimeException(exception));
+                LOGGER.logExceptionAsError(new RuntimeException(exception));
             }
         }
 
@@ -294,7 +296,9 @@ public abstract class TestBase implements BeforeEachCallback {
             version = version.substring(2, 3);
         } else {
             int dot = version.indexOf(".");
-            if (dot != -1) { version = version.substring(0, dot); }
+            if (dot != -1) {
+                version = version.substring(0, dot);
+            }
         }
         int javaVersion = Integer.parseInt(version);
         return javaVersion >= minimumVersion;
