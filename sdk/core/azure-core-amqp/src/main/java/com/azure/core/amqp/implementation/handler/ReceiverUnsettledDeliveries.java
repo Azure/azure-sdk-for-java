@@ -280,7 +280,7 @@ public final class ReceiverUnsettledDeliveries implements AutoCloseable {
         final Mono<Void> dispositionsWithTimeout = workMonoListMerged;
 
         // 4. finally, disposes the timeoutTimer after its final use (to timeout disposition works in-progress).
-        return Mono.using(() -> dispositionsWithTimeout, mono -> mono, ignored -> timoutTimer.dispose());
+        return dispositionsWithTimeout.doFinally(__ -> timoutTimer.dispose());
     }
 
     /**
