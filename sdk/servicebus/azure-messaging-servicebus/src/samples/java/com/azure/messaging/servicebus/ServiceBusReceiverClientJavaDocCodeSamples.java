@@ -20,6 +20,7 @@ import reactor.core.publisher.Mono;
 
 import java.security.SecureRandom;
 import java.time.Duration;
+import java.util.Iterator;
 import java.util.concurrent.atomic.AtomicInteger;
 
 /**
@@ -350,6 +351,8 @@ public class ServiceBusReceiverClientJavaDocCodeSamples {
      */
     @Test
     public void sessionReceiverSessionIdInstantiation() {
+        boolean isMessageProcessed = RANDOM.nextBoolean();
+
         // BEGIN: com.azure.messaging.servicebus.servicebusreceiverclient.instantiation#sessionId
         TokenCredential credential = new DefaultAzureCredentialBuilder().build();
 
@@ -363,6 +366,28 @@ public class ServiceBusReceiverClientJavaDocCodeSamples {
             .buildClient();
         ServiceBusReceiverClient receiver = sessionReceiver.acceptSession("<<my-session-id>>");
 
+        // Keep fetching messages from the session until there are no more messages.
+        // The receiveMessage operation returns when either 10 messages have been receiver or, 30 seconds have elapsed.
+        boolean hasMoreMessages = true;
+        while (hasMoreMessages) {
+            IterableStream<ServiceBusReceivedMessage> messages =
+                receiver.receiveMessages(10, Duration.ofSeconds(30));
+            Iterator<ServiceBusReceivedMessage> iterator = messages.iterator();
+            hasMoreMessages = iterator.hasNext();
+
+            while (iterator.hasNext()) {
+                ServiceBusReceivedMessage message = iterator.next();
+                System.out.printf("Session Id: %s. Message: %s%n.", message.getSessionId(), message.getBody());
+
+                // Explicitly settle the message using complete, abandon, defer, dead-letter, etc.
+                if (isMessageProcessed) {
+                    receiver.complete(message);
+                } else {
+                    receiver.abandon(message);
+                }
+            }
+        }
+
         // Use the receiver and finally close it along with the sessionReceiver.
         receiver.close();
         sessionReceiver.close();
@@ -374,6 +399,8 @@ public class ServiceBusReceiverClientJavaDocCodeSamples {
      */
     @Test
     public void sessionReceiverSessionIdInstantiationAsync() {
+        boolean isMessageProcessed = RANDOM.nextBoolean();
+
         // BEGIN: com.azure.messaging.servicebus.servicebusreceiverasyncclient.instantiation#sessionId
         TokenCredential credential = new DefaultAzureCredentialBuilder().build();
 
@@ -388,16 +415,27 @@ public class ServiceBusReceiverClientJavaDocCodeSamples {
 
         // acceptSession(String) completes successfully with a receiver when "<<my-session-id>>" session is
         // successfully locked.
-        // `Flux.usingWhen` is used, so we dispose of the receiver resource after `receiveMessages()` completes.
-        // `Mono.usingWhen` can also be used if the resource closure only returns a single item.
-        Flux<ServiceBusReceivedMessage> sessionMessages = Flux.usingWhen(
+        // `Flux.usingWhen` is used, so we dispose of the receiver resource after `receiveMessages()` and the settlement
+        // operations complete.
+        // `Mono.usingWhen` can also be used if the resource closure returns a single item.
+        Flux<Void> sessionMessages = Flux.usingWhen(
             sessionReceiver.acceptSession("<<my-session-id>>"),
             receiver -> {
                 // Receive messages from <<my-session-id>> session.
-                return receiver.receiveMessages();
+                return receiver.receiveMessages().flatMap(message -> {
+                    System.out.printf("Received Sequence #: %s. Contents: %s%n", message.getSequenceNumber(),
+                        message.getBody());
+
+                    // Explicitly settle the message using complete, abandon, defer, dead-letter, etc.
+                    if (isMessageProcessed) {
+                        return receiver.complete(message);
+                    } else {
+                        return receiver.abandon(message);
+                    }
+                });
             },
             receiver -> Mono.fromRunnable(() -> {
-                // Dispose of
+                // Dispose of resources.
                 receiver.close();
                 sessionReceiver.close();
             }));
@@ -405,9 +443,8 @@ public class ServiceBusReceiverClientJavaDocCodeSamples {
         // When program ends, or you're done receiving all messages, the `subscription` can be disposed of. This code
         // is non-blocking and kicks off the operation.
         Disposable subscription = sessionMessages.subscribe(
-            message -> System.out.printf("Received Sequence #: %s. Contents: %s%n",
-                message.getSequenceNumber(), message.getBody()),
-            error -> System.err.print(error),
+            unused -> {
+            }, error -> System.err.print(error),
             () -> System.out.println("Completed receiving from session."));
         // END: com.azure.messaging.servicebus.servicebusreceiverasyncclient.instantiation#sessionId
 

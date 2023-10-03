@@ -337,7 +337,7 @@ import static com.azure.messaging.servicebus.implementation.ServiceBusConstants.
  * {@code DefaultAzureCredential} for authentication. It is appropriate for most scenarios, including local development
  * and production environments.  {@link ServiceBusReceiveMode#PEEK_LOCK} and
  * {@link ServiceBusProcessorClientBuilder#disableAutoComplete() disableAutoComplete()} are <strong>strongly</strong>
- * recommended so users have control over message settlement.
+ * recommended so users have control over message settlement.</p>
  *
  * <!-- src_embed com.azure.messaging.servicebus.servicebusprocessorclient#session-instantiation -->
  * <pre>

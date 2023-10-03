@@ -56,8 +56,8 @@ import static com.azure.messaging.servicebus.implementation.ServiceBusConstants.
 import static com.azure.messaging.servicebus.implementation.ServiceBusConstants.SESSION_ID_KEY;
 
 /**
- * <p>An <b>asynchronous</b> receiver responsible for receiving {@link ServiceBusReceivedMessage messages} from a
- * queue or topic/subscription.</p>
+ * <p>An <b>asynchronous</b> receiver responsible for receiving {@link ServiceBusReceivedMessage messages} from an
+ * Azure Service Bus queue or topic/subscription.</p>
  *
  * <p>The examples shown in this document use a credential object named DefaultAzureCredential for authentication,
  * which is appropriate for most scenarios, including local development and production environments. Additionally, we
@@ -183,16 +183,27 @@ import static com.azure.messaging.servicebus.implementation.ServiceBusConstants.
  *
  * &#47;&#47; acceptSession&#40;String&#41; completes successfully with a receiver when &quot;&lt;&lt;my-session-id&gt;&gt;&quot; session is
  * &#47;&#47; successfully locked.
- * &#47;&#47; `Flux.usingWhen` is used, so we dispose of the receiver resource after `receiveMessages&#40;&#41;` completes.
- * &#47;&#47; `Mono.usingWhen` can also be used if the resource closure only returns a single item.
- * Flux&lt;ServiceBusReceivedMessage&gt; sessionMessages = Flux.usingWhen&#40;
+ * &#47;&#47; `Flux.usingWhen` is used, so we dispose of the receiver resource after `receiveMessages&#40;&#41;` and the settlement
+ * &#47;&#47; operations complete.
+ * &#47;&#47; `Mono.usingWhen` can also be used if the resource closure returns a single item.
+ * Flux&lt;Void&gt; sessionMessages = Flux.usingWhen&#40;
  *     sessionReceiver.acceptSession&#40;&quot;&lt;&lt;my-session-id&gt;&gt;&quot;&#41;,
  *     receiver -&gt; &#123;
  *         &#47;&#47; Receive messages from &lt;&lt;my-session-id&gt;&gt; session.
- *         return receiver.receiveMessages&#40;&#41;;
+ *         return receiver.receiveMessages&#40;&#41;.flatMap&#40;message -&gt; &#123;
+ *             System.out.printf&#40;&quot;Received Sequence #: %s. Contents: %s%n&quot;, message.getSequenceNumber&#40;&#41;,
+ *                 message.getBody&#40;&#41;&#41;;
+ *
+ *             &#47;&#47; Explicitly settle the message using complete, abandon, defer, dead-letter, etc.
+ *             if &#40;isMessageProcessed&#41; &#123;
+ *                 return receiver.complete&#40;message&#41;;
+ *             &#125; else &#123;
+ *                 return receiver.abandon&#40;message&#41;;
+ *             &#125;
+ *         &#125;&#41;;
  *     &#125;,
  *     receiver -&gt; Mono.fromRunnable&#40;&#40;&#41; -&gt; &#123;
- *         &#47;&#47; Dispose of
+ *         &#47;&#47; Dispose of resources.
  *         receiver.close&#40;&#41;;
  *         sessionReceiver.close&#40;&#41;;
  *     &#125;&#41;&#41;;
@@ -200,9 +211,8 @@ import static com.azure.messaging.servicebus.implementation.ServiceBusConstants.
  * &#47;&#47; When program ends, or you're done receiving all messages, the `subscription` can be disposed of. This code
  * &#47;&#47; is non-blocking and kicks off the operation.
  * Disposable subscription = sessionMessages.subscribe&#40;
- *     message -&gt; System.out.printf&#40;&quot;Received Sequence #: %s. Contents: %s%n&quot;,
- *         message.getSequenceNumber&#40;&#41;, message.getBody&#40;&#41;&#41;,
- *     error -&gt; System.err.print&#40;error&#41;,
+ *     unused -&gt; &#123;
+ *     &#125;, error -&gt; System.err.print&#40;error&#41;,
  *     &#40;&#41; -&gt; System.out.println&#40;&quot;Completed receiving from session.&quot;&#41;&#41;;
  * </pre>
  * <!-- end com.azure.messaging.servicebus.servicebusreceiverasyncclient.instantiation#sessionId -->
