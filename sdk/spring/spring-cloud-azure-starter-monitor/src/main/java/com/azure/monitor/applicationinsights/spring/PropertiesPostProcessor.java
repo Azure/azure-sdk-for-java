@@ -54,7 +54,7 @@ class PropertiesPostProcessor implements EnvironmentPostProcessor, Ordered {
 
     private static boolean isStarterDisabled(ConfigurableEnvironment environment) {
         String otelSdkDisabled = environment.getProperty("otel.sdk.disabled", "false");
-        return "true".equalsIgnoreCase(otelSdkDisabled);
+        return Boolean.parseBoolean(otelSdkDisabled);
     }
 
     private static boolean applicationInsightsAgentIsAttached() {
