@@ -269,14 +269,15 @@ public abstract class TestBase implements BeforeEachCallback {
                 break;
             }
 
-            String simpleName = "";
+            String simpleName;
             HttpClientProvider httpClientProvider;
             try {
                 httpClientProvider = iterator.next();
                 simpleName = httpClientProvider.getClass().getSimpleName();
             } catch (UnsupportedClassVersionError exception) {
                 // JDK HttpClient was introduced since java 11
-                if ("JdkHttpClientProvider".equalsIgnoreCase(simpleName)
+                if (exception.getMessage().contains(
+                    "JdkHttpClientProvider has been compiled by a more recent version of the Java Runtime")
                     && !isJavaVersionMinimumRequired(11)) {
                     continue;
                 } else {
