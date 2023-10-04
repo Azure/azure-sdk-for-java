@@ -5,7 +5,7 @@ package com.azure.spring.cloud.feature.management.implementation.models;
 import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 
 @JsonIgnoreProperties(ignoreUnknown = true)
-public class Percentile {
+public class PercentileAllocation {
 
     private String variant;
 

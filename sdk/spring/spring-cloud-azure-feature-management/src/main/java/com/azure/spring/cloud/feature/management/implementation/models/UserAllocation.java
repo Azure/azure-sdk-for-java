@@ -4,11 +4,11 @@ package com.azure.spring.cloud.feature.management.implementation.models;
 
 import java.util.Map;
 
-public class VariantAssignmentGroups {
+public class UserAllocation {
 
     private String variant;
 
-    private Map<String, String> groups;
+    private Map<String, String> users;
 
     /**
      * @return the variant
@@ -25,17 +25,17 @@ public class VariantAssignmentGroups {
     }
 
     /**
-     * @return the groups
+     * @return the users
      */
-    public Map<String, String> getGroups() {
-        return groups;
+    public Map<String, String> getUsers() {
+        return users;
     }
 
     /**
-     * @param groups the groups to set
+     * @param users the users to set
      */
-    public void setGroups(Map<String, String> groups) {
-        this.groups = groups;
+    public void setUsers(Map<String, String> users) {
+        this.users = users;
     }
 
 }

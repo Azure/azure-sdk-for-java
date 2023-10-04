@@ -7,23 +7,19 @@ import java.nio.charset.Charset;
 import java.security.MessageDigest;
 import java.security.NoSuchAlgorithmException;
 import java.util.Collection;
-import java.util.LinkedHashMap;
+import java.util.Locale;
 
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
 import org.springframework.util.StringUtils;
 
 import com.azure.spring.cloud.feature.management.implementation.models.Allocation;
-import com.azure.spring.cloud.feature.management.implementation.models.Percentile;
-import com.azure.spring.cloud.feature.management.implementation.models.VariantAssignmentGroups;
-import com.azure.spring.cloud.feature.management.implementation.models.VariantAssignmentUsers;
+import com.azure.spring.cloud.feature.management.implementation.models.GroupAllocation;
+import com.azure.spring.cloud.feature.management.implementation.models.PercentileAllocation;
+import com.azure.spring.cloud.feature.management.implementation.models.UserAllocation;
 import com.azure.spring.cloud.feature.management.implementation.models.VariantReference;
 import com.azure.spring.cloud.feature.management.models.TargetingException;
 import com.azure.spring.cloud.feature.management.targeting.TargetingContextAccessor;
 import com.azure.spring.cloud.feature.management.targeting.TargetingEvaluationOptions;
 import com.azure.spring.cloud.feature.management.targeting.TargetingFilterContext;
-import com.fasterxml.jackson.core.JsonProcessingException;
-import com.fasterxml.jackson.databind.ObjectMapper;
 
 import reactor.core.publisher.Flux;
 
@@ -32,22 +28,9 @@ import reactor.core.publisher.Flux;
  */
 public final class VariantAssignment {
 
-    private static final Logger LOGGER = LoggerFactory.getLogger(VariantAssignment.class);
-
     private final TargetingContextAccessor contextAccessor;
 
     private final TargetingEvaluationOptions evaluationOptions;
-    
-    private static final ObjectMapper MAPPER = new ObjectMapper();
-
-    /**
-     * `Microsoft.TargetingFilter` evaluates a user/group/overall rollout of a feature.
-     * 
-     * @param contextAccessor Context for evaluating the users/groups.
-     */
-    VariantAssignment(TargetingContextAccessor contextAccessor) {
-        this(contextAccessor, new TargetingEvaluationOptions());
-    }
 
     /**
      * `Microsoft.TargetingFilter` evaluates a user/group/overall rollout of a feature.
@@ -72,37 +55,63 @@ public final class VariantAssignment {
 
         contextAccessor.configureTargetingContext(targetingContext);
 
-        if (validateTargetingContext(targetingContext)) {
-            LOGGER.warn("No targeting context available for targeting evaluation.");
-            return null;
-        }
+        String targetedUser = targetingContext.getUserId();
 
-        for (VariantAssignmentUsers users : allocation.getUsers().values()) {
+        for (UserAllocation users : allocation.getUsers().values()) {
             for (String user : users.getUsers().values()) {
-                if (user.equals(targetingContext.getUserId())) {
-                    return getVariant(variants, users.getVariant());
+                if (targetedUser != null) {
+                    if (evaluationOptions.isIgnoreCase()) {
+                        user = user.toLowerCase(Locale.getDefault());
+                        targetedUser = targetedUser.toLowerCase(Locale.getDefault());
+                    }
+
+                    if (user.equals(targetedUser)) {
+                        return getVariant(variants, users.getVariant());
+                    }
                 }
             }
         }
 
-        for (VariantAssignmentGroups groups : allocation.getGroups().values()) {
+        for (GroupAllocation groups : allocation.getGroups().values()) {
             for (String group : groups.getGroups().values()) {
-                if (targetingContext.getGroups().contains(group)) {
-                    return getVariant(variants, groups.getVariant());
+                if (evaluationOptions.isIgnoreCase()) {
+                    group = group.toLowerCase(Locale.getDefault());
                 }
+
+                for (String targetedGroup : targetingContext.getGroups()) {
+                    if (targetedGroup != null) {
+                        if (evaluationOptions.isIgnoreCase()) {
+                            targetedGroup = targetedGroup.toLowerCase(Locale.getDefault());
+                        }
+                        if (targetedGroup.equals(group)) {
+                            return getVariant(variants, groups.getVariant());
+                        }
+                    }
+                }
+
             }
         }
 
         String contextId = "";
+        if (targetedUser != null) {
+            contextId += targetedUser + "\n";
+        }
+        if (StringUtils.hasText(allocation.getSeed())) {
+            contextId += allocation.getSeed() + "\n";
+        }
         double value = isTargetedPercentage(contextId);
 
-        for (Percentile percentile : allocation.getPercentile().values()) {
+        for (PercentileAllocation percentile : allocation.getPercentile().values()) {
             if (percentile.getFrom().doubleValue() <= value && percentile.getTo().doubleValue() > value) {
                 return getVariant(variants, percentile.getVariant());
             }
         }
 
-        return getVariant(variants, allocation.getDefaultWhenEnabled());
+        if (StringUtils.hasText(allocation.getDefaultWhenEnabled())) {
+            return getVariant(variants, allocation.getDefaultWhenEnabled());
+        }
+
+        return null;
     }
 
     /**
@@ -119,28 +128,8 @@ public final class VariantAssignment {
             .blockFirst();
     }
 
-    @SuppressWarnings("unchecked")
     private Variant assignVariant(VariantReference variant) {
-        LinkedHashMap<String, Object> thing = new LinkedHashMap<String, Object>();
-        try {
-            thing = MAPPER.readValue(variant.getConfigurationValue(), LinkedHashMap.class);
-        } catch (JsonProcessingException e) {
-            e.printStackTrace();
-        }
-
-        return new Variant(variant.getName(), thing);
-    }
-
-    private boolean validateTargetingContext(TargetingFilterContext targetingContext) {
-        boolean hasUserDefined = StringUtils.hasText(targetingContext.getUserId());
-        boolean hasGroupsDefined = targetingContext.getGroups() != null;
-        boolean hasAtLeastOneGroup = false;
-
-        if (hasGroupsDefined) {
-            hasAtLeastOneGroup = targetingContext.getGroups().stream().anyMatch(group -> StringUtils.hasText(group));
-        }
-
-        return (!hasUserDefined && !(hasGroupsDefined && hasAtLeastOneGroup));
+        return new Variant(variant.getName(), variant.getConfigurationValue());
     }
 
     /**

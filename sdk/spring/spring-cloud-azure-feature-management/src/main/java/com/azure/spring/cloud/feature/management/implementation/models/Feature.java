@@ -27,7 +27,7 @@ public class Feature {
     private String requirementType = DEFAULT_REQUIREMENT_TYPE;
 
     @JsonProperty("enabled-for")
-    private Map<Integer, FeatureFilterEvaluationContext> enabledFor;
+    private Map<Integer, FeatureFilterEvaluationContext> enabledFor = new HashMap<>();
 
     @JsonProperty("allocation")
     private Allocation allocation;

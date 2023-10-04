@@ -2,8 +2,6 @@
 // Licensed under the MIT License.
 package com.azure.spring.cloud.feature.management;
 
-import java.util.LinkedHashMap;
-
 /**
  * The return object of getVariant that has the name of the variant and the instance value of the variant.
  */
@@ -11,14 +9,14 @@ public class Variant {
 
     private String name;
 
-    private LinkedHashMap<String, Object> value;
+    private Object value;
 
     /**
      * Variant
      * @param name Name of the Variant
      * @param value Instance of the Variant
      */
-    public Variant(String name, LinkedHashMap<String, Object> value) {
+    public Variant(String name, Object value) {
         this.name = name;
         this.value = value;
     }
@@ -40,14 +38,14 @@ public class Variant {
     /**
      * @return the value
      */
-    public LinkedHashMap<String, Object> getValue() {
+    public Object getValue() {
         return value;
     }
 
     /**
      * @param value the value to set
      */
-    public void setValue(LinkedHashMap<String, Object> value) {
+    public void setValue(Object value) {
         this.value = value;
     }
 

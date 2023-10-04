@@ -24,6 +24,8 @@ import com.azure.spring.cloud.feature.management.implementation.models.VariantRe
 import com.azure.spring.cloud.feature.management.models.FeatureFilterEvaluationContext;
 import com.azure.spring.cloud.feature.management.models.FeatureManagementException;
 import com.azure.spring.cloud.feature.management.models.FilterNotFoundException;
+import com.azure.spring.cloud.feature.management.targeting.TargetingContextAccessor;
+import com.azure.spring.cloud.feature.management.targeting.TargetingEvaluationOptions;
 
 import reactor.core.publisher.Mono;
 
@@ -40,6 +42,10 @@ public class FeatureManager {
 
     private transient FeatureManagementConfigProperties properties;
 
+    private final TargetingContextAccessor contextAccessor;
+
+    private final TargetingEvaluationOptions evaluationOptions;
+
     /**
      * Can be called to check if a feature is enabled or disabled.
      * 
@@ -48,10 +54,13 @@ public class FeatureManager {
      * @param properties FeatureManagementConfigProperties
      */
     FeatureManager(ApplicationContext context, FeatureManagementProperties featureManagementConfigurations,
-        FeatureManagementConfigProperties properties) {
+        FeatureManagementConfigProperties properties, TargetingContextAccessor contextAccessor,
+        TargetingEvaluationOptions evaluationOptions) {
         this.context = context;
         this.featureManagementConfigurations = featureManagementConfigurations;
         this.properties = properties;
+        this.contextAccessor = contextAccessor;
+        this.evaluationOptions = evaluationOptions;
     }
 
     /**
@@ -73,40 +82,11 @@ public class FeatureManager {
      * isn't found it returns false.
      *
      * @param feature Feature being checked.
-     * @param featureContext The internal app context
-     * @return state of the feature
-     * @throws FilterNotFoundException file not found
-     */
-    public Mono<Boolean> isEnabledAsync(String feature, Context featureContext) {
-        return Mono.just(checkFeature(feature, featureContext));
-    }
-
-    /**
-     * Checks to see if the feature is enabled. If enabled it check each filter, once a single filter returns true it
-     * returns true. If no filter returns true, it returns false. If there are no filters, it returns true. If feature
-     * isn't found it returns false.
-     *
-     * @param feature Feature being checked.
      * @return state of the feature
      * @throws FilterNotFoundException file not found
      */
     public Boolean isEnabled(String feature) throws FilterNotFoundException {
         return checkFeature(feature, null);
-    }
-
-    /**
-     * Checks to see if the feature is enabled. If enabled it check each filter, once a single filter returns true it
-     * returns true. If no filter returns true, it returns false. If there are no filters, it returns true. If feature
-     * isn't found it returns false.
-     *
-     * @param feature Feature being checked.
-     * @param featureContext The internal app context
-     * @return state of the feature
-     * @throws FilterNotFoundException file not found
-     */
-    public Boolean isEnabled(String feature, Context featureContext) {
-        return checkFeature(feature, featureContext);
-
     }
 
     /**
@@ -200,7 +180,7 @@ public class FeatureManager {
 
     private Variant generateVariant(String featureName, Context featureContext) {
 
-        VariantAssignment variantAssignment = new VariantAssignment(null);
+        VariantAssignment variantAssignment = new VariantAssignment(contextAccessor, evaluationOptions);
 
         if (!StringUtils.hasText(featureName)) {
             throw new IllegalArgumentException("Feature Variant name can not be empty or null.");
@@ -215,9 +195,14 @@ public class FeatureManager {
         validateVariant(feature, featureName);
 
         // Disabled?
-        if (!feature.getEvaluate() || feature.getEnabledFor().size() == 0) {
+        if (!feature.getEvaluate() && StringUtils.hasText(feature.getAllocation().getDefautlWhenDisabled())) {
             return variantAssignment.getVariant(feature.getVariants().values(),
                 feature.getAllocation().getDefautlWhenDisabled());
+        } else if (!feature.getEvaluate()) {
+            return null;
+
+        } else if (feature.getEnabledFor().size() == 0) {
+            return variantAssignment.assignVariant(feature.getAllocation(), feature.getVariants().values());
         }
 
         Stream<FeatureFilterEvaluationContext> filters = feature.getEnabledFor().values().stream()
@@ -234,9 +219,11 @@ public class FeatureManager {
                 .anyMatch(featureFilter -> isFeatureOn(featureFilter, feature.getKey(), featureContext));
         }
 
-        if (!isEnabled) {
+        if (!isEnabled && StringUtils.hasText(feature.getAllocation().getDefautlWhenDisabled())) {
             return variantAssignment.getVariant(feature.getVariants().values(),
                 feature.getAllocation().getDefautlWhenDisabled());
+        } else if (!isEnabled) {
+            return null;
         }
 
         return variantAssignment.assignVariant(feature.getAllocation(), feature.getVariants().values());
@@ -252,7 +239,7 @@ public class FeatureManager {
                 throw new FeatureManagementException("Variant needs a name");
             }
 
-            if (!StringUtils.hasText(variant.getConfigurationValue())) {
+            if (variant.getConfigurationValue() == null) {
                 throw new FeatureManagementException("Need a Configuration Value");
             }
         }

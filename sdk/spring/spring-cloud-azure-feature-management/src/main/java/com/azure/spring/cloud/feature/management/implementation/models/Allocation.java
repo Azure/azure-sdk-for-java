@@ -2,7 +2,7 @@
 // Licensed under the MIT License.
 package com.azure.spring.cloud.feature.management.implementation.models;
 
-import java.util.List;
+import java.util.HashMap;
 import java.util.Map;
 
 import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
@@ -17,11 +17,11 @@ public class Allocation {
     @JsonProperty("default-when-disabled")
     private String defautlWhenDisabled;
 
-    private Map<String, VariantAssignmentUsers> users;
+    private Map<String, UserAllocation> users = new HashMap<>();
 
-    private Map<String, VariantAssignmentGroups> groups;
+    private Map<String, GroupAllocation> groups = new HashMap<>();
 
-    private Map<String, Percentile> percentile;
+    private Map<String, PercentileAllocation> percentile = new HashMap<>();
 
     private String seed;
 
@@ -56,42 +56,42 @@ public class Allocation {
     /**
      * @return the users
      */
-    public Map<String, VariantAssignmentUsers> getUsers() {
+    public Map<String, UserAllocation> getUsers() {
         return users;
     }
 
     /**
      * @param users the users to set
      */
-    public void setUsers(Map<String, VariantAssignmentUsers> users) {
+    public void setUsers(Map<String, UserAllocation> users) {
         this.users = users;
     }
 
     /**
      * @return the groups
      */
-    public Map<String, VariantAssignmentGroups> getGroups() {
+    public Map<String, GroupAllocation> getGroups() {
         return groups;
     }
 
     /**
      * @param groups the groups to set
      */
-    public void setGroups(Map<String, VariantAssignmentGroups> groups) {
+    public void setGroups(Map<String, GroupAllocation> groups) {
         this.groups = groups;
     }
 
     /**
      * @return the percentile
      */
-    public Map<String, Percentile> getPercentile() {
+    public Map<String, PercentileAllocation> getPercentile() {
         return percentile;
     }
 
     /**
      * @param percentile the percentile to set
      */
-    public void setPercentile(Map<String, Percentile> percentile) {
+    public void setPercentile(Map<String, PercentileAllocation> percentile) {
         this.percentile = percentile;
     }
 
