@@ -103,7 +103,9 @@
  *     sender.sendMessages&#40;batch&#41;;
  * &#125;
  *
- * &#47;&#47; Finally dispose of the sender.
+ * &#47;&#47; Continue using the sender and finally, dispose of the sender.
+ * &#47;&#47; Clients should be long-lived objects as they require resources
+ * &#47;&#47; and time to establish a connection to the service.
  * sender.close&#40;&#41;;
  * </pre>
  * <!-- end com.azure.messaging.servicebus.servicebussenderclient.createMessageBatch -->
@@ -231,7 +233,9 @@
  *     &#125;
  * &#125;&#41;;
  *
- * &#47;&#47; When you are done using the receiver, dispose of it.
+ * &#47;&#47; When program ends, or you're done receiving all messages, dispose of the receiver.
+ * &#47;&#47; Clients should be long-lived objects as they
+ * &#47;&#47; require resources and time to establish a connection to the service.
  * receiver.close&#40;&#41;;
  * </pre>
  * <!-- end com.azure.messaging.servicebus.servicebusreceiverclient.receiveMessages-int-duration -->

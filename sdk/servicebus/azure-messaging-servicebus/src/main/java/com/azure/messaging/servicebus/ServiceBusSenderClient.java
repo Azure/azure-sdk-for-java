@@ -79,7 +79,9 @@ import java.util.Objects;
  *     sender.sendMessages&#40;batch&#41;;
  * &#125;
  *
- * &#47;&#47; Finally dispose of the sender.
+ * &#47;&#47; Continue using the sender and finally, dispose of the sender.
+ * &#47;&#47; Clients should be long-lived objects as they require resources
+ * &#47;&#47; and time to establish a connection to the service.
  * sender.close&#40;&#41;;
  * </pre>
  * <!-- end com.azure.messaging.servicebus.servicebussenderclient.createMessageBatch -->
@@ -115,7 +117,9 @@ import java.util.Objects;
  *     sender.sendMessages&#40;currentBatch&#41;;
  * &#125;
  *
- * &#47;&#47; Dispose of the sender
+ * &#47;&#47; Continue using the sender and finally, dispose of the sender.
+ * &#47;&#47; Clients should be long-lived objects as they require resources
+ * &#47;&#47; and time to establish a connection to the service.
  * sender.close&#40;&#41;;
  * </pre>
  * <!-- end com.azure.messaging.servicebus.servicebussenderclient.createMessageBatch#CreateMessageBatchOptions -->

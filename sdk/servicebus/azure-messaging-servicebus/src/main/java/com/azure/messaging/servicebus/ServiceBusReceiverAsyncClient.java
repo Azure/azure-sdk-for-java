@@ -92,7 +92,9 @@ import static com.azure.messaging.servicebus.implementation.ServiceBusConstants.
  *     .queueName&#40;queueName&#41;
  *     .buildAsyncClient&#40;&#41;;
  *
- * &#47;&#47; Use the receiver and finally close it.
+ * &#47;&#47; When users are done with the receiver, dispose of the receiver.
+ * &#47;&#47; Clients should be long-lived objects as they require resources
+ * &#47;&#47; and time to establish a connection to the service.
  * asyncReceiver.close&#40;&#41;;
  * </pre>
  * <!-- end com.azure.messaging.servicebus.servicebusreceiverasyncclient.instantiation -->
@@ -123,8 +125,9 @@ import static com.azure.messaging.servicebus.implementation.ServiceBusConstants.
  *     &#125;, error -&gt; System.out.println&#40;&quot;Error occurred: &quot; + error&#41;,
  *         &#40;&#41; -&gt; System.out.println&#40;&quot;Receiving complete.&quot;&#41;&#41;;
  *
- * &#47;&#47; When program ends, or you're done receiving all messages.
- * subscription.dispose&#40;&#41;;
+ * &#47;&#47; When program ends, or you're done receiving all messages, dispose of the receiver.
+ * &#47;&#47; Clients should be long-lived objects as they
+ * &#47;&#47; require resources and time to establish a connection to the service.
  * asyncReceiver.close&#40;&#41;;
  * </pre>
  * <!-- end com.azure.messaging.servicebus.servicebusreceiverasyncclient.receiveMessages -->

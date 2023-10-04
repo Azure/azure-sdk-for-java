@@ -53,6 +53,9 @@ public class ServiceBusSenderClientJavaDocCodeSamples {
         sender.sendMessage(new ServiceBusMessage("Foo bar"));
         // END: com.azure.messaging.servicebus.servicebussenderclient.instantiation
 
+        // Continue using the sender and finally, dispose of the sender.
+        // Clients should be long-lived objects as they require resources
+        // and time to establish a connection to the service.
         sender.close();
     }
 
@@ -71,7 +74,9 @@ public class ServiceBusSenderClientJavaDocCodeSamples {
             .queueName(queueName)
             .buildAsyncClient();
 
-        // Use the sender and finally close it.
+        // When users are done with the sender, they should dispose of it.
+        // Clients should be long-lived objects as they require resources
+        // and time to establish a connection to the service.
         asyncSender.close();
         // END: com.azure.messaging.servicebus.servicebusasyncsenderclient.instantiation
     }
@@ -120,7 +125,9 @@ public class ServiceBusSenderClientJavaDocCodeSamples {
             sender.sendMessages(batch);
         }
 
-        // Finally dispose of the sender.
+        // Continue using the sender and finally, dispose of the sender.
+        // Clients should be long-lived objects as they require resources
+        // and time to establish a connection to the service.
         sender.close();
         // END: com.azure.messaging.servicebus.servicebussenderclient.createMessageBatch
     }
@@ -152,6 +159,9 @@ public class ServiceBusSenderClientJavaDocCodeSamples {
         });
         // END: com.azure.messaging.servicebus.servicebusasyncsenderclient.createMessageBatch
 
+        // Continue using the sender and finally, dispose of the sender.
+        // Clients should be long-lived objects as they require resources
+        // and time to establish a connection to the service.
         asyncSender.close();
     }
 
@@ -205,7 +215,9 @@ public class ServiceBusSenderClientJavaDocCodeSamples {
             sender.sendMessages(currentBatch);
         }
 
-        // Dispose of the sender
+        // Continue using the sender and finally, dispose of the sender.
+        // Clients should be long-lived objects as they require resources
+        // and time to establish a connection to the service.
         sender.close();
         // END: com.azure.messaging.servicebus.servicebussenderclient.createMessageBatch#CreateMessageBatchOptions
     }
@@ -292,7 +304,9 @@ public class ServiceBusSenderClientJavaDocCodeSamples {
             }, () -> {
                 System.out.println("Completed.");
 
-                // Clean up sender when done using it.  Publishers should be long-lived objects.
+                // Continue using the sender and finally, dispose of the sender.
+                // Clients should be long-lived objects as they require resources
+                // and time to establish a connection to the service.
                 asyncSender.close();
             });
 
@@ -351,7 +365,9 @@ public class ServiceBusSenderClientJavaDocCodeSamples {
             System.out.println("Send complete.");
         });
 
-        // Dispose of the sender.
+        // Continue using the sender and finally, dispose of the sender.
+        // Clients should be long-lived objects as they require resources
+        // and time to establish a connection to the service.
         sender.close();
         // END: com.azure.messaging.servicebus.servicebussenderasyncclient.sendMessage-session
     }

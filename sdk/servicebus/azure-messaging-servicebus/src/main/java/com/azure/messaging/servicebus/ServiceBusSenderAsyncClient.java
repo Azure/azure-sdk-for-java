@@ -74,7 +74,9 @@ import static com.azure.messaging.servicebus.implementation.Messages.INVALID_OPE
  *     .queueName&#40;queueName&#41;
  *     .buildAsyncClient&#40;&#41;;
  *
- * &#47;&#47; Use the sender and finally close it.
+ * &#47;&#47; When users are done with the sender, they should dispose of it.
+ * &#47;&#47; Clients should be long-lived objects as they require resources
+ * &#47;&#47; and time to establish a connection to the service.
  * asyncSender.close&#40;&#41;;
  * </pre>
  * <!-- end com.azure.messaging.servicebus.servicebusasyncsenderclient.instantiation -->
@@ -166,7 +168,9 @@ import static com.azure.messaging.servicebus.implementation.Messages.INVALID_OPE
  *     &#125;, &#40;&#41; -&gt; &#123;
  *         System.out.println&#40;&quot;Completed.&quot;&#41;;
  *
- *         &#47;&#47; Clean up sender when done using it.  Publishers should be long-lived objects.
+ *         &#47;&#47; Continue using the sender and finally, dispose of the sender.
+ *         &#47;&#47; Clients should be long-lived objects as they require resources
+ *         &#47;&#47; and time to establish a connection to the service.
  *         asyncSender.close&#40;&#41;;
  *     &#125;&#41;;
  *
@@ -202,7 +206,9 @@ import static com.azure.messaging.servicebus.implementation.Messages.INVALID_OPE
  *     System.out.println&#40;&quot;Send complete.&quot;&#41;;
  * &#125;&#41;;
  *
- * &#47;&#47; Dispose of the sender.
+ * &#47;&#47; Continue using the sender and finally, dispose of the sender.
+ * &#47;&#47; Clients should be long-lived objects as they require resources
+ * &#47;&#47; and time to establish a connection to the service.
  * sender.close&#40;&#41;;
  * </pre>
  * <!-- end com.azure.messaging.servicebus.servicebussenderasyncclient.sendMessage-session -->

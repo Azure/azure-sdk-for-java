@@ -176,7 +176,9 @@ import static com.azure.messaging.servicebus.implementation.ServiceBusConstants.
  *     .queueName&#40;queueName&#41;
  *     .buildAsyncClient&#40;&#41;;
  *
- * &#47;&#47; Use the receiver and finally close it.
+ * &#47;&#47; When users are done with the receiver, dispose of the receiver.
+ * &#47;&#47; Clients should be long-lived objects as they require resources
+ * &#47;&#47; and time to establish a connection to the service.
  * asyncReceiver.close&#40;&#41;;
  * </pre>
  * <!-- end com.azure.messaging.servicebus.servicebusreceiverasyncclient.instantiation -->
@@ -428,6 +430,8 @@ import static com.azure.messaging.servicebus.implementation.ServiceBusConstants.
  *     sender.sendMessage&#40;new ServiceBusMessage&#40;&quot;payload&quot;&#41;&#41;;
  *     receiver.receiveMessages&#40;1&#41;;
  * &#125; finally &#123;
+ *     &#47;&#47; Clients should be long-lived objects as they require resources
+ *     &#47;&#47; and time to establish a connection to the service.
  *     sender.close&#40;&#41;;
  *     receiver.close&#40;&#41;;
  * &#125;

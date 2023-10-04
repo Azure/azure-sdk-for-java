@@ -121,7 +121,9 @@ ServiceBusReceiverAsyncClient asyncReceiver = new ServiceBusClientBuilder()
     .queueName(queueName)
     .buildAsyncClient();
 
-// Use the receiver and finally close it.
+// When users are done with the receiver, dispose of the receiver.
+// Clients should be long-lived objects as they require resources
+// and time to establish a connection to the service.
 asyncReceiver.close();
 ```
 
@@ -201,7 +203,9 @@ if (batch.getCount() > 0) {
     sender.sendMessages(batch);
 }
 
-// Finally dispose of the sender.
+// Continue using the sender and finally, dispose of the sender.
+// Clients should be long-lived objects as they require resources
+// and time to establish a connection to the service.
 sender.close();
 ```
 
@@ -389,7 +393,9 @@ ServiceBusReceiverClient receiver = new ServiceBusClientBuilder()
     .subQueue(SubQueue.DEAD_LETTER_QUEUE)
     .buildClient();
 
-// Use the receiver and finally close it.
+// When users are done with the receiver, dispose of the receiver.
+// Clients should be long-lived objects as they require resources
+// and time to establish a connection to the service.
 receiver.close();
 ```
 
@@ -421,6 +427,8 @@ try {
     sender.sendMessage(new ServiceBusMessage("payload"));
     receiver.receiveMessages(1);
 } finally {
+    // Clients should be long-lived objects as they require resources
+    // and time to establish a connection to the service.
     sender.close();
     receiver.close();
 }

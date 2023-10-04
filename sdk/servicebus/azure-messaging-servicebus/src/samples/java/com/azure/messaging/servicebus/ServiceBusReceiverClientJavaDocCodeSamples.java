@@ -74,7 +74,9 @@ public class ServiceBusReceiverClientJavaDocCodeSamples {
                 System.out.println("Message: " + message.getBody());
             });
 
-        // Use the receiver and finally close it.
+        // When users are done with the receiver, dispose of the receiver.
+        // Clients should be long-lived objects as they require resources
+        // and time to establish a connection to the service.
         receiver.close();
         // END: com.azure.messaging.servicebus.servicebusreceiverclient.instantiation
     }
@@ -96,7 +98,9 @@ public class ServiceBusReceiverClientJavaDocCodeSamples {
             .queueName(queueName)
             .buildAsyncClient();
 
-        // Use the receiver and finally close it.
+        // When users are done with the receiver, dispose of the receiver.
+        // Clients should be long-lived objects as they require resources
+        // and time to establish a connection to the service.
         asyncReceiver.close();
         // END: com.azure.messaging.servicebus.servicebusreceiverasyncclient.instantiation
     }
@@ -119,7 +123,9 @@ public class ServiceBusReceiverClientJavaDocCodeSamples {
             .subQueue(SubQueue.DEAD_LETTER_QUEUE)
             .buildClient();
 
-        // Use the receiver and finally close it.
+        // When users are done with the receiver, dispose of the receiver.
+        // Clients should be long-lived objects as they require resources
+        // and time to establish a connection to the service.
         receiver.close();
         // END: com.azure.messaging.servicebus.servicebusreceiverclient.instantiation-deadLetterQueue
     }
@@ -156,7 +162,9 @@ public class ServiceBusReceiverClientJavaDocCodeSamples {
             }
         });
 
-        // When you are done using the receiver, dispose of it.
+        // When program ends, or you're done receiving all messages, dispose of the receiver.
+        // Clients should be long-lived objects as they
+        // require resources and time to establish a connection to the service.
         receiver.close();
         // END: com.azure.messaging.servicebus.servicebusreceiverclient.receiveMessages-int-duration
     }
@@ -197,8 +205,9 @@ public class ServiceBusReceiverClientJavaDocCodeSamples {
             }, error -> System.out.println("Error occurred: " + error),
                 () -> System.out.println("Receiving complete."));
 
-        // When program ends, or you're done receiving all messages.
-        subscription.dispose();
+        // When program ends, or you're done receiving all messages, dispose of the receiver.
+        // Clients should be long-lived objects as they
+        // require resources and time to establish a connection to the service.
         asyncReceiver.close();
         // END: com.azure.messaging.servicebus.servicebusreceiverasyncclient.receiveMessages
     }
@@ -282,6 +291,8 @@ public class ServiceBusReceiverClientJavaDocCodeSamples {
         // END: com.azure.messaging.servicebus.servicebusreceiverasyncclient.receive#basesubscriber
 
         // When completed receiving messages, close the receiver.
+        // Clients should be long-lived objects as they require resources
+        // and time to establish a connection to the service.
         asyncReceiver.close();
     }
 
@@ -493,6 +504,9 @@ public class ServiceBusReceiverClientJavaDocCodeSamples {
             () -> System.out.println("Completed receiving from session."));
         // END: com.azure.messaging.servicebus.servicebusreceiverasyncclient.instantiation#sessionId
 
+        // Continue using the receiver and finally, dispose of the receiver.
+        // Clients should be long-lived objects as they require resources
+        // and time to establish a connection to the service.
         subscription.dispose();
         sessionReceiver.close();
     }
@@ -525,7 +539,9 @@ public class ServiceBusReceiverClientJavaDocCodeSamples {
         receiver.commitTransaction(transaction);
         // END: com.azure.messaging.servicebus.servicebusreceiverclient.committransaction#servicebustransactioncontext
 
-        // Close receiver when finished using it.
+        // Continue using the receiver and finally, dispose of the receiver.
+        // Clients should be long-lived objects as they require resources
+        // and time to establish a connection to the service.
         receiver.close();
     }
 
@@ -571,7 +587,10 @@ public class ServiceBusReceiverClientJavaDocCodeSamples {
             System.out.println("Completed transaction");
         });
         // END: com.azure.messaging.servicebus.servicebusreceiverasyncclient.committransaction#servicebustransactioncontext
-        // Close receiver when finished using it.
+
+        // Continue using the receiver and finally, dispose of the receiver.
+        // Clients should be long-lived objects as they require resources
+        // and time to establish a connection to the service.
         asyncReceiver.close();
 
         if (!disposable.isDisposed()) {
@@ -605,6 +624,8 @@ public class ServiceBusReceiverClientJavaDocCodeSamples {
             sender.sendMessage(new ServiceBusMessage("payload"));
             receiver.receiveMessages(1);
         } finally {
+            // Clients should be long-lived objects as they require resources
+            // and time to establish a connection to the service.
             sender.close();
             receiver.close();
         }
