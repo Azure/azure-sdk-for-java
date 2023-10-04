@@ -8,6 +8,7 @@ import com.azure.cosmos.implementation.ConnectionPolicy;
 import com.azure.cosmos.implementation.CosmosError;
 import com.azure.cosmos.implementation.DiagnosticsClientContext;
 import com.azure.cosmos.implementation.Document;
+import com.azure.cosmos.implementation.DocumentClientRetryPolicy;
 import com.azure.cosmos.implementation.GlobalEndpointManager;
 import com.azure.cosmos.implementation.HttpConstants;
 import com.azure.cosmos.implementation.IRetryPolicyFactory;
@@ -63,6 +64,7 @@ import static com.azure.cosmos.implementation.query.DocumentProducerTest.Request
 import static org.assertj.core.api.Assertions.assertThat;
 import static org.mockito.ArgumentMatchers.any;
 import static org.mockito.ArgumentMatchers.anyBoolean;
+import static org.mockito.Mockito.doAnswer;
 import static org.mockito.Mockito.doReturn;
 import static org.mockito.Mockito.mock;
 import static org.mockito.Mockito.times;
@@ -542,6 +544,14 @@ public class DocumentProducerTest {
                     , responses));
 
             IDocumentQueryClient queryClient = Mockito.mock(IDocumentQueryClient.class);
+            doAnswer(invocation -> {
+                Supplier<DocumentClientRetryPolicy> retryPolicyFactory = invocation.getArgument(2);
+                RxDocumentServiceRequest req = invocation.getArgument(3);
+                BiFunction<Supplier<DocumentClientRetryPolicy>, RxDocumentServiceRequest, Mono<FeedResponse<?>>> feedOperation =
+                    invocation.getArgument(4);
+
+                return feedOperation.apply(retryPolicyFactory, req);
+            }).when(queryClient).executeFeedOperationWithAvailabilityStrategy(any(), any(), any(), any(), any());
             String initialContinuationToken = "initial-cp";
             DocumentProducer<Document> documentProducer =
                 new DocumentProducer<>(
@@ -620,6 +630,15 @@ public class DocumentProducerTest {
                                                                                   behaviourAfterException);
 
             IDocumentQueryClient queryClient = Mockito.mock(IDocumentQueryClient.class);
+            doAnswer(invocation -> {
+                Supplier<DocumentClientRetryPolicy> retryPolicyFactory = invocation.getArgument(2);
+                RxDocumentServiceRequest req = invocation.getArgument(3);
+                BiFunction<Supplier<DocumentClientRetryPolicy>, RxDocumentServiceRequest, Mono<FeedResponse<?>>> feedOperation =
+                    invocation.getArgument(4);
+
+                return feedOperation.apply(retryPolicyFactory, req);
+            }).when(queryClient).executeFeedOperationWithAvailabilityStrategy(any(), any(), any(), any(), any());
+
             String initialContinuationToken = "initial-cp";
             DocumentProducer<Document> documentProducer =
                 new DocumentProducer<>(
@@ -702,6 +721,14 @@ public class DocumentProducerTest {
                                                                                   exceptionBehaviour);
 
             IDocumentQueryClient queryClient = Mockito.mock(IDocumentQueryClient.class);
+            doAnswer(invocation -> {
+                Supplier<DocumentClientRetryPolicy> retryPolicyFactory = invocation.getArgument(2);
+                RxDocumentServiceRequest req = invocation.getArgument(3);
+                BiFunction<Supplier<DocumentClientRetryPolicy>, RxDocumentServiceRequest, Mono<FeedResponse<?>>> feedOperation =
+                    invocation.getArgument(4);
+
+                return feedOperation.apply(retryPolicyFactory, req);
+            }).when(queryClient).executeFeedOperationWithAvailabilityStrategy(any(), any(), any(), any(), any());
             String initialContinuationToken = "initial-cp";
             DocumentProducer<Document> documentProducer =
                 new DocumentProducer<Document>(
@@ -815,6 +842,15 @@ public class DocumentProducerTest {
     private IDocumentQueryClient mockQueryClient(List<PartitionKeyRange> replacementRanges) {
         IDocumentQueryClient client = Mockito.mock(IDocumentQueryClient.class);
         RxPartitionKeyRangeCache cache = Mockito.mock(RxPartitionKeyRangeCache.class);
+
+        doAnswer(invocation -> {
+            Supplier<DocumentClientRetryPolicy> retryPolicyFactory = invocation.getArgument(2);
+            RxDocumentServiceRequest req = invocation.getArgument(3);
+            BiFunction<Supplier<DocumentClientRetryPolicy>, RxDocumentServiceRequest, Mono<FeedResponse<?>>> feedOperation =
+                invocation.getArgument(4);
+
+            return feedOperation.apply(retryPolicyFactory, req);
+        }).when(client).executeFeedOperationWithAvailabilityStrategy(any(), any(), any(), any(), any());
         doReturn(cache).when(client).getPartitionKeyRangeCache();
         doReturn(Mono.just(new Utils.ValueHolder<>(replacementRanges)))
             .when(cache).tryGetOverlappingRangesAsync(any(), any(), any(), anyBoolean(), ArgumentMatchers.any());

@@ -3,6 +3,8 @@
 
 package com.azure.messaging.servicebus;
 
+import com.azure.core.credential.TokenCredential;
+import com.azure.identity.DefaultAzureCredentialBuilder;
 import com.azure.messaging.servicebus.models.ServiceBusReceiveMode;
 import org.junit.jupiter.api.Test;
 
@@ -14,8 +16,19 @@ import java.util.function.Consumer;
  * @see ServiceBusProcessorClient
  */
 public class ServiceBusProcessorClientJavaDocCodeSamples {
-    String connectionString = System.getenv("AZURE_SERVICEBUS_NAMESPACE_CONNECTION_STRING");
-    String queueName = System.getenv("AZURE_SERVICEBUS_SAMPLE_SESSION_QUEUE_NAME");
+    /**
+     * Fully qualified namespace is the host name of the Service Bus resource.  It can be found by navigating to the
+     * Service Bus namespace and looking in the "Essentials" panel.
+     */
+    private final String fullyQualifiedNamespace = System.getenv("AZURE_SERVICEBUS_FULLY_QUALIFIED_DOMAIN_NAME");
+    /**
+     * Name of a queue inside the Service Bus namespace.
+     */
+    private final String queueName = System.getenv("AZURE_SERVICEBUS_SAMPLE_QUEUE_NAME");
+    /**
+     * Name of a session-enabled queue in the Service Bus namespace.
+     */
+    private final String sessionEnabledQueueName = System.getenv("AZURE_SERVICEBUS_SAMPLE_SESSION_QUEUE_NAME");
 
     /**
      * Creates a non session-enabled {@link ServiceBusProcessorClient} to receive in PeekLock mode.
@@ -51,11 +64,14 @@ public class ServiceBusProcessorClientJavaDocCodeSamples {
             System.err.println("Error occurred while receiving message: " + errorContext.getException());
         };
 
-        // create the processor client via the builder and its sub-builder
+        TokenCredential tokenCredential = new DefaultAzureCredentialBuilder().build();
+
+        // Create the processor client via the builder and its sub-builder
+        // 'fullyQualifiedNamespace' will look similar to "{your-namespace}.servicebus.windows.net"
         ServiceBusProcessorClient processorClient = new ServiceBusClientBuilder()
-            .connectionString("<< CONNECTION STRING FOR THE SERVICE BUS NAMESPACE >>")
+            .credential(fullyQualifiedNamespace, tokenCredential)
             .processor()
-            .queueName("<< QUEUE NAME >>")
+            .queueName(queueName)
             .receiveMode(ServiceBusReceiveMode.PEEK_LOCK)
             .disableAutoComplete()  // Make sure to explicitly opt in to manual settlement (e.g. complete, abandon).
             .processMessage(processMessage)
@@ -63,8 +79,12 @@ public class ServiceBusProcessorClientJavaDocCodeSamples {
             .disableAutoComplete()
             .buildProcessorClient();
 
-        // Starts the processor in the background and returns immediately
+        // Starts the processor in the background. Control returns immediately.
         processorClient.start();
+
+        // Stop processor and dispose when done processing messages.
+        processorClient.stop();
+        processorClient.close();
         // END: com.azure.messaging.servicebus.servicebusprocessorclient#receive-mode-peek-lock-instantiation
     }
 
@@ -85,19 +105,27 @@ public class ServiceBusProcessorClientJavaDocCodeSamples {
             System.err.println("Error occurred while receiving message: " + errorContext.getException());
         };
 
-        // create the processor client via the builder and its sub-builder
+        TokenCredential tokenCredential = new DefaultAzureCredentialBuilder().build();
+
+        // Create the processor client via the builder and its sub-builder
+        // 'fullyQualifiedNamespace' will look similar to "{your-namespace}.servicebus.windows.net"
         ServiceBusProcessorClient processorClient = new ServiceBusClientBuilder()
-            .connectionString("<< CONNECTION STRING FOR THE SERVICE BUS NAMESPACE >>")
+            .credential(fullyQualifiedNamespace, tokenCredential)
             .processor()
-            .queueName("<< QUEUE NAME >>")
+            .queueName(queueName)
             .receiveMode(ServiceBusReceiveMode.RECEIVE_AND_DELETE)
             .processMessage(processMessage)
             .processError(processError)
             .disableAutoComplete()
             .buildProcessorClient();
 
-        // Starts the processor in the background and returns immediately
+
+        // Starts the processor in the background. Control returns immediately.
         processorClient.start();
+
+        // Stop processor and dispose when done processing messages.
+        processorClient.stop();
+        processorClient.close();
         // END: com.azure.messaging.servicebus.servicebusprocessorclient#receive-mode-receive-and-delete-instantiation
     }
 
@@ -126,19 +154,26 @@ public class ServiceBusProcessorClientJavaDocCodeSamples {
             }
         };
 
-        // Retrieve 'connectionString/queueName' from your configuration.
 
+        TokenCredential tokenCredential = new DefaultAzureCredentialBuilder().build();
+
+        // Create the processor client via the builder and its sub-builder
+        // 'fullyQualifiedNamespace' will look similar to "{your-namespace}.servicebus.windows.net"
         ServiceBusProcessorClient sessionProcessor = new ServiceBusClientBuilder()
-            .connectionString(connectionString)
+            .credential(fullyQualifiedNamespace, tokenCredential)
             .sessionProcessor()
-            .queueName(queueName)
+            .queueName(sessionEnabledQueueName)
             .maxConcurrentSessions(2)
             .processMessage(onMessage)
             .processError(onError)
             .buildProcessorClient();
 
-        // Start the processor in the background
+        // Starts the processor in the background. Control returns immediately.
         sessionProcessor.start();
+
+        // Stop processor and dispose when done processing messages.
+        sessionProcessor.stop();
+        sessionProcessor.close();
         // END: com.azure.messaging.servicebus.servicebusprocessorclient#session-instantiation
     }
 }

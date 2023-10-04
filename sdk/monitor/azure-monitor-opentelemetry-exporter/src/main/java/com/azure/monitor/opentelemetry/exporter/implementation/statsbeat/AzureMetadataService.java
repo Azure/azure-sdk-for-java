@@ -55,7 +55,6 @@ class AzureMetadataService implements Runnable {
         this.customDimensions = customDimensions;
         this.httpPipeline =
             new HttpPipelineBuilder()
-                .policies(new UserAgentPolicy(), new RetryPolicy(), new CookiePolicy())
                 .tracer(new NoopTracer())
                 .build();
         this.vmMetadataServiceCallback = vmMetadataServiceCallback;

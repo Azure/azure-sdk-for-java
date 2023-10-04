@@ -11,7 +11,7 @@ import com.azure.core.util.paging.PageRetriever;
 import java.util.function.Supplier;
 
 /**
- * An implementation of {@link ContinuablePagedFluxCore} that uses default {@link PagedResponse}.
+ * An implementation of {@code ContinuablePagedFluxCore} that uses default {@link PagedResponse}.
  *
  * @see ContinuablePagedFluxCore
  */
@@ -19,7 +19,7 @@ import java.util.function.Supplier;
 public final class ClassifyDocumentPagedFlux extends ContinuablePagedFluxCore<String,
     ClassifyDocumentResultCollection, PagedResponse<ClassifyDocumentResultCollection>> {
     /**
-     * Creates an instance of {@link ClassifyDocumentPagedFlux}
+     * Creates an instance of {@code ClassifyDocumentPagedFlux}
      *
      * @param pageRetrieverProvider a provider that returns {@link PageRetriever}
      */
