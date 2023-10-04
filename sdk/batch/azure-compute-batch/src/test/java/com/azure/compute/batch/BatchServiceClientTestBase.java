@@ -52,20 +52,6 @@ class BatchServiceClientTestBase extends TestProxyTestBase {
 
     protected BatchClient batchClient;
 
-    // protected PoolClient poolClient;
-
-    //protected AccountClient accountClient;
-
-    //protected JobClient jobClient;
-
-    //protected CertificatesClient certificatesClient;
-
-    //protected JobScheduleClient jobScheduleClient;
-
-    //protected TaskClient taskClient;
-
-    //protected BatchNodesClient nodesClient;
-
 	static final int MAX_LEN_ID = 64;
 
     static String REDACTED = "REDACTED";
@@ -96,13 +82,6 @@ class BatchServiceClientTestBase extends TestProxyTestBase {
         authenticateClient(AuthMode.AAD);
 
         batchClient = batchClientBuilder.buildClient();
-        //poolClient = batchClientBuilder.buildClient().listPools();
-        //accountClient = batchClientBuilder.buildAccountClient();
-        //jobClient = batchClientBuilder.buildJobClient();
-        //certificatesClient = batchClientBuilder.buildCertificatesClient();
-        //jobScheduleClient = batchClientBuilder.buildJobScheduleClient();
-        //taskClient = batchClientBuilder.buildTaskClient();
-        //nodesClient = batchClientBuilder.buildBatchNodesClient();
     }
 
     public void addTestRulesOnPlayback(InterceptorManager interceptorManager) {
