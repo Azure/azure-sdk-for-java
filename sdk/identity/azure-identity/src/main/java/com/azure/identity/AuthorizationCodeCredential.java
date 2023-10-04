@@ -9,7 +9,11 @@ import com.azure.core.credential.TokenCredential;
 import com.azure.core.credential.TokenRequestContext;
 import com.azure.core.util.CoreUtils;
 import com.azure.core.util.logging.ClientLogger;
-import com.azure.identity.implementation.*;
+import com.azure.identity.implementation.IdentityClient;
+import com.azure.identity.implementation.IdentityClientBuilder;
+import com.azure.identity.implementation.IdentityClientOptions;
+import com.azure.identity.implementation.MsalToken;
+import com.azure.identity.implementation.MsalAuthenticationAccount;
 import com.azure.identity.implementation.util.LoggingUtil;
 import reactor.core.publisher.Mono;
 
@@ -58,7 +62,7 @@ public class AuthorizationCodeCredential implements TokenCredential {
     private boolean isCaeEnabledRequestCached;
     private boolean isCaeDisabledRequestCached;
     private boolean isCachePopulated;
-    private boolean useConfidentialClient;
+    private final boolean useConfidentialClient;
 
     /**
      * Creates an AuthorizationCodeCredential with the given identity client options.
