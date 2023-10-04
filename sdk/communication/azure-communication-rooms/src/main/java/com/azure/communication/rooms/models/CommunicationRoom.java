@@ -24,11 +24,7 @@ public final class CommunicationRoom {
      * @param createdAt The timestamp when the room was created at the server. The timestamp is in RFC3339 format: `yyyy-MM-ddTHH:mm:ssZ`.
      */
     public CommunicationRoom(String roomId, OffsetDateTime validFrom, OffsetDateTime validUntil, OffsetDateTime createdAt) {
-        this.roomId = roomId;
-        this.validFrom = validFrom;
-        this.validUntil = validUntil;
-        this.createdAt = createdAt;
-        this.isPstnDialOutEnabled = false;
+        this(roomId, validFrom, validUntil, createdAt, null);
     }
 
         /**

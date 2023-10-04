@@ -541,7 +541,7 @@ public final class RoomsAsyncClient {
      * @return The create room request.
      */
     private CreateRoomRequest toCreateRoomRequest(OffsetDateTime validFrom, OffsetDateTime validUntil,
-            boolean isPstnDialOutEnabled, Iterable<RoomParticipant> participants) {
+            Boolean isPstnDialOutEnabled, Iterable<RoomParticipant> participants) {
         CreateRoomRequest createRoomRequest = new CreateRoomRequest();
         if (validFrom != null) {
             createRoomRequest.setValidFrom(validFrom);

@@ -21,9 +21,13 @@ import com.azure.communication.common.CommunicationIdentifier;
 import com.azure.communication.common.CommunicationUserIdentifier;
 import org.junit.jupiter.params.ParameterizedTest;
 import org.junit.jupiter.params.provider.MethodSource;
-import static org.junit.jupiter.api.Assertions.assertNotNull;
+
 import static org.junit.jupiter.api.Assertions.assertEquals;
+import static org.junit.jupiter.api.Assertions.assertFalse;
+import static org.junit.jupiter.api.Assertions.assertNotNull;
 import static org.junit.jupiter.api.Assertions.assertThrows;
+import static org.junit.jupiter.api.Assertions.assertTrue;
+
 
 public class RoomsClientTest extends RoomsTestBase {
     private RoomsClient roomsClient;
@@ -53,7 +57,7 @@ public class RoomsClientTest extends RoomsTestBase {
 
         CommunicationRoom createCommunicationRoom = roomsClient.createRoom(createRoomOptions);
         assertHappyPath(createCommunicationRoom);
-        assertEquals(true, createCommunicationRoom.isPstnDialOutEnabled());
+        assertTrue(createCommunicationRoom.isPstnDialOutEnabled());
 
         String roomId = createCommunicationRoom.getRoomId();
 
@@ -64,7 +68,7 @@ public class RoomsClientTest extends RoomsTestBase {
         CommunicationRoom updateCommunicationRoom = roomsClient.updateRoom(roomId, updateRoomOptions);
         assertEquals(true, updateCommunicationRoom.getValidUntil().toEpochSecond() > VALID_FROM.toEpochSecond());
         assertHappyPath(updateCommunicationRoom);
-        assertEquals(true, updateCommunicationRoom.isPstnDialOutEnabled());
+        assertTrue(updateCommunicationRoom.isPstnDialOutEnabled());
 
         CommunicationRoom getCommunicationRoom = roomsClient.getRoom(roomId);
         assertHappyPath(getCommunicationRoom);
@@ -106,7 +110,7 @@ public class RoomsClientTest extends RoomsTestBase {
         Response<CommunicationRoom> createdRoomResponse = roomsClient.createRoomWithResponse(createRoomOptions,
                 null);
         assertHappyPath(createdRoomResponse, 201);
-        assertEquals(true, createdRoomResponse.getValue().isPstnDialOutEnabled());
+        assertTrue(createdRoomResponse.getValue().isPstnDialOutEnabled());
 
         String roomId = createdRoomResponse.getValue().getRoomId();
 
@@ -118,7 +122,7 @@ public class RoomsClientTest extends RoomsTestBase {
         Response<CommunicationRoom> updateRoomResponse = roomsClient.updateRoomWithResponse(roomId, updateRoomOptions,
                 null);
         assertHappyPath(updateRoomResponse, 200);
-        assertEquals(false, updateRoomResponse.getValue().isPstnDialOutEnabled());
+        assertFalse(updateRoomResponse.getValue().isPstnDialOutEnabled());
 
         Response<CommunicationRoom> getRoomResponse = roomsClient.getRoomWithResponse(roomId, null);
         assertHappyPath(getRoomResponse, 200);
@@ -261,7 +265,7 @@ public class RoomsClientTest extends RoomsTestBase {
         Response<CommunicationRoom> createCommunicationRoom = roomsClient.createRoomWithResponse(createRoomOptions,
                 Context.NONE);
         assertHappyPath(createCommunicationRoom, 201);
-        assertEquals(true, createCommunicationRoom.getValue().isPstnDialOutEnabled());
+        assertTrue(createCommunicationRoom.getValue().isPstnDialOutEnabled());
 
         String roomId = createCommunicationRoom.getValue().getRoomId();
 
@@ -341,7 +345,7 @@ public class RoomsClientTest extends RoomsTestBase {
         Response<CommunicationRoom> createdRoomResponse = roomsClient.createRoomWithResponse(createRoomOptions,
                 Context.NONE);
         assertHappyPath(createdRoomResponse, 201);
-        assertEquals(false, createdRoomResponse.getValue().isPstnDialOutEnabled());
+        assertFalse(createdRoomResponse.getValue().isPstnDialOutEnabled());
 
         String roomId = createdRoomResponse.getValue().getRoomId();
 
@@ -353,7 +357,7 @@ public class RoomsClientTest extends RoomsTestBase {
         Response<CommunicationRoom> updateRoomResponse = roomsClient.updateRoomWithResponse(roomId, updateRoomOptions,
                 Context.NONE);
         assertHappyPath(updateRoomResponse, 200);
-        assertEquals(true, updateRoomResponse.getValue().isPstnDialOutEnabled());
+        assertTrue(updateRoomResponse.getValue().isPstnDialOutEnabled());
 
         Response<Void> deleteResponse = roomsClient.deleteRoomWithResponse(roomId, Context.NONE);
         assertEquals(deleteResponse.getStatusCode(), 204);
@@ -372,7 +376,7 @@ public class RoomsClientTest extends RoomsTestBase {
         Response<CommunicationRoom> createdRoomResponse = roomsClient.createRoomWithResponse(createRoomOptions,
                 Context.NONE);
         assertHappyPath(createdRoomResponse, 201);
-        assertEquals(true, createdRoomResponse.getValue().isPstnDialOutEnabled());
+        assertTrue(createdRoomResponse.getValue().isPstnDialOutEnabled());
 
         String roomId = createdRoomResponse.getValue().getRoomId();
 
@@ -381,7 +385,7 @@ public class RoomsClientTest extends RoomsTestBase {
         Response<CommunicationRoom> updateRoomResponse = roomsClient.updateRoomWithResponse(roomId, updateRoomOptions,
                 Context.NONE);
         assertHappyPath(updateRoomResponse, 200);
-        assertEquals(true, updateRoomResponse.getValue().isPstnDialOutEnabled());
+        assertTrue(updateRoomResponse.getValue().isPstnDialOutEnabled());
 
         Response<Void> deleteResponse = roomsClient.deleteRoomWithResponse(roomId, Context.NONE);
         assertEquals(deleteResponse.getStatusCode(), 204);
@@ -460,7 +464,7 @@ public class RoomsClientTest extends RoomsTestBase {
         CommunicationRoom createCommunicationRoom = roomsClient
                 .createRoom(new CreateRoomOptions().setPstnDialOutEnabled(true));
         assertHappyPath(createCommunicationRoom);
-        assertEquals(createCommunicationRoom.isPstnDialOutEnabled(), true);
+        assertTrue(createCommunicationRoom.isPstnDialOutEnabled());
 
         String roomId = createCommunicationRoom.getRoomId();
 

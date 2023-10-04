@@ -371,7 +371,7 @@ public final class RoomsClient {
      * @return The create room request.
      */
     private CreateRoomRequest toCreateRoomRequest(OffsetDateTime validFrom, OffsetDateTime validUntil,
-            boolean pstnDialOutEnabled, Iterable<RoomParticipant> participants) {
+            Boolean pstnDialOutEnabled, Iterable<RoomParticipant> participants) {
         CreateRoomRequest createRoomRequest = new CreateRoomRequest();
         if (validFrom != null) {
             createRoomRequest.setValidFrom(validFrom);
@@ -381,7 +381,9 @@ public final class RoomsClient {
             createRoomRequest.setValidUntil(validUntil);
         }
 
-        createRoomRequest.setPstnDialOutEnabled(pstnDialOutEnabled);
+        if (pstnDialOutEnabled != null) {
+            createRoomRequest.setPstnDialOutEnabled(pstnDialOutEnabled);
+        }
 
         Map<String, ParticipantProperties> roomParticipants = new HashMap<>();
 

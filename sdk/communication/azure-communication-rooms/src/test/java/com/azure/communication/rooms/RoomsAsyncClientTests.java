@@ -7,6 +7,7 @@ import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertFalse;
 import static org.junit.jupiter.api.Assertions.assertNotNull;
 import static org.junit.jupiter.api.Assertions.assertThrows;
+import static org.junit.jupiter.api.Assertions.assertTrue;
 
 import com.azure.communication.identity.CommunicationIdentityClient;
 import com.azure.communication.rooms.models.*;
@@ -64,7 +65,7 @@ public class RoomsAsyncClientTests extends RoomsTestBase {
         StepVerifier.create(response1)
                 .assertNext(roomResult -> {
                     assertHappyPath(roomResult, 201);
-                    assertEquals(true, roomResult.getValue().isPstnDialOutEnabled());
+                    assertTrue(roomResult.getValue().isPstnDialOutEnabled());
                 })
                 .verifyComplete();
 
@@ -82,7 +83,7 @@ public class RoomsAsyncClientTests extends RoomsTestBase {
         StepVerifier.create(response3)
                 .assertNext(roomResult -> {
                     assertHappyPath(roomResult, 200);
-                    assertEquals(false, roomResult.getValue().isPstnDialOutEnabled());
+                    assertFalse(roomResult.getValue().isPstnDialOutEnabled());
                 }).verifyComplete();
 
         Mono<Response<CommunicationRoom>> response4 = roomsAsyncClient.getRoomWithResponse(roomId, null);
@@ -90,7 +91,7 @@ public class RoomsAsyncClientTests extends RoomsTestBase {
         StepVerifier.create(response4)
                 .assertNext(result4 -> {
                     assertHappyPath(result4, 200);
-                    assertEquals(false, result4.getValue().isPstnDialOutEnabled());
+                    assertFalse(result4.getValue().isPstnDialOutEnabled());
                 }).verifyComplete();
 
         Mono<Response<Void>> response5 = roomsAsyncClient.deleteRoomWithResponse(roomId);
@@ -120,11 +121,11 @@ public class RoomsAsyncClientTests extends RoomsTestBase {
 
         StepVerifier.create(response1)
                 .assertNext(roomResult -> {
-                    assertEquals(true, roomResult.getRoomId() != null);
-                    assertEquals(true, roomResult.getCreatedAt() != null);
-                    assertEquals(true, roomResult.getValidFrom() != null);
-                    assertEquals(true, roomResult.getValidUntil() != null);
-                    assertEquals(true, roomResult.isPstnDialOutEnabled());
+                    assertTrue(roomResult.getRoomId() != null);
+                    assertTrue(roomResult.getCreatedAt() != null);
+                    assertTrue(roomResult.getValidFrom() != null);
+                    assertTrue(roomResult.getValidUntil() != null);
+                    assertTrue(roomResult.isPstnDialOutEnabled());
                 }).verifyComplete();
 
         String roomId = response1.block().getRoomId();
@@ -139,7 +140,7 @@ public class RoomsAsyncClientTests extends RoomsTestBase {
         StepVerifier.create(response3)
                 .assertNext(result3 -> {
                     assertEquals(true, result3.getValidUntil().toEpochSecond() > result3.getValidFrom().toEpochSecond());
-                    assertEquals(true, result3.isPstnDialOutEnabled());
+                    assertTrue(result3.isPstnDialOutEnabled());
 
                 }).verifyComplete();
 
@@ -167,11 +168,11 @@ public class RoomsAsyncClientTests extends RoomsTestBase {
 
         StepVerifier.create(response1)
                 .assertNext(roomResult -> {
-                    assertEquals(true, roomResult.getRoomId() != null);
-                    assertEquals(true, roomResult.getCreatedAt() != null);
-                    assertEquals(true, roomResult.getValidFrom() != null);
-                    assertEquals(true, roomResult.getValidUntil() != null);
-                    assertEquals(false, roomResult.isPstnDialOutEnabled());
+                    assertTrue(roomResult.getRoomId() != null);
+                    assertTrue(roomResult.getCreatedAt() != null);
+                    assertTrue(roomResult.getValidFrom() != null);
+                    assertTrue(roomResult.getValidUntil() != null);
+                    assertFalse(roomResult.isPstnDialOutEnabled());
                 }).verifyComplete();
 
 
@@ -209,11 +210,11 @@ public class RoomsAsyncClientTests extends RoomsTestBase {
 
         StepVerifier.create(response1)
                 .assertNext(roomResult -> {
-                    assertEquals(true, roomResult.getRoomId() != null);
-                    assertEquals(true, roomResult.getCreatedAt() != null);
-                    assertEquals(true, roomResult.getValidFrom() != null);
-                    assertEquals(true, roomResult.getValidUntil() != null);
-                    assertEquals(true, roomResult.isPstnDialOutEnabled());
+                    assertTrue(roomResult.getRoomId() != null);
+                    assertTrue(roomResult.getCreatedAt() != null);
+                    assertTrue(roomResult.getValidFrom() != null);
+                    assertTrue(roomResult.getValidUntil() != null);
+                    assertTrue(roomResult.isPstnDialOutEnabled());
                 }).verifyComplete();
 
 
@@ -240,11 +241,11 @@ public class RoomsAsyncClientTests extends RoomsTestBase {
 
         StepVerifier.create(response1)
                 .assertNext(roomResult -> {
-                    assertEquals(true, roomResult.getRoomId() != null);
-                    assertEquals(true, roomResult.getCreatedAt() != null);
-                    assertEquals(true, roomResult.getValidFrom() != null);
-                    assertEquals(true, roomResult.getValidUntil() != null);
-                    assertEquals(true, roomResult.isPstnDialOutEnabled());
+                    assertTrue(roomResult.getRoomId() != null);
+                    assertTrue(roomResult.getCreatedAt() != null);
+                    assertTrue(roomResult.getValidFrom() != null);
+                    assertTrue(roomResult.getValidUntil() != null);
+                    assertTrue(roomResult.isPstnDialOutEnabled());
                 }).verifyComplete();
 
 
@@ -531,7 +532,7 @@ public class RoomsAsyncClientTests extends RoomsTestBase {
         StepVerifier.create(response2)
                 .assertNext(roomResult2 -> {
                     assertHappyPath(roomResult2, 200);
-                    assertEquals(true, roomResult2.getValue().isPstnDialOutEnabled());
+                    assertTrue(roomResult2.getValue().isPstnDialOutEnabled());
                 }).verifyComplete();
 
         Mono<Response<CommunicationRoom>> response3 = roomsAsyncClient.getRoomWithResponse(roomId, null);
@@ -539,7 +540,7 @@ public class RoomsAsyncClientTests extends RoomsTestBase {
         StepVerifier.create(response3)
                 .assertNext(result3 -> {
                     assertHappyPath(result3, 200);
-                    assertEquals(true, result3.getValue().isPstnDialOutEnabled());
+                    assertTrue(result3.getValue().isPstnDialOutEnabled());
                 }).verifyComplete();
 
         Mono<Response<Void>> response4 = roomsAsyncClient.deleteRoomWithResponse(roomId);
@@ -565,11 +566,11 @@ public class RoomsAsyncClientTests extends RoomsTestBase {
 
         StepVerifier.create(createCommunicationRoom)
                 .assertNext(roomResult -> {
-                    assertEquals(true, roomResult.getRoomId() != null);
-                    assertEquals(true, roomResult.getCreatedAt() != null);
-                    assertEquals(true, roomResult.getValidFrom() != null);
-                    assertEquals(true, roomResult.getValidUntil() != null);
-                    assertEquals(true, roomResult.isPstnDialOutEnabled());
+                    assertTrue(roomResult.getRoomId() != null);
+                    assertTrue(roomResult.getCreatedAt() != null);
+                    assertTrue(roomResult.getValidFrom() != null);
+                    assertTrue(roomResult.getValidUntil() != null);
+                    assertTrue(roomResult.isPstnDialOutEnabled());
                 }).verifyComplete();
 
         String roomId = createCommunicationRoom.block().getRoomId();
@@ -715,11 +716,11 @@ public class RoomsAsyncClientTests extends RoomsTestBase {
 
         StepVerifier.create(createCommunicationRoom)
                 .assertNext(roomResult -> {
-                    assertEquals(true, roomResult.getRoomId() != null);
-                    assertEquals(true, roomResult.getCreatedAt() != null);
-                    assertEquals(true, roomResult.getValidFrom() != null);
-                    assertEquals(true, roomResult.getValidUntil() != null);
-                    assertEquals(true, roomResult.isPstnDialOutEnabled());
+                    assertTrue(roomResult.getRoomId() != null);
+                    assertTrue(roomResult.getCreatedAt() != null);
+                    assertTrue(roomResult.getValidFrom() != null);
+                    assertTrue(roomResult.getValidUntil() != null);
+                    assertTrue(roomResult.isPstnDialOutEnabled());
                 }).verifyComplete();
 
         String roomId = createCommunicationRoom.block().getRoomId();
