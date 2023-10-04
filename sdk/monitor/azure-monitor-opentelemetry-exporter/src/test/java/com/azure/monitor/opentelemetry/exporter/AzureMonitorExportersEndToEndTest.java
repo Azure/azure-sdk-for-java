@@ -314,7 +314,6 @@ public class AzureMonitorExportersEndToEndTest extends MonitorExporterClientTest
     }
 
     private static void validateMetric(TelemetryItem telemetryItem) {
-        System.out.println("connection string: " + telemetryItem.getConnectionString());
         assertThat(telemetryItem.getInstrumentationKey()).isEqualTo(INSTRUMENTATION_KEY);
         assertThat(telemetryItem.getTags()).containsEntry("ai.cloud.role", "unknown_service:java");
         assertThat(telemetryItem.getTags())

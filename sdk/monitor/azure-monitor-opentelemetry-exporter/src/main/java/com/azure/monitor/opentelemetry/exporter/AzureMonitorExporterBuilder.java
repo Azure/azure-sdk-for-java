@@ -62,7 +62,9 @@ import java.util.Objects;
 import java.util.Set;
 import java.util.function.BiConsumer;
 
-import static java.util.concurrent.TimeUnit.*;
+import static java.util.concurrent.TimeUnit.DAYS;
+import static java.util.concurrent.TimeUnit.MINUTES;
+import static java.util.concurrent.TimeUnit.SECONDS;
 
 /**
  * This class provides a fluent builder API to configure the OpenTelemetry SDK with Azure Monitor Exporters.
