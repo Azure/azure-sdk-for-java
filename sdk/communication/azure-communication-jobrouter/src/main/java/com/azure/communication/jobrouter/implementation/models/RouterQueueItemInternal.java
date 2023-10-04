@@ -8,6 +8,7 @@ import com.azure.core.annotation.Fluent;
 import com.fasterxml.jackson.annotation.JsonProperty;
 
 /** Paged instance of RouterQueue. */
+@Deprecated
 @Fluent
 public final class RouterQueueItemInternal {
     /*

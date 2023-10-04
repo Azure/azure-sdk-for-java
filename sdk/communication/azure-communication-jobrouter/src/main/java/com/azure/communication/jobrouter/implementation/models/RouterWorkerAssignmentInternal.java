@@ -9,6 +9,7 @@ import com.fasterxml.jackson.annotation.JsonProperty;
 import java.time.OffsetDateTime;
 
 /** The assignment for a worker to a job. */
+@Deprecated
 @Fluent
 public final class RouterWorkerAssignmentInternal {
     /*

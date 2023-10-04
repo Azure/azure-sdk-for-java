@@ -60,26 +60,4 @@ public class QueueAdapter {
             .setDistributionPolicyId(updateQueueOptions.getDistributionPolicyId())
             .setExceptionPolicyId(updateQueueOptions.getExceptionPolicyId());
     }
-
-    public static PagedFlux<RouterQueueItem> convertPagedFluxToPublic(PagedFlux<RouterQueueItemInternal> internalPagedFlux) {
-        final Function<PagedResponse<RouterQueueItemInternal>, PagedResponse<RouterQueueItem>> responseMapper
-            = internalResponse -> new PagedResponseBase<Void, RouterQueueItem>(internalResponse.getRequest(),
-            internalResponse.getStatusCode(),
-            internalResponse.getHeaders(),
-            internalResponse.getValue()
-                .stream()
-                .map(internal -> new RouterQueueItem()
-                    .setQueue(RouterQueueConstructorProxy.create(internal.getQueue()))
-                    .setEtag(new ETag(internal.getEtag())))
-                .collect(Collectors.toList()),
-            internalResponse.getContinuationToken(),
-            null);
-
-        return PagedFlux.create(() -> (continuationToken, pageSize) -> {
-            Flux<PagedResponse<RouterQueueItemInternal>> flux = (continuationToken == null)
-                ? internalPagedFlux.byPage()
-                : internalPagedFlux.byPage(continuationToken);
-            return flux.map(responseMapper);
-        });
-    }
 }

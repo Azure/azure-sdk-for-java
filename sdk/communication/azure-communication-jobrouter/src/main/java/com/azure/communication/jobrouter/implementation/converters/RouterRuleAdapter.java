@@ -41,7 +41,7 @@ public class RouterRuleAdapter {
                     .setAppKey(functionRouterRule.getCredential().getAppKey())
                     .setClientId(functionRouterRule.getCredential().getClientId()));
         } else if (rule instanceof StaticRouterRule) {
-            return new StaticRouterRuleInternal().setValue(((StaticRouterRule) rule).getValue().getValue());
+            return new StaticRouterRuleInternal().setValue(((StaticRouterRule) rule).getValue());
         } else if (rule instanceof WebhookRouterRule) {
             WebhookRouterRule webhookRouterRule = (WebhookRouterRule) rule;
             return new WebhookRouterRuleInternal().setWebhookUri(webhookRouterRule.getWebhookUri())
@@ -61,19 +61,22 @@ public class RouterRuleAdapter {
             return new ExpressionRouterRule(((ExpressionRouterRuleInternal) rule).getExpression());
         } else if (rule instanceof FunctionRouterRuleInternal) {
             FunctionRouterRuleInternal functionRouterRule = (FunctionRouterRuleInternal) rule;
-            return new FunctionRouterRule().setFunctionUri(functionRouterRule.getFunctionUri())
+            return new FunctionRouterRule(functionRouterRule.getFunctionUri())
                 .setCredential(new FunctionRouterRuleCredential()
                     .setFunctionKey(functionRouterRule.getCredential().getFunctionKey())
                     .setAppKey(functionRouterRule.getCredential().getAppKey())
                     .setClientId(functionRouterRule.getCredential().getClientId()));
         } else if (rule instanceof StaticRouterRuleInternal) {
-            return new StaticRouterRule(LabelValueConstructorProxy.create(((StaticRouterRuleInternal) rule).getValue()));
+            return new StaticRouterRule()
+                .setValue(LabelValueConstructorProxy.create(((StaticRouterRuleInternal) rule).getValue()));
         } else if (rule instanceof WebhookRouterRuleInternal) {
             WebhookRouterRuleInternal webhookRouterRule = (WebhookRouterRuleInternal) rule;
-            return new WebhookRouterRule(webhookRouterRule.getWebhookUri())
-                .setClientCredential(new Oauth2ClientCredential(webhookRouterRule.getClientCredential().getClientId(),
-                    webhookRouterRule.getClientCredential().getClientSecret()))
-                .setAuthorizationServerUri(webhookRouterRule.getAuthorizationServerUri());
+            return new WebhookRouterRule()
+                .setClientCredential(new Oauth2ClientCredential()
+                        .setClientId(webhookRouterRule.getClientCredential().getClientId())
+                        .setClientSecret(webhookRouterRule.getClientCredential().getClientSecret()))
+                        .setAuthorizationServerUri(webhookRouterRule.getAuthorizationServerUri())
+                .setWebhookUri(webhookRouterRule.getWebhookUri());
         }
 
         return null;

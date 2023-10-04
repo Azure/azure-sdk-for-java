@@ -3,32 +3,17 @@
 
 package com.azure.communication.jobrouter.implementation.converters;
 
-import com.azure.communication.jobrouter.implementation.accesshelpers.RouterWorkerConstructorProxy;
 import com.azure.communication.jobrouter.implementation.models.ChannelConfigurationInternal;
-import com.azure.communication.jobrouter.implementation.models.RouterJobOfferInternal;
-import com.azure.communication.jobrouter.implementation.models.RouterWorkerAssignmentInternal;
 import com.azure.communication.jobrouter.implementation.models.RouterWorkerInternal;
-import com.azure.communication.jobrouter.implementation.models.RouterWorkerItemInternal;
 import com.azure.communication.jobrouter.models.ChannelConfiguration;
 import com.azure.communication.jobrouter.models.CreateWorkerOptions;
 import com.azure.communication.jobrouter.models.LabelValue;
-import com.azure.communication.jobrouter.models.RouterJobOffer;
 import com.azure.communication.jobrouter.models.RouterQueueAssignment;
-import com.azure.communication.jobrouter.models.RouterWorkerAssignment;
-import com.azure.communication.jobrouter.models.RouterWorkerItem;
 import com.azure.communication.jobrouter.models.UpdateJobOptions;
 import com.azure.communication.jobrouter.models.UpdateWorkerOptions;
-import com.azure.core.http.rest.PagedFlux;
-import com.azure.core.http.rest.PagedResponse;
-import com.azure.core.http.rest.PagedResponseBase;
-import com.azure.core.util.ETag;
-import reactor.core.publisher.Flux;
 
-import java.util.ArrayList;
 import java.util.HashMap;
-import java.util.List;
 import java.util.Map;
-import java.util.function.Function;
 import java.util.stream.Collectors;
 
 /**
@@ -85,28 +70,6 @@ public class WorkerAdapter {
             .setTotalCapacity(updateWorkerOptions.getTotalCapacity());
     }
 
-    public static PagedFlux<RouterWorkerItem> convertPagedFluxToPublic(PagedFlux<RouterWorkerItemInternal> internalPagedFlux) {
-        final Function<PagedResponse<RouterWorkerItemInternal>, PagedResponse<RouterWorkerItem>> responseMapper
-            = internalResponse -> new PagedResponseBase<Void, RouterWorkerItem>(internalResponse.getRequest(),
-            internalResponse.getStatusCode(),
-            internalResponse.getHeaders(),
-            internalResponse.getValue()
-                .stream()
-                .map(internal -> new RouterWorkerItem()
-                    .setWorker(RouterWorkerConstructorProxy.create(internal.getWorker()))
-                    .setEtag(new ETag(internal.getEtag())))
-                .collect(Collectors.toList()),
-            internalResponse.getContinuationToken(),
-            null);
-
-        return PagedFlux.create(() -> (continuationToken, pageSize) -> {
-            Flux<PagedResponse<RouterWorkerItemInternal>> flux = (continuationToken == null)
-                ? internalPagedFlux.byPage()
-                : internalPagedFlux.byPage(continuationToken);
-            return flux.map(responseMapper);
-        });
-    }
-
     public static Map<String, ChannelConfiguration> convertChannelConfigurationsToPublic(Map<String, ChannelConfigurationInternal> internal) {
         return internal != null ? internal.entrySet().stream()
             .collect(Collectors.toMap(Map.Entry::getKey, entry -> new ChannelConfiguration(entry.getValue().getCapacityCostPerJob())
@@ -118,26 +81,5 @@ public class WorkerAdapter {
             .collect(Collectors.toMap(Map.Entry::getKey, entry -> new ChannelConfigurationInternal()
                 .setCapacityCostPerJob(entry.getValue().getCapacityCostPerJob())
                 .setMaxNumberOfJobs(entry.getValue().getMaxNumberOfJobs()))) : new HashMap<>();
-    }
-
-    public static List<RouterJobOffer> convertOffersToPublic(List<RouterJobOfferInternal> internal) {
-        return internal != null ? internal.stream()
-            .map(o -> new RouterJobOffer()
-                .setJobId(o.getJobId())
-                .setOfferedAt(o.getOfferedAt())
-                .setOfferId(o.getOfferId())
-                .setCapacityCost(o.getCapacityCost())
-                .setExpiresAt(o.getExpiresAt()))
-            .collect(Collectors.toList()) : new ArrayList<>();
-    }
-
-    public static List<RouterWorkerAssignment> convertAssignmentsToPublic(List<RouterWorkerAssignmentInternal> internal) {
-        return internal != null ? internal.stream()
-            .map(o -> new RouterWorkerAssignment()
-                .setJobId(o.getJobId())
-                .setAssignmentId(o.getAssignmentId())
-                .setAssignedAt(o.getAssignedAt())
-                .setCapacityCost(o.getCapacityCost()))
-            .collect(Collectors.toList()) : new ArrayList<>();
     }
 }

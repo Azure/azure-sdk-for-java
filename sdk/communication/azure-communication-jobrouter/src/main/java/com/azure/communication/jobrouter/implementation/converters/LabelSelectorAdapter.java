@@ -51,7 +51,7 @@ public class LabelSelectorAdapter {
     public static RouterWorkerSelectorInternal convertWorkerSelectorToInternal(RouterWorkerSelector ws) {
         RouterWorkerSelectorInternal workerSelector = new RouterWorkerSelectorInternal()
             .setKey(ws.getKey())
-            .setValue(ws.getValue().getValue())
+            .setValue(ws.getValue())
             .setExpedite(ws.isExpedite())
             .setExpiresAfterSeconds(ws.getExpiresAfterSeconds())
             .setLabelOperator(LabelOperatorInternal.fromString(ws.getLabelOperator().toString()));
@@ -61,8 +61,8 @@ public class LabelSelectorAdapter {
 
     public static RouterWorkerSelector convertWorkerSelectorToPublic(RouterWorkerSelectorInternal ws) {
         RouterWorkerSelector workerSelector = new RouterWorkerSelector(ws.getKey(),
-            LabelOperator.fromString(ws.getLabelOperator().toString()),
-            LabelValueConstructorProxy.create(ws.getValue()))
+            LabelOperator.fromString(ws.getLabelOperator().toString()))
+                .setValue(LabelValueConstructorProxy.create(ws.getValue()))
                 .setExpedite(ws.isExpedite())
                 .setExpiresAfterSeconds(ws.getExpiresAfterSeconds());
 
@@ -72,15 +72,15 @@ public class LabelSelectorAdapter {
     public static RouterQueueSelectorInternal convertQueueSelectorToInternal(RouterQueueSelector qs) {
         RouterQueueSelectorInternal queueSelector = new RouterQueueSelectorInternal()
             .setKey(qs.getKey())
-            .setValue(qs.getValue().getValue())
+            .setValue(qs.getValue())
             .setLabelOperator(LabelOperatorInternal.fromString(qs.getLabelOperator().toString()));
 
         return queueSelector;
     }
 
     public static RouterQueueSelector convertQueueSelectorToPublic(RouterQueueSelectorInternal qs) {
-        return new RouterQueueSelector(qs.getKey(), LabelOperator.fromString(qs.getLabelOperator().toString()),
-            LabelValueConstructorProxy.create(qs.getValue()));
+        return new RouterQueueSelector(qs.getKey(), LabelOperator.fromString(qs.getLabelOperator().toString()))
+            .setValue(LabelValueConstructorProxy.create(qs.getValue()));
     }
 
     public static QueueSelectorAttachmentInternal convertQueueSelectorAttachmentToInternal(QueueSelectorAttachment attachment) {
