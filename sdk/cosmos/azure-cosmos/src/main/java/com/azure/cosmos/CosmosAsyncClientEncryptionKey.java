@@ -80,8 +80,7 @@ public final class CosmosAsyncClientEncryptionKey {
             null,
             OperationType.Read,
             ResourceType.ClientEncryptionKey,
-            client.getEffectiveDiagnosticsThresholds(
-                requestOptions != null ? requestOptions.getDiagnosticsThresholds() : null));
+            requestOptions);
     }
 
     /**
@@ -119,7 +118,7 @@ public final class CosmosAsyncClientEncryptionKey {
             null,
             OperationType.Replace,
             ResourceType.ClientEncryptionKey,
-            client.getEffectiveDiagnosticsThresholds(null));
+            null);
     }
 
     String getURIPathSegment() {

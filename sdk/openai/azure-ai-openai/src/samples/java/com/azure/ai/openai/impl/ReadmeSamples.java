@@ -6,6 +6,12 @@ package com.azure.ai.openai.impl;
 import com.azure.ai.openai.OpenAIAsyncClient;
 import com.azure.ai.openai.OpenAIClient;
 import com.azure.ai.openai.OpenAIClientBuilder;
+import com.azure.ai.openai.models.AudioTranscription;
+import com.azure.ai.openai.models.AudioTranscriptionFormat;
+import com.azure.ai.openai.models.AudioTranscriptionOptions;
+import com.azure.ai.openai.models.AudioTranslation;
+import com.azure.ai.openai.models.AudioTranslationFormat;
+import com.azure.ai.openai.models.AudioTranslationOptions;
 import com.azure.ai.openai.models.ChatChoice;
 import com.azure.ai.openai.models.ChatCompletions;
 import com.azure.ai.openai.models.ChatCompletionsOptions;
@@ -25,11 +31,14 @@ import com.azure.core.credential.KeyCredential;
 import com.azure.core.credential.TokenCredential;
 import com.azure.core.http.ProxyOptions;
 import com.azure.core.models.ResponseError;
+import com.azure.core.util.BinaryData;
 import com.azure.core.util.HttpClientOptions;
 import com.azure.core.util.IterableStream;
 import com.azure.identity.DefaultAzureCredentialBuilder;
 
 import java.net.InetSocketAddress;
+import java.nio.file.Path;
+import java.nio.file.Paths;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
@@ -220,5 +229,35 @@ public final class ReadmeSamples {
             }
         }
         // END: readme-sample-imageGeneration
+    }
+
+    public void audioTranscription() {
+        // BEGIN: readme-sample-audioTranscription
+        String fileName = "{your-file-name}";
+        Path filePath = Paths.get("{your-file-path}" + fileName);
+
+        byte[] file = BinaryData.fromFile(filePath).toBytes();
+        AudioTranscriptionOptions transcriptionOptions = new AudioTranscriptionOptions(file)
+            .setResponseFormat(AudioTranscriptionFormat.JSON);
+
+        AudioTranscription transcription = client.getAudioTranscription("{deploymentOrModelId}", fileName, transcriptionOptions);
+
+        System.out.println("Transcription: " + transcription.getText());
+        // END: readme-sample-audioTranscription
+    }
+
+    public void audioTranslation() {
+        // BEGIN: readme-sample-audioTranslation
+        String fileName = "{your-file-name}";
+        Path filePath = Paths.get("{your-file-path}" + fileName);
+
+        byte[] file = BinaryData.fromFile(filePath).toBytes();
+        AudioTranslationOptions translationOptions = new AudioTranslationOptions(file)
+            .setResponseFormat(AudioTranslationFormat.JSON);
+
+        AudioTranslation translation = client.getAudioTranslation("{deploymentOrModelId}", fileName, translationOptions);
+
+        System.out.println("Translation: " + translation.getText());
+        // END: readme-sample-audioTranslation
     }
 }

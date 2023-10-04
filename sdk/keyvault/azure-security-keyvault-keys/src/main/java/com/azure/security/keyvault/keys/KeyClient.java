@@ -39,7 +39,25 @@ import com.azure.security.keyvault.keys.models.ReleaseKeyResult;
  * rotating the {@link KeyVaultKey keys}. The client also supports listing {@link DeletedKey deleted keys} for a
  * soft-delete enabled Azure Key Vault.
  *
- * <p><strong>Samples to construct the sync client</strong></p>
+ * <h2>Getting Started</h2>
+ *
+ * <p>In order to interact with the Azure Key Vault service, you will need to create an instance of the
+ * {@link KeyClient} class, a vault url and a credential object.</p>
+ *
+ * <p>The examples shown in this document use a credential object named DefaultAzureCredential for authentication,
+ * which is appropriate for most scenarios, including local development and production environments. Additionally,
+ * we recommend using a
+ * <a href="https://learn.microsoft.com/azure/active-directory/managed-identities-azure-resources/">
+ * managed identity</a> for authentication in production environments.
+ * You can find more information on different ways of authenticating and their corresponding credential types in the
+ * <a href="https://learn.microsoft.com/java/api/overview/azure/identity-readme?view=azure-java-stable">
+ * Azure Identity documentation"</a>.</p>
+ *
+ * <p><strong>Sample: Construct Synchronous Key Client</strong></p>
+ *
+ * <p>The following code sample demonstrates the creation of a {@link KeyClient}, using the {@link KeyClientBuilder}
+ * to configure it.</p>
+ *
  * <!-- src_embed com.azure.security.keyvault.keys.KeyClient.instantiation -->
  * <pre>
  * KeyClient keyClient = new KeyClientBuilder&#40;&#41;
@@ -49,8 +67,80 @@ import com.azure.security.keyvault.keys.models.ReleaseKeyResult;
  * </pre>
  * <!-- end com.azure.security.keyvault.keys.KeyClient.instantiation -->
  *
+ * <br/>
+ *
+ * <hr/>
+ *
+ * <h2>Create a Cryptographic Key</h2>
+ * The {@link KeyClient} can be used to create a key in the key vault.
+ *
+ * <p><strong>Code Sample:</strong></p>
+ * <p>The following code sample demonstrates how to synchronously create a cryptographic key in the key vault,
+ * using the {@link KeyClient#createKey(String, KeyType)} API.</p>
+ *
+ * <!-- src_embed com.azure.security.keyvault.keys.KeyClient.createKey#String-KeyType -->
+ * <pre>
+ * KeyVaultKey key = keyClient.createKey&#40;&quot;keyName&quot;, KeyType.EC&#41;;
+ * System.out.printf&#40;&quot;Created key with name: %s and id: %s%n&quot;, key.getName&#40;&#41;, key.getId&#40;&#41;&#41;;
+ * </pre>
+ * <!-- end com.azure.security.keyvault.keys.KeyClient.createKey#String-KeyType -->
+ *
+ * <p><strong>Note:</strong> For the asynchronous sample, refer to {@link KeyAsyncClient}.</p>
+ *
+ * <br/>
+ *
+ * <hr/>
+ *
+ * <h2>Get a Cryptographic Key</h2>
+ * The {@link KeyClient} can be used to retrieve a key from the key vault.
+ *
+ * <p><strong>Code Sample:</strong></p>
+ * <p>The following code sample demonstrates how to synchronously retrieve a key from the key vault, using
+ * the {@link KeyClient#getKey(String)} API.</p>
+ *
+ * <!-- src_embed com.azure.security.keyvault.keys.KeyClient.getKey#String -->
+ * <pre>
+ * KeyVaultKey keyWithVersionValue = keyClient.getKey&#40;&quot;keyName&quot;&#41;;
+ *
+ * System.out.printf&#40;&quot;Retrieved key with name: %s and: id %s%n&quot;, keyWithVersionValue.getName&#40;&#41;,
+ *     keyWithVersionValue.getId&#40;&#41;&#41;;
+ * </pre>
+ * <!-- end com.azure.security.keyvault.keys.KeyClient.getKey#String -->
+ *
+ * <p><strong>Note:</strong> For the asynchronous sample, refer to {@link KeyAsyncClient}.</p>
+ *
+ * <br/>
+ *
+ * <hr/>
+ *
+ * <h2>Delete a Cryptographic Key</h2>
+ * The {@link KeyClient} can be used to delete a key from the key vault.
+ *
+ * <p><strong>Code Sample:</strong></p>
+ * <p>The following code sample demonstrates how to synchronously delete a key from the
+ * key vault, using the {@link KeyClient#beginDeleteKey(String)} API.</p>
+ *
+ * <!-- src_embed com.azure.security.keyvault.keys.KeyClient.deleteKey#String -->
+ * <pre>
+ * SyncPoller&lt;DeletedKey, Void&gt; deleteKeyPoller = keyClient.beginDeleteKey&#40;&quot;keyName&quot;&#41;;
+ * PollResponse&lt;DeletedKey&gt; deleteKeyPollResponse = deleteKeyPoller.poll&#40;&#41;;
+ *
+ * &#47;&#47; Deleted date only works for SoftDelete Enabled Key Vault.
+ * DeletedKey deletedKey = deleteKeyPollResponse.getValue&#40;&#41;;
+ *
+ * System.out.printf&#40;&quot;Key delete date: %s%n&quot;, deletedKey.getDeletedOn&#40;&#41;&#41;;
+ * System.out.printf&#40;&quot;Deleted key's recovery id: %s%n&quot;, deletedKey.getRecoveryId&#40;&#41;&#41;;
+ *
+ * &#47;&#47; Key is being deleted on the server.
+ * deleteKeyPoller.waitForCompletion&#40;&#41;;
+ * &#47;&#47; Key is deleted
+ * </pre>
+ * <!-- end com.azure.security.keyvault.keys.KeyClient.deleteKey#String -->
+ *
+ * <p><strong>Note:</strong> For the asynchronous sample, refer to {@link KeyAsyncClient}.</p>
+ *
+ * @see com.azure.security.keyvault.keys
  * @see KeyClientBuilder
- * @see PagedIterable
  */
 @ServiceClient(builder = KeyClientBuilder.class, serviceInterfaces = KeyClientImpl.KeyService.class)
 public final class KeyClient {
@@ -127,7 +217,6 @@ public final class KeyClient {
      * <!-- src_embed com.azure.security.keyvault.keys.KeyClient.createKey#String-KeyType -->
      * <pre>
      * KeyVaultKey key = keyClient.createKey&#40;&quot;keyName&quot;, KeyType.EC&#41;;
-     *
      * System.out.printf&#40;&quot;Created key with name: %s and id: %s%n&quot;, key.getName&#40;&#41;, key.getId&#40;&#41;&#41;;
      * </pre>
      * <!-- end com.azure.security.keyvault.keys.KeyClient.createKey#String-KeyType -->

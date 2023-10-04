@@ -200,7 +200,6 @@ io.opentelemetry:opentelemetry-sdk;1.28.0
 io.opentelemetry:opentelemetry-sdk-metrics;1.28.0
 io.opentelemetry:opentelemetry-sdk-logs;1.28.0
 io.opentelemetry:opentelemetry-exporter-logging;1.28.0
-io.opentelemetry:opentelemetry-exporter-jaeger;1.28.0
 io.opentelemetry:opentelemetry-exporter-otlp;1.28.0
 io.opentelemetry:opentelemetry-api-logs;1.26.0-alpha
 io.opentelemetry:opentelemetry-sdk-testing;1.28.0

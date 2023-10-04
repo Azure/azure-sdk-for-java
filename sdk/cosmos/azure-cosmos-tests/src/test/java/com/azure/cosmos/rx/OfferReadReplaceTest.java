@@ -2,6 +2,10 @@
 // Licensed under the MIT License.
 package com.azure.cosmos.rx;
 
+import com.azure.cosmos.implementation.OperationType;
+import com.azure.cosmos.implementation.ResourceType;
+import com.azure.cosmos.implementation.TestUtils;
+import com.azure.cosmos.models.CosmosQueryRequestOptions;
 import com.azure.cosmos.models.FeedResponse;
 import com.azure.cosmos.implementation.AsyncDocumentClient;
 import com.azure.cosmos.implementation.Database;
@@ -38,7 +42,15 @@ public class OfferReadReplaceTest extends TestSuiteBase {
     @Test(groups = { "emulator" }, timeOut = TIMEOUT)
     public void readAndReplaceOffer() {
 
-        List<Offer> offers = client.readOffers(null).map(FeedResponse::getResults).flatMap(list -> Flux.fromIterable(list)).collectList().block();
+        List<Offer> offers = client
+            .readOffers(
+                TestUtils.createDummyQueryFeedOperationState(
+                    ResourceType.Offer,
+                    OperationType.ReadFeed,
+                    new CosmosQueryRequestOptions(),
+                    client))
+            .map(FeedResponse::getResults)
+            .flatMap(list -> Flux.fromIterable(list)).collectList().block();
 
         int i;
         for (i = 0; i < offers.size(); i++) {

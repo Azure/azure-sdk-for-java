@@ -51,19 +51,19 @@ Licensed under the MIT License.
     <dependency>
       <groupId>com.azure</groupId>
       <artifactId>azure-cosmos</artifactId>
-      <version>4.50.0-beta.1</version> <!-- {x-version-update;com.azure:azure-cosmos;current} -->
+      <version>4.52.0-beta.1</version> <!-- {x-version-update;com.azure:azure-cosmos;current} -->
     </dependency>
 
     <dependency>
       <groupId>com.azure</groupId>
       <artifactId>azure-cosmos-encryption</artifactId>
-      <version>2.5.0-beta.1</version> <!-- {x-version-update;com.azure:azure-cosmos-encryption;current} -->
+      <version>2.6.0-beta.1</version> <!-- {x-version-update;com.azure:azure-cosmos-encryption;current} -->
     </dependency>
 
     <dependency>
       <groupId>com.azure</groupId>
       <artifactId>azure-identity</artifactId>
-      <version>1.10.0</version>  <!-- {x-version-update;com.azure:azure-identity;dependency} -->
+      <version>1.10.1</version>  <!-- {x-version-update;com.azure:azure-identity;dependency} -->
       <exclusions>
         <exclusion>
           <groupId>com.azure</groupId>
@@ -74,13 +74,6 @@ Licensed under the MIT License.
           <artifactId>azure-core-http-netty</artifactId>
         </exclusion>
       </exclusions>
-    </dependency>
-
-    <!-- Can be removed after diagnostic improvements PR -->
-    <dependency>
-      <groupId>com.azure</groupId>
-      <artifactId>azure-core-tracing-opentelemetry</artifactId>
-      <version>1.0.0-beta.39</version> <!-- {x-version-update;com.azure:azure-core-tracing-opentelemetry;dependency} -->
     </dependency>
 
     <dependency>
@@ -189,7 +182,7 @@ Licensed under the MIT License.
     <dependency>
       <groupId>com.azure</groupId>
       <artifactId>azure-security-keyvault-keys</artifactId>
-      <version>4.6.5</version> <!-- {x-version-update;com.azure:azure-security-keyvault-keys;dependency} -->
+      <version>4.7.0</version> <!-- {x-version-update;com.azure:azure-security-keyvault-keys;dependency} -->
       <scope>compile</scope>
     </dependency>
   </dependencies>
@@ -355,6 +348,27 @@ Licensed under the MIT License.
     </profile>
     <profile>
       <!-- integration tests, requires Cosmos DB endpoint -->
+      <id>cfp-split</id>
+      <properties>
+        <test.groups>cfp-split</test.groups>
+      </properties>
+      <build>
+        <plugins>
+          <plugin>
+            <groupId>org.apache.maven.plugins</groupId>
+            <artifactId>maven-failsafe-plugin</artifactId>
+            <version>3.1.0</version> <!-- {x-version-update;org.apache.maven.plugins:maven-failsafe-plugin;external_dependency} -->
+            <configuration>
+              <suiteXmlFiles>
+                <suiteXmlFile>src/test/resources/cfp-split-testng.xml</suiteXmlFile>
+              </suiteXmlFiles>
+            </configuration>
+          </plugin>
+        </plugins>
+      </build>
+    </profile>
+    <profile>
+      <!-- integration tests, requires Cosmos DB endpoint -->
       <id>query</id>
       <properties>
         <test.groups>query</test.groups>
@@ -431,6 +445,27 @@ Licensed under the MIT License.
             <configuration>
               <suiteXmlFiles>
                 <suiteXmlFile>src/test/resources/multi-master-testng.xml</suiteXmlFile>
+              </suiteXmlFiles>
+            </configuration>
+          </plugin>
+        </plugins>
+      </build>
+    </profile>
+    <profile>
+      <!-- integration tests, requires Cosmos DB endpoint with multi master support -->
+      <id>flaky-multi-master</id>
+      <properties>
+        <test.groups>flaky-multi-master</test.groups>
+      </properties>
+      <build>
+        <plugins>
+          <plugin>
+            <groupId>org.apache.maven.plugins</groupId>
+            <artifactId>maven-failsafe-plugin</artifactId>
+            <version>3.1.0</version> <!-- {x-version-update;org.apache.maven.plugins:maven-failsafe-plugin;external_dependency} -->
+            <configuration>
+              <suiteXmlFiles>
+                <suiteXmlFile>src/test/resources/flaky-multi-master-testng.xml</suiteXmlFile>
               </suiteXmlFiles>
             </configuration>
           </plugin>

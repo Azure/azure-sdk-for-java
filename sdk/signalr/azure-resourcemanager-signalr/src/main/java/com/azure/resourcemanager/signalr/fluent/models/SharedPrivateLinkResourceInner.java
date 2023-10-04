@@ -6,7 +6,6 @@ package com.azure.resourcemanager.signalr.fluent.models;
 
 import com.azure.core.annotation.Fluent;
 import com.azure.core.management.ProxyResource;
-import com.azure.core.management.SystemData;
 import com.azure.resourcemanager.signalr.models.ProvisioningState;
 import com.azure.resourcemanager.signalr.models.SharedPrivateLinkResourceStatus;
 import com.fasterxml.jackson.annotation.JsonProperty;
@@ -15,12 +14,6 @@ import com.fasterxml.jackson.annotation.JsonProperty;
 @Fluent
 public final class SharedPrivateLinkResourceInner extends ProxyResource {
     /*
-     * Metadata pertaining to creation and last modification of the resource.
-     */
-    @JsonProperty(value = "systemData", access = JsonProperty.Access.WRITE_ONLY)
-    private SystemData systemData;
-
-    /*
      * Describes the properties of an existing Shared Private Link Resource
      */
     @JsonProperty(value = "properties")
@@ -28,15 +21,6 @@ public final class SharedPrivateLinkResourceInner extends ProxyResource {
 
     /** Creates an instance of SharedPrivateLinkResourceInner class. */
     public SharedPrivateLinkResourceInner() {
-    }
-
-    /**
-     * Get the systemData property: Metadata pertaining to creation and last modification of the resource.
-     *
-     * @return the systemData value.
-     */
-    public SystemData systemData() {
-        return this.systemData;
     }
 
     /**

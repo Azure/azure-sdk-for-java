@@ -18,28 +18,29 @@ public final class ManagedIdentityTests {
         ManagedIdentity model =
             BinaryData
                 .fromString(
-                    "{\"type\":\"UserAssigned\",\"userAssignedIdentities\":{\"bhsfxob\":{\"principalId\":\"cqaqtdoqmcbx\",\"clientId\":\"vxysl\"},\"shqjohxcrsbf\":{\"principalId\":\"tkblmpewww\",\"clientId\":\"krvrns\"},\"ybsrfbjfdtwss\":{\"principalId\":\"asrru\",\"clientId\":\"bhsqfsubcgjbirxb\"}},\"principalId\":\"ftpvjzbexil\",\"tenantId\":\"nfqqnvwp\"}")
+                    "{\"type\":\"SystemAssigned\",\"userAssignedIdentities\":{\"ttpkiwkkbnujrywv\":{\"principalId\":\"hixbjxyfwnyl\",\"clientId\":\"ool\"},\"cbihwqk\":{\"principalId\":\"lbfpncurd\",\"clientId\":\"wiithtywub\"},\"ctondz\":{\"principalId\":\"dntwjchrdgo\",\"clientId\":\"xum\"}},\"principalId\":\"uu\",\"tenantId\":\"dlwggytsbwtovv\"}")
                 .toObject(ManagedIdentity.class);
-        Assertions.assertEquals(ManagedIdentityType.USER_ASSIGNED, model.type());
+        Assertions.assertEquals(ManagedIdentityType.SYSTEM_ASSIGNED, model.type());
     }
 
     @org.junit.jupiter.api.Test
     public void testSerialize() throws Exception {
         ManagedIdentity model =
             new ManagedIdentity()
-                .withType(ManagedIdentityType.USER_ASSIGNED)
+                .withType(ManagedIdentityType.SYSTEM_ASSIGNED)
                 .withUserAssignedIdentities(
                     mapOf(
-                        "bhsfxob",
+                        "ttpkiwkkbnujrywv",
                         new UserAssignedIdentityProperty(),
-                        "shqjohxcrsbf",
+                        "cbihwqk",
                         new UserAssignedIdentityProperty(),
-                        "ybsrfbjfdtwss",
+                        "ctondz",
                         new UserAssignedIdentityProperty()));
         model = BinaryData.fromObject(model).toObject(ManagedIdentity.class);
-        Assertions.assertEquals(ManagedIdentityType.USER_ASSIGNED, model.type());
+        Assertions.assertEquals(ManagedIdentityType.SYSTEM_ASSIGNED, model.type());
     }
 
+    // Use "Map.of" if available
     @SuppressWarnings("unchecked")
     private static <T> Map<String, T> mapOf(Object... inputs) {
         Map<String, T> map = new HashMap<>();

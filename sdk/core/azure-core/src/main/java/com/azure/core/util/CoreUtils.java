@@ -23,7 +23,12 @@ import java.util.Map;
 import java.util.Objects;
 import java.util.Properties;
 import java.util.UUID;
+import java.util.concurrent.CancellationException;
+import java.util.concurrent.ExecutionException;
+import java.util.concurrent.Future;
 import java.util.concurrent.ThreadLocalRandom;
+import java.util.concurrent.TimeUnit;
+import java.util.concurrent.TimeoutException;
 import java.util.function.BiFunction;
 import java.util.function.Function;
 import java.util.stream.Collectors;
@@ -530,5 +535,30 @@ public final class CoreUtils {
         // Use new UUID(long, long) instead of UUID.randomUUID as UUID.randomUUID may be blocking.
         // For environments using Reactor's BlockHound this will raise an exception if called in non-blocking threads.
         return new UUID(msb, lsb);
+    }
+
+    /**
+     * Calls {@link Future#get(long, TimeUnit)} and returns the value if the {@code future} completes before the timeout
+     * is triggered. If the timeout is triggered, the {@code future} is {@link Future#cancel(boolean) cancelled}
+     * interrupting the execution of the task that the {@link Future} represented.
+     *
+     * @param <T> The type of value returned by the {@code future}.
+     * @param future The {@link Future} to get the value from.
+     * @param timeout The timeout value.
+     * @param unit The {@link TimeUnit} of the timeout value.
+     * @return The value from the {@code future}.
+     * @throws CancellationException If the computation was cancelled.
+     * @throws ExecutionException If the computation threw an exception.
+     * @throws InterruptedException If the current thread was interrupted while waiting.
+     * @throws TimeoutException If the wait timed out.
+     */
+    public static <T> T getFutureWithCancellation(Future<T> future, long timeout, TimeUnit unit)
+        throws InterruptedException, ExecutionException, TimeoutException {
+        try {
+            return future.get(timeout, unit);
+        } catch (TimeoutException e) {
+            future.cancel(true);
+            throw e;
+        }
     }
 }

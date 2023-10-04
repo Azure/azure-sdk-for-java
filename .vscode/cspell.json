@@ -127,6 +127,7 @@
     "sdk/core/azure-xml/**",
     "sdk/cosmos/azure-cosmos-dotnet-benchmark/**",
     "sdk/core/azure-core-tracing-opentelemetry/**",
+    "sdk/core/azure-core-tracing-opentelemetry-samples/**",
     "sdk/cosmos/azure-cosmos-benchmark/**",
     "sdk/core/azure-json-gson/**",
     "sdk/cosmos/azure-cosmos-spark_3-1_2-12/**",
@@ -330,6 +331,7 @@
     "Mockito",
     "Mordor",
     "mosca",
+    "mpga",
     "msal",
     "msix",
     "MSRC",
@@ -338,6 +340,7 @@
     "odata",
     "ODBC",
     "okhttp",
+    "OTLP",
     "OLTP",
     "onboarded",
     "Onco",
@@ -683,7 +686,9 @@
         "Pdirect",
 	      "Pmulti",
         "Psplit",
-        "Pquery"
+        "Pquery",
+        "Pcfp",
+        "Pflaky"
       ]
     },
     {
@@ -738,7 +743,8 @@
     {
       "filename": "sdk/storage/azure-storage-blob-cryptography/**",
       "words": [
-        "akek"
+        "akek",
+        "azstorage"
       ]
     },
     {
@@ -1035,6 +1041,12 @@
         "Dskip",
         "Dspotbugs",
         "Pdev"
+      ]
+    },
+    {
+      "filename": "sdk/spring/spring-cloud-azure-starter-monitor/**.md",
+      "words": [
+        "Djava"
       ]
     },
     {

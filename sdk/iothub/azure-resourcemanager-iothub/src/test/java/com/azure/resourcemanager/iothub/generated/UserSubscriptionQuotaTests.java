@@ -15,34 +15,34 @@ public final class UserSubscriptionQuotaTests {
         UserSubscriptionQuota model =
             BinaryData
                 .fromString(
-                    "{\"id\":\"lp\",\"type\":\"gdtpnapnyiro\",\"unit\":\"hpigv\",\"currentValue\":2000011197,\"limit\":1573909011,\"name\":{\"value\":\"itxmedjvcslynqww\",\"localizedValue\":\"wzz\"}}")
+                    "{\"id\":\"vetvt\",\"type\":\"aqtdoqmcbx\",\"unit\":\"vxysl\",\"currentValue\":675840078,\"limit\":92665469,\"name\":{\"value\":\"blytk\",\"localizedValue\":\"mpew\"}}")
                 .toObject(UserSubscriptionQuota.class);
-        Assertions.assertEquals("lp", model.id());
-        Assertions.assertEquals("gdtpnapnyiro", model.type());
-        Assertions.assertEquals("hpigv", model.unit());
-        Assertions.assertEquals(2000011197, model.currentValue());
-        Assertions.assertEquals(1573909011, model.limit());
-        Assertions.assertEquals("itxmedjvcslynqww", model.name().value());
-        Assertions.assertEquals("wzz", model.name().localizedValue());
+        Assertions.assertEquals("vetvt", model.id());
+        Assertions.assertEquals("aqtdoqmcbx", model.type());
+        Assertions.assertEquals("vxysl", model.unit());
+        Assertions.assertEquals(675840078, model.currentValue());
+        Assertions.assertEquals(92665469, model.limit());
+        Assertions.assertEquals("blytk", model.name().value());
+        Assertions.assertEquals("mpew", model.name().localizedValue());
     }
 
     @org.junit.jupiter.api.Test
     public void testSerialize() throws Exception {
         UserSubscriptionQuota model =
             new UserSubscriptionQuota()
-                .withId("lp")
-                .withType("gdtpnapnyiro")
-                .withUnit("hpigv")
-                .withCurrentValue(2000011197)
-                .withLimit(1573909011)
-                .withName(new Name().withValue("itxmedjvcslynqww").withLocalizedValue("wzz"));
+                .withId("vetvt")
+                .withType("aqtdoqmcbx")
+                .withUnit("vxysl")
+                .withCurrentValue(675840078)
+                .withLimit(92665469)
+                .withName(new Name().withValue("blytk").withLocalizedValue("mpew"));
         model = BinaryData.fromObject(model).toObject(UserSubscriptionQuota.class);
-        Assertions.assertEquals("lp", model.id());
-        Assertions.assertEquals("gdtpnapnyiro", model.type());
-        Assertions.assertEquals("hpigv", model.unit());
-        Assertions.assertEquals(2000011197, model.currentValue());
-        Assertions.assertEquals(1573909011, model.limit());
-        Assertions.assertEquals("itxmedjvcslynqww", model.name().value());
-        Assertions.assertEquals("wzz", model.name().localizedValue());
+        Assertions.assertEquals("vetvt", model.id());
+        Assertions.assertEquals("aqtdoqmcbx", model.type());
+        Assertions.assertEquals("vxysl", model.unit());
+        Assertions.assertEquals(675840078, model.currentValue());
+        Assertions.assertEquals(92665469, model.limit());
+        Assertions.assertEquals("blytk", model.name().value());
+        Assertions.assertEquals("mpew", model.name().localizedValue());
     }
 }

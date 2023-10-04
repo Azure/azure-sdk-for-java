@@ -15,7 +15,7 @@ import com.fasterxml.jackson.annotation.JsonProperty;
 @Fluent
 public final class RestServiceLinkedServiceTypeProperties {
     /*
-     * The base URL of the REST service.
+     * The base URL of the REST service. Type: string (or Expression with resultType string).
      */
     @JsonProperty(value = "url", required = true)
     private Object url;
@@ -34,7 +34,7 @@ public final class RestServiceLinkedServiceTypeProperties {
     private RestServiceAuthenticationType authenticationType;
 
     /*
-     * The user name used in Basic authentication type.
+     * The user name used in Basic authentication type. Type: string (or Expression with resultType string).
      */
     @JsonProperty(value = "userName")
     private Object username;
@@ -53,7 +53,8 @@ public final class RestServiceLinkedServiceTypeProperties {
     private Object authHeaders;
 
     /*
-     * The application's client ID used in AadServicePrincipal authentication type.
+     * The application's client ID used in AadServicePrincipal authentication type. Type: string (or Expression with
+     * resultType string).
      */
     @JsonProperty(value = "servicePrincipalId")
     private Object servicePrincipalId;
@@ -66,7 +67,7 @@ public final class RestServiceLinkedServiceTypeProperties {
 
     /*
      * The tenant information (domain name or tenant ID) used in AadServicePrincipal authentication type under which
-     * your application resides.
+     * your application resides. Type: string (or Expression with resultType string).
      */
     @JsonProperty(value = "tenant")
     private Object tenant;
@@ -80,17 +81,17 @@ public final class RestServiceLinkedServiceTypeProperties {
     private Object azureCloudType;
 
     /*
-     * The resource you are requesting authorization to use.
+     * The resource you are requesting authorization to use. Type: string (or Expression with resultType string).
      */
     @JsonProperty(value = "aadResourceId")
     private Object aadResourceId;
 
     /*
      * The encrypted credential used for authentication. Credentials are encrypted using the integration runtime
-     * credential manager. Type: string (or Expression with resultType string).
+     * credential manager. Type: string.
      */
     @JsonProperty(value = "encryptedCredential")
-    private Object encryptedCredential;
+    private String encryptedCredential;
 
     /*
      * The credential reference containing authentication information.
@@ -136,7 +137,7 @@ public final class RestServiceLinkedServiceTypeProperties {
     }
 
     /**
-     * Get the url property: The base URL of the REST service.
+     * Get the url property: The base URL of the REST service. Type: string (or Expression with resultType string).
      *
      * @return the url value.
      */
@@ -145,7 +146,7 @@ public final class RestServiceLinkedServiceTypeProperties {
     }
 
     /**
-     * Set the url property: The base URL of the REST service.
+     * Set the url property: The base URL of the REST service. Type: string (or Expression with resultType string).
      *
      * @param url the url value to set.
      * @return the RestServiceLinkedServiceTypeProperties object itself.
@@ -200,7 +201,8 @@ public final class RestServiceLinkedServiceTypeProperties {
     }
 
     /**
-     * Get the username property: The user name used in Basic authentication type.
+     * Get the username property: The user name used in Basic authentication type. Type: string (or Expression with
+     * resultType string).
      *
      * @return the username value.
      */
@@ -209,7 +211,8 @@ public final class RestServiceLinkedServiceTypeProperties {
     }
 
     /**
-     * Set the username property: The user name used in Basic authentication type.
+     * Set the username property: The user name used in Basic authentication type. Type: string (or Expression with
+     * resultType string).
      *
      * @param username the username value to set.
      * @return the RestServiceLinkedServiceTypeProperties object itself.
@@ -263,6 +266,7 @@ public final class RestServiceLinkedServiceTypeProperties {
 
     /**
      * Get the servicePrincipalId property: The application's client ID used in AadServicePrincipal authentication type.
+     * Type: string (or Expression with resultType string).
      *
      * @return the servicePrincipalId value.
      */
@@ -272,6 +276,7 @@ public final class RestServiceLinkedServiceTypeProperties {
 
     /**
      * Set the servicePrincipalId property: The application's client ID used in AadServicePrincipal authentication type.
+     * Type: string (or Expression with resultType string).
      *
      * @param servicePrincipalId the servicePrincipalId value to set.
      * @return the RestServiceLinkedServiceTypeProperties object itself.
@@ -303,7 +308,7 @@ public final class RestServiceLinkedServiceTypeProperties {
 
     /**
      * Get the tenant property: The tenant information (domain name or tenant ID) used in AadServicePrincipal
-     * authentication type under which your application resides.
+     * authentication type under which your application resides. Type: string (or Expression with resultType string).
      *
      * @return the tenant value.
      */
@@ -313,7 +318,7 @@ public final class RestServiceLinkedServiceTypeProperties {
 
     /**
      * Set the tenant property: The tenant information (domain name or tenant ID) used in AadServicePrincipal
-     * authentication type under which your application resides.
+     * authentication type under which your application resides. Type: string (or Expression with resultType string).
      *
      * @param tenant the tenant value to set.
      * @return the RestServiceLinkedServiceTypeProperties object itself.
@@ -348,7 +353,8 @@ public final class RestServiceLinkedServiceTypeProperties {
     }
 
     /**
-     * Get the aadResourceId property: The resource you are requesting authorization to use.
+     * Get the aadResourceId property: The resource you are requesting authorization to use. Type: string (or Expression
+     * with resultType string).
      *
      * @return the aadResourceId value.
      */
@@ -357,7 +363,8 @@ public final class RestServiceLinkedServiceTypeProperties {
     }
 
     /**
-     * Set the aadResourceId property: The resource you are requesting authorization to use.
+     * Set the aadResourceId property: The resource you are requesting authorization to use. Type: string (or Expression
+     * with resultType string).
      *
      * @param aadResourceId the aadResourceId value to set.
      * @return the RestServiceLinkedServiceTypeProperties object itself.
@@ -369,22 +376,22 @@ public final class RestServiceLinkedServiceTypeProperties {
 
     /**
      * Get the encryptedCredential property: The encrypted credential used for authentication. Credentials are encrypted
-     * using the integration runtime credential manager. Type: string (or Expression with resultType string).
+     * using the integration runtime credential manager. Type: string.
      *
      * @return the encryptedCredential value.
      */
-    public Object encryptedCredential() {
+    public String encryptedCredential() {
         return this.encryptedCredential;
     }
 
     /**
      * Set the encryptedCredential property: The encrypted credential used for authentication. Credentials are encrypted
-     * using the integration runtime credential manager. Type: string (or Expression with resultType string).
+     * using the integration runtime credential manager. Type: string.
      *
      * @param encryptedCredential the encryptedCredential value to set.
      * @return the RestServiceLinkedServiceTypeProperties object itself.
      */
-    public RestServiceLinkedServiceTypeProperties withEncryptedCredential(Object encryptedCredential) {
+    public RestServiceLinkedServiceTypeProperties withEncryptedCredential(String encryptedCredential) {
         this.encryptedCredential = encryptedCredential;
         return this;
     }
