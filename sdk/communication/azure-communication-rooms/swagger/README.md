@@ -25,7 +25,6 @@ require:
 use: '@autorest/java@4.1.17'
 java: true
 title: AzureCommunicationRoomService
-tag: package-rooms-2023-10-30-preview
 output-folder: ..\
 license-header: MICROSOFT_MIT_SMALL
 namespace: com.azure.communication.rooms
