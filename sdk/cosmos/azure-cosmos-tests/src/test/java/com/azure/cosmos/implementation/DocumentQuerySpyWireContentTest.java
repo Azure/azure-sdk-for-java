@@ -84,7 +84,7 @@ public class DocumentQuerySpyWireContentTest extends TestSuiteBase {
         };
     }
 
-    @Test(dataProvider = "responseContinuationTokenLimitParamProvider", groups = { "simple" }, timeOut = TIMEOUT)
+    @Test(dataProvider = "responseContinuationTokenLimitParamProvider", groups = { "fast" }, timeOut = TIMEOUT)
     public void queryWithContinuationTokenLimit(CosmosQueryRequestOptions options, String query, boolean isMultiParitionCollection) throws Exception {
         String collectionLink;
         if (isMultiParitionCollection) {
@@ -139,7 +139,7 @@ public class DocumentQuerySpyWireContentTest extends TestSuiteBase {
                 .createDocument(collectionLink, docDefinition, null, false).block().getResource();
     }
 
-    @BeforeClass(groups = { "simple" }, timeOut = SETUP_TIMEOUT)
+    @BeforeClass(groups = { "fast" }, timeOut = SETUP_TIMEOUT)
     public void before_DocumentQuerySpyWireContentTest() throws Exception {
 
         client = new SpyClientBuilder(this.clientBuilder()).build();
@@ -181,7 +181,7 @@ public class DocumentQuerySpyWireContentTest extends TestSuiteBase {
               .then().block();
     }
 
-    @AfterClass(groups = { "simple" }, timeOut = SHUTDOWN_TIMEOUT, alwaysRun = true)
+    @AfterClass(groups = { "fast" }, timeOut = SHUTDOWN_TIMEOUT, alwaysRun = true)
     public void afterClass() {
         safeClose(client);
     }
