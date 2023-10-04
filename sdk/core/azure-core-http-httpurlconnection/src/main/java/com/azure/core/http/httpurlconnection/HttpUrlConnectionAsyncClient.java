@@ -7,7 +7,6 @@ import com.azure.core.util.logging.ClientLogger;
 import reactor.core.publisher.Flux;
 import reactor.core.publisher.Mono;
 import com.azure.core.http.HttpHeader;
-import reactor.core.scheduler.Schedulers;
 
 import java.io.*;
 import java.net.*;
@@ -63,9 +62,12 @@ public class HttpUrlConnectionAsyncClient implements HttpClient {
             return sendPatchViaSocket(httpRequest);
         }
 
-        return Mono.fromCallable(() -> connect(httpRequest))
-                    .flatMap(connection -> sendRequest(httpRequest, progressReporter, connection))
-                    .flatMap(connection -> receiveResponse(httpRequest, connection));
+        return Mono.fromCallable(() -> {
+            HttpURLConnection connection = connect(httpRequest);
+            Mono<HttpResponse> response = sendRequest(httpRequest, progressReporter, connection)
+                .then(Mono.fromCallable(() -> receiveResponse(httpRequest, connection)));
+            return response.block();
+        });
     }
 
     /**
@@ -79,9 +81,9 @@ public class HttpUrlConnectionAsyncClient implements HttpClient {
     }
 
     private HttpURLConnection connect(HttpRequest httpRequest) {
-        HttpURLConnection connection = null;
         try {
             // Make connection
+            HttpURLConnection connection = null;
             URL url = httpRequest.getUrl();
 
             if (proxyOptions != null) {
@@ -100,6 +102,8 @@ public class HttpUrlConnectionAsyncClient implements HttpClient {
                 connection = (HttpURLConnection) url.openConnection();
             }
 
+            assert connection != null;
+
             if (connectionTimeout != null) {
                 connection.setConnectTimeout((int) connectionTimeout.toMillis());
             }
@@ -108,16 +112,21 @@ public class HttpUrlConnectionAsyncClient implements HttpClient {
             try {
                 connection.setRequestMethod(httpRequest.getHttpMethod().toString());
             } catch (ProtocolException ignored) {}
+
             for (HttpHeader header : httpRequest.getHeaders()) {
                 for (String value : header.getValues()) {
                     connection.addRequestProperty(header.getName(), value);
                 }
             }
-        } catch (IOException ignored) {}
-        return connection;
+            return connection;
+        } catch (IOException e) {
+            throw new RuntimeException(e);
+        }
     }
 
-    private Mono<HttpURLConnection> sendRequest(HttpRequest httpRequest, ProgressReporter progressReporter, HttpURLConnection connection) {
+    private Mono<Void> sendRequest(HttpRequest httpRequest, ProgressReporter progressReporter, HttpURLConnection connection) {
+        Mono<Void> requestSendMono = Mono.empty();
+
         switch (httpRequest.getHttpMethod()) {
             case POST:
             case PUT:
@@ -141,18 +150,24 @@ public class HttpUrlConnectionAsyncClient implements HttpClient {
                         });
                     }
 
-                    requestBody
+                    requestSendMono = requestBody
                         .flatMap(buffer -> {
                             try {
                                 byte[] bytes = new byte[buffer.remaining()];
                                 buffer.get(bytes);
                                 os.write(bytes);
-                                os.flush();
                                 return Mono.just(buffer); // Emit the buffer for downstream processing if needed
                             } catch (IOException e) {
                                 return FluxUtil.monoError(LOGGER, new RuntimeException(e));
                             }
-                        });
+                        })
+                        .then(Mono.fromRunnable(() -> {
+                            try {
+                                os.flush();
+                            } catch (IOException e) {
+                                throw new RuntimeException(e);
+                            }
+                        }));
                 } catch (IOException e) {
                     break;
                 }
@@ -162,12 +177,47 @@ public class HttpUrlConnectionAsyncClient implements HttpClient {
             case TRACE:
             case CONNECT:
                 break ;
+            default:
+                requestSendMono = FluxUtil.monoError(LOGGER, new IllegalStateException("Unknown HTTP Method:"
+                    + httpRequest.getHttpMethod()));
         }
-        System.out.println("what");
-        return Mono.just(connection);
+        return requestSendMono;
+//        return requestSendMono.then(Mono.fromCallable(() -> {
+//            // Read response
+//            try {
+//                int responseCode = connection.getResponseCode();
+//
+//                Map<String, List<String>> responseHeadersMap = new HashMap<>();
+//                for (Map.Entry<String, List<String>> entry : connection.getHeaderFields().entrySet()) {
+//                    if (entry.getKey() != null) {
+//                        responseHeadersMap.put(entry.getKey(), entry.getValue());
+//                    }
+//                }
+//
+//                ByteArrayOutputStream outputStream = new ByteArrayOutputStream();
+//                try (InputStream errorStream = connection.getErrorStream()) {
+//                    InputStream inputStream = (errorStream == null) ? connection.getInputStream() : errorStream;
+//                    byte[] buffer = new byte[1024];
+//                    int length;
+//                    while ((length = inputStream.read(buffer)) != -1) {
+//                        outputStream.write(buffer, 0, length);
+//                    }
+//                }
+//
+//                connection.disconnect();
+//
+//                return new HttpUrlConnectionResponse(
+//                    httpRequest,
+//                    responseCode,
+//                    responseHeadersMap,
+//                    Flux.just(ByteBuffer.wrap(outputStream.toByteArray())));
+//            } catch (IOException e) {
+//                throw new RuntimeException(e);
+//            }
+//        }));
     }
 
-    private Mono<HttpResponse> receiveResponse(HttpRequest httpRequest, HttpURLConnection connection) {
+    private HttpResponse receiveResponse(HttpRequest httpRequest, HttpURLConnection connection) {
         try {
             // Read response
             int responseCode = connection.getResponseCode();
@@ -189,16 +239,14 @@ public class HttpUrlConnectionAsyncClient implements HttpClient {
                 }
             }
 
-            connection.disconnect();
-
-            return Mono.just((HttpResponse) new HttpUrlConnectionResponse(
+            return new HttpUrlConnectionResponse(
                 httpRequest,
                 responseCode,
                 responseHeadersMap,
                 Flux.just(ByteBuffer.wrap(outputStream.toByteArray()))
-            )).publishOn(Schedulers.boundedElastic());
+            );
         } catch (IOException e) {
-            return FluxUtil.monoError(LOGGER, new RuntimeException("Error reading HTTP Response", e));
+            throw new RuntimeException(e);
         }
     }
 
