@@ -180,7 +180,7 @@ public final class MetricsHelper {
             ? null
             : AggregationType.fromString(definition.getPrimaryAggregationType().toString());
         List<AggregationType> supportedAggregationTypes = null;
-        if (CoreUtils.isNullOrEmpty(definition.getSupportedAggregationTypes())) {
+        if (!CoreUtils.isNullOrEmpty(definition.getSupportedAggregationTypes())) {
             supportedAggregationTypes = definition.getSupportedAggregationTypes()
                 .stream()
                 .map(aggregationType -> AggregationType.fromString(aggregationType.toString()))

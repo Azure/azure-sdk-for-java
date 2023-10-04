@@ -5,19 +5,28 @@ package com.azure.cosmos.implementation.changefeed.common;
 import com.azure.cosmos.implementation.changefeed.ChangeFeedObserver;
 import com.azure.cosmos.implementation.changefeed.ChangeFeedObserverCloseReason;
 import com.azure.cosmos.implementation.changefeed.ChangeFeedObserverContext;
+import com.azure.cosmos.ChangeFeedProcessorContext;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import reactor.core.publisher.Mono;
 
 import java.util.List;
+import java.util.function.BiConsumer;
 import java.util.function.Consumer;
 
 public class DefaultObserver<T> implements ChangeFeedObserver<T> {
     private static final Logger log = LoggerFactory.getLogger(DefaultObserver.class);
     private final Consumer<List<T>> consumer;
+    private final BiConsumer<List<T>, ChangeFeedProcessorContext> biConsumer;
 
     public DefaultObserver(Consumer<List<T>> consumer) {
         this.consumer = consumer;
+        this.biConsumer = null;
+    }
+
+    public DefaultObserver(BiConsumer<List<T>, ChangeFeedProcessorContext> biConsumer) {
+        this.biConsumer = biConsumer;
+        this.consumer = null;
     }
 
     @Override
@@ -34,7 +43,13 @@ public class DefaultObserver<T> implements ChangeFeedObserver<T> {
     public Mono<Void> processChanges(ChangeFeedObserverContext<T> context, List<T> docs) {
         log.info("Start processing from thread {}", Thread.currentThread().getId());
         try {
-            consumer.accept(docs);
+
+            if (consumer != null) {
+                consumer.accept(docs);
+            } else if (biConsumer != null) {
+                biConsumer.accept(docs, new ChangeFeedProcessorContextImpl<>(context));
+            }
+
             log.info("Done processing from thread {}", Thread.currentThread().getId());
         } catch (Exception ex) {
             log.warn("Unexpected exception thrown from thread {}", Thread.currentThread().getId(), ex);

@@ -29,12 +29,12 @@ public class ThroughputTests extends TestSuiteBase{
         super(clientBuilder);
     }
 
-    @BeforeClass(groups = { "simple" }, timeOut = SETUP_TIMEOUT)
+    @BeforeClass(groups = { "fast" }, timeOut = SETUP_TIMEOUT)
     public void before_ThroughputTests() {
         client = getClientBuilder().buildAsyncClient();
     }
 
-    @Test(groups = { "simple" }, timeOut = TIMEOUT)
+    @Test(groups = { "fast" }, timeOut = TIMEOUT)
     public void readReplaceAutoscaleThroughputDb() throws Exception {
         final String databaseName = CosmosDatabaseForTest.generateId();
         int initalThroughput = 5000;
@@ -55,7 +55,7 @@ public class ThroughputTests extends TestSuiteBase{
 
     }
 
-    @Test(groups = { "simple" }, timeOut = TIMEOUT)
+    @Test(groups = { "fast" }, timeOut = TIMEOUT)
     public void readReplaceManualThroughputDb() throws Exception {
         final String databaseName = CosmosDatabaseForTest.generateId();
         int initalThroughput = 5000;
@@ -74,7 +74,7 @@ public class ThroughputTests extends TestSuiteBase{
 
     }
 
-    @Test(groups = {"simple"}, timeOut = TIMEOUT)
+    @Test(groups = {"fast"}, timeOut = TIMEOUT)
     public void readReplaceManualThroughputCollection() throws Exception {
         final String databaseName = CosmosDatabaseForTest.generateId();
         int initalThroughput = 5000;
@@ -103,7 +103,7 @@ public class ThroughputTests extends TestSuiteBase{
 
     }
 
-    @Test(groups = { "simple" }, timeOut = TIMEOUT)
+    @Test(groups = { "fast" }, timeOut = TIMEOUT)
     public void readReplaceAutoscaleThroughputCollection() throws Exception {
         final String databaseName = CosmosDatabaseForTest.generateId();
         int initalThroughput = 5000;
@@ -132,7 +132,7 @@ public class ThroughputTests extends TestSuiteBase{
         safeDeleteDatabase(client.getDatabase(databaseName));
     }
 
-    @AfterClass(groups = { "simple" }, timeOut = SHUTDOWN_TIMEOUT, alwaysRun = true)
+    @AfterClass(groups = { "fast" }, timeOut = SHUTDOWN_TIMEOUT, alwaysRun = true)
     public void afterClass() {
         assertThat(this.client).isNotNull();
         this.client.close();

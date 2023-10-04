@@ -2,15 +2,12 @@
 // Licensed under the MIT License.
 package com.azure.security.keyvault.jca.implementation;
 
-import static java.util.logging.Level.INFO;
-import static java.util.logging.Level.WARNING;
-
+import com.azure.security.keyvault.jca.implementation.model.AccessToken;
 import com.azure.security.keyvault.jca.implementation.model.CertificateBundle;
 import com.azure.security.keyvault.jca.implementation.model.CertificateItem;
 import com.azure.security.keyvault.jca.implementation.model.CertificateListResult;
 import com.azure.security.keyvault.jca.implementation.model.CertificatePolicy;
 import com.azure.security.keyvault.jca.implementation.model.KeyProperties;
-import com.azure.security.keyvault.jca.implementation.model.AccessToken;
 import com.azure.security.keyvault.jca.implementation.model.SecretBundle;
 import com.azure.security.keyvault.jca.implementation.model.SignResult;
 import com.azure.security.keyvault.jca.implementation.utils.AccessTokenUtil;
@@ -39,8 +36,12 @@ import java.util.ArrayList;
 import java.util.Base64;
 import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 import java.util.Optional;
 import java.util.logging.Logger;
+
+import static java.util.logging.Level.INFO;
+import static java.util.logging.Level.WARNING;
 
 /**
  * The REST client specific to Azure Key Vault.
@@ -327,13 +328,15 @@ public class KeyVaultClient {
             // and we can't access private key(which is not exportable), we will use
             // the Azure Key Vault Secrets API to obtain the private key (keyless).
             LOGGER.exiting("KeyVaultClient", "getKey", null);
+
+            String keyType2 = keyType.contains("-HSM") ? keyType.substring(0, keyType.indexOf("-HSM")) : keyType;
             return Optional.ofNullable(certificateBundle)
                            .map(CertificateBundle::getKid)
-                           .map(kid -> new KeyVaultPrivateKey(keyType, kid, this))
+                           .map(kid -> new KeyVaultPrivateKey(keyType2, kid, this))
                            .orElse(null);
         }
         String certificateSecretUri = certificateBundle.getSid();
-        HashMap<String, String> headers = new HashMap<>();
+        Map<String, String> headers = new HashMap<>();
         headers.put("Authorization", "Bearer " + getAccessToken());
         String body = HttpUtil.get(certificateSecretUri + API_VERSION_POSTFIX, headers);
         if (body == null) {
@@ -389,7 +392,7 @@ public class KeyVaultClient {
     public byte[] getSignedWithPrivateKey(String digestName, String digestValue, String keyId) {
         SignResult result = null;
         String bodyString = String.format("{\"alg\": \"" + digestName + "\", \"value\": \"%s\"}", digestValue);
-        HashMap<String, String> headers = new HashMap<>();
+        Map<String, String> headers = new HashMap<>();
         headers.put("Authorization", "Bearer " + getAccessToken());
         String url = String.format("%s/sign%s", keyId, API_VERSION_POSTFIX);
         String response = HttpUtil.post(url, headers, bodyString, "application/json");

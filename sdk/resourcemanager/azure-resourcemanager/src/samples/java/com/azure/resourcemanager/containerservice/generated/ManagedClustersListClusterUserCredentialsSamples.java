@@ -7,7 +7,7 @@ package com.azure.resourcemanager.containerservice.generated;
 /** Samples for ManagedClusters ListClusterUserCredentials. */
 public final class ManagedClustersListClusterUserCredentialsSamples {
     /*
-     * x-ms-original-file: specification/containerservice/resource-manager/Microsoft.ContainerService/aks/stable/2023-07-01/examples/ManagedClustersListClusterUserCredentials.json
+     * x-ms-original-file: specification/containerservice/resource-manager/Microsoft.ContainerService/aks/stable/2023-08-01/examples/ManagedClustersListClusterUserCredentials.json
      */
     /**
      * Sample code: Get Managed Cluster.

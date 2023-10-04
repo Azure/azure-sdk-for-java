@@ -12,13 +12,13 @@ import com.fasterxml.jackson.annotation.JsonProperty;
 @Fluent
 public final class SsisExecutionCredential {
     /*
-     * Domain for windows authentication.
+     * Domain for windows authentication. Type: string (or Expression with resultType string).
      */
     @JsonProperty(value = "domain", required = true)
     private Object domain;
 
     /*
-     * UseName for windows authentication.
+     * UseName for windows authentication. Type: string (or Expression with resultType string).
      */
     @JsonProperty(value = "userName", required = true)
     private Object username;
@@ -34,7 +34,7 @@ public final class SsisExecutionCredential {
     }
 
     /**
-     * Get the domain property: Domain for windows authentication.
+     * Get the domain property: Domain for windows authentication. Type: string (or Expression with resultType string).
      *
      * @return the domain value.
      */
@@ -43,7 +43,7 @@ public final class SsisExecutionCredential {
     }
 
     /**
-     * Set the domain property: Domain for windows authentication.
+     * Set the domain property: Domain for windows authentication. Type: string (or Expression with resultType string).
      *
      * @param domain the domain value to set.
      * @return the SsisExecutionCredential object itself.
@@ -54,7 +54,8 @@ public final class SsisExecutionCredential {
     }
 
     /**
-     * Get the username property: UseName for windows authentication.
+     * Get the username property: UseName for windows authentication. Type: string (or Expression with resultType
+     * string).
      *
      * @return the username value.
      */
@@ -63,7 +64,8 @@ public final class SsisExecutionCredential {
     }
 
     /**
-     * Set the username property: UseName for windows authentication.
+     * Set the username property: UseName for windows authentication. Type: string (or Expression with resultType
+     * string).
      *
      * @param username the username value to set.
      * @return the SsisExecutionCredential object itself.
