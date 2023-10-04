@@ -140,7 +140,7 @@ public class HttpUrlConnectionAsyncClient implements HttpClient {
                             });
                         }
 
-                        requestSendMono = requestBody
+                        requestBody
                             .flatMap(buffer -> {
                                 try {
                                     byte[] bytes = new byte[buffer.remaining()];
@@ -152,14 +152,7 @@ public class HttpUrlConnectionAsyncClient implements HttpClient {
                                 }
                             })
                             .then()
-                            .flatMap(ignored -> {
-                                try {
-                                    os.flush();
-                                } catch (IOException e) {
-                                    e.printStackTrace();
-                                }
-                                return Mono.empty();
-                            });
+                            .block();
 
                     } catch (IOException e) {
                         break;
@@ -172,7 +165,6 @@ public class HttpUrlConnectionAsyncClient implements HttpClient {
             case CONNECT:
                 break;
         }
-        System.out.println("what");
         return requestSendMono;
     }
 
