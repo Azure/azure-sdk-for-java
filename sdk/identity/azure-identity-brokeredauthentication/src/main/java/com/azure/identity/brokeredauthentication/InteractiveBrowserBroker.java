@@ -9,7 +9,7 @@ import com.microsoft.aad.msal4jbrokers.MsalRuntimeBroker;
 /**
  * This class is used to create various types of {@link IBroker} objects.
  */
-public class InteractiveBrowserBroker {
+public final class InteractiveBrowserBroker {
 
     InteractiveBrowserBroker() {
     }
