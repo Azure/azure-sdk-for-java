@@ -55,8 +55,23 @@ public final class Providers<TProvider, TInstance> {
             defaultProviderName = null;
         }
 
-        while (it.hasNext()) {
-            TProvider additionalProvider = it.next();
+        while (true) {
+            if (!it.hasNext()) {
+                break;
+            }
+            TProvider additionalProvider;
+            try {
+                additionalProvider = it.next();
+            } catch (UnsupportedClassVersionError exception) {
+                // JDK HttpClient was introduced since java 11
+                if (exception.getMessage().contains(
+                    "JdkHttpClientProvider has been compiled by a more recent version of the Java Runtime")
+                    && !isJavaVersionMinimumRequired(11)) {
+                    continue;
+                } else {
+                    throw LOGGER.logExceptionAsError(new RuntimeException(exception));
+                }
+            }
             String additionalProviderName = additionalProvider.getClass().getName();
             availableProviders.put(additionalProviderName, additionalProvider);
             LOGGER.verbose("Additional provider found on the classpath: {}", additionalProviderName);
@@ -74,6 +89,20 @@ public final class Providers<TProvider, TInstance> {
                 + "specific implementation ensure that the %s service it supplies is being included in the "
                 + "'META-INF/services' file '%s'. The requested provider was: %s.",
                 providerClass.getSimpleName(), providerClass.getSimpleName(), providerClass.getName(), selectedImplementation);
+    }
+
+    private static boolean isJavaVersionMinimumRequired(int minimumVersion) {
+        String version = System.getProperty("java.version");
+        if (version.startsWith("1.")) {
+            version = version.substring(2, 3);
+        } else {
+            int dot = version.indexOf(".");
+            if (dot != -1) {
+                version = version.substring(0, dot);
+            }
+        }
+        int javaVersion = Integer.parseInt(version);
+        return javaVersion >= minimumVersion;
     }
 
     /**
