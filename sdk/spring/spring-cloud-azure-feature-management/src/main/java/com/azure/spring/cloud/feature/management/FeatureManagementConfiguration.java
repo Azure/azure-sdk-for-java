@@ -19,7 +19,7 @@ import com.azure.spring.cloud.feature.management.targeting.TargetingEvaluationOp
 @Configuration
 @EnableConfigurationProperties({ FeatureManagementConfigProperties.class, FeatureManagementProperties.class })
 class FeatureManagementConfiguration {
-    
+
     @Autowired
     private transient ApplicationContext appContext;
 
@@ -33,16 +33,17 @@ class FeatureManagementConfiguration {
      */
     @Bean
     FeatureManager featureManager(ApplicationContext context,
-        FeatureManagementProperties featureManagementConfigurations, FeatureManagementConfigProperties properties, TargetingContextAccessor ct) {
-        
-        TargetingContextAccessor contextAccessor = appContext.getBeanProvider(TargetingContextAccessor.class).getIfAvailable();
-        TargetingEvaluationOptions evaluationOptions = appContext.getBeanProvider(TargetingEvaluationOptions.class).getIfAvailable();
-        
-        
+        FeatureManagementProperties featureManagementConfigurations, FeatureManagementConfigProperties properties) {
+
+        TargetingContextAccessor contextAccessor = appContext.getBeanProvider(TargetingContextAccessor.class)
+            .getIfAvailable();
+        TargetingEvaluationOptions evaluationOptions = appContext.getBeanProvider(TargetingEvaluationOptions.class)
+            .getIfAvailable();
+
         if (evaluationOptions == null) {
             evaluationOptions = new TargetingEvaluationOptions();
         }
-        
+
         return new FeatureManager(context, featureManagementConfigurations, properties, contextAccessor,
             evaluationOptions);
     }
