@@ -294,8 +294,8 @@ public final class SecretAsyncClient {
                     .map(response -> new SimpleResponse<>(response, createKeyVaultSecret(response.getValue())));
             } else {
                 return implClient.setSecretWithResponseAsync(vaultUrl, secret.getName(), secret.getValue(),
-                        secret.getProperties().getTags(), secretProperties.getContentType(),
-                        createSecretAttributes(secret.getProperties()))
+                        secretProperties.getTags(), secretProperties.getContentType(),
+                        createSecretAttributes(secretProperties))
                     .onErrorMap(KeyVaultErrorException.class, SecretAsyncClient::mapSetSecretException)
                     .map(response -> new SimpleResponse<>(response, createKeyVaultSecret(response.getValue())));
             }
