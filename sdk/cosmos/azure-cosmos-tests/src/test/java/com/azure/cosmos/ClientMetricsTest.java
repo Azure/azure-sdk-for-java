@@ -170,7 +170,7 @@ public class ClientMetricsTest extends BatchTestBase {
         this.meterRegistry = null;
     }
 
-    @Test(groups = { "simple" }, timeOut = TIMEOUT)
+    @Test(groups = { "fast" }, timeOut = TIMEOUT)
     public void maxValueExceedingDefinedLimitStillWorksWithoutException() throws Exception {
 
         // Expected behavior is that higher values than the expected max value can still be recorded
@@ -223,7 +223,7 @@ public class ClientMetricsTest extends BatchTestBase {
         }
     }
 
-    @Test(groups = { "simple" }, timeOut = TIMEOUT)
+    @Test(groups = { "fast" }, timeOut = TIMEOUT)
     public void createItem() throws Exception {
         boolean[] disableLatencyMeterTestCases = { false, true };
 
@@ -298,7 +298,7 @@ public class ClientMetricsTest extends BatchTestBase {
         }
     }
 
-    @Test(groups = { "simple" }, timeOut = TIMEOUT)
+    @Test(groups = { "fast" }, timeOut = TIMEOUT)
     public void createItemWithAllMetrics() throws Exception {
 
         boolean[] suppressConsistencyLevelTagTestCases = { false, true };
@@ -371,7 +371,7 @@ public class ClientMetricsTest extends BatchTestBase {
         }
     }
 
-    @Test(groups = { "simple" }, timeOut = TIMEOUT)
+    @Test(groups = { "fast" }, timeOut = TIMEOUT)
     public void readItem() throws Exception {
         this.beforeTest(CosmosMetricCategory.DEFAULT);
         try {
@@ -447,7 +447,7 @@ public class ClientMetricsTest extends BatchTestBase {
         }
     }
 
-    @Test(groups = { "simple" }, timeOut = TIMEOUT)
+    @Test(groups = { "fast" }, timeOut = TIMEOUT)
     public void readItemWithThresholdsApplied() throws Exception {
         CosmosDiagnosticsThresholds maxThresholds = new CosmosDiagnosticsThresholds()
             .setPointOperationLatencyThreshold(Duration.ofDays(1));
@@ -458,7 +458,7 @@ public class ClientMetricsTest extends BatchTestBase {
         runReadItemTestWithThresholds(minThresholds, true);
     }
 
-    @Test(groups = { "simple" }, timeOut = TIMEOUT)
+    @Test(groups = { "fast" }, timeOut = TIMEOUT)
     public void replaceItem() throws Exception {
         this.beforeTest(CosmosMetricCategory.DEFAULT);
         try {
@@ -496,7 +496,7 @@ public class ClientMetricsTest extends BatchTestBase {
         }
     }
 
-    @Test(groups = { "simple" }, timeOut = TIMEOUT)
+    @Test(groups = { "fast" }, timeOut = TIMEOUT)
     public void deleteItem() throws Exception {
         this.beforeTest(CosmosMetricCategory.DEFAULT);
         try {
@@ -528,7 +528,7 @@ public class ClientMetricsTest extends BatchTestBase {
         }
     }
 
-    @Test(groups = { "simple" }, timeOut = TIMEOUT)
+    @Test(groups = { "fast" }, timeOut = TIMEOUT)
     public void readAllItems() throws Exception {
         this.beforeTest(CosmosMetricCategory.DEFAULT);
         try {
@@ -574,7 +574,7 @@ public class ClientMetricsTest extends BatchTestBase {
         }
     }
 
-    @Test(groups = { "simple" }, timeOut = TIMEOUT)
+    @Test(groups = { "fast" }, timeOut = TIMEOUT)
     public void readAllItemsWithDetailMetrics() throws Exception {
         this.beforeTest(
             CosmosMetricCategory.DEFAULT,
@@ -626,7 +626,7 @@ public class ClientMetricsTest extends BatchTestBase {
         }
     }
 
-    @Test(groups = { "simple" }, timeOut = TIMEOUT)
+    @Test(groups = { "fast" }, timeOut = TIMEOUT)
     public void readAllItemsWithDetailMetricsWithExplicitPageSize() throws Exception {
         this.beforeTest(
             CosmosMetricCategory.DEFAULT,
@@ -679,7 +679,7 @@ public class ClientMetricsTest extends BatchTestBase {
         }
     }
 
-    @Test(groups = { "simple" }, timeOut = TIMEOUT)
+    @Test(groups = { "fast" }, timeOut = TIMEOUT)
     public void queryItems() throws Exception {
         this.beforeTest(CosmosMetricCategory.DEFAULT);
         try {
@@ -797,7 +797,7 @@ public class ClientMetricsTest extends BatchTestBase {
         }
     }
 
-    @Test(groups = { "simple" }, timeOut = TIMEOUT)
+    @Test(groups = { "fast" }, timeOut = TIMEOUT)
     public void createItem_withBulk() {
         this.beforeTest(CosmosMetricCategory.DEFAULT);
         try {
@@ -851,7 +851,7 @@ public class ClientMetricsTest extends BatchTestBase {
         }
     }
 
-    @Test(groups = {"simple"}, timeOut = TIMEOUT)
+    @Test(groups = {"fast"}, timeOut = TIMEOUT)
     public void batchMultipleItemExecution() {
         this.beforeTest(CosmosMetricCategory.DEFAULT);
         try {
@@ -913,7 +913,7 @@ public class ClientMetricsTest extends BatchTestBase {
         }
     }
 
-    @Test(groups = { "simple" }, timeOut = TIMEOUT)
+    @Test(groups = { "fast" }, timeOut = TIMEOUT)
     public void effectiveMetricCategoriesForDefault() {
         this.beforeTest(CosmosMetricCategory.fromString("DeFAult"));
         try {
@@ -935,7 +935,7 @@ public class ClientMetricsTest extends BatchTestBase {
         }
     }
 
-    @Test(groups = { "simple" }, timeOut = TIMEOUT)
+    @Test(groups = { "fast" }, timeOut = TIMEOUT)
     public void effectiveMetricCategoriesForDefaultPlusDetails() {
         this.beforeTest(
             CosmosMetricCategory.DEFAULT,
@@ -962,7 +962,7 @@ public class ClientMetricsTest extends BatchTestBase {
         }
     }
 
-    @Test(groups = { "simple" }, timeOut = TIMEOUT)
+    @Test(groups = { "fast" }, timeOut = TIMEOUT)
     public void effectiveMetricCategoriesInvalidCategory() {
         String badCategoryName = "InvalidCategory";
         try {
@@ -978,7 +978,7 @@ public class ClientMetricsTest extends BatchTestBase {
         }
     }
 
-    @Test(groups = { "simple" }, timeOut = TIMEOUT)
+    @Test(groups = { "fast" }, timeOut = TIMEOUT)
     public void effectiveMetricCategoriesForAll() {
         this.beforeTest(CosmosMetricCategory.ALL);
         try {
@@ -1005,7 +1005,7 @@ public class ClientMetricsTest extends BatchTestBase {
         }
     }
 
-    @Test(groups = { "simple" }, timeOut = TIMEOUT)
+    @Test(groups = { "fast" }, timeOut = TIMEOUT)
     public void endpointMetricsAreDurable() throws IllegalAccessException {
         this.beforeTest(CosmosMetricCategory.ALL);
         try {
@@ -1036,7 +1036,7 @@ public class ClientMetricsTest extends BatchTestBase {
         }
     }
 
-    @Test(groups = { "simple" }, timeOut = TIMEOUT)
+    @Test(groups = { "fast" }, timeOut = TIMEOUT)
     public void effectiveMetricCategoriesForAllLatebound() {
         this.beforeTest(CosmosMetricCategory.DEFAULT);
         try {
@@ -1077,7 +1077,7 @@ public class ClientMetricsTest extends BatchTestBase {
         }
     }
 
-    @Test(groups = {"simple"}, timeOut = TIMEOUT)
+    @Test(groups = {"fast"}, timeOut = TIMEOUT)
     public void invalidMeterNameThrows() {
         try {
             CosmosMetricName.fromString("InvalidMeterName");
@@ -1087,7 +1087,7 @@ public class ClientMetricsTest extends BatchTestBase {
         }
     }
 
-    @Test(groups = {"simple"}, timeOut = TIMEOUT)
+    @Test(groups = {"fast"}, timeOut = TIMEOUT)
     public void invalidMeterCategoryThrows() {
         try {
             CosmosMetricCategory.fromString("InvalidMeterCategory");
@@ -1097,7 +1097,7 @@ public class ClientMetricsTest extends BatchTestBase {
         }
     }
 
-    @Test(groups = {"simple"}, timeOut = TIMEOUT)
+    @Test(groups = {"fast"}, timeOut = TIMEOUT)
     public void invalidMeterTagNameThrows() {
         try {
             CosmosMetricTagName.fromString("InvalidMeterTagName");
@@ -1107,7 +1107,7 @@ public class ClientMetricsTest extends BatchTestBase {
         }
     }
 
-    @Test(groups = {"simple"}, timeOut = TIMEOUT)
+    @Test(groups = {"fast"}, timeOut = TIMEOUT)
     public void meterTagNameFromStringConversion() {
         assertThat(CosmosMetricTagName.fromString("aLl  "))
             .isSameAs(CosmosMetricTagName.ALL);
@@ -1148,7 +1148,7 @@ public class ClientMetricsTest extends BatchTestBase {
 
     }
 
-    @Test(groups = {"simple"}, timeOut = TIMEOUT)
+    @Test(groups = {"fast"}, timeOut = TIMEOUT)
     public void meterCategoryFromStringConversion() {
         assertThat(CosmosMetricCategory.fromString("aLl  "))
             .isSameAs(CosmosMetricCategory.ALL);
@@ -1178,7 +1178,7 @@ public class ClientMetricsTest extends BatchTestBase {
             .isSameAs(CosmosMetricCategory.LEGACY);
     }
 
-    @Test(groups = {"simple"}, timeOut = TIMEOUT)
+    @Test(groups = {"fast"}, timeOut = TIMEOUT)
     public void meterNameFromStringConversion() {
         assertThat(CosmosMetricName.fromString("cosmos.client.op.laTency"))
             .isSameAs(CosmosMetricName.OPERATION_SUMMARY_LATENCY);

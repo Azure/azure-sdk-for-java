@@ -49,18 +49,18 @@ public class LogLevelTest extends TestSuiteBase {
         super(clientBuilder);
     }
 
-    @BeforeClass(groups = { "simple" }, timeOut = SETUP_TIMEOUT)
+    @BeforeClass(groups = { "fast" }, timeOut = SETUP_TIMEOUT)
     public void before_LogLevelTest() {
         client = getClientBuilder().buildAsyncClient();
         createdCollection = getSharedMultiPartitionCosmosContainer(client);
     }
 
-    @AfterMethod(groups = { "simple" })
+    @AfterMethod(groups = { "fast" })
     public void afterMethod() {
         resetLoggingConfiguration();
     }
 
-    @AfterClass(groups = { "simple" }, timeOut = SHUTDOWN_TIMEOUT)
+    @AfterClass(groups = { "fast" }, timeOut = SHUTDOWN_TIMEOUT)
     public void after_LogLevelTest() {
         resetLoggingConfiguration();
         safeClose(client);
@@ -72,7 +72,7 @@ public class LogLevelTest extends TestSuiteBase {
      *
      * @throws Exception
      */
-    @Test(groups = { "simple" }, timeOut = TIMEOUT)
+    @Test(groups = { "fast" }, timeOut = TIMEOUT)
     public void createDocumentWithDebugLevel() throws Exception {
         final StringWriter consoleWriter = new StringWriter();
 
@@ -99,7 +99,7 @@ public class LogLevelTest extends TestSuiteBase {
      *
      * @throws Exception
      */
-    @Test(groups = { "simple" }, timeOut = TIMEOUT)
+    @Test(groups = { "fast" }, timeOut = TIMEOUT)
     public void createDocumentWithWarningLevel() throws Exception {
         final StringWriter consoleWriter = new StringWriter();
         addAppenderAndLogger(NETWORK_LOGGING_CATEGORY, Level.WARN, APPENDER_NAME, consoleWriter);
@@ -125,7 +125,7 @@ public class LogLevelTest extends TestSuiteBase {
      *
      * @throws Exception
      */
-    @Test(groups = { "simple" }, timeOut = TIMEOUT)
+    @Test(groups = { "fast" }, timeOut = TIMEOUT)
     public void createDocumentWithTraceLevel() throws Exception {
         final StringWriter consoleWriter = new StringWriter();
 
@@ -146,7 +146,7 @@ public class LogLevelTest extends TestSuiteBase {
         assertThat(consoleWriter.toString()).contains(LOG_PATTERN_4);
     }
 
-    @Test(groups = { "simple" }, timeOut = TIMEOUT, enabled = false)
+    @Test(groups = { "fast" }, timeOut = TIMEOUT, enabled = false)
     public void createDocumentWithTraceLevelAtRoot() throws Exception {
         final StringWriter consoleWriter = new StringWriter();
 
@@ -167,7 +167,7 @@ public class LogLevelTest extends TestSuiteBase {
         assertThat(consoleWriter.toString()).contains(LOG_PATTERN_4);
     }
 
-    @Test(groups = { "simple" }, timeOut = TIMEOUT, enabled = false)
+    @Test(groups = { "fast" }, timeOut = TIMEOUT, enabled = false)
     public void createDocumentWithDebugLevelAtRoot() throws Exception {
         final StringWriter consoleWriter = new StringWriter();
 
@@ -194,7 +194,7 @@ public class LogLevelTest extends TestSuiteBase {
      *
      * @throws Exception
      */
-    @Test(groups = { "simple" }, timeOut = TIMEOUT)
+    @Test(groups = { "fast" }, timeOut = TIMEOUT)
     public void createDocumentWithErrorLevel() throws Exception {
         final StringWriter consoleWriter = new StringWriter();
 
@@ -220,7 +220,7 @@ public class LogLevelTest extends TestSuiteBase {
      *
      * @throws Exception
      */
-    @Test(groups = { "simple" }, timeOut = TIMEOUT)
+    @Test(groups = { "fast" }, timeOut = TIMEOUT)
     public void createDocumentWithInfoLevel() throws Exception {
         final StringWriter consoleWriter = new StringWriter();
 

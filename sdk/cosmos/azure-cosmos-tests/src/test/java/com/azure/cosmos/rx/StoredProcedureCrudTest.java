@@ -33,7 +33,7 @@ public class StoredProcedureCrudTest extends TestSuiteBase {
         super(clientBuilder);
     }
 
-    @Test(groups = { "simple" }, timeOut = TIMEOUT)
+    @Test(groups = { "fast" }, timeOut = TIMEOUT)
     public void createStoredProcedure() throws Exception {
 
         CosmosStoredProcedureProperties storedProcedureDef = new CosmosStoredProcedureProperties(
@@ -52,7 +52,7 @@ public class StoredProcedureCrudTest extends TestSuiteBase {
         validateSuccess(createObservable, validator);
     }
 
-    @Test(groups = { "simple" }, timeOut = TIMEOUT)
+    @Test(groups = { "fast" }, timeOut = TIMEOUT)
     public void readStoredProcedure() throws Exception {
 
         CosmosStoredProcedureProperties storedProcedureDef = new CosmosStoredProcedureProperties(
@@ -75,7 +75,7 @@ public class StoredProcedureCrudTest extends TestSuiteBase {
         validateSuccess(readObservable, validator);
     }
 
-    @Test(groups = { "simple" }, timeOut = TIMEOUT)
+    @Test(groups = { "fast" }, timeOut = TIMEOUT)
     public void deleteStoredProcedure() throws Exception {
 
         CosmosStoredProcedureProperties storedProcedureDef = new CosmosStoredProcedureProperties(
@@ -101,14 +101,14 @@ public class StoredProcedureCrudTest extends TestSuiteBase {
         validateFailure(readObservable, notFoundValidator);
     }
 
-    @BeforeClass(groups = { "simple" }, timeOut = 10_000 * SETUP_TIMEOUT)
+    @BeforeClass(groups = { "fast" }, timeOut = 10_000 * SETUP_TIMEOUT)
     public void before_StoredProcedureCrudTest() {
         assertThat(this.client).isNull();
         this.client = getClientBuilder().buildAsyncClient();
         this.container = getSharedMultiPartitionCosmosContainer(this.client);
     }
 
-    @AfterClass(groups = { "simple" }, timeOut = SHUTDOWN_TIMEOUT, alwaysRun = true)
+    @AfterClass(groups = { "fast" }, timeOut = SHUTDOWN_TIMEOUT, alwaysRun = true)
     public void afterClass() {
         assertThat(this.client).isNotNull();
         this.client.close();
