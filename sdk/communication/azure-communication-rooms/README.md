@@ -78,8 +78,6 @@ participant2 = new RoomParticipant(new CommunicationUserIdentifier("<ACS User MR
 participants.add(participant1);
 participants.add(participant2);
 
-// `PstnDialOutEnabled` property is added to enable or disable PSTN Dial-Out feature in a room. The `PstnDialOutEnabled` is an optional property. If `PstnDialOutEnabled` is not provided, then the default for `PstnDialOutEnabled` is false.
-
 // Create Room options
 CreateRoomOptions roomOptions = new CreateRoomOptions()
         .setValidFrom(validFrom)
