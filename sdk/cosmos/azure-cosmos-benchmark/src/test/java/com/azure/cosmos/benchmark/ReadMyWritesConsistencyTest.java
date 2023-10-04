@@ -6,8 +6,12 @@ package com.azure.cosmos.benchmark;
 import com.azure.cosmos.implementation.AsyncDocumentClient;
 import com.azure.cosmos.implementation.Database;
 import com.azure.cosmos.implementation.DocumentCollection;
+import com.azure.cosmos.implementation.OperationType;
+import com.azure.cosmos.implementation.QueryFeedOperationState;
 import com.azure.cosmos.implementation.RequestOptions;
+import com.azure.cosmos.implementation.ResourceType;
 import com.azure.cosmos.implementation.TestConfigurations;
+import com.azure.cosmos.models.CosmosQueryRequestOptions;
 import com.azure.cosmos.models.IncludedPath;
 import com.azure.cosmos.models.IndexingPolicy;
 import com.azure.cosmos.models.PartitionKeyDefinition;
@@ -175,14 +179,20 @@ public class ReadMyWritesConsistencyTest {
 
     private void scheduleScaleUp(int delayStartInSeconds, int newThroughput) {
         AsyncDocumentClient housekeepingClient = Utils.housekeepingClient();
-        Flux.just(0L).delayElements(Duration.ofSeconds(delayStartInSeconds), Schedulers.newSingle("ScaleUpThread")).flatMap(aVoid -> {
+        QueryFeedOperationState state = DocDBUtils.createDummyQueryFeedOperationState(
+            ResourceType.Offer,
+            OperationType.Query,
+            new CosmosQueryRequestOptions(),
+            housekeepingClient
+        );
 
+        Flux.just(0L).delayElements(Duration.ofSeconds(delayStartInSeconds), Schedulers.newSingle("ScaleUpThread")).flatMap(aVoid -> {
             // increase throughput to max for a single partition collection to avoid throttling
             // for bulk insert and later queries.
             return housekeepingClient.queryOffers(
                 String.format("SELECT * FROM r WHERE r.offerResourceId = '%s'",
                     collection.getResourceId())
-                , null).flatMap(page -> Flux.fromIterable(page.getResults()))
+                , state).flatMap(page -> Flux.fromIterable(page.getResults()))
                                      .take(1).flatMap(offer -> {
                     logger.info("going to scale up collection, newThroughput {}", newThroughput);
                     offer.setThroughput(newThroughput);

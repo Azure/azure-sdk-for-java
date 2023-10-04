@@ -7,7 +7,7 @@ package com.azure.resourcemanager.containerservice.generated;
 /** Samples for ManagedClusters AbortLatestOperation. */
 public final class ManagedClustersAbortLatestOperationSamples {
     /*
-     * x-ms-original-file: specification/containerservice/resource-manager/Microsoft.ContainerService/aks/stable/2023-07-01/examples/ManagedClustersAbortOperation.json
+     * x-ms-original-file: specification/containerservice/resource-manager/Microsoft.ContainerService/aks/stable/2023-08-01/examples/ManagedClustersAbortOperation.json
      */
     /**
      * Sample code: Abort operation on managed cluster.

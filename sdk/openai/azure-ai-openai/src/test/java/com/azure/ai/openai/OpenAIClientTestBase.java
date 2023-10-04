@@ -7,6 +7,7 @@ package com.azure.ai.openai;
 import com.azure.ai.openai.functions.Parameters;
 import com.azure.ai.openai.models.AudioTaskLabel;
 import com.azure.ai.openai.models.AudioTranscription;
+import com.azure.ai.openai.models.AudioTranslation;
 import com.azure.ai.openai.models.AzureChatExtensionsMessageContext;
 import com.azure.ai.openai.models.ChatChoice;
 import com.azure.ai.openai.models.ChatCompletions;
@@ -111,7 +112,9 @@ public abstract class OpenAIClientTestBase extends TestProxyTestBase {
     private void addTestRecordCustomSanitizers() {
         interceptorManager.addSanitizers(Arrays.asList(
             new TestProxySanitizer("$..key", null, "REDACTED", TestProxySanitizerType.BODY_KEY),
-            new TestProxySanitizer("$..endpoint", null, "https://REDACTED", TestProxySanitizerType.BODY_KEY)
+            new TestProxySanitizer("$..endpoint", null, "https://REDACTED", TestProxySanitizerType.BODY_KEY),
+            new TestProxySanitizer("Content-Type", "(^multipart\\/form-data; boundary=[0-9a-f]{8}-[0-9a-f]{4}-[0-9a-f]{2})",
+                "multipart\\/form-data; boundary=BOUNDARY", TestProxySanitizerType.HEADER)
         ));
     }
 
@@ -200,7 +203,7 @@ public abstract class OpenAIClientTestBase extends TestProxyTestBase {
     }
 
     void getCompletionsContentFilterRunner(BiConsumer<String, String> testRunner) {
-        testRunner.accept("gpt-35-turbo", "What is 3 times 4?");
+        testRunner.accept("text-davinci-003", "What is 3 times 4?");
     }
 
     void getChatCompletionsContentFilterRunnerForNonAzure(BiConsumer<String, List<ChatMessage>> testRunner) {
@@ -456,6 +459,25 @@ public abstract class OpenAIClientTestBase extends TestProxyTestBase {
         assertEquals(audioTaskLabel, transcription.getTask());
         assertNotNull(transcription.getSegments());
         assertFalse(transcription.getSegments().isEmpty());
+    }
+
+    static void assertAudioTranslationSimpleJson(AudioTranslation translation, String expectedText) {
+        assertNotNull(translation);
+        assertEquals(expectedText, translation.getText());
+        assertNull(translation.getDuration());
+        assertNull(translation.getLanguage());
+        assertNull(translation.getTask());
+        assertNull(translation.getSegments());
+    }
+
+    static void assertAudioTranslationVerboseJson(AudioTranslation translation, String expectedText, AudioTaskLabel audioTaskLabel) {
+        assertNotNull(translation);
+        assertEquals(expectedText, translation.getText());
+        assertNotNull(translation.getDuration());
+        assertNotNull(translation.getLanguage());
+        assertEquals(audioTaskLabel, translation.getTask());
+        assertNotNull(translation.getSegments());
+        assertFalse(translation.getSegments().isEmpty());
     }
 
     protected static final String BATMAN_TRANSCRIPTION =

@@ -7,6 +7,7 @@ import com.azure.ai.openai.functions.MyFunctionCallArguments;
 import com.azure.ai.openai.models.AudioTaskLabel;
 import com.azure.ai.openai.models.AudioTranscriptionFormat;
 import com.azure.ai.openai.models.AudioTranscriptionOptions;
+import com.azure.ai.openai.models.AudioTranslationFormat;
 import com.azure.ai.openai.models.AudioTranslationOptions;
 import com.azure.ai.openai.models.AzureChatExtensionConfiguration;
 import com.azure.ai.openai.models.AzureChatExtensionType;
@@ -27,6 +28,7 @@ import com.azure.core.exception.HttpResponseException;
 import com.azure.core.exception.ResourceNotFoundException;
 import com.azure.core.http.HttpClient;
 import com.azure.core.http.rest.RequestOptions;
+import com.azure.core.test.annotation.RecordWithoutRequestBody;
 import com.azure.core.util.BinaryData;
 import org.junit.jupiter.params.ParameterizedTest;
 import org.junit.jupiter.params.provider.MethodSource;
@@ -38,7 +40,11 @@ import java.util.Iterator;
 import java.util.List;
 
 import static com.azure.ai.openai.TestUtils.DISPLAY_NAME_WITH_ARGUMENTS;
-import static org.junit.jupiter.api.Assertions.*;
+import static org.junit.jupiter.api.Assertions.assertEquals;
+import static org.junit.jupiter.api.Assertions.assertInstanceOf;
+import static org.junit.jupiter.api.Assertions.assertNotNull;
+import static org.junit.jupiter.api.Assertions.assertNull;
+import static org.junit.jupiter.api.Assertions.assertTrue;
 
 public class OpenAIAsyncClientTest extends OpenAIClientTestBase {
     private OpenAIAsyncClient client;
@@ -295,7 +301,7 @@ public class OpenAIAsyncClientTest extends OpenAIClientTestBase {
     @ParameterizedTest(name = DISPLAY_NAME_WITH_ARGUMENTS)
     @MethodSource("com.azure.ai.openai.TestUtils#getTestParameters")
     public void testChatCompletionContentFiltering(HttpClient httpClient, OpenAIServiceVersion serviceVersion) {
-        client = getOpenAIAsyncClient(httpClient, OpenAIServiceVersion.V2023_08_01_PREVIEW);
+        client = getOpenAIAsyncClient(httpClient, serviceVersion);
         getChatCompletionsContentFilterRunner((modelId, chatMessages) -> {
             StepVerifier.create(client.getChatCompletions(modelId, new ChatCompletionsOptions(chatMessages)))
                 .assertNext(chatCompletions -> {
@@ -311,7 +317,7 @@ public class OpenAIAsyncClientTest extends OpenAIClientTestBase {
     @ParameterizedTest(name = DISPLAY_NAME_WITH_ARGUMENTS)
     @MethodSource("com.azure.ai.openai.TestUtils#getTestParameters")
     public void testChatCompletionStreamContentFiltering(HttpClient httpClient, OpenAIServiceVersion serviceVersion) {
-        client = getOpenAIAsyncClient(httpClient, OpenAIServiceVersion.V2023_08_01_PREVIEW);
+        client = getOpenAIAsyncClient(httpClient, serviceVersion);
         getChatCompletionsContentFilterRunner((modelId, chatMessages) -> {
             StepVerifier.create(client.getChatCompletionsStream(modelId, new ChatCompletionsOptions(chatMessages)))
                 .recordWith(ArrayList::new)
@@ -363,7 +369,7 @@ public class OpenAIAsyncClientTest extends OpenAIClientTestBase {
     @ParameterizedTest(name = DISPLAY_NAME_WITH_ARGUMENTS)
     @MethodSource("com.azure.ai.openai.TestUtils#getTestParameters")
     public void testCompletionContentFiltering(HttpClient httpClient, OpenAIServiceVersion serviceVersion) {
-        client = getOpenAIAsyncClient(httpClient, OpenAIServiceVersion.V2023_08_01_PREVIEW);
+        client = getOpenAIAsyncClient(httpClient, serviceVersion);
         getCompletionsContentFilterRunner((modelId, prompt) -> {
             CompletionsOptions completionsOptions = new CompletionsOptions(Arrays.asList(prompt));
             // work around for this model, there seem to be some issues with Completions in gpt-turbo models
@@ -381,11 +387,9 @@ public class OpenAIAsyncClientTest extends OpenAIClientTestBase {
     @ParameterizedTest(name = DISPLAY_NAME_WITH_ARGUMENTS)
     @MethodSource("com.azure.ai.openai.TestUtils#getTestParameters")
     public void testCompletionStreamContentFiltering(HttpClient httpClient, OpenAIServiceVersion serviceVersion) {
-        client = getOpenAIAsyncClient(httpClient, OpenAIServiceVersion.V2023_08_01_PREVIEW);
+        client = getOpenAIAsyncClient(httpClient, serviceVersion);
         getCompletionsContentFilterRunner((modelId, prompt) -> {
             CompletionsOptions completionsOptions = new CompletionsOptions(Arrays.asList(prompt));
-            // work around for this model, there seem to be some issues with Completions in gpt-turbo models
-            completionsOptions.setMaxTokens(2000);
             StepVerifier.create(client.getCompletionsStream(modelId, completionsOptions))
                 .recordWith(ArrayList::new)
                 .thenConsumeWhile(chatCompletions -> {
@@ -399,14 +403,13 @@ public class OpenAIAsyncClientTest extends OpenAIClientTestBase {
                     for (Iterator<Completions> it = messageList.iterator(); it.hasNext();) {
                         Completions completions = it.next();
                         if (i == 0) {
-                            // The first stream message has the prompt filter result
+                            System.out.println("First stream message");
                             assertEquals(1, completions.getPromptFilterResults().size());
                             assertSafeContentFilterResults(completions.getPromptFilterResults().get(0).getContentFilterResults());
                         } else if (i == messageList.size() - 1) {
                             // The last stream message is empty with all the filters set to null
                             assertEquals(1, completions.getChoices().size());
                             Choice choice = completions.getChoices().get(0);
-
                             assertEquals(CompletionsFinishReason.fromString("stop"), choice.getFinishReason());
                             assertNotNull(choice.getText());
 
@@ -428,7 +431,7 @@ public class OpenAIAsyncClientTest extends OpenAIClientTestBase {
     @ParameterizedTest(name = DISPLAY_NAME_WITH_ARGUMENTS)
     @MethodSource("com.azure.ai.openai.TestUtils#getTestParameters")
     public void testChatCompletionsBasicSearchExtension(HttpClient httpClient, OpenAIServiceVersion serviceVersion) {
-        client = getOpenAIAsyncClient(httpClient, OpenAIServiceVersion.V2023_08_01_PREVIEW);
+        client = getOpenAIAsyncClient(httpClient, serviceVersion);
 
         getChatCompletionsAzureChatSearchRunner((deploymentName, chatCompletionsOptions) -> {
             AzureCognitiveSearchChatExtensionConfiguration cognitiveSearchConfiguration =
@@ -453,7 +456,7 @@ public class OpenAIAsyncClientTest extends OpenAIClientTestBase {
     @ParameterizedTest(name = DISPLAY_NAME_WITH_ARGUMENTS)
     @MethodSource("com.azure.ai.openai.TestUtils#getTestParameters")
     public void testChatCompletionsStreamingBasicSearchExtension(HttpClient httpClient, OpenAIServiceVersion serviceVersion) {
-        client = getOpenAIAsyncClient(httpClient, OpenAIServiceVersion.V2023_08_01_PREVIEW);
+        client = getOpenAIAsyncClient(httpClient, serviceVersion);
 
         getChatCompletionsAzureChatSearchRunner((deploymentName, chatCompletionsOptions) -> {
             AzureCognitiveSearchChatExtensionConfiguration cognitiveSearchConfiguration =
@@ -479,6 +482,7 @@ public class OpenAIAsyncClientTest extends OpenAIClientTestBase {
 
     @ParameterizedTest(name = DISPLAY_NAME_WITH_ARGUMENTS)
     @MethodSource("com.azure.ai.openai.TestUtils#getTestParameters")
+    @RecordWithoutRequestBody
     public void testGetAudioTranscriptionJson(HttpClient httpClient, OpenAIServiceVersion serviceVersion) {
         client = getOpenAIAsyncClient(httpClient, serviceVersion);
 
@@ -496,6 +500,7 @@ public class OpenAIAsyncClientTest extends OpenAIClientTestBase {
 
     @ParameterizedTest(name = DISPLAY_NAME_WITH_ARGUMENTS)
     @MethodSource("com.azure.ai.openai.TestUtils#getTestParameters")
+    @RecordWithoutRequestBody
     public void testGetAudioTranscriptionVerboseJson(HttpClient httpClient, OpenAIServiceVersion serviceVersion) {
         client = getOpenAIAsyncClient(httpClient, serviceVersion);
 
@@ -513,6 +518,7 @@ public class OpenAIAsyncClientTest extends OpenAIClientTestBase {
 
     @ParameterizedTest(name = DISPLAY_NAME_WITH_ARGUMENTS)
     @MethodSource("com.azure.ai.openai.TestUtils#getTestParameters")
+    @RecordWithoutRequestBody
     public void testGetAudioTranscriptionTextPlain(HttpClient httpClient, OpenAIServiceVersion serviceVersion) {
         client = getOpenAIAsyncClient(httpClient, serviceVersion);
 
@@ -531,6 +537,7 @@ public class OpenAIAsyncClientTest extends OpenAIClientTestBase {
 
     @ParameterizedTest(name = DISPLAY_NAME_WITH_ARGUMENTS)
     @MethodSource("com.azure.ai.openai.TestUtils#getTestParameters")
+    @RecordWithoutRequestBody
     public void testGetAudioTranscriptionSrt(HttpClient httpClient, OpenAIServiceVersion serviceVersion) {
         client = getOpenAIAsyncClient(httpClient, serviceVersion);
 
@@ -553,6 +560,7 @@ public class OpenAIAsyncClientTest extends OpenAIClientTestBase {
 
     @ParameterizedTest(name = DISPLAY_NAME_WITH_ARGUMENTS)
     @MethodSource("com.azure.ai.openai.TestUtils#getTestParameters")
+    @RecordWithoutRequestBody
     public void testGetAudioTranscriptionVtt(HttpClient httpClient, OpenAIServiceVersion serviceVersion) {
         client = getOpenAIAsyncClient(httpClient, serviceVersion);
 
@@ -618,47 +626,50 @@ public class OpenAIAsyncClientTest extends OpenAIClientTestBase {
 
     @ParameterizedTest(name = DISPLAY_NAME_WITH_ARGUMENTS)
     @MethodSource("com.azure.ai.openai.TestUtils#getTestParameters")
+    @RecordWithoutRequestBody
     public void testGetAudioTranslationJson(HttpClient httpClient, OpenAIServiceVersion serviceVersion) {
         client = getOpenAIAsyncClient(httpClient, serviceVersion);
 
         getAudioTranslationRunner((deploymentName, fileName) -> {
             byte[] file = BinaryData.fromFile(openTestResourceFile(fileName)).toBytes();
             AudioTranslationOptions translationOptions = new AudioTranslationOptions(file);
-            translationOptions.setResponseFormat(AudioTranscriptionFormat.JSON);
+            translationOptions.setResponseFormat(AudioTranslationFormat.JSON);
 
             StepVerifier.create(client.getAudioTranslation(deploymentName, fileName, translationOptions))
                 .assertNext(translation ->
-                    assertAudioTranscriptionSimpleJson(translation, "It's raining today."))
+                    assertAudioTranslationSimpleJson(translation, "It's raining today."))
                 .verifyComplete();
         });
     }
 
     @ParameterizedTest(name = DISPLAY_NAME_WITH_ARGUMENTS)
     @MethodSource("com.azure.ai.openai.TestUtils#getTestParameters")
+    @RecordWithoutRequestBody
     public void testGetAudioTranslationVerboseJson(HttpClient httpClient, OpenAIServiceVersion serviceVersion) {
         client = getOpenAIAsyncClient(httpClient, serviceVersion);
 
         getAudioTranslationRunner((deploymentName, fileName) -> {
             byte[] file = BinaryData.fromFile(openTestResourceFile(fileName)).toBytes();
             AudioTranslationOptions translationOptions = new AudioTranslationOptions(file);
-            translationOptions.setResponseFormat(AudioTranscriptionFormat.VERBOSE_JSON);
+            translationOptions.setResponseFormat(AudioTranslationFormat.VERBOSE_JSON);
 
             StepVerifier.create(client.getAudioTranslation(deploymentName, fileName, translationOptions))
                 .assertNext(translation ->
-                    assertAudioTranscriptionVerboseJson(translation, "It's raining today.", AudioTaskLabel.TRANSLATE))
+                    assertAudioTranslationVerboseJson(translation, "It's raining today.", AudioTaskLabel.TRANSLATE))
                 .verifyComplete();
         });
     }
 
     @ParameterizedTest(name = DISPLAY_NAME_WITH_ARGUMENTS)
     @MethodSource("com.azure.ai.openai.TestUtils#getTestParameters")
+    @RecordWithoutRequestBody
     public void testGetAudioTranslationTextPlain(HttpClient httpClient, OpenAIServiceVersion serviceVersion) {
         client = getOpenAIAsyncClient(httpClient, serviceVersion);
 
         getAudioTranslationRunner((deploymentName, fileName) -> {
             byte[] file = BinaryData.fromFile(openTestResourceFile(fileName)).toBytes();
             AudioTranslationOptions translationOptions = new AudioTranslationOptions(file);
-            translationOptions.setResponseFormat(AudioTranscriptionFormat.TEXT);
+            translationOptions.setResponseFormat(AudioTranslationFormat.TEXT);
 
             StepVerifier.create(client.getAudioTranslationText(deploymentName, fileName, translationOptions))
                 .assertNext(translation -> {
@@ -669,13 +680,14 @@ public class OpenAIAsyncClientTest extends OpenAIClientTestBase {
 
     @ParameterizedTest(name = DISPLAY_NAME_WITH_ARGUMENTS)
     @MethodSource("com.azure.ai.openai.TestUtils#getTestParameters")
+    @RecordWithoutRequestBody
     public void testGetAudioTranslationSrt(HttpClient httpClient, OpenAIServiceVersion serviceVersion) {
         client = getOpenAIAsyncClient(httpClient, serviceVersion);
 
         getAudioTranslationRunner((deploymentName, fileName) -> {
             byte[] file = BinaryData.fromFile(openTestResourceFile(fileName)).toBytes();
             AudioTranslationOptions translationOptions = new AudioTranslationOptions(file);
-            translationOptions.setResponseFormat(AudioTranscriptionFormat.SRT);
+            translationOptions.setResponseFormat(AudioTranslationFormat.SRT);
 
             StepVerifier.create(client.getAudioTranslationText(deploymentName, fileName, translationOptions))
                 .assertNext(translation -> {
@@ -691,13 +703,14 @@ public class OpenAIAsyncClientTest extends OpenAIClientTestBase {
 
     @ParameterizedTest(name = DISPLAY_NAME_WITH_ARGUMENTS)
     @MethodSource("com.azure.ai.openai.TestUtils#getTestParameters")
+    @RecordWithoutRequestBody
     public void testGetAudioTranslationVtt(HttpClient httpClient, OpenAIServiceVersion serviceVersion) {
         client = getOpenAIAsyncClient(httpClient, serviceVersion);
 
         getAudioTranslationRunner((deploymentName, fileName) -> {
             byte[] file = BinaryData.fromFile(openTestResourceFile(fileName)).toBytes();
             AudioTranslationOptions translationOptions = new AudioTranslationOptions(file);
-            translationOptions.setResponseFormat(AudioTranscriptionFormat.VTT);
+            translationOptions.setResponseFormat(AudioTranslationFormat.VTT);
 
             StepVerifier.create(client.getAudioTranslationText(deploymentName, fileName, translationOptions))
                 .assertNext(translation -> {
@@ -715,16 +728,16 @@ public class OpenAIAsyncClientTest extends OpenAIClientTestBase {
     @MethodSource("com.azure.ai.openai.TestUtils#getTestParameters")
     public void testGetAudioTranslationTextWrongFormats(HttpClient httpClient, OpenAIServiceVersion serviceVersion) {
         client = getOpenAIAsyncClient(httpClient, serviceVersion);
-        List<AudioTranscriptionFormat> wrongFormats = Arrays.asList(
-                AudioTranscriptionFormat.JSON,
-                AudioTranscriptionFormat.VERBOSE_JSON
+        List<AudioTranslationFormat> wrongFormats = Arrays.asList(
+            AudioTranslationFormat.JSON,
+            AudioTranslationFormat.VERBOSE_JSON
         );
 
         getAudioTranslationRunner((deploymentName, fileName) -> {
             byte[] file = BinaryData.fromFile(openTestResourceFile(fileName)).toBytes();
             AudioTranslationOptions translationOptions = new AudioTranslationOptions(file);
 
-            for (AudioTranscriptionFormat format: wrongFormats) {
+            for (AudioTranslationFormat format: wrongFormats) {
                 translationOptions.setResponseFormat(format);
                 StepVerifier.create(client.getAudioTranslationText(deploymentName, fileName, translationOptions))
                                 .verifyErrorSatisfies(error -> assertTrue(error instanceof IllegalArgumentException));
@@ -736,17 +749,17 @@ public class OpenAIAsyncClientTest extends OpenAIClientTestBase {
     @MethodSource("com.azure.ai.openai.TestUtils#getTestParameters")
     public void testGetAudioTranslationJsonWrongFormats(HttpClient httpClient, OpenAIServiceVersion serviceVersion) {
         client = getOpenAIAsyncClient(httpClient, serviceVersion);
-        List<AudioTranscriptionFormat> wrongFormats = Arrays.asList(
-                AudioTranscriptionFormat.TEXT,
-                AudioTranscriptionFormat.SRT,
-                AudioTranscriptionFormat.VTT
+        List<AudioTranslationFormat> wrongFormats = Arrays.asList(
+            AudioTranslationFormat.TEXT,
+            AudioTranslationFormat.SRT,
+            AudioTranslationFormat.VTT
         );
 
         getAudioTranslationRunner((deploymentName, fileName) -> {
             byte[] file = BinaryData.fromFile(openTestResourceFile(fileName)).toBytes();
             AudioTranslationOptions translationOptions = new AudioTranslationOptions(file);
 
-            for (AudioTranscriptionFormat format: wrongFormats) {
+            for (AudioTranslationFormat format: wrongFormats) {
                 translationOptions.setResponseFormat(format);
                 StepVerifier.create(client.getAudioTranslation(deploymentName, fileName, translationOptions))
                         .verifyErrorSatisfies(error -> assertTrue(error instanceof IllegalArgumentException));

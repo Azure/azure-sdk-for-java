@@ -5,11 +5,13 @@
 package com.azure.resourcemanager.managedapplications.models;
 
 import com.azure.core.annotation.Fluent;
+import com.fasterxml.jackson.annotation.JsonInclude;
 import com.fasterxml.jackson.annotation.JsonProperty;
+import java.util.Map;
 
 /** Identity for the resource. */
 @Fluent
-public class Identity {
+public final class Identity {
     /*
      * The principal ID of resource identity.
      */
@@ -27,6 +29,15 @@ public class Identity {
      */
     @JsonProperty(value = "type")
     private ResourceIdentityType type;
+
+    /*
+     * The list of user identities associated with the resource. The user identity dictionary key references will be
+     * resource ids in the form:
+     * '/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.ManagedIdentity/userAssignedIdentities/{identityName}'.
+     */
+    @JsonProperty(value = "userAssignedIdentities")
+    @JsonInclude(value = JsonInclude.Include.NON_NULL, content = JsonInclude.Include.ALWAYS)
+    private Map<String, UserAssignedResourceIdentity> userAssignedIdentities;
 
     /** Creates an instance of Identity class. */
     public Identity() {
@@ -71,10 +82,44 @@ public class Identity {
     }
 
     /**
+     * Get the userAssignedIdentities property: The list of user identities associated with the resource. The user
+     * identity dictionary key references will be resource ids in the form:
+     * '/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.ManagedIdentity/userAssignedIdentities/{identityName}'.
+     *
+     * @return the userAssignedIdentities value.
+     */
+    public Map<String, UserAssignedResourceIdentity> userAssignedIdentities() {
+        return this.userAssignedIdentities;
+    }
+
+    /**
+     * Set the userAssignedIdentities property: The list of user identities associated with the resource. The user
+     * identity dictionary key references will be resource ids in the form:
+     * '/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.ManagedIdentity/userAssignedIdentities/{identityName}'.
+     *
+     * @param userAssignedIdentities the userAssignedIdentities value to set.
+     * @return the Identity object itself.
+     */
+    public Identity withUserAssignedIdentities(Map<String, UserAssignedResourceIdentity> userAssignedIdentities) {
+        this.userAssignedIdentities = userAssignedIdentities;
+        return this;
+    }
+
+    /**
      * Validates the instance.
      *
      * @throws IllegalArgumentException thrown if the instance is not valid.
      */
     public void validate() {
+        if (userAssignedIdentities() != null) {
+            userAssignedIdentities()
+                .values()
+                .forEach(
+                    e -> {
+                        if (e != null) {
+                            e.validate();
+                        }
+                    });
+        }
     }
 }

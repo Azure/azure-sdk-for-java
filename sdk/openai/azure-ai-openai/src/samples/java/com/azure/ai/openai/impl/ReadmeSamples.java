@@ -9,6 +9,8 @@ import com.azure.ai.openai.OpenAIClientBuilder;
 import com.azure.ai.openai.models.AudioTranscription;
 import com.azure.ai.openai.models.AudioTranscriptionFormat;
 import com.azure.ai.openai.models.AudioTranscriptionOptions;
+import com.azure.ai.openai.models.AudioTranslation;
+import com.azure.ai.openai.models.AudioTranslationFormat;
 import com.azure.ai.openai.models.AudioTranslationOptions;
 import com.azure.ai.openai.models.ChatChoice;
 import com.azure.ai.openai.models.ChatCompletions;
@@ -251,9 +253,9 @@ public final class ReadmeSamples {
 
         byte[] file = BinaryData.fromFile(filePath).toBytes();
         AudioTranslationOptions translationOptions = new AudioTranslationOptions(file)
-            .setResponseFormat(AudioTranscriptionFormat.JSON);
+            .setResponseFormat(AudioTranslationFormat.JSON);
 
-        AudioTranscription translation = client.getAudioTranslation("{deploymentOrModelId}", fileName, translationOptions);
+        AudioTranslation translation = client.getAudioTranslation("{deploymentOrModelId}", fileName, translationOptions);
 
         System.out.println("Translation: " + translation.getText());
         // END: readme-sample-audioTranslation
