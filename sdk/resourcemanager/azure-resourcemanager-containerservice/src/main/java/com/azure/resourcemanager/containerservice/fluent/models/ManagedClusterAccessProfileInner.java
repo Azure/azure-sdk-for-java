@@ -67,7 +67,7 @@ public final class ManagedClusterAccessProfileInner extends Resource {
      * @return the kubeConfig value.
      */
     public byte[] kubeConfig() {
-        return this.innerProperties() == null ? new byte[0] : this.innerProperties().kubeConfig();
+        return this.innerProperties() == null ? null : this.innerProperties().kubeConfig();
     }
 
     /**

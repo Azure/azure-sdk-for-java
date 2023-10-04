@@ -22,7 +22,7 @@ import java.util.regex.Pattern;
 import java.util.regex.PatternSyntaxException;
 
 /**
- * This represents proxy configuration to be used in http clients..
+ * This represents proxy configuration to be used in http clients.
  */
 public class ProxyOptions {
     private static final ClientLogger LOGGER = new ClientLogger(ProxyOptions.class);
@@ -136,7 +136,7 @@ public class ProxyOptions {
     }
 
     /**
-     * Gets the type of the prxoy.
+     * Gets the type of the proxy.
      *
      * @return the type of the proxy.
      */

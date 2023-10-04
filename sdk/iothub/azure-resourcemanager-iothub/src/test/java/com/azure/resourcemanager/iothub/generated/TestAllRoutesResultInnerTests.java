@@ -18,14 +18,13 @@ public final class TestAllRoutesResultInnerTests {
         TestAllRoutesResultInner model =
             BinaryData
                 .fromString(
-                    "{\"routes\":[{\"properties\":{\"name\":\"tgqr\",\"source\":\"DeviceConnectionStateEvents\",\"condition\":\"muwlauwzizxbm\",\"endpointNames\":[\"cjefuzmu\"],\"isEnabled\":false}}]}")
+                    "{\"routes\":[{\"properties\":{\"name\":\"qqkdltfzxmhhvhgu\",\"source\":\"DeviceMessages\",\"condition\":\"dkwobdagx\",\"endpointNames\":[\"bqdxbx\",\"akbogqxndlkzgxh\",\"ripl\",\"podxunkb\"],\"isEnabled\":true}}]}")
                 .toObject(TestAllRoutesResultInner.class);
-        Assertions.assertEquals("tgqr", model.routes().get(0).properties().name());
-        Assertions
-            .assertEquals(RoutingSource.DEVICE_CONNECTION_STATE_EVENTS, model.routes().get(0).properties().source());
-        Assertions.assertEquals("muwlauwzizxbm", model.routes().get(0).properties().condition());
-        Assertions.assertEquals("cjefuzmu", model.routes().get(0).properties().endpointNames().get(0));
-        Assertions.assertEquals(false, model.routes().get(0).properties().isEnabled());
+        Assertions.assertEquals("qqkdltfzxmhhvhgu", model.routes().get(0).properties().name());
+        Assertions.assertEquals(RoutingSource.DEVICE_MESSAGES, model.routes().get(0).properties().source());
+        Assertions.assertEquals("dkwobdagx", model.routes().get(0).properties().condition());
+        Assertions.assertEquals("bqdxbx", model.routes().get(0).properties().endpointNames().get(0));
+        Assertions.assertEquals(true, model.routes().get(0).properties().isEnabled());
     }
 
     @org.junit.jupiter.api.Test
@@ -38,17 +37,17 @@ public final class TestAllRoutesResultInnerTests {
                             new MatchedRoute()
                                 .withProperties(
                                     new RouteProperties()
-                                        .withName("tgqr")
-                                        .withSource(RoutingSource.DEVICE_CONNECTION_STATE_EVENTS)
-                                        .withCondition("muwlauwzizxbm")
-                                        .withEndpointNames(Arrays.asList("cjefuzmu"))
-                                        .withIsEnabled(false))));
+                                        .withName("qqkdltfzxmhhvhgu")
+                                        .withSource(RoutingSource.DEVICE_MESSAGES)
+                                        .withCondition("dkwobdagx")
+                                        .withEndpointNames(
+                                            Arrays.asList("bqdxbx", "akbogqxndlkzgxh", "ripl", "podxunkb"))
+                                        .withIsEnabled(true))));
         model = BinaryData.fromObject(model).toObject(TestAllRoutesResultInner.class);
-        Assertions.assertEquals("tgqr", model.routes().get(0).properties().name());
-        Assertions
-            .assertEquals(RoutingSource.DEVICE_CONNECTION_STATE_EVENTS, model.routes().get(0).properties().source());
-        Assertions.assertEquals("muwlauwzizxbm", model.routes().get(0).properties().condition());
-        Assertions.assertEquals("cjefuzmu", model.routes().get(0).properties().endpointNames().get(0));
-        Assertions.assertEquals(false, model.routes().get(0).properties().isEnabled());
+        Assertions.assertEquals("qqkdltfzxmhhvhgu", model.routes().get(0).properties().name());
+        Assertions.assertEquals(RoutingSource.DEVICE_MESSAGES, model.routes().get(0).properties().source());
+        Assertions.assertEquals("dkwobdagx", model.routes().get(0).properties().condition());
+        Assertions.assertEquals("bqdxbx", model.routes().get(0).properties().endpointNames().get(0));
+        Assertions.assertEquals(true, model.routes().get(0).properties().isEnabled());
     }
 }

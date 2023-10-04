@@ -8,11 +8,11 @@ import com.azure.core.http.HttpPipelineBuilder;
 import com.azure.core.http.HttpRequest;
 import com.azure.core.test.http.MockHttpResponse;
 import com.azure.core.util.Context;
+import com.azure.monitor.opentelemetry.exporter.implementation.NoopTracer;
 import com.azure.monitor.opentelemetry.exporter.implementation.models.TelemetryItem;
 import com.azure.monitor.opentelemetry.exporter.implementation.pipeline.TelemetryItemExporter;
 import com.azure.monitor.opentelemetry.exporter.implementation.pipeline.TelemetryPipeline;
 import com.azure.monitor.opentelemetry.exporter.implementation.utils.TestUtils;
-import io.opentelemetry.sdk.resources.Resource;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.io.TempDir;
@@ -66,15 +66,16 @@ public class IntegrationTests {
                         Mono.just(
                             new MockHttpResponse(invocation.getArgument(0, HttpRequest.class), 500)));
         }
-        HttpPipelineBuilder pipelineBuilder = new HttpPipelineBuilder().httpClient(mockedClient);
+        HttpPipelineBuilder pipelineBuilder = new HttpPipelineBuilder()
+            .httpClient(mockedClient)
+            .tracer(new NoopTracer());
 
         TelemetryPipeline telemetryPipeline = new TelemetryPipeline(pipelineBuilder.build());
         telemetryItemExporter =
             new TelemetryItemExporter(
                 telemetryPipeline,
                 new LocalStorageTelemetryPipelineListener(
-                    50, tempFolder, telemetryPipeline, LocalStorageStats.noop(), false),
-                    Resource.empty());
+                    50, tempFolder, telemetryPipeline, LocalStorageStats.noop(), false));
     }
 
     @Test

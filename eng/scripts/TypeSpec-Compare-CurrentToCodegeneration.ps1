@@ -43,7 +43,7 @@ Verify no diff
 "
 
 # prevent warning related to EOL differences which triggers an exception for some reason
-git -c core.safecrlf=false diff --ignore-space-at-eol --exit-code -- "*.java"
+git -c core.safecrlf=false diff --ignore-space-at-eol --exit-code -- "*.java" ":(exclude)**/src/test/**" ":(exclude)**/src/samples/**"
 
 if ($LastExitCode -ne 0) {
   $status = git status -s | Out-String

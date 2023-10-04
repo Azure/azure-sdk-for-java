@@ -10,7 +10,7 @@ import com.azure.resourcemanager.recoveryservicessiterecovery.models.ResumeJobPa
 /** Samples for ReplicationJobs Resume. */
 public final class ReplicationJobsResumeSamples {
     /*
-     * x-ms-original-file: specification/recoveryservicessiterecovery/resource-manager/Microsoft.RecoveryServices/stable/2022-10-01/examples/ReplicationJobs_Resume.json
+     * x-ms-original-file: specification/recoveryservicessiterecovery/resource-manager/Microsoft.RecoveryServices/stable/2023-06-01/examples/ReplicationJobs_Resume.json
      */
     /**
      * Sample code: Resumes the specified job.

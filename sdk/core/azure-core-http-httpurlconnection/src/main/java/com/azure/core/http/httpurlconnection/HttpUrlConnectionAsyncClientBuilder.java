@@ -35,16 +35,9 @@ public class HttpUrlConnectionAsyncClientBuilder {
     private Duration connectionTimeout;
     private ProxyOptions proxyOptions;
     private Configuration configuration;
-    private Executor executor;
 
     public HttpUrlConnectionAsyncClientBuilder() {
     }
-
-    public HttpUrlConnectionAsyncClientBuilder executor(Executor executor) {
-        this.executor = Objects.requireNonNull(executor, "executor can not be null");
-        return this;
-    }
-
     public HttpUrlConnectionAsyncClientBuilder connectionTimeout(Duration connectionTimeout) {
         this.connectionTimeout = connectionTimeout;
         return this;

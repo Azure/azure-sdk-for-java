@@ -7,7 +7,7 @@ package com.azure.resourcemanager.containerservice.generated;
 /** Samples for MaintenanceConfigurations Get. */
 public final class MaintenanceConfigurationsGetSamples {
     /*
-     * x-ms-original-file: specification/containerservice/resource-manager/Microsoft.ContainerService/aks/stable/2023-07-01/examples/MaintenanceConfigurationsGet.json
+     * x-ms-original-file: specification/containerservice/resource-manager/Microsoft.ContainerService/aks/stable/2023-08-01/examples/MaintenanceConfigurationsGet.json
      */
     /**
      * Sample code: Get Maintenance Configuration.
@@ -24,7 +24,7 @@ public final class MaintenanceConfigurationsGetSamples {
     }
 
     /*
-     * x-ms-original-file: specification/containerservice/resource-manager/Microsoft.ContainerService/aks/stable/2023-07-01/examples/MaintenanceConfigurationsGet_MaintenanceWindow.json
+     * x-ms-original-file: specification/containerservice/resource-manager/Microsoft.ContainerService/aks/stable/2023-08-01/examples/MaintenanceConfigurationsGet_MaintenanceWindow.json
      */
     /**
      * Sample code: Get Maintenance Configuration Configured With Maintenance Window.
