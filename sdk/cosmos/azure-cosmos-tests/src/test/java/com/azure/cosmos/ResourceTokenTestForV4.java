@@ -65,7 +65,7 @@ public class ResourceTokenTestForV4 extends TestSuiteBase {
         super(clientBuilder);
     }
 
-    @BeforeClass(groups = {"simple"}, timeOut = SETUP_TIMEOUT)
+    @BeforeClass(groups = {"fast"}, timeOut = SETUP_TIMEOUT)
     public void before_ResourceTokenTests() throws Exception {
         client = getClientBuilder().buildAsyncClient();
 
@@ -202,7 +202,7 @@ public class ResourceTokenTestForV4 extends TestSuiteBase {
      * @throws Exception
      */
     // TODO enable this test and other disabled tests after https://github.com/Azure/azure-sdk-for-java/issues/26050
-    @Test(groups = {"simple"}, enabled = false, dataProvider = "containerAndPermissionData", timeOut = TIMEOUT)
+    @Test(groups = {"fast"}, enabled = false, dataProvider = "containerAndPermissionData", timeOut = TIMEOUT)
     public void readContainerFromPermissionFeed(String containerId, CosmosPermissionProperties permission) throws Exception {
         CosmosAsyncClient asyncClientResourceToken = null;
         try {
@@ -227,7 +227,7 @@ public class ResourceTokenTestForV4 extends TestSuiteBase {
      *
      * @throws Exception
      */
-    @Test(groups = {"simple"}, enabled = false, dataProvider = "containerItemAndPermissionData", timeOut = TIMEOUT)
+    @Test(groups = {"fast"}, enabled = false, dataProvider = "containerItemAndPermissionData", timeOut = TIMEOUT)
     public void readItemFromPermissionFeed(
         String containerId,
         String itemId,
@@ -262,7 +262,7 @@ public class ResourceTokenTestForV4 extends TestSuiteBase {
      *
      * @throws Exception
      */
-    @Test(groups = {"simple"}, dataProvider = "resourceToken", timeOut = TIMEOUT)
+    @Test(groups = {"fast"}, dataProvider = "resourceToken", timeOut = TIMEOUT)
     public void readItemFromResourceToken(String resourceToken) throws Exception {
         CosmosAsyncClient asyncClientResourceToken = null;
         try {
@@ -292,7 +292,7 @@ public class ResourceTokenTestForV4 extends TestSuiteBase {
      *
      * @throws Exception
      */
-    @Test(groups = {"simple"}, enabled = false, dataProvider = "containerItemAndMultipleCollPermissionData", timeOut = TIMEOUT)
+    @Test(groups = {"fast"}, enabled = false, dataProvider = "containerItemAndMultipleCollPermissionData", timeOut = TIMEOUT)
     public void readItemOfParKeyFromTwoCollPermissionWithDiffPartitionKeys(
         String containerId,
         String itemId,
@@ -328,7 +328,7 @@ public class ResourceTokenTestForV4 extends TestSuiteBase {
      *
      * @throws Exception
      */
-    @Test(groups = {"simple"}, enabled = false, dataProvider = "containerItemAndPermissionDataForResourceNotFound", timeOut = TIMEOUT)
+    @Test(groups = {"fast"}, enabled = false, dataProvider = "containerItemAndPermissionDataForResourceNotFound", timeOut = TIMEOUT)
     public void readItemFromCollPermissionWithDiffPartitionKey_ResourceNotFound(
         String containerId,
         String itemId,
@@ -360,7 +360,7 @@ public class ResourceTokenTestForV4 extends TestSuiteBase {
      *
      * @throws Exception
      */
-    @Test(groups = {"simple"}, timeOut = TIMEOUT)
+    @Test(groups = {"fast"}, timeOut = TIMEOUT)
     public void readItemFromCollPermissionWithDiffPartitionKey_WithException() throws Exception {
         CosmosAsyncClient asyncClientResourceToken = null;
         try {
@@ -381,7 +381,7 @@ public class ResourceTokenTestForV4 extends TestSuiteBase {
         }
     }
 
-    @Test(groups = {"simple"}, dataProvider = "queryItemPermissionData", timeOut = TIMEOUT)
+    @Test(groups = {"fast"}, dataProvider = "queryItemPermissionData", timeOut = TIMEOUT)
     public void queryItemFromResourceToken(
         CosmosAsyncContainer container,
         CosmosPermissionProperties permission,
@@ -417,7 +417,7 @@ public class ResourceTokenTestForV4 extends TestSuiteBase {
         }
     }
 
-    @Test(groups = {"simple"}, timeOut = TIMEOUT)
+    @Test(groups = {"fast"}, timeOut = TIMEOUT)
     public void readAllItemFromResourceToken() throws Exception {
 
         CosmosAsyncClient asyncClientResourceToken = null;
@@ -458,7 +458,7 @@ public class ResourceTokenTestForV4 extends TestSuiteBase {
             .buildAsyncClient();
     }
 
-    @AfterClass(groups = {"simple"}, timeOut = SHUTDOWN_TIMEOUT, alwaysRun = true)
+    @AfterClass(groups = {"fast"}, timeOut = SHUTDOWN_TIMEOUT, alwaysRun = true)
     public void afterClass() {
         safeDeleteDatabase(createdDatabase);
         safeClose(client);
