@@ -143,6 +143,7 @@ public class HttpUrlConnectionAsyncClient implements HttpClient {
                                             byte[] bytes = new byte[buffer.remaining()];
                                             buffer.get(bytes);
                                             os.write(bytes);
+                                            os.flush(); // Flush after each write
                                             return Mono.just(buffer); // Emit the buffer for downstream processing if needed
                                         } catch (IOException e) {
                                             return FluxUtil.monoError(LOGGER, new RuntimeException(e));
@@ -150,7 +151,6 @@ public class HttpUrlConnectionAsyncClient implements HttpClient {
                                     })
                                     .then()
                                     .block(); // Wait for completion of the write operations
-                                os.flush();
                             } catch (IOException e) {
                                 return FluxUtil.monoError(LOGGER, new RuntimeException(e));
                             }
