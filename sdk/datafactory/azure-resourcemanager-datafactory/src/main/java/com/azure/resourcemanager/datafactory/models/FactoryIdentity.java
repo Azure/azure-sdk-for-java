@@ -13,7 +13,7 @@ import java.util.UUID;
 
 /** Identity properties of the factory resource. */
 @Fluent
-public class FactoryIdentity {
+public final class FactoryIdentity {
     /*
      * The identity type.
      */

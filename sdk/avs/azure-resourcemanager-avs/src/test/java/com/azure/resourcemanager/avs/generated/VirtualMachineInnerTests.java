@@ -13,7 +13,7 @@ public final class VirtualMachineInnerTests {
         VirtualMachineInner model =
             BinaryData
                 .fromString(
-                    "{\"properties\":{\"displayName\":\"amxjezwlw\",\"moRefId\":\"xuqlcvydypat\",\"folderPath\":\"oa\",\"restrictMovement\":\"Enabled\"},\"id\":\"niodkooeb\",\"name\":\"nuj\",\"type\":\"emmsbvdkc\"}")
+                    "{\"properties\":{\"displayName\":\"phvwauyqncygu\",\"moRefId\":\"vipmdscwxqupevzh\",\"folderPath\":\"totxhojujb\",\"restrictMovement\":\"Disabled\"},\"id\":\"lmcuvhixb\",\"name\":\"xyfwnylrcool\",\"type\":\"ttpkiwkkbnujrywv\"}")
                 .toObject(VirtualMachineInner.class);
     }
 

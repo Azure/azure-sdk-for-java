@@ -1239,7 +1239,6 @@ public final class DocumentModelAdministrationClient {
         }
     }
 
-
     /**
      * Builds a custom classifier document model.
      * <p>Classifier models can identify multiple documents or multiple instances of a single document. For that,

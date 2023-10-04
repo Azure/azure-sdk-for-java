@@ -14,26 +14,26 @@ public final class DiagnosticRenderingTests {
         DiagnosticRendering model =
             BinaryData
                 .fromString(
-                    "{\"type\":183271176,\"title\":\"ulxunsmjbnkpp\",\"description\":\"nenlsvxeizzg\",\"isVisible\":false}")
+                    "{\"type\":631157488,\"title\":\"qactxtgzukxitmmq\",\"description\":\"qqqxhrnxrx\",\"isVisible\":true}")
                 .toObject(DiagnosticRendering.class);
-        Assertions.assertEquals(183271176, model.type());
-        Assertions.assertEquals("ulxunsmjbnkpp", model.title());
-        Assertions.assertEquals("nenlsvxeizzg", model.description());
-        Assertions.assertEquals(false, model.isVisible());
+        Assertions.assertEquals(631157488, model.type());
+        Assertions.assertEquals("qactxtgzukxitmmq", model.title());
+        Assertions.assertEquals("qqqxhrnxrx", model.description());
+        Assertions.assertEquals(true, model.isVisible());
     }
 
     @org.junit.jupiter.api.Test
     public void testSerialize() throws Exception {
         DiagnosticRendering model =
             new DiagnosticRendering()
-                .withType(183271176)
-                .withTitle("ulxunsmjbnkpp")
-                .withDescription("nenlsvxeizzg")
-                .withIsVisible(false);
+                .withType(631157488)
+                .withTitle("qactxtgzukxitmmq")
+                .withDescription("qqqxhrnxrx")
+                .withIsVisible(true);
         model = BinaryData.fromObject(model).toObject(DiagnosticRendering.class);
-        Assertions.assertEquals(183271176, model.type());
-        Assertions.assertEquals("ulxunsmjbnkpp", model.title());
-        Assertions.assertEquals("nenlsvxeizzg", model.description());
-        Assertions.assertEquals(false, model.isVisible());
+        Assertions.assertEquals(631157488, model.type());
+        Assertions.assertEquals("qactxtgzukxitmmq", model.title());
+        Assertions.assertEquals("qqqxhrnxrx", model.description());
+        Assertions.assertEquals(true, model.isVisible());
     }
 }

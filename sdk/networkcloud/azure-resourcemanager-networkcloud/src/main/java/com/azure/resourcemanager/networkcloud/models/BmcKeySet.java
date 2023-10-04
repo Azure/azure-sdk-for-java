@@ -171,11 +171,13 @@ public interface BmcKeySet {
             DefinitionStages.WithUserList,
             DefinitionStages.WithCreate {
     }
+
     /** The BmcKeySet definition stages. */
     interface DefinitionStages {
         /** The first stage of the BmcKeySet definition. */
         interface Blank extends WithLocation {
         }
+
         /** The stage of the BmcKeySet definition allowing to specify location. */
         interface WithLocation {
             /**
@@ -194,6 +196,7 @@ public interface BmcKeySet {
              */
             WithParentResource withRegion(String location);
         }
+
         /** The stage of the BmcKeySet definition allowing to specify parent resource. */
         interface WithParentResource {
             /**
@@ -205,6 +208,7 @@ public interface BmcKeySet {
              */
             WithExtendedLocation withExistingCluster(String resourceGroupName, String clusterName);
         }
+
         /** The stage of the BmcKeySet definition allowing to specify extendedLocation. */
         interface WithExtendedLocation {
             /**
@@ -220,6 +224,7 @@ public interface BmcKeySet {
              */
             WithAzureGroupId withExtendedLocation(ExtendedLocation extendedLocation);
         }
+
         /** The stage of the BmcKeySet definition allowing to specify azureGroupId. */
         interface WithAzureGroupId {
             /**
@@ -232,6 +237,7 @@ public interface BmcKeySet {
              */
             WithExpiration withAzureGroupId(String azureGroupId);
         }
+
         /** The stage of the BmcKeySet definition allowing to specify expiration. */
         interface WithExpiration {
             /**
@@ -244,6 +250,7 @@ public interface BmcKeySet {
              */
             WithPrivilegeLevel withExpiration(OffsetDateTime expiration);
         }
+
         /** The stage of the BmcKeySet definition allowing to specify privilegeLevel. */
         interface WithPrivilegeLevel {
             /**
@@ -254,6 +261,7 @@ public interface BmcKeySet {
              */
             WithUserList withPrivilegeLevel(BmcKeySetPrivilegeLevel privilegeLevel);
         }
+
         /** The stage of the BmcKeySet definition allowing to specify userList. */
         interface WithUserList {
             /**
@@ -264,6 +272,7 @@ public interface BmcKeySet {
              */
             WithCreate withUserList(List<KeySetUser> userList);
         }
+
         /**
          * The stage of the BmcKeySet definition which contains all the minimum required properties for the resource to
          * be created, but also allows for any other optional properties to be specified.
@@ -284,6 +293,7 @@ public interface BmcKeySet {
              */
             BmcKeySet create(Context context);
         }
+
         /** The stage of the BmcKeySet definition allowing to specify tags. */
         interface WithTags {
             /**
@@ -295,6 +305,7 @@ public interface BmcKeySet {
             WithCreate withTags(Map<String, String> tags);
         }
     }
+
     /**
      * Begins update for the BmcKeySet resource.
      *
@@ -319,6 +330,7 @@ public interface BmcKeySet {
          */
         BmcKeySet apply(Context context);
     }
+
     /** The BmcKeySet update stages. */
     interface UpdateStages {
         /** The stage of the BmcKeySet update allowing to specify tags. */
@@ -331,6 +343,7 @@ public interface BmcKeySet {
              */
             Update withTags(Map<String, String> tags);
         }
+
         /** The stage of the BmcKeySet update allowing to specify expiration. */
         interface WithExpiration {
             /**
@@ -343,6 +356,7 @@ public interface BmcKeySet {
              */
             Update withExpiration(OffsetDateTime expiration);
         }
+
         /** The stage of the BmcKeySet update allowing to specify userList. */
         interface WithUserList {
             /**
@@ -354,6 +368,7 @@ public interface BmcKeySet {
             Update withUserList(List<KeySetUser> userList);
         }
     }
+
     /**
      * Refreshes the resource to sync with Azure.
      *

@@ -51,7 +51,8 @@ import static org.testng.AssertJUnit.fail;
 public class FaultInjectionMetadataRequestRuleTests extends TestSuiteBase {
     private CosmosAsyncClient client;
     private CosmosAsyncContainer cosmosAsyncContainer;
-    private List<String> preferredLocations;
+    private List<String> readPreferredLocations;
+    private List<String> writePreferredLocations;
 
     @Factory(dataProvider = "simpleClientBuildersWithJustDirectTcp")
     public FaultInjectionMetadataRequestRuleTests(CosmosClientBuilder clientBuilder) {
@@ -59,20 +60,33 @@ public class FaultInjectionMetadataRequestRuleTests extends TestSuiteBase {
         this.subscriberValidationTimeout = TIMEOUT;
     }
 
-    @BeforeClass(groups = { "multi-region" }, timeOut = TIMEOUT)
+    @BeforeClass(groups = { "multi-region", "multi-master" }, timeOut = TIMEOUT)
     public void beforeClass() {
         this.client = getClientBuilder().buildAsyncClient();
         AsyncDocumentClient asyncDocumentClient = BridgeInternal.getContextClient(this.client);
         GlobalEndpointManager globalEndpointManager = asyncDocumentClient.getGlobalEndpointManager();
 
         DatabaseAccount databaseAccount = globalEndpointManager.getLatestDatabaseAccount();
+
         Map<String, String> readRegionMap = this.getRegionMap(databaseAccount, false);
+        Map<String, String> writeRegionMap = this.getRegionMap(databaseAccount, true);
+
         this.cosmosAsyncContainer = getSharedMultiPartitionCosmosContainerWithIdAsPartitionKey(this.client);
+
+        // This test runs against a real account
+        // Creating collections can take some time in the remote region
+        try {
+            Thread.sleep(3000);
+        } catch (InterruptedException e) {
+            throw new RuntimeException(e);
+        }
+
         // create a client with preferred regions
-        this.preferredLocations = readRegionMap.keySet().stream().collect(Collectors.toList());
+        this.readPreferredLocations = readRegionMap.keySet().stream().collect(Collectors.toList());
+        this.writePreferredLocations = writeRegionMap.keySet().stream().collect(Collectors.toList());
     }
 
-    @Test(groups = { "multi-region" }, timeOut = 4 * TIMEOUT)
+    @Test(groups = { "multi-region" }, timeOut = 20 * TIMEOUT)
     public void faultInjectionServerErrorRuleTests_AddressRefresh_ConnectionDelay() throws JsonProcessingException {
 
         // Test to validate if there is http connection exception for address refresh,
@@ -82,7 +96,7 @@ public class FaultInjectionMetadataRequestRuleTests extends TestSuiteBase {
         // which can impact the test result
         CosmosAsyncClient testClient = getClientBuilder()
             .contentResponseOnWriteEnabled(true)
-            .preferredRegions(preferredLocations)
+            .preferredRegions(readPreferredLocations)
             .buildAsyncClient();
 
         CosmosAsyncContainer container =
@@ -95,7 +109,7 @@ public class FaultInjectionMetadataRequestRuleTests extends TestSuiteBase {
             new FaultInjectionRuleBuilder(addressRefreshConnectionDelay)
                 .condition(
                     new FaultInjectionConditionBuilder()
-                        .region(this.preferredLocations.get(0))
+                        .region(this.readPreferredLocations.get(0))
                         .operationType(FaultInjectionOperationType.METADATA_REQUEST_ADDRESS_REFRESH)
                         .build()
                 )
@@ -103,17 +117,19 @@ public class FaultInjectionMetadataRequestRuleTests extends TestSuiteBase {
                     FaultInjectionResultBuilders
                         .getResultBuilder(FaultInjectionServerErrorType.CONNECTION_DELAY)
                         .delay(Duration.ofSeconds(50)) // to simulate http connection timeout
-                        .times(2)
+                        // changed from 2 to 8
+                        // 6 more address refresh request retries have been introduced by WebExceptionRetryPolicy
+                        .times(8)
                         .build()
                 )
-                .duration(Duration.ofMinutes(5))
+                .duration(Duration.ofMinutes(10))
                 .build();
 
         FaultInjectionRule dataOperationGoneRule =
             new FaultInjectionRuleBuilder("DataOperation-gone-" + UUID.randomUUID())
                 .condition(
                     new FaultInjectionConditionBuilder()
-                        .region(this.preferredLocations.get(0))
+                        .region(this.readPreferredLocations.get(0))
                         .operationType(FaultInjectionOperationType.READ_ITEM)
                         .build())
                 .result(
@@ -139,7 +155,7 @@ public class FaultInjectionMetadataRequestRuleTests extends TestSuiteBase {
                         .block()
                         .getDiagnostics();
                 assertThat(cosmosDiagnostics.getContactedRegionNames().size()).isEqualTo(2);
-                validateFaultInjectionRuleAppliedForAddressResolution(cosmosDiagnostics, addressRefreshConnectionDelay, 2);
+                validateFaultInjectionRuleAppliedForAddressResolution(cosmosDiagnostics, addressRefreshConnectionDelay, 8);
             } catch (CosmosException e) {
                 fail("Request should be able to succeed by retrying in another region. " + e.getDiagnostics());
             }
@@ -157,7 +173,7 @@ public class FaultInjectionMetadataRequestRuleTests extends TestSuiteBase {
             assertThat(
                 cosmosDiagnostics
                     .getContactedRegionNames()
-                    .containsAll(Arrays.asList(this.preferredLocations.get(1).toLowerCase())))
+                    .containsAll(Arrays.asList(this.readPreferredLocations.get(1).toLowerCase())))
                 .isTrue();
         } finally {
             addressRefreshConnectionDelayRule.disable();
@@ -176,7 +192,7 @@ public class FaultInjectionMetadataRequestRuleTests extends TestSuiteBase {
         // which can impact the test result
         CosmosAsyncClient testClient = getClientBuilder()
             .contentResponseOnWriteEnabled(true)
-            .preferredRegions(preferredLocations)
+            .preferredRegions(readPreferredLocations)
             .buildAsyncClient();
 
         CosmosAsyncContainer container =
@@ -189,7 +205,7 @@ public class FaultInjectionMetadataRequestRuleTests extends TestSuiteBase {
             new FaultInjectionRuleBuilder(addressRefreshResponseDelay)
                 .condition(
                     new FaultInjectionConditionBuilder()
-                        .region(this.preferredLocations.get(0))
+                        .region(this.readPreferredLocations.get(0))
                         .operationType(FaultInjectionOperationType.METADATA_REQUEST_ADDRESS_REFRESH)
                         .build()
                 )
@@ -207,7 +223,7 @@ public class FaultInjectionMetadataRequestRuleTests extends TestSuiteBase {
             new FaultInjectionRuleBuilder("DataOperation-gone-" + UUID.randomUUID())
                 .condition(
                     new FaultInjectionConditionBuilder()
-                        .region(this.preferredLocations.get(0))
+                        .region(this.readPreferredLocations.get(0))
                         .operationType(FaultInjectionOperationType.READ_ITEM)
                         .build())
                 .result(
@@ -238,7 +254,7 @@ public class FaultInjectionMetadataRequestRuleTests extends TestSuiteBase {
             } catch (CosmosException e) {
                 CosmosDiagnostics cosmosDiagnostics = e.getDiagnostics();
                 assertThat(cosmosDiagnostics.getContactedRegionNames().size()).isEqualTo(1);
-                assertThat(cosmosDiagnostics.getContactedRegionNames().containsAll(Arrays.asList(this.preferredLocations.get(0).toLowerCase()))).isTrue();
+                assertThat(cosmosDiagnostics.getContactedRegionNames().containsAll(Arrays.asList(this.readPreferredLocations.get(0).toLowerCase()))).isTrue();
                 validateFaultInjectionRuleAppliedForAddressResolution(cosmosDiagnostics, addressRefreshResponseDelay, 4);
             }
         } finally {
@@ -255,7 +271,7 @@ public class FaultInjectionMetadataRequestRuleTests extends TestSuiteBase {
         // which can impact the test result
         CosmosAsyncClient testClient = getClientBuilder()
             .contentResponseOnWriteEnabled(true)
-            .preferredRegions(preferredLocations)
+            .preferredRegions(readPreferredLocations)
             .buildAsyncClient();
 
         CosmosAsyncContainer container =
@@ -365,7 +381,7 @@ public class FaultInjectionMetadataRequestRuleTests extends TestSuiteBase {
         // which can impact the test result
         CosmosAsyncClient testClient = getClientBuilder()
             .contentResponseOnWriteEnabled(true)
-            .preferredRegions(preferredLocations)
+            .preferredRegions(readPreferredLocations)
             .buildAsyncClient();
 
         CosmosAsyncContainer container =
@@ -379,7 +395,7 @@ public class FaultInjectionMetadataRequestRuleTests extends TestSuiteBase {
             new FaultInjectionRuleBuilder(addressRefreshTooManyRequest)
                 .condition(
                     new FaultInjectionConditionBuilder()
-                        .region(this.preferredLocations.get(0))
+                        .region(this.readPreferredLocations.get(0))
                         .operationType(FaultInjectionOperationType.METADATA_REQUEST_ADDRESS_REFRESH)
                         .build()
                 )
@@ -396,7 +412,7 @@ public class FaultInjectionMetadataRequestRuleTests extends TestSuiteBase {
             new FaultInjectionRuleBuilder("DataOperation-gone-" + UUID.randomUUID())
                 .condition(
                     new FaultInjectionConditionBuilder()
-                        .region(this.preferredLocations.get(0))
+                        .region(this.readPreferredLocations.get(0))
                         .operationType(FaultInjectionOperationType.READ_ITEM)
                         .build())
                 .result(
@@ -420,7 +436,7 @@ public class FaultInjectionMetadataRequestRuleTests extends TestSuiteBase {
                 container.readItem(createdItem.getId(), new PartitionKey(createdItem.getId()), JsonNode.class).block().getDiagnostics();
 
             assertThat(cosmosDiagnostics.getContactedRegionNames().size()).isEqualTo(1);
-            assertThat(cosmosDiagnostics.getContactedRegionNames().containsAll(Arrays.asList(this.preferredLocations.get(0).toLowerCase()))).isTrue();
+            assertThat(cosmosDiagnostics.getContactedRegionNames().containsAll(Arrays.asList(this.readPreferredLocations.get(0).toLowerCase()))).isTrue();
             validateFaultInjectionRuleAppliedForAddressResolution(cosmosDiagnostics, addressRefreshTooManyRequest, 1);
         } finally {
             addressRefreshTooManyRequestRule.disable();
@@ -429,14 +445,14 @@ public class FaultInjectionMetadataRequestRuleTests extends TestSuiteBase {
         }
     }
 
-    @Test(groups = { "multi-region" }, timeOut = 40 * TIMEOUT)
+    @Test(groups = { "multi-master" }, timeOut = 40 * TIMEOUT)
     public void faultInjectionServerErrorRuleTests_PartitionKeyRanges_ConnectionDelay() throws JsonProcessingException {
 
         // We need to create a new client because client may have marked region unavailable in other tests
         // which can impact the test result
         CosmosAsyncClient testClient = getClientBuilder()
             .contentResponseOnWriteEnabled(true)
-            .preferredRegions(preferredLocations)
+            .preferredRegions(writePreferredLocations)
             .buildAsyncClient();
 
         CosmosAsyncContainer container =
@@ -450,7 +466,7 @@ public class FaultInjectionMetadataRequestRuleTests extends TestSuiteBase {
             new FaultInjectionRuleBuilder(pkRangesConnectionDelay)
                 .condition(
                     new FaultInjectionConditionBuilder()
-                        .region(this.preferredLocations.get(0))
+                        .region(this.writePreferredLocations.get(0))
                         .operationType(FaultInjectionOperationType.METADATA_REQUEST_PARTITION_KEY_RANGES)
                         .build()
                 )
@@ -469,7 +485,7 @@ public class FaultInjectionMetadataRequestRuleTests extends TestSuiteBase {
                 .condition(
                     new FaultInjectionConditionBuilder()
                         .operationType(FaultInjectionOperationType.CREATE_ITEM)
-                        .region(this.preferredLocations.get(0))
+                        .region(this.writePreferredLocations.get(0))
                         .build())
                 .result(
                     FaultInjectionResultBuilders

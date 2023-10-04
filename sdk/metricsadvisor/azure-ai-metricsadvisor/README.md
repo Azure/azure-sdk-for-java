@@ -112,7 +112,7 @@ Authentication with AAD requires some initial setup:
 <dependency>
     <groupId>com.azure</groupId>
     <artifactId>azure-identity</artifactId>
-    <version>1.9.1</version>
+    <version>1.10.1</version>
 </dependency>
 ```
 [//]: # ({x-version-update-end})
@@ -436,7 +436,7 @@ This project has adopted the [Microsoft Open Source Code of Conduct][coc]. For m
 [logging]: https://github.com/Azure/azure-sdk-for-java/wiki/Logging-with-Azure-SDK
 [metrics_advisor_account]: https://ms.portal.azure.com/#create/Microsoft.CognitiveServicesMetricsAdvisor
 [metrics_advisor_doc]: https://docs.microsoft.com/azure/cognitive-services/Metrics-advisor/glossary
-[mvn_package]: https://search.maven.org/search?q=a:azure-ai-metricsadvisor
+[mvn_package]: https://central.sonatype.com/artifact/com.azure/azure-ai-metricsadvisor
 [product_documentation]: https://docs.microsoft.com/azure/cognitive-services/metrics-advisor/overview
 [register_AAD_application]: https://docs.microsoft.com/azure/cognitive-services/authentication#assign-a-role-to-a-service-principal
 [source_code]: https://github.com/Azure/azure-sdk-for-java/tree/main/sdk/metricsadvisor/azure-ai-metricsadvisor/src

@@ -38,15 +38,6 @@ public final class DeletedServicesImpl implements DeletedServices {
         return Utils.mapPage(inner, inner1 -> new DeletedServiceContractImpl(inner1, this.manager()));
     }
 
-    public DeletedServiceContract getByName(String serviceName, String location) {
-        DeletedServiceContractInner inner = this.serviceClient().getByName(serviceName, location);
-        if (inner != null) {
-            return new DeletedServiceContractImpl(inner, this.manager());
-        } else {
-            return null;
-        }
-    }
-
     public Response<DeletedServiceContract> getByNameWithResponse(
         String serviceName, String location, Context context) {
         Response<DeletedServiceContractInner> inner =
@@ -57,6 +48,15 @@ public final class DeletedServicesImpl implements DeletedServices {
                 inner.getStatusCode(),
                 inner.getHeaders(),
                 new DeletedServiceContractImpl(inner.getValue(), this.manager()));
+        } else {
+            return null;
+        }
+    }
+
+    public DeletedServiceContract getByName(String serviceName, String location) {
+        DeletedServiceContractInner inner = this.serviceClient().getByName(serviceName, location);
+        if (inner != null) {
+            return new DeletedServiceContractImpl(inner, this.manager());
         } else {
             return null;
         }

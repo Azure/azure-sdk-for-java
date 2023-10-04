@@ -124,6 +124,8 @@ public final class ServiceBusTracer {
      */
     public void endSpan(Throwable throwable, Context span, AutoCloseable scope) {
         if (isEnabled()) {
+            closeScope(scope);
+
             String errorCondition = null;
             if (throwable instanceof AmqpException) {
                 AmqpException exception = (AmqpException) throwable;
@@ -131,15 +133,16 @@ public final class ServiceBusTracer {
                     errorCondition = exception.getErrorCondition().getErrorCondition();
                 }
             }
+            tracer.end(errorCondition, throwable, span);
+        }
+    }
 
+    public void closeScope(AutoCloseable scope) {
+        if (scope != null) {
             try {
-                if (scope != null) {
-                    scope.close();
-                }
+                scope.close();
             } catch (Exception e) {
                 LOGGER.warning("Can't close scope", e);
-            } finally {
-                tracer.end(errorCondition, throwable, span);
             }
         }
     }

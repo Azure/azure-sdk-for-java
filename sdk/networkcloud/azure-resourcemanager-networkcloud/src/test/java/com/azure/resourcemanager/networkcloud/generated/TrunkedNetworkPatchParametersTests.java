@@ -16,9 +16,9 @@ public final class TrunkedNetworkPatchParametersTests {
         TrunkedNetworkPatchParameters model =
             BinaryData
                 .fromString(
-                    "{\"tags\":{\"amlbnseqacjjvpil\":\"eg\",\"ueio\":\"uooqjagmdit\",\"tdtpdelqacslmo\":\"kjbsah\",\"xofvcjk\":\"oebn\"}}")
+                    "{\"tags\":{\"qaxsipietgbebjf\":\"pzdqtvhcspod\",\"pnfpubntnbat\":\"lbmoichd\",\"uhplrvkmjcwmjv\":\"viqsowsaaelcattc\"}}")
                 .toObject(TrunkedNetworkPatchParameters.class);
-        Assertions.assertEquals("eg", model.tags().get("amlbnseqacjjvpil"));
+        Assertions.assertEquals("pzdqtvhcspod", model.tags().get("qaxsipietgbebjf"));
     }
 
     @org.junit.jupiter.api.Test
@@ -27,18 +27,17 @@ public final class TrunkedNetworkPatchParametersTests {
             new TrunkedNetworkPatchParameters()
                 .withTags(
                     mapOf(
-                        "amlbnseqacjjvpil",
-                        "eg",
-                        "ueio",
-                        "uooqjagmdit",
-                        "tdtpdelqacslmo",
-                        "kjbsah",
-                        "xofvcjk",
-                        "oebn"));
+                        "qaxsipietgbebjf",
+                        "pzdqtvhcspod",
+                        "pnfpubntnbat",
+                        "lbmoichd",
+                        "uhplrvkmjcwmjv",
+                        "viqsowsaaelcattc"));
         model = BinaryData.fromObject(model).toObject(TrunkedNetworkPatchParameters.class);
-        Assertions.assertEquals("eg", model.tags().get("amlbnseqacjjvpil"));
+        Assertions.assertEquals("pzdqtvhcspod", model.tags().get("qaxsipietgbebjf"));
     }
 
+    // Use "Map.of" if available
     @SuppressWarnings("unchecked")
     private static <T> Map<String, T> mapOf(Object... inputs) {
         Map<String, T> map = new HashMap<>();

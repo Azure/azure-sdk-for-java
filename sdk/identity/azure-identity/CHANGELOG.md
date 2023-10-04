@@ -1,6 +1,6 @@
 # Release History
 
-## 1.10.0-beta.2 (Unreleased)
+## 1.11.0-beta.2 (Unreleased)
 
 ### Features Added
 
@@ -9,6 +9,39 @@
 ### Bugs Fixed
 
 ### Other Changes
+
+## 1.11.0-beta.1 (2023-09-20)
+
+### Features Added
+- Added support for passing an InputStream containing a client cerfificate [#36747](https://github.com/Azure/azure-sdk-for-java/pull/36747)
+
+### Bugs fixed
+- Fixed flowing `HttpClientOptions` through credentials [#36382](https://github.com/Azure/azure-sdk-for-java/pull/36382)
+- Fixed edge case in Docker where 403s erronously caused CredentialUnavailableExceptions [#36747](https://github.com/Azure/azure-sdk-for-java/pull/36747)
+
+
+
+
+## 1.10.1 (2023-09-10)
+
+### Other Changes
+#### Dependency Updates
+- Upgraded `azure-core` from `1.42.0` to version `1.43.0`.
+- Upgraded `azure-core-http-netty` from `1.13.6` to version `1.13.7`.
+
+## 1.10.0 (2023-08-09)
+
+### Features Added
+- Added `BrowserCustomizationOptions` to `InteractiveBrowserCredentialBuilder` to allow for customization of the browser window.
+
+### Other Changes
+- Renamed `enableSupportLogging` to `enableUnsafeSupportLogging`. This is a breaking change from 1.10.0-beta.1.
+- `DefaultAzureCredential` will try all developer credentials. Previously if a developer credential attempted to acquire a token and failed, it would stop the chain. Deployed credentials are unaffected.
+
+#### Dependency Updates
+- Upgraded `azure-core` from `1.41.0` to version `1.42.0`.
+- Upgraded `azure-core-http-netty` from `1.13.5` to version `1.13.6`.
+
 
 ## 1.10.0-beta.1 (2023-07-24)
 
@@ -78,9 +111,9 @@
 
 - Fixed a bug in managed identity not properly URLEncoding a value. [#34375](https://github.com/Azure/azure-sdk-for-java/pull/34375)
 
-### Other Changes	### Other Changes
+### Other Changes
 
-#### Dependency Updates	#### Dependency Updates
+#### Dependency Updates
 - Upgraded `azure-core` from `1.37.0` to version `1.38.0`.
 - Upgraded `azure-core-http-netty` from `1.13.1` to version `1.13.2`.
 - Upgraded `msal4j` from `1.13.5` to version `1.13.7`.

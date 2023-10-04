@@ -43,6 +43,7 @@ import static org.junit.jupiter.api.Assertions.assertNotNull;
 
 
 public class EventGridPublisherClientTests extends TestBase {
+    private static final Duration DEFAULT_TIMEOUT = Duration.ofSeconds(30);
 
     private EventGridPublisherClientBuilder builder;
 
@@ -77,9 +78,6 @@ public class EventGridPublisherClientTests extends TestBase {
 
     @Override
     protected void beforeTest() {
-
-        StepVerifier.setDefaultTimeout(Duration.ofSeconds(30));
-
         builder = new EventGridPublisherClientBuilder();
 
         if (interceptorManager.isPlaybackMode()) {
@@ -88,11 +86,6 @@ public class EventGridPublisherClientTests extends TestBase {
             builder.addPolicy(interceptorManager.getRecordPolicy())
                 .retryPolicy(new RetryPolicy());
         }
-    }
-
-    @Override
-    protected void afterTest() {
-        StepVerifier.resetDefaultTimeout();
     }
 
     @Test
@@ -116,10 +109,12 @@ public class EventGridPublisherClientTests extends TestBase {
 
         StepVerifier.create(egClient.sendEventsWithResponse(events))
             .expectNextMatches(voidResponse -> voidResponse.getStatusCode() == 200)
-            .verifyComplete();
+            .expectComplete()
+            .verify(DEFAULT_TIMEOUT);
 
         StepVerifier.create(egClient.sendEvents(events))
-            .verifyComplete();
+            .expectComplete()
+            .verify(DEFAULT_TIMEOUT);
     }
 
     @Test
@@ -140,7 +135,8 @@ public class EventGridPublisherClientTests extends TestBase {
             "1.0")
             .setEventTime(OffsetDateTime.now());
         StepVerifier.create(egClient.sendEvent(event))
-            .verifyComplete();
+            .expectComplete()
+            .verify(DEFAULT_TIMEOUT);
     }
 
     @Test
@@ -170,7 +166,8 @@ public class EventGridPublisherClientTests extends TestBase {
 
         StepVerifier.create(egClient.sendEventsWithResponse(events, Context.NONE))
             .expectNextMatches(voidResponse -> voidResponse.getStatusCode() == 200)
-            .verifyComplete();
+            .expectComplete()
+            .verify(DEFAULT_TIMEOUT);
     }
 
     @Test
@@ -196,7 +193,8 @@ public class EventGridPublisherClientTests extends TestBase {
 
         StepVerifier.create(egClient.sendEventsWithResponse(events, Context.NONE))
             .expectNextMatches(voidResponse -> voidResponse.getStatusCode() == 200)
-            .verifyComplete();
+            .expectComplete()
+            .verify(DEFAULT_TIMEOUT);
     }
 
     @Test
@@ -220,7 +218,8 @@ public class EventGridPublisherClientTests extends TestBase {
 
         StepVerifier.create(egClient.sendEventsWithResponse(events, Context.NONE))
             .expectNextMatches(voidResponse -> voidResponse.getStatusCode() == 200)
-            .verifyComplete();
+            .expectComplete()
+            .verify(DEFAULT_TIMEOUT);
     }
 
     @Test
@@ -242,7 +241,8 @@ public class EventGridPublisherClientTests extends TestBase {
             .setTime(OffsetDateTime.now());
 
         StepVerifier.create(egClient.sendEvent(event))
-            .verifyComplete();
+            .expectComplete()
+            .verify(DEFAULT_TIMEOUT);
     }
 
     @Test
@@ -272,7 +272,8 @@ public class EventGridPublisherClientTests extends TestBase {
             getChannelName(EVENTGRID_PARTNER_CHANNEL_NAME));
         StepVerifier.create(responseMono)
                 .assertNext(response -> assertEquals(200, response.getStatusCode()))
-                .verifyComplete();
+            .expectComplete()
+            .verify(DEFAULT_TIMEOUT);
     }
 
     @Test
@@ -307,7 +308,7 @@ public class EventGridPublisherClientTests extends TestBase {
                         assertEquals(400,
                                 ((HttpResponseException) exception).getResponse().getStatusCode());
                     }
-                }).verify();
+                }).verify(DEFAULT_TIMEOUT);
     }
 
     public static class TestData {
@@ -353,7 +354,8 @@ public class EventGridPublisherClientTests extends TestBase {
 
         StepVerifier.create(egClient.sendEventsWithResponse(events, Context.NONE))
             .expectNextMatches(voidResponse -> voidResponse.getStatusCode() == 200)
-            .verifyComplete();
+            .expectComplete()
+            .verify(DEFAULT_TIMEOUT);
     }
 
 
@@ -378,7 +380,8 @@ public class EventGridPublisherClientTests extends TestBase {
         }
         StepVerifier.create(egClient.sendEventsWithResponse(events))
             .expectNextMatches(voidResponse -> voidResponse.getStatusCode() == 200)
-            .verifyComplete();
+            .expectComplete()
+            .verify(DEFAULT_TIMEOUT);
     }
 
     @Test
@@ -402,7 +405,8 @@ public class EventGridPublisherClientTests extends TestBase {
         }
         StepVerifier.create(egClient.sendEventsWithResponse(events, Context.NONE))
             .expectNextMatches(voidResponse -> voidResponse.getStatusCode() == 200)
-            .verifyComplete();
+            .expectComplete()
+            .verify(DEFAULT_TIMEOUT);
     }
 
     @Test
@@ -421,7 +425,9 @@ public class EventGridPublisherClientTests extends TestBase {
                 put("type", "Microsoft.MockPublisher.TestEvent");
             }
         });
-        StepVerifier.create(egClient.sendEvent(event)).verifyComplete();
+        StepVerifier.create(egClient.sendEvent(event))
+            .expectComplete()
+            .verify(DEFAULT_TIMEOUT);
     }
 
     @Test

@@ -19,11 +19,12 @@
     <maven.compiler.target>${jdk.version}</maven.compiler.target>
     <maven.compiler.testSource>${jdk-test.version}</maven.compiler.testSource>
     <maven.compiler.testTarget>${jdk-test.version}</maven.compiler.testTarget>
+    <jacoco.skip>true</jacoco.skip> <!--Most of the tests are done in the spring-cloud-azure-starter-monitor-test module-->
   </properties>
 
   <groupId>com.azure.spring</groupId>
   <artifactId>spring-cloud-azure-starter-monitor</artifactId>
-  <version>1.0.0-beta.1</version> <!-- {x-version-update;com.azure.spring:spring-cloud-azure-starter-monitor;current} -->
+  <version>1.0.0-beta.2</version> <!-- {x-version-update;com.azure.spring:spring-cloud-azure-starter-monitor;current} -->
 
   <name>Azure Monitor OpenTelemetry Distro / Application Insights in Spring native Java application</name>
   <description>Spring Boot starter providing telemetry data to Azure Monitor for Spring Boot applications and GraalVM native images.</description>
@@ -45,7 +46,7 @@
     <dependency>
       <groupId>io.opentelemetry.instrumentation</groupId>
       <artifactId>opentelemetry-spring-boot-starter</artifactId>
-      <version>1.27.0-alpha</version> <!-- {x-version-update;io.opentelemetry.instrumentation:opentelemetry-spring-boot-starter;external_dependency} -->
+      <version>1.28.0-alpha</version> <!-- {x-version-update;io.opentelemetry.instrumentation:opentelemetry-spring-boot-starter;external_dependency} -->
     </dependency>
     <dependency>
       <groupId>io.opentelemetry</groupId>
@@ -55,7 +56,13 @@
     <dependency>
       <groupId>io.opentelemetry.instrumentation</groupId>
       <artifactId>opentelemetry-runtime-telemetry-java8</artifactId>
-      <version>1.27.0-alpha</version> <!-- {x-version-update;io.opentelemetry.instrumentation:opentelemetry-runtime-telemetry-java8;external_dependency} -->
+      <version>1.28.0-alpha</version> <!-- {x-version-update;io.opentelemetry.instrumentation:opentelemetry-runtime-telemetry-java8;external_dependency} -->
+    </dependency>
+    <dependency>
+      <groupId>io.opentelemetry</groupId>
+      <artifactId>opentelemetry-api-logs</artifactId>
+      <version>1.26.0-alpha</version> <!-- {x-version-update;io.opentelemetry:opentelemetry-api-logs;external_dependency} -->
+      <scope>compile</scope>
     </dependency>
     <!-- End of OTel dependencies -->
 
@@ -64,13 +71,34 @@
       <artifactId>azure-monitor-opentelemetry-exporter</artifactId>
       <version>1.0.0-beta.11</version> <!-- {x-version-update;com.azure:azure-monitor-opentelemetry-exporter;dependency} -->
     </dependency>
+
+    <!-- Test dependencies -->
     <dependency>
-      <groupId>io.opentelemetry</groupId>
-      <artifactId>opentelemetry-api-logs</artifactId>
-      <version>1.26.0-alpha</version> <!-- {x-version-update;io.opentelemetry:opentelemetry-api-logs;external_dependency} -->
-      <scope>compile</scope>
+      <groupId>org.junit.jupiter</groupId>
+      <artifactId>junit-jupiter-api</artifactId>
+      <version>5.9.3</version> <!-- {x-version-update;org.junit.jupiter:junit-jupiter-api;external_dependency} -->
+      <scope>test</scope>
+    </dependency>
+    <dependency>
+      <groupId>org.junit.jupiter</groupId>
+      <artifactId>junit-jupiter-engine</artifactId>
+      <version>5.9.3</version> <!-- {x-version-update;org.junit.jupiter:junit-jupiter-engine;external_dependency} -->
+      <scope>test</scope>
+    </dependency>
+    <dependency>
+      <groupId>org.assertj</groupId>
+      <artifactId>assertj-core</artifactId>
+      <version>3.22.0</version>  <!-- {x-version-update;org.assertj:assertj-core;external_dependency} -->
+      <scope>test</scope>
+    </dependency>
+    <dependency>
+      <groupId>org.springframework.boot</groupId>
+      <artifactId>spring-boot-starter-test</artifactId>
+      <version>2.7.14</version> <!-- {x-version-update;org.springframework.boot:spring-boot-starter-test;external_dependency} -->
+      <scope>test</scope>
     </dependency>
 
+    <!-- End of test dependencies -->
 
   </dependencies>
 
@@ -84,9 +112,9 @@
           <rules>
             <bannedDependencies>
               <includes>
-                <include>io.opentelemetry.instrumentation:opentelemetry-spring-boot-starter:[1.27.0-alpha]</include> <!-- {x-include-update;io.opentelemetry.instrumentation:opentelemetry-spring-boot-starter;external_dependency} -->
+                <include>io.opentelemetry.instrumentation:opentelemetry-spring-boot-starter:[1.28.0-alpha]</include> <!-- {x-include-update;io.opentelemetry.instrumentation:opentelemetry-spring-boot-starter;external_dependency} -->
                 <include>io.opentelemetry:opentelemetry-sdk-extension-autoconfigure:[1.28.0]</include> <!-- {x-include-update;io.opentelemetry:opentelemetry-sdk-extension-autoconfigure;external_dependency} -->
-                <include>io.opentelemetry.instrumentation:opentelemetry-runtime-telemetry-java8:[1.27.0-alpha]</include> <!-- {x-include-update;io.opentelemetry.instrumentation:opentelemetry-runtime-telemetry-java8;external_dependency} -->
+                <include>io.opentelemetry.instrumentation:opentelemetry-runtime-telemetry-java8:[1.28.0-alpha]</include> <!-- {x-include-update;io.opentelemetry.instrumentation:opentelemetry-runtime-telemetry-java8;external_dependency} -->
                 <include>io.opentelemetry:opentelemetry-api-logs:[1.26.0-alpha]</include> <!-- {x-include-update;io.opentelemetry:opentelemetry-api-logs;external_dependency} -->
               </includes>
             </bannedDependencies>

@@ -11,7 +11,7 @@ import com.azure.resourcemanager.compute.models.GrantAccessData;
 /** Samples for Disks GrantAccess. */
 public final class DisksGrantAccessSamples {
     /*
-     * x-ms-original-file: specification/compute/resource-manager/Microsoft.Compute/DiskRP/stable/2023-01-02/examples/diskExamples/Disk_BeginGetAccess.json
+     * x-ms-original-file: specification/compute/resource-manager/Microsoft.Compute/DiskRP/stable/2023-04-02/examples/diskExamples/Disk_BeginGetAccess.json
      */
     /**
      * Sample code: Get a sas on a managed disk.
@@ -35,7 +35,7 @@ public final class DisksGrantAccessSamples {
     }
 
     /*
-     * x-ms-original-file: specification/compute/resource-manager/Microsoft.Compute/DiskRP/stable/2023-01-02/examples/diskExamples/Disk_BeginGetAccess_WithVMGuestState.json
+     * x-ms-original-file: specification/compute/resource-manager/Microsoft.Compute/DiskRP/stable/2023-04-02/examples/diskExamples/Disk_BeginGetAccess_WithVMGuestState.json
      */
     /**
      * Sample code: Get sas on managed disk and VM guest state.

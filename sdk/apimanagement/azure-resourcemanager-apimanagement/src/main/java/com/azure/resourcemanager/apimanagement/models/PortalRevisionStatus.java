@@ -8,7 +8,7 @@ import com.azure.core.util.ExpandableStringEnum;
 import com.fasterxml.jackson.annotation.JsonCreator;
 import java.util.Collection;
 
-/** Defines values for PortalRevisionStatus. */
+/** Status of the portal's revision. */
 public final class PortalRevisionStatus extends ExpandableStringEnum<PortalRevisionStatus> {
     /** Static value pending for PortalRevisionStatus. */
     public static final PortalRevisionStatus PENDING = fromString("pending");
@@ -23,6 +23,15 @@ public final class PortalRevisionStatus extends ExpandableStringEnum<PortalRevis
     public static final PortalRevisionStatus FAILED = fromString("failed");
 
     /**
+     * Creates a new instance of PortalRevisionStatus value.
+     *
+     * @deprecated Use the {@link #fromString(String)} factory method.
+     */
+    @Deprecated
+    public PortalRevisionStatus() {
+    }
+
+    /**
      * Creates or finds a PortalRevisionStatus from its string representation.
      *
      * @param name a name to look for.
@@ -33,7 +42,11 @@ public final class PortalRevisionStatus extends ExpandableStringEnum<PortalRevis
         return fromString(name, PortalRevisionStatus.class);
     }
 
-    /** @return known PortalRevisionStatus values. */
+    /**
+     * Gets known PortalRevisionStatus values.
+     *
+     * @return known PortalRevisionStatus values.
+     */
     public static Collection<PortalRevisionStatus> values() {
         return values(PortalRevisionStatus.class);
     }

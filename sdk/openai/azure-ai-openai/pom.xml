@@ -14,7 +14,7 @@
 
   <groupId>com.azure</groupId>
   <artifactId>azure-ai-openai</artifactId>
-  <version>1.0.0-beta.4</version> <!-- {x-version-update;com.azure:azure-ai-openai;current} -->
+  <version>1.0.0-beta.6</version> <!-- {x-version-update;com.azure:azure-ai-openai;current} -->
   <packaging>jar</packaging>
 
   <name>Microsoft Azure Client Library For OpenAI</name>
@@ -52,7 +52,6 @@
       --add-opens com.azure.ai.openai/com.azure.ai.openai.implementation=com.fasterxml.jackson.databind
       --add-opens com.azure.ai.openai/com.azure.ai.openai.functions=com.fasterxml.jackson.databind
     </javaModulesSurefireArgLine>
-    <jacoco.skip>true</jacoco.skip>
   </properties>
 
   <dependencies>
@@ -61,17 +60,12 @@
     <dependency>
       <groupId>com.azure</groupId>
       <artifactId>azure-core</artifactId>
-      <version>1.42.0</version> <!-- {x-version-update;com.azure:azure-core;dependency} -->
+      <version>1.43.0</version> <!-- {x-version-update;com.azure:azure-core;dependency} -->
     </dependency>
     <dependency>
       <groupId>com.azure</groupId>
       <artifactId>azure-core-http-netty</artifactId>
-      <version>1.13.6</version> <!-- {x-version-update;com.azure:azure-core-http-netty;dependency} -->
-    </dependency>
-    <dependency>
-      <groupId>com.azure</groupId>
-      <artifactId>azure-core-experimental</artifactId>
-      <version>1.0.0-beta.42</version> <!-- {x-version-update;com.azure:azure-core-experimental;dependency} -->
+      <version>1.13.7</version> <!-- {x-version-update;com.azure:azure-core-http-netty;dependency} -->
     </dependency>
 
     <!-- provided scope -->
@@ -86,13 +80,13 @@
     <dependency>
       <groupId>com.azure</groupId>
       <artifactId>azure-core-test</artifactId>
-      <version>1.19.0</version> <!-- {x-version-update;com.azure:azure-core-test;dependency} -->
+      <version>1.20.0</version> <!-- {x-version-update;com.azure:azure-core-test;dependency} -->
       <scope>test</scope>
     </dependency>
     <dependency>
       <groupId>com.azure</groupId>
       <artifactId>azure-identity</artifactId>
-      <version>1.9.2</version> <!-- {x-version-update;com.azure:azure-identity;dependency} -->
+      <version>1.10.1</version> <!-- {x-version-update;com.azure:azure-identity;dependency} -->
       <scope>test</scope>
     </dependency>
     <dependency>
@@ -105,7 +99,7 @@
     <dependency>
       <groupId>com.azure</groupId>
       <artifactId>azure-core-http-okhttp</artifactId>
-      <version>1.11.12</version> <!-- {x-version-update;com.azure:azure-core-http-okhttp;dependency} -->
+      <version>1.11.13</version> <!-- {x-version-update;com.azure:azure-core-http-okhttp;dependency} -->
       <scope>test</scope>
     </dependency>
 

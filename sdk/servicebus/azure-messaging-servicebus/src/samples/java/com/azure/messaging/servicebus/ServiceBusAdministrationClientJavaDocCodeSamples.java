@@ -21,7 +21,11 @@ import org.junit.jupiter.api.Test;
  * @see ServiceBusAdministrationClient
  */
 public class ServiceBusAdministrationClientJavaDocCodeSamples {
-    private static String connectionString = System.getenv("AZURE_SERVICEBUS_NAMESPACE_CONNECTION_STRING");
+    /**
+     * Fully qualified namespace is the host name of the Service Bus resource.  It can be found by navigating to the
+     * Service Bus namespace and looking in the "Essentials" panel.
+     */
+    private final String fullyQualifiedNamespace = System.getenv("AZURE_SERVICEBUS_FULLY_QUALIFIED_DOMAIN_NAME");
 
     /**
      * Creates {@link ServiceBusAdministrationClient} with a connection string.
@@ -29,13 +33,15 @@ public class ServiceBusAdministrationClientJavaDocCodeSamples {
     @Test
     public void instantiate() {
         // BEGIN: com.azure.messaging.servicebus.administration.servicebusadministrationclient.instantiation
-        // Retrieve 'connectionString' from your configuration.
-
         HttpLogOptions logOptions = new HttpLogOptions()
             .setLogLevel(HttpLogDetailLevel.HEADERS);
 
+        // DefaultAzureCredential creates a credential based on the environment it is executed in.
+        TokenCredential tokenCredential = new DefaultAzureCredentialBuilder().build();
+
+        // 'fullyQualifiedNamespace' will look similar to "{your-namespace}.servicebus.windows.net"
         ServiceBusAdministrationClient client = new ServiceBusAdministrationClientBuilder()
-            .connectionString(connectionString)
+            .credential(fullyQualifiedNamespace, tokenCredential)
             .httpLogOptions(logOptions)
             .buildClient();
         // END: com.azure.messaging.servicebus.administration.servicebusadministrationclient.instantiation
@@ -51,12 +57,11 @@ public class ServiceBusAdministrationClientJavaDocCodeSamples {
         // DefaultAzureCredential creates a credential based on the environment it is executed in.
         TokenCredential credential = new DefaultAzureCredentialBuilder().build();
 
+        // 'fullyQualifiedNamespace' will look similar to "{your-namespace}.servicebus.windows.net"
         ServiceBusAdministrationAsyncClient client = new ServiceBusAdministrationClientBuilder()
-            .connectionString("<< Service Bus NAMESPACE connection string>>")
-            .credential("<< my-sb-namespace.servicebus.windows.net >>", credential)
+            .credential(fullyQualifiedNamespace, new DefaultAzureCredentialBuilder().build())
             .buildAsyncClient();
         // END: com.azure.messaging.servicebus.administration.servicebusadministrationasyncclient.instantiation
-
     }
 
     /**
@@ -66,7 +71,7 @@ public class ServiceBusAdministrationClientJavaDocCodeSamples {
     public void createQueue() {
         // Retrieve 'connectionString' from your configuration.
         ServiceBusAdministrationClient client = new ServiceBusAdministrationClientBuilder()
-            .connectionString(connectionString)
+            .credential(fullyQualifiedNamespace, new DefaultAzureCredentialBuilder().build())
             .buildClient();
 
         // BEGIN: com.azure.messaging.servicebus.administration.servicebusadministrationclient.createqueue#string
@@ -82,7 +87,7 @@ public class ServiceBusAdministrationClientJavaDocCodeSamples {
     @Test
     public void createQueueAsync() {
         ServiceBusAdministrationAsyncClient client = new ServiceBusAdministrationClientBuilder()
-            .connectionString(connectionString)
+            .credential(fullyQualifiedNamespace, new DefaultAzureCredentialBuilder().build())
             .buildAsyncClient();
 
         // BEGIN: com.azure.messaging.servicebus.administration.servicebusadministrationasyncclient.createqueue#string
@@ -103,7 +108,7 @@ public class ServiceBusAdministrationClientJavaDocCodeSamples {
     @Test
     public void updateSubscription() {
         ServiceBusAdministrationClient client = new ServiceBusAdministrationClientBuilder()
-            .connectionString(connectionString)
+            .credential(fullyQualifiedNamespace, new DefaultAzureCredentialBuilder().build())
             .buildClient();
 
         // BEGIN: com.azure.messaging.servicebus.administration.servicebusadministrationclient.updatesubscription#subscriptionproperties
@@ -132,7 +137,7 @@ public class ServiceBusAdministrationClientJavaDocCodeSamples {
     @Test
     public void updateSubscriptionAsync() {
         ServiceBusAdministrationAsyncClient client = new ServiceBusAdministrationClientBuilder()
-            .connectionString(connectionString)
+            .credential(fullyQualifiedNamespace, new DefaultAzureCredentialBuilder().build())
             .buildAsyncClient();
 
         // BEGIN: com.azure.messaging.servicebus.administration.servicebusadministrationasyncclient.updatesubscription#subscriptionproperties
@@ -168,7 +173,7 @@ public class ServiceBusAdministrationClientJavaDocCodeSamples {
     @Test
     public void listQueues() {
         ServiceBusAdministrationClient client = new ServiceBusAdministrationClientBuilder()
-            .connectionString(connectionString)
+            .credential(fullyQualifiedNamespace, new DefaultAzureCredentialBuilder().build())
             .buildClient();
 
         // BEGIN: com.azure.messaging.servicebus.administration.servicebusadministrationclient.listQueues
@@ -185,7 +190,7 @@ public class ServiceBusAdministrationClientJavaDocCodeSamples {
     @Test
     public void listQueuesAsync() {
         ServiceBusAdministrationAsyncClient client = new ServiceBusAdministrationClientBuilder()
-            .connectionString(connectionString)
+            .credential(fullyQualifiedNamespace, new DefaultAzureCredentialBuilder().build())
             .buildAsyncClient();
 
         // BEGIN: com.azure.messaging.servicebus.administration.servicebusadministrationasyncclient.listQueues

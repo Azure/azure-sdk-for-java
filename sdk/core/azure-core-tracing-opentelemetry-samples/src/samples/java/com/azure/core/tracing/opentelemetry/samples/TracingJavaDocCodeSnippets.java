@@ -9,15 +9,15 @@ import com.azure.core.util.ClientOptions;
 import com.azure.core.util.Context;
 import com.azure.core.util.TracingOptions;
 import com.azure.core.util.tracing.TracerProvider;
-import io.opentelemetry.api.GlobalOpenTelemetry;
 import io.opentelemetry.api.OpenTelemetry;
 import io.opentelemetry.api.trace.Span;
 import io.opentelemetry.api.trace.Tracer;
 import io.opentelemetry.context.Scope;
 import io.opentelemetry.exporter.logging.LoggingSpanExporter;
 import io.opentelemetry.sdk.OpenTelemetrySdk;
+import io.opentelemetry.sdk.autoconfigure.AutoConfiguredOpenTelemetrySdk;
 import io.opentelemetry.sdk.trace.SdkTracerProvider;
-import io.opentelemetry.sdk.trace.export.SimpleSpanProcessor;
+import io.opentelemetry.sdk.trace.export.BatchSpanProcessor;
 
 import static com.azure.core.util.tracing.Tracer.PARENT_TRACE_CONTEXT_KEY;
 
@@ -31,16 +31,15 @@ public class TracingJavaDocCodeSnippets {
         // BEGIN: com.azure.core.util.tracing.TracingOptions#default
 
         // no need to configure OpenTelemetry if you're using the OpenTelemetry Java agent (or another vendor-specific Java agent based on it).
-
         // if you're using OpenTelemetry SDK, you can configure it with io.opentelemetry:opentelemetry-sdk-extension-autoconfigure package:
-        // AutoConfiguredOpenTelemetrySdk.initialize();
+        OpenTelemetry opentelemetry = AutoConfiguredOpenTelemetrySdk.initialize().getOpenTelemetrySdk();
 
         // configure Azure Client, no metric configuration needed
         AzureClient sampleClient = new AzureClientBuilder()
             .endpoint("https://my-client.azure.com")
             .build();
 
-        Span span = GlobalOpenTelemetry.getTracer("azure-core-samples")
+        Span span = opentelemetry.getTracer("azure-core-samples")
             .spanBuilder("doWork")
             .startSpan();
 
@@ -63,10 +62,10 @@ public class TracingJavaDocCodeSnippets {
 
         // configure OpenTelemetry SDK explicitly per https://opentelemetry.io/docs/instrumentation/java/manual/
         SdkTracerProvider tracerProvider = SdkTracerProvider.builder()
-            .addSpanProcessor(SimpleSpanProcessor.create(LoggingSpanExporter.create()))
+            .addSpanProcessor(BatchSpanProcessor.builder(LoggingSpanExporter.create()).build())
             .build();
 
-        OpenTelemetry openTelemetry = OpenTelemetrySdk.builder().setTracerProvider(tracerProvider).build();
+        OpenTelemetrySdk openTelemetry = OpenTelemetrySdk.builder().setTracerProvider(tracerProvider).build();
         // Pass OpenTelemetry container to TracingOptions.
         TracingOptions customTracingOptions = new OpenTelemetryTracingOptions()
             .setOpenTelemetry(openTelemetry);
@@ -82,13 +81,14 @@ public class TracingJavaDocCodeSnippets {
         sampleClient.methodCall("get items");
 
         // END: com.azure.core.tracing.TracingOptions#custom
+        openTelemetry.close();
     }
 
     public void passContextExplicitly() {
         // BEGIN: com.azure.core.util.tracing#explicit-parent
 
         SdkTracerProvider tracerProvider = SdkTracerProvider.builder()
-            .addSpanProcessor(SimpleSpanProcessor.create(LoggingSpanExporter.create()))
+            .addSpanProcessor(BatchSpanProcessor.builder(LoggingSpanExporter.create()).build())
             .build();
 
         AzureClient sampleClient = new AzureClientBuilder()
@@ -110,6 +110,7 @@ public class TracingJavaDocCodeSnippets {
         parent.end();
 
         // END: com.azure.core.util.tracing#explicit-parent
+        tracerProvider.close();
     }
 
     /**

@@ -10,7 +10,7 @@ import java.util.List;
 /** An immutable client-side representation of PortalSettingsCollection. */
 public interface PortalSettingsCollection {
     /**
-     * Gets the value property: Descriptions of APIM policies.
+     * Gets the value property: Descriptions of API Management policies.
      *
      * @return the value value.
      */

@@ -4,14 +4,13 @@
 
 package com.azure.resourcemanager.apimanagement.generated;
 
-import com.azure.core.util.Context;
 import com.azure.resourcemanager.apimanagement.models.ConfigurationIdName;
 import com.azure.resourcemanager.apimanagement.models.DeployConfigurationParameters;
 
 /** Samples for TenantConfiguration Validate. */
 public final class TenantConfigurationValidateSamples {
     /*
-     * x-ms-original-file: specification/apimanagement/resource-manager/Microsoft.ApiManagement/stable/2021-08-01/examples/ApiManagementTenantConfigurationValidate.json
+     * x-ms-original-file: specification/apimanagement/resource-manager/Microsoft.ApiManagement/stable/2022-08-01/examples/ApiManagementTenantConfigurationValidate.json
      */
     /**
      * Sample code: ApiManagementTenantConfigurationValidate.
@@ -27,6 +26,6 @@ public final class TenantConfigurationValidateSamples {
                 "apimService1",
                 ConfigurationIdName.CONFIGURATION,
                 new DeployConfigurationParameters().withBranch("master"),
-                Context.NONE);
+                com.azure.core.util.Context.NONE);
     }
 }

@@ -12,27 +12,27 @@ public interface PolicyDescriptions {
     /**
      * Lists all policy descriptions.
      *
-     * @param resourceGroupName The name of the resource group.
-     * @param serviceName The name of the API Management service.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return descriptions of APIM policies.
-     */
-    PolicyDescriptionCollection listByService(String resourceGroupName, String serviceName);
-
-    /**
-     * Lists all policy descriptions.
-     *
-     * @param resourceGroupName The name of the resource group.
+     * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param serviceName The name of the API Management service.
      * @param scope Policy scope.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return descriptions of APIM policies along with {@link Response}.
+     * @return descriptions of API Management policies along with {@link Response}.
      */
     Response<PolicyDescriptionCollection> listByServiceWithResponse(
         String resourceGroupName, String serviceName, PolicyScopeContract scope, Context context);
+
+    /**
+     * Lists all policy descriptions.
+     *
+     * @param resourceGroupName The name of the resource group. The name is case insensitive.
+     * @param serviceName The name of the API Management service.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return descriptions of API Management policies.
+     */
+    PolicyDescriptionCollection listByService(String resourceGroupName, String serviceName);
 }

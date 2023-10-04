@@ -46,7 +46,7 @@ public class BuildDocumentClassifierAsync {
         HashMap<String, ClassifierDocumentTypeDetails> docTypes = new HashMap<>();
         docTypes.put("1040-D", new ClassifierDocumentTypeDetails(new BlobContentSource(blobContainerUrl1040D)
         ));
-        docTypes.put("1040-D", new ClassifierDocumentTypeDetails(new BlobContentSource(blobContainerUrl1040A)
+        docTypes.put("1040-A", new ClassifierDocumentTypeDetails(new BlobContentSource(blobContainerUrl1040A)
         ));
 
         SyncPoller<OperationResult, DocumentClassifierDetails> buildOperationPoller =

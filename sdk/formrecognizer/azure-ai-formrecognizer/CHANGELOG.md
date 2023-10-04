@@ -1,6 +1,6 @@
 # Release History
 
-## 4.1.0-beta.3 (Unreleased)
+## 4.2.0-beta.1 (Unreleased)
 
 ### Features Added
 
@@ -9,6 +9,30 @@
 ### Bugs Fixed
 
 ### Other Changes
+
+## 4.1.1 (2023-09-13)
+
+### Other Changes
+
+- Upgraded `azure-core` from `1.42.0` to version `1.43.0`.
+- Upgraded `azure-core-http-netty` from `1.13.6` to version `1.13.7`.
+
+## 4.1.0 (2023-08-10)
+
+### Features Added
+- Added class `DocumentAnalysisFeature`, added properties `Barcodes`, `KeyValuePairs`, and `Languages` as add-on capabilities.
+- Added class `ContentSource` as a base class to `BlobContentSource` and `BlobFileListContentSource`
+- In `DocumentModelAdministrationClient`, added a new overload to `beginBuildDocumentModel` that takes a `ContentSource` object. 
+It can be used to build a document model from alternative content sources.
+- Added property `serviceVersion` to classes `AnalyzeResult`, `DocumentModelDetails`, `DocumentModelSummary`, `OperationDetails`, and `OperationSummary`.
+
+### Breaking Changes
+- `DocumentAnalysisClient` and `DocumentModelAdministrationClient` now target service API version `2023-07-31` by default. Version `2023-02-28-preview` is not supported anymore.
+- In class `ResourceDetails`, renamed property `customNeuralDocumentModelBuilds` to `neuralDocumentModelQuota`.
+- In class `DocumentClassifierDetails`, renamed property `apiVersion` to `serviceVersion`.
+
+### Bugs Fixed
+- `DocumentStyle` now correctly returns values for `font`, `similarFontFamily`, `backgroundColor`. 
 
 ## 4.0.9 (2023-07-25)
 

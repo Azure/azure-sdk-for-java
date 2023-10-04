@@ -9,7 +9,7 @@ import com.azure.resourcemanager.apimanagement.models.Confirmation;
 /** Samples for User CreateOrUpdate. */
 public final class UserCreateOrUpdateSamples {
     /*
-     * x-ms-original-file: specification/apimanagement/resource-manager/Microsoft.ApiManagement/stable/2021-08-01/examples/ApiManagementCreateUser.json
+     * x-ms-original-file: specification/apimanagement/resource-manager/Microsoft.ApiManagement/stable/2022-08-01/examples/ApiManagementCreateUser.json
      */
     /**
      * Sample code: ApiManagementCreateUser.

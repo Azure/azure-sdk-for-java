@@ -7,6 +7,7 @@ package com.azure.resourcemanager.containerservice.generated;
 import com.azure.resourcemanager.containerservice.fluent.models.ManagedClusterInner;
 import com.azure.resourcemanager.containerservice.models.AgentPoolMode;
 import com.azure.resourcemanager.containerservice.models.AgentPoolType;
+import com.azure.resourcemanager.containerservice.models.ClusterUpgradeSettings;
 import com.azure.resourcemanager.containerservice.models.ContainerServiceLinuxProfile;
 import com.azure.resourcemanager.containerservice.models.ContainerServiceNetworkProfile;
 import com.azure.resourcemanager.containerservice.models.ContainerServiceSshConfiguration;
@@ -15,6 +16,13 @@ import com.azure.resourcemanager.containerservice.models.CreationData;
 import com.azure.resourcemanager.containerservice.models.Expander;
 import com.azure.resourcemanager.containerservice.models.GpuInstanceProfile;
 import com.azure.resourcemanager.containerservice.models.IpFamily;
+import com.azure.resourcemanager.containerservice.models.IstioCertificateAuthority;
+import com.azure.resourcemanager.containerservice.models.IstioComponents;
+import com.azure.resourcemanager.containerservice.models.IstioEgressGateway;
+import com.azure.resourcemanager.containerservice.models.IstioIngressGateway;
+import com.azure.resourcemanager.containerservice.models.IstioIngressGatewayMode;
+import com.azure.resourcemanager.containerservice.models.IstioPluginCertificateAuthority;
+import com.azure.resourcemanager.containerservice.models.IstioServiceMesh;
 import com.azure.resourcemanager.containerservice.models.KubernetesSupportPlan;
 import com.azure.resourcemanager.containerservice.models.LicenseType;
 import com.azure.resourcemanager.containerservice.models.LoadBalancerSku;
@@ -45,7 +53,11 @@ import com.azure.resourcemanager.containerservice.models.OSType;
 import com.azure.resourcemanager.containerservice.models.OutboundType;
 import com.azure.resourcemanager.containerservice.models.ResourceIdentityType;
 import com.azure.resourcemanager.containerservice.models.ScaleDownMode;
+import com.azure.resourcemanager.containerservice.models.ServiceMeshMode;
+import com.azure.resourcemanager.containerservice.models.ServiceMeshProfile;
+import com.azure.resourcemanager.containerservice.models.UpgradeOverrideSettings;
 import com.azure.resourcemanager.containerservice.models.WindowsGmsaProfile;
+import java.time.OffsetDateTime;
 import java.util.Arrays;
 import java.util.HashMap;
 import java.util.Map;
@@ -53,312 +65,7 @@ import java.util.Map;
 /** Samples for ManagedClusters CreateOrUpdate. */
 public final class ManagedClustersCreateOrUpdateSamples {
     /*
-     * x-ms-original-file: specification/containerservice/resource-manager/Microsoft.ContainerService/aks/stable/2023-06-01/examples/ManagedClustersCreate_HTTPProxy.json
-     */
-    /**
-     * Sample code: Create Managed Cluster with HTTP proxy configured.
-     *
-     * @param azure The entry point for accessing resource management APIs in Azure.
-     */
-    public static void createManagedClusterWithHTTPProxyConfigured(
-        com.azure.resourcemanager.AzureResourceManager azure) {
-        azure
-            .kubernetesClusters()
-            .manager()
-            .serviceClient()
-            .getManagedClusters()
-            .createOrUpdate(
-                "rg1",
-                "clustername1",
-                new ManagedClusterInner()
-                    .withLocation("location1")
-                    .withTags(mapOf("archv2", "", "tier", "production"))
-                    .withSku(
-                        new ManagedClusterSku()
-                            .withName(ManagedClusterSkuName.fromString("Basic"))
-                            .withTier(ManagedClusterSkuTier.FREE))
-                    .withKubernetesVersion("")
-                    .withDnsPrefix("dnsprefix1")
-                    .withAgentPoolProfiles(
-                        Arrays
-                            .asList(
-                                new ManagedClusterAgentPoolProfile()
-                                    .withCount(3)
-                                    .withVmSize("Standard_DS2_v2")
-                                    .withOsType(OSType.LINUX)
-                                    .withType(AgentPoolType.VIRTUAL_MACHINE_SCALE_SETS)
-                                    .withMode(AgentPoolMode.SYSTEM)
-                                    .withEnableNodePublicIp(true)
-                                    .withName("nodepool1")))
-                    .withLinuxProfile(
-                        new ContainerServiceLinuxProfile()
-                            .withAdminUsername("azureuser")
-                            .withSsh(
-                                new ContainerServiceSshConfiguration()
-                                    .withPublicKeys(
-                                        Arrays
-                                            .asList(
-                                                new ContainerServiceSshPublicKey()
-                                                    .withKeyData("fakeTokenPlaceholder")))))
-                    .withWindowsProfile(
-                        new ManagedClusterWindowsProfile()
-                            .withAdminUsername("azureuser")
-                            .withAdminPassword("fakeTokenPlaceholder"))
-                    .withServicePrincipalProfile(
-                        new ManagedClusterServicePrincipalProfile()
-                            .withClientId("clientid")
-                            .withSecret("fakeTokenPlaceholder"))
-                    .withAddonProfiles(mapOf())
-                    .withEnableRbac(true)
-                    .withEnablePodSecurityPolicy(true)
-                    .withNetworkProfile(
-                        new ContainerServiceNetworkProfile()
-                            .withOutboundType(OutboundType.LOAD_BALANCER)
-                            .withLoadBalancerSku(LoadBalancerSku.STANDARD)
-                            .withLoadBalancerProfile(
-                                new ManagedClusterLoadBalancerProfile()
-                                    .withManagedOutboundIPs(
-                                        new ManagedClusterLoadBalancerProfileManagedOutboundIPs().withCount(2))))
-                    .withAutoScalerProfile(
-                        new ManagedClusterPropertiesAutoScalerProfile()
-                            .withScanInterval("20s")
-                            .withScaleDownDelayAfterAdd("15m"))
-                    .withDiskEncryptionSetId(
-                        "/subscriptions/subid1/resourceGroups/rg1/providers/Microsoft.Compute/diskEncryptionSets/des")
-                    .withHttpProxyConfig(
-                        new ManagedClusterHttpProxyConfig()
-                            .withHttpProxy("http://myproxy.server.com:8080")
-                            .withHttpsProxy("https://myproxy.server.com:8080")
-                            .withNoProxy(Arrays.asList("localhost", "127.0.0.1"))
-                            .withTrustedCa("Q29uZ3JhdHMhIFlvdSBoYXZlIGZvdW5kIGEgaGlkZGVuIG1lc3NhZ2U=")),
-                com.azure.core.util.Context.NONE);
-    }
-
-    /*
-     * x-ms-original-file: specification/containerservice/resource-manager/Microsoft.ContainerService/aks/stable/2023-06-01/examples/ManagedClustersCreate_DedicatedHostGroup.json
-     */
-    /**
-     * Sample code: Create Managed Cluster with Dedicated Host Group.
-     *
-     * @param azure The entry point for accessing resource management APIs in Azure.
-     */
-    public static void createManagedClusterWithDedicatedHostGroup(
-        com.azure.resourcemanager.AzureResourceManager azure) {
-        azure
-            .kubernetesClusters()
-            .manager()
-            .serviceClient()
-            .getManagedClusters()
-            .createOrUpdate(
-                "rg1",
-                "clustername1",
-                new ManagedClusterInner()
-                    .withLocation("location1")
-                    .withTags(mapOf("archv2", "", "tier", "production"))
-                    .withSku(
-                        new ManagedClusterSku()
-                            .withName(ManagedClusterSkuName.fromString("Basic"))
-                            .withTier(ManagedClusterSkuTier.FREE))
-                    .withKubernetesVersion("")
-                    .withDnsPrefix("dnsprefix1")
-                    .withAgentPoolProfiles(
-                        Arrays
-                            .asList(
-                                new ManagedClusterAgentPoolProfile()
-                                    .withCount(3)
-                                    .withVmSize("Standard_DS2_v2")
-                                    .withOsType(OSType.LINUX)
-                                    .withType(AgentPoolType.VIRTUAL_MACHINE_SCALE_SETS)
-                                    .withEnableNodePublicIp(true)
-                                    .withHostGroupId(
-                                        "/subscriptions/subid1/resourcegroups/rg/providers/Microsoft.Compute/hostGroups/hostgroup1")
-                                    .withName("nodepool1")))
-                    .withLinuxProfile(
-                        new ContainerServiceLinuxProfile()
-                            .withAdminUsername("azureuser")
-                            .withSsh(
-                                new ContainerServiceSshConfiguration()
-                                    .withPublicKeys(
-                                        Arrays
-                                            .asList(
-                                                new ContainerServiceSshPublicKey()
-                                                    .withKeyData("fakeTokenPlaceholder")))))
-                    .withWindowsProfile(
-                        new ManagedClusterWindowsProfile()
-                            .withAdminUsername("azureuser")
-                            .withAdminPassword("fakeTokenPlaceholder"))
-                    .withServicePrincipalProfile(
-                        new ManagedClusterServicePrincipalProfile()
-                            .withClientId("clientid")
-                            .withSecret("fakeTokenPlaceholder"))
-                    .withAddonProfiles(mapOf())
-                    .withEnableRbac(true)
-                    .withEnablePodSecurityPolicy(false)
-                    .withNetworkProfile(
-                        new ContainerServiceNetworkProfile()
-                            .withOutboundType(OutboundType.LOAD_BALANCER)
-                            .withLoadBalancerSku(LoadBalancerSku.STANDARD)
-                            .withLoadBalancerProfile(
-                                new ManagedClusterLoadBalancerProfile()
-                                    .withManagedOutboundIPs(
-                                        new ManagedClusterLoadBalancerProfileManagedOutboundIPs().withCount(2))))
-                    .withAutoScalerProfile(
-                        new ManagedClusterPropertiesAutoScalerProfile()
-                            .withScanInterval("20s")
-                            .withScaleDownDelayAfterAdd("15m"))
-                    .withDiskEncryptionSetId(
-                        "/subscriptions/subid1/resourceGroups/rg1/providers/Microsoft.Compute/diskEncryptionSets/des"),
-                com.azure.core.util.Context.NONE);
-    }
-
-    /*
-     * x-ms-original-file: specification/containerservice/resource-manager/Microsoft.ContainerService/aks/stable/2023-06-01/examples/ManagedClustersCreate_EnabledFIPS.json
-     */
-    /**
-     * Sample code: Create Managed Cluster with FIPS enabled OS.
-     *
-     * @param azure The entry point for accessing resource management APIs in Azure.
-     */
-    public static void createManagedClusterWithFIPSEnabledOS(com.azure.resourcemanager.AzureResourceManager azure) {
-        azure
-            .kubernetesClusters()
-            .manager()
-            .serviceClient()
-            .getManagedClusters()
-            .createOrUpdate(
-                "rg1",
-                "clustername1",
-                new ManagedClusterInner()
-                    .withLocation("location1")
-                    .withTags(mapOf("archv2", "", "tier", "production"))
-                    .withSku(
-                        new ManagedClusterSku()
-                            .withName(ManagedClusterSkuName.fromString("Basic"))
-                            .withTier(ManagedClusterSkuTier.FREE))
-                    .withKubernetesVersion("")
-                    .withDnsPrefix("dnsprefix1")
-                    .withAgentPoolProfiles(
-                        Arrays
-                            .asList(
-                                new ManagedClusterAgentPoolProfile()
-                                    .withCount(3)
-                                    .withVmSize("Standard_DS2_v2")
-                                    .withOsType(OSType.LINUX)
-                                    .withType(AgentPoolType.VIRTUAL_MACHINE_SCALE_SETS)
-                                    .withMode(AgentPoolMode.SYSTEM)
-                                    .withEnableNodePublicIp(true)
-                                    .withEnableFips(true)
-                                    .withName("nodepool1")))
-                    .withLinuxProfile(
-                        new ContainerServiceLinuxProfile()
-                            .withAdminUsername("azureuser")
-                            .withSsh(
-                                new ContainerServiceSshConfiguration()
-                                    .withPublicKeys(
-                                        Arrays
-                                            .asList(
-                                                new ContainerServiceSshPublicKey()
-                                                    .withKeyData("fakeTokenPlaceholder")))))
-                    .withWindowsProfile(
-                        new ManagedClusterWindowsProfile()
-                            .withAdminUsername("azureuser")
-                            .withAdminPassword("fakeTokenPlaceholder"))
-                    .withServicePrincipalProfile(
-                        new ManagedClusterServicePrincipalProfile()
-                            .withClientId("clientid")
-                            .withSecret("fakeTokenPlaceholder"))
-                    .withAddonProfiles(mapOf())
-                    .withEnableRbac(true)
-                    .withEnablePodSecurityPolicy(false)
-                    .withNetworkProfile(
-                        new ContainerServiceNetworkProfile()
-                            .withOutboundType(OutboundType.LOAD_BALANCER)
-                            .withLoadBalancerSku(LoadBalancerSku.STANDARD)
-                            .withLoadBalancerProfile(
-                                new ManagedClusterLoadBalancerProfile()
-                                    .withManagedOutboundIPs(
-                                        new ManagedClusterLoadBalancerProfileManagedOutboundIPs().withCount(2))))
-                    .withAutoScalerProfile(
-                        new ManagedClusterPropertiesAutoScalerProfile()
-                            .withScanInterval("20s")
-                            .withScaleDownDelayAfterAdd("15m"))
-                    .withDiskEncryptionSetId(
-                        "/subscriptions/subid1/resourceGroups/rg1/providers/Microsoft.Compute/diskEncryptionSets/des"),
-                com.azure.core.util.Context.NONE);
-    }
-
-    /*
-     * x-ms-original-file: specification/containerservice/resource-manager/Microsoft.ContainerService/aks/stable/2023-06-01/examples/ManagedClustersCreate_SecurityProfile.json
-     */
-    /**
-     * Sample code: Create Managed Cluster with Security Profile configured.
-     *
-     * @param azure The entry point for accessing resource management APIs in Azure.
-     */
-    public static void createManagedClusterWithSecurityProfileConfigured(
-        com.azure.resourcemanager.AzureResourceManager azure) {
-        azure
-            .kubernetesClusters()
-            .manager()
-            .serviceClient()
-            .getManagedClusters()
-            .createOrUpdate(
-                "rg1",
-                "clustername1",
-                new ManagedClusterInner()
-                    .withLocation("location1")
-                    .withTags(mapOf("archv2", "", "tier", "production"))
-                    .withSku(
-                        new ManagedClusterSku()
-                            .withName(ManagedClusterSkuName.fromString("Basic"))
-                            .withTier(ManagedClusterSkuTier.FREE))
-                    .withKubernetesVersion("")
-                    .withDnsPrefix("dnsprefix1")
-                    .withAgentPoolProfiles(
-                        Arrays
-                            .asList(
-                                new ManagedClusterAgentPoolProfile()
-                                    .withCount(3)
-                                    .withVmSize("Standard_DS2_v2")
-                                    .withOsType(OSType.LINUX)
-                                    .withType(AgentPoolType.VIRTUAL_MACHINE_SCALE_SETS)
-                                    .withMode(AgentPoolMode.SYSTEM)
-                                    .withEnableNodePublicIp(true)
-                                    .withName("nodepool1")))
-                    .withLinuxProfile(
-                        new ContainerServiceLinuxProfile()
-                            .withAdminUsername("azureuser")
-                            .withSsh(
-                                new ContainerServiceSshConfiguration()
-                                    .withPublicKeys(
-                                        Arrays
-                                            .asList(
-                                                new ContainerServiceSshPublicKey()
-                                                    .withKeyData("fakeTokenPlaceholder")))))
-                    .withNetworkProfile(
-                        new ContainerServiceNetworkProfile()
-                            .withOutboundType(OutboundType.LOAD_BALANCER)
-                            .withLoadBalancerSku(LoadBalancerSku.STANDARD)
-                            .withLoadBalancerProfile(
-                                new ManagedClusterLoadBalancerProfile()
-                                    .withManagedOutboundIPs(
-                                        new ManagedClusterLoadBalancerProfileManagedOutboundIPs().withCount(2))))
-                    .withSecurityProfile(
-                        new ManagedClusterSecurityProfile()
-                            .withDefender(
-                                new ManagedClusterSecurityProfileDefender()
-                                    .withLogAnalyticsWorkspaceResourceId(
-                                        "/subscriptions/SUB_ID/resourcegroups/RG_NAME/providers/microsoft.operationalinsights/workspaces/WORKSPACE_NAME")
-                                    .withSecurityMonitoring(
-                                        new ManagedClusterSecurityProfileDefenderSecurityMonitoring()
-                                            .withEnabled(true)))
-                            .withWorkloadIdentity(
-                                new ManagedClusterSecurityProfileWorkloadIdentity().withEnabled(true))),
-                com.azure.core.util.Context.NONE);
-    }
-
-    /*
-     * x-ms-original-file: specification/containerservice/resource-manager/Microsoft.ContainerService/aks/stable/2023-06-01/examples/ManagedClustersCreate_DualStackNetworking.json
+     * x-ms-original-file: specification/containerservice/resource-manager/Microsoft.ContainerService/aks/stable/2023-08-01/examples/ManagedClustersCreate_DualStackNetworking.json
      */
     /**
      * Sample code: Create/Update Managed Cluster with dual-stack networking.
@@ -449,7 +156,1023 @@ public final class ManagedClustersCreateOrUpdateSamples {
     }
 
     /*
-     * x-ms-original-file: specification/containerservice/resource-manager/Microsoft.ContainerService/aks/stable/2023-06-01/examples/ManagedClustersCreate_PPG.json
+     * x-ms-original-file: specification/containerservice/resource-manager/Microsoft.ContainerService/aks/stable/2023-08-01/examples/ManagedClustersCreate_PodIdentity.json
+     */
+    /**
+     * Sample code: Create Managed Cluster with PodIdentity enabled.
+     *
+     * @param azure The entry point for accessing resource management APIs in Azure.
+     */
+    public static void createManagedClusterWithPodIdentityEnabled(
+        com.azure.resourcemanager.AzureResourceManager azure) {
+        azure
+            .kubernetesClusters()
+            .manager()
+            .serviceClient()
+            .getManagedClusters()
+            .createOrUpdate(
+                "rg1",
+                "clustername1",
+                new ManagedClusterInner()
+                    .withLocation("location1")
+                    .withTags(mapOf("archv2", "", "tier", "production"))
+                    .withSku(
+                        new ManagedClusterSku()
+                            .withName(ManagedClusterSkuName.fromString("Basic"))
+                            .withTier(ManagedClusterSkuTier.FREE))
+                    .withKubernetesVersion("")
+                    .withDnsPrefix("dnsprefix1")
+                    .withAgentPoolProfiles(
+                        Arrays
+                            .asList(
+                                new ManagedClusterAgentPoolProfile()
+                                    .withCount(3)
+                                    .withVmSize("Standard_DS2_v2")
+                                    .withOsType(OSType.LINUX)
+                                    .withType(AgentPoolType.VIRTUAL_MACHINE_SCALE_SETS)
+                                    .withMode(AgentPoolMode.SYSTEM)
+                                    .withEnableNodePublicIp(true)
+                                    .withName("nodepool1")))
+                    .withLinuxProfile(
+                        new ContainerServiceLinuxProfile()
+                            .withAdminUsername("azureuser")
+                            .withSsh(
+                                new ContainerServiceSshConfiguration()
+                                    .withPublicKeys(
+                                        Arrays
+                                            .asList(
+                                                new ContainerServiceSshPublicKey()
+                                                    .withKeyData("fakeTokenPlaceholder")))))
+                    .withWindowsProfile(
+                        new ManagedClusterWindowsProfile()
+                            .withAdminUsername("azureuser")
+                            .withAdminPassword("fakeTokenPlaceholder"))
+                    .withServicePrincipalProfile(
+                        new ManagedClusterServicePrincipalProfile()
+                            .withClientId("clientid")
+                            .withSecret("fakeTokenPlaceholder"))
+                    .withAddonProfiles(mapOf())
+                    .withPodIdentityProfile(
+                        new ManagedClusterPodIdentityProfile().withEnabled(true).withAllowNetworkPluginKubenet(true))
+                    .withEnableRbac(true)
+                    .withEnablePodSecurityPolicy(true)
+                    .withNetworkProfile(
+                        new ContainerServiceNetworkProfile()
+                            .withOutboundType(OutboundType.LOAD_BALANCER)
+                            .withLoadBalancerSku(LoadBalancerSku.STANDARD)
+                            .withLoadBalancerProfile(
+                                new ManagedClusterLoadBalancerProfile()
+                                    .withManagedOutboundIPs(
+                                        new ManagedClusterLoadBalancerProfileManagedOutboundIPs().withCount(2))))
+                    .withAutoScalerProfile(
+                        new ManagedClusterPropertiesAutoScalerProfile()
+                            .withScanInterval("20s")
+                            .withScaleDownDelayAfterAdd("15m"))
+                    .withDiskEncryptionSetId(
+                        "/subscriptions/subid1/resourceGroups/rg1/providers/Microsoft.Compute/diskEncryptionSets/des"),
+                com.azure.core.util.Context.NONE);
+    }
+
+    /*
+     * x-ms-original-file: specification/containerservice/resource-manager/Microsoft.ContainerService/aks/stable/2023-08-01/examples/ManagedClustersCreate_UserAssignedNATGateway.json
+     */
+    /**
+     * Sample code: Create Managed Cluster with user-assigned NAT gateway as outbound type.
+     *
+     * @param azure The entry point for accessing resource management APIs in Azure.
+     */
+    public static void createManagedClusterWithUserAssignedNATGatewayAsOutboundType(
+        com.azure.resourcemanager.AzureResourceManager azure) {
+        azure
+            .kubernetesClusters()
+            .manager()
+            .serviceClient()
+            .getManagedClusters()
+            .createOrUpdate(
+                "rg1",
+                "clustername1",
+                new ManagedClusterInner()
+                    .withLocation("location1")
+                    .withTags(mapOf("archv2", "", "tier", "production"))
+                    .withSku(
+                        new ManagedClusterSku()
+                            .withName(ManagedClusterSkuName.fromString("Basic"))
+                            .withTier(ManagedClusterSkuTier.FREE))
+                    .withKubernetesVersion("")
+                    .withDnsPrefix("dnsprefix1")
+                    .withAgentPoolProfiles(
+                        Arrays
+                            .asList(
+                                new ManagedClusterAgentPoolProfile()
+                                    .withCount(3)
+                                    .withVmSize("Standard_DS2_v2")
+                                    .withOsType(OSType.LINUX)
+                                    .withType(AgentPoolType.VIRTUAL_MACHINE_SCALE_SETS)
+                                    .withMode(AgentPoolMode.SYSTEM)
+                                    .withEnableNodePublicIp(false)
+                                    .withName("nodepool1")))
+                    .withLinuxProfile(
+                        new ContainerServiceLinuxProfile()
+                            .withAdminUsername("azureuser")
+                            .withSsh(
+                                new ContainerServiceSshConfiguration()
+                                    .withPublicKeys(
+                                        Arrays
+                                            .asList(
+                                                new ContainerServiceSshPublicKey()
+                                                    .withKeyData("fakeTokenPlaceholder")))))
+                    .withWindowsProfile(
+                        new ManagedClusterWindowsProfile()
+                            .withAdminUsername("azureuser")
+                            .withAdminPassword("fakeTokenPlaceholder"))
+                    .withServicePrincipalProfile(
+                        new ManagedClusterServicePrincipalProfile()
+                            .withClientId("clientid")
+                            .withSecret("fakeTokenPlaceholder"))
+                    .withAddonProfiles(mapOf())
+                    .withEnableRbac(true)
+                    .withEnablePodSecurityPolicy(true)
+                    .withNetworkProfile(
+                        new ContainerServiceNetworkProfile()
+                            .withOutboundType(OutboundType.USER_ASSIGNED_NATGATEWAY)
+                            .withLoadBalancerSku(LoadBalancerSku.STANDARD))
+                    .withAutoScalerProfile(
+                        new ManagedClusterPropertiesAutoScalerProfile()
+                            .withScanInterval("20s")
+                            .withScaleDownDelayAfterAdd("15m"))
+                    .withDiskEncryptionSetId(
+                        "/subscriptions/subid1/resourceGroups/rg1/providers/Microsoft.Compute/diskEncryptionSets/des"),
+                com.azure.core.util.Context.NONE);
+    }
+
+    /*
+     * x-ms-original-file: specification/containerservice/resource-manager/Microsoft.ContainerService/aks/stable/2023-08-01/examples/ManagedClustersCreate_Update.json
+     */
+    /**
+     * Sample code: Create/Update Managed Cluster.
+     *
+     * @param azure The entry point for accessing resource management APIs in Azure.
+     */
+    public static void createUpdateManagedCluster(com.azure.resourcemanager.AzureResourceManager azure) {
+        azure
+            .kubernetesClusters()
+            .manager()
+            .serviceClient()
+            .getManagedClusters()
+            .createOrUpdate(
+                "rg1",
+                "clustername1",
+                new ManagedClusterInner()
+                    .withLocation("location1")
+                    .withTags(mapOf("archv2", "", "tier", "production"))
+                    .withSku(
+                        new ManagedClusterSku()
+                            .withName(ManagedClusterSkuName.fromString("Basic"))
+                            .withTier(ManagedClusterSkuTier.FREE))
+                    .withIdentity(
+                        new ManagedClusterIdentity()
+                            .withType(ResourceIdentityType.USER_ASSIGNED)
+                            .withUserAssignedIdentities(
+                                mapOf(
+                                    "/subscriptions/subid1/resourceGroups/rgName1/providers/Microsoft.ManagedIdentity/userAssignedIdentities/identity1",
+                                    new ManagedServiceIdentityUserAssignedIdentitiesValue())))
+                    .withKubernetesVersion("")
+                    .withDnsPrefix("dnsprefix1")
+                    .withAgentPoolProfiles(
+                        Arrays
+                            .asList(
+                                new ManagedClusterAgentPoolProfile()
+                                    .withCount(3)
+                                    .withVmSize("Standard_DS1_v2")
+                                    .withOsType(OSType.LINUX)
+                                    .withScaleDownMode(ScaleDownMode.DEALLOCATE)
+                                    .withType(AgentPoolType.VIRTUAL_MACHINE_SCALE_SETS)
+                                    .withMode(AgentPoolMode.SYSTEM)
+                                    .withAvailabilityZones(Arrays.asList("1", "2", "3"))
+                                    .withEnableNodePublicIp(true)
+                                    .withName("nodepool1")))
+                    .withLinuxProfile(
+                        new ContainerServiceLinuxProfile()
+                            .withAdminUsername("azureuser")
+                            .withSsh(
+                                new ContainerServiceSshConfiguration()
+                                    .withPublicKeys(
+                                        Arrays
+                                            .asList(
+                                                new ContainerServiceSshPublicKey()
+                                                    .withKeyData("fakeTokenPlaceholder")))))
+                    .withWindowsProfile(
+                        new ManagedClusterWindowsProfile()
+                            .withAdminUsername("azureuser")
+                            .withAdminPassword("fakeTokenPlaceholder"))
+                    .withServicePrincipalProfile(
+                        new ManagedClusterServicePrincipalProfile()
+                            .withClientId("clientid")
+                            .withSecret("fakeTokenPlaceholder"))
+                    .withAddonProfiles(mapOf())
+                    .withEnableRbac(true)
+                    .withEnablePodSecurityPolicy(true)
+                    .withNetworkProfile(
+                        new ContainerServiceNetworkProfile()
+                            .withOutboundType(OutboundType.LOAD_BALANCER)
+                            .withLoadBalancerSku(LoadBalancerSku.STANDARD)
+                            .withLoadBalancerProfile(
+                                new ManagedClusterLoadBalancerProfile()
+                                    .withManagedOutboundIPs(
+                                        new ManagedClusterLoadBalancerProfileManagedOutboundIPs().withCount(2))))
+                    .withUpgradeSettings(
+                        new ClusterUpgradeSettings()
+                            .withOverrideSettings(
+                                new UpgradeOverrideSettings()
+                                    .withForceUpgrade(false)
+                                    .withUntil(OffsetDateTime.parse("2022-11-01T13:00:00Z"))))
+                    .withAutoScalerProfile(
+                        new ManagedClusterPropertiesAutoScalerProfile()
+                            .withBalanceSimilarNodeGroups("true")
+                            .withExpander(Expander.PRIORITY)
+                            .withMaxNodeProvisionTime("15m")
+                            .withNewPodScaleUpDelay("1m")
+                            .withScanInterval("20s")
+                            .withScaleDownDelayAfterAdd("15m")
+                            .withSkipNodesWithSystemPods("false"))
+                    .withDiskEncryptionSetId(
+                        "/subscriptions/subid1/resourceGroups/rg1/providers/Microsoft.Compute/diskEncryptionSets/des"),
+                com.azure.core.util.Context.NONE);
+    }
+
+    /*
+     * x-ms-original-file: specification/containerservice/resource-manager/Microsoft.ContainerService/aks/stable/2023-08-01/examples/ManagedClustersCreate_PrivateClusterFQDNSubdomain.json
+     */
+    /**
+     * Sample code: Create Managed Private Cluster with fqdn subdomain specified.
+     *
+     * @param azure The entry point for accessing resource management APIs in Azure.
+     */
+    public static void createManagedPrivateClusterWithFqdnSubdomainSpecified(
+        com.azure.resourcemanager.AzureResourceManager azure) {
+        azure
+            .kubernetesClusters()
+            .manager()
+            .serviceClient()
+            .getManagedClusters()
+            .createOrUpdate(
+                "rg1",
+                "clustername1",
+                new ManagedClusterInner()
+                    .withLocation("location1")
+                    .withTags(mapOf("archv2", "", "tier", "production"))
+                    .withSku(
+                        new ManagedClusterSku()
+                            .withName(ManagedClusterSkuName.fromString("Basic"))
+                            .withTier(ManagedClusterSkuTier.FREE))
+                    .withKubernetesVersion("")
+                    .withFqdnSubdomain("domain1")
+                    .withAgentPoolProfiles(
+                        Arrays
+                            .asList(
+                                new ManagedClusterAgentPoolProfile()
+                                    .withCount(3)
+                                    .withVmSize("Standard_DS2_v2")
+                                    .withOsType(OSType.LINUX)
+                                    .withType(AgentPoolType.VIRTUAL_MACHINE_SCALE_SETS)
+                                    .withMode(AgentPoolMode.SYSTEM)
+                                    .withEnableNodePublicIp(true)
+                                    .withEnableEncryptionAtHost(true)
+                                    .withName("nodepool1")))
+                    .withLinuxProfile(
+                        new ContainerServiceLinuxProfile()
+                            .withAdminUsername("azureuser")
+                            .withSsh(
+                                new ContainerServiceSshConfiguration()
+                                    .withPublicKeys(
+                                        Arrays
+                                            .asList(
+                                                new ContainerServiceSshPublicKey()
+                                                    .withKeyData("fakeTokenPlaceholder")))))
+                    .withWindowsProfile(
+                        new ManagedClusterWindowsProfile()
+                            .withAdminUsername("azureuser")
+                            .withAdminPassword("fakeTokenPlaceholder"))
+                    .withServicePrincipalProfile(
+                        new ManagedClusterServicePrincipalProfile()
+                            .withClientId("clientid")
+                            .withSecret("fakeTokenPlaceholder"))
+                    .withAddonProfiles(mapOf())
+                    .withEnableRbac(true)
+                    .withEnablePodSecurityPolicy(true)
+                    .withNetworkProfile(
+                        new ContainerServiceNetworkProfile()
+                            .withOutboundType(OutboundType.LOAD_BALANCER)
+                            .withLoadBalancerSku(LoadBalancerSku.STANDARD)
+                            .withLoadBalancerProfile(
+                                new ManagedClusterLoadBalancerProfile()
+                                    .withManagedOutboundIPs(
+                                        new ManagedClusterLoadBalancerProfileManagedOutboundIPs().withCount(2))))
+                    .withAutoScalerProfile(
+                        new ManagedClusterPropertiesAutoScalerProfile()
+                            .withScanInterval("20s")
+                            .withScaleDownDelayAfterAdd("15m"))
+                    .withApiServerAccessProfile(
+                        new ManagedClusterApiServerAccessProfile()
+                            .withEnablePrivateCluster(true)
+                            .withPrivateDnsZone(
+                                "/subscriptions/subid1/resourcegroups/rg1/providers/Microsoft.Network/privateDnsZones/privatelink.location1.azmk8s.io")),
+                com.azure.core.util.Context.NONE);
+    }
+
+    /*
+     * x-ms-original-file: specification/containerservice/resource-manager/Microsoft.ContainerService/aks/stable/2023-08-01/examples/ManagedClustersCreate_ManagedNATGateway.json
+     */
+    /**
+     * Sample code: Create Managed Cluster with AKS-managed NAT gateway as outbound type.
+     *
+     * @param azure The entry point for accessing resource management APIs in Azure.
+     */
+    public static void createManagedClusterWithAKSManagedNATGatewayAsOutboundType(
+        com.azure.resourcemanager.AzureResourceManager azure) {
+        azure
+            .kubernetesClusters()
+            .manager()
+            .serviceClient()
+            .getManagedClusters()
+            .createOrUpdate(
+                "rg1",
+                "clustername1",
+                new ManagedClusterInner()
+                    .withLocation("location1")
+                    .withTags(mapOf("archv2", "", "tier", "production"))
+                    .withSku(
+                        new ManagedClusterSku()
+                            .withName(ManagedClusterSkuName.fromString("Basic"))
+                            .withTier(ManagedClusterSkuTier.FREE))
+                    .withKubernetesVersion("")
+                    .withDnsPrefix("dnsprefix1")
+                    .withAgentPoolProfiles(
+                        Arrays
+                            .asList(
+                                new ManagedClusterAgentPoolProfile()
+                                    .withCount(3)
+                                    .withVmSize("Standard_DS2_v2")
+                                    .withOsType(OSType.LINUX)
+                                    .withType(AgentPoolType.VIRTUAL_MACHINE_SCALE_SETS)
+                                    .withMode(AgentPoolMode.SYSTEM)
+                                    .withEnableNodePublicIp(false)
+                                    .withName("nodepool1")))
+                    .withLinuxProfile(
+                        new ContainerServiceLinuxProfile()
+                            .withAdminUsername("azureuser")
+                            .withSsh(
+                                new ContainerServiceSshConfiguration()
+                                    .withPublicKeys(
+                                        Arrays
+                                            .asList(
+                                                new ContainerServiceSshPublicKey()
+                                                    .withKeyData("fakeTokenPlaceholder")))))
+                    .withWindowsProfile(
+                        new ManagedClusterWindowsProfile()
+                            .withAdminUsername("azureuser")
+                            .withAdminPassword("fakeTokenPlaceholder"))
+                    .withServicePrincipalProfile(
+                        new ManagedClusterServicePrincipalProfile()
+                            .withClientId("clientid")
+                            .withSecret("fakeTokenPlaceholder"))
+                    .withAddonProfiles(mapOf())
+                    .withEnableRbac(true)
+                    .withEnablePodSecurityPolicy(true)
+                    .withNetworkProfile(
+                        new ContainerServiceNetworkProfile()
+                            .withOutboundType(OutboundType.MANAGED_NATGATEWAY)
+                            .withLoadBalancerSku(LoadBalancerSku.STANDARD)
+                            .withNatGatewayProfile(
+                                new ManagedClusterNatGatewayProfile()
+                                    .withManagedOutboundIpProfile(
+                                        new ManagedClusterManagedOutboundIpProfile().withCount(2))))
+                    .withAutoScalerProfile(
+                        new ManagedClusterPropertiesAutoScalerProfile()
+                            .withScanInterval("20s")
+                            .withScaleDownDelayAfterAdd("15m"))
+                    .withDiskEncryptionSetId(
+                        "/subscriptions/subid1/resourceGroups/rg1/providers/Microsoft.Compute/diskEncryptionSets/des"),
+                com.azure.core.util.Context.NONE);
+    }
+
+    /*
+     * x-ms-original-file: specification/containerservice/resource-manager/Microsoft.ContainerService/aks/stable/2023-08-01/examples/ManagedClustersCreate_Premium.json
+     */
+    /**
+     * Sample code: Create Managed Cluster with LongTermSupport.
+     *
+     * @param azure The entry point for accessing resource management APIs in Azure.
+     */
+    public static void createManagedClusterWithLongTermSupport(com.azure.resourcemanager.AzureResourceManager azure) {
+        azure
+            .kubernetesClusters()
+            .manager()
+            .serviceClient()
+            .getManagedClusters()
+            .createOrUpdate(
+                "rg1",
+                "clustername1",
+                new ManagedClusterInner()
+                    .withLocation("location1")
+                    .withTags(mapOf("archv2", "", "tier", "production"))
+                    .withSku(
+                        new ManagedClusterSku()
+                            .withName(ManagedClusterSkuName.BASE)
+                            .withTier(ManagedClusterSkuTier.PREMIUM))
+                    .withKubernetesVersion("")
+                    .withDnsPrefix("dnsprefix1")
+                    .withAgentPoolProfiles(
+                        Arrays
+                            .asList(
+                                new ManagedClusterAgentPoolProfile()
+                                    .withCount(3)
+                                    .withVmSize("Standard_DS2_v2")
+                                    .withOsType(OSType.LINUX)
+                                    .withType(AgentPoolType.VIRTUAL_MACHINE_SCALE_SETS)
+                                    .withMode(AgentPoolMode.SYSTEM)
+                                    .withEnableNodePublicIp(true)
+                                    .withEnableEncryptionAtHost(true)
+                                    .withName("nodepool1")))
+                    .withLinuxProfile(
+                        new ContainerServiceLinuxProfile()
+                            .withAdminUsername("azureuser")
+                            .withSsh(
+                                new ContainerServiceSshConfiguration()
+                                    .withPublicKeys(
+                                        Arrays
+                                            .asList(
+                                                new ContainerServiceSshPublicKey()
+                                                    .withKeyData("fakeTokenPlaceholder")))))
+                    .withWindowsProfile(
+                        new ManagedClusterWindowsProfile()
+                            .withAdminUsername("azureuser")
+                            .withAdminPassword("fakeTokenPlaceholder"))
+                    .withServicePrincipalProfile(
+                        new ManagedClusterServicePrincipalProfile()
+                            .withClientId("clientid")
+                            .withSecret("fakeTokenPlaceholder"))
+                    .withAddonProfiles(mapOf())
+                    .withEnableRbac(true)
+                    .withSupportPlan(KubernetesSupportPlan.AKSLONG_TERM_SUPPORT)
+                    .withEnablePodSecurityPolicy(true)
+                    .withNetworkProfile(
+                        new ContainerServiceNetworkProfile()
+                            .withOutboundType(OutboundType.LOAD_BALANCER)
+                            .withLoadBalancerSku(LoadBalancerSku.STANDARD)
+                            .withLoadBalancerProfile(
+                                new ManagedClusterLoadBalancerProfile()
+                                    .withManagedOutboundIPs(
+                                        new ManagedClusterLoadBalancerProfileManagedOutboundIPs().withCount(2))))
+                    .withAutoScalerProfile(
+                        new ManagedClusterPropertiesAutoScalerProfile()
+                            .withScanInterval("20s")
+                            .withScaleDownDelayAfterAdd("15m"))
+                    .withApiServerAccessProfile(new ManagedClusterApiServerAccessProfile().withDisableRunCommand(true)),
+                com.azure.core.util.Context.NONE);
+    }
+
+    /*
+     * x-ms-original-file: specification/containerservice/resource-manager/Microsoft.ContainerService/aks/stable/2023-08-01/examples/ManagedClustersCreate_NodePublicIPPrefix.json
+     */
+    /**
+     * Sample code: Create Managed Cluster with Node Public IP Prefix.
+     *
+     * @param azure The entry point for accessing resource management APIs in Azure.
+     */
+    public static void createManagedClusterWithNodePublicIPPrefix(
+        com.azure.resourcemanager.AzureResourceManager azure) {
+        azure
+            .kubernetesClusters()
+            .manager()
+            .serviceClient()
+            .getManagedClusters()
+            .createOrUpdate(
+                "rg1",
+                "clustername1",
+                new ManagedClusterInner()
+                    .withLocation("location1")
+                    .withTags(mapOf("archv2", "", "tier", "production"))
+                    .withSku(
+                        new ManagedClusterSku()
+                            .withName(ManagedClusterSkuName.fromString("Basic"))
+                            .withTier(ManagedClusterSkuTier.FREE))
+                    .withKubernetesVersion("")
+                    .withDnsPrefix("dnsprefix1")
+                    .withAgentPoolProfiles(
+                        Arrays
+                            .asList(
+                                new ManagedClusterAgentPoolProfile()
+                                    .withCount(3)
+                                    .withVmSize("Standard_DS2_v2")
+                                    .withOsType(OSType.LINUX)
+                                    .withType(AgentPoolType.VIRTUAL_MACHINE_SCALE_SETS)
+                                    .withMode(AgentPoolMode.SYSTEM)
+                                    .withEnableNodePublicIp(true)
+                                    .withNodePublicIpPrefixId(
+                                        "/subscriptions/subid1/resourcegroups/rg1/providers/Microsoft.Network/publicIPPrefixes/public-ip-prefix")
+                                    .withName("nodepool1")))
+                    .withLinuxProfile(
+                        new ContainerServiceLinuxProfile()
+                            .withAdminUsername("azureuser")
+                            .withSsh(
+                                new ContainerServiceSshConfiguration()
+                                    .withPublicKeys(
+                                        Arrays
+                                            .asList(
+                                                new ContainerServiceSshPublicKey()
+                                                    .withKeyData("fakeTokenPlaceholder")))))
+                    .withWindowsProfile(
+                        new ManagedClusterWindowsProfile()
+                            .withAdminUsername("azureuser")
+                            .withAdminPassword("fakeTokenPlaceholder"))
+                    .withServicePrincipalProfile(
+                        new ManagedClusterServicePrincipalProfile()
+                            .withClientId("clientid")
+                            .withSecret("fakeTokenPlaceholder"))
+                    .withAddonProfiles(mapOf())
+                    .withEnableRbac(true)
+                    .withEnablePodSecurityPolicy(true)
+                    .withNetworkProfile(
+                        new ContainerServiceNetworkProfile()
+                            .withOutboundType(OutboundType.LOAD_BALANCER)
+                            .withLoadBalancerSku(LoadBalancerSku.STANDARD)
+                            .withLoadBalancerProfile(
+                                new ManagedClusterLoadBalancerProfile()
+                                    .withManagedOutboundIPs(
+                                        new ManagedClusterLoadBalancerProfileManagedOutboundIPs().withCount(2))))
+                    .withAutoScalerProfile(
+                        new ManagedClusterPropertiesAutoScalerProfile()
+                            .withScanInterval("20s")
+                            .withScaleDownDelayAfterAdd("15m"))
+                    .withDiskEncryptionSetId(
+                        "/subscriptions/subid1/resourceGroups/rg1/providers/Microsoft.Compute/diskEncryptionSets/des"),
+                com.azure.core.util.Context.NONE);
+    }
+
+    /*
+     * x-ms-original-file: specification/containerservice/resource-manager/Microsoft.ContainerService/aks/stable/2023-08-01/examples/ManagedClustersCreate_EnableEncryptionAtHost.json
+     */
+    /**
+     * Sample code: Create Managed Cluster with EncryptionAtHost enabled.
+     *
+     * @param azure The entry point for accessing resource management APIs in Azure.
+     */
+    public static void createManagedClusterWithEncryptionAtHostEnabled(
+        com.azure.resourcemanager.AzureResourceManager azure) {
+        azure
+            .kubernetesClusters()
+            .manager()
+            .serviceClient()
+            .getManagedClusters()
+            .createOrUpdate(
+                "rg1",
+                "clustername1",
+                new ManagedClusterInner()
+                    .withLocation("location1")
+                    .withTags(mapOf("archv2", "", "tier", "production"))
+                    .withSku(
+                        new ManagedClusterSku()
+                            .withName(ManagedClusterSkuName.fromString("Basic"))
+                            .withTier(ManagedClusterSkuTier.FREE))
+                    .withKubernetesVersion("")
+                    .withDnsPrefix("dnsprefix1")
+                    .withAgentPoolProfiles(
+                        Arrays
+                            .asList(
+                                new ManagedClusterAgentPoolProfile()
+                                    .withCount(3)
+                                    .withVmSize("Standard_DS2_v2")
+                                    .withOsType(OSType.LINUX)
+                                    .withType(AgentPoolType.VIRTUAL_MACHINE_SCALE_SETS)
+                                    .withMode(AgentPoolMode.SYSTEM)
+                                    .withEnableNodePublicIp(true)
+                                    .withEnableEncryptionAtHost(true)
+                                    .withName("nodepool1")))
+                    .withLinuxProfile(
+                        new ContainerServiceLinuxProfile()
+                            .withAdminUsername("azureuser")
+                            .withSsh(
+                                new ContainerServiceSshConfiguration()
+                                    .withPublicKeys(
+                                        Arrays
+                                            .asList(
+                                                new ContainerServiceSshPublicKey()
+                                                    .withKeyData("fakeTokenPlaceholder")))))
+                    .withWindowsProfile(
+                        new ManagedClusterWindowsProfile()
+                            .withAdminUsername("azureuser")
+                            .withAdminPassword("fakeTokenPlaceholder"))
+                    .withServicePrincipalProfile(
+                        new ManagedClusterServicePrincipalProfile()
+                            .withClientId("clientid")
+                            .withSecret("fakeTokenPlaceholder"))
+                    .withAddonProfiles(mapOf())
+                    .withEnableRbac(true)
+                    .withEnablePodSecurityPolicy(true)
+                    .withNetworkProfile(
+                        new ContainerServiceNetworkProfile()
+                            .withOutboundType(OutboundType.LOAD_BALANCER)
+                            .withLoadBalancerSku(LoadBalancerSku.STANDARD)
+                            .withLoadBalancerProfile(
+                                new ManagedClusterLoadBalancerProfile()
+                                    .withManagedOutboundIPs(
+                                        new ManagedClusterLoadBalancerProfileManagedOutboundIPs().withCount(2))))
+                    .withAutoScalerProfile(
+                        new ManagedClusterPropertiesAutoScalerProfile()
+                            .withScanInterval("20s")
+                            .withScaleDownDelayAfterAdd("15m"))
+                    .withDiskEncryptionSetId(
+                        "/subscriptions/subid1/resourceGroups/rg1/providers/Microsoft.Compute/diskEncryptionSets/des"),
+                com.azure.core.util.Context.NONE);
+    }
+
+    /*
+     * x-ms-original-file: specification/containerservice/resource-manager/Microsoft.ContainerService/aks/stable/2023-08-01/examples/ManagedClustersCreate_PrivateClusterPublicFQDN.json
+     */
+    /**
+     * Sample code: Create Managed Private Cluster with Public FQDN specified.
+     *
+     * @param azure The entry point for accessing resource management APIs in Azure.
+     */
+    public static void createManagedPrivateClusterWithPublicFQDNSpecified(
+        com.azure.resourcemanager.AzureResourceManager azure) {
+        azure
+            .kubernetesClusters()
+            .manager()
+            .serviceClient()
+            .getManagedClusters()
+            .createOrUpdate(
+                "rg1",
+                "clustername1",
+                new ManagedClusterInner()
+                    .withLocation("location1")
+                    .withTags(mapOf("archv2", "", "tier", "production"))
+                    .withSku(
+                        new ManagedClusterSku()
+                            .withName(ManagedClusterSkuName.fromString("Basic"))
+                            .withTier(ManagedClusterSkuTier.FREE))
+                    .withKubernetesVersion("")
+                    .withDnsPrefix("dnsprefix1")
+                    .withAgentPoolProfiles(
+                        Arrays
+                            .asList(
+                                new ManagedClusterAgentPoolProfile()
+                                    .withCount(3)
+                                    .withVmSize("Standard_DS2_v2")
+                                    .withOsType(OSType.LINUX)
+                                    .withType(AgentPoolType.VIRTUAL_MACHINE_SCALE_SETS)
+                                    .withMode(AgentPoolMode.SYSTEM)
+                                    .withEnableNodePublicIp(true)
+                                    .withEnableEncryptionAtHost(true)
+                                    .withName("nodepool1")))
+                    .withLinuxProfile(
+                        new ContainerServiceLinuxProfile()
+                            .withAdminUsername("azureuser")
+                            .withSsh(
+                                new ContainerServiceSshConfiguration()
+                                    .withPublicKeys(
+                                        Arrays
+                                            .asList(
+                                                new ContainerServiceSshPublicKey()
+                                                    .withKeyData("fakeTokenPlaceholder")))))
+                    .withWindowsProfile(
+                        new ManagedClusterWindowsProfile()
+                            .withAdminUsername("azureuser")
+                            .withAdminPassword("fakeTokenPlaceholder"))
+                    .withServicePrincipalProfile(
+                        new ManagedClusterServicePrincipalProfile()
+                            .withClientId("clientid")
+                            .withSecret("fakeTokenPlaceholder"))
+                    .withAddonProfiles(mapOf())
+                    .withEnableRbac(true)
+                    .withEnablePodSecurityPolicy(true)
+                    .withNetworkProfile(
+                        new ContainerServiceNetworkProfile()
+                            .withOutboundType(OutboundType.LOAD_BALANCER)
+                            .withLoadBalancerSku(LoadBalancerSku.STANDARD)
+                            .withLoadBalancerProfile(
+                                new ManagedClusterLoadBalancerProfile()
+                                    .withManagedOutboundIPs(
+                                        new ManagedClusterLoadBalancerProfileManagedOutboundIPs().withCount(2))))
+                    .withAutoScalerProfile(
+                        new ManagedClusterPropertiesAutoScalerProfile()
+                            .withScanInterval("20s")
+                            .withScaleDownDelayAfterAdd("15m"))
+                    .withApiServerAccessProfile(
+                        new ManagedClusterApiServerAccessProfile()
+                            .withEnablePrivateCluster(true)
+                            .withEnablePrivateClusterPublicFqdn(true)),
+                com.azure.core.util.Context.NONE);
+    }
+
+    /*
+     * x-ms-original-file: specification/containerservice/resource-manager/Microsoft.ContainerService/aks/stable/2023-08-01/examples/ManagedClustersCreate_HTTPProxy.json
+     */
+    /**
+     * Sample code: Create Managed Cluster with HTTP proxy configured.
+     *
+     * @param azure The entry point for accessing resource management APIs in Azure.
+     */
+    public static void createManagedClusterWithHTTPProxyConfigured(
+        com.azure.resourcemanager.AzureResourceManager azure) {
+        azure
+            .kubernetesClusters()
+            .manager()
+            .serviceClient()
+            .getManagedClusters()
+            .createOrUpdate(
+                "rg1",
+                "clustername1",
+                new ManagedClusterInner()
+                    .withLocation("location1")
+                    .withTags(mapOf("archv2", "", "tier", "production"))
+                    .withSku(
+                        new ManagedClusterSku()
+                            .withName(ManagedClusterSkuName.fromString("Basic"))
+                            .withTier(ManagedClusterSkuTier.FREE))
+                    .withKubernetesVersion("")
+                    .withDnsPrefix("dnsprefix1")
+                    .withAgentPoolProfiles(
+                        Arrays
+                            .asList(
+                                new ManagedClusterAgentPoolProfile()
+                                    .withCount(3)
+                                    .withVmSize("Standard_DS2_v2")
+                                    .withOsType(OSType.LINUX)
+                                    .withType(AgentPoolType.VIRTUAL_MACHINE_SCALE_SETS)
+                                    .withMode(AgentPoolMode.SYSTEM)
+                                    .withEnableNodePublicIp(true)
+                                    .withName("nodepool1")))
+                    .withLinuxProfile(
+                        new ContainerServiceLinuxProfile()
+                            .withAdminUsername("azureuser")
+                            .withSsh(
+                                new ContainerServiceSshConfiguration()
+                                    .withPublicKeys(
+                                        Arrays
+                                            .asList(
+                                                new ContainerServiceSshPublicKey()
+                                                    .withKeyData("fakeTokenPlaceholder")))))
+                    .withWindowsProfile(
+                        new ManagedClusterWindowsProfile()
+                            .withAdminUsername("azureuser")
+                            .withAdminPassword("fakeTokenPlaceholder"))
+                    .withServicePrincipalProfile(
+                        new ManagedClusterServicePrincipalProfile()
+                            .withClientId("clientid")
+                            .withSecret("fakeTokenPlaceholder"))
+                    .withAddonProfiles(mapOf())
+                    .withEnableRbac(true)
+                    .withEnablePodSecurityPolicy(true)
+                    .withNetworkProfile(
+                        new ContainerServiceNetworkProfile()
+                            .withOutboundType(OutboundType.LOAD_BALANCER)
+                            .withLoadBalancerSku(LoadBalancerSku.STANDARD)
+                            .withLoadBalancerProfile(
+                                new ManagedClusterLoadBalancerProfile()
+                                    .withManagedOutboundIPs(
+                                        new ManagedClusterLoadBalancerProfileManagedOutboundIPs().withCount(2))))
+                    .withAutoScalerProfile(
+                        new ManagedClusterPropertiesAutoScalerProfile()
+                            .withScanInterval("20s")
+                            .withScaleDownDelayAfterAdd("15m"))
+                    .withDiskEncryptionSetId(
+                        "/subscriptions/subid1/resourceGroups/rg1/providers/Microsoft.Compute/diskEncryptionSets/des")
+                    .withHttpProxyConfig(
+                        new ManagedClusterHttpProxyConfig()
+                            .withHttpProxy("http://myproxy.server.com:8080")
+                            .withHttpsProxy("https://myproxy.server.com:8080")
+                            .withNoProxy(Arrays.asList("localhost", "127.0.0.1"))
+                            .withTrustedCa("Q29uZ3JhdHMhIFlvdSBoYXZlIGZvdW5kIGEgaGlkZGVuIG1lc3NhZ2U=")),
+                com.azure.core.util.Context.NONE);
+    }
+
+    /*
+     * x-ms-original-file: specification/containerservice/resource-manager/Microsoft.ContainerService/aks/stable/2023-08-01/examples/ManagedClustersCreate_DedicatedHostGroup.json
+     */
+    /**
+     * Sample code: Create Managed Cluster with Dedicated Host Group.
+     *
+     * @param azure The entry point for accessing resource management APIs in Azure.
+     */
+    public static void createManagedClusterWithDedicatedHostGroup(
+        com.azure.resourcemanager.AzureResourceManager azure) {
+        azure
+            .kubernetesClusters()
+            .manager()
+            .serviceClient()
+            .getManagedClusters()
+            .createOrUpdate(
+                "rg1",
+                "clustername1",
+                new ManagedClusterInner()
+                    .withLocation("location1")
+                    .withTags(mapOf("archv2", "", "tier", "production"))
+                    .withSku(
+                        new ManagedClusterSku()
+                            .withName(ManagedClusterSkuName.fromString("Basic"))
+                            .withTier(ManagedClusterSkuTier.FREE))
+                    .withKubernetesVersion("")
+                    .withDnsPrefix("dnsprefix1")
+                    .withAgentPoolProfiles(
+                        Arrays
+                            .asList(
+                                new ManagedClusterAgentPoolProfile()
+                                    .withCount(3)
+                                    .withVmSize("Standard_DS2_v2")
+                                    .withOsType(OSType.LINUX)
+                                    .withType(AgentPoolType.VIRTUAL_MACHINE_SCALE_SETS)
+                                    .withEnableNodePublicIp(true)
+                                    .withHostGroupId(
+                                        "/subscriptions/subid1/resourcegroups/rg/providers/Microsoft.Compute/hostGroups/hostgroup1")
+                                    .withName("nodepool1")))
+                    .withLinuxProfile(
+                        new ContainerServiceLinuxProfile()
+                            .withAdminUsername("azureuser")
+                            .withSsh(
+                                new ContainerServiceSshConfiguration()
+                                    .withPublicKeys(
+                                        Arrays
+                                            .asList(
+                                                new ContainerServiceSshPublicKey()
+                                                    .withKeyData("fakeTokenPlaceholder")))))
+                    .withWindowsProfile(
+                        new ManagedClusterWindowsProfile()
+                            .withAdminUsername("azureuser")
+                            .withAdminPassword("fakeTokenPlaceholder"))
+                    .withServicePrincipalProfile(
+                        new ManagedClusterServicePrincipalProfile()
+                            .withClientId("clientid")
+                            .withSecret("fakeTokenPlaceholder"))
+                    .withAddonProfiles(mapOf())
+                    .withEnableRbac(true)
+                    .withEnablePodSecurityPolicy(false)
+                    .withNetworkProfile(
+                        new ContainerServiceNetworkProfile()
+                            .withOutboundType(OutboundType.LOAD_BALANCER)
+                            .withLoadBalancerSku(LoadBalancerSku.STANDARD)
+                            .withLoadBalancerProfile(
+                                new ManagedClusterLoadBalancerProfile()
+                                    .withManagedOutboundIPs(
+                                        new ManagedClusterLoadBalancerProfileManagedOutboundIPs().withCount(2))))
+                    .withAutoScalerProfile(
+                        new ManagedClusterPropertiesAutoScalerProfile()
+                            .withScanInterval("20s")
+                            .withScaleDownDelayAfterAdd("15m"))
+                    .withDiskEncryptionSetId(
+                        "/subscriptions/subid1/resourceGroups/rg1/providers/Microsoft.Compute/diskEncryptionSets/des"),
+                com.azure.core.util.Context.NONE);
+    }
+
+    /*
+     * x-ms-original-file: specification/containerservice/resource-manager/Microsoft.ContainerService/aks/stable/2023-08-01/examples/ManagedClustersCreate_EnabledFIPS.json
+     */
+    /**
+     * Sample code: Create Managed Cluster with FIPS enabled OS.
+     *
+     * @param azure The entry point for accessing resource management APIs in Azure.
+     */
+    public static void createManagedClusterWithFIPSEnabledOS(com.azure.resourcemanager.AzureResourceManager azure) {
+        azure
+            .kubernetesClusters()
+            .manager()
+            .serviceClient()
+            .getManagedClusters()
+            .createOrUpdate(
+                "rg1",
+                "clustername1",
+                new ManagedClusterInner()
+                    .withLocation("location1")
+                    .withTags(mapOf("archv2", "", "tier", "production"))
+                    .withSku(
+                        new ManagedClusterSku()
+                            .withName(ManagedClusterSkuName.fromString("Basic"))
+                            .withTier(ManagedClusterSkuTier.FREE))
+                    .withKubernetesVersion("")
+                    .withDnsPrefix("dnsprefix1")
+                    .withAgentPoolProfiles(
+                        Arrays
+                            .asList(
+                                new ManagedClusterAgentPoolProfile()
+                                    .withCount(3)
+                                    .withVmSize("Standard_DS2_v2")
+                                    .withOsType(OSType.LINUX)
+                                    .withType(AgentPoolType.VIRTUAL_MACHINE_SCALE_SETS)
+                                    .withMode(AgentPoolMode.SYSTEM)
+                                    .withEnableNodePublicIp(true)
+                                    .withEnableFips(true)
+                                    .withName("nodepool1")))
+                    .withLinuxProfile(
+                        new ContainerServiceLinuxProfile()
+                            .withAdminUsername("azureuser")
+                            .withSsh(
+                                new ContainerServiceSshConfiguration()
+                                    .withPublicKeys(
+                                        Arrays
+                                            .asList(
+                                                new ContainerServiceSshPublicKey()
+                                                    .withKeyData("fakeTokenPlaceholder")))))
+                    .withWindowsProfile(
+                        new ManagedClusterWindowsProfile()
+                            .withAdminUsername("azureuser")
+                            .withAdminPassword("fakeTokenPlaceholder"))
+                    .withServicePrincipalProfile(
+                        new ManagedClusterServicePrincipalProfile()
+                            .withClientId("clientid")
+                            .withSecret("fakeTokenPlaceholder"))
+                    .withAddonProfiles(mapOf())
+                    .withEnableRbac(true)
+                    .withEnablePodSecurityPolicy(false)
+                    .withNetworkProfile(
+                        new ContainerServiceNetworkProfile()
+                            .withOutboundType(OutboundType.LOAD_BALANCER)
+                            .withLoadBalancerSku(LoadBalancerSku.STANDARD)
+                            .withLoadBalancerProfile(
+                                new ManagedClusterLoadBalancerProfile()
+                                    .withManagedOutboundIPs(
+                                        new ManagedClusterLoadBalancerProfileManagedOutboundIPs().withCount(2))))
+                    .withAutoScalerProfile(
+                        new ManagedClusterPropertiesAutoScalerProfile()
+                            .withScanInterval("20s")
+                            .withScaleDownDelayAfterAdd("15m"))
+                    .withDiskEncryptionSetId(
+                        "/subscriptions/subid1/resourceGroups/rg1/providers/Microsoft.Compute/diskEncryptionSets/des"),
+                com.azure.core.util.Context.NONE);
+    }
+
+    /*
+     * x-ms-original-file: specification/containerservice/resource-manager/Microsoft.ContainerService/aks/stable/2023-08-01/examples/ManagedClustersCreate_SecurityProfile.json
+     */
+    /**
+     * Sample code: Create Managed Cluster with Security Profile configured.
+     *
+     * @param azure The entry point for accessing resource management APIs in Azure.
+     */
+    public static void createManagedClusterWithSecurityProfileConfigured(
+        com.azure.resourcemanager.AzureResourceManager azure) {
+        azure
+            .kubernetesClusters()
+            .manager()
+            .serviceClient()
+            .getManagedClusters()
+            .createOrUpdate(
+                "rg1",
+                "clustername1",
+                new ManagedClusterInner()
+                    .withLocation("location1")
+                    .withTags(mapOf("archv2", "", "tier", "production"))
+                    .withSku(
+                        new ManagedClusterSku()
+                            .withName(ManagedClusterSkuName.fromString("Basic"))
+                            .withTier(ManagedClusterSkuTier.FREE))
+                    .withKubernetesVersion("")
+                    .withDnsPrefix("dnsprefix1")
+                    .withAgentPoolProfiles(
+                        Arrays
+                            .asList(
+                                new ManagedClusterAgentPoolProfile()
+                                    .withCount(3)
+                                    .withVmSize("Standard_DS2_v2")
+                                    .withOsType(OSType.LINUX)
+                                    .withType(AgentPoolType.VIRTUAL_MACHINE_SCALE_SETS)
+                                    .withMode(AgentPoolMode.SYSTEM)
+                                    .withEnableNodePublicIp(true)
+                                    .withName("nodepool1")))
+                    .withLinuxProfile(
+                        new ContainerServiceLinuxProfile()
+                            .withAdminUsername("azureuser")
+                            .withSsh(
+                                new ContainerServiceSshConfiguration()
+                                    .withPublicKeys(
+                                        Arrays
+                                            .asList(
+                                                new ContainerServiceSshPublicKey()
+                                                    .withKeyData("fakeTokenPlaceholder")))))
+                    .withNetworkProfile(
+                        new ContainerServiceNetworkProfile()
+                            .withOutboundType(OutboundType.LOAD_BALANCER)
+                            .withLoadBalancerSku(LoadBalancerSku.STANDARD)
+                            .withLoadBalancerProfile(
+                                new ManagedClusterLoadBalancerProfile()
+                                    .withManagedOutboundIPs(
+                                        new ManagedClusterLoadBalancerProfileManagedOutboundIPs().withCount(2))))
+                    .withSecurityProfile(
+                        new ManagedClusterSecurityProfile()
+                            .withDefender(
+                                new ManagedClusterSecurityProfileDefender()
+                                    .withLogAnalyticsWorkspaceResourceId(
+                                        "/subscriptions/SUB_ID/resourcegroups/RG_NAME/providers/microsoft.operationalinsights/workspaces/WORKSPACE_NAME")
+                                    .withSecurityMonitoring(
+                                        new ManagedClusterSecurityProfileDefenderSecurityMonitoring()
+                                            .withEnabled(true)))
+                            .withWorkloadIdentity(
+                                new ManagedClusterSecurityProfileWorkloadIdentity().withEnabled(true))),
+                com.azure.core.util.Context.NONE);
+    }
+
+    /*
+     * x-ms-original-file: specification/containerservice/resource-manager/Microsoft.ContainerService/aks/stable/2023-08-01/examples/ManagedClustersCreate_PPG.json
      */
     /**
      * Sample code: Create Managed Cluster with PPG.
@@ -526,7 +1249,7 @@ public final class ManagedClustersCreateOrUpdateSamples {
     }
 
     /*
-     * x-ms-original-file: specification/containerservice/resource-manager/Microsoft.ContainerService/aks/stable/2023-06-01/examples/ManagedClustersCreate_UpdateWithAHUB.json
+     * x-ms-original-file: specification/containerservice/resource-manager/Microsoft.ContainerService/aks/stable/2023-08-01/examples/ManagedClustersCreate_UpdateWithAHUB.json
      */
     /**
      * Sample code: Create/Update Managed Cluster with EnableAHUB.
@@ -610,85 +1333,7 @@ public final class ManagedClustersCreateOrUpdateSamples {
     }
 
     /*
-     * x-ms-original-file: specification/containerservice/resource-manager/Microsoft.ContainerService/aks/stable/2023-06-01/examples/ManagedClustersCreate_PodIdentity.json
-     */
-    /**
-     * Sample code: Create Managed Cluster with PodIdentity enabled.
-     *
-     * @param azure The entry point for accessing resource management APIs in Azure.
-     */
-    public static void createManagedClusterWithPodIdentityEnabled(
-        com.azure.resourcemanager.AzureResourceManager azure) {
-        azure
-            .kubernetesClusters()
-            .manager()
-            .serviceClient()
-            .getManagedClusters()
-            .createOrUpdate(
-                "rg1",
-                "clustername1",
-                new ManagedClusterInner()
-                    .withLocation("location1")
-                    .withTags(mapOf("archv2", "", "tier", "production"))
-                    .withSku(
-                        new ManagedClusterSku()
-                            .withName(ManagedClusterSkuName.fromString("Basic"))
-                            .withTier(ManagedClusterSkuTier.FREE))
-                    .withKubernetesVersion("")
-                    .withDnsPrefix("dnsprefix1")
-                    .withAgentPoolProfiles(
-                        Arrays
-                            .asList(
-                                new ManagedClusterAgentPoolProfile()
-                                    .withCount(3)
-                                    .withVmSize("Standard_DS2_v2")
-                                    .withOsType(OSType.LINUX)
-                                    .withType(AgentPoolType.VIRTUAL_MACHINE_SCALE_SETS)
-                                    .withMode(AgentPoolMode.SYSTEM)
-                                    .withEnableNodePublicIp(true)
-                                    .withName("nodepool1")))
-                    .withLinuxProfile(
-                        new ContainerServiceLinuxProfile()
-                            .withAdminUsername("azureuser")
-                            .withSsh(
-                                new ContainerServiceSshConfiguration()
-                                    .withPublicKeys(
-                                        Arrays
-                                            .asList(
-                                                new ContainerServiceSshPublicKey()
-                                                    .withKeyData("fakeTokenPlaceholder")))))
-                    .withWindowsProfile(
-                        new ManagedClusterWindowsProfile()
-                            .withAdminUsername("azureuser")
-                            .withAdminPassword("fakeTokenPlaceholder"))
-                    .withServicePrincipalProfile(
-                        new ManagedClusterServicePrincipalProfile()
-                            .withClientId("clientid")
-                            .withSecret("fakeTokenPlaceholder"))
-                    .withAddonProfiles(mapOf())
-                    .withPodIdentityProfile(
-                        new ManagedClusterPodIdentityProfile().withEnabled(true).withAllowNetworkPluginKubenet(true))
-                    .withEnableRbac(true)
-                    .withEnablePodSecurityPolicy(true)
-                    .withNetworkProfile(
-                        new ContainerServiceNetworkProfile()
-                            .withOutboundType(OutboundType.LOAD_BALANCER)
-                            .withLoadBalancerSku(LoadBalancerSku.STANDARD)
-                            .withLoadBalancerProfile(
-                                new ManagedClusterLoadBalancerProfile()
-                                    .withManagedOutboundIPs(
-                                        new ManagedClusterLoadBalancerProfileManagedOutboundIPs().withCount(2))))
-                    .withAutoScalerProfile(
-                        new ManagedClusterPropertiesAutoScalerProfile()
-                            .withScanInterval("20s")
-                            .withScaleDownDelayAfterAdd("15m"))
-                    .withDiskEncryptionSetId(
-                        "/subscriptions/subid1/resourceGroups/rg1/providers/Microsoft.Compute/diskEncryptionSets/des"),
-                com.azure.core.util.Context.NONE);
-    }
-
-    /*
-     * x-ms-original-file: specification/containerservice/resource-manager/Microsoft.ContainerService/aks/stable/2023-06-01/examples/ManagedClustersCreate_DisableRunCommand.json
+     * x-ms-original-file: specification/containerservice/resource-manager/Microsoft.ContainerService/aks/stable/2023-08-01/examples/ManagedClustersCreate_DisableRunCommand.json
      */
     /**
      * Sample code: Create Managed Cluster with RunCommand disabled.
@@ -764,79 +1409,7 @@ public final class ManagedClustersCreateOrUpdateSamples {
     }
 
     /*
-     * x-ms-original-file: specification/containerservice/resource-manager/Microsoft.ContainerService/aks/stable/2023-06-01/examples/ManagedClustersCreate_UserAssignedNATGateway.json
-     */
-    /**
-     * Sample code: Create Managed Cluster with user-assigned NAT gateway as outbound type.
-     *
-     * @param azure The entry point for accessing resource management APIs in Azure.
-     */
-    public static void createManagedClusterWithUserAssignedNATGatewayAsOutboundType(
-        com.azure.resourcemanager.AzureResourceManager azure) {
-        azure
-            .kubernetesClusters()
-            .manager()
-            .serviceClient()
-            .getManagedClusters()
-            .createOrUpdate(
-                "rg1",
-                "clustername1",
-                new ManagedClusterInner()
-                    .withLocation("location1")
-                    .withTags(mapOf("archv2", "", "tier", "production"))
-                    .withSku(
-                        new ManagedClusterSku()
-                            .withName(ManagedClusterSkuName.fromString("Basic"))
-                            .withTier(ManagedClusterSkuTier.FREE))
-                    .withKubernetesVersion("")
-                    .withDnsPrefix("dnsprefix1")
-                    .withAgentPoolProfiles(
-                        Arrays
-                            .asList(
-                                new ManagedClusterAgentPoolProfile()
-                                    .withCount(3)
-                                    .withVmSize("Standard_DS2_v2")
-                                    .withOsType(OSType.LINUX)
-                                    .withType(AgentPoolType.VIRTUAL_MACHINE_SCALE_SETS)
-                                    .withMode(AgentPoolMode.SYSTEM)
-                                    .withEnableNodePublicIp(false)
-                                    .withName("nodepool1")))
-                    .withLinuxProfile(
-                        new ContainerServiceLinuxProfile()
-                            .withAdminUsername("azureuser")
-                            .withSsh(
-                                new ContainerServiceSshConfiguration()
-                                    .withPublicKeys(
-                                        Arrays
-                                            .asList(
-                                                new ContainerServiceSshPublicKey()
-                                                    .withKeyData("fakeTokenPlaceholder")))))
-                    .withWindowsProfile(
-                        new ManagedClusterWindowsProfile()
-                            .withAdminUsername("azureuser")
-                            .withAdminPassword("fakeTokenPlaceholder"))
-                    .withServicePrincipalProfile(
-                        new ManagedClusterServicePrincipalProfile()
-                            .withClientId("clientid")
-                            .withSecret("fakeTokenPlaceholder"))
-                    .withAddonProfiles(mapOf())
-                    .withEnableRbac(true)
-                    .withEnablePodSecurityPolicy(true)
-                    .withNetworkProfile(
-                        new ContainerServiceNetworkProfile()
-                            .withOutboundType(OutboundType.USER_ASSIGNED_NATGATEWAY)
-                            .withLoadBalancerSku(LoadBalancerSku.STANDARD))
-                    .withAutoScalerProfile(
-                        new ManagedClusterPropertiesAutoScalerProfile()
-                            .withScanInterval("20s")
-                            .withScaleDownDelayAfterAdd("15m"))
-                    .withDiskEncryptionSetId(
-                        "/subscriptions/subid1/resourceGroups/rg1/providers/Microsoft.Compute/diskEncryptionSets/des"),
-                com.azure.core.util.Context.NONE);
-    }
-
-    /*
-     * x-ms-original-file: specification/containerservice/resource-manager/Microsoft.ContainerService/aks/stable/2023-06-01/examples/ManagedClustersCreate_Snapshot.json
+     * x-ms-original-file: specification/containerservice/resource-manager/Microsoft.ContainerService/aks/stable/2023-08-01/examples/ManagedClustersCreate_Snapshot.json
      */
     /**
      * Sample code: Create Managed Cluster using an agent pool snapshot.
@@ -917,7 +1490,118 @@ public final class ManagedClustersCreateOrUpdateSamples {
     }
 
     /*
-     * x-ms-original-file: specification/containerservice/resource-manager/Microsoft.ContainerService/aks/stable/2023-06-01/examples/ManagedClustersCreate_AzureKeyvaultSecretsProvider.json
+     * x-ms-original-file: specification/containerservice/resource-manager/Microsoft.ContainerService/aks/stable/2023-08-01/examples/ManagedClustersCreate_AzureServiceMesh.json
+     */
+    /**
+     * Sample code: Create/Update Managed Cluster with Azure Service Mesh.
+     *
+     * @param azure The entry point for accessing resource management APIs in Azure.
+     */
+    public static void createUpdateManagedClusterWithAzureServiceMesh(
+        com.azure.resourcemanager.AzureResourceManager azure) {
+        azure
+            .kubernetesClusters()
+            .manager()
+            .serviceClient()
+            .getManagedClusters()
+            .createOrUpdate(
+                "rg1",
+                "clustername1",
+                new ManagedClusterInner()
+                    .withLocation("location1")
+                    .withTags(mapOf("archv2", "", "tier", "production"))
+                    .withSku(
+                        new ManagedClusterSku()
+                            .withName(ManagedClusterSkuName.fromString("Basic"))
+                            .withTier(ManagedClusterSkuTier.FREE))
+                    .withKubernetesVersion("")
+                    .withDnsPrefix("dnsprefix1")
+                    .withAgentPoolProfiles(
+                        Arrays
+                            .asList(
+                                new ManagedClusterAgentPoolProfile()
+                                    .withCount(3)
+                                    .withVmSize("Standard_DS2_v2")
+                                    .withOsType(OSType.LINUX)
+                                    .withType(AgentPoolType.VIRTUAL_MACHINE_SCALE_SETS)
+                                    .withMode(AgentPoolMode.SYSTEM)
+                                    .withEnableNodePublicIp(true)
+                                    .withName("nodepool1")))
+                    .withLinuxProfile(
+                        new ContainerServiceLinuxProfile()
+                            .withAdminUsername("azureuser")
+                            .withSsh(
+                                new ContainerServiceSshConfiguration()
+                                    .withPublicKeys(
+                                        Arrays
+                                            .asList(
+                                                new ContainerServiceSshPublicKey()
+                                                    .withKeyData("fakeTokenPlaceholder")))))
+                    .withWindowsProfile(
+                        new ManagedClusterWindowsProfile()
+                            .withAdminUsername("azureuser")
+                            .withAdminPassword("fakeTokenPlaceholder"))
+                    .withServicePrincipalProfile(
+                        new ManagedClusterServicePrincipalProfile()
+                            .withClientId("clientid")
+                            .withSecret("fakeTokenPlaceholder"))
+                    .withAddonProfiles(
+                        mapOf(
+                            "azureKeyvaultSecretsProvider",
+                            new ManagedClusterAddonProfile()
+                                .withEnabled(true)
+                                .withConfig(
+                                    mapOf(
+                                        "enableSecretRotation", "fakeTokenPlaceholder", "rotationPollInterval", "2m"))))
+                    .withEnableRbac(true)
+                    .withEnablePodSecurityPolicy(true)
+                    .withNetworkProfile(
+                        new ContainerServiceNetworkProfile()
+                            .withOutboundType(OutboundType.LOAD_BALANCER)
+                            .withLoadBalancerSku(LoadBalancerSku.STANDARD)
+                            .withLoadBalancerProfile(
+                                new ManagedClusterLoadBalancerProfile()
+                                    .withManagedOutboundIPs(
+                                        new ManagedClusterLoadBalancerProfileManagedOutboundIPs().withCount(2))))
+                    .withAutoScalerProfile(
+                        new ManagedClusterPropertiesAutoScalerProfile()
+                            .withScanInterval("20s")
+                            .withScaleDownDelayAfterAdd("15m"))
+                    .withDiskEncryptionSetId(
+                        "/subscriptions/subid1/resourceGroups/rg1/providers/Microsoft.Compute/diskEncryptionSets/des")
+                    .withServiceMeshProfile(
+                        new ServiceMeshProfile()
+                            .withMode(ServiceMeshMode.ISTIO)
+                            .withIstio(
+                                new IstioServiceMesh()
+                                    .withComponents(
+                                        new IstioComponents()
+                                            .withIngressGateways(
+                                                Arrays
+                                                    .asList(
+                                                        new IstioIngressGateway()
+                                                            .withMode(IstioIngressGatewayMode.INTERNAL)
+                                                            .withEnabled(true)))
+                                            .withEgressGateways(
+                                                Arrays
+                                                    .asList(
+                                                        new IstioEgressGateway()
+                                                            .withEnabled(true)
+                                                            .withNodeSelector(mapOf("istio", "egress")))))
+                                    .withCertificateAuthority(
+                                        new IstioCertificateAuthority()
+                                            .withPlugin(
+                                                new IstioPluginCertificateAuthority()
+                                                    .withKeyVaultId("fakeTokenPlaceholder")
+                                                    .withCertObjectName("ca-cert")
+                                                    .withKeyObjectName("fakeTokenPlaceholder")
+                                                    .withRootCertObjectName("root-cert")
+                                                    .withCertChainObjectName("cert-chain"))))),
+                com.azure.core.util.Context.NONE);
+    }
+
+    /*
+     * x-ms-original-file: specification/containerservice/resource-manager/Microsoft.ContainerService/aks/stable/2023-08-01/examples/ManagedClustersCreate_AzureKeyvaultSecretsProvider.json
      */
     /**
      * Sample code: Create Managed Cluster with Azure KeyVault Secrets Provider Addon.
@@ -1000,7 +1684,7 @@ public final class ManagedClustersCreateOrUpdateSamples {
     }
 
     /*
-     * x-ms-original-file: specification/containerservice/resource-manager/Microsoft.ContainerService/aks/stable/2023-06-01/examples/ManagedClustersCreate_OSSKU.json
+     * x-ms-original-file: specification/containerservice/resource-manager/Microsoft.ContainerService/aks/stable/2023-08-01/examples/ManagedClustersCreate_OSSKU.json
      */
     /**
      * Sample code: Create Managed Cluster with OSSKU.
@@ -1082,328 +1766,7 @@ public final class ManagedClustersCreateOrUpdateSamples {
     }
 
     /*
-     * x-ms-original-file: specification/containerservice/resource-manager/Microsoft.ContainerService/aks/stable/2023-06-01/examples/ManagedClustersCreate_Update.json
-     */
-    /**
-     * Sample code: Create/Update Managed Cluster.
-     *
-     * @param azure The entry point for accessing resource management APIs in Azure.
-     */
-    public static void createUpdateManagedCluster(com.azure.resourcemanager.AzureResourceManager azure) {
-        azure
-            .kubernetesClusters()
-            .manager()
-            .serviceClient()
-            .getManagedClusters()
-            .createOrUpdate(
-                "rg1",
-                "clustername1",
-                new ManagedClusterInner()
-                    .withLocation("location1")
-                    .withTags(mapOf("archv2", "", "tier", "production"))
-                    .withSku(
-                        new ManagedClusterSku()
-                            .withName(ManagedClusterSkuName.fromString("Basic"))
-                            .withTier(ManagedClusterSkuTier.FREE))
-                    .withIdentity(
-                        new ManagedClusterIdentity()
-                            .withType(ResourceIdentityType.USER_ASSIGNED)
-                            .withUserAssignedIdentities(
-                                mapOf(
-                                    "/subscriptions/subid1/resourceGroups/rgName1/providers/Microsoft.ManagedIdentity/userAssignedIdentities/identity1",
-                                    new ManagedServiceIdentityUserAssignedIdentitiesValue())))
-                    .withKubernetesVersion("")
-                    .withDnsPrefix("dnsprefix1")
-                    .withAgentPoolProfiles(
-                        Arrays
-                            .asList(
-                                new ManagedClusterAgentPoolProfile()
-                                    .withCount(3)
-                                    .withVmSize("Standard_DS1_v2")
-                                    .withOsType(OSType.LINUX)
-                                    .withScaleDownMode(ScaleDownMode.DEALLOCATE)
-                                    .withType(AgentPoolType.VIRTUAL_MACHINE_SCALE_SETS)
-                                    .withMode(AgentPoolMode.SYSTEM)
-                                    .withAvailabilityZones(Arrays.asList("1", "2", "3"))
-                                    .withEnableNodePublicIp(true)
-                                    .withName("nodepool1")))
-                    .withLinuxProfile(
-                        new ContainerServiceLinuxProfile()
-                            .withAdminUsername("azureuser")
-                            .withSsh(
-                                new ContainerServiceSshConfiguration()
-                                    .withPublicKeys(
-                                        Arrays
-                                            .asList(
-                                                new ContainerServiceSshPublicKey()
-                                                    .withKeyData("fakeTokenPlaceholder")))))
-                    .withWindowsProfile(
-                        new ManagedClusterWindowsProfile()
-                            .withAdminUsername("azureuser")
-                            .withAdminPassword("fakeTokenPlaceholder"))
-                    .withServicePrincipalProfile(
-                        new ManagedClusterServicePrincipalProfile()
-                            .withClientId("clientid")
-                            .withSecret("fakeTokenPlaceholder"))
-                    .withAddonProfiles(mapOf())
-                    .withEnableRbac(true)
-                    .withEnablePodSecurityPolicy(true)
-                    .withNetworkProfile(
-                        new ContainerServiceNetworkProfile()
-                            .withOutboundType(OutboundType.LOAD_BALANCER)
-                            .withLoadBalancerSku(LoadBalancerSku.STANDARD)
-                            .withLoadBalancerProfile(
-                                new ManagedClusterLoadBalancerProfile()
-                                    .withManagedOutboundIPs(
-                                        new ManagedClusterLoadBalancerProfileManagedOutboundIPs().withCount(2))))
-                    .withAutoScalerProfile(
-                        new ManagedClusterPropertiesAutoScalerProfile()
-                            .withBalanceSimilarNodeGroups("true")
-                            .withExpander(Expander.PRIORITY)
-                            .withMaxNodeProvisionTime("15m")
-                            .withNewPodScaleUpDelay("1m")
-                            .withScanInterval("20s")
-                            .withScaleDownDelayAfterAdd("15m")
-                            .withSkipNodesWithSystemPods("false"))
-                    .withDiskEncryptionSetId(
-                        "/subscriptions/subid1/resourceGroups/rg1/providers/Microsoft.Compute/diskEncryptionSets/des"),
-                com.azure.core.util.Context.NONE);
-    }
-
-    /*
-     * x-ms-original-file: specification/containerservice/resource-manager/Microsoft.ContainerService/aks/stable/2023-06-01/examples/ManagedClustersCreate_PrivateClusterFQDNSubdomain.json
-     */
-    /**
-     * Sample code: Create Managed Private Cluster with fqdn subdomain specified.
-     *
-     * @param azure The entry point for accessing resource management APIs in Azure.
-     */
-    public static void createManagedPrivateClusterWithFqdnSubdomainSpecified(
-        com.azure.resourcemanager.AzureResourceManager azure) {
-        azure
-            .kubernetesClusters()
-            .manager()
-            .serviceClient()
-            .getManagedClusters()
-            .createOrUpdate(
-                "rg1",
-                "clustername1",
-                new ManagedClusterInner()
-                    .withLocation("location1")
-                    .withTags(mapOf("archv2", "", "tier", "production"))
-                    .withSku(
-                        new ManagedClusterSku()
-                            .withName(ManagedClusterSkuName.fromString("Basic"))
-                            .withTier(ManagedClusterSkuTier.FREE))
-                    .withKubernetesVersion("")
-                    .withFqdnSubdomain("domain1")
-                    .withAgentPoolProfiles(
-                        Arrays
-                            .asList(
-                                new ManagedClusterAgentPoolProfile()
-                                    .withCount(3)
-                                    .withVmSize("Standard_DS2_v2")
-                                    .withOsType(OSType.LINUX)
-                                    .withType(AgentPoolType.VIRTUAL_MACHINE_SCALE_SETS)
-                                    .withMode(AgentPoolMode.SYSTEM)
-                                    .withEnableNodePublicIp(true)
-                                    .withEnableEncryptionAtHost(true)
-                                    .withName("nodepool1")))
-                    .withLinuxProfile(
-                        new ContainerServiceLinuxProfile()
-                            .withAdminUsername("azureuser")
-                            .withSsh(
-                                new ContainerServiceSshConfiguration()
-                                    .withPublicKeys(
-                                        Arrays
-                                            .asList(
-                                                new ContainerServiceSshPublicKey()
-                                                    .withKeyData("fakeTokenPlaceholder")))))
-                    .withWindowsProfile(
-                        new ManagedClusterWindowsProfile()
-                            .withAdminUsername("azureuser")
-                            .withAdminPassword("fakeTokenPlaceholder"))
-                    .withServicePrincipalProfile(
-                        new ManagedClusterServicePrincipalProfile()
-                            .withClientId("clientid")
-                            .withSecret("fakeTokenPlaceholder"))
-                    .withAddonProfiles(mapOf())
-                    .withEnableRbac(true)
-                    .withEnablePodSecurityPolicy(true)
-                    .withNetworkProfile(
-                        new ContainerServiceNetworkProfile()
-                            .withOutboundType(OutboundType.LOAD_BALANCER)
-                            .withLoadBalancerSku(LoadBalancerSku.STANDARD)
-                            .withLoadBalancerProfile(
-                                new ManagedClusterLoadBalancerProfile()
-                                    .withManagedOutboundIPs(
-                                        new ManagedClusterLoadBalancerProfileManagedOutboundIPs().withCount(2))))
-                    .withAutoScalerProfile(
-                        new ManagedClusterPropertiesAutoScalerProfile()
-                            .withScanInterval("20s")
-                            .withScaleDownDelayAfterAdd("15m"))
-                    .withApiServerAccessProfile(
-                        new ManagedClusterApiServerAccessProfile()
-                            .withEnablePrivateCluster(true)
-                            .withPrivateDnsZone(
-                                "/subscriptions/subid1/resourcegroups/rg1/providers/Microsoft.Network/privateDnsZones/privatelink.location1.azmk8s.io")),
-                com.azure.core.util.Context.NONE);
-    }
-
-    /*
-     * x-ms-original-file: specification/containerservice/resource-manager/Microsoft.ContainerService/aks/stable/2023-06-01/examples/ManagedClustersCreate_ManagedNATGateway.json
-     */
-    /**
-     * Sample code: Create Managed Cluster with AKS-managed NAT gateway as outbound type.
-     *
-     * @param azure The entry point for accessing resource management APIs in Azure.
-     */
-    public static void createManagedClusterWithAKSManagedNATGatewayAsOutboundType(
-        com.azure.resourcemanager.AzureResourceManager azure) {
-        azure
-            .kubernetesClusters()
-            .manager()
-            .serviceClient()
-            .getManagedClusters()
-            .createOrUpdate(
-                "rg1",
-                "clustername1",
-                new ManagedClusterInner()
-                    .withLocation("location1")
-                    .withTags(mapOf("archv2", "", "tier", "production"))
-                    .withSku(
-                        new ManagedClusterSku()
-                            .withName(ManagedClusterSkuName.fromString("Basic"))
-                            .withTier(ManagedClusterSkuTier.FREE))
-                    .withKubernetesVersion("")
-                    .withDnsPrefix("dnsprefix1")
-                    .withAgentPoolProfiles(
-                        Arrays
-                            .asList(
-                                new ManagedClusterAgentPoolProfile()
-                                    .withCount(3)
-                                    .withVmSize("Standard_DS2_v2")
-                                    .withOsType(OSType.LINUX)
-                                    .withType(AgentPoolType.VIRTUAL_MACHINE_SCALE_SETS)
-                                    .withMode(AgentPoolMode.SYSTEM)
-                                    .withEnableNodePublicIp(false)
-                                    .withName("nodepool1")))
-                    .withLinuxProfile(
-                        new ContainerServiceLinuxProfile()
-                            .withAdminUsername("azureuser")
-                            .withSsh(
-                                new ContainerServiceSshConfiguration()
-                                    .withPublicKeys(
-                                        Arrays
-                                            .asList(
-                                                new ContainerServiceSshPublicKey()
-                                                    .withKeyData("fakeTokenPlaceholder")))))
-                    .withWindowsProfile(
-                        new ManagedClusterWindowsProfile()
-                            .withAdminUsername("azureuser")
-                            .withAdminPassword("fakeTokenPlaceholder"))
-                    .withServicePrincipalProfile(
-                        new ManagedClusterServicePrincipalProfile()
-                            .withClientId("clientid")
-                            .withSecret("fakeTokenPlaceholder"))
-                    .withAddonProfiles(mapOf())
-                    .withEnableRbac(true)
-                    .withEnablePodSecurityPolicy(true)
-                    .withNetworkProfile(
-                        new ContainerServiceNetworkProfile()
-                            .withOutboundType(OutboundType.MANAGED_NATGATEWAY)
-                            .withLoadBalancerSku(LoadBalancerSku.STANDARD)
-                            .withNatGatewayProfile(
-                                new ManagedClusterNatGatewayProfile()
-                                    .withManagedOutboundIpProfile(
-                                        new ManagedClusterManagedOutboundIpProfile().withCount(2))))
-                    .withAutoScalerProfile(
-                        new ManagedClusterPropertiesAutoScalerProfile()
-                            .withScanInterval("20s")
-                            .withScaleDownDelayAfterAdd("15m"))
-                    .withDiskEncryptionSetId(
-                        "/subscriptions/subid1/resourceGroups/rg1/providers/Microsoft.Compute/diskEncryptionSets/des"),
-                com.azure.core.util.Context.NONE);
-    }
-
-    /*
-     * x-ms-original-file: specification/containerservice/resource-manager/Microsoft.ContainerService/aks/stable/2023-06-01/examples/ManagedClustersCreate_Premium.json
-     */
-    /**
-     * Sample code: Create Managed Cluster with LongTermSupport.
-     *
-     * @param azure The entry point for accessing resource management APIs in Azure.
-     */
-    public static void createManagedClusterWithLongTermSupport(com.azure.resourcemanager.AzureResourceManager azure) {
-        azure
-            .kubernetesClusters()
-            .manager()
-            .serviceClient()
-            .getManagedClusters()
-            .createOrUpdate(
-                "rg1",
-                "clustername1",
-                new ManagedClusterInner()
-                    .withLocation("location1")
-                    .withTags(mapOf("archv2", "", "tier", "production"))
-                    .withSku(
-                        new ManagedClusterSku()
-                            .withName(ManagedClusterSkuName.BASE)
-                            .withTier(ManagedClusterSkuTier.PREMIUM))
-                    .withKubernetesVersion("")
-                    .withDnsPrefix("dnsprefix1")
-                    .withAgentPoolProfiles(
-                        Arrays
-                            .asList(
-                                new ManagedClusterAgentPoolProfile()
-                                    .withCount(3)
-                                    .withVmSize("Standard_DS2_v2")
-                                    .withOsType(OSType.LINUX)
-                                    .withType(AgentPoolType.VIRTUAL_MACHINE_SCALE_SETS)
-                                    .withMode(AgentPoolMode.SYSTEM)
-                                    .withEnableNodePublicIp(true)
-                                    .withEnableEncryptionAtHost(true)
-                                    .withName("nodepool1")))
-                    .withLinuxProfile(
-                        new ContainerServiceLinuxProfile()
-                            .withAdminUsername("azureuser")
-                            .withSsh(
-                                new ContainerServiceSshConfiguration()
-                                    .withPublicKeys(
-                                        Arrays
-                                            .asList(
-                                                new ContainerServiceSshPublicKey()
-                                                    .withKeyData("fakeTokenPlaceholder")))))
-                    .withWindowsProfile(
-                        new ManagedClusterWindowsProfile()
-                            .withAdminUsername("azureuser")
-                            .withAdminPassword("fakeTokenPlaceholder"))
-                    .withServicePrincipalProfile(
-                        new ManagedClusterServicePrincipalProfile()
-                            .withClientId("clientid")
-                            .withSecret("fakeTokenPlaceholder"))
-                    .withAddonProfiles(mapOf())
-                    .withEnableRbac(true)
-                    .withSupportPlan(KubernetesSupportPlan.AKSLONG_TERM_SUPPORT)
-                    .withEnablePodSecurityPolicy(true)
-                    .withNetworkProfile(
-                        new ContainerServiceNetworkProfile()
-                            .withOutboundType(OutboundType.LOAD_BALANCER)
-                            .withLoadBalancerSku(LoadBalancerSku.STANDARD)
-                            .withLoadBalancerProfile(
-                                new ManagedClusterLoadBalancerProfile()
-                                    .withManagedOutboundIPs(
-                                        new ManagedClusterLoadBalancerProfileManagedOutboundIPs().withCount(2))))
-                    .withAutoScalerProfile(
-                        new ManagedClusterPropertiesAutoScalerProfile()
-                            .withScanInterval("20s")
-                            .withScaleDownDelayAfterAdd("15m"))
-                    .withApiServerAccessProfile(new ManagedClusterApiServerAccessProfile().withDisableRunCommand(true)),
-                com.azure.core.util.Context.NONE);
-    }
-
-    /*
-     * x-ms-original-file: specification/containerservice/resource-manager/Microsoft.ContainerService/aks/stable/2023-06-01/examples/ManagedClustersCreate_UpdateWithEnableAzureRBAC.json
+     * x-ms-original-file: specification/containerservice/resource-manager/Microsoft.ContainerService/aks/stable/2023-08-01/examples/ManagedClustersCreate_UpdateWithEnableAzureRBAC.json
      */
     /**
      * Sample code: Create/Update AAD Managed Cluster with EnableAzureRBAC.
@@ -1481,7 +1844,7 @@ public final class ManagedClustersCreateOrUpdateSamples {
     }
 
     /*
-     * x-ms-original-file: specification/containerservice/resource-manager/Microsoft.ContainerService/aks/stable/2023-06-01/examples/ManagedClustersCreate_EnableUltraSSD.json
+     * x-ms-original-file: specification/containerservice/resource-manager/Microsoft.ContainerService/aks/stable/2023-08-01/examples/ManagedClustersCreate_EnableUltraSSD.json
      */
     /**
      * Sample code: Create Managed Cluster with UltraSSD enabled.
@@ -1557,7 +1920,7 @@ public final class ManagedClustersCreateOrUpdateSamples {
     }
 
     /*
-     * x-ms-original-file: specification/containerservice/resource-manager/Microsoft.ContainerService/aks/stable/2023-06-01/examples/ManagedClustersCreate_UpdateWindowsGmsa.json
+     * x-ms-original-file: specification/containerservice/resource-manager/Microsoft.ContainerService/aks/stable/2023-08-01/examples/ManagedClustersCreate_UpdateWindowsGmsa.json
      */
     /**
      * Sample code: Create/Update Managed Cluster with Windows gMSA enabled.
@@ -1642,7 +2005,7 @@ public final class ManagedClustersCreateOrUpdateSamples {
     }
 
     /*
-     * x-ms-original-file: specification/containerservice/resource-manager/Microsoft.ContainerService/aks/stable/2023-06-01/examples/ManagedClustersCreate_GPUMIG.json
+     * x-ms-original-file: specification/containerservice/resource-manager/Microsoft.ContainerService/aks/stable/2023-08-01/examples/ManagedClustersCreate_GPUMIG.json
      */
     /**
      * Sample code: Create Managed Cluster with GPUMIG.
@@ -1723,240 +2086,7 @@ public final class ManagedClustersCreateOrUpdateSamples {
                 com.azure.core.util.Context.NONE);
     }
 
-    /*
-     * x-ms-original-file: specification/containerservice/resource-manager/Microsoft.ContainerService/aks/stable/2023-06-01/examples/ManagedClustersCreate_NodePublicIPPrefix.json
-     */
-    /**
-     * Sample code: Create Managed Cluster with Node Public IP Prefix.
-     *
-     * @param azure The entry point for accessing resource management APIs in Azure.
-     */
-    public static void createManagedClusterWithNodePublicIPPrefix(
-        com.azure.resourcemanager.AzureResourceManager azure) {
-        azure
-            .kubernetesClusters()
-            .manager()
-            .serviceClient()
-            .getManagedClusters()
-            .createOrUpdate(
-                "rg1",
-                "clustername1",
-                new ManagedClusterInner()
-                    .withLocation("location1")
-                    .withTags(mapOf("archv2", "", "tier", "production"))
-                    .withSku(
-                        new ManagedClusterSku()
-                            .withName(ManagedClusterSkuName.fromString("Basic"))
-                            .withTier(ManagedClusterSkuTier.FREE))
-                    .withKubernetesVersion("")
-                    .withDnsPrefix("dnsprefix1")
-                    .withAgentPoolProfiles(
-                        Arrays
-                            .asList(
-                                new ManagedClusterAgentPoolProfile()
-                                    .withCount(3)
-                                    .withVmSize("Standard_DS2_v2")
-                                    .withOsType(OSType.LINUX)
-                                    .withType(AgentPoolType.VIRTUAL_MACHINE_SCALE_SETS)
-                                    .withMode(AgentPoolMode.SYSTEM)
-                                    .withEnableNodePublicIp(true)
-                                    .withNodePublicIpPrefixId(
-                                        "/subscriptions/subid1/resourcegroups/rg1/providers/Microsoft.Network/publicIPPrefixes/public-ip-prefix")
-                                    .withName("nodepool1")))
-                    .withLinuxProfile(
-                        new ContainerServiceLinuxProfile()
-                            .withAdminUsername("azureuser")
-                            .withSsh(
-                                new ContainerServiceSshConfiguration()
-                                    .withPublicKeys(
-                                        Arrays
-                                            .asList(
-                                                new ContainerServiceSshPublicKey()
-                                                    .withKeyData("fakeTokenPlaceholder")))))
-                    .withWindowsProfile(
-                        new ManagedClusterWindowsProfile()
-                            .withAdminUsername("azureuser")
-                            .withAdminPassword("fakeTokenPlaceholder"))
-                    .withServicePrincipalProfile(
-                        new ManagedClusterServicePrincipalProfile()
-                            .withClientId("clientid")
-                            .withSecret("fakeTokenPlaceholder"))
-                    .withAddonProfiles(mapOf())
-                    .withEnableRbac(true)
-                    .withEnablePodSecurityPolicy(true)
-                    .withNetworkProfile(
-                        new ContainerServiceNetworkProfile()
-                            .withOutboundType(OutboundType.LOAD_BALANCER)
-                            .withLoadBalancerSku(LoadBalancerSku.STANDARD)
-                            .withLoadBalancerProfile(
-                                new ManagedClusterLoadBalancerProfile()
-                                    .withManagedOutboundIPs(
-                                        new ManagedClusterLoadBalancerProfileManagedOutboundIPs().withCount(2))))
-                    .withAutoScalerProfile(
-                        new ManagedClusterPropertiesAutoScalerProfile()
-                            .withScanInterval("20s")
-                            .withScaleDownDelayAfterAdd("15m"))
-                    .withDiskEncryptionSetId(
-                        "/subscriptions/subid1/resourceGroups/rg1/providers/Microsoft.Compute/diskEncryptionSets/des"),
-                com.azure.core.util.Context.NONE);
-    }
-
-    /*
-     * x-ms-original-file: specification/containerservice/resource-manager/Microsoft.ContainerService/aks/stable/2023-06-01/examples/ManagedClustersCreate_EnableEncryptionAtHost.json
-     */
-    /**
-     * Sample code: Create Managed Cluster with EncryptionAtHost enabled.
-     *
-     * @param azure The entry point for accessing resource management APIs in Azure.
-     */
-    public static void createManagedClusterWithEncryptionAtHostEnabled(
-        com.azure.resourcemanager.AzureResourceManager azure) {
-        azure
-            .kubernetesClusters()
-            .manager()
-            .serviceClient()
-            .getManagedClusters()
-            .createOrUpdate(
-                "rg1",
-                "clustername1",
-                new ManagedClusterInner()
-                    .withLocation("location1")
-                    .withTags(mapOf("archv2", "", "tier", "production"))
-                    .withSku(
-                        new ManagedClusterSku()
-                            .withName(ManagedClusterSkuName.fromString("Basic"))
-                            .withTier(ManagedClusterSkuTier.FREE))
-                    .withKubernetesVersion("")
-                    .withDnsPrefix("dnsprefix1")
-                    .withAgentPoolProfiles(
-                        Arrays
-                            .asList(
-                                new ManagedClusterAgentPoolProfile()
-                                    .withCount(3)
-                                    .withVmSize("Standard_DS2_v2")
-                                    .withOsType(OSType.LINUX)
-                                    .withType(AgentPoolType.VIRTUAL_MACHINE_SCALE_SETS)
-                                    .withMode(AgentPoolMode.SYSTEM)
-                                    .withEnableNodePublicIp(true)
-                                    .withEnableEncryptionAtHost(true)
-                                    .withName("nodepool1")))
-                    .withLinuxProfile(
-                        new ContainerServiceLinuxProfile()
-                            .withAdminUsername("azureuser")
-                            .withSsh(
-                                new ContainerServiceSshConfiguration()
-                                    .withPublicKeys(
-                                        Arrays
-                                            .asList(
-                                                new ContainerServiceSshPublicKey()
-                                                    .withKeyData("fakeTokenPlaceholder")))))
-                    .withWindowsProfile(
-                        new ManagedClusterWindowsProfile()
-                            .withAdminUsername("azureuser")
-                            .withAdminPassword("fakeTokenPlaceholder"))
-                    .withServicePrincipalProfile(
-                        new ManagedClusterServicePrincipalProfile()
-                            .withClientId("clientid")
-                            .withSecret("fakeTokenPlaceholder"))
-                    .withAddonProfiles(mapOf())
-                    .withEnableRbac(true)
-                    .withEnablePodSecurityPolicy(true)
-                    .withNetworkProfile(
-                        new ContainerServiceNetworkProfile()
-                            .withOutboundType(OutboundType.LOAD_BALANCER)
-                            .withLoadBalancerSku(LoadBalancerSku.STANDARD)
-                            .withLoadBalancerProfile(
-                                new ManagedClusterLoadBalancerProfile()
-                                    .withManagedOutboundIPs(
-                                        new ManagedClusterLoadBalancerProfileManagedOutboundIPs().withCount(2))))
-                    .withAutoScalerProfile(
-                        new ManagedClusterPropertiesAutoScalerProfile()
-                            .withScanInterval("20s")
-                            .withScaleDownDelayAfterAdd("15m"))
-                    .withDiskEncryptionSetId(
-                        "/subscriptions/subid1/resourceGroups/rg1/providers/Microsoft.Compute/diskEncryptionSets/des"),
-                com.azure.core.util.Context.NONE);
-    }
-
-    /*
-     * x-ms-original-file: specification/containerservice/resource-manager/Microsoft.ContainerService/aks/stable/2023-06-01/examples/ManagedClustersCreate_PrivateClusterPublicFQDN.json
-     */
-    /**
-     * Sample code: Create Managed Private Cluster with Public FQDN specified.
-     *
-     * @param azure The entry point for accessing resource management APIs in Azure.
-     */
-    public static void createManagedPrivateClusterWithPublicFQDNSpecified(
-        com.azure.resourcemanager.AzureResourceManager azure) {
-        azure
-            .kubernetesClusters()
-            .manager()
-            .serviceClient()
-            .getManagedClusters()
-            .createOrUpdate(
-                "rg1",
-                "clustername1",
-                new ManagedClusterInner()
-                    .withLocation("location1")
-                    .withTags(mapOf("archv2", "", "tier", "production"))
-                    .withSku(
-                        new ManagedClusterSku()
-                            .withName(ManagedClusterSkuName.fromString("Basic"))
-                            .withTier(ManagedClusterSkuTier.FREE))
-                    .withKubernetesVersion("")
-                    .withDnsPrefix("dnsprefix1")
-                    .withAgentPoolProfiles(
-                        Arrays
-                            .asList(
-                                new ManagedClusterAgentPoolProfile()
-                                    .withCount(3)
-                                    .withVmSize("Standard_DS2_v2")
-                                    .withOsType(OSType.LINUX)
-                                    .withType(AgentPoolType.VIRTUAL_MACHINE_SCALE_SETS)
-                                    .withMode(AgentPoolMode.SYSTEM)
-                                    .withEnableNodePublicIp(true)
-                                    .withEnableEncryptionAtHost(true)
-                                    .withName("nodepool1")))
-                    .withLinuxProfile(
-                        new ContainerServiceLinuxProfile()
-                            .withAdminUsername("azureuser")
-                            .withSsh(
-                                new ContainerServiceSshConfiguration()
-                                    .withPublicKeys(
-                                        Arrays
-                                            .asList(
-                                                new ContainerServiceSshPublicKey()
-                                                    .withKeyData("fakeTokenPlaceholder")))))
-                    .withWindowsProfile(
-                        new ManagedClusterWindowsProfile()
-                            .withAdminUsername("azureuser")
-                            .withAdminPassword("fakeTokenPlaceholder"))
-                    .withServicePrincipalProfile(
-                        new ManagedClusterServicePrincipalProfile()
-                            .withClientId("clientid")
-                            .withSecret("fakeTokenPlaceholder"))
-                    .withAddonProfiles(mapOf())
-                    .withEnableRbac(true)
-                    .withEnablePodSecurityPolicy(true)
-                    .withNetworkProfile(
-                        new ContainerServiceNetworkProfile()
-                            .withOutboundType(OutboundType.LOAD_BALANCER)
-                            .withLoadBalancerSku(LoadBalancerSku.STANDARD)
-                            .withLoadBalancerProfile(
-                                new ManagedClusterLoadBalancerProfile()
-                                    .withManagedOutboundIPs(
-                                        new ManagedClusterLoadBalancerProfileManagedOutboundIPs().withCount(2))))
-                    .withAutoScalerProfile(
-                        new ManagedClusterPropertiesAutoScalerProfile()
-                            .withScanInterval("20s")
-                            .withScaleDownDelayAfterAdd("15m"))
-                    .withApiServerAccessProfile(
-                        new ManagedClusterApiServerAccessProfile()
-                            .withEnablePrivateCluster(true)
-                            .withEnablePrivateClusterPublicFqdn(true)),
-                com.azure.core.util.Context.NONE);
-    }
-
+    // Use "Map.of" if available
     @SuppressWarnings("unchecked")
     private static <T> Map<String, T> mapOf(Object... inputs) {
         Map<String, T> map = new HashMap<>();

@@ -18,50 +18,42 @@ public final class ClusterManagerInnerTests {
         ClusterManagerInner model =
             BinaryData
                 .fromString(
-                    "{\"properties\":{\"analyticsWorkspaceId\":\"clhocohsl\",\"availabilityZones\":[\"leggzfbu\",\"fmvfaxkffeiit\",\"lvmezyvshxmzsbbz\",\"ggi\"],\"clusterVersions\":[{\"supportExpiryDate\":\"burvjxxjnspy\",\"targetClusterVersion\":\"tko\"},{\"supportExpiryDate\":\"kouknvudwtiu\",\"targetClusterVersion\":\"ldngkpoci\"},{\"supportExpiryDate\":\"z\",\"targetClusterVersion\":\"o\"}],\"detailedStatus\":\"Provisioning\",\"detailedStatusMessage\":\"g\",\"fabricControllerId\":\"npiucgygevqznty\",\"managedResourceGroupConfiguration\":{\"location\":\"bpizcdrqjsdpydn\",\"name\":\"hxdeoejz\"},\"managerExtendedLocation\":{\"name\":\"w\",\"type\":\"fsj\"},\"provisioningState\":\"Failed\",\"vmSize\":\"fbishcbkha\"},\"location\":\"eyeam\",\"tags\":{\"wkgshwa\":\"agalpbuxwgipwhon\",\"bin\":\"kix\",\"iyqzrnk\":\"eputtmrywnuzoqf\",\"qnwvlrya\":\"qvyxlwhzlsicoho\"},\"id\":\"w\",\"name\":\"heun\",\"type\":\"mqhgyxzkonocuk\"}")
+                    "{\"properties\":{\"analyticsWorkspaceId\":\"bxzpuzycisp\",\"availabilityZones\":[\"ahmgkbrp\",\"y\",\"hibnuqqkpika\",\"rgvtqag\"],\"clusterVersions\":[{\"supportExpiryDate\":\"nhijggmebfsi\",\"targetClusterVersion\":\"butr\"},{\"supportExpiryDate\":\"pnazzm\",\"targetClusterVersion\":\"runmp\"}],\"detailedStatus\":\"UpdateFailed\",\"detailedStatusMessage\":\"bh\",\"fabricControllerId\":\"bnlankxmyskpb\",\"managedResourceGroupConfiguration\":{\"location\":\"btkcxywnytnrsyn\",\"name\":\"idybyxczf\"},\"managerExtendedLocation\":{\"name\":\"haaxdbabphl\",\"type\":\"rqlfktsthsucocmn\"},\"provisioningState\":\"Canceled\",\"vmSize\":\"t\"},\"location\":\"twwrqp\",\"tags\":{\"xibxujwbhqwalm\":\"ckzywbiexzfeyue\",\"ux\":\"zyoxaepdkzjan\",\"zt\":\"hdwbavxbniwdjs\"},\"id\":\"dbpgnxytxhp\",\"name\":\"xbzpfzab\",\"type\":\"lcuhxwtctyqiklb\"}")
                 .toObject(ClusterManagerInner.class);
-        Assertions.assertEquals("eyeam", model.location());
-        Assertions.assertEquals("agalpbuxwgipwhon", model.tags().get("wkgshwa"));
-        Assertions.assertEquals("clhocohsl", model.analyticsWorkspaceId());
-        Assertions.assertEquals("leggzfbu", model.availabilityZones().get(0));
-        Assertions.assertEquals("npiucgygevqznty", model.fabricControllerId());
-        Assertions.assertEquals("bpizcdrqjsdpydn", model.managedResourceGroupConfiguration().location());
-        Assertions.assertEquals("hxdeoejz", model.managedResourceGroupConfiguration().name());
-        Assertions.assertEquals("fbishcbkha", model.vmSize());
+        Assertions.assertEquals("twwrqp", model.location());
+        Assertions.assertEquals("ckzywbiexzfeyue", model.tags().get("xibxujwbhqwalm"));
+        Assertions.assertEquals("bxzpuzycisp", model.analyticsWorkspaceId());
+        Assertions.assertEquals("ahmgkbrp", model.availabilityZones().get(0));
+        Assertions.assertEquals("bnlankxmyskpb", model.fabricControllerId());
+        Assertions.assertEquals("btkcxywnytnrsyn", model.managedResourceGroupConfiguration().location());
+        Assertions.assertEquals("idybyxczf", model.managedResourceGroupConfiguration().name());
+        Assertions.assertEquals("t", model.vmSize());
     }
 
     @org.junit.jupiter.api.Test
     public void testSerialize() throws Exception {
         ClusterManagerInner model =
             new ClusterManagerInner()
-                .withLocation("eyeam")
-                .withTags(
-                    mapOf(
-                        "wkgshwa",
-                        "agalpbuxwgipwhon",
-                        "bin",
-                        "kix",
-                        "iyqzrnk",
-                        "eputtmrywnuzoqf",
-                        "qnwvlrya",
-                        "qvyxlwhzlsicoho"))
-                .withAnalyticsWorkspaceId("clhocohsl")
-                .withAvailabilityZones(Arrays.asList("leggzfbu", "fmvfaxkffeiit", "lvmezyvshxmzsbbz", "ggi"))
-                .withFabricControllerId("npiucgygevqznty")
+                .withLocation("twwrqp")
+                .withTags(mapOf("xibxujwbhqwalm", "ckzywbiexzfeyue", "ux", "zyoxaepdkzjan", "zt", "hdwbavxbniwdjs"))
+                .withAnalyticsWorkspaceId("bxzpuzycisp")
+                .withAvailabilityZones(Arrays.asList("ahmgkbrp", "y", "hibnuqqkpika", "rgvtqag"))
+                .withFabricControllerId("bnlankxmyskpb")
                 .withManagedResourceGroupConfiguration(
-                    new ManagedResourceGroupConfiguration().withLocation("bpizcdrqjsdpydn").withName("hxdeoejz"))
-                .withVmSize("fbishcbkha");
+                    new ManagedResourceGroupConfiguration().withLocation("btkcxywnytnrsyn").withName("idybyxczf"))
+                .withVmSize("t");
         model = BinaryData.fromObject(model).toObject(ClusterManagerInner.class);
-        Assertions.assertEquals("eyeam", model.location());
-        Assertions.assertEquals("agalpbuxwgipwhon", model.tags().get("wkgshwa"));
-        Assertions.assertEquals("clhocohsl", model.analyticsWorkspaceId());
-        Assertions.assertEquals("leggzfbu", model.availabilityZones().get(0));
-        Assertions.assertEquals("npiucgygevqznty", model.fabricControllerId());
-        Assertions.assertEquals("bpizcdrqjsdpydn", model.managedResourceGroupConfiguration().location());
-        Assertions.assertEquals("hxdeoejz", model.managedResourceGroupConfiguration().name());
-        Assertions.assertEquals("fbishcbkha", model.vmSize());
+        Assertions.assertEquals("twwrqp", model.location());
+        Assertions.assertEquals("ckzywbiexzfeyue", model.tags().get("xibxujwbhqwalm"));
+        Assertions.assertEquals("bxzpuzycisp", model.analyticsWorkspaceId());
+        Assertions.assertEquals("ahmgkbrp", model.availabilityZones().get(0));
+        Assertions.assertEquals("bnlankxmyskpb", model.fabricControllerId());
+        Assertions.assertEquals("btkcxywnytnrsyn", model.managedResourceGroupConfiguration().location());
+        Assertions.assertEquals("idybyxczf", model.managedResourceGroupConfiguration().name());
+        Assertions.assertEquals("t", model.vmSize());
     }
 
+    // Use "Map.of" if available
     @SuppressWarnings("unchecked")
     private static <T> Map<String, T> mapOf(Object... inputs) {
         Map<String, T> map = new HashMap<>();

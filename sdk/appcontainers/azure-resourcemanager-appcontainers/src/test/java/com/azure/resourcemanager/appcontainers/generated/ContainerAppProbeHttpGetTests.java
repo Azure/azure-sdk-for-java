@@ -17,13 +17,13 @@ public final class ContainerAppProbeHttpGetTests {
         ContainerAppProbeHttpGet model =
             BinaryData
                 .fromString(
-                    "{\"host\":\"xrbuukzclew\",\"httpHeaders\":[{\"name\":\"lw\",\"value\":\"aztz\"},{\"name\":\"ofncckwyfzqwhxxb\",\"value\":\"yq\"}],\"path\":\"zfeqztppri\",\"port\":1872827948,\"scheme\":\"HTTP\"}")
+                    "{\"host\":\"quxvypomgkop\",\"httpHeaders\":[{\"name\":\"ojvpa\",\"value\":\"qgxy\"},{\"name\":\"mocmbqfqvmk\",\"value\":\"xozap\"},{\"name\":\"helxprglya\",\"value\":\"dd\"},{\"name\":\"kcbcue\",\"value\":\"rjxgciqib\"}],\"path\":\"osx\",\"port\":341443712,\"scheme\":\"HTTP\"}")
                 .toObject(ContainerAppProbeHttpGet.class);
-        Assertions.assertEquals("xrbuukzclew", model.host());
-        Assertions.assertEquals("lw", model.httpHeaders().get(0).name());
-        Assertions.assertEquals("aztz", model.httpHeaders().get(0).value());
-        Assertions.assertEquals("zfeqztppri", model.path());
-        Assertions.assertEquals(1872827948, model.port());
+        Assertions.assertEquals("quxvypomgkop", model.host());
+        Assertions.assertEquals("ojvpa", model.httpHeaders().get(0).name());
+        Assertions.assertEquals("qgxy", model.httpHeaders().get(0).value());
+        Assertions.assertEquals("osx", model.path());
+        Assertions.assertEquals(341443712, model.port());
         Assertions.assertEquals(Scheme.HTTP, model.scheme());
     }
 
@@ -31,21 +31,23 @@ public final class ContainerAppProbeHttpGetTests {
     public void testSerialize() throws Exception {
         ContainerAppProbeHttpGet model =
             new ContainerAppProbeHttpGet()
-                .withHost("xrbuukzclew")
+                .withHost("quxvypomgkop")
                 .withHttpHeaders(
                     Arrays
                         .asList(
-                            new ContainerAppProbeHttpGetHttpHeadersItem().withName("lw").withValue("aztz"),
-                            new ContainerAppProbeHttpGetHttpHeadersItem().withName("ofncckwyfzqwhxxb").withValue("yq")))
-                .withPath("zfeqztppri")
-                .withPort(1872827948)
+                            new ContainerAppProbeHttpGetHttpHeadersItem().withName("ojvpa").withValue("qgxy"),
+                            new ContainerAppProbeHttpGetHttpHeadersItem().withName("mocmbqfqvmk").withValue("xozap"),
+                            new ContainerAppProbeHttpGetHttpHeadersItem().withName("helxprglya").withValue("dd"),
+                            new ContainerAppProbeHttpGetHttpHeadersItem().withName("kcbcue").withValue("rjxgciqib")))
+                .withPath("osx")
+                .withPort(341443712)
                 .withScheme(Scheme.HTTP);
         model = BinaryData.fromObject(model).toObject(ContainerAppProbeHttpGet.class);
-        Assertions.assertEquals("xrbuukzclew", model.host());
-        Assertions.assertEquals("lw", model.httpHeaders().get(0).name());
-        Assertions.assertEquals("aztz", model.httpHeaders().get(0).value());
-        Assertions.assertEquals("zfeqztppri", model.path());
-        Assertions.assertEquals(1872827948, model.port());
+        Assertions.assertEquals("quxvypomgkop", model.host());
+        Assertions.assertEquals("ojvpa", model.httpHeaders().get(0).name());
+        Assertions.assertEquals("qgxy", model.httpHeaders().get(0).value());
+        Assertions.assertEquals("osx", model.path());
+        Assertions.assertEquals(341443712, model.port());
         Assertions.assertEquals(Scheme.HTTP, model.scheme());
     }
 }

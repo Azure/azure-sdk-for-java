@@ -31,7 +31,7 @@ public final class WorkloadNetworksGetDnsZoneWithResponseMockTests {
         ArgumentCaptor<HttpRequest> httpRequest = ArgumentCaptor.forClass(HttpRequest.class);
 
         String responseStr =
-            "{\"properties\":{\"displayName\":\"hheioqaqhvseuf\",\"domain\":[\"rxpdlcgqlsi\",\"mjqfrddgamquhio\",\"rsjuivfcdisyir\"],\"dnsServerIps\":[\"hcz\",\"xrxzbujrtr\",\"qvwre\",\"khgn\"],\"sourceIp\":\"zonzlrpiqywnc\",\"dnsServices\":7277409446614883590,\"provisioningState\":\"Failed\",\"revision\":3689932193430480450},\"id\":\"zehtdhgb\",\"name\":\"k\",\"type\":\"reljeamur\"}";
+            "{\"properties\":{\"displayName\":\"dibgqjxgpnrhgov\",\"domain\":[\"ik\",\"mhha\"],\"dnsServerIps\":[\"rmzvupo\",\"qzdfuydzvkfvxcn\",\"mx\"],\"sourceIp\":\"swokm\",\"dnsServices\":1866158858475312478,\"provisioningState\":\"Succeeded\",\"revision\":6332875207430967251},\"id\":\"em\",\"name\":\"qkzszuwiwtglxxh\",\"type\":\"jfpgpicrmn\"}";
 
         Mockito.when(httpResponse.getStatusCode()).thenReturn(200);
         Mockito.when(httpResponse.getHeaders()).thenReturn(new HttpHeaders());
@@ -62,14 +62,14 @@ public final class WorkloadNetworksGetDnsZoneWithResponseMockTests {
         WorkloadNetworkDnsZone response =
             manager
                 .workloadNetworks()
-                .getDnsZoneWithResponse("dqmeqwigpibudq", "yxeb", "ybpmzznrtffyaq", com.azure.core.util.Context.NONE)
+                .getDnsZoneWithResponse("niypfpubcpzg", "xtiv", "j", com.azure.core.util.Context.NONE)
                 .getValue();
 
-        Assertions.assertEquals("hheioqaqhvseuf", response.displayName());
-        Assertions.assertEquals("rxpdlcgqlsi", response.domain().get(0));
-        Assertions.assertEquals("hcz", response.dnsServerIps().get(0));
-        Assertions.assertEquals("zonzlrpiqywnc", response.sourceIp());
-        Assertions.assertEquals(7277409446614883590L, response.dnsServices());
-        Assertions.assertEquals(3689932193430480450L, response.revision());
+        Assertions.assertEquals("dibgqjxgpnrhgov", response.displayName());
+        Assertions.assertEquals("ik", response.domain().get(0));
+        Assertions.assertEquals("rmzvupo", response.dnsServerIps().get(0));
+        Assertions.assertEquals("swokm", response.sourceIp());
+        Assertions.assertEquals(1866158858475312478L, response.dnsServices());
+        Assertions.assertEquals(6332875207430967251L, response.revision());
     }
 }

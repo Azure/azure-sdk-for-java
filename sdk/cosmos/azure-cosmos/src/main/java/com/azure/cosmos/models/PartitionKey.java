@@ -105,7 +105,18 @@ public class PartitionKey {
     ///////////////////////////////////////////////////////////////////////////////////////////
     static void initialize() {
         ImplementationBridgeHelpers.PartitionKeyHelper.setPartitionKeyAccessor(
-            partitionKeyInternal -> new PartitionKey(partitionKeyInternal));
+            new ImplementationBridgeHelpers.PartitionKeyHelper.PartitionKeyAccessor() {
+                @Override
+                public PartitionKey toPartitionKey(PartitionKeyInternal partitionKeyInternal) {
+                    return new PartitionKey(partitionKeyInternal);
+                }
+
+                @Override
+                public PartitionKey toPartitionKey(Object objectKey, PartitionKeyInternal partitionKeyInternal) {
+                    return new PartitionKey(objectKey, partitionKeyInternal);
+                }
+            }
+        );
     }
 
     static { initialize(); }

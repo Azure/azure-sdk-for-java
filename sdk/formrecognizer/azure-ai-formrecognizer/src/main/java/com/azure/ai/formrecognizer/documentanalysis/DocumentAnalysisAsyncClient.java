@@ -154,7 +154,6 @@ public final class DocumentAnalysisAsyncClient {
      *     .flatMap&#40;AsyncPollResponse::getFinalResult&#41;
      *     .subscribe&#40;analyzeResult -&gt;
      *         analyzeResult.getDocuments&#40;&#41;
-     *             .stream&#40;&#41;
      *             .forEach&#40;document -&gt;
      *                 document.getFields&#40;&#41;
      *                     .forEach&#40;&#40;key, documentField&#41; -&gt; &#123;
@@ -202,7 +201,6 @@ public final class DocumentAnalysisAsyncClient {
      *     .subscribe&#40;analyzeResult -&gt; &#123;
      *         System.out.println&#40;analyzeResult.getModelId&#40;&#41;&#41;;
      *         analyzeResult.getDocuments&#40;&#41;
-     *             .stream&#40;&#41;
      *             .forEach&#40;document -&gt;
      *                 document.getFields&#40;&#41;
      *                     .forEach&#40;&#40;key, documentField&#41; -&gt; &#123;
@@ -305,7 +303,6 @@ public final class DocumentAnalysisAsyncClient {
      *     .flatMap&#40;AsyncPollResponse::getFinalResult&#41;
      *     .subscribe&#40;analyzeResult -&gt;
      *         analyzeResult.getDocuments&#40;&#41;
-     *             .stream&#40;&#41;
      *             .forEach&#40;analyzedDocument -&gt;
      *                 analyzedDocument.getFields&#40;&#41;
      *                     .forEach&#40;&#40;key, documentField&#41; -&gt; &#123;
@@ -346,8 +343,9 @@ public final class DocumentAnalysisAsyncClient {
      * File document = new File&#40;&quot;&#123;local&#47;file_path&#47;fileName.jpg&#125;&quot;&#41;;
      * String modelId = &quot;&#123;model_id&#125;&quot;;
      * final AnalyzeDocumentOptions analyzeDocumentOptions =
-     *     new AnalyzeDocumentOptions&#40;&#41;.setPages&#40;Arrays.asList&#40;&quot;1&quot;, &quot;3&quot;&#41;&#41;.setDocumentAnalysisFeatures&#40;Arrays.asList&#40;
-     *         DocumentAnalysisFeature.FORMULAS&#41;&#41;;
+     *     new AnalyzeDocumentOptions&#40;&#41;.setPages&#40;Arrays.asList&#40;&quot;1&quot;, &quot;3&quot;&#41;&#41;.setDocumentAnalysisFeatures&#40;
+     *         Collections.singletonList&#40;
+     *             DocumentAnalysisFeature.FORMULAS&#41;&#41;;
      *
      * &#47;&#47; Utility method to convert input stream to Binary Data
      * BinaryData buffer = BinaryData.fromStream&#40;new ByteArrayInputStream&#40;Files.readAllBytes&#40;document.toPath&#40;&#41;&#41;&#41;&#41;;
@@ -358,7 +356,6 @@ public final class DocumentAnalysisAsyncClient {
      *     .subscribe&#40;analyzeResult -&gt; &#123;
      *         System.out.println&#40;analyzeResult.getModelId&#40;&#41;&#41;;
      *         analyzeResult.getDocuments&#40;&#41;
-     *             .stream&#40;&#41;
      *             .forEach&#40;analyzedDocument -&gt;
      *                 analyzedDocument.getFields&#40;&#41;
      *                     .forEach&#40;&#40;key, documentField&#41; -&gt; &#123;
@@ -452,7 +449,6 @@ public final class DocumentAnalysisAsyncClient {
      * <!-- src_embed com.azure.ai.formrecognizer.documentanalysis.DocumentAnalysisAsyncClient.beginClassifyDocumentFromUrl#string-string -->
      * <pre>
      * String documentUrl = &quot;&#123;document_url&#125;&quot;;
-     * &#47;&#47; analyze a receipt using prebuilt model
      * String classifierId = &quot;custom-trained-classifier-id&quot;;
      *
      * documentAnalysisAsyncClient.beginClassifyDocumentFromUrl&#40;classifierId, documentUrl&#41;
@@ -536,26 +532,22 @@ public final class DocumentAnalysisAsyncClient {
      *
      * <p><strong>Code sample</strong></p>
      * <p> Analyze a document with configurable options.</p>
-     * <!-- src_embed com.azure.ai.formrecognizer.documentanalysis.DocumentAnalysisAsyncClient.beginAnalyzeDocument#string-BinaryData -->
+     * <!-- src_embed com.azure.ai.formrecognizer.documentanalysis.DocumentAnalysisAsyncClient.beginClassifyDocument#string-BinaryData -->
      * <pre>
      * File document = new File&#40;&quot;&#123;local&#47;file_path&#47;fileName.jpg&#125;&quot;&#41;;
-     * String modelId = &quot;&#123;model_id&#125;&quot;;
+     * String classifierId = &quot;&#123;model_id&#125;&quot;;
+     *
      * &#47;&#47; Utility method to convert input stream to Binary Data
      * BinaryData buffer = BinaryData.fromStream&#40;new ByteArrayInputStream&#40;Files.readAllBytes&#40;document.toPath&#40;&#41;&#41;&#41;&#41;;
      *
-     * documentAnalysisAsyncClient.beginAnalyzeDocument&#40;modelId, buffer&#41;
+     * documentAnalysisAsyncClient.beginClassifyDocument&#40;classifierId, buffer&#41;
      *     &#47;&#47; if polling operation completed, retrieve the final result.
      *     .flatMap&#40;AsyncPollResponse::getFinalResult&#41;
-     *     .subscribe&#40;analyzeResult -&gt;
+     *     .subscribe&#40;analyzeResult -&gt; &#123;
+     *         System.out.println&#40;analyzeResult.getModelId&#40;&#41;&#41;;
      *         analyzeResult.getDocuments&#40;&#41;
-     *             .stream&#40;&#41;
-     *             .forEach&#40;analyzedDocument -&gt;
-     *                 analyzedDocument.getFields&#40;&#41;
-     *                     .forEach&#40;&#40;key, documentField&#41; -&gt; &#123;
-     *                         System.out.printf&#40;&quot;Field text: %s%n&quot;, key&#41;;
-     *                         System.out.printf&#40;&quot;Field value data content: %s%n&quot;, documentField.getContent&#40;&#41;&#41;;
-     *                         System.out.printf&#40;&quot;Confidence score: %.2f%n&quot;, documentField.getConfidence&#40;&#41;&#41;;
-     *                     &#125;&#41;&#41;&#41;;
+     *             .forEach&#40;analyzedDocument -&gt; System.out.printf&#40;&quot;Doc Type: %s%n&quot;, analyzedDocument.getDocType&#40;&#41;&#41;&#41;;
+     *     &#125;&#41;;
      * </pre>
      * <!-- end com.azure.ai.formrecognizer.documentanalysis.DocumentAnalysisAsyncClient.beginClassifyDocument#string-BinaryData -->
      *

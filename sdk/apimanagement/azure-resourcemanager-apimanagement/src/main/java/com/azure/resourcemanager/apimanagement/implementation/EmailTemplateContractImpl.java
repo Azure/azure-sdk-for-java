@@ -60,6 +60,10 @@ public final class EmailTemplateContractImpl
         }
     }
 
+    public String resourceGroupName() {
+        return resourceGroupName;
+    }
+
     public EmailTemplateContractInner innerModel() {
         return this.innerObject;
     }

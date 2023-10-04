@@ -38,6 +38,10 @@ public final class IdentityProperties {
     @JsonInclude(value = JsonInclude.Include.NON_NULL, content = JsonInclude.Include.ALWAYS)
     private Map<String, UserAssignedIdentity> userAssignedIdentities;
 
+    /** Creates an instance of IdentityProperties class. */
+    public IdentityProperties() {
+    }
+
     /**
      * Get the tenantId property: The Active Directory tenant id of the principal.
      *

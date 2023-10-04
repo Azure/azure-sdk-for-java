@@ -86,7 +86,7 @@ public final class IdentityUtil {
     }
 
     public static boolean browserCustomizationOptionsPresent(BrowserCustomizationOptions browserCustomizationOptions) {
-        return !CoreUtils.isNullOrEmpty(browserCustomizationOptions.getHtmlMessageError())
-            || !CoreUtils.isNullOrEmpty(browserCustomizationOptions.getHtmlMessageSuccess());
+        return !CoreUtils.isNullOrEmpty(browserCustomizationOptions.getErrorMessage())
+            || !CoreUtils.isNullOrEmpty(browserCustomizationOptions.getSuccessMessage());
     }
 }

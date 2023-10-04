@@ -1,0 +1,37 @@
+parameters:
+  Matrix: ''
+  MaxParallel: 10
+  SkipOptions: "-Dcheckstyle.skip -Dcodesnippet.skip -Denforcer.skip -Djacoco.skip -Dmaven.javadoc.skip -Drevapi.skip -Dspotbugs.skip"
+  BuildParallelization: '2C'
+
+jobs:
+  - job: 'monitor_test'
+    dependsOn: ${{ parameters.DependsOn }}
+    condition: and(succeededOrFailed(), ne(${{ parameters.Matrix }}, '{}'))
+    strategy:
+      maxParallel: ${{ parameters.MaxParallel }}
+      matrix: $[ ${{ parameters.Matrix }} ]
+    variables:
+      - template: ../../../eng/pipelines/templates/variables/globals.yml
+    steps:
+      - template: /eng/common/pipelines/templates/steps/sparse-checkout.yml
+        parameters:
+          Paths:
+            - 'sdk/spring'
+      - script: |
+          python -m pip install termcolor
+        displayName: 'Python module install'
+      - script: |
+            python ./sdk/spring/scripts/spring_monitor_version_substitution.py -b $(TEST_SPRING_BOOT_VERSION)
+        displayName: 'Replace Spring version'
+      - task: Maven@3
+        displayName: 'Run tests'
+        inputs:
+          options: '$(DefaultOptions) -ntp -T ${{parameters.BuildParallelization}} ${{parameters.SkipOptions}}'
+          mavenPomFile: sdk/spring/pom.xml
+          mavenOptions: '$(MemoryOptions)'
+          javaHomeOption: 'JDKVersion'
+          jdkVersionOption: $(JavaTestVersion)
+          jdkArchitectureOption: 'x64'
+          goals: 'clean verify -Pmonitor'
+

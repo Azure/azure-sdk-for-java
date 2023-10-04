@@ -21,6 +21,17 @@ pr:
     include:
       - sdk/boms/
 
+parameters:
+  - name: release_azuresdkbom
+    displayName: 'azure-sdk-bom'
+    type: boolean
+  - name: release_springcloudazuredependencies
+    displayName: 'spring-cloud-azure-dependencies'
+    type: boolean
+  - name: release_azuresdktemplatebom
+    displayName: 'azure-sdk-template-bom'
+    type: boolean
+
 extends:
   template: /eng/pipelines/templates/stages/archetype-sdk-pom-only.yml
   parameters:
@@ -29,9 +40,12 @@ extends:
       - name: azure-sdk-bom
         groupId: com.azure
         safeName: azuresdkbom
+        releaseInBatch: ${{ parameters.release_azuresdkbom }}
       - name: spring-cloud-azure-dependencies
         groupID: com.azure.spring
         safeName: springcloudazuredependencies
+        releaseInBatch: ${{ parameters.release_springcloudazuredependencies }}
       - name: azure-sdk-template-bom
         groupID: com.azure
         safeName: azuresdktemplatebom
+        releaseInBatch: ${{ parameters.release_azuresdktemplatebom }}

@@ -73,7 +73,7 @@ add the direct dependency to your project as follows.
 <dependency>
     <groupId>com.azure</groupId>
     <artifactId>azure-search-documents</artifactId>
-    <version>11.5.9</version>
+    <version>11.6.0-beta.9</version>
 </dependency>
 ```
 [//]: # ({x-version-update-end})
@@ -582,7 +582,7 @@ This project has adopted the [Microsoft Open Source Code of Conduct][coc]. For m
 [search_docs]: https://docs.microsoft.com/azure/search/
 [azure_subscription]: https://azure.microsoft.com/free/java
 [maven]: https://maven.apache.org/
-[package]: https://search.maven.org/artifact/com.azure/azure-search-documents
+[package]: https://central.sonatype.com/artifact/com.azure/azure-search-documents
 [samples]: https://github.com/Azure/azure-sdk-for-java/tree/main/sdk/search/azure-search-documents/src/samples/
 [samples_readme]: https://github.com/Azure/azure-sdk-for-java/blob/main/sdk/search/azure-search-documents/src/samples/README.md
 [source_code]: https://github.com/Azure/azure-sdk-for-java/tree/main/sdk/search/azure-search-documents/src

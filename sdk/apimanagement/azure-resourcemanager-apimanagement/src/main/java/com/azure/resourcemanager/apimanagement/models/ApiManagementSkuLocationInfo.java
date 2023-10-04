@@ -29,6 +29,10 @@ public final class ApiManagementSkuLocationInfo {
     @JsonProperty(value = "zoneDetails", access = JsonProperty.Access.WRITE_ONLY)
     private List<ApiManagementSkuZoneDetails> zoneDetails;
 
+    /** Creates an instance of ApiManagementSkuLocationInfo class. */
+    public ApiManagementSkuLocationInfo() {
+    }
+
     /**
      * Get the location property: Location of the SKU.
      *

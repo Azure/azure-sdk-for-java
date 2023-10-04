@@ -6,7 +6,6 @@ package com.azure.resourcemanager.containerservicefleet.fluent.models;
 
 import com.azure.core.annotation.Fluent;
 import com.azure.core.management.ProxyResource;
-import com.azure.core.management.SystemData;
 import com.azure.resourcemanager.containerservicefleet.models.ManagedClusterUpdate;
 import com.azure.resourcemanager.containerservicefleet.models.UpdateRunProvisioningState;
 import com.azure.resourcemanager.containerservicefleet.models.UpdateRunStatus;
@@ -31,12 +30,6 @@ public final class UpdateRunInner extends ProxyResource {
     @JsonProperty(value = "eTag", access = JsonProperty.Access.WRITE_ONLY)
     private String etag;
 
-    /*
-     * Azure Resource Manager metadata containing createdBy and modifiedBy information.
-     */
-    @JsonProperty(value = "systemData", access = JsonProperty.Access.WRITE_ONLY)
-    private SystemData systemData;
-
     /** Creates an instance of UpdateRunInner class. */
     public UpdateRunInner() {
     }
@@ -60,15 +53,6 @@ public final class UpdateRunInner extends ProxyResource {
      */
     public String etag() {
         return this.etag;
-    }
-
-    /**
-     * Get the systemData property: Azure Resource Manager metadata containing createdBy and modifiedBy information.
-     *
-     * @return the systemData value.
-     */
-    public SystemData systemData() {
-        return this.systemData;
     }
 
     /**

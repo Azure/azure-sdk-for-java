@@ -61,11 +61,28 @@ public final class ConfigurationAssignmentsClientImpl implements ConfigurationAs
     @ServiceInterface(name = "MaintenanceManagemen")
     public interface ConfigurationAssignmentsService {
         @Headers({"Content-Type: application/json"})
-        @Put(
-            "/subscriptions/{subscriptionId}/resourcegroups/{resourceGroupName}/providers/{providerName}"
-                + "/{resourceParentType}/{resourceParentName}/{resourceType}/{resourceName}/providers"
-                + "/Microsoft.Maintenance/configurationAssignments/{configurationAssignmentName}")
+        @Get(
+            "/subscriptions/{subscriptionId}/resourcegroups/{resourceGroupName}/providers/{providerName}/{resourceParentType}/{resourceParentName}/{resourceType}/{resourceName}/providers/Microsoft.Maintenance/configurationAssignments/{configurationAssignmentName}")
         @ExpectedResponses({200})
+        @UnexpectedResponseExceptionType(ManagementException.class)
+        Mono<Response<ConfigurationAssignmentInner>> getParent(
+            @HostParam("$host") String endpoint,
+            @PathParam("subscriptionId") String subscriptionId,
+            @PathParam("resourceGroupName") String resourceGroupName,
+            @PathParam("providerName") String providerName,
+            @PathParam("resourceParentType") String resourceParentType,
+            @PathParam("resourceParentName") String resourceParentName,
+            @PathParam("resourceType") String resourceType,
+            @PathParam("resourceName") String resourceName,
+            @PathParam("configurationAssignmentName") String configurationAssignmentName,
+            @QueryParam("api-version") String apiVersion,
+            @HeaderParam("Accept") String accept,
+            Context context);
+
+        @Headers({"Content-Type: application/json"})
+        @Put(
+            "/subscriptions/{subscriptionId}/resourcegroups/{resourceGroupName}/providers/{providerName}/{resourceParentType}/{resourceParentName}/{resourceType}/{resourceName}/providers/Microsoft.Maintenance/configurationAssignments/{configurationAssignmentName}")
+        @ExpectedResponses({200, 201})
         @UnexpectedResponseExceptionType(ManagementException.class)
         Mono<Response<ConfigurationAssignmentInner>> createOrUpdateParent(
             @HostParam("$host") String endpoint,
@@ -84,9 +101,7 @@ public final class ConfigurationAssignmentsClientImpl implements ConfigurationAs
 
         @Headers({"Content-Type: application/json"})
         @Delete(
-            "/subscriptions/{subscriptionId}/resourcegroups/{resourceGroupName}/providers/{providerName}"
-                + "/{resourceParentType}/{resourceParentName}/{resourceType}/{resourceName}/providers"
-                + "/Microsoft.Maintenance/configurationAssignments/{configurationAssignmentName}")
+            "/subscriptions/{subscriptionId}/resourcegroups/{resourceGroupName}/providers/{providerName}/{resourceParentType}/{resourceParentName}/{resourceType}/{resourceName}/providers/Microsoft.Maintenance/configurationAssignments/{configurationAssignmentName}")
         @ExpectedResponses({200, 204})
         @UnexpectedResponseExceptionType(ManagementException.class)
         Mono<Response<ConfigurationAssignmentInner>> deleteParent(
@@ -104,11 +119,26 @@ public final class ConfigurationAssignmentsClientImpl implements ConfigurationAs
             Context context);
 
         @Headers({"Content-Type: application/json"})
-        @Put(
-            "/subscriptions/{subscriptionId}/resourcegroups/{resourceGroupName}/providers/{providerName}/{resourceType}"
-                + "/{resourceName}/providers/Microsoft.Maintenance/configurationAssignments"
-                + "/{configurationAssignmentName}")
+        @Get(
+            "/subscriptions/{subscriptionId}/resourcegroups/{resourceGroupName}/providers/{providerName}/{resourceType}/{resourceName}/providers/Microsoft.Maintenance/configurationAssignments/{configurationAssignmentName}")
         @ExpectedResponses({200})
+        @UnexpectedResponseExceptionType(ManagementException.class)
+        Mono<Response<ConfigurationAssignmentInner>> get(
+            @HostParam("$host") String endpoint,
+            @PathParam("subscriptionId") String subscriptionId,
+            @PathParam("resourceGroupName") String resourceGroupName,
+            @PathParam("providerName") String providerName,
+            @PathParam("resourceType") String resourceType,
+            @PathParam("resourceName") String resourceName,
+            @PathParam("configurationAssignmentName") String configurationAssignmentName,
+            @QueryParam("api-version") String apiVersion,
+            @HeaderParam("Accept") String accept,
+            Context context);
+
+        @Headers({"Content-Type: application/json"})
+        @Put(
+            "/subscriptions/{subscriptionId}/resourcegroups/{resourceGroupName}/providers/{providerName}/{resourceType}/{resourceName}/providers/Microsoft.Maintenance/configurationAssignments/{configurationAssignmentName}")
+        @ExpectedResponses({200, 201})
         @UnexpectedResponseExceptionType(ManagementException.class)
         Mono<Response<ConfigurationAssignmentInner>> createOrUpdate(
             @HostParam("$host") String endpoint,
@@ -125,9 +155,7 @@ public final class ConfigurationAssignmentsClientImpl implements ConfigurationAs
 
         @Headers({"Content-Type: application/json"})
         @Delete(
-            "/subscriptions/{subscriptionId}/resourcegroups/{resourceGroupName}/providers/{providerName}/{resourceType}"
-                + "/{resourceName}/providers/Microsoft.Maintenance/configurationAssignments"
-                + "/{configurationAssignmentName}")
+            "/subscriptions/{subscriptionId}/resourcegroups/{resourceGroupName}/providers/{providerName}/{resourceType}/{resourceName}/providers/Microsoft.Maintenance/configurationAssignments/{configurationAssignmentName}")
         @ExpectedResponses({200, 204})
         @UnexpectedResponseExceptionType(ManagementException.class)
         Mono<Response<ConfigurationAssignmentInner>> delete(
@@ -144,9 +172,7 @@ public final class ConfigurationAssignmentsClientImpl implements ConfigurationAs
 
         @Headers({"Content-Type: application/json"})
         @Get(
-            "/subscriptions/{subscriptionId}/resourcegroups/{resourceGroupName}/providers/{providerName}"
-                + "/{resourceParentType}/{resourceParentName}/{resourceType}/{resourceName}/providers"
-                + "/Microsoft.Maintenance/configurationAssignments")
+            "/subscriptions/{subscriptionId}/resourcegroups/{resourceGroupName}/providers/{providerName}/{resourceParentType}/{resourceParentName}/{resourceType}/{resourceName}/providers/Microsoft.Maintenance/configurationAssignments")
         @ExpectedResponses({200})
         @UnexpectedResponseExceptionType(ManagementException.class)
         Mono<Response<ListConfigurationAssignmentsResult>> listParent(
@@ -164,8 +190,7 @@ public final class ConfigurationAssignmentsClientImpl implements ConfigurationAs
 
         @Headers({"Content-Type: application/json"})
         @Get(
-            "/subscriptions/{subscriptionId}/resourcegroups/{resourceGroupName}/providers/{providerName}/{resourceType}"
-                + "/{resourceName}/providers/Microsoft.Maintenance/configurationAssignments")
+            "/subscriptions/{subscriptionId}/resourcegroups/{resourceGroupName}/providers/{providerName}/{resourceType}/{resourceName}/providers/Microsoft.Maintenance/configurationAssignments")
         @ExpectedResponses({200})
         @UnexpectedResponseExceptionType(ManagementException.class)
         Mono<Response<ListConfigurationAssignmentsResult>> list(
@@ -178,6 +203,294 @@ public final class ConfigurationAssignmentsClientImpl implements ConfigurationAs
             @QueryParam("api-version") String apiVersion,
             @HeaderParam("Accept") String accept,
             Context context);
+    }
+
+    /**
+     * Get configuration assignment
+     *
+     * <p>Get configuration assignment for resource..
+     *
+     * @param resourceGroupName Resource group name.
+     * @param providerName Resource provider name.
+     * @param resourceParentType Resource parent type.
+     * @param resourceParentName Resource parent identifier.
+     * @param resourceType Resource type.
+     * @param resourceName Resource identifier.
+     * @param configurationAssignmentName Configuration assignment name.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws ManagementException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return configuration assignment for resource. along with {@link Response} on successful completion of {@link
+     *     Mono}.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    private Mono<Response<ConfigurationAssignmentInner>> getParentWithResponseAsync(
+        String resourceGroupName,
+        String providerName,
+        String resourceParentType,
+        String resourceParentName,
+        String resourceType,
+        String resourceName,
+        String configurationAssignmentName) {
+        if (this.client.getEndpoint() == null) {
+            return Mono
+                .error(
+                    new IllegalArgumentException(
+                        "Parameter this.client.getEndpoint() is required and cannot be null."));
+        }
+        if (this.client.getSubscriptionId() == null) {
+            return Mono
+                .error(
+                    new IllegalArgumentException(
+                        "Parameter this.client.getSubscriptionId() is required and cannot be null."));
+        }
+        if (resourceGroupName == null) {
+            return Mono
+                .error(new IllegalArgumentException("Parameter resourceGroupName is required and cannot be null."));
+        }
+        if (providerName == null) {
+            return Mono.error(new IllegalArgumentException("Parameter providerName is required and cannot be null."));
+        }
+        if (resourceParentType == null) {
+            return Mono
+                .error(new IllegalArgumentException("Parameter resourceParentType is required and cannot be null."));
+        }
+        if (resourceParentName == null) {
+            return Mono
+                .error(new IllegalArgumentException("Parameter resourceParentName is required and cannot be null."));
+        }
+        if (resourceType == null) {
+            return Mono.error(new IllegalArgumentException("Parameter resourceType is required and cannot be null."));
+        }
+        if (resourceName == null) {
+            return Mono.error(new IllegalArgumentException("Parameter resourceName is required and cannot be null."));
+        }
+        if (configurationAssignmentName == null) {
+            return Mono
+                .error(
+                    new IllegalArgumentException(
+                        "Parameter configurationAssignmentName is required and cannot be null."));
+        }
+        final String accept = "application/json";
+        return FluxUtil
+            .withContext(
+                context ->
+                    service
+                        .getParent(
+                            this.client.getEndpoint(),
+                            this.client.getSubscriptionId(),
+                            resourceGroupName,
+                            providerName,
+                            resourceParentType,
+                            resourceParentName,
+                            resourceType,
+                            resourceName,
+                            configurationAssignmentName,
+                            this.client.getApiVersion(),
+                            accept,
+                            context))
+            .contextWrite(context -> context.putAll(FluxUtil.toReactorContext(this.client.getContext()).readOnly()));
+    }
+
+    /**
+     * Get configuration assignment
+     *
+     * <p>Get configuration assignment for resource..
+     *
+     * @param resourceGroupName Resource group name.
+     * @param providerName Resource provider name.
+     * @param resourceParentType Resource parent type.
+     * @param resourceParentName Resource parent identifier.
+     * @param resourceType Resource type.
+     * @param resourceName Resource identifier.
+     * @param configurationAssignmentName Configuration assignment name.
+     * @param context The context to associate with this operation.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws ManagementException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return configuration assignment for resource. along with {@link Response} on successful completion of {@link
+     *     Mono}.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    private Mono<Response<ConfigurationAssignmentInner>> getParentWithResponseAsync(
+        String resourceGroupName,
+        String providerName,
+        String resourceParentType,
+        String resourceParentName,
+        String resourceType,
+        String resourceName,
+        String configurationAssignmentName,
+        Context context) {
+        if (this.client.getEndpoint() == null) {
+            return Mono
+                .error(
+                    new IllegalArgumentException(
+                        "Parameter this.client.getEndpoint() is required and cannot be null."));
+        }
+        if (this.client.getSubscriptionId() == null) {
+            return Mono
+                .error(
+                    new IllegalArgumentException(
+                        "Parameter this.client.getSubscriptionId() is required and cannot be null."));
+        }
+        if (resourceGroupName == null) {
+            return Mono
+                .error(new IllegalArgumentException("Parameter resourceGroupName is required and cannot be null."));
+        }
+        if (providerName == null) {
+            return Mono.error(new IllegalArgumentException("Parameter providerName is required and cannot be null."));
+        }
+        if (resourceParentType == null) {
+            return Mono
+                .error(new IllegalArgumentException("Parameter resourceParentType is required and cannot be null."));
+        }
+        if (resourceParentName == null) {
+            return Mono
+                .error(new IllegalArgumentException("Parameter resourceParentName is required and cannot be null."));
+        }
+        if (resourceType == null) {
+            return Mono.error(new IllegalArgumentException("Parameter resourceType is required and cannot be null."));
+        }
+        if (resourceName == null) {
+            return Mono.error(new IllegalArgumentException("Parameter resourceName is required and cannot be null."));
+        }
+        if (configurationAssignmentName == null) {
+            return Mono
+                .error(
+                    new IllegalArgumentException(
+                        "Parameter configurationAssignmentName is required and cannot be null."));
+        }
+        final String accept = "application/json";
+        context = this.client.mergeContext(context);
+        return service
+            .getParent(
+                this.client.getEndpoint(),
+                this.client.getSubscriptionId(),
+                resourceGroupName,
+                providerName,
+                resourceParentType,
+                resourceParentName,
+                resourceType,
+                resourceName,
+                configurationAssignmentName,
+                this.client.getApiVersion(),
+                accept,
+                context);
+    }
+
+    /**
+     * Get configuration assignment
+     *
+     * <p>Get configuration assignment for resource..
+     *
+     * @param resourceGroupName Resource group name.
+     * @param providerName Resource provider name.
+     * @param resourceParentType Resource parent type.
+     * @param resourceParentName Resource parent identifier.
+     * @param resourceType Resource type.
+     * @param resourceName Resource identifier.
+     * @param configurationAssignmentName Configuration assignment name.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws ManagementException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return configuration assignment for resource. on successful completion of {@link Mono}.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    private Mono<ConfigurationAssignmentInner> getParentAsync(
+        String resourceGroupName,
+        String providerName,
+        String resourceParentType,
+        String resourceParentName,
+        String resourceType,
+        String resourceName,
+        String configurationAssignmentName) {
+        return getParentWithResponseAsync(
+                resourceGroupName,
+                providerName,
+                resourceParentType,
+                resourceParentName,
+                resourceType,
+                resourceName,
+                configurationAssignmentName)
+            .flatMap(res -> Mono.justOrEmpty(res.getValue()));
+    }
+
+    /**
+     * Get configuration assignment
+     *
+     * <p>Get configuration assignment for resource..
+     *
+     * @param resourceGroupName Resource group name.
+     * @param providerName Resource provider name.
+     * @param resourceParentType Resource parent type.
+     * @param resourceParentName Resource parent identifier.
+     * @param resourceType Resource type.
+     * @param resourceName Resource identifier.
+     * @param configurationAssignmentName Configuration assignment name.
+     * @param context The context to associate with this operation.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws ManagementException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return configuration assignment for resource. along with {@link Response}.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    public Response<ConfigurationAssignmentInner> getParentWithResponse(
+        String resourceGroupName,
+        String providerName,
+        String resourceParentType,
+        String resourceParentName,
+        String resourceType,
+        String resourceName,
+        String configurationAssignmentName,
+        Context context) {
+        return getParentWithResponseAsync(
+                resourceGroupName,
+                providerName,
+                resourceParentType,
+                resourceParentName,
+                resourceType,
+                resourceName,
+                configurationAssignmentName,
+                context)
+            .block();
+    }
+
+    /**
+     * Get configuration assignment
+     *
+     * <p>Get configuration assignment for resource..
+     *
+     * @param resourceGroupName Resource group name.
+     * @param providerName Resource provider name.
+     * @param resourceParentType Resource parent type.
+     * @param resourceParentName Resource parent identifier.
+     * @param resourceType Resource type.
+     * @param resourceName Resource identifier.
+     * @param configurationAssignmentName Configuration assignment name.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws ManagementException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return configuration assignment for resource.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    public ConfigurationAssignmentInner getParent(
+        String resourceGroupName,
+        String providerName,
+        String resourceParentType,
+        String resourceParentName,
+        String resourceType,
+        String resourceName,
+        String configurationAssignmentName) {
+        return getParentWithResponse(
+                resourceGroupName,
+                providerName,
+                resourceParentType,
+                resourceParentName,
+                resourceType,
+                resourceName,
+                configurationAssignmentName,
+                Context.NONE)
+            .getValue();
     }
 
     /**
@@ -778,6 +1091,234 @@ public final class ConfigurationAssignmentsClientImpl implements ConfigurationAs
                 resourceName,
                 configurationAssignmentName,
                 Context.NONE)
+            .getValue();
+    }
+
+    /**
+     * Get configuration assignment
+     *
+     * <p>Get configuration assignment for resource..
+     *
+     * @param resourceGroupName Resource group name.
+     * @param providerName Resource provider name.
+     * @param resourceType Resource type.
+     * @param resourceName Resource identifier.
+     * @param configurationAssignmentName Configuration assignment name.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws ManagementException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return configuration assignment for resource. along with {@link Response} on successful completion of {@link
+     *     Mono}.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    private Mono<Response<ConfigurationAssignmentInner>> getWithResponseAsync(
+        String resourceGroupName,
+        String providerName,
+        String resourceType,
+        String resourceName,
+        String configurationAssignmentName) {
+        if (this.client.getEndpoint() == null) {
+            return Mono
+                .error(
+                    new IllegalArgumentException(
+                        "Parameter this.client.getEndpoint() is required and cannot be null."));
+        }
+        if (this.client.getSubscriptionId() == null) {
+            return Mono
+                .error(
+                    new IllegalArgumentException(
+                        "Parameter this.client.getSubscriptionId() is required and cannot be null."));
+        }
+        if (resourceGroupName == null) {
+            return Mono
+                .error(new IllegalArgumentException("Parameter resourceGroupName is required and cannot be null."));
+        }
+        if (providerName == null) {
+            return Mono.error(new IllegalArgumentException("Parameter providerName is required and cannot be null."));
+        }
+        if (resourceType == null) {
+            return Mono.error(new IllegalArgumentException("Parameter resourceType is required and cannot be null."));
+        }
+        if (resourceName == null) {
+            return Mono.error(new IllegalArgumentException("Parameter resourceName is required and cannot be null."));
+        }
+        if (configurationAssignmentName == null) {
+            return Mono
+                .error(
+                    new IllegalArgumentException(
+                        "Parameter configurationAssignmentName is required and cannot be null."));
+        }
+        final String accept = "application/json";
+        return FluxUtil
+            .withContext(
+                context ->
+                    service
+                        .get(
+                            this.client.getEndpoint(),
+                            this.client.getSubscriptionId(),
+                            resourceGroupName,
+                            providerName,
+                            resourceType,
+                            resourceName,
+                            configurationAssignmentName,
+                            this.client.getApiVersion(),
+                            accept,
+                            context))
+            .contextWrite(context -> context.putAll(FluxUtil.toReactorContext(this.client.getContext()).readOnly()));
+    }
+
+    /**
+     * Get configuration assignment
+     *
+     * <p>Get configuration assignment for resource..
+     *
+     * @param resourceGroupName Resource group name.
+     * @param providerName Resource provider name.
+     * @param resourceType Resource type.
+     * @param resourceName Resource identifier.
+     * @param configurationAssignmentName Configuration assignment name.
+     * @param context The context to associate with this operation.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws ManagementException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return configuration assignment for resource. along with {@link Response} on successful completion of {@link
+     *     Mono}.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    private Mono<Response<ConfigurationAssignmentInner>> getWithResponseAsync(
+        String resourceGroupName,
+        String providerName,
+        String resourceType,
+        String resourceName,
+        String configurationAssignmentName,
+        Context context) {
+        if (this.client.getEndpoint() == null) {
+            return Mono
+                .error(
+                    new IllegalArgumentException(
+                        "Parameter this.client.getEndpoint() is required and cannot be null."));
+        }
+        if (this.client.getSubscriptionId() == null) {
+            return Mono
+                .error(
+                    new IllegalArgumentException(
+                        "Parameter this.client.getSubscriptionId() is required and cannot be null."));
+        }
+        if (resourceGroupName == null) {
+            return Mono
+                .error(new IllegalArgumentException("Parameter resourceGroupName is required and cannot be null."));
+        }
+        if (providerName == null) {
+            return Mono.error(new IllegalArgumentException("Parameter providerName is required and cannot be null."));
+        }
+        if (resourceType == null) {
+            return Mono.error(new IllegalArgumentException("Parameter resourceType is required and cannot be null."));
+        }
+        if (resourceName == null) {
+            return Mono.error(new IllegalArgumentException("Parameter resourceName is required and cannot be null."));
+        }
+        if (configurationAssignmentName == null) {
+            return Mono
+                .error(
+                    new IllegalArgumentException(
+                        "Parameter configurationAssignmentName is required and cannot be null."));
+        }
+        final String accept = "application/json";
+        context = this.client.mergeContext(context);
+        return service
+            .get(
+                this.client.getEndpoint(),
+                this.client.getSubscriptionId(),
+                resourceGroupName,
+                providerName,
+                resourceType,
+                resourceName,
+                configurationAssignmentName,
+                this.client.getApiVersion(),
+                accept,
+                context);
+    }
+
+    /**
+     * Get configuration assignment
+     *
+     * <p>Get configuration assignment for resource..
+     *
+     * @param resourceGroupName Resource group name.
+     * @param providerName Resource provider name.
+     * @param resourceType Resource type.
+     * @param resourceName Resource identifier.
+     * @param configurationAssignmentName Configuration assignment name.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws ManagementException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return configuration assignment for resource. on successful completion of {@link Mono}.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    private Mono<ConfigurationAssignmentInner> getAsync(
+        String resourceGroupName,
+        String providerName,
+        String resourceType,
+        String resourceName,
+        String configurationAssignmentName) {
+        return getWithResponseAsync(
+                resourceGroupName, providerName, resourceType, resourceName, configurationAssignmentName)
+            .flatMap(res -> Mono.justOrEmpty(res.getValue()));
+    }
+
+    /**
+     * Get configuration assignment
+     *
+     * <p>Get configuration assignment for resource..
+     *
+     * @param resourceGroupName Resource group name.
+     * @param providerName Resource provider name.
+     * @param resourceType Resource type.
+     * @param resourceName Resource identifier.
+     * @param configurationAssignmentName Configuration assignment name.
+     * @param context The context to associate with this operation.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws ManagementException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return configuration assignment for resource. along with {@link Response}.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    public Response<ConfigurationAssignmentInner> getWithResponse(
+        String resourceGroupName,
+        String providerName,
+        String resourceType,
+        String resourceName,
+        String configurationAssignmentName,
+        Context context) {
+        return getWithResponseAsync(
+                resourceGroupName, providerName, resourceType, resourceName, configurationAssignmentName, context)
+            .block();
+    }
+
+    /**
+     * Get configuration assignment
+     *
+     * <p>Get configuration assignment for resource..
+     *
+     * @param resourceGroupName Resource group name.
+     * @param providerName Resource provider name.
+     * @param resourceType Resource type.
+     * @param resourceName Resource identifier.
+     * @param configurationAssignmentName Configuration assignment name.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws ManagementException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return configuration assignment for resource.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    public ConfigurationAssignmentInner get(
+        String resourceGroupName,
+        String providerName,
+        String resourceType,
+        String resourceName,
+        String configurationAssignmentName) {
+        return getWithResponse(
+                resourceGroupName, providerName, resourceType, resourceName, configurationAssignmentName, Context.NONE)
             .getValue();
     }
 
