@@ -62,11 +62,12 @@ public final class Providers<TProvider, TInstance> {
             TProvider additionalProvider;
             try {
                 additionalProvider = it.next();
-            } catch (UnsupportedClassVersionError exception) {
-                // JDK HttpClient was introduced since java 11
+            } catch (final UnsupportedClassVersionError exception) {
+                // The JDK HttpClient in combination with the Azure SDK for Java is only supported with JDK 12 and
+                // higher.
                 if (exception.getMessage().contains(
                     "JdkHttpClientProvider has been compiled by a more recent version of the Java Runtime")
-                    && !isJavaVersionMinimumRequired(11)) {
+                    && !isJavaVersionMinimumRequired(12)) {
                     continue;
                 } else {
                     throw LOGGER.logExceptionAsError(new RuntimeException(exception));

@@ -275,10 +275,11 @@ public abstract class TestBase implements BeforeEachCallback {
                 httpClientProvider = iterator.next();
                 simpleName = httpClientProvider.getClass().getSimpleName();
             } catch (UnsupportedClassVersionError exception) {
-                // JDK HttpClient was introduced since java 11
+                // The JDK HttpClient in combination with the Azure SDK for Java is only supported with JDK 12 and
+                // higher.
                 if (exception.getMessage().contains(
                     "JdkHttpClientProvider has been compiled by a more recent version of the Java Runtime")
-                    && !isJavaVersionMinimumRequired(11)) {
+                    && !isJavaVersionMinimumRequired(12)) {
                     continue;
                 } else {
                     throw LOGGER.logExceptionAsError(new RuntimeException(exception));
