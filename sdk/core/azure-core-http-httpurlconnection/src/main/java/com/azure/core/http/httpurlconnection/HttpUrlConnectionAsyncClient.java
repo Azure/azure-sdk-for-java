@@ -174,7 +174,7 @@ public class HttpUrlConnectionAsyncClient implements HttpClient {
                 for (Map.Entry<String, List<String>> entry : connection.getHeaderFields().entrySet()) {
                     if (entry.getKey() != null) {
                         for (String headerValue : entry.getValue()) {
-                            responseHeaders.add(entry.getKey(), headerValue);
+                            responseHeaders.add(HttpHeaderName.fromString(entry.getKey()), headerValue);
                         }
                     }
                 }
