@@ -9,7 +9,7 @@ import com.azure.identity.DefaultAzureCredentialBuilder;
 
 public final class ReadmeSamples {
     public void readmeSamples() {
-        // BEGIN: com.azure.analytics.defender.easm.readme
+        // BEGIN: readme-sample-createDefenderEasmClient
         String subscriptionId = Configuration.getGlobalConfiguration().get("SUBSCRIPTIONID");
         String workspaceName = Configuration.getGlobalConfiguration().get("WORKSPACENAME");
         String resourceGroupName = Configuration.getGlobalConfiguration().get("RESOURCEGROUPNAME");
@@ -22,6 +22,6 @@ public final class ReadmeSamples {
             .resourceGroupName(resourceGroupName)
             .credential(new DefaultAzureCredentialBuilder().build())
             .buildClient();
-        // END: com.azure.analytics.defender.easm.readme
+        // END: readme-sample-createDefenderEasmClient
     }
 }

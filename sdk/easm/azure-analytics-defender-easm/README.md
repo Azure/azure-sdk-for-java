@@ -56,7 +56,7 @@ Custom discoveries are organized into Discovery Groups. They are independent see
 
 ## Examples
 
-```java readme-sample-createClient
+```java readme-sample-createDefenderEasmClient
 String subscriptionId = Configuration.getGlobalConfiguration().get("SUBSCRIPTIONID");
 String workspaceName = Configuration.getGlobalConfiguration().get("WORKSPACENAME");
 String resourceGroupName = Configuration.getGlobalConfiguration().get("RESOURCEGROUPNAME");
