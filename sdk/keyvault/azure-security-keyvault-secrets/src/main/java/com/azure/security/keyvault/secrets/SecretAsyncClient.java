@@ -516,7 +516,7 @@ public final class SecretAsyncClient {
     public Mono<Response<SecretProperties>> updateSecretPropertiesWithResponse(SecretProperties secretProperties) {
         try {
             return implClient.updateSecretWithResponseAsync(vaultUrl, secretProperties.getName(),
-                secretProperties.getVersion(), ContentType.APPLICATION_JSON,
+                secretProperties.getVersion(), secretProperties.getContentType(),
                     createSecretAttributes(secretProperties), secretProperties.getTags())
                 .map(response -> new SimpleResponse<>(response, createSecretProperties(response.getValue())));
         } catch (RuntimeException ex) {

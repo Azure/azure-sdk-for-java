@@ -435,7 +435,7 @@ public final class SecretClient {
     public Response<SecretProperties> updateSecretPropertiesWithResponse(SecretProperties secretProperties,
                                                                          Context context) {
         Response<SecretBundle> response = implClient.updateSecretWithResponse(vaultUrl, secretProperties.getName(),
-            secretProperties.getVersion(), ContentType.APPLICATION_JSON, createSecretAttributes(secretProperties),
+            secretProperties.getVersion(), secretProperties.getContentType(), createSecretAttributes(secretProperties),
             secretProperties.getTags(), context);
         return new SimpleResponse<>(response, createSecretProperties(response.getValue()));
     }
