@@ -76,6 +76,9 @@ public final class AzureMonitorExporterBuilder {
     private static final String APPLICATIONINSIGHTS_AUTHENTICATION_SCOPE =
         "https://monitor.azure.com//.default";
 
+    private static final String STATSBEAT_LONG_INTERVAL_SECONDS = "STATSBEAT_LONG_INTERVAL_SECONDS";
+    private static final String STATSBEAT_SHORT_INTERVAL_SECONDS = "STATSBEAT_SHORT_INTERVAL_SECONDS";
+
     private static final Map<String, String> PROPERTIES =
         CoreUtils.getProperties("azure-monitor-opentelemetry-exporter.properties");
 
@@ -363,13 +366,25 @@ public final class AzureMonitorExporterBuilder {
                 this::getStatsbeatConnectionString,
                 connectionString::getInstrumentationKey,
                 false,
-                SECONDS.toSeconds(1), // MINUTES.toSeconds(1),
-                SECONDS.toSeconds(1), // DAYS.toSeconds(1),
+                getStatsbeatInterval(STATSBEAT_LONG_INTERVAL_SECONDS, configProperties.getInt(STATSBEAT_LONG_INTERVAL_SECONDS)),
+                getStatsbeatInterval(STATSBEAT_SHORT_INTERVAL_SECONDS, configProperties.getInt(STATSBEAT_SHORT_INTERVAL_SECONDS)),
                 false,
                 initStatsbeatFeatures());
         }
         return new AzureMonitorMetricExporter(
             new MetricDataMapper(createDefaultsPopulator(configProperties), true), builtTelemetryItemExporter);
+    }
+
+    private long getStatsbeatInterval(String key, Integer intervalFromConfig) {
+        if (intervalFromConfig == null) {
+            if ("STATSBEAT_LONG_INTERVAL_SECONDS".equals(key)) {
+                return DAYS.toSeconds(1); // default every 24 hours
+            } else if ("STATSBEAT_SHORT_INTERVAL_SECONDS".equals(key)) {
+                return MINUTES.toSeconds(15); // default every 15 mins
+            }
+        }
+        assert intervalFromConfig != null;
+        return SECONDS.toSeconds(intervalFromConfig);
     }
 
     private Set<Feature> initStatsbeatFeatures() {
