@@ -100,6 +100,11 @@ public final class StringBuilderWriter extends Writer {
         closed = true;
     }
 
+    @Override
+    public String toString() {
+        return builder.toString();
+    }
+
     private void ensureOpen() throws IOException {
         if (closed) {
             throw new IOException("Writer has been closed.");

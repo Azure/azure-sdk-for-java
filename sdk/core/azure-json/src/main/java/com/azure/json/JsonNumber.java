@@ -42,8 +42,8 @@ public class JsonNumber extends JsonElement {
      *
      * TODO: check for invalid number values or types
      */
-    public JsonNumber(Number value) { 
-        this.numberValue = value; 
+    public JsonNumber(Number value) {
+        this.numberValue = value;
     }
 
     /**
@@ -65,8 +65,8 @@ public class JsonNumber extends JsonElement {
      * @return boolean of whether this JsonElement object is of type JsonNumber.
      */
     @Override
-    public boolean isNumber() { 
-        return true; 
+    public boolean isNumber() {
+        return true;
     }
 
     /*
@@ -117,7 +117,7 @@ public class JsonNumber extends JsonElement {
         try {
             return new JsonString(numberValue.toString());
         } catch (NullPointerException e) {
-            return new JsonString();
+            return new JsonString("");
         }
     }
 

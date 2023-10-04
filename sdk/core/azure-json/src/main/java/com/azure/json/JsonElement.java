@@ -62,7 +62,7 @@ public abstract class JsonElement {
      * this constructor defined in the source code if compiler is already adding
      * this constructor implicitly when no other constructor is defined.
      */
-    public JsonElement() {}
+    JsonElement() {}
 
     /**
      * Abstract method that should be defined in a JsonElement sub class to
@@ -269,43 +269,43 @@ public abstract class JsonElement {
     /**
      * @return boolean on whether the given JsonElement is a JsonArray
      */
-    public boolean isArray() { 
-        return false; 
+    public boolean isArray() {
+        return false;
     }
 
     /**
      * @return boolean on whether the given JsonElement is a JsonObject
      */
-    public boolean isObject() { 
-        return false; 
+    public boolean isObject() {
+        return false;
     }
 
     /**
      * @return boolean on whether the given JsonElement is a JsonBoolean
      */
-    public boolean isBoolean() { 
-        return false; 
+    public boolean isBoolean() {
+        return false;
     }
 
     /**
      * @return boolean on whether the given JsonElement is a JsonNull
      */
-    public boolean isNull() { 
-        return false; 
+    public boolean isNull() {
+        return false;
     }
 
     /**
      * @return boolean on whether the given JsonElement is a JsonNumber
      */
-    public boolean isNumber() { 
-        return false; 
+    public boolean isNumber() {
+        return false;
     }
 
     /**
      * @return boolean on whether the given JsonElement is a JsonString
      */
-    public boolean isString() { 
-        return false; 
+    public boolean isString() {
+        return false;
     }
 
     //------------------------------------------------------------------------//
@@ -317,43 +317,43 @@ public abstract class JsonElement {
     /**
      * @return
      */
-    public JsonArray asArray() { 
+    public JsonArray asArray() {
         return new JsonArray();
     }
 
     /**
      * @return
      */
-    public JsonObject asObject() { 
-        return new JsonObject(); 
+    public JsonObject asObject() {
+        return new JsonObject();
     }
 
     /**
      * @return
      */
-    public JsonBoolean asBoolean() { 
-        return JsonBoolean.getInstance(true); 
+    public JsonBoolean asBoolean() {
+        return JsonBoolean.getInstance(true);
     }
 
     /**
      * @return
      */
-    public JsonNull asNull() { 
-        return JsonNull.getInstance(); 
+    public JsonNull asNull() {
+        return JsonNull.getInstance();
     }
 
     /**
      * @return
      */
-    public JsonNumber asNumber() { 
-        return new JsonNumber(); 
+    public JsonNumber asNumber() {
+        return new JsonNumber();
     }
 
     /**
      * @return
      */
-    public JsonString asString() { 
-        return new JsonString(); 
+    public JsonString asString() {
+        return new JsonString("");
     }
 }
 

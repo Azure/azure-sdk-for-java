@@ -113,7 +113,7 @@ public class JsonEditingTests {
     }
 
     @Test
-    public void deleteObjectPropertyArrayInner(){
+    public void deleteObjectPropertyArrayInner() throws IOException {
         object.getProperty("EntryArray").removeElement(0);
         assertEquals("{\"EntryVariable\":\"First\",\"EntryObject\":{\"InnerKey\":20},\"EntryArray\":[\"Value2\"]}", object.toJson());
     }

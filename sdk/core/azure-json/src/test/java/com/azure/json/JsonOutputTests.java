@@ -14,49 +14,49 @@ public class JsonOutputTests {
     //Tests primarily focusing on the toJson method of JsonArray and JsonObject.
 
     @Test
-    public void objectWithStringJSON(){
+    public void objectWithStringJSON() throws IOException {
         String expected = "{\"Value1\":\"Write String\"}";
         String actual = new JsonObject().addProperty("Value1", new JsonString("Write String")).toJson();
         assertEquals(expected, actual);
     }
 
     @Test
-    public void objectWithIntJSON(){
+    public void objectWithIntJSON() throws IOException {
         String expected = "{\"Value1\":111}";
         String actual = new JsonObject().addProperty("Value1", new JsonNumber(111)).toJson();
         assertEquals(expected, actual);
     }
 
     @Test
-    public void objectWithFloatJSON(){
+    public void objectWithFloatJSON() throws IOException {
         String expected = "{\"Value1\":1.23}";
         String actual = new JsonObject().addProperty("Value1", new JsonNumber(1.23)).toJson();
         assertEquals(expected, actual);
     }
 
     @Test
-    public void objectWithBooleanJSON(){
+    public void objectWithBooleanJSON() throws IOException {
         String expected = "{\"Value1\":true}";
         String actual = new JsonObject().addProperty("Value1", JsonBoolean.getInstance(true)).toJson();
         assertEquals(expected, actual);
     }
 
     @Test
-    public void objectWithNullJSON(){
+    public void objectWithNullJSON() throws IOException {
         String expected = "{\"Value1\":null}";
         String actual = new JsonObject().addProperty("Value1", JsonNull.getInstance()).toJson();
         assertEquals(expected, actual);
     }
 
     @Test
-    public void objectWithInnerObjectJSON(){
+    public void objectWithInnerObjectJSON() throws IOException {
         String expected = "{\"Value1\":{\"Value2\":\"Second Layer\"}}";
         String actual = new JsonObject().addProperty("Value1", new JsonObject().addProperty("Value2", new JsonString("Second Layer"))).toJson();
         assertEquals(expected, actual);
     }
 
     @Test
-    public void objectTwoPropertiesJSONSame(){ //Adding two values with the same type.
+    public void objectTwoPropertiesJSONSame() throws IOException { //Adding two values with the same type.
         String expected = "{\"Value1\":\"First Layer\",\"Value2\":\"Second Layer\"}";
         String actual = new JsonObject()
             .addProperty("Value1", new JsonString("First Layer"))
@@ -66,7 +66,7 @@ public class JsonOutputTests {
     }
 
     @Test
-    public void objectTwoPropertiesJSONDifferent(){ //Adding values to JSONObject that have different variable types
+    public void objectTwoPropertiesJSONDifferent() throws IOException { //Adding values to JSONObject that have different variable types
         String expected = "{\"Value1\":\"First Layer\",\"Value2\":2}";
         String actual = new JsonObject()
             .addProperty("Value1", new JsonString("First Layer"))
@@ -76,7 +76,7 @@ public class JsonOutputTests {
     }
 
     @Test
-    public void objectWithArrayObjectsJSON(){
+    public void objectWithArrayObjectsJSON() throws IOException {
         String expected = "{\"Value1\":[{\"Value2\":2},{\"Value3\":3}]}";
         String actual = new JsonObject()
             .addProperty("Value1", new JsonArray()
@@ -88,7 +88,7 @@ public class JsonOutputTests {
     }
 
     @Test
-    public void objectArrayNumbersJSON(){ //Convert int values into a JsonElement type, then add to JsonObject. Not sure if this is correct way to handle it?
+    public void objectArrayNumbersJSON() throws IOException { //Convert int values into a JsonElement type, then add to JsonObject. Not sure if this is correct way to handle it?
         String expected = "{\"intList\":[3,1,4,1,5,9]}";
         int[] values = new int[]{3, 1, 4, 1, 5, 9};
         JsonArray intList = new JsonArray();
@@ -100,7 +100,7 @@ public class JsonOutputTests {
     }
 
     @Test
-    public void complexJSONIsolated(){
+    public void complexJSONIsolated() throws IOException {
         String expected = "{\"James\":\"Anderson\",\"Michael\":\"Campbell\",\"Mary\":\"Jones\",\"John\":\"Williams\"}";
         JsonObject jsonObj = new JsonObject();
         // Adding properties - showcasing addProperty.
@@ -138,7 +138,7 @@ public class JsonOutputTests {
     }
 
     @Test
-    public void complexJSONNesting(){
+    public void complexJSONNesting() throws IOException {
         String expected = "{\"James\":{\"Country\":\"New Zealand\",\"Surname\":\"Anderson\"},\"Michael\":{\"Country\":\"Australia\",\"Surname\":\"Campbell\"},\"Mary\":{\"Country\":\"Canada\",\"Surname\":\"Jones\"},\"John\":{\"Country\":\"Australia\",\"Surname\":\"Williams\"}}";
         JsonObject jsonObj = new JsonObject();
 

@@ -1,7 +1,5 @@
 package com.azure.json;
 
-import com.azure.json.implementation.StringBuilderWriter;
-
 import java.io.IOException;
 import java.io.OutputStream;
 import java.io.StringWriter;
@@ -155,7 +153,7 @@ public class JsonArray extends JsonElement {
      * @return String representation of the JsonArray object
      */
     public String toJson() throws IOException {
-        try (StringBuilderWriter stringOutput = new StringBuilderWriter(new StringBuilder())) {
+        try (StringWriter stringOutput = new StringWriter()) {
             toWriter(stringOutput);
             return stringOutput.toString();
         }
