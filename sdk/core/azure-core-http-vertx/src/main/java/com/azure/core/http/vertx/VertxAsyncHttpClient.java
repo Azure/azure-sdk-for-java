@@ -4,33 +4,44 @@
 package com.azure.core.http.vertx;
 
 import com.azure.core.http.HttpClient;
+import com.azure.core.http.HttpHeader;
 import com.azure.core.http.HttpHeaderName;
 import com.azure.core.http.HttpRequest;
 import com.azure.core.http.HttpResponse;
 import com.azure.core.http.vertx.implementation.BufferedVertxHttpResponse;
+import com.azure.core.http.vertx.implementation.VertxRequestWriteSubscriber;
+import com.azure.core.implementation.util.BinaryDataContent;
+import com.azure.core.implementation.util.BinaryDataHelper;
+import com.azure.core.implementation.util.ByteArrayContent;
+import com.azure.core.implementation.util.ByteBufferContent;
+import com.azure.core.implementation.util.FileContent;
+import com.azure.core.implementation.util.SerializableContent;
+import com.azure.core.implementation.util.StringContent;
+import com.azure.core.util.BinaryData;
 import com.azure.core.util.Context;
 import com.azure.core.util.Contexts;
-import com.azure.core.util.FluxUtil;
 import com.azure.core.util.ProgressReporter;
 import io.netty.buffer.Unpooled;
 import io.vertx.core.Vertx;
 import io.vertx.core.buffer.Buffer;
+import io.vertx.core.file.AsyncFile;
+import io.vertx.core.file.OpenOptions;
 import io.vertx.core.http.HttpClientRequest;
 import io.vertx.core.http.HttpClientResponse;
 import io.vertx.core.http.HttpMethod;
 import io.vertx.core.http.RequestOptions;
-import reactor.core.publisher.Flux;
 import reactor.core.publisher.Mono;
+import reactor.core.publisher.MonoSink;
 import reactor.core.scheduler.Scheduler;
 import reactor.core.scheduler.Schedulers;
 
-import java.nio.ByteBuffer;
 import java.util.Objects;
 
 /**
  * {@link HttpClient} implementation for the Vert.x {@link io.vertx.core.http.HttpClient}.
  */
 class VertxAsyncHttpClient implements HttpClient {
+    private final Vertx vertx;
     private final Scheduler scheduler;
     final io.vertx.core.http.HttpClient client;
 
@@ -39,10 +50,12 @@ class VertxAsyncHttpClient implements HttpClient {
      *
      * @param client The Vert.x {@link io.vertx.core.http.HttpClient}
      */
+    @SuppressWarnings("deprecation")
     VertxAsyncHttpClient(io.vertx.core.http.HttpClient client, Vertx vertx) {
         Objects.requireNonNull(client, "client cannot be null");
         Objects.requireNonNull(vertx, "vertx cannot be null");
         this.client = client;
+        this.vertx = vertx;
         this.scheduler = Schedulers.fromExecutor(vertx.nettyEventLoopGroup());
     }
 
@@ -66,17 +79,17 @@ class VertxAsyncHttpClient implements HttpClient {
                 return;
             }
 
-            HttpClientRequest vertxHttpRequest = requestResult.result();
-            vertxHttpRequest.exceptionHandler(sink::error);
-
-            request.getHeaders().stream()
-                .forEach(header -> vertxHttpRequest.putHeader(header.getName(), header.getValuesList()));
-
+            HttpClientRequest vertxRequest = requestResult.result();
+            for (HttpHeader header : request.getHeaders()) {
+                // Potential optimization here would be creating a MultiMap wrapper around azure-core's
+                // HttpHeaders and using RequestOptions.setHeaders(MultiMap)
+                vertxRequest.putHeader(header.getName(), header.getValuesList());
+            }
             if (request.getHeaders().get(HttpHeaderName.CONTENT_LENGTH) == null) {
-                vertxHttpRequest.setChunked(true);
+                vertxRequest.setChunked(true);
             }
 
-            vertxHttpRequest.response(event -> {
+            vertxRequest.response(event -> {
                 if (event.succeeded()) {
                     HttpClientResponse vertxHttpResponse = event.result();
                     vertxHttpResponse.exceptionHandler(sink::error);
@@ -96,30 +109,80 @@ class VertxAsyncHttpClient implements HttpClient {
                 }
             });
 
-            // TODO (alzimmer)
-            // For now Vertx will always use a buffered request until reliability issues when using streamin can be
-            // resolved.
-            Flux<ByteBuffer> requestBody = request.getBody();
-            if (requestBody == null) {
-                vertxHttpRequest.end();
-            } else {
-                if (progressReporter != null) {
-                    requestBody = requestBody.map(buffer -> {
-                        progressReporter.reportProgress(buffer.remaining());
-                        return buffer;
-                    });
-                }
-
-                FluxUtil.collectBytesFromNetworkResponse(requestBody, request.getHeaders())
-                    .subscribeOn(scheduler)
-                    .subscribe(bytes -> vertxHttpRequest.write(Buffer.buffer(Unpooled.wrappedBuffer(bytes))),
-                        sink::error, vertxHttpRequest::end);
-            }
+            sendBody(sink, request, progressReporter, vertxRequest);
         }));
     }
 
     @Override
     public HttpResponse sendSync(HttpRequest request, Context context) {
         return send(request, context).block();
+    }
+
+    @SuppressWarnings("deprecation")
+    private void sendBody(MonoSink<HttpResponse> sink, HttpRequest azureRequest,
+        ProgressReporter progressReporter, HttpClientRequest vertxRequest) {
+        BinaryData body = azureRequest.getBodyAsBinaryData();
+        if (body == null) {
+            vertxRequest.send(result -> {
+                if (result.failed()) {
+                    sink.error(result.cause());
+                }
+            });
+            return;
+        }
+
+        BinaryDataContent bodyContent = BinaryDataHelper.getContent(body);
+        if (bodyContent instanceof ByteArrayContent
+            || bodyContent instanceof StringContent
+            || bodyContent instanceof SerializableContent) {
+            byte[] content = bodyContent.toBytes();
+            vertxRequest.send(Buffer.buffer(Unpooled.wrappedBuffer(content)), result -> {
+                if (result.succeeded()) {
+                    reportProgress(content.length, progressReporter);
+                } else {
+                    sink.error(result.cause());
+                }
+            });
+        } else if (bodyContent instanceof ByteBufferContent) {
+            long contentLength = bodyContent.getLength();
+            vertxRequest.send(Buffer.buffer(Unpooled.wrappedBuffer(bodyContent.toByteBuffer())), result -> {
+                if (result.succeeded()) {
+                    reportProgress(contentLength, progressReporter);
+                } else {
+                    sink.error(result.cause());
+                }
+            });
+        } else if (bodyContent instanceof FileContent) {
+            FileContent fileContent = (FileContent) bodyContent;
+            vertx.fileSystem().open(fileContent.getFile().toString(), new OpenOptions().setRead(true), event -> {
+                if (event.succeeded()) {
+                    AsyncFile file = event.result();
+                    file.setReadPos(fileContent.getPosition());
+                    if (fileContent.getLength() != null) {
+                        file.setReadLength(fileContent.getLength());
+                    }
+
+                    vertxRequest.send(file, result -> {
+                        if (result.succeeded()) {
+                            reportProgress(fileContent.getLength(), progressReporter);
+                        } else {
+                            sink.error(result.cause());
+                        }
+                    });
+                } else {
+                    sink.error(event.cause());
+                }
+            });
+        } else {
+            // Right now both Flux<ByteBuffer> and InputStream bodies are being handled reactively.
+            azureRequest.getBody().subscribeOn(scheduler)
+                .subscribe(new VertxRequestWriteSubscriber(vertxRequest, sink, progressReporter));
+        }
+    }
+
+    private static void reportProgress(long progress, ProgressReporter progressReporter) {
+        if (progressReporter != null) {
+            progressReporter.reportProgress(progress);
+        }
     }
 }

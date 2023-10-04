@@ -14,7 +14,7 @@ import java.nio.ByteBuffer;
 /**
  * Default HTTP response for Vert.x.
  */
-public class VertxHttpAsyncResponse extends VertxHttpResponseBase {
+public final class VertxHttpAsyncResponse extends VertxHttpResponseBase {
 
     public VertxHttpAsyncResponse(HttpRequest azureHttpRequest, HttpClientResponse vertxHttpResponse) {
         super(azureHttpRequest, vertxHttpResponse);
@@ -31,6 +31,7 @@ public class VertxHttpAsyncResponse extends VertxHttpResponseBase {
         return FluxUtil.collectBytesFromNetworkResponse(streamResponseBody(), getHeaders());
     }
 
+    @SuppressWarnings("deprecation")
     private Flux<ByteBuffer> streamResponseBody() {
         HttpClientResponse vertxHttpResponse = getVertxHttpResponse();
         return Flux.create(sink -> {
