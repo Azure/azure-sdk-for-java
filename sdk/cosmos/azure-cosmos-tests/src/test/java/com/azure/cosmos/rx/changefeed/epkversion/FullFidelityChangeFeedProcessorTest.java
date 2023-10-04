@@ -1019,7 +1019,7 @@ public class FullFidelityChangeFeedProcessorTest extends TestSuiteBase {
 
     // todo: this test was run against an FFCF account, worth re-enabling
     //  when we have such an account for the live tests pipeline
-    @Test(groups = { "split" }, dataProvider = "contextTestConfigs", timeOut = 160 * CHANGE_FEED_PROCESSOR_TIMEOUT, enabled = false)
+    @Test(groups = { "cfp-split" }, dataProvider = "contextTestConfigs", timeOut = 160 * CHANGE_FEED_PROCESSOR_TIMEOUT, enabled = false)
     public void readFeedDocumentsAfterSplit(boolean isContextRequired) throws InterruptedException {
         CosmosAsyncContainer createdFeedCollectionForSplit = createFeedCollection(FEED_COLLECTION_THROUGHPUT);
         CosmosAsyncContainer createdLeaseCollection = createLeaseCollection(2 * LEASE_COLLECTION_THROUGHPUT);
