@@ -9,10 +9,7 @@ import com.azure.core.credential.TokenCredential;
 import com.azure.core.credential.TokenRequestContext;
 import com.azure.core.util.CoreUtils;
 import com.azure.core.util.logging.ClientLogger;
-import com.azure.identity.implementation.IdentityClient;
-import com.azure.identity.implementation.IdentityClientBuilder;
-import com.azure.identity.implementation.IdentityClientOptions;
-import com.azure.identity.implementation.MsalAuthenticationAccount;
+import com.azure.identity.implementation.*;
 import com.azure.identity.implementation.util.LoggingUtil;
 import reactor.core.publisher.Mono;
 
@@ -93,7 +90,8 @@ public class AuthorizationCodeCredential implements TokenCredential {
             isCachePopulated = isCachePopulated(request);
             if (isCachePopulated) {
                 if (useConfidentialClient) {
-                    return identityClient.authenticateWithConfidentialClientCache(request, cachedToken.get());
+                    return identityClient.authenticateWithConfidentialClientCache(request, cachedToken.get())
+                        .map(accessToken -> (MsalToken) accessToken);
                 } else {
                     return identityClient.authenticateWithPublicClientCache(request, cachedToken.get())
                         .onErrorResume(t -> Mono.empty());
