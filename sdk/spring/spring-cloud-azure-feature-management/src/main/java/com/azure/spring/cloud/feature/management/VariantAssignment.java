@@ -50,7 +50,7 @@ public final class VariantAssignment {
      * @param variants List of the possible variants.
      * @return Variant object containing an instance of the type
      */
-    Variant assignVariant(Allocation allocation, Collection<VariantReference> variants) {
+    Flux<Variant> assignVariant(Allocation allocation, Collection<VariantReference> variants) {
         TargetingFilterContext targetingContext = new TargetingFilterContext();
 
         contextAccessor.configureTargetingContext(targetingContext);
@@ -121,11 +121,13 @@ public final class VariantAssignment {
      * @param variantName Name of the assigned variant
      * @return Variant object containing an instance of the type
      */
-    Variant getVariant(Collection<VariantReference> variants, String variantName) {
+    Flux<Variant> getVariant(Collection<VariantReference> variants, String variantName) {
+        if (variantName == null) {
+            return null;
+        }
         return Flux.fromStream(
             variants.stream().filter(variant -> variant.getName().equals(variantName))
-                .map(variant -> this.assignVariant(variant)))
-            .blockFirst();
+                .map(variant -> this.assignVariant(variant)));
     }
 
     private Variant assignVariant(VariantReference variant) {
