@@ -21,7 +21,8 @@ public class JsonNumber extends JsonElement {
      *
      * TODO: may need to double check that 0 is correctly cast to a Number type
      */
-    public JsonNumber() { }//this(0); }
+    JsonNumber() { }//this(0); }
+
 
     public JsonNumber(String value) {
         try {
@@ -135,13 +136,16 @@ public class JsonNumber extends JsonElement {
      */
     @Override
     public JsonWriter serialize(JsonWriter jsonWriter) throws IOException {
-        int integerForm = this.numberValue.intValue();
-        float floatForm = this.numberValue.floatValue();
-        if (integerForm == floatForm) {
-            jsonWriter.writeInt(integerForm);
-        } else {
-            jsonWriter.writeFloat(floatForm);
-        }
+
+        jsonWriter.writeNumber(numberValue);
+
+        //        int integerForm = this.numberValue.intValue();
+//        float floatForm = this.numberValue.floatValue();
+//        if (integerForm == floatForm) {
+//            jsonWriter.writeInt(integerForm);
+//        } else {
+//            jsonWriter.writeFloat(floatForm);
+//        }
         return jsonWriter;
     }
 }
