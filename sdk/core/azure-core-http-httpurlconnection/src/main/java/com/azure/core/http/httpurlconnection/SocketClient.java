@@ -5,10 +5,7 @@ import com.azure.core.http.HttpHeaderName;
 import com.azure.core.http.HttpHeaders;
 import com.azure.core.http.HttpRequest;
 import com.azure.core.http.httpurlconnection.implementation.HttpUrlConnectionResponse;
-import com.azure.core.util.FluxUtil;
-import com.azure.core.util.logging.ClientLogger;
 import reactor.core.publisher.Flux;
-
 import javax.net.ssl.SSLSocket;
 import javax.net.ssl.SSLSocketFactory;
 import java.io.*;
@@ -100,24 +97,24 @@ class SocketClient {
         final StringBuilder request = new StringBuilder();
 
         request.append("PATCH")
-               .append(" ")
-               .append(httpRequest.getUrl().getPath())
-               .append(HTTP_VERSION)
-               .append("\r\n");
+            .append(" ")
+            .append(httpRequest.getUrl().getPath())
+            .append(HTTP_VERSION)
+            .append("\r\n");
 
         if (httpRequest.getHeaders().getSize() > 0) {
             for (HttpHeader header : httpRequest.getHeaders()) {
                 header.getValuesList().forEach(value -> request.append(header.getName())
-                                                               .append(": ")
-                                                               .append(value)
-                                                               .append("\r\n"));
+                    .append(": ")
+                    .append(value)
+                    .append("\r\n"));
             }
         }
         // Add the body if there is a body to add
         if (httpRequest.getBody() != null) {
             request.append("\r\n")
-                   .append(httpRequest.getBodyAsBinaryData().toString())
-                   .append("\r\n");
+                .append(httpRequest.getBodyAsBinaryData().toString())
+                .append("\r\n");
         }
 
         out.write(request.toString());
