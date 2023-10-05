@@ -1,6 +1,6 @@
 package com.azure.compute.batch;
 
-import com.azure.compute.batch.auth.BatchSharedKeyCredentials;
+import com.azure.core.credential.AzureNamedKeyCredential;
 import com.azure.compute.batch.models.*;
 import com.azure.compute.batch.models.BatchClientParallelOptions;
 import com.azure.core.exception.HttpResponseException;
@@ -276,11 +276,6 @@ public class TaskTests extends BatchServiceClientTestBase {
             BatchClientParallelOptions option = new BatchClientParallelOptions(10);
             batchClient.createTasks(jobId, tasksToAdd, option);
 
-            // BatchTaskCollection taskCollection = new BatchTaskCollection(tasksToAdd);
-            // batchClient.createTaskCollection(jobId, taskCollection);
-            // Not sure if removing parallel options is correct?
-            // taskClient.createTasks(jobId, tasksToAdd, parallelOptions);
-
             // LIST
             PagedIterable<BatchTask> tasks = batchClient.listTasks(jobId);
             Assert.assertNotNull(tasks);
@@ -303,8 +298,7 @@ public class TaskTests extends BatchServiceClientTestBase {
         String accessKey = Configuration.getGlobalConfiguration().get("AZURE_BATCH_ACCESS_KEY");
         accessKey = (accessKey == null || accessKey.length() == 0) ? "RANDOM_KEY" : accessKey;
 
-        BatchSharedKeyCredentials noExistCredentials1 = new BatchSharedKeyCredentials(
-                "https://noexistaccount.westus.batch.azure.com",
+        AzureNamedKeyCredential noExistCredentials1 = new AzureNamedKeyCredential(
                 "noexistaccount", accessKey
         );
         batchClientBuilder.credential(noExistCredentials1);
@@ -357,7 +351,6 @@ public class TaskTests extends BatchServiceClientTestBase {
 
         try
         {
-            // batchClient.createTaskCollection(jobId, new BatchTaskCollection(tasksToAdd));
             batchClient.createTasks(jobId, tasksToAdd);
             try {
                 batchClient.deleteJob(jobId);

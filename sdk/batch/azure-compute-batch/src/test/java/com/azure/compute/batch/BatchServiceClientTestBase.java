@@ -4,7 +4,7 @@
 
 package com.azure.compute.batch;
 
-import com.azure.compute.batch.auth.BatchSharedKeyCredentials;
+import com.azure.core.credential.AzureNamedKeyCredential;
 import com.azure.compute.batch.models.*;
 import com.azure.core.credential.AccessToken;
 import com.azure.core.http.HttpClient;
@@ -104,18 +104,17 @@ class BatchServiceClientTestBase extends TestProxyTestBase {
                 batchClientBuilder.credential(new DefaultAzureCredentialBuilder().build());
             }
             else {
-                BatchSharedKeyCredentials keyCredentials = getSharedKeyCredentials();
+                AzureNamedKeyCredential keyCredentials = getSharedKeyCredentials();
                 batchClientBuilder.credential(keyCredentials);
             }
         }
     }
 
-    static BatchSharedKeyCredentials getSharedKeyCredentials() {
+    static AzureNamedKeyCredential getSharedKeyCredentials() {
         Configuration localConfig = Configuration.getGlobalConfiguration();
-        String baseUrl = localConfig.get("AZURE_BATCH_ENDPOINT");
         String accountName = localConfig.get("AZURE_BATCH_ACCOUNT");
         String accountKey = localConfig.get("AZURE_BATCH_ACCESS_KEY");
-        return new BatchSharedKeyCredentials(baseUrl, accountName, accountKey);
+        return new AzureNamedKeyCredential(accountName, accountKey);
     }
 
     static String getStringIdWithUserNamePrefix(String name) {

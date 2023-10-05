@@ -1,6 +1,6 @@
 package com.azure.compute.batch;
 
-import com.azure.compute.batch.auth.BatchSharedKeyCredentials;
+import com.azure.core.credential.AzureNamedKeyCredential;
 import com.azure.compute.batch.models.*;
 import com.azure.core.http.*;
 import com.azure.core.http.HttpHeader;
@@ -24,7 +24,7 @@ public class SharedKeyTests extends BatchServiceClientTestBase {
     @Override
     protected void beforeTest() {
         super.beforeTest();
-        BatchSharedKeyCredentials sharedKeyCred = getSharedKeyCredentials();
+        AzureNamedKeyCredential sharedKeyCred = getSharedKeyCredentials();
         batchClientBuilder.credential(sharedKeyCred);
     }
 

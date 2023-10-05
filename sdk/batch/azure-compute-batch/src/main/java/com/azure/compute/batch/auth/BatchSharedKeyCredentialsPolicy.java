@@ -14,11 +14,12 @@ import java.net.URLDecoder;
 import java.security.InvalidKeyException;
 import java.security.NoSuchAlgorithmException;
 import java.util.*;
+import com.azure.core.credential.AzureNamedKeyCredential;
 
 import static java.time.OffsetDateTime.now;
 
 public final class BatchSharedKeyCredentialsPolicy implements HttpPipelinePolicy {
-    private final BatchSharedKeyCredentials batchSharedKeyCred;
+    private final AzureNamedKeyCredential azureNamedKeyCred;
     private Mac hmacSha256;
 
     /**
@@ -26,8 +27,8 @@ public final class BatchSharedKeyCredentialsPolicy implements HttpPipelinePolicy
      *
      * @param credential the SharedKey credential used to create the policy.
      */
-    public BatchSharedKeyCredentialsPolicy(BatchSharedKeyCredentials credential) {
-        this.batchSharedKeyCred = credential;
+    public BatchSharedKeyCredentialsPolicy(AzureNamedKeyCredential credential) {
+        this.azureNamedKeyCred = credential;
     }
 
     /**
@@ -58,7 +59,7 @@ public final class BatchSharedKeyCredentialsPolicy implements HttpPipelinePolicy
     private synchronized Mac getHmac256() throws NoSuchAlgorithmException, InvalidKeyException {
         if (this.hmacSha256 == null) {
             // Initializes the HMAC-SHA256 Mac and SecretKey.
-            byte[] key = Base64.getDecoder().decode(batchSharedKeyCred.keyValue());
+            byte[] key = Base64.getDecoder().decode(azureNamedKeyCred.getAzureNamedKey().getKey());
             this.hmacSha256 = Mac.getInstance("HmacSHA256");
             this.hmacSha256.init(new SecretKeySpec(key, "HmacSHA256"));
         }
@@ -119,7 +120,7 @@ public final class BatchSharedKeyCredentialsPolicy implements HttpPipelinePolicy
         }
 
         signature.append("/")
-                .append(batchSharedKeyCred.accountName().toLowerCase()).append("/")
+                .append(azureNamedKeyCred.getAzureNamedKey().getName().toLowerCase()).append("/")
                 .append(request.getUrl().getPath().replaceAll("^[/]+", ""));
 
         String query = request.getUrl().getQuery();
@@ -142,7 +143,7 @@ public final class BatchSharedKeyCredentialsPolicy implements HttpPipelinePolicy
         }
 
         String signedSignature = sign(signature.toString());
-        String authorization = "SharedKey " + batchSharedKeyCred.accountName()
+        String authorization = "SharedKey " + azureNamedKeyCred.getAzureNamedKey().getName()
                 + ":" + signedSignature;
 
         return authorization;
