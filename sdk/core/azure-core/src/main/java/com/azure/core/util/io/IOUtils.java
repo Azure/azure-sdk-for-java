@@ -203,8 +203,7 @@ public final class IOUtils {
         BiFunction<Throwable, Long, Mono<StreamResponse>> onErrorResume,
         int maxRetries, int retryCount) {
 
-        return response.writeValueToAsync(targetChannel)
-            .doFinally(ignored -> response.close())
+        return Mono.using(() -> response, r -> r.writeValueToAsync(targetChannel)
             .onErrorResume(Exception.class, exception -> {
                 response.close();
 
@@ -221,9 +220,9 @@ public final class IOUtils {
                     .log(() -> String.format("Using retry attempt %d of %d.", updatedRetryCount, maxRetries),
                         exception);
                 return onErrorResume.apply(exception, targetChannel.getBytesWritten())
-                    .flatMap(newResponse -> transferStreamResponseToAsynchronousByteChannelHelper(
-                        targetChannel, newResponse, onErrorResume, maxRetries, updatedRetryCount));
-            });
+                    .flatMap(newResponse -> transferStreamResponseToAsynchronousByteChannelHelper(targetChannel,
+                        newResponse, onErrorResume, maxRetries, updatedRetryCount));
+            }), StreamResponse::close);
     }
 
     /*
