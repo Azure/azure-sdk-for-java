@@ -218,6 +218,15 @@ public class InteractiveBrowserCredentialBuilder extends AadCredentialBuilderBas
     }
 
     /**
+     * Enables Microsoft Account (MSA) passthrough.
+     * @return The updated InteractiveBrowserCredentialBuilder object.
+     */
+    public InteractiveBrowserCredentialBuilder enableMsaPassthrough() {
+        this.identityClientOptions.enableMsaPassthrough();
+        return this;
+    }
+
+    /**
      * Creates a new {@link InteractiveBrowserCredential} with the current configurations.
      *
      * @return a {@link InteractiveBrowserCredential} with the current configurations.

@@ -82,6 +82,7 @@ import java.time.ZoneOffset;
 import java.time.format.DateTimeFormatter;
 import java.util.ArrayList;
 import java.util.Collections;
+import java.util.HashMap;
 import java.util.HashSet;
 import java.util.List;
 import java.util.Map;
@@ -540,7 +541,11 @@ public abstract class IdentityClientBase {
             builder.windowHandle(options.getBrokerWindowHandle());
             // workaround for an MSAL bug.
             builder.loginHint(loginHint == null ? "" : loginHint);
-
+            if (options.isMsaPassthroughEnabled()) {
+                Map<String, String> extraQueryParameters = new HashMap<>();
+                extraQueryParameters.put("msal_request_type", "consumer_passthrough");
+                builder.extraQueryParameters(extraQueryParameters);
+            }
         }
 
         if (loginHint != null) {

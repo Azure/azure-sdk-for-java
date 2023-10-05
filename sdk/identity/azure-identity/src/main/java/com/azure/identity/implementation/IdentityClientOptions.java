@@ -78,6 +78,7 @@ public final class IdentityClientOptions implements Cloneable {
     private boolean enableUnsafeSupportLogging;
     private long brokerWindowHandle;
     private boolean brokerEnabled;
+    private boolean enableMsaPassthrough;
 
     /**
      * Creates an instance of IdentityClientOptions with default settings.
@@ -769,6 +770,21 @@ public final class IdentityClientOptions implements Cloneable {
      */
     public boolean isBrokerEnabled() {
         return this.brokerEnabled;
+    }
+
+    /**
+     * Enables MSA passthrough.
+     */
+    public void enableMsaPassthrough() {
+        this.enableMsaPassthrough = true;
+    }
+
+    /**
+     * Gets the status whether MSA passthrough is enabled or not.
+     * @return the flag indicating if MSA passthrough is enabled or not.
+     */
+    public boolean isMsaPassthroughEnabled() {
+        return this.enableMsaPassthrough;
     }
 
     public IdentityClientOptions clone() {
