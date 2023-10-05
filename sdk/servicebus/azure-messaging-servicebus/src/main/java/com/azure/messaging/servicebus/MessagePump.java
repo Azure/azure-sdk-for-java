@@ -29,16 +29,16 @@ import static com.azure.core.amqp.implementation.ClientConstants.PUMP_ID_KEY;
  * Abstraction to pump messages using a {@link ServiceBusReceiverAsyncClient} (associated with a session unaware entity)
  * as long as the client is healthy.
  *
- * <p>The pumping starts upon subscribing to the Mono that {@link NonSessionMessagePump#begin} returns. The pumping can
- * be stopped by cancelling the subscription that {@link NonSessionMessagePump#begin} returned.</p>
+ * <p>The pumping starts upon subscribing to the Mono that {@link MessagePump#begin} returns. The pumping can
+ * be stopped by cancelling the subscription that {@link MessagePump#begin} returned.</p>
  *
- * <p>Once the Mono from {@link NonSessionMessagePump#begin} terminates, to restart the pumping a new {@link NonSessionMessagePump}
+ * <p>Once the Mono from {@link MessagePump#begin} terminates, to restart the pumping a new {@link MessagePump}
  * instance should be obtained.</p>
  *
- * <p>The abstraction {@link ServiceBusProcessor} takes care of managing a {@link NonSessionMessagePump} and obtaining
- * the next NonSessionMessagePump when current one terminates.</p>
+ * <p>The abstraction {@link ServiceBusProcessor} takes care of managing a {@link MessagePump} and obtaining
+ * the next MessagePump when current one terminates.</p>
  */
-final class NonSessionMessagePump {
+final class MessagePump {
     private static final AtomicLong COUNTER = new AtomicLong();
     private static final Duration CONNECTION_STATE_POLL_INTERVAL = Duration.ofSeconds(20);
     private final long  pumpId;
@@ -55,7 +55,7 @@ final class NonSessionMessagePump {
     private final ServiceBusReceiverInstrumentation instrumentation;
 
     /**
-     * Instantiate {@link NonSessionMessagePump} that pumps messages emitted by the given {@code client}. The messages
+     * Instantiate {@link MessagePump} that pumps messages emitted by the given {@code client}. The messages
      * are pumped to the {@code processMessage} concurrently with the parallelism equal to {@code concurrency}.
      *
      * @param client The underlying client to read messages from the broker.
@@ -64,7 +64,7 @@ final class NonSessionMessagePump {
      * @param concurrency The pumping concurrency, i.e., how many invocations of {@code processMessage} should happen in parallel.
      * @param enableAutoDisposition Indicate if auto-complete or abandon should be enabled.
      */
-    NonSessionMessagePump(ServiceBusReceiverAsyncClient client, Consumer<ServiceBusReceivedMessageContext> processMessage,
+    MessagePump(ServiceBusReceiverAsyncClient client, Consumer<ServiceBusReceivedMessageContext> processMessage,
         Consumer<ServiceBusErrorContext> processError, int concurrency, boolean enableAutoDisposition) {
         this.pumpId = COUNTER.incrementAndGet();
         this.client = client;
@@ -75,7 +75,7 @@ final class NonSessionMessagePump {
         loggingContext.put(PUMP_ID_KEY, this.pumpId);
         loggingContext.put(FULLY_QUALIFIED_NAMESPACE_KEY, this.fullyQualifiedNamespace);
         loggingContext.put(ENTITY_PATH_KEY, this.entityPath);
-        this.logger = new ClientLogger(NonSessionMessagePump.class, loggingContext);
+        this.logger = new ClientLogger(MessagePump.class, loggingContext);
 
         this.processMessage = processMessage;
         this.processError = processError;
@@ -97,7 +97,7 @@ final class NonSessionMessagePump {
     /**
      * Begin pumping messages in parallel, with the parallelism equal to the configured {@code concurrency}.
      *
-     * @return a mono that emits {@link MessagePumpTerminatedException} when this {@link NonSessionMessagePump} terminates.
+     * @return a mono that emits {@link MessagePumpTerminatedException} when this {@link MessagePump} terminates.
      * The pumping terminates when the underlying client encounters a non-retriable error, the retries exhaust,
      * or rejection when scheduling concurrently.
      */
