@@ -155,14 +155,6 @@ public class BlobTestBase extends TestProxyTestBase {
 
     protected String prefix;
 
-    @BeforeAll
-    public static void beforeAll() {
-        // The property is to limit flapMap buffer size of concurrency
-        // in case the upload or download open too many connections.
-        System.setProperty("reactor.bufferSize.x", "16");
-        System.setProperty("reactor.bufferSize.small", "100");
-    }
-
     @Override
     public void beforeTest() {
         super.beforeTest();
@@ -845,11 +837,8 @@ public class BlobTestBase extends TestProxyTestBase {
      * Insecurely and quickly generates a random AES256 key for the purpose of unit tests. No one should ever make a
      * real key this way.
      */
-    protected static byte[] getRandomKey() {
-        long seed = new Random().nextLong();
-        byte[] key = new byte[32]; // 256-bit key
-        new Random(seed).nextBytes(key);
-        return key;
+    protected byte[] getRandomKey() {
+        return getRandomByteArray(32); // 256-bit key
     }
 
     /**

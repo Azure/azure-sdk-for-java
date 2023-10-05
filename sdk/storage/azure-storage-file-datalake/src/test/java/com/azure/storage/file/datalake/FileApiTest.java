@@ -1700,7 +1700,7 @@ public class FileApiTest extends DataLakeTestBase {
     @EnabledIf("com.azure.storage.file.datalake.DataLakeTestBase#isLiveMode")
     @ParameterizedTest
     @ValueSource(ints = {
-//        100
+        100,
         8 * 1026 * 1024 + 10
     })
     public void downloadFileProgressReceiver(int fileSize) {
