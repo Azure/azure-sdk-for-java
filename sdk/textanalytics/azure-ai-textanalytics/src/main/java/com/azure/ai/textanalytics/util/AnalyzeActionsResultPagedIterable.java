@@ -22,7 +22,7 @@ public final class AnalyzeActionsResultPagedIterable
     extends ContinuablePagedIterable<String, AnalyzeActionsResult, PagedResponse<AnalyzeActionsResult>> {
 
     /**
-     * Creates instance given {@link AnalyzeActionsResultPagedIterable}.
+     * Creates instance given {@code AnalyzeActionsResultPagedIterable}.
      *
      * @param textAnalyticsPagedFlux It used as iterable.
      */
@@ -31,7 +31,7 @@ public final class AnalyzeActionsResultPagedIterable
     }
 
     /**
-     * Creates an instance of {@link AnalyzeActionsResultPagedIterable}. The constructor takes a {@code Supplier} and
+     * Creates an instance of {@code AnalyzeActionsResultPagedIterable}. The constructor takes a {@code Supplier} and
      * {@code Function}. The {@code Supplier} returns the first page of {@link AnalyzeActionsResult},
      * the {@code Function} retrieves subsequent pages of {@link AnalyzeActionsResult}.
      *

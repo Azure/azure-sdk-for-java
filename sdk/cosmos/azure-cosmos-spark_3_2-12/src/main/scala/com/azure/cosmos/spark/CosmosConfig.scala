@@ -1655,12 +1655,27 @@ private object CosmosThroughputControlConfig {
             val globalControlItemExpireInterval = CosmosConfigEntry.parse(cfg, globalControlItemExpireIntervalSupplier)
             val globalControlUseDedicatedContainer = CosmosConfigEntry.parse(cfg, globalControlUseDedicatedContainerSupplier)
 
+            if (groupName.isEmpty) {
+              throw new IllegalArgumentException(
+                s"Configuration option '${CosmosConfigNames.ThroughputControlName}' must not be empty.")
+            }
             assert(groupName.isDefined)
+
+            if (globalControlUseDedicatedContainer.isEmpty) {
+              throw new IllegalArgumentException(
+                s"Configuration option '${CosmosConfigNames.ThroughputControlGlobalControlUseDedicatedContainer}' must not be empty.")
+            }
             assert(globalControlUseDedicatedContainer.isDefined)
 
             if (globalControlUseDedicatedContainer.get) {
-                assert(globalControlDatabase.isDefined)
-                assert(globalControlContainer.isDefined)
+              if (globalControlDatabase.isEmpty || globalControlContainer.isEmpty) {
+                throw new IllegalArgumentException(
+                  s"Configuration options '${CosmosConfigNames.ThroughputControlGlobalControlDatabase}' and " +
+                    s"'${CosmosConfigNames.ThroughputControlGlobalControlContainer}' must not be empty if " +
+                    s" option '${CosmosConfigNames.ThroughputControlGlobalControlUseDedicatedContainer}' is true.")
+              }
+              assert(globalControlDatabase.isDefined)
+              assert(globalControlContainer.isDefined)
             }
 
             Some(CosmosThroughputControlConfig(

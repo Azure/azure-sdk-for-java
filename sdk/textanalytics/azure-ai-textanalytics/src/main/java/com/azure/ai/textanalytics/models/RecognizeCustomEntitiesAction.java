@@ -8,9 +8,8 @@ import com.azure.core.annotation.Fluent;
 /**
  * Configurations that allow callers to specify details about how to execute a custom entities recognition action in
  * a set of documents.
- *
  * See the service documentation for regional support of custom entities recognition:
- * https://aka.ms/azsdk/textanalytics/customentityrecognition
+ * <a href="https://aka.ms/azsdk/textanalytics/customentityrecognition">custom entity recognition</a>
  */
 @Fluent
 public final class RecognizeCustomEntitiesAction {
@@ -45,7 +44,7 @@ public final class RecognizeCustomEntitiesAction {
      *
      * @param actionName the custom name for the action.
      *
-     * @return The {@link RecognizeCustomEntitiesAction} object itself.
+     * @return The {@code RecognizeCustomEntitiesAction} object itself.
      */
     public RecognizeCustomEntitiesAction setActionName(String actionName) {
         this.actionName = actionName;
@@ -88,7 +87,7 @@ public final class RecognizeCustomEntitiesAction {
      * your input text for 48 hours, solely to allow for troubleshooting issues. Setting this property to true,
      * disables input logging and may limit our ability to investigate issues that occur.
      *
-     * @return The {@link RecognizeCustomEntitiesAction} object itself.
+     * @return The {@code RecognizeCustomEntitiesAction} object itself.
      */
     public RecognizeCustomEntitiesAction setServiceLogsDisabled(boolean disableServiceLogs) {
         this.disableServiceLogs = disableServiceLogs;

@@ -143,8 +143,6 @@ First, add the `opentelemetry-jdbc` library:
 Then wrap your `DataSource` bean in an `io.opentelemetry.instrumentation.jdbc.datasource.OpenTelemetryDataSource`, e.g.
 
 ```java
-import org.apache.commons.dbcp2.BasicDataSource;
-import org.springframework.context.annotation.Configuration;
 import io.opentelemetry.instrumentation.jdbc.datasource.OpenTelemetryDataSource;
 
 @Configuration
@@ -152,8 +150,9 @@ public class DataSourceConfig {
 
     @Bean
     public DataSource dataSource() {
-        BasicDataSource dataSource = new BasicDataSource();
-        // Other data source configurations
+        DataSourceBuilder dataSourceBuilder = DataSourceBuilder.create();
+        // Data source configurations
+        DataSource dataSource = dataSourceBuilder.build();
         return new OpenTelemetryDataSource(dataSource);
     }
 

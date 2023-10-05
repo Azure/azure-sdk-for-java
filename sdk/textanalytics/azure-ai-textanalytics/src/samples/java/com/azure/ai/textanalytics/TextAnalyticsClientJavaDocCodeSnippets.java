@@ -27,6 +27,7 @@ import com.azure.ai.textanalytics.models.ExtractiveSummaryOperationDetail;
 import com.azure.ai.textanalytics.models.ExtractiveSummaryOptions;
 import com.azure.ai.textanalytics.models.ExtractiveSummaryResult;
 import com.azure.ai.textanalytics.models.HealthcareEntity;
+import com.azure.ai.textanalytics.models.KeyPhrasesCollection;
 import com.azure.ai.textanalytics.models.MultiLabelClassifyOptions;
 import com.azure.ai.textanalytics.models.PiiEntity;
 import com.azure.ai.textanalytics.models.PiiEntityCollection;
@@ -205,7 +206,7 @@ public class TextAnalyticsClientJavaDocCodeSnippets {
      */
     public void recognizeEntities() {
         // BEGIN: com.azure.ai.textanalytics.TextAnalyticsClient.recognizeCategorizedEntities#String
-        final CategorizedEntityCollection recognizeEntitiesResult =
+        CategorizedEntityCollection recognizeEntitiesResult =
             textAnalyticsClient.recognizeEntities("Satya Nadella is the CEO of Microsoft");
         for (CategorizedEntity entity : recognizeEntitiesResult) {
             System.out.printf("Recognized entity: %s, entity category: %s, confidence score: %f.%n",
@@ -219,7 +220,7 @@ public class TextAnalyticsClientJavaDocCodeSnippets {
      */
     public void recognizeEntitiesWithLanguage() {
         // BEGIN: com.azure.ai.textanalytics.TextAnalyticsClient.recognizeCategorizedEntities#String-String
-        final CategorizedEntityCollection recognizeEntitiesResult =
+        CategorizedEntityCollection recognizeEntitiesResult =
             textAnalyticsClient.recognizeEntities("Satya Nadella is the CEO of Microsoft", "en");
 
         for (CategorizedEntity entity : recognizeEntitiesResult) {
@@ -406,7 +407,7 @@ public class TextAnalyticsClientJavaDocCodeSnippets {
      */
     public void recognizeLinkedEntities() {
         // BEGIN: com.azure.ai.textanalytics.TextAnalyticsClient.recognizeLinkedEntities#String
-        final String document = "Old Faithful is a geyser at Yellowstone Park.";
+        String document = "Old Faithful is a geyser at Yellowstone Park.";
         System.out.println("Linked Entities:");
         textAnalyticsClient.recognizeLinkedEntities(document).forEach(linkedEntity -> {
             System.out.printf("Name: %s, entity ID in data source: %s, URL: %s, data source: %s.%n",
@@ -513,8 +514,9 @@ public class TextAnalyticsClientJavaDocCodeSnippets {
      */
     public void extractKeyPhrases() {
         // BEGIN: com.azure.ai.textanalytics.TextAnalyticsClient.extractKeyPhrases#String
-        System.out.println("Extracted phrases:");
-        for (String keyPhrase : textAnalyticsClient.extractKeyPhrases("My cat might need to see a veterinarian.")) {
+        KeyPhrasesCollection extractedKeyPhrases =
+            textAnalyticsClient.extractKeyPhrases("My cat might need to see a veterinarian.");
+        for (String keyPhrase : extractedKeyPhrases) {
             System.out.printf("%s.%n", keyPhrase);
         }
         // END: com.azure.ai.textanalytics.TextAnalyticsClient.extractKeyPhrases#String
@@ -525,7 +527,6 @@ public class TextAnalyticsClientJavaDocCodeSnippets {
      */
     public void extractKeyPhrasesWithLanguage() {
         // BEGIN: com.azure.ai.textanalytics.TextAnalyticsClient.extractKeyPhrases#String-String-Context
-        System.out.println("Extracted phrases:");
         textAnalyticsClient.extractKeyPhrases("My cat might need to see a veterinarian.", "en")
             .forEach(kegPhrase -> System.out.printf("%s.%n", kegPhrase));
         // END: com.azure.ai.textanalytics.TextAnalyticsClient.extractKeyPhrases#String-String-Context
@@ -607,7 +608,7 @@ public class TextAnalyticsClientJavaDocCodeSnippets {
      */
     public void analyzeSentiment() {
         // BEGIN: com.azure.ai.textanalytics.TextAnalyticsClient.analyzeSentiment#String
-        final DocumentSentiment documentSentiment =
+        DocumentSentiment documentSentiment =
             textAnalyticsClient.analyzeSentiment("The hotel was dark and unclean.");
 
         System.out.printf(
@@ -633,7 +634,7 @@ public class TextAnalyticsClientJavaDocCodeSnippets {
      */
     public void analyzeSentimentWithLanguage() {
         // BEGIN: com.azure.ai.textanalytics.TextAnalyticsClient.analyzeSentiment#String-String
-        final DocumentSentiment documentSentiment = textAnalyticsClient.analyzeSentiment(
+        DocumentSentiment documentSentiment = textAnalyticsClient.analyzeSentiment(
             "The hotel was dark and unclean.", "en");
 
         System.out.printf(
@@ -659,7 +660,7 @@ public class TextAnalyticsClientJavaDocCodeSnippets {
      */
     public void analyzeSentimentWithLanguageWithOpinionMining() {
         // BEGIN: com.azure.ai.textanalytics.TextAnalyticsClient.analyzeSentiment#String-String-AnalyzeSentimentOptions
-        final DocumentSentiment documentSentiment = textAnalyticsClient.analyzeSentiment(
+        DocumentSentiment documentSentiment = textAnalyticsClient.analyzeSentiment(
             "The hotel was dark and unclean.", "en",
             new AnalyzeSentimentOptions().setIncludeOpinionMining(true));
         for (SentenceSentiment sentenceSentiment : documentSentiment.getSentences()) {
@@ -1000,7 +1001,7 @@ public class TextAnalyticsClientJavaDocCodeSnippets {
         AnalyzeHealthcareEntitiesPagedIterable result = syncPoller.getFinalResult();
 
         // Task operation statistics
-        final AnalyzeHealthcareEntitiesOperationDetail operationResult = syncPoller.poll().getValue();
+        AnalyzeHealthcareEntitiesOperationDetail operationResult = syncPoller.poll().getValue();
         System.out.printf("Operation created time: %s, expiration time: %s.%n",
             operationResult.getCreatedAt(), operationResult.getExpiresAt());
 
