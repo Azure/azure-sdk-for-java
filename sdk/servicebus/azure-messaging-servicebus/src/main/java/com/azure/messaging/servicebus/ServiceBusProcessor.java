@@ -18,7 +18,7 @@ import java.util.function.Consumer;
 import static com.azure.core.util.FluxUtil.monoError;
 
 /**
- * An abstraction that underneath uses either {@link NonSessionMessagePump} or {@link SessionsMessagePump}
+ * An abstraction that underneath uses either {@link MessagePump} or {@link SessionsMessagePump}
  * to pump messages from session unaware or session aware entity.
  */
 final class ServiceBusProcessor {
@@ -133,8 +133,8 @@ final class ServiceBusProcessor {
     }
 
     /**
-     * The abstraction to stream messages using either of the MessagePump {@link NonSessionMessagePump} or {@link SessionsMessagePump}.
-     * {@link RollingMessagePump} transparently switch (rolls) to the next MessagePump to continue streaming when the current pump
+     * The abstraction to stream messages using either {@link MessagePump} or {@link SessionsMessagePump} pump.
+     * {@link RollingMessagePump} transparently switch (rolls) to the next pump to continue streaming when the current pump
      * terminates.
      */
     static final class RollingMessagePump extends AtomicBoolean {
@@ -152,9 +152,9 @@ final class ServiceBusProcessor {
         private final AtomicReference<String> clientIdentifier = new AtomicReference<>();
 
         /**
-         * Instantiate {@link RollingMessagePump} that stream messages using {@link NonSessionMessagePump}.
-         * The {@link RollingMessagePump} rolls to the next {@link NonSessionMessagePump} to continue streaming when the current
-         * {@link NonSessionMessagePump} terminates.
+         * Instantiate {@link RollingMessagePump} that stream messages using {@link MessagePump}.
+         * The {@link RollingMessagePump} rolls to the next {@link MessagePump} to continue streaming when the current
+         * {@link MessagePump} terminates.
          *
          * @param builder The builder to build the client for pulling messages from the broker.
          * @param processMessage The consumer to invoke for each message.
@@ -223,13 +223,13 @@ final class ServiceBusProcessor {
             if (kind == Kind.NON_SESSION) {
                 pumping = Mono.using(
                     () -> {
-                        // TODO: anu, there seems an opportunity to simplify, if builder directly returns NonSessionMessagePump,
+                        // TODO: anu, there seems an opportunity to simplify, if builder directly returns MessagePump,
                         //  similar to SessionsMessagePump.
                         return nonSessionBuilder.buildAsyncClientForProcessor();
                     },
                     client -> {
                         clientIdentifier.set(client.getIdentifier());
-                        final NonSessionMessagePump pump = new NonSessionMessagePump(client,
+                        final MessagePump pump = new MessagePump(client,
                             processMessage, processError, concurrency, enableAutoDisposition);
                         return pump.begin();
                     },

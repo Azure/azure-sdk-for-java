@@ -2428,7 +2428,7 @@ public final class ServiceBusClientBuilder implements
         /**
          * In V1, the client {@link ServiceBusReceiverAsyncClient} backing the {@link ServiceBusProcessorClient}
          * is constructed eagerly (triggering input validation in the Constructor) at build time i.e,
-         * when {@link #buildProcessorClient()} is called. In V2, the client {@link NonSessionMessagePump} backing
+         * when {@link #buildProcessorClient()} is called. In V2, the client {@link MessagePump} backing
          * the processor will be built lazily, i.e., when the application calls {@link ServiceBusProcessorClient#start()},
          * This is a helper method in v2 for input validations at build time.
          */
