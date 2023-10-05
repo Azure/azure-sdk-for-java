@@ -2245,6 +2245,13 @@ public class FileSystemApiTests extends DataLakeTestBase {
         assertEquals(accUrl, account.getDataLakeEndpoint());
     }
 
+    @Test
+    public void getBlobContainerClientMin() {
+        assertNotNull(dataLakeFileSystemClient.getBlobContainerClient());
+    }
+
+
+
 //    @Test
 //    public void rename() {
 //        DataLakeFileSystemClient renamedContainer = dataLakeFileSystemClient.rename(generateFileSystemName());

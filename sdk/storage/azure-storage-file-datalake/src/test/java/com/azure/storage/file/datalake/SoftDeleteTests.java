@@ -93,7 +93,7 @@ public class SoftDeleteTests extends DataLakeTestBase {
         assertEquals(file.getPathUrl(), returnedClient.getPathUrl());
     }
 
-    @DisabledIf("olderThan20200804ServiceVersion")
+    @DisabledIf("com.azure.storage.file.datalake.DataLakeTestBase#olderThan20200804ServiceVersion")
     @Test
     public void restorePathWithResponse() {
         DataLakeDirectoryClient dir = fileSystemClient.getDirectoryClient(generatePathName());

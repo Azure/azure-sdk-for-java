@@ -16,6 +16,7 @@ import com.azure.storage.common.sas.AccountSasPermission;
 import com.azure.storage.common.sas.AccountSasResourceType;
 import com.azure.storage.common.sas.AccountSasService;
 import com.azure.storage.common.sas.AccountSasSignatureValues;
+import com.azure.storage.common.test.shared.TestAccount;
 import com.azure.storage.file.datalake.models.DataLakeAnalyticsLogging;
 import com.azure.storage.file.datalake.models.DataLakeCorsRule;
 import com.azure.storage.file.datalake.models.DataLakeMetrics;
@@ -560,7 +561,7 @@ public class ServiceApiTests extends DataLakeTestBase {
         assertEquals(202, response.getStatusCode());
     }
 
-    @Test //todo: ask
+    @Test
     public void getServiceVersion() {
         assertNotNull(primaryDataLakeServiceClient.getServiceVersion());
     }
