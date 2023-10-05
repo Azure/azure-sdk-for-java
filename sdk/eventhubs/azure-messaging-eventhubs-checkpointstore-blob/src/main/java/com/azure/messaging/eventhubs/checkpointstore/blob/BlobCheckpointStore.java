@@ -121,7 +121,13 @@ public class BlobCheckpointStore implements CheckpointStore {
                         OWNERSHIP_PATH, false);
 
                 return listBlobs(legacyPrefix, (item, p) -> convertToPartitionOwnership(item, p));
-            }));
+            }))
+            .map(ownership -> {
+                // The ones from the ownership blob path will be lowercase, so map these to the actual values.
+                return ownership.setConsumerGroup(consumerGroup)
+                    .setEventHubName(eventHubName)
+                    .setFullyQualifiedNamespace(fullyQualifiedNamespace);
+            });
     }
 
     @Override
