@@ -11,9 +11,19 @@
 Note: Below breaking changes only affect the version `1.5.0-beta.1`.
 
 - Changed `listConfigurationSettingsForSnapshot` method's `SettingFields[] fields` parameter type to `List<SettingFields> fields`.
-- Renamed `ConfigurationSettingSnapshot` to `ConfigurationSettingsSnapshot`.
-- Renamed `ConfigurationSettingSnapshot`'s property name, `size` to `sizeInBytes`.
-
+- Renamed `ConfigurationSettingSnapshot` to `ConfigurationSnapshot`.
+- Renamed `ConfigurationSettingSnapshot`'s properties name,
+  - `size` to `sizeInBytes`,
+  - `compositionType` to `snapshotComposition`.
+- Renamed `SnapshotSettingFilter` to `ConfigurationSettingsFilter`.
+- Added `azure-core-experimental` as a dependency and replaced usage of `CreateSnapshotOperationDetail` by `PollResult` 
+  and removed `CreateSnapshotOperationDetail` class.
+- Replaced
+   - `archiveSnapshotWithResponse(ConfigurationSettingsSnapshot, boolean)` by `archiveSnapshotWithResponse(String, MatchConditions)`
+   - `recoverSnapshotWithResponse(ConfigurationSettingsSnapshot, boolean)` by `recoverSnapshotWithResponse(String, MatchConditions)`
+   - `archiveSnapshotWithResponse(ConfigurationSettingsSnapshot, boolean, Context)` by `archiveSnapshotWithResponse(String, MatchConditions, Context)`
+   - `recoverSnapshotWithResponse(ConfigurationSettingsSnapshot, boolean, Context)` by `recoverSnapshotWithResponse(String, MatchConditions, Context)`
+  
 ### Bugs Fixed
 
 ### Other Changes
