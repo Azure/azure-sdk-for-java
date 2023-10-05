@@ -13,6 +13,7 @@ import org.reactivestreams.Subscription;
 import reactor.core.CoreSubscriber;
 import reactor.core.Disposable;
 import reactor.core.scheduler.Schedulers;
+
 import java.util.Map;
 import java.util.Objects;
 import java.util.concurrent.ConcurrentHashMap;
@@ -30,6 +31,7 @@ import java.util.function.Consumer;
  * <p><strong>Sample code to instantiate a processor client and receive in PeekLock mode</strong></p>
  * <!-- src_embed com.azure.messaging.servicebus.servicebusprocessorclient#receive-mode-peek-lock-instantiation -->
  * <pre>
+ * &#47;&#47; Function that gets called whenever a message is received.
  * Consumer&lt;ServiceBusReceivedMessageContext&gt; processMessage = context -&gt; &#123;
  *     final ServiceBusReceivedMessage message = context.getMessage&#40;&#41;;
  *     &#47;&#47; Randomly complete or abandon each message. Ideally, in real-world scenarios, if the business logic
@@ -39,23 +41,30 @@ import java.util.function.Consumer;
  *     if &#40;success&#41; &#123;
  *         try &#123;
  *             context.complete&#40;&#41;;
- *         &#125; catch &#40;Exception completionError&#41; &#123;
- *             System.out.printf&#40;&quot;Completion of the message %s failed&#92;n&quot;, message.getMessageId&#40;&#41;&#41;;
- *             completionError.printStackTrace&#40;&#41;;
+ *         &#125; catch &#40;RuntimeException error&#41; &#123;
+ *             System.out.printf&#40;&quot;Completion of the message %s failed.%n Error: %s%n&quot;,
+ *                 message.getMessageId&#40;&#41;, error&#41;;
  *         &#125;
  *     &#125; else &#123;
  *         try &#123;
  *             context.abandon&#40;&#41;;
- *         &#125; catch &#40;Exception abandonError&#41; &#123;
- *             System.out.printf&#40;&quot;Abandoning of the message %s failed&#92;n&quot;, message.getMessageId&#40;&#41;&#41;;
- *             abandonError.printStackTrace&#40;&#41;;
+ *         &#125; catch &#40;RuntimeException error&#41; &#123;
+ *             System.out.printf&#40;&quot;Abandoning of the message %s failed.%nError: %s%n&quot;,
+ *                 message.getMessageId&#40;&#41;, error&#41;;
  *         &#125;
  *     &#125;
  * &#125;;
  *
  * &#47;&#47; Sample code that gets called if there's an error
  * Consumer&lt;ServiceBusErrorContext&gt; processError = errorContext -&gt; &#123;
- *     System.err.println&#40;&quot;Error occurred while receiving message: &quot; + errorContext.getException&#40;&#41;&#41;;
+ *     if &#40;errorContext.getException&#40;&#41; instanceof ServiceBusException&#41; &#123;
+ *         ServiceBusException exception = &#40;ServiceBusException&#41; errorContext.getException&#40;&#41;;
+ *
+ *         System.out.printf&#40;&quot;Error source: %s, reason %s%n&quot;, errorContext.getErrorSource&#40;&#41;,
+ *             exception.getReason&#40;&#41;&#41;;
+ *     &#125; else &#123;
+ *         System.out.printf&#40;&quot;Error occurred: %s%n&quot;, errorContext.getException&#40;&#41;&#41;;
+ *     &#125;
  * &#125;;
  *
  * TokenCredential tokenCredential = new DefaultAzureCredentialBuilder&#40;&#41;.build&#40;&#41;;
@@ -84,6 +93,7 @@ import java.util.function.Consumer;
  * <p><strong>Sample code to instantiate a processor client and receive in ReceiveAndDelete mode</strong></p>
  * <!-- src_embed com.azure.messaging.servicebus.servicebusprocessorclient#receive-mode-receive-and-delete-instantiation -->
  * <pre>
+ * &#47;&#47; Function that gets called whenever a message is received.
  * Consumer&lt;ServiceBusReceivedMessageContext&gt; processMessage = context -&gt; &#123;
  *     final ServiceBusReceivedMessage message = context.getMessage&#40;&#41;;
  *     System.out.printf&#40;&quot;Processing message. Session: %s, Sequence #: %s. Contents: %s%n&quot;,
@@ -92,13 +102,21 @@ import java.util.function.Consumer;
  *
  * &#47;&#47; Sample code that gets called if there's an error
  * Consumer&lt;ServiceBusErrorContext&gt; processError = errorContext -&gt; &#123;
- *     System.err.println&#40;&quot;Error occurred while receiving message: &quot; + errorContext.getException&#40;&#41;&#41;;
+ *     if &#40;errorContext.getException&#40;&#41; instanceof ServiceBusException&#41; &#123;
+ *         ServiceBusException exception = &#40;ServiceBusException&#41; errorContext.getException&#40;&#41;;
+ *
+ *         System.out.printf&#40;&quot;Error source: %s, reason %s%n&quot;, errorContext.getErrorSource&#40;&#41;,
+ *             exception.getReason&#40;&#41;&#41;;
+ *     &#125; else &#123;
+ *         System.out.printf&#40;&quot;Error occurred: %s%n&quot;, errorContext.getException&#40;&#41;&#41;;
+ *     &#125;
  * &#125;;
  *
  * TokenCredential tokenCredential = new DefaultAzureCredentialBuilder&#40;&#41;.build&#40;&#41;;
  *
  * &#47;&#47; Create the processor client via the builder and its sub-builder
  * &#47;&#47; 'fullyQualifiedNamespace' will look similar to &quot;&#123;your-namespace&#125;.servicebus.windows.net&quot;
+ * &#47;&#47; 'disableAutoComplete&#40;&#41;' will opt in to manual settlement &#40;e.g. complete, abandon&#41;.
  * ServiceBusProcessorClient processorClient = new ServiceBusClientBuilder&#40;&#41;
  *     .credential&#40;fullyQualifiedNamespace, tokenCredential&#41;
  *     .processor&#40;&#41;
@@ -108,7 +126,6 @@ import java.util.function.Consumer;
  *     .processError&#40;processError&#41;
  *     .disableAutoComplete&#40;&#41;
  *     .buildProcessorClient&#40;&#41;;
- *
  *
  * &#47;&#47; Starts the processor in the background. Control returns immediately.
  * processorClient.start&#40;&#41;;
@@ -121,6 +138,7 @@ import java.util.function.Consumer;
  * <p><strong>Create and run a session-enabled processor</strong></p>
  * <!-- src_embed com.azure.messaging.servicebus.servicebusprocessorclient#session-instantiation -->
  * <pre>
+ * &#47;&#47; Function that gets called whenever a message is received.
  * Consumer&lt;ServiceBusReceivedMessageContext&gt; onMessage = context -&gt; &#123;
  *     ServiceBusReceivedMessage message = context.getMessage&#40;&#41;;
  *     System.out.printf&#40;&quot;Processing message. Session: %s, Sequence #: %s. Contents: %s%n&quot;,
@@ -133,13 +151,13 @@ import java.util.function.Consumer;
  *
  *     if &#40;context.getException&#40;&#41; instanceof ServiceBusException&#41; &#123;
  *         ServiceBusException exception = &#40;ServiceBusException&#41; context.getException&#40;&#41;;
+ *
  *         System.out.printf&#40;&quot;Error source: %s, reason %s%n&quot;, context.getErrorSource&#40;&#41;,
  *             exception.getReason&#40;&#41;&#41;;
  *     &#125; else &#123;
  *         System.out.printf&#40;&quot;Error occurred: %s%n&quot;, context.getException&#40;&#41;&#41;;
  *     &#125;
  * &#125;;
- *
  *
  * TokenCredential tokenCredential = new DefaultAzureCredentialBuilder&#40;&#41;.build&#40;&#41;;
  *
@@ -149,6 +167,8 @@ import java.util.function.Consumer;
  *     .credential&#40;fullyQualifiedNamespace, tokenCredential&#41;
  *     .sessionProcessor&#40;&#41;
  *     .queueName&#40;sessionEnabledQueueName&#41;
+ *     .receiveMode&#40;ServiceBusReceiveMode.PEEK_LOCK&#41;
+ *     .disableAutoComplete&#40;&#41;
  *     .maxConcurrentSessions&#40;2&#41;
  *     .processMessage&#40;onMessage&#41;
  *     .processError&#40;onError&#41;
