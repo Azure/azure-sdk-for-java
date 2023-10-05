@@ -7,6 +7,7 @@ import com.azure.core.util.logging.ClientLogger;
 import reactor.core.publisher.Flux;
 import reactor.core.publisher.Mono;
 import com.azure.core.http.HttpHeader;
+import reactor.core.scheduler.Schedulers;
 
 import java.io.*;
 import java.net.*;
@@ -61,7 +62,14 @@ public class HttpUrlConnectionAsyncClient implements HttpClient {
         if (httpMethod == HttpMethod.PATCH) {
             return sendPatchViaSocket(httpRequest);
         }
-        return handleConnection(httpRequest, progressReporter);
+
+        return Mono.fromCallable(() -> {
+            HttpURLConnection connection = connect(httpRequest);
+            Mono<HttpResponse> response = sendRequest(httpRequest, progressReporter, connection)
+                .then(Mono.fromCallable(() -> receiveResponse(httpRequest, connection)))
+                .publishOn(Schedulers.boundedElastic());
+            return response.block();
+        });
     }
 
     /**
@@ -78,129 +86,162 @@ public class HttpUrlConnectionAsyncClient implements HttpClient {
      * Open a connection based on the HttpRequest URL
      *
      * @param httpRequest The HTTP Request being sent
-     * @param progressReporter (Optional) for reporting progress while writing the request body
-     * @return A Mono containing a HttpUrlConnectionResponse object
+     * @return The HttpURLConnection object
      */
-    private Mono<HttpResponse> handleConnection(HttpRequest httpRequest, ProgressReporter progressReporter) {
-        return Mono.defer(() -> {
+    private HttpURLConnection connect(HttpRequest httpRequest) {
+        try {
+            // Make connection
+            HttpURLConnection connection = null;
+            URL url = httpRequest.getUrl();
+
+            if (proxyOptions != null) {
+                InetSocketAddress address = proxyOptions.getAddress();
+                if (address != null) {
+                    Proxy proxy = new Proxy(Proxy.Type.HTTP, address);
+                    connection = (HttpURLConnection) url.openConnection(proxy);
+
+                    if (proxyOptions.getUsername() != null && proxyOptions.getPassword() != null) {
+                        String authString = proxyOptions.getUsername() + ":" + proxyOptions.getPassword();
+                        String authStringEnc = Base64.getEncoder().encodeToString(authString.getBytes());
+                        connection.setRequestProperty("Proxy-Authorization", "Basic " + authStringEnc);
+                    }
+                }
+            } else {
+                connection = (HttpURLConnection) url.openConnection();
+            }
+
+            assert connection != null;
+
+            if (connectionTimeout != null) {
+                connection.setConnectTimeout((int) connectionTimeout.toMillis());
+            }
+
+            // SetConnectionRequest
             try {
-                // Make connection
-                URL url = httpRequest.getUrl();
-                HttpURLConnection connection = null;
+                connection.setRequestMethod(httpRequest.getHttpMethod().toString());
+            } catch (ProtocolException ignored) {}
 
-                if (proxyOptions != null) {
-                    InetSocketAddress address = proxyOptions.getAddress();
-                    if (address != null) {
-                        Proxy proxy = new Proxy(Proxy.Type.HTTP, address);
-                        connection = (HttpURLConnection) url.openConnection(proxy);
+            for (HttpHeader header : httpRequest.getHeaders()) {
+                for (String value : header.getValues()) {
+                    connection.addRequestProperty(header.getName(), value);
+                }
+            }
+            return connection;
+        } catch (IOException e) {
+            throw new RuntimeException(e);
+        }
+    }
 
-                        if (proxyOptions.getUsername() != null && proxyOptions.getPassword() != null) {
-                            String authString = proxyOptions.getUsername() + ":" + proxyOptions.getPassword();
-                            String authStringEnc = Base64.getEncoder().encodeToString(authString.getBytes());
-                            connection.setRequestProperty("Proxy-Authorization", "Basic " + authStringEnc);
-                        }
+    /**
+     * Sends any body content of the request
+     *
+     * @param httpRequest The HTTP Request being sent
+     * @param progressReporter A reporter for the progress of the request
+     * @param connection The HttpURLConnection we're sending to
+     * @return A Mono<Void> for us to chain off for receiving the response
+     */
+    private Mono<Void> sendRequest(HttpRequest httpRequest, ProgressReporter progressReporter, HttpURLConnection connection) {
+        Mono<Void> requestSendMono = Mono.empty();
+
+        switch (httpRequest.getHttpMethod()) {
+            case POST:
+            case PUT:
+            case DELETE:
+                connection.setDoOutput(true);
+
+                // Body we're going to write to the request
+                Flux<ByteBuffer> requestBody;
+
+                // Ensure the body is either valid, or we're sending *something*
+                if (httpRequest.getBody() == null) requestBody = Flux.just(ByteBuffer.wrap(new byte[0]));
+                else {
+                    requestBody = httpRequest.getBody();
+                }
+
+                try (DataOutputStream os = new DataOutputStream(new BufferedOutputStream(connection.getOutputStream()))) {
+                    if (progressReporter != null) {
+                        requestBody = requestBody.map(buffer -> {
+                            progressReporter.reportProgress(buffer.remaining());
+                            return buffer;
+                        });
                     }
-                } else {
-                    connection = (HttpURLConnection) url.openConnection();
-                }
 
-                if (connectionTimeout != null) {
-                    connection.setConnectTimeout((int) connectionTimeout.toMillis());
-                }
-
-                // SetConnectionRequest
-                try {
-                    connection.setRequestMethod(httpRequest.getHttpMethod().toString());
-                } catch (ProtocolException e) {
-                    return FluxUtil.monoError(LOGGER, new RuntimeException(e));
-                }
-                for (HttpHeader header : httpRequest.getHeaders()) {
-                    for (String value : header.getValues()) {
-                        connection.addRequestProperty(header.getName(), value);
-                    }
-                }
-
-                // Write body
-                switch (httpRequest.getHttpMethod()) {
-                    case POST:
-                    case PUT:
-                    case DELETE:
-                        connection.setDoOutput(true);
-                        if (httpRequest.getBody() != null) {
-                            try (DataOutputStream os = new DataOutputStream(new BufferedOutputStream(connection.getOutputStream()))) {
-
-                                Flux<ByteBuffer> requestBody = httpRequest.getBody();
-                                if (progressReporter != null) {
-                                    requestBody = requestBody.map(buffer -> {
-                                        progressReporter.reportProgress(buffer.remaining());
-                                        return buffer;
-                                    });
-                                }
-
-                                requestBody
-                                    .flatMap(buffer -> {
-                                        try {
-                                            byte[] bytes = new byte[buffer.remaining()];
-                                            buffer.get(bytes);
-                                            os.write(bytes);
-                                            os.flush(); // Flush after each write
-                                            return Mono.just(buffer); // Emit the buffer for downstream processing if needed
-                                        } catch (IOException e) {
-                                            return FluxUtil.monoError(LOGGER, new RuntimeException(e));
-                                        }
-                                    })
-                                    .then()
-                                    .block(); // Wait for completion of the write operations
+//                    requestSendMono = requestBody
+                    requestBody
+                        .flatMap(buffer -> {
+                            try {
+                                byte[] bytes = new byte[buffer.remaining()];
+                                buffer.get(bytes);
+                                os.write(bytes);
+                                return Mono.just(buffer); // Emit the buffer for downstream processing if needed
                             } catch (IOException e) {
                                 return FluxUtil.monoError(LOGGER, new RuntimeException(e));
                             }
-                        }
-                        break;
-                    case GET:
-                    case HEAD:
-                    case OPTIONS:
-                    case TRACE:
-                    case CONNECT:
-                        break;
-                    default:
-                        return FluxUtil.monoError(LOGGER, new IllegalStateException("Unknown HTTP Method:"
-                            + httpRequest.getHttpMethod()));
+                        })
+                        .then(Mono.fromRunnable(() -> {
+                            try {
+                                os.flush();
+                            } catch (IOException e) {
+                                throw new RuntimeException(e);
+                            }
+                        })).block();
+                } catch (IOException e) {
+                    break;
                 }
+            case GET:
+            case HEAD:
+            case OPTIONS:
+            case TRACE:
+            case CONNECT:
+                break ;
+            default:
+                requestSendMono = FluxUtil.monoError(LOGGER, new IllegalStateException("Unknown HTTP Method:"
+                    + httpRequest.getHttpMethod()));
+        }
+        return requestSendMono;
+    }
 
-                // Read response
-                int responseCode = connection.getResponseCode();
+    /**
+     * Receive the response from the remote server
+     *
+     * @param httpRequest The HTTP Request being sent
+     * @param connection The HttpURLConnection we're sending to
+     * @return A HttpResponse object
+     */
+    private HttpResponse receiveResponse(HttpRequest httpRequest, HttpURLConnection connection) {
+        try {
+            // Read response
+            int responseCode = connection.getResponseCode();
 
-                HttpHeaders responseHeaders = new HttpHeaders();
-                for (Map.Entry<String, List<String>> entry : connection.getHeaderFields().entrySet()) {
-                    if (entry.getKey() != null) {
-                        for (String headerValue : entry.getValue()) {
-                            responseHeaders.add(HttpHeaderName.fromString(entry.getKey()), headerValue);
-                        }
+            HttpHeaders responseHeaders = new HttpHeaders();
+            for (Map.Entry<String, List<String>> entry : connection.getHeaderFields().entrySet()) {
+                if (entry.getKey() != null) {
+                    for (String headerValue : entry.getValue()) {
+                        responseHeaders.add(HttpHeaderName.fromString(entry.getKey()), headerValue);
                     }
                 }
-
-                ByteArrayOutputStream outputStream = new ByteArrayOutputStream();
-                try (InputStream errorStream = connection.getErrorStream()) {
-                    InputStream inputStream = (errorStream == null) ? connection.getInputStream() : errorStream;
-                    byte[] buffer = new byte[1024];
-                    int length;
-                    while ((length = inputStream.read(buffer)) != -1) {
-                        outputStream.write(buffer, 0, length);
-                    }
-                }
-
-                connection.disconnect();
-
-                return Mono.just(new HttpUrlConnectionResponse(
-                    httpRequest,
-                    responseCode,
-                    responseHeaders,
-                    Flux.just(ByteBuffer.wrap(outputStream.toByteArray()))
-                ));
-
-            } catch (IOException e) {
-                return FluxUtil.monoError(LOGGER, new RuntimeException("Error opening HTTP connection", e));
             }
-        });
+
+            ByteArrayOutputStream outputStream = new ByteArrayOutputStream();
+            try (InputStream errorStream = connection.getErrorStream()) {
+                InputStream inputStream = (errorStream == null) ? connection.getInputStream() : errorStream;
+                byte[] buffer = new byte[1024];
+                int length;
+                while ((length = inputStream.read(buffer)) != -1) {
+                    outputStream.write(buffer, 0, length);
+                }
+            }
+
+            connection.disconnect();
+
+            return new HttpUrlConnectionResponse(
+                httpRequest,
+                responseCode,
+                responseHeaders,
+                Flux.just(ByteBuffer.wrap(outputStream.toByteArray()))
+            );
+        } catch (IOException e) {
+            throw new RuntimeException(e);
+        }
     }
 }
