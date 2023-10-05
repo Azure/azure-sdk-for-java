@@ -45,6 +45,7 @@ import com.azure.storage.blob.specialized.PageBlobClient;
 import com.azure.storage.common.Utility;
 import com.azure.storage.common.implementation.Constants;
 import org.junit.jupiter.api.BeforeEach;
+import org.junit.jupiter.api.Disabled;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.condition.DisabledIf;
 import org.junit.jupiter.api.condition.EnabledIf;
@@ -1198,7 +1199,8 @@ public class ContainerApiTests extends BlobTestBase {
     relationship programmatically, so we have recorded a successful interaction and only test recordings.
     */
 
-    @EnabledIf("com.azure.storage.blob.BlobTestBase#isPlaybackMode")
+    //@EnabledIf("com.azure.storage.blob.BlobTestBase#isPlaybackMode")
+    @Disabled("Need to re-record once account is setup properly.")
     @Test
     public void listBlobsFlatORS() {
         BlobContainerClient sourceContainer = primaryBlobServiceClient.getBlobContainerClient("test1");
