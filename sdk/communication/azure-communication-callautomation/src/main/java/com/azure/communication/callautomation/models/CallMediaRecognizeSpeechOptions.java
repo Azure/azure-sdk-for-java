@@ -14,8 +14,8 @@ public class CallMediaRecognizeSpeechOptions extends CallMediaRecognizeOptions {
      * The length of end silence when user stops speaking and cogservice send
      * response.
      */
-    @JsonProperty(value = "endSilenceTimeout")
-    private Duration endSilenceTimeout;
+    @JsonProperty(value = "endSilenceTimeoutInMs")
+    private Duration endSilenceTimeoutInMs;
 
     /*
      * Speech language to be recognized, If not set default is en-US
@@ -35,8 +35,8 @@ public class CallMediaRecognizeSpeechOptions extends CallMediaRecognizeOptions {
      *
      * @return the endSilenceTimeoutInMs value.
      */
-    public Duration getEndSilenceTimeout() {
-        return this.endSilenceTimeout;
+    public Duration getEndSilenceTimeoutInMs() {
+        return this.endSilenceTimeoutInMs;
     }
 
     /**
@@ -169,10 +169,10 @@ public class CallMediaRecognizeSpeechOptions extends CallMediaRecognizeOptions {
      * Initializes a CallMediaRecognizeSpeechOptions object.
      *
      * @param targetParticipant Target participant of continuous speech recognition.
-     * @param endSilenceTimeout the endSilenceTimeoutInMs value to set.
+     * @param endSilenceTimeoutInMs the endSilenceTimeoutInMs value to set.
      */
-    public CallMediaRecognizeSpeechOptions(CommunicationIdentifier targetParticipant, Duration endSilenceTimeout) {
+    public CallMediaRecognizeSpeechOptions(CommunicationIdentifier targetParticipant, Duration endSilenceTimeoutInMs) {
         super(RecognizeInputType.SPEECH, targetParticipant);
-        this.endSilenceTimeout = endSilenceTimeout;
+        this.endSilenceTimeoutInMs = endSilenceTimeoutInMs;
     }
 }

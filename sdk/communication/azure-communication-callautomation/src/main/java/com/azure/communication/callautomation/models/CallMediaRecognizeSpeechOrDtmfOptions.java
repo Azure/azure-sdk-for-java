@@ -15,8 +15,8 @@ public class CallMediaRecognizeSpeechOrDtmfOptions extends CallMediaRecognizeOpt
      * The length of end silence when user stops speaking and cogservice send
      * response.
      */
-    @JsonProperty(value = "endSilenceTimeout")
-    private Duration endSilenceTimeout;
+    @JsonProperty(value = "endSilenceTimeoutInMs")
+    private Duration endSilenceTimeoutInMs;
 
     /*
      * Speech language to be recognized, If not set default is en-US
@@ -104,8 +104,8 @@ public class CallMediaRecognizeSpeechOrDtmfOptions extends CallMediaRecognizeOpt
      *
      * @return the endSilenceTimeoutInMs value.
      */
-    public Duration getEndSilenceTimeout() {
-        return this.endSilenceTimeout;
+    public Duration getEndSilenceTimeoutInMs() {
+        return this.endSilenceTimeoutInMs;
     }
 
     /**
@@ -152,11 +152,11 @@ public class CallMediaRecognizeSpeechOrDtmfOptions extends CallMediaRecognizeOpt
      *
      * @param targetParticipant Target participant of continuous speech recognition.
      * @param maxTonesToCollect Maximum number of DTMF tones to be collected.
-     * @param endSilenceTimeout the endSilenceTimeoutInMs value to set.
+     * @param endSilenceTimeoutInMs the endSilenceTimeoutInMs value to set.
      */
-    public CallMediaRecognizeSpeechOrDtmfOptions(CommunicationIdentifier targetParticipant, int maxTonesToCollect, Duration endSilenceTimeout) {
+    public CallMediaRecognizeSpeechOrDtmfOptions(CommunicationIdentifier targetParticipant, int maxTonesToCollect, Duration endSilenceTimeoutInMs) {
         super(RecognizeInputType.SPEECH_OR_DTMF, targetParticipant);
-        this.endSilenceTimeout = endSilenceTimeout;
+        this.endSilenceTimeoutInMs = endSilenceTimeoutInMs;
         this.interToneTimeout = Duration.ofSeconds(2);
         this.maxTonesToCollect = maxTonesToCollect;
     }

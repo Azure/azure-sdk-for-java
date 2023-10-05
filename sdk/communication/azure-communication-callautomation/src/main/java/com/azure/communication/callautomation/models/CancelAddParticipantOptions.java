@@ -3,19 +3,17 @@
 
 package com.azure.communication.callautomation.models;
 
-
-import com.azure.communication.common.CommunicationIdentifier;
 import com.azure.core.annotation.Fluent;
 
 /**
- * The options for removing participants.
+ * The options for cancelling add participant.
  */
 @Fluent
-public final class RemoveParticipantOptions {
+public final class CancelAddParticipantOptions {
     /**
-     * The list of participants to remove.
+     * The inviation ID used to cancel the add participant request.
      */
-    private final CommunicationIdentifier participant;
+    private final String invitationId;
 
     /**
      * The operational context
@@ -30,19 +28,19 @@ public final class RemoveParticipantOptions {
     /**
      * Constructor
      *
-     * @param participant The list of participants to invite.
+     * @param invitationId The inviation ID used to cancel the add participant request.
      */
-    public RemoveParticipantOptions(CommunicationIdentifier participant) {
-        this.participant = participant;
+    public CancelAddParticipantOptions(String invitationId) {
+        this.invitationId = invitationId;
     }
 
     /**
-     * Get the participants.
+     * Get the invitationId.
      *
-     * @return the participant being removed
+     * @return invitationId
      */
-    public CommunicationIdentifier getParticipant() {
-        return participant;
+    public String getInvitationId() {
+        return invitationId;
     }
 
     /**
@@ -50,7 +48,7 @@ public final class RemoveParticipantOptions {
      *
      * @return the operationContext
      */
-    public String  getOperationContext() {
+    public String getOperationContext() {
         return operationContext;
     }
 
@@ -67,9 +65,9 @@ public final class RemoveParticipantOptions {
      * Set the operationContext.
      *
      * @param operationContext the operationContext to set
-     * @return the RemoveParticipantOptions object itself.
+     * @return the CancelAddParticipantOptions object itself.
      */
-    public RemoveParticipantOptions setOperationContext(String operationContext) {
+    public CancelAddParticipantOptions setOperationContext(String operationContext) {
         this.operationContext = operationContext;
         return this;
     }
@@ -78,9 +76,9 @@ public final class RemoveParticipantOptions {
      * Set the callbackUriOverride.
      *
      * @param overrideCallbackUri the callbackUriOverride to set
-     * @return the RemoveParticipantOptions object itself.
+     * @return the CancelAddParticipantOptions object itself.
      */
-    public RemoveParticipantOptions setOverrideCallbackUri(String overrideCallbackUri) {
+    public CancelAddParticipantOptions setOverrideCallbackUri(String overrideCallbackUri) {
         this.overrideCallbackUri = overrideCallbackUri;
         return this;
     }

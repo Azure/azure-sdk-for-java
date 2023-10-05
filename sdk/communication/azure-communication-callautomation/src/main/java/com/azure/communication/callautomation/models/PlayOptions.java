@@ -33,6 +33,11 @@ public final class PlayOptions {
     private String operationContext;
 
     /**
+     * The call back URI override.
+     */
+    private String overrideCallbackUri;
+
+    /**
      * Constructor
      * @param playSources A List of {@link PlaySource} representing the sources to play.
      * @param playTo The targets to play to.
@@ -108,6 +113,26 @@ public final class PlayOptions {
      */
     public PlayOptions setOperationContext(String operationContext) {
         this.operationContext = operationContext;
+        return this;
+    }
+
+    /**
+     * Get the call back URI override.
+     *
+     * @return the callbackUriOverride
+     */
+    public String getOverrideCallbackUri() {
+        return overrideCallbackUri;
+    }
+
+    /**
+     * Set the call back URI override.
+     *
+     * @param overrideCallbackUri The call back URI override to set
+     * @return the PlayOptions object itself.
+     */
+    public PlayOptions setOverrideCallbackUri(String overrideCallbackUri) {
+        this.overrideCallbackUri = overrideCallbackUri;
         return this;
     }
 }

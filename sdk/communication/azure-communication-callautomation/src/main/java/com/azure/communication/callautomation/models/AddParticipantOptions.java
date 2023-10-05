@@ -16,7 +16,7 @@ import java.time.Duration;
 public final class AddParticipantOptions {
 
     /**
-     * Information for the target being add
+     * Information for the target being added
      */
     private final CallInvite targetParticipant;
 
@@ -30,6 +30,11 @@ public final class AddParticipantOptions {
      * The maximum value of this is 180 seconds.
      */
     private Duration invitationTimeout;
+
+    /**
+     * The call back URI override.
+     */
+    private String overrideCallbackUri;
 
     /**
      * Constructor
@@ -58,6 +63,15 @@ public final class AddParticipantOptions {
     }
 
     /**
+     * Get the call back URI override.
+     *
+     * @return the callbackUriOverride
+     */
+    public String getOverrideCallbackUri() {
+        return overrideCallbackUri;
+    }
+
+    /**
      * Get the invitationTimeoutInSeconds.
      *
      * @return the Invitation Timeout In Seconds
@@ -74,6 +88,17 @@ public final class AddParticipantOptions {
      */
     public AddParticipantOptions setOperationContext(String operationContext) {
         this.operationContext = operationContext;
+        return this;
+    }
+
+    /**
+     * Set the call back URI override.
+     *
+     * @param overrideCallbackUri The call back URI override to set
+     * @return the AddParticipantOptions object itself.
+     */
+    public AddParticipantOptions setOverrideCallbackUri(String overrideCallbackUri) {
+        this.overrideCallbackUri = overrideCallbackUri;
         return this;
     }
 

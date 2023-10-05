@@ -145,7 +145,7 @@ public class CallMediaUnitTests {
         callMedia = callConnection.getCallMedia();
         Response<Void> response = callMedia.stopContinuousDtmfRecognitionWithResponse(
             new CommunicationUserIdentifier("id"),
-            CALL_OPERATION_CONTEXT, Context.NONE
+            CALL_OPERATION_CONTEXT, null, Context.NONE
         );
         assertEquals(response.getStatusCode(), 200);
     }
@@ -160,7 +160,7 @@ public class CallMediaUnitTests {
         callMedia = callConnection.getCallMedia();
         Response<SendDtmfTonesResult> response = callMedia.sendDtmfTonesWithResponse(
             Stream.of(DtmfTone.ONE, DtmfTone.TWO, DtmfTone.THREE).collect(Collectors.toList()), new CommunicationUserIdentifier("id"),
-            "ctx", Context.NONE
+            "ctx", null, Context.NONE
         );
         assertEquals(response.getStatusCode(), 202);
     }

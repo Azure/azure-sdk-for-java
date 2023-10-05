@@ -36,6 +36,12 @@ public final class PlayRequest {
     @JsonProperty(value = "operationContext")
     private String operationContext;
 
+    /*
+     * The callback URI to override the main callback URI.
+     */
+    @JsonProperty(value = "overrideCallbackUri")
+    private String overrideCallbackUri;
+
     /** Creates an instance of PlayRequest class. */
     public PlayRequest() {}
 
@@ -118,6 +124,26 @@ public final class PlayRequest {
      */
     public PlayRequest setOperationContext(String operationContext) {
         this.operationContext = operationContext;
+        return this;
+    }
+
+    /**
+     * Get the overrideCallbackUri property: The callback URI to override the main callback URI.
+     *
+     * @return the overrideCallbackUri value.
+     */
+    public String getOverrideCallbackUri() {
+        return this.overrideCallbackUri;
+    }
+
+    /**
+     * Set the overrideCallbackUri property: The callback URI to override the main callback URI.
+     *
+     * @param overrideCallbackUri the overrideCallbackUri value to set.
+     * @return the PlayRequest object itself.
+     */
+    public PlayRequest setOverrideCallbackUri(String overrideCallbackUri) {
+        this.overrideCallbackUri = overrideCallbackUri;
         return this;
     }
 }

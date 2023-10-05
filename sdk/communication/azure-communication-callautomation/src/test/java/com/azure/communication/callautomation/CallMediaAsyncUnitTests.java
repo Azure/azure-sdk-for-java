@@ -46,11 +46,7 @@ public class CallMediaAsyncUnitTests {
 
     @BeforeEach
     public void setup() {
-        CallConnectionAsync callConnection =
-            CallAutomationUnitTestBase.getCallConnectionAsync(new ArrayList<>(
-                Collections.singletonList(new AbstractMap.SimpleEntry<>("", 202)))
-            );
-        callMedia = callConnection.getCallMediaAsync();
+        callMedia = getMockCallMedia(202);
 
         playFileSource = new FileSource();
         playFileSource.setPlaySourceCacheId("playFileSourceCacheId");
@@ -63,7 +59,7 @@ public class CallMediaAsyncUnitTests {
         playTextSource.setVoiceName("LULU");
 
         playSsmlSource = new SsmlSource();
-        playSsmlSource.setSsmlText("<speak></speak>");
+        playSsmlSource.setSsmlText("<speak><voice name=\"LULU\"></voice></speak>");
     }
 
     @Test
@@ -177,11 +173,7 @@ public class CallMediaAsyncUnitTests {
     @Test
     public void startContinuousDtmfRecognitionWithResponse() {
         // override callMedia to mock 200 response code
-        CallConnectionAsync callConnection =
-            CallAutomationUnitTestBase.getCallConnectionAsync(new ArrayList<>(
-                Collections.singletonList(new AbstractMap.SimpleEntry<>("", 200)))
-            );
-        callMedia = callConnection.getCallMediaAsync();
+        callMedia = getMockCallMedia(200);
         StepVerifier.create(
                 callMedia.startContinuousDtmfRecognitionWithResponse(new CommunicationUserIdentifier("id"),
                     CALL_OPERATION_CONTEXT)
@@ -193,14 +185,10 @@ public class CallMediaAsyncUnitTests {
     @Test
     public void stopContinuousDtmfRecognitionWithResponse() {
         // override callMedia to mock 200 response code
-        CallConnectionAsync callConnection =
-            CallAutomationUnitTestBase.getCallConnectionAsync(new ArrayList<>(
-                Collections.singletonList(new AbstractMap.SimpleEntry<>("", 200)))
-            );
-        callMedia = callConnection.getCallMediaAsync();
+        callMedia = getMockCallMedia(200);
         StepVerifier.create(
                 callMedia.stopContinuousDtmfRecognitionWithResponse(new CommunicationUserIdentifier("id"),
-                    CALL_OPERATION_CONTEXT)
+                    CALL_OPERATION_CONTEXT, null)
             )
             .consumeNextWith(response -> assertEquals(200, response.getStatusCode()))
             .verifyComplete();
@@ -217,7 +205,7 @@ public class CallMediaAsyncUnitTests {
         StepVerifier.create(
                 callMedia.sendDtmfTonesWithResponse(
                         Stream.of(DtmfTone.ONE, DtmfTone.TWO, DtmfTone.THREE).collect(Collectors.toList()), new CommunicationUserIdentifier("id"),
-                        CALL_OPERATION_CONTEXT
+                        CALL_OPERATION_CONTEXT, null
                 )
             ).consumeNextWith(response -> assertEquals(202, response.getStatusCode()))
             .verifyComplete();
@@ -339,5 +327,13 @@ public class CallMediaAsyncUnitTests {
                 callMedia.startRecognizingWithResponse(recognizeOptions))
             .consumeNextWith(response -> assertEquals(202, response.getStatusCode()))
             .verifyComplete();
+    }
+
+    private CallMediaAsync getMockCallMedia(int expectedStatusCode) {
+        CallConnectionAsync callConnection =
+            CallAutomationUnitTestBase.getCallConnectionAsync(new ArrayList<>(
+                Collections.singletonList(new AbstractMap.SimpleEntry<>("", expectedStatusCode)))
+            );
+        return callConnection.getCallMediaAsync();
     }
 }
