@@ -23,7 +23,7 @@ public final class IdentityUtil {
     public static final String ALL_TENANTS = "*";
     public static final String DEFAULT_TENANT = "organizations";
 
-    public static File NULL_FILE =
+    public static final File NULL_FILE =
         new File((System.getProperty("os.name").startsWith("Windows") ? "NUL" : "/dev/null"));
 
     private IdentityUtil() { }
