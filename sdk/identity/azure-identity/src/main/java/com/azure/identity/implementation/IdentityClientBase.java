@@ -620,6 +620,7 @@ public abstract class IdentityClientBase {
             }
 
             ProcessBuilder builder = new ProcessBuilder(starter, switcher, azdCommand.toString());
+            builder.redirectInput(ProcessBuilder.Redirect.from(IdentityUtil.NULL_FILE));
 
             String workingDirectory = getSafeWorkingDirectory();
             if (workingDirectory != null) {
