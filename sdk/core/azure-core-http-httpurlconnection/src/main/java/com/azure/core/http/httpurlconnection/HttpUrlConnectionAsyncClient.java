@@ -135,12 +135,12 @@ public class HttpUrlConnectionAsyncClient implements HttpClient {
     }
 
     /**
-     * Sends any body content of the request
+     * Sends the content of an HttpRequest via an HttpUrlConnection instance
      *
      * @param httpRequest The HTTP Request being sent
      * @param progressReporter A reporter for the progress of the request
-     * @param connection The HttpURLConnection we're sending to
-     * @return A Mono<Void> for us to chain off for receiving the response
+     * @param connection The HttpURLConnection that is being sent to
+     * @return A Mono<Void> to chain off for receiving the response
      */
     private Mono<Void> sendRequest(HttpRequest httpRequest, ProgressReporter progressReporter, HttpURLConnection connection) {
         Mono<Void> requestSendMono = Mono.empty();
@@ -151,33 +151,31 @@ public class HttpUrlConnectionAsyncClient implements HttpClient {
             case DELETE:
                 connection.setDoOutput(true);
 
-                // Body we're going to write to the request
-                Flux<ByteBuffer> requestBody;
+               Flux<BinaryData> requestBody = null;
+               BinaryData body_data = httpRequest.getBodyAsBinaryData();
 
-                // Ensure the body is either valid, or we're sending *something*
-                if (httpRequest.getBody() == null) {
-                    requestBody = Flux.just(ByteBuffer.wrap(new byte[0]));
+                if (body_data == null) {
+                    requestBody = Flux.just(BinaryData.fromByteBuffer(ByteBuffer.wrap(new byte[0])));
                 }
                 else {
-                    requestBody = httpRequest.getBody();
+                    requestBody = Flux.just(body_data);
                 }
 
                 try (DataOutputStream os = new DataOutputStream(new BufferedOutputStream(connection.getOutputStream()))) {
                     if (progressReporter != null) {
-                        requestBody = requestBody.map(buffer -> {
-                            progressReporter.reportProgress(buffer.remaining());
-                            return buffer;
+                        requestBody = requestBody.map(body -> {
+                            progressReporter.reportProgress(body.toBytes().length);
+                            return body;
                         });
                     }
 
                     // requestSendMono = requestBody
                     requestBody
-                        .flatMap(buffer -> {
+                        .flatMap(body -> {
                             try {
-                                byte[] bytes = new byte[buffer.remaining()];
-                                buffer.get(bytes);
+                                byte[] bytes = body.toBytes();
                                 os.write(bytes);
-                                return Mono.just(buffer); // Emit the buffer for downstream processing if needed
+                                return Mono.just(body); // Emit the BinaryData for downstream processing if needed
                             } catch (IOException e) {
                                 return FluxUtil.monoError(LOGGER, new RuntimeException(e));
                             }
@@ -209,7 +207,7 @@ public class HttpUrlConnectionAsyncClient implements HttpClient {
      * Receive the response from the remote server
      *
      * @param httpRequest The HTTP Request being sent
-     * @param connection The HttpURLConnection we're sending to
+     * @param connection The HttpURLConnection being sent to
      * @return A HttpResponse object
      */
     private HttpResponse receiveResponse(HttpRequest httpRequest, HttpURLConnection connection) {
