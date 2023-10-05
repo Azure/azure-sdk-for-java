@@ -24,7 +24,7 @@ public class JsonNumber extends JsonElement {
     JsonNumber() { }//this(0); }
 
 
-    public JsonNumber(String value) {
+    JsonNumber(String value) {
         try {
             this.numberValue = Integer.parseInt(value);
         } catch (Exception e) {
@@ -118,7 +118,7 @@ public class JsonNumber extends JsonElement {
         try {
             return new JsonString(numberValue.toString());
         } catch (NullPointerException e) {
-            return new JsonString();
+            return new JsonString("");
         }
     }
 
