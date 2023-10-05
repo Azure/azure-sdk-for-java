@@ -365,8 +365,8 @@ public class RoomsClientTest extends RoomsTestBase {
 
     @ParameterizedTest
     @MethodSource("com.azure.core.test.TestBase#getHttpClients")
-    public void updateRoomWithNoAttributes(HttpClient httpClient) {
-        roomsClient = setupSyncClient(httpClient, "updateRoomWithNoAttributes");
+    public void updateRoomWithNoParameters(HttpClient httpClient) {
+        roomsClient = setupSyncClient(httpClient, "updateRoomWithNoParameters");
         assertNotNull(roomsClient);
 
         CreateRoomOptions createRoomOptions = new CreateRoomOptions()
