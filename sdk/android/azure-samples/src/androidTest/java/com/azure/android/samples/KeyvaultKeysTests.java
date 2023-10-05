@@ -34,7 +34,7 @@ public class KeyvaultKeysTests {
     public void helloWorld() {
         try {
             HelloWorldKeyvaultKeys.main(keyvaultEndpoint, clientSecretCredential);
-        } catch (InterruptedException e) {
+        } catch (RuntimeException | InterruptedException e) {
             fail();
         }
     }
@@ -43,7 +43,7 @@ public class KeyvaultKeysTests {
     public void keyRotationAsync() {
         try {
             KeyRotationAsyncKeyvaultKeys.main(keyvaultEndpoint, clientSecretCredential);
-        } catch (InterruptedException e) {
+        } catch (RuntimeException | InterruptedException e) {
             fail();
         }
     }
@@ -53,7 +53,7 @@ public class KeyvaultKeysTests {
     public void keyWrapUnwrapOperations() {
         try {
             KeyWrapUnwrapOperationsKeyvaultKeys.main(keyvaultEndpoint, clientSecretCredential);
-        } catch (InterruptedException e) {
+        } catch (RuntimeException | InterruptedException e) {
             fail();
         }
 
