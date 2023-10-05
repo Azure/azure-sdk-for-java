@@ -1,19 +1,13 @@
 package com.azure.storage.file.datalake.specialized;
 
-import com.azure.core.http.HttpHeaders;
 import com.azure.core.http.RequestConditions;
-import com.azure.core.http.rest.Response;
 import com.azure.core.util.CoreUtils;
 import com.azure.storage.file.datalake.DataLakeFileAsyncClient;
-import com.azure.storage.file.datalake.DataLakeFileClient;
 import com.azure.storage.file.datalake.DataLakeFileSystemAsyncClient;
-import com.azure.storage.file.datalake.DataLakeFileSystemClient;
 import com.azure.storage.file.datalake.DataLakeTestBase;
 import com.azure.storage.file.datalake.models.DataLakeStorageException;
-import com.azure.storage.file.datalake.models.FileSystemProperties;
 import com.azure.storage.file.datalake.models.LeaseDurationType;
 import com.azure.storage.file.datalake.models.LeaseStateType;
-import com.azure.storage.file.datalake.models.PathProperties;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.params.ParameterizedTest;
 import org.junit.jupiter.params.provider.Arguments;
@@ -26,7 +20,6 @@ import java.time.OffsetDateTime;
 import java.util.stream.Stream;
 
 import static org.junit.jupiter.api.Assertions.assertEquals;
-import static org.junit.jupiter.api.Assertions.assertThrows;
 import static org.junit.jupiter.api.Assertions.assertTrue;
 
 public class LeaseAsyncApiTests  extends DataLakeTestBase {
@@ -67,7 +60,8 @@ public class LeaseAsyncApiTests  extends DataLakeTestBase {
 
     @Test
     public void acquireFileLeaseMin() {
-        assertAsyncResponseStatusCode(createLeaseAsyncClient(createPathClient()).acquireLeaseWithResponse(-1, null), 201);
+        assertAsyncResponseStatusCode(createLeaseAsyncClient(createPathClient())
+            .acquireLeaseWithResponse(-1, null), 201);
     }
 
     @ParameterizedTest
@@ -88,7 +82,8 @@ public class LeaseAsyncApiTests  extends DataLakeTestBase {
             .setIfMatch(match)
             .setIfNoneMatch(noneMatch);
 
-        assertAsyncResponseStatusCode(createLeaseAsyncClient(fc).acquireLeaseWithResponse(-1, mac), 201);
+        assertAsyncResponseStatusCode(createLeaseAsyncClient(fc)
+            .acquireLeaseWithResponse(-1, mac), 201);
     }
 
     private static Stream<Arguments> validLeaseConditions() {
@@ -158,7 +153,8 @@ public class LeaseAsyncApiTests  extends DataLakeTestBase {
         DataLakeFileAsyncClient fc = createPathClient();
         String leaseId = setupPathLeaseCondition(fc, RECEIVED_LEASE_ID);
 
-        assertAsyncResponseStatusCode(createLeaseAsyncClient(fc, leaseId).renewLeaseWithResponse(null), 200);
+        assertAsyncResponseStatusCode(createLeaseAsyncClient(fc, leaseId)
+            .renewLeaseWithResponse(null), 200);
     }
 
     @ParameterizedTest
@@ -220,7 +216,8 @@ public class LeaseAsyncApiTests  extends DataLakeTestBase {
         DataLakeFileAsyncClient fc = createPathClient();
         String leaseId = setupPathLeaseCondition(fc, RECEIVED_LEASE_ID);
 
-        assertAsyncResponseStatusCode(createLeaseAsyncClient(fc, leaseId).releaseLeaseWithResponse(null), 200);
+        assertAsyncResponseStatusCode(createLeaseAsyncClient(fc, leaseId)
+            .releaseLeaseWithResponse(null), 200);
     }
 
     @ParameterizedTest
@@ -279,7 +276,8 @@ public class LeaseAsyncApiTests  extends DataLakeTestBase {
             .verifyComplete();
 
         StepVerifier.create(fc.getProperties())
-            .assertNext(p -> assertTrue(p.getLeaseState() == LeaseStateType.BROKEN || p.getLeaseState() == LeaseStateType.BREAKING))
+            .assertNext(p -> assertTrue(p.getLeaseState() == LeaseStateType.BROKEN ||
+                p.getLeaseState() == LeaseStateType.BREAKING))
             .verifyComplete();
     }
 
@@ -288,7 +286,8 @@ public class LeaseAsyncApiTests  extends DataLakeTestBase {
         DataLakeFileAsyncClient fc = createPathClient();
         setupPathLeaseCondition(fc, RECEIVED_LEASE_ID);
 
-        assertAsyncResponseStatusCode(createLeaseAsyncClient(fc).breakLeaseWithResponse(null, null), 202);
+        assertAsyncResponseStatusCode(createLeaseAsyncClient(fc)
+            .breakLeaseWithResponse(null, null), 202);
     }
 
     @ParameterizedTest
@@ -303,7 +302,8 @@ public class LeaseAsyncApiTests  extends DataLakeTestBase {
             .setIfMatch(match)
             .setIfNoneMatch(noneMatch);
 
-        assertAsyncResponseStatusCode(createLeaseAsyncClient(fc).breakLeaseWithResponse(null, mac), 202);
+        assertAsyncResponseStatusCode(createLeaseAsyncClient(fc)
+            .breakLeaseWithResponse(null, mac), 202);
     }
 
     @ParameterizedTest
@@ -446,7 +446,8 @@ public class LeaseAsyncApiTests  extends DataLakeTestBase {
             .setIfMatch(match)
             .setIfNoneMatch(noneMatch);
 
-        assertAsyncResponseStatusCode(createLeaseAsyncClient(dataLakeFileSystemAsyncClient).acquireLeaseWithResponse(-1, mac), 201);
+        assertAsyncResponseStatusCode(createLeaseAsyncClient(dataLakeFileSystemAsyncClient)
+            .acquireLeaseWithResponse(-1, mac), 201);
     }
 
     @ParameterizedTest
@@ -454,7 +455,8 @@ public class LeaseAsyncApiTests  extends DataLakeTestBase {
     public void acquireFileSystemLeaseACFail(OffsetDateTime modified, OffsetDateTime unmodified) {
         RequestConditions mac = new RequestConditions().setIfModifiedSince(modified).setIfUnmodifiedSince(unmodified);
 
-        StepVerifier.create(createLeaseAsyncClient(dataLakeFileSystemAsyncClient).acquireLeaseWithResponse(-1, mac))
+        StepVerifier.create(createLeaseAsyncClient(dataLakeFileSystemAsyncClient)
+            .acquireLeaseWithResponse(-1, mac))
             .verifyError(DataLakeStorageException.class);
     }
 
@@ -557,7 +559,8 @@ public class LeaseAsyncApiTests  extends DataLakeTestBase {
     public void releaseFileSystemLease() {
         String leaseID = setupFileSystemLeaseAsyncCondition(dataLakeFileSystemAsyncClient, RECEIVED_LEASE_ID);
 
-        StepVerifier.create(createLeaseAsyncClient(dataLakeFileSystemAsyncClient, leaseID).releaseLeaseWithResponse(null))
+        StepVerifier.create(createLeaseAsyncClient(dataLakeFileSystemAsyncClient, leaseID)
+            .releaseLeaseWithResponse(null))
             .assertNext(r -> validateBasicHeaders(r.getHeaders()))
             .verifyComplete();
 
@@ -626,7 +629,8 @@ public class LeaseAsyncApiTests  extends DataLakeTestBase {
             .verifyComplete();
 
         StepVerifier.create(dataLakeFileSystemAsyncClient.getProperties())
-            .assertNext(p -> assertTrue(p.getLeaseState() == LeaseStateType.BROKEN || p.getLeaseState() == LeaseStateType.BREAKING))
+            .assertNext(p -> assertTrue(p.getLeaseState() == LeaseStateType.BROKEN ||
+                p.getLeaseState() == LeaseStateType.BREAKING))
             .verifyComplete();
 
         // Break the lease for cleanup.
@@ -657,7 +661,8 @@ public class LeaseAsyncApiTests  extends DataLakeTestBase {
         setupFileSystemLeaseAsyncCondition(dataLakeFileSystemAsyncClient, RECEIVED_LEASE_ID);
         RequestConditions mac = new RequestConditions().setIfModifiedSince(modified).setIfUnmodifiedSince(unmodified);
 
-        StepVerifier.create(createLeaseAsyncClient(dataLakeFileSystemAsyncClient).breakLeaseWithResponse(null, mac))
+        StepVerifier.create(createLeaseAsyncClient(dataLakeFileSystemAsyncClient)
+            .breakLeaseWithResponse(null, mac))
             .verifyError(DataLakeStorageException.class);
     }
 
@@ -666,7 +671,8 @@ public class LeaseAsyncApiTests  extends DataLakeTestBase {
     public void breakFileSystemLeaseACIllegal(String match, String noneMatch) {
         RequestConditions mac = new RequestConditions().setIfMatch(match).setIfNoneMatch(noneMatch);
 
-        StepVerifier.create(createLeaseAsyncClient(dataLakeFileSystemAsyncClient).breakLeaseWithResponse(null, mac))
+        StepVerifier.create(createLeaseAsyncClient(dataLakeFileSystemAsyncClient)
+            .breakLeaseWithResponse(null, mac))
             .verifyError(DataLakeStorageException.class);
     }
 
@@ -687,7 +693,8 @@ public class LeaseAsyncApiTests  extends DataLakeTestBase {
             .flatMap(r -> {
                 validateBasicHeaders(r.getHeaders());
                 assertEquals(leaseClient.getLeaseId(), r.getValue());
-                return createLeaseAsyncClient(dataLakeFileSystemAsyncClient, r.getValue()).releaseLeaseWithResponse(null);
+                return createLeaseAsyncClient(dataLakeFileSystemAsyncClient, r.getValue())
+                    .releaseLeaseWithResponse(null);
             }))
             .assertNext(r -> {
                 assertEquals(200, r.getStatusCode());

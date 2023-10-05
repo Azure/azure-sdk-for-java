@@ -22,6 +22,7 @@ import com.azure.storage.file.datalake.models.FileSystemItemProperties;
 import com.azure.storage.file.datalake.models.FileSystemListDetails;
 import com.azure.storage.file.datalake.models.ListFileSystemsOptions;
 import com.azure.storage.file.datalake.models.PathItem;
+import com.azure.storage.file.datalake.models.UserDelegationKey;
 import com.azure.storage.file.datalake.options.FileSystemEncryptionScopeOptions;
 import com.azure.storage.file.datalake.options.FileSystemUndeleteOptions;
 import org.junit.jupiter.api.Test;
@@ -58,8 +59,10 @@ public class ServiceAsyncApiTests extends DataLakeTestBase {
         assertEquals(sent.getLogging().isRead(), received.getLogging().isRead());
         assertEquals(sent.getLogging().isWrite(), received.getLogging().isWrite());
         assertEquals(sent.getLogging().isDelete(), received.getLogging().isDelete());
-        assertEquals(sent.getLogging().getRetentionPolicy().isEnabled(), received.getLogging().getRetentionPolicy().isEnabled());
-        assertEquals(sent.getLogging().getRetentionPolicy().getDays(), received.getLogging().getRetentionPolicy().getDays());
+        assertEquals(sent.getLogging().getRetentionPolicy().isEnabled(),
+            received.getLogging().getRetentionPolicy().isEnabled());
+        assertEquals(sent.getLogging().getRetentionPolicy().getDays(),
+            received.getLogging().getRetentionPolicy().getDays());
         assertEquals(sent.getLogging().getVersion(), received.getLogging().getVersion());
 
         assertEquals(sent.getCors().size(), received.getCors().size());
@@ -73,14 +76,18 @@ public class ServiceAsyncApiTests extends DataLakeTestBase {
 
         assertEquals(sent.getHourMetrics().isEnabled(), received.getHourMetrics().isEnabled());
         assertEquals(sent.getHourMetrics().isIncludeApis(), received.getHourMetrics().isIncludeApis());
-        assertEquals(sent.getHourMetrics().getRetentionPolicy().isEnabled(), received.getHourMetrics().getRetentionPolicy().isEnabled());
-        assertEquals(sent.getHourMetrics().getRetentionPolicy().getDays(), received.getHourMetrics().getRetentionPolicy().getDays());
+        assertEquals(sent.getHourMetrics().getRetentionPolicy().isEnabled(),
+            received.getHourMetrics().getRetentionPolicy().isEnabled());
+        assertEquals(sent.getHourMetrics().getRetentionPolicy().getDays(),
+            received.getHourMetrics().getRetentionPolicy().getDays());
         assertEquals(sent.getHourMetrics().getVersion(), received.getHourMetrics().getVersion());
 
         assertEquals(sent.getMinuteMetrics().isEnabled(), received.getMinuteMetrics().isEnabled());
         assertEquals(sent.getMinuteMetrics().isIncludeApis(), received.getMinuteMetrics().isIncludeApis());
-        assertEquals(sent.getMinuteMetrics().getRetentionPolicy().isEnabled(), received.getMinuteMetrics().getRetentionPolicy().isEnabled());
-        assertEquals(sent.getMinuteMetrics().getRetentionPolicy().getDays(), received.getMinuteMetrics().getRetentionPolicy().getDays());
+        assertEquals(sent.getMinuteMetrics().getRetentionPolicy().isEnabled(),
+            received.getMinuteMetrics().getRetentionPolicy().isEnabled());
+        assertEquals(sent.getMinuteMetrics().getRetentionPolicy().getDays(),
+            received.getMinuteMetrics().getRetentionPolicy().getDays());
         assertEquals(sent.getMinuteMetrics().getVersion(), received.getMinuteMetrics().getVersion());
 
         assertEquals(sent.getDeleteRetentionPolicy().isEnabled(), received.getDeleteRetentionPolicy().isEnabled());
@@ -88,7 +95,8 @@ public class ServiceAsyncApiTests extends DataLakeTestBase {
 
         assertEquals(sent.getStaticWebsite().isEnabled(), received.getStaticWebsite().isEnabled());
         assertEquals(sent.getStaticWebsite().getIndexDocument(), received.getStaticWebsite().getIndexDocument());
-        assertEquals(sent.getStaticWebsite().getErrorDocument404Path(), received.getStaticWebsite().getErrorDocument404Path());
+        assertEquals(sent.getStaticWebsite().getErrorDocument404Path(),
+            received.getStaticWebsite().getErrorDocument404Path());
     }
 
     @ResourceLock("ServiceProperties")
@@ -200,7 +208,7 @@ public class ServiceAsyncApiTests extends DataLakeTestBase {
         assertAsyncResponseStatusCode(primaryDataLakeServiceAsyncClient.setPropertiesWithResponse(serviceProperties), 202);
     }
 
-    @DisabledIf("olderThan20191212ServiceVersion")
+    @DisabledIf("com.azure.storage.file.datalake.DataLakeTestBase#olderThan20191212ServiceVersion")
     @ResourceLock("ServiceProperties")
     @Test
     public void setPropsStaticWebsite() {
@@ -216,8 +224,10 @@ public class ServiceAsyncApiTests extends DataLakeTestBase {
         StepVerifier.create(primaryDataLakeServiceAsyncClient.getProperties())
             .assertNext(p -> {
                 assertTrue(p.getStaticWebsite().isEnabled());
-                assertEquals(serviceProperties.getStaticWebsite().getErrorDocument404Path(), p.getStaticWebsite().getErrorDocument404Path());
-                assertEquals(serviceProperties.getStaticWebsite().getDefaultIndexDocumentPath(), p.getStaticWebsite().getDefaultIndexDocumentPath());
+                assertEquals(serviceProperties.getStaticWebsite().getErrorDocument404Path(),
+                    p.getStaticWebsite().getErrorDocument404Path());
+                assertEquals(serviceProperties.getStaticWebsite().getDefaultIndexDocumentPath(),
+                    p.getStaticWebsite().getDefaultIndexDocumentPath());
             })
             .verifyComplete();
     }
@@ -367,7 +377,7 @@ public class ServiceAsyncApiTests extends DataLakeTestBase {
     }
 
     @ResourceLock("ServiceProperties")
-    @DisabledIf("olderThan20201002ServiceVersion")
+    @DisabledIf("com.azure.storage.file.datalake.DataLakeTestBase#olderThan20201002ServiceVersion")
     @Test
     public void listSystemFileSystems() {
         DataLakeAnalyticsLogging logging = new DataLakeAnalyticsLogging().setRead(true).setVersion("1.0")
@@ -425,19 +435,35 @@ public class ServiceAsyncApiTests extends DataLakeTestBase {
     }
 
     @Test
-    public void getUserDelegationKey() { //todo: after pr
+    public void getUserDelegationKey() {
+        OffsetDateTime start = OffsetDateTime.now();
+        OffsetDateTime expiry = start.plusDays(1);
 
+        StepVerifier.create(getOAuthServiceAsyncClient().getUserDelegationKeyWithResponse(start, expiry))
+            .assertNext(r -> {
+                assertEquals(200, r.getStatusCode());
+                assertNotNull(r.getValue().getSignedObjectId());
+                assertNotNull(r.getValue().getSignedTenantId());
+                assertNotNull(r.getValue().getSignedStart());
+                assertNotNull(r.getValue().getSignedExpiry());
+                assertNotNull(r.getValue().getSignedService());
+                assertNotNull(r.getValue().getSignedVersion());
+                assertNotNull(r.getValue().getValue());
+            })
+            .verifyComplete();
     }
 
     @Test
-    public void getUserDelegationKeyMin() { //todo: after pr
-
+    public void getUserDelegationKeyMin() {
+        assertAsyncResponseStatusCode(getOAuthServiceAsyncClient()
+            .getUserDelegationKeyWithResponse(null, OffsetDateTime.now().plusDays(1)), 200);
     }
 
     @ParameterizedTest
-    @MethodSource("getUserDelegationKeyErrorSupplier") //todo: after pr
+    @MethodSource("getUserDelegationKeyErrorSupplier")
     public void getUserDelegationKeyError(OffsetDateTime start, OffsetDateTime expiry, Class<? extends Throwable> exception) {
-
+        StepVerifier.create(getOAuthServiceAsyncClient().getUserDelegationKey(start, expiry))
+            .verifyError(exception);
     }
 
     private static Stream<Arguments> getUserDelegationKeyErrorSupplier() {
@@ -474,7 +500,7 @@ public class ServiceAsyncApiTests extends DataLakeTestBase {
             .verifyComplete();
     }
 
-    @DisabledIf("olderThan20191212ServiceVersion")
+    @DisabledIf("com.azure.storage.file.datalake.DataLakeTestBase#olderThan20191212ServiceVersion")
     @Test
     public void restoreFileSystem() {
         DataLakeFileSystemAsyncClient cc1 = primaryDataLakeServiceAsyncClient.getFileSystemAsyncClient(generateFileSystemName());
@@ -499,7 +525,7 @@ public class ServiceAsyncApiTests extends DataLakeTestBase {
             .verifyComplete();
     }
 
-    @DisabledIf("olderThan20191212ServiceVersion")
+    @DisabledIf("com.azure.storage.file.datalake.DataLakeTestBase#olderThan20191212ServiceVersion")
     @Test
     public void restoreFileSystemWithResponse() {
         DataLakeFileSystemAsyncClient cc1 = primaryDataLakeServiceAsyncClient.getFileSystemAsyncClient(generateFileSystemName());
@@ -532,7 +558,7 @@ public class ServiceAsyncApiTests extends DataLakeTestBase {
     }
 
     @SuppressWarnings("deprecation")
-    @DisabledIf("olderThan20191212ServiceVersion")
+    @DisabledIf("com.azure.storage.file.datalake.DataLakeTestBase#olderThan20191212ServiceVersion")
     @Test
     public void restoreFileSystemIntoExistingFileSystemError() {
         DataLakeFileSystemAsyncClient cc1 = primaryDataLakeServiceAsyncClient.getFileSystemAsyncClient(generateFileSystemName());
@@ -586,14 +612,6 @@ public class ServiceAsyncApiTests extends DataLakeTestBase {
         serviceClientBuilder.connectionString(connectionString);
 
         assertDoesNotThrow(serviceClientBuilder::buildAsyncClient);
-    }
-
-    private static boolean olderThan20191212ServiceVersion() {
-        return olderThan(DataLakeServiceVersion.V2019_12_12);
-    }
-
-    private static boolean olderThan20201002ServiceVersion() {
-        return olderThan(DataLakeServiceVersion.V2020_10_02);
     }
 
     private static <T> Mono<T> waitUntilFileSystemIsDeletedAsync(Mono<T> waitUntilOperation) {
