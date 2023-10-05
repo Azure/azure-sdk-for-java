@@ -10,6 +10,7 @@ import com.azure.core.amqp.exception.AmqpException;
 import com.azure.core.amqp.implementation.AmqpMetricsProvider;
 import com.azure.core.amqp.implementation.ReactorDispatcher;
 import com.azure.core.amqp.implementation.ReactorReceiver;
+import com.azure.core.amqp.implementation.ReceiveLinkHandlerWrapper;
 import com.azure.core.amqp.implementation.ReceiversPumpingScheduler;
 import com.azure.core.amqp.implementation.TokenManager;
 import com.azure.core.amqp.implementation.handler.ReceiverUnsettledDeliveries;

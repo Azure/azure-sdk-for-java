@@ -10,7 +10,7 @@ import com.azure.core.amqp.FixedAmqpRetryPolicy;
 import com.azure.core.amqp.exception.AmqpResponseCode;
 import com.azure.core.amqp.implementation.ReactorDispatcher;
 import com.azure.core.amqp.implementation.ReactorProvider;
-import com.azure.core.amqp.implementation.ReactorReceiver.ReceiveLinkHandlerWrapper;
+import com.azure.core.amqp.implementation.ReceiveLinkHandlerWrapper;
 import com.azure.core.amqp.implementation.TokenManager;
 import com.azure.core.amqp.implementation.handler.ReceiveLinkHandler;
 import com.azure.core.util.logging.ClientLogger;

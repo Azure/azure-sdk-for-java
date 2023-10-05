@@ -7,8 +7,6 @@ import com.azure.core.amqp.AmqpConnection;
 import com.azure.core.amqp.AmqpEndpointState;
 import com.azure.core.amqp.AmqpRetryOptions;
 import com.azure.core.amqp.exception.AmqpErrorCondition;
-import com.azure.core.amqp.implementation.handler.ReceiveLinkHandler;
-import com.azure.core.amqp.implementation.handler.ReceiveLinkHandler2;
 import com.azure.core.util.AsyncCloseable;
 import com.azure.core.util.logging.ClientLogger;
 import org.apache.qpid.proton.Proton;
@@ -43,7 +41,6 @@ import static com.azure.core.amqp.implementation.AmqpLoggingUtils.addSignalTypeA
 import static com.azure.core.amqp.implementation.AmqpLoggingUtils.createContextWithConnectionId;
 import static com.azure.core.amqp.implementation.ClientConstants.ENTITY_PATH_KEY;
 import static com.azure.core.amqp.implementation.ClientConstants.LINK_NAME_KEY;
-import static com.azure.core.util.FluxUtil.fluxError;
 import static com.azure.core.util.FluxUtil.monoError;
 
 /**
@@ -550,94 +547,5 @@ public class ReactorReceiver implements AmqpReceiveLink, AsyncCloseable, AutoClo
     public String toString() {
         return String.format("connectionId: [%s] entity path: [%s] linkName: [%s]", receiver.getName(), entityPath,
             getLinkName());
-    }
-
-    // Temporary type to support both v1 or v2 stack side by side.
-    public static final class ReceiveLinkHandlerWrapper {
-        private final boolean isV2;
-        private final ReceiveLinkHandler receiveLinkHandler;
-        private final ReceiveLinkHandler2 receiveLinkHandler2;
-        private ClientLogger logger;
-
-        public ReceiveLinkHandlerWrapper(ReceiveLinkHandler receiveLinkHandler) {
-            this.isV2 = false;
-            this.receiveLinkHandler = receiveLinkHandler;
-            this.receiveLinkHandler2 = null;
-        }
-
-        public ReceiveLinkHandlerWrapper(ReceiveLinkHandler2 receiveLinkHandler2) {
-            this.isV2 = true;
-            this.receiveLinkHandler = null;
-            this.receiveLinkHandler2 = receiveLinkHandler2;
-        }
-
-        public void setLogger(ClientLogger logger) {
-            this.logger = logger;
-        }
-
-        public boolean isV2() {
-            return this.isV2;
-        }
-
-        String getConnectionId() {
-            return isV2 ? receiveLinkHandler2.getConnectionId() : receiveLinkHandler.getConnectionId();
-        }
-
-        public String getLinkName() {
-            return isV2 ? receiveLinkHandler2.getLinkName() : receiveLinkHandler.getLinkName();
-        }
-
-        public String getHostname() {
-            return isV2 ? receiveLinkHandler2.getHostname() : receiveLinkHandler.getHostname();
-        }
-
-        Flux<EndpointState> getEndpointStates() {
-            if (isV2) {
-                return receiveLinkHandler2.getEndpointStates();
-            } else {
-                return receiveLinkHandler.getEndpointStates();
-            }
-        }
-
-        Flux<Delivery> getDeliveredMessagesV1() {
-            if (isV2) {
-                return fluxError(logger, unsupportedOperation("getDeliveredMessagesV1", "V2"));
-            }
-            return receiveLinkHandler.getDeliveredMessages();
-        }
-
-        Flux<Message> getDeliveredMessagesV2() {
-            if (!isV2) {
-                return fluxError(logger, unsupportedOperation("getDeliveredMessagesV2", "V1"));
-            }
-            return receiveLinkHandler2.getMessages();
-        }
-
-        Mono<Void> sendDisposition(String deliveryTag, DeliveryState deliveryState) {
-            if (!isV2) {
-                return monoError(logger, unsupportedOperation("updateDisposition", "V1"));
-            }
-            return receiveLinkHandler2.sendDisposition(deliveryTag, deliveryState);
-        }
-
-        Mono<Boolean> beginClose(Mono<Boolean> thenMono) {
-            if (isV2) {
-                return receiveLinkHandler2.preClose().then(thenMono);
-            } else {
-                return thenMono;
-            }
-        }
-
-        void close() {
-            if (isV2) {
-                receiveLinkHandler2.close();
-            } else {
-                receiveLinkHandler.close();
-            }
-        }
-
-        static RuntimeException unsupportedOperation(String operation, String unsupportedStack) {
-            return new UnsupportedOperationException("The " + operation + " is not needed or supported in " + unsupportedStack + ".");
-        }
     }
 }
