@@ -1740,12 +1740,27 @@ public final class ServiceBusClientBuilder implements
             final boolean isSessionProcessorOnV2 = v2StackSupport.isSessionProcessorAsyncReceiveEnabled(configuration);
             if (isSessionProcessorOnV2) {
                 processorClientOptions.setV2(true);
+                validateInputs();
             }
             return new ServiceBusProcessorClient(sessionReceiverClientBuilder,
                 sessionReceiverClientBuilder.queueName, sessionReceiverClientBuilder.topicName,
                 sessionReceiverClientBuilder.subscriptionName,
                 Objects.requireNonNull(processMessage, "'processMessage' cannot be null"),
                 Objects.requireNonNull(processError, "'processError' cannot be null"), processorClientOptions);
+        }
+
+        /**
+         * In V1, the client {@link ServiceBusSessionReceiverAsyncClient} backing the {@link ServiceBusProcessorClient}
+         * is constructed eagerly (triggering input validation in the Constructor) at build time i.e,
+         * when {@link #buildProcessorClient()} is called. In V2, the client {@link SessionsMessagePump} backing
+         * the processor will be built lazily, i.e., when the application calls {@link ServiceBusProcessorClient#start()},
+         * This is a helper method in v2 for input validations at build time.
+         */
+        private void validateInputs() {
+            final ServiceBusSessionReceiverClientBuilder builder = sessionReceiverClientBuilder;
+            final MessagingEntityType entityType = validateEntityPaths(connectionStringEntityName, builder.topicName, builder.queueName);
+            getEntityPath(entityType, builder.queueName, builder.topicName, builder.subscriptionName, builder.subQueue);
+            getConnectionOptions();
         }
     }
 
@@ -2400,7 +2415,7 @@ public final class ServiceBusClientBuilder implements
             final boolean isNonSessionProcessorV2 = v2StackSupport.isNonSessionAsyncReceiveEnabled(configuration);
             if (isNonSessionProcessorV2) {
                 processorClientOptions.setV2(true);
-                validateReceiverClientBuilder();
+                validateInputs();
             }
             // Build the Processor Client for Non-session receiving.
             return new ServiceBusProcessorClient(serviceBusReceiverClientBuilder,
@@ -2410,10 +2425,14 @@ public final class ServiceBusClientBuilder implements
                 Objects.requireNonNull(processError, "'processError' cannot be null"), processorClientOptions);
         }
 
-        // In V1, the ServiceBusProcessorClient Constructor builds the ServiceBusReceiverAsyncClient eagerly. In V2 Processor,
-        // the client will be built lazily, i.e., when the application calls start() API. This is a helper method for
-        // V2 Processor build time input validations.
-        private void validateReceiverClientBuilder() {
+        /**
+         * In V1, the client {@link ServiceBusReceiverAsyncClient} backing the {@link ServiceBusProcessorClient}
+         * is constructed eagerly (triggering input validation in the Constructor) at build time i.e,
+         * when {@link #buildProcessorClient()} is called. In V2, the client {@link NonSessionMessagePump} backing
+         * the processor will be built lazily, i.e., when the application calls {@link ServiceBusProcessorClient#start()},
+         * This is a helper method in v2 for input validations at build time.
+         */
+        private void validateInputs() {
             final ServiceBusReceiverClientBuilder builder = serviceBusReceiverClientBuilder;
             final MessagingEntityType entityType = validateEntityPaths(connectionStringEntityName, builder.topicName, builder.queueName);
             getEntityPath(entityType, builder.queueName, builder.topicName, builder.subscriptionName, builder.subQueue);
