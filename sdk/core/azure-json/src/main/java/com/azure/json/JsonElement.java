@@ -353,7 +353,7 @@ public abstract class JsonElement {
      * @return
      */
     public JsonString asString() {
-        return new JsonString();
+        return new JsonString("");
     }
 }
 

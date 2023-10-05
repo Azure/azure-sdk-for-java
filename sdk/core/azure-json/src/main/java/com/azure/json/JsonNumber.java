@@ -21,18 +21,18 @@ public class JsonNumber extends JsonElement {
      */
     JsonNumber() { }//this(0); }
 
-    //TODO remove this commented code
-//    public JsonNumber(String value) {
-//        try {
-//            this.numberValue = Integer.parseInt(value);
-//        } catch (Exception e) {
-//            try {
-//                this.numberValue = Float.parseFloat(value);
-//            } catch (Exception x) {
-//                x.printStackTrace();
-//            }
-//        }
-//    }
+
+    public JsonNumber(String value) {
+        try {
+            this.numberValue = Integer.parseInt(value);
+        } catch (Exception e) {
+            try {
+                this.numberValue = Float.parseFloat(value);
+            } catch (Exception x) {
+                x.printStackTrace();
+            }
+        }
+    }
 
     /**
      * Constructor used to explicitly set the number value of the JsonNumber object

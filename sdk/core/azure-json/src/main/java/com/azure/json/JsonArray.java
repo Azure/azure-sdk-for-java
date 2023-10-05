@@ -255,12 +255,12 @@ public class JsonArray extends JsonElement {
      * @return boolean of whether this JsonElement object is of type JsonArray.
      */
     @Override
-    public boolean isArray() { 
-        return true; 
+    public boolean isArray() {
+        return true;
     }
 
     @Override
-    public JsonArray asArray() { 
+    public JsonArray asArray() {
         return this;
     }
 
@@ -300,7 +300,7 @@ public class JsonArray extends JsonElement {
         if (elements.size() >= 1) {
             return elements.get(0).asString();
         } else {
-            return new JsonString();
+            return new JsonString("");
         }
     }
 

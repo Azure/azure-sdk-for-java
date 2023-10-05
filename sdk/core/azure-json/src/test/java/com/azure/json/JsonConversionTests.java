@@ -182,42 +182,42 @@ public class JsonConversionTests {
     //1.4: String
     @Test
     public void convertEmptyStringToNumber(){
-        JsonElement test = new JsonString();
+        JsonElement test = new JsonString("");
         JsonNumber converted = test.asNumber();
         assertTrue(converted.isNumber());
     }
 
     @Test
     public void convertEmptyStringToArray(){
-        JsonElement test = new JsonString();
+        JsonElement test = new JsonString("");
         JsonArray converted = test.asArray();
         assertTrue(converted.isArray());
     }
 
     @Test
     public void convertEmptyStringToBoolean(){
-        JsonElement test = new JsonString();
+        JsonElement test = new JsonString("");
         JsonBoolean converted = test.asBoolean();
         assertTrue(converted.isBoolean());
     }
 
     @Test
     public void convertEmptyStringToNull(){
-        JsonElement test = new JsonString();
+        JsonElement test = new JsonString("");
         JsonNull converted = test.asNull();
         assertTrue(converted.isNull());
     }
 
     @Test
     public void convertEmptyStringToSelf(){
-        JsonElement test = new JsonString();
+        JsonElement test = new JsonString("");
         JsonString converted = test.asString();
         assertTrue(converted.isString());
     }
 
     @Test
     public void convertEmptyStringToObject(){
-        JsonElement test = new JsonString();
+        JsonElement test = new JsonString("");
         JsonObject converted = test.asObject();
         assertTrue(converted.isObject());
     }
