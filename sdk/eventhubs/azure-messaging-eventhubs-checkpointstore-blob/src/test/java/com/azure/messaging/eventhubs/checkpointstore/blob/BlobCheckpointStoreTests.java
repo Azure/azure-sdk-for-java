@@ -130,6 +130,203 @@ public class BlobCheckpointStoreTests {
                 assertEquals("2", partitionOwnership.getPartitionId());
                 assertEquals(eventHubName, partitionOwnership.getEventHubName());
                 assertEquals(consumerGroup, partitionOwnership.getConsumerGroup());
+                assertEquals("eh", partitionOwnership.getEventHubName());
+                assertEquals("cg", partitionOwnership.getConsumerGroup());
+                assertEquals("2", partitionOwnership.getETag());
+            }).verifyComplete();
+    }
+
+    /**
+     * Tests that when there are legacy checkpoints, it is able to fetch them.
+     */
+    @Test
+    public void testListOwnershipLegacyCheckpoints() {
+        BlobCheckpointStore blobCheckpointStore = new BlobCheckpointStore(blobContainerAsyncClient);
+
+        // Has legacy blob name.
+        final String namespace = "namespace.microsoft.com";
+        final String eventHubName = "MyEventHubName";
+        final String consumerGroup = "$Default";
+        final String legacyPrefix = String.join("/", namespace, eventHubName, consumerGroup, "ownership") + "/";
+
+        final BlobItem blobItem = getOwnershipBlobItem("owner1", "etag1", legacyPrefix + "0");
+        final BlobItem blobItem2 = getOwnershipBlobItem("owner2", "etag2", legacyPrefix + "4");
+
+        final String invalidBlobName = String.join("/", namespace, eventHubName, consumerGroup, "0");
+        final BlobItem blobItem3 = getOwnershipBlobItem("owner1", "etag3", invalidBlobName); // invalid name
+        final BlobItem blobItem4 = new BlobItem().setName(legacyPrefix + "5"); // no metadata
+        final BlobItem blobItem5 = getOwnershipBlobItem(null, "2", legacyPrefix + "2"); // valid blob with null ownerId
+
+        PagedFlux<BlobItem> legacyResponse = new PagedFlux<>(() -> Mono.just(new PagedResponseBase<HttpHeaders,
+                BlobItem>(null, 200, null,
+                Arrays.asList(blobItem, blobItem2, blobItem3, blobItem4), null,
+                null)));
+
+        PagedFlux<BlobItem> normalResponse = new PagedFlux<>(() -> Mono.just(new PagedResponseBase<HttpHeaders,
+                BlobItem>(null, 200, null,
+                Arrays.asList(blobItem, blobItem2, blobItem3, blobItem4), null,
+                null)));
+        when(blobContainerAsyncClient.listBlobs(any(ListBlobsOptions.class))).thenAnswer(invocation -> {
+            ListBlobsOptions listBlobsOptions = invocation.getArgument(0);
+            if (legacyPrefix.equals(listBlobsOptions.getPrefix())) {
+                return legacyResponse;
+            } else {
+                return normalResponse;
+            }
+        });
+
+        StepVerifier.create(blobCheckpointStore.listOwnership(namespace, eventHubName, consumerGroup))
+                .assertNext(partitionOwnership -> {
+                    assertEquals("owner1", partitionOwnership.getOwnerId());
+                    assertEquals("0", partitionOwnership.getPartitionId());
+                    assertEquals(eventHubName, partitionOwnership.getEventHubName());
+                    assertEquals(consumerGroup, partitionOwnership.getConsumerGroup());
+                    assertEquals("etag1", partitionOwnership.getETag());
+                })
+                .assertNext(partitionOwnership -> {
+                    assertEquals("owner2", partitionOwnership.getOwnerId());
+                    assertEquals("4", partitionOwnership.getPartitionId());
+                    assertEquals(eventHubName, partitionOwnership.getEventHubName());
+                    assertEquals(consumerGroup, partitionOwnership.getConsumerGroup());
+                    assertEquals("etag2", partitionOwnership.getETag());
+                }).verifyComplete();
+    }
+
+    @Test
+    public void testListCheckpoint() {
+        BlobCheckpointStore blobCheckpointStore = new BlobCheckpointStore(blobContainerAsyncClient);
+        BlobItem blobItem = getCheckpointBlobItem("230", "1", "ns/eh/cg/checkpoint/0"); // valid blob
+        BlobItem blobItem2 = new BlobItem().setName("ns/eh/cg/checkpoint/1"); // valid blob with no metadata
+        BlobItem blobItem3 = getCheckpointBlobItem("230", "1", "ns/eh/cg/1"); // invalid name
+        PagedFlux<BlobItem> response = new PagedFlux<>(() -> Mono.just(new PagedResponseBase<HttpHeaders,
+            BlobItem>(null, 200, null,
+            Arrays.asList(blobItem, blobItem2, blobItem3), null,
+            null)));
+        when(blobContainerAsyncClient.listBlobs(any(ListBlobsOptions.class))).thenReturn(response);
+
+        StepVerifier.create(blobCheckpointStore.listCheckpoints("ns", "eh", "cg"))
+            .assertNext(checkpoint -> {
+                assertEquals("0", checkpoint.getPartitionId());
+                assertEquals("eh", checkpoint.getEventHubName());
+                assertEquals("cg", checkpoint.getConsumerGroup());
+                assertEquals(1L, checkpoint.getSequenceNumber());
+                assertEquals(230L, checkpoint.getOffset());
+            }).verifyComplete();
+    }
+
+    @Test
+    public void testUpdateCheckpoint() {
+        Checkpoint checkpoint = new Checkpoint()
+            .setFullyQualifiedNamespace("ns")
+            .setEventHubName("eh")
+            .setConsumerGroup("cg")
+            .setPartitionId("0")
+            .setSequenceNumber(2L)
+            .setOffset(100L);
+
+        BlobItem blobItem = getCheckpointBlobItem("230", "1", "ns/eh/cg/checkpoint/0");
+        PagedFlux<BlobItem> response = new PagedFlux<BlobItem>(() -> Mono.just(new PagedResponseBase<HttpHeaders,
+            BlobItem>(null, 200, null,
+            Collections.singletonList(blobItem), null,
+            null)));
+
+        when(blobContainerAsyncClient.getBlobAsyncClient("ns/eh/cg/checkpoint/0")).thenReturn(blobAsyncClient);
+        when(blobContainerAsyncClient.listBlobs(any(ListBlobsOptions.class))).thenReturn(response);
+        when(blobAsyncClient.getBlockBlobAsyncClient()).thenReturn(blockBlobAsyncClient);
+        when(blobAsyncClient.exists()).thenReturn(Mono.just(true));
+        when(blobAsyncClient.setMetadata(ArgumentMatchers.<Map<String, String>>any()))
+            .thenReturn(Mono.empty());
+
+        BlobCheckpointStore blobCheckpointStore = new BlobCheckpointStore(blobContainerAsyncClient);
+        StepVerifier.create(blobCheckpointStore.updateCheckpoint(checkpoint)).verifyComplete();
+    }
+
+    @Test
+    public void testInvalidCheckpoint() {
+        BlobCheckpointStore blobCheckpointStore = new BlobCheckpointStore(blobContainerAsyncClient);
+        Assertions.assertThrows(IllegalStateException.class, () -> blobCheckpointStore.updateCheckpoint(null));
+        Assertions
+            .assertThrows(IllegalStateException.class, () -> blobCheckpointStore.updateCheckpoint(new Checkpoint()));
+    }
+
+    @Test
+    public void testUpdateCheckpointForNewPartition() {
+        Checkpoint checkpoint = new Checkpoint()
+            .setFullyQualifiedNamespace("ns")
+            .setEventHubName("eh")
+            .setConsumerGroup("cg")
+            .setPartitionId("0")
+            .setSequenceNumber(2L)
+            .setOffset(100L);
+
+        HttpHeaders httpHeaders = new HttpHeaders();
+        httpHeaders.add(HttpHeaderName.ETAG, "etag2");
+
+        BlobItem blobItem = getCheckpointBlobItem("230", "1", "ns/eh/cg/checkpoint/0");
+        PagedFlux<BlobItem> response = new PagedFlux<BlobItem>(() -> Mono.just(new PagedResponseBase<HttpHeaders,
+            BlobItem>(null, 200, null,
+            Arrays.asList(blobItem), null,
+            null)));
+
+        when(blobContainerAsyncClient.getBlobAsyncClient("ns/eh/cg/checkpoint/0")).thenReturn(blobAsyncClient);
+        when(blobContainerAsyncClient.listBlobs(any(ListBlobsOptions.class))).thenReturn(response);
+        when(blobAsyncClient.getBlockBlobAsyncClient()).thenReturn(blockBlobAsyncClient);
+        when(blobAsyncClient.exists()).thenReturn(Mono.just(false));
+        when(blobAsyncClient.getBlockBlobAsyncClient()).thenReturn(blockBlobAsyncClient);
+        when(blockBlobAsyncClient.uploadWithResponse(ArgumentMatchers.<Flux<ByteBuffer>>any(), eq(0L),
+            isNull(), anyMap(), isNull(), isNull(), isNull()))
+            .thenReturn(Mono.just(new ResponseBase<>(null, 200, httpHeaders, null, null)));
+        BlobCheckpointStore blobCheckpointStore = new BlobCheckpointStore(blobContainerAsyncClient);
+        StepVerifier.create(blobCheckpointStore.updateCheckpoint(checkpoint)).verifyComplete();
+    }
+
+    @Test
+    public void testClaimOwnership() {
+        PartitionOwnership po = createPartitionOwnership("ns", "eh", "cg", "0", "owner1");
+
+        HttpHeaders httpHeaders = new HttpHeaders();
+        httpHeaders.add(HttpHeaderName.ETAG, "etag2");
+
+        when(blobContainerAsyncClient.getBlobAsyncClient("ns/eh/cg/ownership/0")).thenReturn(blobAsyncClient);
+        when(blobAsyncClient.getBlockBlobAsyncClient()).thenReturn(blockBlobAsyncClient);
+        when(blockBlobAsyncClient.uploadWithResponse(ArgumentMatchers.<Flux<ByteBuffer>>any(), eq(0L),
+            isNull(), ArgumentMatchers.<Map<String, String>>any(), isNull(), isNull(),
+            any(BlobRequestConditions.class)))
+            .thenReturn(Mono.just(new ResponseBase<>(null, 200, httpHeaders, null, null)));
+
+        BlobCheckpointStore blobCheckpointStore = new BlobCheckpointStore(blobContainerAsyncClient);
+        StepVerifier.create(blobCheckpointStore.claimOwnership(Arrays.asList(po)))
+            .assertNext(partitionOwnership -> {
+                assertEquals("owner1", partitionOwnership.getOwnerId());
+                assertEquals("0", partitionOwnership.getPartitionId());
+                assertEquals("eh", partitionOwnership.getEventHubName());
+                assertEquals("cg", partitionOwnership.getConsumerGroup());
+                assertEquals("etag2", partitionOwnership.getETag());
+            }).verifyComplete();
+    }
+
+    @Test
+    public void testClaimOwnershipExistingBlob() {
+        PartitionOwnership po = createPartitionOwnership("ns", "eh", "cg", "0", "owner1");
+        po.setETag("1");
+
+        HttpHeaders httpHeaders = new HttpHeaders();
+        httpHeaders.add(HttpHeaderName.ETAG, "2");
+
+        when(blobContainerAsyncClient.getBlobAsyncClient("ns/eh/cg/ownership/0")).thenReturn(blobAsyncClient);
+        when(blobAsyncClient.getBlockBlobAsyncClient()).thenReturn(blockBlobAsyncClient);
+        when(blobAsyncClient
+            .setMetadataWithResponse(ArgumentMatchers.<Map<String, String>>any(), any(BlobRequestConditions.class)))
+            .thenReturn(Mono.just(new ResponseBase<>(null, 200, httpHeaders, null, null)));
+        when(blobAsyncClient.exists()).thenReturn(Mono.just(true));
+
+        BlobCheckpointStore blobCheckpointStore = new BlobCheckpointStore(blobContainerAsyncClient);
+        StepVerifier.create(blobCheckpointStore.claimOwnership(Collections.singletonList(po)))
+            .assertNext(partitionOwnership -> {
+                assertEquals("owner1", partitionOwnership.getOwnerId());
+                assertEquals("0", partitionOwnership.getPartitionId());
+                assertEquals("eh", partitionOwnership.getEventHubName());
+                assertEquals("cg", partitionOwnership.getConsumerGroup());
                 assertEquals("2", partitionOwnership.getETag());
                 assertEquals(fullyQualifiedNamespace, partitionOwnership.getFullyQualifiedNamespace());
             }).verifyComplete();
@@ -430,8 +627,44 @@ public class BlobCheckpointStoreTests {
             .expectError(SocketTimeoutException.class).verify();
     }
 
-    private static PartitionOwnership createPartitionOwnership(String fullyQualifiedNamespace, String eventHubName,
-        String consumerGroupName, String partitionId, String ownerId) {
+    @Test
+    public void testFailedOwnershipClaim() {
+        PartitionOwnership po = createPartitionOwnership("ns", "eh", "cg", "0", "owner1");
+        HttpHeaders httpHeaders = new HttpHeaders();
+        httpHeaders.add(HttpHeaderName.ETAG, "etag2");
+
+        when(blobContainerAsyncClient.getBlobAsyncClient("ns/eh/cg/ownership/0")).thenReturn(blobAsyncClient);
+        when(blobAsyncClient.getBlockBlobAsyncClient()).thenReturn(blockBlobAsyncClient);
+        when(blockBlobAsyncClient.uploadWithResponse(ArgumentMatchers.<Flux<ByteBuffer>>any(), eq(0L),
+            isNull(), ArgumentMatchers.<Map<String, String>>any(), isNull(), isNull(),
+            any(BlobRequestConditions.class)))
+            .thenReturn(Mono.error(new ResourceModifiedException("Etag did not match", null)));
+        BlobCheckpointStore blobCheckpointStore = new BlobCheckpointStore(blobContainerAsyncClient);
+
+        StepVerifier.create(blobCheckpointStore.claimOwnership(Collections.singletonList(po)))
+            .verifyComplete();
+
+        PartitionOwnership po2 = createPartitionOwnership("ns", "eh", "cg", "0", "owner1");
+        po2.setETag("1");
+        when(blobContainerAsyncClient.getBlobAsyncClient("ns/eh/cg/ownership/0")).thenReturn(blobAsyncClient);
+        when(blobAsyncClient.getBlockBlobAsyncClient()).thenReturn(blockBlobAsyncClient);
+        when(blobAsyncClient
+            .setMetadataWithResponse(ArgumentMatchers.<Map<String, String>>any(), any(BlobRequestConditions.class)))
+            .thenReturn(Mono.error(new ResourceModifiedException("Etag did not match", null)));
+
+        StepVerifier.create(blobCheckpointStore.claimOwnership(Collections.singletonList(po2)))
+            .verifyComplete();
+
+        blobCheckpointStore = new BlobCheckpointStore(blobContainerAsyncClient);
+        when(blobContainerAsyncClient.getBlobAsyncClient(anyString())).thenReturn(null);
+
+        StepVerifier.create(blobCheckpointStore.claimOwnership(Collections.singletonList(po)))
+            .verifyComplete();
+    }
+
+    private PartitionOwnership createPartitionOwnership(String fullyQualifiedNamespace, String eventHubName,
+        String consumerGroupName,
+        String partitionId, String ownerId) {
         return new PartitionOwnership()
             .setFullyQualifiedNamespace(fullyQualifiedNamespace)
             .setEventHubName(eventHubName)
