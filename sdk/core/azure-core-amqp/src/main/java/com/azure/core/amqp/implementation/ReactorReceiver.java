@@ -132,7 +132,7 @@ public class ReactorReceiver implements AmqpReceiveLink, AsyncCloseable, AutoClo
                                 final Integer credits = supplier.get();
 
                                 if (credits != null && credits > 0) {
-                                    logger.atInfo()
+                                    logger.atVerbose()
                                         .addKeyValue("credits", credits)
                                         .log("Adding credits.");
                                     receiver.flow(credits);
@@ -152,13 +152,16 @@ public class ReactorReceiver implements AmqpReceiveLink, AsyncCloseable, AutoClo
                 }, 1);
         } else {
             this.messagesProcessor = this.handler.getDeliveredMessagesV2()
-                .doOnNext(message -> {
+                .map(message -> {
+                    // TODO (anu): Check with Liudmila to see if we need isPrefetchedSequenceNumberEnabled() check per message.
+                    //  Or checking once at Construction time is enough, if so remove the map (hence the extra Map-Function call).
                     if (metricsProvider.isPrefetchedSequenceNumberEnabled()) {
                         Long seqNo = getSequenceNumber(message);
                         if (seqNo != null) {
                             lastSequenceNumber.set(seqNo);
                         }
                     }
+                    return message;
                 });
         }
 
