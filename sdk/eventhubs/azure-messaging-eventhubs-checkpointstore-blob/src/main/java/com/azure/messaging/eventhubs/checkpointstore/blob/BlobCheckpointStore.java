@@ -143,7 +143,13 @@ public class BlobCheckpointStore implements CheckpointStore {
                             OWNERSHIP_PATH, false);
 
                     return listBlobs(legacyPrefix, (item, p) -> convertToCheckpoint(item, p));
-                }));
+                }))
+                .map(ownership -> {
+                    // The ones from the blob path will be lowercase, so map these to the actual values.
+                    return ownership.setConsumerGroup(consumerGroup)
+                        .setEventHubName(eventHubName)
+                        .setFullyQualifiedNamespace(fullyQualifiedNamespace);
+                });
     }
 
     private <T> Flux<T> listBlobs(String prefix, BiFunction<BlobItem, String[], T> converter) {
