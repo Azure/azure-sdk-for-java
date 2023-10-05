@@ -28,7 +28,7 @@ autorest README.md --java --v4 --use=@autorest/java@4.0.20 --use=@autorest/model
 ``` yaml
 tag: package-2023-10-15
 require:
-    - https://github.com/Azure/azure-rest-api-specs/blob/f97b5a33604873c440f582bb2b35a1b6849e034c/specification/communication/data-plane/CallAutomation/readme.md
+    - https://github.com/Azure/azure-rest-api-specs/blob/1b8ae37d2fc9fbea242fcff4d93fd54de445d3cf/specification/communication/data-plane/CallAutomation/readme.md
 java: true
 output-folder: ../
 license-header: MICROSOFT_MIT_SMALL
@@ -181,6 +181,9 @@ directive:
 - rename-model:
     from: SendDtmfTonesResult
     to: SendDtmfTonesResultInternal
+- rename-model:
+    from: SendDtmfTonesRequest
+    to: SendDtmfTonesRequestInternal
 
 # Remove models
 - remove-model: AddParticipantFailed
@@ -207,6 +210,8 @@ directive:
 - remove-model: Choice
 - remove-model: ChoiceResult
 - remove-model: SpeechResult
+- remove-model: CancelAddParticipantSucceeded
+- remove-model: CancelAddParticipantFailed
 ```
 
 ### Rename RecordingChannelType to RecordingChannelInternal
