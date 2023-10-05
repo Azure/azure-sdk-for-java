@@ -119,7 +119,9 @@ public class HttpUrlConnectionAsyncClient implements HttpClient {
             // SetConnectionRequest
             try {
                 connection.setRequestMethod(httpRequest.getHttpMethod().toString());
-            } catch (ProtocolException ignored) {}
+            } catch (ProtocolException e) {
+                throw LOGGER.logExceptionAsError(new RuntimeException(e));
+            }
 
             for (HttpHeader header : httpRequest.getHeaders()) {
                 for (String value : header.getValues()) {
@@ -128,7 +130,7 @@ public class HttpUrlConnectionAsyncClient implements HttpClient {
             }
             return connection;
         } catch (IOException e) {
-            throw new RuntimeException(e);
+            throw LOGGER.logExceptionAsError(new RuntimeException(e));
         }
     }
 
@@ -153,7 +155,9 @@ public class HttpUrlConnectionAsyncClient implements HttpClient {
                 Flux<ByteBuffer> requestBody;
 
                 // Ensure the body is either valid, or we're sending *something*
-                if (httpRequest.getBody() == null) requestBody = Flux.just(ByteBuffer.wrap(new byte[0]));
+                if (httpRequest.getBody() == null) {
+                    requestBody = Flux.just(ByteBuffer.wrap(new byte[0]));
+                }
                 else {
                     requestBody = httpRequest.getBody();
                 }
@@ -166,7 +170,7 @@ public class HttpUrlConnectionAsyncClient implements HttpClient {
                         });
                     }
 
-//                    requestSendMono = requestBody
+                    // requestSendMono = requestBody
                     requestBody
                         .flatMap(buffer -> {
                             try {
@@ -182,11 +186,11 @@ public class HttpUrlConnectionAsyncClient implements HttpClient {
                             try {
                                 os.flush();
                             } catch (IOException e) {
-                                throw new RuntimeException(e);
+                                throw LOGGER.logExceptionAsError(new RuntimeException(e));
                             }
                         })).block();
                 } catch (IOException e) {
-                    break;
+                    return FluxUtil.monoError(LOGGER, new RuntimeException(e));
                 }
             case GET:
             case HEAD:
@@ -241,7 +245,7 @@ public class HttpUrlConnectionAsyncClient implements HttpClient {
                 Flux.just(ByteBuffer.wrap(outputStream.toByteArray()))
             );
         } catch (IOException e) {
-            throw new RuntimeException(e);
+            throw LOGGER.logExceptionAsError(new RuntimeException(e));
         }
     }
 }
