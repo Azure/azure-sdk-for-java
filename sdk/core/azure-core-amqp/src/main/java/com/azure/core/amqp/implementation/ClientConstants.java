@@ -17,6 +17,10 @@ public final class ClientConstants {
     public static final String LINK_NAME_KEY = "linkName";
     public static final String ENTITY_PATH_KEY = "entityPath";
     public static final String ENTITY_NAME_KEY = "entityName";
+    public static final String UPDATED_LINK_CREDIT_KEY = "updatedLinkCredit";
+    public static final String REMOTE_CREDIT_KEY = "remoteCredit";
+    public static final String IS_PARTIAL_DELIVERY_KEY = "delivery.isPartial";
+    public static final String IS_SETTLED_DELIVERY_KEY = "delivery.isSettled";
     public static final String SESSION_NAME_KEY = "sessionName";
     public static final String FULLY_QUALIFIED_NAMESPACE_KEY = "namespace";
     public static final String OPERATION_NAME_KEY = "amqpOperation";
