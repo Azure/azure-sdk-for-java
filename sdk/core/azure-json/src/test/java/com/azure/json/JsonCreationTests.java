@@ -16,7 +16,7 @@ public class JsonCreationTests {
 
     @Test
     public void createJsonString(){
-        JsonString test = new JsonString();
+        JsonString test = new JsonString("");
         assertTrue(test.isString());
     }
 

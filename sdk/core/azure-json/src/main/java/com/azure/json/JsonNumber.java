@@ -120,7 +120,7 @@ public class JsonNumber extends JsonElement {
         try {
             return new JsonString(numberValue.toString());
         } catch (NullPointerException e) {
-            return new JsonString();
+            return new JsonString("");
         }
     }
 
