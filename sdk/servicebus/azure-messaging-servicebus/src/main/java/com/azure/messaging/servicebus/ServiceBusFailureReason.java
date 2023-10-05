@@ -75,6 +75,8 @@ public final class ServiceBusFailureReason extends ExpandableStringEnum<ServiceB
     /**
      * Creates a new instance of the failure reason.  Use the existing failure reasons and create a new failure reason
      * using {@link ServiceBusFailureReason#fromString(String, Class)}.
+     *
+     * @deprecated Use {@link ServiceBusErrorSource#fromString(String, Class)} instead.
      */
     @Deprecated
     public ServiceBusFailureReason() {

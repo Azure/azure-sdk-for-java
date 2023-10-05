@@ -48,6 +48,8 @@ public final class ServiceBusErrorSource extends ExpandableStringEnum<ServiceBus
     /**
      * Creates a new instance of the error source.  Use the existing error sources and create a new error source using
      * {@link ServiceBusErrorSource#fromString(String, Class)}.
+     *
+     * @deprecated Use {@link ServiceBusErrorSource#fromString(String, Class)} instead.
      */
     @Deprecated
     public ServiceBusErrorSource() {
