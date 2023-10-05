@@ -64,7 +64,6 @@ import java.util.ArrayList;
 import java.util.Collections;
 import java.util.Iterator;
 import java.util.List;
-import java.util.Locale;
 import java.util.Optional;
 import java.util.UUID;
 import java.util.stream.Collectors;
@@ -840,24 +839,16 @@ public class CosmosTemplate implements CosmosOperations, ApplicationContextAware
         Assert.hasText(containerName, "container should not be null, empty or only whitespaces");
         String finalContainerName = getContainerNameOverride(containerName);
 
-        CosmosEntityInformation<?, ?> entityInfo = CosmosEntityInformation.getInstance(domainType);
+        CosmosEntityInformation<T, Object> entityInfo = (CosmosEntityInformation<T, Object>) CosmosEntityInformation.getInstance(domainType);
 
         final List<JsonNode> results = findItemsAsFlux(query, finalContainerName, domainType).collectList().block();
         assert results != null;
 
         if (entityInfo.getPartitionKeyFieldName() != null) {
             Flux<CosmosItemOperation> cosmosItemOperationFlux = Flux.fromIterable(results).map(item -> {
-                String type = entityInfo.getPartitionKeyFieldType().toString().toLowerCase(Locale.US);
-                if (type.contains("integer")) {
-                    return CosmosBulkOperations.getDeleteItemOperation(item.get(entityInfo.getIdFieldName()).asText(),
-                        new PartitionKey(item.get(entityInfo.getPartitionKeyFieldName()).asInt()));
-                } else if (type.contains("boolean")) {
-                    return CosmosBulkOperations.getDeleteItemOperation(item.get(entityInfo.getIdFieldName()).asText(),
-                        new PartitionKey(item.get(entityInfo.getPartitionKeyFieldName()).asBoolean()));
-                } else {
-                    return CosmosBulkOperations.getDeleteItemOperation(item.get(entityInfo.getIdFieldName()).asText(),
-                        new PartitionKey(item.get(entityInfo.getPartitionKeyFieldName()).asText()));
-                }
+                T object = toDomainObject(domainType, item);
+                return CosmosBulkOperations.getDeleteItemOperation(entityInfo.getId(object) != null ? entityInfo.getId(object).toString() : "",
+                    new PartitionKey(entityInfo.getPartitionKeyFieldValue(object)));
             });
 
             this.getCosmosAsyncClient()

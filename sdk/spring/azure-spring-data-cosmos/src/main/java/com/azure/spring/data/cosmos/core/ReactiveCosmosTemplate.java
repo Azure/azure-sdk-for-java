@@ -720,23 +720,15 @@ public class ReactiveCosmosTemplate implements ReactiveCosmosOperations, Applica
         Assert.notNull(domainType, "domainType should not be null.");
         Assert.hasText(containerName, "container name should not be null, empty or only whitespaces");
 
-        CosmosEntityInformation<?, ?> entityInfo = CosmosEntityInformation.getInstance(domainType);
+        CosmosEntityInformation<T, Object> entityInfo = (CosmosEntityInformation<T, Object>) CosmosEntityInformation.getInstance(domainType);
 
         final Flux<JsonNode> results = findItems(query, finalContainerName, domainType);
 
         if (entityInfo.getPartitionKeyFieldName() != null) {
             Flux<CosmosItemOperation> cosmosItemOperationFlux = results.map(item -> {
-                String type = entityInfo.getPartitionKeyFieldType().toString().toLowerCase(Locale.US);
-                if (type.contains("integer")) {
-                    return CosmosBulkOperations.getDeleteItemOperation(item.get(entityInfo.getIdFieldName()).asText(),
-                        new PartitionKey(item.get(entityInfo.getPartitionKeyFieldName()).asInt()));
-                } else if (type.contains("boolean")) {
-                    return CosmosBulkOperations.getDeleteItemOperation(item.get(entityInfo.getIdFieldName()).asText(),
-                        new PartitionKey(item.get(entityInfo.getPartitionKeyFieldName()).asBoolean()));
-                } else {
-                    return CosmosBulkOperations.getDeleteItemOperation(item.get(entityInfo.getIdFieldName()).asText(),
-                        new PartitionKey(item.get(entityInfo.getPartitionKeyFieldName()).asText()));
-                }
+                T object = toDomainObject(domainType, item);
+                return CosmosBulkOperations.getDeleteItemOperation(entityInfo.getId(object) != null ? entityInfo.getId(object).toString() : "",
+                    new PartitionKey(entityInfo.getPartitionKeyFieldValue(object)));
             });
 
             this.getCosmosAsyncClient()
