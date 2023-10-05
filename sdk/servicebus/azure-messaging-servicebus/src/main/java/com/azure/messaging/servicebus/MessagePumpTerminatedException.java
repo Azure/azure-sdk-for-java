@@ -11,8 +11,8 @@ import static com.azure.core.amqp.implementation.ClientConstants.FULLY_QUALIFIED
 import static com.azure.core.amqp.implementation.ClientConstants.PUMP_ID_KEY;
 
 /**
- * The exception emitted by the mono returned from the {@link SessionsMessagePump#begin()} and
- * {@link NonSessionMessagePump#begin()} API. If available, the {@link MessagePumpTerminatedException#getCause()}}
+ * The exception emitted by the mono returned from the {@link MessagePump#begin()} and
+ * {@link SessionsMessagePump#begin()} API. If available, the {@link MessagePumpTerminatedException#getCause()}}
  * indicates the cause for the termination of message pumping.
  */
 final class MessagePumpTerminatedException extends RuntimeException {
