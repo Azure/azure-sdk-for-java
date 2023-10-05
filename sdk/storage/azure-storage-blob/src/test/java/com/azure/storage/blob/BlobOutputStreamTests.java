@@ -39,10 +39,10 @@ import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertInstanceOf;
 import static org.junit.jupiter.api.Assertions.assertThrows;
 
+@EnabledIf("com.azure.storage.blob.BlobTestBase#isLiveMode")
 public class BlobOutputStreamTests extends BlobTestBase {
     private static final int FOUR_MB = 4 * Constants.MB;
 
-    @EnabledIf("com.azure.storage.blob.BlobTestBase#isLiveMode")
     @Test
     public void blockBlobOutputStream() throws IOException {
         byte[] data = getRandomByteArray(10 * Constants.MB);
@@ -56,7 +56,6 @@ public class BlobOutputStreamTests extends BlobTestBase {
         assertArrayEquals(convertInputStreamToByteArray(blockBlobClient.openInputStream()), data);
     }
 
-    @EnabledIf("com.azure.storage.blob.BlobTestBase#isLiveMode")
     @Test
     public void blockBlobOutputStreamWithCloseMultipleTimes() throws IOException {
         byte[] data = getRandomByteArray(10 * Constants.MB);
@@ -80,7 +79,6 @@ public class BlobOutputStreamTests extends BlobTestBase {
         assertArrayEquals(convertInputStreamToByteArray(blockBlobClient.openInputStream()), data);
     }
 
-    @EnabledIf("com.azure.storage.blob.BlobTestBase#isLiveMode")
     @Test
     public void blockBlobOutputStreamDefaultNoOverwrite() throws IOException {
         byte[] data = getRandomByteArray(10 * Constants.MB);
@@ -93,7 +91,6 @@ public class BlobOutputStreamTests extends BlobTestBase {
         assertThrows(IllegalArgumentException.class, blockBlobClient::getBlobOutputStream);
     }
 
-    @EnabledIf("com.azure.storage.blob.BlobTestBase#isLiveMode")
     @Test
     public void blockBlobOutputStreamDefaultNoOverwriteInterrupted() throws IOException {
         byte[] data = getRandomByteArray(10 * Constants.MB);
@@ -111,7 +108,6 @@ public class BlobOutputStreamTests extends BlobTestBase {
         assertEquals(BlobErrorCode.BLOB_ALREADY_EXISTS, ((BlobStorageException) e.getCause()).getErrorCode());
     }
 
-    @EnabledIf("com.azure.storage.blob.BlobTestBase#isLiveMode")
     @Test
     public void blockBlobOutputStreamOverwrite() throws IOException {
         byte[] randomData = getRandomByteArray(10 * Constants.MB);
@@ -126,7 +122,6 @@ public class BlobOutputStreamTests extends BlobTestBase {
         assertArrayEquals(convertInputStreamToByteArray(blockBlobClient.openInputStream()), randomData);
     }
 
-    @EnabledIf("com.azure.storage.blob.BlobTestBase#isLiveMode")
     @ParameterizedTest
     @MethodSource("blockBlobOutputStreamErrorSupplier")
     public void blockBlobOutputStreamError(Exception exception, Class<?> expectedExceptionClass) {
@@ -160,7 +155,6 @@ public class BlobOutputStreamTests extends BlobTestBase {
             Arguments.of(new IOException(), IOException.class));
     }
 
-    @EnabledIf("com.azure.storage.blob.BlobTestBase#isLiveMode")
     @Test
     public void blockBlobOutputStreamBufferReuse() throws IOException {
         byte[] data = getRandomByteArray(10 * Constants.KB);
@@ -179,7 +173,6 @@ public class BlobOutputStreamTests extends BlobTestBase {
         assertArrayEquals(convertInputStreamToByteArray(blockBlobClient.openInputStream()), data);
     }
 
-    @EnabledIf("com.azure.storage.blob.BlobTestBase#isLiveMode")
     @Test
     public void pageBlobOutputStream() throws IOException {
         byte[] data = getRandomByteArray(16 * Constants.MB - 512);
@@ -195,8 +188,6 @@ public class BlobOutputStreamTests extends BlobTestBase {
         assertArrayEquals(convertInputStreamToByteArray(pageBlobClient.openInputStream()), data);
     }
 
-    // Test is failing, need to investigate.
-    @EnabledIf("com.azure.storage.blob.BlobTestBase#isLiveMode")
     @Test
     public void appendBlobOutputStream() throws IOException {
         byte[] data = getRandomByteArray(4 * FOUR_MB);
@@ -214,7 +205,6 @@ public class BlobOutputStreamTests extends BlobTestBase {
     }
 
     @DisabledIf("com.azure.storage.blob.BlobTestBase#olderThan20221102ServiceVersion")
-    @EnabledIf("com.azure.storage.blob.BlobTestBase#isLiveMode")
     @Test
     public void appendBlobOutputStreamHighThroughput() throws IOException {
         // using data greater than 4MB and service versions above 2022_11_02 to test uploading up to 100MB per block
@@ -229,7 +219,6 @@ public class BlobOutputStreamTests extends BlobTestBase {
         assertArrayEquals(convertInputStreamToByteArray(appendBlobClient.openInputStream()), data);
     }
 
-    @EnabledIf("com.azure.storage.blob.BlobTestBase#isLiveMode")
     @Test
     public void appendBlobOutputStreamOverwrite() throws IOException {
         byte[] data = getRandomByteArray(FOUR_MB);
@@ -252,7 +241,6 @@ public class BlobOutputStreamTests extends BlobTestBase {
         assertArrayEquals(convertInputStreamToByteArray(appendBlobClient.openInputStream()), data2);
     }
 
-    @EnabledIf("com.azure.storage.blob.BlobTestBase#isLiveMode")
     @Test
     public void appendBlobOutputStreamOverwriteFalse() throws IOException {
         byte[] data = getRandomByteArray(Constants.MB);

@@ -63,7 +63,7 @@ public class BlockBlobInputOutputStreamTests extends BlobTestBase {
     private static Stream<Arguments> blobInputStreamReadToLargeBufferSupplier() {
         return Stream.of(
             Arguments.of(0, -1),
-            Arguments.of(6 * 1024 * 1024, 6 * 1024 * 1024) // Test for github issue #13811
+            Arguments.of(6 * 1024 * 1024, 6 * 1024 * 1024) // Test for GitHub issue #13811
         );
     }
 
@@ -215,7 +215,7 @@ public class BlockBlobInputOutputStreamTests extends BlobTestBase {
     }
 
     @Test
-    public void inputStreamEtagLockDefault() throws IOException {
+    public void inputStreamETagLockDefault() throws IOException {
         int length = 6 * Constants.MB;
         byte[] randomBytes = getRandomByteArray(length);
         bc.upload(new ByteArrayInputStream(randomBytes), length, true);
@@ -228,7 +228,7 @@ public class BlockBlobInputOutputStreamTests extends BlobTestBase {
         // Modify the blob again.
         bc.upload(new ByteArrayInputStream(randomBytes), length, true);
 
-        // when: "Reading after etag has been changed"
+        // when: "Reading after eTag has been changed"
         assertThrows(IOException.class, inputStream::read);
     }
 
@@ -252,10 +252,10 @@ public class BlockBlobInputOutputStreamTests extends BlobTestBase {
     }
 
     @Test
-    public void inputStreamConsistentReadControlEtagClientChoosesEtag() throws IOException {
+    public void inputStreamConsistentReadControlETagClientChoosesETag() throws IOException {
         int length = Constants.KB;
         byte[] randomBytes = getRandomByteArray(length);
-        BlobContainerClient blobContainerClient = versionedBlobServiceClient.createBlobContainer(containerName);
+        BlobContainerClient blobContainerClient = versionedBlobServiceClient.createBlobContainer(generateContainerName());
         BlobClient blobClient = blobContainerClient.getBlobClient(generateBlobName());
         blobClient.upload(new ByteArrayInputStream(randomBytes), length, true);
 
@@ -275,10 +275,10 @@ public class BlockBlobInputOutputStreamTests extends BlobTestBase {
     }
 
     @Test
-    public void inputStreamConsistentReadControlEtagUserProvidesEtag() throws IOException {
+    public void inputStreamConsistentReadControlETagUserProvidesETag() throws IOException {
         int length = Constants.KB;
         byte[] randomBytes = getRandomByteArray(length);
-        BlobContainerClient blobContainerClient = versionedBlobServiceClient.createBlobContainer(containerName);
+        BlobContainerClient blobContainerClient = versionedBlobServiceClient.createBlobContainer(generateContainerName());
         BlobClient blobClient = blobContainerClient.getBlobClient(generateBlobName());
         blobClient.upload(new ByteArrayInputStream(randomBytes), length, true);
         BlobProperties properties = blobClient.getProperties();
@@ -300,10 +300,10 @@ public class BlockBlobInputOutputStreamTests extends BlobTestBase {
     }
 
     @Test
-    public void inputStreamConsistentReadControlEtagUserProvidesVersionAndEtag() throws IOException {
+    public void inputStreamConsistentReadControlETagUserProvidesVersionAndETag() throws IOException {
         int length = Constants.KB;
         byte[] randomBytes = getRandomByteArray(length);
-        BlobContainerClient blobContainerClient = versionedBlobServiceClient.createBlobContainer(containerName);
+        BlobContainerClient blobContainerClient = versionedBlobServiceClient.createBlobContainer(generateContainerName());
         BlobClient blobClient = blobContainerClient.getBlobClient(generateBlobName());
         blobClient.upload(new ByteArrayInputStream(randomBytes), length, true);
         BlobProperties properties = blobClient.getProperties();
@@ -327,10 +327,10 @@ public class BlockBlobInputOutputStreamTests extends BlobTestBase {
 
     @DisabledIf("com.azure.storage.blob.BlobTestBase#olderThan20191212ServiceVersion")
     @Test
-    public void inputStreamConsistentReadControlEtagUserProvidesVersionClientChoosesEtag() throws IOException {
+    public void inputStreamConsistentReadControlETagUserProvidesVersionClientChoosesETag() throws IOException {
         int length = Constants.KB;
         byte[] randomBytes = getRandomByteArray(length);
-        BlobContainerClient blobContainerClient = versionedBlobServiceClient.createBlobContainer(containerName);
+        BlobContainerClient blobContainerClient = versionedBlobServiceClient.createBlobContainer(generateContainerName());
         BlobClient blobClient = blobContainerClient.getBlobClient(generateBlobName());
         blobClient.upload(new ByteArrayInputStream(randomBytes), length, true);
         BlobProperties properties = blobClient.getProperties();
@@ -354,10 +354,10 @@ public class BlockBlobInputOutputStreamTests extends BlobTestBase {
 
     // Error case
     @Test
-    public void inputStreamConsistentReadControlEtagUserProvidesOldEtag() {
+    public void inputStreamConsistentReadControlETagUserProvidesOldETag() {
         int length = Constants.KB;
         byte[] randomBytes = getRandomByteArray(length);
-        BlobContainerClient blobContainerClient = versionedBlobServiceClient.createBlobContainer(containerName);
+        BlobContainerClient blobContainerClient = versionedBlobServiceClient.createBlobContainer(generateContainerName());
         BlobClient blobClient = blobContainerClient.getBlobClient(generateBlobName());
         blobClient.upload(new ByteArrayInputStream(randomBytes), length, true);
         BlobProperties properties = blobClient.getProperties();
@@ -381,7 +381,7 @@ public class BlockBlobInputOutputStreamTests extends BlobTestBase {
     public void inputStreamConsistentReadControlVersionClientChoosesVersion() throws IOException {
         int length = Constants.KB;
         byte[] randomBytes = getRandomByteArray(length);
-        BlobContainerClient blobContainerClient = versionedBlobServiceClient.createBlobContainer(containerName);
+        BlobContainerClient blobContainerClient = versionedBlobServiceClient.createBlobContainer(generateContainerName());
         BlobClient blobClient = blobContainerClient.getBlobClient(generateBlobName());
         blobClient.upload(new ByteArrayInputStream(randomBytes), length, true);
 
@@ -406,7 +406,7 @@ public class BlockBlobInputOutputStreamTests extends BlobTestBase {
     public void inputStreamConsistentReadControlVersionUserProvidesVersion() throws IOException {
         int length = Constants.KB;
         byte[] randomBytes = getRandomByteArray(length);
-        BlobContainerClient blobContainerClient = versionedBlobServiceClient.createBlobContainer(containerName);
+        BlobContainerClient blobContainerClient = versionedBlobServiceClient.createBlobContainer(generateContainerName());
         BlobClient blobClient = blobContainerClient.getBlobClient(generateBlobName());
         blobClient.upload(new ByteArrayInputStream(randomBytes), length, true);
         BlobProperties properties = blobClient.getProperties();
@@ -431,10 +431,10 @@ public class BlockBlobInputOutputStreamTests extends BlobTestBase {
 
     @DisabledIf("com.azure.storage.blob.BlobTestBase#olderThan20191212ServiceVersion")
     @Test
-    public void inputStreamConsistentReadControlVersionUserProvidesVersionAndEtag() throws IOException {
+    public void inputStreamConsistentReadControlVersionUserProvidesVersionAndETag() throws IOException {
         int length = Constants.KB;
         byte[] randomBytes = getRandomByteArray(length);
-        BlobContainerClient blobContainerClient = versionedBlobServiceClient.createBlobContainer(containerName);
+        BlobContainerClient blobContainerClient = versionedBlobServiceClient.createBlobContainer(generateContainerName());
         BlobClient blobClient = blobContainerClient.getBlobClient(generateBlobName());
         blobClient.upload(new ByteArrayInputStream(randomBytes), length, true);
         BlobProperties properties = blobClient.getProperties();
@@ -459,10 +459,10 @@ public class BlockBlobInputOutputStreamTests extends BlobTestBase {
 
     @DisabledIf("com.azure.storage.blob.BlobTestBase#olderThan20191212ServiceVersion")
     @Test
-    public void inputStreamConsistentReadControlVersionUserProvidesEtagClientChoosesVersion() throws IOException {
+    public void inputStreamConsistentReadControlVersionUserProvidesETagClientChoosesVersion() throws IOException {
         int length = Constants.KB;
         byte[] randomBytes = getRandomByteArray(length);
-        BlobContainerClient blobContainerClient = versionedBlobServiceClient.createBlobContainer(containerName);
+        BlobContainerClient blobContainerClient = versionedBlobServiceClient.createBlobContainer(generateContainerName());
         BlobClient blobClient = blobContainerClient.getBlobClient(generateBlobName());
         blobClient.upload(new ByteArrayInputStream(randomBytes), length, true);
         BlobProperties properties = blobClient.getProperties();
@@ -491,7 +491,7 @@ public class BlockBlobInputOutputStreamTests extends BlobTestBase {
     @MethodSource("inputStreamConsistentReadControlValidStatesSupplier")
     public void inputStreamConsistentReadControlValidStates(boolean useETag, boolean useVersionId,
         ConsistentReadControl consistentReadControl) {
-        BlobContainerClient blobContainerClient = versionedBlobServiceClient.createBlobContainer(containerName);
+        BlobContainerClient blobContainerClient = versionedBlobServiceClient.createBlobContainer(generateContainerName());
         BlobClient blobClient = blobContainerClient.getBlobClient(generateBlobName());
         blobClient.upload(new ByteArrayInputStream(new byte[0]), 0, true);
         BlobProperties properties = blobClient.getProperties();

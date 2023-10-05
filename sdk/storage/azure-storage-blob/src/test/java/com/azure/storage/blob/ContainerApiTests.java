@@ -1394,7 +1394,7 @@ public class ContainerApiTests extends BlobTestBase {
     @Test
     public void listBlobsHierOptionsDeletedWithVersions() {
         BlobContainerClient versionedCC = versionedBlobServiceClient.getBlobContainerClient(containerName);
-        versionedCC.create();
+        versionedCC.createIfNotExists();
         String blobName = generateBlobName();
         AppendBlobClient blob = versionedCC.getBlobClient(blobName).getAppendBlobClient();
         blob.create();

@@ -22,6 +22,7 @@ import static org.junit.jupiter.api.Assertions.assertTrue;
 import static org.mockito.ArgumentMatchers.anyLong;
 import static org.mockito.Mockito.times;
 
+@SuppressWarnings("deprecation")
 public class ProgressReporterTests extends BlobTestBase {
 
     @Test
