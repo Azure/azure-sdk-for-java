@@ -46,7 +46,7 @@ class BuilderHelperTest extends Specification {
         when:
         def pipeline = BuilderHelper.buildPipeline(credentials, null, null, null,
             endpoint, requestRetryOptions, null, BuilderHelper.getDefaultHttpLogOptions(), new ClientOptions(),
-            new FreshDateTestClient(), new ArrayList<>(), new ArrayList<>(), null, new ClientLogger(BuilderHelperTest.class))
+            new FreshDateTestClient(), new ArrayList<>(), new ArrayList<>(), null, null, new ClientLogger(BuilderHelperTest.class))
 
         then:
         StepVerifier.create(pipeline.send(request(endpoint)))
@@ -161,7 +161,7 @@ class BuilderHelperTest extends Specification {
         when:
         def pipeline = BuilderHelper.buildPipeline(credentials, null, null, null,
             endpoint, new RequestRetryOptions(), null, new HttpLogOptions().setApplicationId(logOptionsUA), new ClientOptions().setApplicationId(clientOptionsUA),
-            new ApplicationIdUAStringTestClient(expectedUA), new ArrayList<>(), new ArrayList<>(), null, new ClientLogger(BuilderHelperTest.class))
+            new ApplicationIdUAStringTestClient(expectedUA), new ArrayList<>(), new ArrayList<>(), null, null, new ClientLogger(BuilderHelperTest.class))
 
         then:
         StepVerifier.create(pipeline.send(request(endpoint)))
@@ -319,7 +319,7 @@ class BuilderHelperTest extends Specification {
         when:
         def pipeline = BuilderHelper.buildPipeline(credentials, null, null, null,
             endpoint, new RequestRetryOptions(), null, BuilderHelper.getDefaultHttpLogOptions(), new ClientOptions().setHeaders(headers),
-            new ClientOptionsHeadersTestClient(headers), new ArrayList<>(), new ArrayList<>(), null, new ClientLogger(BuilderHelperTest.class))
+            new ClientOptionsHeadersTestClient(headers), new ArrayList<>(), new ArrayList<>(), null, null, new ClientLogger(BuilderHelperTest.class))
 
         then:
         StepVerifier.create(pipeline.send(request(endpoint)))
