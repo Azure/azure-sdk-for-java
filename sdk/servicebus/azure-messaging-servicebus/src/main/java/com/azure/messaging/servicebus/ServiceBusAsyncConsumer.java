@@ -15,7 +15,6 @@ import reactor.core.publisher.Flux;
 import reactor.core.publisher.Mono;
 
 import java.util.Map;
-import java.util.concurrent.atomic.AtomicBoolean;
 
 import static com.azure.core.util.FluxUtil.monoError;
 
@@ -25,7 +24,6 @@ import static com.azure.core.util.FluxUtil.monoError;
 class ServiceBusAsyncConsumer implements AutoCloseable {
     private static final ClientLogger LOGGER = new ClientLogger(ServiceBusAsyncConsumer.class);
     private final boolean isV2;
-    private final AtomicBoolean isDisposed = new AtomicBoolean();
     private final String linkName;
     private final ServiceBusReceiveLinkProcessor linkProcessor;
     private final MessageSerializer messageSerializer;
@@ -107,10 +105,9 @@ class ServiceBusAsyncConsumer implements AutoCloseable {
      */
     @Override
     public void close() {
-        if (!isDisposed.getAndSet(true)) {
-            if (!isV2) {
-                linkProcessor.dispose();
-            }
+        if (isV2) {
+            return;
         }
+        linkProcessor.dispose();
     }
 }
