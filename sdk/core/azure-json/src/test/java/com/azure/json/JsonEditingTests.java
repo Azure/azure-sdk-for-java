@@ -120,7 +120,8 @@ public class JsonEditingTests {
 
     @Test
     public void deleteObjectPropertyNotExist(){
-        assertThrows(IOException.class, ()-> object.removeProperty("EntryFake"));
+        assertNull(object.removeProperty("EntryFake"));
+        //assertThrows(IOException.class, ()-> object.removeProperty("EntryFake"));
     }
 
     //---------------------------------------------------------------------------------------------------------------------------------------------------------
@@ -184,7 +185,8 @@ public class JsonEditingTests {
 
     @Test
     public void deleteArrayPropertyNotExist(){
-        assertThrows(IOException.class, ()-> object.removeProperty("EntryFake"));
+        assertThrows(IndexOutOfBoundsException.class, ()-> array.removeElement(3));
+        //assertThrows(IOException.class, ()-> object.removeProperty("EntryFake"));
     }
 
 

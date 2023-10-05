@@ -310,13 +310,11 @@ public class JsonObject extends JsonElement {
      */
 
     @Override
-    public JsonObject removeProperty(String key) throws IOException {
+    public JsonElement removeProperty(String key)  {
         if (properties.containsKey(key)) {
-            this.properties.remove(key);
-            return this;
-        } else {
-            throw new IOException("Key" + key + " does not currently exist");
+            return this.properties.remove(key);
         }
+        return null;
     }
 
     @Override
