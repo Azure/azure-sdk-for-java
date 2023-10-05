@@ -164,6 +164,40 @@ public class ServiceApiTests extends DataLakeTestBase {
         }
     }
 
+    @ResourceLock("ServiceProperties")
+    @Test
+    public void setProps() {
+        DataLakeRetentionPolicy retentionPolicy = new DataLakeRetentionPolicy().setDays(5).setEnabled(true);
+        DataLakeAnalyticsLogging logging = new DataLakeAnalyticsLogging().setRead(true).setVersion("1.0")
+            .setRetentionPolicy(retentionPolicy);
+        List<DataLakeCorsRule> corsRules = Collections.singletonList(new DataLakeCorsRule()
+            .setAllowedMethods("GET,PUT,HEAD")
+            .setAllowedOrigins("*")
+            .setAllowedHeaders("x-ms-version")
+            .setExposedHeaders("x-ms-client-request-id")
+            .setMaxAgeInSeconds(10));
+        DataLakeMetrics hourMetrics = new DataLakeMetrics().setEnabled(true).setVersion("1.0")
+            .setRetentionPolicy(retentionPolicy).setIncludeApis(true);
+        DataLakeMetrics minuteMetrics = new DataLakeMetrics().setEnabled(true).setVersion("1.0")
+            .setRetentionPolicy(retentionPolicy).setIncludeApis(true);
+        DataLakeStaticWebsite website = new DataLakeStaticWebsite().setEnabled(true)
+            .setIndexDocument("myIndex.html")
+            .setErrorDocument404Path("custom/error/path.html");
+
+        DataLakeServiceProperties sentProperties = new DataLakeServiceProperties()
+            .setLogging(logging).setCors(corsRules).setDefaultServiceVersion("2016-05-31")
+            .setMinuteMetrics(minuteMetrics).setHourMetrics(hourMetrics)
+            .setDeleteRetentionPolicy(retentionPolicy)
+            .setStaticWebsite(website);
+
+        primaryDataLakeServiceClient.setProperties(sentProperties);
+
+        DataLakeServiceProperties receivedProperties = primaryDataLakeServiceClient.getProperties();
+
+        validatePropsSet(sentProperties, receivedProperties);
+
+    }
+
     // In java, we don't have support from the validator for checking the bounds on days. The service will catch these.
     @ResourceLock("ServiceProperties")
     @Test
@@ -501,6 +535,34 @@ public class ServiceApiTests extends DataLakeTestBase {
             serviceClient.createFileSystemWithResponse(generateFileSystemName(), null, null, null));
 
         assertEquals("2019-02-02", response.getHeaders().getValue(X_MS_VERSION));
+    }
+
+    @Test
+    public void deleteFileSystem() {
+        String fileSystemName = generateFileSystemName();
+        DataLakeFileSystemClient cc1 = primaryDataLakeServiceClient.getFileSystemClient(fileSystemName);
+        cc1.create();
+
+        primaryDataLakeServiceClient.deleteFileSystem(fileSystemName);
+
+        DataLakeStorageException e = assertThrows(DataLakeStorageException.class, cc1::getProperties);
+        assertEquals(404, e.getStatusCode());
+    }
+
+
+    @Test
+    public void deleteFileSystemWithResponse() {
+        String fileSystemName = generateFileSystemName();
+        DataLakeFileSystemClient cc1 = primaryDataLakeServiceClient.getFileSystemClient(fileSystemName);
+        cc1.create();
+
+        Response<Void> response = primaryDataLakeServiceClient.deleteFileSystemWithResponse(fileSystemName, null, null);
+        assertEquals(202, response.getStatusCode());
+    }
+
+    @Test //todo: ask
+    public void getServiceVersion() {
+        assertNotNull(primaryDataLakeServiceClient.getServiceVersion());
     }
 
     @DisabledIf("olderThan20191212ServiceVersion")

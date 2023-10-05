@@ -9,8 +9,10 @@ import com.azure.core.util.Context;
 import com.azure.core.util.CoreUtils;
 import com.azure.identity.DefaultAzureCredentialBuilder;
 import com.azure.storage.blob.BlobUrlParts;
+import com.azure.storage.blob.BlobContainerClient;
 import com.azure.storage.blob.models.BlobErrorCode;
 import com.azure.storage.common.Utility;
+import com.azure.storage.common.test.shared.TestAccount;
 import com.azure.storage.file.datalake.models.DataLakeAccessPolicy;
 import com.azure.storage.file.datalake.models.DataLakeRequestConditions;
 import com.azure.storage.file.datalake.models.DataLakeSignedIdentifier;
@@ -1098,6 +1100,16 @@ public class FileSystemApiTests extends DataLakeTestBase {
     }
 
     @Test
+    public void deleteFile() {
+        String pathName = generatePathName();
+        DataLakeFileClient client = dataLakeFileSystemClient.createFile(pathName);
+        dataLakeFileSystemClient.deleteFile(pathName);
+
+        DataLakeStorageException e = assertThrows(DataLakeStorageException.class, client::getProperties);
+        assertEquals(404, e.getStatusCode());
+    }
+
+    @Test
     public void deleteFileMin() {
         String pathName = generatePathName();
         dataLakeFileSystemClient.createFile(pathName);
@@ -1692,6 +1704,16 @@ public class FileSystemApiTests extends DataLakeTestBase {
     }
 
     @Test
+    public void deleteDir() {
+        String pathName = generatePathName();
+        DataLakeDirectoryClient client = dataLakeFileSystemClient.createDirectory(pathName);
+        dataLakeFileSystemClient.deleteDirectory(pathName);
+
+        DataLakeStorageException e = assertThrows(DataLakeStorageException.class, client::getProperties);
+        assertEquals(404, e.getStatusCode());
+    }
+
+    @Test
     public void deleteDirMin() {
         String pathName = generatePathName();
         dataLakeFileSystemClient.createDirectory(pathName);
@@ -2227,6 +2249,14 @@ public class FileSystemApiTests extends DataLakeTestBase {
         // dfs endpoint
         assertEquals("2019-02-02", dataLakeFileSystemClient.getAccessPolicyWithResponse(null, null, null)
             .getHeaders().getValue(X_MS_VERSION));
+    }
+
+    @Test
+    public void getAccountUrlMin() {
+        dataLakeFileSystemClient = primaryDataLakeServiceClient.createFileSystem(generateFileSystemName());
+        TestAccount account = ENVIRONMENT.getDataLakeAccount();
+        String accUrl = dataLakeFileSystemClient.getAccountUrl();
+        assertEquals(accUrl, account.getDataLakeEndpoint());
     }
 
 //    @Test

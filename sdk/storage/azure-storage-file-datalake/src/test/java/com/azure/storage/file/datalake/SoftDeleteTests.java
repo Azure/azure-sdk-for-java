@@ -3,6 +3,7 @@
 package com.azure.storage.file.datalake;
 
 import com.azure.core.http.rest.PagedResponse;
+import com.azure.core.http.rest.Response;
 import com.azure.core.test.TestMode;
 import com.azure.storage.common.Utility;
 import com.azure.storage.file.datalake.models.DataLakeRetentionPolicy;
@@ -91,6 +92,38 @@ public class SoftDeleteTests extends DataLakeTestBase {
         assertNotNull(file.getProperties());
         assertEquals(file.getPathUrl(), returnedClient.getPathUrl());
     }
+
+    @DisabledIf("olderThan20200804ServiceVersion")
+    @Test
+    public void restorePathWithResponse() {
+        DataLakeDirectoryClient dir = fileSystemClient.getDirectoryClient(generatePathName());
+        dir.create();
+        dir.delete();
+
+        DataLakeFileClient file = fileSystemClient.getFileClient(generatePathName());
+        file.create();
+        file.delete();
+
+        Iterator<PathDeletedItem> paths = fileSystemClient.listDeletedPaths().iterator();
+
+        String dirDeletionId = paths.next().getDeletionId();
+        String fileDeletionId = paths.next().getDeletionId();
+
+        Response<DataLakePathClient> returnedClient = fileSystemClient.undeletePathWithResponse(dir.getDirectoryName(), dirDeletionId, null, null);
+
+        assertEquals(200, returnedClient.getStatusCode());
+        assertInstanceOf(DataLakeDirectoryClient.class, returnedClient);
+        assertNotNull(dir.getProperties());
+        assertEquals(dir.getPathUrl(), returnedClient.getValue().getPathUrl());
+
+        returnedClient = fileSystemClient.undeletePathWithResponse(file.getFileName(), fileDeletionId, null, null);
+
+        assertEquals(200, returnedClient.getStatusCode());
+        assertInstanceOf(DataLakeFileClient.class, returnedClient);
+        assertNotNull(file.getProperties());
+        assertEquals(file.getPathUrl(), returnedClient.getValue().getPathUrl());
+    }
+
 
     @DisabledIf("olderThan20200804ServiceVersion")
     @ParameterizedTest

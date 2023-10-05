@@ -2645,6 +2645,16 @@ public class DirectoryApiTests extends DataLakeTestBase {
     }
 
     @Test
+    public void deleteFile() {
+        String pathName = generatePathName();
+        DataLakeFileClient client = dc.createFile(pathName);
+        dc.deleteFile(pathName);
+
+        DataLakeStorageException e = assertThrows(DataLakeStorageException.class, client::getProperties);
+        assertEquals(404, e.getStatusCode());
+    }
+
+    @Test
     public void deleteFileMin() {
         String pathName = generatePathName();
         dc.createFile(pathName);
@@ -2972,6 +2982,16 @@ public class DirectoryApiTests extends DataLakeTestBase {
 
         assertEquals(201, client.createSubdirectoryIfNotExistsWithResponse(generatePathName(), options, null,
             Context.NONE).getStatusCode());
+    }
+
+    @Test
+    public void deleteSubDir() {
+        String pathName = generatePathName();
+        DataLakeDirectoryClient client = dc.createSubdirectory(pathName);
+        dc.deleteSubdirectory(pathName);
+
+        DataLakeStorageException e = assertThrows(DataLakeStorageException.class, client::getProperties);
+        assertEquals(404, e.getStatusCode());
     }
 
     @Test
