@@ -1,3 +1,5 @@
+// Copyright (c) Microsoft Corporation. All rights reserved.
+// Licensed under the MIT License.
 package com.azure.storage.file.datalake.specialized;
 
 import com.azure.core.http.RequestConditions;
@@ -33,20 +35,20 @@ public class LeaseAsyncApiTests  extends DataLakeTestBase {
     @MethodSource("acquireLeaseSupplier")
     public void acquireFileLease(String proposedId, int leaseTime, LeaseStateType leaseStateType,
                                  LeaseDurationType leaseDurationType) {
-            DataLakeFileAsyncClient fc = createPathClient();
-            DataLakeLeaseAsyncClient leaseClient = createLeaseAsyncClient(fc, proposedId);
+        DataLakeFileAsyncClient fc = createPathClient();
+        DataLakeLeaseAsyncClient leaseClient = createLeaseAsyncClient(fc, proposedId);
 
-            StepVerifier.create(leaseClient.acquireLease(leaseTime))
-                .assertNext(r -> assertEquals(r, leaseClient.getLeaseId()))
-                .verifyComplete();
+        StepVerifier.create(leaseClient.acquireLease(leaseTime))
+            .assertNext(r -> assertEquals(r, leaseClient.getLeaseId()))
+            .verifyComplete();
 
-            StepVerifier.create(fc.getPropertiesWithResponse(null))
-                .assertNext(r -> {
-                    assertEquals(leaseStateType, r.getValue().getLeaseState());
-                    assertEquals(leaseDurationType, r.getValue().getLeaseDuration());
-                    validateBasicHeaders(r.getHeaders());
-                })
-                .verifyComplete();
+        StepVerifier.create(fc.getPropertiesWithResponse(null))
+            .assertNext(r -> {
+                assertEquals(leaseStateType, r.getValue().getLeaseState());
+                assertEquals(leaseDurationType, r.getValue().getLeaseDuration());
+                validateBasicHeaders(r.getHeaders());
+            })
+            .verifyComplete();
     }
 
     private static Stream<Arguments> acquireLeaseSupplier() {
@@ -276,8 +278,8 @@ public class LeaseAsyncApiTests  extends DataLakeTestBase {
             .verifyComplete();
 
         StepVerifier.create(fc.getProperties())
-            .assertNext(p -> assertTrue(p.getLeaseState() == LeaseStateType.BROKEN ||
-                p.getLeaseState() == LeaseStateType.BREAKING))
+            .assertNext(p -> assertTrue(p.getLeaseState() == LeaseStateType.BROKEN
+                || p.getLeaseState() == LeaseStateType.BREAKING))
             .verifyComplete();
     }
 
@@ -629,8 +631,8 @@ public class LeaseAsyncApiTests  extends DataLakeTestBase {
             .verifyComplete();
 
         StepVerifier.create(dataLakeFileSystemAsyncClient.getProperties())
-            .assertNext(p -> assertTrue(p.getLeaseState() == LeaseStateType.BROKEN ||
-                p.getLeaseState() == LeaseStateType.BREAKING))
+            .assertNext(p -> assertTrue(p.getLeaseState() == LeaseStateType.BROKEN
+                || p.getLeaseState() == LeaseStateType.BREAKING))
             .verifyComplete();
 
         // Break the lease for cleanup.
