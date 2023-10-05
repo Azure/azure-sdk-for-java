@@ -25,7 +25,11 @@ import java.util.concurrent.atomic.AtomicBoolean;
 import static com.azure.core.amqp.implementation.AmqpLoggingUtils.addErrorCondition;
 import static com.azure.core.amqp.implementation.ClientConstants.EMIT_RESULT_KEY;
 import static com.azure.core.amqp.implementation.ClientConstants.ENTITY_PATH_KEY;
+import static com.azure.core.amqp.implementation.ClientConstants.IS_PARTIAL_DELIVERY_KEY;
+import static com.azure.core.amqp.implementation.ClientConstants.IS_SETTLED_DELIVERY_KEY;
 import static com.azure.core.amqp.implementation.ClientConstants.LINK_NAME_KEY;
+import static com.azure.core.amqp.implementation.ClientConstants.REMOTE_CREDIT_KEY;
+import static com.azure.core.amqp.implementation.ClientConstants.UPDATED_LINK_CREDIT_KEY;
 
 /**
  * A type to handle all {@link Delivery} from the ProtonJ library. The ProtonJ library creates {@link Delivery}
@@ -171,15 +175,15 @@ final class ReceiverDeliveryHandler {
                 addErrorCondition(logger.atVerbose(), condition)
                     .addKeyValue(ENTITY_PATH_KEY, entityPath)
                     .addKeyValue(LINK_NAME_KEY, receiveLinkName)
-                    .addKeyValue("updatedLinkCredit", link.getCredit())
-                    .addKeyValue("remoteCredit", link.getRemoteCredit())
-                    .addKeyValue("delivery.isPartial", true)
-                    .addKeyValue("delivery.isSettled", delivery.isSettled())
+                    .addKeyValue(UPDATED_LINK_CREDIT_KEY, link.getCredit())
+                    .addKeyValue(REMOTE_CREDIT_KEY, link.getRemoteCredit())
+                    .addKeyValue(IS_PARTIAL_DELIVERY_KEY, true)
+                    .addKeyValue(IS_SETTLED_DELIVERY_KEY, delivery.isSettled())
                     .log("onDelivery.");
             } else {
                 logger.atWarning()
                     .addKeyValue(ENTITY_PATH_KEY, entityPath)
-                    .addKeyValue("delivery.isSettled", true)
+                    .addKeyValue(IS_SETTLED_DELIVERY_KEY, true)
                     .log("Partial delivery with no link.");
             }
             return true;
@@ -195,14 +199,14 @@ final class ReceiverDeliveryHandler {
                 addErrorCondition(logger.atInfo(), link.getRemoteCondition())
                     .addKeyValue(ENTITY_PATH_KEY, entityPath)
                     .addKeyValue(LINK_NAME_KEY, receiveLinkName)
-                    .addKeyValue("updatedLinkCredit", link.getCredit())
-                    .addKeyValue("remoteCredit", link.getRemoteCredit())
-                    .addKeyValue("delivery.isSettled", true)
+                    .addKeyValue(UPDATED_LINK_CREDIT_KEY, link.getCredit())
+                    .addKeyValue(REMOTE_CREDIT_KEY, link.getRemoteCredit())
+                    .addKeyValue(IS_SETTLED_DELIVERY_KEY, true)
                     .log("onDelivery. Was already settled.");
             } else {
                 logger.atWarning()
                     .addKeyValue(ENTITY_PATH_KEY, entityPath)
-                    .addKeyValue("delivery.isSettled", true)
+                    .addKeyValue(IS_SETTLED_DELIVERY_KEY, true)
                     .log("Settled delivery with no link.");
             }
             return true;
