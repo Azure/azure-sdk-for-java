@@ -145,8 +145,7 @@ class SocketClient {
 
         StringBuilder bodyString = new StringBuilder();
         while ((line = reader.readLine()) != null) {
-            bodyString.append(line)
-                      .append("\n");
+            bodyString.append(line);
         }
 
         Flux<ByteBuffer> body = Flux.just(ByteBuffer.wrap(bodyString.toString().getBytes()));
