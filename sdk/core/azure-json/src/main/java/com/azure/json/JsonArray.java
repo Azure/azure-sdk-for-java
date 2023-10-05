@@ -137,9 +137,8 @@ public class JsonArray extends JsonElement {
      * @throws IndexOutOfBoundsException Thrown when index parameter is < 0 or
      * >= size()
      */
-    public JsonArray removeElement(int index) throws IndexOutOfBoundsException {
-        this.elements.remove(index);
-        return this;
+    public JsonElement removeElement(int index) throws IndexOutOfBoundsException {
+        return this.elements.remove(index);
     }
 
     public int arrayLength(){

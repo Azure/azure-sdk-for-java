@@ -44,11 +44,8 @@ public class JsonNumber extends JsonElement {
      * TODO: check for invalid number values or types
      */
     public JsonNumber(Number value) {
-        if (value == null) {
-            throw new IllegalArgumentException("Null value passed to JsonNumber constructor");
-        }
-            this.numberValue = value;
-        }
+        this.numberValue = value;
+    }
 
     /**
      * Returns the String representation of the JsonNumber object
@@ -121,8 +118,7 @@ public class JsonNumber extends JsonElement {
         try {
             return new JsonString(numberValue.toString());
         } catch (NullPointerException e) {
-            // todo hacky fix
-            return new JsonString("");
+            return new JsonString();
         }
     }
 
