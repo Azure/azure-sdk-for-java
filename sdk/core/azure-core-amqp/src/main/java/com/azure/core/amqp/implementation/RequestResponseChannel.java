@@ -75,7 +75,7 @@ public class RequestResponseChannel implements AsyncCloseable {
     private final SendLinkHandler sendLinkHandler;
     // ReceiveLinkHandlerWrapper is a temporary type to support either v1 or v2 receiver. This type will be deleted,
     // when removing support for the v1 receiver; instead, the 'ReceiveLinkHandler' for the new v2 receiver will be used.
-    private final ReceiveLinkHandlerWrapper receiveLinkHandler;
+    private final RequestChannelWrapper receiveLinkHandler;
     private final SenderSettleMode senderSettleMode;
     // The request-response-channel endpoint states derived from the latest state of the send and receive links.
     private final Sinks.Many<AmqpEndpointState> endpointStates = Sinks.many().multicast().onBackpressureBuffer();
@@ -179,7 +179,7 @@ public class RequestResponseChannel implements AsyncCloseable {
         this.receiveLink.setSenderSettleMode(senderSettleMode);
         this.receiveLink.setReceiverSettleMode(receiverSettleMode);
 
-        this.receiveLinkHandler = new ReceiveLinkHandlerWrapper(connectionId, fullyQualifiedNamespace,
+        this.receiveLinkHandler = new RequestChannelWrapper(connectionId, fullyQualifiedNamespace,
             linkName, entityPath, receiveLink, handlerProvider, provider, retryOptions, isV2);
 
         this.metricsProvider = metricsProvider;
@@ -561,12 +561,13 @@ public class RequestResponseChannel implements AsyncCloseable {
     }
 
     // Temporary type to support either v1 or new v2.
-    private static final class ReceiveLinkHandlerWrapper {
+    // TODO (anu): remove the temporary type once v1's side by side support with v2 is no longer needed.
+    private static final class RequestChannelWrapper {
         private final boolean isV2;
         private final ReceiveLinkHandler receiveLinkHandler;
         private final ReceiveLinkHandler2 receiveLinkHandler2;
 
-        ReceiveLinkHandlerWrapper(String connectionId, String fullyQualifiedNamespace, String linkName, String entityPath,
+        RequestChannelWrapper(String connectionId, String fullyQualifiedNamespace, String linkName, String entityPath,
             Receiver receiveLink, ReactorHandlerProvider handlerProvider, ReactorProvider provider,
             AmqpRetryOptions retryOptions, boolean isV2) {
             this.isV2 = isV2;

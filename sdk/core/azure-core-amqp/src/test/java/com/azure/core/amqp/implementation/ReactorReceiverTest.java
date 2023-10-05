@@ -14,7 +14,6 @@ import com.azure.core.amqp.exception.AmqpErrorContext;
 import com.azure.core.amqp.exception.AmqpException;
 import com.azure.core.amqp.exception.AmqpResponseCode;
 import com.azure.core.amqp.implementation.handler.ReceiveLinkHandler;
-import com.azure.core.amqp.implementation.ReactorReceiver.ReceiveLinkHandlerWrapper;
 import com.azure.core.test.utils.metrics.TestGauge;
 import com.azure.core.test.utils.metrics.TestMeasurement;
 import com.azure.core.test.utils.metrics.TestMeter;
