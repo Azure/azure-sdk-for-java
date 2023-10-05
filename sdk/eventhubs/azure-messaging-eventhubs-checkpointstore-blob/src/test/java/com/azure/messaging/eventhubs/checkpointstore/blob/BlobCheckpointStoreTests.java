@@ -94,10 +94,10 @@ public class BlobCheckpointStoreTests {
         final String eventHubName = "MyEventHubName";
         final String consumerGroup = "$Default";
         final String prefix = getPrefix(fullyQualifiedNamespace, eventHubName, consumerGroup);
-        final String ownershipPrefix =  prefix + "/ownership/";
+        final String ownershipPrefix = prefix + "/ownership/";
 
         BlobCheckpointStore blobCheckpointStore = new BlobCheckpointStore(blobContainerAsyncClient);
-        BlobItem blobItem = getOwnershipBlobItem("owner1", "etag",  ownershipPrefix + "0"); // valid blob
+        BlobItem blobItem = getOwnershipBlobItem("owner1", "etag", ownershipPrefix + "0"); // valid blob
         BlobItem blobItem2 = getOwnershipBlobItem("owner1", "etag", prefix + "/0"); // invalid name
         BlobItem blobItem3 = new BlobItem().setName(ownershipPrefix + "5"); // no metadata
         BlobItem blobItem4 = getOwnershipBlobItem(null, "2", ownershipPrefix + "2"); // valid blob with null ownerid
@@ -115,12 +115,15 @@ public class BlobCheckpointStoreTests {
                 Collections.singletonList(legacyBlobItem), null, null)));
 
         when(blobContainerAsyncClient.listBlobs(any(ListBlobsOptions.class))).thenAnswer(invocation -> {
-            ListBlobsOptions argument = invocation.getArgument(0);
+            final ListBlobsOptions argument = invocation.getArgument(0);
+            final String arg = argument.getPrefix();
 
-            if (ownershipPrefix.equals(argument.getPrefix())) {
+            if (ownershipPrefix.equals(arg)) {
                 return response;
-            } else {
+            } else if (legacyPrefix.equals(arg)) {
                 return legacyResponse;
+            } else {
+                return Flux.error(new IllegalArgumentException("Did not expect this prefix: " + arg));
             }
         });
 
@@ -151,83 +154,171 @@ public class BlobCheckpointStoreTests {
         BlobCheckpointStore blobCheckpointStore = new BlobCheckpointStore(blobContainerAsyncClient);
 
         // Has legacy blob name.
-        final String namespace = "namespace.microsoft.com";
+        final String fullyQualifiedNamespace = "namespace.microsoft.com";
         final String eventHubName = "MyEventHubName";
         final String consumerGroup = "$Default";
-        final String legacyPrefix = String.join("/", namespace, eventHubName, consumerGroup, "ownership") + "/";
+        final String prefix = getPrefix(fullyQualifiedNamespace, eventHubName, consumerGroup) + "/ownership/";
+        final String legacyPrefix = getLegacyPrefix(fullyQualifiedNamespace, eventHubName, consumerGroup)
+            + "/ownership/";
 
         final BlobItem blobItem = getOwnershipBlobItem("owner1", "etag1", legacyPrefix + "0");
         final BlobItem blobItem2 = getOwnershipBlobItem("owner2", "etag4", legacyPrefix + "4");
 
-        final String invalidBlobName = String.join("/", namespace, eventHubName, consumerGroup, "0");
+        final String invalidBlobName = String.join("/", fullyQualifiedNamespace, eventHubName, consumerGroup, "0");
         final BlobItem blobItem3 = getOwnershipBlobItem("owner1", "etag3", invalidBlobName); // invalid name
         final BlobItem blobItem4 = new BlobItem().setName(legacyPrefix + "5"); // no metadata
         final BlobItem blobItem5 = getOwnershipBlobItem(null, "etag2", legacyPrefix + "2"); // valid blob with null ownerId
 
         PagedFlux<BlobItem> legacyResponse = new PagedFlux<>(() -> Mono.just(new PagedResponseBase<HttpHeaders,
-                BlobItem>(null, 200, null,
-                Arrays.asList(blobItem, blobItem2, blobItem3, blobItem4, blobItem5), null,
-                null)));
+            BlobItem>(null, 200, null,
+            Arrays.asList(blobItem, blobItem2, blobItem3, blobItem4, blobItem5), null,
+            null)));
         PagedFlux<BlobItem> emptyResponse = new PagedFlux<>(() -> Mono.just(new PagedResponseBase<HttpHeaders,
             BlobItem>(null, 200, null, Collections.emptyList(), null,
             null)));
 
         when(blobContainerAsyncClient.listBlobs(any(ListBlobsOptions.class))).thenAnswer(invocation -> {
-            ListBlobsOptions listBlobsOptions = invocation.getArgument(0);
-            if (legacyPrefix.equals(listBlobsOptions.getPrefix())) {
+            final ListBlobsOptions listBlobsOptions = invocation.getArgument(0);
+            final String arg = listBlobsOptions.getPrefix();
+
+            if (legacyPrefix.equals(arg)) {
                 return legacyResponse;
-            } else {
+            } else if (prefix.equals(arg)) {
                 return emptyResponse;
+            } else {
+                return Flux.error(new IllegalArgumentException("Did not expect this prefix: " + arg));
             }
         });
 
-        StepVerifier.create(blobCheckpointStore.listOwnership(namespace, eventHubName, consumerGroup))
-                .assertNext(partitionOwnership -> {
-                    assertEquals("owner1", partitionOwnership.getOwnerId());
-                    assertEquals("0", partitionOwnership.getPartitionId());
-                    assertEquals(eventHubName, partitionOwnership.getEventHubName());
-                    assertEquals(consumerGroup, partitionOwnership.getConsumerGroup());
-                    assertEquals(namespace, partitionOwnership.getFullyQualifiedNamespace());
-                    assertEquals("etag1", partitionOwnership.getETag());
-                })
-                .assertNext(partitionOwnership -> {
-                    assertEquals("owner2", partitionOwnership.getOwnerId());
-                    assertEquals("4", partitionOwnership.getPartitionId());
-                    assertEquals(eventHubName, partitionOwnership.getEventHubName());
-                    assertEquals(consumerGroup, partitionOwnership.getConsumerGroup());
-                    assertEquals(namespace, partitionOwnership.getFullyQualifiedNamespace());
-                    assertEquals("etag4", partitionOwnership.getETag());
-                })
-                .assertNext(partitionOwnership -> {
-                    // Empty string is used when there is no ownerId.
-                    assertEquals("", partitionOwnership.getOwnerId());
-                    assertEquals("2", partitionOwnership.getPartitionId());
-                    assertEquals(eventHubName, partitionOwnership.getEventHubName());
-                    assertEquals(consumerGroup, partitionOwnership.getConsumerGroup());
-                    assertEquals(namespace, partitionOwnership.getFullyQualifiedNamespace());
-                    assertEquals("etag2", partitionOwnership.getETag());
-                })
-                .verifyComplete();
+        StepVerifier.create(blobCheckpointStore.listOwnership(fullyQualifiedNamespace, eventHubName, consumerGroup))
+            .assertNext(partitionOwnership -> {
+                assertEquals("owner1", partitionOwnership.getOwnerId());
+                assertEquals("0", partitionOwnership.getPartitionId());
+                assertEquals(eventHubName, partitionOwnership.getEventHubName());
+                assertEquals(consumerGroup, partitionOwnership.getConsumerGroup());
+                assertEquals(fullyQualifiedNamespace, partitionOwnership.getFullyQualifiedNamespace());
+                assertEquals("etag1", partitionOwnership.getETag());
+            })
+            .assertNext(partitionOwnership -> {
+                assertEquals("owner2", partitionOwnership.getOwnerId());
+                assertEquals("4", partitionOwnership.getPartitionId());
+                assertEquals(eventHubName, partitionOwnership.getEventHubName());
+                assertEquals(consumerGroup, partitionOwnership.getConsumerGroup());
+                assertEquals(fullyQualifiedNamespace, partitionOwnership.getFullyQualifiedNamespace());
+                assertEquals("etag4", partitionOwnership.getETag());
+            })
+            .assertNext(partitionOwnership -> {
+                // Empty string is used when there is no ownerId.
+                assertEquals("", partitionOwnership.getOwnerId());
+                assertEquals("2", partitionOwnership.getPartitionId());
+                assertEquals(eventHubName, partitionOwnership.getEventHubName());
+                assertEquals(consumerGroup, partitionOwnership.getConsumerGroup());
+                assertEquals(fullyQualifiedNamespace, partitionOwnership.getFullyQualifiedNamespace());
+                assertEquals("etag2", partitionOwnership.getETag());
+            })
+            .verifyComplete();
     }
 
+    /**
+     * Verifies that it will get the lowercase checkpoint paths.
+     */
     @Test
     public void testListCheckpoint() {
-        BlobCheckpointStore blobCheckpointStore = new BlobCheckpointStore(blobContainerAsyncClient);
-        BlobItem blobItem = getCheckpointBlobItem("230", "1", "ns/eh/cg/checkpoint/0"); // valid blob
-        BlobItem blobItem2 = new BlobItem().setName("ns/eh/cg/checkpoint/1"); // valid blob with no metadata
-        BlobItem blobItem3 = getCheckpointBlobItem("230", "1", "ns/eh/cg/1"); // invalid name
-        PagedFlux<BlobItem> response = new PagedFlux<>(() -> Mono.just(new PagedResponseBase<HttpHeaders,
-            BlobItem>(null, 200, null,
-            Arrays.asList(blobItem, blobItem2, blobItem3), null,
-            null)));
+        final String fullyQualifiedNamespace = "namespace.microsoft.com";
+        final String eventHubName = "MyEventHubName";
+        final String consumerGroup = "$Default";
+        final String prefix = getPrefix(fullyQualifiedNamespace, eventHubName, consumerGroup);
+        final String checkpointPrefix = prefix + "/checkpoint/";
+
+        final BlobCheckpointStore blobCheckpointStore = new BlobCheckpointStore(blobContainerAsyncClient);
+        final BlobItem blobItem = getCheckpointBlobItem("230", "1", checkpointPrefix + "0"); // valid blob
+        final BlobItem blobItem2 = new BlobItem().setName(checkpointPrefix + "1"); // valid blob but not a valid checkpoint.
+        final BlobItem blobItem3 = getCheckpointBlobItem("233", "3", prefix + "1"); // invalid name
+        final PagedFlux<BlobItem> response = new PagedFlux<>(() -> Mono.just(
+            new PagedResponseBase<HttpHeaders, BlobItem>(null, 200, null,
+                Arrays.asList(blobItem, blobItem2, blobItem3), null, null)));
+
+        // If the legacy prefix is used, pass this result.
+        final String legacyPrefix = getLegacyPrefix(fullyQualifiedNamespace, eventHubName, consumerGroup) + "/checkpoint/";
+        final BlobItem legacyBlobItem = getCheckpointBlobItem("110", "0", legacyPrefix + "2");
+        final PagedFlux<BlobItem> legacyResponse = new PagedFlux<>(() -> Mono.just(
+            new PagedResponseBase<HttpHeaders, BlobItem>(null, 200, null,
+                Collections.singletonList(legacyBlobItem), null, null)));
+
+        when(blobContainerAsyncClient.listBlobs(any(ListBlobsOptions.class))).thenAnswer(invocation -> {
+            final ListBlobsOptions listBlobsOptions = invocation.getArgument(0);
+            final String arg = listBlobsOptions.getPrefix();
+
+            if (legacyPrefix.equals(arg)) {
+                return legacyResponse;
+            } else if (checkpointPrefix.equals(arg)) {
+                return response;
+            } else {
+                return Flux.error(new IllegalArgumentException("Did not expect this prefix: " + arg));
+            }
+        });
+
         when(blobContainerAsyncClient.listBlobs(any(ListBlobsOptions.class))).thenReturn(response);
 
-        StepVerifier.create(blobCheckpointStore.listCheckpoints("ns", "eh", "cg"))
+        // Act & Assert
+        StepVerifier.create(blobCheckpointStore.listCheckpoints(fullyQualifiedNamespace, eventHubName, consumerGroup))
             .assertNext(checkpoint -> {
                 assertEquals("0", checkpoint.getPartitionId());
-                assertEquals("eh", checkpoint.getEventHubName());
-                assertEquals("cg", checkpoint.getConsumerGroup());
+                assertEquals(eventHubName, checkpoint.getEventHubName());
+                assertEquals(consumerGroup, checkpoint.getConsumerGroup());
                 assertEquals(1L, checkpoint.getSequenceNumber());
+                assertEquals(230L, checkpoint.getOffset());
+            }).verifyComplete();
+    }
+
+
+    /**
+     * Verifies that it will fallback to legacy checkpoints if there are no lowercase variant ones.
+     */
+    @Test
+    public void testListCheckpointLegacy() {
+        final String fullyQualifiedNamespace = "namespace.microsoft.com";
+        final String eventHubName = "MyEventHubName";
+        final String consumerGroup = "$Default";
+        final String legacyPrefix = getLegacyPrefix(fullyQualifiedNamespace, eventHubName, consumerGroup);
+        final String legacyCheckpointPrefix = legacyPrefix + "/checkpoint/";
+        final String prefix = getPrefix(fullyQualifiedNamespace, eventHubName, consumerGroup) + "/checkpoint/";
+
+        final BlobCheckpointStore blobCheckpointStore = new BlobCheckpointStore(blobContainerAsyncClient);
+        final BlobItem blobItem = getCheckpointBlobItem("230", "1", legacyCheckpointPrefix + "0"); // valid blob
+        final BlobItem blobItem2 = new BlobItem().setName(legacyCheckpointPrefix + "1"); // valid blob but not a valid checkpoint.
+        final BlobItem blobItem3 = getCheckpointBlobItem("233", "3", legacyPrefix + "1"); // invalid name
+        final PagedFlux<BlobItem> legacyResponse = new PagedFlux<>(() -> Mono.just(
+            new PagedResponseBase<HttpHeaders, BlobItem>(null, 200, null,
+                Arrays.asList(blobItem, blobItem2, blobItem3), null, null)));
+
+        final PagedFlux<BlobItem> emptyResponse = new PagedFlux<>(() -> Mono.just(
+            new PagedResponseBase<HttpHeaders, BlobItem>(null, 200, null,
+                Collections.emptyList(), null, null)));
+
+        when(blobContainerAsyncClient.listBlobs(any(ListBlobsOptions.class))).thenAnswer(invocation -> {
+            final ListBlobsOptions listBlobsOptions = invocation.getArgument(0);
+            final String arg = listBlobsOptions.getPrefix();
+
+            if (legacyCheckpointPrefix.equals(arg)) {
+                return legacyResponse;
+            } else if (prefix.equals(arg)) {
+                return emptyResponse;
+            } else {
+                return Flux.error(new IllegalArgumentException("Did not expect this prefix: " + arg));
+            }
+        });
+
+        when(blobContainerAsyncClient.listBlobs(any(ListBlobsOptions.class))).thenReturn(legacyResponse);
+
+        // Act & Assert
+        StepVerifier.create(blobCheckpointStore.listCheckpoints(fullyQualifiedNamespace, eventHubName, consumerGroup))
+            .assertNext(checkpoint -> {
+                assertEquals("0", checkpoint.getPartitionId());
+                assertEquals(eventHubName, checkpoint.getEventHubName());
+                assertEquals(consumerGroup, checkpoint.getConsumerGroup());
+                assertEquals(1L, checkpoint.getSequenceNumber());
+                assertEquals(fullyQualifiedNamespace, checkpoint.getFullyQualifiedNamespace());
                 assertEquals(230L, checkpoint.getOffset());
             }).verifyComplete();
     }
