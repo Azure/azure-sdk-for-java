@@ -442,7 +442,6 @@ public class JsonObject extends JsonElement {
      * utilises the toWriter method.
      * @return the String representation of the JsonObject
      */
-
     public String toJson() throws IOException {
         try (StringBuilderWriter stringOutput = new StringBuilderWriter(new StringBuilder())) {
             toWriter(stringOutput);
