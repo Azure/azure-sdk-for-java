@@ -6,7 +6,6 @@ import com.azure.core.http.HttpHeaders;
 import com.azure.core.http.HttpRequest;
 import com.azure.core.http.httpurlconnection.implementation.HttpUrlConnectionResponse;
 import reactor.core.publisher.Flux;
-
 import javax.net.ssl.SSLSocket;
 import javax.net.ssl.SSLSocketFactory;
 import java.io.*;
@@ -48,9 +47,9 @@ class SocketClient {
     }
 
     /**
-     * Gets a String representation of the request and writes it to the output stream,
-     * then calls buildResponse to get an instance of HttpUrlConnectionResponse from the
-     * input stream
+     * Calls buildAndSend to send a String representation of the request across the output
+     * stream, then calls buildResponse to get an instance of HttpUrlConnectionResponse
+     * from the input stream
      *
      * @param httpRequest {@link com.azure.core.http.HttpRequest} instance
      * @param socket {@link java.net.Socket} instance
@@ -62,12 +61,10 @@ class SocketClient {
             httpRequest.setHeader(HttpHeaderName.CONNECTION, "close");
         }
 
-        String request = buildPatchRequest(httpRequest);
         try (BufferedReader in = new BufferedReader(new InputStreamReader(socket.getInputStream(), StandardCharsets.UTF_8));
              OutputStreamWriter out = new OutputStreamWriter(socket.getOutputStream())) {
 
-            out.write(request);
-            out.flush();
+            buildAndSend(httpRequest, out);
 
             HttpUrlConnectionResponse response = buildResponse(httpRequest, in);
 
@@ -85,7 +82,6 @@ class SocketClient {
                 }
                 return sendPatchRequest(httpRequest);
             }
-
             return response;
         }
     }
@@ -95,32 +91,34 @@ class SocketClient {
      * over the output stream
      *
      * @param httpRequest {@link com.azure.core.http.HttpRequest} instance
-     * @return the String representation of the HttpRequest
+     * @param out {@link java.io.OutputStreamWriter } output stream for writing the request
      */
-    private static String buildPatchRequest(HttpRequest httpRequest) {
+    private static void buildAndSend(HttpRequest httpRequest, OutputStreamWriter out) throws IOException {
         final StringBuilder request = new StringBuilder();
 
         request.append("PATCH")
-               .append(" ")
-               .append(httpRequest.getUrl().getPath())
-               .append(HTTP_VERSION)
-               .append("\r\n");
+            .append(" ")
+            .append(httpRequest.getUrl().getPath())
+            .append(HTTP_VERSION)
+            .append("\r\n");
 
         if (httpRequest.getHeaders().getSize() > 0) {
             for (HttpHeader header : httpRequest.getHeaders()) {
                 header.getValuesList().forEach(value -> request.append(header.getName())
-                                                               .append(": ")
-                                                               .append(value)
-                                                               .append("\r\n"));
+                    .append(": ")
+                    .append(value)
+                    .append("\r\n"));
             }
         }
         // Add the body if there is a body to add
         if (httpRequest.getBody() != null) {
             request.append("\r\n")
-                   .append(httpRequest.getBodyAsBinaryData().toString())
-                   .append("\r\n");
+                .append(httpRequest.getBodyAsBinaryData().toString())
+                .append("\r\n");
         }
-        return request.toString();
+
+        out.write(request.toString());
+        out.flush();
     }
 
     /**
