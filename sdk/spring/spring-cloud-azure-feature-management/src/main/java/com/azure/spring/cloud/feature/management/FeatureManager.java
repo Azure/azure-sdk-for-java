@@ -243,7 +243,7 @@ public class FeatureManager {
                 return variantAssignment.getVariant(feature.getVariants().values(),
                     feature.getAllocation().getDefautlWhenDisabled()).single();
             } else if (!enabled) {
-                return Mono.just(null);
+                return Mono.justOrEmpty(null);
             }
 
             return variantAssignment.assignVariant(feature.getAllocation(), feature.getVariants().values()).single();
