@@ -53,7 +53,15 @@ public class HttpUrlConnectionAsyncClient implements HttpClient {
 
     @Override
     public HttpResponse sendSync(HttpRequest httpRequest, Context context) {
-        return sendAsync(httpRequest, context).block();
+        ProgressReporter progressReporter = Contexts.with(context).getHttpRequestProgressReporter();
+
+        if (httpRequest.getHttpMethod() == HttpMethod.PATCH) {
+            return sendPatchViaSocketSync(httpRequest);
+        }
+
+        HttpURLConnection connection = connect(httpRequest);
+        sendRequest(httpRequest, progressReporter, connection);
+        return receiveResponse(httpRequest, connection);
     }
 
     /**
@@ -65,8 +73,7 @@ public class HttpUrlConnectionAsyncClient implements HttpClient {
      */
     private Mono<HttpResponse> sendAsync(HttpRequest httpRequest, Context context) {
         ProgressReporter progressReporter = Contexts.with(context).getHttpRequestProgressReporter();
-        HttpMethod httpMethod = httpRequest.getHttpMethod();
-        if (httpMethod == HttpMethod.PATCH) {
+        if (httpRequest.getHttpMethod() == HttpMethod.PATCH) {
             return sendPatchViaSocket(httpRequest);
         }
 
@@ -85,7 +92,15 @@ public class HttpUrlConnectionAsyncClient implements HttpClient {
      * @return A Mono containing a HttpResponse object
      */
     private Mono<HttpResponse> sendPatchViaSocket(HttpRequest httpRequest) {
-        return Mono.fromCallable(() -> SocketClient.sendPatchRequest(httpRequest));
+        return Mono.fromCallable(() -> sendPatchViaSocketSync(httpRequest));
+    }
+
+    private HttpResponse sendPatchViaSocketSync(HttpRequest httpRequest) {
+        try {
+            return SocketClient.sendPatchRequest(httpRequest);
+        } catch (IOException e) {
+            throw new RuntimeException(e);
+        }
     }
 
     /**
@@ -256,6 +271,17 @@ public class HttpUrlConnectionAsyncClient implements HttpClient {
             );
         } catch (IOException e) {
             throw LOGGER.logExceptionAsError(new RuntimeException(e));
+        }
+    }
+
+    private void writeBody(ByteBuffer buffer, DataOutputStream os) {
+        try {
+            byte[] bytes = new byte[buffer.remaining()];
+            buffer.get(bytes);
+            os.write(bytes);
+            os.flush();
+        } catch (IOException e) {
+            throw new RuntimeException(e);
         }
     }
 }
