@@ -52,7 +52,7 @@ import java.util.function.Function;
 import java.util.function.Supplier;
 import java.util.stream.Collectors;
 
-import static com.azure.core.util.CoreUtils.getFutureWithCancellation;
+import static com.azure.core.util.CoreUtils.getResultWithTimeout;
 import static com.azure.core.util.FluxUtil.monoError;
 import static com.azure.core.util.tracing.Tracer.AZ_TRACING_NAMESPACE_KEY;
 /**
@@ -616,7 +616,7 @@ public final class TableUtils {
         ClientLogger logger) {
         try {
             return hasTimeout(timeout)
-                ? getFutureWithCancellation(threadPool.submit(callable::get), timeout.toMillis(), TimeUnit.MILLISECONDS)
+                ? getResultWithTimeout(threadPool.submit(callable::get), timeout)
                 : callable.get();
         } catch (InterruptedException | ExecutionException | TimeoutException ex) {
             throw logger.logExceptionAsError(new RuntimeException(ex));

@@ -384,6 +384,11 @@ public final class ImplUtils {
         }
     }
 
+    @SuppressWarnings("unchecked")
+    public static <E extends Throwable> void sneakyThrows(Throwable e) throws E {
+        throw (E) e;
+    }
+
     private ImplUtils() {
     }
 }

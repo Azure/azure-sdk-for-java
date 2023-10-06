@@ -15,10 +15,12 @@ import org.apache.avro.message.SchemaStore;
 @org.apache.avro.specific.AvroGenerated
 public class Person extends org.apache.avro.specific.SpecificRecordBase implements org.apache.avro.specific.SpecificRecord {
   private static final long serialVersionUID = -8426514654473393623L;
+
+
   public static final org.apache.avro.Schema SCHEMA$ = new org.apache.avro.Schema.Parser().parse("{\"type\":\"record\",\"name\":\"Person\",\"namespace\":\"com.azure.data.schemaregistry.apacheavro.generatedtestsources\",\"fields\":[{\"name\":\"name\",\"type\":{\"type\":\"string\",\"avro.java.string\":\"String\"}},{\"name\":\"favourite_number\",\"type\":[\"int\",\"null\"]},{\"name\":\"favourite_colour\",\"type\":[{\"type\":\"string\",\"avro.java.string\":\"String\"},\"null\"]}]}");
   public static org.apache.avro.Schema getClassSchema() { return SCHEMA$; }
 
-  private static SpecificData MODEL$ = new SpecificData();
+  private static final SpecificData MODEL$ = new SpecificData();
 
   private static final BinaryMessageEncoder<Person> ENCODER =
       new BinaryMessageEncoder<Person>(MODEL$, SCHEMA$);
@@ -71,9 +73,9 @@ public class Person extends org.apache.avro.specific.SpecificRecordBase implemen
     return DECODER.decode(b);
   }
 
-   private java.lang.String name;
-   private java.lang.Integer favourite_number;
-   private java.lang.String favourite_colour;
+  private java.lang.String name;
+  private java.lang.Integer favourite_number;
+  private java.lang.String favourite_colour;
 
   /**
    * Default constructor.  Note that this does not initialize fields
@@ -215,7 +217,7 @@ public class Person extends org.apache.avro.specific.SpecificRecordBase implemen
 
     /** Creates a new Builder */
     private Builder() {
-      super(SCHEMA$);
+      super(SCHEMA$, MODEL$);
     }
 
     /**
@@ -243,7 +245,7 @@ public class Person extends org.apache.avro.specific.SpecificRecordBase implemen
      * @param other The existing instance to copy.
      */
     private Builder(com.azure.data.schemaregistry.apacheavro.generatedtestsources.Person other) {
-      super(SCHEMA$);
+      super(SCHEMA$, MODEL$);
       if (isValidValue(fields()[0], other.name)) {
         this.name = data().deepCopy(fields()[0].schema(), other.name);
         fieldSetFlags()[0] = true;
