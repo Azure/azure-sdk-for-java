@@ -50,9 +50,10 @@ public class AzureMonitorExportersEndToEndTest extends MonitorExporterClientTest
             + "IngestionEndpoint=https://test.in.applicationinsights.azure.com/;"
             + "LiveEndpoint=https://test.livediagnostics.monitor.azure.com/";
 
-    private static final String STATSBEAT_CONNECTION_STRING = "InstrumentationKey=00000000-0000-0000-0000-000000000000;" +
-        "IngestionEndpoint=https://westus-0.in.applicationinsights.azure.com/;" +
-        "LiveEndpoint=https://westus.livediagnostics.monitor.azure.com/";
+    private static final String STATSBEAT_CONNECTION_STRING =
+        "InstrumentationKey=00000000-0000-0000-0000-000000000000;"
+        + "IngestionEndpoint=https://westus-0.in.applicationinsights.azure.com/;"
+        + "LiveEndpoint=https://westus.livediagnostics.monitor.azure.com/";
     private static final String INSTRUMENTATION_KEY = "00000000-0000-0000-0000-000000000000";
 
     @Test

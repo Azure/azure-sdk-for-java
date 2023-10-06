@@ -390,7 +390,7 @@ public final class AzureMonitorExporterBuilder {
     }
 
     private Set<Feature> initStatsbeatFeatures() {
-        // TODO - starting tracking native image usage based on a system property or env var to indicate it's from the native image path
+        // TODO (jean): start tracking native image usage based on a system property or env var to indicate it's from the native image path
         return Collections.emptySet();
     }
 
