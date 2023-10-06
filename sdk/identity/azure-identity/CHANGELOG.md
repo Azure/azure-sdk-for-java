@@ -140,7 +140,7 @@
 
 ### Features Added
 - [[#32527]](https://github.com/Azure/azure-sdk-for-java/pull/32527) Added Azure Developer CLI Credential.
-- Added support to disable instance discovery on AAD credentials.
+- Added support to disable instance discovery on Microsoft Entra ID credentials.
 - `WorkloadIdentityCredential` and `DefaultAzureCredential` support Workload Identity Federation on Kubernetes. `DefaultAzureCredential` support requires environment variable configuration as set by the Workload Identity webhook.
 
 ## 1.8.0 (2023-02-03)
@@ -161,7 +161,7 @@
 
 ### Features Added
 - Added support to configure `clientOptions`, `httpLogOptions`, `retryPolicy`, `retryOptions` and `addPolicy` on Identity credentials.
-- Added support to disable instance discovery on AAD credentials.
+- Added support to disable instance discovery on Microsoft Entra ID credentials.
 
 ## 1.7.3 (2023-01-06)
 
@@ -664,7 +664,7 @@ The `getToken(String... scopes)` methods on all the credentials are changed to `
 ## 1.0.0-preview.3 (2019-09-09)
 **New features**
 
-A new credential `SharedTokenCacheCredential` is added. It's currently only supported on Windows. This credential is capable of authenticating to Azure Active Directory if you are logged in in Visual Studio 2019.
+A new credential `SharedTokenCacheCredential` is added. It's currently only supported on Windows. This credential is capable of authenticating to Microsoft Entra ID if you are logged in in Visual Studio 2019.
 
 ## 1.0.0-preview.2 (2019-08-05)
 **Breaking changes**
@@ -708,5 +708,5 @@ See the [documentation](https://github.com/Azure/azure-sdk-for-java/blob/main/sd
 for more details. User authentication will be added in an upcoming preview
 release.
 
-This release supports only global Azure Active Directory tenants, i.e. those
+This release supports only global Microsoft Entra tenants, i.e. those
 using the https://login.microsoftonline.com authentication endpoint.
