@@ -25,8 +25,8 @@ public final class CancelAddParticipantRequest {
     /*
      * The callback URI to override the main callback URI.
      */
-    @JsonProperty(value = "overrideCallbackUri")
-    private String overrideCallbackUri;
+    @JsonProperty(value = "overrideCallbackUrl")
+    private String overrideCallbackUrl;
 
     /** Creates an instance of CancelAddParticipantRequest class. */
     public CancelAddParticipantRequest() {}
@@ -74,22 +74,22 @@ public final class CancelAddParticipantRequest {
     }
 
     /**
-     * Get the overrideCallbackUri property: The callback URI to override the main callback URI.
+     * Get the overrideCallbackUrl property: The callback URI to override the main callback URI.
      *
-     * @return the overrideCallbackUri value.
+     * @return the overrideCallbackUrl value.
      */
-    public String getOverrideCallbackUri() {
-        return this.overrideCallbackUri;
+    public String getOverrideCallbackUrl() {
+        return this.overrideCallbackUrl;
     }
 
     /**
-     * Set the overrideCallbackUri property: The callback URI to override the main callback URI.
+     * Set the overrideCallbackUrl property: The callback URI to override the main callback URI.
      *
-     * @param overrideCallbackUri the overrideCallbackUri value to set.
+     * @param overrideCallbackUrl the overrideCallbackUrl value to set.
      * @return the CancelAddParticipantRequest object itself.
      */
-    public CancelAddParticipantRequest setOverrideCallbackUri(String overrideCallbackUri) {
-        this.overrideCallbackUri = overrideCallbackUri;
+    public CancelAddParticipantRequest setOverrideCallbackUrl(String overrideCallbackUrl) {
+        this.overrideCallbackUrl = overrideCallbackUrl;
         return this;
     }
 }

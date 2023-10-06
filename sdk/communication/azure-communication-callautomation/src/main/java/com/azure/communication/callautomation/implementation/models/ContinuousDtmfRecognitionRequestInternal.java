@@ -25,8 +25,8 @@ public final class ContinuousDtmfRecognitionRequestInternal {
     /*
      * The callback URI to override the main callback URI.
      */
-    @JsonProperty(value = "overrideCallbackUri")
-    private String overrideCallbackUri;
+    @JsonProperty(value = "overrideCallbackUrl")
+    private String overrideCallbackUrl;
 
     /** Creates an instance of ContinuousDtmfRecognitionRequestInternal class. */
     public ContinuousDtmfRecognitionRequestInternal() {}
@@ -73,22 +73,22 @@ public final class ContinuousDtmfRecognitionRequestInternal {
     }
 
     /**
-     * Get the overrideCallbackUri property: The callback URI to override the main callback URI.
+     * Get the overrideCallbackUrl property: The callback URI to override the main callback URI.
      *
-     * @return the overrideCallbackUri value.
+     * @return the overrideCallbackUrl value.
      */
-    public String getOverrideCallbackUri() {
-        return this.overrideCallbackUri;
+    public String getOverrideCallbackUrl() {
+        return this.overrideCallbackUrl;
     }
 
     /**
-     * Set the overrideCallbackUri property: The callback URI to override the main callback URI.
+     * Set the overrideCallbackUrl property: The callback URI to override the main callback URI.
      *
-     * @param overrideCallbackUri the overrideCallbackUri value to set.
+     * @param overrideCallbackUrl the overrideCallbackUrl value to set.
      * @return the ContinuousDtmfRecognitionRequestInternal object itself.
      */
-    public ContinuousDtmfRecognitionRequestInternal setOverrideCallbackUri(String overrideCallbackUri) {
-        this.overrideCallbackUri = overrideCallbackUri;
+    public ContinuousDtmfRecognitionRequestInternal setOverrideCallbackUrl(String overrideCallbackUrl) {
+        this.overrideCallbackUrl = overrideCallbackUrl;
         return this;
     }
 }

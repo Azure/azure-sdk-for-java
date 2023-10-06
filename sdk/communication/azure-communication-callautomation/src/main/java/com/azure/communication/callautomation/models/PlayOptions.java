@@ -35,7 +35,7 @@ public final class PlayOptions {
     /**
      * The call back URI override.
      */
-    private String overrideCallbackUri;
+    private String overrideCallbackUrl;
 
     /**
      * Constructor
@@ -119,20 +119,20 @@ public final class PlayOptions {
     /**
      * Get the call back URI override.
      *
-     * @return the callbackUriOverride
+     * @return the overrideCallbackUrl
      */
-    public String getOverrideCallbackUri() {
-        return overrideCallbackUri;
+    public String getOverrideCallbackUrl() {
+        return overrideCallbackUrl;
     }
 
     /**
      * Set the call back URI override.
      *
-     * @param overrideCallbackUri The call back URI override to set
+     * @param overrideCallbackUrl The call back URI override to set
      * @return the PlayOptions object itself.
      */
-    public PlayOptions setOverrideCallbackUri(String overrideCallbackUri) {
-        this.overrideCallbackUri = overrideCallbackUri;
+    public PlayOptions setOverrideCallbackUrl(String overrideCallbackUrl) {
+        this.overrideCallbackUrl = overrideCallbackUrl;
         return this;
     }
 }

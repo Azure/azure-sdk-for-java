@@ -23,7 +23,7 @@ public final class CancelAddParticipantOptions {
     /**
      * Callback URI override
      */
-    private String overrideCallbackUri;
+    private String overrideCallbackUrl;
 
     /**
      * Constructor
@@ -55,10 +55,10 @@ public final class CancelAddParticipantOptions {
     /**
      * Get the callback URI override.
      *
-     * @return the callbackUriOverride
+     * @return the overrideCallbackUrl
      */
-    public String getOverrideCallbackUri() {
-        return overrideCallbackUri;
+    public String getOverrideCallbackUrl() {
+        return overrideCallbackUrl;
     }
 
     /**
@@ -73,13 +73,13 @@ public final class CancelAddParticipantOptions {
     }
 
     /**
-     * Set the callbackUriOverride.
+     * Set the overrideCallbackUrl.
      *
-     * @param overrideCallbackUri the callbackUriOverride to set
+     * @param overrideCallbackUrl the overrideCallbackUrl to set
      * @return the CancelAddParticipantOptions object itself.
      */
-    public CancelAddParticipantOptions setOverrideCallbackUri(String overrideCallbackUri) {
-        this.overrideCallbackUri = overrideCallbackUri;
+    public CancelAddParticipantOptions setOverrideCallbackUrl(String overrideCallbackUrl) {
+        this.overrideCallbackUrl = overrideCallbackUrl;
         return this;
     }
 }

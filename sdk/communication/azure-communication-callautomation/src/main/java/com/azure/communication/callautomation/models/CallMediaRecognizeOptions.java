@@ -63,7 +63,7 @@ public abstract class CallMediaRecognizeOptions {
     /**
      * The call back URI override.
      */
-    private String overrideCallbackUri;
+    private String overrideCallbackUrl;
 
     /**
      * Initializes a CallMediaRecognizeOptions object.
@@ -233,20 +233,20 @@ public abstract class CallMediaRecognizeOptions {
     /**
      * Get the call back URI override.
      *
-     * @return the callbackUriOverride
+     * @return the overrideCallbackUrl
      */
-    public String getOverrideCallbackUri() {
-        return overrideCallbackUri;
+    public String getOverrideCallbackUrl() {
+        return overrideCallbackUrl;
     }
 
     /**
      * Set the call back URI override.
      *
-     * @param overrideCallbackUri The call back URI override to set
+     * @param overrideCallbackUrl The call back URI override to set
      * @return the CallMediaRecognizeOptions object itself.
      */
-    public CallMediaRecognizeOptions setOverrideCallbackUri(String overrideCallbackUri) {
-        this.overrideCallbackUri = overrideCallbackUri;
+    public CallMediaRecognizeOptions setOverrideCallbackUrl(String overrideCallbackUrl) {
+        this.overrideCallbackUrl = overrideCallbackUrl;
         return this;
     }
 }

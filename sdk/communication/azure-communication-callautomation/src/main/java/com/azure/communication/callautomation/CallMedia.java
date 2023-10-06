@@ -166,14 +166,14 @@ public final class CallMedia {
      * @param tones tones to be sent
      * @param targetParticipant the target participant
      * @param operationContext operationContext (pass null if not applicable)
-     * @param overrideCallbackUri The callback URI to override the main callback URI
+     * @param overrideCallbackUrl The callback URI to override the main callback URI
      * @param context Context
      * @return Response for successful sendDtmfTones request.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Response<SendDtmfTonesResult> sendDtmfTonesWithResponse(List<DtmfTone> tones, CommunicationIdentifier targetParticipant,
-                                                                   String operationContext, String overrideCallbackUri, Context context) {
-        return callMediaAsync.sendDtmfTonesWithResponseInternal(targetParticipant, tones, operationContext, overrideCallbackUri, context).block();
+                                                                   String operationContext, String overrideCallbackUrl, Context context) {
+        return callMediaAsync.sendDtmfTonesWithResponseInternal(targetParticipant, tones, operationContext, overrideCallbackUrl, context).block();
     }
 
     /**
@@ -211,12 +211,12 @@ public final class CallMedia {
      * Stops continuous Dtmf recognition.
      * @param targetParticipant the target participant
      * @param operationContext operationContext (pass null if not applicable)
-     * @param overrideCallbackUri The callback URI to override the main callback URI
+     * @param overrideCallbackUrl The callback URI to override the main callback URI
      * @param context Context
      * @return Response for successful stop continuous dtmf recognition request.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Response<Void> stopContinuousDtmfRecognitionWithResponse(CommunicationIdentifier targetParticipant, String operationContext, String overrideCallbackUri, Context context) {
-        return callMediaAsync.stopContinuousDtmfRecognitionWithResponseInternal(targetParticipant, operationContext, overrideCallbackUri, context).block();
+    public Response<Void> stopContinuousDtmfRecognitionWithResponse(CommunicationIdentifier targetParticipant, String operationContext, String overrideCallbackUrl, Context context) {
+        return callMediaAsync.stopContinuousDtmfRecognitionWithResponseInternal(targetParticipant, operationContext, overrideCallbackUrl, context).block();
     }
 }

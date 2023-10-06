@@ -17,7 +17,7 @@ public final class TransferCallToParticipantOptions {
 
     private final CommunicationIdentifier targetParticipant;
 
-    private String overrideCallbackUri;
+    private String overrideCallbackUrl;
 
     /**
      *  Participant being transferred away
@@ -121,18 +121,18 @@ public final class TransferCallToParticipantOptions {
      *
      * @return the callbackUrlOverride
      */
-    public String getOverrideCallbackUri() {
-        return overrideCallbackUri;
+    public String getOverrideCallbackUrl() {
+        return overrideCallbackUrl;
     }
 
     /**
      * Set the callbackUrl.
      *
-     * @param overrideCallbackUri the callbackUrlOverride to set
+     * @param overrideCallbackUrl the callbackUrlOverride to set
      * @return the TransferCallToParticipantOptions object itself.
      */
-    public TransferCallToParticipantOptions setOverrideCallbackUri(String overrideCallbackUri) {
-        this.overrideCallbackUri = overrideCallbackUri;
+    public TransferCallToParticipantOptions setOverrideCallbackUrl(String overrideCallbackUrl) {
+        this.overrideCallbackUrl = overrideCallbackUrl;
         return this;
     }
 }

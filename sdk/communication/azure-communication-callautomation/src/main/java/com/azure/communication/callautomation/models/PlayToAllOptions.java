@@ -29,7 +29,7 @@ public final class PlayToAllOptions {
     /**
      * The call back URI override.
      */
-    private String overrideCallbackUri;
+    private String overrideCallbackUrl;
 
     /**
      * Constructor
@@ -78,10 +78,10 @@ public final class PlayToAllOptions {
     /**
      * Get the call back URI override.
      *
-     * @return the callbackUriOverride
+     * @return the overrideCallbackUrl
      */
-    public String getOverrideCallbackUri() {
-        return overrideCallbackUri;
+    public String getOverrideCallbackUrl() {
+        return overrideCallbackUrl;
     }
 
     /**
@@ -109,11 +109,11 @@ public final class PlayToAllOptions {
     /**
      * Set the call back URI override.
      *
-     * @param overrideCallbackUri The call back URI override to set
+     * @param overrideCallbackUrl The call back URI override to set
      * @return the PlayToAllOptions object itself.
      */
-    public PlayToAllOptions setOverrideCallbackUri(String overrideCallbackUri) {
-        this.overrideCallbackUri = overrideCallbackUri;
+    public PlayToAllOptions setOverrideCallbackUrl(String overrideCallbackUrl) {
+        this.overrideCallbackUrl = overrideCallbackUrl;
         return this;
     }
 }

@@ -34,7 +34,7 @@ public final class AddParticipantOptions {
     /**
      * The call back URI override.
      */
-    private String overrideCallbackUri;
+    private String overrideCallbackUrl;
 
     /**
      * Constructor
@@ -65,10 +65,10 @@ public final class AddParticipantOptions {
     /**
      * Get the call back URI override.
      *
-     * @return the callbackUriOverride
+     * @return the overrideCallbackUrl
      */
-    public String getOverrideCallbackUri() {
-        return overrideCallbackUri;
+    public String getOverrideCallbackUrl() {
+        return overrideCallbackUrl;
     }
 
     /**
@@ -94,11 +94,11 @@ public final class AddParticipantOptions {
     /**
      * Set the call back URI override.
      *
-     * @param overrideCallbackUri The call back URI override to set
+     * @param overrideCallbackUrl The call back URI override to set
      * @return the AddParticipantOptions object itself.
      */
-    public AddParticipantOptions setOverrideCallbackUri(String overrideCallbackUri) {
-        this.overrideCallbackUri = overrideCallbackUri;
+    public AddParticipantOptions setOverrideCallbackUrl(String overrideCallbackUrl) {
+        this.overrideCallbackUrl = overrideCallbackUrl;
         return this;
     }
 
