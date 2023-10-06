@@ -9,6 +9,7 @@ import com.azure.cosmos.implementation.DatabaseAccount;
 import com.azure.cosmos.implementation.DatabaseAccountLocation;
 import com.azure.cosmos.implementation.GlobalEndpointManager;
 import com.azure.cosmos.implementation.HttpConstants;
+import com.azure.cosmos.implementation.OperationType;
 import com.azure.cosmos.implementation.RxDocumentClientImpl;
 import com.azure.cosmos.implementation.TestConfigurations;
 import com.azure.cosmos.implementation.Utils;
@@ -99,6 +100,12 @@ public class MaxRetryCountTests extends TestSuiteBase {
             assertThat(subStatusCode).isEqualTo(HttpConstants.SubStatusCodes.SERVER_GENERATED_503);
         };
 
+    private final static BiConsumer<Integer, Integer> validateStatusCodeIsRetryWith =
+        (statusCode, subStatusCode) -> {
+            assertThat(statusCode).isEqualTo(HttpConstants.StatusCodes.RETRY_WITH);
+            assertThat(subStatusCode).isEqualTo(HttpConstants.SubStatusCodes.UNKNOWN);
+        };
+
     private final static BiConsumer<CosmosAsyncContainer, FaultInjectionOperationType> noFailureInjection =
         (container, operationType) -> {};
 
@@ -109,6 +116,8 @@ public class MaxRetryCountTests extends TestSuiteBase {
     private BiConsumer<CosmosAsyncContainer, FaultInjectionOperationType> injectServiceUnavailableIntoAllRegions = null;
 
     private BiConsumer<CosmosAsyncContainer, FaultInjectionOperationType> injectInternalServerErrorIntoAllRegions = null;
+
+    private BiConsumer<CosmosAsyncContainer, FaultInjectionOperationType> injectRetryWithErrorIntoAllRegions = null;
 
     private String FIRST_REGION_NAME = null;
     private String SECOND_REGION_NAME = null;
@@ -170,6 +179,9 @@ public class MaxRetryCountTests extends TestSuiteBase {
 
             this.injectInternalServerErrorIntoAllRegions =
                 (c, operationType) -> injectInternalServerError(c, this.writeableRegions, operationType);
+
+            this.injectRetryWithErrorIntoAllRegions =
+                (c, operationType) -> injectRetryWithServerError(c, this.writeableRegions, operationType);
 
             CosmosAsyncContainer container = this.createTestContainer(dummyClient);
             this.testDatabaseId = container.getDatabase().getId();
@@ -252,8 +264,32 @@ public class MaxRetryCountTests extends TestSuiteBase {
         return count + 1;
     }
 
-    @DataProvider(name = "testConfigs_readMaxRetryCount")
-    public Object[][] testConfigs_readMaxRetryCount() {
+    private static int expectedMaxNumberOfRetriesForRetryWith(
+        int maxWaitTimeInSeconds,
+        int maxBackoffTimeInMs,
+        int initialBackoffTimeInMs,
+        int backoffMultiplier) {
+        int currentBackoff = initialBackoffTimeInMs;
+        int waitTime = 0;
+        int count = 1;
+        while (waitTime <= maxWaitTimeInSeconds) {
+            waitTime += currentBackoff;
+            currentBackoff = Math.min(currentBackoff * backoffMultiplier, maxBackoffTimeInMs);
+            count += 1;
+        }
+
+        logger.info(
+            "expectedMaxNumberOfRetriesForRetryWith [maxWaitTimeInSeconds {}, maxBackoffTimeInMs {}, initialBackoffTimeInMs {}] == {}",
+            maxWaitTimeInSeconds,
+            maxBackoffTimeInMs,
+            initialBackoffTimeInMs,
+            count);
+
+        return count + 1;
+    }
+
+    @DataProvider(name = "readMaxRetryCount_readSessionNotAvailable")
+    public Object[][] testConfigs_readMaxRetryCount_readSessionNotAvailable() {
         final Integer MAX_LOCAL_RETRY_COUNT_DEFAULT = null;
         final Integer MAX_LOCAL_RETRY_COUNT_ONE = 1;
         final Integer MAX_LOCAL_RETRY_COUNT_ZERO = 0;
@@ -304,7 +340,7 @@ public class MaxRetryCountTests extends TestSuiteBase {
             },
 
             new Object[] {
-                "404-1002_AllRegions_RemotePreferred_LocalRetryCount1",
+                "404-1002_AllRegions_RemotePreferred_LocalRetryCount0",
                 Duration.ofSeconds(60),
                 CosmosRegionSwitchHint.REMOTE_REGION_PREFERRED,
                 sameDocumentIdJustCreated,
@@ -397,8 +433,68 @@ public class MaxRetryCountTests extends TestSuiteBase {
         };
     }
 
-    @Test(groups = {"multi-master"}, dataProvider = "testConfigs_readMaxRetryCount")
-    public void readMaxRetryCount(
+    @DataProvider(name = "readMaxRetryCount_retryWith")
+    public Object[][] testConfigs_readMaxRetryCount_retryWith() {
+        final int DEFAULT_WAIT_TIME_IN_MS = 30 * 1000;
+        final int DEFAULT_MAXIMUM_BACKOFF_TIME_IN_MS = 1000;
+        final int DEFAULT_INITIAL_BACKOFF_TIME_MS = 10;
+        final int DEFAULT_BACK_OFF_MULTIPLIER = 2;
+
+        return new Object[][] {
+            // CONFIG description
+            // new Object[] {
+            //    TestId - name identifying the test case
+            //    End-to-end timeout,
+            //    OperationType,
+            //    FaultInjectionOperationType,
+            //    optional documentId used for reads (instead of the just created doc id) - this can be used to trigger 404/0
+            //    Failure injection callback
+            //    Status code/sub status code validation callback
+            //    maxExpectedRetryCount
+            // },
+
+            // This test injects 449/0 across all regions for the read operation after the initial creation
+            // It is expected to fail with a 449/0
+            // There is no cross region retry for 449/0
+            new Object[] {
+                "449-0_AllRegions_Read",
+                Duration.ofSeconds(60),
+                OperationType.Read,
+                FaultInjectionOperationType.READ_ITEM,
+                sameDocumentIdJustCreated,
+                injectRetryWithErrorIntoAllRegions,
+                validateStatusCodeIsRetryWith,
+                (Consumer<Integer>)(requestCount) -> assertThat(requestCount).isLessThanOrEqualTo(
+                    expectedMaxNumberOfRetriesForRetryWith(
+                        DEFAULT_WAIT_TIME_IN_MS,
+                        DEFAULT_MAXIMUM_BACKOFF_TIME_IN_MS,
+                        DEFAULT_INITIAL_BACKOFF_TIME_MS,
+                        DEFAULT_BACK_OFF_MULTIPLIER
+                    )
+                ),
+            },
+            new Object[] {
+                "449-0_AllRegions_Create",
+                Duration.ofSeconds(60),
+                OperationType.Create,
+                FaultInjectionOperationType.CREATE_ITEM,
+                sameDocumentIdJustCreated,
+                injectRetryWithErrorIntoAllRegions,
+                validateStatusCodeIsRetryWith,
+                (Consumer<Integer>)(requestCount) -> assertThat(requestCount).isLessThanOrEqualTo(
+                    expectedMaxNumberOfRetriesForRetryWith(
+                        DEFAULT_WAIT_TIME_IN_MS,
+                        DEFAULT_MAXIMUM_BACKOFF_TIME_IN_MS,
+                        DEFAULT_INITIAL_BACKOFF_TIME_MS,
+                        DEFAULT_BACK_OFF_MULTIPLIER
+                    )
+                ),
+            }
+        };
+    }
+
+    @Test(groups = {"multi-master"}, dataProvider = "readMaxRetryCount_readSessionNotAvailable")
+    public void readMaxRetryCount_readSessionNotAvailable(
         String testCaseId,
         Duration endToEndTimeout,
         CosmosRegionSwitchHint regionSwitchHint,
@@ -445,16 +541,8 @@ public class MaxRetryCountTests extends TestSuiteBase {
             System.clearProperty(Configs.DEFAULT_SESSION_TOKEN_MISMATCH_MAXIMUM_BACKOFF_TIME_IN_MILLISECONDS_NAME);
         }
 
-        Function<ItemOperationInvocationParameters, CosmosResponseWrapper> readItemCallback = (params) ->
-            new CosmosResponseWrapper(params.container
-                .readItem(
-                    readItemDocumentIdOverride != null
-                        ? readItemDocumentIdOverride
-                        : params.idAndPkValuePair.getLeft(),
-                    new PartitionKey(params.idAndPkValuePair.getRight()),
-                    params.options,
-                    ObjectNode.class)
-                .block());
+        Function<ItemOperationInvocationParameters, CosmosResponseWrapper> readItemCallback =
+            getRequestCallBack(OperationType.Read, readItemDocumentIdOverride);
 
         BiConsumer<CosmosDiagnosticsContext, Integer> validateCtxRegions =
             (ctx, expectedNumberOfRegionsContacted) -> {
@@ -522,6 +610,81 @@ public class MaxRetryCountTests extends TestSuiteBase {
         } finally {
             System.clearProperty(Configs.MAX_RETRIES_IN_LOCAL_REGION_WHEN_REMOTE_REGION_PREFERRED);
         }
+    }
+
+    @Test(groups = {"multi-master"}, dataProvider = "readMaxRetryCount_retryWith")
+    public void readMaxRetryCount_retryWith(
+        String testCaseId,
+        Duration endToEndTimeout,
+        OperationType operationType,
+        FaultInjectionOperationType faultInjectionOperationType,
+        String readItemDocumentIdOverride,
+        BiConsumer<CosmosAsyncContainer, FaultInjectionOperationType> faultInjectionCallback,
+        BiConsumer<Integer, Integer> validateStatusCode,
+        Consumer<Integer> maxExpectedRequestCountValidation) {
+
+        final int ONE_REGION = 1; // there is no cross region retry for 449
+        Function<ItemOperationInvocationParameters, CosmosResponseWrapper> readItemCallback =
+            this.getRequestCallBack(operationType, readItemDocumentIdOverride);
+
+        BiConsumer<CosmosDiagnosticsContext, Integer> validateCtxRegions =
+            (ctx, expectedNumberOfRegionsContacted) -> {
+                assertThat(ctx).isNotNull();
+                if (ctx != null) {
+                    assertThat(ctx.getContactedRegionNames().size()).isGreaterThanOrEqualTo(expectedNumberOfRegionsContacted);
+                }
+            };
+
+        Consumer<CosmosDiagnosticsContext> logCtx =
+            (ctx) -> {
+                assertThat(ctx).isNotNull();
+                logger.info(
+                    "DIAGNOSTICS CONTEXT: {} Json: {}",
+                    ctx.toString(),
+                    ctx.toJson());
+            };
+
+        Consumer<CosmosDiagnosticsContext> validateCtxOneRegions =
+            (ctx) -> validateCtxRegions.accept(ctx, ONE_REGION);
+
+        Consumer<CosmosDiagnosticsContext> ctxValidation = ctx -> {
+            assertThat(ctx.getDiagnostics()).isNotNull();
+            assertThat(ctx.getDiagnostics().size()).isEqualTo(1);
+            CosmosDiagnostics diagnostics = ctx.getDiagnostics().iterator().next();
+            assertThat(diagnostics.getClientSideRequestStatistics()).isNotNull();
+            assertThat(diagnostics.getClientSideRequestStatistics().size()).isEqualTo(1);
+
+            ClientSideRequestStatistics clientStats = diagnostics.getClientSideRequestStatistics().iterator().next();
+            assertThat(clientStats.getResponseStatisticsList()).isNotNull();
+            int actualRequestCount = clientStats.getResponseStatisticsList().size();
+
+            if (maxExpectedRequestCountValidation != null) {
+                logger.info(
+                    "ACTUAL REQUEST COUNT: {}",
+                    actualRequestCount);
+
+                maxExpectedRequestCountValidation.accept(actualRequestCount);
+            }
+        };
+
+        execute(
+            testCaseId,
+            endToEndTimeout,
+            noAvailabilityStrategy,
+            CosmosRegionSwitchHint.LOCAL_REGION_PREFERRED,
+            notSpecifiedWhetherIdempotentWriteRetriesAreEnabled,
+            ArrayUtils.toArray(faultInjectionOperationType),
+            readItemCallback,
+            faultInjectionCallback,
+            validateStatusCode,
+            1,
+            ArrayUtils.toArray(logCtx, validateCtxOneRegions, ctxValidation),
+            null,
+            null,
+            0,
+            0,
+            false,
+            ConnectionMode.DIRECT);
     }
 
     private CosmosAsyncContainer createTestContainer(CosmosAsyncClient clientWithPreferredRegions) {
@@ -714,6 +877,26 @@ public class MaxRetryCountTests extends TestSuiteBase {
         String ruleName = "serverErrorRule-internalServerError-" + UUID.randomUUID();
         FaultInjectionServerErrorResult serviceUnavailableResult = FaultInjectionResultBuilders
             .getResultBuilder(FaultInjectionServerErrorType.INTERNAL_SERVER_ERROR)
+            .build();
+
+        inject(
+            ruleName,
+            containerWithSeveralWriteableRegions,
+            applicableRegions,
+            faultInjectionOperationType,
+            serviceUnavailableResult,
+            null
+        );
+    }
+
+    private static void injectRetryWithServerError(
+        CosmosAsyncContainer containerWithSeveralWriteableRegions,
+        List<String> applicableRegions,
+        FaultInjectionOperationType faultInjectionOperationType) {
+
+        String ruleName = "serverErrorRule-retryWithError-" + UUID.randomUUID();
+        FaultInjectionServerErrorResult serviceUnavailableResult = FaultInjectionResultBuilders
+            .getResultBuilder(FaultInjectionServerErrorType.RETRY_WITH)
             .build();
 
         inject(
@@ -933,6 +1116,32 @@ public class MaxRetryCountTests extends TestSuiteBase {
         }
 
         return regionMap;
+    }
+
+    private Function<ItemOperationInvocationParameters, CosmosResponseWrapper> getRequestCallBack(
+        OperationType operationType,
+        String readItemDocumentIdOverride) {
+
+        switch (operationType) {
+            case Read:
+                return (params) ->
+                    new CosmosResponseWrapper(params.container
+                        .readItem(
+                            readItemDocumentIdOverride != null
+                                ? readItemDocumentIdOverride
+                                : params.idAndPkValuePair.getLeft(),
+                            new PartitionKey(params.idAndPkValuePair.getRight()),
+                            params.options,
+                            ObjectNode.class)
+                        .block());
+            case Create:
+                return (params) ->
+                    new CosmosResponseWrapper(params.container
+                        .createItem(TestObject.create())
+                        .block());
+            default:
+                throw new IllegalArgumentException("Request operation is not supported: " + operationType);
+        }
     }
 
     private static class CosmosResponseWrapper {
