@@ -19,8 +19,10 @@
 - Fixed flowing `HttpClientOptions` through credentials [#36382](https://github.com/Azure/azure-sdk-for-java/pull/36382)
 - Fixed edge case in Docker where 403s erronously caused CredentialUnavailableExceptions [#36747](https://github.com/Azure/azure-sdk-for-java/pull/36747)
 
+## 1.10.2 (2023-10-10)
 
-
+### Bugs Fixed
+- Bug fixes for developer credentials
 
 ## 1.10.1 (2023-09-10)
 
