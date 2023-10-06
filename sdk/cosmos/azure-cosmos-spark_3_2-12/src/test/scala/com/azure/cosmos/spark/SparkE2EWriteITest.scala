@@ -25,35 +25,44 @@ class SparkE2EWriteITest
   //scalastyle:off magic.number
   //scalastyle:off null
 
-  private case class UpsertParameterTest(
-                                          bulkEnabled: Boolean,
-                                          itemWriteStrategy: ItemWriteStrategy,
-                                          hasId: Boolean = true,
-                                          initialBatchSize: Option[Int] = None,
-                                          maxBatchSize: Option[Int] = None)
+  private case class UpsertParameterTest(bulkEnabled: Boolean, itemWriteStrategy: ItemWriteStrategy, hasId: Boolean = true, initialBatchSize: Option[Int] = None)
 
   private val upsertParameterTest = Seq(
-    UpsertParameterTest(bulkEnabled = true, itemWriteStrategy = ItemWriteStrategy.ItemOverwrite, initialBatchSize = None, maxBatchSize = None),
-    UpsertParameterTest(bulkEnabled = true, itemWriteStrategy = ItemWriteStrategy.ItemOverwrite, initialBatchSize = Some(1), maxBatchSize = None),
-    UpsertParameterTest(bulkEnabled = true, itemWriteStrategy = ItemWriteStrategy.ItemOverwrite, initialBatchSize = Some(1), maxBatchSize = Some(5)),
-    UpsertParameterTest(bulkEnabled = false, itemWriteStrategy = ItemWriteStrategy.ItemOverwrite, initialBatchSize = None, maxBatchSize = None),
-    UpsertParameterTest(bulkEnabled = false, itemWriteStrategy = ItemWriteStrategy.ItemAppend, initialBatchSize = None, maxBatchSize = None)
+    UpsertParameterTest(bulkEnabled = true, itemWriteStrategy = ItemWriteStrategy.ItemOverwrite, initialBatchSize = None),
+    UpsertParameterTest(bulkEnabled = true, itemWriteStrategy = ItemWriteStrategy.ItemOverwrite, initialBatchSize = Some(1)),
+    UpsertParameterTest(bulkEnabled = false, itemWriteStrategy = ItemWriteStrategy.ItemOverwrite, initialBatchSize = None),
+    UpsertParameterTest(bulkEnabled = false, itemWriteStrategy = ItemWriteStrategy.ItemAppend, initialBatchSize = None)
   )
 
-  for (UpsertParameterTest(bulkEnabled, itemWriteStrategy, hasId, initialBatchSize, maxBatchSize) <- upsertParameterTest) {
-    it should s"support upserts with bulkEnabled = $bulkEnabled itemWriteStrategy = $itemWriteStrategy hasId = $hasId initialBatchSize = $initialBatchSize, maxBatchSize = $maxBatchSize" in {
+  for (UpsertParameterTest(bulkEnabled, itemWriteStrategy, hasId, initialBatchSize) <- upsertParameterTest) {
+    it should s"support upserts with bulkEnabled = $bulkEnabled itemWriteStrategy = $itemWriteStrategy hasId = $hasId initialBatchSize = $initialBatchSize" in {
       val cosmosEndpoint = TestConfigurations.HOST
       val cosmosMasterKey = TestConfigurations.MASTER_KEY
 
-      val configMapBuilder = scala.collection.mutable.Map(
-        "spark.cosmos.accountEndpoint" -> cosmosEndpoint,
-        "spark.cosmos.accountKey" -> cosmosMasterKey,
-        "spark.cosmos.database" -> cosmosDatabase,
-        "spark.cosmos.container" -> cosmosContainer,
-        "spark.cosmos.serialization.inclusionMode" -> "NonDefault"
-      )
+      val cfg = {
 
-      val configOverrideMapBuilder = scala.collection.mutable.Map("spark.cosmos.accountEndpoint" -> cosmosEndpoint,
+        initialBatchSize match {
+          case Some(customInitialBatchSize) =>
+            Map(
+              "spark.cosmos.accountEndpoint" -> cosmosEndpoint,
+              "spark.cosmos.accountKey" -> cosmosMasterKey,
+              "spark.cosmos.database" -> cosmosDatabase,
+              "spark.cosmos.container" -> cosmosContainer,
+              "spark.cosmos.serialization.inclusionMode" -> "NonDefault",
+              "spark.cosmos.write.bulk.initialBatchSize" -> customInitialBatchSize.toString,
+            )
+          case None =>
+            Map (
+              "spark.cosmos.accountEndpoint" -> cosmosEndpoint,
+              "spark.cosmos.accountKey" -> cosmosMasterKey,
+              "spark.cosmos.database" -> cosmosDatabase,
+              "spark.cosmos.container" -> cosmosContainer,
+              "spark.cosmos.serialization.inclusionMode" -> "NonDefault"
+            )
+        }
+      }
+
+      val cfgOverwrite = Map("spark.cosmos.accountEndpoint" -> cosmosEndpoint,
         "spark.cosmos.accountKey" -> cosmosMasterKey,
         "spark.cosmos.database" -> cosmosDatabase,
         "spark.cosmos.container" -> cosmosContainer,
@@ -61,34 +70,6 @@ class SparkE2EWriteITest
         "spark.cosmos.write.bulk.enabled" -> bulkEnabled.toString,
         "spark.cosmos.serialization.inclusionMode" -> "NonDefault"
       )
-
-      initialBatchSize match {
-        case Some(customInitialBatchSize) =>
-          configMapBuilder += (
-            "spark.cosmos.write.bulk.initialBatchSize" -> customInitialBatchSize.toString,
-          )
-
-          configOverrideMapBuilder += (
-            "spark.cosmos.write.bulk.initialBatchSize" -> customInitialBatchSize.toString,
-            )
-        case None =>
-      }
-
-      maxBatchSize match {
-        case Some(customMaxBatchSize) =>
-          configMapBuilder += (
-            "spark.cosmos.write.bulk.maxBatchSize" -> customMaxBatchSize.toString,
-            )
-
-          configOverrideMapBuilder += (
-            "spark.cosmos.write.bulk.maxBatchSize" -> customMaxBatchSize.toString,
-            )
-        case None =>
-      }
-
-      val cfg = configMapBuilder.toMap
-
-      val cfgOverwrite = configOverrideMapBuilder.toMap
 
       val newSpark = getSpark
 

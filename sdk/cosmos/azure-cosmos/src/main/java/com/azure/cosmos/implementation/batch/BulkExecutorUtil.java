@@ -42,7 +42,7 @@ final class BulkExecutorUtil {
             partitionKeyRangeId,
             operations,
             maxMicroBatchPayloadSizeInBytes,
-            Math.min(operations.size(), BatchRequestResponseConstants.MAX_OPERATIONS_IN_DIRECT_MODE_BATCH_REQUEST));
+            BatchRequestResponseConstants.MAX_OPERATIONS_IN_DIRECT_MODE_BATCH_REQUEST);
     }
 
     static void setRetryPolicyForBulk(

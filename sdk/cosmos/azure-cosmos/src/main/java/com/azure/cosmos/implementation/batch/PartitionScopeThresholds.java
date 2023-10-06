@@ -28,7 +28,6 @@ public class PartitionScopeThresholds {
     private final double minRetryRate;
     private final double maxRetryRate;
     private final double avgRetryRate;
-    private final int maxMicroBatchSize;
 
     public PartitionScopeThresholds(String pkRangeId, CosmosBulkExecutionOptions options) {
         checkNotNull(pkRangeId, "expected non-null pkRangeId");
@@ -47,11 +46,6 @@ public class PartitionScopeThresholds {
             .getCosmosBulkExecutionOptionsAccessor()
             .getMaxTargetedMicroBatchRetryRate(options);
         this.avgRetryRate = ((this.maxRetryRate + this.minRetryRate)/2);
-        this.maxMicroBatchSize = Math.min(
-            ImplementationBridgeHelpers.CosmosBulkExecutionOptionsHelper
-                .getCosmosBulkExecutionOptionsAccessor()
-                .getMaxMicroBatchSize(options),
-            BatchRequestResponseConstants.MAX_OPERATIONS_IN_DIRECT_MODE_BATCH_REQUEST);
     }
 
     public String getPartitionKeyRangeId() {
@@ -109,12 +103,12 @@ public class PartitionScopeThresholds {
         int microBatchSizeBefore = this.targetMicroBatchSize.get();
         int microBatchSizeAfter = microBatchSizeBefore;
 
-        if (retryRate < this.minRetryRate && microBatchSizeBefore < maxMicroBatchSize) {
+        if (retryRate < this.minRetryRate && microBatchSizeBefore < BatchRequestResponseConstants.MAX_OPERATIONS_IN_DIRECT_MODE_BATCH_REQUEST) {
             int targetedNewBatchSize = Math.min(
                 Math.min(
                     microBatchSizeBefore * 2,
-                    microBatchSizeBefore + (int)(maxMicroBatchSize * this.avgRetryRate)),
-                maxMicroBatchSize);
+                    microBatchSizeBefore + (int)(BatchRequestResponseConstants.MAX_OPERATIONS_IN_DIRECT_MODE_BATCH_REQUEST * this.avgRetryRate)),
+                BatchRequestResponseConstants.MAX_OPERATIONS_IN_DIRECT_MODE_BATCH_REQUEST);
             if (this.targetMicroBatchSize.compareAndSet(microBatchSizeBefore, targetedNewBatchSize)) {
                 microBatchSizeAfter = targetedNewBatchSize;
             }
