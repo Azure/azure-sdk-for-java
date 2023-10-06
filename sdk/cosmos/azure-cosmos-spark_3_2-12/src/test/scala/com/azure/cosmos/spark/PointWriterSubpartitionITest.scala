@@ -4,7 +4,7 @@
 package com.azure.cosmos.spark
 
 import com.azure.cosmos.implementation.apachecommons.lang.StringUtils
-import com.azure.cosmos.models.{CosmosContainerProperties, PartitionKey, PartitionKeyBuilder, ThroughputProperties}
+import com.azure.cosmos.models.{CosmosContainerProperties, PartitionKey, PartitionKeyBuilder, PartitionKeyDefinition, PartitionKeyDefinitionVersion, PartitionKind, ThroughputProperties}
 import com.azure.cosmos.spark.utils.CosmosPatchTestHelper
 import com.azure.cosmos.{CosmosAsyncContainer, CosmosException}
 import com.fasterxml.jackson.databind.ObjectMapper
@@ -13,6 +13,7 @@ import org.apache.commons.lang3.RandomUtils
 import org.apache.spark.MockTaskContext
 import org.apache.spark.sql.types._
 
+import java.util
 import scala.collection.concurrent.TrieMap
 import scala.collection.mutable
 
@@ -340,6 +341,9 @@ class PointWriterSubpartitionITest extends IntegrationSpec with CosmosClient wit
     val containerProperties = container.read().block().getProperties
     val partitionKeyDefinition = containerProperties.getPartitionKeyDefinition
     val strippedPartitionKeyPath = CosmosPatchTestHelper.getStrippedPartitionKeyPath(partitionKeyDefinition)
+    val partitionKeyBuilder = new PartitionKeyBuilder()
+    partitionKeyDefinition.getPaths.forEach(path => {partitionKeyBuilder.add(path.replace("/", ""))})
+    partitionKeyBuilder.build()
     val writeConfig = CosmosWriteConfig(
       ItemWriteStrategy.ItemOverwrite,
       5,
@@ -349,7 +353,7 @@ class PointWriterSubpartitionITest extends IntegrationSpec with CosmosClient wit
       container, partitionKeyDefinition, writeConfig, DiagnosticsConfig(Option.empty, false, None), MockTaskContext.mockTaskContext())
 
     // First create one item, as patch can only operate on existing items
-    val itemWithFullSchema = CosmosPatchTestHelper.getPatchItemWithFullSchema(UUID.randomUUID().toString, strippedPartitionKeyPath)
+    val itemWithFullSchema = CosmosPatchTestHelper.getPatchItemWithFullSchemaSubpartitions(UUID.randomUUID().toString, strippedPartitionKeyPath)
     val id = itemWithFullSchema.get("id").textValue()
     val partitionKey = new PartitionKeyBuilder()
           .add(itemWithFullSchema.get("tenantId").textValue())
@@ -360,6 +364,7 @@ class PointWriterSubpartitionITest extends IntegrationSpec with CosmosClient wit
     pointWriter.scheduleWrite(partitionKey, itemWithFullSchema)
     pointWriter.flushAndClose()
     // make sure the item exists
+    Thread.sleep(2000) // wait for the item to be available
     container.readItem(id, partitionKey, classOf[ObjectNode]).block()
 
     // Test for each cosmos patch operation type, ignore increment type for as there will be a separate test for it
@@ -449,7 +454,7 @@ class PointWriterSubpartitionITest extends IntegrationSpec with CosmosClient wit
       container, partitionKeyDefinition, writeConfig, DiagnosticsConfig(Option.empty, false, None), MockTaskContext.mockTaskContext())
 
     // First create one item, as patch can only operate on existing items
-    val itemWithFullSchema = CosmosPatchTestHelper.getPatchItemWithFullSchema(UUID.randomUUID().toString, partitionKeyPath)
+    val itemWithFullSchema = CosmosPatchTestHelper.getPatchItemWithFullSchemaSubpartitions(UUID.randomUUID().toString, partitionKeyPath)
     val id = itemWithFullSchema.get("id").textValue()
     val partitionKey = new PartitionKeyBuilder()
           .add(itemWithFullSchema.get("tenantId").textValue())
@@ -459,6 +464,7 @@ class PointWriterSubpartitionITest extends IntegrationSpec with CosmosClient wit
 
     pointWriter.scheduleWrite(partitionKey, itemWithFullSchema)
     pointWriter.flushAndClose()
+    Thread.sleep(2000) // wait for the item to be available
     // make sure the item exists
     container.readItem(id, partitionKey, classOf[ObjectNode]).block()
 
@@ -528,12 +534,23 @@ class PointWriterSubpartitionITest extends IntegrationSpec with CosmosClient wit
 
     // First create one item with nestedObject, as patch can only operate on existing items
     val itemWithNestedObject: ObjectNode = objectMapper.createObjectNode()
-    itemWithNestedObject.put("id", UUID.randomUUID().toString)
+    val idguuid = UUID.randomUUID().toString
+    itemWithNestedObject.put("id", idguuid)
+    itemWithNestedObject.put("tenantId", idguuid)
+    itemWithNestedObject.put("userId", "userId1")
+    itemWithNestedObject.put("sessionId", "sessionId1")
     val familyObject = itemWithNestedObject.putObject("family")
     familyObject.put("state", "NY")
+    familyObject.put("tenantId", idguuid)
+    familyObject.put("userId", "userId1")
+    familyObject.put("sessionId", "sessionId1")
     val parentObject = familyObject.putObject("parent1")
     parentObject.put("firstName", "Julie")
     parentObject.put("lastName", "Anderson")
+    parentObject.put("tenantId", idguuid)
+    parentObject.put("userId", "userId")
+    parentObject.put("sessionId", "sessionId1")
+
 
     val id = itemWithNestedObject.get("id").textValue()
     val partitionKey = new PartitionKeyBuilder()
@@ -551,6 +568,9 @@ class PointWriterSubpartitionITest extends IntegrationSpec with CosmosClient wit
     val parent2PropertyName = "parent2"
     val partialUpdateNode = objectMapper.createObjectNode()
     partialUpdateNode.put("id", id)
+    partialUpdateNode.put("tenantId", id)
+    partialUpdateNode.put("userId", "userId1")
+    partialUpdateNode.put("sessionId", "sessionId1")
     val newParentNode = partialUpdateNode.putObject(parent2PropertyName)
     newParentNode.put("firstName", "John")
     newParentNode.put("lastName", "Anderson")
@@ -585,7 +605,7 @@ class PointWriterSubpartitionITest extends IntegrationSpec with CosmosClient wit
       container, partitionKeyDefinition, writeConfig, DiagnosticsConfig(Option.empty, false, None), MockTaskContext.mockTaskContext())
 
     // First create one item, as patch can only operate on existing items
-    val itemWithFullSchema = CosmosPatchTestHelper.getPatchItemWithFullSchema(UUID.randomUUID().toString, strippedPartitionKeyPath)
+    val itemWithFullSchema = CosmosPatchTestHelper.getPatchItemWithFullSchemaSubpartitions(UUID.randomUUID().toString, strippedPartitionKeyPath)
     val id = itemWithFullSchema.get("id").textValue()
     val partitionKey = new PartitionKeyBuilder()
           .add(itemWithFullSchema.get("tenantId").textValue())
@@ -665,7 +685,7 @@ class PointWriterSubpartitionITest extends IntegrationSpec with CosmosClient wit
       container, partitionKeyDefinition, writeConfig, DiagnosticsConfig(Option.empty, false, None), MockTaskContext.mockTaskContext())
 
     // First create one item, as patch can only operate on existing items
-    val itemWithFullSchema = CosmosPatchTestHelper.getPatchItemWithFullSchema(UUID.randomUUID().toString, strippedPartitionKeyPath)
+    val itemWithFullSchema = CosmosPatchTestHelper.getPatchItemWithFullSchemaSubpartitions(UUID.randomUUID().toString, strippedPartitionKeyPath)
     val id = itemWithFullSchema.get("id").textValue()
     val partitionKey = new PartitionKeyBuilder()
           .add(itemWithFullSchema.get("tenantId").textValue())
@@ -717,11 +737,21 @@ class PointWriterSubpartitionITest extends IntegrationSpec with CosmosClient wit
 
     for (partitionKeyPathSameAsId <- partitionKeyPathSameAsIdArray) {
       // create container
+      val partitionKeyPaths = new util.ArrayList[String]
+      partitionKeyPaths.add("/tenantId")
+      partitionKeyPaths.add("/userId")
+      partitionKeyPaths.add("/sessionId")
+      val subpartitionKeyDefinition = new PartitionKeyDefinition
+      subpartitionKeyDefinition.setPaths(partitionKeyPaths)
+      subpartitionKeyDefinition.setKind(PartitionKind.MULTI_HASH)
+      subpartitionKeyDefinition.setVersion(PartitionKeyDefinitionVersion.V2)
+      var containerProperties = new CosmosContainerProperties(UUID.randomUUID().toString, subpartitionKeyDefinition)
       val throughputProperties = ThroughputProperties.createManualThroughput(Defaults.DefaultContainerThroughput)
-      val partitionKeyPath = if (partitionKeyPathSameAsId) "/id" else "/pk"
+      //val throughputProperties = ThroughputProperties.createManualThroughput(Defaults.DefaultContainerThroughput)
+      //val partitionKeyPath = if (partitionKeyPathSameAsId) "/id" else "/pk"
       val strippedPartitionKeyPath = partitionKeyPath.substring(1)
-      val containerProperties = new CosmosContainerProperties(UUID.randomUUID().toString, partitionKeyPath)
-      val partitionKeyDefinition = containerProperties.getPartitionKeyDefinition
+      //val containerProperties = new CosmosContainerProperties(UUID.randomUUID().toString, partitionKeyPath)
+      //val partitionKeyDefinition = containerProperties.getPartitionKeyDefinition
       val containerCreationResponse = cosmosClient
        .getDatabase(cosmosDatabase)
        .createContainerIfNotExists(containerProperties, throughputProperties).block()
@@ -736,10 +766,10 @@ class PointWriterSubpartitionITest extends IntegrationSpec with CosmosClient wit
           bulkMaxPendingOperations = Some(900)
         )
 
-        val bulkWriter = new BulkWriter(container, partitionKeyDefinition, writeConfig, DiagnosticsConfig(Option.empty, false, None))
+        val bulkWriter = new BulkWriter(container, subpartitionKeyDefinition, writeConfig, DiagnosticsConfig(Option.empty, false, None))
 
         // First create one item, as patch can only operate on existing items
-        val itemWithFullSchema = CosmosPatchTestHelper.getPatchItemWithFullSchema(UUID.randomUUID().toString, strippedPartitionKeyPath)
+        val itemWithFullSchema = CosmosPatchTestHelper.getPatchItemWithFullSchemaSubpartitions(UUID.randomUUID().toString, strippedPartitionKeyPath)
         val id = itemWithFullSchema.get("id").textValue()
         val partitionKey = new PartitionKeyBuilder()
               .add(itemWithFullSchema.get("tenantId").textValue())
@@ -770,7 +800,7 @@ class PointWriterSubpartitionITest extends IntegrationSpec with CosmosClient wit
             field.getKey, CosmosPatchOperationTypes.Set, s"/${field.getKey}", false)
         })
 
-        val bulkWriterForPatch = CosmosPatchTestHelper.getBulkWriterForPatch(columnConfigsMap, container, partitionKeyDefinition)
+        val bulkWriterForPatch = CosmosPatchTestHelper.getBulkWriterForPatch(columnConfigsMap, container, subpartitionKeyDefinition)
 
         patchPartialUpdateItem.fields().asScala.foreach(field => {
           columnConfigsMap += field.getKey -> CosmosPatchColumnConfig(
@@ -802,7 +832,7 @@ class PointWriterSubpartitionITest extends IntegrationSpec with CosmosClient wit
       container, partitionKeyDefinition, writeConfig, DiagnosticsConfig(Option.empty, false, None), MockTaskContext.mockTaskContext())
 
     // First create one item, as patch can only operate on existing items
-    val itemWithFullSchema = CosmosPatchTestHelper.getPatchItemWithFullSchema(UUID.randomUUID().toString, strippedPartitionKeyPath)
+    val itemWithFullSchema = CosmosPatchTestHelper.getPatchItemWithFullSchemaSubpartitions(UUID.randomUUID().toString, strippedPartitionKeyPath)
     val id = itemWithFullSchema.get("id").textValue()
     val partitionKey = new PartitionKeyBuilder()
           .add(itemWithFullSchema.get("tenantId").textValue())
@@ -864,7 +894,10 @@ class PointWriterSubpartitionITest extends IntegrationSpec with CosmosClient wit
     val id = UUID.randomUUID().toString
 
     val partialUpdateSchema = StructType(Seq(
-      StructField("_ts", IntegerType)
+      StructField("_ts", IntegerType),
+      StructField("tenantId", StringType),
+      StructField("userId", StringType),
+      StructField("sessionId", StringType),
     ))
 
     val columnConfigsMap = new TrieMap[String, CosmosPatchColumnConfig]
@@ -965,6 +998,9 @@ class PointWriterSubpartitionITest extends IntegrationSpec with CosmosClient wit
       val patchItem = objectMapper.createObjectNode()
       patchItem.put("newPropertyString", UUID.randomUUID().toString)
       patchItem.put("id", id)
+      patchItem.put("tenantId", id)
+      patchItem.put("userId", "userId1")
+      patchItem.put("sessionId", "sessionId1")
       val itemPartitionKey = new PartitionKeyBuilder()
           .add(item.get("tenantId").textValue())
           .add(item.get("userId").textValue())
@@ -1010,7 +1046,7 @@ class PointWriterSubpartitionITest extends IntegrationSpec with CosmosClient wit
         container, partitionKeyDefinition, writeConfig, DiagnosticsConfig(Option.empty, false, None), MockTaskContext.mockTaskContext())
 
     // First create one item
-    val itemWithFullSchema = CosmosPatchTestHelper.getPatchItemWithFullSchema(UUID.randomUUID().toString, strippedPartitionKeyPath)
+    val itemWithFullSchema = CosmosPatchTestHelper.getPatchItemWithFullSchemaSubpartitions(UUID.randomUUID().toString, strippedPartitionKeyPath)
     val id = itemWithFullSchema.get("id").textValue()
     val partitionKey = new PartitionKeyBuilder()
           .add(itemWithFullSchema.get("tenantId").textValue())
@@ -1082,7 +1118,7 @@ class PointWriterSubpartitionITest extends IntegrationSpec with CosmosClient wit
           container, partitionKeyDefinition, writeConfig, DiagnosticsConfig(Option.empty, false, None), MockTaskContext.mockTaskContext())
 
       // First create one item, as patch can only operate on existing items
-      val itemWithFullSchema = CosmosPatchTestHelper.getPatchItemWithFullSchema(UUID.randomUUID().toString, partitionKeyPath)
+      val itemWithFullSchema = CosmosPatchTestHelper.getPatchItemWithFullSchemaSubpartitions(UUID.randomUUID().toString, partitionKeyPath)
       val id = itemWithFullSchema.get("id").textValue()
       val partitionKey = new PartitionKeyBuilder()
           .add(itemWithFullSchema.get("tenantId").textValue())
@@ -1130,6 +1166,9 @@ class PointWriterSubpartitionITest extends IntegrationSpec with CosmosClient wit
       // First create one item with nestedObject, as patch can only operate on existing items
       val itemWithNestedObject: ObjectNode = objectMapper.createObjectNode()
       itemWithNestedObject.put("id", UUID.randomUUID().toString)
+      itemWithNestedObject.put("tenantId", itemWithNestedObject.get("id").textValue())
+      itemWithNestedObject.put("userId", "userId1")
+      itemWithNestedObject.put("sessionId", "sessionId1")
       val familyObject = itemWithNestedObject.putObject("family")
       familyObject.put("state", "NY")
       val parentObject = familyObject.putObject("parent1")
@@ -1186,7 +1225,7 @@ class PointWriterSubpartitionITest extends IntegrationSpec with CosmosClient wit
           container, partitionKeyDefinition, writeConfig, DiagnosticsConfig(Option.empty, false, None), MockTaskContext.mockTaskContext())
 
       // First create one item, as patch can only operate on existing items
-      val itemWithFullSchema = CosmosPatchTestHelper.getPatchItemWithFullSchema(UUID.randomUUID().toString, strippedPartitionKeyPath)
+      val itemWithFullSchema = CosmosPatchTestHelper.getPatchItemWithFullSchemaSubpartitions(UUID.randomUUID().toString, strippedPartitionKeyPath)
       val id = itemWithFullSchema.get("id").textValue()
       val partitionKey = new PartitionKeyBuilder()
           .add(itemWithFullSchema.get("tenantId").textValue())
@@ -1238,11 +1277,18 @@ class PointWriterSubpartitionITest extends IntegrationSpec with CosmosClient wit
 
       for (partitionKeyPathSameAsId <- partitionKeyPathSameAsIdArray) {
             // create container
+            val partitionKeyPaths = new util.ArrayList[String]
+          partitionKeyPaths.add("/tenantId")
+          partitionKeyPaths.add("/userId")
+          partitionKeyPaths.add("/sessionId")
+          val subpartitionKeyDefinition = new PartitionKeyDefinition
+          subpartitionKeyDefinition.setPaths(partitionKeyPaths)
+          subpartitionKeyDefinition.setKind(PartitionKind.MULTI_HASH)
+          subpartitionKeyDefinition.setVersion(PartitionKeyDefinitionVersion.V2)
+          val containerProperties = new CosmosContainerProperties(UUID.randomUUID().toString, subpartitionKeyDefinition)
           val throughputProperties = ThroughputProperties.createManualThroughput(Defaults.DefaultContainerThroughput)
           val partitionKeyPath = if (partitionKeyPathSameAsId) "/id" else "/pk"
           val strippedPartitionKeyPath = partitionKeyPath.substring(1)
-          val containerProperties = new CosmosContainerProperties(UUID.randomUUID().toString, partitionKeyPath)
-          val partitionKeyDefinition = containerProperties.getPartitionKeyDefinition
           val containerCreationResponse = cosmosClient
               .getDatabase(cosmosDatabase)
               .createContainerIfNotExists(containerProperties, throughputProperties).block()
@@ -1257,10 +1303,10 @@ class PointWriterSubpartitionITest extends IntegrationSpec with CosmosClient wit
                   bulkMaxPendingOperations = Some(900)
               )
 
-              val bulkWriter = new BulkWriter(container, partitionKeyDefinition, writeConfig, DiagnosticsConfig(Option.empty, false, None))
+              val bulkWriter = new BulkWriter(container, subpartitionKeyDefinition, writeConfig, DiagnosticsConfig(Option.empty, false, None))
 
               // First create one item
-              val itemWithFullSchema = CosmosPatchTestHelper.getPatchItemWithFullSchema(UUID.randomUUID().toString, strippedPartitionKeyPath)
+              val itemWithFullSchema = CosmosPatchTestHelper.getPatchItemWithFullSchemaSubpartitions(UUID.randomUUID().toString, strippedPartitionKeyPath)
               val id = itemWithFullSchema.get("id").textValue()
               val partitionKey = new PartitionKeyBuilder()
                   .add(itemWithFullSchema.get("tenantId").textValue())
@@ -1291,7 +1337,7 @@ class PointWriterSubpartitionITest extends IntegrationSpec with CosmosClient wit
                       field.getKey, CosmosPatchOperationTypes.Set, s"/${field.getKey}", false)
               })
 
-              val pointWriterForPatch = CosmosPatchTestHelper.getPointWriterForPatchBulkUpdate(columnConfigsMap, container, partitionKeyDefinition)
+              val pointWriterForPatch = CosmosPatchTestHelper.getPointWriterForPatchBulkUpdate(columnConfigsMap, container, subpartitionKeyDefinition)
 
               patchPartialUpdateItem.fields().asScala.foreach(field => {
                   columnConfigsMap += field.getKey -> CosmosPatchColumnConfig(
@@ -1315,7 +1361,7 @@ class PointWriterSubpartitionITest extends IntegrationSpec with CosmosClient wit
     objectNode.put("propString", UUID.randomUUID().toString)
     objectNode.put("propInt", RandomUtils.nextInt())
     objectNode.put("propBoolean", RandomUtils.nextBoolean())
-    objectNode.put("tenantId", "tenantId")
+    objectNode.put("tenantId", id)
     objectNode.put("userId", "userId1")
     objectNode.put("sessionId", "sessionId1")
     objectNode

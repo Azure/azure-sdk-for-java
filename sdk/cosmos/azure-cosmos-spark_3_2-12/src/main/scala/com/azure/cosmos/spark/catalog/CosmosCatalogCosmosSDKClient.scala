@@ -169,25 +169,22 @@ private[spark] case class CosmosCatalogCosmosSDKClient(cosmosAsyncClient: Cosmos
 
     private def getPartitionKeyDefinition(containerProperties: Map[String, String]): PartitionKeyDefinition = {
         val partitionKeyPath = CosmosContainerProperties.getPartitionKeyPath(containerProperties)
-        val subPartitionKeyPath1 = CosmosContainerProperties.getSubPartitionKeyPath1(containerProperties)
-        val subPartitionKeyPath2 = CosmosContainerProperties.getSubPartitionKeyPath2(containerProperties)
         val partitionKeyDef = new PartitionKeyDefinition
         val paths = new util.ArrayList[String]
-        paths.add(partitionKeyPath)
-        if (subPartitionKeyPath1.nonEmpty && subPartitionKeyPath2.nonEmpty) {
+        val pathList = partitionKeyPath.split(",").toList
+        if (pathList.size > 1) {
             partitionKeyDef.setKind(PartitionKind.MULTI_HASH)
             partitionKeyDef.setVersion(PartitionKeyDefinitionVersion.V2)
-            paths.add(subPartitionKeyPath1.get)
-            paths.add(subPartitionKeyPath2.get)
+            pathList.foreach(path => paths.add(path.trim))
         } else {
             partitionKeyDef.setKind(PartitionKind.HASH)
+            paths.add(partitionKeyPath)
         }
         partitionKeyDef.setPaths(paths)
         CosmosContainerProperties.getPartitionKeyVersion(containerProperties) match {
             case Some(pkVersion) => partitionKeyDef.setVersion(PartitionKeyDefinitionVersion.valueOf(pkVersion))
             case None =>
         }
-
         partitionKeyDef
     }
 

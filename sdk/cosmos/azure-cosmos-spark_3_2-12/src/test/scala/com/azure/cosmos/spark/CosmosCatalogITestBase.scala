@@ -66,7 +66,7 @@ abstract class CosmosCatalogITestBase extends IntegrationSpec with CosmosClient 
 
         spark.sql(s"CREATE DATABASE testCatalog.$databaseName;")
         spark.sql(s"CREATE TABLE testCatalog.$databaseName.$containerName (word STRING, number INT) using cosmos.oltp " +
-            s"TBLPROPERTIES(partitionKeyPath = '/tenantId', subPartitionKeyPath1 = '/userId', subPartitionKeyPath2 = '/sessionId', manualThroughput = '1100')")
+            s"TBLPROPERTIES(partitionKeyPath = '/tenantId,/userId,/sessionId', manualThroughput = '1100')")
 
         val containerProperties = cosmosClient.getDatabase(databaseName).getContainer(containerName).read().block().getProperties
         containerProperties.getPartitionKeyDefinition.getPaths.asScala.toArray should equal(Array("/tenantId", "/userId", "/sessionId"))

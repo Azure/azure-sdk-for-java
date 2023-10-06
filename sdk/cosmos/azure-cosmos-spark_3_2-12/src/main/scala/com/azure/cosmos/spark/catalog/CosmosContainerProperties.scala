@@ -22,13 +22,6 @@ private[spark] object CosmosContainerProperties {
     properties.getOrElse(partitionKeyPath, defaultPartitionKeyPath)
   }
 
-  def getSubPartitionKeyPath1(properties: Map[String, String]): Option[String] = {
-      properties.get(subPartitionKeyPath1)
-  }
-  def getSubPartitionKeyPath2(properties: Map[String, String]): Option[String] = {
-      properties.get(subPartitionKeyPath2)
-  }
-
   def getPartitionKeyVersion(properties: Map[String, String]): Option[String] = {
     properties.get(partitionKeyVersion)
   }

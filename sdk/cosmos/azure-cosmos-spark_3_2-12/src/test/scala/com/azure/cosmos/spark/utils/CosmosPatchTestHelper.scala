@@ -25,12 +25,17 @@ object CosmosPatchTestHelper {
   getPatchItemWithSchema(id, partitionKeyPath, getPatchFullTestSchema())
  }
 
+def getPatchItemWithFullSchemaSubpartitions(id: String, partitionKeyPath: String): ObjectNode = {
+  getPatchItemWithSchema(id, partitionKeyPath, getPatchFullTestSchemaWithSubpartitions())
+}
+
  def getPatchItemWithSchema(id: String, partitionKeyPath: String, schema: StructType): ObjectNode = {
   val objectNode = objectMapper.createObjectNode()
   objectNode.put(IdAttributeName, id)
-  if (partitionKeyPath != IdAttributeName) {
+/*  if (partitionKeyPath != IdAttributeName) {
    objectNode.put(partitionKeyPath, UUID.randomUUID().toString)
-  }
+  }*/
+  val guid = UUID.randomUUID().toString
 
   for (field <- schema.fields) {
    field.dataType match {
@@ -45,7 +50,21 @@ object CosmosPatchTestHelper {
     case BooleanType =>
      objectNode.put(field.name, RandomUtils.nextBoolean())
     case StringType =>
-     objectNode.put(field.name, UUID.randomUUID().toString)
+        if (!field.name.equals("tenantId") && !field.name.equals("userId") && !field.name.equals("sessionId")) {
+            objectNode.put(field.name, guid)
+        }
+        else if (field.name.equals("tenantId")) {
+            objectNode.put(field.name, id)
+        }
+        else if (field.name.equals("userId")) {
+            objectNode.put(field.name, "userId1")
+        }
+        else if (field.name.equals("sessionId")) {
+            objectNode.put(field.name, "sessionId1")
+        }
+        else {
+            objectNode.put(field.name, UUID.randomUUID().toString)
+        }
     case _: ArrayType =>
      val arrayNode = objectNode.putArray(field.name)
      arrayNode.add(UUID.randomUUID().toString)
@@ -64,6 +83,7 @@ object CosmosPatchTestHelper {
                             baseObjectNode: ObjectNode): ObjectNode = {
   val objectNode = objectMapper.createObjectNode()
 
+  val idguid = UUID.randomUUID().toString
   for (field <- schema.fields) {
    field.dataType match {
     case IntegerType =>
@@ -77,8 +97,25 @@ object CosmosPatchTestHelper {
     case BooleanType =>
      objectNode.put(field.name, !baseObjectNode.get(field.name).asBoolean())
     case StringType =>
-     if (field.name != IdAttributeName && field.name != partitionKeyPath) {
-      objectNode.put(field.name, UUID.randomUUID().toString)
+     if (field.name != IdAttributeName && field.name != partitionKeyPath && !field.name.equals("tenantId") && !field.name.equals("userId") && !field.name.equals("sessionId")) {
+      objectNode.put(field.name, idguid)
+     }
+     else if (field.name.equals("tenantId")) {
+         if (baseObjectNode.get("id") != null) {
+             objectNode.put(field.name, baseObjectNode.get("id").textValue())
+         }
+         else {
+             objectNode.put(field.name, idguid)
+         }
+     }
+     else if (field.name.equals("userId")) {
+         objectNode.put(field.name, "userId1")
+     }
+     else if (field.name.equals("sessionId")) {
+         objectNode.put(field.name, "sessionId1")
+     }
+     else {
+      objectNode.put(field.name, baseObjectNode.get(field.name).textValue())
      }
     case _: ArrayType =>
      val arrayNode = objectNode.putArray(field.name)
@@ -90,7 +127,7 @@ object CosmosPatchTestHelper {
 
   // add id and partitionKey
   objectNode.put(IdAttributeName, baseObjectNode.get(IdAttributeName).textValue())
-  objectNode.put(partitionKeyPath, baseObjectNode.get(partitionKeyPath).textValue())
+  /*objectNode.put(partitionKeyPath, baseObjectNode.get(partitionKeyPath).textValue())*/
 
   objectNode
  }
@@ -106,6 +143,21 @@ object CosmosPatchTestHelper {
    StructField("propArray", ArrayType(StringType))
   ))
  }
+
+def getPatchFullTestSchemaWithSubpartitions(): StructType = {
+  StructType(Seq(
+   StructField("propInt", IntegerType),
+   StructField("propLong", LongType),
+   StructField("propFloat", FloatType),
+   StructField("propDouble", DoubleType),
+   StructField("propBoolean", BooleanType),
+   StructField("propString", StringType),
+   StructField("tenantId", StringType),
+   StructField("userId", StringType),
+   StructField("sessionId", StringType),
+   StructField("propArray", ArrayType(StringType))
+  ))
+}
 
  def getBulkWriterForPatch(columnConfigsMap: TrieMap[String, CosmosPatchColumnConfig],
                            container: CosmosAsyncContainer,

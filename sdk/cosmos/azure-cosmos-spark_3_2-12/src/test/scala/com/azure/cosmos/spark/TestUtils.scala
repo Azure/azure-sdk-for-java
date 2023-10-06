@@ -3,7 +3,7 @@
 package com.azure.cosmos.spark
 
 import com.azure.cosmos.implementation.TestConfigurations
-import com.azure.cosmos.models.{ChangeFeedPolicy, CosmosBulkOperations, CosmosContainerProperties, CosmosItemOperation, PartitionKey, PartitionKeyDefinition, PartitionKeyDefinitionVersion, PartitionKind, ThroughputProperties}
+import com.azure.cosmos.models.{ChangeFeedPolicy, CosmosBulkOperations, CosmosContainerProperties, CosmosItemOperation, PartitionKey, PartitionKeyBuilder, PartitionKeyDefinition, PartitionKeyDefinitionVersion, PartitionKind, ThroughputProperties}
 import com.azure.cosmos.spark.diagnostics.BasicLoggingTrait
 import com.azure.cosmos.{CosmosAsyncClient, CosmosClientBuilder, CosmosException}
 import com.fasterxml.jackson.databind.node.ObjectNode
@@ -374,7 +374,7 @@ trait AutoCleanableCosmosContainerWithSubpartitions extends CosmosContainerWithS
 
         try {
             // wait for data to get replicated
-            Thread.sleep(1000)
+            Thread.sleep(20000)
             System.out.println(s"cleaning the items in container $cosmosContainer")
             val container = cosmosClient.getDatabase(cosmosDatabase).getContainer(cosmosContainer)
 
@@ -387,7 +387,12 @@ trait AutoCleanableCosmosContainerWithSubpartitions extends CosmosContainerWithS
                 container.queryItems("SELECT * FROM r", classOf[ObjectNode])
                     .asScala
                     .doOnNext(item => {
-                        val operation = CosmosBulkOperations.getDeleteItemOperation(getId(item), new PartitionKey(getPartitionKeyValue(item)))
+                        val partitionKey = new PartitionKeyBuilder()
+                            .add(item.get("tenantId").textValue())
+                            .add(item.get("userId").textValue())
+                            .add(item.get("sessionId").textValue())
+                            .build()
+                        val operation = CosmosBulkOperations.getDeleteItemOperation(getId(item), partitionKey)
                         cnt.incrementAndGet()
                         emitter.tryEmitNext(operation)
 
