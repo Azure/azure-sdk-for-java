@@ -160,7 +160,7 @@ public class ServiceBusReactorReceiver extends ReactorReceiver implements Servic
         if (isDisposed.get()) {
             return monoError(logger, new IllegalStateException("Cannot perform operations on a disposed receiver."));
         }
-        return this.receiverUnsettledDeliveries.sendDisposition(lockToken, deliveryState);
+        return receiverUnsettledDeliveries.sendDisposition(lockToken, deliveryState);
     }
 
     @Override
