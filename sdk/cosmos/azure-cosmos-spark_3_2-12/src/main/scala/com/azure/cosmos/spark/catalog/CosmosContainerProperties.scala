@@ -9,8 +9,6 @@ private[spark] object CosmosContainerProperties {
   val AllPropertiesIndexingPolicyName: String = "AllProperties"
 
   private val partitionKeyPath = "partitionKeyPath"
-  private val subPartitionKeyPath1 = "subPartitionKeyPath1"
-  private val subPartitionKeyPath2 = "subPartitionKeyPath2"
   private val partitionKeyVersion = "partitionKeyVersion"
   private val indexingPolicy = "indexingPolicy"
   private val defaultTtlPropertyName = "defaultTtlInSeconds"
