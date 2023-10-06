@@ -13,8 +13,8 @@ public final class SpeechOptionsInternal {
     /*
      * The length of end silence when user stops speaking and cogservice send response.
      */
-    @JsonProperty(value = "endSilenceTimeoutInMs")
-    private Long endSilenceTimeoutInMs;
+    @JsonProperty(value = "endSilenceTimeout")
+    private Long endSilenceTimeout;
 
     /** Creates an instance of SpeechOptionsInternal class. */
     public SpeechOptionsInternal() {}
@@ -25,19 +25,19 @@ public final class SpeechOptionsInternal {
      *
      * @return the endSilenceTimeoutInMs value.
      */
-    public Long getEndSilenceTimeoutInMs() {
-        return this.endSilenceTimeoutInMs;
+    public Long getEndSilenceTimeout() {
+        return this.endSilenceTimeout;
     }
 
     /**
      * Set the endSilenceTimeoutInMs property: The length of end silence when user stops speaking and cogservice send
      * response.
      *
-     * @param endSilenceTimeoutInMs the endSilenceTimeoutInMs value to set.
+     * @param endSilenceTimeout the endSilenceTimeoutInMs value to set.
      * @return the SpeechOptionsInternal object itself.
      */
-    public SpeechOptionsInternal setEndSilenceTimeoutInMs(Long endSilenceTimeoutInMs) {
-        this.endSilenceTimeoutInMs = endSilenceTimeoutInMs;
+    public SpeechOptionsInternal setEndSilenceTimeout(Long endSilenceTimeout) {
+        this.endSilenceTimeout = endSilenceTimeout;
         return this;
     }
 }

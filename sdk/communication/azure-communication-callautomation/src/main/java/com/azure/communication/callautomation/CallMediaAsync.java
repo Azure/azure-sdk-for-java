@@ -431,7 +431,7 @@ public final class CallMediaAsync {
     private RecognizeRequest getRecognizeRequestFromSpeechConfiguration(CallMediaRecognizeOptions recognizeOptions) {
         CallMediaRecognizeSpeechOptions speechRecognizeOptions = (CallMediaRecognizeSpeechOptions) recognizeOptions;
 
-        SpeechOptionsInternal speechOptionsInternal = new SpeechOptionsInternal().setEndSilenceTimeoutInMs(speechRecognizeOptions.getEndSilenceTimeoutInMs().toMillis());
+        SpeechOptionsInternal speechOptionsInternal = new SpeechOptionsInternal().setEndSilenceTimeout(speechRecognizeOptions.getEndSilenceTimeout().toMillis());
 
         RecognizeOptionsInternal recognizeOptionsInternal = new RecognizeOptionsInternal()
             .setSpeechOptions(speechOptionsInternal)
@@ -471,7 +471,7 @@ public final class CallMediaAsync {
             speechOrDtmfRecognizeOptions.getStopTones()
         );
 
-        SpeechOptionsInternal speechOptionsInternal = new SpeechOptionsInternal().setEndSilenceTimeoutInMs(speechOrDtmfRecognizeOptions.getEndSilenceTimeoutInMs().toMillis());
+        SpeechOptionsInternal speechOptionsInternal = new SpeechOptionsInternal().setEndSilenceTimeout(speechOrDtmfRecognizeOptions.getEndSilenceTimeout().toMillis());
 
         RecognizeOptionsInternal recognizeOptionsInternal = new RecognizeOptionsInternal()
             .setSpeechOptions(speechOptionsInternal)

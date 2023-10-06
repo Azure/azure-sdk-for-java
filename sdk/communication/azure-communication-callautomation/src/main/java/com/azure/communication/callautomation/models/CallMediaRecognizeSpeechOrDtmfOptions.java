@@ -15,8 +15,8 @@ public class CallMediaRecognizeSpeechOrDtmfOptions extends CallMediaRecognizeOpt
      * The length of end silence when user stops speaking and cogservice send
      * response.
      */
-    @JsonProperty(value = "endSilenceTimeoutInMs")
-    private Duration endSilenceTimeoutInMs;
+    @JsonProperty(value = "endSilenceTimeout")
+    private Duration endSilenceTimeout;
 
     /*
      * Speech language to be recognized, If not set default is en-US
@@ -99,13 +99,13 @@ public class CallMediaRecognizeSpeechOrDtmfOptions extends CallMediaRecognizeOpt
     }
 
     /**
-     * Get the endSilenceTimeoutInMs property: The length of end silence when user stops speaking and cogservice send
+     * Get the endSilenceTimeout property: The length of end silence when user stops speaking and cogservice send
      * response.
      *
-     * @return the endSilenceTimeoutInMs value.
+     * @return the endSilenceTimeout value.
      */
-    public Duration getEndSilenceTimeoutInMs() {
-        return this.endSilenceTimeoutInMs;
+    public Duration getEndSilenceTimeout() {
+        return this.endSilenceTimeout;
     }
 
     /**
@@ -152,11 +152,11 @@ public class CallMediaRecognizeSpeechOrDtmfOptions extends CallMediaRecognizeOpt
      *
      * @param targetParticipant Target participant of continuous speech recognition.
      * @param maxTonesToCollect Maximum number of DTMF tones to be collected.
-     * @param endSilenceTimeoutInMs the endSilenceTimeoutInMs value to set.
+     * @param endSilenceTimeout the endSilenceTimeout value to set.
      */
-    public CallMediaRecognizeSpeechOrDtmfOptions(CommunicationIdentifier targetParticipant, int maxTonesToCollect, Duration endSilenceTimeoutInMs) {
+    public CallMediaRecognizeSpeechOrDtmfOptions(CommunicationIdentifier targetParticipant, int maxTonesToCollect, Duration endSilenceTimeout) {
         super(RecognizeInputType.SPEECH_OR_DTMF, targetParticipant);
-        this.endSilenceTimeoutInMs = endSilenceTimeoutInMs;
+        this.endSilenceTimeout = endSilenceTimeout;
         this.interToneTimeout = Duration.ofSeconds(2);
         this.maxTonesToCollect = maxTonesToCollect;
     }
