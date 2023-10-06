@@ -181,7 +181,7 @@ public final class ReactorConnectionCache<T extends ReactorConnection> implement
                 return;
             }
             terminated = true;
-            connection = this.currentConnection;
+            connection = currentConnection;
         }
         if (connection != null && !connection.isDisposed()) {
             connection.closeAsync(closeSignal("Terminating the connection recovery support.")).subscribe();

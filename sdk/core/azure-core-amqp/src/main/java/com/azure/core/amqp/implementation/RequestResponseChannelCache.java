@@ -145,7 +145,7 @@ public final class RequestResponseChannelCache implements Disposable {
                 return;
             }
             terminated = true;
-            channel = this.currentChannel;
+            channel = currentChannel;
         }
 
         if (channel != null && !channel.isDisposed()) {

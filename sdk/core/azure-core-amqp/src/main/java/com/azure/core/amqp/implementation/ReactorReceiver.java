@@ -226,7 +226,7 @@ public class ReactorReceiver implements AmqpReceiveLink, AsyncCloseable, AutoClo
     public Flux<AmqpEndpointState> getEndpointStates() {
         return endpointStates
             .distinctUntilChanged()
-            .takeUntilOther(this.terminateEndpointStates.asMono());
+            .takeUntilOther(terminateEndpointStates.asMono());
     }
 
     @Override
@@ -269,7 +269,7 @@ public class ReactorReceiver implements AmqpReceiveLink, AsyncCloseable, AutoClo
 
     @Override
     public void addCredit(Supplier<Long> creditSupplier) {
-        assert this.isV2;
+        assert isV2;
         if (isDisposed()) {
             throw new RejectedExecutionException("Cannot schedule credit flow when the link is disposed.");
         }
@@ -291,7 +291,7 @@ public class ReactorReceiver implements AmqpReceiveLink, AsyncCloseable, AutoClo
 
     @Override
     public void setEmptyCreditListener(Supplier<Integer> creditSupplier) {
-        assert !this.isV2;
+        assert !isV2;
         Objects.requireNonNull(creditSupplier, "'creditSupplier' cannot be null.");
         this.creditSupplier.set(creditSupplier);
     }
@@ -332,7 +332,7 @@ public class ReactorReceiver implements AmqpReceiveLink, AsyncCloseable, AutoClo
     }
 
     protected Message decodeDelivery(Delivery delivery) {
-        assert !this.isV2;
+        assert !isV2;
         final int messageSize = delivery.pending();
         final byte[] buffer = new byte[messageSize];
         final int read = receiver.recv(buffer, 0, messageSize);
@@ -395,7 +395,7 @@ public class ReactorReceiver implements AmqpReceiveLink, AsyncCloseable, AutoClo
     }
 
     protected void onHandlerClose() {
-        assert !this.isV2;
+        assert !isV2;
         // Note: The 'onHandlerClose' was introduced as a temporary internal method (in the March-2023 release)
         // in the v1 stack - https://github.com/Azure/azure-sdk-for-java/pull/33593.
         // The purpose of 'onHandlerClose' was to allow 'ServiceBusReactorReceiver' to close 'ReceiverUnsettledDeliveries'.
@@ -480,7 +480,7 @@ public class ReactorReceiver implements AmqpReceiveLink, AsyncCloseable, AutoClo
      * </p>
      */
     private void terminateEndpointState() {
-        this.terminateEndpointStates.emitEmpty((signalType, emitResult) -> {
+        terminateEndpointStates.emitEmpty((signalType, emitResult) -> {
             addSignalTypeAndResult(logger.atVerbose(), signalType, emitResult)
                 .log("Could not emit EndpointStates termination.");
             return false;

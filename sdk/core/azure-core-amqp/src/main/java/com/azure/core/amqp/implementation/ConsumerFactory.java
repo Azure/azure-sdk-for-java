@@ -39,7 +39,7 @@ public final class ConsumerFactory {
         final String connectionId = amqpConnection.getId();
         final String hostname = amqpConnection.getFullyQualifiedNamespace();
         final AmqpMetricsProvider metricsProvider = handlerProvider.getMetricProvider(amqpConnection.getFullyQualifiedNamespace(), entityPath);
-        if (this.isV2) {
+        if (isV2) {
             final ReceiveLinkHandler2 handler = handlerProvider.createReceiveLinkHandler(connectionId, hostname, linkName, entityPath,
                 settleMode, includeDeliveryTagInMessage, reactorProvider.getReactorDispatcher(), retryOptions);
             BaseHandler.setHandler(receiver, handler);

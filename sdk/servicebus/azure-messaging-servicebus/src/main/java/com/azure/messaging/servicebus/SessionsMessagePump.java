@@ -256,7 +256,7 @@ final class SessionsMessagePump {
         // backing MessageFlux instance to close the ServiceBusSessionReactorReceiver and runs RollingSessionReceiver.terminate(,).
         logger.atInfo().log("Pump terminated. signal:" + signalType);
         receiversTracker.clear();
-        this.onTerminate.run();
+        onTerminate.run();
         return Mono.empty();
     }
 
@@ -409,7 +409,7 @@ final class SessionsMessagePump {
                 }),
                 workerScheduler -> {
                     final RunOnWorker handleMessageOnWorker = new RunOnWorker(this::handleMessage, workerScheduler);
-                    return this.messageFlux.flatMap(handleMessageOnWorker, concurrency, 1).then();
+                    return messageFlux.flatMap(handleMessageOnWorker, concurrency, 1).then();
                 },
                 (workerScheduler) -> terminate(TerminalSignalType.COMPLETED, workerScheduler),
                 (workerScheduler, e) -> terminate(TerminalSignalType.ERRORED, workerScheduler),
@@ -505,7 +505,7 @@ final class SessionsMessagePump {
 
         private void complete(ServiceBusReceivedMessage message) {
             try {
-                this.receiversTracker.complete(message).block();
+                receiversTracker.complete(message).block();
             } catch (Exception e) {
                 logger.atVerbose().log("Failed to complete message", e);
             }
@@ -513,7 +513,7 @@ final class SessionsMessagePump {
 
         private void abandon(ServiceBusReceivedMessage message) {
             try {
-                this.receiversTracker.abandon(message).block();
+                receiversTracker.abandon(message).block();
             } catch (Exception e) {
                 logger.atVerbose().log("Failed to abandon message", e);
             }
