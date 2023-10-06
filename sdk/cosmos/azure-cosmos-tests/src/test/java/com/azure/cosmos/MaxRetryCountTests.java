@@ -38,6 +38,7 @@ import com.azure.cosmos.test.faultinjection.FaultInjectionServerErrorResult;
 import com.azure.cosmos.test.faultinjection.FaultInjectionServerErrorType;
 import com.fasterxml.jackson.databind.node.ObjectNode;
 import org.apache.commons.lang3.ArrayUtils;
+import org.apache.logging.log4j.util.TriConsumer;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.testng.annotations.AfterClass;
@@ -106,6 +107,20 @@ public class MaxRetryCountTests extends TestSuiteBase {
             assertThat(subStatusCode).isEqualTo(HttpConstants.SubStatusCodes.UNKNOWN);
         };
 
+    // TODO: currently there is an issue where the subStatus code is missed in read especially when all replicas are failed with 410
+    // StoreReader line #486
+    private final static BiConsumer<Integer, Integer> validateStatusCodeIsServerGoneGenerated503ForRead =
+        (statusCode, subStatusCode) -> {
+            assertThat(statusCode).isEqualTo(HttpConstants.StatusCodes.SERVICE_UNAVAILABLE);
+            assertThat(subStatusCode).isEqualTo(HttpConstants.SubStatusCodes.UNKNOWN);
+        };
+
+    private final static BiConsumer<Integer, Integer> validateStatusCodeIsServerGoneGenerated503ForWrite =
+        (statusCode, subStatusCode) -> {
+            assertThat(statusCode).isEqualTo(HttpConstants.StatusCodes.SERVICE_UNAVAILABLE);
+            assertThat(subStatusCode).isEqualTo(HttpConstants.SubStatusCodes.SERVER_GENERATED_410);
+        };
+
     private final static BiConsumer<CosmosAsyncContainer, FaultInjectionOperationType> noFailureInjection =
         (container, operationType) -> {};
 
@@ -118,6 +133,8 @@ public class MaxRetryCountTests extends TestSuiteBase {
     private BiConsumer<CosmosAsyncContainer, FaultInjectionOperationType> injectInternalServerErrorIntoAllRegions = null;
 
     private BiConsumer<CosmosAsyncContainer, FaultInjectionOperationType> injectRetryWithErrorIntoAllRegions = null;
+    private BiConsumer<CosmosAsyncContainer, FaultInjectionOperationType> injectServerGoneErrorIntoAllRegions = null;
+
 
     private String FIRST_REGION_NAME = null;
     private String SECOND_REGION_NAME = null;
@@ -182,6 +199,9 @@ public class MaxRetryCountTests extends TestSuiteBase {
 
             this.injectRetryWithErrorIntoAllRegions =
                 (c, operationType) -> injectRetryWithServerError(c, this.writeableRegions, operationType);
+
+            this.injectServerGoneErrorIntoAllRegions =
+                (c, operationType) -> injectServerGoneError(c, this.writeableRegions, operationType);
 
             CosmosAsyncContainer container = this.createTestContainer(dummyClient);
             this.testDatabaseId = container.getDatabase().getId();
@@ -265,27 +285,78 @@ public class MaxRetryCountTests extends TestSuiteBase {
     }
 
     private static int expectedMaxNumberOfRetriesForRetryWith(
-        int maxWaitTimeInSeconds,
+        int maxWaitTimeInMS,
         int maxBackoffTimeInMs,
         int initialBackoffTimeInMs,
         int backoffMultiplier) {
         int currentBackoff = initialBackoffTimeInMs;
         int waitTime = 0;
         int count = 1;
-        while (waitTime <= maxWaitTimeInSeconds) {
+
+        while (waitTime <= maxWaitTimeInMS) {
             waitTime += currentBackoff;
             currentBackoff = Math.min(currentBackoff * backoffMultiplier, maxBackoffTimeInMs);
             count += 1;
         }
 
         logger.info(
-            "expectedMaxNumberOfRetriesForRetryWith [maxWaitTimeInSeconds {}, maxBackoffTimeInMs {}, initialBackoffTimeInMs {}] == {}",
-            maxWaitTimeInSeconds,
+            "expectedMaxNumberOfRetriesForRetryWith [maxWaitTimeInMS {}, maxBackoffTimeInMs {}, initialBackoffTimeInMs {}] == {}",
+            maxWaitTimeInMS,
             maxBackoffTimeInMs,
             initialBackoffTimeInMs,
             count);
 
         return count + 1;
+    }
+
+    private static int expectedMaxNumberOfRetriesForGone(
+        int maxWaitTimeInMs,
+        int maxBackoffTimeInMs,
+        int initialBackoffTimeInMs,
+        int backoffMultiplier,
+        ConsistencyLevel consistencyLevel,
+        OperationType operationType) {
+
+        int currentBackoff = initialBackoffTimeInMs;
+        int waitTime = 0;
+        int count = 1;
+        while (waitTime <= maxWaitTimeInMs) {
+            if (count == 1) {
+                // first time retry, SDK will do retry right away
+                count += 1;
+            } else {
+                waitTime += currentBackoff;
+                currentBackoff = Math.min(currentBackoff * backoffMultiplier, maxBackoffTimeInMs);
+                count += 1;
+            }
+        }
+
+        logger.info(
+            "expectedMaxNumberOfRetriesForGone [maxWaitTimeInMs {}, maxBackoffTimeInMs {}, initialBackoffTimeInMs {}, consistencyLevel {}, OperationType {}] == {}",
+            maxWaitTimeInMs,
+            maxBackoffTimeInMs,
+            initialBackoffTimeInMs,
+            consistencyLevel,
+            operationType,
+            count);
+
+        count = count + 1;
+        if (operationType.isWriteOperation()) {
+            return count;
+        }
+
+        switch (consistencyLevel) {
+            case EVENTUAL:
+            case CONSISTENT_PREFIX:
+                return count;
+            case SESSION:
+                return 4 * count;
+            case BOUNDED_STALENESS:
+            case STRONG:
+                return 4 * 6 * count;
+            default:
+                throw new IllegalStateException("Consistency level is not supported " + consistencyLevel);
+        }
     }
 
     @DataProvider(name = "readMaxRetryCount_readSessionNotAvailable")
@@ -493,6 +564,96 @@ public class MaxRetryCountTests extends TestSuiteBase {
         };
     }
 
+    @DataProvider(name = "readMaxRetryCount_serverGone")
+    public Object[][] testConfigs_readMaxRetryCount_serverGone() {
+        final int DEFAULT_WAIT_TIME_IN_MS = 30 * 1000;
+        final int DEFAULT_MAXIMUM_BACKOFF_TIME_IN_MS = 15 * 1000;
+        final int DEFAULT_INITIAL_BACKOFF_TIME_IN_MS = 1000;
+        final int DEFAULT_BACK_OFF_MULTIPLIER = 2;
+
+        return new Object[][] {
+            // CONFIG description
+            // new Object[] {
+            //    TestId - name identifying the test case
+            //    End-to-end timeout,
+            //    OperationType,
+            //    FaultInjectionOperationType,
+            //    Flag to indicate whether IdempotentWriteRetries are enabled
+            //    optional documentId used for reads (instead of the just created doc id) - this can be used to trigger 404/0
+            //    Failure injection callback
+            //    Status code/sub status code validation callback
+            //    maxExpectedRetryCount
+            // },
+
+            // This test injects 449/0 across all regions for the read operation after the initial creation
+            // It is expected to fail with a 449/0
+            // There is no cross region retry for 449/0
+            new Object[] {
+                "410-0_AllRegions_Read",
+                Duration.ofSeconds(60),
+                OperationType.Read,
+                FaultInjectionOperationType.READ_ITEM,
+                notSpecifiedWhetherIdempotentWriteRetriesAreEnabled,
+                sameDocumentIdJustCreated,
+                injectServerGoneErrorIntoAllRegions,
+                validateStatusCodeIsServerGoneGenerated503ForRead, // SDK will wrap into 503 exceptions after exhausting all retries
+                (TriConsumer<Integer, ConsistencyLevel, OperationType>)(requestCount, consistencyLevel, operationType) ->
+                    assertThat(requestCount).isLessThanOrEqualTo(
+                        expectedMaxNumberOfRetriesForGone(
+                            DEFAULT_WAIT_TIME_IN_MS,
+                            DEFAULT_MAXIMUM_BACKOFF_TIME_IN_MS,
+                            DEFAULT_INITIAL_BACKOFF_TIME_IN_MS,
+                            DEFAULT_BACK_OFF_MULTIPLIER,
+                            consistencyLevel,
+                            operationType
+                        ) * (1 + this.writeableRegions.size())
+                )
+            },
+            new Object[] {
+                "410-0_AllRegions_Create",
+                Duration.ofSeconds(60),
+                OperationType.Create,
+                FaultInjectionOperationType.CREATE_ITEM,
+                notSpecifiedWhetherIdempotentWriteRetriesAreEnabled,
+                sameDocumentIdJustCreated,
+                injectServerGoneErrorIntoAllRegions,
+                validateStatusCodeIsServerGoneGenerated503ForWrite,
+                (TriConsumer<Integer, ConsistencyLevel, OperationType>)(requestCount, consistencyLevel, operationType) ->
+                    assertThat(requestCount).isLessThanOrEqualTo(
+                        expectedMaxNumberOfRetriesForGone(
+                            DEFAULT_WAIT_TIME_IN_MS,
+                            DEFAULT_MAXIMUM_BACKOFF_TIME_IN_MS,
+                            DEFAULT_INITIAL_BACKOFF_TIME_IN_MS,
+                            DEFAULT_BACK_OFF_MULTIPLIER,
+                            consistencyLevel,
+                            operationType
+                        )// TODO: Fix needed: Currently, for write operation without idempotent write enabled, SDK does not do cross region retries for server 410/0
+                )
+            },
+            new Object[] {
+                "410-0_AllRegions_Create",
+                Duration.ofSeconds(60),
+                OperationType.Create,
+                FaultInjectionOperationType.CREATE_ITEM,
+                true, // IdempotentWriteRetries is enabled
+                sameDocumentIdJustCreated,
+                injectServerGoneErrorIntoAllRegions,
+                validateStatusCodeIsServerGoneGenerated503ForWrite,
+                (TriConsumer<Integer, ConsistencyLevel, OperationType>)(requestCount, consistencyLevel, operationType) ->
+                    assertThat(requestCount).isLessThanOrEqualTo(
+                        expectedMaxNumberOfRetriesForGone(
+                            DEFAULT_WAIT_TIME_IN_MS,
+                            DEFAULT_MAXIMUM_BACKOFF_TIME_IN_MS,
+                            DEFAULT_INITIAL_BACKOFF_TIME_IN_MS,
+                            DEFAULT_BACK_OFF_MULTIPLIER,
+                            consistencyLevel,
+                            operationType
+                        ) * (1 + this.writeableRegions.size())
+                    )
+            }
+        };
+    }
+
     @Test(groups = {"multi-master"}, dataProvider = "readMaxRetryCount_readSessionNotAvailable")
     public void readMaxRetryCount_readSessionNotAvailable(
         String testCaseId,
@@ -673,6 +834,90 @@ public class MaxRetryCountTests extends TestSuiteBase {
             noAvailabilityStrategy,
             CosmosRegionSwitchHint.LOCAL_REGION_PREFERRED,
             notSpecifiedWhetherIdempotentWriteRetriesAreEnabled,
+            ArrayUtils.toArray(faultInjectionOperationType),
+            readItemCallback,
+            faultInjectionCallback,
+            validateStatusCode,
+            1,
+            ArrayUtils.toArray(logCtx, validateCtxOneRegions, ctxValidation),
+            null,
+            null,
+            0,
+            0,
+            false,
+            ConnectionMode.DIRECT);
+    }
+
+    @Test(groups = {"multi-master"}, dataProvider = "readMaxRetryCount_serverGone")
+    public void readMaxRetryCount_serverGone(
+        String testCaseId,
+        Duration endToEndTimeout,
+        OperationType operationType,
+        FaultInjectionOperationType faultInjectionOperationType,
+        Boolean isIdempotentWriteRetriesEnabled,
+        String readItemDocumentIdOverride,
+        BiConsumer<CosmosAsyncContainer, FaultInjectionOperationType> faultInjectionCallback,
+        BiConsumer<Integer, Integer> validateStatusCode,
+        TriConsumer<Integer, ConsistencyLevel, OperationType> maxExpectedRequestCountValidation) {
+
+        final int ONE_REGION = 1;
+        final int TWO_REGIONS = 2;
+        Function<ItemOperationInvocationParameters, CosmosResponseWrapper> readItemCallback =
+            this.getRequestCallBack(operationType, readItemDocumentIdOverride);
+
+        BiConsumer<CosmosDiagnosticsContext, Integer> validateCtxRegions =
+            (ctx, expectedNumberOfRegionsContacted) -> {
+                assertThat(ctx).isNotNull();
+                if (ctx != null) {
+                    assertThat(ctx.getContactedRegionNames().size()).isGreaterThanOrEqualTo(expectedNumberOfRegionsContacted);
+                }
+            };
+
+        Consumer<CosmosDiagnosticsContext> logCtx =
+            (ctx) -> {
+                assertThat(ctx).isNotNull();
+                logger.info(
+                    "DIAGNOSTICS CONTEXT: {} Json: {}",
+                    ctx.toString(),
+                    ctx.toJson());
+            };
+
+        Consumer<CosmosDiagnosticsContext> validateCtxOneRegions =
+            (ctx) -> {
+                if (operationType.isReadOnlyOperation()) {
+                    validateCtxRegions.accept(ctx, TWO_REGIONS);
+                } else {
+                    validateCtxRegions.accept(ctx, ONE_REGION);
+                }
+            };
+
+        Consumer<CosmosDiagnosticsContext> ctxValidation = ctx -> {
+            assertThat(ctx.getDiagnostics()).isNotNull();
+            assertThat(ctx.getDiagnostics().size()).isEqualTo(1);
+            CosmosDiagnostics diagnostics = ctx.getDiagnostics().iterator().next();
+            assertThat(diagnostics.getClientSideRequestStatistics()).isNotNull();
+            assertThat(diagnostics.getClientSideRequestStatistics().size()).isEqualTo(1);
+
+            ClientSideRequestStatistics clientStats = diagnostics.getClientSideRequestStatistics().iterator().next();
+            assertThat(clientStats.getResponseStatisticsList()).isNotNull();
+            int actualRequestCount = clientStats.getResponseStatisticsList().size();
+
+            if (maxExpectedRequestCountValidation != null) {
+                logger.info(
+                    "ACTUAL REQUEST COUNT: {}",
+                    actualRequestCount);
+
+                // TODO: expand into other consistencies
+                maxExpectedRequestCountValidation.accept(actualRequestCount, ConsistencyLevel.SESSION, operationType);
+            }
+        };
+
+        execute(
+            testCaseId,
+            endToEndTimeout,
+            noAvailabilityStrategy,
+            CosmosRegionSwitchHint.LOCAL_REGION_PREFERRED,
+            isIdempotentWriteRetriesEnabled,
             ArrayUtils.toArray(faultInjectionOperationType),
             readItemCallback,
             faultInjectionCallback,
@@ -897,6 +1142,26 @@ public class MaxRetryCountTests extends TestSuiteBase {
         String ruleName = "serverErrorRule-retryWithError-" + UUID.randomUUID();
         FaultInjectionServerErrorResult serviceUnavailableResult = FaultInjectionResultBuilders
             .getResultBuilder(FaultInjectionServerErrorType.RETRY_WITH)
+            .build();
+
+        inject(
+            ruleName,
+            containerWithSeveralWriteableRegions,
+            applicableRegions,
+            faultInjectionOperationType,
+            serviceUnavailableResult,
+            null
+        );
+    }
+
+    private static void injectServerGoneError(
+        CosmosAsyncContainer containerWithSeveralWriteableRegions,
+        List<String> applicableRegions,
+        FaultInjectionOperationType faultInjectionOperationType) {
+
+        String ruleName = "serverErrorRule-serverGoneError-" + UUID.randomUUID();
+        FaultInjectionServerErrorResult serviceUnavailableResult = FaultInjectionResultBuilders
+            .getResultBuilder(FaultInjectionServerErrorType.GONE)
             .build();
 
         inject(
