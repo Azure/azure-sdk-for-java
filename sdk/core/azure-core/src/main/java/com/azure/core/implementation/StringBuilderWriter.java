@@ -100,6 +100,16 @@ public final class StringBuilderWriter extends Writer {
         closed = true;
     }
 
+    /**
+     * Returns the string held in the {@link StringBuilder} backing this {@link Writer}
+     * for consistency with other Writers.
+     * @return builder.toString()
+     */
+    @Override
+    public String toString() {
+        return builder.toString();
+    }
+
     private void ensureOpen() throws IOException {
         if (closed) {
             throw new IOException("Writer has been closed.");
