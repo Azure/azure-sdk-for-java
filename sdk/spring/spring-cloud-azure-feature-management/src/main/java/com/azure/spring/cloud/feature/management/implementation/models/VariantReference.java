@@ -2,8 +2,6 @@
 // Licensed under the MIT License.
 package com.azure.spring.cloud.feature.management.implementation.models;
 
-import java.util.Map;
-
 import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 import com.fasterxml.jackson.annotation.JsonProperty;
 
@@ -13,7 +11,10 @@ public class VariantReference {
     private String name;
 
     @JsonProperty("configuration-value")
-    private Map<String, Object> configurationValue;
+    private Object configurationValue;
+
+    @JsonProperty("configuration-reference")
+    private String configurationReference;
 
     private String statusOverride;
 
@@ -34,15 +35,29 @@ public class VariantReference {
     /**
      * @return the configurationValue
      */
-    public Map<String, Object> getConfigurationValue() {
+    public Object getConfigurationValue() {
         return configurationValue;
     }
 
     /**
      * @param configurationValue the configurationValue to set
      */
-    public void setConfigurationValue(Map<String, Object> configurationValue) {
+    public void setConfigurationValue(Object configurationValue) {
         this.configurationValue = configurationValue;
+    }
+
+    /**
+     * @return the configurationReference
+     */
+    public String getConfigurationReference() {
+        return configurationReference;
+    }
+
+    /**
+     * @param configurationReference the configurationReference to set
+     */
+    public void setConfigurationReference(String configurationReference) {
+        this.configurationReference = configurationReference;
     }
 
     /**

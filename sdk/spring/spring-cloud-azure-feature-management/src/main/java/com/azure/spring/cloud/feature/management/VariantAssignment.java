@@ -7,6 +7,7 @@ import java.nio.charset.Charset;
 import java.security.MessageDigest;
 import java.security.NoSuchAlgorithmException;
 import java.util.Collection;
+import java.util.LinkedHashMap;
 import java.util.Locale;
 
 import org.springframework.util.StringUtils;
@@ -16,12 +17,15 @@ import com.azure.spring.cloud.feature.management.implementation.models.GroupAllo
 import com.azure.spring.cloud.feature.management.implementation.models.PercentileAllocation;
 import com.azure.spring.cloud.feature.management.implementation.models.UserAllocation;
 import com.azure.spring.cloud.feature.management.implementation.models.VariantReference;
+import com.azure.spring.cloud.feature.management.models.FeatureManagementException;
 import com.azure.spring.cloud.feature.management.models.TargetingException;
 import com.azure.spring.cloud.feature.management.targeting.TargetingContextAccessor;
 import com.azure.spring.cloud.feature.management.targeting.TargetingEvaluationOptions;
 import com.azure.spring.cloud.feature.management.targeting.TargetingFilterContext;
+import com.fasterxml.jackson.core.JsonProcessingException;
 
 import reactor.core.publisher.Flux;
+import reactor.core.publisher.Mono;
 
 /**
  * Evaluator for Dynamic Feature and Feature Filters.
@@ -50,8 +54,12 @@ public final class VariantAssignment {
      * @param variants List of the possible variants.
      * @return Variant object containing an instance of the type
      */
-    Flux<Variant> assignVariant(Allocation allocation, Collection<VariantReference> variants) {
+    Mono<Variant> assignVariant(Allocation allocation, Collection<VariantReference> variants) {
         TargetingFilterContext targetingContext = new TargetingFilterContext();
+
+        if (contextAccessor == null) {
+            throw new FeatureManagementException("No Targeting Filter Context found to assign variant.");
+        }
 
         contextAccessor.configureTargetingContext(targetingContext);
 
@@ -66,7 +74,7 @@ public final class VariantAssignment {
                     }
 
                     if (user.equals(targetedUser)) {
-                        return getVariant(variants, users.getVariant());
+                        return getVariant(variants, users.getVariant()).single();
                     }
                 }
             }
@@ -84,7 +92,7 @@ public final class VariantAssignment {
                             targetedGroup = targetedGroup.toLowerCase(Locale.getDefault());
                         }
                         if (targetedGroup.equals(group)) {
-                            return getVariant(variants, groups.getVariant());
+                            return getVariant(variants, groups.getVariant()).single();
                         }
                     }
                 }
@@ -103,15 +111,15 @@ public final class VariantAssignment {
 
         for (PercentileAllocation percentile : allocation.getPercentile().values()) {
             if (percentile.getFrom().doubleValue() <= value && percentile.getTo().doubleValue() > value) {
-                return getVariant(variants, percentile.getVariant());
+                return getVariant(variants, percentile.getVariant()).single();
             }
         }
 
         if (StringUtils.hasText(allocation.getDefaultWhenEnabled())) {
-            return getVariant(variants, allocation.getDefaultWhenEnabled());
+            return getVariant(variants, allocation.getDefaultWhenEnabled()).single();
         }
 
-        return null;
+        return Mono.justOrEmpty(null);
     }
 
     /**
@@ -131,7 +139,11 @@ public final class VariantAssignment {
     }
 
     private Variant assignVariant(VariantReference variant) {
-        return new Variant(variant.getName(), variant.getConfigurationValue());
+        if (variant.getConfigurationValue() != null) {
+            return new Variant(variant.getName(), variant.getConfigurationValue());
+        }
+
+        return null;
     }
 
     /**

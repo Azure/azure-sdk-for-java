@@ -2,7 +2,6 @@
 // Licensed under the MIT License.
 package com.azure.spring.cloud.feature.management.filters;
 
-import com.azure.spring.cloud.feature.management.Context;
 import com.azure.spring.cloud.feature.management.models.FeatureFilterEvaluationContext;
 
 import reactor.core.publisher.Mono;
@@ -22,6 +21,6 @@ public interface ContextualFeatureFilterAsync {
      * @param appContext The internal app context
      * @return True if the feature is enabled, false otherwise.
      */
-    Mono<Boolean> evaluateAsync(FeatureFilterEvaluationContext context, Context appContext);
+    Mono<Boolean> evaluateAsync(FeatureFilterEvaluationContext context, Object appContext);
 
 }

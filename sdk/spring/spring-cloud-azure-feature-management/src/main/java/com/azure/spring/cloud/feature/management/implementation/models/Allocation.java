@@ -49,7 +49,7 @@ public class Allocation {
     /**
      * @param defautlWhenDisabled the defautlWhenDisabled to set
      */
-    public void setDefautlWhenDisabled(String defautlWhenDisabled) {
+    public void setDefaultWhenDisabled(String defautlWhenDisabled) {
         this.defautlWhenDisabled = defautlWhenDisabled;
     }
 

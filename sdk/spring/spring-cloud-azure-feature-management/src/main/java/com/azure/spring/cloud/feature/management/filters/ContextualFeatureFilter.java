@@ -2,7 +2,6 @@
 // Licensed under the MIT License.
 package com.azure.spring.cloud.feature.management.filters;
 
-import com.azure.spring.cloud.feature.management.Context;
 import com.azure.spring.cloud.feature.management.models.FeatureFilterEvaluationContext;
 
 /**
@@ -20,6 +19,6 @@ public interface ContextualFeatureFilter {
      * @param appContext The internal app context
      * @return True if the feature is enabled, false otherwise.
      */
-    boolean evaluate(FeatureFilterEvaluationContext context, Context appContext);
+    boolean evaluate(FeatureFilterEvaluationContext context, Object appContext);
 
 }

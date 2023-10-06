@@ -33,7 +33,7 @@ import com.azure.spring.cloud.feature.management.models.FilterNotFoundException;
 /**
  * Unit tests for FeatureManager.
  */
-@SpringBootTest(classes = { TestConfiguration.class, SpringBootTest.class })
+@SpringBootTest(classes = { FeatureManagementTestConfigurations.class, SpringBootTest.class })
 public class FeatureManagerTest {
 
     private FeatureManager featureManager;
