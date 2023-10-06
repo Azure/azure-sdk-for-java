@@ -10,6 +10,7 @@ import com.azure.core.http.HttpResponse;
 import com.azure.core.http.rest.RequestOptions;
 import com.azure.core.http.rest.Response;
 import com.azure.core.http.rest.StreamResponse;
+import com.azure.core.implementation.ImplUtils;
 import com.azure.core.implementation.TypeUtil;
 import com.azure.core.implementation.serializer.HttpResponseDecoder;
 import com.azure.core.util.Base64Url;
@@ -82,7 +83,7 @@ public class SyncRestProxy extends RestProxyBase {
                 errorOptions);
         } catch (Exception e) {
             tracer.end(null, e, context);
-            sneakyThrows(e);
+            ImplUtils.sneakyThrows(e);
             return null;
         }
     }
@@ -219,6 +220,10 @@ public class SyncRestProxy extends RestProxyBase {
         boolean isJson = requestDataConfiguration.isJson();
         HttpRequest request = requestDataConfiguration.getHttpRequest();
         Object bodyContentObject = requestDataConfiguration.getBodyContent();
+
+        if (bodyContentObject == null) {
+            return;
+        }
 
         // Attempt to use JsonSerializable or XmlSerializable in a separate block.
         if (supportsJsonSerializable(bodyContentObject.getClass())) {

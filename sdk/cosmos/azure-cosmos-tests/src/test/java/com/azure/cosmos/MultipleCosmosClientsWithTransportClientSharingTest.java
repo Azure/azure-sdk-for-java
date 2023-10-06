@@ -48,7 +48,7 @@ public class MultipleCosmosClientsWithTransportClientSharingTest extends TestSui
         super(clientBuilder);
     }
 
-    @BeforeClass(groups = {"simple"}, timeOut = SETUP_TIMEOUT)
+    @BeforeClass(groups = {"fast"}, timeOut = SETUP_TIMEOUT)
     public void before_CosmosItemTest() {
         assertThat(this.client).isNull();
         this.client = getClientBuilder().buildClient();
@@ -62,14 +62,14 @@ public class MultipleCosmosClientsWithTransportClientSharingTest extends TestSui
         container2 = client1.getDatabase(asyncContainer.getDatabase().getId()).getContainer(asyncContainer.getId());
     }
 
-    @AfterClass(groups = {"simple"}, timeOut = SHUTDOWN_TIMEOUT, alwaysRun = true)
+    @AfterClass(groups = {"fast"}, timeOut = SHUTDOWN_TIMEOUT, alwaysRun = true)
     public void afterClass() {
         LifeCycleUtils.closeQuietly(client);
         LifeCycleUtils.closeQuietly(client1);
         LifeCycleUtils.closeQuietly(client2);
     }
 
-    @Test(groups = { "simple" }, timeOut = TIMEOUT)
+    @Test(groups = { "fast" }, timeOut = TIMEOUT)
     public void createItem() {
         InternalObjectNode properties = getDocumentDefinition(UUID.randomUUID().toString());
         CosmosItemResponse<InternalObjectNode> itemResponse = container1.createItem(properties);
@@ -81,7 +81,7 @@ public class MultipleCosmosClientsWithTransportClientSharingTest extends TestSui
         validateItemResponse(properties, itemResponse1);
     }
 
-    @Test(groups = {"simple"}, timeOut = TIMEOUT)
+    @Test(groups = {"fast"}, timeOut = TIMEOUT)
     public void createItem_alreadyExists() {
         InternalObjectNode properties = getDocumentDefinition(UUID.randomUUID().toString());
         CosmosItemResponse<InternalObjectNode> itemResponse = container1.createItem(properties);
@@ -100,7 +100,7 @@ public class MultipleCosmosClientsWithTransportClientSharingTest extends TestSui
         }
     }
 
-    @Test(groups = { "simple" }, timeOut = TIMEOUT)
+    @Test(groups = { "fast" }, timeOut = TIMEOUT)
     public void readItem() {
         InternalObjectNode properties1 = getDocumentDefinition(UUID.randomUUID().toString());
         CosmosItemResponse<InternalObjectNode> itemResponse1 = container1.createItem(properties1);
@@ -119,7 +119,7 @@ public class MultipleCosmosClientsWithTransportClientSharingTest extends TestSui
         validateItemResponse(properties2, readResponse2);
     }
 
-    @Test(groups = { "simple" }, timeOut = TIMEOUT)
+    @Test(groups = { "fast" }, timeOut = TIMEOUT)
     public void replaceItem() throws Exception{
         InternalObjectNode properties = getDocumentDefinition(UUID.randomUUID().toString());
         CosmosItemResponse<InternalObjectNode> itemResponse = container1.createItem(properties);
@@ -137,7 +137,7 @@ public class MultipleCosmosClientsWithTransportClientSharingTest extends TestSui
         assertThat(ModelBridgeInternal.getObjectFromJsonSerializable(BridgeInternal.getProperties(replace), "newProp")).isEqualTo(newPropValue);
     }
 
-    @Test(groups = { "simple" }, timeOut = TIMEOUT)
+    @Test(groups = { "fast" }, timeOut = TIMEOUT)
     public void deleteItem() {
         InternalObjectNode properties = getDocumentDefinition(UUID.randomUUID().toString());
         CosmosItemResponse<InternalObjectNode> itemResponse = container1.createItem(properties);
@@ -150,7 +150,7 @@ public class MultipleCosmosClientsWithTransportClientSharingTest extends TestSui
     }
 
 
-    @Test(groups = { "simple" }, timeOut = TIMEOUT)
+    @Test(groups = { "fast" }, timeOut = TIMEOUT)
     public void readAllItems() throws Exception{
         InternalObjectNode properties = getDocumentDefinition(UUID.randomUUID().toString());
         CosmosItemResponse<InternalObjectNode> itemResponse = container1.createItem(properties);
@@ -163,7 +163,7 @@ public class MultipleCosmosClientsWithTransportClientSharingTest extends TestSui
     }
 
 
-    @Test(groups = { "simple" }, timeOut = TIMEOUT)
+    @Test(groups = { "fast" }, timeOut = TIMEOUT)
     public void queryItems() throws Exception{
         InternalObjectNode properties = getDocumentDefinition(UUID.randomUUID().toString());
         CosmosItemResponse<InternalObjectNode> itemResponse = container1.createItem(properties);
@@ -182,7 +182,7 @@ public class MultipleCosmosClientsWithTransportClientSharingTest extends TestSui
         assertThat(feedResponseIterator3.iterator().hasNext()).isTrue();
     }
 
-    @Test(groups = { "simple" }, timeOut = TIMEOUT)
+    @Test(groups = { "fast" }, timeOut = TIMEOUT)
     public void queryItemsWithContinuationTokenAndPageSize() throws Exception{
         List<String> actualIds = new ArrayList<>();
         InternalObjectNode properties = getDocumentDefinition(UUID.randomUUID().toString());
@@ -245,7 +245,7 @@ public class MultipleCosmosClientsWithTransportClientSharingTest extends TestSui
     }
 
 
-    @Test(groups = { "simple" }, timeOut = TIMEOUT)
+    @Test(groups = { "fast" }, timeOut = TIMEOUT)
     public void transportClientReferenceValidation() {
         if (!ifDirectMode()) {
             throw new SkipException("not direct mode");
@@ -261,7 +261,7 @@ public class MultipleCosmosClientsWithTransportClientSharingTest extends TestSui
         assertThat(transportClient2).isSameAs(transportClient1);
     }
 
-    @Test(groups = { "simple" }, timeOut = TIMEOUT)
+    @Test(groups = { "fast" }, timeOut = TIMEOUT)
     public void gatewayHttpClientReferenceValidation() {
         HttpClient httpClient = ReflectionUtils.getGatewayHttpClient(client);
         assertThat(httpClient).isNotInstanceOf(SharedGatewayHttpClient.class);

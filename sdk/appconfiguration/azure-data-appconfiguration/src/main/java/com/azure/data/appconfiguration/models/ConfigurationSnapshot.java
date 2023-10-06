@@ -17,9 +17,9 @@ import java.util.List;
 import java.util.Map;
 import java.util.Objects;
 
-/** The ConfigurationSettingsSnapshot model. */
+/** The ConfigurationSnapshot model. */
 @Fluent
-public final class ConfigurationSettingsSnapshot implements JsonSerializable<ConfigurationSettingsSnapshot> {
+public final class ConfigurationSnapshot implements JsonSerializable<ConfigurationSnapshot> {
     /*
      * The name of the snapshot.
      */
@@ -28,19 +28,19 @@ public final class ConfigurationSettingsSnapshot implements JsonSerializable<Con
     /*
      * The current status of the snapshot.
      */
-    private SnapshotStatus status;
+    private ConfigurationSnapshotStatus status;
 
     /*
      * A list of filters used to filter the key-values included in the snapshot.
      */
-    private final List<SnapshotSettingFilter> filters;
+    private final List<ConfigurationSettingsFilter> filters;
 
     /*
      * The composition type describes how the key-values within the snapshot are composed. The 'key' composition type
      * ensures there are no two key-values containing the same key. The 'key_label' composition type ensures there are
      * no two key-values containing the same key and label.
      */
-    private CompositionType compositionType;
+    private SnapshotComposition snapshotComposition;
 
     /*
      * The time that the snapshot was created.
@@ -80,11 +80,11 @@ public final class ConfigurationSettingsSnapshot implements JsonSerializable<Con
     private String eTag;
 
     /**
-     * Creates an instance of ConfigurationSettingsSnapshot class.
+     * Creates an instance of ConfigurationSnapshot class.
      *
      * @param filters the filters value to set.
      */
-    public ConfigurationSettingsSnapshot(List<SnapshotSettingFilter> filters) {
+    public ConfigurationSnapshot(List<ConfigurationSettingsFilter> filters) {
         this.filters = filters;
     }
 
@@ -102,7 +102,7 @@ public final class ConfigurationSettingsSnapshot implements JsonSerializable<Con
      *
      * @return the status value.
      */
-    public SnapshotStatus getStatus() {
+    public ConfigurationSnapshotStatus getStatus() {
         return this.status;
     }
 
@@ -111,31 +111,31 @@ public final class ConfigurationSettingsSnapshot implements JsonSerializable<Con
      *
      * @return the filters value.
      */
-    public List<SnapshotSettingFilter> getFilters() {
+    public List<ConfigurationSettingsFilter> getFilters() {
         return this.filters;
     }
 
     /**
-     * Get the compositionType property: The composition type describes how the key-values within the snapshot are
+     * Get the snapshotComposition property: The composition type describes how the key-values within the snapshot are
      * composed. The 'key' composition type ensures there are no two key-values containing the same key. The 'key_label'
      * composition type ensures there are no two key-values containing the same key and label.
      *
-     * @return the compositionType value.
+     * @return the snapshotComposition value.
      */
-    public CompositionType getCompositionType() {
-        return this.compositionType;
+    public SnapshotComposition getSnapshotComposition() {
+        return this.snapshotComposition;
     }
 
     /**
-     * Set the compositionType property: The composition type describes how the key-values within the snapshot are
+     * Set the snapshotComposition property: The composition type describes how the key-values within the snapshot are
      * composed. The 'key' composition type ensures there are no two key-values containing the same key. The 'key_label'
      * composition type ensures there are no two key-values containing the same key and label.
      *
-     * @param compositionType the compositionType value to set.
-     * @return the ConfigurationSettingsSnapshot object itself.
+     * @param snapshotComposition the snapshotComposition value to set.
+     * @return the ConfigurationSnapshot object itself.
      */
-    public ConfigurationSettingsSnapshot setCompositionType(CompositionType compositionType) {
-        this.compositionType = compositionType;
+    public ConfigurationSnapshot setSnapshotComposition(SnapshotComposition snapshotComposition) {
+        this.snapshotComposition = snapshotComposition;
         return this;
     }
 
@@ -177,9 +177,9 @@ public final class ConfigurationSettingsSnapshot implements JsonSerializable<Con
      * default lifetime of key-value revisions will be used.
      *
      * @param retentionPeriod the retentionPeriod value to set.
-     * @return the ConfigurationSettingsSnapshot object itself.
+     * @return the ConfigurationSnapshot object itself.
      */
-    public ConfigurationSettingsSnapshot setRetentionPeriod(Duration retentionPeriod) {
+    public ConfigurationSnapshot setRetentionPeriod(Duration retentionPeriod) {
         this.retentionPeriod = retentionPeriod == null ? null : retentionPeriod.getSeconds();
         return this;
     }
@@ -215,9 +215,9 @@ public final class ConfigurationSettingsSnapshot implements JsonSerializable<Con
      * Set the tags property: The tags of the snapshot.
      *
      * @param tags the tags value to set.
-     * @return the ConfigurationSettingsSnapshot object itself.
+     * @return the ConfigurationSnapshot object itself.
      */
-    public ConfigurationSettingsSnapshot setTags(Map<String, String> tags) {
+    public ConfigurationSnapshot setTags(Map<String, String> tags) {
         this.tags = tags;
         return this;
     }
@@ -237,7 +237,7 @@ public final class ConfigurationSettingsSnapshot implements JsonSerializable<Con
         jsonWriter.writeArrayField("filters", this.filters, (writer, element) -> writer.writeJson(element));
         jsonWriter.writeStringField("name", this.name);
         jsonWriter.writeStringField("status", Objects.toString(this.status, null));
-        jsonWriter.writeStringField("composition_type", Objects.toString(this.compositionType, null));
+        jsonWriter.writeStringField("composition_type", Objects.toString(this.snapshotComposition, null));
         jsonWriter.writeStringField("created", Objects.toString(this.createdAt, null));
         jsonWriter.writeStringField("expires", Objects.toString(this.expiresAt, null));
         jsonWriter.writeNumberField("retention_period", this.retentionPeriod);
@@ -249,22 +249,22 @@ public final class ConfigurationSettingsSnapshot implements JsonSerializable<Con
     }
 
     /**
-     * Reads an instance of ConfigurationSettingsSnapshot from the JsonReader.
+     * Reads an instance of ConfigurationSnapshot from the JsonReader.
      *
      * @param jsonReader The JsonReader being read.
-     * @return An instance of ConfigurationSettingsSnapshot if the JsonReader was pointing to an instance of it, or null
-     *     if it was pointing to JSON null.
+     * @return An instance of ConfigurationSnapshot if the JsonReader was pointing to an instance of it, or null if it
+     *     was pointing to JSON null.
      * @throws IllegalStateException If the deserialized JSON object was missing any required properties.
-     * @throws IOException If an error occurs while reading the ConfigurationSettingsSnapshot.
+     * @throws IOException If an error occurs while reading the ConfigurationSnapshot.
      */
-    public static ConfigurationSettingsSnapshot fromJson(JsonReader jsonReader) throws IOException {
+    public static ConfigurationSnapshot fromJson(JsonReader jsonReader) throws IOException {
         return jsonReader.readObject(
                 reader -> {
                     boolean filtersFound = false;
-                    List<SnapshotSettingFilter> filters = null;
+                    List<ConfigurationSettingsFilter> filters = null;
                     String name = null;
-                    SnapshotStatus status = null;
-                    CompositionType compositionType = null;
+                    ConfigurationSnapshotStatus status = null;
+                    SnapshotComposition snapshotComposition = null;
                     OffsetDateTime createdAt = null;
                     OffsetDateTime expiresAt = null;
                     Long retentionPeriod = null;
@@ -277,14 +277,14 @@ public final class ConfigurationSettingsSnapshot implements JsonSerializable<Con
                         reader.nextToken();
 
                         if ("filters".equals(fieldName)) {
-                            filters = reader.readArray(reader1 -> SnapshotSettingFilter.fromJson(reader1));
+                            filters = reader.readArray(reader1 -> ConfigurationSettingsFilter.fromJson(reader1));
                             filtersFound = true;
                         } else if ("name".equals(fieldName)) {
                             name = reader.getString();
                         } else if ("status".equals(fieldName)) {
-                            status = SnapshotStatus.fromString(reader.getString());
+                            status = ConfigurationSnapshotStatus.fromString(reader.getString());
                         } else if ("composition_type".equals(fieldName)) {
-                            compositionType = CompositionType.fromString(reader.getString());
+                            snapshotComposition = SnapshotComposition.fromString(reader.getString());
                         } else if ("created".equals(fieldName)) {
                             createdAt =
                                     reader.getNullable(
@@ -308,20 +308,19 @@ public final class ConfigurationSettingsSnapshot implements JsonSerializable<Con
                         }
                     }
                     if (filtersFound) {
-                        ConfigurationSettingsSnapshot deserializedConfigurationSettingsSnapshot =
-                                new ConfigurationSettingsSnapshot(filters);
-                        deserializedConfigurationSettingsSnapshot.name = name;
-                        deserializedConfigurationSettingsSnapshot.status = status;
-                        deserializedConfigurationSettingsSnapshot.compositionType = compositionType;
-                        deserializedConfigurationSettingsSnapshot.createdAt = createdAt;
-                        deserializedConfigurationSettingsSnapshot.expiresAt = expiresAt;
-                        deserializedConfigurationSettingsSnapshot.retentionPeriod = retentionPeriod;
-                        deserializedConfigurationSettingsSnapshot.sizeInBytes = sizeInBytes;
-                        deserializedConfigurationSettingsSnapshot.itemCount = itemCount;
-                        deserializedConfigurationSettingsSnapshot.tags = tags;
-                        deserializedConfigurationSettingsSnapshot.eTag = eTag;
+                        ConfigurationSnapshot deserializedConfigurationSnapshot = new ConfigurationSnapshot(filters);
+                        deserializedConfigurationSnapshot.name = name;
+                        deserializedConfigurationSnapshot.status = status;
+                        deserializedConfigurationSnapshot.snapshotComposition = snapshotComposition;
+                        deserializedConfigurationSnapshot.createdAt = createdAt;
+                        deserializedConfigurationSnapshot.expiresAt = expiresAt;
+                        deserializedConfigurationSnapshot.retentionPeriod = retentionPeriod;
+                        deserializedConfigurationSnapshot.sizeInBytes = sizeInBytes;
+                        deserializedConfigurationSnapshot.itemCount = itemCount;
+                        deserializedConfigurationSnapshot.tags = tags;
+                        deserializedConfigurationSnapshot.eTag = eTag;
 
-                        return deserializedConfigurationSettingsSnapshot;
+                        return deserializedConfigurationSnapshot;
                     }
                     List<String> missingProperties = new ArrayList<>();
                     if (!filtersFound) {
