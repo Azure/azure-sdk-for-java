@@ -8,9 +8,6 @@ import com.azure.core.http.HttpPipelineBuilder;
 import com.azure.core.http.policy.AddHeadersPolicy;
 import com.azure.core.http.policy.RetryPolicy;
 import com.azure.core.models.CloudEvent;
-import com.azure.core.models.CloudEventDataFormat;
-import com.azure.core.test.TestBase;
-import com.azure.core.util.BinaryData;
 import com.azure.messaging.eventgrid.implementation.EventGridPublisherClientImpl;
 import com.azure.messaging.eventgrid.implementation.EventGridPublisherClientImplBuilder;
 import com.azure.messaging.eventgrid.implementation.models.EventGridEvent;
@@ -21,12 +18,6 @@ import java.time.Duration;
 import java.util.ArrayList;
 import java.util.Collections;
 import java.util.List;
-import java.time.OffsetDateTime;
-import java.util.ArrayList;
-import java.util.Collections;
-import java.util.HashMap;
-import java.util.List;
-import java.util.UUID;
 
 
 public class EventGridPublisherImplTests extends EventGridTestBase {
@@ -47,7 +38,8 @@ public class EventGridPublisherImplTests extends EventGridTestBase {
         } else if (interceptorManager.isRecordMode()) {
             pipelineBuilder.policies(interceptorManager.getRecordPolicy(), new RetryPolicy());
         }
-
+        setupSanitizers();
+    }
     @Override
     protected void afterTest() {
         StepVerifier.resetDefaultTimeout();
