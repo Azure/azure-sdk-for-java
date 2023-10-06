@@ -108,7 +108,8 @@ public class ReadmeSamples {
         CreateRoomOptions roomOptions = new CreateRoomOptions()
                 .setValidFrom(validFrom)
                 .setValidUntil(validUntil)
-                .setParticipants(participants);
+                .setParticipants(participants)
+                .setPstnDialOutEnabled(true);
 
         CommunicationRoom roomResult = roomsClient.createRoom(roomOptions);
         // END: readme-sample-createRoomWithValidInput
@@ -124,7 +125,8 @@ public class ReadmeSamples {
         // Update Room options
         UpdateRoomOptions updateRoomOptions = new UpdateRoomOptions()
                 .setValidFrom(validFrom)
-                .setValidUntil(validUntil);
+                .setValidUntil(validUntil)
+                .setPstnDialOutEnabled(true);
 
         try {
             CommunicationRoom roomResult = roomsClient.updateRoom("<Room Id>", updateRoomOptions);

@@ -13,10 +13,13 @@ import com.azure.messaging.servicebus.ServiceBusTransactionContext;
 import java.util.Map;
 
 /**
- * Options to specify while deferring message.
+ * Options to specify when deferring a {@link ServiceBusReceivedMessage message} received via
+ * {@link ServiceBusReceiveMode#PEEK_LOCK}.
  *
  * @see ServiceBusReceiverAsyncClient#defer(ServiceBusReceivedMessage, DeferOptions)
  * @see ServiceBusReceiverClient#defer(ServiceBusReceivedMessage, DeferOptions)
+ * @see <a href="https://learn.microsoft.com/azure/service-bus-messaging/message-transfers-locks-settlement#peeklock">
+ *     Settling messages</a>
  */
 public final class DeferOptions extends SettlementOptions {
     private Map<String, Object> propertiesToModify;

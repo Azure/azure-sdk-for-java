@@ -14,11 +14,15 @@ import com.azure.messaging.servicebus.ServiceBusReceiverClient;
  *
  * @see ServiceBusReceiverClientBuilder#receiveMode(ServiceBusReceiveMode)
  * @see ServiceBusSessionReceiverClientBuilder#receiveMode(ServiceBusReceiveMode)
+ * @see <a href="https://learn.microsoft.com/azure/service-bus-messaging/message-transfers-locks-settlement#settling-receive-operations">
+ *     Settling receive operations</a>
  */
 public enum ServiceBusReceiveMode {
     /**
-     * In this mode, received message is not deleted from the queue or subscription, instead it is temporarily locked to
-     * the receiver, making it invisible to other receivers. Then the service waits for one of the following events:
+     * <p>In this mode, the received message is not deleted from the queue or subscription, instead it is temporarily
+     * locked to the receiver, making it invisible to other receivers. Then the service waits for one of the following
+     * events:</p>
+     *
      * <ul>
      * <li>If the receiver processes the message successfully, it calls
      * {@link ServiceBusReceiverClient#complete(ServiceBusReceivedMessage)} or

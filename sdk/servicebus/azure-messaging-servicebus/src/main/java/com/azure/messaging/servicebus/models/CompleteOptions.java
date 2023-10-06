@@ -11,10 +11,13 @@ import com.azure.messaging.servicebus.ServiceBusSenderClient;
 import com.azure.messaging.servicebus.ServiceBusTransactionContext;
 
 /**
- * Options to specify while completing message.
+ * Options to specify when completing a {@link ServiceBusReceivedMessage message} received via
+ * {@link ServiceBusReceiveMode#PEEK_LOCK}.
  *
  * @see ServiceBusReceiverAsyncClient#complete(ServiceBusReceivedMessage, CompleteOptions)
  * @see ServiceBusReceiverClient#complete(ServiceBusReceivedMessage, CompleteOptions)
+ * @see <a href="https://learn.microsoft.com/azure/service-bus-messaging/message-transfers-locks-settlement#peeklock">
+ *     Settling messages</a>
  */
 public final class CompleteOptions extends SettlementOptions {
     /**

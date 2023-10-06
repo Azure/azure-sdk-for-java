@@ -15,7 +15,7 @@ import java.util.List;
 
 /** Enables filtering of key-values. */
 @Fluent
-public final class SnapshotSettingFilter implements JsonSerializable<SnapshotSettingFilter> {
+public final class ConfigurationSettingsFilter implements JsonSerializable<ConfigurationSettingsFilter> {
     /*
      * Filters key-values by their key field.
      */
@@ -27,11 +27,11 @@ public final class SnapshotSettingFilter implements JsonSerializable<SnapshotSet
     private String label;
 
     /**
-     * Creates an instance of SnapshotSettingFilter class.
+     * Creates an instance of ConfigurationSettingsFilter class.
      *
      * @param key the key value to set.
      */
-    public SnapshotSettingFilter(String key) {
+    public ConfigurationSettingsFilter(String key) {
         this.key = key;
     }
 
@@ -57,9 +57,9 @@ public final class SnapshotSettingFilter implements JsonSerializable<SnapshotSet
      * Set the label property: Filters {@link ConfigurationSetting} by their label field.
      *
      * @param label the label value to set.
-     * @return the SnapshotSettingFilter object itself.
+     * @return the ConfigurationSettingsFilter object itself.
      */
-    public SnapshotSettingFilter setLabel(String label) {
+    public ConfigurationSettingsFilter setLabel(String label) {
         this.label = label;
         return this;
     }
@@ -73,15 +73,15 @@ public final class SnapshotSettingFilter implements JsonSerializable<SnapshotSet
     }
 
     /**
-     * Reads an instance of SnapshotSettingFilter from the JsonReader.
+     * Reads an instance of ConfigurationSettingsFilter from the JsonReader.
      *
      * @param jsonReader The JsonReader being read.
-     * @return An instance of SnapshotSettingFilter if the JsonReader was pointing to an instance of it, or null if it
-     *     was pointing to JSON null.
+     * @return An instance of ConfigurationSettingsFilter if the JsonReader was pointing to an instance of it, or null
+     *     if it was pointing to JSON null.
      * @throws IllegalStateException If the deserialized JSON object was missing any required properties.
-     * @throws IOException If an error occurs while reading the SnapshotSettingFilter.
+     * @throws IOException If an error occurs while reading the ConfigurationSettingsFilter.
      */
-    public static SnapshotSettingFilter fromJson(JsonReader jsonReader) throws IOException {
+    public static ConfigurationSettingsFilter fromJson(JsonReader jsonReader) throws IOException {
         return jsonReader.readObject(
                 reader -> {
                     boolean keyFound = false;
@@ -101,10 +101,11 @@ public final class SnapshotSettingFilter implements JsonSerializable<SnapshotSet
                         }
                     }
                     if (keyFound) {
-                        SnapshotSettingFilter deserializedSnapshotSettingFilter = new SnapshotSettingFilter(key);
-                        deserializedSnapshotSettingFilter.label = label;
+                        ConfigurationSettingsFilter deserializedConfigurationSettingsFilter =
+                                new ConfigurationSettingsFilter(key);
+                        deserializedConfigurationSettingsFilter.label = label;
 
-                        return deserializedSnapshotSettingFilter;
+                        return deserializedConfigurationSettingsFilter;
                     }
                     List<String> missingProperties = new ArrayList<>();
                     if (!keyFound) {
