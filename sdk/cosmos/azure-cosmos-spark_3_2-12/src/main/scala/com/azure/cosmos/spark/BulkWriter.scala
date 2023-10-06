@@ -248,7 +248,12 @@ class BulkWriter(container: CosmosAsyncContainer,
 
       // We start from using the bulk batch size and interval and concurrency
       // If in the future, there is a need to separate the configuration, can re-consider
-      val bulkBatchSize = BatchRequestResponseConstants.MAX_OPERATIONS_IN_DIRECT_MODE_BATCH_REQUEST
+      val bulkBatchSize = writeConfig.maxMicroBatchSize match {
+        case Some(customMaxMicroBatchSize) => Math.min(
+          BatchRequestResponseConstants.MAX_OPERATIONS_IN_DIRECT_MODE_BATCH_REQUEST,
+          Math.max(1, customMaxMicroBatchSize))
+        case None => BatchRequestResponseConstants.MAX_OPERATIONS_IN_DIRECT_MODE_BATCH_REQUEST
+      }
 
       val batchConcurrency = ImplementationBridgeHelpers
           .CosmosBulkExecutionOptionsHelper
