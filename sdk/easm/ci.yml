@@ -36,5 +36,5 @@ extends:
     EnableBatchRelease: true
     Artifacts:
       - name: azure-analytics-defender-easm
-        groupId: com.azure.analytics
+        groupId: com.azure
         safeName: azureanalyticsdefendereasm
