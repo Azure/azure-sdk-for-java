@@ -366,7 +366,7 @@ public class JsonArray extends JsonElement {
                      */
 
                 default:
-                    throw new IOException("Default: Invalid JsonToken. Deserialisation aborted.");
+                    throw new IOException(String.format("Default: Invalid JsonToken %s. Deserialisation aborted.", token));
             }
         }
     }

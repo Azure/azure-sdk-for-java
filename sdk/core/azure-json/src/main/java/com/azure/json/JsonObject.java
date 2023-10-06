@@ -431,7 +431,7 @@ public class JsonObject extends JsonElement {
               //  case END_ARRAY:
                  //   throw new IOException("Invalid JsonToken.END_ARRAY token read from deserialised JSON object. JSON object is being deserialised not a JSON array. This is not a valid JSON object. Deserialisation aborted.");
                 default:
-                    throw new IOException("Invalid JsonToken token read from deserialised JSON object. Deserialisation aborted.");
+                    throw new IOException(String.format("Invalid JsonToken %s read from deserialised JSON object. Deserialisation aborted.",token));
             }
             token = reader.nextToken();
         }
