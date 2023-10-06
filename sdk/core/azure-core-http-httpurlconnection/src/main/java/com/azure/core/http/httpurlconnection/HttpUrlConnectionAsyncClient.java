@@ -26,12 +26,17 @@ import java.util.*;
  */
 public class HttpUrlConnectionAsyncClient implements HttpClient {
     private static final ClientLogger LOGGER = new ClientLogger(HttpUrlConnectionAsyncClient.class);
-    private final Duration connectionTimeout;
+    private final long connectionTimeout; // in milliseconds
     private final ProxyOptions proxyOptions;
     private final Configuration configuration;
 
     HttpUrlConnectionAsyncClient(Duration connectionTimeout, ProxyOptions proxyOptions, Configuration configuration) {
-        this.connectionTimeout = connectionTimeout;
+        if (connectionTimeout == null) {
+            this.connectionTimeout = -1;
+        }
+        else {
+            this.connectionTimeout = connectionTimeout.toMillis();
+        }
         this.proxyOptions = proxyOptions;
         this.configuration = configuration;
     }
@@ -130,8 +135,8 @@ public class HttpUrlConnectionAsyncClient implements HttpClient {
 
             assert connection != null;
 
-            if (connectionTimeout != null) {
-                connection.setConnectTimeout((int) connectionTimeout.toMillis());
+            if (connectionTimeout != -1) {
+                connection.setConnectTimeout((int) connectionTimeout);
             }
 
             // SetConnectionRequest
