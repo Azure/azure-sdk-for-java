@@ -87,6 +87,9 @@ public class HttpUrlConnectionAsyncClient implements HttpClient {
     /**
      * Open a connection based on the HttpRequest URL
      *
+     * If a proxy is specified, the authorization type will default to 'Basic' unless Digest authentication is
+     * specified in the 'Authorization' header.
+     *
      * @param httpRequest The HTTP Request being sent
      * @return The HttpURLConnection object
      */
@@ -104,7 +107,7 @@ public class HttpUrlConnectionAsyncClient implements HttpClient {
 
                     if (proxyOptions.getUsername() != null && proxyOptions.getPassword() != null) {
                         String token = httpRequest.getHeaders().getValue(HttpHeaderName.AUTHORIZATION);
-                        if (Objects.equals(token, "Digest")) {
+                        if (token != null && token.startsWith("Digest")) {
                             MessageDigest messageDigest = null;
                             try {
                                 messageDigest = MessageDigest.getInstance("SHA-256");
