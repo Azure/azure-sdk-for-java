@@ -77,7 +77,8 @@ public class CustomDimensions {
         }
     }
 
-    private static String initSdkVersion() {
+    // package protected - visible for test
+    static String initSdkVersion() {
         if (RpAttachType.getRpAttachType() == RpAttachType.MANUAL) {
             return VersionGenerator.getSdkVersion();
         }
