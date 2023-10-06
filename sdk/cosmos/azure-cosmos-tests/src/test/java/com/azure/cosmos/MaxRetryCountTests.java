@@ -295,7 +295,7 @@ public class MaxRetryCountTests extends TestSuiteBase {
                 injectReadSessionNotAvailableIntoAllRegions,
                 validateStatusCodeIsReadSessionNotAvailableError,
                 (Consumer<Integer>)(requestCount) -> assertThat(requestCount).isEqualTo(
-                    Math.max(1, MAX_LOCAL_RETRY_COUNT_ONE) * (1 + (4 * writeableRegions.size()))
+                    Math.max(1, MAX_LOCAL_RETRY_COUNT_ONE) * (1 + (4 * (1 + writeableRegions.size())))
                 ),
                 MAX_LOCAL_RETRY_COUNT_DEFAULT, // DEFAULT is 1
                 SESSION_TOKEN_MISMATCH_WAIT_TIME_DEFAULT, // DEFAULT is 5 seconds,
@@ -311,7 +311,7 @@ public class MaxRetryCountTests extends TestSuiteBase {
                 injectReadSessionNotAvailableIntoAllRegions,
                 validateStatusCodeIsReadSessionNotAvailableError,
                 (Consumer<Integer>)(requestCount) -> assertThat(requestCount).isEqualTo(
-                    Math.max(1, MAX_LOCAL_RETRY_COUNT_ZERO) * (1 + (4 * writeableRegions.size()))
+                    Math.max(1, MAX_LOCAL_RETRY_COUNT_ZERO) * (1 + (4 * (1 + writeableRegions.size())))
                 ),
                 MAX_LOCAL_RETRY_COUNT_ZERO,
                 SESSION_TOKEN_MISMATCH_WAIT_TIME_DEFAULT, // DEFAULT is 5 seconds
@@ -327,7 +327,7 @@ public class MaxRetryCountTests extends TestSuiteBase {
                 injectReadSessionNotAvailableIntoAllRegions,
                 validateStatusCodeIsReadSessionNotAvailableError,
                 (Consumer<Integer>)(requestCount) -> assertThat(requestCount).isEqualTo(
-                    Math.max(1, MAX_LOCAL_RETRY_COUNT_THREE) * (1 + (4 * writeableRegions.size()))
+                    Math.max(1, MAX_LOCAL_RETRY_COUNT_THREE) * (1 + (4 * (1 + writeableRegions.size())))
                 ),
                 MAX_LOCAL_RETRY_COUNT_THREE,
                 SESSION_TOKEN_MISMATCH_WAIT_TIME_DEFAULT, // DEFAULT is 5 seconds
@@ -347,7 +347,7 @@ public class MaxRetryCountTests extends TestSuiteBase {
                         SESSION_TOKEN_MISMATCH_WAIT_TIME_FIVE_SECONDS,
                         SESSION_TOKEN_MISMATCH_INITIAL_BACKOFF_FIVE_MS,
                         SESSION_TOKEN_MISMATCH_MAX_BACKOFF_FIVE_HUNDRED_MS
-                     ) * Math.max(1, MAX_LOCAL_RETRY_COUNT_ONE) * (1 + (4 * writeableRegions.size()))
+                     ) * Math.max(1, MAX_LOCAL_RETRY_COUNT_ONE) * (1 + (4 * (1 + writeableRegions.size())))
                 ),
                 MAX_LOCAL_RETRY_COUNT_DEFAULT, // DEFAULT is 1
                 SESSION_TOKEN_MISMATCH_WAIT_TIME_DEFAULT, // DEFAULT is 5 seconds
@@ -367,7 +367,7 @@ public class MaxRetryCountTests extends TestSuiteBase {
                         SESSION_TOKEN_MISMATCH_WAIT_TIME_ONE_SECOND,
                         SESSION_TOKEN_MISMATCH_INITIAL_BACKOFF_ONE_SECOND,
                         SESSION_TOKEN_MISMATCH_MAX_BACKOFF_FIVE_SECONDS
-                    ) * (1 + (4 * writeableRegions.size()))
+                    ) * (1 + (4 * (1 + writeableRegions.size())))
                 ),
                 MAX_LOCAL_RETRY_COUNT_DEFAULT, // DEFAULT is 1
                 SESSION_TOKEN_MISMATCH_WAIT_TIME_ONE_SECOND, // DEFAULT is 5 seconds
@@ -387,7 +387,7 @@ public class MaxRetryCountTests extends TestSuiteBase {
                         SESSION_TOKEN_MISMATCH_WAIT_TIME_FIVE_SECONDS,
                         SESSION_TOKEN_MISMATCH_INITIAL_BACKOFF_FIVE_MS,
                         SESSION_TOKEN_MISMATCH_MAX_BACKOFF_FIVE_HUNDRED_MS
-                    ) + 1) * (1 + (4 * writeableRegions.size()))
+                    ) + 1) * (1 + (4 * (1 + writeableRegions.size())))
                 ),
                 MAX_LOCAL_RETRY_COUNT_THREE, // DEFAULT is 1
                 SESSION_TOKEN_MISMATCH_WAIT_TIME_DEFAULT, // DEFAULT is 5 seconds
@@ -460,7 +460,7 @@ public class MaxRetryCountTests extends TestSuiteBase {
             (ctx, expectedNumberOfRegionsContacted) -> {
                 assertThat(ctx).isNotNull();
                 if (ctx != null) {
-                    assertThat(ctx.getContactedRegionNames().size()).isGreaterThanOrEqualTo(expectedNumberOfRegionsContacted);
+                    assertThat(ctx.getContactedRegionNames().size()).isEqualTo(expectedNumberOfRegionsContacted);
                 }
             };
 

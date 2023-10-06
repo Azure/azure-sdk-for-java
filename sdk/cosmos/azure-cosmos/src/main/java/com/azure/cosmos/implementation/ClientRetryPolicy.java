@@ -204,7 +204,7 @@ public class ClientRetryPolicy extends DocumentClientRetryPolicy {
                     this.isReadRequest ?
                         this.globalEndpointManager.getApplicableReadEndpoints(request) : this.globalEndpointManager.getApplicableWriteEndpoints(request);
 
-                if (this.sessionTokenRetryCount >= endpoints.size()) {
+                if (this.sessionTokenRetryCount > endpoints.size()) {
                     // When use multiple write locations is true and the request has been tried
                     // on all locations, then don't retry the request
                     return ShouldRetryResult.noRetry();
