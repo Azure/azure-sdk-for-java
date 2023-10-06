@@ -37,7 +37,7 @@ public class CustomDimensions {
         sdkVersion = initSdkVersion(standalone);
         runtimeVersion = System.getProperty("java.version");
 
-        attachType = standalone ? RpAttachType.MANUAL.name() : RpAttachType.getRpAttachType();
+        attachType = RpAttachType.getRpAttachType();
         language = "java";
     }
 
