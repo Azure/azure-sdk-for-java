@@ -266,7 +266,7 @@ public final class CallConnectionAsync {
             TransferToParticipantRequestInternal request = new TransferToParticipantRequestInternal()
                 .setTargetParticipant(CommunicationIdentifierConverter.convert(transferCallToParticipantOptions.getTargetParticipant()))
                 .setOperationContext(transferCallToParticipantOptions.getOperationContext())
-                .setOverrideCallbackUrl(transferCallToParticipantOptions.getOverrideCallbackUrl());
+                .setOverrideCallbackUri(transferCallToParticipantOptions.getOverrideCallbackUrl());
 
             if (transferCallToParticipantOptions.getTransferee() != null) {
                 request.setTransferee(CommunicationIdentifierConverter.convert(transferCallToParticipantOptions.getTransferee()));
@@ -315,7 +315,7 @@ public final class CallConnectionAsync {
                 .setSourceDisplayName(addParticipantOptions.getTargetParticipant().getSourceDisplayName())
                 .setSourceCallerIdNumber(PhoneNumberIdentifierConverter.convert(addParticipantOptions.getTargetParticipant().getSourceCallerIdNumber()))
                 .setOperationContext(addParticipantOptions.getOperationContext())
-                .setOverrideCallbackUrl(addParticipantOptions.getOverrideCallbackUrl());
+                .setOverrideCallbackUri(addParticipantOptions.getOverrideCallbackUrl());
 
             // Need to do a null check since it is optional; it might be a null and breaks the get function as well as type casting.
             if (addParticipantOptions.getInvitationTimeout() != null) {
@@ -365,7 +365,7 @@ public final class CallConnectionAsync {
             RemoveParticipantRequestInternal request = new RemoveParticipantRequestInternal()
                 .setParticipantToRemove(CommunicationIdentifierConverter.convert(removeParticipantOptions.getParticipant()))
                 .setOperationContext(removeParticipantOptions.getOperationContext())
-                .setOverrideCallbackUrl(removeParticipantOptions.getOverrideCallbackUrl());
+                .setOverrideCallbackUri(removeParticipantOptions.getOverrideCallbackUrl());
 
             return callConnectionInternal.removeParticipantWithResponseAsync(
                     callConnectionId,
@@ -447,7 +447,7 @@ public final class CallConnectionAsync {
             CancelAddParticipantRequest request = new CancelAddParticipantRequest()
                 .setInvitationId((cancelAddParticipantOptions.getInvitationId()))
                 .setOperationContext(cancelAddParticipantOptions.getOperationContext())
-                .setOverrideCallbackUrl(cancelAddParticipantOptions.getOverrideCallbackUrl());
+                .setOverrideCallbackUri(cancelAddParticipantOptions.getOverrideCallbackUrl());
 
             return callConnectionInternal.cancelAddParticipantWithResponseAsync(
                     callConnectionId,
