@@ -12,6 +12,8 @@ import reactor.core.scheduler.Schedulers;
 import java.io.*;
 import java.net.*;
 import java.nio.ByteBuffer;
+import java.security.MessageDigest;
+import java.security.NoSuchAlgorithmException;
 import java.time.Duration;
 import java.util.*;
 
@@ -99,10 +101,17 @@ public class HttpUrlConnectionAsyncClient implements HttpClient {
                 if (address != null) {
                     Proxy proxy = new Proxy(Proxy.Type.HTTP, address);
                     connection = (HttpURLConnection) url.openConnection(proxy);
-
+                    
                     if (proxyOptions.getUsername() != null && proxyOptions.getPassword() != null) {
+                        MessageDigest messageDigest = null;
+                        try {
+                            messageDigest = MessageDigest.getInstance("SHA-256");
+                        } catch(NoSuchAlgorithmException e) {
+                            e.printStackTrace();
+                        }
                         String authString = proxyOptions.getUsername() + ":" + proxyOptions.getPassword();
-                        String authStringEnc = Base64.getEncoder().encodeToString(authString.getBytes());
+                        messageDigest.update(authString.getBytes());
+                        String authStringEnc = Base64.getEncoder().encodeToString(messageDigest.digest());
                         connection.setRequestProperty("Proxy-Authorization", "Basic " + authStringEnc);
                     }
                 }
