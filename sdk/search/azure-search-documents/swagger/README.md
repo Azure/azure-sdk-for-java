@@ -412,26 +412,15 @@ directive:
   transform: $["x-ms-format"] = "arm-id";
 ```
 
-### Rename Vector property `K`
+### Rename VectorQuery property `K`
 
-Rename Vector property `K` to `KNearestNeighborsCount`
+Rename VectorQuery property `K` to `KNearestNeighborsCount`
 
 ```yaml $(tag) == 'searchindex'
 directive:
 - from: swagger-document
-  where: $.definitions.Vector.properties.k
+  where: $.definitions.VectorQuery.properties.k
   transform: $["x-ms-client-name"] = "KNearestNeighborsCount";
-```
-
-### Rename Vector property `Vector`
-
-Rename Vector property `Vector` to `SearchQueryVector`
-
-```yaml $(tag) == 'searchindex'
-directive:
-- from: swagger-document
-  where: $.definitions.Vector
-  transform: $["x-ms-client-name"] = "SearchQueryVector";
 ```
 
 ### Rename QueryResultDocumentSemanticFieldState
@@ -443,14 +432,4 @@ directive:
 - from: swagger-document
   where: $.definitions.QueryResultDocumentSemanticFieldState
   transform: $["x-ms-enum"].name = "SemanticFieldState";
-```
-### Remove `Vector` Property
-
-Remove the `Vector` Property from `SearchRequest` in favor of the `Vectors` Array
-
-```yaml
-directive:
-- from: searchindex.json
-  where: $.definitions.SearchRequest
-  transform: delete $.properties.vector;
 ```

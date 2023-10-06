@@ -358,12 +358,12 @@ public class VectorSearchTests extends SearchTestBase {
                     SearchFieldDataType.collection(SearchFieldDataType.SINGLE))
                     .setSearchable(true)
                     .setVectorSearchDimensions(1536)
-                    .setVectorSearchConfiguration("my-vector-config");
+                    .setVectorSearchProfile("my-vector-config");
 
                 createdIndex.getFields().add(vectorField);
 
                 createdIndex.setVectorSearch(new VectorSearch()
-                    .setAlgorithmConfigurations(Collections.singletonList(
+                    .setAlgorithms(Collections.singletonList(
                         new HnswVectorSearchAlgorithmConfiguration("my-vector-config"))));
 
                 return searchIndexClient.createOrUpdateIndex(createdIndex);
@@ -450,12 +450,12 @@ public class VectorSearchTests extends SearchTestBase {
             SearchFieldDataType.collection(SearchFieldDataType.SINGLE))
             .setSearchable(true)
             .setVectorSearchDimensions(1536)
-            .setVectorSearchConfiguration("my-vector-config");
+            .setVectorSearchProfile("my-vector-config");
 
         createdIndex.getFields().add(vectorField);
 
         createdIndex.setVectorSearch(new VectorSearch()
-            .setAlgorithmConfigurations(Collections.singletonList(
+            .setAlgorithms(Collections.singletonList(
                 new HnswVectorSearchAlgorithmConfiguration("my-vector-config"))));
 
         // Update index
@@ -524,7 +524,7 @@ public class VectorSearchTests extends SearchTestBase {
                 new SearchField("DescriptionVector", SearchFieldDataType.collection(SearchFieldDataType.SINGLE))
                     .setSearchable(true)
                     .setVectorSearchDimensions(1536)
-                    .setVectorSearchConfiguration("my-vector-config"),
+                    .setVectorSearchProfile("my-vector-config"),
                 new SearchField("Category", SearchFieldDataType.STRING)
                     .setSearchable(true)
                     .setFilterable(true)
@@ -608,7 +608,7 @@ public class VectorSearchTests extends SearchTestBase {
                             .setFilterable(true)
                             .setFacetable(true)))
             .setVectorSearch(new VectorSearch()
-                .setAlgorithmConfigurations(
+                .setAlgorithms(
                     Collections.singletonList(new HnswVectorSearchAlgorithmConfiguration("my-vector-config"))))
             .setSemanticSettings(new SemanticSettings()
                 .setConfigurations(Collections.singletonList(new SemanticConfiguration("my-semantic-config",

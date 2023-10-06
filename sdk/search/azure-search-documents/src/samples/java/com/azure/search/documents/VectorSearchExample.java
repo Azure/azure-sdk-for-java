@@ -107,7 +107,7 @@ public class VectorSearchExample {
                     .setSearchable(true)
                     .setVectorSearchDimensions(1536)
                     // This must match a vector search configuration name.
-                    .setVectorSearchConfiguration("my-vector-config"),
+                    .setVectorSearchProfile("my-vector-config"),
                 new SearchField("Category", SearchFieldDataType.STRING)
                     .setSearchable(true)
                     .setFilterable(true)
@@ -117,7 +117,7 @@ public class VectorSearchExample {
             // The name used for the vector search algorithm configuration must match the configuration used by the
             // search field used for vector search.
             .setVectorSearch(new VectorSearch()
-                .setAlgorithmConfigurations(Collections.singletonList(
+                .setAlgorithms(Collections.singletonList(
                     new HnswVectorSearchAlgorithmConfiguration("my-vector-config"))));
 
         // Semantic search configuration is disabled due to limited availability.
