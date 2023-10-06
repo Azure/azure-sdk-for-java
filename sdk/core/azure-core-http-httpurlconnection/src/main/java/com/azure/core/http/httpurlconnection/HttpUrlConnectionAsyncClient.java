@@ -199,24 +199,20 @@ public class HttpUrlConnectionAsyncClient implements HttpClient {
                     requestBody = Flux.just(body_data);
                 }
 
-                return requestBody
+                requestBody
                     .flatMap(body -> {
                         if (progressReporter != null) {
                             progressReporter.reportProgress(body.toBytes().length);
                         }
 
-                        return Mono.fromCallable(() -> {
-                            try (DataOutputStream os = new DataOutputStream(new BufferedOutputStream(connection.getOutputStream()))) {
-                                byte[] bytes = body.toBytes();
-                                os.write(bytes);
-                                os.flush();
-                                return Mono.just(body); // Emit the BinaryData for downstream processing if needed
-                            } catch (IOException e) {
-                                return FluxUtil.monoError(LOGGER, new RuntimeException(e));
-                            }
-                        });
-                    })
-                    .then();
+                        try (DataOutputStream os = new DataOutputStream(new BufferedOutputStream(connection.getOutputStream()))) {
+                            writeBody(body, os);
+                            return Mono.just(body); // Emit the buffer for downstream processing if needed
+                        } catch (IOException e) {
+                            return FluxUtil.monoError(LOGGER, new RuntimeException(e));
+                        }
+
+                    }).then().block();
             case GET:
             case HEAD:
             case OPTIONS:
@@ -274,10 +270,9 @@ public class HttpUrlConnectionAsyncClient implements HttpClient {
         }
     }
 
-    private void writeBody(ByteBuffer buffer, DataOutputStream os) {
+    private void writeBody(BinaryData body, DataOutputStream os) {
         try {
-            byte[] bytes = new byte[buffer.remaining()];
-            buffer.get(bytes);
+            byte[] bytes = body.toBytes();
             os.write(bytes);
             os.flush();
         } catch (IOException e) {
