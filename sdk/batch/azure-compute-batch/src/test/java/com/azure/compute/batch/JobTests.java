@@ -68,12 +68,9 @@ public class JobTests extends BatchServiceClientTestBase {
 
 
             // UPDATE
-            // BatchJob updatedJob = applicationsClient.getJob(jobId);
             BatchJobUpdateOptions jobUpdateOptions = new BatchJobUpdateOptions();
             jobUpdateOptions.setPriority(1);
-            // jobUpdateOptions.setPoolInfo(updatedJob.getPoolInfo());
             batchClient.updateJob(jobId, jobUpdateOptions);
-            // updatedJob.setPriority(1);
 
             job = batchClient.getJob(jobId);
             Assertions.assertEquals((Integer) 1, job.getPriority());

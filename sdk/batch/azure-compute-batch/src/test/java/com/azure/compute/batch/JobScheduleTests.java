@@ -121,7 +121,6 @@ public class JobScheduleTests extends BatchServiceClientTestBase {
         try {
             // GET
             BatchJobSchedule jobSchedule = batchClient.getJobSchedule(jobScheduleId);
-            // BatchJobSchedule jobSchedule = jobScheduleClient.get(jobScheduleId);
             Assert.assertEquals(JobScheduleState.ACTIVE, jobSchedule.getState());
 
             batchClient.disableJobSchedule(jobScheduleId);

@@ -17,6 +17,7 @@ import java.util.List;
 import static java.time.OffsetDateTime.now;
 
 public class SharedKeyTests extends BatchServiceClientTestBase {
+    private static BatchClient batchClientWithSharedKey;
     private final String sharedKeyPoolId = "SharedKey-testpool";
     private final String vmSize = "STANDARD_D1_V2";
     private final String nodeAgentSkuId = "batch.node.ubuntu 18.04";
@@ -26,6 +27,7 @@ public class SharedKeyTests extends BatchServiceClientTestBase {
         super.beforeTest();
         AzureNamedKeyCredential sharedKeyCred = getSharedKeyCredentials();
         batchClientBuilder.credential(sharedKeyCred);
+        batchClientWithSharedKey = batchClientBuilder.buildClient();
     }
 
     @Test
@@ -44,13 +46,15 @@ public class SharedKeyTests extends BatchServiceClientTestBase {
                                 .setVirtualMachineConfiguration(configuration)
                                 .setTargetNodeCommunicationMode(NodeCommunicationMode.DEFAULT);
 
-            batchClient.createPool(poolCreateOptions);
+            Response<Void> response = batchClientWithSharedKey.createPoolWithResponse(BinaryData.fromObject(poolCreateOptions), null);
+            String authorizationValue = response.getRequest().getHeaders().getValue(HttpHeaderName.AUTHORIZATION);
+            Assertions.assertTrue(authorizationValue.contains("SharedKey"), "Test is not using SharedKey authentication");
 
             /*
              * Getting Pool
              */
-            Assertions.assertTrue(poolExists(batchClient, sharedKeyPoolId));
-            BatchPool pool = batchClient.getPool(sharedKeyPoolId);
+            Assertions.assertTrue(poolExists(batchClientWithSharedKey, sharedKeyPoolId));
+            BatchPool pool = batchClientWithSharedKey.getPool(sharedKeyPoolId);
             Assertions.assertEquals(pool.getId(), sharedKeyPoolId);
             Assertions.assertEquals(pool.getVirtualMachineConfiguration().getNodeAgentSkuId(), nodeAgentSkuId);
             Assertions.assertEquals(vmSize.toLowerCase(), pool.getVmSize().toLowerCase());
@@ -68,9 +72,9 @@ public class SharedKeyTests extends BatchServiceClientTestBase {
 
             poolUpdateOptions.setTargetNodeCommunicationMode(NodeCommunicationMode.SIMPLIFIED);
 
-            batchClient.updatePool(sharedKeyPoolId, poolUpdateOptions);
+            batchClientWithSharedKey.updatePool(sharedKeyPoolId, poolUpdateOptions);
 
-            pool = batchClient.getPool(sharedKeyPoolId);
+            pool = batchClientWithSharedKey.getPool(sharedKeyPoolId);
             Assertions.assertEquals(NodeCommunicationMode.SIMPLIFIED, pool.getTargetNodeCommunicationMode());
             List<MetadataItem> metadata = pool.getMetadata();
             Assertions.assertTrue(metadata.size() == 1 && metadata.get(0).getName().equals("foo"));
@@ -81,7 +85,7 @@ public class SharedKeyTests extends BatchServiceClientTestBase {
             updatedMetadata.clear();
             updatedMetadata.add(new MetadataItem("key1", "value1"));
             BatchPoolUpdateOptions poolUpdateOptions2 = new BatchPoolUpdateOptions().setMetadata(updatedMetadata).setTargetNodeCommunicationMode(NodeCommunicationMode.CLASSIC);
-            Response<Void> updatePoolResponse = batchClient.updatePoolWithResponse(sharedKeyPoolId, BinaryData.fromObject(poolUpdateOptions2), null);
+            Response<Void> updatePoolResponse = batchClientWithSharedKey.updatePoolWithResponse(sharedKeyPoolId, BinaryData.fromObject(poolUpdateOptions2), null);
             HttpRequest updatePoolRequest = updatePoolResponse.getRequest();
             HttpHeader ocpDateHeader = updatePoolRequest.getHeaders().get(HttpHeaderName.fromString("ocp-date"));
             Assertions.assertNull(ocpDateHeader);
@@ -93,7 +97,7 @@ public class SharedKeyTests extends BatchServiceClientTestBase {
             * */
             RequestOptions requestOptions = new RequestOptions();
             requestOptions.setHeader(HttpHeaderName.fromString("ocp-date"), new DateTimeRfc1123(now()).toString());
-            Response<BinaryData> poolGetResponse = batchClient.getPoolWithResponse(sharedKeyPoolId, requestOptions);
+            Response<BinaryData> poolGetResponse = batchClientWithSharedKey.getPoolWithResponse(sharedKeyPoolId, requestOptions);
 
             HttpRequest getPoolRequest = poolGetResponse.getRequest();
             ocpDateHeader = getPoolRequest.getHeaders().get(HttpHeaderName.fromString("ocp-date"));
@@ -111,7 +115,7 @@ public class SharedKeyTests extends BatchServiceClientTestBase {
              * Deleting Pool
              * */
 
-            batchClient.deletePool(sharedKeyPoolId);
+            batchClientWithSharedKey.deletePool(sharedKeyPoolId);
         }
 
     }
