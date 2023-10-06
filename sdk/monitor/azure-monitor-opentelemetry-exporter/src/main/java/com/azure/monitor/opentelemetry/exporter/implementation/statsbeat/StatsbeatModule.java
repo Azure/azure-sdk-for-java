@@ -35,20 +35,17 @@ public class StatsbeatModule {
     private final FeatureStatsbeat instrumentationStatsbeat;
     private final NonessentialStatsbeat nonessentialStatsbeat;
     private final AzureMetadataService azureMetadataService;
-    private final boolean standalone;
-
     private final AtomicBoolean started = new AtomicBoolean();
 
     private final AtomicBoolean shutdown = new AtomicBoolean();
 
-    public StatsbeatModule(Consumer<MetadataInstanceResponse> vmMetadataServiceCallback, boolean standalone) {
-        customDimensions = new CustomDimensions(standalone);
+    public StatsbeatModule(Consumer<MetadataInstanceResponse> vmMetadataServiceCallback) {
+        customDimensions = new CustomDimensions();
         attachStatsbeat = new AttachStatsbeat(customDimensions);
         featureStatsbeat = new FeatureStatsbeat(customDimensions, FeatureType.FEATURE);
         instrumentationStatsbeat = new FeatureStatsbeat(customDimensions, FeatureType.INSTRUMENTATION);
         azureMetadataService = new AzureMetadataService(attachStatsbeat, customDimensions, vmMetadataServiceCallback);
-        this.standalone = standalone;
-        if (!standalone) {
+        if (RpAttachType.getRpAttachType() == RpAttachType.MANUAL) {
             networkStatsbeat = new NetworkStatsbeat(customDimensions);
             nonessentialStatsbeat = new NonessentialStatsbeat(customDimensions);
         } else {
@@ -86,7 +83,7 @@ public class StatsbeatModule {
         updateConnectionString(connectionString.get());
         updateInstrumentationKey(instrumentationKey.get());
 
-        if (!standalone) {
+        if (RpAttachType.getRpAttachType() != RpAttachType.MANUAL) {
             scheduledExecutor.scheduleWithFixedDelay(
                 new StatsbeatSender(networkStatsbeat, telemetryItemExporter),
                 shortIntervalSeconds,
@@ -118,7 +115,7 @@ public class StatsbeatModule {
 
         featureStatsbeat.trackConfigurationOptions(featureSet);
 
-        if (!disabled && !standalone) {
+        if (!disabled && RpAttachType.getRpAttachType() != RpAttachType.MANUAL) {
             nonessentialStatsbeat.setConnectionString(connectionString.get());
             nonessentialStatsbeat.setInstrumentationKey(instrumentationKey.get());
             scheduledExecutor.scheduleWithFixedDelay(
@@ -159,7 +156,7 @@ public class StatsbeatModule {
 
     private void updateConnectionString(StatsbeatConnectionString connectionString) {
         if (connectionString != null) {
-            if (!standalone) {
+            if (RpAttachType.getRpAttachType() != RpAttachType.MANUAL) {
                 networkStatsbeat.setConnectionString(connectionString);
             }
             attachStatsbeat.setConnectionString(connectionString);
@@ -170,7 +167,7 @@ public class StatsbeatModule {
 
     private void updateInstrumentationKey(String instrumentationKey) {
         if (instrumentationKey != null && !instrumentationKey.isEmpty()) {
-            if (!standalone) {
+            if (RpAttachType.getRpAttachType() != RpAttachType.MANUAL) {
                 networkStatsbeat.setInstrumentationKey(instrumentationKey);
             }
             attachStatsbeat.setInstrumentationKey(instrumentationKey);

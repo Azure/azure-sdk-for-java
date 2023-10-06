@@ -362,7 +362,7 @@ public final class AzureMonitorExporterBuilder {
         HeartbeatExporter.start(
             MINUTES.toSeconds(15), createDefaultsPopulator(configProperties), builtTelemetryItemExporter::send);
         if (connectionString != null) {
-            StatsbeatModule statsbeatModule = new StatsbeatModule(PropertyHelper::lazyUpdateVmRpIntegration, true);
+            StatsbeatModule statsbeatModule = new StatsbeatModule(PropertyHelper::lazyUpdateVmRpIntegration);
             statsbeatModule.start(
                 builtTelemetryItemExporter,
                 this::getStatsbeatConnectionString,

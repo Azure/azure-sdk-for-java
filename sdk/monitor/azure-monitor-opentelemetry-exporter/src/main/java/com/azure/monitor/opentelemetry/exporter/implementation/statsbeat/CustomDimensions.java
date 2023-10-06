@@ -20,7 +20,7 @@ public class CustomDimensions {
     private final String sdkVersion;
 
     // visible for testing
-    CustomDimensions(boolean standalone) {
+    CustomDimensions() {
         if ("java".equals(System.getenv("FUNCTIONS_WORKER_RUNTIME"))) {
             resourceProvider = ResourceProvider.RP_FUNCTIONS;
         } else if (!Strings.isNullOrEmpty(System.getenv("WEBSITE_SITE_NAME"))) {
@@ -34,10 +34,10 @@ public class CustomDimensions {
         }
 
         operatingSystem = initOperatingSystem();
-        sdkVersion = initSdkVersion(standalone);
+        sdkVersion = initSdkVersion();
         runtimeVersion = System.getProperty("java.version");
 
-        attachType = RpAttachType.getRpAttachType();
+        attachType = RpAttachType.getRpAttachTypeString();
         language = "java";
     }
 
@@ -77,8 +77,8 @@ public class CustomDimensions {
         }
     }
 
-    private static String initSdkVersion(boolean standalone) {
-        if (standalone) {
+    private static String initSdkVersion() {
+        if (RpAttachType.getRpAttachType() == RpAttachType.MANUAL) {
             return VersionGenerator.getSdkVersion();
         }
         String qualifiedSdkVersionString = PropertyHelper.getQualifiedSdkVersionString();

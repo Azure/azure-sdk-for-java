@@ -23,7 +23,7 @@ public class NonessentialStatsbeat extends BaseStatsbeat implements LocalStorage
 
     // only used by tests
     NonessentialStatsbeat() {
-        super(new CustomDimensions(false));
+        super(new CustomDimensions);
     }
 
     NonessentialStatsbeat(CustomDimensions customDimensions) {

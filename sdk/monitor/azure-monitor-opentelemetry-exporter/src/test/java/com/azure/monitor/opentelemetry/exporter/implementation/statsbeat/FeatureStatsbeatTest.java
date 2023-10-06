@@ -65,7 +65,7 @@ public class FeatureStatsbeatTest {
     @Test
     public void testAddInstrumentationFirstLong() {
         FeatureStatsbeat instrumentationStatsbeat =
-            new FeatureStatsbeat(new CustomDimensions(false), FeatureType.INSTRUMENTATION);
+            new FeatureStatsbeat(new CustomDimensions, FeatureType.INSTRUMENTATION);
         instrumentationStatsbeat.addInstrumentation("io.opentelemetry.jdbc");
         instrumentationStatsbeat.addInstrumentation("io.opentelemetry.tomcat-7.0");
         instrumentationStatsbeat.addInstrumentation("io.opentelemetry.http-url-connection");
@@ -83,7 +83,7 @@ public class FeatureStatsbeatTest {
     @Test
     public void testAddInstrumentationToSecondLongOnly() {
         FeatureStatsbeat instrumentationStatsbeat =
-            new FeatureStatsbeat(new CustomDimensions(false), FeatureType.INSTRUMENTATION);
+            new FeatureStatsbeat(new CustomDimensions, FeatureType.INSTRUMENTATION);
         instrumentationStatsbeat.addInstrumentation("io.opentelemetry.undertow-1.4");
         instrumentationStatsbeat.addInstrumentation("io.opentelemetry.play-ws-2.0");
         instrumentationStatsbeat.addInstrumentation("io.opentelemetry.vertx-kafka-client-3.5");
@@ -101,7 +101,7 @@ public class FeatureStatsbeatTest {
     @Test
     public void testAddInstrumentationToBoth() {
         FeatureStatsbeat instrumentationStatsbeat =
-            new FeatureStatsbeat(new CustomDimensions(false), FeatureType.INSTRUMENTATION);
+            new FeatureStatsbeat(new CustomDimensions, FeatureType.INSTRUMENTATION);
         instrumentationStatsbeat.addInstrumentation("io.opentelemetry.undertow-1.4");
         instrumentationStatsbeat.addInstrumentation("io.opentelemetry.play-ws-2.0");
         instrumentationStatsbeat.addInstrumentation("io.opentelemetry.vertx-kafka-client-3.5");
@@ -128,7 +128,7 @@ public class FeatureStatsbeatTest {
     private static void testFeature(Feature feature, boolean expected) {
         // given
         FeatureStatsbeat featureStatsbeat =
-            new FeatureStatsbeat(new CustomDimensions(false), FeatureType.FEATURE);
+            new FeatureStatsbeat(new CustomDimensions, FeatureType.FEATURE);
 
         // when
         if (expected) {

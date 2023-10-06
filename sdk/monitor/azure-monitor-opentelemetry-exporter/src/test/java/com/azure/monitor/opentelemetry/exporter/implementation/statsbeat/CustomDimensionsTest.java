@@ -15,14 +15,14 @@ public class CustomDimensionsTest {
 
     @Test
     public void testResourceProvider() {
-        CustomDimensions customDimensions = new CustomDimensions(false);
+        CustomDimensions customDimensions = new CustomDimensions;
 
         assertThat(customDimensions.getResourceProvider()).isEqualTo(ResourceProvider.UNKNOWN);
     }
 
     @Test
     public void testOperatingSystem() {
-        CustomDimensions customDimensions = new CustomDimensions(false);
+        CustomDimensions customDimensions = new CustomDimensions;
 
         OperatingSystem os = OperatingSystem.OS_UNKNOWN;
         if (SystemInformation.isWindows()) {
@@ -35,7 +35,7 @@ public class CustomDimensionsTest {
 
     @Test
     public void testCustomerIkey() {
-        CustomDimensions customDimensions = new CustomDimensions(false);
+        CustomDimensions customDimensions = new CustomDimensions;
 
         StatsbeatTelemetryBuilder telemetryBuilder = StatsbeatTelemetryBuilder.create("test", 1);
         customDimensions.populateProperties(telemetryBuilder, null);
@@ -45,7 +45,7 @@ public class CustomDimensionsTest {
 
     @Test
     public void testVersion() {
-        CustomDimensions customDimensions = new CustomDimensions(false);
+        CustomDimensions customDimensions = new CustomDimensions;
 
         StatsbeatTelemetryBuilder telemetryBuilder = StatsbeatTelemetryBuilder.create("test", 1);
         customDimensions.populateProperties(telemetryBuilder, null);
@@ -59,7 +59,7 @@ public class CustomDimensionsTest {
 
     @Test
     public void testRuntimeVersion() {
-        CustomDimensions customDimensions = new CustomDimensions(false);
+        CustomDimensions customDimensions = new CustomDimensions;
 
         StatsbeatTelemetryBuilder telemetryBuilder = StatsbeatTelemetryBuilder.create("test", 1);
         customDimensions.populateProperties(telemetryBuilder, null);
