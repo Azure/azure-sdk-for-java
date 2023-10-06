@@ -26,7 +26,7 @@ public class AttachStatsbeatTest {
 
     @BeforeEach
     public void setup() {
-        attachStatsbeat = new AttachStatsbeat(new CustomDimensions);
+        attachStatsbeat = new AttachStatsbeat(new CustomDimensions());
     }
 
     @Test
@@ -79,7 +79,7 @@ public class AttachStatsbeatTest {
 
     @Test
     public void testUnknownResourceProviderId() {
-        assertThat(new CustomDimensions.getResourceProvider()).isEqualTo(ResourceProvider.UNKNOWN);
+        assertThat(new CustomDimensions().getResourceProvider()).isEqualTo(ResourceProvider.UNKNOWN);
         assertThat(attachStatsbeat.getResourceProviderId()).isEqualTo("unknown");
     }
 }

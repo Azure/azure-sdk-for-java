@@ -39,7 +39,7 @@ public class NetworkStatsbeat extends BaseStatsbeat {
 
     // only used by tests
     NetworkStatsbeat() {
-        super(new CustomDimensions);
+        super(new CustomDimensions());
     }
 
     NetworkStatsbeat(CustomDimensions customDimensions) {
