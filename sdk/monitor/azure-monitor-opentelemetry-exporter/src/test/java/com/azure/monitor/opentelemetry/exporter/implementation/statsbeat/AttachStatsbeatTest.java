@@ -39,7 +39,7 @@ public class AttachStatsbeatTest {
         BufferedSource source = Okio.buffer(Okio.source(in));
         String result = source.readUtf8();
         source.close();
-        CustomDimensions customDimensions = new CustomDimensions;
+        CustomDimensions customDimensions = new CustomDimensions();
         AzureMetadataService azureMetadataService =
             new AzureMetadataService(attachStatsbeat, customDimensions, (response) -> {});
         azureMetadataService.updateMetadata(result);
