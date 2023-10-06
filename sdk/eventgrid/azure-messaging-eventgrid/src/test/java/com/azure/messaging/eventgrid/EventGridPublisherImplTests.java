@@ -40,10 +40,6 @@ public class EventGridPublisherImplTests extends EventGridTestBase {
         }
         setupSanitizers();
     }
-    @Override
-    protected void afterTest() {
-        StepVerifier.resetDefaultTimeout();
-    }
 
     @Test
     public void publishEventGridEventsImpl() {
