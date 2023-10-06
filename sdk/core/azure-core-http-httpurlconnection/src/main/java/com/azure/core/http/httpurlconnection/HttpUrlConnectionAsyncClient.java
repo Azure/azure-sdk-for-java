@@ -65,12 +65,11 @@ public class HttpUrlConnectionAsyncClient implements HttpClient {
             return sendPatchViaSocket(httpRequest);
         }
 
-        return Mono.fromCallable(() -> {
+        return Mono.defer(() -> {
             HttpURLConnection connection = connect(httpRequest);
-            Mono<HttpResponse> response = sendRequest(httpRequest, progressReporter, connection)
-                .then(Mono.fromCallable(() -> receiveResponse(httpRequest, connection)))
+            return sendRequest(httpRequest, progressReporter, connection)
+                .then(Mono.defer(() -> Mono.fromCallable(() -> receiveResponse(httpRequest, connection))))
                 .publishOn(Schedulers.boundedElastic());
-            return response.block();
         });
     }
 
@@ -170,8 +169,8 @@ public class HttpUrlConnectionAsyncClient implements HttpClient {
             case DELETE:
                 connection.setDoOutput(true);
 
-               Flux<BinaryData> requestBody = null;
-               BinaryData body_data = httpRequest.getBodyAsBinaryData();
+                Flux<BinaryData> requestBody;
+                BinaryData body_data = httpRequest.getBodyAsBinaryData();
 
                 if (body_data == null) {
                     requestBody = Flux.just(BinaryData.fromByteBuffer(ByteBuffer.wrap(new byte[0])));
@@ -180,35 +179,24 @@ public class HttpUrlConnectionAsyncClient implements HttpClient {
                     requestBody = Flux.just(body_data);
                 }
 
-                try (DataOutputStream os = new DataOutputStream(new BufferedOutputStream(connection.getOutputStream()))) {
-                    if (progressReporter != null) {
-                        requestBody = requestBody.map(body -> {
+                return requestBody
+                    .flatMap(body -> {
+                        if (progressReporter != null) {
                             progressReporter.reportProgress(body.toBytes().length);
-                            return body;
-                        });
-                    }
+                        }
 
-                    // requestSendMono = requestBody
-                    requestBody
-                        .flatMap(body -> {
-                            try {
+                        return Mono.fromCallable(() -> {
+                            try (DataOutputStream os = new DataOutputStream(new BufferedOutputStream(connection.getOutputStream()))) {
                                 byte[] bytes = body.toBytes();
                                 os.write(bytes);
+                                os.flush();
                                 return Mono.just(body); // Emit the BinaryData for downstream processing if needed
                             } catch (IOException e) {
                                 return FluxUtil.monoError(LOGGER, new RuntimeException(e));
                             }
-                        })
-                        .then(Mono.fromRunnable(() -> {
-                            try {
-                                os.flush();
-                            } catch (IOException e) {
-                                throw LOGGER.logExceptionAsError(new RuntimeException(e));
-                            }
-                        })).block();
-                } catch (IOException e) {
-                    return FluxUtil.monoError(LOGGER, new RuntimeException(e));
-                }
+                        });
+                    })
+                    .then();
             case GET:
             case HEAD:
             case OPTIONS:
