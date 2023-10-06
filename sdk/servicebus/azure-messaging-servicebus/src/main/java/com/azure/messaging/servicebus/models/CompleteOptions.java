@@ -21,6 +21,12 @@ import com.azure.messaging.servicebus.ServiceBusTransactionContext;
  */
 public final class CompleteOptions extends SettlementOptions {
     /**
+     * Creates a new instance of options to specify when completing messages.
+     */
+    public CompleteOptions() {
+    }
+
+    /**
      * Sets the {@link ServiceBusTransactionContext} to the options.
      *
      * @param transactionContext The {@link ServiceBusTransactionContext} that will be used to complete a message.

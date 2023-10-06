@@ -21,12 +21,12 @@ import static com.azure.monitor.opentelemetry.exporter.implementation.utils.Cons
 
 public class NetworkStatsbeat extends BaseStatsbeat {
 
-    private static final String REQUEST_SUCCESS_COUNT_METRIC_NAME = "Request Success Count";
-    private static final String REQUEST_FAILURE_COUNT_METRIC_NAME = "Request Failure Count";
-    private static final String REQUEST_DURATION_METRIC_NAME = "Request Duration";
-    private static final String RETRY_COUNT_METRIC_NAME = "Retry Count";
-    private static final String THROTTLE_COUNT_METRIC_NAME = "Throttle Count";
-    private static final String EXCEPTION_COUNT_METRIC_NAME = "Exception Count";
+    private static final String REQUEST_SUCCESS_COUNT_METRIC_NAME = "Request_Success_Count";
+    private static final String REQUEST_FAILURE_COUNT_METRIC_NAME = "Request_Failure_Count";
+    private static final String REQUEST_DURATION_METRIC_NAME = "Request_Duration";
+    private static final String RETRY_COUNT_METRIC_NAME = "Retry_Count";
+    private static final String THROTTLE_COUNT_METRIC_NAME = "Throttle_Count";
+    private static final String EXCEPTION_COUNT_METRIC_NAME = "Exception_Count";
     private static final String BREEZE_ENDPOINT = "breeze";
 
     private static final Pattern hostPattern = Pattern.compile("^https?://(?:www\\.)?([^/.]+)");
