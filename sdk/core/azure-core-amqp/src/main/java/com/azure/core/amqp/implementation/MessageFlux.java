@@ -188,8 +188,8 @@ public final class MessageFlux extends FluxOperator<AmqpReceiveLink, Message> {
          */
         @Override
         public void onSubscribe(Subscription s) {
-            if (Operators.validate(this.upstream, s)) {
-                this.upstream = s;
+            if (Operators.validate(upstream, s)) {
+                upstream = s;
                 // Invoke the downstream 'onSubscribe' with the subscription handle enabling downstream to
                 // request messages or cancellation.
                 messageSubscriber.onSubscribe(this);
@@ -374,7 +374,7 @@ public final class MessageFlux extends FluxOperator<AmqpReceiveLink, Message> {
          */
         private void drainLoop() {
             int missed = 1;
-            CoreSubscriber<? super Message> downstream = this.messageSubscriber;
+            CoreSubscriber<? super Message> downstream = messageSubscriber;
             // Begin: serialized drain-loop.
             for (; ;) {
                 boolean d = done;
@@ -401,7 +401,7 @@ public final class MessageFlux extends FluxOperator<AmqpReceiveLink, Message> {
                     return;
                 }
 
-                long r = this.requested;
+                long r = requested;
                 long emitted = 0L;
                 boolean mediatorTerminatedAndDrained = false;
 
@@ -921,7 +921,7 @@ public final class MessageFlux extends FluxOperator<AmqpReceiveLink, Message> {
          */
         @Override
         public Mono<Void> closeAsync() {
-            this.cancel();
+            cancel();
             return receiver.closeAsync();
         }
 
@@ -944,7 +944,7 @@ public final class MessageFlux extends FluxOperator<AmqpReceiveLink, Message> {
                     done, s == CANCELLED_SUBSCRIPTION, parent.done, parent.cancelled);
 
                 final DeliveryNotOnLinkException dispositionError = DeliveryNotOnLinkException.linkClosed(deliveryTag, deliveryState);
-                final Throwable receiverError = this.error;
+                final Throwable receiverError = error;
                 if (receiverError != null) {
                     dispositionError.addSuppressed(receiverError);
                 }

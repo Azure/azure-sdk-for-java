@@ -53,7 +53,7 @@ final class ServiceBusSessionAcquirer {
     }
 
     boolean isConnectionClosed() {
-        return this.connectionCacheWrapper.isChannelClosed();
+        return connectionCacheWrapper.isChannelClosed();
     }
 
     /**
