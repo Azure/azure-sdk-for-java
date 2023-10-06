@@ -49,7 +49,6 @@ public class StatsbeatModule {
             networkStatsbeat = new NetworkStatsbeat(customDimensions);
             nonessentialStatsbeat = new NonessentialStatsbeat(customDimensions);
         } else {
-            RpAttachType.setRpAttachType(RpAttachType.MANUAL);
             networkStatsbeat = null;
             nonessentialStatsbeat = null;
         }
