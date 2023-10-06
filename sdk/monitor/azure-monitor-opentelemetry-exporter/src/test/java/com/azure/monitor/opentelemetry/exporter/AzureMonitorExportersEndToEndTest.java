@@ -302,7 +302,7 @@ public class AzureMonitorExportersEndToEndTest extends MonitorExporterClientTest
         assertThat(telemetryItem.getData().getBaseType()).isEqualTo("MetricData");
         MetricsData actualMetricsData = (MetricsData) telemetryItem.getData().getBaseData();
         assertThat(actualMetricsData.getMetrics().get(0).getName()).isEqualTo("Attach");
-        assertThat(actualMetricsData.getProperties()).contains(entry("rp", "unknown"), entry("attach", "MANUAL"), entry("language", "java"));
+        assertThat(actualMetricsData.getProperties()).contains(entry("rp", "unknown"), entry("attach", "Manual"), entry("language", "java"));
         assertThat(actualMetricsData.getProperties()).containsKeys("attach", "cikey", "language", "os", "rp", "runtimeVersion", "version");
     }
 
