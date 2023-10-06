@@ -101,18 +101,25 @@ public class HttpUrlConnectionAsyncClient implements HttpClient {
                 if (address != null) {
                     Proxy proxy = new Proxy(Proxy.Type.HTTP, address);
                     connection = (HttpURLConnection) url.openConnection(proxy);
-                    
+
                     if (proxyOptions.getUsername() != null && proxyOptions.getPassword() != null) {
-                        MessageDigest messageDigest = null;
-                        try {
-                            messageDigest = MessageDigest.getInstance("SHA-256");
-                        } catch(NoSuchAlgorithmException e) {
-                            e.printStackTrace();
+                        String token = httpRequest.getHeaders().getValue(HttpHeaderName.AUTHORIZATION);
+                        if (Objects.equals(token, "Digest")) {
+                            MessageDigest messageDigest = null;
+                            try {
+                                messageDigest = MessageDigest.getInstance("SHA-256");
+                            } catch (NoSuchAlgorithmException e) {
+                                e.printStackTrace();
+                            }
+                            String authString = proxyOptions.getUsername() + ":" + proxyOptions.getPassword();
+                            messageDigest.update(authString.getBytes());
+                            String authStringEnc = Base64.getEncoder().encodeToString(messageDigest.digest());
+                            connection.setRequestProperty("Proxy-Authorization", "Digest " + authStringEnc);
+                        } else{
+                            String authString = proxyOptions.getUsername() + ":" + proxyOptions.getPassword();
+                            String authStringEnc = Base64.getEncoder().encodeToString(authString.getBytes());
+                            connection.setRequestProperty("Proxy-Authorization", "Basic " + authStringEnc);
                         }
-                        String authString = proxyOptions.getUsername() + ":" + proxyOptions.getPassword();
-                        messageDigest.update(authString.getBytes());
-                        String authStringEnc = Base64.getEncoder().encodeToString(messageDigest.digest());
-                        connection.setRequestProperty("Proxy-Authorization", "Basic " + authStringEnc);
                     }
                 }
             } else {
