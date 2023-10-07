@@ -7,12 +7,16 @@ package com.azure.resourcemanager.sql.fluent.models;
 import com.azure.core.annotation.Fluent;
 import com.azure.core.management.Resource;
 import com.azure.resourcemanager.sql.models.BackupStorageRedundancy;
+import com.azure.resourcemanager.sql.models.ExternalGovernanceStatus;
+import com.azure.resourcemanager.sql.models.FreemiumType;
+import com.azure.resourcemanager.sql.models.HybridSecondaryUsage;
+import com.azure.resourcemanager.sql.models.HybridSecondaryUsageDetected;
 import com.azure.resourcemanager.sql.models.ManagedInstanceExternalAdministrator;
 import com.azure.resourcemanager.sql.models.ManagedInstanceLicenseType;
 import com.azure.resourcemanager.sql.models.ManagedInstancePecProperty;
-import com.azure.resourcemanager.sql.models.ManagedInstancePropertiesProvisioningState;
 import com.azure.resourcemanager.sql.models.ManagedInstanceProxyOverride;
 import com.azure.resourcemanager.sql.models.ManagedServerCreateMode;
+import com.azure.resourcemanager.sql.models.ProvisioningState;
 import com.azure.resourcemanager.sql.models.ResourceIdentity;
 import com.azure.resourcemanager.sql.models.ServicePrincipal;
 import com.azure.resourcemanager.sql.models.Sku;
@@ -112,11 +116,11 @@ public final class ManagedInstanceInner extends Resource {
     }
 
     /**
-     * Get the provisioningState property: The provisioningState property.
+     * Get the provisioningState property: Provisioning state of managed instance.
      *
      * @return the provisioningState value.
      */
-    public ManagedInstancePropertiesProvisioningState provisioningState() {
+    public ProvisioningState provisioningState() {
         return this.innerProperties() == null ? null : this.innerProperties().provisioningState();
     }
 
@@ -160,6 +164,29 @@ public final class ManagedInstanceInner extends Resource {
      */
     public String fullyQualifiedDomainName() {
         return this.innerProperties() == null ? null : this.innerProperties().fullyQualifiedDomainName();
+    }
+
+    /**
+     * Get the isGeneralPurposeV2 property: Whether or not this is a GPv2 variant of General Purpose edition.
+     *
+     * @return the isGeneralPurposeV2 value.
+     */
+    public Boolean isGeneralPurposeV2() {
+        return this.innerProperties() == null ? null : this.innerProperties().isGeneralPurposeV2();
+    }
+
+    /**
+     * Set the isGeneralPurposeV2 property: Whether or not this is a GPv2 variant of General Purpose edition.
+     *
+     * @param isGeneralPurposeV2 the isGeneralPurposeV2 value to set.
+     * @return the ManagedInstanceInner object itself.
+     */
+    public ManagedInstanceInner withIsGeneralPurposeV2(Boolean isGeneralPurposeV2) {
+        if (this.innerProperties() == null) {
+            this.innerProperties = new ManagedInstanceProperties();
+        }
+        this.innerProperties().withIsGeneralPurposeV2(isGeneralPurposeV2);
+        return this;
     }
 
     /**
@@ -270,6 +297,42 @@ public final class ManagedInstanceInner extends Resource {
     }
 
     /**
+     * Get the hybridSecondaryUsage property: Hybrid secondary usage. Possible values are 'Active' (default value) and
+     * 'Passive' (customer uses the secondary as Passive DR).
+     *
+     * @return the hybridSecondaryUsage value.
+     */
+    public HybridSecondaryUsage hybridSecondaryUsage() {
+        return this.innerProperties() == null ? null : this.innerProperties().hybridSecondaryUsage();
+    }
+
+    /**
+     * Set the hybridSecondaryUsage property: Hybrid secondary usage. Possible values are 'Active' (default value) and
+     * 'Passive' (customer uses the secondary as Passive DR).
+     *
+     * @param hybridSecondaryUsage the hybridSecondaryUsage value to set.
+     * @return the ManagedInstanceInner object itself.
+     */
+    public ManagedInstanceInner withHybridSecondaryUsage(HybridSecondaryUsage hybridSecondaryUsage) {
+        if (this.innerProperties() == null) {
+            this.innerProperties = new ManagedInstanceProperties();
+        }
+        this.innerProperties().withHybridSecondaryUsage(hybridSecondaryUsage);
+        return this;
+    }
+
+    /**
+     * Get the hybridSecondaryUsageDetected property: Hybrid secondary usage detected. Possible values are 'Active'
+     * (customer does not meet the requirements to use the secondary as Passive DR) and 'Passive' (customer meets the
+     * requirements to use the secondary as Passive DR).
+     *
+     * @return the hybridSecondaryUsageDetected value.
+     */
+    public HybridSecondaryUsageDetected hybridSecondaryUsageDetected() {
+        return this.innerProperties() == null ? null : this.innerProperties().hybridSecondaryUsageDetected();
+    }
+
+    /**
      * Get the vCores property: The number of vCores. Allowed values: 8, 16, 24, 32, 40, 64, 80.
      *
      * @return the vCores value.
@@ -314,6 +377,56 @@ public final class ManagedInstanceInner extends Resource {
             this.innerProperties = new ManagedInstanceProperties();
         }
         this.innerProperties().withStorageSizeInGB(storageSizeInGB);
+        return this;
+    }
+
+    /**
+     * Get the storageIOps property: Storage IOps. Minimum value: 120. Maximum value: 120000. Increments of 1 IOps
+     * allowed only. Maximum value depends on the selected hardware family and number of vCores.
+     *
+     * @return the storageIOps value.
+     */
+    public Integer storageIOps() {
+        return this.innerProperties() == null ? null : this.innerProperties().storageIOps();
+    }
+
+    /**
+     * Set the storageIOps property: Storage IOps. Minimum value: 120. Maximum value: 120000. Increments of 1 IOps
+     * allowed only. Maximum value depends on the selected hardware family and number of vCores.
+     *
+     * @param storageIOps the storageIOps value to set.
+     * @return the ManagedInstanceInner object itself.
+     */
+    public ManagedInstanceInner withStorageIOps(Integer storageIOps) {
+        if (this.innerProperties() == null) {
+            this.innerProperties = new ManagedInstanceProperties();
+        }
+        this.innerProperties().withStorageIOps(storageIOps);
+        return this;
+    }
+
+    /**
+     * Get the storageThroughputMBps property: Storage throughput in MBps. Minimum value: 25. Maximum value: 4000.
+     * Increments of 1 MBps allowed only. Maximum value depends on the selected hardware family and number of vCores.
+     *
+     * @return the storageThroughputMBps value.
+     */
+    public Integer storageThroughputMBps() {
+        return this.innerProperties() == null ? null : this.innerProperties().storageThroughputMBps();
+    }
+
+    /**
+     * Set the storageThroughputMBps property: Storage throughput in MBps. Minimum value: 25. Maximum value: 4000.
+     * Increments of 1 MBps allowed only. Maximum value depends on the selected hardware family and number of vCores.
+     *
+     * @param storageThroughputMBps the storageThroughputMBps value to set.
+     * @return the ManagedInstanceInner object itself.
+     */
+    public ManagedInstanceInner withStorageThroughputMBps(Integer storageThroughputMBps) {
+        if (this.innerProperties() == null) {
+            this.innerProperties = new ManagedInstanceProperties();
+        }
+        this.innerProperties().withStorageThroughputMBps(storageThroughputMBps);
         return this;
     }
 
@@ -694,7 +807,9 @@ public final class ManagedInstanceInner extends Resource {
     }
 
     /**
-     * Get the administrators property: The Azure Active Directory administrator of the server.
+     * Get the administrators property: The Azure Active Directory administrator of the instance. This can only be used
+     * at instance create time. If used for instance update, it will be ignored or it will result in an error. For
+     * updates individual APIs will need to be used.
      *
      * @return the administrators value.
      */
@@ -703,7 +818,9 @@ public final class ManagedInstanceInner extends Resource {
     }
 
     /**
-     * Set the administrators property: The Azure Active Directory administrator of the server.
+     * Set the administrators property: The Azure Active Directory administrator of the instance. This can only be used
+     * at instance create time. If used for instance update, it will be ignored or it will result in an error. For
+     * updates individual APIs will need to be used.
      *
      * @param administrators the administrators value to set.
      * @return the ManagedInstanceInner object itself.
@@ -737,6 +854,56 @@ public final class ManagedInstanceInner extends Resource {
         }
         this.innerProperties().withServicePrincipal(servicePrincipal);
         return this;
+    }
+
+    /**
+     * Get the virtualClusterId property: Virtual cluster resource id for the Managed Instance.
+     *
+     * @return the virtualClusterId value.
+     */
+    public String virtualClusterId() {
+        return this.innerProperties() == null ? null : this.innerProperties().virtualClusterId();
+    }
+
+    /**
+     * Get the externalGovernanceStatus property: Status of external governance.
+     *
+     * @return the externalGovernanceStatus value.
+     */
+    public ExternalGovernanceStatus externalGovernanceStatus() {
+        return this.innerProperties() == null ? null : this.innerProperties().externalGovernanceStatus();
+    }
+
+    /**
+     * Get the pricingModel property: Weather or not Managed Instance is freemium.
+     *
+     * @return the pricingModel value.
+     */
+    public FreemiumType pricingModel() {
+        return this.innerProperties() == null ? null : this.innerProperties().pricingModel();
+    }
+
+    /**
+     * Set the pricingModel property: Weather or not Managed Instance is freemium.
+     *
+     * @param pricingModel the pricingModel value to set.
+     * @return the ManagedInstanceInner object itself.
+     */
+    public ManagedInstanceInner withPricingModel(FreemiumType pricingModel) {
+        if (this.innerProperties() == null) {
+            this.innerProperties = new ManagedInstanceProperties();
+        }
+        this.innerProperties().withPricingModel(pricingModel);
+        return this;
+    }
+
+    /**
+     * Get the createTime property: Specifies the point in time (ISO8601 format) of the Managed Instance creation.
+     *
+     * @return the createTime value.
+     */
+    public OffsetDateTime createTime() {
+        return this.innerProperties() == null ? null : this.innerProperties().createTime();
     }
 
     /**

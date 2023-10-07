@@ -5,6 +5,7 @@
 package com.azure.resourcemanager.sql.fluent.models;
 
 import com.azure.core.annotation.Fluent;
+import com.azure.resourcemanager.sql.models.ClientClassificationSource;
 import com.azure.resourcemanager.sql.models.SensitivityLabelRank;
 import com.fasterxml.jackson.annotation.JsonProperty;
 
@@ -65,6 +66,12 @@ public final class SensitivityLabelProperties {
      */
     @JsonProperty(value = "rank")
     private SensitivityLabelRank rank;
+
+    /*
+     * The clientClassificationSource property.
+     */
+    @JsonProperty(value = "clientClassificationSource")
+    private ClientClassificationSource clientClassificationSource;
 
     /** Creates an instance of SensitivityLabelProperties class. */
     public SensitivityLabelProperties() {
@@ -204,6 +211,27 @@ public final class SensitivityLabelProperties {
      */
     public SensitivityLabelProperties withRank(SensitivityLabelRank rank) {
         this.rank = rank;
+        return this;
+    }
+
+    /**
+     * Get the clientClassificationSource property: The clientClassificationSource property.
+     *
+     * @return the clientClassificationSource value.
+     */
+    public ClientClassificationSource clientClassificationSource() {
+        return this.clientClassificationSource;
+    }
+
+    /**
+     * Set the clientClassificationSource property: The clientClassificationSource property.
+     *
+     * @param clientClassificationSource the clientClassificationSource value to set.
+     * @return the SensitivityLabelProperties object itself.
+     */
+    public SensitivityLabelProperties withClientClassificationSource(
+        ClientClassificationSource clientClassificationSource) {
+        this.clientClassificationSource = clientClassificationSource;
         return this;
     }
 

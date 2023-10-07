@@ -58,9 +58,7 @@ public final class ManagedDatabaseRestoreDetailsClientImpl implements ManagedDat
     public interface ManagedDatabaseRestoreDetailsService {
         @Headers({"Content-Type: application/json"})
         @Get(
-            "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Sql"
-                + "/managedInstances/{managedInstanceName}/databases/{databaseName}/restoreDetails"
-                + "/{restoreDetailsName}")
+            "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Sql/managedInstances/{managedInstanceName}/databases/{databaseName}/restoreDetails/{restoreDetailsName}")
         @ExpectedResponses({200})
         @UnexpectedResponseExceptionType(ManagementException.class)
         Mono<Response<ManagedDatabaseRestoreDetailsResultInner>> get(

@@ -20,6 +20,15 @@ public final class DiffBackupIntervalInHours extends ExpandableStringEnum<DiffBa
     public static final DiffBackupIntervalInHours TWO_FOUR = fromInt(24);
 
     /**
+     * Creates a new instance of DiffBackupIntervalInHours value.
+     *
+     * @deprecated Use the {@link #fromInt(int)} factory method.
+     */
+    @Deprecated
+    public DiffBackupIntervalInHours() {
+    }
+
+    /**
      * Creates or finds a DiffBackupIntervalInHours from its string representation.
      *
      * @param name a name to look for.

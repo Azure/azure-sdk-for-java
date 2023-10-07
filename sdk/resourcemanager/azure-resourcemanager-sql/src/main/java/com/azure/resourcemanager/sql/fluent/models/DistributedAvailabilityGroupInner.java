@@ -6,8 +6,11 @@ package com.azure.resourcemanager.sql.fluent.models;
 
 import com.azure.core.annotation.Fluent;
 import com.azure.core.management.ProxyResource;
-import com.azure.resourcemanager.sql.models.ReplicationMode;
+import com.azure.resourcemanager.sql.models.DistributedAvailabilityGroupDatabase;
+import com.azure.resourcemanager.sql.models.LinkRole;
+import com.azure.resourcemanager.sql.models.ReplicationModeType;
 import com.fasterxml.jackson.annotation.JsonProperty;
+import java.util.List;
 import java.util.UUID;
 
 /** Distributed availability group between box and Sql Managed Instance. */
@@ -33,124 +36,16 @@ public final class DistributedAvailabilityGroupInner extends ProxyResource {
     }
 
     /**
-     * Get the targetDatabase property: The name of the target database.
+     * Get the distributedAvailabilityGroupName property: Name of the distributed availability group.
      *
-     * @return the targetDatabase value.
+     * @return the distributedAvailabilityGroupName value.
      */
-    public String targetDatabase() {
-        return this.innerProperties() == null ? null : this.innerProperties().targetDatabase();
+    public String distributedAvailabilityGroupName() {
+        return this.innerProperties() == null ? null : this.innerProperties().distributedAvailabilityGroupName();
     }
 
     /**
-     * Set the targetDatabase property: The name of the target database.
-     *
-     * @param targetDatabase the targetDatabase value to set.
-     * @return the DistributedAvailabilityGroupInner object itself.
-     */
-    public DistributedAvailabilityGroupInner withTargetDatabase(String targetDatabase) {
-        if (this.innerProperties() == null) {
-            this.innerProperties = new DistributedAvailabilityGroupProperties();
-        }
-        this.innerProperties().withTargetDatabase(targetDatabase);
-        return this;
-    }
-
-    /**
-     * Get the sourceEndpoint property: The source endpoint.
-     *
-     * @return the sourceEndpoint value.
-     */
-    public String sourceEndpoint() {
-        return this.innerProperties() == null ? null : this.innerProperties().sourceEndpoint();
-    }
-
-    /**
-     * Set the sourceEndpoint property: The source endpoint.
-     *
-     * @param sourceEndpoint the sourceEndpoint value to set.
-     * @return the DistributedAvailabilityGroupInner object itself.
-     */
-    public DistributedAvailabilityGroupInner withSourceEndpoint(String sourceEndpoint) {
-        if (this.innerProperties() == null) {
-            this.innerProperties = new DistributedAvailabilityGroupProperties();
-        }
-        this.innerProperties().withSourceEndpoint(sourceEndpoint);
-        return this;
-    }
-
-    /**
-     * Get the primaryAvailabilityGroupName property: The primary availability group name.
-     *
-     * @return the primaryAvailabilityGroupName value.
-     */
-    public String primaryAvailabilityGroupName() {
-        return this.innerProperties() == null ? null : this.innerProperties().primaryAvailabilityGroupName();
-    }
-
-    /**
-     * Set the primaryAvailabilityGroupName property: The primary availability group name.
-     *
-     * @param primaryAvailabilityGroupName the primaryAvailabilityGroupName value to set.
-     * @return the DistributedAvailabilityGroupInner object itself.
-     */
-    public DistributedAvailabilityGroupInner withPrimaryAvailabilityGroupName(String primaryAvailabilityGroupName) {
-        if (this.innerProperties() == null) {
-            this.innerProperties = new DistributedAvailabilityGroupProperties();
-        }
-        this.innerProperties().withPrimaryAvailabilityGroupName(primaryAvailabilityGroupName);
-        return this;
-    }
-
-    /**
-     * Get the secondaryAvailabilityGroupName property: The secondary availability group name.
-     *
-     * @return the secondaryAvailabilityGroupName value.
-     */
-    public String secondaryAvailabilityGroupName() {
-        return this.innerProperties() == null ? null : this.innerProperties().secondaryAvailabilityGroupName();
-    }
-
-    /**
-     * Set the secondaryAvailabilityGroupName property: The secondary availability group name.
-     *
-     * @param secondaryAvailabilityGroupName the secondaryAvailabilityGroupName value to set.
-     * @return the DistributedAvailabilityGroupInner object itself.
-     */
-    public DistributedAvailabilityGroupInner withSecondaryAvailabilityGroupName(String secondaryAvailabilityGroupName) {
-        if (this.innerProperties() == null) {
-            this.innerProperties = new DistributedAvailabilityGroupProperties();
-        }
-        this.innerProperties().withSecondaryAvailabilityGroupName(secondaryAvailabilityGroupName);
-        return this;
-    }
-
-    /**
-     * Get the replicationMode property: The replication mode of a distributed availability group. Parameter will be
-     * ignored during link creation.
-     *
-     * @return the replicationMode value.
-     */
-    public ReplicationMode replicationMode() {
-        return this.innerProperties() == null ? null : this.innerProperties().replicationMode();
-    }
-
-    /**
-     * Set the replicationMode property: The replication mode of a distributed availability group. Parameter will be
-     * ignored during link creation.
-     *
-     * @param replicationMode the replicationMode value to set.
-     * @return the DistributedAvailabilityGroupInner object itself.
-     */
-    public DistributedAvailabilityGroupInner withReplicationMode(ReplicationMode replicationMode) {
-        if (this.innerProperties() == null) {
-            this.innerProperties = new DistributedAvailabilityGroupProperties();
-        }
-        this.innerProperties().withReplicationMode(replicationMode);
-        return this;
-    }
-
-    /**
-     * Get the distributedAvailabilityGroupId property: The distributed availability group id.
+     * Get the distributedAvailabilityGroupId property: ID of the distributed availability group.
      *
      * @return the distributedAvailabilityGroupId value.
      */
@@ -159,39 +54,80 @@ public final class DistributedAvailabilityGroupInner extends ProxyResource {
     }
 
     /**
-     * Get the sourceReplicaId property: The source replica id.
+     * Get the replicationMode property: Replication mode of the link.
      *
-     * @return the sourceReplicaId value.
+     * @return the replicationMode value.
      */
-    public UUID sourceReplicaId() {
-        return this.innerProperties() == null ? null : this.innerProperties().sourceReplicaId();
+    public ReplicationModeType replicationMode() {
+        return this.innerProperties() == null ? null : this.innerProperties().replicationMode();
     }
 
     /**
-     * Get the targetReplicaId property: The target replica id.
+     * Set the replicationMode property: Replication mode of the link.
      *
-     * @return the targetReplicaId value.
+     * @param replicationMode the replicationMode value to set.
+     * @return the DistributedAvailabilityGroupInner object itself.
      */
-    public UUID targetReplicaId() {
-        return this.innerProperties() == null ? null : this.innerProperties().targetReplicaId();
+    public DistributedAvailabilityGroupInner withReplicationMode(ReplicationModeType replicationMode) {
+        if (this.innerProperties() == null) {
+            this.innerProperties = new DistributedAvailabilityGroupProperties();
+        }
+        this.innerProperties().withReplicationMode(replicationMode);
+        return this;
     }
 
     /**
-     * Get the linkState property: The link state.
+     * Get the partnerLinkRole property: SQL server side link role.
      *
-     * @return the linkState value.
+     * @return the partnerLinkRole value.
      */
-    public String linkState() {
-        return this.innerProperties() == null ? null : this.innerProperties().linkState();
+    public LinkRole partnerLinkRole() {
+        return this.innerProperties() == null ? null : this.innerProperties().partnerLinkRole();
     }
 
     /**
-     * Get the lastHardenedLsn property: The last hardened lsn.
+     * Get the partnerAvailabilityGroupName property: SQL server side availability group name.
      *
-     * @return the lastHardenedLsn value.
+     * @return the partnerAvailabilityGroupName value.
      */
-    public String lastHardenedLsn() {
-        return this.innerProperties() == null ? null : this.innerProperties().lastHardenedLsn();
+    public String partnerAvailabilityGroupName() {
+        return this.innerProperties() == null ? null : this.innerProperties().partnerAvailabilityGroupName();
+    }
+
+    /**
+     * Get the partnerEndpoint property: SQL server side endpoint - IP or DNS resolvable name.
+     *
+     * @return the partnerEndpoint value.
+     */
+    public String partnerEndpoint() {
+        return this.innerProperties() == null ? null : this.innerProperties().partnerEndpoint();
+    }
+
+    /**
+     * Get the instanceLinkRole property: Managed instance side link role.
+     *
+     * @return the instanceLinkRole value.
+     */
+    public LinkRole instanceLinkRole() {
+        return this.innerProperties() == null ? null : this.innerProperties().instanceLinkRole();
+    }
+
+    /**
+     * Get the instanceAvailabilityGroupName property: Managed instance side availability group name.
+     *
+     * @return the instanceAvailabilityGroupName value.
+     */
+    public String instanceAvailabilityGroupName() {
+        return this.innerProperties() == null ? null : this.innerProperties().instanceAvailabilityGroupName();
+    }
+
+    /**
+     * Get the databases property: Databases in the distributed availability group.
+     *
+     * @return the databases value.
+     */
+    public List<DistributedAvailabilityGroupDatabase> databases() {
+        return this.innerProperties() == null ? null : this.innerProperties().databases();
     }
 
     /**

@@ -76,9 +76,7 @@ public final class ManagedRestorableDroppedDatabaseBackupShortTermRetentionPolic
     public interface ManagedRestorableDroppedDatabaseBackupShortTermRetentionPoliciesService {
         @Headers({"Content-Type: application/json"})
         @Get(
-            "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Sql"
-                + "/managedInstances/{managedInstanceName}/restorableDroppedDatabases/{restorableDroppedDatabaseId}"
-                + "/backupShortTermRetentionPolicies")
+            "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Sql/managedInstances/{managedInstanceName}/restorableDroppedDatabases/{restorableDroppedDatabaseId}/backupShortTermRetentionPolicies")
         @ExpectedResponses({200})
         @UnexpectedResponseExceptionType(ManagementException.class)
         Mono<Response<ManagedBackupShortTermRetentionPolicyListResult>> listByRestorableDroppedDatabase(
@@ -93,9 +91,7 @@ public final class ManagedRestorableDroppedDatabaseBackupShortTermRetentionPolic
 
         @Headers({"Content-Type: application/json"})
         @Get(
-            "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Sql"
-                + "/managedInstances/{managedInstanceName}/restorableDroppedDatabases/{restorableDroppedDatabaseId}"
-                + "/backupShortTermRetentionPolicies/{policyName}")
+            "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Sql/managedInstances/{managedInstanceName}/restorableDroppedDatabases/{restorableDroppedDatabaseId}/backupShortTermRetentionPolicies/{policyName}")
         @ExpectedResponses({200})
         @UnexpectedResponseExceptionType(ManagementException.class)
         Mono<Response<ManagedBackupShortTermRetentionPolicyInner>> get(
@@ -111,9 +107,7 @@ public final class ManagedRestorableDroppedDatabaseBackupShortTermRetentionPolic
 
         @Headers({"Content-Type: application/json"})
         @Put(
-            "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Sql"
-                + "/managedInstances/{managedInstanceName}/restorableDroppedDatabases/{restorableDroppedDatabaseId}"
-                + "/backupShortTermRetentionPolicies/{policyName}")
+            "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Sql/managedInstances/{managedInstanceName}/restorableDroppedDatabases/{restorableDroppedDatabaseId}/backupShortTermRetentionPolicies/{policyName}")
         @ExpectedResponses({200, 202})
         @UnexpectedResponseExceptionType(ManagementException.class)
         Mono<Response<Flux<ByteBuffer>>> createOrUpdate(
@@ -130,9 +124,7 @@ public final class ManagedRestorableDroppedDatabaseBackupShortTermRetentionPolic
 
         @Headers({"Content-Type: application/json"})
         @Patch(
-            "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Sql"
-                + "/managedInstances/{managedInstanceName}/restorableDroppedDatabases/{restorableDroppedDatabaseId}"
-                + "/backupShortTermRetentionPolicies/{policyName}")
+            "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Sql/managedInstances/{managedInstanceName}/restorableDroppedDatabases/{restorableDroppedDatabaseId}/backupShortTermRetentionPolicies/{policyName}")
         @ExpectedResponses({200, 202})
         @UnexpectedResponseExceptionType(ManagementException.class)
         Mono<Response<Flux<ByteBuffer>>> update(
@@ -830,7 +822,8 @@ public final class ManagedRestorableDroppedDatabaseBackupShortTermRetentionPolic
             String restorableDroppedDatabaseId,
             ManagedShortTermRetentionPolicyName policyName,
             ManagedBackupShortTermRetentionPolicyInner parameters) {
-        return beginCreateOrUpdateAsync(
+        return this
+            .beginCreateOrUpdateAsync(
                 resourceGroupName, managedInstanceName, restorableDroppedDatabaseId, policyName, parameters)
             .getSyncPoller();
     }
@@ -860,7 +853,8 @@ public final class ManagedRestorableDroppedDatabaseBackupShortTermRetentionPolic
             ManagedShortTermRetentionPolicyName policyName,
             ManagedBackupShortTermRetentionPolicyInner parameters,
             Context context) {
-        return beginCreateOrUpdateAsync(
+        return this
+            .beginCreateOrUpdateAsync(
                 resourceGroupName, managedInstanceName, restorableDroppedDatabaseId, policyName, parameters, context)
             .getSyncPoller();
     }
@@ -1220,7 +1214,8 @@ public final class ManagedRestorableDroppedDatabaseBackupShortTermRetentionPolic
             String restorableDroppedDatabaseId,
             ManagedShortTermRetentionPolicyName policyName,
             ManagedBackupShortTermRetentionPolicyInner parameters) {
-        return beginUpdateAsync(
+        return this
+            .beginUpdateAsync(
                 resourceGroupName, managedInstanceName, restorableDroppedDatabaseId, policyName, parameters)
             .getSyncPoller();
     }
@@ -1250,7 +1245,8 @@ public final class ManagedRestorableDroppedDatabaseBackupShortTermRetentionPolic
             ManagedShortTermRetentionPolicyName policyName,
             ManagedBackupShortTermRetentionPolicyInner parameters,
             Context context) {
-        return beginUpdateAsync(
+        return this
+            .beginUpdateAsync(
                 resourceGroupName, managedInstanceName, restorableDroppedDatabaseId, policyName, parameters, context)
             .getSyncPoller();
     }

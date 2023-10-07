@@ -26,6 +26,15 @@ public final class JobTargetType extends ExpandableStringEnum<JobTargetType> {
     public static final JobTargetType SQL_SERVER = fromString("SqlServer");
 
     /**
+     * Creates a new instance of JobTargetType value.
+     *
+     * @deprecated Use the {@link #fromString(String)} factory method.
+     */
+    @Deprecated
+    public JobTargetType() {
+    }
+
+    /**
      * Creates or finds a JobTargetType from its string representation.
      *
      * @param name a name to look for.

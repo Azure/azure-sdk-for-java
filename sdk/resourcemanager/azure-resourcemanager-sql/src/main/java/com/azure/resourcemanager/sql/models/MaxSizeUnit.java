@@ -23,6 +23,15 @@ public final class MaxSizeUnit extends ExpandableStringEnum<MaxSizeUnit> {
     public static final MaxSizeUnit PETABYTES = fromString("Petabytes");
 
     /**
+     * Creates a new instance of MaxSizeUnit value.
+     *
+     * @deprecated Use the {@link #fromString(String)} factory method.
+     */
+    @Deprecated
+    public MaxSizeUnit() {
+    }
+
+    /**
      * Creates or finds a MaxSizeUnit from its string representation.
      *
      * @param name a name to look for.

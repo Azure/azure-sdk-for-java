@@ -67,8 +67,7 @@ public final class JobExecutionsClientImpl implements JobExecutionsClient {
     public interface JobExecutionsService {
         @Headers({"Content-Type: application/json"})
         @Get(
-            "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Sql/servers"
-                + "/{serverName}/jobAgents/{jobAgentName}/executions")
+            "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Sql/servers/{serverName}/jobAgents/{jobAgentName}/executions")
         @ExpectedResponses({200})
         @UnexpectedResponseExceptionType(ManagementException.class)
         Mono<Response<JobExecutionListResult>> listByAgent(
@@ -90,8 +89,7 @@ public final class JobExecutionsClientImpl implements JobExecutionsClient {
 
         @Headers({"Content-Type: application/json"})
         @Get(
-            "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Sql/servers"
-                + "/{serverName}/jobAgents/{jobAgentName}/jobs/{jobName}/executions")
+            "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Sql/servers/{serverName}/jobAgents/{jobAgentName}/jobs/{jobName}/executions")
         @ExpectedResponses({200})
         @UnexpectedResponseExceptionType(ManagementException.class)
         Mono<Response<JobExecutionListResult>> listByJob(
@@ -114,8 +112,7 @@ public final class JobExecutionsClientImpl implements JobExecutionsClient {
 
         @Headers({"Content-Type: application/json"})
         @Get(
-            "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Sql/servers"
-                + "/{serverName}/jobAgents/{jobAgentName}/jobs/{jobName}/executions/{jobExecutionId}")
+            "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Sql/servers/{serverName}/jobAgents/{jobAgentName}/jobs/{jobName}/executions/{jobExecutionId}")
         @ExpectedResponses({200})
         @UnexpectedResponseExceptionType(ManagementException.class)
         Mono<Response<JobExecutionInner>> get(
@@ -132,8 +129,7 @@ public final class JobExecutionsClientImpl implements JobExecutionsClient {
 
         @Headers({"Content-Type: application/json"})
         @Put(
-            "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Sql/servers"
-                + "/{serverName}/jobAgents/{jobAgentName}/jobs/{jobName}/executions/{jobExecutionId}")
+            "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Sql/servers/{serverName}/jobAgents/{jobAgentName}/jobs/{jobName}/executions/{jobExecutionId}")
         @ExpectedResponses({200, 201, 202})
         @UnexpectedResponseExceptionType(ManagementException.class)
         Mono<Response<Flux<ByteBuffer>>> createOrUpdate(
@@ -150,8 +146,7 @@ public final class JobExecutionsClientImpl implements JobExecutionsClient {
 
         @Headers({"Accept: application/json;q=0.9", "Content-Type: application/json"})
         @Post(
-            "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Sql/servers"
-                + "/{serverName}/jobAgents/{jobAgentName}/jobs/{jobName}/executions/{jobExecutionId}/cancel")
+            "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Sql/servers/{serverName}/jobAgents/{jobAgentName}/jobs/{jobName}/executions/{jobExecutionId}/cancel")
         @ExpectedResponses({200})
         @UnexpectedResponseExceptionType(ManagementException.class)
         Mono<Response<Void>> cancel(
@@ -167,8 +162,7 @@ public final class JobExecutionsClientImpl implements JobExecutionsClient {
 
         @Headers({"Content-Type: application/json"})
         @Post(
-            "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Sql/servers"
-                + "/{serverName}/jobAgents/{jobAgentName}/jobs/{jobName}/start")
+            "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Sql/servers/{serverName}/jobAgents/{jobAgentName}/jobs/{jobName}/start")
         @ExpectedResponses({200, 202})
         @UnexpectedResponseExceptionType(ManagementException.class)
         Mono<Response<Flux<ByteBuffer>>> create(
@@ -1418,7 +1412,8 @@ public final class JobExecutionsClientImpl implements JobExecutionsClient {
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     public SyncPoller<PollResult<JobExecutionInner>, JobExecutionInner> beginCreateOrUpdate(
         String resourceGroupName, String serverName, String jobAgentName, String jobName, UUID jobExecutionId) {
-        return beginCreateOrUpdateAsync(resourceGroupName, serverName, jobAgentName, jobName, jobExecutionId)
+        return this
+            .beginCreateOrUpdateAsync(resourceGroupName, serverName, jobAgentName, jobName, jobExecutionId)
             .getSyncPoller();
     }
 
@@ -1445,7 +1440,8 @@ public final class JobExecutionsClientImpl implements JobExecutionsClient {
         String jobName,
         UUID jobExecutionId,
         Context context) {
-        return beginCreateOrUpdateAsync(resourceGroupName, serverName, jobAgentName, jobName, jobExecutionId, context)
+        return this
+            .beginCreateOrUpdateAsync(resourceGroupName, serverName, jobAgentName, jobName, jobExecutionId, context)
             .getSyncPoller();
     }
 
@@ -1926,7 +1922,7 @@ public final class JobExecutionsClientImpl implements JobExecutionsClient {
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     public SyncPoller<PollResult<JobExecutionInner>, JobExecutionInner> beginCreate(
         String resourceGroupName, String serverName, String jobAgentName, String jobName) {
-        return beginCreateAsync(resourceGroupName, serverName, jobAgentName, jobName).getSyncPoller();
+        return this.beginCreateAsync(resourceGroupName, serverName, jobAgentName, jobName).getSyncPoller();
     }
 
     /**
@@ -1946,7 +1942,7 @@ public final class JobExecutionsClientImpl implements JobExecutionsClient {
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     public SyncPoller<PollResult<JobExecutionInner>, JobExecutionInner> beginCreate(
         String resourceGroupName, String serverName, String jobAgentName, String jobName, Context context) {
-        return beginCreateAsync(resourceGroupName, serverName, jobAgentName, jobName, context).getSyncPoller();
+        return this.beginCreateAsync(resourceGroupName, serverName, jobAgentName, jobName, context).getSyncPoller();
     }
 
     /**

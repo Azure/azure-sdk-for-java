@@ -62,8 +62,7 @@ public final class ManagedDatabaseSecurityEventsClientImpl implements ManagedDat
     public interface ManagedDatabaseSecurityEventsService {
         @Headers({"Content-Type: application/json"})
         @Get(
-            "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Sql"
-                + "/managedInstances/{managedInstanceName}/databases/{databaseName}/securityEvents")
+            "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Sql/managedInstances/{managedInstanceName}/databases/{databaseName}/securityEvents")
         @ExpectedResponses({200})
         @UnexpectedResponseExceptionType(ManagementException.class)
         Mono<Response<SecurityEventCollection>> listByDatabase(

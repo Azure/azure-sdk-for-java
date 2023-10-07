@@ -61,8 +61,7 @@ public final class ManagedDatabaseRecommendedSensitivityLabelsClientImpl
     public interface ManagedDatabaseRecommendedSensitivityLabelsService {
         @Headers({"Accept: application/json;q=0.9", "Content-Type: application/json"})
         @Patch(
-            "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Sql"
-                + "/managedInstances/{managedInstanceName}/databases/{databaseName}/recommendedSensitivityLabels")
+            "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Sql/managedInstances/{managedInstanceName}/databases/{databaseName}/recommendedSensitivityLabels")
         @ExpectedResponses({200})
         @UnexpectedResponseExceptionType(ManagementException.class)
         Mono<Response<Void>> update(

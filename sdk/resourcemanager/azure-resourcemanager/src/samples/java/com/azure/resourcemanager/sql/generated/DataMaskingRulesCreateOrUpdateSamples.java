@@ -4,7 +4,6 @@
 
 package com.azure.resourcemanager.sql.generated;
 
-import com.azure.core.util.Context;
 import com.azure.resourcemanager.sql.fluent.models.DataMaskingRuleInner;
 import com.azure.resourcemanager.sql.models.DataMaskingFunction;
 import com.azure.resourcemanager.sql.models.DataMaskingPolicyName;
@@ -13,7 +12,7 @@ import com.azure.resourcemanager.sql.models.DataMaskingRuleState;
 /** Samples for DataMaskingRules CreateOrUpdate. */
 public final class DataMaskingRulesCreateOrUpdateSamples {
     /*
-     * x-ms-original-file: specification/sql/resource-manager/Microsoft.Sql/stable/2021-11-01/examples/DataMaskingRuleCreateOrUpdateNumber.json
+     * x-ms-original-file: specification/sql/resource-manager/Microsoft.Sql/preview/2023-02-01-preview/examples/DataMaskingRuleCreateOrUpdateNumber.json
      */
     /**
      * Sample code: Create/Update data masking rule for numbers.
@@ -39,11 +38,11 @@ public final class DataMaskingRulesCreateOrUpdateSamples {
                     .withMaskingFunction(DataMaskingFunction.NUMBER)
                     .withNumberFrom("0")
                     .withNumberTo("2"),
-                Context.NONE);
+                com.azure.core.util.Context.NONE);
     }
 
     /*
-     * x-ms-original-file: specification/sql/resource-manager/Microsoft.Sql/stable/2021-11-01/examples/DataMaskingRuleCreateOrUpdateText.json
+     * x-ms-original-file: specification/sql/resource-manager/Microsoft.Sql/preview/2023-02-01-preview/examples/DataMaskingRuleCreateOrUpdateText.json
      */
     /**
      * Sample code: Create/Update data masking rule for text.
@@ -70,11 +69,11 @@ public final class DataMaskingRulesCreateOrUpdateSamples {
                     .withPrefixSize("1")
                     .withSuffixSize("0")
                     .withReplacementString("asdf"),
-                Context.NONE);
+                com.azure.core.util.Context.NONE);
     }
 
     /*
-     * x-ms-original-file: specification/sql/resource-manager/Microsoft.Sql/stable/2021-11-01/examples/DataMaskingRuleCreateOrUpdateDefaultMin.json
+     * x-ms-original-file: specification/sql/resource-manager/Microsoft.Sql/preview/2023-02-01-preview/examples/DataMaskingRuleCreateOrUpdateDefaultMin.json
      */
     /**
      * Sample code: Create/Update data masking rule for default min.
@@ -98,11 +97,11 @@ public final class DataMaskingRulesCreateOrUpdateSamples {
                     .withTableName("Table_1")
                     .withColumnName("test1")
                     .withMaskingFunction(DataMaskingFunction.DEFAULT),
-                Context.NONE);
+                com.azure.core.util.Context.NONE);
     }
 
     /*
-     * x-ms-original-file: specification/sql/resource-manager/Microsoft.Sql/stable/2021-11-01/examples/DataMaskingRuleCreateOrUpdateDefaultMax.json
+     * x-ms-original-file: specification/sql/resource-manager/Microsoft.Sql/preview/2023-02-01-preview/examples/DataMaskingRuleCreateOrUpdateDefaultMax.json
      */
     /**
      * Sample code: Create/Update data masking rule for default max.
@@ -128,6 +127,6 @@ public final class DataMaskingRulesCreateOrUpdateSamples {
                     .withColumnName("test1")
                     .withAliasName("nickname")
                     .withMaskingFunction(DataMaskingFunction.DEFAULT),
-                Context.NONE);
+                com.azure.core.util.Context.NONE);
     }
 }

@@ -7,6 +7,7 @@ package com.azure.resourcemanager.sql.fluent.models;
 import com.azure.core.annotation.Fluent;
 import com.azure.resourcemanager.sql.models.FailoverGroupReadOnlyEndpoint;
 import com.azure.resourcemanager.sql.models.FailoverGroupReadWriteEndpoint;
+import com.azure.resourcemanager.sql.models.PartnerInfo;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import java.util.List;
 
@@ -30,6 +31,12 @@ public final class FailoverGroupUpdateProperties {
      */
     @JsonProperty(value = "databases")
     private List<String> databases;
+
+    /*
+     * List of partner server information for the failover group.
+     */
+    @JsonProperty(value = "partnerServers")
+    private List<PartnerInfo> partnerServers;
 
     /** Creates an instance of FailoverGroupUpdateProperties class. */
     public FailoverGroupUpdateProperties() {
@@ -96,6 +103,26 @@ public final class FailoverGroupUpdateProperties {
     }
 
     /**
+     * Get the partnerServers property: List of partner server information for the failover group.
+     *
+     * @return the partnerServers value.
+     */
+    public List<PartnerInfo> partnerServers() {
+        return this.partnerServers;
+    }
+
+    /**
+     * Set the partnerServers property: List of partner server information for the failover group.
+     *
+     * @param partnerServers the partnerServers value to set.
+     * @return the FailoverGroupUpdateProperties object itself.
+     */
+    public FailoverGroupUpdateProperties withPartnerServers(List<PartnerInfo> partnerServers) {
+        this.partnerServers = partnerServers;
+        return this;
+    }
+
+    /**
      * Validates the instance.
      *
      * @throws IllegalArgumentException thrown if the instance is not valid.
@@ -106,6 +133,9 @@ public final class FailoverGroupUpdateProperties {
         }
         if (readOnlyEndpoint() != null) {
             readOnlyEndpoint().validate();
+        }
+        if (partnerServers() != null) {
+            partnerServers().forEach(e -> e.validate());
         }
     }
 }

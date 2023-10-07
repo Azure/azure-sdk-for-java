@@ -69,8 +69,7 @@ public final class ElasticPoolsClientImpl implements ElasticPoolsClient {
     public interface ElasticPoolsService {
         @Headers({"Content-Type: application/json"})
         @Get(
-            "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Sql/servers"
-                + "/{serverName}/elasticPools")
+            "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Sql/servers/{serverName}/elasticPools")
         @ExpectedResponses({200})
         @UnexpectedResponseExceptionType(ManagementException.class)
         Mono<Response<ElasticPoolListResult>> listByServer(
@@ -85,8 +84,7 @@ public final class ElasticPoolsClientImpl implements ElasticPoolsClient {
 
         @Headers({"Content-Type: application/json"})
         @Get(
-            "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Sql/servers"
-                + "/{serverName}/elasticPools/{elasticPoolName}")
+            "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Sql/servers/{serverName}/elasticPools/{elasticPoolName}")
         @ExpectedResponses({200})
         @UnexpectedResponseExceptionType(ManagementException.class)
         Mono<Response<ElasticPoolInner>> get(
@@ -101,8 +99,7 @@ public final class ElasticPoolsClientImpl implements ElasticPoolsClient {
 
         @Headers({"Content-Type: application/json"})
         @Put(
-            "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Sql/servers"
-                + "/{serverName}/elasticPools/{elasticPoolName}")
+            "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Sql/servers/{serverName}/elasticPools/{elasticPoolName}")
         @ExpectedResponses({200, 201, 202})
         @UnexpectedResponseExceptionType(ManagementException.class)
         Mono<Response<Flux<ByteBuffer>>> createOrUpdate(
@@ -118,8 +115,7 @@ public final class ElasticPoolsClientImpl implements ElasticPoolsClient {
 
         @Headers({"Accept: application/json;q=0.9", "Content-Type: application/json"})
         @Delete(
-            "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Sql/servers"
-                + "/{serverName}/elasticPools/{elasticPoolName}")
+            "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Sql/servers/{serverName}/elasticPools/{elasticPoolName}")
         @ExpectedResponses({200, 202, 204})
         @UnexpectedResponseExceptionType(ManagementException.class)
         Mono<Response<Flux<ByteBuffer>>> delete(
@@ -133,8 +129,7 @@ public final class ElasticPoolsClientImpl implements ElasticPoolsClient {
 
         @Headers({"Content-Type: application/json"})
         @Patch(
-            "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Sql/servers"
-                + "/{serverName}/elasticPools/{elasticPoolName}")
+            "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Sql/servers/{serverName}/elasticPools/{elasticPoolName}")
         @ExpectedResponses({200, 202})
         @UnexpectedResponseExceptionType(ManagementException.class)
         Mono<Response<Flux<ByteBuffer>>> update(
@@ -150,8 +145,7 @@ public final class ElasticPoolsClientImpl implements ElasticPoolsClient {
 
         @Headers({"Accept: application/json;q=0.9", "Content-Type: application/json"})
         @Post(
-            "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Sql/servers"
-                + "/{serverName}/elasticPools/{elasticPoolName}/failover")
+            "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Sql/servers/{serverName}/elasticPools/{elasticPoolName}/failover")
         @ExpectedResponses({200, 202})
         @UnexpectedResponseExceptionType(ManagementException.class)
         Mono<Response<Flux<ByteBuffer>>> failover(
@@ -749,7 +743,9 @@ public final class ElasticPoolsClientImpl implements ElasticPoolsClient {
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     public SyncPoller<PollResult<ElasticPoolInner>, ElasticPoolInner> beginCreateOrUpdate(
         String resourceGroupName, String serverName, String elasticPoolName, ElasticPoolInner parameters) {
-        return beginCreateOrUpdateAsync(resourceGroupName, serverName, elasticPoolName, parameters).getSyncPoller();
+        return this
+            .beginCreateOrUpdateAsync(resourceGroupName, serverName, elasticPoolName, parameters)
+            .getSyncPoller();
     }
 
     /**
@@ -773,7 +769,8 @@ public final class ElasticPoolsClientImpl implements ElasticPoolsClient {
         String elasticPoolName,
         ElasticPoolInner parameters,
         Context context) {
-        return beginCreateOrUpdateAsync(resourceGroupName, serverName, elasticPoolName, parameters, context)
+        return this
+            .beginCreateOrUpdateAsync(resourceGroupName, serverName, elasticPoolName, parameters, context)
             .getSyncPoller();
     }
 
@@ -1032,7 +1029,7 @@ public final class ElasticPoolsClientImpl implements ElasticPoolsClient {
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     public SyncPoller<PollResult<Void>, Void> beginDelete(
         String resourceGroupName, String serverName, String elasticPoolName) {
-        return beginDeleteAsync(resourceGroupName, serverName, elasticPoolName).getSyncPoller();
+        return this.beginDeleteAsync(resourceGroupName, serverName, elasticPoolName).getSyncPoller();
     }
 
     /**
@@ -1051,7 +1048,7 @@ public final class ElasticPoolsClientImpl implements ElasticPoolsClient {
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     public SyncPoller<PollResult<Void>, Void> beginDelete(
         String resourceGroupName, String serverName, String elasticPoolName, Context context) {
-        return beginDeleteAsync(resourceGroupName, serverName, elasticPoolName, context).getSyncPoller();
+        return this.beginDeleteAsync(resourceGroupName, serverName, elasticPoolName, context).getSyncPoller();
     }
 
     /**
@@ -1327,7 +1324,7 @@ public final class ElasticPoolsClientImpl implements ElasticPoolsClient {
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     public SyncPoller<PollResult<ElasticPoolInner>, ElasticPoolInner> beginUpdate(
         String resourceGroupName, String serverName, String elasticPoolName, ElasticPoolUpdate parameters) {
-        return beginUpdateAsync(resourceGroupName, serverName, elasticPoolName, parameters).getSyncPoller();
+        return this.beginUpdateAsync(resourceGroupName, serverName, elasticPoolName, parameters).getSyncPoller();
     }
 
     /**
@@ -1351,7 +1348,9 @@ public final class ElasticPoolsClientImpl implements ElasticPoolsClient {
         String elasticPoolName,
         ElasticPoolUpdate parameters,
         Context context) {
-        return beginUpdateAsync(resourceGroupName, serverName, elasticPoolName, parameters, context).getSyncPoller();
+        return this
+            .beginUpdateAsync(resourceGroupName, serverName, elasticPoolName, parameters, context)
+            .getSyncPoller();
     }
 
     /**
@@ -1610,7 +1609,7 @@ public final class ElasticPoolsClientImpl implements ElasticPoolsClient {
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     public SyncPoller<PollResult<Void>, Void> beginFailover(
         String resourceGroupName, String serverName, String elasticPoolName) {
-        return beginFailoverAsync(resourceGroupName, serverName, elasticPoolName).getSyncPoller();
+        return this.beginFailoverAsync(resourceGroupName, serverName, elasticPoolName).getSyncPoller();
     }
 
     /**
@@ -1629,7 +1628,7 @@ public final class ElasticPoolsClientImpl implements ElasticPoolsClient {
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     public SyncPoller<PollResult<Void>, Void> beginFailover(
         String resourceGroupName, String serverName, String elasticPoolName, Context context) {
-        return beginFailoverAsync(resourceGroupName, serverName, elasticPoolName, context).getSyncPoller();
+        return this.beginFailoverAsync(resourceGroupName, serverName, elasticPoolName, context).getSyncPoller();
     }
 
     /**

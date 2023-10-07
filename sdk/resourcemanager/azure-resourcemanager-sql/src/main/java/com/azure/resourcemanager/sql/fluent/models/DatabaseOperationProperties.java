@@ -6,6 +6,7 @@ package com.azure.resourcemanager.sql.fluent.models;
 
 import com.azure.core.annotation.Immutable;
 import com.azure.resourcemanager.sql.models.ManagementOperationState;
+import com.azure.resourcemanager.sql.models.PhaseDetails;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import java.time.OffsetDateTime;
 
@@ -95,6 +96,12 @@ public final class DatabaseOperationProperties {
      */
     @JsonProperty(value = "isCancellable", access = JsonProperty.Access.WRITE_ONLY)
     private Boolean isCancellable;
+
+    /*
+     * The operation phase details.
+     */
+    @JsonProperty(value = "operationPhaseDetails", access = JsonProperty.Access.WRITE_ONLY)
+    private PhaseDetails operationPhaseDetails;
 
     /** Creates an instance of DatabaseOperationProperties class. */
     public DatabaseOperationProperties() {
@@ -227,10 +234,22 @@ public final class DatabaseOperationProperties {
     }
 
     /**
+     * Get the operationPhaseDetails property: The operation phase details.
+     *
+     * @return the operationPhaseDetails value.
+     */
+    public PhaseDetails operationPhaseDetails() {
+        return this.operationPhaseDetails;
+    }
+
+    /**
      * Validates the instance.
      *
      * @throws IllegalArgumentException thrown if the instance is not valid.
      */
     public void validate() {
+        if (operationPhaseDetails() != null) {
+            operationPhaseDetails().validate();
+        }
     }
 }

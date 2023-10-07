@@ -15,6 +15,15 @@ public final class PrivateLinkServiceConnectionStateActionsRequire
     public static final PrivateLinkServiceConnectionStateActionsRequire NONE = fromString("None");
 
     /**
+     * Creates a new instance of PrivateLinkServiceConnectionStateActionsRequire value.
+     *
+     * @deprecated Use the {@link #fromString(String)} factory method.
+     */
+    @Deprecated
+    public PrivateLinkServiceConnectionStateActionsRequire() {
+    }
+
+    /**
      * Creates or finds a PrivateLinkServiceConnectionStateActionsRequire from its string representation.
      *
      * @param name a name to look for.

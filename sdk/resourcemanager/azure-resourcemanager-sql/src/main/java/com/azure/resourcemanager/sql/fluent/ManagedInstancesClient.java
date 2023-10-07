@@ -18,6 +18,7 @@ import com.azure.resourcemanager.resources.fluentcore.collection.InnerSupportsGe
 import com.azure.resourcemanager.resources.fluentcore.collection.InnerSupportsListing;
 import com.azure.resourcemanager.sql.fluent.models.ManagedInstanceInner;
 import com.azure.resourcemanager.sql.fluent.models.OutboundEnvironmentEndpointInner;
+import com.azure.resourcemanager.sql.fluent.models.RefreshExternalGovernanceStatusOperationResultMIInner;
 import com.azure.resourcemanager.sql.fluent.models.TopQueriesInner;
 import com.azure.resourcemanager.sql.models.AggregationFunctionType;
 import com.azure.resourcemanager.sql.models.ManagedInstanceUpdate;
@@ -763,6 +764,326 @@ public interface ManagedInstancesClient
     @ServiceMethod(returns = ReturnType.COLLECTION)
     PagedIterable<OutboundEnvironmentEndpointInner> listOutboundNetworkDependenciesByManagedInstance(
         String resourceGroupName, String managedInstanceName, Context context);
+
+    /**
+     * Refresh external governance enablement status.
+     *
+     * @param resourceGroupName The name of the resource group that contains the resource. You can obtain this value
+     *     from the Azure Resource Manager API or the portal.
+     * @param managedInstanceName The name of the managed instance.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return an RefreshExternalGovernanceStatus operation result resource along with {@link Response} on successful
+     *     completion of {@link Mono}.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    Mono<Response<Flux<ByteBuffer>>> refreshStatusWithResponseAsync(
+        String resourceGroupName, String managedInstanceName);
+
+    /**
+     * Refresh external governance enablement status.
+     *
+     * @param resourceGroupName The name of the resource group that contains the resource. You can obtain this value
+     *     from the Azure Resource Manager API or the portal.
+     * @param managedInstanceName The name of the managed instance.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return the {@link PollerFlux} for polling of an RefreshExternalGovernanceStatus operation result resource.
+     */
+    @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
+    PollerFlux<
+            PollResult<RefreshExternalGovernanceStatusOperationResultMIInner>,
+            RefreshExternalGovernanceStatusOperationResultMIInner>
+        beginRefreshStatusAsync(String resourceGroupName, String managedInstanceName);
+
+    /**
+     * Refresh external governance enablement status.
+     *
+     * @param resourceGroupName The name of the resource group that contains the resource. You can obtain this value
+     *     from the Azure Resource Manager API or the portal.
+     * @param managedInstanceName The name of the managed instance.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return the {@link SyncPoller} for polling of an RefreshExternalGovernanceStatus operation result resource.
+     */
+    @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
+    SyncPoller<
+            PollResult<RefreshExternalGovernanceStatusOperationResultMIInner>,
+            RefreshExternalGovernanceStatusOperationResultMIInner>
+        beginRefreshStatus(String resourceGroupName, String managedInstanceName);
+
+    /**
+     * Refresh external governance enablement status.
+     *
+     * @param resourceGroupName The name of the resource group that contains the resource. You can obtain this value
+     *     from the Azure Resource Manager API or the portal.
+     * @param managedInstanceName The name of the managed instance.
+     * @param context The context to associate with this operation.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return the {@link SyncPoller} for polling of an RefreshExternalGovernanceStatus operation result resource.
+     */
+    @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
+    SyncPoller<
+            PollResult<RefreshExternalGovernanceStatusOperationResultMIInner>,
+            RefreshExternalGovernanceStatusOperationResultMIInner>
+        beginRefreshStatus(String resourceGroupName, String managedInstanceName, Context context);
+
+    /**
+     * Refresh external governance enablement status.
+     *
+     * @param resourceGroupName The name of the resource group that contains the resource. You can obtain this value
+     *     from the Azure Resource Manager API or the portal.
+     * @param managedInstanceName The name of the managed instance.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return an RefreshExternalGovernanceStatus operation result resource on successful completion of {@link Mono}.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    Mono<RefreshExternalGovernanceStatusOperationResultMIInner> refreshStatusAsync(
+        String resourceGroupName, String managedInstanceName);
+
+    /**
+     * Refresh external governance enablement status.
+     *
+     * @param resourceGroupName The name of the resource group that contains the resource. You can obtain this value
+     *     from the Azure Resource Manager API or the portal.
+     * @param managedInstanceName The name of the managed instance.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return an RefreshExternalGovernanceStatus operation result resource.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    RefreshExternalGovernanceStatusOperationResultMIInner refreshStatus(
+        String resourceGroupName, String managedInstanceName);
+
+    /**
+     * Refresh external governance enablement status.
+     *
+     * @param resourceGroupName The name of the resource group that contains the resource. You can obtain this value
+     *     from the Azure Resource Manager API or the portal.
+     * @param managedInstanceName The name of the managed instance.
+     * @param context The context to associate with this operation.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return an RefreshExternalGovernanceStatus operation result resource.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    RefreshExternalGovernanceStatusOperationResultMIInner refreshStatus(
+        String resourceGroupName, String managedInstanceName, Context context);
+
+    /**
+     * Starts the managed instance.
+     *
+     * @param resourceGroupName The name of the resource group that contains the resource. You can obtain this value
+     *     from the Azure Resource Manager API or the portal.
+     * @param managedInstanceName The name of the managed instance.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return an Azure SQL managed instance along with {@link Response} on successful completion of {@link Mono}.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    Mono<Response<Flux<ByteBuffer>>> startWithResponseAsync(String resourceGroupName, String managedInstanceName);
+
+    /**
+     * Starts the managed instance.
+     *
+     * @param resourceGroupName The name of the resource group that contains the resource. You can obtain this value
+     *     from the Azure Resource Manager API or the portal.
+     * @param managedInstanceName The name of the managed instance.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return the {@link PollerFlux} for polling of an Azure SQL managed instance.
+     */
+    @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
+    PollerFlux<PollResult<ManagedInstanceInner>, ManagedInstanceInner> beginStartAsync(
+        String resourceGroupName, String managedInstanceName);
+
+    /**
+     * Starts the managed instance.
+     *
+     * @param resourceGroupName The name of the resource group that contains the resource. You can obtain this value
+     *     from the Azure Resource Manager API or the portal.
+     * @param managedInstanceName The name of the managed instance.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return the {@link SyncPoller} for polling of an Azure SQL managed instance.
+     */
+    @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
+    SyncPoller<PollResult<ManagedInstanceInner>, ManagedInstanceInner> beginStart(
+        String resourceGroupName, String managedInstanceName);
+
+    /**
+     * Starts the managed instance.
+     *
+     * @param resourceGroupName The name of the resource group that contains the resource. You can obtain this value
+     *     from the Azure Resource Manager API or the portal.
+     * @param managedInstanceName The name of the managed instance.
+     * @param context The context to associate with this operation.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return the {@link SyncPoller} for polling of an Azure SQL managed instance.
+     */
+    @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
+    SyncPoller<PollResult<ManagedInstanceInner>, ManagedInstanceInner> beginStart(
+        String resourceGroupName, String managedInstanceName, Context context);
+
+    /**
+     * Starts the managed instance.
+     *
+     * @param resourceGroupName The name of the resource group that contains the resource. You can obtain this value
+     *     from the Azure Resource Manager API or the portal.
+     * @param managedInstanceName The name of the managed instance.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return an Azure SQL managed instance on successful completion of {@link Mono}.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    Mono<ManagedInstanceInner> startAsync(String resourceGroupName, String managedInstanceName);
+
+    /**
+     * Starts the managed instance.
+     *
+     * @param resourceGroupName The name of the resource group that contains the resource. You can obtain this value
+     *     from the Azure Resource Manager API or the portal.
+     * @param managedInstanceName The name of the managed instance.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return an Azure SQL managed instance.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    ManagedInstanceInner start(String resourceGroupName, String managedInstanceName);
+
+    /**
+     * Starts the managed instance.
+     *
+     * @param resourceGroupName The name of the resource group that contains the resource. You can obtain this value
+     *     from the Azure Resource Manager API or the portal.
+     * @param managedInstanceName The name of the managed instance.
+     * @param context The context to associate with this operation.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return an Azure SQL managed instance.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    ManagedInstanceInner start(String resourceGroupName, String managedInstanceName, Context context);
+
+    /**
+     * Stops the managed instance.
+     *
+     * @param resourceGroupName The name of the resource group that contains the resource. You can obtain this value
+     *     from the Azure Resource Manager API or the portal.
+     * @param managedInstanceName The name of the managed instance.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return an Azure SQL managed instance along with {@link Response} on successful completion of {@link Mono}.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    Mono<Response<Flux<ByteBuffer>>> stopWithResponseAsync(String resourceGroupName, String managedInstanceName);
+
+    /**
+     * Stops the managed instance.
+     *
+     * @param resourceGroupName The name of the resource group that contains the resource. You can obtain this value
+     *     from the Azure Resource Manager API or the portal.
+     * @param managedInstanceName The name of the managed instance.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return the {@link PollerFlux} for polling of an Azure SQL managed instance.
+     */
+    @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
+    PollerFlux<PollResult<ManagedInstanceInner>, ManagedInstanceInner> beginStopAsync(
+        String resourceGroupName, String managedInstanceName);
+
+    /**
+     * Stops the managed instance.
+     *
+     * @param resourceGroupName The name of the resource group that contains the resource. You can obtain this value
+     *     from the Azure Resource Manager API or the portal.
+     * @param managedInstanceName The name of the managed instance.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return the {@link SyncPoller} for polling of an Azure SQL managed instance.
+     */
+    @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
+    SyncPoller<PollResult<ManagedInstanceInner>, ManagedInstanceInner> beginStop(
+        String resourceGroupName, String managedInstanceName);
+
+    /**
+     * Stops the managed instance.
+     *
+     * @param resourceGroupName The name of the resource group that contains the resource. You can obtain this value
+     *     from the Azure Resource Manager API or the portal.
+     * @param managedInstanceName The name of the managed instance.
+     * @param context The context to associate with this operation.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return the {@link SyncPoller} for polling of an Azure SQL managed instance.
+     */
+    @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
+    SyncPoller<PollResult<ManagedInstanceInner>, ManagedInstanceInner> beginStop(
+        String resourceGroupName, String managedInstanceName, Context context);
+
+    /**
+     * Stops the managed instance.
+     *
+     * @param resourceGroupName The name of the resource group that contains the resource. You can obtain this value
+     *     from the Azure Resource Manager API or the portal.
+     * @param managedInstanceName The name of the managed instance.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return an Azure SQL managed instance on successful completion of {@link Mono}.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    Mono<ManagedInstanceInner> stopAsync(String resourceGroupName, String managedInstanceName);
+
+    /**
+     * Stops the managed instance.
+     *
+     * @param resourceGroupName The name of the resource group that contains the resource. You can obtain this value
+     *     from the Azure Resource Manager API or the portal.
+     * @param managedInstanceName The name of the managed instance.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return an Azure SQL managed instance.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    ManagedInstanceInner stop(String resourceGroupName, String managedInstanceName);
+
+    /**
+     * Stops the managed instance.
+     *
+     * @param resourceGroupName The name of the resource group that contains the resource. You can obtain this value
+     *     from the Azure Resource Manager API or the portal.
+     * @param managedInstanceName The name of the managed instance.
+     * @param context The context to associate with this operation.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return an Azure SQL managed instance.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    ManagedInstanceInner stop(String resourceGroupName, String managedInstanceName, Context context);
 
     /**
      * Get top resource consuming queries of a managed instance.

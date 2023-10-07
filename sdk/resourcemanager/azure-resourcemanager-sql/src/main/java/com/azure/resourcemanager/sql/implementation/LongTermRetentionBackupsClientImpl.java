@@ -86,8 +86,7 @@ public final class LongTermRetentionBackupsClientImpl implements LongTermRetenti
 
         @Headers({"Content-Type: application/json"})
         @Get(
-            "/subscriptions/{subscriptionId}/providers/Microsoft.Sql/locations/{locationName}/longTermRetentionServers"
-                + "/{longTermRetentionServerName}/longTermRetentionBackups")
+            "/subscriptions/{subscriptionId}/providers/Microsoft.Sql/locations/{locationName}/longTermRetentionServers/{longTermRetentionServerName}/longTermRetentionBackups")
         @ExpectedResponses({200})
         @UnexpectedResponseExceptionType(ManagementException.class)
         Mono<Response<LongTermRetentionBackupListResult>> listByServer(
@@ -103,9 +102,7 @@ public final class LongTermRetentionBackupsClientImpl implements LongTermRetenti
 
         @Headers({"Content-Type: application/json"})
         @Get(
-            "/subscriptions/{subscriptionId}/providers/Microsoft.Sql/locations/{locationName}/longTermRetentionServers"
-                + "/{longTermRetentionServerName}/longTermRetentionDatabases/{longTermRetentionDatabaseName}"
-                + "/longTermRetentionBackups")
+            "/subscriptions/{subscriptionId}/providers/Microsoft.Sql/locations/{locationName}/longTermRetentionServers/{longTermRetentionServerName}/longTermRetentionDatabases/{longTermRetentionDatabaseName}/longTermRetentionBackups")
         @ExpectedResponses({200})
         @UnexpectedResponseExceptionType(ManagementException.class)
         Mono<Response<LongTermRetentionBackupListResult>> listByDatabase(
@@ -122,9 +119,7 @@ public final class LongTermRetentionBackupsClientImpl implements LongTermRetenti
 
         @Headers({"Content-Type: application/json"})
         @Get(
-            "/subscriptions/{subscriptionId}/providers/Microsoft.Sql/locations/{locationName}/longTermRetentionServers"
-                + "/{longTermRetentionServerName}/longTermRetentionDatabases/{longTermRetentionDatabaseName}"
-                + "/longTermRetentionBackups/{backupName}")
+            "/subscriptions/{subscriptionId}/providers/Microsoft.Sql/locations/{locationName}/longTermRetentionServers/{longTermRetentionServerName}/longTermRetentionDatabases/{longTermRetentionDatabaseName}/longTermRetentionBackups/{backupName}")
         @ExpectedResponses({200})
         @UnexpectedResponseExceptionType(ManagementException.class)
         Mono<Response<LongTermRetentionBackupInner>> get(
@@ -140,9 +135,7 @@ public final class LongTermRetentionBackupsClientImpl implements LongTermRetenti
 
         @Headers({"Accept: application/json;q=0.9", "Content-Type: application/json"})
         @Delete(
-            "/subscriptions/{subscriptionId}/providers/Microsoft.Sql/locations/{locationName}/longTermRetentionServers"
-                + "/{longTermRetentionServerName}/longTermRetentionDatabases/{longTermRetentionDatabaseName}"
-                + "/longTermRetentionBackups/{backupName}")
+            "/subscriptions/{subscriptionId}/providers/Microsoft.Sql/locations/{locationName}/longTermRetentionServers/{longTermRetentionServerName}/longTermRetentionDatabases/{longTermRetentionDatabaseName}/longTermRetentionBackups/{backupName}")
         @ExpectedResponses({200, 202})
         @UnexpectedResponseExceptionType(ManagementException.class)
         Mono<Response<Flux<ByteBuffer>>> delete(
@@ -157,9 +150,7 @@ public final class LongTermRetentionBackupsClientImpl implements LongTermRetenti
 
         @Headers({"Content-Type: application/json"})
         @Post(
-            "/subscriptions/{subscriptionId}/providers/Microsoft.Sql/locations/{locationName}/longTermRetentionServers"
-                + "/{longTermRetentionServerName}/longTermRetentionDatabases/{longTermRetentionDatabaseName}"
-                + "/longTermRetentionBackups/{backupName}/copy")
+            "/subscriptions/{subscriptionId}/providers/Microsoft.Sql/locations/{locationName}/longTermRetentionServers/{longTermRetentionServerName}/longTermRetentionDatabases/{longTermRetentionDatabaseName}/longTermRetentionBackups/{backupName}/copy")
         @ExpectedResponses({200, 202})
         @UnexpectedResponseExceptionType(ManagementException.class)
         Mono<Response<Flux<ByteBuffer>>> copy(
@@ -176,9 +167,7 @@ public final class LongTermRetentionBackupsClientImpl implements LongTermRetenti
 
         @Headers({"Content-Type: application/json"})
         @Post(
-            "/subscriptions/{subscriptionId}/providers/Microsoft.Sql/locations/{locationName}/longTermRetentionServers"
-                + "/{longTermRetentionServerName}/longTermRetentionDatabases/{longTermRetentionDatabaseName}"
-                + "/longTermRetentionBackups/{backupName}/update")
+            "/subscriptions/{subscriptionId}/providers/Microsoft.Sql/locations/{locationName}/longTermRetentionServers/{longTermRetentionServerName}/longTermRetentionDatabases/{longTermRetentionDatabaseName}/longTermRetentionBackups/{backupName}/update")
         @ExpectedResponses({200, 202})
         @UnexpectedResponseExceptionType(ManagementException.class)
         Mono<Response<Flux<ByteBuffer>>> update(
@@ -195,8 +184,7 @@ public final class LongTermRetentionBackupsClientImpl implements LongTermRetenti
 
         @Headers({"Content-Type: application/json"})
         @Get(
-            "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Sql/locations"
-                + "/{locationName}/longTermRetentionBackups")
+            "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Sql/locations/{locationName}/longTermRetentionBackups")
         @ExpectedResponses({200})
         @UnexpectedResponseExceptionType(ManagementException.class)
         Mono<Response<LongTermRetentionBackupListResult>> listByResourceGroupLocation(
@@ -212,8 +200,7 @@ public final class LongTermRetentionBackupsClientImpl implements LongTermRetenti
 
         @Headers({"Content-Type: application/json"})
         @Get(
-            "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Sql/locations"
-                + "/{locationName}/longTermRetentionServers/{longTermRetentionServerName}/longTermRetentionBackups")
+            "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Sql/locations/{locationName}/longTermRetentionServers/{longTermRetentionServerName}/longTermRetentionBackups")
         @ExpectedResponses({200})
         @UnexpectedResponseExceptionType(ManagementException.class)
         Mono<Response<LongTermRetentionBackupListResult>> listByResourceGroupServer(
@@ -230,9 +217,7 @@ public final class LongTermRetentionBackupsClientImpl implements LongTermRetenti
 
         @Headers({"Content-Type: application/json"})
         @Get(
-            "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Sql/locations"
-                + "/{locationName}/longTermRetentionServers/{longTermRetentionServerName}/longTermRetentionDatabases"
-                + "/{longTermRetentionDatabaseName}/longTermRetentionBackups")
+            "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Sql/locations/{locationName}/longTermRetentionServers/{longTermRetentionServerName}/longTermRetentionDatabases/{longTermRetentionDatabaseName}/longTermRetentionBackups")
         @ExpectedResponses({200})
         @UnexpectedResponseExceptionType(ManagementException.class)
         Mono<Response<LongTermRetentionBackupListResult>> listByResourceGroupDatabase(
@@ -250,9 +235,7 @@ public final class LongTermRetentionBackupsClientImpl implements LongTermRetenti
 
         @Headers({"Content-Type: application/json"})
         @Get(
-            "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Sql/locations"
-                + "/{locationName}/longTermRetentionServers/{longTermRetentionServerName}/longTermRetentionDatabases"
-                + "/{longTermRetentionDatabaseName}/longTermRetentionBackups/{backupName}")
+            "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Sql/locations/{locationName}/longTermRetentionServers/{longTermRetentionServerName}/longTermRetentionDatabases/{longTermRetentionDatabaseName}/longTermRetentionBackups/{backupName}")
         @ExpectedResponses({200})
         @UnexpectedResponseExceptionType(ManagementException.class)
         Mono<Response<LongTermRetentionBackupInner>> getByResourceGroup(
@@ -269,9 +252,7 @@ public final class LongTermRetentionBackupsClientImpl implements LongTermRetenti
 
         @Headers({"Accept: application/json;q=0.9", "Content-Type: application/json"})
         @Delete(
-            "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Sql/locations"
-                + "/{locationName}/longTermRetentionServers/{longTermRetentionServerName}/longTermRetentionDatabases"
-                + "/{longTermRetentionDatabaseName}/longTermRetentionBackups/{backupName}")
+            "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Sql/locations/{locationName}/longTermRetentionServers/{longTermRetentionServerName}/longTermRetentionDatabases/{longTermRetentionDatabaseName}/longTermRetentionBackups/{backupName}")
         @ExpectedResponses({200, 202})
         @UnexpectedResponseExceptionType(ManagementException.class)
         Mono<Response<Flux<ByteBuffer>>> deleteByResourceGroup(
@@ -287,9 +268,7 @@ public final class LongTermRetentionBackupsClientImpl implements LongTermRetenti
 
         @Headers({"Content-Type: application/json"})
         @Post(
-            "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Sql/locations"
-                + "/{locationName}/longTermRetentionServers/{longTermRetentionServerName}/longTermRetentionDatabases"
-                + "/{longTermRetentionDatabaseName}/longTermRetentionBackups/{backupName}/copy")
+            "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Sql/locations/{locationName}/longTermRetentionServers/{longTermRetentionServerName}/longTermRetentionDatabases/{longTermRetentionDatabaseName}/longTermRetentionBackups/{backupName}/copy")
         @ExpectedResponses({200, 202})
         @UnexpectedResponseExceptionType(ManagementException.class)
         Mono<Response<Flux<ByteBuffer>>> copyByResourceGroup(
@@ -307,9 +286,7 @@ public final class LongTermRetentionBackupsClientImpl implements LongTermRetenti
 
         @Headers({"Content-Type: application/json"})
         @Post(
-            "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Sql/locations"
-                + "/{locationName}/longTermRetentionServers/{longTermRetentionServerName}/longTermRetentionDatabases"
-                + "/{longTermRetentionDatabaseName}/longTermRetentionBackups/{backupName}/update")
+            "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Sql/locations/{locationName}/longTermRetentionServers/{longTermRetentionServerName}/longTermRetentionDatabases/{longTermRetentionDatabaseName}/longTermRetentionBackups/{backupName}/update")
         @ExpectedResponses({200, 202})
         @UnexpectedResponseExceptionType(ManagementException.class)
         Mono<Response<Flux<ByteBuffer>>> updateByResourceGroup(
@@ -1541,7 +1518,8 @@ public final class LongTermRetentionBackupsClientImpl implements LongTermRetenti
         String longTermRetentionServerName,
         String longTermRetentionDatabaseName,
         String backupName) {
-        return beginDeleteAsync(locationName, longTermRetentionServerName, longTermRetentionDatabaseName, backupName)
+        return this
+            .beginDeleteAsync(locationName, longTermRetentionServerName, longTermRetentionDatabaseName, backupName)
             .getSyncPoller();
     }
 
@@ -1565,7 +1543,8 @@ public final class LongTermRetentionBackupsClientImpl implements LongTermRetenti
         String longTermRetentionDatabaseName,
         String backupName,
         Context context) {
-        return beginDeleteAsync(
+        return this
+            .beginDeleteAsync(
                 locationName, longTermRetentionServerName, longTermRetentionDatabaseName, backupName, context)
             .getSyncPoller();
     }
@@ -1911,7 +1890,8 @@ public final class LongTermRetentionBackupsClientImpl implements LongTermRetenti
             String longTermRetentionDatabaseName,
             String backupName,
             CopyLongTermRetentionBackupParameters parameters) {
-        return beginCopyAsync(
+        return this
+            .beginCopyAsync(
                 locationName, longTermRetentionServerName, longTermRetentionDatabaseName, backupName, parameters)
             .getSyncPoller();
     }
@@ -1940,7 +1920,8 @@ public final class LongTermRetentionBackupsClientImpl implements LongTermRetenti
             String backupName,
             CopyLongTermRetentionBackupParameters parameters,
             Context context) {
-        return beginCopyAsync(
+        return this
+            .beginCopyAsync(
                 locationName,
                 longTermRetentionServerName,
                 longTermRetentionDatabaseName,
@@ -2315,7 +2296,8 @@ public final class LongTermRetentionBackupsClientImpl implements LongTermRetenti
             String longTermRetentionDatabaseName,
             String backupName,
             UpdateLongTermRetentionBackupParameters parameters) {
-        return beginUpdateAsync(
+        return this
+            .beginUpdateAsync(
                 locationName, longTermRetentionServerName, longTermRetentionDatabaseName, backupName, parameters)
             .getSyncPoller();
     }
@@ -2344,7 +2326,8 @@ public final class LongTermRetentionBackupsClientImpl implements LongTermRetenti
             String backupName,
             UpdateLongTermRetentionBackupParameters parameters,
             Context context) {
-        return beginUpdateAsync(
+        return this
+            .beginUpdateAsync(
                 locationName,
                 longTermRetentionServerName,
                 longTermRetentionDatabaseName,
@@ -3821,7 +3804,8 @@ public final class LongTermRetentionBackupsClientImpl implements LongTermRetenti
         String longTermRetentionServerName,
         String longTermRetentionDatabaseName,
         String backupName) {
-        return beginDeleteByResourceGroupAsync(
+        return this
+            .beginDeleteByResourceGroupAsync(
                 resourceGroupName, locationName, longTermRetentionServerName, longTermRetentionDatabaseName, backupName)
             .getSyncPoller();
     }
@@ -3849,7 +3833,8 @@ public final class LongTermRetentionBackupsClientImpl implements LongTermRetenti
         String longTermRetentionDatabaseName,
         String backupName,
         Context context) {
-        return beginDeleteByResourceGroupAsync(
+        return this
+            .beginDeleteByResourceGroupAsync(
                 resourceGroupName,
                 locationName,
                 longTermRetentionServerName,
@@ -4257,7 +4242,8 @@ public final class LongTermRetentionBackupsClientImpl implements LongTermRetenti
             String longTermRetentionDatabaseName,
             String backupName,
             CopyLongTermRetentionBackupParameters parameters) {
-        return beginCopyByResourceGroupAsync(
+        return this
+            .beginCopyByResourceGroupAsync(
                 resourceGroupName,
                 locationName,
                 longTermRetentionServerName,
@@ -4294,7 +4280,8 @@ public final class LongTermRetentionBackupsClientImpl implements LongTermRetenti
             String backupName,
             CopyLongTermRetentionBackupParameters parameters,
             Context context) {
-        return beginCopyByResourceGroupAsync(
+        return this
+            .beginCopyByResourceGroupAsync(
                 resourceGroupName,
                 locationName,
                 longTermRetentionServerName,
@@ -4725,7 +4712,8 @@ public final class LongTermRetentionBackupsClientImpl implements LongTermRetenti
             String longTermRetentionDatabaseName,
             String backupName,
             UpdateLongTermRetentionBackupParameters parameters) {
-        return beginUpdateByResourceGroupAsync(
+        return this
+            .beginUpdateByResourceGroupAsync(
                 resourceGroupName,
                 locationName,
                 longTermRetentionServerName,
@@ -4762,7 +4750,8 @@ public final class LongTermRetentionBackupsClientImpl implements LongTermRetenti
             String backupName,
             UpdateLongTermRetentionBackupParameters parameters,
             Context context) {
-        return beginUpdateByResourceGroupAsync(
+        return this
+            .beginUpdateByResourceGroupAsync(
                 resourceGroupName,
                 locationName,
                 longTermRetentionServerName,

@@ -10,7 +10,7 @@ import java.util.UUID;
 
 /** Azure Active Directory identity configuration for a resource. */
 @Immutable
-public class DatabaseUserIdentity {
+public final class DatabaseUserIdentity {
     /*
      * The Azure Active Directory principal id.
      */

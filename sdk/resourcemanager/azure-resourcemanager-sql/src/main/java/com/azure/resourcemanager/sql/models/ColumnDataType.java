@@ -113,6 +113,15 @@ public final class ColumnDataType extends ExpandableStringEnum<ColumnDataType> {
     public static final ColumnDataType SYSNAME = fromString("sysname");
 
     /**
+     * Creates a new instance of ColumnDataType value.
+     *
+     * @deprecated Use the {@link #fromString(String)} factory method.
+     */
+    @Deprecated
+    public ColumnDataType() {
+    }
+
+    /**
      * Creates or finds a ColumnDataType from its string representation.
      *
      * @param name a name to look for.

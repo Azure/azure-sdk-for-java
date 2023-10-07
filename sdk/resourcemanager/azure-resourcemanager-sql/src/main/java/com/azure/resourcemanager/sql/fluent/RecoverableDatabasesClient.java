@@ -65,6 +65,8 @@ public interface RecoverableDatabasesClient {
      *     from the Azure Resource Manager API or the portal.
      * @param serverName The name of the server.
      * @param databaseName The name of the database.
+     * @param expand The child resources to include in the response.
+     * @param filter An OData filter expression that filters elements in the collection.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
@@ -72,7 +74,7 @@ public interface RecoverableDatabasesClient {
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     Mono<Response<RecoverableDatabaseInner>> getWithResponseAsync(
-        String resourceGroupName, String serverName, String databaseName);
+        String resourceGroupName, String serverName, String databaseName, String expand, String filter);
 
     /**
      * Gets a recoverable database.
@@ -96,6 +98,8 @@ public interface RecoverableDatabasesClient {
      *     from the Azure Resource Manager API or the portal.
      * @param serverName The name of the server.
      * @param databaseName The name of the database.
+     * @param expand The child resources to include in the response.
+     * @param filter An OData filter expression that filters elements in the collection.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
@@ -104,7 +108,12 @@ public interface RecoverableDatabasesClient {
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     Response<RecoverableDatabaseInner> getWithResponse(
-        String resourceGroupName, String serverName, String databaseName, Context context);
+        String resourceGroupName,
+        String serverName,
+        String databaseName,
+        String expand,
+        String filter,
+        Context context);
 
     /**
      * Gets a recoverable database.

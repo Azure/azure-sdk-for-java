@@ -4,12 +4,10 @@
 
 package com.azure.resourcemanager.sql.generated;
 
-import com.azure.core.util.Context;
-
 /** Samples for SensitivityLabels ListByDatabase. */
 public final class SensitivityLabelsListByDatabaseSamples {
     /*
-     * x-ms-original-file: specification/sql/resource-manager/Microsoft.Sql/stable/2021-11-01/examples/SensitivityLabelsListByDatabase.json
+     * x-ms-original-file: specification/sql/resource-manager/Microsoft.Sql/preview/2023-02-01-preview/examples/SensitivityLabelsListByDatabase.json
      */
     /**
      * Sample code: Gets the current and recommended sensitivity labels of a given database.
@@ -23,6 +21,6 @@ public final class SensitivityLabelsListByDatabaseSamples {
             .manager()
             .serviceClient()
             .getSensitivityLabels()
-            .listByDatabase("myRG", "myServer", "myDatabase", null, Context.NONE);
+            .listByDatabase("myRG", "myServer", "myDatabase", null, com.azure.core.util.Context.NONE);
     }
 }

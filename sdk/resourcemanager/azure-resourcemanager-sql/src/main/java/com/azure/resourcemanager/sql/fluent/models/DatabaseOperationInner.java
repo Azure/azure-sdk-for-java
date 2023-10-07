@@ -7,6 +7,7 @@ package com.azure.resourcemanager.sql.fluent.models;
 import com.azure.core.annotation.Immutable;
 import com.azure.core.management.ProxyResource;
 import com.azure.resourcemanager.sql.models.ManagementOperationState;
+import com.azure.resourcemanager.sql.models.PhaseDetails;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import java.time.OffsetDateTime;
 
@@ -156,6 +157,15 @@ public final class DatabaseOperationInner extends ProxyResource {
      */
     public Boolean isCancellable() {
         return this.innerProperties() == null ? null : this.innerProperties().isCancellable();
+    }
+
+    /**
+     * Get the operationPhaseDetails property: The operation phase details.
+     *
+     * @return the operationPhaseDetails value.
+     */
+    public PhaseDetails operationPhaseDetails() {
+        return this.innerProperties() == null ? null : this.innerProperties().operationPhaseDetails();
     }
 
     /**

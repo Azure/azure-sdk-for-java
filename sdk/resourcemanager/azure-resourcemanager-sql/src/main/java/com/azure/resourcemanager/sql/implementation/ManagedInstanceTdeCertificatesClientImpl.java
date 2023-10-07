@@ -62,8 +62,7 @@ public final class ManagedInstanceTdeCertificatesClientImpl implements ManagedIn
     public interface ManagedInstanceTdeCertificatesService {
         @Headers({"Accept: application/json;q=0.9", "Content-Type: application/json"})
         @Post(
-            "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Sql"
-                + "/managedInstances/{managedInstanceName}/tdeCertificates")
+            "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Sql/managedInstances/{managedInstanceName}/tdeCertificates")
         @ExpectedResponses({200, 202})
         @UnexpectedResponseExceptionType(ManagementException.class)
         Mono<Response<Flux<ByteBuffer>>> create(
@@ -246,7 +245,7 @@ public final class ManagedInstanceTdeCertificatesClientImpl implements ManagedIn
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     public SyncPoller<PollResult<Void>, Void> beginCreate(
         String resourceGroupName, String managedInstanceName, TdeCertificate parameters) {
-        return beginCreateAsync(resourceGroupName, managedInstanceName, parameters).getSyncPoller();
+        return this.beginCreateAsync(resourceGroupName, managedInstanceName, parameters).getSyncPoller();
     }
 
     /**
@@ -265,7 +264,7 @@ public final class ManagedInstanceTdeCertificatesClientImpl implements ManagedIn
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     public SyncPoller<PollResult<Void>, Void> beginCreate(
         String resourceGroupName, String managedInstanceName, TdeCertificate parameters, Context context) {
-        return beginCreateAsync(resourceGroupName, managedInstanceName, parameters, context).getSyncPoller();
+        return this.beginCreateAsync(resourceGroupName, managedInstanceName, parameters, context).getSyncPoller();
     }
 
     /**

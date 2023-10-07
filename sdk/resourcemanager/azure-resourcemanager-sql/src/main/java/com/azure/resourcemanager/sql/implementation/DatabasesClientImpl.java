@@ -74,8 +74,7 @@ public final class DatabasesClientImpl implements DatabasesClient {
     public interface DatabasesService {
         @Headers({"Content-Type: application/json"})
         @Get(
-            "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Sql/servers"
-                + "/{serverName}/databases")
+            "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Sql/servers/{serverName}/databases")
         @ExpectedResponses({200})
         @UnexpectedResponseExceptionType(ManagementException.class)
         Mono<Response<DatabaseListResult>> listByServer(
@@ -90,8 +89,7 @@ public final class DatabasesClientImpl implements DatabasesClient {
 
         @Headers({"Content-Type: application/json"})
         @Get(
-            "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Sql/servers"
-                + "/{serverName}/databases/{databaseName}")
+            "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Sql/servers/{serverName}/databases/{databaseName}")
         @ExpectedResponses({200})
         @UnexpectedResponseExceptionType(ManagementException.class)
         Mono<Response<DatabaseInner>> get(
@@ -99,6 +97,8 @@ public final class DatabasesClientImpl implements DatabasesClient {
             @PathParam("resourceGroupName") String resourceGroupName,
             @PathParam("serverName") String serverName,
             @PathParam("databaseName") String databaseName,
+            @QueryParam("$expand") String expand,
+            @QueryParam("$filter") String filter,
             @PathParam("subscriptionId") String subscriptionId,
             @QueryParam("api-version") String apiVersion,
             @HeaderParam("Accept") String accept,
@@ -106,8 +106,7 @@ public final class DatabasesClientImpl implements DatabasesClient {
 
         @Headers({"Content-Type: application/json"})
         @Put(
-            "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Sql/servers"
-                + "/{serverName}/databases/{databaseName}")
+            "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Sql/servers/{serverName}/databases/{databaseName}")
         @ExpectedResponses({200, 201, 202})
         @UnexpectedResponseExceptionType(ManagementException.class)
         Mono<Response<Flux<ByteBuffer>>> createOrUpdate(
@@ -123,8 +122,7 @@ public final class DatabasesClientImpl implements DatabasesClient {
 
         @Headers({"Accept: application/json;q=0.9", "Content-Type: application/json"})
         @Delete(
-            "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Sql/servers"
-                + "/{serverName}/databases/{databaseName}")
+            "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Sql/servers/{serverName}/databases/{databaseName}")
         @ExpectedResponses({200, 202, 204})
         @UnexpectedResponseExceptionType(ManagementException.class)
         Mono<Response<Flux<ByteBuffer>>> delete(
@@ -138,8 +136,7 @@ public final class DatabasesClientImpl implements DatabasesClient {
 
         @Headers({"Content-Type: application/json"})
         @Patch(
-            "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Sql/servers"
-                + "/{serverName}/databases/{databaseName}")
+            "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Sql/servers/{serverName}/databases/{databaseName}")
         @ExpectedResponses({200, 202})
         @UnexpectedResponseExceptionType(ManagementException.class)
         Mono<Response<Flux<ByteBuffer>>> update(
@@ -155,8 +152,7 @@ public final class DatabasesClientImpl implements DatabasesClient {
 
         @Headers({"Content-Type: application/json"})
         @Post(
-            "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Sql/servers"
-                + "/{serverName}/databases/{databaseName}/export")
+            "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Sql/servers/{serverName}/databases/{databaseName}/export")
         @ExpectedResponses({200, 202})
         @UnexpectedResponseExceptionType(ManagementException.class)
         Mono<Response<Flux<ByteBuffer>>> export(
@@ -172,8 +168,7 @@ public final class DatabasesClientImpl implements DatabasesClient {
 
         @Headers({"Accept: application/json;q=0.9", "Content-Type: application/json"})
         @Post(
-            "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Sql/servers"
-                + "/{serverName}/databases/{databaseName}/failover")
+            "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Sql/servers/{serverName}/databases/{databaseName}/failover")
         @ExpectedResponses({200, 202})
         @UnexpectedResponseExceptionType(ManagementException.class)
         Mono<Response<Flux<ByteBuffer>>> failover(
@@ -188,8 +183,7 @@ public final class DatabasesClientImpl implements DatabasesClient {
 
         @Headers({"Content-Type: application/json"})
         @Post(
-            "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Sql/servers"
-                + "/{serverName}/databases/{databaseName}/import")
+            "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Sql/servers/{serverName}/databases/{databaseName}/import")
         @ExpectedResponses({200, 202})
         @UnexpectedResponseExceptionType(ManagementException.class)
         Mono<Response<Flux<ByteBuffer>>> importMethod(
@@ -205,8 +199,7 @@ public final class DatabasesClientImpl implements DatabasesClient {
 
         @Headers({"Accept: application/json;q=0.9", "Content-Type: application/json"})
         @Post(
-            "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Sql/servers"
-                + "/{serverName}/databases/{databaseName}/move")
+            "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Sql/servers/{serverName}/databases/{databaseName}/move")
         @ExpectedResponses({200})
         @UnexpectedResponseExceptionType(ManagementException.class)
         Mono<Response<Void>> rename(
@@ -221,8 +214,7 @@ public final class DatabasesClientImpl implements DatabasesClient {
 
         @Headers({"Content-Type: application/json"})
         @Post(
-            "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Sql/servers"
-                + "/{serverName}/databases/{databaseName}/pause")
+            "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Sql/servers/{serverName}/databases/{databaseName}/pause")
         @ExpectedResponses({200, 202})
         @UnexpectedResponseExceptionType(ManagementException.class)
         Mono<Response<Flux<ByteBuffer>>> pause(
@@ -237,8 +229,7 @@ public final class DatabasesClientImpl implements DatabasesClient {
 
         @Headers({"Content-Type: application/json"})
         @Post(
-            "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Sql/servers"
-                + "/{serverName}/databases/{databaseName}/resume")
+            "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Sql/servers/{serverName}/databases/{databaseName}/resume")
         @ExpectedResponses({200, 202})
         @UnexpectedResponseExceptionType(ManagementException.class)
         Mono<Response<Flux<ByteBuffer>>> resume(
@@ -253,8 +244,7 @@ public final class DatabasesClientImpl implements DatabasesClient {
 
         @Headers({"Accept: application/json;q=0.9", "Content-Type: application/json"})
         @Post(
-            "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Sql/servers"
-                + "/{serverName}/databases/{databaseName}/upgradeDataWarehouse")
+            "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Sql/servers/{serverName}/databases/{databaseName}/upgradeDataWarehouse")
         @ExpectedResponses({200, 202})
         @UnexpectedResponseExceptionType(ManagementException.class)
         Mono<Response<Flux<ByteBuffer>>> upgradeDataWarehouse(
@@ -268,8 +258,7 @@ public final class DatabasesClientImpl implements DatabasesClient {
 
         @Headers({"Content-Type: application/json"})
         @Get(
-            "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Sql/servers"
-                + "/{serverName}/elasticPools/{elasticPoolName}/databases")
+            "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Sql/servers/{serverName}/elasticPools/{elasticPoolName}/databases")
         @ExpectedResponses({200})
         @UnexpectedResponseExceptionType(ManagementException.class)
         Mono<Response<DatabaseListResult>> listByElasticPool(
@@ -284,8 +273,7 @@ public final class DatabasesClientImpl implements DatabasesClient {
 
         @Headers({"Content-Type: application/json"})
         @Get(
-            "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Sql/servers"
-                + "/{serverName}/inaccessibleDatabases")
+            "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Sql/servers/{serverName}/inaccessibleDatabases")
         @ExpectedResponses({200})
         @UnexpectedResponseExceptionType(ManagementException.class)
         Mono<Response<DatabaseListResult>> listInaccessibleByServer(
@@ -548,6 +536,8 @@ public final class DatabasesClientImpl implements DatabasesClient {
      *     from the Azure Resource Manager API or the portal.
      * @param serverName The name of the server.
      * @param databaseName The name of the database.
+     * @param expand The child resources to include in the response.
+     * @param filter An OData filter expression that filters elements in the collection.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
@@ -555,7 +545,7 @@ public final class DatabasesClientImpl implements DatabasesClient {
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<Response<DatabaseInner>> getWithResponseAsync(
-        String resourceGroupName, String serverName, String databaseName) {
+        String resourceGroupName, String serverName, String databaseName, String expand, String filter) {
         if (this.client.getEndpoint() == null) {
             return Mono
                 .error(
@@ -588,6 +578,8 @@ public final class DatabasesClientImpl implements DatabasesClient {
                             resourceGroupName,
                             serverName,
                             databaseName,
+                            expand,
+                            filter,
                             this.client.getSubscriptionId(),
                             this.client.getApiVersion(),
                             accept,
@@ -602,6 +594,8 @@ public final class DatabasesClientImpl implements DatabasesClient {
      *     from the Azure Resource Manager API or the portal.
      * @param serverName The name of the server.
      * @param databaseName The name of the database.
+     * @param expand The child resources to include in the response.
+     * @param filter An OData filter expression that filters elements in the collection.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
@@ -610,7 +604,12 @@ public final class DatabasesClientImpl implements DatabasesClient {
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Mono<Response<DatabaseInner>> getWithResponseAsync(
-        String resourceGroupName, String serverName, String databaseName, Context context) {
+        String resourceGroupName,
+        String serverName,
+        String databaseName,
+        String expand,
+        String filter,
+        Context context) {
         if (this.client.getEndpoint() == null) {
             return Mono
                 .error(
@@ -641,6 +640,8 @@ public final class DatabasesClientImpl implements DatabasesClient {
                 resourceGroupName,
                 serverName,
                 databaseName,
+                expand,
+                filter,
                 this.client.getSubscriptionId(),
                 this.client.getApiVersion(),
                 accept,
@@ -661,7 +662,9 @@ public final class DatabasesClientImpl implements DatabasesClient {
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<DatabaseInner> getAsync(String resourceGroupName, String serverName, String databaseName) {
-        return getWithResponseAsync(resourceGroupName, serverName, databaseName)
+        final String expand = null;
+        final String filter = null;
+        return getWithResponseAsync(resourceGroupName, serverName, databaseName, expand, filter)
             .flatMap(res -> Mono.justOrEmpty(res.getValue()));
     }
 
@@ -672,6 +675,8 @@ public final class DatabasesClientImpl implements DatabasesClient {
      *     from the Azure Resource Manager API or the portal.
      * @param serverName The name of the server.
      * @param databaseName The name of the database.
+     * @param expand The child resources to include in the response.
+     * @param filter An OData filter expression that filters elements in the collection.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
@@ -680,8 +685,13 @@ public final class DatabasesClientImpl implements DatabasesClient {
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Response<DatabaseInner> getWithResponse(
-        String resourceGroupName, String serverName, String databaseName, Context context) {
-        return getWithResponseAsync(resourceGroupName, serverName, databaseName, context).block();
+        String resourceGroupName,
+        String serverName,
+        String databaseName,
+        String expand,
+        String filter,
+        Context context) {
+        return getWithResponseAsync(resourceGroupName, serverName, databaseName, expand, filter, context).block();
     }
 
     /**
@@ -698,7 +708,9 @@ public final class DatabasesClientImpl implements DatabasesClient {
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public DatabaseInner get(String resourceGroupName, String serverName, String databaseName) {
-        return getWithResponse(resourceGroupName, serverName, databaseName, Context.NONE).getValue();
+        final String expand = null;
+        final String filter = null;
+        return getWithResponse(resourceGroupName, serverName, databaseName, expand, filter, Context.NONE).getValue();
     }
 
     /**
@@ -891,7 +903,7 @@ public final class DatabasesClientImpl implements DatabasesClient {
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     public SyncPoller<PollResult<DatabaseInner>, DatabaseInner> beginCreateOrUpdate(
         String resourceGroupName, String serverName, String databaseName, DatabaseInner parameters) {
-        return beginCreateOrUpdateAsync(resourceGroupName, serverName, databaseName, parameters).getSyncPoller();
+        return this.beginCreateOrUpdateAsync(resourceGroupName, serverName, databaseName, parameters).getSyncPoller();
     }
 
     /**
@@ -911,7 +923,8 @@ public final class DatabasesClientImpl implements DatabasesClient {
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     public SyncPoller<PollResult<DatabaseInner>, DatabaseInner> beginCreateOrUpdate(
         String resourceGroupName, String serverName, String databaseName, DatabaseInner parameters, Context context) {
-        return beginCreateOrUpdateAsync(resourceGroupName, serverName, databaseName, parameters, context)
+        return this
+            .beginCreateOrUpdateAsync(resourceGroupName, serverName, databaseName, parameters, context)
             .getSyncPoller();
     }
 
@@ -1160,7 +1173,7 @@ public final class DatabasesClientImpl implements DatabasesClient {
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     public SyncPoller<PollResult<Void>, Void> beginDelete(
         String resourceGroupName, String serverName, String databaseName) {
-        return beginDeleteAsync(resourceGroupName, serverName, databaseName).getSyncPoller();
+        return this.beginDeleteAsync(resourceGroupName, serverName, databaseName).getSyncPoller();
     }
 
     /**
@@ -1179,7 +1192,7 @@ public final class DatabasesClientImpl implements DatabasesClient {
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     public SyncPoller<PollResult<Void>, Void> beginDelete(
         String resourceGroupName, String serverName, String databaseName, Context context) {
-        return beginDeleteAsync(resourceGroupName, serverName, databaseName, context).getSyncPoller();
+        return this.beginDeleteAsync(resourceGroupName, serverName, databaseName, context).getSyncPoller();
     }
 
     /**
@@ -1444,7 +1457,7 @@ public final class DatabasesClientImpl implements DatabasesClient {
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     public SyncPoller<PollResult<DatabaseInner>, DatabaseInner> beginUpdate(
         String resourceGroupName, String serverName, String databaseName, DatabaseUpdate parameters) {
-        return beginUpdateAsync(resourceGroupName, serverName, databaseName, parameters).getSyncPoller();
+        return this.beginUpdateAsync(resourceGroupName, serverName, databaseName, parameters).getSyncPoller();
     }
 
     /**
@@ -1464,7 +1477,7 @@ public final class DatabasesClientImpl implements DatabasesClient {
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     public SyncPoller<PollResult<DatabaseInner>, DatabaseInner> beginUpdate(
         String resourceGroupName, String serverName, String databaseName, DatabaseUpdate parameters, Context context) {
-        return beginUpdateAsync(resourceGroupName, serverName, databaseName, parameters, context).getSyncPoller();
+        return this.beginUpdateAsync(resourceGroupName, serverName, databaseName, parameters, context).getSyncPoller();
     }
 
     /**
@@ -1753,7 +1766,7 @@ public final class DatabasesClientImpl implements DatabasesClient {
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     public SyncPoller<PollResult<ImportExportOperationResultInner>, ImportExportOperationResultInner> beginExport(
         String resourceGroupName, String serverName, String databaseName, ExportDatabaseDefinition parameters) {
-        return beginExportAsync(resourceGroupName, serverName, databaseName, parameters).getSyncPoller();
+        return this.beginExportAsync(resourceGroupName, serverName, databaseName, parameters).getSyncPoller();
     }
 
     /**
@@ -1777,7 +1790,7 @@ public final class DatabasesClientImpl implements DatabasesClient {
         String databaseName,
         ExportDatabaseDefinition parameters,
         Context context) {
-        return beginExportAsync(resourceGroupName, serverName, databaseName, parameters, context).getSyncPoller();
+        return this.beginExportAsync(resourceGroupName, serverName, databaseName, parameters, context).getSyncPoller();
     }
 
     /**
@@ -2065,7 +2078,7 @@ public final class DatabasesClientImpl implements DatabasesClient {
     public SyncPoller<PollResult<Void>, Void> beginFailover(
         String resourceGroupName, String serverName, String databaseName) {
         final ReplicaType replicaType = null;
-        return beginFailoverAsync(resourceGroupName, serverName, databaseName, replicaType).getSyncPoller();
+        return this.beginFailoverAsync(resourceGroupName, serverName, databaseName, replicaType).getSyncPoller();
     }
 
     /**
@@ -2085,7 +2098,9 @@ public final class DatabasesClientImpl implements DatabasesClient {
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     public SyncPoller<PollResult<Void>, Void> beginFailover(
         String resourceGroupName, String serverName, String databaseName, ReplicaType replicaType, Context context) {
-        return beginFailoverAsync(resourceGroupName, serverName, databaseName, replicaType, context).getSyncPoller();
+        return this
+            .beginFailoverAsync(resourceGroupName, serverName, databaseName, replicaType, context)
+            .getSyncPoller();
     }
 
     /**
@@ -2396,7 +2411,7 @@ public final class DatabasesClientImpl implements DatabasesClient {
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     public SyncPoller<PollResult<ImportExportOperationResultInner>, ImportExportOperationResultInner> beginImportMethod(
         String resourceGroupName, String serverName, String databaseName, ImportExistingDatabaseDefinition parameters) {
-        return beginImportMethodAsync(resourceGroupName, serverName, databaseName, parameters).getSyncPoller();
+        return this.beginImportMethodAsync(resourceGroupName, serverName, databaseName, parameters).getSyncPoller();
     }
 
     /**
@@ -2420,7 +2435,9 @@ public final class DatabasesClientImpl implements DatabasesClient {
         String databaseName,
         ImportExistingDatabaseDefinition parameters,
         Context context) {
-        return beginImportMethodAsync(resourceGroupName, serverName, databaseName, parameters, context).getSyncPoller();
+        return this
+            .beginImportMethodAsync(resourceGroupName, serverName, databaseName, parameters, context)
+            .getSyncPoller();
     }
 
     /**
@@ -2867,7 +2884,7 @@ public final class DatabasesClientImpl implements DatabasesClient {
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     public SyncPoller<PollResult<DatabaseInner>, DatabaseInner> beginPause(
         String resourceGroupName, String serverName, String databaseName) {
-        return beginPauseAsync(resourceGroupName, serverName, databaseName).getSyncPoller();
+        return this.beginPauseAsync(resourceGroupName, serverName, databaseName).getSyncPoller();
     }
 
     /**
@@ -2886,7 +2903,7 @@ public final class DatabasesClientImpl implements DatabasesClient {
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     public SyncPoller<PollResult<DatabaseInner>, DatabaseInner> beginPause(
         String resourceGroupName, String serverName, String databaseName, Context context) {
-        return beginPauseAsync(resourceGroupName, serverName, databaseName, context).getSyncPoller();
+        return this.beginPauseAsync(resourceGroupName, serverName, databaseName, context).getSyncPoller();
     }
 
     /**
@@ -3136,7 +3153,7 @@ public final class DatabasesClientImpl implements DatabasesClient {
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     public SyncPoller<PollResult<DatabaseInner>, DatabaseInner> beginResume(
         String resourceGroupName, String serverName, String databaseName) {
-        return beginResumeAsync(resourceGroupName, serverName, databaseName).getSyncPoller();
+        return this.beginResumeAsync(resourceGroupName, serverName, databaseName).getSyncPoller();
     }
 
     /**
@@ -3155,7 +3172,7 @@ public final class DatabasesClientImpl implements DatabasesClient {
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     public SyncPoller<PollResult<DatabaseInner>, DatabaseInner> beginResume(
         String resourceGroupName, String serverName, String databaseName, Context context) {
-        return beginResumeAsync(resourceGroupName, serverName, databaseName, context).getSyncPoller();
+        return this.beginResumeAsync(resourceGroupName, serverName, databaseName, context).getSyncPoller();
     }
 
     /**
@@ -3397,7 +3414,7 @@ public final class DatabasesClientImpl implements DatabasesClient {
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     public SyncPoller<PollResult<Void>, Void> beginUpgradeDataWarehouse(
         String resourceGroupName, String serverName, String databaseName) {
-        return beginUpgradeDataWarehouseAsync(resourceGroupName, serverName, databaseName).getSyncPoller();
+        return this.beginUpgradeDataWarehouseAsync(resourceGroupName, serverName, databaseName).getSyncPoller();
     }
 
     /**
@@ -3416,7 +3433,9 @@ public final class DatabasesClientImpl implements DatabasesClient {
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     public SyncPoller<PollResult<Void>, Void> beginUpgradeDataWarehouse(
         String resourceGroupName, String serverName, String databaseName, Context context) {
-        return beginUpgradeDataWarehouseAsync(resourceGroupName, serverName, databaseName, context).getSyncPoller();
+        return this
+            .beginUpgradeDataWarehouseAsync(resourceGroupName, serverName, databaseName, context)
+            .getSyncPoller();
     }
 
     /**

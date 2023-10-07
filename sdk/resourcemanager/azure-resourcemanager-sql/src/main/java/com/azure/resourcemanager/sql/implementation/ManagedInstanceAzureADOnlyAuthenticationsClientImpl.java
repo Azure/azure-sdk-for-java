@@ -75,8 +75,7 @@ public final class ManagedInstanceAzureADOnlyAuthenticationsClientImpl
     public interface ManagedInstanceAzureADOnlyAuthenticationsService {
         @Headers({"Content-Type: application/json"})
         @Get(
-            "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Sql"
-                + "/managedInstances/{managedInstanceName}/azureADOnlyAuthentications")
+            "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Sql/managedInstances/{managedInstanceName}/azureADOnlyAuthentications")
         @ExpectedResponses({200})
         @UnexpectedResponseExceptionType(ManagementException.class)
         Mono<Response<ManagedInstanceAzureADOnlyAuthListResult>> listByInstance(
@@ -90,8 +89,7 @@ public final class ManagedInstanceAzureADOnlyAuthenticationsClientImpl
 
         @Headers({"Content-Type: application/json"})
         @Get(
-            "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Sql"
-                + "/managedInstances/{managedInstanceName}/azureADOnlyAuthentications/{authenticationName}")
+            "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Sql/managedInstances/{managedInstanceName}/azureADOnlyAuthentications/{authenticationName}")
         @ExpectedResponses({200})
         @UnexpectedResponseExceptionType(ManagementException.class)
         Mono<Response<ManagedInstanceAzureADOnlyAuthenticationInner>> get(
@@ -106,8 +104,7 @@ public final class ManagedInstanceAzureADOnlyAuthenticationsClientImpl
 
         @Headers({"Content-Type: application/json"})
         @Put(
-            "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Sql"
-                + "/managedInstances/{managedInstanceName}/azureADOnlyAuthentications/{authenticationName}")
+            "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Sql/managedInstances/{managedInstanceName}/azureADOnlyAuthentications/{authenticationName}")
         @ExpectedResponses({200, 201, 202})
         @UnexpectedResponseExceptionType(ManagementException.class)
         Mono<Response<Flux<ByteBuffer>>> createOrUpdate(
@@ -123,8 +120,7 @@ public final class ManagedInstanceAzureADOnlyAuthenticationsClientImpl
 
         @Headers({"Accept: application/json;q=0.9", "Content-Type: application/json"})
         @Delete(
-            "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Sql"
-                + "/managedInstances/{managedInstanceName}/azureADOnlyAuthentications/{authenticationName}")
+            "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Sql/managedInstances/{managedInstanceName}/azureADOnlyAuthentications/{authenticationName}")
         @ExpectedResponses({200, 202, 204})
         @UnexpectedResponseExceptionType(ManagementException.class)
         Mono<Response<Flux<ByteBuffer>>> delete(
@@ -745,7 +741,8 @@ public final class ManagedInstanceAzureADOnlyAuthenticationsClientImpl
             String managedInstanceName,
             AuthenticationName authenticationName,
             ManagedInstanceAzureADOnlyAuthenticationInner parameters) {
-        return beginCreateOrUpdateAsync(resourceGroupName, managedInstanceName, authenticationName, parameters)
+        return this
+            .beginCreateOrUpdateAsync(resourceGroupName, managedInstanceName, authenticationName, parameters)
             .getSyncPoller();
     }
 
@@ -774,7 +771,8 @@ public final class ManagedInstanceAzureADOnlyAuthenticationsClientImpl
             AuthenticationName authenticationName,
             ManagedInstanceAzureADOnlyAuthenticationInner parameters,
             Context context) {
-        return beginCreateOrUpdateAsync(resourceGroupName, managedInstanceName, authenticationName, parameters, context)
+        return this
+            .beginCreateOrUpdateAsync(resourceGroupName, managedInstanceName, authenticationName, parameters, context)
             .getSyncPoller();
     }
 
@@ -1051,7 +1049,7 @@ public final class ManagedInstanceAzureADOnlyAuthenticationsClientImpl
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     public SyncPoller<PollResult<Void>, Void> beginDelete(
         String resourceGroupName, String managedInstanceName, AuthenticationName authenticationName) {
-        return beginDeleteAsync(resourceGroupName, managedInstanceName, authenticationName).getSyncPoller();
+        return this.beginDeleteAsync(resourceGroupName, managedInstanceName, authenticationName).getSyncPoller();
     }
 
     /**
@@ -1070,7 +1068,9 @@ public final class ManagedInstanceAzureADOnlyAuthenticationsClientImpl
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     public SyncPoller<PollResult<Void>, Void> beginDelete(
         String resourceGroupName, String managedInstanceName, AuthenticationName authenticationName, Context context) {
-        return beginDeleteAsync(resourceGroupName, managedInstanceName, authenticationName, context).getSyncPoller();
+        return this
+            .beginDeleteAsync(resourceGroupName, managedInstanceName, authenticationName, context)
+            .getSyncPoller();
     }
 
     /**

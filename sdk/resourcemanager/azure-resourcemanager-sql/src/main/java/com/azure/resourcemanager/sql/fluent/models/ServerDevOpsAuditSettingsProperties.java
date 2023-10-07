@@ -33,6 +33,12 @@ public final class ServerDevOpsAuditSettingsProperties {
     private Boolean isAzureMonitorTargetEnabled;
 
     /*
+     * Specifies whether Managed Identity is used to access blob storage
+     */
+    @JsonProperty(value = "isManagedIdentityInUse")
+    private Boolean isManagedIdentityInUse;
+
+    /*
      * Specifies the state of the audit. If state is Enabled, storageEndpoint or isAzureMonitorTargetEnabled are
      * required.
      */
@@ -109,6 +115,26 @@ public final class ServerDevOpsAuditSettingsProperties {
      */
     public ServerDevOpsAuditSettingsProperties withIsAzureMonitorTargetEnabled(Boolean isAzureMonitorTargetEnabled) {
         this.isAzureMonitorTargetEnabled = isAzureMonitorTargetEnabled;
+        return this;
+    }
+
+    /**
+     * Get the isManagedIdentityInUse property: Specifies whether Managed Identity is used to access blob storage.
+     *
+     * @return the isManagedIdentityInUse value.
+     */
+    public Boolean isManagedIdentityInUse() {
+        return this.isManagedIdentityInUse;
+    }
+
+    /**
+     * Set the isManagedIdentityInUse property: Specifies whether Managed Identity is used to access blob storage.
+     *
+     * @param isManagedIdentityInUse the isManagedIdentityInUse value to set.
+     * @return the ServerDevOpsAuditSettingsProperties object itself.
+     */
+    public ServerDevOpsAuditSettingsProperties withIsManagedIdentityInUse(Boolean isManagedIdentityInUse) {
+        this.isManagedIdentityInUse = isManagedIdentityInUse;
         return this;
     }
 

@@ -12,7 +12,7 @@ import java.util.UUID;
 
 /** Azure Active Directory identity configuration for a resource. */
 @Fluent
-public class ResourceIdentity {
+public final class ResourceIdentity {
     /*
      * The resource ids of the user assigned identities to use
      */

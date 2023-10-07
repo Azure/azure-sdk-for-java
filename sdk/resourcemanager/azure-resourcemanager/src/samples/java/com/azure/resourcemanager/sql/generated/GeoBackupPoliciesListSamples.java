@@ -4,12 +4,10 @@
 
 package com.azure.resourcemanager.sql.generated;
 
-import com.azure.core.util.Context;
-
 /** Samples for GeoBackupPolicies List. */
 public final class GeoBackupPoliciesListSamples {
     /*
-     * x-ms-original-file: specification/sql/resource-manager/Microsoft.Sql/stable/2021-11-01/examples/GeoBackupPoliciesList.json
+     * x-ms-original-file: specification/sql/resource-manager/Microsoft.Sql/preview/2023-02-01-preview/examples/GeoBackupPoliciesList.json
      */
     /**
      * Sample code: List Geo backup policies for the given database resource.
@@ -23,6 +21,6 @@ public final class GeoBackupPoliciesListSamples {
             .manager()
             .serviceClient()
             .getGeoBackupPolicies()
-            .list("sqlcrudtest-4799", "sqlcrudtest-5961", "testdw", Context.NONE);
+            .list("sqlcrudtest-4799", "sqlcrudtest-5961", "testdw", com.azure.core.util.Context.NONE);
     }
 }

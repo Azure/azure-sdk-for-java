@@ -69,8 +69,7 @@ public final class ServerAzureADAdministratorsClientImpl implements ServerAzureA
     public interface ServerAzureADAdministratorsService {
         @Headers({"Content-Type: application/json"})
         @Get(
-            "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Sql/servers"
-                + "/{serverName}/administrators")
+            "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Sql/servers/{serverName}/administrators")
         @ExpectedResponses({200})
         @UnexpectedResponseExceptionType(ManagementException.class)
         Mono<Response<AdministratorListResult>> listByServer(
@@ -84,8 +83,7 @@ public final class ServerAzureADAdministratorsClientImpl implements ServerAzureA
 
         @Headers({"Content-Type: application/json"})
         @Get(
-            "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Sql/servers"
-                + "/{serverName}/administrators/{administratorName}")
+            "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Sql/servers/{serverName}/administrators/{administratorName}")
         @ExpectedResponses({200})
         @UnexpectedResponseExceptionType(ManagementException.class)
         Mono<Response<ServerAzureADAdministratorInner>> get(
@@ -100,8 +98,7 @@ public final class ServerAzureADAdministratorsClientImpl implements ServerAzureA
 
         @Headers({"Content-Type: application/json"})
         @Put(
-            "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Sql/servers"
-                + "/{serverName}/administrators/{administratorName}")
+            "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Sql/servers/{serverName}/administrators/{administratorName}")
         @ExpectedResponses({200, 201, 202})
         @UnexpectedResponseExceptionType(ManagementException.class)
         Mono<Response<Flux<ByteBuffer>>> createOrUpdate(
@@ -117,8 +114,7 @@ public final class ServerAzureADAdministratorsClientImpl implements ServerAzureA
 
         @Headers({"Accept: application/json;q=0.9", "Content-Type: application/json"})
         @Delete(
-            "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Sql/servers"
-                + "/{serverName}/administrators/{administratorName}")
+            "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Sql/servers/{serverName}/administrators/{administratorName}")
         @ExpectedResponses({200, 202, 204})
         @UnexpectedResponseExceptionType(ManagementException.class)
         Mono<Response<Flux<ByteBuffer>>> delete(
@@ -714,7 +710,9 @@ public final class ServerAzureADAdministratorsClientImpl implements ServerAzureA
         String serverName,
         AdministratorName administratorName,
         ServerAzureADAdministratorInner parameters) {
-        return beginCreateOrUpdateAsync(resourceGroupName, serverName, administratorName, parameters).getSyncPoller();
+        return this
+            .beginCreateOrUpdateAsync(resourceGroupName, serverName, administratorName, parameters)
+            .getSyncPoller();
     }
 
     /**
@@ -738,7 +736,8 @@ public final class ServerAzureADAdministratorsClientImpl implements ServerAzureA
         AdministratorName administratorName,
         ServerAzureADAdministratorInner parameters,
         Context context) {
-        return beginCreateOrUpdateAsync(resourceGroupName, serverName, administratorName, parameters, context)
+        return this
+            .beginCreateOrUpdateAsync(resourceGroupName, serverName, administratorName, parameters, context)
             .getSyncPoller();
     }
 
@@ -1004,7 +1003,7 @@ public final class ServerAzureADAdministratorsClientImpl implements ServerAzureA
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     public SyncPoller<PollResult<Void>, Void> beginDelete(
         String resourceGroupName, String serverName, AdministratorName administratorName) {
-        return beginDeleteAsync(resourceGroupName, serverName, administratorName).getSyncPoller();
+        return this.beginDeleteAsync(resourceGroupName, serverName, administratorName).getSyncPoller();
     }
 
     /**
@@ -1023,7 +1022,7 @@ public final class ServerAzureADAdministratorsClientImpl implements ServerAzureA
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     public SyncPoller<PollResult<Void>, Void> beginDelete(
         String resourceGroupName, String serverName, AdministratorName administratorName, Context context) {
-        return beginDeleteAsync(resourceGroupName, serverName, administratorName, context).getSyncPoller();
+        return this.beginDeleteAsync(resourceGroupName, serverName, administratorName, context).getSyncPoller();
     }
 
     /**

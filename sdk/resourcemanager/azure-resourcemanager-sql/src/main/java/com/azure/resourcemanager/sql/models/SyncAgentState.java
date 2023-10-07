@@ -20,6 +20,15 @@ public final class SyncAgentState extends ExpandableStringEnum<SyncAgentState> {
     public static final SyncAgentState NEVER_CONNECTED = fromString("NeverConnected");
 
     /**
+     * Creates a new instance of SyncAgentState value.
+     *
+     * @deprecated Use the {@link #fromString(String)} factory method.
+     */
+    @Deprecated
+    public SyncAgentState() {
+    }
+
+    /**
      * Creates or finds a SyncAgentState from its string representation.
      *
      * @param name a name to look for.

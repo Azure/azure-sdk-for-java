@@ -145,7 +145,7 @@ public interface LongTermRetentionPoliciesClient {
         String resourceGroupName, String serverName, String databaseName, LongTermRetentionPolicyName policyName);
 
     /**
-     * Sets a database's long term retention policy.
+     * Set or update a database's long term retention policy.
      *
      * @param resourceGroupName The name of the resource group that contains the resource. You can obtain this value
      *     from the Azure Resource Manager API or the portal.
@@ -167,7 +167,7 @@ public interface LongTermRetentionPoliciesClient {
         LongTermRetentionPolicyInner parameters);
 
     /**
-     * Sets a database's long term retention policy.
+     * Set or update a database's long term retention policy.
      *
      * @param resourceGroupName The name of the resource group that contains the resource. You can obtain this value
      *     from the Azure Resource Manager API or the portal.
@@ -189,7 +189,7 @@ public interface LongTermRetentionPoliciesClient {
         LongTermRetentionPolicyInner parameters);
 
     /**
-     * Sets a database's long term retention policy.
+     * Set or update a database's long term retention policy.
      *
      * @param resourceGroupName The name of the resource group that contains the resource. You can obtain this value
      *     from the Azure Resource Manager API or the portal.
@@ -211,7 +211,7 @@ public interface LongTermRetentionPoliciesClient {
         LongTermRetentionPolicyInner parameters);
 
     /**
-     * Sets a database's long term retention policy.
+     * Set or update a database's long term retention policy.
      *
      * @param resourceGroupName The name of the resource group that contains the resource. You can obtain this value
      *     from the Azure Resource Manager API or the portal.
@@ -235,7 +235,7 @@ public interface LongTermRetentionPoliciesClient {
         Context context);
 
     /**
-     * Sets a database's long term retention policy.
+     * Set or update a database's long term retention policy.
      *
      * @param resourceGroupName The name of the resource group that contains the resource. You can obtain this value
      *     from the Azure Resource Manager API or the portal.
@@ -257,7 +257,7 @@ public interface LongTermRetentionPoliciesClient {
         LongTermRetentionPolicyInner parameters);
 
     /**
-     * Sets a database's long term retention policy.
+     * Set or update a database's long term retention policy.
      *
      * @param resourceGroupName The name of the resource group that contains the resource. You can obtain this value
      *     from the Azure Resource Manager API or the portal.
@@ -279,7 +279,7 @@ public interface LongTermRetentionPoliciesClient {
         LongTermRetentionPolicyInner parameters);
 
     /**
-     * Sets a database's long term retention policy.
+     * Set or update a database's long term retention policy.
      *
      * @param resourceGroupName The name of the resource group that contains the resource. You can obtain this value
      *     from the Azure Resource Manager API or the portal.

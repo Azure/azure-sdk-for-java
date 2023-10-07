@@ -26,6 +26,15 @@ public final class SyncGroupState extends ExpandableStringEnum<SyncGroupState> {
     public static final SyncGroupState GOOD = fromString("Good");
 
     /**
+     * Creates a new instance of SyncGroupState value.
+     *
+     * @deprecated Use the {@link #fromString(String)} factory method.
+     */
+    @Deprecated
+    public SyncGroupState() {
+    }
+
+    /**
      * Creates or finds a SyncGroupState from its string representation.
      *
      * @param name a name to look for.
