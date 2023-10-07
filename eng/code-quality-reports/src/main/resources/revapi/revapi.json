@@ -164,25 +164,21 @@
           "justification": "New method added to support more properties."
         },
         {
-          "ignore": true,
           "code": "java.class.externalClassExposedInAPI",
           "new": "class com.azure.spring.cloud.resourcemanager.provisioning.properties.ServiceBusTopicProperties",
           "justification": "Provides new topic level properties."
         },
         {
-          "ignore": true,
           "code": "java.class.externalClassExposedInAPI",
           "new": "class com.azure.spring.cloud.resourcemanager.provisioning.properties.ServiceBusQueueProperties",
           "justification": "Provides new queue level properties."
         },
 		{
-          "ignore": true,
           "code": "java.class.externalClassExposedInAPI",
           "new": "class com.azure.spring.cloud.stream.binder.servicebus.core.properties.ServiceBusProducerProperties",
           "justification": "Support new properties."
         },
         {
-          "ignore": true,
           "code": "java.class.externalClassExposedInAPI",
           "new": "class com.azure.spring.cloud.stream.binder.servicebus.core.properties.ServiceBusConsumerProperties",
           "justification": "Support new properties."
