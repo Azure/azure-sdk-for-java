@@ -1,5 +1,6 @@
 package com.azure.core.http.httpurlconnection;
 
+import com.azure.core.http.httpurlconnection.implementation.HttpUrlConnectionTimeouts;
 import com.azure.core.http.HttpClient;
 import com.azure.core.http.ProxyOptions;
 import com.azure.core.util.Configuration;
@@ -8,17 +9,15 @@ import com.azure.core.util.logging.ClientLogger;
 import java.net.Authenticator;
 import java.net.PasswordAuthentication;
 import java.time.Duration;
-import java.util.Collections;
-import java.util.HashSet;
-import java.util.Objects;
-import java.util.Properties;
-import java.util.Set;
-import java.util.TreeSet;
-import java.util.concurrent.Executor;
+import java.util.*;
 
 public class HttpUrlConnectionAsyncClientBuilder {
 
-    private static final Duration DEFAULT_CONNECT_TIMEOUT = Duration.ofSeconds(60);
+    private static final Duration DEFAULT_CONNECT_TIMEOUT = Duration.ofSeconds(10);
+    private static final Duration DEFAULT_READ_TIMEOUT = Duration.ofSeconds(60);
+    private static final Duration DEFAULT_WRITE_TIMEOUT = Duration.ofSeconds(60);
+    private static final Duration DEFAULT_RESPONSE_TIMEOUT = Duration.ofSeconds(60);
+    private static final Duration MINIMUM_TIMEOUT = Duration.ofMillis(1);
     private static final String JAVA_HOME = System.getProperty("java.home");
     private static final String HTTPURLCONNECTIONCLIENT_ALLOW_RESTRICTED_HEADERS = "httpurlconnectionclient.allowRestrictedHeaders";
 
@@ -33,6 +32,9 @@ public class HttpUrlConnectionAsyncClientBuilder {
     private static final ClientLogger LOGGER = new ClientLogger(HttpUrlConnectionAsyncClientBuilder.class);
 
     private Duration connectionTimeout;
+    private Duration readTimeout;
+    private Duration writeTimeout;
+    private Duration responseTimeout;
     private ProxyOptions proxyOptions;
     private Configuration configuration;
 
@@ -41,6 +43,40 @@ public class HttpUrlConnectionAsyncClientBuilder {
     public HttpUrlConnectionAsyncClientBuilder connectionTimeout(Duration connectionTimeout) {
         this.connectionTimeout = connectionTimeout;
         return this;
+    }
+
+    public HttpUrlConnectionAsyncClientBuilder readTimeout(Duration readTimeout) {
+        this.readTimeout = readTimeout;
+        return this;
+    }
+
+    public HttpUrlConnectionAsyncClientBuilder writeTimeout(Duration writeTimeout) {
+        this.writeTimeout = writeTimeout;
+        return this;
+    }
+
+    public HttpUrlConnectionAsyncClientBuilder responseTimeout(Duration responseTimeout) {
+        this.responseTimeout = responseTimeout;
+        return this;
+    }
+
+    static Duration getTimeout(Duration configuredTimeout, Duration defaultTimeout) {
+        // Timeout is null, use the default timeout.
+        if (configuredTimeout == null) {
+            return defaultTimeout;
+        }
+
+        // Timeout is less than or equal to zero, return no timeout.
+        if (configuredTimeout.isZero() || configuredTimeout.isNegative()) {
+            return Duration.ZERO;
+        }
+
+        // Return the maximum of the timeout period and the minimum allowed timeout period.
+        if (configuredTimeout.compareTo(MINIMUM_TIMEOUT) < 0) {
+            return MINIMUM_TIMEOUT;
+        } else  {
+            return configuredTimeout;
+        }
     }
 
     public HttpUrlConnectionAsyncClientBuilder proxy(ProxyOptions proxyOptions) {
@@ -73,7 +109,13 @@ public class HttpUrlConnectionAsyncClientBuilder {
             throw new IllegalArgumentException("Invalid proxy");
         }
 
-        return new HttpUrlConnectionAsyncClient(connectionTimeout, buildProxyOptions, buildConfiguration);
+        HttpUrlConnectionTimeouts timeouts = new HttpUrlConnectionTimeouts(
+            getTimeout(connectionTimeout, DEFAULT_CONNECT_TIMEOUT),
+            getTimeout(readTimeout, DEFAULT_READ_TIMEOUT),
+            getTimeout(writeTimeout, DEFAULT_WRITE_TIMEOUT),
+            getTimeout(responseTimeout, DEFAULT_RESPONSE_TIMEOUT)
+        );
+        return new HttpUrlConnectionAsyncClient(timeouts, buildProxyOptions, buildConfiguration);
     }
 
     Set<String> getRestrictedHeaders() {
