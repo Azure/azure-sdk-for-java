@@ -60,7 +60,7 @@ public class HttpUrlConnectionAsyncClient implements HttpClient {
         }
 
         HttpURLConnection connection = connect(httpRequest);
-        sendRequest(httpRequest, progressReporter, connection);
+        sendSyncRequest(httpRequest, progressReporter, connection);
         return receiveResponse(httpRequest, connection);
     }
 
@@ -79,7 +79,7 @@ public class HttpUrlConnectionAsyncClient implements HttpClient {
 
         return Mono.defer(() -> {
             HttpURLConnection connection = connect(httpRequest);
-            return sendRequest(httpRequest, progressReporter, connection)
+            return sendAsyncRequest(httpRequest, progressReporter, connection)
                 .then(Mono.defer(() -> Mono.fromCallable(() -> receiveResponse(httpRequest, connection))))
                 .publishOn(Schedulers.boundedElastic());
         });
@@ -173,14 +173,14 @@ public class HttpUrlConnectionAsyncClient implements HttpClient {
     }
 
     /**
-     * Sends the content of an HttpRequest via an HttpUrlConnection instance
+     * Asynchronously sends the content of an HttpRequest via an HttpUrlConnection instance.
      *
-     * @param httpRequest The HTTP Request being sent
-     * @param progressReporter A reporter for the progress of the request
-     * @param connection The HttpURLConnection that is being sent to
-     * @return A Mono<Void> to chain off for receiving the response
+     * @param httpRequest The HTTP Request being sent.
+     * @param progressReporter A reporter for the progress of the request.
+     * @param connection The HttpURLConnection that is being sent to.
+     * @return A Mono that represents the completion of the request sending process.
      */
-    private Mono<Void> sendRequest(HttpRequest httpRequest, ProgressReporter progressReporter, HttpURLConnection connection) {
+    private Mono<Void> sendAsyncRequest(HttpRequest httpRequest, ProgressReporter progressReporter, HttpURLConnection connection) {
         Mono<Void> requestSendMono = Mono.empty();
 
         switch (httpRequest.getHttpMethod()) {
@@ -199,20 +199,24 @@ public class HttpUrlConnectionAsyncClient implements HttpClient {
                     requestBody = Flux.just(body_data);
                 }
 
-                requestBody
+                return requestBody
                     .flatMap(body -> {
                         if (progressReporter != null) {
                             progressReporter.reportProgress(body.toBytes().length);
                         }
 
-                        try (DataOutputStream os = new DataOutputStream(new BufferedOutputStream(connection.getOutputStream()))) {
-                            writeBody(body, os);
-                            return Mono.just(body); // Emit the buffer for downstream processing if needed
-                        } catch (IOException e) {
-                            return FluxUtil.monoError(LOGGER, new RuntimeException(e));
-                        }
-
-                    }).then().block();
+                        return Mono.fromCallable(() -> {
+                            try (DataOutputStream os = new DataOutputStream(new BufferedOutputStream(connection.getOutputStream()))) {
+                                byte[] bytes = body.toBytes();
+                                os.write(bytes);
+                                os.flush();
+                                return Mono.just(body);
+                            } catch (IOException e) {
+                                return FluxUtil.monoError(LOGGER, new RuntimeException(e));
+                            }
+                        });
+                    })
+                    .then();
             case GET:
             case HEAD:
             case OPTIONS:
@@ -221,6 +225,51 @@ public class HttpUrlConnectionAsyncClient implements HttpClient {
                 break ;
             default:
                 requestSendMono = FluxUtil.monoError(LOGGER, new IllegalStateException("Unknown HTTP Method:"
+                    + httpRequest.getHttpMethod()));
+        }
+        return requestSendMono;
+    }
+
+    /**
+     * Synchronously sends the content of an HttpRequest via an HttpUrlConnection instance.
+     *
+     * @param httpRequest The HTTP Request being sent.
+     * @param progressReporter A reporter for the progress of the request.
+     * @param connection The HttpURLConnection that is being sent to.
+     * @return This method does not return any value.
+     */
+    private Void sendSyncRequest(HttpRequest httpRequest, ProgressReporter progressReporter, HttpURLConnection connection) {
+        Void requestSendMono = null;
+
+        switch (httpRequest.getHttpMethod()) {
+            case POST:
+            case PUT:
+            case DELETE:
+                connection.setDoOutput(true);
+
+                BinaryData bodyData = httpRequest.getBodyAsBinaryData();
+
+                if (bodyData != null) {
+                    if (progressReporter != null) {
+                        progressReporter.reportProgress(bodyData.toBytes().length);
+                    }
+
+                    try (DataOutputStream os = new DataOutputStream(new BufferedOutputStream(connection.getOutputStream()))) {
+                        byte[] bytes = bodyData.toBytes();
+                        os.write(bytes);
+                        os.flush();
+                    } catch (IOException e) {
+                        throw LOGGER.logExceptionAsError(new RuntimeException(e));
+                    }
+                }
+            case GET:
+            case HEAD:
+            case OPTIONS:
+            case TRACE:
+            case CONNECT:
+                break;
+            default:
+                throw LOGGER.logExceptionAsError(new IllegalStateException("Unknown HTTP Method:"
                     + httpRequest.getHttpMethod()));
         }
         return requestSendMono;
@@ -267,16 +316,6 @@ public class HttpUrlConnectionAsyncClient implements HttpClient {
             );
         } catch (IOException e) {
             throw LOGGER.logExceptionAsError(new RuntimeException(e));
-        }
-    }
-
-    private void writeBody(BinaryData body, DataOutputStream os) {
-        try {
-            byte[] bytes = body.toBytes();
-            os.write(bytes);
-            os.flush();
-        } catch (IOException e) {
-            throw new RuntimeException(e);
         }
     }
 }
